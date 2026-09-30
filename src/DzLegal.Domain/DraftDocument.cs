@@ -16,6 +16,13 @@ public sealed record DraftDocument
     public string? GeneratedBy { get; init; }
 
     public DraftSection? FindSection(string id) => Sections.FirstOrDefault(s => s.Id == id);
+
+    /// <summary>Deep copy, so a snapshot is not affected by later edits.</summary>
+    public DraftDocument DeepCopy() => this with
+    {
+        Inputs = new Dictionary<string, string>(Inputs, StringComparer.Ordinal),
+        Sections = Sections.Select(s => new DraftSection { Id = s.Id, Text = s.Text }).ToList(),
+    };
 }
 
 public sealed class DraftSection

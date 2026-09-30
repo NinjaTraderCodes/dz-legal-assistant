@@ -1,0 +1,240 @@
+// Requête introductive d'instance — عريضة افتتاح الدعوى
+// Legal basis: Loi n° 08-09 (CPCA), as amended. Every element carries "verified": false until a
+// practicing lawyer confirms it against the current official text (see docs/UPDATING-LEGAL-RULES.md).
+{
+  "id": "requete-introductive",
+  "version": "0.1.0",
+  "name": { "ar": "عريضة افتتاح الدعوى", "en": "Statement of claim (requête introductive d'instance)" },
+  "description": {
+    "ar": "العريضة التي ترفع بها الدعوى أمام المحكمة (المواد 14 و15 و17 من قانون الإجراءات المدنية والإدارية).",
+    "en": "The document that opens a case before the court (CPCA arts. 14, 15 and 17)."
+  },
+  "systemPrompt": "prompts/system.ar.txt",
+
+  "fieldGroups": [
+    { "id": "court", "label": { "ar": "الجهة القضائية", "en": "Court" } },
+    { "id": "plaintiff", "label": { "ar": "المدعي", "en": "Plaintiff" } },
+    { "id": "defendant", "label": { "ar": "المدعى عليه", "en": "Defendant" } },
+    { "id": "claim", "label": { "ar": "موضوع الدعوى", "en": "Claim" } },
+    { "id": "notes", "label": { "ar": "ملاحظات المحامي (أساس الصياغة)", "en": "Lawyer's notes (basis for drafting)" } },
+    { "id": "documents", "label": { "ar": "المستندات", "en": "Supporting documents" } },
+    { "id": "signature", "label": { "ar": "التاريخ والتوقيع", "en": "Date and signature" } }
+  ],
+
+  "fields": [
+    { "id": "court.council", "group": "court", "label": { "ar": "المجلس القضائي", "en": "Judicial council (cour)" }, "hint": { "ar": "مثال: الجزائر", "en": "e.g. Alger" } },
+    { "id": "court.name", "group": "court", "label": { "ar": "المحكمة", "en": "Court (tribunal)" }, "hint": { "ar": "مثال: محكمة سيدي امحمد", "en": "e.g. Tribunal de Sidi M'Hamed" } },
+    { "id": "court.section", "group": "court", "label": { "ar": "القسم", "en": "Section" }, "hint": { "ar": "مثال: القسم المدني", "en": "e.g. civil section" } },
+
+    { "id": "plaintiff.isLegalEntity", "group": "plaintiff", "kind": "boolean", "default": "false", "label": { "ar": "المدعي شخص معنوي", "en": "Plaintiff is a legal person" } },
+    { "id": "plaintiff.lastName", "group": "plaintiff", "label": { "ar": "اللقب", "en": "Surname" }, "visibleWhen": [ { "field": "plaintiff.isLegalEntity", "isNot": "true" } ] },
+    { "id": "plaintiff.firstName", "group": "plaintiff", "label": { "ar": "الاسم", "en": "First name(s)" }, "visibleWhen": [ { "field": "plaintiff.isLegalEntity", "isNot": "true" } ] },
+    { "id": "plaintiff.profession", "group": "plaintiff", "label": { "ar": "المهنة", "en": "Occupation" }, "visibleWhen": [ { "field": "plaintiff.isLegalEntity", "isNot": "true" } ] },
+    { "id": "plaintiff.domicile", "group": "plaintiff", "label": { "ar": "الموطن", "en": "Domicile" }, "visibleWhen": [ { "field": "plaintiff.isLegalEntity", "isNot": "true" } ] },
+    { "id": "plaintiff.entityName", "group": "plaintiff", "label": { "ar": "تسمية الشخص المعنوي", "en": "Name of the legal person" }, "visibleWhen": [ { "field": "plaintiff.isLegalEntity", "is": "true" } ] },
+    { "id": "plaintiff.entityNature", "group": "plaintiff", "label": { "ar": "طبيعته (شكله القانوني)", "en": "Nature (legal form)" }, "hint": { "ar": "مثال: شركة ذات مسؤولية محدودة", "en": "e.g. SARL" }, "visibleWhen": [ { "field": "plaintiff.isLegalEntity", "is": "true" } ] },
+    { "id": "plaintiff.headOffice", "group": "plaintiff", "label": { "ar": "المقر الاجتماعي", "en": "Registered office" }, "visibleWhen": [ { "field": "plaintiff.isLegalEntity", "is": "true" } ] },
+    { "id": "plaintiff.representativeName", "group": "plaintiff", "label": { "ar": "اسم الممثل", "en": "Representative's name" }, "visibleWhen": [ { "field": "plaintiff.isLegalEntity", "is": "true" } ] },
+    { "id": "plaintiff.representativeCapacity", "group": "plaintiff", "label": { "ar": "صفة الممثل القانوني أو الاتفاقي", "en": "Capacity of the legal or contractual representative" }, "hint": { "ar": "مثال: المسير", "en": "e.g. gérant" }, "visibleWhen": [ { "field": "plaintiff.isLegalEntity", "is": "true" } ] },
+
+    { "id": "defendant.isLegalEntity", "group": "defendant", "kind": "boolean", "default": "false", "label": { "ar": "المدعى عليه شخص معنوي", "en": "Defendant is a legal person" } },
+    { "id": "defendant.lastName", "group": "defendant", "label": { "ar": "اللقب", "en": "Surname" }, "visibleWhen": [ { "field": "defendant.isLegalEntity", "isNot": "true" } ] },
+    { "id": "defendant.firstName", "group": "defendant", "label": { "ar": "الاسم", "en": "First name(s)" }, "visibleWhen": [ { "field": "defendant.isLegalEntity", "isNot": "true" } ] },
+    { "id": "defendant.domicile", "group": "defendant", "label": { "ar": "الموطن", "en": "Domicile" }, "visibleWhen": [ { "field": "defendant.isLegalEntity", "isNot": "true" } ] },
+    { "id": "defendant.lastKnownDomicile", "group": "defendant", "label": { "ar": "آخر موطن معلوم (إن لم يكن له موطن معلوم)", "en": "Last known domicile (if domicile unknown)" }, "visibleWhen": [ { "field": "defendant.isLegalEntity", "isNot": "true" } ] },
+    { "id": "defendant.entityName", "group": "defendant", "label": { "ar": "تسمية الشخص المعنوي", "en": "Name of the legal person" }, "visibleWhen": [ { "field": "defendant.isLegalEntity", "is": "true" } ] },
+    { "id": "defendant.entityNature", "group": "defendant", "label": { "ar": "طبيعته (شكله القانوني)", "en": "Nature (legal form)" }, "visibleWhen": [ { "field": "defendant.isLegalEntity", "is": "true" } ] },
+    { "id": "defendant.headOffice", "group": "defendant", "label": { "ar": "المقر الاجتماعي", "en": "Registered office" }, "visibleWhen": [ { "field": "defendant.isLegalEntity", "is": "true" } ] },
+    { "id": "defendant.representativeName", "group": "defendant", "label": { "ar": "اسم الممثل", "en": "Representative's name" }, "visibleWhen": [ { "field": "defendant.isLegalEntity", "is": "true" } ] },
+    { "id": "defendant.representativeCapacity", "group": "defendant", "label": { "ar": "صفة الممثل القانوني أو الاتفاقي", "en": "Capacity of the legal or contractual representative" }, "visibleWhen": [ { "field": "defendant.isLegalEntity", "is": "true" } ] },
+
+    { "id": "claim.subject", "group": "claim", "label": { "ar": "موضوع الدعوى", "en": "Subject of the claim" }, "hint": { "ar": "مثال: المطالبة بدين", "en": "e.g. recovery of a debt" } },
+    { "id": "claim.concernsRegisteredRealProperty", "group": "claim", "kind": "boolean", "default": "false", "label": { "ar": "الدعوى تتعلق بعقار أو حق عيني عقاري مشهر", "en": "Claim concerns registered real property or a real right" } },
+    { "id": "claim.publicationReference", "group": "claim", "label": { "ar": "مراجع إشهار العريضة لدى المحافظة العقارية", "en": "Publication reference at the land registry (conservation foncière)" }, "visibleWhen": [ { "field": "claim.concernsRegisteredRealProperty", "is": "true" } ] },
+
+    { "id": "notes.facts", "group": "notes", "kind": "multilineText", "label": { "ar": "الوقائع", "en": "Facts" }, "hint": { "ar": "اكتب الوقائع بإيجاز، بأي لغة", "en": "Brief facts, in any language" } },
+    { "id": "notes.grounds", "group": "notes", "kind": "multilineText", "label": { "ar": "الأسانيد القانونية", "en": "Legal grounds" }, "hint": { "ar": "المواد والحجج التي تؤسس عليها الدعوى", "en": "Articles and arguments the claim rests on" } },
+    { "id": "notes.requests", "group": "notes", "kind": "multilineText", "label": { "ar": "الطلبات", "en": "Requests" }, "hint": { "ar": "ما تلتمسه من المحكمة", "en": "What you ask the court for" } },
+
+    { "id": "documents.list", "group": "documents", "kind": "multilineText", "label": { "ar": "المستندات المؤيدة للدعوى (مستند في كل سطر)", "en": "Supporting documents (one per line)" } },
+
+    { "id": "lawyer.name", "group": "signature", "label": { "ar": "اسم المحامي", "en": "Lawyer's name" } },
+    { "id": "lawyer.bar", "group": "signature", "label": { "ar": "صفة المحامي", "en": "Lawyer's standing" }, "hint": { "ar": "مثال: محامٍ لدى مجلس قضاء الجزائر", "en": "e.g. avocat à la Cour d'Alger" } },
+    { "id": "lawyer.address", "group": "signature", "label": { "ar": "عنوان مكتب المحامي", "en": "Lawyer's office address" } },
+    { "id": "document.place", "group": "signature", "label": { "ar": "مكان التحرير", "en": "Place of drafting" } },
+    { "id": "document.date", "group": "signature", "kind": "date", "default": "today", "label": { "ar": "تاريخ التحرير", "en": "Date" }, "hint": { "ar": "يوم/شهر/سنة", "en": "dd/mm/yyyy" } }
+  ],
+
+  "sections": [
+    { "id": "header", "kind": "generated", "template": "templates/header.scriban", "title": { "ar": "الجهة القضائية", "en": "Court" } },
+    { "id": "plaintiff", "kind": "generated", "template": "templates/plaintiff.scriban", "title": { "ar": "المدعي", "en": "Plaintiff" } },
+    { "id": "defendant", "kind": "generated", "template": "templates/defendant.scriban", "title": { "ar": "المدعى عليه", "en": "Defendant" } },
+    { "id": "subject", "kind": "generated", "template": "templates/subject.scriban", "title": { "ar": "الموضوع", "en": "Subject" } },
+    { "id": "publication", "kind": "generated", "template": "templates/publication.scriban", "title": { "ar": "الإشهار العقاري", "en": "Land-registry publication" },
+      "includeWhen": [ { "field": "claim.concernsRegisteredRealProperty", "is": "true" } ] },
+    { "id": "opening", "kind": "generated", "template": "templates/opening.scriban", "title": { "ar": "الافتتاح", "en": "Opening" } },
+    { "id": "facts", "kind": "narrative", "prompt": "prompts/facts.ar.txt", "sourceField": "notes.facts", "showTitle": true, "title": { "ar": "الوقائع", "en": "Facts" } },
+    { "id": "grounds", "kind": "narrative", "prompt": "prompts/grounds.ar.txt", "sourceField": "notes.grounds", "showTitle": true, "title": { "ar": "المناقشة القانونية", "en": "Legal grounds" } },
+    { "id": "requests", "kind": "narrative", "prompt": "prompts/requests.ar.txt", "sourceField": "notes.requests", "showTitle": true, "title": { "ar": "لهذه الأسباب", "en": "Requests (for these reasons)" } },
+    { "id": "documents", "kind": "generated", "template": "templates/documents.scriban", "showTitle": true, "title": { "ar": "قائمة المرفقات", "en": "Supporting documents" } },
+    { "id": "dateplace", "kind": "generated", "template": "templates/dateplace.scriban", "title": { "ar": "التاريخ", "en": "Date" } },
+    { "id": "signature", "kind": "generated", "template": "templates/signature.scriban", "title": { "ar": "التوقيع", "en": "Signature" } }
+  ],
+
+  "elements": [
+    {
+      "id": "art15.1.court",
+      "article": "CPCA art. 15-1",
+      "label": { "ar": "الجهة القضائية التي ترفع أمامها الدعوى", "en": "Court before which the action is brought" },
+      "check": { "kind": "allOf", "checks": [
+        { "kind": "fieldsPresent", "fields": [ "court.name" ] },
+        { "kind": "sectionNotEmpty", "section": "header" } ] },
+      "missingMessage": { "ar": "لم تحدد الجهة القضائية التي ترفع أمامها الدعوى — العريضة معرضة لعدم القبول شكلا.", "en": "The court is not identified — the requête would be inadmissible in form." },
+      "verified": false,
+      "sourceNote": "Art. 15 item 1, Loi 08-09."
+    },
+    {
+      "id": "art15.2.plaintiff",
+      "article": "CPCA art. 15-2",
+      "label": { "ar": "اسم ولقب المدعي وموطنه", "en": "Plaintiff's name, surname and domicile" },
+      "appliesWhen": [ { "field": "plaintiff.isLegalEntity", "isNot": "true" } ],
+      "check": { "kind": "fieldsPresent", "fields": [ "plaintiff.lastName", "plaintiff.firstName", "plaintiff.domicile" ] },
+      "missingMessage": { "ar": "بيانات المدعي (الاسم أو اللقب أو الموطن) ناقصة — العريضة معرضة لعدم القبول شكلا.", "en": "Plaintiff's name, surname or domicile is missing — inadmissible in form." },
+      "verified": false,
+      "sourceNote": "Art. 15 item 2. For a legal-person plaintiff, item 4 applies instead."
+    },
+    {
+      "id": "art15.3.defendant",
+      "article": "CPCA art. 15-3",
+      "label": { "ar": "اسم ولقب وموطن المدعى عليه، أو آخر موطن له", "en": "Defendant's name, surname and domicile (or last known domicile)" },
+      "appliesWhen": [ { "field": "defendant.isLegalEntity", "isNot": "true" } ],
+      "check": { "kind": "allOf", "checks": [
+        { "kind": "fieldsPresent", "fields": [ "defendant.lastName", "defendant.firstName" ] },
+        { "kind": "anyOf", "checks": [
+          { "kind": "fieldsPresent", "fields": [ "defendant.domicile" ] },
+          { "kind": "fieldsPresent", "fields": [ "defendant.lastKnownDomicile" ] } ] } ] },
+      "missingMessage": { "ar": "بيانات المدعى عليه (الاسم أو اللقب أو الموطن أو آخر موطن معلوم) ناقصة — العريضة معرضة لعدم القبول شكلا.", "en": "Defendant's name, surname or (last known) domicile is missing — inadmissible in form." },
+      "verified": false,
+      "sourceNote": "Art. 15 item 3: if the defendant has no known domicile, the last known domicile suffices."
+    },
+    {
+      "id": "art15.4.plaintiff",
+      "article": "CPCA art. 15-4",
+      "label": { "ar": "تسمية وطبيعة الشخص المعنوي المدعي ومقره الاجتماعي وصفة ممثله", "en": "Legal-person plaintiff: name, nature, registered office, representative's capacity" },
+      "appliesWhen": [ { "field": "plaintiff.isLegalEntity", "is": "true" } ],
+      "check": { "kind": "fieldsPresent", "fields": [ "plaintiff.entityName", "plaintiff.entityNature", "plaintiff.headOffice", "plaintiff.representativeCapacity" ] },
+      "missingMessage": { "ar": "بيانات الشخص المعنوي المدعي ناقصة (التسمية أو الطبيعة أو المقر الاجتماعي أو صفة الممثل) — العريضة معرضة لعدم القبول شكلا.", "en": "Legal-person plaintiff details are incomplete — inadmissible in form." },
+      "verified": false,
+      "sourceNote": "Art. 15 item 4. Confirm whether the representative's name is also expected in practice."
+    },
+    {
+      "id": "art15.4.defendant",
+      "article": "CPCA art. 15-4",
+      "label": { "ar": "تسمية وطبيعة الشخص المعنوي المدعى عليه ومقره الاجتماعي وصفة ممثله", "en": "Legal-person defendant: name, nature, registered office, representative's capacity" },
+      "appliesWhen": [ { "field": "defendant.isLegalEntity", "is": "true" } ],
+      "check": { "kind": "fieldsPresent", "fields": [ "defendant.entityName", "defendant.entityNature", "defendant.headOffice", "defendant.representativeCapacity" ] },
+      "missingMessage": { "ar": "بيانات الشخص المعنوي المدعى عليه ناقصة (التسمية أو الطبيعة أو المقر الاجتماعي أو صفة الممثل) — العريضة معرضة لعدم القبول شكلا.", "en": "Legal-person defendant details are incomplete — inadmissible in form." },
+      "verified": false,
+      "sourceNote": "Art. 15 item 4."
+    },
+    {
+      "id": "art15.5.facts",
+      "article": "CPCA art. 15-5",
+      "label": { "ar": "عرض موجز للوقائع", "en": "Summary of the facts" },
+      "check": { "kind": "sectionNotEmpty", "section": "facts" },
+      "missingMessage": { "ar": "لا يوجد عرض للوقائع — العريضة معرضة لعدم القبول شكلا.", "en": "No statement of facts — inadmissible in form." },
+      "verified": false,
+      "sourceNote": "Art. 15 item 5: summary of the facts, the requests and the grounds."
+    },
+    {
+      "id": "art15.5.grounds",
+      "article": "CPCA art. 15-5",
+      "label": { "ar": "الوسائل التي تؤسس عليها الدعوى", "en": "Grounds on which the claim rests" },
+      "check": { "kind": "sectionNotEmpty", "section": "grounds" },
+      "missingMessage": { "ar": "لا توجد الوسائل (الأسانيد) التي تؤسس عليها الدعوى — العريضة معرضة لعدم القبول شكلا.", "en": "No grounds stated — inadmissible in form." },
+      "verified": false,
+      "sourceNote": "Art. 15 item 5."
+    },
+    {
+      "id": "art15.5.requests",
+      "article": "CPCA art. 15-5",
+      "label": { "ar": "الطلبات", "en": "Requests" },
+      "check": { "kind": "sectionNotEmpty", "section": "requests" },
+      "missingMessage": { "ar": "لا توجد طلبات — العريضة معرضة لعدم القبول شكلا.", "en": "No requests stated — inadmissible in form." },
+      "verified": false,
+      "sourceNote": "Art. 15 item 5."
+    },
+    {
+      "id": "art15.6.documents",
+      "article": "CPCA art. 15-6",
+      "severity": "warning",
+      "label": { "ar": "الإشارة إلى المستندات والوثائق المؤيدة للدعوى (عند الاقتضاء)", "en": "Reference to supporting documents (where applicable)" },
+      "check": { "kind": "sectionNotEmpty", "section": "documents" },
+      "missingMessage": { "ar": "لم يشر إلى أي مستند مؤيد للدعوى. تحقق مما إذا كانت الدعوى تقتضي ذلك.", "en": "No supporting documents listed. Check whether the claim requires them." },
+      "verified": false,
+      "sourceNote": "Art. 15 item 6 applies 'where applicable' (عند الاقتضاء), so it is a warning, not a hard failure."
+    },
+    {
+      "id": "art14.date",
+      "article": "CPCA art. 14",
+      "label": { "ar": "تاريخ العريضة", "en": "Date of the requête" },
+      "check": { "kind": "sectionMatches", "section": "dateplace",
+        "pattern": "([0-9]{1,2}|[٠-٩]{1,2})\\s*[/.\\-]\\s*([0-9]{1,2}|[٠-٩]{1,2})\\s*[/.\\-]\\s*([0-9]{4}|[٠-٩]{4})" },
+      "missingMessage": { "ar": "العريضة غير مؤرخة. المادة 14 تشترط عريضة مكتوبة موقعة ومؤرخة.", "en": "The requête is not dated. Art. 14 requires a written, signed and dated requête." },
+      "verified": false,
+      "sourceNote": "Art. 14 (not art. 15): the requête must be written, signed and dated. Confirm the sanction with the lawyer."
+    },
+    {
+      "id": "art14.signature",
+      "article": "CPCA art. 14",
+      "label": { "ar": "توقيع العريضة", "en": "Signature of the requête" },
+      "check": { "kind": "allOf", "checks": [
+        { "kind": "fieldsPresent", "fields": [ "lawyer.name" ] },
+        { "kind": "sectionNotEmpty", "section": "signature" } ] },
+      "missingMessage": { "ar": "لا توجد خانة توقيع باسم المحامي. المادة 14 تشترط عريضة موقعة.", "en": "No signature block with the lawyer's name. Art. 14 requires a signed requête." },
+      "verified": false,
+      "sourceNote": "Art. 14. The application checks the signature block; the handwritten signature is applied by the lawyer."
+    },
+    {
+      "id": "art17.publication",
+      "article": "CPCA art. 17",
+      "label": { "ar": "إشهار العريضة لدى المحافظة العقارية (دعاوى العقار المشهر)", "en": "Publication at the land registry (registered real property claims)" },
+      "appliesWhen": [ { "field": "claim.concernsRegisteredRealProperty", "is": "true" } ],
+      "check": { "kind": "allOf", "checks": [
+        { "kind": "fieldsPresent", "fields": [ "claim.publicationReference" ] },
+        { "kind": "sectionNotEmpty", "section": "publication" } ] },
+      "missingMessage": { "ar": "الدعوى تتعلق بعقار أو بحق عيني عقاري مشهر: يجب إشهار العريضة لدى المحافظة العقارية وتقديمها في أول جلسة، تحت طائلة عدم القبول شكلا.", "en": "Real-property claim: the requête must be published at the land registry and produced at the first hearing, or it is inadmissible in form." },
+      "verified": false,
+      "sourceNote": "Art. 17 para. 2. Confirm current wording after Loi 22-13 and what exactly must appear in the requête itself."
+    },
+    {
+      "id": "art8.arabic",
+      "article": "CPCA art. 8",
+      "label": { "ar": "تحرير العريضة باللغة العربية", "en": "Requête written in Arabic" },
+      "check": { "kind": "predominantlyArabic", "sections": [ "subject", "facts", "grounds", "requests" ], "minRatio": 0.6 },
+      "missingMessage": { "ar": "جزء من العريضة غير محرر باللغة العربية. المادة 8 تشترط تحرير العرائض باللغة العربية تحت طائلة عدم القبول.", "en": "Part of the requête is not in Arabic. Art. 8 requires pleadings in Arabic, on pain of inadmissibility." },
+      "verified": false,
+      "sourceNote": "Art. 8. Latin-script names and French terms inline are tolerated up to 40% of letters per section."
+    },
+    {
+      "id": "form.subject",
+      "article": "CPCA art. 15-5 (objet de la demande)",
+      "severity": "warning",
+      "label": { "ar": "بيان موضوع الدعوى", "en": "Subject of the claim stated" },
+      "check": { "kind": "sectionNotEmpty", "section": "subject" },
+      "missingMessage": { "ar": "لم يحدد موضوع الدعوى في رأس العريضة.", "en": "The subject of the claim is not stated in the heading." },
+      "verified": false,
+      "sourceNote": "Listed in the project brief as a required element; not a separate item of art. 15 as currently read. Confirm with the lawyer."
+    },
+    {
+      "id": "form.order",
+      "article": "Practice (structure)",
+      "severity": "warning",
+      "label": { "ar": "ترتيب أجزاء العريضة", "en": "Order of the requête's parts" },
+      "check": { "kind": "sectionOrder", "sections": [ "header", "plaintiff", "defendant", "subject", "facts", "grounds", "requests", "documents", "dateplace", "signature" ] },
+      "missingMessage": { "ar": "أجزاء العريضة ليست في الترتيب المعتاد.", "en": "The parts of the requête are not in the customary order." },
+      "verified": false,
+      "sourceNote": "Customary structure of Algerian model requêtes, not a statutory rule."
+    }
+  ]
+}

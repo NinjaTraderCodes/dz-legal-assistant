@@ -1,0 +1,3 @@
+{ "name": "legal-person plaintiff without representative's capacity", "extends": "complete-legal-entity-plaintiff.case.json",
+  "setInputs": { "plaintiff.representativeCapacity": "" },
+  "expectedMissing": [ "art15.4.plaintiff" ] }

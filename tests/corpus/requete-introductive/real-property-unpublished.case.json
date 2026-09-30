@@ -1,0 +1,4 @@
+{ "name": "real-property claim without land-registry publication", "extends": "complete-real-property.case.json",
+  "setInputs": { "claim.publicationReference": "" },
+  "removeSections": [ "publication" ],
+  "expectedMissing": [ "art17.publication" ] }

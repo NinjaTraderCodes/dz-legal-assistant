@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <Description>Quality harness: measures Form Engine accuracy against a corpus of documents with known-correct outcomes.</Description>
+    <IncludeLegalData>true</IncludeLegalData>
+    <IncludeQualityCorpus>true</IncludeQualityCorpus>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DzLegal.FormEngine\DzLegal.FormEngine.csproj" />
+    <ProjectReference Include="..\DzLegal.Storage\DzLegal.Storage.csproj" />
+  </ItemGroup>
+</Project>

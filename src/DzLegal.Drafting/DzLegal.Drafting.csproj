@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Drafting layer: renders template sections and asks a model provider to put the lawyer's notes into formal Arabic.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DzLegal.Domain\DzLegal.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Scriban" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="DzLegal.Drafting.Tests" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,4 @@
+{ "name": "subject of the claim not stated", "extends": "_base-natural-person.json",
+  "setInputs": { "claim.subject": "" },
+  "setSections": { "subject": "" },
+  "expectedMissing": [ "form.subject" ] }

@@ -1,0 +1,10 @@
+<Project>
+  <!-- Projects that need the legal rules/templates at runtime set IncludeLegalData=true;
+       the data folder is copied next to the binaries so the app works fully offline. -->
+  <ItemGroup Condition="'$(IncludeLegalData)' == 'true'">
+    <None Include="$(MSBuildThisFileDirectory)data/**/*" LinkBase="data" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(IncludeQualityCorpus)' == 'true'">
+    <None Include="$(MSBuildThisFileDirectory)tests/corpus/**/*" LinkBase="corpus" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

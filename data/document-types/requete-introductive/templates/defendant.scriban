@@ -1,0 +1,8 @@
+{{~ if defendant.isLegalEntity ~}}
+{{~ if defendant.entityName ~}}
+ضد: {{ defendant.entityName }}{{ if defendant.entityNature }}، {{ defendant.entityNature }}{{ end }}{{ if defendant.headOffice }}، الكائن مقرها الاجتماعي بـ: {{ defendant.headOffice }}{{ end }}{{ if defendant.representativeCapacity }}، ممثلة من طرف {{ defendant.representativeCapacity }}{{ if defendant.representativeName }} السيد(ة) {{ defendant.representativeName }}{{ end }}{{ end }}.
+{{~ end ~}}
+{{~ else if defendant.lastName || defendant.firstName ~}}
+ضد: السيد(ة) {{ defendant.lastName }} {{ defendant.firstName }}{{ if defendant.domicile }}، الساكن(ة) بـ: {{ defendant.domicile }}{{ else if defendant.lastKnownDomicile }}، مجهول الموطن، وآخر موطن معلوم له: {{ defendant.lastKnownDomicile }}{{ end }}.
+{{~ end ~}}
+(مدعى عليه)

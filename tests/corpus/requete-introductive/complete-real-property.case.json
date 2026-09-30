@@ -1,0 +1,15 @@
+{
+  "name": "complete requête about registered real property, published",
+  "extends": "_base-natural-person.json",
+  "setInputs": {
+    "claim.subject": "إبطال عقد بيع عقار",
+    "claim.concernsRegisteredRealProperty": "true",
+    "claim.publicationReference": "إيداع رقم 1234 بتاريخ 01/09/2026، المحافظة العقارية لسيدي امحمد"
+  },
+  "setSections": {
+    "subject": "الموضوع: إبطال عقد بيع عقار",
+    "publication": "أشهرت هذه العريضة لدى المحافظة العقارية المختصة، مراجع الإشهار: إيداع رقم 1234 بتاريخ 01/09/2026، المحافظة العقارية لسيدي امحمد."
+  },
+  "sectionOrder": [ "header", "plaintiff", "defendant", "subject", "publication", "opening", "facts", "grounds", "requests", "documents", "dateplace", "signature" ],
+  "expectedNotApplicable": [ "art15.4.plaintiff", "art15.4.defendant" ]
+}

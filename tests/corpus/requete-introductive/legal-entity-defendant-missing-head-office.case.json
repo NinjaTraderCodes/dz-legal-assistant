@@ -1,0 +1,3 @@
+{ "name": "legal-person defendant without registered office", "extends": "complete-legal-entity-defendant.case.json",
+  "setInputs": { "defendant.headOffice": "" },
+  "expectedMissing": [ "art15.4.defendant" ] }

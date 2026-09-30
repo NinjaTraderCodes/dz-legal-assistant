@@ -1,0 +1,11 @@
+{{~ if plaintiff.isLegalEntity ~}}
+{{~ if plaintiff.entityName ~}}
+لفائدة: {{ plaintiff.entityName }}{{ if plaintiff.entityNature }}، {{ plaintiff.entityNature }}{{ end }}{{ if plaintiff.headOffice }}، الكائن مقرها الاجتماعي بـ: {{ plaintiff.headOffice }}{{ end }}{{ if plaintiff.representativeCapacity }}، ممثلة من طرف {{ plaintiff.representativeCapacity }}{{ if plaintiff.representativeName }} السيد(ة) {{ plaintiff.representativeName }}{{ end }}{{ end }}.
+{{~ end ~}}
+{{~ else if plaintiff.lastName || plaintiff.firstName ~}}
+لفائدة: السيد(ة) {{ plaintiff.lastName }} {{ plaintiff.firstName }}{{ if plaintiff.profession }}، {{ plaintiff.profession }}{{ end }}{{ if plaintiff.domicile }}، الساكن(ة) بـ: {{ plaintiff.domicile }}{{ end }}.
+{{~ end ~}}
+{{~ if lawyer.name ~}}
+القائم في حقه(ا) الأستاذ(ة) {{ lawyer.name }}{{ if lawyer.bar }}، {{ lawyer.bar }}{{ end }}{{ if lawyer.address }}، الكائن مكتبه بـ: {{ lawyer.address }}{{ end }}.
+{{~ end ~}}
+(مدعٍ)

@@ -1,0 +1,3 @@
+{{~ for doc in (lines documents.list) ~}}
+{{ for.index + 1 }}. {{ doc }}
+{{~ end ~}}

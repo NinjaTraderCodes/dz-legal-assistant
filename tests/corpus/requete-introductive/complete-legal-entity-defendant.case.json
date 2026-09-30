@@ -1,0 +1,17 @@
+{
+  "name": "complete requête, legal-person defendant",
+  "extends": "_base-natural-person.json",
+  "setInputs": {
+    "defendant.isLegalEntity": "true",
+    "defendant.lastName": "", "defendant.firstName": "", "defendant.domicile": "",
+    "defendant.entityName": "شركة النور للتوزيع",
+    "defendant.entityNature": "شركة ذات مسؤولية محدودة",
+    "defendant.headOffice": "حي الأعمال، باب الزوار، الجزائر",
+    "defendant.representativeName": "مراد قاسمي",
+    "defendant.representativeCapacity": "المسير"
+  },
+  "setSections": {
+    "defendant": "ضد: شركة النور للتوزيع، شركة ذات مسؤولية محدودة، الكائن مقرها الاجتماعي بـ: حي الأعمال، باب الزوار، الجزائر، ممثلة من طرف المسير السيد(ة) مراد قاسمي.\n(مدعى عليه)"
+  },
+  "expectedNotApplicable": [ "art15.3.defendant", "art15.4.plaintiff", "art17.publication" ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "complete requête, legal-person plaintiff",
+  "extends": "_base-natural-person.json",
+  "setInputs": {
+    "plaintiff.isLegalEntity": "true",
+    "plaintiff.lastName": "", "plaintiff.firstName": "", "plaintiff.domicile": "",
+    "plaintiff.entityName": "مؤسسة الأطلس للبناء",
+    "plaintiff.entityNature": "شركة مساهمة",
+    "plaintiff.headOffice": "المنطقة الصناعية، الرويبة",
+    "plaintiff.representativeCapacity": "الرئيس المدير العام"
+  },
+  "expectedNotApplicable": [ "art15.2.plaintiff", "art15.4.defendant", "art17.publication" ]
+}

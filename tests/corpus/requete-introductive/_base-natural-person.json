@@ -1,0 +1,50 @@
+// Base document (not a case by itself): a complete requête between two natural persons.
+// Fictitious parties. Cases extend this file and introduce one defect each.
+{
+  "name": "base natural person",
+  "draft": {
+    "documentTypeId": "requete-introductive",
+    "definitionVersion": "0.1.0",
+    "inputs": {
+      "court.council": "الجزائر",
+      "court.name": "محكمة سيدي امحمد",
+      "court.section": "القسم المدني",
+      "plaintiff.isLegalEntity": "false",
+      "plaintiff.lastName": "بن علي",
+      "plaintiff.firstName": "كريم",
+      "plaintiff.profession": "تاجر",
+      "plaintiff.domicile": "12 شارع ديدوش مراد، الجزائر الوسطى",
+      "defendant.isLegalEntity": "false",
+      "defendant.lastName": "حمداني",
+      "defendant.firstName": "سمير",
+      "defendant.domicile": "5 نهج العربي بن مهيدي، الجزائر",
+      "defendant.lastKnownDomicile": "",
+      "claim.subject": "المطالبة بدين",
+      "claim.concernsRegisteredRealProperty": "false",
+      "claim.publicationReference": "",
+      "notes.facts": "قرض 500000 دج بتاريخ 10/01/2025 لم يسدد.",
+      "notes.grounds": "المادة 106 من القانون المدني.",
+      "notes.requests": "إلزام المدعى عليه بدفع 500000 دج.",
+      "documents.list": "عقد القرض\nإنذار بالدفع",
+      "lawyer.name": "نادية سعدي",
+      "lawyer.bar": "محامية لدى مجلس قضاء الجزائر",
+      "lawyer.address": "20 شارع العربي بن مهيدي، الجزائر",
+      "document.place": "الجزائر",
+      "document.date": "15/09/2026"
+    },
+    "sections": [
+      { "id": "header", "text": "الجمهورية الجزائرية الديمقراطية الشعبية\nمجلس قضاء الجزائر\nمحكمة سيدي امحمد\nالقسم المدني\n\nعريضة افتتاح دعوى" },
+      { "id": "plaintiff", "text": "لفائدة: السيد(ة) بن علي كريم، تاجر، الساكن(ة) بـ: 12 شارع ديدوش مراد، الجزائر الوسطى.\nالقائم في حقه(ا) الأستاذ(ة) نادية سعدي، محامية لدى مجلس قضاء الجزائر.\n(مدعٍ)" },
+      { "id": "defendant", "text": "ضد: السيد(ة) حمداني سمير، الساكن(ة) بـ: 5 نهج العربي بن مهيدي، الجزائر.\n(مدعى عليه)" },
+      { "id": "subject", "text": "الموضوع: المطالبة بدين" },
+      { "id": "opening", "text": "إلى السادة رئيس وأعضاء محكمة سيدي امحمد المحترمين\nيتشرف العارض بواسطة دفاعه أن يعرض على هيئتكم الموقرة ما يلي:" },
+      { "id": "facts", "text": "حيث إن العارض أقرض المدعى عليه مبلغ 500000 دج بتاريخ 10/01/2025.\nوحيث إن المدعى عليه لم يسدد المبلغ رغم حلول أجله." },
+      { "id": "grounds", "text": "حيث إن المادة 106 من القانون المدني تنص على أن العقد شريعة المتعاقدين.\nوحيث إن المدعى عليه ملزم بتنفيذ التزامه." },
+      { "id": "requests", "text": "يلتمس العارض من هيئتكم الموقرة:\nفي الشكل: قبول الدعوى شكلا.\nفي الموضوع: إلزام المدعى عليه بأن يدفع للعارض مبلغ 500000 دج." },
+      { "id": "documents", "text": "1. عقد القرض\n2. إنذار بالدفع" },
+      { "id": "dateplace", "text": "حرر بـالجزائر في: 15/09/2026" },
+      { "id": "signature", "text": "عن المدعي\nدفاعه الأستاذ(ة) نادية سعدي\nالتوقيع:" }
+    ]
+  },
+  "expectedNotApplicable": [ "art15.4.plaintiff", "art15.4.defendant", "art17.publication" ]
+}

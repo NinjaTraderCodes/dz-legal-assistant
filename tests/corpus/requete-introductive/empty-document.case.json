@@ -1,0 +1,9 @@
+{ "name": "empty requête: everything missing", "extends": "_base-natural-person.json",
+  "setInputs": {
+    "court.name": "", "plaintiff.lastName": "", "plaintiff.firstName": "", "plaintiff.domicile": "",
+    "defendant.lastName": "", "defendant.firstName": "", "defendant.domicile": "",
+    "claim.subject": "", "documents.list": "", "lawyer.name": "", "document.date": ""
+  },
+  "setSections": { "header": "", "plaintiff": "", "defendant": "", "subject": "", "facts": "", "grounds": "", "requests": "", "documents": "", "dateplace": "", "signature": "" },
+  "expectedMissing": [ "art15.1.court", "art15.2.plaintiff", "art15.3.defendant", "art15.5.facts", "art15.5.grounds", "art15.5.requests",
+                       "art15.6.documents", "art14.date", "art14.signature", "form.subject" ] }

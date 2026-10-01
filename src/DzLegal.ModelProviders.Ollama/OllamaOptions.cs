@@ -12,6 +12,17 @@ public sealed record OllamaOptions
 
     public int ContextLength { get; init; } = 4096;
 
+    /// <summary>Upper bound on generated tokens per section, so a small model cannot ramble or loop.</summary>
+    public int MaxTokens { get; init; } = 1000;
+
+    public double RepeatPenalty { get; init; } = 1.1;
+
+    /// <summary>
+    /// Ollama's "think" switch for reasoning models (e.g. qwen3): false skips the slow reasoning phase.
+    /// Null leaves it unset, which non-reasoning models require.
+    /// </summary>
+    public bool? Think { get; init; }
+
     /// <summary>CPU inference of a 7B model can take minutes per section on modest hardware.</summary>
     public TimeSpan Timeout { get; init; } = TimeSpan.FromMinutes(10);
 }

@@ -75,6 +75,18 @@ public static class DefinitionLoader
             }
 
             CheckConditions(field.VisibleWhen, $"field '{field.Id}'", fieldIds, errors);
+            if (field.Kind == FieldKind.Choice)
+            {
+                if (field.Options.Count < 2)
+                {
+                    errors.Add($"Choice field '{field.Id}' needs at least two options.");
+                }
+
+                if (!string.IsNullOrEmpty(field.Default) && field.Options.All(o => o.Value != field.Default))
+                {
+                    errors.Add($"Choice field '{field.Id}' has a default that is not one of its options.");
+                }
+            }
         }
 
         foreach (var section in definition.Sections)

@@ -1,1 +1,1 @@
-حرر بـ{{ if document.place }}{{ document.place }}{{ else }}.........{{ end }} في: {{ document.date }}
+حرر {{ if document.place }}ب{{ document.place }}{{ else }}بـ.........{{ end }} في: {{ document.date }}

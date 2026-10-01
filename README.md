@@ -16,7 +16,8 @@ The lawyer fills in the case details, the application produces a structured firs
 |---|---|
 | **Offline, no data leaves the machine** | No cloud APIs, no telemetry. The only model endpoint allowed is a loopback address (`127.0.0.1`, `::1`, `localhost`), checked by `LoopbackGuard`, with the system proxy bypassed. See [docs/OFFLINE.md](docs/OFFLINE.md). |
 | **Assistive, never autonomous** | A permanent "draft, review required" banner. The app only produces text for the lawyer to edit and sign. |
-| **Grounded, not free-generating** | Identification, court, dates and the signature block come from templates, deterministically. The model only rewrites the lawyer's own notes for facts, grounds and requests. If a section has no notes, the model is not called. |
+| **Grounded, not free-generating** | Identification, court, dates and the signature block come from templates, deterministically, with grammatical gender taken from the form. The model only rewrites the lawyer's own notes for facts, grounds and requests. Prompts state the parties' roles explicitly. If a section has no notes, the model is not called. |
+| **Model output is checked** | Deterministic checks flag foreign-script characters, invented numbers and dropped numbers. Corrupted answers are retried once and otherwise replaced by the lawyer's notes. |
 | **Verifiable** | The Form Engine is pure and deterministic. A 24-case corpus measures its accuracy per element, and CI requires 100%. |
 | **Legal rules are data** | Elements, articles, templates and prompts live in `data/`. Changing a rule means editing JSON, not code. |
 
@@ -26,7 +27,7 @@ Prerequisite: [.NET 10 SDK](https://dotnet.microsoft.com/download) (the version 
 
 ```bash
 dotnet build                                   # warnings are errors
-dotnet test                                    # 118 tests: engine, drafting, providers, storage, UI (headless)
+dotnet test                                    # 142 tests: engine, drafting, providers, storage, UI (headless)
 dotnet run --project src/DzLegal.Harness       # Form Engine accuracy report (exit 1 on any mismatch)
 dotnet run --project src/DzLegal.App           # the desktop app
 ```
@@ -39,7 +40,7 @@ The app starts in Arabic and uses the local model by default. **With no model in
 2. `ollama pull qwen2.5:7b-instruct` (about 4.7 GB, one-time download). After that, no network is needed.
 3. Start the app and keep the default engine, "النموذج المحلي" / "Local model".
 
-Minimum hardware: 16 GB RAM (CPU-only inference works, at about a minute or more per section), or a GPU with 8 GB or more of VRAM. To use another model, edit `appsettings.json` next to the executable:
+Recommended hardware: 16 GB RAM for 7B models (CPU-only works, at about a minute or more per section), or a GPU with 8 GB or more of VRAM. **On 8 GB RAM**, use a 3–4B model such as `gemma3:4b` or `qwen2.5:3b-instruct`, and run the drafting bench below to pick one. To use another model, edit `appsettings.json` next to the executable:
 
 ```jsonc
 {
@@ -49,7 +50,16 @@ Minimum hardware: 16 GB RAM (CPU-only inference works, at about a minute or more
 }
 ```
 
-A non-loopback `endpoint` is refused.
+A non-loopback `endpoint` is refused. Further optional keys: `temperature` (0.2), `maxTokens` (1000), `repeatPenalty` (1.1), and `"think": false` for reasoning models such as `qwen3`.
+
+### Comparing local models (drafting bench)
+
+```bash
+ollama pull gemma3:4b && ollama pull qwen2.5:3b-instruct     # once, online
+dotnet run --project src/DzLegal.Harness -- draft --models gemma3:4b,qwen2.5:3b-instruct --out bench
+```
+
+This runs the fictitious cases in `tests/drafting-cases/` through each model. For every model and case it writes the full document, the time per section, any retries or fallbacks, and the automatic issues. It also writes `bench/summary.md`. On a CPU-only machine, expect several minutes per case. Automatic checks cannot detect swapped roles or invented reasoning, so read the outputs too; each file ends with a checklist. Use `--models stub` to try it without any model.
 
 ### Packaging for a lawyer's Windows PC
 

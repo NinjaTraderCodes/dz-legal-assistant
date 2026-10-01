@@ -38,6 +38,13 @@ public sealed partial class SectionViewModel : ObservableObject
     [ObservableProperty]
     public partial string Text { get; set; } = string.Empty;
 
+    /// <summary>Review hints for model-written text (drafting notes, changed or invented numbers).</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasReview))]
+    public partial string ReviewText { get; set; } = string.Empty;
+
+    public bool HasReview => ReviewText.Length > 0;
+
     internal void SetFromModel(string text)
     {
         _updatingFromModel = true;

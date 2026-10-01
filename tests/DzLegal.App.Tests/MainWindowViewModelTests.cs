@@ -173,6 +173,35 @@ public class MainWindowViewModelTests
     }
 
     [Fact]
+    public void GenderChoiceChangesTheWording()
+    {
+        var vm = Vm.Create().Filled();
+        Assert.Contains("السيد/السيدة", vm.Sections.Single(s => s.Id == "plaintiff").Text, StringComparison.Ordinal);
+
+        var gender = vm.Field("plaintiff.gender");
+        Assert.True(gender.IsChoice);
+        gender.SelectedOption = gender.Options.Single(o => o.Value == "female");
+
+        Assert.StartsWith("لفائدة: السيدة بن علي كريم", vm.Sections.Single(s => s.Id == "plaintiff").Text, StringComparison.Ordinal);
+        Assert.Equal("أنثى", gender.SelectedOption!.Label);
+    }
+
+    [Fact]
+    public async Task InventedNumbersAreHintedUnderTheSectionUntilFixed()
+    {
+        var vm = Vm.Create().Filled();
+        await vm.GenerateCommand.ExecuteAsync(null);
+        var grounds = vm.Sections.Single(s => s.Id == "grounds");
+        Assert.False(grounds.HasReview);
+
+        grounds.Text += "\nوحيث إن المادة 999 تؤيد ذلك.";
+        Assert.Contains("999", grounds.ReviewText, StringComparison.Ordinal);
+
+        grounds.Text = grounds.Text.Replace("\nوحيث إن المادة 999 تؤيد ذلك.", string.Empty, StringComparison.Ordinal);
+        Assert.False(grounds.HasReview);
+    }
+
+    [Fact]
     public void NewResetsTheForm()
     {
         var vm = Vm.Create().Filled();

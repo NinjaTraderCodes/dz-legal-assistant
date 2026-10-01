@@ -3,7 +3,7 @@
 // practicing lawyer confirms it against the current official text (see docs/UPDATING-LEGAL-RULES.md).
 {
   "id": "requete-introductive",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "name": { "ar": "عريضة افتتاح الدعوى", "en": "Statement of claim (requête introductive d'instance)" },
   "description": {
     "ar": "العريضة التي ترفع بها الدعوى أمام المحكمة (المواد 14 و15 و17 من قانون الإجراءات المدنية والإدارية).",
@@ -29,6 +29,7 @@
     { "id": "plaintiff.isLegalEntity", "group": "plaintiff", "kind": "boolean", "default": "false", "label": { "ar": "المدعي شخص معنوي", "en": "Plaintiff is a legal person" } },
     { "id": "plaintiff.lastName", "group": "plaintiff", "label": { "ar": "اللقب", "en": "Surname" }, "visibleWhen": [ { "field": "plaintiff.isLegalEntity", "isNot": "true" } ] },
     { "id": "plaintiff.firstName", "group": "plaintiff", "label": { "ar": "الاسم", "en": "First name(s)" }, "visibleWhen": [ { "field": "plaintiff.isLegalEntity", "isNot": "true" } ] },
+    { "id": "plaintiff.gender", "group": "plaintiff", "kind": "choice", "label": { "ar": "الجنس", "en": "Gender" }, "options": [ { "value": "male", "label": { "ar": "ذكر", "en": "Male" } }, { "value": "female", "label": { "ar": "أنثى", "en": "Female" } } ], "visibleWhen": [ { "field": "plaintiff.isLegalEntity", "isNot": "true" } ] },
     { "id": "plaintiff.profession", "group": "plaintiff", "label": { "ar": "المهنة", "en": "Occupation" }, "visibleWhen": [ { "field": "plaintiff.isLegalEntity", "isNot": "true" } ] },
     { "id": "plaintiff.domicile", "group": "plaintiff", "label": { "ar": "الموطن", "en": "Domicile" }, "visibleWhen": [ { "field": "plaintiff.isLegalEntity", "isNot": "true" } ] },
     { "id": "plaintiff.entityName", "group": "plaintiff", "label": { "ar": "تسمية الشخص المعنوي", "en": "Name of the legal person" }, "visibleWhen": [ { "field": "plaintiff.isLegalEntity", "is": "true" } ] },
@@ -40,6 +41,7 @@
     { "id": "defendant.isLegalEntity", "group": "defendant", "kind": "boolean", "default": "false", "label": { "ar": "المدعى عليه شخص معنوي", "en": "Defendant is a legal person" } },
     { "id": "defendant.lastName", "group": "defendant", "label": { "ar": "اللقب", "en": "Surname" }, "visibleWhen": [ { "field": "defendant.isLegalEntity", "isNot": "true" } ] },
     { "id": "defendant.firstName", "group": "defendant", "label": { "ar": "الاسم", "en": "First name(s)" }, "visibleWhen": [ { "field": "defendant.isLegalEntity", "isNot": "true" } ] },
+    { "id": "defendant.gender", "group": "defendant", "kind": "choice", "label": { "ar": "الجنس", "en": "Gender" }, "options": [ { "value": "male", "label": { "ar": "ذكر", "en": "Male" } }, { "value": "female", "label": { "ar": "أنثى", "en": "Female" } } ], "visibleWhen": [ { "field": "defendant.isLegalEntity", "isNot": "true" } ] },
     { "id": "defendant.domicile", "group": "defendant", "label": { "ar": "الموطن", "en": "Domicile" }, "visibleWhen": [ { "field": "defendant.isLegalEntity", "isNot": "true" } ] },
     { "id": "defendant.lastKnownDomicile", "group": "defendant", "label": { "ar": "آخر موطن معلوم (إن لم يكن له موطن معلوم)", "en": "Last known domicile (if domicile unknown)" }, "visibleWhen": [ { "field": "defendant.isLegalEntity", "isNot": "true" } ] },
     { "id": "defendant.entityName", "group": "defendant", "label": { "ar": "تسمية الشخص المعنوي", "en": "Name of the legal person" }, "visibleWhen": [ { "field": "defendant.isLegalEntity", "is": "true" } ] },
@@ -59,6 +61,7 @@
     { "id": "documents.list", "group": "documents", "kind": "multilineText", "label": { "ar": "المستندات المؤيدة للدعوى (مستند في كل سطر)", "en": "Supporting documents (one per line)" } },
 
     { "id": "lawyer.name", "group": "signature", "label": { "ar": "اسم المحامي", "en": "Lawyer's name" } },
+    { "id": "lawyer.gender", "group": "signature", "kind": "choice", "label": { "ar": "المحامي / المحامية", "en": "Lawyer's gender" }, "options": [ { "value": "male", "label": { "ar": "ذكر", "en": "Male" } }, { "value": "female", "label": { "ar": "أنثى", "en": "Female" } } ] },
     { "id": "lawyer.bar", "group": "signature", "label": { "ar": "صفة المحامي", "en": "Lawyer's standing" }, "hint": { "ar": "مثال: محامٍ لدى مجلس قضاء الجزائر", "en": "e.g. avocat à la Cour d'Alger" } },
     { "id": "lawyer.address", "group": "signature", "label": { "ar": "عنوان مكتب المحامي", "en": "Lawyer's office address" } },
     { "id": "document.place", "group": "signature", "label": { "ar": "مكان التحرير", "en": "Place of drafting" } },
@@ -75,7 +78,8 @@
     { "id": "opening", "kind": "generated", "template": "templates/opening.scriban", "title": { "ar": "الافتتاح", "en": "Opening" } },
     { "id": "facts", "kind": "narrative", "prompt": "prompts/facts.ar.txt", "sourceField": "notes.facts", "showTitle": true, "title": { "ar": "الوقائع", "en": "Facts" } },
     { "id": "grounds", "kind": "narrative", "prompt": "prompts/grounds.ar.txt", "sourceField": "notes.grounds", "showTitle": true, "title": { "ar": "المناقشة القانونية", "en": "Legal grounds" } },
-    { "id": "requests", "kind": "narrative", "prompt": "prompts/requests.ar.txt", "sourceField": "notes.requests", "showTitle": true, "title": { "ar": "لهذه الأسباب", "en": "Requests (for these reasons)" } },
+    { "id": "requestsIntro", "kind": "generated", "template": "templates/requestsIntro.scriban", "showTitle": true, "title": { "ar": "لهذه الأسباب ومن أجلها", "en": "For these reasons" } },
+    { "id": "requests", "kind": "narrative", "prompt": "prompts/requests.ar.txt", "sourceField": "notes.requests", "title": { "ar": "الطلبات", "en": "Requests" } },
     { "id": "documents", "kind": "generated", "template": "templates/documents.scriban", "showTitle": true, "title": { "ar": "قائمة المرفقات", "en": "Supporting documents" } },
     { "id": "dateplace", "kind": "generated", "template": "templates/dateplace.scriban", "title": { "ar": "التاريخ", "en": "Date" } },
     { "id": "signature", "kind": "generated", "template": "templates/signature.scriban", "title": { "ar": "التوقيع", "en": "Signature" } }
@@ -231,7 +235,7 @@
       "article": "Practice (structure)",
       "severity": "warning",
       "label": { "ar": "ترتيب أجزاء العريضة", "en": "Order of the requête's parts" },
-      "check": { "kind": "sectionOrder", "sections": [ "header", "plaintiff", "defendant", "subject", "facts", "grounds", "requests", "documents", "dateplace", "signature" ] },
+      "check": { "kind": "sectionOrder", "sections": [ "header", "plaintiff", "defendant", "subject", "facts", "grounds", "requestsIntro", "requests", "documents", "dateplace", "signature" ] },
       "missingMessage": { "ar": "أجزاء العريضة ليست في الترتيب المعتاد.", "en": "The parts of the requête are not in the customary order." },
       "verified": false,
       "sourceNote": "Customary structure of Algerian model requêtes, not a statutory rule."

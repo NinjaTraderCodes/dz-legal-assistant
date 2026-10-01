@@ -33,4 +33,10 @@ public sealed record OllamaSettings
     public string Endpoint { get; init; } = "http://127.0.0.1:11434";
     public string Model { get; init; } = "qwen2.5:7b-instruct";
     public double TimeoutMinutes { get; init; } = 10;
+    public double Temperature { get; init; } = 0.2;
+    public int MaxTokens { get; init; } = 1000;
+    public double RepeatPenalty { get; init; } = 1.1;
+
+    /// <summary>Set to false for reasoning models such as qwen3; leave null otherwise.</summary>
+    public bool? Think { get; init; }
 }

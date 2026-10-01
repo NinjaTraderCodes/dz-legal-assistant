@@ -52,6 +52,20 @@ public class OllamaProviderTests
         var messages = body.RootElement.GetProperty("messages");
         Assert.Equal("system rules", messages[0].GetProperty("content").GetString());
         Assert.Equal("user prompt", messages[1].GetProperty("content").GetString());
+        Assert.Equal(1000, body.RootElement.GetProperty("options").GetProperty("num_predict").GetInt32());
+        Assert.False(body.RootElement.TryGetProperty("think", out _)); // unset for non-reasoning models
+    }
+
+    [Fact]
+    public async Task ThinkCanBeDisabledForReasoningModels()
+    {
+        var handler = new FakeHandler(_ => Json("""{ "message": { "role": "assistant", "content": "x" } }"""));
+        using var provider = new OllamaModelProvider(new OllamaOptions { Model = "qwen3:4b", Think = false }, handler);
+
+        await provider.GenerateAsync(Request, CancellationToken.None);
+
+        using var body = JsonDocument.Parse(handler.Requests[0].Body);
+        Assert.False(body.RootElement.GetProperty("think").GetBoolean());
     }
 
     [Fact]

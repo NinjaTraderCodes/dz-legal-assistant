@@ -1,2 +1,16 @@
-إلى السادة رئيس وأعضاء {{ if court.name }}{{ court.name }}{{ else }}المحكمة{{ end }} المحترمين
-يتشرف العارض بواسطة دفاعه أن يعرض على هيئتكم الموقرة ما يلي:
+{{~
+# Grammatical gender of the plaintiff: legal persons (شركة، مؤسسة) take the feminine.
+if plaintiff.isLegalEntity
+  pg = "female"
+else
+  pg = plaintiff.gender
+end
+~}}
+{{~ if court.section && court.name ~}}
+إلى السيد رئيس {{ court.section }} ب{{ court.name }}
+{{~ else if court.section || court.name ~}}
+إلى السيد رئيس {{ court.section }}{{ court.name }}
+{{~ else ~}}
+إلى السيد رئيس المحكمة
+{{~ end ~}}
+{{ gendered pg "يتشرف المدعي بواسطة دفاعه أن يعرض" "تتشرف المدعية بواسطة دفاعها أن تعرض" }} على هيئتكم الموقرة ما يلي:

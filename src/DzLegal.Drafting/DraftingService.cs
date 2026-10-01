@@ -7,6 +7,8 @@ namespace DzLegal.Drafting;
 /// Builds a draft from the case inputs. Generated sections are rendered deterministically from
 /// templates; narrative sections are written by the model from the lawyer's own notes. A narrative
 /// section with no notes stays empty so the Form Engine flags it: the model is never asked to invent one.
+/// Model output that fails a hard <see cref="NarrativeChecks"/> check is requested once more, and if it is
+/// still unusable the lawyer's notes are used unchanged, so corrupted text never reaches the draft.
 /// </summary>
 public sealed partial class DraftingService
 {
@@ -33,10 +35,9 @@ public sealed partial class DraftingService
         foreach (var section in IncludedSections(definition, inputs))
         {
             progress?.Report(section);
-            var text = section.Kind == SectionKind.Narrative
+            sections.Add(section.Kind == SectionKind.Narrative
                 ? await WriteNarrativeAsync(definition, section, inputs, cancellationToken)
-                : RenderGenerated(definition, section, inputs);
-            sections.Add(new DraftSection { Id = section.Id, Text = text });
+                : new DraftSection { Id = section.Id, Text = RenderGenerated(definition, section, inputs) });
         }
 
         return new DraftDocument
@@ -60,13 +61,9 @@ public sealed partial class DraftingService
         ArgumentNullException.ThrowIfNull(inputs);
 
         var sections = IncludedSections(definition, inputs)
-            .Select(s => new DraftSection
-            {
-                Id = s.Id,
-                Text = s.Kind == SectionKind.Narrative
-                    ? draft.FindSection(s.Id)?.Text ?? string.Empty
-                    : RenderGenerated(definition, s, inputs),
-            })
+            .Select(s => s.Kind == SectionKind.Narrative
+                ? new DraftSection { Id = s.Id, Text = draft.FindSection(s.Id)?.Text ?? string.Empty, DraftingNote = draft.FindSection(s.Id)?.DraftingNote }
+                : new DraftSection { Id = s.Id, Text = RenderGenerated(definition, s, inputs) })
             .ToList();
 
         return draft with { Inputs = new Dictionary<string, string>(inputs, StringComparer.Ordinal), Sections = sections };
@@ -88,20 +85,36 @@ public sealed partial class DraftingService
         var system = definition.SystemPrompt is null
             ? string.Empty
             : File.ReadAllText(Path.Combine(definition.SourceDirectory, definition.SystemPrompt)).Trim();
-        var user = _renderer.RenderFile(definition, section.Prompt!, inputs, new Dictionary<string, object?> { ["notes"] = notes });
+        var user = _renderer.RenderFile(definition, section.Prompt!, inputs, new Dictionary<string, object?> { ["section_notes"] = notes });
         return new ModelRequest(section.Id, system, user, notes);
     }
 
-    private async Task<string> WriteNarrativeAsync(DocumentTypeDefinition definition, SectionDefinition section, IReadOnlyDictionary<string, string> inputs, CancellationToken cancellationToken)
+    private async Task<DraftSection> WriteNarrativeAsync(DocumentTypeDefinition definition, SectionDefinition section, IReadOnlyDictionary<string, string> inputs, CancellationToken cancellationToken)
     {
         var request = BuildRequest(definition, section, inputs);
         if (request.SourceText.Length == 0)
         {
-            return string.Empty;
+            return new DraftSection { Id = section.Id };
         }
 
-        var output = await _provider.GenerateAsync(request, cancellationToken);
-        return CleanModelOutput(output, section);
+        string? note = null;
+        for (var attempt = 1; attempt <= 2; attempt++)
+        {
+            var text = CleanModelOutput(await _provider.GenerateAsync(request, cancellationToken), section);
+            if (text.Length > 0 && !NarrativeChecks.Check(text, request.SourceText, inputs).Any(i => i.IsHard))
+            {
+                return new DraftSection { Id = section.Id, Text = text, DraftingNote = note };
+            }
+
+            note = DraftingNotes.Retried;
+        }
+
+        return new DraftSection
+        {
+            Id = section.Id,
+            Text = TemplateRenderer.Normalize(request.SourceText),
+            DraftingNote = DraftingNotes.FellBackToNotes,
+        };
     }
 
     private static IEnumerable<SectionDefinition> IncludedSections(DocumentTypeDefinition definition, IReadOnlyDictionary<string, string> inputs) =>

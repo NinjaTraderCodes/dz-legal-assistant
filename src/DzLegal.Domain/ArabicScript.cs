@@ -1,4 +1,4 @@
-namespace DzLegal.FormEngine;
+namespace DzLegal.Domain;
 
 /// <summary>Script detection used by the "proceedings in Arabic" rule.</summary>
 public static class ArabicScript

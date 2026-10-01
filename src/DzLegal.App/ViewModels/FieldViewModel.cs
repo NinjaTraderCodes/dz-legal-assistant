@@ -13,6 +13,7 @@ public sealed partial class FieldViewModel : ObservableObject
         Definition = definition;
         _loc = loc;
         _onChanged = onChanged;
+        Options = definition.Options.Select(o => new ChoiceOptionViewModel(o, loc)).ToList();
         Silent = true;
         Value = value;
         Silent = false;
@@ -32,6 +33,16 @@ public sealed partial class FieldViewModel : ObservableObject
 
     public bool IsBoolean => Definition.Kind == FieldKind.Boolean;
 
+    public bool IsChoice => Definition.Kind == FieldKind.Choice;
+
+    public IReadOnlyList<ChoiceOptionViewModel> Options { get; }
+
+    public ChoiceOptionViewModel? SelectedOption
+    {
+        get => Options.FirstOrDefault(o => o.Value == Value);
+        set => Value = value?.Value ?? string.Empty;
+    }
+
     [ObservableProperty]
     public partial string Value { get; set; }
 
@@ -50,6 +61,7 @@ public sealed partial class FieldViewModel : ObservableObject
     partial void OnValueChanged(string value)
     {
         OnPropertyChanged(nameof(BoolValue));
+        OnPropertyChanged(nameof(SelectedOption));
         if (!Silent)
         {
             _onChanged();
@@ -60,7 +72,20 @@ public sealed partial class FieldViewModel : ObservableObject
     {
         OnPropertyChanged(nameof(Label));
         OnPropertyChanged(nameof(Hint));
+        foreach (var o in Options)
+        {
+            o.Relocalize();
+        }
     }
+}
+
+public sealed class ChoiceOptionViewModel(FieldOption option, Loc loc) : ObservableObject
+{
+    public string Value => option.Value;
+
+    public string Label => option.Label.Get(loc.Language);
+
+    internal void Relocalize() => OnPropertyChanged(nameof(Label));
 }
 
 public sealed class FieldGroupViewModel(FieldGroupDefinition? definition, IReadOnlyList<FieldViewModel> fields, Loc loc) : ObservableObject

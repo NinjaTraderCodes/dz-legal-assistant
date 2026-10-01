@@ -1,0 +1,9 @@
+{{~
+# Grammatical gender of the plaintiff: legal persons (شركة، مؤسسة) take the feminine.
+if plaintiff.isLegalEntity
+  pg = "female"
+else
+  pg = plaintiff.gender
+end
+~}}
+{{ gendered pg "يلتمس المدعي" "تلتمس المدعية" }} من هيئة المحكمة الموقرة القضاء بما يلي:

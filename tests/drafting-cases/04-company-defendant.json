@@ -1,0 +1,16 @@
+{
+  "name": "Non-delivery by a company (SARL defendant)",
+  "extends": "01-debt-arabic.json",
+  "inputs": {
+    "court.section": "القسم التجاري",
+    "defendant.isLegalEntity": "true", "defendant.gender": "", "defendant.lastName": "", "defendant.firstName": "", "defendant.domicile": "",
+    "defendant.entityName": "شركة النور للتجهيزات", "defendant.entityNature": "شركة ذات مسؤولية محدودة",
+    "defendant.headOffice": "المنطقة الصناعية، الرويبة، الجزائر", "defendant.representativeName": "مراد قاسمي",
+    "defendant.representativeCapacity": "مسيرها",
+    "claim.subject": "المطالبة بتسليم بضاعة أو استرجاع ثمنها",
+    "notes.facts": "بتاريخ 02/04/2025 اشترى المدعي من الشركة المدعى عليها 20 آلة خياطة بثمن إجمالي 800,000 دج دفعه كاملا.\nالتزمت الشركة بالتسليم قبل 02/05/2025 ولم تسلم أي آلة إلى اليوم.",
+    "notes.grounds": "المادة 364 من القانون المدني: يلتزم البائع بتسليم الشيء المبيع للمشتري في الحالة التي كان عليها وقت البيع.",
+    "notes.requests": "إلزام الشركة المدعى عليها بتسليم 20 آلة خياطة تحت غرامة تهديدية قدرها 5,000 دج عن كل يوم تأخير، أو إرجاع الثمن 800,000 دج.\nتحميلها المصاريف القضائية.",
+    "documents.list": "فاتورة الشراء المؤرخة في 02/04/2025\nوصل الدفع"
+  }
+}

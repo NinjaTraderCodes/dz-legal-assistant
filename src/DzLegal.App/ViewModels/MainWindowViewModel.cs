@@ -314,6 +314,7 @@ public sealed partial class MainWindowViewModel : ObservableObject
         if (_draft.FindSection(section.Id) is { } draftSection)
         {
             draftSection.Text = section.Text;
+            draftSection.DraftingNote = null; // the lawyer's own text now
         }
 
         Recheck();
@@ -382,12 +383,42 @@ public sealed partial class MainWindowViewModel : ObservableObject
             Findings.Add(new FindingViewModel(f, _definition, L));
         }
 
+        UpdateReviewHints();
+
         var mandatoryMissing = Report.Missing.Count(f => f.Element.Severity == Severity.Inadmissible);
         var warnings = Report.Missing.Count(f => f.Element.Severity == Severity.Warning);
         IsAdmissible = Report.IsAdmissibleInForm;
         Summary = mandatoryMissing == 0 ? L["SummaryOk"] : L.Format("SummaryMissing", mandatoryMissing);
         WarningSummary = warnings == 0 ? string.Empty : L.Format("SummaryWarnings", warnings);
         OnPropertyChanged(nameof(Report));
+    }
+
+    /// <summary>Deterministic hints under each narrative section; they disappear once the text is fixed.</summary>
+    private void UpdateReviewHints()
+    {
+        var inputs = CurrentInputs();
+        foreach (var vm in Sections.Where(s => s.IsEditable))
+        {
+            var section = _draft.FindSection(vm.Id);
+            var lines = new List<string>();
+            if (section?.DraftingNote == DraftingNotes.Retried)
+            {
+                lines.Add(L["NoteRetried"]);
+            }
+            else if (section?.DraftingNote == DraftingNotes.FellBackToNotes)
+            {
+                lines.Add(L["NoteFellBack"]);
+            }
+
+            var notes = inputs.GetValueOrDefault(vm.Definition.SourceField ?? string.Empty, string.Empty);
+            lines.AddRange(NarrativeChecks.Check(vm.Text, notes, inputs).Select(i => L.Format(i.Kind switch
+            {
+                NarrativeIssueKind.ForeignScript => "IssueForeignScript",
+                NarrativeIssueKind.UnknownNumber => "IssueUnknownNumber",
+                _ => "IssueMissingNumber",
+            }, i.Detail)));
+            vm.ReviewText = string.Join("\n", lines.Select(l => "⚠ " + l));
+        }
     }
 
     private string SuggestedFileName()

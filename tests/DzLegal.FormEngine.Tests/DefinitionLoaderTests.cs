@@ -84,6 +84,37 @@ public class DefinitionLoaderTests
     }
 
     [Fact]
+    public void ChoiceFieldsNeedOptionsAndAValidDefault()
+    {
+        var definition = Tiny() with
+        {
+            Fields =
+            [
+                new FieldDefinition { Id = "one", Label = new("س", "x"), Kind = FieldKind.Choice, Options = [new FieldOption("a", new("أ", "a"))] },
+                new FieldDefinition
+                {
+                    Id = "bad", Label = new("س", "x"), Kind = FieldKind.Choice, Default = "z",
+                    Options = [new FieldOption("a", new("أ", "a")), new FieldOption("b", new("ب", "b"))],
+                },
+            ],
+        };
+
+        var errors = DefinitionLoader.Validate(definition);
+
+        Assert.Contains(errors, e => e.Contains("'one' needs at least two options", StringComparison.Ordinal));
+        Assert.Contains(errors, e => e.Contains("'bad' has a default that is not one of its options", StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public void ShippedGenderFieldsAreChoices() =>
+        Assert.All(new[] { "plaintiff.gender", "defendant.gender", "lawyer.gender" }, id =>
+        {
+            var field = Requete.FindField(id)!;
+            Assert.Equal(FieldKind.Choice, field.Kind);
+            Assert.Equal(["male", "female"], field.Options.Select(o => o.Value));
+        });
+
+    [Fact]
     public void ConditionTreatsMissingValuesAsEmpty()
     {
         var values = new Dictionary<string, string>();

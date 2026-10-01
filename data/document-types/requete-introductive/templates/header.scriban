@@ -1,6 +1,5 @@
 الجمهورية الجزائرية الديمقراطية الشعبية
 {{ if court.council }}مجلس قضاء {{ court.council }}{{ end }}
-{{ court.name }}
-{{ if court.section }}{{ court.section }}{{ end }}
+{{ court.name }}{{ if court.name && court.section }} — {{ end }}{{ court.section }}
 
 عريضة افتتاح دعوى

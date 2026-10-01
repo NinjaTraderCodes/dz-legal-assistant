@@ -69,6 +69,12 @@
       <Setter Property="FlowDirection" Value="RightToLeft" />
       <Setter Property="TextAlignment" Value="Start" />
     </Style>
+    <Style Selector="TextBlock.review">
+      <Setter Property="Foreground" Value="#8A4B00" />
+      <Setter Property="Background" Value="#FFF6E5" />
+      <Setter Property="Padding" Value="6,3" />
+      <Setter Property="FontSize" Value="13" />
+    </Style>
     <Style Selector="Button.toolbar">
       <Setter Property="Background" Value="#3E655B" />
       <Setter Property="Foreground" Value="White" />
@@ -159,6 +165,14 @@
                             <TextBox Classes="input" Text="{Binding Value}" PlaceholderText="{Binding Hint}" IsVisible="{Binding IsMultiline}"
                                      AcceptsReturn="True" TextWrapping="Wrap" MinHeight="72" MaxHeight="220" />
                             <CheckBox IsChecked="{Binding BoolValue}" Content="{Binding Label}" IsVisible="{Binding IsBoolean}" />
+                            <ComboBox ItemsSource="{Binding Options}" SelectedItem="{Binding SelectedOption}" IsVisible="{Binding IsChoice}"
+                                      MinWidth="160" PlaceholderText="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[ChooseOption]}">
+                              <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="vm:ChoiceOptionViewModel">
+                                  <TextBlock Text="{Binding Label}" />
+                                </DataTemplate>
+                              </ComboBox.ItemTemplate>
+                            </ComboBox>
                           </StackPanel>
                         </DataTemplate>
                       </ItemsControl.ItemTemplate>
@@ -205,6 +219,7 @@
                     </StackPanel>
                     <TextBox Classes="document" Text="{Binding Text}" IsReadOnly="{Binding IsReadOnly}"
                              PlaceholderText="{Binding Watermark}" MinHeight="40" />
+                    <TextBlock Classes="review" Text="{Binding ReviewText}" IsVisible="{Binding HasReview}" TextWrapping="Wrap" />
                   </StackPanel>
                 </DataTemplate>
               </ItemsControl.ItemTemplate>

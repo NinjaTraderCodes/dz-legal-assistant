@@ -21,7 +21,7 @@ public sealed record DraftDocument
     public DraftDocument DeepCopy() => this with
     {
         Inputs = new Dictionary<string, string>(Inputs, StringComparer.Ordinal),
-        Sections = Sections.Select(s => new DraftSection { Id = s.Id, Text = s.Text }).ToList(),
+        Sections = Sections.Select(s => new DraftSection { Id = s.Id, Text = s.Text, DraftingNote = s.DraftingNote }).ToList(),
     };
 }
 
@@ -29,4 +29,20 @@ public sealed class DraftSection
 {
     public required string Id { get; init; }
     public string Text { get; set; } = string.Empty;
+
+    /// <summary>
+    /// What happened while the model wrote this section, when anything did: see <see cref="DraftingNotes"/>.
+    /// Null for a normal draft or for text the lawyer wrote.
+    /// </summary>
+    public string? DraftingNote { get; set; }
+}
+
+/// <summary>Codes stored in <see cref="DraftSection.DraftingNote"/>.</summary>
+public static class DraftingNotes
+{
+    /// <summary>The first answer was unusable; the second one was kept.</summary>
+    public const string Retried = "retried";
+
+    /// <summary>Both answers were unusable; the lawyer's notes were inserted unchanged.</summary>
+    public const string FellBackToNotes = "fellBackToNotes";
 }

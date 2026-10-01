@@ -36,6 +36,16 @@ public class TemplateRendererTests
         Assert.Equal("عقد|إنذار", Render("{{ (lines documents.list) | array.join '|' }}", inputs));
     }
 
+    [Theory]
+    [InlineData("male", "السيد")]
+    [InlineData("female", "السيدة")]
+    [InlineData("", "السيد/السيدة")]
+    public void GenderedPicksTheAgreedForm(string gender, string expected)
+    {
+        var inputs = new Dictionary<string, string> { ["plaintiff.gender"] = gender };
+        Assert.Equal(expected, Render("{{ gendered plaintiff.gender \"السيد\" \"السيدة\" }}", inputs));
+    }
+
     [Fact]
     public void NormalizeTrimsAndCollapsesBlankLines() =>
         Assert.Equal("أ\n\nب", TemplateRenderer.Normalize("\n\n  أ  \n\n\n\n ب \n\n"));

@@ -38,7 +38,8 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
             _options.Model,
             [new ChatMessage("system", request.SystemPrompt), new ChatMessage("user", request.UserPrompt)],
             Stream: false,
-            new ChatOptions(_options.Temperature, _options.ContextLength));
+            _options.Think,
+            new ChatOptions(_options.Temperature, _options.ContextLength, _options.MaxTokens, _options.RepeatPenalty));
 
         HttpResponseMessage response;
         try
@@ -81,6 +82,7 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
         [property: JsonPropertyName("model")] string Model,
         [property: JsonPropertyName("messages")] IReadOnlyList<ChatMessage> Messages,
         [property: JsonPropertyName("stream")] bool Stream,
+        [property: JsonPropertyName("think"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] bool? Think,
         [property: JsonPropertyName("options")] ChatOptions Options);
 
     private sealed record ChatMessage(
@@ -89,7 +91,9 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
 
     private sealed record ChatOptions(
         [property: JsonPropertyName("temperature")] double Temperature,
-        [property: JsonPropertyName("num_ctx")] int ContextLength);
+        [property: JsonPropertyName("num_ctx")] int ContextLength,
+        [property: JsonPropertyName("num_predict")] int MaxTokens,
+        [property: JsonPropertyName("repeat_penalty")] double RepeatPenalty);
 
     private sealed record ChatResponse(
         [property: JsonPropertyName("message")] ChatMessage? Message);

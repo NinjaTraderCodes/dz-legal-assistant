@@ -35,7 +35,13 @@ public enum FieldKind
     MultilineText,
     Boolean,
     Date,
+
+    /// <summary>One value out of <see cref="FieldDefinition.Options"/>.</summary>
+    Choice,
 }
+
+/// <summary>One allowed value of a <see cref="FieldKind.Choice"/> field.</summary>
+public sealed record FieldOption(string Value, LocalizedText Label);
 
 /// <summary>One input the lawyer provides. Values are stored as strings keyed by <see cref="Id"/>.</summary>
 public sealed record FieldDefinition
@@ -51,6 +57,9 @@ public sealed record FieldDefinition
 
     /// <summary>The field is shown only when all conditions hold.</summary>
     public IReadOnlyList<Condition> VisibleWhen { get; init; } = [];
+
+    /// <summary>Allowed values of a <see cref="FieldKind.Choice"/> field.</summary>
+    public IReadOnlyList<FieldOption> Options { get; init; } = [];
 }
 
 public enum SectionKind

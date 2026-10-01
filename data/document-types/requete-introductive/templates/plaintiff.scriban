@@ -1,11 +1,18 @@
+{{~ g = plaintiff.gender ~}}
 {{~ if plaintiff.isLegalEntity ~}}
 {{~ if plaintiff.entityName ~}}
-لفائدة: {{ plaintiff.entityName }}{{ if plaintiff.entityNature }}، {{ plaintiff.entityNature }}{{ end }}{{ if plaintiff.headOffice }}، الكائن مقرها الاجتماعي بـ: {{ plaintiff.headOffice }}{{ end }}{{ if plaintiff.representativeCapacity }}، ممثلة من طرف {{ plaintiff.representativeCapacity }}{{ if plaintiff.representativeName }} السيد(ة) {{ plaintiff.representativeName }}{{ end }}{{ end }}.
-{{~ end ~}}
-{{~ else if plaintiff.lastName || plaintiff.firstName ~}}
-لفائدة: السيد(ة) {{ plaintiff.lastName }} {{ plaintiff.firstName }}{{ if plaintiff.profession }}، {{ plaintiff.profession }}{{ end }}{{ if plaintiff.domicile }}، الساكن(ة) بـ: {{ plaintiff.domicile }}{{ end }}.
+لفائدة: {{ plaintiff.entityName }}{{ if plaintiff.entityNature }}، {{ plaintiff.entityNature }}{{ end }}{{ if plaintiff.headOffice }}، الكائن مقرها الاجتماعي بـ: {{ plaintiff.headOffice }}{{ end }}{{ if plaintiff.representativeCapacity }}، ممثلة من طرف {{ plaintiff.representativeCapacity }}{{ if plaintiff.representativeName }} {{ plaintiff.representativeName }}{{ end }}{{ end }}.
 {{~ end ~}}
 {{~ if lawyer.name ~}}
-القائم في حقه(ا) الأستاذ(ة) {{ lawyer.name }}{{ if lawyer.bar }}، {{ lawyer.bar }}{{ end }}{{ if lawyer.address }}، الكائن مكتبه بـ: {{ lawyer.address }}{{ end }}.
+القائم في حقها {{ gendered lawyer.gender "الأستاذ" "الأستاذة" }} {{ lawyer.name }}{{ if lawyer.bar }}، {{ lawyer.bar }}{{ end }}{{ if lawyer.address }}، {{ gendered lawyer.gender "الكائن مكتبه" "الكائن مكتبها" }} بـ: {{ lawyer.address }}{{ end }}.
 {{~ end ~}}
-(مدعٍ)
+(مدعية)
+{{~ else ~}}
+{{~ if plaintiff.lastName || plaintiff.firstName ~}}
+لفائدة: {{ gendered g "السيد" "السيدة" }} {{ plaintiff.lastName }} {{ plaintiff.firstName }}{{ if plaintiff.profession }}، {{ plaintiff.profession }}{{ end }}{{ if plaintiff.domicile }}، {{ gendered g "القاطن" "القاطنة" }} بـ: {{ plaintiff.domicile }}{{ end }}.
+{{~ end ~}}
+{{~ if lawyer.name ~}}
+القائم في {{ gendered g "حقه" "حقها" }} {{ gendered lawyer.gender "الأستاذ" "الأستاذة" }} {{ lawyer.name }}{{ if lawyer.bar }}، {{ lawyer.bar }}{{ end }}{{ if lawyer.address }}، {{ gendered lawyer.gender "الكائن مكتبه" "الكائن مكتبها" }} بـ: {{ lawyer.address }}{{ end }}.
+{{~ end ~}}
+{{ gendered g "(مدعٍ)" "(مدعية)" }}
+{{~ end ~}}

@@ -91,6 +91,19 @@ public class RenderingTests
     }
 
     [AvaloniaFact]
+    public async Task ReviewHintIsShownUnderANarrativeSection()
+    {
+        var (window, vm) = await ShowFilledWindowAsync();
+        vm.Field("plaintiff.gender").Value = "male";
+        vm.Sections.Single(s => s.Id == "facts").Text += "\nوحيث إن المبلغ أصبح 999 دج.";
+        Dispatcher.UIThread.RunJobs();
+
+        var hint = window.GetVisualDescendants().OfType<TextBlock>().First(t => t.Classes.Contains("review") && t.IsVisible);
+        Assert.Contains("999", hint.Text, StringComparison.Ordinal);
+        SaveScreenshot(window, "main-window-review");
+    }
+
+    [AvaloniaFact]
     public void MixedArabicLatinAndDigitsLayOutInBidiOrder()
     {
         // Arabic paragraph with an embedded French term, a Latin name and a number.

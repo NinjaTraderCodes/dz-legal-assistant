@@ -9,7 +9,9 @@ namespace DzLegal.Drafting;
 /// <summary>
 /// Renders Scriban templates against the case inputs. Field ids such as "plaintiff.lastName" become
 /// nested members (<c>{{ plaintiff.lastName }}</c>); blank values are null, boolean fields are booleans,
-/// and <c>lines</c> splits a multi-line value into its non-blank lines.
+/// <c>lines</c> splits a multi-line value into its non-blank lines, and
+/// <c>gendered g "masculine" "feminine"</c> picks the form matching a gender choice
+/// ("male"/"female"), or shows both ("masculine/feminine") while no gender is chosen.
 /// </summary>
 public sealed class TemplateRenderer
 {
@@ -49,8 +51,16 @@ public sealed class TemplateRenderer
         }
 
         root.Import("lines", new Func<string?, ScriptArray>(SplitLines));
+        root.Import("gendered", new Func<object?, string, string, string>(Gendered));
         return root;
     }
+
+    internal static string Gendered(object? gender, string masculine, string feminine) => (gender as string) switch
+    {
+        "male" => masculine,
+        "female" => feminine,
+        _ => $"{masculine}/{feminine}",
+    };
 
     private static ScriptArray SplitLines(string? value)
     {

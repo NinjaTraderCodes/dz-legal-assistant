@@ -26,8 +26,9 @@ public class DraftingServiceTests
 
         Assert.Contains("محكمة سيدي امحمد", draft.FindSection("header")!.Text, StringComparison.Ordinal);
         Assert.Contains("بن علي كريم", draft.FindSection("plaintiff")!.Text, StringComparison.Ordinal);
+        Assert.Equal("إلى السيد رئيس القسم المدني بمحكمة سيدي امحمد", draft.FindSection("opening")!.Text.Split('\n')[0]);
         Assert.Equal("1. عقد القرض\n2. إنذار بالدفع", draft.FindSection("documents")!.Text);
-        Assert.Equal("حرر بـالجزائر في: 15/09/2026", draft.FindSection("dateplace")!.Text);
+        Assert.Equal("حرر بالجزائر في: 15/09/2026", draft.FindSection("dateplace")!.Text);
         Assert.Null(draft.FindSection("publication"));
     }
 
@@ -110,6 +111,73 @@ public class DraftingServiceTests
         Assert.Equal("نص عدله المحامي", refreshed.FindSection("facts")!.Text);
         Assert.NotNull(refreshed.FindSection("publication"));
         Assert.Equal("محكمة بئر مراد رايس", refreshed.Inputs["court.name"]);
+    }
+
+    [Fact]
+    public async Task GenderChoicesProduceAgreedWording()
+    {
+        var inputs = Fixtures.CompleteInputs();
+        inputs["plaintiff.gender"] = "female";
+        inputs["defendant.gender"] = "male";
+        inputs["lawyer.gender"] = "female";
+
+        var draft = await new DraftingService(new StubModelProvider()).DraftAsync(Requete, inputs);
+
+        Assert.Equal(
+            "لفائدة: السيدة بن علي كريم، القاطنة بـ: 12 شارع ديدوش مراد، الجزائر.\nالقائم في حقها الأستاذة نادية سعدي، محامية لدى مجلس قضاء الجزائر.\n(مدعية)",
+            draft.FindSection("plaintiff")!.Text);
+        Assert.StartsWith("ضد: السيد حمداني سمير، القاطن بـ:", draft.FindSection("defendant")!.Text, StringComparison.Ordinal);
+        Assert.Contains("تتشرف المدعية بواسطة دفاعها أن تعرض", draft.FindSection("opening")!.Text, StringComparison.Ordinal);
+        Assert.Equal("تلتمس المدعية من هيئة المحكمة الموقرة القضاء بما يلي:", draft.FindSection("requestsIntro")!.Text);
+        Assert.Equal("عن المدعية\nالأستاذة نادية سعدي\nالتوقيع:", draft.FindSection("signature")!.Text);
+    }
+
+    [Fact]
+    public async Task UnchosenGenderShowsBothFormsNeverAGuess()
+    {
+        var draft = await new DraftingService(new StubModelProvider()).DraftAsync(Requete, Fixtures.CompleteInputs());
+        Assert.StartsWith("لفائدة: السيد/السيدة بن علي كريم، القاطن/القاطنة بـ:", draft.FindSection("plaintiff")!.Text, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task PromptsStateThePartiesRolesAndTheRequestsContext()
+    {
+        var provider = new RecordingProvider(r => r.SourceText);
+        await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs());
+
+        var facts = provider.Requests.Single(r => r.SectionId == "facts").UserPrompt;
+        Assert.Contains("المدعي (صاحب الطلب، الدائن بالطلبات): بن علي كريم", facts, StringComparison.Ordinal);
+        Assert.Contains("المدعى عليه (المطلوب منه، الملزم بالطلبات): حمداني سمير", facts, StringComparison.Ordinal);
+        Assert.Contains("إلزام المدعى عليه بدفع 500000 دج.", facts, StringComparison.Ordinal);
+        var grounds = provider.Requests.Single(r => r.SectionId == "grounds").UserPrompt;
+        Assert.Contains("قرض 500000 دج بتاريخ 10/01/2025 لم يسدد.", grounds, StringComparison.Ordinal);
+        Assert.Contains("لا تعكس أدوار الطرفين", provider.Requests[0].SystemPrompt, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task CorruptedAnswerIsRetriedOnce()
+    {
+        var answers = new Queue<string>(["حيث إن المدعى عليه لم受理 الدين", "حيث إن المدعى عليه اقترض مبلغ 500000 دج"]);
+        var provider = new RecordingProvider(r => r.SectionId == "facts" ? answers.Dequeue() : r.SourceText);
+
+        var draft = await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs());
+
+        var facts = draft.FindSection("facts")!;
+        Assert.Equal("حيث إن المدعى عليه اقترض مبلغ 500000 دج", facts.Text);
+        Assert.Equal(DraftingNotes.Retried, facts.DraftingNote);
+        Assert.Equal(2, provider.Requests.Count(r => r.SectionId == "facts"));
+    }
+
+    [Fact]
+    public async Task PersistentlyCorruptedAnswerFallsBackToTheLawyersNotes()
+    {
+        var provider = new RecordingProvider(r => r.SectionId == "facts" ? "受理 受理" : r.SourceText);
+
+        var draft = await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs());
+
+        var facts = draft.FindSection("facts")!;
+        Assert.Equal("قرض 500000 دج بتاريخ 10/01/2025 لم يسدد.", facts.Text);
+        Assert.Equal(DraftingNotes.FellBackToNotes, facts.DraftingNote);
     }
 
     [Theory]

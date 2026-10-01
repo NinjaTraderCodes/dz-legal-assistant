@@ -21,6 +21,10 @@ public static class Composition
             Endpoint = new Uri(settings.Ollama.Endpoint),
             Model = settings.Ollama.Model,
             Timeout = TimeSpan.FromMinutes(settings.Ollama.TimeoutMinutes),
+            Temperature = settings.Ollama.Temperature,
+            MaxTokens = settings.Ollama.MaxTokens,
+            RepeatPenalty = settings.Ollama.RepeatPenalty,
+            Think = settings.Ollama.Think,
         };
 
         return

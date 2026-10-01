@@ -45,7 +45,23 @@ Please check each point against the **current official text (Journal Officiel), 
 
 ## 4. Template wording
 
-The scaffold in `templates/` uses the formulas we found in public model requêtes: «لفائدة» / «ضد», «القائم في حقه الأستاذ»، «إلى السادة رئيس وأعضاء…»، «يتشرف العارض بواسطة دفاعه…»، «لهذه الأسباب»، «حرر بـ… في…». Please mark anything that is outdated, regional, or not how you would write it.
+Since rules v0.2.0, the scaffold in `templates/` follows the formulas that recur in public Algerian model requêtes (tribunaldz.com, kanundz, elmouhami, university course material):
+
+| Part | Formula |
+|---|---|
+| Parties | «لفائدة: السيد … القاطن بـ: …» / «القائم في حقه الأستاذ …، محام لدى …» / «ضد: …» |
+| Addressee | «إلى السيد رئيس القسم المدني بمحكمة …» |
+| Opening | «يتشرف المدعي بواسطة دفاعه أن يعرض على هيئتكم الموقرة ما يلي:» |
+| Closing | «لهذه الأسباب ومن أجلها» + «يلتمس المدعي من هيئة المحكمة الموقرة القضاء بما يلي:» |
+| End | «حرر ب… في: …» / «عن المدعي» / «الأستاذ …» / «التوقيع:» |
+
+Grammatical gender comes from the form. For a legal-person plaintiff, the feminine is used («تتشرف المدعية»، «القائم في حقها»).
+
+Please confirm:
+- the addressee: should it be the section president or «السادة رئيس وأعضاء المحكمة»?
+- whether «القاطن» or «الساكن» is preferred;
+- the feminine agreement for legal persons;
+- anything outdated or regional.
 
 ## 5. Recording your confirmation
 

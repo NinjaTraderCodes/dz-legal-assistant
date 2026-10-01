@@ -2,19 +2,44 @@ using System.Globalization;
 using DzLegal.Domain.Serialization;
 using DzLegal.Harness;
 
-// Usage: dzlegal-harness [--data <document-types folder>] [--corpus <corpus folder>]
-// Exit code 0 when every element of every case matches its expected outcome, 1 otherwise.
+// Usage:
+//   dzlegal-harness [--data <document-types folder>] [--corpus <corpus folder>]
+//       Form Engine accuracy over the corpus. Exit code 1 on any mismatch.
+//   dzlegal-harness draft --models <m1,m2,...|stub> [--out bench] [--cases <folder>] [--endpoint http://127.0.0.1:11434] [--timeout-minutes 15]
+//       Drafting bench: runs the drafting cases through each local model and writes outputs + summary.md.
 var dataRoot = Path.Combine(AppContext.BaseDirectory, "data", "document-types");
-var corpusRoot = Path.Combine(AppContext.BaseDirectory, "corpus");
-for (var i = 0; i < args.Length - 1; i++)
+string Option(string name, string fallback)
 {
-    switch (args[i])
-    {
-        case "--data": dataRoot = args[++i]; break;
-        case "--corpus": corpusRoot = args[++i]; break;
-    }
+    var i = Array.IndexOf(args, name);
+    return i >= 0 && i + 1 < args.Length ? args[i + 1] : fallback;
 }
 
+dataRoot = Option("--data", dataRoot);
+
+if (args.Length > 0 && args[0] == "draft")
+{
+    var models = Option("--models", string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+    if (models.Length == 0)
+    {
+        Console.Error.WriteLine("draft: --models is required, e.g. --models gemma3:4b,qwen2.5:3b-instruct (or 'stub').");
+        return 2;
+    }
+
+    await DraftBench.RunAsync(
+        new BenchOptions
+        {
+            Models = models,
+            DataRoot = dataRoot,
+            CasesFolder = Option("--cases", Path.Combine(AppContext.BaseDirectory, "drafting-cases")),
+            OutFolder = Option("--out", "bench"),
+            Endpoint = new Uri(Option("--endpoint", "http://127.0.0.1:11434")),
+            Timeout = TimeSpan.FromMinutes(double.Parse(Option("--timeout-minutes", "15"), CultureInfo.InvariantCulture)),
+        },
+        Console.Out);
+    return 0;
+}
+
+var corpusRoot = Option("--corpus", Path.Combine(AppContext.BaseDirectory, "corpus"));
 var definitions = DefinitionLoader.LoadAll(dataRoot);
 var cases = CorpusLoader.LoadAll(corpusRoot);
 var allPerfect = true;

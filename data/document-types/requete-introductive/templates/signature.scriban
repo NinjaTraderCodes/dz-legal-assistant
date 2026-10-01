@@ -1,5 +1,13 @@
+{{~
+# Grammatical gender of the plaintiff: legal persons (شركة، مؤسسة) take the feminine.
+if plaintiff.isLegalEntity
+  pg = "female"
+else
+  pg = plaintiff.gender
+end
+~}}
 {{~ if lawyer.name ~}}
-عن المدعي
-دفاعه الأستاذ(ة) {{ lawyer.name }}
+{{ gendered pg "عن المدعي" "عن المدعية" }}
+{{ gendered lawyer.gender "الأستاذ" "الأستاذة" }} {{ lawyer.name }}
 التوقيع:
 {{~ end ~}}

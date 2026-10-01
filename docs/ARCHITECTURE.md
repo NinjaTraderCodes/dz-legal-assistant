@@ -22,9 +22,17 @@
   - `DraftingService.DraftAsync` renders the *generated* sections from Scriban templates and asks an `IModelProvider` to write the *narrative* sections.
   - `Refresh` re-applies form changes without calling the model and keeps the lawyer's narrative edits.
   - `BuildRequest` exposes the exact prompt for inspection and tests.
+- **NarrativeChecks** (in Drafting) checks model text against the lawyer's material:
+  - foreign-script characters, a hard failure;
+  - numbers not found in any input, such as an invented amount, date or article;
+  - numbers from the notes that the text dropped.
+
+  `DraftAsync` retries a hard failure once, then falls back to the notes verbatim, and records this in `DraftSection.DraftingNote`. The app re-runs the checks on every edit and shows them as review hints under the section. They cannot detect meaning-level errors such as swapped roles, which remain the lawyer's review.
 - **ModelProviders**: `StubModelProvider` (template mode) and `OllamaModelProvider` (loopback-only HTTP to a local Ollama). Adding llama.cpp or another runtime means one new class implementing `IModelProvider`.
 - **Storage**: drafts (`*.dzdraft.json`) and evaluation records as local JSON under the user's local app-data folder.
-- **Harness**: loads the corpus, runs the Form Engine, and prints per-element accuracy, precision and recall. The same logic runs as a test.
+- **Harness** has two modes:
+  - Its default mode loads the corpus, runs the Form Engine, and prints per-element accuracy, precision and recall. The same logic runs as a test.
+  - The `draft` mode is a model-comparison bench over `tests/drafting-cases/`.
 
 ## Data flow
 

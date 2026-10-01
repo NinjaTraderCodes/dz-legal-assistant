@@ -91,6 +91,16 @@ public sealed record SectionDefinition
 
     /// <summary>The section is included only when all conditions hold.</summary>
     public IReadOnlyList<Condition> IncludeWhen { get; init; } = [];
+
+    /// <summary>Review hints shown under the section while their conditions hold (not legal findings).</summary>
+    public IReadOnlyList<SectionHint> Hints { get; init; } = [];
+}
+
+/// <summary>A drafting hint, e.g. "choose the plaintiff's gender so the wording agrees".</summary>
+public sealed record SectionHint
+{
+    public IReadOnlyList<Condition> When { get; init; } = [];
+    public required LocalizedText Message { get; init; }
 }
 
 /// <summary>

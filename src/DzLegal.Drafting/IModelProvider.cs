@@ -16,7 +16,8 @@ public interface IModelProvider
 /// <param name="SystemPrompt">Shared drafting rules.</param>
 /// <param name="UserPrompt">Section instructions with the lawyer's notes embedded.</param>
 /// <param name="SourceText">The lawyer's raw notes for this section (the grounding material).</param>
-public sealed record ModelRequest(string SectionId, string SystemPrompt, string UserPrompt, string SourceText);
+/// <param name="ExampleText">The worked example shown in the prompt, used to detect output that copies it.</param>
+public sealed record ModelRequest(string SectionId, string SystemPrompt, string UserPrompt, string SourceText, string ExampleText = "");
 
 public sealed class ModelProviderException : Exception
 {

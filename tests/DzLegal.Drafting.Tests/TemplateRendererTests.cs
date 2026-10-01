@@ -39,7 +39,7 @@ public class TemplateRendererTests
     [Theory]
     [InlineData("male", "السيد")]
     [InlineData("female", "السيدة")]
-    [InlineData("", "السيد/السيدة")]
+    [InlineData("", "السيد")]
     public void GenderedPicksTheAgreedForm(string gender, string expected)
     {
         var inputs = new Dictionary<string, string> { ["plaintiff.gender"] = gender };

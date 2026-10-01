@@ -93,6 +93,14 @@ public static class DefinitionLoader
         {
             var where = $"section '{section.Id}'";
             CheckConditions(section.IncludeWhen, where, fieldIds, errors);
+            foreach (var hint in section.Hints)
+            {
+                CheckConditions(hint.When, $"{where} hint", fieldIds, errors);
+                if (string.IsNullOrWhiteSpace(hint.Message.Ar) || string.IsNullOrWhiteSpace(hint.Message.En))
+                {
+                    errors.Add($"{where}: every hint needs an Arabic and an English message.");
+                }
+            }
             switch (section.Kind)
             {
                 case SectionKind.Generated:

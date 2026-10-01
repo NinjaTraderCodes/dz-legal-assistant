@@ -70,8 +70,10 @@
 
   "sections": [
     { "id": "header", "kind": "generated", "template": "templates/header.scriban", "title": { "ar": "الجهة القضائية", "en": "Court" } },
-    { "id": "plaintiff", "kind": "generated", "template": "templates/plaintiff.scriban", "title": { "ar": "المدعي", "en": "Plaintiff" } },
-    { "id": "defendant", "kind": "generated", "template": "templates/defendant.scriban", "title": { "ar": "المدعى عليه", "en": "Defendant" } },
+    { "id": "plaintiff", "kind": "generated", "template": "templates/plaintiff.scriban", "title": { "ar": "المدعي", "en": "Plaintiff" },
+      "hints": [ { "when": [ { "field": "plaintiff.gender", "is": "" }, { "field": "plaintiff.isLegalEntity", "isNot": "true" } ], "message": { "ar": "اختر جنس المدعي في الاستمارة لضبط الصيغة (السيد/السيدة، المدعي/المدعية).", "en": "Choose the plaintiff's gender in the form so the wording agrees." } } ] },
+    { "id": "defendant", "kind": "generated", "template": "templates/defendant.scriban", "title": { "ar": "المدعى عليه", "en": "Defendant" },
+      "hints": [ { "when": [ { "field": "defendant.gender", "is": "" }, { "field": "defendant.isLegalEntity", "isNot": "true" } ], "message": { "ar": "اختر جنس المدعى عليه في الاستمارة لضبط الصيغة.", "en": "Choose the defendant's gender in the form so the wording agrees." } } ] },
     { "id": "subject", "kind": "generated", "template": "templates/subject.scriban", "title": { "ar": "الموضوع", "en": "Subject" } },
     { "id": "publication", "kind": "generated", "template": "templates/publication.scriban", "title": { "ar": "الإشهار العقاري", "en": "Land-registry publication" },
       "includeWhen": [ { "field": "claim.concernsRegisteredRealProperty", "is": "true" } ] },
@@ -82,7 +84,8 @@
     { "id": "requests", "kind": "narrative", "prompt": "prompts/requests.ar.txt", "sourceField": "notes.requests", "title": { "ar": "الطلبات", "en": "Requests" } },
     { "id": "documents", "kind": "generated", "template": "templates/documents.scriban", "showTitle": true, "title": { "ar": "قائمة المرفقات", "en": "Supporting documents" } },
     { "id": "dateplace", "kind": "generated", "template": "templates/dateplace.scriban", "title": { "ar": "التاريخ", "en": "Date" } },
-    { "id": "signature", "kind": "generated", "template": "templates/signature.scriban", "title": { "ar": "التوقيع", "en": "Signature" } }
+    { "id": "signature", "kind": "generated", "template": "templates/signature.scriban", "title": { "ar": "التوقيع", "en": "Signature" },
+      "hints": [ { "when": [ { "field": "lawyer.gender", "is": "" } ], "message": { "ar": "اختر في الاستمارة: المحامي أو المحامية (الأستاذ/الأستاذة).", "en": "Choose the lawyer's gender in the form (الأستاذ/الأستاذة)." } } ] }
   ],
 
   "elements": [

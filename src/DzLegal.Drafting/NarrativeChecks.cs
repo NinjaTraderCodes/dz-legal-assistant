@@ -14,6 +14,9 @@ public enum NarrativeIssueKind
 
     /// <summary>A number from the lawyer's notes for this section that the text dropped.</summary>
     MissingNumber,
+
+    /// <summary>A Latin-script word that appears nowhere in the lawyer's inputs (e.g. "caso" leaking from the model).</summary>
+    UnexpectedLatinWord,
 }
 
 public sealed record NarrativeIssue(NarrativeIssueKind Kind, string Detail)
@@ -49,8 +52,73 @@ public static partial class NarrativeChecks
             .Select(n => new NarrativeIssue(NarrativeIssueKind.UnknownNumber, n)));
         issues.AddRange(Numbers(sectionNotes ?? string.Empty).Where(n => !inText.Contains(n)).Distinct()
             .Select(n => new NarrativeIssue(NarrativeIssueKind.MissingNumber, n)));
+
+        var knownLatin = inputs.Values.SelectMany(LatinWords).ToHashSet(StringComparer.OrdinalIgnoreCase);
+        issues.AddRange(LatinWords(text).Where(w => !knownLatin.Contains(w)).Distinct(StringComparer.OrdinalIgnoreCase)
+            .Select(w => new NarrativeIssue(NarrativeIssueKind.UnexpectedLatinWord, w)));
         return issues;
     }
+
+    /// <summary>
+    /// Removes paragraphs that copy the prompt's worked example. A paragraph is a copy when it contains one of the
+    /// example's placeholder tokens (such as «(س)») that the lawyer's notes do not contain, or when at least 80% of
+    /// its word trigrams occur in the example but not in the notes (a near-verbatim copy). Returns the remaining
+    /// text and how many paragraphs were removed.
+    /// </summary>
+    public static (string Text, int Removed) RemoveCopiedExample(string text, string exampleText, string sectionNotes)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+        if (string.IsNullOrWhiteSpace(exampleText))
+        {
+            return (text, 0);
+        }
+
+        sectionNotes ??= string.Empty;
+        var placeholders = Placeholder().Matches(exampleText)
+            .Select(m => m.Value)
+            .Where(p => !sectionNotes.Contains(p, StringComparison.Ordinal))
+            .Distinct()
+            .ToList();
+        var example = Trigrams(exampleText);
+        var notes = Trigrams(sectionNotes);
+        var kept = new List<string>();
+        var removed = 0;
+        foreach (var paragraph in text.Split('\n'))
+        {
+            var grams = Trigrams(paragraph);
+            var copied = placeholders.Any(p => paragraph.Contains(p, StringComparison.Ordinal))
+                || (grams.Count > 0 && grams.Count(g => example.Contains(g) && !notes.Contains(g)) * 5 >= grams.Count * 4);
+            if (copied)
+            {
+                removed++;
+            }
+            else
+            {
+                kept.Add(paragraph);
+            }
+        }
+
+        return (removed == 0 ? text : string.Join('\n', kept).Trim(), removed);
+    }
+
+    private static HashSet<string> Trigrams(string text)
+    {
+        var words = WordToken().Matches(StripDiacritics(text)).Select(m => m.Value).ToList();
+        var grams = new HashSet<string>(StringComparer.Ordinal);
+        for (var i = 0; i + 2 < words.Count; i++)
+        {
+            grams.Add($"{words[i]} {words[i + 1]} {words[i + 2]}");
+        }
+
+        return grams;
+    }
+
+    /// <summary>Drops Arabic short vowels and tatweel, so «حيثُ» and «حيث» compare equal.</summary>
+    private static string StripDiacritics(string text) =>
+        new(text.Where(c => c is not (>= '\u064B' and <= '\u065F') and not '\u0640' and not '\u0670').ToArray());
+
+    private static IEnumerable<string> LatinWords(string text) =>
+        LatinWord().Matches(text).Select(m => m.Value.ToLowerInvariant());
 
     public static bool IsArabicOrLatinLetter(char c) =>
         ArabicScript.IsArabicLetter(c)
@@ -117,6 +185,16 @@ public static partial class NarrativeChecks
 
     [GeneratedRegex(@"[,.\u066C\u00A0\u202F ]")]
     private static partial Regex Separators();
+
+    /// <summary>Short parenthesised placeholders used in prompt examples, e.g. «(س)», «(ت)».</summary>
+    [GeneratedRegex(@"\([^()\n]{1,12}\)")]
+    private static partial Regex Placeholder();
+
+    [GeneratedRegex(@"[\p{L}\p{Nd}]+")]
+    private static partial Regex WordToken();
+
+    [GeneratedRegex(@"[A-Za-z\u00C0-\u024F\u1E00-\u1EFF]{2,}")]
+    private static partial Regex LatinWord();
 
     [GeneratedRegex(@"^\s*[-•*]?\s*\d{1,2}\s*[.)\-]\s", RegexOptions.Multiline)]
     private static partial Regex ListMarker();

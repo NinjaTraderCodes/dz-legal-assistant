@@ -21,7 +21,7 @@ public sealed record DraftDocument
     public DraftDocument DeepCopy() => this with
     {
         Inputs = new Dictionary<string, string>(Inputs, StringComparer.Ordinal),
-        Sections = Sections.Select(s => new DraftSection { Id = s.Id, Text = s.Text, DraftingNote = s.DraftingNote }).ToList(),
+        Sections = Sections.Select(s => new DraftSection { Id = s.Id, Text = s.Text, DraftingNotes = [.. s.DraftingNotes] }).ToList(),
     };
 }
 
@@ -31,18 +31,21 @@ public sealed class DraftSection
     public string Text { get; set; } = string.Empty;
 
     /// <summary>
-    /// What happened while the model wrote this section, when anything did: see <see cref="DraftingNotes"/>.
-    /// Null for a normal draft or for text the lawyer wrote.
+    /// What happened while the model wrote this section, as <see cref="DraftingNoteCodes"/>.
+    /// Empty for a normal draft or for text the lawyer wrote.
     /// </summary>
-    public string? DraftingNote { get; set; }
+    public List<string> DraftingNotes { get; init; } = [];
 }
 
-/// <summary>Codes stored in <see cref="DraftSection.DraftingNote"/>.</summary>
-public static class DraftingNotes
+/// <summary>Codes stored in <see cref="DraftSection.DraftingNotes"/>.</summary>
+public static class DraftingNoteCodes
 {
     /// <summary>The first answer was unusable; the second one was kept.</summary>
     public const string Retried = "retried";
 
     /// <summary>Both answers were unusable; the lawyer's notes were inserted unchanged.</summary>
     public const string FellBackToNotes = "fellBackToNotes";
+
+    /// <summary>Paragraphs copied from the prompt's worked example were removed.</summary>
+    public const string RemovedCopiedExample = "removedCopiedExample";
 }

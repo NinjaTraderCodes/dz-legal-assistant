@@ -133,10 +133,57 @@ public class DraftingServiceTests
     }
 
     [Fact]
-    public async Task UnchosenGenderShowsBothFormsNeverAGuess()
+    public async Task UnchosenGenderUsesTheMasculineGenericWithoutATitle()
     {
         var draft = await new DraftingService(new StubModelProvider()).DraftAsync(Requete, Fixtures.CompleteInputs());
-        Assert.StartsWith("لفائدة: السيد/السيدة بن علي كريم، القاطن/القاطنة بـ:", draft.FindSection("plaintiff")!.Text, StringComparison.Ordinal);
+        Assert.StartsWith("لفائدة: بن علي كريم، القاطن بـ:", draft.FindSection("plaintiff")!.Text, StringComparison.Ordinal);
+        Assert.Contains("يتشرف المدعي بواسطة دفاعه أن يعرض", draft.FindSection("opening")!.Text, StringComparison.Ordinal);
+        Assert.DoesNotContain("/", draft.FindSection("signature")!.Text, StringComparison.Ordinal);
+    }
+
+    /// <summary>Paragraph 1 of the grounds in the second local run (qwen2.5:3b) copied the prompt's example.</summary>
+    private const string CopiedFromExample =
+        "حيث إن المادة (س) من القانون المدني تلزم البائع بتسليم المبيع، وحيث إن المدعى عليه بصفته بائعا قد أخل بهذا الالتزام، فإن طلب المدعي يكون مؤسسا قانونا.";
+
+    [Fact]
+    public async Task ParagraphsCopiedFromTheExampleAreRemoved()
+    {
+        var provider = new RecordingProvider(r => r.SectionId == "grounds"
+            ? CopiedFromExample + "\nحيث إن المادة 106 من القانون المدني تجعل العقد شريعة المتعاقدين."
+            : r.SourceText);
+
+        var draft = await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs());
+
+        var grounds = draft.FindSection("grounds")!;
+        Assert.Equal("حيث إن المادة 106 من القانون المدني تجعل العقد شريعة المتعاقدين.", grounds.Text);
+        Assert.Equal([DraftingNoteCodes.RemovedCopiedExample], grounds.DraftingNotes);
+        Assert.Single(provider.Requests, r => r.SectionId == "grounds");
+    }
+
+    [Fact]
+    public async Task AnAnswerThatIsOnlyTheExampleIsRetriedThenReplacedByTheNotes()
+    {
+        var provider = new RecordingProvider(r => r.SectionId == "grounds" ? CopiedFromExample : r.SourceText);
+
+        var draft = await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs());
+
+        var grounds = draft.FindSection("grounds")!;
+        Assert.Equal("المادة 106 من القانون المدني.", grounds.Text);
+        Assert.Equal(
+            [DraftingNoteCodes.RemovedCopiedExample, DraftingNoteCodes.Retried, DraftingNoteCodes.FellBackToNotes],
+            grounds.DraftingNotes);
+    }
+
+    [Fact]
+    public void TheModelSeesTheExampleWithoutMarkersAndTheExampleIsKeptAside()
+    {
+        var service = new DraftingService(new StubModelProvider());
+        var request = service.BuildRequest(Requete, Requete.FindSection("grounds")!, Fixtures.CompleteInputs());
+
+        Assert.DoesNotContain("[[", request.UserPrompt, StringComparison.Ordinal);
+        Assert.Contains("المادة (س) من القانون المدني", request.UserPrompt, StringComparison.Ordinal);
+        Assert.Contains("المادة (س) من القانون المدني", request.ExampleText, StringComparison.Ordinal);
+        Assert.DoesNotContain("ملاحظات المحامي حول الأسانيد", request.ExampleText, StringComparison.Ordinal);
     }
 
     [Fact]
@@ -164,7 +211,7 @@ public class DraftingServiceTests
 
         var facts = draft.FindSection("facts")!;
         Assert.Equal("حيث إن المدعى عليه اقترض مبلغ 500000 دج", facts.Text);
-        Assert.Equal(DraftingNotes.Retried, facts.DraftingNote);
+        Assert.Equal([DraftingNoteCodes.Retried], facts.DraftingNotes);
         Assert.Equal(2, provider.Requests.Count(r => r.SectionId == "facts"));
     }
 
@@ -177,7 +224,7 @@ public class DraftingServiceTests
 
         var facts = draft.FindSection("facts")!;
         Assert.Equal("قرض 500000 دج بتاريخ 10/01/2025 لم يسدد.", facts.Text);
-        Assert.Equal(DraftingNotes.FellBackToNotes, facts.DraftingNote);
+        Assert.Equal([DraftingNoteCodes.Retried, DraftingNoteCodes.FellBackToNotes], facts.DraftingNotes);
     }
 
     [Theory]

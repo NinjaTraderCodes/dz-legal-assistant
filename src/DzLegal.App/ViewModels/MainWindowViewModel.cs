@@ -314,7 +314,7 @@ public sealed partial class MainWindowViewModel : ObservableObject
         if (_draft.FindSection(section.Id) is { } draftSection)
         {
             draftSection.Text = section.Text;
-            draftSection.DraftingNote = null; // the lawyer's own text now
+            draftSection.DraftingNotes.Clear(); // the lawyer's own text now
         }
 
         Recheck();
@@ -393,30 +393,42 @@ public sealed partial class MainWindowViewModel : ObservableObject
         OnPropertyChanged(nameof(Report));
     }
 
-    /// <summary>Deterministic hints under each narrative section; they disappear once the text is fixed.</summary>
+    /// <summary>
+    /// Review hints under each section: the definition's own hints (e.g. gender not chosen), what happened while
+    /// the model drafted, and deterministic checks of narrative text. They disappear once the cause is fixed.
+    /// </summary>
     private void UpdateReviewHints()
     {
         var inputs = CurrentInputs();
-        foreach (var vm in Sections.Where(s => s.IsEditable))
+        foreach (var vm in Sections)
         {
-            var section = _draft.FindSection(vm.Id);
-            var lines = new List<string>();
-            if (section?.DraftingNote == DraftingNotes.Retried)
+            var lines = vm.Definition.Hints
+                .Where(h => Condition.All(h.When, inputs))
+                .Select(h => h.Message.Get(L.Language))
+                .ToList();
+
+            if (vm.IsEditable)
             {
-                lines.Add(L["NoteRetried"]);
-            }
-            else if (section?.DraftingNote == DraftingNotes.FellBackToNotes)
-            {
-                lines.Add(L["NoteFellBack"]);
+                foreach (var code in _draft.FindSection(vm.Id)?.DraftingNotes ?? [])
+                {
+                    lines.Add(code switch
+                    {
+                        DraftingNoteCodes.Retried => L["NoteRetried"],
+                        DraftingNoteCodes.FellBackToNotes => L["NoteFellBack"],
+                        _ => L["NoteRemovedCopiedExample"],
+                    });
+                }
+
+                var notes = inputs.GetValueOrDefault(vm.Definition.SourceField ?? string.Empty, string.Empty);
+                lines.AddRange(NarrativeChecks.Check(vm.Text, notes, inputs).Select(i => L.Format(i.Kind switch
+                {
+                    NarrativeIssueKind.ForeignScript => "IssueForeignScript",
+                    NarrativeIssueKind.UnknownNumber => "IssueUnknownNumber",
+                    NarrativeIssueKind.UnexpectedLatinWord => "IssueUnexpectedLatinWord",
+                    _ => "IssueMissingNumber",
+                }, i.Detail)));
             }
 
-            var notes = inputs.GetValueOrDefault(vm.Definition.SourceField ?? string.Empty, string.Empty);
-            lines.AddRange(NarrativeChecks.Check(vm.Text, notes, inputs).Select(i => L.Format(i.Kind switch
-            {
-                NarrativeIssueKind.ForeignScript => "IssueForeignScript",
-                NarrativeIssueKind.UnknownNumber => "IssueUnknownNumber",
-                _ => "IssueMissingNumber",
-            }, i.Detail)));
             vm.ReviewText = string.Join("\n", lines.Select(l => "⚠ " + l));
         }
     }

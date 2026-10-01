@@ -6,7 +6,7 @@
 (مدعى عليها)
 {{~ else ~}}
 {{~ if defendant.lastName || defendant.firstName ~}}
-ضد: {{ gendered g "السيد" "السيدة" }} {{ defendant.lastName }} {{ defendant.firstName }}{{ if defendant.domicile }}، {{ gendered g "القاطن" "القاطنة" }} بـ: {{ defendant.domicile }}{{ else if defendant.lastKnownDomicile }}، {{ gendered g "مجهول الموطن، وآخر موطن معلوم له" "مجهولة الموطن، وآخر موطن معلوم لها" }}: {{ defendant.lastKnownDomicile }}{{ end }}.
+ضد: {{ if g }}{{ gendered g "السيد" "السيدة" }} {{ end }}{{ defendant.lastName }} {{ defendant.firstName }}{{ if defendant.domicile }}، {{ gendered g "القاطن" "القاطنة" }} بـ: {{ defendant.domicile }}{{ else if defendant.lastKnownDomicile }}، {{ gendered g "مجهول الموطن، وآخر موطن معلوم له" "مجهولة الموطن، وآخر موطن معلوم لها" }}: {{ defendant.lastKnownDomicile }}{{ end }}.
 {{~ end ~}}
 {{ gendered g "(مدعى عليه)" "(مدعى عليها)" }}
 {{~ end ~}}

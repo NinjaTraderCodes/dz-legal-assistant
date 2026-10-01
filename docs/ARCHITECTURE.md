@@ -25,9 +25,10 @@
 - **NarrativeChecks** (in Drafting) checks model text against the lawyer's material:
   - foreign-script characters, a hard failure;
   - numbers not found in any input, such as an invented amount, date or article;
-  - numbers from the notes that the text dropped.
+  - numbers from the notes that the text dropped;
+  - Latin-script words found in no input (for example «caso»).
 
-  `DraftAsync` retries a hard failure once, then falls back to the notes verbatim, and records this in `DraftSection.DraftingNote`. The app re-runs the checks on every edit and shows them as review hints under the section. They cannot detect meaning-level errors such as swapped roles, which remain the lawyer's review.
+  Paragraphs that copy the prompt's worked example are removed first. Detection uses the example's placeholder tokens such as «(س)», or near-verbatim overlap. `DraftAsync` then retries an empty or hard-failing answer once, falls back to the notes verbatim, and records each step in `DraftSection.DraftingNotes`. The app re-runs the checks on every edit and shows them as review hints under the section. They cannot detect meaning-level errors such as swapped roles, which remain the lawyer's review.
 - **ModelProviders**: `StubModelProvider` (template mode) and `OllamaModelProvider` (loopback-only HTTP to a local Ollama). Adding llama.cpp or another runtime means one new class implementing `IModelProvider`.
 - **Storage**: drafts (`*.dzdraft.json`) and evaluation records as local JSON under the user's local app-data folder.
 - **Harness** has two modes:

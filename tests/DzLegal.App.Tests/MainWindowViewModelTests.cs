@@ -176,14 +176,17 @@ public class MainWindowViewModelTests
     public void GenderChoiceChangesTheWording()
     {
         var vm = Vm.Create().Filled();
-        Assert.Contains("السيد/السيدة", vm.Sections.Single(s => s.Id == "plaintiff").Text, StringComparison.Ordinal);
+        var plaintiff = vm.Sections.Single(s => s.Id == "plaintiff");
+        Assert.StartsWith("لفائدة: بن علي كريم", plaintiff.Text, StringComparison.Ordinal);
+        Assert.Contains("اختر جنس المدعي", plaintiff.ReviewText, StringComparison.Ordinal);
 
         var gender = vm.Field("plaintiff.gender");
         Assert.True(gender.IsChoice);
         gender.SelectedOption = gender.Options.Single(o => o.Value == "female");
 
-        Assert.StartsWith("لفائدة: السيدة بن علي كريم", vm.Sections.Single(s => s.Id == "plaintiff").Text, StringComparison.Ordinal);
+        Assert.StartsWith("لفائدة: السيدة بن علي كريم", plaintiff.Text, StringComparison.Ordinal);
         Assert.Equal("أنثى", gender.SelectedOption!.Label);
+        Assert.False(plaintiff.HasReview);
     }
 
     [Fact]
@@ -194,10 +197,11 @@ public class MainWindowViewModelTests
         var grounds = vm.Sections.Single(s => s.Id == "grounds");
         Assert.False(grounds.HasReview);
 
-        grounds.Text += "\nوحيث إن المادة 999 تؤيد ذلك.";
+        grounds.Text += "\nوحيث إن المادة 999 تؤيد ذلك في هذا caso.";
         Assert.Contains("999", grounds.ReviewText, StringComparison.Ordinal);
+        Assert.Contains("caso", grounds.ReviewText, StringComparison.Ordinal);
 
-        grounds.Text = grounds.Text.Replace("\nوحيث إن المادة 999 تؤيد ذلك.", string.Empty, StringComparison.Ordinal);
+        grounds.Text = grounds.Text.Replace("\nوحيث إن المادة 999 تؤيد ذلك في هذا caso.", string.Empty, StringComparison.Ordinal);
         Assert.False(grounds.HasReview);
     }
 

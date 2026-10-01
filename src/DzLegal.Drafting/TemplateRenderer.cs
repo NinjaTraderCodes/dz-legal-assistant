@@ -10,8 +10,8 @@ namespace DzLegal.Drafting;
 /// Renders Scriban templates against the case inputs. Field ids such as "plaintiff.lastName" become
 /// nested members (<c>{{ plaintiff.lastName }}</c>); blank values are null, boolean fields are booleans,
 /// <c>lines</c> splits a multi-line value into its non-blank lines, and
-/// <c>gendered g "masculine" "feminine"</c> picks the form matching a gender choice
-/// ("male"/"female"), or shows both ("masculine/feminine") while no gender is chosen.
+/// <c>gendered g "masculine" "feminine"</c> picks the form matching a gender choice ("male"/"female"),
+/// and falls back to the masculine generic, the unmarked form in Arabic legal drafting, while none is chosen.
 /// </summary>
 public sealed class TemplateRenderer
 {
@@ -59,7 +59,7 @@ public sealed class TemplateRenderer
     {
         "male" => masculine,
         "female" => feminine,
-        _ => $"{masculine}/{feminine}",
+        _ => masculine,
     };
 
     private static ScriptArray SplitLines(string? value)

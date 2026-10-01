@@ -17,7 +17,7 @@ The lawyer fills in the case details, the application produces a structured firs
 | **Offline, no data leaves the machine** | No cloud APIs, no telemetry. The only model endpoint allowed is a loopback address (`127.0.0.1`, `::1`, `localhost`), checked by `LoopbackGuard`, with the system proxy bypassed. See [docs/OFFLINE.md](docs/OFFLINE.md). |
 | **Assistive, never autonomous** | A permanent "draft, review required" banner. The app only produces text for the lawyer to edit and sign. |
 | **Grounded, not free-generating** | Identification, court, dates and the signature block come from templates, deterministically, with grammatical gender taken from the form. The model only rewrites the lawyer's own notes for facts, grounds and requests. Prompts state the parties' roles explicitly. If a section has no notes, the model is not called. |
-| **Model output is checked** | Deterministic checks flag foreign-script characters, invented numbers and dropped numbers. Corrupted answers are retried once and otherwise replaced by the lawyer's notes. |
+| **Model output is checked** | Deterministic checks remove paragraphs copied from the prompt's worked example. They also flag foreign-script characters, stray Latin words, invented numbers and dropped numbers. Unusable answers are retried once, and otherwise replaced by the lawyer's notes. |
 | **Verifiable** | The Form Engine is pure and deterministic. A 24-case corpus measures its accuracy per element, and CI requires 100%. |
 | **Legal rules are data** | Elements, articles, templates and prompts live in `data/`. Changing a rule means editing JSON, not code. |
 
@@ -27,7 +27,7 @@ Prerequisite: [.NET 10 SDK](https://dotnet.microsoft.com/download) (the version 
 
 ```bash
 dotnet build                                   # warnings are errors
-dotnet test                                    # 142 tests: engine, drafting, providers, storage, UI (headless)
+dotnet test                                    # 150 tests: engine, drafting, providers, storage, UI (headless)
 dotnet run --project src/DzLegal.Harness       # Form Engine accuracy report (exit 1 on any mismatch)
 dotnet run --project src/DzLegal.App           # the desktop app
 ```

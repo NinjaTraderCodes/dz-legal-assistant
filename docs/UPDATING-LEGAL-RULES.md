@@ -42,10 +42,13 @@ Add it to `fields`, with an `id`, a `group`, a bilingual `label` and a `kind` of
   - Blank inputs are `null`, so `{{ if x }}` hides them.
   - Boolean fields are real booleans.
   - `lines x` splits a multi-line field into items.
-  - `gendered plaintiff.gender "السيد" "السيدة"` picks the agreeing form, and shows `السيد/السيدة` while no gender is chosen.
+  - `gendered plaintiff.gender "السيد" "السيدة"` picks the agreeing form, and falls back to the masculine generic while no gender is chosen. Print titles only when a gender is set: `{{ if g }}…{{ end }}`.
+  - A section can carry `hints`, each with `when` conditions and a bilingual `message`. They show under the section in the editor, for example "choose the gender". They are not legal findings.
 - **Narrative sections:** edit `prompts/<section>.ar.txt`.
   - `{{ section_notes }}` is the lawyer's notes for that section.
-  - Any field is available by id, for example `{{ notes.requests }}` or `{{ plaintiff.lastName }}`. The shared drafting rules are in `prompts/system.ar.txt`. Keep the "do not invent facts, amounts or citations" rules.
+  - Any field is available by id, for example `{{ notes.requests }}` or `{{ plaintiff.lastName }}`.
+  - Wrap each worked example in `[[مثال]] … [[/مثال]]`. The model sees the content without the markers. Any paragraph of the answer that copies the example is removed.
+  - Put a placeholder in parentheses in every example, such as `(س)` or `(ت)`. It makes copying detectable without false alarms. The shared drafting rules are in `prompts/system.ar.txt`. Keep the "do not invent facts, amounts or citations" rules.
 - **Order of sections:** the order of `sections` in `definition.json`. Also update the `form.order` element if it should be enforced.
 
 After any prompt change, re-run the drafting bench (see the README) on the same models and compare `summary.md` and the outputs. Add a case to `tests/drafting-cases/` for every new kind of failure you see.

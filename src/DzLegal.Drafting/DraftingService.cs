@@ -7,8 +7,9 @@ namespace DzLegal.Drafting;
 /// Builds a draft from the case inputs. Generated sections are rendered deterministically from
 /// templates; narrative sections are written by the model from the lawyer's own notes. A narrative
 /// section with no notes stays empty so the Form Engine flags it: the model is never asked to invent one.
-/// Model output that fails a hard <see cref="NarrativeChecks"/> check is requested once more, and if it is
-/// still unusable the lawyer's notes are used unchanged, so corrupted text never reaches the draft.
+/// Paragraphs copied from the prompt's worked example are removed. Output that is then empty or fails a hard
+/// <see cref="NarrativeChecks"/> check is requested once more, and if it is still unusable the lawyer's notes
+/// are used unchanged, so corrupted text never reaches the draft.
 /// </summary>
 public sealed partial class DraftingService
 {
@@ -62,7 +63,7 @@ public sealed partial class DraftingService
 
         var sections = IncludedSections(definition, inputs)
             .Select(s => s.Kind == SectionKind.Narrative
-                ? new DraftSection { Id = s.Id, Text = draft.FindSection(s.Id)?.Text ?? string.Empty, DraftingNote = draft.FindSection(s.Id)?.DraftingNote }
+                ? new DraftSection { Id = s.Id, Text = draft.FindSection(s.Id)?.Text ?? string.Empty, DraftingNotes = [.. draft.FindSection(s.Id)?.DraftingNotes ?? []] }
                 : new DraftSection { Id = s.Id, Text = RenderGenerated(definition, s, inputs) })
             .ToList();
 
@@ -86,7 +87,12 @@ public sealed partial class DraftingService
             ? string.Empty
             : File.ReadAllText(Path.Combine(definition.SourceDirectory, definition.SystemPrompt)).Trim();
         var user = _renderer.RenderFile(definition, section.Prompt!, inputs, new Dictionary<string, object?> { ["section_notes"] = notes });
-        return new ModelRequest(section.Id, system, user, notes);
+
+        // Worked examples are marked [[مثال]] … [[/مثال]] in prompt files: the model sees the content without the
+        // markers, and the content is kept aside to detect output that copies it.
+        var example = string.Join('\n', ExampleBlock().Matches(user).Select(m => m.Groups[1].Value.Trim()));
+        user = TemplateRenderer.Normalize(ExampleMarker().Replace(user, string.Empty));
+        return new ModelRequest(section.Id, system, user, notes, example);
     }
 
     private async Task<DraftSection> WriteNarrativeAsync(DocumentTypeDefinition definition, SectionDefinition section, IReadOnlyDictionary<string, string> inputs, CancellationToken cancellationToken)
@@ -97,24 +103,29 @@ public sealed partial class DraftingService
             return new DraftSection { Id = section.Id };
         }
 
-        string? note = null;
+        var notes = new List<string>();
         for (var attempt = 1; attempt <= 2; attempt++)
         {
-            var text = CleanModelOutput(await _provider.GenerateAsync(request, cancellationToken), section);
-            if (text.Length > 0 && !NarrativeChecks.Check(text, request.SourceText, inputs).Any(i => i.IsHard))
+            var output = CleanModelOutput(await _provider.GenerateAsync(request, cancellationToken), section);
+            var (text, removed) = NarrativeChecks.RemoveCopiedExample(output, request.ExampleText, request.SourceText);
+            if (removed > 0 && !notes.Contains(DraftingNoteCodes.RemovedCopiedExample))
             {
-                return new DraftSection { Id = section.Id, Text = text, DraftingNote = note };
+                notes.Add(DraftingNoteCodes.RemovedCopiedExample);
             }
 
-            note = DraftingNotes.Retried;
+            if (text.Length > 0 && !NarrativeChecks.Check(text, request.SourceText, inputs).Any(i => i.IsHard))
+            {
+                return new DraftSection { Id = section.Id, Text = text, DraftingNotes = notes };
+            }
+
+            if (attempt == 1)
+            {
+                notes.Add(DraftingNoteCodes.Retried);
+            }
         }
 
-        return new DraftSection
-        {
-            Id = section.Id,
-            Text = TemplateRenderer.Normalize(request.SourceText),
-            DraftingNote = DraftingNotes.FellBackToNotes,
-        };
+        notes.Add(DraftingNoteCodes.FellBackToNotes);
+        return new DraftSection { Id = section.Id, Text = TemplateRenderer.Normalize(request.SourceText), DraftingNotes = notes };
     }
 
     private static IEnumerable<SectionDefinition> IncludedSections(DocumentTypeDefinition definition, IReadOnlyDictionary<string, string> inputs) =>
@@ -140,6 +151,12 @@ public sealed partial class DraftingService
 
         return TemplateRenderer.Normalize(string.Join('\n', lines));
     }
+
+    [GeneratedRegex(@"\[\[مثال\]\](.*?)\[\[/مثال\]\]", RegexOptions.Singleline)]
+    private static partial Regex ExampleBlock();
+
+    [GeneratedRegex(@"\[\[/?مثال\]\]")]
+    private static partial Regex ExampleMarker();
 
     [GeneratedRegex(@"<think>.*?</think>", RegexOptions.Singleline)]
     private static partial Regex ThinkBlock();

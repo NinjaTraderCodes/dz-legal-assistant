@@ -25,8 +25,11 @@ public class NarrativeChecksTests
     }
 
     [Fact]
-    public void FrenchTermsAndAccentsAreAllowed() =>
-        Assert.Empty(Check("حيث إن reconnaissance de dette notariée تثبت مبلغ 1500000 دج في 15 جانفي 2025، أي créance certaine."));
+    public void FrenchTermsAndAccentsFromTheInputsAreAllowed()
+    {
+        var inputs = new Dictionary<string, string>(Inputs) { ["notes.grounds"] = "reconnaissance de dette notariée ; créance certaine" };
+        Assert.Empty(NarrativeChecks.Check("حيث إن reconnaissance de dette notariée تثبت مبلغ 1500000 دج في 15 جانفي 2025، أي créance certaine.", Notes, inputs));
+    }
 
     [Fact]
     public void InventedArticleNumberIsFlagged()
@@ -52,6 +55,45 @@ public class NarrativeChecksTests
     [Fact]
     public void NumbersFromOtherInputsAreKnown() =>
         Assert.DoesNotContain(Check("حرر في 01/10/2026، مبلغ 1500000 دج، 15 جانفي 2025"), i => i.Kind == NarrativeIssueKind.UnknownNumber);
+
+    [Fact]
+    public void StrayLatinWordFromTheSecondLocalRunIsFlagged()
+    {
+        var issue = Assert.Single(Check("حيث إنه في هذا caso اقترض المدعى عليه 1,500,000 دج في 15 جانفي 2025."));
+        Assert.Equal(NarrativeIssueKind.UnexpectedLatinWord, issue.Kind);
+        Assert.Equal("caso", issue.Detail);
+        Assert.False(issue.IsHard);
+    }
+
+    [Fact]
+    public void LatinWordsFromTheLawyersInputsAreAllowed()
+    {
+        var inputs = new Dictionary<string, string>(Inputs) { ["notes.grounds"] = "Reconnaissance de dette notariée" };
+        Assert.Empty(NarrativeChecks.Check("بموجب reconnaissance de dette تثبت 1500000 دج في 15 جانفي 2025", Notes, inputs));
+    }
+
+    [Fact]
+    public void CopiedExampleParagraphIsDetectedEvenWhenReworded()
+    {
+        const string example = "حيث إن المادة (س) من القانون المدني تلزم البائع بتسليم المبيع، وحيث إن المدعى عليه بصفته بائعا قد أخل بهذا الالتزام، فإن طلب المدعي يكون مؤسسا قانونا.";
+        const string reworded = "وحيث إن المادة (س) توجب على البائع التسليم، والمدعى عليه أخل بذلك.";
+        const string legitimate = "حيث إن المادة 106 من القانون المدني تنص على أن العقد شريعة المتعاقدين، فإن طلب المدعي يكون مؤسسا قانونا.";
+
+        var (text, removed) = NarrativeChecks.RemoveCopiedExample($"{reworded}\n{legitimate}", example, "المادة 106 من القانون المدني");
+
+        Assert.Equal(1, removed);
+        Assert.Equal(legitimate, text);
+    }
+
+    [Fact]
+    public void WordsSharedWithTheNotesDoNotCountAsCopying()
+    {
+        const string example = "حيث إن المدعى عليه باع للمدعي سيارة ولم يسلمها إليه.";
+        const string notes = "باع المدعى عليه للمدعي سيارة ولم يسلمها";
+        var (text, removed) = NarrativeChecks.RemoveCopiedExample("حيث إن المدعى عليه باع للمدعي سيارة ولم يسلمها إليه.", example, notes);
+        Assert.Equal(0, removed);
+        Assert.NotEmpty(text);
+    }
 
     [Fact]
     public void EmptyTextHasNoIssues() => Assert.Empty(Check("  "));

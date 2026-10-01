@@ -98,8 +98,8 @@ public class RenderingTests
         vm.Sections.Single(s => s.Id == "facts").Text += "\nوحيث إن المبلغ أصبح 999 دج.";
         Dispatcher.UIThread.RunJobs();
 
-        var hint = window.GetVisualDescendants().OfType<TextBlock>().First(t => t.Classes.Contains("review") && t.IsVisible);
-        Assert.Contains("999", hint.Text, StringComparison.Ordinal);
+        Assert.Contains(window.GetVisualDescendants().OfType<TextBlock>(),
+            t => t.Classes.Contains("review") && t.IsVisible && t.Text!.Contains("999", StringComparison.Ordinal));
         SaveScreenshot(window, "main-window-review");
     }
 

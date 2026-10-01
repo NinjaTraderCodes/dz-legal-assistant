@@ -9,7 +9,7 @@
 (مدعية)
 {{~ else ~}}
 {{~ if plaintiff.lastName || plaintiff.firstName ~}}
-لفائدة: {{ gendered g "السيد" "السيدة" }} {{ plaintiff.lastName }} {{ plaintiff.firstName }}{{ if plaintiff.profession }}، {{ plaintiff.profession }}{{ end }}{{ if plaintiff.domicile }}، {{ gendered g "القاطن" "القاطنة" }} بـ: {{ plaintiff.domicile }}{{ end }}.
+لفائدة: {{ if g }}{{ gendered g "السيد" "السيدة" }} {{ end }}{{ plaintiff.lastName }} {{ plaintiff.firstName }}{{ if plaintiff.profession }}، {{ plaintiff.profession }}{{ end }}{{ if plaintiff.domicile }}، {{ gendered g "القاطن" "القاطنة" }} بـ: {{ plaintiff.domicile }}{{ end }}.
 {{~ end ~}}
 {{~ if lawyer.name ~}}
 القائم في {{ gendered g "حقه" "حقها" }} {{ gendered lawyer.gender "الأستاذ" "الأستاذة" }} {{ lawyer.name }}{{ if lawyer.bar }}، {{ lawyer.bar }}{{ end }}{{ if lawyer.address }}، {{ gendered lawyer.gender "الكائن مكتبه" "الكائن مكتبها" }} بـ: {{ lawyer.address }}{{ end }}.

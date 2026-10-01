@@ -106,6 +106,27 @@ public class DefinitionLoaderTests
     }
 
     [Fact]
+    public void SectionHintsAreValidated()
+    {
+        var definition = Tiny() with
+        {
+            Sections =
+            [
+                new SectionDefinition
+                {
+                    Id = "s1", Title = new("1", "1"),
+                    Hints = [new SectionHint { When = [new Condition { Field = "ghost", Is = "" }], Message = new("تنبيه", "") }],
+                },
+            ],
+        };
+
+        var errors = DefinitionLoader.Validate(definition);
+
+        Assert.Contains(errors, e => e.Contains("hint: condition references unknown field 'ghost'", StringComparison.Ordinal));
+        Assert.Contains(errors, e => e.Contains("every hint needs an Arabic and an English message", StringComparison.Ordinal));
+    }
+
+    [Fact]
     public void ShippedGenderFieldsAreChoices() =>
         Assert.All(new[] { "plaintiff.gender", "defendant.gender", "lawyer.gender" }, id =>
         {

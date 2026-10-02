@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using DzLegal.Domain;
 
 namespace DzLegal.App.ViewModels;
@@ -11,15 +12,35 @@ public sealed partial class SectionViewModel : ObservableObject
 {
     private readonly Loc _loc;
     private readonly Action<SectionViewModel> _onEdited;
+    private readonly Action<SectionViewModel, bool> _onOverride;
     private bool _updatingFromModel;
 
-    public SectionViewModel(SectionDefinition definition, string text, Loc loc, Action<SectionViewModel> onEdited)
+    public SectionViewModel(SectionDefinition definition, string text, Loc loc, Action<SectionViewModel> onEdited, Action<SectionViewModel, bool>? onOverride = null)
     {
         Definition = definition;
         _loc = loc;
         _onEdited = onEdited;
+        _onOverride = onOverride ?? ((_, _) => { });
         SetFromModel(text);
     }
+
+    /// <summary>A generated section the lawyer took over: editable, no longer follows the form.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsReadOnly), nameof(IsLocked), nameof(CanOverride), nameof(Hint))]
+    public partial bool IsOverridden { get; set; }
+
+    public bool IsGenerated => Definition.Kind == SectionKind.Generated;
+
+    /// <summary>Generated and following the form.</summary>
+    public bool IsLocked => IsGenerated && !IsOverridden;
+
+    public bool CanOverride => IsLocked;
+
+    [RelayCommand]
+    private void Override() => _onOverride(this, true);
+
+    [RelayCommand]
+    private void Restore() => _onOverride(this, false);
 
     public SectionDefinition Definition { get; }
 
@@ -29,9 +50,9 @@ public sealed partial class SectionViewModel : ObservableObject
 
     public bool IsEditable => Definition.Kind == SectionKind.Narrative;
 
-    public bool IsReadOnly => !IsEditable;
+    public bool IsReadOnly => !IsEditable && !IsOverridden;
 
-    public string Hint => _loc[IsEditable ? "NarrativeSectionHint" : "GeneratedSectionHint"];
+    public string Hint => _loc[IsOverridden ? "OverriddenSectionHint" : IsEditable ? "NarrativeSectionHint" : "GeneratedSectionHint"];
 
     public string Watermark => IsEditable ? _loc["EmptyNarrativeHint"] : string.Empty;
 

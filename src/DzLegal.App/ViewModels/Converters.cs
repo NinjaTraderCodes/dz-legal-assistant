@@ -1,13 +1,13 @@
 using Avalonia.Data.Converters;
-using Avalonia.Media;
 using Avalonia.Media.Imaging;
 
 namespace DzLegal.App.ViewModels;
 
 public static class Converters
 {
-    public static readonly IValueConverter ErrorBrush =
-        new FuncValueConverter<bool, IBrush>(isError => isError ? Brushes.DarkRed : Brushes.Black);
+    public static readonly IValueConverter IsZero = new FuncValueConverter<int, bool>(v => v == 0);
+
+    public static readonly IValueConverter IsOne = new FuncValueConverter<int, bool>(v => v == 1);
 
     /// <summary>PNG bytes (a rendered PDF page) to an image.</summary>
     public static readonly IValueConverter PngToBitmap =

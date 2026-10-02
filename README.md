@@ -39,7 +39,7 @@ Prerequisite: [.NET 10 SDK](https://dotnet.microsoft.com/download) (the version 
 
 ```bash
 dotnet build                                   # warnings are errors
-dotnet test                                    # 182 tests: engine, drafting, providers, storage, UI (headless)
+dotnet test                                    # 191 tests: engine, drafting, providers, storage, UI (headless)
 dotnet run --project src/DzLegal.Harness       # Form Engine accuracy report (exit 1 on any mismatch)
 dotnet run --project src/DzLegal.App           # the desktop app
 ```
@@ -81,16 +81,20 @@ The output folder has everything it needs: runtime, `data/` rules, fonts and `ap
 
 ## Demo walkthrough (for reviewers)
 
-1. `dotnet run --project src/DzLegal.App` and click **English** (top right) if you don't read Arabic. The UI switches to English and left-to-right, while the document stays Arabic and right-to-left.
-2. Choose **Template mode (no AI)** as the drafting engine, unless Ollama is installed.
-3. The **Formal check** panel (right) already lists the missing mandatory elements: court, parties, facts…
-4. Fill in the **Case details**: court, plaintiff, defendant, subject, notes on facts/grounds/requests, lawyer name. The **Draft** panel updates live and findings turn to *Present*.
-5. Click **Draft narrative sections**. The facts, grounds and requests are written, and the summary shows *No mandatory element is missing*.
-6. Clear the text of *Legal grounds* in the draft. The report immediately flags **CPCA art. 15-5**.
-7. Tick **Claim concerns registered real property**. A new mandatory element (**CPCA art. 17**, land-registry publication) appears.
-8. **Save** stores a local `.dzdraft.json`, and **Copy text** puts the whole document on the clipboard. The *Evaluate this draft* panel records a local verdict (used as is / minor edits / major rewrite) for later quality work.
+1. `dotnet run --project src/DzLegal.App`. Click **English** (top bar) if you don't read Arabic. The UI switches to left-to-right, while the document stays Arabic and right-to-left. The moon icon switches to dark mode.
+2. Next to **Draft narrative sections**, choose **Template mode (no AI)** unless Ollama is installed.
+3. **Left panel, Case details:** the form is split into 7 steps, shown as chips. Each chip turns ✓ (done), red (a mandatory element is missing) or amber (a recommendation). A missing field gets a red border and the article it comes from, for example «مطلوب — CPCA art. 15-2». Use **Next** and **Back**, or click a chip.
+4. **Right panel, Formal check:** the score («10 من 12») and only the missing elements, expanded. Click one to jump to the step that fixes it. Present elements are folded away.
+5. **Centre, Draft:**
+   - **Edit** shows the sections on paper. Generated sections follow the form (🔒). Use **Edit by hand** to take one over, and **Restore from form** to give it back.
+   - **Draft narrative sections** writes the grounds and requests.
+   - **Preview** shows the exact A4 pages. **Export PDF** and **Export Word** save the document, with or without the «مسودة» watermark.
+6. Work is autosaved every 30 s and on close. The next start offers to restore it.
+7. Keyboard shortcuts: Ctrl+N new, Ctrl+O open, Ctrl+S save, Ctrl+G draft, Ctrl+P export PDF.
 
 ![English UI](docs/images/main-window-en.png)
+
+![Dark mode](docs/images/main-window-dark.png)
 
 ## Repository layout
 

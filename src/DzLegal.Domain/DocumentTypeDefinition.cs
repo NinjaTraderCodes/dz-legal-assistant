@@ -109,6 +109,9 @@ public sealed record SectionDefinition
 
     /// <summary>How the section is laid out in the printed document (PDF/Word).</summary>
     public SectionLayout Layout { get; init; } = new();
+
+    /// <summary>The form group (step) whose fields feed this section; used to send the lawyer to the right step.</summary>
+    public string? FormGroup { get; init; }
 }
 
 public enum BlockAlign

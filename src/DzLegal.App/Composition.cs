@@ -49,6 +49,7 @@ public static class Composition
             files,
             new EvaluationStore(paths.Evaluations),
             loc,
-            settings.DefaultProvider);
+            settings.DefaultProvider,
+            autosaveFile: Path.Combine(paths.Drafts, "last-session" + DraftFile.Extension));
     }
 }

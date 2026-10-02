@@ -122,6 +122,18 @@ public class RenderingTests
     }
 
     [AvaloniaFact]
+    public async Task DarkThemeRenders()
+    {
+        var (window, vm) = await ShowFilledWindowAsync();
+        vm.ToggleThemeCommand.Execute(null);
+        vm.SelectedStep = vm.FieldGroups.Single(g => g.Id == "plaintiff");
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.Equal(Avalonia.Styling.ThemeVariant.Dark, window.ActualThemeVariant);
+        SaveScreenshot(window, "main-window-dark");
+    }
+
+    [AvaloniaFact]
     public void MixedArabicLatinAndDigitsLayOutInBidiOrder()
     {
         // Arabic paragraph with an embedded French term, a Latin name and a number.

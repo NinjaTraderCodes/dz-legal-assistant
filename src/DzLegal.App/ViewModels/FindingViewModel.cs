@@ -7,6 +7,7 @@ public sealed class FindingViewModel
 {
     public FindingViewModel(Finding finding, DocumentTypeDefinition definition, Loc loc)
     {
+        ArgumentNullException.ThrowIfNull(definition);
         ArgumentNullException.ThrowIfNull(finding);
         var element = finding.Element;
         var lang = loc.Language;
@@ -24,12 +25,19 @@ public sealed class FindingViewModel
             _ => loc["StatusNotApplicable"],
         };
         Message = IsMissing ? element.MissingMessage.Get(lang) : string.Empty;
+        TargetGroupId = finding.MissingParts
+            .SelectMany(p => p.Split('|', '<'))
+            .Select(id => definition.FindField(id)?.Group ?? definition.FindSection(id)?.FormGroup)
+            .FirstOrDefault(g => g is not null);
         MissingPartsText = IsMissing && finding.MissingParts.Count > 0
             ? loc.Format("MissingParts", string.Join("، ", finding.MissingParts.Select(p => DescribePart(p, definition, loc))))
             : string.Empty;
     }
 
     public string ElementId { get; }
+
+    /// <summary>The form step where the lawyer can fix this finding.</summary>
+    public string? TargetGroupId { get; }
 
     public ElementStatus Status { get; }
 

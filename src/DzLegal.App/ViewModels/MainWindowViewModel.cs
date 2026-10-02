@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using Avalonia.Media;
+using Avalonia.Styling;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DzLegal.App.Services;
@@ -29,6 +30,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     private readonly DraftingService _templates = new(new StubModelProvider());
 
     private readonly List<FieldViewModel> _fields = [];
+    private readonly string? _autosaveFile;
     private DraftDocument _draft;
     private DraftDocument? _generatedSnapshot;
 
@@ -39,7 +41,8 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         EvaluationStore evaluations,
         Loc loc,
         string defaultProvider = "ollama",
-        Func<DateOnly>? today = null)
+        Func<DateOnly>? today = null,
+        string? autosaveFile = null)
     {
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentNullException.ThrowIfNull(providers);
@@ -47,6 +50,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         _files = files;
         _evaluations = evaluations;
         _today = today ?? (() => DateOnly.FromDateTime(DateTime.Now));
+        _autosaveFile = autosaveFile;
         L = loc;
 
         Providers = providers;
@@ -65,11 +69,14 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
 
         FieldGroups = definition.Fields
             .GroupBy(f => f.Group)
-            .Select(g => new FieldGroupViewModel(
+            .Select((g, i) => new FieldGroupViewModel(
                 definition.FieldGroups.FirstOrDefault(d => d.Id == g.Key),
                 _fields.Where(f => f.Definition.Group == g.Key).ToList(),
-                loc))
+                loc,
+                i + 1))
             .ToList();
+        SelectedStep = FieldGroups[0];
+        HasRecoverableDraft = _autosaveFile is not null && File.Exists(_autosaveFile);
 
         Verdicts = Enum.GetValues<DraftVerdict>().Select(v => new VerdictOption(v, loc)).ToList();
         SelectedVerdict = Verdicts[1];
@@ -89,7 +96,48 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
 
     public ObservableCollection<SectionViewModel> Sections { get; } = [];
 
+    /// <summary>Every finding, most urgent first.</summary>
     public ObservableCollection<FindingViewModel> Findings { get; } = [];
+
+    /// <summary>Missing elements and warnings: what the compliance pane shows first.</summary>
+    public ObservableCollection<FindingViewModel> IssueFindings { get; } = [];
+
+    /// <summary>Elements present: folded away in the compliance pane.</summary>
+    public ObservableCollection<FindingViewModel> PresentFindings { get; } = [];
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(StepPosition))]
+    public partial FieldGroupViewModel? SelectedStep { get; set; }
+
+    public string StepPosition => SelectedStep is null ? string.Empty : L.Format("StepPosition", SelectedStep.Number, FieldGroups.Count);
+
+    [ObservableProperty]
+    public partial int PresentCount { get; set; }
+
+    [ObservableProperty]
+    public partial int ApplicableCount { get; set; }
+
+    [ObservableProperty]
+    public partial string ScoreText { get; set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial string PresentHeader { get; set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial bool HasIssues { get; set; }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(RequestedTheme))]
+    public partial bool IsDarkTheme { get; set; }
+
+    public ThemeVariant RequestedTheme => IsDarkTheme ? ThemeVariant.Dark : ThemeVariant.Light;
+
+    /// <summary>An autosaved draft from an earlier session can be restored.</summary>
+    [ObservableProperty]
+    public partial bool HasRecoverableDraft { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsEvaluationOpen { get; set; }
 
     public IReadOnlyList<ProviderOption> Providers { get; }
 
@@ -221,6 +269,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         }
 
         SetStatus(L.Format("Exported", t.Name));
+        IsEvaluationOpen = HasGeneratedDraft; // invite a quick verdict once a real draft is out
     }
 
     [ObservableProperty]
@@ -250,6 +299,14 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
             // Synchronous progress: Progress<T> would post late updates over the final status.
             var progress = new InlineProgress<SectionDefinition>(s => SetStatus(L.Format("Generating", s.Title.Get(L.Language))));
             var draft = await drafting.DraftAsync(_definition, CurrentInputs(), progress, cancellationToken);
+            foreach (var manual in _draft.Sections.Where(x => x.Overridden))
+            {
+                if (draft.FindSection(manual.Id) is { } target)
+                {
+                    target.Text = manual.Text;
+                    target.Overridden = true;
+                }
+            }
 
             _draft = draft;
             _generatedSnapshot = draft.DeepCopy();
@@ -270,6 +327,94 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         {
             (provider as IDisposable)?.Dispose();
         }
+    }
+
+    [RelayCommand]
+    private void SelectStep(FieldGroupViewModel step) => SelectedStep = step;
+
+    [RelayCommand]
+    private void NextStep() => MoveStep(+1);
+
+    [RelayCommand]
+    private void PreviousStep() => MoveStep(-1);
+
+    private void MoveStep(int delta)
+    {
+        var index = SelectedStep is null ? 0 : FieldGroups.ToList().IndexOf(SelectedStep);
+        SelectedStep = FieldGroups[Math.Clamp(index + delta, 0, FieldGroups.Count - 1)];
+    }
+
+    /// <summary>Opens the form step where the lawyer can fix a finding.</summary>
+    [RelayCommand]
+    private void GoToFinding(FindingViewModel finding)
+    {
+        if (FieldGroups.FirstOrDefault(g => g.Id == finding?.TargetGroupId) is { } step)
+        {
+            SelectedStep = step;
+        }
+    }
+
+    [RelayCommand]
+    private void ToggleTheme() => IsDarkTheme = !IsDarkTheme;
+
+    /// <summary>Writes the current work to the local autosave file (called on a timer and when closing).</summary>
+    public void AutosaveNow()
+    {
+        if (_autosaveFile is null)
+        {
+            return;
+        }
+
+        Directory.CreateDirectory(Path.GetDirectoryName(_autosaveFile)!);
+        using var stream = File.Create(_autosaveFile);
+        DraftFile.SaveAsync(_draft with { Inputs = CurrentInputs() }, stream).GetAwaiter().GetResult();
+    }
+
+    [RelayCommand]
+    private async Task RestoreLastSessionAsync()
+    {
+        if (_autosaveFile is null || !File.Exists(_autosaveFile))
+        {
+            HasRecoverableDraft = false;
+            return;
+        }
+
+        await using (var stream = File.OpenRead(_autosaveFile))
+        {
+            LoadDraft(await DraftFile.LoadAsync(stream));
+        }
+
+        HasRecoverableDraft = false;
+        SetStatus(L["Restored"]);
+    }
+
+    [RelayCommand]
+    private void DismissRecovery()
+    {
+        HasRecoverableDraft = false;
+        if (_autosaveFile is not null && File.Exists(_autosaveFile))
+        {
+            File.Delete(_autosaveFile);
+        }
+    }
+
+    /// <summary>Takes a generated section over for manual editing, or gives it back to the form.</summary>
+    private void OnSectionOverride(SectionViewModel section, bool overridden)
+    {
+        if (_draft.FindSection(section.Id) is not { } draftSection)
+        {
+            return;
+        }
+
+        draftSection.Overridden = overridden;
+        section.IsOverridden = overridden;
+        if (!overridden)
+        {
+            _draft = _templates.Refresh(_definition, _draft, CurrentInputs());
+            SyncSections(overwriteNarrative: false);
+        }
+
+        Recheck();
     }
 
     [RelayCommand]
@@ -322,6 +467,12 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
             return;
         }
 
+        LoadDraft(loaded);
+        SetStatus(L.Format("Opened", s.Name));
+    }
+
+    private void LoadDraft(DraftDocument loaded)
+    {
         var inputs = CaseInputs.CreateDefaults(_definition, _today());
         foreach (var (key, value) in loaded.Inputs)
         {
@@ -335,7 +486,6 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         UpdateVisibility();
         SyncSections(overwriteNarrative: true);
         Recheck();
-        SetStatus(L.Format("Opened", s.Name));
     }
 
     [RelayCommand]
@@ -395,6 +545,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
 
         OnPropertyChanged(nameof(FlowDirection));
         OnPropertyChanged(nameof(DocumentTypeName));
+        OnPropertyChanged(nameof(StepPosition));
         Recheck();
         SetStatus(L["Ready"]);
     }
@@ -449,15 +600,17 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
             {
                 Sections.Add(existing.TryGetValue(section.Id, out var vm)
                     ? vm
-                    : new SectionViewModel(_definition.FindSection(section.Id)!, section.Text, L, OnSectionEdited));
+                    : new SectionViewModel(_definition.FindSection(section.Id)!, section.Text, L, OnSectionEdited, OnSectionOverride));
             }
         }
 
         foreach (var vm in Sections)
         {
-            if (!vm.IsEditable || overwriteNarrative)
+            var section = _draft.FindSection(vm.Id);
+            vm.IsOverridden = section?.Overridden ?? false;
+            if (vm.IsLocked || overwriteNarrative)
             {
-                vm.SetFromModel(_draft.FindSection(vm.Id)?.Text ?? string.Empty);
+                vm.SetFromModel(section?.Text ?? string.Empty);
             }
         }
     }
@@ -476,10 +629,21 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
             .ToList();
 
         Findings.Clear();
+        IssueFindings.Clear();
+        PresentFindings.Clear();
         foreach (var f in ordered)
         {
-            Findings.Add(new FindingViewModel(f, _definition, L));
+            var vm = new FindingViewModel(f, _definition, L);
+            Findings.Add(vm);
+            (vm.IsMissing ? IssueFindings : vm.IsPresent ? PresentFindings : null)?.Add(vm);
         }
+
+        PresentCount = Report.Findings.Count(f => f.Status == ElementStatus.Present);
+        ApplicableCount = Report.Findings.Count(f => f.Status != ElementStatus.NotApplicable);
+        ScoreText = L.Format("Score", PresentCount, ApplicableCount);
+        PresentHeader = L.Format("PresentHeader", PresentCount);
+        HasIssues = IssueFindings.Count > 0;
+        UpdateStepsAndFields();
 
         UpdateReviewHints();
         SchedulePreview(TimeSpan.FromMilliseconds(400));
@@ -492,6 +656,47 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         OnPropertyChanged(nameof(Report));
     }
 
+    /// <summary>Marks missing fields and computes each step's status from the compliance report.</summary>
+    private void UpdateStepsAndFields()
+    {
+        foreach (var f in _fields)
+        {
+            f.IsMissing = false;
+            f.MissingNote = string.Empty;
+        }
+
+        var missingGroups = new HashSet<string>();
+        var warningGroups = new HashSet<string>();
+        foreach (var finding in Report!.Missing)
+        {
+            var mandatory = finding.Element.Severity == Severity.Inadmissible;
+            foreach (var id in finding.MissingParts.SelectMany(p => p.Split('|', '<')))
+            {
+                var field = _fields.FirstOrDefault(f => f.Id == id);
+                var group = field?.Definition.Group ?? _definition.FindSection(id)?.FormGroup;
+                if (group is not null)
+                {
+                    (mandatory ? missingGroups : warningGroups).Add(group);
+                }
+
+                if (field is not null && !field.IsMissing)
+                {
+                    field.IsMissing = true;
+                    field.MissingNote = L.Format(mandatory ? "FieldRequired" : "FieldRecommended", finding.Element.Article);
+                }
+            }
+        }
+
+        foreach (var step in FieldGroups)
+        {
+            step.Status = missingGroups.Contains(step.Id) ? StepStatus.Missing
+                : warningGroups.Contains(step.Id) ? StepStatus.Warning
+                : step.Fields.Any(f => f.IsVisible && f.Definition.Kind is FieldKind.Text or FieldKind.MultilineText && !string.IsNullOrWhiteSpace(f.Value))
+                    ? StepStatus.Done
+                    : StepStatus.Empty;
+        }
+    }
+
     /// <summary>
     /// Review hints under each section: the definition's own hints (e.g. gender not chosen), what happened while
     /// the model drafted, and deterministic checks of narrative text. They disappear once the cause is fixed.
@@ -501,10 +706,12 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         var inputs = CurrentInputs();
         foreach (var vm in Sections)
         {
-            var lines = vm.Definition.Hints
-                .Where(h => Condition.All(h.When, inputs))
-                .Select(h => h.Message.Get(L.Language))
-                .ToList();
+            var lines = vm.IsOverridden
+                ? [L["OverriddenHint"]]
+                : vm.Definition.Hints
+                    .Where(h => Condition.All(h.When, inputs))
+                    .Select(h => h.Message.Get(L.Language))
+                    .ToList();
 
             if (vm.IsEditable)
             {

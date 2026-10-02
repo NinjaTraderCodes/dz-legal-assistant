@@ -49,6 +49,13 @@ public sealed partial class FieldViewModel : ObservableObject
     [ObservableProperty]
     public partial bool IsVisible { get; set; } = true;
 
+    /// <summary>A mandatory element is missing because this field is empty; <see cref="MissingNote"/> says which.</summary>
+    [ObservableProperty]
+    public partial bool IsMissing { get; set; }
+
+    [ObservableProperty]
+    public partial string MissingNote { get; set; } = string.Empty;
+
     /// <summary>Set while loading values, so the form does not re-check once per field.</summary>
     internal bool Silent { get; set; }
 
@@ -88,11 +95,43 @@ public sealed class ChoiceOptionViewModel(FieldOption option, Loc loc) : Observa
     internal void Relocalize() => OnPropertyChanged(nameof(Label));
 }
 
-public sealed class FieldGroupViewModel(FieldGroupDefinition? definition, IReadOnlyList<FieldViewModel> fields, Loc loc) : ObservableObject
+public enum StepStatus
 {
+    /// <summary>Nothing entered yet.</summary>
+    Empty,
+
+    /// <summary>Entered and nothing missing.</summary>
+    Done,
+
+    /// <summary>A recommended ("where applicable") element is missing.</summary>
+    Warning,
+
+    /// <summary>A mandatory element is missing.</summary>
+    Missing,
+}
+
+/// <summary>One step of the case form (a field group), with its completion status from the compliance report.</summary>
+public sealed partial class FieldGroupViewModel(FieldGroupDefinition? definition, IReadOnlyList<FieldViewModel> fields, Loc loc, int number) : ObservableObject
+{
+    public string Id => definition?.Id ?? string.Empty;
+
+    public int Number { get; } = number;
+
     public string Label => definition?.Label.Get(loc.Language) ?? string.Empty;
 
     public IReadOnlyList<FieldViewModel> Fields { get; } = fields;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsDone), nameof(IsMissing), nameof(IsWarning), nameof(IsEmpty))]
+    public partial StepStatus Status { get; set; }
+
+    public bool IsDone => Status == StepStatus.Done;
+
+    public bool IsMissing => Status == StepStatus.Missing;
+
+    public bool IsWarning => Status == StepStatus.Warning;
+
+    public bool IsEmpty => Status == StepStatus.Empty;
 
     internal void Relocalize()
     {

@@ -1,292 +1,442 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:DzLegal.App.ViewModels"
+        xmlns:ic="using:FluentIcons.Avalonia"
         x:Class="DzLegal.App.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Title="{Binding L[AppTitle]}"
-        Width="1440" Height="900" MinWidth="1000" MinHeight="600"
+        Width="1440" Height="900" MinWidth="1100" MinHeight="640"
         FontFamily="{StaticResource UiFont}"
-        FlowDirection="{Binding FlowDirection}">
+        RequestedThemeVariant="{Binding RequestedTheme}"
+        FlowDirection="{Binding FlowDirection}"
+        Background="{DynamicResource CanvasBrush}">
+
+  <Window.KeyBindings>
+    <KeyBinding Gesture="Ctrl+S" Command="{Binding SaveCommand}" />
+    <KeyBinding Gesture="Ctrl+O" Command="{Binding OpenCommand}" />
+    <KeyBinding Gesture="Ctrl+N" Command="{Binding NewCommand}" />
+    <KeyBinding Gesture="Ctrl+P" Command="{Binding ExportPdfCommand}" />
+    <KeyBinding Gesture="Ctrl+G" Command="{Binding GenerateCommand}" />
+  </Window.KeyBindings>
 
   <Window.Styles>
-    <Style Selector="TextBlock.h1">
-      <Setter Property="FontSize" Value="20" />
-      <Setter Property="FontWeight" Value="Bold" />
+    <Style Selector="TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
     </Style>
-    <Style Selector="TextBlock.h2">
-      <Setter Property="FontSize" Value="16" />
-      <Setter Property="FontWeight" Value="Bold" />
-      <Setter Property="Margin" Value="0,0,0,8" />
+    <Style Selector="TextBlock.status.error">
+      <Setter Property="Foreground" Value="{DynamicResource DangerBrush}" />
     </Style>
     <Style Selector="TextBlock.muted">
-      <Setter Property="Foreground" Value="#6B6B6B" />
+      <Setter Property="Foreground" Value="{DynamicResource TextMutedBrush}" />
       <Setter Property="FontSize" Value="12" />
     </Style>
+    <Style Selector="TextBlock.title">
+      <Setter Property="FontSize" Value="15" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+    <Style Selector="Border.card">
+      <Setter Property="Background" Value="{DynamicResource SurfaceBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource HairlineBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="{StaticResource CardRadius}" />
+      <Setter Property="Padding" Value="16" />
+    </Style>
     <Style Selector="Border.panel">
-      <Setter Property="Background" Value="White" />
-      <Setter Property="BorderBrush" Value="#DDD8CC" />
+      <Setter Property="Background" Value="{DynamicResource SurfaceBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource HairlineBrush}" />
       <Setter Property="BorderThickness" Value="1" />
-      <Setter Property="CornerRadius" Value="6" />
-      <Setter Property="Padding" Value="12" />
-      <Setter Property="Margin" Value="6" />
+      <Setter Property="CornerRadius" Value="{StaticResource CardRadius}" />
     </Style>
-    <Style Selector="Border.finding">
-      <Setter Property="BorderThickness" Value="4,0,0,0" />
-      <Setter Property="BorderBrush" Value="#B8C4B0" />
-      <Setter Property="Background" Value="#F6F7F4" />
+    <Style Selector="Border.chip">
+      <Setter Property="CornerRadius" Value="999" />
+      <Setter Property="Padding" Value="10,3" />
+      <Setter Property="Background" Value="{DynamicResource WarningSoftBrush}" />
+    </Style>
+
+    <!-- App bar buttons -->
+    <Style Selector="Button.bar">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="Foreground" Value="{DynamicResource AppBarTextBrush}" />
       <Setter Property="Padding" Value="8,6" />
-      <Setter Property="Margin" Value="0,0,0,6" />
-      <Setter Property="CornerRadius" Value="3" />
+      <Setter Property="CornerRadius" Value="{StaticResource ControlRadius}" />
     </Style>
-    <Style Selector="Border.finding.missing">
-      <Setter Property="BorderBrush" Value="#B3261E" />
-      <Setter Property="Background" Value="#FCEEEE" />
+    <Style Selector="Button.bar:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="#26FFFFFF" />
+      <Setter Property="Foreground" Value="{DynamicResource AppBarTextBrush}" />
     </Style>
-    <Style Selector="Border.finding.warning">
-      <Setter Property="BorderBrush" Value="#B26A00" />
-      <Setter Property="Background" Value="#FFF6E5" />
+    <Style Selector="Button.subtle">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="Padding" Value="8,4" />
+      <Setter Property="CornerRadius" Value="{StaticResource ControlRadius}" />
     </Style>
-    <Style Selector="Border.finding.na">
-      <Setter Property="Opacity" Value="0.6" />
+    <Style Selector="Button.primary">
+      <Setter Property="Background" Value="{DynamicResource PrimaryButtonBrush}" />
+      <Setter Property="Foreground" Value="White" />
+      <Setter Property="Padding" Value="14,7" />
+      <Setter Property="CornerRadius" Value="{StaticResource ControlRadius}" />
+      <Setter Property="FontWeight" Value="SemiBold" />
     </Style>
-    <Style Selector="Border.summary">
-      <Setter Property="Background" Value="#FCEEEE" />
-      <Setter Property="BorderBrush" Value="#B3261E" />
+    <Style Selector="Button.outline">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderBrush" Value="{DynamicResource HairlineBrush}" />
       <Setter Property="BorderThickness" Value="1" />
-      <Setter Property="CornerRadius" Value="4" />
-      <Setter Property="Padding" Value="10" />
-      <Setter Property="Margin" Value="0,0,0,10" />
+      <Setter Property="Padding" Value="12,7" />
+      <Setter Property="CornerRadius" Value="{StaticResource ControlRadius}" />
     </Style>
-    <Style Selector="Border.summary.ok">
-      <Setter Property="Background" Value="#EDF7EE" />
-      <Setter Property="BorderBrush" Value="#2E7D32" />
+
+    <!-- Form inputs: roomy, rounded, always right-to-left (Arabic document content). -->
+    <Style Selector="TextBox.input">
+      <Setter Property="FlowDirection" Value="RightToLeft" />
+      <Setter Property="FontFamily" Value="{StaticResource DocumentFont}" />
+      <Setter Property="FontSize" Value="15" />
+      <Setter Property="MinHeight" Value="40" />
+      <Setter Property="Padding" Value="12,8" />
+      <Setter Property="CornerRadius" Value="{StaticResource ControlRadius}" />
+      <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource HairlineBrush}" />
     </Style>
+    <Style Selector="TextBox.input.missing">
+      <Setter Property="BorderBrush" Value="{DynamicResource DangerBrush}" />
+    </Style>
+
+    <!-- Draft section editor: reads like the document, not like a form. -->
     <Style Selector="TextBox.document">
       <Setter Property="FontFamily" Value="{StaticResource DocumentFont}" />
       <Setter Property="FontSize" Value="17" />
       <Setter Property="TextWrapping" Value="Wrap" />
       <Setter Property="AcceptsReturn" Value="True" />
       <Setter Property="FlowDirection" Value="RightToLeft" />
-      <Setter Property="TextAlignment" Value="Start" />
+      <Setter Property="Foreground" Value="#1C2321" />
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="Padding" Value="4,2" />
+      <Setter Property="CaretBrush" Value="#1C2321" />
+    </Style>
+    <Style Selector="TextBox.document:focus /template/ Border#PART_BorderElement">
+      <Setter Property="Background" Value="#0A1E5A4B" />
+      <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="TextBox.document:pointerover /template/ Border#PART_BorderElement">
+      <Setter Property="Background" Value="#061E5A4B" />
+      <Setter Property="BorderThickness" Value="0" />
     </Style>
     <Style Selector="TextBlock.review">
-      <Setter Property="Foreground" Value="#8A4B00" />
-      <Setter Property="Background" Value="#FFF6E5" />
-      <Setter Property="Padding" Value="6,3" />
+      <Setter Property="Foreground" Value="{DynamicResource WarningBrush}" />
       <Setter Property="FontSize" Value="13" />
+      <Setter Property="Margin" Value="0,6,0,0" />
+      <Setter Property="TextWrapping" Value="Wrap" />
     </Style>
-    <Style Selector="Button.toolbar">
-      <Setter Property="Background" Value="#3E655B" />
-      <Setter Property="Foreground" Value="White" />
+
+    <!-- Step list -->
+    <Style Selector="ListBox.steps ListBoxItem">
+      <Setter Property="Padding" Value="10,6" />
+      <Setter Property="Margin" Value="0,0,6,6" />
+      <Setter Property="CornerRadius" Value="999" />
+      <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}" />
     </Style>
-    <Style Selector="Button.toolbar:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-      <Setter Property="Background" Value="#4F7A6E" />
-      <Setter Property="Foreground" Value="White" />
+    <Style Selector="ListBox.steps ListBoxItem:selected /template/ ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource AccentSoftBrush}" />
     </Style>
-    <!-- Case inputs are Arabic document content: always right-to-left, whatever the UI language. -->
-    <Style Selector="TextBox.input">
-      <Setter Property="FlowDirection" Value="RightToLeft" />
-      <Setter Property="FontFamily" Value="{StaticResource DocumentFont}" />
+
+    <!-- Findings -->
+    <Style Selector="Button.finding">
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+      <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+      <Setter Property="Padding" Value="12,10" />
+      <Setter Property="Margin" Value="0,0,0,8" />
+      <Setter Property="CornerRadius" Value="10" />
+      <Setter Property="Background" Value="{DynamicResource DangerSoftBrush}" />
+      <Setter Property="BorderThickness" Value="0" />
     </Style>
-    <Style Selector="TextBox.document:readonly">
-      <Setter Property="Background" Value="#F7F5EF" />
+    <Style Selector="Button.finding.warning">
+      <Setter Property="Background" Value="{DynamicResource WarningSoftBrush}" />
     </Style>
   </Window.Styles>
 
-  <DockPanel Background="#F1EEE6">
-    <!-- Title bar -->
-    <Border DockPanel.Dock="Top" Background="#1F3A34" Padding="12,8">
-      <Grid ColumnDefinitions="*,Auto">
-        <StackPanel Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
-          <TextBlock Classes="h1" Foreground="White" Text="{Binding L[AppTitle]}" />
-          <TextBlock Foreground="#CFE0D8" VerticalAlignment="Center" Text="{Binding DocumentTypeName}" />
+  <DockPanel>
+    <!-- App bar -->
+    <Border DockPanel.Dock="Top" Background="{DynamicResource AppBarBrush}" Padding="16,8">
+      <Grid ColumnDefinitions="Auto,*,Auto">
+        <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+          <ic:SymbolIcon Symbol="Gavel" Foreground="{DynamicResource AppBarTextBrush}" FontSize="22" />
+          <TextBlock FontSize="17" FontWeight="SemiBold" Foreground="{DynamicResource AppBarTextBrush}" VerticalAlignment="Center" Text="{Binding L[AppTitle]}" />
+          <TextBlock Foreground="#B9D3CA" VerticalAlignment="Center" Text="{Binding DocumentTypeName}" />
+          <Border Width="1" Height="22" Background="#33FFFFFF" Margin="8,0" />
+          <Button Classes="bar" Command="{Binding NewCommand}" ToolTip.Tip="{Binding L[New]}">
+            <StackPanel Orientation="Horizontal" Spacing="6"><ic:SymbolIcon Symbol="DocumentAdd" Foreground="{DynamicResource AppBarTextBrush}" /><TextBlock Foreground="{DynamicResource AppBarTextBrush}" Text="{Binding L[New]}" /></StackPanel>
+          </Button>
+          <Button Classes="bar" Command="{Binding OpenCommand}" ToolTip.Tip="{Binding L[Open]}">
+            <StackPanel Orientation="Horizontal" Spacing="6"><ic:SymbolIcon Symbol="FolderOpen" Foreground="{DynamicResource AppBarTextBrush}" /><TextBlock Foreground="{DynamicResource AppBarTextBrush}" Text="{Binding L[Open]}" /></StackPanel>
+          </Button>
+          <Button Classes="bar" Command="{Binding SaveCommand}" ToolTip.Tip="{Binding L[Save]}">
+            <StackPanel Orientation="Horizontal" Spacing="6"><ic:SymbolIcon Symbol="Save" Foreground="{DynamicResource AppBarTextBrush}" /><TextBlock Foreground="{DynamicResource AppBarTextBrush}" Text="{Binding L[Save]}" /></StackPanel>
+          </Button>
         </StackPanel>
-        <Button Grid.Column="1" Name="LanguageButton" Classes="toolbar" Command="{Binding SwitchLanguageCommand}" Content="{Binding L[SwitchLanguage]}" />
-      </Grid>
-    </Border>
-
-    <!-- Command bar -->
-    <Border DockPanel.Dock="Top" Background="#2B4C44" Padding="12,6">
-      <Grid ColumnDefinitions="*,Auto">
-        <StackPanel Orientation="Horizontal" Spacing="6">
-          <Button Classes="toolbar" Command="{Binding NewCommand}" Content="{Binding L[New]}" />
-          <Button Classes="toolbar" Command="{Binding OpenCommand}" Content="{Binding L[Open]}" />
-          <Button Classes="toolbar" Command="{Binding SaveCommand}" Content="{Binding L[Save]}" />
-          <Button Classes="toolbar" Command="{Binding CopyTextCommand}" Content="{Binding L[CopyText]}" />
-          <Button Classes="toolbar" Name="ExportPdfButton" Command="{Binding ExportPdfCommand}" Content="{Binding L[ExportPdf]}" />
-          <Button Classes="toolbar" Command="{Binding ExportWordCommand}" Content="{Binding L[ExportWord]}" />
-          <CheckBox Foreground="White" IsChecked="{Binding DraftWatermark}" Content="{Binding L[Watermark]}" Margin="6,0" />
-        </StackPanel>
-        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6">
-          <TextBlock Foreground="White" VerticalAlignment="Center" Text="{Binding L[ProviderLabel]}" />
-          <ComboBox MinWidth="240" ItemsSource="{Binding Providers}" SelectedItem="{Binding SelectedProvider}">
-            <ComboBox.ItemTemplate>
-              <DataTemplate x:DataType="vm:ProviderOption">
-                <TextBlock Text="{Binding DisplayName}" />
-              </DataTemplate>
-            </ComboBox.ItemTemplate>
-          </ComboBox>
-          <Button Name="GenerateButton" Classes="accent" Command="{Binding GenerateCommand}"
-                  Content="{Binding L[Generate]}" ToolTip.Tip="{Binding L[GenerateHint]}" />
-          <Button Classes="toolbar" Command="{Binding GenerateCancelCommand}" Content="{Binding L[Cancel]}"
-                  IsVisible="{Binding GenerateCommand.IsRunning}" />
+        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
+          <Border Classes="chip" Background="#264CAF7F" VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal" Spacing="6">
+              <ic:SymbolIcon Symbol="ShieldCheckmark" Foreground="#9FE0C3" FontSize="14" />
+              <TextBlock Foreground="#CFEBDD" FontSize="12" Text="{Binding L[OfflineStatus]}" />
+            </StackPanel>
+          </Border>
+          <Button Classes="bar" Command="{Binding ToggleThemeCommand}" ToolTip.Tip="{Binding L[ToggleTheme]}">
+            <ic:SymbolIcon Symbol="WeatherMoon" Foreground="{DynamicResource AppBarTextBrush}" />
+          </Button>
+          <Button Name="LanguageButton" Classes="bar" Command="{Binding SwitchLanguageCommand}" Content="{Binding L[SwitchLanguage]}" />
         </StackPanel>
       </Grid>
     </Border>
 
-    <!-- Draft banner: generated content is never final -->
-    <Border DockPanel.Dock="Top" Background="#FFF1C2" BorderBrush="#E0B94A" BorderThickness="0,0,0,1" Padding="12,6">
-      <TextBlock Name="DraftBanner" FontWeight="Bold" Foreground="#5C4300" TextWrapping="Wrap" Text="{Binding L[DraftBanner]}" />
+    <!-- Recovery of an autosaved session -->
+    <Border DockPanel.Dock="Top" Background="{DynamicResource AccentSoftBrush}" Padding="16,8" IsVisible="{Binding HasRecoverableDraft}">
+      <StackPanel Orientation="Horizontal" Spacing="12">
+        <ic:SymbolIcon Symbol="ArrowUndo" Foreground="{DynamicResource AccentBrush}" />
+        <TextBlock VerticalAlignment="Center" Text="{Binding L[RecoveryPrompt]}" />
+        <Button Classes="primary" Command="{Binding RestoreLastSessionCommand}" Content="{Binding L[Restore]}" />
+        <Button Classes="subtle" Command="{Binding DismissRecoveryCommand}" Content="{Binding L[Dismiss]}" />
+      </StackPanel>
     </Border>
 
     <!-- Status bar -->
-    <Border DockPanel.Dock="Bottom" Background="#E6E1D5" Padding="12,4">
-      <Grid ColumnDefinitions="*,Auto">
-        <TextBlock Name="StatusText" Text="{Binding StatusMessage}" TextTrimming="CharacterEllipsis"
-                   Foreground="{Binding IsError, Converter={x:Static vm:Converters.ErrorBrush}}" />
-        <TextBlock Grid.Column="1" Foreground="#2E7D32" Text="{Binding L[OfflineStatus]}" />
-      </Grid>
+    <Border DockPanel.Dock="Bottom" Padding="16,5" BorderBrush="{DynamicResource HairlineBrush}" BorderThickness="0,1,0,0" Background="{DynamicResource SurfaceBrush}">
+      <TextBlock Name="StatusText" Classes="status" Classes.error="{Binding IsError}" Text="{Binding StatusMessage}" TextTrimming="CharacterEllipsis" FontSize="12" />
     </Border>
 
-    <Grid ColumnDefinitions="380,4,*,4,380">
-      <!-- Case form -->
-      <Border Classes="panel">
+    <Grid ColumnDefinitions="390,*,330" Margin="12">
+      <!-- Case form, one step at a time -->
+      <Border Classes="panel" Name="FormPanel" Padding="16">
         <DockPanel>
-          <TextBlock DockPanel.Dock="Top" Classes="h2" Text="{Binding L[CaseForm]}" />
+          <TextBlock DockPanel.Dock="Top" Classes="title" Text="{Binding L[CaseForm]}" Margin="0,0,0,10" />
+          <ListBox DockPanel.Dock="Top" Classes="steps" Name="StepsList" ItemsSource="{Binding FieldGroups}" SelectedItem="{Binding SelectedStep}"
+                   Background="Transparent" Margin="0,0,0,12">
+            <ListBox.ItemsPanel>
+              <ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+              <DataTemplate x:DataType="vm:FieldGroupViewModel">
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                  <ic:SymbolIcon Symbol="CheckmarkCircle" FontSize="15" Foreground="{DynamicResource SuccessBrush}" IsVisible="{Binding IsDone}" />
+                  <ic:SymbolIcon Symbol="ErrorCircle" FontSize="15" Foreground="{DynamicResource DangerBrush}" IsVisible="{Binding IsMissing}" />
+                  <ic:SymbolIcon Symbol="ErrorCircle" FontSize="15" Foreground="{DynamicResource WarningBrush}" IsVisible="{Binding IsWarning}" />
+                  <TextBlock FontSize="12" Foreground="{DynamicResource TextMutedBrush}" Text="{Binding Number}" IsVisible="{Binding IsEmpty}" />
+                  <TextBlock FontSize="13" Text="{Binding Label}" />
+                </StackPanel>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+
+          <Grid DockPanel.Dock="Bottom" ColumnDefinitions="*,Auto,Auto" Margin="0,12,0,0">
+            <TextBlock Classes="muted" VerticalAlignment="Center" Text="{Binding StepPosition}" />
+            <Button Grid.Column="1" Classes="outline" Command="{Binding PreviousStepCommand}" Content="{Binding L[Previous]}" Margin="0,0,8,0" />
+            <Button Grid.Column="2" Classes="primary" Command="{Binding NextStepCommand}" Content="{Binding L[Next]}" />
+          </Grid>
+
           <ScrollViewer>
-            <ItemsControl ItemsSource="{Binding FieldGroups}">
-              <ItemsControl.ItemTemplate>
-                <DataTemplate x:DataType="vm:FieldGroupViewModel">
-                  <StackPanel Margin="0,0,8,14" Spacing="4">
-                    <TextBlock FontWeight="Bold" Foreground="#1F3A34" Text="{Binding Label}" />
-                    <ItemsControl ItemsSource="{Binding Fields}">
-                      <ItemsControl.ItemTemplate>
-                        <DataTemplate x:DataType="vm:FieldViewModel">
-                          <StackPanel Margin="0,2" Spacing="2" IsVisible="{Binding IsVisible}">
-                            <TextBlock Classes="muted" Text="{Binding Label}" IsVisible="{Binding !IsBoolean}" />
-                            <TextBox Classes="input" Text="{Binding Value}" PlaceholderText="{Binding Hint}" IsVisible="{Binding IsSingleLine}" />
-                            <TextBox Classes="input" Text="{Binding Value}" PlaceholderText="{Binding Hint}" IsVisible="{Binding IsMultiline}"
-                                     AcceptsReturn="True" TextWrapping="Wrap" MinHeight="72" MaxHeight="220" />
-                            <CheckBox IsChecked="{Binding BoolValue}" Content="{Binding Label}" IsVisible="{Binding IsBoolean}" />
-                            <ComboBox ItemsSource="{Binding Options}" SelectedItem="{Binding SelectedOption}" IsVisible="{Binding IsChoice}"
-                                      MinWidth="160" PlaceholderText="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[ChooseOption]}">
-                              <ComboBox.ItemTemplate>
-                                <DataTemplate x:DataType="vm:ChoiceOptionViewModel">
-                                  <TextBlock Text="{Binding Label}" />
-                                </DataTemplate>
-                              </ComboBox.ItemTemplate>
-                            </ComboBox>
-                          </StackPanel>
-                        </DataTemplate>
-                      </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                  </StackPanel>
-                </DataTemplate>
-              </ItemsControl.ItemTemplate>
-            </ItemsControl>
+            <StackPanel>
+              <TextBlock FontSize="18" FontWeight="SemiBold" Margin="0,0,0,12" Text="{Binding SelectedStep.Label}" />
+              <ItemsControl ItemsSource="{Binding SelectedStep.Fields}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate x:DataType="vm:FieldViewModel">
+                    <StackPanel Margin="0,0,8,14" Spacing="5" IsVisible="{Binding IsVisible}">
+                      <TextBlock FontSize="13" FontWeight="Medium" Text="{Binding Label}" IsVisible="{Binding !IsBoolean}" />
+                      <TextBox Classes="input" Classes.missing="{Binding IsMissing}" Text="{Binding Value}" PlaceholderText="{Binding Hint}" IsVisible="{Binding IsSingleLine}" />
+                      <TextBox Classes="input" Classes.missing="{Binding IsMissing}" Text="{Binding Value}" PlaceholderText="{Binding Hint}" IsVisible="{Binding IsMultiline}"
+                               AcceptsReturn="True" TextWrapping="Wrap" MinHeight="96" MaxHeight="260" />
+                      <CheckBox IsChecked="{Binding BoolValue}" Content="{Binding Label}" IsVisible="{Binding IsBoolean}" />
+                      <ComboBox ItemsSource="{Binding Options}" SelectedItem="{Binding SelectedOption}" IsVisible="{Binding IsChoice}"
+                                MinWidth="180" CornerRadius="8" PlaceholderText="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[ChooseOption]}">
+                        <ComboBox.ItemTemplate>
+                          <DataTemplate x:DataType="vm:ChoiceOptionViewModel">
+                            <TextBlock Text="{Binding Label}" />
+                          </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                      </ComboBox>
+                      <TextBlock FontSize="12" Foreground="{DynamicResource DangerBrush}" Text="{Binding MissingNote}" IsVisible="{Binding IsMissing}" />
+                    </StackPanel>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </StackPanel>
           </ScrollViewer>
         </DockPanel>
       </Border>
 
-      <GridSplitter Grid.Column="1" ResizeDirection="Columns" Background="Transparent" />
-
-      <!-- Draft editor -->
-      <Border Grid.Column="2" Classes="panel">
+      <!-- Draft -->
+      <Border Grid.Column="1" Classes="panel" Margin="12,0" Padding="16,12,16,16">
         <DockPanel>
-          <TextBlock DockPanel.Dock="Top" Classes="h2" Text="{Binding L[Document]}" />
-          <Expander DockPanel.Dock="Bottom" Header="{Binding L[Evaluation]}" HorizontalAlignment="Stretch" Margin="0,8,0,0">
-            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="6" ColumnSpacing="8">
-              <TextBlock VerticalAlignment="Center" Text="{Binding L[Verdict]}" />
-              <ComboBox Grid.Column="1" ItemsSource="{Binding Verdicts}" SelectedItem="{Binding SelectedVerdict}" MinWidth="220">
+          <Grid DockPanel.Dock="Top" ColumnDefinitions="Auto,Auto,*,Auto" Margin="0,0,0,8">
+            <TextBlock Classes="title" VerticalAlignment="Center" Text="{Binding L[Document]}" />
+            <Border Grid.Column="1" Classes="chip" Margin="10,0,0,0" VerticalAlignment="Center" ToolTip.Tip="{Binding L[DraftBanner]}">
+              <TextBlock Name="DraftBanner" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource WarningBrush}" Text="{Binding L[DraftBadge]}" />
+            </Border>
+            <StackPanel Grid.Column="3" Orientation="Horizontal" Spacing="8">
+              <ComboBox MinWidth="200" CornerRadius="8" ItemsSource="{Binding Providers}" SelectedItem="{Binding SelectedProvider}" ToolTip.Tip="{Binding L[ProviderLabel]}">
+                <ComboBox.ItemTemplate>
+                  <DataTemplate x:DataType="vm:ProviderOption">
+                    <TextBlock Text="{Binding DisplayName}" />
+                  </DataTemplate>
+                </ComboBox.ItemTemplate>
+              </ComboBox>
+              <Button Name="GenerateButton" Classes="primary" Command="{Binding GenerateCommand}" ToolTip.Tip="{Binding L[GenerateHint]}">
+                <StackPanel Orientation="Horizontal" Spacing="6"><ic:SymbolIcon Symbol="Sparkle" Foreground="White" /><TextBlock Foreground="White" Text="{Binding L[Generate]}" /></StackPanel>
+              </Button>
+              <Button Classes="outline" Command="{Binding GenerateCancelCommand}" Content="{Binding L[Cancel]}" IsVisible="{Binding GenerateCommand.IsRunning}" />
+            </StackPanel>
+          </Grid>
+
+          <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto" Margin="0,0,0,6">
+            <TabControl Name="DraftTabs" SelectedIndex="{Binding SelectedDraftTab}" Padding="0">
+              <TabItem Header="{Binding L[Edit]}" FontSize="15" />
+              <TabItem Header="{Binding L[Preview]}" FontSize="15" />
+            </TabControl>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+              <CheckBox IsChecked="{Binding DraftWatermark}" Content="{Binding L[Watermark]}" />
+              <Button Classes="outline" Name="ExportPdfButton" Command="{Binding ExportPdfCommand}">
+                <StackPanel Orientation="Horizontal" Spacing="6"><ic:SymbolIcon Symbol="DocumentPdf" /><TextBlock Text="{Binding L[ExportPdf]}" /></StackPanel>
+              </Button>
+              <Button Classes="outline" Command="{Binding ExportWordCommand}">
+                <StackPanel Orientation="Horizontal" Spacing="6"><ic:SymbolIcon Symbol="DocumentText" /><TextBlock Text="{Binding L[ExportWord]}" /></StackPanel>
+              </Button>
+              <Button Classes="subtle" Command="{Binding CopyTextCommand}" ToolTip.Tip="{Binding L[CopyText]}">
+                <ic:SymbolIcon Symbol="Copy" />
+              </Button>
+            </StackPanel>
+          </Grid>
+
+          <Grid>
+            <!-- Edit: the sections on paper -->
+            <ScrollViewer Background="{DynamicResource PaperCanvasBrush}" CornerRadius="8" IsVisible="{Binding SelectedDraftTab, Converter={x:Static vm:Converters.IsZero}}">
+              <Border Background="{DynamicResource PaperBrush}" Margin="18" Padding="36,28" CornerRadius="4" MaxWidth="860"
+                      BoxShadow="0 2 10 0 #26000000">
+                <ItemsControl Name="SectionsList" ItemsSource="{Binding Sections}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:SectionViewModel">
+                      <StackPanel Margin="0,0,0,14">
+                        <Grid ColumnDefinitions="Auto,Auto,*,Auto" Margin="0,0,0,2">
+                          <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#1E5A4B" VerticalAlignment="Center" Text="{Binding Title}" />
+                          <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="4" Margin="8,0,0,0" VerticalAlignment="Center">
+                            <ic:SymbolIcon Symbol="LockClosed" FontSize="12" Foreground="#8A918E" IsVisible="{Binding IsLocked}" />
+                            <ic:SymbolIcon Symbol="Edit" FontSize="12" Foreground="#935600" IsVisible="{Binding IsOverridden}" />
+                            <TextBlock FontSize="11" Foreground="#8A918E" Text="{Binding Hint}" />
+                          </StackPanel>
+                          <Button Grid.Column="3" Classes="subtle" FontSize="12" Foreground="#1E5A4B" Command="{Binding OverrideCommand}"
+                                  Content="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[EditManually]}" IsVisible="{Binding CanOverride}" />
+                          <Button Grid.Column="3" Classes="subtle" FontSize="12" Foreground="#935600" Command="{Binding RestoreCommand}"
+                                  Content="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[RestoreFromForm]}" IsVisible="{Binding IsOverridden}" />
+                        </Grid>
+                        <TextBox Classes="document" Text="{Binding Text}" IsReadOnly="{Binding IsReadOnly}" PlaceholderText="{Binding Watermark}" MinHeight="34" />
+                        <TextBlock Classes="review" Text="{Binding ReviewText}" IsVisible="{Binding HasReview}" />
+                      </StackPanel>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </Border>
+            </ScrollViewer>
+
+            <!-- Preview: the actual PDF pages -->
+            <Grid IsVisible="{Binding SelectedDraftTab, Converter={x:Static vm:Converters.IsOne}}">
+              <ScrollViewer Background="{DynamicResource PaperCanvasBrush}" CornerRadius="8">
+                <ItemsControl Name="PreviewPagesList" ItemsSource="{Binding PreviewPages}" Margin="18">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <Border Background="White" Margin="0,0,0,18" HorizontalAlignment="Center" BoxShadow="0 2 10 0 #33000000">
+                        <Image Source="{Binding Converter={x:Static vm:Converters.PngToBitmap}}" Stretch="Uniform" MaxWidth="860" />
+                      </Border>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </ScrollViewer>
+              <Border Classes="chip" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10" IsVisible="{Binding IsRenderingPreview}">
+                <TextBlock FontSize="12" Text="{Binding L[RenderingPreview]}" />
+              </Border>
+            </Grid>
+          </Grid>
+        </DockPanel>
+      </Border>
+
+      <!-- Compliance -->
+      <Border Grid.Column="2" Classes="panel" Padding="16">
+        <DockPanel>
+          <TextBlock DockPanel.Dock="Top" Classes="title" Text="{Binding L[Compliance]}" Margin="0,0,0,12" />
+
+          <Expander DockPanel.Dock="Bottom" Header="{Binding L[Evaluation]}" IsExpanded="{Binding IsEvaluationOpen}" HorizontalAlignment="Stretch" Margin="0,10,0,0">
+            <StackPanel Spacing="8">
+              <TextBlock Text="{Binding L[Verdict]}" />
+              <ComboBox ItemsSource="{Binding Verdicts}" SelectedItem="{Binding SelectedVerdict}" HorizontalAlignment="Stretch">
                 <ComboBox.ItemTemplate>
                   <DataTemplate x:DataType="vm:VerdictOption">
                     <TextBlock Text="{Binding DisplayName}" />
                   </DataTemplate>
                 </ComboBox.ItemTemplate>
               </ComboBox>
-              <TextBlock Grid.Row="1" VerticalAlignment="Center" Text="{Binding L[MinutesSaved]}" />
-              <TextBox Grid.Row="1" Grid.Column="1" Width="120" HorizontalAlignment="Left" Text="{Binding MinutesSaved}" />
-              <TextBlock Grid.Row="2" VerticalAlignment="Center" Text="{Binding L[Comments]}" />
-              <TextBox Grid.Row="2" Grid.Column="1" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="48" Text="{Binding EvaluationComments}" />
-              <Button Grid.Row="3" Grid.Column="1" Command="{Binding SaveEvaluationCommand}" Content="{Binding L[SaveEvaluation]}" />
-            </Grid>
+              <TextBlock Text="{Binding L[MinutesSaved]}" />
+              <TextBox Width="120" HorizontalAlignment="Left" Text="{Binding MinutesSaved}" />
+              <TextBlock Text="{Binding L[Comments]}" />
+              <TextBox AcceptsReturn="True" TextWrapping="Wrap" MinHeight="48" Text="{Binding EvaluationComments}" />
+              <Button Classes="primary" Command="{Binding SaveEvaluationCommand}" Content="{Binding L[SaveEvaluation]}" />
+            </StackPanel>
           </Expander>
-          <TabControl Name="DraftTabs" SelectedIndex="{Binding SelectedDraftTab}" Padding="0">
-            <TabItem Header="{Binding L[Edit]}">
-              <ScrollViewer>
-                <ItemsControl Name="SectionsList" ItemsSource="{Binding Sections}">
-                  <ItemsControl.ItemTemplate>
-                    <DataTemplate x:DataType="vm:SectionViewModel">
-                      <StackPanel Margin="0,0,8,10" Spacing="2">
-                        <StackPanel Orientation="Horizontal" Spacing="8">
-                          <TextBlock FontWeight="Bold" Text="{Binding Title}" />
-                          <TextBlock Classes="muted" VerticalAlignment="Center" Text="{Binding Hint}" />
-                        </StackPanel>
-                        <TextBox Classes="document" Text="{Binding Text}" IsReadOnly="{Binding IsReadOnly}"
-                                 PlaceholderText="{Binding Watermark}" MinHeight="40" />
-                        <TextBlock Classes="review" Text="{Binding ReviewText}" IsVisible="{Binding HasReview}" TextWrapping="Wrap" />
+
+          <ScrollViewer>
+            <StackPanel Spacing="10">
+              <!-- Score -->
+              <Border Classes="card" Padding="14" Background="{DynamicResource SurfaceAltBrush}">
+                <StackPanel Spacing="6">
+                  <Grid ColumnDefinitions="*,Auto">
+                    <TextBlock Classes="muted" VerticalAlignment="Center" Text="{Binding L[ComplianceScore]}" />
+                    <TextBlock Grid.Column="1" FontSize="22" FontWeight="Bold" Text="{Binding ScoreText}" />
+                  </Grid>
+                  <ProgressBar Minimum="0" Maximum="{Binding ApplicableCount}" Value="{Binding PresentCount}" Height="6" CornerRadius="3" />
+                  <Grid ColumnDefinitions="Auto,*">
+                    <ic:SymbolIcon Symbol="CheckmarkCircle" FontSize="16" Margin="0,2,6,0" VerticalAlignment="Top" Foreground="{DynamicResource SuccessBrush}" IsVisible="{Binding IsAdmissible}" />
+                    <ic:SymbolIcon Symbol="ErrorCircle" FontSize="16" Margin="0,2,6,0" VerticalAlignment="Top" Foreground="{DynamicResource DangerBrush}" IsVisible="{Binding !IsAdmissible}" />
+                    <TextBlock Grid.Column="1" Name="SummaryText" FontWeight="SemiBold" TextWrapping="Wrap" Text="{Binding Summary}" />
+                  </Grid>
+                  <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{DynamicResource WarningBrush}" Text="{Binding WarningSummary}"
+                             IsVisible="{Binding WarningSummary, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                  <TextBlock Classes="muted" TextWrapping="Wrap" Text="{Binding L[SummaryDisclaimer]}" />
+                  <TextBlock Classes="muted" FontStyle="Italic" TextWrapping="Wrap" Text="{Binding L[Unverified]}" />
+                </StackPanel>
+              </Border>
+
+              <!-- Issues first, clickable -->
+              <ItemsControl Name="FindingsList" ItemsSource="{Binding IssueFindings}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate x:DataType="vm:FindingViewModel">
+                    <Button Classes="finding" Classes.warning="{Binding IsMissingWarning}"
+                            Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).GoToFindingCommand}" CommandParameter="{Binding}">
+                      <StackPanel Spacing="3">
+                        <Grid ColumnDefinitions="Auto,*">
+                          <ic:SymbolIcon Symbol="ErrorCircle" FontSize="16" Margin="0,0,8,0" Foreground="{DynamicResource DangerBrush}" IsVisible="{Binding IsMissingMandatory}" />
+                          <ic:SymbolIcon Symbol="ErrorCircle" FontSize="16" Margin="0,0,8,0" Foreground="{DynamicResource WarningBrush}" IsVisible="{Binding IsMissingWarning}" />
+                          <TextBlock Grid.Column="1" FontWeight="SemiBold" TextWrapping="Wrap" Text="{Binding Label}" />
+                        </Grid>
+                        <TextBlock Classes="muted" Text="{Binding Article}" />
+                        <TextBlock FontSize="13" TextWrapping="Wrap" Text="{Binding Message}" />
+                        <TextBlock Classes="muted" TextWrapping="Wrap" Text="{Binding MissingPartsText}" IsVisible="{Binding HasMissingParts}" />
                       </StackPanel>
+                    </Button>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+
+              <!-- Present elements, folded -->
+              <Expander Header="{Binding PresentHeader}" HorizontalAlignment="Stretch">
+                <ItemsControl ItemsSource="{Binding PresentFindings}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:FindingViewModel">
+                      <Grid ColumnDefinitions="Auto,*" Margin="0,3">
+                        <ic:SymbolIcon Symbol="CheckmarkCircle" FontSize="14" Margin="0,2,8,0" VerticalAlignment="Top" Foreground="{DynamicResource SuccessBrush}" />
+                        <StackPanel Grid.Column="1">
+                          <TextBlock FontSize="13" TextWrapping="Wrap" Text="{Binding Label}" />
+                          <TextBlock Classes="muted" Text="{Binding Article}" />
+                        </StackPanel>
+                      </Grid>
                     </DataTemplate>
                   </ItemsControl.ItemTemplate>
                 </ItemsControl>
-              </ScrollViewer>
-            </TabItem>
-            <TabItem Header="{Binding L[Preview]}">
-              <Grid>
-                <ScrollViewer Background="#E4E1D8">
-                  <ItemsControl Name="PreviewPagesList" ItemsSource="{Binding PreviewPages}" Margin="12">
-                    <ItemsControl.ItemTemplate>
-                      <DataTemplate>
-                        <Border Background="White" Margin="0,0,0,16" HorizontalAlignment="Center" BoxShadow="0 2 8 0 #33000000">
-                          <Image Source="{Binding Converter={x:Static vm:Converters.PngToBitmap}}" Stretch="Uniform" MaxWidth="820" />
-                        </Border>
-                      </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                  </ItemsControl>
-                </ScrollViewer>
-                <TextBlock Text="{Binding L[RenderingPreview]}" IsVisible="{Binding IsRenderingPreview}"
-                           HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,8" Background="#CCFFFFFF" Padding="8,4" />
-              </Grid>
-            </TabItem>
-          </TabControl>
-        </DockPanel>
-      </Border>
-
-      <GridSplitter Grid.Column="3" ResizeDirection="Columns" Background="Transparent" />
-
-      <!-- Compliance report -->
-      <Border Grid.Column="4" Classes="panel">
-        <DockPanel>
-          <TextBlock DockPanel.Dock="Top" Classes="h2" Text="{Binding L[Compliance]}" />
-          <Border DockPanel.Dock="Top" Classes="summary" Classes.ok="{Binding IsAdmissible}">
-            <StackPanel Spacing="2">
-              <TextBlock Name="SummaryText" FontWeight="Bold" TextWrapping="Wrap" Text="{Binding Summary}" />
-              <TextBlock TextWrapping="Wrap" Text="{Binding WarningSummary}" IsVisible="{Binding WarningSummary, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
-              <TextBlock Classes="muted" TextWrapping="Wrap" Text="{Binding L[SummaryDisclaimer]}" />
+              </Expander>
             </StackPanel>
-          </Border>
-          <ScrollViewer>
-            <ItemsControl Name="FindingsList" ItemsSource="{Binding Findings}">
-              <ItemsControl.ItemTemplate>
-                <DataTemplate x:DataType="vm:FindingViewModel">
-                  <Border Classes="finding" Classes.missing="{Binding IsMissingMandatory}"
-                          Classes.warning="{Binding IsMissingWarning}" Classes.na="{Binding IsNotApplicable}">
-                    <StackPanel Spacing="2">
-                      <Grid ColumnDefinitions="*,Auto">
-                        <TextBlock FontWeight="Bold" TextWrapping="Wrap" Text="{Binding Label}" />
-                        <TextBlock Grid.Column="1" Margin="8,0,0,0" FontWeight="Bold" Text="{Binding StatusText}" />
-                      </Grid>
-                      <TextBlock Classes="muted" Text="{Binding Article}" />
-                      <TextBlock TextWrapping="Wrap" Text="{Binding Message}" IsVisible="{Binding HasMessage}" />
-                      <TextBlock Classes="muted" TextWrapping="Wrap" Text="{Binding MissingPartsText}" IsVisible="{Binding HasMissingParts}" />
-                      <TextBlock Classes="muted" FontStyle="Italic" Foreground="#8A5A00"
-                                 Text="{Binding UnverifiedText}"
-                                 IsVisible="{Binding IsUnverified}" />
-                    </StackPanel>
-                  </Border>
-                </DataTemplate>
-              </ItemsControl.ItemTemplate>
-            </ItemsControl>
           </ScrollViewer>
         </DockPanel>
       </Border>

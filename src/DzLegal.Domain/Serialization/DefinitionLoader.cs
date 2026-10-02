@@ -93,6 +93,11 @@ public static class DefinitionLoader
         {
             var where = $"section '{section.Id}'";
             CheckConditions(section.IncludeWhen, where, fieldIds, errors);
+            if (section.FormGroup is not null && !groupIds.Contains(section.FormGroup))
+            {
+                errors.Add($"{where} references unknown formGroup '{section.FormGroup}'.");
+            }
+
             foreach (var hint in section.Hints)
             {
                 CheckConditions(hint.When, $"{where} hint", fieldIds, errors);

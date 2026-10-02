@@ -3,7 +3,7 @@
 // practicing lawyer confirms it against the current official text (see docs/UPDATING-LEGAL-RULES.md).
 {
   "id": "requete-introductive",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "name": { "ar": "عريضة افتتاح الدعوى", "en": "Statement of claim (requête introductive d'instance)" },
   "description": {
     "ar": "العريضة التي ترفع بها الدعوى أمام المحكمة (المواد 14 و15 و17 من قانون الإجراءات المدنية والإدارية).",
@@ -89,22 +89,22 @@
   ],
 
   "sections": [
-    { "id": "header", "layout": { "align": "center", "bold": true, "size": 14, "spaceBefore": 0 }, "kind": "generated", "template": "templates/header.scriban", "title": { "ar": "الجهة القضائية", "en": "Court" } },
-    { "id": "plaintiff", "layout": { "align": "start", "spaceBefore": 14 }, "kind": "generated", "template": "templates/plaintiff.scriban", "title": { "ar": "المدعي", "en": "Plaintiff" },
+    { "id": "header", "formGroup": "court", "layout": { "align": "center", "bold": true, "size": 14, "spaceBefore": 0 }, "kind": "generated", "template": "templates/header.scriban", "title": { "ar": "الجهة القضائية", "en": "Court" } },
+    { "id": "plaintiff", "formGroup": "plaintiff", "layout": { "align": "start", "spaceBefore": 14 }, "kind": "generated", "template": "templates/plaintiff.scriban", "title": { "ar": "المدعي", "en": "Plaintiff" },
       "hints": [ { "when": [ { "field": "plaintiff.gender", "is": "" }, { "field": "plaintiff.isLegalEntity", "isNot": "true" } ], "message": { "ar": "اختر جنس المدعي في الاستمارة لضبط الصيغة (السيد/السيدة، المدعي/المدعية).", "en": "Choose the plaintiff's gender in the form so the wording agrees." } } ] },
-    { "id": "defendant", "layout": { "align": "start", "spaceBefore": 8 }, "kind": "generated", "template": "templates/defendant.scriban", "title": { "ar": "المدعى عليه", "en": "Defendant" },
+    { "id": "defendant", "formGroup": "defendant", "layout": { "align": "start", "spaceBefore": 8 }, "kind": "generated", "template": "templates/defendant.scriban", "title": { "ar": "المدعى عليه", "en": "Defendant" },
       "hints": [ { "when": [ { "field": "defendant.gender", "is": "" }, { "field": "defendant.isLegalEntity", "isNot": "true" } ], "message": { "ar": "اختر جنس المدعى عليه في الاستمارة لضبط الصيغة.", "en": "Choose the defendant's gender in the form so the wording agrees." } } ] },
-    { "id": "subject", "layout": { "align": "start", "bold": true, "spaceBefore": 10 }, "kind": "generated", "template": "templates/subject.scriban", "title": { "ar": "الموضوع", "en": "Subject" } },
-    { "id": "publication", "layout": { "align": "start", "spaceBefore": 6 }, "kind": "generated", "template": "templates/publication.scriban", "title": { "ar": "الإشهار العقاري", "en": "Land-registry publication" },
+    { "id": "subject", "formGroup": "claim", "layout": { "align": "start", "bold": true, "spaceBefore": 10 }, "kind": "generated", "template": "templates/subject.scriban", "title": { "ar": "الموضوع", "en": "Subject" } },
+    { "id": "publication", "formGroup": "claim", "layout": { "align": "start", "spaceBefore": 6 }, "kind": "generated", "template": "templates/publication.scriban", "title": { "ar": "الإشهار العقاري", "en": "Land-registry publication" },
       "includeWhen": [ { "field": "claim.concernsRegisteredRealProperty", "is": "true" } ] },
-    { "id": "opening", "layout": { "align": "center", "bold": true, "spaceBefore": 14 }, "kind": "generated", "template": "templates/opening.scriban", "title": { "ar": "الافتتاح", "en": "Opening" } },
-    { "id": "facts", "layout": { "align": "justify", "spaceBefore": 12 }, "kind": "generated", "template": "templates/facts.scriban", "showTitle": true, "title": { "ar": "الوقائع", "en": "Facts" } },
-    { "id": "grounds", "layout": { "align": "justify", "spaceBefore": 12 }, "kind": "narrative", "prompt": "prompts/grounds.ar.txt", "sourceField": "notes.grounds", "showTitle": true, "title": { "ar": "المناقشة القانونية", "en": "Legal grounds" } },
-    { "id": "requestsIntro", "layout": { "align": "start", "spaceBefore": 12 }, "kind": "generated", "template": "templates/requestsIntro.scriban", "showTitle": true, "title": { "ar": "لهذه الأسباب ومن أجلها", "en": "For these reasons" } },
-    { "id": "requests", "layout": { "align": "start", "spaceBefore": 4 }, "kind": "narrative", "prompt": "prompts/requests.ar.txt", "sourceField": "notes.requests", "title": { "ar": "الطلبات", "en": "Requests" } },
-    { "id": "documents", "layout": { "align": "start", "spaceBefore": 12 }, "kind": "generated", "template": "templates/documents.scriban", "showTitle": true, "title": { "ar": "قائمة المرفقات", "en": "Supporting documents" } },
-    { "id": "dateplace", "layout": { "align": "end", "spaceBefore": 18 }, "kind": "generated", "template": "templates/dateplace.scriban", "title": { "ar": "التاريخ", "en": "Date" } },
-    { "id": "signature", "layout": { "align": "end", "bold": true, "spaceBefore": 6 }, "kind": "generated", "template": "templates/signature.scriban", "title": { "ar": "التوقيع", "en": "Signature" },
+    { "id": "opening", "formGroup": "court", "layout": { "align": "center", "bold": true, "spaceBefore": 14 }, "kind": "generated", "template": "templates/opening.scriban", "title": { "ar": "الافتتاح", "en": "Opening" } },
+    { "id": "facts", "formGroup": "notes", "layout": { "align": "justify", "spaceBefore": 12 }, "kind": "generated", "template": "templates/facts.scriban", "showTitle": true, "title": { "ar": "الوقائع", "en": "Facts" } },
+    { "id": "grounds", "formGroup": "notes", "layout": { "align": "justify", "spaceBefore": 12 }, "kind": "narrative", "prompt": "prompts/grounds.ar.txt", "sourceField": "notes.grounds", "showTitle": true, "title": { "ar": "المناقشة القانونية", "en": "Legal grounds" } },
+    { "id": "requestsIntro", "formGroup": "notes", "layout": { "align": "start", "spaceBefore": 12 }, "kind": "generated", "template": "templates/requestsIntro.scriban", "showTitle": true, "title": { "ar": "لهذه الأسباب ومن أجلها", "en": "For these reasons" } },
+    { "id": "requests", "formGroup": "notes", "layout": { "align": "start", "spaceBefore": 4 }, "kind": "narrative", "prompt": "prompts/requests.ar.txt", "sourceField": "notes.requests", "title": { "ar": "الطلبات", "en": "Requests" } },
+    { "id": "documents", "formGroup": "documents", "layout": { "align": "start", "spaceBefore": 12 }, "kind": "generated", "template": "templates/documents.scriban", "showTitle": true, "title": { "ar": "قائمة المرفقات", "en": "Supporting documents" } },
+    { "id": "dateplace", "formGroup": "signature", "layout": { "align": "end", "spaceBefore": 18 }, "kind": "generated", "template": "templates/dateplace.scriban", "title": { "ar": "التاريخ", "en": "Date" } },
+    { "id": "signature", "formGroup": "signature", "layout": { "align": "end", "bold": true, "spaceBefore": 6 }, "kind": "generated", "template": "templates/signature.scriban", "title": { "ar": "التوقيع", "en": "Signature" },
       "hints": [ { "when": [ { "field": "lawyer.gender", "is": "" } ], "message": { "ar": "اختر في الاستمارة: المحامي أو المحامية (الأستاذ/الأستاذة).", "en": "Choose the lawyer's gender in the form (الأستاذ/الأستاذة)." } } ] }
   ],
 

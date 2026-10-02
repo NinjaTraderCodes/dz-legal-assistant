@@ -67,7 +67,7 @@ internal static class Vm
 {
     public static readonly string EvaluationsFolder = Path.Combine(Path.GetTempPath(), "dzlegal-app-tests-" + Guid.NewGuid().ToString("N"));
 
-    public static MainWindowViewModel Create(FakeFiles? files = null, string provider = "stub", Loc? loc = null)
+    public static MainWindowViewModel Create(FakeFiles? files = null, string provider = "stub", Loc? loc = null, string? autosaveFile = null)
     {
         loc ??= new Loc();
         var definition = DefinitionLoader.Load(Path.Combine(AppContext.BaseDirectory, "data", "document-types", "requete-introductive"));
@@ -76,7 +76,7 @@ internal static class Vm
             new ProviderOption("stub", l => l["ProviderStub"], () => new StubModelProvider()),
             new ProviderOption("failing", _ => "failing", () => new FailingProvider()),
         ];
-        return new MainWindowViewModel(definition, providers, files ?? new FakeFiles(), new EvaluationStore(EvaluationsFolder), loc, provider, () => new DateOnly(2026, 9, 15));
+        return new MainWindowViewModel(definition, providers, files ?? new FakeFiles(), new EvaluationStore(EvaluationsFolder), loc, provider, () => new DateOnly(2026, 9, 15), autosaveFile);
     }
 
     /// <summary>Fills every mandatory field with fictitious data, like a lawyer would.</summary>

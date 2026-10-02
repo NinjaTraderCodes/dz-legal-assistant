@@ -234,6 +234,118 @@ public class MainWindowViewModelTests
     }
 
     [Fact]
+    public async Task StepsShowWhereSomethingIsMissing()
+    {
+        var vm = Vm.Create();
+        Assert.Equal(7, vm.FieldGroups.Count);
+        Assert.True(vm.FieldGroups.Single(g => g.Id == "court").IsMissing);
+
+        vm.Filled();
+        Assert.True(vm.FieldGroups.Single(g => g.Id == "court").IsDone);
+        Assert.True(vm.FieldGroups.Single(g => g.Id == "notes").IsMissing); // grounds and requests not drafted yet
+
+        await vm.GenerateCommand.ExecuteAsync(null);
+        Assert.False(vm.FieldGroups.Any(g => g.IsMissing), string.Join(",", vm.FieldGroups.Where(g => g.IsMissing).Select(g => g.Id)));
+    }
+
+    [Fact]
+    public void MissingFieldsAreMarkedWithTheirArticle()
+    {
+        var vm = Vm.Create().Filled();
+        vm.Field("defendant.domicile").Value = string.Empty;
+
+        Assert.True(vm.Field("defendant.domicile").IsMissing);
+        Assert.Contains("CPCA art. 15-3", vm.Field("defendant.domicile").MissingNote, StringComparison.Ordinal);
+        Assert.False(vm.Field("plaintiff.domicile").IsMissing);
+        Assert.True(vm.FieldGroups.Single(g => g.Id == "defendant").IsMissing);
+    }
+
+    [Fact]
+    public void ClickingAFindingOpensTheStepThatFixesIt()
+    {
+        var vm = Vm.Create().Filled();
+        vm.Field("lawyer.name").Value = string.Empty;
+        var finding = vm.IssueFindings.Single(f => f.ElementId == "art14.signature");
+
+        vm.GoToFindingCommand.Execute(finding);
+
+        Assert.Equal("signature", vm.SelectedStep!.Id);
+    }
+
+    [Fact]
+    public void ComplianceScoreCountsApplicableElements()
+    {
+        var vm = Vm.Create().Filled();
+        Assert.Equal(vm.ApplicableCount - vm.IssueFindings.Count, vm.PresentCount);
+        Assert.Equal(vm.PresentCount, vm.PresentFindings.Count);
+        Assert.Equal($"{vm.PresentCount} من {vm.ApplicableCount}", vm.ScoreText);
+    }
+
+    [Fact]
+    public void NextAndBackMoveThroughTheSteps()
+    {
+        var vm = Vm.Create();
+        vm.NextStepCommand.Execute(null);
+        Assert.Equal("plaintiff", vm.SelectedStep!.Id);
+        vm.PreviousStepCommand.Execute(null);
+        vm.PreviousStepCommand.Execute(null);
+        Assert.Equal("court", vm.SelectedStep!.Id);
+        Assert.Equal("الخطوة 1 من 7", vm.StepPosition);
+    }
+
+    [Fact]
+    public async Task AGeneratedSectionCanBeEditedByHandAndRestored()
+    {
+        var vm = Vm.Create().Filled();
+        await vm.GenerateCommand.ExecuteAsync(null);
+        var opening = vm.Sections.Single(s => s.Id == "opening");
+        Assert.True(opening.IsReadOnly);
+
+        opening.OverrideCommand.Execute(null);
+        Assert.False(opening.IsReadOnly);
+        opening.Text = "إلى السادة رئيس وأعضاء المحكمة المحترمين";
+        vm.Field("court.name").Value = "محكمة الشراقة";
+        Assert.Equal("إلى السادة رئيس وأعضاء المحكمة المحترمين", opening.Text);
+        Assert.Contains("عدّلت هذا القسم يدويا", opening.ReviewText, StringComparison.Ordinal);
+
+        await vm.GenerateCommand.ExecuteAsync(null);
+        Assert.Equal("إلى السادة رئيس وأعضاء المحكمة المحترمين", opening.Text);
+
+        opening.RestoreCommand.Execute(null);
+        Assert.True(opening.IsReadOnly);
+        Assert.Contains("محكمة الشراقة", opening.Text, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task AutosavedWorkCanBeRestoredInANewSession()
+    {
+        var file = Path.Combine(Vm.EvaluationsFolder, "autosave-" + Guid.NewGuid().ToString("N") + ".json");
+        var first = Vm.Create(autosaveFile: file).Filled();
+        first.Sections.Single(s => s.Id == "grounds").Text = "نص لم يحفظ بعد";
+        first.AutosaveNow();
+
+        var second = Vm.Create(autosaveFile: file);
+        Assert.True(second.HasRecoverableDraft);
+        await second.RestoreLastSessionCommand.ExecuteAsync(null);
+
+        Assert.Equal("بن علي", second.Field("plaintiff.lastName").Value);
+        Assert.Equal("نص لم يحفظ بعد", second.Sections.Single(s => s.Id == "grounds").Text);
+        Assert.False(second.HasRecoverableDraft);
+
+        second.DismissRecoveryCommand.Execute(null);
+        Assert.False(File.Exists(file));
+    }
+
+    [Fact]
+    public void ThemeToggles()
+    {
+        var vm = Vm.Create();
+        Assert.Equal(Avalonia.Styling.ThemeVariant.Light, vm.RequestedTheme);
+        vm.ToggleThemeCommand.Execute(null);
+        Assert.Equal(Avalonia.Styling.ThemeVariant.Dark, vm.RequestedTheme);
+    }
+
+    [Fact]
     public void NewResetsTheForm()
     {
         var vm = Vm.Create().Filled();

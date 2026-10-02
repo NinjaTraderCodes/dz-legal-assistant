@@ -64,7 +64,9 @@ public sealed partial class DraftingService
         var sections = IncludedSections(definition, inputs)
             .Select(s => s.Kind == SectionKind.Narrative
                 ? new DraftSection { Id = s.Id, Text = draft.FindSection(s.Id)?.Text ?? string.Empty, DraftingNotes = [.. draft.FindSection(s.Id)?.DraftingNotes ?? []] }
-                : new DraftSection { Id = s.Id, Text = RenderGenerated(definition, s, inputs) })
+                : draft.FindSection(s.Id) is { Overridden: true } manual
+                    ? new DraftSection { Id = s.Id, Text = manual.Text, Overridden = true }
+                    : new DraftSection { Id = s.Id, Text = RenderGenerated(definition, s, inputs) })
             .ToList();
 
         return draft with { Inputs = new Dictionary<string, string>(inputs, StringComparer.Ordinal), Sections = sections };

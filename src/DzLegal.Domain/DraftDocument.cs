@@ -21,7 +21,7 @@ public sealed record DraftDocument
     public DraftDocument DeepCopy() => this with
     {
         Inputs = new Dictionary<string, string>(Inputs, StringComparer.Ordinal),
-        Sections = Sections.Select(s => new DraftSection { Id = s.Id, Text = s.Text, DraftingNotes = [.. s.DraftingNotes] }).ToList(),
+        Sections = Sections.Select(s => new DraftSection { Id = s.Id, Text = s.Text, DraftingNotes = [.. s.DraftingNotes], Overridden = s.Overridden }).ToList(),
     };
 }
 
@@ -35,6 +35,12 @@ public sealed class DraftSection
     /// Empty for a normal draft or for text the lawyer wrote.
     /// </summary>
     public List<string> DraftingNotes { get; init; } = [];
+
+    /// <summary>
+    /// A generated section the lawyer chose to edit by hand: it keeps their text and no longer follows the form
+    /// until restored.
+    /// </summary>
+    public bool Overridden { get; set; }
 }
 
 /// <summary>Codes stored in <see cref="DraftSection.DraftingNotes"/>.</summary>

@@ -3,10 +3,65 @@
              x:Class="DzLegal.App.App"
              RequestedThemeVariant="Light">
   <Application.Resources>
-    <FontFamily x:Key="DocumentFont">fonts:Naskh#Noto Naskh Arabic, fonts:Inter#Inter</FontFamily>
-    <FontFamily x:Key="UiFont">fonts:Naskh#Noto Naskh Arabic, fonts:Inter#Inter</FontFamily>
+    <ResourceDictionary>
+      <FontFamily x:Key="DocumentFont">fonts:Naskh#Noto Naskh Arabic, fonts:Inter#Inter</FontFamily>
+      <FontFamily x:Key="UiFont">fonts:Inter#Inter, fonts:Naskh#Noto Naskh Arabic</FontFamily>
+      <CornerRadius x:Key="CardRadius">12</CornerRadius>
+      <CornerRadius x:Key="ControlRadius">8</CornerRadius>
+
+      <!-- Design tokens: one palette per theme variant. -->
+      <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Light">
+          <SolidColorBrush x:Key="CanvasBrush" Color="#F2F0EA" />
+          <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFF" />
+          <SolidColorBrush x:Key="SurfaceAltBrush" Color="#F8F6F1" />
+          <SolidColorBrush x:Key="PaperBrush" Color="#FFFFFF" />
+          <SolidColorBrush x:Key="PaperCanvasBrush" Color="#E7E3DA" />
+          <SolidColorBrush x:Key="HairlineBrush" Color="#E4DFD4" />
+          <SolidColorBrush x:Key="TextPrimaryBrush" Color="#1C2321" />
+          <SolidColorBrush x:Key="TextMutedBrush" Color="#6A706D" />
+          <SolidColorBrush x:Key="AppBarBrush" Color="#16392F" />
+          <SolidColorBrush x:Key="AppBarTextBrush" Color="#FFFFFF" />
+          <SolidColorBrush x:Key="AccentBrush" Color="#1E5A4B" />
+          <SolidColorBrush x:Key="AccentSoftBrush" Color="#E1EEE9" />
+          <SolidColorBrush x:Key="PrimaryButtonBrush" Color="#1E5A4B" />
+          <SolidColorBrush x:Key="DangerBrush" Color="#B3261E" />
+          <SolidColorBrush x:Key="DangerSoftBrush" Color="#FCEBE9" />
+          <SolidColorBrush x:Key="WarningBrush" Color="#935600" />
+          <SolidColorBrush x:Key="WarningSoftBrush" Color="#FFF3DC" />
+          <SolidColorBrush x:Key="SuccessBrush" Color="#2B7A4B" />
+          <SolidColorBrush x:Key="SuccessSoftBrush" Color="#E5F3EA" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Dark">
+          <SolidColorBrush x:Key="CanvasBrush" Color="#121715" />
+          <SolidColorBrush x:Key="SurfaceBrush" Color="#1B2220" />
+          <SolidColorBrush x:Key="SurfaceAltBrush" Color="#222A27" />
+          <SolidColorBrush x:Key="PaperBrush" Color="#FDFCF9" />
+          <SolidColorBrush x:Key="PaperCanvasBrush" Color="#0E1311" />
+          <SolidColorBrush x:Key="HairlineBrush" Color="#2E3734" />
+          <SolidColorBrush x:Key="TextPrimaryBrush" Color="#E8ECEA" />
+          <SolidColorBrush x:Key="TextMutedBrush" Color="#9AA3A0" />
+          <SolidColorBrush x:Key="AppBarBrush" Color="#0F2A23" />
+          <SolidColorBrush x:Key="AppBarTextBrush" Color="#F2F5F4" />
+          <SolidColorBrush x:Key="AccentBrush" Color="#6FC2A8" />
+          <SolidColorBrush x:Key="AccentSoftBrush" Color="#1F3A33" />
+          <SolidColorBrush x:Key="PrimaryButtonBrush" Color="#2A7A63" />
+          <SolidColorBrush x:Key="DangerBrush" Color="#FF8A80" />
+          <SolidColorBrush x:Key="DangerSoftBrush" Color="#3A2020" />
+          <SolidColorBrush x:Key="WarningBrush" Color="#FFC56B" />
+          <SolidColorBrush x:Key="WarningSoftBrush" Color="#3A2E18" />
+          <SolidColorBrush x:Key="SuccessBrush" Color="#7FD3A0" />
+          <SolidColorBrush x:Key="SuccessSoftBrush" Color="#1D3326" />
+        </ResourceDictionary>
+      </ResourceDictionary.ThemeDictionaries>
+    </ResourceDictionary>
   </Application.Resources>
   <Application.Styles>
-    <FluentTheme />
+    <FluentTheme>
+      <FluentTheme.Palettes>
+        <ColorPaletteResources x:Key="Light" Accent="#1E5A4B" />
+        <ColorPaletteResources x:Key="Dark" Accent="#3E9C82" />
+      </FluentTheme.Palettes>
+    </FluentTheme>
   </Application.Styles>
 </Application>

@@ -3,13 +3,21 @@
 // practicing lawyer confirms it against the current official text (see docs/UPDATING-LEGAL-RULES.md).
 {
   "id": "requete-introductive",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "name": { "ar": "عريضة افتتاح الدعوى", "en": "Statement of claim (requête introductive d'instance)" },
   "description": {
     "ar": "العريضة التي ترفع بها الدعوى أمام المحكمة (المواد 14 و15 و17 من قانون الإجراءات المدنية والإدارية).",
     "en": "The document that opens a case before the court (CPCA arts. 14, 15 and 17)."
   },
   "systemPrompt": "prompts/system.ar.txt",
+  "revisionPrompt": "prompts/revise.ar.txt",
+  "revisionShortcuts": [
+    { "label": { "ar": "أكثر رسمية", "en": "More formal" }, "instruction": "اجعل الصياغة أكثر رسمية وفق أسلوب العرائض أمام المحاكم الجزائرية." },
+    { "label": { "ar": "أوجز", "en": "Shorter" }, "instruction": "اختصر النص مع الإبقاء على كل الوقائع والمواد والأرقام." },
+    { "label": { "ar": "صحح اللغة", "en": "Fix grammar" }, "instruction": "صحح الأخطاء النحوية والإملائية فقط دون تغيير المعنى." },
+    { "label": { "ar": "اربط كل مادة بطلبها", "en": "Tie each article to its request" }, "instruction": "اختم كل فقرة بربط المادة المذكورة فيها بالطلب الذي تؤسسه." },
+    { "label": { "ar": "لا تكرر الخاتمة", "en": "Vary the closing" }, "instruction": "لا تكرر العبارة الختامية نفسها في كل فقرة؛ نوّع الصياغة." }
+  ],
 
   // Exact fixes applied to model-written text only (grounds, requests), never to the lawyer's own words.
   // The noun after «إنّ» is accusative: small models write the nominative dual.

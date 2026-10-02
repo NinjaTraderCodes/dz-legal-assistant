@@ -120,6 +120,21 @@
       <Setter Property="Background" Value="#061E5A4B" />
       <Setter Property="BorderThickness" Value="0" />
     </Style>
+    <Style Selector="Ellipse.status-dot">
+      <Setter Property="Fill" Value="{DynamicResource SuccessBrush}" />
+    </Style>
+    <Style Selector="Ellipse.status-dot.down">
+      <Setter Property="Fill" Value="{DynamicResource DangerBrush}" />
+    </Style>
+    <Style Selector="Border.added">
+      <Setter Property="Background" Value="#D7F0DF" />
+    </Style>
+    <Style Selector="Border.removed">
+      <Setter Property="Background" Value="#F8D9D6" />
+    </Style>
+    <Style Selector="Border.lawyer">
+      <Setter Property="Background" Value="{DynamicResource AccentSoftBrush}" />
+    </Style>
     <Style Selector="TextBlock.review">
       <Setter Property="Foreground" Value="{DynamicResource WarningBrush}" />
       <Setter Property="FontSize" Value="13" />
@@ -270,7 +285,10 @@
               <TextBlock Name="DraftBanner" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource WarningBrush}" Text="{Binding L[DraftBadge]}" />
             </Border>
             <StackPanel Grid.Column="3" Orientation="Horizontal" Spacing="8">
-              <ComboBox MinWidth="200" CornerRadius="8" ItemsSource="{Binding Providers}" SelectedItem="{Binding SelectedProvider}" ToolTip.Tip="{Binding L[ProviderLabel]}">
+              <Ellipse Name="ModelStatusDot" Width="10" Height="10" VerticalAlignment="Center" ToolTip.Tip="{Binding ModelStatusText}"
+                       Classes="status-dot" Classes.down="{Binding !IsModelReady}"
+                       IsVisible="{Binding ModelStatusText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+              <ComboBox MinWidth="150" MaxWidth="210" CornerRadius="8" ItemsSource="{Binding Providers}" SelectedItem="{Binding SelectedProvider}" ToolTip.Tip="{Binding L[ProviderLabel]}">
                 <ComboBox.ItemTemplate>
                   <DataTemplate x:DataType="vm:ProviderOption">
                     <TextBlock Text="{Binding DisplayName}" />
@@ -323,7 +341,27 @@
                                   Content="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[EditManually]}" IsVisible="{Binding CanOverride}" />
                           <Button Grid.Column="3" Classes="subtle" FontSize="12" Foreground="#935600" Command="{Binding RestoreCommand}"
                                   Content="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[RestoreFromForm]}" IsVisible="{Binding IsOverridden}" />
+                          <StackPanel Grid.Column="3" Orientation="Horizontal" Spacing="2" IsVisible="{Binding IsEditable}">
+                            <Button Classes="subtle" FontSize="12" Foreground="#1E5A4B" Command="{Binding UndoCommand}" IsVisible="{Binding CanUndo}"
+                                    Content="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[Undo]}" />
+                            <Button Classes="subtle" FontSize="12" Foreground="#1E5A4B" Command="{Binding RedraftCommand}"
+                                    Content="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[Redraft]}" />
+                            <Button Classes="subtle" Name="AssistantButton" FontSize="12" Foreground="#1E5A4B" Command="{Binding OpenAssistantCommand}">
+                              <StackPanel Orientation="Horizontal" Spacing="4">
+                                <ic:SymbolIcon Symbol="Sparkle" FontSize="13" Foreground="#1E5A4B" />
+                                <TextBlock FontSize="12" Foreground="#1E5A4B" Text="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[Assistant]}" />
+                              </StackPanel>
+                            </Button>
+                          </StackPanel>
                         </Grid>
+                        <Border Background="#FFF3DC" CornerRadius="6" Padding="8,4" Margin="0,2" IsVisible="{Binding IsConfirmingRedraft}">
+                          <StackPanel Orientation="Horizontal" Spacing="8">
+                            <Button Classes="primary" FontSize="12" Command="{Binding RedraftCommand}"
+                                    Content="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[ConfirmRedraft]}" />
+                            <Button Classes="subtle" FontSize="12" Foreground="#1C2321" Command="{Binding CancelRedraftCommand}"
+                                    Content="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[Cancel]}" />
+                          </StackPanel>
+                        </Border>
                         <TextBox Classes="document" Text="{Binding Text}" IsReadOnly="{Binding IsReadOnly}" PlaceholderText="{Binding Watermark}" MinHeight="34" />
                         <TextBlock Classes="review" Text="{Binding ReviewText}" IsVisible="{Binding HasReview}" />
                       </StackPanel>
@@ -354,8 +392,8 @@
         </DockPanel>
       </Border>
 
-      <!-- Compliance -->
-      <Border Grid.Column="2" Classes="panel" Padding="16">
+      <!-- Compliance (the assistant takes its place while open, so the paper keeps its width) -->
+      <Border Grid.Column="2" Classes="panel" Padding="16" IsVisible="{Binding !IsAssistantOpen}">
         <DockPanel>
           <TextBlock DockPanel.Dock="Top" Classes="title" Text="{Binding L[Compliance]}" Margin="0,0,0,12" />
 
@@ -436,6 +474,80 @@
                   </ItemsControl.ItemTemplate>
                 </ItemsControl>
               </Expander>
+            </StackPanel>
+          </ScrollViewer>
+        </DockPanel>
+      </Border>
+      <!-- Section assistant -->
+      <Border Grid.Column="2" Name="AssistantPanel" Classes="panel" Padding="16" IsVisible="{Binding IsAssistantOpen}">
+        <DockPanel>
+          <Grid DockPanel.Dock="Top" ColumnDefinitions="Auto,*,Auto" Margin="0,0,0,4">
+            <ic:SymbolIcon Symbol="Sparkle" Foreground="{DynamicResource AccentBrush}" Margin="0,0,6,0" />
+            <TextBlock Grid.Column="1" Classes="title" Text="{Binding AssistantTitle}" TextTrimming="CharacterEllipsis" />
+            <Button Grid.Column="2" Classes="subtle" Command="{Binding CloseAssistantCommand}" Content="✕" />
+          </Grid>
+          <TextBlock DockPanel.Dock="Top" Classes="muted" TextWrapping="Wrap" Text="{Binding L[AssistantScope]}" Margin="0,0,0,8" />
+          <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Shortcuts}" Margin="0,0,0,8">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="vm:ShortcutViewModel">
+                <Button Classes="outline" FontSize="12" Padding="10,4" Margin="0,0,6,6" CornerRadius="999" Content="{Binding Label}"
+                        Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).UseShortcutCommand}" CommandParameter="{Binding}" />
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+
+          <Grid DockPanel.Dock="Bottom" ColumnDefinitions="*,Auto" Margin="0,8,0,0">
+            <TextBox Classes="input" Name="InstructionBox" Text="{Binding AssistantInstruction}" PlaceholderText="{Binding L[InstructionPlaceholder]}"
+                     AcceptsReturn="True" TextWrapping="Wrap" MinHeight="40" MaxHeight="120" />
+            <StackPanel Grid.Column="1" Margin="6,0,0,0" VerticalAlignment="Bottom">
+              <Button Classes="primary" Command="{Binding SendInstructionCommand}" Content="{Binding L[Send]}" IsVisible="{Binding !SendInstructionCommand.IsRunning}" />
+              <Button Classes="outline" Command="{Binding SendInstructionCancelCommand}" Content="{Binding L[Cancel]}" IsVisible="{Binding SendInstructionCommand.IsRunning}" />
+            </StackPanel>
+          </Grid>
+
+          <ScrollViewer>
+            <StackPanel Spacing="8">
+              <ItemsControl ItemsSource="{Binding AssistantThread}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate x:DataType="vm:AssistantMessage">
+                    <Border CornerRadius="10" Padding="10,6" Margin="0,0,0,6" Background="{DynamicResource SurfaceAltBrush}" Classes.lawyer="{Binding FromLawyer}">
+                      <TextBlock TextWrapping="Wrap" FontSize="13" Text="{Binding Text}" />
+                    </Border>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+
+              <Border Background="{DynamicResource PaperBrush}" CornerRadius="8" Padding="10"
+                      IsVisible="{Binding AssistantPartial, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                <TextBlock FontFamily="{StaticResource DocumentFont}" FontSize="15" Foreground="#1C2321" TextWrapping="Wrap" FlowDirection="RightToLeft" Text="{Binding AssistantPartial}" />
+              </Border>
+
+              <Border Background="{DynamicResource PaperBrush}" CornerRadius="8" Padding="10" IsVisible="{Binding HasProposal}">
+                <StackPanel Spacing="8">
+                  <ItemsControl Name="ProposalDiffList" ItemsSource="{Binding ProposalDiff}" FlowDirection="RightToLeft">
+                    <ItemsControl.ItemsPanel>
+                      <ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate x:DataType="vm:DiffTokenViewModel">
+                        <Border Margin="0,0,4,3" CornerRadius="3" Padding="2,0" Classes.added="{Binding IsAdded}" Classes.removed="{Binding IsRemoved}">
+                          <TextBlock FontFamily="{StaticResource DocumentFont}" FontSize="15" Foreground="#1C2321" Text="{Binding Text}"
+                                     TextDecorations="{Binding IsRemoved, Converter={x:Static vm:Converters.Strike}}" />
+                        </Border>
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                  <TextBlock Classes="review" Text="{Binding ProposalHints}" IsVisible="{Binding ProposalHints, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                  <StackPanel Orientation="Horizontal" Spacing="6">
+                    <Button Classes="primary" Name="AcceptButton" Command="{Binding AcceptProposalCommand}" IsEnabled="{Binding CanAcceptProposal}" Content="{Binding L[Accept]}" />
+                    <Button Classes="outline" Command="{Binding RejectProposalCommand}" Content="{Binding L[Reject]}" />
+                    <Button Classes="subtle" Command="{Binding RetryProposalCommand}" Content="{Binding L[TryAgain]}" />
+                  </StackPanel>
+                </StackPanel>
+              </Border>
             </StackPanel>
           </ScrollViewer>
         </DockPanel>

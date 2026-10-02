@@ -5,6 +5,9 @@ namespace DzLegal.App.ViewModels;
 
 public static class Converters
 {
+    public static readonly IValueConverter Strike =
+        new FuncValueConverter<bool, Avalonia.Media.TextDecorationCollection?>(on => on ? Avalonia.Media.TextDecorations.Strikethrough : null);
+
     public static readonly IValueConverter IsZero = new FuncValueConverter<int, bool>(v => v == 0);
 
     public static readonly IValueConverter IsOne = new FuncValueConverter<int, bool>(v => v == 1);

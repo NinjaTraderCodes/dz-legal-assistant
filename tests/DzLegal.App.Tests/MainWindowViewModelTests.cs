@@ -346,6 +346,91 @@ public class MainWindowViewModelTests
     }
 
     [Fact]
+    public async Task AssistantProposesARevisionShownAsADiffThenAccepted()
+    {
+        var vm = Vm.Create(provider: "scripted").Filled();
+        await vm.GenerateCommand.ExecuteAsync(null);
+        var grounds = vm.Sections.Single(s => s.Id == "grounds");
+        var before = grounds.Text;
+
+        grounds.OpenAssistantCommand.Execute(null);
+        Assert.True(vm.IsAssistantOpen);
+        Assert.NotEmpty(vm.Shortcuts);
+        vm.AssistantInstruction = "أكثر رسمية";
+        await vm.SendInstructionCommand.ExecuteAsync(null);
+
+        Assert.True(vm.HasProposal);
+        Assert.Contains(vm.ProposalDiff, t => t.IsAdded);
+        Assert.Equal(before, grounds.Text); // nothing applied before the lawyer accepts
+
+        vm.AcceptProposalCommand.Execute(null);
+        Assert.Equal(ScriptedProvider.Revision, grounds.Text);
+        Assert.True(grounds.CanUndo);
+        grounds.UndoCommand.Execute(null);
+        Assert.Equal(before, grounds.Text);
+    }
+
+    [Fact]
+    public async Task AssistantRefusesLegalQuestions()
+    {
+        var vm = Vm.Create(provider: "scripted").Filled();
+        await vm.GenerateCommand.ExecuteAsync(null);
+        vm.Sections.Single(s => s.Id == "grounds").OpenAssistantCommand.Execute(null);
+
+        vm.AssistantInstruction = "ما هو أجل التقادم؟";
+        await vm.SendInstructionCommand.ExecuteAsync(null);
+
+        Assert.False(vm.HasProposal);
+        Assert.Equal(vm.L["AssistantScope"], vm.AssistantThread[^1].Text);
+    }
+
+    [Fact]
+    public async Task RedraftingKeepsSectionsTheLawyerEdited()
+    {
+        var vm = Vm.Create().Filled();
+        await vm.GenerateCommand.ExecuteAsync(null);
+        vm.Sections.Single(s => s.Id == "grounds").Text = "نص كتبه المحامي";
+
+        await vm.GenerateCommand.ExecuteAsync(null);
+
+        Assert.Equal("نص كتبه المحامي", vm.Sections.Single(s => s.Id == "grounds").Text);
+        Assert.Contains("أُبقي على الأقسام التي عدّلتها", vm.StatusMessage, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task SectionRedraftAsksForConfirmationAndCanBeUndone()
+    {
+        var vm = Vm.Create().Filled();
+        await vm.GenerateCommand.ExecuteAsync(null);
+        var grounds = vm.Sections.Single(s => s.Id == "grounds");
+        grounds.Text = "نص كتبه المحامي";
+
+        await grounds.RedraftCommand.ExecuteAsync(null);
+        Assert.True(grounds.IsConfirmingRedraft);
+        Assert.Equal("نص كتبه المحامي", grounds.Text);
+
+        await grounds.RedraftCommand.ExecuteAsync(null);
+        Assert.False(grounds.IsConfirmingRedraft);
+        Assert.NotEqual("نص كتبه المحامي", grounds.Text);
+
+        grounds.UndoCommand.Execute(null);
+        Assert.Equal("نص كتبه المحامي", grounds.Text);
+    }
+
+    [Fact]
+    public async Task ModelStatusTellsWhenTheEngineIsNotRunning()
+    {
+        var vm = Vm.Create(provider: "failing");
+        await vm.CheckModelStatusAsync();
+        Assert.False(vm.IsModelReady);
+        Assert.Contains("Ollama", vm.ModelStatusText, StringComparison.Ordinal);
+
+        vm.SelectedProvider = vm.Providers.Single(p => p.Key == "stub");
+        await vm.CheckModelStatusAsync();
+        Assert.True(vm.IsModelReady);
+    }
+
+    [Fact]
     public void NewResetsTheForm()
     {
         var vm = Vm.Create().Filled();

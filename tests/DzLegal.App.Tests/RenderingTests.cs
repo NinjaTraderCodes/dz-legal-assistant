@@ -134,6 +134,23 @@ public class RenderingTests
     }
 
     [AvaloniaFact]
+    public async Task AssistantPanelShowsTheProposalDiff()
+    {
+        var vm = Vm.Create(provider: "scripted").Filled();
+        await vm.GenerateCommand.ExecuteAsync(null);
+        var window = new MainWindow { DataContext = vm, Width = 1440, Height = 900 };
+        window.Show();
+        vm.Sections.Single(s => s.Id == "grounds").OpenAssistantCommand.Execute(null);
+        vm.AssistantInstruction = "أكثر رسمية";
+        await vm.SendInstructionCommand.ExecuteAsync(null);
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.True(window.FindControl<Border>("AssistantPanel")!.IsVisible);
+        Assert.True(window.FindControl<Button>("AcceptButton")!.IsEnabled);
+        SaveScreenshot(window, "main-window-assistant");
+    }
+
+    [AvaloniaFact]
     public void MixedArabicLatinAndDigitsLayOutInBidiOrder()
     {
         // Arabic paragraph with an embedded French term, a Latin name and a number.

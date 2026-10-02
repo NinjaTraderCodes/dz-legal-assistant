@@ -20,6 +20,8 @@
 - **FormEngine** is a single pure function, `ComplianceChecker.Check(definition, draft) → report`. It has no I/O, no AI and no clock, which makes it deterministic and fast enough to run on every keystroke.
 - **Drafting**:
   - `DraftingService.DraftAsync` renders the *generated* sections from Scriban templates and asks an `IModelProvider` to write the *narrative* sections.
+  - `DraftOptions.KeepNarrative` keeps sections the lawyer edited; `DraftSectionAsync` redrafts one section; `OnPartial` streams text as the model writes it (`IModelProvider.StreamAsync`, which Ollama implements with `stream: true`).
+  - `SectionReviser.ReviseAsync` asks the model to edit one section following the lawyer's instruction (`prompts/revise.ar.txt`). The proposal goes through the same cleaning, corrections and `NarrativeChecks` as a draft (numbers in the instruction count as known), is retried once on a hard failure, and is flagged as a refusal when the model returns the fixed «خارج نطاق التعديل» line. `TextDiff` produces the word-level diff shown for review. Nothing is applied until the lawyer accepts.
   - `Refresh` re-applies form changes without calling the model and keeps the lawyer's narrative edits.
   - `BuildRequest` exposes the exact prompt for inspection and tests.
 - **NarrativeChecks** (in Drafting) checks model text against the lawyer's material:
@@ -32,7 +34,7 @@
   Month names (جانفي، يناير، janvier…) count as their numbers, so «15 جانفي 2025» matches `15/01/2025`. Wording that appears in the prompt's instructions (for example «في الشكل: قبول الدعوى شكلا») never counts as copying the example.
 
   Paragraphs that copy the prompt's worked example are removed first. Detection uses the example's placeholder tokens such as «(س)», or near-verbatim overlap. `DraftAsync` then retries an empty or hard-failing answer once, falls back to the notes verbatim, and records each step in `DraftSection.DraftingNotes`. The app re-runs the checks on every edit and shows them as review hints under the section. They cannot detect meaning-level errors such as swapped roles, which remain the lawyer's review.
-- **ModelProviders**: `StubModelProvider` (template mode) and `OllamaModelProvider` (loopback-only HTTP to a local Ollama). Adding llama.cpp or another runtime means one new class implementing `IModelProvider`.
+- **ModelProviders**: `StubModelProvider` (template mode) and `OllamaModelProvider` (loopback-only HTTP to a local Ollama, streaming NDJSON, and `GetInstalledModelsAsync` over `/api/tags` for the status dot). Adding llama.cpp or another runtime means one new class implementing `IModelProvider`.
 - **Documents**: `DocumentLayoutBuilder` turns a draft into print blocks, using the per-section `layout` data.
   - `PdfRenderer` (QuestPDF) produces an A4 right-to-left PDF with the embedded Naskh font, and the page images used by the in-app preview, so the preview is exactly the PDF.
   - `DocxRenderer` (Open XML SDK) produces an editable, schema-valid right-to-left `.docx`.
@@ -48,7 +50,7 @@
 1. The case form is generated from `fields` in `definition.json`. Values are strings keyed by field id (for example `plaintiff.domicile`). Visibility follows each field's `visibleWhen` conditions.
 2. On every form change, `Refresh` re-renders the **generated** sections (court, parties, subject, publication, opening, documents, date, signature). Sections with an `includeWhen` condition, such as land-registry publication, appear or disappear.
 3. **Draft narrative sections** sends one request per narrative section. Each request is the system prompt (rules: no invented facts, amounts or citations; formal Arabic; text only) plus the section prompt with the lawyer's notes embedded. Output is cleaned (`<think>` blocks, Markdown, a repeated heading). Empty notes mean no model call, so the section stays empty and gets flagged.
-4. Narrative sections are freely editable. Generated sections are read-only in the editor and change through the form. This keeps what the lawyer sees identical to what the Form Engine checks.
+4. Narrative sections are freely editable, and the section assistant proposes edits as a diff to accept or reject; each section keeps an undo history. Re-drafting skips sections the lawyer edited. Generated sections are read-only in the editor and change through the form. This keeps what the lawyer sees identical to what the Form Engine checks.
 5. After every change the Form Engine produces a report. Missing mandatory elements are listed first, then warnings, then present and not-applicable elements.
 
 ## The rule model
@@ -86,5 +88,5 @@ The check set is deliberately small. Anything new should be a new kind with unit
 ## Testing
 
 - `DzLegal.FormEngine.Tests`: every check kind; definition validation; one test per corpus case; whole-corpus 100%; every element exercised as missing at least once; the harness detects a wrong expectation.
-- `DzLegal.Drafting.Tests`: template model; grounding (prompt contents, no call without notes); refresh semantics; output cleaning; `LoopbackGuard`; the Ollama client against a fake HTTP handler.
+- `DzLegal.Drafting.Tests`: template model; grounding (prompt contents, no call without notes); refresh semantics; output cleaning; keep-edits and single-section redraft; the reviser (checks, retry, refusal) and word diff; Ollama streaming and model listing; `LoopbackGuard`; the Ollama client against a fake HTTP handler.
 - `DzLegal.App.Tests`: the whole loop through the view model; headless Skia rendering for the RTL layout, language switch and bidi ordering. Set `DZLEGAL_SCREENSHOTS=<folder>` to save screenshots.

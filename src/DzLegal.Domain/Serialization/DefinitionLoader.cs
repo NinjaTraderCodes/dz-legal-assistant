@@ -125,6 +125,10 @@ public static class DefinitionLoader
         if (definition.Sections.Any(s => s.Kind == SectionKind.Narrative))
         {
             CheckFile(definition, definition.SystemPrompt, "systemPrompt", errors);
+            if (definition.RevisionPrompt is not null)
+            {
+                CheckFile(definition, definition.RevisionPrompt, "revisionPrompt", errors);
+            }
         }
 
         errors.AddRange(definition.Corrections

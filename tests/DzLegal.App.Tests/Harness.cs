@@ -55,6 +55,19 @@ internal sealed class FakeFiles : IUserFiles
     }
 }
 
+/// <summary>Answers revision prompts with a fixed rewrite and drafting prompts with the notes.</summary>
+internal sealed class ScriptedProvider : IModelProvider
+{
+    public const string Revision = "حيث إن المادة 106 من القانون المدني تنص على أن العقد شريعة المتعاقدين، وقد أخل المدعى عليه بالتزامه.";
+
+    public string Name => "scripted";
+
+    public Task<string> GenerateAsync(ModelRequest request, CancellationToken cancellationToken) =>
+        Task.FromResult(request.UserPrompt.Contains("النص الحالي للقسم", StringComparison.Ordinal)
+            ? request.UserPrompt.Contains("ما هو", StringComparison.Ordinal) ? SectionReviser.RefusalMarker : Revision
+            : request.SourceText);
+}
+
 internal sealed class FailingProvider : IModelProvider
 {
     public string Name => "failing";
@@ -74,7 +87,8 @@ internal static class Vm
         IReadOnlyList<ProviderOption> providers =
         [
             new ProviderOption("stub", l => l["ProviderStub"], () => new StubModelProvider()),
-            new ProviderOption("failing", _ => "failing", () => new FailingProvider()),
+            new ProviderOption("failing", _ => "failing", () => new FailingProvider(), _ => Task.FromResult(new ModelStatus(ModelState.NotRunning))),
+            new ProviderOption("scripted", _ => "scripted", () => new ScriptedProvider()),
         ];
         return new MainWindowViewModel(definition, providers, files ?? new FakeFiles(), new EvaluationStore(EvaluationsFolder), loc, provider, () => new DateOnly(2026, 9, 15), autosaveFile);
     }

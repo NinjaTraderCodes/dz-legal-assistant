@@ -10,6 +10,15 @@ public interface IModelProvider
     string Name { get; }
 
     Task<string> GenerateAsync(ModelRequest request, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Streams the answer as it is written (text pieces to append). Providers that cannot stream yield the whole
+    /// answer once.
+    /// </summary>
+    async IAsyncEnumerable<string> StreamAsync(ModelRequest request, [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken cancellationToken)
+    {
+        yield return await GenerateAsync(request, cancellationToken);
+    }
 }
 
 /// <param name="SectionId">The section being written.</param>

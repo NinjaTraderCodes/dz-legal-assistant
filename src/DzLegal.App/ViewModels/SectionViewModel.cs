@@ -36,6 +36,60 @@ public sealed partial class SectionViewModel : ObservableObject
 
     public bool CanOverride => IsLocked;
 
+    /// <summary>Earlier versions of this section (before a redraft or an accepted revision), most recent last.</summary>
+    private readonly Stack<string> _history = new();
+
+    [ObservableProperty]
+    public partial bool CanUndo { get; set; }
+
+    /// <summary>First click on ↻ asks for confirmation; the second redrafts.</summary>
+    [ObservableProperty]
+    public partial bool IsConfirmingRedraft { get; set; }
+
+    internal Func<SectionViewModel, Task>? RedraftHandler { get; set; }
+
+    internal Action<SectionViewModel>? AssistantHandler { get; set; }
+
+    /// <summary>Remembers the current text before it is replaced, so the lawyer can go back.</summary>
+    internal void PushHistory()
+    {
+        _history.Push(Text);
+        CanUndo = true;
+    }
+
+    [RelayCommand]
+    private void Undo()
+    {
+        if (_history.Count > 0)
+        {
+            Text = _history.Pop();
+        }
+
+        CanUndo = _history.Count > 0;
+    }
+
+    [RelayCommand]
+    private async Task RedraftAsync()
+    {
+        if (!IsConfirmingRedraft && Text.Trim().Length > 0)
+        {
+            IsConfirmingRedraft = true;
+            return;
+        }
+
+        IsConfirmingRedraft = false;
+        if (RedraftHandler is not null)
+        {
+            await RedraftHandler(this);
+        }
+    }
+
+    [RelayCommand]
+    private void CancelRedraft() => IsConfirmingRedraft = false;
+
+    [RelayCommand]
+    private void OpenAssistant() => AssistantHandler?.Invoke(this);
+
     [RelayCommand]
     private void Override() => _onOverride(this, true);
 

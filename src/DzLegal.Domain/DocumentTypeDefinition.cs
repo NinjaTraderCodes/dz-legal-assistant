@@ -14,6 +14,12 @@ public sealed record DocumentTypeDefinition
 
     /// <summary>System prompt file (relative to the definition folder) shared by all narrative sections.</summary>
     public string? SystemPrompt { get; init; }
+
+    /// <summary>Prompt file used by the section assistant to revise a narrative section on the lawyer's request.</summary>
+    public string? RevisionPrompt { get; init; }
+
+    /// <summary>Quick instructions offered as one-click chips in the section assistant.</summary>
+    public IReadOnlyList<RevisionShortcut> RevisionShortcuts { get; init; } = [];
     public IReadOnlyList<FieldGroupDefinition> FieldGroups { get; init; } = [];
     public IReadOnlyList<FieldDefinition> Fields { get; init; } = [];
     public IReadOnlyList<SectionDefinition> Sections { get; init; } = [];
@@ -37,6 +43,9 @@ public sealed record DocumentTypeDefinition
 }
 
 public sealed record FieldGroupDefinition(string Id, LocalizedText Label);
+
+/// <summary>A one-click instruction for the section assistant: a short label and the Arabic instruction sent.</summary>
+public sealed record RevisionShortcut(LocalizedText Label, string Instruction);
 
 /// <summary>An exact find/replace fix, e.g. «إن المادتان» → «إن المادتين» (the noun after «إنّ» is accusative).</summary>
 public sealed record TextCorrection(string Find, string Replace);

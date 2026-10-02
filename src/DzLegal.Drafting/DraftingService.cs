@@ -23,12 +23,23 @@ public sealed partial class DraftingService
 
     public string ProviderName => _provider.Name;
 
-    public async Task<DraftDocument> DraftAsync(
+    public Task<DraftDocument> DraftAsync(
         DocumentTypeDefinition definition,
         IReadOnlyDictionary<string, string> inputs,
         IProgress<SectionDefinition>? progress = null,
+        CancellationToken cancellationToken = default) =>
+        DraftAsync(definition, inputs, new DraftOptions { Progress = progress }, cancellationToken);
+
+    public async Task<DraftDocument> DraftAsync(
+        DocumentTypeDefinition definition,
+        IReadOnlyDictionary<string, string> inputs,
+        DraftOptions options,
         CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(options);
+        var progress = options.Progress;
+        var keepNarrative = options.KeepNarrative;
+        var onPartial = options.OnPartial;
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentNullException.ThrowIfNull(inputs);
 
@@ -36,8 +47,14 @@ public sealed partial class DraftingService
         foreach (var section in IncludedSections(definition, inputs))
         {
             progress?.Report(section);
+            if (section.Kind == SectionKind.Narrative && keepNarrative?.TryGetValue(section.Id, out var kept) == true)
+            {
+                sections.Add(new DraftSection { Id = section.Id, Text = kept });
+                continue;
+            }
+
             sections.Add(section.Kind == SectionKind.Narrative
-                ? await WriteNarrativeAsync(definition, section, inputs, cancellationToken)
+                ? await WriteNarrativeAsync(definition, section, inputs, cancellationToken, onPartial)
                 : new DraftSection { Id = section.Id, Text = RenderGenerated(definition, section, inputs) });
         }
 
@@ -98,7 +115,35 @@ public sealed partial class DraftingService
         return new ModelRequest(section.Id, system, user, notes, example, instructions);
     }
 
-    private async Task<DraftSection> WriteNarrativeAsync(DocumentTypeDefinition definition, SectionDefinition section, IReadOnlyDictionary<string, string> inputs, CancellationToken cancellationToken)
+    /// <summary>Redrafts one narrative section from the lawyer's notes (the ↻ action on a section).</summary>
+    public Task<DraftSection> DraftSectionAsync(
+        DocumentTypeDefinition definition,
+        string sectionId,
+        IReadOnlyDictionary<string, string> inputs,
+        Action<string, string>? onPartial = null,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(definition);
+        var section = definition.FindSection(sectionId) is { Kind: SectionKind.Narrative } s
+            ? s
+            : throw new ArgumentException($"'{sectionId}' is not a narrative section.", nameof(sectionId));
+        return WriteNarrativeAsync(definition, section, inputs, cancellationToken, onPartial);
+    }
+
+    /// <summary>Streams the model's answer, reporting the text so far, and returns the whole answer.</summary>
+    private async Task<string> CollectAsync(ModelRequest request, Action<string, string>? onPartial, CancellationToken cancellationToken)
+    {
+        var text = new System.Text.StringBuilder();
+        await foreach (var piece in _provider.StreamAsync(request, cancellationToken))
+        {
+            text.Append(piece);
+            onPartial?.Invoke(request.SectionId, text.ToString());
+        }
+
+        return text.ToString();
+    }
+
+    private async Task<DraftSection> WriteNarrativeAsync(DocumentTypeDefinition definition, SectionDefinition section, IReadOnlyDictionary<string, string> inputs, CancellationToken cancellationToken, Action<string, string>? onPartial = null)
     {
         var request = BuildRequest(definition, section, inputs);
         if (request.SourceText.Length == 0)
@@ -109,7 +154,7 @@ public sealed partial class DraftingService
         var notes = new List<string>();
         for (var attempt = 1; attempt <= 2; attempt++)
         {
-            var output = CleanModelOutput(await _provider.GenerateAsync(request, cancellationToken), section);
+            var output = CleanModelOutput(await CollectAsync(request, onPartial, cancellationToken), section);
             var (text, removed) = NarrativeChecks.RemoveCopiedExample(output, request.ExampleText, request.SourceText + "\n" + request.InstructionText);
             text = ApplyCorrections(definition, text);
             if (removed > 0 && !notes.Contains(DraftingNoteCodes.RemovedCopiedExample))
@@ -190,4 +235,20 @@ public sealed partial class DraftingService
 
     [GeneratedRegex(@"^\s*```[a-zA-Z]*\s*$", RegexOptions.Multiline)]
     private static partial Regex CodeFence();
+}
+
+/// <summary>Optional behaviour of <see cref="DraftingService.DraftAsync(DocumentTypeDefinition, IReadOnlyDictionary{string, string}, DraftOptions, CancellationToken)"/>.</summary>
+public sealed record DraftOptions
+{
+    /// <summary>Reports each section as drafting reaches it.</summary>
+    public IProgress<SectionDefinition>? Progress { get; init; }
+
+    /// <summary>
+    /// Narrative sections the lawyer has edited, by id: their text is kept and the model is not called for them,
+    /// so redrafting never destroys the lawyer's work.
+    /// </summary>
+    public IReadOnlyDictionary<string, string>? KeepNarrative { get; init; }
+
+    /// <summary>Receives (section id, text so far) while the model streams its answer.</summary>
+    public Action<string, string>? OnPartial { get; init; }
 }

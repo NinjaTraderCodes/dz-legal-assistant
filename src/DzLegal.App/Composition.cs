@@ -2,6 +2,7 @@ using DzLegal.App.Services;
 using DzLegal.App.ViewModels;
 using DzLegal.Domain;
 using DzLegal.Domain.Serialization;
+using DzLegal.Drafting;
 using DzLegal.ModelProviders.Ollama;
 using DzLegal.ModelProviders.Stub;
 using DzLegal.Storage;
@@ -29,9 +30,28 @@ public static class Composition
 
         return
         [
-            new ProviderOption("ollama", loc => loc.Format("ProviderOllama", ollama.Model), () => new OllamaModelProvider(ollama)),
+            new ProviderOption("ollama", loc => loc.Format("ProviderOllama", ollama.Model), () => new OllamaModelProvider(ollama), ct => ProbeOllamaAsync(ollama, ct)),
             new ProviderOption("stub", loc => loc["ProviderStub"], () => new StubModelProvider()),
         ];
+    }
+
+    /// <summary>Loopback-only check: is Ollama running, and is the configured model installed?</summary>
+    public static async Task<ModelStatus> ProbeOllamaAsync(OllamaOptions options, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(options);
+        using var provider = new OllamaModelProvider(options with { Timeout = TimeSpan.FromSeconds(3) });
+        try
+        {
+            var models = await provider.GetInstalledModelsAsync(cancellationToken);
+            var wanted = options.Model.Contains(':', StringComparison.Ordinal) ? options.Model : options.Model + ":latest";
+            return models.Any(m => string.Equals(m, wanted, StringComparison.OrdinalIgnoreCase))
+                ? new ModelStatus(ModelState.Ready, options.Model)
+                : new ModelStatus(ModelState.ModelMissing, options.Model);
+        }
+        catch (Exception ex) when (ex is ModelProviderException or TaskCanceledException)
+        {
+            return new ModelStatus(ModelState.NotRunning, options.Model);
+        }
     }
 
     public static MainWindowViewModel CreateMainViewModel(AppSettings settings, IUserFiles files, AppPaths paths, Loc loc)

@@ -21,6 +21,20 @@ The lawyer fills in the case details, the application produces a structured firs
 | **Verifiable** | The Form Engine is pure and deterministic. A 24-case corpus measures its accuracy per element, and CI requires 100%. |
 | **Legal rules are data** | Elements, articles, templates and prompts live in `data/`. Changing a rule means editing JSON, not code. |
 
+## Section assistant
+
+Each narrative section (grounds, requests) has a **✦ Assistant** button. It opens a panel where the lawyer asks for an edit of *that section only*: quick chips («أكثر رسمية», «أوجز», «صحح اللغة», «اربط كل مادة بطلبها», «لا تكرر الخاتمة») or a free instruction.
+- The model's answer streams in as it is written, then appears as a **word-level diff** (added in green, removed struck out) with **Accept / Reject / Try again**.
+- Every proposal goes through the same checks as a first draft: invented or dropped numbers, unexpected Latin words, legal terms the lawyer never used, non-Arabic or foreign-script text. Their hints show above the diff. A hard failure is retried once.
+- It is not a chatbot: a legal question gets a fixed reply («المساعد يعدل صياغة هذا القسم فقط»), never an answer.
+- Accepting keeps the old text in the section's history, so **Undo** restores it.
+
+**Regeneration never destroys edits.** «صياغة الأقسام السردية» only fills sections that are empty or unchanged since the model wrote them. A section the lawyer edited keeps its text; its own **↻ Redraft** button asks for confirmation first, and the old text can be undone.
+
+**Model status** is shown by a dot next to the provider. The app asks the local Ollama (`/api/tags`, loopback only) at startup and every 30 s, and says plainly when Ollama is not running or the model is not installed (`ollama pull gemma3:4b`).
+
+![Section assistant](docs/images/main-window-assistant.png)
+
 ## Output: preview, PDF and Word
 
 The **Preview** tab shows the requête exactly as it prints: A4 pages rendered from the real PDF, right-to-left, in the bundled Noto Naskh Arabic font, with an optional diagonal «مسودة» watermark.
@@ -39,7 +53,7 @@ Prerequisite: [.NET 10 SDK](https://dotnet.microsoft.com/download) (the version 
 
 ```bash
 dotnet build                                   # warnings are errors
-dotnet test                                    # 191 tests: engine, drafting, providers, storage, UI (headless)
+dotnet test                                    # 207 tests: engine, drafting, providers, storage, UI (headless)
 dotnet run --project src/DzLegal.Harness       # Form Engine accuracy report (exit 1 on any mismatch)
 dotnet run --project src/DzLegal.App           # the desktop app
 ```
@@ -87,7 +101,8 @@ The output folder has everything it needs: runtime, `data/` rules, fonts and `ap
 4. **Right panel, Formal check:** the score («10 من 12») and only the missing elements, expanded. Click one to jump to the step that fixes it. Present elements are folded away.
 5. **Centre, Draft:**
    - **Edit** shows the sections on paper. Generated sections follow the form (🔒). Use **Edit by hand** to take one over, and **Restore from form** to give it back.
-   - **Draft narrative sections** writes the grounds and requests.
+   - **Draft narrative sections** writes the grounds and requests, streaming the text as it comes. Sections you edited are kept.
+   - **✦ Assistant** on a narrative section proposes an edit you accept or reject (needs Ollama; template mode only echoes the text). **Undo** and **↻ Redraft** are per section.
    - **Preview** shows the exact A4 pages. **Export PDF** and **Export Word** save the document, with or without the «مسودة» watermark.
 6. Work is autosaved every 30 s and on close. The next start offers to restore it.
 7. Keyboard shortcuts: Ctrl+N new, Ctrl+O open, Ctrl+S save, Ctrl+G draft, Ctrl+P export PDF.

@@ -298,7 +298,17 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
             var drafting = new DraftingService(provider);
             // Synchronous progress: Progress<T> would post late updates over the final status.
             var progress = new InlineProgress<SectionDefinition>(s => SetStatus(L.Format("Generating", s.Title.Get(L.Language))));
-            var draft = await drafting.DraftAsync(_definition, CurrentInputs(), progress, cancellationToken);
+            var keep = EditedNarrative();
+            var draft = await drafting.DraftAsync(
+                _definition,
+                CurrentInputs(),
+                new DraftOptions
+                {
+                    Progress = progress,
+                    KeepNarrative = keep,
+                    OnPartial = (id, partial) => Sections.FirstOrDefault(x => x.Id == id)?.SetFromModel(partial),
+                },
+                cancellationToken);
             foreach (var manual in _draft.Sections.Where(x => x.Overridden))
             {
                 if (draft.FindSection(manual.Id) is { } target)
@@ -308,11 +318,22 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
                 }
             }
 
+            foreach (var section in draft.Sections.Where(x => _definition.FindSection(x.Id)?.Kind == SectionKind.Narrative && !keep.ContainsKey(x.Id)))
+            {
+                _modelText[section.Id] = section.Text;
+            }
+
             _draft = draft;
             _generatedSnapshot = draft.DeepCopy();
             HasGeneratedDraft = true;
             SyncSections(overwriteNarrative: true);
             Recheck();
+            if (keep.Count > 0)
+            {
+                SetStatus(L.Format("KeptEdited", provider.Name, string.Join("، ", keep.Keys.Select(k => _definition.FindSection(k)!.Title.Get(L.Language)))));
+                return;
+            }
+
             SetStatus(L.Format("Generated", provider.Name));
         }
         catch (OperationCanceledException)
@@ -423,6 +444,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         LoadInputs(CaseInputs.CreateDefaults(_definition, _today()));
         _draft = new DraftDocument { DocumentTypeId = _definition.Id, DefinitionVersion = _definition.Version };
         _generatedSnapshot = null;
+        _modelText.Clear();
         HasGeneratedDraft = false;
         OnInputChanged();
         SyncSections(overwriteNarrative: true);
@@ -546,6 +568,9 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         OnPropertyChanged(nameof(FlowDirection));
         OnPropertyChanged(nameof(DocumentTypeName));
         OnPropertyChanged(nameof(StepPosition));
+        OnPropertyChanged(nameof(Shortcuts));
+        OnPropertyChanged(nameof(AssistantTitle));
+        _ = CheckModelStatusAsync();
         Recheck();
         SetStatus(L["Ready"]);
     }
@@ -588,6 +613,13 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         }
     }
 
+    private SectionViewModel CreateSection(DraftSection section)
+    {
+        var vm = new SectionViewModel(_definition.FindSection(section.Id)!, section.Text, L, OnSectionEdited, OnSectionOverride);
+        WireSection(vm);
+        return vm;
+    }
+
     /// <summary>Mirrors the draft's sections in the editor, rebuilding only when the section list changed.</summary>
     private void SyncSections(bool overwriteNarrative)
     {
@@ -600,7 +632,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
             {
                 Sections.Add(existing.TryGetValue(section.Id, out var vm)
                     ? vm
-                    : new SectionViewModel(_definition.FindSection(section.Id)!, section.Text, L, OnSectionEdited, OnSectionOverride));
+                    : CreateSection(section));
             }
         }
 

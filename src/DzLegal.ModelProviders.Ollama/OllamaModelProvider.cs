@@ -34,12 +34,7 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
     public async Task<string> GenerateAsync(ModelRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        var body = new ChatRequest(
-            _options.Model,
-            [new ChatMessage("system", request.SystemPrompt), new ChatMessage("user", request.UserPrompt)],
-            Stream: false,
-            _options.Think,
-            new ChatOptions(_options.Temperature, _options.ContextLength, _options.MaxTokens, _options.RepeatPenalty));
+        var body = Body(request, stream: false);
 
         HttpResponseMessage response;
         try
@@ -58,25 +53,98 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
 
         using (response)
         {
-            if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                throw new ModelProviderException(
-                    $"Model '{_options.Model}' is not installed locally. Run: ollama pull {_options.Model}");
-            }
-
-            if (!response.IsSuccessStatusCode)
-            {
-                var detail = await response.Content.ReadAsStringAsync(cancellationToken);
-                throw new ModelProviderException($"Local model error {(int)response.StatusCode}: {detail}");
-            }
-
+            await EnsureSuccessAsync(response, cancellationToken);
             var reply = await response.Content.ReadFromJsonAsync<ChatResponse>(cancellationToken);
             return reply?.Message?.Content
                 ?? throw new ModelProviderException("The local model returned an empty answer.");
         }
     }
 
+    /// <summary>Streams the answer token by token (<c>"stream": true</c>), so the lawyer sees it appear.</summary>
+    public async IAsyncEnumerable<string> StreamAsync(ModelRequest request, [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        using var message = new HttpRequestMessage(HttpMethod.Post, new Uri("api/chat", UriKind.Relative))
+        {
+            Content = JsonContent.Create(Body(request, stream: true)),
+        };
+
+        HttpResponseMessage response;
+        try
+        {
+            response = await _http.SendAsync(message, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+        }
+        catch (HttpRequestException ex)
+        {
+            throw new ModelProviderException(
+                $"The local model server is not reachable at {_options.Endpoint}. Start Ollama, or switch to template mode.", ex);
+        }
+
+        using (response)
+        {
+            await EnsureSuccessAsync(response, cancellationToken);
+            using var reader = new StreamReader(await response.Content.ReadAsStreamAsync(cancellationToken));
+            while (await reader.ReadLineAsync(cancellationToken) is { } line)
+            {
+                if (line.Length == 0)
+                {
+                    continue;
+                }
+
+                var chunk = System.Text.Json.JsonSerializer.Deserialize<ChatResponse>(line);
+                if (chunk?.Message?.Content is { Length: > 0 } piece)
+                {
+                    yield return piece;
+                }
+
+                if (chunk?.Done == true)
+                {
+                    yield break;
+                }
+            }
+        }
+    }
+
+    /// <summary>Asks the local server which models are installed (<c>GET /api/tags</c>); used for the status indicator.</summary>
+    public async Task<IReadOnlyList<string>> GetInstalledModelsAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            using var response = await _http.GetAsync(new Uri("api/tags", UriKind.Relative), cancellationToken);
+            response.EnsureSuccessStatusCode();
+            var tags = await response.Content.ReadFromJsonAsync<TagsResponse>(cancellationToken);
+            return tags?.Models?.Select(m => m.Name).ToList() ?? [];
+        }
+        catch (HttpRequestException ex)
+        {
+            throw new ModelProviderException($"The local model server is not reachable at {_options.Endpoint}.", ex);
+        }
+    }
+
+    public string ModelName => _options.Model;
+
     public void Dispose() => _http.Dispose();
+
+    private ChatRequest Body(ModelRequest request, bool stream) => new(
+        _options.Model,
+        [new ChatMessage("system", request.SystemPrompt), new ChatMessage("user", request.UserPrompt)],
+        Stream: stream,
+        _options.Think,
+        new ChatOptions(_options.Temperature, _options.ContextLength, _options.MaxTokens, _options.RepeatPenalty));
+
+    private async Task EnsureSuccessAsync(HttpResponseMessage response, CancellationToken cancellationToken)
+    {
+        if (response.StatusCode == HttpStatusCode.NotFound)
+        {
+            throw new ModelProviderException($"Model '{_options.Model}' is not installed locally. Run: ollama pull {_options.Model}");
+        }
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var detail = await response.Content.ReadAsStringAsync(cancellationToken);
+            throw new ModelProviderException($"Local model error {(int)response.StatusCode}: {detail}");
+        }
+    }
 
     private sealed record ChatRequest(
         [property: JsonPropertyName("model")] string Model,
@@ -96,5 +164,10 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
         [property: JsonPropertyName("repeat_penalty")] double RepeatPenalty);
 
     private sealed record ChatResponse(
-        [property: JsonPropertyName("message")] ChatMessage? Message);
+        [property: JsonPropertyName("message")] ChatMessage? Message,
+        [property: JsonPropertyName("done")] bool Done = false);
+
+    private sealed record TagsResponse([property: JsonPropertyName("models")] IReadOnlyList<TagModel>? Models);
+
+    private sealed record TagModel([property: JsonPropertyName("name")] string Name);
 }

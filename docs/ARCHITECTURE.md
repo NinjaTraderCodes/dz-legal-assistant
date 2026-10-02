@@ -39,6 +39,7 @@
   - `PdfRenderer` (QuestPDF) produces an A4 right-to-left PDF with the embedded Naskh font, and the page images used by the in-app preview, so the preview is exactly the PDF.
   - `DocxRenderer` (Open XML SDK) produces an editable, schema-valid right-to-left `.docx`.
   - Fonts live in `assets/fonts/` and are shared by the app and the PDF engine.
+- **Law** (`DzLegal.Law`): the offline law library. `LawLibraryLoader` validates `data/law/codes/*.json`. `LawTextParser` splits an official text into articles (headings, «مكرر» numbers, reversed PDF text, repealed markers) and reports gaps for review. `LawDiff` compares two imports. `ArabicScript.Normalize` and `ArabicScript.Tokens` in Domain give the shared Arabic normalisation used for matching. The importer itself (`law import` in the Harness) is the only code that downloads anything, and only at development time. See [LAW-LIBRARY.md](LAW-LIBRARY.md).
 - **Storage**: drafts (`*.dzdraft.json`) and evaluation records as local JSON under the user's local app-data folder.
 - **Harness** has two modes:
   - Its default mode loads the corpus, runs the Form Engine, and prints per-element accuracy, precision and recall. The same logic runs as a test.

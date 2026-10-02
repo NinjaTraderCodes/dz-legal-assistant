@@ -151,9 +151,7 @@ public static partial class NarrativeChecks
         return grams;
     }
 
-    /// <summary>Drops Arabic short vowels and tatweel, so «حيثُ» and «حيث» compare equal.</summary>
-    private static string StripDiacritics(string text) =>
-        new(text.Where(c => c is not (>= '\u064B' and <= '\u065F') and not '\u0640' and not '\u0670').ToArray());
+    private static string StripDiacritics(string text) => ArabicScript.StripDiacritics(text);
 
     private static IEnumerable<string> LatinWords(string text) =>
         LatinWord().Matches(text).Select(m => m.Value.ToLowerInvariant());
@@ -221,21 +219,7 @@ public static partial class NarrativeChecks
         return string.Concat(tokens);
     }
 
-    private static string ToAsciiDigits(string text)
-    {
-        var chars = text.ToCharArray();
-        for (var i = 0; i < chars.Length; i++)
-        {
-            chars[i] = chars[i] switch
-            {
-                >= '٠' and <= '٩' => (char)('0' + (chars[i] - '٠')),
-                >= '۰' and <= '۹' => (char)('0' + (chars[i] - '۰')),
-                _ => chars[i],
-            };
-        }
-
-        return new string(chars);
-    }
+    private static string ToAsciiDigits(string text) => ArabicScript.ToAsciiDigits(text);
 
     [GeneratedRegex(@"\d{1,3}(?:[,.\u066C\u00A0\u202F ]\d{3})+(?!\d)|\d+")]
     private static partial Regex NumberToken();

@@ -122,8 +122,10 @@ src/
   DzLegal.ModelProviders.Ollama/  local model over loopback only
   DzLegal.Storage/                local JSON drafts + evaluation records
   DzLegal.Documents/              print layout → PDF (QuestPDF) and Word (Open XML), preview images
-  DzLegal.Harness/                Form Engine accuracy report over the corpus
+  DzLegal.Law/                    offline law library (official article texts), parser for official texts
+  DzLegal.Harness/                Form Engine accuracy report, drafting bench, `law import` maintainer tool
   DzLegal.App/                    Avalonia desktop shell (Arabic/English)
+data/law/                         official texts to import (sources.json), imported codes, import reports — see docs/LAW-LIBRARY.md
 data/document-types/requete-introductive/
   definition.json                 fields, sections, required elements (+ articles)
   templates/*.scriban             deterministic sections

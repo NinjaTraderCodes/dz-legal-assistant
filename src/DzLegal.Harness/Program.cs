@@ -7,6 +7,8 @@ using DzLegal.Harness;
 //       Form Engine accuracy over the corpus. Exit code 1 on any mismatch.
 //   dzlegal-harness draft --models <m1,m2,...|stub> [--out bench] [--cases <folder>] [--endpoint http://127.0.0.1:11434] [--timeout-minutes 15]
 //       Drafting bench: runs the drafting cases through each local model and writes outputs + summary.md.
+//   dzlegal-harness law import <code-id> (--url <official url> | --file <file>) [--law-root data/law] [--as-of yyyy-mm-dd]
+//       Maintainer tool: imports an official text into the law library and writes a review report.
 var dataRoot = Path.Combine(AppContext.BaseDirectory, "data", "document-types");
 string Option(string name, string fallback)
 {
@@ -15,6 +17,17 @@ string Option(string name, string fallback)
 }
 
 dataRoot = Option("--data", dataRoot);
+
+if (args.Length > 1 && args[0] == "law" && args[1] == "import" && args.Length > 2)
+{
+    return await LawImport.RunAsync(
+        args[2],
+        args.Contains("--url") ? Option("--url", string.Empty) : null,
+        args.Contains("--file") ? Option("--file", string.Empty) : null,
+        Option("--law-root", Path.Combine("data", "law")),
+        args.Contains("--as-of") ? Option("--as-of", string.Empty) : null,
+        Console.Out);
+}
 
 if (args.Length > 0 && args[0] == "draft")
 {

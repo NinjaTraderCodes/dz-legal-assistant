@@ -3,7 +3,7 @@
 // practicing lawyer confirms it against the current official text (see docs/UPDATING-LEGAL-RULES.md).
 {
   "id": "requete-introductive",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "name": { "ar": "عريضة افتتاح الدعوى", "en": "Statement of claim (requête introductive d'instance)" },
   "description": {
     "ar": "العريضة التي ترفع بها الدعوى أمام المحكمة (المواد 14 و15 و17 من قانون الإجراءات المدنية والإدارية).",
@@ -16,7 +16,11 @@
   "corrections": [
     { "find": "إن المادتان", "replace": "إن المادتين" },
     { "find": "إن الطرفان", "replace": "إن الطرفين" },
-    { "find": "إن المدعيان", "replace": "إن المدعيين" }
+    { "find": "إن المدعيان", "replace": "إن المدعيين" },
+    // «امتنان» (gratitude) written for «امتناع» (refusal), seen in bench4.
+    { "find": "امتنانه بالسداد", "replace": "امتناعه عن السداد" },
+    { "find": "امتنانه عن", "replace": "امتناعه عن" },
+    { "find": "امتنانها عن", "replace": "امتناعها عن" }
   ],
 
   // Legal qualifications model text may use only if the lawyer's inputs contain them; otherwise they are

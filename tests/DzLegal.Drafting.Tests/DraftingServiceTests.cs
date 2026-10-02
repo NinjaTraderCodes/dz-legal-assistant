@@ -277,6 +277,18 @@ public class DraftingServiceTests
     }
 
     [Fact]
+    public async Task GratitudeIsCorrectedToRefusalLikeInBench4()
+    {
+        var provider = new RecordingProvider(r => r.SectionId == "grounds"
+            ? "وحيث إن المدعى عليه قد تسبب عن طريق امتنانه بالسداد في ضرر للمدعي."
+            : r.SourceText);
+
+        var draft = await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs());
+
+        Assert.Equal("وحيث إن المدعى عليه قد تسبب عن طريق امتناعه عن السداد في ضرر للمدعي.", draft.FindSection("grounds")!.Text);
+    }
+
+    [Fact]
     public void GroundsPromptAsksForOneParagraphPerGround()
     {
         var request = new DraftingService(new StubModelProvider()).BuildRequest(Requete, Requete.FindSection("grounds")!, Fixtures.CompleteInputs());

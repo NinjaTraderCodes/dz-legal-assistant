@@ -125,6 +125,9 @@ public static class DefinitionLoader
         errors.AddRange(definition.Corrections
             .Where(c => string.IsNullOrWhiteSpace(c.Find))
             .Select(_ => "Every correction needs a non-empty 'find'."));
+        errors.AddRange(definition.GroundedTerms
+            .Where(string.IsNullOrWhiteSpace)
+            .Select(_ => "groundedTerms must not contain empty entries."));
 
         foreach (var element in definition.Elements)
         {

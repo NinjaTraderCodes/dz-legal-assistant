@@ -3,7 +3,7 @@
 // practicing lawyer confirms it against the current official text (see docs/UPDATING-LEGAL-RULES.md).
 {
   "id": "requete-introductive",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "name": { "ar": "عريضة افتتاح الدعوى", "en": "Statement of claim (requête introductive d'instance)" },
   "description": {
     "ar": "العريضة التي ترفع بها الدعوى أمام المحكمة (المواد 14 و15 و17 من قانون الإجراءات المدنية والإدارية).",
@@ -17,6 +17,14 @@
     { "find": "إن المادتان", "replace": "إن المادتين" },
     { "find": "إن الطرفان", "replace": "إن الطرفين" },
     { "find": "إن المدعيان", "replace": "إن المدعيين" }
+  ],
+
+  // Legal qualifications model text may use only if the lawyer's inputs contain them; otherwise they are
+  // flagged («عقد المقاولة» was invented in a loan case). Add terms here as lawyers report new inventions.
+  "groundedTerms": [
+    "عقد المقاولة", "عقد البيع", "عقد الإيجار", "عقد الوديعة", "عقد الوكالة", "عقد العمل", "عقد الشركة",
+    "عقد التأمين", "عقد الهبة", "عقد القرض", "العقد التجاري",
+    "المسؤولية التقصيرية", "المسؤولية العقدية", "التدليس", "الغلط", "الإكراه", "الغبن", "التقادم", "الفسخ", "البطلان"
   ],
 
   "fieldGroups": [

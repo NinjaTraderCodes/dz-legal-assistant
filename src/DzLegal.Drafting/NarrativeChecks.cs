@@ -20,6 +20,9 @@ public enum NarrativeIssueKind
 
     /// <summary>A Latin-script word that appears nowhere in the lawyer's inputs (e.g. "caso" leaking from the model).</summary>
     UnexpectedLatinWord,
+
+    /// <summary>A legal qualification (e.g. «عقد المقاولة» in a loan case) that appears nowhere in the lawyer's inputs.</summary>
+    UngroundedTerm,
 }
 
 public sealed record NarrativeIssue(NarrativeIssueKind Kind, string Detail)
@@ -44,7 +47,11 @@ public static partial class NarrativeChecks
         ["سبتمبر", "septembre"], ["أكتوبر", "اكتوبر", "octobre"], ["نوفمبر", "novembre"], ["ديسمبر", "décembre", "decembre"],
     ];
 
-    public static IReadOnlyList<NarrativeIssue> Check(string text, string sectionNotes, IReadOnlyDictionary<string, string> inputs)
+    public static IReadOnlyList<NarrativeIssue> Check(
+        string text,
+        string sectionNotes,
+        IReadOnlyDictionary<string, string> inputs,
+        IReadOnlyList<string>? groundedTerms = null)
     {
         ArgumentNullException.ThrowIfNull(inputs);
         var issues = new List<NarrativeIssue>();
@@ -75,6 +82,18 @@ public static partial class NarrativeChecks
         var knownLatin = inputs.Values.SelectMany(LatinWords).ToHashSet(StringComparer.OrdinalIgnoreCase);
         issues.AddRange(LatinWords(text).Where(w => !knownLatin.Contains(w)).Distinct(StringComparer.OrdinalIgnoreCase)
             .Select(w => new NarrativeIssue(NarrativeIssueKind.UnexpectedLatinWord, w)));
+
+        if (groundedTerms is { Count: > 0 })
+        {
+            var plain = StripDiacritics(text);
+            var inputText = StripDiacritics(string.Join('\n', inputs.Values));
+            issues.AddRange(groundedTerms
+                .Select(StripDiacritics)
+                .Where(t => plain.Contains(t, StringComparison.Ordinal) && !inputText.Contains(t, StringComparison.Ordinal))
+                .Distinct()
+                .Select(t => new NarrativeIssue(NarrativeIssueKind.UngroundedTerm, t)));
+        }
+
         return issues;
     }
 

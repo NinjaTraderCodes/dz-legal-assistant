@@ -129,9 +129,12 @@ public class DefinitionLoaderTests
     [Fact]
     public void CorrectionsNeedSomethingToFind()
     {
-        var definition = Tiny() with { Corrections = [new TextCorrection(" ", "x")] };
-        Assert.Contains(DefinitionLoader.Validate(definition), e => e.Contains("non-empty 'find'", StringComparison.Ordinal));
+        var definition = Tiny() with { Corrections = [new TextCorrection(" ", "x")], GroundedTerms = ["عقد البيع", " "] };
+        var errors = DefinitionLoader.Validate(definition);
+        Assert.Contains(errors, e => e.Contains("non-empty 'find'", StringComparison.Ordinal));
+        Assert.Contains(errors, e => e.Contains("groundedTerms must not contain empty entries", StringComparison.Ordinal));
         Assert.NotEmpty(Requete.Corrections);
+        Assert.Contains("عقد المقاولة", Requete.GroundedTerms);
     }
 
     [Fact]

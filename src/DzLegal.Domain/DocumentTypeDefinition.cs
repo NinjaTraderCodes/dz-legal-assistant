@@ -22,6 +22,12 @@ public sealed record DocumentTypeDefinition
     /// <summary>Exact text fixes applied to model-written text only (e.g. small-model grammar slips).</summary>
     public IReadOnlyList<TextCorrection> Corrections { get; init; } = [];
 
+    /// <summary>
+    /// Legal qualifications (contract types, liability regimes…) that model-written text may use only when the
+    /// lawyer's own inputs contain them; otherwise they are flagged as possibly invented.
+    /// </summary>
+    public IReadOnlyList<string> GroundedTerms { get; init; } = [];
+
     /// <summary>Folder the definition was loaded from; templates and prompts resolve against it.</summary>
     public string SourceDirectory { get; init; } = string.Empty;
 

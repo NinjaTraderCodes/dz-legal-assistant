@@ -115,7 +115,12 @@ public sealed partial class DraftingService
                 notes.Add(DraftingNoteCodes.RemovedCopiedExample);
             }
 
-            if (text.Length > 0 && !NarrativeChecks.Check(text, request.SourceText, inputs).Any(i => i.IsHard))
+            var issues = NarrativeChecks.Check(text, request.SourceText, inputs, definition.GroundedTerms);
+            var invented = issues.Any(i => i.Kind == NarrativeIssueKind.UngroundedTerm);
+
+            // A possibly invented legal qualification earns one more try; a second answer that still has it is
+            // kept (the rest may be good) and the term is shown to the lawyer as a review hint.
+            if (text.Length > 0 && !issues.Any(i => i.IsHard) && (!invented || attempt == 2))
             {
                 return new DraftSection { Id = section.Id, Text = text, DraftingNotes = notes };
             }

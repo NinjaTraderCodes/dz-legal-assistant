@@ -181,8 +181,9 @@ public class DraftingServiceTests
         var request = service.BuildRequest(Requete, Requete.FindSection("grounds")!, Fixtures.CompleteInputs());
 
         Assert.DoesNotContain("[[", request.UserPrompt, StringComparison.Ordinal);
-        Assert.Contains("المادة (س) من القانون المدني", request.UserPrompt, StringComparison.Ordinal);
-        Assert.Contains("المادة (س) من القانون المدني", request.ExampleText, StringComparison.Ordinal);
+        Assert.Contains("المادة (س) من القانون (ص)", request.UserPrompt, StringComparison.Ordinal);
+        Assert.Contains("المادة (س) من القانون (ص)", request.ExampleText, StringComparison.Ordinal);
+        Assert.DoesNotContain("البائع", request.ExampleText, StringComparison.Ordinal);
         Assert.DoesNotContain("ملاحظات المحامي حول الأسانيد", request.ExampleText, StringComparison.Ordinal);
     }
 
@@ -240,6 +241,39 @@ public class DraftingServiceTests
 
         Assert.Equal("حيث إن المادتين 106 و107 من القانون المدني تجعلان العقد شريعة المتعاقدين.", draft.FindSection("grounds")!.Text);
         Assert.Contains("إن المادتان المذكورتان", draft.FindSection("facts")!.Text, StringComparison.Ordinal);
+    }
+
+    private const string InventedQualification =
+        "حيث إن المادتين 106 و107 من القانون المدني تنفيذاً لعقد المقاولة تجعلان العقد شريعة المتعاقدين.";
+
+    private const string FaithfulGrounds = "حيث إن المادة 106 من القانون المدني تجعل العقد شريعة المتعاقدين.";
+
+    [Fact]
+    public async Task InventedContractTypeEarnsOneRetry()
+    {
+        var answers = new Queue<string>([InventedQualification, FaithfulGrounds]);
+        var provider = new RecordingProvider(r => r.SectionId == "grounds" ? answers.Dequeue() : r.SourceText);
+
+        var draft = await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs());
+
+        var grounds = draft.FindSection("grounds")!;
+        Assert.Equal(FaithfulGrounds, grounds.Text);
+        Assert.Equal([DraftingNoteCodes.Retried], grounds.DraftingNotes);
+    }
+
+    [Fact]
+    public async Task PersistentInventedTermIsKeptForReviewNotReplacedByNotes()
+    {
+        var provider = new RecordingProvider(r => r.SectionId == "grounds" ? InventedQualification : r.SourceText);
+
+        var draft = await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs());
+
+        var grounds = draft.FindSection("grounds")!;
+        Assert.Equal(InventedQualification, grounds.Text);
+        Assert.Equal([DraftingNoteCodes.Retried], grounds.DraftingNotes);
+        var issue = Assert.Single(NarrativeChecks.Check(grounds.Text, "المادة 106 من القانون المدني.", draft.Inputs, Requete.GroundedTerms),
+            i => i.Kind == NarrativeIssueKind.UngroundedTerm);
+        Assert.Equal("عقد المقاولة", issue.Detail);
     }
 
     [Fact]

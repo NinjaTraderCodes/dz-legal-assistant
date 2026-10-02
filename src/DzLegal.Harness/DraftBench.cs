@@ -74,8 +74,8 @@ public static class DraftBench
             .AppendLine("# Drafting bench").AppendLine()
             .AppendLine(CultureInfo.InvariantCulture, $"Rules v{definition.Version}, {cases.Count} cases, run {DateTime.Now:yyyy-MM-dd HH:mm}.").AppendLine()
             .AppendLine("Automatic columns cannot see swapped roles or invented reasoning: read each output too.").AppendLine()
-            .AppendLine("| model | case | total s | slowest section s | hard issues | number issues | stray Latin words | example copies removed | retried | fell back | formally complete | error |")
-            .AppendLine("|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---|---|");
+            .AppendLine("| model | case | total s | slowest section s | hard issues | number issues | stray Latin words | ungrounded terms | example copies removed | retried | fell back | formally complete | error |")
+            .AppendLine("|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|---|");
 
         foreach (var model in options.Models)
         {
@@ -110,14 +110,14 @@ public static class DraftBench
                 clock.Stop();
                 if (draft is null)
                 {
-                    summary.AppendLine(CultureInfo.InvariantCulture, $"| {model} | {drafting.Id} | {clock.Elapsed.TotalSeconds:0} | | | | | | | | | {error} |");
+                    summary.AppendLine(CultureInfo.InvariantCulture, $"| {model} | {drafting.Id} | {clock.Elapsed.TotalSeconds:0} | | | | | | | | | | {error} |");
                     continue;
                 }
 
                 var narrative = definition.Sections.Where(s => s.Kind == SectionKind.Narrative).ToList();
                 var issues = narrative.ToDictionary(
                     s => s.Id,
-                    s => NarrativeChecks.Check(draft.FindSection(s.Id)?.Text ?? string.Empty, inputs.GetValueOrDefault(s.SourceField!, string.Empty), inputs));
+                    s => NarrativeChecks.Check(draft.FindSection(s.Id)?.Text ?? string.Empty, inputs.GetValueOrDefault(s.SourceField!, string.Empty), inputs, definition.GroundedTerms));
                 var report = ComplianceChecker.Check(definition, draft);
                 var hard = issues.Values.Sum(l => l.Count(i => i.IsHard));
                 var numbers = issues.Values.Sum(l => l.Count(i => i.Kind is NarrativeIssueKind.UnknownNumber or NarrativeIssueKind.MissingNumber));
@@ -125,6 +125,7 @@ public static class DraftBench
                 var fellBack = draft.Sections.Count(s => s.DraftingNotes.Contains(DraftingNoteCodes.FellBackToNotes));
                 var copied = draft.Sections.Count(s => s.DraftingNotes.Contains(DraftingNoteCodes.RemovedCopiedExample));
                 var latin = issues.Values.Sum(l => l.Count(i => i.Kind == NarrativeIssueKind.UnexpectedLatinWord));
+                var ungrounded = issues.Values.Sum(l => l.Count(i => i.Kind == NarrativeIssueKind.UngroundedTerm));
                 var slowest = timed.Durations.Count == 0 ? 0 : timed.Durations.Values.Max(d => d.TotalSeconds);
 
                 var file = new StringBuilder()
@@ -149,7 +150,7 @@ public static class DraftBench
                 await File.WriteAllTextAsync(Path.Combine(modelFolder, drafting.Id + ".md"), file.ToString());
 
                 summary.AppendLine(CultureInfo.InvariantCulture,
-                    $"| {model} | {drafting.Id} | {clock.Elapsed.TotalSeconds:0} | {slowest:0} | {hard} | {numbers} | {latin} | {copied} | {retried} | {fellBack} | {(report.IsAdmissibleInForm ? "yes" : "NO")} | |");
+                    $"| {model} | {drafting.Id} | {clock.Elapsed.TotalSeconds:0} | {slowest:0} | {hard} | {numbers} | {latin} | {ungrounded} | {copied} | {retried} | {fellBack} | {(report.IsAdmissibleInForm ? "yes" : "NO")} | |");
             }
         }
 

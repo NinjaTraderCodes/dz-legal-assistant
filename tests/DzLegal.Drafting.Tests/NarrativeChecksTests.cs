@@ -110,6 +110,25 @@ public class NarrativeChecksTests
         Assert.Contains(issues, i => i.Kind == NarrativeIssueKind.NotArabic && i.IsHard);
     }
 
+    private static readonly string[] Terms = ["عقد المقاولة", "عقد القرض"];
+
+    [Fact]
+    public void QualificationFromBench3IsFlaggedEvenWithTashkeel()
+    {
+        var issues = NarrativeChecks.Check("حيث إن المادتين تنفيذاً لِعَقْدِ المُقَاوَلَة توجبان الوفاء بمبلغ 1,500,000 دج منذ 15 جانفي 2025.", Notes, Inputs, Terms);
+        var issue = Assert.Single(issues);
+        Assert.Equal(NarrativeIssueKind.UngroundedTerm, issue.Kind);
+        Assert.Equal("عقد المقاولة", issue.Detail);
+        Assert.False(issue.IsHard);
+    }
+
+    [Fact]
+    public void QualificationTheLawyerUsedIsAllowed()
+    {
+        var inputs = new Dictionary<string, string>(Inputs) { ["notes.grounds"] = "عقد القرض ملزم للطرفين" };
+        Assert.Empty(NarrativeChecks.Check("حيث إن عقد القرض المبرم بمبلغ 1,500,000 دج في 15 جانفي 2025 ملزم.", Notes, inputs, Terms));
+    }
+
     [Fact]
     public void EmptyTextHasNoIssues() => Assert.Empty(Check("  "));
 }

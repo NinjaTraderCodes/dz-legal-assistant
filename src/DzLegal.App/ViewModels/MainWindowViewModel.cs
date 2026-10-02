@@ -420,13 +420,14 @@ public sealed partial class MainWindowViewModel : ObservableObject
                 }
 
                 var notes = inputs.GetValueOrDefault(vm.Definition.SourceField ?? string.Empty, string.Empty);
-                lines.AddRange(NarrativeChecks.Check(vm.Text, notes, inputs).Select(i => L.Format(i.Kind switch
+                lines.AddRange(NarrativeChecks.Check(vm.Text, notes, inputs, _definition.GroundedTerms).Select(i => L.Format(i.Kind switch
                 {
                     NarrativeIssueKind.ForeignScript => "IssueForeignScript",
                     NarrativeIssueKind.NotArabic => "IssueNotArabic",
                     NarrativeIssueKind.UnknownNumber => "IssueUnknownNumber",
                     NarrativeIssueKind.UnexpectedLatinWord => "IssueUnexpectedLatinWord",
                     NarrativeIssueKind.MissingNumber => "IssueMissingNumber",
+                    NarrativeIssueKind.UngroundedTerm => "IssueUngroundedTerm",
                     _ => throw new InvalidOperationException($"No message for {i.Kind}."),
                 }, i.Detail)));
             }

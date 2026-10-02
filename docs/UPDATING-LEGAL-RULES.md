@@ -51,6 +51,11 @@ Add it to `fields`, with an `id`, a `group`, a bilingual `label` and a `kind` of
   - Put a placeholder in parentheses in every example, such as `(س)` or `(ت)`. It makes copying detectable without false alarms. The shared drafting rules are in `prompts/system.ar.txt`. Keep the "do not invent facts, amounts or citations" rules.
 - **Order of sections:** the order of `sections` in `definition.json`. Also update the `form.order` element if it should be enforced.
 
+### Guarding model-written text (grounds, requests)
+These are top-level lists in `definition.json`. They apply only to model-written text, never to the lawyer's own words.
+- **`corrections`:** exact `{ "find", "replace" }` fixes for slips the model keeps making, for example «إن المادتان» → «إن المادتين».
+- **`groundedTerms`:** legal qualifications (contract types, liability regimes, defects of consent…) the model may use only if the lawyer's inputs contain them. Otherwise the answer is retried once, and if the term persists it shows as a ⚠ review hint («تكييف قانوني غير وارد في ملاحظاتك»). Add a term whenever a lawyer catches an invented qualification.
+
 After any prompt change, re-run the drafting bench (see the README) on the same models and compare `summary.md` and the outputs. Add a case to `tests/drafting-cases/` for every new kind of failure you see.
 
 ## Add a corpus case (quality harness)

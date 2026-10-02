@@ -13,6 +13,8 @@
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
     <None Update="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
+    <!-- Personal overrides, git-ignored; copied next to the executable when present. -->
+    <None Update="appsettings.local.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" />

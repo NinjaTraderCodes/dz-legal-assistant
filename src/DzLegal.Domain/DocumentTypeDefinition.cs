@@ -19,6 +19,9 @@ public sealed record DocumentTypeDefinition
     public IReadOnlyList<SectionDefinition> Sections { get; init; } = [];
     public IReadOnlyList<RequiredElement> Elements { get; init; } = [];
 
+    /// <summary>Exact text fixes applied to model-written text only (e.g. small-model grammar slips).</summary>
+    public IReadOnlyList<TextCorrection> Corrections { get; init; } = [];
+
     /// <summary>Folder the definition was loaded from; templates and prompts resolve against it.</summary>
     public string SourceDirectory { get; init; } = string.Empty;
 
@@ -28,6 +31,9 @@ public sealed record DocumentTypeDefinition
 }
 
 public sealed record FieldGroupDefinition(string Id, LocalizedText Label);
+
+/// <summary>An exact find/replace fix, e.g. «إن المادتان» → «إن المادتين» (the noun after «إنّ» is accusative).</summary>
+public sealed record TextCorrection(string Find, string Replace);
 
 public enum FieldKind
 {

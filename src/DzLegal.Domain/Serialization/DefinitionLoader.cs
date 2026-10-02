@@ -122,6 +122,10 @@ public static class DefinitionLoader
             CheckFile(definition, definition.SystemPrompt, "systemPrompt", errors);
         }
 
+        errors.AddRange(definition.Corrections
+            .Where(c => string.IsNullOrWhiteSpace(c.Find))
+            .Select(_ => "Every correction needs a non-empty 'find'."));
+
         foreach (var element in definition.Elements)
         {
             var where = $"element '{element.Id}'";

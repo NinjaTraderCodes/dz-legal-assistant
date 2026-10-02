@@ -109,6 +109,7 @@ public sealed partial class DraftingService
         {
             var output = CleanModelOutput(await _provider.GenerateAsync(request, cancellationToken), section);
             var (text, removed) = NarrativeChecks.RemoveCopiedExample(output, request.ExampleText, request.SourceText + "\n" + request.InstructionText);
+            text = ApplyCorrections(definition, text);
             if (removed > 0 && !notes.Contains(DraftingNoteCodes.RemovedCopiedExample))
             {
                 notes.Add(DraftingNoteCodes.RemovedCopiedExample);
@@ -128,6 +129,10 @@ public sealed partial class DraftingService
         notes.Add(DraftingNoteCodes.FellBackToNotes);
         return new DraftSection { Id = section.Id, Text = TemplateRenderer.Normalize(request.SourceText), DraftingNotes = notes };
     }
+
+    /// <summary>Applies the definition's exact corrections. Used on model-written text only, never on the lawyer's words.</summary>
+    internal static string ApplyCorrections(DocumentTypeDefinition definition, string text) =>
+        definition.Corrections.Aggregate(text, (t, c) => t.Replace(c.Find, c.Replace, StringComparison.Ordinal));
 
     private static IEnumerable<SectionDefinition> IncludedSections(DocumentTypeDefinition definition, IReadOnlyDictionary<string, string> inputs) =>
         definition.Sections.Where(s => Condition.All(s.IncludeWhen, inputs));

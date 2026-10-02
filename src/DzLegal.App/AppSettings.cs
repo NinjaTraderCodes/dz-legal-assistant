@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using DzLegal.Domain.Serialization;
 
 namespace DzLegal.App;
@@ -17,21 +18,50 @@ public sealed record AppSettings
 
     public OllamaSettings Ollama { get; init; } = new();
 
+    /// <summary>
+    /// Reads the shipped settings file and merges an optional <c>appsettings.local.json</c> beside it on top,
+    /// key by key, so personal choices (e.g. the model) live in a file git ignores.
+    /// </summary>
     public static AppSettings Load(string path)
     {
-        if (!File.Exists(path))
+        ArgumentNullException.ThrowIfNull(path);
+        var merged = Read(path) ?? new JsonObject();
+        var localPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(path))!, LocalFileName);
+        if (Read(localPath) is { } local)
         {
-            return new AppSettings();
+            Merge(merged, local);
         }
 
-        return JsonSerializer.Deserialize<AppSettings>(File.ReadAllText(path), DefinitionJson.Options) ?? new AppSettings();
+        return merged.Deserialize<AppSettings>(DefinitionJson.Options) ?? new AppSettings();
+    }
+
+    public const string LocalFileName = "appsettings.local.json";
+
+    private static JsonObject? Read(string path) =>
+        File.Exists(path)
+            ? JsonNode.Parse(File.ReadAllText(path), documentOptions: new JsonDocumentOptions { CommentHandling = JsonCommentHandling.Skip, AllowTrailingCommas = true })?.AsObject()
+            : null;
+
+    private static void Merge(JsonObject target, JsonObject overrides)
+    {
+        foreach (var (key, value) in overrides)
+        {
+            if (value is JsonObject child && target[key] is JsonObject existing)
+            {
+                Merge(existing, child);
+            }
+            else
+            {
+                target[key] = value?.DeepClone();
+            }
+        }
     }
 }
 
 public sealed record OllamaSettings
 {
     public string Endpoint { get; init; } = "http://127.0.0.1:11434";
-    public string Model { get; init; } = "qwen2.5:7b-instruct";
+    public string Model { get; init; } = "gemma3:4b";
     public double TimeoutMinutes { get; init; } = 10;
     public double Temperature { get; init; } = 0.2;
     public int MaxTokens { get; init; } = 1000;

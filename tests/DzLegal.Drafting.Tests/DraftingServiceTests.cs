@@ -228,6 +228,28 @@ public class DraftingServiceTests
     }
 
     [Fact]
+    public async Task GrammarCorrectionsApplyToModelTextButNeverToTheLawyersWords()
+    {
+        var inputs = Fixtures.CompleteInputs();
+        inputs["notes.facts"] = "إن المادتان المذكورتان في العقد واضحتان.";
+        var provider = new RecordingProvider(r => r.SectionId == "grounds"
+            ? "حيث إن المادتان 106 و107 من القانون المدني تجعلان العقد شريعة المتعاقدين."
+            : r.SourceText);
+
+        var draft = await new DraftingService(provider).DraftAsync(Requete, inputs);
+
+        Assert.Equal("حيث إن المادتين 106 و107 من القانون المدني تجعلان العقد شريعة المتعاقدين.", draft.FindSection("grounds")!.Text);
+        Assert.Contains("إن المادتان المذكورتان", draft.FindSection("facts")!.Text, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void GroundsPromptAsksForOneParagraphPerGround()
+    {
+        var request = new DraftingService(new StubModelProvider()).BuildRequest(Requete, Requete.FindSection("grounds")!, Fixtures.CompleteInputs());
+        Assert.Contains("اكتب كل سند في فقرة مستقلة تبدأ في سطر جديد", request.UserPrompt, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public async Task FactsAreTheLawyersSentencesWithoutAnyModelCall()
     {
         var inputs = Fixtures.CompleteInputs();

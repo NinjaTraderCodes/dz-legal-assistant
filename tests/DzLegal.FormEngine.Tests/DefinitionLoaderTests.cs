@@ -127,6 +127,14 @@ public class DefinitionLoaderTests
     }
 
     [Fact]
+    public void CorrectionsNeedSomethingToFind()
+    {
+        var definition = Tiny() with { Corrections = [new TextCorrection(" ", "x")] };
+        Assert.Contains(DefinitionLoader.Validate(definition), e => e.Contains("non-empty 'find'", StringComparison.Ordinal));
+        Assert.NotEmpty(Requete.Corrections);
+    }
+
+    [Fact]
     public void ShippedGenderFieldsAreChoices() =>
         Assert.All(new[] { "plaintiff.gender", "defendant.gender", "lawyer.gender" }, id =>
         {

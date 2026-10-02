@@ -3,13 +3,21 @@
 // practicing lawyer confirms it against the current official text (see docs/UPDATING-LEGAL-RULES.md).
 {
   "id": "requete-introductive",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "name": { "ar": "عريضة افتتاح الدعوى", "en": "Statement of claim (requête introductive d'instance)" },
   "description": {
     "ar": "العريضة التي ترفع بها الدعوى أمام المحكمة (المواد 14 و15 و17 من قانون الإجراءات المدنية والإدارية).",
     "en": "The document that opens a case before the court (CPCA arts. 14, 15 and 17)."
   },
   "systemPrompt": "prompts/system.ar.txt",
+
+  // Exact fixes applied to model-written text only (grounds, requests), never to the lawyer's own words.
+  // The noun after «إنّ» is accusative: small models write the nominative dual.
+  "corrections": [
+    { "find": "إن المادتان", "replace": "إن المادتين" },
+    { "find": "إن الطرفان", "replace": "إن الطرفين" },
+    { "find": "إن المدعيان", "replace": "إن المدعيين" }
+  ],
 
   "fieldGroups": [
     { "id": "court", "label": { "ar": "الجهة القضائية", "en": "Court" } },

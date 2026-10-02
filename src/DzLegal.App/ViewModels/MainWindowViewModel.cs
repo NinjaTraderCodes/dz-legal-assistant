@@ -386,9 +386,16 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
             return;
         }
 
-        Directory.CreateDirectory(Path.GetDirectoryName(_autosaveFile)!);
-        using var stream = File.Create(_autosaveFile);
-        DraftFile.SaveAsync(_draft with { Inputs = CurrentInputs() }, stream).GetAwaiter().GetResult();
+        // Synchronous on purpose: blocking the UI thread on async I/O deadlocks once the draft outgrows the buffers.
+        try
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(_autosaveFile)!);
+            DraftFile.Save(_draft with { Inputs = CurrentInputs() }, _autosaveFile);
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            SetStatus(L.Format("AutosaveFailed", ex.Message), isError: true);
+        }
     }
 
     [RelayCommand]

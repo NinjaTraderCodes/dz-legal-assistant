@@ -17,6 +17,18 @@ public sealed class StorageTests : IDisposable
     };
 
     [Fact]
+    public async Task SynchronousSaveReplacesTheFileWithoutLeavingATemporaryOne()
+    {
+        var path = Path.Combine(_dir.FullName, "autosave" + DraftFile.Extension);
+        await File.WriteAllTextAsync(path, "older content");
+        DraftFile.Save(SampleDraft(), path);
+
+        var loaded = await DraftFile.LoadAsync(path);
+        Assert.Equal("بن علي", loaded.Inputs["plaintiff.lastName"]);
+        Assert.False(File.Exists(path + ".tmp"));
+    }
+
+    [Fact]
     public async Task DraftRoundTripsAndKeepsArabicReadable()
     {
         var path = Path.Combine(_dir.FullName, "d" + DraftFile.Extension);

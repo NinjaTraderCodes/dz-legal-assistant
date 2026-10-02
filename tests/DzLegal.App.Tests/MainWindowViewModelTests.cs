@@ -336,6 +336,49 @@ public class MainWindowViewModelTests
         Assert.False(File.Exists(file));
     }
 
+    /// <summary>
+    /// Autosave runs on the UI thread. Blocking there on async I/O deadlocked once a filled-in draft outgrew the
+    /// write buffers (the continuation waited for the blocked UI thread), freezing the app 30 s after data entry.
+    /// </summary>
+    [Fact]
+    public void AutosaveDoesNotDeadlockOnTheUiThreadWithALargeDraft()
+    {
+        var dir = Directory.CreateTempSubdirectory("dzlegal-autosave-");
+        var file = Path.Combine(dir.FullName, "last-session" + Storage.DraftFile.Extension);
+        var vm = Vm.Create(autosaveFile: file).Filled();
+        var notes = string.Concat(Enumerable.Repeat("اقترض المدعى عليه مبلغا من المدعي ولم يرده رغم الإنذار.\n", 400));
+        vm.Field("notes.facts").Value = notes;
+
+        Exception? error = null;
+        var thread = new Thread(() =>
+        {
+            SynchronizationContext.SetSynchronizationContext(new BlockedUiContext());
+            try
+            {
+                vm.AutosaveNow();
+            }
+            catch (Exception ex)
+            {
+                error = ex;
+            }
+        });
+        thread.Start();
+
+        Assert.True(thread.Join(TimeSpan.FromSeconds(10)), "Autosave deadlocked on the UI thread.");
+        Assert.Null(error);
+        var restored = Vm.Create(autosaveFile: file);
+        Assert.True(restored.HasRecoverableDraft);
+        dir.Delete(recursive: true);
+    }
+
+    /// <summary>A UI context whose thread is busy: posted continuations never run.</summary>
+    private sealed class BlockedUiContext : SynchronizationContext
+    {
+        public override void Post(SendOrPostCallback d, object? state)
+        {
+        }
+    }
+
     [Fact]
     public void ThemeToggles()
     {

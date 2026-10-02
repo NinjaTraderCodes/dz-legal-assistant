@@ -21,13 +21,25 @@ The lawyer fills in the case details, the application produces a structured firs
 | **Verifiable** | The Form Engine is pure and deterministic. A 24-case corpus measures its accuracy per element, and CI requires 100%. |
 | **Legal rules are data** | Elements, articles, templates and prompts live in `data/`. Changing a rule means editing JSON, not code. |
 
+## Output: preview, PDF and Word
+
+The **Preview** tab shows the requête exactly as it prints: A4 pages rendered from the real PDF, right-to-left, in the bundled Noto Naskh Arabic font, with an optional diagonal «مسودة» watermark.
+- **Export PDF** is for filing and printing.
+- **Export Word (.docx)** produces right-to-left paragraphs set in Simplified Arabic, a font that ships with Windows, so the lawyer can keep editing in Word.
+
+Each section's print layout (alignment, bold, size, spacing) is data, under `layout` in `definition.json`.
+
+![PDF page 1](docs/images/requete-pdf-page1.png)
+
+PDFs are generated with [QuestPDF](https://www.questpdf.com) under its Community license. It is free while the company's annual revenue stays under USD 1M; above that a commercial license is required. Word files are generated with the MIT-licensed Open XML SDK.
+
 ## Quick start
 
 Prerequisite: [.NET 10 SDK](https://dotnet.microsoft.com/download) (the version is pinned in `global.json`).
 
 ```bash
 dotnet build                                   # warnings are errors
-dotnet test                                    # 174 tests: engine, drafting, providers, storage, UI (headless)
+dotnet test                                    # 182 tests: engine, drafting, providers, storage, UI (headless)
 dotnet run --project src/DzLegal.Harness       # Form Engine accuracy report (exit 1 on any mismatch)
 dotnet run --project src/DzLegal.App           # the desktop app
 ```
@@ -90,6 +102,7 @@ src/
   DzLegal.ModelProviders.Stub/    template mode (no model)
   DzLegal.ModelProviders.Ollama/  local model over loopback only
   DzLegal.Storage/                local JSON drafts + evaluation records
+  DzLegal.Documents/              print layout → PDF (QuestPDF) and Word (Open XML), preview images
   DzLegal.Harness/                Form Engine accuracy report over the corpus
   DzLegal.App/                    Avalonia desktop shell (Arabic/English)
 data/document-types/requete-introductive/

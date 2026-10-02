@@ -3,6 +3,7 @@ using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DzLegal.App.Services;
+using DzLegal.Documents;
 using DzLegal.Domain;
 using DzLegal.Drafting;
 using DzLegal.FormEngine;
@@ -17,7 +18,7 @@ namespace DzLegal.App.ViewModels;
 /// are written by the selected engine on demand and can be edited freely, and the Form Engine re-checks
 /// after every change.
 /// </summary>
-public sealed partial class MainWindowViewModel : ObservableObject
+public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
 {
     private readonly DocumentTypeDefinition _definition;
     private readonly IUserFiles _files;
@@ -125,6 +126,103 @@ public sealed partial class MainWindowViewModel : ObservableObject
     [ObservableProperty]
     public partial VerdictOption SelectedVerdict { get; set; }
 
+    /// <summary>0 = edit the sections, 1 = preview the printed document.</summary>
+    [ObservableProperty]
+    public partial int SelectedDraftTab { get; set; }
+
+    /// <summary>Print «مسودة» diagonally on preview and exported PDF pages.</summary>
+    [ObservableProperty]
+    public partial bool DraftWatermark { get; set; } = true;
+
+    /// <summary>PNG images of the PDF pages, exactly as they will print.</summary>
+    [ObservableProperty]
+    public partial IReadOnlyList<byte[]> PreviewPages { get; set; } = [];
+
+    [ObservableProperty]
+    public partial bool IsRenderingPreview { get; set; }
+
+    private CancellationTokenSource? _previewCts;
+
+    partial void OnSelectedDraftTabChanged(int value) => SchedulePreview(TimeSpan.Zero);
+
+    partial void OnDraftWatermarkChanged(bool value) => SchedulePreview(TimeSpan.Zero);
+
+    /// <summary>Renders the preview now (used by tests and when the tab opens).</summary>
+    public async Task RefreshPreviewAsync(CancellationToken cancellationToken = default)
+    {
+        var model = DocumentLayoutBuilder.Build(_definition, _draft.DeepCopy());
+        var options = new DocumentRenderOptions { DraftWatermark = DraftWatermark };
+        IsRenderingPreview = true;
+        try
+        {
+            PreviewPages = await Task.Run(() => PdfRenderer.RenderPageImages(model, options), cancellationToken);
+        }
+        finally
+        {
+            IsRenderingPreview = false;
+        }
+    }
+
+    /// <summary>Re-renders the preview shortly after the last change, only while the preview tab is open.</summary>
+    private async void SchedulePreview(TimeSpan delay)
+    {
+        if (SelectedDraftTab != 1)
+        {
+            return;
+        }
+
+        _previewCts?.Cancel();
+        _previewCts?.Dispose();
+        var cts = _previewCts = new CancellationTokenSource();
+        try
+        {
+            await Task.Delay(delay, cts.Token);
+            await RefreshPreviewAsync(cts.Token);
+        }
+        catch (OperationCanceledException)
+        {
+            // superseded by a newer change
+        }
+    }
+
+    public void Dispose()
+    {
+        _previewCts?.Cancel();
+        _previewCts?.Dispose();
+    }
+
+    [RelayCommand]
+    private async Task ExportPdfAsync()
+    {
+        var model = DocumentLayoutBuilder.Build(_definition, _draft.DeepCopy());
+        var bytes = await Task.Run(() => PdfRenderer.RenderPdf(model, new DocumentRenderOptions { DraftWatermark = DraftWatermark }));
+        await ExportAsync(bytes, ".pdf", SaveKind.Pdf);
+    }
+
+    [RelayCommand]
+    private async Task ExportWordAsync()
+    {
+        var model = DocumentLayoutBuilder.Build(_definition, _draft.DeepCopy());
+        var bytes = await Task.Run(() => DocxRenderer.Render(model));
+        await ExportAsync(bytes, ".docx", SaveKind.Word);
+    }
+
+    private async Task ExportAsync(byte[] bytes, string extension, SaveKind kind)
+    {
+        var target = await _files.SaveAsync(SuggestedFileName() + extension, kind);
+        if (target is not { } t)
+        {
+            return;
+        }
+
+        await using (t.Stream)
+        {
+            await t.Stream.WriteAsync(bytes);
+        }
+
+        SetStatus(L.Format("Exported", t.Name));
+    }
+
     [ObservableProperty]
     public partial string MinutesSaved { get; set; } = string.Empty;
 
@@ -189,7 +287,7 @@ public sealed partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task SaveAsync()
     {
-        var target = await _files.SaveAsync(SuggestedFileName());
+        var target = await _files.SaveAsync(SuggestedFileName() + DraftFile.Extension, SaveKind.Draft);
         if (target is not { } t)
         {
             return;
@@ -384,6 +482,7 @@ public sealed partial class MainWindowViewModel : ObservableObject
         }
 
         UpdateReviewHints();
+        SchedulePreview(TimeSpan.FromMilliseconds(400));
 
         var mandatoryMissing = Report.Missing.Count(f => f.Element.Severity == Severity.Inadmissible);
         var warnings = Report.Missing.Count(f => f.Element.Severity == Severity.Warning);
@@ -448,7 +547,7 @@ public sealed partial class MainWindowViewModel : ObservableObject
             stem = stem.Replace(c, '_');
         }
 
-        return stem + DraftFile.Extension;
+        return stem;
     }
 
     private void SetStatus(string message, bool isError = false)

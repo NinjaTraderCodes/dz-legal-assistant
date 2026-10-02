@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Document engine: lays a draft out as a printed requête and renders it to PDF (QuestPDF) and Word (Open XML). Fully offline.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DzLegal.Domain\DzLegal.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="QuestPDF" />
+    <PackageReference Include="DocumentFormat.OpenXml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\assets\fonts\*.ttf" LogicalName="Fonts.%(Filename)%(Extension)" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="DzLegal.Documents.Tests" />
+  </ItemGroup>
+</Project>

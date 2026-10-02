@@ -17,8 +17,17 @@ internal sealed class FakeFiles : IUserFiles
     public Task<(Stream Stream, string Name)?> OpenAsync() =>
         Task.FromResult<(Stream, string)?>(Saved is null ? null : (new MemoryStream(Saved), "saved" + DraftFile.Extension));
 
-    public Task<(Stream Stream, string Name)?> SaveAsync(string suggestedName) =>
-        Task.FromResult<(Stream, string)?>((new CapturingStream(bytes => Saved = bytes), suggestedName));
+    public Dictionary<SaveKind, byte[]> SavedByKind { get; } = [];
+
+    public Task<(Stream Stream, string Name)?> SaveAsync(string suggestedName, SaveKind kind) =>
+        Task.FromResult<(Stream, string)?>((new CapturingStream(bytes =>
+        {
+            SavedByKind[kind] = bytes;
+            if (kind == SaveKind.Draft)
+            {
+                Saved = bytes;
+            }
+        }), suggestedName));
 
     public Task CopyTextAsync(string text)
     {

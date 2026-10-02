@@ -33,6 +33,10 @@
 
   Paragraphs that copy the prompt's worked example are removed first. Detection uses the example's placeholder tokens such as «(س)», or near-verbatim overlap. `DraftAsync` then retries an empty or hard-failing answer once, falls back to the notes verbatim, and records each step in `DraftSection.DraftingNotes`. The app re-runs the checks on every edit and shows them as review hints under the section. They cannot detect meaning-level errors such as swapped roles, which remain the lawyer's review.
 - **ModelProviders**: `StubModelProvider` (template mode) and `OllamaModelProvider` (loopback-only HTTP to a local Ollama). Adding llama.cpp or another runtime means one new class implementing `IModelProvider`.
+- **Documents**: `DocumentLayoutBuilder` turns a draft into print blocks, using the per-section `layout` data.
+  - `PdfRenderer` (QuestPDF) produces an A4 right-to-left PDF with the embedded Naskh font, and the page images used by the in-app preview, so the preview is exactly the PDF.
+  - `DocxRenderer` (Open XML SDK) produces an editable, schema-valid right-to-left `.docx`.
+  - Fonts live in `assets/fonts/` and are shared by the app and the PDF engine.
 - **Storage**: drafts (`*.dzdraft.json`) and evaluation records as local JSON under the user's local app-data folder.
 - **Harness** has two modes:
   - Its default mode loads the corpus, runs the Form Engine, and prints per-element accuracy, precision and recall. The same logic runs as a test.

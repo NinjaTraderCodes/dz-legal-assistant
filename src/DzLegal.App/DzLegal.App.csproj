@@ -12,6 +12,8 @@
   </PropertyGroup>
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
+    <!-- Shared Arabic fonts (also embedded in PDFs by DzLegal.Documents). -->
+    <AvaloniaResource Include="..\..\assets\fonts\*.ttf" Link="Assets\Fonts\%(Filename)%(Extension)" />
     <None Update="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
     <!-- Personal overrides, git-ignored; copied next to the executable when present. -->
     <None Update="appsettings.local.json" CopyToOutputDirectory="PreserveNewest" />
@@ -24,6 +26,7 @@
     <PackageReference Include="CommunityToolkit.Mvvm" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DzLegal.Documents\DzLegal.Documents.csproj" />
     <ProjectReference Include="..\DzLegal.Drafting\DzLegal.Drafting.csproj" />
     <ProjectReference Include="..\DzLegal.FormEngine\DzLegal.FormEngine.csproj" />
     <ProjectReference Include="..\DzLegal.ModelProviders.Ollama\DzLegal.ModelProviders.Ollama.csproj" />

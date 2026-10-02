@@ -106,6 +106,31 @@ public sealed record SectionDefinition
 
     /// <summary>Review hints shown under the section while their conditions hold (not legal findings).</summary>
     public IReadOnlyList<SectionHint> Hints { get; init; } = [];
+
+    /// <summary>How the section is laid out in the printed document (PDF/Word).</summary>
+    public SectionLayout Layout { get; init; } = new();
+}
+
+public enum BlockAlign
+{
+    /// <summary>The reading start: the right-hand side in Arabic.</summary>
+    Start,
+    Center,
+    End,
+    Justify,
+}
+
+/// <summary>Print layout of one section. Data, so each document type controls its own look.</summary>
+public sealed record SectionLayout
+{
+    public BlockAlign Align { get; init; } = BlockAlign.Start;
+    public bool Bold { get; init; }
+
+    /// <summary>Font size in points; null uses the document default.</summary>
+    public float? Size { get; init; }
+
+    /// <summary>Extra space above the section, in points.</summary>
+    public float SpaceBefore { get; init; } = 6;
 }
 
 /// <summary>A drafting hint, e.g. "choose the plaintiff's gender so the wording agrees".</summary>

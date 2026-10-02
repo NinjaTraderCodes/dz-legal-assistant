@@ -105,6 +105,23 @@ public class RenderingTests
     }
 
     [AvaloniaFact]
+    public async Task PreviewTabShowsPaperPages()
+    {
+        var (window, vm) = await ShowFilledWindowAsync();
+        vm.Field("plaintiff.gender").Value = "male";
+        vm.Field("defendant.gender").Value = "male";
+        vm.Field("lawyer.gender").Value = "female";
+
+        vm.SelectedDraftTab = 1;
+        await vm.RefreshPreviewAsync();
+        Dispatcher.UIThread.RunJobs();
+
+        var pages = window.GetVisualDescendants().OfType<Image>().Where(i => i.IsVisible && i.Source is not null).ToList();
+        Assert.NotEmpty(pages);
+        SaveScreenshot(window, "main-window-preview");
+    }
+
+    [AvaloniaFact]
     public void MixedArabicLatinAndDigitsLayOutInBidiOrder()
     {
         // Arabic paragraph with an embedded French term, a Latin name and a number.

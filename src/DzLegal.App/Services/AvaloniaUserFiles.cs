@@ -8,6 +8,8 @@ namespace DzLegal.App.Services;
 public sealed class AvaloniaUserFiles(Func<TopLevel?> topLevel, AppPaths paths) : IUserFiles
 {
     private static readonly FilePickerFileType DraftType = new("Draft") { Patterns = ["*" + DraftFile.Extension] };
+    private static readonly FilePickerFileType PdfType = new("PDF") { Patterns = ["*.pdf"], MimeTypes = ["application/pdf"] };
+    private static readonly FilePickerFileType WordType = new("Word") { Patterns = ["*.docx"] };
 
     public async Task<(Stream Stream, string Name)?> OpenAsync()
     {
@@ -25,8 +27,15 @@ public sealed class AvaloniaUserFiles(Func<TopLevel?> topLevel, AppPaths paths) 
         return files.Count == 0 ? null : (await files[0].OpenReadAsync(), files[0].Name);
     }
 
-    public async Task<(Stream Stream, string Name)?> SaveAsync(string suggestedName)
+    public async Task<(Stream Stream, string Name)?> SaveAsync(string suggestedName, SaveKind kind)
     {
+        var (type, extension) = kind switch
+        {
+            SaveKind.Pdf => (PdfType, ".pdf"),
+            SaveKind.Word => (WordType, ".docx"),
+            _ => (DraftType, DraftFile.Extension),
+        };
+
         if (topLevel() is not { } top)
         {
             return null;
@@ -35,8 +44,8 @@ public sealed class AvaloniaUserFiles(Func<TopLevel?> topLevel, AppPaths paths) 
         var file = await top.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
         {
             SuggestedFileName = suggestedName,
-            DefaultExtension = DraftFile.Extension,
-            FileTypeChoices = [DraftType],
+            DefaultExtension = extension,
+            FileTypeChoices = [type],
             SuggestedStartLocation = await top.StorageProvider.TryGetFolderFromPathAsync(paths.Drafts),
         });
         return file is null ? null : (await file.OpenWriteAsync(), file.Name);

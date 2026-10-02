@@ -207,6 +207,33 @@ public class MainWindowViewModelTests
     }
 
     [Fact]
+    public async Task ExportsPdfAndWordFiles()
+    {
+        var files = new FakeFiles();
+        var vm = Vm.Create(files).Filled();
+        await vm.GenerateCommand.ExecuteAsync(null);
+
+        await vm.ExportPdfCommand.ExecuteAsync(null);
+        await vm.ExportWordCommand.ExecuteAsync(null);
+
+        Assert.StartsWith("%PDF", System.Text.Encoding.ASCII.GetString(files.SavedByKind[Services.SaveKind.Pdf], 0, 4), StringComparison.Ordinal);
+        Assert.Equal((byte)'P', files.SavedByKind[Services.SaveKind.Word][0]); // .docx is a zip ("PK")
+        Assert.StartsWith("تم التصدير", vm.StatusMessage, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task PreviewRendersThePrintedPages()
+    {
+        var vm = Vm.Create().Filled();
+        await vm.GenerateCommand.ExecuteAsync(null);
+
+        await vm.RefreshPreviewAsync();
+
+        Assert.InRange(vm.PreviewPages.Count, 1, 3);
+        Assert.Equal(0x89, vm.PreviewPages[0][0]); // PNG
+    }
+
+    [Fact]
     public void NewResetsTheForm()
     {
         var vm = Vm.Create().Filled();

@@ -271,6 +271,91 @@
                   </DataTemplate>
                 </ItemsControl.ItemTemplate>
               </ItemsControl>
+
+              <!-- Grounds suggestions (Notes step): deterministic, from the facts; the lawyer ticks what to rely on. -->
+              <Border Name="GroundsPanel" Classes="card" Padding="12" Margin="0,4,8,8" IsVisible="{Binding IsNotesStep}">
+                <StackPanel Spacing="8">
+                  <StackPanel Orientation="Horizontal" Spacing="6">
+                    <ic:SymbolIcon Symbol="Gavel" FontSize="16" Foreground="{DynamicResource AccentBrush}" />
+                    <TextBlock FontSize="14" FontWeight="SemiBold" Text="{Binding L[GroundsTitle]}" />
+                  </StackPanel>
+                  <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap" Text="{Binding L[GroundsIntro]}" />
+                  <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap" Text="{Binding GroundsHint}"
+                             IsVisible="{Binding GroundsHint, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                  <ItemsControl Name="GroundsSuggestionsList" ItemsSource="{Binding GroundsSuggestions}">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate x:DataType="vm:ClaimSuggestionViewModel">
+                        <Expander IsExpanded="{Binding IsExpanded}" HorizontalAlignment="Stretch" Margin="0,0,0,6">
+                          <Expander.Header>
+                            <StackPanel Spacing="2">
+                              <TextBlock FontWeight="SemiBold" TextWrapping="Wrap" Text="{Binding Label}" />
+                              <TextBlock Classes="muted" FontSize="11" TextWrapping="Wrap" Text="{Binding MatchedText}" />
+                            </StackPanel>
+                          </Expander.Header>
+                          <StackPanel Spacing="8">
+                            <Border Background="{DynamicResource WarningSoftBrush}" CornerRadius="6" Padding="8,6" IsVisible="{Binding HasPrerequisites}">
+                              <TextBlock FontSize="12" TextWrapping="Wrap" Foreground="{DynamicResource WarningBrush}" Text="{Binding Prerequisites}" />
+                            </Border>
+                            <ItemsControl ItemsSource="{Binding Articles}">
+                              <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:ArticleChoiceViewModel">
+                                  <Border Background="{DynamicResource SurfaceAltBrush}" CornerRadius="6" Padding="8,6" Margin="0,0,0,6">
+                                    <StackPanel Spacing="3">
+                                      <CheckBox IsChecked="{Binding IsSelected}">
+                                        <TextBlock FontWeight="SemiBold" TextWrapping="Wrap" Text="{Binding Citation}" />
+                                      </CheckBox>
+                                      <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap" Text="{Binding Why}" IsVisible="{Binding HasWhy}" />
+                                      <TextBlock FontFamily="{StaticResource DocumentFont}" FontSize="13" TextWrapping="Wrap" Text="{Binding Text}" IsVisible="{Binding IsAvailable}" />
+                                      <TextBlock Classes="muted" FontSize="11" FontStyle="Italic" TextWrapping="Wrap" Text="{Binding Text}" IsVisible="{Binding !IsAvailable}" />
+                                    </StackPanel>
+                                  </Border>
+                                </DataTemplate>
+                              </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <TextBlock FontSize="12" FontWeight="SemiBold" Text="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[GroundsFactsToState]}" />
+                            <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap" Text="{Binding FactsToState}" />
+                            <TextBlock FontSize="12" FontWeight="SemiBold" Text="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[GroundsRequests]}" />
+                            <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap" Text="{Binding Requests}" />
+                            <TextBlock FontSize="12" FontWeight="SemiBold" Text="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[GroundsDocuments]}" />
+                            <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap" Text="{Binding Documents}" />
+                            <WrapPanel>
+                              <Button Classes="outline" Margin="0,0,6,6" Command="{Binding InsertRequestsCommand}">
+                                <StackPanel Orientation="Horizontal" Spacing="5"><ic:SymbolIcon Symbol="TextBulletListAdd" FontSize="14" /><TextBlock FontSize="12" Text="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[InsertRequests]}" /></StackPanel>
+                              </Button>
+                              <Button Classes="outline" Margin="0,0,6,6" Command="{Binding InsertDocumentsCommand}">
+                                <StackPanel Orientation="Horizontal" Spacing="5"><ic:SymbolIcon Symbol="DocumentAdd" FontSize="14" /><TextBlock FontSize="12" Text="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[InsertDocuments]}" /></StackPanel>
+                              </Button>
+                            </WrapPanel>
+                          </StackPanel>
+                        </Expander>
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+
+                  <TextBox Classes="input" Name="ArticleSearchBox" Text="{Binding ArticleQuery}" PlaceholderText="{Binding L[ArticleSearchPlaceholder]}" />
+                  <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap" Text="{Binding ArticleSearchHint}"
+                             IsVisible="{Binding ArticleSearchHint, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                  <ItemsControl ItemsSource="{Binding ArticleResults}">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate x:DataType="vm:ArticleChoiceViewModel">
+                        <Border Background="{DynamicResource SurfaceAltBrush}" CornerRadius="6" Padding="8,6" Margin="0,0,0,6">
+                          <StackPanel Spacing="3">
+                            <CheckBox IsChecked="{Binding IsSelected}"><TextBlock FontWeight="SemiBold" TextWrapping="Wrap" Text="{Binding Citation}" /></CheckBox>
+                            <TextBlock FontFamily="{StaticResource DocumentFont}" FontSize="13" TextWrapping="Wrap" MaxLines="6" TextTrimming="CharacterEllipsis" Text="{Binding Text}" />
+                          </StackPanel>
+                        </Border>
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+
+                  <Button Name="AddSelectedButton" Classes="primary" HorizontalAlignment="Stretch" Command="{Binding AddSelectedToGroundsCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center">
+                      <ic:SymbolIcon Symbol="BookOpen" Foreground="White" FontSize="15" />
+                      <TextBlock Foreground="White" TextWrapping="Wrap" Text="{Binding AddSelectedText}" />
+                    </StackPanel>
+                  </Button>
+                </StackPanel>
+              </Border>
             </StackPanel>
           </ScrollViewer>
         </DockPanel>

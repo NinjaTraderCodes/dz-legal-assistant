@@ -35,10 +35,42 @@ public class NarrativeChecksTests
     public void InventedArticleNumberIsFlagged()
     {
         var issue = Assert.Single(Check("حيث إن المادة 999 تلزم بدفع 1500000 دج منذ 15 جانفي 2025."));
-        Assert.Equal(NarrativeIssueKind.UnknownNumber, issue.Kind);
+        Assert.Equal(NarrativeIssueKind.UncitedArticle, issue.Kind);
         Assert.Equal("999", issue.Detail);
         Assert.False(issue.IsHard);
+        Assert.True(issue.IsInventedLaw);
     }
+
+    private static readonly LegalText[] Selected = [new("124", "القانون التجريبي", "كل فعل وهمي يرتكبه الشخص بخطئه ويسبب ضررا للغير يلزم من كان سببا في حدوثه بالتعويض.")];
+
+    [Fact]
+    public void SelectedArticlesCountAsKnownAndOtherArticlesAreFlagged()
+    {
+        var issues = NarrativeChecks.Check("حيث إن المادتين 124 و 131 توجبان التعويض عن مبلغ 1500000 دج منذ 15 جانفي 2025.", Notes, Inputs, legalTexts: Selected);
+        var issue = Assert.Single(issues);
+        Assert.Equal(NarrativeIssueKind.UncitedArticle, issue.Kind);
+        Assert.Equal("131", issue.Detail);
+    }
+
+    [Fact]
+    public void QuotationsMustMatchTheSelectedArticleText()
+    {
+        Assert.Empty(NarrativeChecks.Check(
+            "حيث إن المادة 124 تنص على أن «كل فعلٍ وهمي يرتكبه الشخص بخطئه، ويسبب ضررا للغير» فإن المدعى عليه ملزم بأداء 1500000 دج منذ 15 جانفي 2025.",
+            Notes, Inputs, legalTexts: Selected));
+
+        var issue = Assert.Single(NarrativeChecks.Check(
+            "حيث إن المادة 124 تنص على أن «كل من أخل بالتزامه يلزم بتعويض مضاعف» فإن المدعى عليه ملزم بأداء 1500000 دج منذ 15 جانفي 2025.",
+            Notes, Inputs, legalTexts: Selected));
+        Assert.Equal(NarrativeIssueKind.MisquotedArticle, issue.Kind);
+        Assert.Equal("124", issue.Detail);
+    }
+
+    [Fact]
+    public void ShortQuotedTermsAndQuotesOfUnselectedArticlesAreNotJudged() =>
+        Assert.Empty(NarrativeChecks.Check(
+            "حيث إن «الخطأ» ثابت، وحيث إن المادة 124 من القانون التجريبي تلزم بأداء 1500000 دج منذ 15 جانفي 2025.",
+            Notes, Inputs, legalTexts: Selected));
 
     [Fact]
     public void ChangedAmountIsFlaggedBothWays()

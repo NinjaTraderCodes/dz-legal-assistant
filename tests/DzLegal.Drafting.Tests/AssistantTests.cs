@@ -46,7 +46,7 @@ public class SectionReviserTests
         Assert.False(proposal.IsRefusal);
         Assert.False(proposal.IsUnusable);
         Assert.StartsWith("حيث إن المادتين", proposal.Text, StringComparison.Ordinal); // corrections applied
-        Assert.Contains(proposal.Issues, i => i.Kind == NarrativeIssueKind.UnknownNumber && i.Detail == "999");
+        Assert.Contains(proposal.Issues, i => i.Kind == NarrativeIssueKind.UncitedArticle && i.Detail == "999");
         Assert.NotEmpty(partials);
     }
 

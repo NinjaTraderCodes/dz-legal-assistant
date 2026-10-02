@@ -14,6 +14,9 @@ public static class Composition
 {
     public static string DataRoot => Path.Combine(AppContext.BaseDirectory, "data", "document-types");
 
+    /// <summary>The offline law library and claim catalog (never downloaded by the app).</summary>
+    public static string LawRoot => Path.Combine(AppContext.BaseDirectory, "data", "law");
+
     public static IReadOnlyList<ProviderOption> CreateProviders(AppSettings settings)
     {
         ArgumentNullException.ThrowIfNull(settings);
@@ -70,6 +73,7 @@ public static class Composition
             new EvaluationStore(paths.Evaluations),
             loc,
             settings.DefaultProvider,
-            autosaveFile: Path.Combine(paths.Drafts, "last-session" + DraftFile.Extension));
+            autosaveFile: Path.Combine(paths.Drafts, "last-session" + DraftFile.Extension),
+            knowledge: DzLegal.Law.LegalKnowledgeLoader.Load(LawRoot));
     }
 }

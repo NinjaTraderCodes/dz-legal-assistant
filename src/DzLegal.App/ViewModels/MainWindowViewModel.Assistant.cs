@@ -134,7 +134,7 @@ public sealed partial class MainWindowViewModel
         {
             provider = SelectedProvider.Create();
             var proposal = await new SectionReviser(provider).ReviseAsync(
-                _definition, section.Id, section.Text, instruction, CurrentInputs(), partial => AssistantPartial = partial, cancellationToken);
+                _definition, section.Id, section.Text, instruction, CurrentInputs(), partial => AssistantPartial = partial, SelectedLegalTexts(), cancellationToken);
             AssistantPartial = string.Empty;
             ShowProposal(section, proposal);
         }
@@ -221,7 +221,7 @@ public sealed partial class MainWindowViewModel
             SetStatus(L.Format("Generating", section.Title));
             var previous = section.Text;
             var drafted = await new DraftingService(provider).DraftSectionAsync(
-                _definition, section.Id, CurrentInputs(), (_, partial) => section.SetFromModel(partial));
+                _definition, section.Id, CurrentInputs(), (_, partial) => section.SetFromModel(partial), SelectedLegalTexts());
             if (previous.Trim().Length > 0)
             {
                 section.SetFromModel(previous);
@@ -269,6 +269,8 @@ public sealed partial class MainWindowViewModel
         NarrativeIssueKind.UnexpectedLatinWord => "IssueUnexpectedLatinWord",
         NarrativeIssueKind.MissingNumber => "IssueMissingNumber",
         NarrativeIssueKind.UngroundedTerm => "IssueUngroundedTerm",
+        NarrativeIssueKind.UncitedArticle => "IssueUncitedArticle",
+        NarrativeIssueKind.MisquotedArticle => "IssueMisquotedArticle",
         _ => throw new InvalidOperationException($"No message for {issue.Kind}."),
     }, issue.Detail);
 }

@@ -23,12 +23,21 @@ public enum NarrativeIssueKind
 
     /// <summary>A legal qualification (e.g. «عقد المقاولة» in a loan case) that appears nowhere in the lawyer's inputs.</summary>
     UngroundedTerm,
+
+    /// <summary>An article cited in the text that is neither in the lawyer's notes nor among the selected articles.</summary>
+    UncitedArticle,
+
+    /// <summary>A quotation «…» attributed to a selected article that is not in that article's official text.</summary>
+    MisquotedArticle,
 }
 
 public sealed record NarrativeIssue(NarrativeIssueKind Kind, string Detail)
 {
     /// <summary>Hard issues make the text unusable: the drafting layer retries, then falls back to the notes.</summary>
     public bool IsHard => Kind is NarrativeIssueKind.ForeignScript or NarrativeIssueKind.NotArabic;
+
+    /// <summary>Law the lawyer did not provide (a qualification, an article, a quotation): worth one more try.</summary>
+    public bool IsInventedLaw => Kind is NarrativeIssueKind.UngroundedTerm or NarrativeIssueKind.UncitedArticle or NarrativeIssueKind.MisquotedArticle;
 }
 
 /// <summary>
@@ -47,11 +56,16 @@ public static partial class NarrativeChecks
         ["سبتمبر", "septembre"], ["أكتوبر", "اكتوبر", "octobre"], ["نوفمبر", "novembre"], ["ديسمبر", "décembre", "decembre"],
     ];
 
+    /// <param name="legalTexts">
+    /// Official texts of the articles the lawyer selected. Their numbers count as known, and quotations attributed
+    /// to them must match their text.
+    /// </param>
     public static IReadOnlyList<NarrativeIssue> Check(
         string text,
         string sectionNotes,
         IReadOnlyDictionary<string, string> inputs,
-        IReadOnlyList<string>? groundedTerms = null)
+        IReadOnlyList<string>? groundedTerms = null,
+        IReadOnlyList<LegalText>? legalTexts = null)
     {
         ArgumentNullException.ThrowIfNull(inputs);
         var issues = new List<NarrativeIssue>();
@@ -73,9 +87,15 @@ public static partial class NarrativeChecks
         }
 
         var inText = Numbers(text);
-        var known = inputs.Values.SelectMany(Numbers).ToHashSet(StringComparer.Ordinal);
-        issues.AddRange(inText.Where(n => !known.Contains(n)).Distinct()
-            .Select(n => new NarrativeIssue(NarrativeIssueKind.UnknownNumber, n)));
+        legalTexts ??= [];
+        var known = inputs.Values.Concat(legalTexts.Select(t => t.Number + " " + t.Text)).SelectMany(Numbers).ToHashSet(StringComparer.Ordinal);
+        var articleNumbers = ArticleReferences(text).Select(r => r.Number).ToHashSet(StringComparer.Ordinal);
+        foreach (var n in inText.Where(n => !known.Contains(n)).Distinct())
+        {
+            issues.Add(new NarrativeIssue(articleNumbers.Contains(n) ? NarrativeIssueKind.UncitedArticle : NarrativeIssueKind.UnknownNumber, n));
+        }
+
+        issues.AddRange(Misquotations(text, legalTexts).Select(n => new NarrativeIssue(NarrativeIssueKind.MisquotedArticle, n)));
         issues.AddRange(Numbers(sectionNotes ?? string.Empty).Where(n => !inText.Contains(n)).Distinct()
             .Select(n => new NarrativeIssue(NarrativeIssueKind.MissingNumber, n)));
 
@@ -95,6 +115,76 @@ public static partial class NarrativeChecks
         }
 
         return issues;
+    }
+
+    /// <summary>
+    /// Article references in a text: «المادة 106», «المادتين 106 و107», «المواد 124 و131 و182 مكرر», with the
+    /// position of each, as the base number (normalised like <see cref="Numbers"/>).
+    /// </summary>
+    internal static IEnumerable<(string Number, int Index)> ArticleReferences(string text)
+    {
+        foreach (Match m in ArticleReference().Matches(ToAsciiDigits(text)))
+        {
+            foreach (Match n in ArticleNumber().Matches(m.Groups[1].Value))
+            {
+                yield return (n.Groups[1].Value.TrimStart('0'), m.Index);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Quotations «…» of ten letters or more that follow a reference to a selected article in the same paragraph
+    /// but are not part of that article's official text (after normalisation). Returns the article numbers.
+    /// </summary>
+    private static IEnumerable<string> Misquotations(string text, IReadOnlyList<LegalText> legalTexts)
+    {
+        if (legalTexts.Count == 0)
+        {
+            return [];
+        }
+
+        var found = new List<string>();
+        foreach (var paragraph in text.Split('\n'))
+        {
+            var references = ArticleReferences(paragraph).ToList();
+            foreach (Match quote in Quotation().Matches(paragraph))
+            {
+                var quoted = Comparable(quote.Groups[1].Value);
+                var reference = references.LastOrDefault(r => r.Index < quote.Index);
+                if (quoted.Count(char.IsLetter) < 10 || reference.Number is null)
+                {
+                    continue;
+                }
+
+                var candidates = legalTexts.Where(t => Numbers(t.Number).FirstOrDefault() == reference.Number).ToList();
+                if (candidates.Count > 0 && !candidates.Any(t => Comparable(t.Text).Contains(quoted, StringComparison.Ordinal)))
+                {
+                    found.Add(reference.Number);
+                }
+            }
+        }
+
+        return found.Distinct();
+    }
+
+    /// <summary>Normalised letters and digits only, single-spaced, so punctuation and layout do not matter.</summary>
+    private static string Comparable(string text)
+    {
+        var normalized = ArabicScript.Normalize(text);
+        var sb = new StringBuilder(normalized.Length);
+        foreach (var c in normalized)
+        {
+            if (char.IsLetterOrDigit(c))
+            {
+                sb.Append(c);
+            }
+            else if (sb.Length > 0 && sb[^1] != ' ')
+            {
+                sb.Append(' ');
+            }
+        }
+
+        return sb.ToString().Trim();
     }
 
     /// <summary>
@@ -220,6 +310,15 @@ public static partial class NarrativeChecks
     }
 
     private static string ToAsciiDigits(string text) => ArabicScript.ToAsciiDigits(text);
+
+    [GeneratedRegex(@"(?:ال)?(?:مادة|مادتين|مادتان|مواد)\s+((?:\d+(?:\s*-\s*\d+)?(?:\s*مكرر(?:\s*\d+)?)?)(?:\s*(?:،|,|و|أو)\s*\d+(?:\s*-\s*\d+)?(?:\s*مكرر(?:\s*\d+)?)?)*)")]
+    private static partial Regex ArticleReference();
+
+    [GeneratedRegex(@"(\d+)(?:\s*-\s*\d+)?(?:\s*مكرر(?:\s*\d+)?)?")]
+    private static partial Regex ArticleNumber();
+
+    [GeneratedRegex(@"«([^«»]+)»")]
+    private static partial Regex Quotation();
 
     [GeneratedRegex(@"\d{1,3}(?:[,.\u066C\u00A0\u202F ]\d{3})+(?!\d)|\d+")]
     private static partial Regex NumberToken();

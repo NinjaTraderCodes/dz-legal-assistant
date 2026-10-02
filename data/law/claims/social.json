@@ -4,54 +4,206 @@
   "claims": [
     {
       "id": "abusive-dismissal",
-      "label": { "ar": "التسريح التعسفي", "en": "Abusive dismissal" },
+      "label": {
+        "ar": "التسريح التعسفي",
+        "en": "Abusive dismissal"
+      },
       "verified": false,
       "triggers": [
-        { "any": ["تسريح", "التسريح", "سرح", "فصل", "فصله", "طرد من العمل", "توقيف", "إنهاء علاقة العمل", "عزل"], "weight": 3, "required": true },
-        { "any": ["العامل", "عامل", "المستخدم", "الهيئة المستخدمة", "صاحب العمل", "منصب", "عمل"], "weight": 2 },
-        { "any": ["تعسفي", "تعسفا", "دون مبرر", "بدون سبب", "دون احترام الإجراءات", "خطأ جسيم", "إعادة الإدماج"], "weight": 2 }
+        {
+          "any": [
+            "تسريح",
+            "التسريح",
+            "سرح",
+            "فصل",
+            "فصله",
+            "طرد من العمل",
+            "توقيف",
+            "إنهاء علاقة العمل",
+            "عزل"
+          ],
+          "weight": 3,
+          "required": true
+        },
+        {
+          "any": [
+            "العامل",
+            "عامل",
+            "المستخدم",
+            "الهيئة المستخدمة",
+            "صاحب العمل",
+            "منصب",
+            "عمل"
+          ],
+          "weight": 2
+        },
+        {
+          "any": [
+            "تعسفي",
+            "تعسفا",
+            "دون مبرر",
+            "بدون سبب",
+            "دون احترام الإجراءات",
+            "خطأ جسيم",
+            "إعادة الإدماج"
+          ],
+          "weight": 2
+        }
       ],
       "exclude": [],
       "prerequisites": [
-        { "ar": "محاولة الصلح أمام مكتب المصالحة قبل رفع الدعوى، وإرفاق محضر عدم المصالحة", "en": "Prior conciliation before the conciliation office; attach the non-conciliation report" }
+        {
+          "ar": "محاولة الصلح أمام مكتب المصالحة قبل رفع الدعوى، وإرفاق محضر عدم المصالحة",
+          "en": "Prior conciliation before the conciliation office; attach the non-conciliation report"
+        }
       ],
       "articles": [
-        { "code": "labour-relations", "number": "73", "role": "basis", "why": { "ar": "الأخطاء الجسيمة التي يجوز التسريح بسببها", "en": "Grave faults that may justify dismissal" } },
-        { "code": "labour-relations", "number": "73-4", "role": "damages", "why": { "ar": "جزاء التسريح المخالف للقانون: إعادة الإدماج أو التعويض", "en": "Unlawful dismissal: reinstatement or compensation" } },
-        { "code": "labour-disputes", "number": "19", "role": "procedure", "why": { "ar": "وجوب محاولة الصلح قبل أي دعوى قضائية", "en": "Mandatory conciliation before any court action" } }
+        {
+          "code": "labour-relations",
+          "number": "73",
+          "role": "basis",
+          "why": {
+            "ar": "الأخطاء الجسيمة التي يجوز التسريح بسببها",
+            "en": "Grave faults that may justify dismissal"
+          }
+        },
+        {
+          "code": "labour-relations",
+          "number": "73-4",
+          "role": "damages",
+          "why": {
+            "ar": "جزاء التسريح المخالف للقانون: إعادة الإدماج أو التعويض",
+            "en": "Unlawful dismissal: reinstatement or compensation"
+          }
+        },
+        {
+          "code": "labour-disputes",
+          "number": "19",
+          "role": "procedure",
+          "why": {
+            "ar": "وجوب محاولة الصلح قبل أي دعوى قضائية",
+            "en": "Mandatory conciliation before any court action"
+          }
+        }
       ],
       "suggestedRequests": [
         "إلغاء قرار التسريح المؤرخ في (...) لتعسفه",
         "إعادة إدماج المدعي في منصب عمله مع الاحتفاظ بامتيازاته المكتسبة",
         "احتياطيا: إلزام المدعى عليها بتعويض لا يقل عن أجر ستة أشهر"
       ],
-      "requiredDocuments": ["محضر عدم المصالحة", "قرار التسريح", "عقد العمل أو شهادة العمل", "كشوف الرواتب"],
-      "factsToState": ["تاريخ التوظيف والمنصب", "قرار التسريح وتاريخه وسببه المزعوم", "الإجراءات التي لم تحترم", "محضر عدم المصالحة وتاريخه"]
+      "requiredDocuments": [
+        "محضر عدم المصالحة",
+        "قرار التسريح",
+        "عقد العمل أو شهادة العمل",
+        "كشوف الرواتب"
+      ],
+      "factsToState": [
+        "تاريخ التوظيف والمنصب",
+        "قرار التسريح وتاريخه وسببه المزعوم",
+        "الإجراءات التي لم تحترم",
+        "محضر عدم المصالحة وتاريخه"
+      ]
     },
     {
       "id": "unpaid-wages",
-      "label": { "ar": "المطالبة بالأجور غير المدفوعة", "en": "Unpaid wages" },
+      "label": {
+        "ar": "المطالبة بالأجور غير المدفوعة",
+        "en": "Unpaid wages"
+      },
       "verified": false,
       "triggers": [
-        { "any": ["أجر", "أجور", "الأجور", "راتب", "رواتب", "مرتب", "منح", "علاوات", "الساعات الإضافية"], "weight": 3, "required": true },
-        { "any": ["لم يدفع", "لم تدفع", "لم يتقاض", "متأخرات", "امتنع", "مستحقات"], "weight": 2 },
-        { "any": ["العامل", "عامل", "المستخدم", "الهيئة المستخدمة", "صاحب العمل", "الشركة"], "weight": 1 }
+        {
+          "any": [
+            "أجر",
+            "أجور",
+            "الأجور",
+            "راتب",
+            "رواتب",
+            "مرتب",
+            "منح",
+            "علاوات",
+            "الساعات الإضافية"
+          ],
+          "weight": 3,
+          "required": true
+        },
+        {
+          "any": [
+            "لم يدفع",
+            "لم تدفع",
+            "لم يتقاض",
+            "متأخرات",
+            "امتنع",
+            "مستحقات"
+          ],
+          "weight": 2
+        },
+        {
+          "any": [
+            "العامل",
+            "عامل",
+            "المستخدم",
+            "الهيئة المستخدمة",
+            "صاحب العمل",
+            "الشركة"
+          ],
+          "weight": 1
+        }
       ],
-      "exclude": ["إيجار", "كراء"],
+      "exclude": [
+        "إيجار",
+        "كراء"
+      ],
       "prerequisites": [
-        { "ar": "محاولة الصلح أمام مكتب المصالحة قبل رفع الدعوى، وإرفاق محضر عدم المصالحة", "en": "Prior conciliation before the conciliation office; attach the non-conciliation report" }
+        {
+          "ar": "محاولة الصلح أمام مكتب المصالحة قبل رفع الدعوى، وإرفاق محضر عدم المصالحة",
+          "en": "Prior conciliation before the conciliation office; attach the non-conciliation report"
+        }
       ],
       "articles": [
-        { "code": "labour-relations", "number": "80", "role": "basis", "why": { "ar": "حق العامل في أجر مقابل العمل المؤدى", "en": "The worker's right to pay for work done" } },
-        { "code": "labour-relations", "number": "88", "role": "basis", "why": { "ar": "وجوب دفع الأجور بانتظام عند حلول أجلها", "en": "Wages must be paid regularly when due" } },
-        { "code": "labour-disputes", "number": "19", "role": "procedure", "why": { "ar": "وجوب محاولة الصلح قبل أي دعوى قضائية", "en": "Mandatory conciliation before any court action" } }
+        {
+          "code": "labour-relations",
+          "number": "80",
+          "role": "basis",
+          "why": {
+            "ar": "حق العامل في أجر مقابل العمل المؤدى",
+            "en": "The worker's right to pay for work done"
+          }
+        },
+        {
+          "code": "labour-relations",
+          "number": "88",
+          "role": "basis",
+          "why": {
+            "ar": "وجوب دفع الأجور بانتظام عند حلول أجلها",
+            "en": "Wages must be paid regularly when due"
+          }
+        },
+        {
+          "code": "labour-disputes",
+          "number": "19",
+          "role": "procedure",
+          "why": {
+            "ar": "وجوب محاولة الصلح قبل أي دعوى قضائية",
+            "en": "Mandatory conciliation before any court action"
+          }
+        }
       ],
       "suggestedRequests": [
         "إلزام المدعى عليها بأن تؤدي للمدعي الأجور غير المدفوعة عن المدة من (...) إلى (...) والمقدرة بـ (...) دج",
         "إلزام المدعى عليها بتعويض عن التأخر قدره (...) دج"
       ],
-      "requiredDocuments": ["محضر عدم المصالحة", "عقد العمل", "كشوف الرواتب", "شهادة العمل"],
-      "factsToState": ["المنصب والأجر المتفق عليه", "المدة غير المدفوعة", "محضر عدم المصالحة وتاريخه"]
+      "requiredDocuments": [
+        "محضر عدم المصالحة",
+        "عقد العمل",
+        "كشوف الرواتب",
+        "شهادة العمل"
+      ],
+      "factsToState": [
+        "المنصب والأجر المتفق عليه",
+        "المدة غير المدفوعة",
+        "محضر عدم المصالحة وتاريخه"
+      ]
     }
   ]
 }

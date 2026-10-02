@@ -134,6 +134,22 @@ public class RenderingTests
     }
 
     [AvaloniaFact]
+    public async Task NotesStepShowsGroundsSuggestions()
+    {
+        var (window, vm) = await ShowFilledWindowAsync();
+        vm.SelectStepCommand.Execute(vm.FieldGroups.Single(g => g.Id == "notes"));
+        vm.GroundsSuggestions[0].Articles[0].IsSelected = true;
+        Dispatcher.UIThread.RunJobs();
+        var panel = window.FindControl<Border>("GroundsPanel")!;
+        panel.BringIntoView();
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.True(panel.IsVisible);
+        Assert.True(window.FindControl<Button>("AddSelectedButton")!.IsEnabled);
+        SaveScreenshot(window, "main-window-grounds");
+    }
+
+    [AvaloniaFact]
     public async Task AssistantPanelShowsTheProposalDiff()
     {
         var vm = Vm.Create(provider: "scripted").Filled();

@@ -54,7 +54,7 @@ public sealed partial class DraftingService
             }
 
             sections.Add(section.Kind == SectionKind.Narrative
-                ? await WriteNarrativeAsync(definition, section, inputs, cancellationToken, onPartial)
+                ? await WriteNarrativeAsync(definition, section, inputs, options.LegalTexts, onPartial, cancellationToken)
                 : new DraftSection { Id = section.Id, Text = RenderGenerated(definition, section, inputs) });
         }
 
@@ -96,7 +96,7 @@ public sealed partial class DraftingService
     }
 
     /// <summary>Builds the prompt pair for a narrative section. Exposed so prompts can be inspected and tested.</summary>
-    public ModelRequest BuildRequest(DocumentTypeDefinition definition, SectionDefinition section, IReadOnlyDictionary<string, string> inputs)
+    public ModelRequest BuildRequest(DocumentTypeDefinition definition, SectionDefinition section, IReadOnlyDictionary<string, string> inputs, IReadOnlyList<LegalText>? legalTexts = null)
     {
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentNullException.ThrowIfNull(section);
@@ -105,7 +105,11 @@ public sealed partial class DraftingService
         var system = definition.SystemPrompt is null
             ? string.Empty
             : File.ReadAllText(Path.Combine(definition.SourceDirectory, definition.SystemPrompt)).Trim();
-        var user = _renderer.RenderFile(definition, section.Prompt!, inputs, new Dictionary<string, object?> { ["section_notes"] = notes });
+        var user = _renderer.RenderFile(definition, section.Prompt!, inputs, new Dictionary<string, object?>
+        {
+            ["section_notes"] = notes,
+            ["legal_texts"] = LegalText.Block(legalTexts),
+        });
 
         // Worked examples are marked [[مثال]] … [[/مثال]] in prompt files: the model sees the content without the
         // markers, and the content is kept aside to detect output that copies it.
@@ -121,13 +125,14 @@ public sealed partial class DraftingService
         string sectionId,
         IReadOnlyDictionary<string, string> inputs,
         Action<string, string>? onPartial = null,
+        IReadOnlyList<LegalText>? legalTexts = null,
         CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(definition);
         var section = definition.FindSection(sectionId) is { Kind: SectionKind.Narrative } s
             ? s
             : throw new ArgumentException($"'{sectionId}' is not a narrative section.", nameof(sectionId));
-        return WriteNarrativeAsync(definition, section, inputs, cancellationToken, onPartial);
+        return WriteNarrativeAsync(definition, section, inputs, legalTexts, onPartial, cancellationToken);
     }
 
     /// <summary>Streams the model's answer, reporting the text so far, and returns the whole answer.</summary>
@@ -143,9 +148,15 @@ public sealed partial class DraftingService
         return text.ToString();
     }
 
-    private async Task<DraftSection> WriteNarrativeAsync(DocumentTypeDefinition definition, SectionDefinition section, IReadOnlyDictionary<string, string> inputs, CancellationToken cancellationToken, Action<string, string>? onPartial = null)
+    private async Task<DraftSection> WriteNarrativeAsync(
+        DocumentTypeDefinition definition,
+        SectionDefinition section,
+        IReadOnlyDictionary<string, string> inputs,
+        IReadOnlyList<LegalText>? legalTexts,
+        Action<string, string>? onPartial,
+        CancellationToken cancellationToken)
     {
-        var request = BuildRequest(definition, section, inputs);
+        var request = BuildRequest(definition, section, inputs, legalTexts);
         if (request.SourceText.Length == 0)
         {
             return new DraftSection { Id = section.Id };
@@ -162,11 +173,11 @@ public sealed partial class DraftingService
                 notes.Add(DraftingNoteCodes.RemovedCopiedExample);
             }
 
-            var issues = NarrativeChecks.Check(text, request.SourceText, inputs, definition.GroundedTerms);
-            var invented = issues.Any(i => i.Kind == NarrativeIssueKind.UngroundedTerm);
+            var issues = NarrativeChecks.Check(text, request.SourceText, inputs, definition.GroundedTerms, legalTexts);
+            var invented = issues.Any(i => i.IsInventedLaw);
 
-            // A possibly invented legal qualification earns one more try; a second answer that still has it is
-            // kept (the rest may be good) and the term is shown to the lawyer as a review hint.
+            // A possibly invented legal qualification, an article nobody selected or a misquoted article earns one
+            // more try; a second answer that still has it is kept (the rest may be good) and shown as a review hint.
             if (text.Length > 0 && !issues.Any(i => i.IsHard) && (!invented || attempt == 2))
             {
                 return new DraftSection { Id = section.Id, Text = text, DraftingNotes = notes };
@@ -251,4 +262,7 @@ public sealed record DraftOptions
 
     /// <summary>Receives (section id, text so far) while the model streams its answer.</summary>
     public Action<string, string>? OnPartial { get; init; }
+
+    /// <summary>Official texts of the articles the lawyer selected: the only law the model may cite or quote.</summary>
+    public IReadOnlyList<LegalText>? LegalTexts { get; init; }
 }

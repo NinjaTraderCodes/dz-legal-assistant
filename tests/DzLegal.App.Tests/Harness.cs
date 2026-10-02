@@ -2,6 +2,7 @@ using DzLegal.App.Services;
 using DzLegal.App.ViewModels;
 using DzLegal.Domain.Serialization;
 using DzLegal.Drafting;
+using DzLegal.Law;
 using DzLegal.ModelProviders.Stub;
 using DzLegal.Storage;
 
@@ -68,6 +69,20 @@ internal sealed class ScriptedProvider : IModelProvider
             : request.SourceText);
 }
 
+/// <summary>Records every prompt and answers with the section notes (like template mode).</summary>
+internal sealed class RecordingProvider : IModelProvider
+{
+    public List<ModelRequest> Requests { get; } = [];
+
+    public string Name => "recording";
+
+    public Task<string> GenerateAsync(ModelRequest request, CancellationToken cancellationToken)
+    {
+        Requests.Add(request);
+        return Task.FromResult(request.SourceText);
+    }
+}
+
 internal sealed class FailingProvider : IModelProvider
 {
     public string Name => "failing";
@@ -80,17 +95,57 @@ internal static class Vm
 {
     public static readonly string EvaluationsFolder = Path.Combine(Path.GetTempPath(), "dzlegal-app-tests-" + Guid.NewGuid().ToString("N"));
 
-    public static MainWindowViewModel Create(FakeFiles? files = null, string provider = "stub", Loc? loc = null, string? autosaveFile = null)
+    /// <summary>The shipped claim catalog; no official text is imported yet, so articles show without text.</summary>
+    public static readonly LegalKnowledge ShippedKnowledge = LegalKnowledgeLoader.Load(Path.Combine(AppContext.BaseDirectory, "data", "law"));
+
+    /// <summary>
+    /// The shipped catalog with a FICTITIOUS civil-code library (some loan articles only), to test what happens
+    /// once texts are imported. Never shown as real law.
+    /// </summary>
+    public static readonly LegalKnowledge FixtureKnowledge = new(
+        new LawLibrary(
+        [
+            new LawCode
+            {
+                Id = "civil-code",
+                Title = new Domain.LocalizedText("قانون تجريبي", "Fictitious code"),
+                CitationName = "القانون المدني",
+                Reference = "نص وهمي للاختبار",
+                Source = new LawSource { Url = "fixture" },
+                Articles =
+                [
+                    new LawArticle { Number = "106", Text = "نص وهمي للاختبار: العقد الوهمي يلزم طرفيه." },
+                    new LawArticle { Number = "323", Text = "نص وهمي للاختبار: على الدائن الوهمي إثبات الالتزام وعلى المدين إثبات التخلص منه." },
+                    new LawArticle { Number = "450", Text = "نص وهمي للاختبار: القرض الوهمي عقد يلتزم به المقرض بنقل مبلغ على أن يرد إليه المقترض مثله." },
+                ],
+            },
+        ]),
+        ShippedKnowledge.Manifest,
+        ShippedKnowledge.Claims);
+
+    public static MainWindowViewModel Create(
+        FakeFiles? files = null,
+        string provider = "stub",
+        Loc? loc = null,
+        string? autosaveFile = null,
+        LegalKnowledge? knowledge = null,
+        RecordingProvider? recorder = null)
     {
         loc ??= new Loc();
         var definition = DefinitionLoader.Load(Path.Combine(AppContext.BaseDirectory, "data", "document-types", "requete-introductive"));
-        IReadOnlyList<ProviderOption> providers =
+        List<ProviderOption> providers =
         [
             new ProviderOption("stub", l => l["ProviderStub"], () => new StubModelProvider()),
             new ProviderOption("failing", _ => "failing", () => new FailingProvider(), _ => Task.FromResult(new ModelStatus(ModelState.NotRunning))),
             new ProviderOption("scripted", _ => "scripted", () => new ScriptedProvider()),
         ];
-        return new MainWindowViewModel(definition, providers, files ?? new FakeFiles(), new EvaluationStore(EvaluationsFolder), loc, provider, () => new DateOnly(2026, 9, 15), autosaveFile);
+        if (recorder is not null)
+        {
+            providers.Add(new ProviderOption("recording", _ => "recording", () => recorder));
+            provider = "recording";
+        }
+
+        return new MainWindowViewModel(definition, providers, files ?? new FakeFiles(), new EvaluationStore(EvaluationsFolder), loc, provider, () => new DateOnly(2026, 9, 15), autosaveFile, knowledge ?? ShippedKnowledge);
     }
 
     /// <summary>Fills every mandatory field with fictitious data, like a lawyer would.</summary>

@@ -15,6 +15,9 @@ public sealed record DraftDocument
     /// <summary>Name of the model provider that wrote the narrative sections (for evaluation records).</summary>
     public string? GeneratedBy { get; init; }
 
+    /// <summary>Articles from the law library the lawyer chose to rely on; their official text grounds the model.</summary>
+    public List<ArticleRef> SelectedArticles { get; init; } = [];
+
     public DraftSection? FindSection(string id) => Sections.FirstOrDefault(s => s.Id == id);
 
     /// <summary>Deep copy, so a snapshot is not affected by later edits.</summary>
@@ -22,8 +25,12 @@ public sealed record DraftDocument
     {
         Inputs = new Dictionary<string, string>(Inputs, StringComparer.Ordinal),
         Sections = Sections.Select(s => new DraftSection { Id = s.Id, Text = s.Text, DraftingNotes = [.. s.DraftingNotes], Overridden = s.Overridden }).ToList(),
+        SelectedArticles = [.. SelectedArticles],
     };
 }
+
+/// <summary>An article of a code in the law library, e.g. ("civil-code", "106").</summary>
+public sealed record ArticleRef(string Code, string Number);
 
 public sealed class DraftSection
 {

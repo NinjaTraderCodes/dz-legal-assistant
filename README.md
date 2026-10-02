@@ -21,6 +21,27 @@ The lawyer fills in the case details, the application produces a structured firs
 | **Verifiable** | The Form Engine is pure and deterministic. A 24-case corpus measures its accuracy per element, and CI requires 100%. |
 | **Legal rules are data** | Elements, articles, templates and prompts live in `data/`. Changing a rule means editing JSON, not code. |
 
+## Grounds suggestions
+
+The legal grounds are often the hardest part for the lawyer. In the **Notes** step, a **Suggested grounds** card proposes up to three claim types matched from the facts, for example «استرداد مبلغ قرض» for a loan. Each one shows:
+- the words that matched;
+- its articles, with a short reason and the official text;
+- prerequisites, such as labour conciliation;
+- the facts to state;
+- one-click inserts for the usual requests and documents.
+
+The lawyer ticks the articles to rely on. **Add selected to the grounds** writes «- المادة 450 من القانون المدني» into the grounds notes.
+
+**How it stays grounded:**
+- The ticked articles' **official texts** are given to the model as the only law it may cite or quote.
+- Any other article in the result is flagged under the section, and so is any «…» quotation that doesn't match the official text. Either one triggers one automatic retry.
+- Matching is deterministic: Arabic keyword groups with normalisation, and no model involved.
+- Texts come from a local law library imported from the official publications and are never typed from memory. See [docs/LAW-LIBRARY.md](docs/LAW-LIBRARY.md).
+
+> ⚠️ **Status:** the claim catalog (18 claim types across civil, commercial, family and labour cases) is unverified. **No official text has been imported yet**, so articles appear with "text not yet imported". The import needs network access to joradp.dz / mjustice.dz, or the PDFs supplied as files.
+
+![Grounds suggestions](docs/images/main-window-grounds.png)
+
 ## Section assistant
 
 Each narrative section (grounds, requests) has a **✦ Assistant** button. It opens a panel where the lawyer asks for an edit of *that section only*: quick chips («أكثر رسمية», «أوجز», «صحح اللغة», «اربط كل مادة بطلبها», «لا تكرر الخاتمة») or a free instruction.
@@ -53,7 +74,7 @@ Prerequisite: [.NET 10 SDK](https://dotnet.microsoft.com/download) (the version 
 
 ```bash
 dotnet build                                   # warnings are errors
-dotnet test                                    # 254 tests: engine, drafting, providers, storage, UI (headless)
+dotnet test                                    # 278 tests: engine, drafting, providers, storage, UI (headless)
 dotnet run --project src/DzLegal.Harness       # Form Engine accuracy report (exit 1 on any mismatch)
 dotnet run --project src/DzLegal.Harness -- grounds   # grounds-suggestion accuracy (exit 1 below 90% top-3)
 dotnet run --project src/DzLegal.App           # the desktop app
@@ -102,6 +123,7 @@ The output folder has everything it needs: runtime, `data/` rules, fonts and `ap
 4. **Right panel, Formal check:** the score («10 من 12») and only the missing elements, expanded. Click one to jump to the step that fixes it. Present elements are folded away.
 5. **Centre, Draft:**
    - **Edit** shows the sections on paper. Generated sections follow the form (🔒). Use **Edit by hand** to take one over, and **Restore from form** to give it back.
+   - In the **Notes** step, **Suggested grounds** proposes claim types and their articles from the facts. Tick the articles, then add them to the grounds notes.
    - **Draft narrative sections** writes the grounds and requests, streaming the text as it comes. Sections you edited are kept.
    - **✦ Assistant** on a narrative section proposes an edit you accept or reject (needs Ollama; template mode only echoes the text). **Undo** and **↻ Redraft** are per section.
    - **Preview** shows the exact A4 pages. **Export PDF** and **Export Word** save the document, with or without the «مسودة» watermark.

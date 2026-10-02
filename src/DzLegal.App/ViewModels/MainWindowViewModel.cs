@@ -42,10 +42,12 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         Loc loc,
         string defaultProvider = "ollama",
         Func<DateOnly>? today = null,
-        string? autosaveFile = null)
+        string? autosaveFile = null,
+        DzLegal.Law.LegalKnowledge? knowledge = null)
     {
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentNullException.ThrowIfNull(providers);
+        UseKnowledge(knowledge);
         _definition = definition;
         _files = files;
         _evaluations = evaluations;
@@ -106,7 +108,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     public ObservableCollection<FindingViewModel> PresentFindings { get; } = [];
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(StepPosition))]
+    [NotifyPropertyChangedFor(nameof(StepPosition), nameof(IsNotesStep))]
     public partial FieldGroupViewModel? SelectedStep { get; set; }
 
     public string StepPosition => SelectedStep is null ? string.Empty : L.Format("StepPosition", SelectedStep.Number, FieldGroups.Count);
@@ -280,6 +282,9 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
 
     public FieldViewModel Field(string id) => _fields.Single(f => f.Id == id);
 
+    /// <summary>The draft as it should be saved: current inputs and the articles the lawyer ticked.</summary>
+    private DraftDocument CurrentDraft() => _draft with { Inputs = CurrentInputs(), SelectedArticles = [.. _selectedArticles] };
+
     public Dictionary<string, string> CurrentInputs() =>
         _fields.ToDictionary(f => f.Id, f => f.Value, StringComparer.Ordinal);
 
@@ -307,6 +312,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
                     Progress = progress,
                     KeepNarrative = keep,
                     OnPartial = (id, partial) => Sections.FirstOrDefault(x => x.Id == id)?.SetFromModel(partial),
+                    LegalTexts = SelectedLegalTexts(),
                 },
                 cancellationToken);
             foreach (var manual in _draft.Sections.Where(x => x.Overridden))
@@ -390,7 +396,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         try
         {
             Directory.CreateDirectory(Path.GetDirectoryName(_autosaveFile)!);
-            DraftFile.Save(_draft with { Inputs = CurrentInputs() }, _autosaveFile);
+            DraftFile.Save(CurrentDraft(), _autosaveFile);
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {
@@ -453,6 +459,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         _generatedSnapshot = null;
         _modelText.Clear();
         HasGeneratedDraft = false;
+        SetSelectedArticles([]);
         OnInputChanged();
         SyncSections(overwriteNarrative: true);
         SetStatus(L["Ready"]);
@@ -469,7 +476,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
 
         await using (t.Stream)
         {
-            await DraftFile.SaveAsync(_draft, t.Stream);
+            await DraftFile.SaveAsync(CurrentDraft(), t.Stream);
         }
 
         SetStatus(L.Format("Saved", t.Name));
@@ -510,6 +517,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
 
         LoadInputs(inputs);
         _draft = _templates.Refresh(_definition, loaded, inputs);
+        SetSelectedArticles(loaded.SelectedArticles);
         _generatedSnapshot = null;
         HasGeneratedDraft = false;
         UpdateVisibility();
@@ -577,7 +585,9 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         OnPropertyChanged(nameof(StepPosition));
         OnPropertyChanged(nameof(Shortcuts));
         OnPropertyChanged(nameof(AssistantTitle));
+        OnPropertyChanged(nameof(AddSelectedText));
         _ = CheckModelStatusAsync();
+        RefreshSuggestions(force: true);
         Recheck();
         SetStatus(L["Ready"]);
     }
@@ -587,6 +597,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         UpdateVisibility();
         _draft = _templates.Refresh(_definition, _draft, CurrentInputs());
         SyncSections(overwriteNarrative: false);
+        RefreshSuggestions();
         Recheck();
     }
 
@@ -765,16 +776,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
                 }
 
                 var notes = inputs.GetValueOrDefault(vm.Definition.SourceField ?? string.Empty, string.Empty);
-                lines.AddRange(NarrativeChecks.Check(vm.Text, notes, inputs, _definition.GroundedTerms).Select(i => L.Format(i.Kind switch
-                {
-                    NarrativeIssueKind.ForeignScript => "IssueForeignScript",
-                    NarrativeIssueKind.NotArabic => "IssueNotArabic",
-                    NarrativeIssueKind.UnknownNumber => "IssueUnknownNumber",
-                    NarrativeIssueKind.UnexpectedLatinWord => "IssueUnexpectedLatinWord",
-                    NarrativeIssueKind.MissingNumber => "IssueMissingNumber",
-                    NarrativeIssueKind.UngroundedTerm => "IssueUngroundedTerm",
-                    _ => throw new InvalidOperationException($"No message for {i.Kind}."),
-                }, i.Detail)));
+                lines.AddRange(NarrativeChecks.Check(vm.Text, notes, inputs, _definition.GroundedTerms, SelectedLegalTexts()).Select(DescribeIssue));
             }
 
             vm.ReviewText = string.Join("\n", lines.Select(l => "⚠ " + l));

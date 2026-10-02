@@ -31,15 +31,16 @@ public sealed class SectionReviser(IModelProvider provider)
         string instruction,
         IReadOnlyDictionary<string, string> inputs,
         Action<string>? onPartial = null,
+        IReadOnlyList<LegalText>? legalTexts = null,
         CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentNullException.ThrowIfNull(inputs);
-        var request = BuildRequest(definition, sectionId, currentText, instruction, inputs);
+        var request = BuildRequest(definition, sectionId, currentText, instruction, inputs, legalTexts);
         var section = definition.FindSection(sectionId)!;
 
-        // Numbers or terms the lawyer typed in the instruction itself are theirs, not invented.
-        var known = new Dictionary<string, string>(inputs, StringComparer.Ordinal) { ["__instruction"] = instruction };
+        // Numbers, terms and articles in the instruction or in the section the lawyer already accepted are theirs.
+        var known = new Dictionary<string, string>(inputs, StringComparer.Ordinal) { ["__instruction"] = instruction, ["__current"] = currentText ?? string.Empty };
         RevisionProposal? last = null;
         for (var attempt = 1; attempt <= 2; attempt++)
         {
@@ -56,9 +57,10 @@ public sealed class SectionReviser(IModelProvider provider)
                 return new RevisionProposal(string.Empty, [], IsRefusal: true, IsUnusable: false);
             }
 
-            var issues = NarrativeChecks.Check(text, request.SourceText, known, definition.GroundedTerms);
+            var issues = NarrativeChecks.Check(text, request.SourceText, known, definition.GroundedTerms, legalTexts);
             last = new RevisionProposal(text, issues, IsRefusal: false, IsUnusable: text.Length == 0 || issues.Any(i => i.IsHard));
-            if (!last.IsUnusable)
+            // An article nobody selected, a misquotation or an invented qualification earns one more try.
+            if (!last.IsUnusable && (attempt == 2 || !issues.Any(i => i.IsInventedLaw)))
             {
                 return last;
             }
@@ -68,7 +70,7 @@ public sealed class SectionReviser(IModelProvider provider)
     }
 
     /// <summary>Builds the revision prompt from the definition's <c>revisionPrompt</c> file.</summary>
-    public ModelRequest BuildRequest(DocumentTypeDefinition definition, string sectionId, string currentText, string instruction, IReadOnlyDictionary<string, string> inputs)
+    public ModelRequest BuildRequest(DocumentTypeDefinition definition, string sectionId, string currentText, string instruction, IReadOnlyDictionary<string, string> inputs, IReadOnlyList<LegalText>? legalTexts = null)
     {
         ArgumentNullException.ThrowIfNull(definition);
         var section = definition.FindSection(sectionId) ?? throw new ArgumentException($"Unknown section '{sectionId}'.", nameof(sectionId));
@@ -87,6 +89,7 @@ public sealed class SectionReviser(IModelProvider provider)
             ["section_notes"] = notes,
             ["current_text"] = currentText ?? string.Empty,
             ["instruction"] = instruction ?? string.Empty,
+            ["legal_texts"] = LegalText.Block(legalTexts),
         });
         return new ModelRequest(sectionId, system, user, notes);
     }

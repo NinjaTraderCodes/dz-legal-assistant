@@ -22,6 +22,7 @@
   - `DraftingService.DraftAsync` renders the *generated* sections from Scriban templates and asks an `IModelProvider` to write the *narrative* sections.
   - `DraftOptions.KeepNarrative` keeps sections the lawyer edited; `DraftSectionAsync` redrafts one section; `OnPartial` streams text as the model writes it (`IModelProvider.StreamAsync`, which Ollama implements with `stream: true`).
   - `SectionReviser.ReviseAsync` asks the model to edit one section following the lawyer's instruction (`prompts/revise.ar.txt`). The proposal goes through the same cleaning, corrections and `NarrativeChecks` as a draft (numbers in the instruction count as known), is retried once on a hard failure, and is flagged as a refusal when the model returns the fixed «خارج نطاق التعديل» line. `TextDiff` produces the word-level diff shown for review. Nothing is applied until the lawyer accepts.
+  - **Selected articles:** `DraftOptions.LegalTexts`, `DraftSectionAsync(..., legalTexts)` and `SectionReviser.ReviseAsync(..., legalTexts)` carry the official texts of the articles the lawyer ticked. Prompts receive them as `legal_texts`. `NarrativeChecks` reports `UncitedArticle` (an article neither in the notes nor ticked) and `MisquotedArticle` (a «…» quote that isn't in the ticked article's text). Both count as invented law, which earns one retry.
   - `Refresh` re-applies form changes without calling the model and keeps the lawyer's narrative edits.
   - `BuildRequest` exposes the exact prompt for inspection and tests.
 - **NarrativeChecks** (in Drafting) checks model text against the lawyer's material:
@@ -40,6 +41,7 @@
   - `DocxRenderer` (Open XML SDK) produces an editable, schema-valid right-to-left `.docx`.
   - Fonts live in `assets/fonts/` and are shared by the app and the PDF engine.
 - **Law** (`DzLegal.Law`): the offline law library. `LawLibraryLoader` validates `data/law/codes/*.json`. `LawTextParser` splits an official text into articles (headings, «مكرر» numbers, reversed PDF text, repealed markers) and reports gaps for review. `LawDiff` compares two imports. `ArabicScript.Normalize` and `ArabicScript.Tokens` in Domain give the shared Arabic normalisation used for matching. The importer itself (`law import` in the Harness) is the only code that downloads anything, and only at development time. See [LAW-LIBRARY.md](LAW-LIBRARY.md).
+- **Grounds suggestions** (`DzLegal.Law`): `LegalKnowledgeLoader` loads the source manifest, the imported codes and the claim catalog, and checks them against each other. `GroundsSuggester` ranks claim types from the facts, filtered by the area named in the court section. `ArticleSearch` finds articles by number or words. In the app, `MainWindowViewModel.Grounds.cs` keeps the ticked articles. They are saved in `DraftDocument.SelectedArticles` and turned into `LegalText`s for drafting.
 - **Storage**: drafts (`*.dzdraft.json`) and evaluation records as local JSON under the user's local app-data folder.
 - **Harness** has two modes:
   - Its default mode loads the corpus, runs the Form Engine, and prints per-element accuracy, precision and recall. The same logic runs as a test.

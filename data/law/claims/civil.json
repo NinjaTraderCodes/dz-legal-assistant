@@ -1,0 +1,860 @@
+{
+  "area": "civil",
+  "comment": "Drafted by the engineering team from its reading of the Civil Code; every article number is a proposal to be confirmed by a lawyer against the imported official text (verified: false). Once the civil code is imported, the loader rejects any article that does not exist or is repealed.",
+  "claims": [
+    {
+      "id": "loan-repayment",
+      "label": {
+        "ar": "استرداد مبلغ قرض",
+        "en": "Repayment of a loan"
+      },
+      "verified": false,
+      "triggers": [
+        {
+          "any": [
+            "قرض",
+            "اقرض",
+            "أقرض",
+            "اقترض",
+            "سلف",
+            "سلفة",
+            "تسليف",
+            "استلف",
+            "دين",
+            "مدين",
+            "مدينا",
+            "ذمته"
+          ],
+          "weight": 3,
+          "required": true
+        },
+        {
+          "any": [
+            "لم يرد",
+            "لم يسدد",
+            "لم يرجع",
+            "امتنع",
+            "رفض الرد",
+            "رفض التسديد",
+            "ماطل",
+            "المماطلة",
+            "ما رجعش",
+            "ما خلصش",
+            "بقي في ذمته",
+            "دون تسديد",
+            "بدون تسديد",
+            "دون دفع",
+            "غير مسددة",
+            "غير مدفوعة"
+          ],
+          "weight": 2
+        },
+        {
+          "any": [
+            "اعتراف بدين",
+            "سند",
+            "وصل",
+            "إعذار",
+            "انذار",
+            "إنذار",
+            "محضر قضائي"
+          ],
+          "weight": 1
+        }
+      ],
+      "exclude": [
+        "إيجار",
+        "كراء",
+        "بدل الإيجار",
+        "أجرة",
+        "راتب",
+        "فاتورة",
+        "سجل تجاري"
+      ],
+      "articles": [
+        {
+          "code": "civil-code",
+          "number": "450",
+          "role": "basis",
+          "why": {
+            "ar": "تعريف قرض الاستهلاك والتزام المقترض برد مثل ما اقترض",
+            "en": "Defines the loan and the borrower's duty to return the same amount"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "106",
+          "role": "basis",
+          "why": {
+            "ar": "العقد شريعة المتعاقدين",
+            "en": "The contract binds the parties"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "323",
+          "role": "proof",
+          "why": {
+            "ar": "على الدائن إثبات الالتزام وعلى المدين إثبات التخلص منه",
+            "en": "Burden of proof: creditor proves the debt, debtor proves payment"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "333",
+          "role": "proof",
+          "why": {
+            "ar": "الإثبات بالكتابة فيما يجاوز النصاب القانوني",
+            "en": "Written proof above the legal threshold"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "454",
+          "role": "basis",
+          "why": {
+            "ar": "القرض بين الأفراد بدون فائدة: لا تطلب فوائد",
+            "en": "Loans between individuals bear no interest: do not ask for interest"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "176",
+          "role": "damages",
+          "why": {
+            "ar": "التعويض عن عدم تنفيذ الالتزام أو التأخر فيه",
+            "en": "Damages for non-performance or delay"
+          }
+        }
+      ],
+      "suggestedRequests": [
+        "إلزام المدعى عليه بأن يؤدي للمدعي مبلغ القرض المقدر بـ (...) دج",
+        "إلزام المدعى عليه بأن يؤدي للمدعي تعويضا عن التماطل قدره (...) دج",
+        "تحميل المدعى عليه المصاريف القضائية"
+      ],
+      "requiredDocuments": [
+        "سند القرض أو الاعتراف بالدين",
+        "محضر الإعذار",
+        "وصولات التحويل أو التسليم إن وجدت"
+      ],
+      "factsToState": [
+        "تاريخ القرض ومبلغه",
+        "أجل الرد المتفق عليه",
+        "المطالبة الودية أو الإعذار وتاريخه",
+        "امتناع المدعى عليه عن الرد"
+      ]
+    },
+    {
+      "id": "unpaid-sale-price",
+      "label": {
+        "ar": "المطالبة بثمن مبيع غير مدفوع",
+        "en": "Unpaid sale price"
+      },
+      "verified": false,
+      "triggers": [
+        {
+          "any": [
+            "بيع",
+            "باع",
+            "اشترى",
+            "شراء",
+            "المشتري",
+            "البائع",
+            "المبيع",
+            "ثمن"
+          ],
+          "weight": 3,
+          "required": true
+        },
+        {
+          "any": [
+            "لم يدفع",
+            "لم يسدد",
+            "باقي الثمن",
+            "بقية الثمن",
+            "امتنع عن دفع",
+            "رفض دفع",
+            "ما خلصش",
+            "سلمه",
+            "تسلم",
+            "دون تسديد",
+            "بدون تسديد",
+            "دون دفع",
+            "غير مسددة",
+            "غير مدفوعة"
+          ],
+          "weight": 2
+        }
+      ],
+      "exclude": [
+        "إيجار",
+        "كراء",
+        "سجل تجاري",
+        "فاتورة"
+      ],
+      "articles": [
+        {
+          "code": "civil-code",
+          "number": "351",
+          "role": "basis",
+          "why": {
+            "ar": "تعريف البيع والتزام المشتري بدفع الثمن",
+            "en": "Definition of sale; the buyer owes the price"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "106",
+          "role": "basis",
+          "why": {
+            "ar": "العقد شريعة المتعاقدين",
+            "en": "The contract binds the parties"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "164",
+          "role": "basis",
+          "why": {
+            "ar": "إجبار المدين بعد إعذاره على التنفيذ العيني",
+            "en": "Compelling performance after formal notice"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "323",
+          "role": "proof",
+          "why": {
+            "ar": "عبء الإثبات",
+            "en": "Burden of proof"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "176",
+          "role": "damages",
+          "why": {
+            "ar": "التعويض عن عدم التنفيذ",
+            "en": "Damages for non-performance"
+          }
+        }
+      ],
+      "suggestedRequests": [
+        "إلزام المدعى عليه بأن يؤدي للمدعي باقي ثمن المبيع المقدر بـ (...) دج",
+        "إلزام المدعى عليه بتعويض قدره (...) دج عن التأخر في الدفع",
+        "تحميل المدعى عليه المصاريف القضائية"
+      ],
+      "requiredDocuments": [
+        "عقد البيع",
+        "ما يثبت تسليم المبيع",
+        "محضر الإعذار"
+      ],
+      "factsToState": [
+        "تاريخ البيع والمبيع والثمن",
+        "تسليم المبيع",
+        "ما دفع وما بقي",
+        "الإعذار"
+      ]
+    },
+    {
+      "id": "contract-rescission",
+      "label": {
+        "ar": "فسخ عقد لعدم التنفيذ",
+        "en": "Rescission for non-performance"
+      },
+      "verified": false,
+      "triggers": [
+        {
+          "any": [
+            "فسخ",
+            "الفسخ",
+            "إبطال العقد",
+            "حل العقد"
+          ],
+          "weight": 3,
+          "required": true
+        },
+        {
+          "any": [
+            "عقد",
+            "اتفاق",
+            "اتفاقية",
+            "التزام"
+          ],
+          "weight": 1
+        },
+        {
+          "any": [
+            "لم ينفذ",
+            "عدم التنفيذ",
+            "أخل",
+            "الإخلال",
+            "امتنع عن تنفيذ",
+            "لم يف"
+          ],
+          "weight": 2
+        }
+      ],
+      "exclude": [],
+      "articles": [
+        {
+          "code": "civil-code",
+          "number": "119",
+          "role": "basis",
+          "why": {
+            "ar": "حق المتعاقد في طلب الفسخ مع التعويض بعد الإعذار في العقود الملزمة للجانبين",
+            "en": "Right to rescind with damages after notice in bilateral contracts"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "122",
+          "role": "basis",
+          "why": {
+            "ar": "أثر الفسخ: إعادة المتعاقدين إلى الحالة التي كانا عليها",
+            "en": "Effect of rescission: restoring the prior position"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "107",
+          "role": "basis",
+          "why": {
+            "ar": "تنفيذ العقد بحسن نية",
+            "en": "Good-faith performance"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "176",
+          "role": "damages",
+          "why": {
+            "ar": "التعويض عن عدم التنفيذ",
+            "en": "Damages for non-performance"
+          }
+        }
+      ],
+      "suggestedRequests": [
+        "الحكم بفسخ العقد المبرم بين الطرفين بتاريخ (...)",
+        "إلزام المدعى عليه بإرجاع ما قبضه والمقدر بـ (...) دج",
+        "إلزام المدعى عليه بتعويض قدره (...) دج"
+      ],
+      "requiredDocuments": [
+        "العقد",
+        "محضر الإعذار",
+        "ما يثبت الإخلال"
+      ],
+      "factsToState": [
+        "تاريخ العقد ومحله",
+        "الالتزام الذي لم ينفذ",
+        "الإعذار وتاريخه"
+      ]
+    },
+    {
+      "id": "contract-damages",
+      "label": {
+        "ar": "تعويض عن الإخلال بالتزام تعاقدي",
+        "en": "Damages for breach of contract"
+      },
+      "verified": false,
+      "triggers": [
+        {
+          "any": [
+            "عقد",
+            "اتفاق",
+            "اتفاقية",
+            "التزم",
+            "تعهد",
+            "تعاقدي",
+            "التعاقدي",
+            "التزام"
+          ],
+          "weight": 2,
+          "required": true
+        },
+        {
+          "any": [
+            "تعويض",
+            "ضرر",
+            "خسارة",
+            "أضرار",
+            "فاته من كسب"
+          ],
+          "weight": 2,
+          "required": true
+        },
+        {
+          "any": [
+            "أخل",
+            "الإخلال",
+            "لم ينفذ",
+            "تأخر",
+            "التأخر",
+            "عدم التنفيذ"
+          ],
+          "weight": 2
+        }
+      ],
+      "exclude": [
+        "فسخ"
+      ],
+      "articles": [
+        {
+          "code": "civil-code",
+          "number": "176",
+          "role": "basis",
+          "why": {
+            "ar": "التعويض عن عدم التنفيذ أو التأخر فيه",
+            "en": "Damages for non-performance or delay"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "182",
+          "role": "damages",
+          "why": {
+            "ar": "تقدير التعويض: ما لحق الدائن من خسارة وما فاته من كسب",
+            "en": "Measure of damages: loss suffered and profit lost"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "107",
+          "role": "basis",
+          "why": {
+            "ar": "تنفيذ العقد بحسن نية",
+            "en": "Good-faith performance"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "106",
+          "role": "basis",
+          "why": {
+            "ar": "العقد شريعة المتعاقدين",
+            "en": "The contract binds the parties"
+          }
+        }
+      ],
+      "suggestedRequests": [
+        "إلزام المدعى عليه بأن يؤدي للمدعي تعويضا قدره (...) دج جبرا للضرر اللاحق به",
+        "تحميل المدعى عليه المصاريف القضائية"
+      ],
+      "requiredDocuments": [
+        "العقد",
+        "ما يثبت الضرر ومقداره",
+        "محضر الإعذار"
+      ],
+      "factsToState": [
+        "الالتزام المتفق عليه",
+        "الإخلال",
+        "الضرر ومقداره",
+        "العلاقة بين الإخلال والضرر"
+      ]
+    },
+    {
+      "id": "tort-damages",
+      "label": {
+        "ar": "تعويض عن ضرر بسبب خطأ (مسؤولية تقصيرية)",
+        "en": "Tort damages (fault)"
+      },
+      "verified": false,
+      "triggers": [
+        {
+          "any": [
+            "خطأ",
+            "اعتداء",
+            "إهمال",
+            "تسبب",
+            "ألحق",
+            "أتلف",
+            "إتلاف",
+            "حادث",
+            "تشهير",
+            "سب",
+            "قذف"
+          ],
+          "weight": 3,
+          "required": true
+        },
+        {
+          "any": [
+            "ضرر",
+            "أضرار",
+            "تعويض",
+            "جروح",
+            "خسائر",
+            "عجز"
+          ],
+          "weight": 2,
+          "required": true
+        },
+        {
+          "any": [
+            "معنوي",
+            "مادي",
+            "شهادة طبية",
+            "خبرة"
+          ],
+          "weight": 1
+        }
+      ],
+      "exclude": [
+        "عقد",
+        "اتفاق",
+        "عامل",
+        "تسريح"
+      ],
+      "articles": [
+        {
+          "code": "civil-code",
+          "number": "124",
+          "role": "basis",
+          "why": {
+            "ar": "كل فعل خاطئ يسبب ضررا للغير يلزم مرتكبه بالتعويض",
+            "en": "Any fault causing harm obliges its author to compensate"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "131",
+          "role": "damages",
+          "why": {
+            "ar": "تقدير القاضي للتعويض",
+            "en": "The judge assesses compensation"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "182 مكرر",
+          "role": "damages",
+          "why": {
+            "ar": "التعويض عن الضرر المعنوي",
+            "en": "Compensation for moral damage"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "182",
+          "role": "damages",
+          "why": {
+            "ar": "عناصر التعويض: الخسارة اللاحقة والكسب الفائت",
+            "en": "Elements of damages"
+          }
+        }
+      ],
+      "suggestedRequests": [
+        "إلزام المدعى عليه بأن يؤدي للمدعي تعويضا عن الضرر المادي قدره (...) دج",
+        "إلزام المدعى عليه بأن يؤدي للمدعي تعويضا عن الضرر المعنوي قدره (...) دج",
+        "احتياطيا: تعيين خبير لتقدير الضرر"
+      ],
+      "requiredDocuments": [
+        "ما يثبت الواقعة (محضر، شهادة)",
+        "الشهادات الطبية أو الفواتير",
+        "تقرير الخبرة إن وجد"
+      ],
+      "factsToState": [
+        "الفعل الضار وتاريخه",
+        "الضرر",
+        "العلاقة السببية بينهما"
+      ]
+    },
+    {
+      "id": "liability-for-things",
+      "label": {
+        "ar": "مسؤولية حارس الشيء",
+        "en": "Liability of the custodian of a thing"
+      },
+      "verified": false,
+      "triggers": [
+        {
+          "any": [
+            "تسرب",
+            "تسربت",
+            "انهيار",
+            "انهار",
+            "سقوط",
+            "سقط",
+            "حيوان",
+            "كلب",
+            "حريق",
+            "المياه",
+            "جدار",
+            "شرفة"
+          ],
+          "weight": 3,
+          "required": true
+        },
+        {
+          "any": [
+            "ضرر",
+            "أضرار",
+            "تعويض",
+            "أتلف",
+            "إتلاف",
+            "خسائر"
+          ],
+          "weight": 2,
+          "required": true
+        },
+        {
+          "any": [
+            "جاره",
+            "الجار",
+            "العمارة",
+            "الطابق",
+            "مسكنه",
+            "حراسة"
+          ],
+          "weight": 1
+        }
+      ],
+      "exclude": [
+        "عقد",
+        "عامل"
+      ],
+      "articles": [
+        {
+          "code": "civil-code",
+          "number": "138",
+          "role": "basis",
+          "why": {
+            "ar": "مسؤولية من تولى حراسة شيء عن الضرر الذي يحدثه",
+            "en": "The custodian of a thing answers for the harm it causes"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "131",
+          "role": "damages",
+          "why": {
+            "ar": "تقدير التعويض",
+            "en": "Assessment of compensation"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "182",
+          "role": "damages",
+          "why": {
+            "ar": "عناصر التعويض",
+            "en": "Elements of damages"
+          }
+        }
+      ],
+      "suggestedRequests": [
+        "إلزام المدعى عليه بإصلاح الأضرار أو بأداء قيمتها المقدرة بـ (...) دج",
+        "احتياطيا: تعيين خبير لمعاينة الأضرار وتقديرها"
+      ],
+      "requiredDocuments": [
+        "محضر معاينة",
+        "صور الأضرار",
+        "تقرير خبرة إن وجد"
+      ],
+      "factsToState": [
+        "الشيء الذي أحدث الضرر وحارسه",
+        "الضرر وتاريخه"
+      ]
+    },
+    {
+      "id": "unpaid-rent-eviction",
+      "label": {
+        "ar": "المطالبة ببدل الإيجار وطرد المستأجر",
+        "en": "Unpaid rent and eviction"
+      },
+      "verified": false,
+      "triggers": [
+        {
+          "any": [
+            "إيجار",
+            "ايجار",
+            "كراء",
+            "المستأجر",
+            "مستأجر",
+            "المؤجر",
+            "بدل الإيجار",
+            "أجرة",
+            "الكراء"
+          ],
+          "weight": 3,
+          "required": true
+        },
+        {
+          "any": [
+            "لم يدفع",
+            "لم يسدد",
+            "متأخرات",
+            "امتنع",
+            "الطرد",
+            "طرد",
+            "إخلاء",
+            "الخروج",
+            "ما خلصش",
+            "دون تسديد",
+            "بدون تسديد",
+            "دون دفع",
+            "غير مسددة",
+            "غير مدفوعة"
+          ],
+          "weight": 2
+        },
+        {
+          "any": [
+            "شقة",
+            "مسكن",
+            "منزل",
+            "سكن",
+            "عقار"
+          ],
+          "weight": 1
+        }
+      ],
+      "exclude": [
+        "محل تجاري",
+        "سجل تجاري",
+        "القاعدة التجارية",
+        "تجاري"
+      ],
+      "articles": [
+        {
+          "code": "civil-code",
+          "number": "467",
+          "role": "basis",
+          "why": {
+            "ar": "تعريف عقد الإيجار ومقابله",
+            "en": "Definition of the lease and its rent"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "498",
+          "role": "basis",
+          "why": {
+            "ar": "التزام المستأجر بدفع بدل الإيجار في المواعيد المتفق عليها",
+            "en": "The tenant must pay rent on the agreed dates"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "119",
+          "role": "basis",
+          "why": {
+            "ar": "الفسخ لعدم التنفيذ بعد الإعذار",
+            "en": "Rescission for non-performance after notice"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "106",
+          "role": "basis",
+          "why": {
+            "ar": "العقد شريعة المتعاقدين",
+            "en": "The contract binds the parties"
+          }
+        }
+      ],
+      "suggestedRequests": [
+        "إلزام المدعى عليه بأن يؤدي للمدعي بدلات الإيجار المتأخرة عن المدة من (...) إلى (...) والمقدرة بـ (...) دج",
+        "الحكم بفسخ عقد الإيجار وطرد المدعى عليه ومن يحل محله من العين المؤجرة",
+        "تحميل المدعى عليه المصاريف القضائية"
+      ],
+      "requiredDocuments": [
+        "عقد الإيجار",
+        "محضر التنبيه أو الإعذار بالدفع",
+        "وصولات الإيجار السابقة إن وجدت"
+      ],
+      "factsToState": [
+        "تاريخ العقد والعين المؤجرة وبدل الإيجار",
+        "المدة غير المدفوعة",
+        "الإعذار"
+      ]
+    },
+    {
+      "id": "eviction-occupier-without-title",
+      "label": {
+        "ar": "طرد شاغل بدون سند",
+        "en": "Eviction of an occupier without title"
+      },
+      "verified": false,
+      "triggers": [
+        {
+          "any": [
+            "بدون سند",
+            "دون سند",
+            "بلا سند",
+            "بدون وجه حق",
+            "دون وجه حق",
+            "احتل",
+            "احتلال",
+            "يشغل",
+            "استولى",
+            "تعدى"
+          ],
+          "weight": 3,
+          "required": true
+        },
+        {
+          "any": [
+            "ملك",
+            "ملكية",
+            "مالك",
+            "عقد ملكية",
+            "عقار",
+            "قطعة أرض",
+            "مسكن",
+            "شقة",
+            "منزل"
+          ],
+          "weight": 2
+        },
+        {
+          "any": [
+            "طرد",
+            "الطرد",
+            "إخلاء",
+            "الخروج"
+          ],
+          "weight": 2
+        }
+      ],
+      "exclude": [
+        "إيجار",
+        "كراء",
+        "بدل الإيجار"
+      ],
+      "articles": [
+        {
+          "code": "civil-code",
+          "number": "674",
+          "role": "basis",
+          "why": {
+            "ar": "حق الملكية: التمتع والتصرف في الأشياء",
+            "en": "Ownership: the right to enjoy and dispose of things"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "124",
+          "role": "damages",
+          "why": {
+            "ar": "التعويض عن الضرر الناتج عن الشغل دون وجه حق",
+            "en": "Damages for wrongful occupation"
+          }
+        }
+      ],
+      "suggestedRequests": [
+        "الحكم بطرد المدعى عليه ومن يحل محله من العقار الكائن بـ (...)",
+        "إلزام المدعى عليه بتعويض عن الشغل دون وجه حق قدره (...) دج"
+      ],
+      "requiredDocuments": [
+        "سند الملكية المشهر",
+        "محضر معاينة الشغل"
+      ],
+      "factsToState": [
+        "سند ملكية المدعي",
+        "شغل المدعى عليه وتاريخه",
+        "انعدام أي سند للشاغل"
+      ]
+    }
+  ]
+}

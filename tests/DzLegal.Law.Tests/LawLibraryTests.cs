@@ -26,6 +26,11 @@ public sealed class ArabicNormalizationTests
     [InlineData("وامتنع", "امتنع", true)]
     [InlineData("بايع", "بايع", true)]
     [InlineData("فسخ", "سخ", false)]
+    [InlineData("تسريحه", "تسريح", true)]
+    [InlineData("اضرارا", "اضرار", true)]
+    [InlineData("بتطليقها", "تطليق", true)]
+    [InlineData("تسريحكم", "تسريح", false)]
+    [InlineData("عملاق", "عمل", false)]
     public void MatchesWordAllowsOneLeadingClitic(string token, string term, bool expected) =>
         Assert.Equal(expected, ArabicScript.MatchesWord(token, term));
 }

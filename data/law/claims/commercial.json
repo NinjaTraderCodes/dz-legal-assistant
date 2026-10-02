@@ -1,0 +1,197 @@
+{
+  "area": "commercial",
+  "comment": "Drafted by the engineering team; article numbers are proposals to be confirmed by a lawyer (verified: false). Note the 2005 reform of commercial leases (Commercial Code art. 187 bis) before relying on renewal or eviction-indemnity articles.",
+  "claims": [
+    {
+      "id": "commercial-debt",
+      "label": {
+        "ar": "المطالبة بدين تجاري",
+        "en": "Commercial debt"
+      },
+      "verified": false,
+      "triggers": [
+        {
+          "any": [
+            "فاتورة",
+            "فواتير",
+            "بضاعة",
+            "بضائع",
+            "سلع",
+            "توريد",
+            "سجل تجاري",
+            "تاجر",
+            "طلبية",
+            "سند طلب"
+          ],
+          "weight": 3,
+          "required": true
+        },
+        {
+          "any": [
+            "لم يدفع",
+            "لم يسدد",
+            "مستحقات",
+            "دين",
+            "رصيد",
+            "امتنع",
+            "باقي",
+            "دون تسديد",
+            "بدون تسديد",
+            "دون دفع",
+            "غير مسددة",
+            "غير مدفوعة"
+          ],
+          "weight": 2,
+          "required": true
+        }
+      ],
+      "exclude": [
+        "إيجار",
+        "كراء",
+        "القاعدة التجارية"
+      ],
+      "articles": [
+        {
+          "code": "commercial-code",
+          "number": "30",
+          "role": "proof",
+          "why": {
+            "ar": "حرية الإثبات في المواد التجارية (الفواتير، الدفاتر، المراسلات)",
+            "en": "Freedom of proof in commercial matters (invoices, books, letters)"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "106",
+          "role": "basis",
+          "why": {
+            "ar": "العقد شريعة المتعاقدين",
+            "en": "The contract binds the parties"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "164",
+          "role": "basis",
+          "why": {
+            "ar": "التنفيذ العيني بعد الإعذار",
+            "en": "Compelled performance after notice"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "176",
+          "role": "damages",
+          "why": {
+            "ar": "التعويض عن عدم التنفيذ أو التأخر",
+            "en": "Damages for non-performance or delay"
+          }
+        }
+      ],
+      "suggestedRequests": [
+        "إلزام المدعى عليها بأن تؤدي للمدعية مبلغ (...) دج قيمة الفواتير غير المسددة",
+        "إلزام المدعى عليها بتعويض قدره (...) دج عن التأخر في الوفاء"
+      ],
+      "requiredDocuments": [
+        "الفواتير",
+        "سندات الطلب والتسليم",
+        "كشف الحساب",
+        "محضر الإعذار",
+        "مستخرج السجل التجاري"
+      ],
+      "factsToState": [
+        "العلاقة التجارية بين الطرفين",
+        "البضائع أو الخدمات المسلمة",
+        "المبلغ المستحق",
+        "الإعذار"
+      ]
+    },
+    {
+      "id": "commercial-lease-eviction",
+      "label": {
+        "ar": "إيجار تجاري: الإخلاء أو تعويض الاستحقاق",
+        "en": "Commercial lease: eviction or eviction indemnity"
+      },
+      "verified": false,
+      "triggers": [
+        {
+          "any": [
+            "محل تجاري",
+            "القاعدة التجارية",
+            "إيجار تجاري",
+            "المحل التجاري",
+            "الإيجار التجاري",
+            "محلا تجاريا"
+          ],
+          "weight": 3,
+          "required": true
+        },
+        {
+          "any": [
+            "تنبيه بالإخلاء",
+            "التنبيه بالإخلاء",
+            "إخلاء",
+            "تجديد",
+            "رفض التجديد",
+            "تعويض الاستحقاق",
+            "طرد"
+          ],
+          "weight": 2
+        }
+      ],
+      "exclude": [],
+      "articles": [
+        {
+          "code": "commercial-code",
+          "number": "172",
+          "role": "basis",
+          "why": {
+            "ar": "شروط حق التجديد في الإيجار التجاري",
+            "en": "Conditions of the right to renewal"
+          }
+        },
+        {
+          "code": "commercial-code",
+          "number": "173",
+          "role": "procedure",
+          "why": {
+            "ar": "التنبيه بالإخلاء وأجله",
+            "en": "Notice to vacate and its time limit"
+          }
+        },
+        {
+          "code": "commercial-code",
+          "number": "176",
+          "role": "damages",
+          "why": {
+            "ar": "تعويض الاستحقاق عند رفض التجديد",
+            "en": "Eviction indemnity when renewal is refused"
+          }
+        },
+        {
+          "code": "commercial-code",
+          "number": "187 مكرر",
+          "role": "basis",
+          "why": {
+            "ar": "عقود الإيجار المبرمة بعد تعديل 2005: الخروج عند انتهاء الأجل دون تعويض ما لم يتفق على خلافه",
+            "en": "Leases after the 2005 reform: vacate at term without indemnity unless agreed"
+          }
+        }
+      ],
+      "suggestedRequests": [
+        "الحكم بإخلاء المدعى عليه من المحل التجاري الكائن بـ (...)",
+        "أو: إلزام المؤجر بأداء تعويض الاستحقاق، واحتياطيا تعيين خبير لتقديره"
+      ],
+      "requiredDocuments": [
+        "عقد الإيجار التجاري (الرسمي)",
+        "محضر التنبيه بالإخلاء",
+        "مستخرج السجل التجاري"
+      ],
+      "factsToState": [
+        "تاريخ العقد (قبل أو بعد 2005)",
+        "مدة الاستغلال",
+        "التنبيه بالإخلاء وتاريخه"
+      ]
+    }
+  ]
+}

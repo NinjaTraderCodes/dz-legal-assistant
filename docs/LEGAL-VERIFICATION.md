@@ -66,3 +66,19 @@ Please confirm:
 ## 5. Recording your confirmation
 
 For each element you confirm, we will set `"verified": true` and note "confirmed by <name>, <date>, against <text/version>" in `sourceNote`. For each correction, we will add a corpus case reproducing it before changing the rule, so it can never silently regress.
+
+## Law library and claim catalog (grounds suggestions)
+
+See [LAW-LIBRARY.md](LAW-LIBRARY.md). Two things need a lawyer:
+
+1. **Each imported code.** Read its import report, compare a sample of articles with the Journal Officiel, then set `verified: true`.
+2. **Each claim type** in `data/law/claims/*.json`:
+   - Are the cited articles the right ones, and are any missing (for example interest on late payment, or proof rules)?
+   - Is each article's role right: basis, proof, damages or procedure?
+   - Are the suggested requests and the required documents those used in practice?
+   - Are the prerequisites complete? For example, labour conciliation under Law 90-04; for commercial leases, the 2005 reform (Commercial Code art. 187 bis).
+   - Which frequent claim types are missing?
+
+   Then set `verified: true` on that claim.
+
+Please also write **10–20 fact patterns from your practice** (anonymised) with the claim you would start from. They become the hold-out test set that measures the suggestions honestly.

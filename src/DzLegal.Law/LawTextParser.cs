@@ -212,8 +212,8 @@ public static partial class LawTextParser
         return parts.Count > 20 ? string.Join(", ", parts.Take(20)) + ", …" : string.Join(", ", parts);
     }
 
-    /// <summary>«المادة 106 :», «المادة ١٠٦ -», «المادة 124 مكرر 1.», «المادة الأولى:» at the start of a line.</summary>
-    [GeneratedRegex(@"^(?:ال)?م[اَ]?ادة\s+(?<n>[0-9٠-٩]+|الأولى|الاولى)\s*(?<bis>مكرر(?:\s*[0-9٠-٩]+)?)?\s*[:：.\-–—]?\s*")]
+    /// <summary>«المادة 106 :», «المادة ١٠٦ -», «المادة 124 مكرر 1.», «المادة 73-4:», «المادة الأولى:» at the start of a line.</summary>
+    [GeneratedRegex(@"^(?:ال)?م[اَ]?ادة\s+(?<n>[0-9٠-٩]+(?:\s*-\s*[0-9٠-٩]+(?=\s*[:：.\-–—]|\s*$))?|الأولى|الاولى)\s*(?<bis>مكرر(?:\s*[0-9٠-٩]+)?)?\s*[:：.\-–—]?\s*")]
     private static partial Regex ArticleHeading();
 
     [GeneratedRegex(@"^(?:[-–•]|\(?[0-9٠-٩]{1,2}\s*[-–).])\s*")]

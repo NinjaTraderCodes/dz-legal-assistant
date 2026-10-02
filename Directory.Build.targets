@@ -7,5 +7,6 @@
   <ItemGroup Condition="'$(IncludeQualityCorpus)' == 'true'">
     <None Include="$(MSBuildThisFileDirectory)tests/corpus/**/*" LinkBase="corpus" CopyToOutputDirectory="PreserveNewest" />
     <None Include="$(MSBuildThisFileDirectory)tests/drafting-cases/**/*" LinkBase="drafting-cases" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="$(MSBuildThisFileDirectory)tests/grounds-cases/**/*" LinkBase="grounds-cases" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

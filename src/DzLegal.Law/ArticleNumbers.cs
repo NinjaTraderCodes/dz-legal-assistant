@@ -3,7 +3,7 @@ using DzLegal.Domain;
 
 namespace DzLegal.Law;
 
-/// <summary>Article numbers as written in Algerian texts: «106», «124 مكرر», «124 مكرر 1», «الأولى».</summary>
+/// <summary>Article numbers as written in Algerian texts: «106», «124 مكرر», «124 مكرر 1», «73-4», «الأولى».</summary>
 public static partial class ArticleNumbers
 {
     /// <summary>"124مكرر1", "١٢٤ مكرر ١" and "124 مكرر 1" all become "124 مكرر 1"; «الأولى» becomes "1".</summary>
@@ -23,6 +23,11 @@ public static partial class ArticleNumbers
         }
 
         var result = m.Groups[1].Value.TrimStart('0');
+        if (m.Groups["sub"].Success)
+        {
+            result += "-" + m.Groups["sub"].Value.TrimStart('0');
+        }
+
         if (m.Groups[2].Success)
         {
             result += " مكرر";
@@ -45,6 +50,6 @@ public static partial class ArticleNumbers
 
     public static bool IsBis(string canonical) => canonical.Contains("مكرر", StringComparison.Ordinal);
 
-    [GeneratedRegex(@"^(\d+)\s*(مكرر)?\s*(\d+)?$")]
+    [GeneratedRegex(@"^(\d+)(?:\s*-\s*(?<sub>\d+))?\s*(مكرر)?\s*(\d+)?$")]
     private static partial Regex Parts();
 }

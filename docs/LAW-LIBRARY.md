@@ -49,6 +49,34 @@ The code file is written only when it validates: canonical and unique numbers, a
 2. Compare at least 20 articles chosen across the whole code, plus every article the claim catalog cites, with the official text.
 3. If everything matches, set `"verified": true` in `data/law/codes/<id>.json` and commit.
 
+## Claim catalog and suggestions
+
+`data/law/claims/<area>.json` (areas: civil, commercial, family, social) lists **claim types** the way a lawyer thinks of them, for example «استرداد مبلغ قرض», «الخلع» or «التسريح التعسفي». Each claim type has:
+
+- **triggers:** groups of words and phrases. A group adds its weight once if any of its words appears in the facts. A `required` group must appear, or the claim is not suggested.
+- **exclude:** words that point to another claim type. For example, «إيجار» rules out a loan.
+- **articles:** code, number, role (`basis`, `proof`, `damages`, `procedure`) and a short "why".
+- **prerequisites:** for example, prior conciliation for labour claims.
+- **suggestedRequests**, **requiredDocuments** and **factsToState**, offered to the lawyer as one-click inserts and a checklist.
+
+### Loader checks
+- Every claim cites a code listed in `sources.json`.
+- **Once a code is imported, every cited article must exist and be in force.** A wrong or repealed number fails at load time and in CI.
+- Until the code is imported, the citation is shown with "text not yet available".
+
+### How the suggester works
+`GroundsSuggester` reads the facts after Arabic normalisation:
+- Diacritics are ignored, and alef, yā' and tā' marbūṭa forms are unified.
+- «ال» and a leading «و ف ب ل» are allowed, and so are common endings («ا», «ه», «ها», «هم», «ات», «ين»…).
+- Only claims of the area named by the court section are considered («القسم الاجتماعي» → social). An unclear section means all areas.
+
+It returns at most three claim types, each with the words that matched. It is deterministic, and no model is involved.
+
+### Quality gate
+`dotnet run --project src/DzLegal.Harness -- grounds` runs the fictitious fact patterns in `tests/grounds-cases/`. Each case names the claim a lawyer would start from, or expects nothing for a case the catalog doesn't cover. CI requires the expected claim in the top 3 for at least 90% of cases, and every claim type must be exercised.
+
+**Limitation:** the triggers were tuned on these same cases, so today's 100% is a development score. A lawyer-written hold-out set, never used for tuning, is needed before trusting the number.
+
 ## Status
 
-The container used for development cannot reach joradp.dz or mjustice.dz yet. **No official text has been imported, so `data/law/codes/` is empty.** Tests run on clearly fictitious fixtures. Once the network allows those sites, or the PDFs are supplied as files, each code is imported with the commands above.
+The container used for development cannot reach joradp.dz or mjustice.dz yet. **No official text has been imported, so `data/law/codes/` is empty.** Tests run on clearly fictitious fixtures. The claim catalog (18 claim types) is complete but `verified: false`. Its article numbers are the engineering team's proposals, and the loader will check them automatically against the official texts once they are imported. Once the network allows those sites, or the PDFs are supplied as files, each code is imported with the commands above.

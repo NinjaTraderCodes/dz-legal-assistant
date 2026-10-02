@@ -7,6 +7,8 @@ using DzLegal.Harness;
 //       Form Engine accuracy over the corpus. Exit code 1 on any mismatch.
 //   dzlegal-harness draft --models <m1,m2,...|stub> [--out bench] [--cases <folder>] [--endpoint http://127.0.0.1:11434] [--timeout-minutes 15]
 //       Drafting bench: runs the drafting cases through each local model and writes outputs + summary.md.
+//   dzlegal-harness grounds [--law-root <data/law folder>] [--cases <grounds-cases folder>]
+//       Grounds suggestions accuracy (top-1 / top-3) over fictitious fact patterns. Exit code 1 below the gate.
 //   dzlegal-harness law import <code-id> (--url <official url> | --file <file>) [--law-root data/law] [--as-of yyyy-mm-dd]
 //       Maintainer tool: imports an official text into the law library and writes a review report.
 var dataRoot = Path.Combine(AppContext.BaseDirectory, "data", "document-types");
@@ -27,6 +29,14 @@ if (args.Length > 1 && args[0] == "law" && args[1] == "import" && args.Length > 
         Option("--law-root", Path.Combine("data", "law")),
         args.Contains("--as-of") ? Option("--as-of", string.Empty) : null,
         Console.Out);
+}
+
+if (args.Length > 0 && args[0] == "grounds")
+{
+    var knowledge = DzLegal.Law.LegalKnowledgeLoader.Load(Option("--law-root", Path.Combine(AppContext.BaseDirectory, "data", "law")));
+    var report = GroundsEvaluator.Evaluate(knowledge, GroundsEvaluator.LoadCases(Option("--cases", Path.Combine(AppContext.BaseDirectory, "grounds-cases"))));
+    GroundsEvaluator.Print(report, Console.Out);
+    return report.Passes ? 0 : 1;
 }
 
 if (args.Length > 0 && args[0] == "draft")

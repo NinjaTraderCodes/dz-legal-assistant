@@ -1,0 +1,481 @@
+{
+  "area": "family",
+  "comment": "Drafted by the engineering team from its reading of the Family Code (Law 84-11 as amended by Ord. 05-02); article numbers are proposals to be confirmed by a lawyer (verified: false).",
+  "claims": [
+    {
+      "id": "divorce-by-husband",
+      "label": {
+        "ar": "الطلاق بإرادة الزوج",
+        "en": "Divorce at the husband's will"
+      },
+      "verified": false,
+      "triggers": [
+        {
+          "any": [
+            "طلاق",
+            "الطلاق",
+            "فك الرابطة",
+            "فك العصمة",
+            "حل الرابطة الزوجية"
+          ],
+          "weight": 3,
+          "required": true
+        },
+        {
+          "any": [
+            "الزوج",
+            "زوجته",
+            "الزوجة",
+            "عقد الزواج",
+            "زواج",
+            "تزوج"
+          ],
+          "weight": 2,
+          "required": true
+        },
+        {
+          "any": [
+            "بإرادته",
+            "بإرادة الزوج",
+            "يرغب في الطلاق",
+            "استحالة العشرة",
+            "استحالة الحياة الزوجية"
+          ],
+          "weight": 2
+        }
+      ],
+      "exclude": [
+        "خلع",
+        "تطليق",
+        "التطليق"
+      ],
+      "articles": [
+        {
+          "code": "family-code",
+          "number": "48",
+          "role": "basis",
+          "why": {
+            "ar": "حالات حل عقد الزواج بالطلاق",
+            "en": "How marriage is dissolved by divorce"
+          }
+        },
+        {
+          "code": "family-code",
+          "number": "49",
+          "role": "procedure",
+          "why": {
+            "ar": "لا يثبت الطلاق إلا بحكم بعد محاولات الصلح",
+            "en": "Divorce only by judgment after reconciliation attempts"
+          }
+        }
+      ],
+      "suggestedRequests": [
+        "الحكم بفك الرابطة الزوجية بين الطرفين بالطلاق بإرادة الزوج المنفردة",
+        "تسجيل الحكم بسجلات الحالة المدنية"
+      ],
+      "requiredDocuments": [
+        "عقد الزواج",
+        "شهادة عائلية",
+        "شهادات ميلاد الأبناء"
+      ],
+      "factsToState": [
+        "تاريخ الزواج",
+        "الأبناء",
+        "أسباب استحالة العشرة"
+      ]
+    },
+    {
+      "id": "tatliq",
+      "label": {
+        "ar": "التطليق بطلب من الزوجة",
+        "en": "Judicial divorce at the wife's request (taṭlīq)"
+      },
+      "verified": false,
+      "triggers": [
+        {
+          "any": [
+            "تطليق",
+            "التطليق",
+            "طلب الطلاق",
+            "تطلب الطلاق"
+          ],
+          "weight": 3,
+          "required": true
+        },
+        {
+          "any": [
+            "هجر",
+            "هجرها",
+            "غياب",
+            "عدم الإنفاق",
+            "لم ينفق",
+            "ضرب",
+            "إيذاء",
+            "ضرر",
+            "المضجع",
+            "حبس",
+            "عيب"
+          ],
+          "weight": 2
+        },
+        {
+          "any": [
+            "الزوجة",
+            "زوجها",
+            "الزوج"
+          ],
+          "weight": 1
+        }
+      ],
+      "exclude": [
+        "خلع"
+      ],
+      "articles": [
+        {
+          "code": "family-code",
+          "number": "53",
+          "role": "basis",
+          "why": {
+            "ar": "أسباب التطليق التي يجوز للزوجة طلبه بها",
+            "en": "Grounds on which the wife may seek taṭlīq"
+          }
+        },
+        {
+          "code": "family-code",
+          "number": "53 مكرر",
+          "role": "damages",
+          "why": {
+            "ar": "التعويض للمطلقة عند الحكم بالتطليق",
+            "en": "Compensation to the wife when taṭlīq is granted"
+          }
+        },
+        {
+          "code": "family-code",
+          "number": "49",
+          "role": "procedure",
+          "why": {
+            "ar": "محاولات الصلح",
+            "en": "Reconciliation attempts"
+          }
+        }
+      ],
+      "suggestedRequests": [
+        "الحكم بتطليق المدعية من المدعى عليه",
+        "إلزام المدعى عليه بأن يؤدي للمدعية تعويضا قدره (...) دج",
+        "إلزام المدعى عليه بنفقة العدة"
+      ],
+      "requiredDocuments": [
+        "عقد الزواج",
+        "شهادة عائلية",
+        "ما يثبت سبب التطليق (محضر، شهادة طبية، حكم)"
+      ],
+      "factsToState": [
+        "تاريخ الزواج",
+        "السبب القانوني للتطليق ووقائعه",
+        "الأبناء"
+      ]
+    },
+    {
+      "id": "khul",
+      "label": {
+        "ar": "الخلع",
+        "en": "Khulʿ"
+      },
+      "verified": false,
+      "triggers": [
+        {
+          "any": [
+            "خلع",
+            "الخلع",
+            "مخالعة",
+            "تخالع"
+          ],
+          "weight": 4,
+          "required": true
+        },
+        {
+          "any": [
+            "مقابل مالي",
+            "بدل الخلع",
+            "صداق"
+          ],
+          "weight": 1
+        }
+      ],
+      "exclude": [],
+      "articles": [
+        {
+          "code": "family-code",
+          "number": "54",
+          "role": "basis",
+          "why": {
+            "ar": "حق الزوجة في مخالعة نفسها بمقابل مالي",
+            "en": "The wife's right to khulʿ against payment"
+          }
+        },
+        {
+          "code": "family-code",
+          "number": "49",
+          "role": "procedure",
+          "why": {
+            "ar": "محاولات الصلح",
+            "en": "Reconciliation attempts"
+          }
+        }
+      ],
+      "suggestedRequests": [
+        "الحكم بفك الرابطة الزوجية خلعا مقابل مبلغ (...) دج تدفعه المدعية للمدعى عليه"
+      ],
+      "requiredDocuments": [
+        "عقد الزواج",
+        "شهادة عائلية"
+      ],
+      "factsToState": [
+        "تاريخ الزواج",
+        "المقابل المعروض"
+      ]
+    },
+    {
+      "id": "nafaqa",
+      "label": {
+        "ar": "النفقة",
+        "en": "Maintenance (nafaqa)"
+      },
+      "verified": false,
+      "triggers": [
+        {
+          "any": [
+            "نفقة",
+            "النفقة",
+            "الإنفاق",
+            "ينفق",
+            "لم ينفق",
+            "مصاريف الأبناء",
+            "المصروف"
+          ],
+          "weight": 3,
+          "required": true
+        },
+        {
+          "any": [
+            "الأبناء",
+            "أبناء",
+            "الأولاد",
+            "الزوجة",
+            "المحضون",
+            "المحضونين"
+          ],
+          "weight": 2
+        }
+      ],
+      "exclude": [],
+      "articles": [
+        {
+          "code": "family-code",
+          "number": "74",
+          "role": "basis",
+          "why": {
+            "ar": "وجوب نفقة الزوجة على زوجها",
+            "en": "The husband owes maintenance to the wife"
+          }
+        },
+        {
+          "code": "family-code",
+          "number": "75",
+          "role": "basis",
+          "why": {
+            "ar": "وجوب نفقة الأولاد على الأب",
+            "en": "The father owes maintenance to the children"
+          }
+        },
+        {
+          "code": "family-code",
+          "number": "78",
+          "role": "basis",
+          "why": {
+            "ar": "ما تشمله النفقة",
+            "en": "What maintenance covers"
+          }
+        },
+        {
+          "code": "family-code",
+          "number": "79",
+          "role": "damages",
+          "why": {
+            "ar": "تقدير النفقة حسب حال الطرفين",
+            "en": "Amount set by the parties' circumstances"
+          }
+        },
+        {
+          "code": "family-code",
+          "number": "80",
+          "role": "procedure",
+          "why": {
+            "ar": "استحقاق النفقة من تاريخ رفع الدعوى وإلى سنة قبلها ببينة",
+            "en": "Due from filing, and up to one year before with proof"
+          }
+        }
+      ],
+      "suggestedRequests": [
+        "إلزام المدعى عليه بأن يؤدي نفقة غذائية للمحضونين قدرها (...) دج شهريا لكل واحد منهم ابتداء من تاريخ رفع الدعوى",
+        "إلزام المدعى عليه بنفقة عن السنة السابقة لرفع الدعوى"
+      ],
+      "requiredDocuments": [
+        "شهادة عائلية",
+        "شهادات ميلاد الأبناء",
+        "ما يثبت دخل المدعى عليه إن أمكن"
+      ],
+      "factsToState": [
+        "المستحقون للنفقة",
+        "امتناع المدعى عليه عن الإنفاق ومنذ متى",
+        "حال الطرفين"
+      ]
+    },
+    {
+      "id": "custody",
+      "label": {
+        "ar": "الحضانة وتوابعها",
+        "en": "Custody (ḥaḍāna)"
+      },
+      "verified": false,
+      "triggers": [
+        {
+          "any": [
+            "حضانة",
+            "الحضانة",
+            "إسناد الحضانة",
+            "المحضون",
+            "المحضونين",
+            "الحاضنة"
+          ],
+          "weight": 3,
+          "required": true
+        },
+        {
+          "any": [
+            "الأبناء",
+            "الأولاد",
+            "الطفل",
+            "البنت",
+            "الابن",
+            "سكن",
+            "مسكن",
+            "بدل الإيجار"
+          ],
+          "weight": 1
+        }
+      ],
+      "exclude": [],
+      "articles": [
+        {
+          "code": "family-code",
+          "number": "62",
+          "role": "basis",
+          "why": {
+            "ar": "تعريف الحضانة وشروط الحاضن",
+            "en": "Definition of custody and the custodian's qualities"
+          }
+        },
+        {
+          "code": "family-code",
+          "number": "64",
+          "role": "basis",
+          "why": {
+            "ar": "ترتيب أصحاب الحق في الحضانة مع مراعاة مصلحة المحضون، والحكم بحق الزيارة",
+            "en": "Order of custodians in the child's interest; visitation"
+          }
+        },
+        {
+          "code": "family-code",
+          "number": "65",
+          "role": "basis",
+          "why": {
+            "ar": "مدة الحضانة",
+            "en": "Duration of custody"
+          }
+        },
+        {
+          "code": "family-code",
+          "number": "72",
+          "role": "basis",
+          "why": {
+            "ar": "سكن ملائم للحاضنة أو بدل الإيجار",
+            "en": "Suitable housing for the custodian, or rent"
+          }
+        }
+      ],
+      "suggestedRequests": [
+        "إسناد حضانة الأبناء (...) للمدعية",
+        "إلزام المدعى عليه بتوفير سكن ملائم لممارسة الحضانة أو بأداء بدل إيجار قدره (...) دج شهريا"
+      ],
+      "requiredDocuments": [
+        "شهادة عائلية",
+        "شهادات ميلاد الأبناء",
+        "حكم الطلاق إن وجد"
+      ],
+      "factsToState": [
+        "الأبناء وأعمارهم",
+        "مصلحة المحضون",
+        "مسكن الحاضنة"
+      ]
+    },
+    {
+      "id": "visitation",
+      "label": {
+        "ar": "حق الزيارة",
+        "en": "Visitation rights"
+      },
+      "verified": false,
+      "triggers": [
+        {
+          "any": [
+            "حق الزيارة",
+            "الزيارة",
+            "زيارة الأبناء",
+            "رؤية الأبناء",
+            "حرمانه من رؤية",
+            "يمنعه من رؤية"
+          ],
+          "weight": 3,
+          "required": true
+        },
+        {
+          "any": [
+            "الأبناء",
+            "الأولاد",
+            "المحضون",
+            "المحضونين",
+            "الطفل",
+            "أبنائه",
+            "أولاده",
+            "أبنائها"
+          ],
+          "weight": 1
+        }
+      ],
+      "exclude": [],
+      "articles": [
+        {
+          "code": "family-code",
+          "number": "64",
+          "role": "basis",
+          "why": {
+            "ar": "الحكم بحق الزيارة عند إسناد الحضانة",
+            "en": "Visitation set when custody is granted"
+          }
+        }
+      ],
+      "suggestedRequests": [
+        "تمكين المدعي من حق زيارة الأبناء (...) كل (...) من الساعة (...) إلى الساعة (...)"
+      ],
+      "requiredDocuments": [
+        "حكم الطلاق وإسناد الحضانة",
+        "شهادة عائلية"
+      ],
+      "factsToState": [
+        "الحكم الذي أسند الحضانة",
+        "المنع من الزيارة"
+      ]
+    }
+  ]
+}

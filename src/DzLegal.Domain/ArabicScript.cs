@@ -158,19 +158,53 @@ public static class ArabicScript
         return word;
     }
 
+    /// <summary>Endings tolerated after a term: accusative alif, attached pronouns, dual and plural endings.</summary>
+    private static readonly string[] Suffixes = ["ا", "ه", "ها", "هم", "هما", "ات", "ان", "ين", "ون"];
+
     /// <summary>
-    /// Whether a token from <see cref="Tokens"/> is the given (tokenised) term, allowing one leading conjunction
-    /// or preposition «و» «ف» «ب» «ل» on the token when the term has at least three letters («وامتنع» matches
-    /// «امتنع», while «بائع» still matches «بائع» and «فسخ» does not match «سخ»).
+    /// Whether a token from <see cref="Tokens"/> is the given (tokenised) term. For terms of three letters or more,
+    /// one leading conjunction or preposition («و» «ف» «ب» «ل») and one common ending («ا», «ه», «ها», «هم»,
+    /// «هما», «ات», «ان», «ين», «ون») are allowed: «وامتنع» and «تسريحه» match «امتنع» and «تسريح», «أضرارا»
+    /// matches «أضرار», «بتطليقها» matches «تطليق». Shorter terms must match exactly («فسخ» never matches «سخ»).
     /// </summary>
     public static bool MatchesWord(string token, string term)
     {
         ArgumentNullException.ThrowIfNull(token);
         ArgumentNullException.ThrowIfNull(term);
-        return string.Equals(token, term, StringComparison.Ordinal)
-            || (term.Length >= 3
-                && token.Length == term.Length + 1
-                && token[0] is '\u0648' or '\u0641' or '\u0628' or '\u0644'
-                && token.AsSpan(1).SequenceEqual(term));
+        if (string.Equals(token, term, StringComparison.Ordinal))
+        {
+            return true;
+        }
+
+        if (term.Length < 3 || token.Length <= term.Length)
+        {
+            return false;
+        }
+
+        var span = token.AsSpan();
+        if (span[0] is '\u0648' or '\u0641' or '\u0628' or '\u0644' && span[1..].StartsWith(term, StringComparison.Ordinal) && IsEnding(span[(1 + term.Length)..]))
+        {
+            return true;
+        }
+
+        return span.StartsWith(term, StringComparison.Ordinal) && IsEnding(span[term.Length..]);
+    }
+
+    private static bool IsEnding(ReadOnlySpan<char> rest)
+    {
+        if (rest.IsEmpty)
+        {
+            return true;
+        }
+
+        foreach (var suffix in Suffixes)
+        {
+            if (rest.SequenceEqual(suffix))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -85,6 +85,7 @@ public class RenderingTests
         vm.Field("defendant.domicile").Value = string.Empty;
         vm.Sections.Single(s => s.Id == "grounds").Text = string.Empty;
         Dispatcher.UIThread.RunJobs();
+        Assert.StartsWith("حيث إن العارض", vm.Sections.Single(s => s.Id == "facts").Text, StringComparison.Ordinal);
 
         Assert.Equal("ينقص 2 من البيانات الإلزامية — العريضة معرضة لعدم القبول شكلا.", window.FindControl<TextBlock>("SummaryText")!.Text);
         SaveScreenshot(window, "main-window-missing");
@@ -95,7 +96,7 @@ public class RenderingTests
     {
         var (window, vm) = await ShowFilledWindowAsync();
         vm.Field("plaintiff.gender").Value = "male";
-        vm.Sections.Single(s => s.Id == "facts").Text += "\nوحيث إن المبلغ أصبح 999 دج.";
+        vm.Sections.Single(s => s.Id == "grounds").Text += "\nوحيث إن المبلغ أصبح 999 دج.";
         Dispatcher.UIThread.RunJobs();
 
         Assert.Contains(window.GetVisualDescendants().OfType<TextBlock>(),

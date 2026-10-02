@@ -36,7 +36,8 @@ public sealed class DraftBenchTests : IDisposable
         var folder = Path.Combine(AppContext.BaseDirectory, "drafting-cases");
         var french = DraftingCaseLoader.Load(Path.Combine(folder, "02-debt-french-notes.json"));
         Assert.Equal("محكمة سيدي امحمد", french.Inputs["court.name"]);
-        Assert.StartsWith("Le 15/01/2025", french.Inputs["notes.facts"], StringComparison.Ordinal);
+        Assert.StartsWith("Articles 106 et 107", french.Inputs["notes.grounds"], StringComparison.Ordinal);
+        Assert.StartsWith("بتاريخ 15 جانفي 2025", french.Inputs["notes.facts"], StringComparison.Ordinal);
     }
 
     public void Dispose() => _out.Delete(recursive: true);

@@ -60,11 +60,11 @@ public class DraftingServiceTests
         var provider = new RecordingProvider(r => "حيث إن " + r.SourceText);
         await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs());
 
-        Assert.Equal(["facts", "grounds", "requests"], provider.Requests.Select(r => r.SectionId));
-        var facts = provider.Requests[0];
-        Assert.Contains("قرض 500000 دج بتاريخ 10/01/2025 لم يسدد.", facts.UserPrompt, StringComparison.Ordinal);
-        Assert.Contains("المطالبة بدين", facts.UserPrompt, StringComparison.Ordinal);
-        Assert.Contains("لا تضف أي واقعة", facts.SystemPrompt, StringComparison.Ordinal);
+        Assert.Equal(["grounds", "requests"], provider.Requests.Select(r => r.SectionId));
+        var grounds = provider.Requests[0];
+        Assert.Contains("المادة 106 من القانون المدني.", grounds.UserPrompt, StringComparison.Ordinal);
+        Assert.Contains("المطالبة بدين", grounds.UserPrompt, StringComparison.Ordinal);
+        Assert.Contains("لا تضف أي واقعة", grounds.SystemPrompt, StringComparison.Ordinal);
     }
 
     [Fact]
@@ -101,14 +101,14 @@ public class DraftingServiceTests
         var service = new DraftingService(new StubModelProvider());
         var inputs = Fixtures.CompleteInputs();
         var draft = await service.DraftAsync(Requete, inputs);
-        draft.FindSection("facts")!.Text = "نص عدله المحامي";
+        draft.FindSection("grounds")!.Text = "نص عدله المحامي";
 
         inputs["court.name"] = "محكمة بئر مراد رايس";
         inputs["claim.concernsRegisteredRealProperty"] = "true";
         var refreshed = service.Refresh(Requete, draft, inputs);
 
         Assert.Contains("محكمة بئر مراد رايس", refreshed.FindSection("header")!.Text, StringComparison.Ordinal);
-        Assert.Equal("نص عدله المحامي", refreshed.FindSection("facts")!.Text);
+        Assert.Equal("نص عدله المحامي", refreshed.FindSection("grounds")!.Text);
         Assert.NotNull(refreshed.FindSection("publication"));
         Assert.Equal("محكمة بئر مراد رايس", refreshed.Inputs["court.name"]);
     }
@@ -192,11 +192,11 @@ public class DraftingServiceTests
         var provider = new RecordingProvider(r => r.SourceText);
         await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs());
 
-        var facts = provider.Requests.Single(r => r.SectionId == "facts").UserPrompt;
-        Assert.Contains("المدعي (صاحب الطلب، الدائن بالطلبات): بن علي كريم", facts, StringComparison.Ordinal);
-        Assert.Contains("المدعى عليه (المطلوب منه، الملزم بالطلبات): حمداني سمير", facts, StringComparison.Ordinal);
-        Assert.Contains("إلزام المدعى عليه بدفع 500000 دج.", facts, StringComparison.Ordinal);
         var grounds = provider.Requests.Single(r => r.SectionId == "grounds").UserPrompt;
+        Assert.Contains("- المدعي: بن علي كريم", grounds, StringComparison.Ordinal);
+        Assert.Contains("- المدعى عليه: حمداني سمير", grounds, StringComparison.Ordinal);
+        Assert.DoesNotContain("الدائن بالطلبات", grounds, StringComparison.Ordinal);
+        Assert.Contains("إلزام المدعى عليه بدفع 500000 دج.", grounds, StringComparison.Ordinal);
         Assert.Contains("قرض 500000 دج بتاريخ 10/01/2025 لم يسدد.", grounds, StringComparison.Ordinal);
         Assert.Contains("لا تعكس أدوار الطرفين", provider.Requests[0].SystemPrompt, StringComparison.Ordinal);
     }
@@ -204,38 +204,85 @@ public class DraftingServiceTests
     [Fact]
     public async Task CorruptedAnswerIsRetriedOnce()
     {
-        var answers = new Queue<string>(["حيث إن المدعى عليه لم受理 الدين", "حيث إن المدعى عليه اقترض مبلغ 500000 دج"]);
-        var provider = new RecordingProvider(r => r.SectionId == "facts" ? answers.Dequeue() : r.SourceText);
+        var answers = new Queue<string>(["حيث إن المادة 106 لم受理 الدين", "حيث إن المادة 106 من القانون المدني تجعل العقد شريعة المتعاقدين"]);
+        var provider = new RecordingProvider(r => r.SectionId == "grounds" ? answers.Dequeue() : r.SourceText);
 
         var draft = await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs());
 
-        var facts = draft.FindSection("facts")!;
-        Assert.Equal("حيث إن المدعى عليه اقترض مبلغ 500000 دج", facts.Text);
-        Assert.Equal([DraftingNoteCodes.Retried], facts.DraftingNotes);
-        Assert.Equal(2, provider.Requests.Count(r => r.SectionId == "facts"));
+        var grounds = draft.FindSection("grounds")!;
+        Assert.Equal("حيث إن المادة 106 من القانون المدني تجعل العقد شريعة المتعاقدين", grounds.Text);
+        Assert.Equal([DraftingNoteCodes.Retried], grounds.DraftingNotes);
+        Assert.Equal(2, provider.Requests.Count(r => r.SectionId == "grounds"));
     }
 
     [Fact]
     public async Task PersistentlyCorruptedAnswerFallsBackToTheLawyersNotes()
     {
-        var provider = new RecordingProvider(r => r.SectionId == "facts" ? "受理 受理" : r.SourceText);
+        var provider = new RecordingProvider(r => r.SectionId == "grounds" ? "受理 受理" : r.SourceText);
 
         var draft = await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs());
 
-        var facts = draft.FindSection("facts")!;
-        Assert.Equal("قرض 500000 دج بتاريخ 10/01/2025 لم يسدد.", facts.Text);
-        Assert.Equal([DraftingNoteCodes.Retried, DraftingNoteCodes.FellBackToNotes], facts.DraftingNotes);
+        var grounds = draft.FindSection("grounds")!;
+        Assert.Equal("المادة 106 من القانون المدني.", grounds.Text);
+        Assert.Equal([DraftingNoteCodes.Retried, DraftingNoteCodes.FellBackToNotes], grounds.DraftingNotes);
     }
+
+    [Fact]
+    public async Task FactsAreTheLawyersSentencesWithoutAnyModelCall()
+    {
+        var inputs = Fixtures.CompleteInputs();
+        inputs["notes.facts"] = "بتاريخ 15 جانفي 2025، اقترض المدعى عليه من المدعي مبلغ 1,500,000 دج.\nالمدعى عليه امتنع عن السداد.\nاتفق الطرفان على أجل.";
+        var provider = new RecordingProvider(r => r.SourceText);
+
+        var draft = await new DraftingService(provider).DraftAsync(Requete, inputs);
+
+        Assert.Equal(
+            "حيث إنه بتاريخ 15 جانفي 2025، اقترض المدعى عليه من المدعي مبلغ 1,500,000 دج.\nوحيث إن المدعى عليه امتنع عن السداد.\nوحيث إنه اتفق الطرفان على أجل.",
+            draft.FindSection("facts")!.Text);
+        Assert.DoesNotContain(provider.Requests, r => r.SectionId == "facts");
+    }
+
+    [Fact]
+    public async Task MandatedRequestsLineIsNotMistakenForAnExampleCopy()
+    {
+        var provider = new RecordingProvider(r => r.SectionId == "requests"
+            ? "في الشكل: قبول الدعوى شكلا.\nفي الموضوع:\n1. إلزام المدعى عليه بتسليم (الشيء المبيع) للمدعي.\n2. إلزام المدعى عليه بدفع 500000 دج."
+            : r.SourceText);
+
+        var draft = await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs());
+
+        var requests = draft.FindSection("requests")!;
+        Assert.Equal("في الشكل: قبول الدعوى شكلا.\nفي الموضوع:\n2. إلزام المدعى عليه بدفع 500000 دج.", requests.Text);
+        Assert.Equal([DraftingNoteCodes.RemovedCopiedExample], requests.DraftingNotes);
+    }
+
+    [Fact]
+    public async Task EnglishReasoningIsRejectedLikeQwen3OnTheBench()
+    {
+        const string qwen3 = "Okay, let's tackle this legal drafting request. The user wants me to rephrase the lawyer's notes into formal Arabic.";
+        var provider = new RecordingProvider(r => r.SectionId == "grounds" ? qwen3 : r.SourceText);
+
+        var draft = await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs());
+
+        var grounds = draft.FindSection("grounds")!;
+        Assert.Equal("المادة 106 من القانون المدني.", grounds.Text);
+        Assert.Equal([DraftingNoteCodes.Retried, DraftingNoteCodes.FellBackToNotes], grounds.DraftingNotes);
+    }
+
+    [Theory]
+    [InlineData("<think>reasoning cut off by the length cap", "")]
+    [InlineData("Okay, here is the text:\nحيث إن المادة 106 تنص", "حيث إن المادة 106 تنص")]
+    public void ReasoningIsStripped(string raw, string expected) =>
+        Assert.Equal(expected, DraftingService.CleanModelOutput(raw, Requete.FindSection("grounds")!));
 
     [Theory]
     [InlineData("<think>تفكير</think>\nحيث إن", "حيث إن")]
     [InlineData("```\nحيث إن\n```", "حيث إن")]
-    [InlineData("الوقائع:\nحيث إن **العارض**", "حيث إن العارض")]
-    [InlineData("## الوقائع\n\nحيث إن", "حيث إن")]
+    [InlineData("المناقشة القانونية:\nحيث إن **العارض**", "حيث إن العارض")]
+    [InlineData("## المناقشة القانونية\n\nحيث إن", "حيث إن")]
     public void ModelOutputIsCleaned(string raw, string expected)
     {
-        var facts = Requete.FindSection("facts")!;
-        Assert.Equal(expected, DraftingService.CleanModelOutput(raw, facts));
+        Assert.Equal(expected, DraftingService.CleanModelOutput(raw, Requete.FindSection("grounds")!));
     }
 
     [Fact]

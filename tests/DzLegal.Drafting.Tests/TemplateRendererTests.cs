@@ -46,6 +46,16 @@ public class TemplateRendererTests
         Assert.Equal(expected, Render("{{ gendered plaintiff.gender \"السيد\" \"السيدة\" }}", inputs));
     }
 
+    [Theory]
+    [InlineData(0, "المدعى عليه اقترض المبلغ.", "حيث إن المدعى عليه اقترض المبلغ.")]
+    [InlineData(1, "المدعى عليه امتنع.", "وحيث إن المدعى عليه امتنع.")]
+    [InlineData(0, "بتاريخ 15 جانفي 2025 اقترض المدعى عليه.", "حيث إنه بتاريخ 15 جانفي 2025 اقترض المدعى عليه.")]
+    [InlineData(2, "اتفق الطرفان على الأجل.", "وحيث إنه اتفق الطرفان على الأجل.")]
+    [InlineData(1, "وحيث إن المدعى عليه امتنع.", "وحيث إن المدعى عليه امتنع.")]
+    [InlineData(0, "حيث إنه بتاريخ 15 جانفي 2025 وقع العقد.", "حيث إنه بتاريخ 15 جانفي 2025 وقع العقد.")]
+    public void WhereasFollowsArabicGrammar(int index, string line, string expected) =>
+        Assert.Equal(expected, TemplateRenderer.Whereas(index, line));
+
     [Fact]
     public void NormalizeTrimsAndCollapsesBlankLines() =>
         Assert.Equal("أ\n\nب", TemplateRenderer.Normalize("\n\n  أ  \n\n\n\n ب \n\n"));

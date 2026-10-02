@@ -18,7 +18,7 @@ public class NarrativeChecksTests
     [Fact]
     public void ChineseCharactersFromTheFirstLocalRunAreAHardIssue()
     {
-        var issue = Assert.Single(Check("حيث إن الدعوى لم受理 قبول 1500000 15 2025"));
+        var issue = Assert.Single(Check("حيث إن الدعوى لم受理 قبول 1500000 بتاريخ 15 جانفي 2025"));
         Assert.Equal(NarrativeIssueKind.ForeignScript, issue.Kind);
         Assert.Equal("受理", issue.Detail);
         Assert.True(issue.IsHard);
@@ -28,7 +28,7 @@ public class NarrativeChecksTests
     public void FrenchTermsAndAccentsFromTheInputsAreAllowed()
     {
         var inputs = new Dictionary<string, string>(Inputs) { ["notes.grounds"] = "reconnaissance de dette notariée ; créance certaine" };
-        Assert.Empty(NarrativeChecks.Check("حيث إن reconnaissance de dette notariée تثبت مبلغ 1500000 دج في 15 جانفي 2025، أي créance certaine.", Notes, inputs));
+        Assert.Empty(NarrativeChecks.Check("حيث إن المدعى عليه اقترض من المدعي مبلغ 1500000 دج بتاريخ 15 جانفي 2025 بموجب reconnaissance de dette notariée، وهو ما يجعل الدين ثابتا ومستحق الأداء بصفته créance certaine في ذمة المدعى عليه.", Notes, inputs));
     }
 
     [Fact]
@@ -69,7 +69,7 @@ public class NarrativeChecksTests
     public void LatinWordsFromTheLawyersInputsAreAllowed()
     {
         var inputs = new Dictionary<string, string>(Inputs) { ["notes.grounds"] = "Reconnaissance de dette notariée" };
-        Assert.Empty(NarrativeChecks.Check("بموجب reconnaissance de dette تثبت 1500000 دج في 15 جانفي 2025", Notes, inputs));
+        Assert.Empty(NarrativeChecks.Check("حيث إن المدعى عليه اقترض من المدعي مبلغ 1500000 دج بموجب reconnaissance de dette موثقة بتاريخ 15 جانفي 2025", Notes, inputs));
     }
 
     [Fact]
@@ -93,6 +93,21 @@ public class NarrativeChecksTests
         var (text, removed) = NarrativeChecks.RemoveCopiedExample("حيث إن المدعى عليه باع للمدعي سيارة ولم يسلمها إليه.", example, notes);
         Assert.Equal(0, removed);
         Assert.NotEmpty(text);
+    }
+
+    [Fact]
+    public void MonthNamesMatchNumericDates()
+    {
+        var inputs = new Dictionary<string, string> { ["notes.grounds"] = "le 15/01/2025, mise en demeure le 10/07/2025" };
+        var issues = NarrativeChecks.Check("حيث إنه بتاريخ 15 جانفي 2025 ثم 10 يوليو 2025 وقع الإعذار.", "le 15/01/2025, mise en demeure le 10/07/2025", inputs);
+        Assert.DoesNotContain(issues, i => i.Kind is NarrativeIssueKind.UnknownNumber or NarrativeIssueKind.MissingNumber);
+    }
+
+    [Fact]
+    public void MostlyEnglishTextIsAHardIssue()
+    {
+        var issues = Check("Okay, let's tackle this legal drafting task: 1,500,000 DA on 15 جانفي 2025.");
+        Assert.Contains(issues, i => i.Kind == NarrativeIssueKind.NotArabic && i.IsHard);
     }
 
     [Fact]

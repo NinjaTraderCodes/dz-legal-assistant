@@ -9,6 +9,9 @@ public enum NarrativeIssueKind
     /// <summary>Letters from a script other than Arabic or Latin (e.g. CJK leaking from the model). Hard failure.</summary>
     ForeignScript,
 
+    /// <summary>Most letters are not Arabic (e.g. the model reasoned in English). Hard failure; CPCA art. 8.</summary>
+    NotArabic,
+
     /// <summary>A number in the text that appears nowhere in the lawyer's inputs (invented amount, date or article).</summary>
     UnknownNumber,
 
@@ -22,7 +25,7 @@ public enum NarrativeIssueKind
 public sealed record NarrativeIssue(NarrativeIssueKind Kind, string Detail)
 {
     /// <summary>Hard issues make the text unusable: the drafting layer retries, then falls back to the notes.</summary>
-    public bool IsHard => Kind == NarrativeIssueKind.ForeignScript;
+    public bool IsHard => Kind is NarrativeIssueKind.ForeignScript or NarrativeIssueKind.NotArabic;
 }
 
 /// <summary>
@@ -31,6 +34,16 @@ public sealed record NarrativeIssue(NarrativeIssueKind Kind, string Detail)
 /// </summary>
 public static partial class NarrativeChecks
 {
+    /// <summary>Same threshold as the Form Engine's art. 8 rule in the shipped definition.</summary>
+    public const double MinArabicRatio = 0.6;
+
+    private static readonly string[][] MonthNames =
+    [
+        ["جانفي", "يناير", "janvier"], ["فيفري", "فبراير", "février", "fevrier"], ["مارس", "mars"], ["أفريل", "افريل", "أبريل", "ابريل", "avril"],
+        ["ماي", "مايو", "mai"], ["جوان", "يونيو", "juin"], ["جويلية", "يوليو", "juillet"], ["أوت", "اوت", "أغسطس", "août", "aout"],
+        ["سبتمبر", "septembre"], ["أكتوبر", "اكتوبر", "octobre"], ["نوفمبر", "novembre"], ["ديسمبر", "décembre", "decembre"],
+    ];
+
     public static IReadOnlyList<NarrativeIssue> Check(string text, string sectionNotes, IReadOnlyDictionary<string, string> inputs)
     {
         ArgumentNullException.ThrowIfNull(inputs);
@@ -38,6 +51,12 @@ public static partial class NarrativeChecks
         if (string.IsNullOrWhiteSpace(text))
         {
             return issues;
+        }
+
+        var ratio = ArabicScript.Ratio(text);
+        if (ratio < MinArabicRatio)
+        {
+            issues.Add(new NarrativeIssue(NarrativeIssueKind.NotArabic, ratio.ToString("P0", System.Globalization.CultureInfo.InvariantCulture)));
         }
 
         var foreign = ForeignRuns(text);
@@ -157,11 +176,30 @@ public static partial class NarrativeChecks
     /// </summary>
     internal static List<string> Numbers(string text)
     {
-        var withoutMarkers = ListMarker().Replace(ToAsciiDigits(text), string.Empty);
+        var withoutMarkers = ListMarker().Replace(ToAsciiDigits(MonthsToNumbers(text)), string.Empty);
         return NumberToken().Matches(withoutMarkers)
             .Select(m => Separators().Replace(m.Value, string.Empty).TrimStart('0'))
             .Select(n => n.Length == 0 ? "0" : n)
             .ToList();
+    }
+
+    /// <summary>«15 جانفي 2025» → «15 1 2025», so it matches «15/01/2025» (Algerian, Mashriq and French month names).</summary>
+    private static string MonthsToNumbers(string text)
+    {
+        var tokens = MonthToken().Split(text);
+        for (var i = 0; i < tokens.Length; i++)
+        {
+            for (var m = 0; m < MonthNames.Length; m++)
+            {
+                if (MonthNames[m].Contains(tokens[i], StringComparer.OrdinalIgnoreCase))
+                {
+                    tokens[i] = (m + 1).ToString(System.Globalization.CultureInfo.InvariantCulture);
+                    break;
+                }
+            }
+        }
+
+        return string.Concat(tokens);
     }
 
     private static string ToAsciiDigits(string text)
@@ -185,6 +223,10 @@ public static partial class NarrativeChecks
 
     [GeneratedRegex(@"[,.\u066C\u00A0\u202F ]")]
     private static partial Regex Separators();
+
+    /// <summary>Splits text into word and non-word runs (kept), so month names can be replaced in place.</summary>
+    [GeneratedRegex(@"([\p{L}]+)")]
+    private static partial Regex MonthToken();
 
     /// <summary>Short parenthesised placeholders used in prompt examples, e.g. «(س)», «(ت)».</summary>
     [GeneratedRegex(@"\([^()\n]{1,12}\)")]

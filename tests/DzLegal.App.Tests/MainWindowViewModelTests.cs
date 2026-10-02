@@ -38,7 +38,7 @@ public class MainWindowViewModelTests
 
         Assert.True(vm.IsAdmissible, string.Join(", ", vm.Report!.Missing.Select(m => m.ElementId)));
         Assert.True(vm.HasGeneratedDraft);
-        Assert.Contains("500000", vm.Sections.Single(s => s.Id == "facts").Text, StringComparison.Ordinal);
+        Assert.StartsWith("حيث إن العارض أقرض المدعى عليه مبلغ 500000 دج", vm.Sections.Single(s => s.Id == "facts").Text, StringComparison.Ordinal);
         Assert.False(vm.IsError);
         Assert.StartsWith("تمت صياغة المسودة", vm.StatusMessage, StringComparison.Ordinal);
     }
@@ -48,14 +48,14 @@ public class MainWindowViewModelTests
     {
         var vm = Vm.Create().Filled();
         await vm.GenerateCommand.ExecuteAsync(null);
-        var facts = vm.Sections.Single(s => s.Id == "facts");
+        var grounds = vm.Sections.Single(s => s.Id == "grounds");
 
-        facts.Text = "   ";
-        Assert.True(vm.Findings.Single(f => f.ElementId == "art15.5.facts").IsMissingMandatory);
+        grounds.Text = "   ";
+        Assert.True(vm.Findings.Single(f => f.ElementId == "art15.5.grounds").IsMissingMandatory);
         Assert.False(vm.IsAdmissible);
 
-        facts.Text = "حيث إن الوقائع كما يلي.";
-        Assert.True(vm.Findings.Single(f => f.ElementId == "art15.5.facts").IsPresent);
+        grounds.Text = "حيث إن المادة 106 من القانون المدني تنص على ذلك.";
+        Assert.True(vm.Findings.Single(f => f.ElementId == "art15.5.grounds").IsPresent);
         Assert.True(vm.IsAdmissible);
     }
 
@@ -64,11 +64,11 @@ public class MainWindowViewModelTests
     {
         var vm = Vm.Create().Filled();
         await vm.GenerateCommand.ExecuteAsync(null);
-        vm.Sections.Single(s => s.Id == "facts").Text = "نص حرره المحامي";
+        vm.Sections.Single(s => s.Id == "grounds").Text = "نص حرره المحامي";
 
         vm.Field("court.name").Value = "محكمة بئر مراد رايس";
 
-        Assert.Equal("نص حرره المحامي", vm.Sections.Single(s => s.Id == "facts").Text);
+        Assert.Equal("نص حرره المحامي", vm.Sections.Single(s => s.Id == "grounds").Text);
         Assert.Contains("محكمة بئر مراد رايس", vm.Sections.Single(s => s.Id == "header").Text, StringComparison.Ordinal);
     }
 
@@ -77,6 +77,7 @@ public class MainWindowViewModelTests
     {
         var vm = Vm.Create();
         Assert.True(vm.Sections.Single(s => s.Id == "header").IsReadOnly);
+        Assert.True(vm.Sections.Single(s => s.Id == "facts").IsReadOnly);
         Assert.True(vm.Sections.Single(s => s.Id == "grounds").IsEditable);
     }
 
@@ -115,13 +116,13 @@ public class MainWindowViewModelTests
     public async Task ModelFailureIsShownAndNothingIsLost()
     {
         var vm = Vm.Create(provider: "failing").Filled();
-        vm.Sections.Single(s => s.Id == "facts").Text = "نص موجود";
+        vm.Sections.Single(s => s.Id == "grounds").Text = "نص موجود";
 
         await vm.GenerateCommand.ExecuteAsync(null);
 
         Assert.True(vm.IsError);
         Assert.Contains("127.0.0.1", vm.StatusMessage, StringComparison.Ordinal);
-        Assert.Equal("نص موجود", vm.Sections.Single(s => s.Id == "facts").Text);
+        Assert.Equal("نص موجود", vm.Sections.Single(s => s.Id == "grounds").Text);
         Assert.False(vm.HasGeneratedDraft);
     }
 

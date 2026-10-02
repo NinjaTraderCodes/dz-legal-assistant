@@ -91,8 +91,9 @@ public sealed partial class DraftingService
         // Worked examples are marked [[مثال]] … [[/مثال]] in prompt files: the model sees the content without the
         // markers, and the content is kept aside to detect output that copies it.
         var example = string.Join('\n', ExampleBlock().Matches(user).Select(m => m.Groups[1].Value.Trim()));
+        var instructions = TemplateRenderer.Normalize(ExampleBlock().Replace(user, string.Empty));
         user = TemplateRenderer.Normalize(ExampleMarker().Replace(user, string.Empty));
-        return new ModelRequest(section.Id, system, user, notes, example);
+        return new ModelRequest(section.Id, system, user, notes, example, instructions);
     }
 
     private async Task<DraftSection> WriteNarrativeAsync(DocumentTypeDefinition definition, SectionDefinition section, IReadOnlyDictionary<string, string> inputs, CancellationToken cancellationToken)
@@ -107,7 +108,7 @@ public sealed partial class DraftingService
         for (var attempt = 1; attempt <= 2; attempt++)
         {
             var output = CleanModelOutput(await _provider.GenerateAsync(request, cancellationToken), section);
-            var (text, removed) = NarrativeChecks.RemoveCopiedExample(output, request.ExampleText, request.SourceText);
+            var (text, removed) = NarrativeChecks.RemoveCopiedExample(output, request.ExampleText, request.SourceText + "\n" + request.InstructionText);
             if (removed > 0 && !notes.Contains(DraftingNoteCodes.RemovedCopiedExample))
             {
                 notes.Add(DraftingNoteCodes.RemovedCopiedExample);
@@ -131,10 +132,21 @@ public sealed partial class DraftingService
     private static IEnumerable<SectionDefinition> IncludedSections(DocumentTypeDefinition definition, IReadOnlyDictionary<string, string> inputs) =>
         definition.Sections.Where(s => Condition.All(s.IncludeWhen, inputs));
 
-    /// <summary>Removes reasoning blocks, Markdown fences/emphasis and a repeated section heading.</summary>
+    /// <summary>
+    /// Removes reasoning (closed or cut-off <c>&lt;think&gt;</c> blocks, and any non-Arabic preamble before the first
+    /// Arabic line), Markdown fences/emphasis and a repeated section heading.
+    /// </summary>
     internal static string CleanModelOutput(string output, SectionDefinition section)
     {
         var text = ThinkBlock().Replace(output ?? string.Empty, string.Empty);
+        text = UnclosedThink().Replace(text, string.Empty);
+        var lines0 = text.Split('\n');
+        var firstArabic = Array.FindIndex(lines0, l => ArabicScript.Ratio(l) >= 0.5 && l.Any(ArabicScript.IsArabicLetter));
+        if (firstArabic > 0)
+        {
+            text = string.Join('\n', lines0[firstArabic..]);
+        }
+
         text = CodeFence().Replace(text, string.Empty);
         text = text.Replace("**", string.Empty, StringComparison.Ordinal);
         text = TemplateRenderer.Normalize(text);
@@ -160,6 +172,9 @@ public sealed partial class DraftingService
 
     [GeneratedRegex(@"<think>.*?</think>", RegexOptions.Singleline)]
     private static partial Regex ThinkBlock();
+
+    [GeneratedRegex(@"<think>.*", RegexOptions.Singleline)]
+    private static partial Regex UnclosedThink();
 
     [GeneratedRegex(@"^\s*```[a-zA-Z]*\s*$", RegexOptions.Multiline)]
     private static partial Regex CodeFence();

@@ -3,7 +3,7 @@
 // practicing lawyer confirms it against the current official text (see docs/UPDATING-LEGAL-RULES.md).
 {
   "id": "requete-introductive",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "name": { "ar": "عريضة افتتاح الدعوى", "en": "Statement of claim (requête introductive d'instance)" },
   "description": {
     "ar": "العريضة التي ترفع بها الدعوى أمام المحكمة (المواد 14 و15 و17 من قانون الإجراءات المدنية والإدارية).",
@@ -54,7 +54,7 @@
     { "id": "claim.concernsRegisteredRealProperty", "group": "claim", "kind": "boolean", "default": "false", "label": { "ar": "الدعوى تتعلق بعقار أو حق عيني عقاري مشهر", "en": "Claim concerns registered real property or a real right" } },
     { "id": "claim.publicationReference", "group": "claim", "label": { "ar": "مراجع إشهار العريضة لدى المحافظة العقارية", "en": "Publication reference at the land registry (conservation foncière)" }, "visibleWhen": [ { "field": "claim.concernsRegisteredRealProperty", "is": "true" } ] },
 
-    { "id": "notes.facts", "group": "notes", "kind": "multilineText", "label": { "ar": "الوقائع", "en": "Facts" }, "hint": { "ar": "اكتب الوقائع بإيجاز، بأي لغة", "en": "Brief facts, in any language" } },
+    { "id": "notes.facts", "group": "notes", "kind": "multilineText", "label": { "ar": "الوقائع", "en": "Facts" }, "hint": { "ar": "اكتب الوقائع بالعربية الفصحى، جملة في كل سطر؛ تدرج كما هي", "en": "Facts in formal Arabic, one sentence per line; used as written" } },
     { "id": "notes.grounds", "group": "notes", "kind": "multilineText", "label": { "ar": "الأسانيد القانونية", "en": "Legal grounds" }, "hint": { "ar": "المواد والحجج التي تؤسس عليها الدعوى", "en": "Articles and arguments the claim rests on" } },
     { "id": "notes.requests", "group": "notes", "kind": "multilineText", "label": { "ar": "الطلبات", "en": "Requests" }, "hint": { "ar": "ما تلتمسه من المحكمة", "en": "What you ask the court for" } },
 
@@ -78,7 +78,7 @@
     { "id": "publication", "kind": "generated", "template": "templates/publication.scriban", "title": { "ar": "الإشهار العقاري", "en": "Land-registry publication" },
       "includeWhen": [ { "field": "claim.concernsRegisteredRealProperty", "is": "true" } ] },
     { "id": "opening", "kind": "generated", "template": "templates/opening.scriban", "title": { "ar": "الافتتاح", "en": "Opening" } },
-    { "id": "facts", "kind": "narrative", "prompt": "prompts/facts.ar.txt", "sourceField": "notes.facts", "showTitle": true, "title": { "ar": "الوقائع", "en": "Facts" } },
+    { "id": "facts", "kind": "generated", "template": "templates/facts.scriban", "showTitle": true, "title": { "ar": "الوقائع", "en": "Facts" } },
     { "id": "grounds", "kind": "narrative", "prompt": "prompts/grounds.ar.txt", "sourceField": "notes.grounds", "showTitle": true, "title": { "ar": "المناقشة القانونية", "en": "Legal grounds" } },
     { "id": "requestsIntro", "kind": "generated", "template": "templates/requestsIntro.scriban", "showTitle": true, "title": { "ar": "لهذه الأسباب ومن أجلها", "en": "For these reasons" } },
     { "id": "requests", "kind": "narrative", "prompt": "prompts/requests.ar.txt", "sourceField": "notes.requests", "title": { "ar": "الطلبات", "en": "Requests" } },

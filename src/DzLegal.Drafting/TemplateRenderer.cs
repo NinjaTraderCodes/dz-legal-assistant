@@ -12,6 +12,7 @@ namespace DzLegal.Drafting;
 /// <c>lines</c> splits a multi-line value into its non-blank lines, and
 /// <c>gendered g "masculine" "feminine"</c> picks the form matching a gender choice ("male"/"female"),
 /// and falls back to the masculine generic, the unmarked form in Arabic legal drafting, while none is chosen.
+/// <c>whereas i line</c> turns the i-th line of notes into a «حيث إن / وحيث إن» paragraph.
 /// </summary>
 public sealed class TemplateRenderer
 {
@@ -52,6 +53,7 @@ public sealed class TemplateRenderer
 
         root.Import("lines", new Func<string?, ScriptArray>(SplitLines));
         root.Import("gendered", new Func<object?, string, string, string>(Gendered));
+        root.Import("whereas", new Func<int, string, string>(Whereas));
         return root;
     }
 
@@ -61,6 +63,23 @@ public sealed class TemplateRenderer
         "female" => feminine,
         _ => masculine,
     };
+
+    /// <summary>
+    /// «حيث إن» must be followed by a noun: a line starting with a definite noun («المدعى عليه …») follows it
+    /// directly; any other line (a verb, «بتاريخ …», «رغم …») takes the pronoun form «حيث إنه …», which is
+    /// grammatical for any clause. The first paragraph uses «حيث», the following ones «وحيث».
+    /// </summary>
+    internal static string Whereas(int index, string line)
+    {
+        var text = (line ?? string.Empty).Trim();
+        if (text.StartsWith("حيث", StringComparison.Ordinal) || text.StartsWith("وحيث", StringComparison.Ordinal))
+        {
+            return text; // the lawyer already wrote the formula
+        }
+
+        var opener = index == 0 ? "حيث إن" : "وحيث إن";
+        return text.StartsWith("ال", StringComparison.Ordinal) ? $"{opener} {text}" : $"{opener}ه {text}";
+    }
 
     private static ScriptArray SplitLines(string? value)
     {

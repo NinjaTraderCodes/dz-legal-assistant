@@ -423,9 +423,11 @@ public sealed partial class MainWindowViewModel : ObservableObject
                 lines.AddRange(NarrativeChecks.Check(vm.Text, notes, inputs).Select(i => L.Format(i.Kind switch
                 {
                     NarrativeIssueKind.ForeignScript => "IssueForeignScript",
+                    NarrativeIssueKind.NotArabic => "IssueNotArabic",
                     NarrativeIssueKind.UnknownNumber => "IssueUnknownNumber",
                     NarrativeIssueKind.UnexpectedLatinWord => "IssueUnexpectedLatinWord",
-                    _ => "IssueMissingNumber",
+                    NarrativeIssueKind.MissingNumber => "IssueMissingNumber",
+                    _ => throw new InvalidOperationException($"No message for {i.Kind}."),
                 }, i.Detail)));
             }
 

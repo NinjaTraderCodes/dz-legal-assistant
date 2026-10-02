@@ -26,7 +26,10 @@
   - foreign-script characters, a hard failure;
   - numbers not found in any input, such as an invented amount, date or article;
   - numbers from the notes that the text dropped;
-  - Latin-script words found in no input (for example «caso»).
+  - Latin-script words found in no input (for example «caso»);
+  - text that is mostly not Arabic (for example English reasoning), a hard failure.
+
+  Month names (جانفي، يناير، janvier…) count as their numbers, so «15 جانفي 2025» matches `15/01/2025`. Wording that appears in the prompt's instructions (for example «في الشكل: قبول الدعوى شكلا») never counts as copying the example.
 
   Paragraphs that copy the prompt's worked example are removed first. Detection uses the example's placeholder tokens such as «(س)», or near-verbatim overlap. `DraftAsync` then retries an empty or hard-failing answer once, falls back to the notes verbatim, and records each step in `DraftSection.DraftingNotes`. The app re-runs the checks on every edit and shows them as review hints under the section. They cannot detect meaning-level errors such as swapped roles, which remain the lawyer's review.
 - **ModelProviders**: `StubModelProvider` (template mode) and `OllamaModelProvider` (loopback-only HTTP to a local Ollama). Adding llama.cpp or another runtime means one new class implementing `IModelProvider`.
@@ -37,6 +40,7 @@
 
 ## Data flow
 
+0. Since rules v0.3.0, **facts are a generated section**. Each line of the lawyer's facts notes becomes «حيث إن …» or «وحيث إن(ه) …» through the `whereas` template helper. Benchmarks showed 3–4B models reversing who lent and who borrowed.
 1. The case form is generated from `fields` in `definition.json`. Values are strings keyed by field id (for example `plaintiff.domicile`). Visibility follows each field's `visibleWhen` conditions.
 2. On every form change, `Refresh` re-renders the **generated** sections (court, parties, subject, publication, opening, documents, date, signature). Sections with an `includeWhen` condition, such as land-registry publication, appear or disappear.
 3. **Draft narrative sections** sends one request per narrative section. Each request is the system prompt (rules: no invented facts, amounts or citations; formal Arabic; text only) plus the section prompt with the lawyer's notes embedded. Output is cleaned (`<think>` blocks, Markdown, a repeated heading). Empty notes mean no model call, so the section stays empty and gets flagged.

@@ -43,11 +43,12 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         string defaultProvider = "ollama",
         Func<DateOnly>? today = null,
         string? autosaveFile = null,
-        DzLegal.Law.LegalKnowledge? knowledge = null)
+        DzLegal.Law.LegalKnowledge? knowledge = null,
+        IExternalLinks? links = null)
     {
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentNullException.ThrowIfNull(providers);
-        UseKnowledge(knowledge);
+        UseKnowledge(knowledge, links);
         _definition = definition;
         _files = files;
         _evaluations = evaluations;

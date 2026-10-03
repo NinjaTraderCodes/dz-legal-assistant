@@ -307,6 +307,27 @@
                                       <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap" Text="{Binding Why}" IsVisible="{Binding HasWhy}" />
                                       <TextBlock FontFamily="{StaticResource DocumentFont}" FontSize="13" TextWrapping="Wrap" Text="{Binding Text}" IsVisible="{Binding IsAvailable}" />
                                       <TextBlock Classes="muted" FontSize="11" FontStyle="Italic" TextWrapping="Wrap" Text="{Binding Text}" IsVisible="{Binding !IsAvailable}" />
+                                      <Border BorderBrush="{DynamicResource HairlineBrush}" BorderThickness="0,1,0,0" Padding="0,5,0,0" Margin="0,3,0,0">
+                                        <StackPanel Spacing="3">
+                                          <TextBlock Classes="muted" FontSize="11" TextWrapping="Wrap" Text="{Binding ReferenceText}" />
+                                          <WrapPanel>
+                                            <Button Classes="subtle" Padding="0,2" Margin="0,0,10,0" Command="{Binding OpenSourceCommand}" IsVisible="{Binding HasSource}" ToolTip.Tip="{Binding LinkTooltip}">
+                                              <StackPanel Orientation="Horizontal" Spacing="4">
+                                                <ic:SymbolIcon Symbol="Open" FontSize="12" Foreground="{DynamicResource AccentBrush}" />
+                                                <TextBlock FontSize="11" Foreground="{DynamicResource AccentBrush}" TextDecorations="Underline" Text="{Binding LinkLabel}" />
+                                              </StackPanel>
+                                            </Button>
+                                            <Border CornerRadius="4" Padding="5,1" VerticalAlignment="Center"
+                                                    Background="{DynamicResource WarningSoftBrush}" IsVisible="{Binding !IsVerified}">
+                                              <TextBlock FontSize="10" Foreground="{DynamicResource WarningBrush}" Text="{Binding ProvenanceTag}" />
+                                            </Border>
+                                            <Border CornerRadius="4" Padding="5,1" VerticalAlignment="Center"
+                                                    Background="{DynamicResource SuccessSoftBrush}" IsVisible="{Binding IsVerified}">
+                                              <TextBlock FontSize="10" Foreground="{DynamicResource SuccessBrush}" Text="{Binding ProvenanceTag}" />
+                                            </Border>
+                                          </WrapPanel>
+                                        </StackPanel>
+                                      </Border>
                                     </StackPanel>
                                   </Border>
                                 </DataTemplate>
@@ -342,6 +363,13 @@
                           <StackPanel Spacing="3">
                             <CheckBox IsChecked="{Binding IsSelected}"><TextBlock FontWeight="SemiBold" TextWrapping="Wrap" Text="{Binding Citation}" /></CheckBox>
                             <TextBlock FontFamily="{StaticResource DocumentFont}" FontSize="13" TextWrapping="Wrap" MaxLines="6" TextTrimming="CharacterEllipsis" Text="{Binding Text}" />
+                            <TextBlock Classes="muted" FontSize="11" TextWrapping="Wrap" Text="{Binding ReferenceText}" />
+                            <Button Classes="subtle" Padding="0,2" HorizontalAlignment="Left" Command="{Binding OpenSourceCommand}" IsVisible="{Binding HasSource}" ToolTip.Tip="{Binding LinkTooltip}">
+                              <StackPanel Orientation="Horizontal" Spacing="4">
+                                <ic:SymbolIcon Symbol="Open" FontSize="12" Foreground="{DynamicResource AccentBrush}" />
+                                <TextBlock FontSize="11" Foreground="{DynamicResource AccentBrush}" TextDecorations="Underline" Text="{Binding LinkLabel}" />
+                              </StackPanel>
+                            </Button>
                           </StackPanel>
                         </Border>
                       </DataTemplate>

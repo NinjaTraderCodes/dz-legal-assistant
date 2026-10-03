@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DzLegal.App.Services;
 using DzLegal.Domain;
 using DzLegal.Drafting;
 using DzLegal.Law;
@@ -23,6 +24,7 @@ public sealed partial class MainWindowViewModel
     private const string DocumentsField = "documents.list";
 
     private LegalKnowledge _knowledge = LegalKnowledge.Empty;
+    private IExternalLinks _links = new NoExternalLinks();
     private GroundsSuggester _suggester = new(LegalKnowledge.Empty);
     private readonly List<ArticleRef> _selectedArticles = [];
     private string _suggestionKey = string.Empty;
@@ -57,8 +59,9 @@ public sealed partial class MainWindowViewModel
 
     public IReadOnlyList<ArticleRef> SelectedArticles => _selectedArticles;
 
-    private void UseKnowledge(LegalKnowledge? knowledge)
+    private void UseKnowledge(LegalKnowledge? knowledge, IExternalLinks? links)
     {
+        _links = links ?? new NoExternalLinks();
         _knowledge = knowledge ?? LegalKnowledge.Empty;
         _suggester = new GroundsSuggester(_knowledge);
     }
@@ -82,7 +85,7 @@ public sealed partial class MainWindowViewModel
         foreach (var suggestion in _suggester.Suggest(text, GroundsSuggester.AreaOf(section)))
         {
             var articles = suggestion.Articles
-                .Select(a => CreateChoice(new ArticleRef(a.Reference.Code, a.Reference.Number), a.Citation, a.Reference.Why.Get(L.Language), a.Article))
+                .Select(a => CreateChoice(new ArticleRef(a.Reference.Code, a.Reference.Number), a.Citation, a.Reference.Why.Get(L.Language), a.Article, suggestion.Claim.Verified))
                 .ToList();
             GroundsSuggestions.Add(new ClaimSuggestionViewModel(suggestion, articles, L, InsertRequests, InsertDocuments)
             {
@@ -115,14 +118,28 @@ public sealed partial class MainWindowViewModel
 
         foreach (var hit in ArticleSearch.Find(_knowledge.Library, ArticleQuery))
         {
-            ArticleResults.Add(CreateChoice(new ArticleRef(hit.Code.Id, hit.Article.Number), hit.Citation, string.Empty, hit.Article));
+            // A searched article is the lawyer's own choice: only the text's verification matters.
+            ArticleResults.Add(CreateChoice(new ArticleRef(hit.Code.Id, hit.Article.Number), hit.Citation, string.Empty, hit.Article, claimVerified: true));
         }
 
         ArticleSearchHint = ArticleResults.Count == 0 ? L["ArticleSearchNone"] : string.Empty;
     }
 
-    private ArticleChoiceViewModel CreateChoice(ArticleRef reference, string citation, string why, LawArticle? article) =>
-        new(reference, citation, why, article, _selectedArticles.Contains(reference), L, OnArticleToggled);
+    private ArticleChoiceViewModel CreateChoice(ArticleRef reference, string citation, string why, LawArticle? article, bool claimVerified) =>
+        new(reference, citation, why, article, _knowledge.ProvenanceOf(reference.Code, article), claimVerified, _selectedArticles.Contains(reference), L, OnArticleToggled, OpenOfficialLinkAsync);
+
+    /// <summary>Opens an official source in the browser, on the lawyer's click only, after re-checking the host.</summary>
+    internal async Task OpenOfficialLinkAsync(string url)
+    {
+        if (!OfficialLinks.IsOfficial(url))
+        {
+            SetStatus(L["LinkRefused"], isError: true);
+            return;
+        }
+
+        var opened = await _links.OpenAsync(new Uri(url));
+        SetStatus(opened ? L["LinkOpened"] : L.Format("LinkNotOpened", url), isError: !opened);
+    }
 
     private void OnArticleToggled(ArticleChoiceViewModel choice)
     {

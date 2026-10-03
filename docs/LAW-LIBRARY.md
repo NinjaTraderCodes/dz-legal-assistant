@@ -2,6 +2,27 @@
 
 The grounds suggestions rest on a **local copy of the official Arabic texts**: Civil Code, CPCA, Commercial Code, Family Code and the two labour laws. The app quotes an article only from this library and never from a model's memory. A 4-billion-parameter model cannot recall article numbers or wording reliably.
 
+## How suggestions are built
+
+Nothing is scraped, searched online or read from PDFs while the lawyer works.
+
+1. **The claim catalog is prepared in advance** (`data/law/claims/*.json`). It lists claim types and the articles each one cites. It was drafted by engineering and is waiting for a lawyer's review.
+2. **The official texts are imported once, at development time,** from joradp.dz / mjustice.dz into `data/law/codes/*.json`, reviewed by a lawyer, committed, and shipped with the app.
+3. **While the lawyer types the facts,** keyword matching inside the local catalog picks up to three claim types, instantly and offline.
+4. **The model only writes.** It turns the articles the lawyer ticked into grounds paragraphs, using their official texts.
+
+**Why there is no live scraping or web search:**
+- The case facts would leave the machine.
+- The sources are mostly scanned Journal Officiel PDFs, which a small local model cannot read reliably.
+- It would take minutes per case.
+- Nobody could verify or reproduce a suggestion afterwards.
+
+**Provenance shown under each suggested article:**
+- the official reference of the text, plus the Journal Officiel issue once a lawyer fills `joReference` in `sources.json`;
+- the article's place in the code (book › title › chapter) once imported;
+- a link the lawyer can click: the exact official document the text was imported from, or the official site (`officialSite`) before import;
+- a tag: "Catalog proposal — not verified by a lawyer" until both the claim and the imported code are marked verified.
+
 ## Rules
 
 1. **Article text only comes from an official publication.** Every code file records the URL it was imported from, the SHA-256 of the downloaded file, and the date. Nobody types article text by hand, and no model writes it.

@@ -73,6 +73,10 @@ public static class LawLibraryLoader
         {
             errors.Add("A code needs the source it was imported from.");
         }
+        else if (code.Source.Url.Contains("://", StringComparison.Ordinal) && !OfficialLinks.IsOfficial(code.Source.Url))
+        {
+            errors.Add($"Source '{code.Source.Url}' must be an https link to {string.Join(" or ", OfficialLinks.Hosts)} (or the name of a file downloaded from there).");
+        }
 
         foreach (var group in code.Articles.GroupBy(a => a.Number).Where(g => g.Count() > 1))
         {

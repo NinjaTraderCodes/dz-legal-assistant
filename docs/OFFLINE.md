@@ -9,6 +9,8 @@ Client case data is covered by professional secrecy. The application is built so
 | Form Engine, templates, storage, UI | **None.** |
 | Template mode (stub engine) | **None.** |
 | Local model engine (Ollama) | HTTP to **`127.0.0.1:11434`** only. This is inter-process communication with the Ollama process on the same computer; packets never leave the machine. |
+| Grounds suggestions, law library, article search | **None.** The texts and the claim catalog ship with the app in `data/law/`; nothing is scraped or searched online. |
+| "Official source" links under suggested articles | **The app itself: none.** When the lawyer clicks one, the operating system opens it in the default browser. The link is fixed data, never built from case data, and only https links to joradp.dz or mjustice.dz are accepted, both when the data loads and again before opening. |
 | Telemetry, analytics, crash reporting, update checks | **None exist.** |
 
 ## How it is enforced in code

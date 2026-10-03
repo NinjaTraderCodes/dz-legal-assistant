@@ -37,6 +37,7 @@ The lawyer ticks the articles to rely on. **Add selected to the grounds** writes
 - Any other article in the result is flagged under the section, and so is any «…» quotation that doesn't match the official text. Either one triggers one automatic retry.
 - Matching is deterministic: Arabic keyword groups with normalisation, and no model involved.
 - Texts come from a local law library imported from the official publications and are never typed from memory. See [docs/LAW-LIBRARY.md](docs/LAW-LIBRARY.md).
+- Nothing is scraped or searched online. Under each article, the card shows the official reference, the place in the code, and a link to the official source. The link opens in the browser only when the lawyer clicks it, and carries no case data. A tag also says whether a lawyer has verified the suggestion.
 
 > ⚠️ **Status:** the claim catalog (18 claim types across civil, commercial, family and labour cases) is unverified. **No official text has been imported yet**, so articles appear with "text not yet imported". The import needs network access to joradp.dz / mjustice.dz, or the PDFs supplied as files.
 
@@ -74,7 +75,7 @@ Prerequisite: [.NET 10 SDK](https://dotnet.microsoft.com/download) (the version 
 
 ```bash
 dotnet build                                   # warnings are errors
-dotnet test                                    # 278 tests: engine, drafting, providers, storage, UI (headless)
+dotnet test                                    # 292 tests: engine, drafting, providers, storage, UI (headless)
 dotnet run --project src/DzLegal.Harness       # Form Engine accuracy report (exit 1 on any mismatch)
 dotnet run --project src/DzLegal.Harness -- grounds   # grounds-suggestion accuracy (exit 1 below 90% top-3)
 dotnet run --project src/DzLegal.App           # the desktop app

@@ -10,16 +10,63 @@ public sealed partial class ArticleChoiceViewModel : ObservableObject
 {
     private readonly Action<ArticleChoiceViewModel> _onToggled;
 
-    public ArticleChoiceViewModel(ArticleRef reference, string citation, string why, LawArticle? article, bool selected, Loc loc, Action<ArticleChoiceViewModel> onToggled)
+    public ArticleChoiceViewModel(
+        ArticleRef reference,
+        string citation,
+        string why,
+        LawArticle? article,
+        ArticleProvenance provenance,
+        bool claimVerified,
+        bool selected,
+        Loc loc,
+        Action<ArticleChoiceViewModel> onToggled,
+        Func<string, Task>? openLink = null)
     {
         ArgumentNullException.ThrowIfNull(loc);
+        ArgumentNullException.ThrowIfNull(provenance);
         Reference = reference;
         Citation = citation;
         Why = why;
         IsAvailable = article is { Repealed: false };
         Text = IsAvailable ? article!.Text : loc["ArticleTextUnavailable"];
+        ReferenceText = provenance.Location.Length > 0 ? provenance.Reference + "\n" + provenance.Location : provenance.Reference;
+        SourceUrl = provenance.SourceUrl;
+        LinkLabel = loc[provenance.SourceIsExactText ? "OfficialSource" : "CheckInOfficialJournal"];
+        LinkTooltip = SourceUrl is null ? string.Empty
+            : provenance.RetrievedOn.Length > 0 ? loc.Format("OfficialSourceTooltip", SourceUrl, provenance.RetrievedOn) : SourceUrl;
+        IsVerified = claimVerified && provenance.IsTextVerified;
+        ProvenanceTag = loc[IsVerified ? "ProvenanceVerified" : "ProvenanceCatalog"];
         _isSelected = selected;
         _onToggled = onToggled;
+        _openLink = openLink;
+    }
+
+    private readonly Func<string, Task>? _openLink;
+
+    /// <summary>The official reference of the text («الأمر رقم 75-58 …») and, once imported, where the article sits.</summary>
+    public string ReferenceText { get; }
+
+    /// <summary>The exact official document it was imported from, or the official site to check it on.</summary>
+    public string? SourceUrl { get; }
+
+    public bool HasSource => SourceUrl is not null;
+
+    public string LinkLabel { get; }
+
+    public string LinkTooltip { get; }
+
+    /// <summary>Both the claim's article list and the imported text were checked by a lawyer.</summary>
+    public bool IsVerified { get; }
+
+    public string ProvenanceTag { get; }
+
+    [RelayCommand]
+    private async Task OpenSource()
+    {
+        if (SourceUrl is not null && _openLink is not null)
+        {
+            await _openLink(SourceUrl);
+        }
     }
 
     public ArticleRef Reference { get; }

@@ -179,3 +179,98 @@ public sealed class ShippedCatalogTests
         Assert.Contains(cases, x => x.Expect.Length == 0);
     }
 }
+
+public sealed class ProvenanceTests : IDisposable
+{
+    private readonly DirectoryInfo _root = Directory.CreateTempSubdirectory("dzlegal-prov-");
+
+    public void Dispose() => _root.Delete(recursive: true);
+
+    private static readonly LawSourceManifest Manifest = new()
+    {
+        Codes =
+        [
+            new LawSourceEntry
+            {
+                Id = "fictitious-code",
+                Title = new LocalizedText("قانون تجريبي", "Fictitious"),
+                CitationName = "القانون التجريبي",
+                Reference = "الأمر الوهمي رقم 00-00",
+                OfficialSite = "https://www.joradp.dz",
+                JoReference = "الجريدة الرسمية الوهمية عدد 0",
+            },
+        ],
+    };
+
+    [Theory]
+    [InlineData("https://www.joradp.dz/HAR/Index.htm", true)]
+    [InlineData("https://joradp.dz", true)]
+    [InlineData("https://www.mjustice.dz/ar/", true)]
+    [InlineData("http://www.joradp.dz", false)]
+    [InlineData("https://joradp.dz.example.com", false)]
+    [InlineData("https://example.com/joradp.dz", false)]
+    [InlineData("fixture", false)]
+    public void OnlyHttpsOfficialHostsAreOfficial(string url, bool expected) => Assert.Equal(expected, OfficialLinks.IsOfficial(url));
+
+    [Fact]
+    public void BeforeImportTheLinkIsTheOfficialSite()
+    {
+        var knowledge = new LegalKnowledge(LawLibrary.Empty, Manifest, []);
+        var p = knowledge.ProvenanceOf("fictitious-code", null);
+        Assert.Equal("الأمر الوهمي رقم 00-00 — الجريدة الرسمية الوهمية عدد 0", p.Reference);
+        Assert.Equal("https://www.joradp.dz", p.SourceUrl);
+        Assert.False(p.SourceIsExactText);
+        Assert.False(p.IsTextVerified);
+        Assert.Empty(p.Location);
+    }
+
+    [Fact]
+    public void AfterImportTheLinkIsTheExactDocumentAndTheLocationIsKnown()
+    {
+        var article = Fixtures.Article("6", "نص وهمي.") with { Path = ["الكتاب الأول", "الباب الثاني"] };
+        var code = Fixtures.Code(article) with
+        {
+            Id = "fictitious-code",
+            Verified = true,
+            Source = new LawSource { Url = "https://www.joradp.dz/fictitious.pdf", RetrievedOn = "2026-10-03" },
+        };
+        var p = new LegalKnowledge(new LawLibrary([code]), Manifest, []).ProvenanceOf("fictitious-code", article);
+        Assert.Equal("https://www.joradp.dz/fictitious.pdf", p.SourceUrl);
+        Assert.True(p.SourceIsExactText);
+        Assert.Equal("الكتاب الأول › الباب الثاني", p.Location);
+        Assert.Equal("2026-10-03", p.RetrievedOn);
+        Assert.True(p.IsTextVerified);
+    }
+
+    [Fact]
+    public void TheLoaderRejectsNonOfficialLinks()
+    {
+        File.WriteAllText(Path.Combine(_root.FullName, LawSourceManifest.FileName),
+            """{ "codes": [ { "id": "x", "title": { "ar": "x", "en": "x" }, "citationName": "x", "reference": "x", "officialSite": "http://example.com" } ] }""");
+        Assert.Throws<LawDataException>(() => LawSourceManifest.Load(_root.FullName));
+
+        var code = Fixtures.Code(Fixtures.Article("1", "نص وهمي.")) with { Source = new LawSource { Url = "https://example.com/code.pdf" } };
+        Assert.Contains(LawLibraryLoader.Validate(code), e => e.Contains("must be an https link", StringComparison.Ordinal));
+        Assert.Empty(LawLibraryLoader.Validate(code with { Source = new LawSource { Url = "code-civil.pdf" } }));
+    }
+
+    [Fact]
+    public async Task TheImporterRefusesNonOfficialUrls()
+    {
+        File.Copy(Path.Combine(AppContext.BaseDirectory, "data", "law", LawSourceManifest.FileName), Path.Combine(_root.FullName, LawSourceManifest.FileName));
+        var output = new StringWriter();
+        Assert.Equal(2, await DzLegal.Harness.LawImport.RunAsync("civil-code", "https://example.com/code.pdf", null, _root.FullName, null, output));
+        Assert.Contains("only official sources", output.ToString(), StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void ShippedSuggestionsCarryTheOfficialReferenceAndSite()
+    {
+        var knowledge = LegalKnowledgeLoader.Load(Path.Combine(AppContext.BaseDirectory, "data", "law"));
+        var loan = new GroundsSuggester(knowledge).Suggest("أقرض المدعي المدعى عليه مبلغا ولم يرده")[0];
+        Assert.Equal(["450", "106", "107", "323", "333", "454", "176"], loan.Articles.Select(a => a.Reference.Number));
+        var first = loan.Articles[0].Provenance;
+        Assert.StartsWith("الأمر رقم 75-58", first.Reference, StringComparison.Ordinal);
+        Assert.Equal("https://www.joradp.dz", first.SourceUrl);
+    }
+}

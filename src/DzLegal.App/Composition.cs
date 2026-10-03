@@ -57,7 +57,7 @@ public static class Composition
         }
     }
 
-    public static MainWindowViewModel CreateMainViewModel(AppSettings settings, IUserFiles files, AppPaths paths, Loc loc)
+    public static MainWindowViewModel CreateMainViewModel(AppSettings settings, IUserFiles files, AppPaths paths, Loc loc, IExternalLinks? links = null)
     {
         ArgumentNullException.ThrowIfNull(settings);
         ArgumentNullException.ThrowIfNull(paths);
@@ -74,6 +74,7 @@ public static class Composition
             loc,
             settings.DefaultProvider,
             autosaveFile: Path.Combine(paths.Drafts, "last-session" + DraftFile.Extension),
-            knowledge: DzLegal.Law.LegalKnowledgeLoader.Load(LawRoot));
+            knowledge: DzLegal.Law.LegalKnowledgeLoader.Load(LawRoot),
+            links: links);
     }
 }

@@ -69,6 +69,18 @@ internal sealed class ScriptedProvider : IModelProvider
             : request.SourceText);
 }
 
+/// <summary>Records the links the app asked to open, instead of launching a browser.</summary>
+internal sealed class FakeLinks : IExternalLinks
+{
+    public List<Uri> Opened { get; } = [];
+
+    public Task<bool> OpenAsync(Uri uri)
+    {
+        Opened.Add(uri);
+        return Task.FromResult(true);
+    }
+}
+
 /// <summary>Records every prompt and answers with the section notes (like template mode).</summary>
 internal sealed class RecordingProvider : IModelProvider
 {
@@ -129,7 +141,8 @@ internal static class Vm
         Loc? loc = null,
         string? autosaveFile = null,
         LegalKnowledge? knowledge = null,
-        RecordingProvider? recorder = null)
+        RecordingProvider? recorder = null,
+        IExternalLinks? links = null)
     {
         loc ??= new Loc();
         var definition = DefinitionLoader.Load(Path.Combine(AppContext.BaseDirectory, "data", "document-types", "requete-introductive"));
@@ -145,7 +158,7 @@ internal static class Vm
             provider = "recording";
         }
 
-        return new MainWindowViewModel(definition, providers, files ?? new FakeFiles(), new EvaluationStore(EvaluationsFolder), loc, provider, () => new DateOnly(2026, 9, 15), autosaveFile, knowledge ?? ShippedKnowledge);
+        return new MainWindowViewModel(definition, providers, files ?? new FakeFiles(), new EvaluationStore(EvaluationsFolder), loc, provider, () => new DateOnly(2026, 9, 15), autosaveFile, knowledge ?? ShippedKnowledge, links);
     }
 
     /// <summary>Fills every mandatory field with fictitious data, like a lawyer would.</summary>

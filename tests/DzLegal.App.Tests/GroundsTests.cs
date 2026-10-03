@@ -120,3 +120,33 @@ public sealed class GroundsTests
         Assert.Empty(reopened.SelectedArticles);
     }
 }
+
+public sealed class GroundsProvenanceTests
+{
+    [Fact]
+    public async Task EachArticleShowsItsOfficialReferenceAndOpensTheOfficialSiteOnClick()
+    {
+        var links = new FakeLinks();
+        var vm = Vm.Create(links: links).Filled();
+        var article = vm.GroundsSuggestions[0].Articles.First(a => a.Reference.Number == "107");
+
+        Assert.StartsWith("الأمر رقم 75-58", article.ReferenceText, StringComparison.Ordinal);
+        Assert.Equal(vm.L["CheckInOfficialJournal"], article.LinkLabel);
+        Assert.Equal(vm.L["ProvenanceCatalog"], article.ProvenanceTag);
+        Assert.False(article.IsVerified);
+
+        await article.OpenSourceCommand.ExecuteAsync(null);
+        Assert.Equal([new Uri("https://www.joradp.dz")], links.Opened);
+        Assert.Equal(vm.L["LinkOpened"], vm.StatusMessage);
+    }
+
+    [Fact]
+    public async Task ANonOfficialLinkIsNeverOpened()
+    {
+        var links = new FakeLinks();
+        var vm = Vm.Create(links: links);
+        await vm.OpenOfficialLinkAsync("https://example.com/phishing");
+        Assert.Empty(links.Opened);
+        Assert.True(vm.IsError);
+    }
+}

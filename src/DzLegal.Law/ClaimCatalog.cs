@@ -87,6 +87,32 @@ public sealed class LegalKnowledge(LawLibrary library, LawSourceManifest manifes
 
     public IReadOnlyList<ClaimType> Claims { get; } = claims;
 
+    /// <summary>
+    /// Where an article of a code comes from: the official reference (with the Journal Officiel issue when known),
+    /// its place in the code, and a link to check it — the exact official document it was imported from, or the
+    /// official site while the code is not imported yet.
+    /// </summary>
+    public ArticleProvenance ProvenanceOf(string codeId, LawArticle? article)
+    {
+        var entry = Manifest.Codes.FirstOrDefault(c => c.Id == codeId);
+        var code = Library.FindCode(codeId);
+        var reference = code?.Reference ?? entry?.Reference ?? string.Empty;
+        if (!string.IsNullOrWhiteSpace(entry?.JoReference))
+        {
+            reference += " — " + entry.JoReference;
+        }
+
+        var imported = code?.Source?.Url;
+        var exact = OfficialLinks.IsOfficial(imported);
+        return new ArticleProvenance(
+            reference,
+            article is null ? string.Empty : string.Join(" › ", article.Path),
+            exact ? imported : OfficialLinks.IsOfficial(entry?.OfficialSite) ? entry!.OfficialSite : null,
+            exact,
+            code?.Source?.RetrievedOn ?? string.Empty,
+            code?.Verified == true);
+    }
+
     /// <summary>«القانون المدني» for "civil-code", whether or not its text is imported yet.</summary>
     public string CitationName(string codeId) =>
         Library.FindCode(codeId)?.CitationName ?? Manifest.Codes.FirstOrDefault(c => c.Id == codeId)?.CitationName ?? codeId;

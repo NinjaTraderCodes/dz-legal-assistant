@@ -71,7 +71,7 @@ For each element you confirm, we will set `"verified": true` and note "confirmed
 
 See [LAW-LIBRARY.md](LAW-LIBRARY.md). Two things need a lawyer:
 
-1. **Each imported code.** Read its import report, compare a sample of articles with the Journal Officiel, then set `verified: true`.
+1. **Each imported code.** Read its import report, compare a sample of articles with the Journal Officiel, then set `verified: true`. Also fill `joReference` in `data/law/sources.json` (for example «الجريدة الرسمية عدد … لسنة …»). It is shown under every article of that code.
 2. **Each claim type** in `data/law/claims/*.json`:
    - Are the cited articles the right ones, and are any missing (for example interest on late payment, or proof rules)?
    - Is each article's role right: basis, proof, damages or procedure?

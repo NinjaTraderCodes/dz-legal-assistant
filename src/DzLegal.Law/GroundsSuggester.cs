@@ -3,7 +3,7 @@ using DzLegal.Domain;
 namespace DzLegal.Law;
 
 /// <summary>An article of a suggested claim, with its official text when that code has been imported.</summary>
-public sealed record ArticleSuggestion(ClaimArticle Reference, string CitationName, LawArticle? Article)
+public sealed record ArticleSuggestion(ClaimArticle Reference, string CitationName, LawArticle? Article, ArticleProvenance Provenance)
 {
     public bool IsAvailable => Article is { Repealed: false };
 
@@ -87,7 +87,11 @@ public sealed class GroundsSuggester
     {
         ArgumentNullException.ThrowIfNull(claim);
         return claim.Articles
-            .Select(a => new ArticleSuggestion(a, _knowledge.CitationName(a.Code), _knowledge.Library.FindArticle(a.Code, a.Number)))
+            .Select(a =>
+            {
+                var article = _knowledge.Library.FindArticle(a.Code, a.Number);
+                return new ArticleSuggestion(a, _knowledge.CitationName(a.Code), article, _knowledge.ProvenanceOf(a.Code, article));
+            })
             .ToList();
     }
 

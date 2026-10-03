@@ -32,6 +32,12 @@ public static partial class LawImport
             return 2;
         }
 
+        if (url is not null && !OfficialLinks.IsOfficial(url))
+        {
+            output.WriteLine($"law import: only official sources are accepted (https on {string.Join(" or ", OfficialLinks.Hosts)}). Download the file from there and use --file if needed.");
+            return 2;
+        }
+
         byte[] bytes;
         if (file is not null)
         {

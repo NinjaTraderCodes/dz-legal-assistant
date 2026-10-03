@@ -30,11 +30,11 @@ public partial class App : Application
             var settings = AppSettings.Load(Path.Combine(AppContext.BaseDirectory, "appsettings.json"));
             var paths = AppPaths.Default;
             window.DataContext = Composition.CreateMainViewModel(
-                settings, new AvaloniaUserFiles(() => TopLevel.GetTopLevel(window), paths), paths, new Loc());
+                settings, new AvaloniaUserFiles(() => TopLevel.GetTopLevel(window), paths), paths, new Loc(), new AvaloniaExternalLinks(() => TopLevel.GetTopLevel(window)));
             return window;
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or ArgumentException
-            or Domain.Serialization.DefinitionValidationException or System.Text.Json.JsonException or UriFormatException)
+            or Domain.Serialization.DefinitionValidationException or Law.LawDataException or System.Text.Json.JsonException or UriFormatException)
         {
             // Bad settings or rule data: show the problem instead of crashing silently.
             return new Window

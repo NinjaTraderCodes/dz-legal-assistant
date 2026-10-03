@@ -36,6 +36,12 @@ public sealed record ClaimType
 
     public required LocalizedText Label { get; init; }
 
+    /// <summary>
+    /// One Arabic line saying when this claim type applies and how it differs from its neighbours (who asks whom
+    /// for what). The model recognises claim types from the label and this line; a lawyer checks it.
+    /// </summary>
+    public string Description { get; init; } = string.Empty;
+
     public bool Verified { get; init; }
 
     public IReadOnlyList<ClaimArticle> Articles { get; init; } = [];

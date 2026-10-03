@@ -96,9 +96,9 @@ public static class LegalKnowledgeLoader
         foreach (var claim in file.Claims)
         {
             var where = $"Claim '{claim.Id}'";
-            if (claim.Label.Ar.Trim().Length == 0)
+            if (claim.Label.Ar.Trim().Length == 0 || claim.Description.Trim().Length == 0)
             {
-                errors.Add($"{where}: needs an Arabic label (the model chooses claim types by their label).");
+                errors.Add($"{where}: needs an Arabic label and description (the model recognises claim types by them).");
             }
 
             if (claim.Articles.Count == 0)

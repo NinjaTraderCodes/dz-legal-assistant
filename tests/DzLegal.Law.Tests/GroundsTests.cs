@@ -32,6 +32,7 @@ public sealed class ClaimCatalogValidationTests
             {
                 Id = "c",
                 Label = new LocalizedText("قرض", "c"),
+                Description = "وصف وهمي",
                 Articles = articles,
             },
         ],
@@ -58,8 +59,8 @@ public sealed class ClaimCatalogValidationTests
     public void AClaimNeedsAnArabicLabel()
     {
         var file = File(Ref("fictitious-code", "6"));
-        file = file with { Claims = [file.Claims[0] with { Label = new LocalizedText(" ", "c") }] };
-        Assert.Contains(LegalKnowledgeLoader.Validate(file, Manifest, LawLibrary.Empty), e => e.Contains("Arabic label", StringComparison.Ordinal));
+        Assert.Contains(LegalKnowledgeLoader.Validate(file with { Claims = [file.Claims[0] with { Label = new LocalizedText(" ", "c") }] }, Manifest, LawLibrary.Empty), e => e.Contains("Arabic label and description", StringComparison.Ordinal));
+        Assert.Contains(LegalKnowledgeLoader.Validate(file with { Claims = [file.Claims[0] with { Description = "" }] }, Manifest, LawLibrary.Empty), e => e.Contains("Arabic label and description", StringComparison.Ordinal));
     }
 }
 
@@ -144,6 +145,7 @@ public sealed class ShippedCatalogTests
         var knowledge = LegalKnowledgeLoader.Load(LawRoot);
         Assert.True(knowledge.Claims.Count >= 18);
         Assert.All(knowledge.Claims, c => Assert.False(c.Verified));
+        Assert.All(knowledge.Claims, c => Assert.NotEmpty(c.Description));
         Assert.Equal(LegalKnowledgeLoader.Areas.Order(), knowledge.Claims.Select(c => c.Area).Distinct().Order());
     }
 
@@ -160,6 +162,27 @@ public sealed class ShippedCatalogTests
             Assert.NotEmpty(c.ExpectArticles);
             Assert.All(c.ExpectArticles, a => Assert.Contains(claim.Articles, x => $"{x.Code}:{x.Number}" == a));
         });
+    }
+
+    [Fact]
+    public async Task TheBenchWritesOneFilePerCaseAndASummary()
+    {
+        var folder = Directory.CreateTempSubdirectory("dzlegal-grounds-bench-");
+        try
+        {
+            var knowledge = LegalKnowledgeLoader.Load(LawRoot);
+            var cases = GroundsEvaluator.LoadCases(Path.Combine(AppContext.BaseDirectory, "grounds-cases")).Take(3).ToList();
+            var report = await GroundsEvaluator.EvaluateAsync(knowledge, cases, new DzLegal.ModelProviders.Stub.StubModelProvider(), TextWriter.Null, folder.FullName);
+            Assert.Equal(3, report.Results.Count);
+            var files = Directory.GetFiles(Path.Combine(folder.FullName, "stub__template_mode__no_AI_"), "*.md");
+            Assert.Equal(3, files.Length);
+            Assert.Contains("## reading.answer", await File.ReadAllTextAsync(files[0]), StringComparison.Ordinal);
+            Assert.Contains("| claim exact |", await File.ReadAllTextAsync(Path.Combine(folder.FullName, "summary.md")), StringComparison.Ordinal);
+        }
+        finally
+        {
+            folder.Delete(recursive: true);
+        }
     }
 
     [Fact]

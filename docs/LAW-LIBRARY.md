@@ -32,7 +32,40 @@ Nothing is scraped, searched online or read from PDFs while the lawyer works. Ev
 
 **Before any code is imported,** stage 2 can only offer the catalog articles of the recognised claim types, described by their catalog reason instead of their text.
 
-**Measuring it:** `dotnet run --project src/DzLegal.Harness -- grounds --models gemma3:4b` runs the fact patterns in `tests/grounds-cases/`. Each case has an expected claim type and expected articles. It reports claim recognition, expected-article recall, unexpected articles and seconds per case. This is reported, not gated, because the quality depends on the model and on the imported texts.
+**Measuring it:** run this on the lawyer's kind of machine:
+
+```bash
+dotnet run --project src/DzLegal.Harness -- grounds --models gemma3:4b --out bench-grounds
+```
+
+It runs the fact patterns in `tests/grounds-cases/` and writes `bench-grounds/summary.md`, plus one file per case with the model's raw answers at each stage. It reports:
+- **claim exact:** the expected claim is ranked first, or nothing is proposed when nothing applies;
+- **claim found:** the expected claim is among those proposed;
+- **core recall:** the expected articles proposed;
+- **off-claim share:** proposed articles outside the expected claim's catalog list, i.e. noise;
+- articles per case, empty answers, and seconds per case.
+
+This is reported, not gated, because the quality depends on the model and on the imported texts.
+
+**First measurement** (gemma3:4b, 8 GB laptop, no official text imported, catalog-only, cases written and tuned by us):
+
+| Measure | Result |
+|---|---|
+| Claim exact | 64% |
+| Claim found | 75% |
+| Core recall | 73% |
+| Time per case | 91 s |
+
+Three weaknesses showed up:
+- **Empty answers:** five cases came back empty, probably from the answer format.
+- **Over-inclusion:** the model nearly always added a second, generic claim type and accepted 6–8 articles.
+- **Confusions** between neighbouring claim types: liability for things vs tort, taṭlīq vs divorce, commercial lease vs commercial debt.
+
+**What we changed in response:**
+- The parser now accepts the claim type's Arabic name and formatting variants.
+- Each claim type has a one-line `description` that tells it apart from its neighbours.
+- The prompts ask for one claim type and 2–5 articles.
+- The bench now saves the raw answers and measures the noise.
 
 **Why there is no live scraping or web search:**
 - The case facts would leave the machine.
@@ -95,7 +128,7 @@ The code file is written only when it validates: canonical and unique numbers, a
 
 ## Claim catalog and suggestions
 
-`data/law/claims/<area>.json` (areas: civil, commercial, family, social) lists **claim types** the way a lawyer thinks of them (with no keywords: the model recognises them from their label), for example «استرداد مبلغ قرض», «الخلع» or «التسريح التعسفي». Each claim type has:
+`data/law/claims/<area>.json` (areas: civil, commercial, family, social) lists **claim types** the way a lawyer thinks of them (with no keywords: the model recognises them from their label and a one-line `description` of when the claim applies and how it differs from its neighbours), for example «استرداد مبلغ قرض», «الخلع» or «التسريح التعسفي». Each claim type has:
 
 - **articles:** code, number, role (`basis`, `proof`, `damages`, `procedure`) and a short "why".
 - **prerequisites:** for example, prior conciliation for labour claims.

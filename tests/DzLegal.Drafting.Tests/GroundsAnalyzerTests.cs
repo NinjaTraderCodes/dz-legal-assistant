@@ -17,6 +17,7 @@ public sealed class GroundsAnalyzerTests
         Id = id,
         Area = area,
         Label = new LocalizedText(label, id),
+        Description = "وصف وهمي لـ" + label,
         Articles = articles.Select(a => new ClaimArticle { Code = "fictitious-code", Number = a.Number, Role = a.Role, Why = new LocalizedText("سبب وهمي للمادة " + a.Number, "x") }).ToList(),
     };
 
@@ -56,24 +57,46 @@ public sealed class GroundsAnalyzerTests
     [Fact]
     public void ReadingKeepsCatalogIdsOnlyAndNoArticleNumbers()
     {
-        var reading = GroundsAnalyzer.ParseReading("<think>khul?</think>\n" + Reading, ["loan", "khul"]);
+        var reading = GroundsAnalyzer.ParseReading("<think>khul?</think>\n" + Reading, [Loan, Khul]);
         Assert.Equal("عقد قرض بين شخصين", reading.Relationship);
         Assert.Equal("لم يرد المقترض المبلغ", reading.Breach);
         Assert.Equal(["loan", "khul"], reading.ClaimIds);
         Assert.Equal(["التعويض عن التأخير", "الإعذار", "رد المثل"], reading.SearchTerms);
 
-        Assert.Empty(GroundsAnalyzer.ParseReading("نوع الدعوى: لا شيء", ["loan"]).ClaimIds);
-        Assert.Equal(FactsReading.Empty with { }, GroundsAnalyzer.ParseReading("كلام بلا عناوين", ["loan"]) with { ClaimIds = [], SearchTerms = [] });
+        Assert.Empty(GroundsAnalyzer.ParseReading("نوع الدعوى: لا شيء", [Loan]).ClaimIds);
+        Assert.Equal(FactsReading.Empty with { }, GroundsAnalyzer.ParseReading("كلام بلا عناوين", [Loan]) with { ClaimIds = [], SearchTerms = [] });
+    }
+
+    [Theory]
+    [InlineData("**نوع الدعوى:** loan")]
+    [InlineData("- نوع الدعوى: استرداد قرض وهمي")]
+    [InlineData("نوع الدعوي: استرداد قرض وهمي (بسبب عدم الرد)")]
+    [InlineData("نوع الدعوى:\nloan")]
+    [InlineData("العلاقة القانونية: عقد قرض\nالدعوى المناسبة هي loan")]
+    public void ReadingAcceptsTheFormatsSmallModelsWrite(string answer) =>
+        Assert.Equal(["loan"], GroundsAnalyzer.ParseReading(answer, [Loan, Khul]).ClaimIds);
+
+    [Fact]
+    public void ANameMentionedOutsideTheClaimLineDoesNotCountWhenTheLineExists() =>
+        Assert.Empty(GroundsAnalyzer.ParseReading("المطلوب: خلع وهمي؟ لا\nنوع الدعوى: لا شيء", [Loan, Khul]).ClaimIds);
+
+    [Fact]
+    public async Task TheTraceReceivesPromptsAnswersAndCandidates()
+    {
+        var provider = new RecordingProvider(r => r.SectionId == GroundsAnalyzer.ReadingRequestId ? Reading : "fictitious-code:10 | أساس | سبب");
+        var trace = new List<string>();
+        await new GroundsAnalyzer(provider) { Trace = (step, _) => trace.Add(step) }.AnalyseAsync(Knowledge(Library), "دين", "أقرض المدعي", "القسم المدني");
+        Assert.Equal(["reading.prompt", "reading.answer", "candidates", "selection.prompt", "selection.answer"], trace);
     }
 
     [Fact]
     public void ThePromptsListOnlyTheAreaClaimsAndTheCandidates()
     {
         var reading = GroundsAnalyzer.BuildReadingRequest(Knowledge(), "دين", "أقرض المدعي", [Loan]);
-        Assert.Contains("loan — استرداد قرض وهمي", reading.UserPrompt, StringComparison.Ordinal);
+        Assert.Contains("loan — استرداد قرض وهمي: وصف وهمي لـاسترداد قرض وهمي", reading.UserPrompt, StringComparison.Ordinal);
         Assert.DoesNotContain("khul", reading.UserPrompt, StringComparison.Ordinal);
 
-        var candidates = GroundsAnalyzer.Candidates(Knowledge(Library), GroundsAnalyzer.ParseReading(Reading, ["loan"]), "أقرض المدعي", [Loan]);
+        var candidates = GroundsAnalyzer.Candidates(Knowledge(Library), GroundsAnalyzer.ParseReading(Reading, [Loan]), "أقرض المدعي", [Loan]);
         var selection = GroundsAnalyzer.BuildSelectionRequest(Knowledge(Library), "أقرض المدعي", FactsReading.Empty, candidates);
         Assert.Contains("fictitious-code:10 — المادة 10 من القانون التجريبي — يلتزم المقترض الوهمي", selection.UserPrompt, StringComparison.Ordinal);
     }
@@ -81,7 +104,7 @@ public sealed class GroundsAnalyzerTests
     [Fact]
     public void CandidatesAreTheClaimArticlesThenLibraryMatches()
     {
-        var reading = GroundsAnalyzer.ParseReading(Reading, ["loan"]);
+        var reading = GroundsAnalyzer.ParseReading(Reading, [Loan]);
 
         // Before import: only the catalog articles, described by their reason.
         var before = GroundsAnalyzer.Candidates(Knowledge(), reading, "facts", [Loan]);
@@ -101,7 +124,7 @@ public sealed class GroundsAnalyzerTests
     [Fact]
     public void SelectionKeepsCandidateKeysWithRolesAndSafeReasons()
     {
-        var candidates = GroundsAnalyzer.Candidates(Knowledge(Library), GroundsAnalyzer.ParseReading(Reading, ["loan"]), "facts", [Loan]);
+        var candidates = GroundsAnalyzer.Candidates(Knowledge(Library), GroundsAnalyzer.ParseReading(Reading, [Loan]), "facts", [Loan]);
         var selected = GroundsAnalyzer.ParseSelection("""
             fictitious-code:10 | أساس | لأن المدعى عليه اقترض ولم يرد
             fictitious-code:999 | أساس | مادة مخترعة

@@ -41,12 +41,18 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
     public const string SelectionRequestId = "grounds.selection";
     public const int MaxClaims = 2;
     public const int MaxCandidates = 25;
-    public const int MaxSelected = 8;
+    public const int MaxSelected = 6;
     public const int ExcerptLength = 300;
     public const int MaxReasonWords = 30;
     public const string NoneMarker = "لا شيء";
 
     private readonly IModelProvider _provider = provider ?? throw new ArgumentNullException(nameof(provider));
+
+    /// <summary>
+    /// Receives (step, text) for diagnostics: each prompt and raw model answer, and the candidate list. Used by the
+    /// quality harness to save what the model actually wrote; the app leaves it unset.
+    /// </summary>
+    public Action<string, string>? Trace { get; init; }
 
     public async Task<GroundsAnalysis> AnalyseAsync(
         LegalKnowledge knowledge,
@@ -66,17 +72,24 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
         var claims = knowledge.Claims.Where(c => area is null || c.Area == area).ToList();
 
         progress?.Report(AnalysisStage.Reading);
-        var readingAnswer = await _provider.GenerateAsync(BuildReadingRequest(knowledge, subject, facts, claims), cancellationToken);
-        var reading = ParseReading(readingAnswer, claims.Select(c => c.Id).ToList());
+        var readingRequest = BuildReadingRequest(knowledge, subject, facts, claims);
+        Trace?.Invoke("reading.prompt", readingRequest.UserPrompt);
+        var readingAnswer = await _provider.GenerateAsync(readingRequest, cancellationToken);
+        Trace?.Invoke("reading.answer", readingAnswer);
+        var reading = ParseReading(readingAnswer, claims);
 
         progress?.Report(AnalysisStage.Searching);
         var candidates = Candidates(knowledge, reading, subject + "\n" + facts, claims);
+        Trace?.Invoke("candidates", string.Join('\n', candidates.Select(c => $"{c.Key} — {c.Source}")));
 
         progress?.Report(AnalysisStage.Selecting);
         var selected = new List<AnalysedArticle>();
         if (candidates.Count > 0)
         {
-            var selectionAnswer = await _provider.GenerateAsync(BuildSelectionRequest(knowledge, facts, reading, candidates), cancellationToken);
+            var selectionRequest = BuildSelectionRequest(knowledge, facts, reading, candidates);
+            Trace?.Invoke("selection.prompt", selectionRequest.UserPrompt);
+            var selectionAnswer = await _provider.GenerateAsync(selectionRequest, cancellationToken);
+            Trace?.Invoke("selection.answer", selectionAnswer);
             selected = ParseSelection(selectionAnswer, candidates);
         }
 
@@ -106,7 +119,7 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
         var user = knowledge.Prompts.ReadFacts
             .Replace("{{ subject }}", subject?.Trim() ?? string.Empty, StringComparison.Ordinal)
             .Replace("{{ facts }}", facts?.Trim() ?? string.Empty, StringComparison.Ordinal)
-            .Replace("{{ claims }}", string.Join('\n', claims.Select(c => $"{c.Id} — {c.Label.Ar}")), StringComparison.Ordinal);
+            .Replace("{{ claims }}", string.Join('\n', claims.Select(c => c.Description.Length > 0 ? $"{c.Id} — {c.Label.Ar}: {c.Description}" : $"{c.Id} — {c.Label.Ar}")), StringComparison.Ordinal);
         return new ModelRequest(ReadingRequestId, string.Empty, TemplateRenderer.Normalize(user), facts?.Trim() ?? string.Empty);
     }
 
@@ -173,27 +186,105 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
         return result;
     }
 
-    /// <summary>Reads the five labelled lines; keeps catalog ids only and drops article numbers from the free lines.</summary>
-    public static FactsReading ParseReading(string answer, IReadOnlyList<string> allowedClaimIds)
+    /// <summary>
+    /// Reads the five labelled lines, tolerating what small models do: bold or bulleted labels, spelling variants
+    /// («نوع الدعوي»), the value on the next line, and a claim type given by its Arabic name instead of its id. Only
+    /// claim types from the given list are kept; article numbers are removed from the free lines. When the claim line
+    /// is missing, the whole answer is searched for ids and names.
+    /// </summary>
+    public static FactsReading ParseReading(string answer, IReadOnlyList<ClaimType> allowedClaims)
     {
-        ArgumentNullException.ThrowIfNull(allowedClaimIds);
-        var text = WithoutReasoning(answer);
-        string Field(string label)
+        ArgumentNullException.ThrowIfNull(allowedClaims);
+        var lines = WithoutReasoning(answer).Split('\n').Select(l => l.Trim()).ToList();
+        string? Field(string label)
         {
-            var m = Regex.Match(text, "^[\\s*\\-•]*" + Regex.Escape(label) + "\\s*[:：]\\s*(.+)$", RegexOptions.Multiline);
-            return m.Success ? WithoutArticleNumbers(m.Groups[1].Value.Trim().Trim('*').Trim()) : string.Empty;
+            var key = ArabicScript.Normalize(label);
+            for (var i = 0; i < lines.Count; i++)
+            {
+                var line = ArabicScript.Normalize(lines[i].TrimStart('-', '*', '•', '#', ' ', '>'));
+                if (!line.StartsWith(key, StringComparison.Ordinal))
+                {
+                    continue;
+                }
+
+                var value = ValueAfterLabel(lines[i], label);
+                if (value.Length == 0 && i + 1 < lines.Count)
+                {
+                    value = lines[i + 1].Trim().TrimStart('-', '*', '•').Trim();
+                }
+
+                return WithoutArticleNumbers(value.Trim('*', ' '));
+            }
+
+            return null;
         }
 
         var claimLine = Field("نوع الدعوى");
-        var ids = IdToken().Matches(claimLine.ToLowerInvariant()).Select(m => m.Value)
-            .Where(allowedClaimIds.Contains).Distinct().Take(MaxClaims).ToList();
-        var terms = Field("كلمات البحث")
+        var ids = FindClaims(claimLine ?? string.Join('\n', lines), allowedClaims);
+        var terms = (Field("كلمات البحث") ?? string.Empty)
             .Split([',', '،', '؛', ';'], StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
             .Where(t => t.Length is > 1 and < 60)
             .Distinct()
             .Take(12)
             .ToList();
-        return new FactsReading(Field("العلاقة القانونية"), Field("الالتزام المخل به"), Field("المطلوب"), ids, terms);
+        return new FactsReading(Field("العلاقة القانونية") ?? string.Empty, Field("الالتزام المخل به") ?? string.Empty, Field("المطلوب") ?? string.Empty, ids, terms);
+    }
+
+    /// <summary>Claim ids named in a text, by id or by Arabic name (full, before «:», or inside brackets), in order of mention.</summary>
+    private static List<string> FindClaims(string text, IReadOnlyList<ClaimType> claims)
+    {
+        var lower = text.ToLowerInvariant();
+        var normalized = ArabicScript.Normalize(text);
+        var found = new List<(int Position, string Id)>();
+        foreach (var claim in claims)
+        {
+            var idMatch = Regex.Match(lower, @"(?<![a-z0-9-])" + Regex.Escape(claim.Id) + @"(?![a-z0-9-])");
+            var position = idMatch.Success ? idMatch.Index : -1;
+            if (position < 0)
+            {
+                position = NameVariants(claim.Label.Ar)
+                    .Select(n => normalized.IndexOf(n, StringComparison.Ordinal))
+                    .Where(p => p >= 0)
+                    .DefaultIfEmpty(-1)
+                    .Min();
+            }
+
+            if (position >= 0)
+            {
+                found.Add((position, claim.Id));
+            }
+        }
+
+        return found.OrderBy(f => f.Position).Select(f => f.Id).Distinct().Take(MaxClaims).ToList();
+    }
+
+    /// <summary>«تعويض عن ضرر بسبب خطأ (مسؤولية تقصيرية)» → itself, «تعويض عن ضرر بسبب خطأ», «مسؤولية تقصيرية».</summary>
+    private static IEnumerable<string> NameVariants(string label)
+    {
+        var variants = new List<string> { label };
+        var bracket = Regex.Match(label, @"^(.*?)\((.*?)\)");
+        if (bracket.Success)
+        {
+            variants.Add(bracket.Groups[1].Value);
+            variants.Add(bracket.Groups[2].Value);
+        }
+
+        if (label.Contains(':', StringComparison.Ordinal))
+        {
+            variants.Add(label[..label.IndexOf(':', StringComparison.Ordinal)]);
+        }
+
+        return variants.Select(v => ArabicScript.Normalize(v).Trim()).Where(v => v.Length >= 4).Distinct();
+    }
+
+    /// <summary>The text after the label: after the first colon, or else after the label's words.</summary>
+    private static string ValueAfterLabel(string line, string label)
+    {
+        var colon = line.IndexOfAny([':', '：']);
+        var value = colon >= 0
+            ? line[(colon + 1)..]
+            : string.Join(' ', line.Split(' ', StringSplitOptions.RemoveEmptyEntries).Skip(label.Split(' ').Length));
+        return value.Trim().TrimStart('-', '–', '—', ' ').Trim();
     }
 
     /// <summary>Reads «key | role | reason» lines; keeps candidate keys only (a bare number is accepted when unambiguous).</summary>

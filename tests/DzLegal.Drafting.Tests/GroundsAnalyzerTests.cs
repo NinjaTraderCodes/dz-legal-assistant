@@ -77,6 +77,23 @@ public sealed class GroundsAnalyzerTests
         Assert.Equal(["loan"], GroundsAnalyzer.ParseReading(answer, [Loan, Khul]).ClaimIds);
 
     [Fact]
+    public async Task OtherMeansNothingAppliesAndSkipsTheSecondCall()
+    {
+        var request = GroundsAnalyzer.BuildReadingRequest(Knowledge(), "", "وقائع", [Loan]);
+        Assert.EndsWith("other — غير ذلك: دعوى لا يطابقها أي نوع أعلاه (مثل الدعاوى الإدارية، التركات، الحالة المدنية، الشركات)",
+            request.UserPrompt.Split('\n').First(l => l.StartsWith("other", StringComparison.Ordinal)), StringComparison.Ordinal);
+
+        Assert.Empty(GroundsAnalyzer.ParseReading("نوع الدعوى: other", [Loan, Khul]).ClaimIds);
+        Assert.Empty(GroundsAnalyzer.ParseReading("نوع الدعوى: غير ذلك", [Loan, Khul]).ClaimIds);
+        Assert.Equal(["khul"], GroundsAnalyzer.ParseReading("نوع الدعوى: other, khul", [Loan, Khul]).ClaimIds);
+
+        var provider = new RecordingProvider(_ => "نوع الدعوى: other");
+        var analysis = await new GroundsAnalyzer(provider).AnalyseAsync(Knowledge(Library), "", "طلب تصحيح تاريخ ميلاد", null);
+        Assert.Empty(analysis.ClaimIds);
+        Assert.Single(provider.Requests);
+    }
+
+    [Fact]
     public void ANameMentionedOutsideTheClaimLineDoesNotCountWhenTheLineExists() =>
         Assert.Empty(GroundsAnalyzer.ParseReading("المطلوب: خلع وهمي؟ لا\nنوع الدعوى: لا شيء", [Loan, Khul]).ClaimIds);
 

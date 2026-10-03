@@ -46,6 +46,19 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
     public const int MaxReasonWords = 30;
     public const string NoneMarker = "لا شيء";
 
+    /// <summary>
+    /// The named way out listed last in stage 1: small models pick the closest real claim type when every option is
+    /// one, so the list offers «other» for facts the catalog does not cover. Choosing it means "nothing applies".
+    /// </summary>
+    public const string OtherClaimId = "other";
+
+    private static readonly ClaimType OtherClaim = new()
+    {
+        Id = OtherClaimId,
+        Label = new LocalizedText("غير ذلك", "Other"),
+        Description = "دعوى لا يطابقها أي نوع أعلاه (مثل الدعاوى الإدارية، التركات، الحالة المدنية، الشركات)",
+    };
+
     private readonly IModelProvider _provider = provider ?? throw new ArgumentNullException(nameof(provider));
 
     /// <summary>
@@ -119,7 +132,7 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
         var user = knowledge.Prompts.ReadFacts
             .Replace("{{ subject }}", subject?.Trim() ?? string.Empty, StringComparison.Ordinal)
             .Replace("{{ facts }}", facts?.Trim() ?? string.Empty, StringComparison.Ordinal)
-            .Replace("{{ claims }}", string.Join('\n', claims.Select(c => c.Description.Length > 0 ? $"{c.Id} — {c.Label.Ar}: {c.Description}" : $"{c.Id} — {c.Label.Ar}")), StringComparison.Ordinal);
+            .Replace("{{ claims }}", string.Join('\n', claims.Append(OtherClaim).Select(c => c.Description.Length > 0 ? $"{c.Id} — {c.Label.Ar}: {c.Description}" : $"{c.Id} — {c.Label.Ar}")), StringComparison.Ordinal);
         return new ModelRequest(ReadingRequestId, string.Empty, TemplateRenderer.Normalize(user), facts?.Trim() ?? string.Empty);
     }
 
@@ -220,7 +233,10 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
         }
 
         var claimLine = Field("نوع الدعوى");
-        var ids = FindClaims(claimLine ?? string.Join('\n', lines), allowedClaims);
+        // «other» (or its name) means nothing in the catalog applies; real claim types named with it are kept.
+        var ids = FindClaims(claimLine ?? string.Join('\n', lines), [.. allowedClaims, OtherClaim])
+            .Where(id => id != OtherClaimId)
+            .ToList();
         var terms = (Field("كلمات البحث") ?? string.Empty)
             .Split([',', '،', '؛', ';'], StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
             .Where(t => t.Length is > 1 and < 60)

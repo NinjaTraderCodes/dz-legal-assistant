@@ -15,13 +15,13 @@ Nothing is scraped, searched online or read from PDFs while the lawyer works. Ev
    - the legal relationship;
    - the obligation breached;
    - what is sought;
-   - up to two claim types, as ids from the catalog list for the court section's area;
+   - one claim type (a second only for an independent demand), as an id from the catalog list for the court section's area, each listed with a one-line description; the list ends with `other`, the named way out when nothing applies;
    - 5–12 search terms in the codes' vocabulary.
 
-   The parser keeps catalog ids only and removes any article number.
+   The parser accepts ids or Arabic names and formatting variants, keeps catalog claim types only (`other` means none), and removes any article number.
 2. **Searching the official texts** (no model). `ArticleIndex` is a BM25 full-text index over every in-force imported article, with its chapter headings weighted ×2. It is queried with the model's terms (weight 1) and the raw facts (weight 0.5). The catalog articles of the recognised claim types come first. At most 25 candidates are kept.
 3. **Choosing articles** (model call 2, `prompts/select-articles.ar.txt`). The model sees the candidates as `key — citation — first 300 characters of the official text` and answers `key | role | reason`. The parser:
-   - keeps candidate keys only, at most 8;
+   - keeps candidate keys only, at most 6;
    - maps the roles (أساس/إثبات/تعويض/إجراء);
    - truncates a reason to 30 words;
    - drops a reason that names another article.
@@ -66,6 +66,31 @@ Three weaknesses showed up:
 - Each claim type has a one-line `description` that tells it apart from its neighbours.
 - The prompts ask for one claim type and 2–5 articles.
 - The bench now saves the raw answers and measures the noise.
+
+**Second measurement**, after those changes:
+
+| Measure | Run 1 | Run 2 |
+|---|---|---|
+| Claim exact | 64% | **80%** |
+| Claim found | 75% | 80% |
+| Core recall | 73% | 61% |
+| Off-claim share | not measured | 13% |
+| Articles per case | about 7 | 2.4 |
+| Empty answers | 5 | **0** |
+| Seconds per case | 91 | 84 |
+
+The lists are now short and focused. Core recall fell mostly because fewer articles are proposed, and because our "core" articles are a guess. For example, the model picks 107 rather than 106 for a loan, which is defensible.
+
+Remaining errors:
+- liability for things still read as tort (3 of 3);
+- 3 of the 4 cases outside the catalog were still given a claim type;
+- one taṭlīq read as divorce by the husband.
+
+Two last generic changes followed:
+- a named way out (`other`) at the end of the claim list;
+- descriptions that say what each claim type is *not*.
+
+**Tuning on our own 44 cases stops here, to avoid overfitting.** The next measurements are Dr. Aicha's hold-out cases, with her own core articles, and a run after the official texts are imported.
 
 **Why there is no live scraping or web search:**
 - The case facts would leave the machine.

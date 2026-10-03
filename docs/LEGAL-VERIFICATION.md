@@ -1,5 +1,7 @@
 # Legal verification checklist (for the practicing lawyer)
 
+> Arabic guide for the legal reviewer, with diagrams of how the app works and uses the legal library, and the full checklist: [LEGAL-REVIEW-GUIDE.ar.md](LEGAL-REVIEW-GUIDE.ar.md).
+
 The rules in `data/document-types/requete-introductive/definition.json` were drafted by the engineering team from the **published text of Loi n° 08-09 (CPCA)** as we understand it. **None has been confirmed by a lawyer yet.** Each carries `"verified": false` and shows "لم يتحقق منه محامٍ بعد / Not yet verified by a lawyer" in the app.
 
 Please check each point against the **current official text (Journal Officiel), including Loi 22-13**, and against your practice. Corrections are data edits (see [UPDATING-LEGAL-RULES.md](UPDATING-LEGAL-RULES.md)).

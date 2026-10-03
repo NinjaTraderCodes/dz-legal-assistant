@@ -1,249 +1,397 @@
 {
-  "comment": "FICTITIOUS fact patterns, written by the engineering team to measure the grounds suggester. 'expect' is the claim type a lawyer would start from; it must be in the top 3 (and ideally first). An empty 'expect' means the catalog does not cover the case and nothing should be suggested. The triggers were tuned on these cases, so this is a development score: a lawyer-written hold-out set must be added before trusting it.",
+  "comment": "FICTITIOUS fact patterns, written by the engineering team to measure the grounds analysis. 'expect' is the catalog claim type a lawyer would start from (empty: not covered, nothing should be recognised); 'expectArticles' are the main articles a lawyer would cite, as code:number. Both are unverified engineering proposals: a lawyer-written hold-out set must be added before trusting the numbers.",
   "cases": [
     {
       "name": "loan-basic",
       "courtSection": "القسم المدني",
       "facts": "أقرض المدعي المدعى عليه مبلغ 500.000 دج بتاريخ 10/01/2024\nالتزم المدعى عليه برد المبلغ في أجل ستة أشهر\nامتنع المدعى عليه عن الرد رغم الإعذار",
-      "expect": "loan-repayment"
+      "expect": "loan-repayment",
+      "expectArticles": [
+        "civil-code:450",
+        "civil-code:106"
+      ]
     },
     {
       "name": "loan-darija",
       "courtSection": "القسم المدني",
       "facts": "سلف المدعي للمدعى عليه 200 ألف دينار\nوعدو يرجعهم في الصيف وما رجعش\nبعث له إنذار مع محضر قضائي",
-      "expect": "loan-repayment"
+      "expect": "loan-repayment",
+      "expectArticles": [
+        "civil-code:450",
+        "civil-code:106"
+      ]
     },
     {
       "name": "loan-acknowledgment",
       "facts": "حرر المدعى عليه اعترافا بدين لفائدة المدعي بمبلغ 1.200.000 دج\nحل أجل الوفاء ولم يسدد المدعى عليه شيئا",
-      "expect": "loan-repayment"
+      "expect": "loan-repayment",
+      "expectArticles": [
+        "civil-code:450",
+        "civil-code:106"
+      ]
     },
     {
       "name": "loan-no-section",
       "facts": "بقي في ذمة المدعى عليه مبلغ 300.000 دج سلفة\nماطل في الرد منذ سنتين",
-      "expect": "loan-repayment"
+      "expect": "loan-repayment",
+      "expectArticles": [
+        "civil-code:450",
+        "civil-code:106"
+      ]
     },
     {
       "name": "sale-price",
       "courtSection": "القسم المدني",
       "facts": "باع المدعي للمدعى عليه سيارة بثمن 2.000.000 دج\nتسلم المشتري السيارة ودفع 1.500.000 دج\nامتنع عن دفع باقي الثمن",
-      "expect": "unpaid-sale-price"
+      "expect": "unpaid-sale-price",
+      "expectArticles": [
+        "civil-code:351",
+        "civil-code:106"
+      ]
     },
     {
       "name": "sale-land-price",
       "facts": "اشترى المدعى عليه من المدعي قطعة أرض بموجب عقد رسمي\nلم يدفع المشتري بقية الثمن المقدرة بـ 800.000 دج",
-      "expect": "unpaid-sale-price"
+      "expect": "unpaid-sale-price",
+      "expectArticles": [
+        "civil-code:351",
+        "civil-code:106"
+      ]
     },
     {
       "name": "rescission",
       "courtSection": "القسم المدني",
       "facts": "أبرم الطرفان عقد مقاولة لبناء مسكن\nأخل المدعى عليه بالتزامه وتوقف عن الأشغال\nيطلب المدعي فسخ العقد واسترجاع التسبيق",
-      "expect": "contract-rescission"
+      "expect": "contract-rescission",
+      "expectArticles": [
+        "civil-code:119",
+        "civil-code:122"
+      ]
     },
     {
       "name": "rescission-sale",
       "facts": "يلتمس المدعي فسخ عقد البيع لعدم تنفيذ البائع التزامه بالتسليم رغم إعذاره",
-      "expect": "contract-rescission"
+      "expect": "contract-rescission",
+      "expectArticles": [
+        "civil-code:119",
+        "civil-code:122"
+      ]
     },
     {
       "name": "contract-damages",
       "courtSection": "القسم المدني",
       "facts": "تعهد المدعى عليه بتسليم الأثاث في أجل شهر حسب الاتفاق\nتأخر في التسليم ثلاثة أشهر\nلحق المدعي ضرر وخسارة بسبب التأخر ويطلب التعويض",
-      "expect": "contract-damages"
+      "expect": "contract-damages",
+      "expectArticles": [
+        "civil-code:176",
+        "civil-code:107"
+      ]
     },
     {
       "name": "contract-damages-2",
       "facts": "أخل المدعى عليه بالتزامه التعاقدي بنقل البضاعة في الموعد\nتضرر المدعي وفاته من كسب ويطالب بالتعويض",
-      "expect": "contract-damages"
+      "expect": "contract-damages",
+      "expectArticles": [
+        "civil-code:176",
+        "civil-code:107"
+      ]
     },
     {
       "name": "tort-assault",
       "courtSection": "القسم المدني",
       "facts": "تعرض المدعي لاعتداء من المدعى عليه بتاريخ 05/05/2024\nأصيب بجروح وعجز مؤقت حسب الشهادة الطبية\nأدين المدعى عليه جزائيا ويطلب المدعي التعويض عن الضرر",
-      "expect": "tort-damages"
+      "expect": "tort-damages",
+      "expectArticles": [
+        "civil-code:124"
+      ]
     },
     {
       "name": "tort-damage-property",
       "facts": "أتلف المدعى عليه سياج المدعي بجرافته عن إهمال\nلحقت بالمدعي أضرار مادية قدرها الخبير",
-      "expect": "tort-damages"
+      "expect": "tort-damages",
+      "expectArticles": [
+        "civil-code:124"
+      ]
     },
     {
       "name": "tort-defamation",
       "facts": "قام المدعى عليه بالتشهير بالمدعي على مواقع التواصل\nلحق المدعي ضرر معنوي ويطلب التعويض",
-      "expect": "tort-damages"
+      "expect": "tort-damages",
+      "expectArticles": [
+        "civil-code:124"
+      ]
     },
     {
       "name": "things-water",
       "courtSection": "القسم المدني",
       "facts": "تسربت المياه من مسكن المدعى عليه الكائن بالطابق العلوي\nألحقت أضرارا بسقف وجدران مسكن المدعي\nرفض الجار إصلاح القنوات",
-      "expect": "liability-for-things"
+      "expect": "liability-for-things",
+      "expectArticles": [
+        "civil-code:138"
+      ]
     },
     {
       "name": "things-dog",
       "facts": "هاجم كلب المدعى عليه ابن المدعي وعضه\nلحقت به أضرار وجروح ويطلب التعويض",
-      "expect": "liability-for-things"
+      "expect": "liability-for-things",
+      "expectArticles": [
+        "civil-code:138"
+      ]
     },
     {
       "name": "things-wall",
       "facts": "انهار جدار منزل المدعى عليه على سيارة المدعي المركونة\nتضررت السيارة ويطلب المدعي التعويض",
-      "expect": "liability-for-things"
+      "expect": "liability-for-things",
+      "expectArticles": [
+        "civil-code:138"
+      ]
     },
     {
       "name": "rent-basic",
       "courtSection": "القسم المدني",
       "facts": "يستأجر المدعى عليه شقة من المدعي بموجب عقد إيجار\nلم يدفع بدل الإيجار منذ ثمانية أشهر رغم التنبيه\nيطلب المدعي المتأخرات وطرد المستأجر",
-      "expect": "unpaid-rent-eviction"
+      "expect": "unpaid-rent-eviction",
+      "expectArticles": [
+        "civil-code:467",
+        "civil-code:498"
+      ]
     },
     {
       "name": "rent-darija",
       "facts": "المدعى عليه ساكن في دار المدعي بالكراء\nما خلصش الكراء من جانفي\nبعثنا له إعذار",
-      "expect": "unpaid-rent-eviction"
+      "expect": "unpaid-rent-eviction",
+      "expectArticles": [
+        "civil-code:467",
+        "civil-code:498"
+      ]
     },
     {
       "name": "occupation",
       "courtSection": "القسم العقاري",
       "facts": "يملك المدعي قطعة أرض بموجب عقد ملكية مشهر\nاحتلها المدعى عليه وبنى عليها كوخا دون سند\nيطلب المدعي طرده",
-      "expect": "eviction-occupier-without-title"
+      "expect": "eviction-occupier-without-title",
+      "expectArticles": [
+        "civil-code:674"
+      ]
     },
     {
       "name": "occupation-flat",
       "facts": "يشغل المدعى عليه شقة المدعي بدون وجه حق منذ وفاة والده\nرفض الخروج رغم مطالبته",
-      "expect": "eviction-occupier-without-title"
+      "expect": "eviction-occupier-without-title",
+      "expectArticles": [
+        "civil-code:674"
+      ]
     },
     {
       "name": "commercial-invoices",
       "courtSection": "القسم التجاري",
       "facts": "قامت الشركة المدعية بتوريد بضائع للمدعى عليها بموجب سندات طلب\nبقيت فواتير بمبلغ 3.400.000 دج دون تسديد\nتم إعذار المدعى عليها",
-      "expect": "commercial-debt"
+      "expect": "commercial-debt",
+      "expectArticles": [
+        "civil-code:106",
+        "civil-code:164"
+      ]
     },
     {
       "name": "commercial-supplies",
       "facts": "سلم المدعي التاجر سلعا لمحل المدعى عليه\nرصيد الحساب المستحق 900.000 دج لم يسدد",
-      "expect": "commercial-debt"
+      "expect": "commercial-debt",
+      "expectArticles": [
+        "civil-code:106",
+        "civil-code:164"
+      ]
     },
     {
       "name": "commercial-lease",
       "courtSection": "القسم التجاري",
       "facts": "يستغل المدعى عليه محلا تجاريا مملوكا للمدعي بموجب إيجار تجاري\nوجه له المدعي تنبيها بالإخلاء عن طريق محضر قضائي\nرفض الخروج عند انتهاء الأجل",
-      "expect": "commercial-lease-eviction"
+      "expect": "commercial-lease-eviction",
+      "expectArticles": [
+        "commercial-code:172",
+        "commercial-code:187 مكرر"
+      ]
     },
     {
       "name": "commercial-lease-indemnity",
       "facts": "رفض المؤجر تجديد الإيجار التجاري للمحل التجاري\nيطالب المستأجر بتعويض الاستحقاق عن فقدان القاعدة التجارية",
-      "expect": "commercial-lease-eviction"
+      "expect": "commercial-lease-eviction",
+      "expectArticles": [
+        "commercial-code:172",
+        "commercial-code:187 مكرر"
+      ]
     },
     {
       "name": "divorce-husband",
       "courtSection": "قسم شؤون الأسرة",
       "facts": "تزوج المدعي بالمدعى عليها بموجب عقد زواج سنة 2015\nأنجبا ولدين\nاستحالت العشرة بينهما ويرغب المدعي في الطلاق",
-      "expect": "divorce-by-husband"
+      "expect": "divorce-by-husband",
+      "expectArticles": [
+        "family-code:48"
+      ]
     },
     {
       "name": "tatliq-abandonment",
       "courtSection": "قسم شؤون الأسرة",
       "facts": "هجر المدعى عليه زوجته المدعية منذ أكثر من أربعة أشهر\nلم ينفق عليها ولا على الأبناء\nتطلب المدعية التطليق والتعويض",
-      "expect": "tatliq"
+      "expect": "tatliq",
+      "expectArticles": [
+        "family-code:53"
+      ]
     },
     {
       "name": "tatliq-harm",
       "facts": "تعرضت المدعية للضرب والإيذاء من زوجها حسب الشهادات الطبية\nتلتمس الحكم بتطليقها",
-      "expect": "tatliq"
+      "expect": "tatliq",
+      "expectArticles": [
+        "family-code:53"
+      ]
     },
     {
       "name": "khul",
       "courtSection": "قسم شؤون الأسرة",
       "facts": "ترغب المدعية في مخالعة زوجها المدعى عليه\nتعرض عليه مقابلا ماليا قدره 300.000 دج",
-      "expect": "khul"
+      "expect": "khul",
+      "expectArticles": [
+        "family-code:54"
+      ]
     },
     {
       "name": "khul-2",
       "facts": "تلتمس الزوجة الخلع لعدم قدرتها على الاستمرار في الحياة الزوجية",
-      "expect": "khul"
+      "expect": "khul",
+      "expectArticles": [
+        "family-code:54"
+      ]
     },
     {
       "name": "nafaqa-children",
       "courtSection": "قسم شؤون الأسرة",
       "facts": "طلق المدعى عليه المدعية بحكم سنة 2022\nامتنع عن دفع نفقة الأبناء المحضونين منذ سنة\nتطلب المدعية النفقة من تاريخ رفع الدعوى",
-      "expect": "nafaqa"
+      "expect": "nafaqa",
+      "expectArticles": [
+        "family-code:74",
+        "family-code:75"
+      ]
     },
     {
       "name": "nafaqa-wife",
       "facts": "الزوج لا ينفق على زوجته منذ ستة أشهر رغم قيام الزوجية\nتطلب نفقة الزوجة",
-      "expect": "nafaqa"
+      "expect": "nafaqa",
+      "expectArticles": [
+        "family-code:74",
+        "family-code:75"
+      ]
     },
     {
       "name": "custody",
       "courtSection": "قسم شؤون الأسرة",
       "facts": "بعد الطلاق بقي الابنان مع الأم\nتطلب المدعية إسناد الحضانة لها وإلزام الأب بتوفير سكن أو بدل الإيجار",
-      "expect": "custody"
+      "expect": "custody",
+      "expectArticles": [
+        "family-code:62",
+        "family-code:64"
+      ]
     },
     {
       "name": "custody-transfer",
       "facts": "يطلب الأب إسقاط الحضانة عن الأم لزواجها بأجنبي عن المحضون وإسنادها له",
-      "expect": "custody"
+      "expect": "custody",
+      "expectArticles": [
+        "family-code:62",
+        "family-code:64"
+      ]
     },
     {
       "name": "visitation",
       "courtSection": "قسم شؤون الأسرة",
       "facts": "تمنع المدعى عليها المدعي من رؤية أبنائه منذ الطلاق\nيطلب تمكينه من حق الزيارة",
-      "expect": "visitation"
+      "expect": "visitation",
+      "expectArticles": [
+        "family-code:64"
+      ]
     },
     {
       "name": "dismissal",
       "courtSection": "القسم الاجتماعي",
       "facts": "يعمل المدعي لدى الشركة المدعى عليها منذ 2016\nتم تسريحه بتاريخ 01/03/2024 دون احترام الإجراءات\nحرر مكتب المصالحة محضر عدم المصالحة\nيطلب إعادة الإدماج",
-      "expect": "abusive-dismissal"
+      "expect": "abusive-dismissal",
+      "expectArticles": [
+        "labour-relations:73"
+      ]
     },
     {
       "name": "dismissal-grave-fault",
       "facts": "فصل المستخدم العامل بحجة خطأ جسيم لم يرتكبه\nيرى العامل أن التسريح تعسفي",
-      "expect": "abusive-dismissal"
+      "expect": "abusive-dismissal",
+      "expectArticles": [
+        "labour-relations:73"
+      ]
     },
     {
       "name": "wages",
       "courtSection": "القسم الاجتماعي",
       "facts": "لم يتقاض المدعي أجوره عن أشهر أكتوبر ونوفمبر وديسمبر\nامتنعت الهيئة المستخدمة عن الدفع\nمحضر عدم المصالحة مرفق",
-      "expect": "unpaid-wages"
+      "expect": "unpaid-wages",
+      "expectArticles": [
+        "labour-relations:80",
+        "labour-relations:88"
+      ]
     },
     {
       "name": "wages-overtime",
       "facts": "يطالب العامل بمستحقات الساعات الإضافية والمنح التي لم يدفعها صاحب العمل",
-      "expect": "unpaid-wages"
+      "expect": "unpaid-wages",
+      "expectArticles": [
+        "labour-relations:80",
+        "labour-relations:88"
+      ]
     },
     {
       "name": "loan-with-section-mismatch-words",
       "courtSection": "القسم المدني",
       "facts": "استلف المدعى عليه من المدعي مبلغا ماليا لشراء سيارة\nلم يرد المبلغ رغم حلول الأجل",
-      "expect": "loan-repayment"
+      "expect": "loan-repayment",
+      "expectArticles": [
+        "civil-code:450",
+        "civil-code:106"
+      ]
     },
     {
       "name": "rent-shop-civil-words",
       "courtSection": "القسم التجاري",
       "facts": "المدعى عليه مستأجر لمحل تجاري ولم يدفع بدل الإيجار ويطلب المؤجر الإخلاء",
-      "expect": "commercial-lease-eviction"
+      "expect": "commercial-lease-eviction",
+      "expectArticles": [
+        "commercial-code:172",
+        "commercial-code:187 مكرر"
+      ]
     },
     {
       "name": "none-inheritance",
       "courtSection": "قسم شؤون الأسرة",
       "facts": "توفي مورث الطرفين وترك تركة تتكون من منزل وقطعة أرض\nيطلب المدعي قسمة التركة وفق الفريضة",
-      "expect": ""
+      "expect": "",
+      "expectArticles": []
     },
     {
       "name": "none-administrative",
       "courtSection": "المحكمة الإدارية",
       "facts": "أصدر الوالي قرارا بإلغاء رخصة البناء الممنوحة للمدعي\nيطلب المدعي إلغاء القرار الإداري لتجاوز السلطة",
-      "expect": ""
+      "expect": "",
+      "expectArticles": []
     },
     {
       "name": "none-commercial-company",
       "courtSection": "القسم التجاري",
       "facts": "يطلب الشريك حل الشركة ذات المسؤولية المحدودة وتعيين مصف بسبب الخلاف بين الشركاء",
-      "expect": ""
+      "expect": "",
+      "expectArticles": []
     },
     {
       "name": "none-civil-status",
       "facts": "وقع خطأ في تاريخ ميلاد المدعي في سجلات الحالة المدنية ويطلب تصحيحه",
-      "expect": ""
+      "expect": "",
+      "expectArticles": []
     }
   ]
 }

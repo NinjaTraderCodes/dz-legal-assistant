@@ -81,4 +81,4 @@ See [LAW-LIBRARY.md](LAW-LIBRARY.md). Two things need a lawyer:
 
    Then set `verified: true` on that claim.
 
-Please also write **10–20 fact patterns from your practice** (anonymised) with the claim you would start from. They become the hold-out test set that measures the suggestions honestly.
+Please also write **10–20 fact patterns from your practice** (anonymised), each with the claim type you would start from and **the articles you would cite**. They become the hold-out test set that measures the analysis honestly: `dotnet run --project src/DzLegal.Harness -- grounds --models gemma3:4b --cases <folder>`.

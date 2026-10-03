@@ -237,12 +237,14 @@ public class MainWindowViewModelTests
     public async Task StepsShowWhereSomethingIsMissing()
     {
         var vm = Vm.Create();
-        Assert.Equal(7, vm.FieldGroups.Count);
+        Assert.Equal(9, vm.FieldGroups.Count);
         Assert.True(vm.FieldGroups.Single(g => g.Id == "court").IsMissing);
 
         vm.Filled();
         Assert.True(vm.FieldGroups.Single(g => g.Id == "court").IsDone);
-        Assert.True(vm.FieldGroups.Single(g => g.Id == "notes").IsMissing); // grounds and requests not drafted yet
+        Assert.True(vm.FieldGroups.Single(g => g.Id == "grounds").IsMissing); // grounds not drafted yet
+        Assert.True(vm.FieldGroups.Single(g => g.Id == "requests").IsMissing);
+        Assert.True(vm.FieldGroups.Single(g => g.Id == "facts").IsDone);
 
         await vm.GenerateCommand.ExecuteAsync(null);
         Assert.False(vm.FieldGroups.Any(g => g.IsMissing), string.Join(",", vm.FieldGroups.Where(g => g.IsMissing).Select(g => g.Id)));
@@ -290,7 +292,7 @@ public class MainWindowViewModelTests
         vm.PreviousStepCommand.Execute(null);
         vm.PreviousStepCommand.Execute(null);
         Assert.Equal("court", vm.SelectedStep!.Id);
-        Assert.Equal("الخطوة 1 من 7", vm.StepPosition);
+        Assert.Equal("الخطوة 1 من 9", vm.StepPosition);
     }
 
     [Fact]

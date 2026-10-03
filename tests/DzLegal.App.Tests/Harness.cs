@@ -133,7 +133,8 @@ internal static class Vm
             },
         ]),
         ShippedKnowledge.Manifest,
-        ShippedKnowledge.Claims);
+        ShippedKnowledge.Claims,
+        ShippedKnowledge.Prompts);
 
     public static MainWindowViewModel Create(
         FakeFiles? files = null,

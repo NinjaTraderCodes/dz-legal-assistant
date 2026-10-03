@@ -11,17 +11,6 @@ public enum ArticleRole
     Procedure,
 }
 
-/// <summary>A group of interchangeable words or phrases; the group counts once if any of them appears.</summary>
-public sealed record TriggerGroup
-{
-    public IReadOnlyList<string> Any { get; init; } = [];
-
-    public int Weight { get; init; } = 1;
-
-    /// <summary>The claim is only suggested when this group matches.</summary>
-    public bool Required { get; init; }
-}
-
 /// <summary>An article a claim type relies on, with why, as a lawyer would explain it.</summary>
 public sealed record ClaimArticle
 {
@@ -49,11 +38,6 @@ public sealed record ClaimType
 
     public bool Verified { get; init; }
 
-    public IReadOnlyList<TriggerGroup> Triggers { get; init; } = [];
-
-    /// <summary>Words that mean another claim type (e.g. «إيجار» for a loan); any of them rules this one out.</summary>
-    public IReadOnlyList<string> Exclude { get; init; } = [];
-
     public IReadOnlyList<ClaimArticle> Articles { get; init; } = [];
 
     /// <summary>Steps required before or with filing (e.g. the labour conciliation report).</summary>
@@ -68,6 +52,14 @@ public sealed record ClaimType
     public IReadOnlyList<string> FactsToState { get; init; } = [];
 }
 
+/// <summary>Prompt templates of the grounds analysis, from <c>data/law/prompts</c>.</summary>
+public sealed record AnalysisPrompts(string ReadFacts, string SelectArticles)
+{
+    public static AnalysisPrompts None { get; } = new(string.Empty, string.Empty);
+
+    public bool IsAvailable => ReadFacts.Length > 0 && SelectArticles.Length > 0;
+}
+
 /// <summary>One catalog file (<c>data/law/claims/&lt;area&gt;.json</c>).</summary>
 public sealed record ClaimCatalogFile
 {
@@ -77,7 +69,7 @@ public sealed record ClaimCatalogFile
 }
 
 /// <summary>Everything the grounds suggestions need: the texts, what is importable, and the claim catalog.</summary>
-public sealed class LegalKnowledge(LawLibrary library, LawSourceManifest manifest, IReadOnlyList<ClaimType> claims, string claimPickPrompt = "")
+public sealed class LegalKnowledge(LawLibrary library, LawSourceManifest manifest, IReadOnlyList<ClaimType> claims, AnalysisPrompts? prompts = null)
 {
     public static LegalKnowledge Empty { get; } = new(LawLibrary.Empty, new LawSourceManifest(), []);
 
@@ -87,8 +79,21 @@ public sealed class LegalKnowledge(LawLibrary library, LawSourceManifest manifes
 
     public IReadOnlyList<ClaimType> Claims { get; } = claims;
 
-    /// <summary>Prompt template for the model fallback that chooses claim types from the catalog (empty: unavailable).</summary>
-    public string ClaimPickPrompt { get; } = claimPickPrompt;
+    /// <summary>Prompts of the grounds analysis (reading the facts, choosing articles); empty when not shipped.</summary>
+    public AnalysisPrompts Prompts { get; } = prompts ?? AnalysisPrompts.None;
+
+    /// <summary>The catalog's articles for a claim type, with their official text when imported and their provenance.</summary>
+    public IReadOnlyList<ArticleSuggestion> Resolve(ClaimType claim)
+    {
+        ArgumentNullException.ThrowIfNull(claim);
+        return claim.Articles
+            .Select(a =>
+            {
+                var article = Library.FindArticle(a.Code, a.Number);
+                return new ArticleSuggestion(a, CitationName(a.Code), article, ProvenanceOf(a.Code, article));
+            })
+            .ToList();
+    }
 
     /// <summary>
     /// Where an article of a code comes from: the official reference (with the Journal Officiel issue when known),

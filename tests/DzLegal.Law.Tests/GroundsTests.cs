@@ -3,65 +3,8 @@ using DzLegal.Harness;
 
 namespace DzLegal.Law.Tests;
 
-public sealed class GroundsSuggesterTests
+public sealed class LegalAreaTests
 {
-    private static readonly LawSourceManifest Manifest = new()
-    {
-        Codes = [new LawSourceEntry { Id = "fictitious-code", Title = new LocalizedText("قانون تجريبي", "Fictitious"), CitationName = "القانون التجريبي", Reference = "نص وهمي" }],
-    };
-
-    private static ClaimType Claim(string id, string area = "civil", params TriggerGroup[] triggers) => new()
-    {
-        Id = id,
-        Area = area,
-        Label = new LocalizedText(id, id),
-        Triggers = triggers,
-        Articles = [new ClaimArticle { Code = "fictitious-code", Number = "6", Why = new LocalizedText("سبب وهمي", "fictitious reason") }],
-    };
-
-    private static readonly ClaimType Loan = Claim(
-        "loan",
-        "civil",
-        new TriggerGroup { Any = ["قرض", "سلف"], Weight = 3, Required = true },
-        new TriggerGroup { Any = ["لم يرد", "امتنع"], Weight = 2 }) with { Exclude = ["إيجار"] };
-
-    private static readonly ClaimType Wages = Claim("wages", "social", new TriggerGroup { Any = ["أجر"], Weight = 3, Required = true });
-
-    private static GroundsSuggester Suggester(LawLibrary? library = null) =>
-        new(new LegalKnowledge(library ?? LawLibrary.Empty, Manifest, [Loan, Wages]));
-
-    [Fact]
-    public void RanksByMatchedGroupsAndReportsTheWordsFound()
-    {
-        var result = Suggester().Suggest("سلف المدعي للمدعى عليه مبلغا وامتنع عن رده");
-        var top = Assert.Single(result);
-        Assert.Equal("loan", top.Claim.Id);
-        Assert.Equal(5, top.Score);
-        Assert.Equal(["سلف", "امتنع"], top.MatchedTerms);
-    }
-
-    [Fact]
-    public void RequiredGroupsExclusionsAndTheAreaFilterRuleClaimsOut()
-    {
-        Assert.Empty(Suggester().Suggest("امتنع المدعى عليه عن الرد")); // no loan word
-        Assert.Empty(Suggester().Suggest("قرض لتسديد بدل الإيجار ولم يرد")); // excluded
-        Assert.Empty(Suggester().Suggest("اقترض ولم يرد القرض", area: "social"));
-        Assert.Single(Suggester().Suggest("لم يدفع أجره", area: "social"));
-    }
-
-    [Fact]
-    public void ArticlesCarryTheOfficialTextOnlyWhenTheCodeIsImported()
-    {
-        var notImported = Suggester().Suggest("قرض لم يرد")[0].Articles[0];
-        Assert.False(notImported.IsAvailable);
-        Assert.Equal("المادة 6 من القانون التجريبي", notImported.Citation);
-
-        var library = new LawLibrary([Fixtures.Code(Fixtures.Article("6", "كل خطأ وهمي يلزم بالتعويض الوهمي."))]);
-        var imported = Suggester(library).Suggest("قرض لم يرد")[0].Articles[0];
-        Assert.True(imported.IsAvailable);
-        Assert.Equal("كل خطأ وهمي يلزم بالتعويض الوهمي.", imported.Article!.Text);
-    }
-
     [Theory]
     [InlineData("القسم المدني", "civil")]
     [InlineData("القسم العقاري", "civil")]
@@ -70,7 +13,7 @@ public sealed class GroundsSuggesterTests
     [InlineData("القسم الاجتماعي", "social")]
     [InlineData("القسم الاستعجالي", null)]
     [InlineData("", null)]
-    public void TheAreaComesFromTheCourtSection(string section, string? expected) => Assert.Equal(expected, GroundsSuggester.AreaOf(section));
+    public void TheAreaComesFromTheCourtSection(string section, string? expected) => Assert.Equal(expected, LegalAreas.AreaOf(section));
 }
 
 public sealed class ClaimCatalogValidationTests
@@ -88,8 +31,7 @@ public sealed class ClaimCatalogValidationTests
             new ClaimType
             {
                 Id = "c",
-                Label = new LocalizedText("c", "c"),
-                Triggers = [new TriggerGroup { Any = ["قرض"], Weight = 3, Required = true }],
+                Label = new LocalizedText("قرض", "c"),
                 Articles = articles,
             },
         ],
@@ -113,11 +55,48 @@ public sealed class ClaimCatalogValidationTests
     }
 
     [Fact]
-    public void AClaimNeedsARequiredTriggerGroup()
+    public void AClaimNeedsAnArabicLabel()
     {
         var file = File(Ref("fictitious-code", "6"));
-        file = file with { Claims = [file.Claims[0] with { Triggers = [new TriggerGroup { Any = ["قرض"], Weight = 3 }] }] };
-        Assert.Contains(LegalKnowledgeLoader.Validate(file, Manifest, LawLibrary.Empty), e => e.Contains("must be required", StringComparison.Ordinal));
+        file = file with { Claims = [file.Claims[0] with { Label = new LocalizedText(" ", "c") }] };
+        Assert.Contains(LegalKnowledgeLoader.Validate(file, Manifest, LawLibrary.Empty), e => e.Contains("Arabic label", StringComparison.Ordinal));
+    }
+}
+
+public sealed class ArticleIndexTests
+{
+    private static readonly LawLibrary Library = new(
+    [
+        Fixtures.Code(
+            Fixtures.Article("10", "يلتزم المقترض الوهمي برد مثل ما اقترضه عند نهاية الأجل.") with { Path = ["الفصل الوهمي — في القرض"] },
+            Fixtures.Article("11", "يدفع المستأجر الوهمي بدل الإيجار في المواعيد المتفق عليها.") with { Path = ["الفصل الوهمي — في الإيجار"] },
+            Fixtures.Article("12", "كل خطأ وهمي سبب ضررا للغير يلزم مرتكبه بالتعويض.") with { Path = ["الفصل الوهمي — في المسؤولية"] },
+            Fixtures.Article("13", "(ملغاة)", repealed: true) with { Path = ["الفصل الوهمي — في القرض"] }),
+    ]);
+
+    [Fact]
+    public void RanksTheArticleThatMatchesTheLegalVocabularyFirst()
+    {
+        Assert.Equal("10", Library.Index.Search("القرض ورد المثل")[0].Article.Number);
+        Assert.Equal("11", Library.Index.Search("بدل الإيجار غير المدفوع")[0].Article.Number);
+        Assert.Equal("12", Library.Index.Search("التعويض عن الضرر")[0].Article.Number);
+    }
+
+    [Fact]
+    public void ChapterHeadingsCountAndRepealedArticlesAreNotIndexed()
+    {
+        Assert.Equal(3, Library.Index.Count);
+        // «القرض» appears only in the heading of article 10's chapter besides its text; the repealed 13 never comes back.
+        Assert.DoesNotContain(Library.Index.Search("القرض"), h => h.Article.Number == "13");
+    }
+
+    [Fact]
+    public void WeightedQueriesAddUp()
+    {
+        var hits = Library.Index.Search([("الإيجار", 0.5), ("القرض", 1.0)]);
+        Assert.Equal("10", hits[0].Article.Number);
+        Assert.Contains(hits, h => h.Article.Number == "11");
+        Assert.Empty(Library.Index.Search("كلمات لا وجود لها إطلاقا"));
     }
 }
 
@@ -169,14 +148,27 @@ public sealed class ShippedCatalogTests
     }
 
     [Fact]
-    public void GroundsSuggestionsMeetTheGateAndEveryClaimIsExercised()
+    public void EveryClaimIsExercisedByTheEvaluationCasesAndTheirArticlesExist()
     {
         var knowledge = LegalKnowledgeLoader.Load(LawRoot);
         var cases = GroundsEvaluator.LoadCases(Path.Combine(AppContext.BaseDirectory, "grounds-cases"));
-        var report = GroundsEvaluator.Evaluate(knowledge, cases);
-        Assert.True(report.Passes, $"Top-3 {report.Top3:P0} is below {GroundsReport.RequiredTop3:P0}.");
         Assert.All(knowledge.Claims, c => Assert.Contains(cases, x => x.Expect == c.Id));
         Assert.Contains(cases, x => x.Expect.Length == 0);
+        Assert.All(cases.Where(c => c.Expect.Length > 0), c =>
+        {
+            var claim = knowledge.Claims.Single(x => x.Id == c.Expect);
+            Assert.NotEmpty(c.ExpectArticles);
+            Assert.All(c.ExpectArticles, a => Assert.Contains(claim.Articles, x => $"{x.Code}:{x.Number}" == a));
+        });
+    }
+
+    [Fact]
+    public void TheAnalysisPromptsShip()
+    {
+        var prompts = LegalKnowledgeLoader.Load(LawRoot).Prompts;
+        Assert.True(prompts.IsAvailable);
+        Assert.Contains("{{ claims }}", prompts.ReadFacts, StringComparison.Ordinal);
+        Assert.Contains("{{ candidates }}", prompts.SelectArticles, StringComparison.Ordinal);
     }
 }
 
@@ -267,9 +259,9 @@ public sealed class ProvenanceTests : IDisposable
     public void ShippedSuggestionsCarryTheOfficialReferenceAndSite()
     {
         var knowledge = LegalKnowledgeLoader.Load(Path.Combine(AppContext.BaseDirectory, "data", "law"));
-        var loan = new GroundsSuggester(knowledge).Suggest("أقرض المدعي المدعى عليه مبلغا ولم يرده")[0];
-        Assert.Equal(["450", "106", "107", "323", "333", "454", "176"], loan.Articles.Select(a => a.Reference.Number));
-        var first = loan.Articles[0].Provenance;
+        var loan = knowledge.Resolve(knowledge.Claims.Single(c => c.Id == "loan-repayment"));
+        Assert.Equal(["450", "106", "107", "323", "333", "454", "176"], loan.Select(a => a.Reference.Number));
+        var first = loan[0].Provenance;
         Assert.StartsWith("الأمر رقم 75-58", first.Reference, StringComparison.Ordinal);
         Assert.Equal("https://www.joradp.dz", first.SourceUrl);
     }

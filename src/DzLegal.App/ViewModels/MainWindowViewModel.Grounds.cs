@@ -9,14 +9,17 @@ using DzLegal.Law;
 namespace DzLegal.App.ViewModels;
 
 /// <summary>
-/// Grounds suggestions: claim types matched deterministically from the facts, their articles from the offline law
-/// library, and article search. The lawyer ticks what to rely on; the official texts of the ticked articles are
-/// what the model may cite. Nothing here is decided by a model.
+/// The Grounds step: on the lawyer's click, the local model reads the facts, the official library is searched, and
+/// the model proposes articles from it (<see cref="GroundsAnalyzer"/>). The lawyer ticks what to rely on; ticked
+/// articles are the legal basis the grounds are drafted from. The Requests and Documents steps offer the usual
+/// lines of the claim types the analysis recognised.
 /// </summary>
 public sealed partial class MainWindowViewModel
 {
-    /// <summary>The form step whose fields feed the narrative sections; the suggestions card shows there.</summary>
-    public const string NotesStepId = "notes";
+    public const string FactsStepId = "facts";
+    public const string GroundsStepId = "grounds";
+    public const string RequestsStepId = "requests";
+    public const string DocumentsStepId = "documents";
 
     private const string FactsField = "notes.facts";
     private const string GroundsField = "notes.grounds";
@@ -25,25 +28,68 @@ public sealed partial class MainWindowViewModel
 
     private LegalKnowledge _knowledge = LegalKnowledge.Empty;
     private IExternalLinks _links = new NoExternalLinks();
-    private GroundsSuggester _suggester = new(LegalKnowledge.Empty);
     private readonly List<ArticleRef> _selectedArticles = [];
+    private GroundsAnalysis? _analysis;
 
-    /// <summary>Claim ids the local model chose from the catalog for the current facts.</summary>
-    private readonly List<string> _modelPicks = [];
-    private string _suggestionKey = string.Empty;
+    /// <summary>Articles the model proposed in the last analysis, to tick.</summary>
+    public ObservableCollection<ArticleChoiceViewModel> AnalysedArticles { get; } = [];
 
-    public ObservableCollection<ClaimSuggestionViewModel> GroundsSuggestions { get; } = [];
+    /// <summary>«الأسانيد المعتمدة»: every ticked article, from the analysis or the search.</summary>
+    public ObservableCollection<SelectedArticleViewModel> SelectedGrounds { get; } = [];
 
     public ObservableCollection<ArticleChoiceViewModel> ArticleResults { get; } = [];
 
-    public bool IsNotesStep => SelectedStep?.Id == NotesStepId;
+    public ObservableCollection<InsertChipViewModel> RequestChips { get; } = [];
+
+    public ObservableCollection<InsertChipViewModel> DocumentChips { get; } = [];
+
+    public bool HasAnalysedArticles => AnalysedArticles.Count > 0;
+
+    public bool HasRequestChips => RequestChips.Count > 0;
+
+    public bool HasDocumentChips => DocumentChips.Count > 0;
+
+    public bool IsGroundsStep => SelectedStep?.Id == GroundsStepId;
+
+    public bool IsRequestsStep => SelectedStep?.Id == RequestsStepId;
+
+    public bool IsDocumentsStep => SelectedStep?.Id == DocumentsStepId;
 
     /// <summary>Whether any official text has been imported; until then citations show without text.</summary>
     public bool IsLibraryImported => _knowledge.Library.Codes.Count > 0;
 
-    /// <summary>Why the list is empty, or empty when there are suggestions.</summary>
+    public bool CanAnalyseGrounds => _knowledge.Prompts.IsAvailable;
+
     [ObservableProperty]
-    public partial string GroundsHint { get; set; } = string.Empty;
+    [NotifyPropertyChangedFor(nameof(HasReading))]
+    public partial string ReadingRelationship { get; set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial string ReadingBreach { get; set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial string ReadingSought { get; set; } = string.Empty;
+
+    /// <summary>The catalog claim types the analysis recognised, by label.</summary>
+    [ObservableProperty]
+    public partial string ReadingClaims { get; set; } = string.Empty;
+
+    public bool HasReading => ReadingRelationship.Length + ReadingBreach.Length + ReadingSought.Length + ReadingClaims.Length > 0;
+
+    /// <summary>The facts, subject or court section changed after the last analysis.</summary>
+    [ObservableProperty]
+    public partial bool IsAnalysisStale { get; set; }
+
+    /// <summary>Progress while the analysis runs, or its outcome («اقترح النموذج 5 مواد…»).</summary>
+    [ObservableProperty]
+    public partial string AnalysisStatus { get; set; } = string.Empty;
+
+    /// <summary>Prerequisites of the recognised claim types (e.g. labour conciliation), for the Requests and Documents steps.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasPrerequisites))]
+    public partial string Prerequisites { get; set; } = string.Empty;
+
+    public bool HasPrerequisites => Prerequisites.Length > 0;
 
     [ObservableProperty]
     public partial string ArticleQuery { get; set; } = string.Empty;
@@ -53,137 +99,150 @@ public sealed partial class MainWindowViewModel
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasSelectedArticles))]
-    [NotifyCanExecuteChangedFor(nameof(AddSelectedToGroundsCommand))]
     public partial int SelectedArticleCount { get; set; }
 
     public bool HasSelectedArticles => SelectedArticleCount > 0;
 
-    public string AddSelectedText => L.Format("GroundsAddSelected", SelectedArticleCount);
-
     public IReadOnlyList<ArticleRef> SelectedArticles => _selectedArticles;
+
+    public GroundsAnalysis? Analysis => _analysis;
 
     private void UseKnowledge(LegalKnowledge? knowledge, IExternalLinks? links)
     {
         _links = links ?? new NoExternalLinks();
         _knowledge = knowledge ?? LegalKnowledge.Empty;
-        _suggester = new GroundsSuggester(_knowledge);
     }
-
-    /// <summary>Re-ranks claim types when the facts, subject or court section changed (cheap: no model).</summary>
-    private void RefreshSuggestions(bool force = false)
-    {
-        var inputs = CurrentInputs();
-        var facts = inputs.GetValueOrDefault(FactsField, string.Empty);
-        var text = inputs.GetValueOrDefault("claim.subject", string.Empty) + "\n" + facts;
-        var section = inputs.GetValueOrDefault("court.section", string.Empty);
-        var key = text + "\u0001" + section + "\u0001" + L.Language;
-        if (!force && key == _suggestionKey)
-        {
-            return;
-        }
-
-        if (key != _suggestionKey && _modelPicks.Count > 0)
-        {
-            // New facts: what the model chose for the old ones no longer applies.
-            _modelPicks.Clear();
-            ModelPickHint = string.Empty;
-        }
-
-        _suggestionKey = key;
-        var expanded = GroundsSuggestions.Where(s => s.IsExpanded).Select(s => s.Claim.Id).ToHashSet();
-        GroundsSuggestions.Clear();
-        foreach (var suggestion in _suggester.Suggest(text, GroundsSuggester.AreaOf(section)))
-        {
-            var articles = suggestion.Articles
-                .Select(a => CreateChoice(new ArticleRef(a.Reference.Code, a.Reference.Number), a.Citation, a.Reference.Why.Get(L.Language), a.Article, suggestion.Claim.Verified))
-                .ToList();
-            GroundsSuggestions.Add(new ClaimSuggestionViewModel(suggestion, articles, L, InsertRequests, InsertDocuments)
-            {
-                IsExpanded = expanded.Contains(suggestion.Claim.Id) || (expanded.Count == 0 && GroundsSuggestions.Count == 0),
-            });
-        }
-
-        foreach (var claim in _modelPicks.Select(id => _knowledge.Claims.FirstOrDefault(c => c.Id == id)).OfType<ClaimType>())
-        {
-            if (GroundsSuggestions.Any(g => g.Claim.Id == claim.Id))
-            {
-                continue;
-            }
-
-            var suggestion = new ClaimSuggestion(claim, 0, [], _suggester.Resolve(claim));
-            var articles = suggestion.Articles
-                .Select(a => CreateChoice(new ArticleRef(a.Reference.Code, a.Reference.Number), a.Citation, a.Reference.Why.Get(L.Language), a.Article, claim.Verified))
-                .ToList();
-            GroundsSuggestions.Add(new ClaimSuggestionViewModel(suggestion, articles, L, InsertRequests, InsertDocuments, pickedByModel: true)
-            {
-                IsExpanded = GroundsSuggestions.Count == 0,
-            });
-        }
-
-        GroundsHint = facts.Trim().Length == 0 ? L["GroundsNeedFacts"]
-            : GroundsSuggestions.Count == 0 ? L["GroundsNone"]
-            : string.Empty;
-        SearchArticles();
-    }
-
-    partial void OnArticleQueryChanged(string value) => SearchArticles();
-
-    /// <summary>What the last «Ask the model» run found, or why it found nothing.</summary>
-    [ObservableProperty]
-    public partial string ModelPickHint { get; set; } = string.Empty;
-
-    /// <summary>Whether the data ships the prompt for the model fallback.</summary>
-    public bool CanAskModelForClaims => _knowledge.ClaimPickPrompt.Length > 0;
 
     /// <summary>
-    /// The model fallback: the selected local model reads the facts and may only choose claim types from the
-    /// catalog, by id (restricted to the court section's area when known). Its picks are shown tagged as such,
-    /// with the catalog's own articles; it never introduces an article.
+    /// Runs the grounds analysis with the selected local model (about 1–2 minutes on a CPU-only laptop). The lawyer's
+    /// ticks are kept; the proposals are replaced.
     /// </summary>
     [RelayCommand(IncludeCancelCommand = true)]
-    private async Task AskModelForClaimsAsync(CancellationToken cancellationToken)
+    private async Task AnalyseGroundsAsync(CancellationToken cancellationToken)
     {
         var inputs = CurrentInputs();
         var facts = inputs.GetValueOrDefault(FactsField, string.Empty);
-        if (SelectedProvider is null || !CanAskModelForClaims || facts.Trim().Length == 0)
+        if (SelectedProvider is null || !CanAnalyseGrounds || facts.Trim().Length == 0)
         {
-            ModelPickHint = L["GroundsNeedFacts"];
+            AnalysisStatus = L["GroundsNeedFacts"];
             return;
         }
 
-        var area = GroundsSuggester.AreaOf(inputs.GetValueOrDefault("court.section", string.Empty));
-        var options = _knowledge.Claims
-            .Where(c => area is null || c.Area == area)
-            .Select(c => new ClaimOption(c.Id, c.Label.Ar))
-            .ToList();
         IModelProvider? provider = null;
         try
         {
             provider = SelectedProvider.Create();
-            ModelPickHint = L.Format("ModelPicking", provider.Name);
-            var picks = await new ClaimPicker(provider).PickAsync(
-                _knowledge.ClaimPickPrompt, inputs.GetValueOrDefault("claim.subject", string.Empty), facts, options, cancellationToken);
-            _modelPicks.Clear();
-            _modelPicks.AddRange(picks);
-            RefreshSuggestions(force: true);
-            var added = picks.Count(id => GroundsSuggestions.Any(g => g.IsPickedByModel && g.Claim.Id == id));
-            ModelPickHint = picks.Count == 0 ? L["ModelPickedNothing"]
-                : added == 0 ? L["ModelPickedSame"]
-                : L.Format("ModelPicked", added);
+            var progress = new InlineProgress<AnalysisStage>(stage => AnalysisStatus = L[stage switch
+            {
+                AnalysisStage.Reading => "AnalysisReading",
+                AnalysisStage.Searching => "AnalysisSearching",
+                _ => "AnalysisSelecting",
+            }]);
+            var analysis = await new GroundsAnalyzer(provider).AnalyseAsync(
+                _knowledge,
+                inputs.GetValueOrDefault("claim.subject", string.Empty),
+                facts,
+                inputs.GetValueOrDefault("court.section", string.Empty),
+                progress,
+                cancellationToken);
+            ShowAnalysis(analysis);
+            var engine = SelectedProvider.DisplayName;
+            AnalysisStatus = analysis.Articles.Count > 0 ? L.Format("AnalysisDone", analysis.Articles.Count, engine)
+                : HasReading ? L["AnalysisNoArticles"]
+                : L.Format("AnalysisNothing", engine);
         }
         catch (OperationCanceledException)
         {
-            ModelPickHint = L["Cancelled"];
+            AnalysisStatus = L["Cancelled"];
         }
-        catch (ModelProviderException ex)
+        catch (Exception ex) when (ex is ModelProviderException or InvalidOperationException)
         {
-            ModelPickHint = L.Format("Error", ex.Message);
+            AnalysisStatus = L.Format("Error", ex.Message);
         }
         finally
         {
             (provider as IDisposable)?.Dispose();
         }
     }
+
+    /// <summary>Ticks every article the model proposed as a basis («أساس»).</summary>
+    [RelayCommand]
+    private void TickBasisArticles()
+    {
+        foreach (var choice in AnalysedArticles.Where(a => _analysis?.Articles.Any(x => x.Ref == a.Reference && x.Role == "basis") == true))
+        {
+            choice.IsSelected = true;
+        }
+    }
+
+    private void ShowAnalysis(GroundsAnalysis? analysis)
+    {
+        _analysis = analysis;
+        AnalysedArticles.Clear();
+        ReadingRelationship = analysis?.Relationship ?? string.Empty;
+        ReadingBreach = analysis?.Breach ?? string.Empty;
+        ReadingSought = analysis?.Sought ?? string.Empty;
+        var claims = (analysis?.ClaimIds ?? []).Select(id => _knowledge.Claims.FirstOrDefault(c => c.Id == id)).OfType<ClaimType>().ToList();
+        ReadingClaims = string.Join("، ", claims.Select(c => c.Label.Get(L.Language)));
+        foreach (var a in analysis?.Articles ?? [])
+        {
+            var article = _knowledge.Library.FindArticle(a.Code, a.Number);
+            var catalogWhy = claims.SelectMany(c => c.Articles).FirstOrDefault(x => x.Code == a.Code && x.Number == ArticleNumbers.Canonical(a.Number))?.Why.Get(L.Language);
+            AnalysedArticles.Add(new ArticleChoiceViewModel(
+                a.Ref,
+                $"المادة {a.Number} من {_knowledge.CitationName(a.Code)}",
+                a.Reason.Length == 0 ? catalogWhy ?? string.Empty : string.Empty,
+                article,
+                _knowledge.ProvenanceOf(a.Code, article),
+                L["ProvenanceModel"],
+                isVerified: false,
+                _selectedArticles.Contains(a.Ref),
+                L,
+                OnArticleToggled,
+                OpenOfficialLinkAsync)
+            {
+                RoleText = L["Role_" + a.Role],
+                ModelReason = a.Reason.Length > 0 ? L.Format("ModelReason", a.Reason) : string.Empty,
+                SourceText = L[a.Source == AnalysedArticle.FromSearch ? "FromLibrarySearch" : "FromClaimCatalog"],
+            });
+        }
+
+        RequestChips.Clear();
+        foreach (var line in claims.SelectMany(c => c.SuggestedRequests).Distinct())
+        {
+            RequestChips.Add(new InsertChipViewModel(line, chip => InsertChip(RequestsField, chip)));
+        }
+
+        DocumentChips.Clear();
+        foreach (var line in claims.SelectMany(c => c.RequiredDocuments).Distinct())
+        {
+            DocumentChips.Add(new InsertChipViewModel(line, chip => InsertChip(DocumentsField, chip)));
+        }
+
+        Prerequisites = string.Join("\n", claims.SelectMany(c => c.Prerequisites).Select(p => "⚠ " + p.Get(L.Language)).Distinct());
+        OnPropertyChanged(nameof(HasAnalysedArticles));
+        OnPropertyChanged(nameof(HasRequestChips));
+        OnPropertyChanged(nameof(HasDocumentChips));
+        UpdateAnalysisStaleness();
+    }
+
+    /// <summary>Called on every input change: the analysis is stale once the analysed facts no longer match.</summary>
+    private void UpdateAnalysisStaleness()
+    {
+        if (_analysis is null)
+        {
+            IsAnalysisStale = false;
+            return;
+        }
+
+        var inputs = CurrentInputs();
+        IsAnalysisStale = _analysis.FactsHash != GroundsAnalyzer.FactsHash(
+            inputs.GetValueOrDefault("claim.subject", string.Empty),
+            inputs.GetValueOrDefault(FactsField, string.Empty),
+            inputs.GetValueOrDefault("court.section", string.Empty));
+    }
+
+    partial void OnArticleQueryChanged(string value) => SearchArticles();
 
     private void SearchArticles()
     {
@@ -202,15 +261,105 @@ public sealed partial class MainWindowViewModel
 
         foreach (var hit in ArticleSearch.Find(_knowledge.Library, ArticleQuery))
         {
-            // A searched article is the lawyer's own choice: only the text's verification matters.
-            ArticleResults.Add(CreateChoice(new ArticleRef(hit.Code.Id, hit.Article.Number), hit.Citation, string.Empty, hit.Article, claimVerified: true));
+            var reference = new ArticleRef(hit.Code.Id, hit.Article.Number);
+            ArticleResults.Add(new ArticleChoiceViewModel(
+                reference,
+                hit.Citation,
+                string.Empty,
+                hit.Article,
+                _knowledge.ProvenanceOf(hit.Code.Id, hit.Article),
+                L[hit.Code.Verified ? "ProvenanceVerified" : "ProvenanceTextUnverified"],
+                hit.Code.Verified,
+                _selectedArticles.Contains(reference),
+                L,
+                OnArticleToggled,
+                OpenOfficialLinkAsync));
         }
 
         ArticleSearchHint = ArticleResults.Count == 0 ? L["ArticleSearchNone"] : string.Empty;
     }
 
-    private ArticleChoiceViewModel CreateChoice(ArticleRef reference, string citation, string why, LawArticle? article, bool claimVerified) =>
-        new(reference, citation, why, article, _knowledge.ProvenanceOf(reference.Code, article), claimVerified, _selectedArticles.Contains(reference), L, OnArticleToggled, OpenOfficialLinkAsync);
+    private void OnArticleToggled(ArticleChoiceViewModel choice)
+    {
+        SetSelected(choice.Reference, choice.IsSelected);
+    }
+
+    private void SetSelected(ArticleRef reference, bool selected)
+    {
+        if (selected && !_selectedArticles.Contains(reference))
+        {
+            _selectedArticles.Add(reference);
+        }
+        else if (!selected)
+        {
+            _selectedArticles.Remove(reference);
+        }
+
+        // The same article can appear among the proposals and in the search results.
+        foreach (var other in AnalysedArticles.Concat(ArticleResults).Where(c => c.Reference == reference))
+        {
+            other.Sync(selected);
+        }
+
+        RefreshSelectedGrounds();
+        UpdateReviewHints();
+    }
+
+    private void RefreshSelectedGrounds()
+    {
+        SelectedGrounds.Clear();
+        foreach (var a in _selectedArticles)
+        {
+            SelectedGrounds.Add(new SelectedArticleViewModel(a, Citation(a), r => SetSelected(r, false)));
+        }
+
+        SelectedArticleCount = _selectedArticles.Count;
+    }
+
+    private void LoadGroundsState(DraftDocument draft)
+    {
+        _selectedArticles.Clear();
+        _selectedArticles.AddRange(draft.SelectedArticles.Distinct());
+        ShowAnalysis(draft.GroundsAnalysis);
+        AnalysisStatus = string.Empty;
+        ArticleQuery = string.Empty;
+        RefreshSelectedGrounds();
+    }
+
+    private string Citation(ArticleRef a) => $"المادة {a.Number} من {_knowledge.CitationName(a.Code)}";
+
+    private void InsertChip(string fieldId, InsertChipViewModel chip)
+    {
+        var field = Field(fieldId);
+        if (!ArabicScript.Normalize(field.Value).Contains(ArabicScript.Normalize(chip.Text), StringComparison.Ordinal))
+        {
+            var current = field.Value.TrimEnd();
+            field.Value = (current.Length > 0 ? current + "\n" : string.Empty) + "- " + chip.Text;
+        }
+
+        chip.IsInserted = true;
+    }
+
+    /// <summary>
+    /// The inputs the model drafts from: the grounds notes carry the ticked articles' citations (those not already
+    /// written there), so the grounds are drafted from the selection even when the lawyer adds no argument.
+    /// </summary>
+    internal Dictionary<string, string> DraftingInputs()
+    {
+        var inputs = CurrentInputs();
+        var notes = inputs.GetValueOrDefault(GroundsField, string.Empty);
+        var present = ArabicScript.Normalize(notes);
+        var lines = _selectedArticles.Select(Citation)
+            .Where(c => !present.Contains(ArabicScript.Normalize(c), StringComparison.Ordinal))
+            .Select(c => "- " + c)
+            .ToList();
+        if (lines.Count > 0)
+        {
+            inputs[GroundsField] = string.Join("\n", lines) + (notes.Trim().Length > 0 ? "\n" + notes : string.Empty);
+        }
+
+        return inputs;
+    }
 
     /// <summary>Opens an official source in the browser, on the lawyer's click only, after re-checking the host.</summary>
     internal async Task OpenOfficialLinkAsync(string url)
@@ -223,79 +372,6 @@ public sealed partial class MainWindowViewModel
 
         var opened = await _links.OpenAsync(new Uri(url));
         SetStatus(opened ? L["LinkOpened"] : L.Format("LinkNotOpened", url), isError: !opened);
-    }
-
-    private void OnArticleToggled(ArticleChoiceViewModel choice)
-    {
-        if (choice.IsSelected && !_selectedArticles.Contains(choice.Reference))
-        {
-            _selectedArticles.Add(choice.Reference);
-        }
-        else if (!choice.IsSelected)
-        {
-            _selectedArticles.Remove(choice.Reference);
-        }
-
-        // The same article can appear under two claims and in the search results.
-        foreach (var other in GroundsSuggestions.SelectMany(s => s.Articles).Concat(ArticleResults).Where(c => c != choice && c.Reference == choice.Reference))
-        {
-            other.Sync(choice.IsSelected);
-        }
-
-        SelectedArticleCount = _selectedArticles.Count;
-        OnPropertyChanged(nameof(AddSelectedText));
-        UpdateReviewHints();
-    }
-
-    private void SetSelectedArticles(IEnumerable<ArticleRef> articles)
-    {
-        _selectedArticles.Clear();
-        _selectedArticles.AddRange(articles.Distinct());
-        SelectedArticleCount = _selectedArticles.Count;
-        OnPropertyChanged(nameof(AddSelectedText));
-        RefreshSuggestions(force: true);
-    }
-
-    /// <summary>Adds «- المادة N من …» lines for the ticked articles that the grounds notes do not cite yet.</summary>
-    [RelayCommand(CanExecute = nameof(HasSelectedArticles))]
-    private void AddSelectedToGrounds()
-    {
-        var field = Field(GroundsField);
-        var present = ArabicScript.Normalize(field.Value);
-        var lines = _selectedArticles
-            .Select(a => $"المادة {a.Number} من {_knowledge.CitationName(a.Code)}")
-            .Where(c => !present.Contains(ArabicScript.Normalize(c), StringComparison.Ordinal))
-            .Select(c => "- " + c)
-            .ToList();
-        if (lines.Count > 0)
-        {
-            Append(field, lines);
-        }
-
-        SetStatus(L.Format("GroundsAdded", lines.Count));
-    }
-
-    private void InsertRequests(ClaimSuggestionViewModel claim) => InsertLines(RequestsField, claim.Claim.SuggestedRequests);
-
-    private void InsertDocuments(ClaimSuggestionViewModel claim) => InsertLines(DocumentsField, claim.Claim.RequiredDocuments);
-
-    private void InsertLines(string fieldId, IReadOnlyList<string> items)
-    {
-        var field = Field(fieldId);
-        var present = ArabicScript.Normalize(field.Value);
-        var lines = items.Where(i => !present.Contains(ArabicScript.Normalize(i), StringComparison.Ordinal)).Select(i => "- " + i).ToList();
-        if (lines.Count > 0)
-        {
-            Append(field, lines);
-        }
-
-        SetStatus(L.Format("GroundsInserted", lines.Count, field.Label));
-    }
-
-    private static void Append(FieldViewModel field, List<string> lines)
-    {
-        var current = field.Value.TrimEnd();
-        field.Value = (current.Length > 0 ? current + "\n" : string.Empty) + string.Join("\n", lines);
     }
 
     /// <summary>Official texts of the ticked articles that are in the library: what the model may cite and quote.</summary>

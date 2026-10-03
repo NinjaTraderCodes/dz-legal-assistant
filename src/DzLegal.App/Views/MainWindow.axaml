@@ -19,6 +19,64 @@
     <KeyBinding Gesture="Ctrl+G" Command="{Binding GenerateCommand}" />
   </Window.KeyBindings>
 
+  <Window.Resources>
+    <!-- One article to tick: citation, role, the model's reason, official text, provenance (reference, official link, tag). -->
+    <DataTemplate x:Key="ArticleChoiceTemplate" x:DataType="vm:ArticleChoiceViewModel">
+      <Border Background="{DynamicResource SurfaceAltBrush}" CornerRadius="6" Padding="8,6" Margin="0,0,0,6">
+        <StackPanel Spacing="3">
+          <Grid ColumnDefinitions="*,Auto">
+            <CheckBox IsChecked="{Binding IsSelected}">
+              <TextBlock FontWeight="SemiBold" TextWrapping="Wrap" Text="{Binding Citation}" />
+            </CheckBox>
+            <Border Grid.Column="1" Classes="chip" Padding="6,1" VerticalAlignment="Center" IsVisible="{Binding HasRole}">
+              <TextBlock FontSize="11" Text="{Binding RoleText}" />
+            </Border>
+          </Grid>
+          <TextBlock FontSize="12" TextWrapping="Wrap" Foreground="{DynamicResource AccentBrush}" Text="{Binding ModelReason}" IsVisible="{Binding HasModelReason}" />
+          <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap" Text="{Binding Why}" IsVisible="{Binding HasWhy}" />
+          <Expander Padding="6,2" HorizontalAlignment="Stretch" IsVisible="{Binding IsAvailable}">
+            <Expander.Header>
+              <TextBlock FontFamily="{StaticResource DocumentFont}" FontSize="13" TextWrapping="Wrap" MaxLines="2" TextTrimming="CharacterEllipsis" Text="{Binding Text}" />
+            </Expander.Header>
+            <TextBlock FontFamily="{StaticResource DocumentFont}" FontSize="13" TextWrapping="Wrap" Text="{Binding Text}" />
+          </Expander>
+          <TextBlock Classes="muted" FontSize="11" FontStyle="Italic" TextWrapping="Wrap" Text="{Binding Text}" IsVisible="{Binding !IsAvailable}" />
+          <Border BorderBrush="{DynamicResource HairlineBrush}" BorderThickness="0,1,0,0" Padding="0,5,0,0" Margin="0,3,0,0">
+            <StackPanel Spacing="3">
+              <TextBlock Classes="muted" FontSize="11" TextWrapping="Wrap" Text="{Binding ReferenceText}" />
+              <WrapPanel>
+                <Button Classes="subtle" Padding="0,2" Margin="0,0,10,0" Command="{Binding OpenSourceCommand}" IsVisible="{Binding HasSource}" ToolTip.Tip="{Binding LinkTooltip}">
+                  <StackPanel Orientation="Horizontal" Spacing="4">
+                    <ic:SymbolIcon Symbol="Open" FontSize="12" Foreground="{DynamicResource AccentBrush}" />
+                    <TextBlock FontSize="11" Foreground="{DynamicResource AccentBrush}" TextDecorations="Underline" Text="{Binding LinkLabel}" />
+                  </StackPanel>
+                </Button>
+                <Border CornerRadius="4" Padding="5,1" Margin="0,0,6,0" VerticalAlignment="Center" Background="{DynamicResource WarningSoftBrush}" IsVisible="{Binding !IsVerified}">
+                  <TextBlock FontSize="10" Foreground="{DynamicResource WarningBrush}" Text="{Binding ProvenanceTag}" />
+                </Border>
+                <Border CornerRadius="4" Padding="5,1" Margin="0,0,6,0" VerticalAlignment="Center" Background="{DynamicResource SuccessSoftBrush}" IsVisible="{Binding IsVerified}">
+                  <TextBlock FontSize="10" Foreground="{DynamicResource SuccessBrush}" Text="{Binding ProvenanceTag}" />
+                </Border>
+                <TextBlock Classes="muted" FontSize="10" VerticalAlignment="Center" Text="{Binding SourceText}" />
+              </WrapPanel>
+            </StackPanel>
+          </Border>
+        </StackPanel>
+      </Border>
+    </DataTemplate>
+
+    <!-- A usual request or document to insert with one click. -->
+    <DataTemplate x:Key="InsertChipTemplate" x:DataType="vm:InsertChipViewModel">
+      <Button Classes="outline" Margin="0,0,0,6" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Command="{Binding InsertCommand}">
+        <Grid ColumnDefinitions="Auto,*">
+          <ic:SymbolIcon Symbol="Add" FontSize="13" Margin="0,0,6,0" IsVisible="{Binding !IsInserted}" />
+          <ic:SymbolIcon Symbol="Checkmark" FontSize="13" Margin="0,0,6,0" Foreground="{DynamicResource SuccessBrush}" IsVisible="{Binding IsInserted}" />
+          <TextBlock Grid.Column="1" FontSize="12" TextWrapping="Wrap" Text="{Binding Text}" />
+        </Grid>
+      </Button>
+    </DataTemplate>
+  </Window.Resources>
+
   <Window.Styles>
     <Style Selector="TextBlock">
       <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
@@ -249,6 +307,77 @@
           <ScrollViewer>
             <StackPanel>
               <TextBlock FontSize="18" FontWeight="SemiBold" Margin="0,0,0,12" Text="{Binding SelectedStep.Label}" />
+
+              <!-- Grounds step: the analysis (model reads the facts, the library is searched, the model proposes articles). -->
+              <StackPanel Name="GroundsPanel" Spacing="10" Margin="0,0,8,14" IsVisible="{Binding IsGroundsStep}">
+                <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap" Text="{Binding L[GroundsIntro]}" />
+                <StackPanel Orientation="Horizontal" Spacing="6" IsVisible="{Binding CanAnalyseGrounds}">
+                  <Button Name="AnalyseButton" Classes="primary" Command="{Binding AnalyseGroundsCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                      <ic:SymbolIcon Symbol="Sparkle" Foreground="White" FontSize="15" />
+                      <TextBlock Foreground="White" Text="{Binding L[AnalyseGrounds]}" />
+                    </StackPanel>
+                  </Button>
+                  <Button Classes="outline" Command="{Binding AnalyseGroundsCancelCommand}" Content="{Binding L[Cancel]}" IsVisible="{Binding AnalyseGroundsCommand.IsRunning}" />
+                </StackPanel>
+                <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap" Text="{Binding AnalysisStatus}"
+                           IsVisible="{Binding AnalysisStatus, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                <Border Name="StaleBanner" Background="{DynamicResource WarningSoftBrush}" CornerRadius="6" Padding="8,6" IsVisible="{Binding IsAnalysisStale}">
+                  <TextBlock FontSize="12" TextWrapping="Wrap" Foreground="{DynamicResource WarningBrush}" Text="{Binding L[AnalysisStale]}" />
+                </Border>
+
+                <Border Classes="card" Padding="10" IsVisible="{Binding HasReading}">
+                  <StackPanel Spacing="4">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                      <TextBlock FontSize="13" FontWeight="SemiBold" Text="{Binding L[ModelReading]}" />
+                      <Border Classes="chip" Padding="6,0"><TextBlock FontSize="10" Text="{Binding L[ModelTag]}" /></Border>
+                    </StackPanel>
+                    <TextBlock FontSize="12" TextWrapping="Wrap"><Run FontWeight="SemiBold" Text="{Binding L[ReadingRelationship]}" /><Run Text=" " /><Run Text="{Binding ReadingRelationship}" /></TextBlock>
+                    <TextBlock FontSize="12" TextWrapping="Wrap"><Run FontWeight="SemiBold" Text="{Binding L[ReadingBreach]}" /><Run Text=" " /><Run Text="{Binding ReadingBreach}" /></TextBlock>
+                    <TextBlock FontSize="12" TextWrapping="Wrap"><Run FontWeight="SemiBold" Text="{Binding L[ReadingSought]}" /><Run Text=" " /><Run Text="{Binding ReadingSought}" /></TextBlock>
+                    <TextBlock FontSize="12" TextWrapping="Wrap"><Run FontWeight="SemiBold" Text="{Binding L[ReadingClaims]}" /><Run Text=" " /><Run Text="{Binding ReadingClaims}" /></TextBlock>
+                  </StackPanel>
+                </Border>
+
+                <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding HasAnalysedArticles}">
+                  <TextBlock FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center" Text="{Binding L[ProposedArticles]}" />
+                  <Button Grid.Column="1" Classes="subtle" FontSize="12" Command="{Binding TickBasisArticlesCommand}" Content="{Binding L[TickBasis]}" />
+                </Grid>
+                <ItemsControl Name="AnalysedArticlesList" ItemsSource="{Binding AnalysedArticles}" ItemTemplate="{StaticResource ArticleChoiceTemplate}" />
+
+                <TextBlock FontSize="14" FontWeight="SemiBold" Text="{Binding L[SelectedGrounds]}" />
+                <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap" Text="{Binding L[SelectedGroundsEmpty]}" IsVisible="{Binding !HasSelectedArticles}" />
+                <ItemsControl Name="SelectedGroundsList" ItemsSource="{Binding SelectedGrounds}">
+                  <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:SelectedArticleViewModel">
+                      <Border Classes="chip" Padding="8,2" Margin="0,0,6,6">
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                          <TextBlock FontSize="12" VerticalAlignment="Center" Text="{Binding Citation}" />
+                          <Button Classes="subtle" Padding="2" Command="{Binding RemoveCommand}"><ic:SymbolIcon Symbol="Dismiss" FontSize="11" /></Button>
+                        </StackPanel>
+                      </Border>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </StackPanel>
+
+              <!-- Requests / Documents steps: the usual lines of the claim types the analysis recognised. -->
+              <StackPanel Name="RequestsHelpPanel" Spacing="6" Margin="0,0,8,14" IsVisible="{Binding IsRequestsStep}">
+                <Border Background="{DynamicResource WarningSoftBrush}" CornerRadius="6" Padding="8,6" IsVisible="{Binding HasPrerequisites}">
+                  <TextBlock FontSize="12" TextWrapping="Wrap" Foreground="{DynamicResource WarningBrush}" Text="{Binding Prerequisites}" />
+                </Border>
+                <TextBlock FontSize="13" FontWeight="SemiBold" Text="{Binding L[UsualRequests]}" IsVisible="{Binding HasRequestChips}" />
+                <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap" Text="{Binding L[UsualLinesNeedAnalysis]}" IsVisible="{Binding !HasRequestChips}" />
+                <ItemsControl ItemsSource="{Binding RequestChips}" ItemTemplate="{StaticResource InsertChipTemplate}" />
+              </StackPanel>
+              <StackPanel Spacing="6" Margin="0,0,8,14" IsVisible="{Binding IsDocumentsStep}">
+                <Border Background="{DynamicResource WarningSoftBrush}" CornerRadius="6" Padding="8,6" IsVisible="{Binding HasPrerequisites}">
+                  <TextBlock FontSize="12" TextWrapping="Wrap" Foreground="{DynamicResource WarningBrush}" Text="{Binding Prerequisites}" />
+                </Border>
+                <TextBlock FontSize="13" FontWeight="SemiBold" Text="{Binding L[UsualDocuments]}" IsVisible="{Binding HasDocumentChips}" />
+                <ItemsControl ItemsSource="{Binding DocumentChips}" ItemTemplate="{StaticResource InsertChipTemplate}" />
+              </StackPanel>
               <ItemsControl ItemsSource="{Binding SelectedStep.Fields}">
                 <ItemsControl.ItemTemplate>
                   <DataTemplate x:DataType="vm:FieldViewModel">
@@ -272,131 +401,15 @@
                 </ItemsControl.ItemTemplate>
               </ItemsControl>
 
-              <!-- Grounds suggestions (Notes step): deterministic, from the facts; the lawyer ticks what to rely on. -->
-              <Border Name="GroundsPanel" Classes="card" Padding="12" Margin="0,4,8,8" IsVisible="{Binding IsNotesStep}">
-                <StackPanel Spacing="8">
-                  <StackPanel Orientation="Horizontal" Spacing="6">
-                    <ic:SymbolIcon Symbol="Gavel" FontSize="16" Foreground="{DynamicResource AccentBrush}" />
-                    <TextBlock FontSize="14" FontWeight="SemiBold" Text="{Binding L[GroundsTitle]}" />
-                  </StackPanel>
-                  <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap" Text="{Binding L[GroundsIntro]}" />
-                  <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap" Text="{Binding GroundsHint}"
-                             IsVisible="{Binding GroundsHint, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
-                  <ItemsControl Name="GroundsSuggestionsList" ItemsSource="{Binding GroundsSuggestions}">
-                    <ItemsControl.ItemTemplate>
-                      <DataTemplate x:DataType="vm:ClaimSuggestionViewModel">
-                        <Expander IsExpanded="{Binding IsExpanded}" HorizontalAlignment="Stretch" Margin="0,0,0,6">
-                          <Expander.Header>
-                            <StackPanel Spacing="2">
-                              <TextBlock FontWeight="SemiBold" TextWrapping="Wrap" Text="{Binding Label}" />
-                              <TextBlock Classes="muted" FontSize="11" TextWrapping="Wrap" Text="{Binding MatchedText}" />
-                            </StackPanel>
-                          </Expander.Header>
-                          <StackPanel Spacing="8">
-                            <Border Background="{DynamicResource WarningSoftBrush}" CornerRadius="6" Padding="8,6" IsVisible="{Binding HasPrerequisites}">
-                              <TextBlock FontSize="12" TextWrapping="Wrap" Foreground="{DynamicResource WarningBrush}" Text="{Binding Prerequisites}" />
-                            </Border>
-                            <ItemsControl ItemsSource="{Binding Articles}">
-                              <ItemsControl.ItemTemplate>
-                                <DataTemplate x:DataType="vm:ArticleChoiceViewModel">
-                                  <Border Background="{DynamicResource SurfaceAltBrush}" CornerRadius="6" Padding="8,6" Margin="0,0,0,6">
-                                    <StackPanel Spacing="3">
-                                      <CheckBox IsChecked="{Binding IsSelected}">
-                                        <TextBlock FontWeight="SemiBold" TextWrapping="Wrap" Text="{Binding Citation}" />
-                                      </CheckBox>
-                                      <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap" Text="{Binding Why}" IsVisible="{Binding HasWhy}" />
-                                      <TextBlock FontFamily="{StaticResource DocumentFont}" FontSize="13" TextWrapping="Wrap" Text="{Binding Text}" IsVisible="{Binding IsAvailable}" />
-                                      <TextBlock Classes="muted" FontSize="11" FontStyle="Italic" TextWrapping="Wrap" Text="{Binding Text}" IsVisible="{Binding !IsAvailable}" />
-                                      <Border BorderBrush="{DynamicResource HairlineBrush}" BorderThickness="0,1,0,0" Padding="0,5,0,0" Margin="0,3,0,0">
-                                        <StackPanel Spacing="3">
-                                          <TextBlock Classes="muted" FontSize="11" TextWrapping="Wrap" Text="{Binding ReferenceText}" />
-                                          <WrapPanel>
-                                            <Button Classes="subtle" Padding="0,2" Margin="0,0,10,0" Command="{Binding OpenSourceCommand}" IsVisible="{Binding HasSource}" ToolTip.Tip="{Binding LinkTooltip}">
-                                              <StackPanel Orientation="Horizontal" Spacing="4">
-                                                <ic:SymbolIcon Symbol="Open" FontSize="12" Foreground="{DynamicResource AccentBrush}" />
-                                                <TextBlock FontSize="11" Foreground="{DynamicResource AccentBrush}" TextDecorations="Underline" Text="{Binding LinkLabel}" />
-                                              </StackPanel>
-                                            </Button>
-                                            <Border CornerRadius="4" Padding="5,1" VerticalAlignment="Center"
-                                                    Background="{DynamicResource WarningSoftBrush}" IsVisible="{Binding !IsVerified}">
-                                              <TextBlock FontSize="10" Foreground="{DynamicResource WarningBrush}" Text="{Binding ProvenanceTag}" />
-                                            </Border>
-                                            <Border CornerRadius="4" Padding="5,1" VerticalAlignment="Center"
-                                                    Background="{DynamicResource SuccessSoftBrush}" IsVisible="{Binding IsVerified}">
-                                              <TextBlock FontSize="10" Foreground="{DynamicResource SuccessBrush}" Text="{Binding ProvenanceTag}" />
-                                            </Border>
-                                          </WrapPanel>
-                                        </StackPanel>
-                                      </Border>
-                                    </StackPanel>
-                                  </Border>
-                                </DataTemplate>
-                              </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                            <TextBlock FontSize="12" FontWeight="SemiBold" Text="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[GroundsFactsToState]}" />
-                            <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap" Text="{Binding FactsToState}" />
-                            <TextBlock FontSize="12" FontWeight="SemiBold" Text="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[GroundsRequests]}" />
-                            <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap" Text="{Binding Requests}" />
-                            <TextBlock FontSize="12" FontWeight="SemiBold" Text="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[GroundsDocuments]}" />
-                            <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap" Text="{Binding Documents}" />
-                            <WrapPanel>
-                              <Button Classes="outline" Margin="0,0,6,6" Command="{Binding InsertRequestsCommand}">
-                                <StackPanel Orientation="Horizontal" Spacing="5"><ic:SymbolIcon Symbol="TextBulletListAdd" FontSize="14" /><TextBlock FontSize="12" Text="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[InsertRequests]}" /></StackPanel>
-                              </Button>
-                              <Button Classes="outline" Margin="0,0,6,6" Command="{Binding InsertDocumentsCommand}">
-                                <StackPanel Orientation="Horizontal" Spacing="5"><ic:SymbolIcon Symbol="DocumentAdd" FontSize="14" /><TextBlock FontSize="12" Text="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[InsertDocuments]}" /></StackPanel>
-                              </Button>
-                            </WrapPanel>
-                          </StackPanel>
-                        </Expander>
-                      </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                  </ItemsControl>
+              <!-- Grounds step: add an article by hand (number or words, searched in the official texts). -->
+              <StackPanel Spacing="6" Margin="0,0,8,8" IsVisible="{Binding IsGroundsStep}">
+                <TextBlock FontSize="13" FontWeight="SemiBold" Text="{Binding L[AddArticleByHand]}" />
+                <TextBox Classes="input" Name="ArticleSearchBox" Text="{Binding ArticleQuery}" PlaceholderText="{Binding L[ArticleSearchPlaceholder]}" />
+                <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap" Text="{Binding ArticleSearchHint}"
+                           IsVisible="{Binding ArticleSearchHint, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                <ItemsControl ItemsSource="{Binding ArticleResults}" ItemTemplate="{StaticResource ArticleChoiceTemplate}" />
+              </StackPanel>
 
-                  <StackPanel Orientation="Horizontal" Spacing="6" IsVisible="{Binding CanAskModelForClaims}">
-                    <Button Name="AskModelButton" Classes="outline" Command="{Binding AskModelForClaimsCommand}">
-                      <StackPanel Orientation="Horizontal" Spacing="5">
-                        <ic:SymbolIcon Symbol="Sparkle" FontSize="14" Foreground="{DynamicResource AccentBrush}" />
-                        <TextBlock FontSize="12" Text="{Binding L[AskModelForClaims]}" />
-                      </StackPanel>
-                    </Button>
-                    <Button Classes="outline" Command="{Binding AskModelForClaimsCancelCommand}" Content="{Binding L[Cancel]}"
-                            IsVisible="{Binding AskModelForClaimsCommand.IsRunning}" />
-                  </StackPanel>
-                  <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap" Text="{Binding ModelPickHint}"
-                             IsVisible="{Binding ModelPickHint, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
-
-                  <TextBox Classes="input" Name="ArticleSearchBox" Text="{Binding ArticleQuery}" PlaceholderText="{Binding L[ArticleSearchPlaceholder]}" />
-                  <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap" Text="{Binding ArticleSearchHint}"
-                             IsVisible="{Binding ArticleSearchHint, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
-                  <ItemsControl ItemsSource="{Binding ArticleResults}">
-                    <ItemsControl.ItemTemplate>
-                      <DataTemplate x:DataType="vm:ArticleChoiceViewModel">
-                        <Border Background="{DynamicResource SurfaceAltBrush}" CornerRadius="6" Padding="8,6" Margin="0,0,0,6">
-                          <StackPanel Spacing="3">
-                            <CheckBox IsChecked="{Binding IsSelected}"><TextBlock FontWeight="SemiBold" TextWrapping="Wrap" Text="{Binding Citation}" /></CheckBox>
-                            <TextBlock FontFamily="{StaticResource DocumentFont}" FontSize="13" TextWrapping="Wrap" MaxLines="6" TextTrimming="CharacterEllipsis" Text="{Binding Text}" />
-                            <TextBlock Classes="muted" FontSize="11" TextWrapping="Wrap" Text="{Binding ReferenceText}" />
-                            <Button Classes="subtle" Padding="0,2" HorizontalAlignment="Left" Command="{Binding OpenSourceCommand}" IsVisible="{Binding HasSource}" ToolTip.Tip="{Binding LinkTooltip}">
-                              <StackPanel Orientation="Horizontal" Spacing="4">
-                                <ic:SymbolIcon Symbol="Open" FontSize="12" Foreground="{DynamicResource AccentBrush}" />
-                                <TextBlock FontSize="11" Foreground="{DynamicResource AccentBrush}" TextDecorations="Underline" Text="{Binding LinkLabel}" />
-                              </StackPanel>
-                            </Button>
-                          </StackPanel>
-                        </Border>
-                      </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                  </ItemsControl>
-
-                  <Button Name="AddSelectedButton" Classes="primary" HorizontalAlignment="Stretch" Command="{Binding AddSelectedToGroundsCommand}">
-                    <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center">
-                      <ic:SymbolIcon Symbol="BookOpen" Foreground="White" FontSize="15" />
-                      <TextBlock Foreground="White" TextWrapping="Wrap" Text="{Binding AddSelectedText}" />
-                    </StackPanel>
-                  </Button>
-                </StackPanel>
-              </Border>
             </StackPanel>
           </ScrollViewer>
         </DockPanel>

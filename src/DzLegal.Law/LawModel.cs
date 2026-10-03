@@ -73,4 +73,9 @@ public sealed class LawLibrary(IReadOnlyList<LawCode> codes)
     public LawCode? FindCode(string id) => Codes.FirstOrDefault(c => c.Id == id);
 
     public LawArticle? FindArticle(string codeId, string number) => FindCode(codeId)?.FindArticle(number);
+
+    private ArticleIndex? _index;
+
+    /// <summary>Full-text index over the in-force articles, built on first use.</summary>
+    public ArticleIndex Index => _index ??= new ArticleIndex(Codes);
 }

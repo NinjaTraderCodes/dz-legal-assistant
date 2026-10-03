@@ -7,9 +7,9 @@ using DzLegal.Harness;
 //       Form Engine accuracy over the corpus. Exit code 1 on any mismatch.
 //   dzlegal-harness draft --models <m1,m2,...|stub> [--out bench] [--cases <folder>] [--endpoint http://127.0.0.1:11434] [--timeout-minutes 15]
 //       Drafting bench: runs the drafting cases through each local model and writes outputs + summary.md.
-//   dzlegal-harness grounds [--law-root <data/law folder>] [--cases <grounds-cases folder>] [--models gemma3:4b,...|stub]
-//       Grounds suggestions accuracy (top-1 / top-3) over fictitious fact patterns. Exit code 1 below the gate.
-//       With --models, also reports how well each local model chooses claim types from the catalog (no gate).
+//   dzlegal-harness grounds --models <gemma3:4b,...|stub> [--law-root <data/law>] [--cases <grounds-cases>] [--endpoint ...]
+//       Runs the grounds analysis (read facts → search library → choose articles) on fictitious fact patterns and
+//       reports claim recognition, expected-article recall and time per case. Reported only (no gate).
 //   dzlegal-harness law import <code-id> (--url <official url> | --file <file>) [--law-root data/law] [--as-of yyyy-mm-dd]
 //       Maintainer tool: imports an official text into the law library and writes a review report.
 var dataRoot = Path.Combine(AppContext.BaseDirectory, "data", "document-types");
@@ -34,31 +34,34 @@ if (args.Length > 1 && args[0] == "law" && args[1] == "import" && args.Length > 
 
 if (args.Length > 0 && args[0] == "grounds")
 {
+    var models = Option("--models", string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+    if (models.Length == 0)
+    {
+        Console.Error.WriteLine("grounds: --models is required, e.g. --models gemma3:4b (or 'stub').");
+        return 2;
+    }
+
     var knowledge = DzLegal.Law.LegalKnowledgeLoader.Load(Option("--law-root", Path.Combine(AppContext.BaseDirectory, "data", "law")));
     var groundsCases = GroundsEvaluator.LoadCases(Option("--cases", Path.Combine(AppContext.BaseDirectory, "grounds-cases")));
-    var report = GroundsEvaluator.Evaluate(knowledge, groundsCases);
-    GroundsEvaluator.Print(report, Console.Out);
-
-    // Optional: also score the model fallback (the model chooses claim ids from the catalog). Reported only.
-    foreach (var model in Option("--models", string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+    foreach (var model in models)
     {
-        Console.WriteLine();
-        Console.WriteLine($"Model fallback: {model}");
-        using var provider = model == "stub"
+        Console.WriteLine($"Grounds analysis with {model} — {groundsCases.Count} cases");
+        using var ollama = model == "stub"
             ? null
             : new DzLegal.ModelProviders.Ollama.OllamaModelProvider(new DzLegal.ModelProviders.Ollama.OllamaOptions
             {
                 Endpoint = new Uri(Option("--endpoint", "http://127.0.0.1:11434")),
                 Model = model,
-                Timeout = TimeSpan.FromMinutes(5),
+                Timeout = TimeSpan.FromMinutes(10),
                 Think = model.StartsWith("qwen3", StringComparison.OrdinalIgnoreCase) ? false : null,
             });
-        var modelReport = await GroundsEvaluator.EvaluateModelAsync(
-            knowledge, groundsCases, (DzLegal.Drafting.IModelProvider?)provider ?? new DzLegal.ModelProviders.Stub.StubModelProvider(), Console.Out);
-        GroundsEvaluator.Print(modelReport, Console.Out);
+        var report = await GroundsEvaluator.EvaluateAsync(
+            knowledge, groundsCases, (DzLegal.Drafting.IModelProvider?)ollama ?? new DzLegal.ModelProviders.Stub.StubModelProvider(), Console.Out);
+        GroundsEvaluator.Print(report, knowledge, Console.Out);
+        Console.WriteLine();
     }
 
-    return report.Passes ? 0 : 1;
+    return 0;
 }
 
 if (args.Length > 0 && args[0] == "draft")

@@ -109,7 +109,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     public ObservableCollection<FindingViewModel> PresentFindings { get; } = [];
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(StepPosition), nameof(IsNotesStep))]
+    [NotifyPropertyChangedFor(nameof(StepPosition), nameof(IsGroundsStep), nameof(IsRequestsStep), nameof(IsDocumentsStep))]
     public partial FieldGroupViewModel? SelectedStep { get; set; }
 
     public string StepPosition => SelectedStep is null ? string.Empty : L.Format("StepPosition", SelectedStep.Number, FieldGroups.Count);
@@ -284,7 +284,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     public FieldViewModel Field(string id) => _fields.Single(f => f.Id == id);
 
     /// <summary>The draft as it should be saved: current inputs and the articles the lawyer ticked.</summary>
-    private DraftDocument CurrentDraft() => _draft with { Inputs = CurrentInputs(), SelectedArticles = [.. _selectedArticles] };
+    private DraftDocument CurrentDraft() => _draft with { Inputs = CurrentInputs(), SelectedArticles = [.. _selectedArticles], GroundsAnalysis = _analysis };
 
     public Dictionary<string, string> CurrentInputs() =>
         _fields.ToDictionary(f => f.Id, f => f.Value, StringComparer.Ordinal);
@@ -307,7 +307,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
             var keep = EditedNarrative();
             var draft = await drafting.DraftAsync(
                 _definition,
-                CurrentInputs(),
+                DraftingInputs(),
                 new DraftOptions
                 {
                     Progress = progress,
@@ -460,7 +460,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         _generatedSnapshot = null;
         _modelText.Clear();
         HasGeneratedDraft = false;
-        SetSelectedArticles([]);
+        LoadGroundsState(_draft);
         OnInputChanged();
         SyncSections(overwriteNarrative: true);
         SetStatus(L["Ready"]);
@@ -518,7 +518,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
 
         LoadInputs(inputs);
         _draft = _templates.Refresh(_definition, loaded, inputs);
-        SetSelectedArticles(loaded.SelectedArticles);
+        LoadGroundsState(loaded);
         _generatedSnapshot = null;
         HasGeneratedDraft = false;
         UpdateVisibility();
@@ -586,9 +586,8 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         OnPropertyChanged(nameof(StepPosition));
         OnPropertyChanged(nameof(Shortcuts));
         OnPropertyChanged(nameof(AssistantTitle));
-        OnPropertyChanged(nameof(AddSelectedText));
         _ = CheckModelStatusAsync();
-        RefreshSuggestions(force: true);
+        ShowAnalysis(_analysis);
         Recheck();
         SetStatus(L["Ready"]);
     }
@@ -598,7 +597,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         UpdateVisibility();
         _draft = _templates.Refresh(_definition, _draft, CurrentInputs());
         SyncSections(overwriteNarrative: false);
-        RefreshSuggestions();
+        UpdateAnalysisStaleness();
         Recheck();
     }
 
@@ -754,7 +753,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     /// </summary>
     private void UpdateReviewHints()
     {
-        var inputs = CurrentInputs();
+        var inputs = DraftingInputs();
         foreach (var vm in Sections)
         {
             var lines = vm.IsOverridden

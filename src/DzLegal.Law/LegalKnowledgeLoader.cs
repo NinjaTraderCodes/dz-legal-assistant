@@ -12,8 +12,11 @@ public static class LegalKnowledgeLoader
 {
     public const string ClaimsFolder = "claims";
 
-    /// <summary>Prompt for the model fallback that chooses claim types from the catalog.</summary>
-    public const string ClaimPickPromptFile = "prompts/pick-claims.ar.txt";
+    /// <summary>Grounds analysis, stage 1: the model reads the facts (relationship, breach, remedy, claim types, search terms).</summary>
+    public const string ReadFactsPromptFile = "prompts/read-facts.ar.txt";
+
+    /// <summary>Grounds analysis, stage 3: the model chooses articles among the candidates found in the library.</summary>
+    public const string SelectArticlesPromptFile = "prompts/select-articles.ar.txt";
 
     public static readonly IReadOnlyList<string> Areas = ["civil", "commercial", "family", "social"];
 
@@ -57,21 +60,26 @@ public static class LegalKnowledgeLoader
         var duplicate = claims.GroupBy(c => c.Id).FirstOrDefault(g => g.Count() > 1);
         return duplicate is not null
             ? throw new LawDataException(folder, [$"Claim id '{duplicate.Key}' is defined more than once."])
-            : new LegalKnowledge(library, manifest, claims, ReadPrompt(lawRoot));
+            : new LegalKnowledge(
+                library,
+                manifest,
+                claims,
+                new AnalysisPrompts(
+                    ReadPrompt(lawRoot, ReadFactsPromptFile, "{{ facts }}", "{{ claims }}"),
+                    ReadPrompt(lawRoot, SelectArticlesPromptFile, "{{ facts }}", "{{ candidates }}")));
     }
 
-    private static string ReadPrompt(string lawRoot)
+    private static string ReadPrompt(string lawRoot, string file, params string[] placeholders)
     {
-        var path = Path.Combine(lawRoot, ClaimPickPromptFile);
+        var path = Path.Combine(lawRoot, file);
         if (!File.Exists(path))
         {
             return string.Empty;
         }
 
         var text = File.ReadAllText(path);
-        return text.Contains("{{ facts }}", StringComparison.Ordinal) && text.Contains("{{ claims }}", StringComparison.Ordinal)
-            ? text
-            : throw new LawDataException(path, ["The prompt must contain {{ facts }} and {{ claims }}."]);
+        var missing = placeholders.Where(p => !text.Contains(p, StringComparison.Ordinal)).ToList();
+        return missing.Count == 0 ? text : throw new LawDataException(path, [$"The prompt must contain {string.Join(" and ", missing)}."]);
     }
 
     public static List<string> Validate(ClaimCatalogFile file, LawSourceManifest manifest, LawLibrary library)
@@ -88,14 +96,9 @@ public static class LegalKnowledgeLoader
         foreach (var claim in file.Claims)
         {
             var where = $"Claim '{claim.Id}'";
-            if (claim.Triggers.Count == 0 || claim.Triggers.Any(t => t.Any.Count == 0 || t.Any.Any(string.IsNullOrWhiteSpace) || t.Weight <= 0))
+            if (claim.Label.Ar.Trim().Length == 0)
             {
-                errors.Add($"{where}: every trigger group needs words and a positive weight, and there must be at least one.");
-            }
-
-            if (!claim.Triggers.Any(t => t.Required))
-            {
-                errors.Add($"{where}: at least one trigger group must be required, so the claim is never suggested on generic words alone.");
+                errors.Add($"{where}: needs an Arabic label (the model chooses claim types by their label).");
             }
 
             if (claim.Articles.Count == 0)

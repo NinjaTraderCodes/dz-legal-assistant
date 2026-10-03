@@ -190,6 +190,31 @@ public static class ArabicScript
         return span.StartsWith(term, StringComparison.Ordinal) && IsEnding(span[term.Length..]);
     }
 
+    /// <summary>
+    /// A coarse search key for a token from <see cref="Tokens"/>: one leading «و/ف/ب/ل» and one common ending are
+    /// removed when at least three letters remain. Used for indexing and querying alike, so both sides agree
+    /// («وأجوره» and «الأجور» both give «اجور»).
+    /// </summary>
+    public static string SearchKey(string token)
+    {
+        ArgumentNullException.ThrowIfNull(token);
+        var key = token;
+        if (key.Length >= 5 && key[0] is '\u0648' or '\u0641' or '\u0628' or '\u0644')
+        {
+            key = key[1..];
+        }
+
+        foreach (var suffix in Suffixes.OrderByDescending(x => x.Length))
+        {
+            if (key.Length - suffix.Length >= 3 && key.EndsWith(suffix, StringComparison.Ordinal))
+            {
+                return key[..^suffix.Length];
+            }
+        }
+
+        return key;
+    }
+
     private static bool IsEnding(ReadOnlySpan<char> rest)
     {
         if (rest.IsEmpty)

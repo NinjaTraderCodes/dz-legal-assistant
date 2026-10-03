@@ -134,38 +134,42 @@ public class RenderingTests
     }
 
     [AvaloniaFact]
-    public async Task NotesStepShowsGroundsSuggestions()
+    public async Task GroundsStepShowsTheAnalysis()
     {
-        var (window, vm) = await ShowFilledWindowAsync();
-        vm.SelectStepCommand.Execute(vm.FieldGroups.Single(g => g.Id == "notes"));
-        vm.GroundsSuggestions[0].Articles[0].IsSelected = true;
-        Dispatcher.UIThread.RunJobs();
-        var panel = window.FindControl<Border>("GroundsPanel")!;
-        panel.BringIntoView();
-        Dispatcher.UIThread.RunJobs();
-
-        Assert.True(panel.IsVisible);
-        Assert.True(window.FindControl<Button>("AddSelectedButton")!.IsEnabled);
-        SaveScreenshot(window, "main-window-grounds");
-    }
-
-    [AvaloniaFact]
-    public async Task AModelPickedClaimIsTagged()
-    {
-        var recorder = new RecordingProvider(r => r.SectionId == Drafting.ClaimPicker.RequestId ? "liability-for-things" : r.SourceText);
-        var vm = Vm.Create(recorder: recorder).Filled();
-        vm.Field("claim.subject").Value = "دعوى";
-        vm.Field("notes.facts").Value = "انفصلت لوحة مثبتة على واجهة محل المدعى عليه وهوت على سيارة المدعي المركونة";
-        vm.SelectStepCommand.Execute(vm.FieldGroups.Single(g => g.Id == "notes"));
-        await vm.AskModelForClaimsCommand.ExecuteAsync(null);
+        var vm = Vm.Create(recorder: Analysis.Model()).Filled();
+        await vm.GenerateCommand.ExecuteAsync(null);
+        vm.SelectStepCommand.Execute(vm.FieldGroups.Single(g => g.Id == "grounds"));
+        await vm.AnalyseGroundsCommand.ExecuteAsync(null);
+        vm.AnalysedArticles[0].IsSelected = true;
         var window = new MainWindow { DataContext = vm, Width = 1440, Height = 900 };
         window.Show();
         Dispatcher.UIThread.RunJobs();
-        window.FindControl<ItemsControl>("GroundsSuggestionsList")!.BringIntoView();
+
+        Assert.True(window.FindControl<StackPanel>("GroundsPanel")!.IsVisible);
+        Assert.True(window.FindControl<Button>("AnalyseButton")!.IsEnabled);
+        Assert.False(window.FindControl<Border>("StaleBanner")!.IsVisible);
+        SaveScreenshot(window, "main-window-grounds");
+
+        window.FindControl<ItemsControl>("SelectedGroundsList")!.BringIntoView();
+        Dispatcher.UIThread.RunJobs();
+        SaveScreenshot(window, "main-window-grounds-selected");
+    }
+
+    [AvaloniaFact]
+    public async Task RequestsStepOffersTheUsualRequests()
+    {
+        var vm = Vm.Create(recorder: Analysis.Model()).Filled();
+        await vm.AnalyseGroundsCommand.ExecuteAsync(null);
+        await vm.GenerateCommand.ExecuteAsync(null);
+        vm.SelectStepCommand.Execute(vm.FieldGroups.Single(g => g.Id == "requests"));
+        vm.RequestChips[0].InsertCommand.Execute(null);
+        var window = new MainWindow { DataContext = vm, Width = 1440, Height = 900 };
+        window.Show();
         Dispatcher.UIThread.RunJobs();
 
-        Assert.True(Assert.Single(vm.GroundsSuggestions).IsPickedByModel);
-        SaveScreenshot(window, "main-window-grounds-model");
+        Assert.True(window.FindControl<StackPanel>("RequestsHelpPanel")!.IsVisible);
+        Assert.False(window.FindControl<StackPanel>("GroundsPanel")!.IsVisible);
+        SaveScreenshot(window, "main-window-requests");
     }
 
     [AvaloniaFact]

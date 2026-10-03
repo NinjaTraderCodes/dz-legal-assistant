@@ -1,5 +1,8 @@
+using System.Diagnostics;
 using System.Text.Json;
+using DzLegal.Domain;
 using DzLegal.Domain.Serialization;
+using DzLegal.Drafting;
 using DzLegal.Law;
 
 namespace DzLegal.Harness;
@@ -10,10 +13,15 @@ public sealed record GroundsCase
 
     public string? CourtSection { get; init; }
 
+    public string Subject { get; init; } = string.Empty;
+
     public required string Facts { get; init; }
 
-    /// <summary>The claim type a lawyer would start from; empty when the catalog does not cover the case.</summary>
-    public required string Expect { get; init; }
+    /// <summary>The catalog claim type a lawyer would start from; empty when the catalog does not cover the case.</summary>
+    public string Expect { get; init; } = string.Empty;
+
+    /// <summary>Articles a lawyer would cite, as "code:number" (e.g. "civil-code:450").</summary>
+    public IReadOnlyList<string> ExpectArticles { get; init; } = [];
 }
 
 public sealed record GroundsCaseFile
@@ -21,28 +29,38 @@ public sealed record GroundsCaseFile
     public IReadOnlyList<GroundsCase> Cases { get; init; } = [];
 }
 
-public sealed record GroundsCaseResult(GroundsCase Case, IReadOnlyList<string> Suggested)
+public sealed record GroundsCaseResult(GroundsCase Case, GroundsAnalysis Analysis, TimeSpan Elapsed)
 {
-    public bool ExpectsNothing => Case.Expect.Length == 0;
+    public bool ClaimFound => Case.Expect.Length == 0 ? Analysis.ClaimIds.Count == 0 : Analysis.ClaimIds.Contains(Case.Expect);
 
-    public bool Top1 => ExpectsNothing ? Suggested.Count == 0 : Suggested.Count > 0 && Suggested[0] == Case.Expect;
+    public IReadOnlyList<string> Selected => Analysis.Articles.Select(a => $"{a.Code}:{a.Number}").ToList();
 
-    public bool Top3 => ExpectsNothing ? Suggested.Count == 0 : Suggested.Contains(Case.Expect);
+    public int ExpectedFound => Case.ExpectArticles.Count(Selected.Contains);
+
+    public IReadOnlyList<string> Unexpected => Selected.Where(s => !Case.ExpectArticles.Contains(s)).ToList();
 }
 
-public sealed record GroundsReport(IReadOnlyList<GroundsCaseResult> Results)
+public sealed record GroundsReport(string Model, IReadOnlyList<GroundsCaseResult> Results)
 {
-    /// <summary>The CI gate: the expected claim must be among the first three suggestions in at least 90% of cases.</summary>
-    public const double RequiredTop3 = 0.9;
+    public double ClaimAccuracy => Results.Count == 0 ? 0 : (double)Results.Count(r => r.ClaimFound) / Results.Count;
 
-    public double Top1 => Results.Count == 0 ? 0 : (double)Results.Count(r => r.Top1) / Results.Count;
+    /// <summary>Share of all expected articles that the analysis proposed.</summary>
+    public double ArticleRecall
+    {
+        get
+        {
+            var expected = Results.Sum(r => r.Case.ExpectArticles.Count);
+            return expected == 0 ? 0 : (double)Results.Sum(r => r.ExpectedFound) / expected;
+        }
+    }
 
-    public double Top3 => Results.Count == 0 ? 0 : (double)Results.Count(r => r.Top3) / Results.Count;
-
-    public bool Passes => Results.Count > 0 && Top3 >= RequiredTop3;
+    public TimeSpan AverageTime => Results.Count == 0 ? TimeSpan.Zero : TimeSpan.FromTicks((long)Results.Average(r => r.Elapsed.Ticks));
 }
 
-/// <summary>Measures the grounds suggester on fact patterns with a known starting claim.</summary>
+/// <summary>
+/// Measures the grounds analysis end to end with a local model, on fact patterns with the claim type and articles a
+/// lawyer would start from. Reported, not gated: model quality is measured on the lawyer's own machine.
+/// </summary>
 public static class GroundsEvaluator
 {
     public static IReadOnlyList<GroundsCase> LoadCases(string folder) =>
@@ -50,44 +68,34 @@ public static class GroundsEvaluator
             .SelectMany(f => JsonSerializer.Deserialize<GroundsCaseFile>(File.ReadAllText(f), DefinitionJson.Options)?.Cases ?? [])
             .ToList();
 
-    public static GroundsReport Evaluate(LegalKnowledge knowledge, IReadOnlyList<GroundsCase> cases)
+    public static async Task<GroundsReport> EvaluateAsync(LegalKnowledge knowledge, IReadOnlyList<GroundsCase> cases, IModelProvider provider, TextWriter log)
     {
-        var suggester = new GroundsSuggester(knowledge);
-        return new GroundsReport(cases
-            .Select(c => new GroundsCaseResult(c, suggester.Suggest(c.Facts, GroundsSuggester.AreaOf(c.CourtSection)).Select(s => s.Claim.Id).ToList()))
-            .ToList());
-    }
-
-    /// <summary>
-    /// Scores the model fallback: for each case the model chooses claim ids from the catalog (restricted to the
-    /// case's area, like the app), and its picks are scored like keyword suggestions.
-    /// </summary>
-    public static async Task<GroundsReport> EvaluateModelAsync(LegalKnowledge knowledge, IReadOnlyList<GroundsCase> cases, DzLegal.Drafting.IModelProvider provider, TextWriter log)
-    {
-        var picker = new DzLegal.Drafting.ClaimPicker(provider);
+        ArgumentNullException.ThrowIfNull(cases);
+        ArgumentNullException.ThrowIfNull(log);
+        var analyzer = new GroundsAnalyzer(provider);
         var results = new List<GroundsCaseResult>();
         foreach (var c in cases)
         {
-            var area = GroundsSuggester.AreaOf(c.CourtSection);
-            var options = knowledge.Claims.Where(x => area is null || x.Area == area).Select(x => new DzLegal.Drafting.ClaimOption(x.Id, x.Label.Ar)).ToList();
-            var started = System.Diagnostics.Stopwatch.StartNew();
-            var picks = await picker.PickAsync(knowledge.ClaimPickPrompt, string.Empty, c.Facts, options);
-            log.WriteLine($"  [{c.Name}] {started.Elapsed.TotalSeconds:F0}s → {(picks.Count == 0 ? "nothing" : string.Join(", ", picks))}");
-            results.Add(new GroundsCaseResult(c, picks));
+            var started = Stopwatch.StartNew();
+            var analysis = await analyzer.AnalyseAsync(knowledge, c.Subject, c.Facts, c.CourtSection);
+            var result = new GroundsCaseResult(c, analysis, started.Elapsed);
+            log.WriteLine($"  [{c.Name}] {started.Elapsed.TotalSeconds:F0}s  claim: {(analysis.ClaimIds.Count == 0 ? "—" : string.Join(", ", analysis.ClaimIds))}  articles: {(result.Selected.Count == 0 ? "—" : string.Join(", ", result.Selected))}  ({result.ExpectedFound}/{c.ExpectArticles.Count} expected)");
+            results.Add(result);
         }
 
-        return new GroundsReport(results);
+        return new GroundsReport(provider.Name, results);
     }
 
-    public static void Print(GroundsReport report, TextWriter output)
+    public static void Print(GroundsReport report, LegalKnowledge knowledge, TextWriter output)
     {
+        ArgumentNullException.ThrowIfNull(report);
+        ArgumentNullException.ThrowIfNull(knowledge);
+        ArgumentNullException.ThrowIfNull(output);
         var ci = System.Globalization.CultureInfo.InvariantCulture;
-        output.WriteLine($"Grounds suggestions — {report.Results.Count} cases");
-        foreach (var r in report.Results.Where(r => !r.Top1))
+        output.WriteLine(string.Format(ci, "{0}: claim type recognised {1:P0} · expected articles proposed {2:P0} · {3:F0}s per case", report.Model, report.ClaimAccuracy, report.ArticleRecall, report.AverageTime.TotalSeconds));
+        if (knowledge.Library.Codes.Count == 0)
         {
-            output.WriteLine($"  {(r.Top3 ? "not first" : "MISSED   ")} [{r.Case.Name}] expected {(r.ExpectsNothing ? "nothing" : r.Case.Expect)}, got {(r.Suggested.Count == 0 ? "nothing" : string.Join(", ", r.Suggested))}");
+            output.WriteLine("  Note: no official text is imported yet, so only catalog articles can be proposed and library search finds nothing.");
         }
-
-        output.WriteLine(string.Format(ci, "Top-1: {0:P0}   Top-3: {1:P0} (required {2:P0})", report.Top1, report.Top3, GroundsReport.RequiredTop3));
     }
 }

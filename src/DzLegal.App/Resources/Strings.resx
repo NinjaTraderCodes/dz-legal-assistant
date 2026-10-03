@@ -113,20 +113,8 @@
   <data name="TryAgain" xml:space="preserve"><value>حاول مجددا</value></data>
   <data name="Send" xml:space="preserve"><value>إرسال</value></data>
   <data name="InstructionPlaceholder" xml:space="preserve"><value>اطلب تعديلا على هذا القسم…</value></data>
-  <data name="GroundsTitle" xml:space="preserve"><value>الأسانيد المقترحة</value></data>
-  <data name="GroundsIntro" xml:space="preserve"><value>اقتراحات آلية من الوقائع، لم يتحقق منها محام بعد. اختر المواد التي تعتمدها؛ لا يذكر النموذج إلا ما تختاره.</value></data>
-  <data name="GroundsMatched" xml:space="preserve"><value>الكلمات الدالة: {0}</value></data>
-  <data name="GroundsNeedFacts" xml:space="preserve"><value>اكتب الوقائع أعلاه لتظهر الأسانيد المقترحة.</value></data>
-  <data name="GroundsNone" xml:space="preserve"><value>لا يوجد اقتراح بالكلمات الدالة لهذه الوقائع. جرب «اسأل النموذج عن نوع الدعوى»، أو ابحث عن مادة أدناه، أو اكتب الأسانيد بنفسك.</value></data>
-  <data name="GroundsArticles" xml:space="preserve"><value>المواد</value></data>
-  <data name="GroundsFactsToState" xml:space="preserve"><value>وقائع ينبغي ذكرها</value></data>
-  <data name="GroundsRequests" xml:space="preserve"><value>طلبات معتادة</value></data>
-  <data name="GroundsDocuments" xml:space="preserve"><value>مستندات معتادة</value></data>
-  <data name="InsertRequests" xml:space="preserve"><value>إدراج في الطلبات</value></data>
-  <data name="InsertDocuments" xml:space="preserve"><value>إدراج في المستندات</value></data>
-  <data name="GroundsAddSelected" xml:space="preserve"><value>إضافة المواد المختارة ({0}) إلى الأسانيد</value></data>
-  <data name="GroundsAdded" xml:space="preserve"><value>أضيفت {0} مادة إلى ملاحظات الأسانيد.</value></data>
-  <data name="GroundsInserted" xml:space="preserve"><value>أدرج {0} سطر في «{1}».</value></data>
+  <data name="GroundsIntro" xml:space="preserve"><value>حلل الوقائع ليقترح النموذج مواد من النصوص الرسمية. أنت من يختار؛ لا يذكر النموذج في العريضة إلا ما تعتمده هنا.</value></data>
+  <data name="GroundsNeedFacts" xml:space="preserve"><value>اكتب الوقائع أولا (خطوة «الوقائع»)، ثم حلّلها هنا.</value></data>
   <data name="ArticleTextUnavailable" xml:space="preserve"><value>النص الرسمي لهذا القانون لم يستورد بعد إلى المكتبة.</value></data>
   <data name="ArticleSearchPlaceholder" xml:space="preserve"><value>ابحث عن مادة: رقمها (124 ق م) أو كلمات منها</value></data>
   <data name="ArticleSearchNone" xml:space="preserve"><value>لا توجد مادة مطابقة.</value></data>
@@ -137,15 +125,39 @@
   <data name="CheckInOfficialJournal" xml:space="preserve"><value>التحقق في الجريدة الرسمية</value></data>
   <data name="OfficialSourceTooltip" xml:space="preserve"><value>{0}
 استورد في {1}</value></data>
-  <data name="ProvenanceCatalog" xml:space="preserve"><value>اقتراح من فهرس الدعاوى — لم يتحقق منه محام</value></data>
   <data name="ProvenanceVerified" xml:space="preserve"><value>تحقق منه محام</value></data>
   <data name="LinkOpened" xml:space="preserve"><value>فتح المصدر الرسمي في متصفحك — لا ترسل أي معطيات عن القضية.</value></data>
   <data name="LinkNotOpened" xml:space="preserve"><value>تعذر فتح المتصفح. الرابط: {0}</value></data>
   <data name="LinkRefused" xml:space="preserve"><value>رفض فتح رابط غير رسمي.</value></data>
-  <data name="AskModelForClaims" xml:space="preserve"><value>اسأل النموذج عن نوع الدعوى</value></data>
-  <data name="ModelPicking" xml:space="preserve"><value>{0} يقرأ الوقائع ويختار من فهرس الدعاوى…</value></data>
-  <data name="ModelPicked" xml:space="preserve"><value>اختار النموذج {0} نوع(ا) من الفهرس — راجعها قبل الاعتماد عليها.</value></data>
-  <data name="ModelPickedNothing" xml:space="preserve"><value>لم يجد النموذج في الفهرس نوعا يناسب هذه الوقائع.</value></data>
-  <data name="ModelPickedSame" xml:space="preserve"><value>اختار النموذج الأنواع المقترحة نفسها.</value></data>
-  <data name="PickedByModel" xml:space="preserve"><value>اختاره النموذج من فهرس الدعاوى</value></data>
+  <data name="AnalyseGrounds" xml:space="preserve"><value>حلّل الوقائع واقترح الأسانيد</value></data>
+  <data name="AnalysisReading" xml:space="preserve"><value>١/٣ قراءة الوقائع…</value></data>
+  <data name="AnalysisSearching" xml:space="preserve"><value>٢/٣ البحث في النصوص القانونية…</value></data>
+  <data name="AnalysisSelecting" xml:space="preserve"><value>٣/٣ اختيار المواد المناسبة…</value></data>
+  <data name="AnalysisDone" xml:space="preserve"><value>اقترح {1} عدد {0} من المواد — راجعها واختر ما تعتمده.</value></data>
+  <data name="AnalysisNoArticles" xml:space="preserve"><value>قرأ النموذج الوقائع لكنه لم يجد مادة مناسبة بين المرشحات. أضف المواد يدويا أدناه.</value></data>
+  <data name="AnalysisNothing" xml:space="preserve"><value>لم يقدم {0} تحليلا صالحا. تأكد من تشغيل النموذج المحلي، أو أضف المواد يدويا أدناه.</value></data>
+  <data name="AnalysisStale" xml:space="preserve"><value>تغيرت الوقائع بعد التحليل — أعد التحليل. المواد التي اعتمدتها محفوظة.</value></data>
+  <data name="ModelReading" xml:space="preserve"><value>قراءة النموذج للوقائع</value></data>
+  <data name="ModelTag" xml:space="preserve"><value>نموذج</value></data>
+  <data name="ReadingRelationship" xml:space="preserve"><value>العلاقة القانونية:</value></data>
+  <data name="ReadingBreach" xml:space="preserve"><value>الالتزام المخل به:</value></data>
+  <data name="ReadingSought" xml:space="preserve"><value>المطلوب:</value></data>
+  <data name="ReadingClaims" xml:space="preserve"><value>نوع الدعوى:</value></data>
+  <data name="ProposedArticles" xml:space="preserve"><value>المواد المقترحة</value></data>
+  <data name="TickBasis" xml:space="preserve"><value>اعتماد مواد الأساس</value></data>
+  <data name="SelectedGrounds" xml:space="preserve"><value>الأسانيد المعتمدة</value></data>
+  <data name="SelectedGroundsEmpty" xml:space="preserve"><value>لم تعتمد أي مادة بعد. اختر من المقترحات أو أضف مادة يدويا.</value></data>
+  <data name="AddArticleByHand" xml:space="preserve"><value>إضافة مادة يدويا</value></data>
+  <data name="Role_basis" xml:space="preserve"><value>أساس</value></data>
+  <data name="Role_proof" xml:space="preserve"><value>إثبات</value></data>
+  <data name="Role_damages" xml:space="preserve"><value>تعويض</value></data>
+  <data name="Role_procedure" xml:space="preserve"><value>إجراء</value></data>
+  <data name="ModelReason" xml:space="preserve"><value>تعليل النموذج: {0}</value></data>
+  <data name="FromClaimCatalog" xml:space="preserve"><value>من فهرس الدعاوى</value></data>
+  <data name="FromLibrarySearch" xml:space="preserve"><value>من البحث في النصوص</value></data>
+  <data name="ProvenanceModel" xml:space="preserve"><value>اقترحه النموذج — تحقق منه قبل اعتماده</value></data>
+  <data name="ProvenanceTextUnverified" xml:space="preserve"><value>نص لم يتحقق منه محام بعد</value></data>
+  <data name="UsualRequests" xml:space="preserve"><value>طلبات معتادة لهذا النوع من الدعاوى</value></data>
+  <data name="UsualDocuments" xml:space="preserve"><value>مستندات معتادة لهذا النوع من الدعاوى</value></data>
+  <data name="UsualLinesNeedAnalysis" xml:space="preserve"><value>حلّل الوقائع في خطوة «الأسانيد القانونية» لتظهر هنا الطلبات المعتادة لنوع الدعوى.</value></data>
 </root>

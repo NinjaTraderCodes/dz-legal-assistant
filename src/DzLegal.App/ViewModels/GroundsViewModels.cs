@@ -16,7 +16,8 @@ public sealed partial class ArticleChoiceViewModel : ObservableObject
         string why,
         LawArticle? article,
         ArticleProvenance provenance,
-        bool claimVerified,
+        string provenanceTag,
+        bool isVerified,
         bool selected,
         Loc loc,
         Action<ArticleChoiceViewModel> onToggled,
@@ -34,8 +35,8 @@ public sealed partial class ArticleChoiceViewModel : ObservableObject
         LinkLabel = loc[provenance.SourceIsExactText ? "OfficialSource" : "CheckInOfficialJournal"];
         LinkTooltip = SourceUrl is null ? string.Empty
             : provenance.RetrievedOn.Length > 0 ? loc.Format("OfficialSourceTooltip", SourceUrl, provenance.RetrievedOn) : SourceUrl;
-        IsVerified = claimVerified && provenance.IsTextVerified;
-        ProvenanceTag = loc[IsVerified ? "ProvenanceVerified" : "ProvenanceCatalog"];
+        IsVerified = isVerified;
+        ProvenanceTag = provenanceTag;
         _isSelected = selected;
         _onToggled = onToggled;
         _openLink = openLink;
@@ -55,8 +56,21 @@ public sealed partial class ArticleChoiceViewModel : ObservableObject
 
     public string LinkTooltip { get; }
 
-    /// <summary>Both the claim's article list and the imported text were checked by a lawyer.</summary>
+    /// <summary>The imported text was checked by a lawyer (and, for a proposal, nothing else is pending).</summary>
     public bool IsVerified { get; }
+
+    /// <summary>For an article the model proposed: its role («أساس»، «إثبات»…), empty otherwise.</summary>
+    public string RoleText { get; init; } = string.Empty;
+
+    public bool HasRole => RoleText.Length > 0;
+
+    /// <summary>For an article the model proposed: «تعليل النموذج: …».</summary>
+    public string ModelReason { get; init; } = string.Empty;
+
+    public bool HasModelReason => ModelReason.Length > 0;
+
+    /// <summary>Where the candidate came from: the claim catalog or the search in the official texts.</summary>
+    public string SourceText { get; init; } = string.Empty;
 
     public string ProvenanceTag { get; }
 
@@ -101,63 +115,25 @@ public sealed partial class ArticleChoiceViewModel : ObservableObject
     internal void Sync(bool selected) => SetProperty(ref _isSelected, selected, nameof(IsSelected));
 }
 
-/// <summary>A suggested claim type, with its articles to tick and its usual requests and documents to insert.</summary>
-public sealed partial class ClaimSuggestionViewModel : ObservableObject
+/// <summary>An article the lawyer relies on, shown as a removable chip in «الأسانيد المعتمدة».</summary>
+public sealed partial class SelectedArticleViewModel(ArticleRef reference, string citation, Action<ArticleRef> remove)
 {
-    private readonly Action<ClaimSuggestionViewModel> _insertRequests;
-    private readonly Action<ClaimSuggestionViewModel> _insertDocuments;
+    public ArticleRef Reference { get; } = reference;
 
-    public ClaimSuggestionViewModel(
-        ClaimSuggestion suggestion,
-        IReadOnlyList<ArticleChoiceViewModel> articles,
-        Loc loc,
-        Action<ClaimSuggestionViewModel> insertRequests,
-        Action<ClaimSuggestionViewModel> insertDocuments,
-        bool pickedByModel = false)
-    {
-        ArgumentNullException.ThrowIfNull(suggestion);
-        ArgumentNullException.ThrowIfNull(loc);
-        Claim = suggestion.Claim;
-        Label = Claim.Label.Get(loc.Language);
-        IsPickedByModel = pickedByModel;
-        MatchedText = pickedByModel ? loc["PickedByModel"] : loc.Format("GroundsMatched", string.Join("، ", suggestion.MatchedTerms));
-        Articles = articles;
-        Prerequisites = string.Join("\n", Claim.Prerequisites.Select(p => "⚠ " + p.Get(loc.Language)));
-        FactsToState = string.Join("\n", Claim.FactsToState.Select(f => "• " + f));
-        Requests = string.Join("\n", Claim.SuggestedRequests.Select(r => "• " + r));
-        Documents = string.Join("\n", Claim.RequiredDocuments.Select(d => "• " + d));
-        _insertRequests = insertRequests;
-        _insertDocuments = insertDocuments;
-    }
+    public string Citation { get; } = citation;
 
-    public ClaimType Claim { get; }
+    [RelayCommand]
+    private void Remove() => remove(Reference);
+}
 
-    public string Label { get; }
-
-    /// <summary>Chosen by the local model from the catalog (not by keyword matching).</summary>
-    public bool IsPickedByModel { get; }
-
-    /// <summary>Which of the lawyer's words led to the suggestion, or that the model chose it from the catalog.</summary>
-    public string MatchedText { get; }
-
-    public IReadOnlyList<ArticleChoiceViewModel> Articles { get; }
-
-    public string Prerequisites { get; }
-
-    public bool HasPrerequisites => Prerequisites.Length > 0;
-
-    public string FactsToState { get; }
-
-    public string Requests { get; }
-
-    public string Documents { get; }
+/// <summary>A line the lawyer can insert with one click (a usual request or document of the recognised claim types).</summary>
+public sealed partial class InsertChipViewModel(string text, Action<InsertChipViewModel> insert) : ObservableObject
+{
+    public string Text { get; } = text;
 
     [ObservableProperty]
-    public partial bool IsExpanded { get; set; }
+    public partial bool IsInserted { get; set; }
 
     [RelayCommand]
-    private void InsertRequests() => _insertRequests(this);
-
-    [RelayCommand]
-    private void InsertDocuments() => _insertDocuments(this);
+    private void Insert() => insert(this);
 }

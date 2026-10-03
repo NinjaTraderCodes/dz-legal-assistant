@@ -3,7 +3,7 @@
 // practicing lawyer confirms it against the current official text (see docs/UPDATING-LEGAL-RULES.md).
 {
   "id": "requete-introductive",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "name": { "ar": "عريضة افتتاح الدعوى", "en": "Statement of claim (requête introductive d'instance)" },
   "description": {
     "ar": "العريضة التي ترفع بها الدعوى أمام المحكمة (المواد 14 و15 و17 من قانون الإجراءات المدنية والإدارية).",
@@ -44,7 +44,9 @@
     { "id": "plaintiff", "label": { "ar": "المدعي", "en": "Plaintiff" } },
     { "id": "defendant", "label": { "ar": "المدعى عليه", "en": "Defendant" } },
     { "id": "claim", "label": { "ar": "موضوع الدعوى", "en": "Claim" } },
-    { "id": "notes", "label": { "ar": "ملاحظات المحامي (أساس الصياغة)", "en": "Lawyer's notes (basis for drafting)" } },
+    { "id": "facts", "label": { "ar": "الوقائع", "en": "Facts" } },
+    { "id": "grounds", "label": { "ar": "الأسانيد القانونية", "en": "Legal grounds" } },
+    { "id": "requests", "label": { "ar": "الطلبات", "en": "Requests" } },
     { "id": "documents", "label": { "ar": "المستندات", "en": "Supporting documents" } },
     { "id": "signature", "label": { "ar": "التاريخ والتوقيع", "en": "Date and signature" } }
   ],
@@ -82,9 +84,9 @@
     { "id": "claim.concernsRegisteredRealProperty", "group": "claim", "kind": "boolean", "default": "false", "label": { "ar": "الدعوى تتعلق بعقار أو حق عيني عقاري مشهر", "en": "Claim concerns registered real property or a real right" } },
     { "id": "claim.publicationReference", "group": "claim", "label": { "ar": "مراجع إشهار العريضة لدى المحافظة العقارية", "en": "Publication reference at the land registry (conservation foncière)" }, "visibleWhen": [ { "field": "claim.concernsRegisteredRealProperty", "is": "true" } ] },
 
-    { "id": "notes.facts", "group": "notes", "kind": "multilineText", "label": { "ar": "الوقائع", "en": "Facts" }, "hint": { "ar": "اكتب الوقائع بالعربية الفصحى، جملة في كل سطر؛ تدرج كما هي", "en": "Facts in formal Arabic, one sentence per line; used as written" } },
-    { "id": "notes.grounds", "group": "notes", "kind": "multilineText", "label": { "ar": "الأسانيد القانونية", "en": "Legal grounds" }, "hint": { "ar": "المواد والحجج التي تؤسس عليها الدعوى", "en": "Articles and arguments the claim rests on" } },
-    { "id": "notes.requests", "group": "notes", "kind": "multilineText", "label": { "ar": "الطلبات", "en": "Requests" }, "hint": { "ar": "ما تلتمسه من المحكمة", "en": "What you ask the court for" } },
+    { "id": "notes.facts", "group": "facts", "kind": "multilineText", "label": { "ar": "الوقائع", "en": "Facts" }, "hint": { "ar": "اكتب الوقائع بالعربية الفصحى، جملة في كل سطر؛ تدرج كما هي", "en": "Facts in formal Arabic, one sentence per line; used as written" } },
+    { "id": "notes.grounds", "group": "grounds", "kind": "multilineText", "label": { "ar": "حججك الإضافية (اختياري)", "en": "Your own arguments (optional)" }, "hint": { "ar": "حجج أو مواد أخرى تريد إضافتها إلى المواد المعتمدة أعلاه", "en": "Other arguments or articles to add to the selected articles above" } },
+    { "id": "notes.requests", "group": "requests", "kind": "multilineText", "label": { "ar": "الطلبات", "en": "Requests" }, "hint": { "ar": "ما تلتمسه من المحكمة", "en": "What you ask the court for" } },
 
     { "id": "documents.list", "group": "documents", "kind": "multilineText", "label": { "ar": "المستندات المؤيدة للدعوى (مستند في كل سطر)", "en": "Supporting documents (one per line)" } },
 
@@ -106,10 +108,10 @@
     { "id": "publication", "formGroup": "claim", "layout": { "align": "start", "spaceBefore": 6 }, "kind": "generated", "template": "templates/publication.scriban", "title": { "ar": "الإشهار العقاري", "en": "Land-registry publication" },
       "includeWhen": [ { "field": "claim.concernsRegisteredRealProperty", "is": "true" } ] },
     { "id": "opening", "formGroup": "court", "layout": { "align": "center", "bold": true, "spaceBefore": 14 }, "kind": "generated", "template": "templates/opening.scriban", "title": { "ar": "الافتتاح", "en": "Opening" } },
-    { "id": "facts", "formGroup": "notes", "layout": { "align": "justify", "spaceBefore": 12 }, "kind": "generated", "template": "templates/facts.scriban", "showTitle": true, "title": { "ar": "الوقائع", "en": "Facts" } },
-    { "id": "grounds", "formGroup": "notes", "layout": { "align": "justify", "spaceBefore": 12 }, "kind": "narrative", "prompt": "prompts/grounds.ar.txt", "sourceField": "notes.grounds", "showTitle": true, "title": { "ar": "المناقشة القانونية", "en": "Legal grounds" } },
-    { "id": "requestsIntro", "formGroup": "notes", "layout": { "align": "start", "spaceBefore": 12 }, "kind": "generated", "template": "templates/requestsIntro.scriban", "showTitle": true, "title": { "ar": "لهذه الأسباب ومن أجلها", "en": "For these reasons" } },
-    { "id": "requests", "formGroup": "notes", "layout": { "align": "start", "spaceBefore": 4 }, "kind": "narrative", "prompt": "prompts/requests.ar.txt", "sourceField": "notes.requests", "title": { "ar": "الطلبات", "en": "Requests" } },
+    { "id": "facts", "formGroup": "facts", "layout": { "align": "justify", "spaceBefore": 12 }, "kind": "generated", "template": "templates/facts.scriban", "showTitle": true, "title": { "ar": "الوقائع", "en": "Facts" } },
+    { "id": "grounds", "formGroup": "grounds", "layout": { "align": "justify", "spaceBefore": 12 }, "kind": "narrative", "prompt": "prompts/grounds.ar.txt", "sourceField": "notes.grounds", "showTitle": true, "title": { "ar": "المناقشة القانونية", "en": "Legal grounds" } },
+    { "id": "requestsIntro", "formGroup": "requests", "layout": { "align": "start", "spaceBefore": 12 }, "kind": "generated", "template": "templates/requestsIntro.scriban", "showTitle": true, "title": { "ar": "لهذه الأسباب ومن أجلها", "en": "For these reasons" } },
+    { "id": "requests", "formGroup": "requests", "layout": { "align": "start", "spaceBefore": 4 }, "kind": "narrative", "prompt": "prompts/requests.ar.txt", "sourceField": "notes.requests", "title": { "ar": "الطلبات", "en": "Requests" } },
     { "id": "documents", "formGroup": "documents", "layout": { "align": "start", "spaceBefore": 12 }, "kind": "generated", "template": "templates/documents.scriban", "showTitle": true, "title": { "ar": "قائمة المرفقات", "en": "Supporting documents" } },
     { "id": "dateplace", "formGroup": "signature", "layout": { "align": "end", "spaceBefore": 18 }, "kind": "generated", "template": "templates/dateplace.scriban", "title": { "ar": "التاريخ", "en": "Date" } },
     { "id": "signature", "formGroup": "signature", "layout": { "align": "end", "bold": true, "spaceBefore": 6 }, "kind": "generated", "template": "templates/signature.scriban", "title": { "ar": "التوقيع", "en": "Signature" },

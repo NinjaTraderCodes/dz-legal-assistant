@@ -2,21 +2,37 @@
 
 The grounds suggestions rest on a **local copy of the official Arabic texts**: Civil Code, CPCA, Commercial Code, Family Code and the two labour laws. The app quotes an article only from this library and never from a model's memory. A 4-billion-parameter model cannot recall article numbers or wording reliably.
 
-## How suggestions are built
+## How the grounds analysis works
 
-Nothing is scraped, searched online or read from PDFs while the lawyer works.
+Nothing is scraped, searched online or read from PDFs while the lawyer works. Everything runs on the lawyer's machine. It starts only when the lawyer clicks «حلّل الوقائع واقترح الأسانيد» in the Legal grounds step.
 
-1. **The claim catalog is prepared in advance** (`data/law/claims/*.json`). It lists claim types and the articles each one cites. It was drafted by engineering and is waiting for a lawyer's review.
-2. **The official texts are imported once, at development time,** from joradp.dz / mjustice.dz into `data/law/codes/*.json`, reviewed by a lawyer, committed, and shipped with the app.
-3. **While the lawyer types the facts,** keyword matching inside the local catalog picks up to three claim types, instantly and offline.
-4. **The model only writes.** It turns the articles the lawyer ticked into grounds paragraphs, using their official texts.
+**Prepared in advance:**
+- The official texts are imported once, at development time, from joradp.dz / mjustice.dz into `data/law/codes/*.json`. They are reviewed by a lawyer and shipped with the app.
+- The claim catalog (`data/law/claims/*.json`) is curated, lawyer-verifiable knowledge. For each claim type it records its usual articles, requests, documents and prerequisites.
 
-**Model fallback, on the lawyer's click only.** «اسأل النموذج عن نوع الدعوى» lets the local model choose among the catalog's claim types, for example when no keyword matched.
-- The model sees the facts and a closed list of `id — label` lines, limited to the court section's area. It may only answer with ids from that list (prompt: `data/law/prompts/pick-claims.ar.txt`).
-- `ClaimPicker` keeps only exact catalog ids, at most three. Anything else is discarded: explanations, invented ids, reasoning blocks.
-- The chosen claims appear tagged «اختاره النموذج من فهرس الدعاوى», with the catalog's own articles. **The model never introduces an article number.**
-- It takes about 20–60 s on a CPU-only laptop and can be cancelled. Template mode chooses nothing.
-- `dotnet run --project src/DzLegal.Harness -- grounds --models gemma3:4b` measures how well a local model chooses, on the same fact patterns. This is reported only; there is no gate.
+**At the lawyer's click** (`GroundsAnalyzer`):
+1. **Reading the facts** (model call 1, `prompts/read-facts.ar.txt`). The model writes five labelled lines:
+   - the legal relationship;
+   - the obligation breached;
+   - what is sought;
+   - up to two claim types, as ids from the catalog list for the court section's area;
+   - 5–12 search terms in the codes' vocabulary.
+
+   The parser keeps catalog ids only and removes any article number.
+2. **Searching the official texts** (no model). `ArticleIndex` is a BM25 full-text index over every in-force imported article, with its chapter headings weighted ×2. It is queried with the model's terms (weight 1) and the raw facts (weight 0.5). The catalog articles of the recognised claim types come first. At most 25 candidates are kept.
+3. **Choosing articles** (model call 2, `prompts/select-articles.ar.txt`). The model sees the candidates as `key — citation — first 300 characters of the official text` and answers `key | role | reason`. The parser:
+   - keeps candidate keys only, at most 8;
+   - maps the roles (أساس/إثبات/تعويض/إجراء);
+   - truncates a reason to 30 words;
+   - drops a reason that names another article.
+
+**The result** is the model's reading plus the proposed articles, each with its role, reason, official text, provenance and origin (catalog or search). It is saved with the draft. Nothing is used until the lawyer ticks it.
+
+**Why there are no hand-written keywords:** there is no official mapping from facts to articles, so a keyword list can never be complete. Here the model translates the facts into legal vocabulary, and the full-text index covers every imported article without curation.
+
+**Before any code is imported,** stage 2 can only offer the catalog articles of the recognised claim types, described by their catalog reason instead of their text.
+
+**Measuring it:** `dotnet run --project src/DzLegal.Harness -- grounds --models gemma3:4b` runs the fact patterns in `tests/grounds-cases/`. Each case has an expected claim type and expected articles. It reports claim recognition, expected-article recall, unexpected articles and seconds per case. This is reported, not gated, because the quality depends on the model and on the imported texts.
 
 **Why there is no live scraping or web search:**
 - The case facts would leave the machine.
@@ -79,10 +95,8 @@ The code file is written only when it validates: canonical and unique numbers, a
 
 ## Claim catalog and suggestions
 
-`data/law/claims/<area>.json` (areas: civil, commercial, family, social) lists **claim types** the way a lawyer thinks of them, for example «استرداد مبلغ قرض», «الخلع» or «التسريح التعسفي». Each claim type has:
+`data/law/claims/<area>.json` (areas: civil, commercial, family, social) lists **claim types** the way a lawyer thinks of them (with no keywords: the model recognises them from their label), for example «استرداد مبلغ قرض», «الخلع» or «التسريح التعسفي». Each claim type has:
 
-- **triggers:** groups of words and phrases. A group adds its weight once if any of its words appears in the facts. A `required` group must appear, or the claim is not suggested.
-- **exclude:** words that point to another claim type. For example, «إيجار» rules out a loan.
 - **articles:** code, number, role (`basis`, `proof`, `damages`, `procedure`) and a short "why".
 - **prerequisites:** for example, prior conciliation for labour claims.
 - **suggestedRequests**, **requiredDocuments** and **factsToState**, offered to the lawyer as one-click inserts and a checklist.
@@ -91,19 +105,6 @@ The code file is written only when it validates: canonical and unique numbers, a
 - Every claim cites a code listed in `sources.json`.
 - **Once a code is imported, every cited article must exist and be in force.** A wrong or repealed number fails at load time and in CI.
 - Until the code is imported, the citation is shown with "text not yet available".
-
-### How the suggester works
-`GroundsSuggester` reads the facts after Arabic normalisation:
-- Diacritics are ignored, and alef, yā' and tā' marbūṭa forms are unified.
-- «ال» and a leading «و ف ب ل» are allowed, and so are common endings («ا», «ه», «ها», «هم», «ات», «ين»…).
-- Only claims of the area named by the court section are considered («القسم الاجتماعي» → social). An unclear section means all areas.
-
-It returns at most three claim types, each with the words that matched. It is deterministic, and no model is involved.
-
-### Quality gate
-`dotnet run --project src/DzLegal.Harness -- grounds` runs the fictitious fact patterns in `tests/grounds-cases/`. Each case names the claim a lawyer would start from, or expects nothing for a case the catalog doesn't cover. CI requires the expected claim in the top 3 for at least 90% of cases, and every claim type must be exercised.
-
-**Limitation:** the triggers were tuned on these same cases, so today's 100% is a development score. A lawyer-written hold-out set, never used for tuning, is needed before trusting the number.
 
 ## Status
 

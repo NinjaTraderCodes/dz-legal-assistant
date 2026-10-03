@@ -3,91 +3,186 @@ using DzLegal.Drafting;
 
 namespace DzLegal.App.Tests;
 
-public sealed class GroundsTests
+/// <summary>A scripted local model for the grounds analysis: a fixed reading, then a fixed choice of candidates.</summary>
+internal static class Analysis
+{
+    public const string Reading = """
+        العلاقة القانونية: عقد قرض بين شخصين طبيعيين
+        الالتزام المخل به: لم يرد المدعى عليه المبلغ في الأجل
+        المطلوب: إلزامه برد المبلغ
+        نوع الدعوى: loan-repayment
+        كلمات البحث: قرض الاستهلاك، رد المثل، الإعذار
+        """;
+
+    public const string Selection = """
+        civil-code:450 | أساس | المدعى عليه اقترض المبلغ ولم يرده
+        civil-code:323 | إثبات | على المدعي إثبات القرض
+        civil-code:999 | أساس | مادة غير مرشحة
+        """;
+
+    public static RecordingProvider Model() => new(r => r.SectionId switch
+    {
+        GroundsAnalyzer.ReadingRequestId => Reading,
+        GroundsAnalyzer.SelectionRequestId => Selection,
+        _ => r.SourceText,
+    });
+}
+
+public sealed class GroundsWorkflowTests
 {
     [Fact]
-    public void TheNotesStepSuggestsTheLoanClaimFromTheFacts()
-    {
-        var vm = Vm.Create().Filled();
-        vm.SelectStepCommand.Execute(vm.FieldGroups.Single(g => g.Id == "notes"));
-
-        Assert.True(vm.IsNotesStep);
-        var first = vm.GroundsSuggestions[0];
-        Assert.Equal("loan-repayment", first.Claim.Id);
-        Assert.True(first.IsExpanded);
-        Assert.Contains("أقرض", first.MatchedText, StringComparison.Ordinal);
-        Assert.Empty(vm.GroundsHint);
-
-        // No official text imported in the shipped library: citations show, texts are marked unavailable.
-        var article = first.Articles.First(a => a.Reference.Number == "450");
-        Assert.Equal("المادة 450 من القانون المدني", article.Citation);
-        Assert.False(article.IsAvailable);
-        Assert.Equal(vm.L["ArticleTextUnavailable"], article.Text);
-    }
-
-    [Fact]
-    public void HintsExplainAnEmptyList()
+    public void TheNotesAreSplitIntoFactsGroundsAndRequestsSteps()
     {
         var vm = Vm.Create();
-        Assert.Equal(vm.L["GroundsNeedFacts"], vm.GroundsHint);
-        vm.Field("notes.facts").Value = "وقع خطأ في تاريخ ميلاد المدعي في سجلات الحالة المدنية";
-        Assert.Empty(vm.GroundsSuggestions);
-        Assert.Equal(vm.L["GroundsNone"], vm.GroundsHint);
+        var ids = vm.FieldGroups.Select(g => g.Id).ToList();
+        Assert.Equal(["court", "plaintiff", "defendant", "claim", "facts", "grounds", "requests", "documents", "signature"], ids);
+        Assert.Equal(["notes.facts"], vm.FieldGroups.Single(g => g.Id == "facts").Fields.Select(f => f.Id));
+
+        vm.SelectStepCommand.Execute(vm.FieldGroups.Single(g => g.Id == "grounds"));
+        Assert.True(vm.IsGroundsStep);
+        Assert.False(vm.IsRequestsStep);
+        Assert.True(vm.CanAnalyseGrounds);
     }
 
     [Fact]
-    public void TickedArticlesAreAddedToTheGroundsNotesOnce()
+    public async Task TheAnalysisShowsTheReadingAndTheProposedArticlesNothingTicked()
     {
-        var vm = Vm.Create().Filled();
-        Assert.False(vm.AddSelectedToGroundsCommand.CanExecute(null));
-        var loan = vm.GroundsSuggestions[0];
-        loan.Articles.First(a => a.Reference.Number == "450").IsSelected = true;
-        loan.Articles.First(a => a.Reference.Number == "106").IsSelected = true; // already cited in the notes
+        var recorder = Analysis.Model();
+        var vm = Vm.Create(recorder: recorder).Filled();
+        await vm.AnalyseGroundsCommand.ExecuteAsync(null);
 
-        Assert.Equal(2, vm.SelectedArticleCount);
-        vm.AddSelectedToGroundsCommand.Execute(null);
-        vm.AddSelectedToGroundsCommand.Execute(null);
+        Assert.Equal("عقد قرض بين شخصين طبيعيين", vm.ReadingRelationship);
+        Assert.Equal("استرداد مبلغ قرض", vm.ReadingClaims);
+        Assert.Equal(["450", "323"], vm.AnalysedArticles.Select(a => a.Reference.Number)); // 999 was not a candidate
+        var first = vm.AnalysedArticles[0];
+        Assert.Equal(vm.L["Role_basis"], first.RoleText);
+        Assert.Equal(vm.L.Format("ModelReason", "المدعى عليه اقترض المبلغ ولم يرده"), first.ModelReason);
+        Assert.Equal(vm.L["ProvenanceModel"], first.ProvenanceTag);
+        Assert.Equal(vm.L["FromClaimCatalog"], first.SourceText);
+        Assert.False(first.IsAvailable); // no official text imported in the shipped library
+        Assert.Empty(vm.SelectedArticles);
+        Assert.Equal(vm.L.Format("AnalysisDone", 2, "recording"), vm.AnalysisStatus);
+        Assert.False(vm.IsAnalysisStale);
 
-        var grounds = vm.Field("notes.grounds").Value;
-        Assert.EndsWith("\n- المادة 450 من القانون المدني", grounds, StringComparison.Ordinal);
-        Assert.Single(grounds.Split("المادة 106").Skip(1));
+        // The model only saw the catalog's civil claims and the candidates' keys.
+        var reading = recorder.Requests.Single(r => r.SectionId == GroundsAnalyzer.ReadingRequestId).UserPrompt;
+        Assert.Contains("loan-repayment — استرداد مبلغ قرض", reading, StringComparison.Ordinal);
+        Assert.DoesNotContain("khul", reading, StringComparison.Ordinal);
     }
 
     [Fact]
-    public void UsualRequestsAndDocumentsCanBeInserted()
+    public async Task TickedArticlesBecomeTheSelectedGroundsAndCanBeRemoved()
+    {
+        var vm = Vm.Create(recorder: Analysis.Model()).Filled();
+        await vm.AnalyseGroundsCommand.ExecuteAsync(null);
+
+        vm.TickBasisArticlesCommand.Execute(null);
+        Assert.Equal([new ArticleRef("civil-code", "450")], vm.SelectedArticles); // 323 is a proof article
+        var chip = Assert.Single(vm.SelectedGrounds);
+        Assert.Equal("المادة 450 من القانون المدني", chip.Citation);
+
+        chip.RemoveCommand.Execute(null);
+        Assert.Empty(vm.SelectedArticles);
+        Assert.False(vm.AnalysedArticles[0].IsSelected);
+    }
+
+    [Fact]
+    public async Task TheGroundsAreDraftedFromTheTickedArticles()
+    {
+        var recorder = Analysis.Model();
+        var vm = Vm.Create(knowledge: Vm.FixtureKnowledge, recorder: recorder).Filled();
+        vm.Field("notes.grounds").Value = string.Empty; // no own arguments: the ticked articles are enough
+        await vm.AnalyseGroundsCommand.ExecuteAsync(null);
+        vm.AnalysedArticles.Single(a => a.Reference.Number == "450").IsSelected = true;
+
+        await vm.GenerateCommand.ExecuteAsync(null);
+
+        var grounds = recorder.Requests.Single(r => r.SectionId == "grounds");
+        Assert.Equal("- المادة 450 من القانون المدني", grounds.SourceText);
+        Assert.Contains("- المادة 450 من القانون المدني: «نص وهمي للاختبار: القرض الوهمي", grounds.UserPrompt, StringComparison.Ordinal);
+        Assert.Empty(vm.Field("notes.grounds").Value); // the lawyer's box is not touched
+
+        // An article the lawyer neither ticked nor wrote is flagged, and so is a ticked article the text dropped.
+        vm.Sections.Single(s => s.Id == "grounds").Text = "حيث إن المادة 777 من القانون المدني تلزم المدعى عليه.";
+        var review = vm.Sections.Single(s => s.Id == "grounds").ReviewText;
+        Assert.Contains(vm.L.Format("IssueUncitedArticle", "777"), review, StringComparison.Ordinal);
+        Assert.Contains(vm.L.Format("IssueMissingNumber", "450"), review, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task ChangedFactsMarkTheAnalysisStaleButKeepTheTicks()
+    {
+        var vm = Vm.Create(recorder: Analysis.Model()).Filled();
+        await vm.AnalyseGroundsCommand.ExecuteAsync(null);
+        vm.AnalysedArticles[0].IsSelected = true;
+
+        vm.Field("notes.facts").Value += "\nوأرسل له إعذارا ثانيا.";
+        Assert.True(vm.IsAnalysisStale);
+        Assert.Single(vm.SelectedArticles);
+
+        await vm.AnalyseGroundsCommand.ExecuteAsync(null);
+        Assert.False(vm.IsAnalysisStale);
+        Assert.True(vm.AnalysedArticles[0].IsSelected);
+    }
+
+    [Fact]
+    public async Task TemplateModeCannotAnalyseAndSaysSo()
     {
         var vm = Vm.Create().Filled();
-        var loan = vm.GroundsSuggestions[0];
-        loan.InsertRequestsCommand.Execute(null);
-        loan.InsertDocumentsCommand.Execute(null);
+        await vm.AnalyseGroundsCommand.ExecuteAsync(null);
+        Assert.Empty(vm.AnalysedArticles);
+        Assert.False(vm.HasReading);
+        Assert.Equal(vm.L.Format("AnalysisNothing", vm.L["ProviderStub"]), vm.AnalysisStatus);
 
-        Assert.Contains("- إلزام المدعى عليه بأن يؤدي للمدعي مبلغ القرض", vm.Field("notes.requests").Value, StringComparison.Ordinal);
+        var empty = Vm.Create();
+        await empty.AnalyseGroundsCommand.ExecuteAsync(null);
+        Assert.Equal(empty.L["GroundsNeedFacts"], empty.AnalysisStatus);
+    }
+
+    [Fact]
+    public async Task TheRequestsAndDocumentsStepsOfferTheUsualLines()
+    {
+        var vm = Vm.Create(recorder: Analysis.Model()).Filled();
+        Assert.False(vm.HasRequestChips);
+        await vm.AnalyseGroundsCommand.ExecuteAsync(null);
+
+        var request = vm.RequestChips[0];
+        request.InsertCommand.Execute(null);
+        request.InsertCommand.Execute(null);
+        Assert.True(request.IsInserted);
+        Assert.Single(vm.Field("notes.requests").Value.Split(request.Text).Skip(1));
+
+        vm.DocumentChips.Single(d => d.Text == "محضر الإعذار").InsertCommand.Execute(null);
         Assert.Contains("- محضر الإعذار", vm.Field("documents.list").Value, StringComparison.Ordinal);
     }
 
     [Fact]
-    public void ImportedTextsGroundTheModelAndTheChecks()
+    public async Task TheAnalysisAndTheTicksAreSavedWithTheDraft()
     {
-        var recorder = new RecordingProvider();
-        var vm = Vm.Create(knowledge: Vm.FixtureKnowledge, recorder: recorder).Filled();
-        var article = vm.GroundsSuggestions[0].Articles.First(a => a.Reference.Number == "450");
-        Assert.True(article.IsAvailable);
-        Assert.StartsWith("نص وهمي للاختبار", article.Text, StringComparison.Ordinal);
-        article.IsSelected = true;
+        var files = new FakeFiles();
+        var vm = Vm.Create(files, recorder: Analysis.Model()).Filled();
+        await vm.AnalyseGroundsCommand.ExecuteAsync(null);
+        vm.AnalysedArticles[1].IsSelected = true;
+        await vm.SaveCommand.ExecuteAsync(null);
 
-        vm.GenerateCommand.Execute(null);
+        var reopened = Vm.Create(files);
+        await reopened.OpenCommand.ExecuteAsync(null);
+        Assert.Equal("عقد قرض بين شخصين طبيعيين", reopened.ReadingRelationship);
+        Assert.Equal([new ArticleRef("civil-code", "323")], reopened.SelectedArticles);
+        Assert.True(reopened.AnalysedArticles[1].IsSelected);
+        Assert.False(reopened.IsAnalysisStale);
 
-        var prompt = recorder.Requests.Single(r => r.SectionId == "grounds").UserPrompt;
-        Assert.Contains("- المادة 450 من القانون المدني: «نص وهمي للاختبار: القرض الوهمي", prompt, StringComparison.Ordinal);
-        Assert.Equal(["450"], vm.SelectedLegalTexts().Select(t => t.Number));
-
-        // An article the lawyer neither noted nor ticked is flagged under the section.
-        vm.Sections.Single(s => s.Id == "grounds").Text = "حيث إن المادة 777 من القانون المدني تلزم المدعى عليه.";
-        Assert.Contains("777", vm.Sections.Single(s => s.Id == "grounds").ReviewText, StringComparison.Ordinal);
+        reopened.NewCommand.Execute(null);
+        Assert.Empty(reopened.SelectedArticles);
+        Assert.Empty(reopened.AnalysedArticles);
+        Assert.False(reopened.HasReading);
     }
+}
 
+public sealed class ArticleSearchAndProvenanceTests
+{
     [Fact]
-    public void ArticleSearchFindsImportedArticlesAndSharesTheTick()
+    public void SearchFindsImportedArticlesAndSharesTheTick()
     {
         var empty = Vm.Create();
         empty.ArticleQuery = "450";
@@ -96,45 +191,28 @@ public sealed class GroundsTests
         var vm = Vm.Create(knowledge: Vm.FixtureKnowledge).Filled();
         vm.ArticleQuery = "المادة 450 ق م";
         var hit = Assert.Single(vm.ArticleResults);
+        Assert.Equal(vm.L["ProvenanceTextUnverified"], hit.ProvenanceTag);
         hit.IsSelected = true;
-        Assert.True(vm.GroundsSuggestions[0].Articles.First(a => a.Reference.Number == "450").IsSelected);
+        Assert.Equal("المادة 450 من القانون المدني", Assert.Single(vm.SelectedGrounds).Citation);
+
+        vm.ArticleQuery = "القرض الوهمي";
+        Assert.Equal("450", vm.ArticleResults[0].Reference.Number);
+        Assert.True(vm.ArticleResults[0].IsSelected);
 
         vm.ArticleQuery = "مادة لا وجود لها 9999";
         Assert.Equal(vm.L["ArticleSearchNone"], vm.ArticleSearchHint);
     }
 
     [Fact]
-    public async Task TheSelectionIsSavedWithTheDraft()
-    {
-        var files = new FakeFiles();
-        var vm = Vm.Create(files).Filled();
-        vm.GroundsSuggestions[0].Articles.First(a => a.Reference.Number == "323").IsSelected = true;
-        await vm.SaveCommand.ExecuteAsync(null);
-
-        var reopened = Vm.Create(files);
-        await reopened.OpenCommand.ExecuteAsync(null);
-        Assert.Equal([new ArticleRef("civil-code", "323")], reopened.SelectedArticles);
-        Assert.True(reopened.GroundsSuggestions[0].Articles.First(a => a.Reference.Number == "323").IsSelected);
-
-        reopened.NewCommand.Execute(null);
-        Assert.Empty(reopened.SelectedArticles);
-    }
-}
-
-public sealed class GroundsProvenanceTests
-{
-    [Fact]
-    public async Task EachArticleShowsItsOfficialReferenceAndOpensTheOfficialSiteOnClick()
+    public async Task EachProposedArticleShowsItsOfficialReferenceAndOpensTheOfficialSiteOnClick()
     {
         var links = new FakeLinks();
-        var vm = Vm.Create(links: links).Filled();
-        var article = vm.GroundsSuggestions[0].Articles.First(a => a.Reference.Number == "107");
+        var vm = Vm.Create(recorder: Analysis.Model(), links: links).Filled();
+        await vm.AnalyseGroundsCommand.ExecuteAsync(null);
+        var article = vm.AnalysedArticles[0];
 
         Assert.StartsWith("الأمر رقم 75-58", article.ReferenceText, StringComparison.Ordinal);
         Assert.Equal(vm.L["CheckInOfficialJournal"], article.LinkLabel);
-        Assert.Equal(vm.L["ProvenanceCatalog"], article.ProvenanceTag);
-        Assert.False(article.IsVerified);
-
         await article.OpenSourceCommand.ExecuteAsync(null);
         Assert.Equal([new Uri("https://www.joradp.dz")], links.Opened);
         Assert.Equal(vm.L["LinkOpened"], vm.StatusMessage);
@@ -148,63 +226,5 @@ public sealed class GroundsProvenanceTests
         await vm.OpenOfficialLinkAsync("https://example.com/phishing");
         Assert.Empty(links.Opened);
         Assert.True(vm.IsError);
-    }
-}
-
-public sealed class ModelFallbackTests
-{
-    /// <summary>Facts no keyword group matches (the catalog has no civil-status claim).</summary>
-    private const string Unmatched = "وقع خطأ في تاريخ ميلاد المدعي في سجلات الحالة المدنية";
-
-    [Fact]
-    public async Task TheModelChoosesOnlyFromTheCatalogAndItsPicksAreTagged()
-    {
-        var recorder = new RecordingProvider(r => r.SectionId == ClaimPicker.RequestId ? "liability-for-things\ninvented-claim\n<think>loan-repayment</think>" : r.SourceText);
-        var vm = Vm.Create(recorder: recorder).Filled();
-        vm.Field("claim.subject").Value = "دعوى";
-        vm.Field("notes.facts").Value = Unmatched;
-        Assert.Empty(vm.GroundsSuggestions);
-        Assert.True(vm.CanAskModelForClaims);
-
-        await vm.AskModelForClaimsCommand.ExecuteAsync(null);
-
-        var prompt = recorder.Requests.Single(r => r.SectionId == ClaimPicker.RequestId).UserPrompt;
-        Assert.Contains("liability-for-things — مسؤولية حارس الشيء", prompt, StringComparison.Ordinal);
-        Assert.DoesNotContain("khul", prompt, StringComparison.Ordinal); // civil section: civil claims only
-
-        var picked = Assert.Single(vm.GroundsSuggestions);
-        Assert.Equal("liability-for-things", picked.Claim.Id);
-        Assert.True(picked.IsPickedByModel);
-        Assert.Equal(vm.L["PickedByModel"], picked.MatchedText);
-        Assert.Contains(picked.Articles, a => a.Reference.Number == "138"); // the catalog's own articles
-        Assert.Equal(vm.L.Format("ModelPicked", 1), vm.ModelPickHint);
-
-        // New facts: the old picks no longer apply.
-        vm.Field("notes.facts").Value = Unmatched + " ليلا";
-        Assert.Empty(vm.GroundsSuggestions);
-        Assert.Empty(vm.ModelPickHint);
-    }
-
-    [Fact]
-    public async Task PicksAlreadySuggestedByKeywordsAreNotRepeated()
-    {
-        var recorder = new RecordingProvider(r => r.SectionId == ClaimPicker.RequestId ? "loan-repayment" : r.SourceText);
-        var vm = Vm.Create(recorder: recorder).Filled();
-        await vm.AskModelForClaimsCommand.ExecuteAsync(null);
-
-        Assert.Single(vm.GroundsSuggestions, g => g.Claim.Id == "loan-repayment");
-        Assert.DoesNotContain(vm.GroundsSuggestions, g => g.IsPickedByModel);
-        Assert.Equal(vm.L["ModelPickedSame"], vm.ModelPickHint);
-    }
-
-    [Fact]
-    public async Task TemplateModeFindsNothingAndSaysSo()
-    {
-        var vm = Vm.Create().Filled();
-        vm.Field("claim.subject").Value = "دعوى";
-        vm.Field("notes.facts").Value = Unmatched;
-        await vm.AskModelForClaimsCommand.ExecuteAsync(null);
-        Assert.Empty(vm.GroundsSuggestions);
-        Assert.Equal(vm.L["ModelPickedNothing"], vm.ModelPickHint);
     }
 }

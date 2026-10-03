@@ -58,6 +58,27 @@ public static class GroundsEvaluator
             .ToList());
     }
 
+    /// <summary>
+    /// Scores the model fallback: for each case the model chooses claim ids from the catalog (restricted to the
+    /// case's area, like the app), and its picks are scored like keyword suggestions.
+    /// </summary>
+    public static async Task<GroundsReport> EvaluateModelAsync(LegalKnowledge knowledge, IReadOnlyList<GroundsCase> cases, DzLegal.Drafting.IModelProvider provider, TextWriter log)
+    {
+        var picker = new DzLegal.Drafting.ClaimPicker(provider);
+        var results = new List<GroundsCaseResult>();
+        foreach (var c in cases)
+        {
+            var area = GroundsSuggester.AreaOf(c.CourtSection);
+            var options = knowledge.Claims.Where(x => area is null || x.Area == area).Select(x => new DzLegal.Drafting.ClaimOption(x.Id, x.Label.Ar)).ToList();
+            var started = System.Diagnostics.Stopwatch.StartNew();
+            var picks = await picker.PickAsync(knowledge.ClaimPickPrompt, string.Empty, c.Facts, options);
+            log.WriteLine($"  [{c.Name}] {started.Elapsed.TotalSeconds:F0}s → {(picks.Count == 0 ? "nothing" : string.Join(", ", picks))}");
+            results.Add(new GroundsCaseResult(c, picks));
+        }
+
+        return new GroundsReport(results);
+    }
+
     public static void Print(GroundsReport report, TextWriter output)
     {
         var ci = System.Globalization.CultureInfo.InvariantCulture;

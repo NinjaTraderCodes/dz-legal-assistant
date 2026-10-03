@@ -36,6 +36,7 @@ The lawyer ticks the articles to rely on. **Add selected to the grounds** writes
 - The ticked articles' **official texts** are given to the model as the only law it may cite or quote.
 - Any other article in the result is flagged under the section, and so is any «…» quotation that doesn't match the official text. Either one triggers one automatic retry.
 - Matching is deterministic: Arabic keyword groups with normalisation, and no model involved.
+- **Ask the model for the claim type** is an optional fallback, run only when the lawyer clicks it. The local model may only choose claim types from the catalog, by id. Its picks are tagged as such and use the catalog's own articles.
 - Texts come from a local law library imported from the official publications and are never typed from memory. See [docs/LAW-LIBRARY.md](docs/LAW-LIBRARY.md).
 - Nothing is scraped or searched online. Under each article, the card shows the official reference, the place in the code, and a link to the official source. The link opens in the browser only when the lawyer clicks it, and carries no case data. A tag also says whether a lawyer has verified the suggestion.
 
@@ -75,7 +76,7 @@ Prerequisite: [.NET 10 SDK](https://dotnet.microsoft.com/download) (the version 
 
 ```bash
 dotnet build                                   # warnings are errors
-dotnet test                                    # 292 tests: engine, drafting, providers, storage, UI (headless)
+dotnet test                                    # 306 tests: engine, drafting, providers, storage, UI (headless)
 dotnet run --project src/DzLegal.Harness       # Form Engine accuracy report (exit 1 on any mismatch)
 dotnet run --project src/DzLegal.Harness -- grounds   # grounds-suggestion accuracy (exit 1 below 90% top-3)
 dotnet run --project src/DzLegal.App           # the desktop app

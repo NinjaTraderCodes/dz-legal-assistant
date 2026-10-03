@@ -12,6 +12,9 @@ public static class LegalKnowledgeLoader
 {
     public const string ClaimsFolder = "claims";
 
+    /// <summary>Prompt for the model fallback that chooses claim types from the catalog.</summary>
+    public const string ClaimPickPromptFile = "prompts/pick-claims.ar.txt";
+
     public static readonly IReadOnlyList<string> Areas = ["civil", "commercial", "family", "social"];
 
     public static LegalKnowledge Load(string lawRoot)
@@ -54,7 +57,21 @@ public static class LegalKnowledgeLoader
         var duplicate = claims.GroupBy(c => c.Id).FirstOrDefault(g => g.Count() > 1);
         return duplicate is not null
             ? throw new LawDataException(folder, [$"Claim id '{duplicate.Key}' is defined more than once."])
-            : new LegalKnowledge(library, manifest, claims);
+            : new LegalKnowledge(library, manifest, claims, ReadPrompt(lawRoot));
+    }
+
+    private static string ReadPrompt(string lawRoot)
+    {
+        var path = Path.Combine(lawRoot, ClaimPickPromptFile);
+        if (!File.Exists(path))
+        {
+            return string.Empty;
+        }
+
+        var text = File.ReadAllText(path);
+        return text.Contains("{{ facts }}", StringComparison.Ordinal) && text.Contains("{{ claims }}", StringComparison.Ordinal)
+            ? text
+            : throw new LawDataException(path, ["The prompt must contain {{ facts }} and {{ claims }}."]);
     }
 
     public static List<string> Validate(ClaimCatalogFile file, LawSourceManifest manifest, LawLibrary library)

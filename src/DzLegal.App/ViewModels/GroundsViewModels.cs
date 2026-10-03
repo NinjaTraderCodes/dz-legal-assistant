@@ -112,13 +112,15 @@ public sealed partial class ClaimSuggestionViewModel : ObservableObject
         IReadOnlyList<ArticleChoiceViewModel> articles,
         Loc loc,
         Action<ClaimSuggestionViewModel> insertRequests,
-        Action<ClaimSuggestionViewModel> insertDocuments)
+        Action<ClaimSuggestionViewModel> insertDocuments,
+        bool pickedByModel = false)
     {
         ArgumentNullException.ThrowIfNull(suggestion);
         ArgumentNullException.ThrowIfNull(loc);
         Claim = suggestion.Claim;
         Label = Claim.Label.Get(loc.Language);
-        MatchedText = loc.Format("GroundsMatched", string.Join("، ", suggestion.MatchedTerms));
+        IsPickedByModel = pickedByModel;
+        MatchedText = pickedByModel ? loc["PickedByModel"] : loc.Format("GroundsMatched", string.Join("، ", suggestion.MatchedTerms));
         Articles = articles;
         Prerequisites = string.Join("\n", Claim.Prerequisites.Select(p => "⚠ " + p.Get(loc.Language)));
         FactsToState = string.Join("\n", Claim.FactsToState.Select(f => "• " + f));
@@ -132,7 +134,10 @@ public sealed partial class ClaimSuggestionViewModel : ObservableObject
 
     public string Label { get; }
 
-    /// <summary>Which of the lawyer's words led to the suggestion, so it can be judged at a glance.</summary>
+    /// <summary>Chosen by the local model from the catalog (not by keyword matching).</summary>
+    public bool IsPickedByModel { get; }
+
+    /// <summary>Which of the lawyer's words led to the suggestion, or that the model chose it from the catalog.</summary>
     public string MatchedText { get; }
 
     public IReadOnlyList<ArticleChoiceViewModel> Articles { get; }

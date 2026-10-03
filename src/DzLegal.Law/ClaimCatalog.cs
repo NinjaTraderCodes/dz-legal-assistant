@@ -77,7 +77,7 @@ public sealed record ClaimCatalogFile
 }
 
 /// <summary>Everything the grounds suggestions need: the texts, what is importable, and the claim catalog.</summary>
-public sealed class LegalKnowledge(LawLibrary library, LawSourceManifest manifest, IReadOnlyList<ClaimType> claims)
+public sealed class LegalKnowledge(LawLibrary library, LawSourceManifest manifest, IReadOnlyList<ClaimType> claims, string claimPickPrompt = "")
 {
     public static LegalKnowledge Empty { get; } = new(LawLibrary.Empty, new LawSourceManifest(), []);
 
@@ -86,6 +86,9 @@ public sealed class LegalKnowledge(LawLibrary library, LawSourceManifest manifes
     public LawSourceManifest Manifest { get; } = manifest;
 
     public IReadOnlyList<ClaimType> Claims { get; } = claims;
+
+    /// <summary>Prompt template for the model fallback that chooses claim types from the catalog (empty: unavailable).</summary>
+    public string ClaimPickPrompt { get; } = claimPickPrompt;
 
     /// <summary>
     /// Where an article of a code comes from: the official reference (with the Journal Officiel issue when known),

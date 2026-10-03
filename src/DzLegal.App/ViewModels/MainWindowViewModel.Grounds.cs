@@ -27,6 +27,9 @@ public sealed partial class MainWindowViewModel
     private IExternalLinks _links = new NoExternalLinks();
     private GroundsSuggester _suggester = new(LegalKnowledge.Empty);
     private readonly List<ArticleRef> _selectedArticles = [];
+
+    /// <summary>Claim ids the local model chose from the catalog for the current facts.</summary>
+    private readonly List<string> _modelPicks = [];
     private string _suggestionKey = string.Empty;
 
     public ObservableCollection<ClaimSuggestionViewModel> GroundsSuggestions { get; } = [];
@@ -79,6 +82,13 @@ public sealed partial class MainWindowViewModel
             return;
         }
 
+        if (key != _suggestionKey && _modelPicks.Count > 0)
+        {
+            // New facts: what the model chose for the old ones no longer applies.
+            _modelPicks.Clear();
+            ModelPickHint = string.Empty;
+        }
+
         _suggestionKey = key;
         var expanded = GroundsSuggestions.Where(s => s.IsExpanded).Select(s => s.Claim.Id).ToHashSet();
         GroundsSuggestions.Clear();
@@ -93,6 +103,23 @@ public sealed partial class MainWindowViewModel
             });
         }
 
+        foreach (var claim in _modelPicks.Select(id => _knowledge.Claims.FirstOrDefault(c => c.Id == id)).OfType<ClaimType>())
+        {
+            if (GroundsSuggestions.Any(g => g.Claim.Id == claim.Id))
+            {
+                continue;
+            }
+
+            var suggestion = new ClaimSuggestion(claim, 0, [], _suggester.Resolve(claim));
+            var articles = suggestion.Articles
+                .Select(a => CreateChoice(new ArticleRef(a.Reference.Code, a.Reference.Number), a.Citation, a.Reference.Why.Get(L.Language), a.Article, claim.Verified))
+                .ToList();
+            GroundsSuggestions.Add(new ClaimSuggestionViewModel(suggestion, articles, L, InsertRequests, InsertDocuments, pickedByModel: true)
+            {
+                IsExpanded = GroundsSuggestions.Count == 0,
+            });
+        }
+
         GroundsHint = facts.Trim().Length == 0 ? L["GroundsNeedFacts"]
             : GroundsSuggestions.Count == 0 ? L["GroundsNone"]
             : string.Empty;
@@ -100,6 +127,63 @@ public sealed partial class MainWindowViewModel
     }
 
     partial void OnArticleQueryChanged(string value) => SearchArticles();
+
+    /// <summary>What the last «Ask the model» run found, or why it found nothing.</summary>
+    [ObservableProperty]
+    public partial string ModelPickHint { get; set; } = string.Empty;
+
+    /// <summary>Whether the data ships the prompt for the model fallback.</summary>
+    public bool CanAskModelForClaims => _knowledge.ClaimPickPrompt.Length > 0;
+
+    /// <summary>
+    /// The model fallback: the selected local model reads the facts and may only choose claim types from the
+    /// catalog, by id (restricted to the court section's area when known). Its picks are shown tagged as such,
+    /// with the catalog's own articles; it never introduces an article.
+    /// </summary>
+    [RelayCommand(IncludeCancelCommand = true)]
+    private async Task AskModelForClaimsAsync(CancellationToken cancellationToken)
+    {
+        var inputs = CurrentInputs();
+        var facts = inputs.GetValueOrDefault(FactsField, string.Empty);
+        if (SelectedProvider is null || !CanAskModelForClaims || facts.Trim().Length == 0)
+        {
+            ModelPickHint = L["GroundsNeedFacts"];
+            return;
+        }
+
+        var area = GroundsSuggester.AreaOf(inputs.GetValueOrDefault("court.section", string.Empty));
+        var options = _knowledge.Claims
+            .Where(c => area is null || c.Area == area)
+            .Select(c => new ClaimOption(c.Id, c.Label.Ar))
+            .ToList();
+        IModelProvider? provider = null;
+        try
+        {
+            provider = SelectedProvider.Create();
+            ModelPickHint = L.Format("ModelPicking", provider.Name);
+            var picks = await new ClaimPicker(provider).PickAsync(
+                _knowledge.ClaimPickPrompt, inputs.GetValueOrDefault("claim.subject", string.Empty), facts, options, cancellationToken);
+            _modelPicks.Clear();
+            _modelPicks.AddRange(picks);
+            RefreshSuggestions(force: true);
+            var added = picks.Count(id => GroundsSuggestions.Any(g => g.IsPickedByModel && g.Claim.Id == id));
+            ModelPickHint = picks.Count == 0 ? L["ModelPickedNothing"]
+                : added == 0 ? L["ModelPickedSame"]
+                : L.Format("ModelPicked", added);
+        }
+        catch (OperationCanceledException)
+        {
+            ModelPickHint = L["Cancelled"];
+        }
+        catch (ModelProviderException ex)
+        {
+            ModelPickHint = L.Format("Error", ex.Message);
+        }
+        finally
+        {
+            (provider as IDisposable)?.Dispose();
+        }
+    }
 
     private void SearchArticles()
     {

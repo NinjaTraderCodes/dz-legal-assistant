@@ -150,6 +150,25 @@ public class RenderingTests
     }
 
     [AvaloniaFact]
+    public async Task AModelPickedClaimIsTagged()
+    {
+        var recorder = new RecordingProvider(r => r.SectionId == Drafting.ClaimPicker.RequestId ? "liability-for-things" : r.SourceText);
+        var vm = Vm.Create(recorder: recorder).Filled();
+        vm.Field("claim.subject").Value = "دعوى";
+        vm.Field("notes.facts").Value = "انفصلت لوحة مثبتة على واجهة محل المدعى عليه وهوت على سيارة المدعي المركونة";
+        vm.SelectStepCommand.Execute(vm.FieldGroups.Single(g => g.Id == "notes"));
+        await vm.AskModelForClaimsCommand.ExecuteAsync(null);
+        var window = new MainWindow { DataContext = vm, Width = 1440, Height = 900 };
+        window.Show();
+        Dispatcher.UIThread.RunJobs();
+        window.FindControl<ItemsControl>("GroundsSuggestionsList")!.BringIntoView();
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.True(Assert.Single(vm.GroundsSuggestions).IsPickedByModel);
+        SaveScreenshot(window, "main-window-grounds-model");
+    }
+
+    [AvaloniaFact]
     public async Task AssistantPanelShowsTheProposalDiff()
     {
         var vm = Vm.Create(provider: "scripted").Filled();

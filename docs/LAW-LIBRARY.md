@@ -11,6 +11,13 @@ Nothing is scraped, searched online or read from PDFs while the lawyer works.
 3. **While the lawyer types the facts,** keyword matching inside the local catalog picks up to three claim types, instantly and offline.
 4. **The model only writes.** It turns the articles the lawyer ticked into grounds paragraphs, using their official texts.
 
+**Model fallback, on the lawyer's click only.** «اسأل النموذج عن نوع الدعوى» lets the local model choose among the catalog's claim types, for example when no keyword matched.
+- The model sees the facts and a closed list of `id — label` lines, limited to the court section's area. It may only answer with ids from that list (prompt: `data/law/prompts/pick-claims.ar.txt`).
+- `ClaimPicker` keeps only exact catalog ids, at most three. Anything else is discarded: explanations, invented ids, reasoning blocks.
+- The chosen claims appear tagged «اختاره النموذج من فهرس الدعاوى», with the catalog's own articles. **The model never introduces an article number.**
+- It takes about 20–60 s on a CPU-only laptop and can be cancelled. Template mode chooses nothing.
+- `dotnet run --project src/DzLegal.Harness -- grounds --models gemma3:4b` measures how well a local model chooses, on the same fact patterns. This is reported only; there is no gate.
+
 **Why there is no live scraping or web search:**
 - The case facts would leave the machine.
 - The sources are mostly scanned Journal Officiel PDFs, which a small local model cannot read reliably.

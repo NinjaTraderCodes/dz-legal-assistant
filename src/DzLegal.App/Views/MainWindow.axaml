@@ -353,6 +353,19 @@
                     </ItemsControl.ItemTemplate>
                   </ItemsControl>
 
+                  <StackPanel Orientation="Horizontal" Spacing="6" IsVisible="{Binding CanAskModelForClaims}">
+                    <Button Name="AskModelButton" Classes="outline" Command="{Binding AskModelForClaimsCommand}">
+                      <StackPanel Orientation="Horizontal" Spacing="5">
+                        <ic:SymbolIcon Symbol="Sparkle" FontSize="14" Foreground="{DynamicResource AccentBrush}" />
+                        <TextBlock FontSize="12" Text="{Binding L[AskModelForClaims]}" />
+                      </StackPanel>
+                    </Button>
+                    <Button Classes="outline" Command="{Binding AskModelForClaimsCancelCommand}" Content="{Binding L[Cancel]}"
+                            IsVisible="{Binding AskModelForClaimsCommand.IsRunning}" />
+                  </StackPanel>
+                  <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap" Text="{Binding ModelPickHint}"
+                             IsVisible="{Binding ModelPickHint, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+
                   <TextBox Classes="input" Name="ArticleSearchBox" Text="{Binding ArticleQuery}" PlaceholderText="{Binding L[ArticleSearchPlaceholder]}" />
                   <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap" Text="{Binding ArticleSearchHint}"
                              IsVisible="{Binding ArticleSearchHint, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />

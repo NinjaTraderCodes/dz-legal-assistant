@@ -150,3 +150,61 @@ public sealed class GroundsProvenanceTests
         Assert.True(vm.IsError);
     }
 }
+
+public sealed class ModelFallbackTests
+{
+    /// <summary>Facts no keyword group matches (the catalog has no civil-status claim).</summary>
+    private const string Unmatched = "وقع خطأ في تاريخ ميلاد المدعي في سجلات الحالة المدنية";
+
+    [Fact]
+    public async Task TheModelChoosesOnlyFromTheCatalogAndItsPicksAreTagged()
+    {
+        var recorder = new RecordingProvider(r => r.SectionId == ClaimPicker.RequestId ? "liability-for-things\ninvented-claim\n<think>loan-repayment</think>" : r.SourceText);
+        var vm = Vm.Create(recorder: recorder).Filled();
+        vm.Field("claim.subject").Value = "دعوى";
+        vm.Field("notes.facts").Value = Unmatched;
+        Assert.Empty(vm.GroundsSuggestions);
+        Assert.True(vm.CanAskModelForClaims);
+
+        await vm.AskModelForClaimsCommand.ExecuteAsync(null);
+
+        var prompt = recorder.Requests.Single(r => r.SectionId == ClaimPicker.RequestId).UserPrompt;
+        Assert.Contains("liability-for-things — مسؤولية حارس الشيء", prompt, StringComparison.Ordinal);
+        Assert.DoesNotContain("khul", prompt, StringComparison.Ordinal); // civil section: civil claims only
+
+        var picked = Assert.Single(vm.GroundsSuggestions);
+        Assert.Equal("liability-for-things", picked.Claim.Id);
+        Assert.True(picked.IsPickedByModel);
+        Assert.Equal(vm.L["PickedByModel"], picked.MatchedText);
+        Assert.Contains(picked.Articles, a => a.Reference.Number == "138"); // the catalog's own articles
+        Assert.Equal(vm.L.Format("ModelPicked", 1), vm.ModelPickHint);
+
+        // New facts: the old picks no longer apply.
+        vm.Field("notes.facts").Value = Unmatched + " ليلا";
+        Assert.Empty(vm.GroundsSuggestions);
+        Assert.Empty(vm.ModelPickHint);
+    }
+
+    [Fact]
+    public async Task PicksAlreadySuggestedByKeywordsAreNotRepeated()
+    {
+        var recorder = new RecordingProvider(r => r.SectionId == ClaimPicker.RequestId ? "loan-repayment" : r.SourceText);
+        var vm = Vm.Create(recorder: recorder).Filled();
+        await vm.AskModelForClaimsCommand.ExecuteAsync(null);
+
+        Assert.Single(vm.GroundsSuggestions, g => g.Claim.Id == "loan-repayment");
+        Assert.DoesNotContain(vm.GroundsSuggestions, g => g.IsPickedByModel);
+        Assert.Equal(vm.L["ModelPickedSame"], vm.ModelPickHint);
+    }
+
+    [Fact]
+    public async Task TemplateModeFindsNothingAndSaysSo()
+    {
+        var vm = Vm.Create().Filled();
+        vm.Field("claim.subject").Value = "دعوى";
+        vm.Field("notes.facts").Value = Unmatched;
+        await vm.AskModelForClaimsCommand.ExecuteAsync(null);
+        Assert.Empty(vm.GroundsSuggestions);
+        Assert.Equal(vm.L["ModelPickedNothing"], vm.ModelPickHint);
+    }
+}

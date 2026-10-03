@@ -81,8 +81,8 @@ internal sealed class FakeLinks : IExternalLinks
     }
 }
 
-/// <summary>Records every prompt and answers with the section notes (like template mode).</summary>
-internal sealed class RecordingProvider : IModelProvider
+/// <summary>Records every prompt and answers with the section notes (like template mode), or with a scripted reply.</summary>
+internal sealed class RecordingProvider(Func<ModelRequest, string>? reply = null) : IModelProvider
 {
     public List<ModelRequest> Requests { get; } = [];
 
@@ -91,7 +91,7 @@ internal sealed class RecordingProvider : IModelProvider
     public Task<string> GenerateAsync(ModelRequest request, CancellationToken cancellationToken)
     {
         Requests.Add(request);
-        return Task.FromResult(request.SourceText);
+        return Task.FromResult(reply?.Invoke(request) ?? request.SourceText);
     }
 }
 

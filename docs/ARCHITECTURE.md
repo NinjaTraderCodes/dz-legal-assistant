@@ -1,5 +1,7 @@
 # Architecture
 
+For a file-by-file map, the prompts and the runtime flows, see [DEVELOPER-GUIDE.md](DEVELOPER-GUIDE.md).
+
 ## Modules and dependencies
 
 ```

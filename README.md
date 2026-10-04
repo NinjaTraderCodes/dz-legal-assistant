@@ -171,6 +171,7 @@ docs/                             architecture, offline guarantees, rule updates
 ## Further documentation
 
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md): modules, data flow, design decisions.
+- [docs/DEVELOPER-GUIDE.md](docs/DEVELOPER-GUIDE.md): for working on the code: which file does what, where every prompt lives, the runtime flows and recipes.
 - [docs/UPDATING-LEGAL-RULES.md](docs/UPDATING-LEGAL-RULES.md): how to change rules, templates and prompts, add corpus cases, add a document type.
 - [docs/OFFLINE.md](docs/OFFLINE.md): what "offline" means here and how to verify it.
 - [docs/LEGAL-VERIFICATION.md](docs/LEGAL-VERIFICATION.md): the checklist for the practicing lawyer.

@@ -69,15 +69,15 @@ Three weaknesses showed up:
 
 **Second measurement**, after those changes:
 
-| Measure | Run 1 | Run 2 |
-|---|---|---|
-| Claim exact | 64% | **80%** |
-| Claim found | 75% | 80% |
-| Core recall | 73% | 61% |
-| Off-claim share | not measured | 13% |
-| Articles per case | about 7 | 2.4 |
-| Empty answers | 5 | **0** |
-| Seconds per case | 91 | 84 |
+| Measure | Run 1 | Run 2 | Run 3 |
+|---|---|---|---|
+| Claim exact | 64% | 80% | **84%** |
+| Claim found | 75% | 80% | 84% |
+| Core recall | 73% | 61% | 67% |
+| Off-claim share | not measured | 13% | 10% |
+| Articles per case | about 7 | 2.4 | 2.5 |
+| Empty answers | 5 | 0 | 0 |
+| Seconds per case | 91 | 84 | 82 |
 
 The lists are now short and focused. Core recall fell mostly because fewer articles are proposed, and because our "core" articles are a guess. For example, the model picks 107 rather than 106 for a loan, which is defensible.
 
@@ -90,7 +90,15 @@ Two last generic changes followed:
 - a named way out (`other`) at the end of the claim list;
 - descriptions that say what each claim type is *not*.
 
-**Tuning on our own 44 cases stops here, to avoid overfitting.** The next measurements are Dr. Aicha's hold-out cases, with her own core articles, and a run after the official texts are imported.
+**Run 3** came after those changes. Liability for things improved (0/3 → 2/3), and the commercial supplies case became right. The model **never chose `other`**, so all four out-of-catalog cases still got the closest claim type: inheritance was read as divorce, the administrative case as rescission, company dissolution as commercial debt, and civil status as a sale. Three single confusions remain: a dog bite read as tort, one taṭlīq read as divorce by the husband, and one loan read as a sale.
+
+**Conclusion and decision:**
+- A 4B model does not use an abstain option, so the lawyer judges the proposed claim type. This is acceptable because the model's reading and claim type are shown, and nothing is used unless the lawyer ticks it.
+- `other` stays: it costs nothing and may work with other models.
+- **Tuning on our own 44 cases stops here, to avoid overfitting.** The next measurements are:
+  - Dr. Aicha's hold-out cases, with her own core articles;
+  - a run after the official texts are imported;
+  - optionally, a larger local model if the hardware allows.
 
 **Why there is no live scraping or web search:**
 - The case facts would leave the machine.

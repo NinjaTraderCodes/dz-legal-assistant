@@ -77,15 +77,54 @@ public sealed partial class MainWindowViewModel
             return;
         }
 
-        ModelStatus = await SelectedProvider.ProbeAsync(CancellationToken.None);
+        var option = SelectedProvider;
+        ModelStatus = await option.ProbeAsync(CancellationToken.None);
         IsModelReady = ModelStatus.State is ModelState.Ready or ModelState.Unknown;
+        if (ModelStatus.State == ModelState.Ready && option.CanWarmUp && _warmUpStarted.Add(option.Key))
+        {
+            _ = WarmUpAsync(option);
+        }
+
         ModelStatusText = ModelStatus.State switch
         {
-            ModelState.Ready => L.Format("ModelReady", SelectedProvider.DisplayName),
+            ModelState.Ready when _inMemory.Contains(option.Key) => L.Format("ModelInMemory", option.DisplayName),
+            ModelState.Ready when _warmUpStarted.Contains(option.Key) && !_warmUpFailed.Contains(option.Key) => L.Format("ModelWarming", option.DisplayName),
+            ModelState.Ready => L.Format("ModelReady", option.DisplayName),
             ModelState.NotRunning => L["ModelNotRunning"],
             ModelState.ModelMissing => L.Format("ModelMissing", ModelStatus.Detail),
             _ => string.Empty,
         };
+    }
+
+    /// <summary>Engines whose warm-up was started, and those now loaded in memory (each warmed once per session).</summary>
+    private readonly HashSet<string> _warmUpStarted = new(StringComparer.Ordinal);
+    private readonly HashSet<string> _inMemory = new(StringComparer.Ordinal);
+    private readonly HashSet<string> _warmUpFailed = new(StringComparer.Ordinal);
+
+    /// <summary>Loads the local model in the background so the lawyer's first request does not wait for it.</summary>
+    private async Task WarmUpAsync(ProviderOption option)
+    {
+        try
+        {
+            await option.WarmUpAsync(CancellationToken.None);
+            _inMemory.Add(option.Key);
+        }
+        catch (Exception ex) when (ex is ModelProviderException or OperationCanceledException or InvalidOperationException or HttpRequestException)
+        {
+            // Not critical: the first request will load the model instead. No retry, so a failing server is not hammered.
+            _warmUpFailed.Add(option.Key);
+            if (SelectedProvider == option && ModelStatus.State == ModelState.Ready)
+            {
+                ModelStatusText = L.Format("ModelReady", option.DisplayName);
+            }
+
+            return;
+        }
+
+        if (SelectedProvider == option && ModelStatus.State == ModelState.Ready)
+        {
+            ModelStatusText = L.Format("ModelInMemory", option.DisplayName);
+        }
     }
 
     private void WireSection(SectionViewModel section)
@@ -133,8 +172,22 @@ public sealed partial class MainWindowViewModel
         try
         {
             provider = SelectedProvider.Create();
+            AssistantActivity.Start([L["ActivityRevising"]]);
+            AssistantActivity.BeginStep(0);
             var proposal = await new SectionReviser(provider).ReviseAsync(
-                _definition, section.Id, section.Text, instruction, DraftingInputs(), partial => AssistantPartial = partial, SelectedLegalTexts(), cancellationToken);
+                _definition,
+                section.Id,
+                section.Text,
+                instruction,
+                DraftingInputs(),
+                partial =>
+                {
+                    AssistantPartial = partial;
+                    AssistantActivity.OnText(partial);
+                },
+                SelectedLegalTexts(),
+                cancellationToken);
+            AssistantActivity.Complete();
             AssistantPartial = string.Empty;
             ShowProposal(section, proposal);
         }
@@ -148,6 +201,7 @@ public sealed partial class MainWindowViewModel
         }
         finally
         {
+            AssistantActivity.Stop();
             AssistantPartial = string.Empty;
             (provider as IDisposable)?.Dispose();
         }
@@ -219,9 +273,21 @@ public sealed partial class MainWindowViewModel
         {
             provider = SelectedProvider.Create();
             SetStatus(L.Format("Generating", section.Title));
+            GenerationActivity.Start([section.Title]);
+            GenerationActivity.BeginStep(0);
+            MarkWriting(section.Id);
             var previous = section.Text;
             var drafted = await new DraftingService(provider).DraftSectionAsync(
-                _definition, section.Id, DraftingInputs(), (_, partial) => section.SetFromModel(partial), SelectedLegalTexts());
+                _definition,
+                section.Id,
+                DraftingInputs(),
+                (_, partial) =>
+                {
+                    section.SetFromModel(partial);
+                    GenerationActivity.OnText(partial);
+                },
+                SelectedLegalTexts());
+            GenerationActivity.Complete();
             if (previous.Trim().Length > 0)
             {
                 section.SetFromModel(previous);
@@ -238,6 +304,8 @@ public sealed partial class MainWindowViewModel
         }
         finally
         {
+            GenerationActivity.Stop();
+            MarkWriting(null);
             (provider as IDisposable)?.Dispose();
         }
     }

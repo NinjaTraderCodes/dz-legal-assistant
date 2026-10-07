@@ -55,6 +55,9 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         _today = today ?? (() => DateOnly.FromDateTime(DateTime.Now));
         _autosaveFile = autosaveFile;
         L = loc;
+        AnalysisActivity = new ModelActivityViewModel(loc);
+        GenerationActivity = new ModelActivityViewModel(loc, showLiveText: false);
+        AssistantActivity = new ModelActivityViewModel(loc, showLiveText: false);
 
         Providers = providers;
         foreach (var p in providers)
@@ -90,6 +93,15 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     }
 
     public Loc L { get; }
+
+    /// <summary>What the model is doing during the grounds analysis.</summary>
+    public ModelActivityViewModel AnalysisActivity { get; }
+
+    /// <summary>What the model is doing while it drafts the requête (or redrafts one section).</summary>
+    public ModelActivityViewModel GenerationActivity { get; }
+
+    /// <summary>What the model is doing while the section assistant prepares a proposal.</summary>
+    public ModelActivityViewModel AssistantActivity { get; }
 
     public string DocumentTypeName => _definition.Name.Get(L.Language);
 
@@ -240,6 +252,9 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     {
         _previewCts?.Cancel();
         _previewCts?.Dispose();
+        AnalysisActivity.Dispose();
+        GenerationActivity.Dispose();
+        AssistantActivity.Dispose();
     }
 
     [RelayCommand]
@@ -302,20 +317,39 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         {
             provider = SelectedProvider.Create();
             var drafting = new DraftingService(provider);
-            // Synchronous progress: Progress<T> would post late updates over the final status.
-            var progress = new InlineProgress<SectionDefinition>(s => SetStatus(L.Format("Generating", s.Title.Get(L.Language))));
             var keep = EditedNarrative();
+            var inputs = DraftingInputs();
+            var narrative = _definition.Sections.Where(x => x.Kind == SectionKind.Narrative).ToList();
+            GenerationActivity.Start(narrative.Select(x => x.Title.Get(L.Language)));
+
+            // Synchronous progress: Progress<T> would post late updates over the final status.
+            var progress = new InlineProgress<SectionDefinition>(s =>
+            {
+                SetStatus(L.Format("Generating", s.Title.Get(L.Language)));
+                var step = narrative.IndexOf(s);
+                if (step >= 0)
+                {
+                    var callsModel = !keep.ContainsKey(s.Id) && inputs.GetValueOrDefault(s.SourceField ?? string.Empty, string.Empty).Trim().Length > 0;
+                    GenerationActivity.BeginStep(step, waitsForModel: callsModel);
+                    MarkWriting(callsModel ? s.Id : null);
+                }
+            });
             var draft = await drafting.DraftAsync(
                 _definition,
-                DraftingInputs(),
+                inputs,
                 new DraftOptions
                 {
                     Progress = progress,
                     KeepNarrative = keep,
-                    OnPartial = (id, partial) => Sections.FirstOrDefault(x => x.Id == id)?.SetFromModel(partial),
+                    OnPartial = (id, partial) =>
+                    {
+                        Sections.FirstOrDefault(x => x.Id == id)?.SetFromModel(partial);
+                        GenerationActivity.OnText(partial);
+                    },
                     LegalTexts = SelectedLegalTexts(),
                 },
                 cancellationToken);
+            GenerationActivity.Complete();
             foreach (var manual in _draft.Sections.Where(x => x.Overridden))
             {
                 if (draft.FindSection(manual.Id) is { } target)
@@ -353,7 +387,18 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         }
         finally
         {
+            GenerationActivity.Stop();
+            MarkWriting(null);
             (provider as IDisposable)?.Dispose();
+        }
+    }
+
+    /// <summary>Shows the "being written" marker on one section (or on none).</summary>
+    private void MarkWriting(string? sectionId)
+    {
+        foreach (var section in Sections)
+        {
+            section.IsWriting = section.Id == sectionId;
         }
     }
 
@@ -586,6 +631,9 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         OnPropertyChanged(nameof(StepPosition));
         OnPropertyChanged(nameof(Shortcuts));
         OnPropertyChanged(nameof(AssistantTitle));
+        AnalysisActivity.Relocalize();
+        GenerationActivity.Relocalize();
+        AssistantActivity.Relocalize();
         _ = CheckModelStatusAsync();
         ShowAnalysis(_analysis);
         Recheck();

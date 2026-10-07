@@ -231,6 +231,10 @@ Program.Main  (src/DzLegal.App/Program.cs)
 - `MainWindow.axaml.cs` starts a 30-second `DispatcherTimer` that does two things on every tick:
   - `AutosaveNow()`;
   - `CheckModelStatusAsync()`, which probes Ollama `/api/tags` through `ProviderOption.ProbeAsync` → `Composition.ProbeOllamaAsync`.
+- **Warm-up:** the first time the probe finds the model ready, `CheckModelStatusAsync` starts `ProviderOption.WarmUpAsync` in the background, once per session. It calls `Composition.WarmUpOllamaAsync`, then `OllamaModelProvider.WarmUpAsync`, which sends `POST /api/generate` with no prompt and `keep_alive` set to 30 minutes. This loads the model into memory while the lawyer fills the form.
+  - The status dot reads "loading into memory…", then "ready in memory".
+  - A failure is silent and not retried.
+  - Turn it off with `ollama.warmUp: false` in the settings.
 - On close, the window autosaves and disposes.
 
 ### 5.2 Typing in the form
@@ -274,6 +278,11 @@ No model is called while typing. Everything here is deterministic and synchronou
      ```
 6. The overridden sections are put back, and the model text is remembered for redraft. Then `SyncSections(true)` and `Recheck()`.
 
+**Live feedback:** `GenerationActivity`, a `ModelActivityViewModel` (see 5.8), has one step per narrative section.
+- The progress callback calls `BeginStep` for the section being drafted.
+- `MarkWriting` sets `SectionViewModel.IsWriting` on that section, which shows a pulsing "the model is writing…" marker in its header.
+- `OnPartial` feeds both the section text and the activity's word count.
+
 ### 5.4 Grounds analysis («حلّل الوقائع واقترح الأسانيد»)
 
 `MainWindowViewModel.AnalyseGroundsAsync` (Grounds partial) calls `GroundsAnalyzer.AnalyseAsync(knowledge, subject, facts, courtSection, progress, ct)`:
@@ -282,12 +291,12 @@ No model is called while typing. Everything here is deterministic and synchronou
 area   = LegalAreas.AreaOf(court.section)                    CatalogArticles.cs
 claims = catalog claim types of that area (all when unknown)
 
-Stage 1  Reading    BuildReadingRequest(read-facts.ar.txt)  → provider.GenerateAsync
+Stage 1  Reading    BuildReadingRequest(read-facts.ar.txt)  → provider.StreamAsync (OnPartial)
                     ParseReading → FactsReading{Relationship, Breach, Sought, ClaimIds (≤2, "other" → none), SearchTerms}
 Stage 2  Searching  Candidates(): catalog articles of ClaimIds first,
                     then library.Index.Search([(terms, 1.0), (subject+facts, 0.5)])   ArticleIndex.cs (BM25)
-                    ≤ 25 CandidateArticle{Key, Ref, Citation, Excerpt(300), Source catalog|search}
-Stage 3  Selecting  BuildSelectionRequest(select-articles.ar.txt) → provider.GenerateAsync
+                    ≤ 25 CandidateArticle{Key, Ref, Citation, Excerpt(300), Source catalog|search}   → OnCandidates
+Stage 3  Selecting  BuildSelectionRequest(select-articles.ar.txt) → provider.StreamAsync (OnPartial)
                     ParseSelection → ≤ 6 AnalysedArticle{Code, Number, Role, Reason, Source}
 Result   GroundsAnalysis{FactsHash, Relationship, Breach, Sought, ClaimIds, Articles, Model}
 ```
@@ -304,6 +313,7 @@ Then `ShowAnalysis(analysis)` fills the UI:
 - `TickBasisArticlesCommand` ticks every article whose role is "basis".
 - The analysis and the ticks are saved in the draft: `GroundsAnalysis` and `SelectedArticles`.
 - `GroundsAnalyzer.Trace` is a hook used only by the bench, to record the prompts and answers.
+- **Live feedback:** `GroundsAnalyzer.OnPartial` (the answer so far, per stage) and `OnCandidates` (the stage 2 result) drive `AnalysisActivity`. It shows three steps: reading → searching ("n candidate articles") → choosing, with the model's words live. Both model calls stream, but the parsers still run on the complete answer.
 
 ### 5.5 Section assistant
 
@@ -315,7 +325,8 @@ In `MainWindowViewModel.Assistant.cs`:
   - Otherwise `NarrativeChecks.Check`. The instruction and the current text count as "known", so their numbers and articles are allowed.
   - It retries once on invented law. The proposal is unusable if it is empty or has a hard issue.
 - `ShowProposal` shows a word diff (`TextDiff.Words`). `AcceptProposal` pushes undo history (`SectionViewModel.PushHistory`) and replaces the text. Reject, Retry and Undo are also available.
-- The ↻ button (redraft one section) → `RedraftSectionAsync` → `DraftingService.DraftSectionAsync`.
+- The ↻ button (redraft one section) → `RedraftSectionAsync` → `DraftingService.DraftSectionAsync`. It uses `GenerationActivity` with one step, plus the "writing" marker.
+- **Live feedback:** `AssistantActivity` shows one step, the waiting state and the timer. Its live text is hidden because `AssistantPartial` already shows the answer as it streams.
 
 ### 5.6 Preview and export
 
@@ -337,6 +348,25 @@ The draft watermark is `DocumentRenderOptions.DraftWatermark`. Fonts are embedde
   - At startup, `HasRecoverableDraft` offers `RestoreLastSessionCommand` or `DismissRecoveryCommand`.
 - **Evaluation:** `SaveEvaluationAsync` → `EvaluationStore.SaveAsync`. It stores the verdict, the comment, the generated snapshot against the final text, and the provider name, in `evaluations/`.
 - `CurrentDraft()` is the single place that gathers inputs, ticks and analysis into a `DraftDocument`. Use it for anything that persists.
+
+### 5.8 Live model activity
+
+`ViewModels/ModelActivityViewModel.cs` is one instance per long task: `AnalysisActivity`, `GenerationActivity` and `AssistantActivity` on `MainWindowViewModel`.
+
+| Call | Effect |
+|---|---|
+| `Start(steps)` | Shows the panel and starts the timer (`Elapsed`, m:ss, ticked every second by a `DispatcherTimer`). |
+| `BeginStep(i, waitsForModel)` | Earlier steps become done and step i becomes active. While the model has not answered, `IsWaiting` shows an indeterminate bar and "waking up the model…". After 15 s (`LoadingHintAfter`) it says the model is loading into memory. |
+| `OnText(textSoFar)` | Ends the waiting state and updates `LiveText` (the last 240 characters) and the word count. |
+| `SetDetail(i, text)` | A short note on a step, such as the number of candidates. |
+| `Complete()` / `Stop()` | Hides the panel (success, or cancel and error). |
+
+The view is one `DataTemplate`, `ModelActivityTemplate` in `MainWindow.axaml`, shown by `ContentControl`s:
+- `AnalysisActivityView` under the Analyse button;
+- `GenerationActivityView` above the draft;
+- one in the assistant pane.
+
+The pulse animation is the `Ellipse.pulse` style. For tests, the constructor takes a clock and `useTimer: false`, and `Tick()` is internal.
 
 ---
 
@@ -392,7 +422,7 @@ The draft watermark is `DocumentRenderOptions.DraftWatermark`. Fonts are embedde
 ### `src/DzLegal.ModelProviders.*`
 | File | Contents |
 |---|---|
-| `Ollama/OllamaModelProvider.cs` | `POST /api/chat` (stream or not), `GET /api/tags`; maps errors to `ModelProviderException` with readable messages |
+| `Ollama/OllamaModelProvider.cs` | `POST /api/chat` (stream or not), `GET /api/tags`, `WarmUpAsync` (`POST /api/generate` with no prompt); maps errors to `ModelProviderException` with readable messages |
 | `Ollama/OllamaOptions.cs` | endpoint, model, timeout, temperature, maxTokens (`num_predict`), repeatPenalty, think |
 | `Ollama/LoopbackGuard.cs` | refuses any endpoint that is not loopback |
 | `Stub/StubModelProvider.cs` | returns `request.SourceText`, i.e. the notes as written |
@@ -427,9 +457,10 @@ The draft watermark is `DocumentRenderOptions.DraftWatermark`. Fonts are embedde
 | `ViewModels/MainWindowViewModel.Assistant.cs` | section assistant, redraft, model status |
 | `ViewModels/GroundsViewModels.cs` | `ArticleChoiceViewModel`, `SelectedArticleViewModel`, `InsertChipViewModel` |
 | `ViewModels/FieldViewModel.cs` | one field, its choice options, a step (`FieldGroupViewModel`, `StepStatus`) |
-| `ViewModels/SectionViewModel.cs` | one editor section: undo history, override, redraft, review hints |
+| `ViewModels/SectionViewModel.cs` | one editor section: undo history, override, redraft, review hints, `IsWriting` |
+| `ViewModels/ModelActivityViewModel.cs` | live model activity: steps, timer, waiting state, live text (§5.8) |
 | `ViewModels/FindingViewModel.cs` | one compliance finding as displayed |
-| `ViewModels/ProviderOption.cs` | a selectable engine + `ModelStatus` |
+| `ViewModels/ProviderOption.cs` | a selectable engine + `ModelStatus`, optional warm-up |
 | `ViewModels/Converters.cs` | small XAML converters |
 | `Views/MainWindow.axaml(.cs)` | the whole UI; the 30-second timer for autosave and the model probe |
 | `Resources/Strings.resx`, `Strings.en.resx` | UI strings (Arabic default, English) |

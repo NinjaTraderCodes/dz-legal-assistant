@@ -69,4 +69,7 @@ public sealed record OllamaSettings
 
     /// <summary>Set to false for reasoning models such as qwen3; leave null otherwise.</summary>
     public bool? Think { get; init; }
+
+    /// <summary>Load the model into memory in the background when the app starts, so the first request is faster.</summary>
+    public bool WarmUp { get; init; } = true;
 }

@@ -84,6 +84,29 @@ public class OllamaProviderTests
         Assert.Contains("not reachable", ex.Message, StringComparison.Ordinal);
     }
 
+    [Fact]
+    public async Task WarmUpLoadsTheModelWithoutGeneratingAnything()
+    {
+        var handler = new FakeHandler(_ => Json("""{ "model": "gemma3:4b", "done": true }"""));
+        using var provider = new OllamaModelProvider(new OllamaOptions { Model = "gemma3:4b" }, handler);
+
+        await provider.WarmUpAsync(CancellationToken.None);
+
+        var sent = Assert.Single(handler.Requests);
+        Assert.Equal(new Uri("http://127.0.0.1:11434/api/generate"), sent.Uri);
+        using var body = JsonDocument.Parse(sent.Body);
+        Assert.Equal("gemma3:4b", body.RootElement.GetProperty("model").GetString());
+        Assert.Equal(OllamaModelProvider.WarmUpKeepAlive, body.RootElement.GetProperty("keep_alive").GetString());
+        Assert.False(body.RootElement.TryGetProperty("prompt", out _)); // nothing to generate
+    }
+
+    [Fact]
+    public async Task AWarmUpWithTheServerDownIsAReadableError()
+    {
+        using var provider = new OllamaModelProvider(new OllamaOptions(), new FakeHandler(_ => throw new HttpRequestException("refused")));
+        await Assert.ThrowsAsync<ModelProviderException>(() => provider.WarmUpAsync(CancellationToken.None));
+    }
+
     private static HttpResponseMessage Json(string json) =>
         new(HttpStatusCode.OK) { Content = new StringContent(json, Encoding.UTF8, "application/json") };
 

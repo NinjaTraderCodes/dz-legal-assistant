@@ -156,6 +156,79 @@ public class RenderingTests
     }
 
     [AvaloniaFact]
+    public async Task TheActivityPanelShowsTheModelReadingTheFactsLive()
+    {
+        var model = new PausingProvider(r => r.SectionId switch
+        {
+            Drafting.GroundsAnalyzer.ReadingRequestId => Analysis.Reading,
+            Drafting.GroundsAnalyzer.SelectionRequestId => Analysis.Selection,
+            _ => r.SourceText,
+        });
+        var vm = Vm.Create(extra: new ViewModels.ProviderOption("paused", _ => "paused", () => model)).Filled();
+        vm.SelectStepCommand.Execute(vm.FieldGroups.Single(g => g.Id == "grounds"));
+        var window = new MainWindow { DataContext = vm, Width = 1440, Height = 900 };
+        window.Show();
+
+        var running = vm.AnalyseGroundsCommand.ExecuteAsync(null);
+        Dispatcher.UIThread.RunJobs();
+
+        var panel = window.FindControl<ContentControl>("AnalysisActivityView")!;
+        Assert.True(vm.AnalysisActivity.IsActive);
+        Assert.True(vm.AnalysisActivity.Steps[0].IsActive);
+        Assert.Contains("العلاقة القانونية", vm.AnalysisActivity.LiveText, StringComparison.Ordinal);
+        Assert.True(panel.IsVisible);
+        SaveScreenshot(window, "main-window-activity");
+
+        model.Release();
+        await running;
+        Dispatcher.UIThread.RunJobs();
+        Assert.False(vm.AnalysisActivity.IsActive);
+    }
+
+    [AvaloniaFact]
+    public async Task TheSectionBeingWrittenIsMarkedWhileTheModelDrafts()
+    {
+        var model = new PausingProvider(r => r.SourceText);
+        var vm = Vm.Create(extra: new ViewModels.ProviderOption("paused", _ => "paused", () => model)).Filled();
+        var window = new MainWindow { DataContext = vm, Width = 1440, Height = 900 };
+        window.Show();
+
+        var running = vm.GenerateCommand.ExecuteAsync(null);
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.True(vm.GenerationActivity.IsActive);
+        Assert.Equal(["grounds"], vm.Sections.Where(s => s.IsWriting).Select(s => s.Id));
+        Assert.True(window.FindControl<ContentControl>("GenerationActivityView")!.IsVisible);
+        SaveScreenshot(window, "main-window-writing");
+
+        model.Release();
+        await running;
+        Dispatcher.UIThread.RunJobs();
+        Assert.DoesNotContain(vm.Sections, s => s.IsWriting);
+    }
+
+    /// <summary>Writes the first part of each answer, then waits until released: a model caught mid-sentence.</summary>
+    private sealed class PausingProvider(Func<Drafting.ModelRequest, string> reply) : Drafting.IModelProvider
+    {
+        private readonly TaskCompletionSource _gate = new(TaskCreationOptions.RunContinuationsAsynchronously);
+
+        public string Name => "paused";
+
+        public void Release() => _gate.TrySetResult();
+
+        public Task<string> GenerateAsync(Drafting.ModelRequest request, CancellationToken cancellationToken) => Task.FromResult(reply(request));
+
+        public async IAsyncEnumerable<string> StreamAsync(Drafting.ModelRequest request, [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken cancellationToken)
+        {
+            var text = reply(request);
+            var half = text.Length * 2 / 3;
+            yield return text[..half];
+            await _gate.Task;
+            yield return text[half..];
+        }
+    }
+
+    [AvaloniaFact]
     public async Task RequestsStepOffersTheUsualRequests()
     {
         var vm = Vm.Create(recorder: Analysis.Model()).Filled();

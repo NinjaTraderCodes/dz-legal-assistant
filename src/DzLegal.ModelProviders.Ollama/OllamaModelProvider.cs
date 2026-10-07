@@ -79,6 +79,10 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
             throw new ModelProviderException(
                 $"The local model server is not reachable at {_options.Endpoint}. Start Ollama, or switch to template mode.", ex);
         }
+        catch (TaskCanceledException ex) when (!cancellationToken.IsCancellationRequested)
+        {
+            throw new ModelProviderException($"The local model did not answer within {_options.Timeout.TotalMinutes:0} minutes.", ex);
+        }
 
         using (response)
         {
@@ -123,6 +127,27 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
 
     public string ModelName => _options.Model;
 
+    /// <summary>
+    /// Asks the local server to load the model into memory now (<c>POST /api/generate</c> with no prompt), so the
+    /// lawyer's first request does not wait for it. Nothing is generated; the model stays loaded for 30 minutes.
+    /// </summary>
+    public async Task WarmUpAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            using var response = await _http.PostAsJsonAsync(
+                new Uri("api/generate", UriKind.Relative), new WarmUpRequest(_options.Model, WarmUpKeepAlive), cancellationToken);
+            await EnsureSuccessAsync(response, cancellationToken);
+        }
+        catch (HttpRequestException ex)
+        {
+            throw new ModelProviderException($"The local model server is not reachable at {_options.Endpoint}.", ex);
+        }
+    }
+
+    /// <summary>How long Ollama keeps the model in memory after the warm-up.</summary>
+    public const string WarmUpKeepAlive = "30m";
+
     public void Dispose() => _http.Dispose();
 
     private ChatRequest Body(ModelRequest request, bool stream) => new(
@@ -166,6 +191,10 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
     private sealed record ChatResponse(
         [property: JsonPropertyName("message")] ChatMessage? Message,
         [property: JsonPropertyName("done")] bool Done = false);
+
+    private sealed record WarmUpRequest(
+        [property: JsonPropertyName("model")] string Model,
+        [property: JsonPropertyName("keep_alive")] string KeepAlive);
 
     private sealed record TagsResponse([property: JsonPropertyName("models")] IReadOnlyList<TagModel>? Models);
 

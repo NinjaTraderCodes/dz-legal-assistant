@@ -120,6 +120,10 @@ public sealed partial class SectionViewModel : ObservableObject
 
     public bool HasReview => ReviewText.Length > 0;
 
+    /// <summary>The model is writing this section right now (an animated marker shows where).</summary>
+    [ObservableProperty]
+    public partial bool IsWriting { get; set; }
+
     internal void SetFromModel(string text)
     {
         _updatingFromModel = true;

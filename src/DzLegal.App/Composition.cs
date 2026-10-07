@@ -33,7 +33,12 @@ public static class Composition
 
         return
         [
-            new ProviderOption("ollama", loc => loc.Format("ProviderOllama", ollama.Model), () => new OllamaModelProvider(ollama), ct => ProbeOllamaAsync(ollama, ct)),
+            new ProviderOption(
+                "ollama",
+                loc => loc.Format("ProviderOllama", ollama.Model),
+                () => new OllamaModelProvider(ollama),
+                ct => ProbeOllamaAsync(ollama, ct),
+                settings.Ollama.WarmUp ? ct => WarmUpOllamaAsync(ollama, ct) : null),
             new ProviderOption("stub", loc => loc["ProviderStub"], () => new StubModelProvider()),
         ];
     }
@@ -55,6 +60,13 @@ public static class Composition
         {
             return new ModelStatus(ModelState.NotRunning, options.Model);
         }
+    }
+
+    /// <summary>Loads the model into the local Ollama's memory (loopback only), so the first request does not wait for it.</summary>
+    public static async Task WarmUpOllamaAsync(OllamaOptions options, CancellationToken cancellationToken)
+    {
+        using var provider = new OllamaModelProvider(options);
+        await provider.WarmUpAsync(cancellationToken);
     }
 
     public static MainWindowViewModel CreateMainViewModel(AppSettings settings, IUserFiles files, AppPaths paths, Loc loc, IExternalLinks? links = null)

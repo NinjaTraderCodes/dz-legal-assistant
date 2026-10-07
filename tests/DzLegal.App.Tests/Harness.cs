@@ -143,7 +143,8 @@ internal static class Vm
         string? autosaveFile = null,
         LegalKnowledge? knowledge = null,
         RecordingProvider? recorder = null,
-        IExternalLinks? links = null)
+        IExternalLinks? links = null,
+        ProviderOption? extra = null)
     {
         loc ??= new Loc();
         var definition = DefinitionLoader.Load(Path.Combine(AppContext.BaseDirectory, "data", "document-types", "requete-introductive"));
@@ -157,6 +158,12 @@ internal static class Vm
         {
             providers.Add(new ProviderOption("recording", _ => "recording", () => recorder));
             provider = "recording";
+        }
+
+        if (extra is not null)
+        {
+            providers.Add(extra);
+            provider = extra.Key;
         }
 
         return new MainWindowViewModel(definition, providers, files ?? new FakeFiles(), new EvaluationStore(EvaluationsFolder), loc, provider, () => new DateOnly(2026, 9, 15), autosaveFile, knowledge ?? ShippedKnowledge, links);

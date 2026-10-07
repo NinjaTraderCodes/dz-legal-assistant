@@ -67,6 +67,14 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
     /// </summary>
     public Action<string, string>? Trace { get; init; }
 
+    /// <summary>
+    /// Receives the model's answer so far while stage 1 or stage 3 is being written, so the app can show it live.
+    /// </summary>
+    public Action<AnalysisStage, string>? OnPartial { get; init; }
+
+    /// <summary>Receives the candidate articles found in stage 2, before the model chooses among them.</summary>
+    public Action<IReadOnlyList<CandidateArticle>>? OnCandidates { get; init; }
+
     public async Task<GroundsAnalysis> AnalyseAsync(
         LegalKnowledge knowledge,
         string subject,
@@ -87,13 +95,14 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
         progress?.Report(AnalysisStage.Reading);
         var readingRequest = BuildReadingRequest(knowledge, subject, facts, claims);
         Trace?.Invoke("reading.prompt", readingRequest.UserPrompt);
-        var readingAnswer = await _provider.GenerateAsync(readingRequest, cancellationToken);
+        var readingAnswer = await CollectAsync(AnalysisStage.Reading, readingRequest, cancellationToken);
         Trace?.Invoke("reading.answer", readingAnswer);
         var reading = ParseReading(readingAnswer, claims);
 
         progress?.Report(AnalysisStage.Searching);
         var candidates = Candidates(knowledge, reading, subject + "\n" + facts, claims);
         Trace?.Invoke("candidates", string.Join('\n', candidates.Select(c => $"{c.Key} — {c.Source}")));
+        OnCandidates?.Invoke(candidates);
 
         progress?.Report(AnalysisStage.Selecting);
         var selected = new List<AnalysedArticle>();
@@ -101,7 +110,7 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
         {
             var selectionRequest = BuildSelectionRequest(knowledge, facts, reading, candidates);
             Trace?.Invoke("selection.prompt", selectionRequest.UserPrompt);
-            var selectionAnswer = await _provider.GenerateAsync(selectionRequest, cancellationToken);
+            var selectionAnswer = await CollectAsync(AnalysisStage.Selecting, selectionRequest, cancellationToken);
             Trace?.Invoke("selection.answer", selectionAnswer);
             selected = ParseSelection(selectionAnswer, candidates);
         }
@@ -116,6 +125,19 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
             Articles = selected,
             Model = _provider.Name,
         };
+    }
+
+    /// <summary>Streams one model answer, reporting the text so far, and returns the whole answer.</summary>
+    private async Task<string> CollectAsync(AnalysisStage stage, ModelRequest request, CancellationToken cancellationToken)
+    {
+        var text = new StringBuilder();
+        await foreach (var piece in _provider.StreamAsync(request, cancellationToken))
+        {
+            text.Append(piece);
+            OnPartial?.Invoke(stage, text.ToString());
+        }
+
+        return text.ToString();
     }
 
     /// <summary>Identifies the analysed input, so the UI can say when the facts changed after the analysis.</summary>

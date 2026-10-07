@@ -173,6 +173,43 @@ public sealed class GroundsAnalyzerTests
     }
 
     [Fact]
+    public async Task BothAnswersStreamLiveAndTheCandidatesAreReported()
+    {
+        var provider = new ChunkedProvider(r => r.SectionId == GroundsAnalyzer.ReadingRequestId ? Reading : "fictitious-code:10 | أساس | سبب");
+        var partials = new List<(AnalysisStage Stage, string Text)>();
+        var candidates = -1;
+        var analysis = await new GroundsAnalyzer(provider)
+        {
+            OnPartial = (stage, text) => partials.Add((stage, text)),
+            OnCandidates = found => candidates = found.Count,
+        }.AnalyseAsync(Knowledge(Library), "دين", "أقرض المدعي المدعى عليه ولم يرد", "القسم المدني");
+
+        Assert.True(partials.Count(p => p.Stage == AnalysisStage.Reading) > 1); // several pieces, growing
+        Assert.Equal(Reading, partials.Last(p => p.Stage == AnalysisStage.Reading).Text);
+        Assert.Equal("fictitious-code:10 | أساس | سبب", partials.Last(p => p.Stage == AnalysisStage.Selecting).Text);
+        Assert.True(candidates > 0);
+        Assert.Equal("10", Assert.Single(analysis.Articles).Number); // parsing is unchanged by streaming
+    }
+
+    /// <summary>Streams each answer in pieces of 20 characters, like a local model writing token by token.</summary>
+    private sealed class ChunkedProvider(Func<ModelRequest, string> reply) : IModelProvider
+    {
+        public string Name => "chunked";
+
+        public Task<string> GenerateAsync(ModelRequest request, CancellationToken cancellationToken) => Task.FromResult(reply(request));
+
+        public async IAsyncEnumerable<string> StreamAsync(ModelRequest request, [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken cancellationToken)
+        {
+            var text = reply(request);
+            for (var i = 0; i < text.Length; i += 20)
+            {
+                await Task.Yield();
+                yield return text.Substring(i, Math.Min(20, text.Length - i));
+            }
+        }
+    }
+
+    [Fact]
     public async Task NoCandidatesMeansNoSecondCall()
     {
         var provider = new RecordingProvider(_ => "نوع الدعوى: لا شيء");

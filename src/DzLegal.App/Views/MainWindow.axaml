@@ -75,6 +75,46 @@
         </Grid>
       </Button>
     </DataTemplate>
+
+    <!-- What the local model is doing: steps (done, current, next), a timer, "waking up" until the first words, then the words live. -->
+    <DataTemplate x:Key="ModelActivityTemplate" x:DataType="vm:ModelActivityViewModel">
+      <Border Name="ActivityPanel" Background="{DynamicResource SurfaceAltBrush}" BorderBrush="{DynamicResource HairlineBrush}" BorderThickness="1"
+              CornerRadius="8" Padding="10,8" IsVisible="{Binding IsActive}">
+        <StackPanel Spacing="6">
+          <ItemsControl ItemsSource="{Binding Steps}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="vm:ActivityStepViewModel">
+                <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,1">
+                  <Panel Width="16" Height="16" VerticalAlignment="Center">
+                    <ic:SymbolIcon Symbol="CheckmarkCircle" FontSize="16" Foreground="{DynamicResource SuccessBrush}" IsVisible="{Binding IsDone}" />
+                    <Ellipse Classes="pulse" Width="10" Height="10" Fill="{DynamicResource AccentBrush}" IsVisible="{Binding IsActive}" />
+                    <Ellipse Width="8" Height="8" Stroke="{DynamicResource TextMutedBrush}" StrokeThickness="1.5" IsVisible="{Binding IsPending}" />
+                  </Panel>
+                  <TextBlock FontSize="12" VerticalAlignment="Center" Text="{Binding Label}" Classes.muted="{Binding IsPending}" Classes.current="{Binding IsActive}" />
+                  <TextBlock Classes="muted" FontSize="11" VerticalAlignment="Center" Text="{Binding Detail}" IsVisible="{Binding HasDetail}" />
+                </StackPanel>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+          <ProgressBar IsIndeterminate="True" Height="3" MinHeight="3" CornerRadius="2" IsVisible="{Binding IsWaiting}" />
+          <Grid ColumnDefinitions="*,Auto">
+            <TextBlock Classes="muted" FontSize="11" TextWrapping="Wrap" Text="{Binding WaitingText}" IsVisible="{Binding IsWaiting}" />
+            <TextBlock Classes="muted" FontSize="11" Text="{Binding WordsText}" IsVisible="{Binding !IsWaiting}" />
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="4" Margin="8,0,0,0">
+              <ic:SymbolIcon Symbol="Clock" FontSize="12" Foreground="{DynamicResource TextMutedBrush}" />
+              <TextBlock Name="ActivityElapsed" Classes="muted" FontSize="11" Text="{Binding Elapsed}" />
+            </StackPanel>
+          </Grid>
+          <Border Background="{DynamicResource PaperBrush}" CornerRadius="6" Padding="8,6" IsVisible="{Binding HasLiveText}">
+            <StackPanel Spacing="2">
+              <TextBlock FontSize="10" Foreground="#6A706D" Text="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[ActivityLive]}" />
+              <TextBlock Name="ActivityLiveText" FontFamily="{StaticResource DocumentFont}" FontSize="13" Foreground="#1C2321" TextWrapping="Wrap"
+                         FlowDirection="RightToLeft" Text="{Binding LiveText}" />
+            </StackPanel>
+          </Border>
+        </StackPanel>
+      </Border>
+    </DataTemplate>
   </Window.Resources>
 
   <Window.Styles>
@@ -177,6 +217,18 @@
     <Style Selector="TextBox.document:pointerover /template/ Border#PART_BorderElement">
       <Setter Property="Background" Value="#061E5A4B" />
       <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <!-- A gentle pulse on whatever the model is working on right now. -->
+    <Style Selector="Ellipse.pulse">
+      <Style.Animations>
+        <Animation Duration="0:0:0.9" IterationCount="Infinite" PlaybackDirection="Alternate">
+          <KeyFrame Cue="0%"><Setter Property="Opacity" Value="1" /></KeyFrame>
+          <KeyFrame Cue="100%"><Setter Property="Opacity" Value="0.2" /></KeyFrame>
+        </Animation>
+      </Style.Animations>
+    </Style>
+    <Style Selector="TextBlock.current">
+      <Setter Property="FontWeight" Value="SemiBold" />
     </Style>
     <Style Selector="Ellipse.status-dot">
       <Setter Property="Fill" Value="{DynamicResource SuccessBrush}" />
@@ -320,6 +372,7 @@
                   </Button>
                   <Button Classes="outline" Command="{Binding AnalyseGroundsCancelCommand}" Content="{Binding L[Cancel]}" IsVisible="{Binding AnalyseGroundsCommand.IsRunning}" />
                 </StackPanel>
+                <ContentControl Name="AnalysisActivityView" Content="{Binding AnalysisActivity}" ContentTemplate="{StaticResource ModelActivityTemplate}" />
                 <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap" Text="{Binding AnalysisStatus}"
                            IsVisible="{Binding AnalysisStatus, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
                 <Border Name="StaleBanner" Background="{DynamicResource WarningSoftBrush}" CornerRadius="6" Padding="8,6" IsVisible="{Binding IsAnalysisStale}">
@@ -460,6 +513,9 @@
             </StackPanel>
           </Grid>
 
+          <ContentControl Name="GenerationActivityView" DockPanel.Dock="Top" Margin="0,0,0,6"
+                          Content="{Binding GenerationActivity}" ContentTemplate="{StaticResource ModelActivityTemplate}" />
+
           <Grid>
             <!-- Edit: the sections on paper -->
             <ScrollViewer Background="{DynamicResource PaperCanvasBrush}" CornerRadius="8" IsVisible="{Binding SelectedDraftTab, Converter={x:Static vm:Converters.IsZero}}">
@@ -474,7 +530,12 @@
                           <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="4" Margin="8,0,0,0" VerticalAlignment="Center">
                             <ic:SymbolIcon Symbol="LockClosed" FontSize="12" Foreground="#8A918E" IsVisible="{Binding IsLocked}" />
                             <ic:SymbolIcon Symbol="Edit" FontSize="12" Foreground="#935600" IsVisible="{Binding IsOverridden}" />
-                            <TextBlock FontSize="11" Foreground="#8A918E" Text="{Binding Hint}" />
+                            <TextBlock FontSize="11" Foreground="#8A918E" Text="{Binding Hint}" IsVisible="{Binding !IsWriting}" />
+                            <StackPanel Orientation="Horizontal" Spacing="5" IsVisible="{Binding IsWriting}">
+                              <Ellipse Classes="pulse" Width="8" Height="8" Fill="#1E5A4B" VerticalAlignment="Center" />
+                              <TextBlock FontSize="11" FontWeight="SemiBold" Foreground="#1E5A4B"
+                                         Text="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[SectionWriting]}" />
+                            </StackPanel>
                           </StackPanel>
                           <Button Grid.Column="3" Classes="subtle" FontSize="12" Foreground="#1E5A4B" Command="{Binding OverrideCommand}"
                                   Content="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[EditManually]}" IsVisible="{Binding CanOverride}" />
@@ -658,6 +719,8 @@
                   </DataTemplate>
                 </ItemsControl.ItemTemplate>
               </ItemsControl>
+
+              <ContentControl Content="{Binding AssistantActivity}" ContentTemplate="{StaticResource ModelActivityTemplate}" />
 
               <Border Background="{DynamicResource PaperBrush}" CornerRadius="8" Padding="10"
                       IsVisible="{Binding AssistantPartial, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">

@@ -19,7 +19,8 @@ public sealed partial class ProviderOption(
     string key,
     Func<Loc, string> displayName,
     Func<IModelProvider> create,
-    Func<CancellationToken, Task<ModelStatus>>? probe = null) : ObservableObject
+    Func<CancellationToken, Task<ModelStatus>>? probe = null,
+    Func<CancellationToken, Task>? warmUp = null) : ObservableObject
 {
     private Loc? _loc;
 
@@ -32,6 +33,12 @@ public sealed partial class ProviderOption(
     /// <summary>Checks the engine without drafting anything (for the status indicator).</summary>
     public Task<ModelStatus> ProbeAsync(CancellationToken cancellationToken) =>
         probe?.Invoke(cancellationToken) ?? Task.FromResult(new ModelStatus(ModelState.Ready));
+
+    /// <summary>True when the engine can be loaded into memory ahead of the first request.</summary>
+    public bool CanWarmUp => warmUp is not null;
+
+    /// <summary>Loads the engine ahead of the first request (local only); a no-op for engines without a warm-up.</summary>
+    public Task WarmUpAsync(CancellationToken cancellationToken) => warmUp?.Invoke(cancellationToken) ?? Task.CompletedTask;
 
     internal void Localize(Loc loc)
     {

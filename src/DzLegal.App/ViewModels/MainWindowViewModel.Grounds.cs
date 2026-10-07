@@ -132,19 +132,23 @@ public sealed partial class MainWindowViewModel
         try
         {
             provider = SelectedProvider.Create();
-            var progress = new InlineProgress<AnalysisStage>(stage => AnalysisStatus = L[stage switch
+            AnalysisStatus = string.Empty;
+            AnalysisActivity.Start([L["AnalysisStepReading"], L["AnalysisStepSearching"], L["AnalysisStepSelecting"]]);
+            var progress = new InlineProgress<AnalysisStage>(stage =>
+                AnalysisActivity.BeginStep((int)stage, waitsForModel: stage != AnalysisStage.Searching));
+            var analyzer = new GroundsAnalyzer(provider)
             {
-                AnalysisStage.Reading => "AnalysisReading",
-                AnalysisStage.Searching => "AnalysisSearching",
-                _ => "AnalysisSelecting",
-            }]);
-            var analysis = await new GroundsAnalyzer(provider).AnalyseAsync(
+                OnPartial = (_, text) => AnalysisActivity.OnText(text),
+                OnCandidates = found => AnalysisActivity.SetDetail((int)AnalysisStage.Searching, L.Format("AnalysisCandidates", found.Count)),
+            };
+            var analysis = await analyzer.AnalyseAsync(
                 _knowledge,
                 inputs.GetValueOrDefault("claim.subject", string.Empty),
                 facts,
                 inputs.GetValueOrDefault("court.section", string.Empty),
                 progress,
                 cancellationToken);
+            AnalysisActivity.Complete();
             ShowAnalysis(analysis);
             var engine = SelectedProvider.DisplayName;
             AnalysisStatus = analysis.Articles.Count > 0 ? L.Format("AnalysisDone", analysis.Articles.Count, engine)
@@ -161,6 +165,7 @@ public sealed partial class MainWindowViewModel
         }
         finally
         {
+            AnalysisActivity.Stop();
             (provider as IDisposable)?.Dispose();
         }
     }

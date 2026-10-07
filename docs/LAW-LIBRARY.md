@@ -96,7 +96,7 @@ Two last generic changes followed:
 - A 4B model does not use an abstain option, so the lawyer judges the proposed claim type. This is acceptable because the model's reading and claim type are shown, and nothing is used unless the lawyer ticks it.
 - `other` stays: it costs nothing and may work with other models.
 - **Tuning on our own 44 cases stops here, to avoid overfitting.** The next measurements are:
-  - Dr. Aicha's hold-out cases, with her own core articles;
+  - the legal reviewer's hold-out cases, with her own core articles;
   - a run after the official texts are imported;
   - optionally, a larger local model if the hardware allows.
 

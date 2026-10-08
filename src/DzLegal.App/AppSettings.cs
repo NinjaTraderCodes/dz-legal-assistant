@@ -72,4 +72,7 @@ public sealed record OllamaSettings
 
     /// <summary>Load the model into memory in the background when the app starts, so the first request is faster.</summary>
     public bool WarmUp { get; init; } = true;
+
+    /// <summary>How long the model stays in memory after each request (Ollama duration, e.g. "60m").</summary>
+    public string KeepAlive { get; init; } = "60m";
 }

@@ -28,7 +28,33 @@ public interface IModelProvider
 /// <param name="ExampleText">The worked example shown in the prompt, used to detect output that copies it.</param>
 /// <param name="InstructionText">The prompt without its example: wording found there (e.g. «في الشكل: قبول الدعوى شكلا»)
 /// is mandated, so it never counts as copying the example.</param>
-public sealed record ModelRequest(string SectionId, string SystemPrompt, string UserPrompt, string SourceText, string ExampleText = "", string InstructionText = "");
+public sealed record ModelRequest(string SectionId, string SystemPrompt, string UserPrompt, string SourceText, string ExampleText = "", string InstructionText = "")
+{
+    /// <summary>
+    /// Upper bound on the answer's length for this call (tokens). Short answers (the analysis) get a small cap, so a slow
+    /// local model cannot ramble; null uses the provider's default.
+    /// </summary>
+    public int? MaxTokens { get; init; }
+}
+
+/// <summary>
+/// How long one model call took, as reported by the local server: loading the model, reading the prompt, writing the
+/// answer. Used by the benches to see where the time goes.
+/// </summary>
+public sealed record ModelTimings(
+    string SectionId,
+    TimeSpan Load,
+    int PromptTokens,
+    TimeSpan PromptReading,
+    int AnswerTokens,
+    TimeSpan Writing,
+    TimeSpan FirstWord,
+    bool PromptMayBeTruncated)
+{
+    public double PromptTokensPerSecond => PromptReading.TotalSeconds > 0 ? PromptTokens / PromptReading.TotalSeconds : 0;
+
+    public double AnswerTokensPerSecond => Writing.TotalSeconds > 0 ? AnswerTokens / Writing.TotalSeconds : 0;
+}
 
 public sealed class ModelProviderException : Exception
 {

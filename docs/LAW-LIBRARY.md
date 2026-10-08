@@ -19,8 +19,8 @@ Nothing is scraped, searched online or read from PDFs while the lawyer works. Ev
    - 5–12 search terms in the codes' vocabulary.
 
    The parser accepts ids or Arabic names and formatting variants, keeps catalog claim types only (`other` means none), and removes any article number.
-2. **Searching the official texts** (no model). `ArticleIndex` is a BM25 full-text index over every in-force imported article, with its chapter headings weighted ×2. It is queried with the model's terms (weight 1) and the raw facts (weight 0.5). The catalog articles of the recognised claim types come first. At most 25 candidates are kept.
-3. **Choosing articles** (model call 2, `prompts/select-articles.ar.txt`). The model sees the candidates as `key — citation — first 300 characters of the official text` and answers `key | role | reason`. The parser:
+2. **Searching the official texts** (no model). `ArticleIndex` is a BM25 full-text index over every in-force imported article, with its chapter headings weighted ×2. It is queried with the model's terms (weight 1) and the raw facts (weight 0.5). The catalog articles of the recognised claim types come first. At most 12 candidates are kept.
+3. **Choosing articles** (model call 2, `prompts/select-articles.ar.txt`). The model sees the candidates as `key — citation — first 180 characters of the official text` and answers `key | role | reason`. The parser:
    - keeps candidate keys only, at most 6;
    - maps the roles (أساس/إثبات/تعويض/إجراء);
    - truncates a reason to 30 words;

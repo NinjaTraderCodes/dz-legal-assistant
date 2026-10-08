@@ -1,5 +1,4 @@
 using System.Collections.ObjectModel;
-using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace DzLegal.App.ViewModels;
@@ -49,7 +48,7 @@ public sealed partial class ModelActivityViewModel : ObservableObject, IDisposab
     private readonly Func<DateTimeOffset> _now;
     private readonly bool _useTimer;
     private readonly bool _showLiveText;
-    private DispatcherTimer? _timer;
+    private CancellationTokenSource? _timer;
     private DateTimeOffset _startedAt;
     private DateTimeOffset _waitingSince;
 
@@ -104,8 +103,9 @@ public sealed partial class ModelActivityViewModel : ObservableObject, IDisposab
         Tick();
         if (_useTimer)
         {
-            _timer ??= new DispatcherTimer(TimeSpan.FromSeconds(1), DispatcherPriority.Background, (_, _) => Tick());
-            _timer.Start();
+            StopTimer();
+            _timer = new CancellationTokenSource();
+            _ = RunTimerAsync(_timer.Token);
         }
     }
 
@@ -158,7 +158,7 @@ public sealed partial class ModelActivityViewModel : ObservableObject, IDisposab
     /// <summary>The task ended early (cancelled or failed): the panel hides.</summary>
     public void Stop()
     {
-        _timer?.Stop();
+        StopTimer();
         IsWaiting = false;
         IsActive = false;
     }
@@ -173,5 +173,32 @@ public sealed partial class ModelActivityViewModel : ObservableObject, IDisposab
 
     internal void Relocalize() => Tick();
 
-    public void Dispose() => _timer?.Stop();
+    public void Dispose() => StopTimer();
+
+    /// <summary>
+    /// Ticks every second on the caller's context (the UI thread in the app). No Avalonia dispatcher is touched, so a
+    /// view model used off the UI thread (tests) never claims it.
+    /// </summary>
+    private async Task RunTimerAsync(CancellationToken cancellationToken)
+    {
+        using var timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
+        try
+        {
+            while (await timer.WaitForNextTickAsync(cancellationToken))
+            {
+                Tick();
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            // stopped
+        }
+    }
+
+    private void StopTimer()
+    {
+        _timer?.Cancel();
+        _timer?.Dispose();
+        _timer = null;
+    }
 }

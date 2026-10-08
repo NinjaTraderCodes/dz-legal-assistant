@@ -210,6 +210,14 @@ public sealed class GroundsAnalyzerTests
     }
 
     [Fact]
+    public async Task BothAnalysisCallsAreShortByDesign()
+    {
+        var provider = new RecordingProvider(r => r.SectionId == GroundsAnalyzer.ReadingRequestId ? Reading : "fictitious-code:10 | أساس | سبب");
+        await new GroundsAnalyzer(provider).AnalyseAsync(Knowledge(Library), "دين", "أقرض المدعي المدعى عليه ولم يرد", "القسم المدني");
+        Assert.Equal([GroundsAnalyzer.ReadingMaxTokens, GroundsAnalyzer.SelectionMaxTokens], provider.Requests.Select(r => r.MaxTokens));
+    }
+
+    [Fact]
     public async Task NoCandidatesMeansNoSecondCall()
     {
         var provider = new RecordingProvider(_ => "نوع الدعوى: لا شيء");

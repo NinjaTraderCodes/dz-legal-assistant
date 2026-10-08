@@ -21,6 +21,40 @@ public sealed class LegalTextTests
     }
 
     [Fact]
+    public void ALongArticleIsShortenedInThePromptOnly()
+    {
+        var longText = string.Join(' ', Enumerable.Repeat("يلتزم المدين الوهمي بالوفاء", 80));
+        var block = LegalText.Block([new LegalText("99", "القانون التجريبي", longText)])!;
+        Assert.True(block.Length < LegalText.MaxPromptLength + 60, $"{block.Length} characters");
+        Assert.EndsWith("…»", block, StringComparison.Ordinal);
+    }
+
+    /// <summary>
+    /// A slow local model spends most of its time reading the prompt: these budgets stop prompts from growing back.
+    /// Raise them only on purpose, after measuring the speed.
+    /// </summary>
+    [Theory]
+    [InlineData("grounds", 6000)]
+    [InlineData("requests", 4500)]
+    public void DraftingPromptsStayWithinTheirBudget(string sectionId, int budget)
+    {
+        var request = new DraftingService(new RecordingProvider(_ => string.Empty))
+            .BuildRequest(Fixtures.Requete, Fixtures.Requete.FindSection(sectionId)!, Fixtures.CompleteInputs());
+        var size = request.SystemPrompt.Length + request.UserPrompt.Length;
+        Assert.True(size <= budget, $"{sectionId}: {size} characters, budget {budget}");
+    }
+
+    [Fact]
+    public void EachModelCallCarriesItsOwnAnswerCap()
+    {
+        var service = new DraftingService(new RecordingProvider(_ => string.Empty));
+        Assert.Equal(900, service.BuildRequest(Fixtures.Requete, Fixtures.Requete.FindSection("grounds")!, Fixtures.CompleteInputs()).MaxTokens);
+        Assert.Equal(450, service.BuildRequest(Fixtures.Requete, Fixtures.Requete.FindSection("requests")!, Fixtures.CompleteInputs()).MaxTokens);
+        Assert.Equal(900, new SectionReviser(new RecordingProvider(_ => string.Empty))
+            .BuildRequest(Fixtures.Requete, "grounds", "نص", "أوجز", Fixtures.CompleteInputs()).MaxTokens);
+    }
+
+    [Fact]
     public void TheRevisionPromptCarriesTheSelectedTextsToo()
     {
         var request = new SectionReviser(new RecordingProvider(_ => string.Empty))

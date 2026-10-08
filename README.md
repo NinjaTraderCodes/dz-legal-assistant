@@ -107,6 +107,19 @@ Shipped defaults: `defaultProvider` `"ollama"` (or `"stub"` for template mode), 
 
 A non-loopback `endpoint` is refused. Further optional keys: `temperature` (0.2), `maxTokens` (1000), `repeatPenalty` (1.1), and `"think": false` for reasoning models such as `qwen3`.
 
+### Speed on a CPU-only laptop (8 GB)
+
+What to expect from a 4B model on CPU: the first request after start-up loads the model (10–40 s). The app warms it up in the background and keeps it in memory for an hour (`ollama.keepAlive`). After that, most of the wait is the model **reading** the prompt, and then it writes a few words per second.
+
+The app keeps prompts short and caps every answer. To see where the time goes on your machine, run either bench (below): its summary has a "Where the time goes" table with load time, prompt tokens and reading speed, answer tokens and writing speed, and time to the first word.
+
+Things that help on the laptop:
+- keep it plugged in, with the "best performance" power mode;
+- close heavy applications (browsers with many tabs);
+- in Ollama's environment, try `OLLAMA_FLASH_ATTENTION=1` and `OLLAMA_KV_CACHE_TYPE=q8_0` (less memory for the same model).
+
+Models to compare against `gemma3:4b` on such a machine: `gemma3n:e2b` and `gemma3n:e4b`, which are built for on-device speed. Earlier runs ruled out `qwen2.5:3b-instruct` (weaker) and `qwen3:4b` (too slow, writes English reasoning).
+
 ### Comparing local models (drafting bench)
 
 ```bash

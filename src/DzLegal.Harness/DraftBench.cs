@@ -77,8 +77,10 @@ public static class DraftBench
             .AppendLine("| model | case | total s | slowest section s | hard issues | number issues | stray Latin words | ungrounded terms | example copies removed | retried | fell back | formally complete | error |")
             .AppendLine("|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|---|");
 
+        var speed = new StringBuilder();
         foreach (var model in options.Models)
         {
+            var speedLog = new SpeedLog();
             var modelFolder = Path.Combine(options.OutFolder, Safe(model));
             Directory.CreateDirectory(modelFolder);
             foreach (var drafting in cases)
@@ -90,7 +92,7 @@ public static class DraftBench
                     inputs[k] = v;
                 }
 
-                var timed = new TimingProvider(CreateProvider(model, options));
+                var timed = new TimingProvider(CreateProvider(model, options, speedLog));
                 var clock = Stopwatch.StartNew();
                 DraftDocument? draft = null;
                 string? error = null;
@@ -152,13 +154,20 @@ public static class DraftBench
                 summary.AppendLine(CultureInfo.InvariantCulture,
                     $"| {model} | {drafting.Id} | {clock.Elapsed.TotalSeconds:0} | {slowest:0} | {hard} | {numbers} | {latin} | {ungrounded} | {copied} | {retried} | {fellBack} | {(report.IsAdmissibleInForm ? "yes" : "NO")} | |");
             }
+
+            speed.AppendLine(CultureInfo.InvariantCulture, $"### {model}").AppendLine().AppendLine(speedLog.Table());
+            log.WriteLine($"[{model}] speed:");
+            log.WriteLine(speedLog.Table());
         }
 
+        summary.AppendLine().AppendLine("## Where the time goes").AppendLine()
+            .AppendLine("Load = reading the model from disk (should be ~0 after the first call). Prompt read = how fast the model reads what we send; write = how fast it writes.").AppendLine()
+            .Append(speed);
         await File.WriteAllTextAsync(Path.Combine(options.OutFolder, "summary.md"), summary.ToString());
         log.WriteLine($"Done: {Path.GetFullPath(Path.Combine(options.OutFolder, "summary.md"))}");
     }
 
-    private static IModelProvider CreateProvider(string model, BenchOptions options) => model == "stub"
+    private static IModelProvider CreateProvider(string model, BenchOptions options, SpeedLog speed) => model == "stub"
         ? new StubModelProvider()
         : new OllamaModelProvider(new OllamaOptions
         {
@@ -167,7 +176,8 @@ public static class DraftBench
             Timeout = options.Timeout,
             // Reasoning models answer far faster with thinking disabled; others reject the flag.
             Think = model.StartsWith("qwen3", StringComparison.OrdinalIgnoreCase) ? false : null,
-        });
+        })
+        { OnTimings = speed.Add };
 
     private static string Safe(string name) =>
         string.Concat(name.Select(c => char.IsLetterOrDigit(c) || c is '.' or '-' or '_' ? c : '_'));

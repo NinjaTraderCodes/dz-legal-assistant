@@ -113,6 +113,11 @@ public static class DefinitionLoader
                     break;
                 case SectionKind.Narrative:
                     CheckFile(definition, section.Prompt, $"{where} prompt", errors);
+                    if (section.MaxTokens is <= 0)
+                    {
+                        errors.Add($"{where}: maxTokens must be positive.");
+                    }
+
                     if (section.SourceField is null || !fieldIds.Contains(section.SourceField))
                     {
                         errors.Add($"{where} must name an existing sourceField.");

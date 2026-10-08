@@ -116,7 +116,7 @@ public sealed partial class DraftingService
         var example = string.Join('\n', ExampleBlock().Matches(user).Select(m => m.Groups[1].Value.Trim()));
         var instructions = TemplateRenderer.Normalize(ExampleBlock().Replace(user, string.Empty));
         user = TemplateRenderer.Normalize(ExampleMarker().Replace(user, string.Empty));
-        return new ModelRequest(section.Id, system, user, notes, example, instructions);
+        return new ModelRequest(section.Id, system, user, notes, example, instructions) { MaxTokens = section.MaxTokens };
     }
 
     /// <summary>Redrafts one narrative section from the lawyer's notes (the ↻ action on a section).</summary>

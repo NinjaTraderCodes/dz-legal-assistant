@@ -91,6 +91,6 @@ public sealed class SectionReviser(IModelProvider provider)
             ["instruction"] = instruction ?? string.Empty,
             ["legal_texts"] = LegalText.Block(legalTexts),
         });
-        return new ModelRequest(sectionId, system, user, notes);
+        return new ModelRequest(sectionId, system, user, notes) { MaxTokens = section.MaxTokens };
     }
 }

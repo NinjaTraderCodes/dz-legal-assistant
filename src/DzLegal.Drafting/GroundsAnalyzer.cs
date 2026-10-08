@@ -40,11 +40,15 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
     public const string ReadingRequestId = "grounds.reading";
     public const string SelectionRequestId = "grounds.selection";
     public const int MaxClaims = 2;
-    public const int MaxCandidates = 25;
+    public const int MaxCandidates = 12;
     public const int MaxSelected = 6;
-    public const int ExcerptLength = 300;
+    public const int ExcerptLength = 180;
     public const int MaxReasonWords = 30;
     public const string NoneMarker = "لا شيء";
+
+    /// <summary>Answer caps: five short lines for the reading, at most six «key | role | reason» lines for the choice.</summary>
+    public const int ReadingMaxTokens = 300;
+    public const int SelectionMaxTokens = 400;
 
     /// <summary>
     /// The named way out listed last in stage 1: small models pick the closest real claim type when every option is
@@ -155,7 +159,7 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
             .Replace("{{ subject }}", subject?.Trim() ?? string.Empty, StringComparison.Ordinal)
             .Replace("{{ facts }}", facts?.Trim() ?? string.Empty, StringComparison.Ordinal)
             .Replace("{{ claims }}", string.Join('\n', claims.Append(OtherClaim).Select(c => c.Description.Length > 0 ? $"{c.Id} — {c.Label.Ar}: {c.Description}" : $"{c.Id} — {c.Label.Ar}")), StringComparison.Ordinal);
-        return new ModelRequest(ReadingRequestId, string.Empty, TemplateRenderer.Normalize(user), facts?.Trim() ?? string.Empty);
+        return new ModelRequest(ReadingRequestId, string.Empty, TemplateRenderer.Normalize(user), facts?.Trim() ?? string.Empty) { MaxTokens = ReadingMaxTokens };
     }
 
     public static ModelRequest BuildSelectionRequest(LegalKnowledge knowledge, string facts, FactsReading reading, IReadOnlyList<CandidateArticle> candidates)
@@ -173,7 +177,7 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
             .Replace("{{ facts }}", facts?.Trim() ?? string.Empty, StringComparison.Ordinal)
             .Replace("{{ reading }}", readingText, StringComparison.Ordinal)
             .Replace("{{ candidates }}", string.Join('\n', candidates.Select(c => $"{c.Key} — {c.Citation} — {c.Excerpt}")), StringComparison.Ordinal);
-        return new ModelRequest(SelectionRequestId, string.Empty, TemplateRenderer.Normalize(user), facts?.Trim() ?? string.Empty);
+        return new ModelRequest(SelectionRequestId, string.Empty, TemplateRenderer.Normalize(user), facts?.Trim() ?? string.Empty) { MaxTokens = SelectionMaxTokens };
 
         static string Line(string label, string value) => value.Length == 0 ? string.Empty : $"{label}: {value}";
     }

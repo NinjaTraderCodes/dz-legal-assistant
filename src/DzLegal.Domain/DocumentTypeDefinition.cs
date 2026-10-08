@@ -110,6 +110,9 @@ public sealed record SectionDefinition
     /// <summary>Field holding the lawyer's notes that a narrative section is grounded on.</summary>
     public string? SourceField { get; init; }
 
+    /// <summary>Longest answer the model may write for this narrative section (tokens); keeps a slow local model short.</summary>
+    public int? MaxTokens { get; init; }
+
     /// <summary>The section is included only when all conditions hold.</summary>
     public IReadOnlyList<Condition> IncludeWhen { get; init; } = [];
 

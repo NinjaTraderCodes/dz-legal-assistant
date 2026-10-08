@@ -3,7 +3,7 @@
 // practicing lawyer confirms it against the current official text (see docs/UPDATING-LEGAL-RULES.md).
 {
   "id": "requete-introductive",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "name": { "ar": "عريضة افتتاح الدعوى", "en": "Statement of claim (requête introductive d'instance)" },
   "description": {
     "ar": "العريضة التي ترفع بها الدعوى أمام المحكمة (المواد 14 و15 و17 من قانون الإجراءات المدنية والإدارية).",
@@ -109,9 +109,9 @@
       "includeWhen": [ { "field": "claim.concernsRegisteredRealProperty", "is": "true" } ] },
     { "id": "opening", "formGroup": "court", "layout": { "align": "center", "bold": true, "spaceBefore": 14 }, "kind": "generated", "template": "templates/opening.scriban", "title": { "ar": "الافتتاح", "en": "Opening" } },
     { "id": "facts", "formGroup": "facts", "layout": { "align": "justify", "spaceBefore": 12 }, "kind": "generated", "template": "templates/facts.scriban", "showTitle": true, "title": { "ar": "الوقائع", "en": "Facts" } },
-    { "id": "grounds", "formGroup": "grounds", "layout": { "align": "justify", "spaceBefore": 12 }, "kind": "narrative", "prompt": "prompts/grounds.ar.txt", "sourceField": "notes.grounds", "showTitle": true, "title": { "ar": "المناقشة القانونية", "en": "Legal grounds" } },
+    { "id": "grounds", "formGroup": "grounds", "layout": { "align": "justify", "spaceBefore": 12 }, "kind": "narrative", "prompt": "prompts/grounds.ar.txt", "sourceField": "notes.grounds", "maxTokens": 900, "showTitle": true, "title": { "ar": "المناقشة القانونية", "en": "Legal grounds" } },
     { "id": "requestsIntro", "formGroup": "requests", "layout": { "align": "start", "spaceBefore": 12 }, "kind": "generated", "template": "templates/requestsIntro.scriban", "showTitle": true, "title": { "ar": "لهذه الأسباب ومن أجلها", "en": "For these reasons" } },
-    { "id": "requests", "formGroup": "requests", "layout": { "align": "start", "spaceBefore": 4 }, "kind": "narrative", "prompt": "prompts/requests.ar.txt", "sourceField": "notes.requests", "title": { "ar": "الطلبات", "en": "Requests" } },
+    { "id": "requests", "formGroup": "requests", "layout": { "align": "start", "spaceBefore": 4 }, "kind": "narrative", "prompt": "prompts/requests.ar.txt", "sourceField": "notes.requests", "maxTokens": 450, "title": { "ar": "الطلبات", "en": "Requests" } },
     { "id": "documents", "formGroup": "documents", "layout": { "align": "start", "spaceBefore": 12 }, "kind": "generated", "template": "templates/documents.scriban", "showTitle": true, "title": { "ar": "قائمة المرفقات", "en": "Supporting documents" } },
     { "id": "dateplace", "formGroup": "signature", "layout": { "align": "end", "spaceBefore": 18 }, "kind": "generated", "template": "templates/dateplace.scriban", "title": { "ar": "التاريخ", "en": "Date" } },
     { "id": "signature", "formGroup": "signature", "layout": { "align": "end", "bold": true, "spaceBefore": 6 }, "kind": "generated", "template": "templates/signature.scriban", "title": { "ar": "التوقيع", "en": "Signature" },

@@ -31,10 +31,14 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
 
     public string Name => $"ollama {_options.Model} @ {_options.Endpoint.Authority}";
 
+    /// <summary>Receives the server's timings after each call (load, prompt reading, writing). Used by the benches.</summary>
+    public Action<ModelTimings>? OnTimings { get; set; }
+
     public async Task<string> GenerateAsync(ModelRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
         var body = Body(request, stream: false);
+        var clock = System.Diagnostics.Stopwatch.StartNew();
 
         HttpResponseMessage response;
         try
@@ -55,6 +59,7 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
         {
             await EnsureSuccessAsync(response, cancellationToken);
             var reply = await response.Content.ReadFromJsonAsync<ChatResponse>(cancellationToken);
+            Report(request, reply, clock.Elapsed);
             return reply?.Message?.Content
                 ?? throw new ModelProviderException("The local model returned an empty answer.");
         }
@@ -68,6 +73,8 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
         {
             Content = JsonContent.Create(Body(request, stream: true)),
         };
+        var clock = System.Diagnostics.Stopwatch.StartNew();
+        TimeSpan? firstWord = null;
 
         HttpResponseMessage response;
         try
@@ -98,11 +105,13 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
                 var chunk = System.Text.Json.JsonSerializer.Deserialize<ChatResponse>(line);
                 if (chunk?.Message?.Content is { Length: > 0 } piece)
                 {
+                    firstWord ??= clock.Elapsed;
                     yield return piece;
                 }
 
                 if (chunk?.Done == true)
                 {
+                    Report(request, chunk, firstWord ?? clock.Elapsed);
                     yield break;
                 }
             }
@@ -135,8 +144,11 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
     {
         try
         {
+            // Same context window as the real requests: a different one would make Ollama load the model a second time.
             using var response = await _http.PostAsJsonAsync(
-                new Uri("api/generate", UriKind.Relative), new WarmUpRequest(_options.Model, WarmUpKeepAlive), cancellationToken);
+                new Uri("api/generate", UriKind.Relative),
+                new WarmUpRequest(_options.Model, _options.KeepAlive, new WarmUpOptions(_options.ContextLength)),
+                cancellationToken);
             await EnsureSuccessAsync(response, cancellationToken);
         }
         catch (HttpRequestException ex)
@@ -145,8 +157,6 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
         }
     }
 
-    /// <summary>How long Ollama keeps the model in memory after the warm-up.</summary>
-    public const string WarmUpKeepAlive = "30m";
 
     public void Dispose() => _http.Dispose();
 
@@ -155,7 +165,32 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
         [new ChatMessage("system", request.SystemPrompt), new ChatMessage("user", request.UserPrompt)],
         Stream: stream,
         _options.Think,
-        new ChatOptions(_options.Temperature, _options.ContextLength, _options.MaxTokens, _options.RepeatPenalty));
+        _options.KeepAlive,
+        new ChatOptions(_options.Temperature, _options.ContextLength, MaxTokens(request), _options.RepeatPenalty));
+
+    /// <summary>The call's own cap, never above the configured maximum.</summary>
+    private int MaxTokens(ModelRequest request) => request.MaxTokens is { } cap ? Math.Min(cap, _options.MaxTokens) : _options.MaxTokens;
+
+    private void Report(ModelRequest request, ChatResponse? done, TimeSpan firstWord)
+    {
+        if (OnTimings is null || done is null)
+        {
+            return;
+        }
+
+        static TimeSpan Ns(long ns) => TimeSpan.FromTicks(ns / 100);
+        // The prompt filled the window: Ollama drops its beginning silently, so the bench says so.
+        var truncated = done.PromptEvalCount + MaxTokens(request) > _options.ContextLength;
+        OnTimings(new ModelTimings(
+            request.SectionId,
+            Ns(done.LoadDuration),
+            done.PromptEvalCount,
+            Ns(done.PromptEvalDuration),
+            done.EvalCount,
+            Ns(done.EvalDuration),
+            firstWord,
+            truncated));
+    }
 
     private async Task EnsureSuccessAsync(HttpResponseMessage response, CancellationToken cancellationToken)
     {
@@ -176,6 +211,7 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
         [property: JsonPropertyName("messages")] IReadOnlyList<ChatMessage> Messages,
         [property: JsonPropertyName("stream")] bool Stream,
         [property: JsonPropertyName("think"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] bool? Think,
+        [property: JsonPropertyName("keep_alive")] string KeepAlive,
         [property: JsonPropertyName("options")] ChatOptions Options);
 
     private sealed record ChatMessage(
@@ -190,11 +226,19 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
 
     private sealed record ChatResponse(
         [property: JsonPropertyName("message")] ChatMessage? Message,
-        [property: JsonPropertyName("done")] bool Done = false);
+        [property: JsonPropertyName("done")] bool Done = false,
+        [property: JsonPropertyName("load_duration")] long LoadDuration = 0,
+        [property: JsonPropertyName("prompt_eval_count")] int PromptEvalCount = 0,
+        [property: JsonPropertyName("prompt_eval_duration")] long PromptEvalDuration = 0,
+        [property: JsonPropertyName("eval_count")] int EvalCount = 0,
+        [property: JsonPropertyName("eval_duration")] long EvalDuration = 0);
 
     private sealed record WarmUpRequest(
         [property: JsonPropertyName("model")] string Model,
-        [property: JsonPropertyName("keep_alive")] string KeepAlive);
+        [property: JsonPropertyName("keep_alive")] string KeepAlive,
+        [property: JsonPropertyName("options")] WarmUpOptions Options);
+
+    private sealed record WarmUpOptions([property: JsonPropertyName("num_ctx")] int ContextLength);
 
     private sealed record TagsResponse([property: JsonPropertyName("models")] IReadOnlyList<TagModel>? Models);
 

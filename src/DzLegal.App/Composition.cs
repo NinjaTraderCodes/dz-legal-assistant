@@ -29,6 +29,7 @@ public static class Composition
             MaxTokens = settings.Ollama.MaxTokens,
             RepeatPenalty = settings.Ollama.RepeatPenalty,
             Think = settings.Ollama.Think,
+            KeepAlive = settings.Ollama.KeepAlive,
         };
 
         return

@@ -10,7 +10,17 @@ public sealed record OllamaOptions
     /// <summary>Low temperature: we want faithful rephrasing, not creativity.</summary>
     public double Temperature { get; init; } = 0.2;
 
+    /// <summary>
+    /// Context window (prompt + answer, tokens). Fixed for every call, the warm-up included: Ollama reloads the model when
+    /// it changes, which would cost the whole loading time again.
+    /// </summary>
     public int ContextLength { get; init; } = 4096;
+
+    /// <summary>
+    /// How long Ollama keeps the model in memory after each request (Ollama duration, e.g. "60m"; "-1" = until it stops).
+    /// Ollama's own default is 5 minutes, after which the next request pays the loading time again.
+    /// </summary>
+    public string KeepAlive { get; init; } = "60m";
 
     /// <summary>Upper bound on generated tokens per section, so a small model cannot ramble or loop.</summary>
     public int MaxTokens { get; init; } = 1000;

@@ -53,6 +53,7 @@ if (args.Length > 0 && args[0] == "grounds")
     foreach (var model in models)
     {
         Console.WriteLine($"Grounds analysis with {model} — {groundsCases.Count} cases");
+        var speed = new SpeedLog();
         using var ollama = model == "stub"
             ? null
             : new DzLegal.ModelProviders.Ollama.OllamaModelProvider(new DzLegal.ModelProviders.Ollama.OllamaOptions
@@ -61,7 +62,8 @@ if (args.Length > 0 && args[0] == "grounds")
                 Model = model,
                 Timeout = TimeSpan.FromMinutes(10),
                 Think = model.StartsWith("qwen3", StringComparison.OrdinalIgnoreCase) ? false : null,
-            });
+            })
+            { OnTimings = speed.Add };
         var report = await GroundsEvaluator.EvaluateAsync(
             knowledge,
             groundsCases,
@@ -69,6 +71,14 @@ if (args.Length > 0 && args[0] == "grounds")
             Console.Out,
             args.Contains("--out") ? Option("--out", "bench-grounds") : null);
         GroundsEvaluator.Print(report, knowledge, Console.Out);
+        Console.WriteLine(speed.Table());
+        if (args.Contains("--out"))
+        {
+            File.AppendAllText(
+                Path.Combine(Option("--out", "bench-grounds"), "summary.md"),
+                $"### Where the time goes ({model}){Environment.NewLine}{Environment.NewLine}{speed.Table()}{Environment.NewLine}");
+        }
+
         Console.WriteLine();
     }
 

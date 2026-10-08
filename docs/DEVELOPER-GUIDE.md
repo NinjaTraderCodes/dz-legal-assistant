@@ -88,7 +88,7 @@ DZLEGAL_SCREENSHOTS=$PWD/docs/images dotnet test tests/DzLegal.App.Tests   # ref
 | Change the **section assistant** («المساعد») | `…/prompts/revise.ar.txt`; shortcuts in `definition.json` → `revisionShortcuts` | |
 | Change how the facts are **read** (grounds analysis, stage 1) | `data/law/prompts/read-facts.ar.txt`; parser `GroundsAnalyzer.ParseReading` | Plain text replacement, not Scriban. |
 | Change how **articles are chosen** (stage 3) | `data/law/prompts/select-articles.ar.txt`; parser `GroundsAnalyzer.ParseSelection` | Plain text replacement. |
-| Change the **candidate search** (stage 2) | `GroundsAnalyzer.Candidates`, `src/DzLegal.Law/ArticleIndex.cs` | The weights and the limit of 25 are there. |
+| Change the **candidate search** (stage 2) | `GroundsAnalyzer.Candidates`, `src/DzLegal.Law/ArticleIndex.cs` | The weights and the limit of 12 are there. |
 | Add or edit a **claim type** | `data/law/claims/<area>.json` | Validated by `LegalKnowledgeLoader.Validate`. |
 | Change fixed wording (header, parties, opening, signature…) | `…/templates/*.scriban` | Generated sections: no model involved. |
 | Add an **input field** | `definition.json` → `fields` (+ `fieldGroups`) | The UI is generated from it. |
@@ -187,7 +187,7 @@ What each variable holds:
 - `legal_texts`: `LegalText.Block(...)`, the official text of each ticked article that is in the library. It is `null` when there is none, so `{{ if legal_texts }}` is false (see §13).
 - `{{ claims }}`: one line per catalog claim type of the court section's area, `id — label: description`, ending with `other`.
 - `{{ reading }}`: the five lines from stage 1.
-- `{{ candidates }}`: `key — citation — first 300 characters` for each candidate.
+- `{{ candidates }}`: `key — citation — first 180 characters` for each candidate.
 
 **Worked examples** in Scriban prompts are wrapped in `[[مثال]] … [[/مثال]]`:
 - The model sees the content without the markers.
@@ -278,7 +278,7 @@ No model is called while typing. Everything here is deterministic and synchronou
      ```
 6. The overridden sections are put back, and the model text is remembered for redraft. Then `SyncSections(true)` and `Recheck()`.
 
-**Live feedback:** `GenerationActivity`, a `ModelActivityViewModel` (see 5.8), has one step per narrative section.
+**Live feedback:** `GenerationActivity`, a `ModelActivityViewModel` (see 5.9), has one step per narrative section.
 - The progress callback calls `BeginStep` for the section being drafted.
 - `MarkWriting` sets `SectionViewModel.IsWriting` on that section, which shows a pulsing "the model is writing…" marker in its header.
 - `OnPartial` feeds both the section text and the activity's word count.
@@ -295,7 +295,7 @@ Stage 1  Reading    BuildReadingRequest(read-facts.ar.txt)  → provider.StreamA
                     ParseReading → FactsReading{Relationship, Breach, Sought, ClaimIds (≤2, "other" → none), SearchTerms}
 Stage 2  Searching  Candidates(): catalog articles of ClaimIds first,
                     then library.Index.Search([(terms, 1.0), (subject+facts, 0.5)])   ArticleIndex.cs (BM25)
-                    ≤ 25 CandidateArticle{Key, Ref, Citation, Excerpt(300), Source catalog|search}   → OnCandidates
+                    ≤ 12 CandidateArticle{Key, Ref, Citation, Excerpt(180), Source catalog|search}   → OnCandidates
 Stage 3  Selecting  BuildSelectionRequest(select-articles.ar.txt) → provider.StreamAsync (OnPartial)
                     ParseSelection → ≤ 6 AnalysedArticle{Code, Number, Role, Reason, Source}
 Result   GroundsAnalysis{FactsHash, Relationship, Breach, Sought, ClaimIds, Articles, Model}
@@ -349,7 +349,27 @@ The draft watermark is `DocumentRenderOptions.DraftWatermark`. Fonts are embedde
 - **Evaluation:** `SaveEvaluationAsync` → `EvaluationStore.SaveAsync`. It stores the verdict, the comment, the generated snapshot against the final text, and the provider name, in `evaluations/`.
 - `CurrentDraft()` is the single place that gathers inputs, ticks and analysis into a `DraftDocument`. Use it for anything that persists.
 
-### 5.8 Live model activity
+### 5.8 Speed of the local model
+
+On a CPU-only 8 GB laptop each call costs three things:
+- **Load:** reading the model from disk. It is paid once if the model stays in memory.
+- **Prompt read:** usually the biggest cost. It grows with everything we send.
+- **Write:** a few tokens per second for a 4B model.
+
+What the code does about each:
+
+| Lever | Where |
+|---|---|
+| Model kept in memory: `keep_alive` (setting `ollama.keepAlive`, default `60m`) sent with **every** request and the warm-up. Ollama's default is 5 minutes. | `OllamaOptions.KeepAlive`, `OllamaModelProvider.Body`, `WarmUpAsync` |
+| One fixed context window (`ContextLength`, 4096) for every call, the warm-up included. A different `num_ctx` makes Ollama reload the model. | `OllamaOptions.ContextLength` |
+| A per-call answer cap, never above `maxTokens`: reading 300, selection 400, grounds 900, requests 450 (the revision uses its section's cap). | `ModelRequest.MaxTokens`, `GroundsAnalyzer.ReadingMaxTokens`/`SelectionMaxTokens`, `definition.json` → `sections[].maxTokens` |
+| Less to read: at most 12 candidates of 180 characters; each ticked article at most 800 characters in the prompt. Quotations are still checked against the whole text. | `GroundsAnalyzer.MaxCandidates`/`ExcerptLength`, `LegalText.MaxPromptLength` |
+| Prompt budgets: tests fail if the drafting prompts grow past their budget. | `LegalTextTests.DraftingPromptsStayWithinTheirBudget` |
+| Measurement: Ollama's own timings (load, prompt tokens and duration, answer tokens and duration), plus time to first word. | `OllamaModelProvider.OnTimings` → `ModelTimings`; the benches print them with `SpeedLog` |
+
+`ModelTimings.PromptMayBeTruncated` flags a prompt that filled the context window. Ollama drops the beginning of such a prompt silently.
+
+### 5.9 Live model activity
 
 `ViewModels/ModelActivityViewModel.cs` is one instance per long task: `AnalysisActivity`, `GenerationActivity` and `AssistantActivity` on `MainWindowViewModel`.
 
@@ -458,7 +478,7 @@ The pulse animation is the `Ellipse.pulse` style. For tests, the constructor tak
 | `ViewModels/GroundsViewModels.cs` | `ArticleChoiceViewModel`, `SelectedArticleViewModel`, `InsertChipViewModel` |
 | `ViewModels/FieldViewModel.cs` | one field, its choice options, a step (`FieldGroupViewModel`, `StepStatus`) |
 | `ViewModels/SectionViewModel.cs` | one editor section: undo history, override, redraft, review hints, `IsWriting` |
-| `ViewModels/ModelActivityViewModel.cs` | live model activity: steps, timer, waiting state, live text (§5.8) |
+| `ViewModels/ModelActivityViewModel.cs` | live model activity: steps, timer, waiting state, live text (§5.9) |
 | `ViewModels/FindingViewModel.cs` | one compliance finding as displayed |
 | `ViewModels/ProviderOption.cs` | a selectable engine + `ModelStatus`, optional warm-up |
 | `ViewModels/Converters.cs` | small XAML converters |

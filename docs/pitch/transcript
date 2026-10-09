@@ -1,0 +1,31 @@
+Pitch transcript, about 3:00
+
+01 · Hook (0:00–0:15)
+In Algeria, a court petition that misses a single mandatory element can be rejected in form, before any judge reads the case. I’m Hicham, and I’m building DZ Legal Assistant: the Grammarly for Algerian court petitions, which never leaves the lawyer’s laptop.
+
+02 · Problem (0:15–0:35)
+Lawyers face three problems. Form: fifteen mandatory elements from the Code of Civil and Administrative Procedure, checked from memory. Grounds: finding the right articles for the facts is the slowest part of the job. And secrecy: online AI means sending a client’s file to a foreign server, which professional secrecy does not allow.
+
+03 · Solution (0:35–0:55)
+So the app combines three safeguards. A rule engine, with no AI, checks every mandatory element and names the article behind each gap. A local AI model writes only the legal grounds and the requests, from the articles the lawyer ticks, and flags any article it wasn’t given. And everything runs offline, on an ordinary laptop.
+
+04 · Demo (0:55–1:30)
+Here is the app with a finished sample case: a loan of one and a half million dinars that was never repaid. The AI works behind two buttons. One: Analyse the facts. The model reads them and proposes articles, each with a role and a reason, and the lawyer ticks what to keep. Two: Draft narrative sections. It writes the legal grounds and the requests, only from those articles. Three, with no AI: the formal check, twelve out of twelve. Ready to sign and export. Nothing left the computer.
+
+05 · Market (1:30–1:45)
+The market, and these are assumptions for this exercise: around fifty thousand lawyers in Algeria, about thirty thousand of whom draft these petitions. Our target is three thousand paying lawyers by year three.
+
+06 · Money (1:45–2:00)
+The core is free: the form, the rule check and the export. Pro, at twenty-nine thousand dinars a year, adds the AI analysis and yearly law updates, because laws change. That is about eighty-seven million dinars a year, with no servers to pay for.
+
+07 · Traction (2:00–2:20)
+What exists today is real: a working desktop app with over three hundred automated tests. The rule engine gets all three hundred and sixty checks right. The model recognises the right type of case eighty-four percent of the time. And a practising lawyer is already my first user.
+
+08 · Competition (2:20–2:35)
+Today, lawyers choose between online chatbots, which are fluent but unsafe and can invent articles, and Word templates, which are safe but check nothing. We are the only option that is safe, Algerian, and grounded in the law.
+
+09 · Team (2:35–2:50)
+I’m a C# and .NET developer, and I built the whole product: the app, the rule engine and the AI pipeline. Khouloud, with a master’s in private law and practice in a law office, reviews every rule and article.
+
+10 · Ask (2:50–3:05)
+Next: import and verify the official texts, then a pilot in five law offices early next year. From this community, I’m asking for three things: introductions to lawyers, design feedback, and a business co-founder. DZ Legal Assistant: safe, Algerian, grounded. Thank you.

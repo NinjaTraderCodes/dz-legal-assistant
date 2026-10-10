@@ -55,6 +55,9 @@ public sealed record ClaimType
 
     public bool Verified { get; init; }
 
+    /// <summary>The claim arises from a contract (loan, sale, lease…), so liability for fault (CC 124) is the wrong basis.</summary>
+    public bool Contractual { get; init; }
+
     public IReadOnlyList<ClaimArticle> Articles { get; init; } = [];
 
     /// <summary>Steps required before or with filing (e.g. the labour conciliation report).</summary>

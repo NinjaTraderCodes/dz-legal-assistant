@@ -119,6 +119,15 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     /// <summary>Elements present: folded away in the compliance pane.</summary>
     public ObservableCollection<FindingViewModel> PresentFindings { get; } = [];
 
+    /// <summary>
+    /// Legal points to look at (wrong basis, interest on a private loan, damages without formal notice…), each with the
+    /// article it comes from. Shown beside the formal check, which only says whether each element is present.
+    /// </summary>
+    public ObservableCollection<string> SubstanceIssues { get; } = [];
+
+    [ObservableProperty]
+    public partial bool HasSubstanceIssues { get; set; }
+
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(StepPosition), nameof(IsGroundsStep), nameof(IsRequestsStep), nameof(IsDocumentsStep))]
     public partial FieldGroupViewModel? SelectedStep { get; set; }
@@ -754,6 +763,21 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         }
     }
 
+    /// <summary>Re-runs the substance checks on the form, the ticked articles and the drafted grounds and requests.</summary>
+    private void UpdateSubstanceIssues()
+    {
+        var claims = (_analysis?.ClaimIds ?? []).Select(id => _knowledge.Claims.FirstOrDefault(c => c.Id == id)).OfType<DzLegal.Law.ClaimType>().ToList();
+        var drafted = (_draft.FindSection("grounds")?.Text ?? string.Empty) + "\n" + (_draft.FindSection("requests")?.Text ?? string.Empty);
+        var issues = SubstanceChecks.Check(CurrentInputs(), claims, _selectedArticles, drafted);
+        SubstanceIssues.Clear();
+        foreach (var issue in issues)
+        {
+            SubstanceIssues.Add(L["Substance_" + issue.Kind]);
+        }
+
+        HasSubstanceIssues = SubstanceIssues.Count > 0;
+    }
+
     private void Recheck()
     {
         Report = ComplianceChecker.Check(_definition, _draft);
@@ -783,6 +807,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         PresentHeader = L.Format("PresentHeader", PresentCount);
         HasIssues = IssueFindings.Count > 0;
         UpdateStepsAndFields();
+        UpdateSubstanceIssues();
 
         UpdateReviewHints();
         SchedulePreview(TimeSpan.FromMilliseconds(400));

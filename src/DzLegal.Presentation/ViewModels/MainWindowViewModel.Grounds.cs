@@ -315,6 +315,7 @@ public sealed partial class MainWindowViewModel
 
         RefreshSelectedGrounds();
         UpdateReviewHints();
+        UpdateSubstanceIssues();
     }
 
     private void RefreshSelectedGrounds()

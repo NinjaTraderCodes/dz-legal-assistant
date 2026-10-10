@@ -138,7 +138,7 @@ public static partial class NarrativeChecks
     /// Article references in a text: «المادة 106», «المادتين 106 و107», «المواد 124 و131 و182 مكرر», with the
     /// position of each, as the base number (normalised like <see cref="Numbers"/>).
     /// </summary>
-    internal static IEnumerable<(string Number, int Index)> ArticleReferences(string text)
+    public static IEnumerable<(string Number, int Index)> ArticleReferences(string text)
     {
         foreach (Match m in ArticleReference().Matches(ToAsciiDigits(text)))
         {
@@ -153,7 +153,7 @@ public static partial class NarrativeChecks
     /// The full number of each article reference («182 مكرر», not just 182) with its position, and the code named
     /// right after it when there is one («من القانون التجاري»), so CC 176 and ComC 176 are told apart.
     /// </summary>
-    internal static IEnumerable<(string Number, int Index, string? Code)> FullArticleReferences(string text)
+    public static IEnumerable<(string Number, int Index, string? Code)> FullArticleReferences(string text)
     {
         var ascii = ToAsciiDigits(text);
         foreach (Match m in ArticleReference().Matches(ascii))

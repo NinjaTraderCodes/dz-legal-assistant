@@ -99,6 +99,11 @@ Nothing needs installing: everything happens in Cloud Shell, in the browser.
    The first run asks for the Google AI Studio key (input hidden), stores it in Secret Manager, builds the image
    (about 5 minutes) and prints the demo URL, e.g. `https://dz-legal-demo-xxxxx.europe-west1.run.app`.
 3. **Updates.** `git pull && ./deploy/cloud-run.sh` in Cloud Shell. The stored key is kept.
+
+   From Windows instead (VS Code's terminal, PowerShell): the `.sh` script is for Linux and Cloud Shell, and Windows
+   only offers to "select an app" for it. Install the [Google Cloud CLI](https://cloud.google.com/sdk/docs/install),
+   run `gcloud auth login` and `gcloud config set project YOUR_PROJECT_ID` once, then `.\deploy\cloud-run.ps1`
+   (same options: `-UpdateKey`, `-MinInstances 1`).
 4. **Uptime.** In this repository's settings, add the variable `DEMO_URL` (the printed URL). The `web-demo-uptime`
    workflow then checks `DEMO_URL/healthz` and the page every 30 minutes; a failed check sends GitHub's usual failure
    e-mail.
@@ -111,6 +116,11 @@ allows **one instance** (every visitor shares the same queue and limits, and the
 affinity**, and sets a one-hour request timeout so a reconnecting browser finds its session again.
 
 Before a deadline, open the demo in a private window, logged out, and run the guided tour end to end.
+
+**If the analysis says "gave no usable analysis".** Gemma 4 thinks before answering unless told not to, and the
+thinking counts against the short answer limits of the analysis, so the answer came back empty. The demo now sends
+`thinkingLevel: minimal` for Gemma 4 (and retries without it if a model refuses the setting); an answer cut off while
+thinking is reported as such instead.
 
 **If an AI step says "error 404 … not found".** Google has retired that model. The demo checks the list at startup,
 so redeploy (`./deploy/cloud-run.sh`) and look at `DEMO_URL/healthz`: it lists the models in use. The server log

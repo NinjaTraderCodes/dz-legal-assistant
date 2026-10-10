@@ -63,6 +63,48 @@ public class GoogleAiProviderTests
     }
 
     [Fact]
+    public async Task Gemma4IsAskedNotToThinkFirstOtherModelsGetNoThinkingSetting()
+    {
+        var handler = new FakeHandler(_ => Sse("""{"candidates":[{"content":{"parts":[{"text":"ok"}]}}]}"""));
+        using (var gemma4 = new GoogleAiModelProvider(new GoogleAiOptions { ApiKey = "k", Model = "gemma-4-26b-a4b-it" }, handler))
+        {
+            await gemma4.GenerateAsync(Request, CancellationToken.None);
+        }
+
+        using (var gemma3 = new GoogleAiModelProvider(new GoogleAiOptions { ApiKey = "k" }, handler))
+        {
+            await gemma3.GenerateAsync(Request, CancellationToken.None);
+        }
+
+        using var first = JsonDocument.Parse(handler.Requests[0].Body);
+        Assert.Equal("minimal", first.RootElement.GetProperty("generationConfig").GetProperty("thinkingConfig").GetProperty("thinkingLevel").GetString());
+        using var second = JsonDocument.Parse(handler.Requests[1].Body);
+        Assert.False(second.RootElement.GetProperty("generationConfig").TryGetProperty("thinkingConfig", out _));
+    }
+
+    [Fact]
+    public async Task AModelThatRefusesTheThinkingSettingIsAskedAgainWithoutIt()
+    {
+        var handler = new FakeHandler(r => r.Content!.ReadAsStringAsync().Result.Contains("thinkingConfig", StringComparison.Ordinal)
+            ? new HttpResponseMessage(HttpStatusCode.BadRequest) { Content = new StringContent("""{"error":{"message":"Thinking level is not supported for this model."}}""") }
+            : Sse("""{"candidates":[{"content":{"parts":[{"text":"ok"}]}}]}"""));
+        using var provider = new GoogleAiModelProvider(new GoogleAiOptions { ApiKey = "k", Model = "gemma-4-31b-it" }, handler);
+
+        Assert.Equal("ok", await provider.GenerateAsync(Request, CancellationToken.None));
+        Assert.Equal(2, handler.Requests.Count);
+    }
+
+    [Fact]
+    public async Task AnAnswerCutOffWhileThinkingSaysSo()
+    {
+        var handler = new FakeHandler(_ => Sse("""{"candidates":[{"content":{"parts":[{"text":"…","thought":true}]},"finishReason":"MAX_TOKENS"}]}"""));
+        using var provider = new GoogleAiModelProvider(new GoogleAiOptions { ApiKey = "k", Model = "gemma-4-31b-it" }, handler);
+
+        var ex = await Assert.ThrowsAsync<ModelProviderException>(() => provider.GenerateAsync(Request, CancellationToken.None));
+        Assert.Contains("length limit", ex.Message, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public async Task ThoughtsAreNotPartOfTheAnswer()
     {
         var handler = new FakeHandler(_ => Sse("""{"candidates":[{"content":{"parts":[{"text":"planning…","thought":true},{"text":"حيث إن"}]}}]}"""));

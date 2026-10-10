@@ -22,6 +22,16 @@ public sealed record GoogleAiOptions
     public bool MergeSystemPrompt { get; init; } = true;
 
     public TimeSpan Timeout { get; init; } = TimeSpan.FromMinutes(2);
+
+    /// <summary>
+    /// <c>thinkingConfig.thinkingLevel</c>. Null means automatic: "minimal" for Gemma 4, which otherwise thinks first by
+    /// default and spends the short answer caps of the grounds analysis on it (the answer then comes back empty); not
+    /// sent for other models.
+    /// </summary>
+    public string? ThinkingLevel { get; init; }
+
+    internal string? EffectiveThinkingLevel =>
+        ThinkingLevel ?? (Model.StartsWith("gemma-4", StringComparison.Ordinal) ? "minimal" : null);
 }
 
 /// <summary>Any API that speaks OpenAI's chat-completions protocol (Groq, OpenRouter, Together…).</summary>

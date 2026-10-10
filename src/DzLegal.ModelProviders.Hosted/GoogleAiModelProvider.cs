@@ -48,12 +48,9 @@ public sealed class GoogleAiModelProvider : IModelProvider, IDisposable
     public async IAsyncEnumerable<string> StreamAsync(ModelRequest request, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        using var message = new HttpRequestMessage(HttpMethod.Post, new Uri($"models/{_options.Model}:streamGenerateContent?alt=sse", UriKind.Relative))
-        {
-            Content = HostedHttp.Json(Body(request)),
-        };
-
-        using var response = await HostedHttp.SendAsync(_http, message, Name, cancellationToken);
+        using var response = await SendAsync(request, cancellationToken);
+        var answered = false;
+        string? finish = null;
         await foreach (var data in HostedHttp.ReadEventsAsync(response, cancellationToken))
         {
             var chunk = JsonSerializer.Deserialize<Chunk>(data);
@@ -62,15 +59,55 @@ public sealed class GoogleAiModelProvider : IModelProvider, IDisposable
                 throw new ModelProviderException($"{Name} refused the request ({blocked}).");
             }
 
-            foreach (var part in chunk?.Candidates is [var first, ..] ? first.Content?.Parts ?? [] : [])
+            var candidate = chunk?.Candidates is [var first, ..] ? first : null;
+            finish = candidate?.FinishReason ?? finish;
+            foreach (var part in candidate?.Content?.Parts ?? [])
             {
                 // Models that think aloud mark those parts; only the answer goes to the document.
                 if (part.Thought != true && part.Text is { Length: > 0 } piece)
                 {
+                    answered = true;
                     yield return piece;
                 }
             }
         }
+
+        if (!answered && finish == "MAX_TOKENS")
+        {
+            throw new ModelProviderException($"{Name} reached its answer length limit before writing anything (it was thinking).");
+        }
+    }
+
+    /// <summary>
+    /// Sends the request with the thinking level; if the model refuses that setting (400 "Thinking level is not
+    /// supported"), sends it once more without it.
+    /// </summary>
+    private async Task<HttpResponseMessage> SendAsync(ModelRequest request, CancellationToken cancellationToken)
+    {
+        var thinking = _options.EffectiveThinkingLevel;
+        if (thinking is not null)
+        {
+            try
+            {
+                return await SendOnceAsync(request, thinking, cancellationToken);
+            }
+            catch (ModelProviderException ex) when (ex.Message.Contains(" error 400:", StringComparison.Ordinal)
+                && ex.Message.Contains("hinking", StringComparison.Ordinal))
+            {
+                // Falls through to a request without thinkingConfig.
+            }
+        }
+
+        return await SendOnceAsync(request, null, cancellationToken);
+    }
+
+    private async Task<HttpResponseMessage> SendOnceAsync(ModelRequest request, string? thinking, CancellationToken cancellationToken)
+    {
+        using var message = new HttpRequestMessage(HttpMethod.Post, new Uri($"models/{_options.Model}:streamGenerateContent?alt=sse", UriKind.Relative))
+        {
+            Content = HostedHttp.Json(Body(request, thinking)),
+        };
+        return await HostedHttp.SendAsync(_http, message, Name, cancellationToken);
     }
 
     /// <summary>
@@ -101,10 +138,10 @@ public sealed class GoogleAiModelProvider : IModelProvider, IDisposable
 
     public void Dispose() => _http.Dispose();
 
-    private Request Body(ModelRequest request)
+    private Request Body(ModelRequest request, string? thinking)
     {
         var maxTokens = request.MaxTokens is { } cap ? Math.Min(cap, _options.MaxTokens) : _options.MaxTokens;
-        var config = new GenerationConfig(_options.Temperature, maxTokens);
+        var config = new GenerationConfig(_options.Temperature, maxTokens, thinking is null ? null : new ThinkingConfig(thinking));
         return _options.MergeSystemPrompt
             ? new Request([new Content("user", [new Part(HostedHttp.Merged(request))])], null, config)
             : new Request([new Content("user", [new Part(request.UserPrompt)])], new Content(null, [new Part(request.SystemPrompt)]), config);
@@ -125,13 +162,18 @@ public sealed class GoogleAiModelProvider : IModelProvider, IDisposable
 
     private sealed record GenerationConfig(
         [property: JsonPropertyName("temperature")] double Temperature,
-        [property: JsonPropertyName("maxOutputTokens")] int MaxOutputTokens);
+        [property: JsonPropertyName("maxOutputTokens")] int MaxOutputTokens,
+        [property: JsonPropertyName("thinkingConfig"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] ThinkingConfig? ThinkingConfig);
+
+    private sealed record ThinkingConfig([property: JsonPropertyName("thinkingLevel")] string ThinkingLevel);
 
     private sealed record Chunk(
         [property: JsonPropertyName("candidates")] IReadOnlyList<Candidate>? Candidates,
         [property: JsonPropertyName("promptFeedback")] PromptFeedback? PromptFeedback);
 
-    private sealed record Candidate([property: JsonPropertyName("content")] Content? Content);
+    private sealed record Candidate(
+        [property: JsonPropertyName("content")] Content? Content,
+        [property: JsonPropertyName("finishReason")] string? FinishReason);
 
     private sealed record ModelList(
         [property: JsonPropertyName("models")] IReadOnlyList<ModelInfo>? Models,

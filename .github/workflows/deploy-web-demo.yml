@@ -1,0 +1,57 @@
+name: deploy-web-demo
+
+# Publishes the web demo (src/DzLegal.Web) to a Hugging Face Docker Space.
+# Setup (once): repository secret HF_TOKEN (a Hugging Face write token) and repository variable HF_SPACE
+# (e.g. "your-user/dz-legal-assistant"). The model key (GOOGLE_API_KEY) is a secret of the Space, not of this repo.
+# See docs/WEB-DEMO.md.
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "src/**"
+      - "data/**"
+      - "assets/**"
+      - "Dockerfile"
+      - "Directory.*"
+      - "global.json"
+      - ".github/workflows/deploy-web-demo.yml"
+
+jobs:
+  deploy:
+    # Only from the default branch, and only once the Space is configured.
+    if: github.ref_name == github.event.repository.default_branch && vars.HF_SPACE != ''
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare the Space contents
+        run: |
+          # The Space only needs what the Docker build uses.
+          rm -rf .git docs/pitch docs/images tests
+          cat > README.md <<'README'
+          ---
+          title: DZ Legal Assistant
+          emoji: ⚖️
+          colorFrom: green
+          colorTo: red
+          sdk: docker
+          app_port: 7860
+          pinned: true
+          short_description: Drafts Algerian court petitions and checks every mandatory element.
+          ---
+
+          Live demo of DZ Legal Assistant. Fictitious cases only. Source code and documentation are on GitHub.
+          README
+      - name: Push to the Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_SPACE: ${{ vars.HF_SPACE }}
+        run: |
+          git init -q -b main
+          git lfs install --local
+          git lfs track "*.ttf" "*.png" "*.pdf"
+          git config user.name "deploy-bot"
+          git config user.email "deploy-bot@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Deploy ${GITHUB_SHA::8}"
+          git push --force "https://user:${HF_TOKEN}@huggingface.co/spaces/${HF_SPACE}" main

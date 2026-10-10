@@ -27,7 +27,11 @@ Contents:
 ## 1. Solution map
 
 ```
-DzLegal.App  (Avalonia UI, MVVM)
+DzLegal.App  (Avalonia desktop, offline)         DzLegal.Web  (Blazor Server web demo)
+ │   └─► ModelProviders.Ollama                     └─► ModelProviders.Hosted (Google AI Studio, OpenAI-compatible)
+ └──────────────┬──────────────────────────────────────┘
+                ▼
+DzLegal.Presentation  (view models, strings: shared by both shells)
  ├─► DzLegal.Drafting ──► DzLegal.Law ──► DzLegal.Domain
  │        ▲                                   ▲
  ├─► DzLegal.ModelProviders.Ollama ─┘ (implements IModelProvider)
@@ -46,6 +50,8 @@ DzLegal.Harness (console) ─► FormEngine, Drafting, Law, Storage, both provid
 | `DzLegal.Law` | The law library (imported codes), BM25 article search, the claim catalog, official-link rules, and the loader for `data/law`. | — |
 | `DzLegal.Drafting` | Everything that talks to a model: drafting, section revision, grounds analysis, Scriban templates, and the checks on model output. | Scriban |
 | `DzLegal.ModelProviders.Ollama` | HTTP client for a **loopback** Ollama server (`/api/chat`, `/api/tags`). | — |
+| `DzLegal.ModelProviders.Hosted` | Hosted engines for the **web demo only**: Gemini API (Gemma 3), OpenAI-compatible APIs, a fallback chain. Never referenced by the desktop app. | — |
+| `DzLegal.Web` | The public web demo: Blazor Server pages over the shared view models, a queue in front of the hosted model, sample cases, health endpoint. See [WEB-DEMO.md](WEB-DEMO.md). | ASP.NET Core |
 | `DzLegal.ModelProviders.Stub` | "Template mode": returns the lawyer's notes unchanged. Used without AI, in tests and in CI. | — |
 | `DzLegal.Documents` | Layout model → PDF (QuestPDF) and Word (OpenXML), RTL, Arabic fonts. | QuestPDF, DocumentFormat.OpenXml |
 | `DzLegal.Storage` | `.dzdraft.json` files, autosave, evaluation records, per-user folders. | — |

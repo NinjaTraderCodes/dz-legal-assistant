@@ -5,18 +5,23 @@ For a file-by-file map, the prompts and the runtime flows, see [DEVELOPER-GUIDE.
 ## Modules and dependencies
 
 ```
-                 ┌──────────────┐
-                 │ DzLegal.App  │  Avalonia shell, MVVM (CommunityToolkit.Mvvm), .resx strings
-                 └──────┬───────┘
-      ┌─────────────┬───┴──────────┬───────────────┬──────────────┐
+   ┌──────────────┐                         ┌──────────────┐
+   │ DzLegal.App  │ Avalonia desktop shell  │ DzLegal.Web  │ Blazor Server web demo
+   │ (offline)    │ + ModelProviders.Ollama │ (public demo)│ + ModelProviders.Hosted
+   └──────┬───────┘                         └──────┬───────┘
+          └──────────────┬─────────────────────────┘
+                         ▼
+               DzLegal.Presentation   view models, .resx strings (CommunityToolkit.Mvvm, no UI framework)
+      ┌─────────────┬────┴─────────┬───────────────┬──────────────┐
       ▼             ▼              ▼               ▼              ▼
- FormEngine     Drafting   ModelProviders.*     Storage     (data/ folder)
-      │             │        Stub   Ollama         │
-      │             │◄─────────┴──────┘            │
+ FormEngine     Drafting   ModelProviders.Stub  Storage      Documents, Law, (data/ folder)
+      │             │◄─────────────┘               │
       └──────┬──────┘                              │
              ▼                                     │
        DzLegal.Domain  ◄───────────────────────────┘
 ```
+
+The desktop app and the web demo share everything below them; only the shell and the model provider differ. The desktop never references the hosted providers ([OFFLINE.md](OFFLINE.md), [WEB-DEMO.md](WEB-DEMO.md)).
 
 - **Domain** holds the records (`DocumentTypeDefinition`, `RequiredElement`, `RuleCheck`, `DraftDocument`, `ComplianceReport`) and `DefinitionLoader`, which parses and **validates** `definition.json`. It checks for unknown fields or sections, duplicate ids, bad regexes and missing template files, so a broken data edit fails at load time and in CI.
 - **FormEngine** is a single pure function, `ComplianceChecker.Check(definition, draft) → report`. It has no I/O, no AI and no clock, which makes it deterministic and fast enough to run on every keystroke.

@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <Description>Public web demo: the desktop app's engine and view models in the browser (Blazor Server). The AI steps run on a hosted Gemma model, so it is for fictitious cases only; the product itself runs offline.</Description>
+    <IncludeLegalData>true</IncludeLegalData>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DzLegal.Presentation\DzLegal.Presentation.csproj" />
+    <ProjectReference Include="..\DzLegal.ModelProviders.Hosted\DzLegal.ModelProviders.Hosted.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="Samples\*.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="DzLegal.Web.Tests" />
+  </ItemGroup>
+</Project>

@@ -1,4 +1,3 @@
-using System.Net.Http.Json;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
@@ -51,7 +50,7 @@ public sealed class GoogleAiModelProvider : IModelProvider, IDisposable
         ArgumentNullException.ThrowIfNull(request);
         using var message = new HttpRequestMessage(HttpMethod.Post, new Uri($"models/{_options.Model}:streamGenerateContent?alt=sse", UriKind.Relative))
         {
-            Content = JsonContent.Create(Body(request)),
+            Content = HostedHttp.Json(Body(request)),
         };
 
         using var response = await HostedHttp.SendAsync(_http, message, Name, cancellationToken);

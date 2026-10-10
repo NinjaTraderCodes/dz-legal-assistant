@@ -1,0 +1,41 @@
+@using DzLegal.Presentation.ViewModels
+@* What the model is doing right now: steps, timer, waiting state, live text. Same view model as the desktop panel. *@
+@if (Model.IsActive)
+{
+    <div class="activity" role="status" aria-live="polite">
+        <ol class="activity-steps">
+            @foreach (var step in Model.Steps)
+            {
+                <li class="@(step.IsDone ? "done" : step.IsActive ? "active" : "pending")">
+                    <span class="dot"></span>
+                    <span>@step.Label</span>
+                    @if (step.HasDetail)
+                    {
+                        <span class="muted"> · @step.Detail</span>
+                    }
+                </li>
+            }
+        </ol>
+        <div class="activity-meta">
+            <span>@(Model.IsWaiting ? Model.WaitingText : Model.WordsText)</span>
+            <span class="timer">⏱ @Model.Elapsed</span>
+        </div>
+        @if (Model.IsWaiting)
+        {
+            <div class="progress-indeterminate"><span></span></div>
+        }
+        @if (Model.HasLiveText)
+        {
+            <div class="live-text">
+                <div class="live-label">@LiveLabel</div>
+                <div class="arabic" dir="rtl">@Model.LiveText</div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    [Parameter, EditorRequired] public ModelActivityViewModel Model { get; set; } = default!;
+
+    [Parameter] public string LiveLabel { get; set; } = string.Empty;
+}

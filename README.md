@@ -10,11 +10,13 @@ The lawyer fills in the case details, the application produces a structured firs
 
 ![Main window in Arabic](docs/images/main-window-ar.png)
 
+**Try it without installing anything:** a public web demo runs the same engine and screens in the browser, with fictitious sample cases. Its AI steps use the same open model family (Gemma 3), hosted, so it is not for real client data. See [docs/WEB-DEMO.md](docs/WEB-DEMO.md) (local run: `dotnet run --project src/DzLegal.Web`).
+
 ## Principles
 
 | Principle | How it is enforced |
 |---|---|
-| **Offline, no data leaves the machine** | No cloud APIs, no telemetry. The only model endpoint allowed is a loopback address (`127.0.0.1`, `::1`, `localhost`), checked by `LoopbackGuard`, with the system proxy bypassed. See [docs/OFFLINE.md](docs/OFFLINE.md). |
+| **Offline, no data leaves the machine** | The desktop app uses no cloud APIs and no telemetry (the public web demo is separate, see above). The only model endpoint allowed is a loopback address (`127.0.0.1`, `::1`, `localhost`), checked by `LoopbackGuard`, with the system proxy bypassed. See [docs/OFFLINE.md](docs/OFFLINE.md). |
 | **Assistive, never autonomous** | A permanent "draft, review required" banner. The app only produces text for the lawyer to edit and sign. |
 | **Grounded, not free-generating** | Identification, court, **facts**, dates and the signature block come from templates, deterministically, with grammatical gender taken from the form. Each facts line becomes a «حيث إن / وحيث إن» paragraph exactly as the lawyer wrote it. Small local models swapped lender and borrower when rewriting facts, so they no longer touch them. The model only rewrites the notes for the legal grounds and the requests. If a section has no notes, the model is not called. |
 | **Model output is checked** | Deterministic checks remove paragraphs copied from the prompt's worked example. They also flag foreign-script characters, stray Latin words, invented numbers, dropped numbers and legal qualifications the lawyer never used (for example «عقد المقاولة» in a loan case). Unusable answers are retried once, and otherwise replaced by the lawyer's notes. |

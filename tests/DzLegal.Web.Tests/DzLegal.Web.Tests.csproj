@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\DzLegal.Web\DzLegal.Web.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\DzLegal.Web\Samples\*.json" LinkBase="Samples" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

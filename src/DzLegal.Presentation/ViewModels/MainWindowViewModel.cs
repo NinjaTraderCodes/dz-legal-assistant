@@ -507,6 +507,23 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         SetStatus(L["Ready"]);
     }
 
+    /// <summary>
+    /// Starts a new requête from case details only (the web demo's sample cases): no draft, no analysis yet, so the
+    /// lawyer, or a judge, runs every step.
+    /// </summary>
+    public void OpenCase(IReadOnlyDictionary<string, string> inputs)
+    {
+        ArgumentNullException.ThrowIfNull(inputs);
+        New();
+        LoadDraft(new DraftDocument
+        {
+            DocumentTypeId = _definition.Id,
+            DefinitionVersion = _definition.Version,
+            Inputs = new Dictionary<string, string>(inputs, StringComparer.Ordinal),
+        });
+        SelectedStep = FieldGroups[0];
+    }
+
     [RelayCommand]
     private async Task SaveAsync()
     {

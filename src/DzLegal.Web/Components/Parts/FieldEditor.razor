@@ -1,0 +1,47 @@
+@using DzLegal.Presentation.ViewModels
+@* One case field, as the definition describes it: text, multi-line text, yes/no, a choice or a date. *@
+<div class="field @(Field.IsMissing ? "missing" : "")">
+    @if (Field.IsBoolean)
+    {
+        <label class="check">
+            <input type="checkbox" checked="@Field.BoolValue" @onchange="e => Field.BoolValue = e.Value is true" />
+            <span>@Field.Label</span>
+        </label>
+    }
+    else
+    {
+        <label for="@InputId">@Field.Label</label>
+        @if (Field.IsChoice)
+        {
+            <select id="@InputId" value="@Field.Value" @onchange="e => Field.Value = e.Value?.ToString() ?? string.Empty">
+                <option value="">@ChooseLabel</option>
+                @foreach (var option in Field.Options)
+                {
+                    <option value="@option.Value">@option.Label</option>
+                }
+            </select>
+        }
+        else if (Field.IsMultiline)
+        {
+            <textarea id="@InputId" class="arabic" dir="rtl" rows="7" placeholder="@Field.Hint"
+                      @bind="Field.Value" @bind:event="oninput"></textarea>
+        }
+        else
+        {
+            <input id="@InputId" class="arabic" dir="rtl" placeholder="@Field.Hint"
+                   @bind="Field.Value" @bind:event="oninput" />
+        }
+    }
+    @if (Field.IsMissing)
+    {
+        <div class="field-note">@Field.MissingNote</div>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public FieldViewModel Field { get; set; } = default!;
+
+    [Parameter] public string ChooseLabel { get; set; } = string.Empty;
+
+    private string InputId => "f-" + Field.Id.Replace('.', '-');
+}

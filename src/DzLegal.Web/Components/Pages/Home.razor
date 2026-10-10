@@ -1,0 +1,233 @@
+@page "/"
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@implements IDisposable
+@using DzLegal.Presentation.ViewModels
+@using DzLegal.Web.Components.Parts
+@using DzLegal.Web.Services
+
+<PageTitle>DZ Legal Assistant · live demo</PageTitle>
+
+@if (Vm is null)
+{
+    <div class="loading">DZ Legal Assistant…</div>
+    return;
+}
+
+<div class="app @(Vm.IsDarkTheme ? "dark" : "")" dir="@(Vm.IsRightToLeft ? "rtl" : "ltr")" lang="@Lang">
+    <div class="demo-banner">@T("Banner")</div>
+    @if (!Engine.Settings.HasAnyEngine)
+    {
+        <div class="demo-banner warn">@T("NoEngine")</div>
+    }
+
+    <header class="topbar">
+        <div class="brand">
+            <span class="logo">⚖</span>
+            <strong>@L["AppTitle"]</strong>
+            <span class="muted">@Vm.DocumentTypeName</span>
+        </div>
+        <div class="toolbar">
+            <select class="samples" aria-label="@T("Samples")" value="" @onchange="OpenSample">
+                <option value="">📂 @T("Samples")</option>
+                @foreach (var sample in Engine.Samples)
+                {
+                    <option value="@sample.Id">@sample.Title.Get(Lang)</option>
+                }
+            </select>
+            <button class="ghost" @onclick="() => Vm.NewCommand.Execute(null)">＋ @L["New"]</button>
+            <button class="ghost" @onclick="() => showGuide = !showGuide">❔ @T("GuideShow")</button>
+            <button class="ghost" title="@L["ToggleTheme"]" @onclick="() => Vm.ToggleThemeCommand.Execute(null)">◐</button>
+            <button class="ghost" @onclick="() => Vm.SwitchLanguageCommand.Execute(null)">@L["SwitchLanguage"]</button>
+        </div>
+    </header>
+
+    @if (showGuide)
+    {
+        <section class="guide">
+            <div class="guide-head">
+                <h2>@T("GuideTitle")</h2>
+                <button class="ghost small" @onclick="() => showGuide = false">✕ @T("GuideHide")</button>
+            </div>
+            <ol>
+                <li>
+                    @T("Guide1")
+                    <span class="guide-actions">
+                        @foreach (var sample in Engine.Samples)
+                        {
+                            <button class="chip" @onclick="() => Open(sample)">@sample.Title.Get(Lang)</button>
+                        }
+                    </span>
+                </li>
+                <li>@T("Guide2") <button class="chip" @onclick='() => GoToStep("defendant")'>@T("OpenDefendant")</button></li>
+                <li>@T("Guide3") <button class="chip" @onclick='() => GoToStep(MainWindowViewModel.GroundsStepId)'>@T("OpenGrounds")</button></li>
+                <li>@T("Guide4")</li>
+                <li>@T("Guide5")</li>
+            </ol>
+        </section>
+    }
+
+    <main class="columns">
+        @* ── Case details: the guided form ─────────────────────────── *@
+        <section class="panel form-panel">
+            <h2>@L["CaseForm"]</h2>
+            <nav class="steps">
+                @foreach (var step in Vm.FieldGroups)
+                {
+                    <button class="step @StepClass(step) @(step == Vm.SelectedStep ? "selected" : "")" @onclick="() => Vm.SelectStepCommand.Execute(step)">
+                        <span class="step-mark">@(step.IsMissing ? "!" : step.IsWarning ? "•" : step.IsDone ? "✓" : step.Number.ToString())</span>
+                        @step.Label
+                    </button>
+                }
+            </nav>
+
+            @if (Vm.SelectedStep is { } current)
+            {
+                <h3>@current.Label</h3>
+                @if (Vm.IsGroundsStep)
+                {
+                    <GroundsPanel Vm="Vm" />
+                }
+                @foreach (var field in current.Fields.Where(f => f.IsVisible))
+                {
+                    <FieldEditor Field="field" ChooseLabel="@L["ChooseOption"]" />
+                }
+                @if (Vm.IsRequestsStep || Vm.IsDocumentsStep)
+                {
+                    var chips = Vm.IsRequestsStep ? Vm.RequestChips : Vm.DocumentChips;
+                    <div class="chips-block">
+                        <div class="label">@(Vm.IsRequestsStep ? L["UsualRequests"] : L["UsualDocuments"])</div>
+                        @if (chips.Count == 0)
+                        {
+                            <div class="muted small">@L["UsualLinesNeedAnalysis"]</div>
+                        }
+                        @foreach (var chip in chips)
+                        {
+                            <button class="chip arabic @(chip.IsInserted ? "inserted" : "")" dir="rtl" @onclick="() => chip.InsertCommand.Execute(null)">＋ @chip.Text</button>
+                        }
+                    </div>
+                }
+                <div class="step-nav">
+                    <span class="muted small">@Vm.StepPosition</span>
+                    <span>
+                        <button class="ghost" @onclick="() => Vm.PreviousStepCommand.Execute(null)">@L["Previous"]</button>
+                        <button class="primary" @onclick="() => Vm.NextStepCommand.Execute(null)">@L["Next"]</button>
+                    </span>
+                </div>
+            }
+        </section>
+
+        @* ── The draft: sections on paper, live writing, preview, export ── *@
+        <section class="panel draft-panel">
+            <div class="draft-head">
+                <h2>@L["Document"] <span class="badge">@L["DraftBadge"]</span></h2>
+                <div class="draft-actions">
+                    <select aria-label="@L["ProviderLabel"]" value="@Vm.SelectedProvider?.Key" @onchange="SelectProvider">
+                        @foreach (var p in Vm.Providers)
+                        {
+                            <option value="@p.Key">@p.DisplayName</option>
+                        }
+                    </select>
+                    @if (Vm.GenerateCommand.IsRunning)
+                    {
+                        <button class="danger" @onclick="() => Vm.GenerateCancelCommand.Execute(null)">@L["Cancel"]</button>
+                    }
+                    else
+                    {
+                        <button class="primary" title="@L["GenerateHint"]" @onclick="() => Vm.GenerateCommand.ExecuteAsync(null)">✦ @L["Generate"]</button>
+                    }
+                </div>
+            </div>
+            <div class="tabs">
+                <button class="tab @(Vm.SelectedDraftTab == 0 ? "on" : "")" @onclick="() => Vm.SelectedDraftTab = 0">@L["Edit"]</button>
+                <button class="tab @(Vm.SelectedDraftTab == 1 ? "on" : "")" @onclick="() => Vm.SelectedDraftTab = 1">@L["Preview"]</button>
+                <span class="spacer"></span>
+                <label class="check small"><input type="checkbox" @bind="Vm.DraftWatermark" /> @L["Watermark"]</label>
+                <button class="ghost" @onclick="() => Vm.ExportPdfCommand.ExecuteAsync(null)">⤓ @L["ExportPdf"]</button>
+                <button class="ghost" @onclick="() => Vm.ExportWordCommand.ExecuteAsync(null)">⤓ @L["ExportWord"]</button>
+                <button class="ghost" title="@L["CopyText"]" @onclick="() => Vm.CopyTextCommand.ExecuteAsync(null)">⧉</button>
+            </div>
+
+            <ModelActivity Model="Vm.GenerationActivity" />
+
+            @if (Vm.SelectedDraftTab == 0)
+            {
+                <div class="paper-canvas">
+                    <div class="paper arabic" dir="rtl">
+                        @foreach (var section in Vm.Sections)
+                        {
+                            <SectionEditor Section="section" Vm="Vm" />
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="paper-canvas preview">
+                    @if (Vm.IsRenderingPreview && Vm.PreviewPages.Count == 0)
+                    {
+                        <div class="muted">@L["RenderingPreview"]</div>
+                    }
+                    @foreach (var page in Vm.PreviewPages)
+                    {
+                        <img class="page" alt="@L["Preview"]" src="@($"data:image/png;base64,{Convert.ToBase64String(page)}")" />
+                    }
+                </div>
+            }
+            <p class="muted small">@T("AboutDocument")</p>
+        </section>
+
+        @* ── Formal check: the deterministic rule engine (no AI) ────────── *@
+        <section class="panel check-panel">
+            <h2>@L["Compliance"]</h2>
+            <div class="score-card @(Vm.IsAdmissible ? "ok" : "ko")">
+                <div class="score-row">
+                    <span class="muted">@T("Present")</span>
+                    <span class="score">@Vm.PresentCount / @Vm.ApplicableCount</span>
+                </div>
+                <div class="bar"><span style="width:@(Vm.ApplicableCount == 0 ? 0 : 100 * Vm.PresentCount / Vm.ApplicableCount)%"></span></div>
+                <div class="summary">@(Vm.IsAdmissible ? "✓ " : "✕ ")@Vm.Summary</div>
+                @if (Vm.WarningSummary.Length > 0)
+                {
+                    <div class="small warn-text">@Vm.WarningSummary</div>
+                }
+                <div class="muted small">@L["SummaryDisclaimer"]</div>
+            </div>
+
+            @if (Vm.IssueFindings.Count > 0)
+            {
+                <h3>@T("Issues")</h3>
+                @foreach (var f in Vm.IssueFindings)
+                {
+                    <button class="finding @(f.IsMissingMandatory ? "mandatory" : "warning")" @onclick="() => Vm.GoToFindingCommand.Execute(f)">
+                        <strong>@f.Label</strong>
+                        <span class="article">@f.Article</span>
+                        @if (f.HasMessage)
+                        {
+                            <span class="small">@f.Message</span>
+                        }
+                        @if (f.HasMissingParts)
+                        {
+                            <span class="small muted">@f.MissingPartsText</span>
+                        }
+                    </button>
+                }
+            }
+
+            <details class="present" open="@(Vm.IssueFindings.Count == 0)">
+                <summary>@Vm.PresentHeader</summary>
+                @foreach (var f in Vm.PresentFindings)
+                {
+                    <div class="finding present-item">
+                        <span>✓ @f.Label</span>
+                        <span class="article">@f.Article</span>
+                    </div>
+                }
+            </details>
+        </section>
+    </main>
+
+    <footer class="statusbar @(Vm.IsError ? "error" : "")">
+        <span>@Vm.StatusMessage</span>
+        <span class="muted">@T("Engine"): @(Vm.SelectedProvider?.DisplayName)@(Engine.Gate.Waiting > 0 ? " · " + string.Format(System.Globalization.CultureInfo.InvariantCulture, T("Waiting"), Engine.Gate.Waiting) : string.Empty)</span>
+    </footer>
+</div>

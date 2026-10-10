@@ -2,6 +2,8 @@
 
 Client case data is covered by professional secrecy. The application is built so that **no case data leaves the lawyer's computer**.
 
+> This page is about the **desktop app**, the product lawyers use. The public **web demo** is a separate program (`src/DzLegal.Web`) that sends prompts to a hosted model, so it is for fictitious cases only; see [WEB-DEMO.md](WEB-DEMO.md). Its hosted providers live in `DzLegal.ModelProviders.Hosted`, which the desktop app does not reference: `OfflineGuaranteeTests` fails the build if it ever does.
+
 ## What the application does on the network
 
 | Component | Network use |

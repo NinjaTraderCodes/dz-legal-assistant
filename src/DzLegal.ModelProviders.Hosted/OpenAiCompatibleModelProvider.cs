@@ -1,5 +1,4 @@
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
@@ -52,7 +51,7 @@ public sealed class OpenAiCompatibleModelProvider : IModelProvider, IDisposable
         var maxTokens = request.MaxTokens is { } cap ? Math.Min(cap, _options.MaxTokens) : _options.MaxTokens;
         using var message = new HttpRequestMessage(HttpMethod.Post, new Uri("chat/completions", UriKind.Relative))
         {
-            Content = JsonContent.Create(new Request(_options.Model, messages, _options.Temperature, maxTokens, Stream: true)),
+            Content = HostedHttp.Json(new Request(_options.Model, messages, _options.Temperature, maxTokens, Stream: true)),
         };
 
         using var response = await HostedHttp.SendAsync(_http, message, Name, cancellationToken);

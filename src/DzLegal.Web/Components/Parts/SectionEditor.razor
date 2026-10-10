@@ -1,0 +1,66 @@
+@using DzLegal.Presentation.ViewModels
+@* One section of the requête on paper. Generated sections follow the form; narrative ones are written by the model and
+   stay editable. Same view model as the desktop editor. *@
+<div class="section @(Section.IsWriting ? "writing" : "")">
+    <div class="section-head" dir="@(Vm.IsRightToLeft ? "rtl" : "ltr")">
+        <span class="section-title">@Section.Title</span>
+        @if (Section.IsWriting)
+        {
+            <span class="writing-mark"><span class="pulse"></span> @Vm.L["SectionWriting"]</span>
+        }
+        else
+        {
+            <span class="muted small">@(Section.IsLocked ? "🔒 " : "")@Section.Hint</span>
+        }
+        <span class="spacer"></span>
+        @if (Section.CanOverride)
+        {
+            <button class="link" @onclick="() => Section.OverrideCommand.Execute(null)">@Vm.L["EditManually"]</button>
+        }
+        @if (Section.IsOverridden)
+        {
+            <button class="link" @onclick="() => Section.RestoreCommand.Execute(null)">@Vm.L["RestoreFromForm"]</button>
+        }
+        @if (Section.IsEditable)
+        {
+            @if (Section.CanUndo)
+            {
+                <button class="link" @onclick="() => Section.UndoCommand.Execute(null)">@Vm.L["Undo"]</button>
+            }
+            <button class="link" @onclick="() => Section.RedraftCommand.ExecuteAsync(null)">@Vm.L["Redraft"]</button>
+            <button class="link" @onclick="() => Section.OpenAssistantCommand.Execute(null)">✦ @Vm.L["Assistant"]</button>
+        }
+    </div>
+    @if (Section.IsConfirmingRedraft)
+    {
+        <div class="confirm" dir="@(Vm.IsRightToLeft ? "rtl" : "ltr")">
+            <button class="primary small" @onclick="() => Section.RedraftCommand.ExecuteAsync(null)">@Vm.L["ConfirmRedraft"]</button>
+            <button class="ghost small" @onclick="() => Section.CancelRedraftCommand.Execute(null)">@Vm.L["Cancel"]</button>
+        </div>
+    }
+    @if (Section.IsReadOnly)
+    {
+        <div class="section-text">@Section.Text</div>
+    }
+    else
+    {
+        <textarea class="section-text" rows="@Rows" placeholder="@Section.Watermark" @bind="Section.Text" @bind:event="oninput"></textarea>
+    }
+    @if (Section.HasReview)
+    {
+        <div class="review" dir="rtl">@Section.ReviewText</div>
+    }
+    @if (Vm.AssistantSection == Section)
+    {
+        <AssistantPanel Vm="Vm" />
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public SectionViewModel Section { get; set; } = default!;
+
+    [Parameter, EditorRequired] public MainWindowViewModel Vm { get; set; } = default!;
+
+    // Enough rows for the text (about 70 characters a line on the paper), so it reads like a page.
+    private int Rows => Math.Max(3, Section.Text.Split('\n').Sum(l => 1 + l.Length / 70));
+}

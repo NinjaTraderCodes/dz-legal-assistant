@@ -24,3 +24,11 @@ jobs:
         run: dotnet run -c Release --no-build --project src/DzLegal.Harness
       - name: Grounds analysis pipeline runs (template mode)
         run: dotnet run -c Release --no-build --project src/DzLegal.Harness -- grounds --models stub
+
+  web-image:
+    # The web demo's Docker image builds (what Render deploys).
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build the web demo image
+        run: docker build -t dzlegal-web .

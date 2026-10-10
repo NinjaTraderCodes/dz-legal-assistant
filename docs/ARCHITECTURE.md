@@ -100,6 +100,9 @@ The check set is deliberately small. Anything new should be a new kind with unit
 | Scriban templates | Readable by non-developers, with conditionals for legal-person or real-property variants, and offline. |
 | Bundled Noto Naskh Arabic | Consistent Arabic shaping on every machine with no font download. |
 | Document and inputs always RTL | Even with the English UI, Arabic content with embedded names and numbers must lay out correctly. This is covered by a bidi hit-test test. |
+| Official texts typed, then proved against the PDF | The official PDFs extract badly (ك encoded as آ, split words, ligature fonts). Typing the articles and proving their letters and digits against the PDF gives clean text with a mechanical guarantee that no word was changed. A lawyer still checks each article. |
+| Deterministic before AI | The articles a claim type requires are proposed by the catalog, not by the model. Quotes and statements of what an article provides are checked against its text. Substance checks are rules tied to articles. The model writes; it does not decide the law. |
+| Web demo on Blazor Server, one instance | The demo reuses the desktop's view models unchanged, so the judges use the real product logic. One instance keeps the queue and limits exact; the visitor's case is kept in their browser, so a restart loses nothing. The cost is a socket per visitor, which suits a demo. |
 
 ## Testing
 

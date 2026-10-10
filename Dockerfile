@@ -1,5 +1,5 @@
 # Web demo of DZ Legal Assistant (src/DzLegal.Web). Build from the repository root:
-#   docker build -t dzlegal-web . && docker run -p 7860:7860 -e GOOGLE_API_KEY=... dzlegal-web
+#   docker build -t dzlegal-web . && docker run -p 7860:7860 -e OPENROUTER_API_KEY=... dzlegal-web
 # The desktop app is not part of this image. See docs/WEB-DEMO.md.
 
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
@@ -14,7 +14,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:10.0
 RUN apt-get update && apt-get install -y --no-install-recommends libfontconfig1 && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY --from=build /app .
-# Port 7860 and user 1000 suit both Cloud Run (deploy/cloud-run.sh passes --port 7860) and Hugging Face Spaces.
+# Port 7860 (Render: set PORT=7860; Cloud Run: --port 7860) and a non-root user.
 # Workstation GC keeps memory low on a 512 MB instance; the server has one small CPU anyway.
 ENV ASPNETCORE_HTTP_PORTS=7860 DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_gcServer=0 DOTNET_GCConserveMemory=5
 EXPOSE 7860

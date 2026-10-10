@@ -174,4 +174,16 @@ The code file is written only when it validates: canonical and unique numbers, a
 
 ## Status
 
-The container used for development cannot reach joradp.dz or mjustice.dz yet. **No official text has been imported, so `data/law/codes/` is empty.** Tests run on clearly fictitious fixtures. The claim catalog (18 claim types) is complete but `verified: false`. Its article numbers are the engineering team's proposals, and the loader will check them automatically against the official texts once they are imported. Once the network allows those sites, or the PDFs are supplied as files, each code is imported with the commands above.
+**39 articles are loaded**: those the four sample cases rely on, from the PDFs in `docs/official-law-texts`.
+- Civil Code: SGG 2007 consolidated edition.
+- Commercial Code: SGG 2007 consolidated edition.
+- CPCA: Official Journal no. 21 of 2008, the original text. The 2022 amendment (Law 22-13) still has to be checked.
+
+How they were loaded:
+- **Typed.** `data/law/curated-articles.json` holds the clean text of each article. Only spacing, punctuation and the letter ك (which these PDFs encode as آ) were corrected.
+- **Proved.** `python3 tools/law/build_codes.py` checks every text against its PDF: the same letters and digits in the same order, from the same page.
+- **Written.** The builder writes `data/law/codes/*.json` with the page, the edition and the source extract. The loader rejects any later edit that changes a letter.
+- **Verified by a lawyer.** Each article is `verified: false` until a lawyer compares it with the PDF page. The review sheet records her verdicts, which then set `verified`, `verifiedBy` and `verifiedOn`.
+
+The codes are partial (`partial: true`). Every article the claim catalog cites in those codes must be loaded, and the
+loader enforces this. The full-text importer (`law import`) remains for loading whole codes later.

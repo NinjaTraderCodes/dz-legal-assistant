@@ -10,7 +10,9 @@ The lawyer fills in the case details, the application produces a structured firs
 
 ![Main window in Arabic](docs/images/main-window-ar.png)
 
-**Try it without installing anything:** a public web demo runs the same engine and screens in the browser, with fictitious sample cases. Its AI steps use the same open model family (Gemma 3), hosted, so it is not for real client data. See [docs/WEB-DEMO.md](docs/WEB-DEMO.md) (local run: `dotnet run --project src/DzLegal.Web`).
+**Try it without installing anything: https://dz-legal-assistant-ai.onrender.com.** The public web demo runs the same engine, law library and screens in the browser, with four fictitious sample cases. Its AI steps use the same model as the desktop (Gemma 3 4B), hosted, so it is not for real client data. See [docs/WEB-DEMO.md](docs/WEB-DEMO.md) (local run: `dotnet run --project src/DzLegal.Web`). The first visit after a quiet spell takes about a minute while the free server wakes up.
+
+**Law texts:** the 39 articles the sample cases rely on are loaded from the official PDFs and proved letter by letter against them ([docs/LAW-LIBRARY.md](docs/LAW-LIBRARY.md)). The AI may describe an article only from that text, and every quote is checked.
 
 ## Principles
 

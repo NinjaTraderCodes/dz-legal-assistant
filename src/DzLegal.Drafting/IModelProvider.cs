@@ -1,8 +1,9 @@
 namespace DzLegal.Drafting;
 
 /// <summary>
-/// A text-generation backend. Implementations must run on the user's machine: a provider must never
-/// send the request to a remote host (see docs/OFFLINE.md).
+/// A text-generation backend. The desktop app only uses providers that run on the user's machine and never send the
+/// request to a remote host (see docs/OFFLINE.md). Hosted providers exist only for the public web demo, in a separate
+/// project the desktop app does not reference (docs/WEB-DEMO.md).
 /// </summary>
 public interface IModelProvider
 {
@@ -58,6 +59,12 @@ public sealed record ModelTimings(
 
 public sealed class ModelProviderException : Exception
 {
+    /// <summary>
+    /// The engine is busy or briefly unavailable (rate limit, overload, timeout): the same request may succeed later or
+    /// on another engine. False for errors a retry cannot fix (bad key, unknown model, refused request).
+    /// </summary>
+    public bool IsTransient { get; init; }
+
     public ModelProviderException()
     {
     }

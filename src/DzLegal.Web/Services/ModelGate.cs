@@ -48,23 +48,69 @@ public sealed class ModelGate(int capacity) : IDisposable
     }
 }
 
-/// <summary>Passes each call through the <see cref="ModelGate"/>: it waits for a free slot, then holds it until the answer ends.</summary>
-public sealed class GatedModelProvider(IModelProvider inner, ModelGate gate) : IModelProvider, IDisposable
+/// <summary>
+/// What every model call of a web visitor goes through:
+/// 1. the visitor's limits (per browser session and per network address), charged per call, not per click;
+/// 2. the shared queue (<see cref="ModelGate"/>), held until the answer ends;
+/// 3. a plain message instead of the service's raw error, which goes to the server log only.
+/// </summary>
+public sealed class ProtectedModelProvider(
+    IModelProvider inner,
+    ModelGate gate,
+    IReadOnlyList<CallQuota> quotas,
+    Action<string>? logFailure = null) : IModelProvider, IDisposable
 {
+    public const string Unavailable =
+        "The AI service did not answer. Try again in a minute; the formal check, editing and export keep working.";
+
     public string Name => inner.Name;
 
     public async Task<string> GenerateAsync(ModelRequest request, CancellationToken cancellationToken)
     {
-        using var slot = await gate.EnterAsync(cancellationToken);
-        return await inner.GenerateAsync(request, cancellationToken);
+        var text = new System.Text.StringBuilder();
+        await foreach (var piece in StreamAsync(request, cancellationToken))
+        {
+            text.Append(piece);
+        }
+
+        return text.Length > 0 ? text.ToString() : throw new ModelProviderException(Unavailable);
     }
 
     public async IAsyncEnumerable<string> StreamAsync(ModelRequest request, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        using var slot = await gate.EnterAsync(cancellationToken);
-        await foreach (var piece in inner.StreamAsync(request, cancellationToken))
+        foreach (var quota in quotas)
         {
-            yield return piece;
+            if (!quota.TryTake())
+            {
+                throw new ModelProviderException(quota.ReachedMessage);
+            }
+        }
+
+        using var slot = await gate.EnterAsync(cancellationToken);
+        await using var pieces = inner.StreamAsync(request, cancellationToken).GetAsyncEnumerator(cancellationToken);
+        while (true)
+        {
+            bool more;
+            try
+            {
+                more = await pieces.MoveNextAsync();
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                throw;
+            }
+            catch (Exception ex) when (ex is not OperationCanceledException || !cancellationToken.IsCancellationRequested)
+            {
+                logFailure?.Invoke(ex.Message);
+                throw new ModelProviderException(Unavailable, ex);
+            }
+
+            if (!more)
+            {
+                yield break;
+            }
+
+            yield return pieces.Current;
         }
     }
 
@@ -72,37 +118,46 @@ public sealed class GatedModelProvider(IModelProvider inner, ModelGate gate) : I
 }
 
 /// <summary>
-/// Counts the AI runs of one browser session in a sliding hour. A public link should not let one visitor spend the whole
-/// shared quota; a judge trying the demo stays far below the limit.
+/// Counts model calls in a sliding hour: one per browser session, and one per network address shared by all of its
+/// sessions, so reloading the page does not reset the limit. A judge trying the demo stays far below both.
 /// </summary>
-public sealed class SessionQuota(int perHour, Func<DateTimeOffset>? now = null)
+public sealed class CallQuota(int perHour, string reachedMessage, Func<DateTimeOffset>? now = null)
 {
-    private readonly Queue<DateTimeOffset> _runs = new();
+    private readonly Queue<DateTimeOffset> _calls = new();
     private readonly Func<DateTimeOffset> _now = now ?? (() => DateTimeOffset.UtcNow);
+    private readonly Lock _lock = new();
+
+    public string ReachedMessage { get; } = reachedMessage;
 
     public bool TryTake()
     {
-        var now = _now();
-        while (_runs.Count > 0 && now - _runs.Peek() > TimeSpan.FromHours(1))
+        lock (_lock)
         {
-            _runs.Dequeue();
-        }
+            var now = _now();
+            while (_calls.Count > 0 && now - _calls.Peek() > TimeSpan.FromHours(1))
+            {
+                _calls.Dequeue();
+            }
 
-        if (_runs.Count >= perHour)
-        {
-            return false;
-        }
+            if (_calls.Count >= perHour)
+            {
+                return false;
+            }
 
-        _runs.Enqueue(now);
-        return true;
+            _calls.Enqueue(now);
+            return true;
+        }
     }
-}
 
-/// <summary>Stands in for the engine once a session has used its hourly quota: every call explains the limit.</summary>
-internal sealed class QuotaReachedModelProvider(string name, int perHour) : IModelProvider
-{
-    public string Name => name;
-
-    public Task<string> GenerateAsync(ModelRequest request, CancellationToken cancellationToken) =>
-        throw new ModelProviderException($"This demo session has used its {perHour} AI runs for this hour. The rule check, editing and export still work; AI is available again within the hour.");
+    /// <summary>True when nothing was counted in the last hour, so the entry can be forgotten.</summary>
+    public bool IsIdle
+    {
+        get
+        {
+            lock (_lock)
+            {
+                return _calls.Count == 0 || _now() - _calls.Last() > TimeSpan.FromHours(1);
+            }
+        }
+    }
 }

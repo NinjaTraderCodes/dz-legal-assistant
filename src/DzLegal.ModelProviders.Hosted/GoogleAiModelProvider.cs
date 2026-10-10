@@ -51,9 +51,9 @@ public sealed class GoogleAiModelProvider : IModelProvider, IDisposable
         using var response = await SendAsync(request, cancellationToken);
         var answered = false;
         string? finish = null;
-        await foreach (var data in HostedHttp.ReadEventsAsync(response, cancellationToken))
+        await foreach (var data in HostedHttp.ReadEventsAsync(response, Name, _options.IdleTimeout, cancellationToken))
         {
-            var chunk = JsonSerializer.Deserialize<Chunk>(data);
+            var chunk = HostedHttp.Parse<Chunk>(data, Name);
             if (chunk?.PromptFeedback?.BlockReason is { } blocked)
             {
                 throw new ModelProviderException($"{Name} refused the request ({blocked}).");

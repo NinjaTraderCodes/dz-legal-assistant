@@ -6,7 +6,8 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1
 COPY . .
-RUN dotnet publish src/DzLegal.Web -c Release -o /app
+# Ready-to-run code starts faster on a small shared CPU (the free host wakes the service on the first visit).
+RUN dotnet publish src/DzLegal.Web -c Release -o /app -r linux-x64 --self-contained false -p:PublishReadyToRun=true
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0
 # QuestPDF (the PDF engine) needs fontconfig on Linux; the Arabic font itself is embedded.
@@ -14,7 +15,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends libfontconfig1 
 WORKDIR /app
 COPY --from=build /app .
 # Port 7860 and user 1000 suit both Cloud Run (deploy/cloud-run.sh passes --port 7860) and Hugging Face Spaces.
-ENV ASPNETCORE_HTTP_PORTS=7860 DOTNET_CLI_TELEMETRY_OPTOUT=1
+# Workstation GC keeps memory low on a 512 MB instance; the server has one small CPU anyway.
+ENV ASPNETCORE_HTTP_PORTS=7860 DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_gcServer=0 DOTNET_GCConserveMemory=5
 EXPOSE 7860
 USER 1000
 ENTRYPOINT ["dotnet", "DzLegal.Web.dll"]

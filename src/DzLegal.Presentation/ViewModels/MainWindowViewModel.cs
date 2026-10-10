@@ -242,10 +242,27 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         {
             // superseded by a newer change
         }
+        catch (Exception ex) when (IsModelOrRenderFailure(ex))
+        {
+            // A failed preview must never take the window (or a web visitor's session) down with it.
+            SetStatus(L.Format("Error", ex.Message), isError: true);
+        }
     }
+
+    /// <summary>
+    /// Failures an AI command or a preview reports to the user instead of crashing: the engine's own errors, a lost
+    /// connection, a malformed answer, a timeout, or a document the renderer refuses.
+    /// </summary>
+    internal static bool IsModelOrRenderFailure(Exception ex) =>
+        ex is ModelProviderException or InvalidOperationException or ArgumentException or HttpRequestException
+            or IOException or System.Text.Json.JsonException or TimeoutException or FormatException;
 
     public void Dispose()
     {
+        // A closed window or browser tab stops its running AI work: no tokens spent and no queue slot held for nobody.
+        GenerateCommand.Cancel();
+        AnalyseGroundsCommand.Cancel();
+        SendInstructionCommand.Cancel();
         _previewCts?.Cancel();
         _previewCts?.Dispose();
         AnalysisActivity.Dispose();
@@ -295,6 +312,17 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     public FieldViewModel Field(string id) => _fields.Single(f => f.Id == id);
 
     /// <summary>The draft as it should be saved: current inputs and the articles the lawyer ticked.</summary>
+    /// <summary>The whole case as saved to a file: inputs, sections, selected articles and the analysis.</summary>
+    public DraftDocument SnapshotDraft() => CurrentDraft();
+
+    /// <summary>Puts a saved case back, as opening a draft file does (the web demo restores from the browser's storage).</summary>
+    public void RestoreDraft(DraftDocument draft)
+    {
+        ArgumentNullException.ThrowIfNull(draft);
+        LoadDraft(draft);
+        SetStatus(L["Restored"]);
+    }
+
     private DraftDocument CurrentDraft() => _draft with { Inputs = CurrentInputs(), SelectedArticles = [.. _selectedArticles], GroundsAnalysis = _analysis };
 
     public Dictionary<string, string> CurrentInputs() =>
@@ -377,7 +405,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         {
             SetStatus(L["Cancelled"]);
         }
-        catch (Exception ex) when (ex is ModelProviderException or ArgumentException or InvalidOperationException)
+        catch (Exception ex) when (IsModelOrRenderFailure(ex))
         {
             SetStatus(L.Format("Error", ex.Message), isError: true);
         }

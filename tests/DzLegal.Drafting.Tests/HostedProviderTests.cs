@@ -51,7 +51,8 @@ public class GoogleAiProviderTests
     [InlineData(HttpStatusCode.TooManyRequests, true)]
     [InlineData(HttpStatusCode.ServiceUnavailable, true)]
     [InlineData(HttpStatusCode.NotFound, true)] // a retired model: the next engine may still be served
-    [InlineData(HttpStatusCode.Unauthorized, false)]
+    [InlineData(HttpStatusCode.Unauthorized, true)] // this service's key; the next service has its own
+    [InlineData(HttpStatusCode.PaymentRequired, true)] // credit used up
     [InlineData(HttpStatusCode.BadRequest, false)]
     public async Task ARateLimitIsTransientABadKeyIsNot(HttpStatusCode status, bool transient)
     {
@@ -102,6 +103,36 @@ public class GoogleAiProviderTests
 
         var ex = await Assert.ThrowsAsync<ModelProviderException>(() => provider.GenerateAsync(Request, CancellationToken.None));
         Assert.Contains("length limit", ex.Message, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task AnAnswerThatGoesSilentIsReportedAndCanBeHandedOver()
+    {
+        var handler = new FakeHandler(_ => new HttpResponseMessage(HttpStatusCode.OK) { Content = new StreamContent(new StallingStream()) });
+        using var provider = new GoogleAiModelProvider(new GoogleAiOptions { ApiKey = "k", IdleTimeout = TimeSpan.FromMilliseconds(200) }, handler);
+
+        var ex = await Assert.ThrowsAsync<ModelProviderException>(() => provider.GenerateAsync(Request, CancellationToken.None));
+        Assert.True(ex.IsTransient);
+        Assert.Contains("silent", ex.Message, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task ADroppedConnectionIsAModelErrorNotACrash()
+    {
+        var handler = new FakeHandler(_ => new HttpResponseMessage(HttpStatusCode.OK) { Content = new StreamContent(new BreakingStream()) });
+        using var provider = new GoogleAiModelProvider(new GoogleAiOptions { ApiKey = "k" }, handler);
+
+        var ex = await Assert.ThrowsAsync<ModelProviderException>(() => provider.GenerateAsync(Request, CancellationToken.None));
+        Assert.True(ex.IsTransient);
+    }
+
+    [Fact]
+    public async Task AnUnreadableEventIsAModelError()
+    {
+        var handler = new FakeHandler(_ => Sse("{not json"));
+        using var provider = new GoogleAiModelProvider(new GoogleAiOptions { ApiKey = "k" }, handler);
+
+        await Assert.ThrowsAsync<ModelProviderException>(() => provider.GenerateAsync(Request, CancellationToken.None));
     }
 
     [Fact]
@@ -172,6 +203,20 @@ public class OpenAiCompatibleProviderTests
         Assert.True(body.RootElement.GetProperty("stream").GetBoolean());
         Assert.Equal("system", body.RootElement.GetProperty("messages")[0].GetProperty("role").GetString());
         Assert.Equal("llama-3.3-70b-versatile (groq)", provider.Name);
+    }
+
+    [Fact]
+    public async Task AnErrorInsideASuccessfulStreamLetsTheNextEngineTry()
+    {
+        // OpenRouter answers 200, then reports the error (e.g. credit used up) as an event.
+        var handler = new FakeHandler(_ => GoogleAiProviderTests.Sse("""{"error":{"code":402,"message":"Insufficient credits"}}"""));
+        using var provider = new OpenAiCompatibleModelProvider(
+            new OpenAiCompatibleOptions { Label = "OpenRouter", Endpoint = new Uri("https://openrouter.ai/api/v1/"), ApiKey = "k", Model = "google/gemma-3-4b-it" },
+            handler);
+
+        var ex = await Assert.ThrowsAsync<ModelProviderException>(() => provider.GenerateAsync(Request, CancellationToken.None));
+        Assert.True(ex.IsTransient);
+        Assert.Contains("Insufficient credits", ex.Message, StringComparison.Ordinal);
     }
 }
 
@@ -257,6 +302,23 @@ public class FallbackProviderTests
             yield return $"from {name}";
         }
     }
+}
+
+/// <summary>Never sends anything after the headers.</summary>
+internal sealed class StallingStream : MemoryStream
+{
+    public override async ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
+    {
+        await Task.Delay(Timeout.Infinite, cancellationToken);
+        return 0;
+    }
+}
+
+/// <summary>The connection drops after the headers.</summary>
+internal sealed class BreakingStream : MemoryStream
+{
+    public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default) =>
+        ValueTask.FromException<int>(new IOException("connection reset by peer"));
 }
 
 internal sealed class FakeHandler(Func<HttpRequestMessage, HttpResponseMessage> respond) : HttpMessageHandler

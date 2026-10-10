@@ -9,7 +9,7 @@
     <div class="row wrap">
         @foreach (var s in Vm.Shortcuts)
         {
-            <button class="chip" @onclick="() => Vm.UseShortcutCommand.ExecuteAsync(s)">@s.Label</button>
+            <button class="chip" @onclick="() => CommandRunner.RunAsync(Vm, Vm.UseShortcutCommand, s)">@s.Label</button>
         }
     </div>
     <div class="row">
@@ -20,7 +20,7 @@
         }
         else
         {
-            <button class="primary" @onclick="() => Vm.SendInstructionCommand.ExecuteAsync(null)">@Vm.L["Send"]</button>
+            <button class="primary" @onclick="() => CommandRunner.RunAsync(Vm, Vm.SendInstructionCommand)">@Vm.L["Send"]</button>
         }
     </div>
     @foreach (var m in Vm.AssistantThread)
@@ -47,7 +47,7 @@
         <div class="row">
             <button class="primary" disabled="@(!Vm.CanAcceptProposal)" @onclick="() => Vm.AcceptProposalCommand.Execute(null)">@Vm.L["Accept"]</button>
             <button class="ghost" @onclick="() => Vm.RejectProposalCommand.Execute(null)">@Vm.L["Reject"]</button>
-            <button class="ghost" @onclick="() => Vm.RetryProposalCommand.ExecuteAsync(null)">@Vm.L["TryAgain"]</button>
+            <button class="ghost" @onclick="() => CommandRunner.RunAsync(Vm, Vm.RetryProposalCommand)">@Vm.L["TryAgain"]</button>
         </div>
     }
 </div>

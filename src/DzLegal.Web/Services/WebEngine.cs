@@ -30,8 +30,13 @@ public sealed partial class WebEngine : IDisposable
         Samples = SampleCase.LoadAll(Path.Combine(baseDirectory, "Samples"));
         Gate = new ModelGate(settings.MaxConcurrentCalls);
         GoogleModels = settings.GoogleModels;
-        EvaluationsFolder = Path.Combine(Path.GetTempPath(), "dzlegal-web-evaluations");
+        _engines = CreateEngines();
     }
+
+    // One set of engines (and their HTTP connections) for every visitor, rebuilt only when the model list changes.
+    private volatile IReadOnlyList<IModelProvider> _engines;
+
+    private readonly System.Collections.Concurrent.ConcurrentDictionary<string, CallQuota> _addressQuotas = new(StringComparer.Ordinal);
 
     public EngineSettings Settings { get; }
 
@@ -85,32 +90,38 @@ public sealed partial class WebEngine : IDisposable
         }
 
         GoogleModels = kept;
+        _engines = CreateEngines();
         LogModels(_log, kept);
     }
 
-    private string EvaluationsFolder { get; }
+    /// <summary>Which engines are configured, in order (names only, never keys); for the server log.</summary>
+    public IReadOnlyList<string> EngineNames => _engines.Select(e => e.Name).ToList();
 
-    /// <summary>A short description for the health endpoint: which engines are configured (never the keys).</summary>
-    public IReadOnlyList<string> EngineNames => CreateEngines().Select(e =>
-    {
-        var name = e.Name;
-        (e as IDisposable)?.Dispose();
-        return name;
-    }).ToList();
-
-    /// <summary>A fresh view model for one browser session, with the hosted engine first and template mode as the fallback.</summary>
-    public MainWindowViewModel CreateSession(IUserFiles files, IExternalLinks links, string language)
+    /// <summary>
+    /// A fresh view model for one browser session, with the hosted engine first and "without AI" as the alternative.
+    /// <paramref name="address"/> is the visitor's network address, for the per-address limit.
+    /// </summary>
+    public MainWindowViewModel CreateSession(IUserFiles files, IExternalLinks links, string language, string? address = null)
     {
         var loc = new Loc();
         loc.SetLanguage(language);
-        var quota = new SessionQuota(Settings.RunsPerSessionPerHour);
         var providers = new List<ProviderOption>();
         if (Settings.HasAnyEngine)
         {
+            var reached = "This demo allows {0} AI calls per hour {1}; the limit is reached. The formal check, editing and export keep working, and AI is available again within the hour.";
+            var quotas = new List<CallQuota>
+            {
+                new(Settings.CallsPerSessionPerHour, string.Format(System.Globalization.CultureInfo.InvariantCulture, reached, Settings.CallsPerSessionPerHour, "per visitor")),
+            };
+            if (!string.IsNullOrEmpty(address))
+            {
+                quotas.Add(AddressQuota(address));
+            }
+
             providers.Add(new ProviderOption(
                 "hosted",
                 l => l.Language == "en" ? $"{PrimaryModel} (demo server)" : $"{PrimaryModel} (خادم العرض)",
-                () => quota.TryTake() ? new GatedModelProvider(CreateChain(), Gate) : new QuotaReachedModelProvider(PrimaryModel, Settings.RunsPerSessionPerHour)));
+                () => new ProtectedModelProvider(CreateChain(), Gate, quotas, reason => LogFailed(_log, reason))));
         }
 
         providers.Add(new ProviderOption("stub", l => l["ProviderStub"], () => new StubModelProvider()));
@@ -118,11 +129,32 @@ public sealed partial class WebEngine : IDisposable
             Definition,
             providers,
             files,
-            new EvaluationStore(EvaluationsFolder),
+            // Never written to: the web page has no evaluation form, and the store creates its folder only on save.
+            new EvaluationStore(Path.Combine(Path.GetTempPath(), "dzlegal-web-unused")),
             loc,
             defaultProvider: providers[0].Key,
             knowledge: Knowledge,
             links: links);
+    }
+
+    private CallQuota AddressQuota(string address)
+    {
+        if (_addressQuotas.Count > 10_000)
+        {
+            foreach (var (key, quota) in _addressQuotas)
+            {
+                if (quota.IsIdle)
+                {
+                    _addressQuotas.TryRemove(key, out _);
+                }
+            }
+        }
+
+        return _addressQuotas.GetOrAdd(address, _ => new CallQuota(
+            Settings.CallsPerAddressPerHour,
+            string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                "This demo allows {0} AI calls per hour from one network; the limit is reached. The formal check, editing and export keep working, and AI is available again within the hour.",
+                Settings.CallsPerAddressPerHour)));
     }
 
     private string PrimaryModel => EngineModels().Select(Pretty).FirstOrDefault() ?? string.Empty;
@@ -150,7 +182,7 @@ public sealed partial class WebEngine : IDisposable
         return parts.Length < 2 ? model : $"Gemma {parts[0]} " + string.Join(' ', parts[1..]).ToUpperInvariant();
     }
 
-    private FallbackModelProvider CreateChain() => new(CreateEngines())
+    private FallbackModelProvider CreateChain() => new(_engines, ownsEngines: false)
     {
         OnSkipped = (engine, ex) => LogSkipped(_log, engine.Name, ex.Message),
     };
@@ -216,7 +248,17 @@ public sealed partial class WebEngine : IDisposable
         }),
     };
 
-    public void Dispose() => Gate.Dispose();
+    public void Dispose()
+    {
+        Gate.Dispose();
+        foreach (var engine in _engines)
+        {
+            (engine as IDisposable)?.Dispose();
+        }
+    }
+
+    [LoggerMessage(Level = LogLevel.Warning, Message = "AI call failed: {Reason}")]
+    private static partial void LogFailed(ILogger logger, string reason);
 
     [LoggerMessage(Level = LogLevel.Warning, Message = "Engine {Engine} skipped: {Reason}")]
     private static partial void LogSkipped(ILogger logger, string engine, string reason);

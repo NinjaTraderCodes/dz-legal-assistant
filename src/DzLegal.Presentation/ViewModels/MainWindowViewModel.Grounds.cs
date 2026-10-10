@@ -159,7 +159,7 @@ public sealed partial class MainWindowViewModel
         {
             AnalysisStatus = L["Cancelled"];
         }
-        catch (Exception ex) when (ex is ModelProviderException or InvalidOperationException)
+        catch (Exception ex) when (IsModelOrRenderFailure(ex))
         {
             AnalysisStatus = L.Format("Error", ex.Message);
         }

@@ -9,7 +9,7 @@
         }
         else
         {
-            <button class="primary" @onclick="() => Vm.AnalyseGroundsCommand.ExecuteAsync(null)">✦ @Vm.L["AnalyseGrounds"]</button>
+            <button class="primary" @onclick="() => CommandRunner.RunAsync(Vm, Vm.AnalyseGroundsCommand)">✦ @Vm.L["AnalyseGrounds"]</button>
         }
     </div>
 

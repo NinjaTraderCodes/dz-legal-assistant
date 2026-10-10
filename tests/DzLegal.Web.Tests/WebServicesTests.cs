@@ -26,13 +26,13 @@ public class ModelGateTests
     }
 
     [Fact]
-    public async Task AGatedProviderHoldsItsSlotUntilTheAnswerEnds()
+    public async Task AProtectedProviderHoldsItsSlotUntilTheAnswerEnds()
     {
         using var gate = new ModelGate(1);
-        using var provider = new GatedModelProvider(new Echo(), gate);
+        using var provider = new ProtectedModelProvider(new Echo(), gate, []);
 
         var pieces = new List<string>();
-        await foreach (var piece in provider.StreamAsync(new ModelRequest("s", "", "hello", ""), CancellationToken.None))
+        await foreach (var piece in provider.StreamAsync(Request, CancellationToken.None))
         {
             pieces.Add(piece);
             var other = gate.EnterAsync(CancellationToken.None);
@@ -44,38 +44,73 @@ public class ModelGateTests
         Assert.Equal(["hello"], pieces);
     }
 
+    [Fact]
+    public async Task AFailingServiceShowsAPlainMessageLogsTheDetailAndFreesTheSlot()
+    {
+        using var gate = new ModelGate(1);
+        var logged = new List<string>();
+        using var provider = new ProtectedModelProvider(new Failing(new IOException("connection reset by peer")), gate, [], logged.Add);
+
+        var ex = await Assert.ThrowsAsync<ModelProviderException>(() => provider.GenerateAsync(Request, CancellationToken.None));
+
+        Assert.Equal(ProtectedModelProvider.Unavailable, ex.Message);
+        Assert.Equal(["connection reset by peer"], logged);
+        using var slot = await gate.EnterAsync(CancellationToken.None).WaitAsync(TimeSpan.FromSeconds(1));
+    }
+
+    [Fact]
+    public async Task EveryModelCallCountsAgainstEveryLimit()
+    {
+        using var gate = new ModelGate(1);
+        var visitor = new CallQuota(2, "visitor limit");
+        var network = new CallQuota(3, "network limit");
+        using var first = new ProtectedModelProvider(new Echo(), gate, [visitor, network]);
+        using var second = new ProtectedModelProvider(new Echo(), gate, [new CallQuota(10, "other visitor"), network]);
+
+        await first.GenerateAsync(Request, CancellationToken.None);
+        await first.GenerateAsync(Request, CancellationToken.None);
+        var ex = await Assert.ThrowsAsync<ModelProviderException>(() => first.GenerateAsync(Request, CancellationToken.None));
+        Assert.Equal("visitor limit", ex.Message);
+
+        // A reload is a new session, but the same network: its limit is shared.
+        await second.GenerateAsync(Request, CancellationToken.None);
+        ex = await Assert.ThrowsAsync<ModelProviderException>(() => second.GenerateAsync(Request, CancellationToken.None));
+        Assert.Equal("network limit", ex.Message);
+    }
+
+    private static readonly ModelRequest Request = new("s", "", "hello", "");
+
     private sealed class Echo : IModelProvider
     {
         public string Name => "echo";
 
         public Task<string> GenerateAsync(ModelRequest request, CancellationToken cancellationToken) => Task.FromResult(request.UserPrompt);
     }
+
+    private sealed class Failing(Exception error) : IModelProvider
+    {
+        public string Name => "failing";
+
+        public Task<string> GenerateAsync(ModelRequest request, CancellationToken cancellationToken) => Task.FromException<string>(error);
+    }
 }
 
-public class SessionQuotaTests
+public class CallQuotaTests
 {
     [Fact]
-    public void ASessionGetsItsRunsPerHourThenWaits()
+    public void CallsAreCountedInASlidingHour()
     {
         var now = DateTimeOffset.Parse("2026-11-02T10:00:00Z", System.Globalization.CultureInfo.InvariantCulture);
-        var quota = new SessionQuota(2, () => now);
+        var quota = new CallQuota(2, "limit", () => now);
 
         Assert.True(quota.TryTake());
         Assert.True(quota.TryTake());
         Assert.False(quota.TryTake());
+        Assert.False(quota.IsIdle);
 
         now = now.AddMinutes(61);
+        Assert.True(quota.IsIdle);
         Assert.True(quota.TryTake());
-    }
-
-    [Fact]
-    public async Task OnceSpentTheEngineExplainsTheLimit()
-    {
-        var provider = new QuotaReachedModelProvider("Gemma 3 4B", 30);
-
-        var ex = await Assert.ThrowsAsync<ModelProviderException>(() => provider.GenerateAsync(new ModelRequest("s", "", "u", ""), CancellationToken.None));
-        Assert.Contains("30 AI runs", ex.Message, StringComparison.Ordinal);
-        Assert.Contains("rule check", ex.Message, StringComparison.Ordinal);
     }
 }
 

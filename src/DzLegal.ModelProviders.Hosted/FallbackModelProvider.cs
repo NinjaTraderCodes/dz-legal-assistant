@@ -11,8 +11,11 @@ namespace DzLegal.ModelProviders.Hosted;
 public sealed class FallbackModelProvider : IModelProvider, IDisposable
 {
     private readonly IReadOnlyList<IModelProvider> _engines;
+    private readonly bool _ownsEngines;
 
-    public FallbackModelProvider(IReadOnlyList<IModelProvider> engines)
+    /// <param name="engines">Tried in order.</param>
+    /// <param name="ownsEngines">False when the engines are shared (the web demo reuses one set, and its connections, for every visitor).</param>
+    public FallbackModelProvider(IReadOnlyList<IModelProvider> engines, bool ownsEngines = true)
     {
         ArgumentNullException.ThrowIfNull(engines);
         if (engines.Count == 0)
@@ -21,6 +24,7 @@ public sealed class FallbackModelProvider : IModelProvider, IDisposable
         }
 
         _engines = engines;
+        _ownsEngines = ownsEngines;
     }
 
     /// <summary>The engine that answered the last request (the first one until then).</summary>
@@ -83,6 +87,11 @@ public sealed class FallbackModelProvider : IModelProvider, IDisposable
 
     public void Dispose()
     {
+        if (!_ownsEngines)
+        {
+            return;
+        }
+
         foreach (var engine in _engines)
         {
             (engine as IDisposable)?.Dispose();

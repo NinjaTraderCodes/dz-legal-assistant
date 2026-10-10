@@ -55,9 +55,9 @@ public sealed class OpenAiCompatibleModelProvider : IModelProvider, IDisposable
         };
 
         using var response = await HostedHttp.SendAsync(_http, message, Name, cancellationToken);
-        await foreach (var data in HostedHttp.ReadEventsAsync(response, cancellationToken))
+        await foreach (var data in HostedHttp.ReadEventsAsync(response, Name, _options.IdleTimeout, cancellationToken))
         {
-            var chunk = JsonSerializer.Deserialize<Chunk>(data);
+            var chunk = HostedHttp.Parse<Chunk>(data, Name);
             if (chunk?.Choices is [var first, ..] && first.Delta?.Content is { Length: > 0 } piece)
             {
                 yield return piece;

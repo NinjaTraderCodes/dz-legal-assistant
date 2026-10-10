@@ -23,6 +23,9 @@ public sealed record GoogleAiOptions
 
     public TimeSpan Timeout { get; init; } = TimeSpan.FromMinutes(2);
 
+    /// <summary>How long an answer may go silent mid-stream before the engine counts as stalled.</summary>
+    public TimeSpan IdleTimeout { get; init; } = HostedHttp.DefaultIdleTimeout;
+
     /// <summary>
     /// <c>thinkingConfig.thinkingLevel</c>. Null means automatic: "minimal" for Gemma 4, which otherwise thinks first by
     /// default and spends the short answer caps of the grounds analysis on it (the answer then comes back empty); not
@@ -55,4 +58,7 @@ public sealed record OpenAiCompatibleOptions
     public bool MergeSystemPrompt { get; init; }
 
     public TimeSpan Timeout { get; init; } = TimeSpan.FromMinutes(2);
+
+    /// <summary>How long an answer may go silent mid-stream before the engine counts as stalled.</summary>
+    public TimeSpan IdleTimeout { get; init; } = HostedHttp.DefaultIdleTimeout;
 }

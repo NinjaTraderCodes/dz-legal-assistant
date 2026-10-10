@@ -38,15 +38,13 @@ public sealed class EvaluationStore
 {
     private readonly string _folder;
 
-    public EvaluationStore(string folder)
-    {
-        _folder = folder;
-        Directory.CreateDirectory(folder);
-    }
+    /// <summary>The folder is created on the first save, so a store that never saves (the web demo) writes nothing.</summary>
+    public EvaluationStore(string folder) => _folder = folder;
 
     public async Task<string> SaveAsync(EvaluationRecord record, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(record);
+        Directory.CreateDirectory(_folder);
         var path = Path.Combine(_folder, $"{record.RecordedAt:yyyyMMdd-HHmmss}-{record.Id:N}.json");
         await using var stream = File.Create(path);
         await JsonSerializer.SerializeAsync(stream, record, DefinitionJson.Options, cancellationToken);
@@ -54,7 +52,7 @@ public sealed class EvaluationStore
     }
 
     public IReadOnlyList<EvaluationRecord> LoadAll() =>
-        Directory.GetFiles(_folder, "*.json")
+        !Directory.Exists(_folder) ? [] : Directory.GetFiles(_folder, "*.json")
             .Order(StringComparer.Ordinal)
             .Select(f => JsonSerializer.Deserialize<EvaluationRecord>(File.ReadAllText(f), DefinitionJson.Options))
             .OfType<EvaluationRecord>()

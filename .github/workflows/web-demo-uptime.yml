@@ -1,8 +1,8 @@
 name: web-demo-uptime
 
-# Every 30 minutes: is the public demo up, and does the page load? A visit also keeps a free Space from sleeping
-# (free Spaces pause after 48 hours without visits). A failed run sends the usual GitHub failure e-mail.
-# Setup: repository variable DEMO_URL, e.g. "https://your-user-dz-legal-assistant.hf.space".
+# Every 30 minutes: is the public demo up, is AI configured, and does the page load? A failed run sends the usual
+# GitHub failure e-mail. Scheduled runs happen only on the default branch.
+# Setup: repository variable DEMO_URL, e.g. "https://dz-legal-assistant-ai.onrender.com".
 
 on:
   workflow_dispatch:
@@ -14,11 +14,11 @@ jobs:
     if: vars.DEMO_URL != ''
     runs-on: ubuntu-latest
     steps:
-      - name: Health endpoint answers and an engine is configured
+      - name: Health endpoint answers and AI is configured
         run: |
           body=$(curl -fsS --retry 5 --retry-delay 20 --retry-all-errors "${{ vars.DEMO_URL }}/healthz")
           echo "$body"
           echo "$body" | grep -q '"status":"ok"'
-          echo "$body" | grep -q '"engines":\["'
+          echo "$body" | grep -q '"ai":true'
       - name: The page itself loads
         run: curl -fsS --retry 3 --retry-delay 10 "${{ vars.DEMO_URL }}/" | grep -q "DZ Legal Assistant"

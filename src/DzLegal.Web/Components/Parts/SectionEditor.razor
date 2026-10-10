@@ -27,14 +27,14 @@
             {
                 <button class="link" @onclick="() => Section.UndoCommand.Execute(null)">@Vm.L["Undo"]</button>
             }
-            <button class="link" @onclick="() => Section.RedraftCommand.ExecuteAsync(null)">@Vm.L["Redraft"]</button>
+            <button class="link" @onclick="() => CommandRunner.RunAsync(Vm, Section.RedraftCommand)">@Vm.L["Redraft"]</button>
             <button class="link" @onclick="() => Section.OpenAssistantCommand.Execute(null)">✦ @Vm.L["Assistant"]</button>
         }
     </div>
     @if (Section.IsConfirmingRedraft)
     {
         <div class="confirm" dir="@(Vm.IsRightToLeft ? "rtl" : "ltr")">
-            <button class="primary small" @onclick="() => Section.RedraftCommand.ExecuteAsync(null)">@Vm.L["ConfirmRedraft"]</button>
+            <button class="primary small" @onclick="() => CommandRunner.RunAsync(Vm, Section.RedraftCommand)">@Vm.L["ConfirmRedraft"]</button>
             <button class="ghost small" @onclick="() => Section.CancelRedraftCommand.Execute(null)">@Vm.L["Cancel"]</button>
         </div>
     }

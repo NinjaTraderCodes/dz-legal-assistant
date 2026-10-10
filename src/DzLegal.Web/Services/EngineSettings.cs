@@ -42,8 +42,14 @@ public sealed class EngineSettings
     /// </summary>
     public int MaxConcurrentCalls { get; init; } = 2;
 
-    /// <summary>AI runs (analysis, drafting, assistant) one browser session may start per hour, against abuse of a public link.</summary>
-    public int RunsPerSessionPerHour { get; init; } = 30;
+    /// <summary>
+    /// Model calls one browser session may make per hour. A full run of the demo (analysis, then drafting) takes about
+    /// six calls, so 60 is ten complete tries.
+    /// </summary>
+    public int CallsPerSessionPerHour { get; init; } = 60;
+
+    /// <summary>Model calls per hour for all sessions from one network address together, so reloading the page does not reset the limit.</summary>
+    public int CallsPerAddressPerHour { get; init; } = 150;
 
     public double Temperature { get; init; } = 0.2;
 
@@ -69,7 +75,8 @@ public sealed class EngineSettings
             GroqEndpoint = settings.GroqEndpoint,
             OpenRouterModel = settings.OpenRouterModel,
             MaxConcurrentCalls = Math.Max(1, settings.MaxConcurrentCalls),
-            RunsPerSessionPerHour = Math.Max(1, settings.RunsPerSessionPerHour),
+            CallsPerSessionPerHour = Math.Max(1, settings.CallsPerSessionPerHour),
+            CallsPerAddressPerHour = Math.Max(1, settings.CallsPerAddressPerHour),
             Temperature = settings.Temperature,
             MaxTokens = settings.MaxTokens,
             GoogleApiKey = NonEmpty(configuration["GOOGLE_API_KEY"]),

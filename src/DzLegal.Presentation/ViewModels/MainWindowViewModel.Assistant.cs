@@ -195,7 +195,7 @@ public sealed partial class MainWindowViewModel
         {
             AssistantThread.Add(new AssistantMessage(L["Cancelled"], FromLawyer: false));
         }
-        catch (Exception ex) when (ex is ModelProviderException or InvalidOperationException)
+        catch (Exception ex) when (IsModelOrRenderFailure(ex))
         {
             AssistantThread.Add(new AssistantMessage(L.Format("Error", ex.Message), FromLawyer: false));
         }
@@ -298,7 +298,7 @@ public sealed partial class MainWindowViewModel
             Recheck();
             SetStatus(L.Format("Generated", provider.Name));
         }
-        catch (Exception ex) when (ex is ModelProviderException or InvalidOperationException or ArgumentException)
+        catch (Exception ex) when (IsModelOrRenderFailure(ex))
         {
             SetStatus(L.Format("Error", ex.Message), isError: true);
         }

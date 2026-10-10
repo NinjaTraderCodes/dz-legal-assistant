@@ -14,6 +14,9 @@ public static class WebText
         ["NoEngine"] = (
             "No AI engine is configured on this server: the rule check, editing and export work; drafting uses template mode.",
             "لا يوجد محرك ذكاء اصطناعي مهيأ على هذا الخادم: المراجعة الشكلية والتحرير والتصدير تعمل، والصياغة بوضع القوالب."),
+        ["SavedCase"] = ("This browser kept your case from {0}.", "احتفظ هذا المتصفح بقضيتك من {0}."),
+        ["RestoreCase"] = ("Restore it", "استعادتها"),
+        ["DiscardCase"] = ("Discard", "تجاهلها"),
         ["Samples"] = ("Open a sample case", "افتح قضية نموذجية"),
         ["GuideTitle"] = ("Try it in 3 minutes", "جرّبه في 3 دقائق"),
         ["GuideHide"] = ("Hide the guide", "إخفاء الدليل"),

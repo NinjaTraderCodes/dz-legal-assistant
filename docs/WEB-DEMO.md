@@ -37,7 +37,9 @@ Browser ──SignalR──► DzLegal.Web (ASP.NET Core, Blazor Server)
 - `src/DzLegal.Web`:
   - `Services/WebEngine` loads the definition, the law library and the sample cases once, and creates each visitor's session.
   - `ModelGate` limits the number of model calls running at once across all visitors; the rest wait their turn. The status bar shows the queue.
-  - `SessionQuota` caps the AI runs one session may start per hour (30 by default), so one visitor can't use up the shared quota.
+  - `ProtectedModelProvider` wraps every model call: per-visitor and per-network hourly limits (`CallQuota`, charged per call, so a reload does not reset them), the shared queue, and a plain error message for visitors (the service's raw error goes to the server log only).
+  - Every answer has an idle timeout (45 s without a word): a stalled service frees its queue slot and the next engine takes over. A service that refuses the key or has no credit left (401/402/403, or an error inside the stream) also hands over to the next one.
+  - The visitor's case is kept in their own browser (`localStorage`) every few seconds; after a server restart or a closed tab, the page offers to restore it.
   - `ViewModelWatcher` re-renders the page when the view model changes, which is what XAML bindings do on the desktop.
   - `BrowserFiles` turns exports into browser downloads; nothing is written on the server.
   - `Samples/*.json` holds four fictitious cases (loan, rent, undelivered goods, land under dispute). A sample holds case details only, so every step, AI included, runs live.
@@ -76,7 +78,8 @@ Settings (`src/DzLegal.Web/appsettings.json`, section `Engines`; any of them can
 |---|---|---|
 | `GoogleModels` | Gemma 4 26B A4B, Gemma 4 31B, then Gemma 3 27B/12B/4B | Gemma models tried in order. At startup the demo asks Google which ones the key can use and drops the rest; if none is left, any Gemma model the key can use takes over. |
 | `MaxConcurrentCalls` | 2 | model calls running at once, all visitors together |
-| `RunsPerSessionPerHour` | 30 | AI runs per browser session per hour |
+| `CallsPerSessionPerHour` | 60 | model calls per browser session per hour (a full run is about six) |
+| `CallsPerAddressPerHour` | 150 | model calls per hour for all sessions from one network address |
 | `MaxTokens`, `Temperature` | 1000, 0.2 | same as the desktop defaults |
 
 Keys come **only** from environment variables: `OPENROUTER_API_KEY`, `GOOGLE_API_KEY`, `GROQ_API_KEY`. Any one of them

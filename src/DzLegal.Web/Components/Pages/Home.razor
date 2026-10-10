@@ -41,6 +41,15 @@
         </div>
     </header>
 
+    @if (SavedCase is not null)
+    {
+        <div class="notice restore" role="status">
+            <span>@string.Format(L.Culture, T("SavedCase"), SavedAt?.ToLocalTime().ToString("g", L.Culture))</span>
+            <button class="primary small" @onclick="RestoreSavedCase">@T("RestoreCase")</button>
+            <button class="ghost small" @onclick="DiscardSavedCase">@T("DiscardCase")</button>
+        </div>
+    }
+
     @if (showGuide)
     {
         <section class="guide">
@@ -133,7 +142,7 @@
                     }
                     else
                     {
-                        <button class="primary" title="@L["GenerateHint"]" @onclick="() => Vm.GenerateCommand.ExecuteAsync(null)">✦ @L["Generate"]</button>
+                        <button class="primary" title="@L["GenerateHint"]" @onclick="() => Run(Vm.GenerateCommand)">✦ @L["Generate"]</button>
                     }
                 </div>
             </div>
@@ -142,9 +151,9 @@
                 <button class="tab @(Vm.SelectedDraftTab == 1 ? "on" : "")" @onclick="() => Vm.SelectedDraftTab = 1">@L["Preview"]</button>
                 <span class="spacer"></span>
                 <label class="check small"><input type="checkbox" @bind="Vm.DraftWatermark" /> @L["Watermark"]</label>
-                <button class="ghost" @onclick="() => Vm.ExportPdfCommand.ExecuteAsync(null)">⤓ @L["ExportPdf"]</button>
-                <button class="ghost" @onclick="() => Vm.ExportWordCommand.ExecuteAsync(null)">⤓ @L["ExportWord"]</button>
-                <button class="ghost" title="@L["CopyText"]" @onclick="() => Vm.CopyTextCommand.ExecuteAsync(null)">⧉</button>
+                <button class="ghost" @onclick="() => Run(Vm.ExportPdfCommand)">⤓ @L["ExportPdf"]</button>
+                <button class="ghost" @onclick="() => Run(Vm.ExportWordCommand)">⤓ @L["ExportWord"]</button>
+                <button class="ghost" title="@L["CopyText"]" @onclick="() => Run(Vm.CopyTextCommand)">⧉</button>
             </div>
 
             <ModelActivity Model="Vm.GenerationActivity" />
@@ -169,7 +178,7 @@
                     }
                     @foreach (var page in Vm.PreviewPages)
                     {
-                        <img class="page" alt="@L["Preview"]" src="@($"data:image/png;base64,{Convert.ToBase64String(page)}")" />
+                        <img class="page" alt="@L["Preview"]" src="@PageSource(page)" />
                     }
                 </div>
             }

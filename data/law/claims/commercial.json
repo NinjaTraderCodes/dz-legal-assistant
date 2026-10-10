@@ -46,6 +46,15 @@
             "ar": "التعويض عن عدم التنفيذ أو التأخر",
             "en": "Damages for non-performance or delay"
           }
+        },
+        {
+          "code": "civil-code",
+          "number": "179",
+          "role": "prerequisite",
+          "why": {
+            "ar": "لا يستحق التعويض إلا بعد إعذار المدين",
+            "en": "No damages before formal notice"
+          }
         }
       ],
       "suggestedRequests": [
@@ -75,15 +84,6 @@
       "description": "إيجار محل تجاري: إخلاء المستأجر بعد التنبيه بالإخلاء، أو مطالبة المستأجر بتعويض الاستحقاق عند رفض التجديد.",
       "verified": false,
       "articles": [
-        {
-          "code": "commercial-code",
-          "number": "172",
-          "role": "basis",
-          "why": {
-            "ar": "شروط حق التجديد في الإيجار التجاري",
-            "en": "Conditions of the right to renewal"
-          }
-        },
         {
           "code": "commercial-code",
           "number": "173",
@@ -125,6 +125,108 @@
         "تاريخ العقد (قبل أو بعد 2005)",
         "مدة الاستغلال",
         "التنبيه بالإخلاء وتاريخه"
+      ]
+    },
+    {
+      "id": "sale-non-delivery",
+      "label": {
+        "ar": "عدم تسليم المبيع",
+        "en": "Goods paid for but not delivered"
+      },
+      "description": "المشتري دفع الثمن والبائع لم يسلم الشيء المبيع في الأجل، فيطلب التسليم تحت غرامة تهديدية أو فسخ البيع واسترجاع الثمن مع التعويض.",
+      "verified": false,
+      "articles": [
+        {
+          "code": "civil-code",
+          "number": "364",
+          "role": "basis",
+          "required": true,
+          "why": {
+            "ar": "يلتزم البائع بتسليم الشيء المبيع للمشتري في الحالة التي كان عليها وقت البيع",
+            "en": "The seller must deliver the thing sold"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "367",
+          "role": "basis",
+          "why": {
+            "ar": "كيف يتم التسليم: وضع المبيع تحت تصرف المشتري",
+            "en": "What delivery means: putting the thing at the buyer's disposal"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "164",
+          "role": "basis",
+          "required": true,
+          "why": {
+            "ar": "يجبر المدين بعد إعذاره على التنفيذ العيني متى كان ممكنا",
+            "en": "After formal notice, the seller can be compelled to deliver"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "174",
+          "role": "damages",
+          "why": {
+            "ar": "غرامة إجبارية (تهديدية) لإجبار المدين على التنفيذ",
+            "en": "A daily penalty to compel performance"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "119",
+          "role": "basis",
+          "why": {
+            "ar": "بديلا عن التسليم: الفسخ بعد الإعذار مع التعويض",
+            "en": "Alternatively: rescission after formal notice, with damages"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "122",
+          "role": "basis",
+          "why": {
+            "ar": "بعد الفسخ يعاد المتعاقدان إلى ما كانا عليه (استرجاع الثمن)",
+            "en": "After rescission the price is returned"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "179",
+          "role": "prerequisite",
+          "why": {
+            "ar": "لا يستحق التعويض إلا بعد إعذار المدين",
+            "en": "No damages before formal notice"
+          }
+        },
+        {
+          "code": "commercial-code",
+          "number": "30",
+          "role": "proof",
+          "why": {
+            "ar": "يثبت العقد التجاري بالفاتورة المقبولة والرسائل والدفاتر وغيرها",
+            "en": "A commercial contract is proved by an accepted invoice, letters, books and other means"
+          }
+        }
+      ],
+      "suggestedRequests": [
+        "إلزام المدعى عليه بتسليم (...) تحت غرامة تهديدية قدرها (...) دج عن كل يوم تأخير",
+        "احتياطيا: فسخ عقد البيع وإلزام المدعى عليه بإرجاع الثمن المقدر بـ (...) دج",
+        "تحميل المدعى عليه المصاريف القضائية"
+      ],
+      "requiredDocuments": [
+        "الفاتورة أو عقد البيع",
+        "وصل دفع الثمن",
+        "محضر الإعذار"
+      ],
+      "factsToState": [
+        "تاريخ البيع ومحله وثمنه",
+        "دفع الثمن",
+        "أجل التسليم المتفق عليه",
+        "الإعذار وتاريخه",
+        "عدم التسليم إلى اليوم"
       ]
     }
   ]

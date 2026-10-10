@@ -140,6 +140,31 @@ public sealed class ShippedCatalogTests
     private static string LawRoot => Path.Combine(AppContext.BaseDirectory, "data", "law");
 
     [Fact]
+    public void EveryShippedTextIsProvedAgainstItsOfficialSource()
+    {
+        var library = LawLibraryLoader.Load(LawRoot);
+        Assert.Equal(["civil-code", "commercial-code", "cpca"], library.Codes.Select(c => c.Id));
+        Assert.All(library.Codes.SelectMany(c => c.Articles), a =>
+        {
+            Assert.NotNull(a.SourceExtract);
+            Assert.Equal(a.SourceExtract, LawTextFold.Fold(a.Text));
+            Assert.True(a.Page > 0);
+        });
+        Assert.Contains("يجب أن تتضمن عريضة افتتاح الدعوى", library.FindArticle("cpca", "15")!.Text, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void AnEditThatChangesALetterIsRejectedButSpacingIsNot()
+    {
+        var code = LawLibraryLoader.Load(LawRoot).FindCode("civil-code")!;
+        var article = code.FindArticle("323")!;
+        Assert.Empty(LawLibraryLoader.Validate(code with { Articles = [article with { Text = article.Text.Replace(" ", "  ", StringComparison.Ordinal) }] }));
+        Assert.Empty(LawLibraryLoader.Validate(code with { Articles = [article with { Text = article.Text.Replace("ك", "آ", StringComparison.Ordinal) }] }));
+        var edited = article with { Text = article.Text.Replace("الدائن", "المدين", StringComparison.Ordinal) };
+        Assert.Contains(LawLibraryLoader.Validate(code with { Articles = [edited] }), e => e.Contains("no longer matches its source", StringComparison.Ordinal));
+    }
+
+    [Fact]
     public void TheShippedCatalogLoadsAndIsUnverified()
     {
         var knowledge = LegalKnowledgeLoader.Load(LawRoot);
@@ -283,9 +308,13 @@ public sealed class ProvenanceTests : IDisposable
     {
         var knowledge = LegalKnowledgeLoader.Load(Path.Combine(AppContext.BaseDirectory, "data", "law"));
         var loan = knowledge.Resolve(knowledge.Claims.Single(c => c.Id == "loan-repayment"));
-        Assert.Equal(["450", "106", "107", "323", "333", "454", "176"], loan.Select(a => a.Reference.Number));
+        Assert.Equal(["450", "106", "107", "323", "324 مكرر 5", "333", "454", "179", "186", "182"], loan.Select(a => a.Reference.Number));
+        Assert.All(loan, a => Assert.True(a.IsAvailable)); // every catalog article has its official text
         var first = loan[0].Provenance;
         Assert.StartsWith("الأمر رقم 75-58", first.Reference, StringComparison.Ordinal);
         Assert.Equal("https://www.joradp.dz", first.SourceUrl);
+        Assert.Equal("docs/official-law-texts/75-58_wipo_Version.pdf", first.SourceFile);
+        Assert.Equal(77, first.Page);
+        Assert.False(first.IsTextVerified); // until a lawyer has checked it against the page
     }
 }

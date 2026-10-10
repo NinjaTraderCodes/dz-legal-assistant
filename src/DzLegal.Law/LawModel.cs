@@ -28,6 +28,26 @@ public sealed record LawArticle
 
     /// <summary>Reference of the amending text, when the consolidated source says so.</summary>
     public string? AmendedBy { get; init; }
+
+    /// <summary>Page of the source document the text was taken from, so a reader can check it there.</summary>
+    public int? Page { get; init; }
+
+    /// <summary>
+    /// The source document's letters and digits for this article, in order (see <see cref="LawTextFold"/>). The text
+    /// must fold to exactly this, which proves that only spacing and punctuation were touched when it was cleaned up.
+    /// </summary>
+    public string? SourceExtract { get; init; }
+
+    /// <summary>A remark for the reviewing lawyer (e.g. an oddity of the source edition).</summary>
+    public string? Note { get; init; }
+
+    /// <summary>True once a lawyer has compared this article with the source page.</summary>
+    public bool Verified { get; init; }
+
+    public string? VerifiedBy { get; init; }
+
+    /// <summary>yyyy-mm-dd.</summary>
+    public string? VerifiedOn { get; init; }
 }
 
 /// <summary>A code or law (e.g. the Civil Code), as imported from an official source.</summary>
@@ -45,6 +65,12 @@ public sealed record LawCode
 
     /// <summary>Date up to which the consolidated text includes amendments (yyyy-mm-dd), when known.</summary>
     public string? ConsolidatedAsOf { get; init; }
+
+    /// <summary>Which publication the text comes from, e.g. «الجريدة الرسمية العدد 21 المؤرخة في 23 أبريل 2008».</summary>
+    public string? Edition { get; init; }
+
+    /// <summary>True when only some articles of the code are in the library (those the claim catalog relies on).</summary>
+    public bool Partial { get; init; }
 
     public LawSource? Source { get; init; }
 

@@ -22,4 +22,19 @@ public sealed record ArticleProvenance(
     string? SourceUrl,
     bool SourceIsExactText,
     string RetrievedOn,
-    bool IsTextVerified);
+    bool IsTextVerified)
+{
+    /// <summary>The official document the text was taken from (repository path of the PDF), when it is a local copy.</summary>
+    public string? SourceFile { get; init; }
+
+    /// <summary>Page of <see cref="SourceFile"/> where the article is printed.</summary>
+    public int? Page { get; init; }
+
+    /// <summary>Which publication: «الجريدة الرسمية العدد 21 …» or «النسخة المحينة …».</summary>
+    public string? Edition { get; init; }
+
+    /// <summary>Who checked the text against the source, and when (yyyy-mm-dd).</summary>
+    public string? VerifiedBy { get; init; }
+
+    public string? VerifiedOn { get; init; }
+}

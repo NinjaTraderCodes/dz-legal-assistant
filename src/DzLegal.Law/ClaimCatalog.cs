@@ -2,13 +2,18 @@ using DzLegal.Domain;
 
 namespace DzLegal.Law;
 
-/// <summary>What an article does for a claim: founds it, proves it, measures damages, or governs procedure.</summary>
+/// <summary>
+/// What an article does for a claim: founds it, proves it, measures damages, governs procedure, limits what may be
+/// asked (no interest on a loan between individuals), or sets a step needed first (formal notice before damages).
+/// </summary>
 public enum ArticleRole
 {
     Basis,
     Proof,
     Damages,
     Procedure,
+    Limit,
+    Prerequisite,
 }
 
 /// <summary>An article a claim type relies on, with why, as a lawyer would explain it.</summary>
@@ -19,6 +24,12 @@ public sealed record ClaimArticle
     public required string Number { get; init; }
 
     public ArticleRole Role { get; init; } = ArticleRole.Basis;
+
+    /// <summary>
+    /// The article a requête of this type rests on: always proposed when the claim type is recognised, whatever the
+    /// model chooses, so a small model cannot drop the loan article from a loan claim.
+    /// </summary>
+    public bool Required { get; init; }
 
     public required LocalizedText Why { get; init; }
 }
@@ -118,13 +129,21 @@ public sealed class LegalKnowledge(LawLibrary library, LawSourceManifest manifes
 
         var imported = code?.Source?.Url;
         var exact = OfficialLinks.IsOfficial(imported);
+        var localFile = imported is not null && !imported.Contains("://", StringComparison.Ordinal) ? imported : null;
         return new ArticleProvenance(
             reference,
             article is null ? string.Empty : string.Join(" › ", article.Path),
             exact ? imported : OfficialLinks.IsOfficial(entry?.OfficialSite) ? entry!.OfficialSite : null,
             exact,
             code?.Source?.RetrievedOn ?? string.Empty,
-            code?.Verified == true);
+            code?.Verified == true || article?.Verified == true)
+        {
+            SourceFile = article is null ? null : localFile,
+            Page = article?.Page,
+            Edition = code?.Edition,
+            VerifiedBy = article?.VerifiedBy,
+            VerifiedOn = article?.VerifiedOn,
+        };
     }
 
     /// <summary>«القانون المدني» for "civil-code", whether or not its text is imported yet.</summary>

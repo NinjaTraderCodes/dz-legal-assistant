@@ -94,6 +94,11 @@ public static class LawLibraryLoader
             {
                 errors.Add($"Article {article.Number} has no text and is not marked repealed.");
             }
+
+            if (article.SourceExtract is { } extract && LawTextFold.Fold(article.Text) != extract)
+            {
+                errors.Add($"Article {article.Number}: the text no longer matches its source (letters or digits changed, not just spacing). Re-run tools/law/build_codes.py.");
+            }
         }
 
         return errors;

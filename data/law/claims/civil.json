@@ -1,6 +1,6 @@
 {
   "area": "civil",
-  "comment": "Drafted by the engineering team from its reading of the Civil Code; every article number is a proposal to be confirmed by a lawyer against the imported official text (verified: false). Once the civil code is imported, the loader rejects any article that does not exist or is repealed.",
+  "comment": "Drafted by the engineering team; every article's text is in data/law/codes (proved against the official PDFs), and each claim type is to be confirmed by a lawyer (verified: false). required: the articles a requête of this type rests on, always proposed. Roles: basis, proof, damages, procedure, limit (restricts what may be asked), prerequisite (a step needed before the claim or the damages).",
   "claims": [
     {
       "id": "loan-repayment",
@@ -15,9 +15,10 @@
           "code": "civil-code",
           "number": "450",
           "role": "basis",
+          "required": true,
           "why": {
-            "ar": "تعريف قرض الاستهلاك والتزام المقترض برد مثل ما اقترض",
-            "en": "Defines the loan and the borrower's duty to return the same amount"
+            "ar": "تعريف قرض الاستهلاك: يلتزم المقترض برد نظير ما اقترضه عند نهاية القرض",
+            "en": "Defines the loan: the borrower must return the equivalent at the end of the loan"
           }
         },
         {
@@ -34,7 +35,7 @@
           "number": "107",
           "role": "basis",
           "why": {
-            "ar": "وجوب تنفيذ العقد طبقا لما اشتمل عليه وبحسن نية",
+            "ar": "يجب تنفيذ العقد طبقا لما اشتمل عليه وبحسن نية",
             "en": "The contract must be performed as agreed and in good faith"
           }
         },
@@ -42,9 +43,19 @@
           "code": "civil-code",
           "number": "323",
           "role": "proof",
+          "required": true,
           "why": {
             "ar": "على الدائن إثبات الالتزام وعلى المدين إثبات التخلص منه",
-            "en": "Burden of proof: creditor proves the debt, debtor proves payment"
+            "en": "Burden of proof: the creditor proves the debt, the debtor proves payment"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "324 مكرر 5",
+          "role": "proof",
+          "why": {
+            "ar": "ما ورد في العقد الرسمي (كالاعتراف بدين الموثق) حجة حتى يثبت تزويره",
+            "en": "A notarised deed (e.g. an acknowledged debt) is proof until shown to be forged"
           }
         },
         {
@@ -52,26 +63,45 @@
           "number": "333",
           "role": "proof",
           "why": {
-            "ar": "الإثبات بالكتابة فيما يجاوز النصاب القانوني",
-            "en": "Written proof above the legal threshold"
+            "ar": "في غير المواد التجارية لا يجوز الإثبات بالشهود فيما يزيد على 100.000 دج",
+            "en": "Outside commerce, witnesses cannot prove more than 100,000 DZD"
           }
         },
         {
           "code": "civil-code",
           "number": "454",
-          "role": "basis",
+          "role": "limit",
+          "required": true,
           "why": {
-            "ar": "القرض بين الأفراد بدون فائدة: لا تطلب فوائد",
-            "en": "Loans between individuals bear no interest: do not ask for interest"
+            "ar": "القرض بين الأفراد يكون دائما بدون أجر: لا تطلب فوائد",
+            "en": "A loan between individuals bears no interest: do not ask for interest"
           }
         },
         {
           "code": "civil-code",
-          "number": "176",
+          "number": "179",
+          "role": "prerequisite",
+          "why": {
+            "ar": "لا يستحق التعويض إلا بعد إعذار المدين",
+            "en": "No damages are due before the debtor has been given formal notice"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "186",
           "role": "damages",
           "why": {
-            "ar": "التعويض عن عدم تنفيذ الالتزام أو التأخر فيه",
-            "en": "Damages for non-performance or delay"
+            "ar": "تعويض الدائن عن الضرر اللاحق من تأخر المدين في الوفاء بمبلغ من النقود",
+            "en": "Damages for the harm caused by late payment of a sum of money"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "182",
+          "role": "damages",
+          "why": {
+            "ar": "تقدير التعويض: ما لحق الدائن من خسارة وما فاته من كسب",
+            "en": "How damages are assessed: loss suffered and profit lost"
           }
         }
       ],
@@ -105,9 +135,10 @@
           "code": "civil-code",
           "number": "351",
           "role": "basis",
+          "required": true,
           "why": {
-            "ar": "تعريف البيع والتزام المشتري بدفع الثمن",
-            "en": "Definition of sale; the buyer owes the price"
+            "ar": "البيع عقد يلتزم بمقتضاه البائع بنقل الملكية في مقابل ثمن نقدي",
+            "en": "A sale transfers ownership in return for a price"
           }
         },
         {
@@ -124,26 +155,36 @@
           "number": "164",
           "role": "basis",
           "why": {
-            "ar": "إجبار المدين بعد إعذاره على التنفيذ العيني",
-            "en": "Compelling performance after formal notice"
+            "ar": "يجبر المدين بعد إعذاره على التنفيذ العيني متى كان ممكنا",
+            "en": "After formal notice, the debtor can be compelled to perform"
           }
         },
         {
           "code": "civil-code",
           "number": "323",
           "role": "proof",
+          "required": true,
           "why": {
-            "ar": "عبء الإثبات",
+            "ar": "على الدائن إثبات الالتزام وعلى المدين إثبات التخلص منه",
             "en": "Burden of proof"
           }
         },
         {
           "code": "civil-code",
-          "number": "176",
+          "number": "179",
+          "role": "prerequisite",
+          "why": {
+            "ar": "لا يستحق التعويض إلا بعد إعذار المدين",
+            "en": "No damages before formal notice"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "186",
           "role": "damages",
           "why": {
-            "ar": "التعويض عن عدم التنفيذ",
-            "en": "Damages for non-performance"
+            "ar": "تعويض الضرر اللاحق من التأخر في الوفاء بمبلغ من النقود",
+            "en": "Damages for late payment of a sum of money"
           }
         }
       ],
@@ -177,18 +218,20 @@
           "code": "civil-code",
           "number": "119",
           "role": "basis",
+          "required": true,
           "why": {
-            "ar": "حق المتعاقد في طلب الفسخ مع التعويض بعد الإعذار في العقود الملزمة للجانبين",
-            "en": "Right to rescind with damages after notice in bilateral contracts"
+            "ar": "في العقود الملزمة للجانبين يجوز بعد الإعذار طلب التنفيذ أو الفسخ مع التعويض",
+            "en": "In two-sided contracts, after formal notice: performance or rescission, with damages"
           }
         },
         {
           "code": "civil-code",
           "number": "122",
           "role": "basis",
+          "required": true,
           "why": {
-            "ar": "أثر الفسخ: إعادة المتعاقدين إلى الحالة التي كانا عليها",
-            "en": "Effect of rescission: restoring the prior position"
+            "ar": "إذا فسخ العقد أعيد المتعاقدان إلى الحالة التي كانا عليها قبل العقد",
+            "en": "Rescission restores the parties to their prior position"
           }
         },
         {
@@ -205,8 +248,17 @@
           "number": "176",
           "role": "damages",
           "why": {
-            "ar": "التعويض عن عدم التنفيذ",
-            "en": "Damages for non-performance"
+            "ar": "التعويض عن عدم التنفيذ أو التأخر فيه",
+            "en": "Damages for non-performance or delay"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "182",
+          "role": "damages",
+          "why": {
+            "ar": "تقدير التعويض",
+            "en": "How damages are assessed"
           }
         }
       ],
@@ -227,6 +279,71 @@
       ]
     },
     {
+      "id": "sale-annulment-fraud",
+      "label": {
+        "ar": "إبطال عقد للتدليس",
+        "en": "Annulment of a contract for fraud"
+      },
+      "description": "المدعي أبرم عقدا (مثل بيع عقار) ثم تبين أن المتعاقد الآخر استعمل حيلا أو سكت عمدا عن واقعة لو علمها لما أبرم العقد، فيطلب إبطاله واسترجاع ما دفع. يختلف عن الفسخ لعدم التنفيذ.",
+      "verified": false,
+      "articles": [
+        {
+          "code": "civil-code",
+          "number": "86",
+          "role": "basis",
+          "required": true,
+          "why": {
+            "ar": "يجوز إبطال العقد للتدليس، ويعتبر تدليسا السكوت عمدا عن واقعة لو علمها المتعاقد لما أبرم العقد",
+            "en": "Fraud, including deliberate silence about a decisive fact, makes the contract voidable"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "103",
+          "role": "basis",
+          "required": true,
+          "why": {
+            "ar": "عند إبطال العقد يعاد المتعاقدان إلى الحالة التي كانا عليها قبل العقد",
+            "en": "On annulment the parties are restored to their prior position (return of the price)"
+          }
+        },
+        {
+          "code": "cpca",
+          "number": "17",
+          "role": "procedure",
+          "why": {
+            "ar": "دعوى تتعلق بعقار مشهر: يجب إشهار العريضة لدى المحافظة العقارية تحت طائلة عدم القبول",
+            "en": "A claim on registered land must be published at the land registry, or it is inadmissible"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "324 مكرر 1",
+          "role": "proof",
+          "why": {
+            "ar": "العقود الناقلة لملكية عقار تحرر في شكل رسمي تحت طائلة البطلان",
+            "en": "Deeds transferring land must be notarised, or they are void"
+          }
+        }
+      ],
+      "suggestedRequests": [
+        "إبطال عقد (...) المؤرخ في (...)",
+        "إلزام المدعى عليه بإرجاع الثمن المقدر بـ (...) دج",
+        "تحميل المدعى عليه المصاريف القضائية"
+      ],
+      "requiredDocuments": [
+        "العقد المطلوب إبطاله",
+        "ما يثبت الواقعة المكتومة أو الحيل",
+        "شهادة إشهار العريضة لدى المحافظة العقارية (إن تعلق الأمر بعقار مشهر)"
+      ],
+      "factsToState": [
+        "تاريخ العقد ومحله وثمنه",
+        "الواقعة المكتومة أو الحيل المستعملة",
+        "أنه لولاها لما أبرم العقد",
+        "تاريخ اكتشافها"
+      ]
+    },
+    {
       "id": "contract-damages",
       "label": {
         "ar": "تعويض عن الإخلال بالتزام تعاقدي",
@@ -239,9 +356,20 @@
           "code": "civil-code",
           "number": "176",
           "role": "basis",
+          "required": true,
           "why": {
-            "ar": "التعويض عن عدم التنفيذ أو التأخر فيه",
-            "en": "Damages for non-performance or delay"
+            "ar": "يحكم على المدين بتعويض الضرر الناجم عن عدم التنفيذ أو التأخر فيه",
+            "en": "The debtor owes damages for non-performance or delay"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "179",
+          "role": "prerequisite",
+          "required": true,
+          "why": {
+            "ar": "لا يستحق التعويض إلا بعد إعذار المدين",
+            "en": "No damages before formal notice"
           }
         },
         {
@@ -249,8 +377,8 @@
           "number": "182",
           "role": "damages",
           "why": {
-            "ar": "تقدير التعويض: ما لحق الدائن من خسارة وما فاته من كسب",
-            "en": "Measure of damages: loss suffered and profit lost"
+            "ar": "تقدير التعويض: ما لحق من خسارة وما فات من كسب",
+            "en": "Loss suffered and profit lost"
           }
         },
         {
@@ -302,9 +430,10 @@
           "number": "124",
           "role": "basis",
           "why": {
-            "ar": "كل فعل خاطئ يسبب ضررا للغير يلزم مرتكبه بالتعويض",
-            "en": "Any fault causing harm obliges its author to compensate"
-          }
+            "ar": "كل فعل يرتكبه الشخص بخطئه ويسبب ضررا للغير يلزم من كان سببا في حدوثه بالتعويض (خارج إطار العقد)",
+            "en": "Fault causing harm to another, outside any contract, obliges its author to compensate"
+          },
+          "required": true
         },
         {
           "code": "civil-code",
@@ -366,7 +495,8 @@
           "why": {
             "ar": "مسؤولية من تولى حراسة شيء عن الضرر الذي يحدثه",
             "en": "The custodian of a thing answers for the harm it causes"
-          }
+          },
+          "required": true
         },
         {
           "code": "civil-code",
@@ -402,39 +532,32 @@
       ]
     },
     {
-      "id": "unpaid-rent-eviction",
+      "id": "unpaid-rent",
       "label": {
-        "ar": "المطالبة ببدل الإيجار وطرد المستأجر",
-        "en": "Unpaid rent and eviction"
+        "ar": "المطالبة ببدلات إيجار غير مدفوعة",
+        "en": "Unpaid rent"
       },
-      "description": "المدعي أجّر مسكنا أو عقارا (غير محل تجاري) للمدعى عليه، والمستأجر لم يدفع الإيجار، ويطلب المتأخرات و/أو الطرد.",
+      "description": "المؤجر يطالب المستأجر (لسكن أو لمحل تجاري) ببدلات الإيجار المستحقة غير المدفوعة، وقد يطلب الفسخ والطرد. لا يتعلق بانتهاء مدة الإيجار التجاري أو برفض تجديده.",
       "verified": false,
       "articles": [
         {
           "code": "civil-code",
-          "number": "467",
-          "role": "basis",
-          "why": {
-            "ar": "تعريف عقد الإيجار ومقابله",
-            "en": "Definition of the lease and its rent"
-          }
-        },
-        {
-          "code": "civil-code",
           "number": "498",
           "role": "basis",
+          "required": true,
           "why": {
-            "ar": "التزام المستأجر بدفع بدل الإيجار في المواعيد المتفق عليها",
-            "en": "The tenant must pay rent on the agreed dates"
+            "ar": "يجب على المستأجر دفع بدل الإيجار في المواعيد المتفق عليها",
+            "en": "The tenant must pay the rent on the agreed dates"
           }
         },
         {
           "code": "civil-code",
-          "number": "119",
+          "number": "467",
           "role": "basis",
+          "required": true,
           "why": {
-            "ar": "الفسخ لعدم التنفيذ بعد الإعذار",
-            "en": "Rescission for non-performance after notice"
+            "ar": "تعريف الإيجار: الانتفاع بشيء لمدة محددة مقابل بدل إيجار معلوم",
+            "en": "Defines the lease: use of a thing for a set time against a fixed rent"
           }
         },
         {
@@ -444,6 +567,33 @@
           "why": {
             "ar": "العقد شريعة المتعاقدين",
             "en": "The contract binds the parties"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "467 مكرر",
+          "role": "proof",
+          "why": {
+            "ar": "ينعقد الإيجار كتابة ويكون له تاريخ ثابت وإلا كان باطلا",
+            "en": "A lease must be written with a fixed date, or it is void"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "324 مكرر 1",
+          "role": "proof",
+          "why": {
+            "ar": "عقود الإيجار التجارية تحرر في شكل رسمي تحت طائلة البطلان",
+            "en": "Commercial leases must be notarised, or they are void"
+          }
+        },
+        {
+          "code": "civil-code",
+          "number": "119",
+          "role": "basis",
+          "why": {
+            "ar": "الفسخ بعد الإعذار مع التعويض إذا طلب المؤجر الفسخ والطرد",
+            "en": "Rescission after formal notice, if the landlord also asks for eviction"
           }
         }
       ],

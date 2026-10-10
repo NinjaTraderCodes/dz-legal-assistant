@@ -150,7 +150,7 @@
       "name": "rent-basic",
       "courtSection": "القسم المدني",
       "facts": "يستأجر المدعى عليه شقة من المدعي بموجب عقد إيجار\nلم يدفع بدل الإيجار منذ ثمانية أشهر رغم التنبيه\nيطلب المدعي المتأخرات وطرد المستأجر",
-      "expect": "unpaid-rent-eviction",
+      "expect": "unpaid-rent",
       "expectArticles": [
         "civil-code:467",
         "civil-code:498"
@@ -159,7 +159,7 @@
     {
       "name": "rent-darija",
       "facts": "المدعى عليه ساكن في دار المدعي بالكراء\nما خلصش الكراء من جانفي\nبعثنا له إعذار",
-      "expect": "unpaid-rent-eviction",
+      "expect": "unpaid-rent",
       "expectArticles": [
         "civil-code:467",
         "civil-code:498"
@@ -207,8 +207,8 @@
       "facts": "يستغل المدعى عليه محلا تجاريا مملوكا للمدعي بموجب إيجار تجاري\nوجه له المدعي تنبيها بالإخلاء عن طريق محضر قضائي\nرفض الخروج عند انتهاء الأجل",
       "expect": "commercial-lease-eviction",
       "expectArticles": [
-        "commercial-code:172",
-        "commercial-code:187 مكرر"
+        "commercial-code:187 مكرر",
+        "commercial-code:173"
       ]
     },
     {
@@ -216,8 +216,8 @@
       "facts": "رفض المؤجر تجديد الإيجار التجاري للمحل التجاري\nيطالب المستأجر بتعويض الاستحقاق عن فقدان القاعدة التجارية",
       "expect": "commercial-lease-eviction",
       "expectArticles": [
-        "commercial-code:172",
-        "commercial-code:187 مكرر"
+        "commercial-code:187 مكرر",
+        "commercial-code:173"
       ]
     },
     {
@@ -362,8 +362,8 @@
       "facts": "المدعى عليه مستأجر لمحل تجاري ولم يدفع بدل الإيجار ويطلب المؤجر الإخلاء",
       "expect": "commercial-lease-eviction",
       "expectArticles": [
-        "commercial-code:172",
-        "commercial-code:187 مكرر"
+        "commercial-code:187 مكرر",
+        "commercial-code:173"
       ]
     },
     {
@@ -392,6 +392,26 @@
       "facts": "وقع خطأ في تاريخ ميلاد المدعي في سجلات الحالة المدنية ويطلب تصحيحه",
       "expect": "",
       "expectArticles": []
+    },
+    {
+      "name": "annulment-fraud-land",
+      "courtSection": "القسم المدني",
+      "facts": "باعت المدعى عليها للمدعي قطعة أرض بتاريخ 12/02/2026 بثمن 9,000,000 دج\nتبين بعد البيع أن القطعة محل نزاع قضائي سابق كتمته البائعة عمدا\nيطلب المدعي إبطال البيع واسترجاع الثمن",
+      "expect": "sale-annulment-fraud",
+      "expectArticles": [
+        "civil-code:86",
+        "civil-code:103"
+      ]
+    },
+    {
+      "name": "non-delivery-machines",
+      "courtSection": "القسم التجاري",
+      "facts": "اشترى المدعي من الشركة المدعى عليها 20 آلة خياطة بتاريخ 02/04/2025 ودفع الثمن كاملا 800,000 دج\nالتزمت الشركة بالتسليم قبل 02/05/2025\nلم تسلم أي آلة إلى اليوم رغم الإعذار",
+      "expect": "sale-non-delivery",
+      "expectArticles": [
+        "civil-code:364",
+        "civil-code:164"
+      ]
     }
   ]
 }

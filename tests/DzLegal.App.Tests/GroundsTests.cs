@@ -59,7 +59,7 @@ public sealed class GroundsWorkflowTests
         Assert.Equal(vm.L.Format("ModelReason", "المدعى عليه اقترض المبلغ ولم يرده"), first.ModelReason);
         Assert.Equal(vm.L["ProvenanceModel"], first.ProvenanceTag);
         Assert.Equal(vm.L["FromClaimCatalog"], first.SourceText);
-        Assert.False(first.IsAvailable); // no official text imported in the shipped library
+        Assert.True(first.IsAvailable); // the shipped library has the official text of every catalog article
         Assert.Empty(vm.SelectedArticles);
         Assert.Equal(vm.L.Format("AnalysisDone", 2, "recording"), vm.AnalysisStatus);
         Assert.False(vm.IsAnalysisStale);
@@ -184,7 +184,7 @@ public sealed class ArticleSearchAndProvenanceTests
     [Fact]
     public void SearchFindsImportedArticlesAndSharesTheTick()
     {
-        var empty = Vm.Create();
+        var empty = Vm.Create(knowledge: DzLegal.Law.LegalKnowledge.Empty);
         empty.ArticleQuery = "450";
         Assert.Equal(empty.L["LibraryNotImported"], empty.ArticleSearchHint);
 

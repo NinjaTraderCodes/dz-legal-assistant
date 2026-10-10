@@ -1,33 +1,64 @@
 @using DzLegal.Presentation.ViewModels
-@* A proposed or found article: tick to use it as a ground; its role, the model's reason, and where to check the text. *@
-<div class="card article-card @(Article.IsSelected ? "selected" : "")">
-    <label class="check">
-        <input type="checkbox" checked="@Article.IsSelected" @onchange="e => Article.IsSelected = e.Value is true" />
-        <span class="arabic citation" dir="rtl">@Article.Citation</span>
-        @if (Article.HasRole)
-        {
-            <span class="tag">@Article.RoleText</span>
-        }
-    </label>
+@* An article to cite or not: who suggested it, its role, why it applies, its official text and where to check it. *@
+<div class="article-card @(Article.IsSelected ? "selected" : "")">
+    <div class="top">
+        <label class="check">
+            <input id="@InputId" type="checkbox" checked="@Article.IsSelected" @onchange="e => Article.IsSelected = e.Value is true" />
+            <span class="citation" dir="rtl" lang="ar">@Article.Citation</span>
+        </label>
+        <span class="tags">
+            @if (Article.HasRole)
+            {
+                <span class="tag role" title="@RoleHelp">@Article.RoleText</span>
+            }
+            @if (Article.IsRequired)
+            {
+                <span class="tag required">@Vm.L["ProvenanceRequired"]</span>
+            }
+            else if (Article.ProvenanceTag == Vm.L["ProvenanceModel"])
+            {
+                <span class="tag ai"><Icon Name="sparkle" Size="12" /> @Vm.L["ProvenanceModel"]</span>
+            }
+        </span>
+    </div>
+
     @if (Article.HasModelReason)
     {
-        <div class="reason arabic" dir="rtl">@Article.ModelReason</div>
+        <div class="why" dir="rtl" lang="ar"><span class="who">@Vm.L["AiReason"]</span>@Article.ModelReason</div>
     }
-    @if (Article.HasWhy)
+    else if (Article.HasWhy)
     {
-        <div class="small arabic" dir="rtl">@Article.Why</div>
+        <div class="why" dir="auto">@Article.Why</div>
     }
-    <div class="small muted @(Article.IsAvailable ? "arabic article-text" : "")" dir="@(Article.IsAvailable ? "rtl" : "auto")">@Article.Text</div>
-    <div class="small muted arabic" dir="rtl">@Article.ReferenceText</div>
-    <div class="row small">
-        @if (Article.HasSource)
+
+    @if (Article.IsAvailable)
+    {
+        <details>
+            <summary><Icon Name="book_open" Size="14" /> @Vm.L["ShowOfficialText"]</summary>
+            <p class="official" dir="rtl" lang="ar">@Article.Text</p>
+        </details>
+    }
+    else
+    {
+        <div class="small muted">@Article.Text</div>
+    }
+
+    <div class="source">
+        @if (Article.SourceFile is { } file && Article.Page is { } page)
         {
-            <a href="@Article.SourceUrl" target="_blank" rel="noopener" title="@Article.LinkTooltip">↗ @Article.LinkLabel</a>
+            <a href="@($"/law-sources/{System.IO.Path.GetFileName(file)}#page={page}")" target="_blank" rel="noopener"><Icon Name="document_text" Size="14" /> @Vm.L.Format("SourcePage", page)</a>
         }
-        <span class="tag warn">@Article.ProvenanceTag</span>
-        @if (Article.SourceText.Length > 0)
+        else if (Article.HasSource)
         {
-            <span class="muted">@Article.SourceText</span>
+            <a href="@Article.SourceUrl" target="_blank" rel="noopener"><Icon Name="open" Size="14" /> @Article.LinkLabel</a>
+        }
+        @if (Article.IsVerified)
+        {
+            <span class="tag verified"><Icon Name="checkmark" Size="12" /> @Vm.L["ProvenanceVerified"]</span>
+        }
+        else if (Article.IsAvailable)
+        {
+            <span>@Vm.L["ProvenanceTextUnverified"]</span>
         }
     </div>
 </div>
@@ -36,4 +67,12 @@
     [Parameter, EditorRequired] public ArticleChoiceViewModel Article { get; set; } = default!;
 
     [Parameter, EditorRequired] public MainWindowViewModel Vm { get; set; } = default!;
+
+    private string InputId => "art-" + Article.Reference.Code + "-" + Article.Reference.Number.Replace(' ', '-');
+
+    private string RoleHelp => Vm.L["RoleHelp_" + RoleKey];
+
+    private string RoleKey => Article.RoleText == Vm.L["Role_basis"] ? "basis" : Article.RoleText == Vm.L["Role_proof"] ? "proof"
+        : Article.RoleText == Vm.L["Role_damages"] ? "damages" : Article.RoleText == Vm.L["Role_procedure"] ? "procedure"
+        : Article.RoleText == Vm.L["Role_limit"] ? "limit" : "prerequisite";
 }

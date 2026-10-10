@@ -70,6 +70,20 @@ app.MapGet("/fonts/{file}", (string file, HttpContext context) =>
     return Results.Stream(font, "font/ttf");
 });
 
+// The official PDFs the law texts come from (only those the library names), opened inline at the cited page.
+app.MapGet("/law-sources/{file}", (string file, WebEngine engine, HttpContext context) =>
+{
+    var allowed = engine.Knowledge.Library.Codes.Select(c => Path.GetFileName(c.Source?.Url ?? string.Empty));
+    var path = Path.Combine(AppContext.BaseDirectory, "law-sources", file);
+    if (!allowed.Contains(file, StringComparer.Ordinal) || !File.Exists(path))
+    {
+        return Results.NotFound();
+    }
+
+    context.Response.Headers.CacheControl = "public, max-age=2592000";
+    return Results.File(path, "application/pdf", enableRangeProcessing: true);
+});
+
 // For uptime checks: is the server up, and is AI configured? Engine names and the queue stay in the server log.
 app.MapGet("/healthz", (WebEngine engine) => Results.Ok(new { status = "ok", ai = engine.Settings.HasAnyEngine }));
 

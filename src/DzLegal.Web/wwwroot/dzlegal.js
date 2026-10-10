@@ -21,6 +21,12 @@ window.dzlegal = {
   loadCase() {
     try { return localStorage.getItem("dzlegal.case"); } catch { return null; }
   },
+  isNarrow() {
+    try { return window.matchMedia("(max-width: 899px)").matches; } catch { return false; }
+  },
+  prefersDark() {
+    try { return window.matchMedia("(prefers-color-scheme: dark)").matches; } catch { return false; }
+  },
   forgetCase() {
     try { localStorage.removeItem("dzlegal.case"); } catch { }
   },

@@ -1,15 +1,15 @@
 @using DzLegal.Presentation.ViewModels
-@* AI step 1: the model reads the facts and proposes articles; the lawyer ticks what to keep. *@
+@* AI step 1: the AI reads the facts and proposes articles; the lawyer decides which ones the draft cites. *@
 <div class="grounds">
     <p class="muted small">@Vm.L["GroundsIntro"]</p>
-    <div class="row">
+    <div>
         @if (Vm.AnalyseGroundsCommand.IsRunning)
         {
-            <button class="danger" @onclick="() => Vm.AnalyseGroundsCancelCommand.Execute(null)">@Vm.L["Cancel"]</button>
+            <button type="button" @onclick="() => Vm.AnalyseGroundsCancelCommand.Execute(null)"><Icon Name="stop" /> @Vm.L["Cancel"]</button>
         }
         else
         {
-            <button class="primary" @onclick="() => CommandRunner.RunAsync(Vm, Vm.AnalyseGroundsCommand)">✦ @Vm.L["AnalyseGrounds"]</button>
+            <button type="button" class="ai" disabled="@CommandRunner.IsAiBusy(Vm)" @onclick="() => CommandRunner.RunAsync(Vm, Vm.AnalyseGroundsCommand)"><Icon Name="sparkle" /> @Vm.L["AnalyseGrounds"]</button>
         }
     </div>
 
@@ -17,7 +17,7 @@
 
     @if (Vm.AnalysisStatus.Length > 0)
     {
-        <div class="small muted">@Vm.AnalysisStatus</div>
+        <div class="small muted" role="status">@Vm.AnalysisStatus</div>
     }
     @if (Vm.IsAnalysisStale)
     {
@@ -25,25 +25,27 @@
     }
     @if (Vm.HasPrerequisites)
     {
-        <div class="notice arabic" dir="rtl">@Vm.Prerequisites</div>
+        <div class="notice arabic" dir="rtl" lang="ar">@Vm.Prerequisites</div>
     }
 
     @if (Vm.HasReading)
     {
-        <div class="card reading">
-            <div class="card-title">@Vm.L["ModelReading"] <span class="tag">@Vm.L["ModelTag"]</span></div>
-            <div><strong>@Vm.L["ReadingRelationship"]</strong> <span class="arabic" dir="rtl">@Vm.ReadingRelationship</span></div>
-            <div><strong>@Vm.L["ReadingBreach"]</strong> <span class="arabic" dir="rtl">@Vm.ReadingBreach</span></div>
-            <div><strong>@Vm.L["ReadingSought"]</strong> <span class="arabic" dir="rtl">@Vm.ReadingSought</span></div>
-            <div><strong>@Vm.L["ReadingClaims"]</strong> @Vm.ReadingClaims</div>
+        <div class="reading">
+            <div class="section-title-row"><h3>@Vm.L["ModelReading"]</h3><span class="tag ai"><Icon Name="sparkle" Size="12" /> @Vm.L["ModelTag"]</span></div>
+            <dl>
+                <dt>@Vm.L["ReadingRelationship"]</dt><dd dir="rtl" lang="ar">@Vm.ReadingRelationship</dd>
+                <dt>@Vm.L["ReadingBreach"]</dt><dd dir="rtl" lang="ar">@Vm.ReadingBreach</dd>
+                <dt>@Vm.L["ReadingSought"]</dt><dd dir="rtl" lang="ar">@Vm.ReadingSought</dd>
+                <dt>@Vm.L["ReadingClaims"]</dt><dd>@Vm.ReadingClaims</dd>
+            </dl>
         </div>
     }
 
     @if (Vm.HasAnalysedArticles)
     {
-        <div class="row between">
-            <strong>@Vm.L["ProposedArticles"]</strong>
-            <button class="link" @onclick="() => Vm.TickBasisArticlesCommand.Execute(null)">@Vm.L["TickBasis"]</button>
+        <div class="section-title-row">
+            <h3>@Vm.L["ProposedArticles"]</h3>
+            <button type="button" class="link" @onclick="() => Vm.TickBasisArticlesCommand.Execute(null)">@Vm.L["TickBasis"]</button>
         </div>
         @foreach (var a in Vm.AnalysedArticles)
         {
@@ -51,21 +53,26 @@
         }
     }
 
-    <div class="card selected-grounds">
-        <div class="card-title">@Vm.L["SelectedGrounds"] (@Vm.SelectedArticleCount)</div>
+    <div class="reading">
+        <h3>@Vm.L["SelectedGrounds"] (@Vm.SelectedArticleCount)</h3>
         @if (!Vm.HasSelectedArticles)
         {
             <div class="muted small">@Vm.L["SelectedGroundsEmpty"]</div>
         }
-        @foreach (var s in Vm.SelectedGrounds)
-        {
-            <span class="chip arabic" dir="rtl">@s.Citation <button class="link" aria-label="remove" @onclick="() => s.RemoveCommand.Execute(null)">✕</button></span>
-        }
+        <div class="selected-list">
+            @foreach (var s in Vm.SelectedGrounds)
+            {
+                <span class="chip" dir="rtl" lang="ar">@s.Citation
+                    <button type="button" class="link" aria-label="@Vm.L.Format("RemoveArticle", s.Citation)" @onclick="() => s.RemoveCommand.Execute(null)"><Icon Name="dismiss" Size="12" /></button>
+                </span>
+            }
+        </div>
     </div>
 
     <details class="search">
         <summary>@Vm.L["AddArticleByHand"]</summary>
-        <input class="arabic" dir="rtl" placeholder="@Vm.L["ArticleSearchPlaceholder"]" @bind="Vm.ArticleQuery" @bind:event="oninput" />
+        <label class="small muted" for="article-search">@Vm.L["ArticleSearchPlaceholder"]</label>
+        <input id="article-search" class="arabic" dir="auto" @bind="Vm.ArticleQuery" @bind:event="oninput" />
         @if (Vm.ArticleSearchHint.Length > 0)
         {
             <div class="muted small">@Vm.ArticleSearchHint</div>

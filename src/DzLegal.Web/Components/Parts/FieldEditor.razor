@@ -11,6 +11,10 @@
     else
     {
         <label for="@InputId">@Field.Label</label>
+        @if (!string.IsNullOrEmpty(Field.Hint))
+        {
+            <span class="small muted">@Field.Hint</span>
+        }
         @if (Field.IsChoice)
         {
             <select id="@InputId" value="@Field.Value" @onchange="e => Field.Value = e.Value?.ToString() ?? string.Empty">
@@ -23,18 +27,18 @@
         }
         else if (Field.IsMultiline)
         {
-            <textarea id="@InputId" class="arabic" dir="rtl" rows="7" placeholder="@Field.Hint"
+            <textarea id="@InputId" class="arabic" dir="rtl" lang="ar" rows="7" aria-describedby="@(Field.IsMissing ? InputId + "-note" : null)"
                       @bind="Field.Value" @bind:event="oninput"></textarea>
         }
         else
         {
-            <input id="@InputId" class="arabic" dir="rtl" placeholder="@Field.Hint"
+            <input id="@InputId" class="arabic" dir="rtl" lang="ar" aria-describedby="@(Field.IsMissing ? InputId + "-note" : null)"
                    @bind="Field.Value" @bind:event="oninput" />
         }
     }
     @if (Field.IsMissing)
     {
-        <div class="field-note">@Field.MissingNote</div>
+        <div class="field-note" id="@(InputId + "-note")">@Field.MissingNote</div>
     }
 </div>
 

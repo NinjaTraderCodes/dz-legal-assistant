@@ -18,7 +18,7 @@
         </ol>
         <div class="activity-meta">
             <span>@(Model.IsWaiting ? Model.WaitingText : Model.WordsText)</span>
-            <span class="timer">⏱ @Model.Elapsed</span>
+            <span class="timer">@Model.Elapsed</span>
         </div>
         @if (Model.IsWaiting)
         {
@@ -28,7 +28,7 @@
         {
             <div class="live-text">
                 <div class="live-label">@LiveLabel</div>
-                <div class="arabic" dir="rtl">@Model.LiveText</div>
+                <div class="arabic" dir="rtl" lang="ar">@Model.LiveText</div>
             </div>
         }
     </div>

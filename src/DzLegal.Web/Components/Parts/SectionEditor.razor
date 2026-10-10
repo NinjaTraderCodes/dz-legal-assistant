@@ -2,40 +2,49 @@
 @* One section of the requête on paper. Generated sections follow the form; narrative ones are written by the model and
    stay editable. Same view model as the desktop editor. *@
 <div class="section @(Section.IsWriting ? "writing" : "")">
-    <div class="section-head" dir="@(Vm.IsRightToLeft ? "rtl" : "ltr")">
-        <span class="section-title">@Section.Title</span>
+    <div class="section-head" dir="@(Vm.IsRightToLeft ? "rtl" : "ltr")" lang="@Vm.L.Language">
+        <span class="title">@Section.Title</span>
         @if (Section.IsWriting)
         {
             <span class="writing-mark"><span class="pulse"></span> @Vm.L["SectionWriting"]</span>
         }
+        else if (Section.IsLocked)
+        {
+            <span class="origin"><Icon Name="lock_closed" Size="12" /> @Section.Hint</span>
+        }
+        else if (Section.IsEditable)
+        {
+            <span class="origin ai"><Icon Name="sparkle" Size="12" /> @Section.Hint</span>
+        }
         else
         {
-            <span class="muted small">@(Section.IsLocked ? "🔒 " : "")@Section.Hint</span>
+            <span class="origin">@Section.Hint</span>
         }
-        <span class="spacer"></span>
-        @if (Section.CanOverride)
-        {
-            <button class="link" @onclick="() => Section.OverrideCommand.Execute(null)">@Vm.L["EditManually"]</button>
-        }
-        @if (Section.IsOverridden)
-        {
-            <button class="link" @onclick="() => Section.RestoreCommand.Execute(null)">@Vm.L["RestoreFromForm"]</button>
-        }
-        @if (Section.IsEditable)
-        {
-            @if (Section.CanUndo)
+        <span class="actions">
+            @if (Section.CanOverride)
             {
-                <button class="link" @onclick="() => Section.UndoCommand.Execute(null)">@Vm.L["Undo"]</button>
+                <button type="button" class="link" @onclick="() => Section.OverrideCommand.Execute(null)"><Icon Name="edit" Size="14" /> @Vm.L["EditManually"]</button>
             }
-            <button class="link" @onclick="() => CommandRunner.RunAsync(Vm, Section.RedraftCommand)">@Vm.L["Redraft"]</button>
-            <button class="link" @onclick="() => Section.OpenAssistantCommand.Execute(null)">✦ @Vm.L["Assistant"]</button>
-        }
+            @if (Section.IsOverridden)
+            {
+                <button type="button" class="link" @onclick="() => Section.RestoreCommand.Execute(null)">@Vm.L["RestoreFromForm"]</button>
+            }
+            @if (Section.IsEditable)
+            {
+                @if (Section.CanUndo)
+                {
+                    <button type="button" class="link" @onclick="() => Section.UndoCommand.Execute(null)"><Icon Name="arrow_undo" Size="14" /> @Vm.L["Undo"]</button>
+                }
+                <button type="button" class="link" disabled="@CommandRunner.IsAiBusy(Vm)" @onclick="() => CommandRunner.RunAsync(Vm, Section.RedraftCommand)"><Icon Name="arrow_clockwise" Size="14" /> @Vm.L["Redraft"]</button>
+                <button type="button" class="link" @onclick="() => Section.OpenAssistantCommand.Execute(null)"><Icon Name="sparkle" Size="14" /> @Vm.L["Assistant"]</button>
+            }
+        </span>
     </div>
     @if (Section.IsConfirmingRedraft)
     {
-        <div class="confirm" dir="@(Vm.IsRightToLeft ? "rtl" : "ltr")">
-            <button class="primary small" @onclick="() => CommandRunner.RunAsync(Vm, Section.RedraftCommand)">@Vm.L["ConfirmRedraft"]</button>
-            <button class="ghost small" @onclick="() => Section.CancelRedraftCommand.Execute(null)">@Vm.L["Cancel"]</button>
+        <div class="confirm" dir="@(Vm.IsRightToLeft ? "rtl" : "ltr")" lang="@Vm.L.Language">
+            <button type="button" class="primary small" @onclick="() => CommandRunner.RunAsync(Vm, Section.RedraftCommand)">@Vm.L["ConfirmRedraft"]</button>
+            <button type="button" class="small" @onclick="() => Section.CancelRedraftCommand.Execute(null)">@Vm.L["Cancel"]</button>
         </div>
     }
     @if (Section.IsReadOnly)
@@ -44,15 +53,11 @@
     }
     else
     {
-        <textarea class="section-text" rows="@Rows" placeholder="@Section.Watermark" @bind="Section.Text" @bind:event="oninput"></textarea>
+        <textarea class="section-text" dir="auto" rows="@Rows" aria-label="@Section.Title" placeholder="@Section.Watermark" @bind="Section.Text" @bind:event="oninput"></textarea>
     }
     @if (Section.HasReview)
     {
-        <div class="review" dir="rtl">@Section.ReviewText</div>
-    }
-    @if (Vm.AssistantSection == Section)
-    {
-        <AssistantPanel Vm="Vm" />
+        <div class="review" dir="@(Vm.IsRightToLeft ? "rtl" : "ltr")" lang="@Vm.L.Language">@Section.ReviewText</div>
     }
 </div>
 

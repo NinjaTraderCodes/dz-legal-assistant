@@ -46,7 +46,7 @@ public class RenderingTests
         Assert.Equal(FlowDirection.RightToLeft, window.FlowDirection);
         var banner = window.FindControl<TextBlock>("DraftBanner")!;
         Assert.StartsWith("مسودة", banner.Text, StringComparison.Ordinal);
-        Assert.Equal("لا ينقص أي بيان إلزامي.", window.FindControl<TextBlock>("SummaryText")!.Text);
+        Assert.Equal("جميع البيانات الإلزامية متوفرة.", window.FindControl<TextBlock>("SummaryText")!.Text);
 
         // In RTL the case form (first column) sits on the right-hand side of the window.
         var formPanel = window.GetVisualDescendants().OfType<Border>().First(b => b.Classes.Contains("panel"));
@@ -65,7 +65,7 @@ public class RenderingTests
         Dispatcher.UIThread.RunJobs();
 
         Assert.Equal(FlowDirection.LeftToRight, window.FlowDirection);
-        Assert.StartsWith("DRAFT", window.FindControl<TextBlock>("DraftBanner")!.Text, StringComparison.Ordinal);
+        Assert.StartsWith("Draft", window.FindControl<TextBlock>("DraftBanner")!.Text, StringComparison.Ordinal);
         Assert.Equal("العربية", (string?)window.FindControl<Button>("LanguageButton")!.Content);
 
         // The document and the case inputs stay Arabic and right-to-left.
@@ -87,7 +87,7 @@ public class RenderingTests
         Dispatcher.UIThread.RunJobs();
         Assert.StartsWith("حيث إن العارض", vm.Sections.Single(s => s.Id == "facts").Text, StringComparison.Ordinal);
 
-        Assert.Equal("ينقص 2 من البيانات الإلزامية — العريضة معرضة لعدم القبول شكلا.", window.FindControl<TextBlock>("SummaryText")!.Text);
+        Assert.Equal("ينقص 2 من البيانات الإلزامية: ترفض المحكمة العريضة شكلا.", window.FindControl<TextBlock>("SummaryText")!.Text);
         SaveScreenshot(window, "main-window-missing");
     }
 

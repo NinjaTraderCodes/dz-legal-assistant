@@ -13,6 +13,8 @@ public sealed partial class Home : IDisposable
 {
     private ViewModelWatcher? _watcher;
     private bool showGuide = true;
+    private int mobileTab;
+    private readonly HashSet<string> _visited = new(StringComparer.Ordinal);
 
     [Inject] private WebEngine Engine { get; set; } = default!;
 
@@ -62,6 +64,19 @@ public sealed partial class Home : IDisposable
 
         try
         {
+            // First visit: follow the browser's dark preference; the theme button switches it afterwards.
+            if (await Js.InvokeAsync<bool>("dzlegal.prefersDark"))
+            {
+                Vm!.IsDarkTheme = true;
+            }
+
+            // On a phone the guide would fill the first screen: it stays one tap away (Guide button).
+            if (await Js.InvokeAsync<bool>("dzlegal.isNarrow"))
+            {
+                showGuide = false;
+                StateHasChanged();
+            }
+
             if (await Js.InvokeAsync<string?>("dzlegal.loadCase") is { } stored)
             {
                 using var envelope = System.Text.Json.JsonDocument.Parse(stored);
@@ -165,11 +180,41 @@ public sealed partial class Home : IDisposable
         if (Vm!.FieldGroups.FirstOrDefault(g => g.Id == id) is { } step)
         {
             Vm.SelectedStep = step;
+            mobileTab = 0;
         }
     }
 
-    private static string StepClass(FieldGroupViewModel step) =>
-        step.IsMissing ? "missing" : step.IsWarning ? "warning" : step.IsDone ? "done" : "empty";
+    // A step is marked as needing attention only once the visitor has been there, or once a draft exists.
+    private string StepClass(FieldGroupViewModel step) =>
+        step.IsMissing ? (Visited(step) ? "missing visited" : "missing") : step.IsWarning ? "warning" : step.IsDone ? "done" : "empty";
+
+    private bool Visited(FieldGroupViewModel step) => Vm!.HasGeneratedDraft || _visited.Contains(step.Id);
+
+    private void SelectStep(FieldGroupViewModel step)
+    {
+        if (Vm!.SelectedStep is { } left)
+        {
+            _visited.Add(left.Id);
+        }
+
+        Vm.SelectStepCommand.Execute(step);
+    }
+
+    private void Move(int direction)
+    {
+        if (Vm!.SelectedStep is { } left)
+        {
+            _visited.Add(left.Id);
+        }
+
+        (direction < 0 ? Vm.PreviousStepCommand : Vm.NextStepCommand).Execute(null);
+    }
+
+    private void GoToFinding(FindingViewModel finding)
+    {
+        Vm!.GoToFindingCommand.Execute(finding);
+        mobileTab = 0;
+    }
 
     public void Dispose()
     {

@@ -1,40 +1,40 @@
 @using DzLegal.Presentation.ViewModels
-@* The section assistant: the model rewords one section on request; the change is shown as a diff to accept or reject. *@
-<div class="assistant" dir="@(Vm.IsRightToLeft ? "rtl" : "ltr")">
-    <div class="row between">
-        <strong>✦ @Vm.AssistantTitle</strong>
-        <button class="link" @onclick="() => Vm.CloseAssistantCommand.Execute(null)">✕</button>
+@* The section assistant, in a side drawer as on the desktop: the AI rewords one section on request and shows the change
+   to accept or reject. *@
+<aside class="assistant" role="dialog" aria-modal="true" aria-labelledby="assistant-title" dir="@(Vm.IsRightToLeft ? "rtl" : "ltr")">
+    <div class="head">
+        <h2 id="assistant-title"><Icon Name="sparkle" /> @Vm.AssistantTitle</h2>
+        <button type="button" class="quiet" aria-label="@Vm.L["CloseAssistant"]" @onclick="() => Vm.CloseAssistantCommand.Execute(null)"><Icon Name="dismiss" /></button>
     </div>
-    <div class="muted small">@Vm.L["AssistantScope"]</div>
-    <div class="row wrap">
+    <p class="muted small">@Vm.L["AssistantScope"]</p>
+    <div class="shortcuts">
         @foreach (var s in Vm.Shortcuts)
         {
-            <button class="chip" @onclick="() => CommandRunner.RunAsync(Vm, Vm.UseShortcutCommand, s)">@s.Label</button>
+            <button type="button" class="small" disabled="@CommandRunner.IsAiBusy(Vm)" @onclick="() => CommandRunner.RunAsync(Vm, Vm.UseShortcutCommand, s)">@s.Label</button>
         }
     </div>
-    <div class="row">
-        <input class="grow" placeholder="@Vm.L["InstructionPlaceholder"]" @bind="Vm.AssistantInstruction" @bind:event="oninput" />
-        @if (Vm.SendInstructionCommand.IsRunning)
-        {
-            <button class="danger" @onclick="() => Vm.SendInstructionCancelCommand.Execute(null)">@Vm.L["Cancel"]</button>
-        }
-        else
-        {
-            <button class="primary" @onclick="() => CommandRunner.RunAsync(Vm, Vm.SendInstructionCommand)">@Vm.L["Send"]</button>
-        }
+    <div class="ask">
+        <label class="small muted" for="assistant-instruction">@Vm.L["InstructionPlaceholder"]</label>
+        <textarea id="assistant-instruction" rows="3" dir="auto" @bind="Vm.AssistantInstruction" @bind:event="oninput"></textarea>
+        <div class="row">
+            @if (Vm.SendInstructionCommand.IsRunning)
+            {
+                <button type="button" @onclick="() => Vm.SendInstructionCancelCommand.Execute(null)"><Icon Name="stop" /> @Vm.L["Cancel"]</button>
+            }
+            else
+            {
+                <button type="button" class="ai" disabled="@CommandRunner.IsAiBusy(Vm)" @onclick="() => CommandRunner.RunAsync(Vm, Vm.SendInstructionCommand)">@Vm.L["Send"]</button>
+            }
+        </div>
     </div>
     @foreach (var m in Vm.AssistantThread)
     {
-        <div class="bubble @(m.FromLawyer ? "mine" : "")">@m.Text</div>
+        <div class="bubble @(m.FromLawyer ? "mine" : "")" dir="auto">@m.Text</div>
     }
-    <ModelActivity Model="Vm.AssistantActivity" />
-    @if (Vm.SendInstructionCommand.IsRunning && Vm.AssistantPartial.Length > 0)
-    {
-        <div class="arabic live-text" dir="rtl">@Vm.AssistantPartial</div>
-    }
+    <ModelActivity Model="Vm.AssistantActivity" LiveLabel="@Vm.L["ActivityLive"]" />
     @if (Vm.HasProposal)
     {
-        <div class="diff arabic" dir="rtl">
+        <div class="diff" dir="rtl" lang="ar">
             @foreach (var t in Vm.ProposalDiff)
             {
                 <span class="@(t.IsAdded ? "added" : t.IsRemoved ? "removed" : "")">@t.Text</span>
@@ -42,15 +42,15 @@
         </div>
         @if (Vm.ProposalHints.Length > 0)
         {
-            <div class="review" dir="rtl">@Vm.ProposalHints</div>
+            <div class="review">@Vm.ProposalHints</div>
         }
-        <div class="row">
-            <button class="primary" disabled="@(!Vm.CanAcceptProposal)" @onclick="() => Vm.AcceptProposalCommand.Execute(null)">@Vm.L["Accept"]</button>
-            <button class="ghost" @onclick="() => Vm.RejectProposalCommand.Execute(null)">@Vm.L["Reject"]</button>
-            <button class="ghost" @onclick="() => CommandRunner.RunAsync(Vm, Vm.RetryProposalCommand)">@Vm.L["TryAgain"]</button>
+        <div class="decide">
+            <button type="button" class="primary" disabled="@(!Vm.CanAcceptProposal)" @onclick="() => Vm.AcceptProposalCommand.Execute(null)"><Icon Name="checkmark" /> @Vm.L["Accept"]</button>
+            <button type="button" @onclick="() => Vm.RejectProposalCommand.Execute(null)">@Vm.L["Reject"]</button>
+            <button type="button" disabled="@CommandRunner.IsAiBusy(Vm)" @onclick="() => CommandRunner.RunAsync(Vm, Vm.RetryProposalCommand)"><Icon Name="arrow_clockwise" Size="16" /> @Vm.L["TryAgain"]</button>
         </div>
     }
-</div>
+</aside>
 
 @code {
     [Parameter, EditorRequired] public MainWindowViewModel Vm { get; set; } = default!;

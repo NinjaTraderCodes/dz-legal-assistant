@@ -1,0 +1,13 @@
+@* A Fluent icon, coloured by the text around it. Decorative: the button or label next to it carries the name. *@
+<svg class="icon" viewBox="0 0 20 20" width="@Size" height="@Size" aria-hidden="true" focusable="false">
+    @foreach (var d in IconPaths.Get(Name))
+    {
+        <path d="@d" fill="currentColor" />
+    }
+</svg>
+
+@code {
+    [Parameter, EditorRequired] public string Name { get; set; } = string.Empty;
+
+    [Parameter] public int Size { get; set; } = 18;
+}

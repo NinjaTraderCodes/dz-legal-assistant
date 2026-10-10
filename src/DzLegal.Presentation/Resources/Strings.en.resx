@@ -4,41 +4,41 @@
   <resheader name="version"><value>2.0</value></resheader>
   <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
   <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
-  <data name="AppTitle" xml:space="preserve"><value>Legal Drafting Assistant</value></data>
+  <data name="AppTitle" xml:space="preserve"><value>DZ Legal Assistant</value></data>
   <data name="DraftBanner" xml:space="preserve"><value>DRAFT — must be reviewed, edited and signed by the lawyer before any use. This tool assists the lawyer; it does not give legal advice.</value></data>
   <data name="OfflineStatus" xml:space="preserve"><value>Offline: no data leaves this computer.</value></data>
   <data name="Ready" xml:space="preserve"><value>Ready.</value></data>
   <data name="CaseForm" xml:space="preserve"><value>Case details</value></data>
-  <data name="Document" xml:space="preserve"><value>Draft</value></data>
+  <data name="Document" xml:space="preserve"><value>Statement of claim</value></data>
   <data name="Compliance" xml:space="preserve"><value>Formal check</value></data>
   <data name="New" xml:space="preserve"><value>New</value></data>
   <data name="Open" xml:space="preserve"><value>Open</value></data>
   <data name="Save" xml:space="preserve"><value>Save</value></data>
   <data name="CopyText" xml:space="preserve"><value>Copy text</value></data>
   <data name="SwitchLanguage" xml:space="preserve"><value>العربية</value></data>
-  <data name="ProviderLabel" xml:space="preserve"><value>Drafting engine:</value></data>
-  <data name="ProviderStub" xml:space="preserve"><value>Template mode (no AI)</value></data>
+  <data name="ProviderLabel" xml:space="preserve"><value>Writing engine</value></data>
+  <data name="ProviderStub" xml:space="preserve"><value>Without AI (fill-in templates)</value></data>
   <data name="ProviderOllama" xml:space="preserve"><value>Local model ({0})</value></data>
-  <data name="Generate" xml:space="preserve"><value>Draft narrative sections</value></data>
+  <data name="Generate" xml:space="preserve"><value>Draft facts, grounds and requests</value></data>
   <data name="Cancel" xml:space="preserve"><value>Cancel</value></data>
-  <data name="GenerateHint" xml:space="preserve"><value>Drafting replaces the current text of the facts, grounds and requests.</value></data>
+  <data name="GenerateHint" xml:space="preserve"><value>Writes the facts, the legal grounds and the requests from your notes. Sections you edited by hand are kept.</value></data>
   <data name="Generating" xml:space="preserve"><value>Drafting: {0}…</value></data>
   <data name="Generated" xml:space="preserve"><value>Draft written by: {0}. Review and edit it.</value></data>
   <data name="Cancelled" xml:space="preserve"><value>Drafting cancelled.</value></data>
   <data name="Error" xml:space="preserve"><value>Error: {0}</value></data>
   <data name="AutosaveFailed" xml:space="preserve"><value>Autosave failed: {0}</value></data>
-  <data name="GeneratedSectionHint" xml:space="preserve"><value>Edit via the form</value></data>
-  <data name="NarrativeSectionHint" xml:space="preserve"><value>Editable</value></data>
-  <data name="EmptyNarrativeHint" xml:space="preserve"><value>Write your notes in the form and press “Draft”, or type here directly.</value></data>
-  <data name="SummaryOk" xml:space="preserve"><value>No mandatory element is missing.</value></data>
-  <data name="SummaryMissing" xml:space="preserve"><value>{0} mandatory element(s) missing — the requête would be inadmissible in form.</value></data>
+  <data name="GeneratedSectionHint" xml:space="preserve"><value>Filled from the form</value></data>
+  <data name="NarrativeSectionHint" xml:space="preserve"><value>Written by AI from your notes, edit freely</value></data>
+  <data name="EmptyNarrativeHint" xml:space="preserve"><value>Write your notes in the form and press “Draft facts, grounds and requests”, or type here directly.</value></data>
+  <data name="SummaryOk" xml:space="preserve"><value>Every mandatory element is present.</value></data>
+  <data name="SummaryMissing" xml:space="preserve"><value>{0} mandatory element(s) missing: the court would reject the statement of claim on form.</value></data>
   <data name="SummaryWarnings" xml:space="preserve"><value>{0} warning(s) to review.</value></data>
-  <data name="SummaryDisclaimer" xml:space="preserve"><value>The formal check does not replace the lawyer's review of the substance.</value></data>
+  <data name="SummaryDisclaimer" xml:space="preserve"><value>The formal check looks at the form only. The legal points below, and the lawyer, judge the substance.</value></data>
   <data name="StatusPresent" xml:space="preserve"><value>Present</value></data>
   <data name="StatusMissing" xml:space="preserve"><value>Missing</value></data>
   <data name="StatusNotApplicable" xml:space="preserve"><value>Not applicable</value></data>
   <data name="SeverityWarning" xml:space="preserve"><value>Warning</value></data>
-  <data name="Unverified" xml:space="preserve"><value>Not yet verified by a lawyer</value></data>
+  <data name="Unverified" xml:space="preserve"><value>Not yet reviewed by a lawyer</value></data>
   <data name="MissingParts" xml:space="preserve"><value>Missing: {0}</value></data>
   <data name="OrderPart" xml:space="preserve"><value>“{0}” before “{1}”</value></data>
   <data name="Or" xml:space="preserve"><value> or </value></data>
@@ -59,7 +59,7 @@
   <data name="Copied" xml:space="preserve"><value>Draft text copied to the clipboard.</value></data>
   <data name="DraftFileType" xml:space="preserve"><value>Draft</value></data>
   <data name="IssueForeignScript" xml:space="preserve"><value>Characters from another script in the text: {0}</value></data>
-  <data name="IssueUnknownNumber" xml:space="preserve"><value>Number not in your notes: {0} — check it</value></data>
+  <data name="IssueUnknownNumber" xml:space="preserve"><value>Number not in your notes: {0}. Check it.</value></data>
   <data name="IssueMissingNumber" xml:space="preserve"><value>Number from your notes missing from the text: {0}</value></data>
   <data name="NoteRetried" xml:space="preserve"><value>Redrafted once because the first answer was unusable.</value></data>
   <data name="NoteFellBack" xml:space="preserve"><value>No usable draft from the model; your notes were inserted as they are.</value></data>
@@ -68,17 +68,17 @@
   <data name="NoteRemovedCopiedExample" xml:space="preserve"><value>A paragraph the model copied from the prompt's example was removed.</value></data>
   <data name="IssueUnexpectedLatinWord" xml:space="preserve"><value>Latin-script word not in your notes: {0}</value></data>
   <data name="IssueNotArabic" xml:space="preserve"><value>The text is mostly not in Arabic (only {0} Arabic letters).</value></data>
-  <data name="IssueUngroundedTerm" xml:space="preserve"><value>Legal qualification not in your notes: {0} — check it</value></data>
+  <data name="IssueUngroundedTerm" xml:space="preserve"><value>Legal qualification not in your notes: {0}. Check it.</value></data>
   <data name="Edit" xml:space="preserve"><value>Edit</value></data>
   <data name="Preview" xml:space="preserve"><value>Preview</value></data>
   <data name="ExportPdf" xml:space="preserve"><value>Export PDF</value></data>
   <data name="ExportWord" xml:space="preserve"><value>Export Word</value></data>
-  <data name="Watermark" xml:space="preserve"><value>«Draft» watermark</value></data>
+  <data name="Watermark" xml:space="preserve"><value>“Draft” watermark</value></data>
   <data name="Exported" xml:space="preserve"><value>Exported: {0}</value></data>
   <data name="RenderingPreview" xml:space="preserve"><value>Preparing preview…</value></data>
   <data name="StepPosition" xml:space="preserve"><value>Step {0} of {1}</value></data>
   <data name="Score" xml:space="preserve"><value>{0} / {1}</value></data>
-  <data name="PresentHeader" xml:space="preserve"><value>Present ({0})</value></data>
+  <data name="PresentHeader" xml:space="preserve"><value>Elements present ({0})</value></data>
   <data name="FieldRequired" xml:space="preserve"><value>Required — {0}</value></data>
   <data name="FieldRecommended" xml:space="preserve"><value>Recommended — {0}</value></data>
   <data name="OverriddenSectionHint" xml:space="preserve"><value>Edited by hand</value></data>
@@ -91,9 +91,9 @@
   <data name="RecoveryPrompt" xml:space="preserve"><value>An autosaved draft from a previous session was found.</value></data>
   <data name="Restore" xml:space="preserve"><value>Restore</value></data>
   <data name="Dismiss" xml:space="preserve"><value>Dismiss</value></data>
-  <data name="DraftBadge" xml:space="preserve"><value>DRAFT — review and sign</value></data>
+  <data name="DraftBadge" xml:space="preserve"><value>Draft · review and sign</value></data>
   <data name="ToggleTheme" xml:space="preserve"><value>Dark / light mode</value></data>
-  <data name="ComplianceScore" xml:space="preserve"><value>Elements present</value></data>
+  <data name="ComplianceScore" xml:space="preserve"><value>Mandatory elements present</value></data>
   <data name="FromForm" xml:space="preserve"><value>From the form</value></data>
   <data name="AssistantTitle" xml:space="preserve"><value>Assistant — {0}</value></data>
   <data name="ModelReady" xml:space="preserve"><value>{0}: ready</value></data>
@@ -107,61 +107,61 @@
   <data name="KeptEdited" xml:space="preserve"><value>Drafted by {0}. Sections you edited were kept: {1}</value></data>
   <data name="Assistant" xml:space="preserve"><value>Assistant</value></data>
   <data name="Redraft" xml:space="preserve"><value>Redraft</value></data>
-  <data name="ConfirmRedraft" xml:space="preserve"><value>Confirm redraft (current text kept in history)</value></data>
+  <data name="ConfirmRedraft" xml:space="preserve"><value>Redraft this section (you can undo)</value></data>
   <data name="Undo" xml:space="preserve"><value>Undo</value></data>
   <data name="Accept" xml:space="preserve"><value>Accept</value></data>
   <data name="Reject" xml:space="preserve"><value>Reject</value></data>
   <data name="TryAgain" xml:space="preserve"><value>Try again</value></data>
   <data name="Send" xml:space="preserve"><value>Send</value></data>
   <data name="InstructionPlaceholder" xml:space="preserve"><value>Ask for a change to this section…</value></data>
-  <data name="GroundsIntro" xml:space="preserve"><value>Analyse the facts and the model proposes articles from the official texts. You decide; the model only cites in the requête what you select here.</value></data>
+  <data name="GroundsIntro" xml:space="preserve"><value>The AI reads the facts and proposes articles from the official texts. You choose: only the articles you tick are cited in the statement of claim.</value></data>
   <data name="GroundsNeedFacts" xml:space="preserve"><value>Write the facts first (Facts step), then analyse them here.</value></data>
-  <data name="ArticleTextUnavailable" xml:space="preserve"><value>The official text of this law has not been imported into the library yet.</value></data>
-  <data name="ArticleSearchPlaceholder" xml:space="preserve"><value>Find an article: its number (124 ق م) or words from it</value></data>
+  <data name="ArticleTextUnavailable" xml:space="preserve"><value>Official text not loaded: the draft cites this article by number only.</value></data>
+  <data name="ArticleSearchPlaceholder" xml:space="preserve"><value>Find an article by number (e.g. 450) or by words from its text</value></data>
   <data name="ArticleSearchNone" xml:space="preserve"><value>No matching article.</value></data>
-  <data name="LibraryNotImported" xml:space="preserve"><value>The law library is empty: the official texts have not been imported yet.</value></data>
-  <data name="IssueUncitedArticle" xml:space="preserve"><value>Article not in your notes or selected articles: {0} — check it</value></data>
-  <data name="IssueMisquotedArticle" xml:space="preserve"><value>What the text says article {0} provides is not in its official text — check it</value></data>
+  <data name="LibraryNotImported" xml:space="preserve"><value>No official text is loaded yet: articles can only be cited by number.</value></data>
+  <data name="IssueUncitedArticle" xml:space="preserve"><value>Article {0} is neither ticked nor in your notes. Check it.</value></data>
+  <data name="IssueMisquotedArticle" xml:space="preserve"><value>What the text says article {0} provides is not in its official text. Check it.</value></data>
   <data name="IssueUnsupportedArticleContent" xml:space="preserve"><value>Says what article {0} provides, but its official text is not loaded and your notes do not say it: the model wrote it from memory. Cite the article by number only, or add its text.</value></data>
   <data name="OfficialSource" xml:space="preserve"><value>Official source</value></data>
-  <data name="CheckInOfficialJournal" xml:space="preserve"><value>Check in the Journal Officiel</value></data>
+  <data name="CheckInOfficialJournal" xml:space="preserve"><value>Official Journal site</value></data>
   <data name="OfficialSourceTooltip" xml:space="preserve"><value>{0}
 Imported on {1}</value></data>
   <data name="ProvenanceVerified" xml:space="preserve"><value>Verified by a lawyer</value></data>
   <data name="LinkOpened" xml:space="preserve"><value>Official source opened in your browser — no case data is sent.</value></data>
   <data name="LinkNotOpened" xml:space="preserve"><value>Could not open the browser. Link: {0}</value></data>
   <data name="LinkRefused" xml:space="preserve"><value>Refused to open a non-official link.</value></data>
-  <data name="AnalyseGrounds" xml:space="preserve"><value>Analyse the facts and propose grounds</value></data>
-  <data name="AnalysisDone" xml:space="preserve"><value>{1} proposed {0} article(s) — review them and select what you rely on.</value></data>
+  <data name="AnalyseGrounds" xml:space="preserve"><value>Analyse the facts</value></data>
+  <data name="AnalysisDone" xml:space="preserve"><value>{1} proposed {0} article(s). The ones this type of claim requires are ticked; review the others.</value></data>
   <data name="AnalysisNoArticles" xml:space="preserve"><value>The model read the facts but found no suitable article among the candidates. Add articles by hand below.</value></data>
   <data name="AnalysisNothing" xml:space="preserve"><value>{0} gave no usable analysis. Try again (check that the model is running), or add articles by hand below.</value></data>
-  <data name="AnalysisStale" xml:space="preserve"><value>The facts changed after the analysis — analyse again. Your selected articles are kept.</value></data>
-  <data name="ModelReading" xml:space="preserve"><value>The model's reading of the facts</value></data>
-  <data name="ModelTag" xml:space="preserve"><value>model</value></data>
+  <data name="AnalysisStale" xml:space="preserve"><value>The facts changed after the analysis: analyse again. Your ticked articles are kept.</value></data>
+  <data name="ModelReading" xml:space="preserve"><value>How the AI reads the facts</value></data>
+  <data name="ModelTag" xml:space="preserve"><value>AI</value></data>
   <data name="ReadingRelationship" xml:space="preserve"><value>Legal relationship:</value></data>
   <data name="ReadingBreach" xml:space="preserve"><value>Obligation breached:</value></data>
-  <data name="ReadingSought" xml:space="preserve"><value>Sought:</value></data>
+  <data name="ReadingSought" xml:space="preserve"><value>What the claimant asks:</value></data>
   <data name="ReadingClaims" xml:space="preserve"><value>Claim type:</value></data>
   <data name="ProposedArticles" xml:space="preserve"><value>Proposed articles</value></data>
-  <data name="TickBasis" xml:space="preserve"><value>Select the basis articles</value></data>
-  <data name="SelectedGrounds" xml:space="preserve"><value>Selected grounds</value></data>
-  <data name="SelectedGroundsEmpty" xml:space="preserve"><value>No article selected yet. Pick from the proposals or add one by hand.</value></data>
-  <data name="AddArticleByHand" xml:space="preserve"><value>Add an article by hand</value></data>
-  <data name="Role_basis" xml:space="preserve"><value>basis</value></data>
-  <data name="Role_proof" xml:space="preserve"><value>proof</value></data>
-  <data name="Role_damages" xml:space="preserve"><value>damages</value></data>
-  <data name="Role_procedure" xml:space="preserve"><value>procedure</value></data>
-  <data name="Role_limit" xml:space="preserve"><value>limit</value></data>
-  <data name="Role_prerequisite" xml:space="preserve"><value>prerequisite</value></data>
-  <data name="ModelReason" xml:space="preserve"><value>Model's reason: {0}</value></data>
+  <data name="TickBasis" xml:space="preserve"><value>Tick every basis article</value></data>
+  <data name="SelectedGrounds" xml:space="preserve"><value>Articles the draft will cite</value></data>
+  <data name="SelectedGroundsEmpty" xml:space="preserve"><value>No article ticked yet. Tick a proposal, or find one by hand below.</value></data>
+  <data name="AddArticleByHand" xml:space="preserve"><value>Find an article by hand</value></data>
+  <data name="Role_basis" xml:space="preserve"><value>Basis</value></data>
+  <data name="Role_proof" xml:space="preserve"><value>Proof</value></data>
+  <data name="Role_damages" xml:space="preserve"><value>Damages</value></data>
+  <data name="Role_procedure" xml:space="preserve"><value>Procedure</value></data>
+  <data name="Role_limit" xml:space="preserve"><value>Limit</value></data>
+  <data name="Role_prerequisite" xml:space="preserve"><value>Prerequisite</value></data>
+  <data name="ModelReason" xml:space="preserve"><value>{0}</value></data>
   <data name="FromClaimCatalog" xml:space="preserve"><value>from the claim catalog</value></data>
   <data name="FromLibrarySearch" xml:space="preserve"><value>from the text search</value></data>
-  <data name="ProvenanceModel" xml:space="preserve"><value>Proposed by the model — check before relying on it</value></data>
-  <data name="ProvenanceRequired" xml:space="preserve"><value>Required for this kind of claim</value></data>
-  <data name="ProvenanceTextUnverified" xml:space="preserve"><value>Text not yet verified by a lawyer</value></data>
+  <data name="ProvenanceModel" xml:space="preserve"><value>Suggested by AI</value></data>
+  <data name="ProvenanceRequired" xml:space="preserve"><value>Required for this type of claim</value></data>
+  <data name="ProvenanceTextUnverified" xml:space="preserve"><value>Text not yet checked by a lawyer</value></data>
   <data name="UsualRequests" xml:space="preserve"><value>Usual requests for this kind of claim</value></data>
   <data name="UsualDocuments" xml:space="preserve"><value>Usual documents for this kind of claim</value></data>
-  <data name="UsualLinesNeedAnalysis" xml:space="preserve"><value>Analyse the facts in the Legal grounds step to see the usual requests for the claim type here.</value></data>
+  <data name="UsualLinesNeedAnalysis" xml:space="preserve"><value>Analyse the facts in the Legal grounds step to see the usual lines for this type of claim.</value></data>
   <data name="AnalysisStepReading" xml:space="preserve"><value>Reading the facts</value></data>
   <data name="AnalysisStepSearching" xml:space="preserve"><value>Searching the legal texts</value></data>
   <data name="AnalysisStepSelecting" xml:space="preserve"><value>Choosing the relevant articles</value></data>
@@ -170,13 +170,29 @@ Imported on {1}</value></data>
   <data name="ActivityLoading" xml:space="preserve"><value>Loading the model into memory (the first use can take a minute)</value></data>
   <data name="ActivityWords" xml:space="preserve"><value>{0} words</value></data>
   <data name="ActivityRevising" xml:space="preserve"><value>Preparing the proposed change</value></data>
-  <data name="ActivityLive" xml:space="preserve"><value>What the model is writing now</value></data>
+  <data name="ActivityLive" xml:space="preserve"><value>What the AI is writing now</value></data>
   <data name="ModelWarming" xml:space="preserve"><value>{0}: loading into memory…</value></data>
   <data name="ModelInMemory" xml:space="preserve"><value>{0}: ready in memory</value></data>
-  <data name="SectionWriting" xml:space="preserve"><value>The model is writing this section…</value></data>
+  <data name="SectionWriting" xml:space="preserve"><value>The AI is writing this section…</value></data>
   <data name="SubstanceHeader" xml:space="preserve"><value>Legal points to check</value></data>
   <data name="Substance_NoBasisArticle" xml:space="preserve"><value>No article founds the claim yet. Analyse the facts, tick an article, or cite one in your notes: the statement of claim must state its legal grounds (Code of Civil Procedure, art. 15).</value></data>
   <data name="Substance_TortArticleInContractClaim" xml:space="preserve"><value>Civil Code art. 124 is liability for fault outside any contract. This claim arises from a contract: base damages on the contract articles instead (art. 176, or art. 186 for late payment of a sum of money).</value></data>
   <data name="Substance_InterestOnPrivateLoan" xml:space="preserve"><value>Interest is asked on a loan between individuals: Civil Code art. 454 makes such a loan interest-free and any clause to the contrary void.</value></data>
   <data name="Substance_DamagesWithoutFormalNotice" xml:space="preserve"><value>Damages are asked but the facts mention no formal notice: under Civil Code art. 179, damages are due only after the debtor has been given formal notice.</value></data>
+  <data name="AiReason" xml:space="preserve"><value>AI</value></data>
+  <data name="WhyItApplies" xml:space="preserve"><value>Why it applies</value></data>
+  <data name="ShowOfficialText" xml:space="preserve"><value>Official text</value></data>
+  <data name="SourcePage" xml:space="preserve"><value>Official PDF, page {0}</value></data>
+  <data name="TextVerifiedBy" xml:space="preserve"><value>Text checked against the PDF by {0}</value></data>
+  <data name="RoleHelp_basis" xml:space="preserve"><value>Founds the claim</value></data>
+  <data name="RoleHelp_proof" xml:space="preserve"><value>How the claim is proved</value></data>
+  <data name="RoleHelp_damages" xml:space="preserve"><value>Damages and their amount</value></data>
+  <data name="RoleHelp_procedure" xml:space="preserve"><value>Procedure and admissibility</value></data>
+  <data name="RoleHelp_limit" xml:space="preserve"><value>Limits what may be asked</value></data>
+  <data name="RoleHelp_prerequisite" xml:space="preserve"><value>A step needed first</value></data>
+  <data name="UsualRequestsNeedAnalysis" xml:space="preserve"><value>Analyse the facts in the Legal grounds step to see the usual requests for this type of claim.</value></data>
+  <data name="UsualDocumentsNeedAnalysis" xml:space="preserve"><value>Analyse the facts in the Legal grounds step to see the usual documents for this type of claim.</value></data>
+  <data name="CloseAssistant" xml:space="preserve"><value>Close the assistant</value></data>
+  <data name="RemoveArticle" xml:space="preserve"><value>Remove {0}</value></data>
+  <data name="FormCheckHeader" xml:space="preserve"><value>Form</value></data>
 </root>

@@ -11,6 +11,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Update="Samples\*.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <!-- The official PDFs the law library's texts were taken from, so a reader can open the exact page. -->
+    <None Include="..\..\docs\official-law-texts\75-58_wipo_Version.pdf;..\..\docs\official-law-texts\75-59_wipo_Version.pdf;..\..\docs\official-law-texts\A2008021.pdf"
+          LinkBase="law-sources" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="DzLegal.Web.Tests" />

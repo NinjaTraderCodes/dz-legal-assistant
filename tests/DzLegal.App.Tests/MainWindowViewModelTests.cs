@@ -497,7 +497,7 @@ public class MainWindowViewModelTests
         Assert.False(vm.IsRightToLeft);
         Assert.Equal("Court (tribunal)", vm.Field("court.name").Label);
         Assert.Equal("Court before which the action is brought", vm.Findings.Single(f => f.ElementId == "art15.1.court").Label);
-        Assert.Equal("Draft narrative sections", vm.L["Generate"]);
+        Assert.Equal("Draft facts, grounds and requests", vm.L["Generate"]);
     }
 
     [Fact]

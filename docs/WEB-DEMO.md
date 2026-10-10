@@ -8,7 +8,7 @@ model runs:
 | | Desktop app | Web demo |
 |---|---|---|
 | Form, 15-rule formal check, templates, PDF/Word | on the laptop | on the demo server |
-| Model for the grounds analysis and the drafting | Gemma 3 4B, **local** (Ollama) | Gemma 4 (the next generation of the same open family), **hosted** (Google AI Studio) |
+| Model for the grounds analysis and the drafting | Gemma 3 4B, **local** (Ollama) | Gemma 3 4B, the same model, **hosted** (OpenRouter); Gemma 4 on Google AI Studio as the backup |
 | Case data | never leaves the computer | sent to the hosted model: **fictitious cases only** |
 | Screen logic (view models, strings) | `DzLegal.Presentation` | `DzLegal.Presentation` (the same code) |
 
@@ -21,9 +21,10 @@ Browser ──SignalR──► DzLegal.Web (ASP.NET Core, Blazor Server)
                       ├─ one MainWindowViewModel per visitor (DzLegal.Presentation, shared with the desktop)
                       ├─ FormEngine · Drafting · Law · Documents (QuestPDF, server-side) · Storage
                       └─ hosted engine chain, behind a queue (ModelGate):
-                           Gemma 4 26B A4B → Gemma 4 31B → Gemma 3… (Google AI Studio, each with its own rate limit;
-                                                                    only the models Google still serves)
-                           → Groq / OpenRouter                       (optional, only when their keys are set)
+                           Gemma 3 4B                               (OpenRouter, when OPENROUTER_API_KEY is set)
+                           → Gemma 4 26B A4B → Gemma 4 31B → …      (Google AI Studio, free tier, each with its own
+                                                                     rate limit; only the models Google still serves)
+                           → Groq                                    (optional, only when its key is set)
                            → template mode, always available         (no AI)
 ```
 
@@ -78,7 +79,27 @@ Settings (`src/DzLegal.Web/appsettings.json`, section `Engines`; any of them can
 | `RunsPerSessionPerHour` | 30 | AI runs per browser session per hour |
 | `MaxTokens`, `Temperature` | 1000, 0.2 | same as the desktop defaults |
 
-Keys come **only** from environment variables: `GOOGLE_API_KEY` (required for AI), `GROQ_API_KEY` and `OPENROUTER_API_KEY` (optional fallbacks).
+Keys come **only** from environment variables: `OPENROUTER_API_KEY`, `GOOGLE_API_KEY`, `GROQ_API_KEY`. Any one of them
+turns the AI on; `Engines:Order` (default openrouter, google, groq) says which is tried first.
+
+**OpenRouter.** At [openrouter.ai](https://openrouter.ai), create an account, add a few dollars of credit (a whole
+demo costs cents with Gemma 3 4B) and create a key under *Keys*. Optionally set a credit limit on the key. Prefer the
+paid `google/gemma-3-4b-it` to the `:free` variant: free models are capped at about 50 requests a day for accounts that
+never bought $10 of credit, and one analysis takes two requests.
+
+## Deploy it (Render, free, no card)
+
+The repository root has a `render.yaml` blueprint.
+
+1. At [render.com](https://render.com), sign up with GitHub and allow access to this repository.
+2. *New → Blueprint*, pick the repository and the branch to deploy. Render reads `render.yaml` and asks for
+   `OPENROUTER_API_KEY` and `GOOGLE_API_KEY` (leave one empty if you only have the other).
+3. The first build takes several minutes; Render then shows the URL, e.g. `https://dz-legal-demo.onrender.com`.
+   Every push to that branch redeploys.
+
+The free plan sleeps after 15 minutes without visitors and takes about a minute to wake up, on a small share of a
+CPU. Before and during judging, open the link a minute ahead, or move to Render's smallest paid plan for that week
+(always on, faster).
 
 ## Deploy it (Google Cloud Run)
 
@@ -136,7 +157,7 @@ secret settings and expose port 7860. A Hugging Face Docker Space needs a paid p
 
 ## Limits, stated plainly
 
-- AI quality: Google no longer serves Gemma 3 4B (the desktop default) on its API, so the demo uses Gemma 4, the next generation of the same open family. Gemma 4 26B A4B uses about 4B parameters per word, so it is fast; it usually writes better Arabic than the 4B desktop model. The status bar shows which engine answered.
+- AI quality: with an OpenRouter key, the demo runs Gemma 3 4B, the same model as the desktop app, so the judges see what a lawyer gets offline. Google no longer serves Gemma 3 4B on its own API; its free Gemma 4 is the backup. The status bar shows which engine answered.
 - Speed depends on the hosted service's load. On Google's servers a full run usually takes seconds; on an 8 GB laptop it takes about 2 minutes.
 - Free-tier limits are per Google project and per model. The queue, the fallback chain and the per-session cap keep a group of visitors within them. When every engine is busy, the visitor sees the error and can retry; template mode always works.
 - The demo can't open files from the visitor's disk (sample cases instead), and it saves nothing on the server.

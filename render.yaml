@@ -1,0 +1,22 @@
+# Render blueprint for the web demo (src/DzLegal.Web): Render → New → Blueprint → this repository.
+# Free plan: no card needed; the service sleeps after 15 minutes without visitors and takes about a minute to wake.
+# Keys are asked for in Render's dashboard when the blueprint is created (sync: false); they are never in this file.
+# See docs/WEB-DEMO.md.
+services:
+  - type: web
+    name: dz-legal-demo
+    runtime: docker
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /healthz
+    envVars:
+      # The port the Dockerfile's app listens on, so Render routes to it.
+      - key: PORT
+        value: "7860"
+      # Gemma 3 4B on OpenRouter, the desktop's model (first engine).
+      - key: OPENROUTER_API_KEY
+        sync: false
+      # Gemma 4 on Google AI Studio (free tier, second engine). Optional.
+      - key: GOOGLE_API_KEY
+        sync: false

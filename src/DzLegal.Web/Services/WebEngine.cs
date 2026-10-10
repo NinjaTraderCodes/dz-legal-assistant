@@ -125,13 +125,22 @@ public sealed partial class WebEngine : IDisposable
             links: links);
     }
 
-    private string PrimaryModel => Settings.GoogleApiKey is not null && GoogleModels.Count > 0
-        ? Pretty(GoogleModels[0])
-        : Settings.GroqApiKey is not null ? Settings.GroqModel : Settings.OpenRouterModel;
+    private string PrimaryModel => EngineModels().Select(Pretty).FirstOrDefault() ?? string.Empty;
 
-    /// <summary>"gemma-3-4b-it" → "Gemma 3 4B", "gemma-4-26b-a4b-it" → "Gemma 4 26B A4B".</summary>
+    /// <summary>The model of every engine, in the order they are tried.</summary>
+    private IEnumerable<string> EngineModels() => Families().SelectMany(f => f.Models);
+
+    /// <summary>"gemma-3-4b-it" → "Gemma 3 4B", "gemma-4-26b-a4b-it" → "Gemma 4 26B A4B", "google/gemma-3-4b-it:free" → "Gemma 3 4B".</summary>
     internal static string Pretty(string model)
     {
+        var bare = model.StartsWith("google/", StringComparison.Ordinal) ? model["google/".Length..] : model;
+        bare = bare.Split(':')[0];
+        if (bare != model)
+        {
+            var pretty = Pretty(bare);
+            return pretty == bare ? model : pretty;
+        }
+
         if (!model.StartsWith("gemma-", StringComparison.Ordinal) || !model.EndsWith("-it", StringComparison.Ordinal))
         {
             return model;
@@ -146,49 +155,66 @@ public sealed partial class WebEngine : IDisposable
         OnSkipped = (engine, ex) => LogSkipped(_log, engine.Name, ex.Message),
     };
 
+    /// <summary>The services with a key, in the configured order, each with its models.</summary>
+    private IEnumerable<(string Service, IReadOnlyList<string> Models)> Families()
+    {
+        foreach (var service in Settings.Order.Select(o => o.Trim().ToLowerInvariant()).Distinct())
+        {
+            switch (service)
+            {
+                case "openrouter" when Settings.OpenRouterApiKey is not null:
+                    yield return (service, [Settings.OpenRouterModel]);
+                    break;
+                case "google" when Settings.GoogleApiKey is not null && GoogleModels.Count > 0:
+                    yield return (service, GoogleModels);
+                    break;
+                case "groq" when Settings.GroqApiKey is not null:
+                    yield return (service, [Settings.GroqModel]);
+                    break;
+            }
+        }
+    }
+
     private List<IModelProvider> CreateEngines()
     {
         var engines = new List<IModelProvider>();
-        if (Settings.GoogleApiKey is { } google)
+        foreach (var (service, models) in Families())
         {
-            engines.AddRange(GoogleModels.Select(m => new GoogleAiModelProvider(new GoogleAiOptions
-            {
-                ApiKey = google,
-                Model = m,
-                Temperature = Settings.Temperature,
-                MaxTokens = Settings.MaxTokens,
-            })));
-        }
-
-        if (Settings.GroqApiKey is { } groq)
-        {
-            engines.Add(new OpenAiCompatibleModelProvider(new OpenAiCompatibleOptions
-            {
-                Label = "Groq",
-                Endpoint = Settings.GroqEndpoint,
-                ApiKey = groq,
-                Model = Settings.GroqModel,
-                Temperature = Settings.Temperature,
-                MaxTokens = Settings.MaxTokens,
-            }));
-        }
-
-        if (Settings.OpenRouterApiKey is { } openRouter)
-        {
-            engines.Add(new OpenAiCompatibleModelProvider(new OpenAiCompatibleOptions
-            {
-                Label = "OpenRouter",
-                Endpoint = new Uri("https://openrouter.ai/api/v1/"),
-                ApiKey = openRouter,
-                Model = Settings.OpenRouterModel,
-                Temperature = Settings.Temperature,
-                MaxTokens = Settings.MaxTokens,
-                MergeSystemPrompt = Settings.OpenRouterModel.Contains("gemma", StringComparison.OrdinalIgnoreCase),
-            }));
+            engines.AddRange(models.Select(model => Create(service, model)));
         }
 
         return engines;
     }
+
+    private IModelProvider Create(string service, string model) => service switch
+    {
+        "google" => new GoogleAiModelProvider(new GoogleAiOptions
+        {
+            ApiKey = Settings.GoogleApiKey!,
+            Model = model,
+            Temperature = Settings.Temperature,
+            MaxTokens = Settings.MaxTokens,
+        }),
+        "groq" => new OpenAiCompatibleModelProvider(new OpenAiCompatibleOptions
+        {
+            Label = "Groq",
+            Endpoint = Settings.GroqEndpoint,
+            ApiKey = Settings.GroqApiKey!,
+            Model = model,
+            Temperature = Settings.Temperature,
+            MaxTokens = Settings.MaxTokens,
+        }),
+        _ => new OpenAiCompatibleModelProvider(new OpenAiCompatibleOptions
+        {
+            Label = "OpenRouter",
+            Endpoint = new Uri("https://openrouter.ai/api/v1/"),
+            ApiKey = Settings.OpenRouterApiKey!,
+            Model = model,
+            Temperature = Settings.Temperature,
+            MaxTokens = Settings.MaxTokens,
+            MergeSystemPrompt = model.Contains("gemma", StringComparison.OrdinalIgnoreCase),
+        }),
+    };
 
     public void Dispose() => Gate.Dispose();
 

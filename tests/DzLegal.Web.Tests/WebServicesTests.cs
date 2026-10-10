@@ -109,6 +109,9 @@ public class EngineSettingsTests
     [InlineData("gemma-3-4b-it", "Gemma 3 4B")]
     [InlineData("gemma-3-27b-it", "Gemma 3 27B")]
     [InlineData("gemma-4-26b-a4b-it", "Gemma 4 26B A4B")]
+    [InlineData("google/gemma-3-4b-it", "Gemma 3 4B")]
+    [InlineData("google/gemma-3-4b-it:free", "Gemma 3 4B")]
+    [InlineData("meta-llama/llama-3.3-70b-instruct", "meta-llama/llama-3.3-70b-instruct")]
     [InlineData("llama-3.3-70b-versatile", "llama-3.3-70b-versatile")]
     public void ModelNamesAreShownReadably(string model, string shown) => Assert.Equal(shown, WebEngine.Pretty(model));
 }
@@ -137,6 +140,24 @@ public class WebEngineTests
         Assert.Equal("hosted", vm.SelectedProvider?.Key);
         Assert.Equal("Gemma 4 26B A4B (demo server)", vm.SelectedProvider?.DisplayName);
         Assert.Equal("gemma-4-26b-a4b-it (Google AI Studio)", engine.EngineNames[0]);
+    }
+
+    [Fact]
+    public void OpenRouterComesFirstWhenItsKeyIsSetThenGoogle()
+    {
+        using var engine = Create(new EngineSettings { GoogleApiKey = "g", OpenRouterApiKey = "o", GoogleModels = ["gemma-4-26b-a4b-it"] });
+        using var vm = engine.CreateSession(new NoFiles(), new NoExternalLinks(), "en");
+
+        Assert.Equal("Gemma 3 4B (demo server)", vm.SelectedProvider?.DisplayName);
+        Assert.Equal(["google/gemma-3-4b-it (OpenRouter)", "gemma-4-26b-a4b-it (Google AI Studio)"], engine.EngineNames);
+    }
+
+    [Fact]
+    public void TheOrderCanPutGoogleFirst()
+    {
+        using var engine = Create(new EngineSettings { GoogleApiKey = "g", OpenRouterApiKey = "o", GoogleModels = ["gemma-4-26b-a4b-it"], Order = ["google", "openrouter"] });
+
+        Assert.Equal(["gemma-4-26b-a4b-it (Google AI Studio)", "google/gemma-3-4b-it (OpenRouter)"], engine.EngineNames);
     }
 
     [Fact]

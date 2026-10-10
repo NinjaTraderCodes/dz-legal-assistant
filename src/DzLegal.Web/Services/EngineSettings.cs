@@ -25,8 +25,16 @@ public sealed class EngineSettings
 
     public Uri GroqEndpoint { get; init; } = new("https://api.groq.com/openai/v1/");
 
-    /// <summary>Optional last resort on OpenRouter (OpenAI-compatible), used only when its key is set.</summary>
-    public string OpenRouterModel { get; init; } = "google/gemma-3-27b-it";
+    /// <summary>
+    /// Gemma 3 4B on OpenRouter (OpenAI-compatible, paid per token, a few cents for a whole demo): the exact model the
+    /// desktop app runs offline. Used only when its key is set.
+    /// </summary>
+    public string OpenRouterModel { get; init; } = "google/gemma-3-4b-it";
+
+    /// <summary>Which services are tried first: "openrouter", "google", "groq". Services without a key are skipped.</summary>
+    public IReadOnlyList<string> Order { get; init; } = DefaultOrder;
+
+    private static readonly string[] DefaultOrder = ["openrouter", "google", "groq"];
 
     /// <summary>
     /// How many model calls run at once across all visitors; the others wait their turn. Keeps a burst of judges within
@@ -56,6 +64,7 @@ public sealed class EngineSettings
         {
             // Read as a list on its own: binding would append the configured models to the defaults instead of replacing them.
             GoogleModels = configuration.GetSection("Engines:GoogleModels").Get<string[]>() is { Length: > 0 } models ? models : DefaultGoogleModels,
+            Order = configuration.GetSection("Engines:Order").Get<string[]>() is { Length: > 0 } order ? order : DefaultOrder,
             GroqModel = settings.GroqModel,
             GroqEndpoint = settings.GroqEndpoint,
             OpenRouterModel = settings.OpenRouterModel,

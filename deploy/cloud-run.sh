@@ -28,6 +28,11 @@ if [[ ! -f Dockerfile || ! -d src/DzLegal.Web ]]; then
 fi
 
 echo "Project $PROJECT, region $REGION, service $SERVICE"
+if [[ "$PROJECT" == gen-lang-client-* ]]; then
+  echo "$PROJECT is the project Google AI Studio made for the API key. Keep the key there (free tier) and deploy to a" >&2
+  echo "separate project with billing: create one, link a billing account, then gcloud config set project THAT_PROJECT_ID." >&2
+  exit 1
+fi
 
 echo "Enabling the APIs (first run only takes a minute)…"
 gcloud services enable run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com \

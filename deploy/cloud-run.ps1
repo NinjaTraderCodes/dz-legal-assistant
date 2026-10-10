@@ -27,6 +27,9 @@ function Invoke-Gcloud {
 if (-not $Project) { throw "No Google Cloud project selected. Run: gcloud config set project YOUR_PROJECT_ID" }
 if (-not (Test-Path Dockerfile) -or -not (Test-Path src/DzLegal.Web)) { throw "Run this script from the repository root." }
 Write-Host "Project $Project, region $Region, service $Service"
+if ($Project -like "gen-lang-client-*") {
+    throw "$Project is the project Google AI Studio made for the API key. Keep the key there (free tier) and deploy to a separate project with billing: create one, link a billing account, then gcloud config set project THAT_PROJECT_ID. See docs/WEB-DEMO.md."
+}
 
 Write-Host "Enabling the APIs (first run only takes a minute)..."
 Invoke-Gcloud services enable run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com secretmanager.googleapis.com --project $Project

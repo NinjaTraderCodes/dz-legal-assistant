@@ -86,7 +86,9 @@ The repository root has a `Dockerfile`; `deploy/cloud-run.sh` builds it on Googl
 Nothing needs installing: everything happens in Cloud Shell, in the browser.
 
 1. **Project and billing.** At [console.cloud.google.com](https://console.cloud.google.com), create a project (e.g.
-   `dz-legal-demo`) and link a billing account (the card). Cloud Run's free monthly allowance covers a demo of this
+   `dz-legal-demo`) and link a billing account (the card). Use a **new** project, not the `gen-lang-client-…` one
+   Google AI Studio created for the API key: that one stays without billing, so the key keeps the free tier (Gemma
+   is offered on the free tier only), and the deploy scripts refuse it. Cloud Run's free monthly allowance covers a demo of this
    size. In *Billing → Budgets & alerts*, add a small budget (e.g. $10) so any surprise sends an e-mail.
 2. **Cloud Shell.** Open [shell.cloud.google.com](https://shell.cloud.google.com), then:
 

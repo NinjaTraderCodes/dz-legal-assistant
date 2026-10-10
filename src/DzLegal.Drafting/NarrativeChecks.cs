@@ -1,6 +1,7 @@
 using System.Text;
 using System.Text.RegularExpressions;
 using DzLegal.Domain;
+using DzLegal.Law;
 
 namespace DzLegal.Drafting;
 
@@ -27,8 +28,18 @@ public enum NarrativeIssueKind
     /// <summary>An article cited in the text that is neither in the lawyer's notes nor among the selected articles.</summary>
     UncitedArticle,
 
-    /// <summary>A quotation «…» attributed to a selected article that is not in that article's official text.</summary>
+    /// <summary>
+    /// A quotation («…», "…" or “…”), or a «تنص على أن …» statement, attributed to an article but not found in that
+    /// article's official text (nor in the lawyer's own notes).
+    /// </summary>
     MisquotedArticle,
+
+    /// <summary>
+    /// Content attributed to an article whose official text the model was not given (it is not in the library, or
+    /// the lawyer did not select it) and that the lawyer's notes do not state either: the model wrote the law from
+    /// memory.
+    /// </summary>
+    UnsupportedArticleContent,
 }
 
 public sealed record NarrativeIssue(NarrativeIssueKind Kind, string Detail)
@@ -37,7 +48,11 @@ public sealed record NarrativeIssue(NarrativeIssueKind Kind, string Detail)
     public bool IsHard => Kind is NarrativeIssueKind.ForeignScript or NarrativeIssueKind.NotArabic;
 
     /// <summary>Law the lawyer did not provide (a qualification, an article, a quotation): worth one more try.</summary>
-    public bool IsInventedLaw => Kind is NarrativeIssueKind.UngroundedTerm or NarrativeIssueKind.UncitedArticle or NarrativeIssueKind.MisquotedArticle;
+    public bool IsInventedLaw => Kind is NarrativeIssueKind.UngroundedTerm or NarrativeIssueKind.UncitedArticle
+        or NarrativeIssueKind.MisquotedArticle or NarrativeIssueKind.UnsupportedArticleContent;
+
+    /// <summary>Wrong law attached to an article: a paragraph that still has it after the retry is removed.</summary>
+    public bool IsWrongArticleContent => Kind is NarrativeIssueKind.MisquotedArticle or NarrativeIssueKind.UnsupportedArticleContent;
 }
 
 /// <summary>
@@ -95,7 +110,9 @@ public static partial class NarrativeChecks
             issues.Add(new NarrativeIssue(articleNumbers.Contains(n) ? NarrativeIssueKind.UncitedArticle : NarrativeIssueKind.UnknownNumber, n));
         }
 
-        issues.AddRange(Misquotations(text, legalTexts).Select(n => new NarrativeIssue(NarrativeIssueKind.MisquotedArticle, n)));
+        var ownWords = string.Join('\n', inputs.Values.Append(sectionNotes ?? string.Empty));
+        issues.AddRange(Misquotations(text, legalTexts, ownWords).Select(n => new NarrativeIssue(NarrativeIssueKind.MisquotedArticle, n)));
+        issues.AddRange(StatedContents(text, legalTexts, ownWords).Where(i => !issues.Contains(i)));
         issues.AddRange(Numbers(sectionNotes ?? string.Empty).Where(n => !inText.Contains(n)).Distinct()
             .Select(n => new NarrativeIssue(NarrativeIssueKind.MissingNumber, n)));
 
@@ -133,30 +150,50 @@ public static partial class NarrativeChecks
     }
 
     /// <summary>
-    /// Quotations «…» of ten letters or more that follow a reference to a selected article in the same paragraph
-    /// but are not part of that article's official text (after normalisation). Returns the article numbers.
+    /// The full number of each article reference («182 مكرر», not just 182) with its position, and the code named
+    /// right after it when there is one («من القانون التجاري»), so CC 176 and ComC 176 are told apart.
     /// </summary>
-    private static IEnumerable<string> Misquotations(string text, IReadOnlyList<LegalText> legalTexts)
+    internal static IEnumerable<(string Number, int Index, string? Code)> FullArticleReferences(string text)
     {
-        if (legalTexts.Count == 0)
+        var ascii = ToAsciiDigits(text);
+        foreach (Match m in ArticleReference().Matches(ascii))
         {
-            return [];
+            var after = ascii[(m.Index + m.Length)..Math.Min(ascii.Length, m.Index + m.Length + 40)];
+            var code = CodeAfterReference().Match(after) is { Success: true } c ? c.Groups[1].Value : null;
+            foreach (Match n in ArticleNumber().Matches(m.Groups[1].Value))
+            {
+                yield return (ArticleNumbers.Canonical(n.Value), m.Index, code);
+            }
         }
+    }
 
+    /// <summary>The selected texts a reference can mean: same full number, and same code when the text names one.</summary>
+    private static List<LegalText> TextsFor((string Number, int Index, string? Code) reference, IReadOnlyList<LegalText> legalTexts) =>
+        legalTexts.Where(t => ArticleNumbers.Canonical(t.Number) == reference.Number
+            && (reference.Code is null || ArabicScript.Normalize(t.CitationName).Contains(ArabicScript.Normalize(reference.Code), StringComparison.Ordinal)))
+            .ToList();
+
+    /// <summary>
+    /// Quotations («…», "…" or “…») of ten letters or more that follow an article reference in the same paragraph but
+    /// are in neither that article's official text nor the lawyer's own notes. Returns the article numbers.
+    /// </summary>
+    private static IEnumerable<string> Misquotations(string text, IReadOnlyList<LegalText> legalTexts, string ownWords)
+    {
+        var own = Comparable(ownWords);
         var found = new List<string>();
         foreach (var paragraph in text.Split('\n'))
         {
-            var references = ArticleReferences(paragraph).ToList();
+            var references = FullArticleReferences(paragraph).ToList();
             foreach (Match quote in Quotation().Matches(paragraph))
             {
-                var quoted = Comparable(quote.Groups[1].Value);
+                var quoted = Comparable(QuotedText(quote));
                 var reference = references.LastOrDefault(r => r.Index < quote.Index);
-                if (quoted.Count(char.IsLetter) < 10 || reference.Number is null)
+                if (quoted.Count(char.IsLetter) < 10 || reference.Number is null || own.Contains(quoted, StringComparison.Ordinal))
                 {
                     continue;
                 }
 
-                var candidates = legalTexts.Where(t => Numbers(t.Number).FirstOrDefault() == reference.Number).ToList();
+                var candidates = TextsFor(reference, legalTexts);
                 if (candidates.Count > 0 && !candidates.Any(t => Comparable(t.Text).Contains(quoted, StringComparison.Ordinal)))
                 {
                     found.Add(reference.Number);
@@ -166,6 +203,65 @@ public static partial class NarrativeChecks
 
         return found.Distinct();
     }
+
+    /// <summary>Share of a stated content's words that must appear in the article's text (or the lawyer's notes).</summary>
+    public const double MinStatedCoverage = 0.6;
+
+    /// <summary>
+    /// «المادة 323 تنص على أن …» and the like: what the text says an article provides. When the article's official
+    /// text was given, most of the stated words must come from it (or from the lawyer's notes), otherwise the
+    /// statement misquotes it; when no text was given, the statement must come from the lawyer's notes, otherwise the
+    /// model wrote the law from memory.
+    /// </summary>
+    private static IEnumerable<NarrativeIssue> StatedContents(string text, IReadOnlyList<LegalText> legalTexts, string ownWords)
+    {
+        var own = ContentWords(ownWords);
+        var issues = new List<NarrativeIssue>();
+        foreach (var paragraph in text.Split('\n'))
+        {
+            var references = FullArticleReferences(paragraph).ToList();
+            foreach (Match statement in Statement().Matches(paragraph))
+            {
+                var reference = references.LastOrDefault(r => r.Index < statement.Index);
+                if (reference.Number is null || references.Any(r => r.Index > reference.Index && r.Index < statement.Index && r.Number != reference.Number))
+                {
+                    continue;
+                }
+
+                // A quotation is judged by Misquotations, letter for letter.
+                if (Quotation().IsMatch(statement.Groups["content"].Value))
+                {
+                    continue;
+                }
+
+                var stated = ContentWords(statement.Groups["content"].Value);
+                if (stated.Count < 4)
+                {
+                    continue;
+                }
+
+                var texts = TextsFor(reference, legalTexts);
+                var source = texts.SelectMany(t => ContentWords(t.Text)).Concat(own).ToList();
+                var covered = stated.Count(w => source.Any(o => ArabicScript.MatchesWord(w, o) || ArabicScript.MatchesWord(o, w)));
+                if (covered < MinStatedCoverage * stated.Count)
+                {
+                    issues.Add(new NarrativeIssue(texts.Count > 0 ? NarrativeIssueKind.MisquotedArticle : NarrativeIssueKind.UnsupportedArticleContent, reference.Number));
+                }
+            }
+        }
+
+        return issues.DistinctBy(i => (i.Kind, i.Detail));
+    }
+
+    private static readonly HashSet<string> StopWords = new(
+        ["على", "التي", "الذي", "الذين", "هذا", "هذه", "ذلك", "إلى", "الى", "إذا", "اذا", "إلا", "الا", "كان", "كانت", "يكون", "تكون", "أو", "او", "ما", "لا", "لم", "من", "في", "عن", "أن", "ان", "بأن", "بان", "وأن", "كل", "قد", "مع", "هو", "هي"],
+        StringComparer.Ordinal);
+
+    private static List<string> ContentWords(string text) =>
+        ArabicScript.Tokens(text).Where(t => t.Length >= 3 && !StopWords.Contains(t)).ToList();
+
+    private static string QuotedText(Match quote) =>
+        quote.Groups[1].Success ? quote.Groups[1].Value : quote.Groups[2].Success ? quote.Groups[2].Value : quote.Groups[3].Value;
 
     /// <summary>Normalised letters and digits only, single-spaced, so punctuation and layout do not matter.</summary>
     private static string Comparable(string text)
@@ -317,7 +413,14 @@ public static partial class NarrativeChecks
     [GeneratedRegex(@"(\d+)(?:\s*-\s*\d+)?(?:\s*مكرر(?:\s*\d+)?)?")]
     private static partial Regex ArticleNumber();
 
-    [GeneratedRegex(@"«([^«»]+)»")]
+    [GeneratedRegex(@"^\s*(?:من\s+)?(القانون المدني|القانون التجاري|قانون الإجراءات المدنية والإدارية|قانون الأسرة|ق\.?\s*م|ق\.?\s*ت)")]
+    private static partial Regex CodeAfterReference();
+
+    /// <summary>«تنص على أن …», «التي تقضي بأن …», «مفادها أن …», up to the end of the sentence or the next «وحيث».</summary>
+    [GeneratedRegex(@"(?:تنص|نصت|تقضي|قضت|مفادها|مضمونها|جاء فيها)\s+(?:على\s+)?(?:أن|ان|أنه|بأن|بان|ب)?\s*(?<content>[^.؛\n]+?)(?=\s*(?:[.؛]|\n|$|،?\s*(?:و)?حيث|،?\s*فإن|،?\s*مما))")]
+    private static partial Regex Statement();
+
+    [GeneratedRegex(@"«([^«»]+)»|""([^""\n]+)""|“([^”\n]+)”")]
     private static partial Regex Quotation();
 
     [GeneratedRegex(@"\d{1,3}(?:[,.\u066C\u00A0\u202F ]\d{3})+(?!\d)|\d+")]

@@ -217,6 +217,21 @@ public class DraftingServiceTests
     }
 
     [Fact]
+    public async Task AParagraphThatKeepsWritingLawFromMemoryIsRemovedAfterTheRetry()
+    {
+        // Notes cite 106 by number only, so whatever the model says 106 provides must come from somewhere: it does not.
+        var answer = "حيث إن المادة 106 من القانون المدني تنص على أن الحقوق الخاصة لا تدعى إلا باللجوء إلى القضاء المختص.\n"
+            + "وحيث إن المدعى عليه لم يرد المبلغ، فإن طلب المدعي يكون مؤسسا طبقا للمادة 106 من القانون المدني.";
+        var provider = new RecordingProvider(r => r.SectionId == "grounds" ? answer : r.SourceText);
+
+        var draft = await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs());
+
+        var grounds = draft.FindSection("grounds")!;
+        Assert.Equal("وحيث إن المدعى عليه لم يرد المبلغ، فإن طلب المدعي يكون مؤسسا طبقا للمادة 106 من القانون المدني.", grounds.Text);
+        Assert.Equal([DraftingNoteCodes.Retried, DraftingNoteCodes.RemovedWrongLaw], grounds.DraftingNotes);
+    }
+
+    [Fact]
     public async Task PersistentlyCorruptedAnswerFallsBackToTheLawyersNotes()
     {
         var provider = new RecordingProvider(r => r.SectionId == "grounds" ? "受理 受理" : r.SourceText);

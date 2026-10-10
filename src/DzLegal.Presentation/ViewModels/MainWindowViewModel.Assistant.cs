@@ -339,6 +339,7 @@ public sealed partial class MainWindowViewModel
         NarrativeIssueKind.UngroundedTerm => "IssueUngroundedTerm",
         NarrativeIssueKind.UncitedArticle => "IssueUncitedArticle",
         NarrativeIssueKind.MisquotedArticle => "IssueMisquotedArticle",
+        NarrativeIssueKind.UnsupportedArticleContent => "IssueUnsupportedArticleContent",
         _ => throw new InvalidOperationException($"No message for {issue.Kind}."),
     }, issue.Detail);
 }

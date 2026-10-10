@@ -150,6 +150,12 @@ public sealed partial class MainWindowViewModel
                 cancellationToken);
             AnalysisActivity.Complete();
             ShowAnalysis(analysis);
+
+            // The articles the claim type requires are ticked; the model's extra proposals wait for the lawyer.
+            foreach (var choice in AnalysedArticles.Where(c => analysis.Articles.Any(a => a.Ref == c.Reference && a.Source == AnalysedArticle.Required)))
+            {
+                choice.IsSelected = true;
+            }
             var engine = SelectedProvider.DisplayName;
             AnalysisStatus = analysis.Articles.Count > 0 ? L.Format("AnalysisDone", analysis.Articles.Count, engine)
                 : HasReading ? L["AnalysisNoArticles"]
@@ -199,7 +205,7 @@ public sealed partial class MainWindowViewModel
                 a.Reason.Length == 0 ? catalogWhy ?? string.Empty : string.Empty,
                 article,
                 _knowledge.ProvenanceOf(a.Code, article),
-                L["ProvenanceModel"],
+                L[a.Source == AnalysedArticle.Required ? "ProvenanceRequired" : "ProvenanceModel"],
                 isVerified: false,
                 _selectedArticles.Contains(a.Ref),
                 L,
@@ -209,6 +215,7 @@ public sealed partial class MainWindowViewModel
                 RoleText = L["Role_" + a.Role],
                 ModelReason = a.Reason.Length > 0 ? L.Format("ModelReason", a.Reason) : string.Empty,
                 SourceText = L[a.Source == AnalysedArticle.FromSearch ? "FromLibrarySearch" : "FromClaimCatalog"],
+                IsRequired = a.Source == AnalysedArticle.Required,
             });
         }
 

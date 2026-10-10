@@ -67,6 +67,58 @@ public class NarrativeChecksTests
     }
 
     [Fact]
+    public void QuotationsInPlainQuotesAreCheckedToo()
+    {
+        var issue = Assert.Single(NarrativeChecks.Check(
+            "حيث إن المادة 124 تنص على \"كل من أخل بالتزامه يلزم بتعويض مضاعف\" فإن المدعى عليه ملزم بأداء 1500000 دج منذ 15 جانفي 2025.",
+            Notes, Inputs, legalTexts: Selected));
+        Assert.Equal(NarrativeIssueKind.MisquotedArticle, issue.Kind);
+    }
+
+    [Fact]
+    public void WhatAnArticleIsSaidToProvideMustComeFromItsTextOrTheLawyersNotes()
+    {
+        // Close to the official text, in other words: accepted.
+        Assert.Empty(NarrativeChecks.Check(
+            "حيث إن المادة 124 تنص على أن كل فعل يرتكبه الشخص بخطئه ويسبب ضررا للغير يلزم صاحبه بالتعويض، فإن المدعى عليه ملزم بأداء 1500000 دج منذ 15 جانفي 2025.",
+            Notes, Inputs, legalTexts: Selected));
+
+        // Content the official text does not have: a misquotation.
+        var misquoted = Assert.Single(NarrativeChecks.Check(
+            "حيث إن المادة 124 تنص على أن الحقوق الخاصة لا تدعى إلا باللجوء إلى القضاء المختص، فإن المدعى عليه ملزم بأداء 1500000 دج منذ 15 جانفي 2025.",
+            Notes, Inputs, legalTexts: Selected));
+        Assert.Equal(NarrativeIssueKind.MisquotedArticle, misquoted.Kind);
+    }
+
+    [Fact]
+    public void ContentOfAnArticleWithoutItsTextIsWrittenFromMemoryUnlessTheLawyerStatedIt()
+    {
+        var inputs = new Dictionary<string, string>(Inputs) { ["notes.grounds"] = "المادة 323 من القانون المدني: على الدائن اثبات الالتزام وعلى المدين اثبات التخلص منه." };
+        var fromMemory = Assert.Single(NarrativeChecks.Check(
+            "حيث إن المادة 323 من القانون المدني تنص على أن الحقوق الخاصة لا تدعى إلا باللجوء إلى القضاء المختص.",
+            string.Empty, inputs),
+            i => i.Kind == NarrativeIssueKind.UnsupportedArticleContent);
+        Assert.Equal("323", fromMemory.Detail);
+        Assert.True(fromMemory.IsWrongArticleContent);
+
+        Assert.DoesNotContain(
+            NarrativeChecks.Check("حيث إن المادة 323 من القانون المدني تنص على أن على الدائن اثبات الالتزام وعلى المدين اثبات التخلص منه.", string.Empty, inputs),
+            i => i.IsWrongArticleContent);
+    }
+
+    [Fact]
+    public void ArticlesWithTheSameBaseNumberAreToldApart()
+    {
+        LegalText[] both = [new("182", "القانون التجريبي", "يشمل التعويض الوهمي ما لحق الدائن من خسارة وما فاته من كسب."), new("182 مكرر", "القانون التجريبي", "يشمل التعويض الوهمي عن الضرر المعنوي كل مساس بالحرية أو الشرف.")];
+        Assert.DoesNotContain(
+            NarrativeChecks.Check("حيث إن المادة 182 مكرر تنص على «يشمل التعويض الوهمي عن الضرر المعنوي كل مساس بالحرية أو الشرف» فإن المدعى عليه ملزم بأداء 1500000 دج منذ 15 جانفي 2025.", Notes, Inputs, legalTexts: both),
+            i => i.Kind == NarrativeIssueKind.MisquotedArticle);
+        Assert.Contains(
+            NarrativeChecks.Check("حيث إن المادة 182 تنص على «يشمل التعويض الوهمي عن الضرر المعنوي كل مساس بالحرية أو الشرف» فإن المدعى عليه ملزم بأداء 1500000 دج منذ 15 جانفي 2025.", Notes, Inputs, legalTexts: both),
+            i => i.Kind == NarrativeIssueKind.MisquotedArticle);
+    }
+
+    [Fact]
     public void ShortQuotedTermsAndQuotesOfUnselectedArticlesAreNotJudged() =>
         Assert.Empty(NarrativeChecks.Check(
             "حيث إن «الخطأ» ثابت، وحيث إن المادة 124 من القانون التجريبي تلزم بأداء 1500000 دج منذ 15 جانفي 2025.",

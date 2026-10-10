@@ -35,8 +35,11 @@ public sealed partial class ArticleChoiceViewModel : ObservableObject
         LinkLabel = loc[provenance.SourceIsExactText ? "OfficialSource" : "CheckInOfficialJournal"];
         LinkTooltip = SourceUrl is null ? string.Empty
             : provenance.RetrievedOn.Length > 0 ? loc.Format("OfficialSourceTooltip", SourceUrl, provenance.RetrievedOn) : SourceUrl;
-        IsVerified = isVerified;
+        IsVerified = isVerified || provenance.IsTextVerified;
         ProvenanceTag = provenanceTag;
+        SourceFile = provenance.SourceFile;
+        Page = provenance.Page;
+        Edition = provenance.Edition ?? string.Empty;
         _isSelected = selected;
         _onToggled = onToggled;
         _openLink = openLink;
@@ -58,6 +61,17 @@ public sealed partial class ArticleChoiceViewModel : ObservableObject
 
     /// <summary>The imported text was checked by a lawyer (and, for a proposal, nothing else is pending).</summary>
     public bool IsVerified { get; }
+
+    /// <summary>Always proposed and ticked for the recognised claim type (not the model's choice).</summary>
+    public bool IsRequired { get; init; }
+
+    /// <summary>The official PDF the text was taken from (repository path), and the page it is printed on.</summary>
+    public string? SourceFile { get; }
+
+    public int? Page { get; }
+
+    /// <summary>Which publication the text comes from.</summary>
+    public string Edition { get; }
 
     /// <summary>For an article the model proposed: its role («أساس»، «إثبات»…), empty otherwise.</summary>
     public string RoleText { get; init; } = string.Empty;

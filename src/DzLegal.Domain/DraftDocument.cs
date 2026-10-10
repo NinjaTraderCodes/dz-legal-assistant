@@ -66,6 +66,9 @@ public sealed record AnalysedArticle(string Code, string Number, string Role, st
     public const string FromCatalog = "catalog";
     public const string FromSearch = "search";
 
+    /// <summary>Always proposed for the recognised claim type (the catalog marks it required), whatever the model chose.</summary>
+    public const string Required = "required";
+
     public ArticleRef Ref => new(Code, Number);
 }
 
@@ -98,4 +101,7 @@ public static class DraftingNoteCodes
 
     /// <summary>Paragraphs copied from the prompt's worked example were removed.</summary>
     public const string RemovedCopiedExample = "removedCopiedExample";
+
+    /// <summary>Paragraphs that attributed to an article content its official text does not have were removed.</summary>
+    public const string RemovedWrongLaw = "removedWrongLaw";
 }

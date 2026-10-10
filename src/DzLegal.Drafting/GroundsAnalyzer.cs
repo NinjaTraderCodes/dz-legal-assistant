@@ -119,6 +119,8 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
             selected = ParseSelection(selectionAnswer, candidates);
         }
 
+        selected = WithRequiredArticles(selected, reading, claims);
+
         return new GroundsAnalysis
         {
             FactsHash = FactsHash(subject, facts, courtSection),
@@ -129,6 +131,27 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
             Articles = selected,
             Model = _provider.Name,
         };
+    }
+
+    /// <summary>
+    /// The articles a requête of each recognised claim type rests on (catalog <c>required</c>) come first, always: a
+    /// small model sometimes leaves out the loan article from a loan claim. The model's other choices follow.
+    /// </summary>
+    public static List<AnalysedArticle> WithRequiredArticles(IReadOnlyList<AnalysedArticle> selected, FactsReading reading, IReadOnlyList<ClaimType> claims)
+    {
+        ArgumentNullException.ThrowIfNull(selected);
+        ArgumentNullException.ThrowIfNull(reading);
+        ArgumentNullException.ThrowIfNull(claims);
+        var required = reading.ClaimIds
+            .Select(id => claims.FirstOrDefault(c => c.Id == id))
+            .OfType<ClaimType>()
+            .SelectMany(c => c.Articles.Where(a => a.Required))
+            .DistinctBy(a => (a.Code, a.Number))
+            .Select(a => selected.FirstOrDefault(s => s.Ref == new ArticleRef(a.Code, a.Number)) is { } chosen
+                ? chosen with { Source = AnalysedArticle.Required } // keeps the model's reason
+                : new AnalysedArticle(a.Code, a.Number, a.Role.ToString().ToLowerInvariant(), string.Empty, AnalysedArticle.Required))
+            .ToList();
+        return [.. required, .. selected.Where(s => required.All(r => r.Ref != s.Ref))];
     }
 
     /// <summary>Streams one model answer, reporting the text so far, and returns the whole answer.</summary>

@@ -174,6 +174,19 @@ public sealed partial class DraftingService
             }
 
             var issues = NarrativeChecks.Check(text, request.SourceText, inputs, definition.GroundedTerms, legalTexts);
+            if (attempt == 2 && issues.Any(i => i.IsWrongArticleContent))
+            {
+                // Still attributing to an article what its text does not say: those paragraphs go, the rest stays.
+                var kept = string.Join('\n', text.Split('\n').Where(p =>
+                    !NarrativeChecks.Check(p, string.Empty, inputs, null, legalTexts).Any(i => i.IsWrongArticleContent)));
+                if (kept.Trim().Length > 0 && kept != text)
+                {
+                    text = kept.Trim();
+                    notes.Add(DraftingNoteCodes.RemovedWrongLaw);
+                    issues = NarrativeChecks.Check(text, request.SourceText, inputs, definition.GroundedTerms, legalTexts);
+                }
+            }
+
             var invented = issues.Any(i => i.IsInventedLaw);
 
             // A possibly invented legal qualification, an article nobody selected or a misquoted article earns one

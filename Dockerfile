@@ -13,7 +13,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:10.0
 RUN apt-get update && apt-get install -y --no-install-recommends libfontconfig1 && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY --from=build /app .
-# Hugging Face Spaces route to port 7860 and run the container as user 1000.
+# Port 7860 and user 1000 suit both Cloud Run (deploy/cloud-run.sh passes --port 7860) and Hugging Face Spaces.
 ENV ASPNETCORE_HTTP_PORTS=7860 DOTNET_CLI_TELEMETRY_OPTOUT=1
 EXPOSE 7860
 USER 1000

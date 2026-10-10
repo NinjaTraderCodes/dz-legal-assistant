@@ -41,6 +41,20 @@ Browser ──SignalR──► DzLegal.Web (ASP.NET Core, Blazor Server)
   - `Samples/*.json` holds four fictitious cases (loan, rent, undelivered goods, land under dispute). A sample holds case details only, so every step, AI included, runs live.
 - `/healthz` reports the configured engines (names only, never keys) and the queue.
 
+## Where the Google AI Studio key goes
+
+The key is a password to a paid-for quota. It goes **only** into an environment variable named `GOOGLE_API_KEY`, set on
+whatever machine runs the demo. It never goes into `appsettings.json`, a commit, a chat or a screenshot.
+
+| Where the demo runs | Where the key goes |
+|---|---|
+| Cloud Run (the public link) | Secret Manager. `deploy/cloud-run.sh` asks for it once, with the input hidden, and stores it there. |
+| Your own computer, PowerShell | `$env:GOOGLE_API_KEY = "..."` in the window that runs `dotnet run` (gone when the window closes) |
+| Your own computer, bash | `GOOGLE_API_KEY=... dotnet run --project src/DzLegal.Web` |
+
+If a key ever leaks, delete it in [Google AI Studio](https://aistudio.google.com/apikey), create a new one and run
+`UPDATE_KEY=1 ./deploy/cloud-run.sh`.
+
 ## Run it locally
 
 ```bash
@@ -65,21 +79,41 @@ Settings (`src/DzLegal.Web/appsettings.json`, section `Engines`; any of them can
 
 Keys come **only** from environment variables: `GOOGLE_API_KEY` (required for AI), `GROQ_API_KEY` and `OPENROUTER_API_KEY` (optional fallbacks).
 
-## Deploy it (Hugging Face Docker Space)
+## Deploy it (Google Cloud Run)
 
-The repository root has a `Dockerfile`. It publishes `src/DzLegal.Web`, runs as user 1000 and listens on port 7860.
+The repository root has a `Dockerfile`; `deploy/cloud-run.sh` builds it on Google's servers and runs it on Cloud Run.
+Nothing needs installing: everything happens in Cloud Shell, in the browser.
 
-1. **Model key.** At [Google AI Studio](https://aistudio.google.com/apikey), create an API key.
-2. **Space.** At huggingface.co, create a **Space**: SDK **Docker**, hardware **CPU basic** (free). In its settings, add the **secret** `GOOGLE_API_KEY`.
-3. **Automatic deployment from GitHub.** In this repository's settings:
-   - add the secret `HF_TOKEN` (a Hugging Face token with *write* access);
-   - add the variable `HF_SPACE` (e.g. `your-user/dz-legal-assistant`);
-   - add the variable `DEMO_URL` (e.g. `https://your-user-dz-legal-assistant.hf.space`).
+1. **Project and billing.** At [console.cloud.google.com](https://console.cloud.google.com), create a project (e.g.
+   `dz-legal-demo`) and link a billing account (the card). Cloud Run's free monthly allowance covers a demo of this
+   size. In *Billing → Budgets & alerts*, add a small budget (e.g. $10) so any surprise sends an e-mail.
+2. **Cloud Shell.** Open [shell.cloud.google.com](https://shell.cloud.google.com), then:
 
-   The `deploy-web-demo` workflow then pushes every change on the default branch to the Space, and the Space rebuilds the image.
-4. **Uptime.** The `web-demo-uptime` workflow checks `DEMO_URL/healthz` and the page every 30 minutes. That also keeps the free Space from sleeping (free Spaces pause after 48 hours without visits). A failed check sends GitHub's usual failure e-mail.
+   ```bash
+   gcloud config set project YOUR_PROJECT_ID
+   git clone https://github.com/NinjaTraderCodes/dz-legal-assistant.git && cd dz-legal-assistant
+   ./deploy/cloud-run.sh
+   ```
+
+   The first run asks for the Google AI Studio key (input hidden), stores it in Secret Manager, builds the image
+   (about 5 minutes) and prints the demo URL, e.g. `https://dz-legal-demo-xxxxx.europe-west1.run.app`.
+3. **Updates.** `git pull && ./deploy/cloud-run.sh` in Cloud Shell. The stored key is kept.
+4. **Uptime.** In this repository's settings, add the variable `DEMO_URL` (the printed URL). The `web-demo-uptime`
+   workflow then checks `DEMO_URL/healthz` and the page every 30 minutes; a failed check sends GitHub's usual failure
+   e-mail.
+5. **Judging week.** Cloud Run stops the instance when nobody is using it, and the first visitor then waits a few
+   seconds. For 1–7 November, run `MIN_INSTANCES=1 ./deploy/cloud-run.sh` to keep one instance warm (a few dollars
+   for the week), then `./deploy/cloud-run.sh` again afterwards.
+
+Why these settings: Blazor Server keeps each visitor's session in the server's memory, over a WebSocket. The script
+allows **one instance** (every visitor shares the same queue and limits, and the cost is capped), turns on **session
+affinity**, and sets a one-hour request timeout so a reconnecting browser finds its session again.
 
 Before a deadline, open the demo in a private window, logged out, and run the guided tour end to end.
+
+**Alternative host.** Any host that runs a Docker image and supports WebSockets works: set `GOOGLE_API_KEY` in its
+secret settings and expose port 7860. A Hugging Face Docker Space needs a paid plan; with one, the
+`deploy-web-demo` workflow pushes the code there (repository secret `HF_TOKEN`, variable `HF_SPACE`).
 
 ## Limits, stated plainly
 

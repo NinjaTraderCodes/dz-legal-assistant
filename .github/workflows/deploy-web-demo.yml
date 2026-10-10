@@ -1,6 +1,7 @@
 name: deploy-web-demo
 
-# Publishes the web demo (src/DzLegal.Web) to a Hugging Face Docker Space.
+# Optional: publishes the web demo (src/DzLegal.Web) to a Hugging Face Docker Space (needs a paid HF plan).
+# The main host is Google Cloud Run (deploy/cloud-run.sh).
 # Setup (once): repository secret HF_TOKEN (a Hugging Face write token) and repository variable HF_SPACE
 # (e.g. "your-user/dz-legal-assistant"). The model key (GOOGLE_API_KEY) is a secret of the Space, not of this repo.
 # See docs/WEB-DEMO.md.

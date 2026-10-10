@@ -108,6 +108,7 @@ public class EngineSettingsTests
     [Theory]
     [InlineData("gemma-3-4b-it", "Gemma 3 4B")]
     [InlineData("gemma-3-27b-it", "Gemma 3 27B")]
+    [InlineData("gemma-4-26b-a4b-it", "Gemma 4 26B A4B")]
     [InlineData("llama-3.3-70b-versatile", "llama-3.3-70b-versatile")]
     public void ModelNamesAreShownReadably(string model, string shown) => Assert.Equal(shown, WebEngine.Pretty(model));
 }
@@ -134,8 +135,54 @@ public class WebEngineTests
 
         Assert.Equal(["hosted", "stub"], vm.Providers.Select(p => p.Key));
         Assert.Equal("hosted", vm.SelectedProvider?.Key);
-        Assert.Equal("Gemma 3 4B (demo server)", vm.SelectedProvider?.DisplayName);
-        Assert.Equal(["gemma-3-4b-it (Google AI Studio)", "gemma-3-12b-it (Google AI Studio)", "gemma-3-27b-it (Google AI Studio)"], engine.EngineNames);
+        Assert.Equal("Gemma 4 26B A4B (demo server)", vm.SelectedProvider?.DisplayName);
+        Assert.Equal("gemma-4-26b-a4b-it (Google AI Studio)", engine.EngineNames[0]);
+    }
+
+    [Fact]
+    public async Task ModelsGoogleNoLongerServesAreDropped()
+    {
+        using var engine = Create(new EngineSettings { GoogleApiKey = "k", GoogleModels = ["gemma-3-4b-it", "gemma-4-31b-it", "gemma-4-26b-a4b-it"] });
+        await engine.ResolveModelsAsync(new ModelListHandler("gemma-4-26b-a4b-it", "gemma-4-31b-it", "gemini-3.8-flash"), CancellationToken.None);
+
+        Assert.Equal(["gemma-4-31b-it", "gemma-4-26b-a4b-it"], engine.GoogleModels);
+        using var vm = engine.CreateSession(new NoFiles(), new NoExternalLinks(), "en");
+        Assert.Equal("Gemma 4 31B (demo server)", vm.SelectedProvider?.DisplayName);
+    }
+
+    [Fact]
+    public async Task WhenNoConfiguredModelIsLeftAnyGemmaTheKeyCanUseTakesOver()
+    {
+        using var engine = Create(new EngineSettings { GoogleApiKey = "k", GoogleModels = ["gemma-3-4b-it"] });
+        await engine.ResolveModelsAsync(new ModelListHandler("gemini-3.8-flash", "gemma-5-9b-it"), CancellationToken.None);
+
+        Assert.Equal(["gemma-5-9b-it"], engine.GoogleModels);
+    }
+
+    [Fact]
+    public async Task IfGoogleCannotBeAskedTheConfiguredModelsStay()
+    {
+        using var engine = Create(new EngineSettings { GoogleApiKey = "k", GoogleModels = ["gemma-3-4b-it"] });
+        await engine.ResolveModelsAsync(new ModelListHandler(fail: true), CancellationToken.None);
+
+        Assert.Equal(["gemma-3-4b-it"], engine.GoogleModels);
+    }
+
+    private sealed class ModelListHandler(params string[] models) : HttpMessageHandler
+    {
+        public ModelListHandler(bool fail)
+            : this() => Fail = fail;
+
+        private bool Fail { get; }
+
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            Assert.Equal("k", request.Headers.GetValues("x-goog-api-key").Single());
+            var body = "{\"models\":[" + string.Join(',', models.Select(m => $$"""{"name":"models/{{m}}","supportedGenerationMethods":["generateContent"]}""")) + "]}";
+            return Task.FromResult(Fail
+                ? new HttpResponseMessage(System.Net.HttpStatusCode.Forbidden) { Content = new StringContent("denied") }
+                : new HttpResponseMessage(System.Net.HttpStatusCode.OK) { Content = new StringContent(body) });
+        }
     }
 
     [Fact]

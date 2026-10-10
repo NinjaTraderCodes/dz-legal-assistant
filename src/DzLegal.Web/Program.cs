@@ -18,6 +18,12 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
 }
 
+// Check which configured Gemma models Google still serves before the first visitor arrives.
+using (var lookup = new CancellationTokenSource(TimeSpan.FromSeconds(15)))
+{
+    await app.Services.GetRequiredService<WebEngine>().ResolveModelsAsync(null, lookup.Token);
+}
+
 app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
 app.UseAntiforgery();
 

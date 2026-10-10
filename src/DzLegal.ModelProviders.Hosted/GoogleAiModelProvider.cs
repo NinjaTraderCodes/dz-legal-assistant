@@ -64,12 +64,39 @@ public sealed class GoogleAiModelProvider : IModelProvider, IDisposable
 
             foreach (var part in chunk?.Candidates is [var first, ..] ? first.Content?.Parts ?? [] : [])
             {
-                if (part.Text is { Length: > 0 } piece)
+                // Models that think aloud mark those parts; only the answer goes to the document.
+                if (part.Thought != true && part.Text is { Length: > 0 } piece)
                 {
                     yield return piece;
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// The models this key may call with <c>generateContent</c> (<c>GET models</c>), e.g. "gemma-4-26b-a4b-it". Google
+    /// retires and renames models, so the demo checks which configured ones still exist instead of trusting the list.
+    /// </summary>
+    public static async Task<IReadOnlyList<string>> ListModelsAsync(GoogleAiOptions options, HttpMessageHandler? handler, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(options);
+        using var provider = new GoogleAiModelProvider(options, handler);
+        var models = new List<string>();
+        string? page = null;
+        do
+        {
+            var address = "models?pageSize=1000" + (page is null ? string.Empty : "&pageToken=" + Uri.EscapeDataString(page));
+            using var message = new HttpRequestMessage(HttpMethod.Get, new Uri(address, UriKind.Relative));
+            using var response = await HostedHttp.SendAsync(provider._http, message, "Google AI Studio", cancellationToken);
+            var list = JsonSerializer.Deserialize<ModelList>(await response.Content.ReadAsStringAsync(cancellationToken));
+            models.AddRange((list?.Models ?? [])
+                .Where(m => m.Name is not null && (m.Methods ?? []).Any(x => x is "generateContent" or "streamGenerateContent"))
+                .Select(m => m.Name!.StartsWith("models/", StringComparison.Ordinal) ? m.Name["models/".Length..] : m.Name!));
+            page = string.IsNullOrEmpty(list?.NextPageToken) ? null : list.NextPageToken;
+        }
+        while (page is not null);
+
+        return models;
     }
 
     public void Dispose() => _http.Dispose();
@@ -92,7 +119,9 @@ public sealed class GoogleAiModelProvider : IModelProvider, IDisposable
         [property: JsonPropertyName("role"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? Role,
         [property: JsonPropertyName("parts")] IReadOnlyList<Part>? Parts);
 
-    private sealed record Part([property: JsonPropertyName("text")] string? Text);
+    private sealed record Part(
+        [property: JsonPropertyName("text")] string? Text,
+        [property: JsonPropertyName("thought"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] bool? Thought = null);
 
     private sealed record GenerationConfig(
         [property: JsonPropertyName("temperature")] double Temperature,
@@ -103,6 +132,14 @@ public sealed class GoogleAiModelProvider : IModelProvider, IDisposable
         [property: JsonPropertyName("promptFeedback")] PromptFeedback? PromptFeedback);
 
     private sealed record Candidate([property: JsonPropertyName("content")] Content? Content);
+
+    private sealed record ModelList(
+        [property: JsonPropertyName("models")] IReadOnlyList<ModelInfo>? Models,
+        [property: JsonPropertyName("nextPageToken")] string? NextPageToken);
+
+    private sealed record ModelInfo(
+        [property: JsonPropertyName("name")] string? Name,
+        [property: JsonPropertyName("supportedGenerationMethods")] IReadOnlyList<string>? Methods);
 
     private sealed record PromptFeedback([property: JsonPropertyName("blockReason")] string? BlockReason);
 }

@@ -50,6 +50,7 @@ public class GoogleAiProviderTests
     [Theory]
     [InlineData(HttpStatusCode.TooManyRequests, true)]
     [InlineData(HttpStatusCode.ServiceUnavailable, true)]
+    [InlineData(HttpStatusCode.NotFound, true)] // a retired model: the next engine may still be served
     [InlineData(HttpStatusCode.Unauthorized, false)]
     [InlineData(HttpStatusCode.BadRequest, false)]
     public async Task ARateLimitIsTransientABadKeyIsNot(HttpStatusCode status, bool transient)
@@ -59,6 +60,31 @@ public class GoogleAiProviderTests
 
         var ex = await Assert.ThrowsAsync<ModelProviderException>(() => provider.GenerateAsync(Request, CancellationToken.None));
         Assert.Equal(transient, ex.IsTransient);
+    }
+
+    [Fact]
+    public async Task ThoughtsAreNotPartOfTheAnswer()
+    {
+        var handler = new FakeHandler(_ => Sse("""{"candidates":[{"content":{"parts":[{"text":"planning…","thought":true},{"text":"حيث إن"}]}}]}"""));
+        using var provider = new GoogleAiModelProvider(new GoogleAiOptions { ApiKey = "k" }, handler);
+
+        Assert.Equal("حيث إن", await provider.GenerateAsync(Request, CancellationToken.None));
+    }
+
+    [Fact]
+    public async Task ListsTheModelsTheKeyCanGenerateWithAcrossPages()
+    {
+        var handler = new FakeHandler(r => new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new StringContent(r.RequestUri!.Query.Contains("pageToken=p2", StringComparison.Ordinal)
+                ? """{"models":[{"name":"models/gemma-4-31b-it","supportedGenerationMethods":["generateContent","countTokens"]}]}"""
+                : """{"models":[{"name":"models/gemma-4-26b-a4b-it","supportedGenerationMethods":["generateContent"]},{"name":"models/text-embedding-004","supportedGenerationMethods":["embedContent"]}],"nextPageToken":"p2"}"""),
+        });
+
+        var models = await GoogleAiModelProvider.ListModelsAsync(new GoogleAiOptions { ApiKey = "secret-key" }, handler, CancellationToken.None);
+
+        Assert.Equal(["gemma-4-26b-a4b-it", "gemma-4-31b-it"], models);
+        Assert.All(handler.Requests, r => Assert.Equal("secret-key", r.Headers["x-goog-api-key"]));
     }
 
     [Fact]

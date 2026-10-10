@@ -8,7 +8,7 @@ model runs:
 | | Desktop app | Web demo |
 |---|---|---|
 | Form, 15-rule formal check, templates, PDF/Word | on the laptop | on the demo server |
-| Model for the grounds analysis and the drafting | Gemma 3 4B, **local** (Ollama) | Gemma 3 (same open model family), **hosted** (Google AI Studio) |
+| Model for the grounds analysis and the drafting | Gemma 3 4B, **local** (Ollama) | Gemma 4 (the next generation of the same open family), **hosted** (Google AI Studio) |
 | Case data | never leaves the computer | sent to the hosted model: **fictitious cases only** |
 | Screen logic (view models, strings) | `DzLegal.Presentation` | `DzLegal.Presentation` (the same code) |
 
@@ -21,7 +21,8 @@ Browser ──SignalR──► DzLegal.Web (ASP.NET Core, Blazor Server)
                       ├─ one MainWindowViewModel per visitor (DzLegal.Presentation, shared with the desktop)
                       ├─ FormEngine · Drafting · Law · Documents (QuestPDF, server-side) · Storage
                       └─ hosted engine chain, behind a queue (ModelGate):
-                           Gemma 3 4B → Gemma 3 12B → Gemma 3 27B   (Google AI Studio, each with its own rate limit)
+                           Gemma 4 26B A4B → Gemma 4 31B → Gemma 3… (Google AI Studio, each with its own rate limit;
+                                                                    only the models Google still serves)
                            → Groq / OpenRouter                       (optional, only when their keys are set)
                            → template mode, always available         (no AI)
 ```
@@ -72,7 +73,7 @@ Settings (`src/DzLegal.Web/appsettings.json`, section `Engines`; any of them can
 
 | Setting | Default | Meaning |
 |---|---|---|
-| `GoogleModels` | 4B, 12B, 27B | Gemma models tried in order |
+| `GoogleModels` | Gemma 4 26B A4B, Gemma 4 31B, then Gemma 3 27B/12B/4B | Gemma models tried in order. At startup the demo asks Google which ones the key can use and drops the rest; if none is left, any Gemma model the key can use takes over. |
 | `MaxConcurrentCalls` | 2 | model calls running at once, all visitors together |
 | `RunsPerSessionPerHour` | 30 | AI runs per browser session per hour |
 | `MaxTokens`, `Temperature` | 1000, 0.2 | same as the desktop defaults |
@@ -111,13 +112,19 @@ affinity**, and sets a one-hour request timeout so a reconnecting browser finds 
 
 Before a deadline, open the demo in a private window, logged out, and run the guided tour end to end.
 
+**If an AI step says "error 404 … not found".** Google has retired that model. The demo checks the list at startup,
+so redeploy (`./deploy/cloud-run.sh`) and look at `DEMO_URL/healthz`: it lists the models in use. The server log
+(Cloud Run → the service → *Logs*) has a line "Gemma models in use: …", or a warning listing every model the key can
+use when no Gemma model is among them. Gemma on the Gemini API is a free-tier offer, so make the key in Google AI
+Studio's own project rather than in the billed Cloud Run project.
+
 **Alternative host.** Any host that runs a Docker image and supports WebSockets works: set `GOOGLE_API_KEY` in its
 secret settings and expose port 7860. A Hugging Face Docker Space needs a paid plan; with one, the
 `deploy-web-demo` workflow pushes the code there (repository secret `HF_TOKEN`, variable `HF_SPACE`).
 
 ## Limits, stated plainly
 
-- AI quality: the hosted Gemma 3 4B is the same open model as the desktop default. The 12B and 27B models, used when 4B is busy, usually write better Arabic. The status bar shows which engine answered.
+- AI quality: Google no longer serves Gemma 3 4B (the desktop default) on its API, so the demo uses Gemma 4, the next generation of the same open family. Gemma 4 26B A4B uses about 4B parameters per word, so it is fast; it usually writes better Arabic than the 4B desktop model. The status bar shows which engine answered.
 - Speed depends on the hosted service's load. On Google's servers a full run usually takes seconds; on an 8 GB laptop it takes about 2 minutes.
 - Free-tier limits are per Google project and per model. The queue, the fallback chain and the per-session cap keep a group of visitors within them. When every engine is busy, the visitor sees the error and can retry; template mode always works.
 - The demo can't open files from the visitor's disk (sample cases instead), and it saves nothing on the server.

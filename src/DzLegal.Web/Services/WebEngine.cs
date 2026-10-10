@@ -29,6 +29,7 @@ public sealed partial class WebEngine : IDisposable
         Knowledge = LegalKnowledgeLoader.Load(Path.Combine(baseDirectory, "data", "law"));
         Samples = SampleCase.LoadAll(Path.Combine(baseDirectory, "Samples"));
         Gate = new ModelGate(settings.MaxConcurrentCalls);
+        GoogleModels = settings.GoogleModels;
         EvaluationsFolder = Path.Combine(Path.GetTempPath(), "dzlegal-web-evaluations");
     }
 
@@ -41,6 +42,51 @@ public sealed partial class WebEngine : IDisposable
     public IReadOnlyList<SampleCase> Samples { get; }
 
     public ModelGate Gate { get; }
+
+    /// <summary>The Gemma models in use: the configured ones that Google still serves (see <see cref="ResolveModelsAsync"/>).</summary>
+    public IReadOnlyList<string> GoogleModels { get; private set; }
+
+    /// <summary>
+    /// Asks Google which models this key may call and keeps the configured ones that exist, in order. Google retires
+    /// models (gemma-3-4b-it answered 404 one day), so when none of them is left, any Gemma model the key can use takes
+    /// over. If Google can't be asked, the configured list stays and the fallback chain skips what is gone.
+    /// </summary>
+    public async Task ResolveModelsAsync(HttpMessageHandler? handler, CancellationToken cancellationToken)
+    {
+        if (Settings.GoogleApiKey is not { } key)
+        {
+            return;
+        }
+
+        IReadOnlyList<string> available;
+        try
+        {
+            available = await GoogleAiModelProvider.ListModelsAsync(new GoogleAiOptions { ApiKey = key }, handler, cancellationToken);
+        }
+        catch (Exception ex) when (ex is ModelProviderException or JsonException or OperationCanceledException)
+        {
+            LogListFailed(_log, ex.Message);
+            return;
+        }
+
+        var kept = Settings.GoogleModels.Where(available.Contains).ToList();
+        if (kept.Count == 0)
+        {
+            kept = available
+                .Where(m => m.StartsWith("gemma-", StringComparison.Ordinal) && m.EndsWith("-it", StringComparison.Ordinal))
+                .OrderDescending(StringComparer.Ordinal)
+                .ToList();
+        }
+
+        if (kept.Count == 0)
+        {
+            LogNoGemma(_log, available);
+            return;
+        }
+
+        GoogleModels = kept;
+        LogModels(_log, kept);
+    }
 
     private string EvaluationsFolder { get; }
 
@@ -79,15 +125,21 @@ public sealed partial class WebEngine : IDisposable
             links: links);
     }
 
-    private string PrimaryModel => Settings.GoogleApiKey is not null && Settings.GoogleModels.Count > 0
-        ? Pretty(Settings.GoogleModels[0])
+    private string PrimaryModel => Settings.GoogleApiKey is not null && GoogleModels.Count > 0
+        ? Pretty(GoogleModels[0])
         : Settings.GroqApiKey is not null ? Settings.GroqModel : Settings.OpenRouterModel;
 
-    /// <summary>"gemma-3-4b-it" → "Gemma 3 4B".</summary>
-    internal static string Pretty(string model) =>
-        model.StartsWith("gemma-3-", StringComparison.Ordinal)
-            ? "Gemma 3 " + model["gemma-3-".Length..].Replace("-it", string.Empty, StringComparison.Ordinal).ToUpperInvariant()
-            : model;
+    /// <summary>"gemma-3-4b-it" → "Gemma 3 4B", "gemma-4-26b-a4b-it" → "Gemma 4 26B A4B".</summary>
+    internal static string Pretty(string model)
+    {
+        if (!model.StartsWith("gemma-", StringComparison.Ordinal) || !model.EndsWith("-it", StringComparison.Ordinal))
+        {
+            return model;
+        }
+
+        var parts = model["gemma-".Length..^"-it".Length].Split('-');
+        return parts.Length < 2 ? model : $"Gemma {parts[0]} " + string.Join(' ', parts[1..]).ToUpperInvariant();
+    }
 
     private FallbackModelProvider CreateChain() => new(CreateEngines())
     {
@@ -99,7 +151,7 @@ public sealed partial class WebEngine : IDisposable
         var engines = new List<IModelProvider>();
         if (Settings.GoogleApiKey is { } google)
         {
-            engines.AddRange(Settings.GoogleModels.Select(m => new GoogleAiModelProvider(new GoogleAiOptions
+            engines.AddRange(GoogleModels.Select(m => new GoogleAiModelProvider(new GoogleAiOptions
             {
                 ApiKey = google,
                 Model = m,
@@ -142,6 +194,15 @@ public sealed partial class WebEngine : IDisposable
 
     [LoggerMessage(Level = LogLevel.Warning, Message = "Engine {Engine} skipped: {Reason}")]
     private static partial void LogSkipped(ILogger logger, string engine, string reason);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "Gemma models in use: {Models}")]
+    private static partial void LogModels(ILogger logger, IEnumerable<string> models);
+
+    [LoggerMessage(Level = LogLevel.Warning, Message = "Could not list the models of the Google key, keeping the configured ones: {Reason}")]
+    private static partial void LogListFailed(ILogger logger, string reason);
+
+    [LoggerMessage(Level = LogLevel.Warning, Message = "No Gemma model is available to the Google key. Models it can use: {Models}")]
+    private static partial void LogNoGemma(ILogger logger, IEnumerable<string> models);
 }
 
 /// <summary>A fictitious case a visitor can open in one click: case details only, so every step runs live.</summary>

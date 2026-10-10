@@ -41,9 +41,12 @@ internal static class HostedHttp
         }
     }
 
-    /// <summary>Busy or briefly down: worth trying another engine. A bad key or a refused request is not.</summary>
+    /// <summary>
+    /// Worth trying another engine: busy or briefly down, or this model is not served (404: Google retires models). A bad
+    /// key or a refused request is not.
+    /// </summary>
     public static bool IsTransient(HttpStatusCode status) =>
-        status is HttpStatusCode.TooManyRequests or HttpStatusCode.RequestTimeout or HttpStatusCode.InternalServerError
+        status is HttpStatusCode.NotFound or HttpStatusCode.TooManyRequests or HttpStatusCode.RequestTimeout or HttpStatusCode.InternalServerError
             or HttpStatusCode.BadGateway or HttpStatusCode.ServiceUnavailable or HttpStatusCode.GatewayTimeout;
 
     /// <summary>The payload of each <c>data:</c> line of a server-sent-events stream, until <c>[DONE]</c> or the end.</summary>

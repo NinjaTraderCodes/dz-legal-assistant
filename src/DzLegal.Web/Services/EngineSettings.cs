@@ -6,10 +6,19 @@ namespace DzLegal.Web.Services;
 /// </summary>
 public sealed class EngineSettings
 {
-    /// <summary>Gemma models on Google AI Studio, tried in order. Each has its own rate limit, so the next one absorbs a burst.</summary>
+    /// <summary>
+    /// Gemma models on Google AI Studio, tried in order. Each has its own rate limit, so the next one absorbs a burst.
+    /// At startup the demo keeps only those Google still serves (<see cref="WebEngine.ResolveModelsAsync"/>).
+    /// </summary>
     public IReadOnlyList<string> GoogleModels { get; init; } = DefaultGoogleModels;
 
-    private static readonly string[] DefaultGoogleModels = ["gemma-3-4b-it", "gemma-3-12b-it", "gemma-3-27b-it"];
+    private static readonly string[] DefaultGoogleModels =
+    [
+        // Gemma 4: a mixture of experts with about 4B parameters active per word (fast), then the dense 31B.
+        "gemma-4-26b-a4b-it", "gemma-4-31b-it",
+        // Gemma 3, the desktop default's family, for keys that still have it.
+        "gemma-3-27b-it", "gemma-3-12b-it", "gemma-3-4b-it",
+    ];
 
     /// <summary>Optional last resort on Groq (OpenAI-compatible), used only when its key is set.</summary>
     public string GroqModel { get; init; } = "llama-3.3-70b-versatile";

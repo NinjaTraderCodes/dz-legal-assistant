@@ -2,7 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DzLegal.Domain;
 
-namespace DzLegal.App.ViewModels;
+namespace DzLegal.Presentation.ViewModels;
 
 /// <summary>
 /// One section of the draft in the editor. Narrative sections are edited freely; generated sections

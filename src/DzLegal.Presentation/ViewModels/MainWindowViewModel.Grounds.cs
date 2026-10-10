@@ -1,12 +1,12 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DzLegal.App.Services;
+using DzLegal.Presentation.Services;
 using DzLegal.Domain;
 using DzLegal.Drafting;
 using DzLegal.Law;
 
-namespace DzLegal.App.ViewModels;
+namespace DzLegal.Presentation.ViewModels;
 
 /// <summary>
 /// The Grounds step: on the lawyer's click, the local model reads the facts, the official library is searched, and

@@ -1,12 +1,18 @@
 using Avalonia.Data.Converters;
 using Avalonia.Media.Imaging;
 
-namespace DzLegal.App.ViewModels;
+namespace DzLegal.App;
 
 public static class Converters
 {
     public static readonly IValueConverter Strike =
         new FuncValueConverter<bool, Avalonia.Media.TextDecorationCollection?>(on => on ? Avalonia.Media.TextDecorations.Strikethrough : null);
+
+    public static readonly IValueConverter RightToLeft =
+        new FuncValueConverter<bool, Avalonia.Media.FlowDirection>(rtl => rtl ? Avalonia.Media.FlowDirection.RightToLeft : Avalonia.Media.FlowDirection.LeftToRight);
+
+    public static readonly IValueConverter DarkTheme =
+        new FuncValueConverter<bool, Avalonia.Styling.ThemeVariant>(dark => dark ? Avalonia.Styling.ThemeVariant.Dark : Avalonia.Styling.ThemeVariant.Light);
 
     public static readonly IValueConverter IsZero = new FuncValueConverter<int, bool>(v => v == 0);
 

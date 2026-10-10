@@ -1,7 +1,7 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace DzLegal.App.ViewModels;
+namespace DzLegal.Presentation.ViewModels;
 
 public enum ActivityStepState
 {

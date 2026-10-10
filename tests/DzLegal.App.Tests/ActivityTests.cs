@@ -1,4 +1,3 @@
-using DzLegal.App.ViewModels;
 using DzLegal.Drafting;
 
 namespace DzLegal.App.Tests;

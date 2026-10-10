@@ -1,7 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using DzLegal.Drafting;
 
-namespace DzLegal.App.ViewModels;
+namespace DzLegal.Presentation.ViewModels;
 
 /// <summary>A drafting engine the lawyer can pick. Providers are created on demand, per drafting run.</summary>
 public enum ModelState

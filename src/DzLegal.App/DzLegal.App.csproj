@@ -6,8 +6,6 @@
     <Description>Desktop shell: guided case form, draft editor and compliance report. Runs fully offline.</Description>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <IncludeLegalData>true</IncludeLegalData>
-    <!-- UI strings are resources; the Arabic neutral language lives in Strings.resx. -->
-    <NeutralLanguage>ar</NeutralLanguage>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>
   <ItemGroup>
@@ -33,7 +31,13 @@
     <ProjectReference Include="..\DzLegal.Law\DzLegal.Law.csproj" />
     <ProjectReference Include="..\DzLegal.ModelProviders.Ollama\DzLegal.ModelProviders.Ollama.csproj" />
     <ProjectReference Include="..\DzLegal.ModelProviders.Stub\DzLegal.ModelProviders.Stub.csproj" />
+    <ProjectReference Include="..\DzLegal.Presentation\DzLegal.Presentation.csproj" />
     <ProjectReference Include="..\DzLegal.Storage\DzLegal.Storage.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Using Include="DzLegal.Presentation" />
+    <Using Include="DzLegal.Presentation.Services" />
+    <Using Include="DzLegal.Presentation.ViewModels" />
   </ItemGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="DzLegal.App.Tests" />

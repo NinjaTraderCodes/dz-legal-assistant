@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using DzLegal.Domain;
 using DzLegal.Law;
 
-namespace DzLegal.App.ViewModels;
+namespace DzLegal.Presentation.ViewModels;
 
 /// <summary>An article the lawyer can tick: citation, why it fits, and its official text when imported.</summary>
 public sealed partial class ArticleChoiceViewModel : ObservableObject

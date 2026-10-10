@@ -1,6 +1,5 @@
 using Avalonia.Controls;
 using Avalonia.Threading;
-using DzLegal.App.ViewModels;
 
 namespace DzLegal.App.Views;
 

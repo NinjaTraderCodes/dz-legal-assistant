@@ -49,7 +49,8 @@ DzLegal.Harness (console) ─► FormEngine, Drafting, Law, Storage, both provid
 | `DzLegal.ModelProviders.Stub` | "Template mode": returns the lawyer's notes unchanged. Used without AI, in tests and in CI. | — |
 | `DzLegal.Documents` | Layout model → PDF (QuestPDF) and Word (OpenXML), RTL, Arabic fonts. | QuestPDF, DocumentFormat.OpenXml |
 | `DzLegal.Storage` | `.dzdraft.json` files, autosave, evaluation records, per-user folders. | — |
-| `DzLegal.App` | The desktop app: composition, view models, XAML, resources (strings, fonts). | Avalonia 12, CommunityToolkit.Mvvm, FluentIcons |
+| `DzLegal.Presentation` | The screens' logic, shared by the desktop app and the web demo: view models, UI strings (`Resources/Strings*.resx`), file and link service interfaces. No UI framework. | CommunityToolkit.Mvvm |
+| `DzLegal.App` | The desktop app: composition, XAML views, converters, Avalonia services, fonts. | Avalonia 12, FluentIcons |
 | `DzLegal.Harness` | Console tool: the Form Engine quality harness, the drafting bench, the grounds bench, law import. | — |
 
 Each project has a matching `tests/<Project>.Tests` (xunit v3), except Domain, Harness and the providers. Their tests live in FormEngine.Tests and Drafting.Tests.
@@ -97,7 +98,7 @@ DZLEGAL_SCREENSHOTS=$PWD/docs/images dotnet test tests/DzLegal.App.Tests   # ref
 | Flag an **invented legal qualification** | `definition.json` → `groundedTerms` | |
 | Section order, alignment, bold, spacing | `definition.json` → `sections[].layout` | Used by the preview, PDF and Word. |
 | Change the default **model** or its parameters | `src/DzLegal.App/appsettings.json`, or a local `appsettings.local.json` | |
-| UI text | `src/DzLegal.App/Resources/Strings.resx` (Arabic) **and** `Strings.en.resx` | Keep the keys in sync. |
+| UI text | `src/DzLegal.Presentation/Resources/Strings.resx` (Arabic) **and** `Strings.en.resx` | Keep the keys in sync. |
 | UI layout | `src/DzLegal.App/Views/MainWindow.axaml` | Compiled bindings. |
 | Add an official code to import | `data/law/sources.json`, then `law import` | |
 | PDF or Word look | `src/DzLegal.Documents/PdfRenderer.cs`, `DocxRenderer.cs` | |

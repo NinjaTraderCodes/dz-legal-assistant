@@ -1,6 +1,4 @@
-using Avalonia.Controls;
-
-namespace DzLegal.App.Services;
+namespace DzLegal.Presentation.Services;
 
 /// <summary>
 /// Opens a link in the lawyer's browser, only when they click it. The app itself never connects anywhere; the
@@ -9,13 +7,6 @@ namespace DzLegal.App.Services;
 public interface IExternalLinks
 {
     Task<bool> OpenAsync(Uri uri);
-}
-
-/// <summary>Uses the operating system's default browser.</summary>
-public sealed class AvaloniaExternalLinks(Func<TopLevel?> topLevel) : IExternalLinks
-{
-    public async Task<bool> OpenAsync(Uri uri) =>
-        topLevel() is { } top && await top.Launcher.LaunchUriAsync(uri);
 }
 
 /// <summary>For contexts without a window: never opens anything.</summary>

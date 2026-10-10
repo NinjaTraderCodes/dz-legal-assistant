@@ -5,5 +5,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\DzLegal.App\DzLegal.App.csproj" />
+    <ProjectReference Include="..\..\src\DzLegal.Presentation\DzLegal.Presentation.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Using Include="DzLegal.Presentation" />
+    <Using Include="DzLegal.Presentation.Services" />
+    <Using Include="DzLegal.Presentation.ViewModels" />
   </ItemGroup>
 </Project>

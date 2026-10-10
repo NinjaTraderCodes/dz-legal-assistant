@@ -216,8 +216,8 @@ public class MainWindowViewModelTests
         await vm.ExportPdfCommand.ExecuteAsync(null);
         await vm.ExportWordCommand.ExecuteAsync(null);
 
-        Assert.StartsWith("%PDF", System.Text.Encoding.ASCII.GetString(files.SavedByKind[Services.SaveKind.Pdf], 0, 4), StringComparison.Ordinal);
-        Assert.Equal((byte)'P', files.SavedByKind[Services.SaveKind.Word][0]); // .docx is a zip ("PK")
+        Assert.StartsWith("%PDF", System.Text.Encoding.ASCII.GetString(files.SavedByKind[SaveKind.Pdf], 0, 4), StringComparison.Ordinal);
+        Assert.Equal((byte)'P', files.SavedByKind[SaveKind.Word][0]); // .docx is a zip ("PK")
         Assert.StartsWith("تم التصدير", vm.StatusMessage, StringComparison.Ordinal);
     }
 
@@ -385,9 +385,9 @@ public class MainWindowViewModelTests
     public void ThemeToggles()
     {
         var vm = Vm.Create();
-        Assert.Equal(Avalonia.Styling.ThemeVariant.Light, vm.RequestedTheme);
+        Assert.False(vm.IsDarkTheme);
         vm.ToggleThemeCommand.Execute(null);
-        Assert.Equal(Avalonia.Styling.ThemeVariant.Dark, vm.RequestedTheme);
+        Assert.True(vm.IsDarkTheme);
     }
 
     [Fact]
@@ -489,12 +489,12 @@ public class MainWindowViewModelTests
     public void SwitchingLanguageTranslatesTheInterface()
     {
         var vm = Vm.Create();
-        Assert.Equal(Avalonia.Media.FlowDirection.RightToLeft, vm.FlowDirection);
+        Assert.True(vm.IsRightToLeft);
         Assert.Equal("المحكمة", vm.Field("court.name").Label);
 
         vm.SwitchLanguageCommand.Execute(null);
 
-        Assert.Equal(Avalonia.Media.FlowDirection.LeftToRight, vm.FlowDirection);
+        Assert.False(vm.IsRightToLeft);
         Assert.Equal("Court (tribunal)", vm.Field("court.name").Label);
         Assert.Equal("Court before which the action is brought", vm.Findings.Single(f => f.ElementId == "art15.1.court").Label);
         Assert.Equal("Draft narrative sections", vm.L["Generate"]);
@@ -503,7 +503,7 @@ public class MainWindowViewModelTests
     [Fact]
     public void EveryUiStringExistsInBothLanguages()
     {
-        var root = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "src", "DzLegal.App", "Resources"));
+        var root = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "src", "DzLegal.Presentation", "Resources"));
         static HashSet<string> Keys(string file) =>
             XDocument.Load(file).Root!.Elements("data").Select(d => (string)d.Attribute("name")!).ToHashSet();
 

@@ -2,7 +2,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Resources;
 
-namespace DzLegal.App;
+namespace DzLegal.Presentation;
 
 /// <summary>
 /// UI strings from Resources/Strings*.resx. Arabic is the neutral language; English is a satellite.
@@ -11,7 +11,7 @@ namespace DzLegal.App;
 /// </summary>
 public sealed class Loc : INotifyPropertyChanged
 {
-    private static readonly ResourceManager Resources = new("DzLegal.App.Resources.Strings", typeof(Loc).Assembly);
+    private static readonly ResourceManager Resources = new("DzLegal.Presentation.Resources.Strings", typeof(Loc).Assembly);
 
     public event PropertyChangedEventHandler? PropertyChanged;
 

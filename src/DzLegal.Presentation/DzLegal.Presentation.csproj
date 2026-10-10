@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>The screens' logic, shared by the desktop app and the web demo: view models, UI strings and the services they need. No UI framework here.</Description>
+    <!-- UI strings are resources; the Arabic neutral language lives in Strings.resx. -->
+    <NeutralLanguage>ar</NeutralLanguage>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DzLegal.Documents\DzLegal.Documents.csproj" />
+    <ProjectReference Include="..\DzLegal.Drafting\DzLegal.Drafting.csproj" />
+    <ProjectReference Include="..\DzLegal.FormEngine\DzLegal.FormEngine.csproj" />
+    <ProjectReference Include="..\DzLegal.Law\DzLegal.Law.csproj" />
+    <ProjectReference Include="..\DzLegal.ModelProviders.Stub\DzLegal.ModelProviders.Stub.csproj" />
+    <ProjectReference Include="..\DzLegal.Storage\DzLegal.Storage.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="DzLegal.App.Tests" />
+    <InternalsVisibleTo Include="DzLegalAssistant" />
+  </ItemGroup>
+</Project>

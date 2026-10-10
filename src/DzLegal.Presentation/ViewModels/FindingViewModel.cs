@@ -1,6 +1,6 @@
 using DzLegal.Domain;
 
-namespace DzLegal.App.ViewModels;
+namespace DzLegal.Presentation.ViewModels;
 
 /// <summary>One line of the compliance report, already localized.</summary>
 public sealed class FindingViewModel

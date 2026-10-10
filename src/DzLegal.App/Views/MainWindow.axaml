@@ -1,14 +1,15 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:DzLegal.App.ViewModels"
+        xmlns:vm="using:DzLegal.Presentation.ViewModels"
+        xmlns:app="using:DzLegal.App"
         xmlns:ic="using:FluentIcons.Avalonia"
         x:Class="DzLegal.App.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Title="{Binding L[AppTitle]}"
         Width="1440" Height="900" MinWidth="1100" MinHeight="640"
         FontFamily="{StaticResource UiFont}"
-        RequestedThemeVariant="{Binding RequestedTheme}"
-        FlowDirection="{Binding FlowDirection}"
+        RequestedThemeVariant="{Binding IsDarkTheme, Converter={x:Static app:Converters.DarkTheme}}"
+        FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}"
         Background="{DynamicResource CanvasBrush}">
 
   <Window.KeyBindings>
@@ -518,7 +519,7 @@
 
           <Grid>
             <!-- Edit: the sections on paper -->
-            <ScrollViewer Background="{DynamicResource PaperCanvasBrush}" CornerRadius="8" IsVisible="{Binding SelectedDraftTab, Converter={x:Static vm:Converters.IsZero}}">
+            <ScrollViewer Background="{DynamicResource PaperCanvasBrush}" CornerRadius="8" IsVisible="{Binding SelectedDraftTab, Converter={x:Static app:Converters.IsZero}}">
               <Border Background="{DynamicResource PaperBrush}" Margin="18" Padding="36,28" CornerRadius="4" MaxWidth="860"
                       BoxShadow="0 2 10 0 #26000000">
                 <ItemsControl Name="SectionsList" ItemsSource="{Binding Sections}">
@@ -572,13 +573,13 @@
             </ScrollViewer>
 
             <!-- Preview: the actual PDF pages -->
-            <Grid IsVisible="{Binding SelectedDraftTab, Converter={x:Static vm:Converters.IsOne}}">
+            <Grid IsVisible="{Binding SelectedDraftTab, Converter={x:Static app:Converters.IsOne}}">
               <ScrollViewer Background="{DynamicResource PaperCanvasBrush}" CornerRadius="8">
                 <ItemsControl Name="PreviewPagesList" ItemsSource="{Binding PreviewPages}" Margin="18">
                   <ItemsControl.ItemTemplate>
                     <DataTemplate>
                       <Border Background="White" Margin="0,0,0,18" HorizontalAlignment="Center" BoxShadow="0 2 10 0 #33000000">
-                        <Image Source="{Binding Converter={x:Static vm:Converters.PngToBitmap}}" Stretch="Uniform" MaxWidth="860" />
+                        <Image Source="{Binding Converter={x:Static app:Converters.PngToBitmap}}" Stretch="Uniform" MaxWidth="860" />
                       </Border>
                     </DataTemplate>
                   </ItemsControl.ItemTemplate>
@@ -737,7 +738,7 @@
                       <DataTemplate x:DataType="vm:DiffTokenViewModel">
                         <Border Margin="0,0,4,3" CornerRadius="3" Padding="2,0" Classes.added="{Binding IsAdded}" Classes.removed="{Binding IsRemoved}">
                           <TextBlock FontFamily="{StaticResource DocumentFont}" FontSize="15" Foreground="#1C2321" Text="{Binding Text}"
-                                     TextDecorations="{Binding IsRemoved, Converter={x:Static vm:Converters.Strike}}" />
+                                     TextDecorations="{Binding IsRemoved, Converter={x:Static app:Converters.Strike}}" />
                         </Border>
                       </DataTemplate>
                     </ItemsControl.ItemTemplate>

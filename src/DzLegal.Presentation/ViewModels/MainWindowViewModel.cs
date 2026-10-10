@@ -1,9 +1,7 @@
 using System.Collections.ObjectModel;
-using Avalonia.Media;
-using Avalonia.Styling;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DzLegal.App.Services;
+using DzLegal.Presentation.Services;
 using DzLegal.Documents;
 using DzLegal.Domain;
 using DzLegal.Drafting;
@@ -11,7 +9,7 @@ using DzLegal.FormEngine;
 using DzLegal.ModelProviders.Stub;
 using DzLegal.Storage;
 
-namespace DzLegal.App.ViewModels;
+namespace DzLegal.Presentation.ViewModels;
 
 /// <summary>
 /// The core loop: case form → draft → compliance report → edit → re-check.
@@ -105,7 +103,8 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
 
     public string DocumentTypeName => _definition.Name.Get(L.Language);
 
-    public FlowDirection FlowDirection => L.IsRightToLeft ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
+    /// <summary>The interface reads right to left (Arabic). The document itself is always Arabic and right to left.</summary>
+    public bool IsRightToLeft => L.IsRightToLeft;
 
     public IReadOnlyList<FieldGroupViewModel> FieldGroups { get; }
 
@@ -142,10 +141,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     public partial bool HasIssues { get; set; }
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(RequestedTheme))]
     public partial bool IsDarkTheme { get; set; }
-
-    public ThemeVariant RequestedTheme => IsDarkTheme ? ThemeVariant.Dark : ThemeVariant.Light;
 
     /// <summary>An autosaved draft from an earlier session can be restored.</summary>
     [ObservableProperty]
@@ -626,7 +622,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
             v.Relocalize();
         }
 
-        OnPropertyChanged(nameof(FlowDirection));
+        OnPropertyChanged(nameof(IsRightToLeft));
         OnPropertyChanged(nameof(DocumentTypeName));
         OnPropertyChanged(nameof(StepPosition));
         OnPropertyChanged(nameof(Shortcuts));

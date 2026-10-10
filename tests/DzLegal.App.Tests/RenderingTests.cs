@@ -28,7 +28,7 @@ public class RenderingTests
 #pragma warning restore CS0618
     }
 
-    private static async Task<(MainWindow Window, ViewModels.MainWindowViewModel Vm)> ShowFilledWindowAsync()
+    private static async Task<(MainWindow Window, MainWindowViewModel Vm)> ShowFilledWindowAsync()
     {
         var vm = Vm.Create().Filled();
         await vm.GenerateCommand.ExecuteAsync(null);
@@ -164,7 +164,7 @@ public class RenderingTests
             Drafting.GroundsAnalyzer.SelectionRequestId => Analysis.Selection,
             _ => r.SourceText,
         });
-        var vm = Vm.Create(extra: new ViewModels.ProviderOption("paused", _ => "paused", () => model)).Filled();
+        var vm = Vm.Create(extra: new ProviderOption("paused", _ => "paused", () => model)).Filled();
         vm.SelectStepCommand.Execute(vm.FieldGroups.Single(g => g.Id == "grounds"));
         var window = new MainWindow { DataContext = vm, Width = 1440, Height = 900 };
         window.Show();
@@ -189,7 +189,7 @@ public class RenderingTests
     public async Task TheSectionBeingWrittenIsMarkedWhileTheModelDrafts()
     {
         var model = new PausingProvider(r => r.SourceText);
-        var vm = Vm.Create(extra: new ViewModels.ProviderOption("paused", _ => "paused", () => model)).Filled();
+        var vm = Vm.Create(extra: new ProviderOption("paused", _ => "paused", () => model)).Filled();
         var window = new MainWindow { DataContext = vm, Width = 1440, Height = 900 };
         window.Show();
 

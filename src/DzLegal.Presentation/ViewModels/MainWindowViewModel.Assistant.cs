@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using DzLegal.Domain;
 using DzLegal.Drafting;
 
-namespace DzLegal.App.ViewModels;
+namespace DzLegal.Presentation.ViewModels;
 
 /// <summary>One line of the assistant thread: the lawyer's request or the assistant's answer status.</summary>
 public sealed record AssistantMessage(string Text, bool FromLawyer);

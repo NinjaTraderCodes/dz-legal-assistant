@@ -131,7 +131,7 @@ ollama pull gemma3:4b                                          # once, online
 dotnet run --project src/DzLegal.Harness -- draft --models gemma3:4b --out bench
 ```
 
-This runs the fictitious cases in `tests/drafting-cases/` through each model. For every model and case it writes the full document, the time per section, any retries or fallbacks, and the automatic issues. It also writes `bench/summary.md`. On a CPU-only machine, expect several minutes per case. Automatic checks cannot detect swapped roles or invented reasoning, so read the outputs too; each file ends with a checklist. Use `--models stub` to try it without any model.
+This runs the fictitious cases in `tests/drafting-cases/` through each model. For every model and case it writes the full document, the time per section, any retries or fallbacks, and the automatic issues. It also writes `bench/summary.md`. On a CPU-only machine, expect several minutes per case. Automatic checks cannot detect swapped roles or invented reasoning, so read the outputs too; each file ends with a checklist. Use `--models stub` to try it without any model. To measure the hosted model's correctness and stability over many runs (`--runs`, `--case`, `--models openrouter`), see [docs/ONLINE-TESTING.md](docs/ONLINE-TESTING.md).
 
 ### Packaging for a lawyer's Windows PC
 
@@ -140,6 +140,8 @@ dotnet publish src/DzLegal.App -c Release -r win-x64 --self-contained -o out/win
 ```
 
 The output folder has everything it needs: runtime, `data/` rules, fonts and `appsettings.json`. Copy it to the machine and run `DzLegalAssistant.exe`.
+
+Never add `-p:OnlineTesting=true` here. That flag builds the temporary online testing version ([docs/ONLINE-TESTING.md](docs/ONLINE-TESTING.md)), which can send case data to OpenRouter.
 
 ## Demo walkthrough (for reviewers)
 

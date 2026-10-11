@@ -318,3 +318,58 @@ public sealed class ProvenanceTests : IDisposable
         Assert.False(first.IsTextVerified); // until a lawyer has checked it against the page
     }
 }
+
+public sealed class GroundsStabilityTests
+{
+    private static readonly GroundsCase Loan = new() { Name = "loan", Facts = "…", Expect = "loan-repayment", ExpectArticles = ["civil-code:450", "civil-code:107"] };
+
+    private static GroundsReport Run(string? claim, string[] articles, string[] modelChosen, string? error = null) =>
+        new("m", [new GroundsCaseResult(Loan, new GroundsAnalysis
+        {
+            FactsHash = "h",
+            ClaimIds = claim is null ? [] : [claim],
+            Articles = articles.Select(a => new AnalysedArticle(a.Split(':')[0], a.Split(':')[1], "basis", "", AnalysedArticle.FromCatalog)).ToList(),
+        }, TimeSpan.Zero, []) { ModelChosen = modelChosen, Error = error }]);
+
+    [Fact]
+    public void IdenticalRunsAreFullyStable()
+    {
+        var runs = new[] { Run("loan-repayment", ["civil-code:450"], ["civil-code:450"]), Run("loan-repayment", ["civil-code:450"], ["civil-code:450"]) };
+        var s = Assert.Single(GroundsEvaluator.Stability(runs));
+        Assert.Equal(2, s.Runs);
+        Assert.Equal(1, s.ClaimAgreement);
+        Assert.Equal("loan-repayment", s.MostCommonClaim);
+        Assert.Equal(1, s.ArticleAgreement);
+        Assert.Equal(1, s.ClaimExactRate);
+        Assert.Equal(0.5, s.ModelRecall);
+    }
+
+    [Fact]
+    public void DisagreementLowersTheScoresAndFailuresAreCounted()
+    {
+        var runs = new[]
+        {
+            Run("loan-repayment", ["civil-code:450", "civil-code:107"], ["civil-code:450", "civil-code:107"]),
+            Run("loan-repayment", ["civil-code:450"], []),
+            Run(null, [], [], error: "not reachable"),
+        };
+        var s = Assert.Single(GroundsEvaluator.Stability(runs));
+        Assert.Equal(2.0 / 3, s.ClaimAgreement, 3);
+        Assert.Equal(1, s.Failures);
+        // Pairwise Jaccard: {450,107} vs {450} = 1/2, vs {} = 0, {450} vs {} = 0.
+        Assert.Equal(1.0 / 6, s.ArticleAgreement, 3);
+        Assert.Equal(1.0 / 3, s.ModelRecall, 3); // mean of the per-run shares: 2/2, 0, 0
+    }
+
+    [Fact]
+    public void TheModelsOwnChoiceIsReadFromItsAnswerAndOnlyCandidatesCount()
+    {
+        var trace = new List<(string, string)>
+        {
+            ("candidates", "civil-code:450 — catalog\ncivil-code:107 — catalog\ncivil-code:124 — search"),
+            ("selection.answer", "- civil-code:٤٥٠ | أساس | اقترض\ncivil-code:999 | أساس | مختلق\n* CIVIL-CODE:124 | تعويض | ضرر"),
+        };
+        Assert.Equal(["civil-code:450", "civil-code:124"], GroundsEvaluator.ModelChosen(trace));
+        Assert.Empty(GroundsEvaluator.ModelChosen([("candidates", "civil-code:450 — catalog")]));
+    }
+}

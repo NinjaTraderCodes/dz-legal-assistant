@@ -4,6 +4,8 @@ Client case data is covered by professional secrecy. The application is built so
 
 > This page is about the **desktop app**, the product lawyers use. The public **web demo** is a separate program (`src/DzLegal.Web`) that sends prompts to a hosted model, so it is for fictitious cases only; see [WEB-DEMO.md](WEB-DEMO.md). Its hosted providers live in `DzLegal.ModelProviders.Hosted`, which the desktop app does not reference: `OfflineGuaranteeTests` fails the build if it ever does.
 
+> **Temporary testing build.** For the AI testing phase only, the app can be built with `-p:OnlineTesting=true` to add an online test engine (OpenRouter), for fictitious cases. That build is the only exception to this page: it says so in its window title, and it shows an amber warning while the online engine is selected. The normal build and the published package don't contain it, and `OfflineGuaranteeTests` checks this. See [ONLINE-TESTING.md](ONLINE-TESTING.md).
+
 ## What the application does on the network
 
 | Component | Network use |

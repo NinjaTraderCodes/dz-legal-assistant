@@ -7,8 +7,6 @@ using DzLegal.Domain;
 using DzLegal.Domain.Serialization;
 using DzLegal.Drafting;
 using DzLegal.FormEngine;
-using DzLegal.ModelProviders.Ollama;
-using DzLegal.ModelProviders.Stub;
 
 namespace DzLegal.Harness;
 
@@ -53,6 +51,21 @@ public sealed record BenchOptions
     public required string DataRoot { get; init; }
     public Uri Endpoint { get; init; } = new("http://127.0.0.1:11434");
     public TimeSpan Timeout { get; init; } = TimeSpan.FromMinutes(15);
+
+    /// <summary>How many times each case is drafted per model (to measure stability).</summary>
+    public int Runs { get; init; } = 1;
+
+    /// <summary>Only this case (its file name without .json), or every case.</summary>
+    public string? Case { get; init; }
+
+    /// <summary>Wait before each model call (hosted rate limits).</summary>
+    public TimeSpan Delay { get; init; } = TimeSpan.Zero;
+
+    /// <summary>
+    /// The law library: the official texts of the articles each case's grounds notes cite are given to the model, as
+    /// the app does for ticked articles, and its quotes are checked against them. Null: no texts.
+    /// </summary>
+    public string? LawRoot { get; init; }
 }
 
 /// <summary>
@@ -67,40 +80,51 @@ public static class DraftBench
         ArgumentNullException.ThrowIfNull(options);
         ArgumentNullException.ThrowIfNull(log);
         var definition = DefinitionLoader.Load(Path.Combine(options.DataRoot, "requete-introductive"));
-        var cases = DraftingCaseLoader.LoadAll(options.CasesFolder);
+        var cases = DraftingCaseLoader.LoadAll(options.CasesFolder).Where(c => options.Case is null || c.Id == options.Case).ToList();
+        var knowledge = options.LawRoot is null ? DzLegal.Law.LegalKnowledge.Empty : DzLegal.Law.LegalKnowledgeLoader.Load(options.LawRoot);
+        var runs = Math.Max(1, options.Runs);
+        var tally = new List<(string Model, string Case, int WrongLaw, bool Removed, bool FellBack, bool Complete, int LegalPoints, double Seconds, bool Failed)>();
         Directory.CreateDirectory(options.OutFolder);
         var ci = CultureInfo.InvariantCulture;
         var summary = new StringBuilder()
             .AppendLine("# Drafting bench").AppendLine()
             .AppendLine(CultureInfo.InvariantCulture, $"Rules v{definition.Version}, {cases.Count} cases, run {DateTime.Now:yyyy-MM-dd HH:mm}.").AppendLine()
             .AppendLine("Automatic columns cannot see swapped roles or invented reasoning: read each output too.").AppendLine()
-            .AppendLine("| model | case | total s | slowest section s | hard issues | number issues | stray Latin words | ungrounded terms | example copies removed | retried | fell back | formally complete | error |")
-            .AppendLine("|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|---|");
+            .AppendLine("| model | case | run | total s | slowest section s | hard issues | number issues | stray Latin words | ungrounded terms | wrong law (misquoted or from memory) | wrong-law paragraphs removed | legal points | example copies removed | retried | fell back | formally complete | error |")
+            .AppendLine("|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|---|");
 
         var speed = new StringBuilder();
         foreach (var model in options.Models)
         {
             var speedLog = new SpeedLog();
-            var modelFolder = Path.Combine(options.OutFolder, Safe(model));
+            if (HarnessModels.IsHosted(model))
+            {
+                log.WriteLine($"[{model}] hosted engine: the (fictitious) test cases are sent to that service. About {cases.Count * runs * 2}-{cases.Count * runs * 4} calls.");
+            }
+
+            for (var run = 1; run <= runs; run++)
+            {
+            var modelFolder = runs > 1 ? Path.Combine(options.OutFolder, Safe(model), $"run-{run}") : Path.Combine(options.OutFolder, Safe(model));
             Directory.CreateDirectory(modelFolder);
             foreach (var drafting in cases)
             {
-                log.WriteLine($"[{model}] {drafting.Id} …");
+                log.WriteLine($"[{model}] {drafting.Id}{(runs > 1 ? $" (run {run}/{runs})" : string.Empty)} …");
                 var inputs = CaseInputs.CreateDefaults(definition, DateOnly.FromDateTime(DateTime.Now));
                 foreach (var (k, v) in drafting.Inputs)
                 {
                     inputs[k] = v;
                 }
 
-                var timed = new TimingProvider(CreateProvider(model, options, speedLog));
+                var timed = new TimingProvider(new PacedModelProvider(HarnessModels.Create(model, options.Endpoint, options.Timeout, speedLog), options.Delay));
+                var legalTexts = LegalTextsCited(knowledge, inputs.GetValueOrDefault("notes.grounds", string.Empty));
                 var clock = Stopwatch.StartNew();
                 DraftDocument? draft = null;
                 string? error = null;
                 try
                 {
-                    draft = await new DraftingService(timed).DraftAsync(definition, inputs);
+                    draft = await new DraftingService(timed).DraftAsync(definition, inputs, new DraftOptions { LegalTexts = legalTexts });
                 }
-                catch (ModelProviderException ex)
+                catch (Exception ex) when (ex is ModelProviderException or HttpRequestException or IOException or TaskCanceledException)
                 {
                     error = ex.Message;
                 }
@@ -112,14 +136,15 @@ public static class DraftBench
                 clock.Stop();
                 if (draft is null)
                 {
-                    summary.AppendLine(CultureInfo.InvariantCulture, $"| {model} | {drafting.Id} | {clock.Elapsed.TotalSeconds:0} | | | | | | | | | | {error} |");
+                    summary.AppendLine(CultureInfo.InvariantCulture, $"| {model} | {drafting.Id} | {run} | {clock.Elapsed.TotalSeconds:0} | | | | | | | | | | | | | {error} |");
+                    tally.Add((model, drafting.Id, 0, false, false, false, 0, clock.Elapsed.TotalSeconds, true));
                     continue;
                 }
 
                 var narrative = definition.Sections.Where(s => s.Kind == SectionKind.Narrative).ToList();
                 var issues = narrative.ToDictionary(
                     s => s.Id,
-                    s => NarrativeChecks.Check(draft.FindSection(s.Id)?.Text ?? string.Empty, inputs.GetValueOrDefault(s.SourceField!, string.Empty), inputs, definition.GroundedTerms));
+                    s => NarrativeChecks.Check(draft.FindSection(s.Id)?.Text ?? string.Empty, inputs.GetValueOrDefault(s.SourceField!, string.Empty), inputs, definition.GroundedTerms, legalTexts));
                 var report = ComplianceChecker.Check(definition, draft);
                 var hard = issues.Values.Sum(l => l.Count(i => i.IsHard));
                 var numbers = issues.Values.Sum(l => l.Count(i => i.Kind is NarrativeIssueKind.UnknownNumber or NarrativeIssueKind.MissingNumber));
@@ -129,12 +154,19 @@ public static class DraftBench
                 var latin = issues.Values.Sum(l => l.Count(i => i.Kind == NarrativeIssueKind.UnexpectedLatinWord));
                 var ungrounded = issues.Values.Sum(l => l.Count(i => i.Kind == NarrativeIssueKind.UngroundedTerm));
                 var slowest = timed.Durations.Count == 0 ? 0 : timed.Durations.Values.Max(d => d.TotalSeconds);
+                var wrongLaw = issues.Values.Sum(l => l.Count(i => i.IsWrongArticleContent || i.Kind == NarrativeIssueKind.UncitedArticle));
+                var removedWrongLaw = draft.Sections.Count(s => s.DraftingNotes.Contains(DraftingNoteCodes.RemovedWrongLaw));
+                var drafted = (draft.FindSection("grounds")?.Text ?? string.Empty) + "\n" + (draft.FindSection("requests")?.Text ?? string.Empty);
+                var legalPoints = SubstanceChecks.Check(inputs, [], [], drafted);
+                tally.Add((model, drafting.Id, wrongLaw, removedWrongLaw > 0, fellBack > 0, report.IsAdmissibleInForm, legalPoints.Count, clock.Elapsed.TotalSeconds, false));
 
                 var file = new StringBuilder()
                     .AppendLine(CultureInfo.InvariantCulture, $"# {drafting.Name}").AppendLine()
                     .AppendLine(CultureInfo.InvariantCulture, $"Model: `{model}` · total {clock.Elapsed.TotalSeconds:0} s · formally complete: {(report.IsAdmissibleInForm ? "yes" : "NO")}").AppendLine()
                     .AppendLine("## Document").AppendLine().AppendLine("```text").AppendLine(DocumentText.Compose(definition, draft)).AppendLine("```").AppendLine()
                     .AppendLine("## Narrative sections").AppendLine()
+                    .AppendLine(legalTexts.Count == 0 ? "No official text given to the model." : "Official texts given to the model: " + string.Join("، ", legalTexts.Select(t => t.Citation))).AppendLine()
+                    .AppendLine(legalPoints.Count == 0 ? "Legal points: none." : "Legal points: " + string.Join("; ", legalPoints.Select(p => $"{p.Kind} ({p.Article.Code}:{p.Article.Number})"))).AppendLine()
                     .AppendLine("| section | seconds (all attempts) | drafting note | automatic issues |")
                     .AppendLine("|---|---:|---|---|");
                 foreach (var s in narrative)
@@ -152,12 +184,29 @@ public static class DraftBench
                 await File.WriteAllTextAsync(Path.Combine(modelFolder, drafting.Id + ".md"), file.ToString());
 
                 summary.AppendLine(CultureInfo.InvariantCulture,
-                    $"| {model} | {drafting.Id} | {clock.Elapsed.TotalSeconds:0} | {slowest:0} | {hard} | {numbers} | {latin} | {ungrounded} | {copied} | {retried} | {fellBack} | {(report.IsAdmissibleInForm ? "yes" : "NO")} | |");
+                    $"| {model} | {drafting.Id} | {run} | {clock.Elapsed.TotalSeconds:0} | {slowest:0} | {hard} | {numbers} | {latin} | {ungrounded} | {wrongLaw} | {removedWrongLaw} | {legalPoints.Count} | {copied} | {retried} | {fellBack} | {(report.IsAdmissibleInForm ? "yes" : "NO")} | |");
+            }
             }
 
             speed.AppendLine(CultureInfo.InvariantCulture, $"### {model}").AppendLine().AppendLine(speedLog.Table());
             log.WriteLine($"[{model}] speed:");
             log.WriteLine(speedLog.Table());
+        }
+
+        if (runs > 1)
+        {
+            summary.AppendLine().AppendLine(CultureInfo.InvariantCulture, $"## Stability over {runs} runs").AppendLine()
+                .AppendLine("Per model and case: wrong law found in the final text (mean, min-max), and how often a paragraph had to be removed, the draft fell back to the notes, or the run failed.").AppendLine()
+                .AppendLine("| model | case | wrong law mean | min-max | runs with removals | fell back | formally complete | legal points mean | failed | mean s |")
+                .AppendLine("|---|---|---:|---|---:|---:|---:|---:|---:|---:|");
+            foreach (var g in tally.GroupBy(t => (t.Model, t.Case)))
+            {
+                var ok = g.Where(t => !t.Failed).ToList();
+                if (ok.Count == 0)
+                    summary.AppendLine(ci, $"| {g.Key.Model} | {g.Key.Case} | | | | | | | {g.Count()} | |");
+                else
+                    summary.AppendLine(ci, $"| {g.Key.Model} | {g.Key.Case} | {ok.Average(t => t.WrongLaw):0.0} | {ok.Min(t => t.WrongLaw)}-{ok.Max(t => t.WrongLaw)} | {ok.Count(t => t.Removed)}/{ok.Count} | {ok.Count(t => t.FellBack)}/{ok.Count} | {ok.Count(t => t.Complete)}/{ok.Count} | {ok.Average(t => t.LegalPoints):0.0} | {g.Count(t => t.Failed)} | {ok.Average(t => t.Seconds):0} |");
+            }
         }
 
         summary.AppendLine().AppendLine("## Where the time goes").AppendLine()
@@ -167,17 +216,26 @@ public static class DraftBench
         log.WriteLine($"Done: {Path.GetFullPath(Path.Combine(options.OutFolder, "summary.md"))}");
     }
 
-    private static IModelProvider CreateProvider(string model, BenchOptions options, SpeedLog speed) => model == "stub"
-        ? new StubModelProvider()
-        : new OllamaModelProvider(new OllamaOptions
+    /// <summary>
+    /// The official texts of the articles a case's grounds notes cite (Civil Code unless another code is named), as the
+    /// app gives the model the texts of the ticked articles.
+    /// </summary>
+    internal static IReadOnlyList<LegalText> LegalTextsCited(DzLegal.Law.LegalKnowledge knowledge, string groundsNotes)
+    {
+        var codes = new Dictionary<string, string>(StringComparer.Ordinal)
         {
-            Endpoint = options.Endpoint,
-            Model = model,
-            Timeout = options.Timeout,
-            // Reasoning models answer far faster with thinking disabled; others reject the flag.
-            Think = model.StartsWith("qwen3", StringComparison.OrdinalIgnoreCase) ? false : null,
-        })
-        { OnTimings = speed.Add };
+            ["القانون المدني"] = "civil-code", ["ق م"] = "civil-code", ["ق.م"] = "civil-code",
+            ["القانون التجاري"] = "commercial-code", ["ق ت"] = "commercial-code", ["ق.ت"] = "commercial-code",
+            ["قانون الإجراءات المدنية والإدارية"] = "cpca",
+        };
+        return NarrativeChecks.FullArticleReferences(groundsNotes)
+            .Select(r => (Code: r.Code is { } name && codes.TryGetValue(name, out var id) ? id : "civil-code", r.Number))
+            .Distinct()
+            .Select(r => (r.Code, Article: knowledge.Library.FindArticle(r.Code, r.Number)))
+            .Where(r => r.Article is { Repealed: false })
+            .Select(r => new LegalText(r.Article!.Number, knowledge.CitationName(r.Code), r.Article.Text))
+            .ToList();
+    }
 
     private static string Safe(string name) =>
         string.Concat(name.Select(c => char.IsLetterOrDigit(c) || c is '.' or '-' or '_' ? c : '_'));

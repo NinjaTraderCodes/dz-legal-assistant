@@ -49,12 +49,13 @@ public sealed class OpenAiCompatibleModelProvider : IModelProvider, IDisposable
             ? [new Message("user", HostedHttp.Merged(request))]
             : [new Message("system", request.SystemPrompt), new Message("user", request.UserPrompt)];
         var maxTokens = request.MaxTokens is { } cap ? Math.Min(cap, _options.MaxTokens) : _options.MaxTokens;
-        using var message = new HttpRequestMessage(HttpMethod.Post, new Uri("chat/completions", UriKind.Relative))
-        {
-            Content = HostedHttp.Json(new Request(_options.Model, messages, _options.Temperature, maxTokens, Stream: true)),
-        };
-
-        using var response = await HostedHttp.SendAsync(_http, message, Name, cancellationToken);
+        var body = new Request(_options.Model, messages, _options.Temperature, maxTokens, Stream: true);
+        using var response = await HostedHttp.SendAsync(
+            _http,
+            () => new HttpRequestMessage(HttpMethod.Post, new Uri("chat/completions", UriKind.Relative)) { Content = HostedHttp.Json(body) },
+            Name,
+            _options.RateLimit,
+            cancellationToken);
         await foreach (var data in HostedHttp.ReadEventsAsync(response, Name, _options.IdleTimeout, cancellationToken))
         {
             var chunk = HostedHttp.Parse<Chunk>(data, Name);

@@ -24,8 +24,9 @@ public static class HarnessModels
     /// <param name="ollamaEndpoint">Where the local Ollama listens.</param>
     /// <param name="timeout">Longest wait for one answer.</param>
     /// <param name="speed">Receives Ollama's timings, when the engine is local.</param>
+    /// <param name="rateLimit">For hosted engines: how long to wait out "too many requests" before a call fails.</param>
     /// <exception cref="ArgumentException">A hosted engine without its key.</exception>
-    public static IModelProvider Create(string spec, Uri ollamaEndpoint, TimeSpan timeout, SpeedLog? speed = null)
+    public static IModelProvider Create(string spec, Uri ollamaEndpoint, TimeSpan timeout, SpeedLog? speed = null, RateLimitPolicy? rateLimit = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(spec);
         if (spec == "stub")
@@ -44,12 +45,13 @@ public static class HarnessModels
                 Model = model,
                 Timeout = timeout,
                 MergeSystemPrompt = model.Contains("gemma", StringComparison.OrdinalIgnoreCase) || model == "mock",
+                RateLimit = rateLimit ?? RateLimitPolicy.None,
             });
         }
 
         if (spec.StartsWith("google:", StringComparison.Ordinal))
         {
-            return new GoogleAiModelProvider(new GoogleAiOptions { ApiKey = Key("GOOGLE_API_KEY", spec), Model = spec["google:".Length..], Timeout = timeout });
+            return new GoogleAiModelProvider(new GoogleAiOptions { ApiKey = Key("GOOGLE_API_KEY", spec), Model = spec["google:".Length..], Timeout = timeout, RateLimit = rateLimit ?? RateLimitPolicy.None });
         }
 
         return new OllamaModelProvider(new OllamaOptions
@@ -62,6 +64,13 @@ public static class HarnessModels
         })
         { OnTimings = speed is null ? null : speed.Add };
     }
+
+    /// <summary>
+    /// Waits out a hosted service's "too many requests" for up to <paramref name="maxWait"/> per call, saying so in the
+    /// log, so a busy spell pauses the batch instead of failing its cases.
+    /// </summary>
+    public static RateLimitPolicy Waiting(TimeSpan maxWait, TextWriter log) =>
+        new(maxWait, (delay, attempt) => log.WriteLine($"    rate-limited, waiting {delay.TotalSeconds:0} s (attempt {attempt})…"));
 
     /// <summary>True for an engine on someone else's server (the cases leave the machine).</summary>
     public static bool IsHosted(string spec) =>

@@ -167,7 +167,7 @@ public sealed partial class MainWindowViewModel
         }
         catch (Exception ex) when (IsModelOrRenderFailure(ex))
         {
-            AnalysisStatus = L.Format("Error", ex.Message);
+            AnalysisStatus = ErrorText(ex);
         }
         finally
         {

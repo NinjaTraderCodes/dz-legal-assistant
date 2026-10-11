@@ -75,6 +75,8 @@ public static class Composition
             Temperature = settings.Ollama.Temperature,
             MaxTokens = settings.Ollama.MaxTokens,
             MergeSystemPrompt = model.Contains("gemma", StringComparison.OrdinalIgnoreCase),
+            // OpenRouter's shared capacity is sometimes rate-limited for a minute or two: wait it out before reporting.
+            RateLimit = new DzLegal.ModelProviders.Hosted.RateLimitPolicy(TimeSpan.FromSeconds(90)),
         };
         return new ProviderOption(
             "online",

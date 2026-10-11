@@ -59,6 +59,12 @@ public sealed record GroundsCaseResult(GroundsCase Case, GroundsAnalysis Analysi
 
 public sealed record GroundsReport(string Model, IReadOnlyList<GroundsCaseResult> Results)
 {
+    /// <summary>Cases in the batch; more than <see cref="Results"/> when the run stopped early.</summary>
+    public int Planned { get; init; }
+
+    /// <summary>The run gave up after too many failures in a row (the service is down or keeps refusing).</summary>
+    public bool StoppedEarly => Planned > Results.Count;
+
     public double ClaimAccuracy => Results.Count == 0 ? 0 : (double)Results.Count(r => r.ClaimFound) / Results.Count;
 
     public double ClaimExactRate => Results.Count == 0 ? 0 : (double)Results.Count(r => r.ClaimExact) / Results.Count;
@@ -116,7 +122,11 @@ public static class GroundsEvaluator
             .SelectMany(f => JsonSerializer.Deserialize<GroundsCaseFile>(File.ReadAllText(f), DefinitionJson.Options)?.Cases ?? [])
             .ToList();
 
-    public static async Task<GroundsReport> EvaluateAsync(LegalKnowledge knowledge, IReadOnlyList<GroundsCase> cases, IModelProvider provider, TextWriter log, string? outFolder = null)
+    /// <param name="maxConsecutiveFailures">
+    /// Stop the batch after this many failed cases in a row (0: never), rather than recording a failure for every
+    /// remaining case while a service is down.
+    /// </param>
+    public static async Task<GroundsReport> EvaluateAsync(LegalKnowledge knowledge, IReadOnlyList<GroundsCase> cases, IModelProvider provider, TextWriter log, string? outFolder = null, int maxConsecutiveFailures = 0)
     {
         ArgumentNullException.ThrowIfNull(knowledge);
         ArgumentNullException.ThrowIfNull(cases);
@@ -129,6 +139,7 @@ public static class GroundsEvaluator
             Directory.CreateDirectory(modelFolder);
         }
 
+        var consecutiveFailures = 0;
         foreach (var c in cases)
         {
             var trace = new List<(string Step, string Text)>();
@@ -155,9 +166,16 @@ public static class GroundsEvaluator
             {
                 await File.WriteAllTextAsync(Path.Combine(modelFolder, Safe(c.Name) + ".md"), CaseReport(result, trace));
             }
+
+            consecutiveFailures = error is null ? 0 : consecutiveFailures + 1;
+            if (maxConsecutiveFailures > 0 && consecutiveFailures >= maxConsecutiveFailures && results.Count < cases.Count)
+            {
+                log.WriteLine($"  stopped: the engine failed {consecutiveFailures} cases in a row (last error: {error})");
+                break;
+            }
         }
 
-        var report = new GroundsReport(provider.Name, results);
+        var report = new GroundsReport(provider.Name, results) { Planned = cases.Count };
         if (outFolder is not null)
         {
             await File.AppendAllTextAsync(Path.Combine(outFolder, "summary.md"), Summary(report, knowledge));
@@ -286,6 +304,11 @@ public static class GroundsEvaluator
     {
         var sb = new System.Text.StringBuilder();
         sb.AppendLine(Ci, $"## {report.Model}").AppendLine();
+        if (report.StoppedEarly)
+        {
+            sb.AppendLine(Ci, $"**Stopped early after {report.Results.Count} of {report.Planned} cases**: the engine failed several cases in a row. The figures below cover only those cases.").AppendLine();
+        }
+
         sb.AppendLine("| claim exact | claim found | core recall | model recall | off-claim share | articles / case | empty (should not be) | failures | seconds / case |");
         sb.AppendLine("|---|---|---|---|---|---|---|---|---|");
         sb.AppendLine(Ci, $"| {report.ClaimExactRate:P0} | {report.ClaimAccuracy:P0} | {report.ArticleRecall:P0} | {report.ModelRecall:P0} | {report.OffClaimShare:P0} | {report.ArticlesPerCase:F1} | {report.EmptyWhenSomethingExpected} | {report.Failures} | {report.AverageTime.TotalSeconds:F0} |").AppendLine();
@@ -313,6 +336,11 @@ public static class GroundsEvaluator
         ArgumentNullException.ThrowIfNull(output);
         var ci = System.Globalization.CultureInfo.InvariantCulture;
         output.WriteLine(string.Format(ci, "{0}: claim exact {1:P0} · claim found {2:P0} · core recall {3:P0} · model recall {8:P0} · off-claim {4:P0} · {5:F1} articles/case · {6} empty · {9} failed · {7:F0}s per case", report.Model, report.ClaimExactRate, report.ClaimAccuracy, report.ArticleRecall, report.OffClaimShare, report.ArticlesPerCase, report.EmptyWhenSomethingExpected, report.AverageTime.TotalSeconds, report.ModelRecall, report.Failures));
+        if (report.StoppedEarly)
+        {
+            output.WriteLine(string.Format(ci, "  Stopped early after {0} of {1} cases.", report.Results.Count, report.Planned));
+        }
+
         if (knowledge.Library.Codes.Count == 0)
         {
             output.WriteLine("  Note: no official text is imported yet, so only catalog articles can be proposed and library search finds nothing.");

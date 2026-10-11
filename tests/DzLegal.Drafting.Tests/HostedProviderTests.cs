@@ -220,6 +220,103 @@ public class OpenAiCompatibleProviderTests
     }
 }
 
+public class RateLimitTests
+{
+    private static readonly ModelRequest Request = new("requests", "system rules", "user prompt", "notes");
+
+    private const string UpstreamLimited =
+        """{"error":{"message":"Provider returned error","code":429,"metadata":{"raw":"google/gemma-3-4b-it is temporarily rate-limited upstream.","provider_name":"DeepInfra"}}}""";
+
+    private static OpenAiCompatibleModelProvider Provider(FakeHandler handler, RateLimitPolicy policy) =>
+        new(new OpenAiCompatibleOptions { Label = "OpenRouter", Endpoint = new Uri("https://openrouter.ai/api/v1/"), ApiKey = "k", Model = "google/gemma-3-4b-it", RateLimit = policy }, handler);
+
+    private static HttpResponseMessage Limited(TimeSpan? retryAfter = null)
+    {
+        var response = new HttpResponseMessage(HttpStatusCode.TooManyRequests) { Content = new StringContent(UpstreamLimited) };
+        if (retryAfter is { } delay)
+        {
+            response.Headers.RetryAfter = new System.Net.Http.Headers.RetryConditionHeaderValue(delay);
+        }
+
+        return response;
+    }
+
+    [Fact]
+    public async Task ARateLimitIsWaitedOutAndTheRequestSentAgain()
+    {
+        var calls = 0;
+        var waits = new List<(TimeSpan Delay, int Attempt)>();
+        var handler = new FakeHandler(_ => ++calls == 1 ? Limited(TimeSpan.Zero) : GoogleAiProviderTests.Sse("""{"choices":[{"delta":{"content":"ok"}}]}"""));
+        using var provider = Provider(handler, new RateLimitPolicy(TimeSpan.FromMinutes(1), (d, a) => waits.Add((d, a))));
+
+        Assert.Equal("ok", await provider.GenerateAsync(Request, CancellationToken.None));
+        Assert.Equal(2, handler.Requests.Count);
+        Assert.Equal(handler.Requests[0].Body, handler.Requests[1].Body); // the same request, rebuilt
+        Assert.Equal([(TimeSpan.Zero, 2)], waits);
+    }
+
+    [Fact]
+    public async Task BeyondTheBudgetItSaysRateLimitedInPlainWordsWithoutTheRawJson()
+    {
+        var handler = new FakeHandler(_ => Limited());
+        using var provider = Provider(handler, new RateLimitPolicy(TimeSpan.FromMilliseconds(30)));
+
+        var ex = await Assert.ThrowsAsync<ModelProviderException>(() => provider.GenerateAsync(Request, CancellationToken.None));
+        Assert.True(ex.IsRateLimited);
+        Assert.True(ex.IsTransient);
+        Assert.Equal(2, handler.Requests.Count); // waited the remaining 30 ms once, then gave up
+        Assert.Contains("rate-limited by its provider", ex.Message, StringComparison.Ordinal);
+        Assert.Contains("temporarily rate-limited upstream", ex.Message, StringComparison.Ordinal);
+        Assert.DoesNotContain("{", ex.Message, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task WithoutAPolicyARateLimitFailsAtOnceSoTheWebFallbackMovesOn()
+    {
+        var handler = new FakeHandler(_ => Limited(TimeSpan.Zero));
+        using var provider = Provider(handler, RateLimitPolicy.None);
+
+        var ex = await Assert.ThrowsAsync<ModelProviderException>(() => provider.GenerateAsync(Request, CancellationToken.None));
+        Assert.True(ex.IsRateLimited);
+        Assert.Single(handler.Requests);
+    }
+
+    [Fact]
+    public async Task ARefusedRequestIsNeverRetriedAndShowsTheServicesMessage()
+    {
+        var handler = new FakeHandler(_ => new HttpResponseMessage(HttpStatusCode.BadRequest) { Content = new StringContent("""{"error":{"message":"max_tokens is too large"}}""") });
+        using var provider = Provider(handler, new RateLimitPolicy(TimeSpan.FromMinutes(1)));
+
+        var ex = await Assert.ThrowsAsync<ModelProviderException>(() => provider.GenerateAsync(Request, CancellationToken.None));
+        Assert.False(ex.IsRateLimited);
+        Assert.Single(handler.Requests);
+        Assert.EndsWith("error 400: max_tokens is too large", ex.Message, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task CancellingDuringTheWaitStopsAtOnce()
+    {
+        var handler = new FakeHandler(_ => Limited(TimeSpan.FromMinutes(1)));
+        using var provider = Provider(handler, new RateLimitPolicy(TimeSpan.FromMinutes(5)));
+        using var cancel = new CancellationTokenSource(TimeSpan.FromMilliseconds(100));
+
+        var clock = System.Diagnostics.Stopwatch.StartNew();
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => provider.GenerateAsync(Request, cancel.Token));
+        Assert.True(clock.Elapsed < TimeSpan.FromSeconds(10));
+    }
+
+    [Fact]
+    public async Task ARateLimitReportedInsideTheStreamIsRecognised()
+    {
+        var handler = new FakeHandler(_ => GoogleAiProviderTests.Sse(UpstreamLimited));
+        using var provider = Provider(handler, RateLimitPolicy.None);
+
+        var ex = await Assert.ThrowsAsync<ModelProviderException>(() => provider.GenerateAsync(Request, CancellationToken.None));
+        Assert.True(ex.IsRateLimited);
+        Assert.Contains("temporarily rate-limited upstream", ex.Message, StringComparison.Ordinal);
+    }
+}
+
 public class FallbackProviderTests
 {
     private static readonly ModelRequest Request = new("grounds", "s", "u", "n");

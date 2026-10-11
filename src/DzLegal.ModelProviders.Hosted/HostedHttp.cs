@@ -8,33 +8,120 @@ namespace DzLegal.ModelProviders.Hosted;
 /// <summary>What the hosted providers share: sending a request, reading server-sent events, classifying errors.</summary>
 internal static class HostedHttp
 {
-    /// <summary>Sends the request; turns network failures, timeouts and error statuses into <see cref="ModelProviderException"/>.</summary>
-    public static async Task<HttpResponseMessage> SendAsync(HttpClient http, HttpRequestMessage message, string engine, CancellationToken cancellationToken)
+    /// <summary>
+    /// Sends the request built by <paramref name="create"/>; turns network failures, timeouts and error statuses into
+    /// <see cref="ModelProviderException"/>. When the service answers "too many requests" (429) or "busy" (503), it waits
+    /// (as long as the service asks, else 10 s, 20 s, 40 s, then 60 s) and sends again, within the policy's budget. This
+    /// happens before any text is read, so nothing is ever duplicated.
+    /// </summary>
+    public static async Task<HttpResponseMessage> SendAsync(HttpClient http, Func<HttpRequestMessage> create, string engine, RateLimitPolicy policy, CancellationToken cancellationToken)
     {
-        HttpResponseMessage response;
+        var waited = TimeSpan.Zero;
+        for (var attempt = 1; ; attempt++)
+        {
+            HttpResponseMessage response;
+            using (var message = create())
+            {
+                try
+                {
+                    response = await http.SendAsync(message, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+                }
+                catch (HttpRequestException ex)
+                {
+                    throw new ModelProviderException($"{engine} is not reachable.", ex) { IsTransient = true };
+                }
+                catch (TaskCanceledException ex) when (!cancellationToken.IsCancellationRequested)
+                {
+                    throw new ModelProviderException($"{engine} did not answer in time.", ex) { IsTransient = true };
+                }
+            }
+
+            if (response.IsSuccessStatusCode)
+            {
+                return response;
+            }
+
+            using (response)
+            {
+                var remaining = policy.MaxWait - waited;
+                if (IsRateLimit(response.StatusCode) && remaining > TimeSpan.Zero && attempt < MaxAttempts)
+                {
+                    var delay = RetryAfter(response) ?? Backoff(attempt);
+                    delay = delay > remaining ? remaining : delay;
+                    policy.OnWait?.Invoke(delay, attempt + 1);
+                    await Task.Delay(delay, cancellationToken);
+                    waited += delay;
+                    continue;
+                }
+
+                throw Error(response.StatusCode, await response.Content.ReadAsStringAsync(cancellationToken), engine);
+            }
+        }
+    }
+
+    /// <summary>A ceiling on attempts, for a service that keeps saying "retry now" (Retry-After: 0).</summary>
+    private const int MaxAttempts = 12;
+
+    public static bool IsRateLimit(HttpStatusCode status) => status is HttpStatusCode.TooManyRequests or HttpStatusCode.ServiceUnavailable;
+
+    private static TimeSpan? RetryAfter(HttpResponseMessage response)
+    {
+        var header = response.Headers.RetryAfter;
+        var delay = header?.Delta ?? (header?.Date is { } date ? date - DateTimeOffset.UtcNow : null);
+        return delay is null ? null : delay < TimeSpan.Zero ? TimeSpan.Zero : delay;
+    }
+
+    private static TimeSpan Backoff(int attempt)
+    {
+        var seconds = Math.Min(60, 10 * Math.Pow(2, attempt - 1));
+        return TimeSpan.FromSeconds(seconds * (1 + (Random.Shared.NextDouble() * 0.2)));
+    }
+
+    /// <summary>
+    /// The error for a refused request, with the service's own explanation rather than its raw JSON. A rate limit says
+    /// so plainly (<see cref="ModelProviderException.IsRateLimited"/>), so the app can tell the lawyer to wait.
+    /// </summary>
+    internal static ModelProviderException Error(HttpStatusCode status, string body, string engine) =>
+        IsRateLimit(status)
+            ? new ModelProviderException($"{engine} is rate-limited by its provider (too many requests): {Truncate(Explanation(body), 160)}") { IsTransient = true, IsRateLimited = true }
+            : new ModelProviderException($"{engine} error {(int)status}: {Truncate(Explanation(body))}") { IsTransient = IsTransient(status) };
+
+    /// <summary>
+    /// What the service says went wrong: OpenRouter's upstream detail (<c>error.metadata.raw</c>) when present, else
+    /// <c>error.message</c>, else the body as it came.
+    /// </summary>
+    internal static string Explanation(string body)
+    {
         try
         {
-            response = await http.SendAsync(message, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+            using var document = JsonDocument.Parse(body);
+            if (document.RootElement.ValueKind == JsonValueKind.Object && document.RootElement.TryGetProperty("error", out var error))
+            {
+                if (error.ValueKind == JsonValueKind.Object)
+                {
+                    if (error.TryGetProperty("metadata", out var metadata) && metadata.ValueKind == JsonValueKind.Object
+                        && metadata.TryGetProperty("raw", out var raw) && raw.ValueKind == JsonValueKind.String)
+                    {
+                        return raw.GetString()!;
+                    }
+
+                    if (error.TryGetProperty("message", out var message) && message.ValueKind == JsonValueKind.String)
+                    {
+                        return message.GetString()!;
+                    }
+                }
+                else if (error.ValueKind == JsonValueKind.String)
+                {
+                    return error.GetString()!;
+                }
+            }
         }
-        catch (HttpRequestException ex)
+        catch (JsonException)
         {
-            throw new ModelProviderException($"{engine} is not reachable.", ex) { IsTransient = true };
-        }
-        catch (TaskCanceledException ex) when (!cancellationToken.IsCancellationRequested)
-        {
-            throw new ModelProviderException($"{engine} did not answer in time.", ex) { IsTransient = true };
+            // Not JSON: shown as it came.
         }
 
-        if (response.IsSuccessStatusCode)
-        {
-            return response;
-        }
-
-        using (response)
-        {
-            var detail = Truncate(await response.Content.ReadAsStringAsync(cancellationToken));
-            throw new ModelProviderException($"{engine} error {(int)response.StatusCode}: {detail}") { IsTransient = IsTransient(response.StatusCode) };
-        }
+        return body.Trim();
     }
 
     /// <summary>
@@ -130,8 +217,11 @@ internal static class HostedHttp
                 && document.RootElement.TryGetProperty("error", out var error)
                 && error.ValueKind != JsonValueKind.Null)
             {
-                var message = error.ValueKind == JsonValueKind.Object && error.TryGetProperty("message", out var m) ? m.ToString() : error.ToString();
-                throw new ModelProviderException($"{engine} error: {Truncate(message)}") { IsTransient = true };
+                var code = error.ValueKind == JsonValueKind.Object && error.TryGetProperty("code", out var c) && c.ValueKind == JsonValueKind.Number ? c.GetInt32() : 0;
+                var explanation = Explanation(data);
+                throw code == 429
+                    ? new ModelProviderException($"{engine} is rate-limited by its provider (too many requests): {Truncate(explanation, 160)}") { IsTransient = true, IsRateLimited = true }
+                    : new ModelProviderException($"{engine} error: {Truncate(explanation)}") { IsTransient = true };
             }
 
             return document.RootElement.Deserialize<T>()!;
@@ -142,7 +232,7 @@ internal static class HostedHttp
         }
     }
 
-    private static string Truncate(string detail) => detail.Length > 300 ? detail[..300] + "…" : detail;
+    private static string Truncate(string detail, int max = 300) => detail.Length > max ? detail[..max] + "…" : detail;
 
     /// <summary>
     /// The request body as JSON with a known length. Some gateways and proxies refuse chunked uploads, which is what

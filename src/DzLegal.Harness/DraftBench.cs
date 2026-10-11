@@ -61,6 +61,12 @@ public sealed record BenchOptions
     /// <summary>Wait before each model call (hosted rate limits).</summary>
     public TimeSpan Delay { get; init; } = TimeSpan.Zero;
 
+    /// <summary>Hosted engines: how long one call may wait out "too many requests".</summary>
+    public TimeSpan RateLimitWait { get; init; } = TimeSpan.FromMinutes(5);
+
+    /// <summary>Stop a model's batch after this many failed cases in a row (0: never).</summary>
+    public int MaxConsecutiveFailures { get; init; } = 3;
+
     /// <summary>
     /// The law library: the official texts of the articles each case's grounds notes cite are given to the model, as
     /// the app does for ticked articles, and its quotes are checked against them. Null: no texts.
@@ -102,90 +108,107 @@ public static class DraftBench
                 log.WriteLine($"[{model}] hosted engine: the (fictitious) test cases are sent to that service. About {cases.Count * runs * 2}-{cases.Count * runs * 4} calls.");
             }
 
+            var consecutiveFailures = 0;
+            var stopped = false;
             for (var run = 1; run <= runs; run++)
             {
-            var modelFolder = runs > 1 ? Path.Combine(options.OutFolder, Safe(model), $"run-{run}") : Path.Combine(options.OutFolder, Safe(model));
-            Directory.CreateDirectory(modelFolder);
-            foreach (var drafting in cases)
-            {
-                log.WriteLine($"[{model}] {drafting.Id}{(runs > 1 ? $" (run {run}/{runs})" : string.Empty)} …");
-                var inputs = CaseInputs.CreateDefaults(definition, DateOnly.FromDateTime(DateTime.Now));
-                foreach (var (k, v) in drafting.Inputs)
+                var modelFolder = runs > 1 ? Path.Combine(options.OutFolder, Safe(model), $"run-{run}") : Path.Combine(options.OutFolder, Safe(model));
+                Directory.CreateDirectory(modelFolder);
+                foreach (var drafting in cases)
                 {
-                    inputs[k] = v;
+                    log.WriteLine($"[{model}] {drafting.Id}{(runs > 1 ? $" (run {run}/{runs})" : string.Empty)} …");
+                    var inputs = CaseInputs.CreateDefaults(definition, DateOnly.FromDateTime(DateTime.Now));
+                    foreach (var (k, v) in drafting.Inputs)
+                    {
+                        inputs[k] = v;
+                    }
+
+                    var timed = new TimingProvider(new PacedModelProvider(HarnessModels.Create(model, options.Endpoint, options.Timeout, speedLog, HarnessModels.Waiting(options.RateLimitWait, log)), options.Delay));
+                    var legalTexts = LegalTextsCited(knowledge, inputs.GetValueOrDefault("notes.grounds", string.Empty));
+                    var clock = Stopwatch.StartNew();
+                    DraftDocument? draft = null;
+                    string? error = null;
+                    try
+                    {
+                        draft = await new DraftingService(timed).DraftAsync(definition, inputs, new DraftOptions { LegalTexts = legalTexts });
+                    }
+                    catch (Exception ex) when (ex is ModelProviderException or HttpRequestException or IOException or TaskCanceledException)
+                    {
+                        error = ex.Message;
+                    }
+                    finally
+                    {
+                        (timed.Inner as IDisposable)?.Dispose();
+                    }
+
+                    clock.Stop();
+                    if (draft is null)
+                    {
+                        summary.AppendLine(CultureInfo.InvariantCulture, $"| {model} | {drafting.Id} | {run} | {clock.Elapsed.TotalSeconds:0} | | | | | | | | | | | | | {error} |");
+                        tally.Add((model, drafting.Id, 0, false, false, false, 0, clock.Elapsed.TotalSeconds, true));
+                        if (++consecutiveFailures >= options.MaxConsecutiveFailures && options.MaxConsecutiveFailures > 0)
+                        {
+                            log.WriteLine($"[{model}] stopped: the engine failed {consecutiveFailures} cases in a row (last error: {error})");
+                            summary.AppendLine(CultureInfo.InvariantCulture, $"| {model} | stopped early | {run} | | | | | | | | | | | | | | the engine failed {consecutiveFailures} cases in a row |");
+                            stopped = true;
+                            break;
+                        }
+
+                        continue;
+                    }
+
+                    consecutiveFailures = 0;
+
+                    var narrative = definition.Sections.Where(s => s.Kind == SectionKind.Narrative).ToList();
+                    var issues = narrative.ToDictionary(
+                        s => s.Id,
+                        s => NarrativeChecks.Check(draft.FindSection(s.Id)?.Text ?? string.Empty, inputs.GetValueOrDefault(s.SourceField!, string.Empty), inputs, definition.GroundedTerms, legalTexts));
+                    var report = ComplianceChecker.Check(definition, draft);
+                    var hard = issues.Values.Sum(l => l.Count(i => i.IsHard));
+                    var numbers = issues.Values.Sum(l => l.Count(i => i.Kind is NarrativeIssueKind.UnknownNumber or NarrativeIssueKind.MissingNumber));
+                    var retried = draft.Sections.Count(s => s.DraftingNotes.Contains(DraftingNoteCodes.Retried));
+                    var fellBack = draft.Sections.Count(s => s.DraftingNotes.Contains(DraftingNoteCodes.FellBackToNotes));
+                    var copied = draft.Sections.Count(s => s.DraftingNotes.Contains(DraftingNoteCodes.RemovedCopiedExample));
+                    var latin = issues.Values.Sum(l => l.Count(i => i.Kind == NarrativeIssueKind.UnexpectedLatinWord));
+                    var ungrounded = issues.Values.Sum(l => l.Count(i => i.Kind == NarrativeIssueKind.UngroundedTerm));
+                    var slowest = timed.Durations.Count == 0 ? 0 : timed.Durations.Values.Max(d => d.TotalSeconds);
+                    var wrongLaw = issues.Values.Sum(l => l.Count(i => i.IsWrongArticleContent || i.Kind == NarrativeIssueKind.UncitedArticle));
+                    var removedWrongLaw = draft.Sections.Count(s => s.DraftingNotes.Contains(DraftingNoteCodes.RemovedWrongLaw));
+                    var drafted = (draft.FindSection("grounds")?.Text ?? string.Empty) + "\n" + (draft.FindSection("requests")?.Text ?? string.Empty);
+                    var legalPoints = SubstanceChecks.Check(inputs, [], [], drafted);
+                    tally.Add((model, drafting.Id, wrongLaw, removedWrongLaw > 0, fellBack > 0, report.IsAdmissibleInForm, legalPoints.Count, clock.Elapsed.TotalSeconds, false));
+
+                    var file = new StringBuilder()
+                        .AppendLine(CultureInfo.InvariantCulture, $"# {drafting.Name}").AppendLine()
+                        .AppendLine(CultureInfo.InvariantCulture, $"Model: `{model}` · total {clock.Elapsed.TotalSeconds:0} s · formally complete: {(report.IsAdmissibleInForm ? "yes" : "NO")}").AppendLine()
+                        .AppendLine("## Document").AppendLine().AppendLine("```text").AppendLine(DocumentText.Compose(definition, draft)).AppendLine("```").AppendLine()
+                        .AppendLine("## Narrative sections").AppendLine()
+                        .AppendLine(legalTexts.Count == 0 ? "No official text given to the model." : "Official texts given to the model: " + string.Join("، ", legalTexts.Select(t => t.Citation))).AppendLine()
+                        .AppendLine(legalPoints.Count == 0 ? "Legal points: none." : "Legal points: " + string.Join("; ", legalPoints.Select(p => $"{p.Kind} ({p.Article.Code}:{p.Article.Number})"))).AppendLine()
+                        .AppendLine("| section | seconds (all attempts) | drafting note | automatic issues |")
+                        .AppendLine("|---|---:|---|---|");
+                    foreach (var s in narrative)
+                    {
+                        var seconds = timed.Durations.TryGetValue(s.Id, out var d) ? d.TotalSeconds.ToString("0", ci) : "-";
+                        var list = issues[s.Id].Count == 0 ? "none" : string.Join("; ", issues[s.Id].Select(i => $"{i.Kind}: {i.Detail}"));
+                        file.AppendLine(CultureInfo.InvariantCulture, $"| {s.Id} | {seconds} | {(draft.FindSection(s.Id)?.DraftingNotes is { Count: > 0 } n ? string.Join(", ", n) : "-")} | {list} |");
+                    }
+
+                    file.AppendLine().AppendLine("## Read for yourself").AppendLine()
+                        .AppendLine("- [ ] Roles kept (who lent, who owes, who claims)?")
+                        .AppendLine("- [ ] Nothing invented (facts, contract types, articles, reasoning)?")
+                        .AppendLine("- [ ] Formal legal Arabic, correct grammar?")
+                        .AppendLine("- [ ] Requests identical in substance and amounts to the notes?");
+                    await File.WriteAllTextAsync(Path.Combine(modelFolder, drafting.Id + ".md"), file.ToString());
+
+                    summary.AppendLine(CultureInfo.InvariantCulture,
+                        $"| {model} | {drafting.Id} | {run} | {clock.Elapsed.TotalSeconds:0} | {slowest:0} | {hard} | {numbers} | {latin} | {ungrounded} | {wrongLaw} | {removedWrongLaw} | {legalPoints.Count} | {copied} | {retried} | {fellBack} | {(report.IsAdmissibleInForm ? "yes" : "NO")} | |");
                 }
 
-                var timed = new TimingProvider(new PacedModelProvider(HarnessModels.Create(model, options.Endpoint, options.Timeout, speedLog), options.Delay));
-                var legalTexts = LegalTextsCited(knowledge, inputs.GetValueOrDefault("notes.grounds", string.Empty));
-                var clock = Stopwatch.StartNew();
-                DraftDocument? draft = null;
-                string? error = null;
-                try
+                if (stopped)
                 {
-                    draft = await new DraftingService(timed).DraftAsync(definition, inputs, new DraftOptions { LegalTexts = legalTexts });
+                    break;
                 }
-                catch (Exception ex) when (ex is ModelProviderException or HttpRequestException or IOException or TaskCanceledException)
-                {
-                    error = ex.Message;
-                }
-                finally
-                {
-                    (timed.Inner as IDisposable)?.Dispose();
-                }
-
-                clock.Stop();
-                if (draft is null)
-                {
-                    summary.AppendLine(CultureInfo.InvariantCulture, $"| {model} | {drafting.Id} | {run} | {clock.Elapsed.TotalSeconds:0} | | | | | | | | | | | | | {error} |");
-                    tally.Add((model, drafting.Id, 0, false, false, false, 0, clock.Elapsed.TotalSeconds, true));
-                    continue;
-                }
-
-                var narrative = definition.Sections.Where(s => s.Kind == SectionKind.Narrative).ToList();
-                var issues = narrative.ToDictionary(
-                    s => s.Id,
-                    s => NarrativeChecks.Check(draft.FindSection(s.Id)?.Text ?? string.Empty, inputs.GetValueOrDefault(s.SourceField!, string.Empty), inputs, definition.GroundedTerms, legalTexts));
-                var report = ComplianceChecker.Check(definition, draft);
-                var hard = issues.Values.Sum(l => l.Count(i => i.IsHard));
-                var numbers = issues.Values.Sum(l => l.Count(i => i.Kind is NarrativeIssueKind.UnknownNumber or NarrativeIssueKind.MissingNumber));
-                var retried = draft.Sections.Count(s => s.DraftingNotes.Contains(DraftingNoteCodes.Retried));
-                var fellBack = draft.Sections.Count(s => s.DraftingNotes.Contains(DraftingNoteCodes.FellBackToNotes));
-                var copied = draft.Sections.Count(s => s.DraftingNotes.Contains(DraftingNoteCodes.RemovedCopiedExample));
-                var latin = issues.Values.Sum(l => l.Count(i => i.Kind == NarrativeIssueKind.UnexpectedLatinWord));
-                var ungrounded = issues.Values.Sum(l => l.Count(i => i.Kind == NarrativeIssueKind.UngroundedTerm));
-                var slowest = timed.Durations.Count == 0 ? 0 : timed.Durations.Values.Max(d => d.TotalSeconds);
-                var wrongLaw = issues.Values.Sum(l => l.Count(i => i.IsWrongArticleContent || i.Kind == NarrativeIssueKind.UncitedArticle));
-                var removedWrongLaw = draft.Sections.Count(s => s.DraftingNotes.Contains(DraftingNoteCodes.RemovedWrongLaw));
-                var drafted = (draft.FindSection("grounds")?.Text ?? string.Empty) + "\n" + (draft.FindSection("requests")?.Text ?? string.Empty);
-                var legalPoints = SubstanceChecks.Check(inputs, [], [], drafted);
-                tally.Add((model, drafting.Id, wrongLaw, removedWrongLaw > 0, fellBack > 0, report.IsAdmissibleInForm, legalPoints.Count, clock.Elapsed.TotalSeconds, false));
-
-                var file = new StringBuilder()
-                    .AppendLine(CultureInfo.InvariantCulture, $"# {drafting.Name}").AppendLine()
-                    .AppendLine(CultureInfo.InvariantCulture, $"Model: `{model}` · total {clock.Elapsed.TotalSeconds:0} s · formally complete: {(report.IsAdmissibleInForm ? "yes" : "NO")}").AppendLine()
-                    .AppendLine("## Document").AppendLine().AppendLine("```text").AppendLine(DocumentText.Compose(definition, draft)).AppendLine("```").AppendLine()
-                    .AppendLine("## Narrative sections").AppendLine()
-                    .AppendLine(legalTexts.Count == 0 ? "No official text given to the model." : "Official texts given to the model: " + string.Join("، ", legalTexts.Select(t => t.Citation))).AppendLine()
-                    .AppendLine(legalPoints.Count == 0 ? "Legal points: none." : "Legal points: " + string.Join("; ", legalPoints.Select(p => $"{p.Kind} ({p.Article.Code}:{p.Article.Number})"))).AppendLine()
-                    .AppendLine("| section | seconds (all attempts) | drafting note | automatic issues |")
-                    .AppendLine("|---|---:|---|---|");
-                foreach (var s in narrative)
-                {
-                    var seconds = timed.Durations.TryGetValue(s.Id, out var d) ? d.TotalSeconds.ToString("0", ci) : "-";
-                    var list = issues[s.Id].Count == 0 ? "none" : string.Join("; ", issues[s.Id].Select(i => $"{i.Kind}: {i.Detail}"));
-                    file.AppendLine(CultureInfo.InvariantCulture, $"| {s.Id} | {seconds} | {(draft.FindSection(s.Id)?.DraftingNotes is { Count: > 0 } n ? string.Join(", ", n) : "-")} | {list} |");
-                }
-
-                file.AppendLine().AppendLine("## Read for yourself").AppendLine()
-                    .AppendLine("- [ ] Roles kept (who lent, who owes, who claims)?")
-                    .AppendLine("- [ ] Nothing invented (facts, contract types, articles, reasoning)?")
-                    .AppendLine("- [ ] Formal legal Arabic, correct grammar?")
-                    .AppendLine("- [ ] Requests identical in substance and amounts to the notes?");
-                await File.WriteAllTextAsync(Path.Combine(modelFolder, drafting.Id + ".md"), file.ToString());
-
-                summary.AppendLine(CultureInfo.InvariantCulture,
-                    $"| {model} | {drafting.Id} | {run} | {clock.Elapsed.TotalSeconds:0} | {slowest:0} | {hard} | {numbers} | {latin} | {ungrounded} | {wrongLaw} | {removedWrongLaw} | {legalPoints.Count} | {copied} | {retried} | {fellBack} | {(report.IsAdmissibleInForm ? "yes" : "NO")} | |");
-            }
             }
 
             speed.AppendLine(CultureInfo.InvariantCulture, $"### {model}").AppendLine().AppendLine(speedLog.Table());

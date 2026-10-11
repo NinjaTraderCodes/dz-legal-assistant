@@ -103,11 +103,13 @@ public sealed class GoogleAiModelProvider : IModelProvider, IDisposable
 
     private async Task<HttpResponseMessage> SendOnceAsync(ModelRequest request, string? thinking, CancellationToken cancellationToken)
     {
-        using var message = new HttpRequestMessage(HttpMethod.Post, new Uri($"models/{_options.Model}:streamGenerateContent?alt=sse", UriKind.Relative))
-        {
-            Content = HostedHttp.Json(Body(request, thinking)),
-        };
-        return await HostedHttp.SendAsync(_http, message, Name, cancellationToken);
+        var body = Body(request, thinking);
+        return await HostedHttp.SendAsync(
+            _http,
+            () => new HttpRequestMessage(HttpMethod.Post, new Uri($"models/{_options.Model}:streamGenerateContent?alt=sse", UriKind.Relative)) { Content = HostedHttp.Json(body) },
+            Name,
+            _options.RateLimit,
+            cancellationToken);
     }
 
     /// <summary>
@@ -123,8 +125,8 @@ public sealed class GoogleAiModelProvider : IModelProvider, IDisposable
         do
         {
             var address = "models?pageSize=1000" + (page is null ? string.Empty : "&pageToken=" + Uri.EscapeDataString(page));
-            using var message = new HttpRequestMessage(HttpMethod.Get, new Uri(address, UriKind.Relative));
-            using var response = await HostedHttp.SendAsync(provider._http, message, "Google AI Studio", cancellationToken);
+            using var response = await HostedHttp.SendAsync(
+                provider._http, () => new HttpRequestMessage(HttpMethod.Get, new Uri(address, UriKind.Relative)), "Google AI Studio", RateLimitPolicy.None, cancellationToken);
             var list = JsonSerializer.Deserialize<ModelList>(await response.Content.ReadAsStringAsync(cancellationToken));
             models.AddRange((list?.Models ?? [])
                 .Where(m => m.Name is not null && (m.Methods ?? []).Any(x => x is "generateContent" or "streamGenerateContent"))

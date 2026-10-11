@@ -263,7 +263,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         catch (Exception ex) when (IsModelOrRenderFailure(ex))
         {
             // A failed preview must never take the window (or a web visitor's session) down with it.
-            SetStatus(L.Format("Error", ex.Message), isError: true);
+            SetStatus(ErrorText(ex), isError: true);
         }
     }
 
@@ -274,6 +274,13 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     internal static bool IsModelOrRenderFailure(Exception ex) =>
         ex is ModelProviderException or InvalidOperationException or ArgumentException or HttpRequestException
             or IOException or System.Text.Json.JsonException or TimeoutException or FormatException;
+
+    /// <summary>
+    /// The message for a failed AI command. A busy online service (rate limit) gets a plain, translated explanation of
+    /// what to do instead of the service's own technical text.
+    /// </summary>
+    internal string ErrorText(Exception ex) =>
+        ex is ModelProviderException { IsRateLimited: true } ? L["EngineRateLimited"] : L.Format("Error", ex.Message);
 
     public void Dispose()
     {
@@ -425,7 +432,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         }
         catch (Exception ex) when (IsModelOrRenderFailure(ex))
         {
-            SetStatus(L.Format("Error", ex.Message), isError: true);
+            SetStatus(ErrorText(ex), isError: true);
         }
         finally
         {

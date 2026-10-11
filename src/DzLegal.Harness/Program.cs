@@ -7,7 +7,9 @@ using DzLegal.Harness;
 //       Form Engine accuracy over the corpus. Exit code 1 on any mismatch.
 //   Models: a local Ollama model (gemma3:4b), stub, openrouter[:<model>] (OPENROUTER_API_KEY) or google:<model>
 //   (GOOGLE_API_KEY). Hosted engines receive the fictitious test cases (docs/ONLINE-TESTING.md).
-//   Batch options for draft and grounds: --runs N (repeat each case), --case <name> (one case), --delay-seconds S.
+//   Batch options for draft and grounds: --runs N (repeat each case), --case <name> (one case), --delay-seconds S,
+//   --rate-limit-wait-seconds S (hosted: wait out "too many requests", default 300 per call),
+//   --max-consecutive-failures N (stop a model's batch after N failed cases in a row, default 3; 0 = never).
 //   dzlegal-harness draft --models <m1,m2,...|stub> [--out bench] [--cases <folder>] [--endpoint http://127.0.0.1:11434] [--timeout-minutes 15]
 //       Drafting bench: runs the drafting cases through each model and writes outputs + summary.md.
 //   dzlegal-harness grounds --models <gemma3:4b,...|stub> [--out bench-grounds] [--law-root <data/law>] [--cases <grounds-cases>] [--endpoint ...]
@@ -47,6 +49,8 @@ if (args.Length > 0 && args[0] == "grounds")
 
     var runs = Math.Max(1, int.Parse(Option("--runs", "1"), CultureInfo.InvariantCulture));
     var delay = TimeSpan.FromSeconds(double.Parse(Option("--delay-seconds", "0"), CultureInfo.InvariantCulture));
+    var rateLimitWait = TimeSpan.FromSeconds(double.Parse(Option("--rate-limit-wait-seconds", "300"), CultureInfo.InvariantCulture));
+    var maxFailures = int.Parse(Option("--max-consecutive-failures", "3"), CultureInfo.InvariantCulture);
     var knowledge = DzLegal.Law.LegalKnowledgeLoader.Load(Option("--law-root", Path.Combine(AppContext.BaseDirectory, "data", "law")));
     var outRoot = args.Contains("--out") ? Option("--out", "bench-grounds") : null;
     if (outRoot is not null)
@@ -81,7 +85,7 @@ if (args.Length > 0 && args[0] == "grounds")
             DzLegal.Drafting.IModelProvider provider;
             try
             {
-                provider = HarnessModels.Create(model, new Uri(Option("--endpoint", "http://127.0.0.1:11434")), TimeSpan.FromMinutes(10), speed);
+                provider = HarnessModels.Create(model, new Uri(Option("--endpoint", "http://127.0.0.1:11434")), TimeSpan.FromMinutes(10), speed, HarnessModels.Waiting(rateLimitWait, Console.Out));
             }
             catch (ArgumentException ex)
             {
@@ -96,12 +100,17 @@ if (args.Length > 0 && args[0] == "grounds")
             }
 
             var runFolder = outRoot is null ? null : runs > 1 ? Path.Combine(outRoot, $"run-{run}") : outRoot;
-            var report = await GroundsEvaluator.EvaluateAsync(knowledge, groundsCases, paced, Console.Out, runFolder);
+            var report = await GroundsEvaluator.EvaluateAsync(knowledge, groundsCases, paced, Console.Out, runFolder, maxFailures);
             GroundsEvaluator.Print(report, knowledge, Console.Out);
             reports.Add(report);
+            if (report.StoppedEarly)
+            {
+                Console.WriteLine($"  {model}: remaining runs skipped; try again later or with --delay-seconds.");
+                break;
+            }
         }
 
-        if (runs > 1)
+        if (reports.Count > 1)
         {
             var table = GroundsEvaluator.StabilityTable(model, GroundsEvaluator.Stability(reports));
             Console.WriteLine(table);
@@ -147,6 +156,8 @@ if (args.Length > 0 && args[0] == "draft")
             Case = args.Contains("--case") ? Option("--case", string.Empty) : null,
             Delay = TimeSpan.FromSeconds(double.Parse(Option("--delay-seconds", "0"), CultureInfo.InvariantCulture)),
             LawRoot = Option("--law-root", Path.Combine(AppContext.BaseDirectory, "data", "law")),
+            RateLimitWait = TimeSpan.FromSeconds(double.Parse(Option("--rate-limit-wait-seconds", "300"), CultureInfo.InvariantCulture)),
+            MaxConsecutiveFailures = int.Parse(Option("--max-consecutive-failures", "3"), CultureInfo.InvariantCulture),
         },
         Console.Out);
     return 0;

@@ -373,3 +373,41 @@ public sealed class GroundsStabilityTests
         Assert.Empty(GroundsEvaluator.ModelChosen([("candidates", "civil-code:450 — catalog")]));
     }
 }
+
+public sealed class GroundsBatchTests
+{
+    private sealed class Down : DzLegal.Drafting.IModelProvider
+    {
+        public int Calls { get; private set; }
+
+        public string Name => "down";
+
+        public Task<string> GenerateAsync(DzLegal.Drafting.ModelRequest request, CancellationToken cancellationToken)
+        {
+            Calls++;
+            throw new DzLegal.Drafting.ModelProviderException("down is rate-limited by its provider (too many requests).") { IsTransient = true, IsRateLimited = true };
+        }
+
+        public async IAsyncEnumerable<string> StreamAsync(DzLegal.Drafting.ModelRequest request, [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken cancellationToken)
+        {
+            yield return await GenerateAsync(request, cancellationToken);
+        }
+    }
+
+    [Fact]
+    public async Task ABatchStopsAfterThreeFailuresInARowInsteadOfFailingEveryCase()
+    {
+        var knowledge = LegalKnowledgeLoader.Load(Path.Combine(AppContext.BaseDirectory, "data", "law"));
+        var cases = GroundsEvaluator.LoadCases(Path.Combine(AppContext.BaseDirectory, "grounds-cases")).Take(10).ToList();
+        var engine = new Down();
+        var log = new StringWriter();
+
+        var report = await GroundsEvaluator.EvaluateAsync(knowledge, cases, engine, log, maxConsecutiveFailures: 3);
+
+        Assert.Equal(3, report.Results.Count);
+        Assert.Equal(3, report.Failures);
+        Assert.True(report.StoppedEarly);
+        Assert.Contains("stopped: the engine failed 3 cases in a row", log.ToString(), StringComparison.Ordinal);
+        Assert.Equal(3, engine.Calls);
+    }
+}

@@ -33,6 +33,9 @@ public sealed record GoogleAiOptions
     /// </summary>
     public string? ThinkingLevel { get; init; }
 
+    /// <inheritdoc cref="RateLimitPolicy"/>
+    public RateLimitPolicy RateLimit { get; init; } = RateLimitPolicy.None;
+
     internal string? EffectiveThinkingLevel =>
         ThinkingLevel ?? (Model.StartsWith("gemma-4", StringComparison.Ordinal) ? "minimal" : null);
 }
@@ -61,4 +64,19 @@ public sealed record OpenAiCompatibleOptions
 
     /// <summary>How long an answer may go silent mid-stream before the engine counts as stalled.</summary>
     public TimeSpan IdleTimeout { get; init; } = HostedHttp.DefaultIdleTimeout;
+
+    /// <inheritdoc cref="RateLimitPolicy"/>
+    public RateLimitPolicy RateLimit { get; init; } = RateLimitPolicy.None;
+}
+
+/// <summary>
+/// How long to keep waiting when the service says "too many requests" (429) or "busy" (503), in total, before giving up.
+/// None (the default) gives up at once, which suits the web demo: its fallback chain moves to the next engine instead.
+/// The desktop testing build and the harness wait, because they test one engine on purpose.
+/// </summary>
+/// <param name="MaxWait">Total waiting allowed for one request.</param>
+/// <param name="OnWait">Told before each wait: how long, and which attempt comes next.</param>
+public sealed record RateLimitPolicy(TimeSpan MaxWait, Action<TimeSpan, int>? OnWait = null)
+{
+    public static readonly RateLimitPolicy None = new(TimeSpan.Zero);
 }

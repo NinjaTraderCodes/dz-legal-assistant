@@ -197,7 +197,7 @@ public sealed partial class MainWindowViewModel
         }
         catch (Exception ex) when (IsModelOrRenderFailure(ex))
         {
-            AssistantThread.Add(new AssistantMessage(L.Format("Error", ex.Message), FromLawyer: false));
+            AssistantThread.Add(new AssistantMessage(ErrorText(ex), FromLawyer: false));
         }
         finally
         {
@@ -300,7 +300,7 @@ public sealed partial class MainWindowViewModel
         }
         catch (Exception ex) when (IsModelOrRenderFailure(ex))
         {
-            SetStatus(L.Format("Error", ex.Message), isError: true);
+            SetStatus(ErrorText(ex), isError: true);
         }
         finally
         {

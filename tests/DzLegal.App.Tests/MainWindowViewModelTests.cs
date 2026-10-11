@@ -501,6 +501,19 @@ public class MainWindowViewModelTests
     }
 
     [Fact]
+    public void ABusyOnlineServiceIsExplainedInPlainWordsNotItsRawError()
+    {
+        var vm = Vm.Create();
+        var limited = new DzLegal.Drafting.ModelProviderException("x (OpenRouter) is rate-limited: {\"error\":…}") { IsRateLimited = true };
+        Assert.Contains("انتظر دقيقة", vm.ErrorText(limited), StringComparison.Ordinal);
+        Assert.DoesNotContain("error", vm.ErrorText(limited), StringComparison.Ordinal);
+        Assert.Equal(vm.L.Format("Error", "boom"), vm.ErrorText(new DzLegal.Drafting.ModelProviderException("boom")));
+
+        vm.SwitchLanguageCommand.Execute(null);
+        Assert.StartsWith("The online service is busy", vm.ErrorText(limited), StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void EveryUiStringExistsInBothLanguages()
     {
         var root = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "src", "DzLegal.Presentation", "Resources"));

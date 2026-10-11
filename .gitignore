@@ -9,3 +9,9 @@ TestResults/
 /artifacts/
 # Personal settings override (see src/DzLegal.App/appsettings.json)
 appsettings.local.json
+
+# Secrets and local benchmark/audit outputs: never committed or copied into images
+*.key
+.env
+bench*/
+redteam-output/

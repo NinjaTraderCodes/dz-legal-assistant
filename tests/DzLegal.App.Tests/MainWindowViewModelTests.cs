@@ -275,11 +275,13 @@ public class MainWindowViewModelTests
     }
 
     [Fact]
-    public void ComplianceScoreCountsApplicableElements()
+    public void ComplianceScoreCountsOnlyApplicableMandatoryElements()
     {
         var vm = Vm.Create().Filled();
-        Assert.Equal(vm.ApplicableCount - vm.IssueFindings.Count, vm.PresentCount);
-        Assert.Equal(vm.PresentCount, vm.PresentFindings.Count);
+        var mandatory = vm.Report!.Findings.Where(f => f.Element.Severity == DzLegal.Domain.Severity.Inadmissible && f.Status != DzLegal.Domain.ElementStatus.NotApplicable).ToList();
+        Assert.Equal(mandatory.Count, vm.ApplicableCount);
+        Assert.Equal(mandatory.Count(f => f.Status == DzLegal.Domain.ElementStatus.Present), vm.PresentCount);
+        Assert.True(vm.Report!.Findings.Count(f => f.Status != DzLegal.Domain.ElementStatus.NotApplicable) > vm.ApplicableCount); // recommendations don't inflate it
         Assert.Equal($"{vm.PresentCount} من {vm.ApplicableCount}", vm.ScoreText);
     }
 

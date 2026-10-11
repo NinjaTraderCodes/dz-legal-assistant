@@ -818,8 +818,10 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
             (vm.IsMissing ? IssueFindings : vm.IsPresent ? PresentFindings : null)?.Add(vm);
         }
 
-        PresentCount = Report.Findings.Count(f => f.Status == ElementStatus.Present);
-        ApplicableCount = Report.Findings.Count(f => f.Status != ElementStatus.NotApplicable);
+        // The score counts mandatory elements only: recommendations and practice points are listed but never inflate it.
+        var mandatory = Report.Findings.Where(f => f.Element.Severity == Severity.Inadmissible).ToList();
+        PresentCount = mandatory.Count(f => f.Status == ElementStatus.Present);
+        ApplicableCount = mandatory.Count(f => f.Status != ElementStatus.NotApplicable);
         ScoreText = L.Format("Score", PresentCount, ApplicableCount);
         PresentHeader = L.Format("PresentHeader", PresentCount);
         HasIssues = IssueFindings.Count > 0;

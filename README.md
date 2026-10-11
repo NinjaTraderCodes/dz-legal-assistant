@@ -12,7 +12,10 @@ The lawyer fills in the case details, the application produces a structured firs
 
 **Try it without installing anything: https://dz-legal-assistant-ai.onrender.com.** The public web demo runs the same engine, law library and screens in the browser, with four fictitious sample cases. Its AI steps use the same model as the desktop (Gemma 3 4B), hosted, so it is not for real client data. See [docs/WEB-DEMO.md](docs/WEB-DEMO.md) (local run: `dotnet run --project src/DzLegal.Web`). The first visit after a quiet spell takes about a minute while the free server wakes up.
 
-**Law texts:** the 39 articles the sample cases rely on are loaded from the official PDFs and proved letter by letter against them ([docs/LAW-LIBRARY.md](docs/LAW-LIBRARY.md)). The AI may describe an article only from that text, and every quote is checked.
+**Law texts:** 39 articles of the Civil Code, the CPCA and the Commercial Code are loaded from the official PDFs. A build script checks that each text matches the letters of its PDF page ([docs/LAW-LIBRARY.md](docs/LAW-LIBRARY.md)); that check is not a lawyer's review. Limits:
+- the CPCA texts are the 2008 originals, not yet checked against the 2022 amendment (Law 22-13);
+- the family and labour articles in the claim catalog have **no text loaded yet**: the app shows them as number only and refuses any quotation of them;
+- a quotation is checked only against a loaded text.
 
 ## Principles
 
@@ -29,7 +32,7 @@ The lawyer fills in the case details, the application produces a structured firs
 
 The legal grounds are often the hardest part for the lawyer. The form has three separate steps for them: **Facts → Legal grounds → Requests**.
 
-In the **Legal grounds** step, **«حلّل الوقائع واقترح الأسانيد»** runs a three-stage analysis with the local model. It takes about 1–2 minutes on a CPU-only laptop and can be cancelled. While it runs, a panel shows each step, a timer and the model's words as they are written, so the lawyer never waits in silence. The same panel appears while the draft is written (the section being written is marked) and in the section assistant. To shorten the first wait, the app loads the model into memory in the background when it starts (local only; `ollama.warmUp`).
+In the **Legal grounds** step, **«حلّل الوقائع واقترح الأسانيد»** runs a three-stage analysis with the local model. It takes about 2–3 minutes on a CPU-only laptop (measured: 117–181 s on an Intel i5-1335U) and can be cancelled. While it runs, a panel shows each step, a timer and the model's words as they are written, so the lawyer never waits in silence. The same panel appears while the draft is written (the section being written is marked) and in the section assistant. To shorten the first wait, the app loads the model into memory in the background when it starts (local only; `ollama.warmUp`).
 1. **Reading the facts.** The model states the legal relationship, the obligation breached and what is sought. It recognises claim types from the catalog, by id only, and writes search terms in the codes' own vocabulary («قرض الاستهلاك، رد المثل، الإعذار»). It names no article.
 2. **Searching the official texts.** No model is involved. A full-text search (BM25) runs over every imported article and its chapter heading, using those terms and the facts. The catalog articles of the recognised claim types are added. There are no hand-written keywords, so the search grows with every imported code.
 3. **Choosing articles.** The model chooses among those candidates only, by key. For each it gives a role (basis, proof, damages, procedure) and a short reason. Anything else it writes is discarded.
@@ -49,7 +52,7 @@ In the **Legal grounds** step, **«حلّل الوقائع واقترح الأس
 - Any other article in the result is flagged under the section, and so is any «…» quotation that doesn't match the official text. Either one triggers one automatic retry.
 - Nothing is scraped or searched online; the texts come from the local law library ([docs/LAW-LIBRARY.md](docs/LAW-LIBRARY.md)).
 
-> ⚠️ **Status:** **no official text has been imported yet**; this needs network access to joradp.dz / mjustice.dz, or the PDFs supplied as files. Until then, stage 2 can only offer the catalog articles, described by their short reason. The catalog itself (18 claim types) is not yet verified by a lawyer.
+> ⚠️ **Status:** the claim catalog (its claim types, articles and required flags) is not yet verified by a lawyer. An independent audit (October 2026) found errors in it and in the test expectations; corrections are under way.
 
 ![Legal grounds step](docs/images/main-window-grounds.png)
 
@@ -87,7 +90,7 @@ Prerequisite: [.NET 10 SDK](https://dotnet.microsoft.com/download) (the version 
 
 ```bash
 dotnet build                                   # warnings are errors
-dotnet test                                    # 303 tests: engine, drafting, providers, storage, UI (headless)
+dotnet test                                    # engine, drafting, providers, storage, UI (headless)
 dotnet run --project src/DzLegal.Harness       # Form Engine accuracy report (exit 1 on any mismatch)
 dotnet run --project src/DzLegal.Harness -- grounds --models gemma3:4b   # grounds analysis quality with a local model
 dotnet run --project src/DzLegal.App           # the desktop app
@@ -101,7 +104,7 @@ The app starts in Arabic and uses the local model by default. **With no model in
 2. `ollama pull gemma3:4b` (about 3.3 GB, one-time download). After that, no network is needed. With 16 GB RAM or a GPU, `qwen2.5:7b-instruct` writes better Arabic.
 3. Start the app and keep the default engine, "النموذج المحلي" / "Local model".
 
-Recommended hardware: 16 GB RAM for 7B models (CPU-only works, at about a minute or more per section), or a GPU with 8 GB or more of VRAM. **On 8 GB RAM without a GPU, use `gemma3:4b`.** It was the best of the three models benchmarked on such a machine (about 2–4 minutes per requête, no fallbacks). `qwen2.5:3b-instruct` is weaker and only worth using on machines too small for gemma. `qwen3:4b` is **not supported** there: it writes its English reasoning into the document and takes over 10 minutes per requête. To change a setting, **don't edit `appsettings.json`**. Create `appsettings.local.json` next to it (in the repo: `src/DzLegal.App/appsettings.local.json`; git ignores it) containing only the keys you want to change. For example:
+Recommended hardware: 16 GB RAM for 7B models (CPU-only works, at about a minute or more per section), or a GPU with 8 GB or more of VRAM. **On 8 GB RAM without a GPU, use `gemma3:4b`.** It was the best of the three models benchmarked on such a machine (about 4 minutes of drafting per requête on an Intel i5-1335U, plus 2–3 minutes for the grounds analysis). `qwen2.5:3b-instruct` is weaker and only worth using on machines too small for gemma. `qwen3:4b` is **not supported** there: it writes its English reasoning into the document and takes over 10 minutes per requête. To change a setting, **don't edit `appsettings.json`**. Create `appsettings.local.json` next to it (in the repo: `src/DzLegal.App/appsettings.local.json`; git ignores it) containing only the keys you want to change. For example:
 
 ```jsonc
 { "ollama": { "model": "qwen2.5:7b-instruct" } }

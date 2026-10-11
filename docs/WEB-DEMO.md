@@ -101,6 +101,6 @@ e-mail.
   - every quote and every "article X provides that…" is checked against the official text;
   - a paragraph that keeps attributing wrong content to an article is removed;
   - the legal points flag a wrong basis, interest on a private loan, and damages without formal notice.
-- **Law texts:** 39 articles are loaded, those the four sample cases rely on. Each is proved letter by letter against the official PDF. None is yet marked "checked by a lawyer"; that review is under way. The CPCA texts are the 2008 originals; the 2022 amendment still has to be checked.
+- **Law texts:** 39 articles are loaded, those the four sample cases rely on. A build script checks each one against the letters of its official PDF page; that is not a lawyer's review. None is yet marked "checked by a lawyer"; that review is under way. The CPCA texts are the 2008 originals; the 2022 amendment still has to be checked.
 - **Speed** depends on the hosted service and on Render's small CPU. The status bar shows the queue when visitors wait.
 - The demo can't open files from the visitor's disk (it has sample cases instead), and it saves nothing on the server.

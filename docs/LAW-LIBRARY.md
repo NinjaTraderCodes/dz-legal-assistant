@@ -1,13 +1,13 @@
 # Law library
 
-The grounds suggestions rest on a **local copy of the official Arabic texts**: Civil Code, CPCA, Commercial Code, Family Code and the two labour laws. The app quotes an article only from this library and never from a model's memory. A 4-billion-parameter model cannot recall article numbers or wording reliably.
+The grounds suggestions rest on a **local copy of the official Arabic texts**. Loaded today: 39 articles of the Civil Code, the CPCA (2008 original text) and the Commercial Code. **Not loaded yet:** the Family Code and the two labour laws; the catalog cites their articles by number only, and the app refuses any quotation of them. The app quotes an article only from this library and never from a model's memory: a 4-billion-parameter model cannot recall article numbers or wording reliably.
 
 ## How the grounds analysis works
 
 Nothing is scraped, searched online or read from PDFs while the lawyer works. Everything runs on the lawyer's machine. It starts only when the lawyer clicks «حلّل الوقائع واقترح الأسانيد» in the Legal grounds step.
 
 **Prepared in advance:**
-- The official texts are imported once, at development time, from joradp.dz / mjustice.dz into `data/law/codes/*.json`. They are reviewed by a lawyer and shipped with the app.
+- The official texts are imported once, at development time, from the official PDFs into `data/law/codes/*.json`, and shipped with the app. A script checks each text against its PDF page; a lawyer's review is still to come (none is marked verified).
 - The claim catalog (`data/law/claims/*.json`) is curated, lawyer-verifiable knowledge. For each claim type it records its usual articles, requests, documents and prerequisites.
 
 **At the lawyer's click** (`GroundsAnalyzer`):

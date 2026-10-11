@@ -438,7 +438,7 @@ The pulse animation is the `Ellipse.pulse` style. For tests, the constructor tak
 | `IModelProvider.cs` | `IModelProvider` (`Name`, `GenerateAsync`, default `StreamAsync`), `ModelRequest`, `ModelProviderException` |
 | `DraftingService.cs` | `DraftAsync`, `Refresh`, `RenderGenerated`, **`BuildRequest`**, `DraftSectionAsync`, `WriteNarrativeAsync` (retry or fallback), `CleanModelOutput`, `ApplyCorrections`; `DraftOptions` |
 | `SectionReviser.cs` | **`BuildRequest`** (revise prompt), `ReviseAsync`, `RevisionProposal`, `RefusalMarker` |
-| `GroundsAnalyzer.cs` | the 3-stage analysis: **`BuildReadingRequest`**, **`BuildSelectionRequest`**, `Candidates`, `ParseReading`, `ParseSelection`, `FactsHash`; constants `MaxClaims` 2, `MaxCandidates` 25, `MaxSelected` 6, `ExcerptLength` 300, `MaxReasonWords` 30, `OtherClaimId` "other" |
+| `GroundsAnalyzer.cs` | the 3-stage analysis: **`BuildReadingRequest`**, **`BuildSelectionRequest`**, `Candidates`, `ParseReading`, `ParseSelection`, `FactsHash`; constants `MaxClaims` 2, `MaxCandidates` 12, `MaxSelected` 6, `ExcerptLength` 180, `MaxReasonWords` 30, `OtherClaimId` "other" |
 | `NarrativeChecks.cs` | `Check` (the 8 issue kinds, §7), `RemoveCopiedExample`, `ArticleReferences`, `Numbers` |
 | `LegalText.cs` | `LegalText(Number, CitationName, Text)`; `Block(texts)` builds the `legal_texts` prompt variable |
 | `TemplateRenderer.cs` | Scriban rendering, the model (`BuildModel`), helpers, `Normalize` |

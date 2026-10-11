@@ -121,7 +121,8 @@ public sealed partial class WebEngine : IDisposable
             providers.Add(new ProviderOption(
                 "hosted",
                 l => l.Language == "en" ? $"{PrimaryModel} (demo server)" : $"{PrimaryModel} (خادم العرض)",
-                () => new ProtectedModelProvider(CreateChain(), Gate, quotas, reason => LogFailed(_log, reason))));
+                () => new ProtectedModelProvider(CreateChain(), Gate, quotas, reason => LogFailed(_log, reason)),
+                sendsCaseData: true));
         }
 
         providers.Add(new ProviderOption("stub", l => l["ProviderStub"], () => new StubModelProvider()));

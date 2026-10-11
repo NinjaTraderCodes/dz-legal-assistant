@@ -34,6 +34,20 @@
     <ProjectReference Include="..\DzLegal.Presentation\DzLegal.Presentation.csproj" />
     <ProjectReference Include="..\DzLegal.Storage\DzLegal.Storage.csproj" />
   </ItemGroup>
+  <!--
+    TEMPORARY, for testing only (docs/ONLINE-TESTING.md): `dotnet run -p:OnlineTesting=true` adds an online engine
+    (OpenRouter) next to the local one, to measure the AI on many runs. The normal build and the package for a lawyer
+    never include it: no case data leaves the computer. OfflineGuaranteeTests checks that this stays conditional.
+  -->
+  <PropertyGroup Condition="'$(OnlineTesting)' == 'true'">
+    <DefineConstants>$(DefineConstants);ONLINE_TESTING</DefineConstants>
+    <!-- Its own folders, so a normal build never picks up code compiled for the testing build. -->
+    <OutputPath>bin\$(Configuration)-online\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)-online\</IntermediateOutputPath>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(OnlineTesting)' == 'true'">
+    <ProjectReference Include="..\DzLegal.ModelProviders.Hosted\DzLegal.ModelProviders.Hosted.csproj" />
+  </ItemGroup>
   <ItemGroup>
     <Using Include="DzLegal.Presentation" />
     <Using Include="DzLegal.Presentation.Services" />

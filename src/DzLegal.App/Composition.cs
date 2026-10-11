@@ -31,7 +31,7 @@ public static class Composition
             KeepAlive = settings.Ollama.KeepAlive,
         };
 
-        return
+        List<ProviderOption> options =
         [
             new ProviderOption(
                 "ollama",
@@ -41,7 +41,52 @@ public static class Composition
                 settings.Ollama.WarmUp ? ct => WarmUpOllamaAsync(ollama, ct) : null),
             new ProviderOption("stub", loc => loc["ProviderStub"], () => new StubModelProvider()),
         ];
+#if ONLINE_TESTING
+        if (OnlineTestingOption(settings) is { } online)
+        {
+            options.Insert(1, online);
+        }
+#endif
+        return options;
     }
+
+#if ONLINE_TESTING
+    /// <summary>
+    /// TEMPORARY, testing build only (docs/ONLINE-TESTING.md): the web demo's engine, Gemma 3 4B on OpenRouter, so the
+    /// team can measure the AI over many runs. Only when OPENROUTER_API_KEY is set; one engine, no fallback, with the
+    /// desktop's own temperature and length so results compare with the local model. The case notes leave the computer.
+    /// </summary>
+    private static ProviderOption? OnlineTestingOption(AppSettings settings)
+    {
+        var key = Environment.GetEnvironmentVariable("OPENROUTER_API_KEY");
+        if (string.IsNullOrWhiteSpace(key))
+        {
+            return null;
+        }
+
+        var model = Environment.GetEnvironmentVariable("OPENROUTER_MODEL") is { Length: > 0 } m ? m : "google/gemma-3-4b-it";
+        var endpoint = Environment.GetEnvironmentVariable("OPENROUTER_ENDPOINT") is { Length: > 0 } e ? new Uri(e) : new Uri("https://openrouter.ai/api/v1/");
+        var options = new DzLegal.ModelProviders.Hosted.OpenAiCompatibleOptions
+        {
+            Label = "OpenRouter",
+            Endpoint = endpoint,
+            ApiKey = key.Trim(),
+            Model = model,
+            Temperature = settings.Ollama.Temperature,
+            MaxTokens = settings.Ollama.MaxTokens,
+            MergeSystemPrompt = model.Contains("gemma", StringComparison.OrdinalIgnoreCase),
+        };
+        return new ProviderOption(
+            "online",
+            loc => loc.Format("ProviderOnlineTest", model),
+            () => new DzLegal.ModelProviders.Hosted.OpenAiCompatibleModelProvider(options),
+            sendsCaseData: true);
+    }
+
+    private const string BuildLabel = "online testing build";
+#else
+    private const string BuildLabel = "";
+#endif
 
     /// <summary>Loopback-only check: is Ollama running, and is the configured model installed?</summary>
     public static async Task<ModelStatus> ProbeOllamaAsync(OllamaOptions options, CancellationToken cancellationToken)
@@ -87,6 +132,9 @@ public static class Composition
             settings.DefaultProvider,
             autosaveFile: Path.Combine(paths.Drafts, "last-session" + DraftFile.Extension),
             knowledge: DzLegal.Law.LegalKnowledgeLoader.Load(LawRoot),
-            links: links);
+            links: links)
+        {
+            BuildLabel = BuildLabel,
+        };
     }
 }

@@ -5,7 +5,7 @@
         xmlns:ic="using:FluentIcons.Avalonia"
         x:Class="DzLegal.App.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Title="{Binding L[AppTitle]}"
+        Title="{Binding WindowTitle}"
         Width="1440" Height="900" MinWidth="1100" MinHeight="640"
         FontFamily="{StaticResource UiFont}"
         RequestedThemeVariant="{Binding IsDarkTheme, Converter={x:Static app:Converters.DarkTheme}}"
@@ -299,10 +299,17 @@
           </Button>
         </StackPanel>
         <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
-          <Border Classes="chip" Background="#264CAF7F" VerticalAlignment="Center">
+          <Border Classes="chip" Background="#264CAF7F" VerticalAlignment="Center" IsVisible="{Binding IsOfflineEngine}">
             <StackPanel Orientation="Horizontal" Spacing="6">
               <ic:SymbolIcon Symbol="ShieldCheckmark" Foreground="#9FE0C3" FontSize="14" />
               <TextBlock Foreground="#CFEBDD" FontSize="12" Text="{Binding L[OfflineStatus]}" />
+            </StackPanel>
+          </Border>
+          <!-- Testing build only: an online engine is selected, so the case notes leave the computer. -->
+          <Border Name="OnlineEngineChip" Classes="chip" Background="#FFF3DC" VerticalAlignment="Center" IsVisible="{Binding !IsOfflineEngine}">
+            <StackPanel Orientation="Horizontal" Spacing="6">
+              <ic:SymbolIcon Symbol="Warning" Foreground="#935600" FontSize="14" />
+              <TextBlock Foreground="#5B3B00" FontSize="12" FontWeight="SemiBold" Text="{Binding L[OnlineEngineStatus]}" />
             </StackPanel>
           </Border>
           <Button Classes="bar" Command="{Binding ToggleThemeCommand}" ToolTip.Tip="{Binding L[ToggleTheme]}">

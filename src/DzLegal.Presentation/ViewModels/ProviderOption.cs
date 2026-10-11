@@ -20,11 +20,18 @@ public sealed partial class ProviderOption(
     Func<Loc, string> displayName,
     Func<IModelProvider> create,
     Func<CancellationToken, Task<ModelStatus>>? probe = null,
-    Func<CancellationToken, Task>? warmUp = null) : ObservableObject
+    Func<CancellationToken, Task>? warmUp = null,
+    bool sendsCaseData = false) : ObservableObject
 {
     private Loc? _loc;
 
     public string Key { get; } = key;
+
+    /// <summary>
+    /// True for an engine that runs on someone else's server, so the case notes leave the computer: the web demo's
+    /// hosted model, and the desktop's online engine in a testing build. The window then says so.
+    /// </summary>
+    public bool SendsCaseData { get; } = sendsCaseData;
 
     public string DisplayName => _loc is null ? Key : displayName(_loc);
 

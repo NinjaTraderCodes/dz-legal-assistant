@@ -170,7 +170,16 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     public DraftDocument Draft => _draft;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsOfflineEngine))]
     public partial ProviderOption? SelectedProvider { get; set; }
+
+    /// <summary>False while an engine that sends the case notes to another server is selected.</summary>
+    public bool IsOfflineEngine => SelectedProvider?.SendsCaseData != true;
+
+    /// <summary>Added to the window title by a testing build, so its screenshots are never taken for the product.</summary>
+    public string BuildLabel { get; init; } = string.Empty;
+
+    public string WindowTitle => BuildLabel.Length == 0 ? L["AppTitle"] : $"{L["AppTitle"]} ({BuildLabel})";
 
     [ObservableProperty]
     public partial string Summary { get; set; } = string.Empty;
@@ -677,6 +686,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         }
 
         OnPropertyChanged(nameof(IsRightToLeft));
+        OnPropertyChanged(nameof(WindowTitle));
         OnPropertyChanged(nameof(DocumentTypeName));
         OnPropertyChanged(nameof(StepPosition));
         OnPropertyChanged(nameof(Shortcuts));

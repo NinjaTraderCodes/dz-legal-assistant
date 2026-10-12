@@ -271,3 +271,8 @@ details.present summary { cursor: pointer; font-weight: 600; }
 #blazor-error-ui { display: none; position: fixed; inset-inline: 0; bottom: 0; z-index: 1000; padding-inline: 16px; padding-block: 10px calc(10px + env(safe-area-inset-bottom, 0px));
   background: #fff3dc; color: #5b3b00; box-shadow: 0 -1px 3px rgb(0 0 0 / .2); font: 14px var(--ui); }
 #blazor-error-ui .dismiss { cursor: pointer; margin-inline-start: 12px; }
+
+/* Requests step: optional AI wording of the lawyer's lines */
+.requests-wording { display: grid; gap: 8px; margin-top: 12px; }
+.requests-wording p { margin: 0; }
+.requests-wording .row { display: flex; gap: 8px; flex-wrap: wrap; }

@@ -23,7 +23,7 @@ The lawyer fills in the case details, the application produces a structured firs
 |---|---|
 | **Offline, no data leaves the machine** | The desktop app uses no cloud APIs and no telemetry (the public web demo is separate, see above). The only model endpoint allowed is a loopback address (`127.0.0.1`, `::1`, `localhost`), checked by `LoopbackGuard`, with the system proxy bypassed. See [docs/OFFLINE.md](docs/OFFLINE.md). |
 | **Assistive, never autonomous** | A permanent "draft, review required" banner. The app only produces text for the lawyer to edit and sign. |
-| **Grounded, not free-generating** | Identification, court, **facts**, dates and the signature block come from templates, deterministically, with grammatical gender taken from the form. Each facts line becomes a «حيث إن / وحيث إن» paragraph exactly as the lawyer wrote it. Small local models swapped lender and borrower when rewriting facts, so they no longer touch them. The model only rewrites the notes for the legal grounds and the requests. If a section has no notes, the model is not called. |
+| **Grounded, not free-generating** | Identification, court, **facts**, dates and the signature block come from templates, deterministically, with grammatical gender taken from the form. Each facts line becomes a «حيث إن / وحيث إن» paragraph exactly as the lawyer wrote it. Small local models swapped lender and borrower when rewriting facts, so they no longer touch them. **The requests are the lawyer's own lines too**, numbered under the fixed formula «في الشكل… في الموضوع:»: model-written requests changed the relief in 9 of 15 audited drafts. The model writes only the legal grounds. If a section has no notes, the model is not called. |
 | **Model output is checked** | Deterministic checks remove paragraphs copied from the prompt's worked example. They also flag foreign-script characters, stray Latin words, invented numbers, dropped numbers and legal qualifications the lawyer never used (for example «عقد المقاولة» in a loan case). Unusable answers are retried once, and otherwise replaced by the lawyer's notes. |
 | **Verifiable** | The Form Engine is pure and deterministic. A 24-case corpus measures its accuracy per element, and CI requires 100%. |
 | **Legal rules are data** | Elements, articles, templates and prompts live in `data/`. Changing a rule means editing JSON, not code. |
@@ -44,7 +44,7 @@ In the **Legal grounds** step, **«حلّل الوقائع واقترح الأس
 - an optional box for the lawyer's own arguments, and a search to add any article by number or words;
 - if the facts change after the analysis, a banner asks to analyse again, and the ticks are kept.
 
-**Requests and Documents steps:** they offer the usual requests and documents of the recognised claim types as one-click lines, plus any prerequisites (for example labour conciliation).
+**Requests and Documents steps:** they offer the usual requests and documents of the recognised claim types as one-click lines, plus any prerequisites (for example labour conciliation). In the Requests step, «اقترح صياغة رسمية للطلبات» asks the AI for a formal Arabic wording of the lawyer's lines (useful for notes in Darija or French). The proposal is shown only if code confirms it kept the number of requests, every amount and number, and every alternative («أو»), with no amount spelled out in words; it replaces the lawyer's lines only when the lawyer accepts it.
 
 **How the draft stays grounded:**
 - The grounds are drafted from the ticked articles, plus the lawyer's own arguments.

@@ -36,6 +36,7 @@ public static class CommandRunner
         ArgumentNullException.ThrowIfNull(vm);
         return vm.GenerateCommand.IsRunning
             || vm.AnalyseGroundsCommand.IsRunning
+            || vm.ProposeRequestsWordingCommand.IsRunning
             || vm.SendInstructionCommand.IsRunning
             || vm.UseShortcutCommand.IsRunning
             || vm.RetryProposalCommand.IsRunning

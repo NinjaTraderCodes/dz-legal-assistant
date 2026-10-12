@@ -141,6 +141,16 @@ Imported on {1}</value></data>
   <data name="ConfirmClaim" xml:space="preserve"><value>Yes, this is the claim type</value></data>
   <data name="ClaimConfirmPrompt" xml:space="preserve"><value>Is this the type of claim? Confirming ticks the articles this type rests on (marked "required for this claim type"). Nothing is ticked without your confirmation.</value></data>
   <data name="AnalysisOutOfScope" xml:space="preserve"><value>The facts match no claim type in the current catalog, so the app proposes no article rather than guess. Search the library below if needed.</value></data>
+  <data name="RequestsWordingLabel" xml:space="preserve"><value>Proposed wording (AI)</value></data>
+  <data name="RejectRequestsWording" xml:space="preserve"><value>Ignore</value></data>
+  <data name="AcceptRequestsWording" xml:space="preserve"><value>Accept the wording</value></data>
+  <data name="RequestsWordingAccepted" xml:space="preserve"><value>Wording accepted: it is now your requests in the form.</value></data>
+  <data name="RequestsWordingWithheld" xml:space="preserve"><value>The model's proposal changed an amount, the number of requests or an «أو» (or), so it is not shown. Your requests stay as you wrote them.</value></data>
+  <data name="RequestsWordingReady" xml:space="preserve"><value>AI-proposed wording; its amounts and number of requests were checked. Review it before accepting.</value></data>
+  <data name="RequestsWordingRunning" xml:space="preserve"><value>The model is writing a proposal…</value></data>
+  <data name="RequestsWordingNeedsNotes" xml:space="preserve"><value>Write your requests first (one per line), and choose an AI engine.</value></data>
+  <data name="RequestsWordingIntro" xml:space="preserve"><value>Your requests appear in the document as you wrote them, numbered. The AI can propose a formal wording; it is shown only if it kept every amount and number, the number of requests and every «أو» (or), and it is used only if you accept it.</value></data>
+  <data name="ProposeRequestsWording" xml:space="preserve"><value>Propose a formal wording of the requests</value></data>
   <data name="AnalysisDone" xml:space="preserve"><value>{1} proposed {0} articles for the claim type below. Nothing is ticked yet: confirm the claim type to tick the articles it rests on, then review the rest.</value></data>
   <data name="AnalysisNothing" xml:space="preserve"><value>{0} gave no usable analysis. Try again (check that the model is running), or add articles by hand below.</value></data>
   <data name="AnalysisStale" xml:space="preserve"><value>The facts changed after the analysis: analyse again. Your ticked articles are kept.</value></data>

@@ -18,6 +18,12 @@ public sealed record DocumentTypeDefinition
     /// <summary>Prompt file used by the section assistant to revise a narrative section on the lawyer's request.</summary>
     public string? RevisionPrompt { get; init; }
 
+    /// <summary>
+    /// Prompt file for the optional formal wording of the lawyer's requests (one line in, one line out). The proposal is
+    /// only offered when deterministic checks show it kept every amount, every alternative and the number of requests.
+    /// </summary>
+    public string? FormaliseRequestsPrompt { get; init; }
+
     /// <summary>Quick instructions offered as one-click chips in the section assistant.</summary>
     public IReadOnlyList<RevisionShortcut> RevisionShortcuts { get; init; } = [];
     public IReadOnlyList<FieldGroupDefinition> FieldGroups { get; init; } = [];

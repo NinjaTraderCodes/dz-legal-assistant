@@ -445,6 +445,33 @@
                 <TextBlock FontSize="13" FontWeight="SemiBold" Text="{Binding L[UsualRequests]}" IsVisible="{Binding HasRequestChips}" />
                 <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap" Text="{Binding L[UsualLinesNeedAnalysis]}" IsVisible="{Binding !HasRequestChips}" />
                 <ItemsControl ItemsSource="{Binding RequestChips}" ItemTemplate="{StaticResource InsertChipTemplate}" />
+
+                <!-- The document shows the lawyer's own lines; the AI may only propose a checked formal wording. -->
+                <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap" Margin="0,6,0,0" Text="{Binding L[RequestsWordingIntro]}" />
+                <StackPanel Orientation="Horizontal" Spacing="8" IsVisible="{Binding CanProposeRequestsWording}">
+                  <Button Name="ProposeRequestsWordingButton" Classes="outline" Command="{Binding ProposeRequestsWordingCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                      <ic:SymbolIcon Symbol="Sparkle" FontSize="14" />
+                      <TextBlock Text="{Binding L[ProposeRequestsWording]}" />
+                    </StackPanel>
+                  </Button>
+                  <Button Classes="outline" Command="{Binding ProposeRequestsWordingCancelCommand}" Content="{Binding L[Cancel]}" IsVisible="{Binding ProposeRequestsWordingCommand.IsRunning}" />
+                </StackPanel>
+                <TextBlock Name="RequestsWordingStatusText" Classes="muted" FontSize="12" TextWrapping="Wrap" Text="{Binding RequestsWordingStatus}"
+                           IsVisible="{Binding RequestsWordingStatus, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                <Border Classes="card" Padding="10" IsVisible="{Binding HasRequestsProposal}">
+                  <StackPanel Spacing="8">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                      <TextBlock FontSize="13" FontWeight="SemiBold" Text="{Binding L[RequestsWordingLabel]}" />
+                      <Border Classes="chip" Padding="6,0"><TextBlock FontSize="10" Text="{Binding L[ModelTag]}" /></Border>
+                    </StackPanel>
+                    <TextBlock Name="RequestsProposalText" FontSize="13" TextWrapping="Wrap" FlowDirection="RightToLeft" Text="{Binding RequestsProposal}" />
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                      <Button Classes="primary" Command="{Binding AcceptRequestsProposalCommand}"><TextBlock Foreground="White" Text="{Binding L[AcceptRequestsWording]}" /></Button>
+                      <Button Classes="outline" Command="{Binding RejectRequestsProposalCommand}" Content="{Binding L[RejectRequestsWording]}" />
+                    </StackPanel>
+                  </StackPanel>
+                </Border>
               </StackPanel>
               <StackPanel Spacing="6" Margin="0,0,8,14" IsVisible="{Binding IsDocumentsStep}">
                 <Border Background="{DynamicResource WarningSoftBrush}" CornerRadius="6" Padding="8,6" IsVisible="{Binding HasPrerequisites}">

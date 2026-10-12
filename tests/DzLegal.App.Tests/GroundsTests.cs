@@ -176,6 +176,44 @@ public sealed class GroundsWorkflowTests
     }
 
     [Fact]
+    public async Task TheAiMayProposeAFormalWordingOfTheRequestsThatTheLawyerAccepts()
+    {
+        var model = new RecordingProvider(r => r.SectionId == RequestsFormaliser.RequestId
+            ? "إلزام المدعى عليه بأن يدفع للمدعي مبلغ 240000 دج بدلات الإيجار.\nتحميل المدعى عليه المصاريف القضائية."
+            : r.SourceText);
+        var vm = Vm.Create(recorder: model).Filled();
+        vm.Field("notes.requests").Value = "يخلص 240000 دج تاع الكرا.\nيخلص المصاريف.";
+        var before = vm.Sections.Single(s => s.Id == "requests").Text;
+        Assert.Contains("يخلص 240000 دج تاع الكرا.", before, StringComparison.Ordinal); // the lawyer's lines, verbatim
+
+        Assert.True(vm.CanProposeRequestsWording);
+        await vm.ProposeRequestsWordingCommand.ExecuteAsync(null);
+        Assert.True(vm.HasRequestsProposal);
+        Assert.Equal(vm.L["RequestsWordingReady"], vm.RequestsWordingStatus);
+        Assert.Equal(before, vm.Sections.Single(s => s.Id == "requests").Text); // nothing changes until accepted
+
+        vm.AcceptRequestsProposalCommand.Execute(null);
+        Assert.False(vm.HasRequestsProposal);
+        Assert.Contains("1. إلزام المدعى عليه بأن يدفع للمدعي مبلغ 240000 دج بدلات الإيجار.", vm.Sections.Single(s => s.Id == "requests").Text, StringComparison.Ordinal);
+        Assert.StartsWith("إلزام المدعى عليه", vm.Field("notes.requests").Value, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task AWordingThatChangesAnAmountIsNeverShown()
+    {
+        var model = new RecordingProvider(r => r.SectionId == RequestsFormaliser.RequestId ? "إلزام المدعى عليه بدفع 24000 دج." : r.SourceText);
+        var vm = Vm.Create(recorder: model).Filled();
+        vm.Field("notes.requests").Value = "يخلص 240000 دج.";
+
+        await vm.ProposeRequestsWordingCommand.ExecuteAsync(null);
+
+        Assert.False(vm.HasRequestsProposal);
+        Assert.Equal(vm.L["RequestsWordingWithheld"], vm.RequestsWordingStatus);
+        Assert.Equal("يخلص 240000 دج.", vm.Field("notes.requests").Value);
+        Assert.False(Vm.Create().CanProposeRequestsWording); // template mode has no wording to offer
+    }
+
+    [Fact]
     public async Task TemplateModeCannotAnalyseAndSaysSo()
     {
         var vm = Vm.Create().Filled();

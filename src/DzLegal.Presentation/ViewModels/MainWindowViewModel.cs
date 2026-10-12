@@ -171,6 +171,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsOfflineEngine))]
+    [NotifyPropertyChangedFor(nameof(CanProposeRequestsWording))]
     public partial ProviderOption? SelectedProvider { get; set; }
 
     /// <summary>False while an engine that sends the case notes to another server is selected.</summary>

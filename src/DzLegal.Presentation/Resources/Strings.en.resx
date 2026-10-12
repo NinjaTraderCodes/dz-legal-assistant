@@ -125,6 +125,7 @@
   <data name="IssueUncitedArticle" xml:space="preserve"><value>Article {0} is neither ticked nor in your notes. Check it.</value></data>
   <data name="IssueMisquotedArticle" xml:space="preserve"><value>What the text says article {0} provides is not in its official text. Check it.</value></data>
   <data name="IssueUnsupportedArticleContent" xml:space="preserve"><value>Says what article {0} provides, but its official text is not loaded and your notes do not say it: the model wrote it from memory. Cite the article by number only, or add its text.</value></data>
+  <data name="IssueUnverifiedQuoteFromNotes" xml:space="preserve"><value>Presents text from your own notes as the wording of article {0}, whose official text is not loaded, so it was never checked. Verify it in the Official Journal before filing, or cite the article by number only.</value></data>
   <data name="OfficialSource" xml:space="preserve"><value>Official source</value></data>
   <data name="CheckInOfficialJournal" xml:space="preserve"><value>Official Journal site</value></data>
   <data name="OfficialSourceTooltip" xml:space="preserve"><value>{0}
@@ -224,4 +225,9 @@ Imported on {1}</value></data>
   <data name="ProviderOnlineTestDeepInfra" xml:space="preserve"><value>Online test: {0} via DeepInfra (case data leaves this computer)</value></data>
   <data name="ProviderOnlineTest" xml:space="preserve"><value>Online test: {0} via OpenRouter (case data leaves this computer)</value></data>
   <data name="OnlineEngineStatus" xml:space="preserve"><value>Online test engine: case data is sent to OpenRouter</value></data>
+  <data name="Substance_InstructionInNotes" xml:space="preserve"><value>Your notes contain text addressed to an AI (such as "SYSTEM:" or "ignore previous instructions"). It may have been pasted from elsewhere: delete it before export.</value></data>
+  <data name="Substance_NonArabicRequest" xml:space="preserve"><value>A request line is not in Arabic, and the requests are copied as you wrote them: the petition must be in Arabic (CPCA art. 8). Correct the line before export.</value></data>
+  <data name="Substance_CriminalPenaltyInCivilClaim" xml:space="preserve"><value>The requests ask for a prison sentence («حبس» or «سجن»), which a civil judge cannot order. Delete it before export.</value></data>
+  <data name="Substance_ArticleOutsideClaimArea" xml:space="preserve"><value>Article {0} comes from a law unrelated to the confirmed claim type (for example the Family Code in a debt claim). Check it is the article you meant.</value></data>
+  <data name="NoteRemovedParagraph" xml:space="preserve"><value>Removed paragraph: «{0}»</value></data>
 </root>

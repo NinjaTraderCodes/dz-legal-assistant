@@ -360,6 +360,7 @@ public sealed partial class MainWindowViewModel
         NarrativeIssueKind.UncitedArticle => "IssueUncitedArticle",
         NarrativeIssueKind.MisquotedArticle => "IssueMisquotedArticle",
         NarrativeIssueKind.UnsupportedArticleContent => "IssueUnsupportedArticleContent",
+        NarrativeIssueKind.UnverifiedQuoteFromNotes => "IssueUnverifiedQuoteFromNotes",
         _ => throw new InvalidOperationException($"No message for {issue.Kind}."),
     }, issue.Detail);
 }

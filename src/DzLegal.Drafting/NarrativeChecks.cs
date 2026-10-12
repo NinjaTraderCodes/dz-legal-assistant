@@ -40,6 +40,13 @@ public enum NarrativeIssueKind
     /// memory.
     /// </summary>
     UnsupportedArticleContent,
+
+    /// <summary>
+    /// A quotation (or «تنص على أن» statement) attributed to an article whose official text is not loaded, taken from
+    /// the lawyer's own notes: it is theirs, but the document now presents it as the article's text, and nothing could
+    /// check it. A review hint, not a failure.
+    /// </summary>
+    UnverifiedQuoteFromNotes,
 }
 
 public sealed record NarrativeIssue(NarrativeIssueKind Kind, string Detail)
@@ -126,9 +133,10 @@ public static partial class NarrativeChecks
         }
 
         var ownWords = string.Join('\n', inputs.Values.Append(sectionNotes ?? string.Empty));
-        var (misquoted, unsupported) = Misquotations(text, legalTexts, ownWords);
+        var (misquoted, unsupported, unverified) = Misquotations(text, legalTexts, ownWords);
         issues.AddRange(misquoted.Select(n => new NarrativeIssue(NarrativeIssueKind.MisquotedArticle, n)));
         issues.AddRange(unsupported.Select(n => new NarrativeIssue(NarrativeIssueKind.UnsupportedArticleContent, n)));
+        issues.AddRange(unverified.Select(n => new NarrativeIssue(NarrativeIssueKind.UnverifiedQuoteFromNotes, n)));
         issues.AddRange(StatedContents(text, legalTexts, ownWords).Where(i => !issues.Contains(i)));
         issues.AddRange(Numbers(sectionNotes ?? string.Empty).Where(n => !inText.Contains(n)).Distinct()
             .Select(n => new NarrativeIssue(NarrativeIssueKind.MissingNumber, n)));
@@ -196,11 +204,12 @@ public static partial class NarrativeChecks
     /// (the text was given and says otherwise) and unsupported (no text was given, so the quotation came from the
     /// model's memory: an article not in the library, another code, an invented provision).
     /// </summary>
-    private static (List<string> Misquoted, List<string> Unsupported) Misquotations(string text, IReadOnlyList<LegalText> legalTexts, string ownWords)
+    private static (List<string> Misquoted, List<string> Unsupported, List<string> Unverified) Misquotations(string text, IReadOnlyList<LegalText> legalTexts, string ownWords)
     {
         var own = Comparable(ownWords);
         var found = new List<string>();
         var unsupported = new List<string>();
+        var unverified = new List<string>();
         foreach (var paragraph in text.Split('\n'))
         {
             var references = FullArticleReferences(paragraph).ToList();
@@ -208,28 +217,41 @@ public static partial class NarrativeChecks
             {
                 var quoted = Comparable(QuotedText(quote));
                 var reference = references.LastOrDefault(r => r.Index < quote.Index);
-                if (quoted.Count(char.IsLetter) < 10 || reference.Number is null || own.Contains(quoted, StringComparison.Ordinal))
+                if (quoted.Count(char.IsLetter) < 10 || reference.Number is null)
                 {
                     continue;
                 }
 
-                var candidates = TextsFor(reference, legalTexts);
+                // «المادتان 106 و107 تنصان على …»: the quotation may come from any article cited together.
+                var cited = references.Where(r => r.Index == reference.Index).ToList();
+                var candidates = cited.SelectMany(r => TextsFor(r, legalTexts)).Distinct().ToList();
+                var label = string.Join("، ", cited.Select(r => r.Number).Distinct());
+                if (own.Contains(quoted, StringComparison.Ordinal))
+                {
+                    if (candidates.Count == 0)
+                    {
+                        unverified.Add(label); // the lawyer's own words, shown as the article's text but never checked
+                    }
+
+                    continue;
+                }
+
                 if (candidates.Count == 0)
                 {
-                    unsupported.Add(reference.Number);
+                    unsupported.Add(label);
                 }
                 else if (!candidates.Any(t => Comparable(t.Text).Contains(quoted, StringComparison.Ordinal)))
                 {
-                    found.Add(reference.Number);
+                    found.Add(label);
                 }
             }
         }
 
-        return ([.. found.Distinct()], [.. unsupported.Distinct()]);
+        return ([.. found.Distinct()], [.. unsupported.Distinct()], [.. unverified.Distinct()]);
     }
 
     /// <summary>The code a reference names, written out («ق.م» → «القانون المدني»), so it can be compared with a citation.</summary>
-    private static string CodeName(string code)
+    internal static string CodeName(string code)
     {
         var compact = Regex.Replace(ArabicScript.Normalize(code), @"[\s.]", string.Empty);
         return compact switch
@@ -303,12 +325,18 @@ public static partial class NarrativeChecks
                     continue;
                 }
 
-                var texts = TextsFor(reference, legalTexts);
+                var cited = references.Where(r => r.Index == reference.Index).ToList();
+                var texts = cited.SelectMany(r => TextsFor(r, legalTexts)).Distinct().ToList();
+                var label = string.Join("، ", cited.Select(r => r.Number).Distinct());
                 var source = texts.SelectMany(t => ContentWords(t.Text)).Concat(own).ToList();
                 var covered = stated.Count(w => source.Any(o => ArabicScript.MatchesWord(w, o) || ArabicScript.MatchesWord(o, w)));
                 if (covered < MinStatedCoverage * stated.Count)
                 {
-                    issues.Add(new NarrativeIssue(texts.Count > 0 ? NarrativeIssueKind.MisquotedArticle : NarrativeIssueKind.UnsupportedArticleContent, reference.Number));
+                    issues.Add(new NarrativeIssue(texts.Count > 0 ? NarrativeIssueKind.MisquotedArticle : NarrativeIssueKind.UnsupportedArticleContent, label));
+                }
+                else if (texts.Count == 0)
+                {
+                    issues.Add(new NarrativeIssue(NarrativeIssueKind.UnverifiedQuoteFromNotes, label));
                 }
             }
         }

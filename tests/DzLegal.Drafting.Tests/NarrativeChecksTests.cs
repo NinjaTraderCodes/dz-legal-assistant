@@ -215,4 +215,31 @@ public class NarrativeChecksTests
 
     [Fact]
     public void EmptyTextHasNoIssues() => Assert.Empty(Check("  "));
+
+    private static readonly LegalText[] ContractTexts =
+    [
+        new("106", "القانون المدني", "العقد شريعة المتعاقدين، فلا يجوز نقضه، ولا تعديله، إلا باتفاق الطرفين، أو للأسباب التي يقررها القانون."),
+        new("107", "القانون المدني", "يجب تنفيذ العقد طبقا لما اشتمل عليه وبحسن نية."),
+    ];
+
+    [Fact]
+    public void AQuoteAfterTwoCitedArticlesIsComparedWithBoth()
+    {
+        // Case 01 of the Week 1 tests: the 106 quote came after «المادتين 106 و107» and was wrongly removed.
+        var issues = NarrativeChecks.Check(
+            "حيث إن المادتين 106 و107 من القانون المدني تنصان على أن «العقد شريعة المتعاقدين، فلا يجوز نقضه، ولا تعديله، إلا باتفاق الطرفين» فإن المدعى عليه ملزم بأداء 1500000 دج.",
+            Notes, Inputs, legalTexts: ContractTexts);
+        Assert.DoesNotContain(issues, i => i.IsWrongArticleContent);
+    }
+
+    [Fact]
+    public void AQuoteOfAnUnloadedArticleTakenFromTheNotesIsMarkedUnverified()
+    {
+        // Week 1 case a7: the lawyer's own quotation of an article whose official text is not loaded.
+        const string Quote = "يلتزم المقاول بضمان العيوب الخفية في البناء لمدة عشر سنوات";
+        var inputs = new Dictionary<string, string>(Inputs) { ["notes.grounds"] = "المادة 554 من القانون المدني: «" + Quote + "»." };
+        var issues = NarrativeChecks.Check("حيث إن المادة 554 من القانون المدني تنص على أن «" + Quote + "».", inputs["notes.grounds"], inputs);
+        var issue = Assert.Single(issues, i => i.Kind == NarrativeIssueKind.UnverifiedQuoteFromNotes);
+        Assert.False(issue.IsWrongArticleContent);
+    }
 }

@@ -436,4 +436,12 @@ public sealed class GroundsBatchTests
         });
         Assert.Contains("| n/a | n/a |", GroundsEvaluator.StabilityTable("down", GroundsEvaluator.Stability(runs)), StringComparison.Ordinal);
     }
+
+    [Fact]
+    public void TheHarnessGivesTheTextsOfArticlesCitedInFrench()
+    {
+        // Week 1 case a8: «Articles 106 et 107 du code civil» gave the model no official text.
+        var texts = DzLegal.Harness.DraftBench.LegalTextsCited(LegalKnowledgeLoader.Load(Path.Combine(AppContext.BaseDirectory, "data", "law")), "Articles 106 et 107 du code civil : le contrat fait la loi des parties.");
+        Assert.Equal(["106", "107"], texts.Select(t => t.Number).Order(StringComparer.Ordinal));
+    }
 }

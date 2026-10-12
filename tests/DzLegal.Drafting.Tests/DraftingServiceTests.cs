@@ -232,6 +232,21 @@ public class DraftingServiceTests
     }
 
     [Fact]
+    public async Task WhenEveryParagraphIsWrongLawTheDraftFallsBackAndKeepsWhatWasRemoved()
+    {
+        // Week 1 case a8: the only paragraph invented the content of art. 106; removing it left nothing.
+        const string Wrong = "حيث إن المادة 106 من القانون المدني تنص على أن الحقوق الخاصة لا تدعى إلا باللجوء إلى القضاء المختص.";
+        var provider = new RecordingProvider(r => r.SectionId == "grounds" ? Wrong : r.SourceText);
+
+        var draft = await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs());
+
+        var grounds = draft.FindSection("grounds")!;
+        Assert.Equal("المادة 106 من القانون المدني.", grounds.Text);
+        Assert.Contains(DraftingNoteCodes.FellBackToNotes, grounds.DraftingNotes);
+        Assert.Equal(Wrong, Assert.Single(grounds.RemovedText));
+    }
+
+    [Fact]
     public async Task PersistentlyCorruptedAnswerFallsBackToTheLawyersNotes()
     {
         var provider = new RecordingProvider(r => r.SectionId == "grounds" ? "受理 受理" : r.SourceText);

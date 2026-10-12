@@ -27,7 +27,7 @@ public sealed record DraftDocument
     public DraftDocument DeepCopy() => this with
     {
         Inputs = new Dictionary<string, string>(Inputs, StringComparer.Ordinal),
-        Sections = Sections.Select(s => new DraftSection { Id = s.Id, Text = s.Text, DraftingNotes = [.. s.DraftingNotes], Overridden = s.Overridden, AiWritten = s.AiWritten, Reviewed = s.Reviewed }).ToList(),
+        Sections = Sections.Select(s => new DraftSection { Id = s.Id, Text = s.Text, DraftingNotes = [.. s.DraftingNotes], Overridden = s.Overridden, AiWritten = s.AiWritten, Reviewed = s.Reviewed, RemovedText = [.. s.RemovedText] }).ToList(),
         SelectedArticles = [.. SelectedArticles],
     };
 }
@@ -97,6 +97,9 @@ public sealed class DraftSection
 
     /// <summary>The lawyer ticked «راجعت هذا القسم» for the AI-written text. Exporting waits for it.</summary>
     public bool Reviewed { get; set; }
+
+    /// <summary>Paragraphs the checks removed from the model's text (wrong law), so the lawyer can see what was cut.</summary>
+    public List<string> RemovedText { get; init; } = [];
 }
 
 /// <summary>Codes stored in <see cref="DraftSection.DraftingNotes"/>.</summary>

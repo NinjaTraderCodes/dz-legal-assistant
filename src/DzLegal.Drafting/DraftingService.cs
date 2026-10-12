@@ -87,6 +87,7 @@ public sealed partial class DraftingService
                     DraftingNotes = [.. draft.FindSection(s.Id)?.DraftingNotes ?? []],
                     AiWritten = draft.FindSection(s.Id)?.AiWritten ?? false,
                     Reviewed = draft.FindSection(s.Id)?.Reviewed ?? false,
+                    RemovedText = [.. draft.FindSection(s.Id)?.RemovedText ?? []],
                 }
                 : draft.FindSection(s.Id) is { Overridden: true } manual
                     ? new DraftSection { Id = s.Id, Text = manual.Text, Overridden = true }
@@ -170,6 +171,7 @@ public sealed partial class DraftingService
         }
 
         var notes = new List<string>();
+        var removedText = new List<string>();
         for (var attempt = 1; attempt <= 2; attempt++)
         {
             var output = CleanModelOutput(await CollectAsync(request, onPartial, cancellationToken), section);
@@ -183,13 +185,17 @@ public sealed partial class DraftingService
             var issues = NarrativeChecks.Check(text, request.SourceText, inputs, definition.GroundedTerms, legalTexts);
             if (attempt == 2 && issues.Any(i => i.IsWrongArticleContent))
             {
-                // Still attributing to an article what its text does not say: those paragraphs go, the rest stays.
-                var kept = string.Join('\n', text.Split('\n').Where(p =>
-                    !NarrativeChecks.Check(p, string.Empty, inputs, null, legalTexts).Any(i => i.IsWrongArticleContent)));
-                if (kept.Trim().Length > 0 && kept != text)
+                // Still attributing to an article what its text does not say: those paragraphs go, the rest stays. The
+                // removed paragraphs are kept aside for the lawyer to see. When nothing else is left, the section falls
+                // back to the lawyer's notes: text already found wrong never stays in the draft.
+                var paragraphs = text.Split('\n');
+                var wrong = paragraphs.Where(p => p.Trim().Length > 0
+                    && NarrativeChecks.Check(p, string.Empty, inputs, null, legalTexts).Any(i => i.IsWrongArticleContent)).ToList();
+                if (wrong.Count > 0)
                 {
-                    text = kept.Trim();
+                    removedText.AddRange(wrong.Select(p => p.Trim()));
                     notes.Add(DraftingNoteCodes.RemovedWrongLaw);
+                    text = string.Join('\n', paragraphs.Where(p => !wrong.Contains(p))).Trim();
                     issues = NarrativeChecks.Check(text, request.SourceText, inputs, definition.GroundedTerms, legalTexts);
                 }
             }
@@ -200,7 +206,7 @@ public sealed partial class DraftingService
             // more try; a second answer that still has it is kept (the rest may be good) and shown as a review hint.
             if (text.Length > 0 && !issues.Any(i => i.IsHard) && (!invented || attempt == 2))
             {
-                return new DraftSection { Id = section.Id, Text = text, DraftingNotes = notes };
+                return new DraftSection { Id = section.Id, Text = text, DraftingNotes = notes, RemovedText = removedText };
             }
 
             if (attempt == 1)
@@ -210,7 +216,7 @@ public sealed partial class DraftingService
         }
 
         notes.Add(DraftingNoteCodes.FellBackToNotes);
-        return new DraftSection { Id = section.Id, Text = TemplateRenderer.Normalize(request.SourceText), DraftingNotes = notes };
+        return new DraftSection { Id = section.Id, Text = TemplateRenderer.Normalize(request.SourceText), DraftingNotes = notes, RemovedText = removedText };
     }
 
     /// <summary>Applies the definition's exact corrections. Used on model-written text only, never on the lawyer's words.</summary>

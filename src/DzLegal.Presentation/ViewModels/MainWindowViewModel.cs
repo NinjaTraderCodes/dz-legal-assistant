@@ -337,6 +337,9 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
             }
         }
 
+        // Problems in the notes themselves (an instruction to the AI, a request not in Arabic, a prison sentence) are
+        // fixed in the notes: no review tick lifts them.
+        lines.AddRange(CurrentSubstanceIssues().Where(i => SubstanceChecks.BlocksExport(i.Kind)).Select(i => "• " + DescribeSubstance(i)));
         ExportBlockers = string.Join("\n", lines);
         if (!HasExportBlockers)
         {
@@ -892,17 +895,24 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     /// <summary>Re-runs the substance checks on the form, the ticked articles and the drafted grounds and requests.</summary>
     private void UpdateSubstanceIssues()
     {
-        var claims = (_analysis?.ClaimIds ?? []).Select(id => _knowledge.Claims.FirstOrDefault(c => c.Id == id)).OfType<DzLegal.Law.ClaimType>().ToList();
-        var drafted = (_draft.FindSection("grounds")?.Text ?? string.Empty) + "\n" + (_draft.FindSection("requests")?.Text ?? string.Empty);
-        var issues = SubstanceChecks.Check(CurrentInputs(), claims, _selectedArticles, drafted);
         SubstanceIssues.Clear();
-        foreach (var issue in issues)
+        foreach (var issue in CurrentSubstanceIssues())
         {
-            SubstanceIssues.Add(L["Substance_" + issue.Kind]);
+            SubstanceIssues.Add(DescribeSubstance(issue));
         }
 
         HasSubstanceIssues = SubstanceIssues.Count > 0;
     }
+
+    private IReadOnlyList<SubstanceIssue> CurrentSubstanceIssues()
+    {
+        var claims = (_analysis?.ClaimIds ?? []).Select(id => _knowledge.Claims.FirstOrDefault(c => c.Id == id)).OfType<DzLegal.Law.ClaimType>().ToList();
+        var drafted = (_draft.FindSection("grounds")?.Text ?? string.Empty) + "\n" + (_draft.FindSection("requests")?.Text ?? string.Empty);
+        return SubstanceChecks.Check(CurrentInputs(), claims, _selectedArticles, drafted);
+    }
+
+    private string DescribeSubstance(SubstanceIssue issue) =>
+        issue.Article is { } article ? L.Format("Substance_" + issue.Kind, article.Number) : L["Substance_" + issue.Kind];
 
     private void Recheck()
     {
@@ -1017,6 +1027,11 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
                         DraftingNoteCodes.RemovedWrongLaw => L["NoteRemovedWrongLaw"],
                         _ => L["NoteRemovedCopiedExample"],
                     });
+                }
+
+                foreach (var removed in _draft.FindSection(vm.Id)?.RemovedText ?? [])
+                {
+                    lines.Add(L.Format("NoteRemovedParagraph", removed.Length > 200 ? removed[..200] + "…" : removed));
                 }
 
                 var notes = inputs.GetValueOrDefault(vm.Definition.SourceField ?? string.Empty, string.Empty);

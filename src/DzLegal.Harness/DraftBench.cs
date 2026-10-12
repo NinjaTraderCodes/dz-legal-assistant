@@ -79,7 +79,7 @@ public sealed record BenchOptions
 /// review table (time per section, retries/fallbacks, number and script issues), and a summary.md.
 /// Meaning-level problems (swapped roles, invented reasoning) still need a human read of the outputs.
 /// </summary>
-public static class DraftBench
+public static partial class DraftBench
 {
     public static async Task RunAsync(BenchOptions options, TextWriter log)
     {
@@ -184,7 +184,7 @@ public static class DraftBench
                         .AppendLine("## Document").AppendLine().AppendLine("```text").AppendLine(DocumentText.Compose(definition, draft)).AppendLine("```").AppendLine()
                         .AppendLine("## Narrative sections").AppendLine()
                         .AppendLine(legalTexts.Count == 0 ? "No official text given to the model." : "Official texts given to the model: " + string.Join("، ", legalTexts.Select(t => t.Citation))).AppendLine()
-                        .AppendLine(legalPoints.Count == 0 ? "Legal points: none." : "Legal points: " + string.Join("; ", legalPoints.Select(p => $"{p.Kind} ({p.Article.Code}:{p.Article.Number})"))).AppendLine()
+                        .AppendLine(legalPoints.Count == 0 ? "Legal points: none." : "Legal points: " + string.Join("; ", legalPoints.Select(p => p.Article is { } a ? $"{p.Kind} ({a.Code}:{a.Number})" : p.Kind.ToString()))).AppendLine()
                         .AppendLine("| section | seconds (all attempts) | drafting note | automatic issues |")
                         .AppendLine("|---|---:|---|---|");
                     foreach (var s in narrative)
@@ -192,6 +192,16 @@ public static class DraftBench
                         var seconds = timed.Durations.TryGetValue(s.Id, out var d) ? d.TotalSeconds.ToString("0", ci) : "-";
                         var list = issues[s.Id].Count == 0 ? "none" : string.Join("; ", issues[s.Id].Select(i => $"{i.Kind}: {i.Detail}"));
                         file.AppendLine(CultureInfo.InvariantCulture, $"| {s.Id} | {seconds} | {(draft.FindSection(s.Id)?.DraftingNotes is { Count: > 0 } n ? string.Join(", ", n) : "-")} | {list} |");
+                    }
+
+                    var removed = draft.Sections.SelectMany(s => s.RemovedText.Select(t => (s.Id, Text: t))).ToList();
+                    if (removed.Count > 0)
+                    {
+                        file.AppendLine().AppendLine("## Removed paragraphs (wrong law)").AppendLine();
+                        foreach (var (id, text) in removed)
+                        {
+                            file.AppendLine(CultureInfo.InvariantCulture, $"- {id}: {text}");
+                        }
                     }
 
                     file.AppendLine().AppendLine("## Read for yourself").AppendLine()
@@ -243,7 +253,7 @@ public static class DraftBench
     /// The official texts of the articles a case's grounds notes cite (Civil Code unless another code is named), as the
     /// app gives the model the texts of the ticked articles.
     /// </summary>
-    internal static IReadOnlyList<LegalText> LegalTextsCited(DzLegal.Law.LegalKnowledge knowledge, string groundsNotes)
+    public static IReadOnlyList<LegalText> LegalTextsCited(DzLegal.Law.LegalKnowledge knowledge, string groundsNotes)
     {
         var codes = new Dictionary<string, string>(StringComparer.Ordinal)
         {
@@ -251,14 +261,25 @@ public static class DraftBench
             ["القانون التجاري"] = "commercial-code", ["ق ت"] = "commercial-code", ["ق.ت"] = "commercial-code",
             ["قانون الإجراءات المدنية والإدارية"] = "cpca",
         };
+        // French notes write «article 106 du code civil», «Articles 106 et 107» or «art. 30 du code de commerce».
+        var french = FrenchReference().Matches(groundsNotes).SelectMany(m => m.Groups["numbers"].Value
+            .Split([',', ' ', 'e', 't'], StringSplitOptions.RemoveEmptyEntries)
+            .Select(n => (
+                Code: m.Groups["code"].Value.Contains("commerce", StringComparison.OrdinalIgnoreCase) ? "commercial-code"
+                    : m.Groups["code"].Value.Contains("proc", StringComparison.OrdinalIgnoreCase) ? "cpca" : "civil-code",
+                Number: DzLegal.Law.ArticleNumbers.Canonical(n))));
         return NarrativeChecks.FullArticleReferences(groundsNotes)
             .Select(r => (Code: r.Code is { } name && codes.TryGetValue(name, out var id) ? id : "civil-code", r.Number))
+            .Concat(french)
             .Distinct()
             .Select(r => (r.Code, Article: knowledge.Library.FindArticle(r.Code, r.Number)))
             .Where(r => r.Article is { Repealed: false })
             .Select(r => new LegalText(r.Article!.Number, knowledge.CitationName(r.Code), r.Article.Text))
             .ToList();
     }
+
+    [System.Text.RegularExpressions.GeneratedRegex(@"(?i)\bart(?:icles?|\.)?\s*(?<numbers>\d+(?:\s*(?:,|et)\s*\d+)*)(?<code>\s+(?:du|de\s+la)\s+(?:code\s+(?:civil|de\s+commerce|de\s+proc[ée]dure[^,.;\n]*)))?")]
+    private static partial System.Text.RegularExpressions.Regex FrenchReference();
 
     private static string Safe(string name) =>
         string.Concat(name.Select(c => char.IsLetterOrDigit(c) || c is '.' or '-' or '_' ? c : '_'));

@@ -261,7 +261,7 @@ public sealed partial class WebEngine : IDisposable
     [LoggerMessage(Level = LogLevel.Warning, Message = "AI call failed: {Reason}")]
     private static partial void LogFailed(ILogger logger, string reason);
 
-    [LoggerMessage(Level = LogLevel.Warning, Message = "Engine {Engine} skipped: {Reason}")]
+    [LoggerMessage(Level = LogLevel.Warning, Message = "Engine {Engine} skipped ({Reason}); the next engine in the chain answers instead")]
     private static partial void LogSkipped(ILogger logger, string engine, string reason);
 
     [LoggerMessage(Level = LogLevel.Information, Message = "Gemma models in use: {Models}")]

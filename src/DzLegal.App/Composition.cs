@@ -77,6 +77,8 @@ public static class Composition
             MergeSystemPrompt = model.Contains("gemma", StringComparison.OrdinalIgnoreCase),
             // OpenRouter's shared capacity is sometimes rate-limited for a minute or two: wait it out before reporting.
             RateLimit = new DzLegal.ModelProviders.Hosted.RateLimitPolicy(TimeSpan.FromSeconds(90)),
+            // Prefer whichever provider of this same model has capacity, instead of queuing on a busy one.
+            ProviderSort = "throughput",
         };
         return new ProviderOption(
             "online",

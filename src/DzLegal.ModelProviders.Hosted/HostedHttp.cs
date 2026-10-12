@@ -48,7 +48,11 @@ internal static class HostedHttp
                 {
                     var delay = RetryAfter(response) ?? Backoff(attempt);
                     delay = delay > remaining ? remaining : delay;
-                    policy.OnWait?.Invoke(delay, attempt + 1);
+                    if (policy.OnWait is not null)
+                    {
+                        policy.OnWait(delay, attempt + 1, Truncate(Explanation(await response.Content.ReadAsStringAsync(cancellationToken)), 160));
+                    }
+
                     await Task.Delay(delay, cancellationToken);
                     waited += delay;
                     continue;

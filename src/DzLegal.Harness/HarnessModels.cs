@@ -46,6 +46,8 @@ public static class HarnessModels
                 Timeout = timeout,
                 MergeSystemPrompt = model.Contains("gemma", StringComparison.OrdinalIgnoreCase) || model == "mock",
                 RateLimit = rateLimit ?? RateLimitPolicy.None,
+                // Prefer whichever provider of this same model has capacity, instead of queuing on a busy one.
+                ProviderSort = "throughput",
             });
         }
 
@@ -70,7 +72,11 @@ public static class HarnessModels
     /// log, so a busy spell pauses the batch instead of failing its cases.
     /// </summary>
     public static RateLimitPolicy Waiting(TimeSpan maxWait, TextWriter log) =>
-        new(maxWait, (delay, attempt) => log.WriteLine($"    rate-limited, waiting {delay.TotalSeconds:0} s (attempt {attempt})…"));
+        new(maxWait, (delay, attempt, reason) => log.WriteLine($"    rate-limited ({reason}), waiting {delay.TotalSeconds:0} s (attempt {attempt})…"));
+
+    /// <summary>The pause before each call: as given, or by default 3 s for a hosted engine (shared capacity) and 0 locally.</summary>
+    public static TimeSpan Pace(string spec, double seconds) =>
+        TimeSpan.FromSeconds(seconds >= 0 ? seconds : IsHosted(spec) ? 3 : 0);
 
     /// <summary>True for an engine on someone else's server (the cases leave the machine).</summary>
     public static bool IsHosted(string spec) =>

@@ -67,6 +67,12 @@ public sealed record OpenAiCompatibleOptions
 
     /// <inheritdoc cref="RateLimitPolicy"/>
     public RateLimitPolicy RateLimit { get; init; } = RateLimitPolicy.None;
+
+    /// <summary>
+    /// OpenRouter only: how to choose among the providers that serve the same model ("throughput", "price",
+    /// "latency"), with fallbacks to the others allowed. Null sends no preference (OpenRouter's default routing).
+    /// </summary>
+    public string? ProviderSort { get; init; }
 }
 
 /// <summary>
@@ -75,8 +81,9 @@ public sealed record OpenAiCompatibleOptions
 /// The desktop testing build and the harness wait, because they test one engine on purpose.
 /// </summary>
 /// <param name="MaxWait">Total waiting allowed for one request.</param>
-/// <param name="OnWait">Told before each wait: how long, and which attempt comes next.</param>
-public sealed record RateLimitPolicy(TimeSpan MaxWait, Action<TimeSpan, int>? OnWait = null)
+/// <param name="OnWait">Told before each wait: how long, which attempt comes next, and what the service said (e.g.
+/// "google/gemma-3-4b-it is temporarily rate-limited upstream"), so a log shows whose limit it is.</param>
+public sealed record RateLimitPolicy(TimeSpan MaxWait, Action<TimeSpan, int, string>? OnWait = null)
 {
     public static readonly RateLimitPolicy None = new(TimeSpan.Zero);
 }

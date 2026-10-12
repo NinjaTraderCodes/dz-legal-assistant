@@ -242,17 +242,38 @@ public class RateLimitTests
     }
 
     [Fact]
+    public async Task AProviderPreferenceIsSentOnlyWhenSet()
+    {
+        var handler = new FakeHandler(_ => GoogleAiProviderTests.Sse("""{"choices":[{"delta":{"content":"ok"}}]}"""));
+        using (var preferring = new OpenAiCompatibleModelProvider(new OpenAiCompatibleOptions { Label = "OpenRouter", Endpoint = new Uri("https://openrouter.ai/api/v1/"), ApiKey = "k", Model = "google/gemma-3-4b-it", ProviderSort = "throughput" }, handler))
+        {
+            await preferring.GenerateAsync(Request, CancellationToken.None);
+        }
+
+        using (var plain = Provider(handler, RateLimitPolicy.None))
+        {
+            await plain.GenerateAsync(Request, CancellationToken.None);
+        }
+
+        using var first = System.Text.Json.JsonDocument.Parse(handler.Requests[0].Body);
+        Assert.Equal("throughput", first.RootElement.GetProperty("provider").GetProperty("sort").GetString());
+        Assert.True(first.RootElement.GetProperty("provider").GetProperty("allow_fallbacks").GetBoolean());
+        using var second = System.Text.Json.JsonDocument.Parse(handler.Requests[1].Body);
+        Assert.False(second.RootElement.TryGetProperty("provider", out _)); // the web demo's request is unchanged
+    }
+
+    [Fact]
     public async Task ARateLimitIsWaitedOutAndTheRequestSentAgain()
     {
         var calls = 0;
-        var waits = new List<(TimeSpan Delay, int Attempt)>();
+        var waits = new List<(TimeSpan Delay, int Attempt, string Reason)>();
         var handler = new FakeHandler(_ => ++calls == 1 ? Limited(TimeSpan.Zero) : GoogleAiProviderTests.Sse("""{"choices":[{"delta":{"content":"ok"}}]}"""));
-        using var provider = Provider(handler, new RateLimitPolicy(TimeSpan.FromMinutes(1), (d, a) => waits.Add((d, a))));
+        using var provider = Provider(handler, new RateLimitPolicy(TimeSpan.FromMinutes(1), (d, a, r) => waits.Add((d, a, r))));
 
         Assert.Equal("ok", await provider.GenerateAsync(Request, CancellationToken.None));
         Assert.Equal(2, handler.Requests.Count);
         Assert.Equal(handler.Requests[0].Body, handler.Requests[1].Body); // the same request, rebuilt
-        Assert.Equal([(TimeSpan.Zero, 2)], waits);
+        Assert.Equal([(TimeSpan.Zero, 2, "google/gemma-3-4b-it is temporarily rate-limited upstream.")], waits);
     }
 
     [Fact]

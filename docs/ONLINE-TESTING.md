@@ -50,8 +50,8 @@ Options:
 
 - `--runs N`: run every case N times. The outputs go to `<out>/<model>/run-<k>/` (grounds: `<out>/run-<k>/<model>/`).
 - `--case <name>`: run one case only, to test "the same case N times".
-- `--delay-seconds S`: wait between model calls, to respect OpenRouter's rate limits on free or low-tier keys.
-- `--rate-limit-wait-seconds S` (default 300) and `--max-consecutive-failures N` (default 3; 0 = never stop): see "Rate limits" below.
+- `--delay-seconds S`: wait between model calls. Default: 3 s for a hosted engine (its capacity is shared), 0 for a local model.
+- `--rate-limit-wait-seconds S` (default 120) and `--max-consecutive-failures N` (default 3; 0 = never stop): see "Rate limits" below.
 
 Before starting, the harness prints how many model calls the run will make.
 
@@ -90,11 +90,28 @@ For more than one run, a stability table gives the mean and range per model and 
 OpenRouter's free and shared capacity for Gemma 3 4B sits at the company that runs the model (DeepInfra, for example). When it's busy, it refuses requests for a minute or two with error 429. That is their limit, not a problem with your key or with the app.
 
 - **Desktop testing build:** a refused request is retried automatically for up to **90 seconds**, as long as the service asks, or else after 10 s, 20 s, 40 s… If it is still refused, the app says "The online service is busy right now…" instead of showing the raw error. Wait a minute or two and press the button again, or switch to the local model.
-- **Harness:** each call waits out a refusal for up to **5 minutes** (`--rate-limit-wait-seconds`) and prints `rate-limited, waiting 20 s…`. If 3 cases in a row still fail (`--max-consecutive-failures`), it stops that model's batch, skips its remaining runs, and marks the summary "stopped early after k of n cases". Calls that never ran are not counted as model failures.
+- **Harness:** each call waits out a refusal for up to **2 minutes** (`--rate-limit-wait-seconds`) and prints the service's reason, for example `rate-limited (google/gemma-3-4b-it is temporarily rate-limited upstream), waiting 20 s…`. The OpenRouter requests ask for whichever provider of the same model has capacity (`provider.sort: throughput`). If 3 cases in a row still fail (`--max-consecutive-failures`), it stops that model's batch, skips its remaining runs, and marks the summary "stopped early after k of n cases". Calls that never ran are not counted as model failures.
 - **What helps:**
   - add `--delay-seconds 2` or `3` for long batches;
   - run outside busy hours;
   - optionally, add your own provider key in OpenRouter's settings → Integrations (the error message suggests this), which gives you your own limit instead of the shared one.
+
+### "It works on the website but not here"
+
+The website uses the same OpenRouter model, but when OpenRouter answers 429 it **switches at once to Gemma 4 on Google AI Studio** (its fallback chain, `docs/WEB-DEMO.md`). The page doesn't show the switch. So during a busy spell the website keeps answering with a bigger model, while the software waits for the real Gemma 3 4B. In Render's logs, each switch reads `Engine google/gemma-3-4b-it (OpenRouter) skipped (…429…); the next engine in the chain answers instead`.
+
+To see whose limit it is, from this PC:
+
+```powershell
+$env:OPENROUTER_API_KEY = "sk-or-..."
+dotnet run --project src/DzLegal.Harness -c Release -- ping
+```
+
+It prints the key's status (credit, limit, free tier, rate limit), then the result of a tiny request and a drafting-sized one: HTTP status, rate-limit headers, the provider's explanation and name. The key is never printed. The last line is a verdict:
+- **shared upstream limit:** every OpenRouter user of this model is limited right now. Retry later.
+- **your key or account:** compare with the key on Render.
+- **no credit:** add credit or raise the key's limit.
+- **answers normally:** a stalled run was a busy spell; rerun.
 
 ## Removing it
 

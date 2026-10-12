@@ -7,8 +7,10 @@ using DzLegal.Harness;
 //       Form Engine accuracy over the corpus. Exit code 1 on any mismatch.
 //   Models: a local Ollama model (gemma3:4b), stub, openrouter[:<model>] (OPENROUTER_API_KEY) or google:<model>
 //   (GOOGLE_API_KEY). Hosted engines receive the fictitious test cases (docs/ONLINE-TESTING.md).
+//   dzlegal-harness ping [--models openrouter[:<model>]]
+//       Tells whose limit stops OpenRouter: the key's status, then a tiny and a drafting-sized request (key never shown).
 //   Batch options for draft and grounds: --runs N (repeat each case), --case <name> (one case), --delay-seconds S,
-//   --rate-limit-wait-seconds S (hosted: wait out "too many requests", default 300 per call),
+//   --rate-limit-wait-seconds S (hosted: wait out "too many requests", default 120 per call),
 //   --max-consecutive-failures N (stop a model's batch after N failed cases in a row, default 3; 0 = never).
 //   dzlegal-harness draft --models <m1,m2,...|stub> [--out bench] [--cases <folder>] [--endpoint http://127.0.0.1:11434] [--timeout-minutes 15]
 //       Drafting bench: runs the drafting cases through each model and writes outputs + summary.md.
@@ -38,6 +40,26 @@ if (args.Length > 1 && args[0] == "law" && args[1] == "import" && args.Length > 
         Console.Out);
 }
 
+if (args.Length > 0 && args[0] == "ping")
+{
+    var spec = Option("--models", "openrouter");
+    if (spec != "openrouter" && !spec.StartsWith("openrouter:", StringComparison.Ordinal))
+    {
+        Console.Error.WriteLine("ping: only --models openrouter[:<model>] is supported.");
+        return 2;
+    }
+
+    if (Environment.GetEnvironmentVariable("OPENROUTER_API_KEY") is not { Length: > 0 } key)
+    {
+        Console.Error.WriteLine("ping: set the OPENROUTER_API_KEY environment variable first.");
+        return 2;
+    }
+
+    var endpoint = Environment.GetEnvironmentVariable("OPENROUTER_ENDPOINT") is { Length: > 0 } e ? new Uri(e) : new Uri("https://openrouter.ai/api/v1/");
+    var model = spec.Length > "openrouter:".Length ? spec["openrouter:".Length..] : HarnessModels.DefaultOpenRouterModel;
+    return await OpenRouterDiagnostics.RunAsync(endpoint, key.Trim(), model, Console.Out);
+}
+
 if (args.Length > 0 && args[0] == "grounds")
 {
     var models = Option("--models", string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
@@ -48,8 +70,9 @@ if (args.Length > 0 && args[0] == "grounds")
     }
 
     var runs = Math.Max(1, int.Parse(Option("--runs", "1"), CultureInfo.InvariantCulture));
-    var delay = TimeSpan.FromSeconds(double.Parse(Option("--delay-seconds", "0"), CultureInfo.InvariantCulture));
-    var rateLimitWait = TimeSpan.FromSeconds(double.Parse(Option("--rate-limit-wait-seconds", "300"), CultureInfo.InvariantCulture));
+    // Unset: 3 s between calls for a hosted engine (its shared capacity), none for a local one.
+    var delaySeconds = args.Contains("--delay-seconds") ? double.Parse(Option("--delay-seconds", "0"), CultureInfo.InvariantCulture) : -1;
+    var rateLimitWait = TimeSpan.FromSeconds(double.Parse(Option("--rate-limit-wait-seconds", "120"), CultureInfo.InvariantCulture));
     var maxFailures = int.Parse(Option("--max-consecutive-failures", "3"), CultureInfo.InvariantCulture);
     var knowledge = DzLegal.Law.LegalKnowledgeLoader.Load(Option("--law-root", Path.Combine(AppContext.BaseDirectory, "data", "law")));
     var outRoot = args.Contains("--out") ? Option("--out", "bench-grounds") : null;
@@ -93,7 +116,7 @@ if (args.Length > 0 && args[0] == "grounds")
                 return 2;
             }
 
-            using var paced = new PacedModelProvider(provider, delay);
+            using var paced = new PacedModelProvider(provider, HarnessModels.Pace(model, delaySeconds));
             if (runs > 1)
             {
                 Console.WriteLine($" run {run}/{runs}");
@@ -154,9 +177,9 @@ if (args.Length > 0 && args[0] == "draft")
             Timeout = TimeSpan.FromMinutes(double.Parse(Option("--timeout-minutes", "15"), CultureInfo.InvariantCulture)),
             Runs = Math.Max(1, int.Parse(Option("--runs", "1"), CultureInfo.InvariantCulture)),
             Case = args.Contains("--case") ? Option("--case", string.Empty) : null,
-            Delay = TimeSpan.FromSeconds(double.Parse(Option("--delay-seconds", "0"), CultureInfo.InvariantCulture)),
+            DelaySeconds = args.Contains("--delay-seconds") ? double.Parse(Option("--delay-seconds", "0"), CultureInfo.InvariantCulture) : -1,
             LawRoot = Option("--law-root", Path.Combine(AppContext.BaseDirectory, "data", "law")),
-            RateLimitWait = TimeSpan.FromSeconds(double.Parse(Option("--rate-limit-wait-seconds", "300"), CultureInfo.InvariantCulture)),
+            RateLimitWait = TimeSpan.FromSeconds(double.Parse(Option("--rate-limit-wait-seconds", "120"), CultureInfo.InvariantCulture)),
             MaxConsecutiveFailures = int.Parse(Option("--max-consecutive-failures", "3"), CultureInfo.InvariantCulture),
         },
         Console.Out);

@@ -49,7 +49,10 @@ public sealed class OpenAiCompatibleModelProvider : IModelProvider, IDisposable
             ? [new Message("user", HostedHttp.Merged(request))]
             : [new Message("system", request.SystemPrompt), new Message("user", request.UserPrompt)];
         var maxTokens = request.MaxTokens is { } cap ? Math.Min(cap, _options.MaxTokens) : _options.MaxTokens;
-        var body = new Request(_options.Model, messages, _options.Temperature, maxTokens, Stream: true);
+        var body = new Request(_options.Model, messages, _options.Temperature, maxTokens, Stream: true)
+        {
+            Provider = _options.ProviderSort is { } sort ? new ProviderPreference(sort, AllowFallbacks: true) : null,
+        };
         using var response = await HostedHttp.SendAsync(
             _http,
             () => new HttpRequestMessage(HttpMethod.Post, new Uri("chat/completions", UriKind.Relative)) { Content = HostedHttp.Json(body) },
@@ -73,7 +76,17 @@ public sealed class OpenAiCompatibleModelProvider : IModelProvider, IDisposable
         [property: JsonPropertyName("messages")] IReadOnlyList<Message> Messages,
         [property: JsonPropertyName("temperature")] double Temperature,
         [property: JsonPropertyName("max_tokens")] int MaxTokens,
-        [property: JsonPropertyName("stream")] bool Stream);
+        [property: JsonPropertyName("stream")] bool Stream)
+    {
+        [JsonPropertyName("provider")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public ProviderPreference? Provider { get; init; }
+    }
+
+    /// <summary>OpenRouter's provider routing: https://openrouter.ai/docs/features/provider-routing.</summary>
+    private sealed record ProviderPreference(
+        [property: JsonPropertyName("sort")] string Sort,
+        [property: JsonPropertyName("allow_fallbacks")] bool AllowFallbacks);
 
     private sealed record Message(
         [property: JsonPropertyName("role")] string Role,

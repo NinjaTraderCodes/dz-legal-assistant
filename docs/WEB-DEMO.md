@@ -31,6 +31,8 @@ Browser ──SignalR──► DzLegal.Web (ASP.NET Core, Blazor Server, one ins
                                 → Groq                            (optional)
 ```
 
+> When OpenRouter's Gemma 3 4B is rate-limited (shared upstream capacity), the demo answers with **Gemma 4 (26B/31B) on Google** without saying so on the page. Those answers come from a bigger model than the desktop's. Each switch is logged: `Engine … skipped (…); the next engine in the chain answers instead`.
+
 - **Failures never end a visitor's session.**
   - A dropped connection, an unreadable event, or an answer silent for 45 seconds becomes a model error.
   - A service that is busy, refuses the key or has no credit left (401/402/403/404/429/5xx, or an error inside the stream) hands the request to the next engine, as long as it has not written anything yet.

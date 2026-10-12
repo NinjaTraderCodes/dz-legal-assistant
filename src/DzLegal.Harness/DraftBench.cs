@@ -58,11 +58,11 @@ public sealed record BenchOptions
     /// <summary>Only this case (its file name without .json), or every case.</summary>
     public string? Case { get; init; }
 
-    /// <summary>Wait before each model call (hosted rate limits).</summary>
-    public TimeSpan Delay { get; init; } = TimeSpan.Zero;
+    /// <summary>Seconds to wait before each model call (hosted rate limits); negative: 3 for a hosted engine, 0 for a local one.</summary>
+    public double DelaySeconds { get; init; } = -1;
 
     /// <summary>Hosted engines: how long one call may wait out "too many requests".</summary>
-    public TimeSpan RateLimitWait { get; init; } = TimeSpan.FromMinutes(5);
+    public TimeSpan RateLimitWait { get; init; } = TimeSpan.FromMinutes(2);
 
     /// <summary>Stop a model's batch after this many failed cases in a row (0: never).</summary>
     public int MaxConsecutiveFailures { get; init; } = 3;
@@ -123,7 +123,7 @@ public static class DraftBench
                         inputs[k] = v;
                     }
 
-                    var timed = new TimingProvider(new PacedModelProvider(HarnessModels.Create(model, options.Endpoint, options.Timeout, speedLog, HarnessModels.Waiting(options.RateLimitWait, log)), options.Delay));
+                    var timed = new TimingProvider(new PacedModelProvider(HarnessModels.Create(model, options.Endpoint, options.Timeout, speedLog, HarnessModels.Waiting(options.RateLimitWait, log)), HarnessModels.Pace(model, options.DelaySeconds)));
                     var legalTexts = LegalTextsCited(knowledge, inputs.GetValueOrDefault("notes.grounds", string.Empty));
                     var clock = Stopwatch.StartNew();
                     DraftDocument? draft = null;

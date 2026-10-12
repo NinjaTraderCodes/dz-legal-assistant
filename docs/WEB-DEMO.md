@@ -10,7 +10,7 @@ difference is where the AI model runs:
 | | Desktop app | Web demo |
 |---|---|---|
 | Form, formal check, legal points, templates, PDF/Word | on the laptop | on the demo server |
-| Model for the analysis and the drafting | Gemma 3 4B, **local** (Ollama) | Gemma 3 4B, the same model, **hosted** (OpenRouter); Gemma 4 on Google AI Studio as the backup |
+| Model for the analysis and the drafting | Gemma 3 4B, **local** (Ollama); about 2 minutes per draft on a laptop CPU | Gemma 4 26B **hosted** on Google AI Studio first (larger than the desktop's model, said on the page), then Gemma 3 4B on OpenRouter, then Groq |
 | Case data | never leaves the computer | sent to the hosted model: **fictitious cases only** |
 | Screen logic (view models, strings) | `DzLegal.Presentation` | `DzLegal.Presentation` (the same code) |
 
@@ -26,12 +26,14 @@ Browser ──SignalR──► DzLegal.Web (ASP.NET Core, Blazor Server, one ins
                            per-visitor and per-network hourly limits (charged per call)
                            → the shared queue (ModelGate, 2 calls at a time)
                            → the engine chain (FallbackModelProvider, one set of engines for everyone):
-                                Gemma 3 4B on OpenRouter          (when OPENROUTER_API_KEY is set)
-                                → Gemma 4 on Google AI Studio     (when GOOGLE_API_KEY is set; models Google still serves)
+                                Gemma 4 on Google AI Studio       (when GOOGLE_API_KEY is set; models Google still serves, 26B first)
+                                → Gemma 3 4B on OpenRouter        (when OPENROUTER_API_KEY is set)
                                 → Groq                            (optional)
 ```
 
-> When OpenRouter's Gemma 3 4B is rate-limited (shared upstream capacity), the demo answers with **Gemma 4 (26B/31B) on Google** without saying so on the page. Those answers come from a bigger model than the desktop's. Each switch is logged: `Engine … skipped (…); the next engine in the chain answers instead`.
+> Gemma 4 26B answers first because, in the October audit, OpenRouter's Gemma 3 4B left every argued paragraph of the live sample blank. The page says the demo runs a larger hosted model than the desktop, lists the services the form may be sent to (Google, OpenRouter, Groq), and shows under the draft which engine answered. Each switch down the chain is logged: `Engine … skipped (…); the next engine in the chain answers instead`.
+>
+> The visitor's case is kept in the browser as a recovery copy for at most a day; «امسح نسخة المتصفح» deletes it and stops keeping one.
 
 - **Failures never end a visitor's session.**
   - A dropped connection, an unreadable event, or an answer silent for 45 seconds becomes a model error.
@@ -98,9 +100,9 @@ e-mail.
 
 ## Limits, stated plainly
 
-- **AI quality:** Gemma 3 4B is a small model. That is why the checks matter:
+- **AI quality:** the desktop's Gemma 3 4B is a small model, and even the demo's larger one makes mistakes. That is why the checks matter:
   - the articles a claim type requires are always proposed;
-  - the grounds cite the ticked articles by number in one paragraph per part of the claim, planned by the code; any "article X provides that…" or quotation is checked against the official text and the catalog's one-line rule;
+  - the program writes each ticked article's rule from the catalog's one-line wording, one paragraph per part of the claim; the AI only writes how the facts meet it, and an application that cites or quotes an article is rejected;
   - a paragraph that keeps attributing wrong content to an article is removed, and the lawyer sees what was removed;
   - the legal points flag a wrong basis, interest on a private loan, damages without formal notice, and an article from an unrelated area of law;
   - export is refused while the notes contain text addressed to an AI, a request line not in Arabic, or a prison sentence asked in a civil case.

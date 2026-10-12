@@ -87,6 +87,8 @@
                     </li>
                 </ol>
                 <p class="muted small">@T("AboutDemo")</p>
+                <p class="row small"><button type="button" class="small" @onclick="ClearBrowserCopy">@T("ClearBrowserCopy")</button>
+                    @if (_browserCopyCleared) { <span class="muted" role="status">@T("BrowserCopyCleared")</span> }</p>
             </section>
         }
     </div>
@@ -184,7 +186,7 @@
                                     }
                                 </ol>
                                 <div class="row">
-                                    <button type="button" class="primary" @onclick="() => Vm.AcceptRequestsProposalCommand.Execute(null)">@L["AcceptRequestsWording"]</button>
+                                    @* Suggestion only (audit C-02): the checks see amounts and counts, not who pays whom or what is asked. *@
                                     <button type="button" @onclick="() => Vm.RejectRequestsProposalCommand.Execute(null)">@L["RejectRequestsWording"]</button>
                                 </div>
                             </div>

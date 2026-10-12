@@ -4,8 +4,11 @@ using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// One message carries a whole field: the fields are bounded (FieldViewModel.MaxLength), and this leaves room for them
+// in Arabic (2 bytes a letter) without letting a huge paste through.
 builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+    .AddInteractiveServerComponents()
+    .AddHubOptions(o => o.MaximumReceiveMessageSize = 64 * 1024);
 builder.Services.AddSingleton(EngineSettings.From(builder.Configuration));
 builder.Services.AddSingleton(sp => new WebEngine(
     sp.GetRequiredService<EngineSettings>(),

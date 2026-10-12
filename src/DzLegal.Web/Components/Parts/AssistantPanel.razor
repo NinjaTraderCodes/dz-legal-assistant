@@ -1,7 +1,9 @@
 @using DzLegal.Presentation.ViewModels
 @* The section assistant, in a side drawer as on the desktop: the AI rewords one section on request and shows the change
    to accept or reject. *@
-<aside class="assistant" role="dialog" aria-modal="true" aria-labelledby="assistant-title" dir="@(Vm.IsRightToLeft ? "rtl" : "ltr")">
+@* A non-modal drawer (the page stays usable beside it); Escape closes it. *@
+<aside class="assistant" role="dialog" aria-labelledby="assistant-title" dir="@(Vm.IsRightToLeft ? "rtl" : "ltr")"
+       @onkeydown="@(e => { if (e.Key == "Escape") Vm.CloseAssistantCommand.Execute(null); })">
     <div class="head">
         <h2 id="assistant-title"><Icon Name="sparkle" /> @Vm.AssistantTitle</h2>
         <button type="button" class="quiet" aria-label="@Vm.L["CloseAssistant"]" @onclick="() => Vm.CloseAssistantCommand.Execute(null)"><Icon Name="dismiss" /></button>
@@ -15,7 +17,7 @@
     </div>
     <div class="ask">
         <label class="small muted" for="assistant-instruction">@Vm.L["InstructionPlaceholder"]</label>
-        <textarea id="assistant-instruction" rows="3" dir="auto" @bind="Vm.AssistantInstruction" @bind:event="oninput"></textarea>
+        <textarea id="assistant-instruction" rows="3" dir="auto" maxlength="1000" @bind="Vm.AssistantInstruction" @bind:event="oninput"></textarea>
         <div class="row">
             @if (Vm.SendInstructionCommand.IsRunning)
             {

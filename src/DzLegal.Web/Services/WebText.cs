@@ -10,8 +10,8 @@ public static class WebText
     {
         ["DemoChip"] = ("Demo · fictitious cases only", "عرض تجريبي · قضايا وهمية فقط"),
         ["AboutDemo"] = (
-            "On this site the AI runs on a hosted server, so use fictitious cases only. The product itself runs the same open model offline, on the lawyer's computer.",
-            "يعمل الذكاء الاصطناعي في هذا الموقع على خادم مستضاف، فاستعمل قضايا وهمية فقط. أما المنتج نفسه فيشغل النموذج المفتوح ذاته دون اتصال على حاسوب المحامي."),
+            "This demo runs on hosted models (Gemma 4 26B first, then smaller ones), on fictitious cases only. The form is processed by this server, and AI actions may send it to Google, OpenRouter or Groq; this browser also keeps a recovery copy. The desktop product runs a smaller model offline on the lawyer's computer, where a draft takes about two minutes on an ordinary laptop. The engine that answered is shown under the draft.",
+            "يعمل هذا العرض بنماذج مستضافة (Gemma 4 26B أولا، ثم نماذج أصغر)، على قضايا وهمية فقط. يعالج هذا الخادم الاستمارة، وقد ترسلها عمليات الذكاء الاصطناعي إلى Google أو OpenRouter أو Groq، ويحتفظ المتصفح بنسخة احتياطية. أما المنتج المكتبي فيشغل نموذجا أصغر دون اتصال على حاسوب المحامي، وتستغرق المسودة فيه نحو دقيقتين على حاسوب عادي. يظهر تحت المسودة المحرك الذي أجاب."),
         ["NoEngine"] = (
             "AI is not configured on this server: the form, the formal check, editing and export work, and drafting uses fill-in templates.",
             "لم يهيأ الذكاء الاصطناعي على هذا الخادم: تعمل الاستمارة والمراجعة الشكلية والتحرير والتصدير، والصياغة بالقوالب."),
@@ -28,11 +28,13 @@ public static class WebText
         ["Guide2"] = ("Clear the defendant's address: the formal check drops and cites the Code of Civil Procedure, art. 15. Then put it back.",
             "امسح عنوان المدعى عليه: تنخفض المراجعة الشكلية وتذكر المادة 15 من قانون الإجراءات المدنية والإدارية. ثم أعده."),
         ["Guide3Title"] = ("Analyse the facts, with AI", "حلل الوقائع، بالذكاء الاصطناعي"),
-        ["Guide3"] = ("The AI reads the facts and proposes articles from the official texts. The articles this type of claim requires are ticked for you.",
-            "يقرأ الذكاء الاصطناعي الوقائع ويقترح مواد من النصوص الرسمية. تختار تلقائيا المواد اللازمة لهذا النوع من الدعاوى."),
+        ["Guide3"] = (
+            "The AI reads the facts and proposes a claim type and articles from the catalog. Check the claim type and confirm it: confirming ticks the articles it requires, and you can change them.",
+            "يقرأ الذكاء الاصطناعي الوقائع ويقترح نوع الدعوى ومواد من الفهرس. راجع نوع الدعوى ثم أكده: عند التأكيد تحدد المواد اللازمة له، ويمكنك تغييرها."),
         ["Guide4Title"] = ("Draft, with AI", "صغ، بالذكاء الاصطناعي"),
-        ["Guide4"] = ("Press “Draft facts, grounds and requests”. The AI cites only the ticked articles, and every quote is checked against the official text.",
-            "اضغط «صياغة الوقائع والأسانيد والطلبات». لا يذكر الذكاء الاصطناعي إلا المواد المختارة، ويقارن كل اقتباس بالنص الرسمي."),
+        ["Guide4"] = (
+            "Press “Draft legal grounds”. Facts and requests use your own wording; the program writes each article's rule from the catalog and the AI writes how the facts meet it. Checks catch some errors; the legal reasoning stays the lawyer's to verify. Tick “reviewed” under the grounds.",
+            "اضغط «صياغة الأسانيد». تدرج الوقائع والطلبات كما كتبتها؛ يكتب البرنامج قاعدة كل مادة من الفهرس، ويكتب الذكاء الاصطناعي كيف تنطبق على الوقائع. تفحص الأداة بعض الأخطاء، ويبقى التحقق من الاستدلال القانوني على المحامي. أشر على «راجعت هذا القسم» تحت الأسانيد."),
         ["Guide5Title"] = ("Preview and export", "عاين وصدر"),
         ["Guide5"] = ("Open Preview, then export the statement of claim to PDF or Word.", "افتح المعاينة، ثم صدر العريضة بصيغة PDF أو Word."),
         ["OpenGrounds"] = ("Go to Legal grounds", "إلى الأسانيد القانونية"),
@@ -45,6 +47,8 @@ public static class WebText
         ["TabChecks"] = ("Checks", "المراجعة"),
         ["Theme"] = ("Dark or light", "داكن أو فاتح"),
         ["CopyDone"] = ("Copy text", "نسخ النص"),
+        ["ClearBrowserCopy"] = ("Clear this browser's copy", "امسح نسخة المتصفح"),
+        ["BrowserCopyCleared"] = ("The copy kept in this browser was deleted.", "حذفت النسخة المحفوظة في هذا المتصفح."),
     };
 
     public static string Get(string key, string language) =>

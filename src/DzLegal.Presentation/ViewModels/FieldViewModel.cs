@@ -21,6 +21,18 @@ public sealed partial class FieldViewModel : ObservableObject
 
     public FieldDefinition Definition { get; }
 
+    /// <summary>
+    /// Longest text the field takes. Bounds what reaches the model (a laptop model reads about 4,000 tokens in all) and
+    /// what a web page sends to its server in one message: a 25,000-letter paste used to disconnect the web demo.
+    /// </summary>
+    public int MaxLength => Id switch
+    {
+        "notes.facts" => 8000,
+        "notes.grounds" => 4000,
+        "notes.requests" or "documents.list" => 2000,
+        _ => 500,
+    };
+
     public string Id => Definition.Id;
 
     public string Label => Definition.Label.Get(_loc.Language);
@@ -67,6 +79,12 @@ public sealed partial class FieldViewModel : ObservableObject
 
     partial void OnValueChanged(string value)
     {
+        if (value.Length > MaxLength)
+        {
+            Value = value[..MaxLength]; // reports the change once, with the bounded text
+            return;
+        }
+
         OnPropertyChanged(nameof(BoolValue));
         OnPropertyChanged(nameof(SelectedOption));
         if (!Silent)

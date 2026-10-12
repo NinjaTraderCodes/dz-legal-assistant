@@ -178,21 +178,22 @@ public class WebEngineTests
     }
 
     [Fact]
-    public void OpenRouterComesFirstWhenItsKeyIsSetThenGoogle()
+    public void GoogleGemma4ComesFirstByDefaultThenOpenRouter()
     {
+        // Audit C-09: the 4B on OpenRouter left every argued paragraph blank on the live demo; Gemma 4 26B answers first.
         using var engine = Create(new EngineSettings { GoogleApiKey = "g", OpenRouterApiKey = "o", GoogleModels = ["gemma-4-26b-a4b-it"] });
+
+        Assert.Equal(["gemma-4-26b-a4b-it (Google AI Studio)", "google/gemma-3-4b-it (OpenRouter)"], engine.EngineNames);
+    }
+
+    [Fact]
+    public void TheOrderCanPutOpenRouterFirst()
+    {
+        using var engine = Create(new EngineSettings { GoogleApiKey = "g", OpenRouterApiKey = "o", GoogleModels = ["gemma-4-26b-a4b-it"], Order = ["openrouter", "google"] });
         using var vm = engine.CreateSession(new NoFiles(), new NoExternalLinks(), "en");
 
         Assert.Equal("Gemma 3 4B (demo server)", vm.SelectedProvider?.DisplayName);
         Assert.Equal(["google/gemma-3-4b-it (OpenRouter)", "gemma-4-26b-a4b-it (Google AI Studio)"], engine.EngineNames);
-    }
-
-    [Fact]
-    public void TheOrderCanPutGoogleFirst()
-    {
-        using var engine = Create(new EngineSettings { GoogleApiKey = "g", OpenRouterApiKey = "o", GoogleModels = ["gemma-4-26b-a4b-it"], Order = ["google", "openrouter"] });
-
-        Assert.Equal(["gemma-4-26b-a4b-it (Google AI Studio)", "google/gemma-3-4b-it (OpenRouter)"], engine.EngineNames);
     }
 
     [Fact]

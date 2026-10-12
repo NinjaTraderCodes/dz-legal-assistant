@@ -19,9 +19,9 @@
   <data name="ProviderLabel" xml:space="preserve"><value>محرك الصياغة</value></data>
   <data name="ProviderStub" xml:space="preserve"><value>دون ذكاء اصطناعي (قوالب)</value></data>
   <data name="ProviderOllama" xml:space="preserve"><value>النموذج المحلي ({0})</value></data>
-  <data name="Generate" xml:space="preserve"><value>صياغة الوقائع والأسانيد والطلبات</value></data>
+  <data name="Generate" xml:space="preserve"><value>صياغة الأسانيد</value></data>
   <data name="Cancel" xml:space="preserve"><value>إلغاء</value></data>
-  <data name="GenerateHint" xml:space="preserve"><value>يكتب الوقائع والأسانيد القانونية والطلبات من ملاحظاتك. تبقى الأقسام التي عدلتها يدويا كما هي.</value></data>
+  <data name="GenerateHint" xml:space="preserve"><value>تدرج الوقائع والطلبات كما كتبتها. يقترح الذكاء الاصطناعي صياغة الأسانيد لتراجعها. تبقى الأقسام التي عدلتها يدويا كما هي.</value></data>
   <data name="Generating" xml:space="preserve"><value>جارٍ صياغة: {0}…</value></data>
   <data name="Generated" xml:space="preserve"><value>تمت صياغة المسودة بواسطة: {0}. راجعها وعدلها.</value></data>
   <data name="Cancelled" xml:space="preserve"><value>ألغيت الصياغة.</value></data>
@@ -30,7 +30,7 @@
   <data name="AutosaveFailed" xml:space="preserve"><value>تعذر الحفظ التلقائي: {0}</value></data>
   <data name="GeneratedSectionHint" xml:space="preserve"><value>من الاستمارة</value></data>
   <data name="NarrativeSectionHint" xml:space="preserve"><value>كتبه الذكاء الاصطناعي من ملاحظاتك، قابل للتعديل</value></data>
-  <data name="EmptyNarrativeHint" xml:space="preserve"><value>اكتب ملاحظاتك في الاستمارة واضغط «صياغة الوقائع والأسانيد والطلبات»، أو اكتب هنا مباشرة.</value></data>
+  <data name="EmptyNarrativeHint" xml:space="preserve"><value>اكتب ملاحظاتك في الاستمارة واضغط «صياغة الأسانيد»، أو اكتب هنا مباشرة.</value></data>
   <data name="SummaryOk" xml:space="preserve"><value>جميع البيانات الإلزامية التي يفحصها البرنامج متوفرة. لا يعني ذلك أن العريضة مقبولة: الموضوع والاختصاص والآجال تبقى على المحامي.</value></data>
   <data name="SummaryMissing" xml:space="preserve"><value>ينقص {0} من البيانات الإلزامية: العريضة معرضة لعدم القبول شكلا.</value></data>
   <data name="SummaryWarnings" xml:space="preserve"><value>{0} تنبيه(ات) للمراجعة.</value></data>
@@ -143,14 +143,14 @@
   <data name="ClaimConfirmPrompt" xml:space="preserve"><value>هل هذا هو نوع الدعوى؟ تأكيدك يختار المواد التي يقوم عليها هذا النوع (المعلّمة «لازمة لهذا النوع»). لا يُختار شيء دون تأكيدك.</value></data>
   <data name="AnalysisOutOfScope" xml:space="preserve"><value>لا تطابق الوقائع أي نوع دعوى في الفهرس الحالي، فلا يقترح البرنامج أي مادة بدل أن يخمن. ابحث عن المواد يدويا أدناه إن لزم.</value></data>
   <data name="RequestsWordingLabel" xml:space="preserve"><value>الصياغة المقترحة (ذكاء اصطناعي)</value></data>
-  <data name="RejectRequestsWording" xml:space="preserve"><value>تجاهل</value></data>
+  <data name="RejectRequestsWording" xml:space="preserve"><value>أغلق الاقتراح</value></data>
   <data name="AcceptRequestsWording" xml:space="preserve"><value>اعتمد الصياغة</value></data>
   <data name="RequestsWordingAccepted" xml:space="preserve"><value>اعتُمدت الصياغة وأصبحت طلباتك في الاستمارة.</value></data>
   <data name="RequestsWordingWithheld" xml:space="preserve"><value>لم يحافظ اقتراح النموذج على المبالغ أو عدد الطلبات أو صيغة «أو»، فلم يُعرض. طلباتك باقية كما كتبتها.</value></data>
-  <data name="RequestsWordingReady" xml:space="preserve"><value>صياغة مقترحة من الذكاء الاصطناعي، فُحصت مبالغها وعدد طلباتها. راجعها قبل اعتمادها.</value></data>
+  <data name="RequestsWordingReady" xml:space="preserve"><value>اقتراح صياغة فقط: فُحصت مبالغه وعدد طلباته، ولم يُتحقق من بقاء المعنى (من يلزم بماذا ولمن). طلباتك تبقى في العريضة كما كتبتها؛ انقل منه بنفسك ما تراه صحيحا.</value></data>
   <data name="RequestsWordingRunning" xml:space="preserve"><value>يكتب النموذج صياغة مقترحة…</value></data>
   <data name="RequestsWordingNeedsNotes" xml:space="preserve"><value>اكتب طلباتك أولا (طلب في كل سطر)، واختر محرك ذكاء اصطناعي.</value></data>
-  <data name="RequestsWordingIntro" xml:space="preserve"><value>تظهر طلباتك في العريضة كما كتبتها، مرقمة. يمكن للذكاء الاصطناعي أن يقترح صياغة رسمية لها؛ لا يُعرض الاقتراح إلا إذا حافظ على كل مبلغ وكل رقم وعلى عدد الطلبات وعلى «أو»، ولا يُعتمد إلا بموافقتك.</value></data>
+  <data name="RequestsWordingIntro" xml:space="preserve"><value>تظهر طلباتك في العريضة كما كتبتها، مرقمة. يمكن للذكاء الاصطناعي أن يقترح صياغة رسمية لها، تعرض للاطلاع فقط ولا تحل محل طلباتك.</value></data>
   <data name="ProposeRequestsWording" xml:space="preserve"><value>اقترح صياغة رسمية للطلبات</value></data>
   <data name="ExportBlockersTitle" xml:space="preserve"><value>قبل التصدير</value></data>
   <data name="ExportBlocked" xml:space="preserve"><value>لا يُصدَّر المستند قبل إتمام ما يلي:</value></data>
@@ -232,4 +232,5 @@
   <data name="NoteRemovedParagraph" xml:space="preserve"><value>الفقرة المحذوفة: «{0}»</value></data>
   <data name="NoteArgumentLeft" xml:space="preserve"><value>كتب الذكاء الاصطناعي المناقشة مستندا إلى المواد المؤشر عليها. فقرة لم تجتز الفحص تُركت «(...)» لتكملها بنفسك.</value></data>
   <data name="NoteChangedAfterReview" xml:space="preserve"><value>تغير النص أو معطيات الدعوى بعد مراجعتك؛ راجع هذا القسم من جديد.</value></data>
+  <data name="GeneratedIncomplete" xml:space="preserve"><value>المسودة ناقصة: {0} فقرة من الأسانيد تحتاج إلى إكمال «(...)» (كتبها: {1}). أكملها أو أعد الصياغة.</value></data>
 </root>

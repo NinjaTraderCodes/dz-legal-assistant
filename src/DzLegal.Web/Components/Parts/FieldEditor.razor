@@ -27,12 +27,12 @@
         }
         else if (Field.IsMultiline)
         {
-            <textarea id="@InputId" class="arabic" dir="rtl" lang="ar" rows="7" aria-describedby="@(Field.IsMissing ? InputId + "-note" : null)"
+            <textarea id="@InputId" class="arabic" dir="rtl" lang="ar" rows="7" maxlength="@Field.MaxLength" aria-describedby="@(Field.IsMissing ? InputId + "-note" : null)"
                       @bind="Field.Value" @bind:event="oninput"></textarea>
         }
         else
         {
-            <input id="@InputId" class="arabic" dir="rtl" lang="ar" aria-describedby="@(Field.IsMissing ? InputId + "-note" : null)"
+            <input id="@InputId" class="arabic" dir="rtl" lang="ar" maxlength="@Field.MaxLength" aria-describedby="@(Field.IsMissing ? InputId + "-note" : null)"
                    @bind="Field.Value" @bind:event="oninput" />
         }
     }

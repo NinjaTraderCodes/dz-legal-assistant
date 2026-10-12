@@ -302,8 +302,7 @@ public sealed partial class MainWindowViewModel
             ApplyModelSection(section, drafted);
             completed = true;
             Recheck();
-            SetStatus(L.Format("Generated", provider.Name));
-            NoteAnswer(provider);
+            ReportDrafted(provider);
         }
         catch (OperationCanceledException)
         {

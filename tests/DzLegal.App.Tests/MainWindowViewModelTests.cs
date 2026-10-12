@@ -632,6 +632,15 @@ public class MainWindowViewModelTests
     }
 
     [Fact]
+    public void AVeryLongPasteIsBoundedToTheFieldsLimit()
+    {
+        // Audit A-04: a 25,000-letter paste disconnected the web demo.
+        var vm = Vm.Create();
+        vm.Field("notes.facts").Value = new string('ب', 25000);
+        Assert.Equal(8000, vm.Field("notes.facts").Value.Length);
+    }
+
+    [Fact]
     public void SwitchingLanguageTranslatesTheInterface()
     {
         var vm = Vm.Create();
@@ -643,7 +652,7 @@ public class MainWindowViewModelTests
         Assert.False(vm.IsRightToLeft);
         Assert.Equal("Court (tribunal)", vm.Field("court.name").Label);
         Assert.Equal("Court before which the action is brought", vm.Findings.Single(f => f.ElementId == "art15.1.court").Label);
-        Assert.Equal("Draft facts, grounds and requests", vm.L["Generate"]);
+        Assert.Equal("Draft legal grounds", vm.L["Generate"]);
     }
 
     [Fact]

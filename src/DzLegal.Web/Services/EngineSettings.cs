@@ -34,7 +34,7 @@ public sealed class EngineSettings
     /// <summary>Which services are tried first: "openrouter", "google", "groq". Services without a key are skipped.</summary>
     public IReadOnlyList<string> Order { get; init; } = DefaultOrder;
 
-    private static readonly string[] DefaultOrder = ["openrouter", "google", "groq"];
+    private static readonly string[] DefaultOrder = ["google", "openrouter", "groq"];
 
     /// <summary>
     /// How many model calls run at once across all visitors; the others wait their turn. Keeps a burst of judges within

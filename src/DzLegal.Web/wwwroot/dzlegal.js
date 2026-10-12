@@ -18,8 +18,16 @@ window.dzlegal = {
   saveCase(json) {
     try { localStorage.setItem("dzlegal.case", JSON.stringify({ savedAt: new Date().toISOString(), json })); } catch { }
   },
+  // A copy older than a day is deleted unread: a shared or public computer should not keep a case.
   loadCase() {
-    try { return localStorage.getItem("dzlegal.case"); } catch { return null; }
+    try {
+      const stored = localStorage.getItem("dzlegal.case");
+      if (stored && Date.now() - Date.parse(JSON.parse(stored).savedAt) > 24 * 3600 * 1000) {
+        localStorage.removeItem("dzlegal.case");
+        return null;
+      }
+      return stored;
+    } catch { return null; }
   },
   isNarrow() {
     try { return window.matchMedia("(max-width: 899px)").matches; } catch { return false; }

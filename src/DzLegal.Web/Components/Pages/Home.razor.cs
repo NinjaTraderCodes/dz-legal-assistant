@@ -97,7 +97,7 @@ public sealed partial class Home : IDisposable
 
     private async Task SaveCaseAsync()
     {
-        if (Vm is null || SavedCase is not null || _changes == _savedChanges)
+        if (Vm is null || SavedCase is not null || _browserCopyCleared || _changes == _savedChanges)
         {
             return;
         }
@@ -122,6 +122,23 @@ public sealed partial class Home : IDisposable
         }
 
         SavedCase = null;
+    }
+
+    /// <summary>The visitor asked this browser to keep nothing: the copy is deleted and no new one is written.</summary>
+    private bool _browserCopyCleared;
+
+    private async Task ClearBrowserCopy()
+    {
+        _browserCopyCleared = true;
+        SavedCase = null;
+        try
+        {
+            await Js.InvokeVoidAsync("dzlegal.forgetCase");
+        }
+        catch (Exception ex) when (ex is JSException or JSDisconnectedException or TaskCanceledException)
+        {
+            // Storage unavailable: there was nothing kept.
+        }
     }
 
     private async Task DiscardSavedCase()

@@ -529,8 +529,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
                 return;
             }
 
-            SetStatus(L.Format("Generated", provider.Name));
-            NoteAnswer(provider);
+            ReportDrafted(provider);
         }
         catch (OperationCanceledException)
         {
@@ -549,6 +548,28 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
             (provider as IDisposable)?.Dispose();
         }
     }
+
+    /// <summary>
+    /// "Draft written by…", or, when paragraphs were left as «(...)» for the lawyer, says the draft is incomplete
+    /// (audit C-09: the live demo reported success over three blank paragraphs).
+    /// </summary>
+    private void ReportDrafted(IModelProvider provider)
+    {
+        var blanks = Sections.Where(s => s.IsEditable).Sum(s => CountPlaceholders(s.Text));
+        if (blanks > 0)
+        {
+            SetStatus(L.Format("GeneratedIncomplete", blanks, provider.Name), isError: true);
+        }
+        else
+        {
+            SetStatus(L.Format("Generated", provider.Name));
+        }
+
+        NoteAnswer(provider);
+    }
+
+    private static int CountPlaceholders(string text) =>
+        System.Text.RegularExpressions.Regex.Count(text, @"\(\s*(\.\.\.|…)\s*\)");
 
     /// <summary>
     /// A cancelled or failed answer was only a preview: the sections go back to their last completed text, so a

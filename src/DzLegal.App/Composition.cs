@@ -47,6 +47,11 @@ public static class Composition
             options.Insert(1, google);
         }
 
+        if (DeepInfraTestingOption(settings) is { } deepInfra)
+        {
+            options.Insert(1, deepInfra);
+        }
+
         if (OnlineTestingOption(settings) is { } online)
         {
             options.Insert(1, online);
@@ -117,6 +122,38 @@ public static class Composition
             "online-google",
             loc => loc.Format("ProviderOnlineTestGoogle", model),
             () => new DzLegal.ModelProviders.Hosted.GoogleAiModelProvider(options),
+            sendsCaseData: true);
+    }
+
+    /// <summary>
+    /// TEMPORARY, testing build only: Gemma 3 4B (or DEEPINFRA_MODEL) called directly on DeepInfra with the tester's own
+    /// key (DEEPINFRA_API_KEY), without OpenRouter's shared pool. The case notes leave the computer.
+    /// </summary>
+    private static ProviderOption? DeepInfraTestingOption(AppSettings settings)
+    {
+        var key = Environment.GetEnvironmentVariable("DEEPINFRA_API_KEY");
+        if (string.IsNullOrWhiteSpace(key))
+        {
+            return null;
+        }
+
+        var model = Environment.GetEnvironmentVariable("DEEPINFRA_MODEL") is { Length: > 0 } m ? m : "google/gemma-3-4b-it";
+        var endpoint = Environment.GetEnvironmentVariable("DEEPINFRA_ENDPOINT") is { Length: > 0 } e ? new Uri(e) : new Uri("https://api.deepinfra.com/v1/openai/");
+        var options = new DzLegal.ModelProviders.Hosted.OpenAiCompatibleOptions
+        {
+            Label = "DeepInfra",
+            Endpoint = endpoint,
+            ApiKey = key.Trim(),
+            Model = model,
+            Temperature = settings.Ollama.Temperature,
+            MaxTokens = settings.Ollama.MaxTokens,
+            MergeSystemPrompt = model.Contains("gemma", StringComparison.OrdinalIgnoreCase),
+            RateLimit = new DzLegal.ModelProviders.Hosted.RateLimitPolicy(TimeSpan.FromSeconds(90)),
+        };
+        return new ProviderOption(
+            "online-deepinfra",
+            loc => loc.Format("ProviderOnlineTestDeepInfra", model),
+            () => new DzLegal.ModelProviders.Hosted.OpenAiCompatibleModelProvider(options),
             sendsCaseData: true);
     }
 

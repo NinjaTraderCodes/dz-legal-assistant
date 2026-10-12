@@ -26,6 +26,20 @@ public static class HarnessModels
     /// </summary>
     public const string DefaultGoogleModel = "gemma-4-e4b-it";
 
+    /// <summary>
+    /// DeepInfra, called directly with the user's own key: the company that actually serves Gemma 3 4B behind OpenRouter,
+    /// without OpenRouter's shared, often saturated, pool.
+    /// </summary>
+    public const string DefaultDeepInfraModel = "google/gemma-3-4b-it";
+
+    /// <summary>DeepInfra's OpenAI-compatible API, or DEEPINFRA_ENDPOINT (a local mock in tests).</summary>
+    public static Uri DeepInfraEndpoint =>
+        Environment.GetEnvironmentVariable("DEEPINFRA_ENDPOINT") is { Length: > 0 } e ? new Uri(e) : new Uri("https://api.deepinfra.com/v1/openai/");
+
+    /// <summary>The DeepInfra model of a <c>deepinfra</c> or <c>deepinfra:&lt;model&gt;</c> spec.</summary>
+    public static string DeepInfraModel(string spec) =>
+        spec.Length > "deepinfra:".Length && spec.StartsWith("deepinfra:", StringComparison.Ordinal) ? spec["deepinfra:".Length..] : DefaultDeepInfraModel;
+
     /// <param name="spec">One <c>--models</c> entry.</param>
     /// <param name="ollamaEndpoint">Where the local Ollama listens.</param>
     /// <param name="timeout">Longest wait for one answer.</param>
@@ -54,6 +68,21 @@ public static class HarnessModels
                 RateLimit = rateLimit ?? RateLimitPolicy.None,
                 // Prefer whichever provider of this same model has capacity, instead of queuing on a busy one.
                 ProviderSort = "throughput",
+            });
+        }
+
+        if (spec == "deepinfra" || spec.StartsWith("deepinfra:", StringComparison.Ordinal))
+        {
+            var model = DeepInfraModel(spec);
+            return new OpenAiCompatibleModelProvider(new OpenAiCompatibleOptions
+            {
+                Label = "DeepInfra",
+                Endpoint = DeepInfraEndpoint,
+                ApiKey = Key("DEEPINFRA_API_KEY", spec),
+                Model = model,
+                Timeout = timeout,
+                MergeSystemPrompt = model.Contains("gemma", StringComparison.OrdinalIgnoreCase) || model == "mock",
+                RateLimit = rateLimit ?? RateLimitPolicy.None,
             });
         }
 
@@ -93,7 +122,8 @@ public static class HarnessModels
 
     /// <summary>True for an engine on someone else's server (the cases leave the machine).</summary>
     public static bool IsHosted(string spec) =>
-        spec == "openrouter" || spec.StartsWith("openrouter:", StringComparison.Ordinal) || spec == "google" || spec.StartsWith("google:", StringComparison.Ordinal);
+        spec == "openrouter" || spec.StartsWith("openrouter:", StringComparison.Ordinal) || spec == "google" || spec.StartsWith("google:", StringComparison.Ordinal)
+        || spec == "deepinfra" || spec.StartsWith("deepinfra:", StringComparison.Ordinal);
 
     /// <summary>The Google model of a <c>google</c> or <c>google:&lt;model&gt;</c> spec.</summary>
     public static string GoogleModel(string spec) =>

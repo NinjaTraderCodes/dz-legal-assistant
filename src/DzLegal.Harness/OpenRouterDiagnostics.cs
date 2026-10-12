@@ -6,23 +6,25 @@ using System.Text.Json;
 namespace DzLegal.Harness;
 
 /// <summary>
-/// `ping`: tells whose limit stops OpenRouter. Reads the key's own status (credit, free tier, rate limit), then sends
+/// `ping` for an OpenAI-compatible service (OpenRouter, DeepInfra): tells whose limit stops it. Reads the key's own status (credit, free tier, rate limit), then sends
 /// one tiny chat request and one with a drafting-sized answer cap, and prints the status, the rate-limit headers, the
 /// service's explanation and which provider served the model. The key itself is never printed.
 /// </summary>
 public static class OpenRouterDiagnostics
 {
-    public static async Task<int> RunAsync(Uri endpoint, string key, string model, TextWriter output, CancellationToken cancellationToken = default)
+    /// <param name="service">"OpenRouter" (reads the key's status) or "DeepInfra" (lists the Gemma models served).</param>
+    public static async Task<int> RunAsync(Uri endpoint, string key, string model, TextWriter output, string service = "OpenRouter", HttpMessageHandler? handler = null, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(endpoint);
         ArgumentNullException.ThrowIfNull(output);
-        using var http = new HttpClient { BaseAddress = endpoint, Timeout = TimeSpan.FromSeconds(60) };
+        using var http = new HttpClient(handler ?? new HttpClientHandler(), disposeHandler: true) { BaseAddress = endpoint, Timeout = TimeSpan.FromSeconds(60) };
         http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", key);
-        output.WriteLine($"OpenRouter check for {model} at {endpoint} (key from OPENROUTER_API_KEY, not shown)");
+        var openRouter = service == "OpenRouter";
+        output.WriteLine($"{service} check for {model} at {endpoint} (key from {(openRouter ? "OPENROUTER_API_KEY" : "DEEPINFRA_API_KEY")}, not shown)");
         output.WriteLine();
 
-        output.WriteLine("1. Your key");
-        var keyOk = await KeyStatusAsync(http, output, cancellationToken);
+        output.WriteLine(openRouter ? "1. Your key" : "1. Gemma models served");
+        var keyOk = openRouter ? await KeyStatusAsync(http, output, cancellationToken) : await GemmaModelsAsync(http, model, output, cancellationToken);
         output.WriteLine();
 
         output.WriteLine("2. A tiny request (answer cap 5 tokens)");
@@ -33,8 +35,79 @@ public static class OpenRouterDiagnostics
         var large = await ChatAsync(http, model, 900, output, cancellationToken);
         output.WriteLine();
 
-        output.WriteLine("Verdict: " + Verdict(keyOk, tiny, large));
+        output.WriteLine("Verdict: " + (openRouter ? Verdict(keyOk, tiny, large) : DirectVerdict(service, model, tiny, large)));
         return 0;
+    }
+
+    /// <summary>Lists the Gemma models an OpenAI-compatible service serves (GET models), marking the one under test.</summary>
+    private static async Task<bool> GemmaModelsAsync(HttpClient http, string model, TextWriter output, CancellationToken cancellationToken)
+    {
+        try
+        {
+            using var response = await http.GetAsync(new Uri("models", UriKind.Relative), cancellationToken);
+            var body = await response.Content.ReadAsStringAsync(cancellationToken);
+            output.WriteLine($"   HTTP {(int)response.StatusCode}");
+            if (!response.IsSuccessStatusCode)
+            {
+                output.WriteLine("   " + Short(body));
+                return false;
+            }
+
+            using var json = JsonDocument.Parse(body);
+            var ids = (json.RootElement.TryGetProperty("data", out var data) && data.ValueKind == JsonValueKind.Array ? data.EnumerateArray() : default)
+                .Select(m => m.TryGetProperty("id", out var id) ? id.GetString() : null)
+                .OfType<string>()
+                .Where(id => id.Contains("gemma", StringComparison.OrdinalIgnoreCase))
+                .Order(StringComparer.Ordinal)
+                .ToList();
+            foreach (var id in ids)
+            {
+                output.WriteLine($"   {id}{(string.Equals(id, model, StringComparison.OrdinalIgnoreCase) ? "  ← under test" : string.Empty)}");
+            }
+
+            if (ids.Count == 0)
+            {
+                output.WriteLine("   none listed");
+            }
+
+            return true;
+        }
+        catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or JsonException)
+        {
+            output.WriteLine("   not reachable: " + ex.Message);
+            return false;
+        }
+    }
+
+    /// <summary>The verdict for a service called directly with the user's own account (no shared pool in between).</summary>
+    private static string DirectVerdict(string service, string model, ChatResult tiny, ChatResult large)
+    {
+        if (tiny.Status is 401 or 403)
+        {
+            return $"the key is refused. Check DEEPINFRA_API_KEY (a key from {service}'s dashboard).";
+        }
+
+        if (tiny.Status == 402 || large.Status == 402 || tiny.Explanation.Contains("balance", StringComparison.OrdinalIgnoreCase) || tiny.Explanation.Contains("payment", StringComparison.OrdinalIgnoreCase))
+        {
+            return $"{service} asks for credit or a payment method on this account before it answers.";
+        }
+
+        if (tiny.Status == 404 || tiny.Explanation.Contains("not found", StringComparison.OrdinalIgnoreCase))
+        {
+            return $"{model} is not served under this name. Use one of the Gemma IDs listed above: --models deepinfra:<id>.";
+        }
+
+        if (tiny.Status == 429 || large.Status == 429)
+        {
+            return $"{service} rate-limits your own account right now (not a shared pool). Wait a minute, or use --delay-seconds 5.";
+        }
+
+        if (tiny.Status == 200 && large.Status == 200)
+        {
+            return $"available. Run: --models deepinfra:{model}";
+        }
+
+        return $"unexpected: tiny HTTP {tiny.Status}, large HTTP {large.Status}. See the details above.";
     }
 
     private sealed record ChatResult(int Status, string Explanation, string? Provider);

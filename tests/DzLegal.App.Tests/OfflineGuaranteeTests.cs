@@ -39,6 +39,8 @@ public class OfflineGuaranteeTests
         var previousGoogle = Environment.GetEnvironmentVariable("GOOGLE_API_KEY");
         Environment.SetEnvironmentVariable("OPENROUTER_API_KEY", "test-key");
         Environment.SetEnvironmentVariable("GOOGLE_API_KEY", "test-key");
+        var previousDeepInfra = Environment.GetEnvironmentVariable("DEEPINFRA_API_KEY");
+        Environment.SetEnvironmentVariable("DEEPINFRA_API_KEY", "test-key");
         try
         {
             if (typeof(Composition).Assembly.GetReferencedAssemblies().Any(a => a.Name == "DzLegal.ModelProviders.Hosted"))
@@ -54,6 +56,7 @@ public class OfflineGuaranteeTests
         {
             Environment.SetEnvironmentVariable("OPENROUTER_API_KEY", previous);
             Environment.SetEnvironmentVariable("GOOGLE_API_KEY", previousGoogle);
+            Environment.SetEnvironmentVariable("DEEPINFRA_API_KEY", previousDeepInfra);
         }
     }
 
@@ -68,10 +71,12 @@ public class OfflineGuaranteeTests
 
         var previous = Environment.GetEnvironmentVariable("OPENROUTER_API_KEY");
         var previousGoogle = Environment.GetEnvironmentVariable("GOOGLE_API_KEY");
+        var previousDeepInfra = Environment.GetEnvironmentVariable("DEEPINFRA_API_KEY");
         try
         {
             Environment.SetEnvironmentVariable("OPENROUTER_API_KEY", null);
             Environment.SetEnvironmentVariable("GOOGLE_API_KEY", null);
+            Environment.SetEnvironmentVariable("DEEPINFRA_API_KEY", null);
             Assert.DoesNotContain(Composition.CreateProviders(new AppSettings()), p => p.SendsCaseData);
 
             Environment.SetEnvironmentVariable("OPENROUTER_API_KEY", "test-key");
@@ -94,12 +99,19 @@ public class OfflineGuaranteeTests
             Assert.True(google.SendsCaseData);
             google.Localize(vm.L);
             Assert.Contains("gemma-4-e4b-it", google.DisplayName, StringComparison.Ordinal);
+
+            // With a DeepInfra key too: Gemma 3 4B called directly on DeepInfra.
+            Environment.SetEnvironmentVariable("DEEPINFRA_API_KEY", "test-key");
+            var all = Composition.CreateProviders(new AppSettings());
+            Assert.Equal(["ollama", "online", "online-deepinfra", "online-google", "stub"], all.Select(p => p.Key));
+            Assert.All(all.Where(p => p.Key.StartsWith("online", StringComparison.Ordinal)), p => Assert.True(p.SendsCaseData));
             await Task.CompletedTask;
         }
         finally
         {
             Environment.SetEnvironmentVariable("OPENROUTER_API_KEY", previous);
             Environment.SetEnvironmentVariable("GOOGLE_API_KEY", previousGoogle);
+            Environment.SetEnvironmentVariable("DEEPINFRA_API_KEY", previousDeepInfra);
         }
     }
 

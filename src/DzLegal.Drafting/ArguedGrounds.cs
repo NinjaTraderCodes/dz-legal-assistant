@@ -132,8 +132,7 @@ public sealed class ArguedGrounds(IModelProvider provider)
         var lines = (groundsNotes ?? string.Empty).Split('\n').Select(l => l.Trim()).Where(l => l.Length > 0).ToList();
         var requests = (requestsNotes ?? string.Empty).Split('\n').Select(l => l.Trim()).Where(l => l.Length > 0).ToList();
         var cited = lines.Select(l => (Line: l, Refs: References(l))).ToList();
-        // «- المادة 450 من القانون المدني» lines are the ticked articles the app lists before the lawyer's own notes.
-        var own = cited.Where(c => !c.Line.StartsWith("- المادة", StringComparison.Ordinal)).ToList();
+        var own = cited.Where(c => IsOwnLine(c.Line)).ToList();
         bool InNotes(LegalText t) => own.Any(c => c.Refs.Any(r => Matches(t, r)));
         string NotesFor(IEnumerable<LegalText> texts) => string.Join('\n', own
             .Where(c => c.Refs.Any(r => texts.Any(t => Matches(t, r))))
@@ -323,6 +322,23 @@ public sealed class ArguedGrounds(IModelProvider provider)
             ? $"{issue.Kind} {issue.Detail}"
             : null;
     }
+
+    /// <summary>
+    /// «- المادة 450 من القانون المدني» lines are the ticked articles the app lists before the lawyer's own notes;
+    /// every other line is the lawyer's.
+    /// </summary>
+    public static bool IsOwnLine(string line) => !(line ?? string.Empty).TrimStart().StartsWith("- المادة", StringComparison.Ordinal);
+
+    /// <summary>The articles the lawyer's own lines of the notes cite: number, and the code's name when written.</summary>
+    public static IReadOnlyList<(string Number, string? CodeName)> CitedInOwnLines(string notes) =>
+        (notes ?? string.Empty).Split('\n').Where(IsOwnLine).SelectMany(References).Distinct().ToList();
+
+    /// <summary>
+    /// A ticked "limit" or "procedure" article that the lawyer's own lines don't cite: <see cref="Plan"/> leaves it out
+    /// of the grounds on purpose.
+    /// </summary>
+    public static bool LeftOut(LegalText text, string notes) =>
+        text.Role is "limit" or "procedure" && !CitedInOwnLines(notes).Any(r => Matches(text, r));
 
     private static List<(string Number, string? CodeName)> References(string text) =>
         NarrativeChecks.FullArticleReferences(NarrativeChecks.CanonicalForReferences(text))

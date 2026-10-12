@@ -488,7 +488,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
                         Sections.FirstOrDefault(x => x.Id == id)?.SetFromModel(partial);
                         GenerationActivity.OnText(partial);
                     },
-                    LegalTexts = SelectedLegalTexts(),
+                    LegalTexts = LegalTextsForDrafting(),
                 },
                 cancellationToken);
             GenerationActivity.Complete();
@@ -1129,7 +1129,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
                 }
 
                 var notes = inputs.GetValueOrDefault(vm.Definition.SourceField ?? string.Empty, string.Empty);
-                lines.AddRange(NarrativeChecks.Check(vm.Text, notes, inputs, _definition.GroundedTerms, SelectedLegalTexts()).Select(DescribeIssue));
+                lines.AddRange(NarrativeChecks.Check(vm.Text, notes, inputs, _definition.GroundedTerms, LegalTextsForDrafting()).Select(DescribeIssue));
             }
 
             vm.ReviewText = string.Join("\n", lines.Select(l => "⚠ " + l));

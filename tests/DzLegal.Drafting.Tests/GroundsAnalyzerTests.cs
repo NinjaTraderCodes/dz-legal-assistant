@@ -169,12 +169,12 @@ public sealed class GroundsAnalyzerTests
             fictitious-code:10 | أساس | لأن المدعى عليه اقترض ولم يرد
             fictitious-code:999 | أساس | مادة مخترعة
             المادة 40 | تعويض | التأخير بعد الإعذار يوجب التعويض
-            fictitious-code:20 | ؟ | يستند إلى المادة 777 أيضا
+            fictitious-code:20 | إجراء | يستند إلى المادة 777 أيضا
             fictitious-code:10 | أساس | مكرر
             """, candidates);
 
         Assert.Equal(["10", "20"], selected.Select(a => a.Number)); // 40 is not a candidate any more
-        Assert.Equal(["basis", "proof"], selected.Select(a => a.Role)); // 20: catalog role when unclear
+        Assert.Equal(["basis", "proof"], selected.Select(a => a.Role)); // 20: the catalog's role, not the model's «إجراء»
         Assert.Equal("لأن المدعى عليه اقترض ولم يرد", selected[0].Reason);
         Assert.Empty(selected[1].Reason); // a reason citing another article is dropped
         Assert.Empty(GroundsAnalyzer.ParseSelection("لا شيء", candidates));

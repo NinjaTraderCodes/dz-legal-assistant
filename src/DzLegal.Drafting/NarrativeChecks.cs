@@ -138,7 +138,10 @@ public static partial class NarrativeChecks
         issues.AddRange(unsupported.Select(n => new NarrativeIssue(NarrativeIssueKind.UnsupportedArticleContent, n)));
         issues.AddRange(unverified.Select(n => new NarrativeIssue(NarrativeIssueKind.UnverifiedQuoteFromNotes, n)));
         issues.AddRange(StatedContents(text, legalTexts, ownWords).Where(i => !issues.Contains(i)));
-        issues.AddRange(Numbers(sectionNotes ?? string.Empty).Where(n => !inText.Contains(n)).Distinct()
+        // A ticked limit or procedure article the notes list but the grounds leave out on purpose is not "missing".
+        var leftOut = legalTexts.Where(t => ArguedGrounds.LeftOut(t, sectionNotes ?? string.Empty))
+            .Select(t => new string(ArticleNumbers.Canonical(t.Number).TakeWhile(char.IsDigit).ToArray())).ToHashSet(StringComparer.Ordinal);
+        issues.AddRange(Numbers(sectionNotes ?? string.Empty).Where(n => !inText.Contains(n) && !leftOut.Contains(n)).Distinct()
             .Select(n => new NarrativeIssue(NarrativeIssueKind.MissingNumber, n)));
 
         var knownLatin = inputs.Values.SelectMany(LatinWords).ToHashSet(StringComparer.OrdinalIgnoreCase);

@@ -11,6 +11,31 @@ public class NarrativeChecksTests
 
     private static IReadOnlyList<NarrativeIssue> Check(string text) => NarrativeChecks.Check(text, Notes, Inputs);
 
+    [Theory]
+    [InlineData("- المادة 450 من القانون المدني\n- المادة 454 من القانون المدني", false)] // listed by the app only
+    [InlineData("- المادة 450 من القانون المدني\nوحيث إن المادة 454 من القانون المدني تمنع الفائدة.", true)] // the lawyer's own argument
+    public void ALimitArticleLeftOutOfTheGroundsOnPurposeIsNotMissing(string notes, bool reported)
+    {
+        // Screenshot of 12 Oct: 454 (interest-free loans, a "limit") is never argued unless the lawyer's notes cite it.
+        LegalText[] texts =
+        [
+            new("450", "القانون المدني", "القرض عقد يلتزم به المقرض بأن ينقل إلى المقترض ملكية مبلغ من النقود.") { Role = "basis" },
+            new("454", "القانون المدني", "القرض بين الأفراد يكون دائما بدون أجر.") { Role = "limit" },
+        ];
+        var issues = NarrativeChecks.Check("حيث إن المادة 450 من القانون المدني تقضي بأن القرض ملزم، وحيث إن المدعى عليه لم يرد المبلغ.", notes, Inputs, legalTexts: texts);
+
+        Assert.Equal(reported, issues.Any(i => i.Kind == NarrativeIssueKind.MissingNumber && i.Detail == "454"));
+    }
+
+    [Fact]
+    public void ATickedBasisArticleMissingFromTheTextIsStillReported()
+    {
+        LegalText[] texts = [new("450", "القانون المدني", "القرض عقد.") { Role = "basis" }];
+        var issues = NarrativeChecks.Check("حيث إن المدعى عليه لم يرد المبلغ.", "- المادة 450 من القانون المدني", Inputs, legalTexts: texts);
+
+        Assert.Contains(issues, i => i.Kind == NarrativeIssueKind.MissingNumber && i.Detail == "450");
+    }
+
     [Fact]
     public void FaithfulTextHasNoIssues() =>
         Assert.Empty(Check("حيث إن المدعى عليه اقترض من المدعي مبلغ 1.500.000 دج بتاريخ 15 جانفي 2025."));

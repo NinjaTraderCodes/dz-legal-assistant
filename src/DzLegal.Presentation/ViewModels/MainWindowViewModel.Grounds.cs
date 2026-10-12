@@ -256,7 +256,7 @@ public sealed partial class MainWindowViewModel
                 OnArticleToggled,
                 OpenOfficialLinkAsync)
             {
-                RoleText = L["Role_" + a.Role],
+                RoleText = L["Role_" + (CatalogEntry(a.Ref)?.Role.ToString().ToLowerInvariant() ?? a.Role)],
                 ModelReason = a.Reason.Length > 0 ? L.Format("ModelReason", a.Reason) : string.Empty,
                 SourceText = L[a.Source == AnalysedArticle.FromSearch ? "FromLibrarySearch" : "FromClaimCatalog"],
                 IsRequired = a.Source == AnalysedArticle.Required,
@@ -437,19 +437,48 @@ public sealed partial class MainWindowViewModel
     /// the claim and its one-line rule from the catalog, taken from the confirmed claim type first, so the grounds are
     /// argued in a lawyer's order (obligation, proof, compensation) and state rules only in the catalog's wording.
     /// </summary>
-    internal IReadOnlyList<LegalText> SelectedLegalTexts()
+    /// <summary>
+    /// What the grounds are drafted and checked against: the ticked articles, then the articles the lawyer's own
+    /// notes cite without ticking them. A cited article the library holds gets its text, role and rule like a ticked
+    /// one, rather than a bare citation.
+    /// </summary>
+    internal IReadOnlyList<LegalText> LegalTextsForDrafting() =>
+        LegalTextsOf(_selectedArticles.Concat(CitedInNotes().Where(a => !_selectedArticles.Contains(a))).ToList());
+
+    private IEnumerable<ArticleRef> CitedInNotes()
     {
-        var confirmed = (_analysis?.ClaimIds ?? []).Select(id => _knowledge.Claims.FirstOrDefault(c => c.Id == id)).OfType<DzLegal.Law.ClaimType>();
-        var catalog = confirmed.Concat(_knowledge.Claims).SelectMany(c => c.Articles).ToList();
-        return _selectedArticles
-            .Select(a => (Ref: a, Article: _knowledge.Library.FindArticle(a.Code, a.Number),
-                Catalog: catalog.FirstOrDefault(c => c.Code == a.Code && c.Number == ArticleNumbers.Canonical(a.Number))))
-            .Where(x => x.Article is { Repealed: false })
-            .Select(x => new LegalText(x.Article!.Number, _knowledge.CitationName(x.Ref.Code), x.Article.Text)
+        foreach (var (number, codeName) in ArguedGrounds.CitedInOwnLines(CurrentInputs().GetValueOrDefault(GroundsField, string.Empty)))
+        {
+            var code = codeName is null
+                ? "civil-code"
+                : _knowledge.Library.Codes.Select(c => c.Id).FirstOrDefault(id =>
+                    ArabicScript.Normalize(_knowledge.CitationName(id)).Contains(ArabicScript.Normalize(codeName), StringComparison.Ordinal));
+            if (code is not null && _knowledge.Library.FindArticle(code, number) is { } article)
             {
-                Role = x.Catalog?.Role.ToString().ToLowerInvariant(),
-                Gist = x.Catalog?.Why.Ar,
-            })
-            .ToList();
+                yield return new ArticleRef(code, article.Number);
+            }
+        }
+    }
+
+    private List<LegalText> LegalTextsOf(IReadOnlyList<ArticleRef> articles) => articles
+        .Select(a => (Ref: a, Article: _knowledge.Library.FindArticle(a.Code, a.Number)))
+        .Where(x => x.Article is { Repealed: false })
+        .Select(x => (x.Ref, x.Article, Entry: CatalogEntry(x.Ref)))
+        .Select(x => new LegalText(x.Article!.Number, _knowledge.CitationName(x.Ref.Code), x.Article.Text)
+        {
+            Role = x.Entry?.Role.ToString().ToLowerInvariant(),
+            Gist = x.Entry?.Why.Ar,
+        })
+        .ToList();
+
+    /// <summary>
+    /// The catalog's entry for an article, from the confirmed claims first: the same role is shown on the article's
+    /// card and used to place it in the grounds.
+    /// </summary>
+    private ClaimArticle? CatalogEntry(ArticleRef a)
+    {
+        var confirmed = (_analysis?.ClaimIds ?? []).Select(id => _knowledge.Claims.FirstOrDefault(c => c.Id == id)).OfType<ClaimType>();
+        return confirmed.Concat(_knowledge.Claims).SelectMany(c => c.Articles)
+            .FirstOrDefault(c => c.Code == a.Code && c.Number == ArticleNumbers.Canonical(a.Number));
     }
 }

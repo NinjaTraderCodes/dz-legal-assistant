@@ -374,7 +374,9 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
                 continue;
             }
 
-            var role = Role(parts.Length > 1 ? parts[1] : string.Empty) ?? candidate.CatalogRole ?? ArticleRole.Basis;
+            // The catalog's role is the reviewed one (179 is a prerequisite, not a "procedure"); the model's role only names
+            // an article found by library search.
+            var role = candidate.CatalogRole ?? Role(parts.Length > 1 ? parts[1] : string.Empty) ?? ArticleRole.Basis;
             result.Add(new AnalysedArticle(
                 candidate.Ref.Code,
                 candidate.Ref.Number,

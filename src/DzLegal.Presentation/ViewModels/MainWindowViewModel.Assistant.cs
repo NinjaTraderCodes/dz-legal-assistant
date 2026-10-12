@@ -187,7 +187,7 @@ public sealed partial class MainWindowViewModel
                     AssistantPartial = partial;
                     AssistantActivity.OnText(partial);
                 },
-                SelectedLegalTexts(),
+                LegalTextsForDrafting(),
                 cancellationToken);
             AssistantActivity.Complete();
             AssistantPartial = string.Empty;
@@ -291,7 +291,7 @@ public sealed partial class MainWindowViewModel
                     section.SetFromModel(partial);
                     GenerationActivity.OnText(partial);
                 },
-                SelectedLegalTexts());
+                LegalTextsForDrafting());
             GenerationActivity.Complete();
             if (previous.Trim().Length > 0)
             {

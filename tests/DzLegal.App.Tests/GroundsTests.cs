@@ -101,6 +101,31 @@ public sealed class GroundsWorkflowTests
     }
 
     [Fact]
+    public async Task AnArticleTheNotesCiteWithoutTickingItGetsItsRuleLikeATickedOne()
+    {
+        // Screenshot of 12 Oct: 106/107/186, cited in the notes but not ticked, came out as «الدعوى تستند إلى المادة 106»
+        // with no rule, although the library holds them.
+        var recorder = Analysis.Model();
+        var vm = Vm.Create(knowledge: Vm.FixtureKnowledge, recorder: recorder).Filled();
+        vm.Field("notes.grounds").Value = "حيث إن المدعى عليه أخل بالتزامه طبقا للمادة 106 من القانون المدني.";
+        await vm.AnalyseGroundsCommand.ExecuteAsync(null);
+        vm.ConfirmClaimCommand.Execute(null);
+        foreach (var other in vm.AnalysedArticles.Where(a => a.Reference.Number != "450"))
+        {
+            other.IsSelected = false;
+        }
+
+        Assert.DoesNotContain(new ArticleRef("civil-code", "106"), vm.SelectedArticles);
+
+        await vm.GenerateCommand.ExecuteAsync(null);
+
+        var grounds = recorder.Requests.First(r => r.SectionId == DzLegal.Drafting.ArguedGrounds.RequestId);
+        Assert.Contains("المادتين 106 و450 من القانون المدني تقضيان", grounds.UserPrompt, StringComparison.Ordinal);
+        Assert.DoesNotContain("سند آخر", grounds.UserPrompt, StringComparison.Ordinal);
+        Assert.DoesNotContain(new ArticleRef("civil-code", "106"), vm.SelectedArticles); // drafting uses it; the selection is unchanged
+    }
+
+    [Fact]
     public async Task TheGroundsAreDraftedFromTheTickedArticles()
     {
         var recorder = Analysis.Model();

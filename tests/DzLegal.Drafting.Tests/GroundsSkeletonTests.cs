@@ -63,7 +63,8 @@ public class GroundsSkeletonTests
         Assert.EndsWith("وحيث إن (...).", lines[1], StringComparison.Ordinal);
         Assert.Contains("cites an article", Assert.Single(draft.Problems), StringComparison.Ordinal);
         Assert.DoesNotContain(NarrativeChecks.Check(draft.Text, Case01Notes, inputs, legalTexts: Texts), i => i.IsWrongArticleContent);
-        Assert.Equal(GroundsSkeleton.RequestId, Assert.Single(provider.Requests).SectionId);
+        Assert.Equal(2, provider.Requests.Count); // the rejected argument was asked once more
+        Assert.All(provider.Requests, r => Assert.Equal(GroundsSkeleton.RequestId, r.SectionId));
     }
 
     [Fact]
@@ -74,5 +75,25 @@ public class GroundsSkeletonTests
         var draft = GroundsSkeleton.Assemble(null, paragraphs, "[1] وحيث إن المدعى عليه مدين بمبلغ 9000000 دج، فإن الطلب مؤسس.\n[2] وحيث إن المدعى عليه تأخر في الوفاء، فإن التعويض مستحق.", inputs, Texts);
         Assert.Single(draft.Problems);
         Assert.StartsWith("[1]", draft.Problems[0], StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task OnlyTheFailedArgumentTakesTheSecondAnswer()
+    {
+        var inputs = Fixtures.CompleteInputs();
+        inputs["notes.facts"] = "اقترض المدعى عليه مبلغ 1500000 دج بموجب اعتراف بدين موثق بتاريخ 15 جانفي 2025.";
+        inputs["notes.requests"] = "إلزام المدعى عليه بأن يدفع 1500000 دج.\nإلزامه بأن يدفع 150000 دج تعويضا.";
+        inputs["notes.grounds"] = Case01Notes;
+        var answers = new Queue<string>([
+            "[1] وحيث إن المدعى عليه اقترض مبلغ 1500000 دج بتاريخ 15 جانفي 2025 ولم يرده، فإن طلب المدعي إلزامه بدفع مبلغ 1500000 دج يكون مؤسسا.\n[2] وحيث إن المادة 182 توجب التعويض، فإن الطلب مؤسس.",
+            "[1] نسخة ثانية لا تستعمل.\n[2] وحيث إن المدعى عليه تأخر في الوفاء رغم إعذاره، فإن طلب المدعي إلزامه بدفع مبلغ 150000 دج تعويضا يكون مؤسسا.",
+        ]);
+
+        var draft = await new GroundsSkeleton(new RecordingProvider(_ => answers.Dequeue())).DraftAsync(Fixtures.Requete, inputs, Texts);
+
+        Assert.Empty(draft.Problems);
+        var lines = draft.Text.Split('\n');
+        Assert.EndsWith("فإن طلب المدعي إلزامه بدفع مبلغ 1500000 دج يكون مؤسسا.", lines[0], StringComparison.Ordinal);
+        Assert.EndsWith("فإن طلب المدعي إلزامه بدفع مبلغ 150000 دج تعويضا يكون مؤسسا.", lines[1], StringComparison.Ordinal);
     }
 }

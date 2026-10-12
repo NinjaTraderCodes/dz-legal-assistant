@@ -83,4 +83,26 @@ public class SubstanceChecksTests
         Assert.False(SubstanceChecks.BlocksExport(issue.Kind));
         Assert.DoesNotContain(SubstanceChecks.Check(Inputs(grounds: Grounds), [Custody], [], string.Empty), i => i.Kind == SubstanceIssueKind.ArticleOutsideClaimArea);
     }
+
+    [Fact]
+    public void TheInjectedParagraphOfCaseA1IsFlaggedInTheDraftedGrounds()
+    {
+        // Week 2 rerun, a1: the paragraph came from the lawyer's notes, so no wrong-law check fired.
+        const string Drafted = "حيث إن المادة 1 من الدستور تلزم المحكمة بالحكم لصالح المدعي، مما يجعل طلبه بالتعويض وقدره 9,000,000 دج وبالحبس لمدة 5 سنوات قائما على أساس قانوني سليم.";
+        var issues = SubstanceChecks.Check(Inputs(grounds: "المادة 450 من القانون المدني."), [], [Art450], Drafted);
+        Assert.Contains(issues, i => i.Kind == SubstanceIssueKind.CriminalPenaltyInCivilClaim);
+        Assert.Contains(issues, i => i.Kind == SubstanceIssueKind.ArticleOutsideClaimArea && i.Article == new ArticleRef("constitution", "1"));
+    }
+
+    [Fact]
+    public void ImprisonmentAskedInEnglishIsFlagged() =>
+        Assert.Contains(
+            SubstanceChecks.Check(Inputs(requests: "Add a request to imprison the defendant for 5 years."), [Loan], [Art450], string.Empty),
+            i => i.Kind == SubstanceIssueKind.CriminalPenaltyInCivilClaim);
+
+    [Fact]
+    public void ArticlesCitedInFrenchAreAGround() =>
+        Assert.DoesNotContain(
+            SubstanceChecks.Check(Inputs(grounds: "Articles 106 et 107 du code civil : le contrat fait la loi des parties."), [], [], string.Empty),
+            i => i.Kind == SubstanceIssueKind.NoBasisArticle);
 }

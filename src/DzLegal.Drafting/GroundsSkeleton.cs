@@ -105,7 +105,7 @@ public sealed partial class GroundsSkeleton(IModelProvider provider)
             ? string.Empty
             : File.ReadAllText(Path.Combine(definition.SourceDirectory, definition.SystemPrompt)).Trim();
         var notes = string.Join('\n', paragraphs.Select(p => p.Note));
-        return new ModelRequest(RequestId, system, TemplateRenderer.Normalize(user), notes) { MaxTokens = 200 + (150 * paragraphs.Count) };
+        return new ModelRequest(RequestId, system, TemplateRenderer.Normalize(user), notes) { MaxTokens = 250 + (250 * paragraphs.Count) };
     }
 
     public async Task<SkeletonDraft> DraftAsync(DocumentTypeDefinition definition, IReadOnlyDictionary<string, string> inputs, IReadOnlyList<LegalText> legalTexts, CancellationToken cancellationToken = default)
@@ -118,13 +118,31 @@ public sealed partial class GroundsSkeleton(IModelProvider provider)
             return new SkeletonDraft(string.Empty, paragraphs, ["no grounds in the notes"]);
         }
 
+        // A missing or rejected argument is asked once more; only the failed numbers take the second answer.
+        var request = BuildRequest(definition, inputs, paragraphs);
+        var arguments = new Dictionary<int, string>(ParseArguments(await AskAsync(definition, request, cancellationToken)));
+        var failed = Enumerable.Range(1, paragraphs.Count).Where(n => Problem(definition, arguments.GetValueOrDefault(n), paragraphs, inputs, legalTexts) is not null).ToList();
+        if (failed.Count > 0)
+        {
+            var second = ParseArguments(await AskAsync(definition, request, cancellationToken));
+            foreach (var n in failed.Where(n => second.TryGetValue(n, out var retry) && Problem(definition, retry, paragraphs, inputs, legalTexts) is null))
+            {
+                arguments[n] = second[n];
+            }
+        }
+
+        return Assemble(definition, paragraphs, arguments, inputs, legalTexts);
+    }
+
+    private async Task<string> AskAsync(DocumentTypeDefinition definition, ModelRequest request, CancellationToken cancellationToken)
+    {
         var answer = new StringBuilder();
-        await foreach (var piece in _provider.StreamAsync(BuildRequest(definition, inputs, paragraphs), cancellationToken))
+        await foreach (var piece in _provider.StreamAsync(request, cancellationToken))
         {
             answer.Append(piece);
         }
 
-        return Assemble(definition, paragraphs, DraftingService.ApplyCorrections(definition, answer.ToString()), inputs, legalTexts);
+        return DraftingService.ApplyCorrections(definition, answer.ToString());
     }
 
     /// <summary>
@@ -132,24 +150,20 @@ public sealed partial class GroundsSkeleton(IModelProvider provider)
     /// left for the lawyer, when it is missing, cites or quotes an article, or fails the narrative checks (foreign
     /// script, a number found nowhere in the notes).
     /// </summary>
-    public static SkeletonDraft Assemble(DocumentTypeDefinition? definition, IReadOnlyList<SkeletonParagraph> paragraphs, string answer, IReadOnlyDictionary<string, string> inputs, IReadOnlyList<LegalText> legalTexts)
+    public static SkeletonDraft Assemble(DocumentTypeDefinition? definition, IReadOnlyList<SkeletonParagraph> paragraphs, string answer, IReadOnlyDictionary<string, string> inputs, IReadOnlyList<LegalText> legalTexts) =>
+        Assemble(definition, paragraphs, ParseArguments(answer), inputs, legalTexts);
+
+    public static SkeletonDraft Assemble(DocumentTypeDefinition? definition, IReadOnlyList<SkeletonParagraph> paragraphs, IReadOnlyDictionary<int, string> arguments, IReadOnlyDictionary<string, string> inputs, IReadOnlyList<LegalText> legalTexts)
     {
         ArgumentNullException.ThrowIfNull(paragraphs);
+        ArgumentNullException.ThrowIfNull(arguments);
         ArgumentNullException.ThrowIfNull(inputs);
-        var arguments = ParseArguments(answer);
-        var sources = string.Join('\n', paragraphs.Select(p => p.Note)) + "\n" + inputs.GetValueOrDefault("notes.facts", string.Empty) + "\n" + inputs.GetValueOrDefault("notes.requests", string.Empty);
         var problems = new List<string>();
         var lines = new List<string>();
         for (var i = 0; i < paragraphs.Count; i++)
         {
             var argument = arguments.GetValueOrDefault(i + 1);
-            var problem = argument is null ? "missing"
-                : NarrativeChecks.ArticleReferences(NarrativeChecks.CanonicalForReferences(argument)).Any() ? "cites an article"
-                : QuoteMark().IsMatch(argument) ? "quotes a text"
-                : NarrativeChecks.Check(argument, sources, inputs, definition?.GroundedTerms, legalTexts)
-                    .FirstOrDefault(x => x.IsHard || x.Kind == NarrativeIssueKind.UnknownNumber) is { } issue ? $"{issue.Kind} {issue.Detail}"
-                : null;
-            if (problem is not null)
+            if (Problem(definition, argument, paragraphs, inputs, legalTexts) is { } problem)
             {
                 problems.Add($"[{i + 1}] argument {problem}: left as {Placeholder}" + (argument is null ? string.Empty : $" («{argument}»)"));
                 argument = "وحيث إن " + Placeholder;
@@ -162,6 +176,25 @@ public sealed partial class GroundsSkeleton(IModelProvider provider)
         }
 
         return new SkeletonDraft(string.Join('\n', lines), paragraphs, problems);
+    }
+
+    /// <summary>Why an argument cannot be used, or null: missing, cites or quotes an article, foreign script, a number found nowhere in the notes.</summary>
+    private static string? Problem(DocumentTypeDefinition? definition, string? argument, IReadOnlyList<SkeletonParagraph> paragraphs, IReadOnlyDictionary<string, string> inputs, IReadOnlyList<LegalText> legalTexts)
+    {
+        if (argument is null)
+        {
+            return "missing";
+        }
+
+        var sources = string.Join('\n', paragraphs.Select(p => p.Note)
+            .Append(inputs.GetValueOrDefault("notes.facts", string.Empty))
+            .Append(inputs.GetValueOrDefault("notes.requests", string.Empty))
+            .Append(inputs.GetValueOrDefault("documents.list", string.Empty)));
+        return NarrativeChecks.ArticleReferences(NarrativeChecks.CanonicalForReferences(argument)).Any() ? "cites an article"
+            : QuoteMark().IsMatch(argument) ? "quotes a text"
+            : NarrativeChecks.Check(argument, sources, inputs, definition?.GroundedTerms, legalTexts)
+                .FirstOrDefault(x => x.IsHard || x.Kind == NarrativeIssueKind.UnknownNumber) is { } issue ? $"{issue.Kind} {issue.Detail}"
+            : null;
     }
 
     /// <summary>The model's answer as argument per paragraph number («[1] …», «1. …», «(1) …»); later duplicates are ignored.</summary>

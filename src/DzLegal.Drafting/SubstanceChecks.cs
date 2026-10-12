@@ -78,8 +78,10 @@ public static partial class SubstanceChecks
             issues.Add(new SubstanceIssue(SubstanceIssueKind.NonArabicRequest, null));
         }
 
+        // Requests, grounds notes and the drafted text: an injected «وبالحبس لمدة 5 سنوات» can reach the grounds too.
         // «حق الحبس» (the right of retention, Civil Code art. 200) is a civil remedy, not a prison sentence.
-        if (requestLines.Any(l => Mentions(l, PrisonWords) && !RightOfRetention().IsMatch(ArabicScript.Normalize(l))))
+        var paragraphs = requestLines.Concat(groundsNotes.Split('\n')).Concat((draftText ?? string.Empty).Split('\n'));
+        if (paragraphs.Any(l => (Mentions(l, PrisonWords) && !RightOfRetention().IsMatch(ArabicScript.Normalize(l))) || ForeignPrisonWords().IsMatch(l)))
         {
             issues.Add(new SubstanceIssue(SubstanceIssueKind.CriminalPenaltyInCivilClaim, null));
         }
@@ -89,7 +91,7 @@ public static partial class SubstanceChecks
             return issues;
         }
 
-        if (selected.Count == 0 && !NarrativeChecks.ArticleReferences(groundsNotes).Any())
+        if (selected.Count == 0 && !NarrativeChecks.ArticleReferences(groundsNotes).Any() && !NarrativeChecks.FrenchArticleReferences(groundsNotes).Any())
         {
             issues.Add(new SubstanceIssue(SubstanceIssueKind.NoBasisArticle, new ArticleRef("cpca", "15")));
         }
@@ -113,13 +115,14 @@ public static partial class SubstanceChecks
             issues.Add(new SubstanceIssue(SubstanceIssueKind.DamagesWithoutFormalNotice, new ArticleRef("civil-code", "179")));
         }
 
-        if (claims.Count > 0)
+        // The Constitution grounds no claim this app drafts (civil, commercial, family or social), so it is flagged even
+        // before the claim type is confirmed; a family or labour law only when the confirmed claims are of another area.
+        var areas = claims.Select(c => c.Area).ToHashSet(StringComparer.Ordinal);
         {
-            var areas = claims.Select(c => c.Area).ToHashSet(StringComparer.Ordinal);
-            var text = groundsNotes + "\n" + draftText;
-            var outside = NarrativeChecks.FullArticleReferences(text)
+            var outside = NarrativeChecks.FullArticleReferences(groundsNotes + "\n" + draftText)
                 .Select(r => (r.Number, Code: AreaCode(r.Code)))
-                .Where(r => r.Code is { } code && !areas.Contains(code == "family-code" ? "family" : "social"))
+                .Where(r => r.Code == "constitution"
+                    || (claims.Count > 0 && r.Code is { } code && !areas.Contains(code == "family-code" ? "family" : "social")))
                 .Select(r => new ArticleRef(r.Code!, r.Number))
                 .FirstOrDefault();
             if (outside is not null)
@@ -131,7 +134,7 @@ public static partial class SubstanceChecks
         return issues;
     }
 
-    /// <summary>"family-code" or "labour-relations" for a reference to those laws, otherwise null.</summary>
+    /// <summary>"family-code", "labour-relations" or "constitution" for a reference to those texts, otherwise null.</summary>
     private static string? AreaCode(string? code)
     {
         if (code is null)
@@ -140,7 +143,13 @@ public static partial class SubstanceChecks
         }
 
         var name = NarrativeChecks.CodeName(code);
-        return name == "قانون الأسرة" ? "family-code" : name == "قانون العمل" ? "labour-relations" : null;
+        return name switch
+        {
+            "قانون الأسرة" => "family-code",
+            "قانون العمل" => "labour-relations",
+            "الدستور" => "constitution",
+            _ => null,
+        };
     }
 
     private static readonly string[] PrisonWords = ["حبس", "الحبس", "بحبس", "سجن", "السجن", "بسجن"];
@@ -150,6 +159,9 @@ public static partial class SubstanceChecks
 
     [GeneratedRegex(@"حق\S{0,2}\s+(?:في\s+)?الحبس")]
     private static partial Regex RightOfRetention();
+
+    [GeneratedRegex(@"(?i)\b(?:imprison\w*|prison|emprisonnement|incarc[ée]ration)\b")]
+    private static partial Regex ForeignPrisonWords();
 
     private static bool Mentions(string text, IEnumerable<string> words)
     {

@@ -20,8 +20,10 @@ Client case data is covered by professional secrecy. The application is built so
 ## How it is enforced in code
 
 - `LoopbackGuard` (`src/DzLegal.ModelProviders.Ollama/LoopbackGuard.cs`) accepts only literal loopback IPs (`127.0.0.0/8`, `::1`) and `localhost`. Any other host is refused **without a DNS lookup**, so a name like `127.0.0.1.nip.io` can't sneak through. `OllamaModelProvider` can't be constructed with any other endpoint, and there is no fallback to another endpoint.
-- The Ollama HTTP client is created with `UseProxy = false`, so a system or corporate proxy never sees the request.
-- No NuGet package with telemetry is referenced. The .NET SDK's own telemetry is a *developer-machine* concern; set `DOTNET_CLI_TELEMETRY_OPTOUT=1` (CI does).
+- The Ollama HTTP client (`LoopbackGuard.CreateHandler`) uses no proxy, **follows no redirects**, and opens every connection itself to a loopback address only, whatever host a request names. A local server answering with a redirect to another machine therefore cannot pull the case text off the computer.
+- Ollama "cloud" models (names ending in `-cloud`) are refused: the local Ollama would forward their prompts to ollama.com.
+- Publishing the app with `-p:OnlineTesting=true` fails the build, so the temporary online testing engine cannot end up in a lawyer's package.
+- The running app sends no telemetry. Two *build-time* tools can, on the developer's machine only: the .NET SDK and Avalonia's build tasks. Set `DOTNET_CLI_TELEMETRY_OPTOUT=1` and `AVALONIA_TELEMETRY_OPTOUT=1` (CI does). Neither ever sees case data.
 - Tests cover the guard (`LoopbackGuardTests`) and a full draft → check loop that runs with no network (template mode).
 
 ## Verify it yourself

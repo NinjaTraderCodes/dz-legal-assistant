@@ -29,6 +29,54 @@ public class LoopbackGuardTests
     [Fact]
     public void ProviderCannotBeConstructedWithARemoteEndpoint() =>
         Assert.Throws<ArgumentException>(() => new OllamaModelProvider(new OllamaOptions { Endpoint = new Uri("https://ollama.example.com") }));
+
+    [Theory]
+    [InlineData("gpt-oss:120b-cloud", true)]
+    [InlineData("deepseek-v3.1:671b-cloud", true)]
+    [InlineData("qwen3-coder:cloud", true)]
+    [InlineData("gemma3:4b", false)]
+    [InlineData("qwen2.5:7b-instruct", false)]
+    public void OllamaCloudModelsAreRefusedBecauseTheyForwardPromptsToOllamaCom(string model, bool cloud)
+    {
+        Assert.Equal(cloud, LoopbackGuard.IsCloudModel(model));
+        if (cloud)
+        {
+            Assert.Throws<ArgumentException>(() => new OllamaModelProvider(new OllamaOptions { Model = model }));
+        }
+    }
+
+    [Fact]
+    public async Task ARedirectIsNeverFollowedOffTheMachine()
+    {
+        // A local server that answers every request with a redirect to another host: the case text must not follow it.
+        using var server = new System.Net.Sockets.TcpListener(System.Net.IPAddress.Loopback, 0);
+        server.Start();
+        var port = ((System.Net.IPEndPoint)server.LocalEndpoint).Port;
+        var serving = Task.Run(async () =>
+        {
+            using var client = await server.AcceptTcpClientAsync();
+            using var stream = client.GetStream();
+            var buffer = new byte[8192];
+            _ = await stream.ReadAsync(buffer);
+            var reply = "HTTP/1.1 307 Temporary Redirect\r\nLocation: http://192.0.2.1/exfil\r\nContent-Length: 0\r\nConnection: close\r\n\r\n"u8.ToArray();
+            await stream.WriteAsync(reply);
+        });
+        using var provider = new OllamaModelProvider(new OllamaOptions { Endpoint = new Uri($"http://127.0.0.1:{port}"), Timeout = TimeSpan.FromSeconds(5) });
+
+        var ex = await Assert.ThrowsAsync<ModelProviderException>(() => provider.GenerateAsync(new ModelRequest("facts", "s", "SECRET-CASE-FACTS", "n"), CancellationToken.None));
+        Assert.Contains("307", ex.Message, StringComparison.Ordinal);
+        await serving;
+    }
+
+    [Theory]
+    [InlineData("192.0.2.1")]
+    [InlineData("example.com")]
+    public async Task TheHandlerConnectsToLoopbackOnlyWhateverTheRequestNames(string host)
+    {
+        using var http = new HttpClient(LoopbackGuard.CreateHandler()) { Timeout = TimeSpan.FromSeconds(5) };
+        var ex = await Assert.ThrowsAsync<HttpRequestException>(() => http.GetAsync(new Uri($"http://{host}/")));
+        Assert.Contains("loopback", ex.ToString(), StringComparison.Ordinal);
+    }
 }
 
 public class OllamaProviderTests

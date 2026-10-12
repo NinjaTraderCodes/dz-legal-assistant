@@ -48,6 +48,10 @@
   <ItemGroup Condition="'$(OnlineTesting)' == 'true'">
     <ProjectReference Include="..\DzLegal.ModelProviders.Hosted\DzLegal.ModelProviders.Hosted.csproj" />
   </ItemGroup>
+  <!-- The testing build must never become a package for a lawyer: publishing it fails. -->
+  <Target Name="RefuseToPublishTheOnlineTestingBuild" BeforeTargets="PrepareForPublish" Condition="'$(OnlineTesting)' == 'true'">
+    <Error Text="Refusing to publish with -p:OnlineTesting=true: that build can send case data to OpenRouter (docs/ONLINE-TESTING.md). Publish without it." />
+  </Target>
   <ItemGroup>
     <Using Include="DzLegal.Presentation" />
     <Using Include="DzLegal.Presentation.Services" />

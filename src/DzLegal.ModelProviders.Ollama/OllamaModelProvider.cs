@@ -19,10 +19,17 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
     {
         ArgumentNullException.ThrowIfNull(options);
         LoopbackGuard.EnsureLoopback(options.Endpoint);
+        if (LoopbackGuard.IsCloudModel(options.Model))
+        {
+            throw new ArgumentException(
+                $"Refusing model '{options.Model}': Ollama sends prompts for cloud models to ollama.com, and case data must never leave this computer.",
+                nameof(options));
+        }
+
         _options = options;
 
-        // UseProxy = false: a configured HTTP proxy must never see the request.
-        _http = new HttpClient(handler ?? new SocketsHttpHandler { UseProxy = false }, disposeHandler: true)
+        // No proxy, no redirects, loopback connections only (see LoopbackGuard.CreateHandler).
+        _http = new HttpClient(handler ?? LoopbackGuard.CreateHandler(), disposeHandler: true)
         {
             BaseAddress = options.Endpoint,
             Timeout = options.Timeout,

@@ -94,6 +94,11 @@ public static class Composition
     public static async Task<ModelStatus> ProbeOllamaAsync(OllamaOptions options, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(options);
+        if (DzLegal.ModelProviders.Ollama.LoopbackGuard.IsCloudModel(options.Model))
+        {
+            return new ModelStatus(ModelState.Refused, options.Model);
+        }
+
         using var provider = new OllamaModelProvider(options with { Timeout = TimeSpan.FromSeconds(3) });
         try
         {

@@ -92,6 +92,7 @@ public sealed partial class MainWindowViewModel
             ModelState.Ready => L.Format("ModelReady", option.DisplayName),
             ModelState.NotRunning => L["ModelNotRunning"],
             ModelState.ModelMissing => L.Format("ModelMissing", ModelStatus.Detail),
+            ModelState.Refused => L.Format("ModelRefusedCloud", ModelStatus.Detail),
             _ => string.Empty,
         };
     }

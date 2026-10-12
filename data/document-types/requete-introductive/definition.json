@@ -24,6 +24,10 @@
   // The noun after «إنّ» is accusative: small models write the nominative dual.
   "corrections": [
     { "find": "إن المادتان", "replace": "إن المادتين" },
+    // «وطبق المادة» seen in the argued-grounds sample (Week 2).
+    { "find": "وطبق المادة", "replace": "وطبقا للمادة" },
+    { "find": "لمضمون المادة", "replace": "للمادة" },
+    { "find": "ضمن مضمون المادة", "replace": "ضمن حكم المادة" },
     { "find": "إن الطرفان", "replace": "إن الطرفين" },
     { "find": "إن المدعيان", "replace": "إن المدعيين" },
     // «امتنان» (gratitude) written for «امتناع» (refusal), seen in bench4.

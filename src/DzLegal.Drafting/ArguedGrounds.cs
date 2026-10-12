@@ -124,7 +124,7 @@ public sealed class ArguedGrounds(IModelProvider provider)
 
             foreach (var t in g.Texts.Where(t => !string.IsNullOrWhiteSpace(t.Gist)))
             {
-                plan.AppendLine(CultureInfo.InvariantCulture, $"    مضمون المادة {t.Number}: {t.Gist}");
+                plan.AppendLine(CultureInfo.InvariantCulture, $"    قاعدة المادة {t.Number}: {t.Gist}");
             }
 
             if (g.Note.Length > 0)

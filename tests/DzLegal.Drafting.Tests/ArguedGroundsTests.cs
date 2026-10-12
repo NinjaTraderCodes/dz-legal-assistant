@@ -92,7 +92,7 @@ public class ArguedGroundsTests
         Assert.Equal(3, draft.Text.Split('\n').Length);
         Assert.DoesNotContain("«", draft.Text, StringComparison.Ordinal);
         var request = Assert.Single(provider.Requests);
-        Assert.Contains("مضمون المادة 323: على الدائن إثبات الالتزام", request.UserPrompt, StringComparison.Ordinal);
+        Assert.Contains("قاعدة المادة 323: على الدائن إثبات الالتزام", request.UserPrompt, StringComparison.Ordinal);
         Assert.DoesNotContain("454", request.UserPrompt, StringComparison.Ordinal);
     }
 }

@@ -42,6 +42,7 @@ public sealed partial class MainWindowViewModel
             provider = SelectedProvider!.Create();
             RequestsWordingStatus = L["RequestsWordingRunning"];
             var proposal = await new RequestsFormaliser(provider).ProposeAsync(_definition, inputs, cancellationToken);
+            NoteAnswer(provider);
             if (proposal.IsOffered)
             {
                 RequestsProposal = string.Join("\n", proposal.Lines);

@@ -223,6 +223,10 @@
                 </div>
             </div>
             <p class="muted small">@L["GenerateHint"]</p>
+            @if (Vm.HasAnsweredBy)
+            {
+                <p class="small answered-by" dir="ltr"><Icon Name="sparkle" Size="12" /> @Vm.AnsweredBy</p>
+            }
 
             <div class="toolbar">
                 <div class="tabs" role="tablist">

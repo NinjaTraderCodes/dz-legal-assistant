@@ -19,6 +19,10 @@
     {
         <div class="small muted" role="status">@Vm.AnalysisStatus</div>
     }
+    @if (Vm.HasAnsweredBy && !Vm.AnalyseGroundsCommand.IsRunning)
+    {
+        <div class="small answered-by" dir="ltr"><Icon Name="sparkle" Size="12" /> @Vm.AnsweredBy</div>
+    }
     @if (Vm.IsAnalysisStale)
     {
         <div class="notice">@Vm.L["AnalysisStale"]</div>

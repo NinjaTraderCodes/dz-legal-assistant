@@ -197,6 +197,18 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     [ObservableProperty]
     public partial bool IsError { get; set; }
 
+    /// <summary>
+    /// The engine that actually wrote the last AI answer («أجاب: gemma-4-26b-a4b-it (Google AI Studio)»). A chain of
+    /// engines (the web demo) may answer with another model than the one selected when the first is busy.
+    /// </summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasAnsweredBy))]
+    public partial string AnsweredBy { get; set; } = string.Empty;
+
+    public bool HasAnsweredBy => AnsweredBy.Length > 0;
+
+    private void NoteAnswer(IModelProvider provider) => AnsweredBy = L.Format("AnsweredBy", provider.Name);
+
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(SaveEvaluationCommand))]
     public partial bool HasGeneratedDraft { get; set; }
@@ -515,6 +527,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
             }
 
             SetStatus(L.Format("Generated", provider.Name));
+            NoteAnswer(provider);
         }
         catch (OperationCanceledException)
         {

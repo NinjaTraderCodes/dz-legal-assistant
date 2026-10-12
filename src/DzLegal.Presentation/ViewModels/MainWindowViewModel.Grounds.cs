@@ -165,10 +165,10 @@ public sealed partial class MainWindowViewModel
             ShowAnalysis(analysis);
 
             // Nothing is ticked yet: the lawyer first confirms the claim type (ConfirmClaim), or searches by hand.
-            var engine = SelectedProvider.DisplayName;
-            AnalysisStatus = analysis.ClaimIds.Count > 0 ? L.Format("AnalysisDone", analysis.Articles.Count, engine)
+            NoteAnswer(provider);
+            AnalysisStatus = analysis.ClaimIds.Count > 0 ? L.Format("AnalysisDone", analysis.Articles.Count, provider.Name) // the engine that answered
                 : HasReading ? L["AnalysisOutOfScope"]
-                : L.Format("AnalysisNothing", engine);
+                : L.Format("AnalysisNothing", SelectedProvider.DisplayName);
         }
         catch (OperationCanceledException)
         {

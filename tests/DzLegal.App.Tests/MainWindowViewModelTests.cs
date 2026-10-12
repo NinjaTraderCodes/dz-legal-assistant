@@ -127,6 +127,17 @@ public class MainWindowViewModelTests
     }
 
     [Fact]
+    public async Task ThePageSaysWhichEngineActuallyAnswered()
+    {
+        var vm = Vm.Create(recorder: new RecordingProvider(r => "حيث إن " + r.SourceText)).Filled();
+        Assert.False(vm.HasAnsweredBy);
+
+        await vm.GenerateCommand.ExecuteAsync(null);
+
+        Assert.Equal(vm.L.Format("AnsweredBy", "recording"), vm.AnsweredBy);
+    }
+
+    [Fact]
     public async Task AnAiDraftCannotLeaveTheAppUntilTheLawyerReviewsIt()
     {
         var files = new FakeFiles();

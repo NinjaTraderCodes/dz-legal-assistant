@@ -192,6 +192,7 @@ public sealed partial class MainWindowViewModel
             AssistantActivity.Complete();
             AssistantPartial = string.Empty;
             ShowProposal(section, proposal);
+            NoteAnswer(provider);
         }
         catch (OperationCanceledException)
         {
@@ -300,6 +301,7 @@ public sealed partial class MainWindowViewModel
             ApplyModelSection(section, drafted);
             Recheck();
             SetStatus(L.Format("Generated", provider.Name));
+            NoteAnswer(provider);
         }
         catch (Exception ex) when (IsModelOrRenderFailure(ex))
         {

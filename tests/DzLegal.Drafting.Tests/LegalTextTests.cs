@@ -66,7 +66,7 @@ public sealed class LegalTextTests
         var answers = new Queue<string>(["حيث إن المادة 777 من القانون المدني تلزم المدعى عليه.", "حيث إن المادة 124 من القانون التجريبي تلزم المدعى عليه بالتعويض."]);
         var provider = new RecordingProvider(r => r.SectionId == "grounds" ? answers.Dequeue() : "إلزام المدعى عليه بأداء 500000 دج.");
 
-        var draft = await new DraftingService(provider).DraftAsync(Fixtures.Requete, Fixtures.CompleteInputs(), new DraftOptions { LegalTexts = Selected });
+        var draft = await new DraftingService(provider) { ClassicGrounds = true }.DraftAsync(Fixtures.Requete, Fixtures.CompleteInputs(), new DraftOptions { LegalTexts = Selected });
 
         var grounds = draft.FindSection("grounds")!;
         Assert.Contains("المادة 124", grounds.Text, StringComparison.Ordinal);

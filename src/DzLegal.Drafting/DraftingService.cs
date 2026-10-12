@@ -255,7 +255,7 @@ public sealed partial class DraftingService
             notes.Add(DraftingNoteCodes.ArgumentLeftForLawyer);
         }
 
-        return new DraftSection { Id = section.Id, Text = draft.Text, DraftingNotes = notes };
+        return new DraftSection { Id = section.Id, Text = draft.Text, DraftingNotes = notes, RemovedText = [.. draft.Rejected] };
     }
 
     /// <summary>Applies the definition's exact corrections. Used on model-written text only, never on the lawyer's words.</summary>

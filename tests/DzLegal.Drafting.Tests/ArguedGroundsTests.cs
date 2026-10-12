@@ -41,24 +41,42 @@ public class ArguedGroundsTests
     }
 
     [Fact]
-    public void AMissingCitationIsAddedAndAnArticleOutsideThePlanIsRejected()
+    public void TheCodeWritesTheRuleAndAnApplicationThatCitesOrMisstatesIsRejected()
     {
         var groups = ArguedGrounds.Plan(Notes, Ticked, Requests);
         var inputs = new Dictionary<string, string> { ["notes.facts"] = "اقترض المدعى عليه مبلغ 1500000 دج بموجب اعتراف بدين ولم يرده رغم إعذاره.", ["notes.requests"] = Requests };
         var draft = ArguedGrounds.Assemble(null, groups, new Dictionary<int, string>
         {
-            [1] = "حيث إن المدعى عليه اقترض مبلغ 1500000 دج ولم يرده، عملا بالمادتين 106 و107 من القانون المدني، مما يجعل طلب المدعي مؤسسا قانونا.",
-            [2] = "وحيث إن الدين ثابت بموجب اعتراف بدين، وهو ما تقضي به المادة 323 من القانون المدني.",
-            [3] = "وحيث إن المادة 182 من القانون المدني تجيز التعويض، فإن طلب التعويض مؤسس.",
+            [1] = "وحيث إن المدعى عليه اقترض مبلغ 1500000 دج ولم يرده، فإن طلب المدعي إلزامه بدفعه مؤسس.",
+            [2] = "وحيث إن الدين ثابت بموجب اعتراف بدين.",
+            // Codex's probe: a model stating the opposite of art. 179. It cites an article, so it never reaches the text.
+            [3] = "وحيث إن المادة 179 من القانون المدني تعفي الدائن من إعذار المدين في جميع الأحوال، فإن التعويض مستحق.",
         }, inputs, Ticked);
 
         var lines = draft.Text.Split('\n');
-        Assert.StartsWith("حيث إن المدعى عليه اقترض", lines[0], StringComparison.Ordinal);
-        Assert.EndsWith("(عملا بالمادة 450 من القانون المدني).", lines[0], StringComparison.Ordinal);
-        Assert.StartsWith("وحيث إن الدين ثابت", lines[1], StringComparison.Ordinal);
-        Assert.Equal("وحيث إن (...)، عملا بالمادتين 179 و186 من القانون المدني.", lines[2]);
-        Assert.Contains("182", Assert.Single(draft.Problems), StringComparison.Ordinal);
+        Assert.Equal("حيث إن المواد 106 و107 و450 من القانون المدني تقضي بأن العقد شريعة المتعاقدين، وبأنه يجب تنفيذ العقد طبقا لما اشتمل عليه وبحسن نية، وبأنه يلتزم المقترض برد نظير ما اقترضه عند نهاية القرض، وحيث إن المدعى عليه اقترض مبلغ 1500000 دج ولم يرده، فإن طلب المدعي إلزامه بدفعه مؤسس.", lines[0]);
+        Assert.Equal("وحيث إن المادة 323 من القانون المدني تقضي بأن على الدائن إثبات الالتزام وعلى المدين إثبات التخلص منه، وحيث إن الدين ثابت بموجب اعتراف بدين.", lines[1]);
+        Assert.Equal("وحيث إن المادتين 179 و186 من القانون المدني تقضيان بأنه لا يستحق التعويض إلا بعد إعذار المدين، وبتعويض الدائن عن الضرر اللاحق من تأخر المدين في الوفاء بمبلغ من النقود، وحيث إن (...).", lines[2]);
+        Assert.DoesNotContain("تعفي", draft.Text, StringComparison.Ordinal);
+        Assert.Contains("cites article 179", Assert.Single(draft.Problems), StringComparison.Ordinal);
+        Assert.Contains("تعفي الدائن", Assert.Single(draft.Rejected), StringComparison.Ordinal);
     }
+
+    [Fact]
+    public void AnAnswerWithoutNumbersIsTakenLineByLineWhenTheCountMatches()
+    {
+        var parsed = ArguedGrounds.Parse("وحيث إن أ، فإن ب.\nوحيث إن ج.", 2);
+        Assert.Equal("وحيث إن ج.", parsed[2]);
+        Assert.Empty(ArguedGrounds.Parse("وحيث إن أ.", 2));
+    }
+
+    [Theory]
+    [InlineData("العقد شريعة المتعاقدين", "بأن العقد شريعة المتعاقدين")]
+    [InlineData("لا يستحق التعويض إلا بعد إعذار المدين", "بأنه لا يستحق التعويض إلا بعد إعذار المدين")]
+    [InlineData("تعويض الدائن عن الضرر", "بتعويض الدائن عن الضرر")]
+    [InlineData("تعريف الإيجار: الانتفاع بشيء لمدة محددة", "بأن الإيجار هو الانتفاع بشيء لمدة محددة")]
+    [InlineData("ما ورد في العقد الرسمي (كالاعتراف بدين الموثق) حجة", "بأن ما ورد في العقد الرسمي حجة")]
+    public void EachOneLineRuleReadsAfterTheVerb(string gist, string clause) => Assert.Equal(clause, ArguedGroup.RuleClause(gist));
 
     [Fact]
     public void TheCatalogsOneLineRuleIsAcceptedWordingButOtherContentIsNot()
@@ -82,9 +100,9 @@ public class ArguedGroundsTests
         inputs["notes.requests"] = Requests;
         inputs["notes.facts"] = "اقترض المدعى عليه مبلغ 1500000 دج بموجب اعتراف بدين ولم يرده رغم إعذاره.";
         var provider = new RecordingProvider(_ =>
-            "[1] حيث إن المدعى عليه اقترض مبلغ 1500000 دج ولم يرده، عملا بالمواد 450 و106 و107 من القانون المدني، مما يجعل طلب المدعي إلزامه بدفع 1500000 دج مؤسسا قانونا.\n"
-            + "[2] وحيث إن الدين ثابت باعتراف بدين، طبقا للمادة 323 من القانون المدني.\n"
-            + "[3] وحيث إن المدعى عليه أعذر ولم يف، فإن طلب التعويض بمبلغ 150000 دج مؤسس عملا بالمادتين 179 و186 من القانون المدني.");
+            "[1] وحيث إن المدعى عليه اقترض مبلغ 1500000 دج ولم يرده، فإن طلب المدعي إلزامه بدفع 1500000 دج مؤسس قانونا.\n"
+            + "[2] وحيث إن الدين ثابت باعتراف بدين.\n"
+            + "[3] وحيث إن المدعى عليه أعذر ولم يف، فإن طلب التعويض بمبلغ 150000 دج مؤسس.");
 
         var draft = await new ArguedGrounds(provider).DraftAsync(Fixtures.Requete, Fixtures.Requete.FindSection("grounds")!, inputs, Ticked, "prompts/grounds-argued.ar.txt");
 
@@ -92,7 +110,7 @@ public class ArguedGroundsTests
         Assert.Equal(3, draft.Text.Split('\n').Length);
         Assert.DoesNotContain("«", draft.Text, StringComparison.Ordinal);
         var request = Assert.Single(provider.Requests);
-        Assert.Contains("قاعدة المادة 323: على الدائن إثبات الالتزام", request.UserPrompt, StringComparison.Ordinal);
+        Assert.Contains("بداية الفقرة (يكتبها البرنامج): وحيث إن المادة 323 من القانون المدني تقضي بأن على الدائن إثبات الالتزام", request.UserPrompt, StringComparison.Ordinal);
         Assert.DoesNotContain("454", request.UserPrompt, StringComparison.Ordinal);
     }
 }

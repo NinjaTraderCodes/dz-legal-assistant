@@ -254,9 +254,10 @@ public class DraftingServiceTests
 
         var draft = await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs(), new DraftOptions { LegalTexts = texts });
 
-        // The answer cites an article outside the plan twice: the paragraph is left for the lawyer, with its article.
+        // The answer cites an article twice: the rule sentence stays, the application is left for the lawyer.
         var grounds = draft.FindSection("grounds")!;
-        Assert.Equal("حيث إن (...)، عملا بالمادة 106 من القانون المدني.", grounds.Text);
+        Assert.Equal("حيث إن المادة 106 من القانون المدني تقضي بأن العقد شريعة المتعاقدين، وحيث إن (...).", grounds.Text);
+        Assert.Contains("المادة 107", Assert.Single(grounds.RemovedText), StringComparison.Ordinal);
         Assert.Equal([DraftingNoteCodes.Retried, DraftingNoteCodes.ArgumentLeftForLawyer], grounds.DraftingNotes);
         Assert.DoesNotContain(provider.Requests, r => r.SectionId == "grounds");
 

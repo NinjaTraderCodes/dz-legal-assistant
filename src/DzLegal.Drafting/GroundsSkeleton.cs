@@ -21,6 +21,9 @@ public sealed record SkeletonParagraph(string Lead, string Note, IReadOnlyList<s
 public sealed record SkeletonDraft(string Text, IReadOnlyList<SkeletonParagraph> Paragraphs, IReadOnlyList<string> Problems)
 {
     public bool Retried { get; init; }
+
+    /// <summary>The model's text for paragraphs that failed the checks, kept for the lawyer to see.</summary>
+    public IReadOnlyList<string> Rejected { get; init; } = [];
 }
 
 /// <summary>

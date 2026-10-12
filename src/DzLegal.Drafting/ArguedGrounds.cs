@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Text;
+using System.Text.RegularExpressions;
 using DzLegal.Domain;
 using DzLegal.Law;
 
@@ -14,28 +15,94 @@ namespace DzLegal.Drafting;
 /// <param name="Unloaded">Articles the notes cite whose text is not loaded, cited by number only («المادة 179 من القانون المدني»).</param>
 /// <param name="Note">The lawyer's own lines for these articles, or a line with no article (an argument of their own).</param>
 /// <param name="Request">The request line it supports, when one is clear.</param>
-public sealed record ArguedGroup(string Topic, IReadOnlyList<LegalText> Texts, IReadOnlyList<string> Unloaded, string Note, string? Request)
+public sealed partial record ArguedGroup(string Topic, IReadOnlyList<LegalText> Texts, IReadOnlyList<string> Unloaded, string Note, string? Request)
 {
+    private static readonly string[] SentenceSubjects = ["العقد ", "البيع ", "العقود ", "عقود ", "كل ", "على ", "ما ورد", "الإيجار ", "القرض "];
+    private static readonly string[] ClauseOpeners = ["لا ", "إذا ", "عند ", "بعد ", "في "];
+
     /// <summary>«المادتين 106 و107 من القانون المدني», «المادة 323 من القانون المدني والمادة 15 من قانون …».</summary>
-    public string Citation
+    public string Citation => string.Join(" و", Cite(Texts).Concat(Unloaded));
+
+    /// <summary>
+    /// The sentence the code writes to open the paragraph, from the catalog's one-line rules, so the model never states
+    /// the law: «المادتين 106 و107 من القانون المدني تقضيان بأن العقد شريعة المتعاقدين، وبأنه يجب تنفيذ العقد…».
+    /// Articles with no rule, and articles whose text is not loaded, are cited by number only. Empty for a paragraph
+    /// that cites no article (a line of the lawyer's own argument).
+    /// </summary>
+    public string RuleSentence
     {
         get
         {
-            var parts = Texts.GroupBy(t => t.CitationName)
-                .Select(g => (g.Count() switch { 1 => "المادة ", 2 => "المادتين ", _ => "المواد " }) + string.Join(" و", g.Select(t => t.Number)) + " من " + g.Key)
-                .Concat(Unloaded);
-            return string.Join(" و", parts);
+            var withRule = Texts.Where(t => !string.IsNullOrWhiteSpace(t.Gist)).ToList();
+            var byNumber = Texts.Where(t => string.IsNullOrWhiteSpace(t.Gist)).Select(t => $"المادة {t.Number} من {t.CitationName}").Concat(Unloaded).ToList();
+            if (withRule.Count == 0)
+            {
+                return byNumber.Count > 0 ? "الدعوى تستند إلى " + string.Join(" و", byNumber) : string.Empty;
+            }
+
+            var verb = withRule.Count == 2 ? "تقضيان" : "تقضي";
+            var rules = withRule.Select(t => RuleClause(t.Gist!)).Distinct().ToList();
+            var sentence = $"{string.Join(" و", Cite(withRule))} {verb} {string.Join("، و", rules)}";
+            return byNumber.Count > 0 ? sentence + "، وذلك طبقا لل" + string.Join(" و", byNumber)[2..] : sentence;
         }
     }
+
+    /// <summary>
+    /// A one-line rule after «تقضي»: a sentence («العقد شريعة المتعاقدين») takes «بأن», a clause opening with a verb or
+    /// a condition («يجب تنفيذ…», «لا يستحق…») takes «بأنه», and a noun phrase («تعويض الدائن عن…») takes «بـ».
+    /// «تعريف قرض الاستهلاك: يلتزم المقترض…» keeps the rule after the colon; parentheses are dropped.
+    /// </summary>
+    public static string RuleClause(string gist)
+    {
+        ArgumentNullException.ThrowIfNull(gist);
+        var text = Parenthesis().Replace(gist, string.Empty).Trim().TrimEnd('.', '،');
+        var colon = text.IndexOf(':', StringComparison.Ordinal);
+        if (colon > 0)
+        {
+            var head = text[..colon].Trim();
+            var tail = text[(colon + 1)..].Trim();
+            if (IsClause(tail) || SentenceSubjects.Any(s => tail.StartsWith(s, StringComparison.Ordinal)) || head.StartsWith("بديلا", StringComparison.Ordinal))
+            {
+                text = tail;
+            }
+            else if (head.StartsWith("تعريف ", StringComparison.Ordinal))
+            {
+                return $"بأن {head["تعريف ".Length..]} هو {tail}";
+            }
+            else if (head.StartsWith("كيف يتم ", StringComparison.Ordinal))
+            {
+                return $"بأن {head["كيف يتم ".Length..]} يتم ب{tail}";
+            }
+            else
+            {
+                return $"ب{head}، أي {tail}";
+            }
+        }
+
+        return IsClause(text) ? "بأنه " + text
+            : SentenceSubjects.Any(s => text.StartsWith(s, StringComparison.Ordinal)) ? "بأن " + text
+            : "ب" + text;
+    }
+
+    private static bool IsClause(string text) =>
+        ClauseOpeners.Any(o => text.StartsWith(o, StringComparison.Ordinal)) || (text.StartsWith('ي') && text.Split(' ')[0].Length > 2);
+
+    private static IEnumerable<string> Cite(IEnumerable<LegalText> texts) =>
+        texts.GroupBy(t => t.CitationName)
+            .Select(g => (g.Count() switch { 1 => "المادة ", 2 => "المادتين ", _ => "المواد " }) + string.Join(" و", g.Select(t => t.Number)) + " من " + g.Key);
+
+    [GeneratedRegex(@"\s*\([^)]*\)")]
+    private static partial Regex Parenthesis();
 }
 
 /// <summary>
-/// Argued grounds, as Algerian petitions write them: articles cited by number in the course of the argument
-/// («عملا بالمادتين 106 و107 من القانون المدني»), not quoted in full. The code plans the paragraphs from the catalog
-/// roles (the obligation and its breach, its proof, the compensation; "limit" articles such as no interest on a private
-/// loan are warnings for the lawyer, not grounds), and the model writes each paragraph. The model may state what an
-/// article provides only in the catalog's one-line wording; anything else, an article not in its paragraph, a number
-/// found nowhere in the notes, or foreign script is rejected, asked once more, then left as «(...)» for the lawyer.
+/// Argued grounds, as Algerian petitions write them: articles cited by number with their rule in one line, not quoted
+/// in full. The code plans the paragraphs from the catalog roles (the obligation and its breach, its proof, the
+/// compensation; "limit" articles such as no interest on a private loan are warnings for the lawyer, not grounds) and
+/// writes each paragraph's rule sentence from the catalog's one-line rules («المادتين 106 و107 من القانون المدني
+/// تقضيان بأن…»), so the law in the draft is never the model's. The model writes only how the facts meet the rule. An
+/// application that cites or quotes an article, has a number found nowhere in the notes, or fails the other checks is
+/// asked once more, then left as «(...)» for the lawyer.
 /// </summary>
 public sealed class ArguedGrounds(IModelProvider provider)
 {
@@ -117,16 +184,10 @@ public sealed class ArguedGrounds(IModelProvider provider)
         {
             var g = groups[i];
             plan.AppendLine(CultureInfo.InvariantCulture, $"[{i + 1}] الموضوع: {g.Topic}");
-            if (g.Citation.Length > 0)
-            {
-                plan.AppendLine("    المواد (تذكر بأرقامها كما هي): " + g.Citation);
-            }
-
-            foreach (var t in g.Texts.Where(t => !string.IsNullOrWhiteSpace(t.Gist)))
-            {
-                plan.AppendLine(CultureInfo.InvariantCulture, $"    قاعدة المادة {t.Number}: {t.Gist}");
-            }
-
+            var rule = g.RuleSentence;
+            plan.AppendLine(rule.Length > 0
+                ? $"    بداية الفقرة (يكتبها البرنامج): {Opening(i)}{rule}، …"
+                : "    بداية الفقرة: لا توجد؛ اكتب الفقرة كاملة من ملاحظة المحامي.");
             if (g.Note.Length > 0)
             {
                 plan.AppendLine("    ملاحظة المحامي: " + g.Note.ReplaceLineEndings(" / "));
@@ -134,7 +195,7 @@ public sealed class ArguedGrounds(IModelProvider provider)
 
             if (g.Request is not null)
             {
-                plan.AppendLine("    الطلب الذي يؤسسه: " + g.Request);
+                plan.AppendLine("    الطلب الذي تؤسسه: " + g.Request);
             }
         }
 
@@ -147,7 +208,7 @@ public sealed class ArguedGrounds(IModelProvider provider)
             ? string.Empty
             : File.ReadAllText(Path.Combine(definition.SourceDirectory, definition.SystemPrompt)).Trim();
         var notes = string.Join('\n', groups.Select(g => g.Note).Where(n => n.Length > 0));
-        return new ModelRequest(RequestId, system, TemplateRenderer.Normalize(user), notes) { MaxTokens = 300 + (300 * groups.Count) };
+        return new ModelRequest(RequestId, system, TemplateRenderer.Normalize(user), notes) { MaxTokens = 250 + (200 * groups.Count) };
     }
 
     public async Task<SkeletonDraft> DraftAsync(DocumentTypeDefinition definition, SectionDefinition section, IReadOnlyDictionary<string, string> inputs, IReadOnlyList<LegalText> legalTexts, string promptPath, CancellationToken cancellationToken = default)
@@ -162,12 +223,12 @@ public sealed class ArguedGrounds(IModelProvider provider)
         }
 
         var request = BuildRequest(definition, inputs, groups, promptPath);
-        var arguments = new Dictionary<int, string>(GroundsSkeleton.ParseArguments(await AskAsync(definition, request, cancellationToken)));
-        var failed = Enumerable.Range(1, groups.Count).Where(n => Problem(definition, arguments.GetValueOrDefault(n), groups[n - 1], groups, inputs, legalTexts) is not null).ToList();
+        var arguments = new Dictionary<int, string>(Parse(await AskAsync(definition, request, cancellationToken), groups.Count));
+        var failed = Enumerable.Range(1, groups.Count).Where(n => Problem(definition, arguments.GetValueOrDefault(n), groups, inputs, legalTexts) is not null).ToList();
         if (failed.Count > 0)
         {
-            var second = GroundsSkeleton.ParseArguments(await AskAsync(definition, request, cancellationToken));
-            foreach (var n in failed.Where(n => second.TryGetValue(n, out var retry) && Problem(definition, retry, groups[n - 1], groups, inputs, legalTexts) is null))
+            var second = Parse(await AskAsync(definition, request, cancellationToken), groups.Count);
+            foreach (var n in failed.Where(n => second.TryGetValue(n, out var retry) && Problem(definition, retry, groups, inputs, legalTexts) is null))
             {
                 arguments[n] = second[n];
             }
@@ -177,60 +238,80 @@ public sealed class ArguedGrounds(IModelProvider provider)
     }
 
     /// <summary>
-    /// Joins the paragraphs, each opened «حيث إن» or «وحيث إن». A paragraph that leaves out one of its articles gets the
-    /// citation added («(عملا بالمادة 323 من القانون المدني)»); one that fails the checks is left as «(...)».
+    /// Arguments by paragraph number («[1] …»). A small model sometimes drops the numbers: when it wrote exactly one
+    /// Arabic line per paragraph, the lines are taken in order.
+    /// </summary>
+    public static IReadOnlyDictionary<int, string> Parse(string answer, int paragraphs)
+    {
+        var numbered = GroundsSkeleton.ParseArguments(answer);
+        if (numbered.Count > 0)
+        {
+            return numbered;
+        }
+
+        var lines = (answer ?? string.Empty).Split('\n').Select(l => l.Trim()).Where(l => l.Length > 0 && l.Any(ArabicScript.IsArabicLetter)).ToList();
+        return lines.Count == paragraphs ? lines.Select((l, k) => (k, l)).ToDictionary(x => x.k + 1, x => x.l) : new Dictionary<int, string>();
+    }
+
+    /// <summary>
+    /// Joins the paragraphs: «حيث إن» or «وحيث إن», the rule sentence the code wrote, then the model's application of
+    /// it to the facts. An application that fails the checks is left as «(...)» after the rule, and kept aside in
+    /// <see cref="SkeletonDraft.Rejected"/> for the lawyer to see.
     /// </summary>
     public static SkeletonDraft Assemble(DocumentTypeDefinition? definition, IReadOnlyList<ArguedGroup> groups, IReadOnlyDictionary<int, string> arguments, IReadOnlyDictionary<string, string> inputs, IReadOnlyList<LegalText> legalTexts)
     {
         ArgumentNullException.ThrowIfNull(groups);
         ArgumentNullException.ThrowIfNull(arguments);
         var problems = new List<string>();
+        var rejected = new List<string>();
         var lines = new List<string>();
         for (var i = 0; i < groups.Count; i++)
         {
             var argument = arguments.GetValueOrDefault(i + 1);
-            if (Problem(definition, argument, groups[i], groups, inputs, legalTexts) is { } problem)
+            if (Problem(definition, argument, groups, inputs, legalTexts) is { } problem)
             {
-                problems.Add($"[{i + 1}] {groups[i].Topic}: {problem}, left as {Placeholder}" + (argument is null ? string.Empty : $" («{argument}»)"));
-                argument = Placeholder + (groups[i].Citation.Length > 0 ? $"، عملا ب{groups[i].Citation}" : string.Empty);
-            }
-            else
-            {
-                var missing = MissingCitations(argument!, groups[i]);
-                if (missing.Count > 0)
+                problems.Add($"[{i + 1}] {groups[i].Topic}: {problem}, left as {Placeholder}");
+                if (argument is not null)
                 {
-                    argument = argument!.TrimEnd().TrimEnd('.') + $" (عملا ب{string.Join(" و", missing)}).";
+                    rejected.Add(argument);
                 }
+
+                argument = "وحيث إن " + Placeholder;
             }
 
-            lines.Add(GroundsSkeleton.Reopen(argument!, i));
+            var rule = groups[i].RuleSentence;
+            if (rule.Length == 0)
+            {
+                lines.Add(GroundsSkeleton.Reopen(argument!, i));
+                continue;
+            }
+
+            var application = argument!.Trim().TrimStart('،', ',', '-', ' ').TrimEnd();
+            lines.Add(Opening(i) + rule + "، " + application + (application.EndsWith('.') ? string.Empty : "."));
         }
 
-        return new SkeletonDraft(string.Join('\n', lines), [], problems);
+        return new SkeletonDraft(string.Join('\n', lines), [], problems) { Rejected = rejected };
     }
 
-    /// <summary>Articles of the group the argument does not cite, as «المادة 323 من القانون المدني».</summary>
-    private static List<string> MissingCitations(string argument, ArguedGroup group)
-    {
-        var refs = References(argument);
-        return group.Texts.Where(t => !refs.Any(r => Matches(t, r))).Select(t => $"المادة {t.Number} من {t.CitationName}")
-            .Concat(group.Unloaded.Where(u => !refs.Any(r => u.StartsWith($"المادة {r.Number} ", StringComparison.Ordinal))))
-            .ToList();
-    }
+    private static string Opening(int index) => index == 0 ? "حيث إن " : "وحيث إن ";
 
-    /// <summary>Why an argument cannot be used, or null.</summary>
-    private static string? Problem(DocumentTypeDefinition? definition, string? argument, ArguedGroup group, IReadOnlyList<ArguedGroup> groups, IReadOnlyDictionary<string, string> inputs, IReadOnlyList<LegalText> legalTexts)
+    /// <summary>Why an application cannot be used, or null.</summary>
+    private static string? Problem(DocumentTypeDefinition? definition, string? argument, IReadOnlyList<ArguedGroup> groups, IReadOnlyDictionary<string, string> inputs, IReadOnlyList<LegalText> legalTexts)
     {
         if (argument is null)
         {
             return "missing";
         }
 
-        // Articles of another paragraph are allowed (a lawyer may refer back); an article in no paragraph is not.
-        var allowed = groups.SelectMany(g => g.Texts.Select(t => t.Number).Concat(g.Unloaded.Select(u => u.Split(' ')[1]))).Select(ArticleNumbers.Canonical).ToHashSet(StringComparer.Ordinal);
-        if (References(argument).FirstOrDefault(r => !allowed.Contains(r.Number)) is { Number: { } stray })
+        // The code wrote the rule and its citations: the application cites and quotes nothing.
+        if (References(argument).FirstOrDefault() is { Number: { } cited })
         {
-            return $"cites article {stray}, which is not among the grounds";
+            return $"cites article {cited}";
+        }
+
+        if (argument.IndexOfAny(['«', '»', '"', '“', '”']) >= 0)
+        {
+            return "quotes a text";
         }
 
         var sources = string.Join('\n', groups.Select(g => g.Note)

@@ -45,7 +45,7 @@ public sealed class GroundsWorkflowTests
     }
 
     [Fact]
-    public async Task TheAnalysisShowsTheReadingAndTheProposedArticlesWithTheRequiredOnesTicked()
+    public async Task TheAnalysisShowsTheReadingAndProposesArticlesButTicksNothingUntilTheLawyerConfirmsTheClaim()
     {
         var recorder = Analysis.Model();
         var vm = Vm.Create(recorder: recorder).Filled();
@@ -53,8 +53,8 @@ public sealed class GroundsWorkflowTests
 
         Assert.Equal("عقد قرض بين شخصين طبيعيين", vm.ReadingRelationship);
         Assert.Equal("استرداد مبلغ قرض", vm.ReadingClaims);
-        // The loan claim's required articles come first and ticked (450, 323, 454: no interest), whether or not the
-        // model chose them; 999 was not a candidate.
+        // The loan claim's required articles come first (450, 323, 454: no interest), whether or not the model chose
+        // them; 999 was not a candidate.
         Assert.Equal(["450", "323", "454"], vm.AnalysedArticles.Select(a => a.Reference.Number));
         var first = vm.AnalysedArticles[0];
         Assert.Equal(vm.L["Role_basis"], first.RoleText);
@@ -65,8 +65,14 @@ public sealed class GroundsWorkflowTests
         Assert.True(first.IsAvailable); // the shipped library has the official text of every catalog article
         Assert.Equal(77, first.Page);
         Assert.Equal(vm.L["Role_limit"], vm.AnalysedArticles[2].RoleText);
-        Assert.Equal(["450", "323", "454"], vm.SelectedArticles.Select(a => a.Number));
         Assert.Equal(vm.L.Format("AnalysisDone", 3, "recording"), vm.AnalysisStatus);
+        Assert.Empty(vm.SelectedArticles); // the model's guess ticks nothing
+        Assert.True(vm.NeedsClaimConfirmation);
+
+        vm.ConfirmClaimCommand.Execute(null);
+        Assert.Equal(["450", "323", "454"], vm.SelectedArticles.Select(a => a.Number));
+        Assert.True(vm.IsClaimConfirmed);
+        Assert.False(vm.NeedsClaimConfirmation);
         Assert.False(vm.IsAnalysisStale);
 
         // The model only saw the catalog's civil claims and the candidates' keys.
@@ -80,8 +86,9 @@ public sealed class GroundsWorkflowTests
     {
         var vm = Vm.Create(recorder: Analysis.Model()).Filled();
         await vm.AnalyseGroundsCommand.ExecuteAsync(null);
+        vm.ConfirmClaimCommand.Execute(null);
 
-        Assert.Equal(3, vm.SelectedGrounds.Count); // the required articles are ticked
+        Assert.Equal(3, vm.SelectedGrounds.Count); // the required articles are ticked once the claim is confirmed
         var chip = vm.SelectedGrounds[0];
         Assert.Equal("المادة 450 من القانون المدني", chip.Citation);
 
@@ -100,6 +107,7 @@ public sealed class GroundsWorkflowTests
         var vm = Vm.Create(knowledge: Vm.FixtureKnowledge, recorder: recorder).Filled();
         vm.Field("notes.grounds").Value = string.Empty; // no own arguments: the ticked articles are enough
         await vm.AnalyseGroundsCommand.ExecuteAsync(null);
+        vm.ConfirmClaimCommand.Execute(null);
         foreach (var other in vm.AnalysedArticles.Where(a => a.Reference.Number != "450"))
         {
             other.IsSelected = false;
@@ -126,6 +134,7 @@ public sealed class GroundsWorkflowTests
     {
         var vm = Vm.Create(recorder: Analysis.Model()).Filled();
         await vm.AnalyseGroundsCommand.ExecuteAsync(null);
+        vm.ConfirmClaimCommand.Execute(null);
         vm.AnalysedArticles[1].IsSelected = false;
 
         vm.Field("notes.facts").Value += "\nوأرسل له إعذارا ثانيا.";
@@ -135,6 +144,35 @@ public sealed class GroundsWorkflowTests
         await vm.AnalyseGroundsCommand.ExecuteAsync(null);
         Assert.False(vm.IsAnalysisStale);
         Assert.True(vm.AnalysedArticles[0].IsSelected);
+    }
+
+    [Fact]
+    public async Task RejectingTheClaimWithdrawsTheProposalsAndTicksNothing()
+    {
+        var vm = Vm.Create(recorder: Analysis.Model()).Filled();
+        await vm.AnalyseGroundsCommand.ExecuteAsync(null);
+
+        vm.RejectClaimCommand.Execute(null);
+
+        Assert.Empty(vm.AnalysedArticles);
+        Assert.Empty(vm.SelectedArticles);
+        Assert.False(vm.NeedsClaimConfirmation);
+        Assert.Equal(vm.L["ClaimRejectedStatus"], vm.AnalysisStatus);
+        Assert.Equal("عقد قرض بين شخصين طبيعيين", vm.ReadingRelationship); // the reading stays for reference
+    }
+
+    [Fact]
+    public async Task FactsOutsideTheCatalogGetNoProposalAndSaySo()
+    {
+        var model = new RecordingProvider(_ => "العلاقة القانونية: قرار إداري\nالمطلوب: إلغاء القرار\nنوع الدعوى: other\nكلمات البحث: الإعذار");
+        var vm = Vm.Create(recorder: model).Filled();
+        await vm.AnalyseGroundsCommand.ExecuteAsync(null);
+
+        Assert.Empty(vm.AnalysedArticles);
+        Assert.Empty(vm.SelectedArticles);
+        Assert.False(vm.NeedsClaimConfirmation);
+        Assert.Equal(vm.L["AnalysisOutOfScope"], vm.AnalysisStatus);
+        Assert.Single(model.Requests); // no second call: nothing to choose from
     }
 
     [Fact]
@@ -174,6 +212,7 @@ public sealed class GroundsWorkflowTests
         var files = new FakeFiles();
         var vm = Vm.Create(files, recorder: Analysis.Model()).Filled();
         await vm.AnalyseGroundsCommand.ExecuteAsync(null);
+        vm.ConfirmClaimCommand.Execute(null);
         vm.AnalysedArticles[0].IsSelected = false;
         vm.AnalysedArticles[2].IsSelected = false;
         await vm.SaveCommand.ExecuteAsync(null);
@@ -183,6 +222,7 @@ public sealed class GroundsWorkflowTests
         Assert.Equal("عقد قرض بين شخصين طبيعيين", reopened.ReadingRelationship);
         Assert.Equal([new ArticleRef("civil-code", "323")], reopened.SelectedArticles);
         Assert.True(reopened.AnalysedArticles[1].IsSelected);
+        Assert.True(reopened.IsClaimConfirmed); // the confirmation is saved with the analysis
         Assert.False(reopened.IsAnalysisStale);
 
         reopened.NewCommand.Execute(null);

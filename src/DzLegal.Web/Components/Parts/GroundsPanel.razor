@@ -38,6 +38,22 @@
                 <dt>@Vm.L["ReadingSought"]</dt><dd dir="rtl" lang="ar">@Vm.ReadingSought</dd>
                 <dt>@Vm.L["ReadingClaims"]</dt><dd>@Vm.ReadingClaims</dd>
             </dl>
+            @if (Vm.IsClaimConfirmed)
+            {
+                <div class="small ok-text">@Vm.L["ClaimConfirmedNote"]</div>
+            }
+        </div>
+    }
+
+    @* Nothing is ticked until the lawyer confirms the claim type the model recognised. *@
+    @if (Vm.NeedsClaimConfirmation)
+    {
+        <div class="notice confirm-claim">
+            <p>@Vm.L["ClaimConfirmPrompt"]</p>
+            <div class="row">
+                <button type="button" class="primary" @onclick="() => Vm.ConfirmClaimCommand.Execute(null)">@Vm.L["ConfirmClaim"]</button>
+                <button type="button" @onclick="() => Vm.RejectClaimCommand.Execute(null)">@Vm.L["RejectClaim"]</button>
+            </div>
         </div>
     }
 

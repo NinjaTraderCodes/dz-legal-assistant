@@ -55,6 +55,9 @@ public sealed record GroundsAnalysis
 
     public List<AnalysedArticle> Articles { get; init; } = [];
 
+    /// <summary>The lawyer confirmed the recognised claim type: its required articles were then ticked.</summary>
+    public bool ClaimConfirmed { get; init; }
+
     public string Model { get; init; } = string.Empty;
 
     public DateTimeOffset CreatedAt { get; init; } = DateTimeOffset.Now;

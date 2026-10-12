@@ -104,7 +104,7 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
         var reading = ParseReading(readingAnswer, claims);
 
         progress?.Report(AnalysisStage.Searching);
-        var candidates = Candidates(knowledge, reading, subject + "\n" + facts, claims);
+        var candidates = Candidates(knowledge, reading, claims);
         Trace?.Invoke("candidates", string.Join('\n', candidates.Select(c => $"{c.Key} — {c.Source}")));
         OnCandidates?.Invoke(candidates);
 
@@ -206,43 +206,34 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
     }
 
     /// <summary>
-    /// Candidates for stage 3: the catalog articles of the recognised claim types (curated), then the library's best
-    /// matches for the model's search terms, then for the raw facts at a lower weight. Deduplicated, capped. Before any
-    /// code is imported only catalog articles exist, described by the catalog's reason instead of the official text.
+    /// Candidates for stage 3: the catalog articles of the recognised claim types only. When no catalog claim type
+    /// applies there are none, so nothing is proposed: the analysis abstains rather than guessing. The library search
+    /// is no longer mixed in: over a small library it only added noise (an audit found 0 useful hits in 138 analyses,
+    /// and 39 % of all proposals); the lawyer still searches the library by hand. Before a code is imported its catalog
+    /// articles are described by the catalog's reason instead of the official text.
     /// </summary>
-    public static IReadOnlyList<CandidateArticle> Candidates(LegalKnowledge knowledge, FactsReading reading, string facts, IReadOnlyList<ClaimType> claims)
+    public static IReadOnlyList<CandidateArticle> Candidates(LegalKnowledge knowledge, FactsReading reading, IReadOnlyList<ClaimType> claims)
     {
         ArgumentNullException.ThrowIfNull(knowledge);
         ArgumentNullException.ThrowIfNull(reading);
         ArgumentNullException.ThrowIfNull(claims);
         var result = new List<CandidateArticle>();
-        void Add(ArticleRef reference, string citation, string excerpt, string source, ArticleRole? role)
-        {
-            if (result.Count < MaxCandidates && result.All(c => c.Ref != reference))
-            {
-                result.Add(new CandidateArticle($"{reference.Code}:{reference.Number}", reference, citation, Excerpt(excerpt), source, role));
-            }
-        }
-
         foreach (var claim in reading.ClaimIds.Select(id => claims.FirstOrDefault(c => c.Id == id)).OfType<ClaimType>())
         {
             foreach (var article in knowledge.Resolve(claim))
             {
-                Add(
-                    new ArticleRef(article.Reference.Code, article.Reference.Number),
-                    article.Citation,
-                    article.IsAvailable ? article.Article!.Text : article.Reference.Why.Ar,
-                    AnalysedArticle.FromCatalog,
-                    article.Reference.Role);
+                var reference = new ArticleRef(article.Reference.Code, article.Reference.Number);
+                if (result.Count < MaxCandidates && result.All(c => c.Ref != reference))
+                {
+                    result.Add(new CandidateArticle(
+                        $"{reference.Code}:{reference.Number}",
+                        reference,
+                        article.Citation,
+                        Excerpt(article.IsAvailable ? article.Article!.Text : article.Reference.Why.Ar),
+                        AnalysedArticle.FromCatalog,
+                        article.Reference.Role));
+                }
             }
-        }
-
-        var hits = knowledge.Library.Index.Search(
-            reading.SearchTerms.Select(t => (t, 1.0)).Append((facts, 0.5)),
-            MaxCandidates);
-        foreach (var hit in hits)
-        {
-            Add(new ArticleRef(hit.Code.Id, hit.Article.Number), hit.Citation, hit.Article.Text, AnalysedArticle.FromSearch, null);
         }
 
         return result;
@@ -282,8 +273,10 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
         }
 
         var claimLine = Field("نوع الدعوى");
-        // «other» (or its name) means nothing in the catalog applies; real claim types named with it are kept.
-        var ids = FindClaims(claimLine ?? string.Join('\n', lines), [.. allowedClaims, OtherClaim])
+        // «other» (or its name) means nothing in the catalog applies; real claim types named with it are kept. Claim
+        // types the line explains away do not count: text in brackets («غير ذلك (لا تتعلق باسترداد قرض…)») and
+        // types after a negation («ليست loan-repayment ولا unpaid-rent، بل other»).
+        var ids = FindClaims(WithoutNegatedClaims(claimLine ?? string.Join('\n', lines)), [.. allowedClaims, OtherClaim])
             .Where(id => id != OtherClaimId)
             .ToList();
         var terms = (Field("كلمات البحث") ?? string.Empty)
@@ -293,6 +286,13 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
             .Take(12)
             .ToList();
         return new FactsReading(Field("العلاقة القانونية") ?? string.Empty, Field("الالتزام المخل به") ?? string.Empty, Field("المطلوب") ?? string.Empty, ids, terms);
+    }
+
+    /// <summary>Removes bracketed explanations, and each phrase introduced by a negation, up to the next separator.</summary>
+    private static string WithoutNegatedClaims(string line)
+    {
+        var text = Regex.Replace(line, @"\([^)]*\)|\[[^\]]*\]", " ");
+        return Regex.Replace(text, @"(?<![\p{L}])(?:و?ليست|و?ليس|و?لا)\s+[^،,؛;\n]*?(?=\s+بل\s|[،,؛;\n]|$)", " ");
     }
 
     /// <summary>Claim ids named in a text, by id or by Arabic name (full, before «:», or inside brackets), in order of mention.</summary>

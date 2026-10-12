@@ -113,35 +113,58 @@ public sealed class GroundsAnalyzerTests
         Assert.Contains("loan — استرداد قرض وهمي: وصف وهمي لـاسترداد قرض وهمي", reading.UserPrompt, StringComparison.Ordinal);
         Assert.DoesNotContain("khul", reading.UserPrompt, StringComparison.Ordinal);
 
-        var candidates = GroundsAnalyzer.Candidates(Knowledge(Library), GroundsAnalyzer.ParseReading(Reading, [Loan]), "أقرض المدعي", [Loan]);
+        var candidates = GroundsAnalyzer.Candidates(Knowledge(Library), GroundsAnalyzer.ParseReading(Reading, [Loan]), [Loan]);
         var selection = GroundsAnalyzer.BuildSelectionRequest(Knowledge(Library), "أقرض المدعي", FactsReading.Empty, candidates);
         Assert.Contains("fictitious-code:10 — المادة 10 من القانون التجريبي — يلتزم المقترض الوهمي", selection.UserPrompt, StringComparison.Ordinal);
     }
 
     [Fact]
-    public void CandidatesAreTheClaimArticlesThenLibraryMatches()
+    public void CandidatesAreTheRecognisedClaimsCatalogArticlesOnly()
     {
         var reading = GroundsAnalyzer.ParseReading(Reading, [Loan]);
 
-        // Before import: only the catalog articles, described by their reason.
-        var before = GroundsAnalyzer.Candidates(Knowledge(), reading, "facts", [Loan]);
+        // Before import: the catalog articles, described by their reason.
+        var before = GroundsAnalyzer.Candidates(Knowledge(), reading, [Loan]);
         Assert.Equal(["fictitious-code:10", "fictitious-code:20"], before.Select(c => c.Key));
         Assert.All(before, c => Assert.Equal(AnalysedArticle.FromCatalog, c.Source));
         Assert.StartsWith("سبب وهمي", before[0].Excerpt, StringComparison.Ordinal);
 
-        // After import: library search adds article 40 (the model's terms «التعويض عن التأخير»، «الإعذار»).
-        var after = GroundsAnalyzer.Candidates(Knowledge(Library), reading, "facts", [Loan]);
-        Assert.Equal("fictitious-code:10", after[0].Key);
+        // After import: the same articles with their official text. The library search no longer adds article 40,
+        // although the model's terms («التعويض عن التأخير»، «الإعذار») match it: the lawyer searches by hand.
+        var after = GroundsAnalyzer.Candidates(Knowledge(Library), reading, [Loan]);
+        Assert.Equal(["fictitious-code:10", "fictitious-code:20"], after.Select(c => c.Key));
         Assert.StartsWith("يلتزم المقترض", after[0].Excerpt, StringComparison.Ordinal);
-        var searched = Assert.Single(after, c => c.Key == "fictitious-code:40");
-        Assert.Equal(AnalysedArticle.FromSearch, searched.Source);
-        Assert.Equal(after.Count, after.Select(c => c.Key).Distinct().Count());
+
+        // No catalog claim type: no candidate at all, so nothing is proposed.
+        Assert.Empty(GroundsAnalyzer.Candidates(Knowledge(Library), reading with { ClaimIds = [] }, [Loan]));
+    }
+
+    [Theory]
+    [InlineData("نوع الدعوى: ليست loan ولا khul، بل other")]
+    [InlineData("نوع الدعوى: غير ذلك (القضية لا تتعلق باسترداد قرض وهمي بل بتركة)")]
+    [InlineData("نوع الدعوى: other [ليست loan]")]
+    [InlineData("نوع الدعوى: لا شيء")]
+    public void ClaimTypesTheLineExplainsAwayDoNotCount(string answer) =>
+        Assert.Empty(GroundsAnalyzer.ParseReading(answer, [Loan, Khul]).ClaimIds);
+
+    [Fact]
+    public void AClaimNamedNextToANegatedOneIsKept() =>
+        Assert.Equal(["khul"], GroundsAnalyzer.ParseReading("نوع الدعوى: ليست loan، بل khul", [Loan, Khul]).ClaimIds);
+
+    [Fact]
+    public async Task WithNoCatalogClaimTypeTheAnalysisProposesNothingAndMakesOneCallOnly()
+    {
+        var provider = new RecordingProvider(_ => "العلاقة القانونية: قرار إداري\nنوع الدعوى: other\nكلمات البحث: الإعذار، رد المثل");
+        var analysis = await new GroundsAnalyzer(provider).AnalyseAsync(Knowledge(Library), "", "أصدر الوالي قرارا بإلغاء رخصة البناء", null);
+        Assert.Empty(analysis.ClaimIds);
+        Assert.Empty(analysis.Articles);
+        Assert.Single(provider.Requests);
     }
 
     [Fact]
     public void SelectionKeepsCandidateKeysWithRolesAndSafeReasons()
     {
-        var candidates = GroundsAnalyzer.Candidates(Knowledge(Library), GroundsAnalyzer.ParseReading(Reading, [Loan]), "facts", [Loan]);
+        var candidates = GroundsAnalyzer.Candidates(Knowledge(Library), GroundsAnalyzer.ParseReading(Reading, [Loan]), [Loan]);
         var selected = GroundsAnalyzer.ParseSelection("""
             fictitious-code:10 | أساس | لأن المدعى عليه اقترض ولم يرد
             fictitious-code:999 | أساس | مادة مخترعة
@@ -150,11 +173,10 @@ public sealed class GroundsAnalyzerTests
             fictitious-code:10 | أساس | مكرر
             """, candidates);
 
-        Assert.Equal(["10", "40", "20"], selected.Select(a => a.Number));
-        Assert.Equal(["basis", "damages", "proof"], selected.Select(a => a.Role)); // 20: catalog role when unclear
+        Assert.Equal(["10", "20"], selected.Select(a => a.Number)); // 40 is not a candidate any more
+        Assert.Equal(["basis", "proof"], selected.Select(a => a.Role)); // 20: catalog role when unclear
         Assert.Equal("لأن المدعى عليه اقترض ولم يرد", selected[0].Reason);
-        Assert.Empty(selected[2].Reason); // a reason citing another article is dropped
-        Assert.Equal(AnalysedArticle.FromSearch, selected[1].Source);
+        Assert.Empty(selected[1].Reason); // a reason citing another article is dropped
         Assert.Empty(GroundsAnalyzer.ParseSelection("لا شيء", candidates));
     }
 

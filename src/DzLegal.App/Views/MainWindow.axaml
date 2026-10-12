@@ -397,6 +397,20 @@
                     <TextBlock FontSize="12" TextWrapping="Wrap"><Run FontWeight="SemiBold" Text="{Binding L[ReadingBreach]}" /><Run Text=" " /><Run Text="{Binding ReadingBreach}" /></TextBlock>
                     <TextBlock FontSize="12" TextWrapping="Wrap"><Run FontWeight="SemiBold" Text="{Binding L[ReadingSought]}" /><Run Text=" " /><Run Text="{Binding ReadingSought}" /></TextBlock>
                     <TextBlock FontSize="12" TextWrapping="Wrap"><Run FontWeight="SemiBold" Text="{Binding L[ReadingClaims]}" /><Run Text=" " /><Run Text="{Binding ReadingClaims}" /></TextBlock>
+                    <TextBlock FontSize="12" Foreground="{DynamicResource SuccessBrush}" Text="{Binding L[ClaimConfirmedNote]}" IsVisible="{Binding IsClaimConfirmed}" />
+                  </StackPanel>
+                </Border>
+
+                <!-- Nothing is ticked until the lawyer confirms the claim type the model recognised. -->
+                <Border Name="ClaimConfirmBar" CornerRadius="6" Padding="10" Background="{DynamicResource WarningSoftBrush}" IsVisible="{Binding NeedsClaimConfirmation}">
+                  <StackPanel Spacing="8">
+                    <TextBlock FontSize="12" TextWrapping="Wrap" Text="{Binding L[ClaimConfirmPrompt]}" />
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                      <Button Name="ConfirmClaimButton" Classes="primary" Command="{Binding ConfirmClaimCommand}">
+                        <TextBlock Foreground="White" Text="{Binding L[ConfirmClaim]}" />
+                      </Button>
+                      <Button Classes="outline" Command="{Binding RejectClaimCommand}" Content="{Binding L[RejectClaim]}" />
+                    </StackPanel>
                   </StackPanel>
                 </Border>
 

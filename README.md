@@ -33,14 +33,14 @@ The lawyer fills in the case details, the application produces a structured firs
 The legal grounds are often the hardest part for the lawyer. The form has three separate steps for them: **Facts → Legal grounds → Requests**.
 
 In the **Legal grounds** step, **«حلّل الوقائع واقترح الأسانيد»** runs a three-stage analysis with the local model. It takes about 2–3 minutes on a CPU-only laptop (measured: 117–181 s on an Intel i5-1335U) and can be cancelled. While it runs, a panel shows each step, a timer and the model's words as they are written, so the lawyer never waits in silence. The same panel appears while the draft is written (the section being written is marked) and in the section assistant. To shorten the first wait, the app loads the model into memory in the background when it starts (local only; `ollama.warmUp`).
-1. **Reading the facts.** The model states the legal relationship, the obligation breached and what is sought. It recognises claim types from the catalog, by id only, and writes search terms in the codes' own vocabulary («قرض الاستهلاك، رد المثل، الإعذار»). It names no article.
-2. **Searching the official texts.** No model is involved. A full-text search (BM25) runs over every imported article and its chapter heading, using those terms and the facts. The catalog articles of the recognised claim types are added. There are no hand-written keywords, so the search grows with every imported code.
+1. **Reading the facts.** The model states the legal relationship, the obligation breached and what is sought. It recognises claim types from the catalog, by id only, or answers `other` when none applies. It names no article.
+2. **Gathering the candidates.** No model is involved. The candidates are the catalog articles of the recognised claim types, nothing else. **When no catalog claim type applies, there is no candidate and nothing is proposed**: the app abstains rather than guess. (A library-wide text search used to add candidates; an audit found it added only noise, so it is now only the lawyer's manual search.)
 3. **Choosing articles.** The model chooses among those candidates only, by key. For each it gives a role (basis, proof, damages, procedure) and a short reason. Anything else it writes is discarded.
 
 **What the lawyer sees:**
-- the model's reading of the facts;
-- **the exact articles it proposed**, each with its role, «تعليل النموذج», the official text (or "not yet imported"), the official reference and source link, and where the candidate came from;
-- nothing is ticked in advance. Ticked articles appear under **«الأسانيد المعتمدة»**;
+- the model's reading of the facts, labelled as the model's;
+- **the exact articles it proposed**, each with its role, «تعليل النموذج», the official text (or "not loaded"), the official reference and source link;
+- **nothing is ticked until the lawyer confirms the claim type.** «نعم، هذا نوع الدعوى» ticks the articles the catalog marks as required for that type; «ليس هذا» withdraws the proposals. Ticked articles appear under **«الأسانيد المعتمدة»**;
 - an optional box for the lawyer's own arguments, and a search to add any article by number or words;
 - if the facts change after the analysis, a banner asks to analyse again, and the ticks are kept.
 

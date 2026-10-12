@@ -76,6 +76,19 @@ public sealed partial class MainWindowViewModel
 
     public bool HasReading => ReadingRelationship.Length + ReadingBreach.Length + ReadingSought.Length + ReadingClaims.Length > 0;
 
+    /// <summary>The analysis recognised a catalog claim type (otherwise it proposes nothing).</summary>
+    public bool HasRecognisedClaims => _analysis?.ClaimIds.Count > 0;
+
+    /// <summary>
+    /// The lawyer confirmed the claim type the analysis recognised. Nothing is ticked before that: the model's guess
+    /// never decides which law the draft rests on.
+    /// </summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(NeedsClaimConfirmation))]
+    public partial bool IsClaimConfirmed { get; set; }
+
+    public bool NeedsClaimConfirmation => HasRecognisedClaims && !IsClaimConfirmed;
+
     /// <summary>The facts, subject or court section changed after the last analysis.</summary>
     [ObservableProperty]
     public partial bool IsAnalysisStale { get; set; }
@@ -151,14 +164,10 @@ public sealed partial class MainWindowViewModel
             AnalysisActivity.Complete();
             ShowAnalysis(analysis);
 
-            // The articles the claim type requires are ticked; the model's extra proposals wait for the lawyer.
-            foreach (var choice in AnalysedArticles.Where(c => analysis.Articles.Any(a => a.Ref == c.Reference && a.Source == AnalysedArticle.Required)))
-            {
-                choice.IsSelected = true;
-            }
+            // Nothing is ticked yet: the lawyer first confirms the claim type (ConfirmClaim), or searches by hand.
             var engine = SelectedProvider.DisplayName;
-            AnalysisStatus = analysis.Articles.Count > 0 ? L.Format("AnalysisDone", analysis.Articles.Count, engine)
-                : HasReading ? L["AnalysisNoArticles"]
+            AnalysisStatus = analysis.ClaimIds.Count > 0 ? L.Format("AnalysisDone", analysis.Articles.Count, engine)
+                : HasReading ? L["AnalysisOutOfScope"]
                 : L.Format("AnalysisNothing", engine);
         }
         catch (OperationCanceledException)
@@ -176,6 +185,38 @@ public sealed partial class MainWindowViewModel
         }
     }
 
+    /// <summary>The lawyer confirms the recognised claim type: the articles that type rests on («لازمة») are ticked.</summary>
+    [RelayCommand]
+    private void ConfirmClaim()
+    {
+        if (_analysis is null || _analysis.ClaimIds.Count == 0)
+        {
+            return;
+        }
+
+        _analysis = _analysis with { ClaimConfirmed = true };
+        IsClaimConfirmed = true;
+        foreach (var choice in AnalysedArticles.Where(c => _analysis.Articles.Any(a => a.Ref == c.Reference && a.Source == AnalysedArticle.Required)))
+        {
+            choice.IsSelected = true;
+        }
+
+        AnalysisStatus = L["ClaimConfirmedStatus"];
+    }
+
+    /// <summary>The lawyer rejects the recognised claim type: its proposals are withdrawn; the reading stays for reference.</summary>
+    [RelayCommand]
+    private void RejectClaim()
+    {
+        if (_analysis is null)
+        {
+            return;
+        }
+
+        ShowAnalysis(_analysis with { ClaimIds = [], Articles = [], ClaimConfirmed = false });
+        AnalysisStatus = L["ClaimRejectedStatus"];
+    }
+
     /// <summary>Ticks every article the model proposed as a basis («أساس»).</summary>
     [RelayCommand]
     private void TickBasisArticles()
@@ -189,6 +230,9 @@ public sealed partial class MainWindowViewModel
     private void ShowAnalysis(GroundsAnalysis? analysis)
     {
         _analysis = analysis;
+        IsClaimConfirmed = analysis?.ClaimConfirmed == true;
+        OnPropertyChanged(nameof(HasRecognisedClaims));
+        OnPropertyChanged(nameof(NeedsClaimConfirmation));
         AnalysedArticles.Clear();
         ReadingRelationship = analysis?.Relationship ?? string.Empty;
         ReadingBreach = analysis?.Breach ?? string.Empty;

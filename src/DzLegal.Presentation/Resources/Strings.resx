@@ -116,7 +116,7 @@
   <data name="TryAgain" xml:space="preserve"><value>حاول مجددا</value></data>
   <data name="Send" xml:space="preserve"><value>إرسال</value></data>
   <data name="InstructionPlaceholder" xml:space="preserve"><value>اطلب تعديلا على هذا القسم…</value></data>
-  <data name="GroundsIntro" xml:space="preserve"><value>يقرأ الذكاء الاصطناعي الوقائع ويقترح مواد من النصوص الرسمية. القرار لك: لا تذكر في العريضة إلا المواد التي تختارها.</value></data>
+  <data name="GroundsIntro" xml:space="preserve"><value>يقرأ الذكاء الاصطناعي الوقائع ويقترح نوع الدعوى ومواد من فهرسه. القرار لك: تؤكد نوع الدعوى، ولا تذكر في العريضة إلا المواد التي تختارها.</value></data>
   <data name="GroundsNeedFacts" xml:space="preserve"><value>اكتب الوقائع أولا (خطوة «الوقائع»)، ثم حلّلها هنا.</value></data>
   <data name="ArticleTextUnavailable" xml:space="preserve"><value>النص الرسمي غير محمل: تذكر المسودة هذه المادة برقمها فقط.</value></data>
   <data name="ArticleSearchPlaceholder" xml:space="preserve"><value>ابحث عن مادة برقمها (مثل 450) أو بكلمات من نصها</value></data>
@@ -134,8 +134,14 @@
   <data name="LinkNotOpened" xml:space="preserve"><value>تعذر فتح المتصفح. الرابط: {0}</value></data>
   <data name="LinkRefused" xml:space="preserve"><value>رفض فتح رابط غير رسمي.</value></data>
   <data name="AnalyseGrounds" xml:space="preserve"><value>تحليل الوقائع</value></data>
-  <data name="AnalysisDone" xml:space="preserve"><value>اقترح {1} {0} مادة. اختيرت المواد اللازمة لهذا النوع من الدعاوى؛ راجع الباقي.</value></data>
-  <data name="AnalysisNoArticles" xml:space="preserve"><value>قرأ النموذج الوقائع لكنه لم يجد مادة مناسبة بين المرشحات. أضف المواد يدويا أدناه.</value></data>
+  <data name="ClaimRejectedStatus" xml:space="preserve"><value>سُحبت الاقتراحات. ابحث عن المواد يدويا أدناه، أو عدّل الوقائع وأعد التحليل.</value></data>
+  <data name="ClaimConfirmedNote" xml:space="preserve"><value>✓ أكد المحامي نوع الدعوى.</value></data>
+  <data name="ClaimConfirmedStatus" xml:space="preserve"><value>أكدتَ نوع الدعوى واختيرت المواد اللازمة له. راجع اقتراحات النموذج الأخرى.</value></data>
+  <data name="RejectClaim" xml:space="preserve"><value>ليس هذا</value></data>
+  <data name="ConfirmClaim" xml:space="preserve"><value>نعم، هذا نوع الدعوى</value></data>
+  <data name="ClaimConfirmPrompt" xml:space="preserve"><value>هل هذا هو نوع الدعوى؟ تأكيدك يختار المواد التي يقوم عليها هذا النوع (المعلّمة «لازمة لهذا النوع»). لا يُختار شيء دون تأكيدك.</value></data>
+  <data name="AnalysisOutOfScope" xml:space="preserve"><value>لا تطابق الوقائع أي نوع دعوى في الفهرس الحالي، فلا يقترح البرنامج أي مادة بدل أن يخمن. ابحث عن المواد يدويا أدناه إن لزم.</value></data>
+  <data name="AnalysisDone" xml:space="preserve"><value>اقترح {1} {0} مادة لنوع الدعوى أدناه. لم يُختر شيء بعد: أكد نوع الدعوى لاختيار المواد التي يقوم عليها، ثم راجع الباقي.</value></data>
   <data name="AnalysisNothing" xml:space="preserve"><value>لم يقدم {0} تحليلا صالحا. أعد المحاولة (وتأكد من تشغيل النموذج)، أو أضف المواد يدويا أدناه.</value></data>
   <data name="AnalysisStale" xml:space="preserve"><value>تغيرت الوقائع بعد التحليل — أعد التحليل. المواد التي اعتمدتها محفوظة.</value></data>
   <data name="ModelReading" xml:space="preserve"><value>قراءة الذكاء الاصطناعي للوقائع</value></data>
@@ -165,7 +171,7 @@
   <data name="UsualDocuments" xml:space="preserve"><value>مستندات معتادة لهذا النوع من الدعاوى</value></data>
   <data name="UsualLinesNeedAnalysis" xml:space="preserve"><value>حلّل الوقائع في خطوة «الأسانيد القانونية» لتظهر هنا الطلبات المعتادة لنوع الدعوى.</value></data>
   <data name="AnalysisStepReading" xml:space="preserve"><value>قراءة الوقائع</value></data>
-  <data name="AnalysisStepSearching" xml:space="preserve"><value>البحث في النصوص القانونية</value></data>
+  <data name="AnalysisStepSearching" xml:space="preserve"><value>جمع مواد نوع الدعوى من الفهرس</value></data>
   <data name="AnalysisStepSelecting" xml:space="preserve"><value>اختيار المواد المناسبة</value></data>
   <data name="AnalysisCandidates" xml:space="preserve"><value>{0} مادة مرشحة</value></data>
   <data name="ActivityWaking" xml:space="preserve"><value>تهيئة النموذج… تظهر الكلمات بعد لحظات</value></data>

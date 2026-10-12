@@ -19,14 +19,14 @@ Nothing is scraped, searched online or read from PDFs while the lawyer works. Ev
    - 5–12 search terms in the codes' vocabulary.
 
    The parser accepts ids or Arabic names and formatting variants, keeps catalog claim types only (`other` means none), and removes any article number.
-2. **Searching the official texts** (no model). `ArticleIndex` is a BM25 full-text index over every in-force imported article, with its chapter headings weighted ×2. It is queried with the model's terms (weight 1) and the raw facts (weight 0.5). The catalog articles of the recognised claim types come first. At most 12 candidates are kept.
+2. **Gathering the candidates** (no model). The candidates are the catalog articles of the recognised claim types only, at most 12. With no recognised claim type there is no candidate and the analysis proposes nothing (it abstains). `ArticleIndex`, a BM25 full-text index over every in-force imported article, now serves only the lawyer's manual search: mixed into the candidates it added noise and no useful article (October 2026 audit).
 3. **Choosing articles** (model call 2, `prompts/select-articles.ar.txt`). The model sees the candidates as `key — citation — first 180 characters of the official text` and answers `key | role | reason`. The parser:
    - keeps candidate keys only, at most 6;
    - maps the roles (أساس/إثبات/تعويض/إجراء);
    - truncates a reason to 30 words;
    - drops a reason that names another article.
 
-**The result** is the model's reading plus the proposed articles, each with its role, reason, official text, provenance and origin (catalog or search). It is saved with the draft. Nothing is used until the lawyer ticks it.
+**The result** is the model's reading plus the proposed articles, each with its role, reason, official text and provenance. It is saved with the draft. Nothing is ticked until the lawyer confirms the claim type; confirming ticks the catalog's required articles for it, and everything else waits for the lawyer's tick.
 
 **Why there are no hand-written keywords:** there is no official mapping from facts to articles, so a keyword list can never be complete. Here the model translates the facts into legal vocabulary, and the full-text index covers every imported article without curation.
 

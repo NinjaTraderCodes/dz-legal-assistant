@@ -80,6 +80,9 @@ label.check input { width: auto; margin-top: 3px; accent-color: var(--accent); }
   background: var(--warning-soft); color: var(--text); border: 1px solid var(--hairline); }
 .notice.info { background: var(--accent-soft); }
 .notice .grow { flex: 1 1 260px; }
+.notice.confirm-claim p { margin: 0; flex: 1 1 100%; }
+.notice.confirm-claim .row { display: flex; gap: 8px; flex-wrap: wrap; }
+.ok-text { color: var(--success); }
 .strip { padding-inline: 16px; padding-block: 10px 0; display: grid; gap: 10px; }
 
 /* Guide */

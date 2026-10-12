@@ -41,11 +41,25 @@ public static class DocxRenderer
                 }
             }
 
-            body.Append(new SectionProperties(
+            var sectionProperties = new SectionProperties(
                 new PageSize { Width = 11906, Height = 16838 }, // A4
                 new PageMargin { Top = 1247, Bottom = 1247, Left = 1247U, Right = 1247U, Header = 708U, Footer = 708U },
-                new BiDi()));
+                new BiDi());
+            if (options.DraftWatermark)
+            {
+                // Word has no reliable diagonal watermark without VML; a header line on every page says the same.
+                var header = main.AddNewPart<HeaderPart>();
+                header.Header = new Header(Paragraph(DocumentRenderOptions.DraftHeader, BlockAlign.Center, bold: true, underline: false, size: 9, spaceBefore: 0, keepNext: false));
+                header.Header.Save();
+                sectionProperties.PrependChild(new HeaderReference { Type = HeaderFooterValues.Default, Id = main.GetIdOfPart(header) });
+            }
+
+            body.Append(sectionProperties);
             main.Document.Save();
+            if (options.AiAssisted)
+            {
+                document.PackageProperties.Description = DocumentRenderOptions.AiAssistedDescription;
+            }
         }
 
         return stream.ToArray();

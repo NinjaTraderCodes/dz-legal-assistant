@@ -106,7 +106,7 @@ public sealed partial class SectionViewModel : ObservableObject
 
     public bool IsReadOnly => !IsEditable && !IsOverridden;
 
-    public string Hint => _loc[IsOverridden ? "OverriddenSectionHint" : IsEditable ? "NarrativeSectionHint" : "GeneratedSectionHint"];
+    public string Hint => _loc[IsOverridden ? "OverriddenSectionHint" : !IsEditable ? "GeneratedSectionHint" : IsAiWritten ? "NarrativeSectionHint" : "LawyerSectionHint"];
 
     public string Watermark => IsEditable ? _loc["EmptyNarrativeHint"] : string.Empty;
 
@@ -119,6 +119,39 @@ public sealed partial class SectionViewModel : ObservableObject
     public partial string ReviewText { get; set; } = string.Empty;
 
     public bool HasReview => ReviewText.Length > 0;
+
+    /// <summary>An AI model wrote this text; the lawyer must review it before the document can be exported.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(NeedsReview), nameof(Hint))]
+    public partial bool IsAiWritten { get; set; }
+
+    /// <summary>«راجعت هذا القسم»: the lawyer read and takes responsibility for the AI-written text.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(NeedsReview))]
+    public partial bool IsReviewed { get; set; }
+
+    public bool NeedsReview => IsAiWritten && !IsReviewed;
+
+    internal Action<SectionViewModel>? ReviewChanged { get; set; }
+
+    private bool _syncingReview;
+
+    /// <summary>Sets the review state from the draft without reporting it as the lawyer's change.</summary>
+    internal void SetReviewState(bool aiWritten, bool reviewed)
+    {
+        _syncingReview = true;
+        IsAiWritten = aiWritten;
+        IsReviewed = reviewed;
+        _syncingReview = false;
+    }
+
+    partial void OnIsReviewedChanged(bool value)
+    {
+        if (!_syncingReview)
+        {
+            ReviewChanged?.Invoke(this);
+        }
+    }
 
     /// <summary>The model is writing this section right now (an animated marker shows where).</summary>
     [ObservableProperty]

@@ -11,6 +11,17 @@ public sealed record DocumentRenderOptions
     /// <summary>Diagonal «مسودة» across each page: on by default, the output is a draft until the lawyer signs.</summary>
     public bool DraftWatermark { get; init; } = true;
 
+    /// <summary>
+    /// Part of the text was written by an AI model. Recorded in the file's properties (Word: description), so the
+    /// document says so wherever it travels.
+    /// </summary>
+    public bool AiAssisted { get; init; }
+
+    /// <summary>The draft line Word documents carry in their page header while <see cref="DraftWatermark"/> is on.</summary>
+    public const string DraftHeader = "مسودة — نص أُعدّ بمساعدة الذكاء الاصطناعي، يراجعه المحامي قبل التوقيع";
+
+    public const string AiAssistedDescription = "AI-assisted draft: part of the text was written by an AI model and must be reviewed by the lawyer.";
+
     public float FontSize { get; init; } = 13;
 }
 

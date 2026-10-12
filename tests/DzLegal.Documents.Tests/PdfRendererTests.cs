@@ -79,4 +79,25 @@ public class DocxRendererTests
         Assert.Contains(paragraphs, p => p.InnerText.StartsWith("حيث إنه بتاريخ 15 جانفي 2025", StringComparison.Ordinal));
         Assert.Equal("التوقيع:", paragraphs[^1].InnerText);
     }
+
+    [Fact]
+    public async Task ADraftCarriesTheDraftLineOnEveryPageAndSaysItIsAiAssisted()
+    {
+        var model = DocumentLayoutBuilder.Build(Sample.Requete, await Sample.DebtCaseAsync());
+
+        var draft = DocxRenderer.Render(model, new DocumentRenderOptions { DraftWatermark = true, AiAssisted = true });
+        using (var doc = DocumentFormat.OpenXml.Packaging.WordprocessingDocument.Open(new MemoryStream(draft), false))
+        {
+            Assert.Empty(new DocumentFormat.OpenXml.Validation.OpenXmlValidator().Validate(doc));
+            Assert.Equal(DocumentRenderOptions.DraftHeader, Assert.Single(doc.MainDocumentPart!.HeaderParts).Header!.InnerText);
+            Assert.Equal(DocumentRenderOptions.AiAssistedDescription, doc.PackageProperties.Description);
+        }
+
+        var final = DocxRenderer.Render(model, new DocumentRenderOptions { DraftWatermark = false });
+        using (var doc = DocumentFormat.OpenXml.Packaging.WordprocessingDocument.Open(new MemoryStream(final), false))
+        {
+            Assert.Empty(doc.MainDocumentPart!.HeaderParts);
+            Assert.Null(doc.PackageProperties.Description);
+        }
+    }
 }

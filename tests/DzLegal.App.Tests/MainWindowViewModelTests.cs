@@ -127,6 +127,74 @@ public class MainWindowViewModelTests
     }
 
     [Fact]
+    public async Task AnAiDraftCannotLeaveTheAppUntilTheLawyerReviewsIt()
+    {
+        var files = new FakeFiles();
+        var model = new RecordingProvider(r => "حيث إن " + r.SourceText);
+        var vm = Vm.Create(files, recorder: model).Filled();
+        await vm.GenerateCommand.ExecuteAsync(null);
+        var grounds = vm.Sections.Single(s => s.Id == "grounds");
+        Assert.True(grounds.IsAiWritten);
+        Assert.True(grounds.NeedsReview);
+        Assert.Equal(vm.L["NarrativeSectionHint"], grounds.Hint);
+
+        await vm.ExportPdfCommand.ExecuteAsync(null);
+        await vm.ExportWordCommand.ExecuteAsync(null);
+        await vm.CopyTextCommand.ExecuteAsync(null);
+        Assert.Empty(files.SavedByKind);
+        Assert.Null(files.Clipboard);
+        Assert.True(vm.IsExportBlockedShown);
+        Assert.Contains(vm.L.Format("BlockerUnreviewed", grounds.Title), vm.ExportBlockers, StringComparison.Ordinal);
+
+        grounds.Text += " وحيث إن المدعى عليه لم يرد."; // editing is not reviewing
+        Assert.True(grounds.NeedsReview);
+
+        grounds.IsReviewed = true;
+        Assert.False(vm.IsExportBlockedShown);
+        await vm.ExportWordCommand.ExecuteAsync(null);
+        Assert.True(files.SavedByKind.ContainsKey(SaveKind.Word));
+        using var doc = DocumentFormat.OpenXml.Packaging.WordprocessingDocument.Open(new MemoryStream(files.SavedByKind[SaveKind.Word]), false);
+        Assert.Equal(DzLegal.Documents.DocumentRenderOptions.AiAssistedDescription, doc.PackageProperties.Description);
+
+        // A redraft brings the section back to "needs review".
+        grounds.RedraftCommand.Execute(null);
+        await grounds.RedraftCommand.ExecuteAsync(null);
+        Assert.True(grounds.NeedsReview);
+    }
+
+    [Fact]
+    public async Task TemplateModeTextIsTheLawyersAndAPlaceholderBlocksExport()
+    {
+        var files = new FakeFiles();
+        var vm = Vm.Create(files).Filled();
+        await vm.GenerateCommand.ExecuteAsync(null);
+        var grounds = vm.Sections.Single(s => s.Id == "grounds");
+        Assert.False(grounds.IsAiWritten);
+        Assert.Equal(vm.L["LawyerSectionHint"], grounds.Hint);
+
+        grounds.Text += "\nوحيث إن (...)";
+        await vm.ExportPdfCommand.ExecuteAsync(null);
+        Assert.Empty(files.SavedByKind);
+        Assert.Contains(vm.L.Format("BlockerPlaceholder", grounds.Title), vm.ExportBlockers, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task TheReviewStateIsSavedWithTheDraft()
+    {
+        var files = new FakeFiles();
+        var vm = Vm.Create(files, recorder: new RecordingProvider(r => "حيث إن " + r.SourceText)).Filled();
+        await vm.GenerateCommand.ExecuteAsync(null);
+        vm.Sections.Single(s => s.Id == "grounds").IsReviewed = true;
+        await vm.SaveCommand.ExecuteAsync(null);
+
+        var reopened = Vm.Create(files);
+        await reopened.OpenCommand.ExecuteAsync(null);
+        var grounds = reopened.Sections.Single(s => s.Id == "grounds");
+        Assert.True(grounds.IsAiWritten);
+        Assert.True(grounds.IsReviewed);
+    }
+
+    [Fact]
     public async Task SaveThenOpenRestoresTheDraft()
     {
         var files = new FakeFiles();

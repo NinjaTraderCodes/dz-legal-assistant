@@ -296,19 +296,96 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         AssistantActivity.Dispose();
     }
 
+    /// <summary>What must be done before the document leaves the app: AI sections to review, placeholders to fill.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasExportBlockers))]
+    public partial string ExportBlockers { get; set; } = string.Empty;
+
+    public bool HasExportBlockers => ExportBlockers.Length > 0;
+
+    /// <summary>The blockers panel is shown after an export attempt was refused, until nothing blocks any more.</summary>
+    [ObservableProperty]
+    public partial bool IsExportBlockedShown { get; set; }
+
+    private const string StubProviderKey = "stub";
+
+    private void UpdateExportBlockers()
+    {
+        var lines = new List<string>();
+        foreach (var section in Sections)
+        {
+            if (section.NeedsReview)
+            {
+                lines.Add("• " + L.Format("BlockerUnreviewed", section.Title));
+            }
+
+            if (System.Text.RegularExpressions.Regex.IsMatch(section.Text, @"\(\s*(\.\.\.|…)\s*\)"))
+            {
+                lines.Add("• " + L.Format("BlockerPlaceholder", section.Title));
+            }
+        }
+
+        ExportBlockers = string.Join("\n", lines);
+        if (!HasExportBlockers)
+        {
+            IsExportBlockedShown = false;
+        }
+    }
+
+    /// <summary>False, with the reasons shown, while something must still be done before the document leaves the app.</summary>
+    private bool MayExport()
+    {
+        UpdateExportBlockers();
+        if (!HasExportBlockers)
+        {
+            return true;
+        }
+
+        IsExportBlockedShown = true;
+        SetStatus(L["ExportBlocked"], isError: true);
+        return false;
+    }
+
+    private bool HasAiText => _draft.Sections.Any(s => s.AiWritten);
+
+    private void OnSectionReviewChanged(SectionViewModel section)
+    {
+        if (_draft.FindSection(section.Id) is { } draftSection)
+        {
+            draftSection.Reviewed = section.IsReviewed;
+            if (section.IsReviewed)
+            {
+                draftSection.DraftingNotes.Clear(); // the lawyer has read the AI notes and takes the text on
+            }
+        }
+
+        UpdateReviewHints();
+        UpdateExportBlockers();
+    }
+
     [RelayCommand]
     private async Task ExportPdfAsync()
     {
+        if (!MayExport())
+        {
+            return;
+        }
+
         var model = DocumentLayoutBuilder.Build(_definition, _draft.DeepCopy());
-        var bytes = await Task.Run(() => PdfRenderer.RenderPdf(model, new DocumentRenderOptions { DraftWatermark = DraftWatermark }));
+        var bytes = await Task.Run(() => PdfRenderer.RenderPdf(model, new DocumentRenderOptions { DraftWatermark = DraftWatermark, AiAssisted = HasAiText }));
         await ExportAsync(bytes, ".pdf", SaveKind.Pdf);
     }
 
     [RelayCommand]
     private async Task ExportWordAsync()
     {
+        if (!MayExport())
+        {
+            return;
+        }
+
         var model = DocumentLayoutBuilder.Build(_definition, _draft.DeepCopy());
-        var bytes = await Task.Run(() => DocxRenderer.Render(model));
+        var bytes = await Task.Run(() => DocxRenderer.Render(model, new DocumentRenderOptions { DraftWatermark = DraftWatermark, AiAssisted = HasAiText }));
         await ExportAsync(bytes, ".docx", SaveKind.Word);
     }
 
@@ -409,9 +486,21 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
                 }
             }
 
+            var byModel = SelectedProvider.Key != StubProviderKey;
             foreach (var section in draft.Sections.Where(x => _definition.FindSection(x.Id)?.Kind == SectionKind.Narrative && !keep.ContainsKey(x.Id)))
             {
                 _modelText[section.Id] = section.Text;
+                section.AiWritten = byModel && section.Text.Trim().Length > 0;
+                section.Reviewed = false;
+            }
+
+            foreach (var kept in keep.Keys)
+            {
+                if (draft.FindSection(kept) is { } target && _draft.FindSection(kept) is { } before)
+                {
+                    target.AiWritten = before.AiWritten;
+                    target.Reviewed = before.Reviewed;
+                }
             }
 
             _draft = draft;
@@ -641,6 +730,11 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     [RelayCommand]
     private async Task CopyTextAsync()
     {
+        if (!MayExport())
+        {
+            return;
+        }
+
         await _files.CopyTextAsync(DocumentText.Compose(_definition, _draft));
         SetStatus(L["Copied"]);
     }
@@ -721,8 +815,8 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     {
         if (_draft.FindSection(section.Id) is { } draftSection)
         {
+            // The AI notes and the review state stay: editing an AI text does not make it reviewed.
             draftSection.Text = section.Text;
-            draftSection.DraftingNotes.Clear(); // the lawyer's own text now
         }
 
         Recheck();
@@ -774,6 +868,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         {
             var section = _draft.FindSection(vm.Id);
             vm.IsOverridden = section?.Overridden ?? false;
+            vm.SetReviewState(section?.AiWritten ?? false, section?.Reviewed ?? false);
             if (vm.IsLocked || overwriteNarrative)
             {
                 vm.SetFromModel(section?.Text ?? string.Empty);
@@ -828,6 +923,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         HasIssues = IssueFindings.Count > 0;
         UpdateStepsAndFields();
         UpdateSubstanceIssues();
+        UpdateExportBlockers();
 
         UpdateReviewHints();
         SchedulePreview(TimeSpan.FromMilliseconds(400));

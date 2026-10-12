@@ -59,6 +59,10 @@
     {
         <div class="review" dir="@(Vm.IsRightToLeft ? "rtl" : "ltr")" lang="@Vm.L.Language">@Section.ReviewText</div>
     }
+    @if (Section.IsAiWritten)
+    {
+        <label class="check small reviewed"><input type="checkbox" @bind="Section.IsReviewed" /> @Vm.L["ReviewedCheck"]</label>
+    }
 </div>
 
 @code {

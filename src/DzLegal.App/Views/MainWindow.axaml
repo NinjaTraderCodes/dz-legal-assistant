@@ -562,6 +562,15 @@
             </StackPanel>
           </Grid>
 
+          <!-- Shown after a refused export: what the lawyer must still do before the document leaves the app. -->
+          <Border Name="ExportBlockersPanel" DockPanel.Dock="Top" Margin="0,0,0,6" CornerRadius="6" Padding="10,8"
+                  Background="{DynamicResource WarningSoftBrush}" IsVisible="{Binding IsExportBlockedShown}">
+            <StackPanel Spacing="4">
+              <TextBlock FontSize="13" FontWeight="SemiBold" Text="{Binding L[ExportBlocked]}" />
+              <TextBlock FontSize="12" TextWrapping="Wrap" Text="{Binding ExportBlockers}" />
+            </StackPanel>
+          </Border>
+
           <ContentControl Name="GenerationActivityView" DockPanel.Dock="Top" Margin="0,0,0,6"
                           Content="{Binding GenerationActivity}" ContentTemplate="{StaticResource ModelActivityTemplate}" />
 
@@ -613,6 +622,8 @@
                         </Border>
                         <TextBox Classes="document" Text="{Binding Text}" IsReadOnly="{Binding IsReadOnly}" PlaceholderText="{Binding Watermark}" MinHeight="34" />
                         <TextBlock Classes="review" Text="{Binding ReviewText}" IsVisible="{Binding HasReview}" />
+                        <CheckBox Name="ReviewedCheck" FontSize="12" IsChecked="{Binding IsReviewed}" IsVisible="{Binding IsAiWritten}"
+                                  Content="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[ReviewedCheck]}" />
                       </StackPanel>
                     </DataTemplate>
                   </ItemsControl.ItemTemplate>
@@ -683,6 +694,23 @@
                              IsVisible="{Binding WarningSummary, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
                   <TextBlock Classes="muted" TextWrapping="Wrap" Text="{Binding L[SummaryDisclaimer]}" />
                   <TextBlock Classes="muted" FontStyle="Italic" TextWrapping="Wrap" Text="{Binding L[Unverified]}" />
+                </StackPanel>
+              </Border>
+
+              <!-- Legal points on the substance (not only the form), as on the web -->
+              <Border Name="SubstancePanel" Classes="card" Padding="12" IsVisible="{Binding HasSubstanceIssues}">
+                <StackPanel Spacing="6">
+                  <TextBlock FontSize="14" FontWeight="SemiBold" Text="{Binding L[SubstanceHeader]}" />
+                  <ItemsControl ItemsSource="{Binding SubstanceIssues}">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate>
+                        <Grid ColumnDefinitions="Auto,*" Margin="0,0,0,6">
+                          <ic:SymbolIcon Symbol="Warning" FontSize="15" Margin="0,1,6,0" VerticalAlignment="Top" Foreground="{DynamicResource WarningBrush}" />
+                          <TextBlock Grid.Column="1" FontSize="12" TextWrapping="Wrap" Text="{Binding}" />
+                        </Grid>
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
                 </StackPanel>
               </Border>
 

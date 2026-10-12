@@ -235,6 +235,14 @@
                 <button type="button" class="small" @onclick="() => Run(Vm.CopyTextCommand)"><Icon Name="copy" Size="16" /> @L["CopyText"]</button>
             </div>
 
+            @if (Vm.IsExportBlockedShown)
+            {
+                <div class="notice export-blockers" role="alert">
+                    <strong>@L["ExportBlocked"]</strong>
+                    <div class="small" style="white-space: pre-line">@Vm.ExportBlockers</div>
+                </div>
+            }
+
             <ModelActivity Model="Vm.GenerationActivity" LiveLabel="@L["ActivityLive"]" />
 
             @if (Vm.SelectedDraftTab == 0)

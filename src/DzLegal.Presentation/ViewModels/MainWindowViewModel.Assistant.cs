@@ -131,6 +131,7 @@ public sealed partial class MainWindowViewModel
     private void WireSection(SectionViewModel section)
     {
         section.RedraftHandler = RedraftSectionAsync;
+        section.ReviewChanged = OnSectionReviewChanged;
         section.AssistantHandler = s =>
         {
             AssistantSection = s;
@@ -236,6 +237,7 @@ public sealed partial class MainWindowViewModel
 
         section.PushHistory();
         section.Text = proposal.Text; // goes through OnSectionEdited: draft updated, re-checked
+        MarkModelWritten(section);
         AssistantThread.Add(new AssistantMessage(L["ProposalAccepted"], FromLawyer: false));
         ClearProposal();
     }
@@ -323,6 +325,21 @@ public sealed partial class MainWindowViewModel
 
         section.SetFromModel(drafted.Text);
         _modelText[section.Id] = drafted.Text;
+        MarkModelWritten(section);
+    }
+
+    /// <summary>The section's text now comes from an AI model (not in template mode): it needs the lawyer's review again.</summary>
+    private void MarkModelWritten(SectionViewModel section)
+    {
+        var byModel = SelectedProvider?.Key != StubProviderKey && section.Text.Trim().Length > 0;
+        if (_draft.FindSection(section.Id) is { } target)
+        {
+            target.AiWritten = byModel || target.AiWritten;
+            target.Reviewed = false;
+        }
+
+        section.SetReviewState(byModel || section.IsAiWritten, reviewed: false);
+        UpdateExportBlockers();
     }
 
     /// <summary>Narrative sections the lawyer wrote or changed: redrafting keeps them.</summary>

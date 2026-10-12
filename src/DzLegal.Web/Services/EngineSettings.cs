@@ -53,7 +53,7 @@ public sealed class EngineSettings
 
     public double Temperature { get; init; } = 0.2;
 
-    public int MaxTokens { get; init; } = 1000;
+    public int MaxTokens { get; init; } = 1500;
 
     public string? GoogleApiKey { get; init; }
 

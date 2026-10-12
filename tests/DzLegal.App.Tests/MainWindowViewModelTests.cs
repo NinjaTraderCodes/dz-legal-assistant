@@ -209,6 +209,52 @@ public class MainWindowViewModelTests
     }
 
     [Fact]
+    public async Task AReviewIsWithdrawnWhenTheTextOrTheCaseChangesAfterIt()
+    {
+        // Audit A-01: an invented amount added after the review, or facts changed, used to leave the section reviewed.
+        var files = new FakeFiles();
+        var vm = Vm.Create(files, recorder: new RecordingProvider(r => "حيث إن " + r.SourceText)).Filled();
+        await vm.GenerateCommand.ExecuteAsync(null);
+        var grounds = vm.Sections.Single(s => s.Id == "grounds");
+
+        grounds.IsReviewed = true;
+        grounds.Text += " بمبلغ 999999999 دج.";
+        Assert.False(grounds.IsReviewed);
+        Assert.Contains(vm.L["NoteChangedAfterReview"], grounds.ReviewText, StringComparison.Ordinal);
+        await vm.ExportPdfCommand.ExecuteAsync(null);
+        await vm.ExportWordCommand.ExecuteAsync(null);
+        await vm.CopyTextCommand.ExecuteAsync(null);
+        Assert.Empty(files.SavedByKind);
+        Assert.Null(files.Clipboard);
+
+        grounds.IsReviewed = true;
+        vm.Field("notes.facts").Value = "حيث إن المدعى عليه سدد الدين كاملا.";
+        Assert.False(grounds.IsReviewed);
+        await vm.CopyTextCommand.ExecuteAsync(null);
+        Assert.Null(files.Clipboard);
+
+        // Fields the review doesn't rest on (the date of the petition) keep it.
+        grounds.IsReviewed = true;
+        vm.Field("document.place").Value = "وهران";
+        Assert.True(grounds.IsReviewed);
+    }
+
+    [Fact]
+    public async Task AFailedAnswerNeverBecomesTheLawyersText()
+    {
+        // Audit A-02: the visible partial answer used to become ordinary text on the next keystroke.
+        var vm = Vm.Create(extra: new ProviderOption("fails-mid-stream", _ => "fails", () => new FailsMidStreamProvider())).Filled();
+        vm.Field("notes.grounds").Value = "المادة 106 من القانون المدني.";
+        await vm.GenerateCommand.ExecuteAsync(null);
+
+        var grounds = vm.Sections.Single(s => s.Id == "grounds");
+        Assert.DoesNotContain("999999999", grounds.Text, StringComparison.Ordinal);
+        grounds.Text += " ";
+        Assert.DoesNotContain("999999999", grounds.Text, StringComparison.Ordinal);
+        Assert.False(grounds.IsAiWritten);
+    }
+
+    [Fact]
     public async Task TheReviewStateIsSavedWithTheDraft()
     {
         var files = new FakeFiles();

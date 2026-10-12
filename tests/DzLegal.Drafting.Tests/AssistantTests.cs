@@ -119,6 +119,16 @@ public class OllamaStreamingTests
         Assert.Equal(["حيث ", "إن"], pieces);
     }
 
+    [Theory]
+    [InlineData("""{"message":{"role":"assistant","content":"حيث إن"},"done":true,"done_reason":"length"}""")]
+    [InlineData("""{"message":{"role":"assistant","content":"حيث إن"},"done":false}""")] // the stream ends without its final record
+    public async Task AnAnswerCutOffOrUnfinishedIsNotTakenAsComplete(string ndjson)
+    {
+        using var provider = new OllamaModelProvider(new OllamaOptions(), new Handler(_ => new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(ndjson, Encoding.UTF8) }));
+
+        await Assert.ThrowsAsync<ModelProviderException>(() => provider.GenerateAsync(new ModelRequest("grounds", "s", "u", "n"), CancellationToken.None));
+    }
+
     [Fact]
     public async Task ListsInstalledModels()
     {

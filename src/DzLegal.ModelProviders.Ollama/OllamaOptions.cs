@@ -23,7 +23,7 @@ public sealed record OllamaOptions
     public string KeepAlive { get; init; } = "60m";
 
     /// <summary>Upper bound on generated tokens per section, so a small model cannot ramble or loop.</summary>
-    public int MaxTokens { get; init; } = 1000;
+    public int MaxTokens { get; init; } = 1500;
 
     public double RepeatPenalty { get; init; } = 1.1;
 

@@ -72,9 +72,17 @@ public sealed class GoogleAiModelProvider : IModelProvider, IDisposable
             }
         }
 
-        if (!answered && finish == "MAX_TOKENS")
+        // A cut-off or blocked answer is not an answer: plausible but unfinished legal text must never pass as complete.
+        if (finish is "MAX_TOKENS")
         {
-            throw new ModelProviderException($"{Name} reached its answer length limit before writing anything (it was thinking).");
+            throw new ModelProviderException(answered
+                ? $"{Name} stopped at its answer length limit: the answer was cut off."
+                : $"{Name} reached its answer length limit before writing anything (it was thinking).");
+        }
+
+        if (finish is "SAFETY" or "RECITATION" or "BLOCKLIST" or "PROHIBITED_CONTENT")
+        {
+            throw new ModelProviderException($"{Name} stopped its answer ({finish}).");
         }
     }
 

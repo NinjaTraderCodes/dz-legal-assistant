@@ -534,10 +534,12 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         }
         catch (OperationCanceledException)
         {
+            DiscardPartialAnswer();
             SetStatus(L["Cancelled"]);
         }
         catch (Exception ex) when (IsModelOrRenderFailure(ex))
         {
+            DiscardPartialAnswer();
             SetStatus(ErrorText(ex), isError: true);
         }
         finally
@@ -545,6 +547,18 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
             GenerationActivity.Stop();
             MarkWriting(null);
             (provider as IDisposable)?.Dispose();
+        }
+    }
+
+    /// <summary>
+    /// A cancelled or failed answer was only a preview: the sections go back to their last completed text, so a
+    /// keystroke can never turn an unchecked, unfinished answer into the lawyer's own text (audit A-02).
+    /// </summary>
+    private void DiscardPartialAnswer()
+    {
+        foreach (var section in Sections.Where(s => s.IsEditable))
+        {
+            section.SetFromModel(_draft.FindSection(section.Id)?.Text ?? string.Empty);
         }
     }
 
@@ -656,6 +670,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     private void New()
     {
         LoadInputs(CaseInputs.CreateDefaults(_definition, _today()));
+        _reviewedCase = null;
         _draft = new DraftDocument { DocumentTypeId = _definition.Id, DefinitionVersion = _definition.Version };
         _generatedSnapshot = null;
         _modelText.Clear();
@@ -734,6 +749,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         }
 
         LoadInputs(inputs);
+        _reviewedCase = null;
         _draft = _templates.Refresh(_definition, loaded, inputs);
         LoadGroundsState(loaded);
         _generatedSnapshot = null;
@@ -824,6 +840,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         _draft = _templates.Refresh(_definition, _draft, CurrentInputs());
         SyncSections(overwriteNarrative: false);
         UpdateAnalysisStaleness();
+        WithdrawReviewsIfCaseChanged();
         Recheck();
     }
 
@@ -831,11 +848,62 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     {
         if (_draft.FindSection(section.Id) is { } draftSection)
         {
-            // The AI notes and the review state stay: editing an AI text does not make it reviewed.
+            // The AI notes stay; a review given to the previous text no longer counts.
             draftSection.Text = section.Text;
         }
 
+        WithdrawReview(section);
         Recheck();
+    }
+
+    /// <summary>The parts of the case a review rests on: the parties, the notes, the documents and the ticked articles.</summary>
+    private string? _reviewedCase;
+
+    private string CaseFingerprint() =>
+        string.Join('\u0001', CurrentInputs()
+            .Where(kv => kv.Key.StartsWith("notes.", StringComparison.Ordinal) || kv.Key.StartsWith("plaintiff.", StringComparison.Ordinal)
+                || kv.Key.StartsWith("defendant.", StringComparison.Ordinal) || kv.Key is "documents.list" or "claim.subject")
+            .OrderBy(kv => kv.Key, StringComparer.Ordinal)
+            .Select(kv => kv.Key + "=" + kv.Value))
+        + '\u0002' + string.Join(',', _selectedArticles);
+
+    /// <summary>
+    /// A review covers the text and the case it was given for: when the parties, notes, documents or ticked articles
+    /// change, every reviewed AI section must be read again (a corrected amount in the facts must reach the grounds).
+    /// </summary>
+    private void WithdrawReviewsIfCaseChanged()
+    {
+        var now = CaseFingerprint();
+        if (_reviewedCase is not null && _reviewedCase != now)
+        {
+            foreach (var section in Sections)
+            {
+                WithdrawReview(section);
+            }
+        }
+
+        _reviewedCase = now;
+    }
+
+    private void WithdrawReview(SectionViewModel section)
+    {
+        if (!section.IsAiWritten || !section.IsReviewed)
+        {
+            return;
+        }
+
+        section.SetReviewState(aiWritten: true, reviewed: false);
+        if (_draft.FindSection(section.Id) is { } draftSection)
+        {
+            draftSection.Reviewed = false;
+            if (!draftSection.DraftingNotes.Contains(DraftingNoteCodes.ChangedAfterReview))
+            {
+                draftSection.DraftingNotes.Add(DraftingNoteCodes.ChangedAfterReview);
+            }
+        }
+
+        UpdateReviewHints();
+        UpdateExportBlockers();
     }
 
     private void UpdateVisibility()
@@ -916,6 +984,9 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
 
     private void Recheck()
     {
+        // After a new or opened case, the first state seen is the one any stored review was given for.
+        _reviewedCase ??= CaseFingerprint();
+
         Report = ComplianceChecker.Check(_definition, _draft);
         var ordered = Report.Findings
             .OrderBy(f => f.Status switch
@@ -1026,6 +1097,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
                         DraftingNoteCodes.FellBackToNotes => L["NoteFellBack"],
                         DraftingNoteCodes.RemovedWrongLaw => L["NoteRemovedWrongLaw"],
                         DraftingNoteCodes.ArgumentLeftForLawyer => L["NoteArgumentLeft"],
+                        DraftingNoteCodes.ChangedAfterReview => L["NoteChangedAfterReview"],
                         _ => L["NoteRemovedCopiedExample"],
                     });
                 }

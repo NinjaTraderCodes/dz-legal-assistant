@@ -273,6 +273,8 @@ public sealed partial class MainWindowViewModel
         }
 
         IModelProvider? provider = null;
+        var previous = section.Text;
+        var completed = false;
         try
         {
             provider = SelectedProvider.Create();
@@ -280,7 +282,6 @@ public sealed partial class MainWindowViewModel
             GenerationActivity.Start([section.Title]);
             GenerationActivity.BeginStep(0);
             MarkWriting(section.Id);
-            var previous = section.Text;
             var drafted = await new DraftingService(provider).DraftSectionAsync(
                 _definition,
                 section.Id,
@@ -299,9 +300,14 @@ public sealed partial class MainWindowViewModel
             }
 
             ApplyModelSection(section, drafted);
+            completed = true;
             Recheck();
             SetStatus(L.Format("Generated", provider.Name));
             NoteAnswer(provider);
+        }
+        catch (OperationCanceledException)
+        {
+            SetStatus(L["Cancelled"]);
         }
         catch (Exception ex) when (IsModelOrRenderFailure(ex))
         {
@@ -309,6 +315,11 @@ public sealed partial class MainWindowViewModel
         }
         finally
         {
+            if (!completed)
+            {
+                section.SetFromModel(previous); // the unfinished answer was a preview only
+            }
+
             GenerationActivity.Stop();
             MarkWriting(null);
             (provider as IDisposable)?.Dispose();

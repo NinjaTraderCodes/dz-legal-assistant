@@ -106,6 +106,17 @@ public class GoogleAiProviderTests
     }
 
     [Fact]
+    public async Task AnAnswerCutOffAfterSomeTextIsNotTakenAsComplete()
+    {
+        // Audit A-03: plausible but unfinished legal text used to pass as a full answer.
+        var handler = new FakeHandler(_ => Sse("""{"candidates":[{"content":{"parts":[{"text":"حيث إن المدعى عليه"}]},"finishReason":"MAX_TOKENS"}]}"""));
+        using var provider = new GoogleAiModelProvider(new GoogleAiOptions { ApiKey = "k" }, handler);
+
+        var ex = await Assert.ThrowsAsync<ModelProviderException>(() => provider.GenerateAsync(Request, CancellationToken.None));
+        Assert.Contains("cut off", ex.Message, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public async Task AnAnswerThatGoesSilentIsReportedAndCanBeHandedOver()
     {
         var handler = new FakeHandler(_ => new HttpResponseMessage(HttpStatusCode.OK) { Content = new StreamContent(new StallingStream()) });
@@ -183,6 +194,17 @@ public class GoogleAiProviderTests
 public class OpenAiCompatibleProviderTests
 {
     private static readonly ModelRequest Request = new("requests", "system rules", "user prompt", "notes");
+
+    [Fact]
+    public async Task AnAnswerCutOffAtTheLengthLimitIsNotTakenAsComplete()
+    {
+        var handler = new FakeHandler(_ => GoogleAiProviderTests.Sse("""{"choices":[{"delta":{"content":"حيث إن"},"finish_reason":"length"}]}"""));
+        using var provider = new OpenAiCompatibleModelProvider(
+            new OpenAiCompatibleOptions { Label = "OpenRouter", Endpoint = new Uri("https://openrouter.ai/api/v1/"), ApiKey = "k", Model = "google/gemma-3-4b-it" }, handler);
+
+        var ex = await Assert.ThrowsAsync<ModelProviderException>(() => provider.GenerateAsync(new ModelRequest("grounds", "s", "u", "n"), CancellationToken.None));
+        Assert.Contains("cut off", ex.Message, StringComparison.Ordinal);
+    }
 
     [Fact]
     public async Task StreamsChatCompletionsWithABearerKey()

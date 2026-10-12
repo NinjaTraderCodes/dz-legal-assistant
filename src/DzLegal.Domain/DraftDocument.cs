@@ -119,4 +119,7 @@ public static class DraftingNoteCodes
 
     /// <summary>Skeleton-first grounds: an argument the model wrote was unusable and is left as «(...)» for the lawyer.</summary>
     public const string ArgumentLeftForLawyer = "argumentLeftForLawyer";
+
+    /// <summary>The section or the case it rests on changed after the lawyer reviewed it: the review was withdrawn.</summary>
+    public const string ChangedAfterReview = "changedAfterReview";
 }

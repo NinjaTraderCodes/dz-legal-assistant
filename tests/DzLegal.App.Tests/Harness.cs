@@ -102,6 +102,22 @@ internal sealed class FailingProvider : IModelProvider
         throw new ModelProviderException("The local model server is not reachable at http://127.0.0.1:11434/.");
 }
 
+/// <summary>Streams the start of an answer, then fails, as a dropped connection or an engine error does.</summary>
+internal sealed class FailsMidStreamProvider : IModelProvider
+{
+    public string Name => "fails-mid-stream";
+
+    public Task<string> GenerateAsync(ModelRequest request, CancellationToken cancellationToken) =>
+        throw new ModelProviderException("connection lost");
+
+    public async IAsyncEnumerable<string> StreamAsync(ModelRequest request, [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken cancellationToken)
+    {
+        yield return "حيث إن المدعى عليه مدين بمبلغ 999999999 دج";
+        await Task.Yield();
+        throw new ModelProviderException("connection lost");
+    }
+}
+
 internal static class Vm
 {
     public static readonly string EvaluationsFolder = Path.Combine(Path.GetTempPath(), "dzlegal-app-tests-" + Guid.NewGuid().ToString("N"));

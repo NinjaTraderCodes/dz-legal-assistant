@@ -67,6 +67,11 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
             await EnsureSuccessAsync(response, cancellationToken);
             var reply = await response.Content.ReadFromJsonAsync<ChatResponse>(cancellationToken);
             Report(request, reply, clock.Elapsed);
+            if (reply is { Done: false } || reply?.DoneReason == "length")
+            {
+                throw new ModelProviderException($"{Name} stopped at its answer length limit: the answer was cut off.");
+            }
+
             return reply?.Message?.Content
                 ?? throw new ModelProviderException("The local model returned an empty answer.");
         }
@@ -119,9 +124,17 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
                 if (chunk?.Done == true)
                 {
                     Report(request, chunk, firstWord ?? clock.Elapsed);
+                    if (chunk.DoneReason == "length")
+                    {
+                        throw new ModelProviderException($"{Name} stopped at its answer length limit: the answer was cut off.");
+                    }
+
                     yield break;
                 }
             }
+
+            // The stream ended without the server's final record: the answer is incomplete.
+            throw new ModelProviderException($"{Name} stopped before the answer was complete.");
         }
     }
 
@@ -234,6 +247,7 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
     private sealed record ChatResponse(
         [property: JsonPropertyName("message")] ChatMessage? Message,
         [property: JsonPropertyName("done")] bool Done = false,
+        [property: JsonPropertyName("done_reason")] string? DoneReason = null,
         [property: JsonPropertyName("load_duration")] long LoadDuration = 0,
         [property: JsonPropertyName("prompt_eval_count")] int PromptEvalCount = 0,
         [property: JsonPropertyName("prompt_eval_duration")] long PromptEvalDuration = 0,

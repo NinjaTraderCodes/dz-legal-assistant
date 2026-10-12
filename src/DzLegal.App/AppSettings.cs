@@ -64,7 +64,7 @@ public sealed record OllamaSettings
     public string Model { get; init; } = "gemma3:4b";
     public double TimeoutMinutes { get; init; } = 10;
     public double Temperature { get; init; } = 0.2;
-    public int MaxTokens { get; init; } = 1000;
+    public int MaxTokens { get; init; } = 1500;
     public double RepeatPenalty { get; init; } = 1.1;
 
     /// <summary>Set to false for reasoning models such as qwen3; leave null otherwise.</summary>

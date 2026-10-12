@@ -13,7 +13,7 @@ public sealed record GoogleAiOptions
 
     public double Temperature { get; init; } = 0.2;
 
-    public int MaxTokens { get; init; } = 1000;
+    public int MaxTokens { get; init; } = 1500;
 
     /// <summary>
     /// Gemma models on the Gemini API refuse a separate system instruction, so the shared drafting rules are sent at the
@@ -56,7 +56,7 @@ public sealed record OpenAiCompatibleOptions
 
     public double Temperature { get; init; } = 0.2;
 
-    public int MaxTokens { get; init; } = 1000;
+    public int MaxTokens { get; init; } = 1500;
 
     public bool MergeSystemPrompt { get; init; }
 

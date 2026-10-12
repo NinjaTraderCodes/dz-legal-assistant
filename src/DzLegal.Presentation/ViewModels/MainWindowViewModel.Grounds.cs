@@ -358,6 +358,7 @@ public sealed partial class MainWindowViewModel
         }
 
         RefreshSelectedGrounds();
+        WithdrawReviewsIfCaseChanged();
         UpdateReviewHints();
         UpdateSubstanceIssues();
     }

@@ -354,11 +354,12 @@ public sealed class GroundsStabilityTests
             Run(null, [], [], error: "not reachable"),
         };
         var s = Assert.Single(GroundsEvaluator.Stability(runs));
-        Assert.Equal(2.0 / 3, s.ClaimAgreement, 3);
+        Assert.Equal(3, s.Runs);
         Assert.Equal(1, s.Failures);
-        // Pairwise Jaccard: {450,107} vs {450} = 1/2, vs {} = 0, {450} vs {} = 0.
-        Assert.Equal(1.0 / 6, s.ArticleAgreement, 3);
-        Assert.Equal(1.0 / 3, s.ModelRecall, 3); // mean of the per-run shares: 2/2, 0, 0
+        // The failed run is left out: both answered runs gave the loan claim; Jaccard {450,107} vs {450} = 1/2.
+        Assert.Equal(1, s.ClaimAgreement);
+        Assert.Equal(0.5, s.ArticleAgreement, 3);
+        Assert.Equal(0.5, s.ModelRecall, 3); // mean of the per-run shares: 2/2, 0
     }
 
     [Fact]
@@ -409,5 +410,30 @@ public sealed class GroundsBatchTests
         Assert.True(report.StoppedEarly);
         Assert.Contains("stopped: the engine failed 3 cases in a row", log.ToString(), StringComparison.Ordinal);
         Assert.Equal(3, engine.Calls);
+    }
+
+    [Fact]
+    public async Task AnEngineThatAlwaysFailsReadsNotApplicableNeverRightOrStable()
+    {
+        var knowledge = LegalKnowledgeLoader.Load(Path.Combine(AppContext.BaseDirectory, "data", "law"));
+        var cases = GroundsEvaluator.LoadCases(Path.Combine(AppContext.BaseDirectory, "grounds-cases"));
+        var outOfScope = cases.Where(c => c.Expect.Length == 0).Take(2).Concat(cases.Where(c => c.Expect.Length > 0).Take(2)).ToList();
+
+        var runs = new[]
+        {
+            await GroundsEvaluator.EvaluateAsync(knowledge, outOfScope, new Down(), TextWriter.Null),
+            await GroundsEvaluator.EvaluateAsync(knowledge, outOfScope, new Down(), TextWriter.Null),
+        };
+
+        Assert.Equal(0, runs[0].ClaimExactRate); // a failure is not a correct "nothing applies"
+        Assert.True(double.IsNaN(runs[0].OutOfScopeAbstention));
+        Assert.True(double.IsNaN(runs[0].FalseAbstention));
+        Assert.All(GroundsEvaluator.Stability(runs), s =>
+        {
+            Assert.True(double.IsNaN(s.ClaimAgreement));
+            Assert.Equal("n/a", s.MostCommonClaim);
+            Assert.Equal(2, s.Failures);
+        });
+        Assert.Contains("| n/a | n/a |", GroundsEvaluator.StabilityTable("down", GroundsEvaluator.Stability(runs)), StringComparison.Ordinal);
     }
 }

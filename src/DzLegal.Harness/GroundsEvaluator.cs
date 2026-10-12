@@ -42,10 +42,14 @@ public sealed record GroundsCaseResult(GroundsCase Case, GroundsAnalysis Analysi
 
     public int ModelExpectedFound => Case.ExpectArticles.Count(ModelChosen.Contains);
 
-    public bool ClaimFound => Case.Expect.Length == 0 ? Analysis.ClaimIds.Count == 0 : Analysis.ClaimIds.Contains(Case.Expect);
+    /// <summary>A failed run never counts as right, not even as a correct "nothing applies".</summary>
+    public bool ClaimFound => Error is null && (Case.Expect.Length == 0 ? Analysis.ClaimIds.Count == 0 : Analysis.ClaimIds.Contains(Case.Expect));
 
     /// <summary>The expected claim is the first one recognised (or nothing is recognised when nothing applies).</summary>
-    public bool ClaimExact => Case.Expect.Length == 0 ? Analysis.ClaimIds.Count == 0 : Analysis.ClaimIds.FirstOrDefault() == Case.Expect;
+    public bool ClaimExact => Error is null && (Case.Expect.Length == 0 ? Analysis.ClaimIds.Count == 0 : Analysis.ClaimIds.FirstOrDefault() == Case.Expect);
+
+    /// <summary>A case outside the catalog that the analysis rightly declined: no claim type and no article proposed.</summary>
+    public bool Abstained => Error is null && Analysis.ClaimIds.Count == 0 && Selected.Count == 0;
 
     /// <summary>Proposed articles outside the expected claim's catalog list (noise). For "nothing applies" cases, every proposal.</summary>
     public IReadOnlyList<string> OffClaim => Selected.Where(a => !Acceptable.Contains(a)).ToList();
@@ -59,6 +63,17 @@ public sealed record GroundsCaseResult(GroundsCase Case, GroundsAnalysis Analysi
 
 public sealed record GroundsReport(string Model, IReadOnlyList<GroundsCaseResult> Results)
 {
+    private IReadOnlyList<GroundsCaseResult> Answered => Results.Where(r => r.Error is null).ToList();
+
+    /// <summary>Share of the cases outside the catalog («nothing applies») where the analysis proposed nothing at all.</summary>
+    public double OutOfScopeAbstention => Rate(Answered.Where(r => r.Case.Expect.Length == 0).ToList(), r => r.Abstained);
+
+    /// <summary>Share of the cases inside the catalog where the analysis wrongly recognised no claim type.</summary>
+    public double FalseAbstention => Rate(Answered.Where(r => r.Case.Expect.Length > 0).ToList(), r => r.Analysis.ClaimIds.Count == 0);
+
+    private static double Rate(List<GroundsCaseResult> cases, Func<GroundsCaseResult, bool> predicate) =>
+        cases.Count == 0 ? double.NaN : (double)cases.Count(predicate) / cases.Count;
+
     /// <summary>Cases in the batch; more than <see cref="Results"/> when the run stopped early.</summary>
     public int Planned { get; init; }
 
@@ -214,18 +229,27 @@ public static class GroundsEvaluator
             .GroupBy(r => r.Case.Name)
             .Select(g =>
             {
-                var results = g.ToList();
+                var all = g.ToList();
+                var failures = all.Count(r => r.Error is not null);
+
+                // Failed runs are left out: an engine that always fails must read "n/a", not perfectly stable.
+                var results = all.Where(r => r.Error is null).ToList();
+                if (results.Count == 0)
+                {
+                    return new CaseStability(g.Key, all.Count, double.NaN, "n/a", double.NaN, double.NaN, failures, double.NaN, double.NaN);
+                }
+
                 var claims = results.Select(r => r.Analysis.ClaimIds.FirstOrDefault() ?? "—").ToList();
                 var top = claims.GroupBy(x => x).OrderByDescending(x => x.Count()).First();
                 var expected = results[0].Case.ExpectArticles.Count;
                 return new CaseStability(
                     g.Key,
-                    results.Count,
+                    all.Count,
                     (double)top.Count() / results.Count,
                     top.Key,
                     MeanJaccard(results.Select(r => r.Selected).ToList()),
                     MeanJaccard(results.Select(r => r.ModelChosen).ToList()),
-                    results.Count(r => r.Error is not null),
+                    failures,
                     (double)results.Count(r => r.ClaimExact) / results.Count,
                     expected == 0 ? 0 : results.Average(r => (double)r.ModelExpectedFound / expected));
             })
@@ -263,15 +287,24 @@ public static class GroundsEvaluator
         sb.AppendLine("|---|---|---:|---:|---:|---:|---:|---:|");
         foreach (var s in stability)
         {
-            sb.AppendLine(Ci, $"| {s.Case} | {s.MostCommonClaim} | {s.ClaimAgreement:P0} | {s.ClaimExactRate:P0} | {s.ArticleAgreement:P0} | {s.ModelArticleAgreement:P0} | {s.ModelRecall:P0} | {s.Failures} |");
+            sb.AppendLine(Ci, $"| {s.Case} | {s.MostCommonClaim} | {P(s.ClaimAgreement)} | {P(s.ClaimExactRate)} | {P(s.ArticleAgreement)} | {P(s.ModelArticleAgreement)} | {P(s.ModelRecall)} | {s.Failures} |");
         }
 
         if (stability.Count > 0)
         {
-            sb.AppendLine(Ci, $"| **all** | | {stability.Average(s => s.ClaimAgreement):P0} | {stability.Average(s => s.ClaimExactRate):P0} | {stability.Average(s => s.ArticleAgreement):P0} | {stability.Average(s => s.ModelArticleAgreement):P0} | {stability.Average(s => s.ModelRecall):P0} | {stability.Sum(s => s.Failures)} |");
+            sb.AppendLine(Ci, $"| **all** | | {P(Mean(stability, s => s.ClaimAgreement))} | {P(Mean(stability, s => s.ClaimExactRate))} | {P(Mean(stability, s => s.ArticleAgreement))} | {P(Mean(stability, s => s.ModelArticleAgreement))} | {P(Mean(stability, s => s.ModelRecall))} | {stability.Sum(s => s.Failures)} |");
         }
 
         return sb.AppendLine().ToString();
+    }
+
+    /// <summary>A percentage, or "n/a" when nothing was measured (every run failed, or no case of that kind).</summary>
+    public static string P(double value) => double.IsNaN(value) ? "n/a" : value.ToString("P0", Ci);
+
+    private static double Mean(IReadOnlyList<CaseStability> stability, Func<CaseStability, double> metric)
+    {
+        var measured = stability.Select(metric).Where(v => !double.IsNaN(v)).ToList();
+        return measured.Count == 0 ? double.NaN : measured.Average();
     }
 
     private static string CaseReport(GroundsCaseResult r, List<(string Step, string Text)> trace)
@@ -309,9 +342,9 @@ public static class GroundsEvaluator
             sb.AppendLine(Ci, $"**Stopped early after {report.Results.Count} of {report.Planned} cases**: the engine failed several cases in a row. The figures below cover only those cases.").AppendLine();
         }
 
-        sb.AppendLine("| claim exact | claim found | core recall | model recall | off-claim share | articles / case | empty (should not be) | failures | seconds / case |");
-        sb.AppendLine("|---|---|---|---|---|---|---|---|---|");
-        sb.AppendLine(Ci, $"| {report.ClaimExactRate:P0} | {report.ClaimAccuracy:P0} | {report.ArticleRecall:P0} | {report.ModelRecall:P0} | {report.OffClaimShare:P0} | {report.ArticlesPerCase:F1} | {report.EmptyWhenSomethingExpected} | {report.Failures} | {report.AverageTime.TotalSeconds:F0} |").AppendLine();
+        sb.AppendLine("| claim exact | claim found | core recall | model recall | off-claim share | out-of-scope abstained | false abstention | articles / case | empty (should not be) | failures | seconds / case |");
+        sb.AppendLine("|---|---|---|---|---|---|---|---|---|---|---|");
+        sb.AppendLine(Ci, $"| {report.ClaimExactRate:P0} | {report.ClaimAccuracy:P0} | {report.ArticleRecall:P0} | {report.ModelRecall:P0} | {report.OffClaimShare:P0} | {P(report.OutOfScopeAbstention)} | {P(report.FalseAbstention)} | {report.ArticlesPerCase:F1} | {report.EmptyWhenSomethingExpected} | {report.Failures} | {report.AverageTime.TotalSeconds:F0} |").AppendLine();
         if (knowledge.Library.Codes.Count == 0)
         {
             sb.AppendLine("No official text imported: only catalog articles could be proposed.").AppendLine();
@@ -335,7 +368,7 @@ public static class GroundsEvaluator
         ArgumentNullException.ThrowIfNull(knowledge);
         ArgumentNullException.ThrowIfNull(output);
         var ci = System.Globalization.CultureInfo.InvariantCulture;
-        output.WriteLine(string.Format(ci, "{0}: claim exact {1:P0} · claim found {2:P0} · core recall {3:P0} · model recall {8:P0} · off-claim {4:P0} · {5:F1} articles/case · {6} empty · {9} failed · {7:F0}s per case", report.Model, report.ClaimExactRate, report.ClaimAccuracy, report.ArticleRecall, report.OffClaimShare, report.ArticlesPerCase, report.EmptyWhenSomethingExpected, report.AverageTime.TotalSeconds, report.ModelRecall, report.Failures));
+        output.WriteLine(string.Format(ci, "{0}: claim exact {1:P0} · claim found {2:P0} · core recall {3:P0} · model recall {8:P0} · off-claim {4:P0} · out-of-scope abstained {10} · false abstention {11} · {5:F1} articles/case · {6} empty · {9} failed · {7:F0}s per case", report.Model, report.ClaimExactRate, report.ClaimAccuracy, report.ArticleRecall, report.OffClaimShare, report.ArticlesPerCase, report.EmptyWhenSomethingExpected, report.AverageTime.TotalSeconds, report.ModelRecall, report.Failures, P(report.OutOfScopeAbstention), P(report.FalseAbstention)));
         if (report.StoppedEarly)
         {
             output.WriteLine(string.Format(ci, "  Stopped early after {0} of {1} cases.", report.Results.Count, report.Planned));

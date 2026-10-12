@@ -247,6 +247,24 @@ public class DraftingServiceTests
     }
 
     [Fact]
+    public async Task WithALoadedTextTheGroundsAreSkeletonFirstAndClassicOnRequest()
+    {
+        LegalText[] texts = [new("106", "القانون المدني", "العقد شريعة المتعاقدين، فلا يجوز نقضه، ولا تعديله الا باتفاق الطرفين.")];
+        var provider = new RecordingProvider(r => r.SectionId == GroundsSkeleton.RequestId ? "[1] وحيث إن المادة 107 تؤكد ذلك، فإن الطلب مؤسس." : r.SourceText);
+
+        var draft = await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs(), new DraftOptions { LegalTexts = texts });
+
+        var grounds = draft.FindSection("grounds")!;
+        Assert.Equal("حيث إن المادة 106 من القانون المدني تنص على أن «العقد شريعة المتعاقدين، فلا يجوز نقضه، ولا تعديله الا باتفاق الطرفين»، وحيث إن (...).", grounds.Text);
+        Assert.Equal([DraftingNoteCodes.Retried, DraftingNoteCodes.ArgumentLeftForLawyer], grounds.DraftingNotes);
+        Assert.DoesNotContain(provider.Requests, r => r.SectionId == "grounds");
+
+        var classic = await new DraftingService(provider) { ClassicGrounds = true }.DraftAsync(Requete, Fixtures.CompleteInputs(), new DraftOptions { LegalTexts = texts });
+        Assert.Contains(provider.Requests, r => r.SectionId == "grounds");
+        Assert.Equal("المادة 106 من القانون المدني.", classic.FindSection("grounds")!.Text);
+    }
+
+    [Fact]
     public async Task PersistentlyCorruptedAnswerFallsBackToTheLawyersNotes()
     {
         var provider = new RecordingProvider(r => r.SectionId == "grounds" ? "受理 受理" : r.SourceText);

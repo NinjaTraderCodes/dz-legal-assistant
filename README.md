@@ -48,7 +48,8 @@ In the **Legal grounds** step, **«حلّل الوقائع واقترح الأس
 
 **How the draft stays grounded:**
 - The grounds are drafted from the ticked articles, plus the lawyer's own arguments.
-- The model receives the ticked articles' **official texts** as the only law it may cite or quote.
+- **The code, not the model, states the law.** For each ticked article whose official text is loaded, the grounds open with «حيث إن المادة … تنص على أن «…»», copied from the official text (the whole article, or for a long one the sentences the lawyer's note relies on). The model writes only the argument that applies it to the facts; an argument that cites or quotes an article, or has a number found nowhere in the notes, is left as «(...)» for the lawyer, which blocks export.
+- When no cited text is loaded, the model writes the grounds with the ticked articles' official texts as the only law it may cite or quote.
 - Any other article in the result is flagged under the section, and so is any «…» quotation that doesn't match the official text. Either one triggers one automatic retry.
 - Nothing is scraped or searched online; the texts come from the local law library ([docs/LAW-LIBRARY.md](docs/LAW-LIBRARY.md)).
 

@@ -116,4 +116,7 @@ public static class DraftingNoteCodes
 
     /// <summary>Paragraphs that attributed to an article content its official text does not have were removed.</summary>
     public const string RemovedWrongLaw = "removedWrongLaw";
+
+    /// <summary>Skeleton-first grounds: an argument the model wrote was unusable and is left as «(...)» for the lawyer.</summary>
+    public const string ArgumentLeftForLawyer = "argumentLeftForLawyer";
 }

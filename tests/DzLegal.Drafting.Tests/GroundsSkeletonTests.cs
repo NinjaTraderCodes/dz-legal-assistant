@@ -8,7 +8,7 @@ public class GroundsSkeletonTests
     private static readonly LegalText[] Texts =
     [
         new("106", "القانون المدني", "العقد شريعة المتعاقدين، فلا يجوز نقضه، ولا تعديله الا باتفاق الطرفين، أو للاسباب التي يقررها القانون."),
-        new("107", "القانون المدني", "يجب تنفيذ العقد طبقا لما اشتمل عليه وبحسن نية. غير أنه إذا طرأت حوادث استثنائية عامة لم يكن في الوسع توقعها جاز للقاضي أن يرد الالتزام المرهق إلى الحد المعقول."),
+        new("107", "القانون المدني", "يجب تنفيذ العقد طبقا لما اشتمل عليه وبحسن نية. ولا يقتصر العقد على الزام المتعاقد بما ورد فيه فحسب، بل يتناول أيضا ما هو من مستلزماته وفقا للقانون، والعرف، والعدالة، بحسب طبيعة الالتزام. غير أنه إذا طرأت حوادث استثنائية عامة لم يكن في الوسع توقعها وترتب على حدوثها أن تنفيذ الالتزام التعاقدي، وإن لم يصبح مستحيلا، صار مرهقا للمدين بحيث يهدده بخسارة فادحة جاز للقاضي تبعا للظروف وبعد مراعاة لمصلحة الطرفين أن يرد الالتزام المرهق إلى الحد المعقول، ويقع باطلا كل اتفاق على خلاف ذلك."),
         new("186", "القانون المدني", "إذا كان محل الالتزام بين أفراد مبلغا من النقود عين مقداره وقت رفع الدعوى وتأخر المدين في الوفاء به، فيجب عليه أن يعوض للدائن الضرر اللاحق من هذا التأخير."),
     ];
 
@@ -55,7 +55,7 @@ public class GroundsSkeletonTests
             "[1] وحيث إن المدعى عليه امتنع عن رد مبلغ 1500000 دج، فإن طلب المدعي يكون مؤسسا.\n"
             + "[2] وحيث إن المادة 182 تنص على «التعويض الكامل»، فإن التعويض مستحق.");
 
-        var draft = await new GroundsSkeleton(provider).DraftAsync(Fixtures.Requete, inputs, Texts);
+        var draft = await new GroundsSkeleton(provider).DraftAsync(Fixtures.Requete, Fixtures.Requete.FindSection("grounds")!, inputs, Texts);
 
         var lines = draft.Text.Split('\n');
         Assert.StartsWith("حيث إن المادة 106 من القانون المدني تنص على أن «العقد شريعة المتعاقدين", lines[0], StringComparison.Ordinal);
@@ -89,11 +89,19 @@ public class GroundsSkeletonTests
             "[1] نسخة ثانية لا تستعمل.\n[2] وحيث إن المدعى عليه تأخر في الوفاء رغم إعذاره، فإن طلب المدعي إلزامه بدفع مبلغ 150000 دج تعويضا يكون مؤسسا.",
         ]);
 
-        var draft = await new GroundsSkeleton(new RecordingProvider(_ => answers.Dequeue())).DraftAsync(Fixtures.Requete, inputs, Texts);
+        var draft = await new GroundsSkeleton(new RecordingProvider(_ => answers.Dequeue())).DraftAsync(Fixtures.Requete, Fixtures.Requete.FindSection("grounds")!, inputs, Texts);
 
         Assert.Empty(draft.Problems);
         var lines = draft.Text.Split('\n');
         Assert.EndsWith("فإن طلب المدعي إلزامه بدفع مبلغ 1500000 دج يكون مؤسسا.", lines[0], StringComparison.Ordinal);
         Assert.EndsWith("فإن طلب المدعي إلزامه بدفع مبلغ 150000 دج تعويضا يكون مؤسسا.", lines[1], StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void AShortArticleIsQuotedWhole()
+    {
+        // Case 05: art. 86's second sentence (silence as fraud) fits the facts though the note paraphrases the first.
+        const string Art86 = "يجوز إبطال العقد للتدليس إذا كانت الحيل التي لجأ إليها أحد المتعاقدين أو النائب عنه، من الجسامة بحيث لولاها لما ابرم الطرف الثاني العقد. ويعتبر تدليسا السكوت عمدا عن واقعة أو ملابسة إذا ثبت أن المدلس عليه ما كان ليبرم العقد لو علم بتلك الواقعة أو هذه الملابسة.";
+        Assert.Equal(Art86.TrimEnd('.'), GroundsSkeleton.Excerpt(Art86, "يجوز إبطال العقد للتدليس إذا كانت الحيل من الجسامة."));
     }
 }

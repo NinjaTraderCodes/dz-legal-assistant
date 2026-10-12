@@ -1025,6 +1025,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
                         DraftingNoteCodes.Retried => L["NoteRetried"],
                         DraftingNoteCodes.FellBackToNotes => L["NoteFellBack"],
                         DraftingNoteCodes.RemovedWrongLaw => L["NoteRemovedWrongLaw"],
+                        DraftingNoteCodes.ArgumentLeftForLawyer => L["NoteArgumentLeft"],
                         _ => L["NoteRemovedCopiedExample"],
                     });
                 }

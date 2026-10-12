@@ -113,6 +113,12 @@ public sealed record SectionDefinition
     /// <summary>Prompt file (relative to the definition folder). Used by narrative sections.</summary>
     public string? Prompt { get; init; }
 
+    /// <summary>
+    /// Skeleton-first drafting (relative prompt path): the code states each cited article from its official text and
+    /// the model writes only the argument after it, with this prompt. Used when at least one cited text is loaded.
+    /// </summary>
+    public string? ArgumentPrompt { get; init; }
+
     /// <summary>Field holding the lawyer's notes that a narrative section is grounded on.</summary>
     public string? SourceField { get; init; }
 

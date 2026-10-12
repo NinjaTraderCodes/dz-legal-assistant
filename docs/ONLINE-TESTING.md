@@ -85,17 +85,17 @@ OPENROUTER_API_KEY=sk-or-... dotnet run --project src/DzLegal.Harness -c Release
 
 For more than one run, a stability table gives the mean and range per model and case. Read the outputs as well: the automatic checks can't see swapped roles or invented reasoning.
 
-### Grounds: today beside skeleton-first (experiment)
+### Grounds: classic beside skeleton-first
 
 ```powershell
 dotnet run --project src/DzLegal.Harness -c Release -- skeleton --models google:gemma-4-26b-a4b-it --out w2-skeleton
 ```
 
 For each case it writes two versions of the grounds:
-- **A**, as the app drafts them today;
-- **B**, skeleton-first: the code writes every «المادة … تنص على أن «…»» from the official text, quoting the sentences the lawyer's note relies on, and the model writes only the argument after it.
+- **A**, classic: the model writes everything, including the article quotes (the app's way before definition v0.8.0);
+- **B**, skeleton-first, the app's way now: the code writes every «المادة … تنص على أن «…»» from the official text, quoting the sentences the lawyer's note relies on, and the model writes only the argument after it.
 
-In B, an argument that cites or quotes an article, or contains a number found nowhere in the notes, is left as «(...)» for the lawyer, which blocks export. The app still drafts the A way until B is approved.
+In B, an argument that cites or quotes an article, or contains a number found nowhere in the notes, is left as «(...)» for the lawyer, which blocks export. The app and `draft` use B whenever at least one cited article's text is loaded.
 
 ## Rate limits ("429 … temporarily rate-limited upstream")
 

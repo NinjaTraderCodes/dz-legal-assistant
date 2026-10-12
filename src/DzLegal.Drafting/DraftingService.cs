@@ -23,6 +23,12 @@ public sealed partial class DraftingService
 
     public string ProviderName => _provider.Name;
 
+    /// <summary>
+    /// Drafts every narrative section the classic way, the model writing the article quotes too, even where the
+    /// definition asks for skeleton-first grounds. For comparisons (harness) only.
+    /// </summary>
+    public bool ClassicGrounds { get; init; }
+
     public Task<DraftDocument> DraftAsync(
         DocumentTypeDefinition definition,
         IReadOnlyDictionary<string, string> inputs,
@@ -170,6 +176,12 @@ public sealed partial class DraftingService
             return new DraftSection { Id = section.Id };
         }
 
+        if (section.ArgumentPrompt is not null && !ClassicGrounds && legalTexts is { Count: > 0 }
+            && GroundsSkeleton.Build(request.SourceText, legalTexts) is var skeleton && skeleton.Any(p => p.Lead.Contains('«', StringComparison.Ordinal)))
+        {
+            return await WriteSkeletonAsync(definition, section, inputs, legalTexts, skeleton, onPartial, cancellationToken);
+        }
+
         var notes = new List<string>();
         var removedText = new List<string>();
         for (var attempt = 1; attempt <= 2; attempt++)
@@ -217,6 +229,36 @@ public sealed partial class DraftingService
 
         notes.Add(DraftingNoteCodes.FellBackToNotes);
         return new DraftSection { Id = section.Id, Text = TemplateRenderer.Normalize(request.SourceText), DraftingNotes = notes, RemovedText = removedText };
+    }
+
+    /// <summary>
+    /// Skeleton-first: the code writes each «المادة … تنص على أن «…»» from the official text, and the model only the
+    /// argument after it, so the law in the draft is never the model's. The leads are shown at once while the model
+    /// writes. An unusable argument is left as «(...)», which blocks export until the lawyer completes it.
+    /// </summary>
+    private async Task<DraftSection> WriteSkeletonAsync(
+        DocumentTypeDefinition definition,
+        SectionDefinition section,
+        IReadOnlyDictionary<string, string> inputs,
+        IReadOnlyList<LegalText> legalTexts,
+        IReadOnlyList<SkeletonParagraph> paragraphs,
+        Action<string, string>? onPartial,
+        CancellationToken cancellationToken)
+    {
+        onPartial?.Invoke(section.Id, GroundsSkeleton.Assemble(definition, paragraphs, new Dictionary<int, string>(), inputs, legalTexts).Text.Replace("(...)", "…", StringComparison.Ordinal));
+        var draft = await new GroundsSkeleton(_provider).DraftAsync(definition, section, inputs, legalTexts, cancellationToken);
+        var notes = new List<string>();
+        if (draft.Retried)
+        {
+            notes.Add(DraftingNoteCodes.Retried);
+        }
+
+        if (draft.Problems.Count > 0)
+        {
+            notes.Add(DraftingNoteCodes.ArgumentLeftForLawyer);
+        }
+
+        return new DraftSection { Id = section.Id, Text = draft.Text, DraftingNotes = notes };
     }
 
     /// <summary>Applies the definition's exact corrections. Used on model-written text only, never on the lawyer's words.</summary>

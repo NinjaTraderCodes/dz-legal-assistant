@@ -17,10 +17,14 @@ public sealed record SkeletonParagraph(string Lead, string Note, IReadOnlyList<s
 
 /// <param name="Text">The assembled grounds; a missing or rejected argument is left as «(...)» for the lawyer.</param>
 /// <param name="Problems">Why an argument was left out, one line each.</param>
-public sealed record SkeletonDraft(string Text, IReadOnlyList<SkeletonParagraph> Paragraphs, IReadOnlyList<string> Problems);
+/// <param name="Retried">An argument was missing or rejected and the model was asked once more.</param>
+public sealed record SkeletonDraft(string Text, IReadOnlyList<SkeletonParagraph> Paragraphs, IReadOnlyList<string> Problems)
+{
+    public bool Retried { get; init; }
+}
 
 /// <summary>
-/// Skeleton-first grounds (an experiment, used by the harness only): the code writes every sentence that states what an
+/// Skeleton-first grounds: the code writes every sentence that states what an
 /// article provides, letter for letter from the official text, and the model writes only the argument that applies it
 /// to the facts. An argument that cites or quotes an article is rejected, so the model never states the law.
 /// </summary>
@@ -28,8 +32,6 @@ public sealed partial class GroundsSkeleton(IModelProvider provider)
 {
     /// <summary>Request id for the model call (used by recording providers and logs).</summary>
     public const string RequestId = "grounds-argument";
-
-    public const string PromptPath = "prompts/grounds-argument.ar.txt";
 
     private const string Placeholder = "(...)";
 
@@ -80,7 +82,7 @@ public sealed partial class GroundsSkeleton(IModelProvider provider)
         return paragraphs;
     }
 
-    public ModelRequest BuildRequest(DocumentTypeDefinition definition, IReadOnlyDictionary<string, string> inputs, IReadOnlyList<SkeletonParagraph> paragraphs)
+    public ModelRequest BuildRequest(DocumentTypeDefinition definition, IReadOnlyDictionary<string, string> inputs, IReadOnlyList<SkeletonParagraph> paragraphs, string promptPath)
     {
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentNullException.ThrowIfNull(paragraphs);
@@ -96,7 +98,7 @@ public sealed partial class GroundsSkeleton(IModelProvider provider)
             }
         }
 
-        var user = _renderer.RenderFile(definition, PromptPath, inputs, new Dictionary<string, object?>
+        var user = _renderer.RenderFile(definition, promptPath, inputs, new Dictionary<string, object?>
         {
             ["paragraphs"] = numbered.ToString().TrimEnd(),
             ["paragraph_count"] = paragraphs.Count,
@@ -108,18 +110,21 @@ public sealed partial class GroundsSkeleton(IModelProvider provider)
         return new ModelRequest(RequestId, system, TemplateRenderer.Normalize(user), notes) { MaxTokens = 250 + (250 * paragraphs.Count) };
     }
 
-    public async Task<SkeletonDraft> DraftAsync(DocumentTypeDefinition definition, IReadOnlyDictionary<string, string> inputs, IReadOnlyList<LegalText> legalTexts, CancellationToken cancellationToken = default)
+    /// <param name="section">The grounds section: its <see cref="SectionDefinition.ArgumentPrompt"/> and notes field.</param>
+    public async Task<SkeletonDraft> DraftAsync(DocumentTypeDefinition definition, SectionDefinition section, IReadOnlyDictionary<string, string> inputs, IReadOnlyList<LegalText> legalTexts, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(definition);
+        ArgumentNullException.ThrowIfNull(section);
         ArgumentNullException.ThrowIfNull(inputs);
-        var paragraphs = Build(inputs.GetValueOrDefault("notes.grounds", string.Empty), legalTexts);
+        var promptPath = section.ArgumentPrompt ?? throw new ArgumentException($"Section '{section.Id}' has no argumentPrompt.", nameof(section));
+        var paragraphs = Build(inputs.GetValueOrDefault(section.SourceField ?? string.Empty, string.Empty), legalTexts);
         if (paragraphs.Count == 0)
         {
             return new SkeletonDraft(string.Empty, paragraphs, ["no grounds in the notes"]);
         }
 
         // A missing or rejected argument is asked once more; only the failed numbers take the second answer.
-        var request = BuildRequest(definition, inputs, paragraphs);
+        var request = BuildRequest(definition, inputs, paragraphs, promptPath);
         var arguments = new Dictionary<int, string>(ParseArguments(await AskAsync(definition, request, cancellationToken)));
         var failed = Enumerable.Range(1, paragraphs.Count).Where(n => Problem(definition, arguments.GetValueOrDefault(n), paragraphs, inputs, legalTexts) is not null).ToList();
         if (failed.Count > 0)
@@ -131,7 +136,7 @@ public sealed partial class GroundsSkeleton(IModelProvider provider)
             }
         }
 
-        return Assemble(definition, paragraphs, arguments, inputs, legalTexts);
+        return Assemble(definition, paragraphs, arguments, inputs, legalTexts) with { Retried = failed.Count > 0 };
     }
 
     private async Task<string> AskAsync(DocumentTypeDefinition definition, ModelRequest request, CancellationToken cancellationToken)
@@ -216,7 +221,13 @@ public sealed partial class GroundsSkeleton(IModelProvider provider)
     private static string Provides(LegalText text, string note) => $"{text.Citation} تنص على أن «{Excerpt(text.Text, note)}»";
 
     /// <summary>
-    /// The part of the official text the lawyer relies on, copied letter for letter: the sentences that share words
+    /// Articles up to this length are quoted whole: art. 86's second sentence (silence as fraud) is often the one that
+    /// fits the facts, though the lawyer's note paraphrases only the first.
+    /// </summary>
+    public const int FullQuoteLength = 400;
+
+    /// <summary>
+    /// The part of a long official text the lawyer relies on, copied letter for letter: the sentences that share words
     /// with the lawyer's note (at least two words and 30 % of the sentence's), from the first to the last of them (art. 107's first sentence, not its paragraph on
     /// unforeseen events), or the first sentence when none does. Without its final full stop, as it sits inside «».
     /// </summary>
@@ -224,6 +235,11 @@ public sealed partial class GroundsSkeleton(IModelProvider provider)
     {
         ArgumentNullException.ThrowIfNull(officialText);
         var text = officialText.ReplaceLineEndings(" ").Trim();
+        if (text.Length <= FullQuoteLength)
+        {
+            return text.TrimEnd('.', ' ');
+        }
+
         var sentences = Sentence().Matches(text).Where(m => m.Value.Trim().Length > 0).ToList();
         if (sentences.Count == 0)
         {

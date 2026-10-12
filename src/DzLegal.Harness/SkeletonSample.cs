@@ -59,10 +59,10 @@ public static class SkeletonSample
                 try
                 {
                     var clock = Stopwatch.StartNew();
-                    a = await new DraftingService(provider).DraftSectionAsync(definition, "grounds", inputs, legalTexts: legalTexts);
+                    a = await new DraftingService(provider) { ClassicGrounds = true }.DraftSectionAsync(definition, "grounds", inputs, legalTexts: legalTexts);
                     aSeconds = clock.Elapsed.TotalSeconds;
                     clock.Restart();
-                    b = await new GroundsSkeleton(provider).DraftAsync(definition, inputs, legalTexts);
+                    b = await new GroundsSkeleton(provider).DraftAsync(definition, definition.FindSection("grounds")!, inputs, legalTexts);
                     bSeconds = clock.Elapsed.TotalSeconds;
                 }
                 catch (Exception ex) when (ex is ModelProviderException or HttpRequestException or IOException or TaskCanceledException)

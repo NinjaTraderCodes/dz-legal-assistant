@@ -117,9 +117,11 @@ public sealed class GroundsWorkflowTests
 
         await vm.GenerateCommand.ExecuteAsync(null);
 
-        var grounds = recorder.Requests.Single(r => r.SectionId == "grounds");
+        // Skeleton-first: the code states the ticked article from its official text; the model is asked for the argument only.
+        var grounds = recorder.Requests.First(r => r.SectionId == DzLegal.Drafting.GroundsSkeleton.RequestId);
         Assert.Equal("- المادة 450 من القانون المدني", grounds.SourceText);
-        Assert.Contains("- المادة 450 من القانون المدني: «نص وهمي للاختبار: القرض الوهمي", grounds.UserPrompt, StringComparison.Ordinal);
+        Assert.Contains("[1] حيث إن المادة 450 من القانون المدني تنص على أن «نص وهمي للاختبار: القرض الوهمي", grounds.UserPrompt, StringComparison.Ordinal);
+        Assert.StartsWith("حيث إن المادة 450 من القانون المدني تنص على أن «نص وهمي للاختبار: القرض الوهمي", vm.Sections.Single(s => s.Id == "grounds").Text, StringComparison.Ordinal);
         Assert.Empty(vm.Field("notes.grounds").Value); // the lawyer's box is not touched
 
         // An article the lawyer neither ticked nor wrote is flagged, and so is a ticked article the text dropped.

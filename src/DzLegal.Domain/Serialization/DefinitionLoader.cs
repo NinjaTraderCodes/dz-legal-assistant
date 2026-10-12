@@ -113,6 +113,11 @@ public static class DefinitionLoader
                     break;
                 case SectionKind.Narrative:
                     CheckFile(definition, section.Prompt, $"{where} prompt", errors);
+                    if (section.ArgumentPrompt is not null)
+                    {
+                        CheckFile(definition, section.ArgumentPrompt, $"{where} argumentPrompt", errors);
+                    }
+
                     if (section.MaxTokens is <= 0)
                     {
                         errors.Add($"{where}: maxTokens must be positive.");

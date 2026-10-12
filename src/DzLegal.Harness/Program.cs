@@ -5,10 +5,11 @@ using DzLegal.Harness;
 // Usage:
 //   dzlegal-harness [--data <document-types folder>] [--corpus <corpus folder>]
 //       Form Engine accuracy over the corpus. Exit code 1 on any mismatch.
-//   Models: a local Ollama model (gemma3:4b), stub, openrouter[:<model>] (OPENROUTER_API_KEY) or google:<model>
-//   (GOOGLE_API_KEY). Hosted engines receive the fictitious test cases (docs/ONLINE-TESTING.md).
-//   dzlegal-harness ping [--models openrouter[:<model>]]
-//       Tells whose limit stops OpenRouter: the key's status, then a tiny and a drafting-sized request (key never shown).
+//   Models: a local Ollama model (gemma3:4b, gemma4:e4b), stub, openrouter[:<model>] (OPENROUTER_API_KEY) or
+//   google[:<model>] (GOOGLE_API_KEY; default gemma-4-e4b-it). Hosted engines receive the fictitious test cases (docs/ONLINE-TESTING.md).
+//   dzlegal-harness ping [--models openrouter[:<model>] | google[:<model>]]
+//       OpenRouter: whose limit stops it (key status, then a tiny and a drafting-sized request). Google: which Gemma
+//       models the key can call, then a tiny request to the model (default gemma-4-e4b-it). Keys are never shown.
 //   Batch options for draft and grounds: --runs N (repeat each case), --case <name> (one case), --delay-seconds S,
 //   --rate-limit-wait-seconds S (hosted: wait out "too many requests", default 120 per call),
 //   --max-consecutive-failures N (stop a model's batch after N failed cases in a row, default 3; 0 = never).
@@ -43,9 +44,22 @@ if (args.Length > 1 && args[0] == "law" && args[1] == "import" && args.Length > 
 if (args.Length > 0 && args[0] == "ping")
 {
     var spec = Option("--models", "openrouter");
+    if (spec == "google" || spec.StartsWith("google:", StringComparison.Ordinal))
+    {
+        if (Environment.GetEnvironmentVariable("GOOGLE_API_KEY") is not { Length: > 0 } googleKey)
+        {
+            Console.Error.WriteLine("ping: set the GOOGLE_API_KEY environment variable first.");
+            return 2;
+        }
+
+        return await GoogleDiagnostics.RunAsync(
+            new DzLegal.ModelProviders.Hosted.GoogleAiOptions { ApiKey = googleKey.Trim(), Model = HarnessModels.GoogleModel(spec), Endpoint = HarnessModels.GoogleEndpoint },
+            Console.Out);
+    }
+
     if (spec != "openrouter" && !spec.StartsWith("openrouter:", StringComparison.Ordinal))
     {
-        Console.Error.WriteLine("ping: only --models openrouter[:<model>] is supported.");
+        Console.Error.WriteLine("ping: --models openrouter[:<model>] or google[:<model>].");
         return 2;
     }
 

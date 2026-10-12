@@ -42,6 +42,11 @@ public static class Composition
             new ProviderOption("stub", loc => loc["ProviderStub"], () => new StubModelProvider()),
         ];
 #if ONLINE_TESTING
+        if (GoogleTestingOption(settings) is { } google)
+        {
+            options.Insert(1, google);
+        }
+
         if (OnlineTestingOption(settings) is { } online)
         {
             options.Insert(1, online);
@@ -84,6 +89,34 @@ public static class Composition
             "online",
             loc => loc.Format("ProviderOnlineTest", model),
             () => new DzLegal.ModelProviders.Hosted.OpenAiCompatibleModelProvider(options),
+            sendsCaseData: true);
+    }
+
+    /// <summary>
+    /// TEMPORARY, testing build only: Gemma 4 E4B (or GOOGLE_MODEL) on Google AI Studio's free tier, when GOOGLE_API_KEY
+    /// is set. The same model a laptop can run as <c>gemma4:e4b</c>; the case notes leave the computer.
+    /// </summary>
+    private static ProviderOption? GoogleTestingOption(AppSettings settings)
+    {
+        var key = Environment.GetEnvironmentVariable("GOOGLE_API_KEY");
+        if (string.IsNullOrWhiteSpace(key))
+        {
+            return null;
+        }
+
+        var model = Environment.GetEnvironmentVariable("GOOGLE_MODEL") is { Length: > 0 } m ? m : "gemma-4-e4b-it";
+        var options = new DzLegal.ModelProviders.Hosted.GoogleAiOptions
+        {
+            ApiKey = key.Trim(),
+            Model = model,
+            Temperature = settings.Ollama.Temperature,
+            MaxTokens = settings.Ollama.MaxTokens,
+            RateLimit = new DzLegal.ModelProviders.Hosted.RateLimitPolicy(TimeSpan.FromSeconds(90)),
+        };
+        return new ProviderOption(
+            "online-google",
+            loc => loc.Format("ProviderOnlineTestGoogle", model),
+            () => new DzLegal.ModelProviders.Hosted.GoogleAiModelProvider(options),
             sendsCaseData: true);
     }
 

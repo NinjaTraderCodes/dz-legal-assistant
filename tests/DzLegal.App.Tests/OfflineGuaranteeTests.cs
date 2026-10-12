@@ -36,9 +36,16 @@ public class OfflineGuaranteeTests
     public void ANormalBuildOffersNoEngineThatSendsCaseDataEvenWithAKeySet()
     {
         var previous = Environment.GetEnvironmentVariable("OPENROUTER_API_KEY");
+        var previousGoogle = Environment.GetEnvironmentVariable("GOOGLE_API_KEY");
         Environment.SetEnvironmentVariable("OPENROUTER_API_KEY", "test-key");
+        Environment.SetEnvironmentVariable("GOOGLE_API_KEY", "test-key");
         try
         {
+            if (typeof(Composition).Assembly.GetReferencedAssemblies().Any(a => a.Name == "DzLegal.ModelProviders.Hosted"))
+            {
+                return; // testing build: covered below
+            }
+
             var providers = Composition.CreateProviders(new AppSettings());
             Assert.Equal(["ollama", "stub"], providers.Select(p => p.Key));
             Assert.DoesNotContain(providers, p => p.SendsCaseData);
@@ -46,6 +53,7 @@ public class OfflineGuaranteeTests
         finally
         {
             Environment.SetEnvironmentVariable("OPENROUTER_API_KEY", previous);
+            Environment.SetEnvironmentVariable("GOOGLE_API_KEY", previousGoogle);
         }
     }
 
@@ -59,10 +67,12 @@ public class OfflineGuaranteeTests
         }
 
         var previous = Environment.GetEnvironmentVariable("OPENROUTER_API_KEY");
+        var previousGoogle = Environment.GetEnvironmentVariable("GOOGLE_API_KEY");
         try
         {
             Environment.SetEnvironmentVariable("OPENROUTER_API_KEY", null);
-            Assert.DoesNotContain(Composition.CreateProviders(new AppSettings()), p => p.Key == "online");
+            Environment.SetEnvironmentVariable("GOOGLE_API_KEY", null);
+            Assert.DoesNotContain(Composition.CreateProviders(new AppSettings()), p => p.SendsCaseData);
 
             Environment.SetEnvironmentVariable("OPENROUTER_API_KEY", "test-key");
             var providers = Composition.CreateProviders(new AppSettings());
@@ -75,11 +85,21 @@ public class OfflineGuaranteeTests
             online.Localize(vm.L);
             Assert.Contains("google/gemma-3-4b-it", online.DisplayName, StringComparison.Ordinal);
             Assert.Contains("(online testing build)", Composition.CreateMainViewModel(new AppSettings(), new FakeFiles(), new DzLegal.Storage.AppPaths(Path.Combine(Path.GetTempPath(), "dzlegal-online-test")), new Loc()).WindowTitle, StringComparison.Ordinal);
+
+            // With a Google key too: Gemma 4 E4B on Google AI Studio, also marked as sending case data.
+            Environment.SetEnvironmentVariable("GOOGLE_API_KEY", "test-key");
+            var both = Composition.CreateProviders(new AppSettings());
+            Assert.Equal(["ollama", "online", "online-google", "stub"], both.Select(p => p.Key));
+            var google = both[2];
+            Assert.True(google.SendsCaseData);
+            google.Localize(vm.L);
+            Assert.Contains("gemma-4-e4b-it", google.DisplayName, StringComparison.Ordinal);
             await Task.CompletedTask;
         }
         finally
         {
             Environment.SetEnvironmentVariable("OPENROUTER_API_KEY", previous);
+            Environment.SetEnvironmentVariable("GOOGLE_API_KEY", previousGoogle);
         }
     }
 

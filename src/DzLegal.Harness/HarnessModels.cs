@@ -20,6 +20,12 @@ public static class HarnessModels
 {
     public const string DefaultOpenRouterModel = "google/gemma-3-4b-it";
 
+    /// <summary>
+    /// Gemma 4 E4B: free on Google AI Studio (no card) and runnable on a lawyer's laptop as <c>gemma4:e4b</c>. Google no
+    /// longer serves Gemma 3 to new keys, and OpenRouter's Gemma 3 4B has a single, often saturated, provider.
+    /// </summary>
+    public const string DefaultGoogleModel = "gemma-4-e4b-it";
+
     /// <param name="spec">One <c>--models</c> entry.</param>
     /// <param name="ollamaEndpoint">Where the local Ollama listens.</param>
     /// <param name="timeout">Longest wait for one answer.</param>
@@ -51,9 +57,16 @@ public static class HarnessModels
             });
         }
 
-        if (spec.StartsWith("google:", StringComparison.Ordinal))
+        if (spec == "google" || spec.StartsWith("google:", StringComparison.Ordinal))
         {
-            return new GoogleAiModelProvider(new GoogleAiOptions { ApiKey = Key("GOOGLE_API_KEY", spec), Model = spec["google:".Length..], Timeout = timeout, RateLimit = rateLimit ?? RateLimitPolicy.None });
+            return new GoogleAiModelProvider(new GoogleAiOptions
+            {
+                ApiKey = Key("GOOGLE_API_KEY", spec),
+                Model = GoogleModel(spec),
+                Endpoint = GoogleEndpoint,
+                Timeout = timeout,
+                RateLimit = rateLimit ?? RateLimitPolicy.None,
+            });
         }
 
         return new OllamaModelProvider(new OllamaOptions
@@ -80,7 +93,15 @@ public static class HarnessModels
 
     /// <summary>True for an engine on someone else's server (the cases leave the machine).</summary>
     public static bool IsHosted(string spec) =>
-        spec == "openrouter" || spec.StartsWith("openrouter:", StringComparison.Ordinal) || spec.StartsWith("google:", StringComparison.Ordinal);
+        spec == "openrouter" || spec.StartsWith("openrouter:", StringComparison.Ordinal) || spec == "google" || spec.StartsWith("google:", StringComparison.Ordinal);
+
+    /// <summary>The Google model of a <c>google</c> or <c>google:&lt;model&gt;</c> spec.</summary>
+    public static string GoogleModel(string spec) =>
+        spec.Length > "google:".Length && spec.StartsWith("google:", StringComparison.Ordinal) ? spec["google:".Length..] : DefaultGoogleModel;
+
+    /// <summary>Google AI Studio, or GOOGLE_ENDPOINT (a local mock in tests).</summary>
+    public static Uri GoogleEndpoint =>
+        Environment.GetEnvironmentVariable("GOOGLE_ENDPOINT") is { Length: > 0 } e ? new Uri(e) : new Uri("https://generativelanguage.googleapis.com/v1beta/");
 
     private static string Key(string variable, string spec) =>
         Environment.GetEnvironmentVariable(variable) is { Length: > 0 } key

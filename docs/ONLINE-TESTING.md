@@ -113,6 +113,47 @@ It prints the key's status (credit, limit, free tier, rate limit), then the resu
 - **no credit:** add credit or raise the key's limit.
 - **answers normally:** a stalled run was a busy spell; rerun.
 
+## Choosing the test model (Gemma 4 E4B on Google, free)
+
+**Gemma 3 4B is poorly hosted now.** On OpenRouter it has a single provider (DeepInfra), and when that provider is saturated every OpenRouter user waits; `ping` says "shared upstream limit". Google no longer serves Gemma 3 to new keys (`404 models/gemma-3-4b-it is not found`).
+
+**Gemma 4 E4B** is the alternative under evaluation:
+- free on Google AI Studio, with no card (the same kind of key as the website's);
+- runnable on a lawyer's laptop: `ollama pull gemma4:e4b` (about 6 GB of RAM, against about 3.3 GB for Gemma 3 4B).
+
+**Check what your Google key can use** (the key is never printed):
+
+```powershell
+$env:GOOGLE_API_KEY = "AIza..."
+dotnet run --project src/DzLegal.Harness -c Release -- ping --models google
+```
+
+It lists the Gemma models the key can call, sends one tiny request to `gemma-4-e4b-it`, and ends with a verdict:
+- **available**;
+- **not served to this key**, with the models it can use;
+- **rate-limited**.
+
+**Test with it.** In the harness, `--models google` means Gemma 4 E4B:
+
+```powershell
+dotnet run --project src/DzLegal.Harness -c Release -- draft --models google --runs 3 --out bench-e4b
+```
+
+In the desktop testing build, setting `GOOGLE_API_KEY` adds "Online test: gemma-4-e4b-it via Google AI Studio" to the engine list. `GOOGLE_MODEL` picks another model.
+
+**Choose the product model by measurement.** Run the same benches on both models:
+
+```powershell
+dotnet run --project src/DzLegal.Harness -c Release -- grounds --models google,openrouter --runs 3 --out bench-choice-grounds
+dotnet run --project src/DzLegal.Harness -c Release -- draft --models google,openrouter --runs 3 --out bench-choice-draft
+```
+
+Then confirm on the laptop, overnight: `--models gemma3:4b,gemma4:e4b`. Compare claim accuracy, wrong-law counts, seconds per draft and memory use.
+
+To use E4B in the desktop app, create `src/DzLegal.App/appsettings.local.json` containing `{ "ollama": { "model": "gemma4:e4b" } }`.
+
+**A hosted model is not bit-identical to the laptop's.** Google runs it at full precision; Ollama runs a 4-bit version, which is usually a little weaker. Hosted runs are for fast iteration; the final check before the judges stays local.
+
 ## Removing it
 
 When testing is over:

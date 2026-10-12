@@ -247,15 +247,16 @@ public class DraftingServiceTests
     }
 
     [Fact]
-    public async Task WithALoadedTextTheGroundsAreSkeletonFirstAndClassicOnRequest()
+    public async Task WithALoadedTextTheGroundsAreArguedAndClassicOnRequest()
     {
-        LegalText[] texts = [new("106", "القانون المدني", "العقد شريعة المتعاقدين، فلا يجوز نقضه، ولا تعديله الا باتفاق الطرفين.")];
-        var provider = new RecordingProvider(r => r.SectionId == GroundsSkeleton.RequestId ? "[1] وحيث إن المادة 107 تؤكد ذلك، فإن الطلب مؤسس." : r.SourceText);
+        LegalText[] texts = [new("106", "القانون المدني", "العقد شريعة المتعاقدين، فلا يجوز نقضه، ولا تعديله الا باتفاق الطرفين.") { Role = "basis", Gist = "العقد شريعة المتعاقدين" }];
+        var provider = new RecordingProvider(r => r.SectionId == ArguedGrounds.RequestId ? "[1] حيث إن المادة 107 تؤكد ذلك، فإن الطلب مؤسس." : r.SourceText);
 
         var draft = await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs(), new DraftOptions { LegalTexts = texts });
 
+        // The answer cites an article outside the plan twice: the paragraph is left for the lawyer, with its article.
         var grounds = draft.FindSection("grounds")!;
-        Assert.Equal("حيث إن المادة 106 من القانون المدني تنص على أن «العقد شريعة المتعاقدين، فلا يجوز نقضه، ولا تعديله الا باتفاق الطرفين»، وحيث إن (...).", grounds.Text);
+        Assert.Equal("حيث إن (...)، عملا بالمادة 106 من القانون المدني.", grounds.Text);
         Assert.Equal([DraftingNoteCodes.Retried, DraftingNoteCodes.ArgumentLeftForLawyer], grounds.DraftingNotes);
         Assert.DoesNotContain(provider.Requests, r => r.SectionId == "grounds");
 

@@ -431,11 +431,24 @@ public sealed partial class MainWindowViewModel
         SetStatus(opened ? L["LinkOpened"] : L.Format("LinkNotOpened", url), isError: !opened);
     }
 
-    /// <summary>Official texts of the ticked articles that are in the library: what the model may cite and quote.</summary>
-    internal IReadOnlyList<LegalText> SelectedLegalTexts() =>
-        _selectedArticles
-            .Select(a => (Ref: a, Article: _knowledge.Library.FindArticle(a.Code, a.Number)))
+    /// <summary>
+    /// Official texts of the ticked articles that are in the library: what the model may cite. Each carries its part in
+    /// the claim and its one-line rule from the catalog, taken from the confirmed claim type first, so the grounds are
+    /// argued in a lawyer's order (obligation, proof, compensation) and state rules only in the catalog's wording.
+    /// </summary>
+    internal IReadOnlyList<LegalText> SelectedLegalTexts()
+    {
+        var confirmed = (_analysis?.ClaimIds ?? []).Select(id => _knowledge.Claims.FirstOrDefault(c => c.Id == id)).OfType<DzLegal.Law.ClaimType>();
+        var catalog = confirmed.Concat(_knowledge.Claims).SelectMany(c => c.Articles).ToList();
+        return _selectedArticles
+            .Select(a => (Ref: a, Article: _knowledge.Library.FindArticle(a.Code, a.Number),
+                Catalog: catalog.FirstOrDefault(c => c.Code == a.Code && c.Number == ArticleNumbers.Canonical(a.Number))))
             .Where(x => x.Article is { Repealed: false })
-            .Select(x => new LegalText(x.Article!.Number, _knowledge.CitationName(x.Ref.Code), x.Article.Text))
+            .Select(x => new LegalText(x.Article!.Number, _knowledge.CitationName(x.Ref.Code), x.Article.Text)
+            {
+                Role = x.Catalog?.Role.ToString().ToLowerInvariant(),
+                Gist = x.Catalog?.Why.Ar,
+            })
             .ToList();
+    }
 }

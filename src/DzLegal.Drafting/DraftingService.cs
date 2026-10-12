@@ -24,8 +24,8 @@ public sealed partial class DraftingService
     public string ProviderName => _provider.Name;
 
     /// <summary>
-    /// Drafts every narrative section the classic way, the model writing the article quotes too, even where the
-    /// definition asks for skeleton-first grounds. For comparisons (harness) only.
+    /// Drafts every narrative section the classic way, the model writing the whole grounds, even where the definition
+    /// asks for argued grounds. For comparisons (harness) only.
     /// </summary>
     public bool ClassicGrounds { get; init; }
 
@@ -176,10 +176,9 @@ public sealed partial class DraftingService
             return new DraftSection { Id = section.Id };
         }
 
-        if (section.ArgumentPrompt is not null && !ClassicGrounds && legalTexts is { Count: > 0 }
-            && GroundsSkeleton.Build(request.SourceText, legalTexts) is var skeleton && skeleton.Any(p => p.Lead.Contains('«', StringComparison.Ordinal)))
+        if (section.ArgumentPrompt is not null && !ClassicGrounds && legalTexts is { Count: > 0 })
         {
-            return await WriteSkeletonAsync(definition, section, inputs, legalTexts, skeleton, onPartial, cancellationToken);
+            return await WriteArguedAsync(definition, section, inputs, legalTexts, cancellationToken);
         }
 
         var notes = new List<string>();
@@ -232,21 +231,19 @@ public sealed partial class DraftingService
     }
 
     /// <summary>
-    /// Skeleton-first: the code writes each «المادة … تنص على أن «…»» from the official text, and the model only the
-    /// argument after it, so the law in the draft is never the model's. The leads are shown at once while the model
-    /// writes. An unusable argument is left as «(...)», which blocks export until the lawyer completes it.
+    /// Argued grounds: the code plans one paragraph per part the articles play in the claim (the obligation and its
+    /// breach, its proof, the compensation) and the model writes them, citing the articles by number as petitions do.
+    /// It may state what an article provides only in the catalog's one-line rule. An unusable paragraph is left as
+    /// «(...)», which blocks export until the lawyer completes it.
     /// </summary>
-    private async Task<DraftSection> WriteSkeletonAsync(
+    private async Task<DraftSection> WriteArguedAsync(
         DocumentTypeDefinition definition,
         SectionDefinition section,
         IReadOnlyDictionary<string, string> inputs,
         IReadOnlyList<LegalText> legalTexts,
-        IReadOnlyList<SkeletonParagraph> paragraphs,
-        Action<string, string>? onPartial,
         CancellationToken cancellationToken)
     {
-        onPartial?.Invoke(section.Id, GroundsSkeleton.Assemble(definition, paragraphs, new Dictionary<int, string>(), inputs, legalTexts).Text.Replace("(...)", "…", StringComparison.Ordinal));
-        var draft = await new GroundsSkeleton(_provider).DraftAsync(definition, section, inputs, legalTexts, cancellationToken);
+        var draft = await new ArguedGrounds(_provider).DraftAsync(definition, section, inputs, legalTexts, section.ArgumentPrompt!, cancellationToken);
         var notes = new List<string>();
         if (draft.Retried)
         {

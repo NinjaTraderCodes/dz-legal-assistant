@@ -3,7 +3,7 @@
 // practicing lawyer confirms it against the current official text (see docs/UPDATING-LEGAL-RULES.md).
 {
   "id": "requete-introductive",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "name": { "ar": "عريضة افتتاح الدعوى", "en": "Statement of claim (requête introductive d'instance)" },
   "description": {
     "ar": "العريضة التي ترفع بها الدعوى أمام المحكمة (المواد 14 و15 و17 من قانون الإجراءات المدنية والإدارية).",
@@ -114,7 +114,7 @@
       "includeWhen": [ { "field": "claim.concernsRegisteredRealProperty", "is": "true" } ] },
     { "id": "opening", "formGroup": "court", "layout": { "align": "center", "bold": true, "spaceBefore": 14 }, "kind": "generated", "template": "templates/opening.scriban", "title": { "ar": "الافتتاح", "en": "Opening" } },
     { "id": "facts", "formGroup": "facts", "layout": { "align": "justify", "spaceBefore": 12 }, "kind": "generated", "template": "templates/facts.scriban", "showTitle": true, "title": { "ar": "الوقائع", "en": "Facts" } },
-    { "id": "grounds", "formGroup": "grounds", "layout": { "align": "justify", "spaceBefore": 12 }, "kind": "narrative", "prompt": "prompts/grounds.ar.txt", "argumentPrompt": "prompts/grounds-argument.ar.txt", "sourceField": "notes.grounds", "maxTokens": 900, "showTitle": true, "title": { "ar": "المناقشة القانونية", "en": "Legal grounds" } },
+    { "id": "grounds", "formGroup": "grounds", "layout": { "align": "justify", "spaceBefore": 12 }, "kind": "narrative", "prompt": "prompts/grounds.ar.txt", "argumentPrompt": "prompts/grounds-argued.ar.txt", "sourceField": "notes.grounds", "maxTokens": 900, "showTitle": true, "title": { "ar": "المناقشة القانونية", "en": "Legal grounds" } },
     { "id": "requestsIntro", "formGroup": "requests", "layout": { "align": "start", "spaceBefore": 12 }, "kind": "generated", "template": "templates/requestsIntro.scriban", "showTitle": true, "title": { "ar": "لهذه الأسباب ومن أجلها", "en": "For these reasons" } },
     // Requests are the lawyer's own lines, numbered under the fixed formula: a model rewriting them changed the relief
     // asked of the court in 9 of 15 audited drafts (dropped requests, «أو» made «و», amounts in words ≠ digits).

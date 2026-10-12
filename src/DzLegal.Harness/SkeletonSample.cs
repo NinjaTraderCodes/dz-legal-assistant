@@ -63,10 +63,10 @@ public static class SkeletonSample
                     a = await new DraftingService(provider) { ClassicGrounds = true }.DraftSectionAsync(definition, "grounds", inputs, legalTexts: legalTexts);
                     aSeconds = clock.Elapsed.TotalSeconds;
                     clock.Restart();
-                    b = await new GroundsSkeleton(provider).DraftAsync(definition, definition.FindSection("grounds")!, inputs, legalTexts);
+                    b = await new GroundsSkeleton(provider).DraftAsync(definition, definition.FindSection("grounds")! with { ArgumentPrompt = "prompts/grounds-argument.ar.txt" }, inputs, legalTexts);
                     bSeconds = clock.Elapsed.TotalSeconds;
                     clock.Restart();
-                    c = await new ArguedGrounds(provider).DraftAsync(definition, definition.FindSection("grounds")!, inputs, legalTexts, "prompts/grounds-argued.ar.txt");
+                    c = await new ArguedGrounds(provider).DraftAsync(definition, definition.FindSection("grounds")!, inputs, legalTexts, definition.FindSection("grounds")!.ArgumentPrompt!);
                     cSeconds = clock.Elapsed.TotalSeconds;
                 }
                 catch (Exception ex) when (ex is ModelProviderException or HttpRequestException or IOException or TaskCanceledException)

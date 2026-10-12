@@ -100,7 +100,7 @@ e-mail.
 
 - **AI quality:** Gemma 3 4B is a small model. That is why the checks matter:
   - the articles a claim type requires are always proposed;
-  - the sentence stating what each ticked article provides is written by the code from the official text, and the model writes only the argument; when no text is loaded, every quote and every "article X provides that…" the model writes is checked against the official text;
+  - the grounds cite the ticked articles by number in one paragraph per part of the claim, planned by the code; any "article X provides that…" or quotation is checked against the official text and the catalog's one-line rule;
   - a paragraph that keeps attributing wrong content to an article is removed, and the lawyer sees what was removed;
   - the legal points flag a wrong basis, interest on a private loan, damages without formal notice, and an article from an unrelated area of law;
   - export is refused while the notes contain text addressed to an AI, a request line not in Arabic, or a prison sentence asked in a civil case.

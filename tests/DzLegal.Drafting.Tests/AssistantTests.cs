@@ -86,8 +86,7 @@ public class KeepAndRedraftTests
             Fixtures.Requete, Fixtures.CompleteInputs(), new DraftOptions { KeepNarrative = new Dictionary<string, string> { ["grounds"] = "نص المحامي" } });
 
         Assert.Equal("نص المحامي", draft.FindSection("grounds")!.Text);
-        Assert.DoesNotContain(provider.Requests, r => r.SectionId == "grounds");
-        Assert.Contains(provider.Requests, r => r.SectionId == "requests");
+        Assert.Empty(provider.Requests); // grounds kept; requests are never sent to the model
     }
 
     [Fact]

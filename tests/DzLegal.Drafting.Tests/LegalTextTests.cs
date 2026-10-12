@@ -35,7 +35,6 @@ public sealed class LegalTextTests
     /// </summary>
     [Theory]
     [InlineData("grounds", 6000)]
-    [InlineData("requests", 4500)]
     public void DraftingPromptsStayWithinTheirBudget(string sectionId, int budget)
     {
         var request = new DraftingService(new RecordingProvider(_ => string.Empty))
@@ -49,7 +48,6 @@ public sealed class LegalTextTests
     {
         var service = new DraftingService(new RecordingProvider(_ => string.Empty));
         Assert.Equal(900, service.BuildRequest(Fixtures.Requete, Fixtures.Requete.FindSection("grounds")!, Fixtures.CompleteInputs()).MaxTokens);
-        Assert.Equal(450, service.BuildRequest(Fixtures.Requete, Fixtures.Requete.FindSection("requests")!, Fixtures.CompleteInputs()).MaxTokens);
         Assert.Equal(900, new SectionReviser(new RecordingProvider(_ => string.Empty))
             .BuildRequest(Fixtures.Requete, "grounds", "نص", "أوجز", Fixtures.CompleteInputs()).MaxTokens);
     }

@@ -60,7 +60,7 @@ public class DraftingServiceTests
         var provider = new RecordingProvider(r => "حيث إن " + r.SourceText);
         await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs());
 
-        Assert.Equal(["grounds", "requests"], provider.Requests.Select(r => r.SectionId));
+        Assert.Equal(["grounds"], provider.Requests.Select(r => r.SectionId)); // requests are the lawyer's lines
         var grounds = provider.Requests[0];
         Assert.Contains("المادة 106 من القانون المدني.", grounds.UserPrompt, StringComparison.Ordinal);
         Assert.Contains("المطالبة بدين", grounds.UserPrompt, StringComparison.Ordinal);
@@ -326,17 +326,18 @@ public class DraftingServiceTests
     }
 
     [Fact]
-    public async Task MandatedRequestsLineIsNotMistakenForAnExampleCopy()
+    public async Task TheRequestsAreTheLawyersLinesVerbatimUnderTheFixedFormula()
     {
-        var provider = new RecordingProvider(r => r.SectionId == "requests"
-            ? "في الشكل: قبول الدعوى شكلا.\nفي الموضوع:\n1. إلزام المدعى عليه بتسليم (الشيء المبيع) للمدعي.\n2. إلزام المدعى عليه بدفع 500000 دج."
-            : r.SourceText);
+        var inputs = Fixtures.CompleteInputs();
+        inputs["notes.requests"] = "في الشكل: قبول الدعوى شكلا\n- إلزام المدعى عليه بتسليم الآلات أو إرجاع الثمن المدفوع وقدره 1.500.000 دج\n2) تحميل المدعى عليه المصاريف القضائية.";
+        var provider = new RecordingProvider(_ => "نص من النموذج");
 
-        var draft = await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs());
+        var draft = await new DraftingService(provider).DraftAsync(Requete, inputs);
 
-        var requests = draft.FindSection("requests")!;
-        Assert.Equal("في الشكل: قبول الدعوى شكلا.\nفي الموضوع:\n2. إلزام المدعى عليه بدفع 500000 دج.", requests.Text);
-        Assert.Equal([DraftingNoteCodes.RemovedCopiedExample], requests.DraftingNotes);
+        Assert.Equal(
+            "في الشكل: قبول الدعوى شكلا.\nفي الموضوع:\n1. إلزام المدعى عليه بتسليم الآلات أو إرجاع الثمن المدفوع وقدره 1.500.000 دج.\n2. تحميل المدعى عليه المصاريف القضائية.",
+            draft.FindSection("requests")!.Text);
+        Assert.DoesNotContain(provider.Requests, r => r.SectionId == "requests");
     }
 
     [Fact]

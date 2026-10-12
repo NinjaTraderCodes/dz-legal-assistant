@@ -1,0 +1,11 @@
+{{~
+# The lawyer's requests, verbatim and numbered: the model never rewrites the relief asked of the court.
+items = requests notes.requests
+~}}
+{{~ if items.size > 0 ~}}
+في الشكل: قبول الدعوى شكلا.
+في الموضوع:
+{{~ for line in items ~}}
+{{ for.index + 1 }}. {{ line }}
+{{~ end ~}}
+{{~ end ~}}

@@ -252,9 +252,11 @@ public class WebEngineTests
             using var vm = engine.CreateSession(new NoFiles(), new NoExternalLinks(), "en");
             vm.OpenCase(sample.Inputs);
 
-            // Everything the lawyer fills in is there; the legal grounds and the requests wait for the model.
+            // Everything the lawyer fills in is there, the requests included (they are the lawyer's lines); only the
+            // legal grounds wait for the model.
             var missing = vm.Report!.Missing.Where(f => f.Element.Severity == Severity.Inadmissible).SelectMany(f => f.MissingParts).ToList();
-            Assert.Equal(["grounds", "requests"], missing.Order(StringComparer.Ordinal));
+            Assert.Equal(["grounds"], missing);
+            Assert.StartsWith("في الشكل: قبول الدعوى شكلا.", vm.Sections.Single(x => x.Id == "requests").Text, StringComparison.Ordinal);
             Assert.False(string.IsNullOrWhiteSpace(sample.Summary.Get("en")));
             Assert.False(string.IsNullOrWhiteSpace(sample.Summary.Get("ar")));
         }

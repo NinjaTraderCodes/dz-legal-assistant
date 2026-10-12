@@ -116,13 +116,13 @@ public class MainWindowViewModelTests
     public async Task ModelFailureIsShownAndNothingIsLost()
     {
         var vm = Vm.Create(provider: "failing").Filled();
-        vm.Sections.Single(s => s.Id == "grounds").Text = "نص موجود";
+        var requests = vm.Sections.Single(s => s.Id == "requests").Text;
 
         await vm.GenerateCommand.ExecuteAsync(null);
 
         Assert.True(vm.IsError);
         Assert.Contains("127.0.0.1", vm.StatusMessage, StringComparison.Ordinal);
-        Assert.Equal("نص موجود", vm.Sections.Single(s => s.Id == "grounds").Text);
+        Assert.Equal(requests, vm.Sections.Single(s => s.Id == "requests").Text);
         Assert.False(vm.HasGeneratedDraft);
     }
 
@@ -132,14 +132,14 @@ public class MainWindowViewModelTests
         var files = new FakeFiles();
         var vm = Vm.Create(files).Filled();
         await vm.GenerateCommand.ExecuteAsync(null);
-        vm.Sections.Single(s => s.Id == "requests").Text = "طلب معدل";
+        vm.Sections.Single(s => s.Id == "grounds").Text = "نص معدل";
         await vm.SaveCommand.ExecuteAsync(null);
 
         var reopened = Vm.Create(files);
         await reopened.OpenCommand.ExecuteAsync(null);
 
         Assert.Equal("بن علي", reopened.Field("plaintiff.lastName").Value);
-        Assert.Equal("طلب معدل", reopened.Sections.Single(s => s.Id == "requests").Text);
+        Assert.Equal("نص معدل", reopened.Sections.Single(s => s.Id == "grounds").Text);
         Assert.Equal(vm.IsAdmissible, reopened.IsAdmissible);
     }
 
@@ -243,7 +243,7 @@ public class MainWindowViewModelTests
         vm.Filled();
         Assert.True(vm.FieldGroups.Single(g => g.Id == "court").IsDone);
         Assert.True(vm.FieldGroups.Single(g => g.Id == "grounds").IsMissing); // grounds not drafted yet
-        Assert.True(vm.FieldGroups.Single(g => g.Id == "requests").IsMissing);
+        Assert.False(vm.FieldGroups.Single(g => g.Id == "requests").IsMissing); // the lawyer's lines, no model needed
         Assert.True(vm.FieldGroups.Single(g => g.Id == "facts").IsDone);
 
         await vm.GenerateCommand.ExecuteAsync(null);

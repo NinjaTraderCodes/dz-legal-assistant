@@ -54,6 +54,7 @@ public sealed class TemplateRenderer
         root.Import("lines", new Func<string?, ScriptArray>(SplitLines));
         root.Import("gendered", new Func<object?, string, string, string>(Gendered));
         root.Import("whereas", new Func<int, string, string>(Whereas));
+        root.Import("requests", new Func<string?, ScriptArray>(RequestLines));
         return root;
     }
 
@@ -79,6 +80,30 @@ public sealed class TemplateRenderer
 
         var opener = index == 0 ? "حيث إن" : "وحيث إن";
         return text.StartsWith("ال", StringComparison.Ordinal) ? $"{opener} {text}" : $"{opener}ه {text}";
+    }
+
+    /// <summary>
+    /// The lawyer's requests, exactly as written, one per line: only the list markers («-», «1.», «٢)») are removed,
+    /// and the frame the template writes itself («في الشكل…», «في الموضوع:», «قبول الدعوى شكلا»). A line without final
+    /// punctuation gets a full stop. No model ever rewrites the relief asked of the court.
+    /// </summary>
+    internal static ScriptArray RequestLines(string? value)
+    {
+        var array = new ScriptArray();
+        foreach (var line in SplitLines(value).Cast<string>())
+        {
+            var text = System.Text.RegularExpressions.Regex.Replace(line, @"^[\(]?[0-9٠-٩]{1,2}\s*[\.\-\)–:]\s*", string.Empty).Trim();
+            var bare = ArabicScript.Normalize(text).TrimEnd('.', ':', '،', ' ');
+            if (text.Length == 0 || bare is "في الموضوع" or "في الشكل" || bare.StartsWith("في الشكل", StringComparison.Ordinal)
+                || bare.Contains(ArabicScript.Normalize("قبول الدعوى شكلا"), StringComparison.Ordinal))
+            {
+                continue;
+            }
+
+            array.Add(text.EndsWith('.') || text.EndsWith('؛') || text.EndsWith('!') ? text : text + ".");
+        }
+
+        return array;
     }
 
     private static ScriptArray SplitLines(string? value)

@@ -276,7 +276,7 @@ public sealed partial class GroundsSkeleton(IModelProvider provider)
     private static string Continue(string argument) => argument.TrimStart('،', ',', ' ', '-');
 
     /// <summary>A note with no article: the argument is the whole paragraph, opened like the others.</summary>
-    private static string Reopen(string argument, int index)
+    internal static string Reopen(string argument, int index)
     {
         var text = Continue(argument);
         var body = OpeningWords().Replace(text, string.Empty, 1);

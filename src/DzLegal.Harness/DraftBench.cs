@@ -262,13 +262,26 @@ public static partial class DraftBench
             ["قانون الإجراءات المدنية والإدارية"] = "cpca",
         };
         var french = NarrativeChecks.FrenchArticleReferences(groundsNotes).Select(r => (Code: codes[r.CodeName], r.Number));
-        return NarrativeChecks.FullArticleReferences(groundsNotes)
+        var refs = NarrativeChecks.FullArticleReferences(groundsNotes)
             .Select(r => (Code: r.Code is { } name && codes.TryGetValue(name, out var id) ? id : "civil-code", r.Number))
             .Concat(french)
             .Distinct()
-            .Select(r => (r.Code, Article: knowledge.Library.FindArticle(r.Code, r.Number)))
+            .ToList();
+
+        // The role and one-line rule come from the catalog claim that covers most of the cited articles, as the app
+        // takes them from the confirmed claim type.
+        var claim = knowledge.Claims.MaxBy(c => refs.Count(r => c.Articles.Any(a => a.Code == r.Code && a.Number == r.Number)));
+        DzLegal.Law.ClaimArticle? Catalog(string code, string number) =>
+            claim?.Articles.FirstOrDefault(a => a.Code == code && a.Number == number)
+            ?? knowledge.Claims.SelectMany(c => c.Articles).FirstOrDefault(a => a.Code == code && a.Number == number);
+        return refs
+            .Select(r => (r.Code, Article: knowledge.Library.FindArticle(r.Code, r.Number), Catalog: Catalog(r.Code, r.Number)))
             .Where(r => r.Article is { Repealed: false })
-            .Select(r => new LegalText(r.Article!.Number, knowledge.CitationName(r.Code), r.Article.Text))
+            .Select(r => new LegalText(r.Article!.Number, knowledge.CitationName(r.Code), r.Article.Text)
+            {
+                Role = r.Catalog?.Role.ToString().ToLowerInvariant(),
+                Gist = r.Catalog?.Why.Ar,
+            })
             .ToList();
     }
 

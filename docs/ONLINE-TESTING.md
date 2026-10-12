@@ -96,6 +96,7 @@ For each case it writes two versions of the grounds:
 - **B**, skeleton-first, the app's way now: the code writes every «المادة … تنص على أن «…»» from the official text, quoting the sentences the lawyer's note relies on, and the model writes only the argument after it.
 
 In B, an argument that cites or quotes an article, or contains a number found nowhere in the notes, is left as «(...)» for the lawyer, which blocks export. The app and `draft` use B whenever at least one cited article's text is loaded.
+- **C**, argued (proposal, harness only): articles cited by number in the course of the argument, as Algerian petitions and Supreme Court decisions write them («عملا بالمادتين 106 و107 من القانون المدني»), not quoted. The code groups the cited articles by their catalog role (the obligation and its breach, its proof, the compensation; a "limit" article such as no interest on a private loan is a warning for the lawyer, not a ground) and the model writes one paragraph per group. It may state what an article provides only in the catalog's one-line wording. A paragraph that leaves out one of its articles gets the citation added; one that cites another article, or fails the other checks, is asked once more, then left as «(...)».
 
 ## Rate limits ("429 … temporarily rate-limited upstream")
 

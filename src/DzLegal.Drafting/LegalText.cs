@@ -6,6 +6,12 @@ namespace DzLegal.Drafting;
 /// </summary>
 public sealed record LegalText(string Number, string CitationName, string Text)
 {
+    /// <summary>What the article does for the claim, from the catalog: basis, proof, damages, prerequisite, limit, procedure; null when unknown.</summary>
+    public string? Role { get; init; }
+
+    /// <summary>The catalog's one-line statement of the rule (lawyer-checked wording), the only paraphrase the model may use.</summary>
+    public string? Gist { get; init; }
+
     /// <summary>«المادة 106 من القانون المدني».</summary>
     public string Citation => $"المادة {Number} من {CitationName}";
 

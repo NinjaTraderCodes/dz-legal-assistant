@@ -347,7 +347,8 @@ public static partial class NarrativeChecks
                 var cited = references.Where(r => r.Index == reference.Index).ToList();
                 var texts = cited.SelectMany(r => TextsFor(r, legalTexts)).Distinct().ToList();
                 var label = string.Join("، ", cited.Select(r => r.Number).Distinct());
-                var source = texts.SelectMany(t => ContentWords(t.Text)).Concat(own).ToList();
+                // The catalog's one-line statement of the rule is accepted wording too (argued grounds paraphrase with it).
+                var source = texts.SelectMany(t => ContentWords(t.Text + " " + t.Gist)).Concat(own).ToList();
                 var covered = stated.Count(w => source.Any(o => ArabicScript.MatchesWord(w, o) || ArabicScript.MatchesWord(o, w)));
                 if (covered < MinStatedCoverage * stated.Count)
                 {

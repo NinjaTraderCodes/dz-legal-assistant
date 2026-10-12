@@ -27,8 +27,8 @@ public static class SkeletonSample
         var summary = new StringBuilder()
             .AppendLine("# Grounds: today (A) and skeleton-first (B)").AppendLine()
             .AppendLine(ci, $"{cases.Count} cases, run {DateTime.Now:yyyy-MM-dd HH:mm}. In B the code writes every «المادة … تنص على أن «…»» from the official text; the model writes only the arguments.").AppendLine()
-            .AppendLine("| model | case | A s | A wrong law | A removed | B s | B arguments kept | B wrong law | error |")
-            .AppendLine("|---|---|---:|---:|---:|---:|---|---:|---|");
+            .AppendLine("| model | case | A s | A wrong law | A removed | B s | B arguments kept | B wrong law | C s | C paragraphs kept | C wrong law | error |")
+            .AppendLine("|---|---|---:|---:|---:|---:|---|---:|---:|---|---:|---|");
         foreach (var model in options.Models)
         {
             if (HarnessModels.IsHosted(model))
@@ -54,7 +54,8 @@ public static class SkeletonSample
                     HarnessModels.Pace(model, options.DelaySeconds));
                 DraftSection? a = null;
                 SkeletonDraft? b = null;
-                double aSeconds = 0, bSeconds = 0;
+                SkeletonDraft? c = null;
+                double aSeconds = 0, bSeconds = 0, cSeconds = 0;
                 string? error = null;
                 try
                 {
@@ -64,6 +65,9 @@ public static class SkeletonSample
                     clock.Restart();
                     b = await new GroundsSkeleton(provider).DraftAsync(definition, definition.FindSection("grounds")!, inputs, legalTexts);
                     bSeconds = clock.Elapsed.TotalSeconds;
+                    clock.Restart();
+                    c = await new ArguedGrounds(provider).DraftAsync(definition, definition.FindSection("grounds")!, inputs, legalTexts, "prompts/grounds-argued.ar.txt");
+                    cSeconds = clock.Elapsed.TotalSeconds;
                 }
                 catch (Exception ex) when (ex is ModelProviderException or HttpRequestException or IOException or TaskCanceledException)
                 {
@@ -77,8 +81,11 @@ public static class SkeletonSample
                 var aIssues = a is null ? [] : NarrativeChecks.Check(a.Text, notes, inputs, definition.GroundedTerms, legalTexts);
                 var bIssues = b is null ? [] : NarrativeChecks.Check(b.Text, notes, inputs, definition.GroundedTerms, legalTexts);
                 static int WrongLaw(IReadOnlyList<NarrativeIssue> l) => l.Count(i => i.IsWrongArticleContent || i.Kind == NarrativeIssueKind.UncitedArticle);
+                var cIssues = c is null ? [] : NarrativeChecks.Check(c.Text, notes, inputs, definition.GroundedTerms, legalTexts);
+                var cGroups = ArguedGrounds.Plan(notes, legalTexts, inputs.GetValueOrDefault("notes.requests", string.Empty)).Count;
                 var kept = b is null ? string.Empty : $"{b.Paragraphs.Count - b.Problems.Count}/{b.Paragraphs.Count}";
-                summary.AppendLine(ci, $"| {model} | {drafting.Id} | {aSeconds:0} | {(a is null ? string.Empty : WrongLaw(aIssues))} | {(a is null ? string.Empty : a.RemovedText.Count)} | {bSeconds:0} | {kept} | {(b is null ? string.Empty : WrongLaw(bIssues))} | {error} |");
+                var cKept = c is null ? string.Empty : $"{cGroups - c.Problems.Count}/{cGroups}";
+                summary.AppendLine(ci, $"| {model} | {drafting.Id} | {aSeconds:0} | {(a is null ? string.Empty : WrongLaw(aIssues))} | {(a is null ? string.Empty : a.RemovedText.Count)} | {bSeconds:0} | {kept} | {(b is null ? string.Empty : WrongLaw(bIssues))} | {cSeconds:0} | {cKept} | {(c is null ? string.Empty : WrongLaw(cIssues))} | {error} |");
 
                 var file = new StringBuilder()
                     .AppendLine(ci, $"# {drafting.Name}").AppendLine()
@@ -105,10 +112,19 @@ public static class SkeletonSample
                         .AppendLine(b.Problems.Count == 0 ? "Every argument was kept." : "Arguments left for the lawyer: " + string.Join("; ", b.Problems)).AppendLine();
                 }
 
+                if (c is not null)
+                {
+                    file.AppendLine(ci, $"## C. Argued: articles cited by number, one paragraph per role ({cSeconds:0} s)").AppendLine()
+                        .AppendLine("```text").AppendLine(c.Text).AppendLine("```").AppendLine()
+                        .AppendLine("Checks: " + Describe(cIssues)).AppendLine()
+                        .AppendLine(c.Problems.Count == 0 ? "Every paragraph was kept." : "Paragraphs left for the lawyer: " + string.Join("; ", c.Problems)).AppendLine();
+                }
+
                 file.AppendLine("## Read for yourself").AppendLine()
                     .AppendLine("- [ ] Which version would you sign with fewer edits?")
                     .AppendLine("- [ ] In B, does each argument follow naturally from the article quoted before it?")
-                    .AppendLine("- [ ] In B, are long article texts acceptable quoted in full, or should they be shortened?");
+                    .AppendLine("- [ ] In B, are long article texts acceptable quoted in full, or should they be shortened?")
+                    .AppendLine("- [ ] Which of A, B and C reads most like a petition you would file?");
                 await File.WriteAllTextAsync(Path.Combine(folder, drafting.Id + ".md"), file.ToString());
             }
         }

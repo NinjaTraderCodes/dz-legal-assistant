@@ -16,6 +16,9 @@ using DzLegal.Harness;
 //   --max-consecutive-failures N (stop a model's batch after N failed cases in a row, default 3; 0 = never).
 //   dzlegal-harness draft --models <m1,m2,...|stub> [--out bench] [--cases <folder>] [--endpoint http://127.0.0.1:11434] [--timeout-minutes 15]
 //       Drafting bench: runs the drafting cases through each model and writes outputs + summary.md.
+//   dzlegal-harness skeleton --models <m|stub> [--out skeleton] [--case <name>] [--cases <folder>]
+//       Grounds as drafted today (A) beside skeleton-first grounds (B: the code states each article from its official
+//       text, the model writes only the arguments), one file per case, for a lawyer to compare.
 //   dzlegal-harness grounds --models <gemma3:4b,...|stub> [--out bench-grounds] [--law-root <data/law>] [--cases <grounds-cases>] [--endpoint ...]
 //       Runs the grounds analysis (read facts → search library → choose articles) on fictitious fact patterns and
 //       reports claim recognition, expected-article recall (final and by the model alone), time per case, and with
@@ -207,6 +210,33 @@ if (args.Length > 0 && args[0] == "draft")
             LawRoot = Option("--law-root", Path.Combine(AppContext.BaseDirectory, "data", "law")),
             RateLimitWait = TimeSpan.FromSeconds(double.Parse(Option("--rate-limit-wait-seconds", "120"), CultureInfo.InvariantCulture)),
             MaxConsecutiveFailures = int.Parse(Option("--max-consecutive-failures", "3"), CultureInfo.InvariantCulture),
+        },
+        Console.Out);
+    return 0;
+}
+
+if (args.Length > 0 && args[0] == "skeleton")
+{
+    var models = Option("--models", string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+    if (models.Length == 0)
+    {
+        Console.Error.WriteLine("skeleton: --models is required, e.g. --models google:gemma-4-26b-a4b-it (or 'stub').");
+        return 2;
+    }
+
+    await SkeletonSample.RunAsync(
+        new BenchOptions
+        {
+            Models = models,
+            DataRoot = dataRoot,
+            CasesFolder = Option("--cases", Path.Combine(AppContext.BaseDirectory, "drafting-cases")),
+            OutFolder = Option("--out", "skeleton"),
+            Endpoint = new Uri(Option("--endpoint", "http://127.0.0.1:11434")),
+            Timeout = TimeSpan.FromMinutes(double.Parse(Option("--timeout-minutes", "15"), CultureInfo.InvariantCulture)),
+            Case = args.Contains("--case") ? Option("--case", string.Empty) : null,
+            DelaySeconds = args.Contains("--delay-seconds") ? double.Parse(Option("--delay-seconds", "0"), CultureInfo.InvariantCulture) : -1,
+            LawRoot = Option("--law-root", Path.Combine(AppContext.BaseDirectory, "data", "law")),
+            RateLimitWait = TimeSpan.FromSeconds(double.Parse(Option("--rate-limit-wait-seconds", "120"), CultureInfo.InvariantCulture)),
         },
         Console.Out);
     return 0;

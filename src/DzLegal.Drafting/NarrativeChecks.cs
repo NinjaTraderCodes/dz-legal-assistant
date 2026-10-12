@@ -192,6 +192,25 @@ public static partial class NarrativeChecks
         }
     }
 
+    /// <summary>
+    /// Article references written in French («article 106 du code civil», «Articles 106 et 107», «art. 30 du code de
+    /// commerce»), with the Arabic name of the code (the Civil Code unless another is named).
+    /// </summary>
+    public static IEnumerable<(string Number, string CodeName)> FrenchArticleReferences(string text)
+    {
+        foreach (Match m in FrenchReference().Matches(text ?? string.Empty))
+        {
+            var code = m.Groups["code"].Value;
+            var name = code.Contains("commerce", StringComparison.OrdinalIgnoreCase) ? "القانون التجاري"
+                : code.Contains("proc", StringComparison.OrdinalIgnoreCase) ? "قانون الإجراءات المدنية والإدارية"
+                : "القانون المدني";
+            foreach (Match n in Regex.Matches(m.Groups["numbers"].Value, @"\d+"))
+            {
+                yield return (ArticleNumbers.Canonical(n.Value), name);
+            }
+        }
+    }
+
     /// <summary>The selected texts a reference can mean: same full number, and same code when the text names one.</summary>
     private static List<LegalText> TextsFor((string Number, int Index, string? Code) reference, IReadOnlyList<LegalText> legalTexts) =>
         legalTexts.Where(t => ArticleNumbers.Canonical(t.Number) == reference.Number
@@ -519,6 +538,9 @@ public static partial class NarrativeChecks
 
     [GeneratedRegex(@"^\s*(?:من\s+)?(القانون المدني|القانون التجاري|قانون الإجراءات المدنية والإدارية|قانون الأسرة|الدستور|قانون العمل|ق\.?\s*إ\.?\s*م\.?\s*إ|ق\.?\s*م\.?\s*ج|ق\.?\s*ت\.?\s*ج|ق\.?\s*م|ق\.?\s*ت|ق\.?\s*أ)")]
     private static partial Regex CodeAfterReference();
+
+    [GeneratedRegex(@"(?i)\bart(?:icles?|\.)?\s*(?<numbers>\d+(?:\s*(?:,|et)\s*\d+)*)(?<code>\s+(?:du|de\s+la)\s+(?:code\s+(?:civil|de\s+commerce|de\s+proc[ée]dure[^,.;\n]*)))?")]
+    private static partial Regex FrenchReference();
 
     /// <summary>«تنص على أن …», «التي تقضي بأن …», «مفادها أن …», up to the end of the sentence or the next «وحيث».</summary>
     [GeneratedRegex(@"(?:تنصان|تنص|نصتا|نصت|تقضيان|تقضي|قضت|مفادها|مضمونها|جاء فيها|(?<=(?:وفقا|طبقا|عملا|استنادا)\s+(?:لنص\s+)?ل?لمادة[^.؛\n]{0,80}?)فإن)\s+(?:على\s+)?(?:أن|ان|أنه|بأن|بان|ب)?\s*(?<content>[^.؛\n]+?)(?=\s*(?:[.؛]|\n|$|،?\s*(?:و)?حيث|،?\s*فإن|،?\s*مما))")]

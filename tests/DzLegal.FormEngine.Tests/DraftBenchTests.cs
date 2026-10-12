@@ -31,6 +31,26 @@ public sealed class DraftBenchTests : IDisposable
     }
 
     [Fact]
+    public async Task SkeletonSampleWritesBothVersionsPerCase()
+    {
+        await SkeletonSample.RunAsync(
+            new BenchOptions
+            {
+                Models = ["stub"],
+                CasesFolder = Path.Combine(AppContext.BaseDirectory, "drafting-cases"),
+                OutFolder = _out.FullName,
+                DataRoot = TestData.DocumentTypesRoot,
+                Case = "01-debt-arabic",
+            },
+            TextWriter.Null);
+
+        var file = await File.ReadAllTextAsync(Path.Combine(_out.FullName, "stub", "01-debt-arabic.md"));
+        Assert.Contains("## A. Today", file, StringComparison.Ordinal);
+        Assert.Contains("## B. Skeleton-first", file, StringComparison.Ordinal);
+        Assert.Contains("| stub | 01-debt-arabic |", await File.ReadAllTextAsync(Path.Combine(_out.FullName, "summary.md")), StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void CasesExtendTheirBase()
     {
         var folder = Path.Combine(AppContext.BaseDirectory, "drafting-cases");

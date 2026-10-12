@@ -261,13 +261,7 @@ public static partial class DraftBench
             ["القانون التجاري"] = "commercial-code", ["ق ت"] = "commercial-code", ["ق.ت"] = "commercial-code",
             ["قانون الإجراءات المدنية والإدارية"] = "cpca",
         };
-        // French notes write «article 106 du code civil», «Articles 106 et 107» or «art. 30 du code de commerce».
-        var french = FrenchReference().Matches(groundsNotes).SelectMany(m => m.Groups["numbers"].Value
-            .Split([',', ' ', 'e', 't'], StringSplitOptions.RemoveEmptyEntries)
-            .Select(n => (
-                Code: m.Groups["code"].Value.Contains("commerce", StringComparison.OrdinalIgnoreCase) ? "commercial-code"
-                    : m.Groups["code"].Value.Contains("proc", StringComparison.OrdinalIgnoreCase) ? "cpca" : "civil-code",
-                Number: DzLegal.Law.ArticleNumbers.Canonical(n))));
+        var french = NarrativeChecks.FrenchArticleReferences(groundsNotes).Select(r => (Code: codes[r.CodeName], r.Number));
         return NarrativeChecks.FullArticleReferences(groundsNotes)
             .Select(r => (Code: r.Code is { } name && codes.TryGetValue(name, out var id) ? id : "civil-code", r.Number))
             .Concat(french)
@@ -277,9 +271,6 @@ public static partial class DraftBench
             .Select(r => new LegalText(r.Article!.Number, knowledge.CitationName(r.Code), r.Article.Text))
             .ToList();
     }
-
-    [System.Text.RegularExpressions.GeneratedRegex(@"(?i)\bart(?:icles?|\.)?\s*(?<numbers>\d+(?:\s*(?:,|et)\s*\d+)*)(?<code>\s+(?:du|de\s+la)\s+(?:code\s+(?:civil|de\s+commerce|de\s+proc[ée]dure[^,.;\n]*)))?")]
-    private static partial System.Text.RegularExpressions.Regex FrenchReference();
 
     private static string Safe(string name) =>
         string.Concat(name.Select(c => char.IsLetterOrDigit(c) || c is '.' or '-' or '_' ? c : '_'));

@@ -85,6 +85,18 @@ OPENROUTER_API_KEY=sk-or-... dotnet run --project src/DzLegal.Harness -c Release
 
 For more than one run, a stability table gives the mean and range per model and case. Read the outputs as well: the automatic checks can't see swapped roles or invented reasoning.
 
+### Grounds: today beside skeleton-first (experiment)
+
+```powershell
+dotnet run --project src/DzLegal.Harness -c Release -- skeleton --models google:gemma-4-26b-a4b-it --out w2-skeleton
+```
+
+For each case it writes two versions of the grounds:
+- **A**, as the app drafts them today;
+- **B**, skeleton-first: the code writes every «المادة … تنص على أن «…»» from the official text, quoting the sentences the lawyer's note relies on, and the model writes only the argument after it.
+
+In B, an argument that cites or quotes an article, or contains a number found nowhere in the notes, is left as «(...)» for the lawyer, which blocks export. The app still drafts the A way until B is approved.
+
 ## Rate limits ("429 … temporarily rate-limited upstream")
 
 OpenRouter's free and shared capacity for Gemma 3 4B sits at the company that runs the model (DeepInfra, for example). When it's busy, it refuses requests for a minute or two with error 429. That is their limit, not a problem with your key or with the app.

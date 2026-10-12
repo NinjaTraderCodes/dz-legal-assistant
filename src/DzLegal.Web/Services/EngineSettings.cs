@@ -15,9 +15,8 @@ public sealed class EngineSettings
     private static readonly string[] DefaultGoogleModels =
     [
         // Gemma 4: a mixture of experts with about 4B parameters active per word (fast), then the dense 31B.
+        // The Gemma models Google AI Studio serves to a new key (October 2026); Gemma 3 and the small Gemma 4 answer 404.
         "gemma-4-26b-a4b-it", "gemma-4-31b-it",
-        // Gemma 3, the desktop default's family, for keys that still have it.
-        "gemma-3-27b-it", "gemma-3-12b-it", "gemma-3-4b-it",
     ];
 
     /// <summary>Optional last resort on Groq (OpenAI-compatible), used only when its key is set.</summary>

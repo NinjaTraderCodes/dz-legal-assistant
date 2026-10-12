@@ -6,11 +6,11 @@ using DzLegal.Harness;
 //   dzlegal-harness [--data <document-types folder>] [--corpus <corpus folder>]
 //       Form Engine accuracy over the corpus. Exit code 1 on any mismatch.
 //   Models: a local Ollama model (gemma3:4b, gemma4:e4b), stub, openrouter[:<model>] (OPENROUTER_API_KEY) or
-//   google[:<model>] (GOOGLE_API_KEY; default gemma-4-e4b-it) or deepinfra[:<model>] (DEEPINFRA_API_KEY; default
+//   google[:<model>] (GOOGLE_API_KEY; default gemma-4-26b-a4b-it) or deepinfra[:<model>] (DEEPINFRA_API_KEY; default
 //   google/gemma-3-4b-it, called directly without OpenRouter's shared pool). Hosted engines receive the fictitious test cases (docs/ONLINE-TESTING.md).
 //   dzlegal-harness ping [--models openrouter[:<model>] | google[:<model>] | deepinfra[:<model>]]
 //       OpenRouter: whose limit stops it (key status, then a tiny and a drafting-sized request). Google: which Gemma
-//       models the key can call, then a tiny request to the model (default gemma-4-e4b-it). Keys are never shown.
+//       models the key can call, then a tiny request to the model (default gemma-4-26b-a4b-it). Keys are never shown.
 //   Batch options for draft and grounds: --runs N (repeat each case), --case <name> (one case), --delay-seconds S,
 //   --rate-limit-wait-seconds S (hosted: wait out "too many requests", default 120 per call),
 //   --max-consecutive-failures N (stop a model's batch after N failed cases in a row, default 3; 0 = never).

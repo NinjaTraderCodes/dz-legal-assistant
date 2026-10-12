@@ -21,10 +21,11 @@ public static class HarnessModels
     public const string DefaultOpenRouterModel = "google/gemma-3-4b-it";
 
     /// <summary>
-    /// Gemma 4 E4B: free on Google AI Studio (no card) and runnable on a lawyer's laptop as <c>gemma4:e4b</c>. Google no
-    /// longer serves Gemma 3 to new keys, and OpenRouter's Gemma 3 4B has a single, often saturated, provider.
+    /// Gemma 4 26B A4B, the web demo's model: Google AI Studio serves new keys only the large Gemma 4 models (26B A4B and
+    /// 31B); Gemma 3 and the small Gemma 4 (E2B, E4B) answer 404. For the offline model's own behaviour use OpenRouter's
+    /// or DeepInfra's Gemma 3 4B, or the local one.
     /// </summary>
-    public const string DefaultGoogleModel = "gemma-4-e4b-it";
+    public const string DefaultGoogleModel = "gemma-4-26b-a4b-it";
 
     /// <summary>
     /// DeepInfra, called directly with the user's own key: the company that actually serves Gemma 3 4B behind OpenRouter,

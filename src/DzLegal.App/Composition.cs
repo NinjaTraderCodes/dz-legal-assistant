@@ -109,7 +109,7 @@ public static class Composition
             return null;
         }
 
-        var model = Environment.GetEnvironmentVariable("GOOGLE_MODEL") is { Length: > 0 } m ? m : "gemma-4-e4b-it";
+        var model = Environment.GetEnvironmentVariable("GOOGLE_MODEL") is { Length: > 0 } m ? m : "gemma-4-26b-a4b-it";
         var options = new DzLegal.ModelProviders.Hosted.GoogleAiOptions
         {
             ApiKey = key.Trim(),

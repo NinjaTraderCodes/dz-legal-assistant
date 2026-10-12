@@ -98,7 +98,7 @@ public class OfflineGuaranteeTests
             var google = both[2];
             Assert.True(google.SendsCaseData);
             google.Localize(vm.L);
-            Assert.Contains("gemma-4-e4b-it", google.DisplayName, StringComparison.Ordinal);
+            Assert.Contains("gemma-4-26b-a4b-it", google.DisplayName, StringComparison.Ordinal);
 
             // With a DeepInfra key too: Gemma 3 4B called directly on DeepInfra.
             Environment.SetEnvironmentVariable("DEEPINFRA_API_KEY", "test-key");

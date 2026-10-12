@@ -50,7 +50,7 @@ public sealed class GoogleDiagnosticsTests
     [Fact]
     public void TheGoogleSpecDefaultsToGemma4E4B()
     {
-        Assert.Equal("gemma-4-e4b-it", HarnessModels.GoogleModel("google"));
+        Assert.Equal("gemma-4-26b-a4b-it", HarnessModels.GoogleModel("google"));
         Assert.Equal("gemma-4-26b-a4b-it", HarnessModels.GoogleModel("google:gemma-4-26b-a4b-it"));
         Assert.True(HarnessModels.IsHosted("google"));
     }

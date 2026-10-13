@@ -110,6 +110,7 @@ public static class SkeletonSample
                         .AppendLine("```text").AppendLine(b.Text).AppendLine("```").AppendLine()
                         .AppendLine("Checks: " + Describe(bIssues)).AppendLine()
                         .AppendLine(b.Problems.Count == 0 ? "Every argument was kept." : "Arguments left for the lawyer: " + string.Join("; ", b.Problems)).AppendLine();
+                    AppendAnswers(file, b);
                 }
 
                 if (c is not null)
@@ -118,6 +119,7 @@ public static class SkeletonSample
                         .AppendLine("```text").AppendLine(c.Text).AppendLine("```").AppendLine()
                         .AppendLine("Checks: " + Describe(cIssues)).AppendLine()
                         .AppendLine(c.Problems.Count == 0 ? "Every paragraph was kept." : "Paragraphs left for the lawyer: " + string.Join("; ", c.Problems)).AppendLine();
+                    AppendAnswers(file, c);
                 }
 
                 file.AppendLine("## Read for yourself").AppendLine()
@@ -131,6 +133,21 @@ public static class SkeletonSample
 
         await File.WriteAllTextAsync(Path.Combine(options.OutFolder, "summary.md"), summary.ToString());
         log.WriteLine($"Done: {Path.GetFullPath(Path.Combine(options.OutFolder, "summary.md"))}");
+    }
+
+    /// <summary>When a paragraph was left for the lawyer, what the model actually wrote: the answers as received.</summary>
+    private static void AppendAnswers(StringBuilder file, SkeletonDraft draft)
+    {
+        if (draft.Problems.Count == 0 || draft.RawAnswers.Count == 0)
+        {
+            return;
+        }
+
+        for (var i = 0; i < draft.RawAnswers.Count; i++)
+        {
+            file.AppendLine(i == 0 ? "The model's answer:" : "The model's answer on the retry:").AppendLine()
+                .AppendLine("```text").AppendLine(draft.RawAnswers[i].Trim()).AppendLine("```").AppendLine();
+        }
     }
 
     private static string Describe(IReadOnlyList<NarrativeIssue> issues) =>

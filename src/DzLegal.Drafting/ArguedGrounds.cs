@@ -222,18 +222,20 @@ public sealed class ArguedGrounds(IModelProvider provider)
         }
 
         var request = BuildRequest(definition, inputs, groups, promptPath);
-        var arguments = new Dictionary<int, string>(Parse(await AskAsync(definition, request, cancellationToken), groups.Count));
+        var raw = new List<string> { await AskAsync(definition, request, cancellationToken) };
+        var arguments = new Dictionary<int, string>(Parse(raw[0], groups.Count));
         var failed = Enumerable.Range(1, groups.Count).Where(n => Problem(definition, arguments.GetValueOrDefault(n), groups, inputs, legalTexts) is not null).ToList();
         if (failed.Count > 0)
         {
-            var second = Parse(await AskAsync(definition, request, cancellationToken), groups.Count);
+            raw.Add(await AskAsync(definition, request, cancellationToken));
+            var second = Parse(raw[^1], groups.Count);
             foreach (var n in failed.Where(n => second.TryGetValue(n, out var retry) && Problem(definition, retry, groups, inputs, legalTexts) is null))
             {
                 arguments[n] = second[n];
             }
         }
 
-        return Assemble(definition, groups, arguments, inputs, legalTexts) with { Retried = failed.Count > 0 };
+        return Assemble(definition, groups, arguments, inputs, legalTexts) with { Retried = failed.Count > 0, RawAnswers = raw };
     }
 
     /// <summary>

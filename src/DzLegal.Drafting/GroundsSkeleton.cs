@@ -24,6 +24,9 @@ public sealed record SkeletonDraft(string Text, IReadOnlyList<SkeletonParagraph>
 
     /// <summary>The model's text for paragraphs that failed the checks, kept for the lawyer to see.</summary>
     public IReadOnlyList<string> Rejected { get; init; } = [];
+
+    /// <summary>The model's answers as received (first try, then the retry), for the harness to show.</summary>
+    public IReadOnlyList<string> RawAnswers { get; init; } = [];
 }
 
 /// <summary>
@@ -128,18 +131,20 @@ public sealed partial class GroundsSkeleton(IModelProvider provider)
 
         // A missing or rejected argument is asked once more; only the failed numbers take the second answer.
         var request = BuildRequest(definition, inputs, paragraphs, promptPath);
-        var arguments = new Dictionary<int, string>(ParseArguments(await AskAsync(definition, request, cancellationToken)));
+        var raw = new List<string> { await AskAsync(definition, request, cancellationToken) };
+        var arguments = new Dictionary<int, string>(ParseArguments(raw[0]));
         var failed = Enumerable.Range(1, paragraphs.Count).Where(n => Problem(definition, arguments.GetValueOrDefault(n), paragraphs, inputs, legalTexts) is not null).ToList();
         if (failed.Count > 0)
         {
-            var second = ParseArguments(await AskAsync(definition, request, cancellationToken));
+            raw.Add(await AskAsync(definition, request, cancellationToken));
+            var second = ParseArguments(raw[^1]);
             foreach (var n in failed.Where(n => second.TryGetValue(n, out var retry) && Problem(definition, retry, paragraphs, inputs, legalTexts) is null))
             {
                 arguments[n] = second[n];
             }
         }
 
-        return Assemble(definition, paragraphs, arguments, inputs, legalTexts) with { Retried = failed.Count > 0 };
+        return Assemble(definition, paragraphs, arguments, inputs, legalTexts) with { Retried = failed.Count > 0, RawAnswers = raw };
     }
 
     private async Task<string> AskAsync(DocumentTypeDefinition definition, ModelRequest request, CancellationToken cancellationToken)

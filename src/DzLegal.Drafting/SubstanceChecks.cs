@@ -24,6 +24,12 @@ public enum SubstanceIssueKind
     /// <summary>A request line is mostly in Latin letters: the requests are copied verbatim, so they must be in Arabic (CPCA art. 8). Blocks export.</summary>
     NonArabicRequest,
 
+    /// <summary>
+    /// A request line written in Algerian dialect («يخلص 240000 دج تاع الكرا»): the requests are copied as written, so a
+    /// court would read the dialect. A warning only, since a word list cannot be sure.
+    /// </summary>
+    DialectRequest,
+
     /// <summary>A prison sentence («حبس», «سجن») asked in a civil case, which a civil court cannot order. Blocks export.</summary>
     CriminalPenaltyInCivilClaim,
 
@@ -76,6 +82,11 @@ public static partial class SubstanceChecks
         if (requestLines.Any(l => l.Count(char.IsLetter) >= 3 && ArabicScript.Ratio(l) < 0.5))
         {
             issues.Add(new SubstanceIssue(SubstanceIssueKind.NonArabicRequest, null));
+        }
+
+        if (requestLines.Any(IsDialect))
+        {
+            issues.Add(new SubstanceIssue(SubstanceIssueKind.DialectRequest, null));
         }
 
         // Requests, grounds notes and the drafted text: an injected «وبالحبس لمدة 5 سنوات» can reach the grounds too.
@@ -162,6 +173,20 @@ public static partial class SubstanceChecks
 
     [GeneratedRegex(@"(?i)\b(?:imprison\w*|prison|emprisonnement|incarc[ée]ration)\b")]
     private static partial Regex ForeignPrisonWords();
+
+    // Words of Algerian dialect that formal Arabic does not use: one is enough. «يخلص» (to pay), «فاتو», «لي» also have
+    // formal uses, so it takes two of them.
+    private static readonly HashSet<string> DialectWords = new(
+        new[] { "تاع", "ديال", "راه", "راهو", "راهي", "راني", "باش", "بزاف", "ماشي", "واش", "كاش", "الكرا", "دراهم", "صوارد" }.Select(ArabicScript.Normalize),
+        StringComparer.Ordinal);
+
+    private static readonly HashSet<string> WeakDialectWords = new(new[] { "يخلص", "خلص", "فاتو", "لي", "هاذ", "هذاك" }.Select(ArabicScript.Normalize), StringComparer.Ordinal);
+
+    internal static bool IsDialect(string line)
+    {
+        var tokens = ArabicScript.Tokens(line).Select(ArabicScript.Normalize).ToList();
+        return tokens.Any(DialectWords.Contains) || tokens.Count(WeakDialectWords.Contains) >= 2;
+    }
 
     private static bool Mentions(string text, IEnumerable<string> words)
     {

@@ -68,6 +68,9 @@ public sealed class ModelProviderException : Exception
     /// <summary>The service refused because of too many requests (429) or overload (503): waiting a little usually helps.</summary>
     public bool IsRateLimited { get; init; }
 
+    /// <summary>The answer reached the length limit and was cut off: what came before may be usable, but not as a whole.</summary>
+    public bool IsCutOff { get; init; }
+
     public ModelProviderException()
     {
     }

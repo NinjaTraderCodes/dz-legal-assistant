@@ -106,6 +106,21 @@ public class GoogleAiProviderTests
     }
 
     [Fact]
+    public async Task AServerErrorBurstIsSentAgain()
+    {
+        // Google AI Studio answered "500 Internal error" on a third of the analysis bench (13 Oct), then recovered.
+        HostedHttp.ServerErrorPause = TimeSpan.Zero;
+        var calls = 0;
+        var handler = new FakeHandler(_ => ++calls < 3
+            ? new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError) { Content = new StringContent("""{"error":{"message":"Internal error encountered."}}""") }
+            : Sse("""{"candidates":[{"content":{"parts":[{"text":"حيث إن"}]},"finishReason":"STOP"}]}"""));
+        using var provider = new GoogleAiModelProvider(new GoogleAiOptions { ApiKey = "k" }, handler);
+
+        Assert.Equal("حيث إن", await provider.GenerateAsync(Request, CancellationToken.None));
+        Assert.Equal(3, calls);
+    }
+
+    [Fact]
     public async Task AnEmptyAnswerIsAnError()
     {
         var handler = new FakeHandler(_ => Sse("""{"candidates":[{"content":{"parts":[{"text":" "}]},"finishReason":"STOP"}]}"""));

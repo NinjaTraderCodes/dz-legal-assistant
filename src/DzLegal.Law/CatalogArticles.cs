@@ -14,12 +14,16 @@ public sealed record ArticleSuggestion(ClaimArticle Reference, string CitationNa
 /// <summary>Litigation areas of the claim catalog, and how a court section names them.</summary>
 public static class LegalAreas
 {
+    /// <summary>Administrative courts: no claim type of the catalog belongs there (they are out of the app's scope).</summary>
+    public const string Administrative = "administrative";
+
     /// <summary>The litigation area named by a court section («القسم التجاري» → commercial), or null when unclear.</summary>
     public static string? AreaOf(string? courtSection)
     {
         var tokens = ArabicScript.Tokens(courtSection);
         bool Has(string word) => tokens.Any(t => ArabicScript.MatchesWord(t, ArabicScript.Tokens(word)[0]));
-        return Has("الاجتماعي") || Has("العمل") ? "social"
+        return Has("الإدارية") || Has("الإداري") || Has("إداري") ? Administrative
+            : Has("الاجتماعي") || Has("العمل") ? "social"
             : Has("الأسرة") || Has("شؤون") ? "family"
             : Has("التجاري") || Has("البحري") ? "commercial"
             : Has("المدني") || Has("العقاري") ? "civil"

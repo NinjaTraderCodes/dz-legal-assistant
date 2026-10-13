@@ -77,7 +77,7 @@ public sealed class GoogleAiModelProvider : IModelProvider, IDisposable
         {
             throw new ModelProviderException(answered
                 ? $"{Name} stopped at its answer length limit: the answer was cut off."
-                : $"{Name} reached its answer length limit before writing anything (it was thinking).");
+                : $"{Name} reached its answer length limit before writing anything (it was thinking).") { IsCutOff = true };
         }
 
         if (finish is "SAFETY" or "RECITATION" or "BLOCKLIST" or "PROHIBITED_CONTENT")

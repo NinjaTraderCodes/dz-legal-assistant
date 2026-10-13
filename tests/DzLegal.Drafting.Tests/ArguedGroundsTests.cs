@@ -139,6 +139,42 @@ public class ArguedGroundsTests
     }
 
     [Fact]
+    public async Task ACutOffAnswerIsAskedAgainAndThenLeftForTheLawyerWithoutFailingTheDraft()
+    {
+        // Gemma 3 4B on French and dialect notes (02, a4, 13 Oct) ran into the length limit: the whole draft failed.
+        var inputs = Fixtures.CompleteInputs();
+        inputs["notes.grounds"] = Notes;
+        inputs["notes.requests"] = Requests;
+        var calls = 0;
+        var provider = new RecordingProvider(_ => ++calls > 0 ? throw new ModelProviderException("cut off") { IsCutOff = true } : string.Empty);
+
+        var draft = await new ArguedGrounds(provider).DraftAsync(Fixtures.Requete, Fixtures.Requete.FindSection("grounds")!, inputs, Ticked, "prompts/grounds-argued.ar.txt");
+
+        Assert.Equal(2, calls);
+        Assert.True(draft.Retried);
+        Assert.Equal(3, draft.Problems.Count);
+        Assert.All(draft.Text.Split('\n'), line => Assert.EndsWith("(...).", line, StringComparison.Ordinal));
+    }
+
+    [Theory]
+    [InlineData("female", "male", "فإن طلب المدعية إلزام المدعى عليه")]
+    [InlineData("male", "female", "فإن طلب المدعي إلزام المدعى عليها")]
+    public async Task TheClosingTheModelIsShownAgreesWithThePartiesGender(string plaintiff, string defendant, string closing)
+    {
+        // Case 03 (13 Oct): a woman's petition closed with «فإن طلب المدعي».
+        var inputs = Fixtures.CompleteInputs();
+        inputs["notes.grounds"] = Notes;
+        inputs["notes.requests"] = Requests;
+        inputs["plaintiff.gender"] = plaintiff;
+        inputs["defendant.gender"] = defendant;
+        var provider = new RecordingProvider(_ => "1- وحيث إن الدين ثابت.");
+
+        await new ArguedGrounds(provider).DraftAsync(Fixtures.Requete, Fixtures.Requete.FindSection("grounds")!, inputs, Ticked, "prompts/grounds-argued.ar.txt");
+
+        Assert.Contains(closing, provider.Requests[0].UserPrompt, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void AClauseRepeatingTheRuleTheCodeWroteIsDropped()
     {
         // Gemma 3 4B on case 01, paragraph 2 (13 Oct): the rule of art. 186 came back inside the application.

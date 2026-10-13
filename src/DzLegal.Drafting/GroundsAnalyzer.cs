@@ -95,6 +95,11 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
 
         var area = LegalAreas.AreaOf(courtSection);
         var claims = knowledge.Claims.Where(c => area is null || c.Area == area).ToList();
+        if (area == LegalAreas.Administrative)
+        {
+            // Out of scope, said by the code: a small model offered «contract rescission» for an administrative appeal.
+            return new GroundsAnalysis { FactsHash = FactsHash(subject, facts, courtSection), Model = _provider.Name };
+        }
 
         progress?.Report(AnalysisStage.Reading);
         var readingRequest = BuildReadingRequest(knowledge, subject, facts, claims);

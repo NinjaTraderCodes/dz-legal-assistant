@@ -60,6 +60,18 @@ public class SubstanceChecksTests
         Assert.True(SubstanceChecks.BlocksExport(issue.Kind));
     }
 
+    [Theory]
+    [InlineData("يخلص 240000 دج تاع الكرا لي راه فاتو.", true)] // case 03 of the drafting bench, inserted as written
+    [InlineData("يخلص المصاريف لي فاتو.", true)]
+    [InlineData("إلزام المدعى عليه بأن يدفع للمدعية مبلغ 240000 دج بدلات إيجار غير مدفوعة.", false)]
+    [InlineData("إلزام المدعى عليه بأن يدفع لي مبلغ التعويض.", false)] // «لي» alone is formal Arabic too
+    public void ARequestInDialectIsPointedOutWithoutBlockingExport(string request, bool dialect)
+    {
+        var issues = SubstanceChecks.Check(Inputs(requests: request), [Loan], [Art450], string.Empty);
+        Assert.Equal(dialect, issues.Any(i => i.Kind == SubstanceIssueKind.DialectRequest));
+        Assert.False(SubstanceChecks.BlocksExport(SubstanceIssueKind.DialectRequest));
+    }
+
     [Fact]
     public void ARequestLineInFrenchBlocksExportButFrenchWordsInAnArabicLineDoNot()
     {

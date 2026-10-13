@@ -12,11 +12,13 @@ internal static class HostedHttp
     /// Sends the request built by <paramref name="create"/>; turns network failures, timeouts and error statuses into
     /// <see cref="ModelProviderException"/>. When the service answers "too many requests" (429) or "busy" (503), it waits
     /// (as long as the service asks, else 10 s, 20 s, 40 s, then 60 s) and sends again, within the policy's budget. This
-    /// happens before any text is read, so nothing is ever duplicated.
+    /// happens before any text is read, so nothing is ever duplicated. A server error (500, 502, 504) is sent again up to
+    /// twice after a short pause: Google AI Studio answers "500 Internal error" in bursts that pass within seconds.
     /// </summary>
     public static async Task<HttpResponseMessage> SendAsync(HttpClient http, Func<HttpRequestMessage> create, string engine, RateLimitPolicy policy, CancellationToken cancellationToken)
     {
         var waited = TimeSpan.Zero;
+        var serverRetries = 0;
         for (var attempt = 1; ; attempt++)
         {
             HttpResponseMessage response;
@@ -58,6 +60,13 @@ internal static class HostedHttp
                     continue;
                 }
 
+                if (IsServerError(response.StatusCode) && serverRetries < MaxServerRetries)
+                {
+                    serverRetries++;
+                    await Task.Delay(ServerErrorPause * serverRetries, cancellationToken);
+                    continue;
+                }
+
                 throw Error(response.StatusCode, await response.Content.ReadAsStringAsync(cancellationToken), engine);
             }
         }
@@ -65,6 +74,14 @@ internal static class HostedHttp
 
     /// <summary>A ceiling on attempts, for a service that keeps saying "retry now" (Retry-After: 0).</summary>
     private const int MaxAttempts = 12;
+
+    private const int MaxServerRetries = 2;
+
+    /// <summary>The pause before resending after a server error (then twice as long); tests set it to zero.</summary>
+    internal static TimeSpan ServerErrorPause { get; set; } = TimeSpan.FromSeconds(3);
+
+    public static bool IsServerError(HttpStatusCode status) =>
+        status is HttpStatusCode.InternalServerError or HttpStatusCode.BadGateway or HttpStatusCode.GatewayTimeout;
 
     public static bool IsRateLimit(HttpStatusCode status) => status is HttpStatusCode.TooManyRequests or HttpStatusCode.ServiceUnavailable;
 

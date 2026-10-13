@@ -209,7 +209,7 @@ public sealed class ArguedGrounds(IModelProvider provider)
             ? string.Empty
             : File.ReadAllText(Path.Combine(definition.SourceDirectory, definition.SystemPrompt)).Trim();
         var notes = string.Join('\n', groups.Select(g => g.Note).Where(n => n.Length > 0));
-        return new ModelRequest(RequestId, system, TemplateRenderer.Normalize(user), notes) { MaxTokens = 250 + (200 * groups.Count) };
+        return new ModelRequest(RequestId, system, TemplateRenderer.Normalize(user), notes) { MaxTokens = 400 + (250 * groups.Count) };
     }
 
     public async Task<SkeletonDraft> DraftAsync(DocumentTypeDefinition definition, SectionDefinition section, IReadOnlyDictionary<string, string> inputs, IReadOnlyList<LegalText> legalTexts, string promptPath, CancellationToken cancellationToken = default)
@@ -397,14 +397,29 @@ public sealed class ArguedGrounds(IModelProvider provider)
         ArticleNumbers.Canonical(text.Number) == reference.Number
         && (reference.CodeName is null || ArabicScript.Normalize(text.CitationName).Contains(ArabicScript.Normalize(reference.CodeName), StringComparison.Ordinal));
 
+    /// <summary>
+    /// The model's answer. One cut off at the length limit (a small model sometimes rambles on French or dialect notes)
+    /// counts as no answer for this try, so the paragraphs are asked once more and then left as «(...)», rather than the
+    /// whole draft failing.
+    /// </summary>
     private async Task<string> AskAsync(DocumentTypeDefinition definition, ModelRequest request, CancellationToken cancellationToken)
     {
         var answer = new StringBuilder();
-        await foreach (var piece in _provider.StreamAsync(request, cancellationToken))
+        try
         {
-            answer.Append(piece);
+            await foreach (var piece in _provider.StreamAsync(request, cancellationToken))
+            {
+                answer.Append(piece);
+            }
+        }
+        catch (ModelProviderException ex) when (ex.IsCutOff)
+        {
+            return CutOffMarker;
         }
 
         return DraftingService.ApplyCorrections(definition, answer.ToString());
     }
+
+    /// <summary>Stands for a cut-off answer in <see cref="SkeletonDraft.RawAnswers"/>; it parses to no paragraph.</summary>
+    internal const string CutOffMarker = "(answer cut off at the length limit)";
 }

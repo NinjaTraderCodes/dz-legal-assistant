@@ -79,7 +79,7 @@ public sealed class OpenAiCompatibleModelProvider : IModelProvider, IDisposable
             switch (chunk?.Choices is [var last, ..] ? last.FinishReason : null)
             {
                 case "length":
-                    throw new ModelProviderException($"{Name} stopped at its answer length limit: the answer was cut off.");
+                    throw new ModelProviderException($"{Name} stopped at its answer length limit: the answer was cut off.") { IsCutOff = true };
                 case "content_filter":
                     throw new ModelProviderException($"{Name} stopped its answer (content filter).");
             }

@@ -12,6 +12,8 @@ public sealed class LegalAreaTests
     [InlineData("قسم شؤون الأسرة", "family")]
     [InlineData("القسم الاجتماعي", "social")]
     [InlineData("القسم الاستعجالي", null)]
+    [InlineData("المحكمة الإدارية", LegalAreas.Administrative)]
+    [InlineData("الغرفة الإدارية", LegalAreas.Administrative)]
     [InlineData("", null)]
     public void TheAreaComesFromTheCourtSection(string section, string? expected) => Assert.Equal(expected, LegalAreas.AreaOf(section));
 }
@@ -417,7 +419,8 @@ public sealed class GroundsBatchTests
     {
         var knowledge = LegalKnowledgeLoader.Load(Path.Combine(AppContext.BaseDirectory, "data", "law"));
         var cases = GroundsEvaluator.LoadCases(Path.Combine(AppContext.BaseDirectory, "grounds-cases"));
-        var outOfScope = cases.Where(c => c.Expect.Length == 0).Take(2).Concat(cases.Where(c => c.Expect.Length > 0).Take(2)).ToList();
+        // Not an administrative court: the code itself answers those, with no engine call.
+        var outOfScope = cases.Where(c => c.Expect.Length == 0 && LegalAreas.AreaOf(c.CourtSection) != LegalAreas.Administrative).Take(2).Concat(cases.Where(c => c.Expect.Length > 0).Take(2)).ToList();
 
         var runs = new[]
         {

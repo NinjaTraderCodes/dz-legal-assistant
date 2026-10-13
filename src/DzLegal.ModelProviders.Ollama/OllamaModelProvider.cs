@@ -69,7 +69,7 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
             Report(request, reply, clock.Elapsed);
             if (reply is { Done: false } || reply?.DoneReason == "length")
             {
-                throw new ModelProviderException($"{Name} stopped at its answer length limit: the answer was cut off.");
+                throw new ModelProviderException($"{Name} stopped at its answer length limit: the answer was cut off.") { IsCutOff = true };
             }
 
             return reply?.Message?.Content
@@ -128,7 +128,7 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
                     Report(request, chunk, firstWord ?? clock.Elapsed);
                     if (chunk.DoneReason == "length")
                     {
-                        throw new ModelProviderException($"{Name} stopped at its answer length limit: the answer was cut off.");
+                        throw new ModelProviderException($"{Name} stopped at its answer length limit: the answer was cut off.") { IsCutOff = true };
                     }
 
                     if (!written)

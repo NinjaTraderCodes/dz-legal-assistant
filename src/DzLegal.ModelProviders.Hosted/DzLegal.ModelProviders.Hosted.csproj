@@ -3,6 +3,9 @@
     <Description>Hosted model providers for the public web demo only (Google AI Studio, OpenAI-compatible APIs). The desktop app must never reference this project: it sends prompts over the internet.</Description>
   </PropertyGroup>
   <ItemGroup>
+    <InternalsVisibleTo Include="DzLegal.Drafting.Tests" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\DzLegal.Drafting\DzLegal.Drafting.csproj" />
   </ItemGroup>
 </Project>

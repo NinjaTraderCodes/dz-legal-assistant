@@ -162,6 +162,17 @@ public sealed class GroundsAnalyzerTests
     }
 
     [Fact]
+    public async Task AnAdministrativeCourtIsOutOfScopeWithoutAskingTheModel()
+    {
+        // Bench of 13 Oct: Gemma 3 4B read an appeal against a wali's decision as «contract rescission».
+        var provider = new RecordingProvider(_ => "نوع الدعوى: loan");
+        var analysis = await new GroundsAnalyzer(provider).AnalyseAsync(Knowledge(Library), "", "أصدر الوالي قرارا بإلغاء رخصة البناء", "المحكمة الإدارية");
+        Assert.Empty(analysis.ClaimIds);
+        Assert.Empty(analysis.Articles);
+        Assert.Empty(provider.Requests);
+    }
+
+    [Fact]
     public void SelectionKeepsCandidateKeysWithRolesAndSafeReasons()
     {
         var candidates = GroundsAnalyzer.Candidates(Knowledge(Library), GroundsAnalyzer.ParseReading(Reading, [Loan]), [Loan]);

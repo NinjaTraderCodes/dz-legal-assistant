@@ -104,7 +104,7 @@ public sealed partial record ArguedGroup(string Topic, IReadOnlyList<LegalText> 
 /// application that cites or quotes an article, has a number found nowhere in the notes, or fails the other checks is
 /// asked once more, then left as «(...)» for the lawyer.
 /// </summary>
-public sealed class ArguedGrounds(IModelProvider provider)
+public sealed partial class ArguedGrounds(IModelProvider provider)
 {
     /// <summary>Request id for the model call (used by recording providers and logs).</summary>
     public const string RequestId = "grounds-argued";
@@ -225,12 +225,12 @@ public sealed class ArguedGrounds(IModelProvider provider)
 
         var request = BuildRequest(definition, inputs, groups, promptPath);
         var raw = new List<string> { await AskAsync(definition, request, cancellationToken) };
-        var arguments = new Dictionary<int, string>(Parse(raw[0], groups.Count));
+        var arguments = new Dictionary<int, string>(WithoutOwnCitations(Parse(raw[0], groups.Count), groups));
         var failed = Enumerable.Range(1, groups.Count).Where(n => Problem(definition, arguments.GetValueOrDefault(n), groups, inputs, legalTexts) is not null).ToList();
         if (failed.Count > 0)
         {
             raw.Add(await AskAsync(definition, request, cancellationToken));
-            var second = Parse(raw[^1], groups.Count);
+            var second = WithoutOwnCitations(Parse(raw[^1], groups.Count), groups);
             foreach (var n in failed.Where(n => second.TryGetValue(n, out var retry) && Problem(definition, retry, groups, inputs, legalTexts) is null))
             {
                 arguments[n] = second[n];
@@ -271,7 +271,7 @@ public sealed class ArguedGrounds(IModelProvider provider)
         var lines = new List<string>();
         for (var i = 0; i < groups.Count; i++)
         {
-            var argument = arguments.GetValueOrDefault(i + 1);
+            var argument = arguments.GetValueOrDefault(i + 1) is { } given ? WithoutOwnCitation(given, groups[i]) : null;
             if (Problem(definition, argument, groups, inputs, legalTexts) is { } problem)
             {
                 problems.Add($"[{i + 1}] {groups[i].Topic}: {problem}, left as {Placeholder}");
@@ -298,6 +298,24 @@ public sealed class ArguedGrounds(IModelProvider provider)
     }
 
     private static string Opening(int index) => index == 0 ? "حيث إن " : "وحيث إن ";
+
+    private static Dictionary<int, string> WithoutOwnCitations(IReadOnlyDictionary<int, string> arguments, IReadOnlyList<ArguedGroup> groups) =>
+        arguments.ToDictionary(a => a.Key, a => a.Key >= 1 && a.Key <= groups.Count ? WithoutOwnCitation(a.Value, groups[a.Key - 1]) : a.Value);
+
+    /// <summary>
+    /// Removes a bare reference to one of the paragraph's own articles («، كما تنص عليه المادة 498 من القانون المدني»,
+    /// «طبقا للمادة 498 من القانون المدني»): the code already cited it in the rule sentence, so it adds nothing and need
+    /// not cost the paragraph (Gemma 3 4B, 14 Oct, case 03). Any other reference stays, and is rejected as before.
+    /// </summary>
+    internal static string WithoutOwnCitation(string application, ArguedGroup group)
+    {
+        var own = group.Texts.Select(t => ArticleNumbers.Canonical(t.Number)).ToHashSet(StringComparer.Ordinal);
+        return OwnCitation().Replace(application, m =>
+            own.Contains(ArticleNumbers.Canonical(m.Groups["n"].Value)) ? string.Empty : m.Value);
+    }
+
+    [GeneratedRegex(@"\s*[،,]?\s*(?:كما\s+(?:تنص|نصت|تقضي|قضت)\s+(?:عليه|على\s+ذلك|به)\s+|طبقا\s+|وفقا\s+|عملا\s+|استنادا\s+(?:إلى|الى)\s+)(?:ال|لل|بال)?ماد[ةه]\s+(?<n>\d+(?:\s+مكرر)?)\s+من\s+(?:ال)?قانون\s+(?:ال)?\p{L}+")]
+    private static partial Regex OwnCitation();
 
     /// <summary>
     /// Drops a clause of the application that repeats the paragraph's rule, which the code already wrote before it

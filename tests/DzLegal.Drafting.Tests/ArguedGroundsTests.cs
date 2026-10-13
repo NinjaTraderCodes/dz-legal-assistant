@@ -184,6 +184,25 @@ public class ArguedGroundsTests
     }
 
     [Fact]
+    public void AReferenceToTheParagraphsOwnArticleIsDroppedButAnyOtherIsRejected()
+    {
+        // Gemma 3 4B, 14 Oct, case 03: a sound application lost to «كما تنص عليه المادة 498 من القانون المدني».
+        var groups = ArguedGrounds.Plan(Notes, Ticked, Requests);
+        var inputs = new Dictionary<string, string> { ["notes.facts"] = "اقترض المدعى عليه مبلغ 1500000 دج ولم يرده رغم إعذاره.", ["notes.requests"] = Requests };
+        var draft = ArguedGrounds.Assemble(null, groups, new Dictionary<int, string>
+        {
+            [1] = "وحيث إن المدعى عليه ملزم برد القرض، كما تنص عليه المادة 450 من القانون المدني، وقد امتنع عن رد مبلغ 1500000 دج.",
+            [2] = "وحيث إن الدين ثابت طبقا للمادة 323 من القانون المدني.",
+            [3] = "وحيث إن المدعى عليه أعذر ولم يف، وفقا للمادة 182 من القانون المدني.",
+        }, inputs, Ticked);
+
+        var lines = draft.Text.Split('\n');
+        Assert.EndsWith("وحيث إن المدعى عليه ملزم برد القرض، وقد امتنع عن رد مبلغ 1500000 دج.", lines[0], StringComparison.Ordinal);
+        Assert.EndsWith("وحيث إن الدين ثابت.", lines[1], StringComparison.Ordinal);
+        Assert.EndsWith("(...).", lines[2], StringComparison.Ordinal); // 182 is not this paragraph's article
+    }
+
+    [Fact]
     public void AClauseRepeatingTheRuleTheCodeWroteIsDropped()
     {
         // Gemma 3 4B on case 01, paragraph 2 (13 Oct): the rule of art. 186 came back inside the application.

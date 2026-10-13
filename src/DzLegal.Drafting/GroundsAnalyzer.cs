@@ -106,7 +106,7 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
         Trace?.Invoke("reading.prompt", readingRequest.UserPrompt);
         var readingAnswer = await CollectAsync(AnalysisStage.Reading, readingRequest, cancellationToken);
         Trace?.Invoke("reading.answer", readingAnswer);
-        var reading = ParseReading(readingAnswer, claims);
+        var reading = Corrected(ParseReading(readingAnswer, claims), facts, claims);
 
         progress?.Report(AnalysisStage.Searching);
         var candidates = Candidates(knowledge, reading, claims);
@@ -250,6 +250,40 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
     /// claim types from the given list are kept; article numbers are removed from the free lines. When the claim line
     /// is missing, the whole answer is searched for ids and names.
     /// </summary>
+    /// <summary>
+    /// Corrections the facts' own legal words make certain, after the model's reading (Gemma 3 4B, 13 Oct, read
+    /// «تلتمس الحكم بتطليقها» and «مخالعة زوجها» as a husband's divorce, and a civil-status correction as a contract case):
+    /// a wife's «تطليق» or «خلع» is never the husband's divorce, and correcting a civil-status record is out of scope.
+    /// </summary>
+    public static FactsReading Corrected(FactsReading reading, string facts, IReadOnlyList<ClaimType> allowedClaims)
+    {
+        ArgumentNullException.ThrowIfNull(reading);
+        ArgumentNullException.ThrowIfNull(allowedClaims);
+        var text = ArabicScript.Normalize(facts);
+        if (CivilStatusCorrection().IsMatch(text))
+        {
+            return reading with { ClaimIds = [] };
+        }
+
+        const string HusbandsDivorce = "divorce-by-husband";
+        var replacement = WifesKhul().IsMatch(text) ? "khul" : WifesTatliq().IsMatch(text) ? "tatliq" : null;
+        if (replacement is null || !reading.ClaimIds.Contains(HusbandsDivorce) || allowedClaims.All(c => c.Id != replacement))
+        {
+            return reading;
+        }
+
+        return reading with { ClaimIds = [.. reading.ClaimIds.Select(id => id == HusbandsDivorce ? replacement : id).Distinct()] };
+    }
+
+    [GeneratedRegex(@"تطليق")]
+    private static partial Regex WifesTatliq();
+
+    [GeneratedRegex(@"(?<![\p{L}])(?:ال|بال|و|ب|ل)?(?:خلع|مخالع|تخالع)")]
+    private static partial Regex WifesKhul();
+
+    [GeneratedRegex(@"الحاله المدنيه[\s\S]*تصحيح|تصحيح[\s\S]*الحاله المدنيه")]
+    private static partial Regex CivilStatusCorrection();
+
     public static FactsReading ParseReading(string answer, IReadOnlyList<ClaimType> allowedClaims)
     {
         ArgumentNullException.ThrowIfNull(allowedClaims);

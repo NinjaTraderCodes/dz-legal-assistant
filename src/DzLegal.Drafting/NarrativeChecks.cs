@@ -47,12 +47,18 @@ public enum NarrativeIssueKind
     /// check it. A review hint, not a failure.
     /// </summary>
     UnverifiedQuoteFromNotes,
+
+    /// <summary>
+    /// The parties' roles reversed against the facts: «اقترض المدعى عليه من المدعي» in the facts, «المدعي اقترض من
+    /// المدعى عليه» (or the same with their names) in the text. Hard: the claim would read the other way round.
+    /// </summary>
+    SwappedRoles,
 }
 
 public sealed record NarrativeIssue(NarrativeIssueKind Kind, string Detail)
 {
     /// <summary>Hard issues make the text unusable: the drafting layer retries, then falls back to the notes.</summary>
-    public bool IsHard => Kind is NarrativeIssueKind.ForeignScript or NarrativeIssueKind.NotArabic;
+    public bool IsHard => Kind is NarrativeIssueKind.ForeignScript or NarrativeIssueKind.NotArabic or NarrativeIssueKind.SwappedRoles;
 
     /// <summary>Law the lawyer did not provide (a qualification, an article, a quotation): worth one more try.</summary>
     public bool IsInventedLaw => Kind is NarrativeIssueKind.UngroundedTerm or NarrativeIssueKind.UncitedArticle
@@ -63,8 +69,9 @@ public sealed record NarrativeIssue(NarrativeIssueKind Kind, string Detail)
 }
 
 /// <summary>
-/// Deterministic checks of model-written text against the lawyer's own material. They catch corruption and
-/// changed or invented numbers; they cannot judge meaning (e.g. swapped roles), which stays the lawyer's review.
+/// Deterministic checks of model-written text against the lawyer's own material. They catch corruption, changed or
+/// invented numbers, and the commonest role reversal (who borrowed, rented or bought from whom); other meaning stays
+/// the lawyer's review.
 /// </summary>
 public static partial class NarrativeChecks
 {
@@ -143,6 +150,8 @@ public static partial class NarrativeChecks
             .Select(t => new string(ArticleNumbers.Canonical(t.Number).TakeWhile(char.IsDigit).ToArray())).ToHashSet(StringComparer.Ordinal);
         issues.AddRange(Numbers(sectionNotes ?? string.Empty).Where(n => !inText.Contains(n) && !leftOut.Contains(n)).Distinct()
             .Select(n => new NarrativeIssue(NarrativeIssueKind.MissingNumber, n)));
+
+        issues.AddRange(SwappedRoles(text, inputs).Select(d => new NarrativeIssue(NarrativeIssueKind.SwappedRoles, d)));
 
         var knownLatin = inputs.Values.SelectMany(LatinWords).ToHashSet(StringComparer.OrdinalIgnoreCase);
         issues.AddRange(LatinWords(text).Where(w => !knownLatin.Contains(w)).Distinct(StringComparer.OrdinalIgnoreCase)
@@ -452,6 +461,70 @@ public static partial class NarrativeChecks
     }
 
     private static string StripDiacritics(string text) => ArabicScript.StripDiacritics(text);
+
+    private const string PlaintiffMark = "PLAINTIFFX";
+    private const string DefendantMark = "DEFENDANTX";
+
+    /// <summary>
+    /// «X اقترض/استأجر/اشترى/استلم … من Y» in the text where the facts have the same act taken from the other party
+    /// (Gemma 3 4B, 13 Oct: «بن علي كريم قد اقترض من حمداني سمير» when the defendant borrowed from the plaintiff).
+    /// Names and role words of both parties are read as the same party. Directions the facts state both ways are left
+    /// alone.
+    /// </summary>
+    internal static IEnumerable<string> SwappedRoles(string text, IReadOnlyDictionary<string, string> inputs)
+    {
+        var facts = Takings(WithRoleMarks(inputs.GetValueOrDefault("notes.facts", string.Empty), inputs)).ToHashSet();
+        if (facts.Count == 0)
+        {
+            return [];
+        }
+
+        return Takings(WithRoleMarks(text, inputs))
+            .Where(t => !facts.Contains(t) && facts.Contains((t.Act, t.From == PlaintiffMark ? DefendantMark : PlaintiffMark)))
+            .Select(t => $"{t.Act} من {(t.From == PlaintiffMark ? "المدعي" : "المدعى عليه")}")
+            .Distinct()
+            .ToList();
+    }
+
+    private static IEnumerable<(string Act, string From)> Takings(string marked) =>
+        TakingAct().Matches(marked).Select(m => (m.Groups["act"].Value, m.Groups["from"].Value));
+
+    /// <summary>The text normalised, with each party's names and role words replaced by one mark per party.</summary>
+    private static string WithRoleMarks(string text, IReadOnlyDictionary<string, string> inputs)
+    {
+        var marked = " " + ArabicScript.Normalize(text) + " ";
+        IEnumerable<string> Names(string party)
+        {
+            var last = ArabicScript.Normalize(inputs.GetValueOrDefault(party + ".lastName"));
+            var first = ArabicScript.Normalize(inputs.GetValueOrDefault(party + ".firstName"));
+            var entity = ArabicScript.Normalize(inputs.GetValueOrDefault(party + ".entityName"));
+            return new[] { $"{last} {first}", $"{first} {last}", entity }.Where(n => n.Trim().Length >= 3);
+        }
+
+        foreach (var name in Names("defendant"))
+        {
+            marked = marked.Replace(name.Trim(), " " + DefendantMark + " ", StringComparison.Ordinal);
+        }
+
+        foreach (var name in Names("plaintiff"))
+        {
+            marked = marked.Replace(name.Trim(), " " + PlaintiffMark + " ", StringComparison.Ordinal);
+        }
+
+        // «المدعى عليه» normalises to «المدعي عليه»: the defendant's words go first.
+        marked = DefendantWords().Replace(marked, " " + DefendantMark + " ");
+        return PlaintiffWords().Replace(marked, " " + PlaintiffMark + " ");
+    }
+
+    [GeneratedRegex(@"(?<![\p{L}])(?:ال|لل|و|ل|ب)?مدعي\s+عليه(?:ا|م)?(?![\p{L}])")]
+    private static partial Regex DefendantWords();
+
+    [GeneratedRegex(@"(?<![\p{L}])(?:ال|لل|و|ل|ب)?(?:مدعيه|مدعي|عارضه|عارض)(?![\p{L}])")]
+    private static partial Regex PlaintiffWords();
+
+    // The act (borrowing, renting, buying, receiving) and the party it was taken from, a few words later.
+    [GeneratedRegex(@"(?<![\p{L}])(?:قد\s+)?(?<act>اقترض|استدان|استاجر|اشتر|استلم|تسلم)\p{L}*(?:\s+\S+){0,8}?\s+من\s+(?<from>PLAINTIFFX|DEFENDANTX)")]
+    private static partial Regex TakingAct();
 
     internal static IEnumerable<string> LatinWords(string text) =>
         LatinWord().Matches(text).Select(m => m.Value.ToLowerInvariant());

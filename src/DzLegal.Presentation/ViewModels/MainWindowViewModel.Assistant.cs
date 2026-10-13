@@ -371,6 +371,7 @@ public sealed partial class MainWindowViewModel
         NarrativeIssueKind.MisquotedArticle => "IssueMisquotedArticle",
         NarrativeIssueKind.UnsupportedArticleContent => "IssueUnsupportedArticleContent",
         NarrativeIssueKind.UnverifiedQuoteFromNotes => "IssueUnverifiedQuoteFromNotes",
+        NarrativeIssueKind.SwappedRoles => "IssueSwappedRoles",
         _ => throw new InvalidOperationException($"No message for {issue.Kind}."),
     }, issue.Detail);
 }

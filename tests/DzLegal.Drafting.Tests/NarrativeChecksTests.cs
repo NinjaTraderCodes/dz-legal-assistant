@@ -36,6 +36,32 @@ public class NarrativeChecksTests
         Assert.Contains(issues, i => i.Kind == NarrativeIssueKind.MissingNumber && i.Detail == "450");
     }
 
+    [Theory]
+    // Gemma 3 4B, 13 Oct, case 02: the plaintiff made the borrower.
+    [InlineData("حيث إنه بتاريخ 15 جانفي 2025، اقترض المدعى عليه (حمداني سمير) من المدعي (بن علي كريم) مبلغا ماليا.", "وحيث إن بن علي كريم قد اقترض من حمداني سمير مبلغ القرض، فإن الطلب مؤسس.", true)]
+    [InlineData("حيث إنه بتاريخ 15 جانفي 2025، اقترض المدعى عليه (حمداني سمير) من المدعي (بن علي كريم) مبلغا ماليا.", "وحيث إن المدعي اقترض من المدعى عليه مبلغ القرض.", true)]
+    [InlineData("حيث إنه بتاريخ 15 جانفي 2025، اقترض المدعى عليه (حمداني سمير) من المدعي (بن علي كريم) مبلغا ماليا.", "وحيث إن حمداني سمير قد اقترض من بن علي كريم مبلغ القرض.", false)]
+    [InlineData("حيث إنه بتاريخ 15 جانفي 2025، اقترض المدعى عليه (حمداني سمير) من المدعي (بن علي كريم) مبلغا ماليا.", "وحيث إن المدعى عليه اقترض مبلغا من المال من المدعي ولم يرده.", false)]
+    // Case 03: a woman landlord made the tenant.
+    [InlineData("حيث إنه استأجر المدعى عليه من المدعية محلا تجاريا.", "وحيث إن مزياني ليلى قد استأجرت من عيساوي نبيل محلا تجاريا.", true)]
+    [InlineData("حيث إنه استأجر المدعى عليه من المدعية محلا تجاريا.", "وحيث إن المدعى عليه استأجر المحل من المدعية ولم يدفع البدل.", false)]
+    public void AReversalOfWhoTookFromWhomIsAHardIssue(string facts, string text, bool swapped)
+    {
+        var inputs = new Dictionary<string, string>
+        {
+            ["notes.facts"] = facts,
+            ["plaintiff.lastName"] = facts.Contains("بن علي", StringComparison.Ordinal) ? "بن علي" : "مزياني",
+            ["plaintiff.firstName"] = facts.Contains("بن علي", StringComparison.Ordinal) ? "كريم" : "ليلى",
+            ["defendant.lastName"] = facts.Contains("بن علي", StringComparison.Ordinal) ? "حمداني" : "عيساوي",
+            ["defendant.firstName"] = facts.Contains("بن علي", StringComparison.Ordinal) ? "سمير" : "نبيل",
+        };
+
+        var issue = NarrativeChecks.Check(text, string.Empty, inputs).SingleOrDefault(i => i.Kind == NarrativeIssueKind.SwappedRoles);
+
+        Assert.Equal(swapped, issue is not null);
+        Assert.True(issue?.IsHard ?? true);
+    }
+
     [Fact]
     public void FaithfulTextHasNoIssues() =>
         Assert.Empty(Check("حيث إن المدعى عليه اقترض من المدعي مبلغ 1.500.000 دج بتاريخ 15 جانفي 2025."));

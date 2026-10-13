@@ -161,6 +161,26 @@ public sealed class GroundsAnalyzerTests
         Assert.Single(provider.Requests);
     }
 
+    [Theory]
+    [InlineData("تعرضت المدعية للضرب والإيذاء من زوجها\nتلتمس الحكم بتطليقها", "tatliq")]
+    [InlineData("ترغب المدعية في مخالعة زوجها المدعى عليه", "khul")]
+    [InlineData("طلق المدعي زوجته بإرادته المنفردة", "divorce-by-husband")]
+    public void AWifesTatliqOrKhulIsNeverTheHusbandsDivorce(string facts, string expected)
+    {
+        // Gemma 3 4B on the bench of 13 Oct: tatliq-harm and khul read as divorce-by-husband.
+        ClaimType[] family = [Claim("divorce-by-husband", "family", "طلاق"), Claim("tatliq", "family", "تطليق"), Claim("khul", "family", "خلع")];
+        var reading = FactsReading.Empty with { ClaimIds = ["divorce-by-husband"] };
+        Assert.Equal([expected], GroundsAnalyzer.Corrected(reading, facts, family).ClaimIds);
+    }
+
+    [Fact]
+    public void CorrectingACivilStatusRecordIsOutOfScope()
+    {
+        var reading = FactsReading.Empty with { ClaimIds = ["loan"] };
+        Assert.Empty(GroundsAnalyzer.Corrected(reading, "وقع خطأ في تاريخ ميلاد المدعي في سجلات الحالة المدنية ويطلب تصحيحه", [Loan]).ClaimIds);
+        Assert.Equal(["loan"], GroundsAnalyzer.Corrected(reading, "أقرض المدعي المدعى عليه مبلغا ولم يرده", [Loan]).ClaimIds);
+    }
+
     [Fact]
     public async Task AnAdministrativeCourtIsOutOfScopeWithoutAskingTheModel()
     {

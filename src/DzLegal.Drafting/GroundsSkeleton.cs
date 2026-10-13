@@ -96,7 +96,7 @@ public sealed partial class GroundsSkeleton(IModelProvider provider)
         for (var i = 0; i < paragraphs.Count; i++)
         {
             var p = paragraphs[i];
-            numbered.Append(CultureInfo.InvariantCulture, $"[{i + 1}] ");
+            numbered.Append(CultureInfo.InvariantCulture, $"{i + 1}- ");
             numbered.AppendLine(p.Lead.Length > 0 ? Opening(i) + p.Lead + "، …" : "(سند بلا مادة)");
             if (p.Note.Length > 0)
             {

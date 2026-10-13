@@ -120,9 +120,9 @@ public class ArguedGroundsTests
         inputs["notes.requests"] = Requests;
         inputs["notes.facts"] = "اقترض المدعى عليه مبلغ 1500000 دج بموجب اعتراف بدين ولم يرده رغم إعذاره.";
         var provider = new RecordingProvider(_ =>
-            "[1] وحيث إن المدعى عليه اقترض مبلغ 1500000 دج ولم يرده، فإن طلب المدعي إلزامه بدفع 1500000 دج مؤسس قانونا.\n"
-            + "[2] وحيث إن الدين ثابت باعتراف بدين.\n"
-            + "[3] وحيث إن المدعى عليه أعذر ولم يف، فإن طلب التعويض بمبلغ 150000 دج مؤسس.");
+            "1- وحيث إن المدعى عليه اقترض مبلغ 1500000 دج ولم يرده، فإن طلب المدعي إلزامه بدفع 1500000 دج مؤسس قانونا.\n"
+            + "2- وحيث إن الدين ثابت باعتراف بدين.\n"
+            + "3- وحيث إن المدعى عليه أعذر ولم يف، فإن طلب التعويض بمبلغ 150000 دج مؤسس.");
 
         var draft = await new ArguedGrounds(provider).DraftAsync(Fixtures.Requete, Fixtures.Requete.FindSection("grounds")!, inputs, Ticked, "prompts/grounds-argued.ar.txt");
 
@@ -132,5 +132,25 @@ public class ArguedGroundsTests
         var request = Assert.Single(provider.Requests);
         Assert.Contains("بداية الفقرة (يكتبها البرنامج): وحيث إن المادة 323 من القانون المدني تقضي بأن على الدائن إثبات الالتزام", request.UserPrompt, StringComparison.Ordinal);
         Assert.DoesNotContain("454", request.UserPrompt, StringComparison.Ordinal);
+
+        // No «[1]»: behind OpenRouter, DeepInfra took an answer starting with «[» for a function call and sent no text.
+        Assert.Contains("1- وحيث إن …", request.UserPrompt, StringComparison.Ordinal);
+        Assert.DoesNotContain("[1]", request.UserPrompt, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void AClauseRepeatingTheRuleTheCodeWroteIsDropped()
+    {
+        // Gemma 3 4B on case 01, paragraph 2 (13 Oct): the rule of art. 186 came back inside the application.
+        var damages = ArguedGrounds.Plan(Notes, Ticked, Requests)[2];
+        var application = "وحيث إن المدعى عليه امتنع عن السداد رغم إعذاره رسميا بتاريخ 10 جويلية 2025، فإن ذلك يثبت إخلاله بالتزامه، "
+            + "وبتعويض الدائن عن الضرر اللاحق من تأخر المدين في الوفاء بمبلغ من النقود، فإنه يستحق تعويضا قدره 150000 دج.";
+
+        Assert.Equal(
+            "وحيث إن المدعى عليه امتنع عن السداد رغم إعذاره رسميا بتاريخ 10 جويلية 2025، فإن ذلك يثبت إخلاله بالتزامه، فإنه يستحق تعويضا قدره 150000 دج.",
+            ArguedGrounds.WithoutRestatedRule(application, damages));
+
+        const string plain = "وحيث إن المدعى عليه لم يرد المبلغ، فإن طلب المدعي يكون مؤسسا قانونا.";
+        Assert.Equal(plain, ArguedGrounds.WithoutRestatedRule(plain, damages));
     }
 }

@@ -184,7 +184,7 @@ public sealed class ArguedGrounds(IModelProvider provider)
         for (var i = 0; i < groups.Count; i++)
         {
             var g = groups[i];
-            plan.AppendLine(CultureInfo.InvariantCulture, $"[{i + 1}] الموضوع: {g.Topic}");
+            plan.AppendLine(CultureInfo.InvariantCulture, $"{i + 1}- الموضوع: {g.Topic}");
             var rule = g.RuleSentence;
             plan.AppendLine(rule.Length > 0
                 ? $"    بداية الفقرة (يكتبها البرنامج): {Opening(i)}{rule}، …"
@@ -241,7 +241,8 @@ public sealed class ArguedGrounds(IModelProvider provider)
     }
 
     /// <summary>
-    /// Arguments by paragraph number («[1] …»). A small model sometimes drops the numbers: when it wrote exactly one
+    /// Arguments by paragraph number («1- …», or «[1] …» as earlier prompts asked). The prompt avoids «[1]»: behind
+    /// OpenRouter, DeepInfra's server took an answer starting with «[» for a function call and returned no text. A small model sometimes drops the numbers: when it wrote exactly one
     /// Arabic line per paragraph, the lines are taken in order.
     /// </summary>
     public static IReadOnlyDictionary<int, string> Parse(string answer, int paragraphs)
@@ -289,7 +290,7 @@ public sealed class ArguedGrounds(IModelProvider provider)
                 continue;
             }
 
-            var application = argument!.Trim().TrimStart('،', ',', '-', ' ').TrimEnd();
+            var application = WithoutRestatedRule(argument!.Trim().TrimStart('،', ',', '-', ' ').TrimEnd(), groups[i]);
             lines.Add(Opening(i) + rule + "، " + application + (application.EndsWith('.') ? string.Empty : "."));
         }
 
@@ -297,6 +298,40 @@ public sealed class ArguedGrounds(IModelProvider provider)
     }
 
     private static string Opening(int index) => index == 0 ? "حيث إن " : "وحيث إن ";
+
+    /// <summary>
+    /// Drops a clause of the application that repeats the paragraph's rule, which the code already wrote before it
+    /// (Gemma 3 4B: «…، فإن ذلك يثبت إخلاله بالتزامه، وبتعويض الدائن عن الضرر اللاحق من تأخر المدين…، فإنه…»). Only a
+    /// clause with no number whose words are the rule's is removed; the opening clause always stays.
+    /// </summary>
+    internal static string WithoutRestatedRule(string application, ArguedGroup group)
+    {
+        var rules = group.Texts.Where(t => !string.IsNullOrWhiteSpace(t.Gist)).Select(t => Core(ArguedGroup.RuleClause(t.Gist!))).Where(r => r.Length > 0).ToList();
+        if (rules.Count == 0)
+        {
+            return application;
+        }
+
+        var clauses = application.Split('،');
+        var kept = clauses.Where((c, k) => k == 0 || c.Any(char.IsDigit) || Core(c) is not { Length: >= 12 } core
+            || !rules.Any(r => r.Contains(core, StringComparison.Ordinal) || core.Contains(r, StringComparison.Ordinal))).ToList();
+        return kept.Count == clauses.Length ? application : string.Join('،', kept);
+
+        static string Core(string clause)
+        {
+            var text = ArabicScript.Normalize(clause).Trim().TrimEnd('.');
+            text = text.StartsWith('و') ? text[1..] : text;
+            foreach (var prefix in new[] { "بانه ", "بان ", "ب" })
+            {
+                if (text.StartsWith(prefix, StringComparison.Ordinal))
+                {
+                    return text[prefix.Length..].Trim();
+                }
+            }
+
+            return text;
+        }
+    }
 
     /// <summary>Why an application cannot be used, or null.</summary>
     private static string? Problem(DocumentTypeDefinition? definition, string? argument, IReadOnlyList<ArguedGroup> groups, IReadOnlyDictionary<string, string> inputs, IReadOnlyList<LegalText> legalTexts)

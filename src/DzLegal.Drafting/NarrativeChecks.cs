@@ -453,7 +453,7 @@ public static partial class NarrativeChecks
 
     private static string StripDiacritics(string text) => ArabicScript.StripDiacritics(text);
 
-    private static IEnumerable<string> LatinWords(string text) =>
+    internal static IEnumerable<string> LatinWords(string text) =>
         LatinWord().Matches(text).Select(m => m.Value.ToLowerInvariant());
 
     public static bool IsArabicOrLatinLetter(char c) =>

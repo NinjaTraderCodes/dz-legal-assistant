@@ -130,6 +130,16 @@ public class OllamaStreamingTests
     }
 
     [Fact]
+    public async Task AnEmptyStreamedAnswerIsAnError()
+    {
+        const string ndjson = "{\"message\":{\"role\":\"assistant\",\"content\":\"\\n\"},\"done\":false}\n{\"message\":{\"role\":\"assistant\",\"content\":\"\"},\"done\":true,\"done_reason\":\"stop\",\"eval_count\":2}";
+        using var provider = new OllamaModelProvider(new OllamaOptions(), new Handler(_ => new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(ndjson, Encoding.UTF8) }));
+
+        var ex = await Assert.ThrowsAsync<ModelProviderException>(async () => await provider.StreamAsync(new ModelRequest("grounds", "s", "u", "n"), CancellationToken.None).ToListAsync());
+        Assert.Contains("empty answer (done reason: stop, answer tokens: 2)", ex.Message, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public async Task ListsInstalledModels()
     {
         using var provider = new OllamaModelProvider(new OllamaOptions(), new Handler(r => new HttpResponseMessage(HttpStatusCode.OK)

@@ -59,11 +59,19 @@ public sealed class OpenAiCompatibleModelProvider : IModelProvider, IDisposable
             Name,
             _options.RateLimit,
             cancellationToken);
+        var written = false;
+        string? finish = null;
+        string? provider = null;
+        int? tokens = null;
         await foreach (var data in HostedHttp.ReadEventsAsync(response, Name, _options.IdleTimeout, cancellationToken))
         {
             var chunk = HostedHttp.Parse<Chunk>(data, Name);
+            provider ??= chunk?.Provider;
+            tokens = chunk?.Usage?.CompletionTokens ?? tokens;
+            finish = (chunk?.Choices is [var end, ..] ? end.FinishReason : null) ?? finish;
             if (chunk?.Choices is [var first, ..] && first.Delta?.Content is { Length: > 0 } piece)
             {
+                written |= !string.IsNullOrWhiteSpace(piece);
                 yield return piece;
             }
 
@@ -75,6 +83,13 @@ public sealed class OpenAiCompatibleModelProvider : IModelProvider, IDisposable
                 case "content_filter":
                     throw new ModelProviderException($"{Name} stopped its answer (content filter).");
             }
+        }
+
+        // Nothing written is not an answer either; say why the model stopped, so the cause can be found.
+        if (!written)
+        {
+            throw new ModelProviderException(
+                $"{Name} returned an empty answer (finish reason: {finish ?? "none"}, answer tokens: {tokens?.ToString(System.Globalization.CultureInfo.InvariantCulture) ?? "not reported"}{(provider is null ? string.Empty : ", served by " + provider)}).");
         }
     }
 
@@ -101,7 +116,12 @@ public sealed class OpenAiCompatibleModelProvider : IModelProvider, IDisposable
         [property: JsonPropertyName("role")] string Role,
         [property: JsonPropertyName("content")] string Content);
 
-    private sealed record Chunk([property: JsonPropertyName("choices")] IReadOnlyList<Choice>? Choices);
+    private sealed record Chunk(
+        [property: JsonPropertyName("choices")] IReadOnlyList<Choice>? Choices,
+        [property: JsonPropertyName("usage")] Usage? Usage = null,
+        [property: JsonPropertyName("provider")] string? Provider = null);
+
+    private sealed record Usage([property: JsonPropertyName("completion_tokens")] int? CompletionTokens);
 
     private sealed record Choice(
         [property: JsonPropertyName("delta")] Delta? Delta,

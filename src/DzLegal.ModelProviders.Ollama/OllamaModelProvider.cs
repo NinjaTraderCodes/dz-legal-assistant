@@ -87,6 +87,7 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
         };
         var clock = System.Diagnostics.Stopwatch.StartNew();
         TimeSpan? firstWord = null;
+        var written = false;
 
         HttpResponseMessage response;
         try
@@ -117,6 +118,7 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
                 var chunk = System.Text.Json.JsonSerializer.Deserialize<ChatResponse>(line);
                 if (chunk?.Message?.Content is { Length: > 0 } piece)
                 {
+                    written |= !string.IsNullOrWhiteSpace(piece);
                     firstWord ??= clock.Elapsed;
                     yield return piece;
                 }
@@ -127,6 +129,11 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
                     if (chunk.DoneReason == "length")
                     {
                         throw new ModelProviderException($"{Name} stopped at its answer length limit: the answer was cut off.");
+                    }
+
+                    if (!written)
+                    {
+                        throw new ModelProviderException($"{Name} returned an empty answer (done reason: {chunk.DoneReason ?? "none"}, answer tokens: {chunk.EvalCount}).");
                     }
 
                     yield break;

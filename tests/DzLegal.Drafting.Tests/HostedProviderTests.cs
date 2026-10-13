@@ -106,6 +106,16 @@ public class GoogleAiProviderTests
     }
 
     [Fact]
+    public async Task AnEmptyAnswerIsAnError()
+    {
+        var handler = new FakeHandler(_ => Sse("""{"candidates":[{"content":{"parts":[{"text":" "}]},"finishReason":"STOP"}]}"""));
+        using var provider = new GoogleAiModelProvider(new GoogleAiOptions { ApiKey = "k" }, handler);
+
+        var ex = await Assert.ThrowsAsync<ModelProviderException>(async () => await provider.StreamAsync(Request, CancellationToken.None).ToListAsync());
+        Assert.Contains("empty answer (finish reason: STOP)", ex.Message, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public async Task AnAnswerCutOffAfterSomeTextIsNotTakenAsComplete()
     {
         // Audit A-03: plausible but unfinished legal text used to pass as a full answer.
@@ -204,6 +214,20 @@ public class OpenAiCompatibleProviderTests
 
         var ex = await Assert.ThrowsAsync<ModelProviderException>(() => provider.GenerateAsync(new ModelRequest("grounds", "s", "u", "n"), CancellationToken.None));
         Assert.Contains("cut off", ex.Message, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task AnEmptyAnswerIsAnErrorThatSaysWhyTheModelStopped()
+    {
+        // Gemma 3 4B via OpenRouter answered the argued grounds with nothing at all, which read as «(...)» everywhere.
+        var handler = new FakeHandler(_ => GoogleAiProviderTests.Sse(
+            """{"provider":"DeepInfra","choices":[{"delta":{"role":"assistant","content":""}}]}""",
+            """{"provider":"DeepInfra","choices":[{"delta":{"content":"\n"},"finish_reason":"stop"}],"usage":{"completion_tokens":1}}"""));
+        using var provider = new OpenAiCompatibleModelProvider(
+            new OpenAiCompatibleOptions { Label = "OpenRouter", Endpoint = new Uri("https://openrouter.ai/api/v1/"), ApiKey = "k", Model = "google/gemma-3-4b-it" }, handler);
+
+        var ex = await Assert.ThrowsAsync<ModelProviderException>(async () => await provider.StreamAsync(new ModelRequest("grounds-argued", "s", "u", "n"), CancellationToken.None).ToListAsync());
+        Assert.Contains("empty answer (finish reason: stop, answer tokens: 1, served by DeepInfra)", ex.Message, StringComparison.Ordinal);
     }
 
     [Fact]

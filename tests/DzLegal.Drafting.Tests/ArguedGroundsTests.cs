@@ -34,6 +34,26 @@ public class ArguedGroundsTests
     }
 
     [Fact]
+    public void ARequestInFrenchIsNotGivenToTheModelAndAFrenchApplicationIsRejected()
+    {
+        // Run of 13 Oct (02, a8): Gemma 4 26B ended the Arabic grounds with «فإن Condamner le défendeur à payer…».
+        const string french = "Condamner le défendeur à payer au demandeur 1.500.000 DA au principal.";
+        var groups = ArguedGrounds.Plan(Notes, Ticked, french);
+        Assert.Null(groups[0].Request);
+
+        var inputs = new Dictionary<string, string> { ["notes.facts"] = "اقترض المدعى عليه مبلغ 1500000 دج ولم يرده.", ["notes.requests"] = french };
+        var draft = ArguedGrounds.Assemble(null, groups, new Dictionary<int, string>
+        {
+            [1] = "وحيث إن المدعى عليه اقترض مبلغ 1500000 دج ولم يرده، فإن " + french,
+            [2] = "وحيث إن الدين ثابت.",
+            [3] = "وحيث إن المدعى عليه أعذر ولم يرد المبلغ.",
+        }, inputs, Ticked);
+
+        Assert.DoesNotContain("Condamner", draft.Text, StringComparison.Ordinal);
+        Assert.Contains("writes in French", Assert.Single(draft.Problems), StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void ALimitTheLawyerArguesInTheNotesStays()
     {
         var groups = ArguedGrounds.Plan("المادة 454 من القانون المدني: لا فوائد على القرض بين الأفراد، فالمدعي لا يطلبها.", Ticked, Requests);

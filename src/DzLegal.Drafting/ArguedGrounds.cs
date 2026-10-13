@@ -130,7 +130,9 @@ public sealed class ArguedGrounds(IModelProvider provider)
     {
         ArgumentNullException.ThrowIfNull(legalTexts);
         var lines = (groundsNotes ?? string.Empty).Split('\n').Select(l => l.Trim()).Where(l => l.Length > 0).ToList();
-        var requests = (requestsNotes ?? string.Empty).Split('\n').Select(l => l.Trim()).Where(l => l.Length > 0).ToList();
+        // A request the lawyer wrote in French is not handed to the model: it would copy it into the Arabic grounds.
+        var requests = (requestsNotes ?? string.Empty).Split('\n').Select(l => l.Trim())
+            .Where(l => l.Length > 0 && ArabicScript.Ratio(l) >= NarrativeChecks.MinArabicRatio).ToList();
         var cited = lines.Select(l => (Line: l, Refs: References(l))).ToList();
         var own = cited.Where(c => IsOwnLine(c.Line)).ToList();
         bool InNotes(LegalText t) => own.Any(c => c.Refs.Any(r => Matches(t, r)));
@@ -313,6 +315,13 @@ public sealed class ArguedGrounds(IModelProvider provider)
         if (argument.IndexOfAny(['«', '»', '"', '“', '”']) >= 0)
         {
             return "quotes a text";
+        }
+
+        // A French phrase («Condamner le défendeur à payer…») has no place in the Arabic grounds; a single French term
+        // the notes use (reconnaissance de dette) is left to the usual checks.
+        if (NarrativeChecks.LatinWords(argument).Count() >= 4)
+        {
+            return "writes in French";
         }
 
         var sources = string.Join('\n', groups.Select(g => g.Note)

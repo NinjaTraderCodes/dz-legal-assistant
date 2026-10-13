@@ -56,27 +56,39 @@ public static class SkeletonSample
                 SkeletonDraft? b = null;
                 SkeletonDraft? c = null;
                 double aSeconds = 0, bSeconds = 0, cSeconds = 0;
-                string? error = null;
-                try
+                var errors = new List<string>();
+                async Task<T?> Run<T>(string variant, Func<Task<T>> draft, Action<double> took)
+                    where T : class
                 {
                     var clock = Stopwatch.StartNew();
-                    a = await new DraftingService(provider) { ClassicGrounds = true }.DraftSectionAsync(definition, "grounds", inputs, legalTexts: legalTexts);
-                    aSeconds = clock.Elapsed.TotalSeconds;
-                    clock.Restart();
-                    b = await new GroundsSkeleton(provider).DraftAsync(definition, definition.FindSection("grounds")! with { ArgumentPrompt = "prompts/grounds-argument.ar.txt" }, inputs, legalTexts);
-                    bSeconds = clock.Elapsed.TotalSeconds;
-                    clock.Restart();
-                    c = await new ArguedGrounds(provider).DraftAsync(definition, definition.FindSection("grounds")!, inputs, legalTexts, definition.FindSection("grounds")!.ArgumentPrompt!);
-                    cSeconds = clock.Elapsed.TotalSeconds;
+                    try
+                    {
+                        return await draft();
+                    }
+                    catch (Exception ex) when (ex is ModelProviderException or HttpRequestException or IOException or TaskCanceledException)
+                    {
+                        errors.Add($"{variant}: {ex.Message}");
+                        return null;
+                    }
+                    finally
+                    {
+                        took(clock.Elapsed.TotalSeconds);
+                    }
                 }
-                catch (Exception ex) when (ex is ModelProviderException or HttpRequestException or IOException or TaskCanceledException)
+
+                // Each version on its own: one that fails (an empty answer, a limit) does not hide the others.
+                try
                 {
-                    error = ex.Message;
+                    a = await Run("A", () => new DraftingService(provider) { ClassicGrounds = true }.DraftSectionAsync(definition, "grounds", inputs, legalTexts: legalTexts), t => aSeconds = t);
+                    b = await Run("B", () => new GroundsSkeleton(provider).DraftAsync(definition, definition.FindSection("grounds")! with { ArgumentPrompt = "prompts/grounds-argument.ar.txt" }, inputs, legalTexts), t => bSeconds = t);
+                    c = await Run("C", () => new ArguedGrounds(provider).DraftAsync(definition, definition.FindSection("grounds")!, inputs, legalTexts, definition.FindSection("grounds")!.ArgumentPrompt!), t => cSeconds = t);
                 }
                 finally
                 {
                     (provider.Inner as IDisposable)?.Dispose();
                 }
+
+                var error = errors.Count == 0 ? null : string.Join(" · ", errors);
 
                 var aIssues = a is null ? [] : NarrativeChecks.Check(a.Text, notes, inputs, definition.GroundedTerms, legalTexts);
                 var bIssues = b is null ? [] : NarrativeChecks.Check(b.Text, notes, inputs, definition.GroundedTerms, legalTexts);

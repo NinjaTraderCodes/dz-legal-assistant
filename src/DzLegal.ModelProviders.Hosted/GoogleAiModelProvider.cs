@@ -66,7 +66,7 @@ public sealed class GoogleAiModelProvider : IModelProvider, IDisposable
                 // Models that think aloud mark those parts; only the answer goes to the document.
                 if (part.Thought != true && part.Text is { Length: > 0 } piece)
                 {
-                    answered = true;
+                    answered |= !string.IsNullOrWhiteSpace(piece);
                     yield return piece;
                 }
             }
@@ -83,6 +83,11 @@ public sealed class GoogleAiModelProvider : IModelProvider, IDisposable
         if (finish is "SAFETY" or "RECITATION" or "BLOCKLIST" or "PROHIBITED_CONTENT")
         {
             throw new ModelProviderException($"{Name} stopped its answer ({finish}).");
+        }
+
+        if (!answered)
+        {
+            throw new ModelProviderException($"{Name} returned an empty answer (finish reason: {finish ?? "none"}).");
         }
     }
 

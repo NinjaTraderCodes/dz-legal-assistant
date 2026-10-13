@@ -352,11 +352,13 @@ public sealed class ArguedGrounds(IModelProvider provider)
             return "quotes a text";
         }
 
-        // A French phrase («Condamner le défendeur à payer…») has no place in the Arabic grounds; a single French term
-        // the notes use (reconnaissance de dette) is left to the usual checks.
-        if (NarrativeChecks.LatinWords(argument).Count() >= 4)
+        // French has no place in the Arabic grounds («Condamner le défendeur…», «1.500.000 DA au principal» copied from
+        // French requests), except a term the facts or documents themselves use (reconnaissance de dette).
+        var ownTerms = NarrativeChecks.LatinWords(inputs.GetValueOrDefault("notes.facts", string.Empty) + "\n" + inputs.GetValueOrDefault("documents.list", string.Empty))
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+        if (NarrativeChecks.LatinWords(argument).FirstOrDefault(w => !ownTerms.Contains(w)) is { } french)
         {
-            return "writes in French";
+            return $"writes in French ({french})";
         }
 
         var sources = string.Join('\n', groups.Select(g => g.Note)

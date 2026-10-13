@@ -50,6 +50,15 @@ public class ArguedGroundsTests
         }, inputs, Ticked);
 
         Assert.DoesNotContain("Condamner", draft.Text, StringComparison.Ordinal);
+
+        // Gemma 4 26B, 14 Oct: only the tail of the French request («… DA au principal») was copied.
+        var tail = ArguedGrounds.Assemble(null, groups, new Dictionary<int, string>
+        {
+            [1] = "وحيث إن المدعى عليه اقترض مبلغ 1500000 دج ولم يرده، فإن طلب المدعي إلزام المدعى عليه بدفع مبلغ 1500000 DA au principal يكون مؤسسا قانونا.",
+            [2] = "وحيث إن الدين ثابت.",
+            [3] = "وحيث إن المدعى عليه أعذر ولم يرد المبلغ.",
+        }, inputs, Ticked);
+        Assert.DoesNotContain("principal", tail.Text, StringComparison.Ordinal);
         Assert.Contains("writes in French", Assert.Single(draft.Problems), StringComparison.Ordinal);
     }
 

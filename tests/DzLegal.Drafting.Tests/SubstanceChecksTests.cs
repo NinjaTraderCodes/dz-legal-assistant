@@ -72,6 +72,22 @@ public class SubstanceChecksTests
         Assert.False(SubstanceChecks.BlocksExport(SubstanceIssueKind.DialectRequest));
     }
 
+    [Theory]
+    [InlineData("أقرض المدعي المدعى عليه مبلغ 1,250,000 دج.", "إلزام المدعى عليه برد مبلغ 1.500.000 دج.", true)] // hostile case a2
+    [InlineData("أقرض المدعي المدعى عليه مبلغ 1 200 000 دينار.", "إلزام المدعى عليه برد مبلغ 1500000 دج.", true)]
+    [InlineData("أقرض المدعي المدعى عليه مبلغ ١٥٠٠٠٠٠ دج.", "إلزام المدعى عليه برد مبلغ 1500000 دج.", false)]
+    [InlineData("أقرض المدعي المدعى عليه مبلغ 1500000 دج ورد منه 300000 دج.", "إلزام المدعى عليه برد مبلغ 1200000 دج.", false)] // the remainder
+    [InlineData("أقرض المدعي المدعى عليه مبلغ 1500000 دج.", "إلزام المدعى عليه برد مبلغ 1500000 دج وبأن يدفع 100000 دج تعويضا.", false)]
+    [InlineData("أقرض المدعي المدعى عليه مبلغ 1500000 دج في 2023.", "إلزام المدعى عليه برد مبلغ 1,500,000.00 دج.", false)]
+    public void ASumAskedCloseToButNotEqualToASumInTheFactsIsPointedOut(string facts, string requests, bool conflict)
+    {
+        var inputs = Inputs(requests: requests);
+        inputs["notes.facts"] = facts;
+        var issues = SubstanceChecks.Check(inputs, [Loan], [Art450], string.Empty);
+        Assert.Equal(conflict, issues.Any(i => i.Kind == SubstanceIssueKind.ConflictingAmounts));
+        Assert.False(SubstanceChecks.BlocksExport(SubstanceIssueKind.ConflictingAmounts));
+    }
+
     [Fact]
     public void ARequestLineInFrenchBlocksExportButFrenchWordsInAnArabicLineDoNot()
     {

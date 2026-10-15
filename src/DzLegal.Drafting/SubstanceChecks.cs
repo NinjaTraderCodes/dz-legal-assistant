@@ -35,6 +35,13 @@ public enum SubstanceIssueKind
 
     /// <summary>An article of the Family Code or the labour laws cited while no recognised claim belongs to that area.</summary>
     ArticleOutsideClaimArea,
+
+    /// <summary>
+    /// A sum asked in the requests is close to a sum in the facts or documents without being equal to it (1,500,000 asked,
+    /// 1,250,000 lent): one of them is probably a typing error. A warning only; a remainder after a partial payment (the
+    /// difference or sum of two amounts in the facts) is not flagged.
+    /// </summary>
+    ConflictingAmounts,
 }
 
 /// <summary>A legal point the lawyer should look at, with the article it rests on.</summary>
@@ -100,6 +107,11 @@ public static partial class SubstanceChecks
         if (facts.Trim().Length == 0)
         {
             return issues;
+        }
+
+        if (ConflictsWithFacts(Amounts(inputs.GetValueOrDefault("notes.requests", string.Empty)), Amounts(facts)))
+        {
+            issues.Add(new SubstanceIssue(SubstanceIssueKind.ConflictingAmounts, null));
         }
 
         if (selected.Count == 0 && !NarrativeChecks.ArticleReferences(groundsNotes).Any() && !NarrativeChecks.FrenchArticleReferences(groundsNotes).Any())
@@ -187,6 +199,49 @@ public static partial class SubstanceChecks
         var tokens = ArabicScript.Tokens(line).Select(ArabicScript.Normalize).ToList();
         return tokens.Any(DialectWords.Contains) || tokens.Count(WeakDialectWords.Contains) >= 2;
     }
+
+    /// <summary>
+    /// The sums of money in a text: a number followed by دج, دينار, DA or DZD, with thousands separated by a comma, a dot or
+    /// a space («1,500,000 دج», «1.500.000,00 DA», «1 500 000 دينار»). Arabic-Indic digits are read too.
+    /// </summary>
+    internal static IReadOnlyList<decimal> Amounts(string text)
+    {
+        var western = new string(text.Select(c => c is >= '٠' and <= '٩' ? (char)('0' + (c - '٠')) : c is '٬' ? ',' : c).ToArray());
+        var amounts = new List<decimal>();
+        foreach (Match m in Amount().Matches(western))
+        {
+            var digits = m.Groups["whole"].Value.Replace(",", string.Empty, StringComparison.Ordinal)
+                .Replace(".", string.Empty, StringComparison.Ordinal).Replace(" ", string.Empty, StringComparison.Ordinal);
+            if (decimal.TryParse(digits, System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out var value) && value > 0)
+            {
+                amounts.Add(value);
+            }
+        }
+
+        return amounts;
+    }
+
+    /// <summary>
+    /// True when a requested sum is within 30 % of a sum in the facts without being equal to it, nor to the difference
+    /// or the sum of two of them (a remainder after a partial payment, a principal plus costs).
+    /// </summary>
+    internal static bool ConflictsWithFacts(IReadOnlyList<decimal> requested, IReadOnlyList<decimal> facts)
+    {
+        var explained = facts.ToHashSet();
+        foreach (var a in facts)
+        {
+            foreach (var b in facts)
+            {
+                explained.Add(a + b);
+                explained.Add(Math.Abs(a - b));
+            }
+        }
+
+        return requested.Any(r => !explained.Contains(r) && facts.Any(f => r / f is >= 0.7m and < 1.3m));
+    }
+
+    [GeneratedRegex(@"(?<![\d.,])(?<whole>\d{1,3}(?:([ .,])\d{3}(?:\1\d{3})*)|\d+)(?:[.,]\d{1,2})?\s*(?:دج|د\.ج|دينار|DA\b|DZD\b)", RegexOptions.IgnoreCase)]
+    private static partial Regex Amount();
 
     private static bool Mentions(string text, IEnumerable<string> words)
     {

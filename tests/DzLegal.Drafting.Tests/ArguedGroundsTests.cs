@@ -165,6 +165,46 @@ public class ArguedGroundsTests
         Assert.All(draft.Text.Split('\n'), line => Assert.EndsWith("(...).", line, StringComparison.Ordinal));
     }
 
+    [Fact]
+    public void TheAnswerIsCutWhereALineBeyondThePlanStarts()
+    {
+        // LOCAL-MODEL-REPORT: one answer wrote 548 tokens for a single planned line.
+        const string answer = "1- وحيث إن الدين ثابت.\n2- وحيث إن المدعى عليه لم يرد.\n3- وحيث إن";
+        var end = ArguedGrounds.PastThePlan(answer, 1);
+        Assert.Equal("1- وحيث إن الدين ثابت.\n", answer[..end!.Value]);
+
+        Assert.Null(ArguedGrounds.PastThePlan("1- وحيث إن الدين ثابت.\n3- وحيث إن", 2)); // line 2 is missing: nothing is cut
+        Assert.Null(ArguedGrounds.PastThePlan("1- وحيث إن الدين ثابت.\n2- وحيث إن", 2));
+        Assert.Null(ArguedGrounds.PastThePlan("1- وحيث إن المبلغ 2- مليون", 1)); // a number inside a line is not a line
+        const string arabicIndic = "١- وحيث إن الدين ثابت.\n٢- وحيث إن";
+        Assert.Equal(arabicIndic.IndexOf('٢', StringComparison.Ordinal), ArguedGrounds.PastThePlan(arabicIndic, 1));
+    }
+
+    [Fact]
+    public void AnArticleOfATextThisAppDoesNotCoverIsNotCitedByTheCode()
+    {
+        // Hostile case a1: the notes named «المادة 1 من الدستور», and the code wrote it into the grounds.
+        var groups = ArguedGrounds.Plan(Notes + "\nالمادة 1 من الدستور تضمن الحق في التقاضي.\nالمادة 1000 من القانون المدني.", Ticked, Requests);
+        Assert.DoesNotContain(groups, g => g.Citation.Contains("الدستور", StringComparison.Ordinal));
+        Assert.Contains(groups, g => g.Citation.Contains("1000", StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public async Task ACompanyIsNamedInTheFeminine()
+    {
+        // Hostile case 04: a company defendant was «المدعى عليه» in the closing the model copies.
+        var inputs = Fixtures.CompleteInputs();
+        inputs["notes.grounds"] = Notes;
+        inputs["notes.requests"] = Requests;
+        inputs["defendant.isLegalEntity"] = "true";
+        inputs["defendant.gender"] = "male";
+        var provider = new RecordingProvider(_ => "1- وحيث إن الدين ثابت.");
+
+        await new ArguedGrounds(provider).DraftAsync(Fixtures.Requete, Fixtures.Requete.FindSection("grounds")!, inputs, Ticked, "prompts/grounds-argued.ar.txt");
+
+        Assert.Contains("إلزام المدعى عليها", provider.Requests[0].UserPrompt, StringComparison.Ordinal);
+    }
+
     [Theory]
     [InlineData("female", "male", "فإن طلب المدعية إلزام المدعى عليه")]
     [InlineData("male", "female", "فإن طلب المدعي إلزام المدعى عليها")]

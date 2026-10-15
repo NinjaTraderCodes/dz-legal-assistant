@@ -111,6 +111,12 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
 
     private const string Placeholder = "(...)";
 
+    /// <summary>The codes whose articles the grounds may cite by number when their text is not loaded.</summary>
+    private static readonly HashSet<string> CoveredCodes = new(StringComparer.Ordinal)
+    {
+        "القانون المدني", "القانون التجاري", "قانون الأسرة", "قانون الإجراءات المدنية والإدارية",
+    };
+
     private static readonly (string Topic, string[] Roles)[] Order =
     [
         ("قيام الالتزام وإخلال المدعى عليه به", ["basis"]),
@@ -158,8 +164,10 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
         }
 
         var others = legalTexts.Where(t => !used.Contains(t) && (t.Role is null or not ("limit" or "procedure") || InNotes(t))).ToList();
+        // An article the library does not hold is cited by number only, and only from a code this app covers: the
+        // code must never write «تستند إلى المادة 1 من الدستور» because the notes named it (hostile case a1).
         var unloaded = cited.SelectMany(c => c.Refs)
-            .Where(r => !legalTexts.Any(t => Matches(t, r)))
+            .Where(r => !legalTexts.Any(t => Matches(t, r)) && (r.CodeName is null || CoveredCodes.Contains(r.CodeName)))
             .Select(r => $"المادة {r.Number} من {r.CodeName ?? "القانون المدني"}")
             .Distinct()
             .ToList();
@@ -224,12 +232,12 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
         }
 
         var request = BuildRequest(definition, inputs, groups, promptPath);
-        var raw = new List<string> { await AskAsync(definition, request, cancellationToken) };
+        var raw = new List<string> { await AskAsync(definition, request, groups.Count, cancellationToken) };
         var arguments = new Dictionary<int, string>(WithoutOwnCitations(Parse(raw[0], groups.Count), groups));
         var failed = Enumerable.Range(1, groups.Count).Where(n => Problem(definition, arguments.GetValueOrDefault(n), groups, inputs, legalTexts) is not null).ToList();
         if (failed.Count > 0)
         {
-            raw.Add(await AskAsync(definition, request, cancellationToken));
+            raw.Add(await AskAsync(definition, request, groups.Count, cancellationToken));
             var second = WithoutOwnCitations(Parse(raw[^1], groups.Count), groups);
             foreach (var n in failed.Where(n => second.TryGetValue(n, out var retry) && Problem(definition, retry, groups, inputs, legalTexts) is null))
             {
@@ -422,14 +430,25 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
     /// counts as no answer for this try, so the paragraphs are asked once more and then left as «(...)», rather than the
     /// whole draft failing.
     /// </summary>
-    private async Task<string> AskAsync(DocumentTypeDefinition definition, ModelRequest request, CancellationToken cancellationToken)
+    /// <remarks>
+    /// Reading stops as soon as the model starts a line numbered past the plan: lines beyond it are never used, and a
+    /// small model sometimes writes five lines for one planned (about 80 s of CPU writing thrown away, measured).
+    /// </remarks>
+    private async Task<string> AskAsync(DocumentTypeDefinition definition, ModelRequest request, int paragraphs, CancellationToken cancellationToken)
     {
         var answer = new StringBuilder();
+        var sawLineBreak = false;
         try
         {
             await foreach (var piece in _provider.StreamAsync(request, cancellationToken))
             {
                 answer.Append(piece);
+                sawLineBreak |= piece.Contains('\n', StringComparison.Ordinal);
+                if (sawLineBreak && PastThePlan(answer.ToString(), paragraphs) is { } end)
+                {
+                    answer.Length = end;
+                    break;
+                }
             }
         }
         catch (ModelProviderException ex) when (ex.IsCutOff)
@@ -439,6 +458,34 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
 
         return DraftingService.ApplyCorrections(definition, answer.ToString());
     }
+
+    /// <summary>
+    /// Where a line numbered beyond <paramref name="paragraphs"/> starts, once every planned line 1..N is present; null
+    /// while the plan is not complete. Only whole lines count, so a planned line is never cut.
+    /// </summary>
+    internal static int? PastThePlan(string answer, int paragraphs)
+    {
+        var seen = new HashSet<int>();
+        foreach (Match m in NumberedLineStart().Matches(answer))
+        {
+            if (!int.TryParse(ArabicScript.Normalize(m.Groups["n"].Value), NumberStyles.Integer, CultureInfo.InvariantCulture, out var n))
+            {
+                continue;
+            }
+
+            if (n > paragraphs && Enumerable.Range(1, paragraphs).All(seen.Contains))
+            {
+                return m.Index;
+            }
+
+            seen.Add(n);
+        }
+
+        return null;
+    }
+
+    [GeneratedRegex(@"(?<=^|\n)[ \t]*[\[(]?(?<n>\d{1,2})[\])\.:\-]", RegexOptions.CultureInvariant)]
+    private static partial Regex NumberedLineStart();
 
     /// <summary>Stands for a cut-off answer in <see cref="SkeletonDraft.RawAnswers"/>; it parses to no paragraph.</summary>
     internal const string CutOffMarker = "(answer cut off at the length limit)";

@@ -61,6 +61,7 @@ public static partial class SubstanceChecks
     private static readonly string[] NoticeWords = ["اعذار", "إعذار", "أعذر", "اعذر", "انذار", "إنذار", "أنذر", "انذر", "تنبيه"];
     private static readonly string[] InterestWords = ["فائدة", "فوائد", "الفوائد", "فائدة قانونية"];
     private static readonly string[] DamagesWords = ["تعويض", "التعويض"];
+    private static readonly string[] FamilyWords = ["زواج", "الزواج", "طلاق", "الطلاق", "تطليق", "التطليق", "خلع", "الخلع", "نفقة", "النفقة", "حضانة", "الحضانة"];
     private static readonly string[] LoanWords = ["قرض", "اقترض", "سلفة", "أقرض", "اقرض"];
 
     /// <param name="inputs">The lawyer's form fields (facts, grounds and requests notes, documents).</param>
@@ -119,7 +120,9 @@ public static partial class SubstanceChecks
             issues.Add(new SubstanceIssue(SubstanceIssueKind.NoBasisArticle, new ArticleRef("cpca", "15")));
         }
 
-        var contractual = claims.Any(c => c.Contractual) || (claims.Count == 0 && Mentions(facts, ["عقد", "اقترض", "قرض", "إيجار", "ايجار", "بيع", "اشترى", "باع"]));
+        // «عقد زواج» is no contract claim: a wife's damages in a tatliq petition need no formal notice (case 06, 16 Oct).
+        var contractual = claims.Any(c => c.Contractual)
+            || (claims.Count == 0 && Mentions(facts, ["عقد", "اقترض", "قرض", "إيجار", "ايجار", "بيع", "اشترى", "باع"]) && !Mentions(facts, FamilyWords));
         var cited = selected.Where(a => a.Code == "civil-code").Select(a => a.Number)
             .Concat(NarrativeChecks.FullArticleReferences(groundsNotes + "\n" + draftText).Where(r => r.Code is null or "القانون المدني" or "ق م" or "ق.م").Select(r => r.Number));
         if (contractual && cited.Contains("124"))

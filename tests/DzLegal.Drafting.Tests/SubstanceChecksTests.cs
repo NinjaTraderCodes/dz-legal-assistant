@@ -89,6 +89,15 @@ public class SubstanceChecksTests
     }
 
     [Fact]
+    public void AMarriageContractDoesNotMakeAFamilyClaimContractual()
+    {
+        // Case 06 (16 Oct): «عقد زواج» in a tatliq petition raised the art. 179 formal-notice warning.
+        var inputs = Inputs(requests: "إلزام المدعى عليه بأن يدفع للمدعية مبلغ 300,000 دج تعويضا عن الضرر.");
+        inputs["notes.facts"] = "تزوجت المدعية بالمدعى عليه بموجب عقد زواج مسجل، وامتنع عن الإنفاق عليها.";
+        Assert.DoesNotContain(SubstanceChecks.Check(inputs, [], [], string.Empty), i => i.Kind == SubstanceIssueKind.DamagesWithoutFormalNotice);
+    }
+
+    [Fact]
     public void ARequestLineInFrenchBlocksExportButFrenchWordsInAnArabicLineDoNot()
     {
         Assert.Contains(SubstanceChecks.Check(Inputs(requests: "Condamner le défendeur à payer 1500000 DA."), [Loan], [Art450], string.Empty), i => i.Kind == SubstanceIssueKind.NonArabicRequest);

@@ -166,9 +166,9 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
         var others = legalTexts.Where(t => !used.Contains(t) && (t.Role is null or not ("limit" or "procedure") || InNotes(t))).ToList();
         // An article the library does not hold is cited by number only, and only from a code this app covers: the
         // code must never write «تستند إلى المادة 1 من الدستور» because the notes named it (hostile case a1).
-        var unloaded = cited.SelectMany(c => c.Refs)
-            .Where(r => !legalTexts.Any(t => Matches(t, r)) && (r.CodeName is null || CoveredCodes.Contains(r.CodeName)))
-            .Select(r => $"المادة {r.Number} من {r.CodeName ?? "القانون المدني"}")
+        var unloaded = cited.SelectMany(c => c.Refs.Select(r => (c.Line, Ref: r)))
+            .Where(x => !legalTexts.Any(t => Matches(t, x.Ref)) && (x.Ref.CodeName is null || CoveredCodes.Contains(x.Ref.CodeName)))
+            .Select(x => $"المادة {x.Ref.Number} من {x.Ref.CodeName ?? LawNamedInLine(x.Line, x.Ref.Number) ?? "القانون المدني"}")
             .Distinct()
             .ToList();
         if (others.Count > 0 || unloaded.Count > 0)
@@ -190,6 +190,27 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
 
         return groups;
     }
+
+    /// <summary>
+    /// The law a line names after an article the reference reader does not know («المادة 80 من القانون المتعلق بعلاقات
+    /// العمل»), as the lawyer wrote it; null when the line names none, so the article is the Civil Code's. Without it
+    /// the code wrote «المادة 80 من القانون المدني» (case 07, 16 Oct).
+    /// </summary>
+    internal static string? LawNamedInLine(string line, string number)
+    {
+        foreach (Match m in NamedLaw().Matches(line ?? string.Empty))
+        {
+            if (ArticleNumbers.Canonical(ArabicScript.Normalize(m.Groups["n"].Value)) == number)
+            {
+                return m.Groups["law"].Value.Trim();
+            }
+        }
+
+        return null;
+    }
+
+    [GeneratedRegex(@"ماد[ةه]\s+(?<n>[\d\u0660-\u0669]+(?:\s+مكرر(?:\s*\d+)?)?)\s+من\s+(?<law>(?:ال)?قانون[^:،,.;؛\n]*)")]
+    private static partial Regex NamedLaw();
 
     public ModelRequest BuildRequest(DocumentTypeDefinition definition, IReadOnlyDictionary<string, string> inputs, IReadOnlyList<ArguedGroup> groups, string promptPath)
     {

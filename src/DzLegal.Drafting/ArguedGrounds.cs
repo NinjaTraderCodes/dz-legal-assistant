@@ -181,6 +181,13 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
             groups.Add(new ArguedGroup("حجة أوردها المحامي", [], [], line, null));
         }
 
+        // No basis article loaded (a Family Code or labour article cited by number only): the first paragraph founds
+        // the first request, so the code still restates it in the lawyer's words.
+        if (requests.Count > 0 && groups.Count > 0 && groups.All(g => g.Request is null) && (groups[0].Texts.Count > 0 || groups[0].Unloaded.Count > 0))
+        {
+            groups[0] = groups[0] with { Request = requests[0] };
+        }
+
         return groups;
     }
 
@@ -211,6 +218,7 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
         var user = _renderer.RenderFile(definition, promptPath, inputs, new Dictionary<string, object?>
         {
             ["plan"] = plan.ToString().TrimEnd(),
+            ["requests_for_model"] = RequestsForModel(inputs.GetValueOrDefault("notes.requests", string.Empty)),
             ["paragraph_count"] = groups.Count,
         });
         var system = definition.SystemPrompt is null
@@ -218,6 +226,40 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
             : File.ReadAllText(Path.Combine(definition.SourceDirectory, definition.SystemPrompt)).Trim();
         var notes = string.Join('\n', groups.Select(g => g.Note).Where(n => n.Length > 0));
         return new ModelRequest(RequestId, system, TemplateRenderer.Normalize(user), notes) { MaxTokens = 400 + (250 * groups.Count) };
+    }
+
+    /// <summary>
+    /// The request lines the model may read: formal Arabic only. A line in dialect or French is replaced by a mention,
+    /// since the model copied «يخلص 240000 دج تاع الكرا…» into its sentence (Gemma 3 4B, case 03, 16 Oct).
+    /// </summary>
+    internal static string RequestsForModel(string requests)
+    {
+        var lines = (requests ?? string.Empty).Split('\n').Select(l => l.Trim()).Where(l => l.Length > 0).ToList();
+        var formal = lines.Where(l => !NotFormal(l)).ToList();
+        return formal.Count == lines.Count ? string.Join('\n', formal)
+            : string.Join('\n', formal.Append("(طلبات أخرى كتبت بغير العربية الفصحى، لا تنقلها)"));
+    }
+
+    private static bool NotFormal(string line) =>
+        ArabicScript.Ratio(line) < NarrativeChecks.MinArabicRatio || SubstanceChecks.IsDialect(line) || NarrativeChecks.LatinWords(line).Any();
+
+    /// <summary>True when the sentence repeats three words in a row of a request line written in dialect or French.</summary>
+    internal static bool CopiesInformalRequest(string argument, string requests)
+    {
+        var said = " " + string.Join(' ', ArabicScript.Tokens(argument).Select(ArabicScript.Normalize)) + " ";
+        foreach (var line in (requests ?? string.Empty).Split('\n').Where(l => l.Trim().Length > 0 && NotFormal(l)))
+        {
+            var words = ArabicScript.Tokens(line).Select(ArabicScript.Normalize).Where(w => !w.Any(char.IsDigit)).ToList();
+            for (var k = 0; k + 3 <= words.Count; k++)
+            {
+                if (said.Contains(" " + string.Join(' ', words.Skip(k).Take(3)) + " ", StringComparison.Ordinal))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public async Task<SkeletonDraft> DraftAsync(DocumentTypeDefinition definition, SectionDefinition section, IReadOnlyDictionary<string, string> inputs, IReadOnlyList<LegalText> legalTexts, string promptPath, CancellationToken cancellationToken = default)
@@ -498,21 +540,43 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
             return $"writes in French ({french})";
         }
 
+        if (CopiesInformalRequest(argument, inputs.GetValueOrDefault("notes.requests", string.Empty)))
+        {
+            return "copies a request not in formal Arabic";
+        }
+
         var sources = string.Join('\n', groups.Select(g => g.Note)
             .Append(inputs.GetValueOrDefault("notes.facts", string.Empty))
             .Append(inputs.GetValueOrDefault("notes.requests", string.Empty))
             .Append(inputs.GetValueOrDefault("documents.list", string.Empty)));
+        // «مليون وخمائة وخمسين ألف دينار», «خمس عشرة جانفي ألف وخمائة وخمسة وسبعين» (Gemma 3 4B, a4, 16 Oct): a number
+        // written in words escapes the number checks, so it is refused unless the lawyer wrote it so.
+        if (NumberInWords().Match(argument) is { Success: true } words
+            && !ArabicScript.Normalize(sources).Contains(ArabicScript.Normalize(words.Value), StringComparison.Ordinal))
+        {
+            return $"writes a number in words ({words.Value})";
+        }
+
         return NarrativeChecks.Check(argument, sources, inputs, definition?.GroundedTerms, legalTexts)
             .FirstOrDefault(x => x.IsHard || x.IsWrongArticleContent || x.Kind is NarrativeIssueKind.UnknownNumber or NarrativeIssueKind.UncitedArticle) is { } issue
             ? $"{issue.Kind} {issue.Detail}"
             : null;
     }
 
+    private const string NumberWord = @"(?:واحد\S*|[اأإ]ثن\S*|ثلاث\S*|[اأ]ربع\S*|خمس\S*|ست\S*|سبع\S*|ثمان\S*|تسع\S*|عشر\S*|\S*م(?:ائ|ئ|اي)ة|مئتين|مائتين|[اأآ]لف\S*|[اآ]لاف|مليون\S*|ملايين|مليار\S*)";
+
+    [GeneratedRegex(@"(?<!\S)" + NumberWord + @"\s+و" + NumberWord + @"(?!\S)")]
+    private static partial Regex NumberInWords();
+
     /// <summary>
     /// «- المادة 450 من القانون المدني» lines are the ticked articles the app lists before the lawyer's own notes;
     /// every other line is the lawyer's.
     /// </summary>
     public static bool IsOwnLine(string line) => !(line ?? string.Empty).TrimStart().StartsWith("- المادة", StringComparison.Ordinal);
+
+    /// <summary>True when the notes cite an article of a code this app covers, loaded or not.</summary>
+    public static bool CitesCoveredArticle(string notes) =>
+        References(notes ?? string.Empty).Any(r => r.CodeName is null || CoveredCodes.Contains(r.CodeName));
 
     /// <summary>The articles the lawyer's own lines of the notes cite: number, and the code's name when written.</summary>
     public static IReadOnlyList<(string Number, string? CodeName)> CitedInOwnLines(string notes) =>

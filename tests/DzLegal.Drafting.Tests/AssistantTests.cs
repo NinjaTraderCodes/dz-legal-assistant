@@ -93,7 +93,7 @@ public class KeepAndRedraftTests
     public async Task OneSectionCanBeRedrafted()
     {
         var provider = new RecordingProvider(r => "حيث إن " + r.SourceText);
-        var section = await new DraftingService(provider).DraftSectionAsync(Fixtures.Requete, "grounds", Fixtures.CompleteInputs());
+        var section = await new DraftingService(provider) { ClassicGrounds = true }.DraftSectionAsync(Fixtures.Requete, "grounds", Fixtures.CompleteInputs());
         Assert.Equal("حيث إن المادة 106 من القانون المدني.", section.Text);
         Assert.Single(provider.Requests);
     }

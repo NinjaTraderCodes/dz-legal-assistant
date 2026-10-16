@@ -58,7 +58,7 @@ public class DraftingServiceTests
     public async Task PromptsAreGroundedInTheLawyersNotes()
     {
         var provider = new RecordingProvider(r => "حيث إن " + r.SourceText);
-        await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs());
+        await new DraftingService(provider) { ClassicGrounds = true }.DraftAsync(Requete, Fixtures.CompleteInputs());
 
         Assert.Equal(["grounds"], provider.Requests.Select(r => r.SectionId)); // requests are the lawyer's lines
         var grounds = provider.Requests[0];
@@ -152,7 +152,7 @@ public class DraftingServiceTests
             ? CopiedFromExample + "\nحيث إن المادة 106 من القانون المدني تجعل العقد شريعة المتعاقدين."
             : r.SourceText);
 
-        var draft = await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs());
+        var draft = await new DraftingService(provider) { ClassicGrounds = true }.DraftAsync(Requete, Fixtures.CompleteInputs());
 
         var grounds = draft.FindSection("grounds")!;
         Assert.Equal("حيث إن المادة 106 من القانون المدني تجعل العقد شريعة المتعاقدين.", grounds.Text);
@@ -165,7 +165,7 @@ public class DraftingServiceTests
     {
         var provider = new RecordingProvider(r => r.SectionId == "grounds" ? CopiedFromExample : r.SourceText);
 
-        var draft = await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs());
+        var draft = await new DraftingService(provider) { ClassicGrounds = true }.DraftAsync(Requete, Fixtures.CompleteInputs());
 
         var grounds = draft.FindSection("grounds")!;
         Assert.Equal("المادة 106 من القانون المدني.", grounds.Text);
@@ -191,7 +191,7 @@ public class DraftingServiceTests
     public async Task PromptsStateThePartiesRolesAndTheRequestsContext()
     {
         var provider = new RecordingProvider(r => r.SourceText);
-        await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs());
+        await new DraftingService(provider) { ClassicGrounds = true }.DraftAsync(Requete, Fixtures.CompleteInputs());
 
         var grounds = provider.Requests.Single(r => r.SectionId == "grounds").UserPrompt;
         Assert.Contains("- المدعي: بن علي كريم", grounds, StringComparison.Ordinal);
@@ -208,7 +208,7 @@ public class DraftingServiceTests
         var answers = new Queue<string>(["حيث إن المادة 106 لم受理 الدين", "حيث إن المادة 106 من القانون المدني تجعل العقد شريعة المتعاقدين"]);
         var provider = new RecordingProvider(r => r.SectionId == "grounds" ? answers.Dequeue() : r.SourceText);
 
-        var draft = await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs());
+        var draft = await new DraftingService(provider) { ClassicGrounds = true }.DraftAsync(Requete, Fixtures.CompleteInputs());
 
         var grounds = draft.FindSection("grounds")!;
         Assert.Equal("حيث إن المادة 106 من القانون المدني تجعل العقد شريعة المتعاقدين", grounds.Text);
@@ -224,7 +224,7 @@ public class DraftingServiceTests
             + "وحيث إن المدعى عليه لم يرد المبلغ، فإن طلب المدعي يكون مؤسسا طبقا للمادة 106 من القانون المدني.";
         var provider = new RecordingProvider(r => r.SectionId == "grounds" ? answer : r.SourceText);
 
-        var draft = await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs());
+        var draft = await new DraftingService(provider) { ClassicGrounds = true }.DraftAsync(Requete, Fixtures.CompleteInputs());
 
         var grounds = draft.FindSection("grounds")!;
         Assert.Equal("وحيث إن المدعى عليه لم يرد المبلغ، فإن طلب المدعي يكون مؤسسا طبقا للمادة 106 من القانون المدني.", grounds.Text);
@@ -238,7 +238,7 @@ public class DraftingServiceTests
         const string Wrong = "حيث إن المادة 106 من القانون المدني تنص على أن الحقوق الخاصة لا تدعى إلا باللجوء إلى القضاء المختص.";
         var provider = new RecordingProvider(r => r.SectionId == "grounds" ? Wrong : r.SourceText);
 
-        var draft = await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs());
+        var draft = await new DraftingService(provider) { ClassicGrounds = true }.DraftAsync(Requete, Fixtures.CompleteInputs());
 
         var grounds = draft.FindSection("grounds")!;
         Assert.Equal("المادة 106 من القانون المدني.", grounds.Text);
@@ -271,7 +271,7 @@ public class DraftingServiceTests
     {
         var provider = new RecordingProvider(r => r.SectionId == "grounds" ? "受理 受理" : r.SourceText);
 
-        var draft = await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs());
+        var draft = await new DraftingService(provider) { ClassicGrounds = true }.DraftAsync(Requete, Fixtures.CompleteInputs());
 
         var grounds = draft.FindSection("grounds")!;
         Assert.Equal("المادة 106 من القانون المدني.", grounds.Text);
@@ -287,7 +287,7 @@ public class DraftingServiceTests
             ? "حيث إن المادتان 106 و107 من القانون المدني تجعلان العقد شريعة المتعاقدين."
             : r.SourceText);
 
-        var draft = await new DraftingService(provider).DraftAsync(Requete, inputs);
+        var draft = await new DraftingService(provider) { ClassicGrounds = true }.DraftAsync(Requete, inputs);
 
         Assert.Equal("حيث إن المادتين 106 و107 من القانون المدني تجعلان العقد شريعة المتعاقدين.", draft.FindSection("grounds")!.Text);
         Assert.Contains("إن المادتان المذكورتان", draft.FindSection("facts")!.Text, StringComparison.Ordinal);
@@ -304,7 +304,7 @@ public class DraftingServiceTests
         var answers = new Queue<string>([InventedQualification, FaithfulGrounds]);
         var provider = new RecordingProvider(r => r.SectionId == "grounds" ? answers.Dequeue() : r.SourceText);
 
-        var draft = await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs());
+        var draft = await new DraftingService(provider) { ClassicGrounds = true }.DraftAsync(Requete, Fixtures.CompleteInputs());
 
         var grounds = draft.FindSection("grounds")!;
         Assert.Equal(FaithfulGrounds, grounds.Text);
@@ -316,7 +316,7 @@ public class DraftingServiceTests
     {
         var provider = new RecordingProvider(r => r.SectionId == "grounds" ? InventedQualification : r.SourceText);
 
-        var draft = await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs());
+        var draft = await new DraftingService(provider) { ClassicGrounds = true }.DraftAsync(Requete, Fixtures.CompleteInputs());
 
         var grounds = draft.FindSection("grounds")!;
         Assert.Equal(InventedQualification, grounds.Text);
@@ -333,7 +333,7 @@ public class DraftingServiceTests
             ? "وحيث إن المدعى عليه قد تسبب عن طريق امتنانه بالسداد في ضرر للمدعي."
             : r.SourceText);
 
-        var draft = await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs());
+        var draft = await new DraftingService(provider) { ClassicGrounds = true }.DraftAsync(Requete, Fixtures.CompleteInputs());
 
         Assert.Equal("وحيث إن المدعى عليه قد تسبب عن طريق امتناعه عن السداد في ضرر للمدعي.", draft.FindSection("grounds")!.Text);
     }
@@ -381,7 +381,7 @@ public class DraftingServiceTests
         const string qwen3 = "Okay, let's tackle this legal drafting request. The user wants me to rephrase the lawyer's notes into formal Arabic.";
         var provider = new RecordingProvider(r => r.SectionId == "grounds" ? qwen3 : r.SourceText);
 
-        var draft = await new DraftingService(provider).DraftAsync(Requete, Fixtures.CompleteInputs());
+        var draft = await new DraftingService(provider) { ClassicGrounds = true }.DraftAsync(Requete, Fixtures.CompleteInputs());
 
         var grounds = draft.FindSection("grounds")!;
         Assert.Equal("المادة 106 من القانون المدني.", grounds.Text);
@@ -414,5 +414,22 @@ public class DraftingServiceTests
         Assert.Contains("الوقائع:\n", text, StringComparison.Ordinal);
         Assert.DoesNotContain("الجهة القضائية:", text, StringComparison.Ordinal);
         Assert.EndsWith("التوقيع:", text, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task NotesCitingOnlyAnUnloadedArticleGetArguedGroundsWithTheCodesClosing()
+    {
+        // Case 06 (16 Oct): with no loaded article, the free-writing path closed a wife's petition «فإن طلب المدعي بتطليق المدعية».
+        var inputs = Fixtures.CompleteInputs();
+        inputs["plaintiff.gender"] = "female";
+        inputs["notes.facts"] = "امتنع المدعى عليه عن الإنفاق على المدعية رغم صدور حكم بالنفقة.";
+        inputs["notes.grounds"] = "المادة 53 من قانون الأسرة: يجوز للزوجة أن تطلب التطليق لعدم الإنفاق.";
+        inputs["notes.requests"] = "الحكم بتطليق المدعية من المدعى عليه.";
+        var provider = new RecordingProvider(_ => "1- وحيث إن المدعى عليه امتنع عن الإنفاق على المدعية رغم صدور حكم بالنفقة.");
+
+        var section = await new DraftingService(provider).DraftSectionAsync(Requete, "grounds", inputs);
+
+        Assert.Equal(ArguedGrounds.RequestId, Assert.Single(provider.Requests).SectionId);
+        Assert.EndsWith("فإن طلب المدعية الحكم بتطليق المدعية من المدعى عليه يكون مؤسسا قانونا.", section.Text, StringComparison.Ordinal);
     }
 }

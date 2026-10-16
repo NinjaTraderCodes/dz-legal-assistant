@@ -274,6 +274,52 @@ public class ArguedGroundsTests
     }
 
     [Fact]
+    public void TheModelReadsOnlyTheFormalRequestsAndASentenceCopyingADialectRequestIsRejected()
+    {
+        // Gemma 3 4B, case 03 (16 Oct): «… دون جدوى، يخلص 240000 دج تاع الكرا لي راه فاتو، فإن طلبات المدعية …».
+        const string requests = "يخلص 240000 دج تاع الكرا لي راه فاتو.\nتحميل المدعى عليه المصاريف القضائية.";
+        var shown = ArguedGrounds.RequestsForModel(requests);
+        Assert.DoesNotContain("يخلص", shown, StringComparison.Ordinal);
+        Assert.Contains("تحميل المدعى عليه المصاريف القضائية.", shown, StringComparison.Ordinal);
+
+        Assert.True(ArguedGrounds.CopiesInformalRequest("وحيث إن المدعى عليه أعذر دون جدوى، يخلص 240000 دج تاع الكرا لي راه فاتو", requests));
+        Assert.False(ArguedGrounds.CopiesInformalRequest("وحيث إن المدعى عليه امتنع عن دفع 240000 دج من بدلات الإيجار", requests));
+    }
+
+    [Fact]
+    public void ANumberWrittenInWordsIsRejected()
+    {
+        // Gemma 3 4B, hostile a4 (16 Oct): 1,500,000 became «مليون وخمائة وخمسين ألف», 15/01/2025 «خمس عشرة جانفي ألف وخمائة…».
+        var groups = ArguedGrounds.Plan(Notes, Ticked, Requests);
+        var inputs = new Dictionary<string, string> { ["notes.facts"] = "اقترض المدعى عليه مبلغ 1500000 دج بموجب اعتراف بدين ولم يرده رغم إعذاره.", ["notes.requests"] = Requests };
+        var draft = ArguedGrounds.Assemble(null, groups, new Dictionary<int, string>
+        {
+            [1] = "وحيث إن المدعى عليه اقترض مبلغا قدره مليون وخمائة وخمسين ألف دينار جزائري ولم يرده.",
+            [2] = "وحيث إن الدين ثابت بموجب اعتراف بدين.",
+            [3] = "وحيث إن المدعى عليه أعذر لمدة ستة أشهر ولم يرد المبلغ.",
+        }, inputs, Ticked);
+
+        Assert.Contains("writes a number in words", Assert.Single(draft.Problems), StringComparison.Ordinal);
+        Assert.Contains("ستة أشهر", draft.Text, StringComparison.Ordinal); // a single number word is not a spelled-out amount
+    }
+
+    [Fact]
+    public void WithOnlyAnUnloadedArticleTheFirstParagraphStillClosesOnTheRequest()
+    {
+        // Case 06 (16 Oct): Family Code art. 53 is not loaded; the old path wrote «فإن طلب المدعي بتطليق المدعية».
+        const string notes = "المادة 53 من قانون الأسرة: يجوز للزوجة أن تطلب التطليق لعدم الإنفاق بعد صدور الحكم بوجوبه.";
+        const string requests = "الحكم بتطليق المدعية من المدعى عليه.\nتحميل المدعى عليه المصاريف القضائية.";
+        Assert.True(ArguedGrounds.CitesCoveredArticle(notes));
+        var groups = ArguedGrounds.Plan(notes, [], requests);
+        var group = Assert.Single(groups);
+        Assert.Equal("الحكم بتطليق المدعية من المدعى عليه.", group.Request);
+
+        var inputs = new Dictionary<string, string> { ["notes.facts"] = "امتنع المدعى عليه عن الإنفاق على المدعية رغم صدور حكم بالنفقة.", ["notes.requests"] = requests, ["plaintiff.gender"] = "female" };
+        var draft = ArguedGrounds.Assemble(null, groups, new Dictionary<int, string> { [1] = "وحيث إن المدعى عليه امتنع عن الإنفاق على المدعية رغم صدور حكم بالنفقة." }, inputs, []);
+        Assert.Equal("حيث إن الدعوى تستند إلى المادة 53 من قانون الأسرة، وحيث إن المدعى عليه امتنع عن الإنفاق على المدعية رغم صدور حكم بالنفقة، فإن طلب المدعية الحكم بتطليق المدعية من المدعى عليه يكون مؤسسا قانونا.", draft.Text);
+    }
+
+    [Fact]
     public void RequestsInFrenchLeaveOneGeneralClosingOnTheLastParagraph()
     {
         const string french = "Condamner le défendeur à payer au demandeur 1.500.000 DA au principal.";

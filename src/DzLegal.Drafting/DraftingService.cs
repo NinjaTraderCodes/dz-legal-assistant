@@ -176,9 +176,12 @@ public sealed partial class DraftingService
             return new DraftSection { Id = section.Id };
         }
 
-        if (section.ArgumentPrompt is not null && !ClassicGrounds && legalTexts is { Count: > 0 })
+        // Argued grounds also when the notes cite only articles whose text is not loaded (Family Code, labour laws):
+        // the older free-writing path wrote «فإن طلب المدعي بتطليق المدعية» for a wife's petition (Gemma 3 4B, 16 Oct).
+        if (section.ArgumentPrompt is not null && !ClassicGrounds
+            && (legalTexts is { Count: > 0 } || ArguedGrounds.CitesCoveredArticle(inputs.GetValueOrDefault(section.SourceField ?? string.Empty, string.Empty))))
         {
-            return await WriteArguedAsync(definition, section, inputs, legalTexts, cancellationToken);
+            return await WriteArguedAsync(definition, section, inputs, legalTexts ?? [], cancellationToken);
         }
 
         var notes = new List<string>();

@@ -42,6 +42,12 @@ public enum SubstanceIssueKind
     /// difference or sum of two amounts in the facts) is not flagged.
     /// </summary>
     ConflictingAmounts,
+
+    /// <summary>
+    /// Damages are asked but the facts describe no harm: the amount in the requests proves no loss (Civil Code arts.
+    /// 182 and 186 tie compensation to the harm suffered). A warning only.
+    /// </summary>
+    DamagesWithoutHarm,
 }
 
 /// <summary>A legal point the lawyer should look at, with the article it rests on.</summary>
@@ -61,6 +67,7 @@ public static partial class SubstanceChecks
     private static readonly string[] NoticeWords = ["اعذار", "إعذار", "أعذر", "اعذر", "انذار", "إنذار", "أنذر", "انذر", "تنبيه"];
     private static readonly string[] InterestWords = ["فائدة", "فوائد", "الفوائد", "فائدة قانونية"];
     private static readonly string[] DamagesWords = ["تعويض", "التعويض"];
+    private static readonly string[] HarmWords = ["ضرر", "الضرر", "أضرار", "الأضرار", "اضرار", "تضرر", "خسارة", "خسائر", "الخسارة", "مصاريف", "تكاليف", "كلفة", "أتلف", "إتلاف", "اتلاف", "فوات", "كسب", "معاناة", "عجز"];
     private static readonly string[] FamilyWords = ["زواج", "الزواج", "طلاق", "الطلاق", "تطليق", "التطليق", "خلع", "الخلع", "نفقة", "النفقة", "حضانة", "الحضانة"];
     private static readonly string[] LoanWords = ["قرض", "اقترض", "سلفة", "أقرض", "اقرض"];
 
@@ -139,6 +146,12 @@ public static partial class SubstanceChecks
         if (contractual && Mentions(requests, DamagesWords) && !Mentions(facts, NoticeWords))
         {
             issues.Add(new SubstanceIssue(SubstanceIssueKind.DamagesWithoutFormalNotice, new ArticleRef("civil-code", "179")));
+        }
+
+        // The requests notes only: the drafted grounds may restate «تعويضا عن الضرر» from the request line itself.
+        if (Mentions(inputs.GetValueOrDefault("notes.requests", string.Empty), DamagesWords) && !Mentions(facts, HarmWords))
+        {
+            issues.Add(new SubstanceIssue(SubstanceIssueKind.DamagesWithoutHarm, new ArticleRef("civil-code", "182")));
         }
 
         // The Constitution grounds no claim this app drafts (civil, commercial, family or social), so it is flagged even

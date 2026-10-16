@@ -7,6 +7,10 @@ stretch (or a few long stretches where the PDF splits an article across columns)
 the article as `sourceExtract`, and the test suite checks the stored text against them, so an edited article that no
 longer matches its source fails the build.
 
+What this proves, exactly: the same Arabic letters and digits, in the same order. It ignores spaces, punctuation,
+diacritics and tatweel, so it is not a glyph-for-glyph identity, and it says nothing about later amendments: those are
+for the lawyer's check against the page (verified, verifiedBy, verifiedOn).
+
 Usage (needs poppler-utils for pdftotext):  python3 tools/law/build_codes.py
 """
 import hashlib, json, re, subprocess, sys, unicodedata

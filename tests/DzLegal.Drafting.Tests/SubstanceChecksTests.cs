@@ -18,7 +18,7 @@ public class SubstanceChecksTests
 
     [Fact]
     public void ACleanLoanClaimRaisesNothing() =>
-        Assert.Empty(SubstanceChecks.Check(Inputs(requests: "إلزام المدعى عليه برد 1500000 دج مع التعويض."), [Loan], [Art450], string.Empty));
+        Assert.Empty(SubstanceChecks.Check(Inputs(requests: "إلزام المدعى عليه برد 1500000 دج."), [Loan], [Art450], string.Empty)); // damages: see DamagesAskedWithNoHarmDescribedArePointedOut
 
     [Fact]
     public void TortLiabilityCitedForAContractIsFlagged()
@@ -86,6 +86,19 @@ public class SubstanceChecksTests
         var issues = SubstanceChecks.Check(inputs, [Loan], [Art450], string.Empty);
         Assert.Equal(conflict, issues.Any(i => i.Kind == SubstanceIssueKind.ConflictingAmounts));
         Assert.False(SubstanceChecks.BlocksExport(SubstanceIssueKind.ConflictingAmounts));
+    }
+
+    [Theory]
+    [InlineData("اقترض المدعى عليه مبلغ 1500000 دج ولم يرده رغم إعذاره.", true)] // case 01: 150,000 DA asked, no loss described
+    [InlineData("اقترض المدعى عليه مبلغ 1500000 دج ولم يرده رغم إعذاره، فتحمل المدعي مصاريف قرض بنكي قدرها 150000 دج.", false)]
+    [InlineData("أتلف المدعى عليه سور منزل المدعية أثناء أشغال هدم.", false)]
+    public void DamagesAskedWithNoHarmDescribedArePointedOut(string facts, bool flagged)
+    {
+        // Legal research of 16 Oct 2026: the amount in the requests is not evidence of loss (Civil Code arts. 182, 186).
+        var inputs = Inputs(requests: "إلزام المدعى عليه بأن يدفع للمدعي 150000 دج تعويضا.");
+        inputs["notes.facts"] = facts;
+        Assert.Equal(flagged, SubstanceChecks.Check(inputs, [Loan], [Art450], string.Empty).Any(i => i.Kind == SubstanceIssueKind.DamagesWithoutHarm));
+        Assert.False(SubstanceChecks.BlocksExport(SubstanceIssueKind.DamagesWithoutHarm));
     }
 
     [Fact]

@@ -18,7 +18,7 @@ Please check each point against the **current official text (Journal Officiel), 
 
 **Art. 14:** the claim is brought by a **written, signed and dated** requête, filed at the greffe by the plaintiff, their agent or their lawyer, in as many copies as there are parties.
 
-**Art. 17 (para. 2):** a requête concerning **real property and/or a registered real right** must be **published at the conservation foncière** and produced at the first hearing, on pain of formal inadmissibility, unless deposit for publication is proven.
+**Art. 17 (paragraph 3):** a requête concerning **real property and/or a registered real right** must be **published at the conservation foncière** and produced at the first hearing, on pain of formal inadmissibility, unless deposit for publication is proven. (Paragraph number corrected by the legal research of 16 October 2026, JO 21/2008, p. 4.)
 
 **Art. 8:** proceedings and pleadings must be in **Arabic**, on pain of inadmissibility.
 

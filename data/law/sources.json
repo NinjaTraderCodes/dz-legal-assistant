@@ -1,5 +1,5 @@
 {
-  "comment": "Official texts the law library is imported from. Import with: dotnet run --project src/DzLegal.Harness -- law import <id> --url <official url> (or --file <downloaded file>). officialSite is where the lawyer can check the text before it is imported; joReference (Journal Officiel issue) is to be filled by a lawyer. Links must be https on joradp.dz or mjustice.dz. References are to be confirmed by a lawyer (see docs/LAW-LIBRARY.md).",
+  "comment": "Official texts the law library is imported from. Import with: dotnet run --project src/DzLegal.Harness -- law import <id> --url <official url> (or --file <downloaded file>). officialSite is where the lawyer can check the text before it is imported; joReference (Journal Officiel issue and the amendments relevant to the loaded articles, not a full amendment history) comes from the legal research of 16 Oct 2026, to be confirmed by a lawyer. Links must be https on joradp.dz or mjustice.dz. References are to be confirmed by a lawyer (see docs/LAW-LIBRARY.md).",
   "codes": [
     {
       "id": "civil-code",
@@ -10,7 +10,7 @@
       "citationName": "القانون المدني",
       "reference": "الأمر رقم 75-58 المؤرخ في 26 سبتمبر 1975 المتضمن القانون المدني، المعدل والمتمم",
       "officialSite": "https://www.joradp.dz",
-      "joReference": ""
+      "joReference": "الجريدة الرسمية العدد 78 المؤرخ في 30 سبتمبر 1975، ص 990؛ وللمواد المحملة: القانون 88-14 (العدد 18 المؤرخ في 4 مايو 1988)، والقانون 05-10 (العدد 44 المؤرخ في 26 يونيو 2005)، والقانون 07-05 (العدد 31 المؤرخ في 13 مايو 2007)"
     },
     {
       "id": "cpca",
@@ -21,7 +21,7 @@
       "citationName": "قانون الإجراءات المدنية والإدارية",
       "reference": "القانون رقم 08-09 المؤرخ في 25 فبراير 2008 المتضمن قانون الإجراءات المدنية والإدارية، المعدل والمتمم",
       "officialSite": "https://www.joradp.dz",
-      "joReference": ""
+      "joReference": "الجريدة الرسمية العدد 21 المؤرخ في 23 أبريل 2008، ص 3؛ معدل ومتمم بالقانون 22-13 المؤرخ في 12 يوليو 2022 (الجريدة الرسمية العدد 48 المؤرخ في 17 يوليو 2022، ص 3)"
     },
     {
       "id": "commercial-code",
@@ -32,7 +32,7 @@
       "citationName": "القانون التجاري",
       "reference": "الأمر رقم 75-59 المؤرخ في 26 سبتمبر 1975 المتضمن القانون التجاري، المعدل والمتمم",
       "officialSite": "https://www.joradp.dz",
-      "joReference": ""
+      "joReference": "الجريدة الرسمية العدد 101 المؤرخ في 19 ديسمبر 1975، ص 1306؛ ولأحكام الإيجار المستحدثة: القانون 05-02 المؤرخ في 6 فبراير 2005 (الجريدة الرسمية العدد 11 المؤرخ في 9 فبراير 2005، ص 8-9)"
     },
     {
       "id": "family-code",
@@ -43,7 +43,7 @@
       "citationName": "قانون الأسرة",
       "reference": "القانون رقم 84-11 المؤرخ في 9 يونيو 1984 المتضمن قانون الأسرة، المعدل والمتمم بالأمر رقم 05-02 المؤرخ في 27 فبراير 2005",
       "officialSite": "https://www.joradp.dz",
-      "joReference": ""
+      "joReference": "الجريدة الرسمية العدد 24 المؤرخ في 12 يونيو 1984، ص 910؛ معدل ومتمم بالأمر 05-02 المؤرخ في 27 فبراير 2005 (الجريدة الرسمية العدد 15 المؤرخ في 27 فبراير 2005، ص 18-22)"
     },
     {
       "id": "labour-relations",
@@ -54,7 +54,7 @@
       "citationName": "القانون رقم 90-11 المتعلق بعلاقات العمل",
       "reference": "القانون رقم 90-11 المؤرخ في 21 أبريل 1990 المتعلق بعلاقات العمل، المعدل والمتمم",
       "officialSite": "https://www.joradp.dz",
-      "joReference": ""
+      "joReference": "الجريدة الرسمية العدد 17 المؤرخ في 25 أبريل 1990، ص 562؛ ولأحكام التسريح: القانون 91-29 (العدد 68 المؤرخ في 25 ديسمبر 1991، ص 2654-2656) والأمر 96-21 (العدد 43 المؤرخ في 10 يوليو 1996، ص 7-8)"
     },
     {
       "id": "labour-disputes",
@@ -65,7 +65,7 @@
       "citationName": "القانون رقم 90-04 المتعلق بتسوية النزاعات الفردية في العمل",
       "reference": "القانون رقم 90-04 المؤرخ في 6 فبراير 1990 المتعلق بتسوية النزاعات الفردية في العمل، المعدل والمتمم",
       "officialSite": "https://www.joradp.dz",
-      "joReference": ""
+      "joReference": "الجريدة الرسمية العدد 6 المؤرخ في 7 فبراير 1990، ص 240؛ معدل بالقانون 91-28 (الجريدة الرسمية العدد 68 المؤرخ في 25 ديسمبر 1991، ص 2654)"
     }
   ]
 }

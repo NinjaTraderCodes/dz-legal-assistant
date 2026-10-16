@@ -202,10 +202,10 @@
   <data name="ModelInMemory" xml:space="preserve"><value>{0}: جاهز في الذاكرة</value></data>
   <data name="SectionWriting" xml:space="preserve"><value>الذكاء الاصطناعي يكتب هذا القسم…</value></data>
   <data name="SubstanceHeader" xml:space="preserve"><value>نقاط قانونية للمراجعة</value></data>
-  <data name="Substance_NoBasisArticle" xml:space="preserve"><value>لا توجد بعد مادة تؤسس عليها الدعوى. حلل الوقائع أو اختر مادة أو اذكرها في ملاحظاتك: يجب أن تتضمن العريضة الوسائل التي تؤسس عليها الدعوى (المادة 15 من قانون الإجراءات المدنية والإدارية).</value></data>
+  <data name="Substance_NoBasisArticle" xml:space="preserve"><value>لم تحدد بعد مادة تؤسس عليها الدعوى. حلل الوقائع أو اختر مادة أو اذكرها في ملاحظاتك، وتحقق من بيان الأساس الذي يربط الوقائع بالطلبات (المادة 15 من قانون الإجراءات المدنية والإدارية تطلب الوسائل التي تؤسس عليها الدعوى؛ عدم ذكر رقم مادة وحده لا يعني مخالفتها).</value></data>
   <data name="Substance_TortArticleInContractClaim" xml:space="preserve"><value>المادة 124 من القانون المدني تخص المسؤولية عن الخطأ خارج إطار العقد. هذه الدعوى ناشئة عن عقد: أسس التعويض على مواد المسؤولية العقدية (المادة 176، أو المادة 186 للتأخر في الوفاء بمبلغ من النقود).</value></data>
   <data name="Substance_InterestOnPrivateLoan" xml:space="preserve"><value>تطلب فوائد على قرض بين أفراد: المادة 454 من القانون المدني تجعل هذا القرض بدون أجر وتبطل كل نص يخالف ذلك.</value></data>
-  <data name="Substance_DamagesWithoutFormalNotice" xml:space="preserve"><value>يطلب تعويض ولا تذكر الوقائع إعذارا: طبقا للمادة 179 من القانون المدني لا يستحق التعويض إلا بعد إعذار المدين.</value></data>
+  <data name="Substance_DamagesWithoutFormalNotice" xml:space="preserve"><value>يطلب تعويض ولا تذكر الوقائع إعذارا: طبقا للمادة 179 من القانون المدني لا يستحق التعويض إلا بعد إعذار المدين، ما لم يقرر القانون غير ذلك. تحقق من الإعذار أو من قيام حالة يستغني فيها القانون عنه (المادتان 180 و181).</value></data>
   <data name="AiReason" xml:space="preserve"><value>ذكاء اصطناعي</value></data>
   <data name="WhyItApplies" xml:space="preserve"><value>سبب الانطباق</value></data>
   <data name="ShowOfficialText" xml:space="preserve"><value>النص الرسمي</value></data>
@@ -228,6 +228,7 @@
   <data name="OnlineEngineStatus" xml:space="preserve"><value>محرك اختبار عبر الإنترنت: ترسل معطيات القضية إلى OpenRouter</value></data>
   <data name="Substance_InstructionInNotes" xml:space="preserve"><value>في ملاحظاتك نص موجه إلى الذكاء الاصطناعي (مثل «SYSTEM:» أو «تجاهل التعليمات»). قد يكون منسوخا من مصدر آخر: احذفه قبل التصدير.</value></data>
   <data name="Substance_DialectRequest" xml:space="preserve"><value>في الطلبات سطر بالدارجة، والطلبات تنقل كما كتبتها: أعد صياغته بالعربية الفصحى قبل التصدير.</value></data>
+  <data name="Substance_DamagesWithoutHarm" xml:space="preserve"><value>يطلب تعويض ولا تصف الوقائع ضررا: مبلغ التعويض في الطلبات لا يثبت الضرر. بين الضرر الذي لحق المدعي وعلاقته بالفعل ومستندات تقديره قبل التصدير.</value></data>
   <data name="Substance_ConflictingAmounts" xml:space="preserve"><value>في الطلبات مبلغ قريب من مبلغ في الوقائع أو المستندات دون أن يساويه: تحقق من أيهما الصحيح قبل التصدير.</value></data>
   <data name="Substance_NonArabicRequest" xml:space="preserve"><value>في الطلبات سطر بغير العربية، والطلبات تنقل كما كتبتها: يجب أن تحرر العريضة بالعربية (المادة 8 من قانون الإجراءات المدنية والإدارية). صحح السطر قبل التصدير.</value></data>
   <data name="Substance_CriminalPenaltyInCivilClaim" xml:space="preserve"><value>في الطلبات أو الأسانيد عقوبة سالبة للحرية («حبس» أو «سجن»)، والقاضي المدني لا يحكم بها. احذفها قبل التصدير.</value></data>

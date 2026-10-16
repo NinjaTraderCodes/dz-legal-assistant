@@ -188,7 +188,7 @@
       "check": { "kind": "sectionNotEmpty", "section": "facts" },
       "missingMessage": { "ar": "لا يوجد عرض للوقائع — العريضة معرضة لعدم القبول شكلا.", "en": "No statement of facts — inadmissible in form." },
       "verified": false,
-      "sourceNote": "Art. 15 item 5: summary of the facts, the requests and the grounds."
+      "sourceNote": "Art. 15 item 5: summary of the facts, the requests and the grounds. Art. 15 asks for this information; it requires no article number and no set heading (legal research of 16 Oct 2026, JO 21/2008 p. 4; to be confirmed by a lawyer)."
     },
     {
       "id": "art15.5.grounds",
@@ -224,9 +224,9 @@
       "label": { "ar": "تاريخ العريضة", "en": "Date of the requête" },
       "check": { "kind": "sectionMatches", "section": "dateplace",
         "pattern": "([0-9]{1,2}|[٠-٩]{1,2})\\s*[/.\\-]\\s*([0-9]{1,2}|[٠-٩]{1,2})\\s*[/.\\-]\\s*([0-9]{4}|[٠-٩]{4})" },
-      "missingMessage": { "ar": "العريضة غير مؤرخة. المادة 14 تشترط عريضة مكتوبة موقعة ومؤرخة.", "en": "The requête is not dated. Art. 14 requires a written, signed and dated requête." },
+      "missingMessage": { "ar": "لم يتعرف البرنامج على تاريخ العريضة (يوم/شهر/سنة): تحقق من وجود تاريخ صحيح. المادة 14 تشترط عريضة مكتوبة موقعة ومؤرخة.", "en": "No date was recognised in the requête (day/month/year): check that it carries a valid date. Art. 14 requires a written, signed and dated requête." },
       "verified": false,
-      "sourceNote": "Art. 14 (not art. 15): the requête must be written, signed and dated. Confirm the sanction with the lawyer."
+      "sourceNote": "Art. 14 (not art. 15): the requête must be written, signed and dated. The pattern only recognises a dd/mm/yyyy date; it is not a form the law prescribes. Confirm the sanction with the lawyer."
     },
     {
       "id": "art14.signature",
@@ -235,9 +235,9 @@
       "check": { "kind": "allOf", "checks": [
         { "kind": "fieldsPresent", "fields": [ "lawyer.name" ] },
         { "kind": "sectionNotEmpty", "section": "signature" } ] },
-      "missingMessage": { "ar": "لا توجد خانة توقيع باسم المحامي. المادة 14 تشترط عريضة موقعة.", "en": "No signature block with the lawyer's name. Art. 14 requires a signed requête." },
+      "missingMessage": { "ar": "خانة التوقيع غير مكتملة. المادة 14 تشترط عريضة موقعة: تحقق من توقيع العريضة فعليا قبل إيداعها.", "en": "The signature block is incomplete. Art. 14 requires a signed requête: check that it is actually signed before filing." },
       "verified": false,
-      "sourceNote": "Art. 14. The application checks the signature block; the handwritten signature is applied by the lawyer."
+      "sourceNote": "Art. 14. The application only sees the signature block; a typed block is not a signature, which is applied by hand before filing. Art. 14 lets the plaintiff, an agent or a lawyer file (legal research of 16 Oct 2026, JO 21/2008 p. 4; to be confirmed by a lawyer)."
     },
     {
       "id": "art17.publication",
@@ -247,18 +247,18 @@
       "check": { "kind": "allOf", "checks": [
         { "kind": "fieldsPresent", "fields": [ "claim.publicationReference" ] },
         { "kind": "sectionNotEmpty", "section": "publication" } ] },
-      "missingMessage": { "ar": "الدعوى تتعلق بعقار أو بحق عيني عقاري مشهر: يجب إشهار العريضة لدى المحافظة العقارية وتقديمها في أول جلسة، تحت طائلة عدم القبول شكلا.", "en": "Real-property claim: the requête must be published at the land registry and produced at the first hearing, or it is inadmissible in form." },
+      "missingMessage": { "ar": "الدعوى تتعلق بعقار أو بحق عيني عقاري مشهر: تحقق من إشهار العريضة لدى المحافظة العقارية أو من إثبات إيداعها للإشهار، ومن تقديم الدليل في أول جلسة، تحت طائلة عدم القبول شكلا.", "en": "Real-property claim: check that the requête was published at the land registry, or that its deposit for publication can be proved, and that the proof is produced at the first hearing, or it is inadmissible in form." },
       "verified": false,
-      "sourceNote": "Art. 17 para. 2. Confirm current wording after Loi 22-13 and what exactly must appear in the requête itself."
+      "sourceNote": "Art. 17 paragraph 3: proof of deposit for publication is accepted in place of publication. A typed reference does not prove it was done (Supreme Court decision 1018513 of 15/12/2016) (legal research of 16 Oct 2026, JO 21/2008 p. 4; to be confirmed by a lawyer)."
     },
     {
       "id": "art8.arabic",
       "article": "CPCA art. 8",
       "label": { "ar": "تحرير العريضة باللغة العربية", "en": "Requête written in Arabic" },
       "check": { "kind": "predominantlyArabic", "sections": [ "subject", "facts", "grounds", "requests" ], "minRatio": 0.6 },
-      "missingMessage": { "ar": "جزء من العريضة غير محرر باللغة العربية. المادة 8 تشترط تحرير العرائض باللغة العربية تحت طائلة عدم القبول.", "en": "Part of the requête is not in Arabic. Art. 8 requires pleadings in Arabic, on pain of inadmissibility." },
+      "missingMessage": { "ar": "يبدو أن جزءا من العريضة غير محرر باللغة العربية (مؤشر تقريبي). المادة 8 تشترط تحرير العرائض باللغة العربية تحت طائلة عدم القبول.", "en": "Part of the requête seems not to be in Arabic (a rough indicator). Art. 8 requires pleadings in Arabic, on pain of inadmissibility." },
       "verified": false,
-      "sourceNote": "Art. 8. Latin-script names and French terms inline are tolerated up to 40% of letters per section."
+      "sourceNote": "Art. 8. The 60% share of Arabic letters is a rough indicator, not a legal threshold: art. 8 sets no percentage. Foreign terms, documents and official translations are for the lawyer to review (legal research of 16 Oct 2026, JO 21/2008 p. 4; to be confirmed by a lawyer)."
     },
     {
       "id": "form.subject",
@@ -268,7 +268,7 @@
       "check": { "kind": "sectionNotEmpty", "section": "subject" },
       "missingMessage": { "ar": "لم يحدد موضوع الدعوى في رأس العريضة.", "en": "The subject of the claim is not stated in the heading." },
       "verified": false,
-      "sourceNote": "Listed in the project brief as a required element; not a separate item of art. 15 as currently read. Confirm with the lawyer."
+      "sourceNote": "A drafting preference, not a separate item of art. 15 (legal research of 16 Oct 2026, JO 21/2008 p. 4; to be confirmed by a lawyer)."
     },
     {
       "id": "form.order",
@@ -278,7 +278,7 @@
       "check": { "kind": "sectionOrder", "sections": [ "header", "plaintiff", "defendant", "subject", "facts", "grounds", "requestsIntro", "requests", "documents", "dateplace", "signature" ] },
       "missingMessage": { "ar": "أجزاء العريضة ليست في الترتيب المعتاد.", "en": "The parts of the requête are not in the customary order." },
       "verified": false,
-      "sourceNote": "Customary structure of Algerian model requêtes, not a statutory rule."
+      "sourceNote": "Customary structure of Algerian model requêtes, a drafting preference, not a statutory rule."
     }
   ]
 }

@@ -309,5 +309,22 @@ public static partial class DraftBench
                 Durations[request.SectionId] = Durations.GetValueOrDefault(request.SectionId) + clock.Elapsed;
             }
         }
+
+        /// <summary>Streams like the app, so a caller that stops reading early (the grounds, once the plan is written) saves the time here too.</summary>
+        public async IAsyncEnumerable<string> StreamAsync(ModelRequest request, [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken cancellationToken)
+        {
+            var clock = Stopwatch.StartNew();
+            try
+            {
+                await foreach (var piece in Inner.StreamAsync(request, cancellationToken))
+                {
+                    yield return piece;
+                }
+            }
+            finally
+            {
+                Durations[request.SectionId] = Durations.GetValueOrDefault(request.SectionId) + clock.Elapsed;
+            }
+        }
     }
 }

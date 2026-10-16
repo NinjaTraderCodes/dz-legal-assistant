@@ -204,7 +204,7 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
 
             if (g.Request is not null)
             {
-                plan.AppendLine("    الطلب الذي تؤسسه: " + g.Request);
+                plan.AppendLine("    الطلب الذي تؤسسه (يضيفه البرنامج في آخر الفقرة): " + g.Request);
             }
         }
 
@@ -274,12 +274,18 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
     {
         ArgumentNullException.ThrowIfNull(groups);
         ArgumentNullException.ThrowIfNull(arguments);
+        ArgumentNullException.ThrowIfNull(inputs);
         var problems = new List<string>();
         var rejected = new List<string>();
         var lines = new List<string>();
+        var applications = Enumerable.Range(0, groups.Count)
+            .Select(i => arguments.GetValueOrDefault(i + 1) is { } given ? Application(given, groups[i]) : null)
+            .ToList();
+        var accepted = applications.Select(a => Problem(definition, a, groups, inputs, legalTexts) is null).ToList();
+        var closings = Closings(groups, inputs, accepted);
         for (var i = 0; i < groups.Count; i++)
         {
-            var argument = arguments.GetValueOrDefault(i + 1) is { } given ? WithoutOwnCitation(given, groups[i]) : null;
+            var argument = applications[i];
             if (Problem(definition, argument, groups, inputs, legalTexts) is { } problem)
             {
                 problems.Add($"[{i + 1}] {groups[i].Topic}: {problem}, left as {Placeholder}");
@@ -294,12 +300,12 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
             var rule = groups[i].RuleSentence;
             if (rule.Length == 0)
             {
-                lines.Add(GroundsSkeleton.Reopen(argument!, i));
+                lines.Add(WithClosing(GroundsSkeleton.Reopen(argument!, i), closings[i]));
                 continue;
             }
 
             var application = WithoutRestatedRule(argument!.Trim().TrimStart('،', ',', '-', ' ').TrimEnd(), groups[i]);
-            lines.Add(Opening(i) + rule + "، " + application + (application.EndsWith('.') ? string.Empty : "."));
+            lines.Add(WithClosing(Opening(i) + rule + "، " + application, closings[i]));
         }
 
         return new SkeletonDraft(string.Join('\n', lines), [], problems) { Rejected = rejected };
@@ -307,8 +313,108 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
 
     private static string Opening(int index) => index == 0 ? "حيث إن " : "وحيث إن ";
 
+    private static string WithClosing(string paragraph, string? closing)
+    {
+        var text = paragraph.TrimEnd().TrimEnd('.', '،', ',').TrimEnd();
+        return closing is null ? text + "." : text + "، " + closing + ".";
+    }
+
     private static Dictionary<int, string> WithoutOwnCitations(IReadOnlyDictionary<int, string> arguments, IReadOnlyList<ArguedGroup> groups) =>
-        arguments.ToDictionary(a => a.Key, a => a.Key >= 1 && a.Key <= groups.Count ? WithoutOwnCitation(a.Value, groups[a.Key - 1]) : a.Value);
+        arguments.ToDictionary(a => a.Key, a => a.Key >= 1 && a.Key <= groups.Count ? Application(a.Value, groups[a.Key - 1]) : a.Value);
+
+    /// <summary>The model's sentence without a reference to the paragraph's own article and without a closing of its own.</summary>
+    private static string Application(string given, ArguedGroup group) => WithoutModelClosing(WithoutOwnCitation(given, group));
+
+    /// <summary>
+    /// Cuts a closing the model wrote although the code writes it («، فإن طلب المدعي … يكون مؤسسا قانونا», «وعليه يكون
+    /// طلب…»), and a closing filler with nothing after it («، وثبت بذلك»). The opening clause always stays.
+    /// </summary>
+    internal static string WithoutModelClosing(string application)
+    {
+        var text = ModelClosing().Replace(application, string.Empty);
+        text = FillerEnding().Replace(text, string.Empty).TrimEnd();
+        return text.Length >= 10 ? text : application;
+    }
+
+    [GeneratedRegex(@"\s*[،,]?\s*(?:(?:و?عليه|و?لذا|و?لذلك|و?بالتالي|و?من\s+ثم|و?بناء\s+على\s+ذلك)\s*[،,]?\s*)?(?:(?:ف|و)?[إا]ن\s+طلب|(?:ف|و)?يكون\s+طلب|مما\s+يجعل\s+طلب|يكون\s+مؤسسا|تكون\s+مؤسسة)[^\n]*$")]
+    private static partial Regex ModelClosing();
+
+    [GeneratedRegex(@"\s*[،,]?\s*و?(?:قد\s+)?ثبت\s*(?:ب?ذلك)?\s*\.?\s*$")]
+    private static partial Regex FillerEnding();
+
+    private static readonly string[] RequestOpeners =
+    [
+        "الزام", "حكم", "قضاء", "ابطال", "بطلان", "فسخ", "تصريح", "تثبيت", "طرد", "اخلاء", "تطليق", "اسناد", "منح", "تمكين",
+        "ارجاع", "رد", "تعويض", "استرداد", "تسليم", "دفع", "قسمه", "اثبات", "انهاء", "نفقه", "حضانه", "زياره", "اعاده", "ابقاء",
+    ];
+
+    /// <summary>
+    /// A request line the closing can repeat as written: formal Arabic (no dialect, no French) that reads after «طلب
+    /// المدعي», i.e. opens with a verbal noun such as «إلزام», «الحكم», «إبطال», «فسخ». Anything else gets the general closing.
+    /// </summary>
+    internal static bool IsFormalRequest(string? request)
+    {
+        if (string.IsNullOrWhiteSpace(request) || ArabicScript.Ratio(request) < NarrativeChecks.MinArabicRatio || SubstanceChecks.IsDialect(request)
+            || NarrativeChecks.LatinWords(request).Any())
+        {
+            return false;
+        }
+
+        var first = ArabicScript.Normalize(RequestText(request)).Split(' ')[0];
+        first = first.StartsWith("وال", StringComparison.Ordinal) ? first[3..] : first.StartsWith("ال", StringComparison.Ordinal) ? first[2..] : first.StartsWith('و') ? first[1..] : first;
+        return RequestOpeners.Any(o => first.StartsWith(o, StringComparison.Ordinal) || ("ال" + first).StartsWith(o, StringComparison.Ordinal));
+    }
+
+    /// <summary>The request line without a list marker, a leading «و» or its final stop.</summary>
+    private static string RequestText(string request)
+    {
+        var text = ListMarker().Replace(request.Trim(), string.Empty).Trim().TrimEnd('.', '،', ';', '؛').Trim();
+        return text.StartsWith('و') && text.Length > 1 && !text.StartsWith("وقف", StringComparison.Ordinal) ? text[1..] : text;
+    }
+
+    [GeneratedRegex(@"^(?:[-–•*]|\(?\d{1,2}[\)\.\-]|[\u0660-\u0669]{1,2}[\)\.\-])\s*")]
+    private static partial Regex ListMarker();
+
+    /// <summary>
+    /// The closing the code writes after each application, so the request in the grounds is the lawyer's own line, word
+    /// for word (Gemma 3 4B copied dialect, changed amounts and dropped «أو» when it wrote the closing: 13 of 89 closings,
+    /// 16 Oct). A formal request line is restated; a request in dialect or French gets «فإن طلبات المدعي تكون مؤسسة
+    /// قانونا», which the last paragraph also takes when no paragraph has a closing, and which is written once.
+    /// </summary>
+    internal static IReadOnlyList<string?> Closings(IReadOnlyList<ArguedGroup> groups, IReadOnlyDictionary<string, string> inputs, IReadOnlyList<bool> written)
+    {
+        var entity = inputs.GetValueOrDefault("plaintiff.isLegalEntity", string.Empty) == "true";
+        var female = entity || inputs.GetValueOrDefault("plaintiff.gender", string.Empty) == "female";
+        var plaintiff = female ? "المدعية" : "المدعي";
+        var general = $"فإن طلبات {plaintiff} تكون مؤسسة قانونا";
+        var closings = new string?[groups.Count];
+        var generalWritten = false;
+        for (var i = 0; i < groups.Count; i++)
+        {
+            if (!written[i] || groups[i].Request is not { } request)
+            {
+                continue;
+            }
+
+            if (IsFormalRequest(request))
+            {
+                closings[i] = $"فإن طلب {plaintiff} {RequestText(request)} يكون مؤسسا قانونا";
+            }
+            else if (!generalWritten)
+            {
+                closings[i] = general;
+                generalWritten = true;
+            }
+        }
+
+        var hasRequests = !string.IsNullOrWhiteSpace(inputs.GetValueOrDefault("notes.requests", string.Empty));
+        if (hasRequests && closings.All(c => c is null) && Enumerable.Range(0, groups.Count).LastOrDefault(i => written[i], -1) is var last and >= 0)
+        {
+            closings[last] = general;
+        }
+
+        return closings;
+    }
 
     /// <summary>
     /// Removes a bare reference to one of the paragraph's own articles («، كما تنص عليه المادة 498 من القانون المدني»,

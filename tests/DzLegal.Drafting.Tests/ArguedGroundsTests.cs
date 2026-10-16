@@ -83,7 +83,7 @@ public class ArguedGroundsTests
         }, inputs, Ticked);
 
         var lines = draft.Text.Split('\n');
-        Assert.Equal("حيث إن المواد 106 و107 و450 من القانون المدني تقضي بأن العقد شريعة المتعاقدين، وبأنه يجب تنفيذ العقد طبقا لما اشتمل عليه وبحسن نية، وبأنه يلتزم المقترض برد نظير ما اقترضه عند نهاية القرض، وحيث إن المدعى عليه اقترض مبلغ 1500000 دج ولم يرده، فإن طلب المدعي إلزامه بدفعه مؤسس.", lines[0]);
+        Assert.Equal("حيث إن المواد 106 و107 و450 من القانون المدني تقضي بأن العقد شريعة المتعاقدين، وبأنه يجب تنفيذ العقد طبقا لما اشتمل عليه وبحسن نية، وبأنه يلتزم المقترض برد نظير ما اقترضه عند نهاية القرض، وحيث إن المدعى عليه اقترض مبلغ 1500000 دج ولم يرده، فإن طلب المدعي إلزام المدعى عليه بأن يدفع للمدعي 1500000 دج يكون مؤسسا قانونا.", lines[0]);
         Assert.Equal("وحيث إن المادة 323 من القانون المدني تقضي بأن على الدائن إثبات الالتزام وعلى المدين إثبات التخلص منه، وحيث إن الدين ثابت بموجب اعتراف بدين.", lines[1]);
         Assert.Equal("وحيث إن المادتين 179 و186 من القانون المدني تقضيان بأنه لا يستحق التعويض إلا بعد إعذار المدين، وبتعويض الدائن عن الضرر اللاحق من تأخر المدين في الوفاء بمبلغ من النقود، وحيث إن (...).", lines[2]);
         Assert.DoesNotContain("تعفي", draft.Text, StringComparison.Ordinal);
@@ -202,25 +202,100 @@ public class ArguedGroundsTests
 
         await new ArguedGrounds(provider).DraftAsync(Fixtures.Requete, Fixtures.Requete.FindSection("grounds")!, inputs, Ticked, "prompts/grounds-argued.ar.txt");
 
-        Assert.Contains("إلزام المدعى عليها", provider.Requests[0].UserPrompt, StringComparison.Ordinal);
+        Assert.Contains("المدعي والمدعى عليها،", provider.Requests[0].UserPrompt, StringComparison.Ordinal);
     }
 
     [Theory]
-    [InlineData("female", "male", "فإن طلب المدعية إلزام المدعى عليه")]
-    [InlineData("male", "female", "فإن طلب المدعي إلزام المدعى عليها")]
-    public async Task TheClosingTheModelIsShownAgreesWithThePartiesGender(string plaintiff, string defendant, string closing)
+    [InlineData("female", "false", "فإن طلب المدعية إلزام المدعى عليه بأن يدفع للمدعي 1500000 دج يكون مؤسسا قانونا.")]
+    [InlineData("male", "true", "فإن طلب المدعية إلزام المدعى عليه بأن يدفع للمدعي 1500000 دج يكون مؤسسا قانونا.")]
+    [InlineData("male", "false", "فإن طلب المدعي إلزام المدعى عليه بأن يدفع للمدعي 1500000 دج يكون مؤسسا قانونا.")]
+    public async Task TheCodeClosesTheParagraphWithTheLawyersRequestInThePlaintiffsGender(string gender, string entity, string closing)
     {
-        // Case 03 (13 Oct): a woman's petition closed with «فإن طلب المدعي».
+        // Case 03 (13 Oct): a woman's petition closed with «فإن طلب المدعي»; the closing is now the code's.
         var inputs = Fixtures.CompleteInputs();
         inputs["notes.grounds"] = Notes;
         inputs["notes.requests"] = Requests;
-        inputs["plaintiff.gender"] = plaintiff;
-        inputs["defendant.gender"] = defendant;
-        var provider = new RecordingProvider(_ => "1- وحيث إن الدين ثابت.");
+        inputs["notes.facts"] = "اقترض المدعى عليه مبلغ 1500000 دج ولم يرده.";
+        inputs["plaintiff.gender"] = gender;
+        inputs["plaintiff.isLegalEntity"] = entity;
+        var provider = new RecordingProvider(_ => "1- وحيث إن المدعى عليه اقترض مبلغ 1500000 دج ولم يرده.");
 
-        await new ArguedGrounds(provider).DraftAsync(Fixtures.Requete, Fixtures.Requete.FindSection("grounds")!, inputs, Ticked, "prompts/grounds-argued.ar.txt");
+        var draft = await new ArguedGrounds(provider).DraftAsync(Fixtures.Requete, Fixtures.Requete.FindSection("grounds")!, inputs, Ticked, "prompts/grounds-argued.ar.txt");
 
-        Assert.Contains(closing, provider.Requests[0].UserPrompt, StringComparison.Ordinal);
+        Assert.EndsWith("ولم يرده، " + closing, draft.Text.Split('\n')[0], StringComparison.Ordinal);
+        Assert.DoesNotContain("مؤسسا قانونا", provider.Requests[0].UserPrompt.Split("التعليمات:")[1].Replace("ولا عبارة يكون مؤسسا قانونا", string.Empty, StringComparison.Ordinal), StringComparison.Ordinal);
+    }
+
+    [Theory]
+    [InlineData("إلزام الشركة المدعى عليها بتسليم 20 آلة خياطة تحت غرامة تهديدية قدرها 5,000 دج عن كل يوم تأخير، أو إرجاع الثمن 800,000 دج.", true)] // case 04
+    [InlineData("إبطال عقد البيع المؤرخ في 12/02/2026.", true)] // case 05
+    [InlineData("الحكم بتطليق المدعية من المدعى عليه.", true)]
+    [InlineData("1- إلزام المدعى عليه بأن يدفع للمدعي أجور ثلاثة أشهر.", true)]
+    [InlineData("وإلزامه بأن يدفع 150000 دج تعويضا.", true)]
+    [InlineData("فسخ عقد الإيجار وطرد المدعى عليه من المحل.", true)]
+    [InlineData("يخلص 240000 دج تاع الكرا لي راه فاتو.", false)] // case 03, dialect
+    [InlineData("Condamner le défendeur à payer 1.500.000 DA.", false)] // case 02, French
+    [InlineData("نلتمس من المحكمة الموقرة قبول الدعوى.", false)] // does not read after «طلب المدعي»
+    [InlineData("خلاص 150 مليون سنتيم لي عندو.", false)] // hostile a4
+    public void OnlyAFormalRequestLineIsRestatedInTheClosing(string request, bool formal) =>
+        Assert.Equal(formal, ArguedGrounds.IsFormalRequest(request));
+
+    [Fact]
+    public void ARequestInDialectGetsTheGeneralClosingOnceAndTheModelsOwnClosingIsReplaced()
+    {
+        // Hostile a4 and case 03 (16 Oct): the model copied the dialect request into the closing, six times in 89.
+        const string dialect = "يخلص 240000 دج تاع الكرا لي راه فاتو.\nيخلص تعويض 50000 دج لي فاتو.";
+        var groups = ArguedGrounds.Plan(Notes, Ticked, dialect);
+        var inputs = new Dictionary<string, string> { ["notes.facts"] = "اقترض المدعى عليه مبلغ 1500000 دج بموجب اعتراف بدين ولم يرده رغم إعذاره.", ["notes.requests"] = dialect };
+        var draft = ArguedGrounds.Assemble(null, groups, new Dictionary<int, string>
+        {
+            [1] = "وحيث إن المدعى عليه اقترض مبلغ 1500000 دج ولم يرده، فإن طلب المدعي يخلص 240000 دج يكون مؤسسا قانونا.",
+            [2] = "وحيث إن الدين ثابت بموجب اعتراف بدين، وثبت بذلك.",
+            [3] = "وحيث إن المدعى عليه أعذر ولم يرد المبلغ.",
+        }, inputs, Ticked);
+
+        Assert.Empty(draft.Problems);
+        Assert.DoesNotContain("يخلص", draft.Text, StringComparison.Ordinal);
+        Assert.DoesNotContain("وثبت بذلك", draft.Text, StringComparison.Ordinal);
+        var lines = draft.Text.Split('\n');
+        Assert.EndsWith("ولم يرده، فإن طلبات المدعي تكون مؤسسة قانونا.", lines[0], StringComparison.Ordinal);
+        Assert.Equal(1, draft.Text.Split("تكون مؤسسة قانونا").Length - 1);
+        Assert.EndsWith("ثابت بموجب اعتراف بدين.", lines[1], StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void RequestsInFrenchLeaveOneGeneralClosingOnTheLastParagraph()
+    {
+        const string french = "Condamner le défendeur à payer au demandeur 1.500.000 DA au principal.";
+        var groups = ArguedGrounds.Plan(Notes, Ticked, french);
+        var inputs = new Dictionary<string, string> { ["notes.facts"] = "اقترض المدعى عليه مبلغ 1500000 دج بموجب اعتراف بدين ولم يرده رغم إعذاره.", ["notes.requests"] = french };
+        var draft = ArguedGrounds.Assemble(null, groups, new Dictionary<int, string>
+        {
+            [1] = "وحيث إن المدعى عليه اقترض مبلغ 1500000 دج ولم يرده.",
+            [2] = "وحيث إن الدين ثابت بموجب اعتراف بدين.",
+            [3] = "وحيث إن المدعى عليه أعذر ولم يرد المبلغ.",
+        }, inputs, Ticked);
+
+        var lines = draft.Text.Split('\n');
+        Assert.EndsWith("ولم يرده.", lines[0], StringComparison.Ordinal);
+        Assert.EndsWith("ولم يرد المبلغ، فإن طلبات المدعي تكون مؤسسة قانونا.", lines[2], StringComparison.Ordinal);
+    }
+
+    [Theory]
+    [InlineData("وحيث إن المدعى عليه لم يرد المبلغ، وعليه فإن طلب المدعي إلزامه بالدفع يكون مؤسسا قانونا.", "وحيث إن المدعى عليه لم يرد المبلغ")]
+    [InlineData("وحيث إن المدعى عليه لم يرد المبلغ مما يجعل طلب المدعي مؤسسا.", "وحيث إن المدعى عليه لم يرد المبلغ")]
+    [InlineData("وحيث إن المدعى عليه لم يرد المبلغ، وثبت بذلك.", "وحيث إن المدعى عليه لم يرد المبلغ")]
+    [InlineData("وحيث إن المدعى عليه لم يرد المبلغ.", "وحيث إن المدعى عليه لم يرد المبلغ.")]
+    public void TheModelsOwnClosingIsCutBeforeTheCodeWritesIt(string application, string kept) =>
+        Assert.Equal(kept, ArguedGrounds.WithoutModelClosing(application));
+
+    [Fact]
+    public void ALineSplitOverTwoPhysicalLinesIsNotCut()
+    {
+        // HARNESS-RESEARCH-REPORT risk: the stop must never cut planned line N when it runs on to a second line.
+        const string answer = "1- وحيث إن المدعى عليه اقترض المبلغ\nولم يرده رغم إعذاره.\n2- وحيث إن الدين ثابت.";
+        Assert.Null(ArguedGrounds.PastThePlan(answer, 2));
+        Assert.Null(ArguedGrounds.PastThePlan("1- وحيث إن المدعى عليه اقترض المبلغ\nولم يرده.", 1));
     }
 
     [Fact]
@@ -237,7 +312,7 @@ public class ArguedGroundsTests
         }, inputs, Ticked);
 
         var lines = draft.Text.Split('\n');
-        Assert.EndsWith("وحيث إن المدعى عليه ملزم برد القرض، وقد امتنع عن رد مبلغ 1500000 دج.", lines[0], StringComparison.Ordinal);
+        Assert.EndsWith("وحيث إن المدعى عليه ملزم برد القرض، وقد امتنع عن رد مبلغ 1500000 دج، فإن طلب المدعي إلزام المدعى عليه بأن يدفع للمدعي 1500000 دج يكون مؤسسا قانونا.", lines[0], StringComparison.Ordinal);
         Assert.EndsWith("وحيث إن الدين ثابت.", lines[1], StringComparison.Ordinal);
         Assert.EndsWith("(...).", lines[2], StringComparison.Ordinal); // 182 is not this paragraph's article
     }

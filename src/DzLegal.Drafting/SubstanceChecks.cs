@@ -172,7 +172,7 @@ public static partial class SubstanceChecks
         return name switch
         {
             "قانون الأسرة" => "family-code",
-            "قانون العمل" => "labour-relations",
+            "قانون العمل" or NarrativeChecks.LabourRelations or NarrativeChecks.LabourDisputes => "labour-relations",
             "الدستور" => "constitution",
             _ => null,
         };

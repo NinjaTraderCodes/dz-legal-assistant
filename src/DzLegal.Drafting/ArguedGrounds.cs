@@ -115,6 +115,7 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
     private static readonly HashSet<string> CoveredCodes = new(StringComparer.Ordinal)
     {
         "القانون المدني", "القانون التجاري", "قانون الأسرة", "قانون الإجراءات المدنية والإدارية",
+        NarrativeChecks.LabourRelations, NarrativeChecks.LabourDisputes,
     };
 
     private static readonly (string Topic, string[] Roles)[] Order =

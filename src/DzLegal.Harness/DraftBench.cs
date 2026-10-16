@@ -262,8 +262,11 @@ public static partial class DraftBench
             ["قانون الإجراءات المدنية والإدارية"] = "cpca",
         };
         var french = NarrativeChecks.FrenchArticleReferences(groundsNotes).Select(r => (Code: codes[r.CodeName], r.Number));
+        codes["قانون الأسرة"] = "family-code";
+        codes[NarrativeChecks.LabourRelations] = "labour-relations";
+        codes[NarrativeChecks.LabourDisputes] = "labour-disputes";
         var refs = NarrativeChecks.FullArticleReferences(groundsNotes)
-            .Select(r => (Code: r.Code is { } name && codes.TryGetValue(name, out var id) ? id : "civil-code", r.Number))
+            .Select(r => (Code: r.Code is { } name && codes.TryGetValue(NarrativeChecks.CodeName(name), out var id) ? id : "civil-code", r.Number))
             .Concat(french)
             .Distinct()
             .ToList();

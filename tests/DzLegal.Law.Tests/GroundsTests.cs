@@ -145,13 +145,30 @@ public sealed class ShippedCatalogTests
     public void EveryShippedTextIsProvedAgainstItsOfficialSource()
     {
         var library = LawLibraryLoader.Load(LawRoot);
-        Assert.Equal(["civil-code", "commercial-code", "cpca"], library.Codes.Select(c => c.Id));
-        Assert.All(library.Codes.SelectMany(c => c.Articles), a =>
+        Assert.Equal(["civil-code", "commercial-code", "cpca", "family-code", "labour-disputes", "labour-relations"], library.Codes.Select(c => c.Id).Order(StringComparer.Ordinal));
+        Assert.All(library.Codes.Where(c => c.Transcription is null).SelectMany(c => c.Articles), a =>
         {
             Assert.NotNull(a.SourceExtract);
             Assert.Equal(a.SourceExtract, LawTextFold.Fold(a.Text));
             Assert.True(a.Page > 0);
         });
+
+        // The Family Code and labour-law PDFs have no usable text layer: transcribed from the page images and read
+        // twice, each article with its page and the file it is printed in, and nothing marked verified.
+        Assert.Equal(["family-code", "labour-disputes", "labour-relations"], library.Codes.Where(c => c.Transcription is not null).Select(c => c.Id).Order(StringComparer.Ordinal));
+        Assert.All(library.Codes.Where(c => c.Transcription is not null), c =>
+        {
+            Assert.False(c.Verified);
+            Assert.All(c.Articles, a =>
+            {
+                Assert.Null(a.SourceExtract);
+                Assert.True(a.Page > 0);
+                Assert.False(a.Verified);
+                Assert.True(File.Exists(Path.Combine(LawRoot, "..", "..", (a.Source ?? c.Source)!.Url)) || (a.Source ?? c.Source)!.Url.StartsWith("docs/", StringComparison.Ordinal));
+            });
+        });
+        Assert.Contains("الخلافات الفردية للعمل", library.FindArticle("labour-disputes", "19")!.Text, StringComparison.Ordinal); // JO 6/1990, p. 242
+        Assert.Contains("مدة ستة (6) أشهر", library.FindArticle("labour-relations", "73-4")!.Text, StringComparison.Ordinal);
         Assert.Contains("يجب أن تتضمن عريضة افتتاح الدعوى", library.FindArticle("cpca", "15")!.Text, StringComparison.Ordinal);
     }
 

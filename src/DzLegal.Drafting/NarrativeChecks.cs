@@ -119,7 +119,8 @@ public static partial class NarrativeChecks
 
         var inText = Numbers(text);
         legalTexts ??= [];
-        var known = inputs.Values.Concat(legalTexts.Select(t => t.Number + " " + t.Text)).SelectMany(Numbers).ToHashSet(StringComparer.Ordinal);
+        // The law's own name can hold numbers the code wrote («القانون رقم 90-11 المتعلق بعلاقات العمل»).
+        var known = inputs.Values.Concat(legalTexts.Select(t => t.Number + " " + t.Text + " " + t.CitationName)).SelectMany(Numbers).ToHashSet(StringComparer.Ordinal);
         var articleNumbers = ArticleReferences(text).Select(r => r.Number).ToHashSet(StringComparer.Ordinal);
         foreach (var n in inText.Where(n => !known.Contains(n)).Distinct())
         {
@@ -282,7 +283,12 @@ public static partial class NarrativeChecks
     }
 
     /// <summary>The code a reference names, written out («ق.م» → «القانون المدني»), so it can be compared with a citation.</summary>
-    internal static string CodeName(string code)
+    /// <summary>The citation names of the two labour laws, as the law library cites them.</summary>
+    public const string LabourRelations = "القانون رقم 90-11 المتعلق بعلاقات العمل";
+
+    public const string LabourDisputes = "القانون رقم 90-04 المتعلق بتسوية النزاعات الفردية في العمل";
+
+    public static string CodeName(string code)
     {
         var compact = Regex.Replace(ArabicScript.Normalize(code), @"[\s.]", string.Empty);
         return compact switch
@@ -291,6 +297,8 @@ public static partial class NarrativeChecks
             "قت" or "قتج" => "القانون التجاري",
             "قامواد" or "قاما" or "قاماا" or "قامام" => "قانون الإجراءات المدنية والإدارية",
             "قا" or "قاج" => "قانون الأسرة",
+            "قانونالعمل" or "قانونعلاقاتالعمل" or "القانونالمتعلقبعلاقاتالعمل" or "القانونرقم90-11المتعلقبعلاقاتالعمل" => LabourRelations,
+            "القانونالمتعلقبتسويهالنزاعاتالفرديهفيالعمل" or "القانونرقم90-04المتعلقبتسويهالنزاعاتالفرديهفيالعمل" => LabourDisputes,
             _ => code,
         };
     }
@@ -613,7 +621,7 @@ public static partial class NarrativeChecks
     [GeneratedRegex(@"(?<head>(?:ال|لل|ل)?مادة\s+)(?<words>(?:(?:و\s*)?(?:" + ArabicNumberWords.Pattern + @")\s*){1,6})(?<tail>\s|$|[.،,؛])")]
     private static partial Regex ArticleInWords();
 
-    [GeneratedRegex(@"^\s*(?:من\s+)?(القانون المدني|القانون التجاري|قانون الإجراءات المدنية والإدارية|قانون الأسرة|الدستور|قانون العمل|ق\.?\s*إ\.?\s*م\.?\s*إ|ق\.?\s*م\.?\s*ج|ق\.?\s*ت\.?\s*ج|ق\.?\s*م|ق\.?\s*ت|ق\.?\s*أ)")]
+    [GeneratedRegex(@"^\s*(?:من\s+)?(القانون المدني|القانون التجاري|قانون الإجراءات المدنية والإدارية|قانون الأسرة|الدستور|القانون\s+(?:رقم\s+90-11\s+)?المتعلق\s+بعلاقات\s+العمل|قانون\s+علاقات\s+العمل|القانون\s+(?:رقم\s+90-04\s+)?المتعلق\s+بتسوية\s+النزاعات\s+الفردية\s+في\s+العمل|قانون العمل|ق\.?\s*إ\.?\s*م\.?\s*إ|ق\.?\s*م\.?\s*ج|ق\.?\s*ت\.?\s*ج|ق\.?\s*م|ق\.?\s*ت|ق\.?\s*أ)")]
     private static partial Regex CodeAfterReference();
 
     [GeneratedRegex(@"(?i)\bart(?:icles?|\.)?\s*(?<numbers>\d+(?:\s*(?:,|et)\s*\d+)*)(?<code>\s+(?:du|de\s+la)\s+(?:code\s+(?:civil|de\s+commerce|de\s+proc[ée]dure[^,.;\n]*)))?")]

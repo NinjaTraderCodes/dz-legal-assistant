@@ -76,7 +76,9 @@ app.MapGet("/fonts/{file}", (string file, HttpContext context) =>
 // The official PDFs the law texts come from (only those the library names), opened inline at the cited page.
 app.MapGet("/law-sources/{file}", (string file, WebEngine engine, HttpContext context) =>
 {
-    var allowed = engine.Knowledge.Library.Codes.Select(c => Path.GetFileName(c.Source?.Url ?? string.Empty));
+    var allowed = engine.Knowledge.Library.Codes
+        .SelectMany(c => c.Articles.Select(a => a.Source?.Url).Append(c.Source?.Url))
+        .Select(url => Path.GetFileName(url ?? string.Empty));
     var path = Path.Combine(AppContext.BaseDirectory, "law-sources", file);
     if (!allowed.Contains(file, StringComparer.Ordinal) || !File.Exists(path))
     {

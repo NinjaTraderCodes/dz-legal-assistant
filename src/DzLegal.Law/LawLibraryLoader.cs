@@ -95,6 +95,18 @@ public static class LawLibraryLoader
                 errors.Add($"Article {article.Number} has no text and is not marked repealed.");
             }
 
+            if (article.Source is { } own && (string.IsNullOrWhiteSpace(own.Url)
+                || (own.Url.Contains("://", StringComparison.Ordinal) && !OfficialLinks.IsOfficial(own.Url))))
+            {
+                errors.Add($"Article {article.Number}: its source must be an official link or a downloaded file.");
+            }
+
+            // A text taken from page images has no text layer to prove it against: it says so, and names its page.
+            if (code.Transcription is not null && (article.SourceExtract is not null || article.Page is not > 0))
+            {
+                errors.Add($"Article {article.Number}: a transcribed code's article needs its page and no source extract.");
+            }
+
             if (article.SourceExtract is { } extract && LawTextFold.Fold(article.Text) != extract)
             {
                 errors.Add($"Article {article.Number}: the text no longer matches its source (letters or digits changed, not just spacing). Re-run tools/law/build_codes.py.");

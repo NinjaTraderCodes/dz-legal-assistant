@@ -38,6 +38,12 @@ public sealed record LawArticle
     /// </summary>
     public string? SourceExtract { get; init; }
 
+    /// <summary>
+    /// The publication this article comes from when it is not the code's own source (an article amended by a later
+    /// law: «المادة 73-4» from the 1996 ordinance); <see cref="Page"/> is then a page of this document.
+    /// </summary>
+    public LawSource? Source { get; init; }
+
     /// <summary>A remark for the reviewing lawyer (e.g. an oddity of the source edition).</summary>
     public string? Note { get; init; }
 
@@ -76,6 +82,13 @@ public sealed record LawCode
 
     /// <summary>False until a lawyer has checked the import against the official text.</summary>
     public bool Verified { get; init; }
+
+    /// <summary>
+    /// How the text was taken from page images when the official PDF has no usable text layer (scans, or a font that
+    /// extracts as other characters), so no article carries a <see cref="LawArticle.SourceExtract"/>; null for a
+    /// code proved letter by letter against its PDF.
+    /// </summary>
+    public string? Transcription { get; init; }
 
     /// <summary>Known, explained irregularities (e.g. "articles 1-3 repealed by law 05-10"), shown by the import report.</summary>
     public IReadOnlyList<string> Notes { get; init; } = [];

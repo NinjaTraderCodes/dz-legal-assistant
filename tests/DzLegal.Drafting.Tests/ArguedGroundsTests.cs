@@ -324,7 +324,8 @@ public class ArguedGroundsTests
     {
         // Case 07 (16 Oct): «المادة 80 من القانون المتعلق بعلاقات العمل» came out «المادة 80 من القانون المدني».
         var group = Assert.Single(ArguedGrounds.Plan("المادة 80 من القانون المتعلق بعلاقات العمل: للعامل الحق في أجر مقابل العمل المؤدى.", [], "إلزام الشركة المدعى عليها بأن تدفع للمدعي 180,000 دج."));
-        Assert.Equal("المادة 80 من القانون المتعلق بعلاقات العمل", Assert.Single(group.Unloaded));
+        Assert.Equal("المادة 80 من القانون رقم 90-11 المتعلق بعلاقات العمل", Assert.Single(group.Unloaded)); // the library's citation name
+        Assert.Equal("المادة 12 من القانون رقم 12-34 المتعلق بشيء آخر", Assert.Single(Assert.Single(ArguedGrounds.Plan("المادة 12 من القانون رقم 12-34 المتعلق بشيء آخر: نص.", [], string.Empty)).Unloaded));
         Assert.Equal("المادة 179 من القانون المدني", Assert.Single(Assert.Single(ArguedGrounds.Plan("المادة 179: الإعذار.", [], string.Empty)).Unloaded));
     }
 

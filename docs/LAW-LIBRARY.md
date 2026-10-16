@@ -1,6 +1,15 @@
 # Law library
 
-The grounds suggestions rest on a **local copy of the official Arabic texts**. Loaded today: 39 articles of the Civil Code, the CPCA (2008 original text) and the Commercial Code. **Not loaded yet:** the Family Code and the two labour laws; the catalog cites their articles by number only, and the app refuses any quotation of them. The app quotes an article only from this library and never from a model's memory: a 4-billion-parameter model cannot recall article numbers or wording reliably.
+The grounds suggestions rest on a **local copy of the official Arabic texts**. The app quotes an article only from this library and never from a model's memory: a 4-billion-parameter model cannot recall article numbers or wording reliably.
+
+Loaded today, 81 articles in two kinds:
+
+| Codes | Articles | How the text was taken | Proof |
+|---|---:|---|---|
+| Civil Code, CPCA (2008 original text), Commercial Code | 39 | Typed from official PDFs that have a text layer (`data/law/curated-articles.json`, `tools/law/build_codes.py`) | Automatic: each text's letters and digits are found, in order, in its PDF (`sourceExtract`) |
+| Family Code (84-11 as amended by 05-02), labour relations (90-11, 91-29, 96-21), labour disputes (90-04) | 42 | Transcribed from Journal Officiel **page images**: the PDFs are scans, or use a font that extracts as other characters (`data/law/transcribed-articles.json`, `tools/law/build_transcribed.py`) | **Read twice**: transcribed (16 October 2026), then read again word by word against the same page images, which corrected four words in Law 90-04 arts. 19 and 31. No automatic proof is possible. Written in modern spelling (hamza, final ya), by decision of 16 October 2026; no word changed |
+
+Every article records the file and page it is printed on (an article amended by a later law names that law's Journal Officiel), and none is marked verified until a lawyer has checked it against its page.
 
 ## How the grounds analysis works
 

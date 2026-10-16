@@ -130,7 +130,7 @@ public sealed class LegalKnowledge(LawLibrary library, LawSourceManifest manifes
             reference += " — " + entry.JoReference;
         }
 
-        var imported = code?.Source?.Url;
+        var imported = article?.Source?.Url ?? code?.Source?.Url;
         var exact = OfficialLinks.IsOfficial(imported);
         var localFile = imported is not null && !imported.Contains("://", StringComparison.Ordinal) ? imported : null;
         return new ArticleProvenance(
@@ -138,7 +138,7 @@ public sealed class LegalKnowledge(LawLibrary library, LawSourceManifest manifes
             article is null ? string.Empty : string.Join(" › ", article.Path),
             exact ? imported : OfficialLinks.IsOfficial(entry?.OfficialSite) ? entry!.OfficialSite : null,
             exact,
-            code?.Source?.RetrievedOn ?? string.Empty,
+            article?.Source?.RetrievedOn ?? code?.Source?.RetrievedOn ?? string.Empty,
             code?.Verified == true || article?.Verified == true)
         {
             SourceFile = article is null ? null : localFile,

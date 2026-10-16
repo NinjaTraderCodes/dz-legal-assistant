@@ -293,4 +293,13 @@ public class NarrativeChecksTests
         var issue = Assert.Single(issues, i => i.Kind == NarrativeIssueKind.UnverifiedQuoteFromNotes);
         Assert.False(issue.IsWrongArticleContent);
     }
+
+    [Fact]
+    public void TheNumbersInALawsNameAreNotInvented()
+    {
+        // Case 07 (16 Oct): «القانون رقم 90-11 المتعلق بعلاقات العمل», written by the code, raised UnknownNumber 90 and 11.
+        var text = new LegalText("80", "القانون رقم 90-11 المتعلق بعلاقات العمل", "للعامل الحق في أجر مقابل العمل المؤدى.");
+        var issues = NarrativeChecks.Check("حيث إن المادة 80 من القانون رقم 90-11 المتعلق بعلاقات العمل تقضي بحق العامل في أجر.", string.Empty, new Dictionary<string, string>(), legalTexts: [text]);
+        Assert.DoesNotContain(issues, i => i.Kind == NarrativeIssueKind.UnknownNumber);
+    }
 }

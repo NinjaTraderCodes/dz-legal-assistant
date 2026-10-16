@@ -52,6 +52,8 @@ public class TemplateRendererTests
     [InlineData(0, "بتاريخ 15 جانفي 2025 اقترض المدعى عليه.", "حيث إنه بتاريخ 15 جانفي 2025 اقترض المدعى عليه.")]
     [InlineData(2, "اتفق الطرفان على الأجل.", "وحيث إنه اتفق الطرفان على الأجل.")]
     [InlineData(1, "وحيث إن المدعى عليه امتنع.", "وحيث إن المدعى عليه امتنع.")]
+    [InlineData(1, "التزمت الشركة بالتسليم قبل 02/05/2025.", "وحيث إنه التزمت الشركة بالتسليم قبل 02/05/2025.")] // case 04: a verb, not «ال»
+    [InlineData(1, "الالتزام ثابت.", "وحيث إن الالتزام ثابت.")]
     [InlineData(0, "حيث إنه بتاريخ 15 جانفي 2025 وقع العقد.", "حيث إنه بتاريخ 15 جانفي 2025 وقع العقد.")]
     public void WhereasFollowsArabicGrammar(int index, string line, string expected) =>
         Assert.Equal(expected, TemplateRenderer.Whereas(index, line));

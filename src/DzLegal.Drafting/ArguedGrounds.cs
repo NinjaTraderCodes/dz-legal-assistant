@@ -369,8 +369,13 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
     private static string RequestText(string request)
     {
         var text = ListMarker().Replace(request.Trim(), string.Empty).Trim().TrimEnd('.', '،', ';', '؛').Trim();
+        text = AskingTheCourt().Replace(text, string.Empty);
         return text.StartsWith('و') && text.Length > 1 && !text.StartsWith("وقف", StringComparison.Ordinal) ? text[1..] : text;
     }
+
+    /// <summary>«نلتمس من المحكمة الموقرة …», «يلتمس المدعي من هيئة المحكمة الحكم بـ…»: the frame, not the request.</summary>
+    [GeneratedRegex(@"^(?:ن|ي|ت)(?:لتمس|طلب)\S*\s+(?:\S+\s+){0,2}?من\s+(?:هيئة\s+)?(?:ال)?محكمة(?:\s+الموقرة)?\s*[:،,]?\s*")]
+    private static partial Regex AskingTheCourt();
 
     [GeneratedRegex(@"^(?:[-–•*]|\(?\d{1,2}[\)\.\-]|[\u0660-\u0669]{1,2}[\)\.\-])\s*")]
     private static partial Regex ListMarker();

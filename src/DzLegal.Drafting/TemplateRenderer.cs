@@ -79,8 +79,16 @@ public sealed class TemplateRenderer
         }
 
         var opener = index == 0 ? "حيث إن" : "وحيث إن";
-        return text.StartsWith("ال", StringComparison.Ordinal) ? $"{opener} {text}" : $"{opener}ه {text}";
+        var first = text.Split(' ', 2)[0];
+        return text.StartsWith("ال", StringComparison.Ordinal) && !VerbsInAl.Contains(first) ? $"{opener} {text}" : $"{opener}ه {text}";
     }
+
+    // Verbs that start with «ال» like a definite noun: «وحيث إن التزمت الشركة» is ungrammatical (case 04, 16 Oct).
+    private static readonly HashSet<string> VerbsInAl = new(StringComparer.Ordinal)
+    {
+        "التزم", "التزمت", "التزما", "التزموا", "التمس", "التمست", "التقى", "التقت", "التحق", "التحقت", "التجأ", "التجأت",
+        "التفت", "التفتت", "التقط", "التقطت", "التهم", "التهمت",
+    };
 
     /// <summary>
     /// The lawyer's requests, exactly as written, one per line: only the list markers («-», «1.», «٢)») are removed,

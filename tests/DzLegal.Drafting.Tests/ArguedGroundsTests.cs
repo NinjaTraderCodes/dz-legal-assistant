@@ -235,7 +235,8 @@ public class ArguedGroundsTests
     [InlineData("فسخ عقد الإيجار وطرد المدعى عليه من المحل.", true)]
     [InlineData("يخلص 240000 دج تاع الكرا لي راه فاتو.", false)] // case 03, dialect
     [InlineData("Condamner le défendeur à payer 1.500.000 DA.", false)] // case 02, French
-    [InlineData("نلتمس من المحكمة الموقرة قبول الدعوى.", false)] // does not read after «طلب المدعي»
+    [InlineData("نلتمس من المحكمة الموقرة إلزام المدعى عليه بأن يدفع للمدعي مبلغ 1,500,000 دج.", true)] // the frame is dropped
+    [InlineData("قبول الدعوى شكلا.", false)] // does not read after «طلب المدعي»
     [InlineData("خلاص 150 مليون سنتيم لي عندو.", false)] // hostile a4
     public void OnlyAFormalRequestLineIsRestatedInTheClosing(string request, bool formal) =>
         Assert.Equal(formal, ArguedGrounds.IsFormalRequest(request));
@@ -261,6 +262,15 @@ public class ArguedGroundsTests
         Assert.EndsWith("ولم يرده، فإن طلبات المدعي تكون مؤسسة قانونا.", lines[0], StringComparison.Ordinal);
         Assert.Equal(1, draft.Text.Split("تكون مؤسسة قانونا").Length - 1);
         Assert.EndsWith("ثابت بموجب اعتراف بدين.", lines[1], StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void TheFrameAskingTheCourtIsNotRepeatedInTheClosing()
+    {
+        const string requests = "نلتمس من المحكمة الموقرة إلزام المدعى عليه بأن يدفع للمدعي مبلغ 1500000 دج.";
+        var groups = ArguedGrounds.Plan(Notes, Ticked, requests);
+        var closings = ArguedGrounds.Closings(groups, new Dictionary<string, string> { ["notes.requests"] = requests }, groups.Select(_ => true).ToList());
+        Assert.Equal("فإن طلب المدعي إلزام المدعى عليه بأن يدفع للمدعي مبلغ 1500000 دج يكون مؤسسا قانونا", closings[0]);
     }
 
     [Fact]

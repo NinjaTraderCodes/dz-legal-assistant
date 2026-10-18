@@ -371,7 +371,7 @@ What the code does about each:
 
 | Lever | Where |
 |---|---|
-| Model kept in memory: `keep_alive` (setting `ollama.keepAlive`, default `60m`) sent with **every** request and the warm-up. Ollama's default is 5 minutes. | `OllamaOptions.KeepAlive`, `OllamaModelProvider.Body`, `WarmUpAsync` |
+| Model kept in memory: `keep_alive` (setting `ollama.keepAlive`, default `15m`) sent with **every** request and the warm-up. Ollama's default is 5 minutes. Closing the window unloads it (`keep_alive: 0`, `OllamaModelProvider.UnloadAsync`), so about 3 GB are not held after the work. | `OllamaOptions.KeepAlive`, `OllamaModelProvider.Body`, `WarmUpAsync` |
 | One fixed context window (`ContextLength`, 4096) for every call, the warm-up included. A different `num_ctx` makes Ollama reload the model. | `OllamaOptions.ContextLength` |
 | A per-call answer cap, never above `maxTokens`: reading 300, selection 400, grounds 900, requests 450 (the revision uses its section's cap). | `ModelRequest.MaxTokens`, `GroundsAnalyzer.ReadingMaxTokens`/`SelectionMaxTokens`, `definition.json` → `sections[].maxTokens` |
 | Less to read: at most 12 candidates of 180 characters; each ticked article at most 800 characters in the prompt. Quotations are still checked against the whole text. | `GroundsAnalyzer.MaxCandidates`/`ExcerptLength`, `LegalText.MaxPromptLength` |

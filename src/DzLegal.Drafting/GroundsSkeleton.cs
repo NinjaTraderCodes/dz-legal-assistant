@@ -25,6 +25,9 @@ public sealed record SkeletonDraft(string Text, IReadOnlyList<SkeletonParagraph>
     /// <summary>The model's text for paragraphs that failed the checks, kept for the lawyer to see.</summary>
     public IReadOnlyList<string> Rejected { get; init; } = [];
 
+    /// <summary>The lawyer's own lines the model wrote nothing for, left as «(...)»: the lawyer sees which.</summary>
+    public IReadOnlyList<string> Unwritten { get; init; } = [];
+
     /// <summary>The model's answers as received (first try, then the retry), for the harness to show.</summary>
     public IReadOnlyList<string> RawAnswers { get; init; } = [];
 }

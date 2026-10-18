@@ -27,7 +27,7 @@ public sealed record DraftDocument
     public DraftDocument DeepCopy() => this with
     {
         Inputs = new Dictionary<string, string>(Inputs, StringComparer.Ordinal),
-        Sections = Sections.Select(s => new DraftSection { Id = s.Id, Text = s.Text, DraftingNotes = [.. s.DraftingNotes], Overridden = s.Overridden, AiWritten = s.AiWritten, Reviewed = s.Reviewed, RemovedText = [.. s.RemovedText] }).ToList(),
+        Sections = Sections.Select(s => new DraftSection { Id = s.Id, Text = s.Text, DraftingNotes = [.. s.DraftingNotes], Overridden = s.Overridden, AiWritten = s.AiWritten, Reviewed = s.Reviewed, RemovedText = [.. s.RemovedText], UnwrittenNotes = [.. s.UnwrittenNotes] }).ToList(),
         SelectedArticles = [.. SelectedArticles],
     };
 }
@@ -100,6 +100,9 @@ public sealed class DraftSection
 
     /// <summary>Paragraphs the checks removed from the model's text (wrong law), so the lawyer can see what was cut.</summary>
     public List<string> RemovedText { get; init; } = [];
+
+    /// <summary>Lines of the lawyer's notes the model wrote no paragraph for (left as «(...)»), so the lawyer knows which.</summary>
+    public List<string> UnwrittenNotes { get; init; } = [];
 }
 
 /// <summary>Codes stored in <see cref="DraftSection.DraftingNotes"/>.</summary>

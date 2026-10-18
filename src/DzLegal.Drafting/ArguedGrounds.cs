@@ -23,6 +23,9 @@ public sealed partial record ArguedGroup(string Topic, IReadOnlyList<LegalText> 
     /// <summary>«المادتين 106 و107 من القانون المدني», «المادة 323 من القانون المدني والمادة 15 من قانون …».</summary>
     public string Citation => string.Join(" و", Cite(Texts).Concat(Unloaded));
 
+    /// <summary>A line of the lawyer's own argument that cites no article: the model writes the whole paragraph.</summary>
+    public bool IsLawyersLine => Texts.Count == 0 && Unloaded.Count == 0;
+
     /// <summary>
     /// The sentence the code writes to open the paragraph, from the catalog's one-line rules, so the model never states
     /// the law: «المادتين 106 و107 من القانون المدني تقضيان بأن العقد شريعة المتعاقدين، وبأنه يجب تنفيذ العقد…».
@@ -300,7 +303,9 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
         var raw = new List<string> { await AskAsync(definition, request, groups.Count, cancellationToken) };
         var arguments = new Dictionary<int, string>(WithoutOwnCitations(Parse(raw[0], groups.Count), groups));
         var failed = Enumerable.Range(1, groups.Count).Where(n => Problem(definition, arguments.GetValueOrDefault(n), groups, inputs, legalTexts) is not null).ToList();
-        if (failed.Count > 0)
+        // A line of the lawyer's own with no article that the model left out entirely (a remark on jurisdiction or
+        // admissibility): asking again cost a full second call and came back without it too (Gemma 3 4B, local, 18 Oct).
+        if (failed.Any(n => !(groups[n - 1].IsLawyersLine && !arguments.ContainsKey(n))))
         {
             raw.Add(await AskAsync(definition, request, groups.Count, cancellationToken));
             var second = WithoutOwnCitations(Parse(raw[^1], groups.Count), groups);
@@ -310,7 +315,7 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
             }
         }
 
-        return Assemble(definition, groups, arguments, inputs, legalTexts) with { Retried = failed.Count > 0, RawAnswers = raw };
+        return Assemble(definition, groups, arguments, inputs, legalTexts) with { Retried = raw.Count > 1, RawAnswers = raw };
     }
 
     /// <summary>
@@ -342,6 +347,7 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
         ArgumentNullException.ThrowIfNull(inputs);
         var problems = new List<string>();
         var rejected = new List<string>();
+        var unwritten = new List<string>();
         var lines = new List<string>();
         var applications = Enumerable.Range(0, groups.Count)
             .Select(i => arguments.GetValueOrDefault(i + 1) is { } given ? Application(given, groups[i]) : null)
@@ -358,6 +364,10 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
                 {
                     rejected.Add(argument);
                 }
+                else if (groups[i].IsLawyersLine)
+                {
+                    unwritten.Add(groups[i].Note);
+                }
 
                 argument = "وحيث إن " + Placeholder;
             }
@@ -373,7 +383,7 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
             lines.Add(WithClosing(Opening(i) + rule + "، " + application, closings[i]));
         }
 
-        return new SkeletonDraft(string.Join('\n', lines), [], problems) { Rejected = rejected };
+        return new SkeletonDraft(string.Join('\n', lines), [], problems) { Rejected = rejected, Unwritten = unwritten };
     }
 
     private static string Opening(int index) => index == 0 ? "حيث إن " : "وحيث إن ";

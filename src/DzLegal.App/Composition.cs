@@ -40,7 +40,8 @@ public static class Composition
                 loc => loc.Format("ProviderOllama", choice.Options.Model),
                 () => new OllamaModelProvider(choice.Options),
                 ct => choice.ProbeAsync(ct),
-                settings.Ollama.WarmUp ? ct => WarmUpOllamaAsync(choice.Options, ct) : null),
+                settings.Ollama.WarmUp ? ct => WarmUpOllamaAsync(choice.Options, ct) : null,
+                release: ct => UnloadOllamaAsync(choice.Options, ct)),
             new ProviderOption("stub", loc => loc["ProviderStub"], () => new StubModelProvider()),
         ];
 #if ONLINE_TESTING
@@ -169,6 +170,12 @@ public static class Composition
     {
         using var provider = new OllamaModelProvider(options);
         await provider.WarmUpAsync(cancellationToken);
+    }
+
+    public static async Task UnloadOllamaAsync(OllamaOptions options, CancellationToken cancellationToken)
+    {
+        using var provider = new OllamaModelProvider(options);
+        await provider.UnloadAsync(cancellationToken);
     }
 
     public static MainWindowViewModel CreateMainViewModel(AppSettings settings, IUserFiles files, AppPaths paths, Loc loc, IExternalLinks? links = null)

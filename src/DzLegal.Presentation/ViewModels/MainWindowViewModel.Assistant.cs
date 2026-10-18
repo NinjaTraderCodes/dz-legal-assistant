@@ -103,6 +103,31 @@ public sealed partial class MainWindowViewModel
     private readonly HashSet<string> _inMemory = new(StringComparer.Ordinal);
     private readonly HashSet<string> _warmUpFailed = new(StringComparer.Ordinal);
 
+    /// <summary>The longest the window waits, on closing, for the local model to free its memory.</summary>
+    public static readonly TimeSpan ReleaseWait = TimeSpan.FromSeconds(2);
+
+    /// <summary>
+    /// Frees the memory the local engines hold (about 3 GB for Gemma 3 4B) when the app closes, instead of leaving it
+    /// taken until Ollama's keep-alive runs out. Waits at most <see cref="ReleaseWait"/>; a server that does not answer
+    /// keeps the model until then, which is harmless.
+    /// </summary>
+    public void ReleaseModels()
+    {
+        var releases = Providers.Where(p => p.CanRelease).Select(p => Task.Run(async () =>
+        {
+            using var timeout = new CancellationTokenSource(ReleaseWait);
+            try
+            {
+                await p.ReleaseAsync(timeout.Token);
+            }
+            catch (Exception ex) when (ex is ModelProviderException or OperationCanceledException or InvalidOperationException or HttpRequestException)
+            {
+                // Not critical: Ollama frees it when the keep-alive runs out.
+            }
+        })).ToArray();
+        Task.WaitAll(releases, ReleaseWait + TimeSpan.FromMilliseconds(500));
+    }
+
     /// <summary>Loads the local model in the background so the lawyer's first request does not wait for it.</summary>
     private async Task WarmUpAsync(ProviderOption option)
     {

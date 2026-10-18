@@ -118,7 +118,7 @@ A non-loopback `endpoint` is refused. Further optional keys: `temperature` (0.2)
 
 ### Speed on a CPU-only laptop (8 GB)
 
-What to expect from a 4B model on CPU: the first request after start-up loads the model (10–40 s). The app warms it up in the background and keeps it in memory for an hour (`ollama.keepAlive`). After that, most of the wait is the model **reading** the prompt, and then it writes a few words per second.
+What to expect from a 4B model on CPU: the first request after start-up loads the model (10–40 s). The app warms it up in the background and keeps it in memory for 15 minutes after the last request (`ollama.keepAlive`), then Ollama frees the memory; closing the app frees it at once. After that, most of the wait is the model **reading** the prompt, and then it writes a few words per second.
 
 The app keeps prompts short and caps every answer. To see where the time goes on your machine, run either bench (below): its summary has a "Where the time goes" table with load time, prompt tokens and reading speed, answer tokens and writing speed, and time to the first word.
 

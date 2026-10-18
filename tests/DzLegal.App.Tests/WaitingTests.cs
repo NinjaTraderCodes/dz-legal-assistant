@@ -281,4 +281,22 @@ public sealed class WaitingWorkflowTests
 
         return estimate;
     }
+
+    [Fact]
+    public void ClosingTheAppFreesTheLocalModelsMemoryAndAServerThatHangsDoesNotHoldItUp()
+    {
+        var released = 0;
+        var local = new ProviderOption("local", _ => "local", () => Analysis.Model(), release: async ct =>
+        {
+            Interlocked.Increment(ref released);
+            await Task.Delay(Timeout.Infinite, ct); // a server that never answers
+        });
+        var vm = Vm.Create(extra: local);
+
+        var watch = System.Diagnostics.Stopwatch.StartNew();
+        vm.ReleaseModels();
+
+        Assert.Equal(1, released);
+        Assert.True(watch.Elapsed < MainWindowViewModel.ReleaseWait + TimeSpan.FromSeconds(2));
+    }
 }

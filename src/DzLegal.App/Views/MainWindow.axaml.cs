@@ -36,6 +36,7 @@ public partial class MainWindow : Window
             if (DataContext is MainWindowViewModel vm)
             {
                 vm.AutosaveNow();
+                vm.ReleaseModels();
                 vm.Dispose();
             }
         };

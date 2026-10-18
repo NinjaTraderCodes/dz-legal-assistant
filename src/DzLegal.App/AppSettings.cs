@@ -87,5 +87,5 @@ public sealed record OllamaSettings
     public bool WarmUp { get; init; } = true;
 
     /// <summary>How long the model stays in memory after each request (Ollama duration, e.g. "60m").</summary>
-    public string KeepAlive { get; init; } = "60m";
+    public string KeepAlive { get; init; } = "15m";
 }

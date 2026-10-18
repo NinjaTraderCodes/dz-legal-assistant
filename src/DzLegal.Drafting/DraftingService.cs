@@ -94,6 +94,7 @@ public sealed partial class DraftingService
                     AiWritten = draft.FindSection(s.Id)?.AiWritten ?? false,
                     Reviewed = draft.FindSection(s.Id)?.Reviewed ?? false,
                     RemovedText = [.. draft.FindSection(s.Id)?.RemovedText ?? []],
+                    UnwrittenNotes = [.. draft.FindSection(s.Id)?.UnwrittenNotes ?? []],
                 }
                 : draft.FindSection(s.Id) is { Overridden: true } manual
                     ? new DraftSection { Id = s.Id, Text = manual.Text, Overridden = true }
@@ -258,7 +259,7 @@ public sealed partial class DraftingService
             notes.Add(DraftingNoteCodes.ArgumentLeftForLawyer);
         }
 
-        return new DraftSection { Id = section.Id, Text = draft.Text, DraftingNotes = notes, RemovedText = [.. draft.Rejected] };
+        return new DraftSection { Id = section.Id, Text = draft.Text, DraftingNotes = notes, RemovedText = [.. draft.Rejected], UnwrittenNotes = [.. draft.Unwritten] };
     }
 
     /// <summary>Applies the definition's exact corrections. Used on model-written text only, never on the lawyer's words.</summary>

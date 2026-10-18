@@ -24,7 +24,8 @@ public sealed partial class ProviderOption(
     Func<IModelProvider> create,
     Func<CancellationToken, Task<ModelStatus>>? probe = null,
     Func<CancellationToken, Task>? warmUp = null,
-    bool sendsCaseData = false) : ObservableObject
+    bool sendsCaseData = false,
+    Func<CancellationToken, Task>? release = null) : ObservableObject
 {
     private Loc? _loc;
 
@@ -49,6 +50,12 @@ public sealed partial class ProviderOption(
 
     /// <summary>Loads the engine ahead of the first request (local only); a no-op for engines without a warm-up.</summary>
     public Task WarmUpAsync(CancellationToken cancellationToken) => warmUp?.Invoke(cancellationToken) ?? Task.CompletedTask;
+
+    /// <summary>True for a local engine that holds memory between requests and can free it.</summary>
+    public bool CanRelease => release is not null;
+
+    /// <summary>Frees the memory the engine holds (local only); a no-op for engines without one.</summary>
+    public Task ReleaseAsync(CancellationToken cancellationToken) => release?.Invoke(cancellationToken) ?? Task.CompletedTask;
 
     /// <summary>The name can depend on what the probe found (the text-only model when it is installed).</summary>
     internal void RefreshName() => OnPropertyChanged(nameof(DisplayName));

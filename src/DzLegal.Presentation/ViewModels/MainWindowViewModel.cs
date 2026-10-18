@@ -1134,6 +1134,11 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
                     lines.Add(L.Format("NoteRemovedParagraph", removed.Length > 200 ? removed[..200] + "…" : removed));
                 }
 
+                foreach (var note in _draft.FindSection(vm.Id)?.UnwrittenNotes ?? [])
+                {
+                    lines.Add(L.Format("NoteParagraphNotWritten", note.Length > 200 ? note[..200] + "…" : note));
+                }
+
                 var notes = inputs.GetValueOrDefault(vm.Definition.SourceField ?? string.Empty, string.Empty);
                 lines.AddRange(NarrativeChecks.Check(vm.Text, notes, inputs, _definition.GroundedTerms, LegalTextsForDrafting()).Select(DescribeIssue));
             }

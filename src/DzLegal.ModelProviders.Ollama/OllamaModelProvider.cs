@@ -165,7 +165,7 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
 
     /// <summary>
     /// Asks the local server to load the model into memory now (<c>POST /api/generate</c> with no prompt), so the
-    /// lawyer's first request does not wait for it. Nothing is generated; the model stays loaded for 30 minutes.
+    /// lawyer's first request does not wait for it. Nothing is generated; the model stays loaded for <see cref="OllamaOptions.KeepAlive"/>.
     /// </summary>
     public async Task WarmUpAsync(CancellationToken cancellationToken)
     {
@@ -184,6 +184,22 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
         }
     }
 
+    /// <summary>
+    /// Frees the memory the model holds now (<c>POST /api/generate</c> with <c>keep_alive: 0</c>), when the lawyer closes
+    /// the app: otherwise Ollama keeps about 3 GB for <see cref="OllamaOptions.KeepAlive"/> after the last request.
+    /// </summary>
+    public async Task UnloadAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            using var response = await _http.PostAsJsonAsync(new Uri("api/generate", UriKind.Relative), new UnloadRequest(_options.Model, 0), cancellationToken);
+            await EnsureSuccessAsync(response, cancellationToken);
+        }
+        catch (HttpRequestException ex)
+        {
+            throw new ModelProviderException($"The local model server is not reachable at {_options.Endpoint}.", ex);
+        }
+    }
 
     public void Dispose() => _http.Dispose();
 
@@ -261,6 +277,10 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
         [property: JsonPropertyName("prompt_eval_duration")] long PromptEvalDuration = 0,
         [property: JsonPropertyName("eval_count")] int EvalCount = 0,
         [property: JsonPropertyName("eval_duration")] long EvalDuration = 0);
+
+    private sealed record UnloadRequest(
+        [property: JsonPropertyName("model")] string Model,
+        [property: JsonPropertyName("keep_alive")] int KeepAlive);
 
     private sealed record WarmUpRequest(
         [property: JsonPropertyName("model")] string Model,

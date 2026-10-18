@@ -144,11 +144,27 @@ public class OllamaProviderTests
         Assert.Equal(new Uri("http://127.0.0.1:11434/api/generate"), sent.Uri);
         using var body = JsonDocument.Parse(sent.Body);
         Assert.Equal("gemma3:4b", body.RootElement.GetProperty("model").GetString());
-        Assert.Equal("60m", body.RootElement.GetProperty("keep_alive").GetString());
+        Assert.Equal("15m", body.RootElement.GetProperty("keep_alive").GetString());
         Assert.False(body.RootElement.TryGetProperty("prompt", out _)); // nothing to generate
         // The same context window as the real requests, or Ollama would load the model a second time.
         Assert.Equal(4096, body.RootElement.GetProperty("options").GetProperty("num_ctx").GetInt32());
         Assert.Equal(0, body.RootElement.GetProperty("options").GetProperty("num_gpu").GetInt32()); // CPU only, as every request: a mismatch would reload the model
+    }
+
+    [Fact]
+    public async Task UnloadFreesTheModelsMemoryNow()
+    {
+        var handler = new FakeHandler(_ => Json("""{ "model": "gemma3:4b", "done": true, "done_reason": "unload" }"""));
+        using var provider = new OllamaModelProvider(new OllamaOptions { Model = "gemma3:4b" }, handler);
+
+        await provider.UnloadAsync(CancellationToken.None);
+
+        var sent = Assert.Single(handler.Requests);
+        Assert.Equal(new Uri("http://127.0.0.1:11434/api/generate"), sent.Uri);
+        using var body = JsonDocument.Parse(sent.Body);
+        Assert.Equal("gemma3:4b", body.RootElement.GetProperty("model").GetString());
+        Assert.Equal(0, body.RootElement.GetProperty("keep_alive").GetInt32());
+        Assert.False(body.RootElement.TryGetProperty("prompt", out _));
     }
 
     [Fact]

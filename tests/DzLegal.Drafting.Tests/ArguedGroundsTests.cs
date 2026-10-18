@@ -434,4 +434,43 @@ public class ArguedGroundsTests
     [InlineData("وحيث إن الدين ثابت بموجب اعتراف بدين موثق، وبموجب محضر الإعذار", "وحيث إن الدين ثابت بموجب اعتراف بدين موثق، وبموجب محضر الإعذار")]
     public void OnlyAClauseNamingAnArticleIsCut(string application, string expected) =>
         Assert.Equal(expected, ArguedGrounds.WithoutCitingClauses(application));
+
+    [Fact]
+    public async Task ALineOfTheLawyersOwnLeftUnwrittenIsNotAskedAgainAndIsNamed()
+    {
+        // Local run, 18 Oct: the model wrote nothing for a remark on jurisdiction; a second full call wrote nothing either.
+        const string own = "أحكام قانون الإجراءات المدنية والإدارية المتعلقة باختصاص القسم المدني ومقبولية الدعوى شكلا.";
+        var inputs = Fixtures.CompleteInputs();
+        inputs["notes.grounds"] = Notes + "\n" + own;
+        inputs["notes.requests"] = Requests;
+        inputs["notes.facts"] = "اقترض المدعى عليه مبلغ 1500000 دج بموجب اعتراف بدين ولم يرده رغم إعذاره.";
+        var provider = new RecordingProvider(_ =>
+            "1- وحيث إن المدعى عليه اقترض مبلغ 1500000 دج ولم يرده.\n"
+            + "2- وحيث إن الدين ثابت باعتراف بدين.\n"
+            + "3- وحيث إن المدعى عليه أعذر ولم يف.");
+
+        var draft = await new ArguedGrounds(provider).DraftAsync(Fixtures.Requete, Fixtures.Requete.FindSection("grounds")!, inputs, Ticked, "prompts/grounds-argued.ar.txt");
+
+        Assert.Single(provider.Requests);
+        Assert.False(draft.Retried);
+        Assert.Equal("وحيث إن (...).", draft.Text.Split('\n')[3]);
+        Assert.Equal(own, Assert.Single(draft.Unwritten));
+        Assert.Empty(draft.Rejected);
+    }
+
+    [Fact]
+    public async Task AMissingParagraphWithAnArticleIsStillAskedAgain()
+    {
+        var inputs = Fixtures.CompleteInputs();
+        inputs["notes.grounds"] = Notes;
+        inputs["notes.requests"] = Requests;
+        inputs["notes.facts"] = "اقترض المدعى عليه مبلغ 1500000 دج بموجب اعتراف بدين ولم يرده رغم إعذاره.";
+        var provider = new RecordingProvider(_ => "1- وحيث إن المدعى عليه اقترض مبلغ 1500000 دج ولم يرده.\n2- وحيث إن الدين ثابت باعتراف بدين.");
+
+        var draft = await new ArguedGrounds(provider).DraftAsync(Fixtures.Requete, Fixtures.Requete.FindSection("grounds")!, inputs, Ticked, "prompts/grounds-argued.ar.txt");
+
+        Assert.Equal(2, provider.Requests.Count);
+        Assert.True(draft.Retried);
+        Assert.Empty(draft.Unwritten); // an article's paragraph: the rule is there, only the application is missing
+    }
 }

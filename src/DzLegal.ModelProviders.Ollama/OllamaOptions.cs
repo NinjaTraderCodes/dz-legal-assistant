@@ -17,10 +17,10 @@ public sealed record OllamaOptions
     public int ContextLength { get; init; } = 4096;
 
     /// <summary>
-    /// How long Ollama keeps the model in memory after each request (Ollama duration, e.g. "60m"; "-1" = until it stops).
+    /// How long Ollama keeps the model in memory after each request (Ollama duration, e.g. "15m"; "-1" = until it stops).
     /// Ollama's own default is 5 minutes, after which the next request pays the loading time again.
     /// </summary>
-    public string KeepAlive { get; init; } = "60m";
+    public string KeepAlive { get; init; } = "15m";
 
     /// <summary>
     /// Model layers Ollama may place on a graphics chip. 0 keeps every lawyer on the same tested CPU path: Ollama 0.40.5

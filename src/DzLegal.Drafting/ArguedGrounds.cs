@@ -101,7 +101,8 @@ public sealed partial record ArguedGroup(string Topic, IReadOnlyList<LegalText> 
 /// compensation; "limit" articles such as no interest on a private loan are warnings for the lawyer, not grounds) and
 /// writes each paragraph's rule sentence from the catalog's one-line rules («المادتين 106 و107 من القانون المدني
 /// تقضيان بأن…»), so the law in the draft is never the model's. The model writes only how the facts meet the rule. An
-/// application that cites or quotes an article, has a number found nowhere in the notes, or fails the other checks is
+/// application that cites (a clause after its facts that names an article is cut first) or quotes an article, has a
+/// number found nowhere in the notes, or fails the other checks is
 /// asked once more, then left as «(...)» for the lawyer.
 /// </summary>
 public sealed partial class ArguedGrounds(IModelProvider provider)
@@ -387,7 +388,24 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
         arguments.ToDictionary(a => a.Key, a => a.Key >= 1 && a.Key <= groups.Count ? Application(a.Value, groups[a.Key - 1]) : a.Value);
 
     /// <summary>The model's sentence without a reference to the paragraph's own article and without a closing of its own.</summary>
-    private static string Application(string given, ArguedGroup group) => WithoutModelClosing(WithoutOwnCitation(given, group));
+    private static string Application(string given, ArguedGroup group) => WithoutModelClosing(WithoutCitingClauses(WithoutOwnCitation(given, group)));
+
+    /// <summary>
+    /// Drops a clause after the first that brings in an article («، وبموجب المادة 450 من القانون المدني الذي يلزم المقترض
+    /// برد نظير ما اقترضه»). The code writes every rule and citation, so such a clause is a repeat or the model's own law,
+    /// sometimes wrong: Gemma 3 4B gave art. 106 the loan rule of art. 450 (local, 18 Oct). Two such clauses cost two
+    /// paragraphs and a second call of about a minute, although the facts before them were right. An opening clause
+    /// that cites is still rejected.
+    /// </summary>
+    internal static string WithoutCitingClauses(string application)
+    {
+        var clauses = application.Split('،');
+        var kept = clauses.Where((c, k) => k == 0 || !CitingClause().IsMatch(c.Trim())).ToList();
+        return kept.Count == clauses.Length ? application : string.Join('،', kept).TrimEnd();
+    }
+
+    [GeneratedRegex(@"^و?(?:(?:ب?موجب|بمقتضى|طبقا|وفقا|وفق|عملا|استنادا|حسب|كما\s+(?:تنص|نصت|تقضي|قضت))\s+(?:\S+\s+){0,2}?)?(?:ال|لل|بال)?ماد(?:[ةه]|تين|تان)\s+[\d\u0660-\u0669]")]
+    private static partial Regex CitingClause();
 
     /// <summary>
     /// Cuts a closing the model wrote although the code writes it («، فإن طلب المدعي … يكون مؤسسا قانونا», «وعليه يكون

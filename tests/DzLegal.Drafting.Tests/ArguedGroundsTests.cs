@@ -365,7 +365,7 @@ public class ArguedGroundsTests
     }
 
     [Fact]
-    public void AReferenceToTheParagraphsOwnArticleIsDroppedButAnyOtherIsRejected()
+    public void AReferenceToAnArticleAfterTheFactsIsDropped()
     {
         // Gemma 3 4B, 14 Oct, case 03: a sound application lost to «كما تنص عليه المادة 498 من القانون المدني».
         var groups = ArguedGrounds.Plan(Notes, Ticked, Requests);
@@ -380,7 +380,10 @@ public class ArguedGroundsTests
         var lines = draft.Text.Split('\n');
         Assert.EndsWith("وحيث إن المدعى عليه ملزم برد القرض، وقد امتنع عن رد مبلغ 1500000 دج، فإن طلب المدعي إلزام المدعى عليه بأن يدفع للمدعي 1500000 دج يكون مؤسسا قانونا.", lines[0], StringComparison.Ordinal);
         Assert.EndsWith("وحيث إن الدين ثابت.", lines[1], StringComparison.Ordinal);
-        Assert.EndsWith("(...).", lines[2], StringComparison.Ordinal); // 182 is not this paragraph's article
+        // 182 is not this paragraph's article: the clause naming it goes, the facts before it stay.
+        Assert.Contains("وحيث إن المدعى عليه أعذر ولم يف", lines[2], StringComparison.Ordinal);
+        Assert.DoesNotContain("182", draft.Text, StringComparison.Ordinal);
+        Assert.Empty(draft.Problems);
     }
 
     [Fact]
@@ -398,4 +401,37 @@ public class ArguedGroundsTests
         const string plain = "وحيث إن المدعى عليه لم يرد المبلغ، فإن طلب المدعي يكون مؤسسا قانونا.";
         Assert.Equal(plain, ArguedGrounds.WithoutRestatedRule(plain, damages));
     }
+
+    [Fact]
+    public void AClauseThatBringsInAnArticleIsCutAndTheFactsBeforeItAreKept()
+    {
+        // Gemma 3 4B, local, 18 Oct: both paragraphs were left as «(...)» and the whole grounds asked again.
+        var groups = ArguedGrounds.Plan(Notes, Ticked, Requests);
+        var inputs = new Dictionary<string, string>
+        {
+            ["notes.facts"] = "اقترض المدعى عليه مبلغ 1500000 دج بموجب اعتراف بدين، وأعذره المدعي بمحضر قضائي بتاريخ 10 جويلية 2025، فامتنع عن السداد دون أي مبرر قانوني.",
+            ["notes.requests"] = Requests,
+        };
+        var draft = ArguedGrounds.Assemble(null, groups, new Dictionary<int, string>
+        {
+            [1] = "وحيث إن المدعى عليه اقترض مبلغ 1500000 دج ولم يرده.",
+            [2] = "وحيث إن المدعى عليه يمتنع عن السداد بدون أي مبرر قانوني، وبموجب المادة 450 من القانون المدني الذي يلزم المقترض برد نظير ما اقترضه عند نهاية القرض.",
+            [3] = "وحيث إن المدعي قد أرسل محضر إعذار رسمي بتاريخ 10 جويلية 2025، وبموجب المادة 106 من القانون المدني الذي يلزم المقترض برد نظير ما اقترضه عند نهاية القرض.",
+        }, inputs, Ticked);
+
+        Assert.Empty(draft.Problems);
+        Assert.Empty(draft.Rejected);
+        var lines = draft.Text.Split('\n');
+        Assert.EndsWith("وحيث إن المدعى عليه يمتنع عن السداد بدون أي مبرر قانوني.", lines[1], StringComparison.Ordinal);
+        Assert.Contains("وحيث إن المدعي قد أرسل محضر إعذار رسمي بتاريخ 10 جويلية 2025", lines[2], StringComparison.Ordinal);
+        Assert.DoesNotContain("المادة 106 من القانون المدني الذي", draft.Text, StringComparison.Ordinal);
+    }
+
+    [Theory]
+    [InlineData("وحيث إن المدعى عليه لم يرد المبلغ، طبقا لأحكام المادة 450 من القانون المدني", "وحيث إن المدعى عليه لم يرد المبلغ")]
+    [InlineData("وحيث إن المدعى عليه لم يرد المبلغ، والمادتان 106 و107 تلزمانه بذلك، رغم إعذاره", "وحيث إن المدعى عليه لم يرد المبلغ، رغم إعذاره")]
+    [InlineData("وحيث إن المادة 450 تلزم المقترض بالرد، وقد امتنع", "وحيث إن المادة 450 تلزم المقترض بالرد، وقد امتنع")] // the opening clause stays, and is rejected
+    [InlineData("وحيث إن الدين ثابت بموجب اعتراف بدين موثق، وبموجب محضر الإعذار", "وحيث إن الدين ثابت بموجب اعتراف بدين موثق، وبموجب محضر الإعذار")]
+    public void OnlyAClauseNamingAnArticleIsCut(string application, string expected) =>
+        Assert.Equal(expected, ArguedGrounds.WithoutCitingClauses(application));
 }

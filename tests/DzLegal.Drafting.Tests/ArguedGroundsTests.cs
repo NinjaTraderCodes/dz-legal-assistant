@@ -159,7 +159,7 @@ public class ArguedGroundsTests
 
         var draft = await new ArguedGrounds(provider).DraftAsync(Fixtures.Requete, Fixtures.Requete.FindSection("grounds")!, inputs, Ticked, "prompts/grounds-argued.ar.txt");
 
-        Assert.Equal(2, calls);
+        Assert.Equal(4, calls); // the whole plan, then each paragraph on its own
         Assert.True(draft.Retried);
         Assert.Equal(3, draft.Problems.Count);
         Assert.All(draft.Text.Split('\n'), line => Assert.EndsWith("(...).", line, StringComparison.Ordinal));
@@ -436,41 +436,65 @@ public class ArguedGroundsTests
         Assert.Equal(expected, ArguedGrounds.WithoutCitingClauses(application));
 
     [Fact]
-    public async Task ALineOfTheLawyersOwnLeftUnwrittenIsNotAskedAgainAndIsNamed()
+    public async Task EachParagraphTheFirstAnswerLeftOutIsAskedOnItsOwn()
     {
-        // Local run, 18 Oct: the model wrote nothing for a remark on jurisdiction; a second full call wrote nothing either.
+        // Local run, 18 Oct: Gemma 3 4B wrote only the first of 4 numbered lines, twice; asking the whole plan again did not help.
+        const string own = "أحكام قانون الإجراءات المدنية والإدارية المتعلقة باختصاص القسم المدني ومقبولية الدعوى شكلا.";
+        var inputs = Fixtures.CompleteInputs();
+        inputs["notes.grounds"] = Notes + "\n" + own;
+        inputs["notes.requests"] = Requests;
+        inputs["notes.facts"] = "اقترض المدعى عليه مبلغ 1500000 دج بموجب اعتراف بدين ولم يرده رغم إعذاره، والدعوى مرفوعة أمام القسم المدني.";
+        var provider = new RecordingProvider(r =>
+            r.UserPrompt.EndsWith("ودون ذكر أي مادة أو قانون.", StringComparison.Ordinal)
+                ? r.UserPrompt.Contains("اكتب الآن مكان «…» في الفقرة 2", StringComparison.Ordinal)
+                    // copies the opening the code writes, article included: only what follows is kept
+                    ? "2- وحيث إن المادة 323 من القانون المدني تقضي بأن على الدائن إثبات الالتزام وعلى المدين إثبات التخلص منه، وحيث إن الدين ثابت باعتراف بدين.\nوحيث إن شيئا آخر."
+                    : r.UserPrompt.Contains("اكتب الآن مكان «…» في الفقرة 3", StringComparison.Ordinal)
+                        ? "وحيث إن المدعى عليه أعذر ولم يف."
+                        : "وحيث إن الدعوى رفعت أمام القسم المدني المختص."
+                : "1- وحيث إن المدعى عليه اقترض مبلغ 1500000 دج ولم يرده.");
+
+        var draft = await new ArguedGrounds(provider).DraftAsync(Fixtures.Requete, Fixtures.Requete.FindSection("grounds")!, inputs, Ticked, "prompts/grounds-argued.ar.txt");
+
+        Assert.Equal(4, provider.Requests.Count);
+        Assert.Empty(draft.Problems);
+        var lines = draft.Text.Split('\n');
+        Assert.EndsWith("وحيث إن الدين ثابت باعتراف بدين.", lines[1], StringComparison.Ordinal);
+        Assert.Single(System.Text.RegularExpressions.Regex.Matches(lines[1], "323")); // the code's citation only
+        Assert.Contains("وحيث إن المدعى عليه أعذر ولم يف", lines[2], StringComparison.Ordinal);
+        Assert.Equal("وحيث إن الدعوى رفعت أمام القسم المدني المختص.", lines[3]);
+        Assert.DoesNotContain("شيئا آخر", draft.Text, StringComparison.Ordinal); // one line only
+        // The single question comes after the very same prompt, so the server reuses what it already read.
+        Assert.All(provider.Requests.Skip(1), r => Assert.StartsWith(provider.Requests[0].UserPrompt, r.UserPrompt, StringComparison.Ordinal));
+        Assert.Contains(own.TrimEnd('.'), provider.Requests[3].UserPrompt[provider.Requests[0].UserPrompt.Length..], StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task ALineOfTheLawyersOwnStillUnwrittenIsNamedForTheLawyer()
+    {
         const string own = "أحكام قانون الإجراءات المدنية والإدارية المتعلقة باختصاص القسم المدني ومقبولية الدعوى شكلا.";
         var inputs = Fixtures.CompleteInputs();
         inputs["notes.grounds"] = Notes + "\n" + own;
         inputs["notes.requests"] = Requests;
         inputs["notes.facts"] = "اقترض المدعى عليه مبلغ 1500000 دج بموجب اعتراف بدين ولم يرده رغم إعذاره.";
-        var provider = new RecordingProvider(_ =>
-            "1- وحيث إن المدعى عليه اقترض مبلغ 1500000 دج ولم يرده.\n"
-            + "2- وحيث إن الدين ثابت باعتراف بدين.\n"
-            + "3- وحيث إن المدعى عليه أعذر ولم يف.");
+        var provider = new RecordingProvider(r => r.UserPrompt.EndsWith("ودون ذكر أي مادة أو قانون.", StringComparison.Ordinal)
+            ? string.Empty
+            : "1- وحيث إن المدعى عليه اقترض مبلغ 1500000 دج ولم يرده.\n2- وحيث إن الدين ثابت باعتراف بدين.\n3- وحيث إن المدعى عليه أعذر ولم يف.");
 
         var draft = await new ArguedGrounds(provider).DraftAsync(Fixtures.Requete, Fixtures.Requete.FindSection("grounds")!, inputs, Ticked, "prompts/grounds-argued.ar.txt");
 
-        Assert.Single(provider.Requests);
-        Assert.False(draft.Retried);
+        Assert.Equal(2, provider.Requests.Count); // the plan, then paragraph 4 alone
+        Assert.True(draft.Retried);
         Assert.Equal("وحيث إن (...).", draft.Text.Split('\n')[3]);
         Assert.Equal(own, Assert.Single(draft.Unwritten));
         Assert.Empty(draft.Rejected);
     }
 
-    [Fact]
-    public async Task AMissingParagraphWithAnArticleIsStillAskedAgain()
-    {
-        var inputs = Fixtures.CompleteInputs();
-        inputs["notes.grounds"] = Notes;
-        inputs["notes.requests"] = Requests;
-        inputs["notes.facts"] = "اقترض المدعى عليه مبلغ 1500000 دج بموجب اعتراف بدين ولم يرده رغم إعذاره.";
-        var provider = new RecordingProvider(_ => "1- وحيث إن المدعى عليه اقترض مبلغ 1500000 دج ولم يرده.\n2- وحيث إن الدين ثابت باعتراف بدين.");
-
-        var draft = await new ArguedGrounds(provider).DraftAsync(Fixtures.Requete, Fixtures.Requete.FindSection("grounds")!, inputs, Ticked, "prompts/grounds-argued.ar.txt");
-
-        Assert.Equal(2, provider.Requests.Count);
-        Assert.True(draft.Retried);
-        Assert.Empty(draft.Unwritten); // an article's paragraph: the rule is there, only the application is missing
-    }
+    [Theory]
+    [InlineData("3- وحيث إن المدعى عليه لم يف.", "وحيث إن المدعى عليه لم يف.")]
+    [InlineData("\n\n(2) وحيث إن الدين ثابت.\n3- وحيث إن …", "وحيث إن الدين ثابت.")]
+    [InlineData("", null)]
+    [InlineData("4-", null)]
+    public void AOneParagraphAnswerIsItsFirstLineWithoutANumber(string answer, string? expected) =>
+        Assert.Equal(expected, ArguedGrounds.OneParagraph(answer, new ArguedGroup("حجة أوردها المحامي", [], [], "ملاحظة", null)));
 }

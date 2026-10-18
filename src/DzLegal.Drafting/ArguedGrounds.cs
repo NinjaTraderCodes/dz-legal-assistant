@@ -303,19 +303,86 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
         var raw = new List<string> { await AskAsync(definition, request, groups.Count, cancellationToken) };
         var arguments = new Dictionary<int, string>(WithoutOwnCitations(Parse(raw[0], groups.Count), groups));
         var failed = Enumerable.Range(1, groups.Count).Where(n => Problem(definition, arguments.GetValueOrDefault(n), groups, inputs, legalTexts) is not null).ToList();
-        // A line of the lawyer's own with no article that the model left out entirely (a remark on jurisdiction or
-        // admissibility): asking again cost a full second call and came back without it too (Gemma 3 4B, local, 18 Oct).
-        if (failed.Any(n => !(groups[n - 1].IsLawyersLine && !arguments.ContainsKey(n))))
+
+        // Each paragraph still missing or refused is asked on its own, as one sentence. Asking the whole plan again
+        // failed the same way: Gemma 3 4B (local, 18 Oct) wrote 4, then 3, then only 1 of 4 numbered lines, on both tries.
+        // The question is added after the same prompt, so Ollama reuses what it already read and only the end is new.
+        foreach (var n in failed)
         {
-            raw.Add(await AskAsync(definition, request, groups.Count, cancellationToken));
-            var second = WithoutOwnCitations(Parse(raw[^1], groups.Count), groups);
-            foreach (var n in failed.Where(n => second.TryGetValue(n, out var retry) && Problem(definition, retry, groups, inputs, legalTexts) is null))
+            var answer = await AskOneAsync(definition, request, n, groups[n - 1], cancellationToken);
+            raw.Add(answer);
+            if (OneParagraph(answer, groups[n - 1]) is { } one)
             {
-                arguments[n] = second[n];
+                var application = Application(one, groups[n - 1]);
+                if (Problem(definition, application, groups, inputs, legalTexts) is null || !arguments.ContainsKey(n))
+                {
+                    arguments[n] = application;
+                }
             }
         }
 
         return Assemble(definition, groups, arguments, inputs, legalTexts) with { Retried = raw.Count > 1, RawAnswers = raw };
+    }
+
+    /// <summary>The question for paragraph <paramref name="number"/> alone, after the same prompt.</summary>
+    internal static ModelRequest OneParagraphRequest(ModelRequest request, int number, ArguedGroup group)
+    {
+        var start = group.RuleSentence.Length > 0
+            ? $"مكان «…» في الفقرة {number} ({group.Topic}): جملة واحدة تبدأ بـ«وحيث إن» تبين كيف تنطبق القاعدة على الوقائع"
+            : $"الفقرة {number}: جملة واحدة تبدأ بـ«وحيث إن» تصوغ ملاحظة المحامي بلغة قانونية من الوقائع: {group.Note.ReplaceLineEndings(" / ")}";
+        return request with
+        {
+            UserPrompt = request.UserPrompt + "\n\nاكتب الآن " + start + ". سطر واحد فقط، دون رقم، ودون ذكر أي مادة أو قانون.",
+            MaxTokens = 250,
+        };
+    }
+
+    /// <summary>The first line of a one-paragraph answer, without a number and without the opening the code writes.</summary>
+    internal static string? OneParagraph(string answer, ArguedGroup group)
+    {
+        var line = (answer ?? string.Empty).Split('\n').Select(l => l.Trim()).FirstOrDefault(l => l.Any(ArabicScript.IsArabicLetter));
+        if (line is null)
+        {
+            return null;
+        }
+
+        line = LeadingNumber().Replace(line, string.Empty).Trim();
+        // The model sometimes copies the paragraph's opening, article included: only what follows it is the answer.
+        var rule = group.RuleSentence;
+        if (rule.Length > 0 && line.IndexOf(rule, StringComparison.Ordinal) is var at and >= 0)
+        {
+            var rest = line[(at + rule.Length)..].TrimStart('،', ',', ' ');
+            line = rest.StartsWith("وحيث", StringComparison.Ordinal) || rest.StartsWith("حيث", StringComparison.Ordinal) ? rest : "وحيث إن " + rest;
+        }
+
+        return line.Length > "وحيث إن ".Length ? line : null;
+    }
+
+    [GeneratedRegex(@"^[\[(]?[\d\u0660-\u0669]{1,2}[\])\.:\-]\s*")]
+    private static partial Regex LeadingNumber();
+
+    /// <summary>One sentence: reading stops at the end of the first line.</summary>
+    private async Task<string> AskOneAsync(DocumentTypeDefinition definition, ModelRequest request, int number, ArguedGroup group, CancellationToken cancellationToken)
+    {
+        var answer = new StringBuilder();
+        try
+        {
+            await foreach (var piece in _provider.StreamAsync(OneParagraphRequest(request, number, group), cancellationToken))
+            {
+                answer.Append(piece);
+                var text = answer.ToString();
+                if (text.TrimStart().IndexOf('\n', StringComparison.Ordinal) > 0)
+                {
+                    break;
+                }
+            }
+        }
+        catch (ModelProviderException ex) when (ex.IsCutOff)
+        {
+            return CutOffMarker;
+        }
+
+        return DraftingService.ApplyCorrections(definition, answer.ToString());
     }
 
     /// <summary>

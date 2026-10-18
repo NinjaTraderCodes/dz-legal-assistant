@@ -417,7 +417,7 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
         var unwritten = new List<string>();
         var lines = new List<string>();
         var applications = Enumerable.Range(0, groups.Count)
-            .Select(i => arguments.GetValueOrDefault(i + 1) is { } given ? Application(given, groups[i]) : null)
+            .Select(i => arguments.GetValueOrDefault(i + 1) is { } given ? WithRolesForNames(Application(given, groups[i]), inputs) : null)
             .ToList();
         var accepted = applications.Select(a => Problem(definition, a, groups, inputs, legalTexts) is null).ToList();
         var closings = Closings(groups, inputs, accepted);
@@ -466,6 +466,35 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
 
     /// <summary>The model's sentence without a reference to the paragraph's own article and without a closing of its own.</summary>
     private static string Application(string given, ArguedGroup group) => WithoutModelClosing(WithoutCitingClauses(WithoutOwnCitation(given, group)));
+
+    /// <summary>
+    /// Puts the parties' standing in place of their names («المدعى عليه حمداني سمير» → «المدعى عليه»), as the prompt asks
+    /// and Gemma 3 4B does not (case 12, 18 Oct). Petitions name the parties in the heading only; with roles a reversal
+    /// such as «وحيث إن بن علي كريم ملتزم بتنفيذ عقد الاعتراف بالدين» reads plainly as «وحيث إن المدعي ملتزم…».
+    /// </summary>
+    internal static string WithRolesForNames(string application, IReadOnlyDictionary<string, string> inputs)
+    {
+        var text = application;
+        foreach (var (party, role) in new[] { ("plaintiff", "المدعي"), ("defendant", "المدعى عليه") })
+        {
+            var entity = inputs.GetValueOrDefault(party + ".isLegalEntity", string.Empty) == "true";
+            var female = entity || inputs.GetValueOrDefault(party + ".gender", string.Empty) == "female";
+            var standing = female ? (party == "plaintiff" ? "المدعية" : "المدعى عليها") : role;
+            var last = inputs.GetValueOrDefault(party + ".lastName", string.Empty).Trim();
+            var first = inputs.GetValueOrDefault(party + ".firstName", string.Empty).Trim();
+            // A full name only: a surname alone may also be a word of the facts.
+            string[] names = entity ? [inputs.GetValueOrDefault(party + ".entityName", string.Empty).Trim()]
+                : last.Length > 0 && first.Length > 0 ? [$"{last} {first}", $"{first} {last}"]
+                : [];
+            foreach (var name in names.Where(n => n.Length > 2))
+            {
+                var pattern = @"(?:(?:ال)?مدع(?:ى\s+عليها|ى\s+عليه|ية|ي)\s+)?(?:\(\s*)?" + Regex.Escape(name).Replace(@"\ ", @"\s+", StringComparison.Ordinal) + @"(?:\s*\))?";
+                text = Regex.Replace(text, pattern, standing);
+            }
+        }
+
+        return text;
+    }
 
     /// <summary>
     /// Drops a clause after the first that brings in an article («، وبموجب المادة 450 من القانون المدني الذي يلزم المقترض
@@ -689,7 +718,14 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
     /// «- المادة 450 من القانون المدني» lines are the ticked articles the app lists before the lawyer's own notes;
     /// every other line is the lawyer's.
     /// </summary>
-    public static bool IsOwnLine(string line) => !(line ?? string.Empty).TrimStart().StartsWith("- المادة", StringComparison.Ordinal);
+    /// <remarks>
+    /// Only a bare citation counts as the app's: a lawyer's «- المادة 124 من القانون المدني الجزائري (الالتزام بالتعويض…)»
+    /// was taken for a ticked article and its argument lost (app run, 18 Oct).
+    /// </remarks>
+    public static bool IsOwnLine(string line) => !TickedLine().IsMatch((line ?? string.Empty).Trim());
+
+    [GeneratedRegex(@"^-\s*المادة\s+[\d\u0660-\u0669]+(?:\s+مكرر(?:\s*[\d\u0660-\u0669]+)?)?\s+من\s+[^\n:()،,.؛;«»]+$")]
+    private static partial Regex TickedLine();
 
     /// <summary>True when the notes cite an article of a code this app covers, loaded or not.</summary>
     public static bool CitesCoveredArticle(string notes) =>

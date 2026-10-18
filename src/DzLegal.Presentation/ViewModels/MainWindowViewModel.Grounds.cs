@@ -465,13 +465,25 @@ public sealed partial class MainWindowViewModel
     private List<LegalText> LegalTextsOf(IReadOnlyList<ArticleRef> articles) => articles
         .Select(a => (Ref: a, Article: _knowledge.Library.FindArticle(a.Code, a.Number)))
         .Where(x => x.Article is { Repealed: false })
-        .Select(x => (x.Ref, x.Article, Entry: CatalogEntry(x.Ref)))
+        .Select(x => (x.Ref, x.Article, Entry: CatalogEntry(x.Ref), Part: PartInConfirmedClaim(x.Ref)))
         .Select(x => new LegalText(x.Article!.Number, _knowledge.CitationName(x.Ref.Code), x.Article.Text)
         {
-            Role = x.Entry?.Role.ToString().ToLowerInvariant(),
+            Role = x.Part?.Role.ToString().ToLowerInvariant(),
             Gist = x.Entry?.Why.Ar,
         })
         .ToList();
+
+    /// <summary>
+    /// The article's part in the claim the grounds argue: from the confirmed claim type only, once there is one. Art. 124
+    /// is the basis of a tort claim, not of a loan claim: taken from any claim, it joined the loan's basis paragraph
+    /// (harness, case 12, 18 Oct). An article outside the confirmed claim gets its own paragraph.
+    /// </summary>
+    private ClaimArticle? PartInConfirmedClaim(ArticleRef a)
+    {
+        var confirmed = (_analysis?.ClaimIds ?? []).Select(id => _knowledge.Claims.FirstOrDefault(c => c.Id == id)).OfType<ClaimType>().ToList();
+        return (confirmed.Count > 0 ? confirmed : _knowledge.Claims).SelectMany(c => c.Articles)
+            .FirstOrDefault(c => c.Code == a.Code && c.Number == ArticleNumbers.Canonical(a.Number));
+    }
 
     /// <summary>
     /// The catalog's entry for an article, from the confirmed claims first: the same role is shown on the article's

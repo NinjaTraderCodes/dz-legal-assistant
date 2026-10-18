@@ -497,4 +497,31 @@ public class ArguedGroundsTests
     [InlineData("4-", null)]
     public void AOneParagraphAnswerIsItsFirstLineWithoutANumber(string answer, string? expected) =>
         Assert.Equal(expected, ArguedGrounds.OneParagraph(answer, new ArguedGroup("حجة أوردها المحامي", [], [], "ملاحظة", null)));
+
+    [Fact]
+    public void ThePartiesAreNamedByTheirStanding()
+    {
+        var inputs = new Dictionary<string, string>
+        {
+            ["plaintiff.lastName"] = "بن علي", ["plaintiff.firstName"] = "كريم",
+            ["defendant.lastName"] = "حمداني", ["defendant.firstName"] = "سمير", ["defendant.gender"] = "female",
+        };
+
+        // Gemma 3 4B, harness case 12 (18 Oct).
+        Assert.Equal(
+            "وحيث إن المدعى عليها اقترضت من المدعي مبلغ 1,500,000 دج، وإن المدعي أعذر المدعى عليها",
+            ArguedGrounds.WithRolesForNames("وحيث إن المدعى عليه حمداني سمير اقترضت من المدعي (بن علي كريم) مبلغ 1,500,000 دج، وإن كريم بن علي أعذر حمداني سمير", inputs));
+        Assert.Equal("وحيث إن المدعي ملتزم بتنفيذ العقد", ArguedGrounds.WithRolesForNames("وحيث إن بن علي كريم ملتزم بتنفيذ العقد", inputs));
+        // A surname alone is left: it may be a word of the facts.
+        Assert.Equal("وحيث إن حمداني امتنع", ArguedGrounds.WithRolesForNames("وحيث إن حمداني امتنع", inputs));
+    }
+
+    [Theory]
+    [InlineData("- المادة 450 من القانون المدني", false)]
+    [InlineData("- المادة 324 مكرر 1 من القانون المدني", false)]
+    [InlineData("- المادة 73 من القانون رقم 90-11 المتعلق بعلاقات العمل", false)]
+    [InlineData("- المادة 124 من القانون المدني الجزائري (الالتزام بالتعويض عن الضرر الناتج عن عدم الوفاء أو التأخير).", true)]
+    [InlineData("- المادتان 106 و107 من القانون المدني: العقد شريعة المتعاقدين", true)]
+    [InlineData("المادة 186 من القانون المدني: إذا كان محل الالتزام…", true)]
+    public void OnlyABareCitationIsTakenForATickedArticle(string line, bool own) => Assert.Equal(own, ArguedGrounds.IsOwnLine(line));
 }

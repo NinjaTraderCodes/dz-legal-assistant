@@ -278,11 +278,13 @@ public static partial class DraftBench
             claim?.Articles.FirstOrDefault(a => a.Code == code && a.Number == number)
             ?? knowledge.Claims.SelectMany(c => c.Articles).FirstOrDefault(a => a.Code == code && a.Number == number);
         return refs
-            .Select(r => (r.Code, Article: knowledge.Library.FindArticle(r.Code, r.Number), Catalog: Catalog(r.Code, r.Number)))
+            .Select(r => (r.Code, Article: knowledge.Library.FindArticle(r.Code, r.Number), Catalog: Catalog(r.Code, r.Number),
+                Part: claim?.Articles.FirstOrDefault(a => a.Code == r.Code && a.Number == r.Number)))
             .Where(r => r.Article is { Repealed: false })
             .Select(r => new LegalText(r.Article!.Number, knowledge.CitationName(r.Code), r.Article.Text)
             {
-                Role = r.Catalog?.Role.ToString().ToLowerInvariant(),
+                // As the app: the part comes from the claim argued only, so art. 124 does not join a loan's basis.
+                Role = (claim is null ? r.Catalog : r.Part)?.Role.ToString().ToLowerInvariant(),
                 Gist = r.Catalog?.Why.Ar,
             })
             .ToList();

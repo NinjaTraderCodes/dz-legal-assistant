@@ -627,4 +627,25 @@ public class ArguedGroundsTests
     [InlineData("لم يدفع أجور أشهر جوان وجويلية وأوت 2025", null)] // months without a day are not dates
     public void AFullDateMustBeOneOfTheNotes(string application, string? invented) =>
         Assert.Equal(invented, ArguedGrounds.InventedDate(application, "يعمل منذ 02 جانفي 2022.\nاقترض بتاريخ 15 جانفي 2025، وأعذر بتاريخ 10 جويلية 2025.\nلم يدفع أجور 2025."));
+
+    [Fact]
+    public void ARegistrationTheFactsNeverMentionIsRefused()
+    {
+        // Gemma 3 4B, case 08, 18 Oct: 5 of 9 drafts.
+        var groups = ArguedGrounds.Plan(Notes, Ticked, Requests);
+        var inputs = new Dictionary<string, string> { ["notes.facts"] = "اقترض المدعى عليه مبلغ 1500000 دج بموجب اعتراف بدين ولم يرده رغم إعذاره.", ["notes.requests"] = Requests };
+        var draft = ArguedGrounds.Assemble(Fixtures.Requete, groups, new Dictionary<int, string>
+        {
+            [1] = "وحيث إن المدعي قد التزم بتسجيل عقد القرض، واقترض المدعى عليه مبلغ 1500000 دج ولم يرده.",
+            [2] = "وحيث إن الدين ثابت باعتراف بدين.",
+            [3] = "وحيث إن المدعى عليه أعذر ولم يف.",
+        }, inputs, Ticked);
+
+        Assert.Contains("UngroundedTerm", Assert.Single(draft.Problems), StringComparison.Ordinal);
+    }
+
+    [Theory]
+    [InlineData("وحيث إن المدعى عليه امتنع عن السداد رغم إعذاره، وبأن هذا الامتناع يجعله ملزما بتحمل الضرر", "وحيث إن المدعى عليه امتنع عن السداد رغم إعذاره")] // case 10, run 2
+    [InlineData("وحيث إن المدعى عليه امتنع عن السداد، مما يمثل إخلالا صريحا بالتزاماته التعاقدية", "وحيث إن المدعى عليه امتنع عن السداد")]
+    public void MoreConclusionsAreCut(string application, string expected) => Assert.Equal(expected, ArguedGrounds.WithoutConclusions(application));
 }

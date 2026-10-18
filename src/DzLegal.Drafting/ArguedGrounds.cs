@@ -484,7 +484,7 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
         return kept.Count == clauses.Length ? application : string.Join('،', kept).TrimEnd();
     }
 
-    [GeneratedRegex(@"^(?:فإنه|فإنها|فإنهم|فإنهن|فإنهما|مما\s+يعني|مما\s+يجعل\S*|مما\s+يستوجب|و?بالتالي|و?عليه|و?لذلك|و?بذلك)(?!\p{L})")]
+    [GeneratedRegex(@"^(?:فإنه|فإنها|فإنهم|فإنهن|فإنهما|مما\s+يعني|مما\s+يجعل\S*|مما\s+يستوجب|مما\s+يمثل|و?بأن\s+هذا\s+(?:الامتناع|الإخلال|الفعل)|و?بالتالي|و?عليه|و?لذلك|و?بذلك)(?!\p{L})")]
     private static partial Regex Conclusion();
 
     /// <summary>
@@ -849,7 +849,9 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
         }
 
         return NarrativeChecks.Check(argument, sources, inputs, definition?.GroundedTerms, legalTexts)
-            .FirstOrDefault(x => x.IsHard || x.IsWrongArticleContent || x.Kind is NarrativeIssueKind.UnknownNumber or NarrativeIssueKind.UncitedArticle) is { } issue
+            // A qualification the notes do not have is refused too: «التزم بتسجيل عقد إيجار» in a lease never said to be
+            // registered (case 08, 5 of 9 drafts, 18 Oct); the paragraph is asked again on its own.
+            .FirstOrDefault(x => x.IsHard || x.IsWrongArticleContent || x.Kind is NarrativeIssueKind.UnknownNumber or NarrativeIssueKind.UncitedArticle or NarrativeIssueKind.UngroundedTerm) is { } issue
             ? $"{issue.Kind} {issue.Detail}"
             : null;
     }

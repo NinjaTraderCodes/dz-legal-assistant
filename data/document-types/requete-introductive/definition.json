@@ -36,7 +36,10 @@
     { "find": "امتنانها عن", "replace": "امتناعها عن" },
     // «إخلاقه» for «إخلاله» (breach), case 10, 18 Oct.
     { "find": "إخلاقه", "replace": "إخلاله" },
-    { "find": "إخلاقها", "replace": "إخلالها" }
+    { "find": "إخلاقها", "replace": "إخلالها" },
+    // «وإمتنع»: no hamza on a verb of form VIII (case 10, 18 Oct).
+    { "find": "وإمتنع", "replace": "وامتنع" },
+    { "find": " إمتنع", "replace": " امتنع" }
   ],
 
   // Legal qualifications model text may use only if the lawyer's inputs contain them; otherwise they are

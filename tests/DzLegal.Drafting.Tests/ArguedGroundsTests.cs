@@ -606,4 +606,25 @@ public class ArguedGroundsTests
         Assert.Contains("swaps the parties' roles", Assert.Single(draft.Problems), StringComparison.Ordinal);
         Assert.Contains("(...)", draft.Text.Split('\n')[0], StringComparison.Ordinal);
     }
+
+    [Theory]
+    // Gemma 3 4B, case 07 (the worker's wages), 18 Oct: «فإنه» after «المدعي» made the worker the one who pays.
+    [InlineData("وحيث إن المدعي يعمل لدى الشركة المدعى عليها بأجر شهري قدره 60,000 دج، فإنه التزم بدفع أجر مقابل العمل المؤدى",
+        "وحيث إن المدعي يعمل لدى الشركة المدعى عليها بأجر شهري قدره 60,000 دج")]
+    [InlineData("وحيث إن المدعي يعمل بأجر شهري قدره 60,000 دج، مما يعني أن الشركة المدعى عليها التزمت بدفع أجر حتى تاريخ 02 جانفي 2025",
+        "وحيث إن المدعي يعمل بأجر شهري قدره 60,000 دج")]
+    [InlineData("وحيث إن المدعى عليه ارتكب خطأ، مما أدى إلى ضرر للمدعي، وبالتالي يلزم بالتعويض", "وحيث إن المدعى عليه ارتكب خطأ، مما أدى إلى ضرر للمدعي")]
+    // A fact after «مما أدى» stays.
+    [InlineData("وحيث إن المدعى عليه لم يدفع الأجرة، مما أدى إلى تراكم مبلغ 240,000 دج", "وحيث إن المدعى عليه لم يدفع الأجرة، مما أدى إلى تراكم مبلغ 240,000 دج")]
+    public void AConclusionTheModelAddsAfterTheFactsIsCut(string application, string expected) =>
+        Assert.Equal(expected, ArguedGrounds.WithoutConclusions(application));
+
+    [Theory]
+    [InlineData("التزمت بدفع أجر حتى تاريخ 02 جانفي 2025", "02 جانفي 2025")] // case 07, run 1: day of 2022, year of 2025
+    [InlineData("بموجب اعتراف بدين مؤرخ في 15 يناير 2025", null)] // the notes' «15 جانفي 2025», in the eastern month name
+    [InlineData("بموجب محضر الإعذار المؤرخ في 10/07/2025", null)]
+    [InlineData("بموجب محضر مؤرخ في 11 جويلية 2025", "11 جويلية 2025")]
+    [InlineData("لم يدفع أجور أشهر جوان وجويلية وأوت 2025", null)] // months without a day are not dates
+    public void AFullDateMustBeOneOfTheNotes(string application, string? invented) =>
+        Assert.Equal(invented, ArguedGrounds.InventedDate(application, "يعمل منذ 02 جانفي 2022.\nاقترض بتاريخ 15 جانفي 2025، وأعذر بتاريخ 10 جويلية 2025.\nلم يدفع أجور 2025."));
 }

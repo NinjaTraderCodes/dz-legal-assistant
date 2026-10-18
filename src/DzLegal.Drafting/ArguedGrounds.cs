@@ -469,7 +469,23 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
         arguments.ToDictionary(a => a.Key, a => a.Key >= 1 && a.Key <= groups.Count ? Application(a.Value, groups[a.Key - 1]) : a.Value);
 
     /// <summary>The model's sentence without a reference to the paragraph's own article and without a closing of its own.</summary>
-    private static string Application(string given, ArguedGroup group) => WithoutModelClosing(WithoutCitingClauses(WithoutOwnCitation(given, group)));
+    private static string Application(string given, ArguedGroup group) => WithoutConclusions(WithoutModelClosing(WithoutCitingClauses(WithoutOwnCitation(given, group))));
+
+    /// <summary>
+    /// Drops a clause after the first in which the model concludes instead of stating a fact («، فإنه التزم بدفع أجر»,
+    /// «، مما يعني أن الشركة المدعى عليها التزمت بدفع أجر … حتى تاريخ 02 جانفي 2025», case 07, 18 Oct): the prompt asks the
+    /// sentence to end on the last fact, and the code writes the conclusion. «فإنه» after «المدعي» gave the worker the
+    /// employer's obligation in 2 of 3 runs.
+    /// </summary>
+    internal static string WithoutConclusions(string application)
+    {
+        var clauses = application.Split('،');
+        var kept = clauses.Where((c, k) => k == 0 || !Conclusion().IsMatch(c.Trim())).ToList();
+        return kept.Count == clauses.Length ? application : string.Join('،', kept).TrimEnd();
+    }
+
+    [GeneratedRegex(@"^(?:فإنه|فإنها|فإنهم|فإنهن|فإنهما|مما\s+يعني|مما\s+يجعل\S*|مما\s+يستوجب|و?بالتالي|و?عليه|و?لذلك|و?بذلك)(?!\p{L})")]
+    private static partial Regex Conclusion();
 
     /// <summary>
     /// Puts the parties' standing in place of their names («المدعى عليه حمداني سمير» → «المدعى عليه»), as the prompt asks
@@ -504,6 +520,44 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
 
         return text;
     }
+
+    private static readonly string[][] Months =
+    [
+        ["جانفي", "يناير"], ["فيفري", "فبراير"], ["مارس"], ["أفريل", "افريل", "أبريل", "ابريل"], ["ماي", "مايو"], ["جوان", "يونيو"],
+        ["جويلية", "يوليو"], ["أوت", "اوت", "أغسطس", "اغسطس"], ["سبتمبر"], ["أكتوبر", "اكتوبر"], ["نوفمبر"], ["ديسمبر"],
+    ];
+
+    /// <summary>
+    /// A full date the notes do not have, although each of its numbers does: «حتى تاريخ 02 جانفي 2025» from «منذ 02
+    /// جانفي 2022» and «2025» (case 07, 18 Oct) passes the number checks. Dates are compared as day, month and year,
+    /// whatever the month's name (جانفي or يناير) or the form (15/01/2025).
+    /// </summary>
+    internal static string? InventedDate(string application, string sources)
+    {
+        var known = Dates(sources).Select(d => d.Key).ToHashSet();
+        return Dates(application).FirstOrDefault(d => !known.Contains(d.Key)).Text;
+
+        static IEnumerable<(string Key, string Text)> Dates(string text)
+        {
+            text = ArabicScript.ToAsciiDigits(text ?? string.Empty);
+            foreach (Match m in WrittenDate().Matches(text))
+            {
+                var month = Array.FindIndex(Months, names => names.Contains(m.Groups["m"].Value, StringComparer.Ordinal)) + 1;
+                yield return ($"{int.Parse(m.Groups["d"].Value, CultureInfo.InvariantCulture)}/{month}/{m.Groups["y"].Value}", m.Value);
+            }
+
+            foreach (Match m in NumericDate().Matches(text))
+            {
+                yield return ($"{int.Parse(m.Groups["d"].Value, CultureInfo.InvariantCulture)}/{int.Parse(m.Groups["m"].Value, CultureInfo.InvariantCulture)}/{m.Groups["y"].Value}", m.Value);
+            }
+        }
+    }
+
+    [GeneratedRegex(@"(?<!\d)(?<d>\d{1,2})\s+(?<m>جانفي|يناير|فيفري|فبراير|مارس|أفريل|افريل|أبريل|ابريل|ماي|مايو|جوان|يونيو|جويلية|يوليو|أوت|اوت|أغسطس|اغسطس|سبتمبر|أكتوبر|اكتوبر|نوفمبر|ديسمبر)\s+(?<y>\d{4})(?!\d)")]
+    private static partial Regex WrittenDate();
+
+    [GeneratedRegex(@"(?<!\d)(?<d>\d{1,2})[/\-.](?<m>\d{1,2})[/\-.](?<y>\d{4})(?!\d)")]
+    private static partial Regex NumericDate();
 
     /// <summary>«ل» + «المدعي» = «للمدعي», «ب» + «المدعي» = «بالمدعي», «و» + «المدعي» = «والمدعي».</summary>
     private static string Joined(string prefix, string standing)
@@ -771,6 +825,15 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
         if (SwapsRoles(WithRolesForNames(argument, inputs), inputs.GetValueOrDefault("notes.requests", string.Empty)) is { } swapped)
         {
             return $"swaps the parties' roles ({swapped})";
+        }
+
+        var allSources = string.Join('\n', groups.Select(g => g.Note)
+            .Append(inputs.GetValueOrDefault("notes.facts", string.Empty))
+            .Append(inputs.GetValueOrDefault("notes.requests", string.Empty))
+            .Append(inputs.GetValueOrDefault("documents.list", string.Empty)));
+        if (InventedDate(argument, allSources) is { } date)
+        {
+            return $"writes a date not in the notes ({date})";
         }
 
         var sources = string.Join('\n', groups.Select(g => g.Note)

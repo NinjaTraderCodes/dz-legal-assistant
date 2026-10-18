@@ -439,7 +439,7 @@ public class ArguedGroundsTests
     public async Task EachParagraphTheFirstAnswerLeftOutIsAskedOnItsOwn()
     {
         // Local run, 18 Oct: Gemma 3 4B wrote only the first of 4 numbered lines, twice; asking the whole plan again did not help.
-        const string own = "أحكام قانون الإجراءات المدنية والإدارية المتعلقة باختصاص القسم المدني ومقبولية الدعوى شكلا.";
+        const string own = "تهرب المدعى عليه من الوفاء رغم المساعي الودية المتكررة.";
         var inputs = Fixtures.CompleteInputs();
         inputs["notes.grounds"] = Notes + "\n" + own;
         inputs["notes.requests"] = Requests;
@@ -451,7 +451,7 @@ public class ArguedGroundsTests
                     ? "2- وحيث إن المادة 323 من القانون المدني تقضي بأن على الدائن إثبات الالتزام وعلى المدين إثبات التخلص منه، وحيث إن الدين ثابت باعتراف بدين.\nوحيث إن شيئا آخر."
                     : r.UserPrompt.Contains("اكتب الآن مكان «…» في الفقرة 3", StringComparison.Ordinal)
                         ? "وحيث إن المدعى عليه أعذر ولم يف."
-                        : "وحيث إن الدعوى رفعت أمام القسم المدني المختص."
+                        : "وحيث إن المدعى عليه تهرب من الوفاء رغم المساعي الودية."
                 : "1- وحيث إن المدعى عليه اقترض مبلغ 1500000 دج ولم يرده.");
 
         var draft = await new ArguedGrounds(provider).DraftAsync(Fixtures.Requete, Fixtures.Requete.FindSection("grounds")!, inputs, Ticked, "prompts/grounds-argued.ar.txt");
@@ -462,7 +462,7 @@ public class ArguedGroundsTests
         Assert.EndsWith("وحيث إن الدين ثابت باعتراف بدين.", lines[1], StringComparison.Ordinal);
         Assert.Single(System.Text.RegularExpressions.Regex.Matches(lines[1], "323")); // the code's citation only
         Assert.Contains("وحيث إن المدعى عليه أعذر ولم يف", lines[2], StringComparison.Ordinal);
-        Assert.Equal("وحيث إن الدعوى رفعت أمام القسم المدني المختص.", lines[3]);
+        Assert.Equal("وحيث إن المدعى عليه تهرب من الوفاء رغم المساعي الودية.", lines[3]);
         Assert.DoesNotContain("شيئا آخر", draft.Text, StringComparison.Ordinal); // one line only
         // The single question comes after the very same prompt, so the server reuses what it already read.
         Assert.All(provider.Requests.Skip(1), r => Assert.StartsWith(provider.Requests[0].UserPrompt, r.UserPrompt, StringComparison.Ordinal));
@@ -472,7 +472,7 @@ public class ArguedGroundsTests
     [Fact]
     public async Task ALineOfTheLawyersOwnStillUnwrittenIsNamedForTheLawyer()
     {
-        const string own = "أحكام قانون الإجراءات المدنية والإدارية المتعلقة باختصاص القسم المدني ومقبولية الدعوى شكلا.";
+        const string own = "تهرب المدعى عليه من الوفاء رغم المساعي الودية المتكررة.";
         var inputs = Fixtures.CompleteInputs();
         inputs["notes.grounds"] = Notes + "\n" + own;
         inputs["notes.requests"] = Requests;
@@ -524,4 +524,37 @@ public class ArguedGroundsTests
     [InlineData("- المادتان 106 و107 من القانون المدني: العقد شريعة المتعاقدين", true)]
     [InlineData("المادة 186 من القانون المدني: إذا كان محل الالتزام…", true)]
     public void OnlyABareCitationIsTakenForATickedArticle(string line, bool own) => Assert.Equal(own, ArguedGrounds.IsOwnLine(line));
+
+    [Fact]
+    public async Task ALineOnAdmissibilityIsWrittenByTheCodeFirstAndNotAskedOfTheModel()
+    {
+        // Gemma 3 4B, harness case 12 (18 Oct): «وحيث إن أحكام قانون الإجراءات المدنية والإدارية المتعلقة باختصاص القسم
+        // المدني ومقبولية الدعوى شكلا، امتنع المدعى عليه عن السداد…».
+        var inputs = Fixtures.CompleteInputs();
+        inputs["court.section"] = "القسم المدني";
+        inputs["notes.grounds"] = Notes + "\n- أحكام قانون الإجراءات المدنية والإدارية المتعلقة باختصاص القسم المدني ومقبولية الدعوى شكلا.";
+        inputs["notes.requests"] = Requests;
+        inputs["notes.facts"] = "اقترض المدعى عليه مبلغ 1500000 دج بموجب اعتراف بدين ولم يرده رغم إعذاره.";
+        var provider = new RecordingProvider(_ =>
+            "1- وحيث إن المدعى عليه اقترض مبلغ 1500000 دج ولم يرده.\n2- وحيث إن الدين ثابت باعتراف بدين.\n3- وحيث إن المدعى عليه أعذر ولم يف.");
+
+        var draft = await new ArguedGrounds(provider).DraftAsync(Fixtures.Requete, Fixtures.Requete.FindSection("grounds")!, inputs, Ticked, "prompts/grounds-argued.ar.txt");
+
+        var lines = draft.Text.Split('\n');
+        Assert.Equal("حيث إن الدعوى رفعت أمام القسم المدني وفق الأشكال المقررة في قانون الإجراءات المدنية والإدارية، فهي مقبولة شكلا.", lines[0]);
+        Assert.StartsWith("وحيث إن المواد 106 و107 و450", lines[1], StringComparison.Ordinal);
+        Assert.Equal(4, lines.Length);
+        Assert.Single(provider.Requests);
+        Assert.DoesNotContain("مقبولية", provider.Requests[0].UserPrompt, StringComparison.Ordinal);
+        Assert.Empty(draft.Problems);
+    }
+
+    [Theory]
+    [InlineData("- أحكام قانون الإجراءات المدنية والإدارية المتعلقة باختصاص القسم المدني ومقبولية الدعوى شكلا.", true)]
+    [InlineData("الدعوى مقبولة شكلا", true)]
+    [InlineData("- المادة 124 من القانون المدني الجزائري (الالتزام بالتعويض عن الضرر الناتج عن عدم الوفاء أو التأخير).", false)]
+    [InlineData("المادة 15 من قانون الإجراءات المدنية والإدارية: الشروط الشكلية للعريضة", false)] // cites an article: argued as usual
+    [InlineData("المدعى عليه امتنع عن السداد رغم إعذاره", false)]
+    public void OnlyALineOnJurisdictionOrAdmissibilityWithoutAnArticleIsTakenOut(string line, bool taken) =>
+        Assert.Equal(taken, ArguedGrounds.WithoutAdmissibilityLines(line).Admissibility);
 }

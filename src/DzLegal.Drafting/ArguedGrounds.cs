@@ -293,10 +293,13 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentNullException.ThrowIfNull(section);
         ArgumentNullException.ThrowIfNull(inputs);
-        var groups = Plan(inputs.GetValueOrDefault(section.SourceField ?? string.Empty, string.Empty), legalTexts, inputs.GetValueOrDefault("notes.requests", string.Empty));
+        var (notes, admissibility) = WithoutAdmissibilityLines(inputs.GetValueOrDefault(section.SourceField ?? string.Empty, string.Empty));
+        var groups = Plan(notes, legalTexts, inputs.GetValueOrDefault("notes.requests", string.Empty));
         if (groups.Count == 0)
         {
-            return new SkeletonDraft(string.Empty, [], ["no grounds in the notes"]);
+            return admissibility
+                ? new SkeletonDraft(AdmissibilitySentence(inputs) + ".", [], [])
+                : new SkeletonDraft(string.Empty, [], ["no grounds in the notes"]);
         }
 
         var request = BuildRequest(definition, inputs, groups, promptPath);
@@ -321,7 +324,8 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
             }
         }
 
-        return Assemble(definition, groups, arguments, inputs, legalTexts) with { Retried = raw.Count > 1, RawAnswers = raw };
+        var draft = Assemble(definition, groups, arguments, inputs, legalTexts) with { Retried = raw.Count > 1, RawAnswers = raw };
+        return admissibility ? draft with { Text = AdmissibilitySentence(inputs) + ".\n" + "و" + draft.Text } : draft;
     }
 
     /// <summary>The question for paragraph <paramref name="number"/> alone, after the same prompt.</summary>
@@ -494,6 +498,35 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
         }
 
         return text;
+    }
+
+    /// <summary>
+    /// A line of the lawyer's notes on jurisdiction or admissibility («أحكام قانون الإجراءات المدنية والإدارية المتعلقة
+    /// باختصاص القسم المدني ومقبولية الدعوى شكلا») cites no article and has no fact to apply: Gemma 3 4B wrote «وحيث إن
+    /// أحكام قانون الإجراءات…، امتنع المدعى عليه عن السداد» (case 12, 18 Oct). Such lines are taken out of the plan and
+    /// the code writes the usual sentence first, as petitions put the form before the merits.
+    /// </summary>
+    internal static (string Notes, bool Admissibility) WithoutAdmissibilityLines(string notes)
+    {
+        var lines = (notes ?? string.Empty).Split('\n');
+        var kept = lines.Where(l => !IsAdmissibilityLine(l)).ToList();
+        return (string.Join('\n', kept), kept.Count < lines.Length);
+    }
+
+    private static bool IsAdmissibilityLine(string line) =>
+        IsOwnLine(line) && References(line).Count == 0
+        && AdmissibilityWords().IsMatch(ArabicScript.Normalize(line))
+        && ArabicScript.Tokens(line).Count <= 20;
+
+    [GeneratedRegex(@"مقبولي|قبول الدعوي|شكلا|الاختصاص|اختصاص")]
+    private static partial Regex AdmissibilityWords();
+
+    /// <summary>«حيث إن الدعوى رفعت أمام القسم المدني وفق الأشكال المقررة في قانون الإجراءات المدنية والإدارية، فهي مقبولة شكلا».</summary>
+    internal static string AdmissibilitySentence(IReadOnlyDictionary<string, string> inputs)
+    {
+        var section = inputs.GetValueOrDefault("court.section", string.Empty).Trim().TrimEnd('.');
+        var before = section.Length > 0 ? $" أمام {section}" : string.Empty;
+        return $"حيث إن الدعوى رفعت{before} وفق الأشكال المقررة في قانون الإجراءات المدنية والإدارية، فهي مقبولة شكلا";
     }
 
     /// <summary>

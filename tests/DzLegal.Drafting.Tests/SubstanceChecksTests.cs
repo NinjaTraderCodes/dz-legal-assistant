@@ -102,6 +102,17 @@ public class SubstanceChecksTests
     }
 
     [Fact]
+    public void InADivorceClaimTheDamagesPointRestsOnFamilyCodeArticle53Bis()
+    {
+        // Case 06 (tatliq, 18 Oct) cited Civil Code art. 182 for the wife's damages.
+        var inputs = Inputs(requests: "إلزام المدعى عليه بأن يدفع للمدعية مبلغ 300,000 دج تعويضا عن الضرر.");
+        inputs["claim.subject"] = "دعوى تطليق للضرر";
+        inputs["notes.facts"] = "تزوجت المدعية بالمدعى عليه بتاريخ 10 أوت 2019، ومنذ 05 مارس 2025 هجر بيت الزوجية.";
+        var issue = Assert.Single(SubstanceChecks.Check(inputs, [], [], string.Empty), i => i.Kind == SubstanceIssueKind.DamagesWithoutHarm);
+        Assert.Equal(new ArticleRef("family-code", "53 مكرر"), issue.Article);
+    }
+
+    [Fact]
     public void AMarriageContractDoesNotMakeAFamilyClaimContractual()
     {
         // Case 06 (16 Oct): «عقد زواج» in a tatliq petition raised the art. 179 formal-notice warning.

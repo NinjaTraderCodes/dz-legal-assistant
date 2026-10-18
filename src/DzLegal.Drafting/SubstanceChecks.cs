@@ -151,7 +151,10 @@ public static partial class SubstanceChecks
         // The requests notes only: the drafted grounds may restate «تعويضا عن الضرر» from the request line itself.
         if (Mentions(inputs.GetValueOrDefault("notes.requests", string.Empty), DamagesWords) && !Mentions(facts, HarmWords))
         {
-            issues.Add(new SubstanceIssue(SubstanceIssueKind.DamagesWithoutHarm, new ArticleRef("civil-code", "182")));
+            // In a divorce claim the compensation rests on Family Code art. 53 bis, not on the Civil Code (case 06, 18 Oct).
+            var family = claims.Any(c => c.Area == "family")
+                || (claims.Count == 0 && Mentions(facts + "\n" + inputs.GetValueOrDefault("claim.subject", string.Empty), FamilyWords));
+            issues.Add(new SubstanceIssue(SubstanceIssueKind.DamagesWithoutHarm, family ? new ArticleRef("family-code", "53 مكرر") : new ArticleRef("civil-code", "182")));
         }
 
         // The Constitution grounds no claim this app drafts (civil, commercial, family or social), so it is flagged even

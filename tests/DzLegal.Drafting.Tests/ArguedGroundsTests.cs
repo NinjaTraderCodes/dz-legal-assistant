@@ -557,4 +557,53 @@ public class ArguedGroundsTests
     [InlineData("المدعى عليه امتنع عن السداد رغم إعذاره", false)]
     public void OnlyALineOnJurisdictionOrAdmissibilityWithoutAnArticleIsTakenOut(string line, bool taken) =>
         Assert.Equal(taken, ArguedGrounds.WithoutAdmissibilityLines(line).Admissibility);
+
+    [Theory]
+    [InlineData("وحيث إن المدعى عليه قد ارتكب خطأً بإعراضه عن سداد الدين، مما أدى إلى ضرر للمدعي بن علي كريم", "وحيث إن المدعى عليه قد ارتكب خطأً بإعراضه عن سداد الدين، مما أدى إلى ضرر للمدعي")] // was «للالمدعي» (case 12, run 1)
+    [InlineData("مما أدى إلى ضرر لبن علي كريم", "مما أدى إلى ضرر للمدعي")]
+    [InlineData("وحيث إن حمداني سمير اقترض من بن علي كريم", "وحيث إن المدعى عليه اقترض من المدعي")]
+    [InlineData("وحيث إن المدعى عليه (حمداني سمير) أعذر بطلب بن علي كريم", "وحيث إن المدعى عليه أعذر بطلب المدعي")]
+    public void ANameAfterAJoinedLetterBecomesTheStandingJoinedCorrectly(string application, string expected)
+    {
+        var inputs = new Dictionary<string, string>
+        {
+            ["plaintiff.lastName"] = "بن علي", ["plaintiff.firstName"] = "كريم",
+            ["defendant.lastName"] = "حمداني", ["defendant.firstName"] = "سمير",
+        };
+        Assert.Equal(expected, ArguedGrounds.WithRolesForNames(application, inputs));
+    }
+
+    private const string EvictionRequests = "فسخ عقد الإيجار المؤرخ في 01/03/2024 وطرد المدعى عليه من الشقة هو ومن يقوم مقامه.\nإلزام المدعى عليه بأن يدفع للمدعي 240,000 دج.";
+
+    [Theory]
+    // Gemma 3 4B, case 08 (landlord's eviction claim), runs 2 and 3 of 18 Oct.
+    [InlineData("وحيث إن المدعي قد التزم بتسجيل عقد إيجار بتاريخ 01 مارس 2024، وأقر المدعي بدفع أجرة شهرية قدرها 40,000 دج", true)]
+    [InlineData("وحيث إن المدعي قد التزم بتسجيل عقد إيجار، وأقر المدعي بأنه ملزم بدفع أجرة شهرية قدرها 40,000 دج", true)]
+    [InlineData("وحيث إن المدعي اقترض من المدعى عليه مبلغ 1,500,000 دج", true)]
+    [InlineData("وحيث إن المدعي امتنع عن السداد رغم إعذاره", true)]
+    [InlineData("وحيث إن المدعى عليه أقرض المدعي مبلغ 1,500,000 دج", true)]
+    // The same runs, roles right: kept.
+    [InlineData("وحيث إن المدعي قد التزم بتسليم الشقة للمدعى عليه بموجب عقد الإيجار المؤرخ في 01 مارس 2024، وإخلال المدعى عليه بعدم دفع الأجرة الشهرية", false)]
+    [InlineData("وحيث إن المدعى عليه قد اقترض من المدعي مبلغ 1,500,000 دج، وامتنع عن السداد رغم حلول الأجل", false)]
+    [InlineData("وحيث إن المدعى عليه أخل بالتزامه بعد إعذار المدعي رسميا بتاريخ 10 جويلية 2025", false)]
+    [InlineData("وحيث إن المدعية دفعت الثمن كاملا ولم يسلمها المدعى عليه البضاعة", false)]
+    [InlineData("وحيث إن المدعى عليه لم يدفع للمدعي أجور أشهر جوان وجويلية", false)]
+    public void TheDebtorsPartGivenToThePlaintiffIsRefused(string application, bool swapped) =>
+        Assert.Equal(swapped, ArguedGrounds.SwapsRoles(application, EvictionRequests) is not null);
+
+    [Fact]
+    public void ASwappedApplicationIsLeftForTheLawyer()
+    {
+        var groups = ArguedGrounds.Plan(Notes, Ticked, Requests);
+        var inputs = new Dictionary<string, string> { ["notes.facts"] = "اقترض المدعى عليه مبلغ 1500000 دج بموجب اعتراف بدين ولم يرده رغم إعذاره.", ["notes.requests"] = Requests };
+        var draft = ArguedGrounds.Assemble(null, groups, new Dictionary<int, string>
+        {
+            [1] = "وحيث إن المدعي اقترض من المدعى عليه مبلغ 1500000 دج ولم يرده.",
+            [2] = "وحيث إن الدين ثابت باعتراف بدين.",
+            [3] = "وحيث إن المدعى عليه أعذر ولم يف.",
+        }, inputs, Ticked);
+
+        Assert.Contains("swaps the parties' roles", Assert.Single(draft.Problems), StringComparison.Ordinal);
+        Assert.Contains("(...)", draft.Text.Split('\n')[0], StringComparison.Ordinal);
+    }
 }

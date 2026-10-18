@@ -492,13 +492,57 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
                 : [];
             foreach (var name in names.Where(n => n.Length > 2))
             {
-                var pattern = @"(?:(?:ال)?مدع(?:ى\s+عليها|ى\s+عليه|ية|ي)\s+)?(?:\(\s*)?" + Regex.Escape(name).Replace(@"\ ", @"\s+", StringComparison.Ordinal) + @"(?:\s*\))?";
-                text = Regex.Replace(text, pattern, standing);
+                var written = @"(?:\(\s*)?" + Regex.Escape(name).Replace(@"\ ", @"\s+", StringComparison.Ordinal) + @"(?:\s*\))?(?!\p{L})";
+                // After a standing as written («للمدعي بن علي كريم», «المدعى عليه (حمداني سمير)»): one standing, in the
+                // party's gender, with its joined letters kept.
+                text = Regex.Replace(text, @"(?<!\p{L})(?<pre>(?:و|ف)?(?:بال|لل|ال|ل|ب)?)مدع(?:ى\s+عليها|ى\s+عليه|ية|ي)\s+" + written,
+                    m => Joined(m.Groups["pre"].Value, standing));
+                // Alone («حمداني سمير», «لبن علي كريم»): the standing, joined as Arabic joins it («للمدعي»).
+                text = Regex.Replace(text, @"(?<!\p{L})(?<pre>(?:و|ف)?(?:ل|ب)?)" + written, m => Joined(m.Groups["pre"].Value, standing));
             }
         }
 
         return text;
     }
+
+    /// <summary>«ل» + «المدعي» = «للمدعي», «ب» + «المدعي» = «بالمدعي», «و» + «المدعي» = «والمدعي».</summary>
+    private static string Joined(string prefix, string standing)
+    {
+        var letters = prefix.EndsWith("لل", StringComparison.Ordinal) ? prefix[..^1]
+            : prefix.EndsWith("ال", StringComparison.Ordinal) ? prefix[..^2]
+            : prefix;
+        return letters.EndsWith('ل') ? letters + standing[1..] : letters + standing;
+    }
+
+    /// <summary>
+    /// The debtor's part given to the plaintiff while the requests ask the defendant to pay or perform: «وأقر المدعي بأنه
+    /// ملزم بدفع أجرة شهرية قدرها 40,000 دج» in a landlord's eviction claim (Gemma 3 4B, case 08, 2 of 3 runs, 18 Oct),
+    /// or the lender's part given to the defendant. Only these plain patterns: a plaintiff may well have paid a price.
+    /// </summary>
+    internal static string? SwapsRoles(string application, string requests)
+    {
+        if (!requests.Contains("المدعى علي", StringComparison.Ordinal))
+        {
+            return null;
+        }
+
+        return PlaintiffAsDebtor().Match(application) is { Success: true } p ? p.Value
+            : DefendantAsLender().Match(application) is { Success: true } d ? d.Value
+            : null;
+    }
+
+    private const string Plaintiff = @"(?<!\p{L})(?:و|ف)?(?:ال|لل)?مدعي(?:ة)?(?!\s+علي)(?!\p{L})";
+    private const string Pays = @"(?:دفع|سداد|تسديد|رد|الوفاء|أداء)";
+
+    [GeneratedRegex(@"(?:(?:أقر|أقرت|اعترف|اعترفت)\s+" + Plaintiff + @"\s+ب(?:أنه\s+|أنها\s+)?(?:ملزم\S*\s+ب)?" + Pays
+        + @"|" + Plaintiff + @"\s+(?:قد\s+)?(?:اقترض|اقترضت)"
+        + @"|" + Plaintiff + @"\s+(?:ب(?:أنه|أنها)\s+)?(?:كان\s+|كانت\s+)?ملزم\S*\s+ب" + Pays
+        + @"|" + Plaintiff + @"\s+(?:قد\s+)?امتنع\S*\s+عن\s+(?:ال)?" + Pays
+        + @"|" + Plaintiff + @"\s+لم\s+(?:ي|ت)(?:دفع|سدد|رد|وف))")]
+    private static partial Regex PlaintiffAsDebtor();
+
+    [GeneratedRegex(@"المدعى\s+علي(?:ه|ها)\s+(?:قد\s+)?(?:أقرض|أقرضت|اقرض)")]
+    private static partial Regex DefendantAsLender();
 
     /// <summary>
     /// A line of the lawyer's notes on jurisdiction or admissibility («أحكام قانون الإجراءات المدنية والإدارية المتعلقة
@@ -722,6 +766,11 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
         if (CopiesInformalRequest(argument, inputs.GetValueOrDefault("notes.requests", string.Empty)))
         {
             return "copies a request not in formal Arabic";
+        }
+
+        if (SwapsRoles(WithRolesForNames(argument, inputs), inputs.GetValueOrDefault("notes.requests", string.Empty)) is { } swapped)
+        {
+            return $"swaps the parties' roles ({swapped})";
         }
 
         var sources = string.Join('\n', groups.Select(g => g.Note)

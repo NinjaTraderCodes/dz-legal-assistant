@@ -258,6 +258,15 @@ public class NarrativeChecksTests
     }
 
     [Fact]
+    public void AQualificationFromTheCodesOwnRuleSentenceIsNotFlagged()
+    {
+        // Case 08, 18 Oct: «الفسخ» came from the catalog's rule for art. 119, written by the code.
+        LegalText[] texts = [new("119", "القانون المدني", "نص للاختبار.") { Gist = "الفسخ بعد الإعذار مع التعويض" }];
+        var issues = NarrativeChecks.Check("حيث إن المادة 119 من القانون المدني تقضي بالفسخ بعد الإعذار مع التعويض.", Notes, Inputs, ["الفسخ"], texts);
+        Assert.DoesNotContain(issues, i => i.Kind == NarrativeIssueKind.UngroundedTerm);
+    }
+
+    [Fact]
     public void QualificationTheLawyerUsedIsAllowed()
     {
         var inputs = new Dictionary<string, string>(Inputs) { ["notes.grounds"] = "عقد القرض ملزم للطرفين" };

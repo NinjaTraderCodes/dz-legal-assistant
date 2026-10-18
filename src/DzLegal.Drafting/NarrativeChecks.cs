@@ -161,7 +161,8 @@ public static partial class NarrativeChecks
         if (groundedTerms is { Count: > 0 })
         {
             var plain = StripDiacritics(text);
-            var inputText = StripDiacritics(string.Join('\n', inputs.Values));
+            // The code's rule sentences use the catalog's one-line rules («تقضيان بالفسخ بعد الإعذار…», case 08, 18 Oct).
+            var inputText = StripDiacritics(string.Join('\n', inputs.Values.Concat((legalTexts ?? []).Select(t => t.Gist + "\n" + t.Text))));
             issues.AddRange(groundedTerms
                 .Select(StripDiacritics)
                 .Where(t => plain.Contains(t, StringComparison.Ordinal) && !inputText.Contains(t, StringComparison.Ordinal))

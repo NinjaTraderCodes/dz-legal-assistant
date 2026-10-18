@@ -33,7 +33,10 @@
     // «امتنان» (gratitude) written for «امتناع» (refusal), seen in bench4.
     { "find": "امتنانه بالسداد", "replace": "امتناعه عن السداد" },
     { "find": "امتنانه عن", "replace": "امتناعه عن" },
-    { "find": "امتنانها عن", "replace": "امتناعها عن" }
+    { "find": "امتنانها عن", "replace": "امتناعها عن" },
+    // «إخلاقه» for «إخلاله» (breach), case 10, 18 Oct.
+    { "find": "إخلاقه", "replace": "إخلاله" },
+    { "find": "إخلاقها", "replace": "إخلالها" }
   ],
 
   // Legal qualifications model text may use only if the lawyer's inputs contain them; otherwise they are

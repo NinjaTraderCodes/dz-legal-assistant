@@ -174,7 +174,7 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
             // Same context window as the real requests: a different one would make Ollama load the model a second time.
             using var response = await _http.PostAsJsonAsync(
                 new Uri("api/generate", UriKind.Relative),
-                new WarmUpRequest(_options.Model, _options.KeepAlive, new WarmUpOptions(_options.ContextLength)),
+                new WarmUpRequest(_options.Model, _options.KeepAlive, new WarmUpOptions(_options.ContextLength, _options.GpuLayers)),
                 cancellationToken);
             await EnsureSuccessAsync(response, cancellationToken);
         }
@@ -193,7 +193,7 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
         Stream: stream,
         _options.Think,
         _options.KeepAlive,
-        new ChatOptions(_options.Temperature, _options.ContextLength, MaxTokens(request), _options.RepeatPenalty));
+        new ChatOptions(_options.Temperature, _options.ContextLength, MaxTokens(request), _options.RepeatPenalty, _options.GpuLayers));
 
     /// <summary>The call's own cap, never above the configured maximum.</summary>
     private int MaxTokens(ModelRequest request) => request.MaxTokens is { } cap ? Math.Min(cap, _options.MaxTokens) : _options.MaxTokens;
@@ -249,7 +249,8 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
         [property: JsonPropertyName("temperature")] double Temperature,
         [property: JsonPropertyName("num_ctx")] int ContextLength,
         [property: JsonPropertyName("num_predict")] int MaxTokens,
-        [property: JsonPropertyName("repeat_penalty")] double RepeatPenalty);
+        [property: JsonPropertyName("repeat_penalty")] double RepeatPenalty,
+        [property: JsonPropertyName("num_gpu")] int GpuLayers);
 
     private sealed record ChatResponse(
         [property: JsonPropertyName("message")] ChatMessage? Message,
@@ -266,7 +267,10 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
         [property: JsonPropertyName("keep_alive")] string KeepAlive,
         [property: JsonPropertyName("options")] WarmUpOptions Options);
 
-    private sealed record WarmUpOptions([property: JsonPropertyName("num_ctx")] int ContextLength);
+    /// <remarks>The load-time options (context, GPU layers) match <see cref="ChatOptions"/>: any difference reloads the model.</remarks>
+    private sealed record WarmUpOptions(
+        [property: JsonPropertyName("num_ctx")] int ContextLength,
+        [property: JsonPropertyName("num_gpu")] int GpuLayers);
 
     private sealed record TagsResponse([property: JsonPropertyName("models")] IReadOnlyList<TagModel>? Models);
 

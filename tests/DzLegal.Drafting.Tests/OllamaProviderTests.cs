@@ -148,6 +148,7 @@ public class OllamaProviderTests
         Assert.False(body.RootElement.TryGetProperty("prompt", out _)); // nothing to generate
         // The same context window as the real requests, or Ollama would load the model a second time.
         Assert.Equal(4096, body.RootElement.GetProperty("options").GetProperty("num_ctx").GetInt32());
+        Assert.Equal(0, body.RootElement.GetProperty("options").GetProperty("num_gpu").GetInt32()); // CPU only, as every request: a mismatch would reload the model
     }
 
     [Fact]
@@ -164,6 +165,7 @@ public class OllamaProviderTests
         {
             using var body = JsonDocument.Parse(r.Body);
             Assert.Equal("2h", body.RootElement.GetProperty("keep_alive").GetString());
+            Assert.Equal(0, body.RootElement.GetProperty("options").GetProperty("num_gpu").GetInt32()); // no graphics chip: one tested path
             return body.RootElement.GetProperty("options").GetProperty("num_predict").GetInt32();
         }).ToList();
         Assert.Equal([300, 1000, 1000], caps); // never above the configured maximum

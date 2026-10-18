@@ -22,6 +22,13 @@ public sealed record OllamaOptions
     /// </summary>
     public string KeepAlive { get; init; } = "60m";
 
+    /// <summary>
+    /// Model layers Ollama may place on a graphics chip. 0 keeps every lawyer on the same tested CPU path: Ollama 0.40.5
+    /// enables Vulkan discovery by default and offloads automatically on a supported GPU when the option is omitted
+    /// (CPU study of 18 Oct 2026), and a lawyer's graphics chip and driver cannot be relied on.
+    /// </summary>
+    public int GpuLayers { get; init; }
+
     /// <summary>Upper bound on generated tokens per section, so a small model cannot ramble or loop.</summary>
     public int MaxTokens { get; init; } = 1500;
 

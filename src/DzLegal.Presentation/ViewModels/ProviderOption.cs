@@ -50,6 +50,9 @@ public sealed partial class ProviderOption(
     /// <summary>Loads the engine ahead of the first request (local only); a no-op for engines without a warm-up.</summary>
     public Task WarmUpAsync(CancellationToken cancellationToken) => warmUp?.Invoke(cancellationToken) ?? Task.CompletedTask;
 
+    /// <summary>The name can depend on what the probe found (the text-only model when it is installed).</summary>
+    internal void RefreshName() => OnPropertyChanged(nameof(DisplayName));
+
     internal void Localize(Loc loc)
     {
         _loc = loc;

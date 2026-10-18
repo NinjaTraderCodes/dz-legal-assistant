@@ -62,6 +62,13 @@ public sealed record OllamaSettings
 {
     public string Endpoint { get; init; } = "http://127.0.0.1:11434";
     public string Model { get; init; } = "gemma3:4b";
+
+    /// <summary>
+    /// Preferred when installed: the same language weights as <see cref="Model"/> without the unused image part (about
+    /// 0.8 GB less memory, identical answers, CPU study of 18 Oct 2026). Created by tools/model/New-TextOnlyModel.ps1.
+    /// Empty: always use <see cref="Model"/>.
+    /// </summary>
+    public string? TextOnlyModel { get; init; } = "dz-gemma3-4b-text";
     public double TimeoutMinutes { get; init; } = 10;
     public double Temperature { get; init; } = 0.2;
     public int MaxTokens { get; init; } = 1500;

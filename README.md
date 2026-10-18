@@ -103,7 +103,8 @@ The app starts in Arabic and uses the local model by default. **With no model in
 
 1. Install [Ollama](https://ollama.com). It runs as a local process on `127.0.0.1:11434`.
 2. `ollama pull gemma3:4b` (about 3.3 GB, one-time download). After that, no network is needed. With 16 GB RAM or a GPU, `qwen2.5:7b-instruct` writes better Arabic.
-3. Start the app and keep the default engine, "النموذج المحلي" / "Local model".
+3. Optional, on Windows, recommended on 8 GB RAM: `powershell -ExecutionPolicy Bypass -File tools\model\New-TextOnlyModel.ps1`. It creates `dz-gemma3-4b-text` from the installed `gemma3:4b` (same language weights, nothing downloaded) without the image part the app never uses: about 0.8 GB less memory, identical answers. The app uses it automatically when it is installed.
+4. Start the app and keep the default engine, "النموذج المحلي" / "Local model".
 
 Recommended hardware: 16 GB RAM for 7B models (CPU-only works, at about a minute or more per section), or a GPU with 8 GB or more of VRAM. **On 8 GB RAM without a GPU, use `gemma3:4b`.** It was the best of the three models benchmarked on such a machine (about 4 minutes of drafting per requête on an Intel i5-1335U, plus 2–3 minutes for the grounds analysis). `qwen2.5:3b-instruct` is weaker and only worth using on machines too small for gemma. `qwen3:4b` is **not supported** there: it writes its English reasoning into the document and takes over 10 minutes per requête. To change a setting, **don't edit `appsettings.json`**. Create `appsettings.local.json` next to it (in the repo: `src/DzLegal.App/appsettings.local.json`; git ignores it) containing only the keys you want to change. For example:
 

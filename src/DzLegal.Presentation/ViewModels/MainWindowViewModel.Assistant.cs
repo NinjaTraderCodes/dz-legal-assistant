@@ -79,6 +79,7 @@ public sealed partial class MainWindowViewModel
 
         var option = SelectedProvider;
         ModelStatus = await option.ProbeAsync(CancellationToken.None);
+        option.RefreshName();
         IsModelReady = ModelStatus.State is ModelState.Ready or ModelState.Unknown;
         if (ModelStatus.State == ModelState.Ready && option.CanWarmUp && _warmUpStarted.Add(option.Key))
         {

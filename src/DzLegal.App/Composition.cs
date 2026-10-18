@@ -31,14 +31,16 @@ public static class Composition
             KeepAlive = settings.Ollama.KeepAlive,
         };
 
+        // The text-only model replaces gemma3:4b only: a lawyer who configured another model keeps it.
+        var choice = new OllamaModelChoice(ollama, OllamaModelChoice.TextOnlyModelFor(ollama.Model, settings.Ollama.TextOnlyModel));
         List<ProviderOption> options =
         [
             new ProviderOption(
                 "ollama",
-                loc => loc.Format("ProviderOllama", ollama.Model),
-                () => new OllamaModelProvider(ollama),
-                ct => ProbeOllamaAsync(ollama, ct),
-                settings.Ollama.WarmUp ? ct => WarmUpOllamaAsync(ollama, ct) : null),
+                loc => loc.Format("ProviderOllama", choice.Options.Model),
+                () => new OllamaModelProvider(choice.Options),
+                ct => choice.ProbeAsync(ct),
+                settings.Ollama.WarmUp ? ct => WarmUpOllamaAsync(choice.Options, ct) : null),
             new ProviderOption("stub", loc => loc["ProviderStub"], () => new StubModelProvider()),
         ];
 #if ONLINE_TESTING
@@ -161,30 +163,6 @@ public static class Composition
 #else
     private const string BuildLabel = "";
 #endif
-
-    /// <summary>Loopback-only check: is Ollama running, and is the configured model installed?</summary>
-    public static async Task<ModelStatus> ProbeOllamaAsync(OllamaOptions options, CancellationToken cancellationToken)
-    {
-        ArgumentNullException.ThrowIfNull(options);
-        if (DzLegal.ModelProviders.Ollama.LoopbackGuard.IsCloudModel(options.Model))
-        {
-            return new ModelStatus(ModelState.Refused, options.Model);
-        }
-
-        using var provider = new OllamaModelProvider(options with { Timeout = TimeSpan.FromSeconds(3) });
-        try
-        {
-            var models = await provider.GetInstalledModelsAsync(cancellationToken);
-            var wanted = options.Model.Contains(':', StringComparison.Ordinal) ? options.Model : options.Model + ":latest";
-            return models.Any(m => string.Equals(m, wanted, StringComparison.OrdinalIgnoreCase))
-                ? new ModelStatus(ModelState.Ready, options.Model)
-                : new ModelStatus(ModelState.ModelMissing, options.Model);
-        }
-        catch (Exception ex) when (ex is ModelProviderException or TaskCanceledException)
-        {
-            return new ModelStatus(ModelState.NotRunning, options.Model);
-        }
-    }
 
     /// <summary>Loads the model into the local Ollama's memory (loopback only), so the first request does not wait for it.</summary>
     public static async Task WarmUpOllamaAsync(OllamaOptions options, CancellationToken cancellationToken)

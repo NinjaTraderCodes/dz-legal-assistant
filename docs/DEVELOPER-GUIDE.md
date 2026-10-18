@@ -237,11 +237,15 @@ Program.Main  (src/DzLegal.App/Program.cs)
 - Any load error (bad JSON, failed validation, `LawDataException`) shows a window containing the exception instead of crashing.
 - `MainWindow.axaml.cs` starts a 30-second `DispatcherTimer` that does two things on every tick:
   - `AutosaveNow()`;
-  - `CheckModelStatusAsync()`, which probes Ollama `/api/tags` through `ProviderOption.ProbeAsync` → `Composition.ProbeOllamaAsync`.
+  - `CheckModelStatusAsync()`, which probes Ollama `/api/tags` through `ProviderOption.ProbeAsync` → `OllamaModelChoice.ProbeAsync` (which also picks the text-only model when it is installed).
 - **Warm-up:** the first time the probe finds the model ready, `CheckModelStatusAsync` starts `ProviderOption.WarmUpAsync` in the background, once per session. It calls `Composition.WarmUpOllamaAsync`, then `OllamaModelProvider.WarmUpAsync`, which sends `POST /api/generate` with no prompt and `keep_alive` set to 30 minutes. This loads the model into memory while the lawyer fills the form.
   - The status dot reads "loading into memory…", then "ready in memory".
   - A failure is silent and not retried.
   - Turn it off with `ollama.warmUp: false` in the settings.
+- **Waiting** (`MainWindowViewModel.Waiting.cs`):
+  - *Time left.* `TaskTimings` keeps the last 5 durations of the analysis and of a full draft, per engine, in `%LOCALAPPDATA%\DzLegalAssistant\timings.json`. The activity panel shows the median minus the elapsed time, rounded up to 10 s, then "taking longer than usual". Before the first run on a computer it shows a hint instead (about 2 minutes for the analysis, 1–2 for a draft). Template mode is never timed.
+  - *Power.* `WindowsPowerStatus` (`GetSystemPowerStatus`) reports battery or energy saver; the panel then says the model will be slower. Local engines only.
+  - *Background analysis.* Leaving the facts step starts the grounds analysis when `analyseInBackground` is on (default), the facts are filled, nothing was analysed yet, and a local engine is ready. It is never cancelled by moving between steps. Nothing is ticked: the lawyer still confirms the claim type. An online engine never starts on its own.
 - On close, the window autosaves and disposes.
 
 ### 5.2 Typing in the form

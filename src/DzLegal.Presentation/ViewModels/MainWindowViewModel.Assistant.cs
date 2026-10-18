@@ -175,7 +175,7 @@ public sealed partial class MainWindowViewModel
         try
         {
             provider = SelectedProvider.Create();
-            AssistantActivity.Start([L["ActivityRevising"]]);
+            AssistantActivity.Start([L["ActivityRevising"]], PowerOnly());
             AssistantActivity.BeginStep(0);
             var proposal = await new SectionReviser(provider).ReviseAsync(
                 _definition,
@@ -280,7 +280,7 @@ public sealed partial class MainWindowViewModel
         {
             provider = SelectedProvider.Create();
             SetStatus(L.Format("Generating", section.Title));
-            GenerationActivity.Start([section.Title]);
+            GenerationActivity.Start([section.Title], PowerOnly());
             GenerationActivity.BeginStep(0);
             MarkWriting(section.Id);
             var drafted = await new DraftingService(provider).DraftSectionAsync(

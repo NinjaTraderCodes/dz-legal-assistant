@@ -33,6 +33,12 @@ public sealed partial class ActivityStepViewModel(string label) : ObservableObje
 }
 
 /// <summary>
+/// What the lawyer can expect from a task before it starts: its usual duration on this computer (null before the first
+/// run), the hint shown instead while there is none, and whether the computer is saving power.
+/// </summary>
+public sealed record ActivityExpectation(TimeSpan? Typical = null, string? FirstRunHintKey = null, bool SavingPower = false);
+
+/// <summary>
 /// What the local model is doing right now, so the lawyer never waits in silence: the steps of the task, a running
 /// timer, a "waking up the model" state until the first words arrive, then the words as they are written.
 /// </summary>
@@ -51,6 +57,7 @@ public sealed partial class ModelActivityViewModel : ObservableObject, IDisposab
     private CancellationTokenSource? _timer;
     private DateTimeOffset _startedAt;
     private DateTimeOffset _waitingSince;
+    private ActivityExpectation _expectation = new();
 
     /// <param name="showLiveText">False where the text already appears elsewhere as it is written (the draft, the assistant).</param>
     public ModelActivityViewModel(Loc loc, bool showLiveText = true, Func<DateTimeOffset>? now = null, bool useTimer = true)
@@ -86,7 +93,27 @@ public sealed partial class ModelActivityViewModel : ObservableObject, IDisposab
     [ObservableProperty]
     public partial string WordsText { get; private set; } = string.Empty;
 
-    public void Start(IEnumerable<string> steps)
+    /// <summary>
+    /// How long is left, from this computer's usual time («about 1:20 left»), «taking longer than usual» past it, or a
+    /// first-run hint while no time has been measured yet.
+    /// </summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasEstimate))]
+    public partial string EstimateText { get; private set; } = string.Empty;
+
+    public bool HasEstimate => EstimateText.Length > 0;
+
+    /// <summary>On battery or in power-saver mode: the model is slower, and the lawyer is told why.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasPowerNote))]
+    public partial string PowerNote { get; private set; } = string.Empty;
+
+    public bool HasPowerNote => PowerNote.Length > 0;
+
+    /// <summary>Time since the task started.</summary>
+    public TimeSpan ElapsedTime => _now() - _startedAt;
+
+    public void Start(IEnumerable<string> steps, ActivityExpectation? expectation = null)
     {
         ArgumentNullException.ThrowIfNull(steps);
         Steps.Clear();
@@ -96,11 +123,12 @@ public sealed partial class ModelActivityViewModel : ObservableObject, IDisposab
         }
 
         _startedAt = _now();
+        _expectation = expectation ?? new ActivityExpectation();
         LiveText = string.Empty;
         WordsText = string.Empty;
         IsWaiting = false;
+        Tick(); // the estimate is ready before the panel shows
         IsActive = true;
-        Tick();
         if (_useTimer)
         {
             StopTimer();
@@ -166,10 +194,40 @@ public sealed partial class ModelActivityViewModel : ObservableObject, IDisposab
     /// <summary>Updates the timer and the waiting hint (every second while active).</summary>
     internal void Tick()
     {
-        var elapsed = _now() - _startedAt;
-        Elapsed = $"{(int)elapsed.TotalMinutes}:{elapsed.Seconds:00}";
+        var elapsed = ElapsedTime;
+        Elapsed = Clock(elapsed);
         WaitingText = _loc[_now() - _waitingSince >= LoadingHintAfter ? "ActivityLoading" : "ActivityWaking"];
+        EstimateText = Estimate(elapsed);
+        PowerNote = _expectation.SavingPower ? _loc["ActivityPowerSaving"] : string.Empty;
     }
+
+    /// <summary>Below this, «about 0:10 left» would be false precision: the end is shown as «almost done» instead.</summary>
+    private static readonly TimeSpan Rounding = TimeSpan.FromSeconds(10);
+
+    private string Estimate(TimeSpan elapsed)
+    {
+        if (_expectation.Typical is not { } typical)
+        {
+            return _expectation.FirstRunHintKey is { } hint ? _loc[hint] : string.Empty;
+        }
+
+        var left = typical - elapsed;
+        if (left <= TimeSpan.Zero)
+        {
+            return _loc["ActivityLongerThanUsual"];
+        }
+
+        if (left < Rounding)
+        {
+            return _loc["ActivityAlmostDone"];
+        }
+
+        // Rounded up to 10 seconds: the clock beside it gives the exact elapsed time.
+        var rounded = TimeSpan.FromSeconds(Math.Ceiling(left.TotalSeconds / Rounding.TotalSeconds) * Rounding.TotalSeconds);
+        return _loc.Format("ActivityRemaining", Clock(rounded));
+    }
+
+    private static string Clock(TimeSpan time) => $"{(int)time.TotalMinutes}:{time.Seconds:00}";
 
     internal void Relocalize() => Tick();
 

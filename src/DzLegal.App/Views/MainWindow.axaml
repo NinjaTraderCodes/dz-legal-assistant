@@ -106,6 +106,10 @@
               <TextBlock Name="ActivityElapsed" Classes="muted" FontSize="11" Text="{Binding Elapsed}" />
             </StackPanel>
           </Grid>
+          <TextBlock Name="ActivityEstimate" Classes="muted" FontSize="11" TextWrapping="Wrap" Text="{Binding EstimateText}" IsVisible="{Binding HasEstimate}" />
+          <Border Name="ActivityPowerNote" Background="{DynamicResource WarningSoftBrush}" CornerRadius="6" Padding="8,4" IsVisible="{Binding HasPowerNote}">
+            <TextBlock FontSize="11" TextWrapping="Wrap" Foreground="{DynamicResource WarningBrush}" Text="{Binding PowerNote}" />
+          </Border>
           <Border Background="{DynamicResource PaperBrush}" CornerRadius="6" Padding="8,6" IsVisible="{Binding HasLiveText}">
             <StackPanel Spacing="2">
               <TextBlock FontSize="10" Foreground="#6A706D" Text="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[ActivityLive]}" />
@@ -359,7 +363,14 @@
           </ListBox>
 
           <Grid DockPanel.Dock="Bottom" ColumnDefinitions="*,Auto,Auto" Margin="0,12,0,0">
-            <TextBlock Classes="muted" VerticalAlignment="Center" Text="{Binding StepPosition}" />
+            <StackPanel VerticalAlignment="Center" Spacing="2">
+              <TextBlock Classes="muted" Text="{Binding StepPosition}" />
+              <StackPanel Name="BackgroundAnalysis" Orientation="Horizontal" Spacing="6" IsVisible="{Binding ShowsBackgroundAnalysis}">
+                <Ellipse Classes="pulse" Width="8" Height="8" Fill="{DynamicResource AccentBrush}" VerticalAlignment="Center" />
+                <TextBlock Classes="muted" FontSize="11" Text="{Binding L[AnalysisInBackground]}" />
+                <TextBlock Classes="muted" FontSize="11" Text="{Binding AnalysisActivity.Elapsed}" />
+              </StackPanel>
+            </StackPanel>
             <Button Grid.Column="1" Classes="outline" Command="{Binding PreviousStepCommand}" Content="{Binding L[Previous]}" Margin="0,0,8,0" />
             <Button Grid.Column="2" Classes="primary" Command="{Binding NextStepCommand}" Content="{Binding L[Next]}" />
           </Grid>
@@ -380,6 +391,7 @@
                   </Button>
                   <Button Classes="outline" Command="{Binding AnalyseGroundsCancelCommand}" Content="{Binding L[Cancel]}" IsVisible="{Binding AnalyseGroundsCommand.IsRunning}" />
                 </StackPanel>
+                <TextBlock Name="AutomaticAnalysisNote" Classes="muted" FontSize="12" TextWrapping="Wrap" Text="{Binding L[AnalysisStartedAutomatically]}" IsVisible="{Binding IsAnalysisAutomatic}" />
                 <ContentControl Name="AnalysisActivityView" Content="{Binding AnalysisActivity}" ContentTemplate="{StaticResource ModelActivityTemplate}" />
                 <TextBlock Classes="muted" FontSize="12" TextWrapping="Wrap" Text="{Binding AnalysisStatus}"
                            IsVisible="{Binding AnalysisStatus, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />

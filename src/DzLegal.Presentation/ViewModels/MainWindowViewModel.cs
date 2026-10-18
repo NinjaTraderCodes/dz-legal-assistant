@@ -129,7 +129,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     public partial bool HasSubstanceIssues { get; set; }
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(StepPosition), nameof(IsGroundsStep), nameof(IsRequestsStep), nameof(IsDocumentsStep))]
+    [NotifyPropertyChangedFor(nameof(StepPosition), nameof(IsGroundsStep), nameof(IsRequestsStep), nameof(IsDocumentsStep), nameof(ShowsBackgroundAnalysis))]
     public partial FieldGroupViewModel? SelectedStep { get; set; }
 
     public string StepPosition => SelectedStep is null ? string.Empty : L.Format("StepPosition", SelectedStep.Number, FieldGroups.Count);
@@ -462,7 +462,8 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
             var keep = EditedNarrative();
             var inputs = DraftingInputs();
             var narrative = _definition.Sections.Where(x => x.Kind == SectionKind.Narrative).ToList();
-            GenerationActivity.Start(narrative.Select(x => x.Title.Get(L.Language)));
+            // Kept sections make a shorter run: only a full draft has a usual time.
+            GenerationActivity.Start(narrative.Select(x => x.Title.Get(L.Language)), Expect(DraftTask, provider, usual: keep.Count == 0));
 
             // Synchronous progress: Progress<T> would post late updates over the final status.
             var progress = new InlineProgress<SectionDefinition>(s =>
@@ -491,6 +492,11 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
                     LegalTexts = LegalTextsForDrafting(),
                 },
                 cancellationToken);
+            if (keep.Count == 0)
+            {
+                RecordDuration(DraftTask, provider, GenerationActivity);
+            }
+
             GenerationActivity.Complete();
             foreach (var manual in _draft.Sections.Where(x => x.Overridden))
             {

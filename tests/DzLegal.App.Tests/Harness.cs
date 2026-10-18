@@ -159,7 +159,10 @@ internal static class Vm
         LegalKnowledge? knowledge = null,
         RecordingProvider? recorder = null,
         IExternalLinks? links = null,
-        ProviderOption? extra = null)
+        ProviderOption? extra = null,
+        ITaskTimings? timings = null,
+        IPowerStatus? power = null,
+        bool analyseInBackground = false)
     {
         loc ??= new Loc();
         var definition = DefinitionLoader.Load(Path.Combine(AppContext.BaseDirectory, "data", "document-types", "requete-introductive"));
@@ -181,7 +184,12 @@ internal static class Vm
             provider = extra.Key;
         }
 
-        return new MainWindowViewModel(definition, providers, files ?? new FakeFiles(), new EvaluationStore(EvaluationsFolder), loc, provider, () => new DateOnly(2026, 9, 15), autosaveFile, knowledge ?? ShippedKnowledge, links);
+        return new MainWindowViewModel(definition, providers, files ?? new FakeFiles(), new EvaluationStore(EvaluationsFolder), loc, provider, () => new DateOnly(2026, 9, 15), autosaveFile, knowledge ?? ShippedKnowledge, links)
+        {
+            Timings = timings ?? new TaskTimings(),
+            Power = power ?? new NoPowerStatus(),
+            AnalyseInBackground = analyseInBackground,
+        };
     }
 
     /// <summary>Fills every mandatory field with fictitious data, like a lawyer would.</summary>

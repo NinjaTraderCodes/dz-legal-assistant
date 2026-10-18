@@ -16,6 +16,12 @@ public sealed record AppSettings
     /// <summary>"ar" or "en".</summary>
     public string Language { get; init; } = "ar";
 
+    /// <summary>
+    /// Start the grounds analysis when the lawyer leaves the facts step (local model only), so it runs while they fill
+    /// the next steps. Nothing is relied on before the lawyer confirms the claim type.
+    /// </summary>
+    public bool AnalyseInBackground { get; init; } = true;
+
     public OllamaSettings Ollama { get; init; } = new();
 
     /// <summary>

@@ -146,7 +146,7 @@ public sealed partial class MainWindowViewModel
         {
             provider = SelectedProvider.Create();
             AnalysisStatus = string.Empty;
-            AnalysisActivity.Start([L["AnalysisStepReading"], L["AnalysisStepSearching"], L["AnalysisStepSelecting"]]);
+            AnalysisActivity.Start([L["AnalysisStepReading"], L["AnalysisStepSearching"], L["AnalysisStepSelecting"]], Expect(AnalysisTask, provider));
             var progress = new InlineProgress<AnalysisStage>(stage =>
                 AnalysisActivity.BeginStep((int)stage, waitsForModel: stage != AnalysisStage.Searching));
             var analyzer = new GroundsAnalyzer(provider)
@@ -161,6 +161,7 @@ public sealed partial class MainWindowViewModel
                 inputs.GetValueOrDefault("court.section", string.Empty),
                 progress,
                 cancellationToken);
+            RecordDuration(AnalysisTask, provider, AnalysisActivity);
             AnalysisActivity.Complete();
             ShowAnalysis(analysis);
 
@@ -180,6 +181,7 @@ public sealed partial class MainWindowViewModel
         }
         finally
         {
+            IsAnalysisAutomatic = false;
             AnalysisActivity.Stop();
             (provider as IDisposable)?.Dispose();
         }

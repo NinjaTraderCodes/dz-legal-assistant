@@ -92,6 +92,29 @@ service to the smallest paid plan** (always on, five times the CPU), then back.
 
 Other hosts (Google Cloud Run: `deploy/cloud-run.sh` and `.ps1`; a paid Hugging Face Space: the `deploy-web-demo` workflow) run the same image.
 
+## No wake-up wait: the options (checked 20 Oct 2026)
+
+**Vercel cannot run this demo as it is built.** The demo is Blazor Server: one long-running .NET process keeps each
+visitor's screen state in memory and talks to the browser over a WebSocket (SignalR). Vercel runs static files and
+short functions (Node.js, Python), not a .NET process or a Docker image, and a function, WebSocket or not, ends after
+at most 300 s on the free plan, which would cut every visitor's session. Moving to Vercel means rewriting the page as
+Blazor WebAssembly with the model calls behind a separate function, and the PDF engine (QuestPDF, native code) does not
+run in the browser, so preview and PDF export would need a server again. Not before 31 October.
+
+What works with the current image, cheapest first:
+
+| Option | Cost | Wake-up wait | Effort |
+|---|---|---|---|
+| Render free + an external monitor pinging `/healthz` every 5 minutes (e.g. UptimeRobot's free plan) | free | none while the pings run | 5 minutes, no code |
+| Render Starter plan | about $7 a month | none | one click in the dashboard |
+| Fly.io, one shared-CPU 512 MB machine left running | about $3–4 a month | none | a `fly.toml` and `fly deploy` |
+| Google Cloud Run, `MIN_INSTANCES=1 ./deploy/cloud-run.sh` | a few dollars a month | none | the script exists |
+
+Notes on the free option: Render counts any inbound HTTP request as activity, so a ping every 5 minutes keeps the 15-minute
+idle timer from running out. One service running all month uses about 744 of the workspace's 750 free hours, so it only
+fits if no other free Render service runs in the same workspace. Don't use a GitHub workflow for the pings: this
+repository is private, and a run every 10 minutes would take more than its 2,000 free Actions minutes a month.
+
 ## Uptime
 
 The `web-demo-uptime` workflow checks `DEMO_URL/healthz` and the page every 30 minutes. It needs the repository variable

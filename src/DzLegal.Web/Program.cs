@@ -90,7 +90,16 @@ app.MapGet("/law-sources/{file}", (string file, WebEngine engine, HttpContext co
 });
 
 // For uptime checks: is the server up, and is AI configured? Engine names and the queue stay in the server log.
-app.MapGet("/healthz", (WebEngine engine) => Results.Ok(new { status = "ok", ai = engine.Settings.HasAnyEngine }));
+// GET or HEAD, whichever the monitor sends: an external monitor calling it every 5 minutes keeps the free host awake
+// (Render sleeps after 15 minutes without a request). "started" stays the same as long as the server never slept or
+// restarted, so it shows whether the pings work.
+var started = DateTimeOffset.UtcNow;
+app.MapMethods("/healthz", ["GET", "HEAD"], (WebEngine engine) => Results.Ok(new
+{
+    status = "ok",
+    ai = engine.Settings.HasAnyEngine,
+    started = started.ToString("yyyy-MM-ddTHH:mm:ssZ", System.Globalization.CultureInfo.InvariantCulture),
+}));
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();

@@ -115,6 +115,16 @@ idle timer from running out. One service running all month uses about 744 of the
 fits if no other free Render service runs in the same workspace. Don't use a GitHub workflow for the pings: this
 repository is private, and a run every 10 minutes would take more than its 2,000 free Actions minutes a month.
 
+### Setting up the free keep-awake ping (UptimeRobot)
+
+1. Create a free account on [uptimerobot.com](https://uptimerobot.com).
+2. *New monitor* → type **HTTP(s)**, URL `https://dz-legal-assistant-ai.onrender.com/healthz`, interval **5 minutes**
+   (the free plan's shortest). `/healthz` answers GET and HEAD, so either method the monitor uses works.
+3. Optional: as alert contact, your e-mail; the monitor then also tells you when the demo is down.
+4. Check that it works: `powershell -ExecutionPolicy Bypass -File tools\web\Watch-DemoAwake.ps1` visits the demo every
+   20 minutes for 3 hours (longer than Render's 15 idle minutes, so the script alone cannot keep it awake) and reports
+   whether the server's start time (`started` in `/healthz`) ever changed. A redeploy also changes it once.
+
 ## Uptime
 
 The `web-demo-uptime` workflow checks `DEMO_URL/healthz` and the page every 30 minutes. It needs the repository variable

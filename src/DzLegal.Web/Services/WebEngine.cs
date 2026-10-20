@@ -48,6 +48,12 @@ public sealed partial class WebEngine : IDisposable
 
     public ModelGate Gate { get; }
 
+    /// <summary>
+    /// How long the analysis and a full draft took on this server, shared by every visitor (in memory only), so the
+    /// progress panel can say how much is left, as the desktop does from the lawyer's own earlier runs.
+    /// </summary>
+    public TaskTimings Timings { get; } = new();
+
     /// <summary>The Gemma models in use: the configured ones that Google still serves (see <see cref="ResolveModelsAsync"/>).</summary>
     public IReadOnlyList<string> GoogleModels { get; private set; }
 
@@ -135,7 +141,10 @@ public sealed partial class WebEngine : IDisposable
             loc,
             defaultProvider: providers[0].Key,
             knowledge: Knowledge,
-            links: links);
+            links: links)
+        {
+            Timings = Timings,
+        };
     }
 
     private CallQuota AddressQuota(string address)

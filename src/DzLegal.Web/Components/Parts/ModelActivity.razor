@@ -24,6 +24,14 @@
         {
             <div class="progress-indeterminate"><span></span></div>
         }
+        @if (Model.HasEstimate)
+        {
+            <div class="activity-estimate">@Model.EstimateText</div>
+        }
+        @if (Model.HasPowerNote)
+        {
+            <div class="notice small">@Model.PowerNote</div>
+        }
         @if (Model.HasLiveText)
         {
             <div class="live-text">

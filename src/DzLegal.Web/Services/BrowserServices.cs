@@ -12,8 +12,20 @@ public sealed class BrowserFiles(IJSRuntime js) : IUserFiles
     public Task<(Stream Stream, string Name)?> SaveAsync(string suggestedName, SaveKind kind) =>
         Task.FromResult<(Stream Stream, string Name)?>((new DownloadStream(js, suggestedName), suggestedName));
 
-    /// <summary>The demo opens sample cases instead of files from the visitor's disk.</summary>
-    public Task<(Stream Stream, string Name)?> OpenAsync() => Task.FromResult<(Stream Stream, string Name)?>(null);
+    private (Stream Stream, string Name)? _picked;
+
+    /// <summary>
+    /// A draft file the visitor chose with the page's file input (a real input, so every browser lets it open). The
+    /// next <see cref="OpenAsync"/> hands it to the app; the file never goes further than this session's memory.
+    /// </summary>
+    public void Pick(Stream stream, string name) => _picked = (stream, name);
+
+    public Task<(Stream Stream, string Name)?> OpenAsync()
+    {
+        var picked = _picked;
+        _picked = null;
+        return Task.FromResult(picked);
+    }
 
     public async Task CopyTextAsync(string text) => await js.InvokeVoidAsync("dzlegal.copyText", text);
 

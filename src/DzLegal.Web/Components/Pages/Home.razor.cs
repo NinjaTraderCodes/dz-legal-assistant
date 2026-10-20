@@ -12,6 +12,10 @@ namespace DzLegal.Web.Components.Pages;
 public sealed partial class Home : IDisposable
 {
     private ViewModelWatcher? _watcher;
+    private BrowserFiles? _files;
+
+    /// <summary>A draft file is small (the case and its text); anything larger is not one.</summary>
+    private const long MaxDraftBytes = 2 * 1024 * 1024;
     private bool showGuide = true;
     private int mobileTab;
     private readonly HashSet<string> _visited = new(StringComparer.Ordinal);
@@ -35,7 +39,8 @@ public sealed partial class Home : IDisposable
         // Judges read English; Arabic is one click away (the document itself is always Arabic).
         // The connection's address (after the proxy's X-Forwarded-For) keys the per-network limit.
         var address = Http.HttpContext?.Connection.RemoteIpAddress?.ToString();
-        Vm = Engine.CreateSession(new BrowserFiles(Js), new BrowserLinks(Js), LanguageQuery == "ar" ? "ar" : "en", address);
+        _files = new BrowserFiles(Js);
+        Vm = Engine.CreateSession(_files, new BrowserLinks(Js), LanguageQuery == "ar" ? "ar" : "en", address);
         _watcher = new ViewModelWatcher(Vm, RequestRender);
         if (Engine.Samples.Count > 0)
         {
@@ -174,6 +179,28 @@ public sealed partial class Home : IDisposable
 
     private string PageSource(byte[] page) =>
         _pageSources.GetValue(page, p => "data:image/png;base64," + Convert.ToBase64String(p));
+
+    /// <summary>The visitor chose a draft file: it is read into this session's memory and opened as the desktop opens one.</summary>
+    private async Task OpenDraftFile(Microsoft.AspNetCore.Components.Forms.InputFileChangeEventArgs e)
+    {
+        var copy = new MemoryStream();
+        try
+        {
+            await using var upload = e.File.OpenReadStream(MaxDraftBytes);
+            await upload.CopyToAsync(copy);
+        }
+        catch (IOException ex)
+        {
+            // Larger than a draft can be, or the upload broke off.
+            Vm!.StatusMessage = string.Format(L.Culture, L["Error"], ex.Message);
+            await copy.DisposeAsync();
+            return;
+        }
+
+        copy.Position = 0;
+        _files!.Pick(copy, e.File.Name);
+        await Run(Vm!.OpenCommand);
+    }
 
     private void Open(SampleCase sample)
     {

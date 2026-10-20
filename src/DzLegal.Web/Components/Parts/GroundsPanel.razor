@@ -89,8 +89,9 @@
         </div>
     </div>
 
-    <details class="search">
-        <summary>@Vm.L["AddArticleByHand"]</summary>
+    @* Always open, as on the desktop: the lawyer can cite an article the analysis did not propose. *@
+    <div class="search">
+        <h3>@Vm.L["AddArticleByHand"]</h3>
         <label class="small muted" for="article-search">@Vm.L["ArticleSearchPlaceholder"]</label>
         <input id="article-search" class="arabic" dir="auto" @bind="Vm.ArticleQuery" @bind:event="oninput" />
         @if (Vm.ArticleSearchHint.Length > 0)
@@ -101,7 +102,7 @@
         {
             <ArticleCard Article="a" Vm="Vm" />
         }
-    </details>
+    </div>
 </div>
 
 @code {

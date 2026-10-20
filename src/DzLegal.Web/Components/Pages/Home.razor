@@ -30,6 +30,9 @@
                 }
             </select>
             <button type="button" @onclick="() => Vm.NewCommand.Execute(null)"><Icon Name="add" /> @L["New"]</button>
+            @* Open and Save as on the desktop: a draft file (.dzdraft.json) from and to the visitor's own disk. *@
+            <label class="button-like" title="@L["Open"]"><Icon Name="folder_open" /> @L["Open"]<InputFile class="visually-hidden" accept=".json,application/json" OnChange="OpenDraftFile" /></label>
+            <button type="button" @onclick="() => Run(Vm.SaveCommand)"><Icon Name="save" /> @L["Save"]</button>
             <button type="button" aria-pressed="@(showGuide ? "true" : "false")" @onclick="() => showGuide = !showGuide"><Icon Name="question_circle" /> @T("GuideShow")</button>
             <button type="button" aria-label="@T("Theme")" title="@T("Theme")" @onclick="() => Vm.ToggleThemeCommand.Execute(null)"><Icon Name="weather_moon" /></button>
             <button type="button" lang="@(Lang == "en" ? "ar" : "en")" @onclick="() => Vm.SwitchLanguageCommand.Execute(null)"><Icon Name="translate" /> @L["SwitchLanguage"]</button>

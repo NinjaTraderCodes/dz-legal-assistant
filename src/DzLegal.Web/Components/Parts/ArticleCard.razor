@@ -11,14 +11,6 @@
             {
                 <span class="tag role" title="@RoleHelp">@Article.RoleText</span>
             }
-            @if (Article.IsRequired)
-            {
-                <span class="tag required">@Vm.L["ProvenanceRequired"]</span>
-            }
-            else if (Article.ProvenanceTag == Vm.L["ProvenanceModel"])
-            {
-                <span class="tag ai"><Icon Name="sparkle" Size="12" /> @Vm.L["ProvenanceModel"]</span>
-            }
         </span>
     </div>
 
@@ -40,26 +32,24 @@
     }
     else
     {
-        <div class="small muted">@Article.Text</div>
+        <div class="small muted"><em>@Article.Text</em></div>
     }
 
-    <div class="source">
-        @if (Article.SourceFile is { } file && Article.Page is { } page)
-        {
-            <a href="@($"/law-sources/{System.IO.Path.GetFileName(file)}#page={page}")" target="_blank" rel="noopener"><Icon Name="document_text" Size="14" /> @Vm.L.Format("SourcePage", page)</a>
-        }
-        else if (Article.HasSource)
-        {
-            <a href="@Article.SourceUrl" target="_blank" rel="noopener"><Icon Name="open" Size="14" /> @Article.LinkLabel</a>
-        }
-        @if (Article.IsVerified)
-        {
-            <span class="tag verified"><Icon Name="checkmark" Size="12" /> @Vm.L["ProvenanceVerified"]</span>
-        }
-        else if (Article.IsAvailable)
-        {
-            <span>@Vm.L["ProvenanceTextUnverified"]</span>
-        }
+    @* The same provenance block as the desktop card: reference, link, how sure the text is, who proposed the article. *@
+    <div class="provenance">
+        <div class="reference" dir="auto">@Article.ReferenceText</div>
+        <div class="source">
+            @if (Article.SourceFile is { } file && Article.Page is { } page)
+            {
+                <a href="@($"/law-sources/{System.IO.Path.GetFileName(file)}#page={page}")" target="_blank" rel="noopener" title="@Article.LinkTooltip"><Icon Name="document_text" Size="14" /> @Vm.L.Format("SourcePage", page)</a>
+            }
+            else if (Article.HasSource)
+            {
+                <a href="@Article.SourceUrl" target="_blank" rel="noopener" title="@Article.LinkTooltip"><Icon Name="open" Size="14" /> @Article.LinkLabel</a>
+            }
+            <span class="tag @(Article.IsVerified ? "verified" : "unverified")">@if (Article.IsVerified) { <Icon Name="checkmark" Size="12" /> }@Article.ProvenanceTag</span>
+            <span>@Article.SourceText</span>
+        </div>
     </div>
 </div>
 

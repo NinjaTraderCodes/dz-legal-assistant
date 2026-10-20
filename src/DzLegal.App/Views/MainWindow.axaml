@@ -478,8 +478,8 @@
                       <Border Classes="chip" Padding="6,0"><TextBlock FontSize="10" Text="{Binding L[ModelTag]}" /></Border>
                     </StackPanel>
                     <TextBlock Name="RequestsProposalText" FontSize="13" TextWrapping="Wrap" FlowDirection="RightToLeft" Text="{Binding RequestsProposal}" />
+                    <!-- A suggestion to copy from, not to accept (audit C-02, as on the web demo): its checks see amounts and counts, not who must pay whom. -->
                     <StackPanel Orientation="Horizontal" Spacing="8">
-                      <Button Classes="primary" Command="{Binding AcceptRequestsProposalCommand}"><TextBlock Foreground="White" Text="{Binding L[AcceptRequestsWording]}" /></Button>
                       <Button Classes="outline" Command="{Binding RejectRequestsProposalCommand}" Content="{Binding L[RejectRequestsWording]}" />
                     </StackPanel>
                   </StackPanel>

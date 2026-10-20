@@ -34,6 +34,10 @@
         <div class="bubble @(m.FromLawyer ? "mine" : "")" dir="auto">@m.Text</div>
     }
     <ModelActivity Model="Vm.AssistantActivity" LiveLabel="@Vm.L["ActivityLive"]" />
+    @if (!string.IsNullOrEmpty(Vm.AssistantPartial))
+    {
+        <div class="assistant-partial arabic" dir="rtl" lang="ar">@Vm.AssistantPartial</div>
+    }
     @if (Vm.HasProposal)
     {
         <div class="diff" dir="rtl" lang="ar">

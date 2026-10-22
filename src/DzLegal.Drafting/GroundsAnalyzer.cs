@@ -267,13 +267,42 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
 
         const string HusbandsDivorce = "divorce-by-husband";
         var replacement = WifesKhul().IsMatch(text) ? "khul" : WifesTatliq().IsMatch(text) ? "tatliq" : null;
-        if (replacement is null || !reading.ClaimIds.Contains(HusbandsDivorce) || allowedClaims.All(c => c.Id != replacement))
+        // A wife asking «تطليق» for violence is a divorce claim, not a civil tort (tatliq-harm, 3 of 3 runs, 20 Oct): her
+        // damages then rest on Family Code art. 53 bis.
+        var swaps = new Dictionary<string, string>(StringComparer.Ordinal);
+        if (replacement is not null)
         {
-            return reading;
+            swaps[HusbandsDivorce] = replacement;
+            swaps["tort-damages"] = replacement;
         }
 
-        return reading with { ClaimIds = [.. reading.ClaimIds.Select(id => id == HusbandsDivorce ? replacement : id).Distinct()] };
+        // Harm done by an animal is the keeper's liability («هاجم كلب المدعى عليه», things-dog, 3 of 3 runs).
+        if (Animal().IsMatch(text))
+        {
+            swaps["tort-damages"] = "liability-for-things";
+        }
+
+        // «سلفة» with no sale in the facts is a loan (loan-no-section, 1 of 3 runs read it as an unpaid price).
+        if (LoanWord().IsMatch(text) && !SaleWord().IsMatch(text))
+        {
+            swaps["unpaid-sale-price"] = "loan-repayment";
+        }
+
+        var ids = reading.ClaimIds
+            .Select(id => swaps.TryGetValue(id, out var to) && allowedClaims.Any(c => c.Id == to) ? to : id)
+            .Distinct()
+            .ToList();
+        return ids.SequenceEqual(reading.ClaimIds) ? reading : reading with { ClaimIds = ids };
     }
+
+    [GeneratedRegex(@"(?<![\p{L}])(?:ال|و|ب|ل)?(?:كلب|كلاب|حيوان|ماشيه|بقره|حصان|بغل)")]
+    private static partial Regex Animal();
+
+    [GeneratedRegex(@"(?<![\p{L}])(?:ال|و|ب|ك)?(?:سلفه|قرض|اقترض|اقرض)")]
+    private static partial Regex LoanWord();
+
+    [GeneratedRegex(@"باع|بيع|مبيع|اشتري|ثمن|سلع|بضاع|فاتور")]
+    private static partial Regex SaleWord();
 
     [GeneratedRegex(@"تطليق")]
     private static partial Regex WifesTatliq();

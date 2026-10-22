@@ -648,4 +648,18 @@ public class ArguedGroundsTests
     [InlineData("وحيث إن المدعى عليه امتنع عن السداد رغم إعذاره، وبأن هذا الامتناع يجعله ملزما بتحمل الضرر", "وحيث إن المدعى عليه امتنع عن السداد رغم إعذاره")] // case 10, run 2
     [InlineData("وحيث إن المدعى عليه امتنع عن السداد، مما يمثل إخلالا صريحا بالتزاماته التعاقدية", "وحيث إن المدعى عليه امتنع عن السداد")]
     public void MoreConclusionsAreCut(string application, string expected) => Assert.Equal(expected, ArguedGrounds.WithoutConclusions(application));
+
+    [Theory]
+    // Gemma 3 4B, case 03 (the landlord's claim, notes in Darija), 2 of 3 runs on 20 Oct.
+    [InlineData("وحيث إن المدعية هي المستأجرة والمدعى عليه هو المؤجر، وإخلاله بذلك", "استأجر المدعى عليه من المدعية محلا تجاريا", true)]
+    [InlineData("وحيث إن المدعى عليه استأجر من المدعية محلا تجاريا وامتنع عن الدفع", "استأجر المدعى عليه من المدعية محلا تجاريا", false)]
+    [InlineData("وحيث إن المدعي اقترض من المدعى عليه مبلغ 1,500,000 دج", "اقترض المدعى عليه من المدعي مبلغا", true)]
+    [InlineData("وحيث إن المدعى عليه بصفته المقرض", "اقترض المدعى عليه من المدعي مبلغا", true)]
+    // «لـ» marks the receiver: the company sold to the defendant (case 09), the landlord let to the tenant (case 08).
+    [InlineData("وحيث إن الشركة المدعية قد باعت للمدعى عليه بضاعة غذائية", "باعت الشركة المدعية للمدعى عليه بضاعة غذائية", false)]
+    [InlineData("وحيث إن المدعي أجر للمدعى عليه شقة", "أجر المدعي للمدعى عليه شقة بحي النخيل", false)]
+    // Facts that state no part: nothing to check.
+    [InlineData("وحيث إن المدعية هي المستأجرة", "تعرضت المدعية للضرب", false)]
+    public void APartyGivenTheOtherSidesPartInTheFactsIsRefused(string application, string facts, bool refused) =>
+        Assert.Equal(refused, ArguedGrounds.RoleAgainstFacts(application, facts) is not null);
 }

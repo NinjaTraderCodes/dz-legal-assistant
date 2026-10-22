@@ -484,7 +484,7 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
         return kept.Count == clauses.Length ? application : string.Join('،', kept).TrimEnd();
     }
 
-    [GeneratedRegex(@"^(?:فإنه|فإنها|فإنهم|فإنهن|فإنهما|مما\s+يعني|مما\s+يجعل\S*|مما\s+يستوجب|مما\s+يمثل|و?بأن\s+هذا\s+(?:الامتناع|الإخلال|الفعل)|و?بالتالي|و?عليه|و?لذلك|و?بذلك)(?!\p{L})")]
+    [GeneratedRegex(@"^(?:فإنه|فإنها|فإنهم|فإنهن|فإنهما|مما\s+يعني|مما\s+يجعل\S*|مما\s+يستوجب|مما\s+استوجب|مما\s+يفرض|مما\s+يمثل|و?بأن\s+هذا\s+(?:الامتناع|الإخلال|الفعل)|و?بالتالي|و?عليه|و?لذلك|و?بذلك)(?!\p{L})")]
     private static partial Regex Conclusion();
 
     /// <summary>
@@ -583,6 +583,114 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
         return PlaintiffAsDebtor().Match(application) is { Success: true } p ? p.Value
             : DefendantAsLender().Match(application) is { Success: true } d ? d.Value
             : null;
+    }
+
+    /// <summary>
+    /// A party given the other side's part in the contract the facts describe: «المدعية هي المستأجرة والمدعى عليه هو
+    /// المؤجر» where the facts say «استأجر المدعى عليه من المدعية» (Gemma 3 4B, case 03, 2 of 3 runs, 20 Oct). Who rented,
+    /// borrowed or bought from whom is read from the facts and from the sentence alike; a party whose part is reversed is
+    /// refused. Parts the facts do not state are not checked.
+    /// </summary>
+    internal static string? RoleAgainstFacts(string application, string facts)
+    {
+        var known = PartsIn(facts);
+        foreach (var (party, part, text) in PartsWithText(application))
+        {
+            if (known.TryGetValue(party, out var fact) && fact != part && Counterpart(fact) == part)
+            {
+                return text;
+            }
+        }
+
+        return null;
+
+        static Dictionary<bool, string> PartsIn(string text)
+        {
+            var parts = new Dictionary<bool, string>();
+            foreach (var (party, part, _) in PartsWithText(text))
+            {
+                parts.TryAdd(party, part);
+            }
+
+            return parts;
+        }
+    }
+
+    private static string? Counterpart(string part) => part switch
+    {
+        "tenant" => "landlord", "landlord" => "tenant", "borrower" => "lender", "lender" => "borrower", "buyer" => "seller", "seller" => "buyer",
+        _ => null,
+    };
+
+    /// <summary>(is the defendant, part, matched text) for each party whose part in a lease, loan or sale the text states.</summary>
+    private static IEnumerable<(bool Defendant, string Part, string Text)> PartsWithText(string text)
+    {
+        var plain = ArabicScript.Normalize(text);
+        static bool IsDefendant(string party) => party.Contains("علي", StringComparison.Ordinal);
+        foreach (var m in MatchesOrNone(TwoPartyVerbPattern, plain).Concat(MatchesOrNone(SubjectFirstPattern, plain)))
+        {
+            var (subject, other) = m.Groups["v"].Value switch
+            {
+                var v when v.StartsWith("استاجر", StringComparison.Ordinal) => ("tenant", "landlord"),
+                var v when v.StartsWith("اجر", StringComparison.Ordinal) => ("landlord", "tenant"),
+                var v when v.StartsWith("اقترض", StringComparison.Ordinal) => ("borrower", "lender"),
+                var v when v.StartsWith("اقرض", StringComparison.Ordinal) => ("lender", "borrower"),
+                var v when v.StartsWith("اشتري", StringComparison.Ordinal) => ("buyer", "seller"),
+                _ => ("seller", "buyer"),
+            };
+            // «باعت للمدعي عليه»: a party joined to «ل» receives (the buyer, the tenant), the subject came before the verb.
+            var first = m.Groups["a"].Value;
+            var receives = (first.StartsWith('ل') || first.Contains(" ل", StringComparison.Ordinal)) && !first.StartsWith("ال", StringComparison.Ordinal);
+            yield return (IsDefendant(first), receives ? other : subject, m.Value);
+            if (m.Groups["b"].Success)
+            {
+                yield return (IsDefendant(m.Groups["b"].Value), other, m.Value);
+            }
+        }
+
+        foreach (var m in MatchesOrNone(StatedPartPattern, plain))
+        {
+            var noun = m.Groups["r"].Value;
+            var part = noun.StartsWith("مستاجر", StringComparison.Ordinal) ? "tenant"
+                : noun.StartsWith("موجر", StringComparison.Ordinal) ? "landlord"
+                : noun.StartsWith("مقترض", StringComparison.Ordinal) ? "borrower"
+                : noun.StartsWith("مقرض", StringComparison.Ordinal) ? "lender"
+                : noun.StartsWith("مشتري", StringComparison.Ordinal) ? "buyer"
+                : "seller";
+            yield return (IsDefendant(m.Groups["p"].Value), part, m.Value);
+        }
+    }
+
+    // A party as the normalised text writes it: «المدعي», «المدعيه», «المدعي عليه», «للمدعي عليها», «الشركه المدعي عليها».
+    private const string Party = @"(?:(?:الشركه|السيد|السيده)\s+)?(?:ال|لل|بال|ل)?مدعي(?:\s+علي(?:ها|ه)|ه)?(?!\p{L})";
+
+    // «استاجر المدعي عليه من المدعيه», «اقترض المدعي عليه … من المدعي», «اجر المدعي للمدعي عليه», «اشتري المدعي من الشركه
+    // المدعي عليها», «باعت المدعي عليها للمدعي». Interpreted, with a time limit: the source-generated form of this pattern
+    // never returned on case 09's «باعت للمدعي عليه … بمبلغ» (20 Oct), and a draft must never wait on a check.
+    private static readonly Regex TwoPartyVerbPattern = new(
+        @"(?<!\p{L})(?:و|ف)?(?<v>استاجر|اقترض|اشتري|اجر|اقرض|باع)ت?\s+(?<a>" + Party + @")(?:\s+(?:\S+\s+){0,8}?(?:من\s+|(?=لل|ل))(?<b>" + Party + @"))?",
+        RegexOptions.CultureInvariant, TimeSpan.FromSeconds(1));
+
+    // The party first: «المدعي اقترض من المدعي عليه», «الشركه المدعيه قد باعت للمدعي عليه».
+    private static readonly Regex SubjectFirstPattern = new(
+        @"(?<a>" + Party + @")\s+(?:قد\s+)?(?:و|ف)?(?<v>استاجر|اقترض|اشتري|اجر|اقرض|باع)ت?(?!\p{L})(?:\s+(?:\S+\s+){0,8}?(?:من\s+|(?=لل|ل))(?<b>" + Party + @"))?",
+        RegexOptions.CultureInvariant, TimeSpan.FromSeconds(1));
+
+    // «المدعيه هي المستاجره», «المدعي عليه هو الموجر», «المدعي بصفته المقرض».
+    private static readonly Regex StatedPartPattern = new(
+        @"(?<p>" + Party + @")\s+(?:هو|هي|بصفته|بصفتها|باعتباره|باعتبارها)\s+(?:ال)?(?<r>مستاجر|موجر|مقترض|مقرض|مشتري|بايع)",
+        RegexOptions.CultureInvariant, TimeSpan.FromSeconds(1));
+
+    private static List<Match> MatchesOrNone(Regex pattern, string text)
+    {
+        try
+        {
+            return pattern.Matches(text).ToList();
+        }
+        catch (RegexMatchTimeoutException)
+        {
+            return [];
+        }
     }
 
     private const string Plaintiff = @"(?<!\p{L})(?:و|ف)?(?:ال|لل)?مدعي(?:ة)?(?!\s+علي)(?!\p{L})";
@@ -822,7 +930,9 @@ public sealed partial class ArguedGrounds(IModelProvider provider)
             return "copies a request not in formal Arabic";
         }
 
-        if (SwapsRoles(WithRolesForNames(argument, inputs), inputs.GetValueOrDefault("notes.requests", string.Empty)) is { } swapped)
+        var withRoles = WithRolesForNames(argument, inputs);
+        if ((SwapsRoles(withRoles, inputs.GetValueOrDefault("notes.requests", string.Empty))
+            ?? RoleAgainstFacts(withRoles, inputs.GetValueOrDefault("notes.facts", string.Empty))) is { } swapped)
         {
             return $"swaps the parties' roles ({swapped})";
         }

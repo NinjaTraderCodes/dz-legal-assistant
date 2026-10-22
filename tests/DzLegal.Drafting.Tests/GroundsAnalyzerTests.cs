@@ -173,6 +173,22 @@ public sealed class GroundsAnalyzerTests
         Assert.Equal([expected], GroundsAnalyzer.Corrected(reading, facts, family).ClaimIds);
     }
 
+    [Theory]
+    // The bench of 20 Oct: the same misreading in every run.
+    [InlineData("تعرضت المدعية للضرب والإيذاء من زوجها حسب الشهادات الطبية\nتلتمس الحكم بتطليقها", "tort-damages", "tatliq")]
+    [InlineData("هاجم كلب المدعى عليه ابن المدعي وعضه\nلحقت به أضرار وجروح ويطلب التعويض", "tort-damages", "liability-for-things")]
+    [InlineData("بقي في ذمة المدعى عليه مبلغ 300.000 دج سلفة\nماطل في الرد منذ سنتين", "unpaid-sale-price", "loan-repayment")]
+    // No clue in the facts: the model's reading stays.
+    [InlineData("اعتدى المدعى عليه على المدعي بالضرب", "tort-damages", "tort-damages")]
+    [InlineData("باع المدعي سيارة للمدعى عليه ولم يدفع الثمن، وكان قد أقرضه مبلغا", "unpaid-sale-price", "unpaid-sale-price")]
+    public void TheFactsOwnWordsCorrectAPlainMisreading(string facts, string read, string expected)
+    {
+        ClaimType[] claims = [Claim("tort-damages", "civil", "تعويض"), Claim("liability-for-things", "civil", "حارس"), Claim("tatliq", "family", "تطليق"),
+            Claim("unpaid-sale-price", "civil", "ثمن"), Claim("loan-repayment", "civil", "قرض")];
+        var reading = FactsReading.Empty with { ClaimIds = [read] };
+        Assert.Equal([expected], GroundsAnalyzer.Corrected(reading, facts, claims).ClaimIds);
+    }
+
     [Fact]
     public void CorrectingACivilStatusRecordIsOutOfScope()
     {

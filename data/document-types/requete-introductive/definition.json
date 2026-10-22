@@ -39,7 +39,12 @@
     { "find": "إخلاقها", "replace": "إخلالها" },
     // «وإمتنع»: no hamza on a verb of form VIII (case 10, 18 Oct).
     { "find": "وإمتنع", "replace": "وامتنع" },
-    { "find": " إمتنع", "replace": " امتنع" }
+    { "find": " إمتنع", "replace": " امتنع" },
+    // «إخلاص» (loyalty) and a doubled «أخل بإخلاله» for «أخل بالتزامه» (case 03, 22 Oct).
+    { "find": "أخل بإخلاصه", "replace": "أخل بالتزامه" },
+    { "find": "أخلت بإخلاصها", "replace": "أخلت بالتزامها" },
+    { "find": "أخل بإخلاله", "replace": "أخل بالتزامه" },
+    { "find": "أخلت بإخلالها", "replace": "أخلت بالتزامها" }
   ],
 
   // Legal qualifications model text may use only if the lawyer's inputs contain them; otherwise they are

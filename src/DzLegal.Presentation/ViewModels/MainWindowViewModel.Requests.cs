@@ -29,6 +29,11 @@ public sealed partial class MainWindowViewModel
     private async Task ProposeRequestsWordingAsync(CancellationToken cancellationToken)
     {
         RequestsProposal = string.Empty;
+        if (RefuseWhileTooLong())
+        {
+            return;
+        }
+
         var inputs = CurrentInputs();
         if (!CanProposeRequestsWording || RequestsFormaliser.Lines(inputs.GetValueOrDefault(RequestsField)).Count == 0)
         {

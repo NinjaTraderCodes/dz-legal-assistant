@@ -81,6 +81,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
             .ToList();
         SelectedStep = FieldGroups[0];
         HasRecoverableDraft = _autosaveFile is not null && File.Exists(_autosaveFile);
+        _recoveryFile = HasRecoverableDraft ? _autosaveFile : null;
 
         Verdicts = Enum.GetValues<DraftVerdict>().Select(v => new VerdictOption(v, loc)).ToList();
         SelectedVerdict = Verdicts[1];
@@ -88,6 +89,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         _draft = new DraftDocument { DocumentTypeId = definition.Id, DefinitionVersion = definition.Version };
         StatusMessage = loc["Ready"];
         OnInputChanged();
+        MarkSaved(null);
     }
 
     public Loc L { get; }
@@ -340,6 +342,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         // Problems in the notes themselves (an instruction to the AI, a request not in Arabic, a prison sentence) are
         // fixed in the notes: no review tick lifts them.
         lines.AddRange(CurrentSubstanceIssues().Where(i => SubstanceChecks.BlocksExport(i.Kind)).Select(i => "• " + DescribeSubstance(i)));
+        lines.AddRange(FieldsTooLong().Select(f => "• " + L.Format("BlockerTooLong", f.Label, f.MaxLength)));
         ExportBlockers = string.Join("\n", lines);
         if (!HasExportBlockers)
         {
@@ -449,7 +452,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     [RelayCommand(IncludeCancelCommand = true)]
     private async Task GenerateAsync(CancellationToken cancellationToken)
     {
-        if (SelectedProvider is null)
+        if (SelectedProvider is null || RefuseWhileTooLong())
         {
             return;
         }
@@ -634,6 +637,12 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
             return;
         }
 
+        // The previous session's copy, still offered, is moved aside rather than overwritten.
+        if (HasRecoverableDraft)
+        {
+            KeepRecoveryAside();
+        }
+
         // Synchronous on purpose: blocking the UI thread on async I/O deadlocks once the draft outgrows the buffers.
         try
         {
@@ -649,13 +658,14 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     [RelayCommand]
     private async Task RestoreLastSessionAsync()
     {
-        if (_autosaveFile is null || !File.Exists(_autosaveFile))
+        var file = _recoveryFile ?? _autosaveFile;
+        if (file is null || !File.Exists(file))
         {
             HasRecoverableDraft = false;
             return;
         }
 
-        await using (var stream = File.OpenRead(_autosaveFile))
+        await using (var stream = File.OpenRead(file))
         {
             LoadDraft(await DraftFile.LoadAsync(stream));
         }
@@ -667,10 +677,13 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     [RelayCommand]
     private void DismissRecovery()
     {
+        // Not deleted (design review, 22 Oct): «تجاهل» must not destroy the only copy of an earlier case. It is kept aside
+        // and can be opened like any draft.
+        KeepRecoveryAside();
         HasRecoverableDraft = false;
-        if (_autosaveFile is not null && File.Exists(_autosaveFile))
+        if (_recoveryFile is { } kept && kept != _autosaveFile && File.Exists(kept))
         {
-            File.Delete(_autosaveFile);
+            SetStatus(L.Format("RecoveryKept", kept));
         }
     }
 
@@ -693,8 +706,8 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         Recheck();
     }
 
-    [RelayCommand]
-    private void New()
+    /// <summary>An empty case (after the lawyer chose: <see cref="NewCommand"/> asks first when there are unsaved changes).</summary>
+    private void StartNew()
     {
         LoadInputs(CaseInputs.CreateDefaults(_definition, _today()));
         _reviewedCase = null;
@@ -705,6 +718,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         LoadGroundsState(_draft);
         OnInputChanged();
         SyncSections(overwriteNarrative: true);
+        MarkSaved(null);
         SetStatus(L["Ready"]);
     }
 
@@ -715,7 +729,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     public void OpenCase(IReadOnlyDictionary<string, string> inputs)
     {
         ArgumentNullException.ThrowIfNull(inputs);
-        New();
+        StartNew();
         LoadDraft(new DraftDocument
         {
             DocumentTypeId = _definition.Id,
@@ -723,27 +737,11 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
             Inputs = new Dictionary<string, string>(inputs, StringComparer.Ordinal),
         });
         SelectedStep = FieldGroups[0];
+        MarkSaved(null);
     }
 
-    [RelayCommand]
-    private async Task SaveAsync()
-    {
-        var target = await _files.SaveAsync(SuggestedFileName() + DraftFile.Extension, SaveKind.Draft);
-        if (target is not { } t)
-        {
-            return;
-        }
-
-        await using (t.Stream)
-        {
-            await DraftFile.SaveAsync(CurrentDraft(), t.Stream);
-        }
-
-        SetStatus(L.Format("Saved", t.Name));
-    }
-
-    [RelayCommand]
-    private async Task OpenAsync()
+    /// <summary>Shows the file picker and opens the draft chosen (after <see cref="OpenCommand"/> asked about unsaved changes).</summary>
+    private async Task OpenFileAsync()
     {
         var source = await _files.OpenAsync();
         if (source is not { } s)
@@ -764,6 +762,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         }
 
         LoadDraft(loaded);
+        MarkSaved(s.Name);
         SetStatus(L.Format("Opened", s.Name));
     }
 
@@ -848,6 +847,11 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
 
         OnPropertyChanged(nameof(IsRightToLeft));
         OnPropertyChanged(nameof(WindowTitle));
+        NotifyBlockersShown();
+        if (IsConfirmingReplace)
+        {
+            ReplacePrompt = L[_pendingReplace == ReplaceAction.New ? "UnsavedBeforeNew" : "UnsavedBeforeOpen"];
+        }
         OnPropertyChanged(nameof(DocumentTypeName));
         OnPropertyChanged(nameof(StepPosition));
         OnPropertyChanged(nameof(Shortcuts));
@@ -1055,6 +1059,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         Summary = mandatoryMissing == 0 ? L["SummaryOk"] : L.Format("SummaryMissing", mandatoryMissing);
         WarningSummary = warnings == 0 ? string.Empty : L.Format("SummaryWarnings", warnings);
         OnPropertyChanged(nameof(Report));
+        UpdateSaveState();
     }
 
     /// <summary>Marks missing fields and computes each step's status from the compliance report.</summary>

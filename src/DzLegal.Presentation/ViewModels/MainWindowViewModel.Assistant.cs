@@ -293,7 +293,7 @@ public sealed partial class MainWindowViewModel
     /// <summary>Redrafts one narrative section from the notes; the previous text stays in the section's history.</summary>
     private async Task RedraftSectionAsync(SectionViewModel section)
     {
-        if (SelectedProvider is null)
+        if (SelectedProvider is null || RefuseWhileTooLong())
         {
             return;
         }

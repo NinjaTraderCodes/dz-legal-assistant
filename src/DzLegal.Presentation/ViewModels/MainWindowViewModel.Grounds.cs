@@ -135,6 +135,11 @@ public sealed partial class MainWindowViewModel
     {
         var inputs = CurrentInputs();
         var facts = inputs.GetValueOrDefault(FactsField, string.Empty);
+        if (RefuseWhileTooLong())
+        {
+            return;
+        }
+
         if (SelectedProvider is null || !CanAnalyseGrounds || facts.Trim().Length == 0)
         {
             AnalysisStatus = L["GroundsNeedFacts"];

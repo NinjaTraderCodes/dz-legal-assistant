@@ -77,14 +77,18 @@ public sealed partial class FieldViewModel : ObservableObject
         set => Value = value ? "true" : "false";
     }
 
+    /// <summary>
+    /// The text is longer than the field takes. It is kept whole (design review, 22 Oct: a paste used to be cut silently,
+    /// which could drop a fact) and the lawyer is told; the AI steps and the export wait until it is shortened.
+    /// </summary>
+    public bool IsTooLong => Value.Length > MaxLength;
+
+    public string TooLongNote => IsTooLong ? _loc.Format("FieldTooLong", Value.Length, MaxLength) : string.Empty;
+
     partial void OnValueChanged(string value)
     {
-        if (value.Length > MaxLength)
-        {
-            Value = value[..MaxLength]; // reports the change once, with the bounded text
-            return;
-        }
-
+        OnPropertyChanged(nameof(IsTooLong));
+        OnPropertyChanged(nameof(TooLongNote));
         OnPropertyChanged(nameof(BoolValue));
         OnPropertyChanged(nameof(SelectedOption));
         if (!Silent)
@@ -97,6 +101,7 @@ public sealed partial class FieldViewModel : ObservableObject
     {
         OnPropertyChanged(nameof(Label));
         OnPropertyChanged(nameof(Hint));
+        OnPropertyChanged(nameof(TooLongNote));
         foreach (var o in Options)
         {
             o.Relocalize();

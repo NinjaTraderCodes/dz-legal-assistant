@@ -301,6 +301,8 @@
           <Button Classes="bar" Command="{Binding SaveCommand}" ToolTip.Tip="{Binding L[Save]}">
             <StackPanel Orientation="Horizontal" Spacing="6"><ic:SymbolIcon Symbol="Save" Foreground="{DynamicResource AppBarTextBrush}" /><TextBlock Foreground="{DynamicResource AppBarTextBrush}" Text="{Binding L[Save]}" /></StackPanel>
           </Button>
+          <!-- Whether the case is saved: «تعديلات غير محفوظة», or the file and the time of the last save. -->
+          <TextBlock Name="SaveStateText" Foreground="#B9D3CA" FontSize="12" VerticalAlignment="Center" Text="{Binding SaveStateText}" IsVisible="{Binding HasSaveState}" />
         </StackPanel>
         <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
           <Border Classes="chip" Background="#264CAF7F" VerticalAlignment="Center" IsVisible="{Binding IsOfflineEngine}">
@@ -322,6 +324,17 @@
           <Button Name="LanguageButton" Classes="bar" Command="{Binding SwitchLanguageCommand}" Content="{Binding L[SwitchLanguage]}" />
         </StackPanel>
       </Grid>
+    </Border>
+
+    <!-- New or Open with unsaved changes: save first, continue without saving, or cancel. -->
+    <Border Name="ReplaceBar" DockPanel.Dock="Top" Background="{DynamicResource WarningSoftBrush}" Padding="16,8" IsVisible="{Binding IsConfirmingReplace}">
+      <StackPanel Orientation="Horizontal" Spacing="12">
+        <ic:SymbolIcon Symbol="Warning" Foreground="{DynamicResource WarningBrush}" />
+        <TextBlock VerticalAlignment="Center" TextWrapping="Wrap" Text="{Binding ReplacePrompt}" />
+        <Button Classes="primary" Command="{Binding SaveThenReplaceCommand}"><TextBlock Foreground="White" Text="{Binding L[SaveFirst]}" /></Button>
+        <Button Classes="outline" Command="{Binding ReplaceWithoutSavingCommand}" Content="{Binding L[ContinueWithoutSaving]}" />
+        <Button Classes="subtle" Command="{Binding CancelReplaceCommand}" Content="{Binding L[Cancel]}" />
+      </StackPanel>
     </Border>
 
     <!-- Recovery of an autosaved session -->
@@ -510,6 +523,7 @@
                         </ComboBox.ItemTemplate>
                       </ComboBox>
                       <TextBlock FontSize="12" Foreground="{DynamicResource DangerBrush}" Text="{Binding MissingNote}" IsVisible="{Binding IsMissing}" />
+                      <TextBlock FontSize="12" TextWrapping="Wrap" Foreground="{DynamicResource DangerBrush}" Text="{Binding TooLongNote}" IsVisible="{Binding IsTooLong}" />
                     </StackPanel>
                   </DataTemplate>
                 </ItemsControl.ItemTemplate>
@@ -574,11 +588,12 @@
             </StackPanel>
           </Grid>
 
-          <!-- Shown after a refused export: what the lawyer must still do before the document leaves the app. -->
+          <!-- What the lawyer must still do before the document leaves the app: shown as soon as a draft exists, not only
+               after a refused export. -->
           <Border Name="ExportBlockersPanel" DockPanel.Dock="Top" Margin="0,0,0,6" CornerRadius="6" Padding="10,8"
-                  Background="{DynamicResource WarningSoftBrush}" IsVisible="{Binding IsExportBlockedShown}">
+                  Background="{DynamicResource WarningSoftBrush}" IsVisible="{Binding ShowsExportBlockers}">
             <StackPanel Spacing="4">
-              <TextBlock FontSize="13" FontWeight="SemiBold" Text="{Binding L[ExportBlocked]}" />
+              <TextBlock FontSize="13" FontWeight="SemiBold" Text="{Binding ExportBlockersTitle}" />
               <TextBlock FontSize="12" TextWrapping="Wrap" Text="{Binding ExportBlockers}" />
             </StackPanel>
           </Border>

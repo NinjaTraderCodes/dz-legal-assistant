@@ -467,7 +467,7 @@ public class MainWindowViewModelTests
     [Fact]
     public async Task AutosavedWorkCanBeRestoredInANewSession()
     {
-        var file = Path.Combine(Vm.EvaluationsFolder, "autosave-" + Guid.NewGuid().ToString("N") + ".json");
+        var file = Path.Combine(AutosaveFolder(), "autosave-" + Guid.NewGuid().ToString("N") + ".json");
         var first = Vm.Create(autosaveFile: file).Filled();
         first.Sections.Single(s => s.Id == "grounds").Text = "نص لم يحفظ بعد";
         first.AutosaveNow();
@@ -480,8 +480,29 @@ public class MainWindowViewModelTests
         Assert.Equal("نص لم يحفظ بعد", second.Sections.Single(s => s.Id == "grounds").Text);
         Assert.False(second.HasRecoverableDraft);
 
-        second.DismissRecoveryCommand.Execute(null);
-        Assert.False(File.Exists(file));
+    }
+
+    [Fact]
+    public async Task TheEarlierSessionsCopyIsNeverDeletedNorOverwrittenBeforeTheLawyerChooses()
+    {
+        // Design review of 22 Oct: «تجاهل» deleted the copy, and this session's autosave overwrote it.
+        var file = Path.Combine(AutosaveFolder(), "autosave-" + Guid.NewGuid().ToString("N") + ".json");
+        var aside = Path.Combine(Path.GetDirectoryName(file)!, "previous-session" + Storage.DraftFile.Extension);
+        var first = Vm.Create(autosaveFile: file).Filled();
+        first.AutosaveNow();
+
+        var second = Vm.Create(autosaveFile: file);
+        second.Field("court.name").Value = "محكمة أخرى";
+        second.AutosaveNow(); // the lawyer works before choosing
+        Assert.True(File.Exists(aside));
+        await second.RestoreLastSessionCommand.ExecuteAsync(null);
+        Assert.Equal("بن علي", second.Field("plaintiff.lastName").Value); // the earlier case, not this session's
+
+        var third = Vm.Create(autosaveFile: file);
+        third.DismissRecoveryCommand.Execute(null);
+        Assert.False(third.HasRecoverableDraft);
+        Assert.True(File.Exists(aside));
+        Assert.Equal(third.L.Format("RecoveryKept", aside), third.StatusMessage);
     }
 
     /// <summary>
@@ -622,22 +643,95 @@ public class MainWindowViewModelTests
     }
 
     [Fact]
-    public void NewResetsTheForm()
+    public async Task NewAsksBeforeDroppingUnsavedWorkThenResetsTheForm()
     {
+        // Design review of 22 Oct: «جديد» used to wipe the case at once.
         var vm = Vm.Create().Filled();
+        Assert.True(vm.HasUnsavedChanges);
+        Assert.Equal(vm.L["UnsavedChanges"], vm.SaveStateText);
+
         vm.NewCommand.Execute(null);
+        Assert.True(vm.IsConfirmingReplace);
+        Assert.Equal(vm.L["UnsavedBeforeNew"], vm.ReplacePrompt);
+        Assert.Equal("محكمة سيدي امحمد", vm.Field("court.name").Value); // nothing replaced yet
+
+        vm.CancelReplaceCommand.Execute(null);
+        Assert.False(vm.IsConfirmingReplace);
+        Assert.Equal("محكمة سيدي امحمد", vm.Field("court.name").Value);
+
+        vm.NewCommand.Execute(null);
+        await vm.ReplaceWithoutSavingCommand.ExecuteAsync(null);
+        Assert.False(vm.IsConfirmingReplace);
+        Assert.False(vm.HasUnsavedChanges);
         Assert.Equal(string.Empty, vm.Field("court.name").Value);
         Assert.Equal("15/09/2026", vm.Field("document.date").Value);
         Assert.False(vm.IsAdmissible);
     }
 
     [Fact]
-    public void AVeryLongPasteIsBoundedToTheFieldsLimit()
+    public async Task ATextLongerThanTheFieldTakesIsKeptWholeAndHoldsBackTheAiAndTheExport()
     {
-        // Audit A-04: a 25,000-letter paste disconnected the web demo.
-        var vm = Vm.Create();
-        vm.Field("notes.facts").Value = new string('ب', 25000);
-        Assert.Equal(8000, vm.Field("notes.facts").Value.Length);
+        // Design review of 22 Oct: the text used to be cut to 8,000 letters without a word, which could drop a fact.
+        var vm = Vm.Create().Filled();
+        var facts = vm.Field("notes.facts");
+        facts.Value = new string('ب', 8001);
+
+        Assert.Equal(8001, facts.Value.Length);
+        Assert.True(facts.IsTooLong);
+        Assert.Equal(vm.L.Format("FieldTooLong", 8001, 8000), facts.TooLongNote);
+        Assert.Contains(vm.L.Format("BlockerTooLong", facts.Label, 8000), vm.ExportBlockers, StringComparison.Ordinal);
+
+        await vm.GenerateCommand.ExecuteAsync(null);
+        Assert.False(vm.HasGeneratedDraft);
+        Assert.Equal(vm.L.Format("ShortenFieldsFirst", facts.Label), vm.StatusMessage);
+
+        facts.Value = "اقترض المدعى عليه مبلغا ولم يرده.";
+        Assert.False(facts.IsTooLong);
+        Assert.DoesNotContain(facts.Label, vm.ExportBlockers, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task SaveFirstSavesThenStartsTheNewCaseAndACancelledSaveKeepsEverything()
+    {
+        var files = new FakeFiles();
+        var vm = Vm.Create(files).Filled();
+
+        vm.NewCommand.Execute(null);
+        await vm.SaveThenReplaceCommand.ExecuteAsync(null);
+
+        Assert.NotNull(files.Saved);
+        Assert.Equal(string.Empty, vm.Field("court.name").Value);
+        Assert.False(vm.HasUnsavedChanges);
+
+        // A saved case asks nothing; it says when it was saved.
+        await vm.OpenCommand.ExecuteAsync(null);
+        Assert.False(vm.IsConfirmingReplace);
+        Assert.False(vm.HasUnsavedChanges);
+        Assert.StartsWith(vm.L.Format("SavedState", "saved" + Storage.DraftFile.Extension, string.Empty).TrimEnd('(', ')', ' '), vm.SaveStateText, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void OpenAsksBeforeReplacingUnsavedWork()
+    {
+        var vm = Vm.Create().Filled();
+        vm.OpenCommand.Execute(null);
+        Assert.True(vm.IsConfirmingReplace);
+        Assert.Equal(vm.L["UnsavedBeforeOpen"], vm.ReplacePrompt);
+    }
+
+    [Fact]
+    public async Task WhatBlocksTheExportShowsAsSoonAsADraftExists()
+    {
+        var vm = Vm.Create().Filled();
+        Assert.False(vm.ShowsExportBlockers); // nothing drafted yet: no list
+        vm.Field("notes.requests").Value = "Condamner le défendeur à payer 500000 DA.";
+        await vm.GenerateCommand.ExecuteAsync(null);
+
+        Assert.True(vm.ShowsExportBlockers); // before any attempt to export
+        Assert.Equal(vm.L["BeforeExport"], vm.ExportBlockersTitle);
+
+        await vm.ExportPdfCommand.ExecuteAsync(null);
+        Assert.Equal(vm.L["ExportBlocked"], vm.ExportBlockersTitle);
     }
 
     [Fact]
@@ -684,5 +778,13 @@ public class MainWindowViewModelTests
         {
             Assert.DoesNotContain("[", loc[key], StringComparison.Ordinal);
         }
+    }
+
+    /// <summary>A folder of its own for each autosave test: kept copies must not land among the evaluation records.</summary>
+    private static string AutosaveFolder()
+    {
+        var folder = Path.Combine(Path.GetTempPath(), "dzlegal-autosave-tests-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(folder);
+        return folder;
     }
 }

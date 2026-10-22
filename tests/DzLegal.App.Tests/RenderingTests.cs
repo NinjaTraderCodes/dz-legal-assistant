@@ -105,6 +105,19 @@ public class RenderingTests
     }
 
     [AvaloniaFact]
+    public async Task NewWithUnsavedWorkShowsTheSaveFirstBar()
+    {
+        var (window, vm) = await ShowFilledWindowAsync();
+        vm.Field("notes.facts").Value = new string('ب', 8001);
+        vm.NewCommand.Execute(null);
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.True(window.FindControl<Border>("ReplaceBar")!.IsVisible);
+        Assert.Equal(vm.L["UnsavedChanges"], window.FindControl<TextBlock>("SaveStateText")!.Text);
+        SaveScreenshot(window, "main-window-unsaved");
+    }
+
+    [AvaloniaFact]
     public async Task PreviewTabShowsPaperPages()
     {
         var (window, vm) = await ShowFilledWindowAsync();

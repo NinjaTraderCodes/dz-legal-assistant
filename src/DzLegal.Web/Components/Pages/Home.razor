@@ -33,6 +33,10 @@
             @* Open and Save as on the desktop: a draft file (.dzdraft.json) from and to the visitor's own disk. *@
             <label class="button-like" title="@L["Open"]"><Icon Name="folder_open" /> @L["Open"]<InputFile class="visually-hidden" accept=".json,application/json" OnChange="OpenDraftFile" /></label>
             <button type="button" @onclick="() => Run(Vm.SaveCommand)"><Icon Name="save" /> @L["Save"]</button>
+            @if (Vm.HasSaveState)
+            {
+                <span class="save-state">@Vm.SaveStateText</span>
+            }
             <button type="button" aria-pressed="@(showGuide ? "true" : "false")" @onclick="() => showGuide = !showGuide"><Icon Name="question_circle" /> @T("GuideShow")</button>
             <button type="button" aria-label="@T("Theme")" title="@T("Theme")" @onclick="() => Vm.ToggleThemeCommand.Execute(null)"><Icon Name="weather_moon" /></button>
             <button type="button" lang="@(Lang == "en" ? "ar" : "en")" @onclick="() => Vm.SwitchLanguageCommand.Execute(null)"><Icon Name="translate" /> @L["SwitchLanguage"]</button>
@@ -43,6 +47,15 @@
         @if (!Engine.Settings.HasAnyEngine)
         {
             <div class="notice" role="status">@T("NoEngine")</div>
+        }
+        @if (Vm.IsConfirmingReplace)
+        {
+            <div class="notice" role="alertdialog" aria-label="@Vm.ReplacePrompt">
+                <span class="grow">@Vm.ReplacePrompt</span>
+                <button type="button" class="primary small" @onclick="() => Run(Vm.SaveThenReplaceCommand)">@L["SaveFirst"]</button>
+                <button type="button" class="small" @onclick="() => Run(Vm.ReplaceWithoutSavingCommand)">@L["ContinueWithoutSaving"]</button>
+                <button type="button" class="small" @onclick="() => Vm.CancelReplaceCommand.Execute(null)">@L["Cancel"]</button>
+            </div>
         }
         @if (SavedCase is not null)
         {
@@ -244,10 +257,10 @@
                 <button type="button" class="small" @onclick="() => Run(Vm.CopyTextCommand)"><Icon Name="copy" Size="16" /> @L["CopyText"]</button>
             </div>
 
-            @if (Vm.IsExportBlockedShown)
+            @if (Vm.ShowsExportBlockers)
             {
-                <div class="notice export-blockers" role="alert">
-                    <strong>@L["ExportBlocked"]</strong>
+                <div class="notice export-blockers" role="@(Vm.IsExportBlockedShown ? "alert" : "status")">
+                    <strong>@Vm.ExportBlockersTitle</strong>
                     <div class="small" style="white-space: pre-line">@Vm.ExportBlockers</div>
                 </div>
             }

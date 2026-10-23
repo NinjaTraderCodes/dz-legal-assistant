@@ -24,7 +24,7 @@ public partial class App : Application
 
     public static Window CreateMainWindow()
     {
-        var window = new MainWindow();
+        var window = new MainWindow(Path.Combine(AppPaths.Default.Root, "settings", "workbench-layout.json"));
         try
         {
             var settings = AppSettings.Load(Path.Combine(AppContext.BaseDirectory, "appsettings.json"));

@@ -12,6 +12,8 @@ namespace DzLegal.App.Tests;
 
 public class RenderingTests
 {
+    private static T Find<T>(Window window, string name) where T : Control =>
+        window.FindControl<T>(name) ?? window.GetVisualDescendants().OfType<T>().Single(c => c.Name == name);
     /// <summary>Screenshots go to $DZLEGAL_SCREENSHOTS when set, for visual review of the RTL layout.</summary>
     private static void SaveScreenshot(Window window, string name)
     {
@@ -44,14 +46,16 @@ public class RenderingTests
         var (window, _) = await ShowFilledWindowAsync();
 
         Assert.Equal(FlowDirection.RightToLeft, window.FlowDirection);
-        var banner = window.FindControl<TextBlock>("DraftBanner")!;
+        var banner = Find<TextBlock>(window, "DraftBanner")!;
         Assert.StartsWith("مسودة", banner.Text, StringComparison.Ordinal);
-        Assert.StartsWith("جميع البيانات الإلزامية التي يفحصها البرنامج متوفرة.", window.FindControl<TextBlock>("SummaryText")!.Text);
+        Assert.StartsWith("جميع البيانات الإلزامية التي يفحصها البرنامج متوفرة.", Find<TextBlock>(window, "SummaryText")!.Text);
 
-        // In RTL the case form (first column) sits on the right-hand side of the window.
-        var formPanel = window.GetVisualDescendants().OfType<Border>().First(b => b.Classes.Contains("panel"));
+        // The outer grid stays LTR: the legal draft is always on the physical right.
+        var formPanel = Find<Border>(window, "FormPanel");
+        var draft = Find<Border>(window, "DraftPane");
         var origin = formPanel.TranslatePoint(new Point(0, 0), window)!.Value;
-        Assert.True(origin.X > window.Bounds.Width / 2, $"form panel at x={origin.X}");
+        var draftOrigin = draft.TranslatePoint(new Point(0, 0), window)!.Value;
+        Assert.True(draftOrigin.X > origin.X + formPanel.Bounds.Width, $"draft={draftOrigin.X}, editor={origin.X}");
 
         SaveScreenshot(window, "main-window-ar");
     }
@@ -65,8 +69,8 @@ public class RenderingTests
         Dispatcher.UIThread.RunJobs();
 
         Assert.Equal(FlowDirection.LeftToRight, window.FlowDirection);
-        Assert.StartsWith("Draft", window.FindControl<TextBlock>("DraftBanner")!.Text, StringComparison.Ordinal);
-        Assert.Equal("العربية", (string?)window.FindControl<Button>("LanguageButton")!.Content);
+        Assert.StartsWith("Draft", Find<TextBlock>(window, "DraftBanner")!.Text, StringComparison.Ordinal);
+        Assert.Equal("العربية", (string?)Find<Button>(window, "LanguageButton")!.Content);
 
         // The document and the case inputs stay Arabic and right-to-left.
         var editor = window.GetVisualDescendants().OfType<TextBox>().First(t => t.Classes.Contains("document"));
@@ -87,7 +91,7 @@ public class RenderingTests
         Dispatcher.UIThread.RunJobs();
         Assert.StartsWith("حيث إن العارض", vm.Sections.Single(s => s.Id == "facts").Text, StringComparison.Ordinal);
 
-        Assert.Equal("ينقص 2 من البيانات الإلزامية: العريضة معرضة لعدم القبول شكلا.", window.FindControl<TextBlock>("SummaryText")!.Text);
+        Assert.Equal("ينقص 2 من البيانات الإلزامية: العريضة معرضة لعدم القبول شكلا.", Find<TextBlock>(window, "SummaryText")!.Text);
         SaveScreenshot(window, "main-window-missing");
     }
 
@@ -112,8 +116,8 @@ public class RenderingTests
         vm.NewCommand.Execute(null);
         Dispatcher.UIThread.RunJobs();
 
-        Assert.True(window.FindControl<Border>("ReplaceBar")!.IsVisible);
-        Assert.Equal(vm.L["UnsavedChanges"], window.FindControl<TextBlock>("SaveStateText")!.Text);
+        Assert.True(Find<Border>(window, "ReplaceBar")!.IsVisible);
+        Assert.Equal(vm.L["UnsavedChanges"], Find<TextBlock>(window, "SaveStateText")!.Text);
         SaveScreenshot(window, "main-window-unsaved");
     }
 
@@ -158,12 +162,12 @@ public class RenderingTests
         window.Show();
         Dispatcher.UIThread.RunJobs();
 
-        Assert.True(window.FindControl<StackPanel>("GroundsPanel")!.IsVisible);
-        Assert.True(window.FindControl<Button>("AnalyseButton")!.IsEnabled);
-        Assert.False(window.FindControl<Border>("StaleBanner")!.IsVisible);
+        Assert.True(Find<StackPanel>(window, "GroundsPanel")!.IsVisible);
+        Assert.True(Find<Button>(window, "AnalyseButton")!.IsEnabled);
+        Assert.False(Find<Border>(window, "StaleBanner")!.IsVisible);
         SaveScreenshot(window, "main-window-grounds");
 
-        window.FindControl<ItemsControl>("SelectedGroundsList")!.BringIntoView();
+        Find<ItemsControl>(window, "SelectedGroundsList")!.BringIntoView();
         Dispatcher.UIThread.RunJobs();
         SaveScreenshot(window, "main-window-grounds-selected");
     }
@@ -185,7 +189,7 @@ public class RenderingTests
         var running = vm.AnalyseGroundsCommand.ExecuteAsync(null);
         Dispatcher.UIThread.RunJobs();
 
-        var panel = window.FindControl<ContentControl>("AnalysisActivityView")!;
+        var panel = Find<ContentControl>(window, "AnalysisActivityView")!;
         Assert.True(vm.AnalysisActivity.IsActive);
         Assert.True(vm.AnalysisActivity.Steps[0].IsActive);
         Assert.Contains("العلاقة القانونية", vm.AnalysisActivity.LiveText, StringComparison.Ordinal);
@@ -211,7 +215,7 @@ public class RenderingTests
 
         Assert.True(vm.GenerationActivity.IsActive);
         Assert.Equal(["grounds"], vm.Sections.Where(s => s.IsWriting).Select(s => s.Id));
-        Assert.True(window.FindControl<ContentControl>("GenerationActivityView")!.IsVisible);
+        Assert.True(Find<ContentControl>(window, "GenerationActivityView")!.IsVisible);
         SaveScreenshot(window, "main-window-writing");
 
         model.Release();
@@ -253,8 +257,8 @@ public class RenderingTests
         window.Show();
         Dispatcher.UIThread.RunJobs();
 
-        Assert.True(window.FindControl<StackPanel>("RequestsHelpPanel")!.IsVisible);
-        Assert.False(window.FindControl<StackPanel>("GroundsPanel")!.IsVisible);
+        Assert.True(Find<StackPanel>(window, "RequestsHelpPanel")!.IsVisible);
+        Assert.False(Find<StackPanel>(window, "GroundsPanel")!.IsVisible);
         SaveScreenshot(window, "main-window-requests");
     }
 
@@ -270,8 +274,8 @@ public class RenderingTests
         await vm.SendInstructionCommand.ExecuteAsync(null);
         Dispatcher.UIThread.RunJobs();
 
-        Assert.True(window.FindControl<Border>("AssistantPanel")!.IsVisible);
-        Assert.True(window.FindControl<Button>("AcceptButton")!.IsEnabled);
+        Assert.True(Find<Border>(window, "AssistantPanel")!.IsVisible);
+        Assert.True(Find<Button>(window, "AcceptButton")!.IsEnabled);
         SaveScreenshot(window, "main-window-assistant");
     }
 

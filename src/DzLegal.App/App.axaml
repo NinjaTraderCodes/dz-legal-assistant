@@ -1,67 +1,354 @@
-<Application xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="DzLegal.App.App"
-             RequestedThemeVariant="Light">
-  <Application.Resources>
-    <ResourceDictionary>
-      <FontFamily x:Key="DocumentFont">fonts:Naskh#Noto Naskh Arabic, fonts:Inter#Inter</FontFamily>
-      <FontFamily x:Key="UiFont">fonts:Inter#Inter, fonts:Naskh#Noto Naskh Arabic</FontFamily>
-      <CornerRadius x:Key="CardRadius">12</CornerRadius>
-      <CornerRadius x:Key="ControlRadius">8</CornerRadius>
+<Application xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:vm="using:DzLegal.Presentation.ViewModels" xmlns:app="using:DzLegal.App" xmlns:ic="using:FluentIcons.Avalonia" x:Class="DzLegal.App.App" RequestedThemeVariant="Light"><Application.Resources><ResourceDictionary><FontFamily x:Key="DocumentFont">fonts:Naskh#Noto Naskh Arabic, fonts:Plex#IBM Plex Sans Arabic</FontFamily><FontFamily x:Key="UiFont">fonts:Plex#IBM Plex Sans Arabic</FontFamily><CornerRadius x:Key="CardRadius">6</CornerRadius><CornerRadius x:Key="PanelRadius">6</CornerRadius><CornerRadius x:Key="ControlRadius">4</CornerRadius><x:Double x:Key="FontBody">14</x:Double>
+<x:Double x:Key="FontSecondary">12.5</x:Double>
+<x:Double x:Key="FontSection">20</x:Double>
+<x:Double x:Key="FontTitle">22</x:Double>
+<x:Double x:Key="FontDocument">22</x:Double>
+<x:Double x:Key="FontInput">20</x:Double>
+<x:Double x:Key="IconSmall">16</x:Double>
+<x:Double x:Key="IconBody">18</x:Double>
+<x:Double x:Key="ChromeMinHeight">64</x:Double>
+<x:Double x:Key="OutlineCompactWidth">64</x:Double>
+<x:Double x:Key="SplitterSize">6</x:Double>
+<x:Double x:Key="EditorMinWidth">320</x:Double>
+<x:Double x:Key="DraftMinWidth">440</x:Double>
+<x:Double x:Key="PaperMaxWidth">840</x:Double>
+<x:Double x:Key="ControlMinHeight">36</x:Double>
+<x:Double x:Key="InputMinHeight">50</x:Double>
+<x:Double x:Key="InputMaxHeight">322</x:Double>
+<x:Double x:Key="InputLineHeight">32</x:Double>
+<x:Double x:Key="DocumentLineHeight">38</x:Double>
+<x:Double x:Key="WindowWidth">1440</x:Double>
+<x:Double x:Key="WindowHeight">900</x:Double>
+<x:Double x:Key="WindowMinWidth">960</x:Double>
+<x:Double x:Key="WindowMinHeight">520</x:Double>
+<x:Double x:Key="Space0">0</x:Double>
+<x:Double x:Key="Space1">4</x:Double>
+<x:Double x:Key="Space2">8</x:Double>
+<x:Double x:Key="Space3">12</x:Double>
+<x:Double x:Key="Space4">16</x:Double>
+<x:Double x:Key="Space5">20</x:Double>
+<x:Double x:Key="Space6">24</x:Double>
+<x:Double x:Key="Space7">32</x:Double>
+<x:Double x:Key="Space8">40</x:Double>
+<x:Double x:Key="Dimension10">10.0</x:Double>
+<x:Double x:Key="Dimension6">6.0</x:Double>
+<x:Double x:Key="Dimension4">4.0</x:Double>
+<x:Double x:Key="Dimension8">8.0</x:Double>
+<x:Double x:Key="Dimension5">5.0</x:Double>
+<x:Double x:Key="Dimension96">96.0</x:Double>
+<x:Double x:Key="Dimension260">260.0</x:Double>
+<x:Double x:Key="Dimension180">180.0</x:Double>
+<x:Double x:Key="Dimension860">860.0</x:Double>
+<x:Double x:Key="Dimension34">34.0</x:Double>
+<x:Double x:Key="Dimension120">120.0</x:Double>
+<x:Double x:Key="Dimension48">48.0</x:Double>
+<x:Double x:Key="Dimension3">3.0</x:Double>
+<x:Double x:Key="Dimension40">40.0</x:Double>
+<x:Double x:Key="Dimension16">16.0</x:Double>
+<x:Double x:Key="Dimension2">2.0</x:Double>
+<x:Double x:Key="Dimension32">32</x:Double>
+<Thickness x:Key="Inset0_0_8_12">0,0,8,12</Thickness>
+<Thickness x:Key="Inset8_4">8,4</Thickness>
+<Thickness x:Key="Inset8">8</Thickness>
+<Thickness x:Key="Inset4_0">4,0</Thickness>
+<Thickness x:Key="Inset8_0">8,0</Thickness>
+<Thickness x:Key="Inset0_0_4_4">0,0,4,4</Thickness>
+<Thickness x:Key="Inset0">0</Thickness>
+<Thickness x:Key="Inset0_4_0_0">0,4,0,0</Thickness>
+<Thickness x:Key="Inset0_0_8_8">0,0,8,8</Thickness>
+<Thickness x:Key="Inset0_0_0_4">0,0,0,4</Thickness>
+<Thickness x:Key="Inset16">16</Thickness>
+<Thickness x:Key="Inset32_24">32,24</Thickness>
+<Thickness x:Key="Inset0_0_0_12">0,0,0,12</Thickness>
+<Thickness x:Key="Inset0_0">0,0</Thickness>
+<Thickness x:Key="Inset0_0_0_16">0,0,0,16</Thickness>
+<Thickness x:Key="Inset0_8">0,8</Thickness>
+<Thickness x:Key="Inset0_8_0_0">0,8,0,0</Thickness>
+<Thickness x:Key="Inset12">12</Thickness>
+<Thickness x:Key="Inset0_0_4_0">0,0,4,0</Thickness>
+<Thickness x:Key="Inset0_0_8_0">0,0,8,0</Thickness>
+<Thickness x:Key="Inset0_4">0,4</Thickness>
+<Thickness x:Key="Inset0_0_0_8">0,0,0,8</Thickness>
+<Thickness x:Key="Inset4_0_0_0">4,0,0,0</Thickness>
+<Thickness x:Key="Inset8_8">8,8</Thickness>
+<Thickness x:Key="Inset8_0_0_0">8,0,0,0</Thickness>
+<Thickness x:Key="Inset12_8">12,8</Thickness>
+<Thickness x:Key="Inset16_8">16,8</Thickness>
+<Thickness x:Key="Inset4">4</Thickness>
+<Thickness x:Key="Inset12_4">12,4</Thickness>
+<Thickness x:Key="Inset24_0">24,0</Thickness>
+<Thickness x:Key="Inset16_0">16,0</Thickness>
+<Thickness x:Key="Inset12_0">12,0</Thickness><SolidColorBrush x:Key="PaperInkBrush" Color="#253B4B"/>
+<SolidColorBrush x:Key="PaperAccentBrush" Color="#245F87"/>
+<SolidColorBrush x:Key="PaperMutedBrush" Color="#526577"/>
+<SolidColorBrush x:Key="PaperWarningBrush" Color="#795018"/>
+<SolidColorBrush x:Key="PaperWarningSoftBrush" Color="#FFF1D9"/>
+<SolidColorBrush x:Key="PaperSelectionBrush" Color="#E5EFF6"/>
+<SolidColorBrush x:Key="DiffAddedBrush" Color="#D7F0DF"/>
+<SolidColorBrush x:Key="DiffRemovedBrush" Color="#F8D9D6"/><ResourceDictionary.ThemeDictionaries><ResourceDictionary x:Key="Light"><SolidColorBrush x:Key="CanvasBrush" Color="#E6EBF0"/><SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFF"/><SolidColorBrush x:Key="SurfaceAltBrush" Color="#F4F6F9"/><SolidColorBrush x:Key="PaperBrush" Color="#FFFEFB"/><SolidColorBrush x:Key="PaperCanvasBrush" Color="#E6EBF0"/><SolidColorBrush x:Key="HairlineBrush" Color="#CBD5DF"/><SolidColorBrush x:Key="ControlBorderBrush" Color="#8093A4"/><SolidColorBrush x:Key="TextPrimaryBrush" Color="#203447"/><SolidColorBrush x:Key="TextMutedBrush" Color="#52677A"/><SolidColorBrush x:Key="AppBarBrush" Color="#132333"/><SolidColorBrush x:Key="AppBarTextBrush" Color="#E6EFF7"/><SolidColorBrush x:Key="AppBarMutedBrush" Color="#C2D2DE"/><SolidColorBrush x:Key="AccentBrush" Color="#245F87"/><SolidColorBrush x:Key="AccentSoftBrush" Color="#E5EFF6"/><SolidColorBrush x:Key="PrimaryButtonBrush" Color="#245F87"/><SolidColorBrush x:Key="OnPrimaryBrush" Color="#FFFFFF"/><SolidColorBrush x:Key="DangerBrush" Color="#A52C28"/><SolidColorBrush x:Key="DangerSoftBrush" Color="#FBEDEA"/><SolidColorBrush x:Key="WarningBrush" Color="#85520D"/><SolidColorBrush x:Key="WarningSoftBrush" Color="#FFF3DF"/><SolidColorBrush x:Key="SuccessBrush" Color="#276747"/><SolidColorBrush x:Key="SuccessSoftBrush" Color="#E5F3EA"/><SolidColorBrush x:Key="FocusBrush" Color="#245F87"/><SolidColorBrush x:Key="ChromeSoftBrush" Color="#243E52"/></ResourceDictionary><ResourceDictionary x:Key="Dark"><SolidColorBrush x:Key="CanvasBrush" Color="#0E1822"/><SolidColorBrush x:Key="SurfaceBrush" Color="#17232F"/><SolidColorBrush x:Key="SurfaceAltBrush" Color="#1C2C3B"/><SolidColorBrush x:Key="PaperBrush" Color="#FFFEFB"/><SolidColorBrush x:Key="PaperCanvasBrush" Color="#0E1822"/><SolidColorBrush x:Key="HairlineBrush" Color="#40566A"/><SolidColorBrush x:Key="ControlBorderBrush" Color="#91A3B2"/><SolidColorBrush x:Key="TextPrimaryBrush" Color="#E2ECF4"/><SolidColorBrush x:Key="TextMutedBrush" Color="#B0BFCD"/><SolidColorBrush x:Key="AppBarBrush" Color="#0D1721"/><SolidColorBrush x:Key="AppBarTextBrush" Color="#E6EFF7"/><SolidColorBrush x:Key="AppBarMutedBrush" Color="#C2D2DE"/><SolidColorBrush x:Key="AccentBrush" Color="#B4DBF5"/><SolidColorBrush x:Key="AccentSoftBrush" Color="#243E52"/><SolidColorBrush x:Key="PrimaryButtonBrush" Color="#B4DBF5"/><SolidColorBrush x:Key="OnPrimaryBrush" Color="#132333"/><SolidColorBrush x:Key="DangerBrush" Color="#FFB3A8"/><SolidColorBrush x:Key="DangerSoftBrush" Color="#402B2C"/><SolidColorBrush x:Key="WarningBrush" Color="#FFD192"/><SolidColorBrush x:Key="WarningSoftBrush" Color="#3E3020"/><SolidColorBrush x:Key="SuccessBrush" Color="#B1DEC7"/><SolidColorBrush x:Key="SuccessSoftBrush" Color="#1E3C30"/><SolidColorBrush x:Key="FocusBrush" Color="#B4DBF5"/><SolidColorBrush x:Key="ChromeSoftBrush" Color="#243E52"/></ResourceDictionary></ResourceDictionary.ThemeDictionaries>
+    <!-- One article to tick: citation, role, the model's reason, official text, provenance (reference, official link, tag). -->
+    <DataTemplate x:Key="ArticleChoiceTemplate" x:DataType="vm:ArticleChoiceViewModel">
+      <Border Background="{DynamicResource SurfaceAltBrush}" CornerRadius="{StaticResource PanelRadius}" Padding="{StaticResource Inset8_4}" Margin="{StaticResource Inset0_0_0_4}">
+        <StackPanel Spacing="{StaticResource Dimension3}">
+          <Grid ColumnDefinitions="*,Auto">
+            <CheckBox IsChecked="{Binding IsSelected}">
+              <TextBlock FontWeight="SemiBold" TextWrapping="Wrap" Text="{Binding Citation}" />
+            </CheckBox>
+            <Border Grid.Column="1" Classes="chip" Padding="{StaticResource Inset4_0}" VerticalAlignment="Center" IsVisible="{Binding HasRole}">
+              <TextBlock FontSize="{StaticResource FontSecondary}" Text="{Binding RoleText}" />
+            </Border>
+          </Grid>
+          <TextBlock FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Foreground="{DynamicResource AccentBrush}" Text="{Binding ModelReason}" IsVisible="{Binding HasModelReason}" />
+          <TextBlock Classes="muted" FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Text="{Binding Why}" IsVisible="{Binding HasWhy}" />
+          <Expander Padding="{StaticResource Inset4_0}" HorizontalAlignment="Stretch" IsVisible="{Binding IsAvailable}">
+            <Expander.Header>
+              <TextBlock FontFamily="{StaticResource DocumentFont}" FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" MaxLines="2" TextTrimming="CharacterEllipsis" Text="{Binding Text}" />
+            </Expander.Header>
+            <TextBlock FontFamily="{StaticResource DocumentFont}" FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Text="{Binding Text}" />
+          </Expander>
+          <TextBlock Classes="muted" FontSize="{StaticResource FontSecondary}" FontStyle="Italic" TextWrapping="Wrap" Text="{Binding Text}" IsVisible="{Binding !IsAvailable}" />
+          <Border BorderBrush="{DynamicResource HairlineBrush}" BorderThickness="0,1,0,0" Padding="{StaticResource Inset0_4_0_0}" Margin="{StaticResource Inset0_4_0_0}">
+            <StackPanel Spacing="{StaticResource Dimension3}">
+              <TextBlock Classes="muted" FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Text="{Binding ReferenceText}" />
+              <WrapPanel>
+                <Button Classes="subtle" Padding="{StaticResource Inset0_0}" Margin="{StaticResource Inset0_0_8_0}" Command="{Binding OpenSourceCommand}" IsVisible="{Binding HasSource}" ToolTip.Tip="{Binding LinkTooltip}">
+                  <StackPanel Orientation="Horizontal" Spacing="{StaticResource Dimension4}">
+                    <ic:SymbolIcon Symbol="Open" FontSize="{StaticResource FontSecondary}" Foreground="{DynamicResource AccentBrush}" />
+                    <TextBlock FontSize="{StaticResource FontSecondary}" Foreground="{DynamicResource AccentBrush}" TextDecorations="Underline" Text="{Binding LinkLabel}" />
+                  </StackPanel>
+                </Button>
+                <Border CornerRadius="{StaticResource PanelRadius}" Padding="{StaticResource Inset4_0}" Margin="{StaticResource Inset0_0_4_0}" VerticalAlignment="Center" Background="{DynamicResource WarningSoftBrush}" IsVisible="{Binding !IsVerified}">
+                  <TextBlock FontSize="{StaticResource FontSecondary}" Foreground="{DynamicResource WarningBrush}" Text="{Binding ProvenanceTag}" />
+                </Border>
+                <Border CornerRadius="{StaticResource PanelRadius}" Padding="{StaticResource Inset4_0}" Margin="{StaticResource Inset0_0_4_0}" VerticalAlignment="Center" Background="{DynamicResource SuccessSoftBrush}" IsVisible="{Binding IsVerified}">
+                  <TextBlock FontSize="{StaticResource FontSecondary}" Foreground="{DynamicResource SuccessBrush}" Text="{Binding ProvenanceTag}" />
+                </Border>
+                <TextBlock Classes="muted" FontSize="{StaticResource FontSecondary}" VerticalAlignment="Center" Text="{Binding SourceText}" />
+              </WrapPanel>
+            </StackPanel>
+          </Border>
+        </StackPanel>
+      </Border>
+    </DataTemplate>
 
-      <!-- Design tokens: one palette per theme variant. -->
-      <ResourceDictionary.ThemeDictionaries>
-        <ResourceDictionary x:Key="Light">
-          <SolidColorBrush x:Key="CanvasBrush" Color="#F2F0EA" />
-          <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFF" />
-          <SolidColorBrush x:Key="SurfaceAltBrush" Color="#F8F6F1" />
-          <SolidColorBrush x:Key="PaperBrush" Color="#FFFFFF" />
-          <SolidColorBrush x:Key="PaperCanvasBrush" Color="#E7E3DA" />
-          <SolidColorBrush x:Key="HairlineBrush" Color="#E4DFD4" />
-          <SolidColorBrush x:Key="TextPrimaryBrush" Color="#1C2321" />
-          <SolidColorBrush x:Key="TextMutedBrush" Color="#6A706D" />
-          <SolidColorBrush x:Key="AppBarBrush" Color="#16392F" />
-          <SolidColorBrush x:Key="AppBarTextBrush" Color="#FFFFFF" />
-          <SolidColorBrush x:Key="AccentBrush" Color="#1E5A4B" />
-          <SolidColorBrush x:Key="AccentSoftBrush" Color="#E1EEE9" />
-          <SolidColorBrush x:Key="PrimaryButtonBrush" Color="#1E5A4B" />
-          <SolidColorBrush x:Key="DangerBrush" Color="#B3261E" />
-          <SolidColorBrush x:Key="DangerSoftBrush" Color="#FCEBE9" />
-          <SolidColorBrush x:Key="WarningBrush" Color="#935600" />
-          <SolidColorBrush x:Key="WarningSoftBrush" Color="#FFF3DC" />
-          <SolidColorBrush x:Key="SuccessBrush" Color="#2B7A4B" />
-          <SolidColorBrush x:Key="SuccessSoftBrush" Color="#E5F3EA" />
-        </ResourceDictionary>
-        <ResourceDictionary x:Key="Dark">
-          <SolidColorBrush x:Key="CanvasBrush" Color="#121715" />
-          <SolidColorBrush x:Key="SurfaceBrush" Color="#1B2220" />
-          <SolidColorBrush x:Key="SurfaceAltBrush" Color="#222A27" />
-          <SolidColorBrush x:Key="PaperBrush" Color="#FDFCF9" />
-          <SolidColorBrush x:Key="PaperCanvasBrush" Color="#0E1311" />
-          <SolidColorBrush x:Key="HairlineBrush" Color="#2E3734" />
-          <SolidColorBrush x:Key="TextPrimaryBrush" Color="#E8ECEA" />
-          <SolidColorBrush x:Key="TextMutedBrush" Color="#9AA3A0" />
-          <SolidColorBrush x:Key="AppBarBrush" Color="#0F2A23" />
-          <SolidColorBrush x:Key="AppBarTextBrush" Color="#F2F5F4" />
-          <SolidColorBrush x:Key="AccentBrush" Color="#6FC2A8" />
-          <SolidColorBrush x:Key="AccentSoftBrush" Color="#1F3A33" />
-          <SolidColorBrush x:Key="PrimaryButtonBrush" Color="#2A7A63" />
-          <SolidColorBrush x:Key="DangerBrush" Color="#FF8A80" />
-          <SolidColorBrush x:Key="DangerSoftBrush" Color="#3A2020" />
-          <SolidColorBrush x:Key="WarningBrush" Color="#FFC56B" />
-          <SolidColorBrush x:Key="WarningSoftBrush" Color="#3A2E18" />
-          <SolidColorBrush x:Key="SuccessBrush" Color="#7FD3A0" />
-          <SolidColorBrush x:Key="SuccessSoftBrush" Color="#1D3326" />
-        </ResourceDictionary>
-      </ResourceDictionary.ThemeDictionaries>
-    </ResourceDictionary>
-  </Application.Resources>
-  <Application.Styles>
-    <FluentTheme>
-      <FluentTheme.Palettes>
-        <ColorPaletteResources x:Key="Light" Accent="#1E5A4B" />
-        <ColorPaletteResources x:Key="Dark" Accent="#3E9C82" />
-      </FluentTheme.Palettes>
-    </FluentTheme>
-  </Application.Styles>
-</Application>
+    <!-- A usual request or document to insert with one click. -->
+    <DataTemplate x:Key="InsertChipTemplate" x:DataType="vm:InsertChipViewModel">
+      <Button Classes="outline" Margin="{StaticResource Inset0_0_0_4}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Command="{Binding InsertCommand}">
+        <Grid ColumnDefinitions="Auto,*">
+          <ic:SymbolIcon Symbol="Add" FontSize="{StaticResource FontSecondary}" Margin="{StaticResource Inset0_0_4_0}" IsVisible="{Binding !IsInserted}" />
+          <ic:SymbolIcon Symbol="Checkmark" FontSize="{StaticResource FontSecondary}" Margin="{StaticResource Inset0_0_4_0}" Foreground="{DynamicResource SuccessBrush}" IsVisible="{Binding IsInserted}" />
+          <TextBlock Grid.Column="1" FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Text="{Binding Text}" />
+        </Grid>
+      </Button>
+    </DataTemplate>
+
+    <!-- What the local model is doing: steps (done, current, next), a timer, "waking up" until the first words, then the words live. -->
+    <DataTemplate x:Key="ModelActivityTemplate" x:DataType="vm:ModelActivityViewModel">
+      <Border Name="ActivityPanel" Background="{DynamicResource SurfaceAltBrush}" BorderBrush="{DynamicResource HairlineBrush}" BorderThickness="1"
+              CornerRadius="{StaticResource PanelRadius}" Padding="{StaticResource Inset8_8}" IsVisible="{Binding IsActive}">
+        <StackPanel Spacing="{StaticResource Dimension6}">
+          <ItemsControl ItemsSource="{Binding Steps}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="vm:ActivityStepViewModel">
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource Dimension8}" Margin="{StaticResource Inset0_0}">
+                  <Panel Width="{StaticResource Dimension16}" Height="{StaticResource Dimension16}" VerticalAlignment="Center">
+                    <ic:SymbolIcon Symbol="CheckmarkCircle" FontSize="{StaticResource FontBody}" Foreground="{DynamicResource SuccessBrush}" IsVisible="{Binding IsDone}" />
+                    <Ellipse Classes="pulse" Width="{StaticResource Dimension10}" Height="{StaticResource Dimension10}" Fill="{DynamicResource AccentBrush}" IsVisible="{Binding IsActive}" />
+                    <Ellipse Width="{StaticResource Dimension8}" Height="{StaticResource Dimension8}" Stroke="{DynamicResource TextMutedBrush}" StrokeThickness="1.5" IsVisible="{Binding IsPending}" />
+                  </Panel>
+                  <TextBlock FontSize="{StaticResource FontSecondary}" VerticalAlignment="Center" Text="{Binding Label}" Classes.muted="{Binding IsPending}" Classes.current="{Binding IsActive}" />
+                  <TextBlock Classes="muted" FontSize="{StaticResource FontSecondary}" VerticalAlignment="Center" Text="{Binding Detail}" IsVisible="{Binding HasDetail}" />
+                </StackPanel>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+          
+          <Grid ColumnDefinitions="*,Auto">
+            <TextBlock Classes="muted" FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Text="{Binding WaitingText}" IsVisible="{Binding IsWaiting}" />
+            <TextBlock Classes="muted" FontSize="{StaticResource FontSecondary}" Text="{Binding WordsText}" IsVisible="{Binding !IsWaiting}" />
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="{StaticResource Dimension4}" Margin="{StaticResource Inset8_0_0_0}">
+              <ic:SymbolIcon Symbol="Clock" FontSize="{StaticResource FontSecondary}" Foreground="{DynamicResource TextMutedBrush}" />
+              <TextBlock Name="ActivityElapsed" Classes="muted" FontSize="{StaticResource FontSecondary}" Text="{Binding Elapsed}" />
+            </StackPanel>
+          </Grid>
+          <TextBlock Name="ActivityEstimate" Classes="muted" FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Text="{Binding EstimateText}" IsVisible="{Binding HasEstimate}" />
+          <Border Name="ActivityPowerNote" Background="{DynamicResource WarningSoftBrush}" CornerRadius="{StaticResource PanelRadius}" Padding="{StaticResource Inset8_4}" IsVisible="{Binding HasPowerNote}">
+            <TextBlock FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Foreground="{DynamicResource WarningBrush}" Text="{Binding PowerNote}" />
+          </Border>
+          <Border Background="{DynamicResource PaperBrush}" CornerRadius="{StaticResource PanelRadius}" Padding="{StaticResource Inset8_4}" IsVisible="{Binding HasLiveText}">
+            <StackPanel Spacing="{StaticResource Dimension2}">
+              <TextBlock FontSize="{StaticResource FontSecondary}" Foreground="{StaticResource PaperMutedBrush}" Text="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[ActivityLive]}" />
+              <TextBlock Name="ActivityLiveText" FontFamily="{StaticResource DocumentFont}" FontSize="{StaticResource FontSecondary}" Foreground="{StaticResource PaperInkBrush}" TextWrapping="Wrap"
+                         FlowDirection="RightToLeft" Text="{Binding LiveText}" />
+            </StackPanel>
+          </Border>
+        </StackPanel>
+      </Border>
+    </DataTemplate>
+  </ResourceDictionary></Application.Resources><Application.Styles><FluentTheme/>
+    <Style Selector="TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+    </Style>
+    <Style Selector="TextBlock.status.error">
+      <Setter Property="Foreground" Value="{DynamicResource DangerBrush}" />
+    </Style>
+    <Style Selector="TextBlock.muted">
+      <Setter Property="Foreground" Value="{DynamicResource TextMutedBrush}" />
+      <Setter Property="FontSize" Value="{StaticResource FontSecondary}" />
+    </Style>
+    <Style Selector="TextBlock.title">
+      <Setter Property="FontSize" Value="{StaticResource FontBody}" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+    <Style Selector="Border.card">
+      <Setter Property="Background" Value="{DynamicResource SurfaceBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource HairlineBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="{StaticResource CardRadius}" />
+      <Setter Property="Padding" Value="16" />
+    </Style>
+    <Style Selector="Border.panel">
+      <Setter Property="Background" Value="{DynamicResource SurfaceBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource HairlineBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="{StaticResource CardRadius}" />
+    </Style>
+    <Style Selector="Border.chip">
+      <Setter Property="CornerRadius" Value="999" />
+      <Setter Property="Padding" Value="10,3" />
+      <Setter Property="Background" Value="{DynamicResource WarningSoftBrush}" />
+    </Style>
+
+    <!-- App bar buttons -->
+    <Style Selector="Button.bar">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="Foreground" Value="{DynamicResource AppBarTextBrush}" />
+      <Setter Property="Padding" Value="8,6" />
+      <Setter Property="CornerRadius" Value="{StaticResource ControlRadius}" />
+    </Style>
+    <Style Selector="Button.bar:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="#26FFFFFF" />
+      <Setter Property="Foreground" Value="{DynamicResource AppBarTextBrush}" />
+    </Style>
+    <Style Selector="Button.subtle">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="Padding" Value="8,4" />
+      <Setter Property="CornerRadius" Value="{StaticResource ControlRadius}" />
+    </Style>
+    <Style Selector="Button.primary">
+      <Setter Property="Background" Value="{DynamicResource PrimaryButtonBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource OnPrimaryBrush}" />
+      <Setter Property="Padding" Value="14,7" />
+      <Setter Property="CornerRadius" Value="{StaticResource ControlRadius}" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+    <Style Selector="Button.outline">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderBrush" Value="{DynamicResource HairlineBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="Padding" Value="12,7" />
+      <Setter Property="CornerRadius" Value="{StaticResource ControlRadius}" />
+    </Style>
+
+    <!-- Form inputs: roomy, rounded, always right-to-left (Arabic document content). -->
+    <Style Selector="TextBox.input">
+<Setter Property="FlowDirection" Value="RightToLeft"/><Setter Property="FontFamily" Value="{StaticResource DocumentFont}"/><Setter Property="FontSize" Value="{StaticResource FontInput}"/><Setter Property="LineHeight" Value="{StaticResource InputLineHeight}"/><Setter Property="MinHeight" Value="{StaticResource InputMinHeight}"/><Setter Property="Padding" Value="{StaticResource Inset12_8}"/><Setter Property="CornerRadius" Value="{StaticResource ControlRadius}"/><Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/><Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/><Setter Property="BorderBrush" Value="{DynamicResource ControlBorderBrush}"/><Setter Property="BorderThickness" Value="1"/><Setter Property="ClipToBounds" Value="True"/></Style>
+    <Style Selector="TextBox.input.missing">
+      <Setter Property="BorderBrush" Value="{DynamicResource DangerBrush}" />
+    </Style>
+
+    <!-- Draft section editor: reads like the document, not like a form. -->
+    <Style Selector="TextBox.document">
+      <Setter Property="FontFamily" Value="{StaticResource DocumentFont}" />
+      <Setter Property="FontSize" Value="{StaticResource FontDocument}" />
+      <Setter Property="LineHeight" Value="{StaticResource DocumentLineHeight}" />
+      <Setter Property="TextWrapping" Value="Wrap" />
+      <Setter Property="AcceptsReturn" Value="True" />
+      <Setter Property="FlowDirection" Value="RightToLeft" />
+      <Setter Property="Foreground" Value="{StaticResource PaperInkBrush}" />
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="Padding" Value="4,2" />
+      <Setter Property="CaretBrush" Value="{StaticResource PaperInkBrush}" />
+    </Style>
+    <Style Selector="TextBox.document:focus /template/ Border#PART_BorderElement">
+      <Setter Property="Background" Value="{StaticResource PaperSelectionBrush}" />
+      <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="TextBox.document:pointerover /template/ Border#PART_BorderElement">
+      <Setter Property="Background" Value="{StaticResource PaperSelectionBrush}" />
+      <Setter Property="BorderThickness" Value="0" />
+    </Style>
+
+    <Style Selector="TextBlock.current">
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+    <Style Selector="Ellipse.status-dot">
+      <Setter Property="Fill" Value="{DynamicResource SuccessBrush}" />
+    </Style>
+    <Style Selector="Ellipse.status-dot.down">
+      <Setter Property="Fill" Value="{DynamicResource DangerBrush}" />
+    </Style>
+    <Style Selector="Border.added">
+      <Setter Property="Background" Value="{StaticResource DiffAddedBrush}" />
+    </Style>
+    <Style Selector="Border.removed">
+      <Setter Property="Background" Value="{StaticResource DiffRemovedBrush}" />
+    </Style>
+    <Style Selector="Border.lawyer">
+      <Setter Property="Background" Value="{DynamicResource AccentSoftBrush}" />
+    </Style>
+    <Style Selector="TextBlock.review">
+      <Setter Property="Foreground" Value="{DynamicResource WarningBrush}" />
+      <Setter Property="FontSize" Value="{StaticResource FontSecondary}" />
+      <Setter Property="Margin" Value="0,6,0,0" />
+      <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+
+    <!-- Step list -->
+    <Style Selector="ListBox.steps ListBoxItem"><Setter Property="Padding" Value="{StaticResource Inset12_8}"/><Setter Property="Margin" Value="0"/><Setter Property="CornerRadius" Value="0"/><Setter Property="HorizontalContentAlignment" Value="Stretch"/></Style>
+    <Style Selector="ListBox.steps ListBoxItem:selected /template/ ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource AccentSoftBrush}" />
+    </Style>
+
+    <!-- Findings -->
+    <Style Selector="Button.finding">
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+      <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+      <Setter Property="Padding" Value="12,10" />
+      <Setter Property="Margin" Value="0,0,0,8" />
+      <Setter Property="CornerRadius" Value="10" />
+      <Setter Property="Background" Value="{DynamicResource DangerSoftBrush}" />
+      <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="Button.finding.warning">
+      <Setter Property="Background" Value="{DynamicResource WarningSoftBrush}" />
+    </Style>
+  <Style Selector="TemplatedControl"><Setter Property="FontFamily" Value="{StaticResource UiFont}"/><Setter Property="FontSize" Value="{StaticResource FontBody}"/></Style>
+<Style Selector="TextBlock"><Setter Property="FontFamily" Value="{StaticResource UiFont}"/><Setter Property="FontSize" Value="{StaticResource FontBody}"/><Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/></Style>
+<Style Selector="TextBlock.secondary"><Setter Property="FontSize" Value="{StaticResource FontSecondary}"/></Style>
+<Style Selector="Control"><Setter Property="Transitions"><Transitions/></Setter></Style>
+<Style Selector="Button"><Setter Property="MinHeight" Value="{StaticResource ControlMinHeight}"/><Setter Property="BorderThickness" Value="2"/><Setter Property="BorderBrush" Value="Transparent"/><Setter Property="Padding" Value="{StaticResource Inset12_8}"/></Style>
+<Style Selector="Button:pointerover"><Setter Property="Background" Value="{DynamicResource AccentSoftBrush}"/></Style>
+<Style Selector="Button:pressed"><Setter Property="Background" Value="{DynamicResource AccentSoftBrush}"/><Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}"/></Style>
+<Style Selector="Button:focus-visible"><Setter Property="BorderBrush" Value="{DynamicResource FocusBrush}"/></Style>
+<Style Selector="Button:disabled"><Setter Property="Foreground" Value="{DynamicResource TextMutedBrush}"/></Style>
+<Style Selector="TextBox:focus-visible"><Setter Property="BorderBrush" Value="{DynamicResource FocusBrush}"/></Style>
+<Style Selector="Button.bar"><Setter Property="MinWidth" Value="{StaticResource ControlMinHeight}"/><Setter Property="Foreground" Value="{DynamicResource AppBarTextBrush}"/></Style>
+<Style Selector="Button.bar:pointerover"><Setter Property="Background" Value="{DynamicResource ChromeSoftBrush}"/></Style>
+<Style Selector="Button.bar:focus-visible"><Setter Property="BorderBrush" Value="{DynamicResource AppBarTextBrush}"/></Style>
+<Style Selector="Button.outline"><Setter Property="BorderBrush" Value="{DynamicResource ControlBorderBrush}"/></Style>
+<Style Selector="Button.paper-action"><Setter Property="Foreground" Value="{StaticResource PaperAccentBrush}"/><Setter Property="FontSize" Value="{StaticResource FontSecondary}"/><Setter Property="Padding" Value="{StaticResource Inset8_4}"/></Style>
+<Style Selector="Button.paper-action:focus-visible"><Setter Property="BorderBrush" Value="{StaticResource PaperAccentBrush}"/></Style>
+<Style Selector="CheckBox"><Setter Property="FontSize" Value="{StaticResource FontBody}"/></Style>
+<Style Selector="GridSplitter"><Setter Property="Background" Value="{DynamicResource HairlineBrush}"/></Style>
+<Style Selector="GridSplitter:pointerover"><Setter Property="Background" Value="{DynamicResource FocusBrush}"/></Style>
+<Style Selector="GridSplitter:focus-visible"><Setter Property="Background" Value="{DynamicResource FocusBrush}"/></Style>
+<Style Selector="Border.panel"><Setter Property="CornerRadius" Value="0"/><Setter Property="Padding" Value="0"/></Style>
+<Style Selector="Border.tool-page"><Setter Property="Padding" Value="{StaticResource Inset16}"/></Style>
+<Style Selector="Border.notice"><Setter Property="Padding" Value="{StaticResource Inset12_8}"/></Style>
+<Style Selector="Border.editor-actions"><Setter Property="Padding" Value="{StaticResource Inset16_8}"/></Style>
+<Style Selector="Grid.pane-heading"><Setter Property="Margin" Value="{StaticResource Inset16_8}"/></Style>
+<Style Selector="WrapPanel.document-toolbar"><Setter Property="Margin" Value="{StaticResource Inset12_4}"/></Style>
+<Style Selector="WrapPanel.document-toolbar > Control"><Setter Property="Margin" Value="{StaticResource Inset4}"/></Style>
+</Application.Styles></Application>

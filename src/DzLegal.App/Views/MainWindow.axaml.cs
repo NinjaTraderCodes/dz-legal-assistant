@@ -7,14 +7,27 @@ public partial class MainWindow : Window
 {
     private readonly DispatcherTimer _autosave = new() { Interval = TimeSpan.FromSeconds(30) };
 
-    public MainWindow()
+    public MainWindow() : this(null)
+    {
+    }
+
+    public MainWindow(string? layoutFile)
     {
         InitializeComponent();
+        _workbench = this.FindControl<Grid>("WorkbenchGrid")!;
+        _editorTools = this.FindControl<Grid>("EditorToolsGrid")!;
+        _layoutStore = layoutFile is null ? null : new Services.WorkbenchLayoutStore(layoutFile);
+        _layout = _layoutStore?.Load() ?? new Services.WorkbenchLayout();
+        _preferredCompact = _layout.OutlineCompact;
+        DataContextChanged += (_, _) => AttachWorkbench();
+        SizeChanged += (_, _) => ApplyWorkbenchLayout();
+        WireWorkbenchSplitters();
 
         // Autosave every 30 s and when the window closes, so a crash or an accidental close loses nothing.
         _autosave.Tick += (_, _) => (DataContext as MainWindowViewModel)?.AutosaveNow();
         Opened += async (_, _) =>
         {
+            ApplyWorkbenchLayout();
             _autosave.Start();
             if (DataContext is MainWindowViewModel vm)
             {
@@ -32,6 +45,11 @@ public partial class MainWindow : Window
         };
         Closing += (_, _) =>
         {
+            CaptureWorkbenchLayout();
+            if (_workbenchVm is not null)
+            {
+                _workbenchVm.PropertyChanged -= WorkbenchPropertyChanged;
+            }
             _autosave.Stop();
             if (DataContext is MainWindowViewModel vm)
             {

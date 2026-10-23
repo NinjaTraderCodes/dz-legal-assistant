@@ -1,101 +1,105 @@
-<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:vm="using:DzLegal.Presentation.ViewModels" xmlns:app="using:DzLegal.App" xmlns:ic="using:FluentIcons.Avalonia" x:Class="DzLegal.App.Views.DraftWorkspaceView" x:DataType="vm:MainWindowViewModel" FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}">      <!-- Draft -->
-      <Border Name="DraftPane" Classes="panel" Padding="{StaticResource Inset0}">
-        <DockPanel>
-          <Grid DockPanel.Dock="Top" Classes="pane-heading" ColumnDefinitions="*,Auto">
-            <StackPanel Spacing="{StaticResource Space1}">
-              <TextBlock Text="{Binding L[Document]}" FontWeight="SemiBold"/>
-              <TextBlock Name="DraftBanner" Classes="secondary" Text="{Binding L[DraftBadge]}" ToolTip.Tip="{Binding L[DraftBanner]}" TextWrapping="Wrap"/>
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:vm="using:DzLegal.Presentation.ViewModels" xmlns:app="using:DzLegal.App" xmlns:ic="using:FluentIcons.Avalonia" x:Class="DzLegal.App.Views.DraftWorkspaceView" x:DataType="vm:MainWindowViewModel" FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}">
+  <!-- Draft -->
+  <Border Name="DraftPane" Classes="panel" Padding="{StaticResource Inset0}">
+    <DockPanel>
+      <Grid DockPanel.Dock="Top" Classes="pane-heading" ColumnDefinitions="*,Auto">
+        <StackPanel Spacing="{StaticResource Space1}">
+          <TextBlock Text="{Binding L[Document]}" FontWeight="SemiBold"/>
+          <TextBlock Name="DraftBanner" Classes="secondary" Text="{Binding L[DraftBadge]}" ToolTip.Tip="{Binding L[DraftBanner]}" TextWrapping="Wrap"/>
+        </StackPanel>
+        <Button Grid.Column="1" Classes="subtle" Command="{Binding ToggleDraftFocusCommand}" ToolTip.Tip="{Binding L[WB.FocusDraft]}" AutomationProperties.Name="{Binding L[WB.FocusDraft]}">
+          <ic:SymbolIcon Symbol="FullScreenMaximize"/>
+        </Button>
+      </Grid>
+      <WrapPanel DockPanel.Dock="Top" Classes="document-toolbar">
+        <TabControl Name="DraftTabs" SelectedIndex="{Binding SelectedDraftTab}">
+          <TabItem Header="{Binding L[Edit]}"/>
+          <TabItem Header="{Binding L[Preview]}"/>
+        </TabControl>
+        <CheckBox IsChecked="{Binding DraftWatermark}" Content="{Binding L[Watermark]}"/>
+        <Button Classes="outline" Name="ExportPdfButton" Command="{Binding ExportPdfCommand}" Content="{Binding L[ExportPdf]}"/>
+        <Button Classes="outline" Command="{Binding ExportWordCommand}" Content="{Binding L[ExportWord]}"/>
+        <Button Classes="subtle" Command="{Binding CopyTextCommand}" ToolTip.Tip="{Binding L[CopyText]}" AutomationProperties.Name="{Binding L[CopyText]}">
+          <ic:SymbolIcon Symbol="Copy"/>
+        </Button>
+        <Button Classes="subtle" Command="{Binding ShowWorkbenchToolCommand}" CommandParameter="review" IsVisible="{Binding ShowsExportBlockers}">
+          <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space2}">
+            <TextBlock Text="{Binding L[WB.BeforeExport]}"/>
+            <TextBlock Text="{Binding ExportBlockerCount}"/>
+          </StackPanel>
+        </Button>
+      </WrapPanel>
+      <Border Name="ExportBlockersPanel" DockPanel.Dock="Top" Classes="notice" Background="{DynamicResource WarningSoftBrush}" IsVisible="{Binding ShowsExportBlockers}">
+        <Grid ColumnDefinitions="*,Auto">
+          <TextBlock Classes="secondary" TextWrapping="Wrap" Text="{Binding ExportBlockersTitle}"/>
+          <Button Grid.Column="1" Classes="subtle" Command="{Binding ShowWorkbenchToolCommand}" CommandParameter="review">
+            <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space2}">
+              <TextBlock Text="{Binding L[WB.BeforeExport]}"/>
+              <TextBlock Text="{Binding ExportBlockerCount}"/>
             </StackPanel>
-            <Button Grid.Column="1" Classes="subtle" Command="{Binding ToggleDraftFocusCommand}" ToolTip.Tip="{Binding L[WB.FocusDraft]}" AutomationProperties.Name="{Binding L[WB.FocusDraft]}"><ic:SymbolIcon Symbol="FullScreenMaximize"/></Button>
-          </Grid>
-          <WrapPanel DockPanel.Dock="Top" Classes="document-toolbar">
-            <TabControl Name="DraftTabs" SelectedIndex="{Binding SelectedDraftTab}">
-              <TabItem Header="{Binding L[Edit]}" /><TabItem Header="{Binding L[Preview]}" />
-            </TabControl>
-            <CheckBox IsChecked="{Binding DraftWatermark}" Content="{Binding L[Watermark]}" />
-            <Button Classes="outline" Name="ExportPdfButton" Command="{Binding ExportPdfCommand}" Content="{Binding L[ExportPdf]}" />
-            <Button Classes="outline" Command="{Binding ExportWordCommand}" Content="{Binding L[ExportWord]}" />
-            <Button Classes="subtle" Command="{Binding CopyTextCommand}" ToolTip.Tip="{Binding L[CopyText]}" AutomationProperties.Name="{Binding L[CopyText]}"><ic:SymbolIcon Symbol="Copy" /></Button>
-            <Button Classes="subtle" Command="{Binding ShowWorkbenchToolCommand}" CommandParameter="review" IsVisible="{Binding ShowsExportBlockers}">
-              <StackPanel Orientation="Horizontal" Spacing="{StaticResource Dimension8}"><TextBlock Text="{Binding L[WB.BeforeExport]}" /><TextBlock Text="{Binding ExportBlockerCount}" /></StackPanel>
-            </Button>
-          </WrapPanel>
-
-          <Border Name="ExportBlockersPanel" DockPanel.Dock="Top" Classes="notice" Background="{DynamicResource WarningSoftBrush}" IsVisible="{Binding ShowsExportBlockers}">
-            <Grid ColumnDefinitions="*,Auto">
-              <TextBlock Classes="secondary" TextWrapping="Wrap" Text="{Binding ExportBlockersTitle}" />
-              <Button Grid.Column="1" Classes="subtle" Command="{Binding ShowWorkbenchToolCommand}" CommandParameter="review">
-                <StackPanel Orientation="Horizontal" Spacing="{StaticResource Dimension8}"><TextBlock Text="{Binding L[WB.BeforeExport]}" /><TextBlock Text="{Binding ExportBlockerCount}" /></StackPanel>
-              </Button>
-            </Grid>
-          </Border>
-
-          <ContentControl Name="GenerationActivityView" DockPanel.Dock="Top" Margin="{StaticResource Inset0_0_0_4}"
-                          IsVisible="{Binding GenerationActivity.IsActive}" Content="{Binding GenerationActivity}" ContentTemplate="{StaticResource ModelActivityTemplate}" />
-
-          <Grid>
-            <!-- Edit: the sections on paper -->
-            <ScrollViewer Background="{DynamicResource PaperCanvasBrush}" CornerRadius="{StaticResource PanelRadius}" IsVisible="{Binding SelectedDraftTab, Converter={x:Static app:Converters.IsZero}}">
-              <Border Background="{DynamicResource PaperBrush}" Margin="{StaticResource Inset16}" Padding="{StaticResource Inset32_24}" CornerRadius="{StaticResource PanelRadius}" MaxWidth="{StaticResource Dimension860}">
-                <ItemsControl Name="SectionsList" ItemsSource="{Binding Sections}">
-                  <ItemsControl.ItemTemplate>
-                    <DataTemplate x:DataType="vm:SectionViewModel">
-                      <StackPanel Margin="{StaticResource Inset0_0_0_12}">
-                        <StackPanel Spacing="{StaticResource Dimension4}">
-                          <Grid ColumnDefinitions="*,Auto">
-                            <TextBlock Classes="secondary" FontWeight="SemiBold" Foreground="{StaticResource PaperAccentBrush}" Text="{Binding Title}" ToolTip.Tip="{Binding Hint}" TextWrapping="Wrap" />
-                            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="{StaticResource Dimension8}" IsVisible="{Binding IsWriting}">
-                              <Ellipse Width="{StaticResource Dimension8}" Height="{StaticResource Dimension8}" Fill="{StaticResource PaperAccentBrush}" />
-                              <TextBlock Classes="secondary" Foreground="{StaticResource PaperAccentBrush}" Text="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[SectionWriting]}" />
-                            </StackPanel>
-                          </Grid>
-                          <TextBlock Classes="secondary" Foreground="{StaticResource PaperWarningBrush}" Text="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[WB.AiWritten]}" IsVisible="{Binding IsAiWritten}" />
-                          <WrapPanel>
-                            <Button Classes="paper-action" Command="{Binding OverrideCommand}" Content="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[EditManually]}" IsVisible="{Binding CanOverride}" />
-                            <Button Classes="paper-action" Command="{Binding RestoreCommand}" Content="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[RestoreFromForm]}" IsVisible="{Binding IsOverridden}" />
-                            <Button Classes="paper-action" Command="{Binding UndoCommand}" Content="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[Undo]}" IsVisible="{Binding CanUndo}" />
-                            <Button Classes="paper-action" Command="{Binding RedraftCommand}" Content="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[Redraft]}" IsVisible="{Binding IsEditable}" />
-                            <Button Classes="paper-action" Name="AssistantButton" Command="{Binding OpenAssistantCommand}" Content="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[Assistant]}" IsVisible="{Binding IsEditable}" />
-                          </WrapPanel>
-                        </StackPanel>
-                        <Border Background="{StaticResource PaperWarningSoftBrush}" CornerRadius="{StaticResource PanelRadius}" Padding="{StaticResource Inset8_4}" Margin="{StaticResource Inset0_0}" IsVisible="{Binding IsConfirmingRedraft}">
-                          <StackPanel Orientation="Horizontal" Spacing="{StaticResource Dimension8}">
-                            <Button Classes="primary" FontSize="{StaticResource FontSecondary}" Command="{Binding RedraftCommand}"
-                                    Content="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[ConfirmRedraft]}" />
-                            <Button Classes="subtle" FontSize="{StaticResource FontSecondary}" Foreground="{StaticResource PaperInkBrush}" Command="{Binding CancelRedraftCommand}"
-                                    Content="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[Cancel]}" />
-                          </StackPanel>
-                        </Border>
-                        <TextBox Classes="document" Text="{Binding Text}" IsReadOnly="{Binding IsReadOnly}" PlaceholderText="{Binding Watermark}" MinHeight="{StaticResource Dimension34}" />
-                        <TextBlock Classes="review" Text="{Binding ReviewText}" IsVisible="{Binding HasReview}" />
-                        <CheckBox Name="ReviewedCheck" FontSize="{StaticResource FontSecondary}" IsChecked="{Binding IsReviewed}" IsVisible="{Binding IsAiWritten}"
-                                  Content="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[ReviewedCheck]}" />
-                      </StackPanel>
-                    </DataTemplate>
-                  </ItemsControl.ItemTemplate>
-                </ItemsControl>
-              </Border>
-            </ScrollViewer>
-
-            <!-- Preview: the actual PDF pages -->
-            <Grid IsVisible="{Binding SelectedDraftTab, Converter={x:Static app:Converters.IsOne}}">
-              <ScrollViewer Background="{DynamicResource PaperCanvasBrush}" CornerRadius="{StaticResource PanelRadius}">
-                <ItemsControl Name="PreviewPagesList" ItemsSource="{Binding PreviewPages}" Margin="{StaticResource Inset16}">
-                  <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                      <Border Background="White" Margin="{StaticResource Inset0_0_0_16}" HorizontalAlignment="Center">
-                        <Image Source="{Binding Converter={x:Static app:Converters.PngToBitmap}}" Stretch="Uniform" MaxWidth="{StaticResource Dimension860}" />
-                      </Border>
-                    </DataTemplate>
-                  </ItemsControl.ItemTemplate>
-                </ItemsControl>
-              </ScrollViewer>
-              <Border Classes="chip" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="{StaticResource Inset0_8}" IsVisible="{Binding IsRenderingPreview}">
-                <TextBlock FontSize="{StaticResource FontSecondary}" Text="{Binding L[RenderingPreview]}" />
-              </Border>
-            </Grid>
-          </Grid>
-        </DockPanel>
+          </Button>
+        </Grid>
       </Border>
-
+      <ContentControl Name="GenerationActivityView" DockPanel.Dock="Top" Margin="{StaticResource Inset0_0_0_4}" IsVisible="{Binding GenerationActivity.IsActive}" Content="{Binding GenerationActivity}" ContentTemplate="{StaticResource ModelActivityTemplate}"/>
+      <Grid>
+        <!-- Edit: the sections on paper -->
+        <ScrollViewer Background="{DynamicResource PaperCanvasBrush}" CornerRadius="{StaticResource PanelRadius}" IsVisible="{Binding SelectedDraftTab, Converter={x:Static app:Converters.IsZero}}">
+          <Border Background="{DynamicResource PaperBrush}" Margin="{StaticResource Inset16}" Padding="{StaticResource Inset32_24}" CornerRadius="{StaticResource PanelRadius}" MaxWidth="{StaticResource PaperMaxWidth}">
+            <ItemsControl Name="SectionsList" ItemsSource="{Binding Sections}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:SectionViewModel">
+                  <StackPanel Margin="{StaticResource Inset0_0_0_12}">
+                    <StackPanel Spacing="{StaticResource Space1}">
+                      <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Classes="secondary" FontWeight="SemiBold" Foreground="{StaticResource PaperAccentBrush}" Text="{Binding Title}" ToolTip.Tip="{Binding Hint}" TextWrapping="Wrap"/>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="{StaticResource Space2}" IsVisible="{Binding IsWriting}">
+                          <Ellipse Width="{StaticResource Space2}" Height="{StaticResource Space2}" Fill="{StaticResource PaperAccentBrush}"/>
+                          <TextBlock Classes="secondary" Foreground="{StaticResource PaperAccentBrush}" Text="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[SectionWriting]}"/>
+                        </StackPanel>
+                      </Grid>
+                      <TextBlock Classes="secondary" Foreground="{StaticResource PaperWarningBrush}" Text="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[WB.AiWritten]}" IsVisible="{Binding IsAiWritten}"/>
+                      <WrapPanel>
+                        <Button Classes="paper-action" Command="{Binding OverrideCommand}" Content="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[EditManually]}" IsVisible="{Binding CanOverride}"/>
+                        <Button Classes="paper-action" Command="{Binding RestoreCommand}" Content="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[RestoreFromForm]}" IsVisible="{Binding IsOverridden}"/>
+                        <Button Classes="paper-action" Command="{Binding UndoCommand}" Content="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[Undo]}" IsVisible="{Binding CanUndo}"/>
+                        <Button Classes="paper-action" Command="{Binding RedraftCommand}" Content="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[Redraft]}" IsVisible="{Binding IsEditable}"/>
+                        <Button Classes="paper-action" Name="AssistantButton" Command="{Binding OpenAssistantCommand}" Content="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[Assistant]}" IsVisible="{Binding IsEditable}"/>
+                      </WrapPanel>
+                    </StackPanel>
+                    <Border Background="{StaticResource PaperWarningSoftBrush}" CornerRadius="{StaticResource PanelRadius}" Padding="{StaticResource Inset8_4}" Margin="{StaticResource Inset0_0}" IsVisible="{Binding IsConfirmingRedraft}">
+                      <WrapPanel>
+                        <Button Classes="primary" FontSize="{StaticResource FontSecondary}" Command="{Binding RedraftCommand}" Content="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[ConfirmRedraft]}"/>
+                        <Button Classes="subtle" FontSize="{StaticResource FontSecondary}" Foreground="{StaticResource PaperInkBrush}" Command="{Binding CancelRedraftCommand}" Content="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[Cancel]}"/>
+                      </WrapPanel>
+                    </Border>
+                    <TextBox Classes="document" AutomationProperties.Name="{Binding Title}" Text="{Binding Text}" IsReadOnly="{Binding IsReadOnly}" PlaceholderText="{Binding Watermark}" MinHeight="{StaticResource ControlMinHeight}"/>
+                    <TextBlock Classes="review" Text="{Binding ReviewText}" IsVisible="{Binding HasReview}"/>
+                    <CheckBox Name="ReviewedCheck" Foreground="{StaticResource PaperInkBrush}" FontSize="{StaticResource FontSecondary}" IsChecked="{Binding IsReviewed}" IsVisible="{Binding IsAiWritten}" Content="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[ReviewedCheck]}"/>
+                  </StackPanel>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </Border>
+        </ScrollViewer>
+        <!-- Preview: the actual PDF pages -->
+        <Grid IsVisible="{Binding SelectedDraftTab, Converter={x:Static app:Converters.IsOne}}">
+          <ScrollViewer Background="{DynamicResource PaperCanvasBrush}" CornerRadius="{StaticResource PanelRadius}">
+            <ItemsControl Name="PreviewPagesList" ItemsSource="{Binding PreviewPages}" Margin="{StaticResource Inset16}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Border Background="{DynamicResource PaperBrush}" Margin="{StaticResource Inset0_0_0_16}" HorizontalAlignment="Center">
+                    <Image Source="{Binding Converter={x:Static app:Converters.PngToBitmap}}" Stretch="Uniform" MaxWidth="{StaticResource PaperMaxWidth}"/>
+                  </Border>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </ScrollViewer>
+          <Border Classes="chip" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="{StaticResource Inset0_8}" IsVisible="{Binding IsRenderingPreview}">
+            <TextBlock FontSize="{StaticResource FontSecondary}" Text="{Binding L[RenderingPreview]}"/>
+          </Border>
+        </Grid>
+      </Grid>
+    </DockPanel>
+  </Border>
 </UserControl>

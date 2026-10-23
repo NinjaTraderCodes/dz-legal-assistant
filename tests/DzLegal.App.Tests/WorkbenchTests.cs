@@ -13,6 +13,31 @@ namespace DzLegal.App.Tests;
 
 public sealed class WorkbenchTests
 {
+    [AvaloniaFact]
+    public void EngineSettingsReceiveKeyboardFocusAndEscapeReturnsToTheWorkbench()
+    {
+        using var vm = Vm.Create();
+        var window = new MainWindow { DataContext = vm };
+        window.Show();
+        var button = window.FindControl<Button>("EngineButton")!;
+        button.Focus();
+        button.Flyout!.ShowAt(button);
+        using var frame = window.CaptureRenderedFrame();
+        Dispatcher.UIThread.RunJobs();
+        var picker = window.FindControl<ComboBox>("EnginePicker")!;
+        Assert.True(picker.IsFocused, $"open={button.Flyout.IsOpen}, visible={picker.IsEffectivelyVisible}, enabled={picker.IsEffectivelyEnabled}, focusable={picker.Focusable}, root={TopLevel.GetTopLevel(picker)}");
+        var popup = TopLevel.GetTopLevel(picker)!;
+        popup.KeyPress(Key.Down, RawInputModifiers.None, PhysicalKey.ArrowDown, null);
+        popup.KeyRelease(Key.Down, RawInputModifiers.None, PhysicalKey.ArrowDown, null);
+        popup.KeyPress(Key.Down, RawInputModifiers.None, PhysicalKey.ArrowDown, null);
+        popup.KeyRelease(Key.Down, RawInputModifiers.None, PhysicalKey.ArrowDown, null);
+        Assert.Equal("scripted", vm.SelectedProvider!.Key);
+        popup.KeyPress(Key.Escape, RawInputModifiers.None, PhysicalKey.Escape, null);
+        popup.KeyRelease(Key.Escape, RawInputModifiers.None, PhysicalKey.Escape, null);
+        Assert.False(button.Flyout.IsOpen);
+        window.Close();
+    }
+
     [Theory]
     [InlineData("{broken")]
     [InlineData("null")]

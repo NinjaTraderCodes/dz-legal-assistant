@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.VisualTree;
 using DzLegal.App.Services;
 
 namespace DzLegal.App.Views;
@@ -17,6 +18,22 @@ public partial class MainWindow
     private bool _applyingLayout;
     private bool? _preferredCompact;
 
+    private double Metric(string name) => (double)this.FindResource(name)!;
+
+    private void FitNarrativeEditors()
+    {
+        var scroll = this.FindControl<ScrollViewer>("FormScroll")!;
+        var limit = Math.Clamp(scroll.Bounds.Height - Metric("FieldChromeHeight"), Metric("NarrativeMinHeight"), Metric("NarrativeMaxHeight"));
+        var padding = (Thickness)this.FindResource("Inset12_8")!;
+        var edge = (Thickness)this.FindResource("EdgeThin")!;
+        var frame = padding.Top + padding.Bottom + edge.Top + edge.Bottom;
+        limit = Math.Max(Metric("NarrativeMinHeight"), Math.Floor((limit - frame) / Metric("InputLineHeight")) * Metric("InputLineHeight") + frame);
+        foreach (var input in scroll.GetVisualDescendants().OfType<TextBox>().Where(t => t.DataContext is FieldViewModel { IsMultiline: true }))
+        {
+            input.MaxHeight = limit;
+        }
+    }
+
     private void AttachWorkbench()
     {
         if (_workbenchVm is not null)
@@ -30,7 +47,7 @@ public partial class MainWindow
             _workbenchVm.PropertyChanged += WorkbenchPropertyChanged;
             _applyingLayout = true;
             _workbenchVm.IsOutlineVisible = _layout.OutlineVisible;
-            _workbenchVm.IsOutlineCompact = _preferredCompact ?? Width < 1500;
+            _workbenchVm.IsOutlineCompact = _preferredCompact ?? Width < Metric("OutlineBreakpoint");
             _workbenchVm.WorkbenchTool = _layout.Tool;
             _workbenchVm.IsToolsOpen = _layout.ToolsOpen;
             _applyingLayout = false;
@@ -43,6 +60,16 @@ public partial class MainWindow
         if (_applyingLayout)
         {
             return;
+        }
+
+        if (e.PropertyName == nameof(MainWindowViewModel.HasProposal) && _workbenchVm?.HasProposal == true)
+        {
+            Avalonia.Threading.Dispatcher.UIThread.Post(() => this.FindControl<Button>("AcceptButton")?.BringIntoView());
+        }
+
+        if (e.PropertyName == nameof(MainWindowViewModel.SelectedStep))
+        {
+            Avalonia.Threading.Dispatcher.UIThread.Post(FitNarrativeEditors, Avalonia.Threading.DispatcherPriority.Background);
         }
 
         if (e.PropertyName is nameof(MainWindowViewModel.IsOutlineCompact)
@@ -70,34 +97,38 @@ public partial class MainWindow
         try
         {
             var width = ClientSize.Width > 0 ? ClientSize.Width : Width;
-            var height = _workbench.Bounds.Height > 0 ? _workbench.Bounds.Height : Math.Max(320, Height - 120);
+            var height = _workbench.Bounds.Height > 0 ? _workbench.Bounds.Height : Height - Metric("ChromeMinHeight");
+            var editorMin = Metric("EditorMinWidth");
+            var splitterSize = Metric("SplitterSize");
+            var toolsMin = Metric("ToolsMinHeight");
             if (_preferredCompact is null)
             {
-                vm.IsOutlineCompact = width < 1500;
+                vm.IsOutlineCompact = width < Metric("OutlineBreakpoint");
             }
 
             var focus = vm.IsDraftMaximized;
-            var outline = !vm.IsOutlineVisible || focus ? 0 : vm.IsOutlineCompact ? 64 : _layout.OutlineWidth;
-            var editor = focus ? 0 : Math.Clamp(_layout.EditorWidth, 320, Math.Max(320, width - outline - 12 - 440));
-            _workbench.ColumnDefinitions[0].MinWidth = outline == 0 ? 0 : vm.IsOutlineCompact ? 64 : 160;
-            _workbench.ColumnDefinitions[0].MaxWidth = outline == 0 ? 0 : vm.IsOutlineCompact ? 64 : 360;
+            var outline = !vm.IsOutlineVisible || focus ? 0 : vm.IsOutlineCompact ? Metric("OutlineCompactWidth") : _layout.OutlineWidth;
+            var editor = focus ? 0 : Math.Clamp(_layout.EditorWidth, editorMin, Math.Max(editorMin, width - outline - 2 * splitterSize - Metric("DraftMinWidth")));
+            _workbench.ColumnDefinitions[0].MinWidth = outline == 0 ? 0 : vm.IsOutlineCompact ? Metric("OutlineCompactWidth") : Metric("OutlineMinWidth");
+            _workbench.ColumnDefinitions[0].MaxWidth = outline == 0 ? 0 : vm.IsOutlineCompact ? Metric("OutlineCompactWidth") : Metric("OutlineMaxWidth");
             _workbench.ColumnDefinitions[0].Width = new GridLength(outline);
-            _workbench.ColumnDefinitions[1].Width = new GridLength(outline == 0 ? 0 : 6);
-            _workbench.ColumnDefinitions[2].MinWidth = focus ? 0 : 320;
-            _workbench.ColumnDefinitions[2].MaxWidth = focus ? 0 : 900;
+            _workbench.ColumnDefinitions[1].Width = new GridLength(outline == 0 ? 0 : splitterSize);
+            _workbench.ColumnDefinitions[2].MinWidth = focus ? 0 : editorMin;
+            _workbench.ColumnDefinitions[2].MaxWidth = focus ? 0 : Metric("EditorMaxWidth");
             _workbench.ColumnDefinitions[2].Width = new GridLength(editor);
-            _workbench.ColumnDefinitions[3].Width = new GridLength(focus ? 0 : 6);
+            _workbench.ColumnDefinitions[3].Width = new GridLength(focus ? 0 : splitterSize);
             _workbench.ColumnDefinitions[4].Width = new GridLength(1, GridUnitType.Star);
             this.FindControl<Border>("OutlinePane")!.IsVisible = outline > 0;
             this.FindControl<GridSplitter>("OutlineSplitter")!.IsVisible = outline > 0;
             _editorTools.IsVisible = !focus;
             this.FindControl<GridSplitter>("DraftSplitter")!.IsVisible = !focus;
 
-            var tools = vm.IsToolsOpen ? Math.Clamp(_layout.ToolsHeight, 120, Math.Max(120, height * .44)) : 0;
-            _editorTools.RowDefinitions[1].Height = new GridLength(tools > 0 ? 6 : 0);
+            var toolsLimit = Math.Max(toolsMin, Math.Min(height * .44, height - Metric("FormMinHeight") - splitterSize - this.FindControl<Grid>("ToolsStrip")!.Bounds.Height));
+            var tools = vm.IsToolsOpen ? Math.Clamp(_layout.ToolsHeight, toolsMin, toolsLimit) : 0;
+            _editorTools.RowDefinitions[1].Height = new GridLength(tools > 0 ? splitterSize : 0);
             _editorTools.RowDefinitions[2].Height = new GridLength(tools);
-            _editorTools.RowDefinitions[2].MinHeight = tools > 0 ? 120 : 0;
-            _editorTools.RowDefinitions[2].MaxHeight = tools > 0 ? Math.Max(120, height - 166) : 0;
+            _editorTools.RowDefinitions[2].MinHeight = tools > 0 ? toolsMin : 0;
+            _editorTools.RowDefinitions[2].MaxHeight = tools > 0 ? toolsLimit : 0;
             this.FindControl<GridSplitter>("ToolsSplitter")!.IsVisible = tools > 0;
         }
         finally
@@ -115,9 +146,9 @@ public partial class MainWindow
 
         _layout = _layout with
         {
-            OutlineWidth = vm.IsOutlineCompact || !vm.IsOutlineVisible ? _layout.OutlineWidth : Math.Clamp(_workbench.ColumnDefinitions[0].ActualWidth, 160, 360),
-            EditorWidth = Math.Clamp(_workbench.ColumnDefinitions[2].ActualWidth, 320, 900),
-            ToolsHeight = vm.IsToolsOpen ? Math.Clamp(_editorTools.RowDefinitions[2].ActualHeight, 120, 500) : _layout.ToolsHeight,
+            OutlineWidth = vm.IsOutlineCompact || !vm.IsOutlineVisible ? _layout.OutlineWidth : Math.Clamp(_workbench.ColumnDefinitions[0].ActualWidth, Metric("OutlineMinWidth"), Metric("OutlineMaxWidth")),
+            EditorWidth = Math.Clamp(_workbench.ColumnDefinitions[2].ActualWidth, Metric("EditorMinWidth"), Metric("EditorMaxWidth")),
+            ToolsHeight = vm.IsToolsOpen ? Math.Clamp(_editorTools.RowDefinitions[2].ActualHeight, Metric("ToolsMinHeight"), Metric("ToolsMaxHeight")) : _layout.ToolsHeight,
         };
         SaveWorkbenchLayout();
     }
@@ -141,8 +172,14 @@ public partial class MainWindow
             splitter.DragCompleted += (_, _) => CaptureWorkbenchLayout();
             splitter.DoubleTapped += (_, e) =>
             {
-                _layout = new WorkbenchLayout { OutlineVisible = _workbenchVm?.IsOutlineVisible ?? true, ToolsOpen = _workbenchVm?.IsToolsOpen ?? false, Tool = _workbenchVm?.WorkbenchTool ?? "review" };
-                _preferredCompact = null;
+                var defaults = new WorkbenchLayout();
+                _layout = name switch
+                {
+                    "OutlineSplitter" => _layout with { OutlineWidth = defaults.OutlineWidth },
+                    "DraftSplitter" => _layout with { EditorWidth = defaults.EditorWidth },
+                    _ => _layout with { ToolsHeight = defaults.ToolsHeight },
+                };
+                if (name == "OutlineSplitter") _preferredCompact = null;
                 ApplyWorkbenchLayout();
                 SaveWorkbenchLayout();
                 e.Handled = true;

@@ -5,6 +5,14 @@ namespace DzLegal.App.Views;
 
 public partial class MainWindow : Window
 {
+    private void EnginePickerLoaded(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (sender is ComboBox picker) picker.Focus();
+    }
+
+    private void EngineFlyoutOpened(object? sender, EventArgs e) =>
+        Dispatcher.UIThread.Post(() => this.FindControl<ComboBox>("EnginePicker")?.Focus(), DispatcherPriority.Background);
+
     private readonly DispatcherTimer _autosave = new() { Interval = TimeSpan.FromSeconds(30) };
 
     public MainWindow() : this(null)
@@ -21,6 +29,8 @@ public partial class MainWindow : Window
         _preferredCompact = _layout.OutlineCompact;
         DataContextChanged += (_, _) => AttachWorkbench();
         SizeChanged += (_, _) => ApplyWorkbenchLayout();
+        _workbench.SizeChanged += (_, _) => ApplyWorkbenchLayout();
+        this.FindControl<ScrollViewer>("FormScroll")!.SizeChanged += (_, _) => FitNarrativeEditors();
         WireWorkbenchSplitters();
 
         // Autosave every 30 s and when the window closes, so a crash or an accidental close loses nothing.

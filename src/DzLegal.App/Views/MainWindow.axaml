@@ -1,436 +1,552 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Window xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:vm="using:DzLegal.Presentation.ViewModels" xmlns:app="using:DzLegal.App" xmlns:ic="using:FluentIcons.Avalonia" xmlns:views="using:DzLegal.App.Views" x:Class="DzLegal.App.Views.MainWindow" x:DataType="vm:MainWindowViewModel" Title="{Binding WindowTitle}" Width="{StaticResource WindowWidth}" Height="{StaticResource WindowHeight}" MinWidth="{StaticResource WindowMinWidth}" MinHeight="{StaticResource WindowMinHeight}" FontFamily="{StaticResource UiFont}" RequestedThemeVariant="{Binding IsDarkTheme, Converter={x:Static app:Converters.DarkTheme}}" FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}" Background="{DynamicResource CanvasBrush}">
-<Window.KeyBindings><KeyBinding Gesture="Ctrl+S" Command="{Binding SaveCommand}"/><KeyBinding Gesture="Ctrl+O" Command="{Binding OpenCommand}"/><KeyBinding Gesture="Ctrl+N" Command="{Binding NewCommand}"/><KeyBinding Gesture="Ctrl+P" Command="{Binding ExportPdfCommand}"/><KeyBinding Gesture="Ctrl+G" Command="{Binding GenerateCommand}"/></Window.KeyBindings>
-<DockPanel FlowDirection="LeftToRight">
- <Border DockPanel.Dock="Top" Background="{DynamicResource AppBarBrush}" MinHeight="{StaticResource ChromeMinHeight}" Padding="{StaticResource Inset16_8}">
-  <Grid ColumnDefinitions="Auto,*,Auto">
-   <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space3}" VerticalAlignment="Center">
-    <Viewbox Width="{StaticResource Dimension32}" Height="{StaticResource Dimension32}" FlowDirection="LeftToRight"><Canvas Width="48" Height="48" FlowDirection="LeftToRight"><Path Data="M7 7H30L42 19V44H27V18H7Z" Fill="{DynamicResource AppBarTextBrush}"/><Path Data="M7 22H20V44H7Z" Fill="#D0AA80"/></Canvas></Viewbox>
-    <TextBlock Text="DZ Legal" FontSize="{StaticResource FontSection}" FontWeight="SemiBold" Foreground="{DynamicResource AppBarTextBrush}" />
-   </StackPanel>
-   <StackPanel Grid.Column="1" Margin="{StaticResource Inset24_0}" Spacing="{StaticResource Space1}" VerticalAlignment="Center" FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}">
-    <TextBlock Text="{Binding CaseTitle}" TextWrapping="Wrap" Foreground="{DynamicResource AppBarTextBrush}" FontWeight="SemiBold"/>
-    <TextBlock Name="SaveStateText" Classes="secondary" Foreground="{DynamicResource AppBarMutedBrush}" Text="{Binding SaveStateText}" IsVisible="{Binding HasSaveState}" TextWrapping="Wrap"/>
-   </StackPanel>
-   <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="{StaticResource Space1}" VerticalAlignment="Center">
-    <Button Classes="bar" Command="{Binding NewCommand}" ToolTip.Tip="{Binding L[New]}" AutomationProperties.Name="{Binding L[New]}"><ic:SymbolIcon Symbol="DocumentAdd"/></Button>
-    <Button Classes="bar" Command="{Binding OpenCommand}" ToolTip.Tip="{Binding L[Open]}" AutomationProperties.Name="{Binding L[Open]}"><ic:SymbolIcon Symbol="FolderOpen"/></Button>
-    <Button Classes="bar" Command="{Binding SaveCommand}" ToolTip.Tip="{Binding L[Save]}" AutomationProperties.Name="{Binding L[Save]}"><ic:SymbolIcon Symbol="Save"/></Button>
-    <Button Classes="bar" Command="{Binding ToggleOutlineCommand}" ToolTip.Tip="{Binding L[WB.ToggleOutline]}" AutomationProperties.Name="{Binding L[WB.ToggleOutline]}"><ic:SymbolIcon Symbol="PanelLeft"/></Button>
-    <Button Classes="bar" Command="{Binding ToggleThemeCommand}" ToolTip.Tip="{Binding L[ToggleTheme]}" AutomationProperties.Name="{Binding L[ToggleTheme]}"><ic:SymbolIcon Symbol="WeatherMoon"/></Button>
-    <Button Name="LanguageButton" Classes="bar" Command="{Binding SwitchLanguageCommand}" Content="{Binding L[SwitchLanguage]}"/>
-   </StackPanel>
-  </Grid>
- </Border>
- <Border Name="ReplaceBar" DockPanel.Dock="Top" Classes="notice" Background="{DynamicResource WarningSoftBrush}" IsVisible="{Binding IsConfirmingReplace}" FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}">
-  <StackPanel Spacing="{StaticResource Space2}"><TextBlock Text="{Binding ReplacePrompt}" TextWrapping="Wrap" FontWeight="SemiBold"/><WrapPanel><Button Classes="primary" Command="{Binding SaveThenReplaceCommand}" Content="{Binding L[SaveFirst]}"/><Button Classes="outline" Command="{Binding ReplaceWithoutSavingCommand}" Content="{Binding L[ContinueWithoutSaving]}"/><Button Classes="subtle" Command="{Binding CancelReplaceCommand}" Content="{Binding L[Cancel]}"/></WrapPanel></StackPanel>
- </Border>
- <Border Name="RecoveryBar" DockPanel.Dock="Top" Classes="notice" Background="{DynamicResource AccentSoftBrush}" IsVisible="{Binding HasRecoverableDraft}" FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}">
-  <StackPanel Spacing="{StaticResource Space2}"><TextBlock Text="{Binding L[RecoveryPrompt]}" TextWrapping="Wrap"/><WrapPanel><Button Classes="primary" Command="{Binding RestoreLastSessionCommand}" Content="{Binding L[Restore]}"/><Button Classes="subtle" Command="{Binding DismissRecoveryCommand}" Content="{Binding L[Dismiss]}"/></WrapPanel></StackPanel>
- </Border>
- <Border Name="ErrorBar" DockPanel.Dock="Top" Classes="notice" Background="{DynamicResource DangerSoftBrush}" IsVisible="{Binding IsError}" FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}"><TextBlock Text="{Binding StatusMessage}" Foreground="{DynamicResource DangerBrush}" TextWrapping="Wrap"/></Border>
- <Border DockPanel.Dock="Bottom" Background="{DynamicResource AppBarBrush}" Padding="{StaticResource Inset12_4}">
-  <Grid ColumnDefinitions="Auto,*,Auto">
-   <TextBlock Classes="secondary" Foreground="{DynamicResource AppBarTextBrush}" Text="{Binding L[WB.Local]}" IsVisible="{Binding IsOfflineEngine}" VerticalAlignment="Center"/>
-   <Border Name="OnlineEngineChip" Background="{DynamicResource WarningSoftBrush}" IsVisible="{Binding !IsOfflineEngine}"><TextBlock Classes="secondary" Foreground="{DynamicResource WarningBrush}" Text="{Binding L[OnlineEngineStatus]}" TextWrapping="Wrap"/></Border>
-   <StackPanel Grid.Column="1" Margin="{StaticResource Inset16_0}" VerticalAlignment="Center" Spacing="{StaticResource Space1}">
-    <TextBlock Name="StatusText" Classes="secondary" Foreground="{DynamicResource AppBarTextBrush}" Text="{Binding StatusMessage}" TextWrapping="Wrap"/>
-    <WrapPanel><TextBlock Classes="secondary" Foreground="{DynamicResource AppBarMutedBrush}" Text="{Binding ModelStatusText}" Margin="{StaticResource Inset8_0}"/><TextBlock Classes="secondary" Foreground="{DynamicResource AppBarTextBrush}" Text="{Binding WorkbenchActivity.EstimateText}" IsVisible="{Binding HasWorkbenchActivity}" TextWrapping="Wrap"/><TextBlock Classes="secondary" Foreground="{DynamicResource AppBarTextBrush}" Text="{Binding WorkbenchActivity.PowerNote}" IsVisible="{Binding HasWorkbenchActivity}" TextWrapping="Wrap" Margin="{StaticResource Inset8_0}"/></WrapPanel>
-   </StackPanel>
-   <Button Grid.Column="2" Classes="bar" Command="{Binding ShowWorkbenchToolCommand}" CommandParameter="activity" Content="{Binding L[WB.WatchActivity]}"/>
-  </Grid>
- </Border>
- <Grid Name="WorkbenchGrid" FlowDirection="LeftToRight">
-  <Grid.ColumnDefinitions><ColumnDefinition Width="224"/><ColumnDefinition Width="6"/><ColumnDefinition Width="440" MinWidth="320"/><ColumnDefinition Width="6"/><ColumnDefinition Width="*" MinWidth="440"/></Grid.ColumnDefinitions>
-  <Border Name="OutlinePane" Background="{DynamicResource SurfaceAltBrush}" FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}">
-   <DockPanel>
-    <Button DockPanel.Dock="Top" Classes="subtle" Command="{Binding ToggleOutlineCompactCommand}" ToolTip.Tip="{Binding L[WB.CompactOutline]}" AutomationProperties.Name="{Binding L[WB.CompactOutline]}"><ic:SymbolIcon Symbol="PanelLeft"/></Button>
-    <TextBlock DockPanel.Dock="Top" Text="{Binding L[WB.Outline]}" Classes="secondary" Margin="{StaticResource Inset16_8}" IsVisible="{Binding !IsOutlineCompact}"/>
-    <ListBox Name="StepsList" Classes="steps" ItemsSource="{Binding FieldGroups}" SelectedItem="{Binding SelectedStep}" Background="Transparent" AutomationProperties.Name="{Binding L[WB.Outline]}">
-     <ListBox.ItemTemplate><DataTemplate x:DataType="vm:FieldGroupViewModel">
-      <Grid ColumnDefinitions="Auto,*" ToolTip.Tip="{Binding Label}" AutomationProperties.Name="{Binding Label}">
-       <Border Background="{DynamicResource AccentSoftBrush}" Width="{StaticResource Dimension32}" Height="{StaticResource Dimension32}" CornerRadius="{StaticResource ControlRadius}"><Grid><ic:SymbolIcon Symbol="{Binding Id, Converter={x:Static app:Converters.OutlineIcon}}"/><Ellipse Width="8" Height="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" Fill="{DynamicResource SuccessBrush}" IsVisible="{Binding IsDone}"/><ic:SymbolIcon Symbol="ErrorCircle" FontSize="12.5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Foreground="{DynamicResource DangerBrush}" IsVisible="{Binding IsMissing}"/><ic:SymbolIcon Symbol="Warning" FontSize="12.5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Foreground="{DynamicResource WarningBrush}" IsVisible="{Binding IsWarning}"/></Grid></Border>
-       <StackPanel Grid.Column="1" Spacing="{StaticResource Space1}" Margin="{StaticResource Inset12_0}" VerticalAlignment="Center" IsVisible="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).IsOutlineExpanded}"><TextBlock Text="{Binding Label}" TextWrapping="Wrap"/><StackPanel Orientation="Horizontal" Spacing="{StaticResource Space1}"><ic:SymbolIcon Symbol="CheckmarkCircle" Foreground="{DynamicResource SuccessBrush}" IsVisible="{Binding IsDone}"/><ic:SymbolIcon Symbol="ErrorCircle" Foreground="{DynamicResource DangerBrush}" IsVisible="{Binding IsMissing}"/><ic:SymbolIcon Symbol="Warning" Foreground="{DynamicResource WarningBrush}" IsVisible="{Binding IsWarning}"/></StackPanel></StackPanel>
+  <Window.KeyBindings>
+    <KeyBinding Gesture="Ctrl+S" Command="{Binding SaveCommand}"/>
+    <KeyBinding Gesture="Ctrl+O" Command="{Binding OpenCommand}"/>
+    <KeyBinding Gesture="Ctrl+N" Command="{Binding NewCommand}"/>
+    <KeyBinding Gesture="Ctrl+P" Command="{Binding ExportPdfCommand}"/>
+    <KeyBinding Gesture="Ctrl+G" Command="{Binding GenerateCommand}"/>
+  </Window.KeyBindings>
+  <DockPanel FlowDirection="LeftToRight">
+    <Border DockPanel.Dock="Top" Background="{DynamicResource AppBarBrush}" MinHeight="{StaticResource ChromeMinHeight}" Padding="{StaticResource Inset16_8}">
+      <Grid ColumnDefinitions="Auto,*,Auto">
+        <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space3}" VerticalAlignment="Center">
+          <Viewbox Width="{StaticResource Space7}" Height="{StaticResource Space7}" FlowDirection="LeftToRight">
+            <Canvas Width="{StaticResource MarkCanvasSize}" Height="{StaticResource MarkCanvasSize}" FlowDirection="LeftToRight">
+              <Path Data="M7 7H30L42 19V44H27V18H7Z" Fill="{DynamicResource AppBarTextBrush}"/>
+              <Path Data="M7 22H20V44H7Z" Fill="{StaticResource BrandGoldBrush}"/>
+            </Canvas>
+          </Viewbox>
+          <TextBlock Text="DZ Legal" FontSize="{StaticResource FontSection}" FontWeight="SemiBold" Foreground="{DynamicResource AppBarTextBrush}"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Margin="{StaticResource Inset24_0}" Spacing="{StaticResource Space1}" VerticalAlignment="Center" FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}">
+          <TextBlock Text="{Binding CaseTitle}" TextWrapping="Wrap" Foreground="{DynamicResource AppBarTextBrush}" FontWeight="SemiBold"/>
+          <TextBlock Name="SaveStateText" Classes="secondary" Foreground="{DynamicResource AppBarMutedBrush}" Text="{Binding SaveStateText}" IsVisible="{Binding HasSaveState}" TextWrapping="Wrap"/>
+        </StackPanel>
+        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="{StaticResource Space1}" VerticalAlignment="Center">
+          <Button Classes="bar" Command="{Binding NewCommand}" ToolTip.Tip="{Binding L[New]}" AutomationProperties.Name="{Binding L[New]}">
+            <ic:SymbolIcon Symbol="DocumentAdd"/>
+          </Button>
+          <Button Classes="bar" Command="{Binding OpenCommand}" ToolTip.Tip="{Binding L[Open]}" AutomationProperties.Name="{Binding L[Open]}">
+            <ic:SymbolIcon Symbol="FolderOpen"/>
+          </Button>
+          <Button Classes="bar" Command="{Binding SaveCommand}" ToolTip.Tip="{Binding L[Save]}" AutomationProperties.Name="{Binding L[Save]}">
+            <ic:SymbolIcon Symbol="Save"/>
+          </Button>
+          <Button Classes="bar" Command="{Binding ToggleOutlineCommand}" ToolTip.Tip="{Binding L[WB.ToggleOutline]}" AutomationProperties.Name="{Binding L[WB.ToggleOutline]}">
+            <ic:SymbolIcon Symbol="PanelLeft"/>
+          </Button>
+          <Button Classes="bar" Command="{Binding ToggleThemeCommand}" ToolTip.Tip="{Binding L[ToggleTheme]}" AutomationProperties.Name="{Binding L[ToggleTheme]}">
+            <ic:SymbolIcon Symbol="WeatherMoon"/>
+          </Button>
+          <Button Name="LanguageButton" Classes="bar" Command="{Binding SwitchLanguageCommand}" Content="{Binding L[SwitchLanguage]}"/>
+        </StackPanel>
       </Grid>
-     </DataTemplate></ListBox.ItemTemplate>
-    </ListBox>
-   </DockPanel>
-  </Border>
-  <GridSplitter Name="OutlineSplitter" Grid.Column="1" ResizeDirection="Columns" ResizeBehavior="PreviousAndNext" ShowsPreview="True" KeyboardIncrement="16" HorizontalAlignment="Stretch" AutomationProperties.Name="{Binding L[WB.ResizeOutline]}"/>
-  <Grid Grid.Column="2" Name="EditorToolsGrid" FlowDirection="LeftToRight">
-   <Grid.RowDefinitions><RowDefinition Height="*" MinHeight="160"/><RowDefinition Height="0"/><RowDefinition Height="0"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-   <Grid Grid.Row="3" Name="ToolsStrip" ColumnDefinitions="*,Auto" Background="{DynamicResource SurfaceAltBrush}" FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}">
-    <WrapPanel><Button Classes="subtle" Classes.active="{Binding IsReviewTool}" Command="{Binding ShowWorkbenchToolCommand}" CommandParameter="review" Content="{Binding L[WB.BeforeExport]}"/><Button Classes="subtle" Classes.active="{Binding IsSourceTool}" Command="{Binding ShowWorkbenchToolCommand}" CommandParameter="source" Content="{Binding L[WB.Source]}"/><Button Classes="subtle" Classes.active="{Binding IsAssistantTool}" Command="{Binding ShowWorkbenchToolCommand}" CommandParameter="assistant" Content="{Binding L[WB.Assistant]}"/><Button Classes="subtle" Classes.active="{Binding IsActivityTool}" Command="{Binding ShowWorkbenchToolCommand}" CommandParameter="activity" Content="{Binding L[WB.Activity]}"/></WrapPanel>
-    <Button Grid.Column="1" Classes="subtle" Command="{Binding HideWorkbenchToolsCommand}" IsVisible="{Binding IsToolsOpen}" Content="×" AutomationProperties.Name="{Binding L[WB.HideTools]}"/>
-   </Grid>
-   <Border Name="FormPanel" Classes="panel" FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}">
-    <DockPanel>
-     <Border DockPanel.Dock="Top" Classes="notice" Background="{DynamicResource SurfaceAltBrush}"><TextBlock Classes="secondary" Text="{Binding L[CaseForm]}" FontWeight="SemiBold"/></Border>
-     <Border DockPanel.Dock="Bottom" Classes="editor-actions" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource HairlineBrush}">
-  <StackPanel Spacing="8">
-    <ComboBox Name="EnginePicker" HorizontalAlignment="Stretch" ItemsSource="{Binding Providers}" SelectedItem="{Binding SelectedProvider}" AutomationProperties.Name="{Binding L[ProviderLabel]}">
-      <ComboBox.ItemTemplate><DataTemplate x:DataType="vm:ProviderOption"><TextBlock TextWrapping="Wrap" Text="{Binding DisplayName}" /></DataTemplate></ComboBox.ItemTemplate>
-    </ComboBox>
-    <WrapPanel>
-      <Button Name="GenerateButton" Classes="primary" Command="{Binding GenerateCommand}" Content="{Binding L[Generate]}" ToolTip.Tip="{Binding L[GenerateHint]}" />
-      <Button Classes="outline" Command="{Binding GenerateCancelCommand}" Content="{Binding L[Cancel]}" IsVisible="{Binding GenerateCommand.IsRunning}" />
-      <Button Classes="subtle" Command="{Binding CheckModelStatusCommand}" Content="{Binding L[WB.CheckEngine]}" />
-    </WrapPanel>
-    <TextBlock Classes="secondary" TextWrapping="Wrap" Foreground="{DynamicResource WarningBrush}" Text="{Binding ModelStatusText}" IsVisible="{Binding !IsModelReady}" />
-  </StackPanel>
-</Border>
-     <Grid DockPanel.Dock="Bottom" ColumnDefinitions="Auto,*,Auto" Margin="{StaticResource Inset12_8}">
-      <Button Classes="subtle" Command="{Binding PreviousStepCommand}" Content="{Binding L[Previous]}"/>
-      <TextBlock Grid.Column="1" Classes="secondary" Text="{Binding StepPosition}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-      <Button Grid.Column="2" Classes="outline" Command="{Binding NextStepCommand}" Content="{Binding L[Next]}"/>
-     </Grid>
-     <Border Name="BackgroundAnalysis" DockPanel.Dock="Bottom" Classes="notice" Background="{DynamicResource AccentSoftBrush}" IsVisible="{Binding ShowsBackgroundAnalysis}">
-      <Button Classes="subtle" Command="{Binding ShowWorkbenchToolCommand}" CommandParameter="activity"><StackPanel Spacing="{StaticResource Space1}"><TextBlock Text="{Binding L[AnalysisInBackground]}" TextWrapping="Wrap"/><TextBlock Classes="secondary" Text="{Binding AnalysisActivity.Elapsed}"/></StackPanel></Button>
-     </Border>
-     <ScrollViewer Name="FormScroll" HorizontalScrollBarVisibility="Disabled">
-      <StackPanel Margin="{StaticResource Inset16}" Spacing="{StaticResource Space3}">
-       <TextBlock FontSize="{StaticResource FontTitle}" FontWeight="SemiBold" Text="{Binding SelectedStep.Label}" TextWrapping="Wrap"/>
-                     <!-- Grounds step: the analysis (model reads the facts, the library is searched, the model proposes articles). -->
-              <StackPanel Name="GroundsPanel" Spacing="{StaticResource Dimension10}" Margin="{StaticResource Inset0_0_8_12}" IsVisible="{Binding IsGroundsStep}">
-                <TextBlock Classes="muted" FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Text="{Binding L[GroundsIntro]}" />
-                <StackPanel Orientation="Horizontal" Spacing="{StaticResource Dimension6}" IsVisible="{Binding CanAnalyseGrounds}">
-                  <Button Name="AnalyseButton" Classes="primary" Command="{Binding AnalyseGroundsCommand}">
-                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource Dimension6}">
-                      <ic:SymbolIcon Symbol="Sparkle" Foreground="White" FontSize="{StaticResource FontBody}" />
-                      <TextBlock Foreground="White" Text="{Binding L[AnalyseGrounds]}" />
-                    </StackPanel>
-                  </Button>
-                  <Button Classes="outline" Command="{Binding AnalyseGroundsCancelCommand}" Content="{Binding L[Cancel]}" IsVisible="{Binding AnalyseGroundsCommand.IsRunning}" />
-                </StackPanel>
-                <TextBlock Name="AutomaticAnalysisNote" Classes="muted" FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Text="{Binding L[AnalysisStartedAutomatically]}" IsVisible="{Binding IsAnalysisAutomatic}" />
-                <ContentControl Name="AnalysisActivityView" Content="{Binding AnalysisActivity}" ContentTemplate="{StaticResource ModelActivityTemplate}" />
-                <TextBlock Classes="muted" FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Text="{Binding AnalysisStatus}"
-                           IsVisible="{Binding AnalysisStatus, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
-                <Border Name="StaleBanner" Background="{DynamicResource WarningSoftBrush}" CornerRadius="{StaticResource PanelRadius}" Padding="{StaticResource Inset8_4}" IsVisible="{Binding IsAnalysisStale}">
-                  <TextBlock FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Foreground="{DynamicResource WarningBrush}" Text="{Binding L[AnalysisStale]}" />
-                </Border>
-
-                <Border Classes="card" Padding="{StaticResource Inset8}" IsVisible="{Binding HasReading}">
-                  <StackPanel Spacing="{StaticResource Dimension4}">
-                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource Dimension6}">
-                      <TextBlock FontSize="{StaticResource FontSecondary}" FontWeight="SemiBold" Text="{Binding L[ModelReading]}" />
-                      <Border Classes="chip" Padding="{StaticResource Inset4_0}"><TextBlock FontSize="{StaticResource FontSecondary}" Text="{Binding L[ModelTag]}" /></Border>
-                    </StackPanel>
-                    <TextBlock FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap"><Run FontWeight="SemiBold" Text="{Binding L[ReadingRelationship]}" /><Run Text=" " /><Run Text="{Binding ReadingRelationship}" /></TextBlock>
-                    <TextBlock FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap"><Run FontWeight="SemiBold" Text="{Binding L[ReadingBreach]}" /><Run Text=" " /><Run Text="{Binding ReadingBreach}" /></TextBlock>
-                    <TextBlock FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap"><Run FontWeight="SemiBold" Text="{Binding L[ReadingSought]}" /><Run Text=" " /><Run Text="{Binding ReadingSought}" /></TextBlock>
-                    <TextBlock FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap"><Run FontWeight="SemiBold" Text="{Binding L[ReadingClaims]}" /><Run Text=" " /><Run Text="{Binding ReadingClaims}" /></TextBlock>
-                    <TextBlock FontSize="{StaticResource FontSecondary}" Foreground="{DynamicResource SuccessBrush}" Text="{Binding L[ClaimConfirmedNote]}" IsVisible="{Binding IsClaimConfirmed}" />
-                  </StackPanel>
-                </Border>
-
-                <!-- Nothing is ticked until the lawyer confirms the claim type the model recognised. -->
-                <Border Name="ClaimConfirmBar" CornerRadius="{StaticResource PanelRadius}" Padding="{StaticResource Inset8}" Background="{DynamicResource WarningSoftBrush}" IsVisible="{Binding NeedsClaimConfirmation}">
-                  <StackPanel Spacing="{StaticResource Dimension8}">
-                    <TextBlock FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Text="{Binding L[ClaimConfirmPrompt]}" />
-                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource Dimension8}">
-                      <Button Name="ConfirmClaimButton" Classes="primary" Command="{Binding ConfirmClaimCommand}">
-                        <TextBlock Foreground="White" Text="{Binding L[ConfirmClaim]}" />
-                      </Button>
-                      <Button Classes="outline" Command="{Binding RejectClaimCommand}" Content="{Binding L[RejectClaim]}" />
-                    </StackPanel>
-                  </StackPanel>
-                </Border>
-
-                <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding HasAnalysedArticles}">
-                  <TextBlock FontSize="{StaticResource FontBody}" FontWeight="SemiBold" VerticalAlignment="Center" Text="{Binding L[ProposedArticles]}" />
-                  <Button Grid.Column="1" Classes="subtle" FontSize="{StaticResource FontSecondary}" Command="{Binding TickBasisArticlesCommand}" Content="{Binding L[TickBasis]}" />
-                </Grid>
-                <ItemsControl Name="AnalysedArticlesList" ItemsSource="{Binding AnalysedArticles}" ItemTemplate="{StaticResource ArticleChoiceTemplate}" />
-
-                <TextBlock FontSize="{StaticResource FontBody}" FontWeight="SemiBold" Text="{Binding L[SelectedGrounds]}" />
-                <TextBlock Classes="muted" FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Text="{Binding L[SelectedGroundsEmpty]}" IsVisible="{Binding !HasSelectedArticles}" />
-                <ItemsControl Name="SelectedGroundsList" ItemsSource="{Binding SelectedGrounds}">
-                  <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
-                  <ItemsControl.ItemTemplate>
-                    <DataTemplate x:DataType="vm:SelectedArticleViewModel">
-                      <Border Classes="chip" Padding="{StaticResource Inset8_0}" Margin="{StaticResource Inset0_0_4_4}">
-                        <StackPanel Orientation="Horizontal" Spacing="{StaticResource Dimension4}">
-                          <TextBlock FontSize="{StaticResource FontSecondary}" VerticalAlignment="Center" Text="{Binding Citation}" />
-                          <Button Classes="subtle" Padding="{StaticResource Inset0}" Command="{Binding RemoveCommand}"><ic:SymbolIcon Symbol="Dismiss" FontSize="{StaticResource FontSecondary}" /></Button>
-                        </StackPanel>
-                      </Border>
-                    </DataTemplate>
-                  </ItemsControl.ItemTemplate>
-                </ItemsControl>
-              </StackPanel>
-
-              <!-- Requests / Documents steps: the usual lines of the claim types the analysis recognised. -->
-              <StackPanel Name="RequestsHelpPanel" Spacing="{StaticResource Dimension6}" Margin="{StaticResource Inset0_0_8_12}" IsVisible="{Binding IsRequestsStep}">
-                <Border Background="{DynamicResource WarningSoftBrush}" CornerRadius="{StaticResource PanelRadius}" Padding="{StaticResource Inset8_4}" IsVisible="{Binding HasPrerequisites}">
-                  <TextBlock FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Foreground="{DynamicResource WarningBrush}" Text="{Binding Prerequisites}" />
-                </Border>
-                <TextBlock FontSize="{StaticResource FontSecondary}" FontWeight="SemiBold" Text="{Binding L[UsualRequests]}" IsVisible="{Binding HasRequestChips}" />
-                <TextBlock Classes="muted" FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Text="{Binding L[UsualLinesNeedAnalysis]}" IsVisible="{Binding !HasRequestChips}" />
-                <ItemsControl ItemsSource="{Binding RequestChips}" ItemTemplate="{StaticResource InsertChipTemplate}" />
-
-                <!-- The document shows the lawyer's own lines; the AI may only propose a checked formal wording. -->
-                <TextBlock Classes="muted" FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Margin="{StaticResource Inset0_4_0_0}" Text="{Binding L[RequestsWordingIntro]}" />
-                <StackPanel Orientation="Horizontal" Spacing="{StaticResource Dimension8}" IsVisible="{Binding CanProposeRequestsWording}">
-                  <Button Name="ProposeRequestsWordingButton" Classes="outline" Command="{Binding ProposeRequestsWordingCommand}">
-                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource Dimension6}">
-                      <ic:SymbolIcon Symbol="Sparkle" FontSize="{StaticResource FontBody}" />
-                      <TextBlock Text="{Binding L[ProposeRequestsWording]}" />
-                    </StackPanel>
-                  </Button>
-                  <Button Classes="outline" Command="{Binding ProposeRequestsWordingCancelCommand}" Content="{Binding L[Cancel]}" IsVisible="{Binding ProposeRequestsWordingCommand.IsRunning}" />
-                </StackPanel>
-                <TextBlock Name="RequestsWordingStatusText" Classes="muted" FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Text="{Binding RequestsWordingStatus}"
-                           IsVisible="{Binding RequestsWordingStatus, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
-                <Border Classes="card" Padding="{StaticResource Inset8}" IsVisible="{Binding HasRequestsProposal}">
-                  <StackPanel Spacing="{StaticResource Dimension8}">
-                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource Dimension6}">
-                      <TextBlock FontSize="{StaticResource FontSecondary}" FontWeight="SemiBold" Text="{Binding L[RequestsWordingLabel]}" />
-                      <Border Classes="chip" Padding="{StaticResource Inset4_0}"><TextBlock FontSize="{StaticResource FontSecondary}" Text="{Binding L[ModelTag]}" /></Border>
-                    </StackPanel>
-                    <TextBlock Name="RequestsProposalText" FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" FlowDirection="RightToLeft" Text="{Binding RequestsProposal}" />
-                    <!-- A suggestion to copy from, not to accept (audit C-02, as on the web demo): its checks see amounts and counts, not who must pay whom. -->
-                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource Dimension8}">
-                      <Button Classes="outline" Command="{Binding RejectRequestsProposalCommand}" Content="{Binding L[RejectRequestsWording]}" />
-                    </StackPanel>
-                  </StackPanel>
-                </Border>
-              </StackPanel>
-              <StackPanel Spacing="{StaticResource Dimension6}" Margin="{StaticResource Inset0_0_8_12}" IsVisible="{Binding IsDocumentsStep}">
-                <Border Background="{DynamicResource WarningSoftBrush}" CornerRadius="{StaticResource PanelRadius}" Padding="{StaticResource Inset8_4}" IsVisible="{Binding HasPrerequisites}">
-                  <TextBlock FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Foreground="{DynamicResource WarningBrush}" Text="{Binding Prerequisites}" />
-                </Border>
-                <TextBlock FontSize="{StaticResource FontSecondary}" FontWeight="SemiBold" Text="{Binding L[UsualDocuments]}" IsVisible="{Binding HasDocumentChips}" />
-                <ItemsControl ItemsSource="{Binding DocumentChips}" ItemTemplate="{StaticResource InsertChipTemplate}" />
-              </StackPanel>
-              <ItemsControl ItemsSource="{Binding SelectedStep.Fields}">
-                <ItemsControl.ItemTemplate>
-                  <DataTemplate x:DataType="vm:FieldViewModel">
-                    <StackPanel Margin="{StaticResource Inset0_0_8_12}" Spacing="{StaticResource Dimension5}" IsVisible="{Binding IsVisible}">
-                      <TextBlock FontSize="{StaticResource FontSecondary}" FontWeight="Medium" Text="{Binding Label}" IsVisible="{Binding !IsBoolean}" />
-                      <TextBox Classes="input" Classes.missing="{Binding IsMissing}" Text="{Binding Value}" PlaceholderText="{Binding Hint}" IsVisible="{Binding IsSingleLine}" />
-                      <TextBox Classes="input" Classes.missing="{Binding IsMissing}" Text="{Binding Value}" PlaceholderText="{Binding Hint}" IsVisible="{Binding IsMultiline}"
-                               AcceptsReturn="True" TextWrapping="Wrap" MinHeight="{StaticResource Dimension96}" MaxHeight="{StaticResource Dimension260}" />
-                      <CheckBox IsChecked="{Binding BoolValue}" Content="{Binding Label}" IsVisible="{Binding IsBoolean}" />
-                      <ComboBox ItemsSource="{Binding Options}" SelectedItem="{Binding SelectedOption}" IsVisible="{Binding IsChoice}"
-                                MinWidth="{StaticResource Dimension180}" CornerRadius="{StaticResource PanelRadius}" PlaceholderText="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[ChooseOption]}">
-                        <ComboBox.ItemTemplate>
-                          <DataTemplate x:DataType="vm:ChoiceOptionViewModel">
-                            <TextBlock Text="{Binding Label}" />
-                          </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                      </ComboBox>
-                      <TextBlock FontSize="{StaticResource FontSecondary}" Foreground="{DynamicResource DangerBrush}" Text="{Binding MissingNote}" IsVisible="{Binding IsMissing}" />
-                      <TextBlock FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Foreground="{DynamicResource DangerBrush}" Text="{Binding TooLongNote}" IsVisible="{Binding IsTooLong}" />
-                    </StackPanel>
-                  </DataTemplate>
-                </ItemsControl.ItemTemplate>
-              </ItemsControl>
-
-              <!-- Grounds step: add an article by hand (number or words, searched in the official texts). -->
-              <StackPanel Spacing="{StaticResource Dimension6}" Margin="{StaticResource Inset0_0_8_8}" IsVisible="{Binding IsGroundsStep}">
-                <TextBlock FontSize="{StaticResource FontSecondary}" FontWeight="SemiBold" Text="{Binding L[AddArticleByHand]}" />
-                <TextBox Classes="input" Name="ArticleSearchBox" Text="{Binding ArticleQuery}" PlaceholderText="{Binding L[ArticleSearchPlaceholder]}" />
-                <TextBlock Classes="muted" FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Text="{Binding ArticleSearchHint}"
-                           IsVisible="{Binding ArticleSearchHint, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
-                <ItemsControl ItemsSource="{Binding ArticleResults}" ItemTemplate="{StaticResource ArticleChoiceTemplate}" />
-              </StackPanel>
-
+    </Border>
+    <Border Name="ReplaceBar" DockPanel.Dock="Top" Classes="notice" Background="{DynamicResource WarningSoftBrush}" IsVisible="{Binding IsConfirmingReplace}" FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}">
+      <StackPanel Spacing="{StaticResource Space2}">
+        <TextBlock Text="{Binding ReplacePrompt}" TextWrapping="Wrap" FontWeight="SemiBold"/>
+        <WrapPanel>
+          <Button Classes="primary" Command="{Binding SaveThenReplaceCommand}" Content="{Binding L[SaveFirst]}"/>
+          <Button Classes="outline" Command="{Binding ReplaceWithoutSavingCommand}" Content="{Binding L[ContinueWithoutSaving]}"/>
+          <Button Classes="subtle" Command="{Binding CancelReplaceCommand}" Content="{Binding L[Cancel]}"/>
+        </WrapPanel>
       </StackPanel>
-     </ScrollViewer>
-    </DockPanel>
-   </Border>
-   <GridSplitter Name="ToolsSplitter" Grid.Row="1" ResizeDirection="Rows" ResizeBehavior="PreviousAndNext" ShowsPreview="True" KeyboardIncrement="16" HorizontalAlignment="Stretch" AutomationProperties.Name="{Binding L[WB.ResizeTools]}"/>
-   <Border Grid.Row="2" Name="ToolsPanel" IsVisible="{Binding IsToolsOpen}" Background="{DynamicResource SurfaceBrush}" FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}">
-    <DockPanel>
-     <Grid>
-            <!-- Compliance (the assistant takes its place while open, so the paper keeps its width) -->
-      <Border Name="ReviewPanel" Classes="tool-page" IsVisible="{Binding IsReviewTool}">
-        <ScrollViewer HorizontalScrollBarVisibility="Disabled"><StackPanel Spacing="{StaticResource Space2}">
-          <TextBlock DockPanel.Dock="Top" Classes="title" Text="{Binding L[Compliance]}" Margin="{StaticResource Inset0_0_0_12}" />
-
-          <Expander DockPanel.Dock="Bottom" Header="{Binding L[Evaluation]}" IsExpanded="{Binding IsEvaluationOpen}" HorizontalAlignment="Stretch" Margin="{StaticResource Inset0_8_0_0}">
-            <StackPanel Spacing="{StaticResource Dimension8}">
-              <TextBlock Text="{Binding L[Verdict]}" />
-              <ComboBox ItemsSource="{Binding Verdicts}" SelectedItem="{Binding SelectedVerdict}" HorizontalAlignment="Stretch">
-                <ComboBox.ItemTemplate>
-                  <DataTemplate x:DataType="vm:VerdictOption">
-                    <TextBlock Text="{Binding DisplayName}" />
-                  </DataTemplate>
-                </ComboBox.ItemTemplate>
-              </ComboBox>
-              <TextBlock Text="{Binding L[MinutesSaved]}" />
-              <TextBox Width="{StaticResource Dimension120}" HorizontalAlignment="Left" Text="{Binding MinutesSaved}" />
-              <TextBlock Text="{Binding L[Comments]}" />
-              <TextBox AcceptsReturn="True" TextWrapping="Wrap" MinHeight="{StaticResource Dimension48}" Text="{Binding EvaluationComments}" />
-              <Button Classes="primary" Command="{Binding SaveEvaluationCommand}" Content="{Binding L[SaveEvaluation]}" />
-            </StackPanel>
-          </Expander>
-
-          <ScrollViewer>
-            <StackPanel Spacing="{StaticResource Dimension10}">
-              <Border Classes="notice" Background="{DynamicResource WarningSoftBrush}" IsVisible="{Binding ShowsExportBlockers}"><StackPanel Spacing="{StaticResource Dimension8}"><TextBlock FontWeight="SemiBold" Text="{Binding ExportBlockersTitle}" /><TextBlock TextWrapping="Wrap" Text="{Binding ExportBlockers}" /></StackPanel></Border>
-              <!-- Score -->
-              <Border Classes="card" Padding="{StaticResource Inset12}" Background="{DynamicResource SurfaceAltBrush}">
-                <StackPanel Spacing="{StaticResource Dimension6}">
-                  <Grid ColumnDefinitions="*,Auto">
-                    <TextBlock Classes="muted" VerticalAlignment="Center" Text="{Binding L[ComplianceScore]}" />
-                    <TextBlock Grid.Column="1" FontSize="{StaticResource FontTitle}" FontWeight="Bold" Text="{Binding ScoreText}" />
-                  </Grid>
-                  <ProgressBar Minimum="0" Maximum="{Binding ApplicableCount}" Value="{Binding PresentCount}" Height="{StaticResource Dimension6}" CornerRadius="{StaticResource PanelRadius}" />
-                  <Grid ColumnDefinitions="Auto,*">
-                    <ic:SymbolIcon Symbol="CheckmarkCircle" FontSize="{StaticResource FontBody}" Margin="{StaticResource Inset0_0_4_0}" VerticalAlignment="Top" Foreground="{DynamicResource SuccessBrush}" IsVisible="{Binding IsAdmissible}" />
-                    <ic:SymbolIcon Symbol="ErrorCircle" FontSize="{StaticResource FontBody}" Margin="{StaticResource Inset0_0_4_0}" VerticalAlignment="Top" Foreground="{DynamicResource DangerBrush}" IsVisible="{Binding !IsAdmissible}" />
-                    <TextBlock Grid.Column="1" Name="SummaryText" FontWeight="SemiBold" TextWrapping="Wrap" Text="{Binding Summary}" />
-                  </Grid>
-                  <TextBlock TextWrapping="Wrap" FontSize="{StaticResource FontSecondary}" Foreground="{DynamicResource WarningBrush}" Text="{Binding WarningSummary}"
-                             IsVisible="{Binding WarningSummary, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
-                  <TextBlock Classes="muted" TextWrapping="Wrap" Text="{Binding L[SummaryDisclaimer]}" />
-                  <TextBlock Classes="muted" FontStyle="Italic" TextWrapping="Wrap" Text="{Binding L[Unverified]}" />
+    </Border>
+    <Border Name="RecoveryBar" DockPanel.Dock="Top" Classes="notice" Background="{DynamicResource AccentSoftBrush}" IsVisible="{Binding HasRecoverableDraft}" FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}">
+      <StackPanel Spacing="{StaticResource Space2}">
+        <TextBlock Text="{Binding L[RecoveryPrompt]}" TextWrapping="Wrap"/>
+        <WrapPanel>
+          <Button Classes="primary" Command="{Binding RestoreLastSessionCommand}" Content="{Binding L[Restore]}"/>
+          <Button Classes="subtle" Command="{Binding DismissRecoveryCommand}" Content="{Binding L[Dismiss]}"/>
+        </WrapPanel>
+      </StackPanel>
+    </Border>
+    <Border Name="ErrorBar" DockPanel.Dock="Top" Classes="notice" Background="{DynamicResource DangerSoftBrush}" IsVisible="{Binding IsError}" FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}">
+      <TextBlock Text="{Binding StatusMessage}" Foreground="{DynamicResource DangerBrush}" TextWrapping="Wrap"/>
+    </Border>
+    <Border DockPanel.Dock="Bottom" Background="{DynamicResource AppBarBrush}" Padding="{StaticResource Inset12_4}">
+      <Grid ColumnDefinitions="Auto,*,Auto">
+        <TextBlock Classes="secondary" Foreground="{DynamicResource AppBarTextBrush}" Text="{Binding L[WB.Local]}" IsVisible="{Binding IsOfflineEngine}" VerticalAlignment="Center"/>
+        <Border Name="OnlineEngineChip" Background="{DynamicResource WarningSoftBrush}" IsVisible="{Binding !IsOfflineEngine}">
+          <TextBlock Classes="secondary" Foreground="{DynamicResource WarningBrush}" Text="{Binding L[OnlineEngineStatus]}" TextWrapping="Wrap"/>
+        </Border>
+        <StackPanel Grid.Column="1" Margin="{StaticResource Inset16_0}" VerticalAlignment="Center" Spacing="{StaticResource Space1}">
+          <TextBlock Name="StatusText" Classes="secondary" Foreground="{DynamicResource AppBarTextBrush}" Text="{Binding StatusMessage}" TextWrapping="Wrap"/>
+          <WrapPanel>
+            <TextBlock Text="{Binding StepPosition}" Classes="secondary" Foreground="{DynamicResource AppBarMutedBrush}" Margin="{StaticResource Inset8_0}"/>
+            <TextBlock Classes="secondary" Foreground="{DynamicResource AppBarMutedBrush}" Text="{Binding ModelStatusText}" Margin="{StaticResource Inset8_0}"/>
+            <TextBlock Classes="secondary" Foreground="{DynamicResource AppBarTextBrush}" Text="{Binding WorkbenchActivity.EstimateText}" IsVisible="{Binding HasWorkbenchActivity}" TextWrapping="Wrap"/>
+            <TextBlock Classes="secondary" Foreground="{DynamicResource AppBarTextBrush}" Text="{Binding WorkbenchActivity.PowerNote}" IsVisible="{Binding HasWorkbenchActivity}" TextWrapping="Wrap" Margin="{StaticResource Inset8_0}"/>
+          </WrapPanel>
+        </StackPanel>
+        <Button Grid.Column="2" Classes="bar" Command="{Binding ShowWorkbenchToolCommand}" CommandParameter="activity" Content="{Binding L[WB.WatchActivity]}"/>
+      </Grid>
+    </Border>
+    <Grid Name="WorkbenchGrid" FlowDirection="LeftToRight">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition/>
+        <ColumnDefinition/>
+        <ColumnDefinition MinWidth="{StaticResource EditorMinWidth}"/>
+        <ColumnDefinition/>
+        <ColumnDefinition Width="*" MinWidth="{StaticResource DraftMinWidth}"/>
+      </Grid.ColumnDefinitions>
+      <Border Name="OutlinePane" Background="{DynamicResource SurfaceAltBrush}" FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}">
+        <DockPanel>
+          <Button DockPanel.Dock="Top" Classes="subtle" Command="{Binding ToggleOutlineCompactCommand}" ToolTip.Tip="{Binding L[WB.CompactOutline]}" AutomationProperties.Name="{Binding L[WB.CompactOutline]}">
+            <ic:SymbolIcon Symbol="PanelLeft"/>
+          </Button>
+          <TextBlock DockPanel.Dock="Top" Text="{Binding L[WB.Outline]}" Classes="secondary" Margin="{StaticResource Inset16_8}" IsVisible="{Binding !IsOutlineCompact}"/>
+          <ListBox Name="StepsList" Classes="steps" ItemsSource="{Binding FieldGroups}" SelectedItem="{Binding SelectedStep}" Background="Transparent" AutomationProperties.Name="{Binding L[WB.Outline]}">
+            <ListBox.ItemTemplate>
+              <DataTemplate x:DataType="vm:FieldGroupViewModel">
+                <Grid ColumnDefinitions="Auto,*" ToolTip.Tip="{Binding Label}" AutomationProperties.Name="{Binding Label}">
+                  <Border Background="{DynamicResource AccentSoftBrush}" Width="{StaticResource Space7}" Height="{StaticResource Space7}" CornerRadius="{StaticResource ControlRadius}">
+                    <Grid>
+                      <ic:SymbolIcon Symbol="{Binding Id, Converter={x:Static app:Converters.OutlineIcon}}"/>
+                      <Ellipse Width="{StaticResource Space2}" Height="{StaticResource Space2}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Fill="{DynamicResource SuccessBrush}" IsVisible="{Binding IsDone}"/>
+                      <ic:SymbolIcon Symbol="ErrorCircle" FontSize="{StaticResource IconStatus}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Foreground="{DynamicResource DangerBrush}" IsVisible="{Binding IsMissing}"/>
+                      <ic:SymbolIcon Symbol="Warning" FontSize="{StaticResource IconStatus}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Foreground="{DynamicResource WarningBrush}" IsVisible="{Binding IsWarning}"/>
+                    </Grid>
+                  </Border>
+                  <StackPanel Grid.Column="1" Spacing="{StaticResource Space1}" Margin="{StaticResource Inset12_0}" VerticalAlignment="Center" IsVisible="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).IsOutlineExpanded}">
+                    <TextBlock Text="{Binding Label}" TextWrapping="Wrap"/>
+                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space1}">
+                      <ic:SymbolIcon Symbol="CheckmarkCircle" Foreground="{DynamicResource SuccessBrush}" IsVisible="{Binding IsDone}"/>
+                      <ic:SymbolIcon Symbol="ErrorCircle" Foreground="{DynamicResource DangerBrush}" IsVisible="{Binding IsMissing}"/>
+                      <ic:SymbolIcon Symbol="Warning" Foreground="{DynamicResource WarningBrush}" IsVisible="{Binding IsWarning}"/>
+                    </StackPanel>
+                  </StackPanel>
+                </Grid>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </DockPanel>
+      </Border>
+      <GridSplitter Name="OutlineSplitter" Grid.Column="1" ResizeDirection="Columns" ResizeBehavior="PreviousAndNext" ShowsPreview="True" KeyboardIncrement="{StaticResource Space4}" HorizontalAlignment="Stretch" AutomationProperties.Name="{Binding L[WB.ResizeOutline]}"/>
+      <Grid Grid.Column="2" Name="EditorToolsGrid" FlowDirection="LeftToRight">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="*" MinHeight="{StaticResource FormMinHeight}"/>
+          <RowDefinition Height="0"/>
+          <RowDefinition Height="0"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="3" Name="ToolsStrip" ColumnDefinitions="*,Auto" Background="{DynamicResource SurfaceAltBrush}" FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}">
+          <WrapPanel>
+            <Button Classes="subtle" Classes.active="{Binding IsReviewTool}" Command="{Binding ShowWorkbenchToolCommand}" CommandParameter="review" Content="{Binding L[WB.BeforeExport]}"/>
+            <Button Classes="subtle" Classes.active="{Binding IsSourceTool}" Command="{Binding ShowWorkbenchToolCommand}" CommandParameter="source" Content="{Binding L[WB.Source]}"/>
+            <Button Classes="subtle" Classes.active="{Binding IsAssistantTool}" Command="{Binding ShowWorkbenchToolCommand}" CommandParameter="assistant" Content="{Binding L[WB.Assistant]}"/>
+            <Button Classes="subtle" Classes.active="{Binding IsActivityTool}" Command="{Binding ShowWorkbenchToolCommand}" CommandParameter="activity" Content="{Binding L[WB.Activity]}"/>
+          </WrapPanel>
+          <Button Grid.Column="1" Classes="subtle" Command="{Binding HideWorkbenchToolsCommand}" IsVisible="{Binding IsToolsOpen}" Content="×" AutomationProperties.Name="{Binding L[WB.HideTools]}"/>
+        </Grid>
+        <Border Name="FormPanel" AutomationProperties.Name="{Binding L[CaseForm]}" Classes="panel" FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}">
+          <DockPanel>
+            <Grid DockPanel.Dock="Top" ColumnDefinitions="Auto,*,Auto" Margin="{StaticResource Inset12_8}">
+              <Button Classes="subtle" Command="{Binding PreviousStepCommand}" Content="{Binding L[Previous]}"/>
+              <TextBlock Grid.Column="1" FontSize="{StaticResource FontSection}" FontWeight="SemiBold" Text="{Binding SelectedStep.Label}" Margin="{StaticResource Inset8_0}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+              <Button Grid.Column="2" Classes="subtle" Command="{Binding NextStepCommand}" Content="{Binding L[Next]}"/>
+            </Grid>
+            <Border DockPanel.Dock="Bottom" Classes="editor-actions" BorderThickness="{StaticResource EdgeTop}" BorderBrush="{DynamicResource HairlineBrush}">
+              <WrapPanel>
+                <Button Name="GenerateButton" Classes="primary" Command="{Binding GenerateCommand}" Content="{Binding L[Generate]}" ToolTip.Tip="{Binding L[GenerateHint]}"/>
+                <Button Classes="outline" Command="{Binding GenerateCancelCommand}" Content="{Binding L[Cancel]}" IsVisible="{Binding GenerateCommand.IsRunning}"/>
+                <Button Name="EngineButton" Classes="subtle" ToolTip.Tip="{Binding L[ProviderLabel]}" AutomationProperties.Name="{Binding L[ProviderLabel]}">
+                  <ic:SymbolIcon Symbol="Settings"/>
+                  <Button.Flyout>
+                    <Flyout Placement="Top" ShowMode="Standard" Opened="EngineFlyoutOpened">
+                      <StackPanel Width="{StaticResource EngineFlyoutWidth}" Spacing="{StaticResource Space3}">
+                        <TextBlock Text="{Binding L[ProviderLabel]}" FontWeight="SemiBold"/>
+                        <ComboBox Name="EnginePicker" Loaded="EnginePickerLoaded" HorizontalAlignment="Stretch" ItemsSource="{Binding Providers}" SelectedItem="{Binding SelectedProvider}" AutomationProperties.Name="{Binding L[ProviderLabel]}">
+                          <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="vm:ProviderOption">
+                              <TextBlock TextWrapping="Wrap" Text="{Binding DisplayName}"/>
+                            </DataTemplate>
+                          </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <TextBlock Text="{Binding ModelStatusText}" TextWrapping="Wrap"/>
+                        <Button Classes="outline" Command="{Binding CheckModelStatusCommand}" Content="{Binding L[WB.CheckEngine]}"/>
+                      </StackPanel>
+                    </Flyout>
+                  </Button.Flyout>
+                </Button>
+              </WrapPanel>
+            </Border>
+            <Border Name="BackgroundAnalysis" DockPanel.Dock="Bottom" Classes="notice" Background="{DynamicResource AccentSoftBrush}" IsVisible="{Binding ShowsBackgroundAnalysis}">
+              <Button Classes="subtle" Command="{Binding ShowWorkbenchToolCommand}" CommandParameter="activity">
+                <StackPanel Spacing="{StaticResource Space1}">
+                  <TextBlock Text="{Binding L[AnalysisInBackground]}" TextWrapping="Wrap"/>
+                  <TextBlock Classes="secondary" Text="{Binding AnalysisActivity.Elapsed}"/>
                 </StackPanel>
-              </Border>
-
-              <!-- Legal points on the substance (not only the form), as on the web -->
-              <Border Name="SubstancePanel" Classes="card" Padding="{StaticResource Inset12}" IsVisible="{Binding HasSubstanceIssues}">
-                <StackPanel Spacing="{StaticResource Dimension6}">
-                  <TextBlock FontSize="{StaticResource FontBody}" FontWeight="SemiBold" Text="{Binding L[SubstanceHeader]}" />
-                  <ItemsControl ItemsSource="{Binding SubstanceIssues}">
-                    <ItemsControl.ItemTemplate>
-                      <DataTemplate>
-                        <Grid ColumnDefinitions="Auto,*" Margin="{StaticResource Inset0_0_0_4}">
-                          <ic:SymbolIcon Symbol="Warning" FontSize="{StaticResource FontBody}" Margin="{StaticResource Inset0_0_4_0}" VerticalAlignment="Top" Foreground="{DynamicResource WarningBrush}" />
-                          <TextBlock Grid.Column="1" FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Text="{Binding}" />
-                        </Grid>
-                      </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                  </ItemsControl>
-                </StackPanel>
-              </Border>
-
-              <!-- Issues first, clickable -->
-              <ItemsControl Name="FindingsList" ItemsSource="{Binding IssueFindings}">
-                <ItemsControl.ItemTemplate>
-                  <DataTemplate x:DataType="vm:FindingViewModel">
-                    <Button Classes="finding" Classes.warning="{Binding IsMissingWarning}"
-                            Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).GoToFindingCommand}" CommandParameter="{Binding}">
-                      <StackPanel Spacing="{StaticResource Dimension3}">
-                        <Grid ColumnDefinitions="Auto,*">
-                          <ic:SymbolIcon Symbol="ErrorCircle" FontSize="{StaticResource FontBody}" Margin="{StaticResource Inset0_0_8_0}" Foreground="{DynamicResource DangerBrush}" IsVisible="{Binding IsMissingMandatory}" />
-                          <ic:SymbolIcon Symbol="ErrorCircle" FontSize="{StaticResource FontBody}" Margin="{StaticResource Inset0_0_8_0}" Foreground="{DynamicResource WarningBrush}" IsVisible="{Binding IsMissingWarning}" />
-                          <TextBlock Grid.Column="1" FontWeight="SemiBold" TextWrapping="Wrap" Text="{Binding Label}" />
-                        </Grid>
-                        <TextBlock Classes="muted" Text="{Binding Article}" />
-                        <TextBlock FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Text="{Binding Message}" />
-                        <TextBlock Classes="muted" TextWrapping="Wrap" Text="{Binding MissingPartsText}" IsVisible="{Binding HasMissingParts}" />
+              </Button>
+            </Border>
+            <ScrollViewer Name="FormScroll" HorizontalScrollBarVisibility="Disabled">
+              <StackPanel Margin="{StaticResource Inset16}" Spacing="{StaticResource Space3}">
+                <!-- Grounds step: the analysis (model reads the facts, the library is searched, the model proposes articles). -->
+                <StackPanel Name="GroundsPanel" Spacing="{StaticResource Space3}" Margin="{StaticResource Inset0_0_8_12}" IsVisible="{Binding IsGroundsStep}">
+                  <TextBlock Classes="muted" FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Text="{Binding L[GroundsIntro]}"/>
+                  <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space2}" IsVisible="{Binding CanAnalyseGrounds}">
+                    <Button Name="AnalyseButton" Classes="primary" Command="{Binding AnalyseGroundsCommand}">
+                      <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space2}">
+                        <ic:SymbolIcon Symbol="Sparkle" Foreground="{DynamicResource OnPrimaryBrush}" FontSize="{StaticResource FontBody}"/>
+                        <TextBlock Foreground="{DynamicResource OnPrimaryBrush}" Text="{Binding L[AnalyseGrounds]}"/>
                       </StackPanel>
                     </Button>
-                  </DataTemplate>
-                </ItemsControl.ItemTemplate>
-              </ItemsControl>
-
-              <!-- Present elements, folded -->
-              <Expander Header="{Binding PresentHeader}" HorizontalAlignment="Stretch">
-                <ItemsControl ItemsSource="{Binding PresentFindings}">
-                  <ItemsControl.ItemTemplate>
-                    <DataTemplate x:DataType="vm:FindingViewModel">
-                      <Grid ColumnDefinitions="Auto,*" Margin="{StaticResource Inset0_4}">
-                        <ic:SymbolIcon Symbol="CheckmarkCircle" FontSize="{StaticResource FontBody}" Margin="{StaticResource Inset0_0_8_0}" VerticalAlignment="Top" Foreground="{DynamicResource SuccessBrush}" />
-                        <StackPanel Grid.Column="1">
-                          <TextBlock FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Text="{Binding Label}" />
-                          <TextBlock Classes="muted" Text="{Binding Article}" />
-                        </StackPanel>
-                      </Grid>
-                    </DataTemplate>
-                  </ItemsControl.ItemTemplate>
-                </ItemsControl>
-              </Expander>
-            </StackPanel>
-          </ScrollViewer>
-        </StackPanel></ScrollViewer>
-      </Border>
-      <!-- Section assistant -->
-      <Border Name="AssistantPanel" Classes="tool-page" IsVisible="{Binding IsAssistantTool}">
-        <ScrollViewer HorizontalScrollBarVisibility="Disabled"><StackPanel Spacing="{StaticResource Space2}">
-          <Grid DockPanel.Dock="Top" ColumnDefinitions="Auto,*,Auto" Margin="{StaticResource Inset0_0_0_4}">
-            <ic:SymbolIcon Symbol="Sparkle" Foreground="{DynamicResource AccentBrush}" Margin="{StaticResource Inset0_0_4_0}" />
-            <TextBlock Grid.Column="1" Classes="title" Text="{Binding AssistantTitle}" TextTrimming="CharacterEllipsis" />
-            <Button Grid.Column="2" Classes="subtle" Command="{Binding CloseAssistantCommand}" Content="✕" />
-          </Grid>
-          <TextBlock DockPanel.Dock="Top" Classes="muted" TextWrapping="Wrap" Text="{Binding L[AssistantScope]}" Margin="{StaticResource Inset0_0_0_8}" />
-          <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Shortcuts}" Margin="{StaticResource Inset0_0_0_8}">
-            <ItemsControl.ItemsPanel>
-              <ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-              <DataTemplate x:DataType="vm:ShortcutViewModel">
-                <Button Classes="outline" FontSize="{StaticResource FontSecondary}" Padding="{StaticResource Inset8_4}" Margin="{StaticResource Inset0_0_4_4}" CornerRadius="{StaticResource PanelRadius}" Content="{Binding Label}"
-                        Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).UseShortcutCommand}" CommandParameter="{Binding}" />
-              </DataTemplate>
-            </ItemsControl.ItemTemplate>
-          </ItemsControl>
-
-          <Grid DockPanel.Dock="Bottom" ColumnDefinitions="*,Auto" Margin="{StaticResource Inset0_8_0_0}">
-            <TextBox Classes="input" Name="InstructionBox" Text="{Binding AssistantInstruction}" PlaceholderText="{Binding L[InstructionPlaceholder]}"
-                     AcceptsReturn="True" TextWrapping="Wrap" MinHeight="{StaticResource Dimension40}" MaxHeight="{StaticResource Dimension120}" />
-            <StackPanel Grid.Column="1" Margin="{StaticResource Inset4_0_0_0}" VerticalAlignment="Bottom">
-              <Button Classes="primary" Command="{Binding SendInstructionCommand}" Content="{Binding L[Send]}" IsVisible="{Binding !SendInstructionCommand.IsRunning}" />
-              <Button Classes="outline" Command="{Binding SendInstructionCancelCommand}" Content="{Binding L[Cancel]}" IsVisible="{Binding SendInstructionCommand.IsRunning}" />
-            </StackPanel>
-          </Grid>
-
-          <ScrollViewer>
-            <StackPanel Spacing="{StaticResource Dimension8}">
-              <ItemsControl ItemsSource="{Binding AssistantThread}">
-                <ItemsControl.ItemTemplate>
-                  <DataTemplate x:DataType="vm:AssistantMessage">
-                    <Border CornerRadius="{StaticResource PanelRadius}" Padding="{StaticResource Inset8_4}" Margin="{StaticResource Inset0_0_0_4}" Background="{DynamicResource SurfaceAltBrush}" Classes.lawyer="{Binding FromLawyer}">
-                      <TextBlock TextWrapping="Wrap" FontSize="{StaticResource FontSecondary}" Text="{Binding Text}" />
-                    </Border>
-                  </DataTemplate>
-                </ItemsControl.ItemTemplate>
-              </ItemsControl>
-
-              <ContentControl Content="{Binding AssistantActivity}" ContentTemplate="{StaticResource ModelActivityTemplate}" />
-
-              <Border Background="{DynamicResource PaperBrush}" CornerRadius="{StaticResource PanelRadius}" Padding="{StaticResource Inset8}"
-                      IsVisible="{Binding AssistantPartial, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-                <TextBlock FontFamily="{StaticResource DocumentFont}" FontSize="{StaticResource FontBody}" Foreground="{StaticResource PaperInkBrush}" TextWrapping="Wrap" FlowDirection="RightToLeft" Text="{Binding AssistantPartial}" />
-              </Border>
-
-              <Border Background="{DynamicResource PaperBrush}" CornerRadius="{StaticResource PanelRadius}" Padding="{StaticResource Inset8}" IsVisible="{Binding HasProposal}">
-                <StackPanel Spacing="{StaticResource Dimension8}">
-                  <ItemsControl Name="ProposalDiffList" ItemsSource="{Binding ProposalDiff}" FlowDirection="RightToLeft">
+                    <Button Classes="outline" Command="{Binding AnalyseGroundsCancelCommand}" Content="{Binding L[Cancel]}" IsVisible="{Binding AnalyseGroundsCommand.IsRunning}"/>
+                  </StackPanel>
+                  <TextBlock Name="AutomaticAnalysisNote" Classes="muted" FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Text="{Binding L[AnalysisStartedAutomatically]}" IsVisible="{Binding IsAnalysisAutomatic}"/>
+                  <ContentControl Name="AnalysisActivityView" Content="{Binding AnalysisActivity}" ContentTemplate="{StaticResource ModelActivityTemplate}"/>
+                  <TextBlock Classes="muted" FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Text="{Binding AnalysisStatus}" IsVisible="{Binding AnalysisStatus, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                  <Border Name="StaleBanner" Background="{DynamicResource WarningSoftBrush}" CornerRadius="{StaticResource PanelRadius}" Padding="{StaticResource Inset8_4}" IsVisible="{Binding IsAnalysisStale}">
+                    <TextBlock FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Foreground="{DynamicResource WarningBrush}" Text="{Binding L[AnalysisStale]}"/>
+                  </Border>
+                  <Border Classes="card" Padding="{StaticResource Inset8}" IsVisible="{Binding HasReading}">
+                    <StackPanel Spacing="{StaticResource Space1}">
+                      <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space2}">
+                        <TextBlock FontSize="{StaticResource FontSecondary}" FontWeight="SemiBold" Text="{Binding L[ModelReading]}"/>
+                        <Border Classes="chip" Padding="{StaticResource Inset4_0}">
+                          <TextBlock FontSize="{StaticResource FontSecondary}" Text="{Binding L[ModelTag]}"/>
+                        </Border>
+                      </StackPanel>
+                      <TextBlock FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap">
+                        <Run FontWeight="SemiBold" Text="{Binding L[ReadingRelationship]}"/>
+                        <Run Text=" "/>
+                        <Run Text="{Binding ReadingRelationship}"/>
+                      </TextBlock>
+                      <TextBlock FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap">
+                        <Run FontWeight="SemiBold" Text="{Binding L[ReadingBreach]}"/>
+                        <Run Text=" "/>
+                        <Run Text="{Binding ReadingBreach}"/>
+                      </TextBlock>
+                      <TextBlock FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap">
+                        <Run FontWeight="SemiBold" Text="{Binding L[ReadingSought]}"/>
+                        <Run Text=" "/>
+                        <Run Text="{Binding ReadingSought}"/>
+                      </TextBlock>
+                      <TextBlock FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap">
+                        <Run FontWeight="SemiBold" Text="{Binding L[ReadingClaims]}"/>
+                        <Run Text=" "/>
+                        <Run Text="{Binding ReadingClaims}"/>
+                      </TextBlock>
+                      <TextBlock FontSize="{StaticResource FontSecondary}" Foreground="{DynamicResource SuccessBrush}" Text="{Binding L[ClaimConfirmedNote]}" IsVisible="{Binding IsClaimConfirmed}"/>
+                    </StackPanel>
+                  </Border>
+                  <!-- Nothing is ticked until the lawyer confirms the claim type the model recognised. -->
+                  <Border Name="ClaimConfirmBar" CornerRadius="{StaticResource PanelRadius}" Padding="{StaticResource Inset8}" Background="{DynamicResource WarningSoftBrush}" IsVisible="{Binding NeedsClaimConfirmation}">
+                    <StackPanel Spacing="{StaticResource Space2}">
+                      <TextBlock FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Text="{Binding L[ClaimConfirmPrompt]}"/>
+                      <WrapPanel>
+                        <Button Name="ConfirmClaimButton" Classes="primary" Command="{Binding ConfirmClaimCommand}">
+                          <TextBlock Foreground="{DynamicResource OnPrimaryBrush}" Text="{Binding L[ConfirmClaim]}"/>
+                        </Button>
+                        <Button Classes="outline" Command="{Binding RejectClaimCommand}" Content="{Binding L[RejectClaim]}"/>
+                      </WrapPanel>
+                    </StackPanel>
+                  </Border>
+                  <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding HasAnalysedArticles}">
+                    <TextBlock FontSize="{StaticResource FontBody}" FontWeight="SemiBold" VerticalAlignment="Center" Text="{Binding L[ProposedArticles]}"/>
+                    <Button Grid.Column="1" Classes="subtle" FontSize="{StaticResource FontSecondary}" Command="{Binding TickBasisArticlesCommand}" Content="{Binding L[TickBasis]}"/>
+                  </Grid>
+                  <ItemsControl Name="AnalysedArticlesList" ItemsSource="{Binding AnalysedArticles}" ItemTemplate="{StaticResource ArticleChoiceTemplate}"/>
+                  <TextBlock FontSize="{StaticResource FontBody}" FontWeight="SemiBold" Text="{Binding L[SelectedGrounds]}"/>
+                  <TextBlock Classes="muted" FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Text="{Binding L[SelectedGroundsEmpty]}" IsVisible="{Binding !HasSelectedArticles}"/>
+                  <ItemsControl Name="SelectedGroundsList" ItemsSource="{Binding SelectedGrounds}">
                     <ItemsControl.ItemsPanel>
-                      <ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate>
+                      <ItemsPanelTemplate>
+                        <WrapPanel/>
+                      </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
-                      <DataTemplate x:DataType="vm:DiffTokenViewModel">
-                        <Border Margin="{StaticResource Inset0_0_4_4}" CornerRadius="{StaticResource PanelRadius}" Padding="{StaticResource Inset0_0}" Classes.added="{Binding IsAdded}" Classes.removed="{Binding IsRemoved}">
-                          <TextBlock FontFamily="{StaticResource DocumentFont}" FontSize="{StaticResource FontBody}" Foreground="{StaticResource PaperInkBrush}" Text="{Binding Text}"
-                                     TextDecorations="{Binding IsRemoved, Converter={x:Static app:Converters.Strike}}" />
+                      <DataTemplate x:DataType="vm:SelectedArticleViewModel">
+                        <Border Classes="chip" Padding="{StaticResource Inset8_0}" Margin="{StaticResource Inset0_0_4_4}">
+                          <WrapPanel>
+                            <TextBlock FontSize="{StaticResource FontSecondary}" VerticalAlignment="Center" Text="{Binding Citation}"/>
+                            <Button Classes="subtle" Padding="{StaticResource Inset0}" Command="{Binding RemoveCommand}">
+                              <ic:SymbolIcon Symbol="Dismiss" FontSize="{StaticResource FontSecondary}"/>
+                            </Button>
+                          </WrapPanel>
                         </Border>
                       </DataTemplate>
                     </ItemsControl.ItemTemplate>
                   </ItemsControl>
-                  <TextBlock Classes="review" Text="{Binding ProposalHints}" IsVisible="{Binding ProposalHints, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
-                  <StackPanel Orientation="Horizontal" Spacing="{StaticResource Dimension6}">
-                    <Button Classes="primary" Name="AcceptButton" Command="{Binding AcceptProposalCommand}" IsEnabled="{Binding CanAcceptProposal}" Content="{Binding L[Accept]}" />
-                    <Button Classes="outline" Command="{Binding RejectProposalCommand}" Content="{Binding L[Reject]}" />
-                    <Button Classes="subtle" Command="{Binding RetryProposalCommand}" Content="{Binding L[TryAgain]}" />
-                  </StackPanel>
                 </StackPanel>
+                <!-- Requests / Documents steps: the usual lines of the claim types the analysis recognised. -->
+                <StackPanel Name="RequestsHelpPanel" Spacing="{StaticResource Space2}" Margin="{StaticResource Inset0_0_8_12}" IsVisible="{Binding IsRequestsStep}">
+                  <Border Background="{DynamicResource WarningSoftBrush}" CornerRadius="{StaticResource PanelRadius}" Padding="{StaticResource Inset8_4}" IsVisible="{Binding HasPrerequisites}">
+                    <TextBlock FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Foreground="{DynamicResource WarningBrush}" Text="{Binding Prerequisites}"/>
+                  </Border>
+                  <TextBlock FontSize="{StaticResource FontSecondary}" FontWeight="SemiBold" Text="{Binding L[UsualRequests]}" IsVisible="{Binding HasRequestChips}"/>
+                  <TextBlock Classes="muted" FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Text="{Binding L[UsualLinesNeedAnalysis]}" IsVisible="{Binding !HasRequestChips}"/>
+                  <ItemsControl ItemsSource="{Binding RequestChips}" ItemTemplate="{StaticResource InsertChipTemplate}"/>
+                  <!-- The document shows the lawyer's own lines; the AI may only propose a checked formal wording. -->
+                  <TextBlock Classes="muted" FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Margin="{StaticResource Inset0_4_0_0}" Text="{Binding L[RequestsWordingIntro]}"/>
+                  <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space2}" IsVisible="{Binding CanProposeRequestsWording}">
+                    <Button Name="ProposeRequestsWordingButton" Classes="outline" Command="{Binding ProposeRequestsWordingCommand}">
+                      <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space2}">
+                        <ic:SymbolIcon Symbol="Sparkle" FontSize="{StaticResource FontBody}"/>
+                        <TextBlock Text="{Binding L[ProposeRequestsWording]}"/>
+                      </StackPanel>
+                    </Button>
+                    <Button Classes="outline" Command="{Binding ProposeRequestsWordingCancelCommand}" Content="{Binding L[Cancel]}" IsVisible="{Binding ProposeRequestsWordingCommand.IsRunning}"/>
+                  </StackPanel>
+                  <TextBlock Name="RequestsWordingStatusText" Classes="muted" FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Text="{Binding RequestsWordingStatus}" IsVisible="{Binding RequestsWordingStatus, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                  <Border Classes="card" Padding="{StaticResource Inset8}" IsVisible="{Binding HasRequestsProposal}">
+                    <StackPanel Spacing="{StaticResource Space2}">
+                      <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space2}">
+                        <TextBlock FontSize="{StaticResource FontSecondary}" FontWeight="SemiBold" Text="{Binding L[RequestsWordingLabel]}"/>
+                        <Border Classes="chip" Padding="{StaticResource Inset4_0}">
+                          <TextBlock FontSize="{StaticResource FontSecondary}" Text="{Binding L[ModelTag]}"/>
+                        </Border>
+                      </StackPanel>
+                      <TextBlock Name="RequestsProposalText" FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" FlowDirection="RightToLeft" Text="{Binding RequestsProposal}"/>
+                      <!-- A suggestion to copy from, not to accept (audit C-02, as on the web demo): its checks see amounts and counts, not who must pay whom. -->
+                      <WrapPanel>
+                        <Button Classes="outline" Command="{Binding RejectRequestsProposalCommand}" Content="{Binding L[RejectRequestsWording]}"/>
+                      </WrapPanel>
+                    </StackPanel>
+                  </Border>
+                </StackPanel>
+                <StackPanel Spacing="{StaticResource Space2}" Margin="{StaticResource Inset0_0_8_12}" IsVisible="{Binding IsDocumentsStep}">
+                  <Border Background="{DynamicResource WarningSoftBrush}" CornerRadius="{StaticResource PanelRadius}" Padding="{StaticResource Inset8_4}" IsVisible="{Binding HasPrerequisites}">
+                    <TextBlock FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Foreground="{DynamicResource WarningBrush}" Text="{Binding Prerequisites}"/>
+                  </Border>
+                  <TextBlock FontSize="{StaticResource FontSecondary}" FontWeight="SemiBold" Text="{Binding L[UsualDocuments]}" IsVisible="{Binding HasDocumentChips}"/>
+                  <ItemsControl ItemsSource="{Binding DocumentChips}" ItemTemplate="{StaticResource InsertChipTemplate}"/>
+                </StackPanel>
+                <ItemsControl ItemsSource="{Binding SelectedStep.Fields}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:FieldViewModel">
+                      <StackPanel Margin="{StaticResource Inset0_0_8_12}" Spacing="{StaticResource Space2}" IsVisible="{Binding IsVisible}">
+                        <views:FieldHelpView Label="{Binding Label}" Text="{Binding Hint}" IsVisible="{Binding !IsBoolean}"/>
+                        <TextBox Classes="input" Classes.missing="{Binding IsMissing}" Text="{Binding Value}" AutomationProperties.Name="{Binding Label}" IsVisible="{Binding IsSingleLine}"/>
+                        <TextBox Classes="input" Classes.missing="{Binding IsMissing}" Text="{Binding Value}" AutomationProperties.Name="{Binding Label}" IsVisible="{Binding IsMultiline}" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="{StaticResource NarrativeMinHeight}" MaxHeight="{StaticResource NarrativeMaxHeight}"/>
+                        <CheckBox IsChecked="{Binding BoolValue}" Content="{Binding Label}" IsVisible="{Binding IsBoolean}"/>
+                        <ComboBox AutomationProperties.Name="{Binding Label}" ItemsSource="{Binding Options}" SelectedItem="{Binding SelectedOption}" IsVisible="{Binding IsChoice}" MinWidth="{StaticResource ChoiceMinWidth}" CornerRadius="{StaticResource PanelRadius}" PlaceholderText="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L[ChooseOption]}">
+                          <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="vm:ChoiceOptionViewModel">
+                              <TextBlock Text="{Binding Label}"/>
+                            </DataTemplate>
+                          </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <TextBlock FontSize="{StaticResource FontSecondary}" Foreground="{DynamicResource DangerBrush}" Text="{Binding MissingNote}" IsVisible="{Binding IsMissing}"/>
+                        <TextBlock FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Foreground="{DynamicResource DangerBrush}" Text="{Binding TooLongNote}" IsVisible="{Binding IsTooLong}"/>
+                      </StackPanel>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <!-- Grounds step: add an article by hand (number or words, searched in the official texts). -->
+                <StackPanel Spacing="{StaticResource Space2}" Margin="{StaticResource Inset0_0_8_8}" IsVisible="{Binding IsGroundsStep}">
+                  <TextBlock FontSize="{StaticResource FontSecondary}" FontWeight="SemiBold" Text="{Binding L[AddArticleByHand]}"/>
+                  <TextBox Classes="input" Name="ArticleSearchBox" Text="{Binding ArticleQuery}" PlaceholderText="{Binding L[ArticleSearchPlaceholder]}"/>
+                  <TextBlock Classes="muted" FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Text="{Binding ArticleSearchHint}" IsVisible="{Binding ArticleSearchHint, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                  <ItemsControl ItemsSource="{Binding ArticleResults}" ItemTemplate="{StaticResource ArticleChoiceTemplate}"/>
+                </StackPanel>
+              </StackPanel>
+            </ScrollViewer>
+          </DockPanel>
+        </Border>
+        <GridSplitter Name="ToolsSplitter" Grid.Row="1" ResizeDirection="Rows" ResizeBehavior="PreviousAndNext" ShowsPreview="True" KeyboardIncrement="{StaticResource Space4}" HorizontalAlignment="Stretch" AutomationProperties.Name="{Binding L[WB.ResizeTools]}"/>
+        <Border Grid.Row="2" Name="ToolsPanel" IsVisible="{Binding IsToolsOpen}" Background="{DynamicResource SurfaceBrush}" FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}">
+          <DockPanel>
+            <Grid>
+              <!-- Compliance (the assistant takes its place while open, so the paper keeps its width) -->
+              <Border Name="ReviewPanel" Classes="tool-page" IsVisible="{Binding IsReviewTool}">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+                  <StackPanel Spacing="{StaticResource Space2}">
+                    <TextBlock DockPanel.Dock="Top" Classes="title" Text="{Binding L[Compliance]}" Margin="{StaticResource Inset0_0_0_12}"/>
+                    <ScrollViewer>
+                      <StackPanel Spacing="{StaticResource Space3}">
+                        <Border Classes="notice" Background="{DynamicResource WarningSoftBrush}" IsVisible="{Binding ShowsExportBlockers}">
+                          <StackPanel Spacing="{StaticResource Space2}">
+                            <TextBlock TextWrapping="Wrap" Text="{Binding ExportBlockers}"/>
+                          </StackPanel>
+                        </Border>
+                        <!-- Score -->
+                        <Border Classes="card" Padding="{StaticResource Inset12}" Background="{DynamicResource SurfaceAltBrush}">
+                          <StackPanel Spacing="{StaticResource Space2}">
+                            <Grid ColumnDefinitions="*,Auto">
+                              <TextBlock Classes="muted" VerticalAlignment="Center" Text="{Binding L[ComplianceScore]}"/>
+                              <TextBlock Grid.Column="1" FontSize="{StaticResource FontTitle}" FontWeight="Bold" Text="{Binding ScoreText}"/>
+                            </Grid>
+                            <ProgressBar Minimum="0" Maximum="{Binding ApplicableCount}" Value="{Binding PresentCount}" Height="{StaticResource Space2}" CornerRadius="{StaticResource PanelRadius}"/>
+                            <Grid ColumnDefinitions="Auto,*">
+                              <ic:SymbolIcon Symbol="CheckmarkCircle" FontSize="{StaticResource FontBody}" Margin="{StaticResource Inset0_0_4_0}" VerticalAlignment="Top" Foreground="{DynamicResource SuccessBrush}" IsVisible="{Binding IsAdmissible}"/>
+                              <ic:SymbolIcon Symbol="ErrorCircle" FontSize="{StaticResource FontBody}" Margin="{StaticResource Inset0_0_4_0}" VerticalAlignment="Top" Foreground="{DynamicResource DangerBrush}" IsVisible="{Binding !IsAdmissible}"/>
+                              <TextBlock Grid.Column="1" Name="SummaryText" FontWeight="SemiBold" TextWrapping="Wrap" Text="{Binding Summary}"/>
+                            </Grid>
+                            <TextBlock TextWrapping="Wrap" FontSize="{StaticResource FontSecondary}" Foreground="{DynamicResource WarningBrush}" Text="{Binding WarningSummary}" IsVisible="{Binding WarningSummary, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                            <TextBlock Classes="muted" TextWrapping="Wrap" Text="{Binding L[SummaryDisclaimer]}"/>
+                            <TextBlock Classes="muted" FontStyle="Italic" TextWrapping="Wrap" Text="{Binding L[Unverified]}"/>
+                          </StackPanel>
+                        </Border>
+                        <!-- Legal points on the substance (not only the form), as on the web -->
+                        <Border Name="SubstancePanel" Classes="card" Padding="{StaticResource Inset12}" IsVisible="{Binding HasSubstanceIssues}">
+                          <StackPanel Spacing="{StaticResource Space2}">
+                            <TextBlock FontSize="{StaticResource FontBody}" FontWeight="SemiBold" Text="{Binding L[SubstanceHeader]}"/>
+                            <ItemsControl ItemsSource="{Binding SubstanceIssues}">
+                              <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                  <Grid ColumnDefinitions="Auto,*" Margin="{StaticResource Inset0_0_0_4}">
+                                    <ic:SymbolIcon Symbol="Warning" FontSize="{StaticResource FontBody}" Margin="{StaticResource Inset0_0_4_0}" VerticalAlignment="Top" Foreground="{DynamicResource WarningBrush}"/>
+                                    <TextBlock Grid.Column="1" FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Text="{Binding}"/>
+                                  </Grid>
+                                </DataTemplate>
+                              </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                          </StackPanel>
+                        </Border>
+                        <!-- Issues first, clickable -->
+                        <ItemsControl Name="FindingsList" ItemsSource="{Binding IssueFindings}">
+                          <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:FindingViewModel">
+                              <Button Classes="finding" Classes.warning="{Binding IsMissingWarning}" Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).GoToFindingCommand}" CommandParameter="{Binding}">
+                                <StackPanel Spacing="{StaticResource Space1}">
+                                  <Grid ColumnDefinitions="Auto,*">
+                                    <ic:SymbolIcon Symbol="ErrorCircle" FontSize="{StaticResource FontBody}" Margin="{StaticResource Inset0_0_8_0}" Foreground="{DynamicResource DangerBrush}" IsVisible="{Binding IsMissingMandatory}"/>
+                                    <ic:SymbolIcon Symbol="ErrorCircle" FontSize="{StaticResource FontBody}" Margin="{StaticResource Inset0_0_8_0}" Foreground="{DynamicResource WarningBrush}" IsVisible="{Binding IsMissingWarning}"/>
+                                    <TextBlock Grid.Column="1" FontWeight="SemiBold" TextWrapping="Wrap" Text="{Binding Label}"/>
+                                  </Grid>
+                                  <TextBlock Classes="muted" Text="{Binding Article}"/>
+                                  <TextBlock FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Text="{Binding Message}"/>
+                                  <TextBlock Classes="muted" TextWrapping="Wrap" Text="{Binding MissingPartsText}" IsVisible="{Binding HasMissingParts}"/>
+                                </StackPanel>
+                              </Button>
+                            </DataTemplate>
+                          </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <!-- Present elements, folded -->
+                        <Expander Header="{Binding PresentHeader}" HorizontalAlignment="Stretch">
+                          <ItemsControl ItemsSource="{Binding PresentFindings}">
+                            <ItemsControl.ItemTemplate>
+                              <DataTemplate x:DataType="vm:FindingViewModel">
+                                <Grid ColumnDefinitions="Auto,*" Margin="{StaticResource Inset0_4}">
+                                  <ic:SymbolIcon Symbol="CheckmarkCircle" FontSize="{StaticResource FontBody}" Margin="{StaticResource Inset0_0_8_0}" VerticalAlignment="Top" Foreground="{DynamicResource SuccessBrush}"/>
+                                  <StackPanel Grid.Column="1">
+                                    <TextBlock FontSize="{StaticResource FontSecondary}" TextWrapping="Wrap" Text="{Binding Label}"/>
+                                    <TextBlock Classes="muted" Text="{Binding Article}"/>
+                                  </StackPanel>
+                                </Grid>
+                              </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                          </ItemsControl>
+                        </Expander>
+                      </StackPanel>
+                    </ScrollViewer>
+                    <Expander DockPanel.Dock="Bottom" Header="{Binding L[Evaluation]}" IsExpanded="{Binding IsEvaluationOpen}" HorizontalAlignment="Stretch" Margin="{StaticResource Inset0_8_0_0}">
+                      <StackPanel Spacing="{StaticResource Space2}">
+                        <TextBlock Text="{Binding L[Verdict]}"/>
+                        <ComboBox ItemsSource="{Binding Verdicts}" SelectedItem="{Binding SelectedVerdict}" HorizontalAlignment="Stretch">
+                          <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="vm:VerdictOption">
+                              <TextBlock Text="{Binding DisplayName}"/>
+                            </DataTemplate>
+                          </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <TextBlock Text="{Binding L[MinutesSaved]}"/>
+                        <TextBox Width="{StaticResource UtilityFieldWidth}" HorizontalAlignment="Left" Text="{Binding MinutesSaved}"/>
+                        <TextBlock Text="{Binding L[Comments]}"/>
+                        <TextBox AcceptsReturn="True" TextWrapping="Wrap" MinHeight="{StaticResource EvaluationMinHeight}" Text="{Binding EvaluationComments}"/>
+                        <Button Classes="primary" Command="{Binding SaveEvaluationCommand}" Content="{Binding L[SaveEvaluation]}"/>
+                      </StackPanel>
+                    </Expander>
+                  </StackPanel>
+                </ScrollViewer>
               </Border>
-            </StackPanel>
-          </ScrollViewer>
-        </StackPanel></ScrollViewer>
-      </Border>
-      <ScrollViewer Name="SourcePanel" IsVisible="{Binding IsSourceTool}" HorizontalScrollBarVisibility="Disabled"><StackPanel Margin="{StaticResource Inset16}" Spacing="{StaticResource Space3}"><TextBlock Text="{Binding L[WB.NoSource]}" TextWrapping="Wrap"/><TextBox Classes="input" Text="{Binding ArticleQuery}" PlaceholderText="{Binding L[ArticleSearchPlaceholder]}" AutomationProperties.Name="{Binding L[ArticleSearchPlaceholder]}"/><TextBlock Text="{Binding ArticleSearchHint}" TextWrapping="Wrap"/><ItemsControl ItemsSource="{Binding ArticleResults}" ItemTemplate="{StaticResource ArticleChoiceTemplate}"/></StackPanel></ScrollViewer>
-      <ScrollViewer Name="ActivityPanel" IsVisible="{Binding IsActivityTool}" HorizontalScrollBarVisibility="Disabled"><StackPanel Margin="{StaticResource Inset16}" Spacing="{StaticResource Space3}"><TextBlock Text="{Binding ModelStatusText}" TextWrapping="Wrap"/><ContentControl Content="{Binding AnalysisActivity}" ContentTemplate="{StaticResource ModelActivityTemplate}"/><ContentControl Content="{Binding GenerationActivity}" ContentTemplate="{StaticResource ModelActivityTemplate}"/><ContentControl Content="{Binding AssistantActivity}" ContentTemplate="{StaticResource ModelActivityTemplate}"/></StackPanel></ScrollViewer>
-     </Grid>
-    </DockPanel>
-   </Border>
-  </Grid>
-  <GridSplitter Name="DraftSplitter" Grid.Column="3" ResizeDirection="Columns" ResizeBehavior="PreviousAndNext" ShowsPreview="True" KeyboardIncrement="16" HorizontalAlignment="Stretch" AutomationProperties.Name="{Binding L[WB.ResizeDraft]}"/>
-  <views:DraftWorkspaceView Name="DraftWorkspace" Grid.Column="4"/>
- </Grid>
-</DockPanel>
+              <!-- Section assistant -->
+              <Border Name="AssistantPanel" Classes="tool-page" IsVisible="{Binding IsAssistantTool}">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+                  <StackPanel Spacing="{StaticResource Space2}">
+                    <Grid DockPanel.Dock="Top" ColumnDefinitions="Auto,*,Auto" Margin="{StaticResource Inset0_0_0_4}">
+                      <ic:SymbolIcon Symbol="Sparkle" Foreground="{DynamicResource AccentBrush}" Margin="{StaticResource Inset0_0_4_0}"/>
+                      <TextBlock Grid.Column="1" Classes="title" Text="{Binding AssistantTitle}" TextWrapping="Wrap"/>
+                      <Button Grid.Column="2" Classes="subtle" Command="{Binding CloseAssistantCommand}" Content="✕"/>
+                    </Grid>
+                    <TextBlock DockPanel.Dock="Top" Classes="muted" TextWrapping="Wrap" Text="{Binding L[AssistantScope]}" Margin="{StaticResource Inset0_0_0_8}"/>
+                    <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Shortcuts}" Margin="{StaticResource Inset0_0_0_8}">
+                      <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                          <WrapPanel/>
+                        </ItemsPanelTemplate>
+                      </ItemsControl.ItemsPanel>
+                      <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="vm:ShortcutViewModel">
+                          <Button Classes="outline" FontSize="{StaticResource FontSecondary}" Padding="{StaticResource Inset8_4}" Margin="{StaticResource Inset0_0_4_4}" CornerRadius="{StaticResource PanelRadius}" Content="{Binding Label}" Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).UseShortcutCommand}" CommandParameter="{Binding}"/>
+                        </DataTemplate>
+                      </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <Grid DockPanel.Dock="Bottom" ColumnDefinitions="*,Auto" Margin="{StaticResource Inset0_8_0_0}">
+                      <TextBox Classes="input" Name="InstructionBox" Text="{Binding AssistantInstruction}" PlaceholderText="{Binding L[InstructionPlaceholder]}" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="{StaticResource Space8}" MaxHeight="{StaticResource UtilityFieldWidth}"/>
+                      <StackPanel Grid.Column="1" Margin="{StaticResource Inset4_0_0_0}" VerticalAlignment="Bottom">
+                        <Button Classes="primary" Command="{Binding SendInstructionCommand}" Content="{Binding L[Send]}" IsVisible="{Binding !SendInstructionCommand.IsRunning}"/>
+                        <Button Classes="outline" Command="{Binding SendInstructionCancelCommand}" Content="{Binding L[Cancel]}" IsVisible="{Binding SendInstructionCommand.IsRunning}"/>
+                      </StackPanel>
+                    </Grid>
+                    <ScrollViewer>
+                      <StackPanel Spacing="{StaticResource Space2}">
+                        <ItemsControl ItemsSource="{Binding AssistantThread}">
+                          <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:AssistantMessage">
+                              <Border CornerRadius="{StaticResource PanelRadius}" Padding="{StaticResource Inset8_4}" Margin="{StaticResource Inset0_0_0_4}" Background="{DynamicResource SurfaceAltBrush}" Classes.lawyer="{Binding FromLawyer}">
+                                <TextBlock TextWrapping="Wrap" FontSize="{StaticResource FontSecondary}" Text="{Binding Text}"/>
+                              </Border>
+                            </DataTemplate>
+                          </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <ContentControl Content="{Binding AssistantActivity}" ContentTemplate="{StaticResource ModelActivityTemplate}"/>
+                        <Border Background="{DynamicResource PaperBrush}" CornerRadius="{StaticResource PanelRadius}" Padding="{StaticResource Inset8}" IsVisible="{Binding AssistantPartial, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                          <TextBlock FontFamily="{StaticResource DocumentFont}" FontSize="{StaticResource FontBody}" Foreground="{StaticResource PaperInkBrush}" TextWrapping="Wrap" FlowDirection="RightToLeft" Text="{Binding AssistantPartial}"/>
+                        </Border>
+                        <Border Background="{DynamicResource PaperBrush}" CornerRadius="{StaticResource PanelRadius}" Padding="{StaticResource Inset8}" IsVisible="{Binding HasProposal}">
+                          <StackPanel Spacing="{StaticResource Space2}">
+                            <ItemsControl Name="ProposalDiffList" ItemsSource="{Binding ProposalDiff}" FlowDirection="RightToLeft">
+                              <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                  <WrapPanel/>
+                                </ItemsPanelTemplate>
+                              </ItemsControl.ItemsPanel>
+                              <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:DiffTokenViewModel">
+                                  <Border Margin="{StaticResource Inset0_0_4_4}" CornerRadius="{StaticResource PanelRadius}" Padding="{StaticResource Inset0_0}" Classes.added="{Binding IsAdded}" Classes.removed="{Binding IsRemoved}">
+                                    <TextBlock FontFamily="{StaticResource DocumentFont}" FontSize="{StaticResource FontBody}" Foreground="{StaticResource PaperInkBrush}" Text="{Binding Text}" TextDecorations="{Binding IsRemoved, Converter={x:Static app:Converters.Strike}}"/>
+                                  </Border>
+                                </DataTemplate>
+                              </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <TextBlock Classes="review" Text="{Binding ProposalHints}" IsVisible="{Binding ProposalHints, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                            <WrapPanel>
+                              <Button Classes="primary" Name="AcceptButton" Command="{Binding AcceptProposalCommand}" IsEnabled="{Binding CanAcceptProposal}" Content="{Binding L[Accept]}"/>
+                              <Button Classes="outline" Command="{Binding RejectProposalCommand}" Content="{Binding L[Reject]}"/>
+                              <Button Classes="subtle" Command="{Binding RetryProposalCommand}" Content="{Binding L[TryAgain]}"/>
+                            </WrapPanel>
+                          </StackPanel>
+                        </Border>
+                      </StackPanel>
+                    </ScrollViewer>
+                  </StackPanel>
+                </ScrollViewer>
+              </Border>
+              <ScrollViewer Name="SourcePanel" IsVisible="{Binding IsSourceTool}" HorizontalScrollBarVisibility="Disabled">
+                <StackPanel Margin="{StaticResource Inset16}" Spacing="{StaticResource Space3}">
+                  <TextBlock Text="{Binding L[WB.NoSource]}" TextWrapping="Wrap"/>
+                  <TextBox Classes="input" Text="{Binding ArticleQuery}" PlaceholderText="{Binding L[ArticleSearchPlaceholder]}" AutomationProperties.Name="{Binding L[ArticleSearchPlaceholder]}"/>
+                  <TextBlock Text="{Binding ArticleSearchHint}" TextWrapping="Wrap"/>
+                  <ItemsControl ItemsSource="{Binding ArticleResults}" ItemTemplate="{StaticResource ArticleChoiceTemplate}"/>
+                </StackPanel>
+              </ScrollViewer>
+              <ScrollViewer Name="ActivityPanel" IsVisible="{Binding IsActivityTool}" HorizontalScrollBarVisibility="Disabled">
+                <StackPanel Margin="{StaticResource Inset16}" Spacing="{StaticResource Space3}">
+                  <TextBlock Text="{Binding ModelStatusText}" TextWrapping="Wrap"/>
+                  <ContentControl Content="{Binding AnalysisActivity}" ContentTemplate="{StaticResource ModelActivityTemplate}"/>
+                  <ContentControl Content="{Binding GenerationActivity}" ContentTemplate="{StaticResource ModelActivityTemplate}"/>
+                  <ContentControl Content="{Binding AssistantActivity}" ContentTemplate="{StaticResource ModelActivityTemplate}"/>
+                </StackPanel>
+              </ScrollViewer>
+            </Grid>
+          </DockPanel>
+        </Border>
+      </Grid>
+      <GridSplitter Name="DraftSplitter" Grid.Column="3" ResizeDirection="Columns" ResizeBehavior="PreviousAndNext" ShowsPreview="True" KeyboardIncrement="{StaticResource Space4}" HorizontalAlignment="Stretch" AutomationProperties.Name="{Binding L[WB.ResizeDraft]}"/>
+      <views:DraftWorkspaceView Name="DraftWorkspace" Grid.Column="4"/>
+    </Grid>
+  </DockPanel>
 </Window>

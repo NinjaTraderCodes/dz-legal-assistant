@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Headless;
 using Avalonia.Headless.XUnit;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
@@ -25,9 +26,7 @@ public class RenderingTests
 
         Directory.CreateDirectory(folder);
         using var frame = window.CaptureRenderedFrame();
-#pragma warning disable CS0618 // PNG default encoder options are fine for review screenshots.
-        frame?.Save(Path.Combine(folder, name + ".png"));
-#pragma warning restore CS0618
+        frame?.Save(Path.Combine(folder, name + ".png"), PngBitmapEncoderOptions.Default);
     }
 
     private static async Task<(MainWindow Window, MainWindowViewModel Vm)> ShowFilledWindowAsync()

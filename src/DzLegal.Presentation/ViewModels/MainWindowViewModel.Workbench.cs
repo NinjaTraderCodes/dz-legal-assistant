@@ -20,6 +20,12 @@ public sealed partial class MainWindowViewModel
     public partial bool IsDraftMaximized { get; set; }
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsDraftDocked))]
+    public partial bool IsDraftDetached { get; set; }
+
+    public bool IsDraftDocked => !IsDraftDetached;
+
+    [ObservableProperty]
     public partial bool IsToolsOpen { get; set; }
 
     [ObservableProperty]
@@ -136,4 +142,7 @@ public sealed partial class MainWindowViewModel
 
     [RelayCommand]
     private void ToggleDraftFocus() => IsDraftMaximized = !IsDraftMaximized;
+
+    [RelayCommand]
+    private void ToggleDraftWindow() => IsDraftDetached = !IsDraftDetached;
 }

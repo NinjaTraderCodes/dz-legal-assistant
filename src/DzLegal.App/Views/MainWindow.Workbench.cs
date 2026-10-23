@@ -62,6 +62,11 @@ public partial class MainWindow
             return;
         }
 
+        if (e.PropertyName == nameof(MainWindowViewModel.IsDraftDetached))
+        {
+            ApplyDraftWindow();
+        }
+
         if (e.PropertyName == nameof(MainWindowViewModel.HasProposal) && _workbenchVm?.HasProposal == true)
         {
             Avalonia.Threading.Dispatcher.UIThread.Post(() => this.FindControl<Button>("AcceptButton")?.BringIntoView());

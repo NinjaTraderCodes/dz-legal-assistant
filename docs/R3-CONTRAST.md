@@ -88,3 +88,14 @@ Computed from the committed sRGB resources using WCAG relative luminance. Ratios
 | Dark | PaperWarningBrush | PaperWarningSoftBrush | 6.33:1 | 4.5:1 |
 | Dark | PaperInkBrush | DiffAddedBrush | 9.65:1 | 4.5:1 |
 | Dark | PaperInkBrush | DiffRemovedBrush | 8.80:1 | 4.5:1 |
+
+## Browser-specific edges
+
+The web workbench uses the same text/surface tokens as the native table. Its permanent editable-paper border and chrome hover surface add these pairs. Browser axe results cover the exported state, separately from this token calculation.
+
+| Theme | Foreground | Background | Ratio | Minimum |
+| --- | --- | --- | ---: | ---: |
+| Light | Paper control border (#6D8295) | #FFFEFB | 3.95:1 | 3:1 |
+| Light | Chrome text on hover (#E6EFF7) | #243E52 | 9.57:1 | 4.5:1 |
+| Dark | Paper control border (#6D8295) | #FFFEFB | 3.95:1 | 3:1 |
+| Dark | Chrome text on hover (#E6EFF7) | #243E52 | 9.57:1 | 4.5:1 |

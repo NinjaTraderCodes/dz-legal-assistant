@@ -16,7 +16,7 @@ public sealed partial class Home : IDisposable
 
     /// <summary>A draft file is small (the case and its text); anything larger is not one.</summary>
     private const long MaxDraftBytes = 2 * 1024 * 1024;
-    private bool showGuide = true;
+    private bool showGuide;
     private int mobileTab;
     private readonly HashSet<string> _visited = new(StringComparer.Ordinal);
 
@@ -62,6 +62,23 @@ public sealed partial class Home : IDisposable
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        try
+        {
+            if (firstRender)
+            {
+                _workbenchBridge = DotNetObjectReference.Create(this);
+                await Js.InvokeVoidAsync("dzlegal.initWorkbench", _workbenchBridge);
+            }
+            else
+            {
+                await Js.InvokeVoidAsync("dzlegal.syncWorkbench");
+            }
+        }
+        catch (Exception ex) when (ex is JSException or JSDisconnectedException or TaskCanceledException)
+        {
+            // A closing tab needs no further interface synchronization.
+        }
+
         if (!firstRender)
         {
             return;
@@ -76,7 +93,8 @@ public sealed partial class Home : IDisposable
             }
 
             // On a phone the guide would fill the first screen: it stays one tap away (Guide button).
-            if (await Js.InvokeAsync<bool>("dzlegal.isNarrow"))
+            _isNarrow = await Js.InvokeAsync<bool>("dzlegal.isNarrow");
+            if (_isNarrow)
             {
                 showGuide = false;
                 StateHasChanged();
@@ -158,6 +176,11 @@ public sealed partial class Home : IDisposable
     /// </summary>
     private void RequestRender()
     {
+        if (Vm is { } vm)
+        {
+            if (_isNarrow && vm.IsAssistantOpen && !_lastAssistantOpen) mobileTab = 2;
+            _lastAssistantOpen = vm.IsAssistantOpen;
+        }
         Interlocked.Increment(ref _changes);
         if (Interlocked.Exchange(ref _renderPending, 1) == 1)
         {
@@ -172,7 +195,13 @@ public sealed partial class Home : IDisposable
         });
     }
 
-    private Task Run(CommunityToolkit.Mvvm.Input.IAsyncRelayCommand command) => CommandRunner.RunAsync(Vm!, command);
+    private Task Run(CommunityToolkit.Mvvm.Input.IAsyncRelayCommand command)
+    {
+        if (Vm is { HasExportBlockers: true } vm
+            && (ReferenceEquals(command, vm.ExportPdfCommand) || ReferenceEquals(command, vm.ExportWordCommand) || ReferenceEquals(command, vm.CopyTextCommand)))
+            ShowTool("review");
+        return CommandRunner.RunAsync(Vm!, command);
+    }
 
     // Preview pages as data URLs, encoded once per rendered page rather than on every re-render.
     private readonly System.Runtime.CompilerServices.ConditionalWeakTable<byte[], string> _pageSources = [];
@@ -262,6 +291,7 @@ public sealed partial class Home : IDisposable
 
     public void Dispose()
     {
+        _workbenchBridge?.Dispose();
         _autosave?.Dispose();
         _watcher?.Dispose();
         Vm?.Dispose();

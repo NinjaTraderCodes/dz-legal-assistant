@@ -1,4 +1,6 @@
 using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Threading;
 
 namespace DzLegal.App.Views;
@@ -32,6 +34,18 @@ public partial class MainWindow : Window
         _workbench.SizeChanged += (_, _) => ApplyWorkbenchLayout();
         this.FindControl<ScrollViewer>("FormScroll")!.SizeChanged += (_, _) => FitNarrativeEditors();
         WireWorkbenchSplitters();
+        AddHandler(KeyDownEvent, (_, e) =>
+        {
+            if (e.Key == Key.K && e.KeyModifiers.HasFlag(KeyModifiers.Control))
+            {
+                ShowCommandPalette();
+                e.Handled = true;
+            }
+            else if (e.Key == Key.P && e.KeyModifiers.HasFlag(KeyModifiers.Control) && DataContext is MainWindowViewModel { HasExportBlockers: true } vm)
+            {
+                vm.ShowWorkbenchToolCommand.Execute("review");
+            }
+        }, RoutingStrategies.Tunnel);
 
         // Autosave every 30 s and when the window closes, so a crash or an accidental close loses nothing.
         _autosave.Tick += (_, _) => (DataContext as MainWindowViewModel)?.AutosaveNow();
@@ -55,6 +69,8 @@ public partial class MainWindow : Window
         };
         Closing += (_, _) =>
         {
+            _palette?.Close();
+            _draftWindow?.Close();
             CaptureWorkbenchLayout();
             if (_workbenchVm is not null)
             {

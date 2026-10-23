@@ -9,7 +9,7 @@
   </Window.KeyBindings>
   <DockPanel FlowDirection="LeftToRight">
     <Border DockPanel.Dock="Top" Background="{DynamicResource AppBarBrush}" MinHeight="{StaticResource ChromeMinHeight}" Padding="{StaticResource Inset16_8}">
-      <Grid ColumnDefinitions="Auto,*,Auto">
+      <Grid ColumnDefinitions="Auto,*,Auto,Auto">
         <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space3}" VerticalAlignment="Center">
           <Viewbox Width="{StaticResource Space7}" Height="{StaticResource Space7}" FlowDirection="LeftToRight">
             <Canvas Width="{StaticResource MarkCanvasSize}" Height="{StaticResource MarkCanvasSize}" FlowDirection="LeftToRight">
@@ -20,10 +20,12 @@
           <TextBlock Text="DZ Legal" FontSize="{StaticResource FontSection}" FontWeight="SemiBold" Foreground="{DynamicResource AppBarTextBrush}"/>
         </StackPanel>
         <StackPanel Grid.Column="1" Margin="{StaticResource Inset24_0}" Spacing="{StaticResource Space1}" VerticalAlignment="Center" FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}">
-          <TextBlock Text="{Binding CaseTitle}" TextWrapping="Wrap" Foreground="{DynamicResource AppBarTextBrush}" FontWeight="SemiBold"/>
-          <TextBlock Name="SaveStateText" Classes="secondary" Foreground="{DynamicResource AppBarMutedBrush}" Text="{Binding SaveStateText}" IsVisible="{Binding HasSaveState}" TextWrapping="Wrap"/>
+          <TextBlock Text="{Binding CaseTitle}" MaxLines="1" TextTrimming="WordEllipsis" ToolTip.Tip="{Binding CaseTitle}" Foreground="{DynamicResource AppBarTextBrush}" FontWeight="SemiBold"/>
+          <TextBlock Name="SaveStateText" Classes="secondary" Foreground="{DynamicResource AppBarMutedBrush}" Text="{Binding SaveStateText}" IsVisible="{Binding HasSaveState}" MaxLines="1" TextTrimming="WordEllipsis" ToolTip.Tip="{Binding SaveStateText}"/>
         </StackPanel>
-        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="{StaticResource Space1}" VerticalAlignment="Center">
+        <Button Grid.Column="2" Name="PaletteButton" Classes="bar" Width="{StaticResource CommandSearchWidth}" Click="OpenCommandPalette" AutomationProperties.Name="{Binding L[WB.Search]}" ToolTip.Tip="{Binding L[WB.Search]}">
+ <Grid ColumnDefinitions="*,Auto"><TextBlock Text="{Binding L[WB.Search]}" Classes="secondary" Foreground="{DynamicResource AppBarTextBrush}" TextTrimming="WordEllipsis" MaxLines="1"/><TextBlock Grid.Column="1" Text="Ctrl+K" Classes="secondary" Foreground="{DynamicResource AppBarMutedBrush}" Margin="{StaticResource Inset8_0}"/></Grid>
+</Button><StackPanel Grid.Column="3" Orientation="Horizontal" Spacing="{StaticResource Space1}" VerticalAlignment="Center">
           <Button Classes="bar" Command="{Binding NewCommand}" ToolTip.Tip="{Binding L[New]}" AutomationProperties.Name="{Binding L[New]}">
             <ic:SymbolIcon Symbol="DocumentAdd"/>
           </Button>
@@ -546,7 +548,12 @@
         </Border>
       </Grid>
       <GridSplitter Name="DraftSplitter" Grid.Column="3" ResizeDirection="Columns" ResizeBehavior="PreviousAndNext" ShowsPreview="True" KeyboardIncrement="{StaticResource Space4}" HorizontalAlignment="Stretch" AutomationProperties.Name="{Binding L[WB.ResizeDraft]}"/>
-      <views:DraftWorkspaceView Name="DraftWorkspace" Grid.Column="4"/>
+      <Border Grid.Column="4" Background="{DynamicResource PaperCanvasBrush}" IsVisible="{Binding IsDraftDetached}" Padding="{StaticResource Inset32_24}">
+ <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="{StaticResource Space4}">
+  <TextBlock Text="{Binding L[WB.DraftDetached]}" TextWrapping="Wrap"/>
+  <Button Classes="outline" Command="{Binding ToggleDraftWindowCommand}" Content="{Binding L[WB.DockDraft]}"/>
+ </StackPanel>
+</Border><views:DraftWorkspaceView Name="DraftWorkspace" Grid.Column="4" IsVisible="{Binding IsDraftDocked}"/>
     </Grid>
   </DockPanel>
 </Window>

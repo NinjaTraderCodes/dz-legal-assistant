@@ -13,31 +13,33 @@
     return;
 }
 
-<div class="app @(Vm.IsDarkTheme ? "dark" : "")" dir="@(Vm.IsRightToLeft ? "rtl" : "ltr")" lang="@Lang">
+<div id="workbench" class="app @(Vm.IsDarkTheme ? "dark" : "") @(Vm.IsOutlineCompact ? "outline-compact" : "") @(!Vm.IsOutlineVisible ? "outline-hidden" : "") @(Vm.IsToolsOpen ? "tools-open" : "") @(Vm.IsDraftMaximized ? "draft-focus" : "")" data-mobile-tab="@mobileTab" data-tool="@Vm.WorkbenchTool" data-tools-open="@Vm.IsToolsOpen.ToString().ToLowerInvariant()" data-compact="@Vm.IsOutlineCompact.ToString().ToLowerInvariant()" data-outline-visible="@Vm.IsOutlineVisible.ToString().ToLowerInvariant()" dir="@(Vm.IsRightToLeft ? "rtl" : "ltr")" lang="@Lang">
     <header class="appbar">
         <div class="brand">
-            <Icon Name="gavel" Size="22" />
-            <h1>@L["AppTitle"]</h1>
+            <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true"><path d="M7 7H30L42 19V44H27V18H7Z" fill="currentColor"/><path d="M7 22H20V44H7Z" fill="#D0AA80"/></svg>
+            <h1>DZ Legal</h1><span class="case-name" title="@Vm.CaseTitle">@Vm.CaseTitle</span>
             <span class="doc-type">@Vm.DocumentTypeName</span>
             <span class="demo-chip">@T("DemoChip")</span>
         </div>
-        <div class="tools">
-            <select id="sample-picker" aria-label="@T("Samples")" value="" @onchange="OpenSample">
+        <button class="command-search" type="button" title="@L["WB.Search"]" @onclick="ShowCommands"><span>@L["WB.Search"]</span> <kbd>Ctrl+K</kbd></button>
+        <div class="tools"><details class="demo-menu"><summary>@T("Samples")</summary><div>            <select id="sample-picker" aria-label="@T("Samples")" value="" @onchange="OpenSample">
                 <option value="">@T("Samples")</option>
                 @foreach (var sample in Engine.Samples)
                 {
                     <option value="@sample.Id">@sample.Title.Get(Lang)</option>
                 }
-            </select>
-            <button type="button" @onclick="() => Vm.NewCommand.Execute(null)"><Icon Name="add" /> @L["New"]</button>
+            </select>            <button type="button" aria-pressed="@(showGuide ? "true" : "false")" @onclick="() => showGuide = !showGuide"><Icon Name="question_circle" /> @T("GuideShow")</button></div></details>
+            <button type="button" title="@L["WB.ToggleOutline"]" aria-label="@L["WB.ToggleOutline"]" @onclick="() => Vm.ToggleOutlineCommand.Execute(null)"><Icon Name="document_text" /></button>
+
+            <button type="button" title="@L["New"]" aria-label="@L["New"]" @onclick="() => Vm.NewCommand.Execute(null)"><Icon Name="add" /> <span class="header-label">@L["New"]</span></button>
             @* Open and Save as on the desktop: a draft file (.dzdraft.json) from and to the visitor's own disk. *@
-            <label class="button-like" title="@L["Open"]"><Icon Name="folder_open" /> @L["Open"]<InputFile class="visually-hidden" accept=".json,application/json" OnChange="OpenDraftFile" /></label>
-            <button type="button" @onclick="() => Run(Vm.SaveCommand)"><Icon Name="save" /> @L["Save"]</button>
+            <label class="button-like" title="@L["Open"]" aria-label="@L["Open"]"><Icon Name="folder_open" /> <span class="header-label">@L["Open"]</span><InputFile aria-label="@L["Open"]" class="visually-hidden" accept=".json,application/json" OnChange="OpenDraftFile" /></label>
+            <button type="button" title="@L["Save"]" aria-label="@L["Save"]" @onclick="() => Run(Vm.SaveCommand)"><Icon Name="save" /> <span class="header-label">@L["Save"]</span></button>
             @if (Vm.HasSaveState)
             {
                 <span class="save-state">@Vm.SaveStateText</span>
             }
-            <button type="button" aria-pressed="@(showGuide ? "true" : "false")" @onclick="() => showGuide = !showGuide"><Icon Name="question_circle" /> @T("GuideShow")</button>
+
             <button type="button" aria-label="@T("Theme")" title="@T("Theme")" @onclick="() => Vm.ToggleThemeCommand.Execute(null)"><Icon Name="weather_moon" /></button>
             <button type="button" lang="@(Lang == "en" ? "ar" : "en")" @onclick="() => Vm.SwitchLanguageCommand.Execute(null)"><Icon Name="translate" /> @L["SwitchLanguage"]</button>
         </div>
@@ -109,21 +111,22 @@
         }
     </div>
 
+    @if(Vm.IsError) { <div class="notice error-notice" role="alert">@Vm.StatusMessage</div> }
     <nav class="mobile-tabs" role="tablist" aria-label="@L["AppTitle"]">
-        <button type="button" role="tab" aria-selected="@(mobileTab == 0 ? "true" : "false")" @onclick="() => mobileTab = 0">@T("TabCase")</button>
-        <button type="button" role="tab" aria-selected="@(mobileTab == 1 ? "true" : "false")" @onclick="() => mobileTab = 1">@T("TabDraft")</button>
-        <button type="button" role="tab" aria-selected="@(mobileTab == 2 ? "true" : "false")" @onclick="() => mobileTab = 2">@T("TabChecks") @(Vm.HasIssues || Vm.HasSubstanceIssues ? "•" : "")</button>
+        <button type="button" role="tab" aria-selected="@(mobileTab == 0 ? "true" : "false")" @onclick="() => SelectMobileTab(0)">@T("TabCase")</button>
+        <button type="button" role="tab" aria-selected="@(mobileTab == 1 ? "true" : "false")" @onclick="() => SelectMobileTab(1)">@T("TabDraft")</button>
+        <button type="button" role="tab" aria-selected="@(mobileTab == 2 ? "true" : "false")" @onclick="() => SelectMobileTab(2)">@T("TabChecks") @(Vm.HasIssues || Vm.HasSubstanceIssues ? "•" : "")</button>
     </nav>
 
     <main class="columns">
-        @* ── The case: the guided form ─────────────────────────────── *@
-        <section class="panel form-panel @(mobileTab == 0 ? "current" : "")" aria-labelledby="case-title">
-            <h2 id="case-title">@L["CaseForm"]</h2>
+<aside class="outline" dir="@(Vm.IsRightToLeft ? "rtl" : "ltr")" aria-label="@L["WB.Outline"]">
+ <button class="quiet" type="button" title="@L["WB.CompactOutline"]" aria-label="@L["WB.CompactOutline"]" @onclick="() => Vm.ToggleOutlineCompactCommand.Execute(null)"><Icon Name="document_text"/></button>
             <nav class="steps" aria-label="@L["CaseForm"]">
                 @foreach (var step in Vm.FieldGroups)
                 {
                     var current = step == Vm.SelectedStep;
-                    <button type="button" class="step @StepClass(step) @(current ? "selected" : "")" aria-current="@(current ? "step" : null)" @onclick="() => SelectStep(step)">
+                    <button type="button" class="step @StepClass(step) @(current ? "selected" : "")" title="@step.Label" aria-label="@step.Label" aria-current="@(current ? "step" : null)" @onclick="() => SelectStep(step)">
+                        <Icon Name="@StepIcon(step.Id)" Size="20"/>
                         <span class="mark">
                             @if (step.IsDone)
                             {
@@ -138,21 +141,32 @@
                                 <span>@step.Number</span>
                             }
                         </span>
-                        @step.Label
+                        <span class="step-label">@step.Label</span>
                     </button>
                 }
-            </nav>
+            </nav></aside>
+<div class="workbench-splitter" data-resize="outline" tabindex="0" role="separator" aria-orientation="vertical" aria-label="@L["WB.ResizeOutline"]"></div>
+<div class="editor-stack" dir="@(Vm.IsRightToLeft ? "rtl" : "ltr")">
+        <section class="panel form-panel @(mobileTab == 0 ? "current" : "")" dir="@(Vm.IsRightToLeft ? "rtl" : "ltr")" aria-labelledby="case-title">
+            <h2 id="case-title">@L["CaseForm"]</h2>
+
 
             @if (Vm.SelectedStep is { } selectedStep)
             {
-                <h3>@selectedStep.Label</h3>
+                <div class="editor-head"><h3>@selectedStep.Label</h3>                <div class="step-nav">
+                    <span class="muted small">@Vm.StepPosition</span>
+                    <span class="buttons">
+                        <button type="button" @onclick="() => Move(-1)">@L["Previous"]</button>
+                        <button type="button" class="primary" @onclick="() => Move(1)">@L["Next"]</button>
+                    </span>
+                </div></div>
                 @if (Vm.IsGroundsStep)
                 {
                     <GroundsPanel Vm="Vm" />
                 }
                 @foreach (var field in selectedStep.Fields.Where(f => f.IsVisible))
                 {
-                    <FieldEditor Field="field" ChooseLabel="@L["ChooseOption"]" />
+                    <FieldEditor @key="field.Id" Field="field" ChooseLabel="@L["ChooseOption"]" HelpLabel="@L["WB.Help"]" />
                 }
                 @if (Vm.IsRequestsStep || Vm.IsDocumentsStep)
                 {
@@ -209,21 +223,11 @@
                         }
                     </div>
                 }
-                <div class="step-nav">
-                    <span class="muted small">@Vm.StepPosition</span>
-                    <span class="buttons">
-                        <button type="button" @onclick="() => Move(-1)">@L["Previous"]</button>
-                        <button type="button" class="primary" @onclick="() => Move(1)">@L["Next"]</button>
-                    </span>
-                </div>
+
             }
         </section>
 
-        @* ── The statement of claim on paper: drafting, preview, export ──── *@
-        <section class="panel draft-panel @(mobileTab == 1 ? "current" : "")" aria-labelledby="draft-title">
-            <div class="panel-head">
-                <h2 id="draft-title">@L["Document"] <span class="badge">@L["DraftBadge"]</span></h2>
-                <div class="draft-actions">
+<div class="editor-engine">                <div class="draft-actions">
                     <select id="engine-picker" aria-label="@L["ProviderLabel"]" value="@Vm.SelectedProvider?.Key" @onchange="SelectProvider">
                         @foreach (var p in Vm.Providers)
                         {
@@ -238,63 +242,10 @@
                     {
                         <button type="button" class="ai" disabled="@CommandRunner.IsAiBusy(Vm)" @onclick="() => Run(Vm.GenerateCommand)"><Icon Name="sparkle" /> @L["Generate"]</button>
                     }
-                </div>
-            </div>
-            <p class="muted small">@L["GenerateHint"]</p>
-            @if (Vm.HasAnsweredBy)
-            {
-                <p class="small answered-by" dir="ltr"><Icon Name="sparkle" Size="12" /> @Vm.AnsweredBy</p>
-            }
-
-            <div class="toolbar">
-                <div class="tabs" role="tablist">
-                    <button type="button" role="tab" class="tab" aria-selected="@(Vm.SelectedDraftTab == 0 ? "true" : "false")" @onclick="() => Vm.SelectedDraftTab = 0"><Icon Name="edit" Size="16" /> @L["Edit"]</button>
-                    <button type="button" role="tab" class="tab" aria-selected="@(Vm.SelectedDraftTab == 1 ? "true" : "false")" @onclick="() => Vm.SelectedDraftTab = 1"><Icon Name="eye" Size="16" /> @L["Preview"]</button>
-                </div>
-                <label class="check small"><input id="watermark" type="checkbox" @bind="Vm.DraftWatermark" /> @L["Watermark"]</label>
-                <button type="button" class="small" @onclick="() => Run(Vm.ExportPdfCommand)"><Icon Name="arrow_download" Size="16" /> @L["ExportPdf"]</button>
-                <button type="button" class="small" @onclick="() => Run(Vm.ExportWordCommand)"><Icon Name="arrow_download" Size="16" /> @L["ExportWord"]</button>
-                <button type="button" class="small" @onclick="() => Run(Vm.CopyTextCommand)"><Icon Name="copy" Size="16" /> @L["CopyText"]</button>
-            </div>
-
-            @if (Vm.ShowsExportBlockers)
-            {
-                <div class="notice export-blockers" role="@(Vm.IsExportBlockedShown ? "alert" : "status")">
-                    <strong>@Vm.ExportBlockersTitle</strong>
-                    <div class="small" style="white-space: pre-line">@Vm.ExportBlockers</div>
-                </div>
-            }
-
-            <ModelActivity Model="Vm.GenerationActivity" LiveLabel="@L["ActivityLive"]" />
-
-            @if (Vm.SelectedDraftTab == 0)
-            {
-                <div class="paper-canvas">
-                    <div class="paper" dir="rtl" lang="ar">
-                        @foreach (var section in Vm.Sections)
-                        {
-                            <SectionEditor Section="section" Vm="Vm" />
-                        }
-                    </div>
-                </div>
-            }
-            else
-            {
-                <div class="paper-canvas" aria-busy="@(Vm.IsRenderingPreview ? "true" : "false")">
-                    @if (Vm.IsRenderingPreview)
-                    {
-                        <div class="preview-wait" role="status">@L["RenderingPreview"]</div>
-                    }
-                    @for (var i = 0; i < Vm.PreviewPages.Count; i++)
-                    {
-                        <img class="page-img" alt="@($"{L["Preview"]} {i + 1}/{Vm.PreviewPages.Count}")" src="@PageSource(Vm.PreviewPages[i])" />
-                    }
-                </div>
-            }
-        </section>
-
-        @* ── The checks: form (rule engine, no AI) and substance ──────────── *@
-        <section class="panel check-panel @(mobileTab == 2 ? "current" : "")" aria-labelledby="check-title">
+                </div></div>
+<div class="workbench-splitter horizontal" data-resize="tools" tabindex="0" role="separator" aria-orientation="horizontal" aria-label="@L["WB.ResizeTools"]" hidden="@(!Vm.IsToolsOpen)"></div>
+<div class="workbench-tools">        @* ── The checks: form (rule engine, no AI) and substance ──────────── *@
+        <section class="panel check-panel @(mobileTab == 2 ? "current" : "")" hidden="@(!Vm.IsToolsOpen || !Vm.IsReviewTool)" aria-labelledby="check-title">
             <h2 id="check-title">@L["Compliance"]</h2>
             <div class="score-card @(Vm.IsAdmissible ? "ok" : "ko")">
                 <div class="score-row">
@@ -355,16 +306,110 @@
                 }
             </details>
         </section>
+<section class="source-tool" hidden="@(!Vm.IsToolsOpen || !Vm.IsSourceTool)" aria-label="@L["WB.Source"]">
+ <p class="small muted">@L["WB.NoSource"]</p>
+ <input class="arabic" dir="rtl" aria-label="@L["ArticleSearchPlaceholder"]" placeholder="@L["ArticleSearchPlaceholder"]" @bind="Vm.ArticleQuery" @bind:event="oninput"/>
+ <p class="small">@Vm.ArticleSearchHint</p>
+ @foreach(var article in Vm.ArticleResults) { <ArticleCard Article="article" Vm="Vm" IdPrefix="source-art"/> }
+</section>
+<section class="assistant-tool" hidden="@(!Vm.IsToolsOpen || !Vm.IsAssistantTool)" aria-label="@L["WB.Assistant"]">
+ @if(Vm.AssistantSection is not null) { <AssistantPanel Vm="Vm"/> } else { <p>@L["AssistantScope"]</p> }
+</section>
+<section class="activity-tool" hidden="@(!Vm.IsToolsOpen || !Vm.IsActivityTool)" aria-label="@L["WB.Activity"]">
+ <p>@Vm.ModelStatusText</p>
+ <ModelActivity Model="Vm.AnalysisActivity" LiveLabel="@L["ActivityLive"]"/>
+ <ModelActivity Model="Vm.GenerationActivity" LiveLabel="@L["ActivityLive"]"/>
+ <ModelActivity Model="Vm.AssistantActivity" LiveLabel="@L["ActivityLive"]"/>
+</section></div><nav class="tool-tabs" aria-label="@L["WB.HideTools"]">
+ @foreach(var tool in new[] { ("WB.BeforeExport", "review"), ("WB.Source", "source"), ("WB.Assistant", "assistant"), ("WB.Activity", "activity") })
+ {
+  <button type="button" aria-pressed="@(Vm.IsToolsOpen && Vm.WorkbenchTool == tool.Item2 ? "true" : "false")" @onclick="() => ShowTool(tool.Item2)">@L[tool.Item1] @(tool.Item2 == "review" && Vm.ShowsExportBlockers ? Vm.ExportBlockerCount.ToString(L.Culture) : "")</button>
+ }
+ <button class="quiet" type="button" hidden="@(!Vm.IsToolsOpen)" aria-label="@L["WB.HideTools"]" @onclick="() => Vm.HideWorkbenchToolsCommand.Execute(null)"><Icon Name="dismiss"/></button>
+</nav></div>
+<div class="workbench-splitter" data-resize="editor" tabindex="0" role="separator" aria-orientation="vertical" aria-label="@L["WB.ResizeDraft"]"></div>
+        @* ── The statement of claim on paper: drafting, preview, export ──── *@
+        <section class="panel draft-panel @(mobileTab == 1 ? "current" : "")" dir="@(Vm.IsRightToLeft ? "rtl" : "ltr")" aria-labelledby="draft-title">
+            <div class="panel-head">
+                <h2 id="draft-title">@L["Document"] <span class="badge">@L["DraftBadge"]</span></h2>
+<button type="button" class="quiet" title="@L["WB.FocusDraft"]" aria-label="@L["WB.FocusDraft"]" @onclick="() => Vm.ToggleDraftFocusCommand.Execute(null)"><Icon Name="eye"/></button>
+            </div>
+            <p class="muted small">@L["GenerateHint"]</p>
+            @if (Vm.HasAnsweredBy)
+            {
+                <p class="small answered-by" dir="ltr"><Icon Name="sparkle" Size="12" /> @Vm.AnsweredBy</p>
+            }
+
+            <div class="toolbar">
+                <div class="tabs" role="tablist">
+                    <button type="button" role="tab" class="tab" aria-selected="@(Vm.SelectedDraftTab == 0 ? "true" : "false")" @onclick="() => Vm.SelectedDraftTab = 0"><Icon Name="edit" Size="16" /> @L["Edit"]</button>
+                    <button type="button" role="tab" class="tab" aria-selected="@(Vm.SelectedDraftTab == 1 ? "true" : "false")" @onclick="() => Vm.SelectedDraftTab = 1"><Icon Name="eye" Size="16" /> @L["Preview"]</button>
+                </div>
+                <label class="check small"><input id="watermark" type="checkbox" @bind="Vm.DraftWatermark" /> @L["Watermark"]</label>
+                <button type="button" class="small" @onclick="() => Run(Vm.ExportPdfCommand)"><Icon Name="arrow_download" Size="16" /> @L["ExportPdf"]</button>
+                <button type="button" class="small" @onclick="() => Run(Vm.ExportWordCommand)"><Icon Name="arrow_download" Size="16" /> @L["ExportWord"]</button>
+                <button type="button" class="small" @onclick="() => Run(Vm.CopyTextCommand)"><Icon Name="copy" Size="16" /> @L["CopyText"]</button>
+            </div>
+
+            @if (Vm.ShowsExportBlockers)
+            {
+                <div class="notice export-blockers" role="@(Vm.IsExportBlockedShown ? "alert" : "status")">
+                    <strong>@Vm.ExportBlockersTitle</strong>
+                    <div class="small" style="white-space: pre-line">@Vm.ExportBlockers</div>
+                </div>
+            }
+
+            <ModelActivity Model="Vm.GenerationActivity" LiveLabel="@L["ActivityLive"]" />
+
+            @if (Vm.SelectedDraftTab == 0)
+            {
+                <div class="paper-canvas">
+                    <div class="paper" dir="rtl" lang="ar">
+                        @foreach (var section in Vm.Sections)
+                        {
+                            <SectionEditor Section="section" Vm="Vm" />
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="paper-canvas" aria-busy="@(Vm.IsRenderingPreview ? "true" : "false")">
+                    @if (Vm.IsRenderingPreview)
+                    {
+                        <div class="preview-wait" role="status">@L["RenderingPreview"]</div>
+                    }
+                    @for (var i = 0; i < Vm.PreviewPages.Count; i++)
+                    {
+                        <img class="page-img" alt="@($"{L["Preview"]} {i + 1}/{Vm.PreviewPages.Count}")" src="@PageSource(Vm.PreviewPages[i])" />
+                    }
+                </div>
+            }
+        </section>
+
     </main>
 
-    @if (Vm.AssistantSection is not null)
+    @if(commandOpen)
     {
-        <div class="drawer-backdrop" @onclick="() => Vm.CloseAssistantCommand.Execute(null)"></div>
-        <AssistantPanel Vm="Vm" />
+      <div class="command-backdrop" @onclick="HideCommands"></div>
+      <section class="command-palette" role="dialog" aria-modal="true" aria-labelledby="commands-title">
+        <h2 id="commands-title">@L["WB.Commands"]</h2>
+        <input id="command-query" aria-label="@L["WB.Search"]" placeholder="@L["WB.Search"]" @bind="commandQuery" @bind:event="oninput"/>
+        <div class="command-results" role="group" aria-label="@L["WB.Commands"]">
+         @foreach(var command in FilteredCommands)
+         {
+          <button type="button" @onclick="() => ExecuteWebCommand(command)">@command.Label</button>
+         }
+        </div>
+        @if(!FilteredCommands.Any()) { <p class="small muted" role="status">@L["WB.NoCommands"]</p> }
+        <p class="small muted">@L["WB.PaletteKeys"]</p>
+        <button type="button" class="quiet" @onclick="HideCommands">@L["Cancel"]</button>
+      </section>
     }
-
     <footer class="statusbar @(Vm.IsError ? "error" : "")" role="status" aria-live="polite">
-        <span>@Vm.StatusMessage</span>
+        <span>@Vm.StatusMessage</span><span>@Vm.StepPosition</span><span>@Vm.ModelStatusText</span>
+        @if(Vm.HasWorkbenchActivity) { <span>@Vm.WorkbenchActivity.EstimateText</span><span>@Vm.WorkbenchActivity.PowerNote</span> }
+        <button class="quiet small" type="button" @onclick='() => ShowTool("activity")'>@L["WB.WatchActivity"]</button>
         @if (Engine.Gate.Waiting > 0)
         {
             <span class="muted">@string.Format(L.Culture, T("Waiting"), Engine.Gate.Waiting)</span>

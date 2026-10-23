@@ -58,7 +58,9 @@
 
     [Parameter, EditorRequired] public MainWindowViewModel Vm { get; set; } = default!;
 
-    private string InputId => "art-" + Article.Reference.Code + "-" + Article.Reference.Number.Replace(' ', '-');
+    [Parameter] public string IdPrefix { get; set; } = "art";
+
+    private string InputId => IdPrefix + "-" + Article.Reference.Code + "-" + Article.Reference.Number.Replace(' ', '-');
 
     private string RoleHelp => Vm.L["RoleHelp_" + RoleKey];
 

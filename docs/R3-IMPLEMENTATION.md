@@ -6,7 +6,7 @@ Branch: `codex/r3-workbench`, based on `origin/claude/stoic-fermat-mi1gko` at `d
 
 1. Workbench shell: implemented. The draft stays on the physical right, with a compact outline below 1500 logical pixels, three preview splitters, persistent layout, four tools, and the existing case commands.
 2. Help, typography, contrast and the complete rendering matrix: implemented; proof and remaining physical-device checks are described below.
-3. Command palette, separate draft window and web parity: not started at the shell checkpoint.
+3. Command palette, separate draft window and web parity: implemented. Final verification and acceptance limits are described below.
 
 The step checkpoints are separate commits. No drafting, legal, storage, document renderer, provider, rule, prompt or corpus files have been changed. Claim confirmation and article selection still call the original commands and setters.
 
@@ -15,6 +15,8 @@ The step checkpoints are separate commits. No drafting, legal, storage, document
 | Existing capability | Location in the workbench |
 | --- | --- |
 | New / Open / Save and save-state text | Title bar; existing Ctrl+N/O/S shortcuts |
+| Search and navigation | Title-bar search / Ctrl+K, with all main actions and case sections in Arabic and English |
+| Separate live draft | Draft-header detach button / command palette; close or dock returns it to the primary pane |
 | Save first / continue / cancel | Persistent replace bar below the title bar |
 | Autosave and recovery | Existing timer and close handling; persistent recovery bar |
 | Every field, conditional field, choice and boolean | Outline → selected editor section |
@@ -27,7 +29,7 @@ The step checkpoints are separate commits. No drafting, legal, storage, document
 | Article selection, manual search and official text | Grounds editor and Source tool, using the existing article template |
 | Journal Officiel reference, provenance and source link | Article card; unavailable text stays visible as text |
 | Suggested request/document insertion | Requests / Supporting documents editor sections |
-| Request wording proposal and accept/reject | Requests editor section |
+| Request wording suggestion and rejection | Requests editor section; unchanged suggestion-only behavior |
 | Drafting and cancellation | Editor footer and existing Ctrl+G shortcut |
 | Real activity steps, stream, elapsed time, history estimate and battery note | Activity tool, in-place activity views, status bar estimate/battery |
 | Section being written | In the draft next to the section heading |
@@ -95,6 +97,36 @@ The actual native executable was launched with an isolated fictitious profile, t
 
 Autosave/recovery behavior is exercised by the original safety tests and by all 16 matrix recovery configurations. Layout failure/round-trip and keyboard sizing are covered separately. No claim of testing a second 8 GB machine, a screen reader, or graphics drivers is made.
 
+## Step 3: command palette, separate draft and browser workbench
+
+Ctrl+K and the title-bar search open a native owned command palette. It filters Arabic or English labels, ranks exact section matches before actions that contain the same word, supports arrows / Enter / Escape, and delegates to the existing commands. It includes case files, analysis/drafting/cancellation, export/copy, preview/edit, appearance, pane controls, tools, all nine case groups, section override/restore/undo/redraft/assistant, and the relevant proposal/confirmation/recovery actions. It adds no legal decisions or confirmation rules.
+
+The draft header can open an owned window with the shared DraftWorkspaceView template, bound to the **same MainWindowViewModel and SectionViewModels**. The primary view stays mounted, hidden, preserving its editor instances and scroll/caret state. A second presentation observes those objects live; it is not a second draft or a second case. This deliberately avoids moving a live Avalonia visual between two layout managers, which failed during development. Closing the window or choosing Dock returns to the original pane. PDF, Word, copy and Ctrl+P use the original guard; repeated blocked export also reopens the review tools. Closing the main window closes its palette and draft window before the existing autosave/disposal path.
+
+Chrome case/save text is intentionally limited to one line with an ellipsis and a full tooltip when space is short. The complete value remains in its editor. The command search uses the same disclosure of its full label. The command palette list uses the workbench surface rather than Fluent's default grey background.
+
+The browser demo now has the same fixed physical pane order, compact/expanded outline icons, three resizers, four lower tools, permanent status, draft focus, quiet help and Ctrl+K palette. Dragging draws a preview line; widths change on release. Arrow keys resize and double-click resets. Layout-only preferences live in **dzlegal.workbench.layout** in browser localStorage, separate from the existing **dzlegal.case** recovery envelope. Null, malformed or out-of-range layout data falls back to defaults. The palette traps Tab, restores the previous focus on Escape, and is centered physically in both interface directions.
+
+Existing sample selection and the guide remain in the Samples menu; the guide starts closed. New/Open/Save, browser downloads, clipboard, replace confirmation, storage recovery, source cards and preview pages retain their existing services. At phone width, Case/Draft/Checks tabs remain available; Checks contains the four tools, and opening the section assistant or refusing export brings those tools into view. Browser fields keep the pre-existing three-times field-length transport ceiling and the existing over-length note/guard; desktop inputs retain full over-long values without a control MaxLength. Both are explicitly legal RTL.
+
+The native app retains Arabic as its default. The demo retains its pre-existing English opening language for judges; `?lang=ar` or the language switch selects Arabic. This is an intentional difference between the two launch experiences.
+
+The web UI uses bundled Plex/Naskh and the desktop palette. Superseded green/purple palette definitions and sub-12.5px type declarations were removed. Narrative fields fit complete text lines. No CDNs, dependencies on a hosted UI library, animations, blur or heavy shadows were added. Program.cs, /healthz, model gates and server configuration are unchanged. This branch has not been deployed to Render.
+
+### Final verification
+
+Release build: **0 warnings / 0 errors**. Full suite: **697 passed, 0 failed, 0 skipped** (App 142; Web 24; Drafting 369; FormEngine 67; Documents 6; Law 86; Storage 3). The five added PowerFeaturesTests cover palette navigation and real export refusal in all language/theme combinations, shared live draft state, preservation of primary editors, guarded exports from the floating window, repeated refusal, and docking. Existing tests were not skipped or weakened.
+
+The native [offline gallery](images/r3/index.html) was regenerated from the final workbench test run and reviewed in all 16 state contact sheets. [Power-feature captures](images/r3/power/index.html) show both palettes/themes and the separate draft. These use actual Avalonia rendering, not a browser reconstruction of the desktop.
+
+The independent [browser review script](../tests/DzLegal.Web.Tests/Browser/workbench-review.cjs) runs against a local demo with hosted API-key variables empty. It exercises 16 size/scale/language/theme configurations, actual PDF and Word downloads, unreviewed-AI export refusal, exact section search, focus restoration, help focus/hover/pinning/Escape, preview-only dragging, keyboard sizing/reset of all resizers, preference restoration, save-first, an empty case and invalid preference fallback. A further four 390px phone configurations check all three mobile tabs. The browser audit of the exported state found **zero axe WCAG A/AA findings in each of the 16 configurations**; this is not a screen-reader certification or an audit of every possible content state. The reviewed states made no external HTTP requests and raised no browser page errors. Both GET and HEAD /healthz returned 200.
+
+[Browser screenshots](images/r3/web/index.html) and [recorded observations](R3-BROWSER-REVIEW.json) are included. Browser 125% uses a reduced CSS viewport and device scale factor, not a physical Windows monitor. The normal hosted demo still requires its existing server connection; the no-CDN guarantee does not turn Blazor Server into an offline web application.
+
+To reproduce the browser run, install/use Playwright and Chromium in your test environment, set PLAYWRIGHT_MODULE and CHROMIUM_PATH to their existing locations (and AXE_PATH for the audit), start the local Web project, then run `node tests/DzLegal.Web.Tests/Browser/workbench-review.cjs`. Output defaults to the ignored redteam-output/r3-web-qa folder. Only fictitious values from the first drafting-case fixture are used. [Asset licences and provenance](R3-ASSET-LICENSES.md) are recorded separately.
+
 ## Outstanding verification
 
 The physical checks listed above remain. Smooth operation on a separate 8 GB laptop and a hardware graphics/scaling matrix cannot be inferred from headless rendering. The existing section-assistant send command does not itself apply the over-long-field refusal used by the other AI commands; legal/command behavior has been preserved within the requested scope, so this pre-existing discrepancy is recorded rather than changed here.
+
+The browser New-case review also exposed a pre-existing view-model ordering issue: after exporting a draft that cites articles, New clears the form and narrative but can leave the previous narrative's article-review hints visible until the next refresh. StartNew calls OnInputChanged (and its review-hint calculation) before SyncSections replaces the narrative text. Neither method was modified on this branch. The `empty` browser frames deliberately retain this observation. Correcting those review calculations is outside the permitted interface-state-only changes and needs a separate behavior fix; the stale warning has not been hidden by the new UI.

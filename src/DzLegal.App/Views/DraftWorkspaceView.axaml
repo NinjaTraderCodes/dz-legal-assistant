@@ -3,14 +3,16 @@
   <!-- Draft -->
   <Border Name="DraftPane" Classes="panel" Padding="{StaticResource Inset0}">
     <DockPanel>
-      <Grid DockPanel.Dock="Top" Classes="pane-heading" ColumnDefinitions="*,Auto">
+      <Grid DockPanel.Dock="Top" Classes="pane-heading" ColumnDefinitions="*,Auto,Auto">
         <StackPanel Spacing="{StaticResource Space1}">
           <TextBlock Text="{Binding L[Document]}" FontWeight="SemiBold"/>
           <TextBlock Name="DraftBanner" Classes="secondary" Text="{Binding L[DraftBadge]}" ToolTip.Tip="{Binding L[DraftBanner]}" TextWrapping="Wrap"/>
         </StackPanel>
-        <Button Grid.Column="1" Classes="subtle" Command="{Binding ToggleDraftFocusCommand}" ToolTip.Tip="{Binding L[WB.FocusDraft]}" AutomationProperties.Name="{Binding L[WB.FocusDraft]}">
+        <Button Grid.Column="1" Classes="subtle" IsVisible="{Binding IsDraftDocked}" Command="{Binding ToggleDraftFocusCommand}" ToolTip.Tip="{Binding L[WB.FocusDraft]}" AutomationProperties.Name="{Binding L[WB.FocusDraft]}">
           <ic:SymbolIcon Symbol="FullScreenMaximize"/>
         </Button>
+        <Button Grid.Column="2" Classes="subtle" IsVisible="{Binding IsDraftDocked}" Command="{Binding ToggleDraftWindowCommand}" ToolTip.Tip="{Binding L[WB.DetachDraft]}" AutomationProperties.Name="{Binding L[WB.DetachDraft]}"><ic:SymbolIcon Symbol="Open"/></Button>
+        <Button Grid.Column="2" Classes="subtle" IsVisible="{Binding IsDraftDetached}" Command="{Binding ToggleDraftWindowCommand}" ToolTip.Tip="{Binding L[WB.DockDraft]}" AutomationProperties.Name="{Binding L[WB.DockDraft]}"><ic:SymbolIcon Symbol="PanelLeft"/></Button>
       </Grid>
       <WrapPanel DockPanel.Dock="Top" Classes="document-toolbar">
         <TabControl Name="DraftTabs" SelectedIndex="{Binding SelectedDraftTab}">
@@ -18,9 +20,9 @@
           <TabItem Header="{Binding L[Preview]}"/>
         </TabControl>
         <CheckBox IsChecked="{Binding DraftWatermark}" Content="{Binding L[Watermark]}"/>
-        <Button Classes="outline" Name="ExportPdfButton" Command="{Binding ExportPdfCommand}" Content="{Binding L[ExportPdf]}"/>
-        <Button Classes="outline" Command="{Binding ExportWordCommand}" Content="{Binding L[ExportWord]}"/>
-        <Button Classes="subtle" Command="{Binding CopyTextCommand}" ToolTip.Tip="{Binding L[CopyText]}" AutomationProperties.Name="{Binding L[CopyText]}">
+        <Button Classes="outline" Name="ExportPdfButton" Command="{Binding ExportPdfCommand}" Click="BeforeExportClick" Content="{Binding L[ExportPdf]}"/>
+        <Button Classes="outline" Command="{Binding ExportWordCommand}" Click="BeforeExportClick" Content="{Binding L[ExportWord]}"/>
+        <Button Classes="subtle" Command="{Binding CopyTextCommand}" Click="BeforeExportClick" ToolTip.Tip="{Binding L[CopyText]}" AutomationProperties.Name="{Binding L[CopyText]}">
           <ic:SymbolIcon Symbol="Copy"/>
         </Button>
         <Button Classes="subtle" Command="{Binding ShowWorkbenchToolCommand}" CommandParameter="review" IsVisible="{Binding ShowsExportBlockers}">

@@ -5,18 +5,6 @@ namespace DzLegal.App;
 
 public static class Converters
 {
-    public static readonly IValueConverter OutlineIcon = new FuncValueConverter<string, FluentIcons.Common.Symbol>(id => id switch
-    {
-        "court" => FluentIcons.Common.Symbol.Building,
-        "plaintiff" or "defendant" => FluentIcons.Common.Symbol.Person,
-        "claim" => FluentIcons.Common.Symbol.Briefcase,
-        "facts" => FluentIcons.Common.Symbol.TextDescription,
-        "grounds" => FluentIcons.Common.Symbol.Library,
-        "requests" => FluentIcons.Common.Symbol.CheckmarkCircle,
-        "documents" => FluentIcons.Common.Symbol.Document,
-        _ => FluentIcons.Common.Symbol.Edit,
-    });
-
     public static readonly IValueConverter Strike =
         new FuncValueConverter<bool, Avalonia.Media.TextDecorationCollection?>(on => on ? Avalonia.Media.TextDecorations.Strikethrough : null);
 

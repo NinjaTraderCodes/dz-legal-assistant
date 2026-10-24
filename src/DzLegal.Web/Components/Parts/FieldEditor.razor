@@ -10,16 +10,11 @@
     }
     else
     {
-        <div class="field-heading">
-          <label for="@InputId">@Field.Label</label>
-          @if(!string.IsNullOrEmpty(Field.Hint))
-          {
-            <details class="field-help">
-              <summary aria-label="@(HelpLabel + " · " + Field.Label)"><Icon Name="question_circle"/></summary>
-              <p class="small" id="@(InputId + "-help")">@Field.Hint</p>
-            </details>
-          }
-        </div>
+        <label for="@InputId">@Field.Label</label>
+        @if (!string.IsNullOrEmpty(Field.Hint))
+        {
+            <span class="small muted">@Field.Hint</span>
+        }
         @if (Field.IsChoice)
         {
             <select id="@InputId" value="@Field.Value" @onchange="e => Field.Value = e.Value?.ToString() ?? string.Empty">
@@ -57,8 +52,6 @@
     [Parameter, EditorRequired] public FieldViewModel Field { get; set; } = default!;
 
     [Parameter] public string ChooseLabel { get; set; } = string.Empty;
-
-    [Parameter] public string HelpLabel { get; set; } = "Help";
 
     private string InputId => "f-" + Field.Id.Replace('.', '-');
 }

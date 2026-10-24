@@ -90,7 +90,6 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         StatusMessage = loc["Ready"];
         OnInputChanged();
         MarkSaved(null);
-        InitializeWorkbench();
     }
 
     public Loc L { get; }
@@ -300,7 +299,6 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
 
     public void Dispose()
     {
-        DisposeWorkbench();
         // A closed window or browser tab stops its running AI work: no tokens spent and no queue slot held for nobody.
         GenerateCommand.Cancel();
         AnalyseGroundsCommand.Cancel();

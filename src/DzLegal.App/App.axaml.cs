@@ -24,13 +24,11 @@ public partial class App : Application
 
     public static Window CreateMainWindow()
     {
-        // Explicit isolated profile for reviewing the real UI without touching an existing lawyer's recovery copy.
-        var reviewHome = Environment.GetEnvironmentVariable("DZLEGAL_REVIEW_HOME");
-        var paths = string.IsNullOrWhiteSpace(reviewHome) ? AppPaths.Default : new AppPaths(Path.GetFullPath(reviewHome));
-        var window = new MainWindow(Path.Combine(paths.Root, "settings", "workbench-layout.json"));
+        var window = new MainWindow();
         try
         {
             var settings = AppSettings.Load(Path.Combine(AppContext.BaseDirectory, "appsettings.json"));
+            var paths = AppPaths.Default;
             window.DataContext = Composition.CreateMainViewModel(
                 settings, new AvaloniaUserFiles(() => TopLevel.GetTopLevel(window), paths), paths, new Loc(), new AvaloniaExternalLinks(() => TopLevel.GetTopLevel(window)));
             return window;

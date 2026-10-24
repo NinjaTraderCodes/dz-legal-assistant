@@ -101,4 +101,4 @@ The images do not show a complete light theme, a full Arabic application interfa
 
 For the next review, prepare a faithful charcoal/gold treatment of the **same restored screen**, presented beside the original. Use the original pane arrangement and one consistent fictitious fixture. Show both a large view and the smallest target laptop view; include a normal editing state and a blocked-export state. Review the concrete mockups with the user before any new application styling is implemented.
 
-Current work ends at restoration and this reference analysis.
+The restoration and reference-analysis review ended here. Following approval of the proposed direction, a separate [charcoal/gold comparison study](design-studies/charcoal-gold/index.html) now shows the restored original beside the proposal in Arabic and English, at laptop and large-window sizes, in editing and blocked-export states. [Study notes and verification](design-studies/charcoal-gold/README.md) describe its scope. Production views and styles remain unchanged.

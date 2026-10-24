@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>DzLegal.DesignStudy</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia.Headless.XUnit" />
+    <PackageReference Include="Avalonia.Skia" />
+    <ProjectReference Include="../../../../src/DzLegal.App/DzLegal.App.csproj" />
+    <Compile Include="../../../../tests/DzLegal.App.Tests/Harness.cs" Link="Harness.cs" />
+    <Compile Include="../../../../tests/DzLegal.App.Tests/TestApp.cs" Link="TestApp.cs" />
+    <Compile Include="../../charcoal-gold/RenderStudy/Treatment.cs" Link="Treatment.cs" />
+    <Using Include="DzLegal.Presentation" />
+    <Using Include="DzLegal.Presentation.Services" />
+    <Using Include="DzLegal.Presentation.ViewModels" />
+  </ItemGroup>
+</Project>

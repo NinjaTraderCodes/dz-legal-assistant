@@ -27,6 +27,8 @@ Validation on Windows:
 
 These results support the absence of detected regressions; they are not a complete certification of every Windows DPI, assistive technology or hardware configuration. No real model, client file or online provider was used for the new UI checks.
 
+Hosted CI could not start: [the implementation run](https://github.com/NinjaTraderCodes/dz-legal-assistant/actions/runs/40126346398) reports `startup_failure` with no jobs or check runs. The same failure is present on [the previous mockup commit](https://github.com/NinjaTraderCodes/dz-legal-assistant/actions/runs/40111114173) and [the unchanged default-branch baseline](https://github.com/NinjaTraderCodes/dz-legal-assistant/actions/runs/40119959784). The underlying hosted-startup cause was not exposed by those run records. Workflow and Dockerfile contents are unchanged. The validation results above are local; they do not claim a successful hosted CI or Docker-image build.
+
 ## Implementation captures
 
 These are native captures of the working application, with fictitious test inputs. The remaining gender/source warnings are intentionally retained.

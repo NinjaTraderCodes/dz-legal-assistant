@@ -75,7 +75,7 @@ Use an opaque warm charcoal workspace, restrained gold emphasis and an ivory doc
 
 These are proposed design values, not exact measurements of the references or a verified accessible palette. Text, control boundaries, focus, selected and disabled states must be measured together before implementation. Gold can mark the current section, primary action, selected tab and a small brand detail. Errors, blockers, AI authorship and review requirements keep distinct wording and semantic treatment.
 
-An alternative is to retain the original forest green and warm paper, adding gold only to selected states and small identity details. That would be a smaller visual change and should be available as a comparison if the user prefers the original identity.
+The user selected **warm charcoal and muted gold, closest to the supplied references**, during this review. This selection establishes the direction for the next design discussion; no new application styling has been authorized or implemented in this turn.
 
 ### Typography, spacing and depth
 
@@ -99,6 +99,6 @@ The images do not show a complete light theme, a full Arabic application interfa
 
 ## Suggested next review
 
-After discussing the direction, prepare two static comparisons of the **same restored screen**: a close charcoal/gold treatment and a restrained forest-green/gold treatment. Use the original pane arrangement and one consistent fictitious fixture. Show both a large view and the smallest target laptop view; include a normal editing state and a blocked-export state. Let the user choose and refine a direction before any new application styling is implemented.
+For the next review, prepare a faithful charcoal/gold treatment of the **same restored screen**, presented beside the original. Use the original pane arrangement and one consistent fictitious fixture. Show both a large view and the smallest target laptop view; include a normal editing state and a blocked-export state. Review the concrete mockups with the user before any new application styling is implemented.
 
 Current work ends at restoration and this reference analysis.

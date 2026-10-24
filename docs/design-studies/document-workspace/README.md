@@ -2,7 +2,7 @@
 
 [Open the review gallery](index.html). The preceding [charcoal/gold study](../charcoal-gold/index.html) remains available unchanged.
 
-This follow-up addresses the three requested refinements. It is an isolated, native Avalonia visual study. No production source, style, view model, export renderer, legal rule, data file or project configuration is changed.
+This historical follow-up addresses the three requested refinements. It is an isolated, native Avalonia visual study. No production source, style, view model, export renderer, legal rule, data file or project configuration was changed when capturing it. The subsequently approved [production implementation](../../UI-WORKBENCH-RELEASE.md) is documented separately.
 
 ## Case details: replace the pills
 
@@ -43,7 +43,7 @@ Completed results: all 18 native scenes passed the rendering checks, the [64 gal
 
 ## Reproduce
 
-From the repository root in PowerShell:
+From the repository root of a checkout at commit `98223ab`, in PowerShell. The historical renderer relies on the original view structure and does not target the subsequent production implementation:
 
 ```powershell
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'

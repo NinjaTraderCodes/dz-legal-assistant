@@ -2,7 +2,7 @@
 
 [Open the comparison gallery](index.html).
 
-This is a design study of the restored original UI. No production view, style, view model, legal rule, test, data file or project configuration was changed. The application remains on the original design from `claude/stoic-fermat-mi1gko`.
+These historical captures show a design study of the restored original UI. At capture time, no production view, style, view model, legal rule, test, data file or project configuration was changed. The subsequently approved [production implementation](../../UI-WORKBENCH-RELEASE.md) is documented separately.
 
 ## Review set
 
@@ -45,7 +45,7 @@ This review covers two static states at 100% scale. It does not certify physical
 
 ## Reproduce
 
-From the repository root, in PowerShell:
+From the repository root of a checkout at commit `98223ab`, in PowerShell. The historical renderer relies on the original view structure and does not target the subsequent production implementation:
 
 ```powershell
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'

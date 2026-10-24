@@ -5,6 +5,23 @@ namespace DzLegal.App;
 
 public static class Converters
 {
+    public static readonly IValueConverter SectionAlignment = new FuncValueConverter<Domain.BlockAlign, Avalonia.Media.TextAlignment>(align => align switch
+    {
+        Domain.BlockAlign.Center or Domain.BlockAlign.End => Avalonia.Media.TextAlignment.Center,
+        Domain.BlockAlign.Justify => Avalonia.Media.TextAlignment.Justify,
+        _ => Avalonia.Media.TextAlignment.Right,
+    });
+
+    public static readonly IValueConverter SectionWeight = new FuncValueConverter<bool, Avalonia.Media.FontWeight>(bold =>
+        bold ? Avalonia.Media.FontWeight.Bold : Avalonia.Media.FontWeight.Normal);
+
+    public static readonly IValueConverter SectionSpacing = new FuncValueConverter<float, Avalonia.Thickness>(points => new(0, points * 1.12, 0, 0));
+
+    public static readonly IValueConverter SectionWidth = new FuncValueConverter<Domain.BlockAlign, double>(align => align == Domain.BlockAlign.End ? 260 : double.PositiveInfinity);
+
+    public static readonly IValueConverter SectionPosition = new FuncValueConverter<Domain.BlockAlign, Avalonia.Layout.HorizontalAlignment>(align =>
+        align == Domain.BlockAlign.End ? Avalonia.Layout.HorizontalAlignment.Left : Avalonia.Layout.HorizontalAlignment.Stretch);
+
     public static readonly IValueConverter Strike =
         new FuncValueConverter<bool, Avalonia.Media.TextDecorationCollection?>(on => on ? Avalonia.Media.TextDecorations.Strikethrough : null);
 

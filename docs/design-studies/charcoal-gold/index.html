@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DZ Legal · Charcoal & Gold study</title>
+<style>
+:root{color-scheme:dark;--bg:#171411;--panel:#24201b;--line:#51483b;--text:#f2ede5;--muted:#c2b8a9;--gold:#c6a76d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 system-ui,Segoe UI,sans-serif}
+header,main,footer{max-width:1920px;margin:auto;padding:24px 32px}header{border-bottom:1px solid var(--line);display:flex;gap:32px;align-items:center;justify-content:space-between}
+.eyebrow{margin:0;color:var(--gold);font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:650}h1{font-size:30px;line-height:1.25;margin:8px 0}p{margin:4px 0;color:var(--muted)}header a,footer a{color:var(--gold)}
+.controls{display:flex;flex-wrap:wrap;gap:20px;align-items:end;padding-bottom:24px}label{display:grid;gap:6px;color:var(--muted);font-size:13px}select,button,a.action{font:inherit;border:1px solid #8c7b61;border-radius:7px;background:#302a23;color:var(--text);padding:9px 14px;min-height:42px}button{cursor:pointer}button.active{background:var(--gold);color:#28231d;border-color:var(--gold)}:focus-visible{outline:3px solid #e1c58e;outline-offset:3px}
+.segmented{display:flex;gap:6px}.caption{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:12px;color:var(--muted);font-size:13px}.caption strong{color:var(--text);font-size:15px;font-weight:600}.caption a{color:var(--gold)}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:24px}.frame{min-width:0}.frame img{display:block;width:100%;height:auto;border:1px solid #62533f;border-radius:6px;background:#24201b}.pair.single{grid-template-columns:1fr}.pair.single img{max-width:1920px;margin:auto}
+.wipe{position:relative;overflow:hidden;border:1px solid #62533f;border-radius:6px}.wipe img{display:block;width:100%;height:auto}.wipe .proposed{position:absolute;inset:0;clip-path:inset(0 0 0 var(--split,50%))}.wipe:after{content:"";position:absolute;top:0;bottom:0;left:var(--split,50%);width:2px;background:#e5cc9c;pointer-events:none}.wipe-labels{display:flex;justify-content:space-between;padding:12px 0;color:var(--muted)}input[type=range]{width:min(100%,620px);accent-color:var(--gold)}
+.notes{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px}.notes article{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px}.notes h2{font-size:16px;margin:0 0 8px;color:var(--gold)}.notes p{font-size:14px}.tag{border:1px solid var(--line);border-radius:20px;padding:6px 12px;color:var(--muted);font-size:12px;white-space:nowrap}footer{padding-top:12px;padding-bottom:28px;font-size:13px;color:var(--muted)}[hidden]{display:none!important}
+@media(max-width:1000px){header,main,footer{padding:20px}header{align-items:start}.pair{grid-template-columns:1fr}.notes{grid-template-columns:1fr}h1{font-size:24px}.tag{display:none}}
+</style>
+<header>
+ <div><p class="eyebrow">DZ Legal · Design study 01</p><h1>Charcoal &amp; Gold</h1><p>The original workspace, with a warmer visual identity. Same case, same pane order.</p></div>
+ <span class="tag">Review mockups · application unchanged</span>
+</header>
+<main>
+ <div class="controls">
+  <label>Interface language<select id="language"><option value="ar">Arabic · العربية</option><option value="en">English</option></select></label>
+  <label>Window size<select id="size"><option value="1366x768">Laptop · 1366 × 768</option><option value="1920x1080">Large · 1920 × 1080</option></select></label>
+  <label>Case state<select id="state"><option value="editing">Editing · AI section reviewed</option><option value="blocked">Export blocked · AI section unreviewed</option></select></label>
+  <div class="segmented" aria-label="Comparison mode"><button class="active" data-view="pair" aria-pressed="true">Side by side</button><button data-view="proposed" aria-pressed="false">Proposal</button><button data-view="wipe" aria-pressed="false">Wipe comparison</button></div>
+ </div>
+ <div id="pair" class="pair">
+  <section class="frame" id="original-frame"><div class="caption"><strong>Original · restored interface</strong><a id="original-link" target="_blank" rel="noopener">Full-size PNG ↗</a></div><img id="original" alt="Restored original interface"></section>
+  <section class="frame"><div class="caption"><strong>Proposed · charcoal and muted gold</strong><a id="proposed-link" target="_blank" rel="noopener">Full-size PNG ↗</a></div><img id="proposed" alt="Proposed charcoal and gold visual treatment"></section>
+ </div>
+ <section id="wipe-area" hidden>
+  <div class="wipe-labels"><span>Original</span><span>Proposal</span></div>
+  <div class="wipe" id="wipe"><img id="wipe-original" alt="Original interface"><img class="proposed" id="wipe-proposed" alt="Proposed visual treatment"></div>
+  <label style="margin-top:16px">Comparison divider<input id="divider" type="range" min="0" max="100" value="50"></label>
+ </section>
+ <div class="notes">
+  <article><h2>Original composition</h2><p>Form, central draft and review stay together. Arabic and English keep their original pane ordering. No new sidebar or lower tools area.</p></article>
+  <article><h2>Reference-inspired finish</h2><p>Warm charcoal surfaces, muted gold selection and primary actions, clearer type hierarchy, ivory paper and opaque reading surfaces.</p></article>
+  <article><h2>Real text, controlled case</h2><p>Native Avalonia renders use the same fictitious fixture. AI authorship is loaded from a controlled draft; no model is called. Blocked export uses the existing guard.</p></article>
+ </div>
+</main>
+<footer><a href="README.md">Study notes</a> · <a href="renders/observations.json">Capture observations</a> · Static review study, not production styling or accessibility certification.</footer>
+<script>
+const $=s=>document.querySelector(s);let mode='pair';
+function show(){const suffix=$('#language').value+'-'+$('#state').value+'-'+$('#size').value+'.png';for(const kind of ['original','proposed']){const url='renders/'+kind+'-'+suffix;$('#'+kind).src=url;$('#'+kind+'-link').href=url;$('#wipe-'+kind).src=url;}
+ $('#pair').hidden=mode==='wipe';$('#wipe-area').hidden=mode!=='wipe';$('#original-frame').hidden=mode==='proposed';$('#pair').classList.toggle('single',mode==='proposed');
+ document.querySelectorAll('[data-view]').forEach(b=>{b.classList.toggle('active',b.dataset.view===mode);b.setAttribute('aria-pressed',String(b.dataset.view===mode));});}
+document.querySelectorAll('select').forEach(s=>s.addEventListener('change',show));document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{mode=b.dataset.view;show();}));$('#divider').addEventListener('input',e=>$('#wipe').style.setProperty('--split',e.target.value+'%'));show();
+</script>
+</html>

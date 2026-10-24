@@ -31,6 +31,7 @@ public partial class App : Application
             var paths = AppPaths.Default;
             window.DataContext = Composition.CreateMainViewModel(
                 settings, new AvaloniaUserFiles(() => TopLevel.GetTopLevel(window), paths), paths, new Loc(), new AvaloniaExternalLinks(() => TopLevel.GetTopLevel(window)));
+            ((MainWindowViewModel)window.DataContext).IsDarkTheme = true;
             return window;
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or ArgumentException

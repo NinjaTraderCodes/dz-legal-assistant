@@ -150,7 +150,7 @@ Never add `-p:OnlineTesting=true` here. That flag builds the temporary online te
 
 ## Demo walkthrough (for reviewers)
 
-1. `dotnet run --project src/DzLegal.App`. Click **English** (top bar) if you don't read Arabic. The UI switches to left-to-right, while the document stays Arabic and right-to-left. The moon icon switches to dark mode.
+1. `dotnet run --project src/DzLegal.App`. Click **English** (top bar) if you don't read Arabic. The UI switches to left-to-right, while the document stays Arabic and right-to-left. The desktop starts in the charcoal/gold theme; the moon icon switches themes. See the [approved workbench implementation and validation](docs/UI-WORKBENCH-RELEASE.md).
 2. Next to **Draft narrative sections**, choose **Template mode (no AI)** unless Ollama is installed.
 3. **Left panel, Case details:** the form is split into 7 steps, shown as chips. Each chip turns ✓ (done), red (a mandatory element is missing) or amber (a recommendation). A missing field gets a red border and the article it comes from, for example «مطلوب — CPCA art. 15-2». Use **Next** and **Back**, or click a chip.
 4. **Right panel, Formal check:** the score («10 من 12») and only the missing elements, expanded. Click one to jump to the step that fixes it. Present elements are folded away.

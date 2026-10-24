@@ -1,0 +1,75 @@
+<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <!-- Static tinted surfaces, not live backdrop blur. Reading surfaces remain opaque. -->
+  <Style Selector="TextBlock#SaveStateText"><Setter Property="MaxWidth" Value="240" /></Style>
+  <Style Selector="ComboBox#ProviderPicker"><Setter Property="MinWidth" Value="200" /><Setter Property="MaxWidth" Value="250" /></Style>
+  <Style Selector="Border#FormPanel"><Setter Property="Padding" Value="16" /></Style>
+  <Style Selector="Border#DraftPanel"><Setter Property="Padding" Value="16,12,16,16" /></Style>
+  <Style Selector="Border#DocumentPaper"><Setter Property="Padding" Value="64,56" /></Style>
+  <Style Selector="Border.panel">
+    <Setter Property="Background" Value="{DynamicResource PanelBrush}" />
+    <Setter Property="BoxShadow" Value="0 6 16 0 #24000000" />
+  </Style>
+  <Style Selector="TextBlock.title"><Setter Property="FontSize" Value="18" /><Setter Property="Foreground" Value="{DynamicResource AccentBrush}" /></Style>
+  <Style Selector="TextBlock.muted"><Setter Property="FontSize" Value="12.5" /></Style>
+  <Style Selector="Button.primary"><Setter Property="Foreground" Value="{DynamicResource PrimaryButtonTextBrush}" /></Style>
+  <Style Selector="Button.outline"><Setter Property="BorderBrush" Value="{DynamicResource InputBorderBrush}" /></Style>
+  <Style Selector="TextBox.input">
+    <Setter Property="FontSize" Value="18" /><Setter Property="MinHeight" Value="44" />
+    <Setter Property="BorderBrush" Value="{DynamicResource InputBorderBrush}" />
+  </Style>
+  <Style Selector="TextBox.input.missing"><Setter Property="BorderBrush" Value="{DynamicResource DangerBrush}" /></Style>
+  <Style Selector="ComboBox"><Setter Property="BorderBrush" Value="{DynamicResource InputBorderBrush}" /></Style>
+  <Style Selector="Expander"><Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}" /></Style>
+  <Style Selector="Expander /template/ ToggleButton"><Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}" /></Style>
+  <Style Selector="ListBox.steps ListBoxItem">
+    <Setter Property="Padding" Value="0" /><Setter Property="Margin" Value="0" />
+    <Setter Property="CornerRadius" Value="4" /><Setter Property="Background" Value="Transparent" />
+    <Setter Property="HorizontalContentAlignment" Value="Stretch" /><Setter Property="MinHeight" Value="28" />
+  </Style>
+  <Style Selector="ListBox.steps ListBoxItem:selected /template/ ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource AccentSoftBrush}" />
+  </Style>
+  <Style Selector="TextBlock.step-label"><Setter Property="FontSize" Value="13" /></Style>
+  <Style Selector="Window.arabic TextBlock.step-label"><Setter Property="FontSize" Value="15.5" /></Style>
+  <Style Selector="Border.step-marker"><Setter Property="Background" Value="Transparent" /></Style>
+  <Style Selector="ListBoxItem:selected Border.step-marker"><Setter Property="Background" Value="{DynamicResource AccentBrush}" /></Style>
+  <Style Selector="ListBoxItem:selected TextBlock.step-label"><Setter Property="FontWeight" Value="SemiBold" /><Setter Property="Foreground" Value="{DynamicResource AccentBrush}" /></Style>
+  <Style Selector="TextBox.document">
+    <Setter Property="FontSize" Value="20.5" /><Setter Property="LineHeight" Value="31" />
+    <Setter Property="Foreground" Value="#27241F" /><Setter Property="CaretBrush" Value="#27241F" />
+    <Setter Property="Padding" Value="0" /><Setter Property="MinHeight" Value="31" />
+  </Style>
+  <Style Selector="Border.document-section:focus-within"><Setter Property="BorderBrush" Value="#637E8C" /></Style>
+  <Style Selector="Border.document-section:pointerover"><Setter Property="BorderBrush" Value="#B0C0C5" /></Style>
+  <Style Selector="TextBlock.document-heading">
+    <Setter Property="FontFamily" Value="{StaticResource DocumentFont}" /><Setter Property="FontSize" Value="20.5" />
+    <Setter Property="FontWeight" Value="Bold" /><Setter Property="Foreground" Value="#27241F" />
+    <Setter Property="TextDecorations" Value="Underline" /><Setter Property="FlowDirection" Value="RightToLeft" />
+  </Style>
+  <Style Selector="Border.field-tools TextBlock"><Setter Property="Foreground" Value="{DynamicResource FieldToolsTextBrush}" /></Style>
+  <Style Selector="Button.field-action">
+    <Setter Property="Foreground" Value="{DynamicResource FieldToolsTextBrush}" /><Setter Property="Background" Value="#F0F4F5" />
+    <Setter Property="BorderBrush" Value="#A9BBC2" /><Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="4" /><Setter Property="FontSize" Value="12" /><Setter Property="Padding" Value="8,4" />
+    <Setter Property="MinHeight" Value="30" />
+  </Style>
+  <Style Selector="Window.arabic Button.field-action"><Setter Property="FontSize" Value="14" /></Style>
+  <Style Selector="TextBlock.field-caption"><Setter Property="FontSize" Value="12.5" /></Style>
+  <Style Selector="Window.arabic TextBlock.field-caption"><Setter Property="FontSize" Value="15" /></Style>
+  <Style Selector="Window.compact TextBlock.document-type"><Setter Property="IsVisible" Value="False" /></Style>
+  <Style Selector="Window.compact TextBlock#SaveStateText"><Setter Property="MaxWidth" Value="150" /></Style>
+  <Style Selector="Window.tight TextBlock#SaveStateText"><Setter Property="MaxWidth" Value="90" /></Style>
+  <Style Selector="Window.tight TextBlock.offline-caption"><Setter Property="MaxWidth" Value="140" /><Setter Property="TextTrimming" Value="CharacterEllipsis" /></Style>
+  <Style Selector="Window.tight Border#FormPanel"><Setter Property="Padding" Value="12" /></Style>
+  <Style Selector="Window.tight Border#DraftPanel"><Setter Property="Padding" Value="12,10" /></Style>
+  <Style Selector="Window.tight TextBlock.draft-heading"><Setter Property="FontSize" Value="16" /></Style>
+  <Style Selector="Window.tight Border#DraftBadgePanel"><Setter Property="MaxWidth" Value="160" /></Style>
+  <Style Selector="Window.tight TextBlock#DraftBanner"><Setter Property="TextWrapping" Value="Wrap" /></Style>
+  <Style Selector="Window.compact Border#DocumentPaper"><Setter Property="Padding" Value="32,42" /></Style>
+  <Style Selector="Window.tight Border#DocumentPaper"><Setter Property="Padding" Value="24,32" /></Style>
+  <Style Selector="Window.tight ComboBox#ProviderPicker"><Setter Property="MinWidth" Value="150" /><Setter Property="MaxWidth" Value="185" /></Style>
+  <Style Selector="Window.tight Button#GenerateButton"><Setter Property="Padding" Value="8,6" /></Style>
+  <Style Selector="Button.export"><Setter Property="Padding" Value="7,5" /><Setter Property="MinHeight" Value="32" /></Style>
+  <Style Selector="TabControl#DraftTabs TabItem"><Setter Property="FontSize" Value="12.5" /><Setter Property="MinHeight" Value="32" /><Setter Property="Padding" Value="8,6" /></Style>
+  <Style Selector="Window.arabic TabControl#DraftTabs TabItem"><Setter Property="FontSize" Value="15" /></Style>
+</Styles>

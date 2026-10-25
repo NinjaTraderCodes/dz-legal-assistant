@@ -19,6 +19,7 @@ import re
 import shutil
 import subprocess
 import sys
+import tempfile
 import unicodedata
 import urllib.parse
 import urllib.request
@@ -43,7 +44,18 @@ def read_json(path: Path):
 
 def write_json(path: Path, value) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", newline="\n", dir=path.parent,
+                                         prefix=path.name + ".", suffix=".partial", delete=False) as stream:
+            temporary = Path(stream.name)
+            stream.write(json.dumps(value, ensure_ascii=False, indent=2) + "\n")
+            stream.flush()
+            os.fsync(stream.fileno())
+        temporary.replace(path)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
 
 
 def hash_file(path: Path) -> str:
@@ -53,6 +65,11 @@ def hash_file(path: Path) -> str:
 
 def hash_text(value: str) -> str:
     return hashlib.sha256(value.encode("utf-8")).hexdigest()
+
+
+def hash_json(value) -> str:
+    """Stable structured-data binding; never a normalization of legal text."""
+    return hash_text(json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
 
 
 def safe_id(value: str) -> str:
@@ -123,6 +140,9 @@ def load_manifest(path: Path) -> dict:
             raise ValueError(f"Invalid normalized top-left region: {key}")
         if extract.get("language", "ara") not in ("ara", "fra", "ara+fra"):
             raise ValueError("Only ara/fra language models are configured")
+        polygon = extract.get("clipPolygon")
+        if polygon is not None and (len(polygon) < 3 or any(len(p) != 2 or any(type(c) not in (int, float) or not 0 <= c <= 1 for c in p) for p in polygon)):
+            raise ValueError("clipPolygon must contain at least three normalized page-coordinate pairs")
     return manifest
 
 
@@ -209,7 +229,7 @@ def ocr_image(image_path: Path, output: Path, language: str, psm: int,
 
 
 def extract(manifest: dict, cache: Path, dpi: int, tesseract: Path,
-            tessdata: Path | None, selected: set[str] | None = None) -> list:
+            tessdata: Path | None, selected: set[str] | None = None, resume: bool = False) -> list:
     import pypdf
     import pypdfium2 as pdfium
 
@@ -217,6 +237,7 @@ def extract(manifest: dict, cache: Path, dpi: int, tesseract: Path,
     evidence = []
     open_docs = {}
     page_cache = {}
+    executable_hash = hash_file(tesseract) if tesseract.exists() else None
     for item in manifest.get("extracts", []):
         if selected and item["id"] not in selected:
             continue
@@ -224,6 +245,35 @@ def extract(manifest: dict, cache: Path, dpi: int, tesseract: Path,
         path = cache / f"{source['id']}.pdf"
         if hash_file(path) != source["sha256"]:
             raise ValueError(f"Source changed before extraction: {path}")
+        prior_folder = cache / "extractions" / source["sha256"] / f"page-{item['pdfPage']:04}" / item["id"]
+        prior_path = prior_folder / "evidence.json"
+        if resume and prior_path.exists():
+            prior = read_json(prior_path)
+            command = prior.get("ocrInvocation", {}).get("command", [])
+            prior_psm = command[command.index("--psm") + 1] if "--psm" in command else None
+            models = [{"language": lang, "sha256": hash_file(tessdata / (lang + ".traineddata"))}
+                      for lang in item.get("language", "ara").split("+")
+                      if tessdata and (tessdata / (lang + ".traineddata")).exists()]
+            matches = (prior.get("sourceSha256") == source["sha256"] and prior.get("pdfPage") == item["pdfPage"]
+                       and prior.get("region") == item.get("region", [0, 0, 1, 1])
+                       and prior.get("clipPolygon") == item.get("clipPolygon")
+                       and prior.get("language") == item.get("language", "ara") and prior.get("dpi") == dpi
+                       and prior_psm == str(item.get("psm", 6))
+                       and prior.get("ocrInvocation", {}).get("exitCode") == 0
+                       and prior.get("ocrInvocation", {}).get("executableSha256") == executable_hash
+                       and prior.get("ocrInvocation", {}).get("models") == models)
+            artifact_names = {Path(a["path"]).name for a in prior.get("artifacts", [])}
+            if not {"crop.png", "text-layer.txt", "ocr.txt", "ocr.tsv"} <= artifact_names:
+                matches = False
+            for artifact in prior.get("artifacts", []):
+                candidate = (cache / artifact["path"]).resolve()
+                if not candidate.is_relative_to(cache.resolve()) or not candidate.exists() or hash_file(candidate) != artifact["sha256"]:
+                    matches = False
+                    break
+            if matches:
+                evidence.append(prior)
+                print(f"{item['id']}: resumed hash-validated evidence", flush=True)
+                continue
         if source["id"] not in open_docs:
             open_docs[source["id"]] = (pdfium.PdfDocument(path), pypdf.PdfReader(path))
         document, reader = open_docs[source["id"]]
@@ -234,6 +284,13 @@ def extract(manifest: dict, cache: Path, dpi: int, tesseract: Path,
         page_folder = cache / "extractions" / source["sha256"] / f"page-{number:04}"
         page_folder.mkdir(parents=True, exist_ok=True)
         if page_key not in page_cache:
+            # Consecutive column crops reuse a page; do not retain an entire code's
+            # uncompressed page images in RAM on the CPU-only development laptop.
+            if len(page_cache) >= 4:
+                oldest = next(iter(page_cache))
+                old_page, old_image = page_cache.pop(oldest)
+                old_image.close()
+                old_page.close()
             page = document[number - 1]
             page_image = page.render(scale=dpi / 72).to_pil()
             page_image.save(page_folder / f"page-{dpi}dpi.png")
@@ -255,7 +312,19 @@ def extract(manifest: dict, cache: Path, dpi: int, tesseract: Path,
                 if previous.is_file():
                     shutil.copyfile(previous, archive / previous.name)
         image_path = folder / "crop.png"
-        page_image.crop(tuple(pixel_box)).save(image_path)
+        cropped = page_image.crop(tuple(pixel_box))
+        if item.get("clipPolygon"):
+            from PIL import Image, ImageDraw
+            mask = Image.new("L", cropped.size, 0)
+            polygon = [(round(x * page_image.width) - pixel_box[0], round(y * page_image.height) - pixel_box[1])
+                       for x, y in item["clipPolygon"]]
+            ImageDraw.Draw(mask).polygon(polygon, fill=255)
+            masked = Image.new(cropped.mode, cropped.size, "white")
+            masked.paste(cropped, mask=mask)
+            cropped.close()
+            cropped = masked
+        cropped.save(image_path)
+        cropped.close()
         width, height = page.get_size()
         textpage = page.get_textpage()
         raw_layer = textpage.get_text_bounded(left * width, (1 - bottom) * height,
@@ -272,10 +341,11 @@ def extract(manifest: dict, cache: Path, dpi: int, tesseract: Path,
         record = {"id": item["id"], "sourceId": source["id"], "sourceUrl": source["url"],
                   "sourceSha256": source["sha256"], "sourceRetrievedOn": source["retrievedOn"],
                   "pdfPage": number, "printedPage": item.get("printedPage"), "region": region,
+                  **({"clipPolygon": item["clipPolygon"]} if item.get("clipPolygon") else {}),
                   "regionCoordinateSystem": "normalized top-left [left,top,right,bottom]",
                   "pixelBox": pixel_box, "pagePixels": [page_image.width, page_image.height],
                   "dpi": dpi, "language": item.get("language", "ara"),
-                  "textLayerMethod": "PDFium get_text_bounded; no encoding repair or letter folding",
+                  "textLayerMethod": "PDFium get_text_bounded of bounding rectangle; no encoding repair or letter folding; optional polygon mask affects OCR pixels only",
                   "pageTextLayerMethod": "pypdf extract_text; raw and independent of OCR",
                   "renderer": "pypdfium2/" + importlib.metadata.version("pypdfium2"),
                   "pdfReader": "pypdf/" + importlib.metadata.version("pypdf"),
@@ -287,10 +357,13 @@ def extract(manifest: dict, cache: Path, dpi: int, tesseract: Path,
         evidence.append(record)
         print(f"{item['id']}: layer={len(raw_layer)} OCR={len(raw_ocr)} "
               f"match={comparison['match']} exit={ocr_result['exitCode']}", flush=True)
+    for page, page_image in page_cache.values():
+        page_image.close()
+        page.close()
     for document, _ in open_docs.values():
         document.close()
     manifest_ids = {item["id"] for item in manifest.get("extracts", [])}
-    all_evidence = [record for record, _ in evidence_by_id(cache).values() if record["id"] in manifest_ids]
+    all_evidence = [record for record, _ in evidence_by_id(cache, manifest_ids).values()]
     write_json(cache / "extraction-report.json", {"generatedAt": datetime.now(timezone.utc).isoformat(),
                 "normalizations": NORMALIZATIONS, "evidence": all_evidence,
                 "unsettled": [{"id": item["id"], "reason": "Text layer/OCR mismatch or missing; image decision required"}
@@ -298,10 +371,12 @@ def extract(manifest: dict, cache: Path, dpi: int, tesseract: Path,
     return evidence
 
 
-def evidence_by_id(cache: Path) -> dict:
+def evidence_by_id(cache: Path, selected_ids: set[str] | None = None) -> dict:
     evidence = {}
     for path in sorted((cache / "extractions").glob("*/page-*/*/evidence.json")):
         item = read_json(path)
+        if selected_ids is not None and item["id"] not in selected_ids:
+            continue
         if item["id"] in evidence:
             raise ValueError(f"Ambiguous extraction id: {item['id']}")
         for artifact in item["artifacts"]:
@@ -318,26 +393,51 @@ def compose(spec: dict, ledger: dict, cache: Path, out: Path) -> dict:
     A review is valid only when its SHA-256 binds the exact canonical transcription
     and rendered image. Declaring a review remains the operator's accountable act.
     """
-    evidence = evidence_by_id(cache)
+    requested_ids = {key for article in spec["articles"] for version in article.get("versions", [])
+                     for key in version.get("evidenceIds", [])}
+    requested_ids.update(fragment["evidenceId"] for article in spec["articles"] for version in article.get("versions", [])
+                         for fragment in version.get("evidenceFragments", []))
+    evidence = evidence_by_id(cache, requested_ids)
     publications = {item["id"]: item for item in ledger["publications"]}
+    inventory_review = validate_inventory_review(spec, ledger)
     articles, unsettled = [], []
     for source_article in spec["articles"]:
         article = {key: value for key, value in source_article.items() if key != "versions"}
         article["versions"] = []
         for source_version in source_article.get("versions", []):
             version = {key: value for key, value in source_version.items()
-                       if key not in ("evidenceIds", "imageReview", "verification", "source", "frenchStructure", "sourcePublicationId")}
-            records = [evidence[key] for key in source_version["evidenceIds"]]
-            if not records or len({r[0]["sourceId"] for r in records}) != 1:
-                raise ValueError("Each version requires evidence crops from exactly one source PDF")
+                       if key not in ("evidenceIds", "evidenceFragments", "imageReview", "verification", "source", "frenchStructure", "sourcePublicationId")}
             if version["introducedBy"] not in publications:
                 raise ValueError("Version introducedBy does not exist in ledger")
             publication_id = source_version.get("sourcePublicationId", version["introducedBy"])
-            if publication_id not in publications:
-                raise ValueError("Evidence publication is not in ledger")
-            publication = publications[publication_id]
-            if any(r.get("sourceSha256") != publication["arabic"]["sha256"] for r, _ in records):
-                raise ValueError("Evidence PDF hash does not match its ledger Arabic publication")
+            if publication_id != version["introducedBy"]:
+                raise ValueError("Top-level source must locate introducedBy; older text belongs in explicit paragraph fragments")
+            fragments = source_version.get("evidenceFragments")
+            if fragments is not None and "evidenceIds" in source_version:
+                raise ValueError("Use evidenceFragments or evidenceIds, not both")
+            if fragments is None:
+                fragments = [{"evidenceId": key, "publicationId": publication_id}
+                             for key in source_version["evidenceIds"]]
+            records = []
+            for fragment in fragments:
+                record, folder = evidence[fragment["evidenceId"]]
+                publication = publications.get(fragment["publicationId"])
+                if publication is None or record.get("sourceSha256") != publication["arabic"]["sha256"]:
+                    raise ValueError("Evidence PDF hash does not match its ledger Arabic publication")
+                paragraph = fragment.get("paragraph")
+                if fragment.get("role", "body") not in ("body", "heading", "repeal", "amendment-instruction"):
+                    raise ValueError("Unknown evidence fragment role")
+                if fragment.get("role", "body") != "body" and paragraph is not None:
+                    raise ValueError("Only article-body fragments may map to a text paragraph")
+                if paragraph is not None and (type(paragraph) is not int or not 1 <= paragraph <= len(version["paragraphs"])):
+                    raise ValueError("Fragment paragraph is outside the current transcription")
+                records.append((record, folder))
+            if not records or not any(f["publicationId"] == publication_id for f in fragments):
+                raise ValueError("Version needs evidence locating the introducing/amending publication")
+            if len({f["publicationId"] for f in fragments}) > 1:
+                if (any(f.get("paragraph") is None for f in fragments if f.get("role", "body") == "body")
+                        or {f["paragraph"] for f in fragments if f.get("paragraph") is not None} != set(range(1, len(version["paragraphs"]) + 1))):
+                    raise ValueError("Multi-publication consolidation requires explicit provenance for every paragraph")
             layers = [(folder / "text-layer.txt").read_text(encoding="utf-8") for _, folder in records]
             ocrs = [(folder / "ocr.txt").read_text(encoding="utf-8") for _, folder in records]
             comparison = compare("\n".join(layers), "\n".join(ocrs))
@@ -365,24 +465,36 @@ def compose(spec: dict, ledger: dict, cache: Path, out: Path) -> dict:
                     raise ValueError("Explicit structural/inventory/amendment checks require method and evidence note")
                 date.fromisoformat(supplied["date"])
                 checks.append(supplied)
+            if inventory_review:
+                for name in ("inventory-complete", "amendment-applied"):
+                    if not any(c["check"] == name for c in checks):
+                        checks.append({"check": name, "method": inventory_review["method"],
+                                       "date": inventory_review["reviewedOn"], "result": "passed",
+                                       "note": inventory_review["note"]})
             if not text_proven:
                 reasons.append("Raw text layer/OCR disagree, are missing, or do not equal the transcription; no bound image decision.")
-            if not ledger["scope"]["complete"]:
-                reasons.append("Code inventory and amendment discovery remain incomplete.")
+            if not inventory_review:
+                reasons.append("Independent scoped inventory and amendment-application review remain incomplete.")
             if version.get("temporalStatus") != "resolved":
                 reasons.append("Temporal applicability is unsettled.")
             # Full corpus inventory/amendment proof cannot be inferred from a cropped
             # article; the independent ledger/inventory builder must supply those checks.
-            state = "partly-checked" if text_proven else "unsettled"
+            state = "checked" if text_proven and inventory_review else "partly-checked" if text_proven else "unsettled"
             version["verification"] = {"state": state, "checks": checks, "reasons": reasons}
-            first = records[0][0]
+            primary_records = [r for (r, _), f in zip(records, fragments) if f["publicationId"] == publication_id]
+            first = primary_records[0]
+            primary_last_page = max(r["pdfPage"] for r in primary_records)
             version["source"] = {"publicationId": publication_id, "page": first["pdfPage"],
-                "endPage": records[-1][0]["pdfPage"] if len(records) > 1 else None,
+                "endPage": primary_last_page if primary_last_page > first["pdfPage"] else None,
                 "printedPage": first.get("printedPage"), "textLayer": "\n".join(layers), "ocr": "\n".join(ocrs),
                 "evidenceId": "+".join(r["id"] for r, _ in records), "region": first["region"],
-                "fragments": [{"publicationId": publication_id, "page": r["pdfPage"],
-                               "textLayer": layer, "ocr": ocr, "evidenceId": r["id"], "region": r["region"]}
-                              for (r, _), layer, ocr in zip(records, layers, ocrs)]}
+                "fragments": [{"publicationId": f["publicationId"], "page": r["pdfPage"],
+                               "textLayer": layer, "ocr": ocr, "evidenceId": r["id"], "region": r["region"],
+                               "sourceSha256": r["sourceSha256"],
+                               "role": f.get("role", "body"),
+                               **({"paragraph": f["paragraph"], "paragraphTextSha256": hash_text(version["paragraphs"][f["paragraph"] - 1])}
+                                  if f.get("paragraph") is not None else {})}
+                              for (r, _), f, layer, ocr in zip(records, fragments, layers, ocrs)]}
             article["versions"].append(version)
             unsettled += [{"id": version["versionId"], "reason": reason} for reason in reasons]
         articles.append(article)
@@ -394,7 +506,9 @@ def compose(spec: dict, ledger: dict, cache: Path, out: Path) -> dict:
     report = {"schemaVersion": "1.0", "codeId": ledger["id"], "generatedOn": spec["generatedOn"],
               "inventory": {"scope": ledger["scope"]["kind"], "expected": expected, "present": present,
                             "gaps": gaps, "unappliedPublications": spec.get("unappliedPublications", []),
-                            "complete": False},
+                            "complete": bool(inventory_review)},
+              "coverage": "complete" if ledger["scope"]["complete"] else "partial",
+              "coveredChapters": ledger["scope"].get("coveredChapters", []),
               "countsByState": {state: sum(v["verification"]["state"] == state for a in articles for v in a["versions"])
                                 for state in ("checked", "partly-checked", "unsettled")},
               "unsettled": unsettled}
@@ -402,6 +516,36 @@ def compose(spec: dict, ledger: dict, cache: Path, out: Path) -> dict:
     write_json(out / "articles.json", {"schemaVersion": "1.0", "codeId": ledger["id"], "articles": articles})
     write_json(out / "report.json", report)
     return report
+
+
+def article_versions_digest(spec: dict) -> str:
+    """Bind inventory certification to identities, text, paragraphs, paths and version boundaries."""
+    return hash_json([{k: a[k] for k in ("id", "canonicalNumber", "number", "path") if k in a} | {
+        "versions": [{k: v[k] for k in ("versionId", "text", "paragraphs", "path", "introducedBy", "status",
+                                        "inForceFrom", "inForceTo", "temporalStatus", "evidenceIds", "evidenceFragments") if k in v}
+                     for v in a.get("versions", [])]}
+        for a in spec["articles"]])
+
+
+def validate_inventory_review(spec: dict, ledger: dict) -> dict | None:
+    review = spec.get("inventoryReview")
+    if review is None:
+        if ledger["scope"]["complete"]:
+            raise ValueError("Complete-code declaration requires a bound independent inventory review")
+        return None
+    expected = ledger["scope"]["targetArticles"]
+    present = [a["canonicalNumber"] for a in spec["articles"] if a.get("availability", "text") == "text" and a.get("versions")]
+    applied = review.get("publicationsApplied", [])
+    if (review.get("ledgerSha256") != hash_json(ledger)
+            or review.get("articleVersionsSha256") != article_versions_digest(spec)
+            or review.get("expectedArticles") != expected or len(expected) != len(set(expected))
+            or set(present) != set(expected) or len(present) != len(expected)
+            or set(applied) != {p["id"] for p in ledger["publications"]} or len(applied) != len(set(applied))
+            or spec.get("unappliedPublications") or not review.get("method", "").strip()
+            or not review.get("note", "").strip()):
+        raise ValueError("Inventory review is incomplete or not bound to the current ledger, articles and all publications")
+    date.fromisoformat(review["reviewedOn"])
+    return review
 
 
 def validate_corpus(corpus: Path) -> list[str]:
@@ -442,19 +586,21 @@ def validate_corpus(corpus: Path) -> list[str]:
 
 def export_evidence_index(manifest_path: Path, cache: Path, out: Path) -> dict:
     manifest = load_manifest(manifest_path)
-    evidence = evidence_by_id(cache)
+    evidence = evidence_by_id(cache, {x["id"] for x in manifest["extracts"]})
     records = []
     for requested in manifest["extracts"]:
         item, _ = evidence[requested["id"]]
         if (item["sourceId"] != requested["sourceId"] or item["pdfPage"] != requested["pdfPage"]
-                or item["region"] != requested.get("region", [0, 0, 1, 1])):
+                or item["region"] != requested.get("region", [0, 0, 1, 1])
+                or item.get("clipPolygon") != requested.get("clipPolygon")):
             raise ValueError(f"Extraction differs from committed crop manifest: {requested['id']}")
         invocation = item["ocrInvocation"]
         records.append({key: item[key] for key in ("id", "sourceId", "sourceUrl", "sourceSha256", "sourceRetrievedOn",
                        "pdfPage", "printedPage", "region", "regionCoordinateSystem", "pixelBox", "pagePixels", "dpi",
                        "language", "textLayerMethod", "pageTextLayerMethod", "renderer", "pdfReader", "extractedOn",
                        "comparison", "imageReviewed", "artifacts")} | {
-                           "ocr": {key: invocation.get(key) for key in ("exitCode", "executableSha256", "models", "stderr")}})
+                           "ocr": {key: invocation.get(key) for key in ("exitCode", "executableSha256", "models", "stderr")},
+                           **({"clipPolygon": item["clipPolygon"]} if item.get("clipPolygon") else {})})
     index = {"manifestSha256": hash_file(manifest_path), "evidenceCount": len(records), "evidence": records,
              "note": "Image review is never inferred from extraction. Explicit corpus image-review records are separate."}
     write_json(out, index)
@@ -475,6 +621,7 @@ def main() -> int:
             command.add_argument("--tesseract", type=Path, default=default_tesseract())
             command.add_argument("--tessdata", type=Path)
             command.add_argument("--only", action="append")
+            command.add_argument("--resume", action="store_true", help="Reuse only hash-validated evidence with identical tools, models, DPI and crop parameters")
     command = sub.add_parser("compose")
     command.add_argument("spec", type=Path)
     command.add_argument("ledger", type=Path)
@@ -506,7 +653,7 @@ def main() -> int:
         if not 72 <= args.dpi <= 600:
             parser.error("DPI must be between 72 and 600")
         result = extract(manifest, cache, args.dpi, args.tesseract, args.tessdata,
-                         set(args.only) if args.only else None)
+                         set(args.only) if args.only else None, args.resume)
         return 1 if any(item["ocrInvocation"]["exitCode"] for item in result) else 0
     return 0
 

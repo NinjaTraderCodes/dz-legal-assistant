@@ -2,24 +2,48 @@
 
 Research cut-off: **25 October 2026**. Branch: `codex/law-corpus`, isolated from the application engineer's default-branch work. This is a separate, additive corpus. The existing `data/law/codes`, claim mappings, loaders and application behavior have not been switched to it.
 
+## Revised scope and resumed execution
+
+The user resumed work with a narrower scope: **complete Civil Code, complete CPCA including Law 22-13, and complete Family Code**; Commercial and Laws 90-11/90-04 cover **only claim-catalogue articles and their full chapters, with every historical version**. Special laws are excluded. There is no dependency on Djihane or an external legal reviewer.
+
+The reproducible scope snapshot is [research/scope-plan.json](../data/law/corpus/research/scope-plan.json); `tools/law-corpus/scope_inventory.py --check` checks the frozen catalogue hashes and chapter inventory. The full-code original base numbering totals 2,292. This is not the final count after insertions, repeals and historical identity reconciliation.
+
+| Partial collection | Catalogue seeds | Entire covered units | Initial bounded identities |
+|---|---|---|---:|
+| Commercial |30,173,176,187bis;187bis1 explicitly required|BookI/TitleIV/ChapterI (30); BookII/TitleII, **all seven commercial-lease chapters** (169–202,187bis,187bis1)|37|
+|90-11|73,73-4,80,88|TitleIII/ChapterVI (62–74 and73-1…73-6); TitleIV/ChapterI (80–86); TitleIV/ChapterIII (88–90)|29|
+|90-04|19|TitleIV/ChapterI, conciliation-bureau competence; **the whole chapter consists of article19**. Article20 begins the next chapter.|1|
+
+These 67 targets are a boundary snapshot, not a certificate that no historical amendment inserted another article within a covered unit. Historical numbering/boundary changes must be reconciled before the inventory becomes final. The commercial-lease unit deliberately includes the whole title as the user's explicit example requires; it is not limited to the chapters containing173/176. The partial designation remains even after every selected chapter is delivered.
+
+Source boundaries were inspected against official Arabic1990 publications and the Ministry's dated French Commercial2007 compilation. That old compilation supplies structure and discovery only; it is not asserted to be current law. All acquired files and failures are recorded in [scope-source-downloads.json](../data/law/corpus/research/scope-source-downloads.json). A guessed Civil2007 filename returned404 and supplies no publication or article text.
+
+The new consolidation machinery checks the prior text hash before applying explicit full or paragraph replacements, paragraph insertion/deletion, article insertions, repeals, heading changes and renumbering. It preserves ordered paragraph provenance across publications, retains unknown commencement dates and produces an operation audit. It does not infer legal operations, change the old application loader, or grant a verification check merely because an operation executed.
+
+`chapter-subset`, typed covered-chapter lists and explicit partial/complete reports are now supported. A multi-publication version needs provenance for every body paragraph; source PDF and paragraph text hashes are checked. A bound independent inventory review is required before composition can produce `checked`; changing its ledger, article text or version boundaries invalidates that review. French structure remains a separate check.
+
+Full Civil source extraction uses `civil-full-manifest.json`: original Arabic/French publications plus all five indexed amendments,312 column windows. The first full pass exposed shifted/slanted1975 column separators and inaccurate initial French amendment-window hints. Pixel-derived polygons now preserve each column, with proposals/hash records in `research/civil-layout-decisions.json`. Image inspection corrected French83-01 toPDF3–5,88-14 toPDF7–8, and89-01 toPDF3–4. The correction pass and hash replay are complete, and all312 evidence records are exported in `research/civil-full-extractions.json`. Anchored original-number OCR observes883Arabic and798French candidates, with19numbers absent from both streams; these are recognition issues, not declared legal gaps. Geometry/OCR success does not establish article accuracy.
+
+Execution status: scope boundaries and consolidation infrastructure have progressed; **no complete code is delivered**. Complete Civil is the current substantive milestone. Complete CPCA and Family, followed by the bounded Commercial/labour deliveries, remain outstanding. The original priority delivery is retained below. The current article489 pilot brings the corpus to **15 identities and 17 versions: 15 partly checked, 2 unsettled, 0 checked**. Its original ArabicPDF31 and2007 ArabicPDF5 were inspected, with FrenchPDF25/2007PDF4 for structure. Law07-05 article6 replaces the first paragraph and explicitly keeps the remainder; the new source fragments retain the original second paragraph. Historical Arabic headings and the exact generic commencement boundary remain unresolved. The data does not convert the amendment placeholder into an article paragraph. See `research/civil-pilot-amendments.json` and `research/civil-pilot-consolidation-audit.json`.
+
 ## Delivery status
 
-**The complete six-code corpus is not delivered.** The initial priority package contains all ten requested priority identities plus four temporal provisions: **14 article identities and 15 version candidates**. The original and 2005 versions of Civil article 7 are separate records. This is an explicitly bounded priority subset, not an inventory of the complete Civil, Commercial or procedural codes.
+**The revised corpus scope is not delivered.** The initial priority package contained all ten requested priority identities plus four temporal provisions: **14 article identities and 15 version candidates**. The original and2005 versions of Civil article7 are separate records. This is a delivery-history count; subsequent checkpoint counts are reported separately. It is an explicitly bounded priority subset, not an inventory of a complete code.
 
 | Legal text | Corpus article identities | Versions | Checked | Partly checked | Unsettled | Full code complete |
 |---|---:|---:|---:|---:|---:|---|
-| Civil Code | 9 | 10 | 0 | 8 | 2 | No |
+| Civil Code | 10 | 12 | 0 | 10 | 2 | No |
 | Commercial Code | 2 | 2 | 0 | 2 | 0 | No |
 | CPCA | 3 | 3 | 0 | 3 | 0 | No |
 | Family Code | 0 | 0 | 0 | 0 | 0 | No; not started |
 | Labour 90-11 | 0 | 0 | 0 | 0 | 0 | No; not started |
 | Labour 90-04 | 0 | 0 | 0 | 0 | 0 | No; not started |
 
-The priority inventory has no missing target identity. Whole-code inventory and amendment-application certification have **not** passed. Accordingly no version is `checked`. Thirteen transcriptions have explicit, hash-bound image decisions and French structural checks, so are `partly-checked`. Two Civil version candidates remain `unsettled`: article 140 punctuation and amended article 7 orthography. They must not be presented as exact checked source text. These states are not lawyer verification, and the original `verified`/`verifiedBy` fields are not set or changed.
+The priority inventory has no missing target identity. Whole-code inventory and amendment-application certification have **not** passed. Accordingly no version is `checked`. Fifteen transcriptions have explicit, hash-bound image decisions and French structural checks, so are `partly-checked`. Two Civil version candidates remain `unsettled`: article 140 punctuation and amended article 7 orthography. They must not be presented as exact checked source text. These states are not lawyer verification, and the original `verified`/`verifiedBy` fields are not set or changed.
 
 Priority coverage:
 
-- Civil: 138, 139, 140, 308, 309, 379; temporal provisions 7 (two versions), 1002 and 1003.
+- Civil: 138, 139, 140, 308, 309, 379; temporal provisions 7 (two versions), 1002 and 1003. The resumed checkpoint adds489 with its original and2007 versions as a real paragraph-consolidation pilot.
 - Commercial: 187 مكرر and 187 مكرر 1, inserted by Law 05-02.
 - CPCA: 2, 504, and the commencement provision 1062.
 
@@ -99,7 +123,7 @@ The complete amendment histories and complete inventories are not certified. `re
 
 A 2026 implementing decree concerning specialized commercial-court territorial organization was discovered and recorded as outside this article-text subset. It must not be treated as an amendment to 187 مكرر, nor does this corpus claim that a 2022 jurisdiction description is current merely because a statutory amendment was indexed.
 
-Every non-checked version has reasons in its code's `report.json`. Scope-level gaps remain in `ledger.scope.unsettled`. Empty **priority** target gaps do not mean a complete code. The six full-code deliveries and special-law inventory remain outstanding.
+Every non-checked version has reasons in its code's `report.json`. Scope-level gaps remain in `ledger.scope.unsettled`. Empty **priority** target gaps do not mean a complete code. The three complete-code deliveries and three bounded partial collections remain outstanding. The user has excluded the special-law inventory and build.
 
 ## Official sources and copyright
 
@@ -126,7 +150,7 @@ Whole-code 20-article random visual sampling has not occurred because no whole c
 
 ## Validation and next work
 
-Final checkpoint validation: the full Release solution built with **zero warnings/errors**, and **685 .NET tests passed** (App114, Web24, Drafting369, Form67, Documents6, Law102, Storage3). The Python pipeline's **19 fictitious offline tests passed**. All corpus files pass JSON Schema validation and the typed .NET corpus validator; all 26 official PDF hashes replay offline. The final Git commit identifies the delivered snapshot. OCR success or a valid schema is not a legal-completeness claim.
+Resumed checkpoint validation: the full Release solution built with **zero warnings/errors**, and **687 .NET tests passed** (App114, Web24, Drafting369, Form67, Documents6, Law104, Storage3). The Python pipeline's **38 fictitious offline tests passed**. All corpus files pass JSON Schema validation and the typed .NET corpus validator; all36 official PDF pins replay offline. A fresh HTTPS comparison also matched all36 pins against the current official source bytes, including reused downloads; `research/official-live-replay.json` records URLs, timestamps and observed hashes. No pin was replaced. The first sandboxed build could not write Avalonia's existing external build log; the normal build/test run then passed with that build-task access, and the task source cache was restored. The final Git commit identifies the delivered snapshot. OCR success or a valid schema is not a legal-completeness claim.
 
 Remaining work, in the user's required order:
 
@@ -134,9 +158,9 @@ Remaining work, in the user's required order:
 2. Complete Civil original/amendment ledger, all versioned articles, independent numbering inventory, paragraph/cross-reference processing and the required visual sample.
 3. Complete CPCA, including all amendments and transition records.
 4. Complete Family Code.
-5. Complete Commercial Code, including the earlier unprocessed amendments and later changes.
-6. Complete 90-11 and 90-04 histories.
-7. Propose the special-law list with official references/reasons before building it.
+5. Complete only the Commercial chapters/title listed in the frozen scope, including all their historical versions; report as partial.
+6. Complete only the90-11 and90-04 chapters listed in the frozen scope, including all their historical versions; report both as partial.
+7. Validate, reconcile and push each recoverable delivery to the corpus branch. **Do not start special laws.**
 
 The 81 existing article records are mechanically compared below. A missing entry in this priority subset remains an explicit unresolved reconciliation item; it is not silently called the same text or a different legal version.
 

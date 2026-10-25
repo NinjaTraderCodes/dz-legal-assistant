@@ -67,7 +67,7 @@ The legacy `tools/law/build_codes.py` was inspected, but its letter/punctuation/
 & tools/law-corpus/.cache/venv/Scripts/python.exe -m unittest discover -s tools/law-corpus -p 'test_*.py' -v
 ```
 
-A spec has `generatedOn` and `articles`. Article/version fields follow the corpus JSON contract. A version additionally has ordered `evidenceIds`; `sourcePublicationId` is optional when different from `introducedBy`. Each crop must match the SHA-256 of the ledger's Arabic source publication. The builder inserts raw `source.textLayer`, `source.ocr` and individual `source.fragments` for every page/crop.
+A spec has `generatedOn` and `articles`. Article/version fields follow the corpus JSON contract. A version has either ordered `evidenceIds` from its introducing publication, or explicit `evidenceFragments` with `evidenceId`, `publicationId` and a one-based `paragraph`. Each crop must match its own ledger publication's Arabic PDF hash. Mixed publications require a source for every body paragraph. Non-body fragments use `role: heading`, `repeal` or `amendment-instruction` and cannot claim a paragraph. The top-level source locates `introducedBy`; older words retain their own fragment publications rather than being attributed to the new law. Fragment PDF hashes and mapped paragraph text hashes are emitted and checked by the typed loader. Optional version-level `path` preserves the headings for that version.
 
 An optional `imageReview` contains `decision: "transcription-resolved"`, `reviewedOn`, a specific `note`, `textSha256` (UTF-8 bytes of the exact canonical version text) and ordered `imageSha256s` (each `crop.png`). The operator must actually inspect every referenced image and settle every glyph, digit, diacritic and punctuation mark before declaring that review. A hash mismatch rejects the claim. Partial reading, plausible wording or OCR similarity does not justify this field. The pipeline itself never declares an image reviewed.
 
@@ -75,7 +75,47 @@ Generated transcription checks retain `textSha256` for the exact canonical UTF-8
 
 Explicit independently observed French structure, inventory and amendment checks can be supplied in a version's `verification.checks`, with the permitted check name, method, date, result and an evidence note. They are retained. Supplied text-layer/image checks are rejected: those require actual matching streams or a bound image review. French structural alignment is not translation validation. Cross-references, explicit paragraphs, temporal bounds/status and other declared version fields are preserved; no dates or legal application rules are inferred.
 
-Composition always leaves the independent code inventory incomplete, and never promotes a cropped subset to `checked`. A resolved text can be `partly-checked`; missing/disagreeing text without a bound review is `unsettled`. Full inventory/amendment consolidation is a separate required stage. All three verification-state counts are emitted, including zeros. Local JSON Schema validation refuses external `$ref` resources; C# semantic validation supplies additional id/date/ledger/cross-reference checks.
+Composition leaves the inventory incomplete unless an explicit independent `inventoryReview` is supplied. That review must name the exact expected article set and every applied publication, contain a method/evidence note/date, and match `hash_json(ledger)` and `article_versions_digest(spec)`. Gaps, unapplied publications or changed text/boundaries reject it. A valid review can supply the inventory/amendment checks; a version reaches `checked` only if its transcription also passes. A bounded chapter inventory may be complete while the collection remains `coverage: partial`; it never becomes a complete code. This binding prevents stale certificates, but does not manufacture independent source observation or prove that an unlisted amendment does not exist.
+
+Without that review, a resolved transcription stays `partly-checked`; missing/disagreeing text without a bound image decision stays `unsettled`. All three state counts include zeros. JSON Schema validation refuses external `$ref` resources; C# validation adds identity/date/ledger/cross-reference and paragraph-provenance checks.
+
+## Revised scope and full Civil extraction
+
+The user requested complete Civil, CPCA including Law22-13, and Family; Commercial/90-11/90-04 cover only catalogue articles plus whole chapters and all versions. **No special laws.** The frozen boundaries and catalogue file hashes are in `research/scope-plan.json`. Run `scope_inventory.py --check` to detect drift. The initial bounded sets contain37,29 and1 identities respectively; historical insertions and chapter changes still need reconciliation. `chapter-subset` and covered-chapter arrays make partial coverage explicit in ledgers and reports.
+
+`collect_scope_sources.py` pins first official acquisitions and replays known hashes. It reuses the old research downloads when available, records failures, and never treats a404 response as a publication. `scope-source-manifest.json` replays the36 successfully pinned PDFs currently used for source/discovery work. The old2007 Commercial compilation supplies structural discovery, not a claim of current law.
+
+```powershell
+& tools/law-corpus/.cache/venv/Scripts/python.exe -B tools/law-corpus/make_civil_manifest.py
+& tools/law-corpus/.cache/venv/Scripts/python.exe -B tools/law-corpus/pipeline.py run tools/law-corpus/civil-full-manifest.json --offline --dpi 150 --resume --tessdata tools/law-corpus/.cache/ocr/share/tessdata
+# On a fresh cache, inspect the page layouts, then record separator proposals:
+& tools/law-corpus/.cache/venv/Scripts/python.exe -B tools/law-corpus/civil_layout.py
+& tools/law-corpus/.cache/venv/Scripts/python.exe -B tools/law-corpus/pipeline.py run tools/law-corpus/civil-full-manifest.json --offline --dpi 150 --resume --tessdata tools/law-corpus/.cache/ocr/share/tessdata
+& tools/law-corpus/.cache/venv/Scripts/python.exe -B tools/law-corpus/index_article_labels.py tools/law-corpus/civil-full-manifest.json A1975078 1003 --out data/law/corpus/research/civil-original-ar-number-observations.json
+```
+
+The312 column windows cover original Arabic/French Civil sources and five indexed amendments. The original1975 scans have shifted/slanted column separators. `civil_layout.py` records pixel-derived polygons with source/page-image hashes; low confidence refuses automatic adoption. `clipPolygon` is expressed in normalized page coordinates inside its bounding `region`. It masks the OCR image only; the independently retained PDFium text layer remains the raw bounding rectangle. No text is repaired by the mask. These are layout proposals, not image-transcription decisions. The old rectangular attempts remain in `previous-attempts`.
+
+`--resume` reuses evidence only when source/crop/polygon/DPI/PSM/engine/models and all necessary artifact hashes agree. It does not rebind image reviews. Extraction retains at most four uncompressed page images. JSON checkpoints are written through flushed temporary files and atomic replacement. Distinct manifests validate only their requested evidence, so unrelated active extraction cannot invalidate their final index. Simultaneous writes to the same evidence remain an error.
+
+`index_article_labels.py` observes anchored article labels and reports missing/duplicate/out-of-order OCR numbers. Its number canonicalization never changes body text. A missed label is **not** a repeal or a legal inventory gap. The current number observations remain candidates, not `inventory-complete` proof or imported article text.
+
+## Explicit amendment application and article489 pilot
+
+`consolidate.py INITIAL LEDGER PLAN --out SPEC --audit AUDIT` applies declared operations in publication order. Each mutation checks the preceding exact text hash. Supported operations are insertion, full replacement, paragraph edits, repeal, heading change and explicit renumbering. Paragraph edits use the old paragraph positions; overlapping edits fail. Unchanged paragraphs retain their earlier evidence. Repeals remain explicit empty-text versions. Renumbering keeps the old numeric identity as repealed and creates the new numeric identity, linked in the operation audit; existing references are not silently rewritten. No commencement date is inferred from a publication date. The output invalidates prior inventory certification and lists unapplied touched articles/publications.
+
+The real489 pilot uses `civil-consolidation-pilot-manifest.json` at200DPI. Arabic1975 PDF31/printed1019 has two paragraphs. Law07-05 art6 names489 and its PDF5 replaces paragraph1 while explicitly keeping the remainder. The pipeline preserves original paragraph2 and its source; it does not import the ellipsis as article text. French originalPDF25 and2007PDF4 independently show that structure. Exact generic commencement and historical Arabic headings remain unresolved.
+
+```powershell
+& tools/law-corpus/.cache/venv/Scripts/python.exe -B tools/law-corpus/pipeline.py run tools/law-corpus/civil-consolidation-pilot-manifest.json --offline --dpi 200 --resume --tessdata tools/law-corpus/.cache/ocr/share/tessdata
+& tools/law-corpus/.cache/venv/Scripts/python.exe -B tools/law-corpus/build_civil_pilot.py
+```
+
+The pilot builder reads **previously recorded** text/image review hashes from `research/civil-pilot-image-decisions.json`. Changed pixels or text require a renewed explicit review; the builder never regenerates a passed review against unseen images. Original orthography remains in the inherited paragraph. The pilot is not a whole-code delivery. To regenerate after `generate_priority_specs.py`, rerun the pilot builder; it refuses to overwrite a larger whole-code spec.
+
+## Checkpoint validation on this Windows laptop
+
+The shared `Directory.Build.targets` remains unchanged. Because it explicitly copies `data/**/*`, run full validation only after extraction/composition stops. `validate_checkpoint.ps1` temporarily moves only this task's ignored source cache outside that glob, checks the resolved paths, runs the full Release build/tests using SDK hard-link copy options, and restores the source cache in `finally`. It also removes only stale source-cache copies from this worktree's development `bin` outputs. Do not run a second extractor while the cache is held. A process-scoped `powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/law-corpus/validate_checkpoint.ps1` runs this local reviewed script without changing the machine's execution-policy setting.
 
 ## Observed setup failures
 

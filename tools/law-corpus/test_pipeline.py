@@ -175,5 +175,70 @@ class OfflineSchemaTests(unittest.TestCase):
             self.assertIn("no corpus code folders", errors[0])
 
 
+class ConsolidatedEvidenceTests(unittest.TestCase):
+    make_evidence = CompositionTests.make_evidence
+    def make_mixed(self, cache):
+        spec, ledger, version, _ = self.make_evidence(cache)
+        folder = cache / "extractions" / ("b" * 64) / "page-0002" / "amended"
+        folder.mkdir(parents=True)
+        for name, text in (("text-layer.txt", "new paragraph"), ("ocr.txt", "new paragraph"), ("crop.png", "new invented pixels")):
+            (folder / name).write_text(text, encoding="utf-8")
+        record = {"id": "amended", "sourceId": "new-source", "sourceSha256": "b" * 64,
+                  "pdfPage": 2, "region": [0, 0, 1, 1],
+                  "artifacts": [{"path": str(p.relative_to(cache)), "sha256": pipeline.hash_file(p)} for p in folder.iterdir()]}
+        pipeline.write_json(folder / "evidence.json", record)
+        ledger["publications"].append({"id": "new-pub", "arabic": {"sha256": "b" * 64}})
+        version.update(introducedBy="new-pub", text="kept paragraph\nnew paragraph", paragraphs=["kept paragraph", "new paragraph"],
+                       evidenceFragments=[{"evidenceId": "fixture", "publicationId": "pub", "paragraph": 1},
+                                          {"evidenceId": "amended", "publicationId": "new-pub", "paragraph": 2}])
+        version.pop("evidenceIds")
+        return spec, ledger, version
+
+    def test_mixed_sources_keep_paragraph_hashes_and_locate_the_amending_pdf(self):
+        with tempfile.TemporaryDirectory() as temp:
+            cache = Path(temp)
+            spec, ledger, _ = self.make_mixed(cache)
+            pipeline.compose(spec, ledger, cache, cache / "out")
+            built = pipeline.read_json(cache / "out/articles.json")["articles"][0]["versions"][0]
+            self.assertEqual(("new-pub", 2, None), (built["source"]["publicationId"], built["source"]["page"], built["source"]["endPage"]))
+            self.assertEqual(["pub", "new-pub"], [f["publicationId"] for f in built["source"]["fragments"]])
+            self.assertEqual(pipeline.hash_text("kept paragraph"), built["source"]["fragments"][0]["paragraphTextSha256"])
+            self.assertEqual("unsettled", built["verification"]["state"])
+
+    def test_missing_paragraph_provenance_in_mixed_sources_is_rejected(self):
+        with tempfile.TemporaryDirectory() as temp:
+            cache = Path(temp)
+            spec, ledger, version = self.make_mixed(cache)
+            version["evidenceFragments"][0].pop("paragraph")
+            with self.assertRaisesRegex(ValueError, "every paragraph"):
+                pipeline.compose(spec, ledger, cache, cache / "out")
+
+    def test_inventory_certificate_cannot_survive_a_text_or_ledger_change(self):
+        with tempfile.TemporaryDirectory() as temp:
+            cache = Path(temp)
+            spec, ledger, version, _ = self.make_evidence(cache)
+            spec["inventoryReview"] = {"ledgerSha256": pipeline.hash_json(ledger),
+                "articleVersionsSha256": pipeline.article_versions_digest(spec), "expectedArticles": ["1"],
+                "publicationsApplied": ["pub"], "method": "Independent fictitious enumeration", "note": "Invented evidence",
+                "reviewedOn": "2026-10-25"}
+            report = pipeline.compose(spec, ledger, cache, cache / "out")
+            self.assertTrue(report["inventory"]["complete"])
+            self.assertEqual("partial", report["coverage"])
+            version["text"] = "changed"
+            with self.assertRaisesRegex(ValueError, "not bound"):
+                pipeline.compose(spec, ledger, cache, cache / "out")
+
+    def test_incomplete_publication_application_rejects_inventory_certificate(self):
+        with tempfile.TemporaryDirectory() as temp:
+            cache = Path(temp)
+            spec, ledger, _, _ = self.make_evidence(cache)
+            spec["inventoryReview"] = {"ledgerSha256": pipeline.hash_json(ledger),
+                "articleVersionsSha256": pipeline.article_versions_digest(spec), "expectedArticles": ["1"],
+                "publicationsApplied": [], "method": "Independent fictitious enumeration", "note": "Invented evidence",
+                "reviewedOn": "2026-10-25"}
+            with self.assertRaisesRegex(ValueError, "all publications"):
+                pipeline.compose(spec, ledger, cache, cache / "out")
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -1,715 +1,800 @@
 {
-    "$schema":  "https://json-schema.org/draft/2020-12/schema",
-    "$id":  "https://dz-legal.invalid/law-corpus/1.0/articles.schema.json",
-    "title":  "DZ Legal corpus articles 1.0",
-    "$ref":  "#/$defs/articles",
-    "$defs":  {
-                  "download":  {
-                                   "type":  "object",
-                                   "properties":  {
-                                                      "url":  {
-                                                                  "type":  "string",
-                                                                  "format":  "uri",
-                                                                  "pattern":  "^https://"
-                                                              },
-                                                      "sha256":  {
-                                                                     "type":  "string",
-                                                                     "pattern":  "^[a-fA-F0-9]{64}$"
-                                                                 },
-                                                      "retrievedOn":  {
-                                                                          "type":  "string",
-                                                                          "format":  "date"
-                                                                      }
-                                                  },
-                                   "required":  [
-                                                    "url",
-                                                    "sha256",
-                                                    "retrievedOn"
-                                                ],
-                                   "additionalProperties":  false
-                               },
-                  "journal":  {
-                                  "type":  "object",
-                                  "properties":  {
-                                                     "issue":  {
-                                                                   "type":  "string"
-                                                               },
-                                                     "date":  {
-                                                                  "type":  "string",
-                                                                  "format":  "date"
-                                                              },
-                                                     "pages":  {
-                                                                   "type":  "array",
-                                                                   "items":  {
-                                                                                 "type":  "integer",
-                                                                                 "minimum":  1
-                                                                             },
-                                                                   "minItems":  1
-                                                               }
-                                                 },
-                                  "required":  [
-                                                   "issue",
-                                                   "date",
-                                                   "pages"
-                                               ],
-                                  "additionalProperties":  false
-                              },
-                  "discovery":  {
-                                    "type":  "object",
-                                    "properties":  {
-                                                       "url":  {
-                                                                   "type":  "string",
-                                                                   "format":  "uri"
-                                                               },
-                                                       "accessedOn":  {
-                                                                          "type":  "string",
-                                                                          "format":  "date"
-                                                                      },
-                                                       "note":  {
-                                                                    "type":  "string"
-                                                                }
-                                                   },
-                                    "required":  [
-                                                     "url",
-                                                     "accessedOn",
-                                                     "note"
-                                                 ],
-                                    "additionalProperties":  false
-                                },
-                  "scope":  {
-                                "type":  "object",
-                                "properties":  {
-                                                   "kind":  {
-                                                                "enum":  [
-                                                                             "priority-subset",
-                                                                             "complete-code"
-                                                                         ]
-                                                            },
-                                                   "targetArticles":  {
-                                                                          "type":  "array",
-                                                                          "items":  {
-                                                                                        "type":  "string"
-                                                                                    }
-                                                                      },
-                                                   "amendmentDiscoveryThrough":  {
-                                                                                     "type":  "string",
-                                                                                     "format":  "date"
-                                                                                 },
-                                                   "complete":  {
-                                                                    "type":  "boolean"
-                                                                },
-                                                   "unsettled":  {
-                                                                     "type":  "array",
-                                                                     "items":  {
-                                                                                   "type":  "string"
-                                                                               }
-                                                                 }
-                                               },
-                                "required":  [
-                                                 "kind",
-                                                 "targetArticles",
-                                                 "amendmentDiscoveryThrough",
-                                                 "complete",
-                                                 "unsettled"
-                                             ],
-                                "additionalProperties":  false
-                            },
-                  "publication":  {
-                                      "type":  "object",
-                                      "properties":  {
-                                                         "id":  {
-                                                                    "type":  "string"
-                                                                },
-                                                         "kind":  {
-                                                                      "enum":  [
-                                                                                   "law",
-                                                                                   "ordinance",
-                                                                                   "decree",
-                                                                                   "rectification"
-                                                                               ]
-                                                                  },
-                                                         "number":  {
-                                                                        "type":  "string"
-                                                                    },
-                                                         "date":  {
-                                                                      "type":  "string",
-                                                                      "format":  "date"
-                                                                  },
-                                                         "jo":  {
-                                                                    "$ref":  "#/$defs/journal"
-                                                                },
-                                                         "arabic":  {
-                                                                        "$ref":  "#/$defs/download"
-                                                                    },
-                                                         "french":  {
-                                                                        "anyOf":  [
-                                                                                      {
-                                                                                          "$ref":  "#/$defs/download"
-                                                                                      },
-                                                                                      {
-                                                                                          "type":  "null"
-                                                                                      }
-                                                                                  ]
-                                                                    },
-                                                         "articlesTouched":  {
-                                                                                 "type":  "array",
-                                                                                 "items":  {
-                                                                                               "type":  "string"
-                                                                                           }
-                                                                             },
-                                                         "commencementDate":  {
-                                                                                  "anyOf":  [
-                                                                                                {
-                                                                                                    "type":  "string",
-                                                                                                    "format":  "date"
-                                                                                                },
-                                                                                                {
-                                                                                                    "type":  "null"
-                                                                                                }
-                                                                                            ]
-                                                                              },
-                                                         "commencementBasis":  {
-                                                                                   "type":  "string"
-                                                                               },
-                                                         "transitionalProvisions":  {
-                                                                                        "type":  "array",
-                                                                                        "items":  {
-                                                                                                      "type":  "string"
-                                                                                                  }
-                                                                                    },
-                                                         "discovery":  {
-                                                                           "type":  "array",
-                                                                           "items":  {
-                                                                                         "$ref":  "#/$defs/discovery"
-                                                                                     }
-                                                                       }
-                                                     },
-                                      "required":  [
-                                                       "id",
-                                                       "kind",
-                                                       "number",
-                                                       "date",
-                                                       "jo",
-                                                       "arabic",
-                                                       "french",
-                                                       "articlesTouched",
-                                                       "commencementDate",
-                                                       "commencementBasis",
-                                                       "transitionalProvisions",
-                                                       "discovery"
-                                                   ],
-                                      "additionalProperties":  false
-                                  },
-                  "check":  {
-                                "type":  "object",
-                                "properties":  {
-                                                   "check":  {
-                                                                 "enum":  [
-                                                                              "text-layer-matches-ocr",
-                                                                              "discrepancy-resolved-from-image",
-                                                                              "french-structure-matches",
-                                                                              "inventory-complete",
-                                                                              "amendment-applied"
-                                                                          ]
-                                                             },
-                                                   "method":  {
-                                                                  "type":  "string",
-                                                                  "minLength":  1
-                                                              },
-                                                   "date":  {
-                                                                "type":  "string",
-                                                                "format":  "date"
-                                                            },
-                                                   "result":  {
-                                                                  "const":  "passed"
-                                                              },
-                                                   "note":  {
-                                                                "type":  "string"
-                                                            },
-                                                   "textSha256":  {
-                                                                      "type":  [
-                                                                                   "string",
-                                                                                   "null"
-                                                                               ],
-                                                                      "pattern":  "^[a-fA-F0-9]{64}$"
-                                                                  },
-                                                   "imageSha256s":  {
-                                                                        "items":  {
-                                                                                      "type":  "string",
-                                                                                      "pattern":  "^[a-fA-F0-9]{64}$"
-                                                                                  },
-                                                                        "type":  [
-                                                                                     "array",
-                                                                                     "null"
-                                                                                 ]
-                                                                    }
-                                               },
-                                "required":  [
-                                                 "check",
-                                                 "method",
-                                                 "date",
-                                                 "result"
-                                             ],
-                                "additionalProperties":  false
-                            },
-                  "verification":  {
-                                       "type":  "object",
-                                       "properties":  {
-                                                          "state":  {
-                                                                        "enum":  [
-                                                                                     "checked",
-                                                                                     "partly-checked",
-                                                                                     "unsettled"
-                                                                                 ]
-                                                                    },
-                                                          "checks":  {
-                                                                         "type":  "array",
-                                                                         "items":  {
-                                                                                       "$ref":  "#/$defs/check"
-                                                                                   }
-                                                                     },
-                                                          "reasons":  {
-                                                                          "type":  "array",
-                                                                          "items":  {
-                                                                                        "type":  "string"
-                                                                                    }
-                                                                      }
-                                                      },
-                                       "required":  [
-                                                        "state",
-                                                        "checks",
-                                                        "reasons"
-                                                    ],
-                                       "additionalProperties":  false
-                                   },
-                  "crossReference":  {
-                                         "type":  "object",
-                                         "properties":  {
-                                                            "targetId":  {
-                                                                             "type":  "string"
-                                                                         },
-                                                            "paragraph":  {
-                                                                              "type":  "integer",
-                                                                              "minimum":  1
-                                                                          },
-                                                            "quote":  {
-                                                                          "type":  "string",
-                                                                          "minLength":  1
-                                                                      }
-                                                        },
-                                         "required":  [
-                                                          "targetId",
-                                                          "paragraph",
-                                                          "quote"
-                                                      ],
-                                         "additionalProperties":  false
-                                     },
-                  "source":  {
-                                 "type":  "object",
-                                 "properties":  {
-                                                    "publicationId":  {
-                                                                          "type":  "string"
-                                                                      },
-                                                    "page":  {
-                                                                 "type":  "integer",
-                                                                 "minimum":  1
-                                                             },
-                                                    "endPage":  {
-                                                                    "anyOf":  [
-                                                                                  {
-                                                                                      "type":  "integer",
-                                                                                      "minimum":  1
-                                                                                  },
-                                                                                  {
-                                                                                      "type":  "null"
-                                                                                  }
-                                                                              ]
-                                                                },
-                                                    "printedPage":  {
-                                                                        "type":  [
-                                                                                     "string",
-                                                                                     "null"
-                                                                                 ]
-                                                                    },
-                                                    "textLayer":  {
-                                                                      "type":  "string"
-                                                                  },
-                                                    "ocr":  {
-                                                                "type":  "string"
-                                                            },
-                                                    "evidenceId":  {
-                                                                       "type":  [
-                                                                                    "string",
-                                                                                    "null"
-                                                                                ]
-                                                                   },
-                                                    "region":  {
-                                                                   "type":  "array",
-                                                                   "items":  {
-                                                                                 "type":  "number",
-                                                                                 "minimum":  0,
-                                                                                 "maximum":  1
-                                                                             },
-                                                                   "minItems":  0,
-                                                                   "maxItems":  4
-                                                               },
-                                                    "fragments":  {
-                                                                      "items":  {
-                                                                                    "$ref":  "#/$defs/sourceFragment"
-                                                                                },
-                                                                      "type":  "array"
-                                                                  }
-                                                },
-                                 "required":  [
-                                                  "publicationId",
-                                                  "page",
-                                                  "textLayer",
-                                                  "ocr"
-                                              ],
-                                 "additionalProperties":  false
-                             },
-                  "version":  {
-                                  "type":  "object",
-                                  "properties":  {
-                                                     "versionId":  {
-                                                                       "type":  "string"
-                                                                   },
-                                                     "text":  {
-                                                                  "type":  "string"
-                                                              },
-                                                     "paragraphs":  {
-                                                                        "type":  "array",
-                                                                        "items":  {
-                                                                                      "type":  "string"
-                                                                                  }
-                                                                    },
-                                                     "inForceFrom":  {
-                                                                         "anyOf":  [
-                                                                                       {
-                                                                                           "type":  "string",
-                                                                                           "format":  "date"
-                                                                                       },
-                                                                                       {
-                                                                                           "type":  "null"
-                                                                                       }
-                                                                                   ]
-                                                                     },
-                                                     "inForceTo":  {
-                                                                       "anyOf":  [
-                                                                                     {
-                                                                                         "type":  "string",
-                                                                                         "format":  "date"
-                                                                                     },
-                                                                                     {
-                                                                                         "type":  "null"
-                                                                                     }
-                                                                                 ]
-                                                                   },
-                                                     "temporalStatus":  {
-                                                                            "enum":  [
-                                                                                         "resolved",
-                                                                                         "unsettled"
-                                                                                     ]
-                                                                        },
-                                                     "introducedBy":  {
-                                                                          "type":  "string"
-                                                                      },
-                                                     "status":  {
-                                                                    "enum":  [
-                                                                                 "in-force",
-                                                                                 "repealed"
-                                                                             ]
-                                                                },
-                                                     "source":  {
-                                                                    "$ref":  "#/$defs/source"
-                                                                },
-                                                     "crossReferences":  {
-                                                                             "type":  "array",
-                                                                             "items":  {
-                                                                                           "$ref":  "#/$defs/crossReference"
-                                                                                       }
-                                                                         },
-                                                     "verification":  {
-                                                                          "$ref":  "#/$defs/verification"
-                                                                      }
-                                                 },
-                                  "required":  [
-                                                   "versionId",
-                                                   "text",
-                                                   "paragraphs",
-                                                   "inForceFrom",
-                                                   "inForceTo",
-                                                   "temporalStatus",
-                                                   "introducedBy",
-                                                   "status",
-                                                   "source",
-                                                   "crossReferences",
-                                                   "verification"
-                                               ],
-                                  "additionalProperties":  false
-                              },
-                  "article":  {
-                                  "type":  "object",
-                                  "properties":  {
-                                                     "id":  {
-                                                                "type":  "string"
-                                                            },
-                                                     "number":  {
-                                                                    "type":  "string"
-                                                                },
-                                                     "canonicalNumber":  {
-                                                                             "type":  "string"
-                                                                         },
-                                                     "path":  {
-                                                                  "type":  "array",
-                                                                  "items":  {
-                                                                                "type":  "string"
-                                                                            }
-                                                              },
-                                                     "availability":  {
-                                                                          "enum":  [
-                                                                                       "text",
-                                                                                       "reference-only"
-                                                                                   ]
-                                                                      },
-                                                     "versions":  {
-                                                                      "type":  "array",
-                                                                      "items":  {
-                                                                                    "$ref":  "#/$defs/version"
-                                                                                }
-                                                                  }
-                                                 },
-                                  "required":  [
-                                                   "id",
-                                                   "number",
-                                                   "canonicalNumber",
-                                                   "path",
-                                                   "availability",
-                                                   "versions"
-                                               ],
-                                  "additionalProperties":  false
-                              },
-                  "inventory":  {
-                                    "type":  "object",
-                                    "properties":  {
-                                                       "scope":  {
-                                                                     "type":  "string"
-                                                                 },
-                                                       "expected":  {
-                                                                        "type":  "array",
-                                                                        "items":  {
-                                                                                      "type":  "string"
-                                                                                  }
-                                                                    },
-                                                       "present":  {
-                                                                       "type":  "array",
-                                                                       "items":  {
-                                                                                     "type":  "string"
-                                                                                 }
-                                                                   },
-                                                       "gaps":  {
-                                                                    "type":  "array",
-                                                                    "items":  {
-                                                                                  "type":  "string"
-                                                                              }
-                                                                },
-                                                       "unappliedPublications":  {
-                                                                                     "type":  "array",
-                                                                                     "items":  {
-                                                                                                   "type":  "string"
-                                                                                               }
-                                                                                 },
-                                                       "complete":  {
-                                                                        "type":  "boolean"
-                                                                    }
-                                                   },
-                                    "required":  [
-                                                     "scope",
-                                                     "expected",
-                                                     "present",
-                                                     "gaps",
-                                                     "unappliedPublications",
-                                                     "complete"
-                                                 ],
-                                    "additionalProperties":  false
-                                },
-                  "unsettled":  {
-                                    "type":  "object",
-                                    "properties":  {
-                                                       "id":  {
-                                                                  "type":  "string"
-                                                              },
-                                                       "reason":  {
-                                                                      "type":  "string",
-                                                                      "minLength":  1
-                                                                  }
-                                                   },
-                                    "required":  [
-                                                     "id",
-                                                     "reason"
-                                                 ],
-                                    "additionalProperties":  false
-                                },
-                  "ledger":  {
-                                 "type":  "object",
-                                 "properties":  {
-                                                    "schemaVersion":  {
-                                                                          "const":  "1.0"
-                                                                      },
-                                                    "id":  {
-                                                               "type":  "string"
-                                                           },
-                                                    "citationName":  {
-                                                                         "type":  "string"
-                                                                     },
-                                                    "reference":  {
-                                                                      "type":  "string"
-                                                                  },
-                                                    "scope":  {
-                                                                  "$ref":  "#/$defs/scope"
-                                                              },
-                                                    "publications":  {
-                                                                         "type":  "array",
-                                                                         "items":  {
-                                                                                       "$ref":  "#/$defs/publication"
-                                                                                   }
-                                                                     }
-                                                },
-                                 "required":  [
-                                                  "schemaVersion",
-                                                  "id",
-                                                  "citationName",
-                                                  "reference",
-                                                  "scope",
-                                                  "publications"
-                                              ],
-                                 "additionalProperties":  false
-                             },
-                  "articles":  {
-                                   "type":  "object",
-                                   "properties":  {
-                                                      "schemaVersion":  {
-                                                                            "const":  "1.0"
-                                                                        },
-                                                      "codeId":  {
-                                                                     "type":  "string"
-                                                                 },
-                                                      "articles":  {
-                                                                       "type":  "array",
-                                                                       "items":  {
-                                                                                     "$ref":  "#/$defs/article"
-                                                                                 }
-                                                                   }
-                                                  },
-                                   "required":  [
-                                                    "schemaVersion",
-                                                    "codeId",
-                                                    "articles"
-                                                ],
-                                   "additionalProperties":  false
-                               },
-                  "report":  {
-                                 "type":  "object",
-                                 "properties":  {
-                                                    "schemaVersion":  {
-                                                                          "const":  "1.0"
-                                                                      },
-                                                    "codeId":  {
-                                                                   "type":  "string"
-                                                               },
-                                                    "generatedOn":  {
-                                                                        "type":  "string",
-                                                                        "format":  "date"
-                                                                    },
-                                                    "inventory":  {
-                                                                      "$ref":  "#/$defs/inventory"
-                                                                  },
-                                                    "countsByState":  {
-                                                                          "type":  "object",
-                                                                          "properties":  {
-                                                                                             "checked":  {
-                                                                                                             "type":  "integer",
-                                                                                                             "minimum":  0
-                                                                                                         },
-                                                                                             "partly-checked":  {
-                                                                                                                    "type":  "integer",
-                                                                                                                    "minimum":  0
-                                                                                                                },
-                                                                                             "unsettled":  {
-                                                                                                               "type":  "integer",
-                                                                                                               "minimum":  0
-                                                                                                           }
-                                                                                         },
-                                                                          "required":  [
-                                                                                           "checked",
-                                                                                           "partly-checked",
-                                                                                           "unsettled"
-                                                                                       ],
-                                                                          "additionalProperties":  false
-                                                                      },
-                                                    "unsettled":  {
-                                                                      "type":  "array",
-                                                                      "items":  {
-                                                                                    "$ref":  "#/$defs/unsettled"
-                                                                                }
-                                                                  }
-                                                },
-                                 "required":  [
-                                                  "schemaVersion",
-                                                  "codeId",
-                                                  "generatedOn",
-                                                  "inventory",
-                                                  "countsByState",
-                                                  "unsettled"
-                                              ],
-                                 "additionalProperties":  false
-                             },
-                  "sourceFragment":  {
-                                         "type":  "object",
-                                         "properties":  {
-                                                            "publicationId":  {
-                                                                                  "type":  "string"
-                                                                              },
-                                                            "page":  {
-                                                                         "type":  "integer",
-                                                                         "minimum":  1
-                                                                     },
-                                                            "textLayer":  {
-                                                                              "type":  "string"
-                                                                          },
-                                                            "ocr":  {
-                                                                        "type":  "string"
-                                                                    },
-                                                            "evidenceId":  {
-                                                                               "type":  "string"
-                                                                           },
-                                                            "region":  {
-                                                                           "minItems":  0,
-                                                                           "items":  {
-                                                                                         "maximum":  1,
-                                                                                         "type":  "number",
-                                                                                         "minimum":  0
-                                                                                     },
-                                                                           "type":  "array",
-                                                                           "maxItems":  4
-                                                                       },
-                                                            "paragraph":  {
-                                                                              "type":  [
-                                                                                           "integer",
-                                                                                           "null"
-                                                                                       ],
-                                                                              "minimum":  1
-                                                                          }
-                                                        },
-                                         "required":  [
-                                                          "publicationId",
-                                                          "page",
-                                                          "textLayer",
-                                                          "ocr",
-                                                          "evidenceId",
-                                                          "region"
-                                                      ],
-                                         "additionalProperties":  false
-                                     }
-              }
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dz-legal.invalid/law-corpus/1.0/articles.schema.json",
+  "title": "DZ Legal corpus articles 1.0",
+  "$ref": "#/$defs/articles",
+  "$defs": {
+    "download": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{64}$"
+        },
+        "retrievedOn": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "required": [
+        "url",
+        "sha256",
+        "retrievedOn"
+      ],
+      "additionalProperties": false
+    },
+    "journal": {
+      "type": "object",
+      "properties": {
+        "issue": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string",
+          "format": "date"
+        },
+        "pages": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "issue",
+        "date",
+        "pages"
+      ],
+      "additionalProperties": false
+    },
+    "discovery": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "accessedOn": {
+          "type": "string",
+          "format": "date"
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "url",
+        "accessedOn",
+        "note"
+      ],
+      "additionalProperties": false
+    },
+    "scope": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "priority-subset",
+            "complete-code",
+            "chapter-subset"
+          ]
+        },
+        "targetArticles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "amendmentDiscoveryThrough": {
+          "type": "string",
+          "format": "date"
+        },
+        "complete": {
+          "type": "boolean"
+        },
+        "unsettled": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "coveredChapters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/chapter"
+          }
+        }
+      },
+      "required": [
+        "kind",
+        "targetArticles",
+        "amendmentDiscoveryThrough",
+        "complete",
+        "unsettled"
+      ],
+      "additionalProperties": false
+    },
+    "publication": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "law",
+            "ordinance",
+            "decree",
+            "rectification"
+          ]
+        },
+        "number": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string",
+          "format": "date"
+        },
+        "jo": {
+          "$ref": "#/$defs/journal"
+        },
+        "arabic": {
+          "$ref": "#/$defs/download"
+        },
+        "french": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/download"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "articlesTouched": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "commencementDate": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "commencementBasis": {
+          "type": "string"
+        },
+        "transitionalProvisions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "discovery": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/discovery"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "number",
+        "date",
+        "jo",
+        "arabic",
+        "french",
+        "articlesTouched",
+        "commencementDate",
+        "commencementBasis",
+        "transitionalProvisions",
+        "discovery"
+      ],
+      "additionalProperties": false
+    },
+    "check": {
+      "type": "object",
+      "properties": {
+        "check": {
+          "enum": [
+            "text-layer-matches-ocr",
+            "discrepancy-resolved-from-image",
+            "french-structure-matches",
+            "inventory-complete",
+            "amendment-applied"
+          ]
+        },
+        "method": {
+          "type": "string",
+          "minLength": 1
+        },
+        "date": {
+          "type": "string",
+          "format": "date"
+        },
+        "result": {
+          "const": "passed"
+        },
+        "note": {
+          "type": "string"
+        },
+        "textSha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-fA-F0-9]{64}$"
+        },
+        "imageSha256s": {
+          "items": {
+            "type": "string",
+            "pattern": "^[a-fA-F0-9]{64}$"
+          },
+          "type": [
+            "array",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "check",
+        "method",
+        "date",
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "verification": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "enum": [
+            "checked",
+            "partly-checked",
+            "unsettled"
+          ]
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/check"
+          }
+        },
+        "reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "state",
+        "checks",
+        "reasons"
+      ],
+      "additionalProperties": false
+    },
+    "crossReference": {
+      "type": "object",
+      "properties": {
+        "targetId": {
+          "type": "string"
+        },
+        "paragraph": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "quote": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "targetId",
+        "paragraph",
+        "quote"
+      ],
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "publicationId": {
+          "type": "string"
+        },
+        "page": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "endPage": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "printedPage": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "textLayer": {
+          "type": "string"
+        },
+        "ocr": {
+          "type": "string"
+        },
+        "evidenceId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "region": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "minItems": 0,
+          "maxItems": 4
+        },
+        "fragments": {
+          "items": {
+            "$ref": "#/$defs/sourceFragment"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "publicationId",
+        "page",
+        "textLayer",
+        "ocr"
+      ],
+      "additionalProperties": false
+    },
+    "version": {
+      "type": "object",
+      "properties": {
+        "versionId": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "paragraphs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "inForceFrom": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "inForceTo": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "temporalStatus": {
+          "enum": [
+            "resolved",
+            "unsettled"
+          ]
+        },
+        "introducedBy": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "in-force",
+            "repealed"
+          ]
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "crossReferences": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/crossReference"
+          }
+        },
+        "verification": {
+          "$ref": "#/$defs/verification"
+        },
+        "path": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "versionId",
+        "text",
+        "paragraphs",
+        "inForceFrom",
+        "inForceTo",
+        "temporalStatus",
+        "introducedBy",
+        "status",
+        "source",
+        "crossReferences",
+        "verification"
+      ],
+      "additionalProperties": false
+    },
+    "article": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "number": {
+          "type": "string"
+        },
+        "canonicalNumber": {
+          "type": "string"
+        },
+        "path": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "availability": {
+          "enum": [
+            "text",
+            "reference-only"
+          ]
+        },
+        "versions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/version"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "number",
+        "canonicalNumber",
+        "path",
+        "availability",
+        "versions"
+      ],
+      "additionalProperties": false
+    },
+    "inventory": {
+      "type": "object",
+      "properties": {
+        "scope": {
+          "type": "string"
+        },
+        "expected": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "present": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "gaps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unappliedPublications": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "complete": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "scope",
+        "expected",
+        "present",
+        "gaps",
+        "unappliedPublications",
+        "complete"
+      ],
+      "additionalProperties": false
+    },
+    "unsettled": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "ledger": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0"
+        },
+        "id": {
+          "type": "string"
+        },
+        "citationName": {
+          "type": "string"
+        },
+        "reference": {
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/scope"
+        },
+        "publications": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/publication"
+          }
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "id",
+        "citationName",
+        "reference",
+        "scope",
+        "publications"
+      ],
+      "additionalProperties": false
+    },
+    "articles": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0"
+        },
+        "codeId": {
+          "type": "string"
+        },
+        "articles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/article"
+          }
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "codeId",
+        "articles"
+      ],
+      "additionalProperties": false
+    },
+    "report": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": "1.0"
+        },
+        "codeId": {
+          "type": "string"
+        },
+        "generatedOn": {
+          "type": "string",
+          "format": "date"
+        },
+        "inventory": {
+          "$ref": "#/$defs/inventory"
+        },
+        "countsByState": {
+          "type": "object",
+          "properties": {
+            "checked": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "partly-checked": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "unsettled": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "checked",
+            "partly-checked",
+            "unsettled"
+          ],
+          "additionalProperties": false
+        },
+        "unsettled": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/unsettled"
+          }
+        },
+        "coverage": {
+          "enum": [
+            "partial",
+            "complete"
+          ]
+        },
+        "coveredChapters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/chapter"
+          }
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "codeId",
+        "generatedOn",
+        "inventory",
+        "countsByState",
+        "unsettled"
+      ],
+      "additionalProperties": false
+    },
+    "sourceFragment": {
+      "type": "object",
+      "properties": {
+        "publicationId": {
+          "type": "string"
+        },
+        "page": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "textLayer": {
+          "type": "string"
+        },
+        "ocr": {
+          "type": "string"
+        },
+        "evidenceId": {
+          "type": "string"
+        },
+        "region": {
+          "minItems": 0,
+          "items": {
+            "maximum": 1,
+            "type": "number",
+            "minimum": 0
+          },
+          "type": "array",
+          "maxItems": 4
+        },
+        "paragraph": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "sourceSha256": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{64}$"
+        },
+        "paragraphTextSha256": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{64}$"
+        },
+        "role": {
+          "enum": [
+            "body",
+            "heading",
+            "repeal",
+            "amendment-instruction"
+          ]
+        }
+      },
+      "required": [
+        "publicationId",
+        "page",
+        "textLayer",
+        "ocr",
+        "evidenceId",
+        "region"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "paragraph"
+            ]
+          },
+          "then": {
+            "required": [
+              "paragraphTextSha256"
+            ]
+          }
+        }
+      ]
+    },
+    "chapter": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "path": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "articles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "id",
+        "path",
+        "articles"
+      ],
+      "additionalProperties": false
+    }
+  }
 }

@@ -127,6 +127,50 @@ public class CorpusLoaderTests
         Assert.Contains(ex.Errors, e => e.Contains("not bound", StringComparison.Ordinal));
     }
 
+    [Fact]
+    public void PartialChapterInventoryCannotBePresentedAsACompleteCode()
+    {
+        var code = Code(Version());
+        CorpusChapter[] chapters = [new("fiction-chapter", ["Invented heading"], ["1"])];
+        code = code with
+        {
+            Ledger = code.Ledger with { Scope = code.Ledger.Scope with { Kind = "chapter-subset", CoveredChapters = chapters } },
+            Report = code.Report with { Inventory = code.Report.Inventory with { Scope = "chapter-subset" }, CoveredChapters = chapters },
+        };
+        Assert.Single(CorpusLoader.Validate([code]).Codes);
+        var dishonest = code with { Report = code.Report with { Coverage = "complete" } };
+        var ex = Assert.Throws<CorpusValidationException>(() => CorpusLoader.Validate([dishonest]));
+        Assert.Contains(ex.Errors, e => e.Contains("partial/complete coverage", StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public void MixedPublicationFragmentsNeedEveryParagraphAndCurrentParagraphHashes()
+    {
+        var version = Version() with { Text = "kept\nchanged", Paragraphs = ["kept", "changed"] };
+        var code = Code(version);
+        var newer = code.Ledger.Publications[0] with { Id = "new-publication" };
+        var keptHash = Convert.ToHexStringLower(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes("kept")));
+        var changedHash = Convert.ToHexStringLower(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes("changed")));
+        version = version with
+        {
+            IntroducedBy = newer.Id,
+            Source = version.Source with
+            {
+                PublicationId = newer.Id,
+                Fragments = [new("fiction-001", 1, "", "", "kept-crop", [], 1, new('a', 64), keptHash),
+                             new(newer.Id, 1, "", "", "changed-crop", [], 2, new('a', 64), changedHash)],
+            },
+        };
+        code = Code(version) with { Ledger = code.Ledger with { Publications = [code.Ledger.Publications[0], newer] } };
+        Assert.Single(CorpusLoader.Validate([code]).Codes);
+        var edited = version with { Text = "edited\nchanged", Paragraphs = ["edited", "changed"] };
+        var ex = Assert.Throws<CorpusValidationException>(() => CorpusLoader.Validate([code with
+        {
+            Content = code.Content with { Articles = [code.Content.Articles[0] with { Versions = [edited] }] },
+        }]));
+        Assert.Contains(ex.Errors, e => e.Contains("paragraph provenance", StringComparison.Ordinal));
+    }
+
     private static CorpusArticleVersion Version() => new()
     {
         VersionId = "fictitious:1@original", Text = "نص وهمي للاختبار فقط.", Paragraphs = ["نص وهمي للاختبار فقط."],

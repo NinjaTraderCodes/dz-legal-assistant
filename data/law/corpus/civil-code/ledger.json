@@ -13,6 +13,7 @@
       "308",
       "309",
       "379",
+      "489",
       "1002",
       "1003"
     ],
@@ -22,7 +23,8 @@
       "This is a priority subset; the rest of the Civil Code is outside its inventory.",
       "Law05-10 replaced art7. No special commencement date appears in its final art52; Civil4 provides a geographic day-franc rule, so one uniform national commencement date and the exact art7 version boundary remain unsettled.",
       "Justice Ministry index also lists83-01,88-14,89-01 and07-05. Official issues for these are cached and reviewed for priority impact, with findings in research/amendment-discovery.json; they are not represented as fully extracted whole-code amendments in this scoped ledger.",
-      "The amendment index plus targeted official-domain search is evidence of discovery through the recorded date, not proof that no unindexed or indirect legal effect exists."
+      "The amendment index plus targeted official-domain search is evidence of discovery through the recorded date, not proof that no unindexed or indirect legal effect exists.",
+      "Article489 is a reviewed consolidation pilot: Law07-05 replaces paragraph1 only; its old paragraph2 must be retained. Full Civil inventory, paths and version-chain certification remain incomplete."
     ]
   },
   "publications": [
@@ -122,7 +124,8 @@
         "309",
         "379",
         "1002",
-        "1003"
+        "1003",
+        "489"
       ],
       "commencementDate": "1975-07-05",
       "commencementBasis": "Explicit original art1003, Arabic PDF67/printed1055: commencement from5July1975. French PDF52/printed868 agrees. This does not replace the separate art1002 publication trigger for prescription facts. Art7 preserves old limitation start/suspension/interruption rules for the earlier period. JO pages are printed page labels, not PDF indexes.",
@@ -260,6 +263,48 @@
           "url": "https://www.joradp.dz/FTP/jo-arabe/2005/A2005044.pdf",
           "accessedOn": "2026-10-25",
           "note": "Law title Arabic PDF17. Art3 replaces Civil7 atPDF18. All operative amendment provisions through final52 reviewed using Arabic page images and official French edition; none replaces138,139,140,308,309,379. Art42 inserts140bis and140bis1, distinct from140. French140ter aliases Arabic140bis1; French324quinquies aliases Arabic324bis4."
+        }
+      ]
+    },
+    {
+      "id": "law-07-05",
+      "kind": "law",
+      "number": "07-05",
+      "date": "2007-05-13",
+      "jo": {
+        "issue": "31",
+        "date": "2007-05-13",
+        "pages": [
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "arabic": {
+        "url": "https://www.joradp.dz/FTP/jo-arabe/2007/A2007031.PDF",
+        "sha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf",
+        "retrievedOn": "2026-10-16"
+      },
+      "french": {
+        "url": "https://www.joradp.dz/FTP/jo-francais/2007/F2007031.pdf",
+        "sha256": "37e6a7ab100bb8335752688d544476b8d55241ede8c0360c3d03d448ebb9189f",
+        "retrievedOn": "2026-10-25"
+      },
+      "articlesTouched": [
+        "489"
+      ],
+      "commencementDate": null,
+      "commencementBasis": "No uniform national date inferred from publication; generic geographic rule remains unsettled. Art6 replaces489 paragraph1; the printed remainder-unchanged instruction preserves paragraph2.",
+      "transitionalProvisions": [
+        "civil-code:507-bis",
+        "civil-code:507-bis-1"
+      ],
+      "discovery": [
+        {
+          "url": "https://www.joradp.dz/FTP/jo-arabe/2007/A2007031.PDF",
+          "accessedOn": "2026-10-25",
+          "note": "ArabicPDF4 art6 lists489; PDF5 prints its replacement first paragraph followed by (... الباقي بدون تغيير ...). FrenchPDF4 confirms the first-paragraph replacement and remainder. articlesTouched here is only the pilot-scope intersection, not the full amending-law inventory. Transition references identify further work, not imported text."
         }
       ]
     }

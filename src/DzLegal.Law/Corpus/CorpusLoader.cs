@@ -69,10 +69,20 @@ public static partial class CorpusLoader
                 errors.Add($"{ledger.Id}: citation name/reference is empty.");
             }
 
-            if (ledger.Scope.Kind is not ("priority-subset" or "complete-code")
+            if (ledger.Scope.Kind is not ("priority-subset" or "complete-code" or "chapter-subset")
                 || (ledger.Scope.Complete && ledger.Scope.Kind != "complete-code"))
             {
                 errors.Add($"{ledger.Id}: invalid coverage scope.");
+            }
+
+            var chapters = ledger.Scope.CoveredChapters;
+            if ((ledger.Scope.Kind == "chapter-subset" && chapters.Count == 0)
+                || chapters.Select(c => c.Id).Distinct(StringComparer.Ordinal).Count() != chapters.Count
+                || chapters.Any(c => string.IsNullOrWhiteSpace(c.Id) || c.Path.Count == 0 || c.Articles.Count == 0)
+                || (chapters.Count > 0 && !chapters.SelectMany(c => c.Articles).ToHashSet(StringComparer.Ordinal)
+                    .SetEquals(ledger.Scope.TargetArticles)))
+            {
+                errors.Add($"{ledger.Id}: chapter coverage disagrees with scoped target inventory.");
             }
 
             if (ledger.Scope.AmendmentDiscoveryThrough == default || code.Report.GeneratedOn == default)
@@ -244,11 +254,37 @@ public static partial class CorpusLoader
         {
             if (!publications.ContainsKey(fragment.PublicationId) || fragment.Page < 1
                 || string.IsNullOrWhiteSpace(fragment.EvidenceId)
+                || fragment.Role is not ("body" or "heading" or "repeal" or "amendment-instruction")
+                || (fragment.Role != "body" && fragment.Paragraph is not null)
                 || (fragment.Region.Count != 0 && (fragment.Region.Count != 4 || fragment.Region.Any(n => n < 0 || n > 1)))
                 || (fragment.Paragraph is { } p && (p < 1 || p > version.Paragraphs.Count)))
             {
                 errors.Add($"{id}: invalid source fragment publication, page, region or paragraph.");
             }
+
+            if (fragment.SourceSha256 is { } sourceHash
+                && (!publications.TryGetValue(fragment.PublicationId, out var fragmentPublication)
+                    || !string.Equals(sourceHash, fragmentPublication.Arabic.Sha256, StringComparison.OrdinalIgnoreCase)))
+            {
+                errors.Add($"{id}: source fragment PDF hash disagrees with ledger.");
+            }
+
+            if (fragment.Paragraph is { } paragraph && paragraph >= 1 && paragraph <= version.Paragraphs.Count
+                && !string.Equals(fragment.ParagraphTextSha256,
+                    Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(version.Paragraphs[paragraph - 1]))),
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                errors.Add($"{id}: paragraph provenance is not bound to the current paragraph text.");
+            }
+        }
+
+        if (version.Source.Fragments.Select(f => f.PublicationId).Distinct(StringComparer.Ordinal).Count() > 1
+            && (version.Source.Fragments.Any(f => (f.Role == "body" && f.Paragraph is null) || f.SourceSha256 is null)
+                || !version.Source.Fragments.Where(f => f.Paragraph is not null).Select(f => f.Paragraph!.Value)
+                    .ToHashSet().SetEquals(Enumerable.Range(1, version.Paragraphs.Count))
+                || !version.Source.Fragments.Any(f => f.PublicationId == version.IntroducedBy && f.Page == version.Source.Page)))
+        {
+            errors.Add($"{id}: multi-publication consolidation requires complete paragraph provenance and an amending-publication locator.");
         }
 
         if (version.Status != "repealed" && (string.IsNullOrWhiteSpace(version.Text) || version.Paragraphs.Count == 0))
@@ -309,10 +345,23 @@ public static partial class CorpusLoader
         var present = code.Content.Articles.Where(a => a.Availability == "text").Select(a => a.CanonicalNumber).ToHashSet(StringComparer.Ordinal);
         var expected = inventory.Expected.ToHashSet(StringComparer.Ordinal);
         if (!present.SetEquals(inventory.Present) || !expected.Except(present).ToHashSet(StringComparer.Ordinal).SetEquals(inventory.Gaps)
+            || !expected.SetEquals(code.Ledger.Scope.TargetArticles)
+            || expected.Count != inventory.Expected.Count
             || (inventory.Complete && (inventory.Gaps.Count > 0 || inventory.UnappliedPublications.Count > 0))
             || inventory.UnappliedPublications.Any(p => !publications.ContainsKey(p)))
         {
             errors.Add($"{code.Ledger.Id}: inventory/report disagrees with corpus.");
+        }
+
+        if (report.Coverage is not ("partial" or "complete")
+            || (report.Coverage == "complete") != code.Ledger.Scope.Complete
+            || report.CoveredChapters.Count != code.Ledger.Scope.CoveredChapters.Count
+            || report.CoveredChapters.Where((chapter, i) => i < code.Ledger.Scope.CoveredChapters.Count
+                && (chapter.Id != code.Ledger.Scope.CoveredChapters[i].Id
+                    || !chapter.Path.SequenceEqual(code.Ledger.Scope.CoveredChapters[i].Path)
+                    || !chapter.Articles.SequenceEqual(code.Ledger.Scope.CoveredChapters[i].Articles))).Any())
+        {
+            errors.Add($"{code.Ledger.Id}: partial/complete coverage or chapter list disagrees with ledger.");
         }
 
         if (code.Ledger.Scope.Complete && (!inventory.Complete || code.Ledger.Scope.Unsettled.Count > 0))
@@ -321,6 +370,10 @@ public static partial class CorpusLoader
         }
 
         var versions = code.Content.Articles.SelectMany(a => a.Versions).ToList();
+        if (versions.Any(v => v.Verification.State == "checked") && !inventory.Complete)
+        {
+            errors.Add($"{code.Ledger.Id}: checked versions require a completed independent scoped inventory.");
+        }
         foreach (var state in States)
         {
             if (report.CountsByState.GetValueOrDefault(state) != versions.Count(v => v.Verification.State == state))

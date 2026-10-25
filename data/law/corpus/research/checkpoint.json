@@ -1,35 +1,66 @@
 {
-    "updatedOn":  "2026-10-25",
-    "branch":  "codex/law-corpus",
-    "baseCommit":  "284c4fb567b01bee4ef609a3bb9121a10d18f231",
-    "priorityPackage":  "delivered-with-explicit-unsettled-items",
-    "articleIdentities":  14,
-    "versionCandidates":  15,
-    "checked":  0,
-    "partlyChecked":  13,
-    "unsettled":  2,
-    "unsettledText":  [
-                          "civil-code:140@ordinance-75-58",
-                          "civil-code:7@law-05-10"
-                      ],
-    "wholeCodeDeliveries":  [
-
-                            ],
-    "nextDelivery":  "Complete Civil Code original/amendment corpus; do not claim whole-code completion from the priority inventory.",
-    "runtimeIntegration":  "Not changed; application engineer consumes typed corpus separately.",
-    "validation":  {
-                       "buildWarnings":  0,
-                       "officialPdfPinsReplayed":  26,
-                       "pythonTests":  19,
-                       "buildErrors":  0,
-                       "dotnetTests":  685,
-                       "schemaErrors":  0
-                   },
-    "remaining":  [
-                      "Complete all Civil article/version/paragraph inventories and explicit amendment application.",
-                      "Run required whole-code20-article image sample.",
-                      "Complete CPCA, Family, Commercial, Labour90-11/90-04 in requested order.",
-                      "Propose official special-law list before building it."
-                  ],
-    "scopeExceptionPending":  "Directory.Build.targets data-cache exclusion requested; no affirmative answer, not applied. Build validation safely held/restored only task cache."
+  "updatedOn": "2026-10-25",
+  "branch": "codex/law-corpus",
+  "baseCommit": "284c4fb567b01bee4ef609a3bb9121a10d18f231",
+  "priorityPackage": "delivered-with-explicit-unsettled-items",
+  "articleIdentities": 15,
+  "versionCandidates": 17,
+  "checked": 0,
+  "partlyChecked": 15,
+  "unsettled": 2,
+  "unsettledText": [
+    "civil-code:140@ordinance-75-58",
+    "civil-code:7@law-05-10"
+  ],
+  "wholeCodeDeliveries": [],
+  "nextDelivery": "Complete Civil Code inventory, transcriptions and all amendment operations/versions, including chapter-local1989 numbering and20-article QA; do not claim completeness from source extraction.",
+  "runtimeIntegration": "Not changed; application engineer consumes typed corpus separately.",
+  "validation": {
+    "buildWarnings": 0,
+    "officialPdfPinsReplayed": 36,
+    "pythonTests": 38,
+    "buildErrors": 0,
+    "dotnetTests": 687,
+    "schemaErrors": 0,
+    "fullCivilCrops": 312,
+    "pilotCrops": 5,
+    "fullReleaseBuild": "passed; zero warnings/errors",
+    "officialLivePinsMatched": 36
+  },
+  "remaining": [
+    "Finish Civil original/amendment article, paragraph, version, heading and cross-reference inventories; resolve or explicitly retain transcription/temporal uncertainties.",
+    "Complete full Civil extraction, source-image comparison, French structural alignment, amendment application and independent inventory; run20-article visual QA.",
+    "Complete CPCA including22-13 and its transitions.",
+    "Complete Family Code and its amendments.",
+    "Complete only the Commercial,90-11 and90-04 chapters listed in scope-plan.json, including all historical versions; report each as partial.",
+    "Run schema/typed loader/regression checks and reconcile all81 legacy records at each delivery.",
+    "Commit/push recoverable checkpoints to codex/law-corpus only; do not start special laws."
+  ],
+  "scopeExceptionPending": "Directory.Build.targets data-cache exclusion requested; no affirmative answer, not applied. Build validation safely held/restored only task cache.",
+  "workStatus": "resumed by explicit user authorization; revised scope being implemented",
+  "scopePlan": "research/scope-plan.json",
+  "revisedScope": {
+    "complete": [
+      "civil-code",
+      "cpca",
+      "family-code"
+    ],
+    "chapterSubset": [
+      "commercial-code",
+      "labour-relations",
+      "labour-disputes"
+    ],
+    "specialLaws": "excluded",
+    "externalTeamDependency": false
+  },
+  "progress": {
+    "inventory": "Catalogue hashes and bounded chapter targets frozen; full historical insertions/numbering still under reconciliation",
+    "consolidation": "Implemented and tested; real Civil489 paragraph1 replacement reconstructs original paragraph2 with distinct source/hash provenance. Pilot typed/schema validation passed.",
+    "civil": "Full312-crop extraction/corrected-layout replay complete; original number observations are883Arabic/798French candidates, not a certified inventory. No complete-code delivery.",
+    "cpca": "Full delivery not started; existing priority subset retained",
+    "family": "Full delivery not started",
+    "boundedCollections": "Boundaries recorded: commercial37, labour90-11 29, labour90-04 1; text/version deliveries not started"
+  },
+  "lastCheckpointPurpose": "Revised scope, multi-publication consolidation, complete Civil source extraction evidence, and article489 real pilot; whole-code work remains.",
+  "checkpointState": "validated; ready for branch-only commit"
 }

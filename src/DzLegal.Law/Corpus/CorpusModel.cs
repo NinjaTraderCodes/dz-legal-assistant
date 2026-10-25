@@ -21,6 +21,8 @@ public sealed record CorpusPublication
     public IReadOnlyList<CorpusDiscovery> Discovery { get; init; } = [];
 }
 
+public sealed record CorpusChapter(string Id, IReadOnlyList<string> Path, IReadOnlyList<string> Articles);
+
 public sealed record CorpusScope
 {
     public required string Kind { get; init; }
@@ -28,6 +30,7 @@ public sealed record CorpusScope
     public DateOnly AmendmentDiscoveryThrough { get; init; }
     public bool Complete { get; init; }
     public IReadOnlyList<string> Unsettled { get; init; } = [];
+    public IReadOnlyList<CorpusChapter> CoveredChapters { get; init; } = [];
 }
 
 public sealed record CorpusLedger
@@ -45,7 +48,8 @@ public sealed record CorpusCheck(string Check, string Method, DateOnly Date, str
 public sealed record CorpusVerification(string State, IReadOnlyList<CorpusCheck> Checks, IReadOnlyList<string> Reasons);
 public sealed record CorpusCrossReference(string TargetId, int Paragraph, string Quote);
 public sealed record CorpusSourceFragment(string PublicationId, int Page, string TextLayer, string Ocr,
-    string EvidenceId, IReadOnlyList<double> Region, int? Paragraph = null);
+    string EvidenceId, IReadOnlyList<double> Region, int? Paragraph = null,
+    string? SourceSha256 = null, string? ParagraphTextSha256 = null, string Role = "body");
 
 /// <summary>Page is one-based PDF page, not the journal's printed page label. Raw streams stay separate.</summary>
 public sealed record CorpusArticleSource
@@ -67,6 +71,8 @@ public sealed record CorpusArticleVersion
     public required string VersionId { get; init; }
     public required string Text { get; init; }
     public IReadOnlyList<string> Paragraphs { get; init; } = [];
+    /// <summary>Headings applicable to this version; an empty list retains the article-level path.</summary>
+    public IReadOnlyList<string> Path { get; init; } = [];
     public DateOnly? InForceFrom { get; init; }
     public DateOnly? InForceTo { get; init; }
     /// <summary>Unsettled null bounds never mean an interval from minus to plus infinity.</summary>
@@ -115,6 +121,8 @@ public sealed record CorpusReport
     public required CorpusInventory Inventory { get; init; }
     public IReadOnlyDictionary<string, int> CountsByState { get; init; } = new Dictionary<string, int>();
     public IReadOnlyList<CorpusUnsettledItem> Unsettled { get; init; } = [];
+    public string Coverage { get; init; } = "partial";
+    public IReadOnlyList<CorpusChapter> CoveredChapters { get; init; } = [];
 }
 
 public sealed record CorpusCode(CorpusLedger Ledger, CorpusArticlesFile Content, CorpusReport Report);

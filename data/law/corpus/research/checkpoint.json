@@ -1,0 +1,35 @@
+{
+    "updatedOn":  "2026-10-25",
+    "branch":  "codex/law-corpus",
+    "baseCommit":  "284c4fb567b01bee4ef609a3bb9121a10d18f231",
+    "priorityPackage":  "delivered-with-explicit-unsettled-items",
+    "articleIdentities":  14,
+    "versionCandidates":  15,
+    "checked":  0,
+    "partlyChecked":  13,
+    "unsettled":  2,
+    "unsettledText":  [
+                          "civil-code:140@ordinance-75-58",
+                          "civil-code:7@law-05-10"
+                      ],
+    "wholeCodeDeliveries":  [
+
+                            ],
+    "nextDelivery":  "Complete Civil Code original/amendment corpus; do not claim whole-code completion from the priority inventory.",
+    "runtimeIntegration":  "Not changed; application engineer consumes typed corpus separately.",
+    "validation":  {
+                       "buildWarnings":  0,
+                       "officialPdfPinsReplayed":  26,
+                       "pythonTests":  19,
+                       "buildErrors":  0,
+                       "dotnetTests":  685,
+                       "schemaErrors":  0
+                   },
+    "remaining":  [
+                      "Complete all Civil article/version/paragraph inventories and explicit amendment application.",
+                      "Run required whole-code20-article image sample.",
+                      "Complete CPCA, Family, Commercial, Labour90-11/90-04 in requested order.",
+                      "Propose official special-law list before building it."
+                  ],
+    "scopeExceptionPending":  "Directory.Build.targets data-cache exclusion requested; no affirmative answer, not applied. Build validation safely held/restored only task cache."
+}

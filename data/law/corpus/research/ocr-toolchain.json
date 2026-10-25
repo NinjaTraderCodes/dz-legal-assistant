@@ -1,0 +1,1627 @@
+{
+  "lockSha256": "53cfe924e74fd4c91b2559cdde2f87155900931640cba507f18c78057866a9dd",
+  "tesseractVersionOutput": "tesseract 5.5.2\n leptonica-1.87.0 (Apr  6 2026, 06:47:44) [MSC v.1944 LIB Release x64]\n  libgif 5.2.2 : libjpeg 8d (libjpeg-turbo 3.1.2) : libpng 1.6.59 : libtiff 4.7.2 : zlib 1.3.2 : libwebp 1.6.0 : libopenjp2 2.5.4\n Found AVX2\n Found AVX\n Found FMA\n Found SSE4.1\n Found libarchive 3.8.9 zlib/1.3.2 liblzma/5.8.3 bz2lib/1.0.8 liblz4/1.10.0 libzstd/1.5.7 libxml2/2.15.3 cng/2.0 libb2/bundled\n Found libcurl/8.17.0 Schannel zlib/1.3.2 libssh2/1.11.1",
+  "tesseractExecutableSha256": "bd50a6b7ce25f2a19d4805be5caa5e02aeffba9a13a3fe78fa0b360b852e5169",
+  "models": [
+    {
+      "file": "share/tessdata/ara.traineddata",
+      "sha256": "e3206d3dc87fd50c24a0fb9f01838615911d25168f4e64415244b67d2bb3e729"
+    },
+    {
+      "file": "share/tessdata/fra.traineddata",
+      "sha256": "ced037562e8c80c13122dece28dd477d399af80911a28791a66a63ac1e3445ca"
+    }
+  ],
+  "packages": [
+    {
+      "name": "bzip2",
+      "version": "1.0.8",
+      "build": "h0ad9c76_10",
+      "url": "https://conda.anaconda.org/conda-forge/win-64/bzip2-1.0.8-h0ad9c76_10.conda",
+      "sha256": "04767466ee9227c9c57ab2c6503e0149177d34111c7418d2f420297acb1eb229",
+      "license": "bzip2-1.0.6"
+    },
+    {
+      "name": "ca-certificates",
+      "version": "2026.10.23",
+      "build": "h4c7d964_0",
+      "url": "https://conda.anaconda.org/conda-forge/noarch/ca-certificates-2026.10.23-h4c7d964_0.conda",
+      "sha256": "f1d280d2618de987204102090e83733089c092dc2dd45686fd3dcbe809034f6a",
+      "license": "ISC"
+    },
+    {
+      "name": "giflib",
+      "version": "5.2.2",
+      "build": "hb0bd012_1",
+      "url": "https://conda.anaconda.org/conda-forge/win-64/giflib-5.2.2-hb0bd012_1.conda",
+      "sha256": "573af9bb6294d125a0be6dc4963e589188da92426c3887feb60dd22a07530e4f",
+      "license": "MIT"
+    },
+    {
+      "name": "icu",
+      "version": "78.3",
+      "build": "h5112557_2",
+      "url": "https://conda.anaconda.org/conda-forge/win-64/icu-78.3-h5112557_2.conda",
+      "sha256": "75c549b55b673e15de8785a8e5dd85bca7eb612eee0ff4dc8d7bdaa15eacbdbb",
+      "license": "MIT"
+    },
+    {
+      "name": "leptonica",
+      "version": "1.87.0",
+      "build": "hb83fb89_1",
+      "url": "https://conda.anaconda.org/conda-forge/win-64/leptonica-1.87.0-hb83fb89_1.conda",
+      "sha256": "6a0e2e099c4b530300fdcc092ddd0ffcc5383dbd04cdf03b232996857b3017d8",
+      "license": "BSD-2-Clause"
+    },
+    {
+      "name": "lerc",
+      "version": "4.2.0",
+      "build": "hd936e49_0",
+      "url": "https://conda.anaconda.org/conda-forge/win-64/lerc-4.2.0-hd936e49_0.conda",
+      "sha256": "93d666f63f284ef77b87b0b1f77b70f7d36d315a132f9afa64bc0012d937ba39",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "libarchive",
+      "version": "3.8.9",
+      "build": "gpl_h8fdc8af_101",
+      "url": "https://conda.anaconda.org/conda-forge/win-64/libarchive-3.8.9-gpl_h8fdc8af_101.conda",
+      "sha256": "71cb6e49282d2aee1eb0249a290dc2333b0063ac2ecec69116ad569d822a0aaf",
+      "license": "BSD-2-Clause"
+    },
+    {
+      "name": "libdeflate",
+      "version": "1.25",
+      "build": "h1a1d4e4_1",
+      "url": "https://conda.anaconda.org/conda-forge/win-64/libdeflate-1.25-h1a1d4e4_1.conda",
+      "sha256": "af1cda21d4653f594fbef20aa4e1ff158a546902b3307ef8af9a9b44b43862d2",
+      "license": "MIT"
+    },
+    {
+      "name": "libiconv",
+      "version": "1.18",
+      "build": "hc1393d2_3",
+      "url": "https://conda.anaconda.org/conda-forge/win-64/libiconv-1.18-hc1393d2_3.conda",
+      "sha256": "35e04e3ddac7720fc7c550a1c9f998604299d6a7bd1f3ec9b2825d825061daa2",
+      "license": "LGPL-2.1-only"
+    },
+    {
+      "name": "libjpeg-turbo",
+      "version": "3.2.0",
+      "build": "hfd05255_1",
+      "url": "https://conda.anaconda.org/conda-forge/win-64/libjpeg-turbo-3.2.0-hfd05255_1.conda",
+      "sha256": "df78ab4c0eecb3dd9331898f96baeed8e5ca1c363346332517abeb0b614b9a53",
+      "license": "IJG AND BSD-3-Clause AND Zlib"
+    },
+    {
+      "name": "liblzma",
+      "version": "5.8.3",
+      "build": "hfd05255_1",
+      "url": "https://conda.anaconda.org/conda-forge/win-64/liblzma-5.8.3-hfd05255_1.conda",
+      "sha256": "d36c4a1e1f80fd08e18a407e03622ff2f34dfdd022da6488ad19603dea19e6d5",
+      "license": "0BSD"
+    },
+    {
+      "name": "libpng",
+      "version": "1.6.59",
+      "build": "hdc8cecf_0",
+      "url": "https://conda.anaconda.org/conda-forge/win-64/libpng-1.6.59-hdc8cecf_0.conda",
+      "sha256": "36050852deae6edc98d7b71489b8d07254e2753c69bd524bf5784927cd1f0b2c",
+      "license": "zlib-acknowledgement"
+    },
+    {
+      "name": "libtiff",
+      "version": "4.7.2",
+      "build": "h8f73337_1",
+      "url": "https://conda.anaconda.org/conda-forge/win-64/libtiff-4.7.2-h8f73337_1.conda",
+      "sha256": "3575a092e3e52625a1767804a4ebd321becaadf61b63dcd6735ebb88c0b3c359",
+      "license": "HPND"
+    },
+    {
+      "name": "libwebp-base",
+      "version": "1.6.0",
+      "build": "h4d5522a_1",
+      "url": "https://conda.anaconda.org/conda-forge/win-64/libwebp-base-1.6.0-h4d5522a_1.conda",
+      "sha256": "4470d98d3178b0d45492eed4808afe421d2e7808352b8d06c2dc29166b75d94d",
+      "license": "BSD-3-Clause"
+    },
+    {
+      "name": "libxml2",
+      "version": "2.15.4",
+      "build": "he095d88_1",
+      "url": "https://conda.anaconda.org/conda-forge/win-64/libxml2-2.15.4-he095d88_1.conda",
+      "sha256": "81e8cace5c3cb62c4125882b4a6df33ab48c16349231d8ea5008bbe0ee93c10f",
+      "license": "MIT"
+    },
+    {
+      "name": "libxml2-16",
+      "version": "2.15.4",
+      "build": "h3cfd58e_1",
+      "url": "https://conda.anaconda.org/conda-forge/win-64/libxml2-16-2.15.4-h3cfd58e_1.conda",
+      "sha256": "819c4edd7b7bcfa9461aeccb56c0a7e9fa7c251163333e64222c142499822958",
+      "license": "MIT"
+    },
+    {
+      "name": "libzlib",
+      "version": "1.3.2",
+      "build": "hfd05255_3",
+      "url": "https://conda.anaconda.org/conda-forge/win-64/libzlib-1.3.2-hfd05255_3.conda",
+      "sha256": "0629c2cc0404d3bb29d6baa7b4ba62da80797015e86de050db81ea5a07050527",
+      "license": "Zlib"
+    },
+    {
+      "name": "lz4-c",
+      "version": "1.10.0",
+      "build": "h6a83c73_2",
+      "url": "https://conda.anaconda.org/conda-forge/win-64/lz4-c-1.10.0-h6a83c73_2.conda",
+      "sha256": "6824e36be0f95ae516dc36dddd18f69cbad0e4e07906fcb10a5f26a8dc471903",
+      "license": "BSD-2-Clause"
+    },
+    {
+      "name": "lzo",
+      "version": "2.10",
+      "build": "h6a83c73_1003",
+      "url": "https://conda.anaconda.org/conda-forge/win-64/lzo-2.10-h6a83c73_1003.conda",
+      "sha256": "e26c855c4b5d797ba5a9e96a6392d58676981660849b99fdb939aee3164e8323",
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "openjpeg",
+      "version": "2.5.4",
+      "build": "h90fa87c_2",
+      "url": "https://conda.anaconda.org/conda-forge/win-64/openjpeg-2.5.4-h90fa87c_2.conda",
+      "sha256": "d1c630ccd9ae0898b48d84e986f4c330f66a25e535f99efe8cbf03f042b33da5",
+      "license": "BSD-2-Clause"
+    },
+    {
+      "name": "openssl",
+      "version": "3.6.5",
+      "build": "hf411b9b_0",
+      "url": "https://conda.anaconda.org/conda-forge/win-64/openssl-3.6.5-hf411b9b_0.conda",
+      "sha256": "bc44625e0c6d83f3e02b5f6adc01e0e3ca7001d3d94e24959591a57f5a011b9a",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "tesseract",
+      "version": "5.5.2",
+      "build": "hfa586c3_0",
+      "url": "https://conda.anaconda.org/conda-forge/win-64/tesseract-5.5.2-hfa586c3_0.conda",
+      "sha256": "eca334e9aeb0b4206f3b6ecd1a25d93514960a7518522545e7814987c979359f",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "ucrt",
+      "version": "10.0.26100.0",
+      "build": "h57928b3_0",
+      "url": "https://conda.anaconda.org/conda-forge/win-64/ucrt-10.0.26100.0-h57928b3_0.conda",
+      "sha256": "3005729dce6f3d3f5ec91dfc49fc75a0095f9cd23bab49efb899657297ac91a5",
+      "license": "LicenseRef-MicrosoftWindowsSDK10"
+    },
+    {
+      "name": "vc",
+      "version": "14.5",
+      "build": "ha367084_41",
+      "url": "https://conda.anaconda.org/conda-forge/win-64/vc-14.5-ha367084_41.conda",
+      "sha256": "35444c55a92e2f7f7ba26bc70f81e56e52344f7d064c0fd4b40a46a58517b79c",
+      "license": "BSD-3-Clause"
+    },
+    {
+      "name": "vc14_runtime",
+      "version": "14.51.36247",
+      "build": "habf1de7_41",
+      "url": "https://conda.anaconda.org/conda-forge/win-64/vc14_runtime-14.51.36247-habf1de7_41.conda",
+      "sha256": "4e4cb599cdc41bf2109d1464c127b5bcbddf548ce3e322e612afb691338b48f8",
+      "license": "LicenseRef-MicrosoftVisualCpp2015-2022Runtime"
+    },
+    {
+      "name": "vcomp14",
+      "version": "14.51.36247",
+      "build": "habf1de7_41",
+      "url": "https://conda.anaconda.org/conda-forge/win-64/vcomp14-14.51.36247-habf1de7_41.conda",
+      "sha256": "731e043390c9457299484d39e427221fc868a9249540a498a5a4f6456c7744d1",
+      "license": "LicenseRef-MicrosoftVisualCpp2015-2022Runtime"
+    },
+    {
+      "name": "zstd",
+      "version": "1.5.7",
+      "build": "h534d264_7",
+      "url": "https://conda.anaconda.org/conda-forge/win-64/zstd-1.5.7-h534d264_7.conda",
+      "sha256": "ca7daae4f218a11fab82cc2857f0ea518ec3f46acec60490485347a4c22c6b3e",
+      "license": "BSD-3-Clause"
+    },
+    {
+      "name": "libcurl",
+      "version": "8.17.0",
+      "build": "h43ecb02_1",
+      "url": "https://conda.anaconda.org/conda-forge/win-64/libcurl-8.17.0-h43ecb02_1.conda",
+      "sha256": "5ebab5c980c09d31b35a25095b295124d89fd8bdffdb3487604218ad56512885",
+      "license": "curl"
+    },
+    {
+      "name": "krb5",
+      "version": "1.21.3",
+      "build": "hdf4eb48_0",
+      "url": "https://conda.anaconda.org/conda-forge/win-64/krb5-1.21.3-hdf4eb48_0.conda",
+      "sha256": "18e8b3430d7d232dad132f574268f56b3eb1a19431d6d5de8c53c29e6c18fa81",
+      "license": "MIT"
+    },
+    {
+      "name": "libssh2",
+      "version": "1.11.1",
+      "build": "h734d217_1",
+      "url": "https://conda.anaconda.org/conda-forge/win-64/libssh2-1.11.1-h734d217_1.conda",
+      "sha256": "1097b08429b4f53f5751a32c6d99a083d227ca7f7812c0b239eea124cec073a0",
+      "license": "BSD-3-Clause"
+    }
+  ],
+  "licenseFiles": [
+    {
+      "path": "package-notices/bzip2/licenses/LICENSE",
+      "sha256": "c6dbbf828498be844a89eaa3b84adbab3199e342eb5cb2ed2f0d4ba7ec0f38a3"
+    },
+    {
+      "path": "package-notices/bzip2/recipe/bld.bat",
+      "sha256": "287b7309b7def5fdfde3927b6f7f62baab88292ee2cb40eb66d3b921b8f3d3f3"
+    },
+    {
+      "path": "package-notices/bzip2/recipe/build.sh",
+      "sha256": "0fcfa41c43cd5e726304e975d5241e28f909656bb8fbcb7b6e3e3d204ceb06db"
+    },
+    {
+      "path": "package-notices/bzip2/recipe/conda_build_config.yaml",
+      "sha256": "0aa829f13967df3de9fabd839b3f82b7907b2a1637c7fddf62b742123a38120b"
+    },
+    {
+      "path": "package-notices/bzip2/recipe/meta.yaml",
+      "sha256": "3f6faa106fa208a9075a0bd3c621ffc7cebf6bc0455961b66c0bfa446ea39a41"
+    },
+    {
+      "path": "package-notices/bzip2/recipe/meta.yaml.template",
+      "sha256": "79efcd8677888d93cc75436665c152ee66860438188973373496e7a635f44b1c"
+    },
+    {
+      "path": "package-notices/bzip2/recipe/patches/0001-cross.patch",
+      "sha256": "d589062eecb8c0247e087113d1938a10360d4d69846fb90193178e04c1f69772"
+    },
+    {
+      "path": "package-notices/bzip2/recipe/patches/0002-Windows-Make-library-name-lowercase.patch",
+      "sha256": "1e508465556fc26ef90fd7ad02415a5d000c7f66e2a85efbfbaa07c2757c220f"
+    },
+    {
+      "path": "package-notices/bzip2/recipe/patches/0003-Windows-Add-dyn-lib-build-rename-libbz2_static.patch",
+      "sha256": "0f47e20a9010b4b39b619fa2f6b21865829b62e1fd66d95a2582bcc8b88b9c47"
+    },
+    {
+      "path": "package-notices/bzip2/recipe/recipe-scripts-license.txt",
+      "sha256": "b2f940c8e8ed8a05c62c1f7e41d16807a3ef28f7e33f54c3c8d1697b90ec149e"
+    },
+    {
+      "path": "package-notices/ca-certificates/licenses/LICENSE",
+      "sha256": "e93716da6b9c0d5a4a1df60fe695b370f0695603d21f6f83f053e42cfc10caf7"
+    },
+    {
+      "path": "package-notices/ca-certificates/recipe/bld.bat",
+      "sha256": "bf79cda3c8736f383f5e53925d25f1d3f4be41aeb6cf76ba0283f405a33e09ff"
+    },
+    {
+      "path": "package-notices/ca-certificates/recipe/build.sh",
+      "sha256": "8327db30fd0c8a5a52f8ac6fbd957f50eb1903d3d80bdbd019de00335be6b029"
+    },
+    {
+      "path": "package-notices/ca-certificates/recipe/conda_build_config.yaml",
+      "sha256": "78a334b71521aee64483df62ff95fadad5845f371c653278c033b7ea9aab87b1"
+    },
+    {
+      "path": "package-notices/ca-certificates/recipe/meta.yaml",
+      "sha256": "c1a71504c1ea080faabab8553e0a0aa1c27de07796be425572f2a8c8430b5b73"
+    },
+    {
+      "path": "package-notices/ca-certificates/recipe/meta.yaml.template",
+      "sha256": "23d558dfc291073e5b8a8ef32ab6f2bde1cc1d05ea203e66ee4c0660df700e30"
+    },
+    {
+      "path": "package-notices/ca-certificates/recipe/recipe-scripts-license.txt",
+      "sha256": "b2f940c8e8ed8a05c62c1f7e41d16807a3ef28f7e33f54c3c8d1697b90ec149e"
+    },
+    {
+      "path": "package-notices/giflib/licenses/COPYING",
+      "sha256": "0c9b7990ecdca88b676db232c226548ac408b279f550d424d996f0d83591dd8e"
+    },
+    {
+      "path": "package-notices/giflib/licenses/getopt_LICENSE.txt",
+      "sha256": "fe73146296e90e2079d2cba94192ffe44887d92821bd2e59267503720cfee68f"
+    },
+    {
+      "path": "package-notices/giflib/recipe/bld.bat",
+      "sha256": "fd0ed746d75afe5588b5e21ca1e409725cc3ca3b2726c98460a90bd0a201636d"
+    },
+    {
+      "path": "package-notices/giflib/recipe/build.sh",
+      "sha256": "44797fbe573a32fa1aa35a79f4c92ffc3a91c703b7a14ecf46aaa6f32f5ad603"
+    },
+    {
+      "path": "package-notices/giflib/recipe/CMakeLists.txt",
+      "sha256": "7e39d1ec939962af70b65e93d4be497582893323f3e4f88a98eaf18ef172b7ca"
+    },
+    {
+      "path": "package-notices/giflib/recipe/conda_build_config.yaml",
+      "sha256": "9cdb7fa511c0635ff288e1fb1abd0db09ee7fbf23fca4ea92a09b3b096dfe913"
+    },
+    {
+      "path": "package-notices/giflib/recipe/fix_win.patch",
+      "sha256": "427088b1682524a28ed507f8c418dd6f8dd3aadbefe003b2f0d7efdc54941a13"
+    },
+    {
+      "path": "package-notices/giflib/recipe/getopt.h",
+      "sha256": "8b2a9e208a7f95d11b45a737fc0c254b9f48c1a2c35965fc30b4aef8faf88cc4"
+    },
+    {
+      "path": "package-notices/giflib/recipe/getopt_LICENSE.txt",
+      "sha256": "fe73146296e90e2079d2cba94192ffe44887d92821bd2e59267503720cfee68f"
+    },
+    {
+      "path": "package-notices/giflib/recipe/meta.yaml",
+      "sha256": "9540ba487da5932c776a663b531769b27389a33f60b7860dba6b9048e9a73ef7"
+    },
+    {
+      "path": "package-notices/giflib/recipe/meta.yaml.template",
+      "sha256": "f51793aacb5556450bacc0836adc75b3b5f9ff5a8c90165951c1056d269c6a86"
+    },
+    {
+      "path": "package-notices/giflib/recipe/recipe-scripts-license.txt",
+      "sha256": "b2f940c8e8ed8a05c62c1f7e41d16807a3ef28f7e33f54c3c8d1697b90ec149e"
+    },
+    {
+      "path": "package-notices/giflib/recipe/stdbool_h.patch",
+      "sha256": "65615cbdc5e7b3ad36cd99472b8c7db90188c9d887144a8b7553559ebcc29ac9"
+    },
+    {
+      "path": "package-notices/icu/licenses/LICENSE",
+      "sha256": "e55522d81edc687a341a4411e0776e54ca654e90147f354a90458aaced4116af"
+    },
+    {
+      "path": "package-notices/icu/recipe/build.bat",
+      "sha256": "673158574aa22dffc2ec1637cac7af2ae0113406b5d18e038a6576ef034c7b53"
+    },
+    {
+      "path": "package-notices/icu/recipe/build.sh",
+      "sha256": "2355d58841b377ec03cf0a75eb775cc2b0da1fe80e60cf38dacadab73f827135"
+    },
+    {
+      "path": "package-notices/icu/recipe/conda_build_config.yaml",
+      "sha256": "ae32437ac05fcba248ec3d0cdb231b9c3437878d1b8babda72423be26fe4eaa2"
+    },
+    {
+      "path": "package-notices/icu/recipe/de.txt",
+      "sha256": "a7e461856d33a158fc6120d7077303eeea77e0dccc7e17052843c2c805b95811"
+    },
+    {
+      "path": "package-notices/icu/recipe/gb-18030-2000.ucm",
+      "sha256": "13e6e0bafc659635ffe7b4aae833b68d9a63ca37cea02d10f3d7f20d746dab31"
+    },
+    {
+      "path": "package-notices/icu/recipe/icu-config.patch",
+      "sha256": "33e45c34d54a8dda36289b12710f736044c4d9fc4d8d4d6295ac0a6d33e7b3e0"
+    },
+    {
+      "path": "package-notices/icu/recipe/icu4c-4_9_1-mingw-w64-mkdir-compatibility.patch",
+      "sha256": "7cbbf20e3d015d0a9e81c3c0b2598848c71d09e0b9a5cf20540cf35a1183e2a3"
+    },
+    {
+      "path": "package-notices/icu/recipe/mach-port-t.patch",
+      "sha256": "ed7d471c67396a168bfa9f9ee016490a1046c2fb038cc1b63b937611a8bb1e0e"
+    },
+    {
+      "path": "package-notices/icu/recipe/no-libm-pkgconfig-win.patch",
+      "sha256": "8fa778cd10673fbfeeb76adb645faf8f6aa3d38b6a2fda1d31b3ca70693ced33"
+    },
+    {
+      "path": "package-notices/icu/recipe/recipe-scripts-license.txt",
+      "sha256": "b2f940c8e8ed8a05c62c1f7e41d16807a3ef28f7e33f54c3c8d1697b90ec149e"
+    },
+    {
+      "path": "package-notices/icu/recipe/recipe.yaml",
+      "sha256": "1a89bc76b57bfd9aa498f7d7b1fb14a4346868855a57ebb80ee681eaeb626bb7"
+    },
+    {
+      "path": "package-notices/icu/recipe/rendered_recipe.yaml",
+      "sha256": "ec5010a9f615fca2baf9ad62cc50671e9ba4946e319b66daa934dd13fbfab610"
+    },
+    {
+      "path": "package-notices/icu/recipe/run_test.bat",
+      "sha256": "1eab005579f6124e773eac0b6a3636903ff5e5ab35aec53e92c4b4c091ed7591"
+    },
+    {
+      "path": "package-notices/icu/recipe/run_test.sh",
+      "sha256": "8491d25b0f73eab20b0659b356e777c3069c7ec53a794c134cb43c14d3f5d951"
+    },
+    {
+      "path": "package-notices/icu/recipe/test.c",
+      "sha256": "3fc343516d013978f3378ebf659ff566d80a956801bf5ef85b0b7f0a60ad1667"
+    },
+    {
+      "path": "package-notices/icu/recipe/variant_config.yaml",
+      "sha256": "c78b03c0b7393b51d9850ee35aa90c15e02048316238e7fc102ecff8919bf1f1"
+    },
+    {
+      "path": "package-notices/krb5/licenses/doc/notice.rst",
+      "sha256": "f0201fc3511b96d5fffc59a6bba3c25dcc25e19c76f657049475ef5604499d5c"
+    },
+    {
+      "path": "package-notices/krb5/recipe/bld.bat",
+      "sha256": "8d636eb75b55469e6e118df69121a47d8440952a7ae1565c6a49f08db7fb9878"
+    },
+    {
+      "path": "package-notices/krb5/recipe/build.sh",
+      "sha256": "1e758a63c01d03c15540072886150e0856a9aebf849935ee256ab96348d0dff7"
+    },
+    {
+      "path": "package-notices/krb5/recipe/build_static.sh",
+      "sha256": "57d261a7d55474b4f8c778a6f4e570b0e037452bf9757d87e5f06f5df05c3fc7"
+    },
+    {
+      "path": "package-notices/krb5/recipe/conda_build_config.yaml",
+      "sha256": "3b9ff0c9bdbcdf4e1a7cf648288a4e073c7f3140c71cef05f370bc2278052b41"
+    },
+    {
+      "path": "package-notices/krb5/recipe/meta.yaml",
+      "sha256": "d1340055e39e5c20d66e84b4a84c8949f6d63e98c3753464598113d6a666a827"
+    },
+    {
+      "path": "package-notices/krb5/recipe/meta.yaml.template",
+      "sha256": "f030b44aa83931c9bcdb2cbbdb7c8dbf25f59eae445ed41f4bce95310268fa40"
+    },
+    {
+      "path": "package-notices/krb5/recipe/recipe-scripts-license.txt",
+      "sha256": "933c7e2f7471d8c90e6aee877c0838fc01b19dd55e362e2e2ec367b74caeb97f"
+    },
+    {
+      "path": "package-notices/leptonica/licenses/leptonica-license.txt",
+      "sha256": "87829abb5bbb00b55a107365da89e9a33f86c4250169e5a1e5588505be7d5806"
+    },
+    {
+      "path": "package-notices/leptonica/recipe/build.bat",
+      "sha256": "6ef08ad4979ab5e38d8fc843f45bc04dd9b6da52b78b1fe10ecdd7d2b55538a3"
+    },
+    {
+      "path": "package-notices/leptonica/recipe/build.sh",
+      "sha256": "7869cd4c341af195a00bfab23b3aa67dce2eddb795a3d960c42924dc5151c707"
+    },
+    {
+      "path": "package-notices/leptonica/recipe/cmake_test/CheckFunctions.cmake",
+      "sha256": "9248d618584c0b1b6994ff2f34464658b64319af2dfbdd08042a2e2e7c92f84f"
+    },
+    {
+      "path": "package-notices/leptonica/recipe/cmake_test/CMakeLists.txt",
+      "sha256": "3d08c57b8b4f812ee453af31fd89d20bbcf4f7e4cd251c78b44dcbc5e52202c8"
+    },
+    {
+      "path": "package-notices/leptonica/recipe/conda_build_config.yaml",
+      "sha256": "61ecf2a1fb0e9cced45eca53c6cc6770064d83cba1d7b95ccf4c36c8b969ea28"
+    },
+    {
+      "path": "package-notices/leptonica/recipe/patches/0001-point-to-our-own-prefix-in-CMake-metadata-on-windows.patch",
+      "sha256": "e685ec87c4859e4f436547f36d2d1716eccbaac6a135787089bc4478f8e236b7"
+    },
+    {
+      "path": "package-notices/leptonica/recipe/recipe-scripts-license.txt",
+      "sha256": "b2f940c8e8ed8a05c62c1f7e41d16807a3ef28f7e33f54c3c8d1697b90ec149e"
+    },
+    {
+      "path": "package-notices/leptonica/recipe/recipe.yaml",
+      "sha256": "839fcdb95b326b63350a4c7ab3b6123e3a1134c8b457986bf805275a70f09be8"
+    },
+    {
+      "path": "package-notices/leptonica/recipe/rendered_recipe.yaml",
+      "sha256": "e661723e922ad19a397c4958ab2260739e67872b7eae98ef9cc6e93276f64c99"
+    },
+    {
+      "path": "package-notices/leptonica/recipe/variant_config.yaml",
+      "sha256": "9d6fd7adb1b1befffaf23f985594f6ac289581f366b0f8eac4d59e89033ae3d4"
+    },
+    {
+      "path": "package-notices/lerc/licenses/LICENSE",
+      "sha256": "77a8b761727c75e2167b15bfdf61b2c0bcf8792271228bebe80779106ad00671"
+    },
+    {
+      "path": "package-notices/lerc/recipe/bld.bat",
+      "sha256": "cbb7363f095c80c1c61e3d9d7c0af38e66805c636a1141139d588c8309227abd"
+    },
+    {
+      "path": "package-notices/lerc/recipe/build.sh",
+      "sha256": "3651b381c78a24dcd7a85e842cecb99cf87bd83b69c7773c2ca637838d5185a6"
+    },
+    {
+      "path": "package-notices/lerc/recipe/conda_build_config.yaml",
+      "sha256": "6d046f0b7d4524e03c991d004ef4f1c74b0f9e591c8c9d017ad67ef4de628525"
+    },
+    {
+      "path": "package-notices/lerc/recipe/meta.yaml",
+      "sha256": "4cd9f95941c0632e2e67d7ca5257a2c31d4b1fa1e1c3b0bf0813d7c36ec22fd2"
+    },
+    {
+      "path": "package-notices/lerc/recipe/meta.yaml.template",
+      "sha256": "de52281f2adaa998cde90da8757c0ae4da25c1d2f05df86d4f8200eaa2b68ac5"
+    },
+    {
+      "path": "package-notices/lerc/recipe/recipe-scripts-license.txt",
+      "sha256": "b2f940c8e8ed8a05c62c1f7e41d16807a3ef28f7e33f54c3c8d1697b90ec149e"
+    },
+    {
+      "path": "package-notices/libarchive/licenses/COPYING",
+      "sha256": "30e556b3959e3985d66efefec5eaac51d4995053caa1d3cffe6eb916f146f229"
+    },
+    {
+      "path": "package-notices/libarchive/recipe/build_libarchive.bat",
+      "sha256": "165c34185064bade7dfc10ce701a678dba2263d403b50b3d2ed40b40c427d051"
+    },
+    {
+      "path": "package-notices/libarchive/recipe/conda_build_config.yaml",
+      "sha256": "c6e6aaa74fd133532b4c8e28e53dc5749de87160539341514dd65198e5abc3e1"
+    },
+    {
+      "path": "package-notices/libarchive/recipe/meta.yaml",
+      "sha256": "9c3c84ba6e8db699b04aa66575b651b0a80d5cc650b8df6e79445ece4a92f1ee"
+    },
+    {
+      "path": "package-notices/libarchive/recipe/parent/build_libarchive.bat",
+      "sha256": "165c34185064bade7dfc10ce701a678dba2263d403b50b3d2ed40b40c427d051"
+    },
+    {
+      "path": "package-notices/libarchive/recipe/parent/build_libarchive.sh",
+      "sha256": "d031bbd613606ea668e29648fe69d3b8819cd5d46b948941d8d0cecfd329ab1c"
+    },
+    {
+      "path": "package-notices/libarchive/recipe/parent/build_minimal.bat",
+      "sha256": "fb5a1bc922853ed9f9d871e68a901574355f9369ea556f27a16c3412f76a84d7"
+    },
+    {
+      "path": "package-notices/libarchive/recipe/parent/build_minimal.sh",
+      "sha256": "52a15d0b07c5f0eccfdb700b4deb09e1a54908b40d394d8152eff51337a019cf"
+    },
+    {
+      "path": "package-notices/libarchive/recipe/parent/conda_build_config.yaml",
+      "sha256": "ca529199b9cf4ad9e52b6057db84781725705c4aa57951f7f7d8eeadc692a648"
+    },
+    {
+      "path": "package-notices/libarchive/recipe/parent/meta.yaml",
+      "sha256": "21a00744db586fa06ff034a18ba8bf30f76fb2b5bbaf5d4e1ba60e9a5f8e915d"
+    },
+    {
+      "path": "package-notices/libarchive/recipe/parent/patches/0001-Add-lib-to-CMAKE_FIND_LIBRARY_PREFIXES-for-lzma.patch",
+      "sha256": "07f0aacca104f182ea7a4e3061c44444827b1d8fc3bd2c06a6fe2dc802410f73"
+    },
+    {
+      "path": "package-notices/libarchive/recipe/parent/recipe-scripts-license.txt",
+      "sha256": "b2f940c8e8ed8a05c62c1f7e41d16807a3ef28f7e33f54c3c8d1697b90ec149e"
+    },
+    {
+      "path": "package-notices/libarchive/recipe/parent/test/CMakeLists.txt",
+      "sha256": "d16031525b5fee468cf1aefa527f649fe2caa420c5039c2046a32651cdfc11fa"
+    },
+    {
+      "path": "package-notices/libarchive/recipe/parent/test/hello_world.xar",
+      "sha256": "7b0d96fb955abb1b30d7bd8500c20c18050edbdf693321514d1403d913125565"
+    },
+    {
+      "path": "package-notices/libarchive/recipe/parent/test/test.c",
+      "sha256": "f19c8e711ca0d3367d17c3723a269d515ecc9863fa9c003267a5f2d0871f4f2e"
+    },
+    {
+      "path": "package-notices/libcurl/licenses/COPYING",
+      "sha256": "e18f1989333b70044b2adfb7dc2f905d0119dbdcac3bc9f4bc9d540e3a29de5b"
+    },
+    {
+      "path": "package-notices/libcurl/recipe/conda_build_config.yaml",
+      "sha256": "1a685390a5d96a81821bf19051f2c475f6265352f1c24c6b159107363ac2f8bc"
+    },
+    {
+      "path": "package-notices/libcurl/recipe/meta.yaml",
+      "sha256": "42ae5f5b18ba75dfb966fb7a227d15ebe3957a6cd41145368d6e9c0948162d80"
+    },
+    {
+      "path": "package-notices/libcurl/recipe/parent/bld.bat",
+      "sha256": "ecabde06650881c84987c7b8b32409091da2f7f9fca54ea80deaf91148e2961b"
+    },
+    {
+      "path": "package-notices/libcurl/recipe/parent/build.sh",
+      "sha256": "96f881153cb388ad4ab05dd7c24941cad84e94749686bf892e2b1b133dad897d"
+    },
+    {
+      "path": "package-notices/libcurl/recipe/parent/meta.yaml",
+      "sha256": "d00a5e20162fbbf9373d0655f1898468654f9eac305fcf35afa97f7493027fe7"
+    },
+    {
+      "path": "package-notices/libcurl/recipe/parent/recipe-scripts-license.txt",
+      "sha256": "933c7e2f7471d8c90e6aee877c0838fc01b19dd55e362e2e2ec367b74caeb97f"
+    },
+    {
+      "path": "package-notices/libdeflate/licenses/COPYING",
+      "sha256": "4ad69099cb4374836fd27583d9991e2838cd86b6e4666ab26b2d32582c91e73a"
+    },
+    {
+      "path": "package-notices/libdeflate/recipe/bld.bat",
+      "sha256": "18188c5902c6df4519ca364b6cebabecd8c95a1950016dc985f8a4756a950ad4"
+    },
+    {
+      "path": "package-notices/libdeflate/recipe/build.sh",
+      "sha256": "aa5841fb23c87bb0ea54c4df3ced3917deae5790bf60d59ef709629bd2b01a2d"
+    },
+    {
+      "path": "package-notices/libdeflate/recipe/conda_build_config.yaml",
+      "sha256": "ed54a2257faa51abee72967e9555e16f3b3140b4dbfd72a2d17e9237999724c8"
+    },
+    {
+      "path": "package-notices/libdeflate/recipe/meta.yaml",
+      "sha256": "d435414a8e1d10fd81262cf4b9ce20952adde145a822403f8a59f35f13beb4d7"
+    },
+    {
+      "path": "package-notices/libdeflate/recipe/meta.yaml.template",
+      "sha256": "bbed6e906d03eb4b856ec3efeaea6bd4c62ada5c5ed8671a9e1ae2a1544c6902"
+    },
+    {
+      "path": "package-notices/libdeflate/recipe/recipe-scripts-license.txt",
+      "sha256": "b2f940c8e8ed8a05c62c1f7e41d16807a3ef28f7e33f54c3c8d1697b90ec149e"
+    },
+    {
+      "path": "package-notices/libiconv/licenses/COPYING.LIB",
+      "sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95"
+    },
+    {
+      "path": "package-notices/libiconv/recipe/conda_build_config.yaml",
+      "sha256": "6d1f48dd917bea3cf90063f8eed29e182dbd86dcf984de7f866594e5debd1587"
+    },
+    {
+      "path": "package-notices/libiconv/recipe/install.bat",
+      "sha256": "4742e7eec31aff93feac2a9436de736e2024f28d4b634f086f9b91e62322809c"
+    },
+    {
+      "path": "package-notices/libiconv/recipe/meta.yaml",
+      "sha256": "b2f43a529a82a8d1c3c2d99daf91bcbae0b6f07787d44b572199dd4178139313"
+    },
+    {
+      "path": "package-notices/libiconv/recipe/parent/bld.bat",
+      "sha256": "a679c82d9334dfbb8b96067b0304c00f175ba7d6328e952004a344f9e309f753"
+    },
+    {
+      "path": "package-notices/libiconv/recipe/parent/build.sh",
+      "sha256": "927b8422d6a68b47134c639c28eb36e46b6f575a2b2d6f0dab56340842aeb36b"
+    },
+    {
+      "path": "package-notices/libiconv/recipe/parent/CMakeLists.txt.patch",
+      "sha256": "e57ef6b173a3158f8cf8f0ab3bef50234feadbc01b7e4fd849687348f4b39a14"
+    },
+    {
+      "path": "package-notices/libiconv/recipe/parent/conda_build_config.yaml",
+      "sha256": "edda29eb47d36e65eba65ce785b037f250fad8072313b23c5209fad072297771"
+    },
+    {
+      "path": "package-notices/libiconv/recipe/parent/config.h.patch",
+      "sha256": "1744fbb2ac3a9dcebd7d3336720c530b8b7046ea0234c5981a022d93cd067ab6"
+    },
+    {
+      "path": "package-notices/libiconv/recipe/parent/configure.cmake.patch",
+      "sha256": "1ac9507ee0b5da7ae318c64ba536ead55544c579120e768fc4cd9c751cc37d9e"
+    },
+    {
+      "path": "package-notices/libiconv/recipe/parent/glibc.patch",
+      "sha256": "e1d9338b87e933202059a1dd5a5751bc7cb8ca315569ccf9d185f9947de68922"
+    },
+    {
+      "path": "package-notices/libiconv/recipe/parent/install.bat",
+      "sha256": "4742e7eec31aff93feac2a9436de736e2024f28d4b634f086f9b91e62322809c"
+    },
+    {
+      "path": "package-notices/libiconv/recipe/parent/install.sh",
+      "sha256": "4ad4390d0f714744dafec34be9be4b13a89f76b786d6709624f5c7e126e2c613"
+    },
+    {
+      "path": "package-notices/libiconv/recipe/parent/meta.yaml",
+      "sha256": "f6e971d192d3948758505031c8f3a12b484ba2c70344f161b69c5614230bf732"
+    },
+    {
+      "path": "package-notices/libiconv/recipe/parent/recipe-scripts-license.txt",
+      "sha256": "b2f940c8e8ed8a05c62c1f7e41d16807a3ef28f7e33f54c3c8d1697b90ec149e"
+    },
+    {
+      "path": "package-notices/libiconv/recipe/parent/utf_8_mac.patch",
+      "sha256": "1f522172809a154e54f77b21636f2e0e883c990f58d0f4c869f35cb0dbbcde64"
+    },
+    {
+      "path": "package-notices/libjpeg-turbo/licenses/LICENSE.md",
+      "sha256": "ba6bceebcba0fdd35488477c2cca8c4632ce82c74dbfbc87d886ce6fc4433579"
+    },
+    {
+      "path": "package-notices/libjpeg-turbo/recipe/bld.bat",
+      "sha256": "ebddf6779e6db02c1804639ce3b84366a5ccb47b9768fde9c13e3133bc282400"
+    },
+    {
+      "path": "package-notices/libjpeg-turbo/recipe/build.sh",
+      "sha256": "ad02bb0358e7b81b71dc4c0514001cf79bbe8d9a3b6630dd1946769953e0309c"
+    },
+    {
+      "path": "package-notices/libjpeg-turbo/recipe/conda_build_config.yaml",
+      "sha256": "9d487f0997c539b5266a3f4d01ee141807726d09021df344c826f3387babfd6c"
+    },
+    {
+      "path": "package-notices/libjpeg-turbo/recipe/meta.yaml",
+      "sha256": "9fed31f479d1f4bc05a5ffffa583ecdb5d1e32ed40fb9aae42dfb5664b0b9db4"
+    },
+    {
+      "path": "package-notices/libjpeg-turbo/recipe/meta.yaml.template",
+      "sha256": "1ae4b3baa2d00e5285d1fa44eaedcce99cee3e2b16196c6bfff7b41a5faa58e8"
+    },
+    {
+      "path": "package-notices/libjpeg-turbo/recipe/recipe-scripts-license.txt",
+      "sha256": "b2f940c8e8ed8a05c62c1f7e41d16807a3ef28f7e33f54c3c8d1697b90ec149e"
+    },
+    {
+      "path": "package-notices/libjpeg-turbo/recipe/testorig.jpg",
+      "sha256": "acc6ec555d41d15b368320edaa3b20958ee6fa97cb6e4a18d1213d5ae8bec73b"
+    },
+    {
+      "path": "package-notices/liblzma/licenses/COPYING",
+      "sha256": "616a3ad264ce29b8f1cb97e53037b139d406899ca8d1f799651e17bfa09830b8"
+    },
+    {
+      "path": "package-notices/liblzma/licenses/COPYING.0BSD",
+      "sha256": "0b01625d853911cd0e2e088dcfb743261034a091bb379246cb25a14cc4c74bf1"
+    },
+    {
+      "path": "package-notices/liblzma/recipe/conda_build_config.yaml",
+      "sha256": "503f4045463e2427ea108c7b62f4a761b548400a1388e352d419fd5a27c550fa"
+    },
+    {
+      "path": "package-notices/liblzma/recipe/install-liblzma.bat",
+      "sha256": "ebdc706351fe2d98e677b1023fcfb550c5c24903e17c529c30ea8b4ee9b24e90"
+    },
+    {
+      "path": "package-notices/liblzma/recipe/meta.yaml",
+      "sha256": "8658bbd7efe80056b9504e40a60843147d4d324f9c357213de9a730cb282b5cc"
+    },
+    {
+      "path": "package-notices/liblzma/recipe/parent/bld-static.bat",
+      "sha256": "43876f3f8788598a2084e267c26196f47375d7562aef28c8f0b762e14f0be13b"
+    },
+    {
+      "path": "package-notices/liblzma/recipe/parent/bld.bat",
+      "sha256": "651eb943501092ade80ee8d0d040726221416dcc76484a8cf75755e744e7d3ed"
+    },
+    {
+      "path": "package-notices/liblzma/recipe/parent/build.sh",
+      "sha256": "af1cedec9d96709a5581e2ffd1f7aa60553256b50bd995c7e8ff8bd7d137a175"
+    },
+    {
+      "path": "package-notices/liblzma/recipe/parent/CMakeLists.txt",
+      "sha256": "6fdc6ec6a5fac0090cc3efbe384d1255c549f3447060e8f7676d35088dc94671"
+    },
+    {
+      "path": "package-notices/liblzma/recipe/parent/conda_build_config.yaml",
+      "sha256": "9ea3505f6042bd412c13a21eaf209c48e605796313b8b38cb40c28c4b2a8919e"
+    },
+    {
+      "path": "package-notices/liblzma/recipe/parent/install-liblzma.bat",
+      "sha256": "ebdc706351fe2d98e677b1023fcfb550c5c24903e17c529c30ea8b4ee9b24e90"
+    },
+    {
+      "path": "package-notices/liblzma/recipe/parent/install-liblzma.sh",
+      "sha256": "8f0f0639ccfc90b8733162d8cf1d921c4c0c48c2868d8bc403f84d899f0b559a"
+    },
+    {
+      "path": "package-notices/liblzma/recipe/parent/install.bat",
+      "sha256": "fdd79012b0dbcbc93294f25acb7f640c216c65fa6c06114a882c6e2f377a6d3f"
+    },
+    {
+      "path": "package-notices/liblzma/recipe/parent/install.sh",
+      "sha256": "f3ec283ad47eca210868c7b2fd9a5e6cb65a698f2e02024b8a67021e3266c6b1"
+    },
+    {
+      "path": "package-notices/liblzma/recipe/parent/meta.yaml",
+      "sha256": "e64d00522c43fe862092dece06f934836bb2807577408dca99c6c4d45770fc91"
+    },
+    {
+      "path": "package-notices/liblzma/recipe/parent/recipe-scripts-license.txt",
+      "sha256": "b2f940c8e8ed8a05c62c1f7e41d16807a3ef28f7e33f54c3c8d1697b90ec149e"
+    },
+    {
+      "path": "package-notices/libpng/licenses/LICENSE",
+      "sha256": "bdb0a645ea18c60507d0368379b1ac5474b92255fcc2d115e07486a7672ba526"
+    },
+    {
+      "path": "package-notices/libpng/recipe/build.bat",
+      "sha256": "7a3ea2bc6f4cf3161c771ae9b64ab2acb6b77e6326b37cab225eb1f4cace211a"
+    },
+    {
+      "path": "package-notices/libpng/recipe/build.sh",
+      "sha256": "33bf186a8f7daf2a31d7048d3ac0dc1cdec4863ff0c01f7a929d9a27d4989ece"
+    },
+    {
+      "path": "package-notices/libpng/recipe/patches/0001-Include-pkg-config-files-in-the-Windows-packages-too.patch",
+      "sha256": "1fe817e3a91201194c7db24717b186f74f3490c9062952e5e0ade62c5774dab5"
+    },
+    {
+      "path": "package-notices/libpng/recipe/patches/0002-Ensure-that-lm-is-not-included-in-Windows-pkg-config.patch",
+      "sha256": "eda8bb8c284aebaac6a8049a20f048c712c9023c3039f877e6876ffcb4876819"
+    },
+    {
+      "path": "package-notices/libpng/recipe/recipe-scripts-license.txt",
+      "sha256": "b2f940c8e8ed8a05c62c1f7e41d16807a3ef28f7e33f54c3c8d1697b90ec149e"
+    },
+    {
+      "path": "package-notices/libpng/recipe/recipe.yaml",
+      "sha256": "5c17395e496c84db534559aea767cb714c57df80513e3107100b447d1bd03d4d"
+    },
+    {
+      "path": "package-notices/libpng/recipe/rendered_recipe.yaml",
+      "sha256": "b5b76763dd7c287f755a4de31f8fa0927d4ac5793eccc6642048c9cca449bb98"
+    },
+    {
+      "path": "package-notices/libpng/recipe/variant_config.yaml",
+      "sha256": "bd488ab52d31fdf0b07786a68835370576c58049c176ef04d98579e30e1a4ec8"
+    },
+    {
+      "path": "package-notices/libssh2/licenses/COPYING",
+      "sha256": "f7f9633cf9ff2f1333f3d7ce46973a8716a4d2a2815ad56f30d437d5fea7bafe"
+    },
+    {
+      "path": "package-notices/libssh2/recipe/bld_shared.bat",
+      "sha256": "c54b722fe46e9b1ed17f84674d728745873c9b09058a92a4c73f656cba8b0fad"
+    },
+    {
+      "path": "package-notices/libssh2/recipe/conda_build_config.yaml",
+      "sha256": "aec9cc5e0f8b54610ccfa0c72e15fed548aeee7a3952a87901e01d244a3c3f37"
+    },
+    {
+      "path": "package-notices/libssh2/recipe/meta.yaml",
+      "sha256": "9de7c0b781dd229a56c4ba314c998bae109362a513714dce66636ad81556e3f5"
+    },
+    {
+      "path": "package-notices/libssh2/recipe/parent/bld_shared.bat",
+      "sha256": "c54b722fe46e9b1ed17f84674d728745873c9b09058a92a4c73f656cba8b0fad"
+    },
+    {
+      "path": "package-notices/libssh2/recipe/parent/bld_static.bat",
+      "sha256": "a173cd6d501326c6fabd7e43d66f073c8b0f55eecebf95743760dc233f403195"
+    },
+    {
+      "path": "package-notices/libssh2/recipe/parent/build_shared.sh",
+      "sha256": "1bb2ba4360b1715664c29281a7a95cb285b2c167e1093fffed6dcb9a99df6409"
+    },
+    {
+      "path": "package-notices/libssh2/recipe/parent/build_static.sh",
+      "sha256": "62898ed848591476367424e4e3b03b1da825721c779b7237b65366b1e933ab18"
+    },
+    {
+      "path": "package-notices/libssh2/recipe/parent/meta.yaml",
+      "sha256": "78d697f75a58cb1096eb9fc0a78bd44e29b0fcc3a8a4b920870703b7ed9f53ef"
+    },
+    {
+      "path": "package-notices/libssh2/recipe/parent/missing_files/test_public_key_auth_succeeds_with_correct_ed25519_key.c",
+      "sha256": "31e7fb17f70d4756d144a5da8885297ca4afa2b4b468462684079eb7df2a15f8"
+    },
+    {
+      "path": "package-notices/libssh2/recipe/parent/missing_files/test_public_key_auth_succeeds_with_correct_ed25519_key_from_mem.c",
+      "sha256": "5c7ccd0760deda06da57fb7cc93f1e24bc9165cddb8180c5e3e17e54ee512a0d"
+    },
+    {
+      "path": "package-notices/libssh2/recipe/parent/missing_files/test_public_key_auth_succeeds_with_correct_encrypted_ed25519_key.c",
+      "sha256": "9164b8bbc2a9796f95b173189a04a3872b4a5f14690ba44fc8a1f79349c792fe"
+    },
+    {
+      "path": "package-notices/libssh2/recipe/parent/recipe-scripts-license.txt",
+      "sha256": "b2f940c8e8ed8a05c62c1f7e41d16807a3ef28f7e33f54c3c8d1697b90ec149e"
+    },
+    {
+      "path": "package-notices/libtiff/licenses/LICENSE.md",
+      "sha256": "0e27c2382d7b8147972bbb746e04059a1152c8d0fda9d03ef1399d1a433c4ade"
+    },
+    {
+      "path": "package-notices/libtiff/recipe/bld.bat",
+      "sha256": "ade2cfe9cb7236b1d9e872394f5a3b0e14b04d00c04aa65cd6cda980eac92f38"
+    },
+    {
+      "path": "package-notices/libtiff/recipe/build.sh",
+      "sha256": "365ab6a7ea335d976329f02f90327a9ef74c7371258615c13f63d8fa415f569e"
+    },
+    {
+      "path": "package-notices/libtiff/recipe/conda_build_config.yaml",
+      "sha256": "052d96312b97c51c1674bbf588300507d8f372a62a137d4ece48522445c2fa0f"
+    },
+    {
+      "path": "package-notices/libtiff/recipe/meta.yaml",
+      "sha256": "4d34f9316fab306c53657671bcb42e91ab2b276324909f5e471e92d2d3b40feb"
+    },
+    {
+      "path": "package-notices/libtiff/recipe/meta.yaml.template",
+      "sha256": "33b0a94cdc12a56894cdff5ea384d9173e391199465aaa88d97773b38643b742"
+    },
+    {
+      "path": "package-notices/libtiff/recipe/patches/use_unix_io.patch",
+      "sha256": "ebab3a00ad525718fe852e30d56f19d6296dce4b8aa93e0879a1d3253c391025"
+    },
+    {
+      "path": "package-notices/libtiff/recipe/recipe-scripts-license.txt",
+      "sha256": "b2f940c8e8ed8a05c62c1f7e41d16807a3ef28f7e33f54c3c8d1697b90ec149e"
+    },
+    {
+      "path": "package-notices/libtiff/recipe/yum_requirements.txt",
+      "sha256": "129112a7d9f8e7be50e6dfa646f159bcd43ce04883c8735c69ee7fbf5b8cfef4"
+    },
+    {
+      "path": "package-notices/libwebp-base/licenses/COPYING",
+      "sha256": "5aec868f669e384a22372a4e8a1a6cd7d44c64cd451f960ca69cc170d1e13acf"
+    },
+    {
+      "path": "package-notices/libwebp-base/recipe/bld.bat",
+      "sha256": "f42ba6480ee285cb9ac17de632df971affb0518a5659ba3a366220c888d2bc9e"
+    },
+    {
+      "path": "package-notices/libwebp-base/recipe/build.sh",
+      "sha256": "11732b6e7295e7b32349e705d0fcd5d177434a0fbe457da588b493b8fa4aeca3"
+    },
+    {
+      "path": "package-notices/libwebp-base/recipe/conda_build_config.yaml",
+      "sha256": "58b495ba29cd133bc74b937b8a819d8c7322a7d6f597e100abb7664bdf948a87"
+    },
+    {
+      "path": "package-notices/libwebp-base/recipe/meta.yaml",
+      "sha256": "248466ebbf7c5bd84bbec22bd2f76c01cdeda669b095efef9f11eafda965f5a6"
+    },
+    {
+      "path": "package-notices/libwebp-base/recipe/meta.yaml.template",
+      "sha256": "83a39e5145127d1fe35edb559c3535d0815feb0537dc1b35376d0414ce8e616d"
+    },
+    {
+      "path": "package-notices/libwebp-base/recipe/recipe-scripts-license.txt",
+      "sha256": "b2f940c8e8ed8a05c62c1f7e41d16807a3ef28f7e33f54c3c8d1697b90ec149e"
+    },
+    {
+      "path": "package-notices/libxml2/licenses/Copyright",
+      "sha256": "5d4873884a890122a4b9b20ad56ac6f7da1d796a5bfcf04a427970ac96217626"
+    },
+    {
+      "path": "package-notices/libxml2/recipe/conda_build_config.yaml",
+      "sha256": "f21651504fa13bdf6a5d3ac7b633dcbc612bf4f195a2749567adf1acd0a59d8d"
+    },
+    {
+      "path": "package-notices/libxml2/recipe/meta.yaml",
+      "sha256": "102dba319474bb94b783ac921b8c12614ab7750b1d41773a06fbeb622500734b"
+    },
+    {
+      "path": "package-notices/libxml2/recipe/parent/activate.bat",
+      "sha256": "3690e84ed1db2ff745b53b5f05f9be7cebe9a945bbaeb493384dc08603195526"
+    },
+    {
+      "path": "package-notices/libxml2/recipe/parent/activate.ps1",
+      "sha256": "25974603c2a3c7c8c1bc3f7263172087a7429a46cb3272e2568fca8b8a996ffb"
+    },
+    {
+      "path": "package-notices/libxml2/recipe/parent/activate.sh",
+      "sha256": "3474f8848d4b08389f7da9a5ac0fba93dd9947df1aea5d1e98371a13e71cdaf6"
+    },
+    {
+      "path": "package-notices/libxml2/recipe/parent/bld.bat",
+      "sha256": "f782d0df5dcdb01f0d71662e46dbf05c45215b7d3010b2d254359b42489777b5"
+    },
+    {
+      "path": "package-notices/libxml2/recipe/parent/build.sh",
+      "sha256": "c18b020758513645cd05f95ed2b176caface4a46033ae3e5c087d937f62bb6be"
+    },
+    {
+      "path": "package-notices/libxml2/recipe/parent/conda_build_config.yaml",
+      "sha256": "2a78cf21c322550dbee442caf6759812986f763e06b1ccc27b4f5afbdd74950c"
+    },
+    {
+      "path": "package-notices/libxml2/recipe/parent/deactivate.bat",
+      "sha256": "27acecb51f5575e67bd9ee40ca8a8bc0df841d98e4b8a4387d3c489b369257b7"
+    },
+    {
+      "path": "package-notices/libxml2/recipe/parent/deactivate.ps1",
+      "sha256": "01e30db18a7c24e430b6380ecf8339d78498f58c265f8461bfd26f567ac6d5e8"
+    },
+    {
+      "path": "package-notices/libxml2/recipe/parent/deactivate.sh",
+      "sha256": "17af107f096092791edeac617c8b9932d147e64cc3d62e65fe0f5cfb451abeeb"
+    },
+    {
+      "path": "package-notices/libxml2/recipe/parent/meta.yaml",
+      "sha256": "2651baf62303a04c9d19f921cdfd530fec3ebb94909205d499b5ef5cf02a8897"
+    },
+    {
+      "path": "package-notices/libxml2/recipe/parent/recipe-scripts-license.txt",
+      "sha256": "b2f940c8e8ed8a05c62c1f7e41d16807a3ef28f7e33f54c3c8d1697b90ec149e"
+    },
+    {
+      "path": "package-notices/libxml2/recipe/parent/test.xml",
+      "sha256": "64a756345ef7ab58f9a3a1d826ed904d02ccf2954cc690bb19d6a3e1c88dbdbd"
+    },
+    {
+      "path": "package-notices/libxml2/recipe/parent/test_catalog.xml",
+      "sha256": "12d5e509839f2d28bd1b2c3baad29a1f8de3dc2845b2c161cd129796a42415ca"
+    },
+    {
+      "path": "package-notices/libxml2-16/licenses/Copyright",
+      "sha256": "5d4873884a890122a4b9b20ad56ac6f7da1d796a5bfcf04a427970ac96217626"
+    },
+    {
+      "path": "package-notices/libxml2-16/recipe/conda_build_config.yaml",
+      "sha256": "f21651504fa13bdf6a5d3ac7b633dcbc612bf4f195a2749567adf1acd0a59d8d"
+    },
+    {
+      "path": "package-notices/libxml2-16/recipe/meta.yaml",
+      "sha256": "174f5c976518ac02781fc148df893cc9e541f293ad47205029819e62f7e04a70"
+    },
+    {
+      "path": "package-notices/libxml2-16/recipe/parent/activate.bat",
+      "sha256": "3690e84ed1db2ff745b53b5f05f9be7cebe9a945bbaeb493384dc08603195526"
+    },
+    {
+      "path": "package-notices/libxml2-16/recipe/parent/activate.ps1",
+      "sha256": "25974603c2a3c7c8c1bc3f7263172087a7429a46cb3272e2568fca8b8a996ffb"
+    },
+    {
+      "path": "package-notices/libxml2-16/recipe/parent/activate.sh",
+      "sha256": "3474f8848d4b08389f7da9a5ac0fba93dd9947df1aea5d1e98371a13e71cdaf6"
+    },
+    {
+      "path": "package-notices/libxml2-16/recipe/parent/bld.bat",
+      "sha256": "f782d0df5dcdb01f0d71662e46dbf05c45215b7d3010b2d254359b42489777b5"
+    },
+    {
+      "path": "package-notices/libxml2-16/recipe/parent/build.sh",
+      "sha256": "c18b020758513645cd05f95ed2b176caface4a46033ae3e5c087d937f62bb6be"
+    },
+    {
+      "path": "package-notices/libxml2-16/recipe/parent/conda_build_config.yaml",
+      "sha256": "2a78cf21c322550dbee442caf6759812986f763e06b1ccc27b4f5afbdd74950c"
+    },
+    {
+      "path": "package-notices/libxml2-16/recipe/parent/deactivate.bat",
+      "sha256": "27acecb51f5575e67bd9ee40ca8a8bc0df841d98e4b8a4387d3c489b369257b7"
+    },
+    {
+      "path": "package-notices/libxml2-16/recipe/parent/deactivate.ps1",
+      "sha256": "01e30db18a7c24e430b6380ecf8339d78498f58c265f8461bfd26f567ac6d5e8"
+    },
+    {
+      "path": "package-notices/libxml2-16/recipe/parent/deactivate.sh",
+      "sha256": "17af107f096092791edeac617c8b9932d147e64cc3d62e65fe0f5cfb451abeeb"
+    },
+    {
+      "path": "package-notices/libxml2-16/recipe/parent/meta.yaml",
+      "sha256": "2651baf62303a04c9d19f921cdfd530fec3ebb94909205d499b5ef5cf02a8897"
+    },
+    {
+      "path": "package-notices/libxml2-16/recipe/parent/recipe-scripts-license.txt",
+      "sha256": "b2f940c8e8ed8a05c62c1f7e41d16807a3ef28f7e33f54c3c8d1697b90ec149e"
+    },
+    {
+      "path": "package-notices/libxml2-16/recipe/parent/test.xml",
+      "sha256": "64a756345ef7ab58f9a3a1d826ed904d02ccf2954cc690bb19d6a3e1c88dbdbd"
+    },
+    {
+      "path": "package-notices/libxml2-16/recipe/parent/test_catalog.xml",
+      "sha256": "12d5e509839f2d28bd1b2c3baad29a1f8de3dc2845b2c161cd129796a42415ca"
+    },
+    {
+      "path": "package-notices/libzlib/licenses/LICENSE",
+      "sha256": "e32ff4e00d9d94930537635291da39e7e612703334bf6fde8c7f1686fe8a45a2"
+    },
+    {
+      "path": "package-notices/libzlib/recipe/conda_build_config.yaml",
+      "sha256": "121667668d7c3d2a306d2ecc3ac27f80051ceab28efd932fca26ea85d9bf9596"
+    },
+    {
+      "path": "package-notices/libzlib/recipe/meta.yaml",
+      "sha256": "d877b4563e977edf22cd8d2c1a979296b8e86db8a6dfa191a4473cb5a288c3cb"
+    },
+    {
+      "path": "package-notices/libzlib/recipe/parent/bld.bat",
+      "sha256": "6248e2b07b6e0036ed870ded7c92aae6c1e003267fe87a23bbe835328898a484"
+    },
+    {
+      "path": "package-notices/libzlib/recipe/parent/build.sh",
+      "sha256": "c6d64207060c5c11cf73ecd858e5bd9200aeba4d8b74cf84f12322281a6917ef"
+    },
+    {
+      "path": "package-notices/libzlib/recipe/parent/conda_build_config.yaml",
+      "sha256": "816952911a6aa46bcf9ae7e94cfca84352be1a5ac0ba6a9f937084b4185158d7"
+    },
+    {
+      "path": "package-notices/libzlib/recipe/parent/meta.yaml",
+      "sha256": "0b5dd346a003f49d609236d823a1751ee26de0c09ae8f4a549f9416582f28853"
+    },
+    {
+      "path": "package-notices/libzlib/recipe/parent/recipe-scripts-license.txt",
+      "sha256": "b2f940c8e8ed8a05c62c1f7e41d16807a3ef28f7e33f54c3c8d1697b90ec149e"
+    },
+    {
+      "path": "package-notices/libzlib/recipe/parent/test_compile_flags.bat",
+      "sha256": "7fa0c671542459219c9a8ad0106fc931f896949bb8b48dc8e68c00d1c9fa8a0e"
+    },
+    {
+      "path": "package-notices/libzlib/recipe/parent/test_compile_flags.c",
+      "sha256": "b456e9029afb2d80518ec75f8c783886e467e6a5b479874dd5b94220288552c6"
+    },
+    {
+      "path": "package-notices/lz4-c/licenses/lib/LICENSE",
+      "sha256": "8b58c446121a109ccf32edc094bba3010a3d85e4ee3702950db55e4d3e87736c"
+    },
+    {
+      "path": "package-notices/lz4-c/recipe/build.bat",
+      "sha256": "601f3f12895c80e76e9901bf92b8dce66865c77d8bcafd8b4b9dd34b496ee9e7"
+    },
+    {
+      "path": "package-notices/lz4-c/recipe/build.sh",
+      "sha256": "293954757a4ba99354063dc29b19460f5dab77724b1eee121728503d105940d8"
+    },
+    {
+      "path": "package-notices/lz4-c/recipe/build_static.bat",
+      "sha256": "cb8fb5d4ceb49cc2bc0974decf35e09ed5e9d71f098b66e0f5b34c579d94dd2e"
+    },
+    {
+      "path": "package-notices/lz4-c/recipe/build_static.sh",
+      "sha256": "f1123bb40cbc8a93dd803fa48a750ee69f08d18f5ceb55f354f95da673762958"
+    },
+    {
+      "path": "package-notices/lz4-c/recipe/patches/0002-include-local-header-directory.patch",
+      "sha256": "3cd2f356bf0d2b0acd0157c60fe13c2bc0abcea718790a96fa5c5f479469d2b5"
+    },
+    {
+      "path": "package-notices/lz4-c/recipe/patches/CVE-2021-3520.patch",
+      "sha256": "f64dc2179aa92d8f765908e98d1184fd045762bfb6806d7944f7dc50d8346d6d"
+    },
+    {
+      "path": "package-notices/lz4-c/recipe/recipe-scripts-license.txt",
+      "sha256": "b2f940c8e8ed8a05c62c1f7e41d16807a3ef28f7e33f54c3c8d1697b90ec149e"
+    },
+    {
+      "path": "package-notices/lz4-c/recipe/recipe.yaml",
+      "sha256": "49569f91b77847312560961297ceedc796d4b716b5a45c01326b8460fe8321fd"
+    },
+    {
+      "path": "package-notices/lz4-c/recipe/rendered_recipe.yaml",
+      "sha256": "827472732d539c5c654b95a505b10777b4bc6ecfa998aff3e6b6453e4e02ea03"
+    },
+    {
+      "path": "package-notices/lz4-c/recipe/test_shared_cmake/CMakeLists.txt",
+      "sha256": "effb94887f0e1c75551eb9e4ccceb001b7bf43c68e06d15ce17671717136b527"
+    },
+    {
+      "path": "package-notices/lz4-c/recipe/test_static_cmake/CMakeLists.txt",
+      "sha256": "75db561cbaf55c84cae372c8e38a1e05ca21039da758e9d2d967e69e13f4da1c"
+    },
+    {
+      "path": "package-notices/lz4-c/recipe/variant_config.yaml",
+      "sha256": "581119fd6ccc2b0e9822a1b7621d312c3a1b197570ac21d0143303b9d27d1beb"
+    },
+    {
+      "path": "package-notices/lzo/licenses/COPYING",
+      "sha256": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643"
+    },
+    {
+      "path": "package-notices/lzo/recipe/build.bat",
+      "sha256": "abf7f7419feb08141b58796605c9b94585ed697afeed3c983a17310fd9422b23"
+    },
+    {
+      "path": "package-notices/lzo/recipe/build.sh",
+      "sha256": "7391e297f8eca889e3dfa41c4d909e8e47de9ab63fd907c624106bba8dc06497"
+    },
+    {
+      "path": "package-notices/lzo/recipe/recipe-scripts-license.txt",
+      "sha256": "b2f940c8e8ed8a05c62c1f7e41d16807a3ef28f7e33f54c3c8d1697b90ec149e"
+    },
+    {
+      "path": "package-notices/lzo/recipe/recipe.yaml",
+      "sha256": "d8fbc8fb29076d9677a3c5e98211fa6786dd4c2341a098acf8b06e0b79be50db"
+    },
+    {
+      "path": "package-notices/lzo/recipe/rendered_recipe.yaml",
+      "sha256": "22846fab34e5f718e7baae70757955b26945fd7896d5aaecfd8c0298dd1f5302"
+    },
+    {
+      "path": "package-notices/lzo/recipe/variant_config.yaml",
+      "sha256": "581119fd6ccc2b0e9822a1b7621d312c3a1b197570ac21d0143303b9d27d1beb"
+    },
+    {
+      "path": "package-notices/openjpeg/licenses/LICENSE",
+      "sha256": "a6af136f3e15038a666b61f376612a07d9a4e48cb7c01adbf3e33b3f14ab49b6"
+    },
+    {
+      "path": "package-notices/openjpeg/recipe/build.bat",
+      "sha256": "f742efc336b4bf6b0f703f740ad4708987096c25b46ccd4b73e456a9f75661bc"
+    },
+    {
+      "path": "package-notices/openjpeg/recipe/build.sh",
+      "sha256": "a6ba47cadf11794146a25ebec073b8619e40728c812e4d34833699eeb4e338a5"
+    },
+    {
+      "path": "package-notices/openjpeg/recipe/p0_01.j2k",
+      "sha256": "a61ea8d21ad0f7f9b76796e0f841c3e125240f83e308e3b8d626f4356b9a1113"
+    },
+    {
+      "path": "package-notices/openjpeg/recipe/pkgconfig-private-libs.patch",
+      "sha256": "caffb7b09cb4faa7871cc5c26935b8a52ab705ba7613eb3401d5397ac5bd95a7"
+    },
+    {
+      "path": "package-notices/openjpeg/recipe/recipe-scripts-license.txt",
+      "sha256": "b2f940c8e8ed8a05c62c1f7e41d16807a3ef28f7e33f54c3c8d1697b90ec149e"
+    },
+    {
+      "path": "package-notices/openjpeg/recipe/recipe.yaml",
+      "sha256": "fe830f02131c2d35f0ad180b3f1954ee6cd5e0e9979be7eb632bbde28ea0d2ae"
+    },
+    {
+      "path": "package-notices/openjpeg/recipe/rendered_recipe.yaml",
+      "sha256": "b98d3ff4e02e8d6d690554b2f675077534ad7e305a9f248df1c4bcfbc679aeca"
+    },
+    {
+      "path": "package-notices/openjpeg/recipe/variant_config.yaml",
+      "sha256": "a0bf6093b6d003d61fa2adfc233b0cb1afa96292f63ca1fe9285e58955f93bfa"
+    },
+    {
+      "path": "package-notices/openjpeg/recipe/variants.yaml",
+      "sha256": "19f14f7531cc526a8f0bb354bb1f930bc4af6ea1a44e12542223411679749b30"
+    },
+    {
+      "path": "package-notices/openssl/licenses/LICENSE.txt",
+      "sha256": "7d5450cb2d142651b8afa315b5f238efc805dad827d91ba367d8516bc9d49e7a"
+    },
+    {
+      "path": "package-notices/openssl/recipe/conda_build_config.yaml",
+      "sha256": "7dd4082c5e7989f77d3db1e7a22614b4ec894f3c68b3c37b259aeab86086c2ba"
+    },
+    {
+      "path": "package-notices/openssl/recipe/install_openssl.bat",
+      "sha256": "eb63463181ed55e935763d73b5f9f3f2ed983a94458d3a0b52841e40552c0502"
+    },
+    {
+      "path": "package-notices/openssl/recipe/meta.yaml",
+      "sha256": "45fb32656b2ff9cd22c348458478f7ec77a22671f93844725e2e5b22b2e4e8d4"
+    },
+    {
+      "path": "package-notices/openssl/recipe/parent/.gitattributes",
+      "sha256": "178d14a4668ff9c1f805f023824888a65b021fffcb14393fea9fdb9f5bd715c6"
+    },
+    {
+      "path": "package-notices/openssl/recipe/parent/activate-win.bat",
+      "sha256": "4d8a81a3adaa5530d3887b8564b7dbb417abc6806027c35a1314972f287ac39f"
+    },
+    {
+      "path": "package-notices/openssl/recipe/parent/activate-win.ps1",
+      "sha256": "3949fb8c03c1455d40dad37617f10c8d9f9992ce5b59aa8847a6fb51a1c9a7f5"
+    },
+    {
+      "path": "package-notices/openssl/recipe/parent/activate-win.sh",
+      "sha256": "5ec78b73cfd2233288a35c464470b62e4a2b08c0dcf8ec3c48969deae24b0e06"
+    },
+    {
+      "path": "package-notices/openssl/recipe/parent/bld.bat",
+      "sha256": "e88b5b6424b314f3793bcc4dc5dd7d3256fead2301ee2bc74569e0fad7893b3a"
+    },
+    {
+      "path": "package-notices/openssl/recipe/parent/build.sh",
+      "sha256": "7c536efbab48b460431c6b6ed8128c6114f6b9725c6240eae19a84a067c11b3f"
+    },
+    {
+      "path": "package-notices/openssl/recipe/parent/conda_build_config.yaml",
+      "sha256": "1c1b848c2c70cf3d3c9632cb4f2127d0d7c526a5a8773ff7734ed76df311e06f"
+    },
+    {
+      "path": "package-notices/openssl/recipe/parent/deactivate-win.bat",
+      "sha256": "c8d3299f7c2495c4591726336d94de91d9b8d25a4d85186b43c6b9bbe3e5b3ee"
+    },
+    {
+      "path": "package-notices/openssl/recipe/parent/deactivate-win.ps1",
+      "sha256": "0c7b217451fade4d5faf97e6ff2e7fe38aa7e173c54d24b4b89933e22211b972"
+    },
+    {
+      "path": "package-notices/openssl/recipe/parent/deactivate-win.sh",
+      "sha256": "ee47af6120be7738e01e715096555d3453134517f67443597c02c2a25d7a2c5a"
+    },
+    {
+      "path": "package-notices/openssl/recipe/parent/install_libopenssl-static.bat",
+      "sha256": "5e79c1c3ef5b1365663527a9cbf28fe57bbc074a2e48338570995bbd724b66ee"
+    },
+    {
+      "path": "package-notices/openssl/recipe/parent/install_libopenssl-static.sh",
+      "sha256": "0e18e63b85f3a89eab9e634f322371c511d9901a8adacf146b7a6df6b433a8c7"
+    },
+    {
+      "path": "package-notices/openssl/recipe/parent/install_openssl.bat",
+      "sha256": "eb63463181ed55e935763d73b5f9f3f2ed983a94458d3a0b52841e40552c0502"
+    },
+    {
+      "path": "package-notices/openssl/recipe/parent/install_openssl.sh",
+      "sha256": "535b27befc0903c764d443534dc4478b23d515ac724784a6ce1123d7f5f823fa"
+    },
+    {
+      "path": "package-notices/openssl/recipe/parent/meta.yaml",
+      "sha256": "d4e8f5d49de0c2e2b26f58af4e024925db86367ce694d6b7a7432a67e5b6e9a7"
+    },
+    {
+      "path": "package-notices/openssl/recipe/parent/recipe-scripts-license.txt",
+      "sha256": "b2f940c8e8ed8a05c62c1f7e41d16807a3ef28f7e33f54c3c8d1697b90ec149e"
+    },
+    {
+      "path": "package-notices/openssl/recipe/parent/win_pkgconfig/libcrypto.pc.in",
+      "sha256": "c61ebcfe1c0b03beee27f6025e8c368c62eb42b4b8d53d473f63f8f8b9e2423d"
+    },
+    {
+      "path": "package-notices/openssl/recipe/parent/win_pkgconfig/libssl.pc.in",
+      "sha256": "8accfc29a79da2900553cd087219893d011a23f8175b9e428b051625f8702c0a"
+    },
+    {
+      "path": "package-notices/openssl/recipe/parent/win_pkgconfig/openssl.pc.in",
+      "sha256": "e80f14d0674c88a25ecd3def3d8f82f74f3e16920d8bfe0d0b7be89f33375395"
+    },
+    {
+      "path": "package-notices/tesseract/licenses/tesseract/LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "package-notices/tesseract/recipe/activate.bat",
+      "sha256": "319cf4f203bf97e328aff9c8a376785ccf601567b78ca8a43ab733abbe14fdfb"
+    },
+    {
+      "path": "package-notices/tesseract/recipe/activate.msh",
+      "sha256": "7729d9fcecbe5951b12f0d5e7a8aec86e61aec8a603d42c9075c6b960d61fed0"
+    },
+    {
+      "path": "package-notices/tesseract/recipe/activate.ps1",
+      "sha256": "332eba2de43376496980f5f3c25f10d425ef85afa6adbe0c3360dff79a8c05fe"
+    },
+    {
+      "path": "package-notices/tesseract/recipe/activate.sh",
+      "sha256": "b9723a30d84022fc3fc7ac20803c6a84f3030acd8a8c24366796dd43547702ca"
+    },
+    {
+      "path": "package-notices/tesseract/recipe/bld.bat",
+      "sha256": "00e3a8016733021929f1d8bc9c39d0123aafe9a39b3c42f94b130b46288bcefc"
+    },
+    {
+      "path": "package-notices/tesseract/recipe/build.sh",
+      "sha256": "c5e8c1b9f0a07638f4160c9424f7df2178221ec06c88de18ddd907b1c6b61148"
+    },
+    {
+      "path": "package-notices/tesseract/recipe/conda_build_config.yaml",
+      "sha256": "b2aed7361edfeb88ff6fb4f13177590b270eb8077e9a6ff861025237b015c019"
+    },
+    {
+      "path": "package-notices/tesseract/recipe/deactivate.bat",
+      "sha256": "763dae49a9c9ffeb1805535481a680e3775e464deae08258877915d25911e8a3"
+    },
+    {
+      "path": "package-notices/tesseract/recipe/deactivate.msh",
+      "sha256": "21142751c29218e03276ac3c4be3e13d7cfefa234eaa5eb0e38b6516001862c0"
+    },
+    {
+      "path": "package-notices/tesseract/recipe/deactivate.ps1",
+      "sha256": "84853cedb4c27febae1bb21279d5068dfd217683d9897dcf5f18cab68516b242"
+    },
+    {
+      "path": "package-notices/tesseract/recipe/deactivate.sh",
+      "sha256": "4a93a88a0fceeafdc1d6ba48015bb87c5c59f60e9fe7ed9e6af998fbe48c5d5d"
+    },
+    {
+      "path": "package-notices/tesseract/recipe/eurotext.tif",
+      "sha256": "7b9bd14aba7d5e30df686fbb6f71782a97f48f81b32dc201a1b75afe6de747d6"
+    },
+    {
+      "path": "package-notices/tesseract/recipe/meta.yaml",
+      "sha256": "77e0b394ecc99799bc44c402088e5eee622069adea58e1ed891b09d93e62c451"
+    },
+    {
+      "path": "package-notices/tesseract/recipe/meta.yaml.template",
+      "sha256": "42f1a84766df104bc9a4b866ff1c58b9e866e22abb18ed08d3dcfadecb4e87d8"
+    },
+    {
+      "path": "package-notices/tesseract/recipe/recipe-scripts-license.txt",
+      "sha256": "933c7e2f7471d8c90e6aee877c0838fc01b19dd55e362e2e2ec367b74caeb97f"
+    },
+    {
+      "path": "package-notices/ucrt/licenses/LICENSE.txt",
+      "sha256": "f4589c739597890dd40bccb6bf20632a99c228bdd20cfbf585b5b30c9e61b3fb"
+    },
+    {
+      "path": "package-notices/ucrt/recipe/bld.bat",
+      "sha256": "c2ea21d2e65a9414e7f81ecd0b4a91646a92516f4158d75608f95a1407d21b03"
+    },
+    {
+      "path": "package-notices/ucrt/recipe/conda_build_config.yaml",
+      "sha256": "6de3d30b47c71fe5ad3895f536dcec32652ece4b501fa796641653e325da5be1"
+    },
+    {
+      "path": "package-notices/ucrt/recipe/LICENSE.txt",
+      "sha256": "f4589c739597890dd40bccb6bf20632a99c228bdd20cfbf585b5b30c9e61b3fb"
+    },
+    {
+      "path": "package-notices/ucrt/recipe/meta.yaml",
+      "sha256": "c010dedac1ced6b77103bd458a5bcb2eb7dd30f402c7750dfdbc198073df9e61"
+    },
+    {
+      "path": "package-notices/ucrt/recipe/meta.yaml.template",
+      "sha256": "7f835bf48a7c0517ab6e0777295cf3aaee566f4895b8d1413da48e527682ed76"
+    },
+    {
+      "path": "package-notices/ucrt/recipe/recipe-scripts-license.txt",
+      "sha256": "933c7e2f7471d8c90e6aee877c0838fc01b19dd55e362e2e2ec367b74caeb97f"
+    },
+    {
+      "path": "package-notices/vc/recipe/conda_build_config.yaml",
+      "sha256": "ae0310cb201aa9c85623c070780155289b498df4823b434d8a5c3c363ba43f2e"
+    },
+    {
+      "path": "package-notices/vc/recipe/meta.yaml",
+      "sha256": "5a2c45d237fcc27732061eb4120309ed7092cee68c529a2300a898619d4500b7"
+    },
+    {
+      "path": "package-notices/vc/recipe/parent/activate.bat",
+      "sha256": "21ef3072541a075eac33764617832e831f995816179ccf4f014106b88114c9ca"
+    },
+    {
+      "path": "package-notices/vc/recipe/parent/bld.bat",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "package-notices/vc/recipe/parent/conda_build_config.yaml",
+      "sha256": "580f648585a9168e7e8dd1fe82841d908d1bc4784f5ed2069505de42faa0406b"
+    },
+    {
+      "path": "package-notices/vc/recipe/parent/LICENSE.TXT",
+      "sha256": "cf89b37107c22cf8ce21043da1da143087b86ce7fd4556f91c25bc429533807e"
+    },
+    {
+      "path": "package-notices/vc/recipe/parent/meta.yaml",
+      "sha256": "ffe0a9efdf4376f67eb703c3df92942fb715dccffca8c5cc1fd29db57e46b76e"
+    },
+    {
+      "path": "package-notices/vc/recipe/parent/recipe-scripts-license.txt",
+      "sha256": "b2f940c8e8ed8a05c62c1f7e41d16807a3ef28f7e33f54c3c8d1697b90ec149e"
+    },
+    {
+      "path": "package-notices/vc/recipe/parent/vc_repack.py",
+      "sha256": "e1d877bae3aa0432a550f7d186a8f499d1d9bdadbd19dcb570d2c2b0df3a3880"
+    },
+    {
+      "path": "package-notices/vc14_runtime/licenses/LICENSE.DOCX",
+      "sha256": "08651651a7602fc7c0e2763de0fde1ff9f868df2780597cd1775ee9d6441c783"
+    },
+    {
+      "path": "package-notices/vc14_runtime/licenses/LICENSE.RTF",
+      "sha256": "9020a331682370e8359e02c5e51762d375896d62f42e33aef331be83255036bc"
+    },
+    {
+      "path": "package-notices/vc14_runtime/licenses/LICENSE.TXT",
+      "sha256": "cf89b37107c22cf8ce21043da1da143087b86ce7fd4556f91c25bc429533807e"
+    },
+    {
+      "path": "package-notices/vc14_runtime/recipe/conda_build_config.yaml",
+      "sha256": "ae0310cb201aa9c85623c070780155289b498df4823b434d8a5c3c363ba43f2e"
+    },
+    {
+      "path": "package-notices/vc14_runtime/recipe/meta.yaml",
+      "sha256": "3ed5de1e9e086eb079639dc65c5f00279af4f835a1c67f26207572a2eac60bc7"
+    },
+    {
+      "path": "package-notices/vc14_runtime/recipe/parent/activate.bat",
+      "sha256": "21ef3072541a075eac33764617832e831f995816179ccf4f014106b88114c9ca"
+    },
+    {
+      "path": "package-notices/vc14_runtime/recipe/parent/bld.bat",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "package-notices/vc14_runtime/recipe/parent/conda_build_config.yaml",
+      "sha256": "580f648585a9168e7e8dd1fe82841d908d1bc4784f5ed2069505de42faa0406b"
+    },
+    {
+      "path": "package-notices/vc14_runtime/recipe/parent/LICENSE.TXT",
+      "sha256": "cf89b37107c22cf8ce21043da1da143087b86ce7fd4556f91c25bc429533807e"
+    },
+    {
+      "path": "package-notices/vc14_runtime/recipe/parent/meta.yaml",
+      "sha256": "ffe0a9efdf4376f67eb703c3df92942fb715dccffca8c5cc1fd29db57e46b76e"
+    },
+    {
+      "path": "package-notices/vc14_runtime/recipe/parent/recipe-scripts-license.txt",
+      "sha256": "b2f940c8e8ed8a05c62c1f7e41d16807a3ef28f7e33f54c3c8d1697b90ec149e"
+    },
+    {
+      "path": "package-notices/vc14_runtime/recipe/parent/vc_repack.py",
+      "sha256": "e1d877bae3aa0432a550f7d186a8f499d1d9bdadbd19dcb570d2c2b0df3a3880"
+    },
+    {
+      "path": "package-notices/vc14_runtime/recipe/vc_repack.py",
+      "sha256": "e1d877bae3aa0432a550f7d186a8f499d1d9bdadbd19dcb570d2c2b0df3a3880"
+    },
+    {
+      "path": "package-notices/vcomp14/licenses/LICENSE.DOCX",
+      "sha256": "08651651a7602fc7c0e2763de0fde1ff9f868df2780597cd1775ee9d6441c783"
+    },
+    {
+      "path": "package-notices/vcomp14/licenses/LICENSE.RTF",
+      "sha256": "9020a331682370e8359e02c5e51762d375896d62f42e33aef331be83255036bc"
+    },
+    {
+      "path": "package-notices/vcomp14/licenses/LICENSE.TXT",
+      "sha256": "cf89b37107c22cf8ce21043da1da143087b86ce7fd4556f91c25bc429533807e"
+    },
+    {
+      "path": "package-notices/vcomp14/recipe/conda_build_config.yaml",
+      "sha256": "ae0310cb201aa9c85623c070780155289b498df4823b434d8a5c3c363ba43f2e"
+    },
+    {
+      "path": "package-notices/vcomp14/recipe/meta.yaml",
+      "sha256": "090392cfd2745532f5e3a5f1f3e7e900c7b2edce24981e5d220ad018e1674d43"
+    },
+    {
+      "path": "package-notices/vcomp14/recipe/parent/activate.bat",
+      "sha256": "21ef3072541a075eac33764617832e831f995816179ccf4f014106b88114c9ca"
+    },
+    {
+      "path": "package-notices/vcomp14/recipe/parent/bld.bat",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "package-notices/vcomp14/recipe/parent/conda_build_config.yaml",
+      "sha256": "580f648585a9168e7e8dd1fe82841d908d1bc4784f5ed2069505de42faa0406b"
+    },
+    {
+      "path": "package-notices/vcomp14/recipe/parent/LICENSE.TXT",
+      "sha256": "cf89b37107c22cf8ce21043da1da143087b86ce7fd4556f91c25bc429533807e"
+    },
+    {
+      "path": "package-notices/vcomp14/recipe/parent/meta.yaml",
+      "sha256": "ffe0a9efdf4376f67eb703c3df92942fb715dccffca8c5cc1fd29db57e46b76e"
+    },
+    {
+      "path": "package-notices/vcomp14/recipe/parent/recipe-scripts-license.txt",
+      "sha256": "b2f940c8e8ed8a05c62c1f7e41d16807a3ef28f7e33f54c3c8d1697b90ec149e"
+    },
+    {
+      "path": "package-notices/vcomp14/recipe/parent/vc_repack.py",
+      "sha256": "e1d877bae3aa0432a550f7d186a8f499d1d9bdadbd19dcb570d2c2b0df3a3880"
+    },
+    {
+      "path": "package-notices/vcomp14/recipe/vc_repack.py",
+      "sha256": "e1d877bae3aa0432a550f7d186a8f499d1d9bdadbd19dcb570d2c2b0df3a3880"
+    },
+    {
+      "path": "package-notices/zstd/licenses/LICENSE",
+      "sha256": "7055266497633c9025b777c78eb7235af13922117480ed5c674677adc381c9d8"
+    },
+    {
+      "path": "package-notices/zstd/recipe/cf_test/CMakeLists.txt",
+      "sha256": "e597e75ad7a2a133b52643ac3c953736e42243e5f86df0136edcce1c2774751a"
+    },
+    {
+      "path": "package-notices/zstd/recipe/conda_build_config.yaml",
+      "sha256": "b46912f849d54626aa7df11c335176de5d521520b2d6f273e4aede9f1b6612ea"
+    },
+    {
+      "path": "package-notices/zstd/recipe/install.bat",
+      "sha256": "7062798ce986f2d0c231a0a092fea7e7bfc1ae299b32d3738a7bf8998b8e8872"
+    },
+    {
+      "path": "package-notices/zstd/recipe/install.sh",
+      "sha256": "54013480cdc5332f0746afcebccc781c3ce145eacafd6e0edd1c258242348653"
+    },
+    {
+      "path": "package-notices/zstd/recipe/recipe-scripts-license.txt",
+      "sha256": "b2f940c8e8ed8a05c62c1f7e41d16807a3ef28f7e33f54c3c8d1697b90ec149e"
+    },
+    {
+      "path": "package-notices/zstd/recipe/recipe.yaml",
+      "sha256": "0597d21737a9c56aaefe45a445b81334ae076d721797132e54dcb0cdd4f292d0"
+    },
+    {
+      "path": "package-notices/zstd/recipe/rendered_recipe.yaml",
+      "sha256": "461e5ee086f8ca1805fe9c793cfc63cf72c85e3c3b7033a3e02ccf0ac766d438"
+    },
+    {
+      "path": "package-notices/zstd/recipe/variant_config.yaml",
+      "sha256": "1fbbf7cb27c1dc8472d396afe6ed2dd2b24fd912edb28cf18e9131c7209ddc3c"
+    }
+  ]
+}

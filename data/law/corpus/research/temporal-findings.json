@@ -1,0 +1,70 @@
+{
+  "checkedOn":"2026-10-25",
+  "method":"Visual inspection by Codex of official Arabic pages, with official French structure/content navigation. These are statutory-source findings, not case-specific applicability determinations.",
+  "findings":[
+    {
+      "id":"civil-original-commencement",
+      "sourceId":"A1975078","url":"https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf","pdfPage":67,"printedPage":"1055","article":"1003","printedArticle":"1.003",
+      "commencementDate":"1975-07-05",
+      "basis":"Original1003 expressly sets effect from5July1975. Do not use26September1975 enactment or30September1975 publication as the general commencement.",
+      "frenchCrossCheck":{"sourceId":"F1975078","pdfPage":52,"printedPage":"868","article":"1003","finding":"Express5July1975 commencement agrees."},
+      "qualification":"Original1002 separately restricts prescription durations to later facts after publication; commencement alone does not determine temporal applicability."
+    },
+    {
+      "id":"civil-prescription-transition",
+      "sourceId":"A1975078","url":"https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf","pdfPage":67,"printedPage":"1055","article":"1002","printedArticle":"1.002",
+      "triggerDate":"1975-09-30",
+      "basis":"1002 says the prescription periods specified by this Code apply only to facts occurring after publication of the ordinance.",
+      "relatedPriorityArticles":["308","309"],
+      "frenchCrossCheck":{"sourceId":"F1975078","pdfPage":52,"printedPage":"868","article":"1002","finding":"Same publication-trigger structure."}
+    },
+    {
+      "id":"civil-general-geographic-commencement",
+      "sourceId":"A1975078","url":"https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf","pdfPage":2,"printedPage":"990","article":"4",
+      "commencementDate":null,
+      "basis":"Article4 says laws apply from publication, then specifies enforceability inAlgiers after one full day after publication and in each other daira after one full day following arrival of the JO at the daira seat, certified by its stamp date. Arrival dates are not established by the issue publication date.",
+      "frenchCrossCheck":{"sourceId":"F1975078","pdfPage":2,"printedPage":"818","article":"4","finding":"Algiers/unjourfranc and elsewhere/arrivalaudaira conditions agree."},
+      "qualification":"A uniform nationwide start for laws without a special clause must not be guessed. The original ordinance itself has a special clause1003."
+    },
+    {
+      "id":"civil7-version-boundary",
+      "sources":[{"sourceId":"A1975078","pdfPage":2,"article":"7"},{"sourceId":"A2005044","pdfPage":18,"article":"Law05-10art3 replacingCivil7"},{"sourceId":"A2005044","pdfPage":25,"article":"52"}],
+      "commencementDate":null,
+      "basis":"Law05-10 final52 only orders publication. NewCivil7 preserves old start/suspension/interruption rules for past periods and adds shorter-new-period/shorter-old-remainder rules. Its precise version boundary remains unsettled under the geographic general commencement rule.",
+      "qualification":"Do not encode2005-06-20(enactment),2005-06-26(publication), or2005-06-27 as one universal commencement."
+    },
+    {
+      "id":"commercial187bis-contract-trigger",
+      "sourceId":"A2005011","url":"https://www.joradp.dz/FTP/jo-arabe/2005/A2005011.pdf","pdfPage":9,"printedPage":"9","articles":["187 مكرر","187 مكرر 1"],
+      "applicabilityTrigger":"2005-02-09",
+      "commencementDate":null,
+      "basis":"187bis expressly addresses contracts concluded from publication ofLaw05-02.187bis1 preserves the former legislation for renewal of leases concluded before that publication. Final10 atPDF12 merely orders publication; generic geographic commencement is not resolved.",
+      "frenchCrossCheck":{"sourceId":"F2005011","pdfPage":7,"printedPage":"7","articles":["187 bis","187 ter"],"finding":"Two-paragraph new-lease rule plus one-paragraph earlier-lease transition. Literal numbering alias must remain visible."}
+    },
+    {
+      "id":"cpca-original-commencement",
+      "sourceId":"A2008021","url":"https://www.joradp.dz/FTP/jo-arabe/2008/A2008021.pdf","pdfPage":95,"printedPage":"95","article":"1062",
+      "publicationDate":"2008-04-23","commencementDate":"2009-04-23",
+      "basis":"Article1062 expressly gives one year from publication.23April2008 publication is on the JO cover/headers; adding one calendar year yields23April2009.",
+      "frenchCrossCheck":{"sourceId":"F2008021","pdfPage":83,"printedPage":"83","article":"1062","finding":"One year after publication agrees."},
+      "qualification":"Article2 atArabicPDF3 excepts periods begun under the old law.1064 atArabicPDF95 repeals66-154 upon this commencement.",
+      "secondaryConflict":{"url":"https://www.mjustice.gov.dz/ar/realisations-2/2/","accessedOn":"2026-10-25","assertedDate":"2009-02-25","finding":"Ministry narrative conflicts with governing1062 by using25February2009. Retained as a source discrepancy; not substituted for the JO rule."}
+    },
+    {
+      "id":"cpca-2022-court-transition",
+      "sourceId":"A2022048","url":"https://www.joradp.dz/FTP/jo-arabe/2022/A2022048.pdf","pdfPage":11,"printedPage":"11","article":"Law22-13art13",
+      "commencementDate":null,
+      "arabicParagraphs":["تسري قواعد الاختصاص النوعي والإقليمي المنصوص عليها في هذا القانون، الخاصة بالجهات القضائية الإدارية والمحاكم التجارية المتخصصة ابتداء من تاريخ تنصيب الجهات القضائية الجديدة.","وتبقى الجهات القضائية الإدارية والأقسام التجارية مختصة بالفصل في الدعاوى المرفوعة أمامها قبل تاريخ تنصيب الجهات القضائية الجديدة."],
+      "basis":"Specified jurisdiction rules start on actual installation of the new jurisdictions; earlier pending cases remain with prior jurisdictions. Actual installation dates not resolved here.",
+      "qualification":"Not a replacement ofCPCA2,504 or1062; retained to prevent a false blanket commencement claim for22-13.",
+      "frenchCrossCheck":{"sourceId":"F2022048","pdfPage":11,"article":"13","paragraphCount":2,"finding":"Installation trigger and pending-case preservation agree in structure."}
+    }
+  ],
+  "copyright":{
+    "instrument":"Ordinance03-05 of19July2003","article":"11","joIssue":"44","joDate":"2003-07-23",
+    "arabic":{"sourceId":"A2003044","url":"https://www.joradp.dz/FTP/jo-arabe/2003/A2003044.pdf","pdfPage":5,"printedPage":"5","sha256":"bf0fb3ccc1451799ad8422e4b0000aa4740cbc6dc0be89515eee0f156db50ca1","retrievedOn":"2026-10-25"},
+    "french":{"sourceId":"F2003044","url":"https://www.joradp.dz/FTP/jo-francais/2003/F2003044.pdf","pdfPage":4,"printedPage":"4","sha256":"9a26449016e18c1be89992ce3b2db0efbc8df20e308624c88add4d5da202e639","retrievedOn":"2026-10-25"},
+    "finding":"Article11 expressly excludes laws/regulations, specified official administrative decisions/acts, judicial decisions, and official translations of those texts from the copyright protection provided by the ordinance. This is the official statutory basis for reproducing the corpus legal texts; it does not make every other state-produced work unrestricted.",
+    "arabicTextCandidate":"لا تكفل الحماية المقررة لحقوق المؤلف المنصوص عليها في هذا الأمر القوانين والتنظيمات والقرارات والعقود الإدارية الصادرة عن مؤسسات الدولة والجماعات المحلية، وقرارات العدالة، والترجمة الرسمية لهذه النصوص."
+  }
+}

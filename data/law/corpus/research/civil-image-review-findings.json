@@ -1,0 +1,495 @@
+{
+  "schemaVersion": "research-1.0",
+  "reviewedOn": "2026-10-25",
+  "method": "Visual comparison by Codex of each candidate against the cited official Arabic page image and, where available, its already rendered300dpi crop. OCR was inspected as a discrepancy aid; the page image controls. No human reviewer or lawyer review is claimed.",
+  "candidateSource": "data/law/corpus/civil-code/articles.json",
+  "candidateHashAlgorithm": "SHA-256 of exact candidate text encoded as UTF-8, preserving paragraph newlines",
+  "scope": "Ten Civil priority versions only. Text-image decisions do not establish amendment-inventory completeness, legal applicability, or temporal resolution.",
+  "transcriptionPolicy": "The article heading and enclosing quotation marks are not part of the existing text field. Physical line wraps, decorative letter stretching and variable typeset space widths are not reproduced. Visible letters, spelling, punctuation, digits and paragraph breaks are compared; no grammar correction, memory-based wording or systematic Arabic-letter folding is applied.",
+  "findings": [
+    {
+      "versionId": "civil-code:138@ordinance-75-58",
+      "number": "138",
+      "publicationId": "ordinance-75-58",
+      "sourceId": "A1975078",
+      "pdfPages": [
+        9
+      ],
+      "printedPages": [
+        997
+      ],
+      "evidenceIds": [
+        "civil-138-original"
+      ],
+      "imagePaths": [
+        "data/law/corpus/.cache/extractions/ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9/page-0009/civil-138-original/crop.png"
+      ],
+      "imageDecision": "resolved-after-listed-corrections",
+      "wordingReview": "Two paragraphs read word by word. The visible source spelling of the thing-noun is dotless-yeh شىء in all three occurrences, matching the source's old printed orthography. Candidate uses شيء three times. No other word or punctuation substitution is identified in the inspected crop.",
+      "replacements": [
+        {
+          "old": "شيء",
+          "new": "شىء",
+          "expectedOccurrences": 3,
+          "paragraphs": [
+            1,
+            2
+          ],
+          "category": "visible-spelling",
+          "basis": "Source prints شىء in حراسة شىء, ذلك الشىء and الحارس للشىء. Retain the visible dotless spelling rather than modernizing it."
+        }
+      ],
+      "correctedTextCertain": true,
+      "unresolvedGlyphNotes": [],
+      "originalCandidateText": "كل من تولى حراسة شيء وكانت له قدرة الاستعمال والتسيير، والرقابة، يعتبر مسؤولا عن الضرر الذى يحدثه ذلك الشيء.\nويعفى من هذه المسؤولية الحارس للشيء اذا أثبت أن ذلك الضرر حدث بسبب لم يكن يتوقعه مثل عمل الضحية، أو عمل الغير، أو الحالة الطارئة، أو القوة القاهرة.",
+      "originalCandidateTextSha256": "a3428f19b0d5e28f5af031ccd64e1fb21fee79927673368e5bfce300b865b34d",
+      "sourcePdfSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "imageSha256": [
+        "c4d8afd33579dd47c57072aa58b708abf91e3686c5ad8ee16a53d1ab6464f0ea"
+      ],
+      "correctedText": "كل من تولى حراسة شىء وكانت له قدرة الاستعمال والتسيير، والرقابة، يعتبر مسؤولا عن الضرر الذى يحدثه ذلك الشىء.\nويعفى من هذه المسؤولية الحارس للشىء اذا أثبت أن ذلك الضرر حدث بسبب لم يكن يتوقعه مثل عمل الضحية، أو عمل الغير، أو الحالة الطارئة، أو القوة القاهرة.",
+      "correctedTextSha256": "3bc72d08469c1087f2a495d1d08b4d2cce420222305b89b1adb0c9d81c8590e7",
+      "correctedParagraphs": [
+        "كل من تولى حراسة شىء وكانت له قدرة الاستعمال والتسيير، والرقابة، يعتبر مسؤولا عن الضرر الذى يحدثه ذلك الشىء.",
+        "ويعفى من هذه المسؤولية الحارس للشىء اذا أثبت أن ذلك الضرر حدث بسبب لم يكن يتوقعه مثل عمل الضحية، أو عمل الغير، أو الحالة الطارئة، أو القوة القاهرة."
+      ],
+      "exactDiffs": [
+        {
+          "operation": "replace",
+          "oldStart": 18,
+          "oldEnd": 19,
+          "newStart": 18,
+          "newEnd": 19,
+          "old": "ي",
+          "new": "ى"
+        },
+        {
+          "operation": "replace",
+          "oldStart": 105,
+          "oldEnd": 106,
+          "newStart": 105,
+          "newEnd": 106,
+          "old": "ي",
+          "new": "ى"
+        },
+        {
+          "operation": "replace",
+          "oldStart": 142,
+          "oldEnd": 143,
+          "newStart": 142,
+          "newEnd": 143,
+          "old": "ي",
+          "new": "ى"
+        }
+      ]
+    },
+    {
+      "versionId": "civil-code:139@ordinance-75-58",
+      "number": "139",
+      "publicationId": "ordinance-75-58",
+      "sourceId": "A1975078",
+      "pdfPages": [
+        9
+      ],
+      "printedPages": [
+        997
+      ],
+      "evidenceIds": [
+        "civil-139-original"
+      ],
+      "imagePaths": [
+        "data/law/corpus/.cache/extractions/ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9/page-0009/civil-139-original/crop.png"
+      ],
+      "imageDecision": "resolved-unchanged",
+      "wordingReview": "One paragraph read word by word. Candidate agrees with visible words and punctuation, including the comma after له, full stop after ضرر, comma after تسرب and final اليه without added hamza. The source word is بسبب, resolving OCR يسبب. The source says مالم, not an inserted explanatory phrase. No substantive word or digit uncertainty remains in this crop.",
+      "replacements": [],
+      "correctedTextCertain": true,
+      "unresolvedGlyphNotes": [],
+      "originalCandidateText": "حارس الحيوان، ولو لم يكن مالكا له، مسؤول عما يحدثه الحيوان من ضرر. ولو ضل الحيوان أو تسرب، مالم يثبت الحارس أن وقوع الحادث كان بسبب لا ينسب اليه.",
+      "originalCandidateTextSha256": "018fedcfb99171c690ecb137471b35b1261027ad737819287a3cfab615d43e81",
+      "sourcePdfSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "imageSha256": [
+        "b1669b8f64e0444e01555a366f0f04a2f9b95556129852ce82698c3c9b055398"
+      ],
+      "correctedText": "حارس الحيوان، ولو لم يكن مالكا له، مسؤول عما يحدثه الحيوان من ضرر. ولو ضل الحيوان أو تسرب، مالم يثبت الحارس أن وقوع الحادث كان بسبب لا ينسب اليه.",
+      "correctedTextSha256": "018fedcfb99171c690ecb137471b35b1261027ad737819287a3cfab615d43e81",
+      "correctedParagraphs": [
+        "حارس الحيوان، ولو لم يكن مالكا له، مسؤول عما يحدثه الحيوان من ضرر. ولو ضل الحيوان أو تسرب، مالم يثبت الحارس أن وقوع الحادث كان بسبب لا ينسب اليه."
+      ],
+      "exactDiffs": []
+    },
+    {
+      "versionId": "civil-code:140@ordinance-75-58",
+      "number": "140",
+      "publicationId": "ordinance-75-58",
+      "sourceId": "A1975078",
+      "pdfPages": [
+        9,
+        10
+      ],
+      "printedPages": [
+        997,
+        998
+      ],
+      "evidenceIds": [
+        "civil-140-original-a",
+        "civil-140-original-b"
+      ],
+      "imagePaths": [
+        "data/law/corpus/.cache/A1975078-p9.png",
+        "data/law/corpus/.cache/A1975078-p10.png"
+      ],
+      "imageDecision": "unsettled",
+      "wordingReview": "Not re-certified in this follow-up. The existing unresolved punctuation at the paragraph3 boundary after الخطر is retained. No proposed correction is inferred from French punctuation or from a modern consolidation.",
+      "replacements": [],
+      "correctedTextCertain": false,
+      "unresolvedGlyphNotes": [
+        "Paragraph3 punctuation between الخطر and فإن is not settled by this review; retain the version quarantine."
+      ],
+      "originalCandidateText": "من كان حائزا بأى وجه كان لعقار أو جزء منه، أو منقولات، حدث فيها حريق لا يكون مسؤولا نحو الغير عن الاضرار التى سببها هذا الحريق الا اذا ثبت أن الحريق ينسب الى خطئه أو خطأ من هو مسؤول عنهم.\nمالك البناء مسؤول عما يحدثه انهدام البناء من ضرر ولو كان انهداما جزئيا، مالم يثبت أن الحادث لا يرجع سببه الى اهمال فى الصيانة، أو قدم فى البناء، أو عيب فيه.\nويجوز لمن كان مهددا بضرر يصيبه من البناء أن يطالب المالك باتخاذ ما يلزم من التدابير الضرورية للوقاية من الخطر فإن لم يقم المالك بذلك، جاز الحصول على اذن من المحكمة فى اتخاذ هذه التدابير على حسابه.",
+      "originalCandidateTextSha256": "bfc0b3c2415047fdd7cb82eea90dce5c0c455dd5794b3eeeeb564a6a55ec0cc0",
+      "sourcePdfSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "imageSha256": [
+        "1228f4c4806c25a44699e5366cf94d5ec1d9ad24f0d6e343d08500121863605f",
+        "e67d2813c4c485ad357f66cb50b7578452c2fa540994b47966c834b08174a28b"
+      ],
+      "correctedText": null,
+      "correctedTextSha256": null,
+      "correctedParagraphs": null,
+      "exactDiffs": []
+    },
+    {
+      "versionId": "civil-code:308@ordinance-75-58",
+      "number": "308",
+      "publicationId": "ordinance-75-58",
+      "sourceId": "A1975078",
+      "pdfPages": [
+        19
+      ],
+      "printedPages": [
+        1007
+      ],
+      "evidenceIds": [
+        "civil-308-original"
+      ],
+      "imagePaths": [
+        "data/law/corpus/.cache/extractions/ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9/page-0019/civil-308-original/crop.png"
+      ],
+      "imageDecision": "resolved-unchanged",
+      "wordingReview": "One paragraph read word by word. All candidate words and the final full stop are visible. The source indeed says خمسة عشرة and الآتية. Neither the unusual grammatical form nor the dotless spellings التى and فى is modernized. OCR uncertainty around الاستثناءات is resolved from the image.",
+      "replacements": [],
+      "correctedTextCertain": true,
+      "unresolvedGlyphNotes": [],
+      "originalCandidateText": "يتقادم الالتزام بانقضاء خمسة عشرة سنة فيما عدا الحالات التى ورد فيها نص خاص فى القانون وفيما عدا الاستثناءات الآتية.",
+      "originalCandidateTextSha256": "dc88ec11373604c7e9f85bd4949fab155e9218ee204819f335aa637ed94097d4",
+      "sourcePdfSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "imageSha256": [
+        "768b085d29132761de842ca217508eae87660fe646c96775a9c1ca88cc62eeb4"
+      ],
+      "correctedText": "يتقادم الالتزام بانقضاء خمسة عشرة سنة فيما عدا الحالات التى ورد فيها نص خاص فى القانون وفيما عدا الاستثناءات الآتية.",
+      "correctedTextSha256": "dc88ec11373604c7e9f85bd4949fab155e9218ee204819f335aa637ed94097d4",
+      "correctedParagraphs": [
+        "يتقادم الالتزام بانقضاء خمسة عشرة سنة فيما عدا الحالات التى ورد فيها نص خاص فى القانون وفيما عدا الاستثناءات الآتية."
+      ],
+      "exactDiffs": []
+    },
+    {
+      "versionId": "civil-code:309@ordinance-75-58",
+      "number": "309",
+      "publicationId": "ordinance-75-58",
+      "sourceId": "A1975078",
+      "pdfPages": [
+        19
+      ],
+      "printedPages": [
+        1007
+      ],
+      "evidenceIds": [
+        "civil-309-original"
+      ],
+      "imagePaths": [
+        "data/law/corpus/.cache/extractions/ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9/page-0019/civil-309-original/crop.png"
+      ],
+      "imageDecision": "resolved-after-listed-corrections",
+      "wordingReview": "Both paragraphs read word by word. The candidate word سيء is printed with dotless yeh سىء. All other visible words agree, including المتأخرة, أداؤه, متصرف المال المشاع and خمس عشرة in paragraph2. Source commas and paragraph endings are visible; OCR لايسقط/لا بسقط and end-period errors do not require retaining lexical uncertainty.",
+      "replacements": [
+        {
+          "old": "سيء",
+          "new": "سىء",
+          "expectedOccurrences": 1,
+          "paragraphs": [
+            2
+          ],
+          "category": "visible-spelling",
+          "basis": "Dotless yeh visibly printed in الحائز سىء النية. This is not an inferred change to the legal word or its meaning."
+        }
+      ],
+      "correctedTextCertain": true,
+      "unresolvedGlyphNotes": [],
+      "originalCandidateText": "يتقادم بخمس سنوات كل حق دورى متجدد ولو أقر به المدين كأجرة المبانى، والديون المتأخرة، والمرتبات والاجور، والمعاشات.\nغير أنه لا يسقط الريع المستحق فى ذمة الحائز سيء النية، ولا الريع الواجب أداؤه على متصرف المال المشاع للمستحقين الا بانقضاء خمس عشرة سنة.",
+      "originalCandidateTextSha256": "69ab5e09c474fa101fe0d9f27f42c059b1082fc3ce0d87ae7e83ab3d5c0cda7c",
+      "sourcePdfSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "imageSha256": [
+        "e27e35611e5c2aea0cd5c47c2955890ee3012289fb0c2fb9d47797bead23b96c"
+      ],
+      "correctedText": "يتقادم بخمس سنوات كل حق دورى متجدد ولو أقر به المدين كأجرة المبانى، والديون المتأخرة، والمرتبات والاجور، والمعاشات.\nغير أنه لا يسقط الريع المستحق فى ذمة الحائز سىء النية، ولا الريع الواجب أداؤه على متصرف المال المشاع للمستحقين الا بانقضاء خمس عشرة سنة.",
+      "correctedTextSha256": "4c5f48ffce9ba486ba7e1f6368c1527e6f0a683244b924c3dd3cf563e0a3680c",
+      "correctedParagraphs": [
+        "يتقادم بخمس سنوات كل حق دورى متجدد ولو أقر به المدين كأجرة المبانى، والديون المتأخرة، والمرتبات والاجور، والمعاشات.",
+        "غير أنه لا يسقط الريع المستحق فى ذمة الحائز سىء النية، ولا الريع الواجب أداؤه على متصرف المال المشاع للمستحقين الا بانقضاء خمس عشرة سنة."
+      ],
+      "exactDiffs": [
+        {
+          "operation": "replace",
+          "oldStart": 161,
+          "oldEnd": 162,
+          "newStart": 161,
+          "newEnd": 162,
+          "old": "ي",
+          "new": "ى"
+        }
+      ]
+    },
+    {
+      "versionId": "civil-code:379@ordinance-75-58",
+      "number": "379",
+      "publicationId": "ordinance-75-58",
+      "sourceId": "A1975078",
+      "pdfPages": [
+        24
+      ],
+      "printedPages": [
+        1012
+      ],
+      "evidenceIds": [
+        "civil-379-original"
+      ],
+      "imagePaths": [
+        "data/law/corpus/.cache/extractions/ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9/page-0024/civil-379-original/crop.png"
+      ],
+      "imageDecision": "resolved-unchanged",
+      "wordingReview": "Both paragraphs read word by word against the300dpi crop and wider page detail. Candidate words and paragraphing agree. The image confirms اذا لم يشتمل, وقت التسليم, ينقص, بعقد البيع, فيكون, غير ان, فحص المبيع, أثبت المشترى and أخفاها غشا عنه; no wording is supplied from a remembered defects-warranty formula. The full stop before فيكون and both paragraph-ending full stops are visible despite nearby scan speckle.",
+      "replacements": [],
+      "correctedTextCertain": true,
+      "unresolvedGlyphNotes": [],
+      "originalCandidateText": "يكون البائع ملزما بالضمان اذا لم يشتمل المبيع على الصفات التى تعهد بوجودها وقت التسليم الى المشترى أو اذا كان بالمبيع عيب ينقص من قيمته، أو من الانتفاع به بحسب الغاية المقصودة منه حسبما هو مذكور بعقد البيع، أو حسبما يظهر من طبيعته أو استعماله. فيكون البائع ضامنا لهذه العيوب ولو لم يكن عالما بوجودها.\nغير ان البائع لا يكون ضامنا للعيوب التى كان المشترى على علم بها وقت البيع، أو كان فى استطاعته أن يطلع عليها لو أنه فحص المبيع بعناية الرجل العادى، الا اذا أثبت المشترى أن البائع أكد له خلو المبيع من تلك العيوب أو أنه أخفاها غشا عنه.",
+      "originalCandidateTextSha256": "f753bd0e23ad5dbe0ce121c697f367520e83bf6a6930f3a18caac5bed4dd896f",
+      "sourcePdfSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "imageSha256": [
+        "96880790b74c473e41e38764a4b9ab5a0cb5e00c66a7c52658d9cae4e4506634"
+      ],
+      "correctedText": "يكون البائع ملزما بالضمان اذا لم يشتمل المبيع على الصفات التى تعهد بوجودها وقت التسليم الى المشترى أو اذا كان بالمبيع عيب ينقص من قيمته، أو من الانتفاع به بحسب الغاية المقصودة منه حسبما هو مذكور بعقد البيع، أو حسبما يظهر من طبيعته أو استعماله. فيكون البائع ضامنا لهذه العيوب ولو لم يكن عالما بوجودها.\nغير ان البائع لا يكون ضامنا للعيوب التى كان المشترى على علم بها وقت البيع، أو كان فى استطاعته أن يطلع عليها لو أنه فحص المبيع بعناية الرجل العادى، الا اذا أثبت المشترى أن البائع أكد له خلو المبيع من تلك العيوب أو أنه أخفاها غشا عنه.",
+      "correctedTextSha256": "f753bd0e23ad5dbe0ce121c697f367520e83bf6a6930f3a18caac5bed4dd896f",
+      "correctedParagraphs": [
+        "يكون البائع ملزما بالضمان اذا لم يشتمل المبيع على الصفات التى تعهد بوجودها وقت التسليم الى المشترى أو اذا كان بالمبيع عيب ينقص من قيمته، أو من الانتفاع به بحسب الغاية المقصودة منه حسبما هو مذكور بعقد البيع، أو حسبما يظهر من طبيعته أو استعماله. فيكون البائع ضامنا لهذه العيوب ولو لم يكن عالما بوجودها.",
+        "غير ان البائع لا يكون ضامنا للعيوب التى كان المشترى على علم بها وقت البيع، أو كان فى استطاعته أن يطلع عليها لو أنه فحص المبيع بعناية الرجل العادى، الا اذا أثبت المشترى أن البائع أكد له خلو المبيع من تلك العيوب أو أنه أخفاها غشا عنه."
+      ],
+      "exactDiffs": []
+    },
+    {
+      "versionId": "civil-code:7@ordinance-75-58",
+      "number": "7",
+      "publicationId": "ordinance-75-58",
+      "sourceId": "A1975078",
+      "pdfPages": [
+        2
+      ],
+      "printedPages": [
+        990
+      ],
+      "evidenceIds": [
+        "civil-7-original"
+      ],
+      "imagePaths": [
+        "data/law/corpus/.cache/extractions/ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9/page-0002/civil-7-original/crop.png"
+      ],
+      "imageDecision": "resolved-after-listed-corrections",
+      "wordingReview": "Both paragraphs reviewed against the crop, including an enlarged in-memory display. The printed interruption word has hamza below the initial alif: وإنقطاعه. The candidate omitted that hamza. The rest of the candidate wording and punctuation is supported, including آجال المرافعة in paragraph2. Old printed spelling is retained; no grammatical modernization to وانقطاعه is made.",
+      "replacements": [
+        {
+          "old": "وانقطاعه",
+          "new": "وإنقطاعه",
+          "expectedOccurrences": 1,
+          "paragraphs": [
+            1
+          ],
+          "category": "visible-hamza",
+          "basis": "Hamza below initial alif is visible in the enlarged official-page crop; retain the printed وإنقطاعه even though modern orthography often differs."
+        }
+      ],
+      "correctedTextCertain": true,
+      "unresolvedGlyphNotes": [],
+      "originalCandidateText": "تطبق النصوص الجديدة المتعلقة بالاجراءات حالا. غير ان النصوص القديمة هى التى تسرى على المسائل الخاصة ببدء التقادم، ووقفه، وانقطاعه، فيما يخص المدة السابقة على العمل بالنصوص الجديدة.\nوكذلك الحال فيما يخص آجال المرافعة.",
+      "originalCandidateTextSha256": "6c7900cfde159b9396ed56ba0e637fa7e907d4a658f33761ac1a046edb7ed227",
+      "sourcePdfSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "imageSha256": [
+        "a3fe03ab3a684a89e40d72b4c4fee27449b87d09ebb9fea82114743102cf2920"
+      ],
+      "correctedText": "تطبق النصوص الجديدة المتعلقة بالاجراءات حالا. غير ان النصوص القديمة هى التى تسرى على المسائل الخاصة ببدء التقادم، ووقفه، وإنقطاعه، فيما يخص المدة السابقة على العمل بالنصوص الجديدة.\nوكذلك الحال فيما يخص آجال المرافعة.",
+      "correctedTextSha256": "8eb94c5b7067709b82fa6a1bad03d29033731ea18f95bffe9db1d4f29a860bb7",
+      "correctedParagraphs": [
+        "تطبق النصوص الجديدة المتعلقة بالاجراءات حالا. غير ان النصوص القديمة هى التى تسرى على المسائل الخاصة ببدء التقادم، ووقفه، وإنقطاعه، فيما يخص المدة السابقة على العمل بالنصوص الجديدة.",
+        "وكذلك الحال فيما يخص آجال المرافعة."
+      ],
+      "exactDiffs": [
+        {
+          "operation": "replace",
+          "oldStart": 122,
+          "oldEnd": 123,
+          "newStart": 122,
+          "newEnd": 123,
+          "old": "ا",
+          "new": "إ"
+        }
+      ]
+    },
+    {
+      "versionId": "civil-code:7@law-05-10",
+      "number": "7",
+      "publicationId": "law-05-10",
+      "sourceId": "A2005044",
+      "pdfPages": [
+        18
+      ],
+      "printedPages": [
+        18
+      ],
+      "evidenceIds": [
+        "civil-amendment-05-10-article-7"
+      ],
+      "imagePaths": [
+        "data/law/corpus/.cache/extractions/3b1a27375d068b68bb4fb5938e3b6c86acde36a632bbe7a2a637af6e3c76d4b7/page-0018/civil-amendment-05-10-article-7/crop.png"
+      ],
+      "imageDecision": "partly-resolved-material-correction-required",
+      "wordingReview": "All four paragraphs compared to the full official page and300dpi crop. Paragraph3 unambiguously reads نصت عليها, not سرت بمقتضى. This is a substantive phrase substitution in the candidate and must be corrected. The rest of the lexical sequence is readable, and the printed comma after القديم and comma after الجديدة in paragraph2 are supported rather than the OCR period/semicolon. The source is not reconstructed from the French translation.",
+      "replacements": [
+        {
+          "old": "المدة التي سرت بمقتضى الأحكام القديمة",
+          "new": "المدة التي نصت عليها الأحكام القديمة",
+          "expectedOccurrences": 1,
+          "paragraphs": [
+            3
+          ],
+          "category": "material-wording",
+          "basis": "Direct official Arabic image clearly shows نصت عليها across the first/second lines of paragraph3. The candidate's سرت بمقتضى is absent from this publication."
+        }
+      ],
+      "correctedTextCertain": false,
+      "unresolvedGlyphNotes": [
+        "The material phrase correction is certain. The2005 typeface uses some final-yeh shapes whose dots are not confidently distinguishable in the inspected image, especially التى/التي and تسرى/تسري; no codepoint-wide spelling change is proposed on that basis.",
+        "Until that narrowly identified orthographic question is settled, the material-corrected full string is a candidate, not a certified exact-glyph transcription. Temporal applicability also remains independently unsettled."
+      ],
+      "originalCandidateText": "تطبق النصوص الجديدة المتعلقة بالإجراءات حالا. غير أن النصوص القديمة هي التي تسري على المسائل الخاصة ببدء التقادم ووقفه وانقطاعه فيما يخص المدة السابقة على العمل بالنصوص الجديدة.\nإذا قررت الأحكام الجديدة مدة تقادم أقصر مما قرره النص القديم، تسري المدة الجديدة من وقت العمل بالأحكام الجديدة، ولو كانت المدة القديمة قد بدأت قبل ذلك.\nأما إذا كان الباقي من المدة التي سرت بمقتضى الأحكام القديمة أقصر من المدة التي تقررها الأحكام الجديدة فإن التقادم يتم بانقضاء هذا الباقي.\nوكذلك الحال فيما يخص آجال الإجراءات.",
+      "originalCandidateTextSha256": "76c68a14c4aa995caf68a221d0d1338aff08d55b79f72dabcec9aa058fbe2dc4",
+      "sourcePdfSha256": "3b1a27375d068b68bb4fb5938e3b6c86acde36a632bbe7a2a637af6e3c76d4b7",
+      "imageSha256": [
+        "3d2e80b56777cc02f8614c8a3d5fb6a9e48befd396e366d8b07c6afecd8a19c7"
+      ],
+      "correctedText": "تطبق النصوص الجديدة المتعلقة بالإجراءات حالا. غير أن النصوص القديمة هي التي تسري على المسائل الخاصة ببدء التقادم ووقفه وانقطاعه فيما يخص المدة السابقة على العمل بالنصوص الجديدة.\nإذا قررت الأحكام الجديدة مدة تقادم أقصر مما قرره النص القديم، تسري المدة الجديدة من وقت العمل بالأحكام الجديدة، ولو كانت المدة القديمة قد بدأت قبل ذلك.\nأما إذا كان الباقي من المدة التي نصت عليها الأحكام القديمة أقصر من المدة التي تقررها الأحكام الجديدة فإن التقادم يتم بانقضاء هذا الباقي.\nوكذلك الحال فيما يخص آجال الإجراءات.",
+      "correctedTextSha256": "bbac75697eb0286e05df5195c3fa94cd6bad257d3d2b1c3982e4f36a6f7ada84",
+      "correctedParagraphs": [
+        "تطبق النصوص الجديدة المتعلقة بالإجراءات حالا. غير أن النصوص القديمة هي التي تسري على المسائل الخاصة ببدء التقادم ووقفه وانقطاعه فيما يخص المدة السابقة على العمل بالنصوص الجديدة.",
+        "إذا قررت الأحكام الجديدة مدة تقادم أقصر مما قرره النص القديم، تسري المدة الجديدة من وقت العمل بالأحكام الجديدة، ولو كانت المدة القديمة قد بدأت قبل ذلك.",
+        "أما إذا كان الباقي من المدة التي نصت عليها الأحكام القديمة أقصر من المدة التي تقررها الأحكام الجديدة فإن التقادم يتم بانقضاء هذا الباقي.",
+        "وكذلك الحال فيما يخص آجال الإجراءات."
+      ],
+      "exactDiffs": [
+        {
+          "operation": "replace",
+          "oldStart": 363,
+          "oldEnd": 365,
+          "newStart": 363,
+          "newEnd": 365,
+          "old": "سر",
+          "new": "نص"
+        },
+        {
+          "operation": "replace",
+          "oldStart": 367,
+          "oldEnd": 373,
+          "newStart": 367,
+          "newEnd": 372,
+          "old": "بمقتضى",
+          "new": "عليها"
+        }
+      ]
+    },
+    {
+      "versionId": "civil-code:1002@ordinance-75-58",
+      "number": "1002",
+      "publicationId": "ordinance-75-58",
+      "sourceId": "A1975078",
+      "pdfPages": [
+        67
+      ],
+      "printedPages": [
+        1055
+      ],
+      "evidenceIds": [
+        "civil-1002-original"
+      ],
+      "imagePaths": [
+        "data/law/corpus/.cache/extractions/ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9/page-0067/civil-1002-original/crop.png"
+      ],
+      "imageDecision": "resolved-unchanged",
+      "wordingReview": "One paragraph read word by word. The source clearly prints the negation/exception لا ... الا, المحددة, الوقائع التى ترد and بعد نشر هذا الامر. These resolve the OCR's القايون and او errors. No change to the candidate words or final full stop is needed. Printed heading1.002 is separately represented as article-number formatting, not included in the body text.",
+      "replacements": [],
+      "correctedTextCertain": true,
+      "unresolvedGlyphNotes": [],
+      "originalCandidateText": "لا تطبق مدة التقادم المحددة فى هذا القانون الا على الوقائع التى ترد بعد نشر هذا الامر.",
+      "originalCandidateTextSha256": "7050c570b9eec1b98ce222cc4171511e7b8e646c2555a9745e1d61f5768c3ada",
+      "sourcePdfSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "imageSha256": [
+        "47c3c5ec6497e0e64034075938f4cbe663ae7bdf9cf720e429377d849ef5e7ee"
+      ],
+      "correctedText": "لا تطبق مدة التقادم المحددة فى هذا القانون الا على الوقائع التى ترد بعد نشر هذا الامر.",
+      "correctedTextSha256": "7050c570b9eec1b98ce222cc4171511e7b8e646c2555a9745e1d61f5768c3ada",
+      "correctedParagraphs": [
+        "لا تطبق مدة التقادم المحددة فى هذا القانون الا على الوقائع التى ترد بعد نشر هذا الامر."
+      ],
+      "exactDiffs": []
+    },
+    {
+      "versionId": "civil-code:1003@ordinance-75-58",
+      "number": "1003",
+      "publicationId": "ordinance-75-58",
+      "sourceId": "A1975078",
+      "pdfPages": [
+        67
+      ],
+      "printedPages": [
+        1055
+      ],
+      "evidenceIds": [
+        "civil-1003-original"
+      ],
+      "imagePaths": [
+        "data/law/corpus/.cache/extractions/ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9/page-0067/civil-1003-original/crop.png"
+      ],
+      "imageDecision": "resolved-unchanged",
+      "wordingReview": "All four body lines read word by word, including the last الشعبية line. Dates visibly read25,1395,5,1975; the OCR's5395/3975 and omitted final word are rejected from the image. Candidate wording, dates and final full stop agree. Printed1.003 heading is not part of the body text.",
+      "replacements": [],
+      "correctedTextCertain": true,
+      "unresolvedGlyphNotes": [],
+      "originalCandidateText": "يسرى مفعول هذا الامر ابتداء من تاريخ 25 جمادى الثانية عام 1395 الموافق 5 يوليو سنة 1975 وينشر فى الجريدة الرسمية للجمهورية الجزائرية الديمقراطية الشعبية.",
+      "originalCandidateTextSha256": "6178ec5be3aec70c63e255bdc2d3a656d3c30298d92a1e6fba93d2f5460c7aa2",
+      "sourcePdfSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "imageSha256": [
+        "8c32a9026c515cd25ce2ec0d2bda8278d9a5044039bed575ca1505ab36a83d2f"
+      ],
+      "correctedText": "يسرى مفعول هذا الامر ابتداء من تاريخ 25 جمادى الثانية عام 1395 الموافق 5 يوليو سنة 1975 وينشر فى الجريدة الرسمية للجمهورية الجزائرية الديمقراطية الشعبية.",
+      "correctedTextSha256": "6178ec5be3aec70c63e255bdc2d3a656d3c30298d92a1e6fba93d2f5460c7aa2",
+      "correctedParagraphs": [
+        "يسرى مفعول هذا الامر ابتداء من تاريخ 25 جمادى الثانية عام 1395 الموافق 5 يوليو سنة 1975 وينشر فى الجريدة الرسمية للجمهورية الجزائرية الديمقراطية الشعبية."
+      ],
+      "exactDiffs": []
+    }
+  ],
+  "summary": {
+    "versionsReviewed": 10,
+    "resolvedUnchanged": 5,
+    "resolvedAfterListedCorrections": 3,
+    "partlyResolved": 1,
+    "unsettled": 1
+  }
+}

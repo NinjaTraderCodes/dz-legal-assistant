@@ -19,3 +19,8 @@ redteam-output/
 # Harness outputs run from the repository root
 w[0-9]*-*/
 skeleton/
+
+# Official-law source downloads, OCR engines and rendered evidence (rebuildable).
+/data/law/corpus/.cache/
+/tools/law-corpus/.cache/
+/tools/law-corpus/__pycache__/

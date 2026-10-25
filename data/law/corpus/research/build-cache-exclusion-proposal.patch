@@ -1,0 +1,5 @@
+--- a/Directory.Build.targets
++++ b/Directory.Build.targets
+@@
+-    <None Include="$(MSBuildThisFileDirectory)data/**/*" LinkBase="data" CopyToOutputDirectory="PreserveNewest" />
++    <None Include="$(MSBuildThisFileDirectory)data/**/*" Exclude="$(MSBuildThisFileDirectory)data/law/corpus/.cache/**/*" LinkBase="data" CopyToOutputDirectory="PreserveNewest" />

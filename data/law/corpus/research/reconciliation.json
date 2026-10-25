@@ -1,0 +1,858 @@
+{
+  "generatedOn": "2026-10-25",
+  "normalizations": [
+    "Unicode NFC",
+    "collapse whitespace for comparison only"
+  ],
+  "legacyArticles": 81,
+  "counts": {
+    "not-imported": 79,
+    "different-text": 1,
+    "same-text": 1
+  },
+  "limitations": [
+    "Different wording does not itself prove a different legal version.",
+    "No unavailable corpus article is guessed, and no legacy verified flag is changed.",
+    "Corpus transcription verification states remain authoritative limitations on any comparison."
+  ],
+  "articles": [
+    {
+      "codeId": "civil-code",
+      "number": "86",
+      "legacyFile": "data/law/codes/civil-code.json",
+      "legacyTextSha256": "0a073a6f983b5c620a99dfa955c80ea821f730944e22eb8bb635276c9aa057c7",
+      "legacyConsolidatedAsOf": "2007-05-13",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "civil-code",
+      "number": "103",
+      "legacyFile": "data/law/codes/civil-code.json",
+      "legacyTextSha256": "fa6c15b64905234ef4616b561ae1687c290ab3aa43f1c589b632dbc6251bc32a",
+      "legacyConsolidatedAsOf": "2007-05-13",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "civil-code",
+      "number": "106",
+      "legacyFile": "data/law/codes/civil-code.json",
+      "legacyTextSha256": "335feaee875a5123095600acc42700764d4e492224b8505bd725738f92ea1885",
+      "legacyConsolidatedAsOf": "2007-05-13",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "civil-code",
+      "number": "107",
+      "legacyFile": "data/law/codes/civil-code.json",
+      "legacyTextSha256": "472a5d6c4cae51ea669e73b3ab9aa6caf76a61edbd0bd8e1e6b4ad404e7e92df",
+      "legacyConsolidatedAsOf": "2007-05-13",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "civil-code",
+      "number": "119",
+      "legacyFile": "data/law/codes/civil-code.json",
+      "legacyTextSha256": "cceb8efaee5eda7e40e5cd391e7829f8b4a6c10e7caedb965d29b1f800ca889a",
+      "legacyConsolidatedAsOf": "2007-05-13",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "civil-code",
+      "number": "122",
+      "legacyFile": "data/law/codes/civil-code.json",
+      "legacyTextSha256": "ddea707849e38eaf2e4d53807b30bdd6c757f9f766e785b47c16629138ccacf8",
+      "legacyConsolidatedAsOf": "2007-05-13",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "civil-code",
+      "number": "124",
+      "legacyFile": "data/law/codes/civil-code.json",
+      "legacyTextSha256": "812a7bc5c8f091a9db83990e0a67b4aaeadd1b88ce749447b2badb7b62b0c0b7",
+      "legacyConsolidatedAsOf": "2007-05-13",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "civil-code",
+      "number": "131",
+      "legacyFile": "data/law/codes/civil-code.json",
+      "legacyTextSha256": "3a983d876327f36e730005f4d7aab2b874b564f4291b6e38850d0bc920705a66",
+      "legacyConsolidatedAsOf": "2007-05-13",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "civil-code",
+      "number": "138",
+      "legacyFile": "data/law/codes/civil-code.json",
+      "legacyTextSha256": "532bbb4eb90906db690e00356368886a672ea1370e833d9643b2c8b26621a6de",
+      "legacyConsolidatedAsOf": "2007-05-13",
+      "category": "different-text",
+      "reason": "Text differs; inspect the stored diff. No legal amendment or correction is inferred from orthographic/punctuation differences.",
+      "versionsCompared": [
+        {
+          "versionId": "civil-code:138@ordinance-75-58",
+          "verificationState": "partly-checked",
+          "temporalStatus": "resolved",
+          "corpusTextSha256": "3bc72d08469c1087f2a495d1d08b4d2cce420222305b89b1adb0c9d81c8590e7",
+          "exactEquality": false,
+          "conservativeComparisonEqual": false,
+          "diff": [
+            "--- legacy",
+            "+++ civil-code:138@ordinance-75-58",
+            "@@ -1,2 +1,2 @@",
+            "-كل من تولى حراسة شيء وكانت له قدرة الاستعمال والتسيير، والرقابة، يعتبر مسؤولا عن الضرر الذي يحدثه ذلك الشيء.",
+            "-ويعفي من هذه المسؤولية الحارس للشيء إذا أثبت أن ذلك الضرر حدث بسبب لم يكن يتوقعه مثل عمل الضحية، أو عمل الغير، أو الحالة الطارئة، أو القوة القاهرة.",
+            "+كل من تولى حراسة شىء وكانت له قدرة الاستعمال والتسيير، والرقابة، يعتبر مسؤولا عن الضرر الذى يحدثه ذلك الشىء.",
+            "+ويعفى من هذه المسؤولية الحارس للشىء اذا أثبت أن ذلك الضرر حدث بسبب لم يكن يتوقعه مثل عمل الضحية، أو عمل الغير، أو الحالة الطارئة، أو القوة القاهرة."
+          ]
+        }
+      ]
+    },
+    {
+      "codeId": "civil-code",
+      "number": "164",
+      "legacyFile": "data/law/codes/civil-code.json",
+      "legacyTextSha256": "226306cbea9ef2cbdeb3cd4e26024f390a41b8ae923c15358829b4a8e3f8d814",
+      "legacyConsolidatedAsOf": "2007-05-13",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "civil-code",
+      "number": "174",
+      "legacyFile": "data/law/codes/civil-code.json",
+      "legacyTextSha256": "5ec44f4e2609a971cb866edf353a66811245213052b6075971d2c75de9f6431c",
+      "legacyConsolidatedAsOf": "2007-05-13",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "civil-code",
+      "number": "176",
+      "legacyFile": "data/law/codes/civil-code.json",
+      "legacyTextSha256": "1e8500536095b9320c134e966bc9bdcd169836fd9dc05aad8d0bfe7530c60e29",
+      "legacyConsolidatedAsOf": "2007-05-13",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "civil-code",
+      "number": "179",
+      "legacyFile": "data/law/codes/civil-code.json",
+      "legacyTextSha256": "904e4454527c5d23aba3f3ffa5717fe6a6e9df0e72618227b450738be0799cd6",
+      "legacyConsolidatedAsOf": "2007-05-13",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "civil-code",
+      "number": "182",
+      "legacyFile": "data/law/codes/civil-code.json",
+      "legacyTextSha256": "c4e7fb9540bad157650ebe337d5fe5ada7bb64e1493746e74c82f65fd429f095",
+      "legacyConsolidatedAsOf": "2007-05-13",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "civil-code",
+      "number": "182 مكرر",
+      "legacyFile": "data/law/codes/civil-code.json",
+      "legacyTextSha256": "53d624d6b4b796a935e6a6747a0b56dc59db01718b85a6e045254c9ad885fa10",
+      "legacyConsolidatedAsOf": "2007-05-13",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "civil-code",
+      "number": "186",
+      "legacyFile": "data/law/codes/civil-code.json",
+      "legacyTextSha256": "00b799a43d4cc961714f61254309e9ede55d608823465ab21fbddb9394d46b3c",
+      "legacyConsolidatedAsOf": "2007-05-13",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "civil-code",
+      "number": "323",
+      "legacyFile": "data/law/codes/civil-code.json",
+      "legacyTextSha256": "ebb8762aac4c3d8159864a5a63be8505f0bf4de22b6f8f532a048a910d9ad268",
+      "legacyConsolidatedAsOf": "2007-05-13",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "civil-code",
+      "number": "324 مكرر 1",
+      "legacyFile": "data/law/codes/civil-code.json",
+      "legacyTextSha256": "d5eb36094b1b4f47dc92d672073d2ea049a8edcfd21a77a8f003219522b742dd",
+      "legacyConsolidatedAsOf": "2007-05-13",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "civil-code",
+      "number": "324 مكرر 5",
+      "legacyFile": "data/law/codes/civil-code.json",
+      "legacyTextSha256": "f4bacb04e0fb50a500bc987414a53a2810ca5efe60aeec8898ff3d201530e14b",
+      "legacyConsolidatedAsOf": "2007-05-13",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "civil-code",
+      "number": "333",
+      "legacyFile": "data/law/codes/civil-code.json",
+      "legacyTextSha256": "9f8bb0658d84d354c2e31ac2a310bc77ed3ef2436578a93b30da189d791ea087",
+      "legacyConsolidatedAsOf": "2007-05-13",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "civil-code",
+      "number": "351",
+      "legacyFile": "data/law/codes/civil-code.json",
+      "legacyTextSha256": "4ec5af1e09b3e908bab93d1ad50adfc07ce568c663bc26f0fd8ee111b9961b8d",
+      "legacyConsolidatedAsOf": "2007-05-13",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "civil-code",
+      "number": "364",
+      "legacyFile": "data/law/codes/civil-code.json",
+      "legacyTextSha256": "336e635e902c063331d14c2c320554364195035b8d5335749dffd4c35a5d30f2",
+      "legacyConsolidatedAsOf": "2007-05-13",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "civil-code",
+      "number": "367",
+      "legacyFile": "data/law/codes/civil-code.json",
+      "legacyTextSha256": "8c57c6625846cea8badefbda41907a22f62a8ec95be6603f8f6dc5987fe8dc37",
+      "legacyConsolidatedAsOf": "2007-05-13",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "civil-code",
+      "number": "450",
+      "legacyFile": "data/law/codes/civil-code.json",
+      "legacyTextSha256": "e6c57e680cf8d21f5475f53cc1d1973193ab68d8d49789d84d191c4cca89625e",
+      "legacyConsolidatedAsOf": "2007-05-13",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "civil-code",
+      "number": "454",
+      "legacyFile": "data/law/codes/civil-code.json",
+      "legacyTextSha256": "62e00932a96313e5bfdc3ae605f5deb77ff43bfc206e8309be47249419ecfed5",
+      "legacyConsolidatedAsOf": "2007-05-13",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "civil-code",
+      "number": "467",
+      "legacyFile": "data/law/codes/civil-code.json",
+      "legacyTextSha256": "7449ea01e97feaabab33734b232bd40e98fcc27c3c26a256ee3c6ed0d7de0c1b",
+      "legacyConsolidatedAsOf": "2007-05-13",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "civil-code",
+      "number": "467 مكرر",
+      "legacyFile": "data/law/codes/civil-code.json",
+      "legacyTextSha256": "db1cb799246787fc94cae9f769afeba4b0490fe4a78d9720e9f02f053d6b183e",
+      "legacyConsolidatedAsOf": "2007-05-13",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "civil-code",
+      "number": "498",
+      "legacyFile": "data/law/codes/civil-code.json",
+      "legacyTextSha256": "166398635a221e5a480d7039ec31aaeac1f64405fb21b9eda2a291bbbf84fc43",
+      "legacyConsolidatedAsOf": "2007-05-13",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "civil-code",
+      "number": "674",
+      "legacyFile": "data/law/codes/civil-code.json",
+      "legacyTextSha256": "f2bccb27287baee6aa1040f3353713e3ff4378492c53b79c265b79ebd58197a7",
+      "legacyConsolidatedAsOf": "2007-05-13",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "commercial-code",
+      "number": "30",
+      "legacyFile": "data/law/codes/commercial-code.json",
+      "legacyTextSha256": "ecb52da7ca09cb4af9d7dee8f492a5aafaf513a244c0d0db368fc775fb02690f",
+      "legacyConsolidatedAsOf": null,
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "commercial-code",
+      "number": "173",
+      "legacyFile": "data/law/codes/commercial-code.json",
+      "legacyTextSha256": "7277c5c426c761a3e1c675b04106c5c2c72dbb2cc4990a951dcf5734edc839dd",
+      "legacyConsolidatedAsOf": null,
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "commercial-code",
+      "number": "176",
+      "legacyFile": "data/law/codes/commercial-code.json",
+      "legacyTextSha256": "f59c7ad1b3c45f2cb8b08625799974d3d9f742ac7344a90b31858670776dbcea",
+      "legacyConsolidatedAsOf": null,
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "commercial-code",
+      "number": "187 مكرر",
+      "legacyFile": "data/law/codes/commercial-code.json",
+      "legacyTextSha256": "9ef3699faf232a76bd837c5131a96e74e1dc69d46b1eeeee9dc8f0b28f694d67",
+      "legacyConsolidatedAsOf": null,
+      "category": "same-text",
+      "reason": "Equality under named NFC/whitespace comparison; raw equality is recorded separately.",
+      "versionsCompared": [
+        {
+          "versionId": "commercial-code:187-bis@law-05-02",
+          "verificationState": "partly-checked",
+          "temporalStatus": "unsettled",
+          "corpusTextSha256": "9ef3699faf232a76bd837c5131a96e74e1dc69d46b1eeeee9dc8f0b28f694d67",
+          "exactEquality": true,
+          "conservativeComparisonEqual": true,
+          "diff": []
+        }
+      ]
+    },
+    {
+      "codeId": "cpca",
+      "number": "8",
+      "legacyFile": "data/law/codes/cpca.json",
+      "legacyTextSha256": "5214042c0dbd1405966efccc002a2aa59ddb1e29222335ce5845afccf1f9a8a1",
+      "legacyConsolidatedAsOf": "2008-04-23",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "cpca",
+      "number": "13",
+      "legacyFile": "data/law/codes/cpca.json",
+      "legacyTextSha256": "d25dcbe18281a4cc8b885f0e6e3169e12a3a284aefd43df3fe2cb3d2ca4425f8",
+      "legacyConsolidatedAsOf": "2008-04-23",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "cpca",
+      "number": "14",
+      "legacyFile": "data/law/codes/cpca.json",
+      "legacyTextSha256": "798e4024a7ca38af686b0ab31cb84359012fd52d2aa075e21ab7259d54b62302",
+      "legacyConsolidatedAsOf": "2008-04-23",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "cpca",
+      "number": "15",
+      "legacyFile": "data/law/codes/cpca.json",
+      "legacyTextSha256": "54a2fb6fb4025353b4857ead350291f05356a7db7ac06d81a15e5e35d7f1f1d4",
+      "legacyConsolidatedAsOf": "2008-04-23",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "cpca",
+      "number": "17",
+      "legacyFile": "data/law/codes/cpca.json",
+      "legacyTextSha256": "b404769fe81d6cf82ae894160cd2a142e8ddec727a25afbfa653a62092343144",
+      "legacyConsolidatedAsOf": "2008-04-23",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "cpca",
+      "number": "37",
+      "legacyFile": "data/law/codes/cpca.json",
+      "legacyTextSha256": "45919898f0499a94d34d6176035015468ee5467365f4762f05512d721ba25daa",
+      "legacyConsolidatedAsOf": "2008-04-23",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "family-code",
+      "number": "3 مكرر",
+      "legacyFile": "data/law/codes/family-code.json",
+      "legacyTextSha256": "2d611fa45c7820ced2f3c7c34f453e60a684c5721881f22318b527f8496e0c92",
+      "legacyConsolidatedAsOf": "2005-02-27",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "family-code",
+      "number": "7",
+      "legacyFile": "data/law/codes/family-code.json",
+      "legacyTextSha256": "8692ae295b0c8513a2ccb70b1b69174177eaa6a74b62ff66725ccbfc0246e4a9",
+      "legacyConsolidatedAsOf": "2005-02-27",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "family-code",
+      "number": "37",
+      "legacyFile": "data/law/codes/family-code.json",
+      "legacyTextSha256": "a51631edbd085baa7427df5eeedcb2cd6bc960bdf11c836190eb0fc9653f305e",
+      "legacyConsolidatedAsOf": "2005-02-27",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "family-code",
+      "number": "48",
+      "legacyFile": "data/law/codes/family-code.json",
+      "legacyTextSha256": "daaada0796e51415ec34346c5fe52133f23ef7e80c73d3ebfb1ba4b8299119d0",
+      "legacyConsolidatedAsOf": "2005-02-27",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "family-code",
+      "number": "49",
+      "legacyFile": "data/law/codes/family-code.json",
+      "legacyTextSha256": "cd4ae1ca6940e210bb3b823b0ab9a3de535e8119aae60a974ab7c3ca7c8437e0",
+      "legacyConsolidatedAsOf": "2005-02-27",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "family-code",
+      "number": "52",
+      "legacyFile": "data/law/codes/family-code.json",
+      "legacyTextSha256": "1ed0319e25379236a13d53b31c53d14016229a9a5f9076327436c7ca11bae1a5",
+      "legacyConsolidatedAsOf": "2005-02-27",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "family-code",
+      "number": "53",
+      "legacyFile": "data/law/codes/family-code.json",
+      "legacyTextSha256": "38aeef3492fc59c5aee8772d2dc100f6278be1674e0a0b5921fea5555dba6313",
+      "legacyConsolidatedAsOf": "2005-02-27",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "family-code",
+      "number": "53 مكرر",
+      "legacyFile": "data/law/codes/family-code.json",
+      "legacyTextSha256": "3cd041a2443a6c76c39e8cc1b682bfc019ff7d92551668676d409d8a5335396c",
+      "legacyConsolidatedAsOf": "2005-02-27",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "family-code",
+      "number": "54",
+      "legacyFile": "data/law/codes/family-code.json",
+      "legacyTextSha256": "f7138b9c60b46cac78a41a32c3dea7e6e415d6545d8b5246858f112fa8c5688e",
+      "legacyConsolidatedAsOf": "2005-02-27",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "family-code",
+      "number": "57",
+      "legacyFile": "data/law/codes/family-code.json",
+      "legacyTextSha256": "7e19025e457aaa2aad32bc6c1e82d0a17462608dbeb7f9cc9bd5d2a1bcf8ede9",
+      "legacyConsolidatedAsOf": "2005-02-27",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "family-code",
+      "number": "57 مكرر",
+      "legacyFile": "data/law/codes/family-code.json",
+      "legacyTextSha256": "a5cddde3c58c6534be04eeb2df32de8ebbfefc17888c1ab5094c7dddd7d16c2d",
+      "legacyConsolidatedAsOf": "2005-02-27",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "family-code",
+      "number": "62",
+      "legacyFile": "data/law/codes/family-code.json",
+      "legacyTextSha256": "30018b4a0c2b16d6e11e6a48b3d8ba5c57c4af1c9d3a90523cf1250a4565e603",
+      "legacyConsolidatedAsOf": "2005-02-27",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "family-code",
+      "number": "64",
+      "legacyFile": "data/law/codes/family-code.json",
+      "legacyTextSha256": "bdb48582d9d6eedbb784b5179d93ce66ce633218eff9c32bafc2719aee2a72b2",
+      "legacyConsolidatedAsOf": "2005-02-27",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "family-code",
+      "number": "65",
+      "legacyFile": "data/law/codes/family-code.json",
+      "legacyTextSha256": "7617cacd006d6318ceb03d11726a02a8380ba13b02df520236bccf214305e3af",
+      "legacyConsolidatedAsOf": "2005-02-27",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "family-code",
+      "number": "66",
+      "legacyFile": "data/law/codes/family-code.json",
+      "legacyTextSha256": "315ba3ccbf5c0e44d181afdd397e3e6ba07f00b8dfd11328c82a25697021e76e",
+      "legacyConsolidatedAsOf": "2005-02-27",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "family-code",
+      "number": "67",
+      "legacyFile": "data/law/codes/family-code.json",
+      "legacyTextSha256": "afe35cce29ac581179a8471d734b171dd8cc217fb925f46da0507f27a16550d0",
+      "legacyConsolidatedAsOf": "2005-02-27",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "family-code",
+      "number": "68",
+      "legacyFile": "data/law/codes/family-code.json",
+      "legacyTextSha256": "17c8b5004ebed2a63d2f531457b31c6a80c9400b17a86acd574091ae78a951da",
+      "legacyConsolidatedAsOf": "2005-02-27",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "family-code",
+      "number": "72",
+      "legacyFile": "data/law/codes/family-code.json",
+      "legacyTextSha256": "27bfea662e06bfa2cc3118afa11e7687cbe80773e13ee38edcb9284f94a4076f",
+      "legacyConsolidatedAsOf": "2005-02-27",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "family-code",
+      "number": "74",
+      "legacyFile": "data/law/codes/family-code.json",
+      "legacyTextSha256": "93f8f000a19738e09455ba39bd93a649a4d58338bbf105bcbe0a457b6c132542",
+      "legacyConsolidatedAsOf": "2005-02-27",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "family-code",
+      "number": "75",
+      "legacyFile": "data/law/codes/family-code.json",
+      "legacyTextSha256": "8648a364133372188226a1d5ac04a0d68760d48e1f3767cdbd3860f4835545ef",
+      "legacyConsolidatedAsOf": "2005-02-27",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "family-code",
+      "number": "76",
+      "legacyFile": "data/law/codes/family-code.json",
+      "legacyTextSha256": "68bbddccba78da87c25ce272faade16d6ae3122be210a16edcfedeb5b3e6fe9c",
+      "legacyConsolidatedAsOf": "2005-02-27",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "family-code",
+      "number": "78",
+      "legacyFile": "data/law/codes/family-code.json",
+      "legacyTextSha256": "6b9f62fbc9ff52a1a38d55d407c1c356b00d2a99a9f73a40508585cccb360342",
+      "legacyConsolidatedAsOf": "2005-02-27",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "family-code",
+      "number": "79",
+      "legacyFile": "data/law/codes/family-code.json",
+      "legacyTextSha256": "ecc8ddae9e069c1158501fae7b549e3ef75eea9c6b1bb0c64b37bdda6d4a811b",
+      "legacyConsolidatedAsOf": "2005-02-27",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "family-code",
+      "number": "80",
+      "legacyFile": "data/law/codes/family-code.json",
+      "legacyTextSha256": "2cfd730c5aacc59bd7298263d5c4cba2d048bc16dcf2b6b4378028e85778cae3",
+      "legacyConsolidatedAsOf": "2005-02-27",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "family-code",
+      "number": "87",
+      "legacyFile": "data/law/codes/family-code.json",
+      "legacyTextSha256": "4e784b5ae066f43d162ad36920f02dfe7f85b1d83a424abbcf8a5027ce636a9c",
+      "legacyConsolidatedAsOf": "2005-02-27",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "labour-disputes",
+      "number": "1",
+      "legacyFile": "data/law/codes/labour-disputes.json",
+      "legacyTextSha256": "ce9e6661c3d26b17663004f1a938de141da21e8852adebb448d5cf910c809663",
+      "legacyConsolidatedAsOf": "1990-02-07",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "labour-disputes",
+      "number": "2",
+      "legacyFile": "data/law/codes/labour-disputes.json",
+      "legacyTextSha256": "00a394c0fecbe2bc7fae3bc2fb5c5522051638caa4ed5e81020bd0446aeb2e0f",
+      "legacyConsolidatedAsOf": "1990-02-07",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "labour-disputes",
+      "number": "19",
+      "legacyFile": "data/law/codes/labour-disputes.json",
+      "legacyTextSha256": "f447dd07a95a7b9463ff0616cbb462734a8c0cba9dab7054aec6e481ef84e895",
+      "legacyConsolidatedAsOf": "1990-02-07",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "labour-disputes",
+      "number": "31",
+      "legacyFile": "data/law/codes/labour-disputes.json",
+      "legacyTextSha256": "604766d63bc63fd259bbe7d67d2dac1cfa9e7ec5903eb9280377676dacdf0066",
+      "legacyConsolidatedAsOf": "1990-02-07",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "labour-disputes",
+      "number": "32",
+      "legacyFile": "data/law/codes/labour-disputes.json",
+      "legacyTextSha256": "fbc2408eb0d89a2687dce5177e7ef6ef2411f6ae6fd8f5df76f6e5326327efb9",
+      "legacyConsolidatedAsOf": "1990-02-07",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "labour-disputes",
+      "number": "36",
+      "legacyFile": "data/law/codes/labour-disputes.json",
+      "legacyTextSha256": "86283fe6dc24121cf4fb9ae063e86b8cafffeeaf29433eeb17ab017599d726c3",
+      "legacyConsolidatedAsOf": "1990-02-07",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "labour-disputes",
+      "number": "37",
+      "legacyFile": "data/law/codes/labour-disputes.json",
+      "legacyTextSha256": "b353540400ce1e3015dc16404568fdbbaaf479a4c45c4b825faff96167a4c3e9",
+      "legacyConsolidatedAsOf": "1990-02-07",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "labour-relations",
+      "number": "1",
+      "legacyFile": "data/law/codes/labour-relations.json",
+      "legacyTextSha256": "1216f8b656a72499937595d1bda96ad18b065019b17eff2c762b1ab26d2639a1",
+      "legacyConsolidatedAsOf": "1996-07-10",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "labour-relations",
+      "number": "2",
+      "legacyFile": "data/law/codes/labour-relations.json",
+      "legacyTextSha256": "39763319161ad3b2642e3ec7686faff9628e2a297edfdfa77d67b8b36f27cfb6",
+      "legacyConsolidatedAsOf": "1996-07-10",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "labour-relations",
+      "number": "3",
+      "legacyFile": "data/law/codes/labour-relations.json",
+      "legacyTextSha256": "f79899d72decb330f53e09f950c35e4768e0316cc0b0a541a2f0b6f5990d7616",
+      "legacyConsolidatedAsOf": "1996-07-10",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "labour-relations",
+      "number": "73",
+      "legacyFile": "data/law/codes/labour-relations.json",
+      "legacyTextSha256": "acc71b7af4dd74c28f2e72851f63cd79837b77ce1e4efb3904b8cf50611e8b88",
+      "legacyConsolidatedAsOf": "1996-07-10",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "labour-relations",
+      "number": "73-1",
+      "legacyFile": "data/law/codes/labour-relations.json",
+      "legacyTextSha256": "ce298b03fd3f84ef945a8dc8dcd640aed2a37bdd5e1d78825f17b0a33dc71051",
+      "legacyConsolidatedAsOf": "1996-07-10",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "labour-relations",
+      "number": "73-2",
+      "legacyFile": "data/law/codes/labour-relations.json",
+      "legacyTextSha256": "1c4cdda56d9b1b9f054eafa746f9339b8e64f9f4ac690958cc2ebee7804b25f6",
+      "legacyConsolidatedAsOf": "1996-07-10",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "labour-relations",
+      "number": "73-3",
+      "legacyFile": "data/law/codes/labour-relations.json",
+      "legacyTextSha256": "d56f7992e3c5ba58026eb4bd120f3afefe7793b2683d90502afae5ba7a8aaf05",
+      "legacyConsolidatedAsOf": "1996-07-10",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "labour-relations",
+      "number": "73-4",
+      "legacyFile": "data/law/codes/labour-relations.json",
+      "legacyTextSha256": "058aa9ab419936a86b91aad4919aa118af460baf0728fdccf0067715996615f7",
+      "legacyConsolidatedAsOf": "1996-07-10",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "labour-relations",
+      "number": "80",
+      "legacyFile": "data/law/codes/labour-relations.json",
+      "legacyTextSha256": "05256b312ec6dd64d6ebc7757b1858bd23854abb8911730bfe954e5e5244d0f5",
+      "legacyConsolidatedAsOf": "1996-07-10",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    },
+    {
+      "codeId": "labour-relations",
+      "number": "88",
+      "legacyFile": "data/law/codes/labour-relations.json",
+      "legacyTextSha256": "60f3ab209ca28e6c88e307b33ba90ceaf892fb92df662e921d68c53d2d5da7e7",
+      "legacyConsolidatedAsOf": "1996-07-10",
+      "category": "not-imported",
+      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
+      "versionsCompared": []
+    }
+  ]
+}

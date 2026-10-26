@@ -209,6 +209,43 @@ public sealed class ShippedCatalogTests
     }
 
     [Fact]
+    public void TheDogAndWallCasesRequireTheirOwnArticlesAndTheGapsAreReported()
+    {
+        var knowledge = LegalKnowledgeLoader.Load(LawRoot);
+        var cases = GroundsEvaluator.LoadCases(Path.Combine(AppContext.BaseDirectory, "grounds-cases"));
+        Assert.Equal(["civil-code:139"], cases.Single(c => c.Name == "things-dog").LegalReference);
+        Assert.Equal(["civil-code:140"], cases.Single(c => c.Name == "things-wall").LegalReference);
+        Assert.All(cases, c => Assert.Contains(c.Partition, new[] { "development", "validation", "release" }));
+        Assert.All(cases.Where(c => c.ReferenceBasis != "engineering"), c => Assert.False(string.IsNullOrWhiteSpace(c.Source)));
+
+        // Until the corpus brings them in, these are gaps of the library, not of the analysis.
+        Assert.False(GroundsEvaluator.InLibrary(knowledge, "civil-code:139"));
+        Assert.True(GroundsEvaluator.InLibrary(knowledge, "civil-code:138"));
+    }
+
+    [Fact]
+    public void TheRunManifestFingerprintsChangeWhenTheDataChanges()
+    {
+        var folder = Directory.CreateTempSubdirectory("dzlegal-manifest-");
+        try
+        {
+            File.WriteAllText(Path.Combine(folder.FullName, "a.json"), "{}");
+            var before = RunManifest.FolderHash(folder.FullName);
+            Assert.Equal(before, RunManifest.FolderHash(folder.FullName));
+            File.WriteAllText(Path.Combine(folder.FullName, "a.json"), "{ }");
+            Assert.NotEqual(before, RunManifest.FolderHash(folder.FullName));
+            Assert.Equal("missing", RunManifest.FolderHash(Path.Combine(folder.FullName, "none")));
+
+            RunManifest.Create("grounds", ["stub"], new Dictionary<string, string> { ["cases"] = folder.FullName }, new Dictionary<string, string>()).Write(folder.FullName);
+            Assert.Contains("\"cases\"", File.ReadAllText(Path.Combine(folder.FullName, "manifest.json")), StringComparison.Ordinal);
+        }
+        finally
+        {
+            folder.Delete(recursive: true);
+        }
+    }
+
+    [Fact]
     public async Task TheBenchWritesOneFilePerCaseAndASummary()
     {
         var folder = Directory.CreateTempSubdirectory("dzlegal-grounds-bench-");
@@ -221,7 +258,9 @@ public sealed class ShippedCatalogTests
             var files = Directory.GetFiles(Path.Combine(folder.FullName, "stub__template_mode__no_AI_"), "*.md");
             Assert.Equal(3, files.Length);
             Assert.Contains("## reading.answer", await File.ReadAllTextAsync(files[0]), StringComparison.Ordinal);
-            Assert.Contains("| claim exact |", await File.ReadAllTextAsync(Path.Combine(folder.FullName, "summary.md")), StringComparison.Ordinal);
+            var summary = await File.ReadAllTextAsync(Path.Combine(folder.FullName, "summary.md"));
+            Assert.Contains("| claim exact |", summary, StringComparison.Ordinal);
+            Assert.Contains("| claim acceptable | legal recall", summary, StringComparison.Ordinal);
         }
         finally
         {
@@ -379,6 +418,43 @@ public sealed class GroundsStabilityTests
         Assert.Equal(1, s.ClaimAgreement);
         Assert.Equal(0.5, s.ArticleAgreement, 3);
         Assert.Equal(0.5, s.ModelRecall, 3); // mean of the per-run shares: 2/2, 0
+    }
+
+    [Fact]
+    public void TheLegalReferenceSeparatesCoverageGapsFromMissesAndCountsExcludedProposals()
+    {
+        var dog = new GroundsCase
+        {
+            Name = "dog",
+            Facts = "…",
+            Expect = "liability-for-things",
+            ExpectArticles = ["civil-code:138"],
+            Required = ["civil-code:139", "civil-code:124"],
+            Excluded = ["civil-code:450"],
+            AcceptableClaims = ["tort-damages"],
+        };
+        var result = new GroundsCaseResult(dog, new GroundsAnalysis
+        {
+            FactsHash = "h",
+            ClaimIds = ["tort-damages"],
+            Articles = [new AnalysedArticle("civil-code", "124", "basis", "", AnalysedArticle.FromCatalog), new AnalysedArticle("civil-code", "450", "basis", "", AnalysedArticle.FromCatalog)],
+        }, TimeSpan.Zero, []) { NotInLibrary = ["civil-code:139"] };
+        var report = new GroundsReport("m", [result]);
+
+        Assert.False(result.ClaimExact);
+        Assert.True(result.ClaimAcceptable);
+        Assert.Equal(["civil-code:124"], result.Proposable); // 139 cannot be proposed: a gap, not a miss
+        Assert.Equal(1, report.LegalRecall);
+        Assert.Equal("civil-code:139", Assert.Single(report.CoverageGaps).Authority);
+        Assert.Equal(1, report.ExcludedProposedCount);
+        Assert.Equal(0, report.ArticleRecall); // the catalog's answer (138) is still measured as before
+    }
+
+    [Fact]
+    public void WithoutARequiredListTheLegalReferenceIsTheCatalogsAnswer()
+    {
+        Assert.Equal(Loan.ExpectArticles, Loan.LegalReference);
+        Assert.Equal("development", Loan.Partition);
     }
 
     [Fact]

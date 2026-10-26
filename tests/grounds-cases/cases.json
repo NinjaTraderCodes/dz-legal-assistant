@@ -1,5 +1,5 @@
 {
-  "comment": "FICTITIOUS fact patterns, written by the engineering team to measure the grounds analysis. 'expect' is the catalog claim type a lawyer would start from (empty: not covered, nothing should be recognised); 'expectArticles' are the main articles a lawyer would cite, as code:number. Both are unverified engineering proposals: a lawyer-written hold-out set must be added before trusting the numbers.",
+  "comment": "FICTITIOUS fact patterns, written by the engineering team to measure the grounds analysis. 'expect' is the catalog claim type a lawyer would start from (empty: not covered, nothing should be recognised); 'expectArticles' is the catalog's answer, kept so runs compare with the 26 October 2026 baseline. 'required' (when present) is the legal reference taken from the official text, even if the library does not hold it yet (reported as a coverage gap); 'optional', 'excluded', 'acceptableClaims' and 'unresolved' refine it; 'referenceBasis' says how it was set. All these cases were used to tune the analysis: partition 'development'. Independent cases (from published decisions) go to 'validation' or the sealed 'release' partition, by family.",
   "cases": [
     {
       "name": "loan-basic",
@@ -9,7 +9,9 @@
       "expectArticles": [
         "civil-code:450",
         "civil-code:106"
-      ]
+      ],
+      "family": "loan-repayment",
+      "partition": "development"
     },
     {
       "name": "loan-darija",
@@ -19,7 +21,9 @@
       "expectArticles": [
         "civil-code:450",
         "civil-code:106"
-      ]
+      ],
+      "family": "loan-repayment",
+      "partition": "development"
     },
     {
       "name": "loan-acknowledgment",
@@ -28,7 +32,9 @@
       "expectArticles": [
         "civil-code:450",
         "civil-code:106"
-      ]
+      ],
+      "family": "loan-repayment",
+      "partition": "development"
     },
     {
       "name": "loan-no-section",
@@ -37,7 +43,9 @@
       "expectArticles": [
         "civil-code:450",
         "civil-code:106"
-      ]
+      ],
+      "family": "loan-repayment",
+      "partition": "development"
     },
     {
       "name": "sale-price",
@@ -47,7 +55,9 @@
       "expectArticles": [
         "civil-code:351",
         "civil-code:106"
-      ]
+      ],
+      "family": "unpaid-sale-price",
+      "partition": "development"
     },
     {
       "name": "sale-land-price",
@@ -56,7 +66,9 @@
       "expectArticles": [
         "civil-code:351",
         "civil-code:106"
-      ]
+      ],
+      "family": "unpaid-sale-price",
+      "partition": "development"
     },
     {
       "name": "rescission",
@@ -66,7 +78,9 @@
       "expectArticles": [
         "civil-code:119",
         "civil-code:122"
-      ]
+      ],
+      "family": "contract-rescission",
+      "partition": "development"
     },
     {
       "name": "rescission-sale",
@@ -75,7 +89,9 @@
       "expectArticles": [
         "civil-code:119",
         "civil-code:122"
-      ]
+      ],
+      "family": "contract-rescission",
+      "partition": "development"
     },
     {
       "name": "contract-damages",
@@ -85,7 +101,9 @@
       "expectArticles": [
         "civil-code:176",
         "civil-code:107"
-      ]
+      ],
+      "family": "contract-damages",
+      "partition": "development"
     },
     {
       "name": "contract-damages-2",
@@ -94,7 +112,9 @@
       "expectArticles": [
         "civil-code:176",
         "civil-code:107"
-      ]
+      ],
+      "family": "contract-damages",
+      "partition": "development"
     },
     {
       "name": "tort-assault",
@@ -103,7 +123,9 @@
       "expect": "tort-damages",
       "expectArticles": [
         "civil-code:124"
-      ]
+      ],
+      "family": "tort-damages",
+      "partition": "development"
     },
     {
       "name": "tort-damage-property",
@@ -111,7 +133,9 @@
       "expect": "tort-damages",
       "expectArticles": [
         "civil-code:124"
-      ]
+      ],
+      "family": "tort-damages",
+      "partition": "development"
     },
     {
       "name": "tort-defamation",
@@ -119,7 +143,9 @@
       "expect": "tort-damages",
       "expectArticles": [
         "civil-code:124"
-      ]
+      ],
+      "family": "tort-damages",
+      "partition": "development"
     },
     {
       "name": "things-water",
@@ -128,7 +154,9 @@
       "expect": "liability-for-things",
       "expectArticles": [
         "civil-code:138"
-      ]
+      ],
+      "family": "liability-for-things",
+      "partition": "development"
     },
     {
       "name": "things-dog",
@@ -136,7 +164,14 @@
       "expect": "liability-for-things",
       "expectArticles": [
         "civil-code:138"
-      ]
+      ],
+      "family": "liability-for-things",
+      "partition": "development",
+      "required": [
+        "civil-code:139"
+      ],
+      "referenceBasis": "official-text",
+      "source": "القانون المدني، المادة 139 (ج.ر 78/1975، ص 997–998): مسؤولية حارس الحيوان، وهي قاعدة خاصة غير المادة 138"
     },
     {
       "name": "things-wall",
@@ -144,7 +179,14 @@
       "expect": "liability-for-things",
       "expectArticles": [
         "civil-code:138"
-      ]
+      ],
+      "family": "liability-for-things",
+      "partition": "development",
+      "required": [
+        "civil-code:140"
+      ],
+      "referenceBasis": "official-text",
+      "source": "القانون المدني، المادة 140 الفقرة 2 (ج.ر 78/1975، ص 998): مسؤولية مالك البناء عن انهدامه، وهي قاعدة خاصة غير المادة 138"
     },
     {
       "name": "rent-basic",
@@ -154,7 +196,9 @@
       "expectArticles": [
         "civil-code:467",
         "civil-code:498"
-      ]
+      ],
+      "family": "unpaid-rent",
+      "partition": "development"
     },
     {
       "name": "rent-darija",
@@ -163,7 +207,9 @@
       "expectArticles": [
         "civil-code:467",
         "civil-code:498"
-      ]
+      ],
+      "family": "unpaid-rent",
+      "partition": "development"
     },
     {
       "name": "occupation",
@@ -172,7 +218,9 @@
       "expect": "eviction-occupier-without-title",
       "expectArticles": [
         "civil-code:674"
-      ]
+      ],
+      "family": "eviction-occupier-without-title",
+      "partition": "development"
     },
     {
       "name": "occupation-flat",
@@ -180,7 +228,9 @@
       "expect": "eviction-occupier-without-title",
       "expectArticles": [
         "civil-code:674"
-      ]
+      ],
+      "family": "eviction-occupier-without-title",
+      "partition": "development"
     },
     {
       "name": "commercial-invoices",
@@ -190,7 +240,9 @@
       "expectArticles": [
         "civil-code:106",
         "civil-code:164"
-      ]
+      ],
+      "family": "commercial-debt",
+      "partition": "development"
     },
     {
       "name": "commercial-supplies",
@@ -199,7 +251,9 @@
       "expectArticles": [
         "civil-code:106",
         "civil-code:164"
-      ]
+      ],
+      "family": "commercial-debt",
+      "partition": "development"
     },
     {
       "name": "commercial-lease",
@@ -209,6 +263,14 @@
       "expectArticles": [
         "commercial-code:187 مكرر",
         "commercial-code:173"
+      ],
+      "family": "commercial-lease-eviction",
+      "partition": "development",
+      "optional": [
+        "commercial-code:187 مكرر 1"
+      ],
+      "unresolved": [
+        "تاريخ إبرام عقد الإيجار التجاري: قبل نشر القانون 05-02 أو بعده، إذ قد تبقى العقود السابقة خاضعة لأحكام سابقة (القانون التجاري، المادة 187 مكرر 1)"
       ]
     },
     {
@@ -218,6 +280,14 @@
       "expectArticles": [
         "commercial-code:187 مكرر",
         "commercial-code:173"
+      ],
+      "family": "commercial-lease-eviction",
+      "partition": "development",
+      "optional": [
+        "commercial-code:187 مكرر 1"
+      ],
+      "unresolved": [
+        "تاريخ إبرام عقد الإيجار التجاري: قبل نشر القانون 05-02 أو بعده، إذ قد تبقى العقود السابقة خاضعة لأحكام سابقة (القانون التجاري، المادة 187 مكرر 1)"
       ]
     },
     {
@@ -227,7 +297,9 @@
       "expect": "divorce-by-husband",
       "expectArticles": [
         "family-code:48"
-      ]
+      ],
+      "family": "divorce-by-husband",
+      "partition": "development"
     },
     {
       "name": "tatliq-abandonment",
@@ -236,7 +308,9 @@
       "expect": "tatliq",
       "expectArticles": [
         "family-code:53"
-      ]
+      ],
+      "family": "tatliq",
+      "partition": "development"
     },
     {
       "name": "tatliq-harm",
@@ -244,7 +318,9 @@
       "expect": "tatliq",
       "expectArticles": [
         "family-code:53"
-      ]
+      ],
+      "family": "tatliq",
+      "partition": "development"
     },
     {
       "name": "khul",
@@ -253,7 +329,9 @@
       "expect": "khul",
       "expectArticles": [
         "family-code:54"
-      ]
+      ],
+      "family": "khul",
+      "partition": "development"
     },
     {
       "name": "khul-2",
@@ -261,7 +339,9 @@
       "expect": "khul",
       "expectArticles": [
         "family-code:54"
-      ]
+      ],
+      "family": "khul",
+      "partition": "development"
     },
     {
       "name": "nafaqa-children",
@@ -271,7 +351,9 @@
       "expectArticles": [
         "family-code:74",
         "family-code:75"
-      ]
+      ],
+      "family": "nafaqa",
+      "partition": "development"
     },
     {
       "name": "nafaqa-wife",
@@ -280,7 +362,9 @@
       "expectArticles": [
         "family-code:74",
         "family-code:75"
-      ]
+      ],
+      "family": "nafaqa",
+      "partition": "development"
     },
     {
       "name": "custody",
@@ -290,7 +374,9 @@
       "expectArticles": [
         "family-code:62",
         "family-code:64"
-      ]
+      ],
+      "family": "custody",
+      "partition": "development"
     },
     {
       "name": "custody-transfer",
@@ -299,7 +385,9 @@
       "expectArticles": [
         "family-code:62",
         "family-code:64"
-      ]
+      ],
+      "family": "custody",
+      "partition": "development"
     },
     {
       "name": "visitation",
@@ -308,7 +396,9 @@
       "expect": "visitation",
       "expectArticles": [
         "family-code:64"
-      ]
+      ],
+      "family": "visitation",
+      "partition": "development"
     },
     {
       "name": "dismissal",
@@ -317,7 +407,9 @@
       "expect": "abusive-dismissal",
       "expectArticles": [
         "labour-relations:73"
-      ]
+      ],
+      "family": "abusive-dismissal",
+      "partition": "development"
     },
     {
       "name": "dismissal-grave-fault",
@@ -325,7 +417,9 @@
       "expect": "abusive-dismissal",
       "expectArticles": [
         "labour-relations:73"
-      ]
+      ],
+      "family": "abusive-dismissal",
+      "partition": "development"
     },
     {
       "name": "wages",
@@ -335,7 +429,9 @@
       "expectArticles": [
         "labour-relations:80",
         "labour-relations:88"
-      ]
+      ],
+      "family": "unpaid-wages",
+      "partition": "development"
     },
     {
       "name": "wages-overtime",
@@ -344,7 +440,9 @@
       "expectArticles": [
         "labour-relations:80",
         "labour-relations:88"
-      ]
+      ],
+      "family": "unpaid-wages",
+      "partition": "development"
     },
     {
       "name": "loan-with-section-mismatch-words",
@@ -354,7 +452,9 @@
       "expectArticles": [
         "civil-code:450",
         "civil-code:106"
-      ]
+      ],
+      "family": "loan-repayment",
+      "partition": "development"
     },
     {
       "name": "rent-shop-civil-words",
@@ -364,6 +464,14 @@
       "expectArticles": [
         "commercial-code:187 مكرر",
         "commercial-code:173"
+      ],
+      "family": "commercial-lease-eviction",
+      "partition": "development",
+      "optional": [
+        "commercial-code:187 مكرر 1"
+      ],
+      "unresolved": [
+        "تاريخ إبرام عقد الإيجار التجاري: قبل نشر القانون 05-02 أو بعده، إذ قد تبقى العقود السابقة خاضعة لأحكام سابقة (القانون التجاري، المادة 187 مكرر 1)"
       ]
     },
     {
@@ -371,27 +479,35 @@
       "courtSection": "قسم شؤون الأسرة",
       "facts": "توفي مورث الطرفين وترك تركة تتكون من منزل وقطعة أرض\nيطلب المدعي قسمة التركة وفق الفريضة",
       "expect": "",
-      "expectArticles": []
+      "expectArticles": [],
+      "family": "out-of-scope",
+      "partition": "development"
     },
     {
       "name": "none-administrative",
       "courtSection": "المحكمة الإدارية",
       "facts": "أصدر الوالي قرارا بإلغاء رخصة البناء الممنوحة للمدعي\nيطلب المدعي إلغاء القرار الإداري لتجاوز السلطة",
       "expect": "",
-      "expectArticles": []
+      "expectArticles": [],
+      "family": "out-of-scope",
+      "partition": "development"
     },
     {
       "name": "none-commercial-company",
       "courtSection": "القسم التجاري",
       "facts": "يطلب الشريك حل الشركة ذات المسؤولية المحدودة وتعيين مصف بسبب الخلاف بين الشركاء",
       "expect": "",
-      "expectArticles": []
+      "expectArticles": [],
+      "family": "out-of-scope",
+      "partition": "development"
     },
     {
       "name": "none-civil-status",
       "facts": "وقع خطأ في تاريخ ميلاد المدعي في سجلات الحالة المدنية ويطلب تصحيحه",
       "expect": "",
-      "expectArticles": []
+      "expectArticles": [],
+      "family": "out-of-scope",
+      "partition": "development"
     },
     {
       "name": "annulment-fraud-land",
@@ -401,7 +517,9 @@
       "expectArticles": [
         "civil-code:86",
         "civil-code:103"
-      ]
+      ],
+      "family": "sale-annulment-fraud",
+      "partition": "development"
     },
     {
       "name": "non-delivery-machines",
@@ -411,7 +529,9 @@
       "expectArticles": [
         "civil-code:364",
         "civil-code:164"
-      ]
+      ],
+      "family": "sale-non-delivery",
+      "partition": "development"
     }
   ]
 }

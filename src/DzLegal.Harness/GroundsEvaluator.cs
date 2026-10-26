@@ -20,8 +20,44 @@ public sealed record GroundsCase
     /// <summary>The catalog claim type a lawyer would start from; empty when the catalog does not cover the case.</summary>
     public string Expect { get; init; } = string.Empty;
 
-    /// <summary>Articles a lawyer would cite, as "code:number" (e.g. "civil-code:450").</summary>
+    /// <summary>
+    /// The catalog's answer, as "code:number" (e.g. "civil-code:450"): what the analysis can propose today. Kept so
+    /// that runs compare with the 26 October baseline; <see cref="Required"/> holds the legal reference when it differs.
+    /// </summary>
     public IReadOnlyList<string> ExpectArticles { get; init; } = [];
+
+    /// <summary>
+    /// The authorities the law requires for these facts, taken from the official text or a published decision, even
+    /// when the library does not hold them yet (those are reported as coverage gaps). Null: same as
+    /// <see cref="ExpectArticles"/>.
+    /// </summary>
+    public IReadOnlyList<string>? Required { get; init; }
+
+    /// <summary>Authorities that may rightly be cited as well; proposing them is not noise.</summary>
+    public IReadOnlyList<string> Optional { get; init; } = [];
+
+    /// <summary>Authorities that must not be proposed for these facts (another regime): proposing one is a critical error.</summary>
+    public IReadOnlyList<string> Excluded { get; init; } = [];
+
+    /// <summary>Other claim types that are also a right answer.</summary>
+    public IReadOnlyList<string> AcceptableClaims { get; init; } = [];
+
+    /// <summary>Decisive facts these facts leave open; a good answer notes them rather than guessing.</summary>
+    public IReadOnlyList<string> Unresolved { get; init; } = [];
+
+    /// <summary>How the reference answer was set: "engineering" (written by us, unchecked), "official-text" or "decision".</summary>
+    public string ReferenceBasis { get; init; } = "engineering";
+
+    /// <summary>Where the reference answer comes from (article text, decision number), when not "engineering".</summary>
+    public string? Source { get; init; }
+
+    /// <summary>"development" (used for tuning), "validation" or "release" (sealed: never looked at while tuning).</summary>
+    public string Partition { get; init; } = "development";
+
+    /// <summary>Cases built from the same scenario share a family, so a family never spans two partitions.</summary>
+    public string? Family { get; init; }
+
+    public IReadOnlyList<string> LegalReference => Required ?? ExpectArticles;
 }
 
 public sealed record GroundsCaseFile
@@ -59,6 +95,20 @@ public sealed record GroundsCaseResult(GroundsCase Case, GroundsAnalysis Analysi
     public int ExpectedFound => Case.ExpectArticles.Count(Selected.Contains);
 
     public IReadOnlyList<string> Unexpected => Selected.Where(s => !Case.ExpectArticles.Contains(s)).ToList();
+
+    /// <summary>Required authorities the library does not hold, so no analysis could propose them (a coverage gap).</summary>
+    public IReadOnlyList<string> NotInLibrary { get; init; } = [];
+
+    /// <summary>Required authorities the library holds: the ones an analysis can be blamed for missing.</summary>
+    public IReadOnlyList<string> Proposable => Case.LegalReference.Where(a => !NotInLibrary.Contains(a)).ToList();
+
+    public int LegalFound => Proposable.Count(Selected.Contains);
+
+    /// <summary>Proposed authorities the reference excludes for these facts.</summary>
+    public IReadOnlyList<string> ExcludedProposed => Selected.Where(Case.Excluded.Contains).ToList();
+
+    /// <summary>The first claim is the expected one or an accepted alternative.</summary>
+    public bool ClaimAcceptable => ClaimExact || (Error is null && Analysis.ClaimIds.FirstOrDefault() is { } first && Case.AcceptableClaims.Contains(first));
 }
 
 public sealed record GroundsReport(string Model, IReadOnlyList<GroundsCaseResult> Results)
@@ -121,6 +171,28 @@ public sealed record GroundsReport(string Model, IReadOnlyList<GroundsCaseResult
     }
 
     public int Failures => Results.Count(r => r.Error is not null);
+
+    /// <summary>Share of the required authorities the library holds that the analysis proposed.</summary>
+    public double LegalRecall
+    {
+        get
+        {
+            var proposable = Results.Sum(r => r.Proposable.Count);
+            return proposable == 0 ? double.NaN : (double)Results.Sum(r => r.LegalFound) / proposable;
+        }
+    }
+
+    public double ClaimAcceptableRate => Results.Count == 0 ? 0 : (double)Results.Count(r => r.ClaimAcceptable) / Results.Count;
+
+    /// <summary>Distinct required authorities missing from the library, with the cases that need them.</summary>
+    public IReadOnlyList<(string Authority, IReadOnlyList<string> Cases)> CoverageGaps =>
+        Results.SelectMany(r => r.NotInLibrary.Select(a => (a, r.Case.Name)))
+            .GroupBy(x => x.a, StringComparer.Ordinal)
+            .Select(g => (g.Key, (IReadOnlyList<string>)g.Select(x => x.Name).ToList()))
+            .OrderBy(g => g.Key, StringComparer.Ordinal)
+            .ToList();
+
+    public int ExcludedProposedCount => Results.Sum(r => r.ExcludedProposed.Count);
 }
 
 /// <summary>How much one case's answers vary over repeated runs of the same engine.</summary>
@@ -174,7 +246,12 @@ public static class GroundsEvaluator
             }
 
             var acceptable = knowledge.Claims.FirstOrDefault(x => x.Id == c.Expect)?.Articles.Select(a => $"{a.Code}:{a.Number}").ToList() ?? [];
-            var result = new GroundsCaseResult(c, analysis, started.Elapsed, acceptable) { Error = error, ModelChosen = ModelChosen(trace) };
+            var result = new GroundsCaseResult(c, analysis, started.Elapsed, [.. acceptable, .. c.Optional])
+            {
+                Error = error,
+                ModelChosen = ModelChosen(trace),
+                NotInLibrary = c.LegalReference.Where(a => !InLibrary(knowledge, a)).ToList(),
+            };
             log.WriteLine(error is not null ? $"  [{c.Name}] FAILED: {error}" : $"  [{c.Name}] {started.Elapsed.TotalSeconds:F0}s  claim: {(analysis.ClaimIds.Count == 0 ? "—" : string.Join(", ", analysis.ClaimIds))}  articles: {(result.Selected.Count == 0 ? "—" : string.Join(", ", result.Selected))}  ({result.ExpectedFound}/{c.ExpectArticles.Count} expected, {result.OffClaim.Count} off-claim)");
             results.Add(result);
             if (modelFolder is not null)
@@ -197,6 +274,15 @@ public static class GroundsEvaluator
         }
 
         return report;
+    }
+
+    /// <summary>The authority ("code:number") has its official text in the library.</summary>
+    public static bool InLibrary(LegalKnowledge knowledge, string authority)
+    {
+        ArgumentNullException.ThrowIfNull(knowledge);
+        ArgumentNullException.ThrowIfNull(authority);
+        var parts = authority.Split(':', 2);
+        return parts.Length == 2 && knowledge.Library.FindArticle(parts[0], parts[1]) is { Repealed: false };
     }
 
     /// <summary>
@@ -313,6 +399,14 @@ public static class GroundsEvaluator
         sb.AppendLine(Ci, $"# {r.Case.Name} — {r.Analysis.Model}").AppendLine();
         sb.AppendLine(Ci, $"- Court section: {r.Case.CourtSection ?? "—"}");
         sb.AppendLine(Ci, $"- Expected claim: {(r.Case.Expect.Length == 0 ? "none" : r.Case.Expect)} · expected articles: {string.Join(", ", r.Case.ExpectArticles)}");
+        if (r.Case.Required is not null || r.Case.Excluded.Count > 0 || r.Case.Unresolved.Count > 0)
+        {
+            sb.AppendLine(Ci, $"- Legal reference ({r.Case.ReferenceBasis}{(r.Case.Source is null ? string.Empty : ": " + r.Case.Source)}): required {string.Join(", ", r.Case.LegalReference)} · not in library: {(r.NotInLibrary.Count == 0 ? "—" : string.Join(", ", r.NotInLibrary))} · excluded: {(r.Case.Excluded.Count == 0 ? "—" : string.Join(", ", r.Case.Excluded))}");
+            foreach (var open in r.Case.Unresolved)
+            {
+                sb.AppendLine(Ci, $"- Left open by the facts: {open}");
+            }
+        }
         sb.AppendLine(Ci, $"- Recognised: {(r.Analysis.ClaimIds.Count == 0 ? "—" : string.Join(", ", r.Analysis.ClaimIds))} · proposed: {(r.Selected.Count == 0 ? "—" : string.Join(", ", r.Selected))}");
         sb.AppendLine(Ci, $"- Off-claim: {(r.OffClaim.Count == 0 ? "—" : string.Join(", ", r.OffClaim))} · time: {r.Elapsed.TotalSeconds:F0}s").AppendLine();
         sb.AppendLine("## Facts").AppendLine().AppendLine(r.Case.Facts).AppendLine();
@@ -350,9 +444,26 @@ public static class GroundsEvaluator
             sb.AppendLine("No official text imported: only catalog articles could be proposed.").AppendLine();
         }
 
+        sb.AppendLine("Legal reference (the authorities the law requires, which may differ from the catalog's answer):").AppendLine();
+        sb.AppendLine("| claim acceptable | legal recall (authorities in the library) | required but not in the library | excluded authorities proposed |");
+        sb.AppendLine("|---|---|---|---|");
+        sb.AppendLine(Ci, $"| {report.ClaimAcceptableRate:P0} | {P(report.LegalRecall)} | {report.CoverageGaps.Count} | {report.ExcludedProposedCount} |").AppendLine();
+        foreach (var (authority, cases) in report.CoverageGaps)
+        {
+            sb.AppendLine(Ci, $"- Coverage gap: `{authority}` (needed by {string.Join(", ", cases)})");
+        }
+
+        if (report.CoverageGaps.Count > 0)
+        {
+            sb.AppendLine();
+        }
+
         foreach (var r in report.Results)
         {
-            sb.AppendLine(Ci, $"- {(r.ClaimExact ? "✓" : "✗")} `{r.Case.Name}` expected {(r.Case.Expect.Length == 0 ? "none" : r.Case.Expect)} → {(r.Analysis.ClaimIds.Count == 0 ? "—" : string.Join(", ", r.Analysis.ClaimIds))} · {r.ExpectedFound}/{r.Case.ExpectArticles.Count} core · {r.OffClaim.Count} off-claim · {r.Elapsed.TotalSeconds:F0}s");
+            var gaps = r.NotInLibrary.Count > 0 ? $" (+{r.NotInLibrary.Count} not in library)" : string.Empty;
+            var legal = r.Case.Required is null ? string.Empty : $" · legal {r.LegalFound}/{r.Proposable.Count}{gaps}";
+            var excluded = r.ExcludedProposed.Count == 0 ? string.Empty : $" · **excluded proposed: {string.Join(", ", r.ExcludedProposed)}**";
+            sb.AppendLine(Ci, $"- {(r.ClaimExact ? "✓" : r.ClaimAcceptable ? "≈" : "✗")} `{r.Case.Name}` expected {(r.Case.Expect.Length == 0 ? "none" : r.Case.Expect)} → {(r.Analysis.ClaimIds.Count == 0 ? "—" : string.Join(", ", r.Analysis.ClaimIds))} · {r.ExpectedFound}/{r.Case.ExpectArticles.Count} core{legal} · {r.OffClaim.Count} off-claim{excluded} · {r.Elapsed.TotalSeconds:F0}s");
         }
 
         return sb.AppendLine().ToString();

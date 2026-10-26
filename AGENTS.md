@@ -36,8 +36,7 @@ Read this file completely before changing anything. Your task brief (a PDF or pr
   - `src/DzLegal.ModelProviders.*`
   - `src/DzLegal.Harness`
 - **Legal data and prompts:**
-  - `data/` (the form definition, law texts and claim catalogue)
-  - `prompts/`
+  - `data/` (the form definition, law texts, claim catalogue, and the model prompts in `data/document-types/*/prompts/` and `data/law/prompts/`)
 - **The law corpus being built on `codex/law-corpus`:**
   - `data/law/corpus/`
   - `tools/law-corpus/`

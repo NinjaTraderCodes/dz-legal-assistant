@@ -20,9 +20,11 @@ using DzLegal.Harness;
 //       Grounds as drafted today (A) beside skeleton-first grounds (B: the code states each article from its official
 //       text, the model writes only the arguments), one file per case, for a lawyer to compare.
 //   dzlegal-harness grounds --models <gemma3:4b,...|stub> [--out bench-grounds] [--law-root <data/law>] [--cases <grounds-cases>] [--endpoint ...]
+//       [--partition development,validation|release]
 //       Runs the grounds analysis (read facts → search library → choose articles) on fictitious fact patterns and
-//       reports claim recognition, expected-article recall (final and by the model alone), time per case, and with
-//       --runs, how stable the answers are. Reported only (no gate).
+//       reports claim recognition, expected-article recall (final and by the model alone), the legal reference (required
+//       authorities, coverage gaps, excluded authorities proposed), time per case, and with --runs, how stable the
+//       answers are. Writes manifest.json (commit, data/prompt/case fingerprints, options). Reported only (no gate).
 //   dzlegal-harness law import <code-id> (--url <official url> | --file <file>) [--law-root data/law] [--as-of yyyy-mm-dd]
 //       Maintainer tool: imports an official text into the law library and writes a review report.
 var dataRoot = Path.Combine(AppContext.BaseDirectory, "data", "document-types");
@@ -111,7 +113,12 @@ if (args.Length > 0 && args[0] == "grounds")
         File.WriteAllText(Path.Combine(outRoot, "summary.md"), $"# Grounds analysis bench{Environment.NewLine}{Environment.NewLine}");
     }
 
-    var groundsCases = GroundsEvaluator.LoadCases(Option("--cases", Path.Combine(AppContext.BaseDirectory, "grounds-cases")));
+    var casesFolder = Option("--cases", Path.Combine(AppContext.BaseDirectory, "grounds-cases"));
+    var groundsCases = GroundsEvaluator.LoadCases(casesFolder);
+
+    // The sealed release cases are only run when asked for by name: tuning on them would make them a validation set.
+    var partition = Option("--partition", "development,validation").Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+    groundsCases = groundsCases.Where(c => partition.Contains(c.Partition)).ToList();
     if (args.Contains("--case"))
     {
         groundsCases = groundsCases.Where(c => c.Name == Option("--case", string.Empty)).ToList();
@@ -120,6 +127,27 @@ if (args.Length > 0 && args[0] == "grounds")
             Console.Error.WriteLine($"grounds: no case named '{Option("--case", string.Empty)}'.");
             return 2;
         }
+    }
+
+    if (outRoot is not null)
+    {
+        var lawRoot = Option("--law-root", Path.Combine(AppContext.BaseDirectory, "data", "law"));
+        RunManifest.Create(
+            "grounds",
+            models,
+            new Dictionary<string, string>
+            {
+                ["law"] = lawRoot,
+                ["documentTypes"] = Path.Combine(AppContext.BaseDirectory, "data", "document-types"),
+                ["cases"] = casesFolder,
+            },
+            new Dictionary<string, string>
+            {
+                ["runs"] = runs.ToString(CultureInfo.InvariantCulture),
+                ["partition"] = string.Join(',', partition),
+                ["case"] = args.Contains("--case") ? Option("--case", string.Empty) : "all",
+                ["endpoint"] = Option("--endpoint", "http://127.0.0.1:11434"),
+            }).Write(outRoot);
     }
 
     foreach (var model in models)

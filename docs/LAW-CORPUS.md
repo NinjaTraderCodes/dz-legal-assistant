@@ -2,6 +2,8 @@
 
 Research cut-off: **25 October 2026**. Branch: `codex/law-corpus`, isolated from the application engineer's default-branch work. This is a separate, additive corpus. The existing `data/law/codes`, claim mappings, loaders and application behavior have not been switched to it.
 
+For the consolidated branch status, achievements, current counts and remaining work, read [the state report dated 26 October 2026](LAW-CORPUS-STATE-REPORT.md). The sections below retain detailed implementation evidence and delivery history.
+
 ## Current-first delivery order, authorized26October2026
 
 The user approved **complete current codes first**, with comprehensive historical reconstruction deferred. Article/chapter scope is unchanged. Preserve express transitions and older provisions that still govern supported cases; missing required historical law must remain explicitly unsettled. The already collected historical work is retained. [Recorded authorization and boundaries](../data/law/corpus/research/delivery-order-2026-10-26.json) supersede the earlier delivery order below.
@@ -172,9 +174,9 @@ Reused: the official downloads already held in the earlier research cache, after
 
 The only existing-file change so far is `.gitignore`, adding ignores for `data/law/corpus/.cache/`, `tools/law-corpus/.cache/` and build-tool bytecode. No package/runtime dependency, project definition or application source has been changed.
 
-**Build-cache issue awaiting a specific scope exception:** the existing `Directory.Build.targets` explicitly copies `data/**/*`, including ignored corpus cache files. MSBuild inspection found 652 cache items in app content at the initial check. A one-line exclusion was proposed in `research/build-cache-exclusion-proposal.patch`, but the shared targets file is outside the assignment's edit allowlist and is not changed without the requested exception. For validation, the task's ignored cache is temporarily held outside that glob and restored in `finally`; this matches a clean checkout containing only shipped data. Do not publish a developer build containing the source cache. There is no production need for PDFs, OCR tools or page images.
+**Build-cache issue and current workaround:** the existing `Directory.Build.targets` explicitly copies `data/**/*`, including ignored corpus cache files. MSBuild inspection found 652 cache items in app content at the initial check. Shared targets remain unchanged. The current `validate_checkpoint.ps1` imports an opt-in cache filter for its build command; it no longer moves the source cache. This supersedes the earlier temporary-cache-hold workaround and avoids disrupting running extraction. It does not permanently fix ordinary developer-build packaging. Do not publish source-cache files, PDFs, OCR tools or page images in product output.
 
-Whole-code 20-article random visual sampling has not occurred because no whole code is claimed complete. No full PDF/page image is committed. Priority crop methods/hashes are retained, and crops can be regenerated from pinned official PDFs. The prompt's later `docs/law-corpus-checks/<code>/` crop requirement will need an explicit documented interpretation against its earlier permitted-path/no-page-image limits before that whole-code delivery.
+Whole-code 20-article random visual sampling has not occurred because no whole code is claimed complete. Priority crop methods/hashes are retained, and crops can be regenerated from pinned official PDFs. The brief explicitly requests small article crops in `docs/law-corpus-checks/<code>/` for that later delivery; those remain to be produced and inspected. Full PDFs and full-page images remain in ignored caches.
 
 ## OCR comparison and resumed work
 
@@ -194,15 +196,15 @@ Current checkpoint validation: the full Release solution built with **zero warni
 
 Validation now uses an opt-in `validation-cache-filter.targets` import, supplied only on the command line by `validate_checkpoint.ps1`. Inspection found zero source-cache items among93 retained app `None` items. This avoids moving evidence under running OCR and matches the shipped data of a clean checkout. Shared `Directory.Build.targets` remains unchanged; the earlier proposed exception is not assumed approved. Developer builds without this opt-in filter still require care not to package the ignored source cache. No full PDF, page image or OCR dependency belongs in product output.
 
-Remaining work, in the user's required order:
+Remaining work under the user's approved current-first order:
 
-1. Resolve or explicitly retain every priority transcription/temporal uncertainty, finish validation and push the checkpoint on `codex/law-corpus` only.
-2. Complete Civil original/amendment ledger, all versioned articles, independent numbering inventory, paragraph/cross-reference processing and the required visual sample.
-3. Complete CPCA, including all amendments and transition records.
-4. Complete Family Code.
-5. Complete only the Commercial chapters/title listed in the frozen scope, including all their historical versions; report as partial.
-6. Complete only the90-11 and90-04 chapters listed in the frozen scope, including all their historical versions; report both as partial.
-7. Validate, reconcile and push each recoverable delivery to the corpus branch. **Do not start special laws.**
+1. Resolve Civil font/layout and current inventory, finish applicable consolidation and quality checks, and retain explicit priority uncertainties.
+2. Complete current CPCA, applying22-13 and preserving installation/earlier-filed-case transitions.
+3. Complete current Family Code from the acquired bilingual source and applicable amendments.
+4. Complete only the frozen Commercial/90-11/90-04 units; report all three collections as partial.
+5. Validate each delivery, finish source sampling and legacy reconciliation, and push recoverable checkpoints to `codex/law-corpus` only.
+6. Preserve legally applicable older provisions in phaseOne; defer the comprehensive historical archive to phaseTwo.
+7. **Do not start special laws.** See the [state report](LAW-CORPUS-STATE-REPORT.md) for the detailed backlog. The checkpoint's existing build/tests and push are complete; whole-code legal-data certification is not.
 
 The 81 existing article records are mechanically compared below. A missing entry in this priority subset remains an explicit unresolved reconciliation item; it is not silently called the same text or a different legal version.
 

@@ -1,0 +1,41 @@
+{
+  "recordedOn": "2026-10-26",
+  "model": "arabic_PP-OCRv5_rec_mobile.onnx",
+  "asciiDigits": [
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9"
+  ],
+  "arabicIndicDigitCount": 10,
+  "alphabetSize": 749,
+  "calibrationCriticalTokenDiagnostics": [
+    {
+      "engine": "tesseract-fast",
+      "criticalTokensMissing": 6,
+      "criticalTokensExtra": 12,
+      "missingDigitTokens": 2
+    },
+    {
+      "engine": "tesseract-best",
+      "criticalTokensMissing": 2,
+      "criticalTokensExtra": 6,
+      "missingDigitTokens": 0
+    },
+    {
+      "engine": "paddle-onnx",
+      "criticalTokensMissing": 11,
+      "criticalTokensExtra": 2,
+      "missingDigitTokens": 7
+    }
+  ],
+  "originalAnchoredNumberLabels": 1,
+  "expectedBaseNumbers": 1003,
+  "warning": "On full original Civil columns this recognizer did not preserve numeric article labels adequately. Body CER excludes labels. Retain Tesseract numbering and independent source-image identity checks; never use the new stream alone to split/index articles or reconstruct dates/amounts. Word-error improvement does not imply safer legal numbers or negations."
+}

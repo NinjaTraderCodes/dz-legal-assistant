@@ -4,6 +4,30 @@ These Python tools create reproducible evidence from official publications. The 
 
 The optional Arabic second recognizer, measured comparison, caveats and hash-locked setup are documented in [OCR-COMPARISON.md](OCR-COMPARISON.md). It writes separate evidence and never upgrades a legal verification state or replaces canonical text. `merge_transcriptions.py` merges explicit reviewed/candidate batches while preserving later history and refusing implicit historical-text corrections.
 
+## Current-first bulk acquisition
+
+The user approved current codes first on26October2026, deferring full history except legally applicable transitions. `collect_current_sources.py` follows official Ministry edition links and records source hashes. Use its task User-Agent; direct requests succeeded even when browser fetches timed out. No unofficial mirror supplies article text.
+
+```powershell
+& tools/law-corpus/.cache/venv/Scripts/python.exe tools/law-corpus/collect_current_sources.py
+& tools/law-corpus/.cache/venv/Scripts/python.exe tools/law-corpus/collect_cpca_html.py
+& tools/law-corpus/.cache/venv/Scripts/python.exe tools/law-corpus/collect_cpca_html.py --offline
+& tools/law-corpus/.cache/venv/Scripts/python.exe tools/law-corpus/collect_civil_native.py
+& tools/law-corpus/.cache/venv/Scripts/python.exe tools/law-corpus/collect_family_native.py
+& tools/law-corpus/.cache/venv/Scripts/python.exe tools/law-corpus/compare_wipo_civil.py
+& tools/law-corpus/.cache/venv/Scripts/python.exe tools/law-corpus/current_cpca_inventory.py
+```
+
+CPCA acquisition parses only the Ministry's navigation data arrays, never downloaded JavaScript code. It validates article labels against the independently enumerated1–1065 catalogue, preserves published HTML paragraphs and characters, and pins every raw Windows-1256 page. Four concurrent requests and per-article checkpoints support recovery. Source edition2008 is not automatically current; the22-13 overlay must be applied first.
+
+Civil acquisition uses PDFium's full character stream because pypdf drops parts of this particular edition. Label-only compatibility decomposition maps offsets back into untouched raw text. Reversed PDF colon placement, font stretch and suffix spacing are recognized as label-layout variants. Raw bodies retain bad font mappings and are quarantined; no global letter repair or verification is inferred. Article blocks can still include headings/annotations. Independent repeal evidence explains absent labels without guessing that a missing label is a repeal. Repeated numbers have unique page/offset candidate IDs and must be reconciled before canonical import.
+
+Family acquisition selects the visible Arabic half using the publication's unrotated crop box and reviewed270-degree orientation. It checks coverage of every Arabic glyph, saves the French half separately, recognizes colon-delimited joined labels and stops at224 before the annexes. Raw font errors, editorial headings and page labels remain explicit cleanup work. The initial French-only metadata was incorrect and has been corrected; source bytes did not change.
+
+`compare_wipo_civil.py` compares every page of the user-supplied local WIPO Civil PDF with the pinned Ministry copy, without normalization. All268page texts match, including their font errors. Its screenshot review is bound to a fixed hash; changed rendering requires a new review. WIPO is recorded as an alternate copy and catalogue reference; the canonical source allowlist is unchanged.
+
+`research/current-batches/` contains source-acquisition records, not a checked runtime library. The typed loader's integration prototype remains separate. Do not wire drafting directly to these research batches. Preserve the exception paths for older contracts/deadlines and the22-13 installation/earlier-filed-case transition.
+
 `validate_checkpoint.ps1` now imports `validation-cache-filter.targets` only for its build command. This excludes ignored development cache items without moving live OCR evidence or modifying shared project targets. Run it through process-scoped `powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/law-corpus/validate_checkpoint.ps1`. The ordinary developer build is not permanently changed.
 
 ## Setup (Windows, Python 3.12)
@@ -119,7 +143,7 @@ The pilot builder reads **previously recorded** text/image review hashes from `r
 
 ## Checkpoint validation on this Windows laptop
 
-The shared `Directory.Build.targets` remains unchanged. Because it explicitly copies `data/**/*`, run full validation only after extraction/composition stops. `validate_checkpoint.ps1` temporarily moves only this task's ignored source cache outside that glob, checks the resolved paths, runs the full Release build/tests using SDK hard-link copy options, and restores the source cache in `finally`. It also removes only stale source-cache copies from this worktree's development `bin` outputs. Do not run a second extractor while the cache is held. A process-scoped `powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/law-corpus/validate_checkpoint.ps1` runs this local reviewed script without changing the machine's execution-policy setting.
+The shared `Directory.Build.targets` remains unchanged. It explicitly copies `data/**/*`, so `validate_checkpoint.ps1` supplies an opt-in `validation-cache-filter.targets` import that removes ignored source-cache items for that command only. It does not move live extraction evidence. The helper checks resolved paths and removes only stale source-cache copies from this worktree's development `bin` outputs, then runs full Release build/tests with SDK hard-link copy options. Finish canonical JSON composition before validation so copied product data is stable; independent source-cache extraction can continue. A process-scoped `powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/law-corpus/validate_checkpoint.ps1` runs the reviewed script without changing machine execution policy.
 
 ## Observed setup failures
 

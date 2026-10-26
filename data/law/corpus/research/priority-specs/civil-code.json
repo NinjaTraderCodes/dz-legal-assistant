@@ -2,7 +2,9 @@
   "schemaVersion": "1.0",
   "codeId": "civil-code",
   "generatedOn": "2026-10-26",
-  "unappliedPublications": [],
+  "unappliedPublications": [
+    "law-05-10"
+  ],
   "articles": [
     {
       "id": "civil-code:1",
@@ -306,6 +308,64 @@
               }
             ]
           }
+        },
+        {
+          "versionId": "civil-code:6@law-05-10",
+          "text": "تسري القوانين المتعلقة بالأهلية على جميع الأشخاص الذين تتوفر فيهم الشروط المنصوص عليها.\nوإذا صار شخص توفرت فيه الأهلية بحسب النص القديم ناقص الأهلية طبقا للنص الجديد، فلا يؤثر ذلك على تصرفاته السابقة.",
+          "paragraphs": [
+            "تسري القوانين المتعلقة بالأهلية على جميع الأشخاص الذين تتوفر فيهم الشروط المنصوص عليها.",
+            "وإذا صار شخص توفرت فيه الأهلية بحسب النص القديم ناقص الأهلية طبقا للنص الجديد، فلا يؤثر ذلك على تصرفاته السابقة."
+          ],
+          "path": [
+            "الكتاب الأول: أحكام عامة",
+            "الباب الأول: آثار القوانين وتطبيقها",
+            "الفصل الأول: تنازع القوانين من حيث الزمان"
+          ],
+          "inForceFrom": null,
+          "inForceTo": null,
+          "temporalStatus": "unsettled",
+          "introducedBy": "law-05-10",
+          "status": "in-force",
+          "evidenceFragments": [
+            {
+              "evidenceId": "civil-2005-conflict-a2005044-018-left",
+              "publicationId": "law-05-10",
+              "paragraph": 1
+            },
+            {
+              "evidenceId": "civil-2005-conflict-a2005044-018-left",
+              "publicationId": "law-05-10",
+              "paragraph": 2
+            }
+          ],
+          "crossReferences": [],
+          "verification": {
+            "checks": [
+              {
+                "check": "french-structure-matches",
+                "method": "Explicit image inspection of official Arabic/French Law05-10 columns; number, insertion alias and printed paragraph count",
+                "date": "2026-10-26",
+                "result": "passed",
+                "imageSha256s": [
+                  "4573e56969ac21d66449c8b6eb2a9bdf6de8d1032a05a265ba856fbf4e0d8435"
+                ],
+                "note": "Same article presence and2 paragraph blocks. Arabic13bis1 aligns with French13ter; no translation equivalence is asserted."
+              }
+            ],
+            "reasons": [
+              "Full Civil inventory and amendment-chain certification are incomplete; exact commencement remains unresolved."
+            ]
+          },
+          "imageReview": {
+            "decision": "transcription-resolved",
+            "reviewedOn": "2026-10-26",
+            "textSha256": "51df9e472160b3252f6208c0e0b43bac971041ab0f423cdce1d132d21f33dcaa",
+            "imageSha256s": [
+              "5658d96dbdcf82b79f6b5276f3ec9fe747a29ca3df611af32e8f77bbf7ed8deb",
+              "5658d96dbdcf82b79f6b5276f3ec9fe747a29ca3df611af32e8f77bbf7ed8deb"
+            ],
+            "note": "One-time word-by-word reading of the exact200DPI official Arabic columns displayed in this session. Article10 spans two pages and includes all four printed paragraphs. Opening/closing amendment quotation delimiters and article labels excluded; sentence punctuation retained. Repeated hashes reflect paragraph-mapped fragments of the same actual crop. Not lawyer verification or a whole-code inventory decision."
+          }
         }
       ]
     },
@@ -374,22 +434,33 @@
           "status": "in-force",
           "crossReferences": [],
           "evidenceIds": [
-            "civil-amendment-05-10-article-7"
+            "civil-2005-conflict-a2005044-018-left"
           ],
           "verification": {
+            "reasons": [
+              "Full Civil inventory/amendment certification and exact commencement remain unresolved."
+            ],
             "checks": [
               {
                 "check": "french-structure-matches",
-                "method": "Codex visual alignment of official Arabic/French page images; presence, numbering/alias and paragraph count only",
-                "date": "2026-10-25",
+                "method": "Explicit image inspection of Law05-10 ArabicPDF18/FrenchPDF15",
+                "date": "2026-10-26",
                 "result": "passed",
-                "note": "{\"arabicParagraphCount\": 4, \"arabicPdfPages\": [18], \"arabicPrintedPages\": [18], \"arabicSource\": \"A2005044\", \"code\": \"civil-code\", \"frenchNumber\": \"7\", \"frenchParagraphCount\": 4, \"frenchPdfPages\": [15], \"frenchPrintedPages\": [15], \"frenchSource\": \"F2005044\", \"number\": \"7\", \"publicationId\": \"law-05-10\", \"status\": \"matching\"}"
+                "imageSha256s": [
+                  "4573e56969ac21d66449c8b6eb2a9bdf6de8d1032a05a265ba856fbf4e0d8435"
+                ],
+                "note": "Article7 presence and four paragraph blocks match; no translation-equivalence claim."
               }
-            ],
-            "reasons": [
-              "The material phrase correction is certain. The2005 typeface uses some final-yeh shapes whose dots are not confidently distinguishable in the inspected image, especially التى/التي and تسرى/تسري; no codepoint-wide spelling change is proposed on that basis.",
-              "Until that narrowly identified orthographic question is settled, the material-corrected full string is a candidate, not a certified exact-glyph transcription. Temporal applicability also remains independently unsettled."
             ]
+          },
+          "imageReview": {
+            "decision": "transcription-resolved",
+            "reviewedOn": "2026-10-26",
+            "textSha256": "bbac75697eb0286e05df5195c3fa94cd6bad257d3d2b1c3982e4f36a6f7ada84",
+            "imageSha256s": [
+              "5658d96dbdcf82b79f6b5276f3ec9fe747a29ca3df611af32e8f77bbf7ed8deb"
+            ],
+            "note": "Renewed word-by-word reading of the exact200DPI image displayed in this session resolves the earlier orthography uncertainty. All four paragraph blocks, beginning/interrupting prescription and shorter remaining-period wording retained. Amendment quotation delimiters excluded. No commencement date is inferred."
           }
         }
       ]
@@ -437,6 +508,57 @@
                 "note": "Number and paragraph counts match the inspected original French page. Structural check only, not translation equivalence."
               }
             ]
+          }
+        },
+        {
+          "versionId": "civil-code:8@law-05-10",
+          "text": "تخضع الأدلة المعدة مقدما للنصوص المعمول بها في الوقت الذي أعد فيه الدليل، أو في الوقت الذي كان ينبغي فيه إعداده.",
+          "paragraphs": [
+            "تخضع الأدلة المعدة مقدما للنصوص المعمول بها في الوقت الذي أعد فيه الدليل، أو في الوقت الذي كان ينبغي فيه إعداده."
+          ],
+          "path": [
+            "الكتاب الأول: أحكام عامة",
+            "الباب الأول: آثار القوانين وتطبيقها",
+            "الفصل الأول: تنازع القوانين من حيث الزمان"
+          ],
+          "inForceFrom": null,
+          "inForceTo": null,
+          "temporalStatus": "unsettled",
+          "introducedBy": "law-05-10",
+          "status": "in-force",
+          "evidenceFragments": [
+            {
+              "evidenceId": "civil-2005-conflict-a2005044-018-left",
+              "publicationId": "law-05-10",
+              "paragraph": 1
+            }
+          ],
+          "crossReferences": [],
+          "verification": {
+            "checks": [
+              {
+                "check": "french-structure-matches",
+                "method": "Explicit image inspection of official Arabic/French Law05-10 columns; number, insertion alias and printed paragraph count",
+                "date": "2026-10-26",
+                "result": "passed",
+                "imageSha256s": [
+                  "4573e56969ac21d66449c8b6eb2a9bdf6de8d1032a05a265ba856fbf4e0d8435"
+                ],
+                "note": "Same article presence and1 paragraph blocks. Arabic13bis1 aligns with French13ter; no translation equivalence is asserted."
+              }
+            ],
+            "reasons": [
+              "Full Civil inventory and amendment-chain certification are incomplete; exact commencement remains unresolved."
+            ]
+          },
+          "imageReview": {
+            "decision": "transcription-resolved",
+            "reviewedOn": "2026-10-26",
+            "textSha256": "2bb0ba24c1dba4469438d91b46333ce5f83ed887a703efee9ea4ed36ddadbc2f",
+            "imageSha256s": [
+              "5658d96dbdcf82b79f6b5276f3ec9fe747a29ca3df611af32e8f77bbf7ed8deb"
+            ],
+            "note": "One-time word-by-word reading of the exact200DPI official Arabic columns displayed in this session. Article10 spans two pages and includes all four printed paragraphs. Opening/closing amendment quotation delimiters and article labels excluded; sentence punctuation retained. Repeated hashes reflect paragraph-mapped fragments of the same actual crop. Not lawyer verification or a whole-code inventory decision."
           }
         }
       ]
@@ -531,6 +653,103 @@
             ],
             "checks": []
           }
+        },
+        {
+          "versionId": "civil-code:10@law-05-10",
+          "text": "يسري على الحالة المدنية للأشخاص وأهليتهم قانون الدولة التي ينتمون إليها بجنسيتهم.\nومع ذلك ففي التصرفات المالية التي تعقد في الجزائر وتنتج آثارها فيها إذا كان أحد الطرفين أجنبيا ناقص الأهلية، وكان نقص أهليته يرجع إلى سبب فيه خفاء لا يسهل تبينه على الطرف الآخر، فإن هذا السبب لا يؤثر في أهليته وفي صحة المعاملة.\nأما الأشخاص الاعتبارية من شركات وجمعيات ومؤسسات وغيرها، يسري على نظامها القانوني قانون الدولة التي يوجد فيها مقرها الاجتماعي الرئيسي والفعلي.\nغير أنه، إذا مارست الأشخاص الاعتبارية الأجنبية نشاطا في الجزائر، فإنها تخضع للقانون الجزائري.",
+          "paragraphs": [
+            "يسري على الحالة المدنية للأشخاص وأهليتهم قانون الدولة التي ينتمون إليها بجنسيتهم.",
+            "ومع ذلك ففي التصرفات المالية التي تعقد في الجزائر وتنتج آثارها فيها إذا كان أحد الطرفين أجنبيا ناقص الأهلية، وكان نقص أهليته يرجع إلى سبب فيه خفاء لا يسهل تبينه على الطرف الآخر، فإن هذا السبب لا يؤثر في أهليته وفي صحة المعاملة.",
+            "أما الأشخاص الاعتبارية من شركات وجمعيات ومؤسسات وغيرها، يسري على نظامها القانوني قانون الدولة التي يوجد فيها مقرها الاجتماعي الرئيسي والفعلي.",
+            "غير أنه، إذا مارست الأشخاص الاعتبارية الأجنبية نشاطا في الجزائر، فإنها تخضع للقانون الجزائري."
+          ],
+          "path": [
+            "الكتاب الأول: أحكام عامة",
+            "الباب الأول: آثار القوانين وتطبيقها",
+            "الفصل الثاني: تنازع القوانين من حيث المكان"
+          ],
+          "inForceFrom": null,
+          "inForceTo": null,
+          "temporalStatus": "unsettled",
+          "introducedBy": "law-05-10",
+          "status": "in-force",
+          "evidenceFragments": [
+            {
+              "evidenceId": "civil-2005-conflict-a2005044-018-left",
+              "publicationId": "law-05-10",
+              "paragraph": 1
+            },
+            {
+              "evidenceId": "civil-2005-conflict-a2005044-019-right",
+              "publicationId": "law-05-10",
+              "paragraph": 1
+            },
+            {
+              "evidenceId": "civil-2005-conflict-a2005044-018-left",
+              "publicationId": "law-05-10",
+              "paragraph": 2
+            },
+            {
+              "evidenceId": "civil-2005-conflict-a2005044-019-right",
+              "publicationId": "law-05-10",
+              "paragraph": 2
+            },
+            {
+              "evidenceId": "civil-2005-conflict-a2005044-018-left",
+              "publicationId": "law-05-10",
+              "paragraph": 3
+            },
+            {
+              "evidenceId": "civil-2005-conflict-a2005044-019-right",
+              "publicationId": "law-05-10",
+              "paragraph": 3
+            },
+            {
+              "evidenceId": "civil-2005-conflict-a2005044-018-left",
+              "publicationId": "law-05-10",
+              "paragraph": 4
+            },
+            {
+              "evidenceId": "civil-2005-conflict-a2005044-019-right",
+              "publicationId": "law-05-10",
+              "paragraph": 4
+            }
+          ],
+          "crossReferences": [],
+          "verification": {
+            "checks": [
+              {
+                "check": "french-structure-matches",
+                "method": "Explicit image inspection of official Arabic/French Law05-10 columns; number, insertion alias and printed paragraph count",
+                "date": "2026-10-26",
+                "result": "passed",
+                "imageSha256s": [
+                  "4573e56969ac21d66449c8b6eb2a9bdf6de8d1032a05a265ba856fbf4e0d8435",
+                  "2e7a4c0f1fd702f9647a65d0c46985cbfed9d587d6de1b730d9b06da9b4027c1"
+                ],
+                "note": "Same article presence and4 paragraph blocks. Arabic13bis1 aligns with French13ter; no translation equivalence is asserted."
+              }
+            ],
+            "reasons": [
+              "Full Civil inventory and amendment-chain certification are incomplete; exact commencement remains unresolved."
+            ]
+          },
+          "imageReview": {
+            "decision": "transcription-resolved",
+            "reviewedOn": "2026-10-26",
+            "textSha256": "23dcdd5e379665a216635f5f283ef4609aaf240ce386408a1fcd435413266baf",
+            "imageSha256s": [
+              "5658d96dbdcf82b79f6b5276f3ec9fe747a29ca3df611af32e8f77bbf7ed8deb",
+              "7ee9a0377881c36e2a98ff457766da47ba2c296de8ce1b241a814bf7a9bb3abb",
+              "5658d96dbdcf82b79f6b5276f3ec9fe747a29ca3df611af32e8f77bbf7ed8deb",
+              "7ee9a0377881c36e2a98ff457766da47ba2c296de8ce1b241a814bf7a9bb3abb",
+              "5658d96dbdcf82b79f6b5276f3ec9fe747a29ca3df611af32e8f77bbf7ed8deb",
+              "7ee9a0377881c36e2a98ff457766da47ba2c296de8ce1b241a814bf7a9bb3abb",
+              "5658d96dbdcf82b79f6b5276f3ec9fe747a29ca3df611af32e8f77bbf7ed8deb",
+              "7ee9a0377881c36e2a98ff457766da47ba2c296de8ce1b241a814bf7a9bb3abb"
+            ],
+            "note": "One-time word-by-word reading of the exact200DPI official Arabic columns displayed in this session. Article10 spans two pages and includes all four printed paragraphs. Opening/closing amendment quotation delimiters and article labels excluded; sentence punctuation retained. Repeated hashes reflect paragraph-mapped fragments of the same actual crop. Not lawyer verification or a whole-code inventory decision."
+          }
         }
       ]
     },
@@ -586,6 +805,57 @@
             ],
             "note": "One-time word-by-word reading of the exact final polygon crop displayed in this session. Printed dotless-yeh/hamza spellings and punctuation preserved; labels and physical line wraps excluded. Not legal-reviewer verification and not a version-chain certificate."
           }
+        },
+        {
+          "versionId": "civil-code:11@law-05-10",
+          "text": "يسري على الشروط الموضوعية الخاصة بصحة الزواج القانون الوطني لكل من الزوجين.",
+          "paragraphs": [
+            "يسري على الشروط الموضوعية الخاصة بصحة الزواج القانون الوطني لكل من الزوجين."
+          ],
+          "path": [
+            "الكتاب الأول: أحكام عامة",
+            "الباب الأول: آثار القوانين وتطبيقها",
+            "الفصل الثاني: تنازع القوانين من حيث المكان"
+          ],
+          "inForceFrom": null,
+          "inForceTo": null,
+          "temporalStatus": "unsettled",
+          "introducedBy": "law-05-10",
+          "status": "in-force",
+          "evidenceFragments": [
+            {
+              "evidenceId": "civil-2005-conflict-a2005044-019-right",
+              "publicationId": "law-05-10",
+              "paragraph": 1
+            }
+          ],
+          "crossReferences": [],
+          "verification": {
+            "checks": [
+              {
+                "check": "french-structure-matches",
+                "method": "Explicit image inspection of official Arabic/French Law05-10 columns; number, insertion alias and printed paragraph count",
+                "date": "2026-10-26",
+                "result": "passed",
+                "imageSha256s": [
+                  "2e7a4c0f1fd702f9647a65d0c46985cbfed9d587d6de1b730d9b06da9b4027c1"
+                ],
+                "note": "Same article presence and1 paragraph blocks. Arabic13bis1 aligns with French13ter; no translation equivalence is asserted."
+              }
+            ],
+            "reasons": [
+              "Full Civil inventory and amendment-chain certification are incomplete; exact commencement remains unresolved."
+            ]
+          },
+          "imageReview": {
+            "decision": "transcription-resolved",
+            "reviewedOn": "2026-10-26",
+            "textSha256": "9da8d51ff4383ea8c52a52f4a388db1e7e82cd76d0b581afcae40af0500e3e88",
+            "imageSha256s": [
+              "7ee9a0377881c36e2a98ff457766da47ba2c296de8ce1b241a814bf7a9bb3abb"
+            ],
+            "note": "One-time word-by-word reading of the exact200DPI official Arabic columns displayed in this session. Article10 spans two pages and includes all four printed paragraphs. Opening/closing amendment quotation delimiters and article labels excluded; sentence punctuation retained. Repeated hashes reflect paragraph-mapped fragments of the same actual crop. Not lawyer verification or a whole-code inventory decision."
+          }
         }
       ]
     },
@@ -634,6 +904,64 @@
               }
             ]
           }
+        },
+        {
+          "versionId": "civil-code:12@law-05-10",
+          "text": "يسري قانون الدولة التي ينتمي إليها الزوج وقت انعقاد الزواج على الآثار الشخصية والمالية التي يرتبها عقد الزواج.\nويسري على انحلال الزواج والانفصال الجسماني القانون الوطني الذي ينتمي إليه الزوج وقت رفع الدعوى.",
+          "paragraphs": [
+            "يسري قانون الدولة التي ينتمي إليها الزوج وقت انعقاد الزواج على الآثار الشخصية والمالية التي يرتبها عقد الزواج.",
+            "ويسري على انحلال الزواج والانفصال الجسماني القانون الوطني الذي ينتمي إليه الزوج وقت رفع الدعوى."
+          ],
+          "path": [
+            "الكتاب الأول: أحكام عامة",
+            "الباب الأول: آثار القوانين وتطبيقها",
+            "الفصل الثاني: تنازع القوانين من حيث المكان"
+          ],
+          "inForceFrom": null,
+          "inForceTo": null,
+          "temporalStatus": "unsettled",
+          "introducedBy": "law-05-10",
+          "status": "in-force",
+          "evidenceFragments": [
+            {
+              "evidenceId": "civil-2005-conflict-a2005044-019-right",
+              "publicationId": "law-05-10",
+              "paragraph": 1
+            },
+            {
+              "evidenceId": "civil-2005-conflict-a2005044-019-right",
+              "publicationId": "law-05-10",
+              "paragraph": 2
+            }
+          ],
+          "crossReferences": [],
+          "verification": {
+            "checks": [
+              {
+                "check": "french-structure-matches",
+                "method": "Explicit image inspection of official Arabic/French Law05-10 columns; number, insertion alias and printed paragraph count",
+                "date": "2026-10-26",
+                "result": "passed",
+                "imageSha256s": [
+                  "2e7a4c0f1fd702f9647a65d0c46985cbfed9d587d6de1b730d9b06da9b4027c1"
+                ],
+                "note": "Same article presence and2 paragraph blocks. Arabic13bis1 aligns with French13ter; no translation equivalence is asserted."
+              }
+            ],
+            "reasons": [
+              "Full Civil inventory and amendment-chain certification are incomplete; exact commencement remains unresolved."
+            ]
+          },
+          "imageReview": {
+            "decision": "transcription-resolved",
+            "reviewedOn": "2026-10-26",
+            "textSha256": "2c3981c7273b035ae51829f77f401cf537f82a18ce72a5dc588de0f8d216f0bb",
+            "imageSha256s": [
+              "7ee9a0377881c36e2a98ff457766da47ba2c296de8ce1b241a814bf7a9bb3abb",
+              "7ee9a0377881c36e2a98ff457766da47ba2c296de8ce1b241a814bf7a9bb3abb"
+            ],
+            "note": "One-time word-by-word reading of the exact200DPI official Arabic columns displayed in this session. Article10 spans two pages and includes all four printed paragraphs. Opening/closing amendment quotation delimiters and article labels excluded; sentence punctuation retained. Repeated hashes reflect paragraph-mapped fragments of the same actual crop. Not lawyer verification or a whole-code inventory decision."
+          }
         }
       ]
     },
@@ -681,6 +1009,148 @@
               "French structural discrepancy: Arabic refers explicitly to11 and12; French prints12 and13. Same article presence/count does not resolve this cross-reference disagreement."
             ],
             "checks": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "civil-code:13-bis",
+      "number": "13 مكرر",
+      "canonicalNumber": "13 مكرر",
+      "path": [
+        "الكتاب الأول: أحكام عامة",
+        "الباب الأول: آثار القوانين وتطبيقها",
+        "الفصل الثاني: تنازع القوانين من حيث المكان"
+      ],
+      "availability": "text",
+      "versions": [
+        {
+          "versionId": "civil-code:13-bis@law-05-10",
+          "text": "يسري على النسب والاعتراف به وإنكاره قانون جنسية الأب وقت ميلاد الطفل.\nوفي حالة وفاة الأب قبل ميلاد الطفل يطبق قانون جنسية الأب وقت الوفاة.",
+          "paragraphs": [
+            "يسري على النسب والاعتراف به وإنكاره قانون جنسية الأب وقت ميلاد الطفل.",
+            "وفي حالة وفاة الأب قبل ميلاد الطفل يطبق قانون جنسية الأب وقت الوفاة."
+          ],
+          "path": [
+            "الكتاب الأول: أحكام عامة",
+            "الباب الأول: آثار القوانين وتطبيقها",
+            "الفصل الثاني: تنازع القوانين من حيث المكان"
+          ],
+          "inForceFrom": null,
+          "inForceTo": null,
+          "temporalStatus": "unsettled",
+          "introducedBy": "law-05-10",
+          "status": "in-force",
+          "evidenceFragments": [
+            {
+              "evidenceId": "civil-2005-conflict-a2005044-019-right",
+              "publicationId": "law-05-10",
+              "paragraph": 1
+            },
+            {
+              "evidenceId": "civil-2005-conflict-a2005044-019-right",
+              "publicationId": "law-05-10",
+              "paragraph": 2
+            }
+          ],
+          "crossReferences": [],
+          "verification": {
+            "checks": [
+              {
+                "check": "french-structure-matches",
+                "method": "Explicit image inspection of official Arabic/French Law05-10 columns; number, insertion alias and printed paragraph count",
+                "date": "2026-10-26",
+                "result": "passed",
+                "imageSha256s": [
+                  "2e7a4c0f1fd702f9647a65d0c46985cbfed9d587d6de1b730d9b06da9b4027c1"
+                ],
+                "note": "Same article presence and2 paragraph blocks. Arabic13bis1 aligns with French13ter; no translation equivalence is asserted."
+              }
+            ],
+            "reasons": [
+              "Full Civil inventory and amendment-chain certification are incomplete; exact commencement remains unresolved."
+            ]
+          },
+          "imageReview": {
+            "decision": "transcription-resolved",
+            "reviewedOn": "2026-10-26",
+            "textSha256": "95d0c63bcb34a64ed773d2818b06e0b5b08f347fa940f6cbd5ea949e057843e7",
+            "imageSha256s": [
+              "7ee9a0377881c36e2a98ff457766da47ba2c296de8ce1b241a814bf7a9bb3abb",
+              "7ee9a0377881c36e2a98ff457766da47ba2c296de8ce1b241a814bf7a9bb3abb"
+            ],
+            "note": "One-time word-by-word reading of the exact200DPI official Arabic columns displayed in this session. Article10 spans two pages and includes all four printed paragraphs. Opening/closing amendment quotation delimiters and article labels excluded; sentence punctuation retained. Repeated hashes reflect paragraph-mapped fragments of the same actual crop. Not lawyer verification or a whole-code inventory decision."
+          }
+        }
+      ]
+    },
+    {
+      "id": "civil-code:13-bis-1",
+      "number": "13 مكرر 1",
+      "canonicalNumber": "13 مكرر 1",
+      "path": [
+        "الكتاب الأول: أحكام عامة",
+        "الباب الأول: آثار القوانين وتطبيقها",
+        "الفصل الثاني: تنازع القوانين من حيث المكان"
+      ],
+      "availability": "text",
+      "versions": [
+        {
+          "versionId": "civil-code:13-bis-1@law-05-10",
+          "text": "يسري على صحة الكفالة قانون جنسية كل من الكفيل والمكفول وقت إجرائها، ويسري على آثارها قانون جنسية الكفيل.\nوتطبق نفس الأحكام على التبني.",
+          "paragraphs": [
+            "يسري على صحة الكفالة قانون جنسية كل من الكفيل والمكفول وقت إجرائها، ويسري على آثارها قانون جنسية الكفيل.",
+            "وتطبق نفس الأحكام على التبني."
+          ],
+          "path": [
+            "الكتاب الأول: أحكام عامة",
+            "الباب الأول: آثار القوانين وتطبيقها",
+            "الفصل الثاني: تنازع القوانين من حيث المكان"
+          ],
+          "inForceFrom": null,
+          "inForceTo": null,
+          "temporalStatus": "unsettled",
+          "introducedBy": "law-05-10",
+          "status": "in-force",
+          "evidenceFragments": [
+            {
+              "evidenceId": "civil-2005-conflict-a2005044-019-right",
+              "publicationId": "law-05-10",
+              "paragraph": 1
+            },
+            {
+              "evidenceId": "civil-2005-conflict-a2005044-019-right",
+              "publicationId": "law-05-10",
+              "paragraph": 2
+            }
+          ],
+          "crossReferences": [],
+          "verification": {
+            "checks": [
+              {
+                "check": "french-structure-matches",
+                "method": "Explicit image inspection of official Arabic/French Law05-10 columns; number, insertion alias and printed paragraph count",
+                "date": "2026-10-26",
+                "result": "passed",
+                "imageSha256s": [
+                  "2e7a4c0f1fd702f9647a65d0c46985cbfed9d587d6de1b730d9b06da9b4027c1"
+                ],
+                "note": "Same article presence and2 paragraph blocks. Arabic13bis1 aligns with French13ter; no translation equivalence is asserted."
+              }
+            ],
+            "reasons": [
+              "Full Civil inventory and amendment-chain certification are incomplete; exact commencement remains unresolved."
+            ]
+          },
+          "imageReview": {
+            "decision": "transcription-resolved",
+            "reviewedOn": "2026-10-26",
+            "textSha256": "566c9b58442c3b206c00bbd390b6ebbb1b057e3dbba0fa8132548da87e1f317e",
+            "imageSha256s": [
+              "7ee9a0377881c36e2a98ff457766da47ba2c296de8ce1b241a814bf7a9bb3abb",
+              "7ee9a0377881c36e2a98ff457766da47ba2c296de8ce1b241a814bf7a9bb3abb"
+            ],
+            "note": "One-time word-by-word reading of the exact200DPI official Arabic columns displayed in this session. Article10 spans two pages and includes all four printed paragraphs. Opening/closing amendment quotation delimiters and article labels excluded; sentence punctuation retained. Repeated hashes reflect paragraph-mapped fragments of the same actual crop. Not lawyer verification or a whole-code inventory decision."
           }
         }
       ]
@@ -784,6 +1254,64 @@
               }
             ]
           }
+        },
+        {
+          "versionId": "civil-code:15@law-05-10",
+          "text": "يسري على الشروط الموضوعية الخاصة بالولاية والوصاية والقوامة وغيرها من النظم المقررة لحماية القصر وعديمي الأهلية والغائبين قانون الشخص الذي تجب حمايته.\nغير أنه يطبق القانون الجزائري بالنسبة للتدابير المستعجلة إذا كان القصر وعديمو الأهلية والغائبون موجودين في الجزائر وقت اتخاذ هذه التدابير، أو تعلقت بأموالهم الموجودة في الجزائر.",
+          "paragraphs": [
+            "يسري على الشروط الموضوعية الخاصة بالولاية والوصاية والقوامة وغيرها من النظم المقررة لحماية القصر وعديمي الأهلية والغائبين قانون الشخص الذي تجب حمايته.",
+            "غير أنه يطبق القانون الجزائري بالنسبة للتدابير المستعجلة إذا كان القصر وعديمو الأهلية والغائبون موجودين في الجزائر وقت اتخاذ هذه التدابير، أو تعلقت بأموالهم الموجودة في الجزائر."
+          ],
+          "path": [
+            "الكتاب الأول: أحكام عامة",
+            "الباب الأول: آثار القوانين وتطبيقها",
+            "الفصل الثاني: تنازع القوانين من حيث المكان"
+          ],
+          "inForceFrom": null,
+          "inForceTo": null,
+          "temporalStatus": "unsettled",
+          "introducedBy": "law-05-10",
+          "status": "in-force",
+          "evidenceFragments": [
+            {
+              "evidenceId": "civil-2005-conflict-a2005044-019-left",
+              "publicationId": "law-05-10",
+              "paragraph": 1
+            },
+            {
+              "evidenceId": "civil-2005-conflict-a2005044-019-left",
+              "publicationId": "law-05-10",
+              "paragraph": 2
+            }
+          ],
+          "crossReferences": [],
+          "verification": {
+            "checks": [
+              {
+                "check": "french-structure-matches",
+                "method": "Explicit image inspection of official Arabic/French Law05-10 columns; number, insertion alias and printed paragraph count",
+                "date": "2026-10-26",
+                "result": "passed",
+                "imageSha256s": [
+                  "2e7a4c0f1fd702f9647a65d0c46985cbfed9d587d6de1b730d9b06da9b4027c1"
+                ],
+                "note": "Same article presence and2 paragraph blocks. Arabic13bis1 aligns with French13ter; no translation equivalence is asserted."
+              }
+            ],
+            "reasons": [
+              "Full Civil inventory and amendment-chain certification are incomplete; exact commencement remains unresolved."
+            ]
+          },
+          "imageReview": {
+            "decision": "transcription-resolved",
+            "reviewedOn": "2026-10-26",
+            "textSha256": "bcb365ae3913eda8583ec61a2f2f67afac46ac8c9120767b9744af91d54e257f",
+            "imageSha256s": [
+              "87d47d74e0c4b76d349f89977030032e40540dcb919e4e668e7d6b968057cdf2",
+              "87d47d74e0c4b76d349f89977030032e40540dcb919e4e668e7d6b968057cdf2"
+            ],
+            "note": "One-time word-by-word reading of the exact200DPI official Arabic columns displayed in this session. Article10 spans two pages and includes all four printed paragraphs. Opening/closing amendment quotation delimiters and article labels excluded; sentence punctuation retained. Repeated hashes reflect paragraph-mapped fragments of the same actual crop. Not lawyer verification or a whole-code inventory decision."
+          }
         }
       ]
     },
@@ -832,6 +1360,65 @@
               }
             ]
           }
+        },
+        {
+          "versionId": "civil-code:16@law-05-10",
+          "text": "يسري على الميراث والوصية وسائر التصرفات التي تنفذ بعد الموت قانون جنسية الهالك أو الموصي أو من صدر منه التصرف وقت موته.\nويسري على الهبة والوقف قانون جنسية الواهب أو الواقف وقت إجرائهما.",
+          "paragraphs": [
+            "يسري على الميراث والوصية وسائر التصرفات التي تنفذ بعد الموت قانون جنسية الهالك أو الموصي أو من صدر منه التصرف وقت موته.",
+            "ويسري على الهبة والوقف قانون جنسية الواهب أو الواقف وقت إجرائهما."
+          ],
+          "path": [
+            "الكتاب الأول: أحكام عامة",
+            "الباب الأول: آثار القوانين وتطبيقها",
+            "الفصل الثاني: تنازع القوانين من حيث المكان"
+          ],
+          "inForceFrom": null,
+          "inForceTo": null,
+          "temporalStatus": "unsettled",
+          "introducedBy": "law-05-10",
+          "status": "in-force",
+          "evidenceFragments": [
+            {
+              "evidenceId": "civil-2005-conflict-a2005044-019-left",
+              "publicationId": "law-05-10",
+              "paragraph": 1
+            },
+            {
+              "evidenceId": "civil-2005-conflict-a2005044-019-left",
+              "publicationId": "law-05-10",
+              "paragraph": 2
+            }
+          ],
+          "crossReferences": [],
+          "verification": {
+            "checks": [
+              {
+                "check": "french-structure-matches",
+                "method": "Explicit image inspection of official Arabic/French Law05-10 columns; number, insertion alias and printed paragraph count",
+                "date": "2026-10-26",
+                "result": "passed",
+                "imageSha256s": [
+                  "2e7a4c0f1fd702f9647a65d0c46985cbfed9d587d6de1b730d9b06da9b4027c1",
+                  "0ec4589d298266e3f8b4342d96ab39d912bd60de90141111ddb56ad6e040fced"
+                ],
+                "note": "Same article presence and2 paragraph blocks. Arabic13bis1 aligns with French13ter; no translation equivalence is asserted."
+              }
+            ],
+            "reasons": [
+              "Full Civil inventory and amendment-chain certification are incomplete; exact commencement remains unresolved."
+            ]
+          },
+          "imageReview": {
+            "decision": "transcription-resolved",
+            "reviewedOn": "2026-10-26",
+            "textSha256": "f1dd2feb71fa862297bcca2a9e5f96e9fd59f9d5740cb43ebe66de4c61bc0307",
+            "imageSha256s": [
+              "87d47d74e0c4b76d349f89977030032e40540dcb919e4e668e7d6b968057cdf2",
+              "87d47d74e0c4b76d349f89977030032e40540dcb919e4e668e7d6b968057cdf2"
+            ],
+            "note": "One-time word-by-word reading of the exact200DPI official Arabic columns displayed in this session. Article10 spans two pages and includes all four printed paragraphs. Opening/closing amendment quotation delimiters and article labels excluded; sentence punctuation retained. Repeated hashes reflect paragraph-mapped fragments of the same actual crop. Not lawyer verification or a whole-code inventory decision."
+          }
         }
       ]
     },
@@ -877,6 +1464,150 @@
                 ],
                 "note": "Number and paragraph counts match the inspected original French page. Structural check only, not translation equivalence."
               }
+            ]
+          }
+        },
+        {
+          "versionId": "civil-code:17@law-05-10",
+          "text": "يخضع تكييف المال سواء كان عقارا أو منقولا إلى قانون الدولة التي يوجد فيها.\nيسري على الحيازة والملكية والحقوق العينية الأخرى قانون موقع العقار. ويسري على المنقول المادي قانون الجهة التي يوجد فيها وقت تحقق السبب الذي ترتب عليه كسب الحيازة أو الملكية أو الحقوق العينية الأخرى، أو فقدها.",
+          "paragraphs": [
+            "يخضع تكييف المال سواء كان عقارا أو منقولا إلى قانون الدولة التي يوجد فيها.",
+            "يسري على الحيازة والملكية والحقوق العينية الأخرى قانون موقع العقار. ويسري على المنقول المادي قانون الجهة التي يوجد فيها وقت تحقق السبب الذي ترتب عليه كسب الحيازة أو الملكية أو الحقوق العينية الأخرى، أو فقدها."
+          ],
+          "path": [
+            "الكتاب الأول: أحكام عامة",
+            "الباب الأول: آثار القوانين وتطبيقها",
+            "الفصل الثاني: تنازع القوانين من حيث المكان"
+          ],
+          "inForceFrom": null,
+          "inForceTo": null,
+          "temporalStatus": "unsettled",
+          "introducedBy": "law-05-10",
+          "status": "in-force",
+          "evidenceFragments": [
+            {
+              "evidenceId": "civil-2005-conflict-a2005044-019-left",
+              "publicationId": "law-05-10",
+              "paragraph": 1
+            },
+            {
+              "evidenceId": "civil-2005-conflict-a2005044-019-left",
+              "publicationId": "law-05-10",
+              "paragraph": 2
+            }
+          ],
+          "crossReferences": [],
+          "verification": {
+            "checks": [
+              {
+                "check": "french-structure-matches",
+                "method": "Explicit image inspection of official Arabic/French Law05-10 columns; number, insertion alias and printed paragraph count",
+                "date": "2026-10-26",
+                "result": "passed",
+                "imageSha256s": [
+                  "0ec4589d298266e3f8b4342d96ab39d912bd60de90141111ddb56ad6e040fced"
+                ],
+                "note": "Same article presence and2 paragraph blocks. Arabic13bis1 aligns with French13ter; no translation equivalence is asserted."
+              }
+            ],
+            "reasons": [
+              "Full Civil inventory and amendment-chain certification are incomplete; exact commencement remains unresolved."
+            ]
+          },
+          "imageReview": {
+            "decision": "transcription-resolved",
+            "reviewedOn": "2026-10-26",
+            "textSha256": "1b2990dae13c3097c7f2e4f55e9bf79777a0ef2393e840d4d1c1570f2e5ad275",
+            "imageSha256s": [
+              "87d47d74e0c4b76d349f89977030032e40540dcb919e4e668e7d6b968057cdf2",
+              "87d47d74e0c4b76d349f89977030032e40540dcb919e4e668e7d6b968057cdf2"
+            ],
+            "note": "One-time word-by-word reading of the exact200DPI official Arabic columns displayed in this session. Article10 spans two pages and includes all four printed paragraphs. Opening/closing amendment quotation delimiters and article labels excluded; sentence punctuation retained. Repeated hashes reflect paragraph-mapped fragments of the same actual crop. Not lawyer verification or a whole-code inventory decision."
+          }
+        }
+      ]
+    },
+    {
+      "id": "civil-code:17-bis",
+      "number": "17 مكرر",
+      "canonicalNumber": "17 مكرر",
+      "path": [
+        "الكتاب الأول: أحكام عامة",
+        "الباب الأول: آثار القوانين وتطبيقها",
+        "الفصل الثاني: تنازع القوانين من حيث المكان"
+      ],
+      "availability": "text",
+      "versions": [
+        {
+          "versionId": "civil-code:17-bis@law-05-10",
+          "text": "يسري على الأموال المعنوية قانون محل وجودها وقت تحقق السبب الذي ترتب عليه كسب الحيازة أو الملكية أو الحقوق العينية الأخرى، أو فقدها.\nيعدّ محل وجود الملكية الأدبية والفنية مكان النشر الأول للمصنف أو إنجازه.\nويعد محل وجود براءة الاختراع البلد الذي منحها.\nويعد محل وجود الرسم والنموذج الصناعيين البلد الذي سجلا أو أودعا فيه.\nويعد محل وجود العلامة التجارية منشأة الاستغلال.\nويعد محل وجود الاسم التجاري بلد المقر الرئيسي للمحل التجاري.",
+          "paragraphs": [
+            "يسري على الأموال المعنوية قانون محل وجودها وقت تحقق السبب الذي ترتب عليه كسب الحيازة أو الملكية أو الحقوق العينية الأخرى، أو فقدها.",
+            "يعدّ محل وجود الملكية الأدبية والفنية مكان النشر الأول للمصنف أو إنجازه.",
+            "ويعد محل وجود براءة الاختراع البلد الذي منحها.",
+            "ويعد محل وجود الرسم والنموذج الصناعيين البلد الذي سجلا أو أودعا فيه.",
+            "ويعد محل وجود العلامة التجارية منشأة الاستغلال.",
+            "ويعد محل وجود الاسم التجاري بلد المقر الرئيسي للمحل التجاري."
+          ],
+          "path": [
+            "الكتاب الأول: أحكام عامة",
+            "الباب الأول: آثار القوانين وتطبيقها",
+            "الفصل الثاني: تنازع القوانين من حيث المكان"
+          ],
+          "inForceFrom": null,
+          "inForceTo": null,
+          "temporalStatus": "unsettled",
+          "introducedBy": "law-05-10",
+          "status": "in-force",
+          "evidenceFragments": [
+            {
+              "evidenceId": "civil-2005-conflict-a2005044-019-left",
+              "publicationId": "law-05-10",
+              "paragraph": 1
+            },
+            {
+              "evidenceId": "civil-2005-conflict-a2005044-019-left",
+              "publicationId": "law-05-10",
+              "paragraph": 2
+            },
+            {
+              "evidenceId": "civil-2005-conflict-a2005044-019-left",
+              "publicationId": "law-05-10",
+              "paragraph": 3
+            },
+            {
+              "evidenceId": "civil-2005-conflict-a2005044-019-left",
+              "publicationId": "law-05-10",
+              "paragraph": 4
+            },
+            {
+              "evidenceId": "civil-2005-conflict-a2005044-019-left",
+              "publicationId": "law-05-10",
+              "paragraph": 5
+            },
+            {
+              "evidenceId": "civil-2005-conflict-a2005044-019-left",
+              "publicationId": "law-05-10",
+              "paragraph": 6
+            }
+          ],
+          "crossReferences": [],
+          "verification": {
+            "checks": [
+              {
+                "check": "french-structure-matches",
+                "method": "Explicit image inspection of official Arabic/French Law05-10 columns; number, insertion alias and printed paragraph count",
+                "date": "2026-10-26",
+                "result": "passed",
+                "imageSha256s": [
+                  "0ec4589d298266e3f8b4342d96ab39d912bd60de90141111ddb56ad6e040fced"
+                ],
+                "note": "Same article presence and6 paragraph blocks. Arabic13bis1 aligns with French13ter; no translation equivalence is asserted."
+              }
+            ],
+            "reasons": [
+              "Full Civil inventory and amendment-chain certification are incomplete; exact commencement remains unresolved.",
+              "Original vocalization and precise diacritics in the six-paragraph17bis reading still need another image inspection; no passed transcription check."
             ]
           }
         }

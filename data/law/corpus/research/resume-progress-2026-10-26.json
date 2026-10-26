@@ -1,13 +1,13 @@
 {
-  "status": "in-progress; no complete code delivered",
+  "status": "Current-first source acquisition checkpoint; no complete checked current code delivered",
   "branch": "codex/law-corpus",
-  "baseCheckpoint": "04d638c22a2e5fd55e7ef355a05c391c4cfaa58a",
+  "baseCheckpoint": "1323ea3",
   "scope": "Complete Civil, CPCA/22-13 and Family; bounded Commercial/90-11/90-04 chapters only; no special laws.",
   "corpus": {
-    "identities": 46,
-    "versions": 48,
+    "identities": 49,
+    "versions": 59,
     "checked": 0,
-    "partlyChecked": 31,
+    "partlyChecked": 42,
     "unsettled": 17
   },
   "completed": [
@@ -16,15 +16,67 @@
     "Added26 original bodies6,8-32, retaining14 unresolved transcriptions and unknown historical endpoints.",
     "Compared18 calibration and12 follow-up bodies; adopted a separate Arabic PP-OCRv5 ONNX stream.",
     "Added hash-pinned models/dependencies, atomic supplementary resume, and an opt-in build cache filter.",
-    "Release build0warnings/0errors;687 .NET and48 fictitious Python tests; schemas and typed validation passed."
+    "Release build0warnings/0errors;687 .NET and48 fictitious Python tests; schemas and typed validation passed.",
+    "All176 Arabic Civil supplementary windows completed with raw artifact/hash replay; wording benefit does not extend to reliable number labels.",
+    "Replayed11 full replacements/insertions for Civil6,8,10-12,13bis/13bis1,15-17/17bis; preserved earlier versions and unknown commencement bounds.",
+    "Resolved2005 article7 transcription uncertainty from a new bound source-image reading;17bis vocalization deliberately unsettled.",
+    "Read83-01 global-substitution tokens and original743-772 heading boundaries; replacements still unapplied.",
+    "Merged upstreamAGENTS.md/onboarding brief only, with full build/regression checks passing after merge.",
+    "Collected all1065 CPCA2008 Ministry HTML articles with0failures and offline hash replay.",
+    "Collected1058 Civil raw blocks with1049 distinct number candidates; independently explained absent41 by an explicit repeal.",
+    "Corrected Family French-only misclassification; collected232 raw Arabic blocks, all224 base labels and8 insertions, excluding annexes.",
+    "Compared the user-supplied local WIPO Civil PDF against the Ministry copy: all268 raw page texts identical, including font defects."
   ],
-  "running": "176-window Arabic Civil supplementary extraction, per-crop cache checkpoints; never implies canonical text verification.",
+  "running": "none",
   "remaining": [
-    "Finish/replay the second stream; export digest and number observations.",
-    "Resolve original4,6,8,10,12,13,15,16,17,20,22,23,25,26,28,140 and amended7 transcription uncertainties.",
+    "Apply the currentCPCA22-13 overlay:69 replacement/partial targets,19 insertions,6 whole repeals,1 partial repeal; preserve installation/earlier-filed-case transitions.",
+    "Resolve Civil2007 PDF font decoding/layout and current insertion/local-number inventory; raw blocks are quarantined and never auto-correct Arabic letters.",
+    "Finish current Family font/layout/amendment/paragraph checks, then only the frozen Commercial/90-11/90-04 chapters, with explicit partial reports.",
+    "Run source/OCR discrepancies, independent current inventory and the required20-article visual QA before claiming each current code complete.",
+    "Retain express legally applicable historical provisions; defer comprehensive original-version reconstruction to phaseTwo.",
+    "Use the approved typed corpus format for final current data; do not present research batches as a checked production library."
+  ],
+  "deliveryOrder": "Current complete codes first; full history deferred except legally applicable historical provisions. See delivery-order-2026-10-26.json.",
+  "sourceAcquisition": {
+    "cpcaOfficialHtmlBaseArticles": 1065,
+    "cpcaFailures": 0,
+    "civilRawBlocks": 1058,
+    "civilDistinctNumberCandidates": 1049,
+    "note": "Source acquisition counts are separate from the canonical49identity/59version prototype and from current-law certification. Raw blocks may contain local numbering, repeals and editorial material.",
+    "civilRepeatedNumberCandidates": {
+      "2": 2,
+      "3": 2,
+      "4": 2,
+      "5": 2,
+      "6": 2,
+      "7": 2,
+      "8": 2,
+      "9": 2,
+      "10": 2
+    },
+    "familyRawBlocks": 232,
+    "familyDistinctNumberCandidates": 232,
+    "familyBaseLabelsObserved": 224,
+    "familyInsertedNumberCandidates": [
+      "3 مكرر",
+      "7 مكرر",
+      "8 مكرر",
+      "8 مكرر 1",
+      "9 مكرر",
+      "45 مكرر",
+      "53 مكرر",
+      "57 مكرر"
+    ],
+    "familyDuplicateNumberCandidates": {},
+    "totalSourceRecordsOrBlocks": 2355
+  },
+  "historicalBacklog": [
+    "Review new OCR wording against Tesseract and source images; PP-OCRv5 lost most article numbers and cannot supply numeric identity/date/amount evidence alone.",
+    "Resolve original4,6,8,10,12,13,15,16,17,20,22,23,25,26,28,140 and2005 article17bis transcription uncertainties.",
     "Complete Civil original bodies, headings/paragraphs/xrefs and all amendment operations/versions; resolve89-01 local1-10 identity representation without inventing numbers.",
-    "Apply83-01 global terminology operation only after exact source strings and heading-wide affected set are fixed.",
+    "Apply83-01 heading-scoped terminology changes after checking actual occurrences, expected prior text hashes and the764bis1 exception.",
     "Independently certify inventory and amendment application, then20-article random source-image QA.",
     "Complete CPCA/22-13, Family, then bounded Commercial/labour chapters; full app integration remains separate."
-  ]
+  ],
+  "validation": "67 fictitious Python tests passed; full Release build0warnings/0errors and687 .NET tests passed. Canonical Civil replay was byte-identical; JSON Schema/typed validation and frozen scope checks passed. All1065 CPCA pages replayed offline; WIPO268-page raw comparison passed."
 }

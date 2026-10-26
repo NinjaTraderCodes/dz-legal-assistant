@@ -1,6 +1,6 @@
 {
   "recordedOn": "2026-10-26",
-  "status": "resumed; reviewed insertion and repeal lists applied to amendment-discovery; terminology still requires exact-glyph confirmation before application",
+  "status": "Source-image insertion corrections applied to discovery; global-operation words and scope read but paragraph replacements remain unapplied.",
   "source": {
     "id": "A1983005",
     "url": "https://www.joradp.dz/FTP/jo-arabe/1983/A1983005.pdf",
@@ -70,8 +70,88 @@
     "sourcePdfPage": 8,
     "amendingArticle": "4",
     "exception": "764 مكرر 1",
-    "scopeHeadingAsPrinted": "الملكية المشتركة في العقارات المبنية",
-    "note": "A global terminology substitution applies under the stated heading, with the explicit764bis1 exception. Read the exact source words again before implementation; no automatic word replacement has been applied."
+    "scopeHeadingAsPrinted": "الملكية المشتركة فى العقارات المبنية",
+    "note": "Exact source tokens and heading boundaries now read. Broad terminology operation is still unapplied. Not every article necessarily contains either token; paragraph-specific occurrences and prior hashes must be inspected before replacements. The explicit764bis1 exception is retained.",
+    "sourceWordsRead": [
+      {
+        "from": "الوكيل",
+        "to": "المتصرف"
+      },
+      {
+        "from": "جمعية الشركاء",
+        "to": "جمعية"
+      }
+    ],
+    "zoomReview": {
+      "dpi": 350,
+      "region": [
+        0.52,
+        0.064,
+        0.98,
+        0.22
+      ],
+      "imageSha256": "60f49f6e00bf7e2f0c74032b993febdc7486ab4c14b7b53f8566372e19e6b193",
+      "method": "Exact local crop displayed and read in this session. sourceWordsRead records matching tokens, not a complete verbatim transcription of the paragraph or font stretching."
+    },
+    "scopeOriginalRange": {
+      "first": "743",
+      "last": "772",
+      "boundaryEvidence": [
+        {
+          "evidenceId": "civil-full-a1975078-049-right",
+          "imageSha256": "f08d8b05d89ac42843e2450192ef94e55e8fc68395adb94131903701af4308e9"
+        },
+        {
+          "evidenceId": "civil-full-a1975078-052-right",
+          "imageSha256": "1563c98146ba34855cfce3ff517803af127e279d476d144c3efb625368174e77"
+        }
+      ],
+      "method": "Displayed original images: section heading before743; new acquisition chapter begins at773 after772."
+    },
+    "historicalScopeIdentities": [
+      "743",
+      "744",
+      "745",
+      "746",
+      "747",
+      "748",
+      "749",
+      "750",
+      "751",
+      "752",
+      "753",
+      "754",
+      "755",
+      "756",
+      "757",
+      "758",
+      "759",
+      "760",
+      "761",
+      "762",
+      "763",
+      "764",
+      "765",
+      "766",
+      "767",
+      "768",
+      "769",
+      "770",
+      "771",
+      "772",
+      "750 مكرر",
+      "750 مكرر 1",
+      "750 مكرر 2",
+      "756 مكرر",
+      "756 مكرر 1",
+      "756 مكرر 2",
+      "756 مكرر 3",
+      "763 مكرر",
+      "764 مكرر",
+      "764 مكرر 1",
+      "764 مكرر 2"
+    ],
+    "afterExplicitRepealsAndExceptionCount": 25
   },
   "pageImageHashes": [
     {
@@ -92,8 +172,8 @@
     }
   ],
   "remaining": [
-    "Re-read source for exact global terminology strings before implementing them.",
-    "Apply these explicit corrections to amendment-discovery.json and build the full affected-number/operation ledger.",
+    "Inspect actual token occurrences across the heading after explicit replacements/insertions/repeals, preserving the764bis1 exception.",
+    "Build and replay paragraph-specific source-bound terminology amendments.",
     "Transcribe/check all original and amended article bodies and paragraph boundaries."
   ]
 }

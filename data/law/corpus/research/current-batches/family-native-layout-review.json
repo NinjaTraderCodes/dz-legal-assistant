@@ -1,0 +1,35 @@
+{
+  "sourceSha256": "662d81783f6c0547a0e20b1387199a63dd8ddf5a21fe50d26fe9b0cc0d6f96d8",
+  "reviewedOn": "2026-10-26",
+  "kind": "native acquisition layout review only; no article transcription verification",
+  "method": "PDFium unrotated crop-box lower half at rotation270; all Arabic glyph bounding boxes tested for coverage.",
+  "observations": [
+    {
+      "pdfPage": 5,
+      "imageSha256": "45e78d9c9b970fb3ec3859dbafd1d62d787b2acc8d7a93d23dc80ac8d0265383",
+      "renderScale": 1.8,
+      "finding": "Visible bilingual page contains Arabic8bis,8bis1,9,9bis,10; French prints8bis1 too. Raw colon/index order is a PDF layout effect."
+    },
+    {
+      "pdfPage": 25,
+      "imageSha256": "28f3827ebd78a0e16f6e7375c75cc7aedf7f1209d55c35b591cdf55e77fb4663",
+      "renderScale": 1.8,
+      "finding": "Visible130 and131 are separate article labels/paragraphs. Raw PDF text joins their lines; inline colon-delimited detection retains131."
+    }
+  ],
+  "bodyRepairApplied": false,
+  "transcriptionChecksGranted": false,
+  "recordCount": 232,
+  "baseLabels": 224,
+  "insertedCandidates": [
+    "3 مكرر",
+    "7 مكرر",
+    "8 مكرر",
+    "8 مكرر 1",
+    "9 مكرر",
+    "45 مكرر",
+    "53 مكرر",
+    "57 مكرر"
+  ],
+  "excluded": "PDF44-45 annex content is outside main Family Code and is not imported."
+}

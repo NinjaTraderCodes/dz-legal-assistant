@@ -2,6 +2,10 @@
 
 These Python tools create reproducible evidence from official publications. The application reads committed JSON only. Nothing here changes the existing code loaders, source JSON or the legacy `verified` fields.
 
+The optional Arabic second recognizer, measured comparison, caveats and hash-locked setup are documented in [OCR-COMPARISON.md](OCR-COMPARISON.md). It writes separate evidence and never upgrades a legal verification state or replaces canonical text. `merge_transcriptions.py` merges explicit reviewed/candidate batches while preserving later history and refusing implicit historical-text corrections.
+
+`validate_checkpoint.ps1` now imports `validation-cache-filter.targets` only for its build command. This excludes ignored development cache items without moving live OCR evidence or modifying shared project targets. Run it through process-scoped `powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/law-corpus/validate_checkpoint.ps1`. The ordinary developer build is not permanently changed.
+
 ## Setup (Windows, Python 3.12)
 
 Run from the repository root. `uv` may use any installed CPython 3.12 interpreter; override `--python 3.12` with its absolute path if the Windows launcher is unavailable.

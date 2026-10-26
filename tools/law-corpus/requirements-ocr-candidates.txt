@@ -1,0 +1,6 @@
+# Optional development-only comparison; no product dependency.
+# Arabic PP-OCRv5 through the CPU ONNX backend also supported by Docling.
+rapidocr==3.9.2
+onnxruntime==1.31.0
+# Required by RapidOCR's Arabic display-order conversion (not declared by core).
+python-bidi==0.6.12

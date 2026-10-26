@@ -24,7 +24,9 @@ The new consolidation machinery checks the prior text hash before applying expli
 
 Full Civil source extraction uses `civil-full-manifest.json`: original Arabic/French publications plus all five indexed amendments,312 column windows. The first full pass exposed shifted/slanted1975 column separators and inaccurate initial French amendment-window hints. Pixel-derived polygons now preserve each column, with proposals/hash records in `research/civil-layout-decisions.json`. Image inspection corrected French83-01 toPDF3–5,88-14 toPDF7–8, and89-01 toPDF3–4. The correction pass and hash replay are complete, and all312 evidence records are exported in `research/civil-full-extractions.json`. Anchored original-number OCR observes883Arabic and798French candidates, with19numbers absent from both streams; these are recognition issues, not declared legal gaps. Geometry/OCR success does not establish article accuracy.
 
-Execution status: scope boundaries and consolidation infrastructure have progressed; **no complete code is delivered**. Complete Civil is the current substantive milestone. Complete CPCA and Family, followed by the bounded Commercial/labour deliveries, remain outstanding. The original priority delivery is retained below. The current article489 pilot brings the corpus to **15 identities and 17 versions: 15 partly checked, 2 unsettled, 0 checked**. Its original ArabicPDF31 and2007 ArabicPDF5 were inspected, with FrenchPDF25/2007PDF4 for structure. Law07-05 article6 replaces the first paragraph and explicitly keeps the remainder; the new source fragments retain the original second paragraph. Historical Arabic headings and the exact generic commencement boundary remain unresolved. The data does not convert the amendment placeholder into an article paragraph. See `research/civil-pilot-amendments.json` and `research/civil-pilot-consolidation-audit.json`.
+Execution status: scope boundaries and consolidation infrastructure have progressed; **no complete code is delivered**. Complete Civil is the current substantive milestone. Complete CPCA and Family, followed by the bounded Commercial/labour deliveries, remain outstanding. The corpus now contains **46 identities and 48 versions: 31 partly checked, 17 unsettled, 0 checked**. Civil includes the original bodies1–32, plus the earlier priority/temporal records and489 pilot; most later versions still need consolidation. Original6,8–32 have unresolved temporal bounds, so the loader cannot present those historical texts as resolved current law. Fourteen of the26 new readings deliberately have no passed transcription check pending further orthography/punctuation review. Original4 also remains unsettled.
+
+The earlier489 pilot inspected original ArabicPDF31 and2007 ArabicPDF5, with FrenchPDF25/2007PDF4 for structure. Law07-05 article6 replaces the first paragraph and explicitly keeps the remainder; the new source fragments retain the original second paragraph. Historical Arabic headings and the exact generic commencement boundary remain unresolved. The data does not convert the amendment placeholder into an article paragraph. See `research/civil-pilot-amendments.json` and `research/civil-pilot-consolidation-audit.json`.
 
 ## Delivery status
 
@@ -32,14 +34,18 @@ Execution status: scope boundaries and consolidation infrastructure have progres
 
 | Legal text | Corpus article identities | Versions | Checked | Partly checked | Unsettled | Full code complete |
 |---|---:|---:|---:|---:|---:|---|
-| Civil Code | 10 | 12 | 0 | 10 | 2 | No |
+| Civil Code | 41 | 43 | 0 | 26 | 17 | No |
 | Commercial Code | 2 | 2 | 0 | 2 | 0 | No |
 | CPCA | 3 | 3 | 0 | 3 | 0 | No |
 | Family Code | 0 | 0 | 0 | 0 | 0 | No; not started |
 | Labour 90-11 | 0 | 0 | 0 | 0 | 0 | No; not started |
 | Labour 90-04 | 0 | 0 | 0 | 0 | 0 | No; not started |
 
-The priority inventory has no missing target identity. Whole-code inventory and amendment-application certification have **not** passed. Accordingly no version is `checked`. Fifteen transcriptions have explicit, hash-bound image decisions and French structural checks, so are `partly-checked`. Two Civil version candidates remain `unsettled`: article 140 punctuation and amended article 7 orthography. They must not be presented as exact checked source text. These states are not lawyer verification, and the original `verified`/`verifiedBy` fields are not set or changed.
+The priority inventory has no missing target identity. Whole-code inventory and amendment-application certification have **not** passed. Accordingly no version is `checked`. Passed transcription checks are bound to exact text and reviewed images. The17 unsettled Civil candidates are4,6,8,10,12,13,15,16,17,20,22,23,25,26,28,140 and the2005 version of7. They must not be presented as exact checked source text. These states are not lawyer verification, and the original `verified`/`verifiedBy` fields are not set or changed.
+
+The French comparison preserves two discrepancies: original10 has different paragraph blocks, and original13 cites11/12 in Arabic but12/13 in French. The actual Arabic cross-references are retained; neither publication is silently corrected. Article33 continues on another page and is deliberately excluded from this batch. `research/civil-original-6-32-structure.json` retains the observations.
+
+The83-01 insertion inventory has been corrected from official source images:11 new identities, removing phantom750bis3 and restoring756bis and764bis. The earlier discovery list must not be reused. The law also has a separate heading-scoped terminology operation with an exception; correcting the number list does not mean that textual operation has been applied.
 
 Priority coverage:
 
@@ -148,9 +154,19 @@ The only existing-file change so far is `.gitignore`, adding ignores for `data/l
 
 Whole-code 20-article random visual sampling has not occurred because no whole code is claimed complete. No full PDF/page image is committed. Priority crop methods/hashes are retained, and crops can be regenerated from pinned official PDFs. The prompt's later `docs/law-corpus-checks/<code>/` crop requirement will need an explicit documented interpretation against its earlier permitted-path/no-page-image limits before that whole-code delivery.
 
+## OCR comparison and resumed work
+
+The user authorized resumption on26October2026. On18 fixed selected body references, measured character error was8.25% for fast Tesseract,7.93% for best Tesseract and2.94% for Arabic PP-OCRv5 through RapidOCR/ONNX. On12 further bodies unused during tuning, fast/Paddle measured7.58%/3.09%. These are small source-image-reviewed samples, not independent human ground truth or legal-accuracy guarantees. The follow-up shares three column crops. See [the full method, caveats, primary sources and replay commands](../tools/law-corpus/OCR-COMPARISON.md).
+
+Fast Tesseract remains the first stream. The new recognizer supplies an independent second Arabic OCR stream for discrepancy review, with raw boxes/text, crop/source/model/runtime/implementation hashes and per-crop recovery. It does not modify canonical text, paragraph structure, dates or verification. Best models are available selectively. Neither Docling itself nor EasyOCR has been benchmarked; no performance claim is made for either. Official digital text remains preferable when traceable to the correct version. Optional locked dependencies and model downloads remain in the ignored development environment, outside product dependencies.
+
+The full Civil second pass covers176 Arabic column windows, including original and amending publications. Its progress and raw artifacts are cached; completion and number-observation results are recorded separately after the batch. This is source extraction, not completion of1003 article bodies or their historical versions.
+
 ## Validation and next work
 
-Resumed checkpoint validation: the full Release solution built with **zero warnings/errors**, and **687 .NET tests passed** (App114, Web24, Drafting369, Form67, Documents6, Law104, Storage3). The Python pipeline's **38 fictitious offline tests passed**. All corpus files pass JSON Schema validation and the typed .NET corpus validator; all36 official PDF pins replay offline. A fresh HTTPS comparison also matched all36 pins against the current official source bytes, including reused downloads; `research/official-live-replay.json` records URLs, timestamps and observed hashes. No pin was replaced. The first sandboxed build could not write Avalonia's existing external build log; the normal build/test run then passed with that build-task access, and the task source cache was restored. The final Git commit identifies the delivered snapshot. OCR success or a valid schema is not a legal-completeness claim.
+Current checkpoint validation: the full Release solution built with **zero warnings/errors**, and **687 .NET tests passed** (App114, Web24, Drafting369, Form67, Documents6, Law104, Storage3). The Python pipeline's **48 fictitious offline tests passed**, including conservative merge, missing-line/critical-token scoring, Arabic word ordering and supplementary-artifact tamper checks. All corpus files pass JSON Schema and the typed .NET validator. The prior checkpoint's36 official PDF pins replayed offline and matched a fresh HTTPS comparison; `research/official-live-replay.json` retains that source audit. No pin was replaced. OCR success or a valid schema is not a legal-completeness claim.
+
+Validation now uses an opt-in `validation-cache-filter.targets` import, supplied only on the command line by `validate_checkpoint.ps1`. Inspection found zero source-cache items among93 retained app `None` items. This avoids moving evidence under running OCR and matches the shipped data of a clean checkout. Shared `Directory.Build.targets` remains unchanged; the earlier proposed exception is not assumed approved. Developer builds without this opt-in filter still require care not to package the ignored source cache. No full PDF, page image or OCR dependency belongs in product output.
 
 Remaining work, in the user's required order:
 

@@ -1,0 +1,63 @@
+{
+  "status": "Historical pause checkpoint; work resumed with explicit user authorization on2026-10-26",
+  "lastPushedCommit": "04d638c22a2e5fd55e7ef355a05c391c4cfaa58a",
+  "branch": "codex/law-corpus",
+  "workingTree": [
+    {
+      "codeId": "civil-code",
+      "articles": 15,
+      "versions": 17,
+      "countsByState": {
+        "checked": 0,
+        "partly-checked": 14,
+        "unsettled": 3
+      }
+    },
+    {
+      "codeId": "commercial-code",
+      "articles": 2,
+      "versions": 2,
+      "countsByState": {
+        "checked": 0,
+        "partly-checked": 2,
+        "unsettled": 0
+      }
+    },
+    {
+      "codeId": "cpca",
+      "articles": 3,
+      "versions": 3,
+      "countsByState": {
+        "checked": 0,
+        "partly-checked": 3,
+        "unsettled": 0
+      }
+    }
+  ],
+  "uncommittedWork": [
+    "civil-general-provisions-manifest.json and seven completed crops",
+    "civil-general-provisions-transcriptions.json:1-5, with4 deliberately unsettled",
+    "merge_transcriptions.py and three fictitious tests",
+    "civil-original-number-image-decisions.json:19 actual header observations",
+    "civil-original-number-coverage.json:all1003 base numbers have an observation; not a verified full corpus",
+    "civil-83-01-inventory-review-findings.json:critical correction to earlier inserted-number discovery"
+  ],
+  "validationBeforePause": "Last pushed snapshot passed687 .NET and38 Python tests. Additional batch checks recorded in ignored pause logs; full solution has not been rerun for uncommitted work.",
+  "remaining": [
+    "Discuss the user OCR proposal before any new extraction, model/tool change or large batch.",
+    "Validate and commit the new general-provisions batch and19 header decisions when work resumes.",
+    "Correct83-01 discovered identities:11 insertions; remove phantom750bis3; add756bis/764bis.",
+    "Finish all Civil article/version/paragraph/path/xref inventories and independent consolidation checks.",
+    "Resolve chapter-local1-10 management numbering from89-01 without guessing570bis aliases.",
+    "Complete CPCA including22-13, then Family, then only the frozen Commercial/90-11/90-04 chapters; no special laws."
+  ],
+  "pauseValidation": {
+    "pythonTestsPassed": 41,
+    "schemaErrors": 0,
+    "typedLoader": "passed with existing compiled validator",
+    "fullSolution": "not rerun for uncommitted follow-up; last pushed checkpoint687tests passed"
+  },
+  "localBackup": "tools/law-corpus/.cache/pause-20261026",
+  "resumedOn": "2026-10-26",
+  "currentProgress": "resume-progress-2026-10-26.json"
+}

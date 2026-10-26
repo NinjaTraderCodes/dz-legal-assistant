@@ -1,0 +1,13 @@
+<Project>
+  <!-- Opt-in, development validation only. Match a clean checkout without moving
+       the ignored source cache out from under a running extraction process. -->
+  <Target Name="LawCorpusFilterDevelopmentCache" BeforeTargets="AssignTargetPaths">
+    <PropertyGroup>
+      <LawCorpusDevelopmentCache>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)../../data/law/corpus/.cache/'))</LawCorpusDevelopmentCache>
+    </PropertyGroup>
+    <ItemGroup>
+      <None Remove="@(None)" Condition="$([System.String]::Copy('%(None.FullPath)').StartsWith('$(LawCorpusDevelopmentCache)'))" />
+      <Content Remove="@(Content)" Condition="$([System.String]::Copy('%(Content.FullPath)').StartsWith('$(LawCorpusDevelopmentCache)'))" />
+    </ItemGroup>
+  </Target>
+</Project>

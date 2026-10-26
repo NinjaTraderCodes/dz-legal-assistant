@@ -1,0 +1,678 @@
+{
+  "engine": "tesseract-fast",
+  "recordedAt": "2026-10-26T00:49:24.818239+00:00",
+  "normalizations": [
+    "Unicode NFC (canonical composition only)",
+    "Unicode whitespace runs replaced by one U+0020; leading/trailing whitespace removed"
+  ],
+  "initializationSeconds": 0,
+  "ocrSeconds": 21.13761650000015,
+  "sampleCount": 12,
+  "bodyCharacterErrorRate": 0.07577174929840973,
+  "limitations": [
+    "Selected image-reviewed integration samples, not independent human ground truth or a random code-wide test.",
+    "Best-contiguous-span CER ignores crop labels and surrounding text; every reference character still incurs alignment/edit cost.",
+    "Times include subprocess startup or first inference; downloads/initialization are separate. Battery CPU, two threads; no throughput guarantee.",
+    "No engine agreement or metric upgrades legal verification; paragraph layout and semantic accuracy need source inspection."
+  ],
+  "models": [],
+  "samples": [
+    {
+      "versionId": "civil-code:9@ordinance-75-58",
+      "reference": "يكون القانون الجزائرى هو المرجع فى تكييف العلاقات المطلوب تحديد نوعها عند تنازع القوانين لمعرفة القانون الواجب تطبيقه.",
+      "evidenceId": "civil-6-22-original-right",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 2,
+      "imageSha256": "ace00dabfe84cfa2796a02edf36e5a6bb59d564cdaffab2d6bad9d75b4dbf446",
+      "dpi": 200,
+      "psm": 6,
+      "language": "ara",
+      "engine": "tesseract-fast",
+      "seconds": 1.2657138999998097,
+      "recognized": "الفصل الآول , ”\n.17 ل اتناؤع القوانين: من حيث الزمان\nالمادة 6 : تسترَئ” القواتيئن المتعلقة بالاهلية على جمييع\nالاشخاص الذين تتوفر فيهم الشبروط المنصوص عليها ‎٠‏\n‏واذ صار شخص توفرت فيه الاهلية» بخسب نصسوص\nقديمة,ء عديم الاهلية بحسب نصوص جديدة» فان ذلك لا\nيؤثر فى تصرفاته السابقة ‎٠‏ 200\nالمادة ” : تطظبق النصوص الجديدة المتعلقة بالاجراءات حالاء\nغير ان النصوص القديمة هى التى تسرى على المسائل الخاصة\nببدء التقاهم» ووقفه, وإنقطاعه,م فيما إيخصيى المدة السابقة على\nالعمل بالنصوص الجديدة' ‎٠‏ 000\nوكذلك الخال فيما يخطننى آجال المرافعة ‎٠‏\n‏المادة 8 : _تخضيع البينات المعدة مقدما للنصوص المعمول\nبها فى الوقت الذى اعدت فيه البينة او فى الوقت الذى كان\nينبغى فيه اعدادها ‎٠‏ :\n2 --تنازع القوانين.عن حيث المكان << .\nالمادة 9 : يكون القانون الجزائرى هو المرجع فى تكييف\nالعلاقات المطلوب تحديد نوعها عند تنازع القوانين لمعرفة\nالقانون الواجب تطبيقه ‎٠‏\n‏المادة 10 : تسّرى القوانين المتعقلة بالحالة المدنية للاشخاص\nواهليتهم على الجزائريين ولو كانوا مقيمين فى بلاد أجنبية ‎٠»‏\n‏ومع ذلك ففى التصرفات المالية التى تعقد فى الجزائر\nونتتج آثارها فيهاء اذا كان احد الطرفين اجنبيا ناقص الاهلية\nفان هذا السبب لآيؤثر فى اهليته وفى صحة المعاملة اما\nالاشخاص الاعتبارية الاجنبية من شركاتء, وجمعيات ,2\nومؤسساتء وغيرها التى تمارس نشاطا فى الجزائر فانها\nتخضع للقانون الجزائرى ‎٠‏\n‏المادة 11 : الشروط الخاصة بصحة الزواج يطبق عليها\nالقانون الوطنى لكل من الزوجين * 00 . ْ\n",
+      "ocrSha256": "900fabe2c752fb6daadf74bd717c01ac9f47fa86202ea3fe005a49563b437368",
+      "invocation": {
+        "command": [
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr\\Library\\bin\\tesseract.exe",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\data\\law\\corpus\\.cache\\extractions\\ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9\\page-0002\\civil-6-22-original-right\\crop.png",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\tesseract-fast\\civil-6-22-original-right\\ocr",
+          "--dpi",
+          "200",
+          "-l",
+          "ara",
+          "--oem",
+          "1",
+          "--psm",
+          "6",
+          "--tessdata-dir",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr\\share\\tessdata",
+          "-c",
+          "tessedit_create_txt=1",
+          "-c",
+          "tessedit_create_tsv=1"
+        ],
+        "exitCode": 0,
+        "stderr": "",
+        "executableSha256": "bd50a6b7ce25f2a19d4805be5caa5e02aeffba9a13a3fe78fa0b360b852e5169",
+        "models": [
+          {
+            "language": "ara",
+            "sha256": "e3206d3dc87fd50c24a0fb9f01838615911d25168f4e64415244b67d2bb3e729"
+          }
+        ]
+      },
+      "metric": {
+        "edits": 1,
+        "referenceCharacters": 118,
+        "characterErrorRate": 0.00847457627118644,
+        "alignedSpan": "يكون القانون الجزائرى هو المرجع فى تكييف العلاقات المطلوب تحديد نوعها عند تنازع القوانين لمعرفة القانون الواجب تطبيقه",
+        "criticalTokensMissing": [],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:11@ordinance-75-58",
+      "reference": "الشروط الخاصة بصحة الزواج يطبق عليها القانون الوطنى لكل من الزوجين.",
+      "evidenceId": "civil-6-22-original-right",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 2,
+      "imageSha256": "ace00dabfe84cfa2796a02edf36e5a6bb59d564cdaffab2d6bad9d75b4dbf446",
+      "dpi": 200,
+      "psm": 6,
+      "language": "ara",
+      "engine": "tesseract-fast",
+      "seconds": 1.6194190000001072,
+      "recognized": "الفصل الآول , ”\n.17 ل اتناؤع القوانين: من حيث الزمان\nالمادة 6 : تسترَئ” القواتيئن المتعلقة بالاهلية على جمييع\nالاشخاص الذين تتوفر فيهم الشبروط المنصوص عليها ‎٠‏\n‏واذ صار شخص توفرت فيه الاهلية» بخسب نصسوص\nقديمة,ء عديم الاهلية بحسب نصوص جديدة» فان ذلك لا\nيؤثر فى تصرفاته السابقة ‎٠‏ 200\nالمادة ” : تطظبق النصوص الجديدة المتعلقة بالاجراءات حالاء\nغير ان النصوص القديمة هى التى تسرى على المسائل الخاصة\nببدء التقاهم» ووقفه, وإنقطاعه,م فيما إيخصيى المدة السابقة على\nالعمل بالنصوص الجديدة' ‎٠‏ 000\nوكذلك الخال فيما يخطننى آجال المرافعة ‎٠‏\n‏المادة 8 : _تخضيع البينات المعدة مقدما للنصوص المعمول\nبها فى الوقت الذى اعدت فيه البينة او فى الوقت الذى كان\nينبغى فيه اعدادها ‎٠‏ :\n2 --تنازع القوانين.عن حيث المكان << .\nالمادة 9 : يكون القانون الجزائرى هو المرجع فى تكييف\nالعلاقات المطلوب تحديد نوعها عند تنازع القوانين لمعرفة\nالقانون الواجب تطبيقه ‎٠‏\n‏المادة 10 : تسّرى القوانين المتعقلة بالحالة المدنية للاشخاص\nواهليتهم على الجزائريين ولو كانوا مقيمين فى بلاد أجنبية ‎٠»‏\n‏ومع ذلك ففى التصرفات المالية التى تعقد فى الجزائر\nونتتج آثارها فيهاء اذا كان احد الطرفين اجنبيا ناقص الاهلية\nفان هذا السبب لآيؤثر فى اهليته وفى صحة المعاملة اما\nالاشخاص الاعتبارية الاجنبية من شركاتء, وجمعيات ,2\nومؤسساتء وغيرها التى تمارس نشاطا فى الجزائر فانها\nتخضع للقانون الجزائرى ‎٠‏\n‏المادة 11 : الشروط الخاصة بصحة الزواج يطبق عليها\nالقانون الوطنى لكل من الزوجين * 00 . ْ\n",
+      "ocrSha256": "900fabe2c752fb6daadf74bd717c01ac9f47fa86202ea3fe005a49563b437368",
+      "invocation": {
+        "command": [
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr\\Library\\bin\\tesseract.exe",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\data\\law\\corpus\\.cache\\extractions\\ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9\\page-0002\\civil-6-22-original-right\\crop.png",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\tesseract-fast\\civil-6-22-original-right\\ocr",
+          "--dpi",
+          "200",
+          "-l",
+          "ara",
+          "--oem",
+          "1",
+          "--psm",
+          "6",
+          "--tessdata-dir",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr\\share\\tessdata",
+          "-c",
+          "tessedit_create_txt=1",
+          "-c",
+          "tessedit_create_tsv=1"
+        ],
+        "exitCode": 0,
+        "stderr": "",
+        "executableSha256": "bd50a6b7ce25f2a19d4805be5caa5e02aeffba9a13a3fe78fa0b360b852e5169",
+        "models": [
+          {
+            "language": "ara",
+            "sha256": "e3206d3dc87fd50c24a0fb9f01838615911d25168f4e64415244b67d2bb3e729"
+          }
+        ]
+      },
+      "metric": {
+        "edits": 1,
+        "referenceCharacters": 67,
+        "characterErrorRate": 0.014925373134328358,
+        "alignedSpan": "الشروط الخاصة بصحة الزواج يطبق عليها القانون الوطنى لكل من الزوجين",
+        "criticalTokensMissing": [],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:14@ordinance-75-58",
+      "reference": "يطبق القانون الوطنى على الالتزام بالنفقة بين الاقارب للمدين بها.",
+      "evidenceId": "civil-8-22-original-right",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 3,
+      "imageSha256": "25deac6f02aae8527350582d81046fee5a1fb02159e4a7ed2eb80817a9ffd579",
+      "dpi": 200,
+      "psm": 6,
+      "language": "ara",
+      "engine": "tesseract-fast",
+      "seconds": 2.599290999999994,
+      "recognized": "و ل[ل[ل+[![![![! + [![ز[ز[|[|[|ز<|'< |أ|ذ|ذأ#ذ#ذأ 11 1111ل\n\nالمادة 12 : يسرى قانون الدولة التى ينتمى اليها الزوج\nوقت انعقاد الزواج على الآثار التى 'يرتبها عقد الزواج فيما\nإيعود منها الى المال * 1 0 5\n\nيسرى على انحلال الزواج القانون الوطنى الذى ينتمى اليه\nالزواج وقت رفع الدعوى ‎٠‏ .\n\nالمادة 13 : يسرى القانون الجزائرى وحده فى الاحوال\nالمنصوص عليها فى المادتين +57 و 22 اذا كان احد الزوجين\nجزائريا وقت انعقاد الزواجء الا فيما يخضى اهلية الزواج ‎٠‏\n\nالمادة 14 : يطبق القانون الوطنى على الالتزام بالنفقة بين\nالاقارب للمدين بها ‎٠‏ ظ\n\nالمادة 5 : يبين قانون الشخص الذى يجب حمايته القراعد |\nالموضوعية الخاصة بالولاية والوصاية والقوامة وغيرها من\n\nالمادة 16 : يسرى على الميراث» والوصيةء وسائر التصرفات\nالتى. تنفذ بعد الموتء قانون الهمالك او الموصى او من صدر\n\n١\n\nالايصاء, او قانون البلد الذى تمت فيه الوصية» وكذلك الحكم\nفى شكل سائر التصرفات التى تنفذ بعد الموت ‎٠‏\n\nالمادة 17 : يسرى على الحيازة, والملكية, والحقوق العينية '\nقانون الجهة التى يوجد فيها هذا المنقول وقت تحقيق. السبب\nالذى ترتب عليه كسب أو فقد الحيازةء أو الملكية2 والحقؤق\n\nالعينية الاخرى ‎٠‏ .\n\nالمادة 18 : يسرى على ' الالتزامات التعاقديةء قانون المكان\nالذى ينبرم فيه العقد مالم يتفق المتعاقدان على تطبيق قانون\nآخر 3\n\nالمادة 19 : تخضع العقود ما بين الاحياء فى شكلها لقانون\nالبلد الذى تمت فيه, ويجب ايضا ان تخضع لقانون الوطن\nالمشسترك للمتعاقدين ‎٠‏ 1\n\nالمادة 20 : يسرى على الالتزامات غير التعاقدية» قانون البلد\nالذى وقع فيه الفعل المنشىء للالتزام »\n\nغير انه فيما يتعلق بالالتزامات الناشئة عن الفعل الضارء\nلاتسرى احكام الفقرة السابقة على الوقائع التى تحدث فى\nالخارج وتكون مشروعة فى الجزائر وان كانت تعد غير\nمشروعة فى البلد الذى وقعت فيه ‎٠‏ 8 :\n\nالمادة 21 : لاتسرى احكام المواد السابقة الا حيث .لايوجد\nنص على خلاف ذلك, فى قانون خاصء او: معاهدة دولية نافذة\nفى الجزائن ‎٠‏\n",
+      "ocrSha256": "bec2c97a2d71c64d5c7cb4a8b26b6422894b60276c7f4be11eeca49dde5ca2b7",
+      "invocation": {
+        "command": [
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr\\Library\\bin\\tesseract.exe",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\data\\law\\corpus\\.cache\\extractions\\ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9\\page-0003\\civil-8-22-original-right\\crop.png",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\tesseract-fast\\civil-8-22-original-right\\ocr",
+          "--dpi",
+          "200",
+          "-l",
+          "ara",
+          "--oem",
+          "1",
+          "--psm",
+          "6",
+          "--tessdata-dir",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr\\share\\tessdata",
+          "-c",
+          "tessedit_create_txt=1",
+          "-c",
+          "tessedit_create_tsv=1"
+        ],
+        "exitCode": 0,
+        "stderr": "",
+        "executableSha256": "bd50a6b7ce25f2a19d4805be5caa5e02aeffba9a13a3fe78fa0b360b852e5169",
+        "models": [
+          {
+            "language": "ara",
+            "sha256": "e3206d3dc87fd50c24a0fb9f01838615911d25168f4e64415244b67d2bb3e729"
+          }
+        ]
+      },
+      "metric": {
+        "edits": 1,
+        "referenceCharacters": 64,
+        "characterErrorRate": 0.015625,
+        "alignedSpan": "يطبق القانون الوطنى على الالتزام بالنفقة بين الاقارب للمدين بها",
+        "criticalTokensMissing": [],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:18@ordinance-75-58",
+      "reference": "يسرى على الالتزامات التعاقدية، قانون المكان الذى يبرم فيه العقد مالم يتفق المتعاقدان على تطبيق قانون آخر.\nغير ان العقود المتعلقة بالعقار يسرى عليها قانون موقعه.",
+      "evidenceId": "civil-8-22-original-right",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 3,
+      "imageSha256": "25deac6f02aae8527350582d81046fee5a1fb02159e4a7ed2eb80817a9ffd579",
+      "dpi": 200,
+      "psm": 6,
+      "language": "ara",
+      "engine": "tesseract-fast",
+      "seconds": 1.8131396999997378,
+      "recognized": "و ل[ل[ل+[![![![! + [![ز[ز[|[|[|ز<|'< |أ|ذ|ذأ#ذ#ذأ 11 1111ل\n\nالمادة 12 : يسرى قانون الدولة التى ينتمى اليها الزوج\nوقت انعقاد الزواج على الآثار التى 'يرتبها عقد الزواج فيما\nإيعود منها الى المال * 1 0 5\n\nيسرى على انحلال الزواج القانون الوطنى الذى ينتمى اليه\nالزواج وقت رفع الدعوى ‎٠‏ .\n\nالمادة 13 : يسرى القانون الجزائرى وحده فى الاحوال\nالمنصوص عليها فى المادتين +57 و 22 اذا كان احد الزوجين\nجزائريا وقت انعقاد الزواجء الا فيما يخضى اهلية الزواج ‎٠‏\n\nالمادة 14 : يطبق القانون الوطنى على الالتزام بالنفقة بين\nالاقارب للمدين بها ‎٠‏ ظ\n\nالمادة 5 : يبين قانون الشخص الذى يجب حمايته القراعد |\nالموضوعية الخاصة بالولاية والوصاية والقوامة وغيرها من\n\nالمادة 16 : يسرى على الميراث» والوصيةء وسائر التصرفات\nالتى. تنفذ بعد الموتء قانون الهمالك او الموصى او من صدر\n\n١\n\nالايصاء, او قانون البلد الذى تمت فيه الوصية» وكذلك الحكم\nفى شكل سائر التصرفات التى تنفذ بعد الموت ‎٠‏\n\nالمادة 17 : يسرى على الحيازة, والملكية, والحقوق العينية '\nقانون الجهة التى يوجد فيها هذا المنقول وقت تحقيق. السبب\nالذى ترتب عليه كسب أو فقد الحيازةء أو الملكية2 والحقؤق\n\nالعينية الاخرى ‎٠‏ .\n\nالمادة 18 : يسرى على ' الالتزامات التعاقديةء قانون المكان\nالذى ينبرم فيه العقد مالم يتفق المتعاقدان على تطبيق قانون\nآخر 3\n\nالمادة 19 : تخضع العقود ما بين الاحياء فى شكلها لقانون\nالبلد الذى تمت فيه, ويجب ايضا ان تخضع لقانون الوطن\nالمشسترك للمتعاقدين ‎٠‏ 1\n\nالمادة 20 : يسرى على الالتزامات غير التعاقدية» قانون البلد\nالذى وقع فيه الفعل المنشىء للالتزام »\n\nغير انه فيما يتعلق بالالتزامات الناشئة عن الفعل الضارء\nلاتسرى احكام الفقرة السابقة على الوقائع التى تحدث فى\nالخارج وتكون مشروعة فى الجزائر وان كانت تعد غير\nمشروعة فى البلد الذى وقعت فيه ‎٠‏ 8 :\n\nالمادة 21 : لاتسرى احكام المواد السابقة الا حيث .لايوجد\nنص على خلاف ذلك, فى قانون خاصء او: معاهدة دولية نافذة\nفى الجزائن ‎٠‏\n",
+      "ocrSha256": "bec2c97a2d71c64d5c7cb4a8b26b6422894b60276c7f4be11eeca49dde5ca2b7",
+      "invocation": {
+        "command": [
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr\\Library\\bin\\tesseract.exe",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\data\\law\\corpus\\.cache\\extractions\\ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9\\page-0003\\civil-8-22-original-right\\crop.png",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\tesseract-fast\\civil-8-22-original-right\\ocr",
+          "--dpi",
+          "200",
+          "-l",
+          "ara",
+          "--oem",
+          "1",
+          "--psm",
+          "6",
+          "--tessdata-dir",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr\\share\\tessdata",
+          "-c",
+          "tessedit_create_txt=1",
+          "-c",
+          "tessedit_create_tsv=1"
+        ],
+        "exitCode": 0,
+        "stderr": "",
+        "executableSha256": "bd50a6b7ce25f2a19d4805be5caa5e02aeffba9a13a3fe78fa0b360b852e5169",
+        "models": [
+          {
+            "language": "ara",
+            "sha256": "e3206d3dc87fd50c24a0fb9f01838615911d25168f4e64415244b67d2bb3e729"
+          }
+        ]
+      },
+      "metric": {
+        "edits": 44,
+        "referenceCharacters": 160,
+        "characterErrorRate": 0.275,
+        "alignedSpan": "يسرى على ' الالتزامات التعاقديةء قانون المكان الذى ينبرم فيه العقد مالم يتفق المتعاقدان على تطبيق قانون آخر 3 المادة 19 : تخضع العقود ما بين ",
+        "criticalTokensMissing": [],
+        "criticalTokensExtra": [
+          "3",
+          "19"
+        ]
+      }
+    },
+    {
+      "versionId": "civil-code:19@ordinance-75-58",
+      "reference": "تخضع العقود ما بين الاحياء فى شكلها لقانون البلد الذى تمت فيه، ويجب ايضا ان تخضع لقانون الوطن المشترك للمتعاقدين.",
+      "evidenceId": "civil-8-22-original-right",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 3,
+      "imageSha256": "25deac6f02aae8527350582d81046fee5a1fb02159e4a7ed2eb80817a9ffd579",
+      "dpi": 200,
+      "psm": 6,
+      "language": "ara",
+      "engine": "tesseract-fast",
+      "seconds": 2.007733400000234,
+      "recognized": "و ل[ل[ل+[![![![! + [![ز[ز[|[|[|ز<|'< |أ|ذ|ذأ#ذ#ذأ 11 1111ل\n\nالمادة 12 : يسرى قانون الدولة التى ينتمى اليها الزوج\nوقت انعقاد الزواج على الآثار التى 'يرتبها عقد الزواج فيما\nإيعود منها الى المال * 1 0 5\n\nيسرى على انحلال الزواج القانون الوطنى الذى ينتمى اليه\nالزواج وقت رفع الدعوى ‎٠‏ .\n\nالمادة 13 : يسرى القانون الجزائرى وحده فى الاحوال\nالمنصوص عليها فى المادتين +57 و 22 اذا كان احد الزوجين\nجزائريا وقت انعقاد الزواجء الا فيما يخضى اهلية الزواج ‎٠‏\n\nالمادة 14 : يطبق القانون الوطنى على الالتزام بالنفقة بين\nالاقارب للمدين بها ‎٠‏ ظ\n\nالمادة 5 : يبين قانون الشخص الذى يجب حمايته القراعد |\nالموضوعية الخاصة بالولاية والوصاية والقوامة وغيرها من\n\nالمادة 16 : يسرى على الميراث» والوصيةء وسائر التصرفات\nالتى. تنفذ بعد الموتء قانون الهمالك او الموصى او من صدر\n\n١\n\nالايصاء, او قانون البلد الذى تمت فيه الوصية» وكذلك الحكم\nفى شكل سائر التصرفات التى تنفذ بعد الموت ‎٠‏\n\nالمادة 17 : يسرى على الحيازة, والملكية, والحقوق العينية '\nقانون الجهة التى يوجد فيها هذا المنقول وقت تحقيق. السبب\nالذى ترتب عليه كسب أو فقد الحيازةء أو الملكية2 والحقؤق\n\nالعينية الاخرى ‎٠‏ .\n\nالمادة 18 : يسرى على ' الالتزامات التعاقديةء قانون المكان\nالذى ينبرم فيه العقد مالم يتفق المتعاقدان على تطبيق قانون\nآخر 3\n\nالمادة 19 : تخضع العقود ما بين الاحياء فى شكلها لقانون\nالبلد الذى تمت فيه, ويجب ايضا ان تخضع لقانون الوطن\nالمشسترك للمتعاقدين ‎٠‏ 1\n\nالمادة 20 : يسرى على الالتزامات غير التعاقدية» قانون البلد\nالذى وقع فيه الفعل المنشىء للالتزام »\n\nغير انه فيما يتعلق بالالتزامات الناشئة عن الفعل الضارء\nلاتسرى احكام الفقرة السابقة على الوقائع التى تحدث فى\nالخارج وتكون مشروعة فى الجزائر وان كانت تعد غير\nمشروعة فى البلد الذى وقعت فيه ‎٠‏ 8 :\n\nالمادة 21 : لاتسرى احكام المواد السابقة الا حيث .لايوجد\nنص على خلاف ذلك, فى قانون خاصء او: معاهدة دولية نافذة\nفى الجزائن ‎٠‏\n",
+      "ocrSha256": "bec2c97a2d71c64d5c7cb4a8b26b6422894b60276c7f4be11eeca49dde5ca2b7",
+      "invocation": {
+        "command": [
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr\\Library\\bin\\tesseract.exe",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\data\\law\\corpus\\.cache\\extractions\\ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9\\page-0003\\civil-8-22-original-right\\crop.png",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\tesseract-fast\\civil-8-22-original-right\\ocr",
+          "--dpi",
+          "200",
+          "-l",
+          "ara",
+          "--oem",
+          "1",
+          "--psm",
+          "6",
+          "--tessdata-dir",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr\\share\\tessdata",
+          "-c",
+          "tessedit_create_txt=1",
+          "-c",
+          "tessedit_create_tsv=1"
+        ],
+        "exitCode": 0,
+        "stderr": "",
+        "executableSha256": "bd50a6b7ce25f2a19d4805be5caa5e02aeffba9a13a3fe78fa0b360b852e5169",
+        "models": [
+          {
+            "language": "ara",
+            "sha256": "e3206d3dc87fd50c24a0fb9f01838615911d25168f4e64415244b67d2bb3e729"
+          }
+        ]
+      },
+      "metric": {
+        "edits": 3,
+        "referenceCharacters": 113,
+        "characterErrorRate": 0.02654867256637168,
+        "alignedSpan": "تخضع العقود ما بين الاحياء فى شكلها لقانون البلد الذى تمت فيه, ويجب ايضا ان تخضع لقانون الوطن المشسترك للمتعاقدين",
+        "criticalTokensMissing": [],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:21@ordinance-75-58",
+      "reference": "لا تسرى احكام المواد السابقة الا حيث لا يوجد نص على خلاف ذلك، فى قانون خاص، او معاهدة دولية نافذة فى الجزائر.",
+      "evidenceId": "civil-8-22-original-right",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 3,
+      "imageSha256": "25deac6f02aae8527350582d81046fee5a1fb02159e4a7ed2eb80817a9ffd579",
+      "dpi": 200,
+      "psm": 6,
+      "language": "ara",
+      "engine": "tesseract-fast",
+      "seconds": 1.7838694000001851,
+      "recognized": "و ل[ل[ل+[![![![! + [![ز[ز[|[|[|ز<|'< |أ|ذ|ذأ#ذ#ذأ 11 1111ل\n\nالمادة 12 : يسرى قانون الدولة التى ينتمى اليها الزوج\nوقت انعقاد الزواج على الآثار التى 'يرتبها عقد الزواج فيما\nإيعود منها الى المال * 1 0 5\n\nيسرى على انحلال الزواج القانون الوطنى الذى ينتمى اليه\nالزواج وقت رفع الدعوى ‎٠‏ .\n\nالمادة 13 : يسرى القانون الجزائرى وحده فى الاحوال\nالمنصوص عليها فى المادتين +57 و 22 اذا كان احد الزوجين\nجزائريا وقت انعقاد الزواجء الا فيما يخضى اهلية الزواج ‎٠‏\n\nالمادة 14 : يطبق القانون الوطنى على الالتزام بالنفقة بين\nالاقارب للمدين بها ‎٠‏ ظ\n\nالمادة 5 : يبين قانون الشخص الذى يجب حمايته القراعد |\nالموضوعية الخاصة بالولاية والوصاية والقوامة وغيرها من\n\nالمادة 16 : يسرى على الميراث» والوصيةء وسائر التصرفات\nالتى. تنفذ بعد الموتء قانون الهمالك او الموصى او من صدر\n\n١\n\nالايصاء, او قانون البلد الذى تمت فيه الوصية» وكذلك الحكم\nفى شكل سائر التصرفات التى تنفذ بعد الموت ‎٠‏\n\nالمادة 17 : يسرى على الحيازة, والملكية, والحقوق العينية '\nقانون الجهة التى يوجد فيها هذا المنقول وقت تحقيق. السبب\nالذى ترتب عليه كسب أو فقد الحيازةء أو الملكية2 والحقؤق\n\nالعينية الاخرى ‎٠‏ .\n\nالمادة 18 : يسرى على ' الالتزامات التعاقديةء قانون المكان\nالذى ينبرم فيه العقد مالم يتفق المتعاقدان على تطبيق قانون\nآخر 3\n\nالمادة 19 : تخضع العقود ما بين الاحياء فى شكلها لقانون\nالبلد الذى تمت فيه, ويجب ايضا ان تخضع لقانون الوطن\nالمشسترك للمتعاقدين ‎٠‏ 1\n\nالمادة 20 : يسرى على الالتزامات غير التعاقدية» قانون البلد\nالذى وقع فيه الفعل المنشىء للالتزام »\n\nغير انه فيما يتعلق بالالتزامات الناشئة عن الفعل الضارء\nلاتسرى احكام الفقرة السابقة على الوقائع التى تحدث فى\nالخارج وتكون مشروعة فى الجزائر وان كانت تعد غير\nمشروعة فى البلد الذى وقعت فيه ‎٠‏ 8 :\n\nالمادة 21 : لاتسرى احكام المواد السابقة الا حيث .لايوجد\nنص على خلاف ذلك, فى قانون خاصء او: معاهدة دولية نافذة\nفى الجزائن ‎٠‏\n",
+      "ocrSha256": "bec2c97a2d71c64d5c7cb4a8b26b6422894b60276c7f4be11eeca49dde5ca2b7",
+      "invocation": {
+        "command": [
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr\\Library\\bin\\tesseract.exe",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\data\\law\\corpus\\.cache\\extractions\\ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9\\page-0003\\civil-8-22-original-right\\crop.png",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\tesseract-fast\\civil-8-22-original-right\\ocr",
+          "--dpi",
+          "200",
+          "-l",
+          "ara",
+          "--oem",
+          "1",
+          "--psm",
+          "6",
+          "--tessdata-dir",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr\\share\\tessdata",
+          "-c",
+          "tessedit_create_txt=1",
+          "-c",
+          "tessedit_create_tsv=1"
+        ],
+        "exitCode": 0,
+        "stderr": "",
+        "executableSha256": "bd50a6b7ce25f2a19d4805be5caa5e02aeffba9a13a3fe78fa0b360b852e5169",
+        "models": [
+          {
+            "language": "ara",
+            "sha256": "e3206d3dc87fd50c24a0fb9f01838615911d25168f4e64415244b67d2bb3e729"
+          }
+        ]
+      },
+      "metric": {
+        "edits": 8,
+        "referenceCharacters": 109,
+        "characterErrorRate": 0.07339449541284404,
+        "alignedSpan": "لاتسرى احكام المواد السابقة الا حيث .لايوجد نص على خلاف ذلك, فى قانون خاصء او: معاهدة دولية نافذة فى الجزائ",
+        "criticalTokensMissing": [
+          "لا",
+          "لا"
+        ],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:24@ordinance-75-58",
+      "reference": "لا يجوز تطبيق القانون الاجنبى بموجب النصوص السابقة اذا كان مخالفا للنظام العام، او الآداب فى الجزائر.",
+      "evidenceId": "civil-8-22-original-left",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 3,
+      "imageSha256": "7255aaa587ee694e2326872fbc3dce267d4dea29e27248b5e2dade1ada466a2c",
+      "dpi": 200,
+      "psm": 6,
+      "language": "ara",
+      "engine": "tesseract-fast",
+      "seconds": 1.391672500000368,
+      "recognized": "ظ المادة 22 : فى حالة تعدد الجنسسبيات» يطبق القاضى الجنسية\n| غير ان القانون الجزالرى هو الذى يطبق اذا كانت للشبخص\nفى وقت .واحد بالنسبة. الى الجزائرء الجنسية الجزائرية,\nوبالنسبة الى دولة او عدة. دول اجنبية جنسية تلك الدول ‎٠‏\n‏وفى. حالة انعدام الجنسية يعين القاضى القانون الواجب\nالمادة 23 : متى ظهر من الاحكام الواردة فى المواد المتقدمة\nان القانون الواجب التطبيق هو قانون دولة معينة تتعدد فيها\nالانظمة التشريعية فان القانون الداخلى لتلك الدولة مهو الذى\nيقرر رأى النظام التشريعى الذى يجب تطبيقه ‎٠‏\n‏المادة 24 : لايجوز تطبيق القانون الاجنبى بموجب النصوص\nالسابقة اذا كان مخالفا للنظام العام, او الآداب فى الجزائن ».\nالباب الثانى . :\nالاشخاص الطبيعية والاعتبارية\nالفصل الاول ‏ .\nالاشخاص الطبيعية\nالمادة 25 : تبدأ شخصمية الإنسان بتمام ولادته حياء وتنتهى\nعلى ان الجنين يتمتع بالحقوق المدنية بشرط ان يولد جياء\nالمادة 26 : تثبت الولادة والوفاة بالسجلات المعدة لذلك ‎٠١‏\n‏واذا لم يوجد.هذا الدليل» او تبين عدم صحة ما ادرج\nينص عليها قانون الحالة المدنية ‎٠‏\n‏المادة 27 : مسك دفاتر المواليد والوفياتء والتبليفات,\nالمتعلقة بها ينظمها القانون الخاص بالحالة المدنية ‎٠‏\n‏ولقب الشخص يلحق اولاده ‎٠‏ . . 0\nبالنسنبة للاطفال المولودين من ابوين غير مسلمين ‎٠‏\n‏المادة 29 : يسرى على اكتساب الالقاب وتبديلها القانون\nالمتعلق بالحالة المدنية ‎٠‏\n‏المادة 30 : ينظم الجنسية الجزائرية قانون الجنسية\nالمادة 31 : تجرى على المفقود والغائب الاحكام المقررة فى\nالتشريع العائلى ‎٠‏\n‏المادة 32 : 'نتكون اسرة الشخض من ذوى قرباه ويعتبر من\nذوى القربى كل من يجمعهم اصل واحد ‎٠‏\n‏المادة 33 : القرابة المباشزة هى الصلة ما بين الاصول '\nوالفروع 35 .\n",
+      "ocrSha256": "fe35241b3f07006edcdb125a4b9fdb6f9c43438f281bea84e6b54f3c9588ecd0",
+      "invocation": {
+        "command": [
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr\\Library\\bin\\tesseract.exe",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\data\\law\\corpus\\.cache\\extractions\\ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9\\page-0003\\civil-8-22-original-left\\crop.png",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\tesseract-fast\\civil-8-22-original-left\\ocr",
+          "--dpi",
+          "200",
+          "-l",
+          "ara",
+          "--oem",
+          "1",
+          "--psm",
+          "6",
+          "--tessdata-dir",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr\\share\\tessdata",
+          "-c",
+          "tessedit_create_txt=1",
+          "-c",
+          "tessedit_create_tsv=1"
+        ],
+        "exitCode": 0,
+        "stderr": "",
+        "executableSha256": "bd50a6b7ce25f2a19d4805be5caa5e02aeffba9a13a3fe78fa0b360b852e5169",
+        "models": [
+          {
+            "language": "ara",
+            "sha256": "e3206d3dc87fd50c24a0fb9f01838615911d25168f4e64415244b67d2bb3e729"
+          }
+        ]
+      },
+      "metric": {
+        "edits": 4,
+        "referenceCharacters": 101,
+        "characterErrorRate": 0.039603960396039604,
+        "alignedSpan": "لايجوز تطبيق القانون الاجنبى بموجب النصوص السابقة اذا كان مخالفا للنظام العام, او الآداب فى الجزائ",
+        "criticalTokensMissing": [
+          "لا"
+        ],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:27@ordinance-75-58",
+      "reference": "مسك دفاتر المواليد والوفيات، والتبليغات، المتعلقة بها ينظمها القانون الخاص بالحالة المدنية.",
+      "evidenceId": "civil-8-22-original-left",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 3,
+      "imageSha256": "7255aaa587ee694e2326872fbc3dce267d4dea29e27248b5e2dade1ada466a2c",
+      "dpi": 200,
+      "psm": 6,
+      "language": "ara",
+      "engine": "tesseract-fast",
+      "seconds": 1.4583726999999271,
+      "recognized": "ظ المادة 22 : فى حالة تعدد الجنسسبيات» يطبق القاضى الجنسية\n| غير ان القانون الجزالرى هو الذى يطبق اذا كانت للشبخص\nفى وقت .واحد بالنسبة. الى الجزائرء الجنسية الجزائرية,\nوبالنسبة الى دولة او عدة. دول اجنبية جنسية تلك الدول ‎٠‏\n‏وفى. حالة انعدام الجنسية يعين القاضى القانون الواجب\nالمادة 23 : متى ظهر من الاحكام الواردة فى المواد المتقدمة\nان القانون الواجب التطبيق هو قانون دولة معينة تتعدد فيها\nالانظمة التشريعية فان القانون الداخلى لتلك الدولة مهو الذى\nيقرر رأى النظام التشريعى الذى يجب تطبيقه ‎٠‏\n‏المادة 24 : لايجوز تطبيق القانون الاجنبى بموجب النصوص\nالسابقة اذا كان مخالفا للنظام العام, او الآداب فى الجزائن ».\nالباب الثانى . :\nالاشخاص الطبيعية والاعتبارية\nالفصل الاول ‏ .\nالاشخاص الطبيعية\nالمادة 25 : تبدأ شخصمية الإنسان بتمام ولادته حياء وتنتهى\nعلى ان الجنين يتمتع بالحقوق المدنية بشرط ان يولد جياء\nالمادة 26 : تثبت الولادة والوفاة بالسجلات المعدة لذلك ‎٠١‏\n‏واذا لم يوجد.هذا الدليل» او تبين عدم صحة ما ادرج\nينص عليها قانون الحالة المدنية ‎٠‏\n‏المادة 27 : مسك دفاتر المواليد والوفياتء والتبليفات,\nالمتعلقة بها ينظمها القانون الخاص بالحالة المدنية ‎٠‏\n‏ولقب الشخص يلحق اولاده ‎٠‏ . . 0\nبالنسنبة للاطفال المولودين من ابوين غير مسلمين ‎٠‏\n‏المادة 29 : يسرى على اكتساب الالقاب وتبديلها القانون\nالمتعلق بالحالة المدنية ‎٠‏\n‏المادة 30 : ينظم الجنسية الجزائرية قانون الجنسية\nالمادة 31 : تجرى على المفقود والغائب الاحكام المقررة فى\nالتشريع العائلى ‎٠‏\n‏المادة 32 : 'نتكون اسرة الشخض من ذوى قرباه ويعتبر من\nذوى القربى كل من يجمعهم اصل واحد ‎٠‏\n‏المادة 33 : القرابة المباشزة هى الصلة ما بين الاصول '\nوالفروع 35 .\n",
+      "ocrSha256": "fe35241b3f07006edcdb125a4b9fdb6f9c43438f281bea84e6b54f3c9588ecd0",
+      "invocation": {
+        "command": [
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr\\Library\\bin\\tesseract.exe",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\data\\law\\corpus\\.cache\\extractions\\ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9\\page-0003\\civil-8-22-original-left\\crop.png",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\tesseract-fast\\civil-8-22-original-left\\ocr",
+          "--dpi",
+          "200",
+          "-l",
+          "ara",
+          "--oem",
+          "1",
+          "--psm",
+          "6",
+          "--tessdata-dir",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr\\share\\tessdata",
+          "-c",
+          "tessedit_create_txt=1",
+          "-c",
+          "tessedit_create_tsv=1"
+        ],
+        "exitCode": 0,
+        "stderr": "",
+        "executableSha256": "bd50a6b7ce25f2a19d4805be5caa5e02aeffba9a13a3fe78fa0b360b852e5169",
+        "models": [
+          {
+            "language": "ara",
+            "sha256": "e3206d3dc87fd50c24a0fb9f01838615911d25168f4e64415244b67d2bb3e729"
+          }
+        ]
+      },
+      "metric": {
+        "edits": 4,
+        "referenceCharacters": 91,
+        "characterErrorRate": 0.04395604395604396,
+        "alignedSpan": "مسك دفاتر المواليد والوفياتء والتبليفات, المتعلقة بها ينظمها القانون الخاص بالحالة المدنية",
+        "criticalTokensMissing": [],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:29@ordinance-75-58",
+      "reference": "يسرى على اكتساب الالقاب وتبديلها القانون المتعلق بالحالة المدنية.",
+      "evidenceId": "civil-8-22-original-left",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 3,
+      "imageSha256": "7255aaa587ee694e2326872fbc3dce267d4dea29e27248b5e2dade1ada466a2c",
+      "dpi": 200,
+      "psm": 6,
+      "language": "ara",
+      "engine": "tesseract-fast",
+      "seconds": 1.7683790000000954,
+      "recognized": "ظ المادة 22 : فى حالة تعدد الجنسسبيات» يطبق القاضى الجنسية\n| غير ان القانون الجزالرى هو الذى يطبق اذا كانت للشبخص\nفى وقت .واحد بالنسبة. الى الجزائرء الجنسية الجزائرية,\nوبالنسبة الى دولة او عدة. دول اجنبية جنسية تلك الدول ‎٠‏\n‏وفى. حالة انعدام الجنسية يعين القاضى القانون الواجب\nالمادة 23 : متى ظهر من الاحكام الواردة فى المواد المتقدمة\nان القانون الواجب التطبيق هو قانون دولة معينة تتعدد فيها\nالانظمة التشريعية فان القانون الداخلى لتلك الدولة مهو الذى\nيقرر رأى النظام التشريعى الذى يجب تطبيقه ‎٠‏\n‏المادة 24 : لايجوز تطبيق القانون الاجنبى بموجب النصوص\nالسابقة اذا كان مخالفا للنظام العام, او الآداب فى الجزائن ».\nالباب الثانى . :\nالاشخاص الطبيعية والاعتبارية\nالفصل الاول ‏ .\nالاشخاص الطبيعية\nالمادة 25 : تبدأ شخصمية الإنسان بتمام ولادته حياء وتنتهى\nعلى ان الجنين يتمتع بالحقوق المدنية بشرط ان يولد جياء\nالمادة 26 : تثبت الولادة والوفاة بالسجلات المعدة لذلك ‎٠١‏\n‏واذا لم يوجد.هذا الدليل» او تبين عدم صحة ما ادرج\nينص عليها قانون الحالة المدنية ‎٠‏\n‏المادة 27 : مسك دفاتر المواليد والوفياتء والتبليفات,\nالمتعلقة بها ينظمها القانون الخاص بالحالة المدنية ‎٠‏\n‏ولقب الشخص يلحق اولاده ‎٠‏ . . 0\nبالنسنبة للاطفال المولودين من ابوين غير مسلمين ‎٠‏\n‏المادة 29 : يسرى على اكتساب الالقاب وتبديلها القانون\nالمتعلق بالحالة المدنية ‎٠‏\n‏المادة 30 : ينظم الجنسية الجزائرية قانون الجنسية\nالمادة 31 : تجرى على المفقود والغائب الاحكام المقررة فى\nالتشريع العائلى ‎٠‏\n‏المادة 32 : 'نتكون اسرة الشخض من ذوى قرباه ويعتبر من\nذوى القربى كل من يجمعهم اصل واحد ‎٠‏\n‏المادة 33 : القرابة المباشزة هى الصلة ما بين الاصول '\nوالفروع 35 .\n",
+      "ocrSha256": "fe35241b3f07006edcdb125a4b9fdb6f9c43438f281bea84e6b54f3c9588ecd0",
+      "invocation": {
+        "command": [
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr\\Library\\bin\\tesseract.exe",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\data\\law\\corpus\\.cache\\extractions\\ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9\\page-0003\\civil-8-22-original-left\\crop.png",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\tesseract-fast\\civil-8-22-original-left\\ocr",
+          "--dpi",
+          "200",
+          "-l",
+          "ara",
+          "--oem",
+          "1",
+          "--psm",
+          "6",
+          "--tessdata-dir",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr\\share\\tessdata",
+          "-c",
+          "tessedit_create_txt=1",
+          "-c",
+          "tessedit_create_tsv=1"
+        ],
+        "exitCode": 0,
+        "stderr": "",
+        "executableSha256": "bd50a6b7ce25f2a19d4805be5caa5e02aeffba9a13a3fe78fa0b360b852e5169",
+        "models": [
+          {
+            "language": "ara",
+            "sha256": "e3206d3dc87fd50c24a0fb9f01838615911d25168f4e64415244b67d2bb3e729"
+          }
+        ]
+      },
+      "metric": {
+        "edits": 1,
+        "referenceCharacters": 65,
+        "characterErrorRate": 0.015384615384615385,
+        "alignedSpan": "يسرى على اكتساب الالقاب وتبديلها القانون المتعلق بالحالة المدنية",
+        "criticalTokensMissing": [],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:30@ordinance-75-58",
+      "reference": "ينظم الجنسية الجزائرية قانون الجنسية الخاص بها.",
+      "evidenceId": "civil-8-22-original-left",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 3,
+      "imageSha256": "7255aaa587ee694e2326872fbc3dce267d4dea29e27248b5e2dade1ada466a2c",
+      "dpi": 200,
+      "psm": 6,
+      "language": "ara",
+      "engine": "tesseract-fast",
+      "seconds": 2.1359364999998434,
+      "recognized": "ظ المادة 22 : فى حالة تعدد الجنسسبيات» يطبق القاضى الجنسية\n| غير ان القانون الجزالرى هو الذى يطبق اذا كانت للشبخص\nفى وقت .واحد بالنسبة. الى الجزائرء الجنسية الجزائرية,\nوبالنسبة الى دولة او عدة. دول اجنبية جنسية تلك الدول ‎٠‏\n‏وفى. حالة انعدام الجنسية يعين القاضى القانون الواجب\nالمادة 23 : متى ظهر من الاحكام الواردة فى المواد المتقدمة\nان القانون الواجب التطبيق هو قانون دولة معينة تتعدد فيها\nالانظمة التشريعية فان القانون الداخلى لتلك الدولة مهو الذى\nيقرر رأى النظام التشريعى الذى يجب تطبيقه ‎٠‏\n‏المادة 24 : لايجوز تطبيق القانون الاجنبى بموجب النصوص\nالسابقة اذا كان مخالفا للنظام العام, او الآداب فى الجزائن ».\nالباب الثانى . :\nالاشخاص الطبيعية والاعتبارية\nالفصل الاول ‏ .\nالاشخاص الطبيعية\nالمادة 25 : تبدأ شخصمية الإنسان بتمام ولادته حياء وتنتهى\nعلى ان الجنين يتمتع بالحقوق المدنية بشرط ان يولد جياء\nالمادة 26 : تثبت الولادة والوفاة بالسجلات المعدة لذلك ‎٠١‏\n‏واذا لم يوجد.هذا الدليل» او تبين عدم صحة ما ادرج\nينص عليها قانون الحالة المدنية ‎٠‏\n‏المادة 27 : مسك دفاتر المواليد والوفياتء والتبليفات,\nالمتعلقة بها ينظمها القانون الخاص بالحالة المدنية ‎٠‏\n‏ولقب الشخص يلحق اولاده ‎٠‏ . . 0\nبالنسنبة للاطفال المولودين من ابوين غير مسلمين ‎٠‏\n‏المادة 29 : يسرى على اكتساب الالقاب وتبديلها القانون\nالمتعلق بالحالة المدنية ‎٠‏\n‏المادة 30 : ينظم الجنسية الجزائرية قانون الجنسية\nالمادة 31 : تجرى على المفقود والغائب الاحكام المقررة فى\nالتشريع العائلى ‎٠‏\n‏المادة 32 : 'نتكون اسرة الشخض من ذوى قرباه ويعتبر من\nذوى القربى كل من يجمعهم اصل واحد ‎٠‏\n‏المادة 33 : القرابة المباشزة هى الصلة ما بين الاصول '\nوالفروع 35 .\n",
+      "ocrSha256": "fe35241b3f07006edcdb125a4b9fdb6f9c43438f281bea84e6b54f3c9588ecd0",
+      "invocation": {
+        "command": [
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr\\Library\\bin\\tesseract.exe",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\data\\law\\corpus\\.cache\\extractions\\ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9\\page-0003\\civil-8-22-original-left\\crop.png",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\tesseract-fast\\civil-8-22-original-left\\ocr",
+          "--dpi",
+          "200",
+          "-l",
+          "ara",
+          "--oem",
+          "1",
+          "--psm",
+          "6",
+          "--tessdata-dir",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr\\share\\tessdata",
+          "-c",
+          "tessedit_create_txt=1",
+          "-c",
+          "tessedit_create_tsv=1"
+        ],
+        "exitCode": 0,
+        "stderr": "",
+        "executableSha256": "bd50a6b7ce25f2a19d4805be5caa5e02aeffba9a13a3fe78fa0b360b852e5169",
+        "models": [
+          {
+            "language": "ara",
+            "sha256": "e3206d3dc87fd50c24a0fb9f01838615911d25168f4e64415244b67d2bb3e729"
+          }
+        ]
+      },
+      "metric": {
+        "edits": 7,
+        "referenceCharacters": 47,
+        "characterErrorRate": 0.14893617021276595,
+        "alignedSpan": "ينظم الجنسية الجزائرية قانون الجنسية الما",
+        "criticalTokensMissing": [],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:31@ordinance-75-58",
+      "reference": "يسرى على المفقود والغائب الاحكام المقررة فى التشريع العائلى.",
+      "evidenceId": "civil-8-22-original-left",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 3,
+      "imageSha256": "7255aaa587ee694e2326872fbc3dce267d4dea29e27248b5e2dade1ada466a2c",
+      "dpi": 200,
+      "psm": 6,
+      "language": "ara",
+      "engine": "tesseract-fast",
+      "seconds": 1.5471815999999308,
+      "recognized": "ظ المادة 22 : فى حالة تعدد الجنسسبيات» يطبق القاضى الجنسية\n| غير ان القانون الجزالرى هو الذى يطبق اذا كانت للشبخص\nفى وقت .واحد بالنسبة. الى الجزائرء الجنسية الجزائرية,\nوبالنسبة الى دولة او عدة. دول اجنبية جنسية تلك الدول ‎٠‏\n‏وفى. حالة انعدام الجنسية يعين القاضى القانون الواجب\nالمادة 23 : متى ظهر من الاحكام الواردة فى المواد المتقدمة\nان القانون الواجب التطبيق هو قانون دولة معينة تتعدد فيها\nالانظمة التشريعية فان القانون الداخلى لتلك الدولة مهو الذى\nيقرر رأى النظام التشريعى الذى يجب تطبيقه ‎٠‏\n‏المادة 24 : لايجوز تطبيق القانون الاجنبى بموجب النصوص\nالسابقة اذا كان مخالفا للنظام العام, او الآداب فى الجزائن ».\nالباب الثانى . :\nالاشخاص الطبيعية والاعتبارية\nالفصل الاول ‏ .\nالاشخاص الطبيعية\nالمادة 25 : تبدأ شخصمية الإنسان بتمام ولادته حياء وتنتهى\nعلى ان الجنين يتمتع بالحقوق المدنية بشرط ان يولد جياء\nالمادة 26 : تثبت الولادة والوفاة بالسجلات المعدة لذلك ‎٠١‏\n‏واذا لم يوجد.هذا الدليل» او تبين عدم صحة ما ادرج\nينص عليها قانون الحالة المدنية ‎٠‏\n‏المادة 27 : مسك دفاتر المواليد والوفياتء والتبليفات,\nالمتعلقة بها ينظمها القانون الخاص بالحالة المدنية ‎٠‏\n‏ولقب الشخص يلحق اولاده ‎٠‏ . . 0\nبالنسنبة للاطفال المولودين من ابوين غير مسلمين ‎٠‏\n‏المادة 29 : يسرى على اكتساب الالقاب وتبديلها القانون\nالمتعلق بالحالة المدنية ‎٠‏\n‏المادة 30 : ينظم الجنسية الجزائرية قانون الجنسية\nالمادة 31 : تجرى على المفقود والغائب الاحكام المقررة فى\nالتشريع العائلى ‎٠‏\n‏المادة 32 : 'نتكون اسرة الشخض من ذوى قرباه ويعتبر من\nذوى القربى كل من يجمعهم اصل واحد ‎٠‏\n‏المادة 33 : القرابة المباشزة هى الصلة ما بين الاصول '\nوالفروع 35 .\n",
+      "ocrSha256": "fe35241b3f07006edcdb125a4b9fdb6f9c43438f281bea84e6b54f3c9588ecd0",
+      "invocation": {
+        "command": [
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr\\Library\\bin\\tesseract.exe",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\data\\law\\corpus\\.cache\\extractions\\ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9\\page-0003\\civil-8-22-original-left\\crop.png",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\tesseract-fast\\civil-8-22-original-left\\ocr",
+          "--dpi",
+          "200",
+          "-l",
+          "ara",
+          "--oem",
+          "1",
+          "--psm",
+          "6",
+          "--tessdata-dir",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr\\share\\tessdata",
+          "-c",
+          "tessedit_create_txt=1",
+          "-c",
+          "tessedit_create_tsv=1"
+        ],
+        "exitCode": 0,
+        "stderr": "",
+        "executableSha256": "bd50a6b7ce25f2a19d4805be5caa5e02aeffba9a13a3fe78fa0b360b852e5169",
+        "models": [
+          {
+            "language": "ara",
+            "sha256": "e3206d3dc87fd50c24a0fb9f01838615911d25168f4e64415244b67d2bb3e729"
+          }
+        ]
+      },
+      "metric": {
+        "edits": 3,
+        "referenceCharacters": 60,
+        "characterErrorRate": 0.05,
+        "alignedSpan": "تجرى على المفقود والغائب الاحكام المقررة فى التشريع العائلى",
+        "criticalTokensMissing": [],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:32@ordinance-75-58",
+      "reference": "تتكون اسرة الشخص من ذوى قرباه، ويعتبر من ذوى القربى كل من يجمعهم اصل واحد.",
+      "evidenceId": "civil-8-22-original-left",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 3,
+      "imageSha256": "7255aaa587ee694e2326872fbc3dce267d4dea29e27248b5e2dade1ada466a2c",
+      "dpi": 200,
+      "psm": 6,
+      "language": "ara",
+      "engine": "tesseract-fast",
+      "seconds": 1.7469077999999172,
+      "recognized": "ظ المادة 22 : فى حالة تعدد الجنسسبيات» يطبق القاضى الجنسية\n| غير ان القانون الجزالرى هو الذى يطبق اذا كانت للشبخص\nفى وقت .واحد بالنسبة. الى الجزائرء الجنسية الجزائرية,\nوبالنسبة الى دولة او عدة. دول اجنبية جنسية تلك الدول ‎٠‏\n‏وفى. حالة انعدام الجنسية يعين القاضى القانون الواجب\nالمادة 23 : متى ظهر من الاحكام الواردة فى المواد المتقدمة\nان القانون الواجب التطبيق هو قانون دولة معينة تتعدد فيها\nالانظمة التشريعية فان القانون الداخلى لتلك الدولة مهو الذى\nيقرر رأى النظام التشريعى الذى يجب تطبيقه ‎٠‏\n‏المادة 24 : لايجوز تطبيق القانون الاجنبى بموجب النصوص\nالسابقة اذا كان مخالفا للنظام العام, او الآداب فى الجزائن ».\nالباب الثانى . :\nالاشخاص الطبيعية والاعتبارية\nالفصل الاول ‏ .\nالاشخاص الطبيعية\nالمادة 25 : تبدأ شخصمية الإنسان بتمام ولادته حياء وتنتهى\nعلى ان الجنين يتمتع بالحقوق المدنية بشرط ان يولد جياء\nالمادة 26 : تثبت الولادة والوفاة بالسجلات المعدة لذلك ‎٠١‏\n‏واذا لم يوجد.هذا الدليل» او تبين عدم صحة ما ادرج\nينص عليها قانون الحالة المدنية ‎٠‏\n‏المادة 27 : مسك دفاتر المواليد والوفياتء والتبليفات,\nالمتعلقة بها ينظمها القانون الخاص بالحالة المدنية ‎٠‏\n‏ولقب الشخص يلحق اولاده ‎٠‏ . . 0\nبالنسنبة للاطفال المولودين من ابوين غير مسلمين ‎٠‏\n‏المادة 29 : يسرى على اكتساب الالقاب وتبديلها القانون\nالمتعلق بالحالة المدنية ‎٠‏\n‏المادة 30 : ينظم الجنسية الجزائرية قانون الجنسية\nالمادة 31 : تجرى على المفقود والغائب الاحكام المقررة فى\nالتشريع العائلى ‎٠‏\n‏المادة 32 : 'نتكون اسرة الشخض من ذوى قرباه ويعتبر من\nذوى القربى كل من يجمعهم اصل واحد ‎٠‏\n‏المادة 33 : القرابة المباشزة هى الصلة ما بين الاصول '\nوالفروع 35 .\n",
+      "ocrSha256": "fe35241b3f07006edcdb125a4b9fdb6f9c43438f281bea84e6b54f3c9588ecd0",
+      "invocation": {
+        "command": [
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr\\Library\\bin\\tesseract.exe",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\data\\law\\corpus\\.cache\\extractions\\ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9\\page-0003\\civil-8-22-original-left\\crop.png",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\tesseract-fast\\civil-8-22-original-left\\ocr",
+          "--dpi",
+          "200",
+          "-l",
+          "ara",
+          "--oem",
+          "1",
+          "--psm",
+          "6",
+          "--tessdata-dir",
+          "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr\\share\\tessdata",
+          "-c",
+          "tessedit_create_txt=1",
+          "-c",
+          "tessedit_create_tsv=1"
+        ],
+        "exitCode": 0,
+        "stderr": "",
+        "executableSha256": "bd50a6b7ce25f2a19d4805be5caa5e02aeffba9a13a3fe78fa0b360b852e5169",
+        "models": [
+          {
+            "language": "ara",
+            "sha256": "e3206d3dc87fd50c24a0fb9f01838615911d25168f4e64415244b67d2bb3e729"
+          }
+        ]
+      },
+      "metric": {
+        "edits": 4,
+        "referenceCharacters": 74,
+        "characterErrorRate": 0.05405405405405406,
+        "alignedSpan": "نتكون اسرة الشخض من ذوى قرباه ويعتبر من ذوى القربى كل من يجمعهم اصل واحد",
+        "criticalTokensMissing": [],
+        "criticalTokensExtra": []
+      }
+    }
+  ],
+  "sampleSet": "new12 untreated original-page samples; not used for parameter tuning"
+}

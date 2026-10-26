@@ -1,0 +1,872 @@
+{
+  "engine": "paddle-onnx",
+  "recordedAt": "2026-10-26T00:51:33.477451+00:00",
+  "normalizations": [
+    "Unicode NFC (canonical composition only)",
+    "Unicode whitespace runs replaced by one U+0020; leading/trailing whitespace removed"
+  ],
+  "initializationSeconds": 1.4580656000002818,
+  "ocrSeconds": 125.10427350000145,
+  "sampleCount": 12,
+  "bodyCharacterErrorRate": 0.03086997193638915,
+  "limitations": [
+    "Selected image-reviewed integration samples, not independent human ground truth or a random code-wide test.",
+    "Best-contiguous-span CER ignores crop labels and surrounding text; every reference character still incurs alignment/edit cost.",
+    "Times include subprocess startup or first inference; downloads/initialization are separate. Battery CPU, two threads; no throughput guarantee.",
+    "No engine agreement or metric upgrades legal verification; paragraph layout and semantic accuracy need source inspection."
+  ],
+  "models": [
+    {
+      "file": "arabic_PP-OCRv5_rec_mobile.onnx",
+      "sha256": "c1192e632d0baa9146ae5b756a0e635e3dc63c1733737ebfd1629e87144e9295",
+      "bytes": 8023828
+    },
+    {
+      "file": "ch_PP-OCRv5_det_mobile.onnx",
+      "sha256": "4d97c44a20d30a81aad087d6a396b08f786c4635742afc391f6621f5c6ae78ae",
+      "bytes": 4819576
+    },
+    {
+      "file": "ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+      "sha256": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c",
+      "bytes": 585532
+    }
+  ],
+  "samples": [
+    {
+      "versionId": "civil-code:9@ordinance-75-58",
+      "reference": "يكون القانون الجزائرى هو المرجع فى تكييف العلاقات المطلوب تحديد نوعها عند تنازع القوانين لمعرفة القانون الواجب تطبيقه.",
+      "evidenceId": "civil-6-22-original-right",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 2,
+      "imageSha256": "ace00dabfe84cfa2796a02edf36e5a6bb59d564cdaffab2d6bad9d75b4dbf446",
+      "dpi": 200,
+      "psm": 6,
+      "language": "ara",
+      "engine": "paddle-onnx",
+      "seconds": 9.129294900000332,
+      "recognized": "الفصلألأول\nتنازع القوانين من حيث الزمان\nالمادة  تسترّى القوائين المتعلقة بالاهلية على جميع\nالاشخاص الذين تتوفر فيهم الشروط المنصوص عليها\nواذ صار شخص توفرت فيه الاهلية، بخسب نصوص\nقديمة، عديم الاهلية بحسب نصوص جديدة، فان ذلك لا\nيؤثر فى تصرفاته السابقة\nالمادةتطبق النصوص الجديدة المتعلقة بالاجراءات حالا\nغير ان النصوص القديمة هى التى تسرى على المسائل الخاصة\nببدء التقاوم، ووقفه، وانقطاعه؛ فيما يخص المدة السابقة على\nالعمل بالنصوص الجديدة\nوكذلك الحال فيما يخضي أجال المرافعة\nالمادة   تخضع البينات المعدة مقدما للنصوص المعمول\nبها فى ألوقت الذى اعدت فيه البينة او فى الوقت الذى كان\nينبغى فية اعدادها\nالفضل الثانى\nتنازع القوانين هن حيث المكان\nالمإدة و يكون القانون الجزائرى هو المرجع فى تكييف\nالعلاقات المطلوب تحديد نوعها عند تنازع القوانين لمعرفة\nالقانون الواجب تطبيقه\nالمادة تسرى القوانين المتعقلة بالحالة المدنية للاشخاص\nواهليتهم على الجزائرين ولو كانوا مقيمين فى بلاد أجنبية\nومع ذلك ففى التصرفات المالية التى تعقد في الجزائر\nوتنتج أثارها فيها، اذا كان احد الطرفين اجنبيا ناقص الاهلية\nوكان نقص الإهلية يرجع الى سبب فيه خفاء لا يسهل تبينه،\nفان هذا السبب لايؤثر فى اهليته وفى صحة المعاملة اما\nالاشخاص الاعتبارية الاجنبية من شزكات، وجمعيات\nومؤسسات، وغيرها التى تمارس نشاطا فى الجزائر فانها\nتخضع للقانون الجزائرى\nالمادة  الشروط الخاصة بصحة الزواج يطبق عليها\nالقانون الوطنى لكل من الزوجين",
+      "ocrSha256": "4a5b10fe1c27ccba50b486d074d48f6d9706a6a4ae9a8df23dadddca5b2fb6b3",
+      "invocation": {
+        "params": {
+          "Global.model_root_dir": "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\models",
+          "Global.use_cls": false,
+          "Det.ocr_version": "PP-OCRv5",
+          "Det.model_type": "mobile",
+          "Det.lang_type": "ch",
+          "Det.limit_type": "max",
+          "Det.limit_side_len": 1600,
+          "Rec.ocr_version": "PP-OCRv5",
+          "Rec.model_type": "mobile",
+          "Rec.lang_type": "arabic",
+          "EngineConfig.onnxruntime.intra_op_num_threads": 2,
+          "EngineConfig.onnxruntime.inter_op_num_threads": 1
+        },
+        "versions": {
+          "rapidocr": "3.9.2",
+          "onnxruntime": "1.31.0",
+          "python-bidi": "0.6.12"
+        },
+        "models": [
+          {
+            "file": "arabic_PP-OCRv5_rec_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv5/rec/arabic_PP-OCRv5_rec_mobile.onnx",
+            "sha256": "c1192e632d0baa9146ae5b756a0e635e3dc63c1733737ebfd1629e87144e9295",
+            "bytes": 8023828,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          },
+          {
+            "file": "ch_PP-OCRv5_det_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv5/det/ch_PP-OCRv5_det_mobile.onnx",
+            "sha256": "4d97c44a20d30a81aad087d6a396b08f786c4635742afc391f6621f5c6ae78ae",
+            "bytes": 4819576,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          },
+          {
+            "file": "ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv4/cls/ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+            "sha256": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c",
+            "bytes": 585532,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          }
+        ],
+        "order": "word boxes clustered by y-overlap then x descending; raw engine boxes/order retained; engine's Arabic bidi conversion retained without further character reversal"
+      },
+      "metric": {
+        "edits": 1,
+        "referenceCharacters": 118,
+        "characterErrorRate": 0.00847457627118644,
+        "alignedSpan": "يكون القانون الجزائرى هو المرجع فى تكييف العلاقات المطلوب تحديد نوعها عند تنازع القوانين لمعرفة القانون الواجب تطبيقه",
+        "criticalTokensMissing": [],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:11@ordinance-75-58",
+      "reference": "الشروط الخاصة بصحة الزواج يطبق عليها القانون الوطنى لكل من الزوجين.",
+      "evidenceId": "civil-6-22-original-right",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 2,
+      "imageSha256": "ace00dabfe84cfa2796a02edf36e5a6bb59d564cdaffab2d6bad9d75b4dbf446",
+      "dpi": 200,
+      "psm": 6,
+      "language": "ara",
+      "engine": "paddle-onnx",
+      "seconds": 7.835730199999944,
+      "recognized": "الفصلألأول\nتنازع القوانين من حيث الزمان\nالمادة  تسترّى القوائين المتعلقة بالاهلية على جميع\nالاشخاص الذين تتوفر فيهم الشروط المنصوص عليها\nواذ صار شخص توفرت فيه الاهلية، بخسب نصوص\nقديمة، عديم الاهلية بحسب نصوص جديدة، فان ذلك لا\nيؤثر فى تصرفاته السابقة\nالمادةتطبق النصوص الجديدة المتعلقة بالاجراءات حالا\nغير ان النصوص القديمة هى التى تسرى على المسائل الخاصة\nببدء التقاوم، ووقفه، وانقطاعه؛ فيما يخص المدة السابقة على\nالعمل بالنصوص الجديدة\nوكذلك الحال فيما يخضي أجال المرافعة\nالمادة   تخضع البينات المعدة مقدما للنصوص المعمول\nبها فى ألوقت الذى اعدت فيه البينة او فى الوقت الذى كان\nينبغى فية اعدادها\nالفضل الثانى\nتنازع القوانين هن حيث المكان\nالمإدة و يكون القانون الجزائرى هو المرجع فى تكييف\nالعلاقات المطلوب تحديد نوعها عند تنازع القوانين لمعرفة\nالقانون الواجب تطبيقه\nالمادة تسرى القوانين المتعقلة بالحالة المدنية للاشخاص\nواهليتهم على الجزائرين ولو كانوا مقيمين فى بلاد أجنبية\nومع ذلك ففى التصرفات المالية التى تعقد في الجزائر\nوتنتج أثارها فيها، اذا كان احد الطرفين اجنبيا ناقص الاهلية\nوكان نقص الإهلية يرجع الى سبب فيه خفاء لا يسهل تبينه،\nفان هذا السبب لايؤثر فى اهليته وفى صحة المعاملة اما\nالاشخاص الاعتبارية الاجنبية من شزكات، وجمعيات\nومؤسسات، وغيرها التى تمارس نشاطا فى الجزائر فانها\nتخضع للقانون الجزائرى\nالمادة  الشروط الخاصة بصحة الزواج يطبق عليها\nالقانون الوطنى لكل من الزوجين",
+      "ocrSha256": "4a5b10fe1c27ccba50b486d074d48f6d9706a6a4ae9a8df23dadddca5b2fb6b3",
+      "invocation": {
+        "params": {
+          "Global.model_root_dir": "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\models",
+          "Global.use_cls": false,
+          "Det.ocr_version": "PP-OCRv5",
+          "Det.model_type": "mobile",
+          "Det.lang_type": "ch",
+          "Det.limit_type": "max",
+          "Det.limit_side_len": 1600,
+          "Rec.ocr_version": "PP-OCRv5",
+          "Rec.model_type": "mobile",
+          "Rec.lang_type": "arabic",
+          "EngineConfig.onnxruntime.intra_op_num_threads": 2,
+          "EngineConfig.onnxruntime.inter_op_num_threads": 1
+        },
+        "versions": {
+          "rapidocr": "3.9.2",
+          "onnxruntime": "1.31.0",
+          "python-bidi": "0.6.12"
+        },
+        "models": [
+          {
+            "file": "arabic_PP-OCRv5_rec_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv5/rec/arabic_PP-OCRv5_rec_mobile.onnx",
+            "sha256": "c1192e632d0baa9146ae5b756a0e635e3dc63c1733737ebfd1629e87144e9295",
+            "bytes": 8023828,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          },
+          {
+            "file": "ch_PP-OCRv5_det_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv5/det/ch_PP-OCRv5_det_mobile.onnx",
+            "sha256": "4d97c44a20d30a81aad087d6a396b08f786c4635742afc391f6621f5c6ae78ae",
+            "bytes": 4819576,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          },
+          {
+            "file": "ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv4/cls/ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+            "sha256": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c",
+            "bytes": 585532,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          }
+        ],
+        "order": "word boxes clustered by y-overlap then x descending; raw engine boxes/order retained; engine's Arabic bidi conversion retained without further character reversal"
+      },
+      "metric": {
+        "edits": 1,
+        "referenceCharacters": 67,
+        "characterErrorRate": 0.014925373134328358,
+        "alignedSpan": "الشروط الخاصة بصحة الزواج يطبق عليها القانون الوطنى لكل من الزوجين",
+        "criticalTokensMissing": [],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:14@ordinance-75-58",
+      "reference": "يطبق القانون الوطنى على الالتزام بالنفقة بين الاقارب للمدين بها.",
+      "evidenceId": "civil-8-22-original-right",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 3,
+      "imageSha256": "25deac6f02aae8527350582d81046fee5a1fb02159e4a7ed2eb80817a9ffd579",
+      "dpi": 200,
+      "psm": 6,
+      "language": "ara",
+      "engine": "paddle-onnx",
+      "seconds": 12.879813200000171,
+      "recognized": "المادة  يسرى قانون الدولة التى ينتمى اليها الزوج\nوقت انعقاد الزواج على الآثار التى يرتبها عقد الزواج فيما\nيعود منها الى المال\nيسرى على انحلال الزواج القانون الوطبى الذى ينتمى اليه\nالزواج وقت رفع الدعوى\nالمادة  يسرى القانون الجزائرى وحده فى الاحوال\nالمنصوص عليها فى المادتين واذا كان احد الزوجين\nجزائريا وقت انعقاد الزواج، الا فيما يخض اهلية الزواج\nالادة  يطبق القانون الوطنى على الالتزام بالنفقة بين\nالاقارب للمدين بها\nالمادة يبين قانون الشخص الذى يجب حمايته القواعد\nالموضوعية الخاصة بالولاية والوصاية والقوامة وغيرها من\nالنظم المتعلقة بحماية المحجورين، والغائبين\nالمادة  يسرى على الميراث، والوصية، وسائر التصرفات\nالتى تنفذ بعد الموت، قائون الهالك او الموصى او من صدر\nمنه التصرف وقت موته\nغير انه يسرى على شكل الوصية، قانون الموصى وقت\nالايصاه او قانون البلد الذى تمت فيه الوصية، وكذلك الحكم\nفى شكل سائر التصرفات التى تنفذ بعد الموت\nالمادة  يسرى على الحيازة، والملكية، والحقوق العينية\nالاخرى، قانون موقع العقار، ويسرى بالنسبة الى المنقول،\nقانون الجهة التى يوجد فيها هذا المنقول وقت تحقيق السبب\nالذى ترتب عليه كسب أو فقد الحيازة، أو الملكية، والحقوق\nالعينية الاخرى\nالمادة  يسرى على الالتزامات التعاقدية، قانون المكان\nالذى ينبرم فيه العقد مالم يتفق المتعاقدان على تطبيق قانون\nآخر\nغير ان العقود المتعلقة بالعقار يسرى عليها قانون موقعه\nالمادة  تخضع العقود ما بين الاحياء فى شكلها لقانون\nالبلد الذى تمت فيه، ويجب ايضا ان تخضع لقانون الوطن\nالمشترك للمتعاقدين\nالمادة  يسرى على الالمتزامات غير التعاقدية، قانون البلد\nالذى وقع فيه الفعل المنشي للالتزام\nغير انه فيا يتعلق بالالتزامات الناشئة عن الفعل الضار،\nلاتسرى احكام الفقرة السابقة على الوقائع التى تحدث فى\nالخارج وتكون مشروعة فى الجزائر وان كانت تعد غير\nمشروعة فى البلد الذى وقعت فيه\nالمادة  لاتسرى احكام المواد السابقة الاحيث لايوجد\nنص على خلاف ذلك، فى قانون خاص؛ او معاهدة دولية نافذة\nفي الجزائر",
+      "ocrSha256": "93c5573ade59b93f4af4e50fc607f4c2eba30b5fb85b519b36a59ef298ca7268",
+      "invocation": {
+        "params": {
+          "Global.model_root_dir": "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\models",
+          "Global.use_cls": false,
+          "Det.ocr_version": "PP-OCRv5",
+          "Det.model_type": "mobile",
+          "Det.lang_type": "ch",
+          "Det.limit_type": "max",
+          "Det.limit_side_len": 1600,
+          "Rec.ocr_version": "PP-OCRv5",
+          "Rec.model_type": "mobile",
+          "Rec.lang_type": "arabic",
+          "EngineConfig.onnxruntime.intra_op_num_threads": 2,
+          "EngineConfig.onnxruntime.inter_op_num_threads": 1
+        },
+        "versions": {
+          "rapidocr": "3.9.2",
+          "onnxruntime": "1.31.0",
+          "python-bidi": "0.6.12"
+        },
+        "models": [
+          {
+            "file": "arabic_PP-OCRv5_rec_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv5/rec/arabic_PP-OCRv5_rec_mobile.onnx",
+            "sha256": "c1192e632d0baa9146ae5b756a0e635e3dc63c1733737ebfd1629e87144e9295",
+            "bytes": 8023828,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          },
+          {
+            "file": "ch_PP-OCRv5_det_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv5/det/ch_PP-OCRv5_det_mobile.onnx",
+            "sha256": "4d97c44a20d30a81aad087d6a396b08f786c4635742afc391f6621f5c6ae78ae",
+            "bytes": 4819576,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          },
+          {
+            "file": "ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv4/cls/ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+            "sha256": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c",
+            "bytes": 585532,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          }
+        ],
+        "order": "word boxes clustered by y-overlap then x descending; raw engine boxes/order retained; engine's Arabic bidi conversion retained without further character reversal"
+      },
+      "metric": {
+        "edits": 1,
+        "referenceCharacters": 64,
+        "characterErrorRate": 0.015625,
+        "alignedSpan": "يطبق القانون الوطنى على الالتزام بالنفقة بين الاقارب للمدين بها",
+        "criticalTokensMissing": [],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:18@ordinance-75-58",
+      "reference": "يسرى على الالتزامات التعاقدية، قانون المكان الذى يبرم فيه العقد مالم يتفق المتعاقدان على تطبيق قانون آخر.\nغير ان العقود المتعلقة بالعقار يسرى عليها قانون موقعه.",
+      "evidenceId": "civil-8-22-original-right",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 3,
+      "imageSha256": "25deac6f02aae8527350582d81046fee5a1fb02159e4a7ed2eb80817a9ffd579",
+      "dpi": 200,
+      "psm": 6,
+      "language": "ara",
+      "engine": "paddle-onnx",
+      "seconds": 10.837172500000179,
+      "recognized": "المادة  يسرى قانون الدولة التى ينتمى اليها الزوج\nوقت انعقاد الزواج على الآثار التى يرتبها عقد الزواج فيما\nيعود منها الى المال\nيسرى على انحلال الزواج القانون الوطبى الذى ينتمى اليه\nالزواج وقت رفع الدعوى\nالمادة  يسرى القانون الجزائرى وحده فى الاحوال\nالمنصوص عليها فى المادتين واذا كان احد الزوجين\nجزائريا وقت انعقاد الزواج، الا فيما يخض اهلية الزواج\nالادة  يطبق القانون الوطنى على الالتزام بالنفقة بين\nالاقارب للمدين بها\nالمادة يبين قانون الشخص الذى يجب حمايته القواعد\nالموضوعية الخاصة بالولاية والوصاية والقوامة وغيرها من\nالنظم المتعلقة بحماية المحجورين، والغائبين\nالمادة  يسرى على الميراث، والوصية، وسائر التصرفات\nالتى تنفذ بعد الموت، قائون الهالك او الموصى او من صدر\nمنه التصرف وقت موته\nغير انه يسرى على شكل الوصية، قانون الموصى وقت\nالايصاه او قانون البلد الذى تمت فيه الوصية، وكذلك الحكم\nفى شكل سائر التصرفات التى تنفذ بعد الموت\nالمادة  يسرى على الحيازة، والملكية، والحقوق العينية\nالاخرى، قانون موقع العقار، ويسرى بالنسبة الى المنقول،\nقانون الجهة التى يوجد فيها هذا المنقول وقت تحقيق السبب\nالذى ترتب عليه كسب أو فقد الحيازة، أو الملكية، والحقوق\nالعينية الاخرى\nالمادة  يسرى على الالتزامات التعاقدية، قانون المكان\nالذى ينبرم فيه العقد مالم يتفق المتعاقدان على تطبيق قانون\nآخر\nغير ان العقود المتعلقة بالعقار يسرى عليها قانون موقعه\nالمادة  تخضع العقود ما بين الاحياء فى شكلها لقانون\nالبلد الذى تمت فيه، ويجب ايضا ان تخضع لقانون الوطن\nالمشترك للمتعاقدين\nالمادة  يسرى على الالمتزامات غير التعاقدية، قانون البلد\nالذى وقع فيه الفعل المنشي للالتزام\nغير انه فيا يتعلق بالالتزامات الناشئة عن الفعل الضار،\nلاتسرى احكام الفقرة السابقة على الوقائع التى تحدث فى\nالخارج وتكون مشروعة فى الجزائر وان كانت تعد غير\nمشروعة فى البلد الذى وقعت فيه\nالمادة  لاتسرى احكام المواد السابقة الاحيث لايوجد\nنص على خلاف ذلك، فى قانون خاص؛ او معاهدة دولية نافذة\nفي الجزائر",
+      "ocrSha256": "93c5573ade59b93f4af4e50fc607f4c2eba30b5fb85b519b36a59ef298ca7268",
+      "invocation": {
+        "params": {
+          "Global.model_root_dir": "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\models",
+          "Global.use_cls": false,
+          "Det.ocr_version": "PP-OCRv5",
+          "Det.model_type": "mobile",
+          "Det.lang_type": "ch",
+          "Det.limit_type": "max",
+          "Det.limit_side_len": 1600,
+          "Rec.ocr_version": "PP-OCRv5",
+          "Rec.model_type": "mobile",
+          "Rec.lang_type": "arabic",
+          "EngineConfig.onnxruntime.intra_op_num_threads": 2,
+          "EngineConfig.onnxruntime.inter_op_num_threads": 1
+        },
+        "versions": {
+          "rapidocr": "3.9.2",
+          "onnxruntime": "1.31.0",
+          "python-bidi": "0.6.12"
+        },
+        "models": [
+          {
+            "file": "arabic_PP-OCRv5_rec_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv5/rec/arabic_PP-OCRv5_rec_mobile.onnx",
+            "sha256": "c1192e632d0baa9146ae5b756a0e635e3dc63c1733737ebfd1629e87144e9295",
+            "bytes": 8023828,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          },
+          {
+            "file": "ch_PP-OCRv5_det_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv5/det/ch_PP-OCRv5_det_mobile.onnx",
+            "sha256": "4d97c44a20d30a81aad087d6a396b08f786c4635742afc391f6621f5c6ae78ae",
+            "bytes": 4819576,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          },
+          {
+            "file": "ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv4/cls/ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+            "sha256": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c",
+            "bytes": 585532,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          }
+        ],
+        "order": "word boxes clustered by y-overlap then x descending; raw engine boxes/order retained; engine's Arabic bidi conversion retained without further character reversal"
+      },
+      "metric": {
+        "edits": 3,
+        "referenceCharacters": 160,
+        "characterErrorRate": 0.01875,
+        "alignedSpan": "يسرى على الالتزامات التعاقدية، قانون المكان الذى ينبرم فيه العقد مالم يتفق المتعاقدان على تطبيق قانون آخر غير ان العقود المتعلقة بالعقار يسرى عليها قانون موقعه",
+        "criticalTokensMissing": [],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:19@ordinance-75-58",
+      "reference": "تخضع العقود ما بين الاحياء فى شكلها لقانون البلد الذى تمت فيه، ويجب ايضا ان تخضع لقانون الوطن المشترك للمتعاقدين.",
+      "evidenceId": "civil-8-22-original-right",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 3,
+      "imageSha256": "25deac6f02aae8527350582d81046fee5a1fb02159e4a7ed2eb80817a9ffd579",
+      "dpi": 200,
+      "psm": 6,
+      "language": "ara",
+      "engine": "paddle-onnx",
+      "seconds": 11.02433370000017,
+      "recognized": "المادة  يسرى قانون الدولة التى ينتمى اليها الزوج\nوقت انعقاد الزواج على الآثار التى يرتبها عقد الزواج فيما\nيعود منها الى المال\nيسرى على انحلال الزواج القانون الوطبى الذى ينتمى اليه\nالزواج وقت رفع الدعوى\nالمادة  يسرى القانون الجزائرى وحده فى الاحوال\nالمنصوص عليها فى المادتين واذا كان احد الزوجين\nجزائريا وقت انعقاد الزواج، الا فيما يخض اهلية الزواج\nالادة  يطبق القانون الوطنى على الالتزام بالنفقة بين\nالاقارب للمدين بها\nالمادة يبين قانون الشخص الذى يجب حمايته القواعد\nالموضوعية الخاصة بالولاية والوصاية والقوامة وغيرها من\nالنظم المتعلقة بحماية المحجورين، والغائبين\nالمادة  يسرى على الميراث، والوصية، وسائر التصرفات\nالتى تنفذ بعد الموت، قائون الهالك او الموصى او من صدر\nمنه التصرف وقت موته\nغير انه يسرى على شكل الوصية، قانون الموصى وقت\nالايصاه او قانون البلد الذى تمت فيه الوصية، وكذلك الحكم\nفى شكل سائر التصرفات التى تنفذ بعد الموت\nالمادة  يسرى على الحيازة، والملكية، والحقوق العينية\nالاخرى، قانون موقع العقار، ويسرى بالنسبة الى المنقول،\nقانون الجهة التى يوجد فيها هذا المنقول وقت تحقيق السبب\nالذى ترتب عليه كسب أو فقد الحيازة، أو الملكية، والحقوق\nالعينية الاخرى\nالمادة  يسرى على الالتزامات التعاقدية، قانون المكان\nالذى ينبرم فيه العقد مالم يتفق المتعاقدان على تطبيق قانون\nآخر\nغير ان العقود المتعلقة بالعقار يسرى عليها قانون موقعه\nالمادة  تخضع العقود ما بين الاحياء فى شكلها لقانون\nالبلد الذى تمت فيه، ويجب ايضا ان تخضع لقانون الوطن\nالمشترك للمتعاقدين\nالمادة  يسرى على الالمتزامات غير التعاقدية، قانون البلد\nالذى وقع فيه الفعل المنشي للالتزام\nغير انه فيا يتعلق بالالتزامات الناشئة عن الفعل الضار،\nلاتسرى احكام الفقرة السابقة على الوقائع التى تحدث فى\nالخارج وتكون مشروعة فى الجزائر وان كانت تعد غير\nمشروعة فى البلد الذى وقعت فيه\nالمادة  لاتسرى احكام المواد السابقة الاحيث لايوجد\nنص على خلاف ذلك، فى قانون خاص؛ او معاهدة دولية نافذة\nفي الجزائر",
+      "ocrSha256": "93c5573ade59b93f4af4e50fc607f4c2eba30b5fb85b519b36a59ef298ca7268",
+      "invocation": {
+        "params": {
+          "Global.model_root_dir": "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\models",
+          "Global.use_cls": false,
+          "Det.ocr_version": "PP-OCRv5",
+          "Det.model_type": "mobile",
+          "Det.lang_type": "ch",
+          "Det.limit_type": "max",
+          "Det.limit_side_len": 1600,
+          "Rec.ocr_version": "PP-OCRv5",
+          "Rec.model_type": "mobile",
+          "Rec.lang_type": "arabic",
+          "EngineConfig.onnxruntime.intra_op_num_threads": 2,
+          "EngineConfig.onnxruntime.inter_op_num_threads": 1
+        },
+        "versions": {
+          "rapidocr": "3.9.2",
+          "onnxruntime": "1.31.0",
+          "python-bidi": "0.6.12"
+        },
+        "models": [
+          {
+            "file": "arabic_PP-OCRv5_rec_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv5/rec/arabic_PP-OCRv5_rec_mobile.onnx",
+            "sha256": "c1192e632d0baa9146ae5b756a0e635e3dc63c1733737ebfd1629e87144e9295",
+            "bytes": 8023828,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          },
+          {
+            "file": "ch_PP-OCRv5_det_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv5/det/ch_PP-OCRv5_det_mobile.onnx",
+            "sha256": "4d97c44a20d30a81aad087d6a396b08f786c4635742afc391f6621f5c6ae78ae",
+            "bytes": 4819576,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          },
+          {
+            "file": "ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv4/cls/ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+            "sha256": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c",
+            "bytes": 585532,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          }
+        ],
+        "order": "word boxes clustered by y-overlap then x descending; raw engine boxes/order retained; engine's Arabic bidi conversion retained without further character reversal"
+      },
+      "metric": {
+        "edits": 1,
+        "referenceCharacters": 113,
+        "characterErrorRate": 0.008849557522123894,
+        "alignedSpan": "تخضع العقود ما بين الاحياء فى شكلها لقانون البلد الذى تمت فيه، ويجب ايضا ان تخضع لقانون الوطن المشترك للمتعاقدين",
+        "criticalTokensMissing": [],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:21@ordinance-75-58",
+      "reference": "لا تسرى احكام المواد السابقة الا حيث لا يوجد نص على خلاف ذلك، فى قانون خاص، او معاهدة دولية نافذة فى الجزائر.",
+      "evidenceId": "civil-8-22-original-right",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 3,
+      "imageSha256": "25deac6f02aae8527350582d81046fee5a1fb02159e4a7ed2eb80817a9ffd579",
+      "dpi": 200,
+      "psm": 6,
+      "language": "ara",
+      "engine": "paddle-onnx",
+      "seconds": 10.54404710000017,
+      "recognized": "المادة  يسرى قانون الدولة التى ينتمى اليها الزوج\nوقت انعقاد الزواج على الآثار التى يرتبها عقد الزواج فيما\nيعود منها الى المال\nيسرى على انحلال الزواج القانون الوطبى الذى ينتمى اليه\nالزواج وقت رفع الدعوى\nالمادة  يسرى القانون الجزائرى وحده فى الاحوال\nالمنصوص عليها فى المادتين واذا كان احد الزوجين\nجزائريا وقت انعقاد الزواج، الا فيما يخض اهلية الزواج\nالادة  يطبق القانون الوطنى على الالتزام بالنفقة بين\nالاقارب للمدين بها\nالمادة يبين قانون الشخص الذى يجب حمايته القواعد\nالموضوعية الخاصة بالولاية والوصاية والقوامة وغيرها من\nالنظم المتعلقة بحماية المحجورين، والغائبين\nالمادة  يسرى على الميراث، والوصية، وسائر التصرفات\nالتى تنفذ بعد الموت، قائون الهالك او الموصى او من صدر\nمنه التصرف وقت موته\nغير انه يسرى على شكل الوصية، قانون الموصى وقت\nالايصاه او قانون البلد الذى تمت فيه الوصية، وكذلك الحكم\nفى شكل سائر التصرفات التى تنفذ بعد الموت\nالمادة  يسرى على الحيازة، والملكية، والحقوق العينية\nالاخرى، قانون موقع العقار، ويسرى بالنسبة الى المنقول،\nقانون الجهة التى يوجد فيها هذا المنقول وقت تحقيق السبب\nالذى ترتب عليه كسب أو فقد الحيازة، أو الملكية، والحقوق\nالعينية الاخرى\nالمادة  يسرى على الالتزامات التعاقدية، قانون المكان\nالذى ينبرم فيه العقد مالم يتفق المتعاقدان على تطبيق قانون\nآخر\nغير ان العقود المتعلقة بالعقار يسرى عليها قانون موقعه\nالمادة  تخضع العقود ما بين الاحياء فى شكلها لقانون\nالبلد الذى تمت فيه، ويجب ايضا ان تخضع لقانون الوطن\nالمشترك للمتعاقدين\nالمادة  يسرى على الالمتزامات غير التعاقدية، قانون البلد\nالذى وقع فيه الفعل المنشي للالتزام\nغير انه فيا يتعلق بالالتزامات الناشئة عن الفعل الضار،\nلاتسرى احكام الفقرة السابقة على الوقائع التى تحدث فى\nالخارج وتكون مشروعة فى الجزائر وان كانت تعد غير\nمشروعة فى البلد الذى وقعت فيه\nالمادة  لاتسرى احكام المواد السابقة الاحيث لايوجد\nنص على خلاف ذلك، فى قانون خاص؛ او معاهدة دولية نافذة\nفي الجزائر",
+      "ocrSha256": "93c5573ade59b93f4af4e50fc607f4c2eba30b5fb85b519b36a59ef298ca7268",
+      "invocation": {
+        "params": {
+          "Global.model_root_dir": "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\models",
+          "Global.use_cls": false,
+          "Det.ocr_version": "PP-OCRv5",
+          "Det.model_type": "mobile",
+          "Det.lang_type": "ch",
+          "Det.limit_type": "max",
+          "Det.limit_side_len": 1600,
+          "Rec.ocr_version": "PP-OCRv5",
+          "Rec.model_type": "mobile",
+          "Rec.lang_type": "arabic",
+          "EngineConfig.onnxruntime.intra_op_num_threads": 2,
+          "EngineConfig.onnxruntime.inter_op_num_threads": 1
+        },
+        "versions": {
+          "rapidocr": "3.9.2",
+          "onnxruntime": "1.31.0",
+          "python-bidi": "0.6.12"
+        },
+        "models": [
+          {
+            "file": "arabic_PP-OCRv5_rec_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv5/rec/arabic_PP-OCRv5_rec_mobile.onnx",
+            "sha256": "c1192e632d0baa9146ae5b756a0e635e3dc63c1733737ebfd1629e87144e9295",
+            "bytes": 8023828,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          },
+          {
+            "file": "ch_PP-OCRv5_det_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv5/det/ch_PP-OCRv5_det_mobile.onnx",
+            "sha256": "4d97c44a20d30a81aad087d6a396b08f786c4635742afc391f6621f5c6ae78ae",
+            "bytes": 4819576,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          },
+          {
+            "file": "ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv4/cls/ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+            "sha256": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c",
+            "bytes": 585532,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          }
+        ],
+        "order": "word boxes clustered by y-overlap then x descending; raw engine boxes/order retained; engine's Arabic bidi conversion retained without further character reversal"
+      },
+      "metric": {
+        "edits": 6,
+        "referenceCharacters": 109,
+        "characterErrorRate": 0.05504587155963303,
+        "alignedSpan": "لاتسرى احكام المواد السابقة الاحيث لايوجد نص على خلاف ذلك، فى قانون خاص؛ او معاهدة دولية نافذة في الجزائر",
+        "criticalTokensMissing": [
+          "لا",
+          "لا",
+          "الا"
+        ],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:24@ordinance-75-58",
+      "reference": "لا يجوز تطبيق القانون الاجنبى بموجب النصوص السابقة اذا كان مخالفا للنظام العام، او الآداب فى الجزائر.",
+      "evidenceId": "civil-8-22-original-left",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 3,
+      "imageSha256": "7255aaa587ee694e2326872fbc3dce267d4dea29e27248b5e2dade1ada466a2c",
+      "dpi": 200,
+      "psm": 6,
+      "language": "ara",
+      "engine": "paddle-onnx",
+      "seconds": 11.578677400000288,
+      "recognized": "المادة فى حالة تعدد الجنسبيات، يطبق القاضى الجنسية\nالحقيقة\nغير ان القانون الجزالرى هو الذى يطبق اذا كانت للشخص\nفي وقت واحد بالنسبة الى الجزائر، الجنسية الجزائرية،\nوبالنسبة الى دولة او عدة دول اجنبية جنسية تلك الدول\nوفي حالة انعدام الجنسية يعين القاضى القانون الواجب\nتطبيقه\nالمادة  متى ظهر من الاخكام الواردة في المواد المتقدمة\nان القانون الواجب التطبيق هو قائون دولة معينة تتعدد فيها\nالانظمة التشريعية فان القانون الداخلى لتلك الدولة هو الذى\nيقرر رأى النظام التشريعى الذى يجب تطبيقه\nالمادة لايجوز تطبيق القانون الاجنبى بموجب النصوص\nالسابقة اذا كان مخالفا للنظام العام، و الآداب فى الجزائر\nالباب الثانى\nالأشخاص الطبيعية والاعتبارية\nالفصل الاول\nالاشخاص الطبيعية\nالمادةتبدأ شخص الإنسان يتمام ولادته حيا، وتنتهى\nبموته\nعلى أن الجنين يتمتع بالحقوق المدنية بشرط ان يولد حياه\nالمادة  تثبت الولادة والوفاة بالسجلات المعدة لنمك\nواذا لم يوجد هذا الدليل، او تبين عدم صحة ما ادرج\nبالسجلات، يجوز الاثبات بأية طريقة حسب الاجراهات التى\nينص عليها قانون الحالة المدنية\nالمادة مسك دفاتر المواليد والوفيات والتبليغات\nالمتعلقة بها ينظمها القانون الخاص بالحالة المدنية\nالمادة  يجب ان يكون لكل شخص لقب واسم فاكثن\nولقب الشخص يلحق اولاده\nيجب ان تكون الاسماء جزائرية وقد يكون خلاف ذلك\nبالنسنبة للاطفال المولودين من ابوين غير مسلمين\nالمادة  يسرى على اكتساب الالقاب وتبديلها القانون\nالمتعلق بالحالة المدنية\nالادة  ينظم الجنسية الجزائرية قانون الجنسية\nالخاص بها\nالمادةتجرىعلى المفقود والغائب الاحكام القررةفي\nالتشريع العائلى\nالمادة  تتكون اسرة الشخضى من ذوى قرباه ويعتبر من\nذوى القربى كل من يجمعهم اضل واحد\nالمادة  القرابة المباشرة مى الصلة ما بين الاصول\nوالفروع",
+      "ocrSha256": "6fe9733af17422fe0b5eb2d8aa23748e14a5a5fb388c7f9e498d911bdcd677de",
+      "invocation": {
+        "params": {
+          "Global.model_root_dir": "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\models",
+          "Global.use_cls": false,
+          "Det.ocr_version": "PP-OCRv5",
+          "Det.model_type": "mobile",
+          "Det.lang_type": "ch",
+          "Det.limit_type": "max",
+          "Det.limit_side_len": 1600,
+          "Rec.ocr_version": "PP-OCRv5",
+          "Rec.model_type": "mobile",
+          "Rec.lang_type": "arabic",
+          "EngineConfig.onnxruntime.intra_op_num_threads": 2,
+          "EngineConfig.onnxruntime.inter_op_num_threads": 1
+        },
+        "versions": {
+          "rapidocr": "3.9.2",
+          "onnxruntime": "1.31.0",
+          "python-bidi": "0.6.12"
+        },
+        "models": [
+          {
+            "file": "arabic_PP-OCRv5_rec_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv5/rec/arabic_PP-OCRv5_rec_mobile.onnx",
+            "sha256": "c1192e632d0baa9146ae5b756a0e635e3dc63c1733737ebfd1629e87144e9295",
+            "bytes": 8023828,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          },
+          {
+            "file": "ch_PP-OCRv5_det_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv5/det/ch_PP-OCRv5_det_mobile.onnx",
+            "sha256": "4d97c44a20d30a81aad087d6a396b08f786c4635742afc391f6621f5c6ae78ae",
+            "bytes": 4819576,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          },
+          {
+            "file": "ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv4/cls/ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+            "sha256": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c",
+            "bytes": 585532,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          }
+        ],
+        "order": "word boxes clustered by y-overlap then x descending; raw engine boxes/order retained; engine's Arabic bidi conversion retained without further character reversal"
+      },
+      "metric": {
+        "edits": 3,
+        "referenceCharacters": 101,
+        "characterErrorRate": 0.0297029702970297,
+        "alignedSpan": "لايجوز تطبيق القانون الاجنبى بموجب النصوص السابقة اذا كان مخالفا للنظام العام، و الآداب فى الجزائر",
+        "criticalTokensMissing": [
+          "لا"
+        ],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:27@ordinance-75-58",
+      "reference": "مسك دفاتر المواليد والوفيات، والتبليغات، المتعلقة بها ينظمها القانون الخاص بالحالة المدنية.",
+      "evidenceId": "civil-8-22-original-left",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 3,
+      "imageSha256": "7255aaa587ee694e2326872fbc3dce267d4dea29e27248b5e2dade1ada466a2c",
+      "dpi": 200,
+      "psm": 6,
+      "language": "ara",
+      "engine": "paddle-onnx",
+      "seconds": 11.167294000000311,
+      "recognized": "المادة فى حالة تعدد الجنسبيات، يطبق القاضى الجنسية\nالحقيقة\nغير ان القانون الجزالرى هو الذى يطبق اذا كانت للشخص\nفي وقت واحد بالنسبة الى الجزائر، الجنسية الجزائرية،\nوبالنسبة الى دولة او عدة دول اجنبية جنسية تلك الدول\nوفي حالة انعدام الجنسية يعين القاضى القانون الواجب\nتطبيقه\nالمادة  متى ظهر من الاخكام الواردة في المواد المتقدمة\nان القانون الواجب التطبيق هو قائون دولة معينة تتعدد فيها\nالانظمة التشريعية فان القانون الداخلى لتلك الدولة هو الذى\nيقرر رأى النظام التشريعى الذى يجب تطبيقه\nالمادة لايجوز تطبيق القانون الاجنبى بموجب النصوص\nالسابقة اذا كان مخالفا للنظام العام، و الآداب فى الجزائر\nالباب الثانى\nالأشخاص الطبيعية والاعتبارية\nالفصل الاول\nالاشخاص الطبيعية\nالمادةتبدأ شخص الإنسان يتمام ولادته حيا، وتنتهى\nبموته\nعلى أن الجنين يتمتع بالحقوق المدنية بشرط ان يولد حياه\nالمادة  تثبت الولادة والوفاة بالسجلات المعدة لنمك\nواذا لم يوجد هذا الدليل، او تبين عدم صحة ما ادرج\nبالسجلات، يجوز الاثبات بأية طريقة حسب الاجراهات التى\nينص عليها قانون الحالة المدنية\nالمادة مسك دفاتر المواليد والوفيات والتبليغات\nالمتعلقة بها ينظمها القانون الخاص بالحالة المدنية\nالمادة  يجب ان يكون لكل شخص لقب واسم فاكثن\nولقب الشخص يلحق اولاده\nيجب ان تكون الاسماء جزائرية وقد يكون خلاف ذلك\nبالنسنبة للاطفال المولودين من ابوين غير مسلمين\nالمادة  يسرى على اكتساب الالقاب وتبديلها القانون\nالمتعلق بالحالة المدنية\nالادة  ينظم الجنسية الجزائرية قانون الجنسية\nالخاص بها\nالمادةتجرىعلى المفقود والغائب الاحكام القررةفي\nالتشريع العائلى\nالمادة  تتكون اسرة الشخضى من ذوى قرباه ويعتبر من\nذوى القربى كل من يجمعهم اضل واحد\nالمادة  القرابة المباشرة مى الصلة ما بين الاصول\nوالفروع",
+      "ocrSha256": "6fe9733af17422fe0b5eb2d8aa23748e14a5a5fb388c7f9e498d911bdcd677de",
+      "invocation": {
+        "params": {
+          "Global.model_root_dir": "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\models",
+          "Global.use_cls": false,
+          "Det.ocr_version": "PP-OCRv5",
+          "Det.model_type": "mobile",
+          "Det.lang_type": "ch",
+          "Det.limit_type": "max",
+          "Det.limit_side_len": 1600,
+          "Rec.ocr_version": "PP-OCRv5",
+          "Rec.model_type": "mobile",
+          "Rec.lang_type": "arabic",
+          "EngineConfig.onnxruntime.intra_op_num_threads": 2,
+          "EngineConfig.onnxruntime.inter_op_num_threads": 1
+        },
+        "versions": {
+          "rapidocr": "3.9.2",
+          "onnxruntime": "1.31.0",
+          "python-bidi": "0.6.12"
+        },
+        "models": [
+          {
+            "file": "arabic_PP-OCRv5_rec_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv5/rec/arabic_PP-OCRv5_rec_mobile.onnx",
+            "sha256": "c1192e632d0baa9146ae5b756a0e635e3dc63c1733737ebfd1629e87144e9295",
+            "bytes": 8023828,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          },
+          {
+            "file": "ch_PP-OCRv5_det_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv5/det/ch_PP-OCRv5_det_mobile.onnx",
+            "sha256": "4d97c44a20d30a81aad087d6a396b08f786c4635742afc391f6621f5c6ae78ae",
+            "bytes": 4819576,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          },
+          {
+            "file": "ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv4/cls/ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+            "sha256": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c",
+            "bytes": 585532,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          }
+        ],
+        "order": "word boxes clustered by y-overlap then x descending; raw engine boxes/order retained; engine's Arabic bidi conversion retained without further character reversal"
+      },
+      "metric": {
+        "edits": 3,
+        "referenceCharacters": 91,
+        "characterErrorRate": 0.03296703296703297,
+        "alignedSpan": "مسك دفاتر المواليد والوفيات والتبليغات المتعلقة بها ينظمها القانون الخاص بالحالة المدنية",
+        "criticalTokensMissing": [],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:29@ordinance-75-58",
+      "reference": "يسرى على اكتساب الالقاب وتبديلها القانون المتعلق بالحالة المدنية.",
+      "evidenceId": "civil-8-22-original-left",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 3,
+      "imageSha256": "7255aaa587ee694e2326872fbc3dce267d4dea29e27248b5e2dade1ada466a2c",
+      "dpi": 200,
+      "psm": 6,
+      "language": "ara",
+      "engine": "paddle-onnx",
+      "seconds": 9.24498850000009,
+      "recognized": "المادة فى حالة تعدد الجنسبيات، يطبق القاضى الجنسية\nالحقيقة\nغير ان القانون الجزالرى هو الذى يطبق اذا كانت للشخص\nفي وقت واحد بالنسبة الى الجزائر، الجنسية الجزائرية،\nوبالنسبة الى دولة او عدة دول اجنبية جنسية تلك الدول\nوفي حالة انعدام الجنسية يعين القاضى القانون الواجب\nتطبيقه\nالمادة  متى ظهر من الاخكام الواردة في المواد المتقدمة\nان القانون الواجب التطبيق هو قائون دولة معينة تتعدد فيها\nالانظمة التشريعية فان القانون الداخلى لتلك الدولة هو الذى\nيقرر رأى النظام التشريعى الذى يجب تطبيقه\nالمادة لايجوز تطبيق القانون الاجنبى بموجب النصوص\nالسابقة اذا كان مخالفا للنظام العام، و الآداب فى الجزائر\nالباب الثانى\nالأشخاص الطبيعية والاعتبارية\nالفصل الاول\nالاشخاص الطبيعية\nالمادةتبدأ شخص الإنسان يتمام ولادته حيا، وتنتهى\nبموته\nعلى أن الجنين يتمتع بالحقوق المدنية بشرط ان يولد حياه\nالمادة  تثبت الولادة والوفاة بالسجلات المعدة لنمك\nواذا لم يوجد هذا الدليل، او تبين عدم صحة ما ادرج\nبالسجلات، يجوز الاثبات بأية طريقة حسب الاجراهات التى\nينص عليها قانون الحالة المدنية\nالمادة مسك دفاتر المواليد والوفيات والتبليغات\nالمتعلقة بها ينظمها القانون الخاص بالحالة المدنية\nالمادة  يجب ان يكون لكل شخص لقب واسم فاكثن\nولقب الشخص يلحق اولاده\nيجب ان تكون الاسماء جزائرية وقد يكون خلاف ذلك\nبالنسنبة للاطفال المولودين من ابوين غير مسلمين\nالمادة  يسرى على اكتساب الالقاب وتبديلها القانون\nالمتعلق بالحالة المدنية\nالادة  ينظم الجنسية الجزائرية قانون الجنسية\nالخاص بها\nالمادةتجرىعلى المفقود والغائب الاحكام القررةفي\nالتشريع العائلى\nالمادة  تتكون اسرة الشخضى من ذوى قرباه ويعتبر من\nذوى القربى كل من يجمعهم اضل واحد\nالمادة  القرابة المباشرة مى الصلة ما بين الاصول\nوالفروع",
+      "ocrSha256": "6fe9733af17422fe0b5eb2d8aa23748e14a5a5fb388c7f9e498d911bdcd677de",
+      "invocation": {
+        "params": {
+          "Global.model_root_dir": "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\models",
+          "Global.use_cls": false,
+          "Det.ocr_version": "PP-OCRv5",
+          "Det.model_type": "mobile",
+          "Det.lang_type": "ch",
+          "Det.limit_type": "max",
+          "Det.limit_side_len": 1600,
+          "Rec.ocr_version": "PP-OCRv5",
+          "Rec.model_type": "mobile",
+          "Rec.lang_type": "arabic",
+          "EngineConfig.onnxruntime.intra_op_num_threads": 2,
+          "EngineConfig.onnxruntime.inter_op_num_threads": 1
+        },
+        "versions": {
+          "rapidocr": "3.9.2",
+          "onnxruntime": "1.31.0",
+          "python-bidi": "0.6.12"
+        },
+        "models": [
+          {
+            "file": "arabic_PP-OCRv5_rec_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv5/rec/arabic_PP-OCRv5_rec_mobile.onnx",
+            "sha256": "c1192e632d0baa9146ae5b756a0e635e3dc63c1733737ebfd1629e87144e9295",
+            "bytes": 8023828,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          },
+          {
+            "file": "ch_PP-OCRv5_det_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv5/det/ch_PP-OCRv5_det_mobile.onnx",
+            "sha256": "4d97c44a20d30a81aad087d6a396b08f786c4635742afc391f6621f5c6ae78ae",
+            "bytes": 4819576,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          },
+          {
+            "file": "ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv4/cls/ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+            "sha256": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c",
+            "bytes": 585532,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          }
+        ],
+        "order": "word boxes clustered by y-overlap then x descending; raw engine boxes/order retained; engine's Arabic bidi conversion retained without further character reversal"
+      },
+      "metric": {
+        "edits": 1,
+        "referenceCharacters": 65,
+        "characterErrorRate": 0.015384615384615385,
+        "alignedSpan": "يسرى على اكتساب الالقاب وتبديلها القانون المتعلق بالحالة المدنية",
+        "criticalTokensMissing": [],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:30@ordinance-75-58",
+      "reference": "ينظم الجنسية الجزائرية قانون الجنسية الخاص بها.",
+      "evidenceId": "civil-8-22-original-left",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 3,
+      "imageSha256": "7255aaa587ee694e2326872fbc3dce267d4dea29e27248b5e2dade1ada466a2c",
+      "dpi": 200,
+      "psm": 6,
+      "language": "ara",
+      "engine": "paddle-onnx",
+      "seconds": 9.570764199999758,
+      "recognized": "المادة فى حالة تعدد الجنسبيات، يطبق القاضى الجنسية\nالحقيقة\nغير ان القانون الجزالرى هو الذى يطبق اذا كانت للشخص\nفي وقت واحد بالنسبة الى الجزائر، الجنسية الجزائرية،\nوبالنسبة الى دولة او عدة دول اجنبية جنسية تلك الدول\nوفي حالة انعدام الجنسية يعين القاضى القانون الواجب\nتطبيقه\nالمادة  متى ظهر من الاخكام الواردة في المواد المتقدمة\nان القانون الواجب التطبيق هو قائون دولة معينة تتعدد فيها\nالانظمة التشريعية فان القانون الداخلى لتلك الدولة هو الذى\nيقرر رأى النظام التشريعى الذى يجب تطبيقه\nالمادة لايجوز تطبيق القانون الاجنبى بموجب النصوص\nالسابقة اذا كان مخالفا للنظام العام، و الآداب فى الجزائر\nالباب الثانى\nالأشخاص الطبيعية والاعتبارية\nالفصل الاول\nالاشخاص الطبيعية\nالمادةتبدأ شخص الإنسان يتمام ولادته حيا، وتنتهى\nبموته\nعلى أن الجنين يتمتع بالحقوق المدنية بشرط ان يولد حياه\nالمادة  تثبت الولادة والوفاة بالسجلات المعدة لنمك\nواذا لم يوجد هذا الدليل، او تبين عدم صحة ما ادرج\nبالسجلات، يجوز الاثبات بأية طريقة حسب الاجراهات التى\nينص عليها قانون الحالة المدنية\nالمادة مسك دفاتر المواليد والوفيات والتبليغات\nالمتعلقة بها ينظمها القانون الخاص بالحالة المدنية\nالمادة  يجب ان يكون لكل شخص لقب واسم فاكثن\nولقب الشخص يلحق اولاده\nيجب ان تكون الاسماء جزائرية وقد يكون خلاف ذلك\nبالنسنبة للاطفال المولودين من ابوين غير مسلمين\nالمادة  يسرى على اكتساب الالقاب وتبديلها القانون\nالمتعلق بالحالة المدنية\nالادة  ينظم الجنسية الجزائرية قانون الجنسية\nالخاص بها\nالمادةتجرىعلى المفقود والغائب الاحكام القررةفي\nالتشريع العائلى\nالمادة  تتكون اسرة الشخضى من ذوى قرباه ويعتبر من\nذوى القربى كل من يجمعهم اضل واحد\nالمادة  القرابة المباشرة مى الصلة ما بين الاصول\nوالفروع",
+      "ocrSha256": "6fe9733af17422fe0b5eb2d8aa23748e14a5a5fb388c7f9e498d911bdcd677de",
+      "invocation": {
+        "params": {
+          "Global.model_root_dir": "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\models",
+          "Global.use_cls": false,
+          "Det.ocr_version": "PP-OCRv5",
+          "Det.model_type": "mobile",
+          "Det.lang_type": "ch",
+          "Det.limit_type": "max",
+          "Det.limit_side_len": 1600,
+          "Rec.ocr_version": "PP-OCRv5",
+          "Rec.model_type": "mobile",
+          "Rec.lang_type": "arabic",
+          "EngineConfig.onnxruntime.intra_op_num_threads": 2,
+          "EngineConfig.onnxruntime.inter_op_num_threads": 1
+        },
+        "versions": {
+          "rapidocr": "3.9.2",
+          "onnxruntime": "1.31.0",
+          "python-bidi": "0.6.12"
+        },
+        "models": [
+          {
+            "file": "arabic_PP-OCRv5_rec_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv5/rec/arabic_PP-OCRv5_rec_mobile.onnx",
+            "sha256": "c1192e632d0baa9146ae5b756a0e635e3dc63c1733737ebfd1629e87144e9295",
+            "bytes": 8023828,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          },
+          {
+            "file": "ch_PP-OCRv5_det_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv5/det/ch_PP-OCRv5_det_mobile.onnx",
+            "sha256": "4d97c44a20d30a81aad087d6a396b08f786c4635742afc391f6621f5c6ae78ae",
+            "bytes": 4819576,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          },
+          {
+            "file": "ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv4/cls/ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+            "sha256": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c",
+            "bytes": 585532,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          }
+        ],
+        "order": "word boxes clustered by y-overlap then x descending; raw engine boxes/order retained; engine's Arabic bidi conversion retained without further character reversal"
+      },
+      "metric": {
+        "edits": 1,
+        "referenceCharacters": 47,
+        "characterErrorRate": 0.02127659574468085,
+        "alignedSpan": "ينظم الجنسية الجزائرية قانون الجنسية الخاص بها",
+        "criticalTokensMissing": [],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:31@ordinance-75-58",
+      "reference": "يسرى على المفقود والغائب الاحكام المقررة فى التشريع العائلى.",
+      "evidenceId": "civil-8-22-original-left",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 3,
+      "imageSha256": "7255aaa587ee694e2326872fbc3dce267d4dea29e27248b5e2dade1ada466a2c",
+      "dpi": 200,
+      "psm": 6,
+      "language": "ara",
+      "engine": "paddle-onnx",
+      "seconds": 10.872742400000334,
+      "recognized": "المادة فى حالة تعدد الجنسبيات، يطبق القاضى الجنسية\nالحقيقة\nغير ان القانون الجزالرى هو الذى يطبق اذا كانت للشخص\nفي وقت واحد بالنسبة الى الجزائر، الجنسية الجزائرية،\nوبالنسبة الى دولة او عدة دول اجنبية جنسية تلك الدول\nوفي حالة انعدام الجنسية يعين القاضى القانون الواجب\nتطبيقه\nالمادة  متى ظهر من الاخكام الواردة في المواد المتقدمة\nان القانون الواجب التطبيق هو قائون دولة معينة تتعدد فيها\nالانظمة التشريعية فان القانون الداخلى لتلك الدولة هو الذى\nيقرر رأى النظام التشريعى الذى يجب تطبيقه\nالمادة لايجوز تطبيق القانون الاجنبى بموجب النصوص\nالسابقة اذا كان مخالفا للنظام العام، و الآداب فى الجزائر\nالباب الثانى\nالأشخاص الطبيعية والاعتبارية\nالفصل الاول\nالاشخاص الطبيعية\nالمادةتبدأ شخص الإنسان يتمام ولادته حيا، وتنتهى\nبموته\nعلى أن الجنين يتمتع بالحقوق المدنية بشرط ان يولد حياه\nالمادة  تثبت الولادة والوفاة بالسجلات المعدة لنمك\nواذا لم يوجد هذا الدليل، او تبين عدم صحة ما ادرج\nبالسجلات، يجوز الاثبات بأية طريقة حسب الاجراهات التى\nينص عليها قانون الحالة المدنية\nالمادة مسك دفاتر المواليد والوفيات والتبليغات\nالمتعلقة بها ينظمها القانون الخاص بالحالة المدنية\nالمادة  يجب ان يكون لكل شخص لقب واسم فاكثن\nولقب الشخص يلحق اولاده\nيجب ان تكون الاسماء جزائرية وقد يكون خلاف ذلك\nبالنسنبة للاطفال المولودين من ابوين غير مسلمين\nالمادة  يسرى على اكتساب الالقاب وتبديلها القانون\nالمتعلق بالحالة المدنية\nالادة  ينظم الجنسية الجزائرية قانون الجنسية\nالخاص بها\nالمادةتجرىعلى المفقود والغائب الاحكام القررةفي\nالتشريع العائلى\nالمادة  تتكون اسرة الشخضى من ذوى قرباه ويعتبر من\nذوى القربى كل من يجمعهم اضل واحد\nالمادة  القرابة المباشرة مى الصلة ما بين الاصول\nوالفروع",
+      "ocrSha256": "6fe9733af17422fe0b5eb2d8aa23748e14a5a5fb388c7f9e498d911bdcd677de",
+      "invocation": {
+        "params": {
+          "Global.model_root_dir": "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\models",
+          "Global.use_cls": false,
+          "Det.ocr_version": "PP-OCRv5",
+          "Det.model_type": "mobile",
+          "Det.lang_type": "ch",
+          "Det.limit_type": "max",
+          "Det.limit_side_len": 1600,
+          "Rec.ocr_version": "PP-OCRv5",
+          "Rec.model_type": "mobile",
+          "Rec.lang_type": "arabic",
+          "EngineConfig.onnxruntime.intra_op_num_threads": 2,
+          "EngineConfig.onnxruntime.inter_op_num_threads": 1
+        },
+        "versions": {
+          "rapidocr": "3.9.2",
+          "onnxruntime": "1.31.0",
+          "python-bidi": "0.6.12"
+        },
+        "models": [
+          {
+            "file": "arabic_PP-OCRv5_rec_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv5/rec/arabic_PP-OCRv5_rec_mobile.onnx",
+            "sha256": "c1192e632d0baa9146ae5b756a0e635e3dc63c1733737ebfd1629e87144e9295",
+            "bytes": 8023828,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          },
+          {
+            "file": "ch_PP-OCRv5_det_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv5/det/ch_PP-OCRv5_det_mobile.onnx",
+            "sha256": "4d97c44a20d30a81aad087d6a396b08f786c4635742afc391f6621f5c6ae78ae",
+            "bytes": 4819576,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          },
+          {
+            "file": "ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv4/cls/ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+            "sha256": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c",
+            "bytes": 585532,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          }
+        ],
+        "order": "word boxes clustered by y-overlap then x descending; raw engine boxes/order retained; engine's Arabic bidi conversion retained without further character reversal"
+      },
+      "metric": {
+        "edits": 7,
+        "referenceCharacters": 60,
+        "characterErrorRate": 0.11666666666666667,
+        "alignedSpan": "تجرىعلى المفقود والغائب الاحكام القررةفي التشريع العائلى",
+        "criticalTokensMissing": [],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:32@ordinance-75-58",
+      "reference": "تتكون اسرة الشخص من ذوى قرباه، ويعتبر من ذوى القربى كل من يجمعهم اصل واحد.",
+      "evidenceId": "civil-8-22-original-left",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 3,
+      "imageSha256": "7255aaa587ee694e2326872fbc3dce267d4dea29e27248b5e2dade1ada466a2c",
+      "dpi": 200,
+      "psm": 6,
+      "language": "ara",
+      "engine": "paddle-onnx",
+      "seconds": 10.419415399999707,
+      "recognized": "المادة فى حالة تعدد الجنسبيات، يطبق القاضى الجنسية\nالحقيقة\nغير ان القانون الجزالرى هو الذى يطبق اذا كانت للشخص\nفي وقت واحد بالنسبة الى الجزائر، الجنسية الجزائرية،\nوبالنسبة الى دولة او عدة دول اجنبية جنسية تلك الدول\nوفي حالة انعدام الجنسية يعين القاضى القانون الواجب\nتطبيقه\nالمادة  متى ظهر من الاخكام الواردة في المواد المتقدمة\nان القانون الواجب التطبيق هو قائون دولة معينة تتعدد فيها\nالانظمة التشريعية فان القانون الداخلى لتلك الدولة هو الذى\nيقرر رأى النظام التشريعى الذى يجب تطبيقه\nالمادة لايجوز تطبيق القانون الاجنبى بموجب النصوص\nالسابقة اذا كان مخالفا للنظام العام، و الآداب فى الجزائر\nالباب الثانى\nالأشخاص الطبيعية والاعتبارية\nالفصل الاول\nالاشخاص الطبيعية\nالمادةتبدأ شخص الإنسان يتمام ولادته حيا، وتنتهى\nبموته\nعلى أن الجنين يتمتع بالحقوق المدنية بشرط ان يولد حياه\nالمادة  تثبت الولادة والوفاة بالسجلات المعدة لنمك\nواذا لم يوجد هذا الدليل، او تبين عدم صحة ما ادرج\nبالسجلات، يجوز الاثبات بأية طريقة حسب الاجراهات التى\nينص عليها قانون الحالة المدنية\nالمادة مسك دفاتر المواليد والوفيات والتبليغات\nالمتعلقة بها ينظمها القانون الخاص بالحالة المدنية\nالمادة  يجب ان يكون لكل شخص لقب واسم فاكثن\nولقب الشخص يلحق اولاده\nيجب ان تكون الاسماء جزائرية وقد يكون خلاف ذلك\nبالنسنبة للاطفال المولودين من ابوين غير مسلمين\nالمادة  يسرى على اكتساب الالقاب وتبديلها القانون\nالمتعلق بالحالة المدنية\nالادة  ينظم الجنسية الجزائرية قانون الجنسية\nالخاص بها\nالمادةتجرىعلى المفقود والغائب الاحكام القررةفي\nالتشريع العائلى\nالمادة  تتكون اسرة الشخضى من ذوى قرباه ويعتبر من\nذوى القربى كل من يجمعهم اضل واحد\nالمادة  القرابة المباشرة مى الصلة ما بين الاصول\nوالفروع",
+      "ocrSha256": "6fe9733af17422fe0b5eb2d8aa23748e14a5a5fb388c7f9e498d911bdcd677de",
+      "invocation": {
+        "params": {
+          "Global.model_root_dir": "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\models",
+          "Global.use_cls": false,
+          "Det.ocr_version": "PP-OCRv5",
+          "Det.model_type": "mobile",
+          "Det.lang_type": "ch",
+          "Det.limit_type": "max",
+          "Det.limit_side_len": 1600,
+          "Rec.ocr_version": "PP-OCRv5",
+          "Rec.model_type": "mobile",
+          "Rec.lang_type": "arabic",
+          "EngineConfig.onnxruntime.intra_op_num_threads": 2,
+          "EngineConfig.onnxruntime.inter_op_num_threads": 1
+        },
+        "versions": {
+          "rapidocr": "3.9.2",
+          "onnxruntime": "1.31.0",
+          "python-bidi": "0.6.12"
+        },
+        "models": [
+          {
+            "file": "arabic_PP-OCRv5_rec_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv5/rec/arabic_PP-OCRv5_rec_mobile.onnx",
+            "sha256": "c1192e632d0baa9146ae5b756a0e635e3dc63c1733737ebfd1629e87144e9295",
+            "bytes": 8023828,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          },
+          {
+            "file": "ch_PP-OCRv5_det_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv5/det/ch_PP-OCRv5_det_mobile.onnx",
+            "sha256": "4d97c44a20d30a81aad087d6a396b08f786c4635742afc391f6621f5c6ae78ae",
+            "bytes": 4819576,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          },
+          {
+            "file": "ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+            "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv4/cls/ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+            "sha256": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c",
+            "bytes": 585532,
+            "license": "Apache-2.0; RapidAI ONNX conversion of PaddleOCR model"
+          }
+        ],
+        "order": "word boxes clustered by y-overlap then x descending; raw engine boxes/order retained; engine's Arabic bidi conversion retained without further character reversal"
+      },
+      "metric": {
+        "edits": 5,
+        "referenceCharacters": 74,
+        "characterErrorRate": 0.06756756756756757,
+        "alignedSpan": "تتكون اسرة الشخضى من ذوى قرباه ويعتبر من ذوى القربى كل من يجمعهم اضل واحد",
+        "criticalTokensMissing": [],
+        "criticalTokensExtra": []
+      }
+    }
+  ],
+  "sampleSet": "new12 untreated original-page samples; not used for parameter tuning"
+}

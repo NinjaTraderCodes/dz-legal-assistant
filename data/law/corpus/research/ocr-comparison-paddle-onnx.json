@@ -1,0 +1,852 @@
+{
+  "engine": "paddle-onnx",
+  "recordedAt": "2026-10-26T00:41:08.647002+00:00",
+  "normalizations": [
+    "Unicode NFC (canonical composition only)",
+    "Unicode whitespace runs replaced by one U+0020; leading/trailing whitespace removed"
+  ],
+  "initializationSeconds": 0.7094308000000638,
+  "ocrSeconds": 18.40850290000003,
+  "sampleCount": 18,
+  "bodyCharacterErrorRate": 0.02939497716894977,
+  "limitations": [
+    "Selected image-reviewed integration samples, not independent human ground truth or a random code-wide test.",
+    "Best-contiguous-span CER ignores crop labels and surrounding text; every reference character still incurs alignment/edit cost.",
+    "Times include subprocess startup or first inference; downloads/initialization are separate. Battery CPU, two threads; no throughput guarantee.",
+    "No engine agreement or metric upgrades legal verification; paragraph layout and semantic accuracy need source inspection."
+  ],
+  "models": [
+    {
+      "file": "arabic_PP-OCRv5_rec_mobile.onnx",
+      "sha256": "c1192e632d0baa9146ae5b756a0e635e3dc63c1733737ebfd1629e87144e9295",
+      "bytes": 8023828
+    },
+    {
+      "file": "ch_PP-OCRv5_det_mobile.onnx",
+      "sha256": "4d97c44a20d30a81aad087d6a396b08f786c4635742afc391f6621f5c6ae78ae",
+      "bytes": 4819576
+    },
+    {
+      "file": "ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+      "sha256": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c",
+      "bytes": 585532
+    }
+  ],
+  "samples": [
+    {
+      "versionId": "civil-code:1@ordinance-75-58",
+      "reference": "يسرى القانون على جميع المسائل التى تتناولها نصوصه فى لفظها أو فى فحواها.\nواذا لم يوجد نص تشريعى، حكم القاضى بمقتضى مبادىء الشريعة الاسلامية، فاذا لم يوجد فبمقتضى العرف.\nفاذا لم يوجد فبمقتضى مبادىء القانون الطبيعى وقواعد العدالة.",
+      "evidenceId": "civil-1-original-reviewed",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 2,
+      "imageSha256": "f8f52b4652d5eb25d8f8c6eb80f51e48f4131d20d1a9e53943d83dd2d025aadd",
+      "dpi": 200,
+      "psm": 6,
+      "language": "ara",
+      "engine": "paddle-onnx",
+      "seconds": 1.2058948000001237,
+      "recognized": "المادة الاولى  يسرى القانون على جميسع المسائل التى\nتتناولها نصوصه فى لفظها أو فى فحواها\nواذا لم يوجد نص تشريعى، حكم القاضى بمقتضى مباديء\nالشريعة الاسلامية، فاذا لم يوجد فبمقتضى العرف\nفاذا لم يوجد فبمقتضى مبادىء القانون الطبيعى وقواعد\nالعدالة",
+      "ocrSha256": "d62dc2308f41a483c4af2bd0e4e672b9e47eeab798f2aef0ebe9fef59fdc5896",
+      "invocation": {
+        "params": {
+          "Global.model_root_dir": "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\models",
+          "Global.use_cls": false,
+          "Det.ocr_version": "PP-OCRv5",
+          "Det.model_type": "mobile",
+          "Det.lang_type": "ch",
+          "Det.limit_type": "max",
+          "Det.limit_side_len": 1600,
+          "Rec.ocr_version": "PP-OCRv5",
+          "Rec.model_type": "mobile",
+          "Rec.lang_type": "arabic",
+          "EngineConfig.onnxruntime.intra_op_num_threads": 2,
+          "EngineConfig.onnxruntime.inter_op_num_threads": 1
+        },
+        "rapidocr": "3.9.2",
+        "onnxruntime": "1.31.0",
+        "python-bidi": "0.6.12",
+        "order": "word boxes clustered into lines by y-overlap then x descending; engine strings unchanged; raw boxes/order retained"
+      },
+      "metric": {
+        "edits": 5,
+        "referenceCharacters": 228,
+        "characterErrorRate": 0.021929824561403508,
+        "alignedSpan": "يسرى القانون على جميسع المسائل التى تتناولها نصوصه فى لفظها أو فى فحواها واذا لم يوجد نص تشريعى، حكم القاضى بمقتضى مباديء الشريعة الاسلامية، فاذا لم يوجد فبمقتضى العرف فاذا لم يوجد فبمقتضى مبادىء القانون الطبيعى وقواعد العدالة",
+        "criticalTokensMissing": [],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:2@ordinance-75-58",
+      "reference": "لا يسرى القانون الا على ما يقع فى المستقبل. ولا يكون له أثر رجعى. ولا يجوز الغاء القانون الا بقانون لاحق ينص صراحة على هذا الالغاء.\nوقد يكون الالغاء ضمنيا اذا تضمن القانون الجديد نصا يتعارض مع نص القانون القديم أو نظم من جديد موضوعا سبق أن قرر قواعده ذلك القانون القديم.",
+      "evidenceId": "civil-2-original-reviewed",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 2,
+      "imageSha256": "4d264afd48e8743ae9df1a2870720db8e052e88aeb373a66722ccd0f78202196",
+      "dpi": 200,
+      "psm": 6,
+      "language": "ara",
+      "engine": "paddle-onnx",
+      "seconds": 1.2570780000000923,
+      "recognized": "المادة لايسرى القانون الا على ما يقع فى المستقبل\nولا يكون له أثر رجعى ٠ولا يجوز الغاء القانون الا\nبقانون لاحق ينص صراحة على هذا الالغاء\nوقد يكون الالغاء ضمنيا اذا تضمن القانون الجديد نصا\nيتعارض مع نص القانون القديم أو نظم من جديد موضوعا\nسبق ان قرر قواعده ذلك القانون القديم",
+      "ocrSha256": "17d821991829570ce0a67c5e57cd855132a00d092e2d8f840fdce90381af7015",
+      "invocation": {
+        "params": {
+          "Global.model_root_dir": "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\models",
+          "Global.use_cls": false,
+          "Det.ocr_version": "PP-OCRv5",
+          "Det.model_type": "mobile",
+          "Det.lang_type": "ch",
+          "Det.limit_type": "max",
+          "Det.limit_side_len": 1600,
+          "Rec.ocr_version": "PP-OCRv5",
+          "Rec.model_type": "mobile",
+          "Rec.lang_type": "arabic",
+          "EngineConfig.onnxruntime.intra_op_num_threads": 2,
+          "EngineConfig.onnxruntime.inter_op_num_threads": 1
+        },
+        "rapidocr": "3.9.2",
+        "onnxruntime": "1.31.0",
+        "python-bidi": "0.6.12",
+        "order": "word boxes clustered into lines by y-overlap then x descending; engine strings unchanged; raw boxes/order retained"
+      },
+      "metric": {
+        "edits": 7,
+        "referenceCharacters": 270,
+        "characterErrorRate": 0.025925925925925925,
+        "alignedSpan": "لايسرى القانون الا على ما يقع فى المستقبل ولا يكون له أثر رجعى ٠ولا يجوز الغاء القانون الا بقانون لاحق ينص صراحة على هذا الالغاء وقد يكون الالغاء ضمنيا اذا تضمن القانون الجديد نصا يتعارض مع نص القانون القديم أو نظم من جديد موضوعا سبق ان قرر قواعده ذلك القانون القديم",
+        "criticalTokensMissing": [
+          "لا"
+        ],
+        "criticalTokensExtra": [
+          "٠"
+        ]
+      }
+    },
+    {
+      "versionId": "civil-code:3@ordinance-75-58",
+      "reference": "تحسب الآجال بالتقويم الميلادى مالم ينص القانون على خلاف ذلك.",
+      "evidenceId": "civil-3-original-reviewed",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 2,
+      "imageSha256": "3dbcc32c5601281d4eb399bd82c9c5028328438a17b1c3092f553c2f39552257",
+      "dpi": 200,
+      "psm": 6,
+      "language": "ara",
+      "engine": "paddle-onnx",
+      "seconds": 0.4448558999999932,
+      "recognized": "المادة  تحسب الآجال بالتقويم الميلادى مالم ينص\nالقانون على خلاف ذلك",
+      "ocrSha256": "2cc3e28c2ce152096c4f5c6795dc0c3282e043c403a5a727fc2b0d8ad5da1b69",
+      "invocation": {
+        "params": {
+          "Global.model_root_dir": "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\models",
+          "Global.use_cls": false,
+          "Det.ocr_version": "PP-OCRv5",
+          "Det.model_type": "mobile",
+          "Det.lang_type": "ch",
+          "Det.limit_type": "max",
+          "Det.limit_side_len": 1600,
+          "Rec.ocr_version": "PP-OCRv5",
+          "Rec.model_type": "mobile",
+          "Rec.lang_type": "arabic",
+          "EngineConfig.onnxruntime.intra_op_num_threads": 2,
+          "EngineConfig.onnxruntime.inter_op_num_threads": 1
+        },
+        "rapidocr": "3.9.2",
+        "onnxruntime": "1.31.0",
+        "python-bidi": "0.6.12",
+        "order": "word boxes clustered into lines by y-overlap then x descending; engine strings unchanged; raw boxes/order retained"
+      },
+      "metric": {
+        "edits": 1,
+        "referenceCharacters": 60,
+        "characterErrorRate": 0.016666666666666666,
+        "alignedSpan": "تحسب الآجال بالتقويم الميلادى مالم ينص القانون على خلاف ذلك",
+        "criticalTokensMissing": [],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:5@ordinance-75-58",
+      "reference": "يخضع كل سكان القطر الجزائرى لقوانين الشرطة والامن.",
+      "evidenceId": "civil-5-original-reviewed",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 2,
+      "imageSha256": "c53b1b1d2d3c32223bfde860c11d3b6290e8dc04dd444f97025357eef24b3ff2",
+      "dpi": 200,
+      "psm": 6,
+      "language": "ara",
+      "engine": "paddle-onnx",
+      "seconds": 0.37265750000005937,
+      "recognized": "المادة  يخضع كل سكان القطر الجزائرى لقوانيسن\nالشبرطة والامن",
+      "ocrSha256": "7da2fc9c45038ffe38ff43d87e802c67a20d49b35c0c7b81df62c2a73341ca7b",
+      "invocation": {
+        "params": {
+          "Global.model_root_dir": "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\models",
+          "Global.use_cls": false,
+          "Det.ocr_version": "PP-OCRv5",
+          "Det.model_type": "mobile",
+          "Det.lang_type": "ch",
+          "Det.limit_type": "max",
+          "Det.limit_side_len": 1600,
+          "Rec.ocr_version": "PP-OCRv5",
+          "Rec.model_type": "mobile",
+          "Rec.lang_type": "arabic",
+          "EngineConfig.onnxruntime.intra_op_num_threads": 2,
+          "EngineConfig.onnxruntime.inter_op_num_threads": 1
+        },
+        "rapidocr": "3.9.2",
+        "onnxruntime": "1.31.0",
+        "python-bidi": "0.6.12",
+        "order": "word boxes clustered into lines by y-overlap then x descending; engine strings unchanged; raw boxes/order retained"
+      },
+      "metric": {
+        "edits": 3,
+        "referenceCharacters": 50,
+        "characterErrorRate": 0.06,
+        "alignedSpan": "يخضع كل سكان القطر الجزائرى لقوانيسن الشبرطة والامن",
+        "criticalTokensMissing": [],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:7@ordinance-75-58",
+      "reference": "تطبق النصوص الجديدة المتعلقة بالاجراءات حالا. غير ان النصوص القديمة هى التى تسرى على المسائل الخاصة ببدء التقادم، ووقفه، وإنقطاعه، فيما يخص المدة السابقة على العمل بالنصوص الجديدة.\nوكذلك الحال فيما يخص آجال المرافعة.",
+      "evidenceId": "civil-7-original",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 2,
+      "imageSha256": "a3fe03ab3a684a89e40d72b4c4fee27449b87d09ebb9fea82114743102cf2920",
+      "dpi": 150,
+      "psm": 6,
+      "language": "ara",
+      "engine": "paddle-onnx",
+      "seconds": 1.0564119999999093,
+      "recognized": "المادة  تطبق النصوص الجديدة المتعلقة بالاجراءات حالا\nغير ان النصوص القديمة هي التى تسرى على المسائل الخاصة\nببدء التقام، ووقفه، وإنقطاعه؛ فيما يخص المدة السابقة على\nالعمل بالنصوص الجديدة\nوكذلك الحال فيما يخض أجال المرافعة",
+      "ocrSha256": "d69d8b873704a6cfb93054e8da66507093d8c1bc0ee1c60568f18c14d90aea72",
+      "invocation": {
+        "params": {
+          "Global.model_root_dir": "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\models",
+          "Global.use_cls": false,
+          "Det.ocr_version": "PP-OCRv5",
+          "Det.model_type": "mobile",
+          "Det.lang_type": "ch",
+          "Det.limit_type": "max",
+          "Det.limit_side_len": 1600,
+          "Rec.ocr_version": "PP-OCRv5",
+          "Rec.model_type": "mobile",
+          "Rec.lang_type": "arabic",
+          "EngineConfig.onnxruntime.intra_op_num_threads": 2,
+          "EngineConfig.onnxruntime.inter_op_num_threads": 1
+        },
+        "rapidocr": "3.9.2",
+        "onnxruntime": "1.31.0",
+        "python-bidi": "0.6.12",
+        "order": "word boxes clustered into lines by y-overlap then x descending; engine strings unchanged; raw boxes/order retained"
+      },
+      "metric": {
+        "edits": 8,
+        "referenceCharacters": 216,
+        "characterErrorRate": 0.037037037037037035,
+        "alignedSpan": "تطبق النصوص الجديدة المتعلقة بالاجراءات حالا غير ان النصوص القديمة هي التى تسرى على المسائل الخاصة ببدء التقام، ووقفه، وإنقطاعه؛ فيما يخص المدة السابقة على العمل بالنصوص الجديدة وكذلك الحال فيما يخض أجال المرافعة",
+        "criticalTokensMissing": [],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:138@ordinance-75-58",
+      "reference": "كل من تولى حراسة شىء وكانت له قدرة الاستعمال والتسيير، والرقابة، يعتبر مسؤولا عن الضرر الذى يحدثه ذلك الشىء.\nويعفى من هذه المسؤولية الحارس للشىء اذا أثبت أن ذلك الضرر حدث بسبب لم يكن يتوقعه مثل عمل الضحية، أو عمل الغير، أو الحالة الطارئة، أو القوة القاهرة.",
+      "evidenceId": "civil-138-original",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 9,
+      "imageSha256": "c4d8afd33579dd47c57072aa58b708abf91e3686c5ad8ee16a53d1ab6464f0ea",
+      "dpi": 150,
+      "psm": 6,
+      "language": "ara",
+      "engine": "paddle-onnx",
+      "seconds": 1.3443488999998863,
+      "recognized": "اللنغة  كل من تولى حراسة شئ؛، وكانت له قدرة\nالاستعمال والتسيير، والرقابة، يعتبر مسؤولا عن الضرر\nالذى يحدثه ذلك الشئ\nويعفى من هذه المسؤولية الحارس للشي اذا أثبت أن ذلك\nالضرر حدث بسبب لم يكن يتوقعه مثل عمل الضحية، أو عمل\nالغير، أو الحالة الطارئة، أو القوة القاهرة",
+      "ocrSha256": "f198e4c61b86ca5e3c425067f5354e40e4911bbbf7850dd38a03048b6fc035e5",
+      "invocation": {
+        "params": {
+          "Global.model_root_dir": "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\models",
+          "Global.use_cls": false,
+          "Det.ocr_version": "PP-OCRv5",
+          "Det.model_type": "mobile",
+          "Det.lang_type": "ch",
+          "Det.limit_type": "max",
+          "Det.limit_side_len": 1600,
+          "Rec.ocr_version": "PP-OCRv5",
+          "Rec.model_type": "mobile",
+          "Rec.lang_type": "arabic",
+          "EngineConfig.onnxruntime.intra_op_num_threads": 2,
+          "EngineConfig.onnxruntime.inter_op_num_threads": 1
+        },
+        "rapidocr": "3.9.2",
+        "onnxruntime": "1.31.0",
+        "python-bidi": "0.6.12",
+        "order": "word boxes clustered into lines by y-overlap then x descending; engine strings unchanged; raw boxes/order retained"
+      },
+      "metric": {
+        "edits": 9,
+        "referenceCharacters": 256,
+        "characterErrorRate": 0.03515625,
+        "alignedSpan": "كل من تولى حراسة شئ؛، وكانت له قدرة الاستعمال والتسيير، والرقابة، يعتبر مسؤولا عن الضرر الذى يحدثه ذلك الشئ ويعفى من هذه المسؤولية الحارس للشي اذا أثبت أن ذلك الضرر حدث بسبب لم يكن يتوقعه مثل عمل الضحية، أو عمل الغير، أو الحالة الطارئة، أو القوة القاهرة",
+        "criticalTokensMissing": [],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:139@ordinance-75-58",
+      "reference": "حارس الحيوان، ولو لم يكن مالكا له، مسؤول عما يحدثه الحيوان من ضرر. ولو ضل الحيوان أو تسرب، مالم يثبت الحارس أن وقوع الحادث كان بسبب لا ينسب اليه.",
+      "evidenceId": "civil-139-original",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 9,
+      "imageSha256": "b1669b8f64e0444e01555a366f0f04a2f9b95556129852ce82698c3c9b055398",
+      "dpi": 150,
+      "psm": 6,
+      "language": "ara",
+      "engine": "paddle-onnx",
+      "seconds": 1.0674447999999757,
+      "recognized": "المادة  حارس الحيوان، ولو لم يكن مالكا له، مسؤول\nعما يحدثه الحيوان من ضرر ولو ضل الحيوان أو تسرب،\nمالم يثبت الحارس أن وقوع الحادث كان بسبب لا ينسب اليه",
+      "ocrSha256": "61b8ebbbd8a9c4e2402187c3304439555566a684b4c3d673a7e7427958030c91",
+      "invocation": {
+        "params": {
+          "Global.model_root_dir": "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\models",
+          "Global.use_cls": false,
+          "Det.ocr_version": "PP-OCRv5",
+          "Det.model_type": "mobile",
+          "Det.lang_type": "ch",
+          "Det.limit_type": "max",
+          "Det.limit_side_len": 1600,
+          "Rec.ocr_version": "PP-OCRv5",
+          "Rec.model_type": "mobile",
+          "Rec.lang_type": "arabic",
+          "EngineConfig.onnxruntime.intra_op_num_threads": 2,
+          "EngineConfig.onnxruntime.inter_op_num_threads": 1
+        },
+        "rapidocr": "3.9.2",
+        "onnxruntime": "1.31.0",
+        "python-bidi": "0.6.12",
+        "order": "word boxes clustered into lines by y-overlap then x descending; engine strings unchanged; raw boxes/order retained"
+      },
+      "metric": {
+        "edits": 2,
+        "referenceCharacters": 145,
+        "characterErrorRate": 0.013793103448275862,
+        "alignedSpan": "حارس الحيوان، ولو لم يكن مالكا له، مسؤول عما يحدثه الحيوان من ضرر ولو ضل الحيوان أو تسرب، مالم يثبت الحارس أن وقوع الحادث كان بسبب لا ينسب اليه",
+        "criticalTokensMissing": [],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:308@ordinance-75-58",
+      "reference": "يتقادم الالتزام بانقضاء خمسة عشرة سنة فيما عدا الحالات التى ورد فيها نص خاص فى القانون وفيما عدا الاستثناءات الآتية.",
+      "evidenceId": "civil-308-original",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 19,
+      "imageSha256": "768b085d29132761de842ca217508eae87660fe646c96775a9c1ca88cc62eeb4",
+      "dpi": 150,
+      "psm": 6,
+      "language": "ara",
+      "engine": "paddle-onnx",
+      "seconds": 0.6196714000000156,
+      "recognized": "المادة  يتقادم الالتزام بانقضاء خمسة عشرة سنة فيما\nعدا الحالأت التى ورد فيها نص خاص مى القانون وفيما عدا\nالاستثناءات الآأتية",
+      "ocrSha256": "c1c30e81fb69c216d1902f438b025f4de2de1e6406683ee2eb251e215e5d86a7",
+      "invocation": {
+        "params": {
+          "Global.model_root_dir": "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\models",
+          "Global.use_cls": false,
+          "Det.ocr_version": "PP-OCRv5",
+          "Det.model_type": "mobile",
+          "Det.lang_type": "ch",
+          "Det.limit_type": "max",
+          "Det.limit_side_len": 1600,
+          "Rec.ocr_version": "PP-OCRv5",
+          "Rec.model_type": "mobile",
+          "Rec.lang_type": "arabic",
+          "EngineConfig.onnxruntime.intra_op_num_threads": 2,
+          "EngineConfig.onnxruntime.inter_op_num_threads": 1
+        },
+        "rapidocr": "3.9.2",
+        "onnxruntime": "1.31.0",
+        "python-bidi": "0.6.12",
+        "order": "word boxes clustered into lines by y-overlap then x descending; engine strings unchanged; raw boxes/order retained"
+      },
+      "metric": {
+        "edits": 4,
+        "referenceCharacters": 116,
+        "characterErrorRate": 0.034482758620689655,
+        "alignedSpan": "يتقادم الالتزام بانقضاء خمسة عشرة سنة فيما عدا الحالأت التى ورد فيها نص خاص مى القانون وفيما عدا الاستثناءات الآأتية",
+        "criticalTokensMissing": [],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:309@ordinance-75-58",
+      "reference": "يتقادم بخمس سنوات كل حق دورى متجدد ولو أقر به المدين كأجرة المبانى، والديون المتأخرة، والمرتبات والاجور، والمعاشات.\nغير أنه لا يسقط الريع المستحق فى ذمة الحائز سىء النية، ولا الريع الواجب أداؤه على متصرف المال المشاع للمستحقين الا بانقضاء خمس عشرة سنة.",
+      "evidenceId": "civil-309-original",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 19,
+      "imageSha256": "e27e35611e5c2aea0cd5c47c2955890ee3012289fb0c2fb9d47797bead23b96c",
+      "dpi": 150,
+      "psm": 6,
+      "language": "ara",
+      "engine": "paddle-onnx",
+      "seconds": 1.1279571999998552,
+      "recognized": "المادة  يتقادم بخمس سنوات كل حبق دورى متجدد\nولو أقر به المدين كأجرة المباني، والديون المتأخرة، والمرتبات\nوالاجوروالمعاشات\nغير أنه لا يسقط الريع المستحق في ذمة الحائز سئ\nالنية، ولا الريع الواجب آداؤه على متصرف المال المشاع\nللمستجقين الأ بانقضاء خمس عشرة سنة",
+      "ocrSha256": "3c02e2573dd1cb2ddaf94e641fc8ac6d4e7de6c2f1cc958a4de4b98844a27457",
+      "invocation": {
+        "params": {
+          "Global.model_root_dir": "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\models",
+          "Global.use_cls": false,
+          "Det.ocr_version": "PP-OCRv5",
+          "Det.model_type": "mobile",
+          "Det.lang_type": "ch",
+          "Det.limit_type": "max",
+          "Det.limit_side_len": 1600,
+          "Rec.ocr_version": "PP-OCRv5",
+          "Rec.model_type": "mobile",
+          "Rec.lang_type": "arabic",
+          "EngineConfig.onnxruntime.intra_op_num_threads": 2,
+          "EngineConfig.onnxruntime.inter_op_num_threads": 1
+        },
+        "rapidocr": "3.9.2",
+        "onnxruntime": "1.31.0",
+        "python-bidi": "0.6.12",
+        "order": "word boxes clustered into lines by y-overlap then x descending; engine strings unchanged; raw boxes/order retained"
+      },
+      "metric": {
+        "edits": 12,
+        "referenceCharacters": 252,
+        "characterErrorRate": 0.047619047619047616,
+        "alignedSpan": "يتقادم بخمس سنوات كل حبق دورى متجدد ولو أقر به المدين كأجرة المباني، والديون المتأخرة، والمرتبات والاجوروالمعاشات غير أنه لا يسقط الريع المستحق في ذمة الحائز سئ النية، ولا الريع الواجب آداؤه على متصرف المال المشاع للمستجقين الأ بانقضاء خمس عشرة سنة",
+        "criticalTokensMissing": [
+          "الا"
+        ],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:379@ordinance-75-58",
+      "reference": "يكون البائع ملزما بالضمان اذا لم يشتمل المبيع على الصفات التى تعهد بوجودها وقت التسليم الى المشترى أو اذا كان بالمبيع عيب ينقص من قيمته، أو من الانتفاع به بحسب الغاية المقصودة منه حسبما هو مذكور بعقد البيع، أو حسبما يظهر من طبيعته أو استعماله. فيكون البائع ضامنا لهذه العيوب ولو لم يكن عالما بوجودها.\nغير ان البائع لا يكون ضامنا للعيوب التى كان المشترى على علم بها وقت البيع، أو كان فى استطاعته أن يطلع عليها لو أنه فحص المبيع بعناية الرجل العادى، الا اذا أثبت المشترى أن البائع أكد له خلو المبيع من تلك العيوب أو أنه أخفاها غشا عنه.",
+      "evidenceId": "civil-379-original",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 24,
+      "imageSha256": "96880790b74c473e41e38764a4b9ab5a0cb5e00c66a7c52658d9cae4e4506634",
+      "dpi": 150,
+      "psm": 6,
+      "language": "ara",
+      "engine": "paddle-onnx",
+      "seconds": 1.9935907999999927,
+      "recognized": "المادة  يكون البائع ملزما بالضمان اذا لم يشتمل المبيع\nعلى الصفات التى تعهد بوجودها وقت التسليم الى المشترى\nأو اذا كان بالمبيع عيب ينقص من قيمته، أو من الانتفاع به\nبحسب الغاية المقصودة منه حسبما هو مذكوز بعقد البيع،\nأو حسنبما يظهر من طبيعته أو استعماله  فيكون البائع ضامنا\nلهذه العيوب ولو لم يكن عالما بوجودها\nغير ان البائع لا يكون ضامنا للعيوب التى كان المشترى\nعلى علم بها وقت البيع، أو كان فى استطاعته أن يطلع عليها\nلو أنه فحص المبيع بعناية الرجل العادي، الا اذا أثبت المشترى\nأن البائع أكد له خلو المبيع من تلك العيوب أو أنه أخفاها\nغشا عنه ",
+      "ocrSha256": "95022290b003f169149a671034f79f21c67ac15bf535288dd62a7a3f752cc3e9",
+      "invocation": {
+        "params": {
+          "Global.model_root_dir": "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\models",
+          "Global.use_cls": false,
+          "Det.ocr_version": "PP-OCRv5",
+          "Det.model_type": "mobile",
+          "Det.lang_type": "ch",
+          "Det.limit_type": "max",
+          "Det.limit_side_len": 1600,
+          "Rec.ocr_version": "PP-OCRv5",
+          "Rec.model_type": "mobile",
+          "Rec.lang_type": "arabic",
+          "EngineConfig.onnxruntime.intra_op_num_threads": 2,
+          "EngineConfig.onnxruntime.inter_op_num_threads": 1
+        },
+        "rapidocr": "3.9.2",
+        "onnxruntime": "1.31.0",
+        "python-bidi": "0.6.12",
+        "order": "word boxes clustered into lines by y-overlap then x descending; engine strings unchanged; raw boxes/order retained"
+      },
+      "metric": {
+        "edits": 6,
+        "referenceCharacters": 533,
+        "characterErrorRate": 0.01125703564727955,
+        "alignedSpan": "يكون البائع ملزما بالضمان اذا لم يشتمل المبيع على الصفات التى تعهد بوجودها وقت التسليم الى المشترى أو اذا كان بالمبيع عيب ينقص من قيمته، أو من الانتفاع به بحسب الغاية المقصودة منه حسبما هو مذكوز بعقد البيع، أو حسنبما يظهر من طبيعته أو استعماله فيكون البائع ضامنا لهذه العيوب ولو لم يكن عالما بوجودها غير ان البائع لا يكون ضامنا للعيوب التى كان المشترى على علم بها وقت البيع، أو كان فى استطاعته أن يطلع عليها لو أنه فحص المبيع بعناية الرجل العادي، الا اذا أثبت المشترى أن البائع أكد له خلو المبيع من تلك العيوب أو أنه أخفاها غشا عنه",
+        "criticalTokensMissing": [],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:489@ordinance-75-58",
+      "reference": "اذا وجد بالعين المؤجرة عيب يتحقق معه الضمان، يجوز للمستأجر حسب الظروف أن يطلب فسخ عقد الايجار أو انقاص الثمن وله كذلك أن يطلب اصلاح العيب أو أن يقوم هو باصلاحه على نفقة المؤجر اذا كان الاصلاح لا يكون نفقة باهظة عليه.\nفاذا لحق المستأجر ضرر من العيب التزم المؤجر بتعويضه مالم يثبت أنه كان يجهل وجود العيب.",
+      "evidenceId": "civil-489-original-body",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 31,
+      "imageSha256": "e8b31e7072cc16d93974e6677c56a623fa9da86284db663c7dfb7efdf3f26a31",
+      "dpi": 200,
+      "psm": 6,
+      "language": "ara",
+      "engine": "paddle-onnx",
+      "seconds": 1.71841459999996,
+      "recognized": "ن يم به هدا الاحير وص ألعق\nالمادة اذاوجد بالعين المؤجرة عيب يتحقق معه الضمان\nيجوز للمستأجر حسب الظروف أن يطلب فسخ عقد الايجار\nأو انقاص الثمن وله كذلك أن يطلب اصلاح العيب أو أن يقوم\nهو باصلاحه على نفقة الؤجر اذا كان الاصلاح لا يكون نفقة\nباهظة عليه\nفاذا لحق المستأجر ضرر من العيب التزم المؤجر بتعويضه\nمالم يثبت أنه كان يجهل وجود العيب",
+      "ocrSha256": "8a2b33d017196f2fdd6999f67f09cbfe56598cbcec2138b9c353c1a7b3ffbcf1",
+      "invocation": {
+        "params": {
+          "Global.model_root_dir": "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\models",
+          "Global.use_cls": false,
+          "Det.ocr_version": "PP-OCRv5",
+          "Det.model_type": "mobile",
+          "Det.lang_type": "ch",
+          "Det.limit_type": "max",
+          "Det.limit_side_len": 1600,
+          "Rec.ocr_version": "PP-OCRv5",
+          "Rec.model_type": "mobile",
+          "Rec.lang_type": "arabic",
+          "EngineConfig.onnxruntime.intra_op_num_threads": 2,
+          "EngineConfig.onnxruntime.inter_op_num_threads": 1
+        },
+        "rapidocr": "3.9.2",
+        "onnxruntime": "1.31.0",
+        "python-bidi": "0.6.12",
+        "order": "word boxes clustered into lines by y-overlap then x descending; engine strings unchanged; raw boxes/order retained"
+      },
+      "metric": {
+        "edits": 5,
+        "referenceCharacters": 303,
+        "characterErrorRate": 0.0165016501650165,
+        "alignedSpan": "اذاوجد بالعين المؤجرة عيب يتحقق معه الضمان يجوز للمستأجر حسب الظروف أن يطلب فسخ عقد الايجار أو انقاص الثمن وله كذلك أن يطلب اصلاح العيب أو أن يقوم هو باصلاحه على نفقة الؤجر اذا كان الاصلاح لا يكون نفقة باهظة عليه فاذا لحق المستأجر ضرر من العيب التزم المؤجر بتعويضه مالم يثبت أنه كان يجهل وجود العيب",
+        "criticalTokensMissing": [],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "civil-code:1002@ordinance-75-58",
+      "reference": "لا تطبق مدة التقادم المحددة فى هذا القانون الا على الوقائع التى ترد بعد نشر هذا الامر.",
+      "evidenceId": "civil-1002-original",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 67,
+      "imageSha256": "47c3c5ec6497e0e64034075938f4cbe663ae7bdf9cf720e429377d849ef5e7ee",
+      "dpi": 150,
+      "psm": 6,
+      "language": "ara",
+      "engine": "paddle-onnx",
+      "seconds": 0.4988409000000047,
+      "recognized": "المادة لا تطبق مدة التقادم المحددة في هذا القانون لا\nعلى الوقائع التى ترد بعد نشر هذا الامر",
+      "ocrSha256": "ff4b8b0b44c4b33e0fef968a46133bc14073ec75d96fd5f2d7e7ca087ec8560f",
+      "invocation": {
+        "params": {
+          "Global.model_root_dir": "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\models",
+          "Global.use_cls": false,
+          "Det.ocr_version": "PP-OCRv5",
+          "Det.model_type": "mobile",
+          "Det.lang_type": "ch",
+          "Det.limit_type": "max",
+          "Det.limit_side_len": 1600,
+          "Rec.ocr_version": "PP-OCRv5",
+          "Rec.model_type": "mobile",
+          "Rec.lang_type": "arabic",
+          "EngineConfig.onnxruntime.intra_op_num_threads": 2,
+          "EngineConfig.onnxruntime.inter_op_num_threads": 1
+        },
+        "rapidocr": "3.9.2",
+        "onnxruntime": "1.31.0",
+        "python-bidi": "0.6.12",
+        "order": "word boxes clustered into lines by y-overlap then x descending; engine strings unchanged; raw boxes/order retained"
+      },
+      "metric": {
+        "edits": 3,
+        "referenceCharacters": 86,
+        "characterErrorRate": 0.03488372093023256,
+        "alignedSpan": "لا تطبق مدة التقادم المحددة في هذا القانون لا على الوقائع التى ترد بعد نشر هذا الامر",
+        "criticalTokensMissing": [
+          "الا"
+        ],
+        "criticalTokensExtra": [
+          "لا"
+        ]
+      }
+    },
+    {
+      "versionId": "civil-code:1003@ordinance-75-58",
+      "reference": "يسرى مفعول هذا الامر ابتداء من تاريخ 25 جمادى الثانية عام 1395 الموافق 5 يوليو سنة 1975 وينشر فى الجريدة الرسمية للجمهورية الجزائرية الديمقراطية الشعبية.",
+      "evidenceId": "civil-1003-original",
+      "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+      "pdfPage": 67,
+      "imageSha256": "8c32a9026c515cd25ce2ec0d2bda8278d9a5044039bed575ca1505ab36a83d2f",
+      "dpi": 150,
+      "psm": 6,
+      "language": "ara",
+      "engine": "paddle-onnx",
+      "seconds": 0.8511162000002059,
+      "recognized": "المادة  يسرى مفعول جذا الامربتداء من تاريخ\nجمادى الثانية عام  الموافق  يوليو سنة  وينش\nفى الجريدة الرسمية للجمهورية الجزائرية الديمقراطية\nالشعبية",
+      "ocrSha256": "4eed1a49ad9c682739e1f7282ca4ff7980558ec5c87c28d22d41b69010e8ab99",
+      "invocation": {
+        "params": {
+          "Global.model_root_dir": "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\models",
+          "Global.use_cls": false,
+          "Det.ocr_version": "PP-OCRv5",
+          "Det.model_type": "mobile",
+          "Det.lang_type": "ch",
+          "Det.limit_type": "max",
+          "Det.limit_side_len": 1600,
+          "Rec.ocr_version": "PP-OCRv5",
+          "Rec.model_type": "mobile",
+          "Rec.lang_type": "arabic",
+          "EngineConfig.onnxruntime.intra_op_num_threads": 2,
+          "EngineConfig.onnxruntime.inter_op_num_threads": 1
+        },
+        "rapidocr": "3.9.2",
+        "onnxruntime": "1.31.0",
+        "python-bidi": "0.6.12",
+        "order": "word boxes clustered into lines by y-overlap then x descending; engine strings unchanged; raw boxes/order retained"
+      },
+      "metric": {
+        "edits": 20,
+        "referenceCharacters": 153,
+        "characterErrorRate": 0.13071895424836602,
+        "alignedSpan": "يسرى مفعول جذا الامربتداء من تاريخ جمادى الثانية عام الموافق يوليو سنة وينش فى الجريدة الرسمية للجمهورية الجزائرية الديمقراطية الشعبية",
+        "criticalTokensMissing": [
+          "25",
+          "1395",
+          "5",
+          "1975"
+        ],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "commercial-code:187-bis@law-05-02",
+      "reference": "تحرر عقود الإيجار المبرمة ابتداء من تاريخ نشر هذا القانون في الجريدة الرسمية للجمهورية الجزائرية الديمقراطية الشعبية، في الشكل الرسمي، وذلك تحت طائلة البطلان، وتبرم لمدة يحددها الأطراف بكل حرية.\nيلزم المستأجر بمغادرة الأمكنة المستأجرة بانتهاء الأجل المحدد في العقد دون حاجة إلى توجيه تنبيه بالإخلاء ودون الحق في الحصول على تعويض الاستحقاق المنصوص عليه في هذا القانون، ما لم يشترط الأطراف خلاف ذلك.",
+      "evidenceId": "commercial-187-bis-introduced",
+      "sourceSha256": "85a7e8d258ca720d396c51d6dd59fd9f91ca2d10e5a4ca8edb9b87fd3136e806",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/2005/A2005011.pdf",
+      "pdfPage": 9,
+      "imageSha256": "f3000ee6861bd2b678712d4b5bf141b57af6496fbe58cf2c4d744e87fd6fa66f",
+      "dpi": 150,
+      "psm": 6,
+      "language": "ara",
+      "engine": "paddle-onnx",
+      "seconds": 1.778937100000121,
+      "recognized": "المادة  مكرر تحرر عقود الإيجار المبرمة\nابتداء من تاريخ نشر هذا القانون في الجريدة\nالرسمية للجمهورية الجزائرية الديمقراطية الشعبية،\nفي الشكل الرسمي، وذلك تحت طائلة البطلان، وتبرم\nلمدة يحددها الأطراف بكل حرية\nيلزم المستأجر بمغادرة الأمكنة المستأجرة\nبانتهاء الأجل المحدد في العقد دون حاجة إلى توجيه\nتنبيه بالإخلاء ودون الحق في الحصول على تعويض\nالاستحقاق المنصوص عليه في هذا القانون، مالم\nيشترط الأطراف خلاف ذلك",
+      "ocrSha256": "6105395fd6c58531dcac4583d5a24d9ee357bab6ec2fdd083060305463760c8b",
+      "invocation": {
+        "params": {
+          "Global.model_root_dir": "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\models",
+          "Global.use_cls": false,
+          "Det.ocr_version": "PP-OCRv5",
+          "Det.model_type": "mobile",
+          "Det.lang_type": "ch",
+          "Det.limit_type": "max",
+          "Det.limit_side_len": 1600,
+          "Rec.ocr_version": "PP-OCRv5",
+          "Rec.model_type": "mobile",
+          "Rec.lang_type": "arabic",
+          "EngineConfig.onnxruntime.intra_op_num_threads": 2,
+          "EngineConfig.onnxruntime.inter_op_num_threads": 1
+        },
+        "rapidocr": "3.9.2",
+        "onnxruntime": "1.31.0",
+        "python-bidi": "0.6.12",
+        "order": "word boxes clustered into lines by y-overlap then x descending; engine strings unchanged; raw boxes/order retained"
+      },
+      "metric": {
+        "edits": 3,
+        "referenceCharacters": 397,
+        "characterErrorRate": 0.007556675062972292,
+        "alignedSpan": "تحرر عقود الإيجار المبرمة ابتداء من تاريخ نشر هذا القانون في الجريدة الرسمية للجمهورية الجزائرية الديمقراطية الشعبية، في الشكل الرسمي، وذلك تحت طائلة البطلان، وتبرم لمدة يحددها الأطراف بكل حرية يلزم المستأجر بمغادرة الأمكنة المستأجرة بانتهاء الأجل المحدد في العقد دون حاجة إلى توجيه تنبيه بالإخلاء ودون الحق في الحصول على تعويض الاستحقاق المنصوص عليه في هذا القانون، مالم يشترط الأطراف خلاف ذلك",
+        "criticalTokensMissing": [
+          "لم"
+        ],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "commercial-code:187-bis-1@law-05-02",
+      "reference": "يبقى تجديد عقود الإيجار المبرمة قبل النشر المذكور في المادة 187 مكرر أعلاه، خاضعا للتشريع الساري المفعول بتاريخ إبرام عقد الإيجار.",
+      "evidenceId": "commercial-187-bis-1-introduced",
+      "sourceSha256": "85a7e8d258ca720d396c51d6dd59fd9f91ca2d10e5a4ca8edb9b87fd3136e806",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/2005/A2005011.pdf",
+      "pdfPage": 9,
+      "imageSha256": "0f1dceb03063f63a319bbf16b02ab702dada9395143eba45adeaa52cd029a6d9",
+      "dpi": 150,
+      "psm": 6,
+      "language": "ara",
+      "engine": "paddle-onnx",
+      "seconds": 0.7300570999998399,
+      "recognized": "المادة ١ مكرريبقى تجديد عقود الإيجار\nالمبرمة قبل النشر المذكور في المادة ا مكرر\nأعلاه، خاضعا للتشريع الساري المفعول بتاريخ إبرام\nعقد الإيجار",
+      "ocrSha256": "9b3b56a8d03efe08a06cb08d9740a0df4c7733925682b1655acb5fac52a7bd5c",
+      "invocation": {
+        "params": {
+          "Global.model_root_dir": "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\models",
+          "Global.use_cls": false,
+          "Det.ocr_version": "PP-OCRv5",
+          "Det.model_type": "mobile",
+          "Det.lang_type": "ch",
+          "Det.limit_type": "max",
+          "Det.limit_side_len": 1600,
+          "Rec.ocr_version": "PP-OCRv5",
+          "Rec.model_type": "mobile",
+          "Rec.lang_type": "arabic",
+          "EngineConfig.onnxruntime.intra_op_num_threads": 2,
+          "EngineConfig.onnxruntime.inter_op_num_threads": 1
+        },
+        "rapidocr": "3.9.2",
+        "onnxruntime": "1.31.0",
+        "python-bidi": "0.6.12",
+        "order": "word boxes clustered into lines by y-overlap then x descending; engine strings unchanged; raw boxes/order retained"
+      },
+      "metric": {
+        "edits": 4,
+        "referenceCharacters": 130,
+        "characterErrorRate": 0.03076923076923077,
+        "alignedSpan": "يبقى تجديد عقود الإيجار المبرمة قبل النشر المذكور في المادة ا مكرر أعلاه، خاضعا للتشريع الساري المفعول بتاريخ إبرام عقد الإيجار",
+        "criticalTokensMissing": [
+          "187"
+        ],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "cpca:2@law-08-09",
+      "reference": "تطبق أحكام هذا القانون فور سريانه، باستثناء ما يتعلق منها بالآجال التي بدأ سريانها في ظل القانون القديم.",
+      "evidenceId": "cpca-2-original",
+      "sourceSha256": "e4f8a83fab8db5520fefb36c65a47537e8f3b56b8588bb45116c47388abf5344",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/2008/A2008021.pdf",
+      "pdfPage": 3,
+      "imageSha256": "9722bdab31acb5a9817357b10c796c6779ac029a989a8ca73dcfb15121f8e534",
+      "dpi": 150,
+      "psm": 6,
+      "language": "ara",
+      "engine": "paddle-onnx",
+      "seconds": 0.7228640999999243,
+      "recognized": "المادة  تطبق أحكام هذا القانون فور سريانه،\nباستثناء ما يتعلق منها بالآجال التي بدأ سريانها في\nظل القانون القديم",
+      "ocrSha256": "17f1389f119bc870d253d31dde4058996f9f84668b4bdc673bd3c5a539678415",
+      "invocation": {
+        "params": {
+          "Global.model_root_dir": "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\models",
+          "Global.use_cls": false,
+          "Det.ocr_version": "PP-OCRv5",
+          "Det.model_type": "mobile",
+          "Det.lang_type": "ch",
+          "Det.limit_type": "max",
+          "Det.limit_side_len": 1600,
+          "Rec.ocr_version": "PP-OCRv5",
+          "Rec.model_type": "mobile",
+          "Rec.lang_type": "arabic",
+          "EngineConfig.onnxruntime.intra_op_num_threads": 2,
+          "EngineConfig.onnxruntime.inter_op_num_threads": 1
+        },
+        "rapidocr": "3.9.2",
+        "onnxruntime": "1.31.0",
+        "python-bidi": "0.6.12",
+        "order": "word boxes clustered into lines by y-overlap then x descending; engine strings unchanged; raw boxes/order retained"
+      },
+      "metric": {
+        "edits": 1,
+        "referenceCharacters": 104,
+        "characterErrorRate": 0.009615384615384616,
+        "alignedSpan": "تطبق أحكام هذا القانون فور سريانه، باستثناء ما يتعلق منها بالآجال التي بدأ سريانها في ظل القانون القديم",
+        "criticalTokensMissing": [],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "cpca:504@law-08-09",
+      "reference": "يجب رفع الدعوى أمام القسم الاجتماعي في أجل لا يتجاوز ستة (6) أشهر من تاريخ تسليم محضر عدم الصلح، وذلك تحت طائلة سقوط الحق في رفع الدعوى.",
+      "evidenceId": "cpca-504-original",
+      "sourceSha256": "e4f8a83fab8db5520fefb36c65a47537e8f3b56b8588bb45116c47388abf5344",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/2008/A2008021.pdf",
+      "pdfPage": 41,
+      "imageSha256": "4e0f447aeb4236fb5a7dbe78b6c568a135ed2b7e64245609967114dac8c73cfc",
+      "dpi": 150,
+      "psm": 6,
+      "language": "ara",
+      "engine": "paddle-onnx",
+      "seconds": 0.9157787999999982,
+      "recognized": "المادة  يجب رفع الدعوى أمام القسم\nالاجتماعي في أجل لا يتجاوز ستة  أشهر من تاريخ\nتسليم محضر عدم الصلح، وذلك تحت طائلة سقوط\nالحق في رفع الدعوى",
+      "ocrSha256": "faa3fcc30a55aa0031937436ef7369f1da5fb9be6e9ed6debe321ae3b94f18d9",
+      "invocation": {
+        "params": {
+          "Global.model_root_dir": "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\models",
+          "Global.use_cls": false,
+          "Det.ocr_version": "PP-OCRv5",
+          "Det.model_type": "mobile",
+          "Det.lang_type": "ch",
+          "Det.limit_type": "max",
+          "Det.limit_side_len": 1600,
+          "Rec.ocr_version": "PP-OCRv5",
+          "Rec.model_type": "mobile",
+          "Rec.lang_type": "arabic",
+          "EngineConfig.onnxruntime.intra_op_num_threads": 2,
+          "EngineConfig.onnxruntime.inter_op_num_threads": 1
+        },
+        "rapidocr": "3.9.2",
+        "onnxruntime": "1.31.0",
+        "python-bidi": "0.6.12",
+        "order": "word boxes clustered into lines by y-overlap then x descending; engine strings unchanged; raw boxes/order retained"
+      },
+      "metric": {
+        "edits": 5,
+        "referenceCharacters": 136,
+        "characterErrorRate": 0.03676470588235294,
+        "alignedSpan": "يجب رفع الدعوى أمام القسم الاجتماعي في أجل لا يتجاوز ستة أشهر من تاريخ تسليم محضر عدم الصلح، وذلك تحت طائلة سقوط الحق في رفع الدعوى",
+        "criticalTokensMissing": [
+          "6"
+        ],
+        "criticalTokensExtra": []
+      }
+    },
+    {
+      "versionId": "cpca:1062@law-08-09",
+      "reference": "يسري مفعول هذا القانون، بعد سنة (1) من تاريخ نشره في الجريدة الرسمية.",
+      "evidenceId": "cpca-1062-original",
+      "sourceSha256": "e4f8a83fab8db5520fefb36c65a47537e8f3b56b8588bb45116c47388abf5344",
+      "sourceUrl": "https://www.joradp.dz/FTP/jo-arabe/2008/A2008021.pdf",
+      "pdfPage": 95,
+      "imageSha256": "c9a1a934c98f3c0fab4a45b772246eb5f9ab8ffe82e2bf1a05dc69189e7809a5",
+      "dpi": 150,
+      "psm": 6,
+      "language": "ara",
+      "engine": "paddle-onnx",
+      "seconds": 0.7025828000000729,
+      "recognized": "المادة  يسري مفعول هذا القانون، بعد\nسنة من تاريخ نشره في الجريدة الرسمية",
+      "ocrSha256": "ff93fc0cd31c48fb209265f9d6165186c43cd5040e5d77570c01ae1987e22f54",
+      "invocation": {
+        "params": {
+          "Global.model_root_dir": "C:\\Users\\TheShadow\\dz-legal-assistant\\redteam-output\\law-corpus-worktree\\tools\\law-corpus\\.cache\\ocr-comparison\\models",
+          "Global.use_cls": false,
+          "Det.ocr_version": "PP-OCRv5",
+          "Det.model_type": "mobile",
+          "Det.lang_type": "ch",
+          "Det.limit_type": "max",
+          "Det.limit_side_len": 1600,
+          "Rec.ocr_version": "PP-OCRv5",
+          "Rec.model_type": "mobile",
+          "Rec.lang_type": "arabic",
+          "EngineConfig.onnxruntime.intra_op_num_threads": 2,
+          "EngineConfig.onnxruntime.inter_op_num_threads": 1
+        },
+        "rapidocr": "3.9.2",
+        "onnxruntime": "1.31.0",
+        "python-bidi": "0.6.12",
+        "order": "word boxes clustered into lines by y-overlap then x descending; engine strings unchanged; raw boxes/order retained"
+      },
+      "metric": {
+        "edits": 5,
+        "referenceCharacters": 69,
+        "characterErrorRate": 0.07246376811594203,
+        "alignedSpan": "يسري مفعول هذا القانون، بعد سنة من تاريخ نشره في الجريدة الرسمية",
+        "criticalTokensMissing": [
+          "1"
+        ],
+        "criticalTokensExtra": []
+      }
+    }
+  ]
+}

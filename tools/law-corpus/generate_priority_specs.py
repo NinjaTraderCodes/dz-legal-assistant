@@ -13,7 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 CORPUS = ROOT / "data/law/corpus"
 RESEARCH = CORPUS / "research"
-CACHE = CORPUS / ".cache"
+CACHE = ROOT / "tools/law-corpus/.cache/evidence"
 DATE = "2026-10-25"
 
 

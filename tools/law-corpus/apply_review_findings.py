@@ -40,7 +40,7 @@ def main():
         actual_hashes = []
         for image in finding["imagePaths"]:
             path = (ROOT / image).resolve()
-            if not path.is_relative_to((ROOT / "data/law/corpus/.cache").resolve()):
+            if not path.is_relative_to((ROOT / "tools/law-corpus/.cache/evidence").resolve()):
                 raise ValueError("Image path escapes corpus cache")
             actual_hashes.append(hashlib.sha256(path.read_bytes()).hexdigest())
         if actual_hashes != finding["imageSha256"]:

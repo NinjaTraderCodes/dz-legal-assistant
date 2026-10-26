@@ -28,7 +28,7 @@ Family acquisition selects the visible Arabic half using the publication's unrot
 
 `research/current-batches/` contains source-acquisition records, not a checked runtime library. The typed loader's integration prototype remains separate. Do not wire drafting directly to these research batches. Preserve the exception paths for older contracts/deadlines and the22-13 installation/earlier-filed-case transition.
 
-`validate_checkpoint.ps1` now imports `validation-cache-filter.targets` only for its build command. This excludes ignored development cache items without moving live OCR evidence or modifying shared project targets. Run it through process-scoped `powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/law-corpus/validate_checkpoint.ps1`. The ordinary developer build is not permanently changed.
+**Evidence cache location (since 26 October 2026).** The ignored evidence cache (official PDFs, rendered pages, crops, OCR artifacts) lives in `tools/law-corpus/.cache/evidence/`, outside `data/`. The shared `Directory.Build.targets` copies `data/**/*` into every build; with the cache outside `data/`, an ordinary `dotnet build -c Release` no longer picks it up. `validate_checkpoint.ps1` still runs the full build and tests, and its old filter now only removes stale copies left in earlier `bin` outputs. Run it through process-scoped `powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/law-corpus/validate_checkpoint.ps1`.
 
 ## Setup (Windows, Python 3.12)
 
@@ -62,7 +62,7 @@ The manifest contains `manifestVersion: 1`, `sources` (`id`, official `url`, pin
 For each crop the extraction directory is:
 
 ```text
-data/law/corpus/.cache/extractions/<PDF-SHA256>/page-<0001>/<evidence-id>/
+tools/law-corpus/.cache/evidence/extractions/<PDF-SHA256>/page-<0001>/<evidence-id>/
   crop.png
   text-layer.txt
   ocr.txt
@@ -143,7 +143,7 @@ The pilot builder reads **previously recorded** text/image review hashes from `r
 
 ## Checkpoint validation on this Windows laptop
 
-The shared `Directory.Build.targets` remains unchanged. It explicitly copies `data/**/*`, so `validate_checkpoint.ps1` supplies an opt-in `validation-cache-filter.targets` import that removes ignored source-cache items for that command only. It does not move live extraction evidence. The helper checks resolved paths and removes only stale source-cache copies from this worktree's development `bin` outputs, then runs full Release build/tests with SDK hard-link copy options. Finish canonical JSON composition before validation so copied product data is stable; independent source-cache extraction can continue. A process-scoped `powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/law-corpus/validate_checkpoint.ps1` runs the reviewed script without changing machine execution policy.
+The shared `Directory.Build.targets` remains unchanged. It copies `data/**/*`, so the evidence cache was moved out of `data/` to `tools/law-corpus/.cache/evidence/`; an ordinary Release build therefore contains no cache file. `validate_checkpoint.ps1` removes only stale source-cache copies left in this worktree's earlier `bin` outputs, then runs the full Release build and tests. Finish canonical JSON composition before validation so copied product data is stable. A process-scoped `powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/law-corpus/validate_checkpoint.ps1` runs the script without changing machine execution policy.
 
 ## Observed setup failures
 

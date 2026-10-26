@@ -25,7 +25,7 @@ import urllib.parse
 import urllib.request
 
 ROOT = Path(__file__).resolve().parents[2]
-CACHE = ROOT / "data/law/corpus/.cache"
+CACHE = ROOT / "tools/law-corpus/.cache/evidence"
 TOOLS = ROOT / "tools/law-corpus/.cache"
 OFFICIAL_TEXT_HOSTS = frozenset({
     "joradp.dz", "www.joradp.dz", "mjustice.gov.dz", "www.mjustice.gov.dz",

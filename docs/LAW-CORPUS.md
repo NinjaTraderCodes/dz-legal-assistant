@@ -54,6 +54,39 @@ The earlier489 pilot inspected original ArabicPDF31 and2007 ArabicPDF5, with Fre
 
 ## Delivery status
 
+### Delivery 1 — priority articles, current version, `checked` (26 October 2026)
+
+All eleven priority articles are `checked` in their current version: Civil 124, 138, 139, 140, 308, 309, 379; CPCA 2, 504; Commercial 187 مكرر, 187 مكرر 1. Each passes the four checks the loader requires and the brief's six conditions:
+
+1. **Pinned source:** the introducing JO issue (official URL and SHA-256 in the ledger), page and crop evidence id.
+2. **Text:** read by Claude from the official page image (150–1,200 dpi renders of the pinned PDF), word by word, every digit, negation and punctuation mark, recorded as `discrepancy-resolved-from-image` bound to the text and image SHA-256s. This is an AI reading, not lawyer verification; `verified`/`verifiedBy` are untouched.
+3. **Inventory:** priority-subset inventory, identity present in the introducing publication and the current Ministry source, no repeal in the ledger.
+4. **Amendments:** every amending text listed by the Justice Ministry codes index (fetched 26 Oct 2026, page SHA-256 in `research/amendment-discovery-2026-10-26.json`; the index lists texts up to 12 Oct 2026) is in the ledger; the check lists the texts touching the article and confirms none later than its introducing text does.
+
+**Corrections found by re-reading the images** (the earlier candidate texts had silently modernised the 1975 spelling): Civil 309 «في ذمة» (dotted) and «آداؤه» (madda); 379 «آكد» (madda); 140 «مايلزم» (one word), «فان» (no hamza), and paragraph 2 ending with the printed comma «،» (kept as published; the shape matches the line's other commas, not the full stop). Civil 140's earlier quarantine (punctuation between الخطر and فان) is settled: none, a line break. Civil 124 is new: Law 05-10 art. 35, JO 44/2005 p. 23.
+
+**Paths:** Law 05-10 art. 34 renamed Chapter III «الفعل المستحق للتعويض» and Section I «المسؤولية عن الأفعال الشخصية»; current versions of 124 and 138–140 carry these headings (Section III «المسؤولية الناشئة عن الاشياء» is unchanged).
+
+**Temporal:** Civil 124 (Law 05-10) and Commercial 187 مكرر / 187 مكرر 1 (Law 05-02) are `checked` text with `temporalStatus: unsettled`: these laws set no national commencement date (Civil art. 4 day-franc rule per locality); listed in each report.
+
+Evidence: `research/priority-current-review-2026-10-26.json` (image hashes and render notes), visual spot-check `docs/law-corpus-checks/priority/`, builder `tools/law-corpus/deliver_priority.py`.
+
+| Legal text | Article identities | Versions | Checked | Partly checked | Unsettled | Scope | Full code complete |
+|---|---:|---:|---:|---:|---:|---|---|
+| Civil Code | 45 | 55 | 7 | 32 | 16 | priority subset (7 targets) | No |
+| Commercial Code | 2 | 2 | 2 | 0 | 0 | priority subset (2 targets) | No |
+| CPCA | 3 | 3 | 2 | 1 | 0 | priority subset (3 targets; 1062 not re-reviewed) | No |
+| Family Code | 0 | 0 | 0 | 0 | 0 | — | No; not started |
+| Labour 90-11 | 0 | 0 | 0 | 0 | 0 | — | No; not started |
+| Labour 90-04 | 0 | 0 | 0 | 0 | 0 | — | No; not started |
+
+The other Civil identities (originals 1–32, 489 pilot, 1002/1003) keep their earlier states and reasons; they are outside delivery 1.
+
+**What remains:** CPCA complete and current (22-13 overlay), Family complete, Civil complete (font decoding of the 2007 compilation first), the bounded Commercial/90-11/90-04 collections, and the 81-article legacy reconciliation.
+
+### Earlier history (before 26 October 2026)
+
+
 **The revised corpus scope is not delivered.** The initial priority package contained all ten requested priority identities plus four temporal provisions: **14 article identities and 15 version candidates**. The original and2005 versions of Civil article7 are separate records. This is a delivery-history count; subsequent checkpoint counts are reported separately. It is an explicitly bounded priority subset, not an inventory of a complete code.
 
 | Legal text | Corpus article identities | Versions | Checked | Partly checked | Unsettled | Full code complete |
@@ -65,7 +98,7 @@ The earlier489 pilot inspected original ArabicPDF31 and2007 ArabicPDF5, with Fre
 | Labour 90-11 | 0 | 0 | 0 | 0 | 0 | No; not started |
 | Labour 90-04 | 0 | 0 | 0 | 0 | 0 | No; not started |
 
-The priority inventory has no missing target identity. Whole-code inventory and amendment-application certification have **not** passed. Accordingly no version is `checked`. Passed transcription checks are bound to exact text and reviewed images. The17 unsettled Civil candidates are4,6,8,10,12,13,15,16,17,20,22,23,25,26,28,140 and2005 article17bis. The former2005 article7 uncertainty has now been resolved from a renewed source-image reading. They must not be presented as exact checked source text. These states are not lawyer verification, and the original `verified`/`verifiedBy` fields are not set or changed.
+(Superseded by delivery 1 above.) The priority inventory has no missing target identity. Whole-code inventory and amendment-application certification have **not** passed. Accordingly no version is `checked`. Passed transcription checks are bound to exact text and reviewed images. The17 unsettled Civil candidates are4,6,8,10,12,13,15,16,17,20,22,23,25,26,28,140 and2005 article17bis. The former2005 article7 uncertainty has now been resolved from a renewed source-image reading. They must not be presented as exact checked source text. These states are not lawyer verification, and the original `verified`/`verifiedBy` fields are not set or changed.
 
 The French comparison preserves two discrepancies: original10 has different paragraph blocks, and original13 cites11/12 in Arabic but12/13 in French. The actual Arabic cross-references are retained; neither publication is silently corrected. Article33 continues on another page and is deliberately excluded from this batch. `research/civil-original-6-32-structure.json` retains the observations.
 

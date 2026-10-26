@@ -27,7 +27,7 @@
           "status": "in-force",
           "crossReferences": [],
           "verification": {
-            "state": "partly-checked",
+            "state": "checked",
             "checks": [
               {
                 "check": "discrepancy-resolved-from-image",
@@ -46,12 +46,35 @@
                 "date": "2026-10-25",
                 "result": "passed",
                 "note": "{\"arabicParagraphCount\": 2, \"arabicPdfPages\": [9], \"arabicPrintedPages\": [9], \"arabicSource\": \"A2005011\", \"code\": \"commercial-code\", \"frenchNumber\": \"187 bis\", \"frenchParagraphCount\": 2, \"frenchPdfPages\": [7], \"frenchPrintedPages\": [7], \"frenchSource\": \"F2005011\", \"number\": \"187 مكرر\", \"publicationId\": \"law-05-02\", \"status\": \"matching\"}"
+              },
+              {
+                "check": "discrepancy-resolved-from-image",
+                "method": "Claude visual reading of the official page image, word by word, every digit, negation and punctuation mark; bound to text and image SHA-256",
+                "date": "2026-10-26",
+                "result": "passed",
+                "note": "Both paragraphs read word by word on JO 11/2005 page 9 (2x): three commas in paragraph 1, ما لم in two words, closing full stop printed after the closing quotation mark of the amending law (kept, as for all quoted article bodies). AI reading, not a lawyer or human verification.",
+                "textSha256": "9ef3699faf232a76bd837c5131a96e74e1dc69d46b1eeeee9dc8f0b28f694d67",
+                "imageSha256s": [
+                  "f3000ee6861bd2b678712d4b5bf141b57af6496fbe58cf2c4d744e87fd6fa66f",
+                  "f81c218232501dda691708b2567a704a5774f6af67c4099339cb6d13a7abc7ac"
+                ]
+              },
+              {
+                "check": "inventory-complete",
+                "method": "Priority-subset inventory: identity present in the introducing official publication and in the current official Ministry source; no repeal recorded in the ledger",
+                "date": "2026-10-26",
+                "result": "passed",
+                "note": "{\"scope\": \"priority-subset\", \"targets\": [\"187 مكرر\", \"187 مكرر 1\"], \"identity\": \"187 مكرر\", \"currentSource\": \"Law 05-02 art. 3 insertion; Ministry codes index\"}"
+              },
+              {
+                "check": "amendment-applied",
+                "method": "Ledger of every amending text listed by the Justice Ministry codes index (fetched 2026-10-26, lists texts to 12 Oct 2026); each touching text applied",
+                "date": "2026-10-26",
+                "result": "passed",
+                "note": "{\"introducedBy\": \"law-05-02\", \"ledgerPublicationsTouchingArticle\": [\"law-05-02\"], \"laterPublicationsInLedger\": [\"law-15-20\", \"law-22-09\"], \"laterPublicationsTouchingArticle\": [], \"index\": {\"url\": \"https://droit.mjustice.gov.dz/fr/content/codes-0\", \"accessedOn\": \"2026-10-26\", \"sha256\": \"46e5a42bf31a5ebe981f8faef8c6300779e1bca204c1cf50010aad339ee24bfc\"}}"
               }
             ],
-            "reasons": [
-              "Code inventory and amendment discovery remain incomplete.",
-              "Temporal applicability is unsettled."
-            ]
+            "reasons": []
           },
           "source": {
             "publicationId": "law-05-02",
@@ -116,7 +139,7 @@
             }
           ],
           "verification": {
-            "state": "partly-checked",
+            "state": "checked",
             "checks": [
               {
                 "check": "discrepancy-resolved-from-image",
@@ -135,12 +158,35 @@
                 "date": "2026-10-25",
                 "result": "passed",
                 "note": "{\"arabicParagraphCount\": 1, \"arabicPdfPages\": [9], \"arabicPrintedPages\": [9], \"arabicSource\": \"A2005011\", \"code\": \"commercial-code\", \"frenchNumber\": \"187 ter\", \"frenchParagraphCount\": 1, \"frenchPdfPages\": [7], \"frenchPrintedPages\": [7], \"frenchSource\": \"F2005011\", \"note\": \"Literal printed numbering differs. The two provisions align by insertion in05-02art3 and preserved-prior-lease renewal transition; do not report a missing187bis1 French article or invent an extra Arabic187ter.\", \"number\": \"187 مكرر 1\", \"publicationId\": \"law-05-02\", \"status\": \"matching-with-published-numbering-alias\"}"
+              },
+              {
+                "check": "discrepancy-resolved-from-image",
+                "method": "Claude visual reading of the official page image, word by word, every digit, negation and punctuation mark; bound to text and image SHA-256",
+                "date": "2026-10-26",
+                "result": "passed",
+                "note": "Single paragraph read on JO 11/2005 page 9 (2x), including the cross-reference «المادة 187 مكرر» and the comma after أعلاه. AI reading, not a lawyer or human verification.",
+                "textSha256": "a29a4e16c537172239167a4085711b460fc131ce2abfff35495a5033d5521c6f",
+                "imageSha256s": [
+                  "0f1dceb03063f63a319bbf16b02ab702dada9395143eba45adeaa52cd029a6d9",
+                  "f81c218232501dda691708b2567a704a5774f6af67c4099339cb6d13a7abc7ac"
+                ]
+              },
+              {
+                "check": "inventory-complete",
+                "method": "Priority-subset inventory: identity present in the introducing official publication and in the current official Ministry source; no repeal recorded in the ledger",
+                "date": "2026-10-26",
+                "result": "passed",
+                "note": "{\"scope\": \"priority-subset\", \"targets\": [\"187 مكرر\", \"187 مكرر 1\"], \"identity\": \"187 مكرر 1\", \"currentSource\": \"Law 05-02 art. 3 insertion; Ministry codes index\"}"
+              },
+              {
+                "check": "amendment-applied",
+                "method": "Ledger of every amending text listed by the Justice Ministry codes index (fetched 2026-10-26, lists texts to 12 Oct 2026); each touching text applied",
+                "date": "2026-10-26",
+                "result": "passed",
+                "note": "{\"introducedBy\": \"law-05-02\", \"ledgerPublicationsTouchingArticle\": [\"law-05-02\"], \"laterPublicationsInLedger\": [\"law-15-20\", \"law-22-09\"], \"laterPublicationsTouchingArticle\": [], \"index\": {\"url\": \"https://droit.mjustice.gov.dz/fr/content/codes-0\", \"accessedOn\": \"2026-10-26\", \"sha256\": \"46e5a42bf31a5ebe981f8faef8c6300779e1bca204c1cf50010aad339ee24bfc\"}}"
               }
             ],
-            "reasons": [
-              "Code inventory and amendment discovery remain incomplete.",
-              "Temporal applicability is unsettled."
-            ]
+            "reasons": []
           },
           "source": {
             "publicationId": "law-05-02",

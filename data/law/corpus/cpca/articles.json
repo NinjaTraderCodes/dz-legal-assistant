@@ -24,7 +24,7 @@
           "status": "in-force",
           "crossReferences": [],
           "verification": {
-            "state": "partly-checked",
+            "state": "checked",
             "checks": [
               {
                 "check": "discrepancy-resolved-from-image",
@@ -43,11 +43,35 @@
                 "date": "2026-10-25",
                 "result": "passed",
                 "note": "{\"arabicParagraphCount\": 1, \"arabicPdfPages\": [3], \"arabicPrintedPages\": [3], \"arabicSource\": \"A2008021\", \"code\": \"cpca\", \"frenchNumber\": \"2\", \"frenchParagraphCount\": 1, \"frenchPdfPages\": [3], \"frenchPrintedPages\": [3], \"frenchSource\": \"F2008021\", \"number\": \"2\", \"publicationId\": \"law-08-09\", \"status\": \"matching\"}"
+              },
+              {
+                "check": "discrepancy-resolved-from-image",
+                "method": "Claude visual reading of the official page image, word by word, every digit, negation and punctuation mark; bound to text and image SHA-256",
+                "date": "2026-10-26",
+                "result": "passed",
+                "note": "Read every word, the comma after سريانه and the final full stop on the JO 21/2008 page 3 crop (2x). Agrees with the Ministry HTML text of article 2. AI reading, not a lawyer or human verification.",
+                "textSha256": "081b557bfecaf01ec64a8c7342c19ff77ae6277b619cab9cb765fd964e3cf29f",
+                "imageSha256s": [
+                  "9722bdab31acb5a9817357b10c796c6779ac029a989a8ca73dcfb15121f8e534",
+                  "d2fd63e73607aa71f6122891ed6d2f0598d211c6437e5d68d05b775d83205936"
+                ]
+              },
+              {
+                "check": "inventory-complete",
+                "method": "Priority-subset inventory: identity present in the introducing official publication and in the current official Ministry source; no repeal recorded in the ledger",
+                "date": "2026-10-26",
+                "result": "passed",
+                "note": "{\"scope\": \"priority-subset\", \"targets\": [\"2\", \"504\", \"1062\"], \"identity\": \"2\", \"currentSource\": \"Ministry Arabic HTML 1065-article catalogue\"}"
+              },
+              {
+                "check": "amendment-applied",
+                "method": "Ledger of every amending text listed by the Justice Ministry codes index (fetched 2026-10-26, lists texts to 12 Oct 2026); each touching text applied",
+                "date": "2026-10-26",
+                "result": "passed",
+                "note": "{\"introducedBy\": \"law-08-09\", \"ledgerPublicationsTouchingArticle\": [\"law-08-09\"], \"laterPublicationsInLedger\": [\"law-22-13\"], \"laterPublicationsTouchingArticle\": [], \"index\": {\"url\": \"https://droit.mjustice.gov.dz/fr/content/codes-0\", \"accessedOn\": \"2026-10-26\", \"sha256\": \"46e5a42bf31a5ebe981f8faef8c6300779e1bca204c1cf50010aad339ee24bfc\"}}"
               }
             ],
-            "reasons": [
-              "Code inventory and amendment discovery remain incomplete."
-            ]
+            "reasons": []
           },
           "source": {
             "publicationId": "law-08-09",
@@ -107,7 +131,7 @@
           "status": "in-force",
           "crossReferences": [],
           "verification": {
-            "state": "partly-checked",
+            "state": "checked",
             "checks": [
               {
                 "check": "discrepancy-resolved-from-image",
@@ -126,11 +150,35 @@
                 "date": "2026-10-25",
                 "result": "passed",
                 "note": "{\"arabicParagraphCount\": 1, \"arabicPdfPages\": [41], \"arabicPrintedPages\": [41], \"arabicSource\": \"A2008021\", \"code\": \"cpca\", \"frenchNumber\": \"504\", \"frenchParagraphCount\": 1, \"frenchPdfPages\": [36], \"frenchPrintedPages\": [36], \"frenchSource\": \"F2008021\", \"note\": \"Structure matches. Arabic saysdate ofdelivery ofnonconciliation record; French saysdate ofrecord. No translation-equivalence assertion.\", \"number\": \"504\", \"publicationId\": \"law-08-09\", \"status\": \"matching\"}"
+              },
+              {
+                "check": "discrepancy-resolved-from-image",
+                "method": "Claude visual reading of the official page image, word by word, every digit, negation and punctuation mark; bound to text and image SHA-256",
+                "date": "2026-10-26",
+                "result": "passed",
+                "note": "Read every word, ستة (6), the comma after الصلح and the final full stop on the JO 21/2008 page 41 crop (2x). AI reading, not a lawyer or human verification.",
+                "textSha256": "bfcde739161e987854f43ba66026dc4db5de1474dcd8472dbcf3da9bb3b9e3c2",
+                "imageSha256s": [
+                  "4e0f447aeb4236fb5a7dbe78b6c568a135ed2b7e64245609967114dac8c73cfc",
+                  "d2fd63e73607aa71f6122891ed6d2f0598d211c6437e5d68d05b775d83205936"
+                ]
+              },
+              {
+                "check": "inventory-complete",
+                "method": "Priority-subset inventory: identity present in the introducing official publication and in the current official Ministry source; no repeal recorded in the ledger",
+                "date": "2026-10-26",
+                "result": "passed",
+                "note": "{\"scope\": \"priority-subset\", \"targets\": [\"2\", \"504\", \"1062\"], \"identity\": \"504\", \"currentSource\": \"Ministry Arabic HTML 1065-article catalogue\"}"
+              },
+              {
+                "check": "amendment-applied",
+                "method": "Ledger of every amending text listed by the Justice Ministry codes index (fetched 2026-10-26, lists texts to 12 Oct 2026); each touching text applied",
+                "date": "2026-10-26",
+                "result": "passed",
+                "note": "{\"introducedBy\": \"law-08-09\", \"ledgerPublicationsTouchingArticle\": [\"law-08-09\"], \"laterPublicationsInLedger\": [\"law-22-13\"], \"laterPublicationsTouchingArticle\": [], \"index\": {\"url\": \"https://droit.mjustice.gov.dz/fr/content/codes-0\", \"accessedOn\": \"2026-10-26\", \"sha256\": \"46e5a42bf31a5ebe981f8faef8c6300779e1bca204c1cf50010aad339ee24bfc\"}}"
               }
             ],
-            "reasons": [
-              "Code inventory and amendment discovery remain incomplete."
-            ]
+            "reasons": []
           },
           "source": {
             "publicationId": "law-08-09",
@@ -209,7 +257,7 @@
               }
             ],
             "reasons": [
-              "Code inventory and amendment discovery remain incomplete."
+              "Outside the delivery-1 priority list; not re-reviewed on 26 Oct 2026."
             ]
           },
           "source": {

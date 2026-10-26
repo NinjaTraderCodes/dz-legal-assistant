@@ -79,7 +79,7 @@ public sealed class GroundsAnalyzerTests
     [Fact]
     public async Task OtherMeansNothingAppliesAndSkipsTheSecondCall()
     {
-        var request = GroundsAnalyzer.BuildReadingRequest(Knowledge(), "", "وقائع", [Loan]);
+        var request = GroundsAnalyzer.BuildReadingRequest(Knowledge(), "", "وقائع", null, [Loan]);
         Assert.EndsWith("other — غير ذلك: دعوى لا يطابقها أي نوع أعلاه (مثل الدعاوى الإدارية، التركات، الحالة المدنية، الشركات)",
             request.UserPrompt.Split('\n').First(l => l.StartsWith("other", StringComparison.Ordinal)), StringComparison.Ordinal);
 
@@ -107,15 +107,52 @@ public sealed class GroundsAnalyzerTests
     }
 
     [Fact]
-    public void ThePromptsListOnlyTheAreaClaimsAndTheCandidates()
+    public async Task EveryClaimIsOfferedWhateverTheSectionWhichIsOnlyAHint()
     {
-        var reading = GroundsAnalyzer.BuildReadingRequest(Knowledge(), "دين", "أقرض المدعي", [Loan]);
-        Assert.Contains("loan — استرداد قرض وهمي: وصف وهمي لـاسترداد قرض وهمي", reading.UserPrompt, StringComparison.Ordinal);
-        Assert.DoesNotContain("khul", reading.UserPrompt, StringComparison.Ordinal);
+        // A wrong section (family) must not hide the loan claim; the section is given to the model as a hint.
+        var provider = new RecordingProvider(_ => "نوع الدعوى: other");
+        await new GroundsAnalyzer(provider).AnalyseAsync(Knowledge(Library), "دين", "أقرض المدعي", "قسم شؤون الأسرة");
+        var prompt = Assert.Single(provider.Requests).UserPrompt;
+        Assert.Contains("loan — استرداد قرض وهمي: وصف وهمي لـاسترداد قرض وهمي", prompt, StringComparison.Ordinal);
+        Assert.Contains("khul — خلع وهمي", prompt, StringComparison.Ordinal);
+        Assert.Contains("القسم الذي اختاره المحامي: قسم شؤون الأسرة", prompt, StringComparison.Ordinal);
+    }
 
+    [Fact]
+    public void EveryCaseStartsWithTheSameTextAndTheCaseComesLast()
+    {
+        var first = GroundsAnalyzer.BuildReadingRequest(Knowledge(), "دين", "أقرض المدعي", "القسم المدني", [Loan, Khul]).UserPrompt;
+        var second = GroundsAnalyzer.BuildReadingRequest(Knowledge(), "خلع", "تطلب الزوجة الخلع", null, [Loan, Khul]).UserPrompt;
+        var shared = first.Zip(second).TakeWhile(p => p.First == p.Second).Count();
+
+        // Everything up to the case block is shared: instructions, claim list and rules are read once by a local server.
+        var caseBlock = first.IndexOf("\nالدعوى:\nالقسم الذي اختاره المحامي: ", StringComparison.Ordinal);
+        Assert.True(caseBlock > 0);
+        Assert.Equal(caseBlock + "\nالدعوى:\nالقسم الذي اختاره المحامي: ".Length, shared);
+        Assert.True(first.IndexOf("khul —", StringComparison.Ordinal) < shared);
+        Assert.Contains("القسم الذي اختاره المحامي: لم يحدد", second, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void TheSelectionContinuesTheReadingConversationAndOnlyAddsTheCandidates()
+    {
+        var reading = GroundsAnalyzer.BuildReadingRequest(Knowledge(Library), "دين", "أقرض المدعي", "القسم المدني", [Loan]);
         var candidates = GroundsAnalyzer.Candidates(Knowledge(Library), GroundsAnalyzer.ParseReading(Reading, [Loan]), [Loan]);
-        var selection = GroundsAnalyzer.BuildSelectionRequest(Knowledge(Library), "أقرض المدعي", FactsReading.Empty, candidates);
+        var selection = GroundsAnalyzer.BuildSelectionRequest(Knowledge(Library), reading, Reading, candidates);
+
+        Assert.Equal([new ModelTurn(ModelTurn.User, reading.UserPrompt), new ModelTurn(ModelTurn.Assistant, Reading)], selection.Earlier);
         Assert.Contains("fictitious-code:10 — المادة 10 من القانون التجريبي — يلتزم المقترض الوهمي", selection.UserPrompt, StringComparison.Ordinal);
+        Assert.DoesNotContain("أقرض المدعي", selection.UserPrompt, StringComparison.Ordinal); // the facts are not read twice
+        Assert.Equal("أقرض المدعي", selection.SourceText);
+    }
+
+    [Fact]
+    public void TurnsPutTheSystemRulesOnTopOfTheFirstUserTurnWhenMerged()
+    {
+        var request = new ModelRequest("s", "قواعد", "سؤال ثان", "") { Earlier = [new ModelTurn(ModelTurn.User, "سؤال أول"), new ModelTurn(ModelTurn.Assistant, "جواب")] };
+        Assert.Equal(["قواعد\n\nسؤال أول", "جواب", "سؤال ثان"], request.Turns(mergeSystem: true).Select(t => t.Text));
+        Assert.Equal(["سؤال أول", "جواب", "سؤال ثان"], request.Turns(mergeSystem: false).Select(t => t.Text));
+        Assert.Equal(["user", "assistant", "user"], request.Turns(mergeSystem: false).Select(t => t.Role));
     }
 
     [Fact]
@@ -235,7 +272,7 @@ public sealed class GroundsAnalyzerTests
         var analysis = await new GroundsAnalyzer(provider).AnalyseAsync(Knowledge(Library), "دين", "أقرض المدعي المدعى عليه ولم يرد", "القسم المدني", new InlineProgress(stages.Add));
 
         Assert.Equal([AnalysisStage.Reading, AnalysisStage.Searching, AnalysisStage.Selecting], stages);
-        Assert.Equal(["loan"], analysis.ClaimIds); // khul is a family claim: not offered for a civil section
+        Assert.Equal(["loan"], analysis.ClaimIds); // khul is in another area than the first claim: one requête does not join them
         Assert.Equal("10", Assert.Single(analysis.Articles).Number);
         Assert.Equal(GroundsAnalyzer.FactsHash("دين", "أقرض المدعي المدعى عليه ولم يرد", "القسم المدني"), analysis.FactsHash);
         Assert.Equal("recording", analysis.Model);

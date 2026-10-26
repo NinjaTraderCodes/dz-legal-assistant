@@ -205,7 +205,7 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
 
     private ChatRequest Body(ModelRequest request, bool stream) => new(
         _options.Model,
-        [new ChatMessage("system", request.SystemPrompt), new ChatMessage("user", request.UserPrompt)],
+        [new ChatMessage("system", request.SystemPrompt), .. request.Turns(mergeSystem: false).Select(t => new ChatMessage(t.Role, t.Text))],
         Stream: stream,
         _options.Think,
         _options.KeepAlive,

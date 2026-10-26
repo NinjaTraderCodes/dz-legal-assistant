@@ -157,9 +157,11 @@ public sealed class GoogleAiModelProvider : IModelProvider, IDisposable
     {
         var maxTokens = request.MaxTokens is { } cap ? Math.Min(cap, _options.MaxTokens) : _options.MaxTokens;
         var config = new GenerationConfig(_options.Temperature, maxTokens, thinking is null ? null : new ThinkingConfig(thinking));
-        return _options.MergeSystemPrompt
-            ? new Request([new Content("user", [new Part(HostedHttp.Merged(request))])], null, config)
-            : new Request([new Content("user", [new Part(request.UserPrompt)])], new Content(null, [new Part(request.SystemPrompt)]), config);
+        // Google names the assistant's turns "model".
+        var contents = request.Turns(_options.MergeSystemPrompt)
+            .Select(t => new Content(t.Role == ModelTurn.Assistant ? "model" : "user", [new Part(t.Text)]))
+            .ToList();
+        return new Request(contents, _options.MergeSystemPrompt ? null : new Content(null, [new Part(request.SystemPrompt)]), config);
     }
 
     private sealed record Request(

@@ -45,9 +45,10 @@ public sealed class OpenAiCompatibleModelProvider : IModelProvider, IDisposable
     public async IAsyncEnumerable<string> StreamAsync(ModelRequest request, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
+        var turns = request.Turns(_options.MergeSystemPrompt).Select(t => new Message(t.Role, t.Text));
         IReadOnlyList<Message> messages = _options.MergeSystemPrompt
-            ? [new Message("user", HostedHttp.Merged(request))]
-            : [new Message("system", request.SystemPrompt), new Message("user", request.UserPrompt)];
+            ? [.. turns]
+            : [new Message("system", request.SystemPrompt), .. turns];
         var maxTokens = request.MaxTokens is { } cap ? Math.Min(cap, _options.MaxTokens) : _options.MaxTokens;
         var body = new Request(_options.Model, messages, _options.Temperature, maxTokens, Stream: true)
         {

@@ -261,7 +261,4 @@ internal static class HostedHttp
     /// </summary>
     public static StringContent Json<T>(T body) =>
         new(System.Text.Json.JsonSerializer.Serialize(body), System.Text.Encoding.UTF8, "application/json");
-
-    /// <summary>The system rules on top of the user turn, for models that refuse a separate system instruction.</summary>
-    public static string Merged(ModelRequest request) => request.SystemPrompt + "\n\n" + request.UserPrompt;
 }

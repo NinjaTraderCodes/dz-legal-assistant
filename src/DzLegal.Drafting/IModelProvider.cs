@@ -36,6 +36,35 @@ public sealed record ModelRequest(string SectionId, string SystemPrompt, string 
     /// local model cannot ramble; null uses the provider's default.
     /// </summary>
     public int? MaxTokens { get; init; }
+
+    /// <summary>
+    /// Turns sent before <see cref="UserPrompt"/>, oldest first: a follow-up call (the analysis's choice of articles)
+    /// continues the conversation of the call before it, so a local server reuses everything already read instead of
+    /// reading the case again.
+    /// </summary>
+    public IReadOnlyList<ModelTurn> Earlier { get; init; } = [];
+
+    /// <summary>
+    /// The user and assistant turns to send, ending with <see cref="UserPrompt"/>. With <paramref name="mergeSystem"/>,
+    /// for models without a system role, the system rules open the first user turn.
+    /// </summary>
+    public IReadOnlyList<ModelTurn> Turns(bool mergeSystem)
+    {
+        List<ModelTurn> turns = [.. Earlier, new ModelTurn(ModelTurn.User, UserPrompt)];
+        if (mergeSystem && SystemPrompt.Length > 0)
+        {
+            turns[0] = turns[0] with { Text = SystemPrompt + "\n\n" + turns[0].Text };
+        }
+
+        return turns;
+    }
+}
+
+/// <summary>One turn of a conversation with the model: <see cref="User"/> or <see cref="Assistant"/>.</summary>
+public sealed record ModelTurn(string Role, string Text)
+{
+    public const string User = "user";
+    public const string Assistant = "assistant";
 }
 
 /// <summary>

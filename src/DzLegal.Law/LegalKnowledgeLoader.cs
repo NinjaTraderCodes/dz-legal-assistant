@@ -65,8 +65,8 @@ public static class LegalKnowledgeLoader
                 manifest,
                 claims,
                 new AnalysisPrompts(
-                    ReadPrompt(lawRoot, ReadFactsPromptFile, "{{ facts }}", "{{ claims }}", "{{ section }}"),
-                    ReadPrompt(lawRoot, SelectArticlesPromptFile, "{{ candidates }}")));
+                    ReadPrompt(lawRoot, ReadFactsPromptFile, "{{ facts }}", "{{ claims }}"),
+                    ReadPrompt(lawRoot, SelectArticlesPromptFile, "{{ facts }}", "{{ candidates }}")));
     }
 
     private static string ReadPrompt(string lawRoot, string file, params string[] placeholders)

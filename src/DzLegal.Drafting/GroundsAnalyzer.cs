@@ -93,11 +93,8 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
             throw new InvalidOperationException("The grounds analysis prompts are missing from data/law/prompts.");
         }
 
-        // The court section's claims are offered first: the whole catalogue confused the 4B model (26 Oct: 96 % → 76 %).
-        // A wrong section must not hide the right claim, so a «nothing applies» answer is asked again with every claim.
         var area = LegalAreas.AreaOf(courtSection);
-        var allClaims = knowledge.Claims.ToList();
-        var claims = area is null ? allClaims : allClaims.Where(c => c.Area == area).ToList();
+        var claims = knowledge.Claims.Where(c => area is null || c.Area == area).ToList();
         if (area == LegalAreas.Administrative)
         {
             // Out of scope, said by the code: a small model offered «contract rescission» for an administrative appeal.
@@ -105,20 +102,11 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
         }
 
         progress?.Report(AnalysisStage.Reading);
-        var readingRequest = BuildReadingRequest(knowledge, subject, facts, courtSection, claims);
+        var readingRequest = BuildReadingRequest(knowledge, subject, facts, claims);
         Trace?.Invoke("reading.prompt", readingRequest.UserPrompt);
         var readingAnswer = await CollectAsync(AnalysisStage.Reading, readingRequest, cancellationToken);
         Trace?.Invoke("reading.answer", readingAnswer);
-        var reading = SameAreaAsFirst(Corrected(ParseReading(readingAnswer, claims), facts, claims), claims);
-        if (reading.ClaimIds.Count == 0 && claims.Count < allClaims.Count)
-        {
-            claims = allClaims;
-            readingRequest = BuildReadingRequest(knowledge, subject, facts, courtSection, claims);
-            Trace?.Invoke("reading.all.prompt", readingRequest.UserPrompt);
-            readingAnswer = await CollectAsync(AnalysisStage.Reading, readingRequest, cancellationToken);
-            Trace?.Invoke("reading.all.answer", readingAnswer);
-            reading = SameAreaAsFirst(Corrected(ParseReading(readingAnswer, claims), facts, claims), claims);
-        }
+        var reading = Corrected(ParseReading(readingAnswer, claims), facts, claims);
 
         progress?.Report(AnalysisStage.Searching);
         var candidates = Candidates(knowledge, reading, claims);
@@ -129,7 +117,7 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
         var selected = new List<AnalysedArticle>();
         if (candidates.Count > 0)
         {
-            var selectionRequest = BuildSelectionRequest(knowledge, readingRequest, readingAnswer, candidates);
+            var selectionRequest = BuildSelectionRequest(knowledge, facts, reading, candidates);
             Trace?.Invoke("selection.prompt", selectionRequest.UserPrompt);
             var selectionAnswer = await CollectAsync(AnalysisStage.Selecting, selectionRequest, cancellationToken);
             Trace?.Invoke("selection.answer", selectionAnswer);
@@ -148,19 +136,6 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
             Articles = selected,
             Model = _provider.Name,
         };
-    }
-
-    /// <summary>
-    /// A second claim type stays only in the first one's area (tatliq with the children's maintenance): one requête
-    /// does not join a loan to a khul', which the court section used to rule out before it became a hint.
-    /// </summary>
-    public static FactsReading SameAreaAsFirst(FactsReading reading, IReadOnlyList<ClaimType> claims)
-    {
-        ArgumentNullException.ThrowIfNull(reading);
-        ArgumentNullException.ThrowIfNull(claims);
-        var first = reading.ClaimIds.Count > 0 ? reading.ClaimIds[0] : null;
-        var area = claims.FirstOrDefault(c => c.Id == first)?.Area;
-        return area is null ? reading : reading with { ClaimIds = reading.ClaimIds.Where(id => claims.FirstOrDefault(c => c.Id == id)?.Area == area).ToList() };
     }
 
     /// <summary>
@@ -204,39 +179,35 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
         return Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(canonical)))[..16];
     }
 
-    /// <summary>
-    /// Stage 1. The task and the claim list come first, the same for every case of a court section, so a local server
-    /// keeps what it has read of them; the case follows, and the instructions come last, where a small model follows
-    /// them best (with the instructions before the case, 26 Oct, it misread more cases).
-    /// </summary>
-    public static ModelRequest BuildReadingRequest(LegalKnowledge knowledge, string subject, string facts, string? courtSection, IReadOnlyList<ClaimType> claims)
+    public static ModelRequest BuildReadingRequest(LegalKnowledge knowledge, string subject, string facts, IReadOnlyList<ClaimType> claims)
     {
         ArgumentNullException.ThrowIfNull(knowledge);
         ArgumentNullException.ThrowIfNull(claims);
         var user = knowledge.Prompts.ReadFacts
-            .Replace("{{ claims }}", string.Join('\n', claims.Append(OtherClaim).Select(c => c.Description.Length > 0 ? $"{c.Id} — {c.Label.Ar}: {c.Description}" : $"{c.Id} — {c.Label.Ar}")), StringComparison.Ordinal)
-            .Replace("{{ section }}", string.IsNullOrWhiteSpace(courtSection) ? "لم يحدد" : courtSection.Trim(), StringComparison.Ordinal)
             .Replace("{{ subject }}", subject?.Trim() ?? string.Empty, StringComparison.Ordinal)
-            .Replace("{{ facts }}", facts?.Trim() ?? string.Empty, StringComparison.Ordinal);
+            .Replace("{{ facts }}", facts?.Trim() ?? string.Empty, StringComparison.Ordinal)
+            .Replace("{{ claims }}", string.Join('\n', claims.Append(OtherClaim).Select(c => c.Description.Length > 0 ? $"{c.Id} — {c.Label.Ar}: {c.Description}" : $"{c.Id} — {c.Label.Ar}")), StringComparison.Ordinal);
         return new ModelRequest(ReadingRequestId, string.Empty, TemplateRenderer.Normalize(user), facts?.Trim() ?? string.Empty) { MaxTokens = ReadingMaxTokens };
     }
 
-    /// <summary>
-    /// Stage 3, as the next turn of the stage 1 conversation: the model already holds the facts and its own reading,
-    /// so only the candidates are new to read.
-    /// </summary>
-    public static ModelRequest BuildSelectionRequest(LegalKnowledge knowledge, ModelRequest reading, string readingAnswer, IReadOnlyList<CandidateArticle> candidates)
+    public static ModelRequest BuildSelectionRequest(LegalKnowledge knowledge, string facts, FactsReading reading, IReadOnlyList<CandidateArticle> candidates)
     {
         ArgumentNullException.ThrowIfNull(knowledge);
         ArgumentNullException.ThrowIfNull(reading);
         ArgumentNullException.ThrowIfNull(candidates);
-        var user = knowledge.Prompts.SelectArticles
-            .Replace("{{ candidates }}", string.Join('\n', candidates.Select(c => $"{c.Key} — {c.Citation} — {c.Excerpt}")), StringComparison.Ordinal);
-        return new ModelRequest(SelectionRequestId, reading.SystemPrompt, TemplateRenderer.Normalize(user), reading.SourceText)
+        var readingText = string.Join('\n', new[]
         {
-            MaxTokens = SelectionMaxTokens,
-            Earlier = [.. reading.Earlier, new ModelTurn(ModelTurn.User, reading.UserPrompt), new ModelTurn(ModelTurn.Assistant, readingAnswer ?? string.Empty)],
-        };
+            Line("العلاقة القانونية", reading.Relationship),
+            Line("الالتزام المخل به", reading.Breach),
+            Line("المطلوب", reading.Sought),
+        }.Where(l => l.Length > 0));
+        var user = knowledge.Prompts.SelectArticles
+            .Replace("{{ facts }}", facts?.Trim() ?? string.Empty, StringComparison.Ordinal)
+            .Replace("{{ reading }}", readingText, StringComparison.Ordinal)
+            .Replace("{{ candidates }}", string.Join('\n', candidates.Select(c => $"{c.Key} — {c.Citation} — {c.Excerpt}")), StringComparison.Ordinal);
+        return new ModelRequest(SelectionRequestId, string.Empty, TemplateRenderer.Normalize(user), facts?.Trim() ?? string.Empty) { MaxTokens = SelectionMaxTokens };
+
+        static string Line(string label, string value) => value.Length == 0 ? string.Empty : $"{label}: {value}";
     }
 
     /// <summary>

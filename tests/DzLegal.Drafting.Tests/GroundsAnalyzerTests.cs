@@ -79,7 +79,7 @@ public sealed class GroundsAnalyzerTests
     [Fact]
     public async Task OtherMeansNothingAppliesAndSkipsTheSecondCall()
     {
-        var request = GroundsAnalyzer.BuildReadingRequest(Knowledge(), "", "وقائع", null, [Loan]);
+        var request = GroundsAnalyzer.BuildReadingRequest(Knowledge(), "", "وقائع", [Loan]);
         Assert.EndsWith("other — غير ذلك: دعوى لا يطابقها أي نوع أعلاه (مثل الدعاوى الإدارية، التركات، الحالة المدنية، الشركات)",
             request.UserPrompt.Split('\n').First(l => l.StartsWith("other", StringComparison.Ordinal)), StringComparison.Ordinal);
 
@@ -107,46 +107,15 @@ public sealed class GroundsAnalyzerTests
     }
 
     [Fact]
-    public async Task TheSectionsClaimsComeFirstAndNothingAppliesIsAskedAgainWithEveryClaim()
+    public void ThePromptsListOnlyTheAreaClaimsAndTheCandidates()
     {
-        // A wrong section (family) must not hide the loan claim: «other» among the family claims asks again with all.
-        var provider = new RecordingProvider(r => r.UserPrompt.Contains("loan —", StringComparison.Ordinal) ? "نوع الدعوى: loan" : "نوع الدعوى: other");
-        var analysis = await new GroundsAnalyzer(provider).AnalyseAsync(Knowledge(Library), "دين", "أقرض المدعي", "قسم شؤون الأسرة");
-        var readings = provider.Requests.Where(r => r.SectionId == GroundsAnalyzer.ReadingRequestId).ToList();
-        Assert.Equal(2, readings.Count);
-        Assert.DoesNotContain("loan —", readings[0].UserPrompt, StringComparison.Ordinal);
-        Assert.Contains("khul — خلع وهمي", readings[0].UserPrompt, StringComparison.Ordinal);
-        Assert.Contains("loan — استرداد قرض وهمي: وصف وهمي لـاسترداد قرض وهمي", readings[1].UserPrompt, StringComparison.Ordinal);
-        Assert.Contains("القسم الذي اختاره المحامي: قسم شؤون الأسرة", readings[1].UserPrompt, StringComparison.Ordinal);
-        Assert.Equal(["loan"], analysis.ClaimIds);
-    }
+        var reading = GroundsAnalyzer.BuildReadingRequest(Knowledge(), "دين", "أقرض المدعي", [Loan]);
+        Assert.Contains("loan — استرداد قرض وهمي: وصف وهمي لـاسترداد قرض وهمي", reading.UserPrompt, StringComparison.Ordinal);
+        Assert.DoesNotContain("khul", reading.UserPrompt, StringComparison.Ordinal);
 
-    [Fact]
-    public void CasesOfOneSectionStartWithTheSameTextAndTheInstructionsComeLast()
-    {
-        var first = GroundsAnalyzer.BuildReadingRequest(Knowledge(), "دين", "أقرض المدعي", "القسم المدني", [Loan, Khul]).UserPrompt;
-        var second = GroundsAnalyzer.BuildReadingRequest(Knowledge(), "خلع", "تطلب الزوجة الخلع", "القسم المدني", [Loan, Khul]).UserPrompt;
-        var shared = first.Zip(second).TakeWhile(p => p.First == p.Second).Count();
-
-        // The task and the claim list are shared, so a local server reads them once; the case and instructions follow.
-        var subject = first.IndexOf("موضوع الدعوى: ", StringComparison.Ordinal);
-        Assert.Equal(subject + "موضوع الدعوى: ".Length, shared);
-        Assert.True(first.IndexOf("khul —", StringComparison.Ordinal) < shared);
-        Assert.True(first.IndexOf("اكتب الأسطر الستة", StringComparison.Ordinal) > first.IndexOf("أقرض المدعي", StringComparison.Ordinal));
-        Assert.Contains("القسم الذي اختاره المحامي: لم يحدد", GroundsAnalyzer.BuildReadingRequest(Knowledge(), "", "وقائع", null, [Loan]).UserPrompt, StringComparison.Ordinal);
-    }
-
-    [Fact]
-    public void TheSelectionContinuesTheReadingConversationAndOnlyAddsTheCandidates()
-    {
-        var reading = GroundsAnalyzer.BuildReadingRequest(Knowledge(Library), "دين", "أقرض المدعي", "القسم المدني", [Loan]);
         var candidates = GroundsAnalyzer.Candidates(Knowledge(Library), GroundsAnalyzer.ParseReading(Reading, [Loan]), [Loan]);
-        var selection = GroundsAnalyzer.BuildSelectionRequest(Knowledge(Library), reading, Reading, candidates);
-
-        Assert.Equal([new ModelTurn(ModelTurn.User, reading.UserPrompt), new ModelTurn(ModelTurn.Assistant, Reading)], selection.Earlier);
+        var selection = GroundsAnalyzer.BuildSelectionRequest(Knowledge(Library), "أقرض المدعي", FactsReading.Empty, candidates);
         Assert.Contains("fictitious-code:10 — المادة 10 من القانون التجريبي — يلتزم المقترض الوهمي", selection.UserPrompt, StringComparison.Ordinal);
-        Assert.DoesNotContain("أقرض المدعي", selection.UserPrompt, StringComparison.Ordinal); // the facts are not read twice
-        Assert.Equal("أقرض المدعي", selection.SourceText);
     }
 
     [Fact]

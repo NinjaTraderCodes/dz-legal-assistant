@@ -6,6 +6,24 @@ namespace DzLegal.App.Tests;
 public class MainWindowViewModelTests
 {
     [Fact]
+    public void DarijaInANarrativeFieldIsPointedOutQuietlyAndNothingIsBlocked()
+    {
+        var vm = Vm.Create();
+        var requests = vm.Field("notes.requests");
+        requests.Value = "إلزام المدعى عليه بأن يدفع للمدعي مبلغ 240000 دج.";
+        Assert.False(requests.IsInformal);
+
+        requests.Value = "يخلص 240000 دج تاع الكرا لي راه فاتو.";
+        Assert.True(requests.IsInformal);
+        Assert.Equal(vm.L["InformalWriting"], requests.InformalNote);
+        Assert.False(requests.IsTooLong); // a note, not a blocker
+
+        var name = vm.Field("plaintiff.lastName");
+        name.Value = "تاع راه"; // single-line fields are never checked
+        Assert.False(name.IsInformal);
+    }
+
+    [Fact]
     public void EmptyFormIsReportedAsInadmissible()
     {
         var vm = Vm.Create();

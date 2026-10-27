@@ -20,7 +20,7 @@ using DzLegal.Harness;
 //       Grounds as drafted today (A) beside skeleton-first grounds (B: the code states each article from its official
 //       text, the model writes only the arguments), one file per case, for a lawyer to compare.
 //   dzlegal-harness grounds --models <gemma3:4b,...|stub> [--out bench-grounds] [--law-root <data/law>] [--cases <grounds-cases>] [--endpoint ...]
-//       [--partition development,validation|release]
+//       [--partition development,validation,robustness|release]
 //       Runs the grounds analysis (read facts → search library → choose articles) on fictitious fact patterns and
 //       reports claim recognition, expected-article recall (final and by the model alone), the legal reference (required
 //       authorities, coverage gaps, excluded authorities proposed), time per case, and with --runs, how stable the
@@ -117,7 +117,8 @@ if (args.Length > 0 && args[0] == "grounds")
     var groundsCases = GroundsEvaluator.LoadCases(casesFolder);
 
     // The sealed release cases are only run when asked for by name: tuning on them would make them a validation set.
-    var partition = Option("--partition", "development,validation").Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+    // Robustness cases (Darija, French) run by default but are reported apart from the supported formal Arabic.
+    var partition = Option("--partition", "development,validation,robustness").Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
     groundsCases = groundsCases.Where(c => partition.Contains(c.Partition)).ToList();
     if (args.Contains("--case"))
     {

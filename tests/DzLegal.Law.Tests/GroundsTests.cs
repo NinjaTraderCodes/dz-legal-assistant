@@ -215,7 +215,7 @@ public sealed class ShippedCatalogTests
         var cases = GroundsEvaluator.LoadCases(Path.Combine(AppContext.BaseDirectory, "grounds-cases"));
         Assert.Equal(["civil-code:139"], cases.Single(c => c.Name == "things-dog").LegalReference);
         Assert.Equal(["civil-code:140"], cases.Single(c => c.Name == "things-wall").LegalReference);
-        Assert.All(cases, c => Assert.Contains(c.Partition, new[] { "development", "validation", "release" }));
+        Assert.All(cases, c => Assert.Contains(c.Partition, new[] { "development", "validation", "release", "robustness" }));
         Assert.All(cases.Where(c => c.ReferenceBasis != "engineering"), c => Assert.False(string.IsNullOrWhiteSpace(c.Source)));
 
         // Until the corpus brings them in, these are gaps of the library, not of the analysis.
@@ -252,15 +252,18 @@ public sealed class ShippedCatalogTests
         try
         {
             var knowledge = LegalKnowledgeLoader.Load(LawRoot);
+            // The first three cases include loan-darija: written in Darija, it is drafted and reported apart.
             var cases = GroundsEvaluator.LoadCases(Path.Combine(AppContext.BaseDirectory, "grounds-cases")).Take(3).ToList();
             var report = await GroundsEvaluator.EvaluateAsync(knowledge, cases, new DzLegal.ModelProviders.Stub.StubModelProvider(), TextWriter.Null, folder.FullName);
-            Assert.Equal(3, report.Results.Count);
+            Assert.Equal(2, report.Results.Count);
+            Assert.Equal("loan-darija", Assert.Single(report.Robustness).Case.Name);
             var files = Directory.GetFiles(Path.Combine(folder.FullName, "stub__template_mode__no_AI_"), "*.md");
-            Assert.Equal(3, files.Length);
+            Assert.Equal(3, files.Length); // every case keeps its trace, robustness included
             Assert.Contains("## reading.answer", await File.ReadAllTextAsync(files[0]), StringComparison.Ordinal);
             var summary = await File.ReadAllTextAsync(Path.Combine(folder.FullName, "summary.md"));
             Assert.Contains("| claim exact |", summary, StringComparison.Ordinal);
             Assert.Contains("| claim acceptable | legal recall", summary, StringComparison.Ordinal);
+            Assert.Contains("### Robustness: facts in Darija or French (not counted above)", summary, StringComparison.Ordinal);
         }
         finally
         {
@@ -494,7 +497,7 @@ public sealed class GroundsBatchTests
     public async Task ABatchStopsAfterThreeFailuresInARowInsteadOfFailingEveryCase()
     {
         var knowledge = LegalKnowledgeLoader.Load(Path.Combine(AppContext.BaseDirectory, "data", "law"));
-        var cases = GroundsEvaluator.LoadCases(Path.Combine(AppContext.BaseDirectory, "grounds-cases")).Take(10).ToList();
+        var cases = GroundsEvaluator.LoadCases(Path.Combine(AppContext.BaseDirectory, "grounds-cases")).Where(c => c.Partition != GroundsEvaluator.Robustness).Take(10).ToList();
         var engine = new Down();
         var log = new StringWriter();
 

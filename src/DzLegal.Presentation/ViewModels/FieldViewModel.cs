@@ -85,10 +85,20 @@ public sealed partial class FieldViewModel : ObservableObject
 
     public string TooLongNote => IsTooLong ? _loc.Format("FieldTooLong", Value.Length, MaxLength) : string.Empty;
 
+    /// <summary>
+    /// A narrative field (facts, grounds, requests) reads like Darija or mostly French. Formal Arabic is the supported
+    /// input: the lawyer is told quietly, never stopped or asked anything.
+    /// </summary>
+    public bool IsInformal => IsMultiline && Drafting.WritingStyle.LooksInformal(Value);
+
+    public string InformalNote => IsInformal ? _loc["InformalWriting"] : string.Empty;
+
     partial void OnValueChanged(string value)
     {
         OnPropertyChanged(nameof(IsTooLong));
         OnPropertyChanged(nameof(TooLongNote));
+        OnPropertyChanged(nameof(IsInformal));
+        OnPropertyChanged(nameof(InformalNote));
         OnPropertyChanged(nameof(BoolValue));
         OnPropertyChanged(nameof(SelectedOption));
         if (!Silent)
@@ -102,6 +112,7 @@ public sealed partial class FieldViewModel : ObservableObject
         OnPropertyChanged(nameof(Label));
         OnPropertyChanged(nameof(Hint));
         OnPropertyChanged(nameof(TooLongNote));
+        OnPropertyChanged(nameof(InformalNote));
         foreach (var o in Options)
         {
             o.Relocalize();

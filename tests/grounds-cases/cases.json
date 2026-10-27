@@ -1,5 +1,5 @@
 {
-  "comment": "FICTITIOUS fact patterns, written by the engineering team to measure the grounds analysis. 'expect' is the catalog claim type a lawyer would start from (empty: not covered, nothing should be recognised); 'expectArticles' is the catalog's answer, kept so runs compare with the 26 October 2026 baseline. 'required' (when present) is the legal reference taken from the official text, even if the library does not hold it yet (reported as a coverage gap); 'optional', 'excluded', 'acceptableClaims' and 'unresolved' refine it; 'referenceBasis' says how it was set. All these cases were used to tune the analysis: partition 'development'. Independent cases (from published decisions) go to 'validation' or the sealed 'release' partition, by family.",
+  "comment": "FICTITIOUS fact patterns, written by the engineering team to measure the grounds analysis. 'expect' is the catalog claim type a lawyer would start from (empty: not covered, nothing should be recognised); 'expectArticles' is the catalog's answer, kept so runs compare with the 26 October 2026 baseline. 'required' (when present) is the legal reference taken from the official text, even if the library does not hold it yet (reported as a coverage gap); 'optional', 'excluded', 'acceptableClaims' and 'unresolved' refine it; 'referenceBasis' says how it was set. All these cases were used to tune the analysis: partition 'development', except those written in Darija, partition 'robustness' (formal Arabic is the supported input: they are reported apart, not counted). Independent cases (from published decisions) go to 'validation' or the sealed 'release' partition, by family.",
   "cases": [
     {
       "name": "loan-basic",
@@ -23,7 +23,7 @@
         "civil-code:106"
       ],
       "family": "loan-repayment",
-      "partition": "development"
+      "partition": "robustness"
     },
     {
       "name": "loan-acknowledgment",
@@ -209,7 +209,7 @@
         "civil-code:498"
       ],
       "family": "unpaid-rent",
-      "partition": "development"
+      "partition": "robustness"
     },
     {
       "name": "occupation",

@@ -258,6 +258,7 @@ public class WebEngineTests
             var missing = vm.Report!.Missing.Where(f => f.Element.Severity == Severity.Inadmissible).SelectMany(f => f.MissingParts).ToList();
             Assert.Equal(["grounds"], missing);
             Assert.StartsWith("في الشكل: قبول الدعوى شكلا.", vm.Sections.Single(x => x.Id == "requests").Text, StringComparison.Ordinal);
+            Assert.DoesNotContain(vm.FieldGroups.SelectMany(g => g.Fields), f => f.IsInformal); // the demo shows the supported input: formal Arabic
             Assert.False(string.IsNullOrWhiteSpace(sample.Summary.Get("en")));
             Assert.False(string.IsNullOrWhiteSpace(sample.Summary.Get("ar")));
         }

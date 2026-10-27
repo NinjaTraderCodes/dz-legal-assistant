@@ -11,7 +11,15 @@ using DzLegal.FormEngine;
 namespace DzLegal.Harness;
 
 /// <summary>A drafting test case: fictitious case inputs only. May <c>extend</c> another case file.</summary>
-public sealed record DraftingCase(string Id, string Name, Dictionary<string, string> Inputs);
+/// <param name="Partition">"development", or "robustness" for notes in Darija or French: formal Arabic is the supported
+/// input, so those cases are drafted and reported but marked apart.</param>
+public sealed record DraftingCase(string Id, string Name, Dictionary<string, string> Inputs, string Partition = "development")
+{
+    public bool IsRobustness => Partition == "robustness";
+
+    /// <summary>The case as named in the summary tables, marked when it is outside the supported input.</summary>
+    public string Label => IsRobustness ? Id + " (robustness)" : Id;
+}
 
 public static class DraftingCaseLoader
 {
@@ -35,7 +43,7 @@ public static class DraftingCaseLoader
             inputs[k] = v?.GetValue<string>() ?? string.Empty;
         }
 
-        return new DraftingCase(Path.GetFileNameWithoutExtension(path), node["name"]?.GetValue<string>() ?? path, inputs);
+        return new DraftingCase(Path.GetFileNameWithoutExtension(path), node["name"]?.GetValue<string>() ?? path, inputs, node["partition"]?.GetValue<string>() ?? "development");
     }
 
     private static JsonObject Read(string path) =>
@@ -96,6 +104,7 @@ public static partial class DraftBench
             .AppendLine("# Drafting bench").AppendLine()
             .AppendLine(CultureInfo.InvariantCulture, $"Rules v{definition.Version}, {cases.Count} cases, run {DateTime.Now:yyyy-MM-dd HH:mm}.").AppendLine()
             .AppendLine("Automatic columns cannot see swapped roles or invented reasoning: read each output too.").AppendLine()
+            .AppendLine("Cases marked (robustness) have notes in Darija or French: formal Arabic is the supported input, so they show how the drafting copes, not its quality.").AppendLine()
             .AppendLine("| model | case | run | total s | slowest section s | hard issues | number issues | stray Latin words | ungrounded terms | wrong law (misquoted or from memory) | wrong-law paragraphs removed | legal points | example copies removed | retried | fell back | formally complete | error |")
             .AppendLine("|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|---|");
 
@@ -144,8 +153,8 @@ public static partial class DraftBench
                     clock.Stop();
                     if (draft is null)
                     {
-                        summary.AppendLine(CultureInfo.InvariantCulture, $"| {model} | {drafting.Id} | {run} | {clock.Elapsed.TotalSeconds:0} | | | | | | | | | | | | | {error} |");
-                        tally.Add((model, drafting.Id, 0, false, false, false, 0, clock.Elapsed.TotalSeconds, true));
+                        summary.AppendLine(CultureInfo.InvariantCulture, $"| {model} | {drafting.Label} | {run} | {clock.Elapsed.TotalSeconds:0} | | | | | | | | | | | | | {error} |");
+                        tally.Add((model, drafting.Label, 0, false, false, false, 0, clock.Elapsed.TotalSeconds, true));
                         if (++consecutiveFailures >= options.MaxConsecutiveFailures && options.MaxConsecutiveFailures > 0)
                         {
                             log.WriteLine($"[{model}] stopped: the engine failed {consecutiveFailures} cases in a row (last error: {error})");
@@ -176,7 +185,7 @@ public static partial class DraftBench
                     var removedWrongLaw = draft.Sections.Count(s => s.DraftingNotes.Contains(DraftingNoteCodes.RemovedWrongLaw));
                     var drafted = (draft.FindSection("grounds")?.Text ?? string.Empty) + "\n" + (draft.FindSection("requests")?.Text ?? string.Empty);
                     var legalPoints = SubstanceChecks.Check(inputs, [], [], drafted);
-                    tally.Add((model, drafting.Id, wrongLaw, removedWrongLaw > 0, fellBack > 0, report.IsAdmissibleInForm, legalPoints.Count, clock.Elapsed.TotalSeconds, false));
+                    tally.Add((model, drafting.Label, wrongLaw, removedWrongLaw > 0, fellBack > 0, report.IsAdmissibleInForm, legalPoints.Count, clock.Elapsed.TotalSeconds, false));
 
                     var file = new StringBuilder()
                         .AppendLine(CultureInfo.InvariantCulture, $"# {drafting.Name}").AppendLine()
@@ -212,7 +221,7 @@ public static partial class DraftBench
                     await File.WriteAllTextAsync(Path.Combine(modelFolder, drafting.Id + ".md"), file.ToString());
 
                     summary.AppendLine(CultureInfo.InvariantCulture,
-                        $"| {model} | {drafting.Id} | {run} | {clock.Elapsed.TotalSeconds:0} | {slowest:0} | {hard} | {numbers} | {latin} | {ungrounded} | {wrongLaw} | {removedWrongLaw} | {legalPoints.Count} | {copied} | {retried} | {fellBack} | {(report.IsAdmissibleInForm ? "yes" : "NO")} | |");
+                        $"| {model} | {drafting.Label} | {run} | {clock.Elapsed.TotalSeconds:0} | {slowest:0} | {hard} | {numbers} | {latin} | {ungrounded} | {wrongLaw} | {removedWrongLaw} | {legalPoints.Count} | {copied} | {retried} | {fellBack} | {(report.IsAdmissibleInForm ? "yes" : "NO")} | |");
                 }
 
                 if (stopped)

@@ -554,6 +554,7 @@
                       </ComboBox>
                       <TextBlock FontSize="12" Foreground="{DynamicResource DangerBrush}" Text="{Binding MissingNote}" IsVisible="{Binding IsMissing}" />
                       <TextBlock FontSize="12" TextWrapping="Wrap" Foreground="{DynamicResource DangerBrush}" Text="{Binding TooLongNote}" IsVisible="{Binding IsTooLong}" />
+                      <TextBlock FontSize="12" TextWrapping="Wrap" Foreground="{DynamicResource TextMutedBrush}" Text="{Binding InformalNote}" IsVisible="{Binding IsInformal}" />
                     </StackPanel>
                   </DataTemplate>
                 </ItemsControl.ItemTemplate>

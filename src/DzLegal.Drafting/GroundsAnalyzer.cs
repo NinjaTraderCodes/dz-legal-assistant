@@ -93,10 +93,11 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
             throw new InvalidOperationException("The grounds analysis prompts are missing from data/law/prompts.");
         }
 
-        // Every claim type is offered whatever the court section, which the prompt gives as a hint only: a wrong section
-        // must not hide the right claim, and an identical list in every case lets the local server reuse what it read.
+        // The court section's claims are offered first: the whole catalogue confused the 4B model (26 Oct: 96 % → 76 %).
+        // A wrong section must not hide the right claim, so a «nothing applies» answer is asked again with every claim.
         var area = LegalAreas.AreaOf(courtSection);
-        var claims = knowledge.Claims.ToList();
+        var allClaims = knowledge.Claims.ToList();
+        var claims = area is null ? allClaims : allClaims.Where(c => c.Area == area).ToList();
         if (area == LegalAreas.Administrative)
         {
             // Out of scope, said by the code: a small model offered «contract rescission» for an administrative appeal.
@@ -109,6 +110,15 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
         var readingAnswer = await CollectAsync(AnalysisStage.Reading, readingRequest, cancellationToken);
         Trace?.Invoke("reading.answer", readingAnswer);
         var reading = SameAreaAsFirst(Corrected(ParseReading(readingAnswer, claims), facts, claims), claims);
+        if (reading.ClaimIds.Count == 0 && claims.Count < allClaims.Count)
+        {
+            claims = allClaims;
+            readingRequest = BuildReadingRequest(knowledge, subject, facts, courtSection, claims);
+            Trace?.Invoke("reading.all.prompt", readingRequest.UserPrompt);
+            readingAnswer = await CollectAsync(AnalysisStage.Reading, readingRequest, cancellationToken);
+            Trace?.Invoke("reading.all.answer", readingAnswer);
+            reading = SameAreaAsFirst(Corrected(ParseReading(readingAnswer, claims), facts, claims), claims);
+        }
 
         progress?.Report(AnalysisStage.Searching);
         var candidates = Candidates(knowledge, reading, claims);
@@ -195,8 +205,9 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
     }
 
     /// <summary>
-    /// Stage 1. The instructions and the claim list come first and are the same for every case, the case last, so that
-    /// a local server keeps what it has read of the shared beginning instead of reading it again for each analysis.
+    /// Stage 1. The task and the claim list come first, the same for every case of a court section, so a local server
+    /// keeps what it has read of them; the case follows, and the instructions come last, where a small model follows
+    /// them best (with the instructions before the case, 26 Oct, it misread more cases).
     /// </summary>
     public static ModelRequest BuildReadingRequest(LegalKnowledge knowledge, string subject, string facts, string? courtSection, IReadOnlyList<ClaimType> claims)
     {

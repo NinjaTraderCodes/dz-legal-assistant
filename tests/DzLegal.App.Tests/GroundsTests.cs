@@ -75,10 +75,10 @@ public sealed class GroundsWorkflowTests
         Assert.False(vm.NeedsClaimConfirmation);
         Assert.False(vm.IsAnalysisStale);
 
-        // The model saw the whole catalog, with the lawyer's court section as a hint only.
+        // The model saw the section's claims (civil), and the section itself.
         var reading = recorder.Requests.Single(r => r.SectionId == GroundsAnalyzer.ReadingRequestId).UserPrompt;
         Assert.Contains("loan-repayment — استرداد مبلغ قرض", reading, StringComparison.Ordinal);
-        Assert.Contains("khul — ", reading, StringComparison.Ordinal);
+        Assert.DoesNotContain("khul", reading, StringComparison.Ordinal);
         Assert.Contains("القسم الذي اختاره المحامي: ", reading, StringComparison.Ordinal);
     }
 
@@ -199,7 +199,9 @@ public sealed class GroundsWorkflowTests
         Assert.Empty(vm.SelectedArticles);
         Assert.False(vm.NeedsClaimConfirmation);
         Assert.Equal(vm.L["AnalysisOutOfScope"], vm.AnalysisStatus);
-        Assert.Single(model.Requests); // no second call: nothing to choose from
+        // The section's claims, then every claim (a wrong section must not hide the right one); no choice of articles.
+        Assert.Equal(2, model.Requests.Count);
+        Assert.All(model.Requests, r => Assert.Equal(GroundsAnalyzer.ReadingRequestId, r.SectionId));
     }
 
     [Fact]

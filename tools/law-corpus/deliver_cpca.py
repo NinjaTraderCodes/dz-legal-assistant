@@ -563,7 +563,7 @@ def build() -> None:
     print(report["countsByState"], len(articles), "identities;", len(unsettled), "unsettled entries")
 
 
-def spotcheck(count: int = 20, seed: int = 20261027) -> None:
+def spotcheck(count: int = 20, seed: int = 20261027, extra_2213: int = 4) -> None:
     """docs/law-corpus-checks/cpca: `count` random current versions, each beside the printed article cropped from the
     hashed column crops (the OCR-located region, two lines of margin). The inspection result is written by hand into
     inspection.json and rendered into the README; the generator never claims an inspection."""
@@ -571,7 +571,11 @@ def spotcheck(count: int = 20, seed: int = 20261027) -> None:
     from PIL import Image
     content = pipeline.read_json(CORPUS / "cpca/articles.json")
     current = [(a, a["versions"][-1]) for a in content["articles"] if a["versions"][-1]["status"] == "in-force"]
-    chosen = sorted(random.Random(seed).sample(current, count), key=lambda av: number_key(av[0]["canonicalNumber"]))
+    chosen = random.Random(seed).sample(current, count)
+    # Addition of 28 Oct: the random draw held no Law 22-13 text, so 4 are drawn from those with the same seed.
+    amended = [(a, v) for a, v in current if v["introducedBy"] == "law-22-13" and (a, v) not in chosen]
+    chosen = sorted(chosen + random.Random(seed).sample(amended, extra_2213),
+                    key=lambda av: number_key(av[0]["canonicalNumber"]))
     out = ROOT / "docs/law-corpus-checks/cpca"
     out.mkdir(parents=True, exist_ok=True)
     checks = {"law-08-09": pipeline.read_json(WORK / "check-base-reread.json"), "law-22-13": pipeline.read_json(WORK / "check-22-13-reread.json")}
@@ -583,6 +587,7 @@ def spotcheck(count: int = 20, seed: int = 20261027) -> None:
     lines = ["# Visual spot-check: CPCA (delivery 2)", "",
              f"{count} current versions drawn at random (seed {seed}) from `data/law/corpus/cpca/articles.json`, each beside the "
              "official printed article cropped from the hashed evidence column crops (the region OCR located, with a margin). "
+             f"Because that draw held no Law 22-13 text, {extra_2213} versions introduced by Law 22-13 were added, drawn with the same seed. "
              "For a version amended by Law 22-13 in part, both the 2008 page (kept paragraphs) and the 2022 page are shown.",
              "", "Inspected by: " + REVIEWER + ".", ""]
     for article, version in chosen:

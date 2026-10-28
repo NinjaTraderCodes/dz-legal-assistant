@@ -69,10 +69,12 @@ So the 97 Law 22-13 versions and the 78 Law 08-09 versions they replace have no 
 
 ## Spot-check
 
-20 current versions drawn at random (seed 20261027) are shown beside their printed crops in `docs/law-corpus-checks/cpca/`. All 20 match word for word.
+`docs/law-corpus-checks/cpca/` shows 24 current versions beside their printed crops. All 24 match word for word.
 
-- **Art. 829:** the crop cuts off the last printed line. That line was confirmed by the OCR comparison, not by the inspection.
-- **No Law 22-13 article was drawn.** The 22-13 texts make up 90 of 1,084 current versions; their image decisions are in the research files listed below.
+- **20 versions drawn at random** (seed 20261027) from all current versions.
+  - On art. 829 the crop cuts off the last printed line. That line was confirmed by the OCR comparison, not by the inspection.
+- **4 versions introduced by Law 22-13**, added because the random draw held none (same seed): 535, 600, 804, 812.
+  - Art. 600 checks the consolidation itself: paragraph 1 and item 7 follow the 2022 print, and the rest the 2008 print.
 
 ## Evidence
 

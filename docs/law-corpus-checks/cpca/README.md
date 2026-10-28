@@ -1,6 +1,6 @@
 # Visual spot-check: CPCA (delivery 2)
 
-20 current versions drawn at random (seed 20261027) from `data/law/corpus/cpca/articles.json`, each beside the official printed article cropped from the hashed evidence column crops (the region OCR located, with a margin). For a version amended by Law 22-13 in part, both the 2008 page (kept paragraphs) and the 2022 page are shown.
+20 current versions drawn at random (seed 20261027) from `data/law/corpus/cpca/articles.json`, each beside the official printed article cropped from the hashed evidence column crops (the region OCR located, with a margin). Because that draw held no Law 22-13 text, 4 versions introduced by Law 22-13 were added, drawn with the same seed. For a version amended by Law 22-13 in part, both the 2008 page (kept paragraphs) and the 2022 page are shown.
 
 Inspected by: Claude (AI) visual reading of the official page images; not a lawyer or human verification.
 
@@ -195,6 +195,116 @@ Canonical text:
 > ولا تقبل دعاوى الحيازة، ومن بينها دعوى استردادها، إذا لم ترفع خلال سنة من التعرض.
 
 Inspection: 28 Oct 2026, Claude (AI) visual reading: every word, digit and negation of the canonical text matches the printed article; paragraph breaks match.
+
+## Article 535 — `cpca:535@law-22-13` — checked
+
+![535-law-22-13-0.png](535-law-22-13-0.png)
+
+Cut from crop `a2022048-004-right` (SHA-256 `803c5f77648724e5e1369310e666a224d8c16176558b0d27f871effa016dcf31`); this image SHA-256 `bf1b10e62e13e25f80a9fd1e781e7b16740b75a10c48a5c13b25048245be7d25`.
+
+Canonical text:
+
+> يفصل رئيس القسم التجاري وفق الإجراءات الواردة في هذا القانون والقانون التجاري والقوانين الخاصة.
+
+Inspection: 28 Oct 2026, Claude (AI) visual reading: every word, digit and negation matches the JO 48/2022 print; paragraph breaks match.
+
+## Article 600 — `cpca:600@law-22-13` — checked
+
+![600-law-22-13-0.png](600-law-22-13-0.png)
+
+Cut from crop `a2022048-004-left` (SHA-256 `4e469f347d58c43ffc1bcc19a2e7f29ad049885dd71cdded5180853eb5d25206`); this image SHA-256 `88370de73c27a78b3975c39ec0341a859c85851666143ed828d2d256e9f13648`.
+
+![600-law-08-09-0.png](600-law-08-09-0.png)
+
+Cut from crop `a2008021-050-right` (SHA-256 `bbae6b72116b6f849ce844fa73e18e4ddc7e53332d85d6bc98a6a249f34778e4`); this image SHA-256 `a8ddaa7c748d8aa84ac664787f3d0077f45f6fe16793a491237fde963d0a9d67`.
+
+![600-law-08-09-1.png](600-law-08-09-1.png)
+
+Cut from crop `a2008021-050-left` (SHA-256 `e6837c1753d0b148665d3da12fe8ad40199b421ba016f9b1d28720dc8b86aa87`); this image SHA-256 `dffa0a6c16012ddf6be839d7a132334425083c42d588151ff813f6676ac18198`.
+
+Canonical text:
+
+> لا يجوز التنفيذ الجبري إلا بسند تنفيذي.
+>
+> والسندات التنفيذية هي:
+>
+> 1 - أحكام المحاكم التي استنفذت طرق الطعن العادية والأحكام المشمولة بالنفاذ المعجل.
+>
+> 2 - الأوامر الاستعجالية،
+>
+> 3 - أوامر الأداء،
+>
+> 4 - الأوامر على العرائض،
+>
+> 5 - أوامر تحديد المصاريف القضائية،
+>
+> 6 - قرارات المجالس القضائية وقرارات المحكمة العليا المتضمنة إلتزاما بالتنفيذ،
+>
+> 7– أحكام المحاكم الإدارية وقرارات المحاكم الإدارية للاستئناف ومجلس الدولة.
+>
+> 8 - محاضر الصلح أو الاتفاق المؤشر عليها من طرف القضاة والمودعة بأمانة الضبط،
+>
+> 9 - أحكام التحكيم المأمور بتنفيذها من قبل رؤساء الجهات القضائية والمودعة بأمانة الضبط،
+>
+> 10 - الشيكات والسفاتج، بعد التبليغ الرسمي للاحتجاجات إلى المدين، طبقا لأحكام القانون التجاري،
+>
+> 11 - العقود التوثيقية، لاسيما المتعلقة بالإيجارات التجارية والسكنية المحددة المدة، وعقود القرض والعارية والهبة والوقف والبيع والرهن والوديعة،
+>
+> 12 - محاضر البيع بالمزاد العلني، بعد إيداعها بأمانة الضبط،
+>
+> 13 - أحكام رسو المزاد على العقار،
+>
+> وتعتبر أيضا سندات تنفيذية كل العقود والأوراق الأخرى التي يعطيها القانون صفة السند التنفيذي.
+
+Inspection: 28 Oct 2026, Claude (AI) visual reading: the consolidated text matches both prints — paragraph 1 and item 7 as printed in JO 48/2022 (Law 22-13), items 1-6 and 8-13 and the closing paragraph as printed in JO 21/2008 (the parts Law 22-13 keeps «بدون تغيير»).
+
+## Article 804 — `cpca:804@law-22-13` — checked
+
+![804-law-22-13-0.png](804-law-22-13-0.png)
+
+Cut from crop `a2022048-005-right` (SHA-256 `d90bed9daa36585cc0b639349478dc846e5a33023fe54d1030295c04581e741e`); this image SHA-256 `06bc02b2110ad7661ed73c5d7e948af2c5f073bf33623f68ac8b7e9b0d244dd5`.
+
+![804-law-22-13-1.png](804-law-22-13-1.png)
+
+Cut from crop `a2022048-005-left` (SHA-256 `2dabda67562e217c5cc4b0700a1a4fedf3ea6ca4db2a6489cd8913be3edf272a`); this image SHA-256 `687e9bcb792c9492923cf05efeb955e053ab3633af4add8740a243ec6778d36d`.
+
+Canonical text:
+
+> خلافا لأحكام المادة 803 أعلاه، ترفع الدعاوى وجوبا أمام المحاكم الإدارية في المواد المبينة أدناه :
+>
+> 1– في مادة الضرائب أو الرسوم، أمام المحكمة التي يقع في دائرة اختصاصها مكان فرض الضريبة أو الرسم،
+>
+> 2– في مادة الأشغال العمومية، أمام المحكمة التي يقع في دائرة اختصاصها مكان تنفيذ الأشغال،
+>
+> 3– في مادة العقود الإدارية، مهما كانت طبيعتها، أمام المحكمة التي يقع في دائرة اختصاصها مكان إبرام العقد أو تنفيذه،
+>
+> 4– في مادة المنازعات المتعلقة بالموظفين أو أعوان الدولة أو غيرهم من الأشخاص العاملين في المؤسسات العمومية الإدارية، أمام المحكمة التي يقع في دائرة اختصاصها مكان ممارسة وظيفتهم،
+>
+> 5– في مادة الخدمات الطبية، أمام المحكمة التي يقع في دائرة اختصاصها مكان تقديم الخدمات،
+>
+> 6– في مادة التوريدات أو الأشغال أو تأجير خدمات فنية أو صناعية، أمام المحكمة التي يقع في دائرة اختصاصها مكان إبرام الاتفاق أو مكان تنفيذه إذا كان أحد الأطراف مقيما به،
+>
+> 7– في مادة تعويض الضرر الناجم عن جناية أو جنحة أو فعل تقصيري، أمام المحكمة التي يقع في دائرة اختصاصها مكان وقوع الفعل الضار،
+>
+> 8– في مادة إشكالات تنفيذ الأحكام الصادرة عن الجهات القضائية الإدارية، أمام رئيس الجهة القضائية الإدارية التي صدر عنها الحكم موضوع الإشكال، ويفصل هذا الأخير وفقا للإجراءات المنصوص عليها في المواد من 631 إلى 635 من هذا القانون.
+
+Inspection: 28 Oct 2026, Claude (AI) visual reading: every word, digit and negation matches the JO 48/2022 print; paragraph breaks match. All eight items present.
+
+## Article 812 — `cpca:812@law-22-13` — checked
+
+![812-law-22-13-0.png](812-law-22-13-0.png)
+
+Cut from crop `a2022048-006-right` (SHA-256 `9e56d684224a0f053a83feaf110dd234719185ae40d35888385469d9dd10299b`); this image SHA-256 `52654eedf4b388511ab9cedda0d047c62b1ccdb6919a2d67d88bbc3d28abcd43`.
+
+Canonical text:
+
+> يترتب على أوامر الإحالة المنصوص عليها أعلاه، إرجاء الفصل في الخصومة.
+>
+> تكون الأوامر الصادرة عن رؤساء المحاكم الإدارية للاستئناف المذكورة أعلاه، قابلة للطعن أمام مجلس الدولة.
+>
+> وتكون الأوامر الصادرة عن رئيس مجلس الدولة المذكورة أعلاه، غير قابلة لأي طعن.
+
+Inspection: 28 Oct 2026, Claude (AI) visual reading: every word, digit and negation matches the JO 48/2022 print; paragraph breaks match.
 
 ## Article 829 — `cpca:829@law-08-09` — checked
 

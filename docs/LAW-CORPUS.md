@@ -6,7 +6,7 @@ For current branch counts, start with **Current coverage (28 October 2026)** bel
 
 ## Recovery and Family preparation, 28 October 2026
 
-**Resumed after the safe pause.** The [Family source-check report](LAW-CORPUS-FAMILY.md) now records completed targeted rereads, a stricter exact-word overlay, and 28 image decisions settling the 37 replaced/inserted body comparisons with eight guarded corrections. The base exact-word backlog remains open. Inherited agreement permits ordinary-word folding/one-letter OCR noise and must not be described as uniform exact-word verification; the older counts below retain that original method. No typed Family completion is claimed.
+**Resumed after the safe pause.** The [Family source-check report](LAW-CORPUS-FAMILY.md) records 37 replaced/inserted body comparisons settled against the amending JO (eight guarded corrections), plus all 190 unchanged bodies word-checked against the current Ministry print (128 OCR agreements and 62 image-resolved bodies). Seventy-eight whole articles cover those word flags and all 27 French paragraph-count flags; art. 178's page-break split is corrected. Eighteen bodies retain explicit punctuation notes. Unchanged-body collation with the original JO and typed packaging remain open. Inherited agreement permits ordinary-word folding/one-letter OCR noise and must not be described as uniform exact-word verification; older counts below retain that method. No typed Family completion is claimed.
 
 Historical safe pause: [the recovery instructions](LAW-CORPUS-RESUME-2026-10-28.md) record the 480 hash-bound readings retained at that point. Those are OCR-call counts, not articles. The base reread has since finished; the Family report above supersedes its partial status.
 

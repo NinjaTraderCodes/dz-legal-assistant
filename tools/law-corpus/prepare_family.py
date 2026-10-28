@@ -42,8 +42,10 @@ def article_label(text: str) -> dict | None:
     return next((label for label in page_labels(text) if label["start"] == 0), None)
 
 
-def page_lines(document, reader, index: int, decisions: dict) -> list[dict]:
+def page_lines(document, reader, index: int, decisions: dict, *, french: bool = False) -> list[dict]:
     left, bottom, right, top = arabic_column(reader.pages[index].cropbox, reader.pages[index].rotation)
+    if french:
+        bottom, top = top, float(reader.pages[index].cropbox.top)
     textpage = document[index].get_textpage()
     lines, current = [], []
     for i in range(textpage.count_chars()):
@@ -68,7 +70,10 @@ def page_lines(document, reader, index: int, decisions: dict) -> list[dict]:
             continue
         # The stretch glyph (kashida) is typography: removed before label matching, as text_clean does later anyway.
         text = "".join(c for c, _ in line).replace(sgg_glyphs.STRETCH, "").replace("ـ", "").strip()
-        out.append({"text": text, "start": min(b[1] for b in ink), "end": max(b[3] for b in ink),
+        start, end = min(b[1] for b in ink), max(b[3] for b in ink)
+        if french:
+            start, end = -end, -start
+        out.append({"text": text, "start": start, "end": end,
                     "x": (min(b[0] for b in ink) + max(b[2] for b in ink)) / 2, "page": index + 1})
     # A line made of punctuation only (a full stop drawn apart) joins the line it overlaps horizontally.
     merged = []

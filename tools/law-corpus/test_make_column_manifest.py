@@ -29,6 +29,14 @@ class ColumnSeparation(unittest.TestCase):
         self.assertLess(result["left"][2], 0.550)
         self.assertGreater(result["right"][0], 0.552)
 
+    def test_missing_outer_frame_never_trims_letters_near_page_edges(self):
+        gray = self.image()
+        gray[200:208, 2:15] = 0
+        gray[300:308, 986:999] = 0
+        result = columns.page_columns(gray)
+        self.assertEqual(0, result["left"][0])
+        self.assertEqual(1, result["right"][2])
+
 
 if __name__ == "__main__":
     unittest.main()

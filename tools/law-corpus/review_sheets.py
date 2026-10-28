@@ -49,7 +49,7 @@ def render(items: list[dict], out: Path, prefix: str, per_sheet: int = 6) -> lis
                 f"@font-face{{font-family:Naskh;src:url('{FONT.resolve().as_uri()}')}}"
                 "body{margin:8px;background:#fff;font-family:Naskh,serif} section{border-bottom:3px solid #555;padding:6px 0}"
                 "h2{font:bold 18px sans-serif;margin:2px 0}"
-                ".img img{display:block;margin-bottom:4px;border:1px solid #999}"
+                ".img img{display:block;max-width:100%;height:auto;margin-bottom:4px;border:1px solid #999}"
                 ".txt{font-size:24px;line-height:1.6;width:1054px} .txt p{margin:0} mark{background:#ffd23f}"
                 ".note{font:12px sans-serif;color:#333;margin-top:4px}</style></head><body>"
                 + "".join(blocks) + "</body></html>")
@@ -58,9 +58,12 @@ def render(items: list[dict], out: Path, prefix: str, per_sheet: int = 6) -> lis
         html_path.write_text(page, encoding="utf-8")
         png = out / f"{name}.png"
         height = 60 + sum(120 + sum(Image.open(p).height for p in i["images"]) + 40 * (1 + len(i["text"]) // 70) for i in chunk)
-        subprocess.run([str(EDGE), "--headless=new", "--disable-gpu", "--hide-scrollbars", "--allow-file-access-from-files",
+        result = subprocess.run([str(EDGE), "--headless=new", "--disable-gpu", "--hide-scrollbars", "--allow-file-access-from-files",
                         f"--window-size=1080,{height}", f"--screenshot={png.resolve()}", html_path.resolve().as_uri()],
                        capture_output=True, timeout=120)
-        sheets.append({"sheet": str(png), "sheetSha256": pipeline.hash_file(png) if png.exists() else None,
+        if result.returncode or not png.exists():
+            raise RuntimeError(f"Review sheet was not rendered: {name}; exit={result.returncode}; "
+                               + result.stderr.decode("utf-8", errors="replace")[-1500:])
+        sheets.append({"sheet": str(png), "sheetSha256": pipeline.hash_file(png),
                        "items": [{"id": i["id"], "imageSha256s": [pipeline.hash_file(Path(p)) for p in i["images"]]} for i in chunk]})
     return sheets

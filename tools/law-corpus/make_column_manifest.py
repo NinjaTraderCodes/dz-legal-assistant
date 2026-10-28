@@ -41,8 +41,10 @@ def page_columns(gray: np.ndarray) -> dict:
     left_frame = [g for g in groups if g[1] < 0.12 * w]
     right_frame = [g for g in groups if g[0] > 0.88 * w]
     mid = [g for g in groups if 0.35 * w < g[0] < 0.65 * w]
-    x0 = left_frame[-1][1] + 3 if left_frame else int(0.02 * w)
-    x3 = right_frame[0][0] - 3 if right_frame else int(0.98 * w)
+    # Scanned text can reach within 2% of the page edge (JO24/1984 p4 clips «قبل» there).
+    # Only a detected frame justifies trimming; absent one, preserve the entire outer edge.
+    x0 = left_frame[-1][1] + 3 if left_frame else 0
+    x3 = right_frame[0][0] - 3 if right_frame else w
     note = None
     if mid:
         x1, x2 = mid[0][0] - 3, mid[-1][1] + 3
@@ -66,6 +68,7 @@ def main() -> int:
     parser.add_argument("--psm", type=int, default=4)
     parser.add_argument("--sources", default=str(pipeline.ROOT / "tools/law-corpus/scope-source-manifest.json"))
     parser.add_argument("--append", action="store_true")
+    parser.add_argument("--id-prefix", default="", help="Distinct evidence namespace for a revised crop; retain earlier evidence")
     args = parser.parse_args()
     pins = {s["id"]: s for s in pipeline.read_json(pipeline.Path(args.sources))["sources"]}
     source = pins[args.source]
@@ -87,7 +90,7 @@ def main() -> int:
         if layout["note"]:
             notes.append(f"page {number}: {layout['note']}")
         for side in ("right", "left"):
-            ident = f"{source['id'].lower()}-{number:03}-{side}"
+            ident = f"{args.id_prefix}{source['id'].lower()}-{number:03}-{side}"
             if ident in known:
                 continue
             region = [round(v, 4) for v in layout[side]]

@@ -1,9 +1,17 @@
 import unittest
 
-from build_family_candidate import identity, references
+from build_family_candidate import checked_family_locator, identity, references
 
 
 class FamilyReferenceTests(unittest.TestCase):
+    def test_identical_sentence_in_neighboring_act_cannot_supply_family_locator(self):
+        result = {"number": "3 مكرر", "regions": [{"evidenceId": "neighbor"}], "ocr": {}}
+        records = {"neighbor": ({"sourceId": "A2005015", "pdfPage": 18}, None)}
+        with self.assertRaisesRegex(ValueError, "outside the independently read act"):
+            checked_family_locator(result, "ordinance-05-02", records, "نص اختباري.", {})
+        records["neighbor"][0]["pdfPage"] = 19
+        self.assertEqual(result, checked_family_locator(result, "ordinance-05-02", records, "نص اختباري.", {}))
+
     def test_shared_number_is_not_mapped_to_the_wrong_code(self):
         internal, external = references(["طبقا للمادة 40 من القانون المدني.", "تطبق المادة 64 من قانون الحالة المدنية."])
         self.assertEqual([], internal)

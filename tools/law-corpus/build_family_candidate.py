@@ -10,6 +10,7 @@ import re
 from collections import Counter
 
 import apply_family_jo_collation
+import apply_family_amended_structure
 import pipeline
 
 ROOT = pipeline.ROOT
@@ -63,6 +64,29 @@ def source_from(result: dict, publication: str, records: dict) -> dict:
             "evidenceId": fragments[0]["evidenceId"], "region": fragments[0]["region"], "fragments": fragments}
 
 
+def checked_family_locator(result: dict, publication: str, records: dict, text: str, overrides: dict) -> dict:
+    override = overrides.get(result["number"])
+    if override:
+        if (override["publicationId"] != publication or override["candidateTextSha256"] != pipeline.hash_text(text)
+                or override["previousGeneratedRegions"] != result["regions"]):
+            raise ValueError("Source locator override belongs to a different article body/publication")
+        if not override["images"] or len(override["images"]) != len(override["imageSha256s"]):
+            raise ValueError("Source locator override lacks actual reading proof")
+        for image, expected in zip(override["images"], override["imageSha256s"]):
+            path = (ROOT / image).resolve()
+            if not path.is_relative_to(ROOT.resolve()) or pipeline.hash_file(path) != expected:
+                raise ValueError("Source locator override image changed")
+        result = result | {"regions": override["regions"], "ocr": override["ocr"]}
+    ranges = {"ordinance-05-02": ("A2005015",set(range(19,23))), "law-84-11": ("A1984024",set(range(2,17)))}
+    if publication not in ranges:
+        raise ValueError("Unknown Family publication")
+    expected_source, pages = ranges[publication]
+    if not result["regions"] or any(records[r["evidenceId"]][0]["sourceId"] != expected_source
+                                     or records[r["evidenceId"]][0]["pdfPage"] not in pages for r in result["regions"]):
+        raise ValueError("Family source locator is outside the independently read act pages")
+    return result
+
+
 def build() -> None:
     native = pipeline.read_json(WORK / "native.json")
     source = native["source"]
@@ -72,6 +96,7 @@ def build() -> None:
     apply_family_jo_collation.main()
     unchanged = pipeline.read_json(WORK / "unchanged-jo-collated.json")
     amended = pipeline.read_json(WORK / "amended-corrected.json")
+    amended_structure = apply_family_amended_structure.main()
     bodies = {a["number"]: a for a in unchanged + amended}
     inventory = pipeline.read_json(WORK / "amendment-inventory.json")
     actions = {number: op for op in inventory["operations"] for number in op.get("numbers", [])}
@@ -98,6 +123,12 @@ def build() -> None:
                 raise ValueError("Source artifact changed or escaped the cache")
     jo_base = {r["number"]: r for r in pipeline.read_json(WORK / "base-unchanged-comparison.json")["results"]}
     jo_amended = {r["number"]: r for r in pipeline.read_json(WORK / "amended-comparison.json")["results"]}
+    locator_review = pipeline.read_json(WORK / "amended-source-locator-overrides.json")
+    if locator_review["sourceSha256"] != source_pins["A2005015"]["sha256"]:
+        raise ValueError("Locator review belongs to another JO source")
+    locator_overrides = {r["number"]: r for r in locator_review["overrides"]}
+    if len(locator_overrides) != len(locator_review["overrides"]) or not set(locator_overrides) <= expected_amended:
+        raise ValueError("Duplicate or out-of-scope source locator override")
     ministry = {r["number"]: r for r in pipeline.read_json(WORK / "ministry-raw-comparison.json")["results"]}
     french_pins = {s["id"]: s for s in pipeline.read_json(ROOT / "data/law/corpus/research/scope-source-downloads.json") if "sha256" in s}
     discovery = {"url": "https://droit.mjustice.gov.dz/fr/content/codes-0", "accessedOn": "2026-10-26",
@@ -157,7 +188,10 @@ def build() -> None:
             if pipeline.hash_text(text) != body.get("joCheck", body["bodyCheck"])["textSha256"]:
                 raise ValueError("Reviewed body changed: " + number)
             comparison = jo_amended[number] if op else jo_base[number]
+            comparison = checked_family_locator(comparison, publication, records, text, locator_overrides)
             src = source_from(comparison, publication, records)
+            if number in locator_overrides:
+                reasons.append(locator_overrides[number]["note"])
             src["transcriptionWitnesses"] = [{"document": download(source), "pages": raw["pages"],
                 "textLayer": "\n".join(raw["rawParagraphs"]),
                 "ocr": "\n".join(name + ":\n" + stream for name, stream in ministry[number]["ocr"].items()),
@@ -191,6 +225,12 @@ def build() -> None:
                                    "method": "Independent original-JO body collation; source/raw edition spellings and punctuation remain distinct",
                                    "date": TODAY, "result": "passed", "textSha256": pipeline.hash_text(text),
                                    "imageSha256s": jo_check["imageSha256s"], "note": jo_check["note"]})
+            if op:
+                structure = amended_structure[number]
+                checks.append({"check":"discrepancy-resolved-from-image", "date":TODAY, "result":"passed",
+                               "method":"Explicit reading of the original Family-amending JO paragraph and body boundaries",
+                               "textSha256":pipeline.hash_text(text), "imageSha256s":structure["imageSha256s"],
+                               "note":structure["note"]})
         version = {"versionId": version_id, "text": text, "paragraphs": paragraphs, "path": raw["path"],
                    "inForceFrom": None, "inForceTo": None, "temporalStatus": "unsettled", "introducedBy": publication,
                    "status": "repealed" if repeal else "in-force", "source": src, "crossReferences": internal,

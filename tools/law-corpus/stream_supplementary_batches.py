@@ -7,10 +7,11 @@ artifacts. Missing evidence waits at most fifteen minutes per batch, then fails 
 from __future__ import annotations
 
 import argparse
+import subprocess
+import sys
 import time
 
 import pipeline
-import supplementary_ocr
 
 
 def main() -> None:
@@ -38,7 +39,11 @@ def main() -> None:
             time.sleep(2)
         batch_path = cache / f"batch-{start:03d}.json"
         pipeline.write_json(batch_path,manifest | {"extracts":batch})
-        records.extend(supplementary_ocr.run(batch_path,cache / f"result-{start:03d}.json"))
+        # A fresh worker releases each batch's native ONNX allocations before the next model load.
+        result_path = cache / f"result-{start:03d}.json"
+        subprocess.run([sys.executable,"-B",str(pipeline.ROOT / "tools/law-corpus/supplementary_ocr.py"),
+                        str(batch_path),"--out",str(result_path)],check=True)
+        records.extend(pipeline.read_json(result_path)["records"])
         pipeline.write_json(args.out, {"manifest":str(manifest_path.relative_to(pipeline.ROOT)),
             "manifestSha256":pipeline.hash_file(manifest_path), "requested":len(requested), "completed":len(records),
             "records":records, "legalInventoryComplete":False, "verificationEffect":"none; supplementary OCR only"})

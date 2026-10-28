@@ -87,6 +87,8 @@ What remains: final Family QA, Civil Code, Commercial (37), Labour 90-11 (29) an
 
 The [Civil preparation report](LAW-CORPUS-CIVIL.md) now records 1,059 decoded source candidates across164 code pages, with no undecided glyph assignments. Ten locally numbered management-contract articles are kept separate from general provisions1–10; original JO89-01 image inspection confirms that insertion structure. These candidates are not a replacement typed delivery. Current-edition OCR is running on164 guarded body crops; the old1975 OCR diagnostic and its many unresolved groups remain retained separately.
 
+The Family amended-body paragraph review is also complete for all37 bodies. It corrected the source locator for3bis (a duplicate sentence had matched a neighboring nationality provision) and removed an extraneous next-page locator from57bis. Wording and verification counts are unchanged; the [Family report](LAW-CORPUS-FAMILY.md) records both guarded provenance fixes and the remaining delivery tasks.
+
 ### Delivery 2 — CPCA, complete and current (28 October 2026)
 
 All 1,162 versions of the CPCA are `checked`. Details are in the [code report](LAW-CORPUS-CPCA.md); the spot-check is in `docs/law-corpus-checks/cpca/`.

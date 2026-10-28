@@ -21,6 +21,17 @@ These four current candidates retain the Ministry reading **only as an unsettled
 
 Official discovery identified French rectifications in JO31/1984 p. 801 and JO41/1984 p. 1018. The Ministry amendment list does not enumerate them. Official image acquisition/reading remains pending; direct download timed out. Secondary descriptions are discovery clues only and supply no canonical wording or legal effect. No rectification is assumed to settle article 135. The separate Law05-09 approval-source acquisition remains open.
 
+## Amended paragraph review and source-locator corrections
+
+All **37 amended-body paragraph layouts** have now been actually read on19 generated source-review sheets, with a separate correct-source reading for3bis. No paragraph text or division needed changing. `amended-structure-decisions.json` binds the final candidate texts, paragraph counts and actual proof hashes; `apply_family_amended_structure.py` refuses missing/duplicate readings, reflowed paragraphs or changed proof. All **165 Python tests** now pass, including three new paragraph-proof guards and a wrong-act locator regression.
+
+The review corrected two provenance errors without changing wording:
+
+- **3bis:** automatic alignment had selected the identical prosecution sentence in nationality article37 on PDF18. The Family insertion is actually below Ordinance05-02 article2 on PDF19 right. That passage was read, and both raw OCR streams and the primary locator now come from the correct column. The old generated comparison remains diagnostic evidence.
+- **57bis:** the automatic span included a second region on PDF22 containing the next amending instruction/header. Its complete one-paragraph body ends on PDF21 left. The extra body locator is removed.
+
+`amended-source-locator-overrides.json` records the old/generated regions, guarded final body hashes, correct source regions, actual image proof and raw OCR. The builder rejects a changed old locator or body and enforces the independently read Family act's PDF-page ranges. Identical wording in another act in the same journal cannot satisfy that guard. This Family-specific PDF-range check does not reinterpret the older codes' journal-page metadata.
+
 ## Prepared scope and source inventory
 
 The Ministry's bilingual compilation yields 232 distinct identities: 224 base numbers and eight insertions. Duplicate numbering, the `8 bis 1` label, the chapter heading after repealed art. 39 and the signature after art. 224 have explicit boundary fixes. All five repealed identities remain in the inventory. Annexes outside the main code remain excluded.
@@ -80,7 +91,7 @@ Eight hash-guarded string corrections follow the official print:
 ## Remaining before delivery
 
 1. Resolve the four now-isolated official-edition conflicts above, acquiring/reading any applicable official rectification. The 190-body original-JO collation itself is complete; do not repeat its OCR or the 176 finished image readings.
-2. Finish paths, amendment paragraph checks and cross-references. French numbering is complete and all 27 flagged unchanged-body paragraph counts have image decisions.
+2. Finish paths and cross-references. All37 amended-body paragraph layouts and all27 flagged unchanged-body paragraph counts have actual source-image decisions; French compilation numbering is complete.
 3. Finish the typed candidate's amendment audit, honest temporal limits and legally needed older regimes. Source fragments and separate Ministry transcription witnesses are now present. Record Law 05-09's approval of Ordinance 05-02 without inventing article changes; local acquisition of its Arabic publication timed out.
 4. Finish the remaining content QA, then repeat the schema, typed-loader, full build and regression gate for final delivery. The 20-article sample and legacy Family reconciliation below are now complete for this candidate.
 5. Recheck latest amendment discovery; the previous live index attempt timed out, so the cached cut-off is not silently advanced.

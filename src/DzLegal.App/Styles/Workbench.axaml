@@ -1,4 +1,47 @@
 <Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Styles.Resources>
+    <ResourceDictionary>
+      <SolidColorBrush x:Key="WelcomeGoldBrush" Color="#C6A76D" />
+      <SolidColorBrush x:Key="WelcomeButtonTextBrush" Color="#28231D" />
+      <StreamGeometry x:Key="WelcomeScalesGeometry">M48,9 L48,78 M43,9 C43,3 53,3 53,9 C53,15 43,15 43,9 M18,25 C28,25 34,18 48,18 C62,18 68,25 78,25 M23,25 L10,53 L36,53 Z M73,25 L60,53 L86,53 Z M10,53 C12,69 34,69 36,53 M60,53 C62,69 84,69 86,53 M42,78 L54,78 M38,85 C38,75 58,75 58,85 M28,88 L68,88</StreamGeometry>
+      <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Dark">
+          <LinearGradientBrush x:Key="WelcomeOverlayBrush" StartPoint="0%,0%" EndPoint="0%,100%">
+            <GradientStop Color="#B81D201E" Offset="0" />
+            <GradientStop Color="#B31D201E" Offset="0.5" />
+            <GradientStop Color="#B81D201E" Offset="1" />
+          </LinearGradientBrush>
+          <SolidColorBrush x:Key="WelcomeTextBrush" Color="#F2EDE5" />
+          <SolidColorBrush x:Key="WelcomeSecondaryBrush" Color="#E0D7C9" />
+          <SolidColorBrush x:Key="WelcomeControlBrush" Color="#24201B" />
+          <SolidColorBrush x:Key="WelcomeEdgeBrush" Color="#D2B981" />
+          <SolidColorBrush x:Key="WelcomeFocusBrush" Color="#F2EDE5" />
+          <SolidColorBrush x:Key="WelcomeButtonBorderBrush" Color="#D2B981" />
+          <SolidColorBrush x:Key="WelcomeMarkBrush" Color="#C6A76D" />
+          <LinearGradientBrush x:Key="WelcomeLogoBrush" StartPoint="0%,0%" EndPoint="100%,100%">
+            <GradientStop Color="#D2B981" Offset="0" /><GradientStop Color="#C6A76D" Offset="1" />
+          </LinearGradientBrush>
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Light">
+          <LinearGradientBrush x:Key="WelcomeOverlayBrush" StartPoint="0%,0%" EndPoint="0%,100%">
+            <GradientStop Color="#EBF2F0EA" Offset="0" />
+            <GradientStop Color="#D9F2F0EA" Offset="0.5" />
+            <GradientStop Color="#EBF2F0EA" Offset="1" />
+          </LinearGradientBrush>
+          <SolidColorBrush x:Key="WelcomeTextBrush" Color="#28231D" />
+          <SolidColorBrush x:Key="WelcomeSecondaryBrush" Color="#494238" />
+          <SolidColorBrush x:Key="WelcomeControlBrush" Color="#F2F0EA" />
+          <SolidColorBrush x:Key="WelcomeEdgeBrush" Color="#786039" />
+          <SolidColorBrush x:Key="WelcomeFocusBrush" Color="#28231D" />
+          <SolidColorBrush x:Key="WelcomeButtonBorderBrush" Color="#786039" />
+          <SolidColorBrush x:Key="WelcomeMarkBrush" Color="#786039" />
+          <LinearGradientBrush x:Key="WelcomeLogoBrush" StartPoint="0%,0%" EndPoint="100%,100%">
+            <GradientStop Color="#786039" Offset="0" /><GradientStop Color="#80663C" Offset="1" />
+          </LinearGradientBrush>
+        </ResourceDictionary>
+      </ResourceDictionary.ThemeDictionaries>
+    </ResourceDictionary>
+  </Styles.Resources>
   <!-- Static tinted surfaces, not live backdrop blur. Reading surfaces remain opaque. -->
   <Style Selector="TextBlock#SaveStateText"><Setter Property="MaxWidth" Value="240" /></Style>
   <Style Selector="ComboBox#ProviderPicker"><Setter Property="MinWidth" Value="200" /><Setter Property="MaxWidth" Value="250" /></Style>

@@ -16,7 +16,7 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = CreateMainWindow();
+            desktop.MainWindow = new OnboardingWindow(new WelcomePreferences(AppPaths.Default.Root), CreateMainWindow);
         }
 
         base.OnFrameworkInitializationCompleted();

@@ -1,129 +1,131 @@
 {
-    "schema":  "dzlegal.evidence.review-artifacts/1",
-    "sourceCommit":  "79a6ee65f2d3f6764451d791de2e0e2f0c56d170",
-    "baselineCommit":  "c0421f8d14f13ddd9b53f668525cc684dfa471d6",
-    "generatedUtc":  "2026-10-28T18:15:31.8278952Z",
-    "petitionSource":  "Known fixture annotations constructed by EvidenceDemo; factual wording copies original fixture input; no reader inference.",
-    "existingGoldLabelsChanged":  false,
-    "trainingPerformed":  false,
-    "originalLocalSummarySha256":  "f639cd20ab7df86cb50ce6feacb19132663ce805b9872431130fca113b6c50f5",
-    "fixtureSha256":  "582b328f903cbf49adc0d3a2e1323fed86e71f04d4eb5b3ce6ca605bf1055c3e",
-    "gemmaOriginalCritical":  50,
-    "gemmaStrictCritical":  56,
-    "gemmaAdditionalCriticalCases":  [
-                                         {
-                                             "name":  "things-water",
-                                             "errors":  [
-                                                            {
-                                                                "type":  "unreadable output",
-                                                                "detail":  "1",
-                                                                "critical":  true
-                                                            }
-                                                        ]
-                                         },
-                                         {
-                                             "name":  "divorce-husband",
-                                             "errors":  [
-                                                            {
-                                                                "type":  "missing date",
-                                                                "detail":  "marriage",
-                                                                "critical":  true
-                                                            },
-                                                            {
-                                                                "type":  "missing source",
-                                                                "detail":  "divorce",
-                                                                "critical":  true
-                                                            },
-                                                            {
-                                                                "type":  "unreadable output",
-                                                                "detail":  "2",
-                                                                "critical":  true
-                                                            }
-                                                        ]
-                                         },
-                                         {
-                                             "name":  "tatliq-abandonment",
-                                             "errors":  [
-                                                            {
-                                                                "type":  "missing request",
-                                                                "detail":  "tatliq",
-                                                                "critical":  true
-                                                            },
-                                                            {
-                                                                "type":  "missing request",
-                                                                "detail":  "damages",
-                                                                "critical":  true
-                                                            },
-                                                            {
-                                                                "type":  "missing source",
-                                                                "detail":  "divorce",
-                                                                "critical":  true
-                                                            }
-                                                        ]
-                                         },
-                                         {
-                                             "name":  "khul-2",
-                                             "errors":  [
-                                                            {
-                                                                "type":  "missing request",
-                                                                "detail":  "khul",
-                                                                "critical":  true
-                                                            },
-                                                            {
-                                                                "type":  "unreadable output",
-                                                                "detail":  "1",
-                                                                "critical":  true
-                                                            }
-                                                        ]
-                                         },
-                                         {
-                                             "name":  "custody-transfer",
-                                             "errors":  [
-                                                            {
-                                                                "type":  "unreadable output",
-                                                                "detail":  "1",
-                                                                "critical":  true
-                                                            }
-                                                        ]
-                                         },
-                                         {
-                                             "name":  "none-commercial-company",
-                                             "errors":  [
-                                                            {
-                                                                "type":  "unreadable output",
-                                                                "detail":  "1",
-                                                                "critical":  true
-                                                            }
-                                                        ]
-                                         }
-                                     ],
-    "filesSha256":  {
-                        "lease-review/authority-candidates.json":  "29399ee2067e95af1cab17310a56ee9c0cbc968b9e88fdf9564ac028c0603561",
-                        "lease-review/evaluation/draft.ar.txt":  "72ec6e64b811edb6bcb00f8015758d1ad15df0330c7fc6e02d380f3c59f5438f",
-                        "lease-review/evaluation/end-to-end.json":  "e57a6e848edc5905c73ac6865e996d8bf792774377b0dffc68ca7cb4debca79d",
-                        "lease-review/evaluation/formal-checks.json":  "9e79ed26beafb628b9f322b8e478365fa59713bc42d582a75525ae1fb024bf51",
-                        "lease-review/evaluation/petition.ar.txt":  "97b7cf41bda31b8b2396f1786a6b8b27569a77df5eda2ffbc7e4b3d9d0399dd9",
-                        "lease-review/evaluation/petition.json":  "19c9049a50786d0355022d0b0d214a5fdf4a9cbd397aa0d08c34b6a280126262",
-                        "lease-review/evaluation/result.json":  "4f52728f658883510722fd82080e5b5311d5caa22393e4560a50da94e145c380",
-                        "lease-review/evaluation/review-state.json":  "cb99a4d63c35e0a8144b6ccd16cb8dfb0556e7ffac49ff0d683c1b836180b1cb",
-                        "lease-review/evaluation/snapshot.json":  "cc22ecac0b9d147b9dc0da2c4dd79a6e6787144a0ee4ed6e49bc9c3ea36c5f49",
-                        "lease-review/evidence.json":  "68a00760c7ff36d17fdf3cf875897bbe70d242a8bbab7f79a0e304f3e8b4fb41",
-                        "lease-review/input.json":  "4d8cd3eebe211ddf6cf3f06a379d22700d1979287dbf1766bd120fb6e285c590",
-                        "lease-review/reference-input.json":  "48a50a4a6d460aec9832d4b521927ebbe9af0d8c94f9774a5e7329fdd27f02ff",
-                        "lease-review/reference-schema.json":  "ce8a516c757f3da66ec1409a12d06a25ccd5f0e1404c14d316e623f9dffb828f",
-                        "lease-review/reference-target.json":  "106dfccbfd9650af79e3e426e35ef35c53dd86d8809ae61e2447c41e0dcbb6b2",
-                        "lease-review/review-package.json":  "9f03a976fbfda39afc9a094a337c7d7556c2199d2854d937ad2667d89010d622",
-                        "lease-review/rules.for-review.json":  "af13cbd995c877782b98edc8aeb36367ed0e911dc4c4baeef6d745746c43f4eb",
-                        "lease-review/schema.json":  "3ced7268d80a58e0cdc6c98e63227fdd35ab90d6ff307a5f14efbbe786bbba2d",
-                        "lease-review/snapshot.json":  "cc22ecac0b9d147b9dc0da2c4dd79a6e6787144a0ee4ed6e49bc9c3ea36c5f49",
-                        "original-local.manifest.json":  "24b3d1ca0226782c765ea7424d9e5e4635bbf6fde21b9c3590fc33e9f3267537",
-                        "protocol-self-check.json":  "1c4d5fb04cb539f30b46912904588667df7f24c8e61b770f2d8acbd7dd319efd",
-                        "README.md":  "f46a66da34982b3d6eb29e924f60d19cc5fd638d7ee37fe8f561b4cba767b677",
-                        "scoring-reconciliation.md":  "823e30b9457c4ed3f65ada08377121c98519f9244fd005196e03fe173c0eb377",
-                        "strict-gemma.md":  "b564d82e40f5abb30b8e6379ee1972442f8cbda257c9ffc6e63d86cceca8ffa9",
-                        "strict-gliner.manifest.json":  "838368120404d83b85c05e8755c69b38614549aebc5a2671913b6fda9f4fe427",
-                        "strict-gliner.md":  "be8eb48ffdd9714505ac6ac48868ba1c81314d76d1b46c5eec73f00196ee3552",
-                        "strict-local.manifest.json":  "1f50e1d74810cad0e049dbcaf0c30fccf0399d136f76452b71200c1d91ead6d8",
-                        "strict-qwen.md":  "a7d05749cf8bdf3b5cca3e0ecfbb3596d3a94999b35b01663d9573738035e705"
-                    }
+  "schema": "dzlegal.evidence.review-artifacts/1",
+  "sourceCommit": "79a6ee65f2d3f6764451d791de2e0e2f0c56d170",
+  "baselineCommit": "c0421f8d14f13ddd9b53f668525cc684dfa471d6",
+  "generatedUtc": "2026-10-28T18:15:31.8278952Z",
+  "petitionSource": "Known fixture annotations constructed by EvidenceDemo; factual wording copies original fixture input; no reader inference.",
+  "existingGoldLabelsChanged": false,
+  "trainingPerformed": false,
+  "originalLocalSummarySha256": "f639cd20ab7df86cb50ce6feacb19132663ce805b9872431130fca113b6c50f5",
+  "fixtureSha256": "582b328f903cbf49adc0d3a2e1323fed86e71f04d4eb5b3ce6ca605bf1055c3e",
+  "gemmaOriginalCritical": 50,
+  "gemmaStrictCritical": 56,
+  "gemmaAdditionalCriticalCases": [
+    {
+      "name": "things-water",
+      "errors": [
+        {
+          "type": "unreadable output",
+          "detail": "1",
+          "critical": true
+        }
+      ]
+    },
+    {
+      "name": "divorce-husband",
+      "errors": [
+        {
+          "type": "missing date",
+          "detail": "marriage",
+          "critical": true
+        },
+        {
+          "type": "missing source",
+          "detail": "divorce",
+          "critical": true
+        },
+        {
+          "type": "unreadable output",
+          "detail": "2",
+          "critical": true
+        }
+      ]
+    },
+    {
+      "name": "tatliq-abandonment",
+      "errors": [
+        {
+          "type": "missing request",
+          "detail": "tatliq",
+          "critical": true
+        },
+        {
+          "type": "missing request",
+          "detail": "damages",
+          "critical": true
+        },
+        {
+          "type": "missing source",
+          "detail": "divorce",
+          "critical": true
+        }
+      ]
+    },
+    {
+      "name": "khul-2",
+      "errors": [
+        {
+          "type": "missing request",
+          "detail": "khul",
+          "critical": true
+        },
+        {
+          "type": "unreadable output",
+          "detail": "1",
+          "critical": true
+        }
+      ]
+    },
+    {
+      "name": "custody-transfer",
+      "errors": [
+        {
+          "type": "unreadable output",
+          "detail": "1",
+          "critical": true
+        }
+      ]
+    },
+    {
+      "name": "none-commercial-company",
+      "errors": [
+        {
+          "type": "unreadable output",
+          "detail": "1",
+          "critical": true
+        }
+      ]
+    }
+  ],
+  "filesSha256": {
+    ".gitattributes": "a79691a93b46e49ce460c26ef22afcc03d6eca1e63bf2edbc20e96159510f6c9",
+    "lease-review/authority-candidates.json": "8091240cdbe3e912133e05ee41260580c464ed4c806cc8b59b5bf3c1c9ab8a33",
+    "lease-review/evaluation/draft.ar.txt": "5e3ae7583184379ab99f7635e82f527f73618d354f54511b01415c4453600c85",
+    "lease-review/evaluation/end-to-end.json": "8b0519a2735ccfa59ad94596fc446249752425a417513154ecd74603e96d04b8",
+    "lease-review/evaluation/formal-checks.json": "16f8cb4168efd5b4e386e26844f6509cdc467465307ad641c04affdcaa3c3406",
+    "lease-review/evaluation/petition.ar.txt": "2fed8a6636d8663902fbd9af337add89419494268b7a7357fc61db5612a781d3",
+    "lease-review/evaluation/petition.json": "7f13a23f67a7cc871dfe3d2bb643852eec89aeb05f4a914c0e7d32e155486ec8",
+    "lease-review/evaluation/result.json": "eb5948303eecbbd1f24474031b1fede8fa13a2d719b1f2aba8de8034570745d5",
+    "lease-review/evaluation/review-state.json": "5944bc69a843e7d4c7794907a9087b27c2cbfe86a374321e5fc8e4f5bdb99829",
+    "lease-review/evaluation/snapshot.json": "f6dadf2e05b3aead3151c922408ba6f72f0f18e3cbb5a1b8202b73181d26b4f2",
+    "lease-review/evidence.json": "a9149100e0ff8e0821bb9e6bac8b4a7cd2fe19376ae598bce64f8571301427aa",
+    "lease-review/input.json": "c32928a4acc0cedde58570ac80e2198767ec39fe2d4301435eb0f75ef1abbe15",
+    "lease-review/reference-input.json": "f4dcd8ac4fa695a60644887d3a40fc474f3181d23d6bdc1cfd7897007ca2b55e",
+    "lease-review/reference-schema.json": "41ff10305a417648404608cae663d9db6fc3c83fb6a3bf6a4658eaca34dfa4bc",
+    "lease-review/reference-target.json": "9b036db8a822d2381dd86735124755db51c08ff07364fe8f4c462585a0dde01a",
+    "lease-review/review-package.json": "0adf5a853dff9d8de7d94bddf252aa3f780785da3cf3e3d957d496099f7526ea",
+    "lease-review/rules.for-review.json": "a6657f0ee0598dc140e7099d4c6916b449435cce78014f9c72bef9f2e80624f6",
+    "lease-review/schema.json": "1d3b49eef72e9ace54aaba1202b8abe80ad7399b809c5d6c83d8d591bf33dac0",
+    "lease-review/snapshot.json": "f6dadf2e05b3aead3151c922408ba6f72f0f18e3cbb5a1b8202b73181d26b4f2",
+    "original-local.manifest.json": "32a0c328875b59c4ece0c76d5f4c69448e3a4c27006bd41e21dd5cda89b16fd7",
+    "protocol-self-check.json": "b89b0a2dac152bdec87f195703723f42a4af1ccaddff153907950120bd2fa97d",
+    "README.md": "764b133d16e40a9cab2193f54ad6ac8845a270e8dad55f145634cc69d2b5e95f",
+    "scoring-reconciliation.md": "823e30b9457c4ed3f65ada08377121c98519f9244fd005196e03fe173c0eb377",
+    "strict-gemma.md": "fd12ee33266df1abadbc22045143cd9894daa8f481a6e0ea2081a723fcfeb59e",
+    "strict-gliner.manifest.json": "c5a8c018a6e3b23aaf489f162c80ade12852c00bf426ac3f0010054ecc0477ec",
+    "strict-gliner.md": "92425fb6095fb7158f40343f0f16a38f53c77f1db684b0a2ae228c26b32bdac6",
+    "strict-local.manifest.json": "371385a56be8908bcd91dd1f07ffd535d3df34fa514eb59f7a839ed196682d91",
+    "strict-qwen.md": "0e80a5fb183b5f7733a7fd9d99e225227f76b8d7df8d93873e26b410b2b8dcea"
+  },
+  "artifactEncoding": "UTF-8 with LF line endings; filesSha256 covers exact canonical review-file bytes, excluding provenance.json itself."
 }

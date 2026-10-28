@@ -13,3 +13,5 @@ Start here:
 The rest of `lease-review/` preserves the generated source snapshot, schemas, reference-format target, discovery candidates, formal checks, draft/review state and process measurements. `evaluation/end-to-end.json` measures supplied evidence through drafting/formal checks. Its time and memory exclude model inference and cannot establish app latency, extraction accuracy or physical 8 GB qualification.
 
 The `strict-local.manifest.json` and `strict-gliner.manifest.json` retain source/case/scorer fingerprints. Full raw benchmark folders remain local under ignored `bench*/`; the summaries alone cannot reproduce a model run. The original 61-case gold and original `FactsEvaluator` remain unchanged.
+
+Review files use UTF-8 text with LF line endings, enforced by this folder's `.gitattributes`. `provenance.json` hashes these exact canonical review-file bytes, excluding itself. Normalize new review copies to LF before refreshing those hashes. Historical run/source fingerprints remain the measurements of their original files; they are not hashes of reformatted copies.

@@ -8,8 +8,8 @@
     "ppocr": 43059
   },
   "articles": 1065,
-  "agreed": 555,
-  "agreementRate": 0.5211,
+  "agreed": 550,
+  "agreementRate": 0.5164,
   "results": [
     {
       "number": "1",
@@ -520,25 +520,25 @@
     {
       "number": "12",
       "agrees": true,
-      "canonicalTokens": 10,
+      "canonicalTokens": 11,
       "confirmedBy": {
-        "tesseract": 9,
+        "tesseract": 10,
         "ppocr": 10
       },
       "disagreements": [],
       "located": {
         "tesseract": [
           577,
-          594
+          595
         ],
         "ppocr": [
           439,
-          453
+          454
         ]
       },
       "ocr": {
-        "tesseract": "المادة 12 : يلتزم الأطراف بالهدوء أثناء الجلسة و أن يراعوا الوقار الواجب للعدالة . الكتاب الأول",
-        "ppocr": "المادة يلتزم الأطراف بالهدوء أثناء الجلسة وأن يراعوا الوقار الواجب للعدالة الكتاب الأول الأحكام"
+        "tesseract": "المادة 12 : يلتزم الأطراف بالهدوء أثناء الجلسة و أن يراعوا الوقار الواجب للعدالة . الكتاب الأول الأحكام",
+        "ppocr": "المادة يلتزم الأطراف بالهدوء أثناء الجلسة وأن يراعوا الوقار الواجب للعدالة الكتاب الأول الأحكام المشتركة"
       },
       "regions": [
         {
@@ -547,13 +547,19 @@
             54,
             1619,
             1028,
-            1836
+            1923
           ]
         }
       ],
       "labelTokens": 2,
       "boundaryExtrasDropped": [
         [
+          "الاحكام",
+          "الاول",
+          "الكتاب"
+        ],
+        [
+          "الاحكام",
           "الاول",
           "الكتاب"
         ]
@@ -659,16 +665,16 @@
     {
       "number": "15",
       "agrees": false,
-      "canonicalTokens": 80,
+      "canonicalTokens": 81,
       "confirmedBy": {
-        "tesseract": 63,
+        "tesseract": 64,
         "ppocr": 71
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "-",
-          "at": 25,
+          "at": 26,
           "streams": {
             "tesseract": [
               "miss"
@@ -870,16 +876,16 @@
     {
       "number": "18",
       "agrees": false,
-      "canonicalTokens": 56,
+      "canonicalTokens": 57,
       "confirmedBy": {
-        "tesseract": 43,
+        "tesseract": 44,
         "ppocr": 46
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "2 -",
-          "at": 24,
+          "at": 25,
           "streams": {
             "tesseract": [
               "miss",
@@ -986,9 +992,9 @@
     {
       "number": "19",
       "agrees": true,
-      "canonicalTokens": 157,
+      "canonicalTokens": 158,
       "confirmedBy": {
-        "tesseract": 133,
+        "tesseract": 134,
         "ppocr": 138
       },
       "disagreements": [],
@@ -2424,9 +2430,9 @@
     {
       "number": "39",
       "agrees": true,
-      "canonicalTokens": 174,
+      "canonicalTokens": 175,
       "confirmedBy": {
-        "tesseract": 158,
+        "tesseract": 159,
         "ppocr": 164
       },
       "disagreements": [],
@@ -2462,9 +2468,9 @@
     {
       "number": "40",
       "agrees": true,
-      "canonicalTokens": 293,
+      "canonicalTokens": 294,
       "confirmedBy": {
-        "tesseract": 263,
+        "tesseract": 264,
         "ppocr": 267
       },
       "disagreements": [],
@@ -3798,16 +3804,16 @@
     {
       "number": "64",
       "agrees": false,
-      "canonicalTokens": 32,
+      "canonicalTokens": 33,
       "confirmedBy": {
-        "tesseract": 27,
+        "tesseract": 28,
         "ppocr": 28
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "1 -",
-          "at": 18,
+          "at": 19,
           "streams": {
             "tesseract": [
               "miss",
@@ -3824,25 +3830,25 @@
                 "evidenceId": "a2008021-009-left",
                 "box": [
                   0,
-                  311,
+                  323,
                   1054,
                   710
                 ],
                 "scale": 1,
-                "imageSha256": "62119955d840507201a7763b2ff9726ecbae99e15a59d2a4002f150f02d176bc",
+                "imageSha256": "1b737dc988e755fd4c8477e7d9ad3847d0d2bce9675732ac1103419452808a36",
                 "ocr": "1- انعدام الأهلية للخصوم؛\r\n2- انعدام الأهلية أو التفويض لممثل الشخص\r\nالطبيعي أو المعنوي.\r\n"
               },
               {
                 "evidenceId": "a2008021-009-left",
                 "box": [
                   0,
-                  311,
+                  323,
                   1054,
                   710
                 ],
                 "scale": 2,
-                "imageSha256": "11e0f89eaaec1a8da979416c562254325d220f96fa3ff067925a8318d09a921b",
-                "ocr": "قبا اج .0 7ح أ - د الى ب تل 6 << ”<”-< 0 0 قا بألل\r\n2- انعدام الأهلية أو التفويض لممثل الشخص\r\nالطبيعي أو المعنوي.\r\n4 14 له «أ_ ع َ* ا 0 عد ل ته د بع 0-0 ى\r\n"
+                "imageSha256": "63f1266250224159a8031d63d0aa61ea892167276614589be13275319088b45c",
+                "ocr": "1- انعدام الأهلية للخصوم؛\r\n2- انعدام الأهلية أو التفويض لممثل الشخص\r\nالطبيعي أو المعنوي.\r\n"
               }
             ],
             "confirmed": true
@@ -7374,9 +7380,9 @@
     {
       "number": "126",
       "agrees": true,
-      "canonicalTokens": 21,
+      "canonicalTokens": 22,
       "confirmedBy": {
-        "tesseract": 21,
+        "tesseract": 22,
         "ppocr": 21
       },
       "disagreements": [],
@@ -7464,7 +7470,7 @@
       "located": {
         "tesseract": [
           4962,
-          4983
+          4982
         ],
         "ppocr": [
           4549,
@@ -7472,7 +7478,7 @@
         ]
       },
       "ocr": {
-        "tesseract": "المادة 127 : فى حالة تعدد الخبراء المعينين . يقومون بأعمال الخبرة معاء ويُعدُون تقريرا واحدا . الخبيرة ما يأتى :",
+        "tesseract": "المادة 127 : فى حالة تعدد الخبراء المعينين . يقومون بأعمال الخبرة معاء ويُعدُون تقريرا واحدا . الخبيرة ما يأتى",
         "ppocr": "المادة في حالة تعدد الخبراء المعيّنين، يقومون بأعمال الخبرة معا، ويُعدّون تقريرا واحدًا إذا اختلفت آراؤهم وجب على كل واحد منهم تسبيب رأيه المادة يجب"
       },
       "regions": [
@@ -7493,16 +7499,16 @@
     {
       "number": "128",
       "agrees": false,
-      "canonicalTokens": 53,
+      "canonicalTokens": 54,
       "confirmedBy": {
-        "tesseract": 31,
+        "tesseract": 32,
         "ppocr": 46
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "3 -",
-          "at": 40,
+          "at": 41,
           "streams": {
             "tesseract": [
               "miss",
@@ -8189,7 +8195,7 @@
     {
       "number": "138",
       "agrees": false,
-      "canonicalTokens": 30,
+      "canonicalTokens": 31,
       "confirmedBy": {
         "tesseract": 23,
         "ppocr": 26
@@ -8197,8 +8203,50 @@
       "disagreements": [
         {
           "kind": "unconfirmed",
+          "canonical": ":",
+          "at": 9,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          },
+          "reread": {
+            "readings": [
+              {
+                "evidenceId": "a2008021-014-right",
+                "box": [
+                  0,
+                  1478,
+                  1068,
+                  1927
+                ],
+                "scale": 1,
+                "imageSha256": "d487f33597735d302ff836c84759134c2148b735c31b63a28fe1bc883e85ff7e",
+                "ocr": "المادة 138 : يسجل الخبير في تقريره على\r\nالخصوص :\r\n\r\n1- أقوال وملاحظات الخصوم ومستنداتهم؛\r\n\r\n2- عرض تحليلي عما قام به وعاينه في حدود\r\nالمهمة المسندة إليه؛\r\n\r\n3- نتائء الخر ة.\r\n"
+              },
+              {
+                "evidenceId": "a2008021-014-right",
+                "box": [
+                  0,
+                  1478,
+                  1068,
+                  1927
+                ],
+                "scale": 2,
+                "imageSha256": "e5d158b36bdcc2ea31b66baadea1f25834018b43496715d00b121a17e6ffee4b",
+                "ocr": "المادة 138 : يسجل الخبير في تقريره على\r\nالخصوص :\r\n\r\n1- أقوال و ملاحظات الخصوم ومستنداتهم؛\r\n\r\n2- عرض تحليلى عماقام يه وعا ينه في حدود\r\nالمهمة المسندة إليه. 0\r\n\r\n3- ننائح الخد ة.\r\n"
+              }
+            ],
+            "confirmed": true
+          }
+        },
+        {
+          "kind": "unconfirmed",
           "canonical": "-",
-          "at": 10,
+          "at": 11,
           "streams": {
             "tesseract": [
               "miss"
@@ -9873,16 +9921,16 @@
     {
       "number": "160",
       "agrees": false,
-      "canonicalTokens": 63,
+      "canonicalTokens": 64,
       "confirmedBy": {
-        "tesseract": 59,
+        "tesseract": 60,
         "ppocr": 50
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "-",
-          "at": 59,
+          "at": 60,
           "streams": {
             "tesseract": [
               "miss"
@@ -10241,9 +10289,9 @@
     {
       "number": "167",
       "agrees": true,
-      "canonicalTokens": 66,
+      "canonicalTokens": 67,
       "confirmedBy": {
-        "tesseract": 60,
+        "tesseract": 61,
         "ppocr": 57
       },
       "disagreements": [],
@@ -10893,60 +10941,13 @@
     },
     {
       "number": "178",
-      "agrees": false,
-      "canonicalTokens": 20,
+      "agrees": true,
+      "canonicalTokens": 21,
       "confirmedBy": {
-        "tesseract": 12,
-        "ppocr": 16
+        "tesseract": 14,
+        "ppocr": 19
       },
-      "disagreements": [
-        {
-          "kind": "unconfirmed",
-          "canonical": "عليها في المادة165",
-          "at": 14,
-          "streams": {
-            "tesseract": [
-              "miss",
-              "miss",
-              "miss"
-            ],
-            "ppocr": [
-              "miss",
-              "miss",
-              "miss"
-            ]
-          },
-          "reread": {
-            "readings": [
-              {
-                "evidenceId": "a2008021-017-right",
-                "box": [
-                  0,
-                  2532,
-                  1068,
-                  2889
-                ],
-                "scale": 1,
-                "imageSha256": "9639d1bef843a500251ffb4351c872e96d5ef1a29b9badb619937577aaa980da",
-                "ocr": "المادة 178 : إذا صرح المدعى عليه بتمسكه بالمحرر\r\nالمنازع فيه. تتبع الإجراءات المنصوص عليهافي\r\nالمادة 165 وما يليها من هذا القانون.\r\n+ الد!). ‏ د ‎ ..**‏ اا2د*, !) ‎ -‏ ب\"\r\n"
-              },
-              {
-                "evidenceId": "a2008021-017-right",
-                "box": [
-                  0,
-                  2532,
-                  1068,
-                  2889
-                ],
-                "scale": 2,
-                "imageSha256": "cf9f3e162e48e3c24a32ce0f21b8ae145247354d18211ce16acbf2da68f4d596",
-                "ocr": "المادة 178 : إذا صرح المدعى عليه بتمسكه بالمحرر\r\nالمادة 165 وما يليها من هذا القانون.\r\n4 أ ال - ) يرف ال ا و 4 ‎١‏ قفد 2 2ه 3\r\n"
-              }
-            ],
-            "confirmed": false
-          }
-        }
-      ],
+      "disagreements": [],
       "located": {
         "tesseract": [
           6907,
@@ -10954,12 +10955,12 @@
         ],
         "ppocr": [
           6448,
-          6472
+          6473
         ]
       },
       "ocr": {
         "tesseract": "المادة 178 : إذا صرح المدعى عليه بتمسكه بالمحرر المادة 165 وما يليها من هذا القانون . في الادعاء بتزوير العقود الرسمية",
-        "ppocr": "المادة إذا صرح المدعى عليه بتمسكه بالمحرر المنازع فيه، تتبع الإجراءات المنصوص عليهافي المادة وما يليها من هذا القانون القسم الثالث عشر في الادعاء"
+        "ppocr": "المادة إذا صرح المدعى عليه بتمسكه بالمحرر المنازع فيه، تتبع الإجراءات المنصوص عليهافي المادة وما يليها من هذا القانون القسم الثالث عشر في الادعاء بتزوير"
       },
       "regions": [
         {
@@ -10976,14 +10977,16 @@
       "boundaryExtrasDropped": [
         [
           "الادعاء",
+          "بتزوير",
           "في"
         ],
         [
           "الادعاء",
+          "بتزوير",
           "في"
         ]
       ],
-      "agreesAfterReread": false
+      "agreesAfterReread": true
     },
     {
       "number": "179",
@@ -11635,9 +11638,9 @@
     {
       "number": "187",
       "agrees": false,
-      "canonicalTokens": 33,
+      "canonicalTokens": 34,
       "confirmedBy": {
-        "tesseract": 11,
+        "tesseract": 13,
         "ppocr": 20
       },
       "disagreements": [
@@ -11665,11 +11668,11 @@
                   0,
                   1023,
                   1068,
-                  1456
+                  1451
                 ],
                 "scale": 1,
-                "imageSha256": "e42b14cc1f4b4193f1ee8f5b6b13a234adf52b86aec881bc9208b59fcbc6d159",
-                "ocr": "المادة 187 : يأمر القاضى بإيداع المستند المطعون\r\nالمواد 165 و 167 إلى 170 و174 من هذا القانون.\r\n\r\nالمادة 188 : إذا قضى الحكم بثبوت التزوير. تطبق\r\n»ا ‎)!١١‏ - د19 5ك _ ل\r\n"
+                "imageSha256": "6247672b921072e6c8bc3037db0272514f185e98253626e8f746a78813fb76bf",
+                "ocr": "المادة 187 : يأمر القاضى بإيداع المستند المطعون\r\nالمواد 165 و 167 إلى 170 و174 من هذا القانون.\r\n\r\nالمادة 188 : إذا قضى الحكم بثبوت التزوير. تطبق\r\nع ما ‎١‏ ) > د0م1ه5 ؟ ب\r\n"
               },
               {
                 "evidenceId": "a2008021-018-right",
@@ -11677,11 +11680,11 @@
                   0,
                   1023,
                   1068,
-                  1456
+                  1451
                 ],
                 "scale": 2,
-                "imageSha256": "6b6b6f8056eb30ec559ecc33481dc7e973b729e0c7e3c3e42a703b2640a06fdd",
-                "ocr": "المادة 187 : يمر القاضى بإيداع المستند المطعون\r\nفيه بالتزوير لدى أمانة الضيبط خلال أجل لا يتعدى\r\n\r\nالمادة 188 : إذا قضى الحكم بثبوت التزوير. تطبق\r\n؟ »ا ١ا١!)‏ + 1973 5؟_ ل\r\n"
+                "imageSha256": "c28390c4680a063d800b0a95db3188c30b65d91d4ef4a741ceb969fd9f5557ec",
+                "ocr": "المادة 187 : يمر القاضى بإيداع المستند المطعون\r\nالمادة 188 : إذا قضى الحكم بثبوت التزوير. تطبق\r\n6 )ا )!)]!) »> 710727 ؟ ا\r\n"
               }
             ],
             "confirmed": false
@@ -11689,18 +11692,14 @@
         },
         {
           "kind": "unconfirmed",
-          "canonical": "عليها في المواد165 و167",
+          "canonical": "عليها في",
           "at": 25,
           "streams": {
             "tesseract": [
               "miss",
-              "miss",
-              "miss",
               "miss"
             ],
             "ppocr": [
-              "miss",
-              "miss",
               "miss",
               "miss"
             ]
@@ -11713,11 +11712,11 @@
                   0,
                   1023,
                   1068,
-                  1456
+                  1451
                 ],
                 "scale": 1,
-                "imageSha256": "e42b14cc1f4b4193f1ee8f5b6b13a234adf52b86aec881bc9208b59fcbc6d159",
-                "ocr": "المادة 187 : يأمر القاضى بإيداع المستند المطعون\r\nالمواد 165 و 167 إلى 170 و174 من هذا القانون.\r\n\r\nالمادة 188 : إذا قضى الحكم بثبوت التزوير. تطبق\r\n»ا ‎)!١١‏ - د19 5ك _ ل\r\n"
+                "imageSha256": "6247672b921072e6c8bc3037db0272514f185e98253626e8f746a78813fb76bf",
+                "ocr": "المادة 187 : يأمر القاضى بإيداع المستند المطعون\r\nالمواد 165 و 167 إلى 170 و174 من هذا القانون.\r\n\r\nالمادة 188 : إذا قضى الحكم بثبوت التزوير. تطبق\r\nع ما ‎١‏ ) > د0م1ه5 ؟ ب\r\n"
               },
               {
                 "evidenceId": "a2008021-018-right",
@@ -11725,11 +11724,53 @@
                   0,
                   1023,
                   1068,
+                  1451
+                ],
+                "scale": 2,
+                "imageSha256": "c28390c4680a063d800b0a95db3188c30b65d91d4ef4a741ceb969fd9f5557ec",
+                "ocr": "المادة 187 : يمر القاضى بإيداع المستند المطعون\r\nالمادة 188 : إذا قضى الحكم بثبوت التزوير. تطبق\r\n6 )ا )!)]!) »> 710727 ؟ ا\r\n"
+              }
+            ],
+            "confirmed": false
+          }
+        },
+        {
+          "kind": "unconfirmed",
+          "canonical": "و167",
+          "at": 29,
+          "streams": {
+            "tesseract": [
+              "split"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          },
+          "reread": {
+            "readings": [
+              {
+                "evidenceId": "a2008021-018-right",
+                "box": [
+                  0,
+                  1222,
+                  1068,
+                  1456
+                ],
+                "scale": 1,
+                "imageSha256": "19ff453bbb6730c4c86ef93ef7506807a8b61624ab50e9d15a25eb5215d69574",
+                "ocr": "اي زر اذ الها ‎١١‏ بدقاااالكتكة ‏ اف - عا ا لضا ا لاطا ب\r\nالمواد 165 و 167 إلى 170 و174 من هذا القانون.\r\n\r\nالمادة 188 : إذا قضى الحكم بثبوت التزوير. تطبق\r\n»ا ‎)!١١‏ - د19 5ك _ ل\r\n"
+              },
+              {
+                "evidenceId": "a2008021-018-right",
+                "box": [
+                  0,
+                  1222,
+                  1068,
                   1456
                 ],
                 "scale": 2,
-                "imageSha256": "6b6b6f8056eb30ec559ecc33481dc7e973b729e0c7e3c3e42a703b2640a06fdd",
-                "ocr": "المادة 187 : يمر القاضى بإيداع المستند المطعون\r\nفيه بالتزوير لدى أمانة الضيبط خلال أجل لا يتعدى\r\n\r\nالمادة 188 : إذا قضى الحكم بثبوت التزوير. تطبق\r\n؟ »ا ١ا١!)‏ + 1973 5؟_ ل\r\n"
+                "imageSha256": "acb5ec77d23b0ba7282028a9f019d01874f26a2b8523d8f3d918fbea3f8bb3dc",
+                "ocr": "اق 2ل د اليا ‎١١‏ ث ااه\" | ز لاطلااف - لاا ل لاعت اها اي\r\nالمادة 188 : إذا قضى الحكم بثبوت التزوير؛ء تطبق\r\n؟ »ا ١ا١!)‏ + 1973 5؟_ ل\r\n"
               }
             ],
             "confirmed": false
@@ -11738,7 +11779,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "و174",
-          "at": 31,
+          "at": 32,
           "streams": {
             "tesseract": [
               "miss"
@@ -13244,9 +13285,9 @@
     {
       "number": "210",
       "agrees": true,
-      "canonicalTokens": 47,
+      "canonicalTokens": 48,
       "confirmedBy": {
-        "tesseract": 44,
+        "tesseract": 45,
         "ppocr": 40
       },
       "disagreements": [],
@@ -14770,15 +14811,15 @@
     {
       "number": "235",
       "agrees": false,
-      "canonicalTokens": 18,
+      "canonicalTokens": 19,
       "confirmedBy": {
-        "tesseract": 15,
+        "tesseract": 16,
         "ppocr": 9
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
-          "canonical": "234 و 238من",
+          "canonical": "234 و 238",
           "at": 8,
           "streams": {
             "tesseract": [
@@ -14800,11 +14841,11 @@
                   0,
                   2228,
                   1054,
-                  2511
+                  2456
                 ],
                 "scale": 1,
-                "imageSha256": "c481748cdbd4268cded12d85d276c1745aae25e0b8d170ba8a40538707538bdd",
-                "ocr": "المادة 235 : تطبق المواد من 231 إلى 234و238 من\r\nهذا القانون على التنازل المتعلق بالاستئناف\r\nوالمعارضة والطعن بالنقض.\r\n\r\n7 ‏بين‎ )] - )!)! . 0-3 ).! ٠١.٠ ٠ )) ‏داج”*‎ . 337 * ) ))\r\n"
+                "imageSha256": "6cfcf501064099a01290161fa5202cfe38ebe967348c2cb04022b44b48797378",
+                "ocr": "المادة 235 : تطبق المواد من 231 إلى 234و238 من\r\nهذا القانون على التنازل المتعلق بالاستئناف\r\nوالمعارضة والطعن بالنقض.\r\n"
               },
               {
                 "evidenceId": "a2008021-020-left",
@@ -14812,11 +14853,11 @@
                   0,
                   2228,
                   1054,
-                  2511
+                  2456
                 ],
                 "scale": 2,
-                "imageSha256": "24490f25fc8e259827e81efee3c5d85ad9b0ff32b0bf7d24c6a5efe97f3cb85c",
-                "ocr": "المادة 235: تطبق المواد من 231 إلى 234و238 من\r\nهذا القانون على التنازل المتعلق بالاستئناف\r\nوالمعارضة والطعن بالنقض.\r\n\r\n7 ‏ين‎ )] -  )!! . 0-000)! ١.! ٠١ ٠ ١ ‏37د . اج”‎ > !)\r\n"
+                "imageSha256": "2be220a4b2966017c9955cd830ae8d6ec4fb0767d3610795ce0e3a92caa30f34",
+                "ocr": "المادة 235: تطبق المواد من 231 إلى 234و238 من\r\nهذا القانون على التنازل المتعلق بالاستئناف\r\nوالمعارضة والطعن بالنقض.\r\n"
               }
             ],
             "confirmed": false
@@ -15226,16 +15267,16 @@
     {
       "number": "241",
       "agrees": false,
-      "canonicalTokens": 127,
+      "canonicalTokens": 128,
       "confirmedBy": {
-        "tesseract": 61,
+        "tesseract": 62,
         "ppocr": 118
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "-",
-          "at": 65,
+          "at": 66,
           "streams": {
             "tesseract": [
               "miss"
@@ -15277,7 +15318,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "-",
-          "at": 116,
+          "at": 117,
           "streams": {
             "tesseract": [
               "miss"
@@ -16731,16 +16772,16 @@
     {
       "number": "260",
       "agrees": false,
-      "canonicalTokens": 98,
+      "canonicalTokens": 99,
       "confirmedBy": {
-        "tesseract": 71,
+        "tesseract": 72,
         "ppocr": 78
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "3 -",
-          "at": 43,
+          "at": 44,
           "streams": {
             "tesseract": [
               "miss",
@@ -17560,16 +17601,16 @@
     {
       "number": "275",
       "agrees": false,
-      "canonicalTokens": 16,
+      "canonicalTokens": 17,
       "confirmedBy": {
-        "tesseract": 12,
+        "tesseract": 13,
         "ppocr": 13
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "باسم الشعب الجزائري",
-          "at": 16,
+          "at": 17,
           "streams": {
             "tesseract": [
               "miss",
@@ -17645,16 +17686,16 @@
     {
       "number": "276",
       "agrees": false,
-      "canonicalTokens": 93,
+      "canonicalTokens": 94,
       "confirmedBy": {
-        "tesseract": 61,
+        "tesseract": 62,
         "ppocr": 79
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "-",
-          "at": 51,
+          "at": 52,
           "streams": {
             "tesseract": [
               "miss"
@@ -17696,7 +17737,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "7 -",
-          "at": 72,
+          "at": 73,
           "streams": {
             "tesseract": [
               "miss",
@@ -17740,7 +17781,7 @@
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 95,
+          "at": 96,
           "streams": {
             "tesseract": [
               "miss"
@@ -18472,9 +18513,9 @@
     {
       "number": "284",
       "agrees": true,
-      "canonicalTokens": 11,
+      "canonicalTokens": 12,
       "confirmedBy": {
-        "tesseract": 11,
+        "tesseract": 12,
         "ppocr": 10
       },
       "disagreements": [],
@@ -19949,16 +19990,16 @@
     {
       "number": "306",
       "agrees": false,
-      "canonicalTokens": 105,
+      "canonicalTokens": 106,
       "confirmedBy": {
-        "tesseract": 75,
+        "tesseract": 76,
         "ppocr": 98
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "2 -",
-          "at": 67,
+          "at": 68,
           "streams": {
             "tesseract": [
               "miss",
@@ -20002,7 +20043,7 @@
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 107,
+          "at": 108,
           "streams": {
             "tesseract": [
               "miss"
@@ -22717,9 +22758,9 @@
     {
       "number": "346",
       "agrees": true,
-      "canonicalTokens": 38,
+      "canonicalTokens": 39,
       "confirmedBy": {
-        "tesseract": 28,
+        "tesseract": 29,
         "ppocr": 38
       },
       "disagreements": [],
@@ -23262,16 +23303,16 @@
     {
       "number": "353",
       "agrees": false,
-      "canonicalTokens": 85,
+      "canonicalTokens": 86,
       "confirmedBy": {
-        "tesseract": 76,
+        "tesseract": 77,
         "ppocr": 83
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 62,
+          "at": 63,
           "streams": {
             "tesseract": [
               "miss"
@@ -23549,7 +23590,7 @@
     {
       "number": "358",
       "agrees": false,
-      "canonicalTokens": 224,
+      "canonicalTokens": 225,
       "confirmedBy": {
         "tesseract": 165,
         "ppocr": 195
@@ -23557,8 +23598,74 @@
       "disagreements": [
         {
           "kind": "unconfirmed",
+          "canonical": ":",
+          "at": 16,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          },
+          "reread": {
+            "readings": [
+              {
+                "evidenceId": "a2008021-030-right",
+                "box": [
+                  0,
+                  3011,
+                  1068,
+                  3203
+                ],
+                "scale": 1,
+                "imageSha256": "b7a107cff2aea86acbd03cd704ab267892a270d623a803a76689034b65c53115",
+                "ocr": "المادة 8: لا يبنى الطعن بالنقض إلا على وجه\r\nواحد أو أكثر من الأوجه الآتية :\r\n"
+              },
+              {
+                "evidenceId": "a2008021-030-right",
+                "box": [
+                  0,
+                  3011,
+                  1068,
+                  3203
+                ],
+                "scale": 2,
+                "imageSha256": "73f1befdabb12c8b986824ab4ee55ed9effdc4d1ba0b7e912b69374b87808602",
+                "ocr": "المادة 358 : لا يبنى الطعن بالنقض إلا على وجه\r\n"
+              },
+              {
+                "evidenceId": "a2008021-030-left",
+                "box": [
+                  0,
+                  0,
+                  1054,
+                  404
+                ],
+                "scale": 1,
+                "imageSha256": "b9251b64b3ca5b4288e55e8016958619102eb136ee1819484459962c04c01b64",
+                "ocr": "ل 7 ربيع الثاني عام 1429ه\r\nمزائرية / العدد 21 3 أبريل سنة 2008 م\r\n\r\n1 - مخالفة قاعدة جوهرية فى الإجراءات؛\r\n\r\n2- إغفال الأشكال الجوهرية للإجراءات؛\r\n"
+              },
+              {
+                "evidenceId": "a2008021-030-left",
+                "box": [
+                  0,
+                  0,
+                  1054,
+                  404
+                ],
+                "scale": 2,
+                "imageSha256": "4966e5f1528c87b159001e7dddede95843d3a10172afb3cd0031332619af7203",
+                "ocr": "7 ربيع الثاني عام 1429 ه\r\nزائرية 21 :\r\nمزائرية / العدد 3 أبريل سنة 2008 م\r\n1- مخالفة قاعدة جوهرية فى إ لإجرا ءات؛\r\n"
+              }
+            ],
+            "confirmed": true
+          }
+        },
+        {
+          "kind": "unconfirmed",
           "canonical": "2 -",
-          "at": 23,
+          "at": 24,
           "streams": {
             "tesseract": [
               "miss",
@@ -23602,7 +23709,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "10",
-          "at": 64,
+          "at": 65,
           "streams": {
             "tesseract": [
               "miss"
@@ -23644,7 +23751,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "12",
-          "at": 74,
+          "at": 75,
           "streams": {
             "tesseract": [
               "miss"
@@ -23686,7 +23793,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "14",
-          "at": 130,
+          "at": 131,
           "streams": {
             "tesseract": [
               "miss"
@@ -23728,7 +23835,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "16",
-          "at": 199,
+          "at": 200,
           "streams": {
             "tesseract": [
               "miss"
@@ -23770,7 +23877,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "18",
-          "at": 218,
+          "at": 219,
           "streams": {
             "tesseract": [
               "miss"
@@ -23812,7 +23919,7 @@
         {
           "kind": "extra-in-all-streams",
           "canonical": "",
-          "at": 217,
+          "at": 218,
           "ocr": [
             "8"
           ]
@@ -23820,7 +23927,7 @@
         {
           "kind": "extra-in-all-streams",
           "canonical": "",
-          "at": 218,
+          "at": 219,
           "ocr": [
             "8"
           ]
@@ -25183,13 +25290,56 @@
     },
     {
       "number": "379",
-      "agrees": true,
-      "canonicalTokens": 7,
+      "agrees": false,
+      "canonicalTokens": 8,
       "confirmedBy": {
         "tesseract": 6,
         "ppocr": 7
       },
-      "disagreements": [],
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 10,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          },
+          "reread": {
+            "readings": [
+              {
+                "evidenceId": "a2008021-032-left",
+                "box": [
+                  0,
+                  186,
+                  1054,
+                  405
+                ],
+                "scale": 1,
+                "imageSha256": "b919e6cc83576f8a77695e8bdcf929cb2a7dae1cb58bf1c6897e921e53e5c47d",
+                "ocr": "المادة 379 : لا تقبل المعارضة فى قرارات المحكمة\r\n)+ ااا -\r\n"
+              },
+              {
+                "evidenceId": "a2008021-032-left",
+                "box": [
+                  0,
+                  186,
+                  1054,
+                  405
+                ],
+                "scale": 2,
+                "imageSha256": "7900b2e8eab15f48da9ae3cb4caf9a7290729889b639fdb643157cb084b8579a",
+                "ocr": "المادة 379 : لا تقبل المعارضة فى قرارات المحكمة\r\nالعليا.\r\n)+ !)ا -\r\n"
+              }
+            ],
+            "confirmed": true
+          }
+        }
+      ],
       "located": {
         "tesseract": [
           14310,
@@ -25197,12 +25347,12 @@
         ],
         "ppocr": [
           13546,
-          13557
+          13558
         ]
       },
       "ocr": {
         "tesseract": "المادة 379 : لا تقبل المعارضة فى قرارات المحكمة",
-        "ppocr": "المادة لا تقبل المعارضة في قرارات المحكمة العليا القسم الثاني في"
+        "ppocr": "المادة لا تقبل المعارضة في قرارات المحكمة العليا القسم الثاني في اعتراض"
       },
       "regions": [
         {
@@ -25837,16 +25987,16 @@
     {
       "number": "392",
       "agrees": false,
-      "canonicalTokens": 69,
+      "canonicalTokens": 70,
       "confirmedBy": {
-        "tesseract": 44,
+        "tesseract": 45,
         "ppocr": 64
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "2 - إذا",
-          "at": 45,
+          "at": 46,
           "streams": {
             "tesseract": [
               "miss",
@@ -25892,7 +26042,7 @@
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 71,
+          "at": 72,
           "streams": {
             "tesseract": [
               "miss"
@@ -26783,7 +26933,7 @@
     {
       "number": "407",
       "agrees": false,
-      "canonicalTokens": 150,
+      "canonicalTokens": 151,
       "confirmedBy": {
         "tesseract": 106,
         "ppocr": 130
@@ -26791,8 +26941,50 @@
       "disagreements": [
         {
           "kind": "unconfirmed",
+          "canonical": ":",
+          "at": 14,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          },
+          "reread": {
+            "readings": [
+              {
+                "evidenceId": "a2008021-034-left",
+                "box": [
+                  0,
+                  1668,
+                  1054,
+                  2051
+                ],
+                "scale": 1,
+                "imageSha256": "630e425d1c0ca2e4d4bd9d085f0a0a99bb17590a8a30b2b67bc3d8f9edbe943b",
+                "ocr": "المادة 407: يجب أن يتضمن محضر التبليغ\r\n1- اسم ولقب المحعضر القضائي وعنوانه المهني\r\n؛73 ) دز انعا ‎١‏ لها ا لز ل ا م )_ «* ب\r\n"
+              },
+              {
+                "evidenceId": "a2008021-034-left",
+                "box": [
+                  0,
+                  1668,
+                  1054,
+                  2051
+                ],
+                "scale": 2,
+                "imageSha256": "e01e70c7f2f3c50ce011541748b809b2662ce5b01cebfa3f1af144d8f0b5fcdf",
+                "ocr": "73 > ] -.+ء |] .» !)إ- ‎0٠١‏ !إإ ‎١‏ ءءء 0 أ م\r\n"
+              }
+            ],
+            "confirmed": true
+          }
+        },
+        {
+          "kind": "unconfirmed",
           "canonical": ".",
-          "at": 24,
+          "at": 25,
           "streams": {
             "tesseract": [
               "miss"
@@ -26834,7 +27026,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "6 -",
-          "at": 89,
+          "at": 90,
           "streams": {
             "tesseract": [
               "miss",
@@ -26878,7 +27070,7 @@
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 152,
+          "at": 153,
           "streams": {
             "tesseract": [
               "miss"
@@ -28063,7 +28255,7 @@
     {
       "number": "423",
       "agrees": false,
-      "canonicalTokens": 59,
+      "canonicalTokens": 60,
       "confirmedBy": {
         "tesseract": 35,
         "ppocr": 51
@@ -28071,14 +28263,16 @@
       "disagreements": [
         {
           "kind": "unconfirmed",
-          "canonical": "1 -",
+          "canonical": ": 1 -",
           "at": 12,
           "streams": {
             "tesseract": [
               "miss",
+              "miss",
               "miss"
             ],
             "ppocr": [
+              "miss",
               "miss",
               "miss"
             ]
@@ -28316,16 +28510,16 @@
     {
       "number": "426",
       "agrees": false,
-      "canonicalTokens": 112,
+      "canonicalTokens": 113,
       "confirmedBy": {
-        "tesseract": 82,
+        "tesseract": 83,
         "ppocr": 98
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "-",
-          "at": 8,
+          "at": 9,
           "streams": {
             "tesseract": [
               "miss"
@@ -28340,24 +28534,24 @@
                 "evidenceId": "a2008021-036-left",
                 "box": [
                   0,
-                  1242,
+                  1252,
                   1054,
                   1624
                 ],
                 "scale": 1,
-                "imageSha256": "76ba8482dd88957f813c0026c798a48ed76eb07d6ba15c1ebd43c81908562bba",
+                "imageSha256": "cc69ee28c3a6a6716a24fd44551d6c4227a6c54ba2513479fd243d55598b42bf",
                 "ocr": "المادة 426 : تكون المحكمة مختصة إقليميا :\r\nموطن المدعى عليه.\r\n\r\n2- في موضوع إثبات الزواج بمكان وجود موطن\r\nالمدعى عليه؛\r\n"
               },
               {
                 "evidenceId": "a2008021-036-left",
                 "box": [
                   0,
-                  1242,
+                  1252,
                   1054,
                   1624
                 ],
                 "scale": 2,
-                "imageSha256": "eebb20a8ca5d59db26a838dfd4761bd80c46fda87596566abc5a6dbb288e3d05",
+                "imageSha256": "0300abe33599cf517cb30406f576958fddddcb127213dbe4452f2f66f4553eaa",
                 "ocr": "المادة 426 : تكون المحكمة مختصة إقليميا :\r\n1- في موضوع العدول عن الخطبة بمكان وجود\r\n2- في موضوع إثبات الزواج بمكان وجود موطن\r\n"
               }
             ],
@@ -28367,7 +28561,7 @@
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 50,
+          "at": 51,
           "streams": {
             "tesseract": [
               "miss"
@@ -28409,7 +28603,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "-",
-          "at": 96,
+          "at": 97,
           "streams": {
             "tesseract": [
               "miss"
@@ -28577,7 +28771,7 @@
     {
       "number": "429",
       "agrees": false,
-      "canonicalTokens": 63,
+      "canonicalTokens": 64,
       "confirmedBy": {
         "tesseract": 42,
         "ppocr": 53
@@ -28585,14 +28779,16 @@
       "disagreements": [
         {
           "kind": "unconfirmed",
-          "canonical": "ما يأتي",
+          "canonical": "ما يأتي :",
           "at": 8,
           "streams": {
             "tesseract": [
               "miss",
+              "miss",
               "miss"
             ],
             "ppocr": [
+              "miss",
               "miss",
               "miss"
             ]
@@ -28630,7 +28826,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "3",
-          "at": 29,
+          "at": 30,
           "streams": {
             "tesseract": [
               "miss"
@@ -28672,7 +28868,7 @@
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 65,
+          "at": 66,
           "streams": {
             "tesseract": [
               "miss"
@@ -30188,9 +30384,9 @@
     {
       "number": "452",
       "agrees": false,
-      "canonicalTokens": 15,
+      "canonicalTokens": 16,
       "confirmedBy": {
-        "tesseract": 10,
+        "tesseract": 11,
         "ppocr": 9
       },
       "disagreements": [
@@ -30284,16 +30480,16 @@
       "located": {
         "tesseract": [
           17211,
-          17232
+          17233
         ],
         "ppocr": [
           16329,
-          16349
+          16350
         ]
       },
       "ocr": {
-        "tesseract": "المادة 452 : لا يوقف الطعن بالنقض تنفيذ أحكام لطلاق ا لمنصوصضص عليها فى ا لمادتين 450 جا 1 45 أعلاه",
-        "ppocr": "الأسرة المادة لا يوقف الطعن بالنقض تنفيذ أحكام الطلاق المنصوص عليهافيالمادتينوأعلاه القسم الرابع في إجراءات الولاية الفرع الأول في الولاية"
+        "tesseract": "المادة 452 : لا يوقف الطعن بالنقض تنفيذ أحكام لطلاق ا لمنصوصضص عليها فى ا لمادتين 450 جا 1 45 أعلاه .",
+        "ppocr": "الأسرة المادة لا يوقف الطعن بالنقض تنفيذ أحكام الطلاق المنصوص عليهافيالمادتينوأعلاه القسم الرابع في إجراءات الولاية الفرع الأول في الولاية على"
       },
       "regions": [
         {
@@ -30351,16 +30547,16 @@
     {
       "number": "454",
       "agrees": false,
-      "canonicalTokens": 52,
+      "canonicalTokens": 53,
       "confirmedBy": {
-        "tesseract": 32,
+        "tesseract": 33,
         "ppocr": 46
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "1 -",
-          "at": 15,
+          "at": 16,
           "streams": {
             "tesseract": [
               "miss",
@@ -30377,25 +30573,25 @@
                 "evidenceId": "a2008021-038-left",
                 "box": [
                   0,
-                  1231,
+                  1241,
                   1054,
                   1606
                 ],
                 "scale": 1,
-                "imageSha256": "afd8be21397ecd0284e9df2cdb217d0abe22c37d3beefe8f8f9ecf8cdd1de34c",
-                "ocr": "ااا ا ‎١١‏ | ساطفا: _ ااا اا تان اننا كا وا ا ا\r\nالوالدين أو ممثل النيابة العامة :\r\nفائدة فى سماعه.؛\r\n2-سماع القاصر مالم يكن سنه أو حالته\r\nلح ب ‎١‏ | أ\r\n"
+                "imageSha256": "e6dcbb5c9043c75802de63f3b3f8388bd53c4fb3fe8c331dab10ace5a7918708",
+                "ocr": "الوالدين أو ممثل النيابة العامة :\r\nفائدة فى سماعه.؛\r\n\r\n2-سماع القاصر ما لم يكن سنه أو حالته\r\nلح ب ‎١‏ | أ\r\n"
               },
               {
                 "evidenceId": "a2008021-038-left",
                 "box": [
                   0,
-                  1231,
+                  1241,
                   1054,
                   1606
                 ],
                 "scale": 2,
-                "imageSha256": "4f828cfafe6585a751eddb77f2c24e482af36507c05561b188e1a05bda48385c",
-                "ocr": "‎١ 1‏ للا ‎١‏ ملافا ال ل . ا لا أب ل[|- اللا الها ا\r\nالوالدين أو ممثل النيابة العامة :\r\nفائدة فى سماعه؛\r\nتح ‎١‏ | أ\r\n"
+                "imageSha256": "3d1911919052529492630d6b90ce159c085de1d24b83aa7f101c1e0cfbba017d",
+                "ocr": "الوالدين أو ممثل النيابة العامة :\r\nفائدة فى سماعه؛\r\nتح ‎١‏ | أ\r\n"
               }
             ],
             "confirmed": false
@@ -30472,9 +30668,9 @@
     {
       "number": "456",
       "agrees": true,
-      "canonicalTokens": 36,
+      "canonicalTokens": 37,
       "confirmedBy": {
-        "tesseract": 36,
+        "tesseract": 37,
         "ppocr": 29
       },
       "disagreements": [],
@@ -30548,16 +30744,16 @@
     {
       "number": "458",
       "agrees": false,
-      "canonicalTokens": 40,
+      "canonicalTokens": 41,
       "confirmedBy": {
-        "tesseract": 26,
+        "tesseract": 27,
         "ppocr": 38
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 42,
+          "at": 43,
           "streams": {
             "tesseract": [
               "miss"
@@ -31834,16 +32030,16 @@
     {
       "number": "477",
       "agrees": true,
-      "canonicalTokens": 16,
+      "canonicalTokens": 17,
       "confirmedBy": {
-        "tesseract": 12,
+        "tesseract": 13,
         "ppocr": 16
       },
       "disagreements": [],
       "located": {
         "tesseract": [
           17988,
-          18010
+          18011
         ],
         "ppocr": [
           17079,
@@ -31851,7 +32047,7 @@
         ]
       },
       "ocr": {
-        "tesseract": "المادة 477 : ترفع المنازعات المتعلقة بحسابات ا لولاية من قبل ا لقاصرء يعد بلوغه أو ترشيده أمام قاضي شؤون ا لأسرة",
+        "tesseract": "المادة 477 : ترفع المنازعات المتعلقة بحسابات ا لولاية من قبل ا لقاصرء يعد بلوغه أو ترشيده أمام قاضي شؤون ا لأسرة .",
         "ppocr": "الأسرة المادة ترفع المنازعات المتعلقة بحسابات الولاية من قبل القاصر، بعد بلوغه أو ترشيده، أمام قاضي شؤون الأسرة المادة"
       },
       "regions": [
@@ -32212,9 +32408,9 @@
     {
       "number": "485",
       "agrees": true,
-      "canonicalTokens": 16,
+      "canonicalTokens": 17,
       "confirmedBy": {
-        "tesseract": 2,
+        "tesseract": 3,
         "ppocr": 16
       },
       "disagreements": [],
@@ -32440,25 +32636,25 @@
     {
       "number": "491",
       "agrees": true,
-      "canonicalTokens": 18,
+      "canonicalTokens": 19,
       "confirmedBy": {
-        "tesseract": 13,
+        "tesseract": 14,
         "ppocr": 17
       },
       "disagreements": [],
       "located": {
         "tesseract": [
           18382,
-          18415
+          18416
         ],
         "ppocr": [
           17441,
-          17461
+          17462
         ]
       },
       "ocr": {
-        "tesseract": "المادة 491 : ينظر فى الدعاوى المتعلقة بالمنازعات 1 1 مو ص ع ٠ ‏ ًّ 1 فى ا لمادة 490 أعلاه ْ بيحضور ممثل النيابة العامة وفى جلسة سرية . في إجراءات",
-        "ppocr": "المادة ينظر في الدعاوى المتعلقة بالمنازعات المنصوص عليهافي المادة أعلاه، بحضور ممثل النيابة العامة وفي جلسة سرية القسم السادس في"
+        "tesseract": "المادة 491 : ينظر فى الدعاوى المتعلقة بالمنازعات 1 1 مو ص ع ٠ ‏ ًّ 1 فى ا لمادة 490 أعلاه ْ بيحضور ممثل النيابة العامة وفى جلسة سرية . في إجراءات الكفالة",
+        "ppocr": "المادة ينظر في الدعاوى المتعلقة بالمنازعات المنصوص عليهافي المادة أعلاه، بحضور ممثل النيابة العامة وفي جلسة سرية القسم السادس في إجراءات"
       },
       "regions": [
         {
@@ -32474,6 +32670,11 @@
       "labelTokens": 2,
       "boundaryExtrasDropped": [
         [
+          "اجراءات",
+          "في"
+        ],
+        [
+          "اجراءات",
           "في"
         ]
       ],
@@ -32854,16 +33055,16 @@
     {
       "number": "500",
       "agrees": false,
-      "canonicalTokens": 59,
+      "canonicalTokens": 60,
       "confirmedBy": {
-        "tesseract": 41,
+        "tesseract": 42,
         "ppocr": 48
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "-",
-          "at": 19,
+          "at": 20,
           "streams": {
             "tesseract": [
               "miss"
@@ -32905,7 +33106,7 @@
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 61,
+          "at": 62,
           "streams": {
             "tesseract": [
               "miss"
@@ -33431,16 +33632,16 @@
     {
       "number": "508",
       "agrees": false,
-      "canonicalTokens": 48,
+      "canonicalTokens": 49,
       "confirmedBy": {
-        "tesseract": 38,
+        "tesseract": 39,
         "ppocr": 42
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 50,
+          "at": 51,
           "streams": {
             "tesseract": [
               "miss"
@@ -33736,7 +33937,7 @@
       "located": {
         "tesseract": [
           18993,
-          19008
+          19005
         ],
         "ppocr": [
           18033,
@@ -33744,7 +33945,7 @@
         ]
       },
       "ocr": {
-        "tesseract": "المادة 511 : ينظر القسم العقاري فى المتازعات المتعلقة بالأملاك العقارية . في القضايا الآتية",
+        "tesseract": "المادة 511 : ينظر القسم العقاري فى المتازعات المتعلقة بالأملاك العقارية .",
         "ppocr": "القسم العقاري المادة ينظر القسم العقاري في المنازعات المتعلقة بالأملاك العقارية المادة"
       },
       "regions": [
@@ -33753,8 +33954,8 @@
           "box": [
             52,
             2551,
-            1028,
-            2846
+            1026,
+            2660
           ]
         }
       ],
@@ -33765,16 +33966,16 @@
     {
       "number": "512",
       "agrees": false,
-      "canonicalTokens": 91,
+      "canonicalTokens": 92,
       "confirmedBy": {
-        "tesseract": 74,
+        "tesseract": 75,
         "ppocr": 77
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "-",
-          "at": 22,
+          "at": 23,
           "streams": {
             "tesseract": [
               "miss"
@@ -33816,7 +34017,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "10",
-          "at": 81,
+          "at": 82,
           "streams": {
             "tesseract": [
               "miss"
@@ -35320,7 +35521,7 @@
     {
       "number": "540",
       "agrees": false,
-      "canonicalTokens": 83,
+      "canonicalTokens": 84,
       "confirmedBy": {
         "tesseract": 47,
         "ppocr": 70
@@ -35328,8 +35529,50 @@
       "disagreements": [
         {
           "kind": "unconfirmed",
+          "canonical": ":",
+          "at": 15,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          },
+          "reread": {
+            "readings": [
+              {
+                "evidenceId": "a2008021-044-left",
+                "box": [
+                  0,
+                  184,
+                  1054,
+                  543
+                ],
+                "scale": 1,
+                "imageSha256": "50f3cc8e586cf608ed6344df936a385a7efb74fcd15869a265b5aeb91fb97d06",
+                "ocr": "المادة 540 : يجب أن تتضمن عريضة الاستئناف.\r\nتحت طائلة عدم قبولها شكلاء البيانات الآتية :\r\n\r\n1- الجهة القضائية التى أصدرت الحكم المستأتنف.\r\n\r\n2- اسم ولقب وموطن المستأنف.\r\n\r\n3- اسم » لقب » موطر المستائف عليهة ‎١١٠١‏ لد +\r\n"
+              },
+              {
+                "evidenceId": "a2008021-044-left",
+                "box": [
+                  0,
+                  184,
+                  1054,
+                  543
+                ],
+                "scale": 2,
+                "imageSha256": "c463899ad20b8dabffa7f303cd96aabbf5bb3e3dea8a7e73aadab23ed1e9e459",
+                "ocr": "المادة 540 : يجب أن تتضمن عريضة الاستئناف,؛\r\nتحت طائلة عدم قبولها شكلاء البيانات الآتية :\r\n\r\n1- الجهة القضائية التي أصدرت الحكم المستأنف؛\r\n\r\n2- اسم و لقب وموطن المستأنف؛\r\n\r\n3 - اسم : لقب » موط:؛ المستائف عليه ‎١-١٠١‏ لو بك +\r\n"
+              }
+            ],
+            "confirmed": true
+          }
+        },
+        {
+          "kind": "unconfirmed",
           "canonical": "2 -",
-          "at": 23,
+          "at": 24,
           "streams": {
             "tesseract": [
               "miss",
@@ -35373,7 +35616,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "3 -",
-          "at": 29,
+          "at": 30,
           "streams": {
             "tesseract": [
               "miss",
@@ -36108,10 +36351,10 @@
     {
       "number": "552",
       "agrees": true,
-      "canonicalTokens": 16,
+      "canonicalTokens": 17,
       "confirmedBy": {
-        "tesseract": 15,
-        "ppocr": 16
+        "tesseract": 16,
+        "ppocr": 15
       },
       "disagreements": [],
       "located": {
@@ -36146,16 +36389,16 @@
     {
       "number": "553",
       "agrees": false,
-      "canonicalTokens": 91,
+      "canonicalTokens": 92,
       "confirmedBy": {
-        "tesseract": 67,
+        "tesseract": 68,
         "ppocr": 75
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "في",
-          "at": 23,
+          "at": 24,
           "streams": {
             "tesseract": [
               "miss"
@@ -36197,7 +36440,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "-",
-          "at": 46,
+          "at": 47,
           "streams": {
             "tesseract": [
               "miss"
@@ -36263,7 +36506,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "7 -",
-          "at": 54,
+          "at": 55,
           "streams": {
             "tesseract": [
               "miss",
@@ -37228,16 +37471,16 @@
     {
       "number": "562",
       "agrees": false,
-      "canonicalTokens": 118,
+      "canonicalTokens": 119,
       "confirmedBy": {
-        "tesseract": 77,
+        "tesseract": 78,
         "ppocr": 108
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "1 -",
-          "at": 36,
+          "at": 37,
           "streams": {
             "tesseract": [
               "miss",
@@ -37254,24 +37497,24 @@
                 "evidenceId": "a2008021-046-right",
                 "box": [
                   0,
-                  2158,
+                  2169,
                   1068,
                   2542
                 ],
                 "scale": 1,
-                "imageSha256": "d014c27790fc45f8b59ffbd45676ccc7438b68da3b159239b4bf063ed9718d6e",
+                "imageSha256": "f4171f403561bfb69d93e28ce3a73a8fb1c3e302ff570efd48d0543e773bb177",
                 "ocr": "يتضمن المحضر البيانات الآتية :\r\nيبشخص معنوي بيا ن تسميته و طبيعته و مقر هه\r\nالاجتماعى وصفة ممثله القانونى أو الاتفاقى؛\r\n\r\n2- اسم ولق وموطك ا لمطعوي ضصضدةه 0 ضد هم؛ء\r\n"
               },
               {
                 "evidenceId": "a2008021-046-right",
                 "box": [
                   0,
-                  2158,
+                  2169,
                   1068,
                   2542
                 ],
                 "scale": 2,
-                "imageSha256": "3b67c64ea3f09602966a4cd5c7d4c853835c3f80523e510c8250bfede374431b",
+                "imageSha256": "ff25a29013b59276520c62883416be9acc1245ae6498858fe2bfb6b8f42bab12",
                 "ocr": "يتضمن المحضر البيانات الآتية :\r\nيبشخص معنوي ييا نْ تسميته و طبيعته و مقر هه\r\nالاجتماعى وصفة ممثله القانونى أو الاتفاقى؛\r\n\r\n2- اسدمو لقب و موط, المطعه,ر. ضده أه ضدهم.\r\n"
               }
             ],
@@ -37281,7 +37524,7 @@
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 75,
+          "at": 76,
           "streams": {
             "tesseract": [
               "miss"
@@ -37575,7 +37818,7 @@
     {
       "number": "565",
       "agrees": false,
-      "canonicalTokens": 103,
+      "canonicalTokens": 104,
       "confirmedBy": {
         "tesseract": 56,
         "ppocr": 93
@@ -37583,16 +37826,18 @@
       "disagreements": [
         {
           "kind": "unconfirmed",
-          "canonical": "ما يأتي 1 -",
+          "canonical": "ما يأتي : 1 -",
           "at": 16,
           "streams": {
             "tesseract": [
               "miss",
               "miss",
               "miss",
+              "miss",
               "miss"
             ],
             "ppocr": [
+              "miss",
               "miss",
               "miss",
               "miss",
@@ -37632,7 +37877,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "4 -",
-          "at": 64,
+          "at": 65,
           "streams": {
             "tesseract": [
               "miss",
@@ -37715,16 +37960,16 @@
     {
       "number": "566",
       "agrees": false,
-      "canonicalTokens": 85,
+      "canonicalTokens": 86,
       "confirmedBy": {
-        "tesseract": 71,
+        "tesseract": 72,
         "ppocr": 74
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "4 -",
-          "at": 54,
+          "at": 55,
           "streams": {
             "tesseract": [
               "miss",
@@ -38357,9 +38602,9 @@
     {
       "number": "573",
       "agrees": true,
-      "canonicalTokens": 18,
+      "canonicalTokens": 19,
       "confirmedBy": {
-        "tesseract": 17,
+        "tesseract": 18,
         "ppocr": 13
       },
       "disagreements": [],
@@ -38814,9 +39059,9 @@
     {
       "number": "580",
       "agrees": true,
-      "canonicalTokens": 29,
+      "canonicalTokens": 30,
       "confirmedBy": {
-        "tesseract": 29,
+        "tesseract": 30,
         "ppocr": 23
       },
       "disagreements": [],
@@ -38990,9 +39235,9 @@
     {
       "number": "582",
       "agrees": true,
-      "canonicalTokens": 132,
+      "canonicalTokens": 133,
       "confirmedBy": {
-        "tesseract": 125,
+        "tesseract": 126,
         "ppocr": 105
       },
       "disagreements": [],
@@ -39084,7 +39329,7 @@
     {
       "number": "584",
       "agrees": false,
-      "canonicalTokens": 123,
+      "canonicalTokens": 124,
       "confirmedBy": {
         "tesseract": 82,
         "ppocr": 108
@@ -39092,14 +39337,16 @@
       "disagreements": [
         {
           "kind": "unconfirmed",
-          "canonical": "1 -",
+          "canonical": ": 1 -",
           "at": 25,
           "streams": {
             "tesseract": [
               "miss",
+              "miss",
               "miss"
             ],
             "ppocr": [
+              "miss",
               "miss",
               "miss"
             ]
@@ -39137,7 +39384,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "-",
-          "at": 41,
+          "at": 42,
           "streams": {
             "tesseract": [
               "miss"
@@ -39179,7 +39426,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "-",
-          "at": 71,
+          "at": 72,
           "streams": {
             "tesseract": [
               "miss"
@@ -39421,13 +39668,56 @@
     },
     {
       "number": "587",
-      "agrees": true,
-      "canonicalTokens": 39,
+      "agrees": false,
+      "canonicalTokens": 40,
       "confirmedBy": {
         "tesseract": 22,
         "ppocr": 37
       },
-      "disagreements": [],
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 18,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          },
+          "reread": {
+            "readings": [
+              {
+                "evidenceId": "a2008021-049-right",
+                "box": [
+                  0,
+                  1614,
+                  1068,
+                  1998
+                ],
+                "scale": 1,
+                "imageSha256": "7465e3b40c8942c36799cb09f668e577896f3a18c33ac45eb7c4e4b1734e819b",
+                "ocr": "المادة 587 : كل منازعة تتعلق بقبول الكفيل تقدم\r\nمن الخصم في أول جلسة. ويفصل فيها في الحال.\r\n\r\nإذا وقعت المنازعة. يخطر أطراف الخصومة\r\n\r\nالحكم الصادر في المنازعة واحب النفاذ رغم\r\n"
+              },
+              {
+                "evidenceId": "a2008021-049-right",
+                "box": [
+                  0,
+                  1614,
+                  1068,
+                  1998
+                ],
+                "scale": 2,
+                "imageSha256": "d7a1bae0df48564aeaeb5f187c9a341dd1fc7cda7fc76a887d69e8b2e2ec9308",
+                "ocr": "المادة 587 : كل منازعة تتعلق بقبول الكفيل تقدم\r\nمن الخصم في أول جلسة. ويفصل فيها في الحال.\r\n\r\nإذا وقعت المنازعة. يخطر أطراف الخصومة\r\n\r\nالحكم الصادر فم المتنازعة واحب النفاذ رغم\r\n"
+              }
+            ],
+            "confirmed": true
+          }
+        }
+      ],
       "located": {
         "tesseract": [
           22251,
@@ -40155,25 +40445,25 @@
     {
       "number": "599",
       "agrees": true,
-      "canonicalTokens": 36,
+      "canonicalTokens": 37,
       "confirmedBy": {
-        "tesseract": 35,
+        "tesseract": 36,
         "ppocr": 36
       },
       "disagreements": [],
       "located": {
         "tesseract": [
           22641,
-          22683
+          22684
         ],
         "ppocr": [
           21474,
-          21513
+          21514
         ]
       },
       "ocr": {
-        "tesseract": "المادة 599 : تكون مخاصمة المحاسبين المنتدبين بمعرفة القضاء أمام الجهة القضائية التي انتدبيتهم؛ وتكون مخاصمة الأوصياء أمام الجهة القضائية التي قدم إليها طلب تعيين الوصيء وتكون مخاصمة بقية الحاسبين أمام الجهة القضائية التى يوجد في دائرة اختصاصها موطنهم . الباب الرابع",
-        "ppocr": "المادة تكون مخاصمة المحاسبين المنتدبين بمعرفة القضاء أمام الجهة القضائية التي انتدبتهم، وتكون مخاصمة الأوصياء أمام الجهة القضائية التي قدم إليهاطلب تعيين الوصي، وتكون مخاصمة بقية المحاسبين أمام الجهة القضائية التي يوجد في دائرة اختصاصها موطنهم الباب الرابع أحكام"
+        "tesseract": "المادة 599 : تكون مخاصمة المحاسبين المنتدبين بمعرفة القضاء أمام الجهة القضائية التي انتدبيتهم؛ وتكون مخاصمة الأوصياء أمام الجهة القضائية التي قدم إليها طلب تعيين الوصيء وتكون مخاصمة بقية الحاسبين أمام الجهة القضائية التى يوجد في دائرة اختصاصها موطنهم . الباب الرابع أحكام",
+        "ppocr": "المادة تكون مخاصمة المحاسبين المنتدبين بمعرفة القضاء أمام الجهة القضائية التي انتدبتهم، وتكون مخاصمة الأوصياء أمام الجهة القضائية التي قدم إليهاطلب تعيين الوصي، وتكون مخاصمة بقية المحاسبين أمام الجهة القضائية التي يوجد في دائرة اختصاصها موطنهم الباب الرابع أحكام عامة"
       },
       "regions": [
         {
@@ -40182,13 +40472,19 @@
             52,
             221,
             1029,
-            693
+            778
           ]
         }
       ],
       "labelTokens": 2,
       "boundaryExtrasDropped": [
         [
+          "احكام",
+          "الباب",
+          "الرابع"
+        ],
+        [
+          "احكام",
           "الباب",
           "الرابع"
         ]
@@ -40198,9 +40494,9 @@
     {
       "number": "600",
       "agrees": false,
-      "canonicalTokens": 156,
+      "canonicalTokens": 157,
       "confirmedBy": {
-        "tesseract": 132,
+        "tesseract": 133,
         "ppocr": 132
       },
       "disagreements": [
@@ -40249,7 +40545,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "3 -",
-          "at": 32,
+          "at": 33,
           "streams": {
             "tesseract": [
               "miss",
@@ -40293,7 +40589,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "10",
-          "at": 94,
+          "at": 95,
           "streams": {
             "tesseract": [
               "miss"
@@ -40335,7 +40631,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "11",
-          "at": 108,
+          "at": 109,
           "streams": {
             "tesseract": [
               "miss"
@@ -40377,7 +40673,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "12",
-          "at": 127,
+          "at": 128,
           "streams": {
             "tesseract": [
               "miss"
@@ -40419,14 +40715,6 @@
         {
           "kind": "extra-in-all-streams",
           "canonical": "",
-          "at": 107,
-          "ocr": [
-            "1"
-          ]
-        },
-        {
-          "kind": "extra-in-all-streams",
-          "canonical": "",
           "at": 108,
           "ocr": [
             "1"
@@ -40435,7 +40723,15 @@
         {
           "kind": "extra-in-all-streams",
           "canonical": "",
-          "at": 126,
+          "at": 109,
+          "ocr": [
+            "1"
+          ]
+        },
+        {
+          "kind": "extra-in-all-streams",
+          "canonical": "",
+          "at": 127,
           "ocr": [
             "2"
           ]
@@ -40443,7 +40739,7 @@
         {
           "kind": "extra-in-all-streams",
           "canonical": "",
-          "at": 127,
+          "at": 128,
           "ocr": [
             "2"
           ]
@@ -40489,13 +40785,56 @@
     },
     {
       "number": "601",
-      "agrees": true,
-      "canonicalTokens": 144,
+      "agrees": false,
+      "canonicalTokens": 148,
       "confirmedBy": {
-        "tesseract": 104,
+        "tesseract": 107,
         "ppocr": 139
       },
-      "disagreements": [],
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": ":",
+          "at": 106,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          },
+          "reread": {
+            "readings": [
+              {
+                "evidenceId": "a2008021-050-left",
+                "box": [
+                  0,
+                  1492,
+                  1054,
+                  1719
+                ],
+                "scale": 1,
+                "imageSha256": "10aa79a17ff863796a985704bea4652c38334d7a630559174d176031d3d01559",
+                "ocr": "ب - في المواد الإدارية :\r\nالجمهورية الجزائرية الديمقراطية الشعبية. تدعو\r\nوتأمم الوونم أ الوالر أو كن المحلم الشعب”\r\n"
+              },
+              {
+                "evidenceId": "a2008021-050-left",
+                "box": [
+                  0,
+                  1492,
+                  1054,
+                  1719
+                ],
+                "scale": 2,
+                "imageSha256": "a3f7b09615fda35e3aa81d777568142dfd085cc5dfff8d85912c759d366d26b9",
+                "ocr": "الجمهورية الجزائرية الديمقراطية الشعبية.؛ تدعو\r\nوتام الوؤذؤيدر 0 الوال_- 0 نر المحلم الشعيب ”\r\n"
+              }
+            ],
+            "confirmed": false
+          }
+        }
+      ],
       "located": {
         "tesseract": [
           22862,
@@ -40523,7 +40862,7 @@
       ],
       "labelTokens": 2,
       "boundaryExtrasDropped": [],
-      "agreesAfterReread": true
+      "agreesAfterReread": false
     },
     {
       "number": "602",
@@ -40676,16 +41015,16 @@
     {
       "number": "603",
       "agrees": false,
-      "canonicalTokens": 92,
+      "canonicalTokens": 93,
       "confirmedBy": {
-        "tesseract": 49,
+        "tesseract": 50,
         "ppocr": 85
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "-",
-          "at": 39,
+          "at": 40,
           "streams": {
             "tesseract": [
               "miss"
@@ -40727,7 +41066,7 @@
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 68,
+          "at": 69,
           "streams": {
             "tesseract": [
               "miss"
@@ -40769,7 +41108,7 @@
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 82,
+          "at": 83,
           "streams": {
             "tesseract": [
               "miss"
@@ -40811,7 +41150,7 @@
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 94,
+          "at": 95,
           "streams": {
             "tesseract": [
               "miss"
@@ -41048,9 +41387,9 @@
     {
       "number": "605",
       "agrees": true,
-      "canonicalTokens": 82,
+      "canonicalTokens": 83,
       "confirmedBy": {
-        "tesseract": 77,
+        "tesseract": 78,
         "ppocr": 74
       },
       "disagreements": [],
@@ -41086,9 +41425,9 @@
     {
       "number": "606",
       "agrees": true,
-      "canonicalTokens": 69,
+      "canonicalTokens": 70,
       "confirmedBy": {
-        "tesseract": 67,
+        "tesseract": 68,
         "ppocr": 63
       },
       "disagreements": [],
@@ -41214,58 +41553,16 @@
     {
       "number": "608",
       "agrees": false,
-      "canonicalTokens": 24,
+      "canonicalTokens": 25,
       "confirmedBy": {
-        "tesseract": 22,
-        "ppocr": 20
+        "tesseract": 24,
+        "ppocr": 21
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
-          "canonical": "المادتين605",
-          "at": 9,
-          "streams": {
-            "tesseract": [
-              "split"
-            ],
-            "ppocr": [
-              "miss"
-            ]
-          },
-          "reread": {
-            "readings": [
-              {
-                "evidenceId": "a2008021-051-left",
-                "box": [
-                  0,
-                  1006,
-                  1054,
-                  1295
-                ],
-                "scale": 1,
-                "imageSha256": "793439debf8e82e506210879d5eb133246e0af0ebcfcd14c7e0a1a76b2d56401",
-                "ocr": "المادة 608 : إن العمل بالقواعد المنصوص عليها في\r\nالمادتين 605 و606 أعلاه. لا يخل بأحكام المعاهدات\r\nالدولية والاتفاقيات القضائية التي تبرم بين الجزائر\r\nوغيرها من الدول.\r\n"
-              },
-              {
-                "evidenceId": "a2008021-051-left",
-                "box": [
-                  0,
-                  1006,
-                  1054,
-                  1295
-                ],
-                "scale": 2,
-                "imageSha256": "6e55f133753d8b088d1f8f204280810de70c0da0b1bea6f96d8f0ad636b3c6ec",
-                "ocr": "المادة 608 : إن العمل بالقواعد المنصوص عليها في\r\nإ لمادتين 605 و606 أعلاد ,الا يخل بأحكام إ لمعاهد إ ت\r\nالدولية والاتفاقيات القضائية التي تبرم بين الجزائر\r\nوغيرها من الدول.\r\n"
-              }
-            ],
-            "confirmed": false
-          }
-        },
-        {
-          "kind": "unconfirmed",
           "canonical": "أعلاه،",
-          "at": 11,
+          "at": 12,
           "streams": {
             "tesseract": [
               "miss"
@@ -41605,7 +41902,7 @@
     {
       "number": "613",
       "agrees": false,
-      "canonicalTokens": 128,
+      "canonicalTokens": 129,
       "confirmedBy": {
         "tesseract": 90,
         "ppocr": 102
@@ -41613,14 +41910,16 @@
       "disagreements": [
         {
           "kind": "unconfirmed",
-          "canonical": "ما يأتي",
+          "canonical": "ما يأتي :",
           "at": 17,
           "streams": {
             "tesseract": [
               "miss",
+              "miss",
               "miss"
             ],
             "ppocr": [
+              "miss",
               "miss",
               "miss"
             ]
@@ -41658,7 +41957,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "-",
-          "at": 42,
+          "at": 43,
           "streams": {
             "tesseract": [
               "miss"
@@ -41700,7 +41999,7 @@
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 71,
+          "at": 72,
           "streams": {
             "tesseract": [
               "miss"
@@ -41772,9 +42071,9 @@
     {
       "number": "614",
       "agrees": false,
-      "canonicalTokens": 45,
+      "canonicalTokens": 46,
       "confirmedBy": {
-        "tesseract": 19,
+        "tesseract": 20,
         "ppocr": 40
       },
       "disagreements": [
@@ -41825,7 +42124,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "-",
-          "at": 37,
+          "at": 38,
           "streams": {
             "tesseract": [
               "miss"
@@ -41840,25 +42139,25 @@
                 "evidenceId": "a2008021-052-right",
                 "box": [
                   0,
-                  2338,
+                  2350,
                   1068,
                   2813
                 ],
                 "scale": 1,
-                "imageSha256": "2187decad6096a1cca8d082a4d4b6aa99c9b418079e8ed8065a186193b4e9e6c",
-                "ocr": "‎0١ 0١ 0‏ اماي ان لب تاف ! تلا ‎١ ١‏ لمات ‎١!‏ نل اب “الا نلا يا ‎١‏ مس\r\n2 أعلاه. فيما يآتى :\r\n1- إذا كان التنفيذ يتم بموجب أمر استعجالى.\r\nبالنفاذ المعجل.\r\n‎٠)‏\r\n‎٠‏ ام »#6 - ‎٠ )  '‏ ا عضي < ‎٠‏ *«*\r\n"
+                "imageSha256": "572b3a16f16d0c35d0d2910a3433be8a0b2377928bd425964825b1386e7ceecd",
+                "ocr": "2 أعلاه. فيما يأتى :\r\n1- إذا كان التنفيذ يتم بموجب أمر استعجالى.\r\nبالنفاذ المعجل.\r\nا\r\n‎ » +‏ واب ‎ »‏ #») ا. اكلات.ء.ء. +\r\n"
               },
               {
                 "evidenceId": "a2008021-052-right",
                 "box": [
                   0,
-                  2338,
+                  2350,
                   1068,
                   2813
                 ],
                 "scale": 2,
-                "imageSha256": "8e982dbfb2f58cfee85c51bb776e96d8c50adb65be65e0d7f94b1ae78ede741d",
-                "ocr": "برممةعنن. :107272‏ ااه بي © 2-7 نا ة4'“ي - 00 7 4لا 7 7 ننا_للنط“م 1.000 ا دي ‎١‏ تاس\r\n612 أعلاه فيما يأتى :\r\nبالنفاذ المعجل.\r\n\r\n*«* | |+٠+ - ‏امع # -»\" \"* ة ) )!+ 4 يه‎ +  )؛‎ ٠\r\n"
+                "imageSha256": "492004d8df459403c61cd012b5bc497edea5c6056d0565b25daac2d78ea5f3f7",
+                "ocr": "612 أعلاه فيما يأتى :\r\nبالنفاذ المعجل.\r\n.د ) ‎٠‏\r\n‎٠‏ ؛) ‏ + امع # -»\" \"* ة ) )!+ 4 يه - ‎|+٠+‏ | *«*\r\n"
               }
             ],
             "confirmed": true
@@ -42185,9 +42484,9 @@
     {
       "number": "618",
       "agrees": true,
-      "canonicalTokens": 79,
+      "canonicalTokens": 80,
       "confirmedBy": {
-        "tesseract": 67,
+        "tesseract": 68,
         "ppocr": 77
       },
       "disagreements": [],
@@ -42319,9 +42618,9 @@
     {
       "number": "621",
       "agrees": true,
-      "canonicalTokens": 109,
+      "canonicalTokens": 110,
       "confirmedBy": {
-        "tesseract": 92,
+        "tesseract": 93,
         "ppocr": 103
       },
       "disagreements": [],
@@ -43466,25 +43765,25 @@
     {
       "number": "635",
       "agrees": true,
-      "canonicalTokens": 22,
+      "canonicalTokens": 23,
       "confirmedBy": {
-        "tesseract": 22,
+        "tesseract": 23,
         "ppocr": 22
       },
       "disagreements": [],
       "located": {
         "tesseract": [
           25188,
-          25216
+          25217
         ],
         "ppocr": [
           23800,
-          23826
+          23827
         ]
       },
       "ocr": {
-        "tesseract": "المادة 635 : إذا سبق الفصل في إشكال التنفيذ أو في طلب وقف التنفيذء فلا يجوز رفع دعوى ثانية من نفس الأطراف حول نفس الموضوع . الفصل الأول",
-        "ppocr": "المادة إذا سبق الفصل في إشكال التنفيذ أو في طلب وقف التنفيذ، فلا يجوز رفع دعوى ثانية من نفس الأطراف حول نفس الموضوع الباب الخامس في"
+        "tesseract": "المادة 635 : إذا سبق الفصل في إشكال التنفيذ أو في طلب وقف التنفيذء فلا يجوز رفع دعوى ثانية من نفس الأطراف حول نفس الموضوع . الفصل الأول أحكام",
+        "ppocr": "المادة إذا سبق الفصل في إشكال التنفيذ أو في طلب وقف التنفيذ، فلا يجوز رفع دعوى ثانية من نفس الأطراف حول نفس الموضوع الباب الخامس في الحجوز"
       },
       "regions": [
         {
@@ -43493,7 +43792,7 @@
             29,
             2163,
             1006,
-            2640
+            2733
           ]
         }
       ],
@@ -43504,16 +43803,16 @@
     {
       "number": "636",
       "agrees": false,
-      "canonicalTokens": 248,
+      "canonicalTokens": 249,
       "confirmedBy": {
-        "tesseract": 150,
+        "tesseract": 151,
         "ppocr": 193
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "-",
-          "at": 44,
+          "at": 45,
           "streams": {
             "tesseract": [
               "miss"
@@ -43555,7 +43854,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "ثلثي ( 3 / 2 ) الأجر",
-          "at": 70,
+          "at": 71,
           "streams": {
             "tesseract": [
               "miss",
@@ -43609,7 +43908,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "-",
-          "at": 81,
+          "at": 82,
           "streams": {
             "tesseract": [
               "miss"
@@ -43651,7 +43950,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "6 -",
-          "at": 91,
+          "at": 92,
           "streams": {
             "tesseract": [
               "miss",
@@ -43695,7 +43994,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "، 10",
-          "at": 176,
+          "at": 177,
           "streams": {
             "tesseract": [
               "miss",
@@ -43739,7 +44038,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "( 3 )",
-          "at": 188,
+          "at": 189,
           "streams": {
             "tesseract": [
               "miss",
@@ -43785,7 +44084,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "12",
-          "at": 211,
+          "at": 212,
           "streams": {
             "tesseract": [
               "miss"
@@ -43827,7 +44126,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "13",
-          "at": 217,
+          "at": 218,
           "streams": {
             "tesseract": [
               "miss"
@@ -45179,16 +45478,16 @@
     {
       "number": "652",
       "agrees": false,
-      "canonicalTokens": 37,
+      "canonicalTokens": 38,
       "confirmedBy": {
-        "tesseract": 34,
+        "tesseract": 35,
         "ppocr": 31
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": ")",
-          "at": 30,
+          "at": 31,
           "streams": {
             "tesseract": [
               "miss"
@@ -45874,16 +46173,16 @@
     {
       "number": "663",
       "agrees": false,
-      "canonicalTokens": 71,
+      "canonicalTokens": 72,
       "confirmedBy": {
-        "tesseract": 20,
+        "tesseract": 21,
         "ppocr": 63
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "662",
-          "at": 28,
+          "at": 29,
           "streams": {
             "tesseract": [
               "miss"
@@ -45925,7 +46224,7 @@
         {
           "kind": "unconfirmed",
           "canonical": ". 2 -",
-          "at": 30,
+          "at": 31,
           "streams": {
             "tesseract": [
               "miss",
@@ -45971,7 +46270,7 @@
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 50,
+          "at": 51,
           "streams": {
             "tesseract": [
               "miss"
@@ -46013,7 +46312,7 @@
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 73,
+          "at": 74,
           "streams": {
             "tesseract": [
               "miss"
@@ -46606,9 +46905,9 @@
     {
       "number": "672",
       "agrees": true,
-      "canonicalTokens": 53,
+      "canonicalTokens": 54,
       "confirmedBy": {
-        "tesseract": 49,
+        "tesseract": 50,
         "ppocr": 50
       },
       "disagreements": [],
@@ -47907,16 +48206,16 @@
     {
       "number": "691",
       "agrees": false,
-      "canonicalTokens": 152,
+      "canonicalTokens": 153,
       "confirmedBy": {
-        "tesseract": 119,
+        "tesseract": 120,
         "ppocr": 129
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 89,
+          "at": 90,
           "streams": {
             "tesseract": [
               "miss"
@@ -47958,7 +48257,7 @@
       ],
       "located": {
         "tesseract": [
-          28481,
+          28480,
           28614
         ],
         "ppocr": [
@@ -47967,7 +48266,7 @@
         ]
       },
       "ocr": {
-        "tesseract": "بكو ّ . ٠ ) القسم الثاني ‎ فضلا عن البيانات المعتادة؛ ما يأتى : 1 - بيان السند التنفيذي والأمر الذي بموجبه تم 2 - مبلغ الدين المحجوز من أجله . ؛ 3 - اختيار موطن للدائن الحاجز فى دائرة اختصاص المحكمة التي يوجد في دائرة اختصاصها مكان 4 - بيان مكان الحجز وما قام به المحضر القضائي أثناء الحجزء وما اتخذه من تدابيرء 5 - تعيين الأشياء المحجوزة بالتفصيل مع تحديد نوعهاوأوصافها ومقدارها ووزنها ومقاسها وقيمتها و يختم المحضر بالتوقيع عليه مع المحجوز عليه إن كان حاضرا أو التنويه عن غيابه أو رفضه التوقيع . إذا خلا م ضر الحجز والجرد من أحد هذه البيانات؛ كان قابلا للإبطال خلال أجل عشرة ( 10 ) أيام الاستعجال . يفصل فيه رئيس المحكمة خلال أجل أقصاه خمسة عشر ( 15 ) يوما .",
+        "tesseract": "ٍ بكو ّ . ٠ ) القسم الثاني ‎ فضلا عن البيانات المعتادة؛ ما يأتى : 1 - بيان السند التنفيذي والأمر الذي بموجبه تم 2 - مبلغ الدين المحجوز من أجله . ؛ 3 - اختيار موطن للدائن الحاجز فى دائرة اختصاص المحكمة التي يوجد في دائرة اختصاصها مكان 4 - بيان مكان الحجز وما قام به المحضر القضائي أثناء الحجزء وما اتخذه من تدابيرء 5 - تعيين الأشياء المحجوزة بالتفصيل مع تحديد نوعهاوأوصافها ومقدارها ووزنها ومقاسها وقيمتها و يختم المحضر بالتوقيع عليه مع المحجوز عليه إن كان حاضرا أو التنويه عن غيابه أو رفضه التوقيع . إذا خلا م ضر الحجز والجرد من أحد هذه البيانات؛ كان قابلا للإبطال خلال أجل عشرة ( 10 ) أيام الاستعجال . يفصل فيه رئيس المحكمة خلال أجل أقصاه خمسة عشر ( 15 ) يوما .",
         "ppocr": "الحجز والجرد المادة يجب أن يتضمن محضر الحجز والجرد، فضلا عن البيانات المعتادة، مايأتي ا بيان السند التنفيذي والأمر الذي بموجبه تم الحجز، مبلغ الدين المحجوز من أجله، اختيار موطن للدائن الحاجز في دائرة اختصاص المحكمة التي يوجد في دائرة اختصاصها مكان التنفيذ، بيان مكان الحجز وماقام به المحضر القضائي من إجراءات، أو مالقيه من صعوبات أو اعتراضات أثناء الحجز، وما اتخذه من تدابير، 5 تعيين الأشياء المحجوزة بالتفصيل مع تحديد نوعها وأوصافها ومقدارها ووزنها ومقاسها وقيمتها بالتقريب و يختم المحضر بالتوقيع عليه مع المحجوز عليه إن كان حاضرا أو التنويه عن غيابه أو رفضه التوقيع إذا خلا محضر الحجز والجرد من أحد هذه البيانات، كان قابلا للإبطال خلال أجل عشرة أيام من تاريخه يرفع طلب الإبطال من كل ذي مصلحة عن طريق الاستعجال، يفصل فيه رئيس المحكمة خلال أجل أقصاه خمسة عشريوما المادة"
       },
       "regions": [
@@ -48450,9 +48749,9 @@
     {
       "number": "698",
       "agrees": true,
-      "canonicalTokens": 71,
+      "canonicalTokens": 72,
       "confirmedBy": {
-        "tesseract": 67,
+        "tesseract": 68,
         "ppocr": 69
       },
       "disagreements": [],
@@ -49022,16 +49321,16 @@
     {
       "number": "707",
       "agrees": false,
-      "canonicalTokens": 101,
+      "canonicalTokens": 102,
       "confirmedBy": {
-        "tesseract": 74,
+        "tesseract": 75,
         "ppocr": 88
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 76,
+          "at": 77,
           "streams": {
             "tesseract": [
               "miss"
@@ -49073,7 +49372,7 @@
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 103,
+          "at": 104,
           "streams": {
             "tesseract": [
               "miss"
@@ -49592,16 +49891,16 @@
     {
       "number": "715",
       "agrees": false,
-      "canonicalTokens": 124,
+      "canonicalTokens": 125,
       "confirmedBy": {
-        "tesseract": 82,
-        "ppocr": 108
+        "tesseract": 83,
+        "ppocr": 106
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "-",
-          "at": 62,
+          "at": 63,
           "streams": {
             "tesseract": [
               "miss"
@@ -49643,7 +49942,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "-",
-          "at": 77,
+          "at": 78,
           "streams": {
             "tesseract": [
               "miss"
@@ -49685,7 +49984,7 @@
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 109,
+          "at": 110,
           "streams": {
             "tesseract": [
               "miss"
@@ -49727,7 +50026,7 @@
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 126,
+          "at": 127,
           "streams": {
             "tesseract": [
               "miss"
@@ -49917,13 +50216,56 @@
     },
     {
       "number": "718",
-      "agrees": true,
-      "canonicalTokens": 21,
+      "agrees": false,
+      "canonicalTokens": 22,
       "confirmedBy": {
         "tesseract": 15,
         "ppocr": 21
       },
-      "disagreements": [],
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 24,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          },
+          "reread": {
+            "readings": [
+              {
+                "evidenceId": "a2008021-064-left",
+                "box": [
+                  0,
+                  252,
+                  1054,
+                  483
+                ],
+                "scale": 1,
+                "imageSha256": "20cc8f5fdb31a6b6a1388eaae82f60602e7171f3b79ed48654c3b5169ef8057b",
+                "ocr": "للدائن الحاجز أن يرجع عليه أمام قاضي الموضوع بطلب\r\n١ح ‎1١١!‏ .»\r\n"
+              },
+              {
+                "evidenceId": "a2008021-064-left",
+                "box": [
+                  0,
+                  252,
+                  1054,
+                  483
+                ],
+                "scale": 2,
+                "imageSha256": "3be6e61ae935505ee67a5ba279acf02fc29b8e9d3f6ac6a7253b49477bcafa21",
+                "ocr": "للدائن الحاجز أن يرجع عليه أمام قاضى الموضوع بطلب\r\nا اث !]+1 ,..»\r\n"
+              }
+            ],
+            "confirmed": true
+          }
+        }
+      ],
       "located": {
         "tesseract": [
           30474,
@@ -49931,12 +50273,12 @@
         ],
         "ppocr": [
           28809,
-          28834
+          28835
         ]
       },
       "ocr": {
         "tesseract": "المادة 718 : إذا خسر طالب الاسترداد دعواه؛ جاز للدائن الحاجز أن يرجع عليه أمام قاضي الموضوع بطلب القسم التاسع والقيم المنقولة",
-        "ppocr": "المادة إذا خسر طالب الاسترداد دعواه، جاز للدائن الحاجز أن يرجع عليه أمام قاضي الموضوع بطلب التعويضات المدنية عمالحقه من ضرر القسم التاسع في حجز"
+        "ppocr": "المادة إذا خسر طالب الاسترداد دعواه، جاز للدائن الحاجز أن يرجع عليه أمام قاضي الموضوع بطلب التعويضات المدنية عمالحقه من ضرر القسم التاسع في حجز وبيع"
       },
       "regions": [
         {
@@ -50124,7 +50466,7 @@
     {
       "number": "722",
       "agrees": false,
-      "canonicalTokens": 118,
+      "canonicalTokens": 119,
       "confirmedBy": {
         "tesseract": 72,
         "ppocr": 100
@@ -50132,8 +50474,74 @@
       "disagreements": [
         {
           "kind": "unconfirmed",
+          "canonical": ":",
+          "at": 37,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          },
+          "reread": {
+            "readings": [
+              {
+                "evidenceId": "a2008021-064-left",
+                "box": [
+                  0,
+                  2998,
+                  1054,
+                  3203
+                ],
+                "scale": 1,
+                "imageSha256": "dca6341190f1fb0ee9e720644f3cca7b6f39b57ea3f56fad8bc1d023b86d7662",
+                "ocr": "مآا- -0 0 0 ‎١‏ ا # ا ,> 0 ب : ا ')\r\n"
+              },
+              {
+                "evidenceId": "a2008021-064-left",
+                "box": [
+                  0,
+                  2998,
+                  1054,
+                  3203
+                ],
+                "scale": 2,
+                "imageSha256": "1c6040644039bcb75a07546ded7121ca77c1140461cf840ba7837ab07e33607c",
+                "ocr": "يي ا ا # ا أب ‎١‏ الث ب ا 0-0 ما| د 0 م\r\nممثله القانونى أو الاتفاقى. ويتضمن الطلب على\r\n"
+              },
+              {
+                "evidenceId": "a2008021-065-right",
+                "box": [
+                  0,
+                  0,
+                  1068,
+                  403
+                ],
+                "scale": 1,
+                "imageSha256": "a560c8b799a7329b1bdd5a3bb92976eb47eb6c9bd12de2db62b4bf3232006c58",
+                "ocr": "7 ربيع الثاني عام 1429ه 0\r\n3 أبريل سنة 2008 م الجريدة الرس\r\n1- اسم ولقب الدائن وموطنه الحقيقي وموطنه\r\nالمختار في دائرة اختصاص المحكمة التي يوجد فيها\r\nالعقار و/رأو الحق العينى العقارى.\r\n"
+              },
+              {
+                "evidenceId": "a2008021-065-right",
+                "box": [
+                  0,
+                  0,
+                  1068,
+                  403
+                ],
+                "scale": 2,
+                "imageSha256": "942d64d0647be966f282f31f233a5ec4704dfd53284b21248d1ecf00c700e208",
+                "ocr": "17 التَّاذ عام 1429 ه ّ\r\nربيع في إ عب فل ‎١‏\r\n\r\n23 أبريل سثة 2005 م | برض , .\r\nالمختار فى دائرة اختصاص المحكمة التى يوجد فيها\r\n"
+              }
+            ],
+            "confirmed": true
+          }
+        },
+        {
+          "kind": "unconfirmed",
           "canonical": "أو",
-          "at": 56,
+          "at": 57,
           "streams": {
             "tesseract": [
               "miss"
@@ -50175,7 +50583,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "-",
-          "at": 61,
+          "at": 62,
           "streams": {
             "tesseract": [
               "miss"
@@ -50217,7 +50625,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "3 -",
-          "at": 66,
+          "at": 67,
           "streams": {
             "tesseract": [
               "miss",
@@ -50261,7 +50669,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "و",
-          "at": 70,
+          "at": 71,
           "streams": {
             "tesseract": [
               "miss"
@@ -50303,7 +50711,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "لما",
-          "at": 88,
+          "at": 89,
           "streams": {
             "tesseract": [
               "miss"
@@ -50384,9 +50792,9 @@
     {
       "number": "723",
       "agrees": false,
-      "canonicalTokens": 90,
+      "canonicalTokens": 91,
       "confirmedBy": {
-        "tesseract": 75,
+        "tesseract": 76,
         "ppocr": 77
       },
       "disagreements": [
@@ -50435,7 +50843,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "1 - نسخة",
-          "at": 14,
+          "at": 15,
           "streams": {
             "tesseract": [
               "miss",
@@ -50454,25 +50862,25 @@
                 "evidenceId": "a2008021-065-right",
                 "box": [
                   0,
-                  1172,
+                  1183,
                   1068,
                   1563
                 ],
                 "scale": 1,
-                "imageSha256": "7f96d0b598509d79c7eb7f49dd2ff3b71c37143dee114b0b093d3faf22a5072c",
-                "ocr": "ااانا ا | نااك ااا لاف لاا ب اس لاض لا\r\n2 أعلاه. بالوثائق الآتية :\r\nالدين. ونسخة من محضر التبليغ الرسمي والتكليف\r\nبالوفاء؛\r\n"
+                "imageSha256": "677822b26310a1569be2528036f942ad41ccf43b22c37ac1a540d6a6e312d1cd",
+                "ocr": "2 أعلاى بالوثائق الآتية ب ا\r\nالدين. ونسخة من محضر التبليغ الرسمي والتكليف\r\nبالوقاء؛\r\n\r\n2- محضر عدم كفاية الأموال المنقولة أو عدم\r\n"
               },
               {
                 "evidenceId": "a2008021-065-right",
                 "box": [
                   0,
-                  1172,
+                  1183,
                   1068,
                   1563
                 ],
                 "scale": 2,
-                "imageSha256": "c532603390bbf2584b91e2fa21a93dd4a2e6dd90765e18bdf53f5617ee920811",
-                "ocr": "ااا الا | ملاع ااانه الاك اللتاك 2 اا لاض ا لاا\r\n2 أعلاه ‎٠‏ بالوثائق الآتية :\r\nالدين. ونسخة من محضر التبليغ الرسمي والتكليف\r\nبالوقاء؛\r\n"
+                "imageSha256": "7b52a042b9bf2cedb150fa17f5971da65d464da430f66e62f609977d73aca014",
+                "ocr": "2 أعلاه ‎٠‏ بالوثائق الآتية :\r\nبالوفاء؛\r\n"
               }
             ],
             "confirmed": false
@@ -50511,7 +50919,7 @@
     {
       "number": "724",
       "agrees": false,
-      "canonicalTokens": 184,
+      "canonicalTokens": 186,
       "confirmedBy": {
         "tesseract": 129,
         "ppocr": 155
@@ -50561,8 +50969,50 @@
         },
         {
           "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 45,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          },
+          "reread": {
+            "readings": [
+              {
+                "evidenceId": "a2008021-065-right",
+                "box": [
+                  0,
+                  2519,
+                  1068,
+                  2856
+                ],
+                "scale": 1,
+                "imageSha256": "2641d9c44b36cd89c0c8a0a3f9f90682a177e11504b3334234a5bbd78133a95b",
+                "ocr": "إذا كان للمدين عدة عقارات و//أو حقوق عينية\r\nاستصدار أمر واحد بالحجز عليها من طرف رئيس\r\n"
+              },
+              {
+                "evidenceId": "a2008021-065-right",
+                "box": [
+                  0,
+                  2519,
+                  1068,
+                  2856
+                ],
+                "scale": 2,
+                "imageSha256": "282e34fd9e2a4607dd8a6c64a674bb70a3e0a9cf0a339fafe85ac60f01de4ae9",
+                "ocr": "كد كه خا الااًسسا ‏ وااالااق << لاا اده | رقععتا اكد ا\r\nإذا كان للمدين عدةه عقار ات و/أو حقوق عينية\r\n"
+              }
+            ],
+            "confirmed": false
+          }
+        },
+        {
+          "kind": "unconfirmed",
           "canonical": "أو",
-          "at": 82,
+          "at": 83,
           "streams": {
             "tesseract": [
               "miss"
@@ -50603,10 +51053,11 @@
         },
         {
           "kind": "unconfirmed",
-          "canonical": "ما يأتي 1 - نوع",
-          "at": 96,
+          "canonical": "ما يأتي : 1 - نوع",
+          "at": 97,
           "streams": {
             "tesseract": [
+              "miss",
               "miss",
               "miss",
               "miss",
@@ -50614,6 +51065,7 @@
               "miss"
             ],
             "ppocr": [
+              "miss",
               "miss",
               "miss",
               "miss",
@@ -50678,7 +51130,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "و / أو",
-          "at": 133,
+          "at": 135,
           "streams": {
             "tesseract": [
               "miss",
@@ -50724,7 +51176,7 @@
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 174,
+          "at": 176,
           "streams": {
             "tesseract": [
               "miss"
@@ -51247,9 +51699,9 @@
     {
       "number": "729",
       "agrees": true,
-      "canonicalTokens": 34,
+      "canonicalTokens": 35,
       "confirmedBy": {
-        "tesseract": 32,
+        "tesseract": 33,
         "ppocr": 34
       },
       "disagreements": [],
@@ -51590,16 +52042,16 @@
     {
       "number": "734",
       "agrees": false,
-      "canonicalTokens": 108,
+      "canonicalTokens": 109,
       "confirmedBy": {
-        "tesseract": 67,
+        "tesseract": 68,
         "ppocr": 89
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "له،",
-          "at": 61,
+          "at": 62,
           "streams": {
             "tesseract": [
               "miss"
@@ -51641,7 +52093,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "( 1 )",
-          "at": 81,
+          "at": 82,
           "streams": {
             "tesseract": [
               "miss",
@@ -51687,7 +52139,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "731",
-          "at": 101,
+          "at": 102,
           "streams": {
             "tesseract": [
               "miss"
@@ -51729,7 +52181,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "و733 أعلاه،",
-          "at": 103,
+          "at": 104,
           "streams": {
             "tesseract": [
               "miss",
@@ -51931,9 +52383,9 @@
     {
       "number": "737",
       "agrees": false,
-      "canonicalTokens": 292,
+      "canonicalTokens": 293,
       "confirmedBy": {
-        "tesseract": 193,
+        "tesseract": 194,
         "ppocr": 262
       },
       "disagreements": [
@@ -51986,7 +52438,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "1 - اسم",
-          "at": 79,
+          "at": 80,
           "streams": {
             "tesseract": [
               "miss",
@@ -52032,7 +52484,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "-",
-          "at": 121,
+          "at": 122,
           "streams": {
             "tesseract": [
               "miss"
@@ -52074,7 +52526,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "و / أو",
-          "at": 124,
+          "at": 125,
           "streams": {
             "tesseract": [
               "miss",
@@ -52120,7 +52572,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "-",
-          "at": 166,
+          "at": 167,
           "streams": {
             "tesseract": [
               "miss"
@@ -52186,7 +52638,7 @@
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 294,
+          "at": 295,
           "streams": {
             "tesseract": [
               "miss"
@@ -52267,15 +52719,15 @@
     {
       "number": "738",
       "agrees": true,
-      "canonicalTokens": 58,
+      "canonicalTokens": 59,
       "confirmedBy": {
-        "tesseract": 40,
+        "tesseract": 41,
         "ppocr": 53
       },
       "disagreements": [],
       "located": {
         "tesseract": [
-          32200,
+          32199,
           32265
         ],
         "ppocr": [
@@ -52284,7 +52736,7 @@
         ]
       },
       "ocr": {
-        "tesseract": "> ا 0 ا محا ي . المستندات الآتية : 1 - نسخة من السند التنفيذي الذي تم الحجز 3 - نسخة من ْ ر ) | د ليغ ا لرسمى للمحجوز عليه أو الحائز أو الكقيل العيني إن وجد؛ 4 - شهادة عقار ية تتضمن ا لقيود ا لتى حصلت إلى غاية تاريخ الحجز؛ 5 - مستخرج جدول الضريبة العقارية . القسم السادس في",
+        "tesseract": "اجاج > ا 0 ا محا ي . المستندات الآتية : 1 - نسخة من السند التنفيذي الذي تم الحجز 3 - نسخة من ْ ر ) | د ليغ ا لرسمى للمحجوز عليه أو الحائز أو الكقيل العيني إن وجد؛ 4 - شهادة عقار ية تتضمن ا لقيود ا لتى حصلت إلى غاية تاريخ الحجز؛ 5 - مستخرج جدول الضريبة العقارية . القسم السادس في",
         "ppocr": "القضائي المادة ترفق مع قائمة شروط البيع المستندات الآتية ١ نسخة من السند التنفيذي الذي تم الحجز بمقتضاه، 2 – نسخة من أمر الحجز، 3 نسخة من محضر التبليغ الرسمي للمحجوز عليه أو الحائز أو الكفيل العيني إن وجد، 4 شهادة عقارية تتضمن القيود التي حصلت إلى غاية تاريخ الحجز، 5 مستخرج جدول الضريبة العقارية القسم السادس في تحديد الثمن"
       },
       "regions": [
@@ -52374,7 +52826,7 @@
     {
       "number": "740",
       "agrees": false,
-      "canonicalTokens": 105,
+      "canonicalTokens": 106,
       "confirmedBy": {
         "tesseract": 86,
         "ppocr": 87
@@ -52382,8 +52834,50 @@
       "disagreements": [
         {
           "kind": "unconfirmed",
+          "canonical": ":",
+          "at": 26,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          },
+          "reread": {
+            "readings": [
+              {
+                "evidenceId": "a2008021-068-right",
+                "box": [
+                  0,
+                  727,
+                  1068,
+                  1100
+                ],
+                "scale": 1,
+                "imageSha256": "6df8e00cc34709b9c2081a62b05ac253227a7c5efcde255ce7a54058b14b117b",
+                "ocr": "فلكتت ‎١ ١١١‏ + صكلل اكتاتنا الما ‎ ,‏ 00ب 77 “الا\r\nعشر (15) يوما الموالية لإيداع قائمة شروط البيع\r\n\r\n1- المدين المحجوز عليه.\r\n\r\n2- الكفيل العيني والحائز للعقار و//أو الحق\r\nاا الا.وةل .هه ا . ‎١)‏\r\n"
+              },
+              {
+                "evidenceId": "a2008021-068-right",
+                "box": [
+                  0,
+                  727,
+                  1068,
+                  1100
+                ],
+                "scale": 2,
+                "imageSha256": "62fbff005e7253adc0eea858686eebfdee360c75f3c54311d9831a184d8b54c0",
+                "ocr": "فا لا ‎١‏ ا كنا اتاج ا للبت ااانا يِِ لله ا\r\nبأمانة الضبط؛ أن يبلغ رسميا الأشخاص الآتية :\r\n\r\n2- الكفيل العيني والحائز للعقار و//أو الحق\r\n0 ب\" 0 ول صر | ‎٠‏ م ‎١-‏ أ\r\n"
+              }
+            ],
+            "confirmed": true
+          }
+        },
+        {
+          "kind": "unconfirmed",
           "canonical": "3",
-          "at": 45,
+          "at": 46,
           "streams": {
             "tesseract": [
               "miss"
@@ -52455,7 +52949,7 @@
     {
       "number": "741",
       "agrees": false,
-      "canonicalTokens": 78,
+      "canonicalTokens": 79,
       "confirmedBy": {
         "tesseract": 57,
         "ppocr": 62
@@ -52463,14 +52957,16 @@
       "disagreements": [
         {
           "kind": "unconfirmed",
-          "canonical": "ما يأتي",
+          "canonical": "ما يأتي :",
           "at": 14,
           "streams": {
             "tesseract": [
               "miss",
+              "miss",
               "miss"
             ],
             "ppocr": [
+              "miss",
               "miss",
               "miss"
             ]
@@ -52508,7 +53004,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "أو",
-          "at": 29,
+          "at": 30,
           "streams": {
             "tesseract": [
               "miss"
@@ -52550,7 +53046,7 @@
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 80,
+          "at": 81,
           "streams": {
             "tesseract": [
               "miss"
@@ -53306,7 +53802,7 @@
     {
       "number": "749",
       "agrees": false,
-      "canonicalTokens": 116,
+      "canonicalTokens": 117,
       "confirmedBy": {
         "tesseract": 83,
         "ppocr": 94
@@ -53402,14 +53898,16 @@
         },
         {
           "kind": "unconfirmed",
-          "canonical": "ما يأتي",
+          "canonical": "ما يأتي :",
           "at": 53,
           "streams": {
             "tesseract": [
               "miss",
+              "miss",
               "miss"
             ],
             "ppocr": [
+              "miss",
               "miss",
               "miss"
             ]
@@ -53471,7 +53969,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "-",
-          "at": 106,
+          "at": 107,
           "streams": {
             "tesseract": [
               "miss"
@@ -53552,16 +54050,16 @@
     {
       "number": "750",
       "agrees": false,
-      "canonicalTokens": 101,
+      "canonicalTokens": 102,
       "confirmedBy": {
-        "tesseract": 78,
+        "tesseract": 79,
         "ppocr": 85
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "-",
-          "at": 63,
+          "at": 64,
           "streams": {
             "tesseract": [
               "miss"
@@ -53603,7 +54101,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "6 - وفي",
-          "at": 68,
+          "at": 69,
           "streams": {
             "tesseract": [
               "miss",
@@ -53937,16 +54435,16 @@
     {
       "number": "755",
       "agrees": false,
-      "canonicalTokens": 51,
+      "canonicalTokens": 52,
       "confirmedBy": {
-        "tesseract": 48,
+        "tesseract": 49,
         "ppocr": 38
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "749 و750",
-          "at": 50,
+          "at": 51,
           "streams": {
             "tesseract": [
               "split",
@@ -54731,7 +55229,7 @@
     {
       "number": "763",
       "agrees": false,
-      "canonicalTokens": 126,
+      "canonicalTokens": 127,
       "confirmedBy": {
         "tesseract": 103,
         "ppocr": 102
@@ -54739,8 +55237,74 @@
       "disagreements": [
         {
           "kind": "unconfirmed",
+          "canonical": ":",
+          "at": 17,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          },
+          "reread": {
+            "readings": [
+              {
+                "evidenceId": "a2008021-071-right",
+                "box": [
+                  0,
+                  2999,
+                  1068,
+                  3203
+                ],
+                "scale": 1,
+                "imageSha256": "98dcdb898b6e00a52d3ba89f4b20b1f7285ed8e8c760eed92656c72276c9c144",
+                "ocr": "لاا ننانا ‎١ ١‏ تتتن لتب اللا ل الاب الاق ان!١!‏ ال للا\r\nبيانات ‎١‏ لأحكام المألوفة و أسماء وألقاب الأطراف\r\n"
+              },
+              {
+                "evidenceId": "a2008021-071-right",
+                "box": [
+                  0,
+                  2999,
+                  1068,
+                  3203
+                ],
+                "scale": 2,
+                "imageSha256": "fa8d4be70a234110b253179cdf9622f4f85d6b71a4985b43ea2a11e2ef644845",
+                "ocr": "بويو ‎٠...‏ #السلات :أي لً>ك!٠يا|>[ال[|الم|ا|ا|أاالانلنناااه ‏ . 6 لالووووووور ‎٠‏ نووم امسن أيييييستوف لم0\r\n"
+              },
+              {
+                "evidenceId": "a2008021-071-left",
+                "box": [
+                  0,
+                  0,
+                  1054,
+                  403
+                ],
+                "scale": 1,
+                "imageSha256": "d87dd277f644fa81ba9019b33a92c9dfd2ba18545e30b0495f63d43eaa2583fb",
+                "ocr": "ة للجمهوريّة الجزائريّة / العدد 21 71\r\nوالإجراءات التى تلته.؛ لاسيما تاريخ كل من التبليغ\r\n"
+              },
+              {
+                "evidenceId": "a2008021-071-left",
+                "box": [
+                  0,
+                  0,
+                  1054,
+                  403
+                ],
+                "scale": 2,
+                "imageSha256": "60c1ebff0a6c7a8c3142bb986e74f8aa833173cad343b44ad5b25f342c02400b",
+                "ocr": "ة للجمهورية الجزائرية / العدد 21 71\r\n1- السند التنفيذى الذى بموجبه تم الحجز\r\n"
+              }
+            ],
+            "confirmed": true
+          }
+        },
+        {
+          "kind": "unconfirmed",
           "canonical": ".",
-          "at": 38,
+          "at": 39,
           "streams": {
             "tesseract": [
               "miss"
@@ -54782,7 +55346,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "7 -",
-          "at": 102,
+          "at": 103,
           "streams": {
             "tesseract": [
               "miss",
@@ -54995,9 +55559,9 @@
     {
       "number": "766",
       "agrees": false,
-      "canonicalTokens": 75,
+      "canonicalTokens": 76,
       "confirmedBy": {
-        "tesseract": 68,
+        "tesseract": 69,
         "ppocr": 65
       },
       "disagreements": [
@@ -55484,16 +56048,16 @@
     {
       "number": "775",
       "agrees": false,
-      "canonicalTokens": 19,
+      "canonicalTokens": 20,
       "confirmedBy": {
         "tesseract": 16,
-        "ppocr": 17
+        "ppocr": 18
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
-          "canonical": "المادة776",
-          "at": 19,
+          "canonical": "776",
+          "at": 20,
           "streams": {
             "tesseract": [
               "miss"
@@ -55529,13 +56093,13 @@
                 "ocr": "با --- بيب + ا 2 0 ‎٠+‏ ود ا اويا 0 د 0 ا حا ب فا ل\r\nالمذكورة فى المادة 776 أدناه.\r\n\r\n‎١‏ لماد هه 776 ؛ يجو رََ لمن بيد مه يذ تنفيذ ى إ لحجز على\r\nالككر__ا_ 2 ‎١١1١1‏ هاا 0 ‎١|‏ جح إ.د || حم ا 1حجال. ا ‎١١١‏ .0 0 .ا\r\n"
               }
             ],
-            "confirmed": false
+            "confirmed": true
           }
         },
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 21,
+          "at": 22,
           "streams": {
             "tesseract": [
               "miss"
@@ -55602,21 +56166,21 @@
       ],
       "labelTokens": 2,
       "boundaryExtrasDropped": [],
-      "agreesAfterReread": false
+      "agreesAfterReread": true
     },
     {
       "number": "776",
       "agrees": false,
-      "canonicalTokens": 198,
+      "canonicalTokens": 199,
       "confirmedBy": {
-        "tesseract": 168,
+        "tesseract": 169,
         "ppocr": 149
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "%",
-          "at": 26,
+          "at": 27,
           "streams": {
             "tesseract": [
               "miss"
@@ -55658,7 +56222,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "20 %",
-          "at": 60,
+          "at": 61,
           "streams": {
             "tesseract": [
               "miss",
@@ -55702,7 +56266,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "%",
-          "at": 84,
+          "at": 85,
           "streams": {
             "tesseract": [
               "miss"
@@ -55744,7 +56308,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "%",
-          "at": 112,
+          "at": 113,
           "streams": {
             "tesseract": [
               "miss"
@@ -55786,7 +56350,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "بخمس ( 5 ) مرات",
-          "at": 131,
+          "at": 132,
           "streams": {
             "tesseract": [
               "miss",
@@ -55836,7 +56400,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "40 %",
-          "at": 139,
+          "at": 140,
           "streams": {
             "tesseract": [
               "miss",
@@ -55880,7 +56444,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "%",
-          "at": 168,
+          "at": 169,
           "streams": {
             "tesseract": [
               "miss"
@@ -55922,7 +56486,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "(",
-          "at": 175,
+          "at": 176,
           "streams": {
             "tesseract": [
               "miss"
@@ -55968,13 +56532,13 @@
           35200
         ],
         "ppocr": [
-          32927,
+          32928,
           33086
         ]
       },
       "ocr": {
         "tesseract": "المادة 776 : يجوز لمن بيده سند تنفيذي الحجز على الأجور والمداخيل والمرتبات التى يتقاضاها المدين وفقا للإجراءات التالية . وفى حدود النسب المبينة أسفله : - 10 © إذا كان المرتب الصافي يساوي أو يقل عن قيمة الأآجر الوطني الأدنى المضمون؛ - 15 6 إذا كان المرتب الصافي يفوق قيمة الأجر الوطني الأدنى المضمون ويساوي أو يقل عن ضعف - 620 إذا كان المرتب الصافي يفوق ضعف الأجر الوطني الأدنى المضمون ويساوي أو يقل بثلاث ( 3 ) مرات عن قيمته . ؛ - 25 إذا كان المرتب الصافي يفوق ثلاث ( 3 ) مرات قيمة الأجر الوطني الأدنى المضمون ويساوي أو يقل بأربع ( 4 ) مرات عن قيمته . ؛ - 30 96 إذا كان المرتب الصافي يفوق أربع ( 4 ) مرات قيمة الأجر الوطني الأدنى المضمون ويساوي أو - 9640 إذا كان المرتب الصافي يفوق خمس ( 5 ) مرات قيمة الأجر الوطني الأدنى المضمون ويساوي أو يقل بست ( 6 ) مرات عن قيمته . ؛ - 50 0 إذا كان المرتب الصافي يفوق ست 6 ) مرات قيمة الآجر الوطني الأدنى المضمون . في النسب المذكورة أعلاه؛ ولا يجوز الحجز عليها .",
-        "ppocr": "المادة أدناه المادة يجوز من بيده سند تنفيذي الحجز على الأجور والمداخيل والمرتبات التي يتقاضاها المدين وفقا للإجراءات التالية، وفي حدود النسب المبينة أسفله - إذا كان المرتب الصافي يساوي أو يقل عن قيمة الأجر الوطني الأدنى المضمون، 15 % إذا كان المرتب الصافي يفوق قيمة الأجر الوطني الأدنى المضمون ويساوي أو يقل عن ضعف قيمته، 2 إذا كان المرتب الصافي يفوق ضعف الأجر الوطني الأدنى المضمون ويساوي أو يقل بثلاث مرات عن قيمته، 2 إذا كان المرتب الصافي يفوق ثلاث مرات قيمة الأجر الوطني الأدنى المضمون ويساوي أو يقل بأربع مرات عن قيمته، إذا كان المرتب الصافي يفوق أربع مرات قيمة الأجر الوطني الأدنى المضمون ويساوي أو يقل بخمسمرات عن قيمته، إذا كان المرتب الصافي يفوق خمس مرات قيمة الأجر الوطني الأدنى المضمون ويساوي أو يقل بستمرات عن قيمته، إذا كان المرتب الصافي يفوق ست مرات قيمة الأجر الوطني الأدنى المضمون تستثنى المنح العائلية عند حساب الدخل الصافي في النسب المذكورة أعلاه، ولا يجوز الحجز عليها المادة ٦يجوز"
+        "ppocr": "أدناه المادة يجوز من بيده سند تنفيذي الحجز على الأجور والمداخيل والمرتبات التي يتقاضاها المدين وفقا للإجراءات التالية، وفي حدود النسب المبينة أسفله - إذا كان المرتب الصافي يساوي أو يقل عن قيمة الأجر الوطني الأدنى المضمون، 15 % إذا كان المرتب الصافي يفوق قيمة الأجر الوطني الأدنى المضمون ويساوي أو يقل عن ضعف قيمته، 2 إذا كان المرتب الصافي يفوق ضعف الأجر الوطني الأدنى المضمون ويساوي أو يقل بثلاث مرات عن قيمته، 2 إذا كان المرتب الصافي يفوق ثلاث مرات قيمة الأجر الوطني الأدنى المضمون ويساوي أو يقل بأربع مرات عن قيمته، إذا كان المرتب الصافي يفوق أربع مرات قيمة الأجر الوطني الأدنى المضمون ويساوي أو يقل بخمسمرات عن قيمته، إذا كان المرتب الصافي يفوق خمس مرات قيمة الأجر الوطني الأدنى المضمون ويساوي أو يقل بستمرات عن قيمته، إذا كان المرتب الصافي يفوق ست مرات قيمة الأجر الوطني الأدنى المضمون تستثنى المنح العائلية عند حساب الدخل الصافي في النسب المذكورة أعلاه، ولا يجوز الحجز عليها المادة ٦يجوز"
       },
       "regions": [
         {
@@ -56203,10 +56767,10 @@
     {
       "number": "780",
       "agrees": false,
-      "canonicalTokens": 158,
+      "canonicalTokens": 159,
       "confirmedBy": {
-        "tesseract": 95,
-        "ppocr": 139
+        "tesseract": 96,
+        "ppocr": 137
       },
       "disagreements": [
         {
@@ -56338,7 +56902,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "3 -",
-          "at": 111,
+          "at": 112,
           "streams": {
             "tesseract": [
               "miss",
@@ -56575,9 +57139,9 @@
     {
       "number": "783",
       "agrees": false,
-      "canonicalTokens": 127,
+      "canonicalTokens": 128,
       "confirmedBy": {
-        "tesseract": 101,
+        "tesseract": 102,
         "ppocr": 111
       },
       "disagreements": [
@@ -56627,7 +57191,7 @@
       "located": {
         "tesseract": [
           35671,
-          35815
+          35814
         ],
         "ppocr": [
           33514,
@@ -56635,7 +57199,7 @@
         ]
       },
       "ocr": {
-        "tesseract": "المادة 783 : يتم بيع العقارات و / رأو الحقوق العينية العقارية المرخص يبيعها قضائيا بال مزاد العلنى . البيع؛ تودع بأمانة ضبط المحكمة . يعدها المحمضر القضائي بناء على طلب المقدم أو الوصي أو الولي . أو يعدها وكيل التفليسة . حسب الحالة . تتضمن قائمة شروط البيع البيانات الآتية : 1 - الإذن الصادر بالبيع؛ 2 - تعيين العقار و / / أو الحق العيني العقاري . تعيد نا دقد قا لا سد اموقعه وحدوده ونوعه و شتملاته و ساحته ورقم القطعة الأرضية واسمهاء عند الاقتضاء . مفرزا أو مشاعاء وغيرها من البيانات التي تفيد في تعيينه . ؛ وإن كان العقار بناية؛ يبين الشارع ورقمه و أجزاء العقارات . 3 - شروط البيع والثمن الأساسيء 4 - تجزئة العقار إلى أجزاء إذا اقتضت الضرورة ذلك . مع ذكر الثمن الأساسي لكل جزء؛ 5 - بيان سندات الملكية . المستندات الآتية :",
+        "tesseract": "المادة 783 : يتم بيع العقارات و / رأو الحقوق العينية العقارية المرخص يبيعها قضائيا بال مزاد العلنى . البيع؛ تودع بأمانة ضبط المحكمة . يعدها المحمضر القضائي بناء على طلب المقدم أو الوصي أو الولي . أو يعدها وكيل التفليسة . حسب الحالة . تتضمن قائمة شروط البيع البيانات الآتية : 1 - الإذن الصادر بالبيع؛ 2 - تعيين العقار و / / أو الحق العيني العقاري . تعيد نا دقد قا لا سد اموقعه وحدوده ونوعه و شتملاته و ساحته ورقم القطعة الأرضية واسمهاء عند الاقتضاء . مفرزا أو مشاعاء وغيرها من البيانات التي تفيد في تعيينه . ؛ وإن كان العقار بناية؛ يبين الشارع ورقمه و أجزاء العقارات . 3 - شروط البيع والثمن الأساسيء 4 - تجزئة العقار إلى أجزاء إذا اقتضت الضرورة ذلك . مع ذكر الثمن الأساسي لكل جزء؛ 5 - بيان سندات الملكية . المستندات الآتية",
         "ppocr": "العقارية للمفقود وناقص الأهلية والمفلس المادةيتم بيع العقارات وأو الحقوق العينية العقارية المرخص ببيعها قضائيا بالمزاد العلني، للمفقود وناقص الأهلية والمفلس، حسب قائمة شروط البيع، تودع بأمانة ضبط المحكمة، يعدها المحضر القضائي بناء على طلب المقدم أو الوصي أو الولي، أو يعدها وكيل التفليسة، حسب الحالة تتضمن قائمة شروط البيع البيانات الآتية 1 الإذن الصادر بالبيع، 2 تعيين العقار وأو الحق العيني العقاري، تعيينا دقيقا، لا سيما موقعه وحدوده ونوعه ومشتملاته ومساحته ورقم القطعة الأرضية واسمها، عند الاقتضاء، مفرزا أو مشاعا، وغيرها من البيانات التي تفيد في تعيينه، وإن كان العقار بناية، يبين الشارع ورقمه وأجزاء العقارات، شروط البيع والثمن الأساسي، تجزئة العقار إلى أجزاء إذا اقتضت الضرورة ذلك، مع ذكر الثمن الأساسي لكل جزء، 5 بيان سندات الملكية المادة ترفق مع قائمة شروط"
       },
       "regions": [
@@ -56651,7 +57215,7 @@
         {
           "evidenceId": "a2008021-074-right",
           "box": [
-            714,
+            737,
             287,
             1026,
             327
@@ -56665,9 +57229,9 @@
     {
       "number": "784",
       "agrees": true,
-      "canonicalTokens": 30,
+      "canonicalTokens": 31,
       "confirmedBy": {
-        "tesseract": 24,
+        "tesseract": 25,
         "ppocr": 25
       },
       "disagreements": [],
@@ -56754,9 +57318,9 @@
     {
       "number": "786",
       "agrees": true,
-      "canonicalTokens": 100,
+      "canonicalTokens": 101,
       "confirmedBy": {
-        "tesseract": 97,
+        "tesseract": 98,
         "ppocr": 94
       },
       "disagreements": [],
@@ -57470,16 +58034,16 @@
     {
       "number": "798",
       "agrees": false,
-      "canonicalTokens": 98,
+      "canonicalTokens": 99,
       "confirmedBy": {
-        "tesseract": 89,
+        "tesseract": 90,
         "ppocr": 83
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 81,
+          "at": 82,
           "streams": {
             "tesseract": [
               "miss"
@@ -57521,7 +58085,7 @@
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 100,
+          "at": 101,
           "streams": {
             "tesseract": [
               "miss"
@@ -57679,13 +58243,56 @@
     },
     {
       "number": "801",
-      "agrees": true,
-      "canonicalTokens": 56,
+      "agrees": false,
+      "canonicalTokens": 58,
       "confirmedBy": {
-        "tesseract": 45,
+        "tesseract": 46,
         "ppocr": 47
       },
-      "disagreements": [],
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": ":",
+          "at": 9,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          },
+          "reread": {
+            "readings": [
+              {
+                "evidenceId": "a2008021-075-left",
+                "box": [
+                  0,
+                  2786,
+                  1054,
+                  3158
+                ],
+                "scale": 1,
+                "imageSha256": "8c424bae3fce13b7302ec9b62d08121db384ddf777f4c353f460f48aeb8991c4",
+                "ocr": "المادة 801 : تختص المحاكم الإدارية كذلك\r\n1- دعاوى إلغاء القرارات الإدارية والدعاوى\r\n"
+              },
+              {
+                "evidenceId": "a2008021-075-left",
+                "box": [
+                  0,
+                  2786,
+                  1054,
+                  3158
+                ],
+                "scale": 2,
+                "imageSha256": "72967e63e1f7f76b0972cc8b2d668930ec869bb2837e8540054dabd2bd29960c",
+                "ocr": "المادة 801 : تختص المحاكم الإدارية كذلك\r\nإ لصادرة عن :\r\n"
+              }
+            ],
+            "confirmed": true
+          }
+        }
+      ],
       "located": {
         "tesseract": [
           36857,
@@ -57727,9 +58334,9 @@
     {
       "number": "802",
       "agrees": true,
-      "canonicalTokens": 48,
+      "canonicalTokens": 49,
       "confirmedBy": {
-        "tesseract": 47,
+        "tesseract": 48,
         "ppocr": 37
       },
       "disagreements": [],
@@ -57810,58 +58417,16 @@
     {
       "number": "804",
       "agrees": false,
-      "canonicalTokens": 192,
+      "canonicalTokens": 194,
       "confirmedBy": {
-        "tesseract": 168,
-        "ppocr": 182
+        "tesseract": 171,
+        "ppocr": 183
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
-          "canonical": "المادة803",
-          "at": 5,
-          "streams": {
-            "tesseract": [
-              "miss"
-            ],
-            "ppocr": [
-              "miss"
-            ]
-          },
-          "reread": {
-            "readings": [
-              {
-                "evidenceId": "a2008021-076-right",
-                "box": [
-                  0,
-                  1656,
-                  1068,
-                  1896
-                ],
-                "scale": 1,
-                "imageSha256": "d2000d2e0974c8f9ad309c7d4ee86b7f01c1fb7a0ae949fe0e5c30635561ecac",
-                "ocr": "المادة 804 : خلافا لأحكام المادة 803 أعلاه. ترفع\r\nالدعاوى وجوبا أمام المحاكم الإدارية في المواد المبينة\r\nأدناه :\r\n"
-              },
-              {
-                "evidenceId": "a2008021-076-right",
-                "box": [
-                  0,
-                  1656,
-                  1068,
-                  1896
-                ],
-                "scale": 2,
-                "imageSha256": "9b4500ac1c26e18196b5b614a38bd822d2a80bcba95b47da2b1a6f8b3abbffd0",
-                "ocr": "المادة 804 : خلافا لأحكام المادة 803 أعلاه. ترفع\r\nدناه :\r\n"
-              }
-            ],
-            "confirmed": false
-          }
-        },
-        {
-          "kind": "unconfirmed",
           "canonical": "-",
-          "at": 18,
+          "at": 20,
           "streams": {
             "tesseract": [
               "miss"
@@ -57903,7 +58468,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "-",
-          "at": 150,
+          "at": 152,
           "streams": {
             "tesseract": [
               "miss"
@@ -57945,7 +58510,7 @@
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 194,
+          "at": 196,
           "streams": {
             "tesseract": [
               "miss"
@@ -57983,14 +58548,6 @@
             ],
             "confirmed": true
           }
-        },
-        {
-          "kind": "extra-in-all-streams",
-          "canonical": "",
-          "at": 5,
-          "ocr": [
-            "الماده"
-          ]
         }
       ],
       "located": {
@@ -57999,13 +58556,13 @@
           37201
         ],
         "ppocr": [
-          34693,
+          34692,
           34880
         ]
       },
       "ocr": {
         "tesseract": "المادة 804 : خلافا لأحكام المادة 803 أعلاه . ترفع الدعاوى وجوبا أمام المحاكم الإدارية في المواد المبينة أدناه : - ١ ‏ في مادة الضرائب أو الرسوم . أمام المحكمة التي يقع في دائرة اختصاصها مكان فرض الضريبة أو الرسم؛ 2 - في مادة الأشغال العمومية , أمام المحكمة التي يقع في دائرة اختصاصها مكان تنفيذ الأشغال . 3 - فى مادة العقود الإدارية . مهما كانت طبيعتهاء أمام المحكمة التي يقع في دائرة اختصاصها مكان إبرام العقد أو تنفيذه؛ 4 - فى مادة المتازعات المتعلقة بالموظفين أو أعوان الدولة أو غيرهم من الأشخاص العاملين فى المؤسسات العمومية الإدارية , أمام المحكمة التي يقع في دائرة اختصاصها مكان التعيين . 5 - في مادة الخدمات الطبية , أمام المحكمة التي يقع في دائرة اختصاصها مكان تقديم الخدمات؛ 6 - فى مادة التوريدات أو الأشضغال أو تأجير خدمات فد 1 3 أو صناعية . أمام المحكمة التي يقع في دائرة اختصاصها مكان إبرام الاتفاق أو مكان تنفيذه إذا كان أحد الأطراف مقيما به؛ ا 7 ربيع النّاذ 9ه 7 فى مادة تعويض ا لضرر ا لناجم عن جناية أو جنحة أو فعل تقصيرى؛ أمام المحكمة ا لتى يقع فى دا ثرةٌ اختصاصها مكان وقوع الفعل الضار ء 8 - فى مادة إشكالات تنفيذ الأحكام الصادرة عن الجهات القضائية الإدارية . أمام المحكمة التى صدر عنها",
-        "ppocr": "هذا القانون المادة خلافا لأحكام المادة أعلاه، ترفع الدعاوى وجوبا أمام المحاكم الإدارية في المواد المبينة أدناه 1 في مادة الضرائب أو الرسوم، أمام المحكمة التي يقع في دائرة اختصاصها مكان فرض الضريبة أو الرسم، 2 في مادة الأشغال العمومية، أمام المحكمة التي يقع في دائرة اختصاصها مكان تنفيذ الأشغال، 3 في مادة العقود الإدارية، مهما كانت طبيعتها، أمام المحكمة التي يقع في دائرة اختصاصها مكان إبرام العقد أو تنفيذه، 4 في مادة المنازعات المتعلقة بالموظفين أو أعوان الدولة أو غيرهم من الأشخاص العاملين في المؤسسات العمومية الإدارية، أمام المحكمة التي يقع في دائرة اختصاصها مكان التعيين، 5 في مادة الخدمات الطبية، أمام المحكمة التي يقع في دائرة اختصاصها مكان تقديم الخدمات، 6 في مادة التوريدات أو الأشغال أو تأجير خدمات فنية أو صناعية، أمام المحكمة التي يقع في دائرة اختصاصها مكان إبرام الاتفاق أو مكان تنفيذه إذا كان أحد الأطراف مقيما به، في مادة تعويض الضرر الناجم عن جناية أو جنحة أو فعل تقصيري، أمام المحكمة التي يقع في دائرة اختصاصها مكان وقوع الفعل الضار، 8 – في مادة إشكالات تنفيذ الأحكام الصادرة عن الجهات القضائية الإدارية، أمام المحكمة التي صدر عنها الحكم موضوع الإشكال المادة"
+        "ppocr": "من هذا القانون المادة خلافا لأحكام المادة أعلاه، ترفع الدعاوى وجوبا أمام المحاكم الإدارية في المواد المبينة أدناه 1 في مادة الضرائب أو الرسوم، أمام المحكمة التي يقع في دائرة اختصاصها مكان فرض الضريبة أو الرسم، 2 في مادة الأشغال العمومية، أمام المحكمة التي يقع في دائرة اختصاصها مكان تنفيذ الأشغال، 3 في مادة العقود الإدارية، مهما كانت طبيعتها، أمام المحكمة التي يقع في دائرة اختصاصها مكان إبرام العقد أو تنفيذه، 4 في مادة المنازعات المتعلقة بالموظفين أو أعوان الدولة أو غيرهم من الأشخاص العاملين في المؤسسات العمومية الإدارية، أمام المحكمة التي يقع في دائرة اختصاصها مكان التعيين، 5 في مادة الخدمات الطبية، أمام المحكمة التي يقع في دائرة اختصاصها مكان تقديم الخدمات، 6 في مادة التوريدات أو الأشغال أو تأجير خدمات فنية أو صناعية، أمام المحكمة التي يقع في دائرة اختصاصها مكان إبرام الاتفاق أو مكان تنفيذه إذا كان أحد الأطراف مقيما به، في مادة تعويض الضرر الناجم عن جناية أو جنحة أو فعل تقصيري، أمام المحكمة التي يقع في دائرة اختصاصها مكان وقوع الفعل الضار، 8 – في مادة إشكالات تنفيذ الأحكام الصادرة عن الجهات القضائية الإدارية، أمام المحكمة التي صدر عنها الحكم موضوع الإشكال المادة"
       },
       "regions": [
         {
@@ -59846,9 +60403,9 @@
     {
       "number": "832",
       "agrees": true,
-      "canonicalTokens": 35,
+      "canonicalTokens": 36,
       "confirmedBy": {
-        "tesseract": 33,
+        "tesseract": 34,
         "ppocr": 29
       },
       "disagreements": [],
@@ -60320,9 +60877,9 @@
     {
       "number": "838",
       "agrees": true,
-      "canonicalTokens": 40,
+      "canonicalTokens": 41,
       "confirmedBy": {
-        "tesseract": 40,
+        "tesseract": 41,
         "ppocr": 39
       },
       "disagreements": [],
@@ -61528,9 +62085,9 @@
     {
       "number": "860",
       "agrees": true,
-      "canonicalTokens": 33,
+      "canonicalTokens": 34,
       "confirmedBy": {
-        "tesseract": 31,
+        "tesseract": 32,
         "ppocr": 32
       },
       "disagreements": [],
@@ -62755,13 +63312,56 @@
     },
     {
       "number": "880",
-      "agrees": true,
-      "canonicalTokens": 31,
+      "agrees": false,
+      "canonicalTokens": 32,
       "confirmedBy": {
         "tesseract": 26,
         "ppocr": 30
       },
-      "disagreements": [],
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 20,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          },
+          "reread": {
+            "readings": [
+              {
+                "evidenceId": "a2008021-081-left",
+                "box": [
+                  0,
+                  2483,
+                  1054,
+                  2860
+                ],
+                "scale": 1,
+                "imageSha256": "e8c47db9b5af08b4b9bcd02e228eeb9687c3fcdb479d6b4672c670c730e0c62d",
+                "ocr": "في حالة الاستعجال. يعين رئيس الجهة القضائية\r\nالإدارية قاضيا آخر لضمان سير القضية.\r\nالمادة 881 : تقدم القاض المطلوب رده.؛ كتارة قيول\r\n"
+              },
+              {
+                "evidenceId": "a2008021-081-left",
+                "box": [
+                  0,
+                  2483,
+                  1054,
+                  2860
+                ],
+                "scale": 2,
+                "imageSha256": "14bb31b60b836883e691d806c53d7e1c42660569739989aa3839edfcf4cfd8b2",
+                "ocr": "في حالة الاستعجال. يعين رئيس الجهة القضائية\r\nالمادة 881 : يقدم القاضر المطلوب رده؛ كتارة قيول\r\n"
+              }
+            ],
+            "confirmed": false
+          }
+        }
+      ],
       "located": {
         "tesseract": [
           39818,
@@ -62789,7 +63389,7 @@
       ],
       "labelTokens": 2,
       "boundaryExtrasDropped": [],
-      "agreesAfterReread": true
+      "agreesAfterReread": false
     },
     {
       "number": "881",
@@ -62922,58 +63522,16 @@
     {
       "number": "883",
       "agrees": false,
-      "canonicalTokens": 27,
+      "canonicalTokens": 29,
       "confirmedBy": {
-        "tesseract": 25,
+        "tesseract": 28,
         "ppocr": 17
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
-          "canonical": "دج",
-          "at": 22,
-          "streams": {
-            "tesseract": [
-              "miss"
-            ],
-            "ppocr": [
-              "miss"
-            ]
-          },
-          "reread": {
-            "readings": [
-              {
-                "evidenceId": "a2008021-082-right",
-                "box": [
-                  0,
-                  1107,
-                  1068,
-                  1343
-                ],
-                "scale": 1,
-                "imageSha256": "0211f21255c238ba5efade6098ebc85a92ad85457faf4a561b96f89d6de2a1ad",
-                "ocr": "اا اانا ‎١‏ تواال الت نان ان ناك ‎١‏ لاا الث اا ا\r\nبغرامة مدنية لا تقل عن عشرة آلاف دينار (10.000 د.ج)؛\r\nدون الإخلال بالتعويضات المحتملة.\r\n\r\nالقب الخالىة\r\n"
-              },
-              {
-                "evidenceId": "a2008021-082-right",
-                "box": [
-                  0,
-                  1107,
-                  1068,
-                  1343
-                ],
-                "scale": 2,
-                "imageSha256": "d251693a5d55e84699c21f5273bbbe632c1811a2cf8436786264605adc82b4d9",
-                "ocr": "ا ااانا ‎١‏ تمت لانت ان اتنا ‎١‏ لضا ‎١‏ لاك الك الاق ا\r\nبغرامة مدنية لا تقل عن عشرة آلاف دينار (10.000 د.ج)؛\r\nدون الإخلال بالتعويضات المحتملة.\r\n\r\nالقب الخالىة\r\n"
-              }
-            ],
-            "confirmed": false
-          }
-        },
-        {
-          "kind": "unconfirmed",
           "canonical": "،",
-          "at": 24,
+          "at": 26,
           "streams": {
             "tesseract": [
               "miss"
@@ -64357,69 +64915,26 @@
     },
     {
       "number": "904",
-      "agrees": false,
-      "canonicalTokens": 15,
+      "agrees": true,
+      "canonicalTokens": 16,
       "confirmedBy": {
-        "tesseract": 13,
-        "ppocr": 12
+        "tesseract": 15,
+        "ppocr": 13
       },
-      "disagreements": [
-        {
-          "kind": "unconfirmed",
-          "canonical": "من815",
-          "at": 6,
-          "streams": {
-            "tesseract": [
-              "split"
-            ],
-            "ppocr": [
-              "miss"
-            ]
-          },
-          "reread": {
-            "readings": [
-              {
-                "evidenceId": "a2008021-083-left",
-                "box": [
-                  0,
-                  936,
-                  1054,
-                  1169
-                ],
-                "scale": 1,
-                "imageSha256": "012be080536164214c6c3d5463a74cae43dc9fef7e691a2bbd72cafe6a5a1c99",
-                "ocr": "المادة 904 : تطبق أحكام المواد من 815 إلى 825\r\nأعلاه؛ المتعلقة بعريضة افتتاح الدعوى. أمام مجلس\r\nالدولة.\r\n"
-              },
-              {
-                "evidenceId": "a2008021-083-left",
-                "box": [
-                  0,
-                  936,
-                  1054,
-                  1169
-                ],
-                "scale": 2,
-                "imageSha256": "ee1a9066e72e6975bc209fe774f8d9f7efb37fd4a4dd485c4580ceac1d5a0b9e",
-                "ocr": "المادة 904 : تطبق أحكام المواد من 815 إلى 825\r\nأعلاد 6 إ لمتعلقة بعريضة إ فتتاح إ لد عوى؛ أمام مجلس\r\nالدولة.\r\n"
-              }
-            ],
-            "confirmed": false
-          }
-        }
-      ],
+      "disagreements": [],
       "located": {
         "tesseract": [
           40629,
           40649
         ],
         "ppocr": [
-          38022,
+          38021,
           38040
         ]
       },
       "ocr": {
         "tesseract": "المادة 904 : تطبق أحكام المواد من 815 إلى 825 أعلاه؛ المتعلقة بعريضة افتتاح الدعوى . أمام مجلس الدولة .",
-        "ppocr": "في افتتاح الدعوى المادة تطبق أحكام المواد من إلى أعلاه، المتعلقة بعريضة افتتاح الدعوى، أمام مجلس الدولة المادة"
+        "ppocr": "الأول في افتتاح الدعوى المادة تطبق أحكام المواد من إلى أعلاه، المتعلقة بعريضة افتتاح الدعوى، أمام مجلس الدولة المادة"
       },
       "regions": [
         {
@@ -64434,7 +64949,7 @@
       ],
       "labelTokens": 2,
       "boundaryExtrasDropped": [],
-      "agreesAfterReread": false
+      "agreesAfterReread": true
     },
     {
       "number": "905",
@@ -64714,76 +65229,17 @@
     },
     {
       "number": "910",
-      "agrees": false,
-      "canonicalTokens": 17,
+      "agrees": true,
+      "canonicalTokens": 18,
       "confirmedBy": {
-        "tesseract": 15,
-        "ppocr": 14
+        "tesseract": 18,
+        "ppocr": 15
       },
-      "disagreements": [
-        {
-          "kind": "unconfirmed",
-          "canonical": "إلى837",
-          "at": 14,
-          "streams": {
-            "tesseract": [
-              "miss"
-            ],
-            "ppocr": [
-              "miss"
-            ]
-          },
-          "reread": {
-            "readings": [
-              {
-                "evidenceId": "a2008021-083-left",
-                "box": [
-                  0,
-                  2473,
-                  1054,
-                  2710
-                ],
-                "scale": 1,
-                "imageSha256": "3c83e74d7157ce9d7da4e8dc6e0b5cc3f7f3964c67b734133117c6bcb687c10f",
-                "ocr": "الت ا١[١١ ‎١)‏ ناما ‎١١‏ اتنا ‎١‏ اانا اتا ال توا\r\nالمنصوص عليها فى المواد من 833 إلى 837 أعلاه د أمام\r\nمجلس الدولة.\r\nالقسم الثالث\r\n"
-              },
-              {
-                "evidenceId": "a2008021-083-left",
-                "box": [
-                  0,
-                  2473,
-                  1054,
-                  2710
-                ],
-                "scale": 2,
-                "imageSha256": "359a4e85803a726d97ce868664cb1cc02d453f62f5952cce5fe371e4e4ed6d7f",
-                "ocr": "“كاتا اا١[ً1١‏ )ا ‎١‏ لاا ‎١‏ لالت ‎١‏ لتنا ع ِ ا\r\nإ لمنصوصض عليها فى إ لمواد من 8/83 إلى 7 أاعلاه؛ ‎١‏ مام\r\nمجلس الدولة.\r\n"
-              }
-            ],
-            "confirmed": false
-          }
-        },
-        {
-          "kind": "extra-in-all-streams",
-          "canonical": "",
-          "at": 13,
-          "ocr": [
-            "الي"
-          ]
-        },
-        {
-          "kind": "extra-in-all-streams",
-          "canonical": "",
-          "at": 14,
-          "ocr": [
-            "الي"
-          ]
-        }
-      ],
+      "disagreements": [],
       "located": {
         "tesseract": [
           40763,
-          40786
+          40787
         ],
         "ppocr": [
           38119,
@@ -64791,7 +65247,7 @@
         ]
       },
       "ocr": {
-        "tesseract": "المادة 910 : تطبق الأحكام المتعلقة بوقف التنفيذ المنصوص عليها في المواد من 833 إلى 837 أعلاه؛ أمام مجلس الدولة . في وقف",
+        "tesseract": "المادة 910 : تطبق الأحكام المتعلقة بوقف التنفيذ المنصوص عليها في المواد من 833 إلى 837 أعلاه؛ أمام مجلس الدولة . في وقف تنفيذ",
         "ppocr": "أحكام عامة المادة تطبق الأحكام المتعلقة بوقف التنفيذ المنصوص عليها في المواد من إلى أعلاه، أمام مجلس الدولة القسم الثالث في وقف"
       },
       "regions": [
@@ -64816,7 +65272,7 @@
           "وقف"
         ]
       ],
-      "agreesAfterReread": false
+      "agreesAfterReread": true
     },
     {
       "number": "911",
@@ -65070,25 +65526,25 @@
     {
       "number": "915",
       "agrees": true,
-      "canonicalTokens": 15,
+      "canonicalTokens": 16,
       "confirmedBy": {
-        "tesseract": 15,
+        "tesseract": 16,
         "ppocr": 13
       },
       "disagreements": [],
       "located": {
         "tesseract": [
           41033,
-          41054
+          41055
         ],
         "ppocr": [
           38378,
-          38399
+          38400
         ]
       },
       "ocr": {
-        "tesseract": "المادة 915 : تطبق الأحكام الواردة في المواد من 838 إلى 873 أعلاه؛ الملتعلقة بالتحقيق أمام مجلس الدولة . الفصل الثالث",
-        "ppocr": "الخامس في التحقيق المادة تطبق الأحكام الواردة في المواد من إلى 7 أعلاه، المتعلقة بالتحقيق أمام مجلس الدولة الفصل الثالث في"
+        "tesseract": "المادة 915 : تطبق الأحكام الواردة في المواد من 838 إلى 873 أعلاه؛ الملتعلقة بالتحقيق أمام مجلس الدولة . الفصل الثالث في",
+        "ppocr": "الخامس في التحقيق المادة تطبق الأحكام الواردة في المواد من إلى 7 أعلاه، المتعلقة بالتحقيق أمام مجلس الدولة الفصل الثالث في القرارات"
       },
       "regions": [
         {
@@ -65097,7 +65553,7 @@
             51,
             2529,
             1026,
-            2802
+            2910
           ]
         }
       ],
@@ -65105,7 +65561,13 @@
       "boundaryExtrasDropped": [
         [
           "الثالث",
-          "الفصل"
+          "الفصل",
+          "في"
+        ],
+        [
+          "الثالث",
+          "الفصل",
+          "في"
         ]
       ],
       "agreesAfterReread": true
@@ -66124,9 +66586,9 @@
     {
       "number": "933",
       "agrees": false,
-      "canonicalTokens": 13,
+      "canonicalTokens": 14,
       "confirmedBy": {
-        "tesseract": 12,
+        "tesseract": 13,
         "ppocr": 11
       },
       "disagreements": [
@@ -67054,25 +67516,25 @@
     {
       "number": "945",
       "agrees": true,
-      "canonicalTokens": 39,
+      "canonicalTokens": 40,
       "confirmedBy": {
-        "tesseract": 36,
+        "tesseract": 37,
         "ppocr": 39
       },
       "disagreements": [],
       "located": {
         "tesseract": [
           42025,
-          42074
+          42075
         ],
         "ppocr": [
           39289,
-          39334
+          39335
         ]
       },
       "ocr": {
-        "tesseract": "المادة 945 : يجوز لمجلس الدولة . ؛ أن يأمر يوقف تنفيذ الأمر القاضى بمنح التسبيق . إذا كان تنفيذه من شأنه أن يؤدي إلى نتائج لا يمكن تداركها وإذا كانت الأوجه المثارة تبدو من خلال التحقيق جدية . ومن طبيعتها أن تبرر إلغاءه ورفض الطلب . الفصل الخامس",
-        "ppocr": "لتقديم ضمان المادة يجوز لمجلس الدولة، أن يأمر بوقف تنفيذ الأمر القاضي بمنح التسبيق، إذا كان تنفيذه من شأنه أن يؤدي إلى نتائج لا يمكن تداركها وإذا كانت الأوجه المثارة تبدو من خلال التحقيق جدية، ومن طبيعتها أن تبرر إلغاءه ورفض الطلب الفصل الخامس الاستعجال"
+        "tesseract": "المادة 945 : يجوز لمجلس الدولة . ؛ أن يأمر يوقف تنفيذ الأمر القاضى بمنح التسبيق . إذا كان تنفيذه من شأنه أن يؤدي إلى نتائج لا يمكن تداركها وإذا كانت الأوجه المثارة تبدو من خلال التحقيق جدية . ومن طبيعتها أن تبرر إلغاءه ورفض الطلب . الفصل الخامس الاستعجال",
+        "ppocr": "لتقديم ضمان المادة يجوز لمجلس الدولة، أن يأمر بوقف تنفيذ الأمر القاضي بمنح التسبيق، إذا كان تنفيذه من شأنه أن يؤدي إلى نتائج لا يمكن تداركها وإذا كانت الأوجه المثارة تبدو من خلال التحقيق جدية، ومن طبيعتها أن تبرر إلغاءه ورفض الطلب الفصل الخامس الاستعجال في"
       },
       "regions": [
         {
@@ -67081,13 +67543,19 @@
             29,
             407,
             1008,
-            855
+            940
           ]
         }
       ],
       "labelTokens": 2,
       "boundaryExtrasDropped": [
         [
+          "الاستعجال",
+          "الخامس",
+          "الفصل"
+        ],
+        [
+          "الاستعجال",
           "الخامس",
           "الفصل"
         ]
@@ -67269,25 +67737,25 @@
     {
       "number": "948",
       "agrees": true,
-      "canonicalTokens": 15,
+      "canonicalTokens": 16,
       "confirmedBy": {
-        "tesseract": 8,
+        "tesseract": 9,
         "ppocr": 15
       },
       "disagreements": [],
       "located": {
         "tesseract": [
           42232,
-          42246
+          42247
         ],
         "ppocr": [
           39473,
-          39494
+          39495
         ]
       },
       "ocr": {
-        "tesseract": "المادة 948 : يخضع الاستعجال في المادة الجبائية ولأحكام هذا الباب . 17 التّاذ",
-        "ppocr": "فيالمادة الجبائية المادة يخضع الاستعجال في المادة الجبائية للقواعد المنصوص عليها في قانون الإجراءات الجبائية ولأحكام هذا الباب ربيع الثاني عام"
+        "tesseract": "المادة 948 : يخضع الاستعجال في المادة الجبائية ولأحكام هذا الباب . 17 التّاذ 9ه",
+        "ppocr": "فيالمادة الجبائية المادة يخضع الاستعجال في المادة الجبائية للقواعد المنصوص عليها في قانون الإجراءات الجبائية ولأحكام هذا الباب ربيع الثاني عام الجدة"
       },
       "regions": [
         {
@@ -67302,7 +67770,7 @@
         {
           "evidenceId": "a2008021-087-right",
           "box": [
-            848,
+            609,
             10,
             1057,
             62
@@ -67473,25 +67941,25 @@
     {
       "number": "952",
       "agrees": true,
-      "canonicalTokens": 21,
+      "canonicalTokens": 22,
       "confirmedBy": {
-        "tesseract": 18,
+        "tesseract": 19,
         "ppocr": 21
       },
       "disagreements": [],
       "located": {
         "tesseract": [
           42386,
-          42413
+          42414
         ],
         "ppocr": [
           39626,
-          39653
+          39654
         ]
       },
       "ocr": {
-        "tesseract": "المادة 952 : لا تكون الأحكام الصادرة قبل الفصل في الموضوع . قابلة للاستتناف إلا مع الحكم الفاصل في موضوع ا لدعوىء ويتم الاستتئناف بعريضة وا حدة",
-        "ppocr": "بعد التنازل المادة لا تكون الأحكام الصادرة قبل الفصل في الموضوع، قابلة للاستئناف إلا مع الحكم الفاصل في موضوع الدعوى، ويتم الاستئناف بعريضة واحدة القسم الثاني في"
+        "tesseract": "المادة 952 : لا تكون الأحكام الصادرة قبل الفصل في الموضوع . قابلة للاستتناف إلا مع الحكم الفاصل في موضوع ا لدعوىء ويتم الاستتئناف بعريضة وا حدة .",
+        "ppocr": "بعد التنازل المادة لا تكون الأحكام الصادرة قبل الفصل في الموضوع، قابلة للاستئناف إلا مع الحكم الفاصل في موضوع الدعوى، ويتم الاستئناف بعريضة واحدة القسم الثاني في المعارضة"
       },
       "regions": [
         {
@@ -68295,16 +68763,16 @@
     {
       "number": "967",
       "agrees": false,
-      "canonicalTokens": 43,
+      "canonicalTokens": 44,
       "confirmedBy": {
-        "tesseract": 32,
+        "tesseract": 33,
         "ppocr": 40
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "-",
-          "at": 31,
+          "at": 32,
           "streams": {
             "tesseract": [
               "miss"
@@ -68741,13 +69209,65 @@
     },
     {
       "number": "974",
-      "agrees": true,
-      "canonicalTokens": 15,
+      "agrees": false,
+      "canonicalTokens": 16,
       "confirmedBy": {
         "tesseract": 14,
         "ppocr": 15
       },
-      "disagreements": [],
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 18,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          },
+          "reread": {
+            "readings": [
+              {
+                "evidenceId": "a2008021-088-left",
+                "box": [
+                  0,
+                  252,
+                  1054,
+                  481
+                ],
+                "scale": 1,
+                "imageSha256": "7313c169925e4537374db9d9f4c562d83c57f00b33c1e5b4c9ffea757b3263b2",
+                "ocr": "تباشر الصلح إلا في ا لنزاعات ‎١‏ لتي تدخل في\r\nالفصل الثانى\r\n"
+              },
+              {
+                "evidenceId": "a2008021-088-left",
+                "box": [
+                  0,
+                  252,
+                  1054,
+                  481
+                ],
+                "scale": 2,
+                "imageSha256": "fca3b4cb624298da4a51e34aa8dbd39172aeba60b9db9ce695031a7f1b762b95",
+                "ocr": ""
+              }
+            ],
+            "confirmed": false
+          }
+        },
+        {
+          "kind": "extra-in-all-streams",
+          "canonical": "",
+          "at": 17,
+          "ocr": [
+            "الثاني",
+            "الفصل"
+          ]
+        }
+      ],
       "located": {
         "tesseract": [
           42841,
@@ -68755,12 +69275,12 @@
         ],
         "ppocr": [
           40090,
-          40111
+          40112
         ]
       },
       "ocr": {
         "tesseract": "المادة 974 : لا يجوز للجهة القضائية الإدارية أن تباشر الصلح إلا فى النزاعات التى تدخل فى الفصل الثاني",
-        "ppocr": "لأي طعن المادة لا يجوز للجهة القضائية الإدارية أن تباشر الصلح إلا في النزاعات التي تدخل في اختصاصها الفصل الثاني في"
+        "ppocr": "لأي طعن المادة لا يجوز للجهة القضائية الإدارية أن تباشر الصلح إلا في النزاعات التي تدخل في اختصاصها الفصل الثاني في التحكيم"
       },
       "regions": [
         {
@@ -68778,13 +69298,9 @@
         [
           "الثاني",
           "الفصل"
-        ],
-        [
-          "الثاني",
-          "الفصل"
         ]
       ],
-      "agreesAfterReread": true
+      "agreesAfterReread": false
     },
     {
       "number": "975",
@@ -69005,25 +69521,25 @@
     {
       "number": "977",
       "agrees": true,
-      "canonicalTokens": 20,
+      "canonicalTokens": 21,
       "confirmedBy": {
-        "tesseract": 20,
+        "tesseract": 21,
         "ppocr": 20
       },
       "disagreements": [],
       "located": {
         "tesseract": [
           42977,
-          43003
+          43004
         ],
         "ppocr": [
           40225,
-          40251
+          40252
         ]
       },
       "ocr": {
-        "tesseract": "المادة 977 : تطبق المقتضيات الواردة في هذا القانون المتعلقة بتنفيذ أحكام التحكيم وطرق الطعن فيها على أحكام التحكيم الصادرة في المادة الإدارية . الباب السادس",
-        "ppocr": "والطعن فيها المادة تطبق المقتضيات الواردة في هذا القانون المتعلقة بتنفيذ أحكام التحكيم وطرق الطعن فيها على أحكام التحكيم الصادرة في المادة الإدارية الباب السادس في"
+        "tesseract": "المادة 977 : تطبق المقتضيات الواردة في هذا القانون المتعلقة بتنفيذ أحكام التحكيم وطرق الطعن فيها على أحكام التحكيم الصادرة في المادة الإدارية . الباب السادس في",
+        "ppocr": "والطعن فيها المادة تطبق المقتضيات الواردة في هذا القانون المتعلقة بتنفيذ أحكام التحكيم وطرق الطعن فيها على أحكام التحكيم الصادرة في المادة الإدارية الباب السادس في تنفيذ"
       },
       "regions": [
         {
@@ -69032,7 +69548,7 @@
             29,
             2198,
             1006,
-            2465
+            2551
           ]
         }
       ],
@@ -69040,7 +69556,13 @@
       "boundaryExtrasDropped": [
         [
           "الباب",
-          "السادس"
+          "السادس",
+          "في"
+        ],
+        [
+          "الباب",
+          "السادس",
+          "في"
         ]
       ],
       "agreesAfterReread": true
@@ -69693,25 +70215,25 @@
     {
       "number": "989",
       "agrees": true,
-      "canonicalTokens": 20,
+      "canonicalTokens": 21,
       "confirmedBy": {
-        "tesseract": 12,
+        "tesseract": 13,
         "ppocr": 20
       },
       "disagreements": [],
       "located": {
         "tesseract": [
           43393,
-          43409
+          43410
         ],
         "ppocr": [
           40610,
-          40636
+          40637
         ]
       },
       "ocr": {
-        "tesseract": "محكمة إدارية تقريرا إلى رئيس مجلس الدولة حول صعوبات التنفيذ و مختلف الإشكالات المعاينة . في",
-        "ppocr": "قرار الرفض المادة في نهاية كل سنة، يوجه رئيس كل محكمة إدارية تقريرا إلى رئيس مجلس الدولة حول صعوبات التنفيذ ومختلف الإشكالات المعاينة الكتاب الخامس في"
+        "tesseract": "محكمة إدارية تقريرا إلى رئيس مجلس الدولة حول صعوبات التنفيذ و مختلف الإشكالات المعاينة . في الطرق",
+        "ppocr": "قرار الرفض المادة في نهاية كل سنة، يوجه رئيس كل محكمة إدارية تقريرا إلى رئيس مجلس الدولة حول صعوبات التنفيذ ومختلف الإشكالات المعاينة الكتاب الخامس في الطرق"
       },
       "regions": [
         {
@@ -69727,6 +70249,11 @@
       "labelTokens": 2,
       "boundaryExtrasDropped": [
         [
+          "الطرق",
+          "في"
+        ],
+        [
+          "الطرق",
           "في"
         ]
       ],
@@ -70506,7 +71033,7 @@
     {
       "number": "998",
       "agrees": false,
-      "canonicalTokens": 66,
+      "canonicalTokens": 67,
       "confirmedBy": {
         "tesseract": 39,
         "ppocr": 62
@@ -70514,8 +71041,50 @@
       "disagreements": [
         {
           "kind": "unconfirmed",
+          "canonical": ":",
+          "at": 23,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          },
+          "reread": {
+            "readings": [
+              {
+                "evidenceId": "a2008021-090-right",
+                "box": [
+                  0,
+                  1235,
+                  1068,
+                  1612
+                ],
+                "scale": 1,
+                "imageSha256": "eaa99bb94dd48eaec853471e1562785893dba1c6f71e2c730f0b95c476af1c4a",
+                "ocr": "المكلف بالوساطة من بين الأشخاص المعترف لهم بحسن\r\nالسلوك والاستقامة.؛ و أن تتوفر فيه الشروط الآتية :\r\n1- ألا يكون قد تعرض إلى عقوبة عن جريمة\r\nمخلة بالشرف, وآلا يكون ممنوعا من حقوقه المدنية.\r\n0 _ اك بج 0. 0 - لعغوء |١)١١٠١.ا ‏ .ء ‎٠) ٠ ١١‏ هه ‎٠.١١5‏ ا .| ”\r\n"
+              },
+              {
+                "evidenceId": "a2008021-090-right",
+                "box": [
+                  0,
+                  1235,
+                  1068,
+                  1612
+                ],
+                "scale": 2,
+                "imageSha256": "3406d48e647e34eb486bd78780740f0fdf94d9baba567b3cf6b17d338cd437d6",
+                "ocr": "السلوك والاستقامة. وأن تتوفر فيه الشروط الآتية :\r\nمخلة بالشرف, وآلا يكون ممنوعا من حقوقه المدنية؛\r\nزو د الها ال ان ا نم ا 2 ‎١. 0 ٠.١١ 3 - ٠+)! ٠ )|١‏ ل\r\n"
+              }
+            ],
+            "confirmed": true
+          }
+        },
+        {
+          "kind": "unconfirmed",
           "canonical": "-",
-          "at": 52,
+          "at": 53,
           "streams": {
             "tesseract": [
               "miss"
@@ -70557,7 +71126,7 @@
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 68,
+          "at": 69,
           "streams": {
             "tesseract": [
               "miss"
@@ -70600,7 +71169,7 @@
       "located": {
         "tesseract": [
           43592,
-          43642
+          43638
         ],
         "ppocr": [
           40834,
@@ -70608,7 +71177,7 @@
         ]
       },
       "ocr": {
-        "tesseract": "المكلف بالوساطة من بين الأشخاص المعترف لهم بحسن 1 - ألايكون قد تعرض إلى عقوبة عن جريمة مخلة بالشرف , وآلا يكون ممنوعا من حقوقه المدنية . 2 - أن يكون مؤهلا للنظر في المنازعة المعروضة ِ 5 الوساطة؛ تحدد كيفيات تطبيبيق هذه المادة عن طريق الوسيط ما يأتى :",
+        "tesseract": "المكلف بالوساطة من بين الأشخاص المعترف لهم بحسن 1 - ألايكون قد تعرض إلى عقوبة عن جريمة مخلة بالشرف , وآلا يكون ممنوعا من حقوقه المدنية . 2 - أن يكون مؤهلا للنظر في المنازعة المعروضة ِ 5 الوساطة؛ تحدد كيفيات تطبيبيق هذه المادة عن طريق",
         "ppocr": "المادة يجب أن يعين الشخص الطبيعي المكلف بالوساطة من بين الأشخاص المعترف لهم بحسن السلوك والاستقامة، وأن تتوفر فيه الشروط الآتية 1 ألا يكون قد تعرض إلى عقوبة عن جريمة مخلة بالشرف، وألا يكون ممنوعا من حقوقه المدنية، 2 أن يكون مؤهلا للنظر في المنازعة المعروضة عليه، 3 أن يكون محايدا ومستقلا في ممارسة الوساطة، تحدد كيفيات تطبيق هذه المادة عن طريق التنظيم المادة يجب"
       },
       "regions": [
@@ -70618,7 +71187,7 @@
             51,
             1263,
             1027,
-            2192
+            1949
           ]
         }
       ],
@@ -70629,16 +71198,16 @@
     {
       "number": "999",
       "agrees": false,
-      "canonicalTokens": 28,
+      "canonicalTokens": 29,
       "confirmedBy": {
-        "tesseract": 18,
+        "tesseract": 19,
         "ppocr": 21
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "1 -",
-          "at": 12,
+          "at": 13,
           "streams": {
             "tesseract": [
               "miss",
@@ -72063,16 +72632,16 @@
     {
       "number": "1016",
       "agrees": false,
-      "canonicalTokens": 129,
+      "canonicalTokens": 130,
       "confirmedBy": {
-        "tesseract": 86,
+        "tesseract": 87,
         "ppocr": 117
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "-",
-          "at": 21,
+          "at": 22,
           "streams": {
             "tesseract": [
               "miss"
@@ -72114,7 +72683,7 @@
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 85,
+          "at": 86,
           "streams": {
             "tesseract": [
               "miss"
@@ -72156,7 +72725,7 @@
         {
           "kind": "unconfirmed",
           "canonical": ".",
-          "at": 124,
+          "at": 125,
           "streams": {
             "tesseract": [
               "miss"
@@ -72546,16 +73115,16 @@
     {
       "number": "1024",
       "agrees": false,
-      "canonicalTokens": 82,
+      "canonicalTokens": 83,
       "confirmedBy": {
-        "tesseract": 59,
+        "tesseract": 60,
         "ppocr": 70
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "( 4 )",
-          "at": 63,
+          "at": 64,
           "streams": {
             "tesseract": [
               "miss",
@@ -72605,13 +73174,13 @@
           44583
         ],
         "ppocr": [
-          41721,
+          41720,
           41800
         ]
       },
       "ocr": {
         "tesseract": "المادة 1024 : ينتهى التحكيم : 1 - بوفاة أحد المحكمين أو رفضه القيام بمهمته مخالف , أو إذا اتفق الأطراف على استبداله أو استبداله من قبل المحكم أو المحكمين الباقين . وفي حالة غياب الاتفاق تطبق أحكام المادة 1009 أعلاه؛ 2 - بانتهاء المدة المقررة للتحكيم . فإذا لم 3 - بفقد الشيء موضوع النزاع أو انقضاء الدين المتنازع فيه . ؛ 4 - بوفاة أحد أطراف العقد . الفصل الخثالث في",
-        "ppocr": "يفصلالمحكمون وفقا لقواعد القانون المادةينتهي التحكيم ا بوفاة أحد المحكمين أو رفضه القيام بمهمته بمبرر أو تنحيته أو حصول مانع له، مالم يوجد شرط مخالف، أو إذا اتفق الأطراف على استبداله أو استبداله من قبل المحكم أو المحكمين الباقين وفي حالة غياب الاتفاق تطبق أحكام المادة أعلاه، 2 بانتهاء المدة المقررة للتحكيم، فإذا لم تشترط المدة، فبانتهاء مدة أربعة أشهر، بفقد الشيء موضوع النزاع أو انقضاء الدين المتنازع فيه، 4 – بوفاة أحد أطراف العقد الفصل الثالث في أحكام"
+        "ppocr": "المادة يفصلالمحكمون وفقا لقواعد القانون المادةينتهي التحكيم ا بوفاة أحد المحكمين أو رفضه القيام بمهمته بمبرر أو تنحيته أو حصول مانع له، مالم يوجد شرط مخالف، أو إذا اتفق الأطراف على استبداله أو استبداله من قبل المحكم أو المحكمين الباقين وفي حالة غياب الاتفاق تطبق أحكام المادة أعلاه، 2 بانتهاء المدة المقررة للتحكيم، فإذا لم تشترط المدة، فبانتهاء مدة أربعة أشهر، بفقد الشيء موضوع النزاع أو انقضاء الدين المتنازع فيه، 4 – بوفاة أحد أطراف العقد الفصل الثالث في أحكام"
       },
       "regions": [
         {
@@ -72797,16 +73366,16 @@
     {
       "number": "1028",
       "agrees": false,
-      "canonicalTokens": 48,
+      "canonicalTokens": 49,
       "confirmedBy": {
-        "tesseract": 26,
+        "tesseract": 27,
         "ppocr": 40
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
           "canonical": "-",
-          "at": 25,
+          "at": 26,
           "streams": {
             "tesseract": [
               "miss"
@@ -72848,7 +73417,7 @@
         {
           "kind": "unconfirmed",
           "canonical": "-",
-          "at": 38,
+          "at": 39,
           "streams": {
             "tesseract": [
               "miss"
@@ -73343,13 +73912,56 @@
     },
     {
       "number": "1034",
-      "agrees": true,
-      "canonicalTokens": 16,
+      "agrees": false,
+      "canonicalTokens": 17,
       "confirmedBy": {
         "tesseract": 11,
         "ppocr": 16
       },
-      "disagreements": [],
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 19,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          },
+          "reread": {
+            "readings": [
+              {
+                "evidenceId": "a2008021-092-left",
+                "box": [
+                  0,
+                  2453,
+                  1054,
+                  2691
+                ],
+                "scale": 1,
+                "imageSha256": "0f53c2e5a24b1bf27ada29045420dabedb7a9654e4a6bbed0b5530398d8d844f",
+                "ocr": "شط ططثث: ‎١‏ لكان ‎١‏ الل كب ‎١‏ الاب ‎١‏ أن اتا ل دي\r\nالاستئناف وحدها قابلة للطعن بالنقض طبقا للأحكام\r\nالقهنا , الغامك -\r\n"
+              },
+              {
+                "evidenceId": "a2008021-092-left",
+                "box": [
+                  0,
+                  2453,
+                  1054,
+                  2691
+                ],
+                "scale": 2,
+                "imageSha256": "aa47a5fcadca0ebd237e6f8ef50eb77180cc538ecff7ae0466f4a1c891b10c53",
+                "ocr": "ا ل ا ل ف لها ‎ -__‏ له له اا اا يي\r\nالاستئناف وحدها قابلة للطعن بالنقض طبقا للأحكام\r\nالقمهنا, الغامك.-\r\n"
+              }
+            ],
+            "confirmed": true
+          }
+        }
+      ],
       "located": {
         "tesseract": [
           44794,
@@ -73357,12 +73969,12 @@
         ],
         "ppocr": [
           42002,
-          42022
+          42023
         ]
       },
       "ocr": {
         "tesseract": "المادة 1034 : تكون القرارات الفاصلة فى الاستئناف وحدها قابلة للطعن بالنقض طبقا للأحكام الفصل الخامس",
-        "ppocr": "المادة تكون القرارات الفاصلة في الاستئناف وحدها قابلة للطعن بالنقض طبقا للأحكام المنصوص عليهافي هذا القانون الفصل الخامس في تنفيذ"
+        "ppocr": "المادة تكون القرارات الفاصلة في الاستئناف وحدها قابلة للطعن بالنقض طبقا للأحكام المنصوص عليهافي هذا القانون الفصل الخامس في تنفيذ أحكام"
       },
       "regions": [
         {
@@ -73688,9 +74300,9 @@
     {
       "number": "1041",
       "agrees": true,
-      "canonicalTokens": 84,
+      "canonicalTokens": 85,
       "confirmedBy": {
-        "tesseract": 71,
+        "tesseract": 72,
         "ppocr": 75
       },
       "disagreements": [],
@@ -74182,9 +74794,9 @@
     {
       "number": "1049",
       "agrees": true,
-      "canonicalTokens": 17,
+      "canonicalTokens": 18,
       "confirmedBy": {
-        "tesseract": 15,
+        "tesseract": 16,
         "ppocr": 17
       },
       "disagreements": [],
@@ -74692,9 +75304,9 @@
     {
       "number": "1056",
       "agrees": true,
-      "canonicalTokens": 86,
+      "canonicalTokens": 87,
       "confirmedBy": {
-        "tesseract": 80,
+        "tesseract": 81,
         "ppocr": 76
       },
       "disagreements": [],
@@ -75023,23 +75635,21 @@
     {
       "number": "1060",
       "agrees": false,
-      "canonicalTokens": 14,
+      "canonicalTokens": 16,
       "confirmedBy": {
-        "tesseract": 7,
+        "tesseract": 9,
         "ppocr": 9
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
-          "canonical": "1055و1056 و1058،",
-          "at": 12,
+          "canonical": "و1058،",
+          "at": 14,
           "streams": {
             "tesseract": [
-              "miss",
               "miss"
             ],
             "ppocr": [
-              "miss",
               "miss"
             ]
           },
@@ -75049,28 +75659,70 @@
                 "evidenceId": "a2008021-095-right",
                 "box": [
                   0,
-                  256,
+                  255,
                   1190,
                   485
                 ],
                 "scale": 1,
-                "imageSha256": "0ddceca487eae3262752a2f7b2fd6bdbb8e249d539d842117676de3081054021",
-                "ocr": "الىستاتكتاكاث٠ ‎١‏ ل ا مسا لاللائنتءا !!! قعكاه 4< تدا لادان\r\n‎١!‏ *» 10714 .أ حلم ‎١ ه١! ٠) .٠-‏ - )) ) ص-0 0 .ان ) جم )|\r\n"
+                "imageSha256": "2cfcf5c11ca9186f84285311375fe9454b45f5f8e8d9b56240673a0f260da8b7",
+                "ocr": "#افتنا ‎١ ١‏ لا | لشسا< اتن اللاي ال << كا رفانت ال لل\r\n‎١!‏ *» 10714 .أ حلم ‎١ ه١! ٠) .٠-‏ - )) ) ص-0 0 .ان ) جم )|\r\n"
               },
               {
                 "evidenceId": "a2008021-095-right",
                 "box": [
                   0,
-                  256,
+                  255,
                   1190,
                   485
                 ],
                 "scale": 2,
-                "imageSha256": "a0dc826bcb3f4aed9428e4c36b4c20a51d581ffaef243623aa33ae8f9aa13b10",
-                "ocr": "لستتتكاااكاا ‎١ ١‏ ااا ممض لاا لاسن ا لقاذذا7١‏ كا لاقم االاصد اها\r\nأحكام التحكيم.\r\n‎10٠71 »* .!‏ . > دووأ(-. !)) ‎0-١ )! !) ! ٠‏ .”انيم ) > )\r\n"
+                "imageSha256": "ce0d69ff69c4e27cb374288e4f7d50d3feb78390a84f82c2bc028c17dbb1d7fe",
+                "ocr": "ااانا 7 ‎7١‏ الا | لاض ااا الي لل لضاف كبا لاااعا الل ل\r\nأحكام التحكيم.\r\n‎10٠71 »* .!‏ . > دووأ(-. !)) ‎0-١ )! !) ! ٠‏ .”انيم ) > )\r\n"
               }
             ],
             "confirmed": false
+          }
+        },
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 18,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          },
+          "reread": {
+            "readings": [
+              {
+                "evidenceId": "a2008021-095-right",
+                "box": [
+                  0,
+                  258,
+                  1190,
+                  485
+                ],
+                "scale": 1,
+                "imageSha256": "7bae3814c2b2dbf00a25ea6a002eb317339746dc69b7c132f539c33820925de3",
+                "ocr": "8 نا اذا ٠م ‎١‏ انا سا انا الج يح و\r\n‎١!‏ *» 10714 .أ حلم ‎١ ه١! ٠) .٠-‏ - )) ) ص-0 0 .ان ) جم )|\r\n"
+              },
+              {
+                "evidenceId": "a2008021-095-right",
+                "box": [
+                  0,
+                  258,
+                  1190,
+                  485
+                ],
+                "scale": 2,
+                "imageSha256": "fe2a2424b5e1fda33b058aa71ce37f606074278db946cdb36cbc6155e3df249b",
+                "ocr": "ل وب ما ا اب نا ابا بب- هب 9\r\nأحكام التحكيم.\r\n‎10٠71 »* .!‏ . > دووأ(-. !)) ‎0-١ )! !) ! ٠‏ .”انيم ) > )\r\n"
+              }
+            ],
+            "confirmed": true
           }
         }
       ],
@@ -75081,12 +75733,12 @@
         ],
         "ppocr": [
           42961,
-          42979
+          42981
         ]
       },
       "ocr": {
         "tesseract": "المادة 1060 : يوقف تقديم الطّعون و أجل ممارستها . الملنصوص عليها فى المواد 1055 و1056 و1058 , تنفيذ",
-        "ppocr": "المادة يوقف تقديم الطّعون وأجل ممارستهاء المنصوص عليهافي الموادو، تنفيذ أحكام التحكيم المادةتكون القرارات الصادرة تطبيقا للموادووأعلاه، قابلة"
+        "ppocr": "المادة يوقف تقديم الطّعون وأجل ممارستهاء المنصوص عليهافي الموادو، تنفيذ أحكام التحكيم المادةتكون القرارات الصادرة تطبيقا للموادووأعلاه، قابلة لطعن بالنقض"
       },
       "regions": [
         {
@@ -75492,27 +76144,21 @@
     {
       "number": "1065",
       "agrees": false,
-      "canonicalTokens": 30,
+      "canonicalTokens": 11,
       "confirmedBy": {
-        "tesseract": 21,
-        "ppocr": 21
+        "tesseract": 8,
+        "ppocr": 10
       },
       "disagreements": [
         {
           "kind": "unconfirmed",
-          "canonical": ". أحكام انتقالية وختامية",
+          "canonical": ".",
           "at": 13,
           "streams": {
             "tesseract": [
-              "miss",
-              "miss",
-              "miss",
               "miss"
             ],
             "ppocr": [
-              "miss",
-              "miss",
-              "miss",
               "miss"
             ]
           },
@@ -75524,11 +76170,11 @@
                   0,
                   635,
                   1192,
-                  1098
+                  875
                 ],
                 "scale": 1,
-                "imageSha256": "6a1a9befff63fed7263dd2453f096005813cba0fe38f4842d98be2ba5976e92c",
-                "ocr": "لتكت لاا اها ل دأ( د الث اب .0 الاي ا\r\nحرر بالجزائر في 18 صفر عام 1429 الموافق 25\r\nفيراير سنة 2008.\r\n"
+                "imageSha256": "069af3c1e2310c62928121b46c91a23ccb3aa2da0fb5bb913c4f4f450dab4dd5",
+                "ocr": "تتكتل لا 77 ااائئ. ‏ الانء . - اا مضه اب .0 الاي ا\r\nالرسمية للجمهوريئة الجزائريّة الديمقراطيّة\r\n"
               },
               {
                 "evidenceId": "a2008021-095-left",
@@ -75536,50 +76182,50 @@
                   0,
                   635,
                   1192,
-                  1098
+                  875
                 ],
                 "scale": 2,
-                "imageSha256": "c50957de2172c5d54a0a1aaca620bafb02a2f78d091667de9d8fc882fb9d2052",
-                "ocr": "ام اد راث يِِ ج00 الهاي ا\r\nحرر بالجزائر فى 18 صفر عام 1429 الموافق 25\r\nفبراير سنة 2008.\r\n"
+                "imageSha256": "7aca4b32bbd6c77f5c9b674791d20dd99de40f8c5bc039543e48cb0e4fb020da",
+                "ocr": "؛ كاتا ‎١١١١7١‏ ساان لفك _ لان اللا الاك اللا .ا ماضلا\r\nالشعغبية.\r\n"
               }
             ],
-            "confirmed": false
+            "confirmed": true
           }
         }
       ],
       "located": {
         "tesseract": [
           45966,
-          45991
+          45983
         ],
         "ppocr": [
           43037,
-          43059
+          43052
         ]
       },
       "ocr": {
-        "tesseract": "المادة 1065 : ينشر هذا القانون فى الجريدة الرسميَّة للجمهورييّة الجزائريَّة الدييمقراطيّة حرر بالجزائر في 18 صفر عام 1429 الموافق 25 فيراير سنة 2008 .",
-        "ppocr": "المادة ينشر هذا القانون في الجريدة الرَسميّة للجمهوريّة الجزائريّة الدّيمقراطيّة الشعبيّة حرّر بالجزائر في صفر عام الموافق فبراير سنة عبد العزيز بوتفليقة"
+        "tesseract": "المادة 1065 : ينشر هذا القانون فى الجريدة الرسميَّة للجمهورييّة الجزائريَّة الدييمقراطيّة حرر بالجزائر في 18 صفر",
+        "ppocr": "المادة ينشر هذا القانون في الجريدة الرَسميّة للجمهوريّة الجزائريّة الدّيمقراطيّة الشعبيّة حرّر بالجزائر في صفر"
       },
       "regions": [
         {
           "evidenceId": "a2008021-095-left",
           "box": [
-            91,
+            92,
             606,
-            1072,
-            1024
+            1071,
+            960
           ]
         }
       ],
       "labelTokens": 2,
       "boundaryExtrasDropped": [],
-      "agreesAfterReread": false
+      "agreesAfterReread": true
     }
   ],
   "reread": {
     "rule": "reread.py: Tesseract best, psm 6, strip of the column crop at 1x and 2x; disputed tokens confirmed by native_check.token_statuses in a window of 6 tokens; extras never resolved",
-    "agreed": 786,
-    "agreementRate": 0.738
+    "agreed": 788,
+    "agreementRate": 0.7399
   }
 }

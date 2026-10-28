@@ -54,6 +54,35 @@ The earlier489 pilot inspected original ArabicPDF31 and2007 ArabicPDF5, with Fre
 
 ## Delivery status
 
+### Current coverage (28 October 2026)
+
+| Legal text | Article identities | Versions | Checked | Partly checked | Unsettled | Scope | Full code complete |
+|---|---:|---:|---:|---:|---:|---|---|
+| CPCA | 1,084 | 1,162 | 1,162 | 0 | 0 | complete code, Law 08-09 + Law 22-13 | **Yes** (175 versions with an unsettled temporal boundary, see below) |
+| Civil Code | 45 | 55 | 7 | 32 | 16 | priority subset (7 targets) | No |
+| Commercial Code | 2 | 2 | 2 | 0 | 0 | priority subset (2 targets) | No |
+| Family Code | 0 | 0 | 0 | 0 | 0 | — | No; next |
+| Labour 90-11 | 0 | 0 | 0 | 0 | 0 | — | No; not started |
+| Labour 90-04 | 0 | 0 | 0 | 0 | 0 | — | No; not started |
+
+What remains: Family Code (next), Civil Code, Commercial (37), Labour 90-11 (29) and 90-04 (1), and the reconciliation of the 81 legacy articles.
+
+### Delivery 2 — CPCA, complete and current (28 October 2026)
+
+All 1,162 versions of the CPCA are `checked`. Details are in the [code report](LAW-CORPUS-CPCA.md); the spot-check is in `docs/law-corpus-checks/cpca/`.
+
+**Text sources.** Law 08-09 comes from the Ministry HTML (1,065 articles), compared with two OCR readings of JO 21/2008. Law 22-13 comes from the JO 48/2022 Arabic text layer, cleaned by tested transforms and compared with its own print. Without any image decision, 788 of 1,065 and 74 of 90 agree. Every other difference in words, digits or negations was read on the page image: 561 base decisions and 42 decisions for Law 22-13.
+
+**Main finding: the Ministry HTML has lost every colon.** The review restored 80 colons and 40 full stops from the print, plus 10 spacing/abbreviation fixes. In art. 1065 the HTML includes a heading and the signature block, which were removed.
+
+**Punctuation rule (28 Oct).** Punctuation-only differences do not block `checked`. Unsettled marks are listed in the version's transcription note: 15 versions, 16 marks.
+
+**Law 22-13 consolidation.** `consolidate.py` applied every change with a hash guard and an audit: 60 replacements, 10 paragraph edits (the 9 partial restatements and art. 32 losing paragraphs 7–10), 19 insertions, 6 repeals and 2 heading-only changes (532, 536). The renamed headings of law arts. 9 and 11 are applied to the affected paths. No amending text later than 22-13 is listed by the Ministry index.
+
+**Temporal limit.** Law 22-13 has no calendar commencement date, and its art. 13 ties the new jurisdiction rules to the installation of the new courts. Its 97 versions and the 78 they replace therefore carry `temporalStatus: unsettled`, each listed in the report.
+
+**Gate.** Release build with 0 warnings, all .NET tests and the Python corpus tests pass, the schema validates and the typed loader loads the complete code.
+
 ### Delivery 1 — priority articles, current version, `checked` (26 October 2026)
 
 All eleven priority articles are `checked` in their current version: Civil 124, 138, 139, 140, 308, 309, 379; CPCA 2, 504; Commercial 187 مكرر, 187 مكرر 1. Each passes the four checks the loader requires and the brief's six conditions:
@@ -70,6 +99,8 @@ All eleven priority articles are `checked` in their current version: Civil 124, 
 **Temporal:** Civil 124 (Law 05-10) and Commercial 187 مكرر / 187 مكرر 1 (Law 05-02) are `checked` text with `temporalStatus: unsettled`: these laws set no national commencement date (Civil art. 4 day-franc rule per locality); listed in each report.
 
 Evidence: `research/priority-current-review-2026-10-26.json` (image hashes and render notes), visual spot-check `docs/law-corpus-checks/priority/`, builder `tools/law-corpus/deliver_priority.py`.
+
+State after delivery 1 (superseded for the CPCA by delivery 2):
 
 | Legal text | Article identities | Versions | Checked | Partly checked | Unsettled | Scope | Full code complete |
 |---|---:|---:|---:|---:|---:|---|---|

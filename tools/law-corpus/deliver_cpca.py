@@ -104,20 +104,116 @@ def inputs() -> None:
 
 
 def apply_decisions(articles: list[dict], decisions: dict) -> list[dict]:
-    """Apply the image decisions that found the print different from the native text. Each correction replaces one
-    exact string that must occur exactly once in its article; anything else stops the build."""
+    """Apply the image decisions that found the print different from the native text, in three explicit forms:
+    - from/to: replaces one exact string that must occur exactly once in the article;
+    - insert: puts the printed mark right after body token `afterToken` (0-based, tokens as native_check counts them),
+      which must still be the token `afterTokenText`; insertions are applied from the end so positions stay valid;
+    - keepParagraphs: keeps only the first N paragraphs (text the print places outside the article).
+    Anything that does not match exactly stops the build."""
     by_number = {a["number"]: a for a in articles}
-    for decision in decisions["decisions"]:
-        if decision["decision"] != "print-differs":
+    changes = [d for d in decisions["decisions"] if d["decision"] == "print-differs"]
+    inserts = sorted((d for d in changes if "insert" in d), key=lambda d: (d["number"], -d["afterToken"]))
+    for decision in inserts:
+        article = by_number[decision["number"]]
+        matches = list(nc.TOKEN.finditer(article["text"]))
+        token = matches[decision["afterToken"]]
+        if token.group() != decision["afterTokenText"]:
+            raise ValueError(f"insertion {decision['id']}: token {decision['afterToken']} is «{token.group()}», not «{decision['afterTokenText']}»")
+        article["text"] = article["text"][:token.end()] + decision["insert"] + article["text"][token.end():]
+        article["paragraphs"] = article["text"].split("\n")
+        article.setdefault("corrections", []).append(decision["id"])
+    for decision in changes:
+        if "insert" in decision:
             continue
         article = by_number[decision["number"]]
-        hits = sum(p.count(decision["from"]) for p in article["paragraphs"])
-        if hits != 1:
-            raise ValueError(f"correction {decision['id']} matches {hits} times in {decision['number']}")
-        article["paragraphs"] = [p.replace(decision["from"], decision["to"]) for p in article["paragraphs"]]
+        if "keepParagraphs" in decision:
+            article["paragraphs"] = article["paragraphs"][:decision["keepParagraphs"]]
+        else:
+            hits = sum(p.count(decision["from"]) for p in article["paragraphs"])
+            if hits != 1:
+                raise ValueError(f"correction {decision['id']} matches {hits} times in {decision['number']}")
+            article["paragraphs"] = [p.replace(decision["from"], decision["to"]) for p in article["paragraphs"]]
         article["text"] = "\n".join(article["paragraphs"])
         article.setdefault("corrections", []).append(decision["id"])
     return articles
+
+
+def base_decisions() -> None:
+    """research/.../image-decisions-base.json from Claude's review log of the 93 base sheets (base-review-log.txt).
+    Under the 28 Oct rule, the 16 wrong-line items that are punctuation only are not decided: they stay open and are
+    reported as unverified punctuation. The 7 wrong-line items involving words or digits were read on whole-article
+    crops (reviews/cpca-base/recheck)."""
+    index = pipeline.read_json(pipeline.CACHE / "reviews/cpca-base/cpca-base-items.json")
+    items = index["items"]
+    recheck_dir = pipeline.CACHE / "reviews/cpca-base/recheck"
+    recheck = {11: ["26.png", "26b.png"], 37: ["130.png"], 221: ["540.png"], 326: ["693.png"], 341: ["722.png"],
+               384: ["758.png"], 385: ["758.png"]}
+    base = {a["number"]: a for a in pipeline.read_json(WORK / "base-2008-cleaned.json")}
+    decisions = []
+    for line in (WORK / "base-review-log.txt").read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            continue
+        number_s, verdict, rest = (line.split(" ", 2) + [""])[:3]
+        k = int(number_s)
+        item = items[k]
+        images = [str(pipeline.Path(p).resolve().relative_to(ROOT)).replace("\\", "/") for p in item["images"]]
+        hashes = list(item["imageSha256s"])
+        record = {"id": item["id"], "number": item["number"], "kind": item["kind"], "canonical": item["canonical"], "ocr": item.get("ocr")}
+        if verdict == "RECHECK":
+            if k not in recheck:
+                continue
+            paths = [recheck_dir / n for n in recheck[k]]
+            images = [str(p.relative_to(ROOT)).replace("\\", "/") for p in paths]
+            hashes = [pipeline.hash_file(p) for p in paths]
+            record |= {"decision": "native-matches-print", "reason": f"Whole-article crop: the print shows «{item['canonical'] or item.get('ocr')}» as in the native text"
+                       + (" (the extra reading is the next label «المادة 131 : يؤدي»)." if k == 37 else ".")}
+        elif verdict in ("OK", "HDR"):
+            record |= {"decision": "native-matches-print",
+                       "reason": "Running page header between two lines of the article, not article text." if verdict == "HDR"
+                       else (rest or "The printed page shows the native text here.")}
+        elif verdict == "INS":
+            label_tokens = len(nc.tokens(label_for(item["number"]) + " :"))
+            after = item["at"] - label_tokens
+            text_tokens = nc.TOKEN.findall(base[item["number"]]["text"])
+            record |= {"decision": "print-differs", "insert": rest, "afterToken": after, "afterTokenText": text_tokens[after],
+                       "reason": f"The print has «{rest.strip()}» after «{text_tokens[after]}»; the Ministry HTML lost it."}
+        elif verdict == "FIX":
+            old, new = [s.strip() for s in rest.split("=>")]
+            record |= {"decision": "print-differs", "from": old, "to": new, "reason": f"The print reads «{new}»."}
+        elif verdict == "STRUCT":
+            if item["id"] != "1065#0":
+                record |= {"decision": "settled-by-correction", "reason": "Part of the art. 1065 correction (1065#0)."}
+            else:
+                record |= {"decision": "print-differs", "keepParagraphs": 1,
+                           "reason": "The print ends art. 1065 at «…الشعبية.»; the Ministry HTML adds the heading «أحكام انتقالية وختامية» "
+                                     "and the signature block (place, date, signatory), which are not article text."}
+        record |= {"images": images, "imageSha256s": hashes}
+        decisions.append(record)
+    # After the printed marks were inserted, the comparison was run again: these differences now span the inserted mark
+    # too, so their text no longer equals the reviewed item's. They are the same printed places, already read.
+    moved = {"187": [63, 64], "235": [83], "423": [180, 181], "429": [184, 187], "565": [239, 241], "724": [349, 351],
+             "741": [366, 368], "749": [375, 377], "974": [492], "1060": [549, 550]}
+    check = pipeline.read_json(WORK / "check-base-reread.json")
+    for result in check["results"]:
+        if result["number"] not in moved:
+            continue
+        refs = [items[k] for k in moved[result["number"]]]
+        for d in result["disagreements"]:
+            if d.get("reread", {}).get("confirmed"):
+                continue
+            decisions.append({"id": f"{result['number']}#after-correction-{d['at']}", "number": result["number"], "kind": d["kind"],
+                              "canonical": d["canonical"], "ocr": d.get("ocr"), "decision": "native-matches-print",
+                              "reason": "Same printed place as review items " + ", ".join(r["id"] for r in refs)
+                                        + " (read on the page image); the difference now spans the inserted printed mark or the heading below.",
+                              "images": [str(pipeline.Path(p).resolve().relative_to(ROOT)).replace("\\", "/") for r in refs for p in r["images"]],
+                              "imageSha256s": [h for r in refs for h in r["imageSha256s"]]})
+    out = {"source": "A2008021", "reviewedOn": "2026-10-27/28", "reviewer": REVIEWER,
+           "rule": "28 Oct 2026: punctuation-only differences do not block `checked`; open ones are listed as unverified punctuation.",
+           "sheets": [{"sheet": str(pipeline.Path(s["sheet"]).resolve().relative_to(ROOT)).replace("\\", "/"), "sheetSha256": s["sheetSha256"]}
+                      for s in index["sheets"]],
+           "decisions": decisions}
+    pipeline.write_json(WORK / "image-decisions-base.json", out)
+    print(Counter(d["decision"] for d in decisions))
 
 
 def marks(semicolon_sample: int = 24, seed: int = 20261027) -> None:
@@ -179,6 +275,15 @@ def number_key(number: str) -> tuple:
     return (int(parts[0]), 1 if len(parts) > 1 else 0, int(parts[2]) if len(parts) > 2 else 0)
 
 
+def punctuation_only(d: dict) -> bool:
+    """28 Oct 2026 rule: a difference made only of punctuation marks (colon, full stop, comma, semicolon, dash, brackets,
+    quotation marks; spacing around them) does not block `checked`. Words, digits, article numbers and negations do."""
+    if d["kind"] in ("mark-candidate", "semicolon-sample"):
+        return True
+    tokens = nc.tokens(d.get("canonical") or "") + [t for t in (d.get("ocr") or [])]
+    return bool(tokens) and all(len(t) == 1 and t in nc.PUNCT for t in tokens)
+
+
 class Verdicts:
     """Per article and source: how each token of the compared text was settled (streams, targeted re-read, image)."""
 
@@ -195,7 +300,7 @@ class Verdicts:
                        for d in decisions["decisions"] if d["decision"] == "native-matches-print")
         self.by_article: dict[str, dict] = {}
         for number, result in self.results.items():
-            image, open_items, reread = [], [], 0
+            image, open_items, punctuation, reread = [], [], [], 0
             for d in result["disagreements"]:
                 if d.get("reread", {}).get("confirmed"):
                     reread += 1
@@ -204,10 +309,12 @@ class Verdicts:
                 if pool[key] > 0:
                     pool[key] -= 1
                     image.append(next(x for x in decisions["decisions"] if (x["number"], x.get("kind"), x.get("canonical"), tuple(x.get("ocr") or [])) == key))
+                elif punctuation_only(d):
+                    punctuation.append(d)
                 else:
                     open_items.append(d)
             image += [x for x in decisions["decisions"] if x["number"] == number and x["decision"] in ("print-differs", "settled-by-correction")]
-            self.by_article[number] = {"image": image, "open": open_items, "reread": reread, "result": result}
+            self.by_article[number] = {"image": image, "open": open_items, "punctuation": punctuation, "reread": reread, "result": result}
 
     def paragraph_sources(self, number: str) -> list[list[str]]:
         """Evidence crops of each paragraph, from the OCR words aligned to it (nearest aligned word if none)."""
@@ -256,17 +363,21 @@ def transcription_check(parts: list[tuple[str, dict, Verdicts]], text: str, extr
                           "rule": "native_check.compare_streams (Tesseract best psm 4 whole column + PP-OCRv5), then reread.py for unconfirmed tokens",
                           "confirmedTokens": v["result"]["confirmedBy"], "canonicalTokens": v["result"]["canonicalTokens"],
                           "settledByTargetedReread": v["reread"],
+                          "punctuationUnverified": bool(v["punctuation"]),
+                          "unverifiedPunctuation": [{"kind": d["kind"], "native": d.get("canonical"), "ocr": d.get("ocr"), "atToken": d["at"]}
+                                                    for d in v["punctuation"]],
                           "imageDecisions": [{"id": d["id"], "decision": d["decision"], **({"from": d["from"], "to": d["to"]} if "from" in d else {}),
                                               "reason": d["reason"]} for d in v["image"]]} for label, v, vs in parts]}
-    if images or extra_images:
+    if images:
         return {"check": "discrepancy-resolved-from-image",
                 "method": "Native text compared with two OCR readings of the official page and a targeted re-read; every remaining "
-                          "difference read on the page image (strip images hashed) and recorded with its reason. " + REVIEWER,
+                          "difference in words, digits or negations read on the page image (strip images hashed) and recorded with its "
+                          "reason; punctuation not settled is listed as unverified (28 Oct 2026 rule). " + REVIEWER,
                 "date": TODAY, "result": "passed", "note": json.dumps(note, ensure_ascii=False),
                 "textSha256": pipeline.hash_text(text), "imageSha256s": list(dict.fromkeys(images + crops))}, []
     return {"check": "text-layer-matches-ocr",
-            "method": "Native text agrees token by token with independent OCR of the official printed page (rule: native_check; digits, "
-                      "punctuation and negations exact; no image decision needed)",
+            "method": "Native text agrees token by token with independent OCR of the official printed page (rule: native_check; words, "
+                      "digits and negations exact; punctuation not settled by OCR is listed as unverified, 28 Oct 2026 rule)",
             "date": TODAY, "result": "passed", "note": json.dumps(note, ensure_ascii=False), "textSha256": pipeline.hash_text(text)}, []
 
 
@@ -377,13 +488,21 @@ def build() -> None:
                 fragments.append(fragment(vs, f["evidenceId"], f["publicationId"], paragraph,
                                           version["paragraphs"][paragraph - 1] if paragraph else None, role=f.get("role", "body")))
             primary = [f for f in fragments if f["publicationId"] == publication]
-            parts, extra = [], []
-            if publication == "law-08-09" or version.get("status") == "repealed" or number in ("32", "532", "536") or number in PARTIAL:
-                parts.append(("Law 08-09 text (Ministry HTML vs JO 21/2008)", vb.by_article[number], vb))
-            if publication == "law-22-13" and number in quoted and number not in ("532", "536"):
-                parts.append(("Law 22-13 text (JO 48/2022 text layer vs its print)", vl.by_article[number], vl))
-            if publication == "law-22-13" and (version["status"] == "repealed" or number == "32"):
-                extra = repeal_decision["imageSha256s"]
+            base_part = ("Law 08-09 text (Ministry HTML vs JO 21/2008)", vb.by_article[number], vb) if number in vb.by_article else None
+            law_part = ("Law 22-13 text (JO 48/2022 text layer vs its print)", vl.by_article[number], vl) if number in vl.by_article else None
+            extra = []
+            if publication == "law-08-09":
+                parts = [base_part]
+            elif version["status"] == "repealed":
+                parts, extra = [], repeal_decision["imageSha256s"]
+            elif number == "32":
+                parts, extra = [base_part], repeal_decision["imageSha256s"]
+            elif number in ("532", "536"):
+                parts = [base_part]
+            elif number in PARTIAL:
+                parts = [base_part, law_part]
+            else:
+                parts = [law_part]
             check, reasons = transcription_check(parts, version["text"], extra)
             touching = [p["id"] for p in ledger["publications"] if number in p["articlesTouched"]]
             checks = [check] if check else []
@@ -399,7 +518,7 @@ def build() -> None:
                  "date": TODAY, "result": "passed",
                  "note": json.dumps({"introducedBy": publication, "ledgerPublicationsTouchingArticle": touching,
                                      "isCurrent": version["inForceTo"] is None and version is article["versions"][-1], "index": INDEX}, ensure_ascii=False)}]
-            state = "checked" if check else "unsettled"
+            state = "checked" if check else "partly-checked"
             path = version.get("path") or article["path"]
             if publication == "law-22-13":
                 path = renamed(path)
@@ -490,7 +609,7 @@ def spotcheck(count: int = 20, seed: int = 20261027) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("step", choices=["inputs", "corrected", "marks", "build", "spotcheck"])
+    parser.add_argument("step", choices=["inputs", "decisions", "corrected", "marks", "build", "spotcheck"])
     args = parser.parse_args()
     if args.step == "inputs":
         inputs()
@@ -498,6 +617,8 @@ def main() -> int:
         corrected()
     elif args.step == "build":
         build()
+    elif args.step == "decisions":
+        base_decisions()
     elif args.step == "marks":
         marks()
     elif args.step == "spotcheck":

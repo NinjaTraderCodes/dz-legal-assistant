@@ -83,7 +83,7 @@ The earlier489 pilot inspected original ArabicPDF31 and2007 ArabicPDF5, with Fre
 | Labour 90-11 | 0 | 0 | 0 | 0 | 0 | — | No; not started |
 | Labour 90-04 | 0 | 0 | 0 | 0 | 0 | — | No; not started |
 
-What remains: Family Code (next), Civil Code, Commercial (37), Labour 90-11 (29) and 90-04 (1), and the reconciliation of the 81 legacy articles.
+What remains: final Family QA, Civil Code, Commercial (37), Labour 90-11 (29) and 90-04 (1). All 81 legacy records are accounted for in the reconciliation below; 47 still lack imported corpus text. The [Family 20-article image sample](law-corpus-checks/family-code/README.md) is complete for the current candidate, without promoting its verification states.
 
 ### Delivery 2 — CPCA, complete and current (28 October 2026)
 
@@ -291,7 +291,7 @@ Remaining work under the user's approved current-first order:
 The 81 existing article records are mechanically compared below. A missing entry in this priority subset remains an explicit unresolved reconciliation item; it is not silently called the same text or a different legal version.
 
 <!-- RECONCILIATION:BEGIN -->
-All **81** legacy records are accounted for: different-text: 1; not-imported: 79; same-text: 1.
+All **81** legacy records are accounted for: different-text: 9; not-imported: 47; same-text: 25.
 
 Differences and raw hashes: [machine-readable reconciliation](../data/law/corpus/research/reconciliation.json).
 
@@ -303,7 +303,7 @@ Differences and raw hashes: [machine-readable reconciliation](../data/law/corpus
 | civil-code | 107 | not-imported |
 | civil-code | 119 | not-imported |
 | civil-code | 122 | not-imported |
-| civil-code | 124 | not-imported |
+| civil-code | 124 | same-text |
 | civil-code | 131 | not-imported |
 | civil-code | 138 | different-text |
 | civil-code | 164 | not-imported |
@@ -330,37 +330,37 @@ Differences and raw hashes: [machine-readable reconciliation](../data/law/corpus
 | commercial-code | 173 | not-imported |
 | commercial-code | 176 | not-imported |
 | commercial-code | 187 مكرر | same-text |
-| cpca | 8 | not-imported |
-| cpca | 13 | not-imported |
-| cpca | 14 | not-imported |
-| cpca | 15 | not-imported |
-| cpca | 17 | not-imported |
-| cpca | 37 | not-imported |
-| family-code | 3 مكرر | not-imported |
-| family-code | 7 | not-imported |
-| family-code | 37 | not-imported |
-| family-code | 48 | not-imported |
-| family-code | 49 | not-imported |
-| family-code | 52 | not-imported |
-| family-code | 53 | not-imported |
-| family-code | 53 مكرر | not-imported |
-| family-code | 54 | not-imported |
-| family-code | 57 | not-imported |
-| family-code | 57 مكرر | not-imported |
-| family-code | 62 | not-imported |
-| family-code | 64 | not-imported |
-| family-code | 65 | not-imported |
-| family-code | 66 | not-imported |
-| family-code | 67 | not-imported |
-| family-code | 68 | not-imported |
-| family-code | 72 | not-imported |
-| family-code | 74 | not-imported |
-| family-code | 75 | not-imported |
-| family-code | 76 | not-imported |
-| family-code | 78 | not-imported |
-| family-code | 79 | not-imported |
-| family-code | 80 | not-imported |
-| family-code | 87 | not-imported |
+| cpca | 8 | same-text |
+| cpca | 13 | same-text |
+| cpca | 14 | same-text |
+| cpca | 15 | different-text |
+| cpca | 17 | different-text |
+| cpca | 37 | same-text |
+| family-code | 3 مكرر | same-text |
+| family-code | 7 | same-text |
+| family-code | 37 | same-text |
+| family-code | 48 | different-text |
+| family-code | 49 | same-text |
+| family-code | 52 | same-text |
+| family-code | 53 | different-text |
+| family-code | 53 مكرر | same-text |
+| family-code | 54 | same-text |
+| family-code | 57 | same-text |
+| family-code | 57 مكرر | same-text |
+| family-code | 62 | same-text |
+| family-code | 64 | same-text |
+| family-code | 65 | same-text |
+| family-code | 66 | different-text |
+| family-code | 67 | same-text |
+| family-code | 68 | same-text |
+| family-code | 72 | same-text |
+| family-code | 74 | different-text |
+| family-code | 75 | different-text |
+| family-code | 76 | same-text |
+| family-code | 78 | same-text |
+| family-code | 79 | different-text |
+| family-code | 80 | same-text |
+| family-code | 87 | same-text |
 | labour-disputes | 1 | not-imported |
 | labour-disputes | 2 | not-imported |
 | labour-disputes | 19 | not-imported |
@@ -383,7 +383,7 @@ Differences and raw hashes: [machine-readable reconciliation](../data/law/corpus
 
 Text differs; inspect the stored diff. No legal amendment or correction is inferred from orthographic/punctuation differences.
 
-Compared with `civil-code:138@ordinance-75-58`; corpus transcription state `partly-checked`.
+Compared with `civil-code:138@ordinance-75-58`; corpus transcription state `checked`.
 
 ```diff
 --- legacy
@@ -393,5 +393,135 @@ Compared with `civil-code:138@ordinance-75-58`; corpus transcription state `part
 -ويعفي من هذه المسؤولية الحارس للشيء إذا أثبت أن ذلك الضرر حدث بسبب لم يكن يتوقعه مثل عمل الضحية، أو عمل الغير، أو الحالة الطارئة، أو القوة القاهرة.
 +كل من تولى حراسة شىء وكانت له قدرة الاستعمال والتسيير، والرقابة، يعتبر مسؤولا عن الضرر الذى يحدثه ذلك الشىء.
 +ويعفى من هذه المسؤولية الحارس للشىء اذا أثبت أن ذلك الضرر حدث بسبب لم يكن يتوقعه مثل عمل الضحية، أو عمل الغير، أو الحالة الطارئة، أو القوة القاهرة.
+```
+
+### Text difference: cpca 15
+
+Text differs; inspect the stored diff. No legal amendment or correction is inferred from orthographic/punctuation differences.
+
+Compared with `cpca:15@law-08-09`; corpus transcription state `checked`.
+
+```diff
+--- legacy
++++ cpca:15@law-08-09
+@@ -1,7 +1,7 @@
+-يجب أن تتضمن عريضة افتتاح الدعوى، تحت طائلة عدم قبولها شكلا، البيانات الآتية:
++يجب أن تتضمن عريضة افتتاح الدعوى، تحت طائلة عدم قبولها شكلا، البيانات الآتية :
+ 1 - الجهة القضائية التي ترفع أمامها الدعوى،
+-2 - اسم ولقب المدعي وموطنه،
+-3 - اسم ولقب وموطن المدعى عليه، فإن لم يكن له موطن معلوم، فآخر موطن له،
+-4 - الإشارة إلى تسمية وطبيعة الشخص المعنوي، ومقره الاجتماعي وصفة ممثله القانوني أو الاتفاقي،
+-5 - عرضا موجزا للوقائع والطلبات والوسائل التي تؤسس عليها الدعوى،
+-6 - الإشارة، عند الاقتضاء، إلى المستندات والوثائق المؤيدة للدعوى.
++2- اسم ولقب المدعي وموطنه،
++3- اسم ولقب وموطن المدعى عليه، فإن لم يكن له موطن معلوم، فآخر موطن له،
++4- الإشارة إلى تسمية وطبيعة الشخص المعنوي، ومقره الاجتماعي وصفة ممثله القانوني أو الاتفاقي،
++5- عرضا موجزا للوقائع والطلبات والوسائل التي تؤسس عليها الدعوى،
++6- الإشارة، عند الاقتضاء، إلى المستندات والوثائق المؤيدة للدعوى.
+```
+
+### Text difference: cpca 17
+
+Text differs; inspect the stored diff. No legal amendment or correction is inferred from orthographic/punctuation differences.
+
+Compared with `cpca:17@law-08-09`; corpus transcription state `checked`.
+
+```diff
+--- legacy
++++ cpca:17@law-08-09
+@@ -1,3 +1,3 @@
+-لا تقيد العريضة إلا بعد دفع الرسوم المحددة قانونا، مالم ينص القانون على خلاف ذلك.
++لا تقيد العريضة إلا بعد دفع الرسوم المحددة قانونا، ما لم ينص القانون على خلاف ذلك.
+ يفصل رئيس الجهة القضائية في كل نزاع يعرض عليه حول دفع الرسوم، بأمر غير قابل لأي طعن.
+-يجب إشهار عريضة رفع الدعوى لدى المحافظة العقارية، إذا تعلقت بعقار و/أو حق عيني عقاري مشهر طبقا للقانون، وتقديمها في أول جلسة ينادى فيها على القضية، تحت طائلة عدم قبولها شكلا، مالم يثبت إيداعها للإشهار.
++يجب إشهار عريضة رفع الدعوى لدى المحافظة العقارية، إذا تعلقت بعقار و/أو حق عيني عقاري مشهر طبقا للقانون، وتقديمها في أول جلسة ينادى فيها على القضية، تحت طائلة عدم قبولها شكلا، ما لم يثبت إيداعها للإشهار.
+```
+
+### Text difference: family-code 48
+
+Text differs; inspect the stored diff. No legal amendment or correction is inferred from orthographic/punctuation differences.
+
+Compared with `family-code:48@ordinance-05-02`; corpus transcription state `partly-checked`.
+
+```diff
+--- legacy
++++ family-code:48@ordinance-05-02
+@@ -1 +1 @@
+-مع مراعاة أحكام المادة 49 أدناه، يحل عقد الزواج بالطلاق الذي يتم بإرادة الزوج أو بتراضي الزوجين أو بطلب من الزوجة في حدود ما ورد في المادتين 53 و 54 من هذا القانون.
++مع مراعاة أحكام المادة 49 أدناه، يحل عقد الزواج بالطلاق الذي يتم بإرادة الزوج أو بتراضي الزوجين أو بطلب من الزوجة في حدود ما ورد في المادتين 53 و54 من هذا القانون.
+```
+
+### Text difference: family-code 53
+
+Text differs; inspect the stored diff. No legal amendment or correction is inferred from orthographic/punctuation differences.
+
+Compared with `family-code:53@ordinance-05-02`; corpus transcription state `partly-checked`.
+
+```diff
+--- legacy
++++ family-code:53@ordinance-05-02
+@@ -1,5 +1,5 @@
+ يجوز للزوجة أن تطلب التطليق للأسباب الآتية:
+-1 – عدم الإنفاق بعد صدور الحكم بوجوبه ما لم تكن عالمة بإعساره وقت الزواج، مع مراعاة المواد 78 و 79 و 80 من هذا القانون،
++1 – عدم الإنفاق بعد صدور الحكم بوجوبه ما لم تكن عالمة بإعساره وقت الزواج، مع مراعاة المواد 78 و79 و80 من هذا القانون،
+ 2 – العيوب التي تحول دون تحقيق الهدف من الزواج،
+ 3 – الهجر في المضجع فوق أربعة أشهر،
+ 4 – الحكم على الزوج عن جريمة فيها مساس بشرف الأسرة وتستحيل معها مواصلة العشرة والحياة الزوجية،
+```
+
+### Text difference: family-code 66
+
+Text differs; inspect the stored diff. No legal amendment or correction is inferred from orthographic/punctuation differences.
+
+Compared with `family-code:66@law-84-11`; corpus transcription state `partly-checked`.
+
+```diff
+--- legacy
++++ family-code:66@law-84-11
+@@ -1 +1 @@
+-يسقط حق الحاضنة بالتزوج بغير قريب محرم وبالتنازل ما لم يضر بمصلحة المحضون.
++يسقط حق الحاضنة بالتزوج بغير قريب محرم، وبالتنازل ما لم يضر بمصلحة المحضون.
+```
+
+### Text difference: family-code 74
+
+Text differs; inspect the stored diff. No legal amendment or correction is inferred from orthographic/punctuation differences.
+
+Compared with `family-code:74@law-84-11`; corpus transcription state `partly-checked`.
+
+```diff
+--- legacy
++++ family-code:74@law-84-11
+@@ -1 +1 @@
+-تجب نفقة الزوجة على زوجها بالدخول بها أو دعوتها إليه ببينة مع مراعاة أحكام المواد 78 و 79 و 80 من هذا القانون.
++تجب نفقة الزوجة على زوجها بالدخول بها أو دعوتها إليه ببينة مع مراعاة أحكام المواد 78 و79 و80 من هذا القانون.
+```
+
+### Text difference: family-code 75
+
+Text differs; inspect the stored diff. No legal amendment or correction is inferred from orthographic/punctuation differences.
+
+Compared with `family-code:75@law-84-11`; corpus transcription state `partly-checked`.
+
+```diff
+--- legacy
++++ family-code:75@law-84-11
+@@ -1 +1 @@
+-تجب نفقة الولد على الأب ما لم يكن له مال، فبالنسبة للذكور إلى سن الرشد والإناث إلى الدخول وتستمر في حالة ما إذا كان الولد عاجزا لآفة عقلية أو بدنية أو مزاولا للدراسة وتسقط بالاستغناء عنها بالكسب.
++تجب نفقة الولد على الأب ما لم يكن له مال، فبالنسبة للذكور إلى سن الرشد والإناث إلى الدخول وتستمر في حالة ما إذا كان الولد عاجزا لآفة عقلية أو بدنية أو مزاولا للدراسة وتسقط بالإستغناء عنها بالكسب.
+```
+
+### Text difference: family-code 79
+
+Text differs; inspect the stored diff. No legal amendment or correction is inferred from orthographic/punctuation differences.
+
+Compared with `family-code:79@law-84-11`; corpus transcription state `partly-checked`.
+
+```diff
+--- legacy
++++ family-code:79@law-84-11
+@@ -1 +1 @@
+-يراعي القاضي في تقدير النفقة حال الطرفين وظروف المعاش ولا يراجع تقديره قبل مضي سنة من الحكم.
++يراعى القاضي في تقدير النفقة حال الطرفين وظروف المعاش ولا يراجع تقديره قبل مضي سنة من الحكم.
 ```
 <!-- RECONCILIATION:END -->

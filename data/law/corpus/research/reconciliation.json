@@ -1,14 +1,14 @@
 {
-  "generatedOn": "2026-10-26",
+  "generatedOn": "2026-10-28",
   "normalizations": [
     "Unicode NFC",
     "collapse whitespace for comparison only"
   ],
   "legacyArticles": 81,
   "counts": {
-    "not-imported": 79,
-    "different-text": 1,
-    "same-text": 1
+    "not-imported": 47,
+    "same-text": 25,
+    "different-text": 9
   },
   "limitations": [
     "Different wording does not itself prove a different legal version.",
@@ -82,9 +82,19 @@
       "legacyFile": "data/law/codes/civil-code.json",
       "legacyTextSha256": "812a7bc5c8f091a9db83990e0a67b4aaeadd1b88ce749447b2badb7b62b0c0b7",
       "legacyConsolidatedAsOf": "2007-05-13",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "same-text",
+      "reason": "Equality under named NFC/whitespace comparison; raw equality is recorded separately.",
+      "versionsCompared": [
+        {
+          "versionId": "civil-code:124@law-05-10",
+          "verificationState": "checked",
+          "temporalStatus": "unsettled",
+          "corpusTextSha256": "812a7bc5c8f091a9db83990e0a67b4aaeadd1b88ce749447b2badb7b62b0c0b7",
+          "exactEquality": true,
+          "conservativeComparisonEqual": true,
+          "diff": []
+        }
+      ]
     },
     {
       "codeId": "civil-code",
@@ -107,7 +117,7 @@
       "versionsCompared": [
         {
           "versionId": "civil-code:138@ordinance-75-58",
-          "verificationState": "partly-checked",
+          "verificationState": "checked",
           "temporalStatus": "resolved",
           "corpusTextSha256": "3bc72d08469c1087f2a495d1d08b4d2cce420222305b89b1adb0c9d81c8590e7",
           "exactEquality": false,
@@ -365,7 +375,7 @@
       "versionsCompared": [
         {
           "versionId": "commercial-code:187-bis@law-05-02",
-          "verificationState": "partly-checked",
+          "verificationState": "checked",
           "temporalStatus": "unsettled",
           "corpusTextSha256": "9ef3699faf232a76bd837c5131a96e74e1dc69d46b1eeeee9dc8f0b28f694d67",
           "exactEquality": true,
@@ -380,9 +390,19 @@
       "legacyFile": "data/law/codes/cpca.json",
       "legacyTextSha256": "5214042c0dbd1405966efccc002a2aa59ddb1e29222335ce5845afccf1f9a8a1",
       "legacyConsolidatedAsOf": "2008-04-23",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "same-text",
+      "reason": "Equality under named NFC/whitespace comparison; raw equality is recorded separately.",
+      "versionsCompared": [
+        {
+          "versionId": "cpca:8@law-08-09",
+          "verificationState": "checked",
+          "temporalStatus": "resolved",
+          "corpusTextSha256": "5214042c0dbd1405966efccc002a2aa59ddb1e29222335ce5845afccf1f9a8a1",
+          "exactEquality": true,
+          "conservativeComparisonEqual": true,
+          "diff": []
+        }
+      ]
     },
     {
       "codeId": "cpca",
@@ -390,9 +410,19 @@
       "legacyFile": "data/law/codes/cpca.json",
       "legacyTextSha256": "d25dcbe18281a4cc8b885f0e6e3169e12a3a284aefd43df3fe2cb3d2ca4425f8",
       "legacyConsolidatedAsOf": "2008-04-23",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "same-text",
+      "reason": "Equality under named NFC/whitespace comparison; raw equality is recorded separately.",
+      "versionsCompared": [
+        {
+          "versionId": "cpca:13@law-08-09",
+          "verificationState": "checked",
+          "temporalStatus": "resolved",
+          "corpusTextSha256": "d25dcbe18281a4cc8b885f0e6e3169e12a3a284aefd43df3fe2cb3d2ca4425f8",
+          "exactEquality": true,
+          "conservativeComparisonEqual": true,
+          "diff": []
+        }
+      ]
     },
     {
       "codeId": "cpca",
@@ -400,9 +430,19 @@
       "legacyFile": "data/law/codes/cpca.json",
       "legacyTextSha256": "798e4024a7ca38af686b0ab31cb84359012fd52d2aa075e21ab7259d54b62302",
       "legacyConsolidatedAsOf": "2008-04-23",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "same-text",
+      "reason": "Equality under named NFC/whitespace comparison; raw equality is recorded separately.",
+      "versionsCompared": [
+        {
+          "versionId": "cpca:14@law-08-09",
+          "verificationState": "checked",
+          "temporalStatus": "resolved",
+          "corpusTextSha256": "798e4024a7ca38af686b0ab31cb84359012fd52d2aa075e21ab7259d54b62302",
+          "exactEquality": true,
+          "conservativeComparisonEqual": true,
+          "diff": []
+        }
+      ]
     },
     {
       "codeId": "cpca",
@@ -410,9 +450,36 @@
       "legacyFile": "data/law/codes/cpca.json",
       "legacyTextSha256": "54a2fb6fb4025353b4857ead350291f05356a7db7ac06d81a15e5e35d7f1f1d4",
       "legacyConsolidatedAsOf": "2008-04-23",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "different-text",
+      "reason": "Text differs; inspect the stored diff. No legal amendment or correction is inferred from orthographic/punctuation differences.",
+      "versionsCompared": [
+        {
+          "versionId": "cpca:15@law-08-09",
+          "verificationState": "checked",
+          "temporalStatus": "resolved",
+          "corpusTextSha256": "0cbbefd94a3cf4365f99b368cb39b829d2ea04eb0e15254cc179d31c3f88513d",
+          "exactEquality": false,
+          "conservativeComparisonEqual": false,
+          "diff": [
+            "--- legacy",
+            "+++ cpca:15@law-08-09",
+            "@@ -1,7 +1,7 @@",
+            "-يجب أن تتضمن عريضة افتتاح الدعوى، تحت طائلة عدم قبولها شكلا، البيانات الآتية:",
+            "+يجب أن تتضمن عريضة افتتاح الدعوى، تحت طائلة عدم قبولها شكلا، البيانات الآتية :",
+            " 1 - الجهة القضائية التي ترفع أمامها الدعوى،",
+            "-2 - اسم ولقب المدعي وموطنه،",
+            "-3 - اسم ولقب وموطن المدعى عليه، فإن لم يكن له موطن معلوم، فآخر موطن له،",
+            "-4 - الإشارة إلى تسمية وطبيعة الشخص المعنوي، ومقره الاجتماعي وصفة ممثله القانوني أو الاتفاقي،",
+            "-5 - عرضا موجزا للوقائع والطلبات والوسائل التي تؤسس عليها الدعوى،",
+            "-6 - الإشارة، عند الاقتضاء، إلى المستندات والوثائق المؤيدة للدعوى.",
+            "+2- اسم ولقب المدعي وموطنه،",
+            "+3- اسم ولقب وموطن المدعى عليه، فإن لم يكن له موطن معلوم، فآخر موطن له،",
+            "+4- الإشارة إلى تسمية وطبيعة الشخص المعنوي، ومقره الاجتماعي وصفة ممثله القانوني أو الاتفاقي،",
+            "+5- عرضا موجزا للوقائع والطلبات والوسائل التي تؤسس عليها الدعوى،",
+            "+6- الإشارة، عند الاقتضاء، إلى المستندات والوثائق المؤيدة للدعوى."
+          ]
+        }
+      ]
     },
     {
       "codeId": "cpca",
@@ -420,9 +487,28 @@
       "legacyFile": "data/law/codes/cpca.json",
       "legacyTextSha256": "b404769fe81d6cf82ae894160cd2a142e8ddec727a25afbfa653a62092343144",
       "legacyConsolidatedAsOf": "2008-04-23",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "different-text",
+      "reason": "Text differs; inspect the stored diff. No legal amendment or correction is inferred from orthographic/punctuation differences.",
+      "versionsCompared": [
+        {
+          "versionId": "cpca:17@law-08-09",
+          "verificationState": "checked",
+          "temporalStatus": "resolved",
+          "corpusTextSha256": "08f2fb359d7d792062da6e31be3a4b8765dabb144f82f2fd9a0e50bcdf6153a9",
+          "exactEquality": false,
+          "conservativeComparisonEqual": false,
+          "diff": [
+            "--- legacy",
+            "+++ cpca:17@law-08-09",
+            "@@ -1,3 +1,3 @@",
+            "-لا تقيد العريضة إلا بعد دفع الرسوم المحددة قانونا، مالم ينص القانون على خلاف ذلك.",
+            "+لا تقيد العريضة إلا بعد دفع الرسوم المحددة قانونا، ما لم ينص القانون على خلاف ذلك.",
+            " يفصل رئيس الجهة القضائية في كل نزاع يعرض عليه حول دفع الرسوم، بأمر غير قابل لأي طعن.",
+            "-يجب إشهار عريضة رفع الدعوى لدى المحافظة العقارية، إذا تعلقت بعقار و/أو حق عيني عقاري مشهر طبقا للقانون، وتقديمها في أول جلسة ينادى فيها على القضية، تحت طائلة عدم قبولها شكلا، مالم يثبت إيداعها للإشهار.",
+            "+يجب إشهار عريضة رفع الدعوى لدى المحافظة العقارية، إذا تعلقت بعقار و/أو حق عيني عقاري مشهر طبقا للقانون، وتقديمها في أول جلسة ينادى فيها على القضية، تحت طائلة عدم قبولها شكلا، ما لم يثبت إيداعها للإشهار."
+          ]
+        }
+      ]
     },
     {
       "codeId": "cpca",
@@ -430,9 +516,19 @@
       "legacyFile": "data/law/codes/cpca.json",
       "legacyTextSha256": "45919898f0499a94d34d6176035015468ee5467365f4762f05512d721ba25daa",
       "legacyConsolidatedAsOf": "2008-04-23",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "same-text",
+      "reason": "Equality under named NFC/whitespace comparison; raw equality is recorded separately.",
+      "versionsCompared": [
+        {
+          "versionId": "cpca:37@law-08-09",
+          "verificationState": "checked",
+          "temporalStatus": "resolved",
+          "corpusTextSha256": "45919898f0499a94d34d6176035015468ee5467365f4762f05512d721ba25daa",
+          "exactEquality": true,
+          "conservativeComparisonEqual": true,
+          "diff": []
+        }
+      ]
     },
     {
       "codeId": "family-code",
@@ -440,9 +536,19 @@
       "legacyFile": "data/law/codes/family-code.json",
       "legacyTextSha256": "2d611fa45c7820ced2f3c7c34f453e60a684c5721881f22318b527f8496e0c92",
       "legacyConsolidatedAsOf": "2005-02-27",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "same-text",
+      "reason": "Equality under named NFC/whitespace comparison; raw equality is recorded separately.",
+      "versionsCompared": [
+        {
+          "versionId": "family-code:3-bis@ordinance-05-02",
+          "verificationState": "partly-checked",
+          "temporalStatus": "unsettled",
+          "corpusTextSha256": "2d611fa45c7820ced2f3c7c34f453e60a684c5721881f22318b527f8496e0c92",
+          "exactEquality": true,
+          "conservativeComparisonEqual": true,
+          "diff": []
+        }
+      ]
     },
     {
       "codeId": "family-code",
@@ -450,9 +556,19 @@
       "legacyFile": "data/law/codes/family-code.json",
       "legacyTextSha256": "8692ae295b0c8513a2ccb70b1b69174177eaa6a74b62ff66725ccbfc0246e4a9",
       "legacyConsolidatedAsOf": "2005-02-27",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "same-text",
+      "reason": "Equality under named NFC/whitespace comparison; raw equality is recorded separately.",
+      "versionsCompared": [
+        {
+          "versionId": "family-code:7@ordinance-05-02",
+          "verificationState": "partly-checked",
+          "temporalStatus": "unsettled",
+          "corpusTextSha256": "8692ae295b0c8513a2ccb70b1b69174177eaa6a74b62ff66725ccbfc0246e4a9",
+          "exactEquality": true,
+          "conservativeComparisonEqual": true,
+          "diff": []
+        }
+      ]
     },
     {
       "codeId": "family-code",
@@ -460,9 +576,19 @@
       "legacyFile": "data/law/codes/family-code.json",
       "legacyTextSha256": "a51631edbd085baa7427df5eeedcb2cd6bc960bdf11c836190eb0fc9653f305e",
       "legacyConsolidatedAsOf": "2005-02-27",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "same-text",
+      "reason": "Equality under named NFC/whitespace comparison; raw equality is recorded separately.",
+      "versionsCompared": [
+        {
+          "versionId": "family-code:37@ordinance-05-02",
+          "verificationState": "partly-checked",
+          "temporalStatus": "unsettled",
+          "corpusTextSha256": "a51631edbd085baa7427df5eeedcb2cd6bc960bdf11c836190eb0fc9653f305e",
+          "exactEquality": true,
+          "conservativeComparisonEqual": true,
+          "diff": []
+        }
+      ]
     },
     {
       "codeId": "family-code",
@@ -470,9 +596,25 @@
       "legacyFile": "data/law/codes/family-code.json",
       "legacyTextSha256": "daaada0796e51415ec34346c5fe52133f23ef7e80c73d3ebfb1ba4b8299119d0",
       "legacyConsolidatedAsOf": "2005-02-27",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "different-text",
+      "reason": "Text differs; inspect the stored diff. No legal amendment or correction is inferred from orthographic/punctuation differences.",
+      "versionsCompared": [
+        {
+          "versionId": "family-code:48@ordinance-05-02",
+          "verificationState": "partly-checked",
+          "temporalStatus": "unsettled",
+          "corpusTextSha256": "58af3a2d48480f9aa7b61f37cc19202e607b0e3b96f2e3c8fe90214203cfe993",
+          "exactEquality": false,
+          "conservativeComparisonEqual": false,
+          "diff": [
+            "--- legacy",
+            "+++ family-code:48@ordinance-05-02",
+            "@@ -1 +1 @@",
+            "-مع مراعاة أحكام المادة 49 أدناه، يحل عقد الزواج بالطلاق الذي يتم بإرادة الزوج أو بتراضي الزوجين أو بطلب من الزوجة في حدود ما ورد في المادتين 53 و 54 من هذا القانون.",
+            "+مع مراعاة أحكام المادة 49 أدناه، يحل عقد الزواج بالطلاق الذي يتم بإرادة الزوج أو بتراضي الزوجين أو بطلب من الزوجة في حدود ما ورد في المادتين 53 و54 من هذا القانون."
+          ]
+        }
+      ]
     },
     {
       "codeId": "family-code",
@@ -480,9 +622,19 @@
       "legacyFile": "data/law/codes/family-code.json",
       "legacyTextSha256": "cd4ae1ca6940e210bb3b823b0ab9a3de535e8119aae60a974ab7c3ca7c8437e0",
       "legacyConsolidatedAsOf": "2005-02-27",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "same-text",
+      "reason": "Equality under named NFC/whitespace comparison; raw equality is recorded separately.",
+      "versionsCompared": [
+        {
+          "versionId": "family-code:49@ordinance-05-02",
+          "verificationState": "partly-checked",
+          "temporalStatus": "unsettled",
+          "corpusTextSha256": "cd4ae1ca6940e210bb3b823b0ab9a3de535e8119aae60a974ab7c3ca7c8437e0",
+          "exactEquality": true,
+          "conservativeComparisonEqual": true,
+          "diff": []
+        }
+      ]
     },
     {
       "codeId": "family-code",
@@ -490,9 +642,19 @@
       "legacyFile": "data/law/codes/family-code.json",
       "legacyTextSha256": "1ed0319e25379236a13d53b31c53d14016229a9a5f9076327436c7ca11bae1a5",
       "legacyConsolidatedAsOf": "2005-02-27",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "same-text",
+      "reason": "Equality under named NFC/whitespace comparison; raw equality is recorded separately.",
+      "versionsCompared": [
+        {
+          "versionId": "family-code:52@ordinance-05-02",
+          "verificationState": "partly-checked",
+          "temporalStatus": "unsettled",
+          "corpusTextSha256": "1ed0319e25379236a13d53b31c53d14016229a9a5f9076327436c7ca11bae1a5",
+          "exactEquality": true,
+          "conservativeComparisonEqual": true,
+          "diff": []
+        }
+      ]
     },
     {
       "codeId": "family-code",
@@ -500,9 +662,29 @@
       "legacyFile": "data/law/codes/family-code.json",
       "legacyTextSha256": "38aeef3492fc59c5aee8772d2dc100f6278be1674e0a0b5921fea5555dba6313",
       "legacyConsolidatedAsOf": "2005-02-27",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "different-text",
+      "reason": "Text differs; inspect the stored diff. No legal amendment or correction is inferred from orthographic/punctuation differences.",
+      "versionsCompared": [
+        {
+          "versionId": "family-code:53@ordinance-05-02",
+          "verificationState": "partly-checked",
+          "temporalStatus": "unsettled",
+          "corpusTextSha256": "63c10daed0865a067bcce7a1b1d73e95242b866f7908547403172271ba99324b",
+          "exactEquality": false,
+          "conservativeComparisonEqual": false,
+          "diff": [
+            "--- legacy",
+            "+++ family-code:53@ordinance-05-02",
+            "@@ -1,5 +1,5 @@",
+            " يجوز للزوجة أن تطلب التطليق للأسباب الآتية:",
+            "-1 – عدم الإنفاق بعد صدور الحكم بوجوبه ما لم تكن عالمة بإعساره وقت الزواج، مع مراعاة المواد 78 و 79 و 80 من هذا القانون،",
+            "+1 – عدم الإنفاق بعد صدور الحكم بوجوبه ما لم تكن عالمة بإعساره وقت الزواج، مع مراعاة المواد 78 و79 و80 من هذا القانون،",
+            " 2 – العيوب التي تحول دون تحقيق الهدف من الزواج،",
+            " 3 – الهجر في المضجع فوق أربعة أشهر،",
+            " 4 – الحكم على الزوج عن جريمة فيها مساس بشرف الأسرة وتستحيل معها مواصلة العشرة والحياة الزوجية،"
+          ]
+        }
+      ]
     },
     {
       "codeId": "family-code",
@@ -510,9 +692,19 @@
       "legacyFile": "data/law/codes/family-code.json",
       "legacyTextSha256": "3cd041a2443a6c76c39e8cc1b682bfc019ff7d92551668676d409d8a5335396c",
       "legacyConsolidatedAsOf": "2005-02-27",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "same-text",
+      "reason": "Equality under named NFC/whitespace comparison; raw equality is recorded separately.",
+      "versionsCompared": [
+        {
+          "versionId": "family-code:53-bis@ordinance-05-02",
+          "verificationState": "partly-checked",
+          "temporalStatus": "unsettled",
+          "corpusTextSha256": "3cd041a2443a6c76c39e8cc1b682bfc019ff7d92551668676d409d8a5335396c",
+          "exactEquality": true,
+          "conservativeComparisonEqual": true,
+          "diff": []
+        }
+      ]
     },
     {
       "codeId": "family-code",
@@ -520,9 +712,19 @@
       "legacyFile": "data/law/codes/family-code.json",
       "legacyTextSha256": "f7138b9c60b46cac78a41a32c3dea7e6e415d6545d8b5246858f112fa8c5688e",
       "legacyConsolidatedAsOf": "2005-02-27",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "same-text",
+      "reason": "Equality under named NFC/whitespace comparison; raw equality is recorded separately.",
+      "versionsCompared": [
+        {
+          "versionId": "family-code:54@ordinance-05-02",
+          "verificationState": "partly-checked",
+          "temporalStatus": "unsettled",
+          "corpusTextSha256": "f7138b9c60b46cac78a41a32c3dea7e6e415d6545d8b5246858f112fa8c5688e",
+          "exactEquality": true,
+          "conservativeComparisonEqual": true,
+          "diff": []
+        }
+      ]
     },
     {
       "codeId": "family-code",
@@ -530,9 +732,19 @@
       "legacyFile": "data/law/codes/family-code.json",
       "legacyTextSha256": "7e19025e457aaa2aad32bc6c1e82d0a17462608dbeb7f9cc9bd5d2a1bcf8ede9",
       "legacyConsolidatedAsOf": "2005-02-27",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "same-text",
+      "reason": "Equality under named NFC/whitespace comparison; raw equality is recorded separately.",
+      "versionsCompared": [
+        {
+          "versionId": "family-code:57@ordinance-05-02",
+          "verificationState": "partly-checked",
+          "temporalStatus": "unsettled",
+          "corpusTextSha256": "7e19025e457aaa2aad32bc6c1e82d0a17462608dbeb7f9cc9bd5d2a1bcf8ede9",
+          "exactEquality": true,
+          "conservativeComparisonEqual": true,
+          "diff": []
+        }
+      ]
     },
     {
       "codeId": "family-code",
@@ -540,9 +752,19 @@
       "legacyFile": "data/law/codes/family-code.json",
       "legacyTextSha256": "a5cddde3c58c6534be04eeb2df32de8ebbfefc17888c1ab5094c7dddd7d16c2d",
       "legacyConsolidatedAsOf": "2005-02-27",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "same-text",
+      "reason": "Equality under named NFC/whitespace comparison; raw equality is recorded separately.",
+      "versionsCompared": [
+        {
+          "versionId": "family-code:57-bis@ordinance-05-02",
+          "verificationState": "partly-checked",
+          "temporalStatus": "unsettled",
+          "corpusTextSha256": "a5cddde3c58c6534be04eeb2df32de8ebbfefc17888c1ab5094c7dddd7d16c2d",
+          "exactEquality": true,
+          "conservativeComparisonEqual": true,
+          "diff": []
+        }
+      ]
     },
     {
       "codeId": "family-code",
@@ -550,9 +772,19 @@
       "legacyFile": "data/law/codes/family-code.json",
       "legacyTextSha256": "30018b4a0c2b16d6e11e6a48b3d8ba5c57c4af1c9d3a90523cf1250a4565e603",
       "legacyConsolidatedAsOf": "2005-02-27",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "same-text",
+      "reason": "Equality under named NFC/whitespace comparison; raw equality is recorded separately.",
+      "versionsCompared": [
+        {
+          "versionId": "family-code:62@law-84-11",
+          "verificationState": "partly-checked",
+          "temporalStatus": "unsettled",
+          "corpusTextSha256": "30018b4a0c2b16d6e11e6a48b3d8ba5c57c4af1c9d3a90523cf1250a4565e603",
+          "exactEquality": true,
+          "conservativeComparisonEqual": true,
+          "diff": []
+        }
+      ]
     },
     {
       "codeId": "family-code",
@@ -560,9 +792,19 @@
       "legacyFile": "data/law/codes/family-code.json",
       "legacyTextSha256": "bdb48582d9d6eedbb784b5179d93ce66ce633218eff9c32bafc2719aee2a72b2",
       "legacyConsolidatedAsOf": "2005-02-27",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "same-text",
+      "reason": "Equality under named NFC/whitespace comparison; raw equality is recorded separately.",
+      "versionsCompared": [
+        {
+          "versionId": "family-code:64@ordinance-05-02",
+          "verificationState": "partly-checked",
+          "temporalStatus": "unsettled",
+          "corpusTextSha256": "bdb48582d9d6eedbb784b5179d93ce66ce633218eff9c32bafc2719aee2a72b2",
+          "exactEquality": true,
+          "conservativeComparisonEqual": true,
+          "diff": []
+        }
+      ]
     },
     {
       "codeId": "family-code",
@@ -570,9 +812,19 @@
       "legacyFile": "data/law/codes/family-code.json",
       "legacyTextSha256": "7617cacd006d6318ceb03d11726a02a8380ba13b02df520236bccf214305e3af",
       "legacyConsolidatedAsOf": "2005-02-27",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "same-text",
+      "reason": "Equality under named NFC/whitespace comparison; raw equality is recorded separately.",
+      "versionsCompared": [
+        {
+          "versionId": "family-code:65@law-84-11",
+          "verificationState": "partly-checked",
+          "temporalStatus": "unsettled",
+          "corpusTextSha256": "7617cacd006d6318ceb03d11726a02a8380ba13b02df520236bccf214305e3af",
+          "exactEquality": true,
+          "conservativeComparisonEqual": true,
+          "diff": []
+        }
+      ]
     },
     {
       "codeId": "family-code",
@@ -580,9 +832,25 @@
       "legacyFile": "data/law/codes/family-code.json",
       "legacyTextSha256": "315ba3ccbf5c0e44d181afdd397e3e6ba07f00b8dfd11328c82a25697021e76e",
       "legacyConsolidatedAsOf": "2005-02-27",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "different-text",
+      "reason": "Text differs; inspect the stored diff. No legal amendment or correction is inferred from orthographic/punctuation differences.",
+      "versionsCompared": [
+        {
+          "versionId": "family-code:66@law-84-11",
+          "verificationState": "partly-checked",
+          "temporalStatus": "unsettled",
+          "corpusTextSha256": "05ab0828b9f90226332f2e56970ed517eb114d8c4409621832134b4ba8b8ca5c",
+          "exactEquality": false,
+          "conservativeComparisonEqual": false,
+          "diff": [
+            "--- legacy",
+            "+++ family-code:66@law-84-11",
+            "@@ -1 +1 @@",
+            "-يسقط حق الحاضنة بالتزوج بغير قريب محرم وبالتنازل ما لم يضر بمصلحة المحضون.",
+            "+يسقط حق الحاضنة بالتزوج بغير قريب محرم، وبالتنازل ما لم يضر بمصلحة المحضون."
+          ]
+        }
+      ]
     },
     {
       "codeId": "family-code",
@@ -590,9 +858,19 @@
       "legacyFile": "data/law/codes/family-code.json",
       "legacyTextSha256": "afe35cce29ac581179a8471d734b171dd8cc217fb925f46da0507f27a16550d0",
       "legacyConsolidatedAsOf": "2005-02-27",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "same-text",
+      "reason": "Equality under named NFC/whitespace comparison; raw equality is recorded separately.",
+      "versionsCompared": [
+        {
+          "versionId": "family-code:67@ordinance-05-02",
+          "verificationState": "partly-checked",
+          "temporalStatus": "unsettled",
+          "corpusTextSha256": "afe35cce29ac581179a8471d734b171dd8cc217fb925f46da0507f27a16550d0",
+          "exactEquality": true,
+          "conservativeComparisonEqual": true,
+          "diff": []
+        }
+      ]
     },
     {
       "codeId": "family-code",
@@ -600,9 +878,19 @@
       "legacyFile": "data/law/codes/family-code.json",
       "legacyTextSha256": "17c8b5004ebed2a63d2f531457b31c6a80c9400b17a86acd574091ae78a951da",
       "legacyConsolidatedAsOf": "2005-02-27",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "same-text",
+      "reason": "Equality under named NFC/whitespace comparison; raw equality is recorded separately.",
+      "versionsCompared": [
+        {
+          "versionId": "family-code:68@law-84-11",
+          "verificationState": "partly-checked",
+          "temporalStatus": "unsettled",
+          "corpusTextSha256": "17c8b5004ebed2a63d2f531457b31c6a80c9400b17a86acd574091ae78a951da",
+          "exactEquality": true,
+          "conservativeComparisonEqual": true,
+          "diff": []
+        }
+      ]
     },
     {
       "codeId": "family-code",
@@ -610,9 +898,19 @@
       "legacyFile": "data/law/codes/family-code.json",
       "legacyTextSha256": "27bfea662e06bfa2cc3118afa11e7687cbe80773e13ee38edcb9284f94a4076f",
       "legacyConsolidatedAsOf": "2005-02-27",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "same-text",
+      "reason": "Equality under named NFC/whitespace comparison; raw equality is recorded separately.",
+      "versionsCompared": [
+        {
+          "versionId": "family-code:72@ordinance-05-02",
+          "verificationState": "partly-checked",
+          "temporalStatus": "unsettled",
+          "corpusTextSha256": "27bfea662e06bfa2cc3118afa11e7687cbe80773e13ee38edcb9284f94a4076f",
+          "exactEquality": true,
+          "conservativeComparisonEqual": true,
+          "diff": []
+        }
+      ]
     },
     {
       "codeId": "family-code",
@@ -620,9 +918,25 @@
       "legacyFile": "data/law/codes/family-code.json",
       "legacyTextSha256": "93f8f000a19738e09455ba39bd93a649a4d58338bbf105bcbe0a457b6c132542",
       "legacyConsolidatedAsOf": "2005-02-27",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "different-text",
+      "reason": "Text differs; inspect the stored diff. No legal amendment or correction is inferred from orthographic/punctuation differences.",
+      "versionsCompared": [
+        {
+          "versionId": "family-code:74@law-84-11",
+          "verificationState": "partly-checked",
+          "temporalStatus": "unsettled",
+          "corpusTextSha256": "98b65dc2578171401d9a96811b1698cf1afe1937b67cd9d06704cc8866d4a35e",
+          "exactEquality": false,
+          "conservativeComparisonEqual": false,
+          "diff": [
+            "--- legacy",
+            "+++ family-code:74@law-84-11",
+            "@@ -1 +1 @@",
+            "-تجب نفقة الزوجة على زوجها بالدخول بها أو دعوتها إليه ببينة مع مراعاة أحكام المواد 78 و 79 و 80 من هذا القانون.",
+            "+تجب نفقة الزوجة على زوجها بالدخول بها أو دعوتها إليه ببينة مع مراعاة أحكام المواد 78 و79 و80 من هذا القانون."
+          ]
+        }
+      ]
     },
     {
       "codeId": "family-code",
@@ -630,9 +944,25 @@
       "legacyFile": "data/law/codes/family-code.json",
       "legacyTextSha256": "8648a364133372188226a1d5ac04a0d68760d48e1f3767cdbd3860f4835545ef",
       "legacyConsolidatedAsOf": "2005-02-27",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "different-text",
+      "reason": "Text differs; inspect the stored diff. No legal amendment or correction is inferred from orthographic/punctuation differences.",
+      "versionsCompared": [
+        {
+          "versionId": "family-code:75@law-84-11",
+          "verificationState": "partly-checked",
+          "temporalStatus": "unsettled",
+          "corpusTextSha256": "03801d429eb2bf68ff9b84edacbc9bc6a1cadebbb2a954b7327de95acfd78ac5",
+          "exactEquality": false,
+          "conservativeComparisonEqual": false,
+          "diff": [
+            "--- legacy",
+            "+++ family-code:75@law-84-11",
+            "@@ -1 +1 @@",
+            "-تجب نفقة الولد على الأب ما لم يكن له مال، فبالنسبة للذكور إلى سن الرشد والإناث إلى الدخول وتستمر في حالة ما إذا كان الولد عاجزا لآفة عقلية أو بدنية أو مزاولا للدراسة وتسقط بالاستغناء عنها بالكسب.",
+            "+تجب نفقة الولد على الأب ما لم يكن له مال، فبالنسبة للذكور إلى سن الرشد والإناث إلى الدخول وتستمر في حالة ما إذا كان الولد عاجزا لآفة عقلية أو بدنية أو مزاولا للدراسة وتسقط بالإستغناء عنها بالكسب."
+          ]
+        }
+      ]
     },
     {
       "codeId": "family-code",
@@ -640,9 +970,19 @@
       "legacyFile": "data/law/codes/family-code.json",
       "legacyTextSha256": "68bbddccba78da87c25ce272faade16d6ae3122be210a16edcfedeb5b3e6fe9c",
       "legacyConsolidatedAsOf": "2005-02-27",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "same-text",
+      "reason": "Equality under named NFC/whitespace comparison; raw equality is recorded separately.",
+      "versionsCompared": [
+        {
+          "versionId": "family-code:76@law-84-11",
+          "verificationState": "partly-checked",
+          "temporalStatus": "unsettled",
+          "corpusTextSha256": "68bbddccba78da87c25ce272faade16d6ae3122be210a16edcfedeb5b3e6fe9c",
+          "exactEquality": true,
+          "conservativeComparisonEqual": true,
+          "diff": []
+        }
+      ]
     },
     {
       "codeId": "family-code",
@@ -650,9 +990,19 @@
       "legacyFile": "data/law/codes/family-code.json",
       "legacyTextSha256": "6b9f62fbc9ff52a1a38d55d407c1c356b00d2a99a9f73a40508585cccb360342",
       "legacyConsolidatedAsOf": "2005-02-27",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "same-text",
+      "reason": "Equality under named NFC/whitespace comparison; raw equality is recorded separately.",
+      "versionsCompared": [
+        {
+          "versionId": "family-code:78@law-84-11",
+          "verificationState": "partly-checked",
+          "temporalStatus": "unsettled",
+          "corpusTextSha256": "6b9f62fbc9ff52a1a38d55d407c1c356b00d2a99a9f73a40508585cccb360342",
+          "exactEquality": true,
+          "conservativeComparisonEqual": true,
+          "diff": []
+        }
+      ]
     },
     {
       "codeId": "family-code",
@@ -660,9 +1010,25 @@
       "legacyFile": "data/law/codes/family-code.json",
       "legacyTextSha256": "ecc8ddae9e069c1158501fae7b549e3ef75eea9c6b1bb0c64b37bdda6d4a811b",
       "legacyConsolidatedAsOf": "2005-02-27",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "different-text",
+      "reason": "Text differs; inspect the stored diff. No legal amendment or correction is inferred from orthographic/punctuation differences.",
+      "versionsCompared": [
+        {
+          "versionId": "family-code:79@law-84-11",
+          "verificationState": "partly-checked",
+          "temporalStatus": "unsettled",
+          "corpusTextSha256": "fc114aa9a561446ff3bc4867641154bb34aafe91a27d3025167a57f1fed5ca52",
+          "exactEquality": false,
+          "conservativeComparisonEqual": false,
+          "diff": [
+            "--- legacy",
+            "+++ family-code:79@law-84-11",
+            "@@ -1 +1 @@",
+            "-يراعي القاضي في تقدير النفقة حال الطرفين وظروف المعاش ولا يراجع تقديره قبل مضي سنة من الحكم.",
+            "+يراعى القاضي في تقدير النفقة حال الطرفين وظروف المعاش ولا يراجع تقديره قبل مضي سنة من الحكم."
+          ]
+        }
+      ]
     },
     {
       "codeId": "family-code",
@@ -670,9 +1036,19 @@
       "legacyFile": "data/law/codes/family-code.json",
       "legacyTextSha256": "2cfd730c5aacc59bd7298263d5c4cba2d048bc16dcf2b6b4378028e85778cae3",
       "legacyConsolidatedAsOf": "2005-02-27",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "same-text",
+      "reason": "Equality under named NFC/whitespace comparison; raw equality is recorded separately.",
+      "versionsCompared": [
+        {
+          "versionId": "family-code:80@law-84-11",
+          "verificationState": "partly-checked",
+          "temporalStatus": "unsettled",
+          "corpusTextSha256": "2cfd730c5aacc59bd7298263d5c4cba2d048bc16dcf2b6b4378028e85778cae3",
+          "exactEquality": true,
+          "conservativeComparisonEqual": true,
+          "diff": []
+        }
+      ]
     },
     {
       "codeId": "family-code",
@@ -680,9 +1056,19 @@
       "legacyFile": "data/law/codes/family-code.json",
       "legacyTextSha256": "4e784b5ae066f43d162ad36920f02dfe7f85b1d83a424abbcf8a5027ce636a9c",
       "legacyConsolidatedAsOf": "2005-02-27",
-      "category": "not-imported",
-      "reason": "Outside the delivered priority subset; text/version comparison is not established.",
-      "versionsCompared": []
+      "category": "same-text",
+      "reason": "Equality under named NFC/whitespace comparison; raw equality is recorded separately.",
+      "versionsCompared": [
+        {
+          "versionId": "family-code:87@ordinance-05-02",
+          "verificationState": "partly-checked",
+          "temporalStatus": "unsettled",
+          "corpusTextSha256": "4e784b5ae066f43d162ad36920f02dfe7f85b1d83a424abbcf8a5027ce636a9c",
+          "exactEquality": true,
+          "conservativeComparisonEqual": true,
+          "diff": []
+        }
+      ]
     },
     {
       "codeId": "labour-disputes",

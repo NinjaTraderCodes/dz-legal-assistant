@@ -100,7 +100,7 @@ def build() -> None:
     discovery = {"url": "https://droit.mjustice.gov.dz/fr/content/codes-0", "accessedOn": "2026-10-26",
                  "note": "Cached Ministry index, SHA256 46e5a42bf31a5ebe981f8faef8c6300779e1bca204c1cf50010aad339ee24bfc, "
                          "lists Ordinance05-02 as the Family amendment. A later live open timed out; cut-off not advanced."}
-    common_reasons = ["Current snapshot candidate: final independent inventory/amendment/heading and 20-article delivery QA are pending.",
+    common_reasons = ["Current snapshot candidate: final independent inventory/amendment/heading QA is pending.",
                       "French compilation numbering aligns; JO French structural check is not yet complete.",
                       "Complete historical archive deferred by user; missing former bodies are not represented as unchanged law.",
                       "Body text uses the documented text_clean normalization (including removal of harakat/tatweel); raw witnesses are retained. Printed vocalization is not certified.",

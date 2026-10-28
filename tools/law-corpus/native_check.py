@@ -192,13 +192,14 @@ def line_bands(gray, ink_threshold: int = 160, min_ink: int = 3, min_gap: int = 
 OK_STATES = {"exact", "noise", "merge"}
 
 
-def token_statuses(canonical_tokens: list[str], ocr_tokens: list[str]) -> tuple[list[str], dict[int, list[str]]]:
+def token_statuses(canonical_tokens: list[str], ocr_tokens: list[str], *, strict: bool = False) -> tuple[list[str], dict[int, list[str]]]:
     """Per canonical token: exact | noise | merge | split | miss; and OCR tokens inserted before canonical index i.
 
     merge: OCR joined words that the canonical text separates (letters identical) — tolerated OCR spacing noise, unless
     a canonical part is a single letter (a word broken by a stray space in the native text).
     split: the canonical text joins what OCR separates (letters identical) — NOT tolerated, because a native-text
     clean-up (e.g. joining kashida-split words) could have merged two words wrongly.
+    strict: folding is alignment-only for every token; ordinary-word edit noise and digit joins cannot pass.
     """
     status = ["miss"] * len(canonical_tokens)
     inserted: dict[int, list[str]] = {}
@@ -209,16 +210,18 @@ def token_statuses(canonical_tokens: list[str], ocr_tokens: list[str]) -> tuple[
         seg_l, seg_r = canonical_tokens[a1:a2], ocr_tokens[b1:b2]
         if op == "equal":
             for k, (la, ra) in enumerate(zip(seg_l, seg_r)):
-                status[a1 + k] = "miss" if (critical(la) or critical(ra)) and exact_form(la) != exact_form(ra) else "exact"
+                status[a1 + k] = "miss" if (strict or critical(la) or critical(ra)) and exact_form(la) != exact_form(ra) else "exact"
             continue
         if op == "replace":
             fl, fr = [fold(t) for t in seg_l], [fold(t) for t in seg_r]
-            if not any(critical(t) for t in seg_l + seg_r) and len(seg_l) == len(seg_r) \
+            if not strict and not any(critical(t) for t in seg_l + seg_r) and len(seg_l) == len(seg_r) \
                     and all(len(x) >= 4 and len(y) >= 4 and edits(x, y) <= 1 for x, y in zip(fl, fr)):
                 for k in range(len(seg_l)):
                     status[a1 + k] = "noise"
                 continue
             if "".join(exact_form(t) for t in seg_l) == "".join(exact_form(t) for t in seg_r):
+                if strict and any(any(c.isdigit() for c in t) for t in seg_l + seg_r):
+                    continue
                 state = "merge" if len(seg_l) > len(seg_r) else "split"
                 if state == "merge" and any(len(exact_form(t)) == 1 and t.isalpha() for t in seg_l):
                     state = "split"  # «ه ذا», «ع ليه»: a lone letter in the native text is a broken word, not OCR spacing

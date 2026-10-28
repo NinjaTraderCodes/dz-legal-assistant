@@ -6,7 +6,9 @@ For current branch counts, start with **Current coverage (28 October 2026)** bel
 
 ## Recovery and Family preparation, 28 October 2026
 
-**Safely paused at the user's request.** Read [the exact recovery and remaining-work instructions](LAW-CORPUS-RESUME-2026-10-28.md) before resuming. The completed amended targeted reread reached 25/37 agreements with 20 groups left. The base targeted reread was deliberately stopped; 480 completed, hash-bound per-strip readings survive across both jobs. These are OCR-call counts, not new checked articles. The pause also includes the independent 05-02 inventory (29 replacements, eight insertions, five repeals), further heading-boundary corrections, and 122 passing Python tests.
+**Resumed after the safe pause.** The [Family source-check report](LAW-CORPUS-FAMILY.md) now records completed targeted rereads, a stricter exact-word overlay, and 28 image decisions settling the 37 replaced/inserted body comparisons with eight guarded corrections. The base exact-word backlog remains open. Inherited agreement permits ordinary-word folding/one-letter OCR noise and must not be described as uniform exact-word verification; the older counts below retain that original method. No typed Family completion is claimed.
+
+Historical safe pause: [the recovery instructions](LAW-CORPUS-RESUME-2026-10-28.md) record the 480 hash-bound readings retained at that point. Those are OCR-call counts, not articles. The base reread has since finished; the Family report above supersedes its partial status.
 
 Codex recovered Claude's local project transcript and uncommitted files after the session limit. The two requested additions were already committed and pushed: `9636344` adds the four Law 22-13 spot-checks, and `eb43a21` implements the glyph-specific Family/Civil decoder. Neither addition has been repeated or overwritten.
 

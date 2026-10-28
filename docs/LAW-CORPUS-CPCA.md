@@ -4,6 +4,8 @@ Delivery 2, 28 October 2026, branch `codex/law-corpus`. Image readings are Claud
 
 ## Result
 
+**Additional QA limitation identified on 28 October:** the inherited `native_check` rule accepts ordinary-word Arabic-letter folds and one-letter OCR noise. Thus `checked` below is the existing pipeline state, not a uniform exact-word certification. A stricter overlay exposed an actual Ministry-versus-JO word difference in the Family work; the CPCA has not yet received that overlay, and no new CPCA failure count is inferred. See [the Family quality finding](LAW-CORPUS-FAMILY.md). Existing data and recorded image decisions remain unchanged.
+
 | | Count |
 |---|---:|
 | Articles | 1,084 (1,065 of Law 08-09 + 19 inserted by Law 22-13) |

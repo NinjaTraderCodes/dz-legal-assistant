@@ -78,3 +78,23 @@ Keep a reader only if both hold:
 - **clearly faster than `gemma3:4b`,** measured on the same laptop.
 
 A reader that writes valid lines but reverses roles or reads denials as facts is rejected, however fast it is.
+
+## Trial: numbered values and an enforced answer format (`--structured`)
+
+Branch `claude/evidence-reader-trial`, built on `codex/evidence-core-framework`.
+
+**What the trial reader does** (`src/DzLegal.Drafting/StructuredFactReader.cs`, prompt `data/law/prompts/read-case-facts-json.ar.txt`):
+1. **The program lists every date and amount** of the case under a number (`v1 = 01/03/2024 (تاريخ، في s2)`).
+2. **The model answers in JSON** and chooses values by number instead of writing them.
+3. **The JSON schema is built for each case.** Codes, sentence numbers and value numbers are closed lists, and Ollama enforces the schema while the model writes (the `format` field, from the evidence-core branch).
+   - The model therefore cannot invent a value, cite a missing sentence or write an unreadable line.
+   - What remains to measure is whether it ties each value and role to the right event.
+4. **The answer is converted to the coded lines** and checked and scored exactly as before.
+   - Each saved case record also keeps the raw JSON.
+   - The summary adds the strict scoring (`facts.strict/1`) next to the original one.
+
+```powershell
+dotnet run -c Release --project src/DzLegal.Harness -- facts --structured --models gemma3:4b --out bench-facts-structured-local
+```
+
+**Hosted engines ignore the schema:** they get the same prompt but nothing enforces the format. Only the local run tests the trial.

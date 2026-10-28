@@ -1,0 +1,49 @@
+المهمة: اقرأ نص الدعوى كما كتبه المحامي، واستخرج منه الوقائع فقط بالرموز المحددة أدناه، في جواب بصيغة JSON. لا تحكم في القانون، ولا تذكر أي مادة قانونية، ولا تشرح.
+
+الرموز المسموح بها:
+
+العلاقة بين الطرفين:
+loan قرض، debt_acknowledgment اعتراف بدين، sale بيع، lease إيجار سكني أو مدني، commercial_lease إيجار تجاري، works_contract مقاولة أو أشغال، transport_contract نقل، supply توريد سلع بين تجار، employment عمل، marriage زواج، ownership ملكية أو حيازة دون عقد بين الطرفين، none لا عقد بينهما (فعل ضار)، inheritance تركة، company شركة، administrative قرار إداري، civil_status حالة مدنية، other غير ذلك
+
+موقع المدعي في هذه العلاقة:
+lender المقرض، borrower المقترض، creditor الدائن، debtor المدين، seller البائع، buyer المشتري، lessor المؤجر، lessee المستأجر، owner المالك، occupant الشاغل، contractor المقاول، client رب العمل في المقاولة، supplier المورد، employer المستخدم، employee العامل، husband الزوج، wife الزوجة، father الأب، mother الأم، victim المضرور، heir وارث، partner شريك، other غير ذلك
+
+الأحداث:
+contract_concluded إبرام عقد، money_lent تسليم مبلغ على سبيل القرض، debt_acknowledged اعتراف بدين، deadline_passed حلول أجل الوفاء أو التنفيذ، payment_made دفع مبلغ، debt_unpaid عدم رد دين أو قرض، price_unpaid عدم دفع الثمن، rent_unpaid عدم دفع بدل الإيجار، wages_unpaid عدم دفع الأجر أو المستحقات، maintenance_unpaid عدم دفع النفقة، goods_delivered تسليم سلع أو شيء، delivery_missing عدم التسليم، delivery_late التأخر في التسليم، work_stopped التوقف عن الأشغال أو الإخلال بها، lease_started بداية الإيجار، lease_renewal_refused رفض تجديد الإيجار، eviction_notice تنبيه بالإخلاء، notice_served إعذار أو تنبيه بالوفاء، occupation_without_title شغل ملك الغير دون سند، harm_by_person ضرر بفعل شخص، harm_by_animal ضرر بفعل حيوان، harm_by_building ضرر بانهدام بناء، harm_by_thing ضرر بفعل شيء آخر (مياه، آلة)، criminal_conviction إدانة جزائية، concealment كتمان أو تدليس، marriage زواج، divorce طلاق أو حكم به، abandonment هجر، spouse_harm ضرب أو إيذاء الزوجة، custody_held بقاء الأولاد عند أحد الوالدين، visitation_refused منع رؤية الأولاد، employment_started بداية العمل، dismissal تسريح العامل، conciliation_failed محضر عدم المصالحة، death وفاة، administrative_decision قرار إداري، record_error خطأ في سجل، other حدث آخر
+
+الطلبات:
+payment دفع مبلغ، eviction طرد أو إخلاء، rescission فسخ عقد، damages تعويض، annulment إبطال عقد، restitution استرجاع مبلغ أو شيء، delivery تسليم، divorce طلاق، tatliq تطليق، khul خلع، maintenance نفقة، custody حضانة، custody_transfer إسقاط الحضانة ونقلها، visitation حق الزيارة، housing سكن أو بدل إيجار للمحضون، reinstatement إعادة الإدماج، wages أجور ومستحقات، partition قسمة، cancel_decision إلغاء قرار، correction تصحيح، dissolution حل شركة، other طلب آخر
+
+الفاعل: plaintiff المدعي، defendant المدعى عليه، other شخص آخر، unknown غير معروف، none لا فاعل
+الحالة: affirmed وقع، denied ينفي النص وقوعه، disputed يدعيه طرف وينكره الآخر
+
+شكل الجواب: كائن JSON واحد فيه relation (العلاقة) وposition (موقع المدعي) وrelation_sentences (أرقام الجمل التي تبين العلاقة) وevents (الأحداث) وrequests (الطلبات).
+لكل حدث: kind (الحدث)، sentences (أرقام الجمل التي ورد فيها)، actor (الفاعل)، polarity (الحالة)، date (رقم التاريخ من قائمة القيم أو none)، amount (رقم المبلغ من قائمة القيم أو none).
+لكل طلب: kind (الطلب)، sentences (أرقام الجمل)، amount (رقم المبلغ من قائمة القيم أو none).
+
+القواعد:
+- التواريخ والمبالغ لا تكتبها بنفسك: اختر رقمها من قائمة القيم (مثل v2)، أو none إذا لم يرد للحدث تاريخ أو مبلغ.
+- التاريخ يخص الحدث الذي ورد معه في الجملة نفسها فقط: تاريخ بداية الإيجار ليس تاريخ إبرام العقد، وتاريخ الإعذار ليس تاريخ حلول الأجل.
+- إذا قال النص إن شيئا لم يقع (مثل: لم يوجه أي إعذار، لا علاقة لأي حيوان)، فاجعل حالته denied أو لا تذكره، ولا تجعله affirmed أبدا. وإذا ادعاه طرف وأنكره الآخر فحالته disputed.
+- الفاعل هو من قام بالحدث: من امتنع عن الدفع، من أقرض، من سرّح العامل.
+- اذكر كل حدث وطلب ورد في النص، ولا تضف ما لم يرد.
+
+مثال (قضية وهمية):
+s1 [الوقائع] باع المدعي للمدعى عليه شاحنة بثمن 3.000.000 دج بتاريخ 05/06/2023.
+s2 [الوقائع] لم يدفع المدعى عليه الثمن، ولم يوجه له المدعي أي إعذار.
+s3 [الطلبات] إلزام المدعى عليه بدفع مبلغ 3.000.000 دج.
+قائمة القيم:
+v1 = 05/06/2023 (تاريخ، في s1)
+v2 = 3000000 (مبلغ، في s1)
+v3 = 3000000 (مبلغ، في s3)
+الجواب:
+{"relation":"sale","position":"seller","relation_sentences":["s1"],"events":[{"kind":"contract_concluded","sentences":["s1"],"actor":"none","polarity":"affirmed","date":"v1","amount":"v2"},{"kind":"price_unpaid","sentences":["s2"],"actor":"defendant","polarity":"affirmed","date":"none","amount":"none"},{"kind":"notice_served","sentences":["s2"],"actor":"plaintiff","polarity":"denied","date":"none","amount":"none"}],"requests":[{"kind":"payment","sentences":["s3"],"amount":"v3"}]}
+
+الدعوى:
+القسم الذي اختاره المحامي: {{ section }}
+{{ case }}
+
+قائمة القيم:
+{{ values }}
+
+اكتب الجواب الآن: كائن JSON واحد فقط.

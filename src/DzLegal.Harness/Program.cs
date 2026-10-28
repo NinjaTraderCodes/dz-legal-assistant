@@ -28,6 +28,7 @@ using DzLegal.Harness;
 //   dzlegal-harness facts --models <gemma3:4b,qwen3.5:2b,...> [--out bench-facts] [--partition development,validation,robustness] [--case <name>]
 //       The fact-reading step (docs/FACT-READING.md): each reader extracts roles, events, dates, amounts and requests,
 //       scored against the answer key in tests/fact-cases, critical errors counted per case.
+//       --structured: the trial reader (numbered dates/amounts, JSON answer enforced by the local server's schema).
 //   dzlegal-harness facts export --out <inputs.json>      the cases as numbered sentences, for a reader outside .NET
 //   dzlegal-harness facts score --predictions <file.json> [--reader <name>] [--out <folder>]   scores that reader
 //   dzlegal-harness law import <code-id> (--url <official url> | --file <file>) [--law-root data/law] [--as-of yyyy-mm-dd]
@@ -269,7 +270,9 @@ if (args.Length > 0 && args[0] == "facts")
     }
 
     var lawRoot = Option("--law-root", Path.Combine(AppContext.BaseDirectory, "data", "law"));
-    var prompt = DzLegal.Drafting.FactReader.LoadPrompt(lawRoot);
+    // --structured: the trial reader with numbered values and an enforced JSON answer (docs/FACT-READING.md).
+    var structured = args.Contains("--structured");
+    var prompt = structured ? DzLegal.Drafting.StructuredFactReader.LoadPrompt(lawRoot) : DzLegal.Drafting.FactReader.LoadPrompt(lawRoot);
     if (factOut is not null)
     {
         Directory.CreateDirectory(factOut);
@@ -277,8 +280,8 @@ if (args.Length > 0 && args[0] == "facts")
         RunManifest.Create(
             "facts",
             readers,
-            new Dictionary<string, string> { ["prompt"] = Path.Combine(lawRoot, DzLegal.Drafting.FactReader.PromptFile), ["cases"] = Option("--cases", Path.Combine(AppContext.BaseDirectory, "fact-cases")) },
-            new Dictionary<string, string> { ["partition"] = string.Join(',', factPartition), ["case"] = args.Contains("--case") ? Option("--case", string.Empty) : "all", ["endpoint"] = Option("--endpoint", "http://127.0.0.1:11434") })
+            new Dictionary<string, string> { ["prompt"] = Path.Combine(lawRoot, structured ? DzLegal.Drafting.StructuredFactReader.PromptFile : DzLegal.Drafting.FactReader.PromptFile), ["cases"] = Option("--cases", Path.Combine(AppContext.BaseDirectory, "fact-cases")) },
+            new Dictionary<string, string> { ["reader"] = structured ? "structured" : "lines", ["partition"] = string.Join(',', factPartition), ["case"] = args.Contains("--case") ? Option("--case", string.Empty) : "all", ["endpoint"] = Option("--endpoint", "http://127.0.0.1:11434") })
             .Write(factOut);
     }
 
@@ -303,8 +306,22 @@ if (args.Length > 0 && args[0] == "facts")
         }
 
         using var paced = new PacedModelProvider(provider, HarnessModels.Pace(model, args.Contains("--delay-seconds") ? double.Parse(Option("--delay-seconds", "0"), CultureInfo.InvariantCulture) : -1));
-        var report = await FactsEvaluator.RunAsync(factCases, paced, prompt, Console.Out, factOut);
-        var text = FactsEvaluator.Summary(report, speed.Table());
+        FactsReport report;
+        if (structured)
+        {
+            var reader = new DzLegal.Drafting.StructuredFactReader(paced, prompt);
+            report = await FactsEvaluator.RunAsync(factCases, paced.Name + " (structured)", async (caseText, ct) =>
+            {
+                var (facts, raw) = await reader.ReadAsync(caseText, ct);
+                return (facts, DzLegal.Drafting.StructuredFactReader.ToLines(raw, caseText), raw);
+            }, Console.Out, factOut);
+        }
+        else
+        {
+            report = await FactsEvaluator.RunAsync(factCases, paced, prompt, Console.Out, factOut);
+        }
+
+        var text = FactsEvaluator.Summary(report, speed.Table()) + StrictTable(report);
         Console.WriteLine(text);
         if (factOut is not null)
         {
@@ -313,6 +330,20 @@ if (args.Length > 0 && args[0] == "facts")
     }
 
     return 0;
+}
+
+// The same run scored by the strict scorer (facts.strict/1, docs/EVIDENCE-CORE.md), per partition.
+static string StrictTable(FactsReport report)
+{
+    var sb = new System.Text.StringBuilder().AppendLine("### Strict scoring (" + StrictFactsEvaluator.Version + ")").AppendLine()
+        .AppendLine("| partition | cases | cases with a critical error |").AppendLine("|---|---:|---:|");
+    foreach (var g in report.Results.GroupBy(r => r.Case.Partition))
+    {
+        var critical = g.Count(r => r.Failure is not null || StrictFactsEvaluator.Score(r.Case.Gold, r.Facts).Any(e => e.Critical));
+        sb.AppendLine(CultureInfo.InvariantCulture, $"| {g.Key} | {g.Count()} | {critical} |");
+    }
+
+    return sb.AppendLine().ToString();
 }
 
 if (args.Length > 0 && args[0] == "draft")

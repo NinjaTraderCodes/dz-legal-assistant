@@ -121,21 +121,37 @@ public static class FactsEvaluator
             .SelectMany(f => JsonSerializer.Deserialize<FactCaseFile>(File.ReadAllText(f), DefinitionJson.Options)?.Cases ?? [])
             .ToList();
 
-    public static async Task<FactsReport> RunAsync(IReadOnlyList<FactCase> cases, IModelProvider provider, string prompt, TextWriter log, string? outFolder = null)
+    public static Task<FactsReport> RunAsync(IReadOnlyList<FactCase> cases, IModelProvider provider, string prompt, TextWriter log, string? outFolder = null)
+    {
+        var reader = new FactReader(provider, prompt);
+        return RunAsync(cases, provider.Name, async (text, ct) => { var (facts, answer) = await reader.ReadAsync(text, ct); return (facts, answer, (string?)null); }, log, outFolder);
+    }
+
+    /// <summary>
+    /// Runs any reader over the cases. <paramref name="read"/> returns the facts, the answer as coded lines (what the
+    /// saved records and the strict audit read) and, when the reader answered in another form, its raw answer.
+    /// </summary>
+    public static async Task<FactsReport> RunAsync(
+        IReadOnlyList<FactCase> cases,
+        string readerName,
+        Func<CaseText, CancellationToken, Task<(CaseFacts Facts, string Answer, string? Raw)>> read,
+        TextWriter log,
+        string? outFolder = null)
     {
         ArgumentNullException.ThrowIfNull(cases);
-        ArgumentNullException.ThrowIfNull(provider);
+        ArgumentNullException.ThrowIfNull(read);
         ArgumentNullException.ThrowIfNull(log);
-        var reader = new FactReader(provider, prompt);
         var results = new List<FactCaseResult>();
         foreach (var c in cases)
         {
             var text = CaseText.From(c.Inputs);
             var clock = Stopwatch.StartNew();
             FactCaseResult result;
+            string? raw = null;
             try
             {
-                var (facts, answer) = await reader.ReadAsync(text);
+                var (facts, answer, rawAnswer) = await read(text, CancellationToken.None);
+                raw = rawAnswer;
                 result = new FactCaseResult(c, facts, answer, clock.Elapsed, Score(c.Gold, facts));
             }
             catch (Exception ex) when (ex is ModelProviderException or HttpRequestException or IOException or TaskCanceledException)
@@ -145,10 +161,10 @@ public static class FactsEvaluator
 
             log.WriteLine($"  [{c.Name}] {result.Elapsed.TotalSeconds:F0}s  {(result.Failure is not null ? "FAILED: " + result.Failure : result.HasCritical ? "critical: " + string.Join("; ", result.Errors.Where(e => e.Critical).Select(e => e.Type)) : "ok")}");
             results.Add(result);
-            await WriteCaseAsync(outFolder, provider.Name, result, text);
+            await WriteCaseAsync(outFolder, readerName, result, text, raw);
         }
 
-        return new FactsReport(provider.Name, results);
+        return new FactsReport(readerName, results);
     }
 
     /// <summary>
@@ -394,7 +410,7 @@ public static class FactsEvaluator
     private static (int, int) RequestScore(FactCaseResult r) =>
         (r.Case.Gold.Requests.Count(g => r.Facts.Requests.Any(q => Alternatives(g.Kind).Contains(q.Kind))), r.Case.Gold.Requests.Count);
 
-    private static async Task WriteCaseAsync(string? outFolder, string reader, FactCaseResult r, CaseText text)
+    private static async Task WriteCaseAsync(string? outFolder, string reader, FactCaseResult r, CaseText text, string? raw)
     {
         if (outFolder is null)
         {
@@ -406,6 +422,11 @@ public static class FactsEvaluator
         var sb = new StringBuilder().AppendLine(Ci, $"# {r.Case.Name} — {reader}").AppendLine();
         sb.AppendLine("## Case").AppendLine().AppendLine("```").AppendLine(text.Render()).AppendLine("```").AppendLine();
         sb.AppendLine("## Answer").AppendLine().AppendLine("```").AppendLine(r.Failure ?? r.Answer).AppendLine("```").AppendLine();
+        if (raw is not null)
+        {
+            sb.AppendLine("## Raw answer").AppendLine().AppendLine("```json").AppendLine(raw).AppendLine("```").AppendLine();
+        }
+
         sb.AppendLine("## Errors").AppendLine();
         foreach (var e in r.Errors)
         {

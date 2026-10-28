@@ -10,7 +10,7 @@ namespace DzLegal.ModelProviders.Ollama;
 /// same machine: the endpoint is checked by <see cref="LoopbackGuard"/>, the system proxy is bypassed,
 /// and there is no fallback to any other endpoint.
 /// </summary>
-public sealed class OllamaModelProvider : IModelProvider, IDisposable
+public sealed class OllamaModelProvider : IStructuredModelProvider, IDisposable
 {
     private readonly OllamaOptions _options;
     private readonly HttpClient _http;
@@ -37,6 +37,8 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
     }
 
     public string Name => $"ollama {_options.Model} @ {_options.Endpoint.Authority}";
+    public int ContextTokenLimit => _options.ContextLength;
+    public int OutputTokenLimit => _options.MaxTokens;
 
     /// <summary>Receives the server's timings after each call (load, prompt reading, writing). Used by the benches.</summary>
     public Action<ModelTimings>? OnTimings { get; set; }
@@ -209,7 +211,8 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
         Stream: stream,
         _options.Think,
         _options.KeepAlive,
-        new ChatOptions(_options.Temperature, _options.ContextLength, MaxTokens(request), _options.RepeatPenalty, _options.GpuLayers));
+        new ChatOptions(_options.Temperature, _options.ContextLength, MaxTokens(request), _options.RepeatPenalty, _options.GpuLayers),
+        request.OutputSchema);
 
     /// <summary>The call's own cap, never above the configured maximum.</summary>
     private int MaxTokens(ModelRequest request) => request.MaxTokens is { } cap ? Math.Min(cap, _options.MaxTokens) : _options.MaxTokens;
@@ -255,7 +258,8 @@ public sealed class OllamaModelProvider : IModelProvider, IDisposable
         [property: JsonPropertyName("stream")] bool Stream,
         [property: JsonPropertyName("think"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] bool? Think,
         [property: JsonPropertyName("keep_alive")] string KeepAlive,
-        [property: JsonPropertyName("options")] ChatOptions Options);
+        [property: JsonPropertyName("options")] ChatOptions Options,
+        [property: JsonPropertyName("format"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] System.Text.Json.JsonElement? Format);
 
     private sealed record ChatMessage(
         [property: JsonPropertyName("role")] string Role,

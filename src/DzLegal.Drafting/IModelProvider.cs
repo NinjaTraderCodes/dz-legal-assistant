@@ -22,6 +22,13 @@ public interface IModelProvider
     }
 }
 
+/// <summary>A backend that enforces a JSON schema and exposes the limits actually sent to its runtime.</summary>
+public interface IStructuredModelProvider : IModelProvider
+{
+    int ContextTokenLimit { get; }
+    int OutputTokenLimit { get; }
+}
+
 /// <param name="SectionId">The section being written.</param>
 /// <param name="SystemPrompt">Shared drafting rules.</param>
 /// <param name="UserPrompt">Section instructions with the lawyer's notes embedded.</param>
@@ -36,6 +43,9 @@ public sealed record ModelRequest(string SectionId, string SystemPrompt, string 
     /// local model cannot ramble; null uses the provider's default.
     /// </summary>
     public int? MaxTokens { get; init; }
+
+    /// <summary>Optional JSON schema for a structured local reader. Null preserves existing drafting requests.</summary>
+    public System.Text.Json.JsonElement? OutputSchema { get; init; }
 
     /// <summary>
     /// Turns sent before <see cref="UserPrompt"/>, oldest first: a follow-up call (the analysis's choice of articles)

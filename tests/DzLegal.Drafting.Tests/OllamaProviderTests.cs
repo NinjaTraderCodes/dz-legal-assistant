@@ -84,6 +84,19 @@ public class OllamaProviderTests
     private static readonly ModelRequest Request = new("facts", "system rules", "user prompt", "notes");
 
     [Fact]
+    public async Task StructuredSchemaIsOptInAndSentAsAnObject()
+    {
+        var handler = new FakeHandler(_ => Json("""{"message":{"content":"{}"},"done":true}"""));
+        using var provider = new OllamaModelProvider(new OllamaOptions(), handler);
+        await provider.GenerateAsync(Request with { OutputSchema = JsonSerializer.SerializeToElement(new { type = "object", additionalProperties = false }) }, CancellationToken.None);
+        await provider.GenerateAsync(Request, CancellationToken.None);
+        using var structured = JsonDocument.Parse(handler.Requests[0].Body);
+        using var unchanged = JsonDocument.Parse(handler.Requests[1].Body);
+        Assert.Equal(JsonValueKind.Object, structured.RootElement.GetProperty("format").ValueKind);
+        Assert.False(unchanged.RootElement.TryGetProperty("format", out _));
+    }
+
+    [Fact]
     public async Task SendsAChatRequestAndReturnsTheContent()
     {
         var handler = new FakeHandler(_ => Json("""{ "message": { "role": "assistant", "content": "حيث إن" }, "done": true }"""));

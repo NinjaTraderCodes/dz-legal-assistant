@@ -25,6 +25,11 @@ using DzLegal.Harness;
 //       reports claim recognition, expected-article recall (final and by the model alone), the legal reference (required
 //       authorities, coverage gaps, excluded authorities proposed), time per case, and with --runs, how stable the
 //       answers are. Writes manifest.json (commit, data/prompt/case fingerprints, options). Reported only (no gate).
+//   dzlegal-harness facts --models <gemma3:4b,qwen3.5:2b,...> [--out bench-facts] [--partition development,validation,robustness] [--case <name>]
+//       The fact-reading step (docs/FACT-READING.md): each reader extracts roles, events, dates, amounts and requests,
+//       scored against the answer key in tests/fact-cases, critical errors counted per case.
+//   dzlegal-harness facts export --out <inputs.json>      the cases as numbered sentences, for a reader outside .NET
+//   dzlegal-harness facts score --predictions <file.json> [--reader <name>] [--out <folder>]   scores that reader
 //   dzlegal-harness law import <code-id> (--url <official url> | --file <file>) [--law-root data/law] [--as-of yyyy-mm-dd]
 //       Maintainer tool: imports an official text into the law library and writes a review report.
 var dataRoot = Path.Combine(AppContext.BaseDirectory, "data", "document-types");
@@ -210,6 +215,96 @@ if (args.Length > 0 && args[0] == "grounds")
         }
 
         Console.WriteLine();
+    }
+
+    return 0;
+}
+
+if (args.Length > 0 && args[0] == "facts")
+{
+    var factCases = FactsEvaluator.LoadCases(Option("--cases", Path.Combine(AppContext.BaseDirectory, "fact-cases")));
+    var factPartition = Option("--partition", "development,validation,robustness").Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+    factCases = factCases.Where(c => factPartition.Contains(c.Partition) && (!args.Contains("--case") || c.Name == Option("--case", string.Empty))).ToList();
+    var factOut = args.Contains("--out") ? Option("--out", "bench-facts") : null;
+
+    if (args.Length > 1 && args[1] == "export")
+    {
+        var file = Option("--out", "fact-cases-input.json");
+        File.WriteAllText(file, FactsEvaluator.Export(factCases));
+        Console.WriteLine($"{factCases.Count} cases written to {Path.GetFullPath(file)} (numbered sentences, no answers).");
+        return 0;
+    }
+
+    if (args.Length > 1 && args[1] == "score")
+    {
+        var predictions = Option("--predictions", string.Empty);
+        if (!File.Exists(predictions))
+        {
+            Console.Error.WriteLine("facts score: --predictions <file.json> is required (see docs/FACT-READING.md).");
+            return 2;
+        }
+
+        var scored = FactsEvaluator.ScorePredictions(factCases, Option("--reader", Path.GetFileNameWithoutExtension(predictions)), predictions);
+        var text = FactsEvaluator.Summary(scored);
+        Console.WriteLine(text);
+        if (factOut is not null)
+        {
+            Directory.CreateDirectory(factOut);
+            File.WriteAllText(Path.Combine(factOut, "summary.md"), "# Fact reading bench" + Environment.NewLine + Environment.NewLine + text);
+        }
+
+        return 0;
+    }
+
+    var readers = Option("--models", string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+    if (readers.Length == 0)
+    {
+        Console.Error.WriteLine("facts: --models is required, e.g. --models gemma3:4b,qwen3.5:2b (or 'facts export' / 'facts score').");
+        return 2;
+    }
+
+    var lawRoot = Option("--law-root", Path.Combine(AppContext.BaseDirectory, "data", "law"));
+    var prompt = DzLegal.Drafting.FactReader.LoadPrompt(lawRoot);
+    if (factOut is not null)
+    {
+        Directory.CreateDirectory(factOut);
+        File.WriteAllText(Path.Combine(factOut, "summary.md"), "# Fact reading bench" + Environment.NewLine + Environment.NewLine);
+        RunManifest.Create(
+            "facts",
+            readers,
+            new Dictionary<string, string> { ["prompt"] = Path.Combine(lawRoot, DzLegal.Drafting.FactReader.PromptFile), ["cases"] = Option("--cases", Path.Combine(AppContext.BaseDirectory, "fact-cases")) },
+            new Dictionary<string, string> { ["partition"] = string.Join(',', factPartition), ["case"] = args.Contains("--case") ? Option("--case", string.Empty) : "all", ["endpoint"] = Option("--endpoint", "http://127.0.0.1:11434") })
+            .Write(factOut);
+    }
+
+    foreach (var model in readers)
+    {
+        Console.WriteLine($"Fact reading with {model}: {factCases.Count} case(s), one call each");
+        if (HarnessModels.IsHosted(model))
+        {
+            Console.WriteLine("  Hosted engine: the (fictitious) test cases are sent to that service.");
+        }
+
+        var speed = new SpeedLog();
+        DzLegal.Drafting.IModelProvider provider;
+        try
+        {
+            provider = HarnessModels.Create(model, new Uri(Option("--endpoint", "http://127.0.0.1:11434")), TimeSpan.FromMinutes(10), speed, HarnessModels.Waiting(TimeSpan.FromSeconds(120), Console.Out));
+        }
+        catch (ArgumentException ex)
+        {
+            Console.Error.WriteLine($"facts: {ex.Message}");
+            return 2;
+        }
+
+        using var paced = new PacedModelProvider(provider, HarnessModels.Pace(model, args.Contains("--delay-seconds") ? double.Parse(Option("--delay-seconds", "0"), CultureInfo.InvariantCulture) : -1));
+        var report = await FactsEvaluator.RunAsync(factCases, paced, prompt, Console.Out, factOut);
+        var text = FactsEvaluator.Summary(report, speed.Table());
+        Console.WriteLine(text);
+        if (factOut is not null)
+        {
+            File.AppendAllText(Path.Combine(factOut, "summary.md"), text);
+        }
     }
 
     return 0;

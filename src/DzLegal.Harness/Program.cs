@@ -41,6 +41,11 @@ string Option(string name, string fallback)
 
 dataRoot = Option("--data", dataRoot);
 
+if (args.Length > 0 && args[0] == "evidence")
+{
+    return await EvidenceCommands.RunAsync(args, Console.Out, CancellationToken.None);
+}
+
 if (args.Length > 1 && args[0] == "law" && args[1] == "import" && args.Length > 2)
 {
     return await LawImport.RunAsync(

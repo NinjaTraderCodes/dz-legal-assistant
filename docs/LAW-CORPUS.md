@@ -6,6 +6,8 @@ For current branch counts, start with **Current coverage (28 October 2026)** bel
 
 ## Recovery and Family preparation, 28 October 2026
 
+**Safely paused at the user's request.** Read [the exact recovery and remaining-work instructions](LAW-CORPUS-RESUME-2026-10-28.md) before resuming. The completed amended targeted reread reached 25/37 agreements with 20 groups left. The base targeted reread was deliberately stopped; 480 completed, hash-bound per-strip readings survive across both jobs. These are OCR-call counts, not new checked articles. The pause also includes the independent 05-02 inventory (29 replacements, eight insertions, five repeals), further heading-boundary corrections, and 122 passing Python tests.
+
 Codex recovered Claude's local project transcript and uncommitted files after the session limit. The two requested additions were already committed and pushed: `9636344` adds the four Law 22-13 spot-checks, and `eb43a21` implements the glyph-specific Family/Civil decoder. Neither addition has been repeated or overwritten.
 
 - Both saved Family OCR runs finished: 40 column crops in Tesseract and PP-OCRv5. All 40 Tesseract crop artifacts replayed their hashes. These are extraction results, not checked article bodies.

@@ -13,7 +13,9 @@ Usage: reread.py ARTICLES.json CHECK.json MANIFEST.json SOURCE --name NAME --out
 from __future__ import annotations
 
 import argparse
+import re
 import subprocess
+from functools import lru_cache
 
 from PIL import Image
 
@@ -27,10 +29,34 @@ TESSDATA = pipeline.TOOLS / "ocr-best"
 WINDOW = 6
 
 
+def strip_tag(number: str) -> str:
+    tag = number.replace(" مكرر", "-bis").replace(" ", "-")
+    if re.fullmatch(r"[0-9]+(?:-bis(?:-[0-9]+)?)?", tag):
+        return tag
+    return "article-" + pipeline.hash_text(number)[:16]
+
+
+@lru_cache(maxsize=8)
+def tool_hash(path: str, size: int, modified: int) -> str:
+    return pipeline.hash_file(pipeline.Path(path))
+
+
 def read_strip(path: pipeline.Path) -> str:
+    pins = {"imageSha256": pipeline.hash_file(path), "language": "ara", "psm": 6}
+    for name, file in (("tesseractSha256", TESSERACT), ("traineddataSha256", TESSDATA / "ara.traineddata")):
+        stat = file.stat()
+        pins[name] = tool_hash(str(file), stat.st_size, stat.st_mtime_ns)
+    # Each OCR call survives an interrupted batch. A changed crop, binary or model cannot reuse the old reading.
+    cached = path.with_suffix(".ocr.json")
+    if cached.exists():
+        record = pipeline.read_json(cached)
+        if all(record.get(k) == v for k, v in pins.items()) and isinstance(record.get("ocr"), str):
+            return record["ocr"]
     result = subprocess.run([str(TESSERACT), str(path), "stdout", "-l", "ara", "--psm", "6", "--tessdata-dir", str(TESSDATA)],
-                            capture_output=True, timeout=120)
-    return result.stdout.decode("utf-8", errors="replace")
+                            capture_output=True, timeout=120, check=True)
+    text = result.stdout.decode("utf-8", errors="strict")
+    pipeline.write_json(cached, pins | {"ocr": text})
+    return text
 
 
 def confirms(canonical: list[str], first: int, last: int, ocr_text: str) -> bool:
@@ -62,7 +88,8 @@ def run(articles: list[dict], check: dict, manifest_path, source: str, name: str
                 crop = Image.open(folders[region["source"]] / "crop.png").crop(region["box"])
                 for scale in (1, 2):
                     image = crop if scale == 1 else crop.resize((crop.width * 2, crop.height * 2), Image.LANCZOS)
-                    path = out_dir / f"{result['number'].replace(' ', '_')}-{k}-{n}-x{scale}.png"
+                    # This Windows Tesseract build cannot open Arabic filenames, even with valid Unicode arguments.
+                    path = out_dir / f"{strip_tag(result['number'])}-{k}-{n}-x{scale}.png"
                     image.save(path)
                     text = read_strip(path)
                     readings.append({"evidenceId": region["source"], "box": region["box"], "scale": scale,

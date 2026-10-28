@@ -33,6 +33,7 @@ SOURCE = pipeline.CACHE / "current-digital/family-consolidated-bilingual.pdf"
 ANNOTATION = re.compile(r"\(\s*(?:معدلة\s*)?(?:الأمر|القانون)\s+رقم[^)]*\)\.?")
 REPEALED = re.compile(r"\(\s*ملغاة\s+بالأمر[^)]*\)\.?")
 KEYWORDS = [("الكتاب", 0), ("الباب", 1), ("الفصل", 2), ("القسم", 3)]
+BARE_HEADING = re.compile(r"^(?:الكتاب|الباب|الفصل|القسم)\s+(?:الأول|الثاني|الثالث|الرابع|الخامس|السادس|السابع|الثامن|التاسع|العاشر)$")
 
 
 def article_label(text: str) -> dict | None:
@@ -103,10 +104,11 @@ def assemble(lines: list[dict]) -> tuple[list[dict], list[dict]]:
         if text.startswith("*"):
             notes.append({"page": line["page"], "footnote": text})
             continue
-        if line["kind"] == "heading" and not article_label(text):
+        if (line["kind"] == "heading" or BARE_HEADING.fullmatch(text)) and not article_label(text):
             heading_buffer.append(text)
             continue
         if heading_buffer:
+            new_level = None
             for h in heading_buffer:
                 h = ANNOTATION.sub("", h).strip()
                 if not h:
@@ -115,11 +117,13 @@ def assemble(lines: list[dict]) -> tuple[list[dict], list[dict]]:
                 if level is not None:
                     path = {k: v for k, v in path.items() if k < level}
                     path[level] = h
-                elif path:
-                    deepest = max(path)
-                    path[deepest] = path[deepest] + (" - " if " - " not in path[deepest] else " ") + h
+                    new_level = level
+                elif new_level is not None:
+                    path[new_level] += " - " + h
+                    new_level = None
                 else:
-                    path = {0: h}
+                    # Unnumbered subheadings such as «العدة» and «الحضانة» are siblings, not cumulative chapter titles.
+                    path[4] = h
             heading_buffer = []
         label = article_label(text) if line["kind"] == "start" or current is None else None
         if label:

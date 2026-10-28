@@ -124,7 +124,18 @@ New tests exercise source-offset round trips, unchanged raw text, all-field fres
 
 Outside the engine/harness portion of the brief, changes are limited to `Directory.Build.targets` (copy the new fictitious fixture into harness/test output), the two Presentation string resources, additional tests/fixture, these docs, and `tools/evidence/`. No app views, legal corpus/data/prompts or storage formats changed. Visual desktop inspection could not be performed because the native UI helper is unavailable; the harness demo and automated desktop/web regression tests are the available checks. The machine is a 16 GB development host, not an 8 GB certification target.
 
-Final verification on 28 October 2026: `dotnet build -c Release` completed with zero warnings/errors; `dotnet test -c Release --no-build` passed all 855 tests, with none skipped. The dependency-free Python preflight regression passed. The final fictitious bundle is in `bench-evidence-core/final-lease-review/`; its reference-format self-check has zero critical differences. That self-check uses the fixture's own annotations and does not establish model accuracy. A command-level negative check also confirmed that unreviewed labels return exit code 2 without creating a training-export directory.
+Final verification on 28 October 2026: `dotnet build -c Release` completed with zero warnings/errors; `dotnet test -c Release --no-build` passed all **755 tests**, with none skipped. The earlier verbal total of 855 was an arithmetic/reporting error; the actual passing project counts are below. The dependency-free Python preflight regression passed. The final fictitious bundle is in `bench-evidence-core/final-lease-review/`; its reference-format self-check has zero critical differences. That self-check uses the fixture's own annotations and does not establish model accuracy. A command-level negative check also confirmed that unreviewed labels return exit code 2 without creating a training-export directory.
+
+| Test project | Passed | Failed | Skipped |
+|---|---:|---:|---:|
+| DzLegal.Documents.Tests | 6 | 0 | 0 |
+| DzLegal.Storage.Tests | 3 | 0 | 0 |
+| DzLegal.FormEngine.Tests | 67 | 0 | 0 |
+| DzLegal.Drafting.Tests | 430 | 0 | 0 |
+| DzLegal.Law.Tests | 110 | 0 | 0 |
+| DzLegal.Web.Tests | 24 | 0 | 0 |
+| DzLegal.App.Tests | 115 | 0 | 0 |
+| **Total** | **755** | **0** | **0** |
 
 For publication, the bundle and summaries were regenerated from implementation commit `79a6ee6` and copied into [docs/evidence-core](evidence-core/README.md), with provenance and hashes. All implementation commits were checked from their own committed-source snapshots. One validation attempt exhausted temporary disk space; only generated validation copies were removed, and the affected build/tests passed on retry. Temporary source/build copies are excluded from Git; validation logs remain local.
 

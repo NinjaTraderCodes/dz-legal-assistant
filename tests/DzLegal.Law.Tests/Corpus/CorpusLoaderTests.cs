@@ -171,6 +171,48 @@ public class CorpusLoaderTests
         Assert.Contains(ex.Errors, e => e.Contains("paragraph provenance", StringComparison.Ordinal));
     }
 
+    [Fact]
+    public void CompilationWitnessKeepsItsOwnDocumentWithoutReplacingTheLegislativeSource()
+    {
+        var version = Version();
+        var hash = Convert.ToHexStringLower(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(version.Text)));
+        var witness = new CorpusTranscriptionWitness(
+            new("https://droit.mjustice.gov.dz/fictitious-compilation.pdf", new('b', 64), Start),
+            [3, 4], "Invented raw layer", "Invented raw OCR", ["invented-3", "invented-4"], hash,
+            "Fictitious compilation; no legal applicability or transcription check inferred.");
+        version = version with { Source = version.Source with { TranscriptionWitnesses = [witness] } };
+        var loaded = CorpusLoader.Validate([Code(version)]).Codes[0].Content.Articles[0].Versions[0];
+        Assert.Equal("fiction-001", loaded.Source.PublicationId);
+        Assert.Equal(new string('b', 64), loaded.Source.TranscriptionWitnesses[0].Document.Sha256);
+        Assert.Empty(loaded.Verification.Checks);
+        var wrongPublication = version with { Source = version.Source with { PublicationId = "absent" } };
+        Assert.Throws<CorpusValidationException>(() => CorpusLoader.Validate([Code(wrongPublication)]));
+    }
+
+    [Theory]
+    [InlineData("unofficial")]
+    [InlineData("stale-text")]
+    [InlineData("missing-ocr")]
+    [InlineData("duplicate-page")]
+    public void RejectsInvalidCompilationWitnesses(string defect)
+    {
+        var version = Version();
+        var hash = Convert.ToHexStringLower(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(version.Text)));
+        var witness = new CorpusTranscriptionWitness(
+            new("https://droit.mjustice.gov.dz/fictitious.pdf", new('b', 64), Start),
+            [3], "Invented layer", "Invented OCR", ["invented-3"], hash, "Invented fixture");
+        witness = defect switch
+        {
+            "unofficial" => witness with { Document = witness.Document with { Url = "https://droit.mjustice.gov.dz.example.org/fake.pdf" } },
+            "stale-text" => witness with { TextSha256 = new('c', 64) },
+            "missing-ocr" => witness with { Ocr = "" },
+            "duplicate-page" => witness with { Pages = [3, 3] },
+            _ => throw new InvalidOperationException("Unknown fixture defect"),
+        };
+        version = version with { Source = version.Source with { TranscriptionWitnesses = [witness] } };
+        Assert.Throws<CorpusValidationException>(() => CorpusLoader.Validate([Code(version)]));
+    }
+
     private static CorpusArticleVersion Version() => new()
     {
         VersionId = "fictitious:1@original", Text = "نص وهمي للاختبار فقط.", Paragraphs = ["نص وهمي للاختبار فقط."],

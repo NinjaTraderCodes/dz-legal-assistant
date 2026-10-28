@@ -51,6 +51,10 @@ public sealed record CorpusSourceFragment(string PublicationId, int Page, string
     string EvidenceId, IReadOnlyList<double> Region, int? Paragraph = null,
     string? SourceSha256 = null, string? ParagraphTextSha256 = null, string Role = "body");
 
+/// <summary>An official compilation used for transcription; it never replaces the legislative publication.</summary>
+public sealed record CorpusTranscriptionWitness(CorpusDownload Document, IReadOnlyList<int> Pages,
+    string TextLayer, string Ocr, IReadOnlyList<string> EvidenceIds, string TextSha256, string Note);
+
 /// <summary>Page is one-based PDF page, not the journal's printed page label. Raw streams stay separate.</summary>
 public sealed record CorpusArticleSource
 {
@@ -64,6 +68,7 @@ public sealed record CorpusArticleSource
     public IReadOnlyList<double> Region { get; init; } = [];
     /// <summary>Multiple pages or amendment sources; keeps each fragment's own provenance.</summary>
     public IReadOnlyList<CorpusSourceFragment> Fragments { get; init; } = [];
+    public IReadOnlyList<CorpusTranscriptionWitness> TranscriptionWitnesses { get; init; } = [];
 }
 
 public sealed record CorpusArticleVersion

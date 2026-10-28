@@ -365,6 +365,12 @@
             "$ref": "#/$defs/sourceFragment"
           },
           "type": "array"
+        },
+        "transcriptionWitnesses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/transcriptionWitness"
+          }
         }
       },
       "required": [
@@ -793,6 +799,58 @@
         "id",
         "path",
         "articles"
+      ],
+      "additionalProperties": false
+    },
+    "transcriptionWitness": {
+      "type": "object",
+      "properties": {
+        "document": {
+          "$ref": "#/$defs/download"
+        },
+        "pages": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "textLayer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ocr": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidenceIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "textSha256": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{64}$"
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "document",
+        "pages",
+        "textLayer",
+        "ocr",
+        "evidenceIds",
+        "textSha256",
+        "note"
       ],
       "additionalProperties": false
     }

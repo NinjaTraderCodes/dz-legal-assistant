@@ -315,6 +315,21 @@ public static partial class CorpusLoader
 
         var passed = version.Verification.Checks.Select(c => c.Check).ToHashSet(StringComparer.Ordinal);
         var textHash = Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(version.Text)));
+        foreach (var witness in version.Source.TranscriptionWitnesses)
+        {
+            ValidateDownload(witness.Document, id + ":transcription witness", errors);
+            if (witness.Pages.Count == 0 || witness.Pages.Any(p => p < 1)
+                || witness.Pages.Distinct().Count() != witness.Pages.Count
+                || string.IsNullOrWhiteSpace(witness.TextLayer) || string.IsNullOrWhiteSpace(witness.Ocr)
+                || witness.EvidenceIds.Count == 0 || witness.EvidenceIds.Any(string.IsNullOrWhiteSpace)
+                || witness.EvidenceIds.Distinct(StringComparer.Ordinal).Count() != witness.EvidenceIds.Count
+                || string.IsNullOrWhiteSpace(witness.Note)
+                || !string.Equals(witness.TextSha256, textHash, StringComparison.OrdinalIgnoreCase))
+            {
+                errors.Add($"{id}: transcription witness needs distinct source pages/evidence, both raw streams, a note and the current text hash.");
+            }
+        }
+
         foreach (var check in version.Verification.Checks.Where(c => c.Check is "text-layer-matches-ocr" or "discrepancy-resolved-from-image"))
         {
             if (!string.Equals(check.TextSha256, textHash, StringComparison.OrdinalIgnoreCase)

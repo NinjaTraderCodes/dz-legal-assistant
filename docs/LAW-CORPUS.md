@@ -6,7 +6,7 @@ For current branch counts, start with **Current coverage (28 October 2026)** bel
 
 ## Recovery and Family preparation, 28 October 2026
 
-**Resumed after the safe pause.** The [Family source-check report](LAW-CORPUS-FAMILY.md) records 37 replaced/inserted body comparisons settled against the amending JO (eight guarded corrections), plus all 190 unchanged bodies word-checked against the current Ministry print (128 OCR agreements and 62 image-resolved bodies). Seventy-eight whole articles cover those word flags and all 27 French paragraph-count flags; art. 178's page-break split is corrected. Eighteen bodies retain punctuation notes. A typed candidate now contains **232 identities / 232 current snapshot records, all partly-checked**. Original-JO collation and final amendment, structure, temporal and delivery QA remain open. Inherited agreement permits ordinary-word folding/one-letter OCR noise and must not be described as uniform exact-word verification; older counts retain that method. No finished Family delivery is claimed.
+**Resumed after the safe pause.** The [Family source-check report](LAW-CORPUS-FAMILY.md) records 37 replaced/inserted body comparisons settled against the amending JO (eight guarded corrections), plus all 190 unchanged bodies word-checked against the current Ministry print (128 OCR agreements and 62 image-resolved bodies). Original-JO collation is now finished: 14 strict agreements and 176 actual article-image readings, yielding 171 edition-orthography matches, one guarded correction (42), and four unresolved official-edition conflicts (135, 151, 202, 203). These conflicts are explicitly quarantined. The typed candidate contains **232 identities / 232 current snapshot records: 228 partly-checked, four unsettled**. All 27 French paragraph-count flags have image decisions; art.178's page continuation is joined, and 18 bodies retain punctuation notes. Final amendment, paths, temporal and delivery QA remain open. Inherited approximate agreement must not be described as uniform exact-word verification. No finished Family delivery is claimed.
 
 Historical safe pause: [the recovery instructions](LAW-CORPUS-RESUME-2026-10-28.md) record the 480 hash-bound readings retained at that point. Those are OCR-call counts, not articles. The base reread has since finished; the Family report above supersedes its partial status.
 
@@ -79,7 +79,7 @@ The earlier489 pilot inspected original ArabicPDF31 and2007 ArabicPDF5, with Fre
 | CPCA | 1,084 | 1,162 | 1,162 | 0 | 0 | complete code, Law 08-09 + Law 22-13 | **Yes** (175 versions with an unsettled temporal boundary, see below) |
 | Civil Code | 45 | 55 | 7 | 32 | 16 | priority subset (7 targets) | No |
 | Commercial Code | 2 | 2 | 2 | 0 | 0 | priority subset (2 targets) | No |
-| Family Code | 232 | 232 | 0 | 232 | 0 | current snapshot candidate; five repeals retained; history deferred | No; final QA and all temporal boundaries remain open |
+| Family Code | 232 | 232 | 0 | 228 | 4 | current snapshot candidate; five repeals retained; four edition conflicts; history deferred | No; final QA and all temporal boundaries remain open |
 | Labour 90-11 | 0 | 0 | 0 | 0 | 0 | — | No; not started |
 | Labour 90-04 | 0 | 0 | 0 | 0 | 0 | — | No; not started |
 

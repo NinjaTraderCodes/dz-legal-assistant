@@ -1,6 +1,25 @@
 # Family Code: preparation and source-check record
 
-Updated 28 October 2026, branch `codex/law-corpus`. This is **not a completed Family delivery**. The typed current candidate contains **232 identities / 232 snapshot records: 0 checked, 232 partly-checked**. Image readings are Codex's (AI), never human or lawyer verification.
+Updated 28 October 2026, branch `codex/law-corpus`. This is **not a completed Family delivery**. The typed current candidate contains **232 identities / 232 snapshot records: 0 checked, 228 partly-checked, four unsettled**. Image readings are Codex's (AI), never human or lawyer verification.
+
+## Latest checkpoint: original-JO body collation finished
+
+All **176 flagged unchanged-body article views** were actually read against JO24/1984, including wider original-page images when alignment clipped words or closing lines. Together with the 14 strict OCR agreements, this accounts for all 190 unchanged bodies: **171 image-collated matches with disclosed edition orthography, one guarded correction, four unresolved official-edition conflicts**. This does not certify identical printed spelling, vocalization or punctuation between editions.
+
+Art. **42** loses the compilation's added `(06)` after `ستة`; the original prints the six-month minimum in words, while the maximum `عشرة (10)` is retained. Initial visual notes proposed changes to 69 and 210, but the exact old-text guards established that both the displayed input and current candidate already had `الموكول` and `يحوز`. Those proposals were rejected; the superseded findings and reasons remain recorded. No extra article correction is claimed.
+
+| Article | Original JO reading | Ministry candidate | Disposition |
+|---|---|---|---|
+| 135 | `عمدا أو عدوانا` | `عمدا وعدوانا` | Critical OR/AND disagreement; original image and both OCR streams support `أو`. |
+| 151 | `عاصب غيره` | `عاصب مع غيره` | Original list omits `مع`, although its later heading includes it. |
+| 202 | `يتوقف على إنجاز الشرط` | `يتوقف تمامها على إنجاز الشرط` | Compilation adds `تمامها`. |
+| 203 | `وغير محجوز عليه` | `وغير محجور عليه` | Original final letter has an upper dot; a suspected print typo is not silently repaired. |
+
+These four current candidates retain the Ministry reading **only as an unsettled hypothesis**, with both exact alternatives in their verification reasons and research record. They receive no passed original-JO check. The 20-article sample includes Ministry witnesses for 135, 151 and 203: matching those source images never resolved their disagreement with the original JO.
+
+`family_jo_collation.py` records explicit readings; `apply_family_jo_collation.py` replays all decisions, proof/input/text hashes, unique correction guards and a complete partition of wording differences into fixes or unresolved conflicts. `build_family_candidate.py` replays that operation before assembly and keeps the original Ministry text hash separate from the final JO-corrected text. Seven new regression tests cover missing/stale proof, wrong source, duplicate decisions, incomplete crops, correction guards and conflict quarantine. All **156 Python tests** pass.
+
+Official discovery identified French rectifications in JO31/1984 p. 801 and JO41/1984 p. 1018. The Ministry amendment list does not enumerate them. Official image acquisition/reading remains pending; direct download timed out. Secondary descriptions are discovery clues only and supply no canonical wording or legal effect. No rectification is assumed to settle article 135. The separate Law05-09 approval-source acquisition remains open.
 
 ## Prepared scope and source inventory
 
@@ -60,7 +79,7 @@ Eight hash-guarded string corrections follow the official print:
 
 ## Remaining before delivery
 
-1. Finish collation of unchanged Ministry bodies against the 1984 JO, distinguishing edition spelling/punctuation from substantive wording. The completed Ministry transcription check above cannot automatically settle a JO disagreement.
+1. Resolve the four now-isolated official-edition conflicts above, acquiring/reading any applicable official rectification. The 190-body original-JO collation itself is complete; do not repeat its OCR or the 176 finished image readings.
 2. Finish paths, amendment paragraph checks and cross-references. French numbering is complete and all 27 flagged unchanged-body paragraph counts have image decisions.
 3. Finish the typed candidate's amendment audit, honest temporal limits and legally needed older regimes. Source fragments and separate Ministry transcription witnesses are now present. Record Law 05-09's approval of Ordinance 05-02 without inventing article changes; local acquisition of its Arabic publication timed out.
 4. Finish the remaining content QA, then repeat the schema, typed-loader, full build and regression gate for final delivery. The 20-article sample and legacy Family reconciliation below are now complete for this candidate.
@@ -76,7 +95,7 @@ The schema/model has one optional addition, `source.transcriptionWitnesses`. Eac
 
 All 232 current records have unresolved temporal bounds; no national commencement date or older body was guessed. `VersionOn` must therefore continue to return an unsettled result. **Do not integrate this candidate as a completed or date-applicable legal library.** The app and legacy loaders have not been switched to it. Consumers of the new optional field must use the updated corpus reader.
 
-The candidate records internal explicit cross-references, with their original quote and paragraph. Two external targets remain disclosed in the assembly audit/report rather than being falsely mapped to Family numbers: art. 86 → Civil art. 40, and art. 120 → civil-status art. 64. Their texts/typed links need the appropriate in-scope import or explicit reference handling; no special-law text was started. Reference tests caught and fixed an extractor omission for attached `للمادة` / `للمادتين` forms.
+The candidate records internal explicit cross-references, with their original quote and paragraph. Four external targets remain disclosed in the assembly audit/report rather than being falsely mapped to Family numbers: art. 82 → Civil art. 42, art. 83 → Civil art. 43, art. 86 → Civil art. 40, and art. 120 → civil-status art. 64. Their texts/typed links need the appropriate in-scope import or explicit reference handling; no special-law text was started. Reference tests caught and fixed an extractor omission for attached `للمادة` / `للمادتين` forms.
 
 ## Random source sample and legacy comparison
 

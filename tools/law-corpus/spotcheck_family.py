@@ -44,6 +44,11 @@ def report() -> None:
              "15 unchanged bodies use the current Ministry print; five amended bodies use the amending JO. "
              "The known art. 178 continuation is included. Source selection and printed-vocalization limits are "
              "in `inspection.json`; the other Family QA remains open.", ""]
+    if selection.get("populationUpdates"):
+        lines += ["The sample was retained after the guarded correction to unsampled article 42: all 20 selected texts and "
+                  "paragraphs replay unchanged. The population update and prior selection hash remain recorded. "
+                  "The Ministry-source readings of sampled articles 135, 151 and 203 do not settle their separately "
+                  "recorded original-JO edition conflicts; those candidates are now explicitly unsettled.", ""]
     for item in selection["items"]:
         decision = decisions[item["id"]]
         actual = next(a["versions"][0] for a in current if a["id"] == item["id"])

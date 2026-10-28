@@ -7,7 +7,9 @@ invented. The Ministry witness keeps its own PDF identity. All versions stay par
 from __future__ import annotations
 
 import re
+from collections import Counter
 
+import apply_family_jo_collation
 import pipeline
 
 ROOT = pipeline.ROOT
@@ -67,7 +69,8 @@ def build() -> None:
     pdf = pipeline.CACHE / "current-digital/family-consolidated-bilingual.pdf"
     if pipeline.hash_file(pdf) != source["sha256"]:
         raise ValueError("Ministry PDF changed")
-    unchanged = pipeline.read_json(WORK / "unchanged-ministry-reviewed.json")
+    apply_family_jo_collation.main()
+    unchanged = pipeline.read_json(WORK / "unchanged-jo-collated.json")
     amended = pipeline.read_json(WORK / "amended-corrected.json")
     bodies = {a["number"]: a for a in unchanged + amended}
     inventory = pipeline.read_json(WORK / "amendment-inventory.json")
@@ -104,6 +107,7 @@ def build() -> None:
                       "French compilation numbering aligns; JO French structural check is not yet complete.",
                       "Complete historical archive deferred by user; missing former bodies are not represented as unchanged law.",
                       "Body text uses the documented text_clean normalization (including removal of harakat/tatweel); raw witnesses are retained. Printed vocalization is not certified.",
+                      "Four official-edition wording conflicts are quarantined individually; two discovered French rectifications still need official acquisition/reading.",
                       TEMPORAL]
     ledger = {"schemaVersion": "1.0", "id": "family-code", "citationName": "قانون الأسرة",
               "reference": "القانون رقم 84-11 المؤرخ في 9 يونيو 1984 المتضمن قانون الأسرة، المعدل والمتمم بالأمر رقم 05-02",
@@ -150,7 +154,7 @@ def build() -> None:
             reasons.append("Current repeal marker from independently read Ordinance05-02 art18; former article body is deferred, not replaced by empty historical text.")
         else:
             body = bodies[number]
-            if pipeline.hash_text(text) != body["bodyCheck"]["textSha256"]:
+            if pipeline.hash_text(text) != body.get("joCheck", body["bodyCheck"])["textSha256"]:
                 raise ValueError("Reviewed body changed: " + number)
             comparison = jo_amended[number] if op else jo_base[number]
             src = source_from(comparison, publication, records)
@@ -161,19 +165,37 @@ def build() -> None:
                 "textSha256": pipeline.hash_text(text),
                 "note": "Official Ministry compilation is the native-text witness, not the legislative publication. "
                         + ("Amending JO controls the corrected body; compilation discrepancies remain visible in raw text." if op
-                           else "Word transcription checked against Ministry print; independent 1984 JO exact collation remains separate.")}]
+                           else "Ministry spelling/punctuation is a separate witness. Original-JO body collation is recorded; any unresolved edition conflict is disclosed in verification reasons.")}]
+            jo_check = body.get("joCheck")
+            ministry_hash = jo_check["ministryTextSha256"] if jo_check else pipeline.hash_text(text)
+            if ministry_hash != body["bodyCheck"]["textSha256"]:
+                raise ValueError("Original Ministry check changed: " + number)
             check = "discrepancy-resolved-from-image" if body["bodyCheck"]["imageSha256s"] else "text-layer-matches-ocr"
-            checks.append({"check": check, "method": body["bodyCheck"]["rule"], "date": TODAY, "result": "passed",
-                           "note": "Body word comparison only, with the named normalization; no printed-vocalization or whole-code certification.",
-                           "textSha256": pipeline.hash_text(text), "imageSha256s": body["bodyCheck"]["imageSha256s"]})
+            if ministry_hash == pipeline.hash_text(text):
+                checks.append({"check": check, "method": body["bodyCheck"]["rule"], "date": TODAY, "result": "passed",
+                               "note": "Body word comparison only, with the named normalization; no printed-vocalization or whole-code certification.",
+                               "textSha256": pipeline.hash_text(text), "imageSha256s": body["bodyCheck"]["imageSha256s"]})
+            else:
+                reasons.append("Canonical text follows the original JO correction. The separate Ministry check remains bound to its prior witness text, SHA256 " + ministry_hash)
             if body["bodyCheck"].get("unconfirmedPunctuation"):
                 reasons.append("Unconfirmed punctuation: " + str(body["bodyCheck"]["unconfirmedPunctuation"]))
-            if not op:
-                reasons.append("Ministry transcription is settled; edition differences with the 1984 JO are not silently resolved.")
+            if jo_check:
+                if jo_check["textSha256"] != pipeline.hash_text(text):
+                    raise ValueError("Original-JO collation belongs to a different body: " + number)
+                if jo_check["conflict"]:
+                    conflict = jo_check["conflict"]
+                    reasons.append("UNRESOLVED OFFICIAL EDITIONS: original JO [" + conflict["joQuote"]
+                                   + "]; Ministry candidate [" + conflict["ministryQuote"] + "]. " + conflict["reason"])
+                else:
+                    checks.append({"check": "discrepancy-resolved-from-image" if jo_check["imageSha256s"] else "text-layer-matches-ocr",
+                                   "method": "Independent original-JO body collation; source/raw edition spellings and punctuation remain distinct",
+                                   "date": TODAY, "result": "passed", "textSha256": pipeline.hash_text(text),
+                                   "imageSha256s": jo_check["imageSha256s"], "note": jo_check["note"]})
         version = {"versionId": version_id, "text": text, "paragraphs": paragraphs, "path": raw["path"],
                    "inForceFrom": None, "inForceTo": None, "temporalStatus": "unsettled", "introducedBy": publication,
                    "status": "repealed" if repeal else "in-force", "source": src, "crossReferences": internal,
-                   "verification": {"state": "partly-checked", "checks": checks, "reasons": reasons}}
+                   "verification": {"state": "unsettled" if not repeal and bodies[number].get("joCheck", {}).get("conflict") else "partly-checked",
+                                    "checks": checks, "reasons": reasons}}
         articles.append({"id": article_id, "number": number, "canonicalNumber": number, "path": raw["path"],
                          "availability": "text", "versions": [version]})
         unresolved.append({"id": version_id, "reason": " ".join(reasons)})
@@ -184,14 +206,16 @@ def build() -> None:
     report = {"schemaVersion": "1.0", "codeId": "family-code", "generatedOn": TODAY,
               "inventory": {"scope": "complete-code", "expected": targets, "present": targets, "gaps": [],
                             "unappliedPublications": ["ordinance-05-02"], "complete": False},
-              "countsByState": {"checked": 0, "partly-checked": 232, "unsettled": 0},
+              "countsByState": {state: sum(a["versions"][0]["verification"]["state"] == state for a in articles)
+                                for state in ("checked", "partly-checked", "unsettled")},
               "unsettled": unresolved, "coverage": "partial", "coveredChapters": []}
     pipeline.write_json(OUT / "ledger.json", ledger)
     pipeline.write_json(OUT / "articles.json", {"schemaVersion": "1.0", "codeId": "family-code", "articles": articles})
     pipeline.write_json(OUT / "report.json", report)
     pipeline.write_json(WORK / "current-candidate-assembly.json", {"method": __doc__.strip(), "articles": assembly,
         "verificationEffect": "none; this is a current-snapshot assembly, not successful execution of a historical consolidation plan"})
-    print("232 current-snapshot candidates; 0 checked; exact temporal applicability remains unresolved")
+    print("232 current-snapshot candidates;", dict(Counter(a["versions"][0]["verification"]["state"] for a in articles)),
+          "; exact temporal applicability remains unresolved")
 
 
 if __name__ == "__main__":

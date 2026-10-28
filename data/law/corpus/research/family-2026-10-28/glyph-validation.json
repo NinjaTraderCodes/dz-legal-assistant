@@ -1,0 +1,162 @@
+{
+  "recordedOn": "2026-10-28",
+  "reviewer": "Codex (AI), source-image inspection; no human or lawyer verification",
+  "sources": [
+    {
+      "id": "civil-consolidated-ar",
+      "url": "https://droit.mjustice.gov.dz/sites/default/files/ACivil.pdf",
+      "finalUrl": "https://droit.mjustice.gov.dz/sites/default/files/ACivil.pdf",
+      "sha256": "17a555bf81d5b99bf67417f3d42c157fd5df69499d6190cffbf182bc3566b573",
+      "bytes": 2194319,
+      "retrievedOn": "2026-10-26",
+      "contentType": "application/pdf",
+      "kind": "pdf",
+      "discoveredFrom": "https://droit.mjustice.gov.dz/ar",
+      "versionStatus": "edition and latest-amendment reconciliation pending"
+    },
+    {
+      "id": "family-consolidated-bilingual",
+      "url": "https://droit.mjustice.gov.dz/sites/default/files/code_famille.pdf",
+      "finalUrl": "https://droit.mjustice.gov.dz/sites/default/files/code_famille.pdf",
+      "sha256": "662d81783f6c0547a0e20b1387199a63dd8ddf5a21fe50d26fe9b0cc0d6f96d8",
+      "bytes": 945705,
+      "retrievedOn": "2026-10-26",
+      "contentType": "application/pdf",
+      "kind": "pdf",
+      "discoveredFrom": "https://droit.mjustice.gov.dz/ar",
+      "versionStatus": "Visible Arabic/French compilation incorporating05-02. Latest-amendment reconciliation pending; related annexes excluded.",
+      "language": "ara+fra",
+      "classificationCorrection": "Initial French-only classification corrected after visible page4 and full Arabic-column inspection on2026-10-26; source bytes unchanged."
+    }
+  ],
+  "implementation": {
+    "path": "tools/law-corpus/sgg_glyphs.py",
+    "sha256": "b23b0d8bcee223bd60a47d5a3d2350cb43f002e3a39e04090980b83cfa3403ca"
+  },
+  "recoveredOcrCrossCheck": {
+    "cachePath": "tools/law-corpus/.cache/evidence/reviews/glyph-validation/validation.json",
+    "sha256": "ebcff0dd7ad4435e42337589f3c75549fc2f598fb4a66373553a8ea07094db34",
+    "result": {
+      "civil": {
+        "pages": [
+          10,
+          18,
+          26,
+          34,
+          42,
+          50,
+          58,
+          66,
+          74,
+          82,
+          90,
+          98,
+          106,
+          114,
+          122,
+          130,
+          138,
+          146,
+          154,
+          162,
+          170,
+          178,
+          186,
+          194,
+          202,
+          210,
+          218,
+          226,
+          234,
+          242,
+          250,
+          258
+        ],
+        "tally": {
+          "('madda', 'decoded-in-ocr')": 48,
+          "('kaf', 'decoded-in-ocr')": 304,
+          "('madda', 'neither')": 4,
+          "('kaf', 'both')": 24,
+          "('kaf', 'neither')": 18,
+          "('kaf', 'raw-in-ocr')": 3
+        },
+        "againstDecision": [
+          [
+            34,
+            "آما",
+            "كما"
+          ],
+          [
+            66,
+            "آل",
+            "كل"
+          ],
+          [
+            210,
+            "وآذا",
+            "وكذا"
+          ]
+        ]
+      },
+      "family": {
+        "pages": [
+          3,
+          7,
+          11,
+          15,
+          19,
+          23,
+          27,
+          31,
+          35,
+          39
+        ],
+        "tally": {
+          "('kaf', 'decoded-in-ocr')": 39,
+          "('kaf', 'both')": 4,
+          "('madda', 'decoded-in-ocr')": 1
+        },
+        "againstDecision": []
+      }
+    },
+    "limitations": [
+      "OCR token-presence check across each sampled page, not position-aligned proof of every glyph.",
+      "Samples include Civil compilation annex pages for font validation only; they do not expand corpus scope.",
+      "Neither this check nor glyph decoding grants any article a transcription verification state."
+    ]
+  },
+  "imageDecisions": [
+    {
+      "sourceId": "civil-consolidated-ar",
+      "pdfPage": 34,
+      "readWord": "كما",
+      "imageCachePath": "tools/law-corpus/.cache/evidence/reviews/codex-recovery/civil-p34-1.png",
+      "imageSha256": "f674fe06b3e7074c4d731b8ae263218469027311b0bb1520a54fc358c01fb4a0",
+      "decision": "Print supports the glyph-specific decoding; legitimate alef-madda in the second page-66 example is retained."
+    },
+    {
+      "sourceId": "civil-consolidated-ar",
+      "pdfPage": 66,
+      "readWord": "كل",
+      "imageCachePath": "tools/law-corpus/.cache/evidence/reviews/codex-recovery/civil-p66-1.png",
+      "imageSha256": "8d0d5f07b0660d3c244ec9a0718124747f0306956fef74c73a0306a3ffcb499d",
+      "decision": "Print supports the glyph-specific decoding; legitimate alef-madda in the second page-66 example is retained."
+    },
+    {
+      "sourceId": "civil-consolidated-ar",
+      "pdfPage": 66,
+      "readWord": "آل",
+      "imageCachePath": "tools/law-corpus/.cache/evidence/reviews/codex-recovery/civil-p66-2.png",
+      "imageSha256": "a5841734669bf4025256c3e1413255275d16d508192a1723f8518f16f417d390",
+      "decision": "Print supports the glyph-specific decoding; legitimate alef-madda in the second page-66 example is retained."
+    },
+    {
+      "sourceId": "civil-consolidated-ar",
+      "pdfPage": 210,
+      "readWord": "وكذا",
+      "imageCachePath": "tools/law-corpus/.cache/evidence/reviews/codex-recovery/civil-p210-1.png",
+      "imageSha256": "f4119d384d0f1d8defe531014307a1ea3d50060f5780bb2e3e380265b5f0a52a",
+      "decision": "Print supports the glyph-specific decoding; legitimate alef-madda in the second page-66 example is retained."
+    }
+  ]
+}

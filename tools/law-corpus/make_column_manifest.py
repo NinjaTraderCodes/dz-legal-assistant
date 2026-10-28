@@ -5,7 +5,7 @@ Column boundaries come from the page pixels, deterministically: the header rule 
 top), the frame and the column rule (vertical lines inked over most of the body height). Each column region stops a few
 pixels inside those rules, because Tesseract was observed to drop whole text lines that touch a vertical rule
 (JO 21/2008, 26 Oct 2026). Reading order for Arabic: right column, then left. A page without a detectable column rule is
-split at its middle and reported, never silently treated as one column.
+split at its white gutter (least-inked column near the middle) and reported, never silently treated as one column.
 
 Usage: make_column_manifest.py SOURCE_ID FIRST LAST --out MANIFEST [--psm 4] [--append]
 The source must already be pinned in scope-source-manifest.json (or --sources FILE) and cached.
@@ -47,8 +47,13 @@ def page_columns(gray: np.ndarray) -> dict:
     if mid:
         x1, x2 = mid[0][0] - 3, mid[-1][1] + 3
     else:
-        x1 = x2 = w // 2
-        note = "no column rule detected; split at the page middle"
+        # No rule (some scanned issues): split at the least-inked column between 40% and 60% of the width (the white
+        # gutter), smoothed over 7 pixels, rather than at the exact middle, which can cut the end of a skewed line.
+        profile = body.mean(axis=0)
+        lo, hi = int(0.40 * w), int(0.60 * w)
+        gutter = min(range(lo, hi), key=lambda x: profile[max(0, x - 3):x + 4].sum())
+        x1 = x2 = gutter
+        note = f"no column rule detected; split at the least-inked column ({gutter / w:.3f} of the width)"
     return {"right": [x2 / w, body_top / h, x3 / w, body_bottom / h], "left": [x0 / w, body_top / h, x1 / w, body_bottom / h], "note": note}
 
 

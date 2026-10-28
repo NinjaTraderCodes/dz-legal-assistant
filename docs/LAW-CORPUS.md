@@ -2,7 +2,21 @@
 
 Research cut-off: **25 October 2026**. Branch: `codex/law-corpus`, isolated from the application engineer's default-branch work. This is a separate, additive corpus. The existing `data/law/codes`, claim mappings, loaders and application behavior have not been switched to it.
 
-For the consolidated branch status, achievements, current counts and remaining work, read [the state report dated 26 October 2026](LAW-CORPUS-STATE-REPORT.md). The sections below retain detailed implementation evidence and delivery history.
+For current branch counts, start with **Current coverage (28 October 2026)** below. The [state report dated 26 October 2026](LAW-CORPUS-STATE-REPORT.md) is a historical checkpoint, superseded for the CPCA by delivery 2. Older acquisition and execution notes below retain their original dates and are not current delivery counts.
+
+## Recovery and Family preparation, 28 October 2026
+
+Codex recovered Claude's local project transcript and uncommitted files after the session limit. The two requested additions were already committed and pushed: `9636344` adds the four Law 22-13 spot-checks, and `eb43a21` implements the glyph-specific Family/Civil decoder. Neither addition has been repeated or overwritten.
+
+- Both saved Family OCR runs finished: 40 column crops in Tesseract and PP-OCRv5. All 40 Tesseract crop artifacts replayed their hashes. These are extraction results, not checked article bodies.
+- The glyph cross-check also finished: 32 sampled Civil compilation pages and 10 Family pages. Its word-presence comparison is a diagnostic, not a position-aligned verification. Source-image inspection supports the three Civil changes for which that diagnostic preferred the raw reading; a nearby legitimate «آل» remains unchanged. Sampling includes Civil annex material for font testing only. [Bound source hashes, OCR tallies, image decisions and limitations](../data/law/corpus/research/family-2026-10-28/glyph-validation.json).
+- Family preparation now recovers **232 distinct identities: 224 base labels and eight insertions**, with no duplicate or missing label relative to the independently collected source inventory. It previously treated «8 مكرر :1» as another «8 مكرر» and included the signature after art. 224; the printed pages settle both boundaries. A duplicate inventory now stops preparation.
+- The prepared file is explicitly **source candidates only**. Heading paths, paragraph structure, amendment metadata and bodies still require checking. There is no new typed Family delivery or `checked` state yet.
+- Initial comparison of the **190 apparently unchanged base bodies** with the two 1984 JO OCR streams finds 77 agreements under `native_check.compare_streams`, with 238 unconfirmed token groups and 46 extra-text groups across the others. Missing amended bodies can affect alignment; these are review tasks, not 113 proven legal-text errors. The 37 annotated replacement/insertion candidates and five repeal markers need separate 2005-source checks.
+- The corresponding initial 2005 comparison agrees on 16 of the 37 annotated bodies; 36 unconfirmed groups and one extra-text group remain. Reproduce both runs with `tools/law-corpus/.cache/venv/Scripts/python.exe -B tools/law-corpus/compare_family_current.py`. No result from this command grants a verification check.
+- The inherited baseline passes: Release build 0 warnings/errors, all 687 .NET tests and all 116 Python tests (including seven new boundary/crop regressions). The Ministry index live re-fetch timed out; this recovery does not claim a new amendment-discovery cut-off beyond the cached index.
+
+Files outside the corpus/tool directories changed in this recovery: this report only. No application code, old article library, claim catalogue, prompts, loaders or safety behavior was changed. The half-day font investigation has produced its bounded mapping; further work proceeds to body comparison rather than another general font project.
 
 ## Current-first delivery order, authorized26October2026
 
@@ -48,7 +62,7 @@ The new consolidation machinery checks the prior text hash before applying expli
 
 Full Civil source extraction uses `civil-full-manifest.json`: original Arabic/French publications plus all five indexed amendments,312 column windows. The first full pass exposed shifted/slanted1975 column separators and inaccurate initial French amendment-window hints. Pixel-derived polygons now preserve each column, with proposals/hash records in `research/civil-layout-decisions.json`. Image inspection corrected French83-01 toPDF3–5,88-14 toPDF7–8, and89-01 toPDF3–4. The correction pass and hash replay are complete, and all312 evidence records are exported in `research/civil-full-extractions.json`. Anchored original-number OCR observes883Arabic and798French candidates, with19numbers absent from both streams; these are recognition issues, not declared legal gaps. Geometry/OCR success does not establish article accuracy.
 
-Execution status: scope boundaries and consolidation infrastructure have progressed; **no complete code is delivered**. Complete Civil is the current substantive milestone. Complete CPCA and Family, followed by the bounded Commercial/labour deliveries, remain outstanding. The corpus now contains **49 identities and 59 versions: 42 partly checked, 17 unsettled, 0 checked**. Civil includes the original bodies1–32, plus the earlier priority/temporal records and489 pilot; most later versions still need consolidation. Original6,8–32 have unresolved temporal bounds, so the loader cannot present those historical texts as resolved current law. Fourteen of the26 new readings deliberately have no passed transcription check pending further orthography/punctuation review. Original4 also remains unsettled.
+Historical execution checkpoint, 26 October (superseded by deliveries 1 and 2 below): scope boundaries and consolidation infrastructure had progressed, but no complete code was delivered. The typed prototype then contained 49 identities and 59 versions: 42 partly checked, 17 unsettled, 0 checked. Civil included originals1–32, priority/temporal records and the489 pilot; most later versions still needed consolidation. The current coverage table below replaces these historical counts.
 
 The earlier489 pilot inspected original ArabicPDF31 and2007 ArabicPDF5, with FrenchPDF25/2007PDF4 for structure. Law07-05 article6 replaces the first paragraph and explicitly keeps the remainder; the new source fragments retain the original second paragraph. Historical Arabic headings and the exact generic commencement boundary remain unresolved. The data does not convert the amendment placeholder into an article paragraph. See `research/civil-pilot-amendments.json` and `research/civil-pilot-consolidation-audit.json`.
 
@@ -61,7 +75,7 @@ The earlier489 pilot inspected original ArabicPDF31 and2007 ArabicPDF5, with Fre
 | CPCA | 1,084 | 1,162 | 1,162 | 0 | 0 | complete code, Law 08-09 + Law 22-13 | **Yes** (175 versions with an unsettled temporal boundary, see below) |
 | Civil Code | 45 | 55 | 7 | 32 | 16 | priority subset (7 targets) | No |
 | Commercial Code | 2 | 2 | 2 | 0 | 0 | priority subset (2 targets) | No |
-| Family Code | 0 | 0 | 0 | 0 | 0 | — | No; next |
+| Family Code | 0 | 0 | 0 | 0 | 0 | 232 prepared candidates; no typed delivery yet | No; in progress |
 | Labour 90-11 | 0 | 0 | 0 | 0 | 0 | — | No; not started |
 | Labour 90-04 | 0 | 0 | 0 | 0 | 0 | — | No; not started |
 

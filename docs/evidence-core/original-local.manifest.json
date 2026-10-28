@@ -1,0 +1,18 @@
+{
+  "Command": "facts",
+  "StartedUtc": "2026-10-28T13:28:57.1342457+00:00",
+  "Commit": "c0421f8d14f13ddd9b53f668525cc684dfa471d6",
+  "Models": [
+    "gemma3:4b",
+    "qwen3.5:2b"
+  ],
+  "Fingerprints": {
+    "prompt": "a8359cd0b8c65e6f63de0002f9d99fabdbffaee85e4b924c021bf6bf5000e34a",
+    "cases": "3c182665bdd92015105dee3909659e8077fc1c324b645368097c51334e520d35"
+  },
+  "Options": {
+    "partition": "development,validation,robustness",
+    "case": "all",
+    "endpoint": "http://127.0.0.1:11434"
+  }
+}

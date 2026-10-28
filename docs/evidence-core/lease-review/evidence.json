@@ -1,0 +1,304 @@
+{
+  "schema": "dzlegal.evidence/1",
+  "snapshotFingerprint": "b0d396690bbc7bad20c820fc2db6c11ede387eeefb5316df3da84b76f76bfc3f",
+  "relations": [
+    {
+      "kind": "lease",
+      "plaintiffPosition": "lessor",
+      "assertedBy": "plaintiff",
+      "sources": [
+        {
+          "fieldId": "notes.facts",
+          "start": 0,
+          "length": 40
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "event1",
+      "kind": "contract_concluded",
+      "assertedBy": "plaintiff",
+      "polarity": "affirmed",
+      "disputeGroup": null,
+      "participants": [],
+      "values": [
+        {
+          "kind": "date",
+          "role": "signature_date",
+          "source": {
+            "fieldId": "notes.facts",
+            "start": 77,
+            "length": 10
+          }
+        }
+      ],
+      "sources": [
+        {
+          "fieldId": "notes.facts",
+          "start": 41,
+          "length": 47
+        }
+      ]
+    },
+    {
+      "id": "event2",
+      "kind": "lease_started",
+      "assertedBy": "plaintiff",
+      "polarity": "affirmed",
+      "disputeGroup": null,
+      "participants": [],
+      "values": [
+        {
+          "kind": "date",
+          "role": "commencement_date",
+          "source": {
+            "fieldId": "notes.facts",
+            "start": 114,
+            "length": 10
+          }
+        },
+        {
+          "kind": "amount",
+          "role": "monthly_rent",
+          "source": {
+            "fieldId": "notes.facts",
+            "start": 140,
+            "length": 8
+          }
+        }
+      ],
+      "sources": [
+        {
+          "fieldId": "notes.facts",
+          "start": 89,
+          "length": 60
+        }
+      ]
+    },
+    {
+      "id": "event3",
+      "kind": "rent_unpaid",
+      "assertedBy": "plaintiff",
+      "polarity": "affirmed",
+      "disputeGroup": null,
+      "participants": [
+        {
+          "role": "actor",
+          "partyId": "defendant",
+          "sources": [
+            {
+              "fieldId": "notes.facts",
+              "start": 150,
+              "length": 47
+            }
+          ]
+        }
+      ],
+      "values": [],
+      "sources": [
+        {
+          "fieldId": "notes.facts",
+          "start": 150,
+          "length": 47
+        }
+      ]
+    },
+    {
+      "id": "event4",
+      "kind": "notice_served",
+      "assertedBy": "plaintiff",
+      "polarity": "affirmed",
+      "disputeGroup": "notice1",
+      "participants": [
+        {
+          "role": "actor",
+          "partyId": "plaintiff",
+          "sources": [
+            {
+              "fieldId": "notes.facts",
+              "start": 198,
+              "length": 55
+            }
+          ]
+        }
+      ],
+      "values": [
+        {
+          "kind": "date",
+          "role": "service_date",
+          "source": {
+            "fieldId": "notes.facts",
+            "start": 242,
+            "length": 10
+          }
+        }
+      ],
+      "sources": [
+        {
+          "fieldId": "notes.facts",
+          "start": 198,
+          "length": 55
+        }
+      ]
+    },
+    {
+      "id": "event5",
+      "kind": "notice_served",
+      "assertedBy": "defendant",
+      "polarity": "denied",
+      "disputeGroup": "notice1",
+      "participants": [
+        {
+          "role": "actor",
+          "partyId": "plaintiff",
+          "sources": [
+            {
+              "fieldId": "notes.facts",
+              "start": 254,
+              "length": 31
+            }
+          ]
+        }
+      ],
+      "values": [],
+      "sources": [
+        {
+          "fieldId": "notes.facts",
+          "start": 254,
+          "length": 31
+        }
+      ]
+    }
+  ],
+  "requests": [
+    {
+      "id": "request1",
+      "kind": "payment",
+      "values": [
+        {
+          "kind": "amount",
+          "role": "requested_total",
+          "source": {
+            "fieldId": "notes.requests",
+            "start": 41,
+            "length": 9
+          }
+        }
+      ],
+      "sources": [
+        {
+          "fieldId": "notes.requests",
+          "start": 0,
+          "length": 51
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "id": "document1",
+      "description": {
+        "fieldId": "documents.list",
+        "start": 0,
+        "length": 36
+      }
+    }
+  ],
+  "coverage": [
+    {
+      "sentenceId": "s1",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s2",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s3",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s4",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s5",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s6",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s7",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s8",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s9",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s10",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s11",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s12",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s13",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s14",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s15",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s16",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s17",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s18",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s19",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s20",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s21",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s22",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s23",
+      "status": "read"
+    }
+  ],
+  "unresolved": []
+}

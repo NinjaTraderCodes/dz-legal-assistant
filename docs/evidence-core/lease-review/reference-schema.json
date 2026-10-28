@@ -1,0 +1,513 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "relations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "loan",
+              "debt_acknowledgment",
+              "sale",
+              "lease",
+              "commercial_lease",
+              "works_contract",
+              "transport_contract",
+              "supply",
+              "employment",
+              "marriage",
+              "ownership",
+              "none",
+              "inheritance",
+              "company",
+              "administrative",
+              "civil_status",
+              "other"
+            ]
+          },
+          "plaintiffPosition": {
+            "type": "string",
+            "enum": [
+              "lender",
+              "borrower",
+              "creditor",
+              "debtor",
+              "seller",
+              "buyer",
+              "lessor",
+              "lessee",
+              "owner",
+              "occupant",
+              "contractor",
+              "client",
+              "supplier",
+              "employer",
+              "employee",
+              "husband",
+              "wife",
+              "father",
+              "mother",
+              "victim",
+              "heir",
+              "partner",
+              "other"
+            ]
+          },
+          "assertedBy": {
+            "type": "string",
+            "enum": [
+              "plaintiff",
+              "defendant",
+              "other",
+              "unknown"
+            ]
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "s1",
+                "s2",
+                "s4",
+                "s5",
+                "s6",
+                "s7",
+                "s8",
+                "s9",
+                "s10",
+                "s11",
+                "s12",
+                "s13",
+                "s14",
+                "s15",
+                "s16",
+                "s17",
+                "s18",
+                "s19",
+                "s20",
+                "s21",
+                "s22",
+                "s23"
+              ]
+            }
+          }
+        },
+        "required": [
+          "kind",
+          "plaintiffPosition",
+          "assertedBy",
+          "sources"
+        ]
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "contract_concluded",
+              "money_lent",
+              "debt_acknowledged",
+              "deadline_passed",
+              "payment_made",
+              "debt_unpaid",
+              "price_unpaid",
+              "rent_unpaid",
+              "wages_unpaid",
+              "maintenance_unpaid",
+              "goods_delivered",
+              "delivery_missing",
+              "delivery_late",
+              "work_stopped",
+              "lease_started",
+              "lease_renewal_refused",
+              "eviction_notice",
+              "notice_served",
+              "occupation_without_title",
+              "harm_by_person",
+              "harm_by_animal",
+              "harm_by_building",
+              "harm_by_thing",
+              "criminal_conviction",
+              "concealment",
+              "marriage",
+              "divorce",
+              "abandonment",
+              "spouse_harm",
+              "custody_held",
+              "visitation_refused",
+              "employment_started",
+              "dismissal",
+              "conciliation_failed",
+              "death",
+              "administrative_decision",
+              "record_error",
+              "other"
+            ]
+          },
+          "assertedBy": {
+            "type": "string",
+            "enum": [
+              "plaintiff",
+              "defendant",
+              "other",
+              "unknown"
+            ]
+          },
+          "polarity": {
+            "type": "string",
+            "enum": [
+              "affirmed",
+              "denied",
+              "disputed"
+            ]
+          },
+          "disputeGroup": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "participants": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "role": {
+                  "type": "string"
+                },
+                "partyId": {
+                  "type": "string",
+                  "enum": [
+                    "plaintiff",
+                    "defendant",
+                    "other",
+                    "unknown"
+                  ]
+                },
+                "sources": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "s1",
+                      "s2",
+                      "s4",
+                      "s5",
+                      "s6",
+                      "s7",
+                      "s8",
+                      "s9",
+                      "s10",
+                      "s11",
+                      "s12",
+                      "s13",
+                      "s14",
+                      "s15",
+                      "s16",
+                      "s17",
+                      "s18",
+                      "s19",
+                      "s20",
+                      "s21",
+                      "s22",
+                      "s23"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "role",
+                "partyId",
+                "sources"
+              ]
+            }
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "date",
+                    "amount"
+                  ]
+                },
+                "role": {
+                  "type": "string"
+                },
+                "sourceId": {
+                  "type": "string",
+                  "enum": [
+                    "v1",
+                    "v2",
+                    "v3",
+                    "v4",
+                    "v5",
+                    "v6"
+                  ]
+                }
+              },
+              "required": [
+                "kind",
+                "role",
+                "sourceId"
+              ]
+            }
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "s1",
+                "s2",
+                "s4",
+                "s5",
+                "s6",
+                "s7",
+                "s8",
+                "s9",
+                "s10",
+                "s11",
+                "s12",
+                "s13",
+                "s14",
+                "s15",
+                "s16",
+                "s17",
+                "s18",
+                "s19",
+                "s20",
+                "s21",
+                "s22",
+                "s23"
+              ]
+            }
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "assertedBy",
+          "polarity",
+          "disputeGroup",
+          "participants",
+          "values",
+          "sources"
+        ]
+      }
+    },
+    "requests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "payment",
+              "eviction",
+              "rescission",
+              "damages",
+              "annulment",
+              "restitution",
+              "delivery",
+              "divorce",
+              "tatliq",
+              "khul",
+              "maintenance",
+              "custody",
+              "custody_transfer",
+              "visitation",
+              "housing",
+              "reinstatement",
+              "wages",
+              "partition",
+              "cancel_decision",
+              "correction",
+              "dissolution",
+              "other"
+            ]
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "date",
+                    "amount"
+                  ]
+                },
+                "role": {
+                  "type": "string"
+                },
+                "sourceId": {
+                  "type": "string",
+                  "enum": [
+                    "v1",
+                    "v2",
+                    "v3",
+                    "v4",
+                    "v5",
+                    "v6"
+                  ]
+                }
+              },
+              "required": [
+                "kind",
+                "role",
+                "sourceId"
+              ]
+            }
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "s1",
+                "s2",
+                "s4",
+                "s5",
+                "s6",
+                "s7",
+                "s8",
+                "s9",
+                "s10",
+                "s11",
+                "s12",
+                "s13",
+                "s14",
+                "s15",
+                "s16",
+                "s17",
+                "s18",
+                "s19",
+                "s20",
+                "s21",
+                "s22",
+                "s23"
+              ]
+            }
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "values",
+          "sources"
+        ]
+      }
+    },
+    "documents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "enum": [
+              "s10"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "description"
+        ]
+      }
+    },
+    "coverage": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "sentenceId": {
+            "type": "string",
+            "enum": [
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5",
+              "s6",
+              "s7",
+              "s8",
+              "s9",
+              "s10",
+              "s11",
+              "s12",
+              "s13",
+              "s14",
+              "s15",
+              "s16",
+              "s17",
+              "s18",
+              "s19",
+              "s20",
+              "s21",
+              "s22",
+              "s23"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "read",
+              "unresolved"
+            ]
+          }
+        },
+        "required": [
+          "sentenceId",
+          "status"
+        ]
+      }
+    },
+    "unresolved": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "relations",
+    "events",
+    "requests",
+    "documents",
+    "coverage",
+    "unresolved"
+  ]
+}

@@ -1,0 +1,503 @@
+{
+  "documentTypeId": "requete-introductive",
+  "findings": [
+    {
+      "element": {
+        "id": "art15.1.court",
+        "label": {
+          "ar": "الجهة القضائية التي ترفع أمامها الدعوى",
+          "en": "Court before which the action is brought"
+        },
+        "article": "CPCA art. 15-1",
+        "severity": 0,
+        "check": {
+          "kind": "allOf",
+          "checks": [
+            {
+              "kind": "fieldsPresent",
+              "fields": [
+                "court.name"
+              ]
+            },
+            {
+              "kind": "sectionNotEmpty",
+              "section": "header"
+            }
+          ]
+        },
+        "appliesWhen": [],
+        "missingMessage": {
+          "ar": "لم تحدد الجهة القضائية التي ترفع أمامها الدعوى — العريضة معرضة لعدم القبول شكلا.",
+          "en": "The court is not identified — the requête would be inadmissible in form."
+        },
+        "verified": false,
+        "sourceNote": "Art. 15 item 1, Loi 08-09."
+      },
+      "status": 0,
+      "missingParts": [],
+      "elementId": "art15.1.court"
+    },
+    {
+      "element": {
+        "id": "art15.2.plaintiff",
+        "label": {
+          "ar": "اسم ولقب المدعي وموطنه",
+          "en": "Plaintiff's name, surname and domicile"
+        },
+        "article": "CPCA art. 15-2",
+        "severity": 0,
+        "check": {
+          "kind": "fieldsPresent",
+          "fields": [
+            "plaintiff.lastName",
+            "plaintiff.firstName",
+            "plaintiff.domicile"
+          ]
+        },
+        "appliesWhen": [
+          {
+            "field": "plaintiff.isLegalEntity",
+            "is": null,
+            "isNot": "true"
+          }
+        ],
+        "missingMessage": {
+          "ar": "بيانات المدعي (الاسم أو اللقب أو الموطن) ناقصة — العريضة معرضة لعدم القبول شكلا.",
+          "en": "Plaintiff's name, surname or domicile is missing — inadmissible in form."
+        },
+        "verified": false,
+        "sourceNote": "Art. 15 item 2. For a legal-person plaintiff, item 4 applies instead."
+      },
+      "status": 0,
+      "missingParts": [],
+      "elementId": "art15.2.plaintiff"
+    },
+    {
+      "element": {
+        "id": "art15.3.defendant",
+        "label": {
+          "ar": "اسم ولقب وموطن المدعى عليه، أو آخر موطن له",
+          "en": "Defendant's name, surname and domicile (or last known domicile)"
+        },
+        "article": "CPCA art. 15-3",
+        "severity": 0,
+        "check": {
+          "kind": "allOf",
+          "checks": [
+            {
+              "kind": "fieldsPresent",
+              "fields": [
+                "defendant.lastName",
+                "defendant.firstName"
+              ]
+            },
+            {
+              "kind": "anyOf",
+              "checks": [
+                {
+                  "kind": "fieldsPresent",
+                  "fields": [
+                    "defendant.domicile"
+                  ]
+                },
+                {
+                  "kind": "fieldsPresent",
+                  "fields": [
+                    "defendant.lastKnownDomicile"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "appliesWhen": [
+          {
+            "field": "defendant.isLegalEntity",
+            "is": null,
+            "isNot": "true"
+          }
+        ],
+        "missingMessage": {
+          "ar": "بيانات المدعى عليه (الاسم أو اللقب أو الموطن أو آخر موطن معلوم) ناقصة — العريضة معرضة لعدم القبول شكلا.",
+          "en": "Defendant's name, surname or (last known) domicile is missing — inadmissible in form."
+        },
+        "verified": false,
+        "sourceNote": "Art. 15 item 3: if the defendant has no known domicile, the last known domicile suffices."
+      },
+      "status": 0,
+      "missingParts": [],
+      "elementId": "art15.3.defendant"
+    },
+    {
+      "element": {
+        "id": "art15.4.plaintiff",
+        "label": {
+          "ar": "تسمية وطبيعة الشخص المعنوي المدعي ومقره الاجتماعي وصفة ممثله",
+          "en": "Legal-person plaintiff: name, nature, registered office, representative's capacity"
+        },
+        "article": "CPCA art. 15-4",
+        "severity": 0,
+        "check": {
+          "kind": "fieldsPresent",
+          "fields": [
+            "plaintiff.entityName",
+            "plaintiff.entityNature",
+            "plaintiff.headOffice",
+            "plaintiff.representativeCapacity"
+          ]
+        },
+        "appliesWhen": [
+          {
+            "field": "plaintiff.isLegalEntity",
+            "is": "true",
+            "isNot": null
+          }
+        ],
+        "missingMessage": {
+          "ar": "بيانات الشخص المعنوي المدعي ناقصة (التسمية أو الطبيعة أو المقر الاجتماعي أو صفة الممثل) — العريضة معرضة لعدم القبول شكلا.",
+          "en": "Legal-person plaintiff details are incomplete — inadmissible in form."
+        },
+        "verified": false,
+        "sourceNote": "Art. 15 item 4. Confirm whether the representative's name is also expected in practice."
+      },
+      "status": 2,
+      "missingParts": [],
+      "elementId": "art15.4.plaintiff"
+    },
+    {
+      "element": {
+        "id": "art15.4.defendant",
+        "label": {
+          "ar": "تسمية وطبيعة الشخص المعنوي المدعى عليه ومقره الاجتماعي وصفة ممثله",
+          "en": "Legal-person defendant: name, nature, registered office, representative's capacity"
+        },
+        "article": "CPCA art. 15-4",
+        "severity": 0,
+        "check": {
+          "kind": "fieldsPresent",
+          "fields": [
+            "defendant.entityName",
+            "defendant.entityNature",
+            "defendant.headOffice",
+            "defendant.representativeCapacity"
+          ]
+        },
+        "appliesWhen": [
+          {
+            "field": "defendant.isLegalEntity",
+            "is": "true",
+            "isNot": null
+          }
+        ],
+        "missingMessage": {
+          "ar": "بيانات الشخص المعنوي المدعى عليه ناقصة (التسمية أو الطبيعة أو المقر الاجتماعي أو صفة الممثل) — العريضة معرضة لعدم القبول شكلا.",
+          "en": "Legal-person defendant details are incomplete — inadmissible in form."
+        },
+        "verified": false,
+        "sourceNote": "Art. 15 item 4."
+      },
+      "status": 2,
+      "missingParts": [],
+      "elementId": "art15.4.defendant"
+    },
+    {
+      "element": {
+        "id": "art15.5.facts",
+        "label": {
+          "ar": "عرض موجز للوقائع",
+          "en": "Summary of the facts"
+        },
+        "article": "CPCA art. 15-5",
+        "severity": 0,
+        "check": {
+          "kind": "sectionNotEmpty",
+          "section": "facts"
+        },
+        "appliesWhen": [],
+        "missingMessage": {
+          "ar": "لا يوجد عرض للوقائع — العريضة معرضة لعدم القبول شكلا.",
+          "en": "No statement of facts — inadmissible in form."
+        },
+        "verified": false,
+        "sourceNote": "Art. 15 item 5: summary of the facts, the requests and the grounds. Art. 15 asks for this information; it requires no article number and no set heading (legal research of 16 Oct 2026, JO 21/2008 p. 4; to be confirmed by a lawyer)."
+      },
+      "status": 0,
+      "missingParts": [],
+      "elementId": "art15.5.facts"
+    },
+    {
+      "element": {
+        "id": "art15.5.grounds",
+        "label": {
+          "ar": "الوسائل التي تؤسس عليها الدعوى",
+          "en": "Grounds on which the claim rests"
+        },
+        "article": "CPCA art. 15-5",
+        "severity": 0,
+        "check": {
+          "kind": "sectionNotEmpty",
+          "section": "grounds"
+        },
+        "appliesWhen": [],
+        "missingMessage": {
+          "ar": "لا توجد الوسائل (الأسانيد) التي تؤسس عليها الدعوى — العريضة معرضة لعدم القبول شكلا.",
+          "en": "No grounds stated — inadmissible in form."
+        },
+        "verified": false,
+        "sourceNote": "Art. 15 item 5."
+      },
+      "status": 0,
+      "missingParts": [],
+      "elementId": "art15.5.grounds"
+    },
+    {
+      "element": {
+        "id": "art15.5.requests",
+        "label": {
+          "ar": "الطلبات",
+          "en": "Requests"
+        },
+        "article": "CPCA art. 15-5",
+        "severity": 0,
+        "check": {
+          "kind": "sectionNotEmpty",
+          "section": "requests"
+        },
+        "appliesWhen": [],
+        "missingMessage": {
+          "ar": "لا توجد طلبات — العريضة معرضة لعدم القبول شكلا.",
+          "en": "No requests stated — inadmissible in form."
+        },
+        "verified": false,
+        "sourceNote": "Art. 15 item 5."
+      },
+      "status": 0,
+      "missingParts": [],
+      "elementId": "art15.5.requests"
+    },
+    {
+      "element": {
+        "id": "art15.6.documents",
+        "label": {
+          "ar": "الإشارة إلى المستندات والوثائق المؤيدة للدعوى (عند الاقتضاء)",
+          "en": "Reference to supporting documents (where applicable)"
+        },
+        "article": "CPCA art. 15-6",
+        "severity": 1,
+        "check": {
+          "kind": "sectionNotEmpty",
+          "section": "documents"
+        },
+        "appliesWhen": [],
+        "missingMessage": {
+          "ar": "لم يشر إلى أي مستند مؤيد للدعوى. تحقق مما إذا كانت الدعوى تقتضي ذلك.",
+          "en": "No supporting documents listed. Check whether the claim requires them."
+        },
+        "verified": false,
+        "sourceNote": "Art. 15 item 6 applies 'where applicable' (عند الاقتضاء), so it is a warning, not a hard failure."
+      },
+      "status": 0,
+      "missingParts": [],
+      "elementId": "art15.6.documents"
+    },
+    {
+      "element": {
+        "id": "art14.date",
+        "label": {
+          "ar": "تاريخ العريضة",
+          "en": "Date of the requête"
+        },
+        "article": "CPCA art. 14",
+        "severity": 0,
+        "check": {
+          "kind": "sectionMatches",
+          "section": "dateplace",
+          "pattern": "([0-9]{1,2}|[٠-٩]{1,2})\\s*[/.\\-]\\s*([0-9]{1,2}|[٠-٩]{1,2})\\s*[/.\\-]\\s*([0-9]{4}|[٠-٩]{4})"
+        },
+        "appliesWhen": [],
+        "missingMessage": {
+          "ar": "لم يتعرف البرنامج على تاريخ العريضة (يوم/شهر/سنة): تحقق من وجود تاريخ صحيح. المادة 14 تشترط عريضة مكتوبة موقعة ومؤرخة.",
+          "en": "No date was recognised in the requête (day/month/year): check that it carries a valid date. Art. 14 requires a written, signed and dated requête."
+        },
+        "verified": false,
+        "sourceNote": "Art. 14 (not art. 15): the requête must be written, signed and dated. The pattern only recognises a dd/mm/yyyy date; it is not a form the law prescribes. Confirm the sanction with the lawyer."
+      },
+      "status": 0,
+      "missingParts": [],
+      "elementId": "art14.date"
+    },
+    {
+      "element": {
+        "id": "art14.signature",
+        "label": {
+          "ar": "توقيع العريضة",
+          "en": "Signature of the requête"
+        },
+        "article": "CPCA art. 14",
+        "severity": 0,
+        "check": {
+          "kind": "allOf",
+          "checks": [
+            {
+              "kind": "fieldsPresent",
+              "fields": [
+                "lawyer.name"
+              ]
+            },
+            {
+              "kind": "sectionNotEmpty",
+              "section": "signature"
+            }
+          ]
+        },
+        "appliesWhen": [],
+        "missingMessage": {
+          "ar": "خانة التوقيع غير مكتملة. المادة 14 تشترط عريضة موقعة: تحقق من توقيع العريضة فعليا قبل إيداعها.",
+          "en": "The signature block is incomplete. Art. 14 requires a signed requête: check that it is actually signed before filing."
+        },
+        "verified": false,
+        "sourceNote": "Art. 14. The application only sees the signature block; a typed block is not a signature, which is applied by hand before filing. Art. 14 lets the plaintiff, an agent or a lawyer file (legal research of 16 Oct 2026, JO 21/2008 p. 4; to be confirmed by a lawyer)."
+      },
+      "status": 0,
+      "missingParts": [],
+      "elementId": "art14.signature"
+    },
+    {
+      "element": {
+        "id": "art17.publication",
+        "label": {
+          "ar": "إشهار العريضة لدى المحافظة العقارية (دعاوى العقار المشهر)",
+          "en": "Publication at the land registry (registered real property claims)"
+        },
+        "article": "CPCA art. 17",
+        "severity": 0,
+        "check": {
+          "kind": "allOf",
+          "checks": [
+            {
+              "kind": "fieldsPresent",
+              "fields": [
+                "claim.publicationReference"
+              ]
+            },
+            {
+              "kind": "sectionNotEmpty",
+              "section": "publication"
+            }
+          ]
+        },
+        "appliesWhen": [
+          {
+            "field": "claim.concernsRegisteredRealProperty",
+            "is": "true",
+            "isNot": null
+          }
+        ],
+        "missingMessage": {
+          "ar": "الدعوى تتعلق بعقار أو بحق عيني عقاري مشهر: تحقق من إشهار العريضة لدى المحافظة العقارية أو من إثبات إيداعها للإشهار، ومن تقديم الدليل في أول جلسة، تحت طائلة عدم القبول شكلا.",
+          "en": "Real-property claim: check that the requête was published at the land registry, or that its deposit for publication can be proved, and that the proof is produced at the first hearing, or it is inadmissible in form."
+        },
+        "verified": false,
+        "sourceNote": "Art. 17 paragraph 3: proof of deposit for publication is accepted in place of publication. A typed reference does not prove it was done (Supreme Court decision 1018513 of 15/12/2016) (legal research of 16 Oct 2026, JO 21/2008 p. 4; to be confirmed by a lawyer)."
+      },
+      "status": 2,
+      "missingParts": [],
+      "elementId": "art17.publication"
+    },
+    {
+      "element": {
+        "id": "art8.arabic",
+        "label": {
+          "ar": "تحرير العريضة باللغة العربية",
+          "en": "Requête written in Arabic"
+        },
+        "article": "CPCA art. 8",
+        "severity": 0,
+        "check": {
+          "kind": "predominantlyArabic",
+          "sections": [
+            "subject",
+            "facts",
+            "grounds",
+            "requests"
+          ],
+          "minRatio": 0.6
+        },
+        "appliesWhen": [],
+        "missingMessage": {
+          "ar": "يبدو أن جزءا من العريضة غير محرر باللغة العربية (مؤشر تقريبي). المادة 8 تشترط تحرير العرائض باللغة العربية تحت طائلة عدم القبول.",
+          "en": "Part of the requête seems not to be in Arabic (a rough indicator). Art. 8 requires pleadings in Arabic, on pain of inadmissibility."
+        },
+        "verified": false,
+        "sourceNote": "Art. 8. The 60% share of Arabic letters is a rough indicator, not a legal threshold: art. 8 sets no percentage. Foreign terms, documents and official translations are for the lawyer to review (legal research of 16 Oct 2026, JO 21/2008 p. 4; to be confirmed by a lawyer)."
+      },
+      "status": 0,
+      "missingParts": [],
+      "elementId": "art8.arabic"
+    },
+    {
+      "element": {
+        "id": "form.subject",
+        "label": {
+          "ar": "بيان موضوع الدعوى",
+          "en": "Subject of the claim stated"
+        },
+        "article": "CPCA art. 15-5 (objet de la demande)",
+        "severity": 1,
+        "check": {
+          "kind": "sectionNotEmpty",
+          "section": "subject"
+        },
+        "appliesWhen": [],
+        "missingMessage": {
+          "ar": "لم يحدد موضوع الدعوى في رأس العريضة.",
+          "en": "The subject of the claim is not stated in the heading."
+        },
+        "verified": false,
+        "sourceNote": "A drafting preference, not a separate item of art. 15 (legal research of 16 Oct 2026, JO 21/2008 p. 4; to be confirmed by a lawyer)."
+      },
+      "status": 0,
+      "missingParts": [],
+      "elementId": "form.subject"
+    },
+    {
+      "element": {
+        "id": "form.order",
+        "label": {
+          "ar": "ترتيب أجزاء العريضة",
+          "en": "Order of the requête's parts"
+        },
+        "article": "Practice (structure)",
+        "severity": 1,
+        "check": {
+          "kind": "sectionOrder",
+          "sections": [
+            "header",
+            "plaintiff",
+            "defendant",
+            "subject",
+            "facts",
+            "grounds",
+            "requestsIntro",
+            "requests",
+            "documents",
+            "dateplace",
+            "signature"
+          ]
+        },
+        "appliesWhen": [],
+        "missingMessage": {
+          "ar": "أجزاء العريضة ليست في الترتيب المعتاد.",
+          "en": "The parts of the requête are not in the customary order."
+        },
+        "verified": false,
+        "sourceNote": "Customary structure of Algerian model requêtes, a drafting preference, not a statutory rule."
+      },
+      "status": 0,
+      "missingParts": [],
+      "elementId": "form.order"
+    }
+  ],
+  "missing": [],
+  "isAdmissibleInForm": true
+}

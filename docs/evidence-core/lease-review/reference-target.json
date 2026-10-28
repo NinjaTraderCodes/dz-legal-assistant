@@ -1,0 +1,238 @@
+{
+  "relations": [
+    {
+      "kind": "lease",
+      "plaintiffPosition": "lessor",
+      "assertedBy": "plaintiff",
+      "sources": [
+        "s13"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "event1",
+      "kind": "contract_concluded",
+      "assertedBy": "plaintiff",
+      "polarity": "affirmed",
+      "disputeGroup": null,
+      "participants": [],
+      "values": [
+        {
+          "kind": "date",
+          "role": "signature_date",
+          "sourceId": "v2"
+        }
+      ],
+      "sources": [
+        "s14"
+      ]
+    },
+    {
+      "id": "event2",
+      "kind": "lease_started",
+      "assertedBy": "plaintiff",
+      "polarity": "affirmed",
+      "disputeGroup": null,
+      "participants": [],
+      "values": [
+        {
+          "kind": "date",
+          "role": "commencement_date",
+          "sourceId": "v3"
+        },
+        {
+          "kind": "amount",
+          "role": "monthly_rent",
+          "sourceId": "v4"
+        }
+      ],
+      "sources": [
+        "s15"
+      ]
+    },
+    {
+      "id": "event3",
+      "kind": "rent_unpaid",
+      "assertedBy": "plaintiff",
+      "polarity": "affirmed",
+      "disputeGroup": null,
+      "participants": [
+        {
+          "role": "actor",
+          "partyId": "defendant",
+          "sources": [
+            "s16"
+          ]
+        }
+      ],
+      "values": [],
+      "sources": [
+        "s16"
+      ]
+    },
+    {
+      "id": "event4",
+      "kind": "notice_served",
+      "assertedBy": "plaintiff",
+      "polarity": "affirmed",
+      "disputeGroup": "notice1",
+      "participants": [
+        {
+          "role": "actor",
+          "partyId": "plaintiff",
+          "sources": [
+            "s17"
+          ]
+        }
+      ],
+      "values": [
+        {
+          "kind": "date",
+          "role": "service_date",
+          "sourceId": "v5"
+        }
+      ],
+      "sources": [
+        "s17"
+      ]
+    },
+    {
+      "id": "event5",
+      "kind": "notice_served",
+      "assertedBy": "defendant",
+      "polarity": "denied",
+      "disputeGroup": "notice1",
+      "participants": [
+        {
+          "role": "actor",
+          "partyId": "plaintiff",
+          "sources": [
+            "s18"
+          ]
+        }
+      ],
+      "values": [],
+      "sources": [
+        "s18"
+      ]
+    }
+  ],
+  "requests": [
+    {
+      "id": "request1",
+      "kind": "payment",
+      "values": [
+        {
+          "kind": "amount",
+          "role": "requested_total",
+          "sourceId": "v6"
+        }
+      ],
+      "sources": [
+        "s19"
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "id": "document1",
+      "description": "s10"
+    }
+  ],
+  "coverage": [
+    {
+      "sentenceId": "s1",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s2",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s3",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s4",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s5",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s6",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s7",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s8",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s9",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s10",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s11",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s12",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s13",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s14",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s15",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s16",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s17",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s18",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s19",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s20",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s21",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s22",
+      "status": "read"
+    },
+    {
+      "sentenceId": "s23",
+      "status": "read"
+    }
+  ],
+  "unresolved": []
+}

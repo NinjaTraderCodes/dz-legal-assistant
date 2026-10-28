@@ -85,6 +85,8 @@ The earlier489 pilot inspected original ArabicPDF31 and2007 ArabicPDF5, with Fre
 
 What remains: final Family QA, Civil Code, Commercial (37), Labour 90-11 (29) and 90-04 (1). All 81 legacy records are accounted for in the reconciliation below; 47 still lack imported corpus text. The [Family 20-article image sample](law-corpus-checks/family-code/README.md) is complete for the current candidate, without promoting its verification states.
 
+The [Civil preparation report](LAW-CORPUS-CIVIL.md) now records 1,059 decoded source candidates across164 code pages, with no undecided glyph assignments. Ten locally numbered management-contract articles are kept separate from general provisions1–10; original JO89-01 image inspection confirms that insertion structure. These candidates are not a replacement typed delivery. Current-edition OCR is running on164 guarded body crops; the old1975 OCR diagnostic and its many unresolved groups remain retained separately.
+
 ### Delivery 2 — CPCA, complete and current (28 October 2026)
 
 All 1,162 versions of the CPCA are `checked`. Details are in the [code report](LAW-CORPUS-CPCA.md); the spot-check is in `docs/law-corpus-checks/cpca/`.

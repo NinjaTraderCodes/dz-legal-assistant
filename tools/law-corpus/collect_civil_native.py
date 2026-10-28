@@ -8,7 +8,7 @@ import pipeline
 
 STRETCH='[\u0640\u0467 \t]*'
 LABEL=STRETCH.join('المادة')
-NUMBER=r'([0-9]+(?:[.,][0-9]{3})*|الأولى)'
+NUMBER=r'([0-9]+(?:[.,][0-9]{3})*|الأولى|الاولى)'
 SUFFIX=r'(?:\s*('+STRETCH.join('مكرر')+r')(?:\s*([0-9]+))?)?'
 BIS=STRETCH.join('مكرر')
 LABEL_BODIES=[LABEL+r'\s*'+NUMBER+r'\s*('+BIS+r')\s*:([0-9]+)(?=\s*\()',
@@ -36,7 +36,7 @@ def page_labels(raw, *, allow_inline=False):
     for match in matches:
         if match.start()<previous_end:continue
         previous_end=match.end()
-        number='1' if match[1]=='الأولى' else str(int(match[1].replace('.','').replace(',','')))
+        number='1' if match[1] in {'الأولى','الاولى'} else str(int(match[1].replace('.','').replace(',','')))
         if match[2]:number+=' مكرر'+(' '+match[3] if match[3] else '')
         start=offsets[match.start()];end=offsets[match.end()-1]+1
         found.append({'canonicalNumberCandidate':number,'rawLabel':raw[start:end],'start':start,'end':end})

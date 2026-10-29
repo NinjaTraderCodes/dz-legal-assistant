@@ -3,6 +3,7 @@
         xmlns:vm="using:DzLegal.Presentation.ViewModels"
         xmlns:app="using:DzLegal.App"
         xmlns:ic="using:FluentIcons.Avalonia"
+        xmlns:views="using:DzLegal.App.Views"
         x:Class="DzLegal.App.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Title="{Binding WindowTitle}"
@@ -347,9 +348,7 @@
               <TextBlock Foreground="#5B3B00" FontSize="12" FontWeight="SemiBold" Text="{Binding L[OnlineEngineStatus]}" />
             </StackPanel>
           </Border>
-          <Button Classes="bar" Command="{Binding ToggleThemeCommand}" ToolTip.Tip="{Binding L[ToggleTheme]}">
-            <ic:SymbolIcon Symbol="WeatherMoon" Foreground="{DynamicResource AppBarTextBrush}" />
-          </Button>
+          <views:ThemeToggleButton Name="ThemeButton" Localization="{Binding L}" />
           <Button Name="LanguageButton" Classes="bar" Command="{Binding SwitchLanguageCommand}" Content="{Binding L[SwitchLanguage]}" />
         </StackPanel>
       </Grid>

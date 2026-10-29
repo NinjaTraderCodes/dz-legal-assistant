@@ -26,7 +26,7 @@ public sealed class OnboardingWindow : Window
         MinWidth = 800;
         MinHeight = 560;
         WindowStartupLocation = WindowStartupLocation.CenterScreen;
-        RequestedThemeVariant = ThemeVariant.Dark;
+        (Application.Current as App)?.Themes?.TrackWindow(this);
         this.Bind(BackgroundProperty, new DynamicResourceExtension("SurfaceBrush"));
         this.Bind(ForegroundProperty, new DynamicResourceExtension("TextPrimaryBrush"));
         _welcome = new WelcomeViewModel(preferences, OpenSetupStepOne);
@@ -38,7 +38,7 @@ public sealed class OnboardingWindow : Window
 
     public void OpenSetupStepOne() => Content = _setup();
 
-    private StackPanel Placeholder(string key, Func<Window> openWorkbench)
+    private Grid Placeholder(string key, Func<Window> openWorkbench)
     {
         var button = new Button
         {
@@ -70,6 +70,25 @@ public sealed class OnboardingWindow : Window
                 button,
             },
         };
-        return panel;
+        Grid.SetRow(panel, 1);
+        return new Grid
+        {
+            RowDefinitions = new RowDefinitions("Auto,*"),
+            Margin = new Thickness(40, 28),
+            FlowDirection = _welcome.IsRightToLeft ? FlowDirection.RightToLeft : FlowDirection.LeftToRight,
+            Children = { ThemeHost(), panel },
+        };
+    }
+
+    private Border ThemeHost()
+    {
+        var host = new Border
+        {
+            HorizontalAlignment = HorizontalAlignment.Right,
+            Child = new ThemeToggleButton { Localization = _welcome.L },
+        };
+        host.Bind(Border.BackgroundProperty, new DynamicResourceExtension("AppBarBrush"));
+        host.Bind(Border.CornerRadiusProperty, new DynamicResourceExtension("ControlRadius"));
+        return host;
     }
 }

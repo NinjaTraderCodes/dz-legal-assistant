@@ -1,5 +1,6 @@
 using System.Collections.Specialized;
 using System.ComponentModel;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -15,6 +16,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        (Application.Current as App)?.Themes?.TrackWindow(this);
         DataContextChanged += (_, _) => ObserveViewModel();
         SizeChanged += (_, _) => UpdateWorkbenchLayout();
         Closed += (_, _) => StopObserving();

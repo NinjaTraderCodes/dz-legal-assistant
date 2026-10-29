@@ -10,6 +10,7 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Styling;
 using Avalonia.Threading;
+using Avalonia.VisualTree;
 using DzLegal.App.Views;
 using DzLegal.Storage;
 
@@ -150,6 +151,16 @@ public sealed class WelcomeTests : IDisposable
             window.SetRenderScaling(scale);
             Layout(window);
             Assert.Equal(language == "ar" ? FlowDirection.RightToLeft : FlowDirection.LeftToRight, view.FlowDirection);
+            foreach (var name in new[] { "ArabicLanguage", "EnglishLanguage", "WelcomeStart" })
+            {
+                var button = view.FindControl<Button>(name)!;
+                var label = Assert.Single(button.GetVisualDescendants().OfType<TextBlock>());
+                var buttonBounds = Bounds(button, window);
+                var labelBounds = Bounds(label, window);
+                Assert.True(Math.Abs(buttonBounds.Center.X - labelBounds.Center.X) <= 1 / scale
+                    && Math.Abs(buttonBounds.Center.Y - labelBounds.Center.Y) <= 1 / scale,
+                    $"{language}/{dark}/{size}/{scale}: {name} label is off-center: button={buttonBounds}, label={labelBounds}, padding={button.Padding}");
+            }
             var controls = new[] { "LanguageSwitch", "WelcomeLogo", "WelcomeTitle", "WelcomeDivider", "WelcomeTagline", "WelcomeStart", "WelcomeFooter" }
                 .Select(name => view.FindControl<Control>(name)!).ToArray();
             foreach (var control in controls)
@@ -185,6 +196,10 @@ public sealed class WelcomeTests : IDisposable
     private static void CheckContrast(Window window, WelcomeView view, Control[] controls, string language, bool dark, (int, int) size, double scale)
     {
         foreach (var control in controls) control.Opacity = 0;
+        var languageSwitch = view.FindControl<StackPanel>("LanguageSwitch")!;
+        var languageButtons = languageSwitch.Children.OfType<Button>().ToArray();
+        languageSwitch.Opacity = 1;
+        foreach (var label in languageButtons.SelectMany(button => button.GetVisualDescendants().OfType<TextBlock>())) label.Opacity = 0;
         Layout(window);
         using var background = window.CaptureRenderedFrame();
         Assert.NotNull(background);
@@ -202,7 +217,11 @@ public sealed class WelcomeTests : IDisposable
         foreach (var name in new[] { "WelcomeTitle", "WelcomeTagline", "WelcomeFooter", "WelcomeLogo", "WelcomeDivider", "WelcomeStart", "LanguageSwitch" })
         {
             var control = view.FindControl<Control>(name)!;
-            var rectangle = Bounds(control, window);
+            // The transparent gap is photograph, not a button surface. Sample the actual
+            // button fills, inset past their rounded borders, for component contrast.
+            var rectangles = name == "LanguageSwitch"
+                ? languageButtons.Select(button => Bounds(button, window).Deflate(button.CornerRadius.TopLeft)).ToArray()
+                : new[] { Bounds(control, window) };
             var brush = name switch
             {
                 "WelcomeTitle" => Brush(view, "WelcomeTextBrush"),
@@ -214,6 +233,7 @@ public sealed class WelcomeTests : IDisposable
             };
             var colors = brush is SolidColorBrush solid ? new[] { solid.Color } : ((LinearGradientBrush)brush).GradientStops.Select(g => g.Color).ToArray();
             var minimum = double.MaxValue;
+            foreach (var rectangle in rectangles)
             for (var y = Math.Max(0, (int)(rectangle.Top * scale)); y < Math.Min(background.PixelSize.Height, (int)(rectangle.Bottom * scale)); y++)
             for (var x = Math.Max(0, (int)(rectangle.Left * scale)); x < Math.Min(background.PixelSize.Width, (int)(rectangle.Right * scale)); x++)
             {

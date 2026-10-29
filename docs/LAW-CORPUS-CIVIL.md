@@ -16,7 +16,19 @@ For the current-edition transcription check, **164 body crops** exclude historic
 
 Research records are in `data/law/corpus/research/civil-2026-10-28/`. Five new regressions cover the printed first-label alias, local/global number collisions, duplicate rejection, signature/page continuation and body-crop clipping. All **161 Python tests** pass. The last full Release checkpoint (`c9c3480`) passed all692 .NET tests with zero warnings/errors; the new checkpoint receives the same gate.
 
-## Latest continuation and second safe pause
+## Resumed 29 October: both readers complete and strict comparison available
+
+The four final PP-OCR crops are complete. **Both Tesseract and PP-OCR now cover all 164 pages.** The final supplementary aggregate contains 164 distinct completed readings. The strict audit replays the pinned PDF, manifest, crop bindings and first/second-reader artifact hashes before comparison. No source/model download was needed.
+
+The initial global alignment produces **510/1,059 strict word agreements**, with 1,000 word/digit/extra groups and 216 punctuation groups. Of those word groups, 279 flag spans extending onto neighbouring pages. The original input, comparison and audit remain unchanged. `bound_civil_alignment.py` derives an additional comparison using only OCR tokens on each candidate's recorded source pages. It removes no token on those pages and no native body token; empty/wrong-page spans still fail. It refuses disjoint projections. Strict word acceptance is unchanged. This yields **673/1,059 word agreements**, with **702 word/digit/extra groups and 216 punctuation groups**. These are research comparison counts, not verified law or proven legal-error counts.
+
+Actual image review has covered all 58 word/figure/extra flags in the **first 150 source candidates**. Ten review sheets and five wider heading/footer views were read. The two curated decision files bind each flag, original body hash and proof image. The review distinguishes actual native spacing errors from correctly printed figures/words, OCR comma artifacts, next-article labels, headings and page numbers.
+
+`apply_civil_word_review.py` replays these decisions and saves **26 guarded spacing repairs across 25 derived research candidates**, preserving every raw/prepared/typed body. In particular, articles 108 and 119 visibly print the negation `لم`; extraction had split it into `ل م`. These repairs follow the source rather than tolerating an unread negation. The applier rejects changed/missing proof, stale/duplicate/incomplete decisions, wrong old text, ambiguous or cross-paragraph edits, letter substitutions, digit joins and joining an already separate negation into another word. It never assigns a typed verification state. Editorial markers/callouts, paragraphs, paths, amendments, temporal applicability and punctuation remain separate tasks.
+
+The tools reuse the existing `check_native`, `family_literal`, `review_items` and source-sheet renderer. Only qualified identities receive Windows-safe hashed proof filenames; old numeric filenames remain stable. The typed Civil package is still **45 identities / 55 versions**. No app/legacy law data changed.
+
+## Previous continuation and second safe pause (historical)
 
 The isolated native-worker batch runner has now been exercised successfully: it resumed119 existing PP-OCR records and completed41 additional crops without repeating those readings. At the user's second pause, **Tesseract is complete164/164 and PP-OCR is complete160/164**. The four missing PP-OCR crops are **PDF168–171**. All160 completed supplementary records and their crop/artifact hashes replayed successfully. The aggregate file contains144 records;16 further valid individual records through PDF167 remain cached and must be reused. Every OCR/rendering worker is stopped. No source or model download was needed.
 
@@ -26,7 +38,7 @@ The full Python suite now has182 passing tests and JSON Schema validation has0 e
 
 Remaining work:
 
-1. Finish only the four missing supplementary OCR crops (PDF168–171), reusing all160 valid records, then run the prepared strict current-edition audit. Inspect word/digit/negation flags and retain punctuation uncertainty explicitly.
+1. Continue targeted image review from source-order offset150. Both readers and both strict diagnostics are complete. Keep the original audit and its derived page-bounded comparison separate; do not repeat OCR. Preserve the first150 candidates' recorded decisions and derived repairs. Retain punctuation uncertainty explicitly.
 2. Remove editorial annotations with guarded, reversible projections; validate paragraph and heading boundaries.
 3. Reconcile every amending publication, insertion, partial rewrite and repeal against the JO, including qualified local numbering. Keep current outcomes separate from the deferred complete historical archive.
 4. Import the complete current package with provenance, references and honest temporal limits; preserve the earlier typed history and checked pilot records.

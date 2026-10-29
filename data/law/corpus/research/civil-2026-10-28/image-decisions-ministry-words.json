@@ -1,0 +1,589 @@
+{
+  "reviewedOn": "2026-10-29",
+  "reviewer": "Codex (AI), actual source-image reading; not human/lawyer verification",
+  "sourceOrderStart": 0,
+  "sourceOrderEnd": 50,
+  "sourceSha256": "17a555bf81d5b99bf67417f3d42c157fd5df69499d6190cffbf182bc3566b573",
+  "nativeSha256": "84e056995a3599311f65e9b89aa6c06b4d9096e06c6c05db548465c3d11bcf6c",
+  "auditSha256": "ed6a54404398a792add08250290d09b58ea1d6462ffc6c01c3f79e0c996d8f13",
+  "viewIndexSha256": "e2ea1543178d9b9f923c47248b1ab7bb5f00d7929c409fa519c0b4d3b50a41e7",
+  "decisions": [
+    {
+      "itemId": "main:4#0",
+      "candidateKey": "main:4",
+      "kind": "unconfirmed",
+      "at": 45,
+      "canonical": "الجريد ة",
+      "ocrExtra": null,
+      "inputTextSha256": "3f09471238e57249633d943ea65c1c96cc0755c792db72843cafd059f015420c",
+      "verdict": "native-spacing-correction",
+      "correction": {
+        "old": "الجريد ة",
+        "new": "الجريدة",
+        "expectedOccurrences": 1
+      },
+      "note": "Actual printed source joins the highlighted word; the native text has inserted spaces. Identical letters retained; no spelling/letter substitution or legal amendment inferred.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-exact-0000-0050/strips/article-c79629cbb44d49af01bf-0-0.png"
+      ],
+      "imageSha256s": [
+        "04b6c9de7600a34697cd32910744f9745ccfb5f9f0b7448eb50a2347b0ff3c49"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-008-body",
+          "box": [
+            0,
+            2696,
+            2059,
+            2810
+          ]
+        }
+      ]
+    },
+    {
+      "itemId": "main:6#0",
+      "candidateKey": "main:6",
+      "kind": "unconfirmed",
+      "at": 42,
+      "canonical": "1",
+      "ocrExtra": null,
+      "inputTextSha256": "6efe31a2ca24710334f9d810127ab0fb894f6df5c51a2364f2412b40041ac433",
+      "verdict": "source-reads-native",
+      "correction": null,
+      "note": "Actually read the highlighted figure/word and adjacent wording on the source strip. The native reading is printed; OCR failed to confirm it. Printed numeric editorial callouts are retained in this raw comparison, not promoted to operative law.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-exact-0000-0050/strips/article-cd0a831cbe9030b5fecb-0-0.png"
+      ],
+      "imageSha256s": [
+        "b260f614b37aa1b6ce9e2fab6b321cb39e95f820d9d4a026c7356e715a01a06a"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-009-body",
+          "box": [
+            0,
+            685,
+            2059,
+            810
+          ]
+        }
+      ]
+    },
+    {
+      "itemId": "main:7#0",
+      "candidateKey": "main:7",
+      "kind": "unconfirmed",
+      "at": 93,
+      "canonical": "آجال",
+      "ocrExtra": null,
+      "inputTextSha256": "445cfccea01a4e77f16e77f5ac4555841a830b4c9b9cef05302b6bf63946b4ed",
+      "verdict": "source-reads-native",
+      "correction": null,
+      "note": "Actually read the highlighted figure/word and adjacent wording on the source strip. The native reading is printed; OCR failed to confirm it. Printed numeric editorial callouts are retained in this raw comparison, not promoted to operative law.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-exact-0000-0050/strips/article-c7261c37c40ffd45a955-0-0.png"
+      ],
+      "imageSha256s": [
+        "e9aa7b6f21a3c1c37ce9e333bc0354cabd1168b8593d05d7f7b3f2dd0495a7f8"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-009-body",
+          "box": [
+            0,
+            1292,
+            2059,
+            1533
+          ]
+        }
+      ]
+    },
+    {
+      "itemId": "main:7#1",
+      "candidateKey": "main:7",
+      "kind": "unconfirmed",
+      "at": 97,
+      "canonical": "2",
+      "ocrExtra": null,
+      "inputTextSha256": "445cfccea01a4e77f16e77f5ac4555841a830b4c9b9cef05302b6bf63946b4ed",
+      "verdict": "source-reads-native",
+      "correction": null,
+      "note": "Actually read the highlighted figure/word and adjacent wording on the source strip. The native reading is printed; OCR failed to confirm it. Printed numeric editorial callouts are retained in this raw comparison, not promoted to operative law.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-exact-0000-0050/strips/article-c7261c37c40ffd45a955-1-0.png"
+      ],
+      "imageSha256s": [
+        "e9aa7b6f21a3c1c37ce9e333bc0354cabd1168b8593d05d7f7b3f2dd0495a7f8"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-009-body",
+          "box": [
+            0,
+            1292,
+            2059,
+            1533
+          ]
+        }
+      ]
+    },
+    {
+      "itemId": "main:13#0",
+      "candidateKey": "main:13",
+      "kind": "unconfirmed",
+      "at": 15,
+      "canonical": "12",
+      "ocrExtra": null,
+      "inputTextSha256": "e9546e9ad97eca4e715f1ce21d65ad2cadf5a1257c422c6ba4b4bbafff3cd608",
+      "verdict": "source-reads-native",
+      "correction": null,
+      "note": "Actually read the highlighted figure/word and adjacent wording on the source strip. The native reading is printed; OCR failed to confirm it. Printed numeric editorial callouts are retained in this raw comparison, not promoted to operative law.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-exact-0000-0050/strips/article-db3beee37f39f5750e89-0-0.png"
+      ],
+      "imageSha256s": [
+        "c178ffb46fef861a423962ab84ea4a0e73c6f3f996b6f22dcdcdefd387beea04"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-010-body",
+          "box": [
+            0,
+            1543,
+            2059,
+            1651
+          ]
+        }
+      ]
+    },
+    {
+      "itemId": "main:17#0",
+      "candidateKey": "main:17",
+      "kind": "unconfirmed",
+      "at": 38,
+      "canonical": "ا لتي",
+      "ocrExtra": null,
+      "inputTextSha256": "e35ff23786ebf9bddc41818eb16d882de858e6753be67c5d68cf0c9e4103de19",
+      "verdict": "native-spacing-correction",
+      "correction": {
+        "old": "ا لتي",
+        "new": "التي",
+        "expectedOccurrences": 1
+      },
+      "note": "Actual printed source joins the highlighted word; the native text has inserted spaces. Identical letters retained; no spelling/letter substitution or legal amendment inferred.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-exact-0000-0050/strips/article-2656b57066ae5e93c71c-0-0.png"
+      ],
+      "imageSha256s": [
+        "0421eab386b93c70f1ad91f924ab7e95fd47ce3991bb6b18e80cc3b16fa91f4d"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-011-body",
+          "box": [
+            0,
+            1897,
+            2059,
+            2011
+          ]
+        }
+      ]
+    },
+    {
+      "itemId": "main:18#0",
+      "candidateKey": "main:18",
+      "kind": "unconfirmed",
+      "at": 8,
+      "canonical": "ا لالتزامات",
+      "ocrExtra": null,
+      "inputTextSha256": "87e594b16e56104f1ef22047e3f2760b4cf268cfc4afcc81eb6724e73d8fd38b",
+      "verdict": "native-spacing-correction",
+      "correction": {
+        "old": "ا لالتزامات",
+        "new": "الالتزامات",
+        "expectedOccurrences": 1
+      },
+      "note": "Actual printed source joins the highlighted word; the native text has inserted spaces. Identical letters retained; no spelling/letter substitution or legal amendment inferred.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-exact-0000-0050/strips/article-915077da67b561133a11-0-0.png"
+      ],
+      "imageSha256s": [
+        "ed8b93b123629b35bbca2bafea5dc6817ff4ec80b9763c2b7ac9d4010a2eaa52"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-012-body",
+          "box": [
+            0,
+            847,
+            2059,
+            961
+          ]
+        }
+      ]
+    },
+    {
+      "itemId": "main:18#1",
+      "candidateKey": "main:18",
+      "kind": "unconfirmed",
+      "at": 20,
+      "canonical": "حقيق ي ة",
+      "ocrExtra": null,
+      "inputTextSha256": "87e594b16e56104f1ef22047e3f2760b4cf268cfc4afcc81eb6724e73d8fd38b",
+      "verdict": "native-spacing-correction",
+      "correction": {
+        "old": "حقيق ي ة",
+        "new": "حقيقية",
+        "expectedOccurrences": 1
+      },
+      "note": "Actual printed source joins the highlighted word; the native text has inserted spaces. Identical letters retained; no spelling/letter substitution or legal amendment inferred.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-exact-0000-0050/strips/article-915077da67b561133a11-1-0.png"
+      ],
+      "imageSha256s": [
+        "53cc7fc9e83a174617f4798cecec76367548641742eeb15172da647b5041b10a"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-012-body",
+          "box": [
+            0,
+            848,
+            2059,
+            1047
+          ]
+        }
+      ]
+    },
+    {
+      "itemId": "main:21#0",
+      "candidateKey": "main:21",
+      "kind": "unconfirmed",
+      "at": 5,
+      "canonical": "أ حكام",
+      "ocrExtra": null,
+      "inputTextSha256": "7f68773fe14eeff6f0003f33ee7c421ba61e288c6d51e69baf9230f57250f68e",
+      "verdict": "native-spacing-correction",
+      "correction": {
+        "old": "أ حكام",
+        "new": "أحكام",
+        "expectedOccurrences": 1
+      },
+      "note": "Actual printed source joins the highlighted word; the native text has inserted spaces. Identical letters retained; no spelling/letter substitution or legal amendment inferred.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-exact-0000-0050/strips/article-99083b378c2670b0d64c-0-0.png"
+      ],
+      "imageSha256s": [
+        "68cc8642684ab8034864c77ba13d22e8a8dfe2f1c4a7a1367f93550a22ff8bfd"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-012-body",
+          "box": [
+            0,
+            2017,
+            2059,
+            2126
+          ]
+        }
+      ]
+    },
+    {
+      "itemId": "main:21#1",
+      "candidateKey": "main:21",
+      "kind": "extra-in-all-streams",
+      "at": 26,
+      "canonical": "",
+      "ocrExtra": [
+        "المادة"
+      ],
+      "inputTextSha256": "7f68773fe14eeff6f0003f33ee7c421ba61e288c6d51e69baf9230f57250f68e",
+      "verdict": "outside-article-next-label",
+      "correction": null,
+      "note": "Actual source shows the closing phrase دولية نافذة في الجزائر followed by the separate label المادة21مكرر. The flagged المادة belongs to that following article, not missing operative text of21. Both duplicated gap flags were inspected.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-exact-0000-0050/strips/article-99083b378c2670b0d64c-1-0.png"
+      ],
+      "imageSha256s": [
+        "a84105245d9b4702547c4b51c2318e97f54e3b3b1a8e8d3c2b149b281900347c"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-012-body",
+          "box": [
+            0,
+            2097,
+            2059,
+            2332
+          ]
+        }
+      ]
+    },
+    {
+      "itemId": "main:21#2",
+      "candidateKey": "main:21",
+      "kind": "extra-in-all-streams",
+      "at": 27,
+      "canonical": "",
+      "ocrExtra": [
+        "المادة"
+      ],
+      "inputTextSha256": "7f68773fe14eeff6f0003f33ee7c421ba61e288c6d51e69baf9230f57250f68e",
+      "verdict": "outside-article-next-label",
+      "correction": null,
+      "note": "Actual source shows the closing phrase دولية نافذة في الجزائر followed by the separate label المادة21مكرر. The flagged المادة belongs to that following article, not missing operative text of21. Both duplicated gap flags were inspected.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-exact-0000-0050/strips/article-99083b378c2670b0d64c-2-0.png"
+      ],
+      "imageSha256s": [
+        "a84105245d9b4702547c4b51c2318e97f54e3b3b1a8e8d3c2b149b281900347c"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-012-body",
+          "box": [
+            0,
+            2097,
+            2059,
+            2332
+          ]
+        }
+      ]
+    },
+    {
+      "itemId": "main:22#0",
+      "candidateKey": "main:22",
+      "kind": "unconfirmed",
+      "at": 21,
+      "canonical": "يطب ق",
+      "ocrExtra": null,
+      "inputTextSha256": "bdb32f5804bb7d0fd8f4bf8856c6e9c72075d95f211f957f55c8fd6e563d0f66",
+      "verdict": "native-spacing-correction",
+      "correction": {
+        "old": "يطب ق",
+        "new": "يطبق",
+        "expectedOccurrences": 1
+      },
+      "note": "Actual printed source joins the highlighted word; the native text has inserted spaces. Identical letters retained; no spelling/letter substitution or legal amendment inferred.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-exact-0000-0050/strips/article-051fe4ef4f912c84ccee-0-0.png"
+      ],
+      "imageSha256s": [
+        "e56e9e4a39bf6d323d0b0614ca9ddd5a05bd730694b156a15ea89fdeccb2e7a2"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-013-body",
+          "box": [
+            0,
+            258,
+            2059,
+            372
+          ]
+        }
+      ]
+    },
+    {
+      "itemId": "main:23 مكرر 2#0",
+      "candidateKey": "main:23 مكرر 2",
+      "kind": "unconfirmed",
+      "at": 14,
+      "canonical": "في م ا",
+      "ocrExtra": null,
+      "inputTextSha256": "73b8349e425a7d937e01b637ddeefb89c364c9a1683eb5d60c9088ada6e43e32",
+      "verdict": "native-spacing-correction",
+      "correction": {
+        "old": "في م ا",
+        "new": "فيما",
+        "expectedOccurrences": 1
+      },
+      "note": "Actual printed source joins the highlighted word; the native text has inserted spaces. Identical letters retained; no spelling/letter substitution or legal amendment inferred.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-exact-0000-0050/strips/article-157d77e0108824d51abf-0-0.png"
+      ],
+      "imageSha256s": [
+        "e53cd538d66ce06b0db08dc30ff6b216cc20bc0c983b70efb245605987aa4184"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-013-body",
+          "box": [
+            0,
+            1552,
+            2059,
+            1671
+          ]
+        }
+      ]
+    },
+    {
+      "itemId": "main:24#0",
+      "candidateKey": "main:24",
+      "kind": "unconfirmed",
+      "at": 16,
+      "canonical": "م خالفا",
+      "ocrExtra": null,
+      "inputTextSha256": "0fa8a0bb631bdcc32b3c4b3c3c40194c635346b77991347b8a8fd311350349fd",
+      "verdict": "native-spacing-correction",
+      "correction": {
+        "old": "م خالفا",
+        "new": "مخالفا",
+        "expectedOccurrences": 1
+      },
+      "note": "Actual printed source joins the highlighted word; the native text has inserted spaces. Identical letters retained; no spelling/letter substitution or legal amendment inferred.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-exact-0000-0050/strips/article-9751f091b39bc5d60bb7-0-0.png"
+      ],
+      "imageSha256s": [
+        "a67c97d37b2a7b79860bf7e51f97080f966a67fe69955146d4126663016448d9"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-013-body",
+          "box": [
+            0,
+            1813,
+            2059,
+            1928
+          ]
+        }
+      ]
+    },
+    {
+      "itemId": "main:26#0",
+      "candidateKey": "main:26",
+      "kind": "unconfirmed",
+      "at": 21,
+      "canonical": "بالسجلا ت،",
+      "ocrExtra": null,
+      "inputTextSha256": "408575ab4d9cee648b1b0a0f0d297337bc0c67cc615658dbf601a7a00aae8ba1",
+      "verdict": "native-spacing-correction",
+      "correction": {
+        "old": "بالسجلا ت،",
+        "new": "بالسجلات،",
+        "expectedOccurrences": 1
+      },
+      "note": "Actual printed source joins the highlighted word; the native text has inserted spaces. Identical letters retained; no spelling/letter substitution or legal amendment inferred.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-exact-0000-0050/strips/article-328c96ba184102a741af-0-0.png"
+      ],
+      "imageSha256s": [
+        "294517e9483300858dc19bc0966ef810bcd61de2408574a8b58cb1b48873662c"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-014-body",
+          "box": [
+            0,
+            980,
+            2059,
+            1095
+          ]
+        }
+      ]
+    },
+    {
+      "itemId": "main:34#0",
+      "candidateKey": "main:34",
+      "kind": "unconfirmed",
+      "at": 36,
+      "canonical": "الآخر،",
+      "ocrExtra": null,
+      "inputTextSha256": "e96d881ab16ae01bb3139c9b021bdf8ec881718d0409481671b5eab13e762360",
+      "verdict": "source-reads-native",
+      "correction": null,
+      "note": "Actually read the highlighted figure/word and adjacent wording on the source strip. The native reading is printed; OCR failed to confirm it. Printed numeric editorial callouts are retained in this raw comparison, not promoted to operative law.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-exact-0000-0050/strips/article-6cbbfb6b1561feeca8da-0-0.png"
+      ],
+      "imageSha256s": [
+        "d2f7bfc16c80d09be779d431f1d0e071b37ee91740165c6a6d60eda2fbd7bd6e"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-015-body",
+          "box": [
+            0,
+            215,
+            2059,
+            390
+          ]
+        }
+      ]
+    },
+    {
+      "itemId": "main:38#0",
+      "candidateKey": "main:38",
+      "kind": "unconfirmed",
+      "at": 36,
+      "canonical": "2",
+      "ocrExtra": null,
+      "inputTextSha256": "743b5f6f0769ba6738ff8c5c1192c3a909c76097a166d4ca163192cdc17fd431",
+      "verdict": "source-reads-native",
+      "correction": null,
+      "note": "Actually read the highlighted figure/word and adjacent wording on the source strip. The native reading is printed; OCR failed to confirm it. Printed numeric editorial callouts are retained in this raw comparison, not promoted to operative law.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-exact-0000-0050/strips/article-7af8e24424a02bd48a03-0-0.png"
+      ],
+      "imageSha256s": [
+        "e2313e98d76a3ea03edfae018758c0aa81f03fb82a2a92383aea72b574072a9d"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-015-body",
+          "box": [
+            0,
+            1094,
+            2059,
+            1219
+          ]
+        }
+      ]
+    },
+    {
+      "itemId": "main:39#0",
+      "candidateKey": "main:39",
+      "kind": "unconfirmed",
+      "at": 52,
+      "canonical": "3",
+      "ocrExtra": null,
+      "inputTextSha256": "e00d507a0d6c1c7987fb70c35001367b94d3100ddf433104f27b4ac349f6e6ff",
+      "verdict": "source-reads-native",
+      "correction": null,
+      "note": "Actually read the highlighted figure/word and adjacent wording on the source strip. The native reading is printed; OCR failed to confirm it. Printed numeric editorial callouts are retained in this raw comparison, not promoted to operative law.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-exact-0000-0050/strips/article-e2c431d033868aa394a8-0-0.png"
+      ],
+      "imageSha256s": [
+        "5c9ac2b8b6a90b9311c2f10873f6bd91f65260d16fa4ba03c16b03649341b34f"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-015-body",
+          "box": [
+            0,
+            1410,
+            2059,
+            1529
+          ]
+        }
+      ]
+    }
+  ],
+  "sheetsActuallyRead": [
+    {
+      "image": "tools/law-corpus/.cache/evidence/reviews/civil-exact-0000-0050/civil-exact-0000-0050-001.png",
+      "sha256": "a8f552d416d1d0afc1933701070a4e2e5c3cfcfb1d175c33180f45b0c9a1ac51"
+    },
+    {
+      "image": "tools/law-corpus/.cache/evidence/reviews/civil-exact-0000-0050/civil-exact-0000-0050-002.png",
+      "sha256": "2c6d8ab196111cd1a74a21f8255aa8d81e8295e164677f55c0f5af5398078a75"
+    },
+    {
+      "image": "tools/law-corpus/.cache/evidence/reviews/civil-exact-0000-0050/civil-exact-0000-0050-003.png",
+      "sha256": "496d92ee402e1d54dd266838366c0ae389c549600f89440e49ae80acb40c7fae"
+    }
+  ],
+  "verificationEffect": "18 targeted word/figure/extra flags read; nine proposed guarded spacing edits across eight source candidates. No edits applied to raw/prepared/typed text; paragraphs/headings/amendments/dates and punctuation remain separate."
+}

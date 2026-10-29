@@ -22,6 +22,11 @@ import review_sheets
 CONTEXT = 8
 
 
+def file_tag(number: str) -> str:
+    # Qualified research identities contain a colon, which Windows reserves in filenames.
+    return "article-" + pipeline.hash_text(number)[:20] if ":" in number else number.replace(" ", "_")
+
+
 def matched_pairs(canonical: list[str], ocr: list[dict]) -> list[tuple[int, int]]:
     matcher = difflib.SequenceMatcher(a=[nc.fold(t) for t in canonical], b=[nc.fold(t["token"]) for t in ocr], autojunk=False)
     return [(m.a + k, m.b + k) for m in matcher.get_matching_blocks() for k in range(m.size)]
@@ -76,7 +81,7 @@ def build(articles: list[dict], check: dict, manifest_path, source: str, name: s
             regions = strips(ocr, pairs, first, last, folders, tight=True) if ocr else []
             images = []
             for n, region in enumerate(regions):
-                path = out_dir / "strips" / f"{result['number'].replace(' ', '_')}-{k}-{n}.png"
+                path = out_dir / "strips" / f"{file_tag(result['number'])}-{k}-{n}.png"
                 Image.open(folders[region["source"]] / "crop.png").crop(region["box"]).save(path)
                 images.append(str(path))
             highlight = list(range(first, last + 1)) if d["kind"] == "unconfirmed" else []

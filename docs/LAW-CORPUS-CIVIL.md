@@ -2,7 +2,17 @@
 
 29 October 2026, `codex/law-corpus`. **No completed Civil delivery is claimed.** The typed package has48 identities:45 with text and three reference-only Family citation targets;55 versions (seven checked,32 partly-checked,16 unsettled). The reference-only identities contain no versions/texts. The preparation below is separate research data and has not replaced existing versions or the application's law library.
 
-## Latest word-review batch: source-order250–350
+## Latest source readings: source-order350–450, application pending
+
+All **80 flagged groups** in this batch were actually read on14 sheets,26 wider crops shown on seven overviews and one further enlarged350 heading view. Every original body/flag/proof hash replays. `image-readings-ministry-words-0350-0450.json` is deliberately a **reading-only record**, with `mechanicalApplicationComplete:false`; it is not a legacy applier decision file and grants no checked state. Source-image review now reaches450 candidates (266 flag findings in total); guarded derived repairs remain the58 recorded through350.
+
+The readings propose24 letter-identical spacing restorations. Four flags involve the printed `100.000` amounts in333/334; another isolated-alef flag in333 needs a unique contextual repair rather than replacing one letter by a whole word. The single-word applier continues to reject these multiword/numeric/context operations. Before applying them, bind the exact context, preserve every digit group/dot/negation and handle each repeated occurrence explicitly. Do not weaken the existing digit-join/ambiguity tests.
+
+Two real preparation defects are also source-proven:350 wrongly includes the following `-1 أركان البيع` heading as a body paragraph;360 includes the following numbered `التزامات البائع` heading. Their printed pages were actually enlarged and read. The final derived body must exclude those headings while retaining them as source/path metadata; raw native candidates stay intact. Other numbered headings, page footers, next405/419 labels and comma-as-hamza OCR artifacts have explicit findings. All typed Civil data remains unchanged.
+
+Next: implement/replay these guarded projections and finish batch350–450; the next **unread image batch** begins450. Preserve the finished readings rather than rerendering or assuming the pending projections were applied. Paragraph/path/editorial and JO amendment validation still precede any full typed import.
+
+## Previous word-review batch: source-order250–350
 
 All **57 word/figure/extra flags** in this100-candidate batch were actually read on10 sheets and16 wider heading/footer crops (shown on four inspected overviews). The guarded output saves **11 spacing repairs in11 separate research bodies**. Cumulative review now covers all flagged groups in the **first350 source candidates:186 decisions,58 spacing repairs in55 derived bodies**. Next source-order offset is350. Native/prepared/typed law remains unchanged.
 
@@ -54,7 +64,7 @@ The full Python suite now has182 passing tests and JSON Schema validation has0 e
 
 Remaining work:
 
-1. Continue targeted image review from source-order offset350. Both readers and both strict diagnostics are complete. Keep the original audit and its derived page-bounded comparison separate; do not repeat OCR. Preserve the first350 candidates' recorded decisions and derived repairs. Retain punctuation uncertainty explicitly.
+1. Finish guarded application of the completed350–450 source readings, then continue image review from offset450. Both readers and both strict diagnostics are complete. Keep the original audit and its derived page-bounded comparison separate; do not repeat OCR. Preserve the first350 candidates' completed decisions/repairs and the next80 source findings. Retain punctuation uncertainty explicitly.
 2. Remove editorial annotations with guarded, reversible projections; validate paragraph and heading boundaries.
 3. Reconcile every amending publication, insertion, partial rewrite and repeal against the JO, including qualified local numbering. Keep current outcomes separate from the deferred complete historical archive.
 4. Import the complete current package with provenance, references and honest temporal limits; preserve the earlier typed history and checked pilot records.

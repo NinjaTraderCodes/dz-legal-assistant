@@ -2,7 +2,25 @@
 
 29 October 2026, `codex/law-corpus`. **No completed Civil delivery is claimed.** The typed package has48 identities:45 with text and three reference-only Family citation targets;55 versions (seven checked,32 partly-checked,16 unsettled). The reference-only identities contain no versions/texts. The preparation below is separate research data and has not replaced existing versions or the application's law library.
 
-**Paused by the user on29October2026.** Read [the safe-pause/restart record](LAW-CORPUS-PAUSE-2026-10-29-PRIORITIES.md). Approved checkpoints through9fa6a0f are pushed and remote-verified; the following boundary/pause checkpoint stays local. No research/OCR resumes without the user's instruction.
+**Resumed at the user's instruction after the29October pause.** Approved checkpoints through9fa6a0f are pushed and remote-verified;598b325 stays local and is not approved for push. Its completed post-commit gate passed694 .NET/262 Python tests, zero warnings/errors. The [pause record](LAW-CORPUS-PAUSE-2026-10-29-PRIORITIES.md) preserves the previous checkpoint; the following paragraph/layout review supersedes its next step2.
+
+## Resumed Arabic body, annotation and paragraph review
+
+All **48 complete Ministry page images containing the274 selected identities were actually inspected** for article-body boundaries, paragraph starts/continuations, status labels and footnote markers. `priority-layout-readings.json` binds every identity to its input text and all its page-image hashes. This is a compilation-layout review, not a new independent whole-word comparison, historical certification or French alignment.
+
+`civil_priority_layout.py` now produces `priority-layout-projection.json`: **234 body projections and40 compilation repeal markers**. The40 markers comprise37 in the lease unit plus96,115 and135; original amending instructions must still confirm each legal repeal. **101 status annotations and101 trailing footnote callouts** move into separate source metadata, preserving all **14 parenthesized legal quantities**, fractions, references and list numbers. No blanket parenthesis/number removal is used. The extra cause-heading callout stays with its excluded heading metadata.
+
+Two further body defects were found and projected with closed, source-bound guards:
+
+- **95:** the following bold numbered heading `2 مكرر – السبب (جديدة) (1)` is excluded from the article body and retained as metadata.
+- **140bis1:** the PDF text layer merged the final legal line `بالتعويض عن هذا الضرر.(4)` with the underscore divider. The printed page32 visibly places it above the divider. That exact cached native fragment is restored, then only editorial `(4)` is separated. The prior diagnostic's agreement could not certify an omitted line; the raw candidate/audit remain unchanged as evidence of that limitation.
+- **489:** the second printed paragraph begins `فإذا لحق المستأجر ضرر من العيب`. The source-read split changes no legal word. The original/pilot's partial-replacement and retained-second-paragraph evidence remains intact.
+
+Three page continuations (365,378,544) were read across both pages; page breaks are not automatically paragraph breaks. Compilation554 retains its three printed paragraphs and legal `(10)`; this does not assert that the original JO uses identical layout. No general heading cleanup, preferred-spelling repair or historical reconstruction was performed.
+
+Eleven new fictitious regression cases cover omitted-line restoration, stale/missing/cross-page proof, arbitrary heading/negation deletion, retained quantities, illegal repeal-body loss and exact paragraph splitting. **273 Python tests and schema validation pass (zero errors)** before this checkpoint; its required post-commit Release gate is recorded separately. No tests were removed/weakened. No manual app run for this data/tool-only checkpoint; automated app/web regressions are included in the gate. Files outside corpus/tools: this report, the coverage report and restart record.
+
+**Typed Civil is still unchanged and the checked partial package is not delivered.** Next: reconcile current amended outcomes and40 repeals against the actual instructions, then references/independent inventory/sample and guarded typed import. Use the new layout projection rather than rerunning the completed48-page review. Full amendment/body reconciliation may replace compilation spelling only with explicit authoritative-source decisions; this projection itself makes no such legal inference.
 
 The final pre-pause boundary review actually inspected28 cases on five sheets (plus enlarged64/561/568 strips), after separating144 exact separate-word witnesses from172 diagnostic OCR-join events. `priority-word-boundary-projection.json` applies19 source-read word restorations and retains nine valid boundaries. The specific456 follow-up below is now resolved in this later projection. A closed, source/body/image/token-bound registry handles64/456's noun prefixes without relaxing general independent-negation protection. Source561/568's`خطإ` spelling remains unchanged. Research spacing repairs total111 (58+13+21+19); the262 Python regressions pass. **Typed Civil remains unchanged and the checked partial delivery still awaits the remaining gates.**
 

@@ -28,6 +28,8 @@ using DzLegal.Harness;
 //   dzlegal-harness facts --models <gemma3:4b,qwen3.5:2b,...> [--out bench-facts] [--partition development,validation,robustness] [--case <name>]
 //       The fact-reading step (docs/FACT-READING.md): each reader extracts roles, events, dates, amounts and requests,
 //       scored against the answer key in tests/fact-cases, critical errors counted per case.
+//   dzlegal-harness facts --alpha [--claims given|read] --models <...>   Alpha-01 (docs/ALPHA-01.md): the case is read
+//       against its claim type, given (the answer key's) or read by the analysis's first step; the role follows from it.
 //   dzlegal-harness facts export --out <inputs.json>      the cases as numbered sentences, for a reader outside .NET
 //   dzlegal-harness facts score --predictions <file.json> [--reader <name>] [--out <folder>]   scores that reader
 //   dzlegal-harness law import <code-id> (--url <official url> | --file <file>) [--law-root data/law] [--as-of yyyy-mm-dd]
@@ -265,6 +267,14 @@ if (args.Length > 0 && args[0] == "facts")
 
     var lawRoot = Option("--law-root", Path.Combine(AppContext.BaseDirectory, "data", "law"));
     var prompt = DzLegal.Drafting.FactReader.LoadPrompt(lawRoot);
+    var alpha = args.Contains("--alpha");
+    var claimsMode = Option("--claims", AlphaFacts.Given);
+    if (alpha && claimsMode is not (AlphaFacts.Given or AlphaFacts.Read))
+    {
+        Console.Error.WriteLine("facts: --claims is 'given' (the answer key's claim type) or 'read' (the analysis reads it).");
+        return 2;
+    }
+
     if (factOut is not null)
     {
         Directory.CreateDirectory(factOut);
@@ -272,14 +282,30 @@ if (args.Length > 0 && args[0] == "facts")
         RunManifest.Create(
             "facts",
             readers,
-            new Dictionary<string, string> { ["prompt"] = Path.Combine(lawRoot, DzLegal.Drafting.FactReader.PromptFile), ["cases"] = Option("--cases", Path.Combine(AppContext.BaseDirectory, "fact-cases")) },
-            new Dictionary<string, string> { ["partition"] = string.Join(',', factPartition), ["case"] = args.Contains("--case") ? Option("--case", string.Empty) : "all", ["endpoint"] = Option("--endpoint", "http://127.0.0.1:11434") })
+            alpha
+                ? new Dictionary<string, string>
+                {
+                    ["prompt"] = Path.Combine(lawRoot, DzLegal.Drafting.ClaimFactReader.PromptFile),
+                    ["elements"] = Path.Combine(lawRoot, DzLegal.Drafting.ClaimFactReader.ElementsFile),
+                    ["claims prompt"] = Path.Combine(lawRoot, DzLegal.Law.LegalKnowledgeLoader.ReadFactsPromptFile),
+                    ["cases"] = Option("--cases", Path.Combine(AppContext.BaseDirectory, "fact-cases")),
+                }
+                : new Dictionary<string, string> { ["prompt"] = Path.Combine(lawRoot, DzLegal.Drafting.FactReader.PromptFile), ["cases"] = Option("--cases", Path.Combine(AppContext.BaseDirectory, "fact-cases")) },
+            new Dictionary<string, string>
+            {
+                ["reader"] = alpha ? "alpha-01, claims " + claimsMode : "lines",
+                ["partition"] = string.Join(',', factPartition),
+                ["case"] = args.Contains("--case") ? Option("--case", string.Empty) : "all",
+                ["endpoint"] = Option("--endpoint", "http://127.0.0.1:11434"),
+            })
             .Write(factOut);
     }
 
     foreach (var model in readers)
     {
-        Console.WriteLine($"Fact reading with {model}: {factCases.Count} case(s), one call each");
+        Console.WriteLine(alpha
+            ? $"Fact reading (Alpha-01, claim type {(claimsMode == AlphaFacts.Given ? "given" : "read by the analysis")}) with {model}: {factCases.Count} case(s), {(claimsMode == AlphaFacts.Given ? "one call" : "two calls")} each"
+            : $"Fact reading with {model}: {factCases.Count} case(s), one call each");
         if (HarnessModels.IsHosted(model))
         {
             Console.WriteLine("  Hosted engine: the (fictitious) test cases are sent to that service.");
@@ -298,7 +324,9 @@ if (args.Length > 0 && args[0] == "facts")
         }
 
         using var paced = new PacedModelProvider(provider, HarnessModels.Pace(model, args.Contains("--delay-seconds") ? double.Parse(Option("--delay-seconds", "0"), CultureInfo.InvariantCulture) : -1));
-        var report = await FactsEvaluator.RunAsync(factCases, paced, prompt, Console.Out, factOut);
+        var report = alpha
+            ? await FactsEvaluator.RunAsync(factCases, $"{paced.Name} (alpha-01, claims {claimsMode})", AlphaFacts.Reader(paced, lawRoot, claimsMode), Console.Out, factOut)
+            : await FactsEvaluator.RunAsync(factCases, paced, prompt, Console.Out, factOut);
         var text = FactsEvaluator.Summary(report, speed.Table());
         Console.WriteLine(text);
         if (factOut is not null)

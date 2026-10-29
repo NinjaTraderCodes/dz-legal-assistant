@@ -102,11 +102,7 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
         }
 
         progress?.Report(AnalysisStage.Reading);
-        var readingRequest = BuildReadingRequest(knowledge, subject, facts, claims);
-        Trace?.Invoke("reading.prompt", readingRequest.UserPrompt);
-        var readingAnswer = await CollectAsync(AnalysisStage.Reading, readingRequest, cancellationToken);
-        Trace?.Invoke("reading.answer", readingAnswer);
-        var reading = Corrected(ParseReading(readingAnswer, claims), facts, claims);
+        var reading = await ReadAsync(knowledge, subject, facts, claims, cancellationToken);
 
         progress?.Report(AnalysisStage.Searching);
         var candidates = Candidates(knowledge, reading, claims);
@@ -160,6 +156,28 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
     }
 
     /// <summary>Streams one model answer, reporting the text so far, and returns the whole answer.</summary>
+    /// <summary>
+    /// Stage 1 alone: the claim types the facts point to, among those of the court section's area (none for an
+    /// administrative section). The fact-reading benches use it to measure the whole chain.
+    /// </summary>
+    public Task<FactsReading> ReadClaimsAsync(LegalKnowledge knowledge, string subject, string facts, string? courtSection, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(knowledge);
+        var area = LegalAreas.AreaOf(courtSection);
+        return area == LegalAreas.Administrative
+            ? Task.FromResult(FactsReading.Empty)
+            : ReadAsync(knowledge, subject, facts, [.. knowledge.Claims.Where(c => area is null || c.Area == area)], cancellationToken);
+    }
+
+    private async Task<FactsReading> ReadAsync(LegalKnowledge knowledge, string subject, string facts, IReadOnlyList<ClaimType> claims, CancellationToken cancellationToken)
+    {
+        var readingRequest = BuildReadingRequest(knowledge, subject, facts, claims);
+        Trace?.Invoke("reading.prompt", readingRequest.UserPrompt);
+        var readingAnswer = await CollectAsync(AnalysisStage.Reading, readingRequest, cancellationToken);
+        Trace?.Invoke("reading.answer", readingAnswer);
+        return Corrected(ParseReading(readingAnswer, claims), facts, claims);
+    }
+
     private async Task<string> CollectAsync(AnalysisStage stage, ModelRequest request, CancellationToken cancellationToken)
     {
         var text = new StringBuilder();

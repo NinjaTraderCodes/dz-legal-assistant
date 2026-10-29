@@ -1,0 +1,303 @@
+{
+  "comment": "Alpha-01 (harness only, not used by the app). For each claim type of the catalog (data/law/claims): the relationship and the plaintiff's position it implies, and the few facts and requests a reader looks for once the lawyer has confirmed the claim type. Drafted by the engineering team from each claim's own factsToState and suggestedRequests; the codes are those of FactVocabulary (src/DzLegal.Drafting/CaseFacts.cs). When a claim type allows more than one role, the reader is asked to choose among them only. An element's actor is plaintiff, defendant, or a position (lessor…): that party is the plaintiff when it is the plaintiff's position, otherwise the defendant. See docs/ALPHA-01.md.",
+  "claims": [
+    {
+      "claim": "loan-repayment",
+      "roles": [ { "relation": "loan", "position": "lender", "label": "المقرض" } ],
+      "elements": [
+        { "event": "money_lent", "actor": "plaintiff", "label": "سلّم المدعي المدعى عليه مبلغا على سبيل القرض أو السلفة", "date": true, "amount": true },
+        { "event": "debt_acknowledged", "actor": "defendant", "label": "اعترف المدعى عليه بالدين كتابة أو بإقرار", "date": true, "amount": true },
+        { "event": "deadline_passed", "label": "حلّ أجل الرد المتفق عليه", "date": true },
+        { "event": "payment_made", "actor": "defendant", "label": "دفع المدعى عليه جزءا من المبلغ", "date": true, "amount": true },
+        { "event": "debt_unpaid", "actor": "defendant", "label": "لم يرد المدعى عليه المبلغ أو باقيه", "amount": true },
+        { "event": "notice_served", "actor": "plaintiff", "label": "طالب المدعي المدعى عليه بالرد أو أعذره", "date": true }
+      ],
+      "requests": [
+        { "kind": "payment", "label": "إلزام المدعى عليه بدفع مبلغ القرض", "amount": true },
+        { "kind": "damages", "label": "تعويض عن التماطل أو الضرر", "amount": true }
+      ]
+    },
+    {
+      "claim": "unpaid-sale-price",
+      "roles": [ { "relation": "sale", "position": "seller", "label": "البائع" } ],
+      "elements": [
+        { "event": "contract_concluded", "label": "إبرام البيع بين الطرفين", "date": true, "amount": true },
+        { "event": "goods_delivered", "actor": "plaintiff", "label": "سلّم المدعي المبيع للمدعى عليه", "date": true },
+        { "event": "payment_made", "actor": "defendant", "label": "دفع المدعى عليه جزءا من الثمن", "date": true, "amount": true },
+        { "event": "price_unpaid", "actor": "defendant", "label": "لم يدفع المدعى عليه الثمن أو باقيه", "amount": true },
+        { "event": "notice_served", "actor": "plaintiff", "label": "طالب المدعي المدعى عليه بالدفع أو أعذره", "date": true }
+      ],
+      "requests": [
+        { "kind": "payment", "label": "إلزام المدعى عليه بدفع الثمن أو باقيه", "amount": true },
+        { "kind": "damages", "label": "تعويض عن التأخر في الدفع", "amount": true }
+      ]
+    },
+    {
+      "claim": "contract-rescission",
+      "roles": [
+        { "relation": "sale", "position": "buyer", "label": "المشتري في عقد بيع" },
+        { "relation": "sale", "position": "seller", "label": "البائع في عقد بيع" },
+        { "relation": "works_contract", "position": "client", "label": "صاحب المشروع في عقد مقاولة أو أشغال" },
+        { "relation": "works_contract", "position": "contractor", "label": "المقاول في عقد مقاولة أو أشغال" },
+        { "relation": "other", "position": "other", "label": "طرف في عقد آخر" }
+      ],
+      "elements": [
+        { "event": "contract_concluded", "label": "إبرام العقد بين الطرفين", "date": true, "amount": true },
+        { "event": "payment_made", "actor": "plaintiff", "label": "دفع المدعي الثمن أو تسبيقا منه", "date": true, "amount": true },
+        { "event": "delivery_missing", "actor": "defendant", "label": "لم يسلم المدعى عليه الشيء محل العقد" },
+        { "event": "work_stopped", "actor": "defendant", "label": "توقف المدعى عليه عن الأشغال أو أخل بتنفيذها" },
+        { "event": "notice_served", "actor": "plaintiff", "label": "أعذر المدعي المدعى عليه بالتنفيذ", "date": true }
+      ],
+      "requests": [
+        { "kind": "rescission", "label": "فسخ العقد" },
+        { "kind": "restitution", "label": "إرجاع ما دفعه المدعي", "amount": true },
+        { "kind": "damages", "label": "تعويض", "amount": true }
+      ]
+    },
+    {
+      "claim": "sale-annulment-fraud",
+      "roles": [
+        { "relation": "sale", "position": "buyer", "label": "المشتري" },
+        { "relation": "sale", "position": "seller", "label": "البائع" },
+        { "relation": "other", "position": "other", "label": "طرف في عقد آخر غير البيع" }
+      ],
+      "elements": [
+        { "event": "contract_concluded", "label": "إبرام العقد بين الطرفين", "date": true, "amount": true },
+        { "event": "concealment", "actor": "defendant", "label": "كتم المدعى عليه واقعة عمدا أو استعمل حيلا دفعت المدعي إلى التعاقد" },
+        { "event": "payment_made", "actor": "plaintiff", "label": "دفع المدعي الثمن", "date": true, "amount": true }
+      ],
+      "requests": [
+        { "kind": "annulment", "label": "إبطال العقد" },
+        { "kind": "restitution", "label": "إرجاع الثمن أو ما دفعه المدعي", "amount": true },
+        { "kind": "damages", "label": "تعويض", "amount": true }
+      ]
+    },
+    {
+      "claim": "contract-damages",
+      "roles": [
+        { "relation": "sale", "position": "buyer", "label": "المشتري في عقد بيع" },
+        { "relation": "sale", "position": "seller", "label": "البائع في عقد بيع" },
+        { "relation": "works_contract", "position": "client", "label": "صاحب المشروع في عقد مقاولة أو أشغال" },
+        { "relation": "works_contract", "position": "contractor", "label": "المقاول في عقد مقاولة أو أشغال" },
+        { "relation": "transport_contract", "position": "client", "label": "صاحب البضاعة في عقد نقل" },
+        { "relation": "lease", "position": "lessee", "label": "المستأجر في عقد إيجار" },
+        { "relation": "lease", "position": "lessor", "label": "المؤجر في عقد إيجار" },
+        { "relation": "other", "position": "creditor", "label": "الدائن بالتزام في عقد آخر" }
+      ],
+      "elements": [
+        { "event": "contract_concluded", "label": "إبرام العقد بين الطرفين", "date": true, "amount": true },
+        { "event": "delivery_late", "actor": "defendant", "label": "تأخر المدعى عليه في التسليم أو التنفيذ عن الموعد المتفق عليه", "date": true },
+        { "event": "delivery_missing", "actor": "defendant", "label": "لم يسلم المدعى عليه ما التزم بتسليمه" },
+        { "event": "work_stopped", "actor": "defendant", "label": "توقف المدعى عليه عن الأشغال أو أخل بتنفيذها" },
+        { "event": "other", "actor": "defendant", "label": "أخل المدعى عليه بالتزام تعاقدي آخر" },
+        { "event": "notice_served", "actor": "plaintiff", "label": "أعذر المدعي المدعى عليه بالتنفيذ", "date": true }
+      ],
+      "requests": [
+        { "kind": "damages", "label": "تعويض عن الضرر", "amount": true },
+        { "kind": "other", "label": "تنفيذ الالتزام أو تمكين المدعي من حقه" }
+      ]
+    },
+    {
+      "claim": "tort-damages",
+      "roles": [ { "relation": "none", "position": "victim", "label": "المضرور" } ],
+      "elements": [
+        { "event": "harm_by_person", "actor": "defendant", "label": "ارتكب المدعى عليه فعلا ضارا (اعتداء، إهمال، تشهير، إتلاف)", "date": true },
+        { "event": "criminal_conviction", "label": "صدر حكم جزائي بإدانة المدعى عليه", "date": true }
+      ],
+      "requests": [
+        { "kind": "damages", "label": "تعويض عن الضرر", "amount": true }
+      ]
+    },
+    {
+      "claim": "liability-for-things",
+      "roles": [ { "relation": "none", "position": "victim", "label": "المضرور" } ],
+      "elements": [
+        { "event": "harm_by_thing", "label": "أحدث شيء في حراسة المدعى عليه ضررا (تسرب مياه، آلة، سيارة…)", "date": true },
+        { "event": "harm_by_animal", "label": "أحدث حيوان في حراسة المدعى عليه ضررا", "date": true },
+        { "event": "harm_by_building", "label": "انهدم بناء أو جزء منه في حراسة المدعى عليه فأحدث ضررا", "date": true }
+      ],
+      "requests": [
+        { "kind": "damages", "label": "إصلاح الأضرار أو التعويض عنها", "amount": true }
+      ]
+    },
+    {
+      "claim": "unpaid-rent",
+      "roles": [ { "relation": "lease", "position": "lessor", "label": "المؤجر" } ],
+      "elements": [
+        { "event": "contract_concluded", "label": "إبرام عقد الإيجار وبدله", "date": true, "amount": true },
+        { "event": "lease_started", "label": "بداية الانتفاع بالعين المؤجرة", "date": true },
+        { "event": "rent_unpaid", "actor": "defendant", "label": "لم يدفع المدعى عليه بدلات الإيجار المستحقة", "amount": true },
+        { "event": "notice_served", "actor": "plaintiff", "label": "أعذر المدعي المدعى عليه بالدفع أو نبهه", "date": true }
+      ],
+      "requests": [
+        { "kind": "payment", "label": "إلزام المدعى عليه بدفع بدلات الإيجار المتأخرة", "amount": true },
+        { "kind": "eviction", "label": "طرد المدعى عليه أو إخلاء العين المؤجرة" },
+        { "kind": "rescission", "label": "فسخ عقد الإيجار" }
+      ]
+    },
+    {
+      "claim": "eviction-occupier-without-title",
+      "roles": [ { "relation": "ownership", "position": "owner", "label": "المالك" } ],
+      "elements": [
+        { "event": "occupation_without_title", "actor": "defendant", "label": "يشغل المدعى عليه عقار المدعي دون عقد أو سند", "date": true },
+        { "event": "notice_served", "actor": "plaintiff", "label": "طالب المدعي المدعى عليه بالخروج أو أعذره", "date": true }
+      ],
+      "requests": [
+        { "kind": "eviction", "label": "طرد المدعى عليه من العقار" },
+        { "kind": "damages", "label": "تعويض عن الشغل دون وجه حق", "amount": true }
+      ]
+    },
+    {
+      "claim": "commercial-debt",
+      "roles": [ { "relation": "supply", "position": "supplier", "label": "المورد" } ],
+      "elements": [
+        { "event": "goods_delivered", "actor": "plaintiff", "label": "سلّم المدعي للمدعى عليه بضائع أو خدمات", "date": true, "amount": true },
+        { "event": "payment_made", "actor": "defendant", "label": "دفع المدعى عليه جزءا من المبلغ", "date": true, "amount": true },
+        { "event": "price_unpaid", "actor": "defendant", "label": "لم يسدد المدعى عليه قيمة البضائع أو الفواتير أو باقيها", "amount": true },
+        { "event": "notice_served", "actor": "plaintiff", "label": "أعذر المدعي المدعى عليه بالدفع", "date": true }
+      ],
+      "requests": [
+        { "kind": "payment", "label": "إلزام المدعى عليه بدفع المبلغ المستحق", "amount": true },
+        { "kind": "damages", "label": "تعويض عن التأخر في الوفاء", "amount": true }
+      ]
+    },
+    {
+      "claim": "commercial-lease-eviction",
+      "roles": [
+        { "relation": "commercial_lease", "position": "lessor", "label": "المؤجر (يطلب إخلاء المحل)" },
+        { "relation": "commercial_lease", "position": "lessee", "label": "المستأجر (يطلب تعويض الاستحقاق)" }
+      ],
+      "elements": [
+        { "event": "contract_concluded", "label": "إبرام عقد الإيجار التجاري", "date": true, "amount": true },
+        { "event": "rent_unpaid", "actor": "lessee", "label": "لم يدفع المستأجر بدلات الإيجار", "amount": true },
+        { "event": "eviction_notice", "actor": "lessor", "label": "وجه المؤجر تنبيها بالإخلاء", "date": true },
+        { "event": "lease_renewal_refused", "actor": "lessor", "label": "رفض المؤجر تجديد الإيجار" }
+      ],
+      "requests": [
+        { "kind": "eviction", "label": "إخلاء المحل التجاري أو طرد المستأجر" },
+        { "kind": "damages", "label": "تعويض الاستحقاق أو تعويض آخر", "amount": true },
+        { "kind": "payment", "label": "دفع بدلات الإيجار المتأخرة", "amount": true }
+      ]
+    },
+    {
+      "claim": "sale-non-delivery",
+      "roles": [ { "relation": "sale", "position": "buyer", "label": "المشتري" } ],
+      "elements": [
+        { "event": "contract_concluded", "label": "إبرام البيع بين الطرفين", "date": true, "amount": true },
+        { "event": "payment_made", "actor": "plaintiff", "label": "دفع المدعي الثمن أو جزءا منه", "date": true, "amount": true },
+        { "event": "deadline_passed", "label": "حلّ أجل التسليم المتفق عليه", "date": true },
+        { "event": "delivery_missing", "actor": "defendant", "label": "لم يسلم المدعى عليه المبيع" },
+        { "event": "notice_served", "actor": "plaintiff", "label": "أعذر المدعي المدعى عليه بالتسليم", "date": true }
+      ],
+      "requests": [
+        { "kind": "delivery", "label": "إلزام المدعى عليه بتسليم المبيع" },
+        { "kind": "rescission", "label": "فسخ البيع" },
+        { "kind": "restitution", "label": "إرجاع الثمن المدفوع", "amount": true }
+      ]
+    },
+    {
+      "claim": "divorce-by-husband",
+      "roles": [ { "relation": "marriage", "position": "husband", "label": "الزوج" } ],
+      "elements": [
+        { "event": "marriage", "label": "انعقاد الزواج بين الطرفين", "date": true }
+      ],
+      "requests": [
+        { "kind": "divorce", "label": "الحكم بالطلاق" }
+      ]
+    },
+    {
+      "claim": "tatliq",
+      "roles": [ { "relation": "marriage", "position": "wife", "label": "الزوجة" } ],
+      "elements": [
+        { "event": "marriage", "label": "انعقاد الزواج بين الطرفين", "date": true },
+        { "event": "abandonment", "actor": "defendant", "label": "هجر المدعى عليه المدعية" },
+        { "event": "maintenance_unpaid", "actor": "defendant", "label": "امتنع المدعى عليه عن الإنفاق" },
+        { "event": "spouse_harm", "actor": "defendant", "label": "أضر المدعى عليه بالمدعية (ضرب أو إيذاء)" }
+      ],
+      "requests": [
+        { "kind": "tatliq", "label": "الحكم بالتطليق" },
+        { "kind": "damages", "label": "تعويض", "amount": true },
+        { "kind": "maintenance", "label": "نفقة", "amount": true }
+      ]
+    },
+    {
+      "claim": "khul",
+      "roles": [ { "relation": "marriage", "position": "wife", "label": "الزوجة" } ],
+      "elements": [
+        { "event": "marriage", "label": "انعقاد الزواج بين الطرفين", "date": true }
+      ],
+      "requests": [
+        { "kind": "khul", "label": "الخلع مقابل مال تعرضه المدعية", "amount": true }
+      ]
+    },
+    {
+      "claim": "nafaqa",
+      "roles": [ { "relation": "marriage", "position": "wife", "label": "الزوجة أو الأم الحاضنة" } ],
+      "elements": [
+        { "event": "marriage", "label": "انعقاد الزواج بين الطرفين", "date": true },
+        { "event": "divorce", "label": "وقع الطلاق بين الطرفين", "date": true },
+        { "event": "maintenance_unpaid", "actor": "defendant", "label": "امتنع المدعى عليه عن الإنفاق" }
+      ],
+      "requests": [
+        { "kind": "maintenance", "label": "نفقة للزوجة أو للأبناء", "amount": true },
+        { "kind": "housing", "label": "سكن أو بدل إيجار", "amount": true }
+      ]
+    },
+    {
+      "claim": "custody",
+      "roles": [
+        { "relation": "marriage", "position": "mother", "label": "الأم" },
+        { "relation": "marriage", "position": "father", "label": "الأب" }
+      ],
+      "elements": [
+        { "event": "divorce", "label": "وقع الطلاق بين الطرفين", "date": true },
+        { "event": "custody_held", "label": "يقيم الأبناء حاليا عند أحد الوالدين" }
+      ],
+      "requests": [
+        { "kind": "custody", "label": "إسناد الحضانة للمدعي" },
+        { "kind": "custody_transfer", "label": "إسقاط الحضانة عن المدعى عليه ونقلها" },
+        { "kind": "housing", "label": "سكن للحاضنة أو بدل إيجار", "amount": true }
+      ]
+    },
+    {
+      "claim": "visitation",
+      "roles": [
+        { "relation": "marriage", "position": "father", "label": "الأب" },
+        { "relation": "marriage", "position": "mother", "label": "الأم" }
+      ],
+      "elements": [
+        { "event": "divorce", "label": "وقع الطلاق بين الطرفين", "date": true },
+        { "event": "visitation_refused", "actor": "defendant", "label": "منع المدعى عليه المدعي من رؤية الأبناء" }
+      ],
+      "requests": [
+        { "kind": "visitation", "label": "تمكين المدعي من حق الزيارة" }
+      ]
+    },
+    {
+      "claim": "abusive-dismissal",
+      "roles": [ { "relation": "employment", "position": "employee", "label": "العامل" } ],
+      "elements": [
+        { "event": "employment_started", "label": "التحق المدعي بالعمل لدى المدعى عليه", "date": true },
+        { "event": "dismissal", "actor": "defendant", "label": "سرّح المدعى عليه المدعي أو فصله من العمل", "date": true },
+        { "event": "conciliation_failed", "label": "حرر محضر عدم المصالحة", "date": true }
+      ],
+      "requests": [
+        { "kind": "reinstatement", "label": "إعادة إدماج المدعي في منصبه" },
+        { "kind": "damages", "label": "تعويض", "amount": true }
+      ]
+    },
+    {
+      "claim": "unpaid-wages",
+      "roles": [ { "relation": "employment", "position": "employee", "label": "العامل" } ],
+      "elements": [
+        { "event": "employment_started", "label": "التحق المدعي بالعمل لدى المدعى عليه", "date": true },
+        { "event": "wages_unpaid", "actor": "defendant", "label": "لم يدفع المدعى عليه الأجور أو المستحقات", "amount": true },
+        { "event": "conciliation_failed", "label": "حرر محضر عدم المصالحة", "date": true }
+      ],
+      "requests": [
+        { "kind": "wages", "label": "دفع الأجور أو المستحقات", "amount": true },
+        { "kind": "damages", "label": "تعويض عن التأخر", "amount": true }
+      ]
+    }
+  ]
+}

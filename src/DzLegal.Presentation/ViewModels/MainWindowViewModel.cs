@@ -23,6 +23,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     private readonly IUserFiles _files;
     private readonly EvaluationStore _evaluations;
     private readonly Func<DateOnly> _today;
+    private readonly IProfileDefaults? _profileDefaults;
 
     // Refresh re-renders templates only; it never calls a model.
     private readonly DraftingService _templates = new(new StubModelProvider());
@@ -42,7 +43,8 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         Func<DateOnly>? today = null,
         string? autosaveFile = null,
         DzLegal.Law.LegalKnowledge? knowledge = null,
-        IExternalLinks? links = null)
+        IExternalLinks? links = null,
+        IProfileDefaults? profileDefaults = null)
     {
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentNullException.ThrowIfNull(providers);
@@ -52,6 +54,8 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         _evaluations = evaluations;
         _today = today ?? (() => DateOnly.FromDateTime(DateTime.Now));
         _autosaveFile = autosaveFile;
+        _profileDefaults = profileDefaults;
+        DraftWatermark = _profileDefaults?.WatermarkByDefault ?? true;
         L = loc;
         AnalysisActivity = new ModelActivityViewModel(loc);
         GenerationActivity = new ModelActivityViewModel(loc, showLiveText: false);
@@ -66,6 +70,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         SelectedProvider = providers.FirstOrDefault(p => p.Key == defaultProvider) ?? (providers.Count > 0 ? providers[0] : null);
 
         var defaults = CaseInputs.CreateDefaults(definition, _today());
+        ApplyProfileDefaults(defaults);
         foreach (var field in definition.Fields)
         {
             _fields.Add(new FieldViewModel(field, defaults[field.Id], loc, OnInputChanged));
@@ -709,7 +714,9 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     /// <summary>An empty case (after the lawyer chose: <see cref="NewCommand"/> asks first when there are unsaved changes).</summary>
     private void StartNew()
     {
-        LoadInputs(CaseInputs.CreateDefaults(_definition, _today()));
+        var inputs = CaseInputs.CreateDefaults(_definition, _today());
+        ApplyProfileDefaults(inputs);
+        LoadInputs(inputs);
         _reviewedCase = null;
         _draft = new DraftDocument { DocumentTypeId = _definition.Id, DefinitionVersion = _definition.Version };
         _generatedSnapshot = null;
@@ -720,6 +727,23 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         SyncSections(overwriteNarrative: true);
         MarkSaved(null);
         SetStatus(L["Ready"]);
+    }
+
+    /// <summary>Pre-fills the empty fields of a fresh case from the lawyer's profile; nothing is overwritten once filled.</summary>
+    private void ApplyProfileDefaults(Dictionary<string, string> inputs)
+    {
+        if (_profileDefaults is null)
+        {
+            return;
+        }
+
+        foreach (var (field, value) in _profileDefaults.Values)
+        {
+            if (!inputs.TryGetValue(field, out var current) || string.IsNullOrWhiteSpace(current))
+            {
+                inputs[field] = value;
+            }
+        }
     }
 
     /// <summary>
@@ -1158,6 +1182,18 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         var who = inputs.GetValueOrDefault("plaintiff.lastName") is { Length: > 0 } name
             ? name
             : inputs.GetValueOrDefault("plaintiff.entityName") ?? string.Empty;
+        if (who.Length == 0 && _profileDefaults is not null)
+        {
+            foreach (var (field, value) in _profileDefaults.Values)
+            {
+                if (field == "lawyer.name")
+                {
+                    who = value;
+                    break;
+                }
+            }
+        }
+
         var stem = string.Join('-', new[] { _definition.Id, who }.Where(s => s.Length > 0));
         foreach (var c in Path.GetInvalidFileNameChars())
         {

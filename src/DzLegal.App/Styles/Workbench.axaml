@@ -6,6 +6,8 @@
       <StreamGeometry x:Key="WelcomeScalesGeometry">M48,9 L48,78 M43,9 C43,3 53,3 53,9 C53,15 43,15 43,9 M18,25 C28,25 34,18 48,18 C62,18 68,25 78,25 M23,25 L10,53 L36,53 Z M73,25 L60,53 L86,53 Z M10,53 C12,69 34,69 36,53 M60,53 C62,69 84,69 86,53 M42,78 L54,78 M38,85 C38,75 58,75 58,85 M28,88 L68,88</StreamGeometry>
       <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary x:Key="Dark">
+          <SolidColorBrush x:Key="WelcomeReadingBrush" Color="Transparent" />
+          <SolidColorBrush x:Key="WelcomeLanguageSurfaceBrush" Color="Transparent" />
           <LinearGradientBrush x:Key="WelcomeOverlayBrush" StartPoint="0%,0%" EndPoint="0%,100%">
             <GradientStop Color="#B81D201E" Offset="0" />
             <GradientStop Color="#B31D201E" Offset="0.5" />
@@ -23,14 +25,17 @@
           </LinearGradientBrush>
         </ResourceDictionary>
         <ResourceDictionary x:Key="Light">
+          <SolidColorBrush x:Key="WelcomeReadingBrush" Color="#EFF2F0EA" />
+          <SolidColorBrush x:Key="WelcomeLanguageSurfaceBrush" Color="Transparent" />
           <LinearGradientBrush x:Key="WelcomeOverlayBrush" StartPoint="0%,0%" EndPoint="0%,100%">
-            <GradientStop Color="#C7F2F0EA" Offset="0" />
-            <GradientStop Color="#B3F2F0EA" Offset="0.5" />
-            <GradientStop Color="#C7F2F0EA" Offset="1" />
+            <GradientStop Color="#00F2F0EA" Offset="0" />
+            <GradientStop Color="#00F2F0EA" Offset="0.84" />
+            <GradientStop Color="#D9F2F0EA" Offset="0.93" />
+            <GradientStop Color="#E5F2F0EA" Offset="1" />
           </LinearGradientBrush>
           <SolidColorBrush x:Key="WelcomeTextBrush" Color="#28231D" />
           <SolidColorBrush x:Key="WelcomeSecondaryBrush" Color="#494238" />
-          <SolidColorBrush x:Key="WelcomeControlBrush" Color="#F2F0EA" />
+          <SolidColorBrush x:Key="WelcomeControlBrush" Color="#FFFFFF" />
           <SolidColorBrush x:Key="WelcomeEdgeBrush" Color="#786039" />
           <SolidColorBrush x:Key="WelcomeFocusBrush" Color="#28231D" />
           <SolidColorBrush x:Key="WelcomeButtonBorderBrush" Color="#786039" />

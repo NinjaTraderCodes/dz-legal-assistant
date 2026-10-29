@@ -2,7 +2,15 @@
 
 29 October 2026, `codex/law-corpus`. **No completed Civil delivery is claimed.** The typed package has48 identities:45 with text and three reference-only Family citation targets;55 versions (seven checked,32 partly-checked,16 unsettled). The reference-only identities contain no versions/texts. The preparation below is separate research data and has not replaced existing versions or the application's law library.
 
-## Latest word-review batch: source-order150–250
+## Latest word-review batch: source-order250–350
+
+All **57 word/figure/extra flags** in this100-candidate batch were actually read on10 sheets and16 wider heading/footer crops (shown on four inspected overviews). The guarded output saves **11 spacing repairs in11 separate research bodies**. Cumulative review now covers all flagged groups in the **first350 source candidates:186 decisions,58 spacing repairs in55 derived bodies**. Next source-order offset is350. Native/prepared/typed law remains unchanged.
+
+Source-read repairs include `رض ي`→`رضي`, `دو ن`→`دون` and split forms of `الحوالة`, `إذا`, `التجديد`, `الدين`, `الذي`, `المشاع`, `الاسم` and `بسبب`. Reference170, printed `تتقادم`/`يبدأ`/`الاستئنافية`, and the commas after `شخصيا`/`عناصرها`/`فيها` were individually inspected and retained. The `جديدة` annotation and parenthetic3 callout stay in the raw research witness for the later guarded editorial projection; no operative-law quantity/status is inferred. Words `عن هذه العمليات` inside324bis1 are retained as actual body text despite an OCR alignment-extra flag.
+
+Curated decisions and separate corrected research output are `image-decisions-ministry-words-0250-0350.json` and `ministry-word-corrected-0250-0350.json`. All57 decisions and11 unique repairs replay through the existing guards. No new application/tool implementation or test is needed for this data-only batch; the required full post-commit Release gate still applies.
+
+## Previous word-review batch: source-order150–250
 
 All **71 word/figure/extra flags** in the next100 source candidates were actually read on12 sheets plus13 wider views for clipped headings, negations and footers. `image-decisions-ministry-words-0150-0250.json` binds each discrepancy, native body and actual proof. Its guarded application saves **21 spacing repairs in19 derived research bodies**. The cumulative first250 source candidates therefore have **129 actual flag decisions and47 spacing repairs in44 distinct research bodies**. No typed Civil text/state/date is changed.
 
@@ -46,7 +54,7 @@ The full Python suite now has182 passing tests and JSON Schema validation has0 e
 
 Remaining work:
 
-1. Continue targeted image review from source-order offset250. Both readers and both strict diagnostics are complete. Keep the original audit and its derived page-bounded comparison separate; do not repeat OCR. Preserve the first250 candidates' recorded decisions and derived repairs. Retain punctuation uncertainty explicitly.
+1. Continue targeted image review from source-order offset350. Both readers and both strict diagnostics are complete. Keep the original audit and its derived page-bounded comparison separate; do not repeat OCR. Preserve the first350 candidates' recorded decisions and derived repairs. Retain punctuation uncertainty explicitly.
 2. Remove editorial annotations with guarded, reversible projections; validate paragraph and heading boundaries.
 3. Reconcile every amending publication, insertion, partial rewrite and repeal against the JO, including qualified local numbering. Keep current outcomes separate from the deferred complete historical archive.
 4. Import the complete current package with provenance, references and honest temporal limits; preserve the earlier typed history and checked pilot records.

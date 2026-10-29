@@ -1,5 +1,7 @@
 # Separate official-law corpus: delivery record and integration contract
 
+**Safe pause requested29October2026.** [Exact restart steps and remaining work](LAW-CORPUS-PAUSE-2026-10-29-PRIORITIES.md). Family's232 checked current records are delivered/pushed; historical/local date limits remain explicit. Civil priority scope is274 identities. Approved Civil research checkpoints95914fb/9fa6a0f are pushed; the later28-case boundary review restores19 words and retains nine boundaries, bringing research spacing repairs to111. The262 Python tests pass; the local pause checkpoint receives its required post-commit Release gate and is not approved for push. **Typed Civil counts below remain unchanged; the checked partial package is not finished.** No app/catalogue/prompts changed; no OCR/review jobs remain running. Do not resume research until the user resumes.
+
 Research cut-off: **25 October 2026**. Branch: `codex/law-corpus`, isolated from the application engineer's default-branch work. This is a separate, additive corpus. The existing `data/law/codes`, claim mappings, loaders and application behavior have not been switched to it.
 
 For current branch counts, start with **Current coverage (29 October 2026)** below. The [state report dated 26 October 2026](LAW-CORPUS-STATE-REPORT.md) is a historical checkpoint, superseded for the CPCA by delivery 2. Older acquisition and execution notes below retain their original dates and are not current delivery counts.

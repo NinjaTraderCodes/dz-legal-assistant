@@ -1,0 +1,1205 @@
+{
+  "reviewedOn": "2026-10-29",
+  "sourceSha256": "17a555bf81d5b99bf67417f3d42c157fd5df69499d6190cffbf182bc3566b573",
+  "method": "Review identical-letter OCR joins separately from exact native-word-boundary agreement. Diagnostic generation grants no decision.28 cases with no separate exact OCR witness actually read on5 sheets, including3 enlarged source strips.",
+  "inputFiles": {
+    "native-candidates.json": "84e056995a3599311f65e9b89aa6c06b4d9096e06c6c05db548465c3d11bcf6c",
+    "ministry-word-corrected.json": "1e96936ba742db7756a9005bc6b9cd26b4e66d55bbf6682c674bdd3fe6899ccf",
+    "ministry-word-corrected-0050-0150.json": "ec899e07515d87edd78fb366141eac5449b3269fb5290a0e607a33dd88175f56",
+    "ministry-word-corrected-0150-0250.json": "9e077f499b15bce1d60f335240c7151e3a0142db07700c9e091d2ee79dd483d4",
+    "ministry-word-corrected-0250-0350.json": "799c39cd07489f82c8120b4ddeee3dbac98ae1c2512d4573458b1375bd48a4ad",
+    "priority-sale-word-projection.json": "07e34b789fd504b6360ad9dc58212ba019d6366f585ab8b3a8a28645d3f68b9d",
+    "priority-remaining-word-projection.json": "d315f98b55231e4aab96eb183716a3c73737a2740399eb6a8887ab68521802b0",
+    "ministry-page-bounded-exact-audit.json": "ed6a54404398a792add08250290d09b58ea1d6462ffc6c01c3f79e0c996d8f13",
+    "priority-chapter-inventory.json": "f5ca24b34e0213c233d73295b15fa8fdddfc238d9d26c415e0a117e19c28c577"
+  },
+  "viewIndexSha256": "5a4e7e75250b0471fb3ce6877be0441775ea26cabeff6d1d871166339972f7b5",
+  "derivedInputsSha256": "e846b9bf9fe7384c98dcec4e1da86cb028f21a36d8641efa8c33fd88db32afe3",
+  "diagnosticJoinEvents": 172,
+  "eventsWithAnotherExactSeparateWordWitness": 144,
+  "sourceCasesActuallyRead": 28,
+  "sourceJoinedWordProposals": 19,
+  "sourceSeparateWordRetentions": 9,
+  "sheetsActuallyRead": [
+    {
+      "sheet": "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/civil-priority-word-boundaries-20261029-001.png",
+      "sheetSha256": "895f65a8f65ad0b78a4b50b2ee1a88a43bfb62f22288666eede7e8fb324ccbf6",
+      "items": [
+        {
+          "id": "main:61#0",
+          "imageSha256s": [
+            "43386534664efd1ec0c4179afd42a24bf1ab79af83760095230b99fa9dfb3f75"
+          ]
+        },
+        {
+          "id": "main:64#0",
+          "imageSha256s": [
+            "5b1a4bc87e94bb9ad4cc03570e672bec615304d0441329be1b61aaf426e3323d"
+          ]
+        },
+        {
+          "id": "main:67#0",
+          "imageSha256s": [
+            "2c42a4ce1a4c8550b2e094babe97d9e5e8b6fc156c0eb52679c27adfad801434"
+          ]
+        },
+        {
+          "id": "main:88#0",
+          "imageSha256s": [
+            "92afea905cc76791decd11b6d508c475e9ddd6d47e4d2be209cc99303d8be041"
+          ]
+        },
+        {
+          "id": "main:90#0",
+          "imageSha256s": [
+            "61bd4f1fe12b64723bb2f801293f8100059f8171255984a033e488e88a692952"
+          ]
+        },
+        {
+          "id": "main:124#0",
+          "imageSha256s": [
+            "6bd0869f5a68836f476fa97b70ded33dfcb4a402714f7950a96608f4daee27b8"
+          ]
+        }
+      ]
+    },
+    {
+      "sheet": "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/civil-priority-word-boundaries-20261029-002.png",
+      "sheetSha256": "e5f7e6494f346bef1d390bffacd2d96c34e9b0c0199c590dba27f68af0843854",
+      "items": [
+        {
+          "id": "main:124 مكرر#0",
+          "imageSha256s": [
+            "28276cac7ac18a0af5f04b26edf72184b258e5bcf3123fb4b1345ad6471d54dd"
+          ]
+        },
+        {
+          "id": "main:131#0",
+          "imageSha256s": [
+            "d231860ff9a60687fae6a70d862cf16e89682338c8bccff8bfd3c0757f559481"
+          ]
+        },
+        {
+          "id": "main:132#0",
+          "imageSha256s": [
+            "72ee1aa7b4aaf57998ddfc6fbf29420520dbecc52b0c31cc03f40da9e013d3ea"
+          ]
+        },
+        {
+          "id": "main:136#0",
+          "imageSha256s": [
+            "a2ff7cbcdf3021d8f77564467b0aca259b2accf8a17c7099739939750fec85df"
+          ]
+        },
+        {
+          "id": "main:355#0",
+          "imageSha256s": [
+            "81adcac7d54a837b34ddfa7cb1bbf9fa088735ea8b895ef023d5260fdbc7594f"
+          ]
+        },
+        {
+          "id": "main:365#0",
+          "imageSha256s": [
+            "7235930a91aec9d8bdb9e9078f5fe690054f64558d3b8e4b2b07c37cd12dae69"
+          ]
+        }
+      ]
+    },
+    {
+      "sheet": "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/civil-priority-word-boundaries-20261029-003.png",
+      "sheetSha256": "83b168ddc2d2fbd55418af909e62ee56dca969c972b53a8c21f74d416161fee8",
+      "items": [
+        {
+          "id": "main:370#0",
+          "imageSha256s": [
+            "d1ed5289670cea3bc33f3a42710603921e95b6191dabac25e8baa63a8b8adbe2"
+          ]
+        },
+        {
+          "id": "main:374#0",
+          "imageSha256s": [
+            "a7f983857b08acbf41b1a55186273224542d8425acd0e20728ffb150d38e07f1"
+          ]
+        },
+        {
+          "id": "main:378#0",
+          "imageSha256s": [
+            "b2e8d45f5fa537a52b8d9553b22384ad49c41eda0d1220d395f2f58a7af0481f"
+          ]
+        },
+        {
+          "id": "main:456#0",
+          "imageSha256s": [
+            "a88bd4c837ff795a67dc13c4ff9b8866b3a3b688099d78479dc6c2e74cb414e7"
+          ]
+        },
+        {
+          "id": "main:469 مكرر 3#0",
+          "imageSha256s": [
+            "d95069c9bd71e59faa1ed8533988a5883779b718ecf44bd6846681763e84ed18"
+          ]
+        },
+        {
+          "id": "main:486#0",
+          "imageSha256s": [
+            "e853be5ba58d379f49e63819734cee337a002f2d334f556306b03a1a6a82417a"
+          ]
+        }
+      ]
+    },
+    {
+      "sheet": "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/civil-priority-word-boundaries-20261029-004.png",
+      "sheetSha256": "c6f63448a692d4e2ae646c1254effcd9cd35de1deb352c18c2c645313c7ca7ae",
+      "items": [
+        {
+          "id": "main:489#0",
+          "imageSha256s": [
+            "3346f8f1489567e71123d1c4429cfe7408e2c8c739c7b248f700cc566d326531"
+          ]
+        },
+        {
+          "id": "main:496#0",
+          "imageSha256s": [
+            "6b2bc4a571926fb2d2b87b10ee52c0564880f9d41beee8b55ca643d4c16fb19b"
+          ]
+        },
+        {
+          "id": "main:496#1",
+          "imageSha256s": [
+            "6b2bc4a571926fb2d2b87b10ee52c0564880f9d41beee8b55ca643d4c16fb19b"
+          ]
+        },
+        {
+          "id": "main:503#0",
+          "imageSha256s": [
+            "543d68df1d5cbff19b3e4efe67128a8036340da1c8bb7be89e171254ea6abf98"
+          ]
+        },
+        {
+          "id": "main:507#0",
+          "imageSha256s": [
+            "169fd7686ebd135b7b22ec93b009b03ab58265298194aaa85c9397775f2efcb9"
+          ]
+        },
+        {
+          "id": "main:546#0",
+          "imageSha256s": [
+            "9ed9320052c979246a553a5de38f93ddc5363df261f04338a8ec9954d007b4c7"
+          ]
+        }
+      ]
+    },
+    {
+      "sheet": "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/civil-priority-word-boundaries-20261029-005.png",
+      "sheetSha256": "fa26cdeed5cd0658c4ee24070fad83cc9fa1fb9793bafbcb876492e72afb8297",
+      "items": [
+        {
+          "id": "main:558#0",
+          "imageSha256s": [
+            "2cb2b54e9200b0145c3ebed9be7fd675db9b6e70e6e5506ab107f58229ac3b9c"
+          ]
+        },
+        {
+          "id": "main:560#0",
+          "imageSha256s": [
+            "49a495f0c33cd91d9d9b20ae44ac08aa689d8e00e2640e8ba98ae8dbe2bb6500"
+          ]
+        },
+        {
+          "id": "main:561#0",
+          "imageSha256s": [
+            "a203d03d534d98f1ed0ac6e7169479ae3f5e77433dcbd5b102239ce438d1c24b"
+          ]
+        },
+        {
+          "id": "main:568#0",
+          "imageSha256s": [
+            "6d3489b584442e0b4651b332b7a6911d26d49ac7ee39ac7ba2a25c20600f8fb8"
+          ]
+        }
+      ]
+    }
+  ],
+  "readings": [
+    {
+      "itemId": "word-boundary:main:61#0",
+      "viewItemId": "main:61#0",
+      "candidateKey": "main:61",
+      "kind": "unconfirmed-word-boundary",
+      "at": 4,
+      "canonical": "ال تعبير",
+      "inputTextSha256": "983daf064adece579828661d68c38b7e7ef626ed0a46ff1fac909b02886c646d",
+      "finding": "source-read-joined-word-proposed",
+      "sourceReading": "التعبير",
+      "proposal": {
+        "old": "ال تعبير",
+        "new": "التعبير",
+        "applicationStatus": "pending source-bound projection"
+      },
+      "sourceReadNounNotNegation": false,
+      "note": "Actual source word is joined. Retain every letter/mark; do not infer spelling from preferred orthography.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/strips/article-c925dd640989f28069ca-0-0.png"
+      ],
+      "imageSha256s": [
+        "43386534664efd1ec0c4179afd42a24bf1ab79af83760095230b99fa9dfb3f75"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-019-body",
+          "box": [
+            0,
+            1212,
+            2059,
+            1320
+          ]
+        }
+      ],
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "itemId": "word-boundary:main:64#0",
+      "viewItemId": "main:64#0",
+      "candidateKey": "main:64",
+      "kind": "unconfirmed-word-boundary",
+      "at": 5,
+      "canonical": "الا يجاب",
+      "inputTextSha256": "f74ab28a0fa8c18c1739adec92b76d05d8683f93d69734db9305120b753633ea",
+      "finding": "source-read-joined-word-proposed",
+      "sourceReading": "الايجاب",
+      "proposal": {
+        "old": "الا يجاب",
+        "new": "الايجاب",
+        "applicationStatus": "pending source-bound projection"
+      },
+      "sourceReadNounNotNegation": true,
+      "note": "Actual source word is joined. Retain every letter/mark; do not infer spelling from preferred orthography. The native split الا is part of a printed noun, not an independent source negation. Generic negation protection must stay strict; any projection needs a separate explicitly source-bound noun decision.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/strips/article-3201aa4558cc85d7d8b2-0-0.png",
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/main-64-enlarged-source.png"
+      ],
+      "imageSha256s": [
+        "5b1a4bc87e94bb9ad4cc03570e672bec615304d0441329be1b61aaf426e3323d",
+        "5b1a4bc87e94bb9ad4cc03570e672bec615304d0441329be1b61aaf426e3323d"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-019-body",
+          "box": [
+            0,
+            1996,
+            2059,
+            2103
+          ]
+        }
+      ],
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "itemId": "word-boundary:main:67#0",
+      "viewItemId": "main:67#0",
+      "candidateKey": "main:67",
+      "kind": "unconfirmed-word-boundary",
+      "at": 11,
+      "canonical": "الم كان",
+      "inputTextSha256": "1e51336123b812028cb7753a4d8a616564392e3639dc19848c54832e8736bf27",
+      "finding": "source-read-joined-word-proposed",
+      "sourceReading": "المكان",
+      "proposal": {
+        "old": "الم كان",
+        "new": "المكان",
+        "applicationStatus": "pending source-bound projection"
+      },
+      "sourceReadNounNotNegation": false,
+      "note": "Actual source word is joined. Retain every letter/mark; do not infer spelling from preferred orthography.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/strips/article-a89ce155969a98a5ecf7-0-0.png"
+      ],
+      "imageSha256s": [
+        "2c42a4ce1a4c8550b2e094babe97d9e5e8b6fc156c0eb52679c27adfad801434"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-020-body",
+          "box": [
+            0,
+            178,
+            2059,
+            293
+          ]
+        }
+      ],
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "itemId": "word-boundary:main:88#0",
+      "viewItemId": "main:88#0",
+      "candidateKey": "main:88",
+      "kind": "unconfirmed-word-boundary",
+      "at": 66,
+      "canonical": "وا لصحية،",
+      "inputTextSha256": "0422b8a0ff5fde3faeb03185c945d80b9c7710ae20a7184fb3a6f40de0bb8050",
+      "finding": "source-read-joined-word-proposed",
+      "sourceReading": "والصحية،",
+      "proposal": {
+        "old": "وا لصحية،",
+        "new": "والصحية،",
+        "applicationStatus": "pending source-bound projection"
+      },
+      "sourceReadNounNotNegation": false,
+      "note": "Actual source word is joined. Retain every letter/mark; do not infer spelling from preferred orthography.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/strips/article-4eb46e10101518143dfd-0-0.png"
+      ],
+      "imageSha256s": [
+        "92afea905cc76791decd11b6d508c475e9ddd6d47e4d2be209cc99303d8be041"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-022-body",
+          "box": [
+            0,
+            2587,
+            2059,
+            2707
+          ]
+        }
+      ],
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "itemId": "word-boundary:main:90#0",
+      "viewItemId": "main:90#0",
+      "candidateKey": "main:90",
+      "kind": "unconfirmed-word-boundary",
+      "at": 84,
+      "canonical": "المعا وضة",
+      "inputTextSha256": "e31f32277cd4f391f270d269036a4b7b6f8af869416a08ef737fbdd29b9b1e44",
+      "finding": "source-read-joined-word-proposed",
+      "sourceReading": "المعاوضة",
+      "proposal": {
+        "old": "المعا وضة",
+        "new": "المعاوضة",
+        "applicationStatus": "pending source-bound projection"
+      },
+      "sourceReadNounNotNegation": false,
+      "note": "Actual source word is joined. Retain every letter/mark; do not infer spelling from preferred orthography.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/strips/article-2b119f829960286552d3-0-0.png"
+      ],
+      "imageSha256s": [
+        "61bd4f1fe12b64723bb2f801293f8100059f8171255984a033e488e88a692952"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-023-body",
+          "box": [
+            0,
+            867,
+            2059,
+            976
+          ]
+        }
+      ],
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "itemId": "word-boundary:main:124#0",
+      "viewItemId": "main:124#0",
+      "candidateKey": "main:124",
+      "kind": "unconfirmed-word-boundary",
+      "at": 11,
+      "canonical": "ال شخص",
+      "inputTextSha256": "e5a9dc7b24c9c84e672adbc19905a204ce17015bd289122301a03b385e9b9995",
+      "finding": "source-read-joined-word-proposed",
+      "sourceReading": "الشخص",
+      "proposal": {
+        "old": "ال شخص",
+        "new": "الشخص",
+        "applicationStatus": "pending source-bound projection"
+      },
+      "sourceReadNounNotNegation": false,
+      "note": "Actual source word is joined. Retain every letter/mark; do not infer spelling from preferred orthography.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/strips/article-015ee248f264e1f13903-0-0.png"
+      ],
+      "imageSha256s": [
+        "6bd0869f5a68836f476fa97b70ded33dfcb4a402714f7950a96608f4daee27b8"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-029-body",
+          "box": [
+            0,
+            1677,
+            2059,
+            1788
+          ]
+        }
+      ],
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "itemId": "word-boundary:main:124 مكرر#0",
+      "viewItemId": "main:124 مكرر#0",
+      "candidateKey": "main:124 مكرر",
+      "kind": "unconfirmed-word-boundary",
+      "at": 11,
+      "canonical": "خطأ لاسيما",
+      "inputTextSha256": "788543de2f407ba3fe6dad57d90b1984ee9a9380229fcab45e357f5dc0aac265",
+      "finding": "source-read-separate-words-retained",
+      "sourceReading": "خطأ لاسيما",
+      "proposal": null,
+      "sourceReadNounNotNegation": false,
+      "note": "Actual source has these distinct words. The recognizer joined them; keep the native word boundary and all negations/letters.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/strips/article-87a9268d62220200db95-0-0.png"
+      ],
+      "imageSha256s": [
+        "28276cac7ac18a0af5f04b26edf72184b258e5bcf3123fb4b1345ad6471d54dd"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-029-body",
+          "box": [
+            0,
+            1932,
+            2059,
+            2053
+          ]
+        }
+      ],
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "itemId": "word-boundary:main:131#0",
+      "viewItemId": "main:131#0",
+      "candidateKey": "main:131",
+      "kind": "unconfirmed-word-boundary",
+      "at": 17,
+      "canonical": "الماد تين",
+      "inputTextSha256": "7f0fbf6600fdff77622323fd94e25d90d234ac9d0111a2c48ba9aafb2b1f4887",
+      "finding": "source-read-joined-word-proposed",
+      "sourceReading": "المادتين",
+      "proposal": {
+        "old": "الماد تين",
+        "new": "المادتين",
+        "applicationStatus": "pending source-bound projection"
+      },
+      "sourceReadNounNotNegation": false,
+      "note": "Actual source word is joined. Retain every letter/mark; do not infer spelling from preferred orthography.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/strips/article-3cbd4524126971da9434-0-0.png"
+      ],
+      "imageSha256s": [
+        "d231860ff9a60687fae6a70d862cf16e89682338c8bccff8bfd3c0757f559481"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-030-body",
+          "box": [
+            0,
+            1805,
+            2059,
+            1920
+          ]
+        }
+      ],
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "itemId": "word-boundary:main:132#0",
+      "viewItemId": "main:132#0",
+      "candidateKey": "main:132",
+      "kind": "unconfirmed-word-boundary",
+      "at": 65,
+      "canonical": "بال فعل",
+      "inputTextSha256": "a7182419f51aa96f9a3d4c18ef78e331b1d8499d807c1860571203f039d43e34",
+      "finding": "source-read-joined-word-proposed",
+      "sourceReading": "بالفعل",
+      "proposal": {
+        "old": "بال فعل",
+        "new": "بالفعل",
+        "applicationStatus": "pending source-bound projection"
+      },
+      "sourceReadNounNotNegation": false,
+      "note": "Actual source word is joined. Retain every letter/mark; do not infer spelling from preferred orthography.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/strips/article-8849a29cb725400432b9-0-0.png"
+      ],
+      "imageSha256s": [
+        "72ee1aa7b4aaf57998ddfc6fbf29420520dbecc52b0c31cc03f40da9e013d3ea"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-031-body",
+          "box": [
+            0,
+            431,
+            2059,
+            546
+          ]
+        }
+      ],
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "itemId": "word-boundary:main:136#0",
+      "viewItemId": "main:136#0",
+      "candidateKey": "main:136",
+      "kind": "unconfirmed-word-boundary",
+      "at": 15,
+      "canonical": "الض ار",
+      "inputTextSha256": "dc66295fddb369625e1e41054030d9a97e54d245ff8d794543dc6782ef810553",
+      "finding": "source-read-joined-word-proposed",
+      "sourceReading": "الضار",
+      "proposal": {
+        "old": "الض ار",
+        "new": "الضار",
+        "applicationStatus": "pending source-bound projection"
+      },
+      "sourceReadNounNotNegation": false,
+      "note": "Actual source word is joined. Retain every letter/mark; do not infer spelling from preferred orthography.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/strips/article-43e8e266fe6ed09a0038-0-0.png"
+      ],
+      "imageSha256s": [
+        "a2ff7cbcdf3021d8f77564467b0aca259b2accf8a17c7099739939750fec85df"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-032-body",
+          "box": [
+            0,
+            173,
+            2059,
+            288
+          ]
+        }
+      ],
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "itemId": "word-boundary:main:355#0",
+      "viewItemId": "main:355#0",
+      "candidateKey": "main:355",
+      "kind": "unconfirmed-word-boundary",
+      "at": 4,
+      "canonical": "ال بيع",
+      "inputTextSha256": "f818f1775a8aeed1e1c2e1d0ca924f37ce3f11fbb7248527e62d598b6ea2ad64",
+      "finding": "source-read-joined-word-proposed",
+      "sourceReading": "البيع",
+      "proposal": {
+        "old": "ال بيع",
+        "new": "البيع",
+        "applicationStatus": "pending source-bound projection"
+      },
+      "sourceReadNounNotNegation": false,
+      "note": "Actual source word is joined. Retain every letter/mark; do not infer spelling from preferred orthography.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/strips/article-6d8f7d4e0286ebfa47f2-0-0.png"
+      ],
+      "imageSha256s": [
+        "81adcac7d54a837b34ddfa7cb1bbf9fa088735ea8b895ef023d5260fdbc7594f"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-064-body",
+          "box": [
+            0,
+            1973,
+            2059,
+            2083
+          ]
+        }
+      ],
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "itemId": "word-boundary:main:365#0",
+      "viewItemId": "main:365#0",
+      "candidateKey": "main:365",
+      "kind": "unconfirmed-word-boundary",
+      "at": 29,
+      "canonical": "ال عقد",
+      "inputTextSha256": "b5d3d0c094cf6766dcab8779cfc7d01017ffe8575ff797bfc92dbe9ebd79a299",
+      "finding": "source-read-joined-word-proposed",
+      "sourceReading": "العقد",
+      "proposal": {
+        "old": "ال عقد",
+        "new": "العقد",
+        "applicationStatus": "pending source-bound projection"
+      },
+      "sourceReadNounNotNegation": false,
+      "note": "Actual source word is joined. Retain every letter/mark; do not infer spelling from preferred orthography.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/strips/article-59ee77e80a823bed2834-0-0.png"
+      ],
+      "imageSha256s": [
+        "7235930a91aec9d8bdb9e9078f5fe690054f64558d3b8e4b2b07c37cd12dae69"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-065-body",
+          "box": [
+            0,
+            2793,
+            2059,
+            2901
+          ]
+        }
+      ],
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "itemId": "word-boundary:main:370#0",
+      "viewItemId": "main:370#0",
+      "candidateKey": "main:370",
+      "kind": "unconfirmed-word-boundary",
+      "at": 23,
+      "canonical": "لو طرأ",
+      "inputTextSha256": "1e8ac813909472a54cc9ba50cc1069c33ce25b83a38983c0b3232dd4677b563e",
+      "finding": "source-read-separate-words-retained",
+      "sourceReading": "لو طرأ",
+      "proposal": null,
+      "sourceReadNounNotNegation": false,
+      "note": "Actual source has these distinct words. The recognizer joined them; keep the native word boundary and all negations/letters.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/strips/article-07ae825c9e633f9eaf1a-0-0.png"
+      ],
+      "imageSha256s": [
+        "d1ed5289670cea3bc33f3a42710603921e95b6191dabac25e8baa63a8b8adbe2"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-066-body",
+          "box": [
+            0,
+            1901,
+            2059,
+            2008
+          ]
+        }
+      ],
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "itemId": "word-boundary:main:374#0",
+      "viewItemId": "main:374#0",
+      "candidateKey": "main:374",
+      "kind": "unconfirmed-word-boundary",
+      "at": 27,
+      "canonical": "نت ائج",
+      "inputTextSha256": "ab7d5e48eeb7190775b362e42578484fd3fd67026cd30459f654ae52eeb2a373",
+      "finding": "source-read-joined-word-proposed",
+      "sourceReading": "نتائج",
+      "proposal": {
+        "old": "نت ائج",
+        "new": "نتائج",
+        "applicationStatus": "pending source-bound projection"
+      },
+      "sourceReadNounNotNegation": false,
+      "note": "Actual source word is joined. Retain every letter/mark; do not infer spelling from preferred orthography.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/strips/article-77c796e019585793b5b0-0-0.png"
+      ],
+      "imageSha256s": [
+        "a7f983857b08acbf41b1a55186273224542d8425acd0e20728ffb150d38e07f1"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-067-body",
+          "box": [
+            0,
+            614,
+            2059,
+            717
+          ]
+        }
+      ],
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "itemId": "word-boundary:main:378#0",
+      "viewItemId": "main:378#0",
+      "candidateKey": "main:378",
+      "kind": "unconfirmed-word-boundary",
+      "at": 9,
+      "canonical": "يد ينشأ",
+      "inputTextSha256": "53dfa7928c47f2e2cc092423c84ae371eee9923e65010984c78d7366abedf7c2",
+      "finding": "source-read-separate-words-retained",
+      "sourceReading": "يد ينشأ",
+      "proposal": null,
+      "sourceReadNounNotNegation": false,
+      "note": "Actual source has these distinct words. The recognizer joined them; keep the native word boundary and all negations/letters.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/strips/article-becc9144cd7e2a4c0f83-0-0.png"
+      ],
+      "imageSha256s": [
+        "b2e8d45f5fa537a52b8d9553b22384ad49c41eda0d1220d395f2f58a7af0481f"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-067-body",
+          "box": [
+            0,
+            2680,
+            2059,
+            2786
+          ]
+        }
+      ],
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "itemId": "word-boundary:main:456#0",
+      "viewItemId": "main:456#0",
+      "candidateKey": "main:456",
+      "kind": "unconfirmed-word-boundary",
+      "at": 15,
+      "canonical": "الا قتصادي",
+      "inputTextSha256": "5f5b2adda25aac2e81b244b24e423950e5051222a501a28cfef1f3acc6a6d4d8",
+      "finding": "source-read-joined-word-proposed",
+      "sourceReading": "الاقتصادي",
+      "proposal": {
+        "old": "الا قتصادي",
+        "new": "الاقتصادي",
+        "applicationStatus": "pending source-bound projection"
+      },
+      "sourceReadNounNotNegation": true,
+      "note": "Actual source word is joined. Retain every letter/mark; do not infer spelling from preferred orthography. The native split الا is part of a printed noun, not an independent source negation. Generic negation protection must stay strict; any projection needs a separate explicitly source-bound noun decision.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/strips/article-6997e8bb24db9eba9186-0-0.png"
+      ],
+      "imageSha256s": [
+        "a88bd4c837ff795a67dc13c4ff9b8866b3a3b688099d78479dc6c2e74cb414e7"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-078-body",
+          "box": [
+            0,
+            1206,
+            2059,
+            1327
+          ]
+        }
+      ],
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "itemId": "word-boundary:main:469 مكرر 3#0",
+      "viewItemId": "main:469 مكرر 3#0",
+      "candidateKey": "main:469 مكرر 3",
+      "kind": "unconfirmed-word-boundary",
+      "at": 12,
+      "canonical": "المؤ جرة",
+      "inputTextSha256": "b5a47df8a2846730f2f423401b762ad00d14e68275d6b7dbab9abfd25dd20ba4",
+      "finding": "source-read-joined-word-proposed",
+      "sourceReading": "المؤجرة",
+      "proposal": {
+        "old": "المؤ جرة",
+        "new": "المؤجرة",
+        "applicationStatus": "pending source-bound projection"
+      },
+      "sourceReadNounNotNegation": false,
+      "note": "Actual source word is joined. Retain every letter/mark; do not infer spelling from preferred orthography.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/strips/article-be6f28c18fa7f6b06a1b-0-0.png"
+      ],
+      "imageSha256s": [
+        "d95069c9bd71e59faa1ed8533988a5883779b718ecf44bd6846681763e84ed18"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-081-body",
+          "box": [
+            0,
+            1637,
+            2059,
+            1752
+          ]
+        }
+      ],
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "itemId": "word-boundary:main:486#0",
+      "viewItemId": "main:486#0",
+      "candidateKey": "main:486",
+      "kind": "unconfirmed-word-boundary",
+      "at": 9,
+      "canonical": "السل طة",
+      "inputTextSha256": "42501ed987f5f777bc7c926ae1822dcacae6e6d7883debb848baee1c0148e43b",
+      "finding": "source-read-joined-word-proposed",
+      "sourceReading": "السلطة",
+      "proposal": {
+        "old": "السل طة",
+        "new": "السلطة",
+        "applicationStatus": "pending source-bound projection"
+      },
+      "sourceReadNounNotNegation": false,
+      "note": "Actual source word is joined. Retain every letter/mark; do not infer spelling from preferred orthography.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/strips/article-f4b8d48e98a7d2776c1e-0-0.png"
+      ],
+      "imageSha256s": [
+        "e853be5ba58d379f49e63819734cee337a002f2d334f556306b03a1a6a82417a"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-085-body",
+          "box": [
+            0,
+            1132,
+            2059,
+            1235
+          ]
+        }
+      ],
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "itemId": "word-boundary:main:489#0",
+      "viewItemId": "main:489#0",
+      "candidateKey": "main:489",
+      "kind": "unconfirmed-word-boundary",
+      "at": 63,
+      "canonical": "أنه كان",
+      "inputTextSha256": "49e4bdc06e6824650be37f05e0cfa9b86839e4d63b9f452dccaa8c5915da185a",
+      "finding": "source-read-separate-words-retained",
+      "sourceReading": "أنه كان",
+      "proposal": null,
+      "sourceReadNounNotNegation": false,
+      "note": "Actual source has these distinct words. The recognizer joined them; keep the native word boundary and all negations/letters.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/strips/article-f409cf5751235516b4b8-0-0.png"
+      ],
+      "imageSha256s": [
+        "3346f8f1489567e71123d1c4429cfe7408e2c8c739c7b248f700cc566d326531"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-086-body",
+          "box": [
+            0,
+            633,
+            2059,
+            916
+          ]
+        }
+      ],
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "itemId": "word-boundary:main:496#0",
+      "viewItemId": "main:496#0",
+      "candidateKey": "main:496",
+      "kind": "unconfirmed-word-boundary",
+      "at": 25,
+      "canonical": "واحد كان",
+      "inputTextSha256": "5fe927b45b6a67fc06c77120f52f33c8e7ee71f1ae20d3052a485f604b66682e",
+      "finding": "source-read-separate-words-retained",
+      "sourceReading": "واحد كان",
+      "proposal": null,
+      "sourceReadNounNotNegation": false,
+      "note": "Actual source has these distinct words. The recognizer joined them; keep the native word boundary and all negations/letters.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/strips/article-3c116e6ee336b29680ba-0-0.png"
+      ],
+      "imageSha256s": [
+        "6b2bc4a571926fb2d2b87b10ee52c0564880f9d41beee8b55ca643d4c16fb19b"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-087-body",
+          "box": [
+            0,
+            935,
+            2059,
+            1165
+          ]
+        }
+      ],
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "itemId": "word-boundary:main:496#1",
+      "viewItemId": "main:496#1",
+      "candidateKey": "main:496",
+      "kind": "unconfirmed-word-boundary",
+      "at": 37,
+      "canonical": "بما فيهم",
+      "inputTextSha256": "5fe927b45b6a67fc06c77120f52f33c8e7ee71f1ae20d3052a485f604b66682e",
+      "finding": "source-read-separate-words-retained",
+      "sourceReading": "بما فيهم",
+      "proposal": null,
+      "sourceReadNounNotNegation": false,
+      "note": "Actual source has these distinct words. The recognizer joined them; keep the native word boundary and all negations/letters.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/strips/article-3c116e6ee336b29680ba-1-0.png"
+      ],
+      "imageSha256s": [
+        "6b2bc4a571926fb2d2b87b10ee52c0564880f9d41beee8b55ca643d4c16fb19b"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-087-body",
+          "box": [
+            0,
+            935,
+            2059,
+            1165
+          ]
+        }
+      ],
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "itemId": "word-boundary:main:503#0",
+      "viewItemId": "main:503#0",
+      "candidateKey": "main:503",
+      "kind": "unconfirmed-word-boundary",
+      "at": 47,
+      "canonical": "ما لم",
+      "inputTextSha256": "bef041cb6936d0f7243cfa04d96e7ceb0f1fe9e608ed1dd1e3cf72dbb8ed1f04",
+      "finding": "source-read-separate-words-retained",
+      "sourceReading": "ما لم",
+      "proposal": null,
+      "sourceReadNounNotNegation": false,
+      "note": "Actual source has these distinct words. The recognizer joined them; keep the native word boundary and all negations/letters.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/strips/article-7415ee9961f69af17f15-0-0.png"
+      ],
+      "imageSha256s": [
+        "543d68df1d5cbff19b3e4efe67128a8036340da1c8bb7be89e171254ea6abf98"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-088-body",
+          "box": [
+            0,
+            1047,
+            2059,
+            1269
+          ]
+        }
+      ],
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "itemId": "word-boundary:main:507#0",
+      "viewItemId": "main:507#0",
+      "candidateKey": "main:507",
+      "kind": "unconfirmed-word-boundary",
+      "at": 38,
+      "canonical": "الإيج ار",
+      "inputTextSha256": "f9d12f26f5e596d7aa37a71df53efc9f4fca039dc47b6d8662c23674a2201763",
+      "finding": "source-read-joined-word-proposed",
+      "sourceReading": "الإيجار",
+      "proposal": {
+        "old": "الإيج ار",
+        "new": "الإيجار",
+        "applicationStatus": "pending source-bound projection"
+      },
+      "sourceReadNounNotNegation": false,
+      "note": "Actual source word is joined. Retain every letter/mark; do not infer spelling from preferred orthography.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/strips/article-3626ef8f8558edd72828-0-0.png"
+      ],
+      "imageSha256s": [
+        "169fd7686ebd135b7b22ec93b009b03ab58265298194aaa85c9397775f2efcb9"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-089-body",
+          "box": [
+            0,
+            949,
+            2059,
+            1064
+          ]
+        }
+      ],
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "itemId": "word-boundary:main:546#0",
+      "viewItemId": "main:546#0",
+      "candidateKey": "main:546",
+      "kind": "unconfirmed-word-boundary",
+      "at": 5,
+      "canonical": "بانقض اء",
+      "inputTextSha256": "dd6c1cae3b0a29e3d5e84a6be49245b3c9ab8ad913e3faee182bd7e88e1293ae",
+      "finding": "source-read-joined-word-proposed",
+      "sourceReading": "بانقضاء",
+      "proposal": {
+        "old": "بانقض اء",
+        "new": "بانقضاء",
+        "applicationStatus": "pending source-bound projection"
+      },
+      "sourceReadNounNotNegation": false,
+      "note": "Actual source word is joined. Retain every letter/mark; do not infer spelling from preferred orthography.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/strips/article-d0f6de4c591daf3f61e7-0-0.png"
+      ],
+      "imageSha256s": [
+        "9ed9320052c979246a553a5de38f93ddc5363df261f04338a8ec9954d007b4c7"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-097-body",
+          "box": [
+            0,
+            1048,
+            2059,
+            1159
+          ]
+        }
+      ],
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "itemId": "word-boundary:main:558#0",
+      "viewItemId": "main:558#0",
+      "candidateKey": "main:558",
+      "kind": "unconfirmed-word-boundary",
+      "at": 22,
+      "canonical": "تس لمه",
+      "inputTextSha256": "edae59f15e4a5890e91c4cf06e5a4a17b9a73cf44c8cf3426ca4894b591f2abf",
+      "finding": "source-read-joined-word-proposed",
+      "sourceReading": "تسلمه",
+      "proposal": {
+        "old": "تس لمه",
+        "new": "تسلمه",
+        "applicationStatus": "pending source-bound projection"
+      },
+      "sourceReadNounNotNegation": false,
+      "note": "Actual source word is joined. Retain every letter/mark; do not infer spelling from preferred orthography.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/strips/article-c63e7a450b67214ffadc-0-0.png"
+      ],
+      "imageSha256s": [
+        "2cb2b54e9200b0145c3ebed9be7fd675db9b6e70e6e5506ab107f58229ac3b9c"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-099-body",
+          "box": [
+            0,
+            1006,
+            2059,
+            1126
+          ]
+        }
+      ],
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "itemId": "word-boundary:main:560#0",
+      "viewItemId": "main:560#0",
+      "candidateKey": "main:560",
+      "kind": "unconfirmed-word-boundary",
+      "at": 23,
+      "canonical": "المق ايسة",
+      "inputTextSha256": "b56f82874df736aac4ab55f05eb85a8251652b204aab3cc0377f26ec25a46558",
+      "finding": "source-read-joined-word-proposed",
+      "sourceReading": "المقايسة",
+      "proposal": {
+        "old": "المق ايسة",
+        "new": "المقايسة",
+        "applicationStatus": "pending source-bound projection"
+      },
+      "sourceReadNounNotNegation": false,
+      "note": "Actual source word is joined. Retain every letter/mark; do not infer spelling from preferred orthography.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/strips/article-84ab6ca000fcd885b9bd-0-0.png"
+      ],
+      "imageSha256s": [
+        "49a495f0c33cd91d9d9b20ae44ac08aa689d8e00e2640e8ba98ae8dbe2bb6500"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-099-body",
+          "box": [
+            0,
+            1526,
+            2059,
+            1637
+          ]
+        }
+      ],
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "itemId": "word-boundary:main:561#0",
+      "viewItemId": "main:561#0",
+      "candidateKey": "main:561",
+      "kind": "unconfirmed-word-boundary",
+      "at": 38,
+      "canonical": "خطإ من",
+      "inputTextSha256": "870855d37804ec68c22697840a60dcc61b8c2317b88fc8b6cc3442635bdf8ed6",
+      "finding": "source-read-separate-words-retained",
+      "sourceReading": "خطإ من",
+      "proposal": null,
+      "sourceReadNounNotNegation": false,
+      "note": "Actual source has these distinct words. The recognizer joined them; keep the native word boundary and all negations/letters. Enlarged actual source visibly has خطإ with hamza below the alif. Retain that spelling and the following separate من/منه; no preferred-spelling repair or letter change.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/strips/article-45faa737e08660936dca-0-0.png",
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/main-561-enlarged-source.png"
+      ],
+      "imageSha256s": [
+        "a203d03d534d98f1ed0ac6e7169479ae3f5e77433dcbd5b102239ce438d1c24b",
+        "a203d03d534d98f1ed0ac6e7169479ae3f5e77433dcbd5b102239ce438d1c24b"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-099-body",
+          "box": [
+            0,
+            2212,
+            2059,
+            2327
+          ]
+        }
+      ],
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "itemId": "word-boundary:main:568#0",
+      "viewItemId": "main:568#0",
+      "candidateKey": "main:568",
+      "kind": "unconfirmed-word-boundary",
+      "at": 77,
+      "canonical": "خطإ منه",
+      "inputTextSha256": "a2c2b8098fcfbd6387960b033d2792cee0e5f41941971f0ce41af930362365b3",
+      "finding": "source-read-separate-words-retained",
+      "sourceReading": "خطإ منه",
+      "proposal": null,
+      "sourceReadNounNotNegation": false,
+      "note": "Actual source has these distinct words. The recognizer joined them; keep the native word boundary and all negations/letters. Enlarged actual source visibly has خطإ with hamza below the alif. Retain that spelling and the following separate من/منه; no preferred-spelling repair or letter change.",
+      "images": [
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/strips/article-37bf5a790339af2aa9ea-0-0.png",
+        "tools/law-corpus/.cache/evidence/reviews/civil-priority-word-boundaries-20261029/main-568-enlarged-source.png"
+      ],
+      "imageSha256s": [
+        "6d3489b584442e0b4651b332b7a6911d26d49ac7ee39ac7ba2a25c20600f8fb8",
+        "6d3489b584442e0b4651b332b7a6911d26d49ac7ee39ac7ba2a25c20600f8fb8"
+      ],
+      "regions": [
+        {
+          "source": "civil-ministry-101-body",
+          "box": [
+            0,
+            518,
+            2059,
+            632
+          ]
+        }
+      ],
+      "inspection": "actually read; not human/lawyer verification"
+    }
+  ],
+  "mechanicalApplicationComplete": false,
+  "verificationEffect": "Word-boundary source readings only. No new correction/checked state is granted. Two noun-prefix cases must not weaken general independent-negation protection."
+}

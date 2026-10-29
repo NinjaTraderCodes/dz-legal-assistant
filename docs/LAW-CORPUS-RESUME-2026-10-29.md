@@ -1,5 +1,7 @@
 # Corpus restart record - 29 October 2026
 
+**PAUSED by explicit user request.** Do not resume corpus/OCR/import work until the user resumes. The current authoritative handoff is [LAW-CORPUS-PAUSE-2026-10-29-PRIORITIES.md](LAW-CORPUS-PAUSE-2026-10-29-PRIORITIES.md). Family392c0fb and Civil95914fb/9fa6a0f were approved/pushed; remote9fa6a0f verified. The later28-case word-boundary review and local pause checkpoint are not approved for push.262 Python tests pass; mandatory post-commit Release gate/status is saved in the recovery record. New projection applies19 restorations/retains nine boundaries; cumulative research spacing repairs111. Typed Civil remains unchanged; the274-identity checked partial is not delivered. All prior ACTIVE/pending statements below are historical where inconsistent with this header.
+
 ## Latest priority change and Family current-text delivery
 
 The user's latest order supersedes the older source-order tasks below: **close Family; deliver Civil general-contract, sale, lease, consumption/use loan, works and liability chapters as a checked partial package; then the remaining Civil in source order; then bounded Commercial/labour.** Postpone French paragraph expansion, editorial heading cleanup and older regimes unless needed by a conflict. Never change app/catalogue/prompts. Push only with the user's specific approval.

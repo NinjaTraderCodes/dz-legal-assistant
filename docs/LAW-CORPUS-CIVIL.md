@@ -2,6 +2,10 @@
 
 29 October 2026, `codex/law-corpus`. **No completed Civil delivery is claimed.** The typed package has48 identities:45 with text and three reference-only Family citation targets;55 versions (seven checked,32 partly-checked,16 unsettled). The reference-only identities contain no versions/texts. The preparation below is separate research data and has not replaced existing versions or the application's law library.
 
+**Paused by the user on29October2026.** Read [the safe-pause/restart record](LAW-CORPUS-PAUSE-2026-10-29-PRIORITIES.md). Approved checkpoints through9fa6a0f are pushed and remote-verified; the following boundary/pause checkpoint stays local. No research/OCR resumes without the user's instruction.
+
+The final pre-pause boundary review actually inspected28 cases on five sheets (plus enlarged64/561/568 strips), after separating144 exact separate-word witnesses from172 diagnostic OCR-join events. `priority-word-boundary-projection.json` applies19 source-read word restorations and retains nine valid boundaries. The specific456 follow-up below is now resolved in this later projection. A closed, source/body/image/token-bound registry handles64/456's noun prefixes without relaxing general independent-negation protection. Source561/568's`خطإ` spelling remains unchanged. Research spacing repairs total111 (58+13+21+19); the262 Python regressions pass. **Typed Civil remains unchanged and the checked partial delivery still awaits the remaining gates.**
+
 ## New priority:274 identities in whole contract/liability chapters
 
 The user's new order is recorded in `priority-chapter-inventory.json`. **Fifteen official Ministry page images were actually read** for the chapter starts, ends and following units. Seven original overviews and the two successor-page views establish these boundaries; full-body certification is not inferred from boundary reading.

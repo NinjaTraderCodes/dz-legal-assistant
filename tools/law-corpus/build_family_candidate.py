@@ -13,6 +13,8 @@ import apply_family_jo_collation
 import apply_family_amended_structure
 import apply_family_paths
 import family_current_outcomes
+import family_supplementary_sources
+import family_original_french_labels
 import pipeline
 
 ROOT = pipeline.ROOT
@@ -92,6 +94,8 @@ def checked_family_locator(result: dict, publication: str, records: dict, text: 
 def build() -> None:
     native = pipeline.read_json(WORK / "native.json")
     reviewed_paths = apply_family_paths.main()
+    approval = family_supplementary_sources.main()
+    family_original_french_labels.main()
     source = native["source"]
     pdf = pipeline.CACHE / "current-digital/family-consolidated-bilingual.pdf"
     if pipeline.hash_file(pdf) != source["sha256"]:
@@ -138,16 +142,15 @@ def build() -> None:
                  "note": "Cached Ministry index, SHA256 46e5a42bf31a5ebe981f8faef8c6300779e1bca204c1cf50010aad339ee24bfc, "
                          "lists Ordinance05-02 as the Family amendment. A later live open timed out; cut-off not advanced."}
     common_reasons = ["Current snapshot only: independent identity/current-amendment-outcome and heading checks pass; remaining source/discovery QA is explicit below.",
-                      "French compilation numbering aligns; JO French structural check is not yet complete.",
+                      "French compilation numbering aligns for232 identities; all224 original French JO labels were actually read with28 OCR column artifacts replayed. JO paragraph comparison remains separate and incomplete; no translation equivalence is certified.",
                       "Complete historical archive deferred by user; missing former bodies are not represented as unchanged law.",
                       "Body text uses the documented text_clean normalization (including removal of harakat/tatweel); raw witnesses are retained. Printed vocalization is not certified.",
-                      "Four official-edition wording conflicts are quarantined individually; two discovered French rectifications still need official acquisition/reading.",
+                      "Four official-edition wording conflicts remain quarantined. Both discovered French rectifications are pinned/read; neither names these four targets and no Arabic wording is changed from them.",
                       TEMPORAL]
     ledger = {"schemaVersion": "1.0", "id": "family-code", "citationName": "قانون الأسرة",
               "reference": "القانون رقم 84-11 المؤرخ في 9 يونيو 1984 المتضمن قانون الأسرة، المعدل والمتمم بالأمر رقم 05-02",
               "scope": {"kind": "complete-code", "targetArticles": targets, "amendmentDiscoveryThrough": "2026-10-26",
-                        "complete": False, "unsettled": common_reasons + [
-                            "Law05-09 approval (JO43/2005 p3) is discovered from the official French JO; Arabic acquisition/hash pending. No new Family wording is inferred."]},
+                        "complete": False, "unsettled": common_reasons},
               "publications": []}
     for ident, kind, number, date, issue, jo_date, pages, pin_id, french_id, touched in [
         ("law-84-11", "law", "84-11", "1984-06-09", "24", "1984-06-12", list(range(2, 17)), "A1984024", "F1984024", [str(n) for n in range(1, 225)]),
@@ -157,6 +160,7 @@ def build() -> None:
             "jo": {"issue": issue, "date": jo_date, "pages": pages}, "arabic": download(source_pins[pin_id]),
             "french": download(french_pins[french_id]), "articlesTouched": touched,
             "commencementDate": None, "commencementBasis": TEMPORAL, "transitionalProvisions": [], "discovery": [discovery]})
+    ledger["publications"].append(approval)
     articles, unresolved, assembly = [], [], []
     for raw in native["articles"]:
         number = raw["number"]
@@ -171,9 +175,13 @@ def build() -> None:
         text = "\n".join(paragraphs)
         checks = []
         reasons = list(common_reasons)
+        if number == "171":
+            reasons.append("The actually read Ministry French witness still contains ou non after legs despite the official1984 French rectification deleting it. Raw French wording is retained as a discrepant witness, not used to change the independently checked Arabic body.")
+        elif number == "175":
+            reasons.append("The actually read Ministry French ChapterIX heading retains al ghora despite the official1984 rectification to al ghara. The Arabic heading is independently checked; no Arabic body change is inferred.")
         internal, external = references(paragraphs)
         if external:
-            reasons.append("External article targets await in-scope corpus/import support; not remapped to Family numbers: "
+            reasons.append("External citation identities are linked through the existing reference-only contract; their texts/versions remain unavailable and cannot resolve as operative law: "
                            + ", ".join(r["targetId"] for r in external))
         if repeal:
             proof = next(i for i in inventory["images"] if i["pdfPage"] == op["pages"][0])
@@ -240,7 +248,7 @@ def build() -> None:
                     "date": TODAY, "result": "passed", "note": "Present outcomes only; not execution of a full historical consolidation plan or resolution of source conflicts/dates."}]
         version = {"versionId": version_id, "text": text, "paragraphs": paragraphs, "path": reviewed_paths[number],
                    "inForceFrom": None, "inForceTo": None, "temporalStatus": "unsettled", "introducedBy": publication,
-                   "status": "repealed" if repeal else "in-force", "source": src, "crossReferences": internal,
+                   "status": "repealed" if repeal else "in-force", "source": src, "crossReferences": internal + external,
                    "verification": {"state": "unsettled" if not repeal and bodies[number].get("joCheck", {}).get("conflict") else "partly-checked",
                                     "checks": checks, "reasons": reasons}}
         articles.append({"id": article_id, "number": number, "canonicalNumber": number, "path": reviewed_paths[number],
@@ -248,10 +256,14 @@ def build() -> None:
         unresolved.append({"id": version_id, "reason": " ".join(reasons)})
         assembly.append({"number": number, "versionId": version_id, "textSha256": pipeline.hash_text(text),
                          "currentOperation": op["operation"] if op else "unchanged-body", "externalReferencesPending": external})
-    if any(ref["targetId"] not in {a["id"] for a in articles} for a in articles for v in a["versions"] for ref in v["crossReferences"]):
-        raise ValueError("Extracted internal reference is absent")
+    available = {a["id"] for a in articles}
+    for path in (ROOT / "data/law/corpus").glob("*/articles.json"):
+        if path.parent.name != "family-code":
+            available.update(a["id"] for a in pipeline.read_json(path)["articles"])
+    if any(ref["targetId"] not in available for a in articles for v in a["versions"] for ref in v["crossReferences"]):
+        raise ValueError("Extracted reference target is absent; record an explicit reference-only identity without inventing text")
     family_current_outcomes.run(articles, inventory, bodies, reviewed_paths)
-    report = {"schemaVersion": "1.0", "codeId": "family-code", "generatedOn": TODAY,
+    report = {"schemaVersion": "1.0", "codeId": "family-code", "generatedOn": max(TODAY, approval["discovery"][0]["accessedOn"]),
               "inventory": {"scope": "complete-code", "expected": targets, "present": targets, "gaps": [],
                             "unappliedPublications": [], "complete": True},
               "countsByState": {state: sum(a["versions"][0]["verification"]["state"] == state for a in articles)

@@ -1,6 +1,35 @@
 # Family Code: preparation and source-check record
 
-Updated 28 October 2026, branch `codex/law-corpus`. This is **not a completed Family delivery**. The typed current candidate contains **232 identities / 232 snapshot records: 0 checked, 228 partly-checked, four unsettled**. Image readings are Codex's (AI), never human or lawyer verification.
+Updated 29 October 2026, branch `codex/law-corpus`. This is **not a completed Family delivery**. The typed current candidate contains **232 identities / 232 snapshot records: 0 checked, 228 partly-checked, four unsettled**. Image readings are Codex's (AI), never human or lawyer verification.
+
+## 29 October: original French inventory and external identities
+
+All **224 base labels** were actually read on the original French JO24/1984, PDF2–15 (printed612–625), in both columns. All28 independent French OCR crops completed and their artifacts replay. `original-french-label-review.json` records the actual page/column readings, continuations, source/manifest/image hashes and findings; `family_original_french_labels.py` rejects missing, duplicated or reordered labels and stale proof. OCR misses are not automatically filled by numerical continuity. This completes base numbering/presence evidence; original-JO paragraph comparison remains separate and incomplete. It grants no translation equivalence, resolved Arabic conflict, date or checked state.
+
+An enlarged original French PDF14 view visibly prints **Chapitre III / De la donation** before202. That printed heading discrepancy is retained, alongside the already recorded French/Arabic maintenance hierarchy distinction. Neither changes the independently checked Arabic paths. The French rectifications and the current Ministry witness remain separately recorded below.
+
+All **four explicit external citations** now have typed identity links with their original quote/paragraph:82→Civil42,83→Civil43,86→Civil40,120→civil-status64. The existing `reference-only` contract is reused: Civil40/42/43 and civil-status64 have **zero versions and no text/date**. Civil therefore has48 identities but only45 with text and55 versions; the civil-status catalogue has one identity, zero law bodies and no audited amendment inventory. This is reference bookkeeping only; no excluded special-law collection was started. Date-based lookup remains unsettled for unavailable targets, and the original missing-target validation remains strict.
+
+The new .NET regression uses fictitious fixtures to verify identity links cannot expose invented operative law. Python regressions cover source pins, actual readings, precise approval locators, Arabic conflict protection, identity preservation/idempotence and the complete French label inventory. All **213 Python tests pass**. Full post-commit Release validation is recorded in the checkpoint handoff; no application or legacy law behavior was changed.
+
+## 29 October: official supplementary publications acquired and read
+
+Using the official `joradp.dz` hostname without `www` resolved the download failures. Four official PDFs are now cached and pinned; their law pages and the 1984 issue covers were actually inspected. `supplementary-source-review.json` records the exact source/page/image hashes and findings. `family-supplementary-manifest.json` can reacquire the four PDFs and regenerate six Arabic/French OCR crops with the already installed language packs. All six extractions completed; no new model download was needed.
+
+| Official source | Inspected PDF / printed page | SHA-256 |
+|---|---|---|
+| [French JO 31/1984](https://joradp.dz/FTP/jo-francais/1984/F1984031.PDF), 31 July 1984 | PDF 9 / 801, plus cover | `17aebcd70ee825b2bd78632a769f577a52b933abc1bd3d23b6e783b5fe0c42a2` |
+| [French JO 41/1984](https://joradp.dz/FTP/jo-francais/1984/F1984041.PDF), 19 September 1984 | PDF 2 / 1018, plus cover | `7094710ebdce9cd336c9898e5a35888cb7656831c474373959df5a5e3dbe92e3` |
+| [Arabic JO 43/2005](https://joradp.dz/FTP/jo-arabe/2005/A2005043.pdf), 22 June 2005 | **PDF 4 / 4**, left column | `ec671d5e6fd9eb0b8c463e28aa9853f0b83266948aa125ff80f453a5af204d2a` |
+| [French JO 43/2005](https://joradp.dz/FTP/jo-francais/2005/F2005043.pdf), 22 June 2005 | **PDF 3 / 3**, right column | `04f7a9c75337d25b48dda2e5c19c12f5146cc082bd38c4c8c07e9031f639efdf` |
+
+Law **05-09 of 4 May 2005** is now in the typed ledger as an approval-only publication: article 1 approves Ordinance 05-02; article 2 orders publication. It creates no replacement, insertion or repeal of a Family body, and supplies no calendar commencement date. Arabic page 3 is continued contents, so copying the French page number would give a wrong locator. The guard and regression require Arabic page 4 / French page 3. All existing Family texts, paragraphs, dates and verification states remain unchanged.
+
+The first French rectification changes the historical article 12 phrase, the heading at article 99, deletes `ou non` after `legs` in article 171, and corrects the chapter IX transliteration to `al ghara`. The second notice further corrects the article 12 phrase to `bikr`. Both notices identify the French translation. Neither names articles **135, 151, 202 or 203**; those four Arabic conflicts remain unresolved.
+
+The source comparison found **two unapplied rectifications in the Ministry's French witness**: actual PDF 35 still prints `un legs ou non ou fait` in article 171 and `al ghora` in the chapter IX heading. The raw French witness is retained with explicit findings; it is not treated as corrected French meaning or used to alter the independently checked Arabic bodies/headings. The compilation's chapter IV `De la curatelle` heading is already correct. Thus French numbering/paragraph alignment remains separate from translation correctness.
+
+`family_supplementary_sources.py` replays all four PDF pins and actual image readings before the builder adds the approval publication. Missing/changed proof, the wrong Arabic page and silently waiving the Arabic conflicts fail closed. Five regressions cover these boundaries. Latest discovery is still based on the pinned 26 October index: the 29 October live refresh returned HTTP 500, so its cut-off was not advanced from search-cache results.
 
 ## Latest continuation: heading paths and current amendment outcomes
 
@@ -10,7 +39,7 @@ All57 distinct current heading paths were actually inspected on15 source sheets,
 
 `family_current_outcomes.py` independently replays the current identity/outcome audit: **190 unchanged bodies,29 replacements, eight insertions and five repeals**, with the reviewed body/paragraph hashes, correct introducing publications and reviewed paths. The expected set is constructed from base1–224 plus the independently read eight insertions. Consequently **current `inventory.complete` is now true and the unapplied-current-publication list is empty**. Each snapshot records the narrowly described inventory/current-outcome checks. This is not execution or completion of the deferred historical archive.
 
-All verification states remain **0 checked,228 partly-checked,four unsettled**; `scope.complete` remains false, and all temporal bounds remain unresolved. The four wording conflicts, French JO/rectification and approval acquisition, latest discovery and external-reference tasks below remain open. New regression tests reject omitted insertions, stale body/paragraphs, incorrect repeal states and wrong introducing publications. The current Python suite has182 passing tests, including the concurrent Civil strict-audit regressions.
+All verification states remain **0 checked,228 partly-checked,four unsettled**; `scope.complete` remains false, and all temporal bounds remain unresolved. The four wording conflicts, original-JO paragraph comparison, latest discovery, unavailable external-reference texts and temporal work remain open. Rectification/approval acquisition, original French base-label presence and external identity linking are completed above. The heading/outcome checkpoint had182 passing Python tests; the current total is above.
 
 ## Original-JO body collation finished
 
@@ -29,7 +58,7 @@ These four current candidates retain the Ministry reading **only as an unsettled
 
 `family_jo_collation.py` records explicit readings; `apply_family_jo_collation.py` replays all decisions, proof/input/text hashes, unique correction guards and a complete partition of wording differences into fixes or unresolved conflicts. `build_family_candidate.py` replays that operation before assembly and keeps the original Ministry text hash separate from the final JO-corrected text. Seven new regression tests cover missing/stale proof, wrong source, duplicate decisions, incomplete crops, correction guards and conflict quarantine. All **156 Python tests** pass.
 
-Official discovery identified French rectifications in JO31/1984 p. 801 and JO41/1984 p. 1018. The Ministry amendment list does not enumerate them. Official image acquisition/reading remains pending; direct download timed out. Secondary descriptions are discovery clues only and supply no canonical wording or legal effect. No rectification is assumed to settle article 135. The separate Law05-09 approval-source acquisition remains open.
+Earlier discovery identified French rectifications in JO31/1984 p. 801 and JO41/1984 p. 1018, which the Ministry amendment list does not enumerate. Their official acquisition/reading and the approval-source pin are now complete as recorded above. The four Arabic conflicts remain unresolved; no secondary description supplies canonical wording or legal effect.
 
 ## Amended paragraph review and source-locator corrections
 
@@ -100,9 +129,9 @@ Eight hash-guarded string corrections follow the official print:
 
 ## Remaining before delivery
 
-1. Resolve the four now-isolated official-edition conflicts above, acquiring/reading any applicable official rectification. The 190-body original-JO collation itself is complete; do not repeat its OCR or the 176 finished image readings.
-2. Finish external cross-reference handling and French JO structural/rectification reconciliation. Current heading paths, all37 amended-body paragraph layouts and all27 flagged unchanged-body paragraph counts have actual source-image decisions; French compilation numbering is complete.
-3. Settle source/discovery and honest temporal limits and legally needed older regimes. The current amendment-outcome audit now passes; source fragments and separate Ministry transcription witnesses are present. Record Law05-09's approval of Ordinance05-02 without inventing article changes; local acquisition of its Arabic publication timed out.
+1. Resolve the four isolated Arabic edition conflicts, if further official evidence permits. The two now-inspected French rectifications name other targets. The 190-body original-JO collation is complete; do not repeat its OCR or the 176 finished image readings.
+2. Complete original French JO paragraph alignment, preserving the known edition/rectification discrepancies. Base-label presence, French compilation numbering and all four external identity links are complete. External target texts remain unavailable. Current heading paths, all37 amended-body paragraph layouts and all27 flagged unchanged-body paragraph counts have actual Arabic source-image decisions.
+3. Settle latest discovery, temporal limits and legally needed older regimes. The current amendment-outcome audit and approval05-09 ledger entry now pass; source fragments and separate Ministry transcription witnesses are present. No calendar commencement date is inferred from a publication clause.
 4. Finish the remaining content QA, then repeat the schema, typed-loader, full build and regression gate for final delivery. The 20-article sample and legacy Family reconciliation below are now complete for this candidate.
 5. Recheck latest amendment discovery; the previous live index attempt timed out, so the cached cut-off is not silently advanced.
 
@@ -116,7 +145,7 @@ The schema/model has one optional addition, `source.transcriptionWitnesses`. Eac
 
 All 232 current records have unresolved temporal bounds; no national commencement date or older body was guessed. `VersionOn` must therefore continue to return an unsettled result. **Do not integrate this candidate as a completed or date-applicable legal library.** The app and legacy loaders have not been switched to it. Consumers of the new optional field must use the updated corpus reader.
 
-The candidate records internal explicit cross-references, with their original quote and paragraph. Four external targets remain disclosed in the assembly audit/report rather than being falsely mapped to Family numbers: art. 82 → Civil art. 42, art. 83 → Civil art. 43, art. 86 → Civil art. 40, and art. 120 → civil-status art. 64. Their texts/typed links need the appropriate in-scope import or explicit reference handling; no special-law text was started. Reference tests caught and fixed an extractor omission for attached `للمادة` / `للمادتين` forms.
+The candidate records internal and external explicit cross-references, with their original quote and paragraph. The four external targets are linked through the explicit reference-only mechanism described above. Their texts remain unavailable and are still listed as pending support in the assembly audit/report; no special-law text was started. Reference tests caught and fixed an extractor omission for attached `للمادة` / `للمادتين` forms.
 
 ## Random source sample and legacy comparison
 
@@ -126,7 +155,7 @@ The 22 small source crops (two articles span pages), selection, actual inspectio
 
 Reused `reconcile_existing.py` without changing its comparison rule (NFC and collapsed whitespace only). All **25 legacy Family records** are compared: **19 same-text**, **six different-text** (48, 53, 66, 74, 75, 79), with raw hashes and full diffs. A text difference is not automatically a legal-version change. Across all 81 legacy records the current counts are 25 same-text, nine different-text and 47 not yet imported; every absence is listed. Legacy texts and verification flags remain untouched.
 
-[Law 05-09, official French JO43/2005 p. 3](https://www.joradp.dz/jo2000/2005/043/FP3.pdf) approves Ordinance 05-02 and provides for publication; it supplies no replacement Family body. The French publication was accessible through the research browser, but direct local downloads of the Arabic issue and the small French page timed out. The candidate explicitly discloses the missing local approval-source pin instead of inventing a hash or claiming its ledger is final. Latest-amendment discovery still uses the pinned 26 October Ministry index; a search-cache result is not treated as a newly acquired index.
+The earlier approval-download failure is resolved by the pinned/read full issues above: Law05-09 is now in the ledger. Latest-amendment discovery still uses the pinned26October Ministry index; a search-cache result is not treated as a newly acquired index.
 
 The shared comparison's default behavior and existing CPCA corpus have not been changed. The CPCA's existing `checked` state reflects its recorded method; an independent exact-word overlay for that code remains a separate QA task. No new CPCA failure count is inferred from the Family findings.
 

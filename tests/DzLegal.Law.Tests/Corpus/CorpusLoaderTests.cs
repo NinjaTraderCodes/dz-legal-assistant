@@ -37,6 +37,29 @@ public class CorpusLoaderTests
     }
 
     [Fact]
+    public void ReferenceOnlyTargetSatisfiesIdentityLinkWithoutExposingInventedLaw()
+    {
+        var version = Version();
+        version = version with { CrossReferences = [new("fictitious:2", 1, version.Text)] };
+        var code = Code(version);
+        code = code with
+        {
+            Content = code.Content with
+            {
+                Articles = [code.Content.Articles[0], new()
+                {
+                    Id = "fictitious:2", Number = "2", CanonicalNumber = "2", Availability = "reference-only",
+                }],
+            },
+        };
+        var corpus = CorpusLoader.Validate([code]);
+        var target = corpus.VersionOn("fictitious:2", Start);
+        Assert.Equal("unsettled", target.State);
+        Assert.Null(target.Version);
+        Assert.Equal("partly-checked", corpus.VersionOn("fictitious:1", Start).State);
+    }
+
+    [Fact]
     public void DoesNotExposeAnUnsettledTranscriptionAsAResolvedVersion()
     {
         var version = Version() with { Verification = new("unsettled", [], ["Unresolved invented OCR discrepancy"]) };

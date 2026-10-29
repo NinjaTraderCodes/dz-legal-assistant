@@ -2,9 +2,11 @@
 
 Research cut-off: **25 October 2026**. Branch: `codex/law-corpus`, isolated from the application engineer's default-branch work. This is a separate, additive corpus. The existing `data/law/codes`, claim mappings, loaders and application behavior have not been switched to it.
 
-For current branch counts, start with **Current coverage (28 October 2026)** below. The [state report dated 26 October 2026](LAW-CORPUS-STATE-REPORT.md) is a historical checkpoint, superseded for the CPCA by delivery 2. Older acquisition and execution notes below retain their original dates and are not current delivery counts.
+For current branch counts, start with **Current coverage (29 October 2026)** below. The [state report dated 26 October 2026](LAW-CORPUS-STATE-REPORT.md) is a historical checkpoint, superseded for the CPCA by delivery 2. Older acquisition and execution notes below retain their original dates and are not current delivery counts.
 
 **29 October continuation:** the user resumed after the second safe pause. Family checkpoint `0380e3f` is committed, fully validated and pushed to the authorized branch; its current inventory/outcomes and heading paths pass, while its four conflicts and source/temporal limitations remain. Civil OCR is now complete in both readers across 164 pages. The strict page-bounded research comparison has 673/1,059 word agreements, 702 word/digit/extra groups and 216 punctuation groups. All 58 word flags in the first150 source candidates have actual image decisions; 26 guarded spacing repairs are saved in 25 separate research bodies. Typed coverage below is unchanged. See the [current restart record](LAW-CORPUS-RESUME-2026-10-29.md) and [Civil report](LAW-CORPUS-CIVIL.md).
+
+Family source acquisition has since advanced: the official hostname without `www` supplied both1984 French rectification issues and Arabic/French Law05-09 approval publications. They are pinned and actually read; approval05-09 is added to the ledger with Arabic PDF4 / French PDF3, no new body/version or guessed date. The rectifications expose two stale phrases in the Ministry French witness (171 and a chapter heading), now explicitly recorded. They do not identify the four disputed Arabic targets. All224 original French base labels have actual source-image readings, with28 OCR columns replayed. All four external Family citations now link to reference-only identities: three Civil targets and civil-status64. These four identities contain **zero law texts/versions** and are not an extension into special-law collection. The [Family report](LAW-CORPUS-FAMILY.md) supersedes older pending-acquisition/linking notes; current article bodies, dates and verification states are unchanged.
 
 ## Recovery and Family preparation, 28 October 2026
 
@@ -76,16 +78,18 @@ The earlier489 pilot inspected original ArabicPDF31 and2007 ArabicPDF5, with Fre
 
 ## Delivery status
 
-### Current coverage (28 October 2026)
+### Current coverage (29 October 2026)
 
 | Legal text | Article identities | Versions | Checked | Partly checked | Unsettled | Scope | Full code complete |
 |---|---:|---:|---:|---:|---:|---|---|
 | CPCA | 1,084 | 1,162 | 1,162 | 0 | 0 | complete code, Law 08-09 + Law 22-13 | **Yes** (175 versions with an unsettled temporal boundary, see below) |
-| Civil Code | 45 | 55 | 7 | 32 | 16 | priority subset (7 targets) | No |
+| Civil Code | 48 (45 text + 3 reference-only) | 55 | 7 | 32 | 16 | priority subset (7 targets) | No |
 | Commercial Code | 2 | 2 | 2 | 0 | 0 | priority subset (2 targets) | No |
 | Family Code | 232 | 232 | 0 | 228 | 4 | current snapshot candidate; five repeals retained; four edition conflicts; history deferred | No; final QA and all temporal boundaries remain open |
 | Labour 90-11 | 0 | 0 | 0 | 0 | 0 | — | No; not started |
 | Labour 90-04 | 0 | 0 | 0 | 0 | 0 | — | No; not started |
+
+The civil-status reference catalogue adds one identity (64), **zero versions and zero article bodies**. It exists solely to preserve Family120's explicit target; its text, applicability and amendment discovery are unavailable. It is excluded from the in-scope delivered-text totals. Original source pins/rectifications do not resolve the four Arabic conflicts or any temporal boundary.
 
 What remains: final Family QA, Civil Code, Commercial (37), Labour 90-11 (29) and 90-04 (1). All 81 legacy records are accounted for in the reconciliation below; 47 still lack imported corpus text. The [Family 20-article image sample](law-corpus-checks/family-code/README.md) is complete for the current candidate, without promoting its verification states.
 

@@ -2,6 +2,36 @@
 
 29 October 2026, `codex/law-corpus`. **No completed Civil delivery is claimed.** The typed package has48 identities:45 with text and three reference-only Family citation targets;55 versions (seven checked,32 partly-checked,16 unsettled). The reference-only identities contain no versions/texts. The preparation below is separate research data and has not replaced existing versions or the application's law library.
 
+## New priority:274 identities in whole contract/liability chapters
+
+The user's new order is recorded in `priority-chapter-inventory.json`. **Fifteen official Ministry page images were actually read** for the chapter starts, ends and following units. Seven original overviews and the two successor-page views establish these boundaries; full-body certification is not inferred from boundary reading.
+
+| Chapter | Identities | Boundaries |
+|---|---:|---|
+|General contract rules|71|54–123, including72bis; excluding the separate123bis/123bis1 unilateral-obligation chapter|
+|Sale|62|351–412; exchange begins413|
+|Lease|79|467–537, including eight insertions and current repeal markers|
+|Consumption loan|9|450–458; settlement begins459|
+|Loan for use|11|538–548; works begins549|
+|Works contract|22|549–570; the following locally numbered management-contract chapter is separate|
+|Liability|20|124–140bis1, including personal fault, the middle vicarious-liability section and things; quasi-contract begins141|
+
+The total is **274**. Both kinds of loan are included. Current repeal markers are retained; their former bodies are not mislabeled current. Existing typed pilot versions/history remain intact. The next release must be explicitly partial and list these chapters. Remaining Civil continues in source order only after this package passes its body, paragraph, inventory, amendment, reference and sample gates. French paragraph expansion, general editorial heading cleanup and older regimes remain postponed unless a conflict needs them.
+
+**The sale chapter's62 research bodies now replay47 previously saved image readings.** `civil_priority_word_review.py` applies13 guarded spacing restorations and one necessary article-body boundary repair:360 loses its trailing printed heading`-2 التزامات البائع`, which is preserved in separate source metadata. This is a source-proven body contamination fix, not a broad heading cleanup. `priority-sale-word-projection.json` marks `fullArticleChecked:false`; no typed version/state/date is changed.
+
+One of those13 repairs needs a precise contextual guard. In388,`م ا` occurs both across two valid neighbouring words in`تسليم المبيع` and as the actual split`ما`. The original unique-replacement guard correctly refused a global repair. The new projection changes only`تسليم المبيع، م ا لم يوجد`→`تسليم المبيع، ما لم يوجد`, tied to the actual flagged token14 and source/body/image hashes. It preserves the valid neighbouring boundary and records the critical word restoration. The original general digit, negation and ambiguity guards remain unchanged. Eight new regressions cover stale/missing proof, duplicate/missing flags, wrong token context, arbitrary heading deletion, digit joins and independent negation.
+
+The whole350–450 reading record stays immutable with its original `mechanicalApplicationComplete:false`: **33 findings outside the sale selection remain unapplied**, including the difficult333 amount/context proposals. Do not rerun/claim all80 as applied. Current cumulative spacing repairs are71 (58 earlier +13 sale); the remaining target chapters still need their own review and all non-word gates.
+
+### Additional current amendment discovered:Law84-21
+
+The Ministry loan footnotes cite **Law84-21 of24December1984**, omitted by the short Ministry amendment index. The official Arabic [JO72/1984](https://joradp.dz/FTP/jo-arabe/1984/A1984072.pdf), SHA256`0bbf0e406386b9d709c855a855c0d362c42de549d2a6f31c26b35d3cc6b6383a`, was acquired and its cover/act identity and PDF8/printed2544 actually read. It was published **31December1984**, not on enactment24December. Instruction22 replaces Civil455; instruction23 replaces456. Both current Ministry bodies reflect the ministerial-order rate provision. The two scoped OCR crops completed; OCR456 misses a visibly present line, so it is **not** advertised as strict agreement. Exact body collation/application remains pending.
+
+`law-84-21-discovery-review.json`, `civil-84-21-manifest.json` and the two-crop evidence index preserve this discovery. Printed2581/PDF45 is an annex table and is not used as a commencement clause. This acquisition is confined to Civil amending clauses; no separate Finance Act/special-law collection was started. No date or retroactive effect is invented. The finding demonstrates why current amendment discovery must inspect code annotations and original publications as well as the Ministry's short index.
+
+Family checkpoint`392c0fb` is pushed after explicit approval and remote-confirmed; it passed694 .NET/241 Python tests and zero warnings/errors. This following Civil research checkpoint has249 passing Python tests before commit and requires the full post-commit Release gate. It changes corpus research/tools and progress reports only; no app, catalogue, prompts, legacy data or typed Civil package changes. No manual app run for this research-only work; automated app/web regression remains required. Files outside corpus/tools: this report, the restart record and `docs/LAW-CORPUS.md`.
+
 ## Latest source readings: source-order350–450, application pending
 
 All **80 flagged groups** in this batch were actually read on14 sheets,26 wider crops shown on seven overviews and one further enlarged350 heading view. Every original body/flag/proof hash replays. `image-readings-ministry-words-0350-0450.json` is deliberately a **reading-only record**, with `mechanicalApplicationComplete:false`; it is not a legacy applier decision file and grants no checked state. Source-image review now reaches450 candidates (266 flag findings in total); guarded derived repairs remain the58 recorded through350.

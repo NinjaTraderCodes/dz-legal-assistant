@@ -43,12 +43,14 @@ def report() -> None:
              "This is not human/lawyer verification or a claim of whole-code completion.", "",
              "15 unchanged bodies use the current Ministry print; five amended bodies use the amending JO. "
              "The known art. 178 continuation is included. Source selection and printed-vocalization limits are "
-             "in `inspection.json`; the other Family QA remains open.", ""]
+             "in `inspection.json`; historical and temporal applicability limits remain explicit in the Family delivery report.", ""]
     if selection.get("populationUpdates"):
         lines += ["The sample was retained after the guarded correction to unsampled article 42: all 20 selected texts and "
                   "paragraphs replay unchanged. The population update and prior selection hash remain recorded. "
                   "The Ministry-source readings of sampled articles 135, 151 and 203 do not settle their separately "
-                  "recorded original-JO edition conflicts; those candidates are now explicitly unsettled.", ""]
+                  "recorded original-JO edition conflicts. The separately pinned Arabic JO31/1984 rectification "
+                  "now resolves those readings. The later unsampled167 source-order correction is recorded in "
+                  "populationUpdates; all20 selected bodies/proofs remain unchanged.", ""]
     for item in selection["items"]:
         decision = decisions[item["id"]]
         actual = next(a["versions"][0] for a in current if a["id"] == item["id"])
@@ -78,7 +80,8 @@ def report() -> None:
                 "section{border-top:2px solid #555;padding:16px 0}.pair{display:grid;grid-template-columns:1fr 1fr;gap:24px}"
                 "img{display:block;max-width:100%;height:auto}.body{font-size:26px;line-height:1.9}.meta{font-size:14px}"
                 "@media(max-width:900px){.pair{grid-template-columns:1fr}}</style><h1>Family current-candidate sample</h1>"
-                "<p>20 actual AI image readings; source and canonical body. Remaining whole-code QA is open.</p>"
+                "<p>20 actual AI image readings; source and canonical body. See the Family delivery record for the "
+                "complete current text and separate historical/temporal limitations.</p>"
                 + "".join(blocks) + "</html>")
     (OUT / "comparison.html").write_text(document, encoding="utf-8", newline="\n")
     (OUT / "README.md").write_text("\n".join(lines), encoding="utf-8", newline="\n")

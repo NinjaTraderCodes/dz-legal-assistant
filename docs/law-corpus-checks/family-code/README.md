@@ -4,9 +4,9 @@
 
 All ten generated review sheets were actually read by Codex (AI) on 28 October 2026. The 20 sampled bodies' words, figures, negation and paragraphing match their identified source. This is not human/lawyer verification or a claim of whole-code completion.
 
-15 unchanged bodies use the current Ministry print; five amended bodies use the amending JO. The known art. 178 continuation is included. Source selection and printed-vocalization limits are in `inspection.json`; the other Family QA remains open.
+15 unchanged bodies use the current Ministry print; five amended bodies use the amending JO. The known art. 178 continuation is included. Source selection and printed-vocalization limits are in `inspection.json`; historical and temporal applicability limits remain explicit in the Family delivery report.
 
-The sample was retained after the guarded correction to unsampled article 42: all 20 selected texts and paragraphs replay unchanged. The population update and prior selection hash remain recorded. The Ministry-source readings of sampled articles 135, 151 and 203 do not settle their separately recorded original-JO edition conflicts; those candidates are now explicitly unsettled.
+The sample was retained after the guarded correction to unsampled article 42: all 20 selected texts and paragraphs replay unchanged. The population update and prior selection hash remain recorded. The Ministry-source readings of sampled articles 135, 151 and 203 do not settle their separately recorded original-JO edition conflicts. The separately pinned Arabic JO31/1984 rectification now resolves those readings. The later unsampled167 source-order correction is recorded in populationUpdates; all20 selected bodies/proofs remain unchanged.
 
 ## Article 151
 

@@ -1,6 +1,31 @@
 # Family Code: preparation and source-check record
 
-Updated 29 October 2026, branch `codex/law-corpus`. This is **not a completed Family delivery**. The typed current candidate contains **232 identities / 232 snapshot records: 0 checked, 228 partly-checked, four unsettled**. Image readings are Codex's (AI), never human or lawyer verification.
+Updated 29 October 2026, branch `codex/law-corpus`. **The current-text delivery is complete: 232 identities / 232 checked snapshot records, comprising227 bodies and five repeal markers.** The recorded amendment-discovery cut-off remains26October2026. This is a normalized current-text collection, not a complete historical archive or a certificate of temporal applicability. Image readings are Codex's (AI), never human or lawyer verification. The dated sections below this new closure record describe earlier checkpoints and are superseded where they call the four conflicts unresolved.
+
+## Current delivery: Arabic rectification and commencement rule
+
+The decisive source is the **Arabic** [JO31/1984](https://joradp.dz/FTP/jo-arabe/1984/A1984031.pdf), PDF12–13, printed1184–1185, SHA256 `e925d9cb539288b7bd57b908976810944adb952ac0c6852622d7df6cfb67966a`. Its cover explicitly lists the Family rectification. Both pages, their continuation and enlarged disputed passages were actually read; four separate Arabic OCR columns completed. The earlier French notices are separate publications and were insufficient to settle Arabic wording.
+
+| Article | Original Arabic print | Arabic rectification/current text |
+|---|---|---|
+|135|`عمدا أو عدوانا`|`عمدا وعدوانا`|
+|151|`عاصب غيره`|`عاصب مع غيره`|
+|202|`يتوقف على إنجاز الشرط`|`يتوقف تمامها على إنجاز الشرط`|
+|203|`وغير محجوز عليه`|`وغير محجور عليه`|
+
+Thus all four former wording conflicts are closed by an explicit official correction, without relying on legal expectation or silently choosing the Ministry over the original. Their current bodies already used the corrected readings, so no wording change to these four was needed. The original conflicting print, original collation and Ministry witness remain preserved. `arabic-rectification-review.json`, its audit, the new ledger publication and correcting source fragments bind the decision to the actual Arabic source.
+
+The notice covers **17 identities**:19,30,36,107,111,135,144,151,153,165,167,168,185,202,203,207,211. The current2005 replacements supersede19/30/36's older corrections; they are not overwritten. All14 other targets were checked against their current bodies. Article168's unnumbered correction locator was independently identified as its continuation on original printed921/PDF13, rather than attributed to167. In167, the rectification itself prints `لم تستغرق الفروض التركة`, whereas the Ministry reorders this to `لم تستغرق فروض التركة`. **The canonical current167 now retains the rectification's printed order**; the Ministry variant remains a separate raw witness. No grammatical repair is invented. This is the only body change in this delivery checkpoint.
+
+Mixed-publication article sources retain paragraph hashes and the original-law body fragments, plus the correcting Arabic instruction. The replay tool rejects missing targets, wrong pages, stale bodies/proof, wrong conflict mappings and applying an older correction over a2005 replacement. The original unresolved-conflict research file is historical evidence and intentionally remains unchanged; the new audit records its authoritative resolution.
+
+The **date question is a conditional rule, not an absent nationwide date to guess**. Original Civil4 was actually read on [Arabic JO78/1975](https://joradp.dz/FTP/jo-arabe/1975/A1975078.pdf), PDF2/printed990, including its continuation at the top of the other column. It distinguishes Algiers publication from stamped receipt at each other daira, in each case after one complete day. Family224 and05-02 article19 only order publication;05-09 article2 does likewise, and approval does not restart05-02's bodies. `temporal-rule-review.json` preserves these source readings and the rule. Research calendar calculations under a full intervening-day reading give14June1984 and1March2005 for Algiers, but **are not copied into nationwide version bounds**. The rectification's retrospective legal effect is not invented either.
+
+Consequently all232 `inForceFrom`/`inForceTo` bounds remain null and `temporalStatus` remains`unsettled`. These are explicit limits of historical/date-based use, separately reported from checked current text. The unchanged `VersionOn` resolver still returns`unsettled`/no version; a new fictitious regression verifies this even for a complete, checked current collection. **Use this package for the recorded current text snapshot. Do not treat it as deciding which law governs an older marriage, succession, gift or proceeding.** No historical regime was fabricated or silently imported.
+
+The independent current inventory,37 amended bodies, five repeal targets and all prior body/paragraph/source checks replay. The20 sampled articles retain the same draw, bodies and proof;167 is unsampled, so its guarded population-hash update is recorded without a redraw. Existing French paragraph readings were retained, with only167's Arabic body-hash binding updated after the source correction; no new French alignment or heading cleanup was undertaken. The live Ministry refresh again returnedHTTP500; the pinned26October discovery cut-off is retained.
+
+Validation before commit: **694 .NET tests,241 Python tests, zero Release warnings/errors, schema0 errors**. The full post-commit Release gate remains mandatory and its actual result is stored in the ignored recovery record. No tests were removed, skipped or weakened. New tests cover rectification provenance/ambiguity/superseded bodies, publication geography and full-day boundaries, and complete-current versus unknown-historical lookup. No app, catalogue, prompts or legacy law data changed; the app was not manually rerun for this data-only delivery. Files outside corpus/tools: the corpus test file, this report, coverage/restart reports and the existing20-sample report/selection/inspection metadata. PDFs and raw extraction cache remain local.
 
 ## 29 October: original French inventory and external identities
 

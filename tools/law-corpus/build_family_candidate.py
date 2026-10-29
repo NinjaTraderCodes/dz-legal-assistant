@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Assemble the reviewed current Family snapshot as explicitly incomplete typed data, not a finished delivery.
+"""Assemble the complete checked current Family text snapshot, with historical/date limitations separate.
 
-No historical body, commencement date, JO collation decision, paragraph certification or legal applicability is
-invented. The Ministry witness keeps its own PDF identity. All versions stay partly-checked until final QA.
+The Arabic rectification resolves the four prior wording conflicts. No missing former body or nationwide
+commencement date is invented; the existing date resolver remains fail-closed on unresolved intervals.
 """
 from __future__ import annotations
 
@@ -17,14 +17,18 @@ import family_supplementary_sources
 import family_original_french_labels
 import family_french_amendment_structure
 import family_original_french_paragraphs
+import family_arabic_rectification
+import publication_rules
 import pipeline
 
 ROOT = pipeline.ROOT
 WORK = ROOT / "data/law/corpus/research/family-2026-10-28"
 OUT = ROOT / "data/law/corpus/family-code"
-TODAY = "2026-10-28"
-TEMPORAL = ("Exact commencement is unresolved: enactment/publication is not substituted for the applicable "
-            "commencement rule and local receipt/publication evidence. Null bounds do not authorize historical use.")
+TODAY = "2026-10-29"
+TEMPORAL = ("Civil article4: after one complete day following JO publication in Algiers; elsewhere after one complete "
+            "day following JO receipt at the daira, evidenced by its stamp. No single nationwide commencement date "
+            "is supplied. Exact local receipt and historical applicability are not represented by null bounds. "
+            "See research/family-2026-10-28/temporal-rule-review.json; date-based lookup remains fail-closed.")
 NUMBER = r"\d+(?:\s+مكرر(?:\s+\d+)?)?"
 REFERENCE = re.compile(r"(?P<label>(?:ال|لل)(?:مادة|مادتين|مادتان|مواد))\s*\(?\s*(?P<numbers>" + NUMBER + r"(?:\s*و\s*" + NUMBER + r")*)\s*\)?")
 
@@ -94,6 +98,7 @@ def checked_family_locator(result: dict, publication: str, records: dict, text: 
 
 
 def build() -> None:
+    publication_rules.replay_family_review()
     native = pipeline.read_json(WORK / "native.json")
     reviewed_paths = apply_family_paths.main()
     approval = family_supplementary_sources.main()
@@ -138,6 +143,14 @@ def build() -> None:
     locator_overrides = {r["number"]: r for r in locator_review["overrides"]}
     if len(locator_overrides) != len(locator_review["overrides"]) or not set(locator_overrides) <= expected_amended:
         raise ValueError("Duplicate or out-of-scope source locator override")
+    bodies, arabic_rectification = family_arabic_rectification.main(bodies)
+    rect_manifest = pipeline.load_manifest(ROOT / "tools/law-corpus/family-arabic-closure-manifest.json")
+    rect_records = pipeline.evidence_by_id(pipeline.CACHE, {e["id"] for e in rect_manifest["extracts"]})
+    for extract in rect_manifest["extracts"]:
+        record, _ = rect_records[extract["id"]]
+        if (record["sourceId"] != extract["sourceId"] or record["pdfPage"] != extract["pdfPage"]
+                or record["region"] != extract["region"] or record["ocrInvocation"]["exitCode"] != 0):
+            raise ValueError("Arabic closure extraction differs from the committed source/crop manifest")
     ministry = {r["number"]: r for r in pipeline.read_json(WORK / "ministry-raw-comparison.json")["results"]}
     french_pins = {s["id"]: s for s in pipeline.read_json(ROOT / "data/law/corpus/research/scope-source-downloads.json") if "sha256" in s}
     original_french = pipeline.read_json(WORK / "original-french-paragraph-review.json")
@@ -145,16 +158,16 @@ def build() -> None:
     discovery = {"url": "https://droit.mjustice.gov.dz/fr/content/codes-0", "accessedOn": "2026-10-26",
                  "note": "Cached Ministry index, SHA256 46e5a42bf31a5ebe981f8faef8c6300779e1bca204c1cf50010aad339ee24bfc, "
                          "lists Ordinance05-02 as the Family amendment. A later live open timed out; cut-off not advanced."}
-    common_reasons = ["Current snapshot only: independent identity/current-amendment-outcome and heading checks pass; remaining source/discovery QA is explicit below.",
+    common_reasons = ["Complete checked current text snapshot at the recorded2026-10-26 amendment-discovery cut-off; this does not certify applicability to an earlier case.",
                       "French structure audit covers the current snapshot:232 compilation labels,224 original JO labels,190 unchanged-body JO paragraph readings,37 amended-body JO paragraph matches and five repeals. The25 original-JO paragraph layout differences retain independently source-read Arabic structure. No translation equivalence is certified.",
                       "Complete historical archive deferred by user; missing former bodies are not represented as unchanged law.",
                       "Body text uses the documented text_clean normalization (including removal of harakat/tatweel); raw witnesses are retained. Printed vocalization is not certified.",
-                      "Four official-edition wording conflicts remain quarantined. Both discovered French rectifications are pinned/read; neither names these four targets and no Arabic wording is changed from them.",
+                      "Arabic JO31/1984 PDF12-13 explicitly resolves the former135/151/202/203 wording conflicts. Original print and conflict history remain recorded; separate French notices are not their authority.",
                       TEMPORAL]
     ledger = {"schemaVersion": "1.0", "id": "family-code", "citationName": "قانون الأسرة",
               "reference": "القانون رقم 84-11 المؤرخ في 9 يونيو 1984 المتضمن قانون الأسرة، المعدل والمتمم بالأمر رقم 05-02",
               "scope": {"kind": "complete-code", "targetArticles": targets, "amendmentDiscoveryThrough": "2026-10-26",
-                        "complete": False, "unsettled": common_reasons},
+                        "complete": True, "unsettled": []},
               "publications": []}
     for ident, kind, number, date, issue, jo_date, pages, pin_id, french_id, touched in [
         ("law-84-11", "law", "84-11", "1984-06-09", "24", "1984-06-12", list(range(2, 17)), "A1984024", "F1984024", [str(n) for n in range(1, 225)]),
@@ -165,6 +178,8 @@ def build() -> None:
             "french": download(french_pins[french_id]), "articlesTouched": touched,
             "commencementDate": None, "commencementBasis": TEMPORAL, "transitionalProvisions": [], "discovery": [discovery]})
     ledger["publications"].append(approval)
+    ledger["publications"].append(arabic_rectification)
+    ledger["publications"].sort(key=lambda publication: (publication["date"], publication["id"]))
     articles, unresolved, assembly = [], [], []
     for raw in native["articles"]:
         number = raw["number"]
@@ -203,6 +218,10 @@ def build() -> None:
             src["ocr"] = "\n".join(f["ocr"] for f in src["fragments"])
             src["fragments"] = [f | {"role": "repeal"} for f in src["fragments"]]
             reasons.append("Current repeal marker from independently read Ordinance05-02 art18; former article body is deferred, not replaced by empty historical text.")
+            checks.append({"check": "discrepancy-resolved-from-image", "date": TODAY, "result": "passed",
+                           "method": "Actual Arabic05-02 article18 repeal-instruction reading; empty current tombstone only",
+                           "textSha256": pipeline.hash_text(text), "imageSha256s": [proof["imageSha256"]],
+                           "note": "Checks the published repeal target; no former body or historical date is invented."})
         else:
             body = bodies[number]
             if pipeline.hash_text(text) != body.get("joCheck", body["bodyCheck"])["textSha256"]:
@@ -221,6 +240,22 @@ def build() -> None:
                         + ("Amending JO controls the corrected body; compilation discrepancies remain visible in raw text." if op
                            else "Ministry spelling/punctuation is a separate witness. Original-JO body collation is recorded; any unresolved edition conflict is disclosed in verification reasons.")}]
             jo_check = body.get("joCheck")
+            if jo_check and jo_check.get("rectificationPublicationId"):
+                # Mixed-publication sources retain complete paragraph bindings plus the correcting instruction.
+                src["fragments"] = [f | {"paragraph": index, "paragraphTextSha256": pipeline.hash_text(p)}
+                                    for index, p in enumerate(paragraphs, 1) for f in src["fragments"]]
+                side = "left" if number in {"107", "111", "135", "185", "202", "203", "207", "211"} else "right"
+                ident = "family-ar-rect-1984-31-" + str(jo_check["rectificationPdfPage"]) + "-" + side
+                record, folder = rect_records[ident]
+                if record["sourceSha256"] != arabic_rectification["arabic"]["sha256"]:
+                    raise ValueError("Rectification fragment belongs to another Arabic publication")
+                for artifact in record["artifacts"]:
+                    if pipeline.hash_file(pipeline.CACHE / artifact["path"]) != artifact["sha256"]:
+                        raise ValueError("Rectification extraction artifact changed")
+                src["fragments"].append({"publicationId": arabic_rectification["id"], "page": record["pdfPage"],
+                    "textLayer": (folder / "text-layer.txt").read_text(encoding="utf-8"),
+                    "ocr": (folder / "ocr.txt").read_text(encoding="utf-8"), "evidenceId": ident,
+                    "region": record["region"], "sourceSha256": record["sourceSha256"], "role": "amendment-instruction"})
             ministry_hash = jo_check["ministryTextSha256"] if jo_check else pipeline.hash_text(text)
             if ministry_hash != body["bodyCheck"]["textSha256"]:
                 raise ValueError("Original Ministry check changed: " + number)
@@ -242,7 +277,7 @@ def build() -> None:
                                    + "]; Ministry candidate [" + conflict["ministryQuote"] + "]. " + conflict["reason"])
                 else:
                     checks.append({"check": "discrepancy-resolved-from-image" if jo_check["imageSha256s"] else "text-layer-matches-ocr",
-                                   "method": "Independent original-JO body collation; source/raw edition spellings and punctuation remain distinct",
+                                   "method": "Independent original-JO body collation with the separately replayed Arabic rectification where applicable; raw edition spellings and punctuation remain distinct",
                                    "date": TODAY, "result": "passed", "textSha256": pipeline.hash_text(text),
                                    "imageSha256s": jo_check["imageSha256s"], "note": jo_check["note"]})
             if op:
@@ -258,7 +293,7 @@ def build() -> None:
         version = {"versionId": version_id, "text": text, "paragraphs": paragraphs, "path": reviewed_paths[number],
                    "inForceFrom": None, "inForceTo": None, "temporalStatus": "unsettled", "introducedBy": publication,
                    "status": "repealed" if repeal else "in-force", "source": src, "crossReferences": internal + external,
-                   "verification": {"state": "unsettled" if not repeal and bodies[number].get("joCheck", {}).get("conflict") else "partly-checked",
+                   "verification": {"state": "unsettled" if not repeal and bodies[number].get("joCheck", {}).get("conflict") else "checked",
                                     "checks": checks, "reasons": reasons}}
         articles.append({"id": article_id, "number": number, "canonicalNumber": number, "path": reviewed_paths[number],
                          "availability": "text", "versions": [version]})
@@ -302,13 +337,15 @@ def build() -> None:
                             "unappliedPublications": [], "complete": True},
               "countsByState": {state: sum(a["versions"][0]["verification"]["state"] == state for a in articles)
                                 for state in ("checked", "partly-checked", "unsettled")},
-              "unsettled": unresolved, "coverage": "partial", "coveredChapters": []}
+              "unsettled": unresolved, "coverage": "complete", "coveredChapters": []}
+    if any(a["versions"][0]["verification"]["state"] != "checked" for a in articles):
+        raise ValueError("Current Family delivery still contains a wording conflict")
     pipeline.write_json(OUT / "ledger.json", ledger)
     pipeline.write_json(OUT / "articles.json", {"schemaVersion": "1.0", "codeId": "family-code", "articles": articles})
     pipeline.write_json(OUT / "report.json", report)
     pipeline.write_json(WORK / "current-candidate-assembly.json", {"method": __doc__.strip(), "articles": assembly,
-        "verificationEffect": "none; this is a current-snapshot assembly, not successful execution of a historical consolidation plan"})
-    print("232 current-snapshot candidates;", dict(Counter(a["versions"][0]["verification"]["state"] for a in articles)),
+        "verificationEffect": "Complete checked current text snapshot only; not a historical consolidation archive or a nationwide date certificate"})
+    print("232 checked current-snapshot records;", dict(Counter(a["versions"][0]["verification"]["state"] for a in articles)),
           "; exact temporal applicability remains unresolved")
 
 

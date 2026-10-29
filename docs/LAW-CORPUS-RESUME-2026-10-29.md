@@ -1,5 +1,21 @@
 # Corpus restart record - 29 October 2026
 
+## Latest priority change and Family current-text delivery
+
+The user's latest order supersedes the older source-order tasks below: **close Family; deliver Civil general-contract, sale, lease, consumption/use loan, works and liability chapters as a checked partial package; then the remaining Civil in source order; then bounded Commercial/labour.** Postpone French paragraph expansion, editorial heading cleanup and older regimes unless needed by a conflict. Never change app/catalogue/prompts. Push only with the user's specific approval.
+
+**Family current text is complete:232 checked snapshot records,227 bodies and five repeal markers, at the pinned26October discovery cut-off.** Arabic JO31/1984 PDF12–13/printed1184–1185 explicitly resolves135/151/202/203. It covers17 identities in total;14 current outcomes are replayed and three superseded2005 bodies are preserved. Only167 changes body wording, restoring the rectification's printed noun order rather than the Ministry's reordered variant. See `arabic-rectification-review.json` and its audit. Original conflict/print evidence remains immutable; do not rerun old Ministry-only preparation and erase these authoritative resolutions.
+
+Civil4's actual Arabic source establishes location-dependent commencement. Family224/05-02 article19/05-09 article2 do not supply a single calendar date. `temporal-rule-review.json` records the rule, conditional Algiers research calculations, unknown local receipt and the separation from case-specific/historical applicability. All232 version bounds remain null/temporal-unsettled, and the unchanged date resolver remains fail-closed. The completed deliverable is **current text**, not a completed dated historical archive; do not invent dates to remove that limitation.
+
+Current build command: `python -B tools/law-corpus/build_family_candidate.py`. It now replays Arabic rectification and temporal proofs before publishing checked current records. The six new OCR crops, original PDFs and actual review images remain cached locally. The20-article sample retains its draw and all20 selected bodies/proofs; only an unsampled167 population-hash update was necessary. Prior French readings are retained with167's source-bound Arabic hash update; no new alignment performed.
+
+Validation before commit:694 .NET tests,241 Python tests,0 Release warnings/errors,0 schema errors, five typed packages accepted and20 sample decisions replayed. The ensuing commit must receive the full post-commit Release gate. Its hash/status and any approval request are recorded in `tools/law-corpus/.cache/recovery-20261029-family-closure/validation.json`. Do not push without the user's approval of the concrete new payload. No manual app rerun for this data-only delivery; full automated app/web regression passed. No app/legacy law/catalogue/prompts changed.
+
+Next Civil work should reuse the saved through450 images selectively: many hard333 numeric/context repairs lie outside the requested priority chapters and can wait. The sale chapter's own source readings are already available. A numbered heading actually contaminating360's article body still needs a guarded boundary projection; this is necessary transcription repair, not a broad editorial-cleanup project. Prior55 typed Civil versions/history remain intact until the scoped checked delivery passes its own inventory, amendment and source gates. No Civil partial-completion claim has yet been made.
+
+## Historical checkpoint narrative (superseded where inconsistent above)
+
 The user resumed after the second safe pause. Work remains on `codex/law-corpus` in `redteam-output/law-corpus-worktree`. This record supersedes the earlier pause files as to activity and Civil OCR progress. The agreed scope remains full current Civil/CPCA/Family and bounded Commercial/labour chapters; full history is deferred except legally needed regimes. No special laws.
 
 ## Saved checkpoint

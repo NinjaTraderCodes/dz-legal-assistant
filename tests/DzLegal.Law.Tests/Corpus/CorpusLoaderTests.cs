@@ -30,6 +30,32 @@ public class CorpusLoaderTests
     }
 
     [Fact]
+    public void CompleteCheckedCurrentTextDoesNotAuthorizeAnUnknownHistoricalInterval()
+    {
+        var version = Version();
+        var hash = Convert.ToHexStringLower(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(version.Text)));
+        version = version with
+        {
+            InForceFrom = null,
+            TemporalStatus = "unsettled",
+            Verification = new("checked",
+                [new("text-layer-matches-ocr", "Invented exact comparison", Start, "passed", TextSha256: hash),
+                 new("inventory-complete", "Invented complete current inventory", Start, "passed"),
+                 new("amendment-applied", "Invented current outcome audit", Start, "passed")], []),
+        };
+        var code = Code(version);
+        code = code with
+        {
+            Ledger = code.Ledger with { Scope = code.Ledger.Scope with { Kind = "complete-code", Complete = true } },
+            Report = code.Report with { Coverage = "complete", Inventory = code.Report.Inventory with { Scope = "complete-code" } },
+        };
+        var corpus = CorpusLoader.Validate([code]);
+        Assert.Equal("checked", corpus.Codes[0].Content.Articles[0].Versions[0].Verification.State);
+        Assert.Equal("unsettled", corpus.VersionOn("fictitious:1", Cutoff).State);
+        Assert.Null(corpus.VersionOn("fictitious:1", Cutoff).Version);
+    }
+
+    [Fact]
     public void RefusesFutureResolutionAfterDiscoveryCutoff()
     {
         var corpus = CorpusLoader.Validate([Code(Version())]);

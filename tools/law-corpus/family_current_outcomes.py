@@ -69,5 +69,5 @@ def run(articles: list[dict], inventory: dict, bodies: dict, paths: dict) -> dic
                "pathDecisionsSha256": pipeline.hash_file(WORK / "path-decisions.json"),
                "verificationEffect": "Current identity/operation checks only. No wording conflict, missing historical body or commencement uncertainty is waived."}
     pipeline.write_json(WORK / "current-outcome-audit.json", result)
-    print("Current Family inventory/outcomes:", result["operations"], "; whole-code delivery remains incomplete")
+    print("Current Family inventory/outcomes:", result["operations"], "; this audit alone grants no historical certification")
     return result

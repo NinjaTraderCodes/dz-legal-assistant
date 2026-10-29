@@ -1,6 +1,14 @@
 # Civil Code: current-edition preparation and open validation
 
-28 October 2026, `codex/law-corpus`. **No completed Civil delivery is claimed.** The typed package remains 45 identities / 55 versions (seven checked, 32 partly-checked, 16 unsettled). The preparation below is separate research data and has not replaced those versions or the application's law library.
+29 October 2026, `codex/law-corpus`. **No completed Civil delivery is claimed.** The typed package has48 identities:45 with text and three reference-only Family citation targets;55 versions (seven checked,32 partly-checked,16 unsettled). The reference-only identities contain no versions/texts. The preparation below is separate research data and has not replaced existing versions or the application's law library.
+
+## Latest word-review batch: source-order150–250
+
+All **71 word/figure/extra flags** in the next100 source candidates were actually read on12 sheets plus13 wider views for clipped headings, negations and footers. `image-decisions-ministry-words-0150-0250.json` binds each discrepancy, native body and actual proof. Its guarded application saves **21 spacing repairs in19 derived research bodies**. The cumulative first250 source candidates therefore have **129 actual flag decisions and47 spacing repairs in44 distinct research bodies**. No typed Civil text/state/date is changed.
+
+The source-visible joined negation `إلا` in224 was split as `إ لا` by native extraction. It receives a separate critical-negation verdict/marker: the repair must preserve identical letters, restore exactly one known negation word, target the exact unique old text and retain source-image proof. The ordinary repair path still rejects joining an independent negation into another word. New regressions retain those exclusions and also reject digit/letter changes or a critical marker paired with an ordinary verdict. Article143's actually printed bare-alef `الا أن` remains intact; it is not normalized to a guessed hamza spelling.
+
+Figures10/15, reference181, figure2 in the589 paragraph reference, printed hamzas and commas were checked individually. OCR-comma artifacts, words already inside140bis1, next-article148 labels, colored headings and centered footer numbers have explicit source decisions. None is silently dropped from law text. Next source-order batch starts **250**, not printed article250. Punctuation-only flags and the remaining legal/paragraph/editorial checks remain separate.
 
 The pinned [Ministry Arabic compilation](https://droit.mjustice.gov.dz/sites/default/files/ACivil.pdf), SHA-256 `17a555bf81d5b99bf67417f3d42c157fd5df69499d6190cffbf182bc3566b573`, retrieved 26 October 2026, has been decoded across **164 code pages, PDF8–171**, with the proven per-object glyph table. No glyph assignment is undecided. Later annexes are excluded. The previously identified WIPO copy has the same extracted text and supplies no independent legal witness.
 
@@ -26,7 +34,7 @@ Actual image review has covered all 58 word/figure/extra flags in the **first 15
 
 `apply_civil_word_review.py` replays these decisions and saves **26 guarded spacing repairs across 25 derived research candidates**, preserving every raw/prepared/typed body. In particular, articles 108 and 119 visibly print the negation `لم`; extraction had split it into `ل م`. These repairs follow the source rather than tolerating an unread negation. The applier rejects changed/missing proof, stale/duplicate/incomplete decisions, wrong old text, ambiguous or cross-paragraph edits, letter substitutions, digit joins and joining an already separate negation into another word. It never assigns a typed verification state. Editorial markers/callouts, paragraphs, paths, amendments, temporal applicability and punctuation remain separate tasks.
 
-The tools reuse the existing `check_native`, `family_literal`, `review_items` and source-sheet renderer. Only qualified identities receive Windows-safe hashed proof filenames; old numeric filenames remain stable. The typed Civil package is still **45 identities / 55 versions**. No app/legacy law data changed.
+The tools reuse the existing `check_native`, `family_literal`, `review_items` and source-sheet renderer. Only qualified identities receive Windows-safe hashed proof filenames; old numeric filenames remain stable. This earlier body-review checkpoint had45 identities/55 versions; three reference-only Family citation identities were subsequently added without article bodies. No app/legacy law data changed.
 
 ## Previous continuation and second safe pause (historical)
 
@@ -38,7 +46,7 @@ The full Python suite now has182 passing tests and JSON Schema validation has0 e
 
 Remaining work:
 
-1. Continue targeted image review from source-order offset150. Both readers and both strict diagnostics are complete. Keep the original audit and its derived page-bounded comparison separate; do not repeat OCR. Preserve the first150 candidates' recorded decisions and derived repairs. Retain punctuation uncertainty explicitly.
+1. Continue targeted image review from source-order offset250. Both readers and both strict diagnostics are complete. Keep the original audit and its derived page-bounded comparison separate; do not repeat OCR. Preserve the first250 candidates' recorded decisions and derived repairs. Retain punctuation uncertainty explicitly.
 2. Remove editorial annotations with guarded, reversible projections; validate paragraph and heading boundaries.
 3. Reconcile every amending publication, insertion, partial rewrite and repeal against the JO, including qualified local numbering. Keep current outcomes separate from the deferred complete historical archive.
 4. Import the complete current package with provenance, references and honest temporal limits; preserve the earlier typed history and checked pilot records.

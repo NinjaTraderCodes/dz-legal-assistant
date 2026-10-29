@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Replay source-bound Civil word review into a separate corrected research file, retaining raw native evidence.
 
-This first review batch permits only explicitly inspected letter-identical spacing repairs. Digit joins, removal
+This review permits only explicitly inspected letter-identical spacing repairs. Restoring a split negation needs
+its own source-read verdict and marker, and must produce exactly one known negation word. Digit joins, removal
 of a separate negation, letter substitutions, ambiguous replacements and stale/missing proof fail closed. It does
 not certify operative law, paragraphs, headings, amendments or dates, and never changes the typed Civil package.
 """
@@ -20,8 +21,12 @@ def repair(article: dict, corrections: list[dict]) -> dict:
         raise ValueError("Candidate paragraphs do not reconstruct the native body")
     for correction in corrections:
         old, new, count = correction["old"], correction["new"], correction["expectedOccurrences"]
+        joined_negation = correction.get("sourceReadJoinedNegation", False)
+        if joined_negation and (joined_negation is not True or new not in nc.NEGATIONS):
+            raise ValueError("Critical spacing repair must restore one source-read negation word")
         if (not old or not new or count != 1 or old == new or old.replace(" ", "") != new
-                or any(ch.isdigit() for ch in old + new) or any(nc.is_negation(t) for t in nc.tokens(old))):
+                or any(ch.isdigit() for ch in old + new)
+                or (any(nc.is_negation(t) for t in nc.tokens(old)) and not joined_negation)):
             raise ValueError("Correction is not an allowed source-read spacing repair")
         if text.count(old) != count or sum(p.count(old) for p in paragraphs) != count:
             raise ValueError("Spacing repair is absent, ambiguous or crosses paragraph boundaries")
@@ -62,9 +67,11 @@ def apply(native: dict, audit: dict, review: dict, root=pipeline.ROOT) -> dict:
             if not path.is_relative_to(root.resolve()) or pipeline.hash_file(path) != sha:
                 raise ValueError("Civil word proof changed or escaped the repository")
         verdict, correction = decision["verdict"], decision["correction"]
-        if verdict == "native-spacing-correction":
+        if verdict in {"native-spacing-correction", "native-negation-spacing-correction"}:
             if flag["kind"] != "unconfirmed" or correction is None or correction["old"] != flag["canonical"]:
                 raise ValueError("Spacing repair does not address the actual source-read flag")
+            if (verdict == "native-negation-spacing-correction") != bool(correction.get("sourceReadJoinedNegation")):
+                raise ValueError("Critical negation join requires a separate explicit source-read verdict")
             repairs.setdefault(number, []).append(correction)
         elif verdict in {"source-reads-native", "outside-article-next-label", "outside-article-heading-or-page-label"}:
             if correction is not None or (verdict.startswith("outside-") and flag["kind"] != "extra-in-all-streams"):

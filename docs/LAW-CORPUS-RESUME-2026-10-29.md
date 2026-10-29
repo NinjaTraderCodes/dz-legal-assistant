@@ -21,10 +21,10 @@ Automatic approval review initially rejected the push because authorization for 
 ## Exact continuation
 
 1. Check the latest commit and post-commit validation in the local recovery metadata/final handoff before editing. New checkpoint changes after `0380e3f` comprise the completed Civil comparison, word review tools/decisions and these reports.
-2. Continue Civil source-image review at **source-order offset150** (not printed article150). Reuse the strict diagnostics and both completed readers:
+2. Continue Civil source-image review at **source-order offset250** (not printed article250). The later batch150–250 is complete:71 actual decisions on12 sheets plus13 wider views,21 guarded spacing repairs in19 derived bodies. The first250 candidates cumulatively contain129 actual flag decisions and47 spacing repairs in44 derived bodies. Reuse the strict diagnostics and both completed readers:
 
    ```powershell
-   .\tools\law-corpus\.cache\venv\Scripts\python.exe -B tools/law-corpus/review_civil_items.py --start 150 --count 100 --per-sheet 6
+   .\tools\law-corpus\.cache\venv\Scripts\python.exe -B tools/law-corpus/review_civil_items.py --start 250 --count 100 --per-sheet 6
    ```
 
    Generation records no reading. Inspect every emitted sheet and wider source views wherever the strip clips relevant context. Store explicit decisions with original body/audit/image hashes; use separate per-batch files. `apply_civil_word_review.py --decisions <batch.json> --out <derived.json>` replays the targeted reviews without replacing raw data or typed law. Keep critical digits/negations strict. Punctuation-only items remain in the audit, outside the word batches.
@@ -39,3 +39,11 @@ Raw evidence and generated views remain under the ignored cache, with committed 
 Civil checkpoint `1ec73a11be2bc97730584fa31e9772432b200b88` is committed and pushed after the user's explicit approval. Its full gate passed692 .NET/198 Python tests and zero build warnings/errors.
 
 The next Family checkpoint records the supplementary publications, original French label readings and external identity links described above. All213 Python checks pass before commit. The added .NET test checks the existing reference-only behavior using fictitious fixtures; the model/loader contract is unchanged. Post-commit Release validation and the actual resulting hash are recorded in the final handoff and ignored local recovery metadata. No Family body, paragraph, date, source fragment or state is changed by these additions. Files outside corpus/tool directories for this checkpoint: this restart record, `docs/LAW-CORPUS.md`, `docs/LAW-CORPUS-FAMILY.md` and the authorized corpus test file `tests/DzLegal.Law.Tests/Corpus/CorpusLoaderTests.cs`. The application was not manually rerun for this data-only checkpoint; its full automated regression gate remains required.
+
+That Family checkpoint is **9772b0c97fedb1f68643c7d5a3b824dfa6783f21**, now fully validated and pushed after explicit approval. Its post-commit gate passed693 .NET/213 Python tests, zero build warnings/errors, schema validation, all five typed packages and the20-article Family sample replay. PDFs and raw OCR stayed local.
+
+## Following structure and Civil word-review checkpoint
+
+All current Family French JO structure work is complete:190 unchanged-body paragraph readings against1984,37 amended-body readings against2005 and five repeal targets. The25 original-edition paragraph-count differences retain Arabic structure and are listed individually;202 matching current bodies receive a narrowly described French structural check. No Family body/paragraph/source/date/state is altered. Four Arabic wording conflicts, latest discovery (live index HTTP500; cut-off26October retained), external target texts and temporal/legally needed older-regime work remain open. Do not repeat the finished paragraph readings described in the older step4.
+
+The Civil150–250 batch above is saved with its actual proof;224's split `إ لا` is restored to source-visible `إلا` only through an explicit critical-negation verdict/marker. Independent negations cannot be absorbed into an ordinary word, and digit/letter changes still fail closed. All226 Python tests pass before commit; the following commit requires the full post-commit Release gate. Reports changed outside corpus/tools: this record, `docs/LAW-CORPUS.md`, `docs/LAW-CORPUS-FAMILY.md` and `docs/LAW-CORPUS-CIVIL.md`. No UI/app code or existing law/claim/prompts/loader behavior changed; no manual app check was performed for this data-only checkpoint.

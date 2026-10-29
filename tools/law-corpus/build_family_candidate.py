@@ -15,6 +15,8 @@ import apply_family_paths
 import family_current_outcomes
 import family_supplementary_sources
 import family_original_french_labels
+import family_french_amendment_structure
+import family_original_french_paragraphs
 import pipeline
 
 ROOT = pipeline.ROOT
@@ -138,11 +140,13 @@ def build() -> None:
         raise ValueError("Duplicate or out-of-scope source locator override")
     ministry = {r["number"]: r for r in pipeline.read_json(WORK / "ministry-raw-comparison.json")["results"]}
     french_pins = {s["id"]: s for s in pipeline.read_json(ROOT / "data/law/corpus/research/scope-source-downloads.json") if "sha256" in s}
+    original_french = pipeline.read_json(WORK / "original-french-paragraph-review.json")
+    original_french_rows = {r["number"]: r for r in original_french["articles"]}
     discovery = {"url": "https://droit.mjustice.gov.dz/fr/content/codes-0", "accessedOn": "2026-10-26",
                  "note": "Cached Ministry index, SHA256 46e5a42bf31a5ebe981f8faef8c6300779e1bca204c1cf50010aad339ee24bfc, "
                          "lists Ordinance05-02 as the Family amendment. A later live open timed out; cut-off not advanced."}
     common_reasons = ["Current snapshot only: independent identity/current-amendment-outcome and heading checks pass; remaining source/discovery QA is explicit below.",
-                      "French compilation numbering aligns for232 identities; all224 original French JO labels were actually read with28 OCR column artifacts replayed. JO paragraph comparison remains separate and incomplete; no translation equivalence is certified.",
+                      "French structure audit covers the current snapshot:232 compilation labels,224 original JO labels,190 unchanged-body JO paragraph readings,37 amended-body JO paragraph matches and five repeals. The25 original-JO paragraph layout differences retain independently source-read Arabic structure. No translation equivalence is certified.",
                       "Complete historical archive deferred by user; missing former bodies are not represented as unchanged law.",
                       "Body text uses the documented text_clean normalization (including removal of harakat/tatweel); raw witnesses are retained. Printed vocalization is not certified.",
                       "Four official-edition wording conflicts remain quarantined. Both discovered French rectifications are pinned/read; neither names these four targets and no Arabic wording is changed from them.",
@@ -175,6 +179,11 @@ def build() -> None:
         text = "\n".join(paragraphs)
         checks = []
         reasons = list(common_reasons)
+        original_row = original_french_rows.get(number)
+        if original_row is not None and original_row["frenchParagraphsActuallyRead"] != original_row["arabicParagraphs"]:
+            reasons.append("Original French JO printed paragraphs=" + str(original_row["frenchParagraphsActuallyRead"])
+                           + "; independently source-read Arabic paragraphs=" + str(original_row["arabicParagraphs"])
+                           + ". Edition layout difference retained, never forced into French structure.")
         if number == "171":
             reasons.append("The actually read Ministry French witness still contains ou non after legs despite the official1984 French rectification deleting it. Raw French wording is retained as a discrepant witness, not used to change the independently checked Arabic body.")
         elif number == "175":
@@ -263,6 +272,31 @@ def build() -> None:
     if any(ref["targetId"] not in available for a in articles for v in a["versions"] for ref in v["crossReferences"]):
         raise ValueError("Extracted reference target is absent; record an explicit reference-only identity without inventing text")
     family_current_outcomes.run(articles, inventory, bodies, reviewed_paths)
+    family_french_amendment_structure.main(articles)
+    family_original_french_paragraphs.main(articles)
+    french_review = pipeline.read_json(WORK / "amending-french-structure-review.json")
+    french_rows = {r["number"]: r for r in french_review["articles"]}
+    french_images = {r["pdfPage"]: r["imageSha256"] for r in french_review["imagesActuallyRead"]}
+    for article in articles:
+        if article["number"] not in french_rows:
+            continue
+        row = french_rows[article["number"]]
+        article["versions"][0]["verification"]["checks"].append({
+            "check": "french-structure-matches", "date": french_review["reviewedOn"], "result": "passed",
+            "method": "Independent source-image reading of French05-02 quoted-body labels and printed paragraph counts",
+            "textSha256": row["arabicTextSha256"],
+            "imageSha256s": [french_images[p] for p in row["frenchPdfPages"]],
+            "note": "Current replaced/inserted body only; French native labels independently match. No translation, date or whole-code checked-state inference."})
+    original_images = {r["pdfPage"]: r["imageSha256"] for r in original_french["imagesActuallyRead"] if "gift-heading" not in r["image"]}
+    for row in original_french["articles"]:
+        if row["frenchParagraphsActuallyRead"] != row["arabicParagraphs"]:
+            continue
+        article = next(a for a in articles if a["number"] == row["number"])
+        article["versions"][0]["verification"]["checks"].append({
+            "check": "french-structure-matches", "date": original_french["reviewedOn"], "result": "passed",
+            "method": "Independent source-image reading of original French84-11 label, paragraph starts and all source continuations",
+            "textSha256": row["arabicTextSha256"], "imageSha256s": [original_images[p] for p in row["frenchPdfPages"]],
+            "note": "Current unchanged-body numbering/presence/paragraph count only. No translation, Arabic conflict, date or checked-state inference."})
     report = {"schemaVersion": "1.0", "codeId": "family-code", "generatedOn": max(TODAY, approval["discovery"][0]["accessedOn"]),
               "inventory": {"scope": "complete-code", "expected": targets, "present": targets, "gaps": [],
                             "unappliedPublications": [], "complete": True},

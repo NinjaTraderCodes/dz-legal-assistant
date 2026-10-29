@@ -38,6 +38,27 @@ class CivilWordRepairTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             review.repair(candidate, [self.patch()])
 
+    def test_split_negation_requires_explicit_source_read_marker(self):
+        patch=self.patch("إ لا","إلا")
+        with self.assertRaisesRegex(ValueError,"allowed"):
+            review.repair(self.candidate("إ لا"),[patch])
+        patch["sourceReadJoinedNegation"]=True
+        self.assertEqual("إلا",review.repair(self.candidate("إ لا"),[patch])["text"])
+
+    def test_critical_marker_cannot_hide_an_independent_negation_or_join_digits(self):
+        for old,new in [("لا يجوز","لايجوز"),("1 9","19"),("لف ظ","لفظ")]:
+            patch=self.patch(old,new) | {"sourceReadJoinedNegation":True}
+            with self.subTest(old=old),self.assertRaises(ValueError):
+                review.repair(self.candidate(old),[patch])
+
+    def test_critical_join_cannot_use_an_ordinary_spacing_verdict(self):
+        with tempfile.TemporaryDirectory() as name:
+            root=Path(name)
+            native,audit,data=self.fixture(root)
+            data["decisions"][0]["correction"]["sourceReadJoinedNegation"]=True
+            with self.assertRaisesRegex(ValueError,"separate explicit"):
+                review.apply(native,audit,data,root)
+
     def fixture(self, root):
         article = self.candidate()
         proof = root / "proof.txt"

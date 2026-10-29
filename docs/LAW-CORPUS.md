@@ -99,6 +99,8 @@ The [Civil preparation report](LAW-CORPUS-CIVIL.md) records1,059 decoded source 
 
 The Family amended-body paragraph review is also complete for all37 bodies. It corrected the source locator for3bis (a duplicate sentence had matched a neighboring nationality provision) and removed an extraneous next-page locator from57bis. Wording and verification counts are unchanged; the [Family report](LAW-CORPUS-FAMILY.md) records both guarded provenance fixes and the remaining delivery tasks.
 
+The next Civil priority batch adds63 actual source findings on11 sheets plus16 wider views, covering84 operative loan/lease/use-loan/works candidates;37 current repeal markers await the amending instructions. A separate guarded projection applies21 token-position-bound spacing repairs, bringing cumulative research repairs to92. Native word-boundary QA remains explicit because the older diagnostic accepts identical-letter OCR joins;456 supplies a documented follow-up. These results do not change typed Civil counts or claim the274-identity partial package finished. Current Python regressions:257; the next commit needs its own full Release gate and specific push approval.
+
 ### Delivery 2 — CPCA, complete and current (28 October 2026)
 
 All 1,162 versions of the CPCA are `checked`. Details are in the [code report](LAW-CORPUS-CPCA.md); the spot-check is in `docs/law-corpus-checks/cpca/`.

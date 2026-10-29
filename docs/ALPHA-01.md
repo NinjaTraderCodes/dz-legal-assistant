@@ -114,6 +114,29 @@ What the raw answers showed:
 - **Role choices are sentences about the parties** («المدعي اشترى من المدعى عليه»), not bare titles.
 - **The answer cap is 300 tokens.**
 
+### Run 3 (29 Oct 2026, local `gemma3:4b`, claim type given)
+
+Kept in `docs/baselines/2026-10-29-alpha-given-3/`.
+
+| | cases | with a critical error | the same answers, read by the parser of run 4 | seconds / case |
+|---|---:|---:|---:|---:|
+| development | 40 | 4 | 2 | 21 |
+| validation | 14 | 3 (1 cut off) | 3 | 28 |
+| robustness | 2 | 0 | 0 | 24 |
+
+What remains:
+- **A role chosen among eight:** lessee for a buyer of furniture (contract damages).
+- **Notices:** «رغم التنبيه» read as absent once, and «لم يوجه أي إعذار» read as disputed once.
+- **The disputed loan read as affirmed,** in all three runs.
+- **The tenant case was cut off** even at 300 tokens.
+
+### Changes for run 4
+
+These are changes to the parser only; the prompt is unchanged:
+- **The lines written before a cut-off are kept.** The cut line is not read.
+- **«s1» is read as question 1.** No answer line refers to a sentence.
+- **A value number in the status's place** («6 | v6 | ?») means the fact is mentioned. A value number that does not exist is dropped, never resolved.
+
 ## Decision rule
 
 Keep Alpha-01 only if, on the local `gemma3:4b`:

@@ -217,9 +217,17 @@ public sealed partial class ClaimFactReader(IModelProvider provider, string prom
     public async Task<(CaseFacts Facts, string Answer)> ReadAsync(CaseText text, string claimId, string claimLabel, CancellationToken cancellationToken = default)
     {
         var answer = new StringBuilder();
-        await foreach (var piece in _provider.StreamAsync(BuildRequest(text, claimId, claimLabel), cancellationToken))
+        try
         {
-            answer.Append(piece);
+            await foreach (var piece in _provider.StreamAsync(BuildRequest(text, claimId, claimLabel), cancellationToken))
+            {
+                answer.Append(piece);
+            }
+        }
+        catch (ModelProviderException ex) when (ex.IsCutOff && answer.Length > 0)
+        {
+            // Each line stands alone, so the lines written before the cap are kept; the cut one cannot be read.
+            answer.Append("\n[cut off at the answer length limit]");
         }
 
         return (Parse(answer.ToString(), text, _catalog[claimId]), answer.ToString());
@@ -261,7 +269,7 @@ public sealed partial class ClaimFactReader(IModelProvider provider, string prom
                 continue;
             }
 
-            var id = m.Groups["id"].Value.ToLowerInvariant();
+            var id = m.Groups["id"].Value.ToLowerInvariant().TrimStart('s');
             if (!seen.Add(id))
             {
                 continue;
@@ -292,7 +300,9 @@ public sealed partial class ClaimFactReader(IModelProvider provider, string prom
             var word = Status().Match(body);
 
             // «1 | v1 | v2»: no status but values given, so the text mentions the fact.
-            var polarity = word.Success ? Polarity(word.Value) : found.Count > 0 ? FactPolarity.Affirmed : "?";
+            // A value number in the status's place, even one that does not exist, says the fact is there; such a
+            // number is dropped, never resolved.
+            var polarity = word.Success ? Polarity(word.Value) : found.Count > 0 || ValueId().IsMatch(body) ? FactPolarity.Affirmed : "?";
             rows.Add((id, polarity, found, line));
         }
 
@@ -364,8 +374,11 @@ public sealed partial class ClaimFactReader(IModelProvider provider, string prom
         : actor == role.Position ? "plaintiff"
         : "defendant";
 
-    /// <summary>«3 | stated | v1 v2», «r1 | absent | -», «p | 2»; a colon or a bracket may stand for the bar.</summary>
-    [GeneratedRegex(@"^(?<id>[rR]?\d+|[pP])\s*[)|:]\s*(?<body>.+)$")]
+    /// <summary>
+    /// «3 | stated | v1 v2», «r1 | absent | -», «p | 2»; a colon or a bracket may stand for the bar. «s1» is question 1
+    /// numbered like the case's sentences (twice for the same case, 29 Oct): no answer line refers to a sentence.
+    /// </summary>
+    [GeneratedRegex(@"^(?<id>[rRsS]?\d+|[pP])\s*[)|:]\s*(?<body>.+)$")]
     private static partial Regex AnswerLine();
 
     /// <summary>The status word; yes and no are what the first prompt asked for.</summary>

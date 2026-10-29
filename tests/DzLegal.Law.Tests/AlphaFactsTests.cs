@@ -135,6 +135,30 @@ public sealed class AlphaFactsTests
         Assert.Equal(FactPolarity.Denied, ClaimFactReader.Parse("2 | denied | -", sale, Elements["sale-annulment-fraud"]).Events.Single().Polarity);
     }
 
+    /// <summary>The slips of the third local run (29 Oct): «s1» for question 1, a value number in the status's place.</summary>
+    [Fact]
+    public void AQuestionNumberedLikeASentenceAndAValueInTheStatusPlaceAreRead()
+    {
+        var divorce = ClaimFactReader.Parse("s1 | v1 | stated\nr1 | stated", CaseText.From(Case("divorce-husband").Inputs), Elements["divorce-by-husband"]);
+        Assert.Equal(("marriage", "2015"), (divorce.Events.Single().Kind, divorce.Events.Single().Date?.Normalized));
+
+        var loan = ClaimFactReader.Parse("6 | v6 | ?", CaseText.From(Case("loan-basic").Inputs), Elements["loan-repayment"]);
+        var notice = loan.Events.Single();
+        Assert.Equal(("notice_served", FactPolarity.Affirmed), (notice.Kind, notice.Polarity));
+        Assert.Null(notice.Date);
+    }
+
+    [Fact]
+    public async Task TheLinesWrittenBeforeTheAnswerWasCutOffAreKept()
+    {
+        var reader = new ClaimFactReader(new CutOff("p | 6\n1 | stated | -\n2 | sta"), ClaimFactReader.LoadPrompt(LawRoot), Elements);
+        var (facts, answer) = await reader.ReadAsync(CaseText.From(Case("tenant-plaintiff").Inputs), "contract-damages", "x");
+
+        Assert.Equal("lessee", facts.Position);
+        Assert.Equal(["contract_concluded"], facts.Events.Select(e => e.Kind));
+        Assert.EndsWith("[cut off at the answer length limit]", answer, StringComparison.Ordinal);
+    }
+
     [Fact]
     public void AnActorNamedByPositionIsWhicheverPartyHoldsIt()
     {
@@ -181,6 +205,20 @@ public sealed class AlphaFactsTests
 
         // sale-price: the claim, then the reading; borrower-plaintiff: the claim only.
         Assert.Equal([GroundsAnalyzer.ReadingRequestId, ClaimFactReader.RequestId, GroundsAnalyzer.ReadingRequestId], model.Requests.Select(r => r.SectionId));
+    }
+
+    private sealed class CutOff(string written) : IModelProvider
+    {
+        public string Name => "cut off";
+
+        public Task<string> GenerateAsync(ModelRequest request, CancellationToken cancellationToken) => throw new NotSupportedException();
+
+        public async IAsyncEnumerable<string> StreamAsync(ModelRequest request, [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken cancellationToken)
+        {
+            await Task.Yield();
+            yield return written;
+            throw new ModelProviderException("stopped at its answer length limit") { IsCutOff = true };
+        }
     }
 
     private sealed class Scripted(string answer) : IModelProvider

@@ -1,0 +1,1625 @@
+{
+  "reviewedOn": "2026-10-29",
+  "inspection": "Codex AI actual image reading; not human/lawyer verification",
+  "inputFiles": {
+    "priority-layout-projection.json": "66aea8599aeabbcabab93d0570a081b2e5b9ef8e67b30ad317a73c134e76b82f",
+    "priority-amendment-inventory.json": "c4fdf4f46a5705347e27171ea604c68d1ebacbb238f5995adf2f0b3ae0079933",
+    "priority-07-05-crop-readings.json": "bbb24318b5a1fb6754d5a025604bab0362bd0e3877a02d7d1e2632cc0a000aea",
+    "priority-a2005044-body-diagnostic-v2.json": "6d165a0f05f499b74a962de6b95783147862a07f5b18fa2b48b81fbe9c9e9cd9",
+    "priority-a2007031-body-diagnostic-v2.json": "70ddd6db8e1e9b7abbbafa0ede792ccab43115dd09c2ab8ffae554b0fbe40cc7"
+  },
+  "wordFlagReadings": [
+    {
+      "sourceId": "A2005044",
+      "number": "72 مكرر",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 33,
+        "last": 33,
+        "canonical": "فقدة",
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "009f0f6c86e5fb9f96b1d0c5abff1b0ed8cf09ba52c56e5320a6bd862c3cc05b",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "source-read-JO-wording-restoration-proposed",
+      "note": "The original JO visibly prints the proposed word; the current compilation differs. No repair is applied in this reading-only checkpoint.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/reviews/civil-priority-amendments-20261029/A2005044-021.png",
+          "imageSha256": "94760ad3a741ed66a4ce90c34dc88a55ae0601eccea0cf4eefa225ac37da90d0",
+          "pdfPage": 21,
+          "sourceId": "A2005044",
+          "sourceSha256": "3b1a27375d068b68bb4fb5938e3b6c86acde36a632bbe7a2a637af6e3c76d4b7"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "72 مكرر",
+      "flagIndex": 1,
+      "flag": {
+        "kind": "extra-in-all-streams",
+        "at": 48,
+        "canonical": "",
+        "ocr": [
+          "المادة"
+        ],
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "009f0f6c86e5fb9f96b1d0c5abff1b0ed8cf09ba52c56e5320a6bd862c3cc05b",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "outside-following-instruction-or-article-label",
+      "note": "Actually inspected source shows this label/number boilerplate after the quoted body. It is not missing operative body text. Alignment retains the raw tail as diagnostic evidence.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/reviews/civil-priority-amendments-20261029/A2005044-021.png",
+          "imageSha256": "94760ad3a741ed66a4ce90c34dc88a55ae0601eccea0cf4eefa225ac37da90d0",
+          "pdfPage": 21,
+          "sourceId": "A2005044",
+          "sourceSha256": "3b1a27375d068b68bb4fb5938e3b6c86acde36a632bbe7a2a637af6e3c76d4b7"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "72 مكرر",
+      "flagIndex": 2,
+      "flag": {
+        "kind": "extra-in-all-streams",
+        "at": 49,
+        "canonical": "",
+        "ocr": [
+          "المادة"
+        ],
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "009f0f6c86e5fb9f96b1d0c5abff1b0ed8cf09ba52c56e5320a6bd862c3cc05b",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "outside-following-instruction-or-article-label",
+      "note": "Actually inspected source shows this label/number boilerplate after the quoted body. It is not missing operative body text. Alignment retains the raw tail as diagnostic evidence.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/reviews/civil-priority-amendments-20261029/A2005044-021.png",
+          "imageSha256": "94760ad3a741ed66a4ce90c34dc88a55ae0601eccea0cf4eefa225ac37da90d0",
+          "pdfPage": 21,
+          "sourceId": "A2005044",
+          "sourceSha256": "3b1a27375d068b68bb4fb5938e3b6c86acde36a632bbe7a2a637af6e3c76d4b7"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "101",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 65,
+        "last": 65,
+        "canonical": "عشرة",
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "d5d1ab8f86c1cef7654e18ebe47ae3a25951b402b3c335e1fcd36e0bac2539c7",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "source-read-JO-wording-restoration-proposed",
+      "note": "The original JO visibly prints the proposed word; the current compilation differs. No repair is applied in this reading-only checkpoint.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/reviews/civil-priority-amendments-20261029/A2005044-022.png",
+          "imageSha256": "22b63477eb26922ba77a69d0b64476cc961d877ac657aad144d8b029788d02e5",
+          "pdfPage": 22,
+          "sourceId": "A2005044",
+          "sourceSha256": "3b1a27375d068b68bb4fb5938e3b6c86acde36a632bbe7a2a637af6e3c76d4b7"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "101",
+      "flagIndex": 1,
+      "flag": {
+        "kind": "extra-in-all-streams",
+        "at": 65,
+        "canonical": "",
+        "ocr": [
+          "عشر"
+        ],
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "d5d1ab8f86c1cef7654e18ebe47ae3a25951b402b3c335e1fcd36e0bac2539c7",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "paired-wording-conflict-extra",
+      "note": "The recognizer extra is the original JO word paired with the missing/different compilation token. It is one correction proposal, not an additional word insertion.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/reviews/civil-priority-amendments-20261029/A2005044-022.png",
+          "imageSha256": "22b63477eb26922ba77a69d0b64476cc961d877ac657aad144d8b029788d02e5",
+          "pdfPage": 22,
+          "sourceId": "A2005044",
+          "sourceSha256": "3b1a27375d068b68bb4fb5938e3b6c86acde36a632bbe7a2a637af6e3c76d4b7"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "101",
+      "flagIndex": 2,
+      "flag": {
+        "kind": "extra-in-all-streams",
+        "at": 74,
+        "canonical": "",
+        "ocr": [
+          "المادة"
+        ],
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "d5d1ab8f86c1cef7654e18ebe47ae3a25951b402b3c335e1fcd36e0bac2539c7",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "outside-following-instruction-or-article-label",
+      "note": "Actually inspected source shows this label/number boilerplate after the quoted body. It is not missing operative body text. Alignment retains the raw tail as diagnostic evidence.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/reviews/civil-priority-amendments-20261029/A2005044-022.png",
+          "imageSha256": "22b63477eb26922ba77a69d0b64476cc961d877ac657aad144d8b029788d02e5",
+          "pdfPage": 22,
+          "sourceId": "A2005044",
+          "sourceSha256": "3b1a27375d068b68bb4fb5938e3b6c86acde36a632bbe7a2a637af6e3c76d4b7"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "101",
+      "flagIndex": 3,
+      "flag": {
+        "kind": "extra-in-all-streams",
+        "at": 75,
+        "canonical": "",
+        "ocr": [
+          "المادة"
+        ],
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "d5d1ab8f86c1cef7654e18ebe47ae3a25951b402b3c335e1fcd36e0bac2539c7",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "outside-following-instruction-or-article-label",
+      "note": "Actually inspected source shows this label/number boilerplate after the quoted body. It is not missing operative body text. Alignment retains the raw tail as diagnostic evidence.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/reviews/civil-priority-amendments-20261029/A2005044-022.png",
+          "imageSha256": "22b63477eb26922ba77a69d0b64476cc961d877ac657aad144d8b029788d02e5",
+          "pdfPage": 22,
+          "sourceId": "A2005044",
+          "sourceSha256": "3b1a27375d068b68bb4fb5938e3b6c86acde36a632bbe7a2a637af6e3c76d4b7"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "124 مكرر",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 9,
+        "last": 9,
+        "canonical": "لاسيما",
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "e0b4e6933543c0d4fd815cbd3c98d83ba92efcf5089671f0881baaf39244ba12",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "source-read-JO-wording-restoration-proposed",
+      "note": "The original JO visibly prints the proposed word; the current compilation differs. No repair is applied in this reading-only checkpoint.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/reviews/civil-priority-amendments-20261029/A2005044-023.png",
+          "imageSha256": "3340434aa125229f4924c703550ca9272c1910312ce0a5378c1d88bdea48631a",
+          "pdfPage": 23,
+          "sourceId": "A2005044",
+          "sourceSha256": "3b1a27375d068b68bb4fb5938e3b6c86acde36a632bbe7a2a637af6e3c76d4b7"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "124 مكرر",
+      "flagIndex": 1,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 18,
+        "last": 18,
+        "canonical": "الاضرار",
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "e0b4e6933543c0d4fd815cbd3c98d83ba92efcf5089671f0881baaf39244ba12",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "source-read-JO-wording-restoration-proposed",
+      "note": "The original JO visibly prints the proposed word; the current compilation differs. No repair is applied in this reading-only checkpoint.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/reviews/civil-priority-amendments-20261029/A2005044-023.png",
+          "imageSha256": "3340434aa125229f4924c703550ca9272c1910312ce0a5378c1d88bdea48631a",
+          "pdfPage": 23,
+          "sourceId": "A2005044",
+          "sourceSha256": "3b1a27375d068b68bb4fb5938e3b6c86acde36a632bbe7a2a637af6e3c76d4b7"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "129",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "extra-in-all-streams",
+        "at": 31,
+        "canonical": "",
+        "ocr": [
+          "المادة"
+        ],
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "bb5532f7be2311df17d499a07ed7f596c891b6841acb9b3d329d705824816a2f",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "outside-following-instruction-or-article-label",
+      "note": "Actually inspected source shows this label/number boilerplate after the quoted body. It is not missing operative body text. Alignment retains the raw tail as diagnostic evidence.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/reviews/civil-priority-amendments-20261029/A2005044-023.png",
+          "imageSha256": "3340434aa125229f4924c703550ca9272c1910312ce0a5378c1d88bdea48631a",
+          "pdfPage": 23,
+          "sourceId": "A2005044",
+          "sourceSha256": "3b1a27375d068b68bb4fb5938e3b6c86acde36a632bbe7a2a637af6e3c76d4b7"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "129",
+      "flagIndex": 1,
+      "flag": {
+        "kind": "extra-in-all-streams",
+        "at": 32,
+        "canonical": "",
+        "ocr": [
+          "المادة"
+        ],
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "bb5532f7be2311df17d499a07ed7f596c891b6841acb9b3d329d705824816a2f",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "outside-following-instruction-or-article-label",
+      "note": "Actually inspected source shows this label/number boilerplate after the quoted body. It is not missing operative body text. Alignment retains the raw tail as diagnostic evidence.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/reviews/civil-priority-amendments-20261029/A2005044-023.png",
+          "imageSha256": "3340434aa125229f4924c703550ca9272c1910312ce0a5378c1d88bdea48631a",
+          "pdfPage": 23,
+          "sourceId": "A2005044",
+          "sourceSha256": "3b1a27375d068b68bb4fb5938e3b6c86acde36a632bbe7a2a637af6e3c76d4b7"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "133",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "extra-in-all-streams",
+        "at": 18,
+        "canonical": "",
+        "ocr": [
+          "المادة"
+        ],
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "b6cb0ad90967ccdd6648067c8395be8ba23ebda0b0611a68a078dca877fc6639",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "outside-following-instruction-or-article-label",
+      "note": "Actually inspected source shows this label/number boilerplate after the quoted body. It is not missing operative body text. Alignment retains the raw tail as diagnostic evidence.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/reviews/civil-priority-amendments-20261029/A2005044-023.png",
+          "imageSha256": "3340434aa125229f4924c703550ca9272c1910312ce0a5378c1d88bdea48631a",
+          "pdfPage": 23,
+          "sourceId": "A2005044",
+          "sourceSha256": "3b1a27375d068b68bb4fb5938e3b6c86acde36a632bbe7a2a637af6e3c76d4b7"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "133",
+      "flagIndex": 1,
+      "flag": {
+        "kind": "extra-in-all-streams",
+        "at": 19,
+        "canonical": "",
+        "ocr": [
+          "المادة"
+        ],
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "b6cb0ad90967ccdd6648067c8395be8ba23ebda0b0611a68a078dca877fc6639",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "outside-following-instruction-or-article-label",
+      "note": "Actually inspected source shows this label/number boilerplate after the quoted body. It is not missing operative body text. Alignment retains the raw tail as diagnostic evidence.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/reviews/civil-priority-amendments-20261029/A2005044-023.png",
+          "imageSha256": "3340434aa125229f4924c703550ca9272c1910312ce0a5378c1d88bdea48631a",
+          "pdfPage": 23,
+          "sourceId": "A2005044",
+          "sourceSha256": "3b1a27375d068b68bb4fb5938e3b6c86acde36a632bbe7a2a637af6e3c76d4b7"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "140 مكرر",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 6,
+        "last": 6,
+        "canonical": "مسؤول",
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "3d34524a72f20d37bc76b2a552db0f796bf4a2846e15b0deeb1ee7fc1c27ad8f",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "source-read-JO-wording-restoration-proposed",
+      "note": "The original JO visibly prints the proposed word; the current compilation differs. No repair is applied in this reading-only checkpoint.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/reviews/civil-priority-amendments-20261029/A2005044-024.png",
+          "imageSha256": "315b1b17169124e512ad5de6eda737823914656513e82278b17bb1ddfcaba780",
+          "pdfPage": 24,
+          "sourceId": "A2005044",
+          "sourceSha256": "3b1a27375d068b68bb4fb5938e3b6c86acde36a632bbe7a2a637af6e3c76d4b7"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "140 مكرر",
+      "flagIndex": 1,
+      "flag": {
+        "kind": "extra-in-all-streams",
+        "at": 6,
+        "canonical": "",
+        "ocr": [
+          "مسؤولا"
+        ],
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "3d34524a72f20d37bc76b2a552db0f796bf4a2846e15b0deeb1ee7fc1c27ad8f",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "paired-wording-conflict-extra",
+      "note": "The recognizer extra is the original JO word paired with the missing/different compilation token. It is one correction proposal, not an additional word insertion.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/reviews/civil-priority-amendments-20261029/A2005044-024.png",
+          "imageSha256": "315b1b17169124e512ad5de6eda737823914656513e82278b17bb1ddfcaba780",
+          "pdfPage": 24,
+          "sourceId": "A2005044",
+          "sourceSha256": "3b1a27375d068b68bb4fb5938e3b6c86acde36a632bbe7a2a637af6e3c76d4b7"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "467",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "extra-in-all-streams",
+        "at": 29,
+        "canonical": "",
+        "ocr": [
+          "رقم"
+        ],
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "7449ea01e97feaabab33734b232bd40e98fcc27c3c26a256ee3c6ed0d7de0c1b",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "outside-following-instruction-or-article-label",
+      "note": "Actually inspected source shows this label/number boilerplate after the quoted body. It is not missing operative body text. Alignment retains the raw tail as diagnostic evidence.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0003/civil-priority-07-05-003-left/crop.png",
+          "imageSha256": "4e0a612e11a5780fb2c4a20c168086cb1b6c4c52959a5a8094ae6ce37a769ab2",
+          "pdfPage": 3,
+          "sourceId": "A2007031",
+          "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "467",
+      "flagIndex": 1,
+      "flag": {
+        "kind": "extra-in-all-streams",
+        "at": 30,
+        "canonical": "",
+        "ocr": [
+          "رقم"
+        ],
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "7449ea01e97feaabab33734b232bd40e98fcc27c3c26a256ee3c6ed0d7de0c1b",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "outside-following-instruction-or-article-label",
+      "note": "Actually inspected source shows this label/number boilerplate after the quoted body. It is not missing operative body text. Alignment retains the raw tail as diagnostic evidence.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0003/civil-priority-07-05-003-left/crop.png",
+          "imageSha256": "4e0a612e11a5780fb2c4a20c168086cb1b6c4c52959a5a8094ae6ce37a769ab2",
+          "pdfPage": 3,
+          "sourceId": "A2007031",
+          "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "468",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 8,
+        "last": 8,
+        "canonical": "الا",
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "c85c2f3c0344822b5ce0fcd5c7bf4e6a77888b6b2d6759b0a9282c8e173eda2d",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "source-read-JO-wording-restoration-proposed",
+      "note": "The original JO visibly prints the proposed word; the current compilation differs. No repair is applied in this reading-only checkpoint.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0003/civil-priority-07-05-003-left/crop.png",
+          "imageSha256": "4e0a612e11a5780fb2c4a20c168086cb1b6c4c52959a5a8094ae6ce37a769ab2",
+          "pdfPage": 3,
+          "sourceId": "A2007031",
+          "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "468",
+      "flagIndex": 1,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 15,
+        "last": 15,
+        "canonical": "ايجارا",
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "c85c2f3c0344822b5ce0fcd5c7bf4e6a77888b6b2d6759b0a9282c8e173eda2d",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "source-read-JO-wording-restoration-proposed",
+      "note": "The original JO visibly prints the proposed word; the current compilation differs. No repair is applied in this reading-only checkpoint.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0003/civil-priority-07-05-003-left/crop.png",
+          "imageSha256": "4e0a612e11a5780fb2c4a20c168086cb1b6c4c52959a5a8094ae6ce37a769ab2",
+          "pdfPage": 3,
+          "sourceId": "A2007031",
+          "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "469",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "extra-in-all-streams",
+        "at": 12,
+        "canonical": "",
+        "ocr": [
+          "المادة"
+        ],
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "441482d1c7501b68dc37b4270479536cef335c47aede680ce1c09a466e5578ae",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "outside-following-instruction-or-article-label",
+      "note": "Actually inspected source shows this label/number boilerplate after the quoted body. It is not missing operative body text. Alignment retains the raw tail as diagnostic evidence.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0003/civil-priority-07-05-003-left/crop.png",
+          "imageSha256": "4e0a612e11a5780fb2c4a20c168086cb1b6c4c52959a5a8094ae6ce37a769ab2",
+          "pdfPage": 3,
+          "sourceId": "A2007031",
+          "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "469",
+      "flagIndex": 1,
+      "flag": {
+        "kind": "extra-in-all-streams",
+        "at": 13,
+        "canonical": "",
+        "ocr": [
+          "المادة"
+        ],
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "441482d1c7501b68dc37b4270479536cef335c47aede680ce1c09a466e5578ae",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "outside-following-instruction-or-article-label",
+      "note": "Actually inspected source shows this label/number boilerplate after the quoted body. It is not missing operative body text. Alignment retains the raw tail as diagnostic evidence.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0003/civil-priority-07-05-003-left/crop.png",
+          "imageSha256": "4e0a612e11a5780fb2c4a20c168086cb1b6c4c52959a5a8094ae6ce37a769ab2",
+          "pdfPage": 3,
+          "sourceId": "A2007031",
+          "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "469 مكرر 1",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 41,
+        "last": 41,
+        "canonical": "لمدة",
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "2f4645a1b96f38dbd77935a0fb6e0010b0bd340c2f6ffb7a08712564cb281398",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "source-read-compilation-words-retained",
+      "note": "The flagged compilation words are visible on the actual source crop; retained. OCR noise or span alignment caused the flag; no letter, digit or negation is removed.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0004/civil-priority-07-05-004-right/crop.png",
+          "imageSha256": "0ec20b134e44cbc15b384e851b188258512c28326505231313b83beedc55e8af",
+          "pdfPage": 4,
+          "sourceId": "A2007031",
+          "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "469 مكرر 4",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 5,
+        "last": 6,
+        "canonical": "لا يجوز",
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "aa1242512e26b58a5edf965bac8eecfdb65a94491e82bfef07141bdd4249bc91",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "source-read-compilation-words-retained",
+      "note": "The flagged compilation words are visible on the actual source crop; retained. OCR noise or span alignment caused the flag; no letter, digit or negation is removed. The source expressly starts with the negative لايجوز; PP-OCR joins the two words and the Tesseract span misses this opening. Retain the independent negative لا يجوز; no spacing-equivalence or positive permission is inferred.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0004/civil-priority-07-05-004-right/crop.png",
+          "imageSha256": "0ec20b134e44cbc15b384e851b188258512c28326505231313b83beedc55e8af",
+          "pdfPage": 4,
+          "sourceId": "A2007031",
+          "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "480",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "extra-in-all-streams",
+        "at": 44,
+        "canonical": "",
+        "ocr": [
+          "المادة"
+        ],
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "757eb45c3d3593c1160b74fafb8b6d065c8361ee66e5f37f8b4ca9308cad48a7",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "outside-following-instruction-or-article-label",
+      "note": "Actually inspected source shows this label/number boilerplate after the quoted body. It is not missing operative body text. Alignment retains the raw tail as diagnostic evidence.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0004/civil-priority-07-05-004-left/crop.png",
+          "imageSha256": "557f472c253aa884f3e45cb9fb8effd95c4bf46eef30e8a19158089675638c86",
+          "pdfPage": 4,
+          "sourceId": "A2007031",
+          "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "480",
+      "flagIndex": 1,
+      "flag": {
+        "kind": "extra-in-all-streams",
+        "at": 45,
+        "canonical": "",
+        "ocr": [
+          "المادة"
+        ],
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "757eb45c3d3593c1160b74fafb8b6d065c8361ee66e5f37f8b4ca9308cad48a7",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "outside-following-instruction-or-article-label",
+      "note": "Actually inspected source shows this label/number boilerplate after the quoted body. It is not missing operative body text. Alignment retains the raw tail as diagnostic evidence.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0004/civil-priority-07-05-004-left/crop.png",
+          "imageSha256": "557f472c253aa884f3e45cb9fb8effd95c4bf46eef30e8a19158089675638c86",
+          "pdfPage": 4,
+          "sourceId": "A2007031",
+          "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "482",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 31,
+        "last": 31,
+        "canonical": "الانتفاع",
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "408b84a313ef5b2c37d986df06816983e7db19920f09659f44c915b9c6b4c776",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "source-read-compilation-words-retained",
+      "note": "The flagged compilation words are visible on the actual source crop; retained. OCR noise or span alignment caused the flag; no letter, digit or negation is removed. The print reads الانتفاع, not the OCR confusion الانتقاع; the separate آخر flag in483also retains the print.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0004/civil-priority-07-05-004-left/crop.png",
+          "imageSha256": "557f472c253aa884f3e45cb9fb8effd95c4bf46eef30e8a19158089675638c86",
+          "pdfPage": 4,
+          "sourceId": "A2007031",
+          "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf"
+        },
+        {
+          "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0005/civil-priority-07-05-005-right/crop.png",
+          "imageSha256": "532c9c64ece67b68d57f709592706f1c63b71c6a0cf4f9d71cc98a45a2a778a2",
+          "pdfPage": 5,
+          "sourceId": "A2007031",
+          "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "482",
+      "flagIndex": 1,
+      "flag": {
+        "kind": "extra-in-all-streams",
+        "at": 31,
+        "canonical": "",
+        "ocr": [
+          "الانتقاع"
+        ],
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "408b84a313ef5b2c37d986df06816983e7db19920f09659f44c915b9c6b4c776",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "source-read-compilation-words-retained",
+      "note": "The flagged compilation words are visible on the actual source crop; retained. OCR noise or span alignment caused the flag; no letter, digit or negation is removed. The print reads الانتفاع, not the OCR confusion الانتقاع; the separate آخر flag in483also retains the print.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0004/civil-priority-07-05-004-left/crop.png",
+          "imageSha256": "557f472c253aa884f3e45cb9fb8effd95c4bf46eef30e8a19158089675638c86",
+          "pdfPage": 4,
+          "sourceId": "A2007031",
+          "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf"
+        },
+        {
+          "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0005/civil-priority-07-05-005-right/crop.png",
+          "imageSha256": "532c9c64ece67b68d57f709592706f1c63b71c6a0cf4f9d71cc98a45a2a778a2",
+          "pdfPage": 5,
+          "sourceId": "A2007031",
+          "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "483",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 30,
+        "last": 30,
+        "canonical": "الانتفاع",
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "8fd30b9d173164c6bd4204880c4d1017eea7bc2f77251357301ffca05f217d69",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "source-read-compilation-words-retained",
+      "note": "The flagged compilation words are visible on the actual source crop; retained. OCR noise or span alignment caused the flag; no letter, digit or negation is removed. The print reads الانتفاع, not the OCR confusion الانتقاع; the separate آخر flag in483also retains the print.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0005/civil-priority-07-05-005-right/crop.png",
+          "imageSha256": "532c9c64ece67b68d57f709592706f1c63b71c6a0cf4f9d71cc98a45a2a778a2",
+          "pdfPage": 5,
+          "sourceId": "A2007031",
+          "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "483",
+      "flagIndex": 1,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 55,
+        "last": 55,
+        "canonical": "آخر",
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "8fd30b9d173164c6bd4204880c4d1017eea7bc2f77251357301ffca05f217d69",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "source-read-compilation-words-retained",
+      "note": "The flagged compilation words are visible on the actual source crop; retained. OCR noise or span alignment caused the flag; no letter, digit or negation is removed. The print reads الانتفاع, not the OCR confusion الانتقاع; the separate آخر flag in483also retains the print.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0005/civil-priority-07-05-005-right/crop.png",
+          "imageSha256": "532c9c64ece67b68d57f709592706f1c63b71c6a0cf4f9d71cc98a45a2a778a2",
+          "pdfPage": 5,
+          "sourceId": "A2007031",
+          "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "484",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 4,
+        "last": 4,
+        "canonical": "عل",
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "dde1371584849986b203302ec0a81909d9a7b2b3362800bce6b0a3f6053bcc72",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "source-read-JO-wording-restoration-proposed",
+      "note": "The original JO visibly prints the proposed word; the current compilation differs. No repair is applied in this reading-only checkpoint.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0005/civil-priority-07-05-005-right/crop.png",
+          "imageSha256": "532c9c64ece67b68d57f709592706f1c63b71c6a0cf4f9d71cc98a45a2a778a2",
+          "pdfPage": 5,
+          "sourceId": "A2007031",
+          "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "484",
+      "flagIndex": 1,
+      "flag": {
+        "kind": "extra-in-all-streams",
+        "at": 4,
+        "canonical": "",
+        "ocr": [
+          "على"
+        ],
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "dde1371584849986b203302ec0a81909d9a7b2b3362800bce6b0a3f6053bcc72",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "paired-wording-conflict-extra",
+      "note": "The recognizer extra is the original JO word paired with the missing/different compilation token. It is one correction proposal, not an additional word insertion.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0005/civil-priority-07-05-005-right/crop.png",
+          "imageSha256": "532c9c64ece67b68d57f709592706f1c63b71c6a0cf4f9d71cc98a45a2a778a2",
+          "pdfPage": 5,
+          "sourceId": "A2007031",
+          "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "490",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 20,
+        "last": 20,
+        "canonical": "الاعفاء",
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "8aaa994cc3609e641acd3340705c2263af9263b0cf24473adcc32809b40535cb",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "source-read-JO-wording-restoration-proposed",
+      "note": "The original JO visibly prints the proposed word; the current compilation differs. No repair is applied in this reading-only checkpoint.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0005/civil-priority-07-05-005-left/crop.png",
+          "imageSha256": "3d105ae755da238d49317875c5f909adebb6059b4a10ffb684dbdbfc2f2cfbbf",
+          "pdfPage": 5,
+          "sourceId": "A2007031",
+          "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "492",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 73,
+        "last": 73,
+        "canonical": "بحلاف",
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "f61dab69af56ca2db7321731c94a2f57cfb34cf8596991f88e44c41eca51877c",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "source-read-JO-wording-restoration-proposed",
+      "note": "The original JO visibly prints the proposed word; the current compilation differs. No repair is applied in this reading-only checkpoint.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0005/civil-priority-07-05-005-left/crop.png",
+          "imageSha256": "3d105ae755da238d49317875c5f909adebb6059b4a10ffb684dbdbfc2f2cfbbf",
+          "pdfPage": 5,
+          "sourceId": "A2007031",
+          "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "492",
+      "flagIndex": 1,
+      "flag": {
+        "kind": "extra-in-all-streams",
+        "at": 73,
+        "canonical": "",
+        "ocr": [
+          "بخلاف"
+        ],
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "f61dab69af56ca2db7321731c94a2f57cfb34cf8596991f88e44c41eca51877c",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "paired-wording-conflict-extra",
+      "note": "The recognizer extra is the original JO word paired with the missing/different compilation token. It is one correction proposal, not an additional word insertion.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0005/civil-priority-07-05-005-left/crop.png",
+          "imageSha256": "3d105ae755da238d49317875c5f909adebb6059b4a10ffb684dbdbfc2f2cfbbf",
+          "pdfPage": 5,
+          "sourceId": "A2007031",
+          "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "499",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 12,
+        "last": 12,
+        "canonical": "بالاقساط",
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "229574498edfd0eef83824a1297fc7fb97bd896c1b13a86503e540a77c9bca95",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "source-read-JO-wording-restoration-proposed",
+      "note": "The original JO visibly prints the proposed word; the current compilation differs. No repair is applied in this reading-only checkpoint.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0005/civil-priority-07-05-005-left/crop.png",
+          "imageSha256": "3d105ae755da238d49317875c5f909adebb6059b4a10ffb684dbdbfc2f2cfbbf",
+          "pdfPage": 5,
+          "sourceId": "A2007031",
+          "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf"
+        }
+      ]
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "507",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 39,
+        "last": 39,
+        "canonical": "الا",
+        "punctuationOnly": false
+      },
+      "inputTextSha256": "014697d1e17230ee3485c37ea9724df7bf3bab5510a3fd8251e3d0f2a201315e",
+      "inspection": "actually read; not human/lawyer verification",
+      "finding": "source-read-JO-wording-restoration-proposed",
+      "note": "The original JO visibly prints the proposed word; the current compilation differs. No repair is applied in this reading-only checkpoint.",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0006/civil-priority-07-05-006-right/crop.png",
+          "imageSha256": "3fcbe469e4053c304cdc870e7e45a2500f69d41d1e64f1d7f7b5032416f361c7",
+          "pdfPage": 6,
+          "sourceId": "A2007031",
+          "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf"
+        }
+      ]
+    }
+  ],
+  "correctionProposals": [
+    {
+      "sourceId": "A2005044",
+      "number": "72 مكرر",
+      "inputTextSha256": "009f0f6c86e5fb9f96b1d0c5abff1b0ed8cf09ba52c56e5320a6bd862c3cc05b",
+      "diagnosticFlagIndex": 0,
+      "flagCanonical": "فقدة",
+      "old": "فقدة",
+      "new": "فقده",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/reviews/civil-priority-amendments-20261029/A2005044-021.png",
+          "imageSha256": "94760ad3a741ed66a4ce90c34dc88a55ae0601eccea0cf4eefa225ac37da90d0",
+          "pdfPage": 21,
+          "sourceId": "A2005044",
+          "sourceSha256": "3b1a27375d068b68bb4fb5938e3b6c86acde36a632bbe7a2a637af6e3c76d4b7"
+        }
+      ],
+      "status": "source-read proposal; NOT applied",
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "101",
+      "inputTextSha256": "d5d1ab8f86c1cef7654e18ebe47ae3a25951b402b3c335e1fcd36e0bac2539c7",
+      "diagnosticFlagIndex": 0,
+      "flagCanonical": "عشرة",
+      "old": "عشرة",
+      "new": "عشر",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/reviews/civil-priority-amendments-20261029/A2005044-022.png",
+          "imageSha256": "22b63477eb26922ba77a69d0b64476cc961d877ac657aad144d8b029788d02e5",
+          "pdfPage": 22,
+          "sourceId": "A2005044",
+          "sourceSha256": "3b1a27375d068b68bb4fb5938e3b6c86acde36a632bbe7a2a637af6e3c76d4b7"
+        }
+      ],
+      "status": "source-read proposal; NOT applied",
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "124 مكرر",
+      "inputTextSha256": "e0b4e6933543c0d4fd815cbd3c98d83ba92efcf5089671f0881baaf39244ba12",
+      "diagnosticFlagIndex": 0,
+      "flagCanonical": "لاسيما",
+      "old": "لاسيما",
+      "new": "لا سيما",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/reviews/civil-priority-amendments-20261029/A2005044-023.png",
+          "imageSha256": "3340434aa125229f4924c703550ca9272c1910312ce0a5378c1d88bdea48631a",
+          "pdfPage": 23,
+          "sourceId": "A2005044",
+          "sourceSha256": "3b1a27375d068b68bb4fb5938e3b6c86acde36a632bbe7a2a637af6e3c76d4b7"
+        }
+      ],
+      "status": "source-read proposal; NOT applied",
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "124 مكرر",
+      "inputTextSha256": "e0b4e6933543c0d4fd815cbd3c98d83ba92efcf5089671f0881baaf39244ba12",
+      "diagnosticFlagIndex": 1,
+      "flagCanonical": "الاضرار",
+      "old": "الاضرار",
+      "new": "الإضرار",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/reviews/civil-priority-amendments-20261029/A2005044-023.png",
+          "imageSha256": "3340434aa125229f4924c703550ca9272c1910312ce0a5378c1d88bdea48631a",
+          "pdfPage": 23,
+          "sourceId": "A2005044",
+          "sourceSha256": "3b1a27375d068b68bb4fb5938e3b6c86acde36a632bbe7a2a637af6e3c76d4b7"
+        }
+      ],
+      "status": "source-read proposal; NOT applied",
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "140 مكرر",
+      "inputTextSha256": "3d34524a72f20d37bc76b2a552db0f796bf4a2846e15b0deeb1ee7fc1c27ad8f",
+      "diagnosticFlagIndex": 0,
+      "flagCanonical": "مسؤول",
+      "old": "مسؤول",
+      "new": "مسؤولا",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/reviews/civil-priority-amendments-20261029/A2005044-024.png",
+          "imageSha256": "315b1b17169124e512ad5de6eda737823914656513e82278b17bb1ddfcaba780",
+          "pdfPage": 24,
+          "sourceId": "A2005044",
+          "sourceSha256": "3b1a27375d068b68bb4fb5938e3b6c86acde36a632bbe7a2a637af6e3c76d4b7"
+        }
+      ],
+      "status": "source-read proposal; NOT applied",
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "468",
+      "inputTextSha256": "c85c2f3c0344822b5ce0fcd5c7bf4e6a77888b6b2d6759b0a9282c8e173eda2d",
+      "diagnosticFlagIndex": 0,
+      "flagCanonical": "الا",
+      "old": "الا",
+      "new": "إلا",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0003/civil-priority-07-05-003-left/crop.png",
+          "imageSha256": "4e0a612e11a5780fb2c4a20c168086cb1b6c4c52959a5a8094ae6ce37a769ab2",
+          "pdfPage": 3,
+          "sourceId": "A2007031",
+          "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf"
+        }
+      ],
+      "status": "source-read proposal; NOT applied",
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "468",
+      "inputTextSha256": "c85c2f3c0344822b5ce0fcd5c7bf4e6a77888b6b2d6759b0a9282c8e173eda2d",
+      "diagnosticFlagIndex": 1,
+      "flagCanonical": "ايجارا",
+      "old": "ايجارا",
+      "new": "إيجارا",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0003/civil-priority-07-05-003-left/crop.png",
+          "imageSha256": "4e0a612e11a5780fb2c4a20c168086cb1b6c4c52959a5a8094ae6ce37a769ab2",
+          "pdfPage": 3,
+          "sourceId": "A2007031",
+          "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf"
+        }
+      ],
+      "status": "source-read proposal; NOT applied",
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "484",
+      "inputTextSha256": "dde1371584849986b203302ec0a81909d9a7b2b3362800bce6b0a3f6053bcc72",
+      "diagnosticFlagIndex": 0,
+      "flagCanonical": "عل",
+      "old": "يتعين عل المستأجر",
+      "new": "يتعين على المستأجر",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0005/civil-priority-07-05-005-right/crop.png",
+          "imageSha256": "532c9c64ece67b68d57f709592706f1c63b71c6a0cf4f9d71cc98a45a2a778a2",
+          "pdfPage": 5,
+          "sourceId": "A2007031",
+          "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf"
+        }
+      ],
+      "status": "source-read proposal; NOT applied",
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "490",
+      "inputTextSha256": "8aaa994cc3609e641acd3340705c2263af9263b0cf24473adcc32809b40535cb",
+      "diagnosticFlagIndex": 0,
+      "flagCanonical": "الاعفاء",
+      "old": "الاعفاء",
+      "new": "الإعفاء",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0005/civil-priority-07-05-005-left/crop.png",
+          "imageSha256": "3d105ae755da238d49317875c5f909adebb6059b4a10ffb684dbdbfc2f2cfbbf",
+          "pdfPage": 5,
+          "sourceId": "A2007031",
+          "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf"
+        }
+      ],
+      "status": "source-read proposal; NOT applied",
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "492",
+      "inputTextSha256": "f61dab69af56ca2db7321731c94a2f57cfb34cf8596991f88e44c41eca51877c",
+      "diagnosticFlagIndex": 0,
+      "flagCanonical": "بحلاف",
+      "old": "بحلاف",
+      "new": "بخلاف",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0005/civil-priority-07-05-005-left/crop.png",
+          "imageSha256": "3d105ae755da238d49317875c5f909adebb6059b4a10ffb684dbdbfc2f2cfbbf",
+          "pdfPage": 5,
+          "sourceId": "A2007031",
+          "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf"
+        }
+      ],
+      "status": "source-read proposal; NOT applied",
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "499",
+      "inputTextSha256": "229574498edfd0eef83824a1297fc7fb97bd896c1b13a86503e540a77c9bca95",
+      "diagnosticFlagIndex": 0,
+      "flagCanonical": "بالاقساط",
+      "old": "بالاقساط",
+      "new": "بالأقساط",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0005/civil-priority-07-05-005-left/crop.png",
+          "imageSha256": "3d105ae755da238d49317875c5f909adebb6059b4a10ffb684dbdbfc2f2cfbbf",
+          "pdfPage": 5,
+          "sourceId": "A2007031",
+          "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf"
+        }
+      ],
+      "status": "source-read proposal; NOT applied",
+      "inspection": "actually read; not human/lawyer verification"
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "507",
+      "inputTextSha256": "014697d1e17230ee3485c37ea9724df7bf3bab5510a3fd8251e3d0f2a201315e",
+      "diagnosticFlagIndex": 0,
+      "flagCanonical": "الا",
+      "old": "الا",
+      "new": "إلا",
+      "proofs": [
+        {
+          "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0006/civil-priority-07-05-006-right/crop.png",
+          "imageSha256": "3fcbe469e4053c304cdc870e7e45a2500f69d41d1e64f1d7f7b5032416f361c7",
+          "pdfPage": 6,
+          "sourceId": "A2007031",
+          "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf"
+        }
+      ],
+      "status": "source-read proposal; NOT applied",
+      "inspection": "actually read; not human/lawyer verification"
+    }
+  ],
+  "punctuationQueue": [
+    {
+      "sourceId": "A2005044",
+      "number": "72 مكرر",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 27,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "80",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 60,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "90",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 96,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "93",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 21,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "103",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 48,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "124",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 20,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "124 مكرر",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 13,
+        "canonical": ":",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "124 مكرر",
+      "flagIndex": 1,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 43,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "134",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 35,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "134",
+      "flagIndex": 1,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 65,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "136",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 25,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "136",
+      "flagIndex": 1,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 44,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "137",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 13,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2005044",
+      "number": "553",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 94,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "467",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 30,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "468",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 31,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "469 مكرر 1",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 16,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "469 مكرر 1",
+      "flagIndex": 1,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 43,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "469 مكرر 2",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 60,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "469 مكرر 2",
+      "flagIndex": 1,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 76,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "469 مكرر 2",
+      "flagIndex": 2,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 88,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "469 مكرر 3",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 22,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "479",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 65,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "483",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 63,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "484",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 24,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "484",
+      "flagIndex": 1,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 34,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "484",
+      "flagIndex": 2,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 63,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "487",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 36,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "489",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 23,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "497",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 36,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "501",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 56,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "505",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 29,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "507 مكرر",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 75,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    },
+    {
+      "sourceId": "A2007031",
+      "number": "507 مكرر 1",
+      "flagIndex": 0,
+      "flag": {
+        "kind": "unconfirmed",
+        "at": 19,
+        "canonical": ".",
+        "punctuationOnly": true
+      },
+      "status": "separate punctuation/quotation-boundary reconciliation pending; no mark changed or silently certified"
+    }
+  ],
+  "wordFlagsActuallyRead": 36,
+  "sourceWordCorrectionsProposed": 12,
+  "distinctBodiesWithProposals": 10,
+  "mechanicalApplicationComplete": false,
+  "sourceWordCorrectionsApplied": 0,
+  "typedCivilChanged": false,
+  "fullArticleChecked": false,
+  "remaining": "Implement/test/replay exact source-bound proposals; complete original84-21body check and retained489paragraph provenance; reconcile34punctuation flags explicitly, references/inventory/sample/typedpartial."
+}

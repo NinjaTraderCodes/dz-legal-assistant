@@ -1,0 +1,2937 @@
+{
+  "source": "A2007031",
+  "manifest": "tools/law-corpus/civil-priority-07-05-manifest.json",
+  "manifestSha256": "5d1d7612881613b61199fd1a06acda0ece7e2be078e1ceda195a4db77112a8b9",
+  "rule": "native_check.compare_streams",
+  "streams": {
+    "tesseract": 1981,
+    "ppocr": 1919
+  },
+  "articles": 34,
+  "agreed": 17,
+  "agreementRate": 0.5,
+  "results": [
+    {
+      "number": "467",
+      "agrees": false,
+      "canonicalTokens": 28,
+      "confirmedBy": {
+        "tesseract": 26,
+        "ppocr": 26
+      },
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 30,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        },
+        {
+          "kind": "extra-in-all-streams",
+          "canonical": "",
+          "at": 29,
+          "ocr": [
+            "رقم"
+          ]
+        },
+        {
+          "kind": "extra-in-all-streams",
+          "canonical": "",
+          "at": 30,
+          "ocr": [
+            "رقم"
+          ]
+        }
+      ],
+      "located": {
+        "tesseract": [
+          287,
+          321
+        ],
+        "ppocr": [
+          201,
+          234
+        ]
+      },
+      "ocr": {
+        "tesseract": "الادة 467 : الإيجار عقد يمكّن المؤّجر بمقتضاه المستاجر من الانتفاع بشيء لمدة محددة مقايل بدل إيجار معلوم . يجوز أن يحدد بدل الإايجار نقدا أو بتقديم أي عمل المادئة 3 : يتممالأمر رقم",
+        "ppocr": "يأتي \" المادة الإيجار عقد يمكّن المؤجر بمقتضاه المستأجر من الانتفاع بشيء لمدة محددة مقابل بدل إيجار معلوم يجوز أن يحدد بدل الإيجار نقدا أو بتقديم أي عمل آخر المادّة يتمم الأمر رقم"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-003-left",
+          "box": [
+            90,
+            658,
+            1070,
+            1110
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "7449ea01e97feaabab33734b232bd40e98fcc27c3c26a256ee3c6ed0d7de0c1b",
+      "strictWordFlags": [
+        {
+          "kind": "extra-in-all-streams",
+          "at": 29,
+          "canonical": "",
+          "ocr": [
+            "رقم"
+          ],
+          "punctuationOnly": false
+        },
+        {
+          "kind": "extra-in-all-streams",
+          "at": 30,
+          "canonical": "",
+          "ocr": [
+            "رقم"
+          ],
+          "punctuationOnly": false
+        }
+      ],
+      "strictMarkFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 30,
+          "canonical": ".",
+          "punctuationOnly": true
+        }
+      ],
+      "instructionPdfPages": [
+        3
+      ],
+      "strictWordAgrees": false,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-003-left"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-003-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          3
+        ],
+        "ppocr": [
+          3
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "467 مكرر",
+      "agrees": true,
+      "canonicalTokens": 11,
+      "confirmedBy": {
+        "tesseract": 11,
+        "ppocr": 10
+      },
+      "disagreements": [],
+      "located": {
+        "tesseract": [
+          338,
+          356
+        ],
+        "ppocr": [
+          245,
+          263
+        ]
+      },
+      "ocr": {
+        "tesseract": "مادة 467 مكرر : ينعقد الايجار كتابة ويكون له تاريخ ثابت وإلا كان باطلا \" . المادة 4",
+        "ppocr": "وتحرر كمايأتي المادة مكرر ينعقد الإيجار كتابة ويكون له تاريخ ثابت وإلا كان باطلا \" المادةتعدل المادتان و"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-003-left",
+          "box": [
+            91,
+            1265,
+            1070,
+            1483
+          ]
+        }
+      ],
+      "labelTokens": 3,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "db1cb799246787fc94cae9f769afeba4b0490fe4a78d9720e9f02f053d6b183e",
+      "strictWordFlags": [],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        3
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-003-left"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-003-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          3
+        ],
+        "ppocr": [
+          3
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "468",
+      "agrees": false,
+      "canonicalTokens": 45,
+      "confirmedBy": {
+        "tesseract": 34,
+        "ppocr": 33
+      },
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": "الا",
+          "at": 8,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        },
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 31,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        }
+      ],
+      "located": {
+        "tesseract": [
+          377,
+          419
+        ],
+        "ppocr": [
+          277,
+          316
+        ]
+      },
+      "ocr": {
+        "tesseract": "مادة 468 : لا يجوز لمن لاا يملك إلا حق القيام بأعمال الإدارة أن يعقد إيجارا تزيد مدته على ثلاث ( 3 ) إذا عقد الإايجار لمدة أطول من ذلك تخفض المدة إلى ثلاث ( 3 ) سنوات ” \" . \"",
+        "ppocr": "كما يأتي المادة لا يجوز لمن لا يملك إلاحق القيام بأعمال الإدارة أن يعقد إيجارا تزيد مدته على ثلاث سنوات مالم يوجد نص يقضي بخلاف ذلك إذا عقد الإيجار لمدة أطول من ذلك تخفض المدة إلى ثلاثسنوات \" المادة"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-003-left",
+          "box": [
+            90,
+            1661,
+            1071,
+            2089
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "c85c2f3c0344822b5ce0fcd5c7bf4e6a77888b6b2d6759b0a9282c8e173eda2d",
+      "strictWordFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 8,
+          "last": 8,
+          "canonical": "الا",
+          "punctuationOnly": false
+        },
+        {
+          "kind": "unconfirmed",
+          "at": 15,
+          "last": 15,
+          "canonical": "ايجارا",
+          "punctuationOnly": false
+        }
+      ],
+      "strictMarkFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 31,
+          "canonical": ".",
+          "punctuationOnly": true
+        }
+      ],
+      "instructionPdfPages": [
+        3
+      ],
+      "strictWordAgrees": false,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-003-left"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-003-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          3
+        ],
+        "ppocr": [
+          3
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "469",
+      "agrees": true,
+      "canonicalTokens": 10,
+      "confirmedBy": {
+        "tesseract": 10,
+        "ppocr": 9
+      },
+      "disagreements": [],
+      "located": {
+        "tesseract": [
+          419,
+          435
+        ],
+        "ppocr": [
+          313,
+          329
+        ]
+      },
+      "ocr": {
+        "tesseract": "الادة 469 : ينتهى بقوة القانون الإيجار الصادر من المنتفع بانقضاء الانتفاع \" . المادة 5",
+        "ppocr": "ثلاثسنوات \" المادة ينتهي بقوة القانون الإيجار الصادر من المنتفع بانقضاء الانتفاع المادّة يتمم الأمر رقم"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-003-left",
+          "box": [
+            94,
+            2046,
+            1074,
+            2262
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [
+        [
+          "الماده"
+        ],
+        [
+          "الماده"
+        ]
+      ],
+      "inputTextSha256": "441482d1c7501b68dc37b4270479536cef335c47aede680ce1c09a466e5578ae",
+      "strictWordFlags": [
+        {
+          "kind": "extra-in-all-streams",
+          "at": 12,
+          "canonical": "",
+          "ocr": [
+            "المادة"
+          ],
+          "punctuationOnly": false
+        },
+        {
+          "kind": "extra-in-all-streams",
+          "at": 13,
+          "canonical": "",
+          "ocr": [
+            "المادة"
+          ],
+          "punctuationOnly": false
+        }
+      ],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        3
+      ],
+      "strictWordAgrees": false,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-003-left"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-003-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          3
+        ],
+        "ppocr": [
+          3
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "469 مكرر",
+      "agrees": true,
+      "canonicalTokens": 30,
+      "confirmedBy": {
+        "tesseract": 25,
+        "ppocr": 28
+      },
+      "disagreements": [],
+      "located": {
+        "tesseract": [
+          446,
+          481
+        ],
+        "ppocr": [
+          347,
+          381
+        ]
+      },
+      "ocr": {
+        "tesseract": "مكرر3 و469 مكرر4 . ؛ وتحرر كما يأتي : وحق السكن أن يعقد إيجارا مالم ينص العقد المنشئ لحقه صراحة على ذلك . ينتهي الإيجار بقوةالقانون بانقضاء حق الاستعمال وحق السكن \" . \" الادة",
+        "ppocr": "كمايأتي \" المادة مكرر لا يجوز لصاحب حق الاستعمال وحق السكن أن يعقد إيجارا مالم ينص العقد المنشئ لحقه صراحة على ذلك ينتهي الإيجار بقوة القانون بانقضاء حق الاستعمال وحق السكن \" المادة مكررا"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-003-left",
+          "box": [
+            85,
+            2414,
+            1074,
+            2702
+          ]
+        },
+        {
+          "evidenceId": "civil-priority-07-05-004-right",
+          "box": [
+            53,
+            47,
+            1031,
+            247
+          ]
+        }
+      ],
+      "labelTokens": 3,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "686cc0120c38ef6f8233b18cbe10c310480f2dc96a38352aa3db65177c1ebc3c",
+      "strictWordFlags": [],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        3,
+        4
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-003-left",
+          "civil-priority-07-05-004-right"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-003-left",
+          "civil-priority-07-05-004-right"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          3,
+          4
+        ],
+        "ppocr": [
+          3,
+          4
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "469 مكرر 1",
+      "agrees": false,
+      "canonicalTokens": 39,
+      "confirmedBy": {
+        "tesseract": 22,
+        "ppocr": 35
+      },
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 16,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        },
+        {
+          "kind": "unconfirmed",
+          "canonical": "لمدة",
+          "at": 41,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        },
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 43,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        }
+      ],
+      "located": {
+        "tesseract": [
+          480,
+          511
+        ],
+        "ppocr": [
+          377,
+          419
+        ]
+      },
+      "ocr": {
+        "tesseract": "الادة 469 مكرر ! : ينتهى الإيجار بانقضاء المدة غير أنه يجوز للمستأجر إنهاء عقد الإيجار قبل ذلك لسبب عائّلي أو مهني . ويجب عليه إخطار المؤجر \" الادة 469 مكرر2",
+        "ppocr": "السكن \" المادة مكررا ينتهي الإيجار بانقضاء المدة المتفق عليها دون حاجة إلى تنبيه بالإخلاء غير أنه يجوز للمستأجر إنهاء عقد الإيجار قبل ذلك لسبب عائلي أو مهني ويجب عليه إخطار المؤجر بموجب محرر غير قضائي يتضمن إشعارا مدة شهرين المادة مكرر"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-004-right",
+          "box": [
+            53,
+            203,
+            1034,
+            667
+          ]
+        }
+      ],
+      "labelTokens": 4,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "2f4645a1b96f38dbd77935a0fb6e0010b0bd340c2f6ffb7a08712564cb281398",
+      "strictWordFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 41,
+          "last": 41,
+          "canonical": "لمدة",
+          "punctuationOnly": false
+        }
+      ],
+      "strictMarkFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 16,
+          "canonical": ".",
+          "punctuationOnly": true
+        },
+        {
+          "kind": "unconfirmed",
+          "at": 43,
+          "canonical": ".",
+          "punctuationOnly": true
+        }
+      ],
+      "instructionPdfPages": [
+        3,
+        4
+      ],
+      "strictWordAgrees": false,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-004-right"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-004-right"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          4
+        ],
+        "ppocr": [
+          4
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "469 مكرر 2",
+      "agrees": false,
+      "canonicalTokens": 84,
+      "confirmedBy": {
+        "tesseract": 68,
+        "ppocr": 74
+      },
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 60,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        },
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 76,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        },
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 88,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        }
+      ],
+      "located": {
+        "tesseract": [
+          507,
+          588
+        ],
+        "ppocr": [
+          414,
+          495
+        ]
+      },
+      "ocr": {
+        "tesseract": "\" الادة 469 مكرر2 : لا ينتقل الإيجار إلى الورثة . غير أنه في حالة وفاة المستأجرء ما لم يوجد اتفاق على خلاف ذلك . يستمر العقد إلى انتهاء مدته . وفى هذه الحالة . يجوز للورثة الذين كانوا يعيشون عادة معه منذ ستة ( 6 ) أشهرء إنهاء العقد إذا أصبحت تكاليفه باهظة بالنسبة إلى مواردهم أو أصبح الإيجار يزيد عن تجب ممارسة حق إنهاء الإيجار خلال ستة ( 6 ) ويجب إخطارر المؤجر بموجب محرر غير قضائي \" الادة",
+        "ppocr": "إشعارا مدة شهرين المادة مكرر لا ينتقل الإيجار إلى الورثة غير أنه في حالة وفاة المستأجر، مالم يوجد اتفاق على خلاف ذلك، يستمر العقد إلى انتهاء مدته، وفي هذه الحالة، يجوز للورثة الذين كانوا يعيشون عادة معه منذ ستة أشهر، إنهاء العقد إذا أصبحت تكاليفه باهظة بالنسبة إلى مواردهم أو أصبح الإيجار يزيد عن حاجتهم تجب ممارسة حق إنهاء الإيجار خلال ستة أشهر من يوم وفاة المستأجر ويجب إخطار المؤجر بموجب محرر غير قضائي يتضمن إشعارا لمدة شهرين \" المادة مكرر"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-004-right",
+          "box": [
+            53,
+            607,
+            1038,
+            1499
+          ]
+        }
+      ],
+      "labelTokens": 4,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "d76911d3d4348dcb75b8836faae4dc46f6f33dab252d1511515444d8daf7b598",
+      "strictWordFlags": [],
+      "strictMarkFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 60,
+          "canonical": ".",
+          "punctuationOnly": true
+        },
+        {
+          "kind": "unconfirmed",
+          "at": 76,
+          "canonical": ".",
+          "punctuationOnly": true
+        },
+        {
+          "kind": "unconfirmed",
+          "at": 88,
+          "canonical": ".",
+          "punctuationOnly": true
+        }
+      ],
+      "instructionPdfPages": [
+        3,
+        4
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-004-right"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-004-right"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          4
+        ],
+        "ppocr": [
+          4
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "469 مكرر 3",
+      "agrees": false,
+      "canonicalTokens": 18,
+      "confirmedBy": {
+        "tesseract": 14,
+        "ppocr": 17
+      },
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 22,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        }
+      ],
+      "located": {
+        "tesseract": [
+          587,
+          606
+        ],
+        "ppocr": [
+          490,
+          516
+        ]
+      },
+      "ocr": {
+        "tesseract": "الادة 469 مكرر 3 : إذا انتقلت ملكي ةالعين المؤجرة إراديا أو جبرا يكون الإيجار نافذا في حق من",
+        "ppocr": "لمدة شهرين \" المادة مكرر إذا انتقلت ملكية العين المؤجرة إراديا أو جبرا يكون الإيجار نافذا في حق من انتقلت إليه الملكية \" المادة مكرر لايجوز"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-004-right",
+          "box": [
+            55,
+            1436,
+            1030,
+            1561
+          ]
+        }
+      ],
+      "labelTokens": 4,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "ae5a1f149bd80b7808da7f014954b14151ea985e9d046e753c9b887b5fc9c441",
+      "strictWordFlags": [],
+      "strictMarkFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 22,
+          "canonical": ".",
+          "punctuationOnly": true
+        }
+      ],
+      "instructionPdfPages": [
+        3,
+        4
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-004-right"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-004-right"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          4
+        ],
+        "ppocr": [
+          4
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "469 مكرر 4",
+      "agrees": false,
+      "canonicalTokens": 54,
+      "confirmedBy": {
+        "tesseract": 45,
+        "ppocr": 50
+      },
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": "لا يجوز",
+          "at": 5,
+          "streams": {
+            "tesseract": [
+              "miss",
+              "miss"
+            ],
+            "ppocr": [
+              "miss",
+              "miss"
+            ]
+          }
+        }
+      ],
+      "located": {
+        "tesseract": [
+          606,
+          658
+        ],
+        "ppocr": [
+          511,
+          570
+        ]
+      },
+      "ocr": {
+        "tesseract": "على من انتقلت إليه الملكية يما دقعه مقدما من يبدل الإيجار إذا أثبت هذا الأخير أن المستأجر كان يعلم وقت الدفع بانتقال الملكية أو كان من المفروض حتما أن يعلم ذلك . وفي حالة عدم إثبات ذلك فلا يكون لمن انتقلت إليه الملكية إلا الرجوع على المؤجر السايق \" . المادة 6",
+        "ppocr": "الملكية \" المادة مكرر لايجوز للمستأجر أن يحتج على من انتقلت إليه الملكية بما دفعه مقدما من بدل الإيجار إذا أثبت هذا الأخير أن المستأجر كان يعلم وقت الدفع بانتقال الملكية أو كان من المفروض حتما أن يعلم ذلك وفي حالة عدم إثبات ذلك فلا يكون لمن انتقلت إليه اللكية إلا الرجوع على المؤجر السابق المادّةتعدللمواد و4494847444342481 وومنالأمر رقم"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-004-right",
+          "box": [
+            52,
+            1725,
+            1038,
+            2135
+          ]
+        }
+      ],
+      "labelTokens": 4,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "aa1242512e26b58a5edf965bac8eecfdb65a94491e82bfef07141bdd4249bc91",
+      "strictWordFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 5,
+          "last": 6,
+          "canonical": "لا يجوز",
+          "punctuationOnly": false
+        }
+      ],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        3,
+        4
+      ],
+      "strictWordAgrees": false,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-004-right"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-004-right"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          4
+        ],
+        "ppocr": [
+          4
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "476",
+      "agrees": true,
+      "canonicalTokens": 54,
+      "confirmedBy": {
+        "tesseract": 30,
+        "ppocr": 51
+      },
+      "disagreements": [],
+      "located": {
+        "tesseract": [
+          704,
+          744
+        ],
+        "ppocr": [
+          580,
+          633
+        ]
+      },
+      "ocr": {
+        "tesseract": "الادة 476 : يلتزم المؤجر بتسليم العين المؤجرة للمستأاجر فى حالة تصلح للاستعمال المعد لهاتيعا لاتفاق الطرفين . تتم معاينة الأماكن وجاهيا بموجب محضر أو بيان وصفي يلحق بعقد الإيجار . حسنة مالم يثبيت العكس \" . \" ا مادة",
+        "ppocr": "يأتي \" المادة يلتزم المؤجر بتسليم العين المؤجرة للمستأجر في حالة تصلح للاستعمال المعد لهاتبعا لاتفاق الطرفين تتم معاينة الأماكن وجاهيا بموجب محضر أو بيان وصفي يلحق بعقد الإيجار غير أنه إذا تم تسليم العين المؤجرة دون محضر أو بيان وصفي، يفترض في المستأجر أنه تسلمها في حالة حسنة مالم يثبت العكس المادة"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-004-right",
+          "box": [
+            54,
+            2453,
+            1036,
+            3000
+          ]
+        },
+        {
+          "evidenceId": "civil-priority-07-05-004-left",
+          "box": [
+            873,
+            40,
+            981,
+            108
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "f74aedf95511d7da35eb1f19756cdaf99f00a82f78c706d45be6dcbc2fa67ac2",
+      "strictWordFlags": [],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        4,
+        5,
+        6
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-004-left",
+          "civil-priority-07-05-004-right"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-004-left",
+          "civil-priority-07-05-004-right"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          4
+        ],
+        "ppocr": [
+          4
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "477",
+      "agrees": true,
+      "canonicalTokens": 48,
+      "confirmedBy": {
+        "tesseract": 48,
+        "ppocr": 47
+      },
+      "disagreements": [],
+      "located": {
+        "tesseract": [
+          743,
+          794
+        ],
+        "ppocr": [
+          630,
+          681
+        ]
+      },
+      "ocr": {
+        "tesseract": "مادة 477 : إذا سلمت العين المؤجرة فى حالة لاتكون فيها صالحة للاستعمال الذى أجرت من أجله أو طرأ على هذا الاستعمال نقص معتبرء جاز للمستاجر أن يطلب فسخ الإيجار أو إنقاص بدل الإيجار بقدر مانقص من الاستعمال مع التعويض عن الضرر في الحالتين إذا اقتضى الأمر ذلك \" . '",
+        "ppocr": "يثبت العكس المادة إذا سلمت العين المؤجرة في حالة لاتكون فيها صالحة للاستعمال الذي أجرت من أجله أو طرأ على هذا الاستعمال نقص معتبر، جاز للمستأجر أن يطلب فسخ الإيجار أو إنقاص بدل الإيجار بقدر مانقص من الاستعمال مع التعويض عن الضرر في الحالتين إذا اقتضى الأمر ذلك \" المادة يسري"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-004-left",
+          "box": [
+            94,
+            40,
+            1077,
+            526
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "a352caa1e1b09ad423949f0fe5fc5fd311a713f0c02b16a1796ec8ebdb5f9571",
+      "strictWordFlags": [],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        4,
+        5,
+        6
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-004-left"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-004-left",
+          "civil-priority-07-05-004-right"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          4
+        ],
+        "ppocr": [
+          4
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "478",
+      "agrees": true,
+      "canonicalTokens": 24,
+      "confirmedBy": {
+        "tesseract": 23,
+        "ppocr": 23
+      },
+      "disagreements": [],
+      "located": {
+        "tesseract": [
+          794,
+          825
+        ],
+        "ppocr": [
+          678,
+          702
+        ]
+      },
+      "ocr": {
+        "tesseract": "المادة 478 : يسري على الالتزام بتسليم العين المؤجرة ما يسري على الالتزام بتسليم المبيع من أحكام , خاصة ما تعلق منها بتاريخ ومكان تسليم الشيء المؤجر \" . \" ا",
+        "ppocr": "\" المادة يسري على الالتزام بتسليم العين المؤجرة مايسري على الالتزام بتسليم المبيع من أحكام، خاصة ماتعلق منها بتاريخ ومكان تسليم الشي المؤجر المادة"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-004-left",
+          "box": [
+            92,
+            452,
+            1071,
+            799
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "e7cc6e63e04d655ca31c15f491d04cec84ba55101ff7a218c30ac2874dafcca5",
+      "strictWordFlags": [],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        4,
+        5,
+        6
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-004-left"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-004-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          4
+        ],
+        "ppocr": [
+          4
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "479",
+      "agrees": false,
+      "canonicalTokens": 63,
+      "confirmedBy": {
+        "tesseract": 55,
+        "ppocr": 59
+      },
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 65,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        }
+      ],
+      "located": {
+        "tesseract": [
+          825,
+          890
+        ],
+        "ppocr": [
+          699,
+          762
+        ]
+      },
+      "ocr": {
+        "tesseract": "مادة 479 : يلتزم المؤجر بصيانة العين المؤجرة لتبقى على الحالة التي كانت عليها وقت التسليم . ويجب عليه أن يقوم بالترميمات الضرورية أثناء مدة الإيجار » دون الترميمات الخاصة بالمستأجر . ويتعين عليه أن يقوم لاسيما بالأعمال اللازمة للأسطح من تحصيص و أعمال تنظيف الآيار وكما يتعين عليه صيانة وتفريغ المراحيض وقنوات تصريف المياه . يتحمل الموؤجر الرسوم والضرائب وغيرها من ' امادة 450",
+        "ppocr": "الشي المؤجر المادة يلتزم المؤجر بصيانة العين المؤجرة لتبقى على الحالة التي كانت عليها وقت التسليم ويجب عليه أن يقوم بالترميمات الضرورية أثناء مدة الإيجار، دون الترميمات الخاصة بالمستأجر ويتعين عليه أن يقوم لاسيما بالأعمال اللازمة للأسطح من تجصيص وأعمال تنظيف الآبار وكما يتعين عليه صيانة وتفريغ المراحيض وقنوات تصريف المياه يتحمل المؤجر الرسوم والضرائب وغيرها من التكاليف المثقلة للعين المؤجرة \" المادة"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-004-left",
+          "box": [
+            91,
+            727,
+            1073,
+            1541
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "076ec6179666a94c347bba23ca840e868ea8cebabd60872c9e73dd1327c53648",
+      "strictWordFlags": [],
+      "strictMarkFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 65,
+          "canonical": ".",
+          "punctuationOnly": true
+        }
+      ],
+      "instructionPdfPages": [
+        4,
+        5,
+        6
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-004-left"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-004-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          4
+        ],
+        "ppocr": [
+          4
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "480",
+      "agrees": true,
+      "canonicalTokens": 42,
+      "confirmedBy": {
+        "tesseract": 39,
+        "ppocr": 40
+      },
+      "disagreements": [],
+      "located": {
+        "tesseract": [
+          888,
+          939
+        ],
+        "ppocr": [
+          760,
+          804
+        ]
+      },
+      "ocr": {
+        "tesseract": "امادة 450 : في حالة عدم تنفيذ المؤجر لالتزامه بالصيانة وبعد إعذاره بموجب محرر غير قضائي , يجوز للمستاجر المطالية بفسخ العقد أو إنقاص بدل الإيجار » دون الإخلال بحقه في التعويض . إذا كانت الترميمات مستعجلة : جاز للمستاجر أن يقوم بتنفيذها على حساب المعني بها \" . ' المادة",
+        "ppocr": "\" المادة في حالة عدم تنفيذ المؤجر لالتزامه بالصيانة وبعد إعذاره بموجب محرر غير قضائي، يجوز للمستأجر المطالبة بفسخ العقد أو إنقاص بدل الإيجار، دون الإخلال بحقه في التعويض إذا كانت الترميمات مستعجلة، جاز للمستأجر أن يقوم بتنفيذها على حساب المعني بها \" المادة"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-004-left",
+          "box": [
+            94,
+            1466,
+            1072,
+            1953
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [
+        [
+          "الماده"
+        ],
+        [
+          "الماده"
+        ]
+      ],
+      "inputTextSha256": "757eb45c3d3593c1160b74fafb8b6d065c8361ee66e5f37f8b4ca9308cad48a7",
+      "strictWordFlags": [
+        {
+          "kind": "extra-in-all-streams",
+          "at": 44,
+          "canonical": "",
+          "ocr": [
+            "المادة"
+          ],
+          "punctuationOnly": false
+        },
+        {
+          "kind": "extra-in-all-streams",
+          "at": 45,
+          "canonical": "",
+          "ocr": [
+            "المادة"
+          ],
+          "punctuationOnly": false
+        }
+      ],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        4,
+        5,
+        6
+      ],
+      "strictWordAgrees": false,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-004-left"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-004-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          4
+        ],
+        "ppocr": [
+          4
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "481",
+      "agrees": true,
+      "canonicalTokens": 73,
+      "confirmedBy": {
+        "tesseract": 71,
+        "ppocr": 71
+      },
+      "disagreements": [],
+      "located": {
+        "tesseract": [
+          938,
+          1017
+        ],
+        "ppocr": [
+          802,
+          878
+        ]
+      },
+      "ocr": {
+        "tesseract": "المادة 451 : إذا هلكت العين المؤجرة أثناء مدة الإيجار هلاكا كليا يفسخ الإيجار بحكم القانون . إذا كان هلاك العين المؤجرة جزئياء أو إذا أصبحت في حالة لا تصلح للاستعمال الذي أعدت من أجله؛ أو نقص هذا الاستعمال نقصا معتيرا ولم يكن ذلك يفعل المستأجرء . يجوز لهذا الأخيرء إذا لم يقمالمؤجر في الوقت المناسب برد العين المؤجرة إلى الحالة التى كانت عليهاء أن يطلب حسب الحالة؛ إما إنقاص بدل الإيجار أو فسخ الإيجار \" . \" ا",
+        "ppocr": "\" المادة إذا هلكت العين المؤجرة أثناء مدة الإيجار هلاكا كليا يفسخ الإيجار بحكم القانون إذا كان هلاك العين المؤجرة جزئيا، أو إذا أصبحت في حالة لا تصلح للاستعمال الذي أعدّت من أجله، أو نقص هذا الاستعمال نقصا معتبرا ولم يكن ذلك بفعل المستأجر، يجوز لهذا الأخير، إذا لم يقم المؤجر في الوقت المناسب برد العين المؤجرة إلى الحالة التي كانت عليها، أن يطلب حسب الحالة، إما إنقاص بدل الإيجار أو فسخ الإيجار \" المادة لا"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-004-left",
+          "box": [
+            90,
+            1920,
+            1073,
+            2578
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "66f38838d9c1f1f958a974b0f0f34b6fe6e7bb27144ab17681348970157f83db",
+      "strictWordFlags": [],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        4,
+        5,
+        6
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-004-left"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-004-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          4
+        ],
+        "ppocr": [
+          4
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "482",
+      "agrees": true,
+      "canonicalTokens": 58,
+      "confirmedBy": {
+        "tesseract": 51,
+        "ppocr": 55
+      },
+      "disagreements": [],
+      "located": {
+        "tesseract": [
+          1017,
+          1081
+        ],
+        "ppocr": [
+          875,
+          933
+        ]
+      },
+      "ocr": {
+        "tesseract": "مادة 452 : لا يجوز للمستأجر أن يمنع المؤجر من إجراء الترميمات المستعجلة الضرورية لحفظ العين المؤجرة . غمير أنهإذا ترتب على إجراء هذه الترميمات إخلال كلي أو جزئي في الانتقاع بالعين المؤجرة؛ جاز للمستأجرء . حسب الحالة . طلب فسخ العقد أو إنقاص بدل الإيجار . إذا بقىالمستأجر في العين المؤجرة بعد إتمام الترميمات فليس له حق طلب الفسخ \" . \" الادة",
+        "ppocr": "\" المادة لا يجوز للمستأجر أن يمنع المؤجر من إجراء الترميمات المستعجلة الضرورية لحفظ العين المؤجرة غير أنه إذا ترتب على إجراء هذه الترميمات إخلال كلي أو جزئي في الانتقاع بالعين المؤجرة، جاز للمستأجر، حسب الحالة، طلب فسخ العقد أو إنقاص بدل الإيجار إذا بقي المستأجر في العين المؤجرة بعد إتمام الترميمات فليس له حق طلب الفسخ المادة"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-004-left",
+          "box": [
+            90,
+            2530,
+            1071,
+            2992
+          ]
+        },
+        {
+          "evidenceId": "civil-priority-07-05-005-right",
+          "box": [
+            58,
+            39,
+            1031,
+            271
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "408b84a313ef5b2c37d986df06816983e7db19920f09659f44c915b9c6b4c776",
+      "strictWordFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 31,
+          "last": 31,
+          "canonical": "الانتفاع",
+          "punctuationOnly": false
+        },
+        {
+          "kind": "extra-in-all-streams",
+          "at": 31,
+          "canonical": "",
+          "ocr": [
+            "الانتقاع"
+          ],
+          "punctuationOnly": false
+        }
+      ],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        4,
+        5,
+        6
+      ],
+      "strictWordAgrees": false,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-004-left",
+          "civil-priority-07-05-005-right"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-004-left",
+          "civil-priority-07-05-005-right"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          4,
+          5
+        ],
+        "ppocr": [
+          4,
+          5
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "483",
+      "agrees": false,
+      "canonicalTokens": 61,
+      "confirmedBy": {
+        "tesseract": 35,
+        "ppocr": 57
+      },
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": "الانتفاع",
+          "at": 30,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        },
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 63,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        }
+      ],
+      "located": {
+        "tesseract": [
+          1080,
+          1128
+        ],
+        "ppocr": [
+          932,
+          994
+        ]
+      },
+      "ocr": {
+        "tesseract": "الادة 453 : على المؤجر أن يمتنع عن كل تعرض يحول دون انتفاع المستأجر بالعين المؤجرة . ولا يجوز الانتقاع . ولا يقتصر ضمان المؤجر على الأفعال التي تصدر منه أو من تايعيه . بل يمتد إلى كل ضرر أو تعرض \" الادة 484 : يتعين على المستأجرء",
+        "ppocr": "المادة على المؤجر أن يمتنع عن كل تعرض يحول دون انتفاع المستأجر بالعين المؤجرة ولا يجوز له أن يحدث بها أو بملحقاتها أي تغيير ينقص من هذا الانتقاع ولا يقتصر ضمان المؤجر على الأفعال التي تصدر منه أو من تابعيه، بل يمتد إلى كل ضرر أو تعرض قانوني صادر عن مستأجر أخر أو أي شخص تلقى الحق عن المؤجر المادة يتعين على"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-005-right",
+          "box": [
+            56,
+            213,
+            1036,
+            852
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "8fd30b9d173164c6bd4204880c4d1017eea7bc2f77251357301ffca05f217d69",
+      "strictWordFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 30,
+          "last": 30,
+          "canonical": "الانتفاع",
+          "punctuationOnly": false
+        },
+        {
+          "kind": "unconfirmed",
+          "at": 55,
+          "last": 55,
+          "canonical": "آخر",
+          "punctuationOnly": false
+        }
+      ],
+      "strictMarkFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 63,
+          "canonical": ".",
+          "punctuationOnly": true
+        }
+      ],
+      "instructionPdfPages": [
+        4,
+        5,
+        6
+      ],
+      "strictWordAgrees": false,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-005-right"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-005-right"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          5
+        ],
+        "ppocr": [
+          5
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "484",
+      "agrees": false,
+      "canonicalTokens": 61,
+      "confirmedBy": {
+        "tesseract": 38,
+        "ppocr": 57
+      },
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": "عل",
+          "at": 4,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        },
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 24,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        },
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 34,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        },
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 63,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        },
+        {
+          "kind": "extra-in-all-streams",
+          "canonical": "",
+          "at": 4,
+          "ocr": [
+            "علي"
+          ]
+        }
+      ],
+      "located": {
+        "tesseract": [
+          1122,
+          1166
+        ],
+        "ppocr": [
+          991,
+          1051
+        ]
+      },
+      "ocr": {
+        "tesseract": "الادة 484 : يتعين على المستأجرء إخطار المؤجر بالدعوى المرفوعة من الغير الذي يدعي حقا على العين وفى هذه الحالة يمكن المستأجر طلب إخراجه من الانتفاع بالشيىء المستأجر كليا أو جزئياء جاز له طلب فسخ الإيجار أو إنقاص بدل الايجار دون الإخلال بحقه '",
+        "ppocr": "المادة يتعين على المستأجر، إخطار المؤجر بالدعوى المرفوعة من الغير الذي يدعي حقا على العين المؤجرة يتعارض مع حق المستأجر ومطالبته بالضمان وفي هذه الحالة يمكن المستأجر طلب إخراجه من الخصام إذا ترتب على هذه الدعوى حرمان المستأجر من الانتفاع بالشيء المستأجر كليا أو جزئيا، جاز له طلب فسخ الإيجار أو إنقاص بدل الإيجار دون الإخلال بحقه في التعويض المادة"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-005-right",
+          "box": [
+            55,
+            782,
+            1035,
+            1502
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "dde1371584849986b203302ec0a81909d9a7b2b3362800bce6b0a3f6053bcc72",
+      "strictWordFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 4,
+          "last": 4,
+          "canonical": "عل",
+          "punctuationOnly": false
+        },
+        {
+          "kind": "extra-in-all-streams",
+          "at": 4,
+          "canonical": "",
+          "ocr": [
+            "على"
+          ],
+          "punctuationOnly": false
+        }
+      ],
+      "strictMarkFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 24,
+          "canonical": ".",
+          "punctuationOnly": true
+        },
+        {
+          "kind": "unconfirmed",
+          "at": 34,
+          "canonical": ".",
+          "punctuationOnly": true
+        },
+        {
+          "kind": "unconfirmed",
+          "at": 63,
+          "canonical": ".",
+          "punctuationOnly": true
+        }
+      ],
+      "instructionPdfPages": [
+        4,
+        5,
+        6
+      ],
+      "strictWordAgrees": false,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-005-right"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-005-right"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          5
+        ],
+        "ppocr": [
+          5
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "485",
+      "agrees": true,
+      "canonicalTokens": 42,
+      "confirmedBy": {
+        "tesseract": 33,
+        "ppocr": 38
+      },
+      "disagreements": [],
+      "located": {
+        "tesseract": [
+          1166,
+          1205
+        ],
+        "ppocr": [
+          1048,
+          1092
+        ]
+      },
+      "ocr": {
+        "tesseract": "المادة 485 : إذا تعدد المستأجرون لعين واحدة , تكون الأولوية لمن كان عقده سابقا فى ثبوت التاريخ على العقود الأخرى . وإذا كان للعقود نفس التاريخ تكون الأولوية لمن حاز الأماكن . الأولوية مطالبة المؤجر بالتعويض \" .",
+        "ppocr": "في التعويض المادة إذا تعدد المستأجرون لعين واحدة، تكون الأولوية من كان عقده سابقا في ثبوت التاريخ على العقود الأخرى وإذا كان للعقود نفس التاريخ تكون الأولوية لمن حاز الأماكن يجوز للمستأجر حسن النية، إذا حرم من هذه الأولوية مطالبة المؤجر بالتعويض \" المادة"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-005-right",
+          "box": [
+            53,
+            1432,
+            1037,
+            1945
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "05b1e0e001a276a8df69a5b58624ad25270fe4c9086a54464228100d8a5dcca2",
+      "strictWordFlags": [],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        4,
+        5,
+        6
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-005-right"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-005-right"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          5
+        ],
+        "ppocr": [
+          5
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "487",
+      "agrees": false,
+      "canonicalTokens": 34,
+      "confirmedBy": {
+        "tesseract": 19,
+        "ppocr": 33
+      },
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 36,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        }
+      ],
+      "located": {
+        "tesseract": [
+          1203,
+          1224
+        ],
+        "ppocr": [
+          1090,
+          1126
+        ]
+      },
+      "ocr": {
+        "tesseract": "\" . المادى الصادر من الغير الذى لا يدعى حقا على العين بالتعويض عن الضرر الذى لحقه؛ وله أن يمارس ضده",
+        "ppocr": "\" المادة لا يضمن المؤجر للمستأجر التعرض المادي الصادر من الغير الذي لا يدعي حقاعلى العين المؤجرة، وللمستأجر أن يطالب شخصيا المتعرض بالتعويض عن الضرر الذي لحقه، وله أن يمارس ضده كل دعاوى الحيازة \" المادة"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-005-right",
+          "box": [
+            55,
+            1904,
+            1034,
+            2253
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "628a0af40cab6c61a4fde4e51c29dca92c57e8c11d5db4d48860a65a15bc6278",
+      "strictWordFlags": [],
+      "strictMarkFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 36,
+          "canonical": ".",
+          "punctuationOnly": true
+        }
+      ],
+      "instructionPdfPages": [
+        4,
+        5,
+        6
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-005-right"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-005-right"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          5
+        ],
+        "ppocr": [
+          5
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "488",
+      "agrees": true,
+      "canonicalTokens": 65,
+      "confirmedBy": {
+        "tesseract": 41,
+        "ppocr": 62
+      },
+      "disagreements": [],
+      "located": {
+        "tesseract": [
+          1224,
+          1271
+        ],
+        "ppocr": [
+          1124,
+          1189
+        ]
+      },
+      "ocr": {
+        "tesseract": "العيوب التي جرى العرف على التسامح فيهاء كل ما يوجد بالعين المؤجرة من عيوب تحول دون استعمالها أو تنقص من هذا الاستعمال نقصا محسوسا ء مالم يوجد اتفاق على خلاف ذلك . صراحة . المستاجر أو كان يعلم بها هذا الأخير وقت التعاقد \" . \" الادة",
+        "ppocr": "\" المادة يضمن المؤجر للمستأجر، باستثناء العيوب التي جرى العرف على التسامح فيها، كل ما يوجد بالعين المؤجرة من عيوب تحول دون استعمالها أو تنقص من هذا الاستعمال نقصا محسوسا، مالم يوجد اتفاق على خلاف ذلك ويكون كذلك مسؤولا عن الصفات التي تعهد بها صراحة غير أن المؤجر لا يضمن العيوب التي أعلم بها المستأجر أو كان يعلم بها هذا الأخير وقت التعاقد \" المادة"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-005-right",
+          "box": [
+            58,
+            2410,
+            1037,
+            2991
+          ]
+        },
+        {
+          "evidenceId": "civil-priority-07-05-005-left",
+          "box": [
+            881,
+            60,
+            982,
+            90
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "4a8c77a6aaccbdf3af0d4fd80dcafbb3e704dd46a837543b496ecb8e47770f8f",
+      "strictWordFlags": [],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        4,
+        5,
+        6
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-005-left",
+          "civil-priority-07-05-005-right"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-005-left",
+          "civil-priority-07-05-005-right"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          5
+        ],
+        "ppocr": [
+          5
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "489",
+      "agrees": false,
+      "canonicalTokens": 45,
+      "confirmedBy": {
+        "tesseract": 17,
+        "ppocr": 43
+      },
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 23,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        }
+      ],
+      "located": {
+        "tesseract": [
+          1270,
+          1292
+        ],
+        "ppocr": [
+          1187,
+          1236
+        ]
+      },
+      "ocr": {
+        "tesseract": "الادة 489 : إذا وجد بالعين المؤجرة عيب يتحقق المؤجر إذا كان الإصلاح لا يشكل نفقة باهظة على المؤجر . \" الادة",
+        "ppocr": "\" المادة إذا وجد بالعين المؤجرة عيب يتحقق معه الضمان، يجوز للمستأجر حسب الحالة أن يطلب فسخ الإيجار أو إنقاص بدل الإيجار وله كذلك أن يطلب إصلاح العيب أو أن يقوم هو بإصلاحه على نفقة المؤجر إذا كان الإصلاح لا يشكل نفقة باهظة على المؤجر ( الباقي بدون تغيير"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-005-left",
+          "box": [
+            94,
+            38,
+            1068,
+            553
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "be9cc6c20cb9d83d521cebf7122514efb7532434c0d21e8ea227eaa28ea1c6a8",
+      "strictWordFlags": [],
+      "strictMarkFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 23,
+          "canonical": ".",
+          "punctuationOnly": true
+        }
+      ],
+      "instructionPdfPages": [
+        4,
+        5
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-005-left"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-005-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          5
+        ],
+        "ppocr": [
+          5
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "490",
+      "agrees": true,
+      "canonicalTokens": 28,
+      "confirmedBy": {
+        "tesseract": 28,
+        "ppocr": 26
+      },
+      "disagreements": [],
+      "located": {
+        "tesseract": [
+          1291,
+          1325
+        ],
+        "ppocr": [
+          1235,
+          1268
+        ]
+      },
+      "ocr": {
+        "tesseract": "الادة 490 : يبطل كل اتفاق يتضمن الإعفاء أو التحديد من الضمان بسبب التعرض القانونى . ويبطل كل اتفاق يتضمن الإعفاء أو التخفيف من ضمان العيوب إذا أخفاها المؤجر غشا \" . \" الادة",
+        "ppocr": "تغيير . المادة يبطل كل اتفاق يتضمن الإعفاء أو التحديد من الضمان بسبب التعرض القانوني ويبطل كل اتفاق يتضمن الإعفاء أو التخفيف من ضمان العيوب إذا أخفاها المؤجر غشا \" \" المادة لا"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-005-left",
+          "box": [
+            94,
+            520,
+            1074,
+            837
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "8aaa994cc3609e641acd3340705c2263af9263b0cf24473adcc32809b40535cb",
+      "strictWordFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 20,
+          "last": 20,
+          "canonical": "الاعفاء",
+          "punctuationOnly": false
+        }
+      ],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        4,
+        5,
+        6
+      ],
+      "strictWordAgrees": false,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-005-left"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-005-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          5
+        ],
+        "ppocr": [
+          5
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "492",
+      "agrees": true,
+      "canonicalTokens": 73,
+      "confirmedBy": {
+        "tesseract": 47,
+        "ppocr": 70
+      },
+      "disagreements": [],
+      "located": {
+        "tesseract": [
+          1324,
+          1375
+        ],
+        "ppocr": [
+          1264,
+          1340
+        ]
+      },
+      "ocr": {
+        "tesseract": "الادة 492 : لا يجوز للمستأاجر أن يحدث بالعين المؤجرة أي تغيير بدون إذن مكتوب من المؤجر . بإرجاعها إلى الحالة التي كانت عليها ويعوض الضرر عند الاقتضاء . وإذا أحدث المستأجرء بإذن المؤجرء تغييرات فى العين المؤجرة زادت في قيمتهاء وجب على المؤجر عند اتفاق يقضى بخلاف ذلك \" .",
+        "ppocr": "\" \" المادة لا يجوز للمستأجر أن يحدث بالعين المؤجرة أي تغيير بدون إذن مكتوب من المؤجرن إذا أحدث المستأجر تغييرا في العين المؤجرة يلزم بإرجاعها إلى الحالة التي كانت عليها ويعوض الضرر عند الاقتضاء وإذا أحدث المستأجر، بإذن المؤجر، تغييرات في العين المؤجرة زادت في قيمتها، وجب على المؤجر عند انتهاء الإيجار، أن يرد للمستأجر المصاريف التي أنفقها أو قيمة مازاد في العين المؤجرة، مالم يوجد اتفاق يقضي بخلاف ذلك \" . \" المادة يجب"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-005-left",
+          "box": [
+            93,
+            828,
+            1070,
+            1504
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "f61dab69af56ca2db7321731c94a2f57cfb34cf8596991f88e44c41eca51877c",
+      "strictWordFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 73,
+          "last": 73,
+          "canonical": "بحلاف",
+          "punctuationOnly": false
+        },
+        {
+          "kind": "extra-in-all-streams",
+          "at": 73,
+          "canonical": "",
+          "ocr": [
+            "بخلاف"
+          ],
+          "punctuationOnly": false
+        }
+      ],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        4,
+        5,
+        6
+      ],
+      "strictWordAgrees": false,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-005-left"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-005-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          5
+        ],
+        "ppocr": [
+          5
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "497",
+      "agrees": false,
+      "canonicalTokens": 34,
+      "confirmedBy": {
+        "tesseract": 9,
+        "ppocr": 33
+      },
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 36,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        }
+      ],
+      "located": {
+        "tesseract": [
+          1369,
+          1389
+        ],
+        "ppocr": [
+          1336,
+          1375
+        ]
+      },
+      "ocr": {
+        "tesseract": "اتفاق يقضى بخلاف ذلك \" . المؤجرة إلى ترميمات مستعجلة أو يظهر عيب فيها أو \" الادة 495 : يجب",
+        "ppocr": ". \" المادة يجب على المستأجر أن يخبر، فورا، المؤجر بكل أمر يستوجب تدخله كأن تحتاج العين المؤجرة إلى ترميمات مستعجلة أو يظهر عيب فيها أو يقع اغتصاب عليها، أو يتعدى الغير بالتعرض، أو الإضرار بها \" المادة يجب"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-005-left",
+          "box": [
+            96,
+            1463,
+            1068,
+            1964
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "2b9cebf76eededae996ef8774e877cd500bc7ed60c11d40300e2edb55721cac3",
+      "strictWordFlags": [],
+      "strictMarkFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 36,
+          "canonical": ".",
+          "punctuationOnly": true
+        }
+      ],
+      "instructionPdfPages": [
+        4,
+        5,
+        6
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-005-left"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-005-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          5
+        ],
+        "ppocr": [
+          5
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "498",
+      "agrees": true,
+      "canonicalTokens": 45,
+      "confirmedBy": {
+        "tesseract": 45,
+        "ppocr": 43
+      },
+      "disagreements": [],
+      "located": {
+        "tesseract": [
+          1385,
+          1435
+        ],
+        "ppocr": [
+          1372,
+          1419
+        ]
+      },
+      "ocr": {
+        "tesseract": "الادة 495 : يجب على المستأجر أن يقوم بدفع بدل الإيجار في المواعيد المتفق عليهاء فإذا لم يكن هناك اتفاق وجب الوفاء ببدل الإيجار في المواعيد المعمول بها في الجهة . ويكون دفع بدل الإيجار في موطن المستاجر مالم يكن اتفاق أو عرف يقضى بخلاف ذلك \" . \" ا",
+        "ppocr": "\" المادة يجب على المستأجر أن يقوم بدفع بدل الإيجار في المواعيد المتفق عليها، فإذا لم يكن هناك اتفاق وجب الوفاء ببدل الإيجار في المواعيد المعمول بهافي الجهة ويكون دفع بدل الإيجار في موطن المستأجر مالم يكن اتفاق أو عرف يقضي بخلاف ذلك المادة الوفاء بقسط من"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-005-left",
+          "box": [
+            93,
+            1906,
+            1073,
+            2395
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "166398635a221e5a480d7039ec31aaeac1f64405fb21b9eda2a291bbbf84fc43",
+      "strictWordFlags": [],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        4,
+        5,
+        6
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-005-left"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-005-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          5
+        ],
+        "ppocr": [
+          5
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "499",
+      "agrees": true,
+      "canonicalTokens": 18,
+      "confirmedBy": {
+        "tesseract": 14,
+        "ppocr": 18
+      },
+      "disagreements": [],
+      "located": {
+        "tesseract": [
+          1435,
+          1453
+        ],
+        "ppocr": [
+          1415,
+          1435
+        ]
+      },
+      "ocr": {
+        "tesseract": "مادة 499 : الوفاء بقسط من بدل الإيجار يعتبر قرينة على الوفاء بالأقساط السابقة حتى يقوم الدليل \"",
+        "ppocr": "المادة الوفاء بقسط من بدلالإيجار يعتبر قرينة على الوفاء بالأقساط السابقة حتى يقوم الدليل على عكس ذلك \" . لمادة"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-005-left",
+          "box": [
+            90,
+            2345,
+            1071,
+            2624
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "229574498edfd0eef83824a1297fc7fb97bd896c1b13a86503e540a77c9bca95",
+      "strictWordFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 12,
+          "last": 12,
+          "canonical": "بالاقساط",
+          "punctuationOnly": false
+        }
+      ],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        4,
+        5,
+        6
+      ],
+      "strictWordAgrees": false,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-005-left"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-005-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          5
+        ],
+        "ppocr": [
+          5
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "500",
+      "agrees": true,
+      "canonicalTokens": 11,
+      "confirmedBy": {
+        "tesseract": 11,
+        "ppocr": 10
+      },
+      "disagreements": [],
+      "located": {
+        "tesseract": [
+          1453,
+          1470
+        ],
+        "ppocr": [
+          1432,
+          1447
+        ]
+      },
+      "ocr": {
+        "tesseract": "المادة 500 : يمكن الأطراف الإتفاق على كفالة لضمان الوفاء ببدل الإيجار والتكاليف \" . \" الادة",
+        "ppocr": "\" . لمادة يمكن الأطراف الإتفاق على كفالة لضمان الوفاء ببدل الإيجار والتكاليف \" المادة"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-005-left",
+          "box": [
+            95,
+            2591,
+            1073,
+            2787
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "5c812e8afb1c9608a34116c224c3d2fb24a85e64e4f881586d8c87c43f82a6aa",
+      "strictWordFlags": [],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        4,
+        5,
+        6
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-005-left"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-005-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          5
+        ],
+        "ppocr": [
+          5
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "501",
+      "agrees": false,
+      "canonicalTokens": 93,
+      "confirmedBy": {
+        "tesseract": 72,
+        "ppocr": 90
+      },
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 56,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        }
+      ],
+      "located": {
+        "tesseract": [
+          1466,
+          1555
+        ],
+        "ppocr": [
+          1445,
+          1539
+        ]
+      },
+      "ocr": {
+        "tesseract": "\" . \" الادة 501 : يحق للمؤّجرء ضمانا لحقوقه الناشئة المؤجرء ولو لم تكن مملوكة للمستأجر . يجوز للمؤجر أن يعترض على نقلهاء وإذا نقلت رغم اعتراضه أو دون علمه . , جاز له استردادها من الحائز ولو كان حسن النية : ولهذا الأخير المطالبة ولا يجوز للمؤجر استعمال حقه في الحبس أو في الاسترداد إذا كان نقل هذه المنقولات تقتضيه حرفة المستأجرء أو تقتضيه شؤون الحياة العادية , أو كانت المنقولات التي أبقيت في العين المؤجرة أو التي طلب استردادها تفي ببدل الإيجار \" . 1 \"",
+        "ppocr": "\" المادة يحق للمؤجر، ضمانا لحقوقه الناشئة عن الإيجار، أن يحبس جميع المنقولات القابلة للحجز الموجودة في العين المؤجرة مادامت مثقلة بامتياز المؤجر، ولو لم تكن مملوكة للمستأجر يجوز للمؤجر أن يعترض على نقلها، وإذا نقلت رغم اعتراضه أو دون علمه، جاز له استردادهامن الحائز ولو كان حسن النية، ولهذا الأخير المطالبة بحقوقه ولا يجوز للمؤجر استعمال حقه في الحبس أو في الاسترداد إذا كان نقل هذه المنقولات تقتضيه حرفة المستأجر، أو تقتضيه شؤون الحياة العادية، أو كانت المنقولات التي أبقيت في العين المؤجرة أو التي طلب استردادها تفي ببدل الإيجار \" المادة يجب"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-005-left",
+          "box": [
+            91,
+            2659,
+            1070,
+            3000
+          ]
+        },
+        {
+          "evidenceId": "civil-priority-07-05-006-right",
+          "box": [
+            53,
+            36,
+            1034,
+            759
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "c056192743c17cc1af96f9b3b6febc5eb0adbfcab92ec669c77107b79f0dc1aa",
+      "strictWordFlags": [],
+      "strictMarkFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 56,
+          "canonical": ".",
+          "punctuationOnly": true
+        }
+      ],
+      "instructionPdfPages": [
+        4,
+        5,
+        6
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-005-left",
+          "civil-priority-07-05-006-right"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-005-left",
+          "civil-priority-07-05-006-right"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          5,
+          6
+        ],
+        "ppocr": [
+          5,
+          6
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "503",
+      "agrees": true,
+      "canonicalTokens": 64,
+      "confirmedBy": {
+        "tesseract": 64,
+        "ppocr": 59
+      },
+      "disagreements": [],
+      "located": {
+        "tesseract": [
+          1555,
+          1623
+        ],
+        "ppocr": [
+          1536,
+          1598
+        ]
+      },
+      "ocr": {
+        "tesseract": "الادة 503 : يجب على المستأجر أن يردالعين المؤجرة بالحالة التي كانت عليها وقت تسلمهاء ويحرر وجاهيا محضر أو بيان وصفي بذلك . إذا تم رد العين المؤجرة دون تحرير محضر أو دون بيان وصفهاء يفترض في المؤجر أنه استردها في حالة حسنة ما لم يثبت العكس . المستآجر مسؤول عما يلحق العين المؤجرة من هلاك أو تلف ما لم يثيت أنه لاينسب إليه \" . \" الادة",
+        "ppocr": "\" المادة يجب على المستأجر أن يرد العين المؤجرة بالحالة التي كانت عليها وقت تسلمها، ويحرر وجاهيا محضر أو بيان وصفي بذلك إذا تم رد العين المؤجرة دون تحرير محضر أو دون بيان وصفها، يفترض في المؤجر أنه استردهافي حالة حسنة مالم يثبت العكس المستأجر مسؤول عما يلحق العين المؤجرة من هلاك أو تلف مالم يثبت أنه لاينسب إليه \" المادة لا"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-006-right",
+          "box": [
+            53,
+            691,
+            1034,
+            1377
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "b11d49546ea5996ff3b6fa91f45ad7136f3d0c6ca2cac768d811752df76dec7f",
+      "strictWordFlags": [],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        4,
+        5,
+        6
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-006-right"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-006-right"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          6
+        ],
+        "ppocr": [
+          6
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "505",
+      "agrees": false,
+      "canonicalTokens": 27,
+      "confirmedBy": {
+        "tesseract": 16,
+        "ppocr": 26
+      },
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 29,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        }
+      ],
+      "located": {
+        "tesseract": [
+          1622,
+          1643
+        ],
+        "ppocr": [
+          1594,
+          1623
+        ]
+      },
+      "ocr": {
+        "tesseract": "الادة 505 : لا يجوز للمستأجر أن يتنازل عن حقه في الإيجار أو يجري إيجارا من الباطن دون موافقة \" الادة",
+        "ppocr": "إليه \" المادة لا يجوز للمستأجر أن يتنازل عن حقه في الإيجار أو يجري إيجارا من الباطن دون موافقة المؤجر كتابيا مالم يوجد نص قانوني يقضي بخلاف ذلك المادة"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-006-right",
+          "box": [
+            54,
+            1317,
+            1034,
+            1663
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "69ced279f48e8b5543f78174b3959b98e7ef94bbe6f83ea4906e6f29df7deab6",
+      "strictWordFlags": [],
+      "strictMarkFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 29,
+          "canonical": ".",
+          "punctuationOnly": true
+        }
+      ],
+      "instructionPdfPages": [
+        4,
+        5,
+        6
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-006-right"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-006-right"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          6
+        ],
+        "ppocr": [
+          6
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "507",
+      "agrees": false,
+      "canonicalTokens": 53,
+      "confirmedBy": {
+        "tesseract": 52,
+        "ppocr": 50
+      },
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": "الا",
+          "at": 39,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        }
+      ],
+      "located": {
+        "tesseract": [
+          1642,
+          1701
+        ],
+        "ppocr": [
+          1622,
+          1678
+        ]
+      },
+      "ocr": {
+        "tesseract": "الادة 507 : يكون المستأجر الفرعى ملتزما مباشرة تجاه المؤجر بالقدر الذي يكون بذمته للمستاجر الأصلي وذلك في الوقت الذي أنذره المؤجر . ولا يجوز للمستآجر الفرعي أن يحتج تجاه المؤجر بما سبقه من بدل الإيجار إلى المستأجر الأصلي إلا إذا تم ذلك قبل الإنذار طبقا للعرفء أو للاتفاق الثابت والمبرم وقت انعقاد الإيجار الفرعي \" . المادة7 :",
+        "ppocr": "المادة يكون المستأجر الفرعي ملتزما مباشرة تجاه المؤجر بالقدر الذي يكون بذمته للمستأجر الأصلي وذلك في الوقت الذي أنذره المؤجر ولا يجوز للمستأجر الفرعي أن يحتج تجاه المؤجر بما سبقه من بدل الإيجار إلى المستأجر الأصلي إلا إذا تم ذلك قبل الإنذار طبقا للعرف، أو للاتفاق الثابت والمبرم وقت انعقاد الإيجار الفرعي المادّة يتمم الأمر رقم"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-006-right",
+          "box": [
+            48,
+            1595,
+            1038,
+            2178
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "014697d1e17230ee3485c37ea9724df7bf3bab5510a3fd8251e3d0f2a201315e",
+      "strictWordFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 39,
+          "last": 39,
+          "canonical": "الا",
+          "punctuationOnly": false
+        }
+      ],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        4,
+        5,
+        6
+      ],
+      "strictWordAgrees": false,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-006-right"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-006-right"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          6
+        ],
+        "ppocr": [
+          6
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "507 مكرر",
+      "agrees": false,
+      "canonicalTokens": 72,
+      "confirmedBy": {
+        "tesseract": 54,
+        "ppocr": 62
+      },
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": "للسكن،",
+          "at": 52,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "split"
+            ]
+          }
+        },
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 75,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        }
+      ],
+      "located": {
+        "tesseract": [
+          1734,
+          1804
+        ],
+        "ppocr": [
+          1692,
+          1763
+        ]
+      },
+      "ocr": {
+        "tesseract": "مادة 507 مكرر : تبقى الإيجارات المبرمة فى ظل التشريع السابق خاضعة له مدة عشر ( 10 ) سنوات , ابتداء من تاريخ نشر هذا القانون في الجريدة الرسمية . غير أن الأشخاص الطبيعيين البالغين ستين ( 60 ) سنة كاملة عند نشر هذا القانون والذين لهم الحق في البقاء في الأمكنة المعدة للسكن . وفقاللتشريع السابقء ييقون يتمتعون بهذا الحق إلى حين وفاتهم . ' \" الادة 507 مكرر1",
+        "ppocr": "كمايأتي \" المادة مكرر تبقى الإيجارات المبرمة في ظل التشريع السابق خاضعة له مدة عشر سنوات، ابتداء من تاريخ نشر هذا القانون في الجريدة الرسمية غير أن الأشخاص الطبيعيين البالغين ستين سنة كاملة عند نشر هذا القانون والذين لهم الحق في البقاء في الأمكنة المعدة للسكن ، وفقا للتشريع السابق، يبقون يتمتعون بهذا الحق إلى حين وفاتهم لا يستفيد من هذا الحق الورثة ولا الأشخاص الذين يعيشون معهم \" المادة مكررا"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-006-right",
+          "box": [
+            53,
+            2429,
+            1039,
+            2987
+          ]
+        },
+        {
+          "evidenceId": "civil-priority-07-05-006-left",
+          "box": [
+            580,
+            233,
+            982,
+            272
+          ]
+        }
+      ],
+      "labelTokens": 3,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "3622a6dfc0e855cb79179078079b119f5107808d01fe32b7f964419876619a97",
+      "strictWordFlags": [],
+      "strictMarkFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 75,
+          "canonical": ".",
+          "punctuationOnly": true
+        }
+      ],
+      "instructionPdfPages": [
+        6
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-006-left",
+          "civil-priority-07-05-006-right"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-006-left",
+          "civil-priority-07-05-006-right"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          6
+        ],
+        "ppocr": [
+          6
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "507 مكرر 1",
+      "agrees": false,
+      "canonicalTokens": 15,
+      "confirmedBy": {
+        "tesseract": 9,
+        "ppocr": 14
+      },
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 19,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        }
+      ],
+      "located": {
+        "tesseract": [
+          1800,
+          1813
+        ],
+        "ppocr": [
+          1760,
+          1781
+        ]
+      },
+      "ocr": {
+        "tesseract": "\" الادة 507 مكرر1 : تبقى الإيجارات ذات الاستعمال السكني المبرمة معالمؤسسات العمومية",
+        "ppocr": "\" المادة مكررا تبقى الإيجارات ذات الاستعمال السكني المبرمة مع المؤسسات العمومية المختصة خاضعة للأحكام الخاصة بها \" المادةتلغىالمواد ومن إلىمن"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-priority-07-05-006-left",
+          "box": [
+            91,
+            233,
+            1067,
+            350
+          ]
+        }
+      ],
+      "labelTokens": 4,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "6028a9dede1ee924e219f884352d4f2798bf4320f5922daf70d742611deca4d1",
+      "strictWordFlags": [],
+      "strictMarkFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 19,
+          "canonical": ".",
+          "punctuationOnly": true
+        }
+      ],
+      "instructionPdfPages": [
+        6
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-priority-07-05-006-left"
+        ],
+        "ppocr": [
+          "civil-priority-07-05-006-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          6
+        ],
+        "ppocr": [
+          6
+        ]
+      },
+      "expectedPageOnly": true
+    }
+  ],
+  "inputProjectionSha256": "66aea8599aeabbcabab93d0570a081b2e5b9ef8e67b30ad317a73c134e76b82f",
+  "instructionInventorySha256": "c4fdf4f46a5705347e27171ea604c68d1ebacbb238f5995adf2f0b3ae0079933",
+  "method": "Diagnose current Civil amended bodies against pinned original-JO OCR; never grant checks or alter law.\n\nThe07-05 manifest preserves complete column endings. Quoted-body boundaries, instruction extras,\nword/digit/negation differences and paragraph-only amendments still require explicit source decisions.",
+  "verificationEffect": "diagnostic only; no body/state/date/import changes"
+}

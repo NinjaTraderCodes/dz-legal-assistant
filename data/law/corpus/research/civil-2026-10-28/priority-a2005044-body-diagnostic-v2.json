@@ -1,0 +1,2056 @@
+{
+  "source": "A2005044",
+  "manifest": "tools/law-corpus/civil-full-manifest.json",
+  "manifestSha256": "aa05538f82906be5fd879f7839e42392244665a3c6009f7e5111d18b6091aa2a",
+  "rule": "native_check.compare_streams",
+  "streams": {
+    "tesseract": 5240,
+    "ppocr": 4019
+  },
+  "articles": 25,
+  "agreed": 13,
+  "agreementRate": 0.52,
+  "results": [
+    {
+      "number": "54",
+      "agrees": true,
+      "canonicalTokens": 23,
+      "confirmedBy": {
+        "tesseract": 23,
+        "ppocr": 22
+      },
+      "disagreements": [],
+      "located": {
+        "tesseract": [
+          2602,
+          2631
+        ],
+        "ppocr": [
+          1978,
+          2007
+        ]
+      },
+      "ocr": {
+        "tesseract": "المادة 54 : العقد اتفاق يلتزم بموجبه شخص أو عدة أشخاص نحو شخص أو عدة أشخاص آخرين بمنح أو فعل أو عدم فعل شيء ما \" . المادة 24",
+        "ppocr": "كما يأتي المادة العقد اتفاق يلتزم بموجبه شخص أو عدة أشخاص نحو شخص أو عدة أشخاص أخرين بمنح أو فعل أو عدم فعل شيء ما المادةيتمم الأمر رقم المؤرخ"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-full-a2005044-021-left",
+          "box": [
+            75,
+            703,
+            568,
+            849
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "3e68d76d734c8eb513c511269c655746dd421360ea6b958ec0bdba0416fea4f5",
+      "strictWordFlags": [],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        21
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-full-a2005044-021-left"
+        ],
+        "ppocr": [
+          "civil-full-a2005044-021-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          21
+        ],
+        "ppocr": [
+          21
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "72 مكرر",
+      "agrees": false,
+      "canonicalTokens": 45,
+      "confirmedBy": {
+        "tesseract": 43,
+        "ppocr": 42
+      },
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 27,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        }
+      ],
+      "located": {
+        "tesseract": [
+          2660,
+          2710
+        ],
+        "ppocr": [
+          2018,
+          2068
+        ]
+      },
+      "ocr": {
+        "tesseract": "المادة 72 مكرر : يمنح دفع العربون وقت إبرام العقد لكل من المتعاقدين الحق في العدول عنه خلال المدة المتّفق عليهاء إلا إذا قضى الاتفاق بخلاف فإذا عدل من دفع العربون فقده . وإذا عدل من قبضه رده ومثله ولو لم يترتب على العدول أي ضرر \" . المادة 25",
+        "ppocr": "كما يأتي المادة مكرر يمنح دفع العربون وقت إبرام العقد لكل من المتعاقدين الحق فى العدول عنه خلال المدة المتّفق عليها، إلا إذا قضى الاتفاق بخلاف ذلك فإذا عدل من دفع العربون فقده وإذا عدل من قبضه رده ومثله ولو لم يترتب على العدول أي ضرر المادة تعدل المواد ومن"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-full-a2005044-021-left",
+          "box": [
+            76,
+            946,
+            567,
+            1268
+          ]
+        }
+      ],
+      "labelTokens": 3,
+      "boundaryExtrasDropped": [
+        [
+          "الماده"
+        ],
+        [
+          "الماده"
+        ]
+      ],
+      "inputTextSha256": "009f0f6c86e5fb9f96b1d0c5abff1b0ed8cf09ba52c56e5320a6bd862c3cc05b",
+      "strictWordFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 33,
+          "last": 33,
+          "canonical": "فقدة",
+          "punctuationOnly": false
+        },
+        {
+          "kind": "extra-in-all-streams",
+          "at": 48,
+          "canonical": "",
+          "ocr": [
+            "المادة"
+          ],
+          "punctuationOnly": false
+        },
+        {
+          "kind": "extra-in-all-streams",
+          "at": 49,
+          "canonical": "",
+          "ocr": [
+            "المادة"
+          ],
+          "punctuationOnly": false
+        }
+      ],
+      "strictMarkFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 27,
+          "canonical": ".",
+          "punctuationOnly": true
+        }
+      ],
+      "instructionPdfPages": [
+        21
+      ],
+      "strictWordAgrees": false,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-full-a2005044-021-left"
+        ],
+        "ppocr": [
+          "civil-full-a2005044-021-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          21
+        ],
+        "ppocr": [
+          21
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "78",
+      "agrees": true,
+      "canonicalTokens": 18,
+      "confirmedBy": {
+        "tesseract": 18,
+        "ppocr": 17
+      },
+      "disagreements": [],
+      "located": {
+        "tesseract": [
+          2741,
+          2763
+        ],
+        "ppocr": [
+          2080,
+          2100
+        ]
+      },
+      "ocr": {
+        "tesseract": "المادة 78 : كل شخص أهل للتعاقد مالم يطراً على أهليته عارض يجعله ناقص الأهلية أو فاقدها بحكم القانون \" . “",
+        "ppocr": "كما يأتي المادة كل شخص أهل للتعاقد مالم يطرأ على أهليته عارض يجعله ناقص الأهلية أو فاقدها بحكم القانون المادة"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-full-a2005044-021-left",
+          "box": [
+            75,
+            1353,
+            573,
+            1499
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "eaa3efe067c92e16c7156bf89d0d5fb1b2f7e6438c83a309b84d660121e7e121",
+      "strictWordFlags": [],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        21,
+        22
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-full-a2005044-021-left"
+        ],
+        "ppocr": [
+          "civil-full-a2005044-021-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          21
+        ],
+        "ppocr": [
+          21
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "79",
+      "agrees": true,
+      "canonicalTokens": 21,
+      "confirmedBy": {
+        "tesseract": 21,
+        "ppocr": 20
+      },
+      "disagreements": [],
+      "located": {
+        "tesseract": [
+          2763,
+          2789
+        ],
+        "ppocr": [
+          2099,
+          2122
+        ]
+      },
+      "ocr": {
+        "tesseract": "المادة 79 : تسري على القصر وعلى المحجور عليهم وعلى غيرهم من عديمي الأهلية أو ناقصيها قواعد الأهلية المنصوص عليها في قانون الأسرة \" . \"",
+        "ppocr": "المادة تسري على القصر وعلى المحجور عليهم وعلى غيرهم من عديمي الأهلية أو ناقصيها قواعد الأهلية المنصوص عليها في قانون الأسرة \" المادة"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-full-a2005044-021-left",
+          "box": [
+            80,
+            1474,
+            571,
+            1576
+          ]
+        },
+        {
+          "evidenceId": "civil-full-a2005044-022-right",
+          "box": [
+            403,
+            105,
+            465,
+            121
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "f6413fe46b6f5dddb9369e1f5be51bce6a50975ac3c5f10ef08d6673662d6a7b",
+      "strictWordFlags": [],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        21,
+        22
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-full-a2005044-021-left",
+          "civil-full-a2005044-022-right"
+        ],
+        "ppocr": [
+          "civil-full-a2005044-021-left",
+          "civil-full-a2005044-022-right"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          21,
+          22
+        ],
+        "ppocr": [
+          21,
+          22
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "80",
+      "agrees": false,
+      "canonicalTokens": 58,
+      "confirmedBy": {
+        "tesseract": 48,
+        "ppocr": 56
+      },
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 60,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        }
+      ],
+      "located": {
+        "tesseract": [
+          2789,
+          2846
+        ],
+        "ppocr": [
+          2120,
+          2182
+        ]
+      },
+      "ocr": {
+        "tesseract": "المادة 80 : إذا كان الشخص أصم أبكم : أو أعمى أصم , أو أعمى أبكم؛ وتعذر عليه بسبب تلك العاهة التعبير عن إرادته . جاز للمحكمة أن تعين له مساعدا مصلحته . ويكون قابلا للإبطال كل تصرف عين من أجله مساعد قضائي إذا صدر من الشخص الذي تقررت مساعدته بدون حضور المساعد بعد تسجيل قرار المساعدة",
+        "ppocr": "\" المادة إذا كان الشخص أصم أبكم، أو أعمى أصم، أو أعمى أبكم، وتعذر عليه بسبب تلك العاهة التعبير عن إرادته، جاز للمحكمة أن تعين له مساعدا قضائيا يعاونه في التصرفات التي تقتضيها مصلحته ويكون قابلا للإبطال كل تصرف عين من أجله مساعد قضائي إذا صدر من الشخص الذي تقررت مساعدته بدون حضور المساعد بعد تسجيل قرار المساعدة المادة تعدل المادة من"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-full-a2005044-022-right",
+          "box": [
+            21,
+            94,
+            516,
+            407
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "99783f82555041403879504635efe183235734639cad019572c2b1c8df564004",
+      "strictWordFlags": [],
+      "strictMarkFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 60,
+          "canonical": ".",
+          "punctuationOnly": true
+        }
+      ],
+      "instructionPdfPages": [
+        21,
+        22
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-full-a2005044-022-right"
+        ],
+        "ppocr": [
+          "civil-full-a2005044-021-left",
+          "civil-full-a2005044-022-right"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          22
+        ],
+        "ppocr": [
+          21,
+          22
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "90",
+      "agrees": false,
+      "canonicalTokens": 94,
+      "confirmedBy": {
+        "tesseract": 92,
+        "ppocr": 91
+      },
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 96,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        }
+      ],
+      "located": {
+        "tesseract": [
+          2878,
+          2975
+        ],
+        "ppocr": [
+          2192,
+          2287
+        ]
+      },
+      "ocr": {
+        "tesseract": "المادة 90 : إذا كانت التزامات أحد المتعاقدين متفاوتة كثيرا في النسبة مع ما حصل عليه هذا المتعاقد من فائدة بموجب العقد أو مع التزامات المتعاقد الآخرء وتبين أن المتعاقد المغبون لم يبرم العقد إلا لأن المتعاقد الآخر قد استغل فيه طيشا بيّنا أو هوى جامحاء جاز للقاضي بناء على طلب المتعاقد المغبونء أن يبطل العقد أو أن ينقص التزامات هذا المتعاقد . ويجب أن ترفع الدعوى بذلك خلال سنة من تاريخ العقد . وإلا كانت غير مقبولة . ويجوز في عقود المعاوضة أن يتوقى الطرف الآخر دعوى الإبطالء إذا عرض ما يراه القاضي كافيا لرفع الغبن",
+        "ppocr": "كما يأتي المادة إذا كانت التزامات أحد المتعاقدين متفاوتة كثيرا في النسبة مع ماحصل عليه هذا المتعاقد من فائدة بموجب العقد أو مع التزامات المتعاقد الآخر، وتبين أن المتعاقد المغبون لم يبرم العقد إلا لأن المتعاقد الأخر قد استغل فيه طيشابيّنا أو هوى جامحا، جاز للقاضي بناء على طلب المتعاقد المغبون، أن يبطل العقد أو أن ينقص التزامات هذا المتعاقد ويجب أن ترفع الدعوى بذلك خلال سنة من تاريخ العقد، وإلا كانت غير مقبولة ويجوز في عقود المعاوضة أن يتوقى الطرف الأخر دعوى الإبطال، إذا عرض مايراه القاضي كافيا لرفع الغبن المادة تعدل وتتمم المادة"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-full-a2005044-022-right",
+          "box": [
+            21,
+            565,
+            517,
+            1015
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "46df283ad394ba90411bc4774387ccd8a0c19b97c714135e69c259d72b2841c2",
+      "strictWordFlags": [],
+      "strictMarkFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 96,
+          "canonical": ".",
+          "punctuationOnly": true
+        }
+      ],
+      "instructionPdfPages": [
+        22
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-full-a2005044-022-right"
+        ],
+        "ppocr": [
+          "civil-full-a2005044-022-right"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          22
+        ],
+        "ppocr": [
+          22
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "93",
+      "agrees": false,
+      "canonicalTokens": 19,
+      "confirmedBy": {
+        "tesseract": 16,
+        "ppocr": 18
+      },
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 21,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        }
+      ],
+      "located": {
+        "tesseract": [
+          3008,
+          3027
+        ],
+        "ppocr": [
+          2299,
+          2324
+        ]
+      },
+      "ocr": {
+        "tesseract": "المادة 3 : إذا كان محل الالتزام مستحيلا في ذاته أو مخالفا للنظام العام أو الآداب العامة كان باطلا",
+        "ppocr": "كما يأتي المادة إذا كان محل الالتزام مستحيلا في ذاته أو مخالفا للنظام العام أو الآداب العامة كان باطلا بطلانا مطلقا المادة يتمم الأمر رقم"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-full-a2005044-022-right",
+          "box": [
+            21,
+            1167,
+            513,
+            1231
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "a5c07c7c5a74b62d825bff7b8beb7597e329ff37c308755d683c030ff3eb0965",
+      "strictWordFlags": [],
+      "strictMarkFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 21,
+          "canonical": ".",
+          "punctuationOnly": true
+        }
+      ],
+      "instructionPdfPages": [
+        22
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-full-a2005044-022-right"
+        ],
+        "ppocr": [
+          "civil-full-a2005044-022-right"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          22
+        ],
+        "ppocr": [
+          22
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "101",
+      "agrees": false,
+      "canonicalTokens": 72,
+      "confirmedBy": {
+        "tesseract": 68,
+        "ppocr": 59
+      },
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": "عشرة",
+          "at": 65,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        },
+        {
+          "kind": "extra-in-all-streams",
+          "canonical": "",
+          "at": 65,
+          "ocr": [
+            "عشر"
+          ]
+        }
+      ],
+      "located": {
+        "tesseract": [
+          3170,
+          3250
+        ],
+        "ppocr": [
+          2414,
+          2483
+        ]
+      },
+      "ocr": {
+        "tesseract": "المادة 101 : يسقط الحق في إبطال العقد إذا لم يتمسك به صاحبه خلال خمس ( 5 ) سنوات . ويبدأً سريان هذه المدة » في حالة نقص الأهلية من اليوم الذي يزول فيه هذا السببء وفي حالة الغلط أو التدليس من اليوم الذي يكشف فيهه . وفي حالة الإكراه من يوم انقطاعه؛ غير أنه لا يجوز التمساكء بحق الإبطال لغلط أو تدليس أو إكراه إذا انقضت عشر ( 10 ) سنوات من وقت تمام العقد \" . المادة 31",
+        "ppocr": "وتحرر كمايأتي المادة يسقط الحق في إبطال العقد إذا لم يتمسك به صاحبه خلال خمسسنوات ويبدأسريان هذه المدة، في حالة نقص الأهلية من اليوم الذي يزول فيه هذا السبب، وفي حالة الغلط أو التدليس من اليوم الذي يكشف فيه، وفي حالة الإكراه من يوم انقطاعه، غير أنه لا يجوز التمسك بحق الإبطال لغلط أو تدليس أو إكراه إذا انقضت عشر سنوات من وقت تمام العقد المادة تعدل وتتمم المادة"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-full-a2005044-022-left",
+          "box": [
+            76,
+            424,
+            573,
+            739
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [
+        [
+          "الماده"
+        ],
+        [
+          "الماده"
+        ]
+      ],
+      "inputTextSha256": "d5d1ab8f86c1cef7654e18ebe47ae3a25951b402b3c335e1fcd36e0bac2539c7",
+      "strictWordFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 65,
+          "last": 65,
+          "canonical": "عشرة",
+          "punctuationOnly": false
+        },
+        {
+          "kind": "extra-in-all-streams",
+          "at": 65,
+          "canonical": "",
+          "ocr": [
+            "عشر"
+          ],
+          "punctuationOnly": false
+        },
+        {
+          "kind": "extra-in-all-streams",
+          "at": 74,
+          "canonical": "",
+          "ocr": [
+            "المادة"
+          ],
+          "punctuationOnly": false
+        },
+        {
+          "kind": "extra-in-all-streams",
+          "at": 75,
+          "canonical": "",
+          "ocr": [
+            "المادة"
+          ],
+          "punctuationOnly": false
+        }
+      ],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        22
+      ],
+      "strictWordAgrees": false,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-full-a2005044-022-left"
+        ],
+        "ppocr": [
+          "civil-full-a2005044-022-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          22
+        ],
+        "ppocr": [
+          22
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "103",
+      "agrees": false,
+      "canonicalTokens": 63,
+      "confirmedBy": {
+        "tesseract": 55,
+        "ppocr": 57
+      },
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 48,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        }
+      ],
+      "located": {
+        "tesseract": [
+          3276,
+          3344
+        ],
+        "ppocr": [
+          2495,
+          2561
+        ]
+      },
+      "ocr": {
+        "tesseract": "المادة 103 : يعاد المتعاقدان إلى الحالة التي كانا عليها قبل العقد في حالة بطلان العقد أو إيطاله , فإن كان هذا مستحيلا جاز الحكم بتعويض معادل . غير أنه لاايلزم ناقص الأهلية : إذا أبطل العقد لنقص أهليته . إلا برد ما عاد عليه من منفعة بسبب يحرم من الاسترداد في حالة بطلان العقد من تسبب في عدم مشروعيته أو كان عالما به \" . المادة 32",
+        "ppocr": "كما يأتي المادة ذيعاد المتعاقدان إلى الحالة التي كانا عليها قبل العقد في حالة بطلان العقد أو إبطاله، فإن كان هذا مستحيلا جاز الحكم بتعويض معادل غير أنه لا يلزم ناقص الأهلية، إذا أبطل العقد لنقص أهليته، إلا بردّ ماعاد عليه من منفعة بسبب تنفيذ العقد يحرم من الاسترداد في حالة بطلان العقد من تسبب في عدم مشروعيته أو كان عالمابة المادة تعدل المادةمن الأمر رقم"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-full-a2005044-022-left",
+          "box": [
+            75,
+            870,
+            571,
+            1203
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "fa6c15b64905234ef4616b561ae1687c290ab3aa43f1c589b632dbc6251bc32a",
+      "strictWordFlags": [],
+      "strictMarkFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 48,
+          "canonical": ".",
+          "punctuationOnly": true
+        }
+      ],
+      "instructionPdfPages": [
+        22
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-full-a2005044-022-left"
+        ],
+        "ppocr": [
+          "civil-full-a2005044-022-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          22
+        ],
+        "ppocr": [
+          22
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "121",
+      "agrees": true,
+      "canonicalTokens": 20,
+      "confirmedBy": {
+        "tesseract": 12,
+        "ppocr": 19
+      },
+      "disagreements": [],
+      "located": {
+        "tesseract": [
+          3373,
+          3392
+        ],
+        "ppocr": [
+          2570,
+          2596
+        ]
+      },
+      "ocr": {
+        "tesseract": "المادة 121 : في العقود الملزمة للجانبين إذا معهالالتزامات المقابلة له وينفسخ العقد يحكم القانون \" . المادة 33",
+        "ppocr": "كما يأتي المادة في العقود الملزمة للجانبين إذا انقضى التزام بسبب استحالة تنفيذه انقضت معه الالتزامات المقابلة له وينفسخ العقد بحكم القانون المادةيتمم الأمر رقم المؤرخ"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-full-a2005044-022-left",
+          "box": [
+            75,
+            1291,
+            567,
+            1465
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "5c2727ee0340a8d4f84e689c697726a638d6e480ef3a14336356bfb57b26a6ac",
+      "strictWordFlags": [],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        22
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-full-a2005044-022-left"
+        ],
+        "ppocr": [
+          "civil-full-a2005044-022-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          22
+        ],
+        "ppocr": [
+          22
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "124",
+      "agrees": false,
+      "canonicalTokens": 18,
+      "confirmedBy": {
+        "tesseract": 17,
+        "ppocr": 17
+      },
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 20,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        }
+      ],
+      "located": {
+        "tesseract": [
+          3606,
+          3626
+        ],
+        "ppocr": [
+          2758,
+          2782
+        ]
+      },
+      "ocr": {
+        "tesseract": "المادة 124 : كل فعل أيا كان يرتكبه الشخص بخطئه؛ ويسبب ضررا للغير يلزم من كان سببا في حدوثه بالتعويض",
+        "ppocr": "وتحرر كما يأتي المادة كل فعل أياكان يرتكبه الشخص بخطئه، ويسبب ضررا للغير يلزم من كان سببا في حدوثه بالتعويض المادة يتمم الأمر رقم"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-full-a2005044-023-right",
+          "box": [
+            21,
+            1093,
+            519,
+            1200
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "812a7bc5c8f091a9db83990e0a67b4aaeadd1b88ce749447b2badb7b62b0c0b7",
+      "strictWordFlags": [],
+      "strictMarkFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 20,
+          "canonical": ".",
+          "punctuationOnly": true
+        }
+      ],
+      "instructionPdfPages": [
+        23
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-full-a2005044-023-right"
+        ],
+        "ppocr": [
+          "civil-full-a2005044-023-right"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          23
+        ],
+        "ppocr": [
+          23
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "124 مكرر",
+      "agrees": false,
+      "canonicalTokens": 40,
+      "confirmedBy": {
+        "tesseract": 37,
+        "ppocr": 33
+      },
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": "لاسيما",
+          "at": 9,
+          "streams": {
+            "tesseract": [
+              "split"
+            ],
+            "ppocr": [
+              "split"
+            ]
+          }
+        },
+        {
+          "kind": "unconfirmed",
+          "canonical": ":",
+          "at": 13,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        },
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 43,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        }
+      ],
+      "located": {
+        "tesseract": [
+          3655,
+          3698
+        ],
+        "ppocr": [
+          2791,
+          2834
+        ]
+      },
+      "ocr": {
+        "tesseract": "المادة 124 مكرر : يشكل الاستعمال التعسفي للحق خطأ لا سيما في الحالات الآتية - إذا وقع بقصد الإضرار بالغيرء - إذا كان يرمي للحصول على فائدة قليلة بالنسبة إلى الضرر الناشئ للغيرء - إذا كان الغرض منه الحصول على فائدة غير مشروعة",
+        "ppocr": "مكرروتحرر كمايأتي المادة مكرر يشكل الاستعمال التعسفي للحق خطأ لا سيمافي الحالات الأتية إذا وقع بقصد الإضرار بالغير، إذا كان يرمي للحصول على فائدة قليلة بالنسبة إلى الضرر الناشئ للغير، إذا كان الغرض منه الحصول على فائدة غير مشروعة المادة تعدل المادة من"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-full-a2005044-023-right",
+          "box": [
+            21,
+            1330,
+            516,
+            1571
+          ]
+        }
+      ],
+      "labelTokens": 3,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "e0b4e6933543c0d4fd815cbd3c98d83ba92efcf5089671f0881baaf39244ba12",
+      "strictWordFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 9,
+          "last": 9,
+          "canonical": "لاسيما",
+          "punctuationOnly": false
+        },
+        {
+          "kind": "unconfirmed",
+          "at": 18,
+          "last": 18,
+          "canonical": "الاضرار",
+          "punctuationOnly": false
+        }
+      ],
+      "strictMarkFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 13,
+          "canonical": ":",
+          "punctuationOnly": true
+        },
+        {
+          "kind": "unconfirmed",
+          "at": 43,
+          "canonical": ".",
+          "punctuationOnly": true
+        }
+      ],
+      "instructionPdfPages": [
+        23
+      ],
+      "strictWordAgrees": false,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-full-a2005044-023-right"
+        ],
+        "ppocr": [
+          "civil-full-a2005044-023-left",
+          "civil-full-a2005044-023-right"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          23
+        ],
+        "ppocr": [
+          23
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "125",
+      "agrees": true,
+      "canonicalTokens": 21,
+      "confirmedBy": {
+        "tesseract": 21,
+        "ppocr": 20
+      },
+      "disagreements": [],
+      "located": {
+        "tesseract": [
+          3730,
+          3757
+        ],
+        "ppocr": [
+          2846,
+          2873
+        ]
+      },
+      "ocr": {
+        "tesseract": "المادة 125 : لا يسأل المتسبب في الضرر الذي يحدثه بفعله أو امتناعه أو بإهمال منه أو عدم حيطته إلا إذا كان مميزا \" . المادة 38",
+        "ppocr": "كما يأتي المادة لا يسأل المتسبب في الضرر الذي يحدثه بفعله أو امتناعه أو بإهمال منه أو عدم حيطته إلا إذا كان مميزا المادةتعدلامواد من الأمر رقم"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-full-a2005044-023-left",
+          "box": [
+            79,
+            213,
+            570,
+            373
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "3dadfb4c32cc24762e739f8d10ddb9cf01dc03cf45240d0d9edaf501e7ee8332",
+      "strictWordFlags": [],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        23
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-full-a2005044-023-left"
+        ],
+        "ppocr": [
+          "civil-full-a2005044-023-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          23
+        ],
+        "ppocr": [
+          23
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "126",
+      "agrees": true,
+      "canonicalTokens": 28,
+      "confirmedBy": {
+        "tesseract": 28,
+        "ppocr": 27
+      },
+      "disagreements": [],
+      "located": {
+        "tesseract": [
+          3789,
+          3822
+        ],
+        "ppocr": [
+          2883,
+          2914
+        ]
+      },
+      "ocr": {
+        "tesseract": "المادة 126 : إذا تعدد المسؤولون عن فعل ضار كانوا متضامنين في التزامهم بتعويض الضرر؛ وتكون المسؤولية فيما بينهم بالتساوي إلا إذا عين القاضي نصيب كل منهم في الالتزام بالتعويض \" . \"",
+        "ppocr": "كما يأتي المادة إذا تعدد المسؤولون عن فعل ضار كانوا متضامنين في التزامهم بتعويض الضرر، وتكون المسؤولية فيما بينهم بالتساوي إلا إذا عين القاضي نصيب كل منهم في الالتزام بالتعويض المادة"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-full-a2005044-023-left",
+          "box": [
+            76,
+            466,
+            570,
+            647
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "0a96ff4b009b0a91f5d2f1c592e94854f993a762577668dae99fabbcd0f62b57",
+      "strictWordFlags": [],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        23
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-full-a2005044-023-left"
+        ],
+        "ppocr": [
+          "civil-full-a2005044-023-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          23
+        ],
+        "ppocr": [
+          23
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "129",
+      "agrees": true,
+      "canonicalTokens": 29,
+      "confirmedBy": {
+        "tesseract": 29,
+        "ppocr": 28
+      },
+      "disagreements": [],
+      "located": {
+        "tesseract": [
+          3822,
+          3857
+        ],
+        "ppocr": [
+          2913,
+          2943
+        ]
+      },
+      "ocr": {
+        "tesseract": "المادة 129 : لا يكون الموظفون والأعوان العموميون مسؤولين شخصيا عن أفعالهم التي أضرت بالغير إذا قاموا بها تنفيذا لأوامر صدرت إليهم من رئيسء متى كانت إطاعة هذه الأوامر واجبة عليهم ' . \" المادة",
+        "ppocr": "المادة لا يكون الموظفون والأعوان العموميون مسؤولين شخصيا عن أفعالهم التي أضرت بالغير إذا قاموا بها تنفيذا لأوامر صدرت إليهم من رئيس، متى كانت إطاعة هذه الأوامر واجبة عليهم المادة"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-full-a2005044-023-left",
+          "box": [
+            76,
+            618,
+            568,
+            801
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [
+        [
+          "الماده"
+        ],
+        [
+          "الماده"
+        ]
+      ],
+      "inputTextSha256": "bb5532f7be2311df17d499a07ed7f596c891b6841acb9b3d329d705824816a2f",
+      "strictWordFlags": [
+        {
+          "kind": "extra-in-all-streams",
+          "at": 31,
+          "canonical": "",
+          "ocr": [
+            "المادة"
+          ],
+          "punctuationOnly": false
+        },
+        {
+          "kind": "extra-in-all-streams",
+          "at": 32,
+          "canonical": "",
+          "ocr": [
+            "المادة"
+          ],
+          "punctuationOnly": false
+        }
+      ],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        23
+      ],
+      "strictWordAgrees": false,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-full-a2005044-023-left"
+        ],
+        "ppocr": [
+          "civil-full-a2005044-023-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          23
+        ],
+        "ppocr": [
+          23
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "131",
+      "agrees": true,
+      "canonicalTokens": 48,
+      "confirmedBy": {
+        "tesseract": 46,
+        "ppocr": 45
+      },
+      "disagreements": [],
+      "located": {
+        "tesseract": [
+          3857,
+          3912
+        ],
+        "ppocr": [
+          2942,
+          2990
+        ]
+      },
+      "ocr": {
+        "tesseract": "/ 13 : يقدر القاضي مدى التعويض عن الضرر الذي لحق المصاب طبقا لأحكام المادتين 182 و182 مكرر مع مراعاة الظروف الملابسة , فإن لم يتيسر له وقت الحكم أن يقدر مدى التعويض بصفة نهائية » فله أن يحتفظ للمضرور بالحق في أن يطالب خلال مدة معينة بالنظر من جديد في التقدير \" . \"",
+        "ppocr": "المادة يقدر القاضي مدى التعويض عن الضرر الذي لحق المصاب طبقا لأحكام المادتين و مكرر مع مراعاة الظروف الملابسة، فإن لم يتيسر له وقت الحكم أن يقدر مدى التعويض بصفة نهائية، فله أن يحتفظ للمضرور بالحق في أن يطالب خلال مدة معينة بالنظر من جديد في التقدير المادة"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-full-a2005044-023-left",
+          "box": [
+            75,
+            773,
+            573,
+            1018
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "3a983d876327f36e730005f4d7aab2b874b564f4291b6e38850d0bc920705a66",
+      "strictWordFlags": [],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        23
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-full-a2005044-023-left"
+        ],
+        "ppocr": [
+          "civil-full-a2005044-023-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          23
+        ],
+        "ppocr": [
+          23
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "132",
+      "agrees": true,
+      "canonicalTokens": 63,
+      "confirmedBy": {
+        "tesseract": 58,
+        "ppocr": 61
+      },
+      "disagreements": [],
+      "located": {
+        "tesseract": [
+          3912,
+          3981
+        ],
+        "ppocr": [
+          2989,
+          3050
+        ]
+      },
+      "ocr": {
+        "tesseract": "المادة 132 : يعين القاضي طريقة التعويض تبعا للظروفء . ويصح أن يكون التعويض مقسطاء كما يصح أن يكون إيرادا مرتباء ويجوز في هاتين الحالتين إلزام المدين بأن يقدر تأمينا . ويقدر التعويض بالنقد , على أنه يجوز للقاضيء تبعاللظروف وبناء على طلب المضرورء أن يأمر بإعادة الحالة إلى ما كانت عليه؛ أو أن يحكم وذلك على سبيل التعويض بأداء بعض الإعانات تتصل بالفعل غير المشروع \" . \"",
+        "ppocr": "المادة يعين القاضي طريقة التعويض تبعا للظروف، ويصح أن يكون التعويض مقسطا، كمايصح أن يكون إيرادا مرتبا، ويجوز في هاتين الحالتين إلزام المدين بأن يقدر تأمينا ويقدر التعويض بالنقد، على أنه يجوز للقاضي، تبعا للظروف وبناء على طلب المضرور، أن يأمر بإعادة الحالة إلى ماكانت عليه، أو أن يحكم وذلك على سبيل التعويض، بأداء بعض الإعانات تتصل بالفعل غير المشروع المادةتسقط"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-full-a2005044-023-left",
+          "box": [
+            75,
+            989,
+            572,
+            1347
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "a29be4dd2d66dd9f03625db5c4c6fb24274cf1ad853711a1a614e7f8bf54dd38",
+      "strictWordFlags": [],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        23
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-full-a2005044-023-left"
+        ],
+        "ppocr": [
+          "civil-full-a2005044-023-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          23
+        ],
+        "ppocr": [
+          23
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "133",
+      "agrees": true,
+      "canonicalTokens": 16,
+      "confirmedBy": {
+        "tesseract": 16,
+        "ppocr": 11
+      },
+      "disagreements": [],
+      "located": {
+        "tesseract": [
+          3981,
+          4003
+        ],
+        "ppocr": [
+          3049,
+          3065
+        ]
+      },
+      "ocr": {
+        "tesseract": "المادة 133 : تسقط دعوى التعويض بانقضاء خمس عشرة ( 15 ) سنة من يوم وقوع الفعل الضار \" . المادة 39",
+        "ppocr": "المادةتسقط دعوى التعويض بانقضاء خمس عشرة سنة من يوم وقوع الفعل الضار المادة يعدل عنوان القسم"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-full-a2005044-023-left",
+          "box": [
+            81,
+            1319,
+            571,
+            1435
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [
+        [
+          "الماده"
+        ],
+        [
+          "الماده"
+        ]
+      ],
+      "inputTextSha256": "b6cb0ad90967ccdd6648067c8395be8ba23ebda0b0611a68a078dca877fc6639",
+      "strictWordFlags": [
+        {
+          "kind": "extra-in-all-streams",
+          "at": 18,
+          "canonical": "",
+          "ocr": [
+            "المادة"
+          ],
+          "punctuationOnly": false
+        },
+        {
+          "kind": "extra-in-all-streams",
+          "at": 19,
+          "canonical": "",
+          "ocr": [
+            "المادة"
+          ],
+          "punctuationOnly": false
+        }
+      ],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        23
+      ],
+      "strictWordAgrees": false,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-full-a2005044-023-left"
+        ],
+        "ppocr": [
+          "civil-full-a2005044-023-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          23
+        ],
+        "ppocr": [
+          23
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "134",
+      "agrees": false,
+      "canonicalTokens": 63,
+      "confirmedBy": {
+        "tesseract": 45,
+        "ppocr": 61
+      },
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 35,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        },
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 65,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        }
+      ],
+      "located": {
+        "tesseract": [
+          4076,
+          4124
+        ],
+        "ppocr": [
+          3111,
+          3179
+        ]
+      },
+      "ocr": {
+        "tesseract": "المادة 134 : كل من يجب عليه قانونا أو اتفاقا رقابة شخص في حاجة إلى الرقابة بسبب قصره أو بتعويض الضرر الذي يحدثه ذلك الشخص للغير بفعله الضار المسؤولية إذا أثبت أنه قام بواجب الرقابة أو أثبت أن الضرر كان لابد من حدوثه ولو قام بهذا الواجب بما",
+        "ppocr": "كما يأتي المادة كل من يجب عليه قانونا أو اتفاقا رقابة شخص في حاجة إلى الرقابة بسبب قصره أو بسبب حالته العقلية أو الجسمية، يكون ملزما بتعويض الضرر الذي يحدثه ذلك الشخص للغير بفعله الضار ويستطيع المكلف بالرقابة أن يتخلص من المسؤولية إذا أثبت أنه قام بواجب الرقابة أو أثبت أن الضرر كان لابد من حدوثه ولو قام بهذا الواجب بما ينبغي من العناية المادةتعدل المادتان من الأمر"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-full-a2005044-024-right",
+          "box": [
+            21,
+            355,
+            516,
+            633
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "142b64e766642197dd0ecc404925df1d33333f2fe2740e193152e30b6aaca27b",
+      "strictWordFlags": [],
+      "strictMarkFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 35,
+          "canonical": ".",
+          "punctuationOnly": true
+        },
+        {
+          "kind": "unconfirmed",
+          "at": 65,
+          "canonical": ".",
+          "punctuationOnly": true
+        }
+      ],
+      "instructionPdfPages": [
+        24
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-full-a2005044-024-right"
+        ],
+        "ppocr": [
+          "civil-full-a2005044-024-right"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          24
+        ],
+        "ppocr": [
+          24
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "136",
+      "agrees": false,
+      "canonicalTokens": 42,
+      "confirmedBy": {
+        "tesseract": 39,
+        "ppocr": 40
+      },
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 25,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        },
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 44,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        }
+      ],
+      "located": {
+        "tesseract": [
+          4155,
+          4198
+        ],
+        "ppocr": [
+          3188,
+          3232
+        ]
+      },
+      "ocr": {
+        "tesseract": "المادة 136 : يكون المتبوع مسؤولا عن الضرر الذي يحدثه تابعه بفعله الضار متى كان واقعا منه في حالة تأدية وظيفته أو بسيبها أو بمناسبتها وتتحقق علاقة التبعية ولو لم يكن المتبوع حرا في اختيار تابعه متى كان هذا الأخير يعمل لحساب \"",
+        "ppocr": "وتحرران كمايأتي المادة يكون المتبوع مسؤولا عن الضرر الذي يحدثه تابعه بفعله الضار متى كان واقعا منه في حالة تأدية وظيفته أو بسببها أو بمناسبتها وتتحقق علاقة التبعية ولو لم يكن المتبوع حرا في اختيار تابعه متى كان هذا الأخير يعمل لحساب المتبوع المادة"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-full-a2005044-024-right",
+          "box": [
+            21,
+            832,
+            519,
+            1113
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "ba7190faf259452d9d0e6de4a57e7e6104ff9193cce608a9d59f34923a676b15",
+      "strictWordFlags": [],
+      "strictMarkFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 25,
+          "canonical": ".",
+          "punctuationOnly": true
+        },
+        {
+          "kind": "unconfirmed",
+          "at": 44,
+          "canonical": ".",
+          "punctuationOnly": true
+        }
+      ],
+      "instructionPdfPages": [
+        24
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-full-a2005044-024-right"
+        ],
+        "ppocr": [
+          "civil-full-a2005044-024-right"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          24
+        ],
+        "ppocr": [
+          24
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "137",
+      "agrees": false,
+      "canonicalTokens": 11,
+      "confirmedBy": {
+        "tesseract": 10,
+        "ppocr": 10
+      },
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 13,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        }
+      ],
+      "located": {
+        "tesseract": [
+          4198,
+          4211
+        ],
+        "ppocr": [
+          3231,
+          3246
+        ]
+      },
+      "ocr": {
+        "tesseract": "المادة 137 : للمتبوع حق الرجوع على تابعه في حالة ارتكابه خطأ جسيما",
+        "ppocr": "المادة للمتبوع حق الرجوع على تابعه في حالة ارتكابه خطأ جسيما المادة يتمم الأمر رقم"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-full-a2005044-024-right",
+          "box": [
+            21,
+            1074,
+            513,
+            1141
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "d1ffc01929a135d2217560dcf03b80b44a8fc5942e3d978efa8c94d064aaff81",
+      "strictWordFlags": [],
+      "strictMarkFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 13,
+          "canonical": ".",
+          "punctuationOnly": true
+        }
+      ],
+      "instructionPdfPages": [
+        24
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-full-a2005044-024-right"
+        ],
+        "ppocr": [
+          "civil-full-a2005044-024-right"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          24
+        ],
+        "ppocr": [
+          24
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "140 مكرر",
+      "agrees": true,
+      "canonicalTokens": 42,
+      "confirmedBy": {
+        "tesseract": 42,
+        "ppocr": 40
+      },
+      "disagreements": [],
+      "located": {
+        "tesseract": [
+          4245,
+          4294
+        ],
+        "ppocr": [
+          3260,
+          3308
+        ]
+      },
+      "ocr": {
+        "tesseract": "المادة 140 مكرر : يكون المنتج مسؤولا عن الضرر الناتج عن عيب في منتوجه حتى ولو لم تربطه بالمتضرر علاقة تعاقدية . يعتبر منتوجا كل مال منقول ولو كان متصلا بعقارء لاسيما المنتوج الزراعي والمنتوج الصناعي وتربية الحيوانات والصناعة الغذائية والصيد البري والبحري والطاقة الكهربائية \" . 5000 19",
+        "ppocr": "كما يأتي المادة مكرر يكون المنتج مسؤولا عن الضرر الناتج عن عيب في منتوجه حتى ولو لم تربطه بالمتضرر علاقة تعاقدية يعتبر منتوجا كل مال منقول ولو كان متصلا بعقار، لاسيما المنتوج الزراعي والمنتوج الصناعي وتربية الحيوانات والصناعة الغذائية والصيد البري والبحري والطاقة الكهربائية ة الجزائريّةالعد جمادى الأولى"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-full-a2005044-024-right",
+          "box": [
+            21,
+            1319,
+            519,
+            1583
+          ]
+        },
+        {
+          "evidenceId": "civil-full-a2005044-024-left",
+          "box": [
+            279,
+            12,
+            604,
+            31
+          ]
+        }
+      ],
+      "labelTokens": 3,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "3d34524a72f20d37bc76b2a552db0f796bf4a2846e15b0deeb1ee7fc1c27ad8f",
+      "strictWordFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 6,
+          "last": 6,
+          "canonical": "مسؤول",
+          "punctuationOnly": false
+        },
+        {
+          "kind": "extra-in-all-streams",
+          "at": 6,
+          "canonical": "",
+          "ocr": [
+            "مسؤولا"
+          ],
+          "punctuationOnly": false
+        }
+      ],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        24
+      ],
+      "strictWordAgrees": false,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-full-a2005044-024-left",
+          "civil-full-a2005044-024-right"
+        ],
+        "ppocr": [
+          "civil-full-a2005044-024-left",
+          "civil-full-a2005044-024-right"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          24
+        ],
+        "ppocr": [
+          24
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "140 مكرر 1",
+      "agrees": true,
+      "canonicalTokens": 18,
+      "confirmedBy": {
+        "tesseract": 17,
+        "ppocr": 16
+      },
+      "disagreements": [],
+      "located": {
+        "tesseract": [
+          4299,
+          4326
+        ],
+        "ppocr": [
+          3306,
+          3332
+        ]
+      },
+      "ocr": {
+        "tesseract": "\" المادة 140 مكرر : إذا انعدم المسؤول عن الضرر الجسماني ولم تكن للمتضرر يد فيه . تتكفل الدولة بالتعويض عن هذا الضرر \" . المادة 43",
+        "ppocr": "جمادى الأولى عام يونيو سنة المادة مكرراإذا انعدم المسؤولعن الضرر الجسماني ولم تكن للمتضرر يد فيه، تتكفل الدولة بالتعويض عن هذا الضرر المادةيتمم الأمر رقم المؤرخ"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-full-a2005044-024-left",
+          "box": [
+            75,
+            98,
+            570,
+            244
+          ]
+        }
+      ],
+      "labelTokens": 4,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "8d5ca7a8b9f1f54a23eac4c7350af74b7bb1131e9a8589e55227f9b4870569b8",
+      "strictWordFlags": [],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        24
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-full-a2005044-024-left"
+        ],
+        "ppocr": [
+          "civil-full-a2005044-024-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          24
+        ],
+        "ppocr": [
+          24
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "553",
+      "agrees": false,
+      "canonicalTokens": 92,
+      "confirmedBy": {
+        "tesseract": 86,
+        "ppocr": 87
+      },
+      "disagreements": [
+        {
+          "kind": "unconfirmed",
+          "canonical": ".",
+          "at": 94,
+          "streams": {
+            "tesseract": [
+              "miss"
+            ],
+            "ppocr": [
+              "miss"
+            ]
+          }
+        }
+      ],
+      "located": {
+        "tesseract": [
+          5004,
+          5094
+        ],
+        "ppocr": [
+          3824,
+          3917
+        ]
+      },
+      "ocr": {
+        "tesseract": "المادة 553 : إذا ثبت أثناء سير العمل أن المقاول يقوم به على وجه معيب أو مناف لشروط العقد جاز لرب العمل أن ينذره بأن يصحح من طريقة التنفيذ خلال أجل معقول يعينه لهء فإذا انقضى هذا الأجل دون أن يرجع المقاول إلى الطريقة الصحيحة جاز لرب العمل أن يطلب إما فسخ العقد وإما أن يعهد إلى مقاول آخر بإنجاز العمل على نفقة المقاول الأول طبقا لأحكام المادة 170 أعلاه . غير أنه يجوز طلب فسخ العقد في الحال دون حاجة إلى تعيين أجل إذا كان إصلاح ما في طريقة",
+        "ppocr": "كما يتي المادة إذا ثبت أثناء سير العمل أن المقاول يقوم به على وجه معيب أو مناف لشروط العقد جاز لرب العمل أن ينذره بأن يصحح من طريقة التنفيذ خلال أجل معقول يعينه له، فإذا انقضى هذا الأجل دون أن يرجع المقاول إلى الطريقة الصحيحة جاز لرب العمل أن يطلب إمافسخ العقد وإما أن يعهد إلى مقاول آخر بإنجاز العمل على نفقة المقاول الأول طبقا لأحكام المادةأعلاه غير أنه يجوز طلب فسخ العقد في الحال دون حاجة إلى تعيين أجل إذا كان إصلاح مافي طريقة التنفيذ من عيب مستحيلا المادة تعدل وتتمم المادة"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-full-a2005044-025-left",
+          "box": [
+            77,
+            489,
+            571,
+            840
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "718c5770d8f807cb90f819d29f60da55abc248d83e2f5d5f15f90120d8ccc8b4",
+      "strictWordFlags": [],
+      "strictMarkFlags": [
+        {
+          "kind": "unconfirmed",
+          "at": 94,
+          "canonical": ".",
+          "punctuationOnly": true
+        }
+      ],
+      "instructionPdfPages": [
+        25
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-full-a2005044-025-left"
+        ],
+        "ppocr": [
+          "civil-full-a2005044-025-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          25
+        ],
+        "ppocr": [
+          25
+        ]
+      },
+      "expectedPageOnly": true
+    },
+    {
+      "number": "558",
+      "agrees": true,
+      "canonicalTokens": 55,
+      "confirmedBy": {
+        "tesseract": 55,
+        "ppocr": 52
+      },
+      "disagreements": [],
+      "located": {
+        "tesseract": [
+          5126,
+          5187
+        ],
+        "ppocr": [
+          3928,
+          3988
+        ]
+      },
+      "ocr": {
+        "tesseract": "المادة 558 : عندما يتم المقاول العمل ويضعه تحت تصرف رب العملء وجب على هذا الأخير أن يبادر إلى تسلمه في أقرب وقت ممكن بحسب ما هو جار في المعاملاتء فإذا امتنع دون سبب مشروع عن التسلم رغم دعوته إلى ذلك بإنذار رسمي اعتبر أن العمل قد سلم إليه؛ ويتحمل كل ما يترتب على ذلك من آثار ' . المادة 51",
+        "ppocr": "وتحرر كما يأتي المادة عندمايتم المقاول العمل ويضعه تحت تصرف رب العمل، وجب على هذا الأخير أن يبادر إلى تسلمه في أقرب وقت ممكن بحسب ما هو جار في المعاملات، فإذا امتنع دون سبب مشروع عن التسلم رغم دعوته إلى ذلك بإنذار رسمي اعتبر أن العمل قد سلم إليه، ويتحمل كل مايترتب على ذلك من آثار \" المادةتلغى الموادوووم الأمر"
+      },
+      "regions": [
+        {
+          "evidenceId": "civil-full-a2005044-025-left",
+          "box": [
+            75,
+            1004,
+            573,
+            1249
+          ]
+        }
+      ],
+      "labelTokens": 2,
+      "boundaryExtrasDropped": [],
+      "inputTextSha256": "9a315f47dff941389d2a3ea809c09234283bc428b39635804f6e5a478972c9e0",
+      "strictWordFlags": [],
+      "strictMarkFlags": [],
+      "instructionPdfPages": [
+        25
+      ],
+      "strictWordAgrees": true,
+      "alignedEvidenceIds": {
+        "tesseract": [
+          "civil-full-a2005044-025-left"
+        ],
+        "ppocr": [
+          "civil-full-a2005044-025-left"
+        ]
+      },
+      "alignedPdfPages": {
+        "tesseract": [
+          25
+        ],
+        "ppocr": [
+          25
+        ]
+      },
+      "expectedPageOnly": true
+    }
+  ],
+  "inputProjectionSha256": "66aea8599aeabbcabab93d0570a081b2e5b9ef8e67b30ad317a73c134e76b82f",
+  "instructionInventorySha256": "c4fdf4f46a5705347e27171ea604c68d1ebacbb238f5995adf2f0b3ae0079933",
+  "method": "Diagnose current Civil amended bodies against pinned original-JO OCR; never grant checks or alter law.\n\nThe07-05 manifest preserves complete column endings. Quoted-body boundaries, instruction extras,\nword/digit/negation differences and paragraph-only amendments still require explicit source decisions.",
+  "verificationEffect": "diagnostic only; no body/state/date/import changes"
+}

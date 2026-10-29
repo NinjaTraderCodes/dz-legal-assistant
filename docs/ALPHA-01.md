@@ -49,6 +49,39 @@ The model does well on narrow questions. Recognising the claim type is one: 42 o
 - The element lists were written after the answer key (development *and* validation cases) had been read. They come from the catalog's own lists, not from the cases. Two hints that matched specific validation cases were removed before any run. Validation is therefore no longer fully blind for the element lists. It still is for the model's reading.
 - Removing the role question from the model fixes most role errors by construction. That is the point of the design, not a measurement of the model. The `read` mode shows what remains when the claim type itself is wrong.
 
+## Results
+
+### Run 1 (29 Oct 2026, local `gemma3:4b`, claim type given)
+
+Kept in `docs/baselines/2026-10-29-alpha-given/`.
+
+| | cases | with a critical error | seconds / case |
+|---|---:|---:|---:|
+| development | 40 | 5 | 27 |
+| validation | 14 | 5 | 28 |
+| robustness | 2 | 0 | 28 |
+
+The structured trial before it had 32 of 44 and 12 of 15, at 48–59 s.
+
+What the raw answers showed:
+- **The model copied the prompt's worked example.**
+  - Its first line, `p | 2`, chose the second role in every case. That accounts for 3 role errors: a seller in a delivery-delay case, and a lessee twice where the lessor had sent the eviction notice.
+  - It also copied the example's question numbers in cases with fewer questions. That accounts for 32 unreadable lines, and for the khul amount being given to a question that does not exist.
+- **«رغم إعذاره» was read as no notice.** The model took the «لم» of the same sentence for the notice. A «محضر إعذار» in the documents list was read the same way. That accounts for 5 notice errors.
+- **A loan the defendant denies** («يدعي… ينكر») was read as affirmed.
+- **The time is now mostly reading the prompt:** about 630 tokens at 33 tokens per second, against 45 tokens of answer.
+
+### Changes for run 2
+
+- **The worked example is gone.** The prompt ends with an answer template for the case («1 | ? | ?», one line per question, with a value slot only where the question takes one).
+- **The notice questions say «وُجّه إلى المدعى عليه إعذار…».** «أعذر» can also be read as "excused".
+- **The status rules now say:**
+  - a negation covers only the negated act («لم يدفع رغم إعذاره»: both facts happened);
+  - a document in the documents list proves the fact it is named after;
+  - «disputed» means one side claims it and the other denies or contests it.
+
+These rules were written after seeing failures in development and validation cases alike. **The validation cases are therefore no longer blind.** A fresh validation set, written by someone who has not seen the prompt, is needed before any number is taken as final.
+
 ## Decision rule
 
 Keep Alpha-01 only if, on the local `gemma3:4b`:

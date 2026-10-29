@@ -76,6 +76,13 @@ public sealed class AlphaFactsTests
     }
 
     [Fact]
+    public void TheAnswerTemplateHasOneLinePerQuestionAndAValueSlotOnlyWhereOneIsTaken()
+    {
+        Assert.Equal("1 | ? | ?\nr1 | ? | ?", ClaimFactReader.Template(Elements["khul"]));
+        Assert.Equal("p | ?\n1 | ? | ?\n2 | ?\nr1 | ?\nr2 | ?\nr3 | ? | ?", ClaimFactReader.Template(Elements["custody"]));
+    }
+
+    [Fact]
     public void ValuesAreTakenByNumberOnlyWhenTheyExistAndFitTheElement()
     {
         var text = CaseText.From(Case("loan-basic").Inputs);
@@ -133,6 +140,7 @@ public sealed class AlphaFactsTests
         Assert.Contains("نوع الدعوى: ", model.Requests[0].UserPrompt, StringComparison.Ordinal);
         Assert.Contains("2) سلّم المدعي المبيع", model.Requests[0].UserPrompt, StringComparison.Ordinal);
         Assert.DoesNotContain("{{", model.Requests[0].UserPrompt, StringComparison.Ordinal);
+        Assert.EndsWith("1 | ? | ?\n2 | ? | ?\n3 | ? | ?\n4 | ? | ?\n5 | ? | ?\nr1 | ? | ?\nr2 | ? | ?", model.Requests[0].UserPrompt.TrimEnd(), StringComparison.Ordinal);
         Assert.Contains("1 case(s) outside the claim catalogue", FactsEvaluator.Summary(report), StringComparison.Ordinal);
     }
 

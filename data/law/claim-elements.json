@@ -10,7 +10,7 @@
         { "event": "deadline_passed", "label": "حلّ أجل الرد المتفق عليه", "date": true },
         { "event": "payment_made", "actor": "defendant", "label": "دفع المدعى عليه جزءا من المبلغ", "date": true, "amount": true },
         { "event": "debt_unpaid", "actor": "defendant", "label": "لم يرد المدعى عليه المبلغ أو باقيه", "amount": true },
-        { "event": "notice_served", "actor": "plaintiff", "label": "طالب المدعي المدعى عليه بالرد أو أعذره", "date": true }
+        { "event": "notice_served", "actor": "plaintiff", "label": "وُجّه إلى المدعى عليه إعذار أو تنبيه أو مطالبة بالرد", "date": true }
       ],
       "requests": [
         { "kind": "payment", "label": "إلزام المدعى عليه بدفع مبلغ القرض", "amount": true },
@@ -25,7 +25,7 @@
         { "event": "goods_delivered", "actor": "plaintiff", "label": "سلّم المدعي المبيع للمدعى عليه", "date": true },
         { "event": "payment_made", "actor": "defendant", "label": "دفع المدعى عليه جزءا من الثمن", "date": true, "amount": true },
         { "event": "price_unpaid", "actor": "defendant", "label": "لم يدفع المدعى عليه الثمن أو باقيه", "amount": true },
-        { "event": "notice_served", "actor": "plaintiff", "label": "طالب المدعي المدعى عليه بالدفع أو أعذره", "date": true }
+        { "event": "notice_served", "actor": "plaintiff", "label": "وُجّه إلى المدعى عليه إعذار أو تنبيه أو مطالبة بالدفع", "date": true }
       ],
       "requests": [
         { "kind": "payment", "label": "إلزام المدعى عليه بدفع الثمن أو باقيه", "amount": true },
@@ -46,7 +46,7 @@
         { "event": "payment_made", "actor": "plaintiff", "label": "دفع المدعي الثمن أو تسبيقا منه", "date": true, "amount": true },
         { "event": "delivery_missing", "actor": "defendant", "label": "لم يسلم المدعى عليه الشيء محل العقد" },
         { "event": "work_stopped", "actor": "defendant", "label": "توقف المدعى عليه عن الأشغال أو أخل بتنفيذها" },
-        { "event": "notice_served", "actor": "plaintiff", "label": "أعذر المدعي المدعى عليه بالتنفيذ", "date": true }
+        { "event": "notice_served", "actor": "plaintiff", "label": "وُجّه إلى المدعى عليه إعذار أو تنبيه بالتنفيذ", "date": true }
       ],
       "requests": [
         { "kind": "rescission", "label": "فسخ العقد" },
@@ -90,7 +90,7 @@
         { "event": "delivery_missing", "actor": "defendant", "label": "لم يسلم المدعى عليه ما التزم بتسليمه" },
         { "event": "work_stopped", "actor": "defendant", "label": "توقف المدعى عليه عن الأشغال أو أخل بتنفيذها" },
         { "event": "other", "actor": "defendant", "label": "أخل المدعى عليه بالتزام تعاقدي آخر" },
-        { "event": "notice_served", "actor": "plaintiff", "label": "أعذر المدعي المدعى عليه بالتنفيذ", "date": true }
+        { "event": "notice_served", "actor": "plaintiff", "label": "وُجّه إلى المدعى عليه إعذار أو تنبيه بالتنفيذ", "date": true }
       ],
       "requests": [
         { "kind": "damages", "label": "تعويض عن الضرر", "amount": true },
@@ -127,7 +127,7 @@
         { "event": "contract_concluded", "label": "إبرام عقد الإيجار وبدله", "date": true, "amount": true },
         { "event": "lease_started", "label": "بداية الانتفاع بالعين المؤجرة", "date": true },
         { "event": "rent_unpaid", "actor": "defendant", "label": "لم يدفع المدعى عليه بدلات الإيجار المستحقة", "amount": true },
-        { "event": "notice_served", "actor": "plaintiff", "label": "أعذر المدعي المدعى عليه بالدفع أو نبهه", "date": true }
+        { "event": "notice_served", "actor": "plaintiff", "label": "وُجّه إلى المدعى عليه إعذار أو تنبيه أو مطالبة بالدفع", "date": true }
       ],
       "requests": [
         { "kind": "payment", "label": "إلزام المدعى عليه بدفع بدلات الإيجار المتأخرة", "amount": true },
@@ -140,7 +140,7 @@
       "roles": [ { "relation": "ownership", "position": "owner", "label": "المالك" } ],
       "elements": [
         { "event": "occupation_without_title", "actor": "defendant", "label": "يشغل المدعى عليه عقار المدعي دون عقد أو سند", "date": true },
-        { "event": "notice_served", "actor": "plaintiff", "label": "طالب المدعي المدعى عليه بالخروج أو أعذره", "date": true }
+        { "event": "notice_served", "actor": "plaintiff", "label": "وُجّه إلى المدعى عليه إعذار أو مطالبة بالخروج", "date": true }
       ],
       "requests": [
         { "kind": "eviction", "label": "طرد المدعى عليه من العقار" },
@@ -154,7 +154,7 @@
         { "event": "goods_delivered", "actor": "plaintiff", "label": "سلّم المدعي للمدعى عليه بضائع أو خدمات", "date": true, "amount": true },
         { "event": "payment_made", "actor": "defendant", "label": "دفع المدعى عليه جزءا من المبلغ", "date": true, "amount": true },
         { "event": "price_unpaid", "actor": "defendant", "label": "لم يسدد المدعى عليه قيمة البضائع أو الفواتير أو باقيها", "amount": true },
-        { "event": "notice_served", "actor": "plaintiff", "label": "أعذر المدعي المدعى عليه بالدفع", "date": true }
+        { "event": "notice_served", "actor": "plaintiff", "label": "وُجّه إلى المدعى عليه إعذار أو تنبيه أو مطالبة بالدفع", "date": true }
       ],
       "requests": [
         { "kind": "payment", "label": "إلزام المدعى عليه بدفع المبلغ المستحق", "amount": true },
@@ -187,7 +187,7 @@
         { "event": "payment_made", "actor": "plaintiff", "label": "دفع المدعي الثمن أو جزءا منه", "date": true, "amount": true },
         { "event": "deadline_passed", "label": "حلّ أجل التسليم المتفق عليه", "date": true },
         { "event": "delivery_missing", "actor": "defendant", "label": "لم يسلم المدعى عليه المبيع" },
-        { "event": "notice_served", "actor": "plaintiff", "label": "أعذر المدعي المدعى عليه بالتسليم", "date": true }
+        { "event": "notice_served", "actor": "plaintiff", "label": "وُجّه إلى المدعى عليه إعذار أو تنبيه بالتسليم", "date": true }
       ],
       "requests": [
         { "kind": "delivery", "label": "إلزام المدعى عليه بتسليم المبيع" },

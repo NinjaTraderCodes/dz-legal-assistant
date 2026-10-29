@@ -156,7 +156,8 @@ public sealed partial class ClaimFactReader(IModelProvider provider, string prom
             .Replace("{{ claim }}", claimLabel, StringComparison.Ordinal)
             .Replace("{{ case }}", text.Render(), StringComparison.Ordinal)
             .Replace("{{ values }}", list, StringComparison.Ordinal)
-            .Replace("{{ questions }}", Questions(claim), StringComparison.Ordinal);
+            .Replace("{{ questions }}", Questions(claim), StringComparison.Ordinal)
+            .Replace("{{ template }}", Template(claim), StringComparison.Ordinal);
         return new ModelRequest(RequestId, string.Empty, user, string.Join('\n', text.Sentences.Select(s => s.Text))) { MaxTokens = MaxTokens };
     }
 
@@ -191,6 +192,25 @@ public sealed partial class ClaimFactReader(IModelProvider provider, string prom
         }
 
         return sb.ToString().TrimEnd();
+    }
+
+    /// <summary>
+    /// The answer to fill in, one line per question, with a value slot only where the question takes a value. A worked
+    /// example was copied instead (its «p | 2» chose the second role in every case, 29 Oct), and so were its question
+    /// numbers, in cases that had fewer questions.
+    /// </summary>
+    public static string Template(ClaimElements claim)
+    {
+        ArgumentNullException.ThrowIfNull(claim);
+        var lines = new List<string>();
+        if (claim.Roles.Count > 1)
+        {
+            lines.Add("p | ?");
+        }
+
+        lines.AddRange(claim.Elements.Select((e, i) => (i + 1).ToString(CultureInfo.InvariantCulture) + (e.Date || e.Amount ? " | ? | ?" : " | ?")));
+        lines.AddRange(claim.Requests.Select((q, i) => "r" + (i + 1).ToString(CultureInfo.InvariantCulture) + (q.Amount ? " | ? | ?" : " | ?")));
+        return string.Join('\n', lines);
     }
 
     /// <returns>The facts, checked, and the model's raw answer.</returns>

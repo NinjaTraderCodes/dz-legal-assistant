@@ -1,0 +1,156 @@
+{
+  "savedOn": "2026-10-29",
+  "status": "PAUSED by explicit user request; batch completed, new crops not yet inspected",
+  "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf",
+  "manifestSha256": "5d1d7612881613b61199fd1a06acda0ece7e2be078e1ceda195a4db77112a8b9",
+  "priorCropActuallyInspected": {
+    "image": "tools/law-corpus/.cache/evidence/extractions/4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf/page-0004/civil-full-a2007031-004-right/crop.png",
+    "sha256": "94629839850098ae449f9cd53c315e98375bbe343775ddb3dfca6129d006267f",
+    "finding": "Original right crop visibly clips line-ending letters. Left crops include fragments from the neighbouring right column. Preserve originals as evidence, not authoritative complete body windows."
+  },
+  "newBoundary": {
+    "normalizedX": 0.47,
+    "pdfPoints": 279.65,
+    "pageWidthPoints": 595,
+    "observedBodyLeftColumnRightMaximumPoints": 266.11,
+    "observedBodyRightColumnLeftMinimumPoints": 292.403,
+    "note": "Bounds from cached native-line geometry; shared page3large title is not an article body. Original complete page images were actually read. Geometry does not replace inspection of the new crops."
+  },
+  "tesseractCompleted": 8,
+  "supplementaryCompleted": 8,
+  "newCropImagesActuallyInspected": 0,
+  "bodyComparisonWithNewCropsRun": false,
+  "evidence": [
+    {
+      "evidenceId": "civil-priority-07-05-003-right",
+      "pdfPage": 3,
+      "region": [
+        0.47,
+        0.18,
+        0.995,
+        0.985
+      ],
+      "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf",
+      "cropImageSha256": "f110a97017f93c7a5d32a6486c87b3701b775b257f4f0d79ceb62c79d0ae0da7",
+      "tesseractEvidenceSha256": "2f551868ea107a41c65e2cc4fe7c6bcd33d42769ba522d7b36771c53edf74b52",
+      "supplementaryRecordSha256": "e5b3566d4131b485a407736ff07613a36774f97eb290e6e1c4936e637429b8ad",
+      "tesseractExitCode": 0,
+      "supplementaryStatus": "extracted"
+    },
+    {
+      "evidenceId": "civil-priority-07-05-003-left",
+      "pdfPage": 3,
+      "region": [
+        0.015,
+        0.18,
+        0.47,
+        0.985
+      ],
+      "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf",
+      "cropImageSha256": "4e0a612e11a5780fb2c4a20c168086cb1b6c4c52959a5a8094ae6ce37a769ab2",
+      "tesseractEvidenceSha256": "08ebc5da7ecfa824546fed1ddc52017257b6a2f0e8536cec51c3493f4a0b363e",
+      "supplementaryRecordSha256": "ef039c6dd0abb780045117621e67a9e44614130a7b5ccf6fff872942cb314106",
+      "tesseractExitCode": 0,
+      "supplementaryStatus": "extracted"
+    },
+    {
+      "evidenceId": "civil-priority-07-05-004-right",
+      "pdfPage": 4,
+      "region": [
+        0.47,
+        0.095,
+        0.995,
+        0.985
+      ],
+      "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf",
+      "cropImageSha256": "0ec20b134e44cbc15b384e851b188258512c28326505231313b83beedc55e8af",
+      "tesseractEvidenceSha256": "35803a8713ca4f3ee82ae2ed8a4552902e5d72d5be60d8ac314ad8c271a2422a",
+      "supplementaryRecordSha256": "14a0bec1eb730fa71c05bc06c7e4285cefd88e731bc34ababa94bef3cfbc1ba0",
+      "tesseractExitCode": 0,
+      "supplementaryStatus": "extracted"
+    },
+    {
+      "evidenceId": "civil-priority-07-05-004-left",
+      "pdfPage": 4,
+      "region": [
+        0.015,
+        0.095,
+        0.47,
+        0.985
+      ],
+      "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf",
+      "cropImageSha256": "557f472c253aa884f3e45cb9fb8effd95c4bf46eef30e8a19158089675638c86",
+      "tesseractEvidenceSha256": "58c2b48dc7a98cbf4ddc3d8b7f15c5d5ebd03db4f22a876310d62340b74e6757",
+      "supplementaryRecordSha256": "5a4ce630e31cb34230bac9b169772518913f40e98a061bc47176435679f6c2ed",
+      "tesseractExitCode": 0,
+      "supplementaryStatus": "extracted"
+    },
+    {
+      "evidenceId": "civil-priority-07-05-005-right",
+      "pdfPage": 5,
+      "region": [
+        0.47,
+        0.095,
+        0.995,
+        0.985
+      ],
+      "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf",
+      "cropImageSha256": "532c9c64ece67b68d57f709592706f1c63b71c6a0cf4f9d71cc98a45a2a778a2",
+      "tesseractEvidenceSha256": "db0151e8e40188798887193cf8b449f33bd2d4d1b5e6785d14e38b602ef95825",
+      "supplementaryRecordSha256": "267966f54a1d8c06f2744dbe2c6e0e8eaf71f1d59575444d8c2e52f52d0e6f9b",
+      "tesseractExitCode": 0,
+      "supplementaryStatus": "extracted"
+    },
+    {
+      "evidenceId": "civil-priority-07-05-005-left",
+      "pdfPage": 5,
+      "region": [
+        0.015,
+        0.095,
+        0.47,
+        0.985
+      ],
+      "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf",
+      "cropImageSha256": "3d105ae755da238d49317875c5f909adebb6059b4a10ffb684dbdbfc2f2cfbbf",
+      "tesseractEvidenceSha256": "94aa04c87c6e0447e3fc5b156fce670ca0a24c5201e8bf2e51e2cac93c95a19a",
+      "supplementaryRecordSha256": "f07e73147e32069c502abdf6e79f2bf898783f177ec1d85c845e445df00c70b9",
+      "tesseractExitCode": 0,
+      "supplementaryStatus": "extracted"
+    },
+    {
+      "evidenceId": "civil-priority-07-05-006-right",
+      "pdfPage": 6,
+      "region": [
+        0.47,
+        0.095,
+        0.995,
+        0.985
+      ],
+      "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf",
+      "cropImageSha256": "3fcbe469e4053c304cdc870e7e45a2500f69d41d1e64f1d7f7b5032416f361c7",
+      "tesseractEvidenceSha256": "47da706725281472b73e95d3d2000a798a0c7f34d00e0d158d5ef4f580c8c833",
+      "supplementaryRecordSha256": "4b419744dbe21ce796dd1833025b3234d87d789bc1fe362a42c47537162d9870",
+      "tesseractExitCode": 0,
+      "supplementaryStatus": "extracted"
+    },
+    {
+      "evidenceId": "civil-priority-07-05-006-left",
+      "pdfPage": 6,
+      "region": [
+        0.015,
+        0.095,
+        0.47,
+        0.985
+      ],
+      "sourceSha256": "4c0801865c086523c05c43ce7d533dad15df452a103a9411ca1bd3ec87f0b0cf",
+      "cropImageSha256": "68891cec1278f6c3a3a154f8a0ea5786f2b741576bfed393b469ae276b18840f",
+      "tesseractEvidenceSha256": "04643ed3a03a31fe5228a10bca009167ea432885053bcd756c61d1434b694531",
+      "supplementaryRecordSha256": "651f573051aa58bd81f19ac265c736935e3f989b5caa1cb0266fe7ea2286752f",
+      "tesseractExitCode": 0,
+      "supplementaryStatus": "extracted"
+    }
+  ],
+  "typedCivilChanged": false,
+  "fullArticleChecked": false,
+  "next": "Inspect the8new crops against full pages, re-run the34-body07-05diagnostic with the new manifest, then decide all remaining word/figure/negation discrepancies explicitly. No current body changes from these OCR runs."
+}

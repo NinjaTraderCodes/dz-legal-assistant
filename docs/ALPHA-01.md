@@ -82,6 +82,38 @@ What the raw answers showed:
 
 These rules were written after seeing failures in development and validation cases alike. **The validation cases are therefore no longer blind.** A fresh validation set, written by someone who has not seen the prompt, is needed before any number is taken as final.
 
+### Run 2 (29 Oct 2026, local `gemma3:4b`, claim type given)
+
+Kept in `docs/baselines/2026-10-29-alpha-given-2/`.
+
+| | cases | with a critical error | of which the answer was cut off | seconds / case |
+|---|---:|---:|---:|---:|
+| development | 40 | 6 | 1 | 26 |
+| validation | 14 | 2 | 1 | 31 |
+| robustness | 2 | 0 | 0 | 29 |
+
+What the raw answers showed:
+- **The answer format slipped in a few cases:**
+  - a status left out («1 | v1 | v2»);
+  - a value copied out in full («300000» instead of its number);
+  - a question numbered like a sentence («s1 yes»);
+  - two answers cut off at the 160-token cap.
+- **«no» was given for facts that are themselves negative.** «لم يتقاض أجوره» was read as "no" to «لم يدفع المدعى عليه الأجور», in two wage cases.
+- **A seller was chosen as plaintiff** in the land-sale fraud case, where the defendant had sold.
+- **The disputed loan was again read as affirmed.** This looks like a real limit of the model.
+
+### Changes for run 3
+
+- **The parser accepts the slips that are not ambiguous:**
+  - with values but no status, the fact counts as stated;
+  - a value written out in full counts if the program listed it;
+  - yes and no are still read.
+
+  Re-scoring run 2's own answers with it fixes khul and the land sale's missing contract.
+- **The status words are now `stated`, `denied`, `disputed` and `absent`.** The prompt says that a negative fact stated as such («لم يدفع») is `stated`.
+- **Role choices are sentences about the parties** («المدعي اشترى من المدعى عليه»), not bare titles.
+- **The answer cap is 300 tokens.**
+
 ## Decision rule
 
 Keep Alpha-01 only if, on the local `gemma3:4b`:

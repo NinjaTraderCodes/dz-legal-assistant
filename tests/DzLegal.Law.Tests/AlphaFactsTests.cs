@@ -70,7 +70,7 @@ public sealed class AlphaFactsTests
         Assert.Equal(("marriage", "wife"), (facts.Relation, facts.Position));
 
         var custody = Elements["custody"];
-        Assert.StartsWith("p) من هو المدعي؟ 1 = الأم، 2 = الأب", ClaimFactReader.Questions(custody), StringComparison.Ordinal);
+        Assert.StartsWith("p) من هو المدعي؟ 1 = المدعية هي الأم، 2 = المدعي هو الأب", ClaimFactReader.Questions(custody), StringComparison.Ordinal);
         Assert.Equal("father", ClaimFactReader.Parse("p | 2", CaseText.From(Case("custody-transfer").Inputs), custody).Position);
         Assert.Equal("mother", ClaimFactReader.Parse("p | 9", CaseText.From(Case("custody-transfer").Inputs), custody).Position);
     }
@@ -113,6 +113,26 @@ public sealed class AlphaFactsTests
         Assert.Equal(FactPolarity.Disputed, facts.Events[0].Polarity);
         Assert.Equal(["eviction"], facts.Requests.Select(r => r.Kind));
         Assert.Equal(["4 | maybe | -", "9 | yes | -", "r7 | yes | -"], facts.Rejected);
+    }
+
+    /// <summary>The slips of the second local run (29 Oct): a status left out, a value copied out in full, yes/no.</summary>
+    [Fact]
+    public void CommonAnswerSlipsAreReadWithoutAcceptingAnythingNotInTheText()
+    {
+        var text = CaseText.From(Case("khul").Inputs);
+        var facts = ClaimFactReader.Parse("1 | absent | absent\nr1 | yes | 300000", text, Elements["khul"]);
+        Assert.Equal("300000", facts.Requests.Single().Amount?.Normalized);
+        Assert.Null(ClaimFactReader.Parse("r1 | stated | 450000", text, Elements["khul"]).Requests.Single().Amount);
+
+        var sale = CaseText.From(Case("annulment-fraud-land").Inputs);
+        var read = ClaimFactReader.Parse("p | 1\n1 | v1 | v2\n2 | stated\nr2 | v2", sale, Elements["sale-annulment-fraud"]);
+        var concluded = read.Events.Single(e => e.Kind == "contract_concluded");
+        Assert.Equal((FactPolarity.Affirmed, "12/02/2026", "9000000"), (concluded.Polarity, concluded.Date?.Normalized, concluded.Amount?.Normalized));
+        Assert.Equal(FactPolarity.Affirmed, read.Events.Single(e => e.Kind == "concealment").Polarity);
+        Assert.Equal("restitution", read.Requests.Single().Kind);
+        Assert.Equal("buyer", read.Position);
+
+        Assert.Equal(FactPolarity.Denied, ClaimFactReader.Parse("2 | denied | -", sale, Elements["sale-annulment-fraud"]).Events.Single().Polarity);
     }
 
     [Fact]

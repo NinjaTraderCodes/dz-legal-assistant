@@ -71,8 +71,8 @@ public sealed partial class ClaimFactReader(IModelProvider provider, string prom
     public const string PromptFile = "prompts/read-claim-elements.ar.txt";
     public const string ElementsFile = "claim-elements.json";
 
-    /// <summary>About ten short lines.</summary>
-    public const int MaxTokens = 160;
+    /// <summary>About ten short lines, with room for a model that spells them out (160 cut two answers off, 29 Oct).</summary>
+    public const int MaxTokens = 300;
 
     private readonly IModelProvider _provider = provider ?? throw new ArgumentNullException(nameof(provider));
     private readonly IReadOnlyDictionary<string, ClaimElements> _catalog = catalog ?? throw new ArgumentNullException(nameof(catalog));
@@ -234,13 +234,14 @@ public sealed partial class ClaimFactReader(IModelProvider provider, string prom
     {
         ArgumentNullException.ThrowIfNull(text);
         ArgumentNullException.ThrowIfNull(claim);
-        var values = Values(text).ToDictionary(v => v.Id, StringComparer.Ordinal);
+        var list = Values(text);
+        var values = list.ToDictionary(v => v.Id, StringComparer.Ordinal);
         var role = claim.Roles[0];
         var events = new List<FactEvent>();
         var requests = new List<FactRequest>();
         var rejected = new List<string>();
         var seen = new HashSet<string>(StringComparer.Ordinal);
-        var rows = new List<(string Id, string Status, List<CaseValue> Values, string Line)>();
+        var rows = new List<(string Id, string? Polarity, List<CaseValue> Values, string Line)>();
         foreach (var raw in (answer ?? string.Empty).Split('\n'))
         {
             var line = ArabicScript.ToAsciiDigits(raw).Trim().TrimStart('*', '`', '-', '•').TrimEnd('*', '`').Trim();
@@ -266,9 +267,10 @@ public sealed partial class ClaimFactReader(IModelProvider provider, string prom
                 continue;
             }
 
+            var body = m.Groups["body"].Value;
             if (id == "p")
             {
-                if (int.TryParse(m.Groups["status"].Value, NumberStyles.None, CultureInfo.InvariantCulture, out var choice) && choice >= 1 && choice <= claim.Roles.Count)
+                if (int.TryParse(Choice().Match(body).Value, NumberStyles.None, CultureInfo.InvariantCulture, out var choice) && choice >= 1 && choice <= claim.Roles.Count)
                 {
                     role = claim.Roles[choice - 1];
                 }
@@ -280,20 +282,22 @@ public sealed partial class ClaimFactReader(IModelProvider provider, string prom
                 continue;
             }
 
-            var ids = ValueId().Matches(m.Groups["rest"].Value).Select(v => v.Value.ToLowerInvariant()).ToList();
-            rows.Add((id, m.Groups["status"].Value.ToLowerInvariant(), [.. ids.Select(v => values.GetValueOrDefault(v)).OfType<CaseValue>()], line));
+            // Values by number; a value copied out in full (300000) is taken only if the program listed it.
+            var rest = ValueId().Replace(body, " ");
+            var found = ValueId().Matches(body).Select(v => values.GetValueOrDefault(v.Value.ToLowerInvariant())).OfType<CaseValue>()
+                .Concat(FactValues.DatesIn(rest).Select(d => list.FirstOrDefault(v => v.Kind == CaseValue.Date && v.Normalized == d)).OfType<CaseValue>())
+                .Concat(FactValues.AmountsIn(rest).Select(a => list.FirstOrDefault(v => v.Kind == CaseValue.Amount && v.Normalized == a)).OfType<CaseValue>())
+                .Distinct()
+                .ToList();
+            var word = Status().Match(body);
+
+            // «1 | v1 | v2»: no status but values given, so the text mentions the fact.
+            var polarity = word.Success ? Polarity(word.Value) : found.Count > 0 ? FactPolarity.Affirmed : "?";
+            rows.Add((id, polarity, found, line));
         }
 
-        foreach (var (id, status, found, line) in rows)
+        foreach (var (id, polarity, found, line) in rows)
         {
-            var polarity = status switch
-            {
-                "yes" => FactPolarity.Affirmed,
-                "no" => FactPolarity.Denied,
-                "disputed" => FactPolarity.Disputed,
-                "absent" => null,
-                _ => "?",
-            };
             if (polarity == "?")
             {
                 rejected.Add(line);
@@ -344,6 +348,14 @@ public sealed partial class ClaimFactReader(IModelProvider provider, string prom
         return new CaseFacts { Relation = role.Relation, Position = role.Position, Events = events, Requests = requests, Rejected = rejected };
     }
 
+    private static string? Polarity(string word) => word.ToLowerInvariant() switch
+    {
+        "stated" or "affirmed" or "yes" or "نعم" => FactPolarity.Affirmed,
+        "denied" or "no" or "لا" => FactPolarity.Denied,
+        "disputed" => FactPolarity.Disputed,
+        _ => null,
+    };
+
     /// <summary>A value chosen by number is in its sentence by construction.</summary>
     private static FactValue? Value(CaseValue? v) => v is null ? null : new FactValue(v.Normalized, v.Normalized, ValueCheck.InCitedSentence);
 
@@ -352,9 +364,16 @@ public sealed partial class ClaimFactReader(IModelProvider provider, string prom
         : actor == role.Position ? "plaintiff"
         : "defendant";
 
-    /// <summary>«3 | yes | v1 v2», «r1 | absent | -», «p | 2»; a colon or dash may stand for the bar.</summary>
-    [GeneratedRegex(@"^(?<id>[pPrR]?\d+|[pP])\s*[)|:\-]\s*(?<status>[A-Za-z]+|\d+)\s*(?:[|:\-]\s*(?<rest>.*))?$")]
+    /// <summary>«3 | stated | v1 v2», «r1 | absent | -», «p | 2»; a colon or a bracket may stand for the bar.</summary>
+    [GeneratedRegex(@"^(?<id>[rR]?\d+|[pP])\s*[)|:]\s*(?<body>.+)$")]
     private static partial Regex AnswerLine();
+
+    /// <summary>The status word; yes and no are what the first prompt asked for.</summary>
+    [GeneratedRegex(@"\b(?:stated|affirmed|yes|denied|no|disputed|absent|none)\b|(?<!\p{L})(?:نعم|لا)(?!\p{L})", RegexOptions.IgnoreCase)]
+    private static partial Regex Status();
+
+    [GeneratedRegex(@"\d+")]
+    private static partial Regex Choice();
 
     [GeneratedRegex(@"\b[vV]\d+\b")]
     private static partial Regex ValueId();

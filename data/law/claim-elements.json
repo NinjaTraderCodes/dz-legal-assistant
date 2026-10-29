@@ -19,7 +19,7 @@
     },
     {
       "claim": "unpaid-sale-price",
-      "roles": [ { "relation": "sale", "position": "seller", "label": "البائع" } ],
+      "roles": [ { "relation": "sale", "position": "seller", "label": "المدعي باع للمدعى عليه" } ],
       "elements": [
         { "event": "contract_concluded", "label": "إبرام البيع بين الطرفين", "date": true, "amount": true },
         { "event": "goods_delivered", "actor": "plaintiff", "label": "سلّم المدعي المبيع للمدعى عليه", "date": true },
@@ -35,11 +35,11 @@
     {
       "claim": "contract-rescission",
       "roles": [
-        { "relation": "sale", "position": "buyer", "label": "المشتري في عقد بيع" },
-        { "relation": "sale", "position": "seller", "label": "البائع في عقد بيع" },
-        { "relation": "works_contract", "position": "client", "label": "صاحب المشروع في عقد مقاولة أو أشغال" },
-        { "relation": "works_contract", "position": "contractor", "label": "المقاول في عقد مقاولة أو أشغال" },
-        { "relation": "other", "position": "other", "label": "طرف في عقد آخر" }
+        { "relation": "sale", "position": "buyer", "label": "المدعي اشترى من المدعى عليه (عقد بيع)" },
+        { "relation": "sale", "position": "seller", "label": "المدعي باع للمدعى عليه (عقد بيع)" },
+        { "relation": "works_contract", "position": "client", "label": "المدعي كلّف المدعى عليه بأشغال (المدعي صاحب المشروع)" },
+        { "relation": "works_contract", "position": "contractor", "label": "المدعي هو المقاول الذي قام بالأشغال للمدعى عليه" },
+        { "relation": "other", "position": "other", "label": "عقد آخر بين الطرفين" }
       ],
       "elements": [
         { "event": "contract_concluded", "label": "إبرام العقد بين الطرفين", "date": true, "amount": true },
@@ -57,9 +57,9 @@
     {
       "claim": "sale-annulment-fraud",
       "roles": [
-        { "relation": "sale", "position": "buyer", "label": "المشتري" },
-        { "relation": "sale", "position": "seller", "label": "البائع" },
-        { "relation": "other", "position": "other", "label": "طرف في عقد آخر غير البيع" }
+        { "relation": "sale", "position": "buyer", "label": "المدعي اشترى من المدعى عليه" },
+        { "relation": "sale", "position": "seller", "label": "المدعي باع للمدعى عليه" },
+        { "relation": "other", "position": "other", "label": "عقد آخر غير البيع" }
       ],
       "elements": [
         { "event": "contract_concluded", "label": "إبرام العقد بين الطرفين", "date": true, "amount": true },
@@ -75,14 +75,14 @@
     {
       "claim": "contract-damages",
       "roles": [
-        { "relation": "sale", "position": "buyer", "label": "المشتري في عقد بيع" },
-        { "relation": "sale", "position": "seller", "label": "البائع في عقد بيع" },
-        { "relation": "works_contract", "position": "client", "label": "صاحب المشروع في عقد مقاولة أو أشغال" },
-        { "relation": "works_contract", "position": "contractor", "label": "المقاول في عقد مقاولة أو أشغال" },
-        { "relation": "transport_contract", "position": "client", "label": "صاحب البضاعة في عقد نقل" },
-        { "relation": "lease", "position": "lessee", "label": "المستأجر في عقد إيجار" },
-        { "relation": "lease", "position": "lessor", "label": "المؤجر في عقد إيجار" },
-        { "relation": "other", "position": "creditor", "label": "الدائن بالتزام في عقد آخر" }
+        { "relation": "sale", "position": "buyer", "label": "المدعي اشترى من المدعى عليه (عقد بيع)" },
+        { "relation": "sale", "position": "seller", "label": "المدعي باع للمدعى عليه (عقد بيع)" },
+        { "relation": "works_contract", "position": "client", "label": "المدعي كلّف المدعى عليه بأشغال (المدعي صاحب المشروع)" },
+        { "relation": "works_contract", "position": "contractor", "label": "المدعي هو المقاول الذي قام بالأشغال للمدعى عليه" },
+        { "relation": "transport_contract", "position": "client", "label": "المدعي كلّف المدعى عليه بنقل بضاعة (عقد نقل)" },
+        { "relation": "lease", "position": "lessee", "label": "المدعي استأجر من المدعى عليه (عقد إيجار)" },
+        { "relation": "lease", "position": "lessor", "label": "المدعي أجّر للمدعى عليه (عقد إيجار)" },
+        { "relation": "other", "position": "creditor", "label": "المدعي دائن بالتزام في عقد آخر" }
       ],
       "elements": [
         { "event": "contract_concluded", "label": "إبرام العقد بين الطرفين", "date": true, "amount": true },
@@ -164,8 +164,8 @@
     {
       "claim": "commercial-lease-eviction",
       "roles": [
-        { "relation": "commercial_lease", "position": "lessor", "label": "المؤجر (يطلب إخلاء المحل)" },
-        { "relation": "commercial_lease", "position": "lessee", "label": "المستأجر (يطلب تعويض الاستحقاق)" }
+        { "relation": "commercial_lease", "position": "lessor", "label": "المدعي هو المؤجر مالك المحل، والمدعى عليه يستغل المحل" },
+        { "relation": "commercial_lease", "position": "lessee", "label": "المدعي هو المستأجر الذي يستغل المحل، والمدعى عليه هو المؤجر" }
       ],
       "elements": [
         { "event": "contract_concluded", "label": "إبرام عقد الإيجار التجاري", "date": true, "amount": true },
@@ -181,7 +181,7 @@
     },
     {
       "claim": "sale-non-delivery",
-      "roles": [ { "relation": "sale", "position": "buyer", "label": "المشتري" } ],
+      "roles": [ { "relation": "sale", "position": "buyer", "label": "المدعي اشترى من المدعى عليه" } ],
       "elements": [
         { "event": "contract_concluded", "label": "إبرام البيع بين الطرفين", "date": true, "amount": true },
         { "event": "payment_made", "actor": "plaintiff", "label": "دفع المدعي الثمن أو جزءا منه", "date": true, "amount": true },
@@ -246,8 +246,8 @@
     {
       "claim": "custody",
       "roles": [
-        { "relation": "marriage", "position": "mother", "label": "الأم" },
-        { "relation": "marriage", "position": "father", "label": "الأب" }
+        { "relation": "marriage", "position": "mother", "label": "المدعية هي الأم" },
+        { "relation": "marriage", "position": "father", "label": "المدعي هو الأب" }
       ],
       "elements": [
         { "event": "divorce", "label": "وقع الطلاق بين الطرفين", "date": true },
@@ -262,8 +262,8 @@
     {
       "claim": "visitation",
       "roles": [
-        { "relation": "marriage", "position": "father", "label": "الأب" },
-        { "relation": "marriage", "position": "mother", "label": "الأم" }
+        { "relation": "marriage", "position": "father", "label": "المدعي هو الأب" },
+        { "relation": "marriage", "position": "mother", "label": "المدعية هي الأم" }
       ],
       "elements": [
         { "event": "divorce", "label": "وقع الطلاق بين الطرفين", "date": true },

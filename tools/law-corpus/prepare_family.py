@@ -108,6 +108,10 @@ def assemble(lines: list[dict]) -> tuple[list[dict], list[dict]]:
             continue
         if text.startswith("*"):
             notes.append({"page": line["page"], "footnote": text})
+            marked = text.lstrip("* ")
+            if BARE_HEADING.fullmatch(marked):
+                # The publisher's footnote marker precedes the maintenance chapter in PDF index order.
+                heading_buffer.append(marked)
             continue
         if (line["kind"] == "heading" or BARE_HEADING.fullmatch(text)) and not article_label(text):
             heading_buffer.append(text)

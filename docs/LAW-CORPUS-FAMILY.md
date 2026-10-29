@@ -2,7 +2,17 @@
 
 Updated 28 October 2026, branch `codex/law-corpus`. This is **not a completed Family delivery**. The typed current candidate contains **232 identities / 232 snapshot records: 0 checked, 228 partly-checked, four unsettled**. Image readings are Codex's (AI), never human or lawyer verification.
 
-## Latest checkpoint: original-JO body collation finished
+## Latest continuation: heading paths and current amendment outcomes
+
+All57 distinct current heading paths were actually inspected on15 source sheets, with full Arabic page views where a strip clipped a heading and the original2005 JO for the three reorganized sections. The guarded review covers all232 identities. It fixes a real parser omission: the Ministry PDF places an asterisk before `الفصل الثالث` in PDF index order, causing the old preparer to discard it as a footnote. Articles74–80 now belong to **`الفصل الثالث - النفقة`**, instead of inheriting `الفصل الثاني - آثار الطلاق`. The publisher explicitly notes the French edition calls this unit `الباب الثالث`; the Arabic hierarchy is retained. BookIV's second printed subtitle, `الوصية – الهبة – الوقف`, is also retained in metadata for184–224. Altogether48 article/version paths change; **no body wording changes**.
+
+`path-decisions.json` records the actual readings and proof hashes; `apply_family_paths.py` rejects missing, duplicate or stale paths/proof. The original native preparation remains intact so prior body reviews keep their original bindings. The preparer now recognizes a footnoted bare chapter heading; its regression confirms that ordinary publisher notes remain outside article text.
+
+`family_current_outcomes.py` independently replays the current identity/outcome audit: **190 unchanged bodies,29 replacements, eight insertions and five repeals**, with the reviewed body/paragraph hashes, correct introducing publications and reviewed paths. The expected set is constructed from base1–224 plus the independently read eight insertions. Consequently **current `inventory.complete` is now true and the unapplied-current-publication list is empty**. Each snapshot records the narrowly described inventory/current-outcome checks. This is not execution or completion of the deferred historical archive.
+
+All verification states remain **0 checked,228 partly-checked,four unsettled**; `scope.complete` remains false, and all temporal bounds remain unresolved. The four wording conflicts, French JO/rectification and approval acquisition, latest discovery and external-reference tasks below remain open. New regression tests reject omitted insertions, stale body/paragraphs, incorrect repeal states and wrong introducing publications. The current Python suite has182 passing tests, including the concurrent Civil strict-audit regressions.
+
+## Original-JO body collation finished
 
 All **176 flagged unchanged-body article views** were actually read against JO24/1984, including wider original-page images when alignment clipped words or closing lines. Together with the 14 strict OCR agreements, this accounts for all 190 unchanged bodies: **171 image-collated matches with disclosed edition orthography, one guarded correction, four unresolved official-edition conflicts**. This does not certify identical printed spelling, vocalization or punctuation between editions.
 
@@ -91,8 +101,8 @@ Eight hash-guarded string corrections follow the official print:
 ## Remaining before delivery
 
 1. Resolve the four now-isolated official-edition conflicts above, acquiring/reading any applicable official rectification. The 190-body original-JO collation itself is complete; do not repeat its OCR or the 176 finished image readings.
-2. Finish paths and cross-references. All37 amended-body paragraph layouts and all27 flagged unchanged-body paragraph counts have actual source-image decisions; French compilation numbering is complete.
-3. Finish the typed candidate's amendment audit, honest temporal limits and legally needed older regimes. Source fragments and separate Ministry transcription witnesses are now present. Record Law 05-09's approval of Ordinance 05-02 without inventing article changes; local acquisition of its Arabic publication timed out.
+2. Finish external cross-reference handling and French JO structural/rectification reconciliation. Current heading paths, all37 amended-body paragraph layouts and all27 flagged unchanged-body paragraph counts have actual source-image decisions; French compilation numbering is complete.
+3. Settle source/discovery and honest temporal limits and legally needed older regimes. The current amendment-outcome audit now passes; source fragments and separate Ministry transcription witnesses are present. Record Law05-09's approval of Ordinance05-02 without inventing article changes; local acquisition of its Arabic publication timed out.
 4. Finish the remaining content QA, then repeat the schema, typed-loader, full build and regression gate for final delivery. The 20-article sample and legacy Family reconciliation below are now complete for this candidate.
 5. Recheck latest amendment discovery; the previous live index attempt timed out, so the cached cut-off is not silently advanced.
 
@@ -100,7 +110,7 @@ Evidence is in `data/law/corpus/research/family-2026-10-28/`; raw PDFs, images a
 
 ## Typed candidate and integration boundary
 
-`build_family_candidate.py` assembles `data/law/corpus/family-code/`: **227 current body candidates and five repeal markers**, with the expected 232 identities and no numbering gap. It checks pinned PDFs and cached artifact hashes before assembling; it binds body checks to final text hashes. This is a current-snapshot assembly, **not** execution of a complete historical consolidation plan. The amendment inventory remains unapplied in the report until final reconciliation and heading QA are finished. `scope.complete` and `inventory.complete` remain false.
+`build_family_candidate.py` assembles `data/law/corpus/family-code/`: **227 current body candidates and five repeal markers**, with the expected232 identities and no numbering gap. It checks pinned PDFs and cached artifact hashes before assembling; it binds body checks to final text hashes and replays the heading/current-outcome audits. This is a current-snapshot assembly, **not** execution of a complete historical consolidation plan. Current `inventory.complete` is true after the independent outcome audit; **`scope.complete` remains false** because the source/discovery and applicability limitations remain.
 
 The schema/model has one optional addition, `source.transcriptionWitnesses`. Each official compilation witness carries its **own** document URL, SHA-256, retrieval date, PDF pages, raw native/OCR streams, evidence IDs, current text hash and explanatory note. The legislative `source.publicationId` and introducing publication remain separate and retain their JO locators and raw streams. The typed loader rejects unofficial witnesses, stale text hashes, missing raw streams and duplicate pages/evidence. Adding a witness grants no verification check and cannot substitute for a missing legislative source.
 

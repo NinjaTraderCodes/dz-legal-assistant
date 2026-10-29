@@ -11,6 +11,8 @@ from collections import Counter
 
 import apply_family_jo_collation
 import apply_family_amended_structure
+import apply_family_paths
+import family_current_outcomes
 import pipeline
 
 ROOT = pipeline.ROOT
@@ -89,6 +91,7 @@ def checked_family_locator(result: dict, publication: str, records: dict, text: 
 
 def build() -> None:
     native = pipeline.read_json(WORK / "native.json")
+    reviewed_paths = apply_family_paths.main()
     source = native["source"]
     pdf = pipeline.CACHE / "current-digital/family-consolidated-bilingual.pdf"
     if pipeline.hash_file(pdf) != source["sha256"]:
@@ -134,7 +137,7 @@ def build() -> None:
     discovery = {"url": "https://droit.mjustice.gov.dz/fr/content/codes-0", "accessedOn": "2026-10-26",
                  "note": "Cached Ministry index, SHA256 46e5a42bf31a5ebe981f8faef8c6300779e1bca204c1cf50010aad339ee24bfc, "
                          "lists Ordinance05-02 as the Family amendment. A later live open timed out; cut-off not advanced."}
-    common_reasons = ["Current snapshot candidate: final independent inventory/amendment/heading QA is pending.",
+    common_reasons = ["Current snapshot only: independent identity/current-amendment-outcome and heading checks pass; remaining source/discovery QA is explicit below.",
                       "French compilation numbering aligns; JO French structural check is not yet complete.",
                       "Complete historical archive deferred by user; missing former bodies are not represented as unchanged law.",
                       "Body text uses the documented text_clean normalization (including removal of harakat/tatweel); raw witnesses are retained. Printed vocalization is not certified.",
@@ -231,21 +234,26 @@ def build() -> None:
                                "method":"Explicit reading of the original Family-amending JO paragraph and body boundaries",
                                "textSha256":pipeline.hash_text(text), "imageSha256s":structure["imageSha256s"],
                                "note":structure["note"]})
-        version = {"versionId": version_id, "text": text, "paragraphs": paragraphs, "path": raw["path"],
+        checks += [{"check": "inventory-complete", "method": "Independent current inventory: base1-224 plus the eight insertions read from Ordinance05-02; every identity present once",
+                    "date": TODAY, "result": "passed", "note": "Current snapshot inventory only; no complete historical archive is inferred."},
+                   {"check": "amendment-applied", "method": "Guarded current-outcome audit against independently read Ordinance05-02 replacement/insertion/repeal targets and reviewed body hashes",
+                    "date": TODAY, "result": "passed", "note": "Present outcomes only; not execution of a full historical consolidation plan or resolution of source conflicts/dates."}]
+        version = {"versionId": version_id, "text": text, "paragraphs": paragraphs, "path": reviewed_paths[number],
                    "inForceFrom": None, "inForceTo": None, "temporalStatus": "unsettled", "introducedBy": publication,
                    "status": "repealed" if repeal else "in-force", "source": src, "crossReferences": internal,
                    "verification": {"state": "unsettled" if not repeal and bodies[number].get("joCheck", {}).get("conflict") else "partly-checked",
                                     "checks": checks, "reasons": reasons}}
-        articles.append({"id": article_id, "number": number, "canonicalNumber": number, "path": raw["path"],
+        articles.append({"id": article_id, "number": number, "canonicalNumber": number, "path": reviewed_paths[number],
                          "availability": "text", "versions": [version]})
         unresolved.append({"id": version_id, "reason": " ".join(reasons)})
         assembly.append({"number": number, "versionId": version_id, "textSha256": pipeline.hash_text(text),
                          "currentOperation": op["operation"] if op else "unchanged-body", "externalReferencesPending": external})
     if any(ref["targetId"] not in {a["id"] for a in articles} for a in articles for v in a["versions"] for ref in v["crossReferences"]):
         raise ValueError("Extracted internal reference is absent")
+    family_current_outcomes.run(articles, inventory, bodies, reviewed_paths)
     report = {"schemaVersion": "1.0", "codeId": "family-code", "generatedOn": TODAY,
               "inventory": {"scope": "complete-code", "expected": targets, "present": targets, "gaps": [],
-                            "unappliedPublications": ["ordinance-05-02"], "complete": False},
+                            "unappliedPublications": [], "complete": True},
               "countsByState": {state: sum(a["versions"][0]["verification"]["state"] == state for a in articles)
                                 for state in ("checked", "partly-checked", "unsettled")},
               "unsettled": unresolved, "coverage": "partial", "coveredChapters": []}

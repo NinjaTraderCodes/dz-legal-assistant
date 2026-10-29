@@ -62,6 +62,18 @@ class FamilyBoundaries(unittest.TestCase):
         self.assertEqual(["الفصل الثاني - آثار الطلاق", "العدة"], articles[0]["path"])
         self.assertEqual(["الفصل الثاني - آثار الطلاق", "الحضانة"], articles[1]["path"])
 
+    def test_footnoted_chapter_is_not_discarded_with_publisher_note(self):
+        articles, notes = family.assemble([
+            line("الفصل الثاني", "heading"), line("موضوع اختباري سابق", "heading"),
+            line("المادة 73: نص اختباري سابق."),
+            line("* الفصل الثالث", "continuation"), line("النفقة", "heading"),
+            line("المادة 74: نص اختباري لاحق."),
+            line("* ملاحظة ناشر اختبارية.", "continuation"),
+        ])
+        self.assertEqual(["الفصل الثالث - النفقة"], articles[1]["path"])
+        self.assertEqual("نص اختباري لاحق.", articles[1]["text"])
+        self.assertEqual(2, len(notes))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -16,9 +16,17 @@ For the current-edition transcription check, **164 body crops** exclude historic
 
 Research records are in `data/law/corpus/research/civil-2026-10-28/`. Five new regressions cover the printed first-label alias, local/global number collisions, duplicate rejection, signature/page continuation and body-crop clipping. All **161 Python tests** pass. The last full Release checkpoint (`c9c3480`) passed all692 .NET tests with zero warnings/errors; the new checkpoint receives the same gate.
 
+## Latest continuation and second safe pause
+
+The isolated native-worker batch runner has now been exercised successfully: it resumed119 existing PP-OCR records and completed41 additional crops without repeating those readings. At the user's second pause, **Tesseract is complete164/164 and PP-OCR is complete160/164**. The four missing PP-OCR crops are **PDF168–171**. All160 completed supplementary records and their crop/artifact hashes replayed successfully. The aggregate file contains144 records;16 further valid individual records through PDF167 remain cached and must be reused. Every OCR/rendering worker is stopped. No source or model download was needed.
+
+`civil_ministry_audit.py` and seven regressions prepare the next strict comparison for all1,059 qualified candidates. It retains editorial annotations and numeric callouts, requires both readers, keeps local/general numbers separate, rejects duplicate/missing result rows and refuses identical text aligned to an unexpected source page. It checks cached source/crop/artifact hashes before reading. **The full audit has not yet run**, because the four final OCR readings are missing. Its regression tests pass; no new Civil agreement score or checked article is claimed.
+
+The full Python suite now has182 passing tests and JSON Schema validation has0 errors. The new pause checkpoint receives the required post-commit Release gate. Resume instructions are in [the latest handoff](LAW-CORPUS-PAUSE-2026-10-28-2.md).
+
 Remaining work:
 
-1. Finish both current-edition OCR streams and exact body comparisons; inspect word/digit/negation flags and retain punctuation uncertainty explicitly.
+1. Finish only the four missing supplementary OCR crops (PDF168–171), reusing all160 valid records, then run the prepared strict current-edition audit. Inspect word/digit/negation flags and retain punctuation uncertainty explicitly.
 2. Remove editorial annotations with guarded, reversible projections; validate paragraph and heading boundaries.
 3. Reconcile every amending publication, insertion, partial rewrite and repeal against the JO, including qualified local numbering. Keep current outcomes separate from the deferred complete historical archive.
 4. Import the complete current package with provenance, references and honest temporal limits; preserve the earlier typed history and checked pilot records.

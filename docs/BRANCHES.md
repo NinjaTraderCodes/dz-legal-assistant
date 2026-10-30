@@ -12,11 +12,12 @@
 
 | Branch | Owner | State |
 |---|---|---|
-| `claude/stoic-fermat-mi1gko` | — | Default branch. Alpha-01 (harness only) and the family claims merged on 30 Oct. |
+| `claude/stoic-fermat-mi1gko` | — | Default branch. Alpha-01 (harness only), the family claims and the onboarding merged on 30 Oct. |
 | `claude/family-claims` | Claude | Merged on 30 Oct: the complete Family Code and CPCA, and the family claims (`docs/FAMILY-CLAIMS.md`). Can be deleted. |
 | `claude/alpha-01` | Claude | Merged; kept until the hidden set is run on its frozen version. |
-| `codex/law-corpus` | Law agent | Active: the complete Family Code and CPCA, then the Civil priority package. Its code areas are its own (see `AGENTS.md`). |
-| `djihane/onboarding` | Djihane | Active: onboarding. It merges the default branch in, then opens a pull request when a feature is ready. |
+| `codex/law-corpus` | Law agent | Active: Family Code and CPCA delivered (in the app since 30 Oct); next the Civil Code. Its code areas are its own (see `AGENTS.md`). |
+| `djihane/onboarding` | Djihane | Done: merged on 30 Oct through `claude/onboarding-fixes`, her 7 commits under her name. Can be deleted. |
+| `claude/onboarding-fixes` | Claude | Merged on 30 Oct: the fixes to the onboarding before merging (`docs/ONBOARDING-RELEASE.md`). Can be deleted. |
 
 ## Archived
 

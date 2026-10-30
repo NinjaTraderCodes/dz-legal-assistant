@@ -1,5 +1,15 @@
 # Civil priority chapters: active checkpoint, 30 October 2026
 
+## Latest: 100 new original bodies and one unresolved reference
+
+100 new original 1975 JO bodies have been read and replayed, and four prior checked JO transcriptions retained. Of the 173 unchanged bodies, 69 remain unread. The last 40 readings include 37 clause/edition matches, two guarded numeric-gloss separations and one unresolved conflict. General-contract and liability unchanged-body collation is complete. Remaining review covers sale, loans, retained lease bodies and works. Typed Civil has not changed.
+
+- **358:** The JO prints the fractions as Arabic words. Three parenthetic numeric glosses in the Ministry witness are separated into research metadata; every quantity word and paragraph is preserved.
+- **386:** The JO prints ??? ???? without the Ministry parenthetic 6. Only that added numeric gloss is separated; the one-month notice and six-month suit period remain. Closed source-bound decisions and tests reject changing a quantity or applying this exception to another article.
+- **363:** The original Arabic JO (PDF 23, printed 1011) visibly cites 224 in paragraph 2, confirmed at 600 dpi. Current Ministry Arabic (PDF 65, printed 58) and original French JO (PDF 19, printed 835) cite 184. Limited official-domain searches identified no verified Arabic rectification. The current witness remains unchanged and receives no passed original-body check. See `article363-reference-conflict-discovery.json`. This does not establish that no rectification exists; neither number is silently treated as settled authoritative Arabic.
+
+The fixed 20-article sample is unchanged; none of 358, 386 or 363 was drawn. Final population hashes and outcome/reference audits must use the final research projection before typed import. Existing typed pilots/history are untouched. Latest approved and pushed checkpoint: `e749838554870ca819047e9a660012ebc2837421`, verified remotely. All 305 Python tests and schema validation pass before this next checkpoint; its mandatory post-commit Release gate is recorded separately.
+
 ## Original current-body collation progress
 
 The subsequent source comparison has now actually read60unchanged bodies, including all59unchanged general-contract bodies and127. The40source comparison/edition decisions in the first two batches and20in the third replay separately. No substantive word/number/negation difference was found in these60; Ministry edition spellings remain documented, without claiming uniform glyph-literal equality. The failed automated81locator is explicitly restored from its complete text visible in the actually read82proof; an empty view never passes.

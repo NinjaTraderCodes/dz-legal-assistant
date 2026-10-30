@@ -7,11 +7,24 @@ Raw compilations, prior law versions and the fixed sample remain unchanged.
 from __future__ import annotations
 
 import copy
+import re
 
 import pipeline
 
 WORK = pipeline.ROOT / "data/law/corpus/research/civil-2026-10-28"
 PRIOR = {"138", "139", "140", "379"}
+FRACTION_GLOSSES_358 = [
+    {"old":"عن (1/5) الخمس", "new":"عن الخمس"},
+    {"old":"أربعة (4/5) أخماس", "new":"أربعة أخماس"},
+    {"old":"الخمس (1/5) أن", "new":"الخمس أن"},
+]
+NUMERIC_GLOSSES = {"358":FRACTION_GLOSSES_358, "386":[{"old":"ستة (6) أشهر","new":"ستة أشهر"}]}
+GLOSS_DIGITS = {"358":["1","5","4","5","1","5"],"386":["6"]}
+CONFLICT_363_SOURCES = {
+    "A1975078":("ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",23),
+    "F1975078":("a6f6e4d51a3e0cd622682e6c8cf09bf91e96beb056cfa8378f8b4141d4001124",19),
+    "civil-consolidated-ar":("17a555bf81d5b99bf67417f3d42c157fd5df69499d6190cffbf182bc3566b573",65),
+}
 
 
 def view_for(reading: dict, views: dict) -> dict:
@@ -35,8 +48,10 @@ def apply_reading(body: dict, reading: dict, viewed: dict, root=pipeline.ROOT) -
             or viewed["textSha256"] != reading["inputTextSha256"] or viewed["text"] != body["text"]
             or body["text"] != "\n".join(body["paragraphs"])):
         raise ValueError("Original-JO reading belongs to another current body")
+    finding = reading["finding"]
     if (reading["inspection"] != "actually read; not human/lawyer verification"
-            or reading["finding"] != "same-clauses-edition-orthography" or reading["proposals"]
+            or finding not in {"same-clauses-edition-orthography", "source-read-compiler-numeric-gloss-separation",
+                              "unresolved-original-JO-reference-conflict"}
             or reading["printedBodyParagraphs"] != len(body["paragraphs"]) or not reading["note"].strip()
             or reading["images"] != viewed["images"] or reading["imageSha256s"] != viewed["imageSha256s"]
             or reading["regions"] != viewed["regions"] or not reading["images"]
@@ -47,8 +62,38 @@ def apply_reading(body: dict, reading: dict, viewed: dict, root=pipeline.ROOT) -
         if not path.is_relative_to(root.resolve()) or pipeline.hash_file(path) != sha:
             raise ValueError("Original-JO body proof changed or escaped its root")
     result = copy.deepcopy(body)
-    result["currentBaseJoCheck"] = {"result": reading["finding"], "textSha256":pipeline.hash_text(body["text"]),
-        "imageSha256s":reading["imageSha256s"],"note":reading["note"],"verificationEffect":"Current unchanged-body collation only; no historical/date certificate"}
+    if finding == "same-clauses-edition-orthography" and reading["proposals"]:
+        raise ValueError("A wording change needs its own guarded decision")
+    if finding == "source-read-compiler-numeric-gloss-separation":
+        changes = NUMERIC_GLOSSES.get(body["number"])
+        if changes is None or reading["proposals"] != changes:
+            raise ValueError("Only the closed source-read numeric glosses may be separated")
+        paragraphs = list(body["paragraphs"])
+        for change in changes:
+            if "\n".join(paragraphs).count(change["old"]) != 1:
+                raise ValueError("A numeric gloss needs its unique exact source context")
+            paragraphs = [p.replace(change["old"],change["new"],1) if change["old"] in p else p for p in paragraphs]
+        text = "\n".join(paragraphs)
+        if (re.findall(r"\d+",body["text"]) != GLOSS_DIGITS[body["number"]]
+                or re.findall(r"\d+",text)
+                or [w for w in re.findall(r"[\u0600-\u06ff]+",text)] != re.findall(r"[\u0600-\u06ff]+",body["text"])):
+            raise ValueError("A gloss separation cannot lose any Arabic quantity word or gain a numeric alteration")
+        result.update(text=text,paragraphs=paragraphs,textSha256=pipeline.hash_text(text),
+                      separatedMinistryNumericGlosses=copy.deepcopy(changes))
+    if finding == "unresolved-original-JO-reference-conflict":
+        if (body["number"] != "363" or reading["proposals"] or reading.get("referenceConflict") != {
+                "ministry":"184","originalArabic":"224","originalFrench":"184"}
+                or len(reading.get("additionalProofs",[])) != 3
+                or {p["sourceId"]:(p["sourceSha256"],p["pdfPage"]) for p in reading["additionalProofs"]} != CONFLICT_363_SOURCES):
+            raise ValueError("The363numeric source conflict must remain explicit and unapplied")
+        for proof in reading["additionalProofs"]:
+            image = (root / proof["image"]).resolve()
+            if not image.is_relative_to(root.resolve()) or pipeline.hash_file(image) != proof["imageSha256"]:
+                raise ValueError("363supplementary source proof changed")
+    result["currentBaseJoCheck"] = {"result":finding,"textSha256":pipeline.hash_text(result["text"]),
+        "imageSha256s":reading["imageSha256s"],"note":reading["note"],
+        "referenceConflict":reading.get("referenceConflict"),
+        "verificationEffect":"Unresolved363conflict grants no passed body check" if finding.startswith("unresolved-") else "Current unchanged-body collation only; no historical/date certificate"}
     return result
 
 
@@ -77,6 +122,11 @@ def main() -> None:
         if len(rows) != len(review["readings"]) or set(rows) != set(views) or not set(rows) <= pending - covered:
             raise ValueError("Original-JO batches are duplicate, incomplete or outside the selected current bodies")
         for number,reading in rows.items():
+            if reading["finding"] == "unresolved-original-JO-reference-conflict":
+                for source,(sha,_) in CONFLICT_363_SOURCES.items():
+                    pdf = pipeline.CACHE / ("current-digital/civil-consolidated-ar.pdf" if source == "civil-consolidated-ar" else source+".pdf")
+                    if pipeline.hash_file(pdf) != sha:
+                        raise ValueError("363conflicting publication PDF pin changed")
             output[number] = apply_reading(output[number],reading,view_for(reading,views))
         covered.update(rows)
         inputs[path.name] = pipeline.hash_file(path)
@@ -116,6 +166,7 @@ def main() -> None:
         "originalUnchangedBodiesAccountedFor":len(covered)+4,
         "pendingOriginalUnchangedBodies":sorted(pending-covered,key=lambda n:int(n)),
         "all173OriginalUnchangedBodiesAccountedFor":covered==pending,
+        "unresolvedWordingConflicts":[n for n,b in output.items() if b.get("currentBaseJoCheck",{}).get("result","").startswith("unresolved-")],
         "projectedCandidates":list(output.values()),"typedCivilChanged":False,"fullArticleChecked":False,
         "remaining":"Complete original-current body conflicts, retain/update fixed sample without redraw and import validated typed partial; history/dates stay separate."})
     print(len(covered),"new original bodies replayed;4prior JO transcriptions retained;",len(pending-covered),"base bodies pending; typed Civil unchanged")

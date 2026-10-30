@@ -6,7 +6,7 @@ The lawyer fills in the case details, the application produces a structured firs
 
 > **Target 1 (this milestone):** one document type, the *requête introductive d'instance* (عريضة افتتاح الدعوى), checked against CPCA (Loi 08-09) arts. 8, 14, 15 and 17.
 >
-> ⚠️ **The legal rules are not yet verified by a lawyer.** Every rule is marked `verified: false` in the data and flagged in the UI. See [docs/LEGAL-VERIFICATION.md](docs/LEGAL-VERIFICATION.md) and the Arabic reviewer guide [docs/LEGAL-REVIEW-GUIDE.ar.md](docs/LEGAL-REVIEW-GUIDE.ar.md).
+> ⚠️ **The legal rules are not yet formally verified by a practising lawyer.** Every rule is marked `verified: false` in the data and flagged in the UI. See [docs/LEGAL-VERIFICATION.md](docs/LEGAL-VERIFICATION.md) and the Arabic reviewer guide [docs/LEGAL-REVIEW-GUIDE.ar.md](docs/LEGAL-REVIEW-GUIDE.ar.md).
 
 **Supported input: formal Arabic (الفصحى).** The facts, grounds and requests should be written in formal Arabic, the language the requête itself must be in (CPCA art. 8). The quality targets and benchmark scores are measured on formal Arabic only.
 - **Proper names, company names and an occasional French legal term** are kept exactly as written.
@@ -16,6 +16,8 @@ The lawyer fills in the case details, the application produces a structured firs
 
 ![Main window in Arabic](docs/images/main-window-ar.png)
 
+*Version 0.9.0. Screens in this README are rendered by the automated UI tests, with fictitious data; where a model is shown, it is a scripted test engine.*
+
 **Try it without installing anything: https://dz-legal-assistant-ai.onrender.com.** The public web demo runs the same engine, law library and screens in the browser, with four fictitious sample cases. Its AI steps use the same model as the desktop (Gemma 3 4B), hosted, so it is not for real client data. See [docs/WEB-DEMO.md](docs/WEB-DEMO.md) (local run: `dotnet run --project src/DzLegal.Web`). The first visit after a quiet spell takes about a minute while the free server wakes up.
 
 **Law texts:** 1,361 articles are loaded:
@@ -24,6 +26,16 @@ The lawyer fills in the case details, the application produces a structured firs
 - **17 labour-law articles**, transcribed from the official page images.
 
 None of these checks is a lawyer's review ([docs/LAW-LIBRARY.md](docs/LAW-LIBRARY.md)). A quotation is checked only against a loaded text. The complete Civil Code follows when the corpus delivers it.
+
+## Team and how it was built
+
+| Who | Role | What they did |
+|---|---|---|
+| **Hicham Benkaihoul** | Product owner and developer | Defined the product and its legal pipeline, directed and reviewed the AI coding agents that wrote most of the code, ran the benchmarks on a CPU-only laptop, and tested the app. |
+| **Djihane Ben Djeddou** | UI/UX designer | Designed and built the desktop app's welcome screen, lawyer profile and settings, and start screen (merged on 30 October 2026), with an AI coding agent. |
+| **Khouloud Otmane Cherif** | Legal reviewer | Reviewed legal points of the drafting and answered the team's questions on Algerian civil procedure and claim types. |
+
+**AI tools used to build it.** Most of the code, tests and documentation were written by AI coding agents, directed and reviewed by the team: Claude Code (most of the app), OpenAI Codex (the law corpus, part of the workbench, the hidden test cases) and OpenCode (the onboarding screens). The welcome image was generated with ChatGPT. Inside the app, the only AI is the local model (Gemma 3 4B through Ollama), and the lawyer confirms everything it proposes.
 
 ## Principles
 
@@ -75,7 +87,7 @@ Each narrative section (grounds, requests) has a **✦ Assistant** button. It op
 - It is not a chatbot: a legal question gets a fixed reply («المساعد يعدل صياغة هذا القسم فقط»), never an answer.
 - Accepting keeps the old text in the section's history, so **Undo** restores it.
 
-**Regeneration never destroys edits.** «صياغة الأقسام السردية» only fills sections that are empty or unchanged since the model wrote them. A section the lawyer edited keeps its text; its own **↻ Redraft** button asks for confirmation first, and the old text can be undone.
+**Regeneration never destroys edits.** «صياغة الأسانيد» only fills sections that are empty or unchanged since the model wrote them. A section the lawyer edited keeps its text; its own **↻ Redraft** button asks for confirmation first, and the old text can be undone.
 
 **Model status** is shown by a dot next to the provider. The app asks the local Ollama (`/api/tags`, loopback only) at startup and every 30 s, and says plainly when Ollama is not running or the model is not installed (`ollama pull gemma3:4b`).
 
@@ -105,14 +117,14 @@ dotnet run --project src/DzLegal.Harness -- grounds --models gemma3:4b   # groun
 dotnet run --project src/DzLegal.App           # the desktop app
 ```
 
-The app starts in Arabic and uses the local model by default. **With no model installed,** choose **"وضع القوالب (دون ذكاء اصطناعي)" / "Template mode (no AI)"** in the toolbar. The draft is then built from the templates plus your own notes, and everything else works the same.
+The app starts in Arabic and uses the local model by default. **With no model installed,** choose **«دون ذكاء اصطناعي (قوالب)» / "Without AI (fill-in templates)"** in the draft panel. The draft is then built from the templates plus your own notes, and everything else works the same.
 
 ### Using the local model (optional, recommended)
 
 1. Install [Ollama](https://ollama.com). It runs as a local process on `127.0.0.1:11434`.
 2. `ollama pull gemma3:4b` (about 3.3 GB, one-time download). After that, no network is needed. With 16 GB RAM or a GPU, `qwen2.5:7b-instruct` writes better Arabic.
 3. Optional, on Windows, recommended on 8 GB RAM: `powershell -ExecutionPolicy Bypass -File tools\model\New-TextOnlyModel.ps1`. It creates `dz-gemma3-4b-text` from the installed `gemma3:4b` (same language weights, nothing downloaded) without the image part the app never uses: about 0.8 GB less memory, identical answers. The app uses it automatically when it is installed.
-4. Start the app and keep the default engine, "النموذج المحلي" / "Local model".
+4. Start the app and keep the default engine, "Local model (gemma3:4b)".
 
 Recommended hardware: 16 GB RAM for 7B models (CPU-only works, at about a minute or more per section), or a GPU with 8 GB or more of VRAM. **On 8 GB RAM without a GPU, use `gemma3:4b`.** It was the best of the three models benchmarked on such a machine (about 4 minutes of drafting per requête on an Intel i5-1335U, plus 2–3 minutes for the grounds analysis). `qwen2.5:3b-instruct` is weaker and only worth using on machines too small for gemma. `qwen3:4b` is **not supported** there: it writes its English reasoning into the document and takes over 10 minutes per requête. To change a setting, **don't edit `appsettings.json`**. Create `appsettings.local.json` next to it (in the repo: `src/DzLegal.App/appsettings.local.json`; git ignores it) containing only the keys you want to change. For example:
 
@@ -158,22 +170,22 @@ Never add `-p:OnlineTesting=true` here. That flag builds the temporary online te
 
 ## Demo walkthrough (for reviewers)
 
-1. `dotnet run --project src/DzLegal.App`. Click **English** (top bar) if you don't read Arabic. The UI switches to left-to-right, while the document stays Arabic and right-to-left. The desktop starts in the charcoal/gold theme; the moon icon switches themes. See the [approved workbench implementation and validation](docs/UI-WORKBENCH-RELEASE.md).
-2. Next to **Draft narrative sections**, choose **Template mode (no AI)** unless Ollama is installed.
-3. **Left panel, Case details:** the form is split into 7 steps, shown as chips. Each chip turns ✓ (done), red (a mandatory element is missing) or amber (a recommendation). A missing field gets a red border and the article it comes from, for example «مطلوب — CPCA art. 15-2». Use **Next** and **Back**, or click a chip.
-4. **Right panel, Formal check:** the score («10 من 12») and only the missing elements, expanded. Click one to jump to the step that fixes it. Present elements are folded away.
-5. **Centre, Draft:**
-   - **Edit** shows the sections on paper. Generated sections follow the form (🔒). Use **Edit by hand** to take one over, and **Restore from form** to give it back.
-   - **Facts → Legal grounds → Requests:** in the Legal grounds step, **Analyse the facts** proposes articles from the official texts with the model's reasons. Tick the ones you rely on. The Requests step then offers the usual requests.
-   - **Draft narrative sections** writes the grounds and requests, streaming the text as it comes. Sections you edited are kept.
-   - **✦ Assistant** on a narrative section proposes an edit you accept or reject (needs Ollama; template mode only echoes the text). **Undo** and **↻ Redraft** are per section.
-   - **Preview** shows the exact A4 pages. **Export PDF** and **Export Word** save the document, with or without the «مسودة» watermark.
-6. Work is autosaved every 30 s and on close. The next start offers to restore it.
-7. Keyboard shortcuts: Ctrl+N new, Ctrl+O open, Ctrl+S save, Ctrl+G draft, Ctrl+P export PDF.
+1. `dotnet run --project src/DzLegal.App`. **On first launch:** a welcome screen, then a three-step setup (the lawyer, the office, preferences). The profile fills the signature block of every new petition; **Later** skips it. Then the **start screen**: new petition, open a case, resume the last session. Everything is stored on the computer only (`%LOCALAPPDATA%\DzLegalAssistant`).
+2. Click **English** (top bar) if you don't read Arabic. The interface switches to left-to-right, while the document stays Arabic and right-to-left. The moon icon switches between the light and dark themes.
+3. In the draft panel, choose the engine **Without AI (fill-in templates)** unless Ollama is installed; with it, keep **Local model (gemma3:4b)**.
+4. **Left, Case details:** nine steps (court, plaintiff, defendant, claim, facts, legal grounds, requests, supporting documents, date and signature), each ✓ when complete. A missing mandatory field gets a red border and the article it comes from, for example «مطلوب — CPCA art. 15-2».
+5. **Legal grounds step:** **Analyse the facts** proposes a claim type and articles, each with the model's reason and the official text. Nothing is ticked until you confirm the claim type (**Yes, this is the claim type**); the **Requests** and **Supporting documents** steps then offer the usual lines for it, one click each.
+6. **Centre, the petition:** **Draft legal grounds** (Ctrl+G) writes the grounds from the ticked articles; the code writes each rule and its article, the AI only how the facts meet it. Every AI-written section carries «راجعت هذا القسم وأتحمل مضمونه», and **PDF**, **Word** and copy stay blocked, with the reasons listed, until each one is ticked. **Edit by hand** takes a section over and **Restore from form** gives it back; **Preview** shows the exact A4 pages, with or without the «مسودة» draft mark.
+7. **Right, Formal check:** «9 من 9» counts the mandatory elements of form only, then the legal points to check. Click a missing element to jump to the step that fixes it.
+8. Work is saved automatically and on close; the next start offers to restore it. Keyboard: Ctrl+N new, Ctrl+O open, Ctrl+S save, Ctrl+G draft, Ctrl+P export PDF.
 
-![English UI](docs/images/main-window-en.png)
+![Setup, step 1](docs/images/onboarding/setup-1-en-light-1366x768.png)
 
-![Dark mode](docs/images/main-window-dark.png)
+![English interface](docs/images/main-window-en.png)
+
+![Export blocked until the AI-written section is reviewed](docs/images/workbench-export-blocked.png)
+
+![Dark theme](docs/images/main-window-dark.png)
 
 ## Repository layout
 
@@ -184,11 +196,14 @@ src/
   DzLegal.Drafting/               template rendering, grounded prompts, IModelProvider
   DzLegal.ModelProviders.Stub/    template mode (no model)
   DzLegal.ModelProviders.Ollama/  local model over loopback only
-  DzLegal.Storage/                local JSON drafts + evaluation records
+  DzLegal.ModelProviders.Hosted/  hosted models, for the web demo and the online testing build only
+  DzLegal.Storage/                local JSON drafts, profile, preferences, recent cases, evaluation records
   DzLegal.Documents/              print layout → PDF (QuestPDF) and Word (Open XML), preview images
   DzLegal.Law/                    offline law library (official texts), full-text index, claim catalog, official-text parser
   DzLegal.Harness/                Form Engine accuracy report, drafting bench, `law import` maintainer tool
-  DzLegal.App/                    Avalonia desktop shell (Arabic/English)
+  DzLegal.Presentation/           screen logic shared by the desktop and the web demo (view models, Arabic/English strings)
+  DzLegal.App/                    Avalonia desktop app: welcome, setup, start screen, workbench
+  DzLegal.Web/                    Blazor Server web demo (the public live demo)
 data/law/                         official texts to import (sources.json), imported codes, import reports — see docs/LAW-LIBRARY.md
 data/document-types/requete-introductive/
   definition.json                 fields, sections, required elements (+ articles)
@@ -197,7 +212,8 @@ data/document-types/requete-introductive/
 tests/
   corpus/requete-introductive/    documents with known-correct outcomes
   DzLegal.*.Tests/                unit, integration and headless UI tests
-docs/                             architecture, offline guarantees, rule updates, legal verification
+tools/law/                        import and check the official law texts
+docs/                             architecture, offline guarantees, rule updates, legal verification, briefs
 ```
 
 ## Further documentation

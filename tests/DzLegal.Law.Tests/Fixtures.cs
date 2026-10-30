@@ -33,6 +33,7 @@ internal static class Fixtures
         CitationName = "القانون التجريبي",
         Reference = "نص وهمي للاختبار",
         Source = new LawSource { Url = "fixture" },
+        Check = LawCheck.OfficialPdfText,
         Articles = articles,
     };
 

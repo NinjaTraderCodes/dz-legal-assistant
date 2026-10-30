@@ -81,6 +81,7 @@ def build(code_id: str, folder: Path, commit: str, manifest: dict) -> dict:
         "partial": False,
         "source": {"url": base["arabic"]["url"], "sha256": base["arabic"]["sha256"], "retrievedOn": base["arabic"]["retrievedOn"]},
         "verified": False,
+        "check": "officialJournalPage",
         "transcription": "النص الساري لكل مادة مأخوذ من مدونة النصوص الرسمية (الفرع codex/law-corpus): قرئ كل نص على صفحة الجريدة الرسمية التي نشرته وقورن بها، وطبقت عليه التعديلات المنشورة. هذه مراجعة آلية وبصرية للمصدر، لا مراجعة محام.",
         "notes": [
             f"مستورد من مدونة النصوص (codex/law-corpus، الإيداع {commit}) بالأداة tools/law/import_corpus.py: {len(articles)} مادة سارية، كل نسخة منها في حالة checked.",

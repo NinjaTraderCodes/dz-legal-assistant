@@ -65,6 +65,7 @@ public static partial class LawImport
                 RetrievedOn = DateTime.UtcNow.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture),
             },
             Verified = false,
+            Check = LawCheck.OfficialPdfText,
             Articles = parsed.Articles,
         };
 

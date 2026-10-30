@@ -56,6 +56,19 @@ public sealed record LawArticle
     public string? VerifiedOn { get; init; }
 }
 
+/// <summary>How a code's text was taken from its official source and checked against it, shown to the lawyer.</summary>
+public enum LawCheck
+{
+    /// <summary>From the law corpus: each article read against the Official Journal page that published it.</summary>
+    OfficialJournalPage,
+
+    /// <summary>From the official PDF's own text layer, its letters and digits found in order in that text.</summary>
+    OfficialPdfText,
+
+    /// <summary>The PDF holds page images only: transcribed from them, then read again word by word.</summary>
+    PageImagesReadTwice,
+}
+
 /// <summary>A code or law (e.g. the Civil Code), as imported from an official source.</summary>
 public sealed record LawCode
 {
@@ -82,6 +95,9 @@ public sealed record LawCode
 
     /// <summary>False until a lawyer has checked the import against the official text.</summary>
     public bool Verified { get; init; }
+
+    /// <summary>How the text was taken and checked; required for every shipped code.</summary>
+    public LawCheck? Check { get; init; }
 
     /// <summary>
     /// How the text was taken from page images when the official PDF has no usable text layer (scans, or a font that

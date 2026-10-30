@@ -78,6 +78,16 @@ public static class LawLibraryLoader
             errors.Add($"Source '{code.Source.Url}' must be an https link to {string.Join(" or ", OfficialLinks.Hosts)} (or the name of a file downloaded from there).");
         }
 
+        // Only a text read from the PDF's own text layer goes without a transcription note.
+        if (code.Check is null)
+        {
+            errors.Add("A code needs its check method (officialJournalPage, officialPdfText or pageImagesReadTwice).");
+        }
+        else if ((code.Check == LawCheck.OfficialPdfText) != (code.Transcription is null))
+        {
+            errors.Add($"A code checked by '{code.Check}' {(code.Transcription is null ? "needs" : "cannot have")} a transcription note.");
+        }
+
         foreach (var group in code.Articles.GroupBy(a => a.Number).Where(g => g.Count() > 1))
         {
             errors.Add($"Article {group.Key} appears {group.Count()} times.");

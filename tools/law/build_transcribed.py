@@ -48,6 +48,7 @@ def main() -> int:
             "partial": True,
             "source": source(spec["file"]),
             "verified": False,
+            "check": "pageImagesReadTwice",
             "transcription": spec["transcription"],
             "notes": spec.get("notes", []),
             "articles": articles,

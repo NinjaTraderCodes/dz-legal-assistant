@@ -112,6 +112,7 @@ def main() -> int:
                 "retrievedOn": date.today().isoformat(),
             },
             "verified": False,
+            "check": "officialPdfText",
             "notes": spec.get("codeNotes", []),
             "articles": articles,
         }

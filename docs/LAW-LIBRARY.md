@@ -18,6 +18,8 @@ python3 tools/law/import_corpus.py <corpus folder> <corpus commit> family-code c
 
 The Civil Code will come the same way once the law agent delivers its checked package.
 
+Each code file says which of the three it is in `check` (`officialJournalPage`, `officialPdfText` or `pageImagesReadTwice`; `LawCode.Check`). The import tools write it, and the loader refuses a code without it, or one whose check disagrees with its transcription note. The law library page shows it to the lawyer.
+
 Every article records the file and page it is printed on (an article amended by a later law names that law's Journal Officiel), and none is marked verified until a lawyer has checked it against its page.
 
 ## How the grounds analysis works

@@ -146,6 +146,10 @@ public sealed class ShippedCatalogTests
     {
         var library = LawLibraryLoader.Load(LawRoot);
         Assert.Equal(["civil-code", "commercial-code", "cpca", "family-code", "labour-disputes", "labour-relations"], library.Codes.Select(c => c.Id).Order(StringComparer.Ordinal));
+        Assert.Equal(
+            [("civil-code", LawCheck.OfficialPdfText), ("commercial-code", LawCheck.OfficialPdfText), ("cpca", LawCheck.OfficialJournalPage),
+             ("family-code", LawCheck.OfficialJournalPage), ("labour-disputes", LawCheck.PageImagesReadTwice), ("labour-relations", LawCheck.PageImagesReadTwice)],
+            library.Codes.OrderBy(c => c.Id, StringComparer.Ordinal).Select(c => (c.Id, c.Check!.Value)));
         Assert.All(library.Codes.Where(c => c.Transcription is null).SelectMany(c => c.Articles), a =>
         {
             Assert.NotNull(a.SourceExtract);
@@ -176,6 +180,19 @@ public sealed class ShippedCatalogTests
         Assert.Contains("الخلافات الفردية للعمل", library.FindArticle("labour-disputes", "19")!.Text, StringComparison.Ordinal); // JO 6/1990, p. 242
         Assert.Contains("مدة ستة (6) أشهر", library.FindArticle("labour-relations", "73-4")!.Text, StringComparison.Ordinal);
         Assert.Contains("يجب أن تتضمن عريضة افتتاح الدعوى", library.FindArticle("cpca", "15")!.Text, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void ACodeMustSayHowItsTextWasCheckedAndAgreeWithItsTranscriptionNote()
+    {
+        var library = LawLibraryLoader.Load(LawRoot);
+        var civil = library.FindCode("civil-code")!;
+        var labour = library.FindCode("labour-disputes")!;
+        Assert.Empty(LawLibraryLoader.Validate(civil));
+        Assert.Empty(LawLibraryLoader.Validate(labour));
+        Assert.Contains(LawLibraryLoader.Validate(civil with { Check = null }), e => e.Contains("check method", StringComparison.Ordinal));
+        Assert.Contains(LawLibraryLoader.Validate(civil with { Check = LawCheck.PageImagesReadTwice }), e => e.Contains("needs a transcription note", StringComparison.Ordinal));
+        Assert.Contains(LawLibraryLoader.Validate(labour with { Check = LawCheck.OfficialPdfText }), e => e.Contains("cannot have a transcription note", StringComparison.Ordinal));
     }
 
     [Fact]

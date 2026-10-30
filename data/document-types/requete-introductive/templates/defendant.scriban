@@ -10,3 +10,7 @@
 {{~ end ~}}
 {{ gendered g "(مدعى عليه)" "(مدعى عليها)" }}
 {{~ end ~}}
+{{~ if (area court.section) == "family" ~}}
+{{~ # Family Code art. 3 bis: the prosecution is a principal party in every family case; written as practitioners do. ~}}
+بحضور: السيد وكيل الجمهورية{{ if court.name }} لدى {{ court.name }}{{ end }}.
+{{~ end ~}}

@@ -20,11 +20,20 @@ using DzLegal.Harness;
 //       Grounds as drafted today (A) beside skeleton-first grounds (B: the code states each article from its official
 //       text, the model writes only the arguments), one file per case, for a lawyer to compare.
 //   dzlegal-harness grounds --models <gemma3:4b,...|stub> [--out bench-grounds] [--law-root <data/law>] [--cases <grounds-cases>] [--endpoint ...]
-//       [--partition development,validation|release]
+//       [--partition development,validation,robustness|release]
 //       Runs the grounds analysis (read facts → search library → choose articles) on fictitious fact patterns and
 //       reports claim recognition, expected-article recall (final and by the model alone), the legal reference (required
 //       authorities, coverage gaps, excluded authorities proposed), time per case, and with --runs, how stable the
 //       answers are. Writes manifest.json (commit, data/prompt/case fingerprints, options). Reported only (no gate).
+//   dzlegal-harness facts --models <gemma3:4b,qwen3.5:2b,...> [--out bench-facts] [--partition development,validation,robustness] [--case <name>]
+//       The fact-reading step (docs/FACT-READING.md): each reader extracts roles, events, dates, amounts and requests,
+//       scored against the answer key in tests/fact-cases, critical errors counted per case.
+//   dzlegal-harness facts --alpha [--claims given|read] --models <...>   Alpha-01 (docs/ALPHA-01.md): the case is read
+//       against its claim type, given (the answer key's) or read by the analysis's first step; the role follows from it.
+//   dzlegal-harness facts check --cases <folder>   checks a case set written elsewhere (docs/HIDDEN-SET.md) without
+//       showing its text: codes, claim types, values written in the case, answers the Alpha-01 questions can express.
+//   dzlegal-harness facts export --out <inputs.json>      the cases as numbered sentences, for a reader outside .NET
+//   dzlegal-harness facts score --predictions <file.json> [--reader <name>] [--out <folder>]   scores that reader
 //   dzlegal-harness law import <code-id> (--url <official url> | --file <file>) [--law-root data/law] [--as-of yyyy-mm-dd]
 //       Maintainer tool: imports an official text into the law library and writes a review report.
 var dataRoot = Path.Combine(AppContext.BaseDirectory, "data", "document-types");
@@ -117,7 +126,8 @@ if (args.Length > 0 && args[0] == "grounds")
     var groundsCases = GroundsEvaluator.LoadCases(casesFolder);
 
     // The sealed release cases are only run when asked for by name: tuning on them would make them a validation set.
-    var partition = Option("--partition", "development,validation").Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+    // Robustness cases (Darija, French) run by default but are reported apart from the supported formal Arabic.
+    var partition = Option("--partition", "development,validation,robustness").Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
     groundsCases = groundsCases.Where(c => partition.Contains(c.Partition)).ToList();
     if (args.Contains("--case"))
     {
@@ -209,6 +219,139 @@ if (args.Length > 0 && args[0] == "grounds")
         }
 
         Console.WriteLine();
+    }
+
+    return 0;
+}
+
+if (args.Length > 0 && args[0] == "facts")
+{
+    var factCases = FactsEvaluator.LoadCases(Option("--cases", Path.Combine(AppContext.BaseDirectory, "fact-cases")));
+    if (args.Length > 1 && args[1] == "check")
+    {
+        var elements = DzLegal.Drafting.ClaimFactReader.LoadElements(Option("--law-root", Path.Combine(AppContext.BaseDirectory, "data", "law")));
+        var problems = FactCaseCheck.Problems(factCases, elements);
+        Console.WriteLine($"{factCases.Count} case(s): " + string.Join(", ", factCases.GroupBy(c => c.Partition).Select(g => $"{g.Count()} {g.Key}")));
+        Console.WriteLine("Claim types: " + string.Join(", ", factCases.GroupBy(c => c.Claim).OrderByDescending(g => g.Count()).Select(g => $"{g.Key} {g.Count()}")));
+        Console.WriteLine(factCases.Count == 0 ? "No case found in the expected format: each file holds {\"cases\": [...]} (docs/HIDDEN-SET.md)."
+            : problems.Count == 0 ? "No problem found."
+            : $"{problems.Count} problem(s):");
+        foreach (var problem in problems)
+        {
+            Console.WriteLine("  " + problem);
+        }
+
+        return problems.Count == 0 && factCases.Count > 0 ? 0 : 1;
+    }
+
+    var factPartition = Option("--partition", "development,validation,robustness,hidden").Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+    factCases = factCases.Where(c => factPartition.Contains(c.Partition) && (!args.Contains("--case") || c.Name == Option("--case", string.Empty))).ToList();
+    var factOut = args.Contains("--out") ? Option("--out", "bench-facts") : null;
+
+    if (args.Length > 1 && args[1] == "export")
+    {
+        var file = Option("--out", "fact-cases-input.json");
+        File.WriteAllText(file, FactsEvaluator.Export(factCases));
+        Console.WriteLine($"{factCases.Count} cases written to {Path.GetFullPath(file)} (numbered sentences, no answers).");
+        return 0;
+    }
+
+    if (args.Length > 1 && args[1] == "score")
+    {
+        var predictions = Option("--predictions", string.Empty);
+        if (!File.Exists(predictions))
+        {
+            Console.Error.WriteLine("facts score: --predictions <file.json> is required (see docs/FACT-READING.md).");
+            return 2;
+        }
+
+        var scored = FactsEvaluator.ScorePredictions(factCases, Option("--reader", Path.GetFileNameWithoutExtension(predictions)), predictions);
+        var text = FactsEvaluator.Summary(scored);
+        Console.WriteLine(text);
+        if (factOut is not null)
+        {
+            Directory.CreateDirectory(factOut);
+            File.WriteAllText(Path.Combine(factOut, "summary.md"), "# Fact reading bench" + Environment.NewLine + Environment.NewLine + text);
+        }
+
+        return 0;
+    }
+
+    var readers = Option("--models", string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+    if (readers.Length == 0)
+    {
+        Console.Error.WriteLine("facts: --models is required, e.g. --models gemma3:4b,qwen3.5:2b (or 'facts export' / 'facts score').");
+        return 2;
+    }
+
+    var lawRoot = Option("--law-root", Path.Combine(AppContext.BaseDirectory, "data", "law"));
+    var prompt = DzLegal.Drafting.FactReader.LoadPrompt(lawRoot);
+    var alpha = args.Contains("--alpha");
+    var claimsMode = Option("--claims", AlphaFacts.Given);
+    if (alpha && claimsMode is not (AlphaFacts.Given or AlphaFacts.Read))
+    {
+        Console.Error.WriteLine("facts: --claims is 'given' (the answer key's claim type) or 'read' (the analysis reads it).");
+        return 2;
+    }
+
+    if (factOut is not null)
+    {
+        Directory.CreateDirectory(factOut);
+        File.WriteAllText(Path.Combine(factOut, "summary.md"), "# Fact reading bench" + Environment.NewLine + Environment.NewLine);
+        RunManifest.Create(
+            "facts",
+            readers,
+            alpha
+                ? new Dictionary<string, string>
+                {
+                    ["prompt"] = Path.Combine(lawRoot, DzLegal.Drafting.ClaimFactReader.PromptFile),
+                    ["elements"] = Path.Combine(lawRoot, DzLegal.Drafting.ClaimFactReader.ElementsFile),
+                    ["claims prompt"] = Path.Combine(lawRoot, DzLegal.Law.LegalKnowledgeLoader.ReadFactsPromptFile),
+                    ["cases"] = Option("--cases", Path.Combine(AppContext.BaseDirectory, "fact-cases")),
+                }
+                : new Dictionary<string, string> { ["prompt"] = Path.Combine(lawRoot, DzLegal.Drafting.FactReader.PromptFile), ["cases"] = Option("--cases", Path.Combine(AppContext.BaseDirectory, "fact-cases")) },
+            new Dictionary<string, string>
+            {
+                ["reader"] = alpha ? "alpha-01, claims " + claimsMode : "lines",
+                ["partition"] = string.Join(',', factPartition),
+                ["case"] = args.Contains("--case") ? Option("--case", string.Empty) : "all",
+                ["endpoint"] = Option("--endpoint", "http://127.0.0.1:11434"),
+            })
+            .Write(factOut);
+    }
+
+    foreach (var model in readers)
+    {
+        Console.WriteLine(alpha
+            ? $"Fact reading (Alpha-01, claim type {(claimsMode == AlphaFacts.Given ? "given" : "read by the analysis")}) with {model}: {factCases.Count} case(s), {(claimsMode == AlphaFacts.Given ? "one call" : "two calls")} each"
+            : $"Fact reading with {model}: {factCases.Count} case(s), one call each");
+        if (HarnessModels.IsHosted(model))
+        {
+            Console.WriteLine("  Hosted engine: the (fictitious) test cases are sent to that service.");
+        }
+
+        var speed = new SpeedLog();
+        DzLegal.Drafting.IModelProvider provider;
+        try
+        {
+            provider = HarnessModels.Create(model, new Uri(Option("--endpoint", "http://127.0.0.1:11434")), TimeSpan.FromMinutes(10), speed, HarnessModels.Waiting(TimeSpan.FromSeconds(120), Console.Out));
+        }
+        catch (ArgumentException ex)
+        {
+            Console.Error.WriteLine($"facts: {ex.Message}");
+            return 2;
+        }
+
+        using var paced = new PacedModelProvider(provider, HarnessModels.Pace(model, args.Contains("--delay-seconds") ? double.Parse(Option("--delay-seconds", "0"), CultureInfo.InvariantCulture) : -1));
+        var report = alpha
+            ? await FactsEvaluator.RunAsync(factCases, $"{paced.Name} (alpha-01, claims {claimsMode})", AlphaFacts.Reader(paced, lawRoot, claimsMode), Console.Out, factOut)
+            : await FactsEvaluator.RunAsync(factCases, paced, prompt, Console.Out, factOut);
+        var text = FactsEvaluator.Summary(report, speed.Table());
+        Console.WriteLine(text);
+        if (factOut is not null)
+        {
+            File.AppendAllText(Path.Combine(factOut, "summary.md"), text);
+        }
     }
 
     return 0;

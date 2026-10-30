@@ -1,6 +1,7 @@
 {
   "name": "Same debt case, grounds and requests notes in French (output must be Arabic; facts stay in Arabic since they are inserted as written)",
   "extends": "01-debt-arabic.json",
+  "partition": "robustness",
   "inputs": {
     "notes.grounds": "Articles 106 et 107 du code civil : le contrat fait la loi des parties et doit être exécuté de bonne foi.\nArticle 124 du code civil : responsabilité pour le préjudice causé par la faute.",
     "notes.requests": "Condamner le défendeur à payer au demandeur 1.500.000 DA au principal.\nCondamner le défendeur à payer 150.000 DA de dommages-intérêts pour retard.\nMettre les dépens à la charge du défendeur."

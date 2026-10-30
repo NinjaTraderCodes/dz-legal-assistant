@@ -25,7 +25,7 @@ public sealed class DraftBenchTests : IDisposable
         foreach (var c in cases)
         {
             var id = Path.GetFileNameWithoutExtension(c);
-            Assert.Contains($"| stub | {id} |", summary, StringComparison.Ordinal);
+            Assert.Contains($"| stub | {id}", summary, StringComparison.Ordinal); // «(robustness)» follows the Darija and French cases
             Assert.True(File.Exists(Path.Combine(_out.FullName, "stub", id + ".md")), id);
         }
     }

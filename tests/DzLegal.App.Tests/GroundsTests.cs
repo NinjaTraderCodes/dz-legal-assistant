@@ -75,11 +75,10 @@ public sealed class GroundsWorkflowTests
         Assert.False(vm.NeedsClaimConfirmation);
         Assert.False(vm.IsAnalysisStale);
 
-        // The model saw the whole catalog, with the lawyer's court section as a hint only.
+        // The model only saw the catalog's civil claims and the candidates' keys.
         var reading = recorder.Requests.Single(r => r.SectionId == GroundsAnalyzer.ReadingRequestId).UserPrompt;
         Assert.Contains("loan-repayment — استرداد مبلغ قرض", reading, StringComparison.Ordinal);
-        Assert.Contains("khul — ", reading, StringComparison.Ordinal);
-        Assert.Contains("القسم الذي اختاره المحامي: ", reading, StringComparison.Ordinal);
+        Assert.DoesNotContain("khul", reading, StringComparison.Ordinal);
     }
 
     [Fact]

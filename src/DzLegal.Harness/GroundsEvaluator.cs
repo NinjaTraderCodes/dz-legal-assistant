@@ -51,7 +51,10 @@ public sealed record GroundsCase
     /// <summary>Where the reference answer comes from (article text, decision number), when not "engineering".</summary>
     public string? Source { get; init; }
 
-    /// <summary>"development" (used for tuning), "validation" or "release" (sealed: never looked at while tuning).</summary>
+    /// <summary>
+    /// "development" (used for tuning), "validation", "release" (sealed: never looked at while tuning), or "robustness"
+    /// (Darija or French facts: formal Arabic is the supported input, so they are reported apart and not counted).
+    /// </summary>
     public string Partition { get; init; } = "development";
 
     /// <summary>Cases built from the same scenario share a family, so a family never spans two partitions.</summary>
@@ -193,6 +196,9 @@ public sealed record GroundsReport(string Model, IReadOnlyList<GroundsCaseResult
             .ToList();
 
     public int ExcludedProposedCount => Results.Sum(r => r.ExcludedProposed.Count);
+
+    /// <summary>The robustness cases (Darija, French) of the same run, kept out of every figure above.</summary>
+    public IReadOnlyList<GroundsCaseResult> Robustness { get; init; } = [];
 }
 
 /// <summary>How much one case's answers vary over repeated runs of the same engine.</summary>
@@ -267,13 +273,14 @@ public static class GroundsEvaluator
             }
         }
 
-        var report = new GroundsReport(provider.Name, results) { Planned = cases.Count };
+        var report = new GroundsReport(provider.Name, results.Where(r => r.Case.Partition != Robustness).ToList()) { Planned = cases.Count(c => c.Partition != Robustness) };
+        var robustness = new GroundsReport(provider.Name, results.Where(r => r.Case.Partition == Robustness).ToList());
         if (outFolder is not null)
         {
-            await File.AppendAllTextAsync(Path.Combine(outFolder, "summary.md"), Summary(report, knowledge));
+            await File.AppendAllTextAsync(Path.Combine(outFolder, "summary.md"), Summary(report, knowledge) + RobustnessSummary(robustness));
         }
 
-        return report;
+        return report with { Robustness = robustness.Results };
     }
 
     /// <summary>The authority ("code:number") has its official text in the library.</summary>
@@ -425,6 +432,29 @@ public static class GroundsEvaluator
         }
 
         return sb.ToString();
+    }
+
+    public const string Robustness = "robustness";
+
+    /// <summary>The Darija and French cases, apart: how the analysis copes outside the supported formal Arabic.</summary>
+    private static string RobustnessSummary(GroundsReport report)
+    {
+        if (report.Results.Count == 0)
+        {
+            return string.Empty;
+        }
+
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine("### Robustness: facts in Darija or French (not counted above)").AppendLine();
+        sb.AppendLine("| cases | claim exact | core recall | failures | seconds / case |");
+        sb.AppendLine("|---|---|---|---|---|");
+        sb.AppendLine(Ci, $"| {report.Results.Count} | {report.ClaimExactRate:P0} | {report.ArticleRecall:P0} | {report.Failures} | {report.AverageTime.TotalSeconds:F0} |").AppendLine();
+        foreach (var r in report.Results)
+        {
+            sb.AppendLine(Ci, $"- {(r.ClaimExact ? "✓" : "✗")} `{r.Case.Name}` expected {(r.Case.Expect.Length == 0 ? "none" : r.Case.Expect)} → {(r.Analysis.ClaimIds.Count == 0 ? "—" : string.Join(", ", r.Analysis.ClaimIds))} · {r.ExpectedFound}/{r.Case.ExpectArticles.Count} core · {r.Elapsed.TotalSeconds:F0}s");
+        }
+
+        return sb.AppendLine().ToString();
     }
 
     private static string Summary(GroundsReport report, LegalKnowledge knowledge)

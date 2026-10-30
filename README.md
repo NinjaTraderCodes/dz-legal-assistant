@@ -8,14 +8,22 @@ The lawyer fills in the case details, the application produces a structured firs
 >
 > ⚠️ **The legal rules are not yet verified by a lawyer.** Every rule is marked `verified: false` in the data and flagged in the UI. See [docs/LEGAL-VERIFICATION.md](docs/LEGAL-VERIFICATION.md) and the Arabic reviewer guide [docs/LEGAL-REVIEW-GUIDE.ar.md](docs/LEGAL-REVIEW-GUIDE.ar.md).
 
+**Supported input: formal Arabic (الفصحى).** The facts, grounds and requests should be written in formal Arabic, the language the requête itself must be in (CPCA art. 8). The quality targets and benchmark scores are measured on formal Arabic only.
+- **Proper names, company names and an occasional French legal term** are kept exactly as written.
+- **Notes in Darija or mostly in French** are still accepted, never refused or cut.
+  - The field shows a quiet note suggesting formal Arabic: «للحصول على أفضل نتيجة، اكتب هذا النص بالعربية الفصحى…».
+  - Test cases written that way form a separate *robustness* group, reported apart and not counted in the scores.
+
 ![Main window in Arabic](docs/images/main-window-ar.png)
 
 **Try it without installing anything: https://dz-legal-assistant-ai.onrender.com.** The public web demo runs the same engine, law library and screens in the browser, with four fictitious sample cases. Its AI steps use the same model as the desktop (Gemma 3 4B), hosted, so it is not for real client data. See [docs/WEB-DEMO.md](docs/WEB-DEMO.md) (local run: `dotnet run --project src/DzLegal.Web`). The first visit after a quiet spell takes about a minute while the free server wakes up.
 
-**Law texts:** 39 articles of the Civil Code, the CPCA and the Commercial Code are loaded from the official PDFs. A build script checks that each text matches the letters of its PDF page ([docs/LAW-LIBRARY.md](docs/LAW-LIBRARY.md)); that check is not a lawyer's review. Limits:
-- the CPCA texts are the 2008 originals, not yet checked against the 2022 amendment (Law 22-13);
-- the family and labour articles in the claim catalog have **no text loaded yet**: the app shows them as number only and refuses any quotation of them;
-- a quotation is checked only against a loaded text.
+**Law texts:** 1,361 articles are loaded:
+- **the complete Family Code and the complete CPCA** (including the 2022 amendment, Law 22-13). They come from the law corpus, where every text was read against the official gazette page that published it;
+- **33 articles** of the Civil and Commercial Codes, proved letter by letter against their official PDFs;
+- **17 labour-law articles**, transcribed from the official page images.
+
+None of these checks is a lawyer's review ([docs/LAW-LIBRARY.md](docs/LAW-LIBRARY.md)). A quotation is checked only against a loaded text. The complete Civil Code follows when the corpus delivers it.
 
 ## Principles
 
@@ -44,7 +52,7 @@ In the **Legal grounds** step, **«حلّل الوقائع واقترح الأس
 - an optional box for the lawyer's own arguments, and a search to add any article by number or words;
 - if the facts change after the analysis, a banner asks to analyse again, and the ticks are kept.
 
-**Requests and Documents steps:** they offer the usual requests and documents of the recognised claim types as one-click lines, plus any prerequisites (for example labour conciliation). In the Requests step, «اقترح صياغة رسمية للطلبات» asks the AI for a formal Arabic wording of the lawyer's lines (useful for notes in Darija or French). The proposal is shown only if code confirms it kept the number of requests, every amount and number, and every alternative («أو»), with no amount spelled out in words; it replaces the lawyer's lines only when the lawyer accepts it.
+**Requests and Documents steps:** they offer the usual requests and documents of the recognised claim types as one-click lines, plus any prerequisites (for example labour conciliation). In the Requests step, «اقترح صياغة رسمية للطلبات» asks the AI for a formal Arabic wording of the lawyer's lines (a help for notes that slipped into Darija or French; formal Arabic remains the supported input). The proposal is shown only if code confirms it kept the number of requests, every amount and number, and every alternative («أو»), with no amount spelled out in words; it replaces the lawyer's lines only when the lawyer accepts it.
 
 **How the draft stays grounded:**
 - The grounds are drafted from the ticked articles, plus the lawyer's own arguments.

@@ -20,7 +20,7 @@ The lawyer is never questioned. The export blockers that exist today stay unchan
 - **Offline at run time.**
   - `gemma3:4b` through Ollama on loopback; 8 GB laptops; no GPU.
   - No automatic downloads and no remote fallback.
-- **Arabic first.**
+- **Arabic first.** The supported input is formal Arabic (decided on 27 October). Darija and French-heavy notes are accepted, with a quiet note in the field, and their test cases form a separate robustness group that is not counted in the scores.
 - **The lawyer confirms the claim type and the articles,** as today. AI-written text is marked and reviewed before export.
 - **Speed.** Each stage has a prompt, output and retry budget, measured against today on the same machine and cases.
 - **Fictitious data only in tests.**

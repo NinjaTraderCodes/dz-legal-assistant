@@ -1,0 +1,49 @@
+المهمة: اقرأ نص الدعوى كما كتبه المحامي، واستخرج منه الوقائع فقط في أسطر قصيرة بالرموز المحددة أدناه. لا تحكم في القانون، ولا تذكر أي مادة قانونية، ولا تشرح.
+
+الرموز المسموح بها:
+
+العلاقة بين الطرفين:
+loan قرض، debt_acknowledgment اعتراف بدين، sale بيع، lease إيجار سكني أو مدني، commercial_lease إيجار تجاري، works_contract مقاولة أو أشغال، transport_contract نقل، supply توريد سلع بين تجار، employment عمل، marriage زواج، ownership ملكية أو حيازة دون عقد بين الطرفين، none لا عقد بينهما (فعل ضار)، inheritance تركة، company شركة، administrative قرار إداري، civil_status حالة مدنية، other غير ذلك
+
+موقع المدعي في هذه العلاقة:
+lender المقرض، borrower المقترض، creditor الدائن، debtor المدين، seller البائع، buyer المشتري، lessor المؤجر، lessee المستأجر، owner المالك، occupant الشاغل، contractor المقاول، client رب العمل في المقاولة، supplier المورد، employer المستخدم، employee العامل، husband الزوج، wife الزوجة، father الأب، mother الأم، victim المضرور، heir وارث، partner شريك، other غير ذلك
+
+الأحداث:
+contract_concluded إبرام عقد، money_lent تسليم مبلغ على سبيل القرض، debt_acknowledged اعتراف بدين، deadline_passed حلول أجل الوفاء أو التنفيذ، payment_made دفع مبلغ، debt_unpaid عدم رد دين أو قرض، price_unpaid عدم دفع الثمن، rent_unpaid عدم دفع بدل الإيجار، wages_unpaid عدم دفع الأجر أو المستحقات، maintenance_unpaid عدم دفع النفقة، goods_delivered تسليم سلع أو شيء، delivery_missing عدم التسليم، delivery_late التأخر في التسليم، work_stopped التوقف عن الأشغال أو الإخلال بها، lease_started بداية الإيجار، lease_renewal_refused رفض تجديد الإيجار، eviction_notice تنبيه بالإخلاء، notice_served إعذار أو تنبيه بالوفاء، occupation_without_title شغل ملك الغير دون سند، harm_by_person ضرر بفعل شخص، harm_by_animal ضرر بفعل حيوان، harm_by_building ضرر بانهدام بناء، harm_by_thing ضرر بفعل شيء آخر (مياه، آلة)، criminal_conviction إدانة جزائية، concealment كتمان أو تدليس، marriage زواج، divorce طلاق أو حكم به، abandonment هجر، spouse_harm ضرب أو إيذاء الزوجة، custody_held بقاء الأولاد عند أحد الوالدين، visitation_refused منع رؤية الأولاد، employment_started بداية العمل، dismissal تسريح العامل، conciliation_failed محضر عدم المصالحة، death وفاة، administrative_decision قرار إداري، record_error خطأ في سجل، custody_judgment حكم سابق أسند الحضانة أو حدد الزيارة، custodian_remarried زواج الحاضنة بغير قريب محرم، custody_renounced التنازل عن الحضانة، custodian_unfit اختلال شرط من شروط الحضانة، custody_unclaimed عدم طلب الحضانة أكثر من سنة، custodian_abroad استيطان الحاضن في بلد أجنبي، other حدث آخر
+
+الطلبات:
+payment دفع مبلغ، eviction طرد أو إخلاء، rescission فسخ عقد، damages تعويض، annulment إبطال عقد، restitution استرجاع مبلغ أو شيء، delivery تسليم، divorce طلاق، tatliq تطليق، khul خلع، maintenance نفقة، custody حضانة، custody_transfer إسقاط الحضانة ونقلها، visitation حق الزيارة، housing سكن أو بدل إيجار للمحضون، reinstatement إعادة الإدماج، wages أجور ومستحقات، partition قسمة، cancel_decision إلغاء قرار، correction تصحيح، dissolution حل شركة، guardianship منح الولاية على الأبناء، provisional_execution النفاذ المعجل، other طلب آخر
+
+الفاعل: plaintiff المدعي، defendant المدعى عليه، other شخص آخر، unknown غير معروف، - لا فاعل
+الحالة: affirmed وقع، denied ينفي النص وقوعه، disputed يدعيه طرف وينكره الآخر
+
+شكل الجواب، سطر لكل عنصر، والحقول مفصولة بالرمز |
+علاقة | العلاقة | موقع المدعي | أرقام الجمل
+حدث | الحدث | التاريخ أو - | المبلغ أو - | الفاعل | الحالة | أرقام الجمل
+طلب | الطلب | المبلغ أو - | أرقام الجمل
+
+القواعد:
+- سطر علاقة واحد بالضبط، ثم سطر لكل حدث وسطر لكل طلب.
+- أرقام الجمل هي أرقام الجمل التي ورد فيها العنصر (مثل s2 أو s2,s3).
+- انقل التاريخ والمبلغ كما وردا في الجملة، ولا تخترع تاريخا أو مبلغا. إذا لم يرد فاكتب -.
+- التاريخ يخص الحدث الذي ورد معه فقط: تاريخ بداية الإيجار ليس تاريخ إبرام العقد، وتاريخ الإعذار ليس تاريخ حلول الأجل.
+- إذا قال النص إن شيئا لم يقع (مثل: لم يوجه أي إعذار، لا علاقة لأي حيوان)، فاكتب الحدث بالحالة denied، أو لا تكتبه، ولا تكتبه affirmed أبدا.
+- الفاعل هو من قام بالحدث: من امتنع عن الدفع، من أقرض، من سرّح العامل.
+- اكتب ما ذكره النص فقط، ولا تضف حدثا أو طلبا لم يرد.
+
+مثال (قضية وهمية):
+s1 [الوقائع] باع المدعي للمدعى عليه شاحنة بثمن 3.000.000 دج بتاريخ 05/06/2023.
+s2 [الوقائع] لم يدفع المدعى عليه الثمن، ولم يوجه له المدعي أي إعذار.
+s3 [الطلبات] إلزام المدعى عليه بدفع مبلغ 3.000.000 دج.
+الجواب:
+علاقة | sale | seller | s1
+حدث | contract_concluded | 05/06/2023 | 3.000.000 | - | affirmed | s1
+حدث | price_unpaid | - | 3.000.000 | defendant | affirmed | s2
+حدث | notice_served | - | - | plaintiff | denied | s2
+طلب | payment | 3.000.000 | s3
+
+الدعوى:
+القسم الذي اختاره المحامي: {{ section }}
+{{ case }}
+
+اكتب الجواب الآن بالأسطر المحددة فقط.

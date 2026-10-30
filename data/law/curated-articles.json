@@ -1,5 +1,5 @@
 {
-  "comment": "Clean texts of the articles the four sample cases rely on, typed from the official PDFs in docs/official-law-texts. Only spacing, punctuation spacing and the letter ك (which these PDFs encode as آ) were corrected: tools/law/build_codes.py proves each text against the PDF (letters and digits, in order) and writes data/law/codes/*.json. A lawyer then checks each article against the PDF page (verified, verifiedBy, verifiedOn).",
+  "comment": "Clean texts of the articles the four sample cases rely on, typed from the official PDFs in docs/official-law-texts. Only spacing, punctuation spacing and the letter ك (which these PDFs encode as آ) were corrected: tools/law/build_codes.py proves each text against the PDF (letters and digits, in order) and writes data/law/codes/*.json. A lawyer then checks each article against the PDF page (verified, verifiedBy, verifiedOn). The cpca is no longer built here: its complete current text comes from the law corpus (tools/law/import_corpus.py).",
   "codes": {
     "civil-code": {
       "file": "docs/official-law-texts/75-58_wipo_Version.pdf",
@@ -40,26 +40,6 @@
         "674": "النص كما ورد في الملف المصدر («حق المتمتع»)؛ النص الأصلي المعروف «حق التمتع»: يجب التحقق من الجريدة الرسمية.",
         "107": "الملف المصدر يكتب «أن تنفيذ» كما هو منقول هنا."
       }
-    },
-    "cpca": {
-      "file": "docs/official-law-texts/A2008021.pdf",
-      "edition": "الجريدة الرسمية العدد 21 المؤرخة في 23 أبريل 2008 (النص الأصلي)",
-      "consolidatedAsOf": "2008-04-23",
-      "articles": {
-        "8": "يجب أن تتم الإجراءات والعقود القضائية من عرائض ومذكرات باللغة العربية، تحت طائلة عدم القبول.\nيجب أن تقدم الوثائق والمستندات باللغة العربية أو مصحوبة بترجمة رسمية إلى هذه اللغة، تحت طائلة عدم القبول.\nتتم المناقشات والمرافعات باللغة العربية.\nتصدر الأحكام القضائية باللغة العربية، تحت طائلة البطلان المثار تلقائيا من القاضي.\nيقصد بالأحكام القضائية في هذا القانون، الأوامر والأحكام والقرارات القضائية.",
-        "13": "لا يجوز لأي شخص، التقاضي ما لم تكن له صفة، وله مصلحة قائمة أو محتملة يقرها القانون.\nيثير القاضي تلقائيا انعدام الصفة في المدعي أو في المدعى عليه.\nكما يثير تلقائيا انعدام الإذن إذا ما اشترطه القانون.",
-        "14": "ترفع الدعوى أمام المحكمة بعريضة مكتوبة، موقعة ومؤرخة، تودع بأمانة الضبط من قبل المدعي أو وكيله أو محاميه، بعدد من النسخ يساوي عدد الأطراف.",
-        "15": "يجب أن تتضمن عريضة افتتاح الدعوى، تحت طائلة عدم قبولها شكلا، البيانات الآتية:\n1 - الجهة القضائية التي ترفع أمامها الدعوى،\n2 - اسم ولقب المدعي وموطنه،\n3 - اسم ولقب وموطن المدعى عليه، فإن لم يكن له موطن معلوم، فآخر موطن له،\n4 - الإشارة إلى تسمية وطبيعة الشخص المعنوي، ومقره الاجتماعي وصفة ممثله القانوني أو الاتفاقي،\n5 - عرضا موجزا للوقائع والطلبات والوسائل التي تؤسس عليها الدعوى،\n6 - الإشارة، عند الاقتضاء، إلى المستندات والوثائق المؤيدة للدعوى.",
-        "17": "لا تقيد العريضة إلا بعد دفع الرسوم المحددة قانونا، مالم ينص القانون على خلاف ذلك.\nيفصل رئيس الجهة القضائية في كل نزاع يعرض عليه حول دفع الرسوم، بأمر غير قابل لأي طعن.\nيجب إشهار عريضة رفع الدعوى لدى المحافظة العقارية، إذا تعلقت بعقار و/أو حق عيني عقاري مشهر طبقا للقانون، وتقديمها في أول جلسة ينادى فيها على القضية، تحت طائلة عدم قبولها شكلا، مالم يثبت إيداعها للإشهار.",
-        "37": "يؤول الاختصاص الإقليمي للجهة القضائية التي يقع في دائرة اختصاصها موطن المدعى عليه، وإن لم يكن له موطن معروف، فيعود الاختصاص للجهة القضائية التي يقع فيها آخر موطن له، وفي حالة اختيار موطن، يؤول الاختصاص الإقليمي للجهة القضائية التي يقع فيها الموطن المختار، ما لم ينص القانون على خلاف ذلك."
-      },
-      "notes": {
-        "15": "في الملف المصدر يتوزع نص المادة على عمودين؛ أعيد ترتيبه هنا.",
-        "8": "في الملف المصدر يتداخل نص المادة مع عمود مجاور؛ أعيد ترتيبه هنا."
-      },
-      "codeNotes": [
-        "Text as first published in 2008. The CPCA was amended by Law 22-13 (2022): check these articles against it before relying on them."
-      ]
     },
     "commercial-code": {
       "file": "docs/official-law-texts/75-59_wipo_Version.pdf",

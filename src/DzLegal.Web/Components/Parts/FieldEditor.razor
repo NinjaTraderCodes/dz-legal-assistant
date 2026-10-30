@@ -46,6 +46,10 @@
            paste so large it would break the page's connection. *@
         <div class="field-note" role="status">@Field.TooLongNote</div>
     }
+    @if (Field.IsInformal)
+    {
+        <div class="field-note field-note-quiet" role="status">@Field.InformalNote</div>
+    }
 </div>
 
 @code {

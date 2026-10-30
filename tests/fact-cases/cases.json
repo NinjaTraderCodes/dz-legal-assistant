@@ -1,0 +1,1811 @@
+{
+  "comment": "FICTITIOUS cases with the facts a correct reader extracts (the answer key of the fact-reading step, docs/CORE-REBUILD-PLAN.md §4.1). 'gold.relation' and 'gold.position' may list accepted alternatives separated by |; so may an event's or request's kind. An event marked 'decisive' must be found; 'forbidden' lists what must never be read (an event that is denied or absent, or a value bound to the wrong event). The first 46 cases come from tests/grounds-cases (partition development, Darija in robustness); the contrast cases are written to test roles, negation, competing dates and facts outside the facts field, in partition validation: do not tune the reader on them. 'claim' is the catalog claim type the lawyer would confirm (out-of-scope when none applies); Alpha-01 reads each case against it (docs/ALPHA-01.md).",
+  "cases": [
+    {
+      "name": "loan-basic",
+      "partition": "development",
+      "family": "loan-repayment", "claim": "loan-repayment",
+      "inputs": {
+        "notes.facts": "أقرض المدعي المدعى عليه مبلغ 500.000 دج بتاريخ 10/01/2024\nالتزم المدعى عليه برد المبلغ في أجل ستة أشهر\nامتنع المدعى عليه عن الرد رغم الإعذار",
+        "court.section": "القسم المدني"
+      },
+      "gold": {
+        "relation": "loan",
+        "position": "lender|creditor",
+        "events": [
+          {
+            "kind": "money_lent",
+            "polarity": "affirmed",
+            "decisive": true,
+            "date": "10/01/2024",
+            "amount": "500000",
+            "actor": "plaintiff"
+          },
+          {
+            "kind": "debt_unpaid",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          },
+          {
+            "kind": "notice_served",
+            "polarity": "affirmed",
+            "decisive": true
+          }
+        ],
+        "forbidden": [],
+        "requests": []
+      }
+    },
+    {
+      "name": "loan-darija",
+      "partition": "robustness",
+      "family": "loan-repayment", "claim": "loan-repayment",
+      "inputs": {
+        "notes.facts": "سلف المدعي للمدعى عليه 200 ألف دينار\nوعدو يرجعهم في الصيف وما رجعش\nبعث له إنذار مع محضر قضائي",
+        "court.section": "القسم المدني"
+      },
+      "gold": {
+        "relation": "loan",
+        "position": "lender|creditor",
+        "events": [
+          {
+            "kind": "money_lent",
+            "polarity": "affirmed",
+            "decisive": true,
+            "amount": "200000",
+            "actor": "plaintiff"
+          },
+          {
+            "kind": "debt_unpaid",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          },
+          {
+            "kind": "notice_served",
+            "polarity": "affirmed",
+            "decisive": true
+          }
+        ],
+        "forbidden": [],
+        "requests": []
+      }
+    },
+    {
+      "name": "loan-acknowledgment",
+      "partition": "development",
+      "family": "loan-repayment", "claim": "loan-repayment",
+      "inputs": {
+        "notes.facts": "حرر المدعى عليه اعترافا بدين لفائدة المدعي بمبلغ 1.200.000 دج\nحل أجل الوفاء ولم يسدد المدعى عليه شيئا"
+      },
+      "gold": {
+        "relation": "debt_acknowledgment|loan",
+        "position": "creditor|lender",
+        "events": [
+          {
+            "kind": "debt_acknowledged",
+            "polarity": "affirmed",
+            "decisive": true,
+            "amount": "1200000",
+            "actor": "defendant"
+          },
+          {
+            "kind": "debt_unpaid",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [],
+        "requests": []
+      }
+    },
+    {
+      "name": "loan-no-section",
+      "partition": "development",
+      "family": "loan-repayment", "claim": "loan-repayment",
+      "inputs": {
+        "notes.facts": "بقي في ذمة المدعى عليه مبلغ 300.000 دج سلفة\nماطل في الرد منذ سنتين"
+      },
+      "gold": {
+        "relation": "loan|debt_acknowledgment",
+        "position": "lender|creditor",
+        "events": [
+          {
+            "kind": "debt_unpaid|money_lent",
+            "polarity": "affirmed",
+            "decisive": true,
+            "amount": "300000"
+          }
+        ],
+        "forbidden": [],
+        "requests": []
+      }
+    },
+    {
+      "name": "sale-price",
+      "partition": "development",
+      "family": "unpaid-sale-price", "claim": "unpaid-sale-price",
+      "inputs": {
+        "notes.facts": "باع المدعي للمدعى عليه سيارة بثمن 2.000.000 دج\nتسلم المشتري السيارة ودفع 1.500.000 دج\nامتنع عن دفع باقي الثمن",
+        "court.section": "القسم المدني"
+      },
+      "gold": {
+        "relation": "sale",
+        "position": "seller",
+        "events": [
+          {
+            "kind": "contract_concluded|price_unpaid",
+            "polarity": "affirmed",
+            "decisive": false,
+            "amount": "2000000"
+          },
+          {
+            "kind": "payment_made",
+            "polarity": "affirmed",
+            "decisive": true,
+            "amount": "1500000",
+            "actor": "defendant"
+          },
+          {
+            "kind": "price_unpaid",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [],
+        "requests": []
+      }
+    },
+    {
+      "name": "sale-land-price",
+      "partition": "development",
+      "family": "unpaid-sale-price", "claim": "unpaid-sale-price",
+      "inputs": {
+        "notes.facts": "اشترى المدعى عليه من المدعي قطعة أرض بموجب عقد رسمي\nلم يدفع المشتري بقية الثمن المقدرة بـ 800.000 دج"
+      },
+      "gold": {
+        "relation": "sale",
+        "position": "seller",
+        "events": [
+          {
+            "kind": "price_unpaid",
+            "polarity": "affirmed",
+            "decisive": true,
+            "amount": "800000",
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [],
+        "requests": []
+      }
+    },
+    {
+      "name": "rescission",
+      "partition": "development",
+      "family": "contract-rescission", "claim": "contract-rescission",
+      "inputs": {
+        "notes.facts": "أبرم الطرفان عقد مقاولة لبناء مسكن\nأخل المدعى عليه بالتزامه وتوقف عن الأشغال\nيطلب المدعي فسخ العقد واسترجاع التسبيق",
+        "court.section": "القسم المدني"
+      },
+      "gold": {
+        "relation": "works_contract",
+        "position": "client",
+        "events": [
+          {
+            "kind": "work_stopped",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "rescission"
+          },
+          {
+            "kind": "restitution"
+          }
+        ]
+      }
+    },
+    {
+      "name": "rescission-sale",
+      "partition": "development",
+      "family": "contract-rescission", "claim": "contract-rescission",
+      "inputs": {
+        "notes.facts": "يلتمس المدعي فسخ عقد البيع لعدم تنفيذ البائع التزامه بالتسليم رغم إعذاره"
+      },
+      "gold": {
+        "relation": "sale",
+        "position": "buyer",
+        "events": [
+          {
+            "kind": "delivery_missing",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          },
+          {
+            "kind": "notice_served",
+            "polarity": "affirmed",
+            "decisive": true
+          }
+        ],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "rescission"
+          }
+        ]
+      }
+    },
+    {
+      "name": "contract-damages",
+      "partition": "development",
+      "family": "contract-damages", "claim": "contract-damages",
+      "inputs": {
+        "notes.facts": "تعهد المدعى عليه بتسليم الأثاث في أجل شهر حسب الاتفاق\nتأخر في التسليم ثلاثة أشهر\nلحق المدعي ضرر وخسارة بسبب التأخر ويطلب التعويض",
+        "court.section": "القسم المدني"
+      },
+      "gold": {
+        "relation": "sale|works_contract|other",
+        "position": "buyer|client|creditor|other",
+        "events": [
+          {
+            "kind": "delivery_late",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "damages"
+          }
+        ]
+      }
+    },
+    {
+      "name": "contract-damages-2",
+      "partition": "development",
+      "family": "contract-damages", "claim": "contract-damages",
+      "inputs": {
+        "notes.facts": "أخل المدعى عليه بالتزامه التعاقدي بنقل البضاعة في الموعد\nتضرر المدعي وفاته من كسب ويطالب بالتعويض"
+      },
+      "gold": {
+        "relation": "transport_contract|other",
+        "position": "client|creditor|other",
+        "events": [
+          {
+            "kind": "delivery_late|work_stopped",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "damages"
+          }
+        ]
+      }
+    },
+    {
+      "name": "tort-assault",
+      "partition": "development",
+      "family": "tort-damages", "claim": "tort-damages",
+      "inputs": {
+        "notes.facts": "تعرض المدعي لاعتداء من المدعى عليه بتاريخ 05/05/2024\nأصيب بجروح وعجز مؤقت حسب الشهادة الطبية\nأدين المدعى عليه جزائيا ويطلب المدعي التعويض عن الضرر",
+        "court.section": "القسم المدني"
+      },
+      "gold": {
+        "relation": "none",
+        "position": "victim",
+        "events": [
+          {
+            "kind": "harm_by_person",
+            "polarity": "affirmed",
+            "decisive": true,
+            "date": "05/05/2024",
+            "actor": "defendant"
+          },
+          {
+            "kind": "criminal_conviction",
+            "polarity": "affirmed",
+            "decisive": true
+          }
+        ],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "damages"
+          }
+        ]
+      }
+    },
+    {
+      "name": "tort-damage-property",
+      "partition": "development",
+      "family": "tort-damages", "claim": "tort-damages",
+      "inputs": {
+        "notes.facts": "أتلف المدعى عليه سياج المدعي بجرافته عن إهمال\nلحقت بالمدعي أضرار مادية قدرها الخبير"
+      },
+      "gold": {
+        "relation": "none",
+        "position": "victim|owner",
+        "events": [
+          {
+            "kind": "harm_by_person|harm_by_thing",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [],
+        "requests": []
+      }
+    },
+    {
+      "name": "tort-defamation",
+      "partition": "development",
+      "family": "tort-damages", "claim": "tort-damages",
+      "inputs": {
+        "notes.facts": "قام المدعى عليه بالتشهير بالمدعي على مواقع التواصل\nلحق المدعي ضرر معنوي ويطلب التعويض"
+      },
+      "gold": {
+        "relation": "none",
+        "position": "victim",
+        "events": [
+          {
+            "kind": "harm_by_person",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "damages"
+          }
+        ]
+      }
+    },
+    {
+      "name": "things-water",
+      "partition": "development",
+      "family": "liability-for-things", "claim": "liability-for-things",
+      "inputs": {
+        "notes.facts": "تسربت المياه من مسكن المدعى عليه الكائن بالطابق العلوي\nألحقت أضرارا بسقف وجدران مسكن المدعي\nرفض الجار إصلاح القنوات",
+        "court.section": "القسم المدني"
+      },
+      "gold": {
+        "relation": "none|ownership",
+        "position": "victim|owner",
+        "events": [
+          {
+            "kind": "harm_by_thing",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [
+          {
+            "kind": "harm_by_animal"
+          }
+        ],
+        "requests": []
+      }
+    },
+    {
+      "name": "things-dog",
+      "partition": "development",
+      "family": "liability-for-things", "claim": "liability-for-things",
+      "inputs": {
+        "notes.facts": "هاجم كلب المدعى عليه ابن المدعي وعضه\nلحقت به أضرار وجروح ويطلب التعويض"
+      },
+      "gold": {
+        "relation": "none",
+        "position": "victim|father|other",
+        "events": [
+          {
+            "kind": "harm_by_animal",
+            "polarity": "affirmed",
+            "decisive": true
+          }
+        ],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "damages"
+          }
+        ]
+      }
+    },
+    {
+      "name": "things-wall",
+      "partition": "development",
+      "family": "liability-for-things", "claim": "liability-for-things",
+      "inputs": {
+        "notes.facts": "انهار جدار منزل المدعى عليه على سيارة المدعي المركونة\nتضررت السيارة ويطلب المدعي التعويض"
+      },
+      "gold": {
+        "relation": "none|ownership",
+        "position": "victim|owner",
+        "events": [
+          {
+            "kind": "harm_by_building",
+            "polarity": "affirmed",
+            "decisive": true
+          }
+        ],
+        "forbidden": [
+          {
+            "kind": "harm_by_animal"
+          }
+        ],
+        "requests": [
+          {
+            "kind": "damages"
+          }
+        ]
+      }
+    },
+    {
+      "name": "rent-basic",
+      "partition": "development",
+      "family": "unpaid-rent", "claim": "unpaid-rent",
+      "inputs": {
+        "notes.facts": "يستأجر المدعى عليه شقة من المدعي بموجب عقد إيجار\nلم يدفع بدل الإيجار منذ ثمانية أشهر رغم التنبيه\nيطلب المدعي المتأخرات وطرد المستأجر",
+        "court.section": "القسم المدني"
+      },
+      "gold": {
+        "relation": "lease",
+        "position": "lessor",
+        "events": [
+          {
+            "kind": "rent_unpaid",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          },
+          {
+            "kind": "notice_served",
+            "polarity": "affirmed",
+            "decisive": true
+          }
+        ],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "payment"
+          },
+          {
+            "kind": "eviction"
+          }
+        ]
+      }
+    },
+    {
+      "name": "rent-darija",
+      "partition": "robustness",
+      "family": "unpaid-rent", "claim": "unpaid-rent",
+      "inputs": {
+        "notes.facts": "المدعى عليه ساكن في دار المدعي بالكراء\nما خلصش الكراء من جانفي\nبعثنا له إعذار"
+      },
+      "gold": {
+        "relation": "lease",
+        "position": "lessor",
+        "events": [
+          {
+            "kind": "rent_unpaid",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          },
+          {
+            "kind": "notice_served",
+            "polarity": "affirmed",
+            "decisive": true
+          }
+        ],
+        "forbidden": [],
+        "requests": []
+      }
+    },
+    {
+      "name": "occupation",
+      "partition": "development",
+      "family": "eviction-occupier-without-title", "claim": "eviction-occupier-without-title",
+      "inputs": {
+        "notes.facts": "يملك المدعي قطعة أرض بموجب عقد ملكية مشهر\nاحتلها المدعى عليه وبنى عليها كوخا دون سند\nيطلب المدعي طرده",
+        "court.section": "القسم العقاري"
+      },
+      "gold": {
+        "relation": "ownership",
+        "position": "owner",
+        "events": [
+          {
+            "kind": "occupation_without_title",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "eviction"
+          }
+        ]
+      }
+    },
+    {
+      "name": "occupation-flat",
+      "partition": "development",
+      "family": "eviction-occupier-without-title", "claim": "eviction-occupier-without-title",
+      "inputs": {
+        "notes.facts": "يشغل المدعى عليه شقة المدعي بدون وجه حق منذ وفاة والده\nرفض الخروج رغم مطالبته"
+      },
+      "gold": {
+        "relation": "ownership",
+        "position": "owner",
+        "events": [
+          {
+            "kind": "occupation_without_title",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [],
+        "requests": []
+      }
+    },
+    {
+      "name": "commercial-invoices",
+      "partition": "development",
+      "family": "commercial-debt", "claim": "commercial-debt",
+      "inputs": {
+        "notes.facts": "قامت الشركة المدعية بتوريد بضائع للمدعى عليها بموجب سندات طلب\nبقيت فواتير بمبلغ 3.400.000 دج دون تسديد\nتم إعذار المدعى عليها",
+        "court.section": "القسم التجاري"
+      },
+      "gold": {
+        "relation": "supply|sale",
+        "position": "supplier|seller|creditor",
+        "events": [
+          {
+            "kind": "debt_unpaid|price_unpaid",
+            "polarity": "affirmed",
+            "decisive": true,
+            "amount": "3400000",
+            "actor": "defendant"
+          },
+          {
+            "kind": "notice_served",
+            "polarity": "affirmed",
+            "decisive": true
+          }
+        ],
+        "forbidden": [],
+        "requests": []
+      }
+    },
+    {
+      "name": "commercial-supplies",
+      "partition": "development",
+      "family": "commercial-debt", "claim": "commercial-debt",
+      "inputs": {
+        "notes.facts": "سلم المدعي التاجر سلعا لمحل المدعى عليه\nرصيد الحساب المستحق 900.000 دج لم يسدد"
+      },
+      "gold": {
+        "relation": "supply|sale",
+        "position": "supplier|seller|creditor",
+        "events": [
+          {
+            "kind": "debt_unpaid|price_unpaid",
+            "polarity": "affirmed",
+            "decisive": true,
+            "amount": "900000",
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [],
+        "requests": []
+      }
+    },
+    {
+      "name": "commercial-lease",
+      "partition": "development",
+      "family": "commercial-lease-eviction", "claim": "commercial-lease-eviction",
+      "inputs": {
+        "notes.facts": "يستغل المدعى عليه محلا تجاريا مملوكا للمدعي بموجب إيجار تجاري\nوجه له المدعي تنبيها بالإخلاء عن طريق محضر قضائي\nرفض الخروج عند انتهاء الأجل",
+        "court.section": "القسم التجاري"
+      },
+      "gold": {
+        "relation": "commercial_lease",
+        "position": "lessor",
+        "events": [
+          {
+            "kind": "eviction_notice",
+            "polarity": "affirmed",
+            "decisive": true
+          }
+        ],
+        "forbidden": [],
+        "requests": []
+      }
+    },
+    {
+      "name": "commercial-lease-indemnity",
+      "partition": "development",
+      "family": "commercial-lease-eviction", "claim": "commercial-lease-eviction",
+      "inputs": {
+        "notes.facts": "رفض المؤجر تجديد الإيجار التجاري للمحل التجاري\nيطالب المستأجر بتعويض الاستحقاق عن فقدان القاعدة التجارية"
+      },
+      "gold": {
+        "relation": "commercial_lease",
+        "position": "lessee",
+        "events": [
+          {
+            "kind": "lease_renewal_refused",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "damages"
+          }
+        ]
+      }
+    },
+    {
+      "name": "divorce-husband",
+      "partition": "development",
+      "family": "divorce-by-husband", "claim": "divorce-by-husband",
+      "inputs": {
+        "notes.facts": "تزوج المدعي بالمدعى عليها بموجب عقد زواج سنة 2015\nأنجبا ولدين\nاستحالت العشرة بينهما ويرغب المدعي في الطلاق",
+        "court.section": "قسم شؤون الأسرة"
+      },
+      "gold": {
+        "relation": "marriage",
+        "position": "husband",
+        "events": [
+          {
+            "kind": "marriage",
+            "polarity": "affirmed",
+            "decisive": true,
+            "date": "2015"
+          }
+        ],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "divorce"
+          }
+        ]
+      }
+    },
+    {
+      "name": "tatliq-abandonment",
+      "partition": "development",
+      "family": "tatliq", "claim": "tatliq",
+      "inputs": {
+        "notes.facts": "هجر المدعى عليه زوجته المدعية منذ أكثر من أربعة أشهر\nلم ينفق عليها ولا على الأبناء\nتطلب المدعية التطليق والتعويض",
+        "court.section": "قسم شؤون الأسرة"
+      },
+      "gold": {
+        "relation": "marriage",
+        "position": "wife",
+        "events": [
+          {
+            "kind": "abandonment",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "tatliq"
+          },
+          {
+            "kind": "damages"
+          }
+        ]
+      }
+    },
+    {
+      "name": "tatliq-harm",
+      "partition": "development",
+      "family": "tatliq", "claim": "tatliq",
+      "inputs": {
+        "notes.facts": "تعرضت المدعية للضرب والإيذاء من زوجها حسب الشهادات الطبية\nتلتمس الحكم بتطليقها"
+      },
+      "gold": {
+        "relation": "marriage",
+        "position": "wife",
+        "events": [
+          {
+            "kind": "spouse_harm",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "tatliq"
+          }
+        ]
+      }
+    },
+    {
+      "name": "khul",
+      "partition": "development",
+      "family": "khul", "claim": "khul",
+      "inputs": {
+        "notes.facts": "ترغب المدعية في مخالعة زوجها المدعى عليه\nتعرض عليه مقابلا ماليا قدره 300.000 دج",
+        "court.section": "قسم شؤون الأسرة"
+      },
+      "gold": {
+        "relation": "marriage",
+        "position": "wife",
+        "events": [],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "khul",
+            "amount": "300000"
+          }
+        ]
+      }
+    },
+    {
+      "name": "khul-2",
+      "partition": "development",
+      "family": "khul", "claim": "khul",
+      "inputs": {
+        "notes.facts": "تلتمس الزوجة الخلع لعدم قدرتها على الاستمرار في الحياة الزوجية"
+      },
+      "gold": {
+        "relation": "marriage",
+        "position": "wife",
+        "events": [],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "khul"
+          }
+        ]
+      }
+    },
+    {
+      "name": "nafaqa-children",
+      "partition": "development",
+      "family": "nafaqa", "claim": "nafaqa",
+      "inputs": {
+        "notes.facts": "طلق المدعى عليه المدعية بحكم سنة 2022\nامتنع عن دفع نفقة الأبناء المحضونين منذ سنة\nتطلب المدعية النفقة من تاريخ رفع الدعوى",
+        "court.section": "قسم شؤون الأسرة"
+      },
+      "gold": {
+        "relation": "marriage",
+        "position": "mother|wife",
+        "events": [
+          {
+            "kind": "divorce",
+            "polarity": "affirmed",
+            "decisive": false,
+            "date": "2022"
+          },
+          {
+            "kind": "maintenance_unpaid",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "maintenance"
+          }
+        ]
+      }
+    },
+    {
+      "name": "nafaqa-wife",
+      "partition": "development",
+      "family": "nafaqa", "claim": "nafaqa",
+      "inputs": {
+        "notes.facts": "الزوج لا ينفق على زوجته منذ ستة أشهر رغم قيام الزوجية\nتطلب نفقة الزوجة"
+      },
+      "gold": {
+        "relation": "marriage",
+        "position": "wife",
+        "events": [
+          {
+            "kind": "maintenance_unpaid",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "maintenance"
+          }
+        ]
+      }
+    },
+    {
+      "name": "custody",
+      "partition": "development",
+      "family": "custody", "claim": "custody",
+      "inputs": {
+        "notes.facts": "بعد الطلاق بقي الابنان مع الأم\nتطلب المدعية إسناد الحضانة لها وإلزام الأب بتوفير سكن أو بدل الإيجار",
+        "court.section": "قسم شؤون الأسرة"
+      },
+      "gold": {
+        "relation": "marriage",
+        "position": "mother|wife",
+        "events": [],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "custody"
+          },
+          {
+            "kind": "housing"
+          }
+        ]
+      }
+    },
+    {
+      "name": "custody-transfer",
+      "partition": "development",
+      "family": "custody", "claim": "custody-forfeiture",
+      "inputs": {
+        "notes.facts": "يطلب الأب إسقاط الحضانة عن الأم لزواجها بأجنبي عن المحضون وإسنادها له"
+      },
+      "gold": {
+        "relation": "marriage",
+        "position": "father|husband",
+        "events": [
+          {
+            "kind": "custodian_remarried",
+            "polarity": "affirmed",
+            "decisive": true
+          }
+        ],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "custody_transfer|custody"
+          }
+        ]
+      }
+    },
+    {
+      "name": "visitation",
+      "partition": "development",
+      "family": "visitation", "claim": "visitation",
+      "inputs": {
+        "notes.facts": "تمنع المدعى عليها المدعي من رؤية أبنائه منذ الطلاق\nيطلب تمكينه من حق الزيارة",
+        "court.section": "قسم شؤون الأسرة"
+      },
+      "gold": {
+        "relation": "marriage",
+        "position": "father|husband",
+        "events": [
+          {
+            "kind": "visitation_refused",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "visitation"
+          }
+        ]
+      }
+    },
+    {
+      "name": "dismissal",
+      "partition": "development",
+      "family": "abusive-dismissal", "claim": "abusive-dismissal",
+      "inputs": {
+        "notes.facts": "يعمل المدعي لدى الشركة المدعى عليها منذ 2016\nتم تسريحه بتاريخ 01/03/2024 دون احترام الإجراءات\nحرر مكتب المصالحة محضر عدم المصالحة\nيطلب إعادة الإدماج",
+        "court.section": "القسم الاجتماعي"
+      },
+      "gold": {
+        "relation": "employment",
+        "position": "employee",
+        "events": [
+          {
+            "kind": "employment_started",
+            "polarity": "affirmed",
+            "decisive": false,
+            "date": "2016"
+          },
+          {
+            "kind": "dismissal",
+            "polarity": "affirmed",
+            "decisive": true,
+            "date": "01/03/2024",
+            "actor": "defendant"
+          },
+          {
+            "kind": "conciliation_failed",
+            "polarity": "affirmed",
+            "decisive": true
+          }
+        ],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "reinstatement"
+          }
+        ]
+      }
+    },
+    {
+      "name": "dismissal-grave-fault",
+      "partition": "development",
+      "family": "abusive-dismissal", "claim": "abusive-dismissal",
+      "inputs": {
+        "notes.facts": "فصل المستخدم العامل بحجة خطأ جسيم لم يرتكبه\nيرى العامل أن التسريح تعسفي"
+      },
+      "gold": {
+        "relation": "employment",
+        "position": "employee",
+        "events": [
+          {
+            "kind": "dismissal",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [],
+        "requests": []
+      }
+    },
+    {
+      "name": "wages",
+      "partition": "development",
+      "family": "unpaid-wages", "claim": "unpaid-wages",
+      "inputs": {
+        "notes.facts": "لم يتقاض المدعي أجوره عن أشهر أكتوبر ونوفمبر وديسمبر\nامتنعت الهيئة المستخدمة عن الدفع\nمحضر عدم المصالحة مرفق",
+        "court.section": "القسم الاجتماعي"
+      },
+      "gold": {
+        "relation": "employment",
+        "position": "employee",
+        "events": [
+          {
+            "kind": "wages_unpaid",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          },
+          {
+            "kind": "conciliation_failed",
+            "polarity": "affirmed",
+            "decisive": true
+          }
+        ],
+        "forbidden": [],
+        "requests": []
+      }
+    },
+    {
+      "name": "wages-overtime",
+      "partition": "development",
+      "family": "unpaid-wages", "claim": "unpaid-wages",
+      "inputs": {
+        "notes.facts": "يطالب العامل بمستحقات الساعات الإضافية والمنح التي لم يدفعها صاحب العمل"
+      },
+      "gold": {
+        "relation": "employment",
+        "position": "employee",
+        "events": [
+          {
+            "kind": "wages_unpaid",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "wages|payment"
+          }
+        ]
+      }
+    },
+    {
+      "name": "loan-with-section-mismatch-words",
+      "partition": "development",
+      "family": "loan-repayment", "claim": "loan-repayment",
+      "inputs": {
+        "notes.facts": "استلف المدعى عليه من المدعي مبلغا ماليا لشراء سيارة\nلم يرد المبلغ رغم حلول الأجل",
+        "court.section": "القسم المدني"
+      },
+      "gold": {
+        "relation": "loan",
+        "position": "lender|creditor",
+        "events": [
+          {
+            "kind": "debt_unpaid",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [],
+        "requests": []
+      }
+    },
+    {
+      "name": "rent-shop-civil-words",
+      "partition": "development",
+      "family": "commercial-lease-eviction", "claim": "commercial-lease-eviction",
+      "inputs": {
+        "notes.facts": "المدعى عليه مستأجر لمحل تجاري ولم يدفع بدل الإيجار ويطلب المؤجر الإخلاء",
+        "court.section": "القسم التجاري"
+      },
+      "gold": {
+        "relation": "commercial_lease|lease",
+        "position": "lessor",
+        "events": [
+          {
+            "kind": "rent_unpaid",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "eviction"
+          }
+        ]
+      }
+    },
+    {
+      "name": "none-inheritance",
+      "partition": "development",
+      "family": "out-of-scope", "claim": "out-of-scope",
+      "inputs": {
+        "notes.facts": "توفي مورث الطرفين وترك تركة تتكون من منزل وقطعة أرض\nيطلب المدعي قسمة التركة وفق الفريضة",
+        "court.section": "قسم شؤون الأسرة"
+      },
+      "gold": {
+        "relation": "inheritance",
+        "position": "heir",
+        "events": [],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "partition"
+          }
+        ]
+      }
+    },
+    {
+      "name": "none-administrative",
+      "partition": "development",
+      "family": "out-of-scope", "claim": "out-of-scope",
+      "inputs": {
+        "notes.facts": "أصدر الوالي قرارا بإلغاء رخصة البناء الممنوحة للمدعي\nيطلب المدعي إلغاء القرار الإداري لتجاوز السلطة",
+        "court.section": "المحكمة الإدارية"
+      },
+      "gold": {
+        "relation": "administrative",
+        "position": "other|owner",
+        "events": [
+          {
+            "kind": "administrative_decision",
+            "polarity": "affirmed",
+            "decisive": true
+          }
+        ],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "cancel_decision"
+          }
+        ]
+      }
+    },
+    {
+      "name": "none-commercial-company",
+      "partition": "development",
+      "family": "out-of-scope", "claim": "out-of-scope",
+      "inputs": {
+        "notes.facts": "يطلب الشريك حل الشركة ذات المسؤولية المحدودة وتعيين مصف بسبب الخلاف بين الشركاء",
+        "court.section": "القسم التجاري"
+      },
+      "gold": {
+        "relation": "company",
+        "position": "partner",
+        "events": [],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "dissolution"
+          }
+        ]
+      }
+    },
+    {
+      "name": "none-civil-status",
+      "partition": "development",
+      "family": "out-of-scope", "claim": "out-of-scope",
+      "inputs": {
+        "notes.facts": "وقع خطأ في تاريخ ميلاد المدعي في سجلات الحالة المدنية ويطلب تصحيحه"
+      },
+      "gold": {
+        "relation": "civil_status",
+        "position": "other",
+        "events": [
+          {
+            "kind": "record_error",
+            "polarity": "affirmed",
+            "decisive": true
+          }
+        ],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "correction"
+          }
+        ]
+      }
+    },
+    {
+      "name": "annulment-fraud-land",
+      "partition": "development",
+      "family": "sale-annulment-fraud", "claim": "sale-annulment-fraud",
+      "inputs": {
+        "notes.facts": "باعت المدعى عليها للمدعي قطعة أرض بتاريخ 12/02/2026 بثمن 9,000,000 دج\nتبين بعد البيع أن القطعة محل نزاع قضائي سابق كتمته البائعة عمدا\nيطلب المدعي إبطال البيع واسترجاع الثمن",
+        "court.section": "القسم المدني"
+      },
+      "gold": {
+        "relation": "sale",
+        "position": "buyer",
+        "events": [
+          {
+            "kind": "contract_concluded",
+            "polarity": "affirmed",
+            "decisive": true,
+            "date": "12/02/2026",
+            "amount": "9000000"
+          },
+          {
+            "kind": "concealment",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "annulment"
+          },
+          {
+            "kind": "restitution"
+          }
+        ]
+      }
+    },
+    {
+      "name": "non-delivery-machines",
+      "partition": "development",
+      "family": "sale-non-delivery", "claim": "sale-non-delivery",
+      "inputs": {
+        "notes.facts": "اشترى المدعي من الشركة المدعى عليها 20 آلة خياطة بتاريخ 02/04/2025 ودفع الثمن كاملا 800,000 دج\nالتزمت الشركة بالتسليم قبل 02/05/2025\nلم تسلم أي آلة إلى اليوم رغم الإعذار",
+        "court.section": "القسم التجاري"
+      },
+      "gold": {
+        "relation": "sale",
+        "position": "buyer",
+        "events": [
+          {
+            "kind": "contract_concluded",
+            "polarity": "affirmed",
+            "decisive": false,
+            "date": "02/04/2025"
+          },
+          {
+            "kind": "payment_made",
+            "polarity": "affirmed",
+            "decisive": true,
+            "amount": "800000",
+            "actor": "plaintiff"
+          },
+          {
+            "kind": "delivery_missing",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [
+          {
+            "kind": "contract_concluded",
+            "date": "02/05/2025"
+          }
+        ],
+        "requests": []
+      }
+    },
+    {
+      "name": "lease-start-vs-signing",
+      "partition": "validation",
+      "family": "lease", "claim": "unpaid-rent",
+      "inputs": {
+        "notes.facts": "أبرم المدعي مع المدعى عليه عقد إيجار شقة بتاريخ 15/02/2024.\nبدأ سريان الإيجار بتاريخ 01/03/2024 ببدل شهري قدره 35.000 دج.\nلم يدفع المدعى عليه بدلات الإيجار منذ شهر سبتمبر 2024 رغم إعذاره بتاريخ 10/12/2024.",
+        "notes.requests": "إلزام المدعى عليه بدفع بدلات الإيجار المتأخرة.\nطرد المدعى عليه من الشقة.",
+        "court.section": "القسم المدني"
+      },
+      "gold": {
+        "relation": "lease",
+        "position": "lessor",
+        "events": [
+          {
+            "kind": "contract_concluded",
+            "polarity": "affirmed",
+            "decisive": true,
+            "date": "15/02/2024"
+          },
+          {
+            "kind": "lease_started",
+            "polarity": "affirmed",
+            "decisive": true,
+            "date": "01/03/2024"
+          },
+          {
+            "kind": "rent_unpaid",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          },
+          {
+            "kind": "notice_served",
+            "polarity": "affirmed",
+            "decisive": true,
+            "date": "10/12/2024"
+          }
+        ],
+        "forbidden": [
+          {
+            "kind": "contract_concluded",
+            "date": "01/03/2024"
+          },
+          {
+            "kind": "lease_started",
+            "date": "15/02/2024"
+          }
+        ],
+        "requests": [
+          {
+            "kind": "payment"
+          },
+          {
+            "kind": "eviction"
+          }
+        ]
+      }
+    },
+    {
+      "name": "lease-date-in-documents",
+      "partition": "validation",
+      "family": "lease", "claim": "unpaid-rent",
+      "inputs": {
+        "notes.facts": "يستأجر المدعى عليه من المدعي مسكنا.\nامتنع عن دفع بدل الإيجار منذ ستة أشهر.",
+        "documents.list": "عقد إيجار مؤرخ في 01/09/2023\nمحضر إعذار مؤرخ في 15/03/2025"
+      },
+      "gold": {
+        "relation": "lease",
+        "position": "lessor",
+        "events": [
+          {
+            "kind": "contract_concluded",
+            "polarity": "affirmed",
+            "decisive": true,
+            "date": "01/09/2023"
+          },
+          {
+            "kind": "rent_unpaid",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          },
+          {
+            "kind": "notice_served",
+            "polarity": "affirmed",
+            "decisive": true,
+            "date": "15/03/2025"
+          }
+        ],
+        "forbidden": [
+          {
+            "kind": "contract_concluded",
+            "date": "15/03/2025"
+          }
+        ],
+        "requests": []
+      }
+    },
+    {
+      "name": "rent-no-notice",
+      "partition": "validation",
+      "family": "lease", "claim": "unpaid-rent",
+      "inputs": {
+        "notes.facts": "يستأجر المدعى عليه شقة المدعي بموجب عقد إيجار.\nلم يدفع بدل الإيجار منذ خمسة أشهر.\nلم يوجه المدعي أي إعذار للمستأجر بعد."
+      },
+      "gold": {
+        "relation": "lease",
+        "position": "lessor",
+        "events": [
+          {
+            "kind": "rent_unpaid",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          },
+          {
+            "kind": "notice_served",
+            "polarity": "denied",
+            "decisive": false
+          }
+        ],
+        "forbidden": [
+          {
+            "kind": "notice_served"
+          }
+        ],
+        "requests": []
+      }
+    },
+    {
+      "name": "tenant-plaintiff",
+      "partition": "validation",
+      "family": "lease", "claim": "contract-damages",
+      "inputs": {
+        "notes.facts": "يستأجر المدعي من المدعى عليه مسكنا منذ سنة 2019.\nقطع المؤجر الماء والكهرباء عن المسكن ومنع المدعي من الدخول إليه.",
+        "notes.requests": "تمكين المدعي من الانتفاع بالمسكن المؤجر.\nإلزام المدعى عليه بالتعويض عن الضرر."
+      },
+      "gold": {
+        "relation": "lease",
+        "position": "lessee",
+        "events": [
+          {
+            "kind": "harm_by_person|other",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "damages"
+          }
+        ]
+      }
+    },
+    {
+      "name": "assault-no-animal",
+      "partition": "validation",
+      "family": "tort", "claim": "tort-damages",
+      "inputs": {
+        "notes.facts": "تعرض المدعي لاعتداء بالضرب من المدعى عليه بتاريخ 03/03/2025 أمام منزله.\nلم يكن لأي حيوان أو كلب دخل في الحادث.\nأصيب المدعي بكسر حسب الشهادة الطبية.",
+        "notes.requests": "إلزام المدعى عليه بالتعويض عن الضرر الجسماني."
+      },
+      "gold": {
+        "relation": "none",
+        "position": "victim",
+        "events": [
+          {
+            "kind": "harm_by_person",
+            "polarity": "affirmed",
+            "decisive": true,
+            "date": "03/03/2025",
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [
+          {
+            "kind": "harm_by_animal"
+          }
+        ],
+        "requests": [
+          {
+            "kind": "damages"
+          }
+        ]
+      }
+    },
+    {
+      "name": "borrower-plaintiff",
+      "partition": "validation",
+      "family": "loan", "claim": "out-of-scope",
+      "inputs": {
+        "notes.facts": "اقترض المدعي من المدعى عليه مبلغ 400.000 دج سنة 2023.\nسدد المدعي كامل المبلغ بتاريخ 20/01/2025.\nيرفض المدعى عليه رد سند الدين ويطالب المدعي بالمبلغ مرة ثانية.",
+        "notes.requests": "إلزام المدعى عليه برد سند الدين إلى المدعي."
+      },
+      "gold": {
+        "relation": "loan",
+        "position": "borrower|debtor",
+        "events": [
+          {
+            "kind": "money_lent",
+            "polarity": "affirmed",
+            "decisive": true,
+            "amount": "400000",
+            "actor": "defendant"
+          },
+          {
+            "kind": "payment_made",
+            "polarity": "affirmed",
+            "decisive": true,
+            "date": "20/01/2025",
+            "actor": "plaintiff"
+          }
+        ],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "restitution|other"
+          }
+        ]
+      }
+    },
+    {
+      "name": "disputed-loan",
+      "partition": "validation",
+      "family": "loan", "claim": "loan-repayment",
+      "inputs": {
+        "notes.facts": "يدعي المدعي أنه أقرض المدعى عليه مبلغ 600.000 دج نقدا سنة 2024.\nينكر المدعى عليه استلام أي مبلغ من المدعي.\nلا يوجد سند كتابي للقرض.",
+        "notes.requests": "إلزام المدعى عليه برد مبلغ 600.000 دج."
+      },
+      "gold": {
+        "relation": "loan",
+        "position": "lender|creditor",
+        "events": [
+          {
+            "kind": "money_lent",
+            "polarity": "disputed",
+            "decisive": true,
+            "amount": "600000"
+          }
+        ],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "payment",
+            "amount": "600000"
+          }
+        ]
+      }
+    },
+    {
+      "name": "amount-in-requests",
+      "partition": "validation",
+      "family": "sale", "claim": "unpaid-sale-price",
+      "inputs": {
+        "notes.facts": "باع المدعي للمدعى عليه بضاعة بالتقسيط.\nتوقف المشتري عن دفع الأقساط المتبقية.",
+        "notes.requests": "إلزام المدعى عليه بدفع مبلغ 450.000 دج باقي الثمن."
+      },
+      "gold": {
+        "relation": "sale",
+        "position": "seller",
+        "events": [
+          {
+            "kind": "price_unpaid",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "payment",
+            "amount": "450000"
+          }
+        ]
+      }
+    },
+    {
+      "name": "loan-due-vs-notice",
+      "partition": "validation",
+      "family": "loan", "claim": "loan-repayment",
+      "inputs": {
+        "notes.facts": "أقرض المدعي المدعى عليه مبلغ 250.000 دج بتاريخ 10/01/2024 على أن يرده في 10/07/2024.\nحل الأجل ولم يرد المدعى عليه المبلغ.\nأعذره المدعي بواسطة محضر قضائي بتاريخ 05/10/2024."
+      },
+      "gold": {
+        "relation": "loan",
+        "position": "lender|creditor",
+        "events": [
+          {
+            "kind": "money_lent",
+            "polarity": "affirmed",
+            "decisive": true,
+            "date": "10/01/2024",
+            "amount": "250000",
+            "actor": "plaintiff"
+          },
+          {
+            "kind": "deadline_passed",
+            "polarity": "affirmed",
+            "decisive": true,
+            "date": "10/07/2024"
+          },
+          {
+            "kind": "debt_unpaid",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          },
+          {
+            "kind": "notice_served",
+            "polarity": "affirmed",
+            "decisive": true,
+            "date": "05/10/2024"
+          }
+        ],
+        "forbidden": [
+          {
+            "kind": "notice_served",
+            "date": "10/07/2024"
+          },
+          {
+            "kind": "deadline_passed",
+            "date": "05/10/2024"
+          }
+        ],
+        "requests": []
+      }
+    },
+    {
+      "name": "commercial-lease-1998",
+      "partition": "validation",
+      "family": "lease", "claim": "commercial-lease-eviction",
+      "inputs": {
+        "notes.facts": "يستغل المدعى عليه محلا تجاريا للمدعي بموجب عقد إيجار تجاري مبرم سنة 1998 ومجدد عدة مرات.\nوجه المدعي له تنبيها بالإخلاء مع رفض التجديد بتاريخ 02/02/2025.",
+        "notes.requests": "طرد المدعى عليه من المحل التجاري.",
+        "court.section": "القسم التجاري"
+      },
+      "gold": {
+        "relation": "commercial_lease",
+        "position": "lessor",
+        "events": [
+          {
+            "kind": "contract_concluded",
+            "polarity": "affirmed",
+            "decisive": true,
+            "date": "1998"
+          },
+          {
+            "kind": "eviction_notice",
+            "polarity": "affirmed",
+            "decisive": true,
+            "date": "02/02/2025"
+          }
+        ],
+        "forbidden": [
+          {
+            "kind": "contract_concluded",
+            "date": "02/02/2025"
+          }
+        ],
+        "requests": [
+          {
+            "kind": "eviction"
+          }
+        ]
+      }
+    },
+    {
+      "name": "tort-no-conviction",
+      "partition": "validation",
+      "family": "tort", "claim": "tort-damages",
+      "inputs": {
+        "notes.facts": "صدم المدعى عليه بسيارته سياج منزل المدعي بتاريخ 11/11/2024 بسبب السرعة.\nلم تتم متابعة المدعى عليه جزائيا.",
+        "notes.requests": "إلزام المدعى عليه بدفع مبلغ 150.000 دج تعويضا عن إصلاح السياج."
+      },
+      "gold": {
+        "relation": "none",
+        "position": "victim|owner",
+        "events": [
+          {
+            "kind": "harm_by_person|harm_by_thing",
+            "polarity": "affirmed",
+            "decisive": true,
+            "date": "11/11/2024",
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [
+          {
+            "kind": "criminal_conviction"
+          }
+        ],
+        "requests": [
+          {
+            "kind": "damages|payment",
+            "amount": "150000"
+          }
+        ]
+      }
+    },
+    {
+      "name": "dismissal-no-conciliation",
+      "partition": "validation",
+      "family": "employment", "claim": "abusive-dismissal",
+      "inputs": {
+        "notes.facts": "يعمل المدعي لدى الشركة المدعى عليها منذ 01/06/2018.\nسرحته المستخدمة بتاريخ 15/09/2025 دون إشعار.\nلم يعرض النزاع على مكتب المصالحة.",
+        "notes.requests": "إعادة إدماج المدعي في منصب عمله.\nإلزام المدعى عليها بالتعويض.",
+        "court.section": "القسم الاجتماعي"
+      },
+      "gold": {
+        "relation": "employment",
+        "position": "employee",
+        "events": [
+          {
+            "kind": "employment_started",
+            "polarity": "affirmed",
+            "decisive": true,
+            "date": "01/06/2018"
+          },
+          {
+            "kind": "dismissal",
+            "polarity": "affirmed",
+            "decisive": true,
+            "date": "15/09/2025",
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [
+          {
+            "kind": "conciliation_failed"
+          }
+        ],
+        "requests": [
+          {
+            "kind": "reinstatement"
+          },
+          {
+            "kind": "damages"
+          }
+        ]
+      }
+    },
+    {
+      "name": "loan-family-section",
+      "partition": "validation",
+      "family": "loan", "claim": "loan-repayment",
+      "inputs": {
+        "notes.facts": "أقرض المدعي جاره المدعى عليه مبلغ 120.000 دج.\nلم يرد المدعى عليه المبلغ رغم حلول الأجل.",
+        "court.section": "قسم شؤون الأسرة"
+      },
+      "gold": {
+        "relation": "loan",
+        "position": "lender|creditor",
+        "events": [
+          {
+            "kind": "money_lent",
+            "polarity": "affirmed",
+            "decisive": true,
+            "amount": "120000",
+            "actor": "plaintiff"
+          },
+          {
+            "kind": "debt_unpaid",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [],
+        "requests": []
+      }
+    },
+    {
+      "name": "buyer-plaintiff",
+      "partition": "validation",
+      "family": "sale", "claim": "sale-non-delivery",
+      "inputs": {
+        "notes.facts": "اشترى المدعي من المدعى عليه سيارة بتاريخ 01/06/2025 بثمن 1.800.000 دج دفعه كاملا.\nلم يسلم البائع وثائق السيارة رغم إعذاره.",
+        "notes.requests": "إلزام البائع بتسليم وثائق السيارة."
+      },
+      "gold": {
+        "relation": "sale",
+        "position": "buyer",
+        "events": [
+          {
+            "kind": "payment_made",
+            "polarity": "affirmed",
+            "decisive": true,
+            "amount": "1800000",
+            "actor": "plaintiff"
+          },
+          {
+            "kind": "delivery_missing",
+            "polarity": "affirmed",
+            "decisive": true,
+            "actor": "defendant"
+          },
+          {
+            "kind": "notice_served",
+            "polarity": "affirmed",
+            "decisive": true
+          }
+        ],
+        "forbidden": [],
+        "requests": [
+          {
+            "kind": "delivery"
+          }
+        ]
+      }
+    },
+    {
+      "name": "rent-monthly-vs-total",
+      "partition": "validation",
+      "family": "lease", "claim": "unpaid-rent",
+      "inputs": {
+        "notes.facts": "يستأجر المدعى عليه مسكنا من المدعي ببدل شهري قدره 50.000 دج.\nتخلف عن دفع ثمانية أشهر، أي ما مجموعه 400.000 دج.",
+        "notes.requests": "إلزام المدعى عليه بدفع مبلغ 400.000 دج."
+      },
+      "gold": {
+        "relation": "lease",
+        "position": "lessor",
+        "events": [
+          {
+            "kind": "rent_unpaid",
+            "polarity": "affirmed",
+            "decisive": true,
+            "amount": "400000",
+            "actor": "defendant"
+          }
+        ],
+        "forbidden": [
+          {
+            "kind": "rent_unpaid",
+            "amount": "50000"
+          }
+        ],
+        "requests": [
+          {
+            "kind": "payment",
+            "amount": "400000"
+          }
+        ]
+      }
+    }
+  ]
+}

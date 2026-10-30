@@ -64,6 +64,11 @@ public sealed record FactCase
 
     public string Family { get; init; } = string.Empty;
 
+    /// <summary>The catalog claim type the case falls under, as the lawyer would confirm it; <see cref="OutOfScope"/> when none does.</summary>
+    public string Claim { get; init; } = string.Empty;
+
+    public const string OutOfScope = "out-of-scope";
+
     public Dictionary<string, string> Inputs { get; init; } = [];
 
     public required FactGold Gold { get; init; }
@@ -79,9 +84,30 @@ public sealed record FactCaseFile
 /// date or amount bound to the wrong event, a denial read as a fact, an invented value.</param>
 public sealed record FactError(string Type, string Detail, bool Critical);
 
+/// <summary>What a reader returned for one case. <see cref="NotRead"/>: no claim type to read the case against, so only
+/// <see cref="ClaimErrors"/> are scored.</summary>
+public sealed record FactReading(CaseFacts Facts, string Answer)
+{
+    public string Claim { get; init; } = string.Empty;
+
+    public IReadOnlyList<FactError> ClaimErrors { get; init; } = [];
+
+    public bool NotRead { get; init; }
+
+    /// <summary>Outside the catalog with the claim type given: the app abstains, nothing to measure; left out of the tables.</summary>
+    public bool Excluded { get; init; }
+}
+
 public sealed record FactCaseResult(FactCase Case, CaseFacts Facts, string Answer, TimeSpan Elapsed, IReadOnlyList<FactError> Errors)
 {
     public string? Failure { get; init; }
+
+    public string Claim { get; init; } = string.Empty;
+
+    public bool Excluded { get; init; }
+
+    /// <summary>No reading to score (the claim type was not recognised, or rightly or wrongly outside the catalog).</summary>
+    public bool NotRead { get; init; }
 
     public bool HasCritical => Failure is not null || Errors.Any(e => e.Critical);
 }
@@ -97,7 +123,7 @@ public sealed record FactsReport(string Reader, IReadOnlyList<FactCaseResult> Re
 
     public double Rate(Func<FactCaseResult, (int Hit, int Of)> score)
     {
-        var (hit, of) = Results.Where(r => r.Failure is null).Select(score).Aggregate((0, 0), (a, b) => (a.Item1 + b.Hit, a.Item2 + b.Of));
+        var (hit, of) = Results.Where(r => r.Failure is null && !r.NotRead).Select(score).Aggregate((0, 0), (a, b) => (a.Item1 + b.Hit, a.Item2 + b.Of));
         return of == 0 ? double.NaN : (double)hit / of;
     }
 
@@ -121,12 +147,23 @@ public static class FactsEvaluator
             .SelectMany(f => JsonSerializer.Deserialize<FactCaseFile>(File.ReadAllText(f), DefinitionJson.Options)?.Cases ?? [])
             .ToList();
 
-    public static async Task<FactsReport> RunAsync(IReadOnlyList<FactCase> cases, IModelProvider provider, string prompt, TextWriter log, string? outFolder = null)
+    public static Task<FactsReport> RunAsync(IReadOnlyList<FactCase> cases, IModelProvider provider, string prompt, TextWriter log, string? outFolder = null)
+    {
+        ArgumentNullException.ThrowIfNull(provider);
+        var reader = new FactReader(provider, prompt);
+        return RunAsync(cases, provider.Name, async (_, text, ct) =>
+        {
+            var (facts, answer) = await reader.ReadAsync(text, ct);
+            return new FactReading(facts, answer);
+        }, log, outFolder);
+    }
+
+    /// <summary>Runs any reader over the cases and scores each reading as it comes.</summary>
+    public static async Task<FactsReport> RunAsync(IReadOnlyList<FactCase> cases, string readerName, Func<FactCase, CaseText, CancellationToken, Task<FactReading>> read, TextWriter log, string? outFolder = null)
     {
         ArgumentNullException.ThrowIfNull(cases);
-        ArgumentNullException.ThrowIfNull(provider);
+        ArgumentNullException.ThrowIfNull(read);
         ArgumentNullException.ThrowIfNull(log);
-        var reader = new FactReader(provider, prompt);
         var results = new List<FactCaseResult>();
         foreach (var c in cases)
         {
@@ -135,20 +172,25 @@ public static class FactsEvaluator
             FactCaseResult result;
             try
             {
-                var (facts, answer) = await reader.ReadAsync(text);
-                result = new FactCaseResult(c, facts, answer, clock.Elapsed, Score(c.Gold, facts));
+                var reading = await read(c, text, CancellationToken.None);
+                var errors = reading.NotRead ? reading.ClaimErrors : [.. reading.ClaimErrors, .. Score(c.Gold, reading.Facts)];
+                result = new FactCaseResult(c, reading.Facts, reading.Answer, clock.Elapsed, errors) { Claim = reading.Claim, Excluded = reading.Excluded, NotRead = reading.NotRead };
             }
             catch (Exception ex) when (ex is ModelProviderException or HttpRequestException or IOException or TaskCanceledException)
             {
                 result = new FactCaseResult(c, new CaseFacts(), string.Empty, clock.Elapsed, []) { Failure = ex.Message };
             }
 
-            log.WriteLine($"  [{c.Name}] {result.Elapsed.TotalSeconds:F0}s  {(result.Failure is not null ? "FAILED: " + result.Failure : result.HasCritical ? "critical: " + string.Join("; ", result.Errors.Where(e => e.Critical).Select(e => e.Type)) : "ok")}");
+            var status = result.Failure is not null ? "FAILED: " + result.Failure
+                : result.Excluded ? "outside the catalogue (not read)"
+                : result.HasCritical ? "critical: " + string.Join("; ", result.Errors.Where(e => e.Critical).Select(e => e.Type))
+                : "ok";
+            log.WriteLine($"  [{c.Name}] {result.Elapsed.TotalSeconds:F0}s  {status}");
             results.Add(result);
-            await WriteCaseAsync(outFolder, provider.Name, result, text);
+            await WriteCaseAsync(outFolder, readerName, result, text);
         }
 
-        return new FactsReport(provider.Name, results);
+        return new FactsReport(readerName, results);
     }
 
     /// <summary>
@@ -337,9 +379,9 @@ public static class FactsEvaluator
         sb.AppendLine("A critical error would make the legal decision or the draft wrong: a reversed role, a missing decisive event, a date or amount bound to the wrong event, a denial read as a fact, an invented value, a wrong requested amount.").AppendLine();
         sb.AppendLine("| partition | cases | cases with a critical error | plaintiff position | decisive events found | dates on the right event | polarity right | requests found | failures | seconds / case |");
         sb.AppendLine("|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|");
-        foreach (var part in new[] { "development", "validation", "robustness", "release" })
+        foreach (var part in new[] { "development", "validation", "robustness", "release", "hidden" })
         {
-            var subset = new FactsReport(report.Reader, report.Results.Where(r => r.Case.Partition == part).ToList());
+            var subset = new FactsReport(report.Reader, report.Results.Where(r => r.Case.Partition == part && !r.Excluded).ToList());
             if (subset.Results.Count == 0)
             {
                 continue;
@@ -350,11 +392,18 @@ public static class FactsEvaluator
 
         sb.AppendLine().AppendLine("Critical errors: " + Counts(report.ErrorsByType(critical: true)));
         sb.AppendLine().AppendLine("Other differences: " + Counts(report.ErrorsByType(critical: false))).AppendLine();
+        var excluded = report.Results.Count(r => r.Excluded);
+        if (excluded > 0)
+        {
+            sb.AppendLine(Ci, $"{excluded} case(s) outside the claim catalogue were not read and are left out of the table: with the claim type given, the app abstains on them.").AppendLine();
+        }
+
         foreach (var r in report.Results)
         {
-            var mark = r.Failure is not null ? "✗ failed" : r.HasCritical ? "✗" : "✓";
+            var mark = r.Failure is not null ? "✗ failed" : r.Excluded ? "–" : r.HasCritical ? "✗" : "✓";
             var detail = r.Failure ?? string.Join("; ", r.Errors.Where(e => e.Critical).Select(e => $"{e.Type} ({e.Detail})"));
-            sb.AppendLine(Ci, $"- {mark} `{r.Case.Name}` [{r.Case.Partition}] {r.Elapsed.TotalSeconds:F0}s{(detail.Length > 0 ? " · " + detail : string.Empty)}");
+            var claim = r.Claim.Length > 0 ? $" ({r.Claim})" : string.Empty;
+            sb.AppendLine(Ci, $"- {mark} `{r.Case.Name}`{claim} [{r.Case.Partition}] {r.Elapsed.TotalSeconds:F0}s{(detail.Length > 0 ? " · " + detail : string.Empty)}");
         }
 
         if (timings is not null)
@@ -404,6 +453,11 @@ public static class FactsEvaluator
         var folder = Path.Combine(outFolder, string.Concat(reader.Select(ch => char.IsLetterOrDigit(ch) || ch is '.' or '-' or '_' ? ch : '_')));
         Directory.CreateDirectory(folder);
         var sb = new StringBuilder().AppendLine(Ci, $"# {r.Case.Name} — {reader}").AppendLine();
+        if (r.Claim.Length > 0)
+        {
+            sb.AppendLine(Ci, $"Claim type read against: {r.Claim} (expected: {r.Case.Claim})").AppendLine();
+        }
+
         sb.AppendLine("## Case").AppendLine().AppendLine("```").AppendLine(text.Render()).AppendLine("```").AppendLine();
         sb.AppendLine("## Answer").AppendLine().AppendLine("```").AppendLine(r.Failure ?? r.Answer).AppendLine("```").AppendLine();
         sb.AppendLine("## Errors").AppendLine();

@@ -1,0 +1,87 @@
+# Fact reading bench
+
+## ollama gemma3:4b @ 127.0.0.1:11434 (alpha-01, claims given)
+
+A critical error would make the legal decision or the draft wrong: a reversed role, a missing decisive event, a date or amount bound to the wrong event, a denial read as a fact, an invented value, a wrong requested amount.
+
+| partition | cases | cases with a critical error | plaintiff position | decisive events found | dates on the right event | polarity right | requests found | failures | seconds / case |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| development | 40 | 3 | 97 % | 96 % | 88 % | 100 % | 90 % | 0 | 21 |
+| validation | 14 | 3 | 100 % | 96 % | 93 % | 93 % | 92 % | 0 | 26 |
+| robustness | 2 | 0 | 100 % | 100 % | n/a | 100 % | n/a | 0 | 25 |
+
+Critical errors: missing decisive event 3, polarity 2, plaintiff position 1
+
+Other differences: missing request 4, unreadable lines 3, date not given 2, amount not given 2, relation 1
+
+5 case(s) outside the claim catalogue were not read and are left out of the table: with the claim type given, the app abstains on them.
+
+- ✓ `loan-basic` (loan-repayment) [development] 57s
+- ✓ `loan-darija` (loan-repayment) [robustness] 29s
+- ✓ `loan-acknowledgment` (loan-repayment) [development] 31s
+- ✓ `loan-no-section` (loan-repayment) [development] 31s
+- ✓ `sale-price` (unpaid-sale-price) [development] 29s
+- ✓ `sale-land-price` (unpaid-sale-price) [development] 31s
+- ✓ `rescission` (contract-rescission) [development] 32s
+- ✓ `rescission-sale` (contract-rescission) [development] 29s
+- ✗ `contract-damages` (contract-damages) [development] 32s · plaintiff position (lessee instead of buyer|client|creditor|other)
+- ✓ `contract-damages-2` (contract-damages) [development] 29s
+- ✓ `tort-assault` (tort-damages) [development] 15s
+- ✓ `tort-damage-property` (tort-damages) [development] 13s
+- ✓ `tort-defamation` (tort-damages) [development] 13s
+- ✓ `things-water` (liability-for-things) [development] 16s
+- ✓ `things-dog` (liability-for-things) [development] 15s
+- ✓ `things-wall` (liability-for-things) [development] 15s
+- ✗ `rent-basic` (unpaid-rent) [development] 22s · missing decisive event (notice_served)
+- ✓ `rent-darija` (unpaid-rent) [robustness] 20s
+- ✓ `occupation` (eviction-occupier-without-title) [development] 15s
+- ✓ `occupation-flat` (eviction-occupier-without-title) [development] 14s
+- ✓ `commercial-invoices` (commercial-debt) [development] 21s
+- ✓ `commercial-supplies` (commercial-debt) [development] 20s
+- ✓ `commercial-lease` (commercial-lease-eviction) [development] 25s
+- ✓ `commercial-lease-indemnity` (commercial-lease-eviction) [development] 23s
+- ✓ `divorce-husband` (divorce-by-husband) [development] 12s
+- ✓ `tatliq-abandonment` (tatliq) [development] 20s
+- ✓ `tatliq-harm` (tatliq) [development] 19s
+- ✓ `khul` (khul) [development] 12s
+- ✓ `khul-2` (khul) [development] 10s
+- ✓ `nafaqa-children` (nafaqa) [development] 17s
+- ✓ `nafaqa-wife` (nafaqa) [development] 16s
+- ✓ `custody` (custody) [development] 18s
+- ✓ `custody-transfer` (custody) [development] 17s
+- ✓ `visitation` (visitation) [development] 13s
+- ✓ `dismissal` (abusive-dismissal) [development] 20s
+- ✓ `dismissal-grave-fault` (abusive-dismissal) [development] 16s
+- ✗ `wages` (unpaid-wages) [development] 17s · missing decisive event (conciliation_failed)
+- ✓ `wages-overtime` (unpaid-wages) [development] 16s
+- ✓ `loan-with-section-mismatch-words` (loan-repayment) [development] 24s
+- ✓ `rent-shop-civil-words` (commercial-lease-eviction) [development] 23s
+- – `none-inheritance` (out-of-scope) [development] 0s
+- – `none-administrative` (out-of-scope) [development] 0s
+- – `none-commercial-company` (out-of-scope) [development] 0s
+- – `none-civil-status` (out-of-scope) [development] 0s
+- ✓ `annulment-fraud-land` (sale-annulment-fraud) [development] 24s
+- ✓ `non-delivery-machines` (sale-non-delivery) [development] 27s
+- ✓ `lease-start-vs-signing` (unpaid-rent) [validation] 35s
+- ✓ `lease-date-in-documents` (unpaid-rent) [validation] 23s
+- ✗ `rent-no-notice` (unpaid-rent) [validation] 20s · polarity (notice_served: disputed instead of denied)
+- ✗ `tenant-plaintiff` (contract-damages) [validation] 36s · missing decisive event (harm_by_person|other)
+- ✓ `assault-no-animal` (tort-damages) [validation] 20s
+- – `borrower-plaintiff` (out-of-scope) [validation] 0s
+- ✗ `disputed-loan` (loan-repayment) [validation] 31s · polarity (money_lent: affirmed instead of disputed)
+- ✓ `amount-in-requests` (unpaid-sale-price) [validation] 27s
+- ✓ `loan-due-vs-notice` (loan-repayment) [validation] 33s
+- ✓ `commercial-lease-1998` (commercial-lease-eviction) [validation] 27s
+- ✓ `tort-no-conviction` (tort-damages) [validation] 17s
+- ✓ `dismissal-no-conciliation` (abusive-dismissal) [validation] 20s
+- ✓ `loan-family-section` (loan-repayment) [validation] 24s
+- ✓ `buyer-plaintiff` (sale-non-delivery) [validation] 25s
+- ✓ `rent-monthly-vs-total` (unpaid-rent) [validation] 30s
+
+### Where the time goes (ollama gemma3:4b @ 127.0.0.1:11434 (alpha-01, claims given))
+
+| call | calls | load s (avg) | prompt tokens (avg) | prompt read tok/s | answer tokens (avg) | write tok/s | first word s (avg) | prompt may be truncated |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| facts.claim | 56 | 0.2 | 735 | 44.9 | 40 | 6.7 | 16.6 | 0 |
+
+

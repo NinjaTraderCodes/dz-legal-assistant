@@ -1,10 +1,10 @@
 {
-  "comment": "FICTITIOUS cases with the facts a correct reader extracts (the answer key of the fact-reading step, docs/CORE-REBUILD-PLAN.md §4.1). 'gold.relation' and 'gold.position' may list accepted alternatives separated by |; so may an event's or request's kind. An event marked 'decisive' must be found; 'forbidden' lists what must never be read (an event that is denied or absent, or a value bound to the wrong event). The first 46 cases come from tests/grounds-cases (partition development, Darija in robustness); the contrast cases are written to test roles, negation, competing dates and facts outside the facts field, in partition validation: do not tune the reader on them.",
+  "comment": "FICTITIOUS cases with the facts a correct reader extracts (the answer key of the fact-reading step, docs/CORE-REBUILD-PLAN.md §4.1). 'gold.relation' and 'gold.position' may list accepted alternatives separated by |; so may an event's or request's kind. An event marked 'decisive' must be found; 'forbidden' lists what must never be read (an event that is denied or absent, or a value bound to the wrong event). The first 46 cases come from tests/grounds-cases (partition development, Darija in robustness); the contrast cases are written to test roles, negation, competing dates and facts outside the facts field, in partition validation: do not tune the reader on them. 'claim' is the catalog claim type the lawyer would confirm (out-of-scope when none applies); Alpha-01 reads each case against it (docs/ALPHA-01.md).",
   "cases": [
     {
       "name": "loan-basic",
       "partition": "development",
-      "family": "loan-repayment",
+      "family": "loan-repayment", "claim": "loan-repayment",
       "inputs": {
         "notes.facts": "أقرض المدعي المدعى عليه مبلغ 500.000 دج بتاريخ 10/01/2024\nالتزم المدعى عليه برد المبلغ في أجل ستة أشهر\nامتنع المدعى عليه عن الرد رغم الإعذار",
         "court.section": "القسم المدني"
@@ -40,7 +40,7 @@
     {
       "name": "loan-darija",
       "partition": "robustness",
-      "family": "loan-repayment",
+      "family": "loan-repayment", "claim": "loan-repayment",
       "inputs": {
         "notes.facts": "سلف المدعي للمدعى عليه 200 ألف دينار\nوعدو يرجعهم في الصيف وما رجعش\nبعث له إنذار مع محضر قضائي",
         "court.section": "القسم المدني"
@@ -75,7 +75,7 @@
     {
       "name": "loan-acknowledgment",
       "partition": "development",
-      "family": "loan-repayment",
+      "family": "loan-repayment", "claim": "loan-repayment",
       "inputs": {
         "notes.facts": "حرر المدعى عليه اعترافا بدين لفائدة المدعي بمبلغ 1.200.000 دج\nحل أجل الوفاء ولم يسدد المدعى عليه شيئا"
       },
@@ -104,7 +104,7 @@
     {
       "name": "loan-no-section",
       "partition": "development",
-      "family": "loan-repayment",
+      "family": "loan-repayment", "claim": "loan-repayment",
       "inputs": {
         "notes.facts": "بقي في ذمة المدعى عليه مبلغ 300.000 دج سلفة\nماطل في الرد منذ سنتين"
       },
@@ -126,7 +126,7 @@
     {
       "name": "sale-price",
       "partition": "development",
-      "family": "unpaid-sale-price",
+      "family": "unpaid-sale-price", "claim": "unpaid-sale-price",
       "inputs": {
         "notes.facts": "باع المدعي للمدعى عليه سيارة بثمن 2.000.000 دج\nتسلم المشتري السيارة ودفع 1.500.000 دج\nامتنع عن دفع باقي الثمن",
         "court.section": "القسم المدني"
@@ -162,7 +162,7 @@
     {
       "name": "sale-land-price",
       "partition": "development",
-      "family": "unpaid-sale-price",
+      "family": "unpaid-sale-price", "claim": "unpaid-sale-price",
       "inputs": {
         "notes.facts": "اشترى المدعى عليه من المدعي قطعة أرض بموجب عقد رسمي\nلم يدفع المشتري بقية الثمن المقدرة بـ 800.000 دج"
       },
@@ -185,7 +185,7 @@
     {
       "name": "rescission",
       "partition": "development",
-      "family": "contract-rescission",
+      "family": "contract-rescission", "claim": "contract-rescission",
       "inputs": {
         "notes.facts": "أبرم الطرفان عقد مقاولة لبناء مسكن\nأخل المدعى عليه بالتزامه وتوقف عن الأشغال\nيطلب المدعي فسخ العقد واسترجاع التسبيق",
         "court.section": "القسم المدني"
@@ -215,7 +215,7 @@
     {
       "name": "rescission-sale",
       "partition": "development",
-      "family": "contract-rescission",
+      "family": "contract-rescission", "claim": "contract-rescission",
       "inputs": {
         "notes.facts": "يلتمس المدعي فسخ عقد البيع لعدم تنفيذ البائع التزامه بالتسليم رغم إعذاره"
       },
@@ -246,7 +246,7 @@
     {
       "name": "contract-damages",
       "partition": "development",
-      "family": "contract-damages",
+      "family": "contract-damages", "claim": "contract-damages",
       "inputs": {
         "notes.facts": "تعهد المدعى عليه بتسليم الأثاث في أجل شهر حسب الاتفاق\nتأخر في التسليم ثلاثة أشهر\nلحق المدعي ضرر وخسارة بسبب التأخر ويطلب التعويض",
         "court.section": "القسم المدني"
@@ -273,7 +273,7 @@
     {
       "name": "contract-damages-2",
       "partition": "development",
-      "family": "contract-damages",
+      "family": "contract-damages", "claim": "contract-damages",
       "inputs": {
         "notes.facts": "أخل المدعى عليه بالتزامه التعاقدي بنقل البضاعة في الموعد\nتضرر المدعي وفاته من كسب ويطالب بالتعويض"
       },
@@ -299,7 +299,7 @@
     {
       "name": "tort-assault",
       "partition": "development",
-      "family": "tort-damages",
+      "family": "tort-damages", "claim": "tort-damages",
       "inputs": {
         "notes.facts": "تعرض المدعي لاعتداء من المدعى عليه بتاريخ 05/05/2024\nأصيب بجروح وعجز مؤقت حسب الشهادة الطبية\nأدين المدعى عليه جزائيا ويطلب المدعي التعويض عن الضرر",
         "court.section": "القسم المدني"
@@ -332,7 +332,7 @@
     {
       "name": "tort-damage-property",
       "partition": "development",
-      "family": "tort-damages",
+      "family": "tort-damages", "claim": "tort-damages",
       "inputs": {
         "notes.facts": "أتلف المدعى عليه سياج المدعي بجرافته عن إهمال\nلحقت بالمدعي أضرار مادية قدرها الخبير"
       },
@@ -354,7 +354,7 @@
     {
       "name": "tort-defamation",
       "partition": "development",
-      "family": "tort-damages",
+      "family": "tort-damages", "claim": "tort-damages",
       "inputs": {
         "notes.facts": "قام المدعى عليه بالتشهير بالمدعي على مواقع التواصل\nلحق المدعي ضرر معنوي ويطلب التعويض"
       },
@@ -380,7 +380,7 @@
     {
       "name": "things-water",
       "partition": "development",
-      "family": "liability-for-things",
+      "family": "liability-for-things", "claim": "liability-for-things",
       "inputs": {
         "notes.facts": "تسربت المياه من مسكن المدعى عليه الكائن بالطابق العلوي\nألحقت أضرارا بسقف وجدران مسكن المدعي\nرفض الجار إصلاح القنوات",
         "court.section": "القسم المدني"
@@ -407,7 +407,7 @@
     {
       "name": "things-dog",
       "partition": "development",
-      "family": "liability-for-things",
+      "family": "liability-for-things", "claim": "liability-for-things",
       "inputs": {
         "notes.facts": "هاجم كلب المدعى عليه ابن المدعي وعضه\nلحقت به أضرار وجروح ويطلب التعويض"
       },
@@ -432,7 +432,7 @@
     {
       "name": "things-wall",
       "partition": "development",
-      "family": "liability-for-things",
+      "family": "liability-for-things", "claim": "liability-for-things",
       "inputs": {
         "notes.facts": "انهار جدار منزل المدعى عليه على سيارة المدعي المركونة\nتضررت السيارة ويطلب المدعي التعويض"
       },
@@ -461,7 +461,7 @@
     {
       "name": "rent-basic",
       "partition": "development",
-      "family": "unpaid-rent",
+      "family": "unpaid-rent", "claim": "unpaid-rent",
       "inputs": {
         "notes.facts": "يستأجر المدعى عليه شقة من المدعي بموجب عقد إيجار\nلم يدفع بدل الإيجار منذ ثمانية أشهر رغم التنبيه\nيطلب المدعي المتأخرات وطرد المستأجر",
         "court.section": "القسم المدني"
@@ -496,7 +496,7 @@
     {
       "name": "rent-darija",
       "partition": "robustness",
-      "family": "unpaid-rent",
+      "family": "unpaid-rent", "claim": "unpaid-rent",
       "inputs": {
         "notes.facts": "المدعى عليه ساكن في دار المدعي بالكراء\nما خلصش الكراء من جانفي\nبعثنا له إعذار"
       },
@@ -523,7 +523,7 @@
     {
       "name": "occupation",
       "partition": "development",
-      "family": "eviction-occupier-without-title",
+      "family": "eviction-occupier-without-title", "claim": "eviction-occupier-without-title",
       "inputs": {
         "notes.facts": "يملك المدعي قطعة أرض بموجب عقد ملكية مشهر\nاحتلها المدعى عليه وبنى عليها كوخا دون سند\nيطلب المدعي طرده",
         "court.section": "القسم العقاري"
@@ -550,7 +550,7 @@
     {
       "name": "occupation-flat",
       "partition": "development",
-      "family": "eviction-occupier-without-title",
+      "family": "eviction-occupier-without-title", "claim": "eviction-occupier-without-title",
       "inputs": {
         "notes.facts": "يشغل المدعى عليه شقة المدعي بدون وجه حق منذ وفاة والده\nرفض الخروج رغم مطالبته"
       },
@@ -572,7 +572,7 @@
     {
       "name": "commercial-invoices",
       "partition": "development",
-      "family": "commercial-debt",
+      "family": "commercial-debt", "claim": "commercial-debt",
       "inputs": {
         "notes.facts": "قامت الشركة المدعية بتوريد بضائع للمدعى عليها بموجب سندات طلب\nبقيت فواتير بمبلغ 3.400.000 دج دون تسديد\nتم إعذار المدعى عليها",
         "court.section": "القسم التجاري"
@@ -601,7 +601,7 @@
     {
       "name": "commercial-supplies",
       "partition": "development",
-      "family": "commercial-debt",
+      "family": "commercial-debt", "claim": "commercial-debt",
       "inputs": {
         "notes.facts": "سلم المدعي التاجر سلعا لمحل المدعى عليه\nرصيد الحساب المستحق 900.000 دج لم يسدد"
       },
@@ -624,7 +624,7 @@
     {
       "name": "commercial-lease",
       "partition": "development",
-      "family": "commercial-lease-eviction",
+      "family": "commercial-lease-eviction", "claim": "commercial-lease-eviction",
       "inputs": {
         "notes.facts": "يستغل المدعى عليه محلا تجاريا مملوكا للمدعي بموجب إيجار تجاري\nوجه له المدعي تنبيها بالإخلاء عن طريق محضر قضائي\nرفض الخروج عند انتهاء الأجل",
         "court.section": "القسم التجاري"
@@ -646,7 +646,7 @@
     {
       "name": "commercial-lease-indemnity",
       "partition": "development",
-      "family": "commercial-lease-eviction",
+      "family": "commercial-lease-eviction", "claim": "commercial-lease-eviction",
       "inputs": {
         "notes.facts": "رفض المؤجر تجديد الإيجار التجاري للمحل التجاري\nيطالب المستأجر بتعويض الاستحقاق عن فقدان القاعدة التجارية"
       },
@@ -672,7 +672,7 @@
     {
       "name": "divorce-husband",
       "partition": "development",
-      "family": "divorce-by-husband",
+      "family": "divorce-by-husband", "claim": "divorce-by-husband",
       "inputs": {
         "notes.facts": "تزوج المدعي بالمدعى عليها بموجب عقد زواج سنة 2015\nأنجبا ولدين\nاستحالت العشرة بينهما ويرغب المدعي في الطلاق",
         "court.section": "قسم شؤون الأسرة"
@@ -699,7 +699,7 @@
     {
       "name": "tatliq-abandonment",
       "partition": "development",
-      "family": "tatliq",
+      "family": "tatliq", "claim": "tatliq",
       "inputs": {
         "notes.facts": "هجر المدعى عليه زوجته المدعية منذ أكثر من أربعة أشهر\nلم ينفق عليها ولا على الأبناء\nتطلب المدعية التطليق والتعويض",
         "court.section": "قسم شؤون الأسرة"
@@ -729,7 +729,7 @@
     {
       "name": "tatliq-harm",
       "partition": "development",
-      "family": "tatliq",
+      "family": "tatliq", "claim": "tatliq",
       "inputs": {
         "notes.facts": "تعرضت المدعية للضرب والإيذاء من زوجها حسب الشهادات الطبية\nتلتمس الحكم بتطليقها"
       },
@@ -755,7 +755,7 @@
     {
       "name": "khul",
       "partition": "development",
-      "family": "khul",
+      "family": "khul", "claim": "khul",
       "inputs": {
         "notes.facts": "ترغب المدعية في مخالعة زوجها المدعى عليه\nتعرض عليه مقابلا ماليا قدره 300.000 دج",
         "court.section": "قسم شؤون الأسرة"
@@ -776,7 +776,7 @@
     {
       "name": "khul-2",
       "partition": "development",
-      "family": "khul",
+      "family": "khul", "claim": "khul",
       "inputs": {
         "notes.facts": "تلتمس الزوجة الخلع لعدم قدرتها على الاستمرار في الحياة الزوجية"
       },
@@ -795,7 +795,7 @@
     {
       "name": "nafaqa-children",
       "partition": "development",
-      "family": "nafaqa",
+      "family": "nafaqa", "claim": "nafaqa",
       "inputs": {
         "notes.facts": "طلق المدعى عليه المدعية بحكم سنة 2022\nامتنع عن دفع نفقة الأبناء المحضونين منذ سنة\nتطلب المدعية النفقة من تاريخ رفع الدعوى",
         "court.section": "قسم شؤون الأسرة"
@@ -828,7 +828,7 @@
     {
       "name": "nafaqa-wife",
       "partition": "development",
-      "family": "nafaqa",
+      "family": "nafaqa", "claim": "nafaqa",
       "inputs": {
         "notes.facts": "الزوج لا ينفق على زوجته منذ ستة أشهر رغم قيام الزوجية\nتطلب نفقة الزوجة"
       },
@@ -854,7 +854,7 @@
     {
       "name": "custody",
       "partition": "development",
-      "family": "custody",
+      "family": "custody", "claim": "custody",
       "inputs": {
         "notes.facts": "بعد الطلاق بقي الابنان مع الأم\nتطلب المدعية إسناد الحضانة لها وإلزام الأب بتوفير سكن أو بدل الإيجار",
         "court.section": "قسم شؤون الأسرة"
@@ -877,7 +877,7 @@
     {
       "name": "custody-transfer",
       "partition": "development",
-      "family": "custody",
+      "family": "custody", "claim": "custody",
       "inputs": {
         "notes.facts": "يطلب الأب إسقاط الحضانة عن الأم لزواجها بأجنبي عن المحضون وإسنادها له"
       },
@@ -896,7 +896,7 @@
     {
       "name": "visitation",
       "partition": "development",
-      "family": "visitation",
+      "family": "visitation", "claim": "visitation",
       "inputs": {
         "notes.facts": "تمنع المدعى عليها المدعي من رؤية أبنائه منذ الطلاق\nيطلب تمكينه من حق الزيارة",
         "court.section": "قسم شؤون الأسرة"
@@ -923,7 +923,7 @@
     {
       "name": "dismissal",
       "partition": "development",
-      "family": "abusive-dismissal",
+      "family": "abusive-dismissal", "claim": "abusive-dismissal",
       "inputs": {
         "notes.facts": "يعمل المدعي لدى الشركة المدعى عليها منذ 2016\nتم تسريحه بتاريخ 01/03/2024 دون احترام الإجراءات\nحرر مكتب المصالحة محضر عدم المصالحة\nيطلب إعادة الإدماج",
         "court.section": "القسم الاجتماعي"
@@ -962,7 +962,7 @@
     {
       "name": "dismissal-grave-fault",
       "partition": "development",
-      "family": "abusive-dismissal",
+      "family": "abusive-dismissal", "claim": "abusive-dismissal",
       "inputs": {
         "notes.facts": "فصل المستخدم العامل بحجة خطأ جسيم لم يرتكبه\nيرى العامل أن التسريح تعسفي"
       },
@@ -984,7 +984,7 @@
     {
       "name": "wages",
       "partition": "development",
-      "family": "unpaid-wages",
+      "family": "unpaid-wages", "claim": "unpaid-wages",
       "inputs": {
         "notes.facts": "لم يتقاض المدعي أجوره عن أشهر أكتوبر ونوفمبر وديسمبر\nامتنعت الهيئة المستخدمة عن الدفع\nمحضر عدم المصالحة مرفق",
         "court.section": "القسم الاجتماعي"
@@ -1012,7 +1012,7 @@
     {
       "name": "wages-overtime",
       "partition": "development",
-      "family": "unpaid-wages",
+      "family": "unpaid-wages", "claim": "unpaid-wages",
       "inputs": {
         "notes.facts": "يطالب العامل بمستحقات الساعات الإضافية والمنح التي لم يدفعها صاحب العمل"
       },
@@ -1038,7 +1038,7 @@
     {
       "name": "loan-with-section-mismatch-words",
       "partition": "development",
-      "family": "loan-repayment",
+      "family": "loan-repayment", "claim": "loan-repayment",
       "inputs": {
         "notes.facts": "استلف المدعى عليه من المدعي مبلغا ماليا لشراء سيارة\nلم يرد المبلغ رغم حلول الأجل",
         "court.section": "القسم المدني"
@@ -1061,7 +1061,7 @@
     {
       "name": "rent-shop-civil-words",
       "partition": "development",
-      "family": "commercial-lease-eviction",
+      "family": "commercial-lease-eviction", "claim": "commercial-lease-eviction",
       "inputs": {
         "notes.facts": "المدعى عليه مستأجر لمحل تجاري ولم يدفع بدل الإيجار ويطلب المؤجر الإخلاء",
         "court.section": "القسم التجاري"
@@ -1088,7 +1088,7 @@
     {
       "name": "none-inheritance",
       "partition": "development",
-      "family": "out-of-scope",
+      "family": "out-of-scope", "claim": "out-of-scope",
       "inputs": {
         "notes.facts": "توفي مورث الطرفين وترك تركة تتكون من منزل وقطعة أرض\nيطلب المدعي قسمة التركة وفق الفريضة",
         "court.section": "قسم شؤون الأسرة"
@@ -1108,7 +1108,7 @@
     {
       "name": "none-administrative",
       "partition": "development",
-      "family": "out-of-scope",
+      "family": "out-of-scope", "claim": "out-of-scope",
       "inputs": {
         "notes.facts": "أصدر الوالي قرارا بإلغاء رخصة البناء الممنوحة للمدعي\nيطلب المدعي إلغاء القرار الإداري لتجاوز السلطة",
         "court.section": "المحكمة الإدارية"
@@ -1134,7 +1134,7 @@
     {
       "name": "none-commercial-company",
       "partition": "development",
-      "family": "out-of-scope",
+      "family": "out-of-scope", "claim": "out-of-scope",
       "inputs": {
         "notes.facts": "يطلب الشريك حل الشركة ذات المسؤولية المحدودة وتعيين مصف بسبب الخلاف بين الشركاء",
         "court.section": "القسم التجاري"
@@ -1154,7 +1154,7 @@
     {
       "name": "none-civil-status",
       "partition": "development",
-      "family": "out-of-scope",
+      "family": "out-of-scope", "claim": "out-of-scope",
       "inputs": {
         "notes.facts": "وقع خطأ في تاريخ ميلاد المدعي في سجلات الحالة المدنية ويطلب تصحيحه"
       },
@@ -1179,7 +1179,7 @@
     {
       "name": "annulment-fraud-land",
       "partition": "development",
-      "family": "sale-annulment-fraud",
+      "family": "sale-annulment-fraud", "claim": "sale-annulment-fraud",
       "inputs": {
         "notes.facts": "باعت المدعى عليها للمدعي قطعة أرض بتاريخ 12/02/2026 بثمن 9,000,000 دج\nتبين بعد البيع أن القطعة محل نزاع قضائي سابق كتمته البائعة عمدا\nيطلب المدعي إبطال البيع واسترجاع الثمن",
         "court.section": "القسم المدني"
@@ -1216,7 +1216,7 @@
     {
       "name": "non-delivery-machines",
       "partition": "development",
-      "family": "sale-non-delivery",
+      "family": "sale-non-delivery", "claim": "sale-non-delivery",
       "inputs": {
         "notes.facts": "اشترى المدعي من الشركة المدعى عليها 20 آلة خياطة بتاريخ 02/04/2025 ودفع الثمن كاملا 800,000 دج\nالتزمت الشركة بالتسليم قبل 02/05/2025\nلم تسلم أي آلة إلى اليوم رغم الإعذار",
         "court.section": "القسم التجاري"
@@ -1257,7 +1257,7 @@
     {
       "name": "lease-start-vs-signing",
       "partition": "validation",
-      "family": "lease",
+      "family": "lease", "claim": "unpaid-rent",
       "inputs": {
         "notes.facts": "أبرم المدعي مع المدعى عليه عقد إيجار شقة بتاريخ 15/02/2024.\nبدأ سريان الإيجار بتاريخ 01/03/2024 ببدل شهري قدره 35.000 دج.\nلم يدفع المدعى عليه بدلات الإيجار منذ شهر سبتمبر 2024 رغم إعذاره بتاريخ 10/12/2024.",
         "notes.requests": "إلزام المدعى عليه بدفع بدلات الإيجار المتأخرة.\nطرد المدعى عليه من الشقة.",
@@ -1315,7 +1315,7 @@
     {
       "name": "lease-date-in-documents",
       "partition": "validation",
-      "family": "lease",
+      "family": "lease", "claim": "unpaid-rent",
       "inputs": {
         "notes.facts": "يستأجر المدعى عليه من المدعي مسكنا.\nامتنع عن دفع بدل الإيجار منذ ستة أشهر.",
         "documents.list": "عقد إيجار مؤرخ في 01/09/2023\nمحضر إعذار مؤرخ في 15/03/2025"
@@ -1355,7 +1355,7 @@
     {
       "name": "rent-no-notice",
       "partition": "validation",
-      "family": "lease",
+      "family": "lease", "claim": "unpaid-rent",
       "inputs": {
         "notes.facts": "يستأجر المدعى عليه شقة المدعي بموجب عقد إيجار.\nلم يدفع بدل الإيجار منذ خمسة أشهر.\nلم يوجه المدعي أي إعذار للمستأجر بعد."
       },
@@ -1386,7 +1386,7 @@
     {
       "name": "tenant-plaintiff",
       "partition": "validation",
-      "family": "lease",
+      "family": "lease", "claim": "contract-damages",
       "inputs": {
         "notes.facts": "يستأجر المدعي من المدعى عليه مسكنا منذ سنة 2019.\nقطع المؤجر الماء والكهرباء عن المسكن ومنع المدعي من الدخول إليه.",
         "notes.requests": "تمكين المدعي من الانتفاع بالمسكن المؤجر.\nإلزام المدعى عليه بالتعويض عن الضرر."
@@ -1413,7 +1413,7 @@
     {
       "name": "assault-no-animal",
       "partition": "validation",
-      "family": "tort",
+      "family": "tort", "claim": "tort-damages",
       "inputs": {
         "notes.facts": "تعرض المدعي لاعتداء بالضرب من المدعى عليه بتاريخ 03/03/2025 أمام منزله.\nلم يكن لأي حيوان أو كلب دخل في الحادث.\nأصيب المدعي بكسر حسب الشهادة الطبية.",
         "notes.requests": "إلزام المدعى عليه بالتعويض عن الضرر الجسماني."
@@ -1445,7 +1445,7 @@
     {
       "name": "borrower-plaintiff",
       "partition": "validation",
-      "family": "loan",
+      "family": "loan", "claim": "out-of-scope",
       "inputs": {
         "notes.facts": "اقترض المدعي من المدعى عليه مبلغ 400.000 دج سنة 2023.\nسدد المدعي كامل المبلغ بتاريخ 20/01/2025.\nيرفض المدعى عليه رد سند الدين ويطالب المدعي بالمبلغ مرة ثانية.",
         "notes.requests": "إلزام المدعى عليه برد سند الدين إلى المدعي."
@@ -1480,7 +1480,7 @@
     {
       "name": "disputed-loan",
       "partition": "validation",
-      "family": "loan",
+      "family": "loan", "claim": "loan-repayment",
       "inputs": {
         "notes.facts": "يدعي المدعي أنه أقرض المدعى عليه مبلغ 600.000 دج نقدا سنة 2024.\nينكر المدعى عليه استلام أي مبلغ من المدعي.\nلا يوجد سند كتابي للقرض.",
         "notes.requests": "إلزام المدعى عليه برد مبلغ 600.000 دج."
@@ -1508,7 +1508,7 @@
     {
       "name": "amount-in-requests",
       "partition": "validation",
-      "family": "sale",
+      "family": "sale", "claim": "unpaid-sale-price",
       "inputs": {
         "notes.facts": "باع المدعي للمدعى عليه بضاعة بالتقسيط.\nتوقف المشتري عن دفع الأقساط المتبقية.",
         "notes.requests": "إلزام المدعى عليه بدفع مبلغ 450.000 دج باقي الثمن."
@@ -1536,7 +1536,7 @@
     {
       "name": "loan-due-vs-notice",
       "partition": "validation",
-      "family": "loan",
+      "family": "loan", "claim": "loan-repayment",
       "inputs": {
         "notes.facts": "أقرض المدعي المدعى عليه مبلغ 250.000 دج بتاريخ 10/01/2024 على أن يرده في 10/07/2024.\nحل الأجل ولم يرد المدعى عليه المبلغ.\nأعذره المدعي بواسطة محضر قضائي بتاريخ 05/10/2024."
       },
@@ -1587,7 +1587,7 @@
     {
       "name": "commercial-lease-1998",
       "partition": "validation",
-      "family": "lease",
+      "family": "lease", "claim": "commercial-lease-eviction",
       "inputs": {
         "notes.facts": "يستغل المدعى عليه محلا تجاريا للمدعي بموجب عقد إيجار تجاري مبرم سنة 1998 ومجدد عدة مرات.\nوجه المدعي له تنبيها بالإخلاء مع رفض التجديد بتاريخ 02/02/2025.",
         "notes.requests": "طرد المدعى عليه من المحل التجاري.",
@@ -1626,7 +1626,7 @@
     {
       "name": "tort-no-conviction",
       "partition": "validation",
-      "family": "tort",
+      "family": "tort", "claim": "tort-damages",
       "inputs": {
         "notes.facts": "صدم المدعى عليه بسيارته سياج منزل المدعي بتاريخ 11/11/2024 بسبب السرعة.\nلم تتم متابعة المدعى عليه جزائيا.",
         "notes.requests": "إلزام المدعى عليه بدفع مبلغ 150.000 دج تعويضا عن إصلاح السياج."
@@ -1659,7 +1659,7 @@
     {
       "name": "dismissal-no-conciliation",
       "partition": "validation",
-      "family": "employment",
+      "family": "employment", "claim": "abusive-dismissal",
       "inputs": {
         "notes.facts": "يعمل المدعي لدى الشركة المدعى عليها منذ 01/06/2018.\nسرحته المستخدمة بتاريخ 15/09/2025 دون إشعار.\nلم يعرض النزاع على مكتب المصالحة.",
         "notes.requests": "إعادة إدماج المدعي في منصب عمله.\nإلزام المدعى عليها بالتعويض.",
@@ -1701,7 +1701,7 @@
     {
       "name": "loan-family-section",
       "partition": "validation",
-      "family": "loan",
+      "family": "loan", "claim": "loan-repayment",
       "inputs": {
         "notes.facts": "أقرض المدعي جاره المدعى عليه مبلغ 120.000 دج.\nلم يرد المدعى عليه المبلغ رغم حلول الأجل.",
         "court.section": "قسم شؤون الأسرة"
@@ -1731,7 +1731,7 @@
     {
       "name": "buyer-plaintiff",
       "partition": "validation",
-      "family": "sale",
+      "family": "sale", "claim": "sale-non-delivery",
       "inputs": {
         "notes.facts": "اشترى المدعي من المدعى عليه سيارة بتاريخ 01/06/2025 بثمن 1.800.000 دج دفعه كاملا.\nلم يسلم البائع وثائق السيارة رغم إعذاره.",
         "notes.requests": "إلزام البائع بتسليم وثائق السيارة."
@@ -1770,7 +1770,7 @@
     {
       "name": "rent-monthly-vs-total",
       "partition": "validation",
-      "family": "lease",
+      "family": "lease", "claim": "unpaid-rent",
       "inputs": {
         "notes.facts": "يستأجر المدعى عليه مسكنا من المدعي ببدل شهري قدره 50.000 دج.\nتخلف عن دفع ثمانية أشهر، أي ما مجموعه 400.000 دج.",
         "notes.requests": "إلزام المدعى عليه بدفع مبلغ 400.000 دج."

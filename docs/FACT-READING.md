@@ -11,6 +11,8 @@ Every fact points to the numbered sentence it came from, and the program checks 
 
 **Status.** It is measured in the harness only; it is **not used by the app**. It replaces nothing until a reader passes the comparison below.
 
+**Alpha-01** reads the case against its confirmed claim type instead, with a few short questions: see [ALPHA-01.md](ALPHA-01.md).
+
 ## Code
 
 | Where | What |

@@ -72,13 +72,7 @@ public sealed partial class MainWindowViewModel
     }
 
     [RelayCommand]
-    private async Task OpenAsync()
-    {
-        if (!AskBeforeReplacing(ReplaceAction.Open))
-        {
-            await OpenFileAsync();
-        }
-    }
+    private async Task OpenAsync() => await RequestOpenAsync(null);
 
     [RelayCommand]
     private async Task SaveAsync() => await SaveFileAsync();
@@ -101,6 +95,7 @@ public sealed partial class MainWindowViewModel
     private void CancelReplace()
     {
         _pendingReplace = ReplaceAction.None;
+        _pendingOpenPath = null;
         IsConfirmingReplace = false;
     }
 
@@ -113,6 +108,7 @@ public sealed partial class MainWindowViewModel
         }
 
         _pendingReplace = action;
+        _pendingOpenPath = null;
         ReplacePrompt = L[action == ReplaceAction.New ? "UnsavedBeforeNew" : "UnsavedBeforeOpen"];
         IsConfirmingReplace = true;
         return true;
@@ -121,6 +117,7 @@ public sealed partial class MainWindowViewModel
     private async Task ReplaceAsync()
     {
         var action = _pendingReplace;
+        var path = _pendingOpenPath;
         CancelReplace();
         if (action == ReplaceAction.New)
         {
@@ -128,27 +125,33 @@ public sealed partial class MainWindowViewModel
         }
         else if (action == ReplaceAction.Open)
         {
-            await OpenFileAsync();
+            await OpenFileAsync(path);
         }
     }
 
-    /// <summary>True when the file was written; false when the lawyer cancelled the save dialog.</summary>
+    /// <summary>A cancelled or failed save keeps the pending replacement and the unsaved case.</summary>
     private async Task<bool> SaveFileAsync()
     {
-        var target = await _files.SaveAsync(SuggestedFileName() + DraftFile.Extension, SaveKind.Draft);
-        if (target is not { } t)
+        try
         {
+            var target = await _files.SaveAsync(SuggestedFileName() + DraftFile.Extension, SaveKind.Draft);
+            if (target is not { } t) return false;
+
+            await using (t.Stream)
+            {
+                await DraftFile.SaveAsync(CurrentDraft(), t.Stream);
+            }
+
+            MarkSaved(t.Name);
+            RecordRecentCase(saved: true);
+            SetStatus(L.Format("Saved", t.Name));
+            return true;
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or NotSupportedException)
+        {
+            SetStatus(L.Format("Error", ex.Message), isError: true);
             return false;
         }
-
-        await using (t.Stream)
-        {
-            await DraftFile.SaveAsync(CurrentDraft(), t.Stream);
-        }
-
-        MarkSaved(t.Name);
-        SetStatus(L.Format("Saved", t.Name));
-        return true;
     }
 
     /// <summary>The current case is the one on disk (just saved or opened), or the empty case of a new start.</summary>

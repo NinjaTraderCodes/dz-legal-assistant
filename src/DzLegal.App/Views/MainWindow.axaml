@@ -7,7 +7,7 @@
         x:Class="DzLegal.App.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Title="{Binding WindowTitle}"
-        Width="1440" Height="900" MinWidth="1100" MinHeight="640"
+        Width="1440" Height="900" MinWidth="800" MinHeight="560"
         FontFamily="{StaticResource UiFont}"
         RequestedThemeVariant="{Binding IsDarkTheme, Converter={x:Static app:Converters.DarkTheme}}"
         FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}"
@@ -315,13 +315,19 @@
 
   <DockPanel>
     <!-- App bar -->
-    <Border DockPanel.Dock="Top" Background="{DynamicResource AppBarBrush}" Padding="16,8" BorderBrush="{DynamicResource HairlineBrush}" BorderThickness="0,0,0,1">
+    <Border Name="WorkbenchTitleBar" DockPanel.Dock="Top" Background="{DynamicResource AppBarBrush}" Padding="16,8" BorderBrush="{DynamicResource HairlineBrush}" BorderThickness="0,0,0,1">
       <Grid ColumnDefinitions="*,Auto">
         <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center" ClipToBounds="True">
           <Border Background="{DynamicResource PrimaryButtonBrush}" CornerRadius="8" Padding="7"><ic:SymbolIcon Symbol="Gavel" Foreground="{DynamicResource PrimaryButtonTextBrush}" FontSize="20" /></Border>
           <TextBlock FontSize="19" FontWeight="SemiBold" Foreground="{DynamicResource AppBarTextBrush}" VerticalAlignment="Center" Text="{Binding L[AppTitle]}" />
           <TextBlock Classes="document-type" Foreground="{DynamicResource TextMutedBrush}" VerticalAlignment="Center" Text="{Binding DocumentTypeName}" />
           <Border Width="1" Height="22" Background="#33FFFFFF" Margin="8,0" />
+          <Button Name="HomeButton" Classes="bar" Click="OpenHome" ToolTip.Tip="{Binding L[Home]}" AutomationProperties.Name="{Binding L[Home]}" MinWidth="36" MinHeight="36">
+            <ic:SymbolIcon Symbol="Home" Foreground="{DynamicResource AppBarTextBrush}" />
+          </Button>
+          <Button Name="ProfileButton" Classes="bar" Click="OpenProfile" ToolTip.Tip="{Binding L[ProfileButtonHint]}" AutomationProperties.Name="{Binding L[ProfileButton]}" MinWidth="36" MinHeight="36">
+            <ic:SymbolIcon Symbol="Person" Foreground="{DynamicResource AppBarTextBrush}" />
+          </Button>
           <Button Classes="bar" Command="{Binding NewCommand}" ToolTip.Tip="{Binding L[New]}">
             <StackPanel Orientation="Horizontal" Spacing="6"><ic:SymbolIcon Symbol="DocumentAdd" Foreground="{DynamicResource AppBarTextBrush}" /><TextBlock Foreground="{DynamicResource AppBarTextBrush}" Text="{Binding L[New]}" /></StackPanel>
           </Button>

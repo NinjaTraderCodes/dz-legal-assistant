@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
+using Avalonia.Input;
 using DzLegal.Presentation.ViewModels;
 using DzLegal.Storage;
 
@@ -25,6 +26,12 @@ public sealed class HomeWindow : Window
             await new ProfileSettingsWindow(root, localization).ShowDialog(this), workspace, new WelcomePreferences(root).LoadLanguage(), localization: localization);
         this.Bind(TitleProperty, new Binding("L[Home]") { Source = Home });
         Content = new HomeView { DataContext = Home };
+        KeyDown += (_, e) =>
+        {
+            if (e.Key != Key.Escape) return;
+            Home.BackToCaseCommand.Execute(null);
+            e.Handled = true;
+        };
         Closed += (_, _) => { Home.Dispose(); workspace.Dispose(); };
     }
     public HomeViewModel Home { get; }

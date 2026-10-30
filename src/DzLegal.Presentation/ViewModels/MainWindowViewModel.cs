@@ -44,13 +44,15 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         string? autosaveFile = null,
         DzLegal.Law.LegalKnowledge? knowledge = null,
         IExternalLinks? links = null,
-        IProfileDefaults? profileDefaults = null)
+        IProfileDefaults? profileDefaults = null,
+        RecentCasesStore? recentCases = null)
     {
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentNullException.ThrowIfNull(providers);
         UseKnowledge(knowledge, links);
         _definition = definition;
         _files = files;
+        _recentCases = recentCases;
         _evaluations = evaluations;
         _today = today ?? (() => DateOnly.FromDateTime(DateTime.Now));
         _autosaveFile = autosaveFile;
@@ -765,29 +767,35 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     }
 
     /// <summary>Shows the file picker and opens the draft chosen (after <see cref="OpenCommand"/> asked about unsaved changes).</summary>
-    private async Task OpenFileAsync()
+    private async Task OpenFileAsync(string? path = null)
     {
-        var source = await _files.OpenAsync();
-        if (source is not { } s)
+        try
         {
-            return;
-        }
+            var source = path is null ? await _files.OpenAsync()
+                : _files is IHomeRecentFiles recentFiles ? await recentFiles.OpenPathAsync(path) : null;
+            if (source is not { } s) return;
 
-        DraftDocument loaded;
-        await using (s.Stream)
+            DraftDocument loaded;
+            await using (s.Stream)
+            {
+                loaded = await DraftFile.LoadAsync(s.Stream);
+            }
+
+            if (loaded.DocumentTypeId != _definition.Id)
+            {
+                SetStatus(L["WrongDocumentType"], isError: true);
+                return;
+            }
+
+            LoadDraft(loaded);
+            MarkSaved(s.Name);
+            RecordRecentCase(saved: false);
+            SetStatus(L.Format("Opened", s.Name));
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or System.Text.Json.JsonException or NotSupportedException or ArgumentException)
         {
-            loaded = await DraftFile.LoadAsync(s.Stream);
+            SetStatus(L.Format("Error", ex.Message), isError: true);
         }
-
-        if (loaded.DocumentTypeId != _definition.Id)
-        {
-            SetStatus(L["WrongDocumentType"], isError: true);
-            return;
-        }
-
-        LoadDraft(loaded);
-        MarkSaved(s.Name);
-        SetStatus(L.Format("Opened", s.Name));
     }
 
     private void LoadDraft(DraftDocument loaded)

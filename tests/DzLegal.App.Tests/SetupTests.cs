@@ -482,7 +482,7 @@ public sealed class SetupTests : IDisposable
         // Every L[...] key the onboarding screens bind to resolves in both languages, from the resource files.
         var views = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "src", "DzLegal.App", "Views"));
         var keys = Directory.GetFiles(views, "*.axaml")
-            .Where(f => Path.GetFileName(f) is var n && (n.StartsWith("Setup", StringComparison.Ordinal) || n.StartsWith("Home", StringComparison.Ordinal) || n.StartsWith("Welcome", StringComparison.Ordinal)))
+            .Where(f => Path.GetFileName(f) is var n && (n == "MainWindow.axaml" || n.StartsWith("Setup", StringComparison.Ordinal) || n.StartsWith("Home", StringComparison.Ordinal) || n.StartsWith("Welcome", StringComparison.Ordinal)))
             .SelectMany(f => System.Text.RegularExpressions.Regex.Matches(File.ReadAllText(f), @"L\[(\w+)\]").Select(m => m.Groups[1].Value))
             .Distinct()
             .ToList();

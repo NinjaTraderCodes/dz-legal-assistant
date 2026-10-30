@@ -477,12 +477,21 @@ public sealed class SetupTests : IDisposable
     }
 
     [Fact]
-    public void EverySetupBindingHasTemporaryArabicAndEnglishWording()
+    public void EverySetupBindingHasArabicAndEnglishWording()
     {
-        foreach (var (key, text) in SetupLocalization.Entries)
+        // Every L[...] key the onboarding screens bind to resolves in both languages, from the resource files.
+        var views = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "src", "DzLegal.App", "Views"));
+        var keys = Directory.GetFiles(views, "*.axaml")
+            .Where(f => Path.GetFileName(f) is var n && (n.StartsWith("Setup", StringComparison.Ordinal) || n.StartsWith("Home", StringComparison.Ordinal) || n.StartsWith("Welcome", StringComparison.Ordinal)))
+            .SelectMany(f => System.Text.RegularExpressions.Regex.Matches(File.ReadAllText(f), @"L\[(\w+)\]").Select(m => m.Groups[1].Value))
+            .Distinct()
+            .ToList();
+        Assert.NotEmpty(keys);
+        foreach (var language in new[] { "ar", "en" })
         {
-            Assert.False(string.IsNullOrWhiteSpace(text.Arabic), key);
-            Assert.False(string.IsNullOrWhiteSpace(text.English), key);
+            var loc = new Loc();
+            loc.SetLanguage(language);
+            Assert.All(keys, key => Assert.DoesNotContain("[", loc[key], StringComparison.Ordinal));
         }
         var vm = Create();
         foreach (var choice in vm.GenderOptions.Concat(vm.LanguageOptions).Concat(vm.ThemeOptions).Concat(vm.EngineOptions).Concat(vm.FileNamingOptions))

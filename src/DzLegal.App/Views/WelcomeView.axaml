@@ -94,9 +94,13 @@
                 IsDefault="True" TabIndex="2" HorizontalAlignment="Center" Margin="0,32,0,0" />
       </StackPanel>
       </Border>
-      <TextBlock Name="WelcomeFooter" Grid.Row="2" Text="{Binding L[OfflineStatus]}" FontSize="13"
-                 TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center"
-                 Foreground="{DynamicResource WelcomeSecondaryBrush}" />
+      <!-- On the reading panel, like the main text: its contrast must not depend on the photograph behind it. -->
+      <Border Grid.Row="2" Background="{DynamicResource WelcomeReadingBrush}" CornerRadius="8" Padding="12,4"
+              HorizontalAlignment="Center">
+        <TextBlock Name="WelcomeFooter" Text="{Binding L[OfflineStatus]}" FontSize="13"
+                   TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center"
+                   Foreground="{DynamicResource WelcomeSecondaryBrush}" />
+      </Border>
     </Grid>
   </Grid>
 </UserControl>

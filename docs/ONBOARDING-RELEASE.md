@@ -21,7 +21,8 @@ not crash the screen (the view model exposes `LanguageSaveFailed`).
 
 ## Design
 
-- The approved 1280x720 JPEG and its license note are unchanged. The existing
+- The 1280x720 JPEG is the project owner's own generated image (30 Oct; see its licence note,
+  which states the source); it replaced an earlier photograph with no stated source. The existing
   `AvaloniaResource Include="Assets\**"` wildcard registers both. Git records the
   canonical `Assets/Images` paths. Windows still refuses the physical directory
   rename (`assets` to a temporary name returns access denied); no original file
@@ -81,9 +82,7 @@ demo, PDF renderer, or Word renderer were edited. Document-output identity has n
 been independently measured; the source that produces those outputs is unchanged.
 
 The requested release notes (this file) and eight final screenshots are the only
-deliverables outside App, Presentation, Storage, and App tests. The unrelated
-untracked brief PDF and root `package-lock.json` are left untouched and unstaged.
-No push will be performed.
+deliverables outside App, Presentation, Storage, and App tests. No push will be performed.
 
 ## Wording proposal only
 
@@ -120,3 +119,18 @@ feature on `djihane/onboarding`. The exception is limited to Step C: setup
 navigation, the setup-seen marker, and language/theme persistence through
 `preferences.json`. Neither file may be renamed or deleted. Existing tests and
 all other protection rules remain unchanged.
+
+## Fixes before merging (30 Oct 2026, branch `claude/onboarding-fixes`)
+
+- **Welcome background.** It is now the project owner's own generated image, with a licence note stating its source.
+- **Strings.** The 102 strings held in `SetupLocalization` and `HomeLocalization` moved into `Strings.resx` and `Strings.en.resx`. The two classes now read the shared resources only.
+  - `EverySetupBindingHasArabicAndEnglishWording` now checks that every `L[...]` key of the Welcome, Setup and Home screens resolves in both languages.
+  - The Home language test no longer reads the removed table.
+- **Contrast.**
+  - The welcome footer sits on the reading panel, so its contrast no longer depends on the photograph.
+  - The dark theme's secondary text is a little lighter (`#ECE6DC`), so the tagline stays at least 4.5:1 over the new image.
+- **Removed from the repository:**
+  - `screenshots/`: screenshots are saved outside the repository (`DZLEGAL_SCREENSHOTS`);
+  - an empty `package-lock.json`;
+  - a copy of the onboarding brief 1.1, which the default branch holds as `docs/briefs/ONBOARDING-BRIEF.pdf`.
+- **Screenshots.** The eight welcome screenshots under `docs/images/onboarding` were regenerated with the new image.

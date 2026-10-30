@@ -79,7 +79,6 @@ public sealed class HomeTests : IDisposable
         using var home = Create(language: language);
         Assert.Equal(rtl, home.IsRightToLeft);
         Assert.Equal(home.L.Source["OfflineStatus"], home.L["OfflineStatus"]);
-        Assert.False(HomeLocalization.Entries.ContainsKey("OfflineStatus"));
         Assert.DoesNotContain("[", home.L["StartNew"], StringComparison.Ordinal);
         Assert.False(File.Exists(Path.Combine(_folder.FullName, "welcome-preferences.json")));
     }

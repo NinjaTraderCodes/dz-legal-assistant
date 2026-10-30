@@ -214,6 +214,33 @@ public sealed class ShippedCatalogTests
         });
     }
 
+    /// <summary>
+    /// The family claims as checked against the official Family Code and CPCA on 30 Oct 2026 (docs/FAMILY-CLAIMS.md):
+    /// losing custody is its own suit, on arts. 66-69; a visitation judgment is enforced, not sued for again; the public
+    /// prosecutor and the territorial jurisdiction are cited in every family claim; khulʿ rests on art. 54.
+    /// </summary>
+    [Fact]
+    public void TheFamilyClaimsCiteWhatTheOfficialTextsSay()
+    {
+        var knowledge = LegalKnowledgeLoader.Load(LawRoot);
+        string[] Cited(string id) => [.. knowledge.Claims.Single(c => c.Id == id).Articles.Select(a => $"{a.Code}:{a.Number}")];
+
+        Assert.Equal(["family-code:66", "family-code:67", "family-code:68", "family-code:69"], Cited("custody-forfeiture").Where(a => a is "family-code:66" or "family-code:67" or "family-code:68" or "family-code:69"));
+        Assert.DoesNotContain("family-code:66", Cited("custody"));
+        Assert.Contains("family-code:87", Cited("custody"));
+        var enforcement = knowledge.Claims.Single(c => c.Id == "visitation").Articles.Single(a => a is { Code: "cpca", Number: "600" });
+        Assert.Equal((ArticleRole.Limit, true), (enforcement.Role, enforcement.Required));
+        Assert.All(knowledge.Claims.Where(c => c.Area == "family"), c =>
+        {
+            Assert.Contains("family-code:3 مكرر", Cited(c.Id));
+            Assert.Contains("cpca:426", Cited(c.Id));
+        });
+        Assert.Contains("family-code:54", Cited("khul"));
+        Assert.Contains("cpca:438", Cited("divorce-by-husband"));
+        Assert.Contains("cpca:323", Cited("nafaqa"));
+        Assert.All(knowledge.Claims.SelectMany(c => c.Articles), a => Assert.True(GroundsEvaluator.InLibrary(knowledge, $"{a.Code}:{a.Number}") || a.Code is "civil-code" or "commercial-code" or "labour-relations" or "labour-disputes"));
+    }
+
     [Fact]
     public void TheDogAndWallCasesRequireTheirOwnArticlesAndTheGapsAreReported()
     {

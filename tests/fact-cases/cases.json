@@ -877,14 +877,20 @@
     {
       "name": "custody-transfer",
       "partition": "development",
-      "family": "custody", "claim": "custody",
+      "family": "custody", "claim": "custody-forfeiture",
       "inputs": {
         "notes.facts": "يطلب الأب إسقاط الحضانة عن الأم لزواجها بأجنبي عن المحضون وإسنادها له"
       },
       "gold": {
         "relation": "marriage",
         "position": "father|husband",
-        "events": [],
+        "events": [
+          {
+            "kind": "custodian_remarried",
+            "polarity": "affirmed",
+            "decisive": true
+          }
+        ],
         "forbidden": [],
         "requests": [
           {

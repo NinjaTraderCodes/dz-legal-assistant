@@ -27,7 +27,7 @@ The 61 cases in `tests/fact-cases` were used to build and tune the reader, so it
 ## Content (about 100 cases)
 
 **Coverage:**
-- **4 or 5 cases for each of the 20 claim types** in the catalogue, about 90 in all.
+- **4 or 5 cases for each of the 21 claim types** in the catalogue, about 90 in all.
 - **10 cases outside the catalogue** (`"claim": "out-of-scope"`), for example an inheritance partition, an administrative appeal, a company dispute or a correction of civil status.
 
 **Make them read like a lawyer's notes, not like an exercise:**

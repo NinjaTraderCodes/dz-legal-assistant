@@ -82,6 +82,26 @@ Five real documents with the names blanked out were read. They were not kept in 
 
 **Speed.** Tatliq now cites 13 articles and khul 12. The analysis gives the model at most 12 candidates, in catalogue order, so for tatliq the provisional-execution article (CPCA 323) is not among them. It stays in the catalogue and in the suggested requests. Its longer candidate list may make the article choice a few seconds slower for these two claim types; the grounds bench will show how much.
 
+## Measured (30 Oct 2026, local `gemma3:4b`, commit 80f09b6)
+
+Kept in `docs/baselines/2026-10-30-family-grounds/` and `-family-alpha/`.
+
+**The grounds analysis**, on all grounds cases, against the last local baseline (26 Oct):
+
+| | 26 Oct | 30 Oct |
+|---|---:|---:|
+| claim type exact | 96 % | **98 %** |
+| core article recall | 75 % | **78 %** |
+| out-of-scope declined | 100 % | 100 % |
+| seconds per case | 113 | 121 |
+
+The new `custody-forfeiture` claim type was recognised for the custody-transfer case. The time grew by 7 %: 21 claim types to read, and longer article lists.
+
+**The fact reader (Alpha-01, claim type given):**
+- **The run:** 35/40 development and 11/14 validation cases fully right, at 28–33 s per case (21–26 s before; there are more requests to answer).
+- **A parser bug.** The model copied a question out («1) انعقاد الزواج…») before answering it, and that copy took the question's number from the real answer. It is fixed: only a readable answer takes a number. With the fix, the run's own answers give **36/40 and 11/14**.
+- **The one new error.** The custody-transfer case's «لزواجها بأجنبي» was not matched to «تزوجت الحاضنة بغير قريب محرم». That question now adds «أي بأجنبي عنه».
+
 ## Unsettled, left out
 
 - **A criminal complaint for refusing to hand over a child.** It is in the Penal Code, which the library does not hold.

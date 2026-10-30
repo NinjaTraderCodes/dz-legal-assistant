@@ -148,6 +148,18 @@ public sealed class AlphaFactsTests
         Assert.Null(notice.Date);
     }
 
+    /// <summary>The family run (30 Oct) copied the questions out before answering them.</summary>
+    [Fact]
+    public void QuestionsCopiedOutBeforeTheAnswersDoNotTakeTheirNumbers()
+    {
+        var divorce = ClaimFactReader.Parse("1) انعقاد الزواج بين الطرفين [التاريخ]\nr1) طلب: الحكم بالطلاق\n1 | stated | v1\nr1 | stated | ?", CaseText.From(Case("divorce-husband").Inputs), Elements["divorce-by-husband"]);
+        Assert.Equal(("marriage", "2015"), (divorce.Events.Single().Kind, divorce.Events.Single().Date?.Normalized));
+        Assert.Equal(["divorce"], divorce.Requests.Select(r => r.Kind));
+
+        var custody = ClaimFactReader.Parse("p) من هو المدعي؟ 1 = المدعي هو الأب، 2 = المدعية هي الأم\np | 2", CaseText.From(Case("custody-transfer").Inputs), Elements["custody-forfeiture"]);
+        Assert.Equal("mother", custody.Position);
+    }
+
     [Fact]
     public async Task TheLinesWrittenBeforeTheAnswerWasCutOffAreKept()
     {

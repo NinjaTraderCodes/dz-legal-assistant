@@ -1,0 +1,19 @@
+{
+  "Command": "grounds",
+  "StartedUtc": "2026-10-30T04:59:19.2874297+00:00",
+  "Commit": "80f09b680a09bf13cbcb607d6700efe3bcadb7d4",
+  "Models": [
+    "gemma3:4b"
+  ],
+  "Fingerprints": {
+    "law": "0b66de337e0cbf371da7b8a06c48e45865d83ef7e8a3667aa334dd3fc2fef1f8",
+    "documentTypes": "6d627908283e33b8a465754f4cd268f423536d88c43b12ea521cb86f2c0dc747",
+    "cases": "0248f79af80d30be3330fd93a7f4fda72178c147a19512d7e8862a1524d3e907"
+  },
+  "Options": {
+    "runs": "1",
+    "partition": "development,validation,robustness",
+    "case": "all",
+    "endpoint": "http://127.0.0.1:11434"
+  }
+}

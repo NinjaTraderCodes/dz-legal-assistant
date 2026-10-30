@@ -1,5 +1,7 @@
 # Civil Code: current-edition preparation and open validation
 
+**ACTIVE,30October2026:** all four saved local commits were approved/pushed; remote c960911 verified. The [current Civil checkpoint](LAW-CORPUS-CIVIL-PRIORITY-2026-10-30.md) records12applied JO word restorations,34source-visible marks retained,455/456original loan collation and489retained original paragraph provenance. Typed Civil is unchanged. Separate53Ministry punctuation flags, references/inventory/sample/typed import remain. All older pause/status notes below are historical.
+
 29 October 2026, `codex/law-corpus`. **No completed Civil delivery is claimed.** The typed package has48 identities:45 with text and three reference-only Family citation targets;55 versions (seven checked,32 partly-checked,16 unsettled). The reference-only identities contain no versions/texts. The preparation below is separate research data and has not replaced existing versions or the application's law library.
 
 **PAUSED at the latest user request.** [Current safe-pause/restart record](LAW-CORPUS-PAUSE-2026-10-29-JO-WORDS.md). Approved checkpoints through9fa6a0f are pushed; local598b325,9dbf7ddand38ca401are not approved for push.38ca401passed694 .NET/279 Python, zero warnings/errors. No research/OCR/import resumes until the user resumes.

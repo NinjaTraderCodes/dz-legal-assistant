@@ -185,3 +185,38 @@ The first two conditions are met on the development set.
 - **Speed:** the reading step is twice as fast (21–26 s against 48–59 s).
 
 These numbers are optimistic, because the cases were seen while tuning. The real measure is the hidden set (`docs/HIDDEN-SET.md`).
+
+### The hidden set (30 Oct 2026): the honest measure
+
+100 cases written by an independent agent, run once on the frozen version `83cd421`, claim type given (`docs/baselines/2026-10-30-hidden-given/`). The 10 cases outside the catalogue are left out, as the app abstains on them.
+
+| | Development | Validation | **Hidden** |
+|---|---:|---:|---:|
+| cases fully right | 37 / 40 | 11 / 14 | **32 / 90 (36 %)** |
+| seconds per case | 21–26 | 21–26 | **63** (33–83) |
+
+**Each item is mostly read right; whole cases are not.** On the hidden set:
+- the plaintiff's position is right in 97 % of cases;
+- 88 % of decisive events are found;
+- 81 % of polarities are right;
+- 80 % of dates are bound to the right event;
+- 93 % of requests are found.
+
+A case has several events, so these small error rates add up. Of the 58 cases with a critical error, 25 have exactly one.
+
+**What goes wrong, by type of error** (critical errors, a case can have several):
+- **Polarity, 45.** 38 of them read as stated a fact the text disputes (26) or denies (12). The model takes the plaintiff's version and misses the other side's denial or the «لم…».
+- **A date, an amount or a requested amount on the wrong event, 37** (19 + 8 + 10).
+- **A decisive event missed, 16.**
+- **The plaintiff's position or who acted reversed, 6.**
+
+**By area:** family 15 / 29 fully right, labour 4 / 8, civil and commercial 13 / 53.
+
+**Speed.** The hidden cases read like a lawyer's notes and are longer: the prompt averages 1,175 tokens, read at 22 tokens per second, so 54 s pass before the first word. Speed now depends on the length of the case, not on the answer.
+
+**Verdict:** condition 1 is **not met** on unseen cases, and condition 3 is not met on cases of realistic length. The development score came largely from tuning on cases we had seen. **Alpha-01 stays in the harness and does not go into the app.** The app is unchanged: its analysis proposes the claim type and articles, and the lawyer confirms them.
+
+**What this says about the way forward:**
+- Most failures are one or two wrong items in an otherwise right reading. A reader whose answers the lawyer confirms item by item is a more realistic goal than a fully automatic one.
+- Polarity is the main weakness of a 4B model. The text's own markers of denial («لم», «ينكر», «ينفي», «يدعي») could be pointed out by code before the model answers.
+- Any change is measured on a **new** hidden set: this one's results have now been seen, by error type and case name (`docs/HIDDEN-SET.md`, rule 7).

@@ -115,3 +115,12 @@ dotnet run -c Release --project src/DzLegal.Harness -- facts --alpha --cases C:\
 Share only `C:\dz-hidden-results\summary.md`.
 
 For the whole chain, with the claim type read by the analysis instead of given, add `--claims read`.
+
+## Runs
+
+| Date | Version | Mode | Result | Summary |
+|---|---|---|---|---|
+| 30 Oct 2026 | `83cd421` | claim type given | 32 of 90 cases fully right, 63 s per case | `docs/baselines/2026-10-30-hidden-given/` |
+
+The first set (100 cases, written by Codex on 30 Oct 2026) has now been **seen at the level of the summary**: case names, error types and the codes involved. Its case texts were never opened by the developers; the results folder sent with the summary had its case files deleted unread. Under rule 7, it is no longer hidden for changes made from these results: the next measure of a changed reader needs a new set.
+

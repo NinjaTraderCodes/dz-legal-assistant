@@ -1,0 +1,106 @@
+<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DzLegal.Presentation.ViewModels" xmlns:app="using:DzLegal.App"
+             xmlns:views="using:DzLegal.App.Views"
+             x:Class="DzLegal.App.Views.WelcomeView" x:DataType="vm:WelcomeViewModel"
+             FontFamily="{DynamicResource UiFont}"
+             FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}">
+  <UserControl.Styles>
+    <StyleInclude Source="/Styles/Workbench.axaml" />
+    <Style Selector="Button.welcome-language, Button.welcome-primary">
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+    <Style Selector="Button.welcome-language">
+      <Setter Property="Background" Value="{DynamicResource WelcomeControlBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource WelcomeTextBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource WelcomeEdgeBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="8" />
+      <Setter Property="MinHeight" Value="44" />
+      <Setter Property="Padding" Value="16,6" />
+      <Setter Property="FontSize" Value="14" />
+    </Style>
+    <Style Selector="Button.welcome-language.selected">
+      <Setter Property="BorderThickness" Value="2" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+    <Style Selector="Button.welcome-primary">
+      <Setter Property="Background" Value="{DynamicResource WelcomeGoldBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource WelcomeButtonTextBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource WelcomeButtonBorderBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="10" />
+      <Setter Property="FontSize" Value="17" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="MinHeight" Value="48" />
+      <Setter Property="MinWidth" Value="208" />
+      <Setter Property="Padding" Value="8,5.5" />
+    </Style>
+    <Style Selector="Button.welcome-primary:pointerover /template/ ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource WelcomeGoldBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource WelcomeButtonTextBrush}" />
+    </Style>
+    <Style Selector="Button.welcome-primary:pressed /template/ ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource WelcomeGoldBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource WelcomeButtonTextBrush}" />
+    </Style>
+    <Style Selector="Button.welcome-language:focus-visible, Button.welcome-primary:focus-visible">
+      <Setter Property="BorderBrush" Value="{DynamicResource WelcomeFocusBrush}" />
+      <Setter Property="BorderThickness" Value="3" />
+    </Style>
+  </UserControl.Styles>
+  <Grid ClipToBounds="True">
+    <Image Name="WelcomeBackground" Stretch="UniformToFill"
+           HorizontalAlignment="Center" VerticalAlignment="Center" />
+    <Border Background="{DynamicResource WelcomeOverlayBrush}" />
+    <Grid RowDefinitions="Auto,*,Auto" Margin="40,28">
+      <Grid ColumnDefinitions="*,Auto">
+      <Border Background="{DynamicResource WelcomeLanguageSurfaceBrush}" CornerRadius="8" Padding="4" HorizontalAlignment="Left">
+      <StackPanel Name="LanguageSwitch" Orientation="Horizontal" Spacing="6" HorizontalAlignment="Left"
+                  AutomationProperties.Name="{Binding L[WelcomeLanguage]}">
+        <Button Name="ArabicLanguage" Classes="welcome-language" Classes.selected="{Binding IsArabic}"
+                Content="{Binding L[WelcomeArabic]}" AutomationProperties.Name="{Binding L[WelcomeArabic]}"
+                Command="{Binding SwitchLanguageCommand}" CommandParameter="ar" TabIndex="0" />
+        <Button Name="EnglishLanguage" Classes="welcome-language" Classes.selected="{Binding IsEnglish}"
+                Content="{Binding L[WelcomeEnglish]}" AutomationProperties.Name="{Binding L[WelcomeEnglish]}"
+                Command="{Binding SwitchLanguageCommand}" CommandParameter="en" TabIndex="1" FlowDirection="LeftToRight" />
+      </StackPanel>
+      </Border>
+      <Border Grid.Column="1" Background="{DynamicResource AppBarBrush}" CornerRadius="{DynamicResource ControlRadius}"
+              VerticalAlignment="Top">
+        <views:ThemeToggleButton Name="ThemeButton" Localization="{Binding L}" TabIndex="3" />
+      </Border>
+      </Grid>
+      <Border Grid.Row="1" Background="{DynamicResource WelcomeReadingBrush}" CornerRadius="16"
+              VerticalAlignment="Center" HorizontalAlignment="Center">
+      <StackPanel Name="WelcomeContent" VerticalAlignment="Center" HorizontalAlignment="Center"
+                  MaxWidth="600" Spacing="0" Margin="24,12">
+        <Viewbox Name="WelcomeLogo" Width="88" Height="88" Margin="0,0,0,24"
+                 AutomationProperties.Name="{Binding L[WelcomeLogo]}">
+          <Path Width="96" Height="96" Data="{DynamicResource WelcomeScalesGeometry}"
+                Stroke="{DynamicResource WelcomeLogoBrush}" StrokeThickness="1.7"
+                StrokeLineCap="Round" StrokeJoin="Round" />
+        </Viewbox>
+        <TextBlock Name="WelcomeTitle" Text="{Binding L[WelcomeTitle]}" FontSize="40" FontWeight="SemiBold"
+                   LetterSpacing="{Binding TitleLetterSpacing}" TextAlignment="Center" TextWrapping="Wrap"
+                   Foreground="{DynamicResource WelcomeTextBrush}" />
+        <Border Name="WelcomeDivider" Width="48" Height="2" Margin="0,20,0,20"
+                Background="{DynamicResource WelcomeMarkBrush}" HorizontalAlignment="Center" />
+        <TextBlock Name="WelcomeTagline" Text="{Binding L[WelcomeTagline]}" FontSize="17" LineHeight="29"
+                   MaxWidth="560" TextWrapping="Wrap" TextAlignment="Center"
+                   Foreground="{DynamicResource WelcomeSecondaryBrush}" />
+        <Button Name="WelcomeStart" Classes="welcome-primary" Content="{Binding L[WelcomeStart]}"
+                AutomationProperties.Name="{Binding L[WelcomeStart]}" Command="{Binding StartCommand}"
+                IsDefault="True" TabIndex="2" HorizontalAlignment="Center" Margin="0,32,0,0" />
+      </StackPanel>
+      </Border>
+      <!-- On the reading panel, like the main text: its contrast must not depend on the photograph behind it. -->
+      <Border Grid.Row="2" Background="{DynamicResource WelcomeReadingBrush}" CornerRadius="8" Padding="12,4"
+              HorizontalAlignment="Center">
+        <TextBlock Name="WelcomeFooter" Text="{Binding L[OfflineStatus]}" FontSize="13"
+                   TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center"
+                   Foreground="{DynamicResource WelcomeSecondaryBrush}" />
+      </Border>
+    </Grid>
+  </Grid>
+</UserControl>

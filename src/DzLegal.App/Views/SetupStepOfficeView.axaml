@@ -1,0 +1,44 @@
+<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DzLegal.Presentation.ViewModels" xmlns:views="using:DzLegal.App.Views"
+             x:Class="DzLegal.App.Views.SetupStepOfficeView" x:DataType="vm:SetupViewModel">
+  <UserControl.Resources><views:SetupImageConverter x:Key="SetupImage" /></UserControl.Resources>
+  <StackPanel Spacing="10" HorizontalAlignment="Stretch">
+    <TextBlock Classes="setup-label" Text="{Binding L[ProfileAddress]}" />
+    <TextBox Name="ProfileAddress" Text="{Binding Address}" AutomationProperties.Name="{Binding L[ProfileAddress]}" FlowDirection="RightToLeft" AcceptsReturn="True" MinHeight="76" TextWrapping="Wrap" />
+    <Grid ColumnDefinitions="*,*" ColumnSpacing="18">
+      <StackPanel Spacing="10">
+    <TextBlock Classes="setup-label" Text="{Binding L[ProfilePhone]}" />
+    <TextBox Name="ProfilePhone" Text="{Binding Phone}" AutomationProperties.Name="{Binding L[ProfilePhone]}" FlowDirection="LeftToRight" />
+      </StackPanel>
+      <StackPanel Grid.Column="1" Spacing="10">
+    <TextBlock Classes="setup-label" Text="{Binding L[ProfileEmail]}" />
+    <TextBox Name="ProfileEmail" Text="{Binding Email}" Classes.invalid="{Binding HasEmailError}" AutomationProperties.Name="{Binding L[ProfileEmail]}" FlowDirection="LeftToRight" />
+      </StackPanel>
+    </Grid>
+    <TextBlock Classes="setup-error" Text="{Binding L[EmailInvalid]}" IsVisible="{Binding HasEmailError}" />
+    <TextBlock Classes="setup-label" Text="{Binding L[ProfileFirm]}" />
+    <TextBox Name="ProfileFirm" Text="{Binding Firm}" AutomationProperties.Name="{Binding L[ProfileFirm]}" FlowDirection="RightToLeft" />
+    <TextBlock Classes="setup-label" Text="{Binding L[ProfileLogo]}" />
+    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="18">
+      <Border Width="96" Height="72" Background="{DynamicResource WelcomeControlBrush}" BorderBrush="{DynamicResource WelcomeEdgeBrush}" BorderThickness="1" CornerRadius="8" IsVisible="{Binding HasLogo}">
+        <Image Name="LogoImage" Source="{Binding LogoPreview, Converter={StaticResource SetupImage}}" Stretch="Uniform" Margin="6" />
+      </Border>
+      <WrapPanel Grid.Column="1" VerticalAlignment="Center">
+        <Button Classes="setup" Content="{Binding L[ProfileLogoChoose]}" Command="{Binding ChooseLogoCommand}" Margin="0,0,8,0" />
+        <Button Classes="setup" Content="{Binding L[ProfileLogoRemove]}" Command="{Binding RemoveLogoCommand}" IsVisible="{Binding HasLogo}" />
+      </WrapPanel>
+    </Grid>
+    <TextBlock Classes="setup-note" Text="{Binding L[ProfileLogoNote]}" />
+    <TextBlock Classes="setup-label" Text="{Binding L[DefaultsPlace]}" />
+    <TextBox Name="ProfileDefaultPlace" Text="{Binding DefaultPlace}" AutomationProperties.Name="{Binding L[DefaultsPlace]}" FlowDirection="RightToLeft" />
+    <TextBlock Classes="setup-label" Text="{Binding L[DefaultsCouncil]}" />
+    <TextBox Name="ProfileDefaultCouncil" Text="{Binding DefaultCouncil}" AutomationProperties.Name="{Binding L[DefaultsCouncil]}" FlowDirection="RightToLeft" />
+    <TextBlock Classes="setup-label" Text="{Binding L[DefaultsCourt]}" />
+    <TextBox Name="ProfileDefaultCourt" Text="{Binding DefaultCourt}" AutomationProperties.Name="{Binding L[DefaultsCourt]}" FlowDirection="RightToLeft" />
+    <CheckBox Content="{Binding L[DefaultsWatermark]}" IsChecked="{Binding WatermarkByDefault}" />
+    <TextBlock Classes="setup-label" Text="{Binding L[DefaultsFileName]}" />
+    <ComboBox Name="ProfileFileNaming" ItemsSource="{Binding FileNamingOptions}" SelectedValueBinding="{Binding Value}" SelectedValue="{Binding FileNaming, Mode=TwoWay}" HorizontalAlignment="Stretch" AutomationProperties.Name="{Binding L[DefaultsFileName]}">
+      <ComboBox.ItemTemplate><DataTemplate x:DataType="vm:SetupChoice"><TextBlock Text="{Binding Label}" /></DataTemplate></ComboBox.ItemTemplate>
+    </ComboBox>
+  </StackPanel>
+</UserControl>

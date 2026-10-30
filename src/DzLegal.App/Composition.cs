@@ -178,7 +178,7 @@ public static class Composition
         await provider.UnloadAsync(cancellationToken);
     }
 
-    public static MainWindowViewModel CreateMainViewModel(AppSettings settings, IUserFiles files, AppPaths paths, Loc loc, IExternalLinks? links = null)
+    public static MainWindowViewModel CreateMainViewModel(AppSettings settings, IUserFiles files, AppPaths paths, Loc loc, IExternalLinks? links = null, IProfileDefaults? profileDefaults = null)
     {
         ArgumentNullException.ThrowIfNull(settings);
         ArgumentNullException.ThrowIfNull(paths);
@@ -196,7 +196,8 @@ public static class Composition
             settings.DefaultProvider,
             autosaveFile: Path.Combine(paths.Drafts, "last-session" + DraftFile.Extension),
             knowledge: DzLegal.Law.LegalKnowledgeLoader.Load(LawRoot),
-            links: links)
+            links: links,
+            profileDefaults: profileDefaults)
         {
             BuildLabel = BuildLabel,
             Timings = new TaskTimings(Path.Combine(paths.Root, "timings.json")),

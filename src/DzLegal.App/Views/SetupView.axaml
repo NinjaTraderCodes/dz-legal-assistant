@@ -1,0 +1,131 @@
+<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DzLegal.Presentation.ViewModels" xmlns:app="using:DzLegal.App" xmlns:views="using:DzLegal.App.Views"
+             x:Class="DzLegal.App.Views.SetupView" x:DataType="vm:SetupViewModel"
+             FontFamily="{DynamicResource UiFont}"
+             FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}">
+  <UserControl.Styles>
+    <StyleInclude Source="/Styles/Workbench.axaml" />
+    <Style Selector="TextBlock.setup-label">
+      <Setter Property="Foreground" Value="{DynamicResource WelcomeTextBrush}" /><Setter Property="FontSize" Value="14" />
+      <Setter Property="FontWeight" Value="SemiBold" /><Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    <Style Selector="TextBlock.setup-note">
+      <Setter Property="Foreground" Value="{DynamicResource WelcomeSecondaryBrush}" /><Setter Property="FontSize" Value="13" />
+      <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    <Style Selector="TextBlock.setup-error">
+      <Setter Property="Foreground" Value="{DynamicResource WelcomeTextBrush}" /><Setter Property="FontSize" Value="14" />
+      <Setter Property="FontWeight" Value="SemiBold" /><Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    <Style Selector="TextBox, ComboBox">
+      <Setter Property="MinHeight" Value="42" /><Setter Property="FontSize" Value="16" />
+      <Setter Property="Background" Value="{DynamicResource WelcomeControlBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource WelcomeTextBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource WelcomeEdgeBrush}" /><Setter Property="CornerRadius" Value="8" />
+    </Style>
+    <Style Selector="CheckBox">
+      <Setter Property="Foreground" Value="{DynamicResource WelcomeTextBrush}" /><Setter Property="FontSize" Value="14" />
+    </Style>
+    <Style Selector="TextBox.invalid"><Setter Property="BorderBrush" Value="{DynamicResource DangerBrush}" /></Style>
+    <Style Selector="Button.setup">
+      <Setter Property="Background" Value="{DynamicResource WelcomeControlBrush}" /><Setter Property="Foreground" Value="{DynamicResource WelcomeTextBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource WelcomeEdgeBrush}" /><Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="10" /><Setter Property="MinHeight" Value="44" />
+      <Setter Property="Padding" Value="16,8" /><Setter Property="FontSize" Value="14" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" /><Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+    <Style Selector="Button.setup.primary">
+      <Setter Property="Background" Value="{DynamicResource WelcomeGoldBrush}" /><Setter Property="Foreground" Value="{DynamicResource WelcomeButtonTextBrush}" />
+      <Setter Property="FontWeight" Value="SemiBold" /><Setter Property="MinWidth" Value="112" />
+    </Style>
+    <Style Selector="Button.setup:focus-visible">
+      <Setter Property="BorderBrush" Value="{DynamicResource WelcomeFocusBrush}" /><Setter Property="BorderThickness" Value="3" />
+    </Style>
+    <Style Selector="Button.setup:pointerover /template/ ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource WelcomeControlBrush}" /><Setter Property="Foreground" Value="{DynamicResource WelcomeTextBrush}" />
+    </Style>
+    <Style Selector="Button.setup.primary:pointerover /template/ ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource WelcomeGoldBrush}" /><Setter Property="Foreground" Value="{DynamicResource WelcomeButtonTextBrush}" />
+    </Style>
+  </UserControl.Styles>
+  <Grid ClipToBounds="True">
+    <Image Name="SetupBackground" Stretch="UniformToFill" />
+    <Border Background="{DynamicResource WelcomeOverlayBrush}" />
+    <Grid RowDefinitions="Auto,*,Auto" Margin="32,18" RowSpacing="12" IsEnabled="{Binding CanEdit}">
+      <Border Background="{DynamicResource WelcomeReadingBrush}" CornerRadius="16" Padding="16,6">
+      <Grid ColumnDefinitions="*,Auto" MinHeight="44">
+        <TextBlock Text="{Binding PageTitle}" FontSize="26" FontWeight="SemiBold" VerticalAlignment="Center" Foreground="{DynamicResource WelcomeTextBrush}" />
+        <Border Name="SetupThemeHost" Grid.Column="1" Background="{DynamicResource AppBarBrush}" CornerRadius="{DynamicResource ControlRadius}" IsEnabled="{Binding CanEdit}">
+          <views:ThemeToggleButton Localization="{Binding L.Source}" />
+        </Border>
+      </Grid>
+      </Border>
+      <Border Grid.Row="1" Background="{DynamicResource SetupSurfaceBrush}" CornerRadius="16" Padding="24,16"
+              MaxWidth="820" HorizontalAlignment="Stretch">
+        <Grid RowDefinitions="Auto,Auto,*,Auto,Auto" RowSpacing="12">
+          <TextBlock Classes="setup-note" Text="{Binding L[SetupIntro]}" IsVisible="{Binding IsSetup}" TextAlignment="Center" />
+          <StackPanel Grid.Row="1" Spacing="6">
+            <TextBlock Text="{Binding ProgressText}" Foreground="{DynamicResource WelcomeMarkBrush}" FontWeight="SemiBold" FontSize="15" TextAlignment="Center" />
+            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+              <Button Classes="setup" Classes.primary="{Binding ShowLawyerStep}" Content="{Binding L[SetupStepLawyer]}" Click="GoLawyer" />
+              <Button Grid.Column="1" Classes="setup" Classes.primary="{Binding ShowOfficeStep}" Content="{Binding L[SetupStepOffice]}" Click="GoOffice" />
+              <Button Grid.Column="2" Classes="setup" Classes.primary="{Binding ShowPrefsStep}" Content="{Binding L[SetupStepPrefs]}" Click="GoPreferences" />
+            </Grid>
+          </StackPanel>
+          <ScrollViewer Name="StepScroll" Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <ContentControl Name="SetupStepHost" HorizontalContentAlignment="Stretch" Margin="0,0,12,0" />
+          </ScrollViewer>
+          <Border Grid.Row="3" BorderBrush="{DynamicResource WelcomeEdgeBrush}" BorderThickness="1" CornerRadius="8" Padding="12" IsVisible="{Binding HasMessage}">
+            <StackPanel Spacing="8">
+              <TextBlock Text="{Binding Message}" Classes="setup-error" />
+              <Button Classes="setup" Content="{Binding L[SetupContinueAnyway]}" Command="{Binding ContinueAnywayCommand}" IsVisible="{Binding CanContinueAnyway}" />
+            </StackPanel>
+          </Border>
+          <Grid Grid.Row="4" ColumnDefinitions="*,Auto" ColumnSpacing="16">
+            <WrapPanel VerticalAlignment="Center">
+              <Button Name="SetupBack" Classes="setup" Content="{Binding L[Previous]}" Command="{Binding GoBackCommand}" IsVisible="{Binding HasPrevious}" Margin="0,0,8,0" />
+              <Button Name="SetupLater" Classes="setup" Content="{Binding L[SetupLater]}" Command="{Binding LaterCommand}" IsVisible="{Binding IsSetup}" />
+              <Button Classes="setup" Content="{Binding L[ProfileClose]}" Command="{Binding CloseEditorCommand}" IsVisible="{Binding IsEditing}" />
+            </WrapPanel>
+            <WrapPanel Grid.Column="1">
+              <Button Name="ProfileSave" Classes="setup" Content="{Binding L[ProfileSave]}" Command="{Binding SaveCommand}" IsVisible="{Binding ShowEditorSave}" Margin="0,0,8,0" />
+              <Button Name="SetupNext" Classes="setup primary" Content="{Binding L[Next]}" Command="{Binding GoNextCommand}" IsVisible="{Binding HasNext}" IsDefault="{Binding HasNext}" />
+              <Button Name="SetupFinish" Classes="setup primary" Content="{Binding FinishText}" Command="{Binding FinishCommand}" IsVisible="{Binding IsLastStep}" IsDefault="{Binding IsLastStep}" />
+            </WrapPanel>
+          </Grid>
+        </Grid>
+      </Border>
+      <Border Grid.Row="2" Background="{DynamicResource WelcomeReadingBrush}" CornerRadius="10" Padding="12,6">
+      <StackPanel Spacing="3">
+        <TextBlock Classes="setup-note" Text="{Binding L[PrivacyNote]}" TextAlignment="Center" />
+        <TextBlock Classes="setup-note" Text="{Binding L[ProfileAppliesToNew]}" TextAlignment="Center" />
+      </StackPanel>
+      </Border>
+    </Grid>
+    <Border Background="{DynamicResource WelcomeOverlayBrush}" IsVisible="{Binding IsConfirmingLeave}">
+      <Border Background="{DynamicResource WelcomeControlBrush}" BorderBrush="{DynamicResource WelcomeEdgeBrush}" BorderThickness="1" CornerRadius="16" Padding="28" MaxWidth="620" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel Spacing="20" KeyboardNavigation.TabNavigation="Cycle">
+          <TextBlock Text="{Binding L[ProfileUnsaved]}" Classes="setup-label" FontSize="18" />
+          <WrapPanel>
+            <Button Name="SaveBeforeLeaving" Classes="setup primary" Content="{Binding L[ProfileSave]}" Command="{Binding SaveAndLeaveCommand}" Margin="0,0,8,8" />
+            <Button Classes="setup" Content="{Binding L[ProfileDiscard]}" Command="{Binding DiscardAndLeaveCommand}" Margin="0,0,8,8" />
+            <Button Classes="setup" Content="{Binding L[Cancel]}" Command="{Binding CancelLeaveCommand}" Margin="0,0,0,8" />
+          </WrapPanel>
+          <TextBlock Text="{Binding Message}" Classes="setup-error" IsVisible="{Binding IsError}" />
+        </StackPanel>
+      </Border>
+    </Border>
+    <Border Background="{DynamicResource WelcomeOverlayBrush}" IsVisible="{Binding IsConfirmingImport}">
+      <Border Background="{DynamicResource WelcomeControlBrush}" BorderBrush="{DynamicResource WelcomeEdgeBrush}" BorderThickness="1" CornerRadius="16" Padding="28" MaxWidth="620" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel Spacing="20" KeyboardNavigation.TabNavigation="Cycle">
+          <TextBlock Text="{Binding L[ProfileImportConfirm]}" Classes="setup-label" FontSize="18" />
+          <TextBlock Text="{Binding ImportSummary}" Classes="setup-note" />
+          <WrapPanel>
+            <Button Name="AcceptProfileImport" Classes="setup primary" Content="{Binding L[ProfileContinue]}" Command="{Binding ConfirmImportCommand}" Margin="0,0,8,8" />
+            <Button Classes="setup" Content="{Binding L[Cancel]}" Command="{Binding CancelImportCommand}" Margin="0,0,0,8" />
+          </WrapPanel>
+        </StackPanel>
+      </Border>
+    </Border>
+  </Grid>
+</UserControl>

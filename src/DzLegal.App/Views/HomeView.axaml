@@ -1,0 +1,163 @@
+<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DzLegal.Presentation.ViewModels" xmlns:app="using:DzLegal.App" xmlns:views="using:DzLegal.App.Views"
+             x:Class="DzLegal.App.Views.HomeView" x:DataType="vm:HomeViewModel"
+             FontFamily="{DynamicResource UiFont}" FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}">
+  <UserControl.Resources>
+    <ControlTheme x:Key="HomeRowButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+      <Setter Property="Height" Value="44" /><Setter Property="MinHeight" Value="44" />
+      <Setter Property="HorizontalAlignment" Value="Stretch" /><Setter Property="CornerRadius" Value="10" />
+      <Setter Property="FontSize" Value="15" /><Setter Property="Padding" Value="16,8" />
+    </ControlTheme>
+  </UserControl.Resources>
+  <UserControl.KeyBindings>
+    <KeyBinding Gesture="Ctrl+N" Command="{Binding NewPetitionCommand}" />
+    <KeyBinding Gesture="Ctrl+O" Command="{Binding OpenCaseCommand}" />
+  </UserControl.KeyBindings>
+  <UserControl.Styles>
+    <StyleInclude Source="/Styles/Workbench.axaml" />
+    <Style Selector="TextBlock"><Setter Property="ToolTip.ShowOnDisabled" Value="True" /></Style>
+    <Style Selector="TextBlock.home-text">
+      <Setter Property="Foreground" Value="{DynamicResource WelcomeTextBrush}" /><Setter Property="FontSize" Value="16" /><Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    <Style Selector="TextBlock.home-note">
+      <Setter Property="Foreground" Value="{DynamicResource WelcomeSecondaryBrush}" /><Setter Property="FontSize" Value="13" /><Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    <Style Selector="Button.home">
+      <Setter Property="ToolTip.ShowOnDisabled" Value="True" />
+      <Setter Property="Background" Value="{DynamicResource WelcomeControlBrush}" /><Setter Property="Foreground" Value="{DynamicResource WelcomeTextBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource WelcomeEdgeBrush}" /><Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="10" /><Setter Property="MinHeight" Value="44" /><Setter Property="FontSize" Value="15" />
+      <Setter Property="Padding" Value="16,8" /><Setter Property="HorizontalContentAlignment" Value="Center" /><Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+    <Style Selector="Button.home.selected"><Setter Property="BorderThickness" Value="2" /><Setter Property="FontWeight" Value="SemiBold" /></Style>
+    <Style Selector="Button.home.main-action">
+      <Setter Property="Height" Value="58" /><Setter Property="MinHeight" Value="58" />
+      <Setter Property="Background" Value="{DynamicResource WelcomeGoldBrush}" /><Setter Property="Foreground" Value="{DynamicResource WelcomeButtonTextBrush}" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+    <Style Selector="Button.home.main-action:pointerover /template/ ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource WelcomeGoldBrush}" /><Setter Property="Foreground" Value="{DynamicResource WelcomeButtonTextBrush}" />
+    </Style>
+    <Style Selector="Button.home.primary">
+      <Setter Property="Background" Value="{DynamicResource WelcomeGoldBrush}" /><Setter Property="Foreground" Value="{DynamicResource WelcomeButtonTextBrush}" /><Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+    <Style Selector="Button.home:focus-visible">
+      <Setter Property="BorderBrush" Value="{DynamicResource WelcomeFocusBrush}" /><Setter Property="BorderThickness" Value="3" />
+    </Style>
+    <Style Selector="Button.home:pointerover /template/ ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource WelcomeControlBrush}" /><Setter Property="Foreground" Value="{DynamicResource WelcomeTextBrush}" />
+    </Style>
+    <Style Selector="Button.home.primary:pointerover /template/ ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource WelcomeGoldBrush}" /><Setter Property="Foreground" Value="{DynamicResource WelcomeButtonTextBrush}" />
+    </Style>
+    <Style Selector="Button.home:disabled /template/ ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource WelcomeControlBrush}" /><Setter Property="Foreground" Value="{DynamicResource WelcomeSecondaryBrush}" />
+    </Style>
+    <Style Selector="Border.home-panel">
+      <Setter Property="Background" Value="{DynamicResource SetupSurfaceBrush}" /><Setter Property="CornerRadius" Value="16" /><Setter Property="Padding" Value="20,16" />
+    </Style>
+  </UserControl.Styles>
+  <Grid ClipToBounds="True">
+    <Image Name="HomeBackground" Stretch="UniformToFill"><Image.Effect><BlurEffect Radius="8" /></Image.Effect></Image>
+    <Border Background="{DynamicResource WelcomeOverlayBrush}" />
+    <Grid Name="HomeContent" RowDefinitions="Auto,Auto,Auto,*,Auto" RowSpacing="12" Margin="32,20" IsEnabled="{Binding CanInteract}">
+      <Border Background="{DynamicResource WelcomeReadingBrush}" CornerRadius="16" Padding="16,8">
+        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="20">
+          <StackPanel Orientation="Horizontal" Spacing="16" VerticalAlignment="Center">
+            <TextBlock Text="{Binding L[WelcomeTitle]}" Classes="home-text" FontSize="26" FontWeight="SemiBold" />
+            <TextBlock Text="{Binding L[Home]}" Classes="home-text" FontSize="20" VerticalAlignment="Center" />
+          </StackPanel>
+          <WrapPanel Grid.Column="1">
+            <Button Name="HomeArabic" Classes="home" Classes.selected="{Binding IsArabic}" Content="{Binding L[HomeArabic]}" Command="{Binding SwitchLanguageCommand}" CommandParameter="ar" Margin="0,0,6,0" TabIndex="0" />
+            <Button Name="HomeEnglish" Classes="home" Classes.selected="{Binding IsEnglish}" Content="{Binding L[HomeEnglish]}" Command="{Binding SwitchLanguageCommand}" CommandParameter="en" Margin="0,0,6,0" TabIndex="1" />
+            <Border Background="{DynamicResource AppBarBrush}" CornerRadius="{DynamicResource ControlRadius}"><views:ThemeToggleButton Name="HomeThemeButton" Localization="{Binding L.Source}" TabIndex="2" /></Border>
+          </WrapPanel>
+        </Grid>
+      </Border>
+      <Border Name="IncompleteProfileBanner" Grid.Row="1" Classes="home-panel" IsVisible="{Binding IsProfileIncomplete}">
+        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="16">
+          <TextBlock Text="{Binding L[CompleteProfileBanner]}" Classes="home-text" VerticalAlignment="Center" />
+          <Button Name="CompleteProfile" Grid.Column="1" Classes="home" Content="{Binding L[CompleteProfileAction]}" Command="{Binding ProfileCommand}" />
+        </Grid>
+      </Border>
+      <Border Name="ResumeBanner" Grid.Row="2" Classes="home-panel" IsVisible="{Binding HasRecoverableDraft}">
+        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="16">
+          <StackPanel Spacing="3"><TextBlock Text="{Binding L[StartResume]}" Classes="home-text" FontWeight="SemiBold" /><TextBlock Text="{Binding L[StartResumeDesc]}" Classes="home-note" /></StackPanel>
+          <WrapPanel Grid.Column="1" VerticalAlignment="Center">
+            <Button Name="ResumeSession" Classes="home primary" Content="{Binding L[StartResume]}" Command="{Binding ResumeCommand}" Margin="0,0,8,0" />
+            <Button Name="DismissSession" Classes="home" Content="{Binding L[StartResumeLater]}" Command="{Binding NotNowCommand}" />
+          </WrapPanel>
+        </Grid>
+      </Border>
+      <Border Grid.Row="3" Classes="home-panel" MaxWidth="1280" HorizontalAlignment="Stretch">
+        <Grid RowDefinitions="Auto,Auto,Auto,*,Auto" RowSpacing="10">
+          <Grid Name="HomeActions" ColumnDefinitions="*,*,*" RowDefinitions="58,20" ColumnSpacing="12" RowSpacing="2">
+            <Button Name="HomeNew" Theme="{StaticResource HomeRowButton}" Classes="home main-action" Content="{Binding L[StartNew]}" Command="{Binding NewPetitionCommand}" AutomationProperties.Name="{Binding L[StartNew]}" />
+            <Button Name="HomeOpen" Grid.Column="1" Theme="{StaticResource HomeRowButton}" Classes="home main-action" Content="{Binding L[StartOpen]}" Command="{Binding OpenCaseCommand}" AutomationProperties.Name="{Binding L[StartOpen]}" />
+            <Button Name="HomeSample" Grid.Column="2" Theme="{StaticResource HomeRowButton}" Classes="home main-action" Content="{Binding L[StartSample]}" IsEnabled="False" ToolTip.Tip="{Binding L[StartSampleDesc]}" />
+            <TextBlock Grid.Row="1" Grid.Column="2" Classes="home-note" Text="{Binding L[HomeComingLater]}" TextAlignment="Center" />
+          </Grid>
+          <StackPanel Grid.Row="1" Spacing="3">
+            <TextBlock Classes="home-note" Text="{Binding L[HomeWorkspaceUnavailable]}" IsVisible="{Binding WorkspaceUnavailable}" />
+            <TextBlock Classes="home-note" Text="{Binding L[HomeRecentUnavailable]}" IsVisible="{Binding RecentOpeningUnavailable}" />
+          </StackPanel>
+          <Grid Grid.Row="2" ColumnDefinitions="*,Auto">
+            <TextBlock Classes="home-text" Text="{Binding L[StartRecent]}" FontSize="19" FontWeight="SemiBold" VerticalAlignment="Center" />
+            <Button Name="ClearRecent" Grid.Column="1" Classes="home" Content="{Binding L[RecentClear]}" Command="{Binding ClearRecentCommand}" IsVisible="{Binding HasRecent}" />
+          </Grid>
+          <Grid Grid.Row="3" MinHeight="64">
+            <TextBlock Name="EmptyRecent" Text="{Binding L[StartRecentEmpty]}" Classes="home-note" IsVisible="{Binding HasNoRecent}" VerticalAlignment="Center" TextAlignment="Center" />
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" IsVisible="{Binding HasRecent}">
+              <ItemsControl ItemsSource="{Binding RecentCases}" HorizontalAlignment="Stretch">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate x:DataType="vm:RecentCaseItem">
+                    <Border BorderBrush="{DynamicResource WelcomeEdgeBrush}" BorderThickness="0,0,0,1" Padding="0,7">
+                      <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                        <Button Classes="home" Command="{Binding OpenCommand}" HorizontalContentAlignment="Stretch" ToolTip.Tip="{Binding Path}">
+                          <Grid RowDefinitions="Auto,Auto,Auto">
+                            <TextBlock Text="{Binding FileName}" Foreground="{DynamicResource WelcomeTextBrush}" FontSize="16" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" MaxLines="1" ToolTip.Tip="{Binding FileName}" />
+                            <TextBlock Grid.Row="1" Text="{Binding Subject}" Foreground="{DynamicResource WelcomeSecondaryBrush}" FontSize="14" TextTrimming="CharacterEllipsis" MaxLines="1" ToolTip.Tip="{Binding Subject}" />
+                            <TextBlock Grid.Row="2" Text="{Binding OpenedText}" Foreground="{DynamicResource WelcomeSecondaryBrush}" FontSize="13" />
+                          </Grid>
+                        </Button>
+                        <Button Grid.Column="1" Classes="home" Content="{Binding RemoveLabel}" Command="{Binding RemoveCommand}" VerticalAlignment="Center" />
+                      </Grid>
+                    </Border>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </ScrollViewer>
+          </Grid>
+          <Border Grid.Row="4" BorderBrush="{DynamicResource WelcomeEdgeBrush}" BorderThickness="1" CornerRadius="10" Padding="12" IsVisible="{Binding HasMessage}">
+            <StackPanel Spacing="6">
+              <TextBlock Name="HomeMessage" Text="{Binding Message}" Classes="home-text" MaxLines="2" TextTrimming="CharacterEllipsis" ToolTip.Tip="{Binding Message}" />
+              <Button Classes="home" Content="{Binding L[RecentRemove]}" Command="{Binding RemoveMissingCommand}" IsVisible="{Binding HasMissingFile}" HorizontalAlignment="Left" />
+            </StackPanel>
+          </Border>
+        </Grid>
+      </Border>
+      <Border Grid.Row="4" Background="{DynamicResource WelcomeReadingBrush}" CornerRadius="16" Padding="12,8">
+        <StackPanel Spacing="8">
+          <Grid Name="HomeLinks" ColumnDefinitions="Auto,*,*,*" ColumnSpacing="12" MaxWidth="1000" HorizontalAlignment="Stretch">
+            <Button Name="BackToCase" Classes="home" Content="{Binding L[BackToCase]}" Command="{Binding BackToCaseCommand}" IsVisible="{Binding HasOpenCase}" VerticalAlignment="Top" />
+            <StackPanel Grid.Column="1" Spacing="2"><Button Name="HomeTour" Theme="{StaticResource HomeRowButton}" Classes="home" Content="{Binding L[StartTour]}" IsEnabled="False" /><TextBlock Classes="home-note" Text="{Binding L[HomeComingLater]}" TextAlignment="Center" /></StackPanel>
+            <StackPanel Grid.Column="2" Spacing="2"><Button Name="HomeHelp" Theme="{StaticResource HomeRowButton}" Classes="home" Content="{Binding L[HomeHelp]}" IsEnabled="False" /><TextBlock Classes="home-note" Text="{Binding L[HomeComingLater]}" TextAlignment="Center" /></StackPanel>
+            <StackPanel Grid.Column="3" Spacing="2"><Button Name="HomeLibrary" Theme="{StaticResource HomeRowButton}" Classes="home" Content="{Binding L[HomeLibrary]}" IsEnabled="False" /><TextBlock Classes="home-note" Text="{Binding L[HomeComingLater]}" TextAlignment="Center" /></StackPanel>
+          </Grid>
+          <TextBlock Name="HomeOffline" Text="{Binding L[OfflineStatus]}" Classes="home-note" TextAlignment="Center" />
+        </StackPanel>
+      </Border>
+    </Grid>
+    <Border Background="{DynamicResource WelcomeOverlayBrush}" IsVisible="{Binding IsConfirmingClear}">
+      <Border Background="{DynamicResource WelcomeControlBrush}" BorderBrush="{DynamicResource WelcomeEdgeBrush}" BorderThickness="1" CornerRadius="16" Padding="28" MaxWidth="580" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel Spacing="20" KeyboardNavigation.TabNavigation="Cycle">
+          <TextBlock Classes="home-text" Text="{Binding L[HomeClearConfirm]}" />
+          <WrapPanel>
+            <Button Name="ConfirmClear" Classes="home primary" Content="{Binding L[RecentClear]}" Command="{Binding ConfirmClearCommand}" Margin="0,0,10,0" />
+            <Button Classes="home" Content="{Binding L[HomeCancel]}" Command="{Binding CancelClearCommand}" />
+          </WrapPanel>
+        </StackPanel>
+      </Border>
+    </Border>
+  </Grid>
+</UserControl>

@@ -30,6 +30,8 @@ using DzLegal.Harness;
 //       scored against the answer key in tests/fact-cases, critical errors counted per case.
 //   dzlegal-harness facts --alpha [--claims given|read] --models <...>   Alpha-01 (docs/ALPHA-01.md): the case is read
 //       against its claim type, given (the answer key's) or read by the analysis's first step; the role follows from it.
+//   dzlegal-harness facts check --cases <folder>   checks a case set written elsewhere (docs/HIDDEN-SET.md) without
+//       showing its text: codes, claim types, values written in the case, answers the Alpha-01 questions can express.
 //   dzlegal-harness facts export --out <inputs.json>      the cases as numbered sentences, for a reader outside .NET
 //   dzlegal-harness facts score --predictions <file.json> [--reader <name>] [--out <folder>]   scores that reader
 //   dzlegal-harness law import <code-id> (--url <official url> | --file <file>) [--law-root data/law] [--as-of yyyy-mm-dd]
@@ -225,7 +227,24 @@ if (args.Length > 0 && args[0] == "grounds")
 if (args.Length > 0 && args[0] == "facts")
 {
     var factCases = FactsEvaluator.LoadCases(Option("--cases", Path.Combine(AppContext.BaseDirectory, "fact-cases")));
-    var factPartition = Option("--partition", "development,validation,robustness").Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+    if (args.Length > 1 && args[1] == "check")
+    {
+        var elements = DzLegal.Drafting.ClaimFactReader.LoadElements(Option("--law-root", Path.Combine(AppContext.BaseDirectory, "data", "law")));
+        var problems = FactCaseCheck.Problems(factCases, elements);
+        Console.WriteLine($"{factCases.Count} case(s): " + string.Join(", ", factCases.GroupBy(c => c.Partition).Select(g => $"{g.Count()} {g.Key}")));
+        Console.WriteLine("Claim types: " + string.Join(", ", factCases.GroupBy(c => c.Claim).OrderByDescending(g => g.Count()).Select(g => $"{g.Key} {g.Count()}")));
+        Console.WriteLine(factCases.Count == 0 ? "No case found in the expected format: each file holds {\"cases\": [...]} (docs/HIDDEN-SET.md)."
+            : problems.Count == 0 ? "No problem found."
+            : $"{problems.Count} problem(s):");
+        foreach (var problem in problems)
+        {
+            Console.WriteLine("  " + problem);
+        }
+
+        return problems.Count == 0 && factCases.Count > 0 ? 0 : 1;
+    }
+
+    var factPartition = Option("--partition", "development,validation,robustness,hidden").Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
     factCases = factCases.Where(c => factPartition.Contains(c.Partition) && (!args.Contains("--case") || c.Name == Option("--case", string.Empty))).ToList();
     var factOut = args.Contains("--out") ? Option("--out", "bench-facts") : null;
 

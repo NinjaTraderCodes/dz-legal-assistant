@@ -379,7 +379,7 @@ public static class FactsEvaluator
         sb.AppendLine("A critical error would make the legal decision or the draft wrong: a reversed role, a missing decisive event, a date or amount bound to the wrong event, a denial read as a fact, an invented value, a wrong requested amount.").AppendLine();
         sb.AppendLine("| partition | cases | cases with a critical error | plaintiff position | decisive events found | dates on the right event | polarity right | requests found | failures | seconds / case |");
         sb.AppendLine("|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|");
-        foreach (var part in new[] { "development", "validation", "robustness", "release" })
+        foreach (var part in new[] { "development", "validation", "robustness", "release", "hidden" })
         {
             var subset = new FactsReport(report.Reader, report.Results.Where(r => r.Case.Partition == part && !r.Excluded).ToList());
             if (subset.Results.Count == 0)

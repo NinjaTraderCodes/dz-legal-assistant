@@ -207,6 +207,25 @@ public sealed class AlphaFactsTests
         Assert.Equal([GroundsAnalyzer.ReadingRequestId, ClaimFactReader.RequestId, GroundsAnalyzer.ReadingRequestId], model.Requests.Select(r => r.SectionId));
     }
 
+    [Fact]
+    public void TheCaseCheckFindsNothingInTheAnswerKeyAndNamesProblemsWithoutTheText()
+    {
+        Assert.Empty(FactCaseCheck.Problems(Cases, Elements));
+
+        var loan = Case("loan-basic");
+        var broken = loan with
+        {
+            Name = "x",
+            Claim = "loan",
+            Gold = loan.Gold with { Position = "borrower", Events = [.. loan.Gold.Events, new GoldEvent { Kind = "harm_by_animal", Date = "01/01/2020" }] },
+        };
+        var wrongRole = loan with { Name = "y", Gold = loan.Gold with { Position = "borrower" } };
+        var problems = FactCaseCheck.Problems([broken, wrongRole], Elements);
+
+        Assert.Equal(["x: unknown claim type 'loan'", "x: date 01/01/2020 is not written in the case (dd/mm/yyyy or a year)", "y: position 'borrower' is not a role of loan-repayment"], problems);
+        Assert.DoesNotContain(problems, p => p.Contains("أقرض", StringComparison.Ordinal));
+    }
+
     private sealed class CutOff(string written) : IModelProvider
     {
         public string Name => "cut off";

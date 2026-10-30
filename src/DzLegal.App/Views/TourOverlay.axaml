@@ -6,19 +6,20 @@
   <Grid FlowDirection="LeftToRight" ClipToBounds="True">
     <Canvas Name="Shade" IsHitTestVisible="False" />
     <Canvas Name="Cards">
-      <Border Name="TourCard" Focusable="True" Width="420" Padding="24" CornerRadius="12"
-              Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="2"
+      <Border Name="TourCard" Classes="onboarding-dialog" Focusable="True" MaxWidth="{DynamicResource OnboardingTourWidth}"
               FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}"
               AutomationProperties.Name="{Binding Announcement}" AutomationProperties.HelpText="{Binding Text}"
               AutomationProperties.LiveSetting="Assertive" KeyboardNavigation.TabNavigation="Cycle">
-        <StackPanel Spacing="14">
-          <TextBlock Text="{Binding Counter}" FontSize="13" Foreground="{DynamicResource TextMutedBrush}" />
-          <TextBlock Text="{Binding Title}" FontSize="22" FontWeight="SemiBold" TextWrapping="Wrap" />
-          <TextBlock Text="{Binding Text}" FontSize="16" TextWrapping="Wrap" LineHeight="27" />
+        <StackPanel Spacing="{DynamicResource OnboardingDialogGap}">
+          <TextBlock Name="TourCounter" Classes="onboarding-secondary" Text="{Binding Counter}" />
+          <TextBlock Name="TourTitle" Classes="onboarding-title" Text="{Binding Title}" />
+          <TextBlock Name="TourText" Classes="onboarding-body" Text="{Binding Text}" />
           <WrapPanel>
-            <Button Name="TourNext" Classes="primary" Content="{Binding NextText}" Command="{Binding NextCommand}" Margin="0,0,8,8" />
-            <Button Classes="outline" Content="{Binding L[TourBack]}" Command="{Binding BackCommand}" Margin="0,0,8,8" />
-            <Button Classes="subtle" Content="{Binding L[TourSkip]}" Command="{Binding SkipCommand}" Margin="0,0,0,8" />
+            <Button Name="TourNext" Classes="onboarding onboarding-primary" AutomationProperties.Name="{Binding NextText}" Command="{Binding NextCommand}" Margin="{DynamicResource OnboardingActionMargin}">
+              <TextBlock Name="TourNextLabel" Foreground="{DynamicResource WelcomeButtonTextBrush}" Text="{Binding NextText}" />
+            </Button>
+            <Button Name="TourBack" Classes="onboarding" Content="{Binding L[TourBack]}" Command="{Binding BackCommand}" Margin="{DynamicResource OnboardingActionMargin}" />
+            <Button Name="TourSkip" Classes="onboarding" Content="{Binding L[TourSkip]}" Command="{Binding SkipCommand}" Margin="{DynamicResource OnboardingActionMargin}" />
           </WrapPanel>
         </StackPanel>
       </Border>

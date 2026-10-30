@@ -113,8 +113,8 @@ public partial class TourOverlay : UserControl
         Shade.Children.Clear();
         void Dim(Rect rectangle)
         {
-            var border = new Border { Width = rectangle.Width, Height = rectangle.Height, Opacity = .72 };
-            border.Bind(Border.BackgroundProperty, this.GetResourceObservable("CanvasBrush"));
+            var border = new Border { Width = rectangle.Width, Height = rectangle.Height };
+            border.Bind(Border.BackgroundProperty, this.GetResourceObservable("OnboardingTourBackdropBrush"));
             Canvas.SetLeft(border, rectangle.X); Canvas.SetTop(border, rectangle.Y); Shade.Children.Add(border);
         }
         if (target is { } t)
@@ -123,22 +123,26 @@ public partial class TourOverlay : UserControl
             Dim(new Rect(0, t.Bottom, Bounds.Width, Math.Max(0, Bounds.Height - t.Bottom)));
             Dim(new Rect(0, t.Top, t.Left, t.Height));
             Dim(new Rect(t.Right, t.Top, Math.Max(0, Bounds.Width - t.Right), t.Height));
-            var outline = new Border { Width = t.Width, Height = t.Height, BorderThickness = new Thickness(3), CornerRadius = new CornerRadius(6) };
-            outline.Bind(Border.BorderBrushProperty, this.GetResourceObservable("AccentBrush"));
+            var outline = new Border { Width = t.Width, Height = t.Height };
+            outline.Bind(Border.BorderThicknessProperty, this.GetResourceObservable("OnboardingFocusThickness"));
+            outline.Bind(Border.CornerRadiusProperty, this.GetResourceObservable("ControlRadius"));
+            outline.Bind(Border.BorderBrushProperty, this.GetResourceObservable("WelcomeMarkBrush"));
             Canvas.SetLeft(outline, t.X); Canvas.SetTop(outline, t.Y); Shade.Children.Add(outline);
         }
         else Dim(new Rect(Bounds.Size));
-        TourCard.Width = Math.Min(420, Bounds.Width - 32);
-        TourCard.Measure(new Size(TourCard.Width, Bounds.Height - 32));
+        var edgeSpace = (double)this.FindResource("OnboardingTourEdgeSpace")!;
+        var anchorGap = (double)this.FindResource("OnboardingTourAnchorGap")!;
+        TourCard.Width = Math.Min(TourCard.MaxWidth, Bounds.Width - edgeSpace);
+        TourCard.Measure(new Size(TourCard.Width, Bounds.Height - edgeSpace));
         var size = TourCard.DesiredSize;
         var x = (Bounds.Width - size.Width) / 2;
         var y = (Bounds.Height - size.Height) / 2;
         if (target is { } anchor)
         {
-            if (anchor.Right + 16 + size.Width <= Bounds.Width - 16) x = anchor.Right + 16;
-            else if (anchor.Left - 16 - size.Width >= 16) x = anchor.Left - 16 - size.Width;
-            else if (anchor.Bottom + 16 + size.Height <= Bounds.Height - 16) y = anchor.Bottom + 16;
-            else if (anchor.Top - 16 - size.Height >= 16) y = anchor.Top - 16 - size.Height;
+            if (anchor.Right + anchorGap + size.Width <= Bounds.Width - anchorGap) x = anchor.Right + anchorGap;
+            else if (anchor.Left - anchorGap - size.Width >= anchorGap) x = anchor.Left - anchorGap - size.Width;
+            else if (anchor.Bottom + anchorGap + size.Height <= Bounds.Height - anchorGap) y = anchor.Bottom + anchorGap;
+            else if (anchor.Top - anchorGap - size.Height >= anchorGap) y = anchor.Top - anchorGap - size.Height;
         }
         Canvas.SetLeft(TourCard, x); Canvas.SetTop(TourCard, y);
     }

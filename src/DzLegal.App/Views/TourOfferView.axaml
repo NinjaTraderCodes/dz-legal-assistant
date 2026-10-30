@@ -1,15 +1,20 @@
 <UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="using:DzLegal.Presentation.ViewModels" xmlns:app="using:DzLegal.App"
+             xmlns:vm="using:DzLegal.Presentation.ViewModels" xmlns:app="using:DzLegal.App" xmlns:ic="using:FluentIcons.Avalonia"
              x:Class="DzLegal.App.Views.TourOfferView" x:DataType="vm:TourOfferViewModel"
              FontFamily="{DynamicResource UiFont}" FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}">
-  <UserControl.Styles><StyleInclude Source="/Styles/Workbench.axaml" /><StyleInclude Source="/Styles/Guide.axaml" /></UserControl.Styles>
-  <Border Background="{DynamicResource SurfaceBrush}" CornerRadius="16" Padding="32" MaxWidth="620" VerticalAlignment="Center" HorizontalAlignment="Center">
-    <StackPanel Spacing="24">
-      <TextBlock Text="{Binding L[SetupOfferTour]}" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="24" TextWrapping="Wrap" />
-      <WrapPanel>
-        <Button Name="AcceptTour" Classes="primary" Content="{Binding L[SetupOfferTourYes]}" Command="{Binding YesCommand}" Margin="0,0,12,8" />
-        <Button Name="DeclineTour" Classes="outline" Content="{Binding L[SetupOfferTourNo]}" Command="{Binding NotNowCommand}" />
-      </WrapPanel>
-    </StackPanel>
-  </Border>
+  <UserControl.Styles><StyleInclude Source="/Styles/Guide.axaml" /></UserControl.Styles>
+  <Grid ClipToBounds="True">
+    <Border Name="TourOfferBackground" Background="{DynamicResource OnboardingPhotograph}" FlowDirection="LeftToRight" />
+    <Border Background="{DynamicResource WelcomeOverlayBrush}" />
+    <Border Name="TourOfferCard" Classes="onboarding-dialog" MaxWidth="{DynamicResource OnboardingDialogWidth}" Margin="{DynamicResource OnboardingPageMargin}" VerticalAlignment="Center" HorizontalAlignment="Center">
+      <StackPanel Spacing="{DynamicResource OnboardingDialogGap}">
+        <ic:SymbolIcon Classes="onboarding-icon" Symbol="Info" HorizontalAlignment="Left" />
+        <TextBlock Name="TourOfferTitle" Classes="onboarding-title" Text="{Binding L[SetupOfferTour]}" />
+        <WrapPanel>
+          <Button Name="AcceptTour" Classes="onboarding onboarding-primary" Content="{Binding L[SetupOfferTourYes]}" Command="{Binding YesCommand}" Margin="{DynamicResource OnboardingActionMargin}" />
+          <Button Name="DeclineTour" Classes="onboarding" Content="{Binding L[SetupOfferTourNo]}" Command="{Binding NotNowCommand}" />
+        </WrapPanel>
+      </StackPanel>
+    </Border>
+  </Grid>
 </UserControl>

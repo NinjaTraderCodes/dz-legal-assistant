@@ -1,0 +1,27 @@
+<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DzLegal.Presentation.ViewModels" xmlns:app="using:DzLegal.App"
+             x:Class="DzLegal.App.Views.TourOverlay" x:DataType="vm:TourViewModel"
+             IsVisible="{Binding IsOpen}" FlowDirection="LeftToRight" Background="Transparent">
+  <UserControl.Styles><StyleInclude Source="/Styles/Guide.axaml" /></UserControl.Styles>
+  <Grid FlowDirection="LeftToRight" ClipToBounds="True">
+    <Canvas Name="Shade" IsHitTestVisible="False" />
+    <Canvas Name="Cards">
+      <Border Name="TourCard" Focusable="True" Width="420" Padding="24" CornerRadius="12"
+              Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="2"
+              FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}"
+              AutomationProperties.Name="{Binding Announcement}" AutomationProperties.HelpText="{Binding Text}"
+              AutomationProperties.LiveSetting="Assertive" KeyboardNavigation.TabNavigation="Cycle">
+        <StackPanel Spacing="14">
+          <TextBlock Text="{Binding Counter}" FontSize="13" Foreground="{DynamicResource TextMutedBrush}" />
+          <TextBlock Text="{Binding Title}" FontSize="22" FontWeight="SemiBold" TextWrapping="Wrap" />
+          <TextBlock Text="{Binding Text}" FontSize="16" TextWrapping="Wrap" LineHeight="27" />
+          <WrapPanel>
+            <Button Name="TourNext" Classes="primary" Content="{Binding NextText}" Command="{Binding NextCommand}" Margin="0,0,8,8" />
+            <Button Classes="outline" Content="{Binding L[TourBack]}" Command="{Binding BackCommand}" Margin="0,0,8,8" />
+            <Button Classes="subtle" Content="{Binding L[TourSkip]}" Command="{Binding SkipCommand}" Margin="0,0,0,8" />
+          </WrapPanel>
+        </StackPanel>
+      </Border>
+    </Canvas>
+  </Grid>
+</UserControl>

@@ -94,8 +94,7 @@
           <Grid Name="HomeActions" ColumnDefinitions="*,*,*" RowDefinitions="58,20" ColumnSpacing="12" RowSpacing="2">
             <Button Name="HomeNew" Theme="{StaticResource HomeRowButton}" Classes="home main-action" Content="{Binding L[StartNew]}" Command="{Binding NewPetitionCommand}" AutomationProperties.Name="{Binding L[StartNew]}" />
             <Button Name="HomeOpen" Grid.Column="1" Theme="{StaticResource HomeRowButton}" Classes="home main-action" Content="{Binding L[StartOpen]}" Command="{Binding OpenCaseCommand}" AutomationProperties.Name="{Binding L[StartOpen]}" />
-            <Button Name="HomeSample" Grid.Column="2" Theme="{StaticResource HomeRowButton}" Classes="home main-action" Content="{Binding L[StartSample]}" IsEnabled="False" ToolTip.Tip="{Binding L[StartSampleDesc]}" />
-            <TextBlock Grid.Row="1" Grid.Column="2" Classes="home-note" Text="{Binding L[HomeComingLater]}" TextAlignment="Center" />
+            <Button Name="HomeSample" Grid.Column="2" Theme="{StaticResource HomeRowButton}" Classes="home main-action" Content="{Binding L[StartSample]}" Command="{Binding SampleCommand}" ToolTip.Tip="{Binding L[StartSampleDesc]}" />
           </Grid>
           <StackPanel Grid.Row="1" Spacing="3">
             <TextBlock Classes="home-note" Text="{Binding L[HomeWorkspaceUnavailable]}" IsVisible="{Binding WorkspaceUnavailable}" />
@@ -140,8 +139,8 @@
         <StackPanel Spacing="8">
           <Grid Name="HomeLinks" ColumnDefinitions="Auto,*,*,*" ColumnSpacing="12" MaxWidth="1000" HorizontalAlignment="Stretch">
             <Button Name="BackToCase" Classes="home" Content="{Binding L[BackToCase]}" Command="{Binding BackToCaseCommand}" IsVisible="{Binding HasOpenCase}" VerticalAlignment="Top" />
-            <StackPanel Grid.Column="1" Spacing="2"><Button Name="HomeTour" Theme="{StaticResource HomeRowButton}" Classes="home" Content="{Binding L[StartTour]}" IsEnabled="False" /><TextBlock Classes="home-note" Text="{Binding L[HomeComingLater]}" TextAlignment="Center" /></StackPanel>
-            <StackPanel Grid.Column="2" Spacing="2"><Button Name="HomeHelp" Theme="{StaticResource HomeRowButton}" Classes="home" Content="{Binding L[HomeHelp]}" IsEnabled="False" /><TextBlock Classes="home-note" Text="{Binding L[HomeComingLater]}" TextAlignment="Center" /></StackPanel>
+            <StackPanel Grid.Column="1" Spacing="2"><Button Name="HomeTour" Theme="{StaticResource HomeRowButton}" Classes="home" Content="{Binding L[StartTour]}" Command="{Binding TourCommand}" /></StackPanel>
+            <StackPanel Grid.Column="2" Spacing="2"><Button Name="HomeHelp" Theme="{StaticResource HomeRowButton}" Classes="home" Content="{Binding L[HomeHelp]}" Command="{Binding HelpCommand}" /></StackPanel>
             <StackPanel Grid.Column="3" Spacing="2"><Button Name="HomeLibrary" Theme="{StaticResource HomeRowButton}" Classes="home" Content="{Binding L[HomeLibrary]}" IsEnabled="False" /><TextBlock Classes="home-note" Text="{Binding L[HomeComingLater]}" TextAlignment="Center" /></StackPanel>
           </Grid>
           <TextBlock Name="HomeOffline" Text="{Binding L[OfflineStatus]}" Classes="home-note" TextAlignment="Center" />

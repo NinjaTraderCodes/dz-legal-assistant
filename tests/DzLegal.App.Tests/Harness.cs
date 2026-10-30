@@ -163,7 +163,9 @@ internal static class Vm
         ITaskTimings? timings = null,
         IPowerStatus? power = null,
         bool analyseInBackground = false,
-        RecentCasesStore? recentCases = null)
+        RecentCasesStore? recentCases = null,
+        bool noLocalModel = false,
+        IProfileDefaults? profileDefaults = null)
     {
         loc ??= new Loc();
         var definition = DefinitionLoader.Load(Path.Combine(AppContext.BaseDirectory, "data", "document-types", "requete-introductive"));
@@ -185,7 +187,9 @@ internal static class Vm
             provider = extra.Key;
         }
 
-        return new MainWindowViewModel(definition, providers, files ?? new FakeFiles(), new EvaluationStore(EvaluationsFolder), loc, provider, () => new DateOnly(2026, 9, 15), autosaveFile, knowledge ?? ShippedKnowledge, links, recentCases: recentCases)
+        if (noLocalModel) providers.RemoveAll(option => option.Key != "stub");
+
+        return new MainWindowViewModel(definition, providers, files ?? new FakeFiles(), new EvaluationStore(EvaluationsFolder), loc, provider, () => new DateOnly(2026, 9, 15), autosaveFile, knowledge ?? ShippedKnowledge, links, profileDefaults: profileDefaults, recentCases: recentCases)
         {
             Timings = timings ?? new TaskTimings(),
             Power = power ?? new NoPowerStatus(),

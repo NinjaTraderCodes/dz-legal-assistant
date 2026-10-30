@@ -23,6 +23,7 @@ public sealed partial class MainWindowViewModel
         None,
         New,
         Open,
+        Sample,
     }
 
     /// <summary>The case differs from the last file saved or opened (or from the empty case it started as).</summary>
@@ -63,12 +64,16 @@ public sealed partial class MainWindowViewModel
     }
 
     [RelayCommand]
-    private void New()
+    private void New() => RequestNew(null);
+
+    private void RequestNew(Action? afterNew)
     {
         if (!AskBeforeReplacing(ReplaceAction.New))
         {
             StartNew();
+            afterNew?.Invoke();
         }
+        else _pendingAfterNew = afterNew;
     }
 
     [RelayCommand]
@@ -96,6 +101,8 @@ public sealed partial class MainWindowViewModel
     {
         _pendingReplace = ReplaceAction.None;
         _pendingOpenPath = null;
+        _pendingSample = null;
+        _pendingAfterNew = null;
         IsConfirmingReplace = false;
     }
 
@@ -109,6 +116,8 @@ public sealed partial class MainWindowViewModel
 
         _pendingReplace = action;
         _pendingOpenPath = null;
+        _pendingSample = null;
+        _pendingAfterNew = null;
         ReplacePrompt = L[action == ReplaceAction.New ? "UnsavedBeforeNew" : "UnsavedBeforeOpen"];
         IsConfirmingReplace = true;
         return true;
@@ -118,14 +127,21 @@ public sealed partial class MainWindowViewModel
     {
         var action = _pendingReplace;
         var path = _pendingOpenPath;
+        var sample = _pendingSample;
+        var afterNew = _pendingAfterNew;
         CancelReplace();
         if (action == ReplaceAction.New)
         {
             StartNew();
+            afterNew?.Invoke();
         }
         else if (action == ReplaceAction.Open)
         {
             await OpenFileAsync(path);
+        }
+        else if (action == ReplaceAction.Sample && sample is not null)
+        {
+            await OpenSampleCoreAsync(sample);
         }
     }
 

@@ -17,6 +17,7 @@ public sealed partial class SetupViewModel : ObservableObject
     private readonly OnboardingProfileAssets _assets;
     private readonly Action _onFinished;
     private readonly Action _onLater;
+    private readonly Func<bool>? _tourHandler;
     private readonly Action<bool>? _onThemeApplied;
     private readonly Func<string?, Task>? _saveFolderPicker;
     private readonly ISetupFiles? _setupFiles;
@@ -52,6 +53,7 @@ public sealed partial class SetupViewModel : ObservableObject
         _assets = new OnboardingProfileAssets(profileStore.Root);
         _onFinished = onFinished;
         _onLater = onLater;
+        _tourHandler = tourHandler;
         _onThemeApplied = onThemeApplied;
         _saveFolderPicker = saveFolderPicker;
         _setupFiles = setupFiles;
@@ -304,7 +306,7 @@ public sealed partial class SetupViewModel : ObservableObject
             SetMessage("SetupMarkerFailed", true);
             return;
         }
-        _onFinished();
+        if (_tourHandler?.Invoke() != true) _onFinished();
     }
 
     [RelayCommand] private void Later() => RequestLeave(SkipSetup);

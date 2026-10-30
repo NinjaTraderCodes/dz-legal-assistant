@@ -69,7 +69,7 @@ public sealed class OnboardingWindow : Window, IDisposable
             files ?? new AvaloniaUserFiles(() => TopLevel.GetTopLevel(this), new AppPaths(preferences.Root)),
             _onFinished,
             _onLater,
-            tourHandler,
+            tourHandler ?? OfferTour,
             onThemeApplied: ApplyTheme,
             saveFolderPicker: saveFolderPicker,
             setupFiles: new SetupFileDialogs(() => this), localization: _welcome.L);
@@ -110,14 +110,15 @@ public sealed class OnboardingWindow : Window, IDisposable
     {
         _home?.Dispose();
         _homeWorkspace?.Dispose();
-        _workbench ??= _localizedWorkbenchFactory?.Invoke(_welcome.L) ?? _openWorkbench();
-        if (_workbench.DataContext is MainWindowViewModel model && model.L.Language != _welcome.L.Language)
+        EnsureWorkbench();
+        if (_workbench!.DataContext is MainWindowViewModel model && model.L.Language != _welcome.L.Language)
             model.SwitchLanguageCommand.Execute(null);
         _homeWorkspace = new HomeWorkspace(_workbench, ShowWorkbench,
             openRecent: _openRecentCase is null ? null : path => _openRecentCase(_workbench, path));
         _home = new HomeViewModel(new RecentCasesStore(_profileRoot), new ProfileStore(_profileRoot),
             async () => await new ProfileSettingsWindow(_profileRoot, _welcome.L).ShowDialog(this), _homeWorkspace,
-            new WelcomePreferences(_profileRoot).LoadLanguage(), localization: _welcome.L);
+            new WelcomePreferences(_profileRoot).LoadLanguage(), localization: _welcome.L,
+            guides: GuideNavigation.CreateActions(_workbench!, this, ShowWorkbench, hasOpenCase: false));
         return new HomeView { DataContext = _home };
     }
 
@@ -134,6 +135,23 @@ public sealed class OnboardingWindow : Window, IDisposable
         window.Show();
         _allowClose = true;
         Close();
+    }
+
+    private void EnsureWorkbench() => _workbench ??= _localizedWorkbenchFactory?.Invoke(_welcome.L) ?? _openWorkbench();
+
+    private bool OfferTour()
+    {
+        var preferences = new GuidePreferences(_profileRoot);
+        if (preferences.TourOffered) return false;
+        preferences.MarkTourOffered();
+        _isSetupOpen = false;
+        Content = new TourOfferView { DataContext = new TourOfferViewModel(_welcome.L, () =>
+        {
+            EnsureWorkbench();
+            if (_workbench!.DataContext is MainWindowViewModel model) model.StartTour(hasOpenCase: false);
+            ShowWorkbench();
+        }, OpenHome) };
+        return true;
     }
 
     private void ApplyTheme(bool dark) => (Application.Current as App)?.Themes?.SetDarkTheme(dark);

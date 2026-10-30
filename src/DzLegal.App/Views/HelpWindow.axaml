@@ -1,0 +1,34 @@
+<Window xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:DzLegal.Presentation.ViewModels" xmlns:app="using:DzLegal.App"
+        x:Class="DzLegal.App.Views.HelpWindow" x:DataType="vm:HelpViewModel"
+        Width="900" Height="600" MinWidth="640" MinHeight="420" Title="{Binding L[HelpTitle]}"
+        FontFamily="{DynamicResource UiFont}" Background="{DynamicResource CanvasBrush}"
+        Foreground="{DynamicResource TextPrimaryBrush}"
+        FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}">
+  <Window.Styles><StyleInclude Source="/Styles/Workbench.axaml" /><StyleInclude Source="/Styles/Guide.axaml" /></Window.Styles>
+  <Border Background="{DynamicResource SurfaceBrush}" CornerRadius="12" Padding="28" Margin="24" MaxWidth="960" HorizontalAlignment="Stretch">
+  <Grid RowDefinitions="Auto,*,Auto" RowSpacing="20">
+    <TextBlock Text="{Binding Title}" FontSize="26" FontWeight="SemiBold" TextWrapping="Wrap" />
+    <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
+      <Panel>
+        <ItemsControl ItemsSource="{Binding Pages}" IsVisible="{Binding IsIndex}">
+          <ItemsControl.ItemTemplate><DataTemplate x:DataType="vm:HelpPageViewModel">
+            <Button Classes="outline" Command="{Binding OpenCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,0,0,10" Padding="16,12">
+              <TextBlock Text="{Binding Title}" TextWrapping="Wrap" FontSize="17" />
+            </Button>
+          </DataTemplate></ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <ItemsControl ItemsSource="{Binding Paragraphs}" IsVisible="{Binding !IsIndex}">
+          <ItemsControl.ItemTemplate><DataTemplate x:DataType="vm:HelpParagraphViewModel">
+            <TextBlock Text="{Binding Text}" TextWrapping="Wrap" FontSize="18" LineHeight="32" Margin="0,0,0,20" />
+          </DataTemplate></ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </Panel>
+    </ScrollViewer>
+    <WrapPanel Grid.Row="2">
+      <Button Classes="outline" Content="{Binding L[HelpBack]}" Command="{Binding BackCommand}" IsVisible="{Binding !IsIndex}" Margin="0,0,12,0" />
+      <Button Classes="primary" Content="{Binding L[StartTour]}" Command="{Binding TourCommand}" IsVisible="{Binding IsIndex}" />
+    </WrapPanel>
+  </Grid>
+  </Border>
+</Window>

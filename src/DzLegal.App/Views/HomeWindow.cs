@@ -23,7 +23,8 @@ public sealed class HomeWindow : Window
             localization.SetLanguage(new WelcomePreferences(root).LoadLanguage());
         }
         Home = new HomeViewModel(new RecentCasesStore(root), new ProfileStore(root), async () =>
-            await new ProfileSettingsWindow(root, localization).ShowDialog(this), workspace, new WelcomePreferences(root).LoadLanguage(), localization: localization);
+            await new ProfileSettingsWindow(root, localization).ShowDialog(this), workspace, new WelcomePreferences(root).LoadLanguage(), localization: localization,
+            guides: GuideNavigation.CreateActions(workbench, this, Close, hasOpenCase: true));
         this.Bind(TitleProperty, new Binding("L[Home]") { Source = Home });
         Content = new HomeView { DataContext = Home };
         KeyDown += (_, e) =>

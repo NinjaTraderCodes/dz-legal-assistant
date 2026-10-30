@@ -64,6 +64,8 @@ public sealed partial class MainWindowViewModel
 
     partial void OnSelectedStepChanged(FieldGroupViewModel? oldValue, FieldGroupViewModel? newValue)
     {
+        if (IsSampleCase && newValue?.Id == FactsStepId && !IsTourActive) SampleFactsOpened = true;
+        if (IsTourActive || _guideNavigating) return;
         if (oldValue?.Id == FactsStepId && newValue?.Id != FactsStepId && ShouldAnalyseInBackground())
         {
             IsAnalysisAutomatic = true;

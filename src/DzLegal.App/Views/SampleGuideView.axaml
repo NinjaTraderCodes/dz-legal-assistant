@@ -1,0 +1,44 @@
+<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DzLegal.Presentation.ViewModels" xmlns:ic="using:FluentIcons.Avalonia"
+             x:Class="DzLegal.App.Views.SampleGuideView" x:DataType="vm:SampleGuideViewModel">
+  <Border Classes="panel" Background="{DynamicResource SurfaceBrush}" CornerRadius="12" Padding="12">
+    <DockPanel>
+      <StackPanel DockPanel.Dock="Top" Spacing="6" Margin="0,0,0,10">
+        <TextBlock Text="{Binding L[SampleGuideTitle]}" FontSize="20" FontWeight="SemiBold" TextWrapping="Wrap" />
+        <TextBlock Text="{Binding Counter}" Foreground="{DynamicResource TextMutedBrush}" />
+        <TextBlock Text="{Binding L[SampleNoModel]}" FontSize="16" TextWrapping="Wrap" IsVisible="{Binding NeedsLocalModel}" />
+      </StackPanel>
+      <StackPanel DockPanel.Dock="Bottom" Spacing="8" Margin="0,8,0,0">
+        <Expander Header="{Binding L[Help4Title]}" IsVisible="{Binding NeedsManualCompletion}" HorizontalAlignment="Stretch">
+          <TextBlock Text="{Binding L[Help4Body1]}" TextWrapping="Wrap" FontSize="13" />
+        </Expander>
+        <Button Classes="outline" Content="{Binding L[Compliance]}" Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ShowSampleCheckCommand}" HorizontalAlignment="Stretch" />
+        <StackPanel IsVisible="{Binding IsDone}" Spacing="8">
+          <TextBlock Name="SampleDone" Text="{Binding L[SampleDone]}" TextWrapping="Wrap" FontSize="15" FontWeight="SemiBold" />
+          <Button Classes="primary" Content="{Binding L[StartNew]}" Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).NewCommand}" HorizontalAlignment="Stretch" />
+        </StackPanel>
+      </StackPanel>
+      <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+        <ItemsControl ItemsSource="{Binding Tasks}">
+          <ItemsControl.ItemTemplate><DataTemplate x:DataType="vm:SampleTaskViewModel">
+            <Expander IsExpanded="{Binding IsExpanded}" HorizontalAlignment="Stretch" Margin="0,0,0,6" Padding="8">
+              <Expander.Header>
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                  <ic:SymbolIcon Symbol="CheckmarkCircle" Foreground="{DynamicResource SuccessBrush}" FontSize="18" IsVisible="{Binding IsComplete}" />
+                  <StackPanel Grid.Column="1" Spacing="3">
+                    <TextBlock Text="{Binding Title}" TextWrapping="Wrap" FontSize="16" />
+                    <TextBlock Text="{Binding ModelNote}" IsVisible="{Binding NeedsModel}" Foreground="{DynamicResource WarningBrush}" TextWrapping="Wrap" FontSize="13" />
+                  </StackPanel>
+                </Grid>
+              </Expander.Header>
+              <StackPanel Spacing="8">
+                <TextBlock Text="{Binding Hint}" TextWrapping="Wrap" FontSize="16" />
+                <Button Classes="outline" Content="{Binding ShowMe}" Command="{Binding ShowMeCommand}" />
+              </StackPanel>
+            </Expander>
+          </DataTemplate></ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </ScrollViewer>
+    </DockPanel>
+  </Border>
+</UserControl>

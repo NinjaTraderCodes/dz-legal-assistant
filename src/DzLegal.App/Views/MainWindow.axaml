@@ -313,7 +313,8 @@
     <StyleInclude Source="/Styles/Workbench.axaml" />
   </Window.Styles>
 
-  <DockPanel>
+  <Grid>
+  <DockPanel IsHitTestVisible="{Binding !Tour.IsOpen}">
     <!-- App bar -->
     <Border Name="WorkbenchTitleBar" DockPanel.Dock="Top" Background="{DynamicResource AppBarBrush}" Padding="16,8" BorderBrush="{DynamicResource HairlineBrush}" BorderThickness="0,0,0,1">
       <Grid ColumnDefinitions="*,Auto">
@@ -325,6 +326,7 @@
           <Button Name="HomeButton" Classes="bar" Click="OpenHome" ToolTip.Tip="{Binding L[Home]}" AutomationProperties.Name="{Binding L[Home]}" MinWidth="36" MinHeight="36">
             <ic:SymbolIcon Symbol="Home" Foreground="{DynamicResource AppBarTextBrush}" />
           </Button>
+          <Button Name="HelpButton" Classes="bar" Click="OpenHelp" ToolTip.Tip="{Binding L[Help]}" AutomationProperties.Name="{Binding L[Help]}" MinWidth="36" MinHeight="36"><ic:SymbolIcon Symbol="Info" /></Button>
           <Button Name="ProfileButton" Classes="bar" Click="OpenProfile" ToolTip.Tip="{Binding L[ProfileButtonHint]}" AutomationProperties.Name="{Binding L[ProfileButton]}" MinWidth="36" MinHeight="36">
             <ic:SymbolIcon Symbol="Person" Foreground="{DynamicResource AppBarTextBrush}" />
           </Button>
@@ -361,6 +363,12 @@
     </Border>
 
     <!-- New or Open with unsaved changes: save first, continue without saving, or cancel. -->
+    <Border Name="SampleBanner" DockPanel.Dock="Top" Background="{DynamicResource AccentSoftBrush}" Padding="16,8" IsVisible="{Binding IsSampleCase}">
+      <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+        <TextBlock Text="{Binding L[SampleBanner]}" TextWrapping="Wrap" VerticalAlignment="Center" />
+        <Button Grid.Column="1" Classes="outline" Content="{Binding L[SampleLeave]}" Command="{Binding NewCommand}" />
+      </Grid>
+    </Border>
     <Border Name="ReplaceBar" DockPanel.Dock="Top" Background="{DynamicResource WarningSoftBrush}" Padding="16,8" IsVisible="{Binding IsConfirmingReplace}">
       <StackPanel Orientation="Horizontal" Spacing="12">
         <ic:SymbolIcon Symbol="Warning" Foreground="{DynamicResource WarningBrush}" />
@@ -611,7 +619,7 @@
               <TabItem Header="{Binding L[Preview]}" FontSize="15" />
             </TabControl>
             <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-              <CheckBox Name="DraftWatermarkCheck" FontSize="12.5" IsChecked="{Binding DraftWatermark}" Content="{Binding L[WatermarkShort]}" ToolTip.Tip="{Binding L[Watermark]}" />
+              <CheckBox Name="DraftWatermarkCheck" FontSize="12.5" IsChecked="{Binding DraftWatermark}" IsEnabled="{Binding !IsSampleCase}" Content="{Binding L[WatermarkShort]}" ToolTip.Tip="{Binding WatermarkHint}" ToolTip.ShowOnDisabled="True" />
               <Button Classes="outline export" Name="ExportPdfButton" Command="{Binding ExportPdfCommand}" ToolTip.Tip="{Binding L[ExportPdf]}">
                 <StackPanel Orientation="Horizontal" Spacing="4"><ic:SymbolIcon Symbol="DocumentPdf" FontSize="16" /><TextBlock FontSize="12.5" Text="PDF" /></StackPanel>
               </Button>
@@ -715,8 +723,10 @@
       </Border>
 
       <!-- Compliance (the assistant takes its place while open, so the paper keeps its width) -->
-      <Border Grid.Column="2" Classes="panel" Padding="16" IsVisible="{Binding !IsAssistantOpen}">
+      <Border Grid.Column="2" IsVisible="{Binding IsSampleGuideVisible}"><views:SampleGuideView DataContext="{Binding SampleGuide}" /></Border>
+      <Border Name="CheckPanel" Grid.Column="2" Classes="panel" Padding="16" IsVisible="{Binding IsCheckPanelVisible}">
         <DockPanel>
+          <Button DockPanel.Dock="Top" Classes="outline" Content="{Binding L[SampleGuideTitle]}" Command="{Binding ShowSampleGuideCommand}" IsVisible="{Binding IsSampleCase}" Margin="0,0,0,8" />
           <TextBlock DockPanel.Dock="Top" Classes="title" Text="{Binding L[Compliance]}" Margin="0,0,0,12" />
 
           <Expander DockPanel.Dock="Bottom" Header="{Binding L[Evaluation]}" IsExpanded="{Binding IsEvaluationOpen}" HorizontalAlignment="Stretch" Margin="0,10,0,0">
@@ -895,4 +905,6 @@
       </Border>
     </Grid>
   </DockPanel>
+  <views:TourOverlay Name="GuideOverlay" DataContext="{Binding Tour}" />
+  </Grid>
 </Window>

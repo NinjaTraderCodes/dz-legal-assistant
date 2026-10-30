@@ -62,6 +62,12 @@ public partial class MainWindow : Window
     private async void OpenProfile(object? sender, RoutedEventArgs e) =>
         await new ProfileSettingsWindow(UserDataRoot, (DataContext as MainWindowViewModel)?.L).ShowDialog(this);
 
+    private async void OpenHelp(object? sender, RoutedEventArgs e)
+    {
+        if (DataContext is MainWindowViewModel model)
+            await GuideNavigation.ShowHelpAsync(this, model.L, () => { model.StartTour(); return Task.CompletedTask; });
+    }
+
     private void ObserveViewModel()
     {
         StopObserving();

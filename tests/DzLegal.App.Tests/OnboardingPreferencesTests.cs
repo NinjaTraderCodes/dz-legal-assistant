@@ -40,6 +40,9 @@ public sealed class OnboardingPreferencesTests : IDisposable
             Assert.Equal(language == "ar", window.Setup.IsRightToLeft);
             window.Setup.GoNextCommand.Execute(null); window.Setup.GoNextCommand.Execute(null);
             window.Setup.FinishCommand.Execute(null); Layout(window);
+            var offer = Assert.IsType<TourOfferViewModel>(Assert.IsType<TourOfferView>(window.Content).DataContext);
+            Assert.Same(model.L, offer.L);
+            offer.NotNowCommand.Execute(null); Layout(window);
             var home = Assert.IsType<HomeViewModel>(Assert.IsType<HomeView>(window.Content).DataContext);
             Assert.Same(model.L, home.L.Source);
             Assert.Equal(language, home.L.Language);

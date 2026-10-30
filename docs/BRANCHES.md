@@ -18,6 +18,7 @@
 | `codex/law-corpus` | Law agent | Active: Family Code and CPCA delivered (in the app since 30 Oct); next the Civil Code. Its code areas are its own (see `AGENTS.md`). |
 | `djihane/onboarding` | Djihane | Done: merged on 30 Oct through `claude/onboarding-fixes`, her 7 commits under her name. Can be deleted. |
 | `claude/onboarding-fixes` | Claude | Merged on 30 Oct: the fixes to the onboarding before merging (`docs/ONBOARDING-RELEASE.md`). Can be deleted. |
+| `djihane/guide` | Djihane | To be created from the default branch: the tour, the sample case, help, the law library page and the About page (`docs/briefs/GUIDE-BRIEF.pdf`). |
 
 ## Archived
 

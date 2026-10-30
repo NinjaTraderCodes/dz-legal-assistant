@@ -4,6 +4,12 @@ These Python tools create reproducible evidence from official publications. The 
 
 The optional Arabic second recognizer, measured comparison, caveats and hash-locked setup are documented in [OCR-COMPARISON.md](OCR-COMPARISON.md). It writes separate evidence and never upgrades a legal verification state or replaces canonical text. `merge_transcriptions.py` merges explicit reviewed/candidate batches while preserving later history and refusing implicit historical-text corrections.
 
+## Civil priority current delivery (30 October 2026)
+
+`build_civil_priority.py` replays the source-bound word/mark/body decisions, final 274-identity inventory and fixed sample, then imports the seven current chapters. It retains article 363's Arabic 224 / Ministry-French 184 conflict as **unsettled**: 273 current records are checked (233 bodies and 40 repeal markers). The old sample is never redrawn. Necessary legal heading operations are applied to current article paths; broad editorial/French/history work stays deferred.
+
+The committed pre-import hash baseline protects all 55 prior version bodies, dates, evidence, references and version paths. Five checked current versions are reused; only current 489 verification is augmented. Repeated builds are byte-identical. New snapshot dates remain unknown and cannot authorize dated case applicability. Raw PDFs, full-page images and OCR stay in the ignored evidence cache. See [delivery and remaining work](../../docs/LAW-CORPUS-CIVIL-PRIORITY-2026-10-30.md).
+
 ## Current-first bulk acquisition
 
 The user approved current codes first on26October2026, deferring full history except legally applicable transitions. `collect_current_sources.py` follows official Ministry edition links and records source hashes. Use its task User-Agent; direct requests succeeded even when browser fetches timed out. No unofficial mirror supplies article text.

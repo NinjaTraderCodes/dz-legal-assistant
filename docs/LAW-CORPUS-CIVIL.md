@@ -1,5 +1,13 @@
 # Civil Code: current-edition preparation and open validation
 
+**Current typed delivery, 30 October 2026:** the 274-identity contract/liability package is imported: **273 checked current records (233 bodies and 40 repeal markers), one unsettled body (363)**. Original Arabic 363 cites 224; Ministry Arabic and original French cite 184. This conflict remains explicit. All 55 prior version bodies, dates and source provenance are unchanged. Typed Civil totals: 321 identities / 323 versions; 275 checked, 31 partly checked, 17 unsettled, including older material outside the package. [Delivery details, limits and next work](LAW-CORPUS-CIVIL-PRIORITY-2026-10-30.md).
+
+New snapshot dates remain unsettled; the existing resolver stays fail-closed. Full Civil, bounded Commercial/labour and deferred history are unfinished. No app/catalogue/prompt/legacy change. Python 315, schema zero errors and typed-loader checks pass; the new commit receives its own Release gate. Checkpoints are pushed only with specific approval.
+
+## Historical preparation checkpoints
+
+The following earlier counts and pending-step notes are retained as history; the current typed delivery above supersedes them.
+
 **Current source review:** All 173 unchanged Civil priority bodies are accounted for; zero unread. Article 363 remains unresolved (Arabic JO 224 / Ministry and French 184). Final 274-identity outcome/reference audit preserves the fixed sample without redrawing. Typed import is next; no typed Civil change yet. Latest pushed/verified checkpoint: `f457dfd`. [Current progress and restart](LAW-CORPUS-CIVIL-PRIORITY-2026-10-30.md).
 
 **Latest source collation:** 100 new original JO body readings and four preserved checked originals are replayed; 69 unchanged bodies remain unread. Source-absent numeric glosses in 358 and 386 are separated without losing quantity words. Article 363 remains unresolved: original Arabic cites 224; Ministry Arabic and original French cite 184. No correction is guessed. Approved checkpoint `e749838` is pushed and verified after 694 .NET / 301 Python gates. [Current progress and restart](LAW-CORPUS-CIVIL-PRIORITY-2026-10-30.md). Typed Civil is unchanged; the checked 274-identity partial is unfinished.

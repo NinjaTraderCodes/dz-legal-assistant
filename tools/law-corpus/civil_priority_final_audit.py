@@ -75,7 +75,10 @@ def main() -> None:
         "selectionSha256":pipeline.hash_file(sample.OUT / "selection.json"),
         "inspectionSha256":pipeline.hash_file(sample.OUT / "inspection.json"),
         "fixedDrawRetained":expected,"selectedBodiesAndProofsUnchanged":True,"populationChanges":changed,
-        "outcomeInventory":outcome,"numericReferences":ref_rows,"explicitReferenceOccurrences":sum(map(len,found.values())),
+        "outcomeInventory":outcome,
+        "outcomePathWitness":"Native Ministry heading paths; necessary current legal heading corrections are separately source-read and applied by build_civil_priority.py, not inferred by this body audit.",
+        "necessaryHeadingReviewSha256":pipeline.hash_file(WORK / "priority-necessary-heading-review.json"),
+        "numericReferences":ref_rows,"explicitReferenceOccurrences":sum(map(len,found.values())),
         "unresolvedWordingConflicts":["363"],"baseReadingResults":dict(Counter(
             a["currentBaseJoCheck"]["result"] for a in rows if "currentBaseJoCheck" in a)),
         "typedCivilChanged":False,"partialPackageChecked":False,

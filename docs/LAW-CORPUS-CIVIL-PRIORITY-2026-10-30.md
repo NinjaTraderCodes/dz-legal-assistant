@@ -1,5 +1,42 @@
 # Civil priority chapters: active checkpoint, 30 October 2026
 
+## Current typed delivery
+
+The priority package is imported into the separate typed corpus: **273 of 274 current records are checked**. These are **233 checked article bodies and 40 checked current repeal markers**. Article **363 is unsettled**; its current Ministry witness cites 184, while the original Arabic JO prints 224. Original French also cites 184. No verified Arabic rectification was found in the limited search, and no number was guessed. The whole package is therefore **not entirely checked**.
+
+| Chapter | Current identities | Checked | Unsettled |
+|---|---:|---:|---:|
+| General contract rules (54–123, including 72 bis) | 71 | 71 | 0 |
+| Liability (124–140, including insertions) | 20 | 20 | 0 |
+| Sale (351–412) | 62 | 61 | 1 (363) |
+| Consumption loan (450–458) | 9 | 9 | 0 |
+| Lease (467–537, including insertions/repeals) | 79 | 79 | 0 |
+| Use loan (538–548) | 11 | 11 | 0 |
+| Works contracts (549–570) | 22 | 22 | 0 |
+| **Total** | **274** | **273** | **1** |
+
+All 173 unchanged original bodies are accounted for: 169 new actual source readings and four reused checked originals. The independently read 101 amendment targets reconcile as 48 full replacements, one partial replacement (489), 12 insertions and 40 repeals. Law 84-21 is now represented for 455/456. The fixed 20-article sample retains its original draw, selected words and image proofs; the final population audit explicitly records the 12 changed non-selected bodies. Necessary current heading corrections affect 96–98 and the liability chapter; historical version paths remain intact.
+
+The typed Civil file now holds **321 identities (313 with version records, eight reference-only) and 323 versions**: 275 checked, 31 partly checked and 17 unsettled. These totals include older records outside this delivery and must not be confused with the 274 current chapter records. There are 268 new current records and five new reference-only citation identities (170, 182, 182 bis, 184, 212). Missing target text is never invented.
+
+**Preservation:** all 55 pre-existing versions retain their exact text, paragraphs, dates, source provenance, references and version paths. Fifty-four full version objects are unchanged. Only the existing current 489 pilot receives added verification; its original version and two-source paragraph provenance are preserved. The five earlier checked current bodies are reused, avoiding unknown-date duplicates that would degrade the existing resolver. A frozen hash baseline and final delivery audit enforce this. A repeated builder run is byte-identical.
+
+**Limits:** new current snapshot bounds stay null and temporally unsettled. No historical case applicability, national commencement date, lawyer review or entire Civil completion is claimed. Existing resolved dates remain exact. Full history, broad French paragraph alignment and general editorial cleanup remain deferred. The app, catalogue, prompts, legacy texts and safety behaviour are unchanged.
+
+**Validation:** all 315 Python tests pass; JSON Schema has zero errors; the typed .NET loader accepts every code. Local source checkpoint `693842e` passed all 694 .NET tests and a Release build with zero warnings/errors. The new typed checkpoint receives its own mandatory post-commit gate. Latest approved/pushed checkpoint is `f457dfd`; later pushes need specific user approval. No manual app run for this corpus/tool-only change; automated app/web regressions are included.
+
+**Remaining, in priority order:**
+
+1. Resolve 363 against a verified Arabic rectification or other sufficient primary authority; until then retain the conflict and exclude it from the checked set.
+2. Continue the remaining Civil Code in source order. This partial delivers six entirely checked chapter inventories and a sale chapter with one explicit exception.
+3. Complete the bounded Commercial and labour chapters, marking those collections partial. No special-law collection. Deferred history/French/editorial work stays deferred unless a conflict requires it.
+
+Files outside corpus/tools: this report, `LAW-CORPUS-CIVIL.md`, `LAW-CORPUS.md` and `LAW-CORPUS-RESUME-2026-10-29.md`. Tests added for this import use fictitious data: checked-version reuse, rejection of silent wording changes, idempotent verification augmentation and preservation of prior text/date/provenance. No tests were removed, skipped or weakened.
+
+## Earlier source checkpoints (historical)
+
+The sections below describe earlier states, superseded by the current typed delivery above.
+
 ## Latest: all 173 unchanged original bodies accounted for
 
 All 169 new original JO body readings now replay, together with the four preserved checked originals. There are **zero unread unchanged bodies** in the 274-identity priority package. One numeric-reference conflict remains: article 363, Arabic JO 224 versus Ministry Arabic and original French 184. Its current witness receives no passed original-body check.

@@ -1,5 +1,16 @@
 # Corpus restart record - 29 October 2026
 
+## Active restart, 30 October 2026: typed Civil priority partial imported
+
+- Current package: **274 records, 273 checked / one unsettled (363)**; 233 checked bodies and 40 checked repeal markers. All 173 unchanged original bodies are accounted for, with zero unread. The fixed sample is unchanged.
+- Typed Civil totals: 321 identities, 323 versions; 275 checked / 31 partly checked / 17 unsettled. All 55 old version bodies/dates/provenance remain exact; only current 489 verification is augmented. Rebuilding is byte-identical.
+- 363 stays quarantined: Arabic JO reference 224 versus Ministry and French 184. No passed body check or guessed correction. Resolve this specific conflict; do not redo the finished body readings.
+- Next: remaining Civil in source order, then bounded Commercial/labour. Preserve deferred history/French/editorial scope and unknown snapshot dates. No app/catalogue/prompt changes.
+- Latest approved/pushed hash: `f457dfd`. `693842e` is validated locally and has a pending specific push request; the typed delivery is newer. Python 315 / schema zero / typed loader pass before its new post-commit Release gate.
+- Reproduce with `build_civil_priority.py`; it replays source-bound decisions, preserves the pre-import baseline and retains 363 unsettled. Raw PDFs/OCR remain in the ignored evidence cache. See [the delivery report](LAW-CORPUS-CIVIL-PRIORITY-2026-10-30.md).
+
+## Earlier restart checkpoints (historical)
+
 **Current source review:** All 173 unchanged Civil priority bodies are accounted for; zero unread. Article 363 remains unresolved (Arabic JO 224 / Ministry and French 184). Final 274-identity outcome/reference audit preserves the fixed sample without redrawing. Typed import is next; no typed Civil change yet. Latest pushed/verified checkpoint: `f457dfd`. [Current progress and restart](LAW-CORPUS-CIVIL-PRIORITY-2026-10-30.md).
 
 **Latest source collation:** 100 new original JO body readings and four preserved checked originals are replayed; 69 unchanged bodies remain unread. Source-absent numeric glosses in 358 and 386 are separated without losing quantity words. Article 363 remains unresolved: original Arabic cites 224; Ministry Arabic and original French cite 184. No correction is guessed. Approved checkpoint `e749838` is pushed and verified after 694 .NET / 301 Python gates. [Current progress and restart](LAW-CORPUS-CIVIL-PRIORITY-2026-10-30.md). Typed Civil is unchanged; the checked 274-identity partial is unfinished.

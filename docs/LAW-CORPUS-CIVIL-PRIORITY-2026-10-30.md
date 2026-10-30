@@ -1,11 +1,21 @@
 # Civil priority chapters: active checkpoint, 30 October 2026
 
+## Latest: all 173 unchanged original bodies accounted for
+
+All 169 new original JO body readings now replay, together with the four preserved checked originals. There are **zero unread unchanged bodies** in the 274-identity priority package. One numeric-reference conflict remains: article 363, Arabic JO 224 versus Ministry Arabic and original French 184. Its current witness receives no passed original-body check.
+
+The last 69 readings add one source-word restoration (401: introductory الأموال → الأحوال), four numeric-gloss separations (458 twice, 554 and 557), and two source paragraph layouts (546: two paragraphs; 563: three). All quantity words, negations and other words remain. The fixed 20-article draw, selected texts and proof images are unchanged. The final population audit records all 12 changed non-selected bodies, including the four older checked transcriptions.
+
+The necessary Law 05-10 heading instructions were also reread on PDF 22–24. They require 23 current path corrections: the cause subheading for 96–98, and الفعل instead of the Ministry العمل in the liability chapter heading. General editorial cleanup remains deferred. No historical path or typed article has changed yet.
+
+`f457dfd3f479067ab09ecfa4a48d9fab983c23ab` is approved, pushed and remotely verified, with 694 .NET / 305 Python tests and a zero-warning Release build. All 311 Python tests and schema validation pass before the next checkpoint. Next: import the validated current partial, preserving existing version bodies, dates and evidence; leave 363 explicitly unsettled; replay typed-loader and full Release checks. The partial must not be described as entirely checked while that conflict remains.
+
 ## Latest: 100 new original bodies and one unresolved reference
 
 100 new original 1975 JO bodies have been read and replayed, and four prior checked JO transcriptions retained. Of the 173 unchanged bodies, 69 remain unread. The last 40 readings include 37 clause/edition matches, two guarded numeric-gloss separations and one unresolved conflict. General-contract and liability unchanged-body collation is complete. Remaining review covers sale, loans, retained lease bodies and works. Typed Civil has not changed.
 
 - **358:** The JO prints the fractions as Arabic words. Three parenthetic numeric glosses in the Ministry witness are separated into research metadata; every quantity word and paragraph is preserved.
-- **386:** The JO prints ??? ???? without the Ministry parenthetic 6. Only that added numeric gloss is separated; the one-month notice and six-month suit period remain. Closed source-bound decisions and tests reject changing a quantity or applying this exception to another article.
+- **386:** The JO prints ستة أشهر without the Ministry parenthetic 6. Only that added numeric gloss is separated; the one-month notice and six-month suit period remain. Closed source-bound decisions and tests reject changing a quantity or applying this exception to another article.
 - **363:** The original Arabic JO (PDF 23, printed 1011) visibly cites 224 in paragraph 2, confirmed at 600 dpi. Current Ministry Arabic (PDF 65, printed 58) and original French JO (PDF 19, printed 835) cite 184. Limited official-domain searches identified no verified Arabic rectification. The current witness remains unchanged and receives no passed original-body check. See `article363-reference-conflict-discovery.json`. This does not establish that no rectification exists; neither number is silently treated as settled authoritative Arabic.
 
 The fixed 20-article sample is unchanged; none of 358, 386 or 363 was drawn. Final population hashes and outcome/reference audits must use the final research projection before typed import. Existing typed pilots/history are untouched. Latest approved and pushed checkpoint: `e749838554870ca819047e9a660012ebc2837421`, verified remotely. All 305 Python tests and schema validation pass before this next checkpoint; its mandatory post-commit Release gate is recorded separately.

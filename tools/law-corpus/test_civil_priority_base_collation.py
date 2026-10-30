@@ -118,6 +118,69 @@ class CivilPriorityBaseCollationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"closed source-read numeric glosses"):
             self.apply()
 
+    def test_401restores_only_the_introductory_word_and_keeps_property_in_the_first_ground(self):
+        self.reset_body("401","مثال وهمي لا تسري أحكام المادة 400 في الأموال الآتية :\n- مجموعة أموال بيعت بثمن واحد.")
+        self.reading.update(finding="source-read-original-word-restoration",proposals=collation.JO_WORD_RESTORATIONS["401"])
+        before=copy.deepcopy(self.body)
+        result=self.apply()
+        self.assertEqual(before,self.body)
+        self.assertEqual("مثال وهمي لا تسري أحكام المادة 400 في الأحوال الآتية :\n- مجموعة أموال بيعت بثمن واحد.",result["text"])
+        self.assertEqual(2,len(result["paragraphs"]))
+        self.reading["proposals"]=[{"old":"أموال","new":"أحوال"}]
+        with self.assertRaisesRegex(ValueError,"closed source-read JO wording"):
+            self.apply()
+
+    def test_word_restoration_rejects_another_article_or_ambiguous_context(self):
+        self.reset_body("999","مثال وهمي في الأموال الآتية")
+        self.reading.update(finding="source-read-original-word-restoration",proposals=collation.JO_WORD_RESTORATIONS["401"])
+        with self.assertRaisesRegex(ValueError,"closed source-read JO wording"):
+            self.apply()
+        self.reset_body("401","مثال وهمي في الأموال الآتية في الأموال الآتية")
+        with self.assertRaisesRegex(ValueError,"unique exact source context"):
+            self.apply()
+
+    def test_458separates_two_numeric_glosses_and_preserves_both_six_month_periods(self):
+        self.reset_body("458","مثال وهمي ستة (6) أشهر على القرض، ستة (6) أشهر من تاريخ الإعلان.\nلا يجوز إسقاطه.")
+        self.reading.update(finding="source-read-compiler-numeric-gloss-separation",proposals=collation.NUMERIC_GLOSSES["458"])
+        result=self.apply()
+        self.assertEqual("مثال وهمي ستة أشهر على القرض، ستة أشهر من تاريخ الإعلان.\nلا يجوز إسقاطه.",result["text"])
+        self.assertEqual(2,len(result["paragraphs"]))
+        self.reading["proposals"]=collation.NUMERIC_GLOSSES["458"][:1]
+        with self.assertRaisesRegex(ValueError,"closed source-read numeric glosses"):
+            self.apply()
+
+    def test_554and557retain_the_ten_and_three_year_words_without_compiler_numerals(self):
+        for number,text,wanted in [
+                ("554","مثال وهمي السنوات (10) العشر ولا يغير.","مثال وهمي السنوات العشر ولا يغير."),
+                ("557","مثال وهمي ثلاث (3) سنوات ولا يغير.","مثال وهمي ثلاث سنوات ولا يغير.")]:
+            with self.subTest(number=number):
+                self.reset_body(number,text)
+                self.reading.update(finding="source-read-compiler-numeric-gloss-separation",proposals=collation.NUMERIC_GLOSSES[number])
+                self.assertEqual(wanted,self.apply()["text"])
+
+    def test_original_paragraph_layouts_preserve_every_word_figure_and_mark(self):
+        for number,text,wanted in [
+                ("546","مثال وهمي.\nنص ثان.\nغير أنه لا يغير (10).","مثال وهمي.\nنص ثان. غير أنه لا يغير (10)."),
+                ("563","مثال وهمي الأعمال. وتحدد الأجرة وفقا للعقد.\nلا يغير (10).","مثال وهمي الأعمال.\nوتحدد الأجرة وفقا للعقد.\nلا يغير (10).")]:
+            with self.subTest(number=number):
+                change,_,count=collation.JO_PARAGRAPH_LAYOUTS[number]
+                self.reset_body(number,text)
+                self.reading.update(finding="source-read-original-paragraph-restoration",proposals=[change],originalJoParagraphs=count)
+                result=self.apply()
+                self.assertEqual(wanted,result["text"])
+                self.assertEqual(count,len(result["paragraphs"]))
+
+    def test_paragraph_restoration_rejects_another_article_or_invented_source_count(self):
+        change,_,count=collation.JO_PARAGRAPH_LAYOUTS["546"]
+        self.reset_body("999","مثال وهمي.\nنص ثان.\nغير أنه لا يغير.")
+        self.reading.update(finding="source-read-original-paragraph-restoration",proposals=[change],originalJoParagraphs=count)
+        with self.assertRaisesRegex(ValueError,"closed source-read JO paragraph layouts"):
+            self.apply()
+        self.reset_body("546",self.body["text"])
+        self.reading["originalJoParagraphs"]=3
+        with self.assertRaisesRegex(ValueError,"exact context and source paragraph counts"):
+            self.apply()
+
 
 if __name__ == "__main__":
     unittest.main()

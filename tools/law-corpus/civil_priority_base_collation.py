@@ -18,8 +18,20 @@ FRACTION_GLOSSES_358 = [
     {"old":"أربعة (4/5) أخماس", "new":"أربعة أخماس"},
     {"old":"الخمس (1/5) أن", "new":"الخمس أن"},
 ]
-NUMERIC_GLOSSES = {"358":FRACTION_GLOSSES_358, "386":[{"old":"ستة (6) أشهر","new":"ستة أشهر"}]}
-GLOSS_DIGITS = {"358":["1","5","4","5","1","5"],"386":["6"]}
+NUMERIC_GLOSSES = {
+    "358":FRACTION_GLOSSES_358,
+    "386":[{"old":"ستة (6) أشهر","new":"ستة أشهر"}],
+    "458":[{"old":"ستة (6) أشهر على القرض","new":"ستة أشهر على القرض"},
+           {"old":"ستة (6) أشهر من تاريخ","new":"ستة أشهر من تاريخ"}],
+    "554":[{"old":"السنوات (10) العشر","new":"السنوات العشر"}],
+    "557":[{"old":"ثلاث (3) سنوات","new":"ثلاث سنوات"}],
+}
+GLOSS_DIGITS = {"358":["1","5","4","5","1","5"],"386":["6"],"458":["6","6"],"554":["10"],"557":["3"]}
+JO_WORD_RESTORATIONS = {"401":[{"old":"في الأموال الآتية", "new":"في الأحوال الآتية"}]}
+JO_PARAGRAPH_LAYOUTS = {
+    "546":({"old":"\nغير أنه", "new":" غير أنه"},3,2),
+    "563":({"old":"الأعمال. وتحدد", "new":"الأعمال.\nوتحدد"},2,3),
+}
 CONFLICT_363_SOURCES = {
     "A1975078":("ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",23),
     "F1975078":("a6f6e4d51a3e0cd622682e6c8cf09bf91e96beb056cfa8378f8b4141d4001124",19),
@@ -51,7 +63,8 @@ def apply_reading(body: dict, reading: dict, viewed: dict, root=pipeline.ROOT) -
     finding = reading["finding"]
     if (reading["inspection"] != "actually read; not human/lawyer verification"
             or finding not in {"same-clauses-edition-orthography", "source-read-compiler-numeric-gloss-separation",
-                              "unresolved-original-JO-reference-conflict"}
+                              "unresolved-original-JO-reference-conflict", "source-read-original-word-restoration",
+                              "source-read-original-paragraph-restoration"}
             or reading["printedBodyParagraphs"] != len(body["paragraphs"]) or not reading["note"].strip()
             or reading["images"] != viewed["images"] or reading["imageSha256s"] != viewed["imageSha256s"]
             or reading["regions"] != viewed["regions"] or not reading["images"]
@@ -64,6 +77,35 @@ def apply_reading(body: dict, reading: dict, viewed: dict, root=pipeline.ROOT) -
     result = copy.deepcopy(body)
     if finding == "same-clauses-edition-orthography" and reading["proposals"]:
         raise ValueError("A wording change needs its own guarded decision")
+    if finding == "source-read-original-paragraph-restoration":
+        layout = JO_PARAGRAPH_LAYOUTS.get(body["number"])
+        if layout is None or reading["proposals"] != [layout[0]]:
+            raise ValueError("Only closed source-read JO paragraph layouts may be restored")
+        change,before,after = layout
+        if (len(body["paragraphs"]) != before or reading.get("originalJoParagraphs") != after
+                or body["text"].count(change["old"]) != 1):
+            raise ValueError("A JO paragraph restoration needs its exact context and source paragraph counts")
+        text = body["text"].replace(change["old"],change["new"],1)
+        paragraphs = text.split("\n")
+        if len(paragraphs) != after or text.replace("\n"," ") != body["text"].replace("\n"," "):
+            raise ValueError("A JO paragraph restoration cannot alter any words, figures or marks")
+        result.update(text=text,paragraphs=paragraphs,textSha256=pipeline.hash_text(text),
+                      restoredOriginalJoParagraphLayout={"change":change,"originalParagraphs":after,
+                          "ministryParagraphs":before})
+    if finding == "source-read-original-word-restoration":
+        changes = JO_WORD_RESTORATIONS.get(body["number"])
+        if changes is None or reading["proposals"] != changes:
+            raise ValueError("Only closed source-read JO wording restorations may be applied")
+        paragraphs = list(body["paragraphs"])
+        for change in changes:
+            if "\n".join(paragraphs).count(change["old"]) != 1:
+                raise ValueError("A JO word restoration needs its unique exact source context")
+            paragraphs = [p.replace(change["old"],change["new"],1) if change["old"] in p else p for p in paragraphs]
+        text = "\n".join(paragraphs)
+        if re.findall(r"\d+",text) != re.findall(r"\d+",body["text"]):
+            raise ValueError("JO word restorations cannot alter numeric quantities or references")
+        result.update(text=text,paragraphs=paragraphs,textSha256=pipeline.hash_text(text),
+                      restoredOriginalJoWords=copy.deepcopy(changes))
     if finding == "source-read-compiler-numeric-gloss-separation":
         changes = NUMERIC_GLOSSES.get(body["number"])
         if changes is None or reading["proposals"] != changes:

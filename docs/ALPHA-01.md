@@ -137,9 +137,51 @@ These are changes to the parser only; the prompt is unchanged:
 - **«s1» is read as question 1.** No answer line refers to a sentence.
 - **A value number in the status's place** («6 | v6 | ?») means the fact is mentioned. A value number that does not exist is dropped, never resolved.
 
+### Run 4 (30 Oct 2026, local `gemma3:4b`, claim type given)
+
+Kept in `docs/baselines/2026-10-30-alpha-given-4/`.
+
+| | cases | with a critical error | seconds / case |
+|---|---:|---:|---:|
+| development | 40 | 3 | 21 |
+| validation | 14 | 3 | 26 |
+| robustness | 2 | 0 | 25 |
+
+There were no cut-off answers and no format slips. The six errors are the kinds seen in every run:
+- a role chosen among eight;
+- a notice missed, or read as disputed;
+- the disputed loan;
+- a conciliation report missed;
+- the tenant's "other breach".
+
+The results have levelled off.
+
+### The whole chain (30 Oct 2026, claim type read by the analysis)
+
+Kept in `docs/baselines/2026-10-30-alpha-read/`. The table is rebuilt from the case files, because the run's own summary was not written.
+
+| | cases | fully right |
+|---|---:|---:|
+| development | 44 | 38 |
+| validation | 15 | 9 |
+| robustness | 2 | 2 |
+
+- **The analysis read the right claim type in 55 of 61 cases.** It declined 4 of the 5 out-of-scope cases.
+- **Every extra error comes from a wrong claim type.** Those are the errors the lawyer's one-click confirmation is there to catch.
+- **Time:** about 110–130 s per case, most of it in the analysis's claim reading.
+
 ## Decision rule
 
 Keep Alpha-01 only if, on the local `gemma3:4b`:
 - **almost no case has a critical error** on development and on validation, in `given` mode;
 - **the `read` mode's extra errors are only wrong claim types,** which the lawyer's confirmation catches in the app;
 - **it is clearly faster** than the 48–59 s per case of the structured trial.
+
+### Verdict (30 Oct 2026)
+
+The first two conditions are met on the development set.
+- **Critical errors:** with the claim type given, 37 of 40 development and 11 of 14 validation cases are fully right. Before Alpha-01, it was 12 of 44 and 3 of 15.
+- **The `read` mode:** its extra errors are only wrong claim types.
+- **Speed:** the reading step is twice as fast (21–26 s against 48–59 s).
+
+These numbers are optimistic, because the cases were seen while tuning. The real measure is the hidden set (`docs/HIDDEN-SET.md`).

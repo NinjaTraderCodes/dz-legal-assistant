@@ -153,20 +153,26 @@ public sealed class ShippedCatalogTests
             Assert.True(a.Page > 0);
         });
 
-        // The Family Code and labour-law PDFs have no usable text layer: transcribed from the page images and read
-        // twice, each article with its page and the file it is printed in, and nothing marked verified.
-        Assert.Equal(["family-code", "labour-disputes", "labour-relations"], library.Codes.Where(c => c.Transcription is not null).Select(c => c.Id).Order(StringComparer.Ordinal));
+        // The labour-law PDFs have no usable text layer: transcribed from the page images and read twice. The Family
+        // Code and the CPCA come complete from the law corpus, each text read against the official gazette page that
+        // published it. Either way: each article with its page and the publication it is printed in, nothing marked
+        // verified.
+        Assert.Equal(["cpca", "family-code", "labour-disputes", "labour-relations"], library.Codes.Where(c => c.Transcription is not null).Select(c => c.Id).Order(StringComparer.Ordinal));
         Assert.All(library.Codes.Where(c => c.Transcription is not null), c =>
         {
             Assert.False(c.Verified);
             Assert.All(c.Articles, a =>
             {
+                var url = (a.Source ?? c.Source)!.Url;
                 Assert.Null(a.SourceExtract);
                 Assert.True(a.Page > 0);
                 Assert.False(a.Verified);
-                Assert.True(File.Exists(Path.Combine(LawRoot, "..", "..", (a.Source ?? c.Source)!.Url)) || (a.Source ?? c.Source)!.Url.StartsWith("docs/", StringComparison.Ordinal));
+                Assert.True(File.Exists(Path.Combine(LawRoot, "..", "..", url)) || url.StartsWith("docs/", StringComparison.Ordinal) || url.StartsWith("https://www.joradp.dz/FTP/jo-arabe/", StringComparison.Ordinal), url);
             });
         });
+        Assert.Equal((227, 1084), (library.FindCode("family-code")!.Articles.Count, library.FindCode("cpca")!.Articles.Count));
+        Assert.Contains("يمنح القاضي الولاية لمن أسندت له حضانة الأولاد", library.FindArticle("family-code", "87")!.Text, StringComparison.Ordinal);
+        Assert.Contains("في موضوع النفقة الغذائية بموطن الدائن بها", library.FindArticle("cpca", "426")!.Text, StringComparison.Ordinal);
         Assert.Contains("الخلافات الفردية للعمل", library.FindArticle("labour-disputes", "19")!.Text, StringComparison.Ordinal); // JO 6/1990, p. 242
         Assert.Contains("مدة ستة (6) أشهر", library.FindArticle("labour-relations", "73-4")!.Text, StringComparison.Ordinal);
         Assert.Contains("يجب أن تتضمن عريضة افتتاح الدعوى", library.FindArticle("cpca", "15")!.Text, StringComparison.Ordinal);
@@ -206,6 +212,33 @@ public sealed class ShippedCatalogTests
             Assert.NotEmpty(c.ExpectArticles);
             Assert.All(c.ExpectArticles, a => Assert.Contains(claim.Articles, x => $"{x.Code}:{x.Number}" == a));
         });
+    }
+
+    /// <summary>
+    /// The family claims as checked against the official Family Code and CPCA on 30 Oct 2026 (docs/FAMILY-CLAIMS.md):
+    /// losing custody is its own suit, on arts. 66-69; a visitation judgment is enforced, not sued for again; the public
+    /// prosecutor and the territorial jurisdiction are cited in every family claim; khulʿ rests on art. 54.
+    /// </summary>
+    [Fact]
+    public void TheFamilyClaimsCiteWhatTheOfficialTextsSay()
+    {
+        var knowledge = LegalKnowledgeLoader.Load(LawRoot);
+        string[] Cited(string id) => [.. knowledge.Claims.Single(c => c.Id == id).Articles.Select(a => $"{a.Code}:{a.Number}")];
+
+        Assert.Equal(["family-code:66", "family-code:67", "family-code:68", "family-code:69"], Cited("custody-forfeiture").Where(a => a is "family-code:66" or "family-code:67" or "family-code:68" or "family-code:69"));
+        Assert.DoesNotContain("family-code:66", Cited("custody"));
+        Assert.Contains("family-code:87", Cited("custody"));
+        var enforcement = knowledge.Claims.Single(c => c.Id == "visitation").Articles.Single(a => a is { Code: "cpca", Number: "600" });
+        Assert.Equal((ArticleRole.Limit, true), (enforcement.Role, enforcement.Required));
+        Assert.All(knowledge.Claims.Where(c => c.Area == "family"), c =>
+        {
+            Assert.Contains("family-code:3 مكرر", Cited(c.Id));
+            Assert.Contains("cpca:426", Cited(c.Id));
+        });
+        Assert.Contains("family-code:54", Cited("khul"));
+        Assert.Contains("cpca:438", Cited("divorce-by-husband"));
+        Assert.Contains("cpca:323", Cited("nafaqa"));
+        Assert.All(knowledge.Claims.SelectMany(c => c.Articles), a => Assert.True(GroundsEvaluator.InLibrary(knowledge, $"{a.Code}:{a.Number}") || a.Code is "civil-code" or "commercial-code" or "labour-relations" or "labour-disputes"));
     }
 
     [Fact]

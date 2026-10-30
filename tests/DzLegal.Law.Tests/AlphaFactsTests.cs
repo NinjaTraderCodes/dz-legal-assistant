@@ -78,8 +78,8 @@ public sealed class AlphaFactsTests
     [Fact]
     public void TheAnswerTemplateHasOneLinePerQuestionAndAValueSlotOnlyWhereOneIsTaken()
     {
-        Assert.Equal("1 | ? | ?\nr1 | ? | ?", ClaimFactReader.Template(Elements["khul"]));
-        Assert.Equal("p | ?\n1 | ? | ?\n2 | ?\nr1 | ?\nr2 | ?\nr3 | ? | ?", ClaimFactReader.Template(Elements["custody"]));
+        Assert.Equal("1 | ? | ?\nr1 | ? | ?\nr2 | ? | ?\nr3 | ?\nr4 | ? | ?\nr5 | ?", ClaimFactReader.Template(Elements["khul"]));
+        Assert.Equal("p | ?\n1 | ? | ?\n2 | ?\nr1 | ?\nr2 | ?\nr3 | ? | ?\nr4 | ?", ClaimFactReader.Template(Elements["custody"]));
     }
 
     [Fact]
@@ -146,6 +146,18 @@ public sealed class AlphaFactsTests
         var notice = loan.Events.Single();
         Assert.Equal(("notice_served", FactPolarity.Affirmed), (notice.Kind, notice.Polarity));
         Assert.Null(notice.Date);
+    }
+
+    /// <summary>The family run (30 Oct) copied the questions out before answering them.</summary>
+    [Fact]
+    public void QuestionsCopiedOutBeforeTheAnswersDoNotTakeTheirNumbers()
+    {
+        var divorce = ClaimFactReader.Parse("1) انعقاد الزواج بين الطرفين [التاريخ]\nr1) طلب: الحكم بالطلاق\n1 | stated | v1\nr1 | stated | ?", CaseText.From(Case("divorce-husband").Inputs), Elements["divorce-by-husband"]);
+        Assert.Equal(("marriage", "2015"), (divorce.Events.Single().Kind, divorce.Events.Single().Date?.Normalized));
+        Assert.Equal(["divorce"], divorce.Requests.Select(r => r.Kind));
+
+        var custody = ClaimFactReader.Parse("p) من هو المدعي؟ 1 = المدعي هو الأب، 2 = المدعية هي الأم\np | 2", CaseText.From(Case("custody-transfer").Inputs), Elements["custody-forfeiture"]);
+        Assert.Equal("mother", custody.Position);
     }
 
     [Fact]

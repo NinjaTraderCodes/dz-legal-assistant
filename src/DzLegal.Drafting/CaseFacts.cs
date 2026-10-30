@@ -106,14 +106,15 @@ public static class FactVocabulary
         "occupation_without_title", "harm_by_person", "harm_by_animal", "harm_by_building", "harm_by_thing",
         "criminal_conviction", "concealment", "marriage", "divorce", "abandonment", "spouse_harm", "custody_held",
         "visitation_refused", "employment_started", "dismissal", "conciliation_failed", "death", "administrative_decision",
-        "record_error", "other",
+        "record_error", "custody_judgment", "custodian_remarried", "custody_renounced", "custodian_unfit", "custody_unclaimed",
+        "custodian_abroad", "other",
     ];
 
     public static readonly IReadOnlyList<string> Requests =
     [
         "payment", "eviction", "rescission", "damages", "annulment", "restitution", "delivery", "divorce", "tatliq", "khul",
         "maintenance", "custody", "custody_transfer", "visitation", "housing", "reinstatement", "wages", "partition",
-        "cancel_decision", "correction", "dissolution", "other",
+        "cancel_decision", "correction", "dissolution", "guardianship", "provisional_execution", "other",
     ];
 
     public static readonly IReadOnlyList<string> Actors = ["plaintiff", "defendant", "other", "unknown"];

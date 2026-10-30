@@ -132,6 +132,32 @@ public class DraftingServiceTests
         Assert.Equal("عن المدعية\nالأستاذة نادية سعدي\nالتوقيع:", draft.FindSection("signature")!.Text);
     }
 
+    /// <summary>
+    /// As practitioners write it (examples of 30 Oct 2026): a family petition names the prosecution after the parties
+    /// (Family Code art. 3 bis), and every petition opens the discussion with its admissibility, citing the CPCA
+    /// articles every requête meets, and art. 426 for the territorial jurisdiction of a family case.
+    /// </summary>
+    [Fact]
+    public async Task AFamilyPetitionNamesTheProsecutionAndEveryPetitionStatesItsAdmissibility()
+    {
+        var service = new DraftingService(new StubModelProvider());
+        var inputs = Fixtures.CompleteInputs();
+        var civil = await service.DraftAsync(Requete, inputs);
+        Assert.DoesNotContain("وكيل الجمهورية", civil.FindSection("defendant")!.Text, StringComparison.Ordinal);
+        Assert.Equal("حيث إن هذه العريضة جاءت مستوفية للشروط المنصوص عليها قانونا، سيما المواد 13 و14 و15 و17 من قانون الإجراءات المدنية والإدارية، مما يتعين معه قبولها شكلا.", civil.FindSection("form")!.Text);
+        var order = civil.Sections.Select(x => x.Id).ToList();
+        Assert.True(order.IndexOf("opening") < order.IndexOf("form") && order.IndexOf("form") < order.IndexOf("facts"));
+
+        inputs["court.section"] = "قسم شؤون الأسرة";
+        inputs["court.name"] = "محكمة تبسة";
+        var family = await service.DraftAsync(Requete, inputs);
+        Assert.EndsWith("(مدعى عليه)\nبحضور: السيد وكيل الجمهورية لدى محكمة تبسة.", family.FindSection("defendant")!.Text, StringComparison.Ordinal);
+        Assert.Contains("13 و14 و15 و17 و426 من قانون الإجراءات المدنية والإدارية", family.FindSection("form")!.Text, StringComparison.Ordinal);
+
+        inputs["court.name"] = string.Empty;
+        Assert.EndsWith("بحضور: السيد وكيل الجمهورية.", service.Refresh(Requete, family, inputs).FindSection("defendant")!.Text, StringComparison.Ordinal);
+    }
+
     [Fact]
     public async Task UnchosenGenderUsesTheMasculineGenericWithoutATitle()
     {

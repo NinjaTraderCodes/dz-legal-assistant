@@ -269,18 +269,22 @@ public sealed partial class ClaimFactReader(IModelProvider provider, string prom
                 continue;
             }
 
+            // A number is taken by its first readable answer only: a question copied out before the answers
+            // («1) انعقاد الزواج…», «p) من هو المدعي؟ 1 = …», 30 Oct) is not an answer and must not take it.
             var id = m.Groups["id"].Value.ToLowerInvariant().TrimStart('s');
-            if (!seen.Add(id))
+            var body = m.Groups["body"].Value;
+            if (seen.Contains(id))
             {
                 continue;
             }
 
-            var body = m.Groups["body"].Value;
             if (id == "p")
             {
-                if (int.TryParse(Choice().Match(body).Value, NumberStyles.None, CultureInfo.InvariantCulture, out var choice) && choice >= 1 && choice <= claim.Roles.Count)
+                if (!body.Contains('=', StringComparison.Ordinal)
+                    && int.TryParse(Choice().Match(body).Value, NumberStyles.None, CultureInfo.InvariantCulture, out var choice) && choice >= 1 && choice <= claim.Roles.Count)
                 {
                     role = claim.Roles[choice - 1];
+                    seen.Add(id);
                 }
                 else
                 {
@@ -303,6 +307,13 @@ public sealed partial class ClaimFactReader(IModelProvider provider, string prom
             // A value number in the status's place, even one that does not exist, says the fact is there; such a
             // number is dropped, never resolved.
             var polarity = word.Success ? Polarity(word.Value) : found.Count > 0 || ValueId().IsMatch(body) ? FactPolarity.Affirmed : "?";
+            if (polarity == "?")
+            {
+                rejected.Add(line);
+                continue;
+            }
+
+            seen.Add(id);
             rows.Add((id, polarity, found, line));
         }
 

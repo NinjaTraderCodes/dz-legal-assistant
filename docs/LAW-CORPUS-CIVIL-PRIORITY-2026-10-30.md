@@ -1,5 +1,13 @@
 # Civil priority chapters: active checkpoint, 30 October 2026
 
+## Original current-body collation progress
+
+The subsequent source comparison has now actually read60unchanged bodies, including all59unchanged general-contract bodies and127. The40source comparison/edition decisions in the first two batches and20in the third replay separately. No substantive word/number/negation difference was found in these60; Ministry edition spellings remain documented, without claiming uniform glyph-literal equality. The failed automated81locator is explicitly restored from its complete text visible in the actually read82proof; an empty view never passes.
+
+The source-bound projection also retains the four earlier checked original JO transcriptions138/139/140/379, with all prior proof hashes replayed. It preserves the original379preposition and printing,140comma and joined words,138dotless-y spelling and139joined negation. No historical typed record is overwritten. Thus64of173original unchanged bodies are accounted for;109remain. priority-base-collation-projection.json still marks the whole partial unfinished, and typed Civil is unchanged. Five new guard regressions bring Python to301; all pass, with schema0.
+
+The prior sample/inventory checkpoint9f2d78ae64a78c0639f0aafbbdc860a732c8f625passed694.NET/296Python and zero-warning Release gates; user approval was received, the push succeeded and the exact remote hash was verified. New checkpoints still need separate push approval.
+
 The user approved all four saved local commits. They were pushed to `origin/codex/law-corpus`; the remote hash was verified as `c960911d550431630877bc9d1b137f34ce81ffdf`. Work is active on the agreed 274-identity Civil partial package. This record supersedes the older pause headers; their decisions and evidence remain historical records.
 
 ## Completed in this continuation
@@ -29,3 +37,5 @@ Checkpoint `fd3f000b1d2c13fc2a957f1eb0a630416e42331b` passed the post-commit gat
 4. Continue the rest of Civil in source order, then the bounded Commercial/labour chapters. French paragraph expansion, general editorial cleanup and older regimes stay deferred unless required to resolve a conflict. No special-law collection.
 
 **Typed Civil is still48 identities/55 versions; this continuation has not yet changed it. Family remains the complete232checked current-text delivery with temporal limits.** No application code, catalogue, prompts, legacy law or safety behaviour changed. Files outside corpus/tools: this report, the three existing coverage/Civil/restart reports and the requested sample artifacts. All296 Python tests and schema validation pass before this next checkpoint; its mandatory post-commit Release result is recorded separately. New checkpoints require separate push approval.
+
+Hash replay protection: scoped .gitattributes files keep JSON inputs/manifests/sample selections as LF on Windows checkouts. Existing tracked JSON inputs already use LF; no legal text or binary image is changed. Additional file outside corpus/tools: docs/law-corpus-checks/.gitattributes.

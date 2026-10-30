@@ -1,0 +1,469 @@
+{
+  "inputArticlesSha256": "7e0bd0a7fb58502887e93c27f808fa786e529fab91c121228014c2a7bc1ff6bf",
+  "priorReviewSha256": "80d49c82d2e68bfae86dac6a2dc83ddd2dba11523f0f179d851264381336975a",
+  "articles": [
+    {
+      "id": "civil-code:138",
+      "number": "138",
+      "canonicalNumber": "138",
+      "path": [
+        "الكتاب الثانى - الالتزامات والعقود",
+        "الباب الاول - مصادر الالتزام",
+        "الفصل الثالث - العمل المستحق للتعويض",
+        "القسم الثالث - المسؤولية الناشئة عن الاشياء"
+      ],
+      "availability": "text",
+      "versions": [
+        {
+          "versionId": "civil-code:138@ordinance-75-58",
+          "text": "كل من تولى حراسة شىء وكانت له قدرة الاستعمال والتسيير، والرقابة، يعتبر مسؤولا عن الضرر الذى يحدثه ذلك الشىء.\nويعفى من هذه المسؤولية الحارس للشىء اذا أثبت أن ذلك الضرر حدث بسبب لم يكن يتوقعه مثل عمل الضحية، أو عمل الغير، أو الحالة الطارئة، أو القوة القاهرة.",
+          "paragraphs": [
+            "كل من تولى حراسة شىء وكانت له قدرة الاستعمال والتسيير، والرقابة، يعتبر مسؤولا عن الضرر الذى يحدثه ذلك الشىء.",
+            "ويعفى من هذه المسؤولية الحارس للشىء اذا أثبت أن ذلك الضرر حدث بسبب لم يكن يتوقعه مثل عمل الضحية، أو عمل الغير، أو الحالة الطارئة، أو القوة القاهرة."
+          ],
+          "inForceFrom": "1975-07-05",
+          "inForceTo": null,
+          "temporalStatus": "resolved",
+          "introducedBy": "ordinance-75-58",
+          "status": "in-force",
+          "crossReferences": [],
+          "verification": {
+            "state": "checked",
+            "checks": [
+              {
+                "check": "discrepancy-resolved-from-image",
+                "method": "Explicit image review bound to text/image SHA-256",
+                "date": "2026-10-25",
+                "result": "passed",
+                "note": "Codex visual review, not a human or lawyer verification. Two paragraphs read word by word. The visible source spelling of the thing-noun is dotless-yeh شىء in all three occurrences, matching the source's old printed orthography. Candidate uses شيء three times. No other word or punctuation substitution is identified in the inspected crop. Exact before/after text, differences and image hashes are retained in research/civil-image-review-findings.json. Article labels and physical line wrapping are publication layout, not body paragraphs.",
+                "textSha256": "3bc72d08469c1087f2a495d1d08b4d2cce420222305b89b1adb0c9d81c8590e7",
+                "imageSha256s": [
+                  "c4d8afd33579dd47c57072aa58b708abf91e3686c5ad8ee16a53d1ab6464f0ea"
+                ]
+              },
+              {
+                "check": "french-structure-matches",
+                "method": "Codex visual alignment of official Arabic/French page images; presence, numbering/alias and paragraph count only",
+                "date": "2026-10-25",
+                "result": "passed",
+                "note": "{\"arabicParagraphCount\": 2, \"arabicPdfPages\": [9], \"arabicPrintedPages\": [997], \"arabicSource\": \"A1975078\", \"code\": \"civil-code\", \"frenchNumber\": \"138\", \"frenchParagraphCount\": 2, \"frenchPdfPages\": [7, 8], \"frenchPrintedPages\": [823, 824], \"frenchSource\": \"F1975078\", \"note\": \"Paragraph1 starts at bottom ofPDF7/right column; paragraph2 starts top ofPDF8/left column.\", \"number\": \"138\", \"publicationId\": \"ordinance-75-58\", \"status\": \"matching\"}"
+              },
+              {
+                "check": "discrepancy-resolved-from-image",
+                "method": "Claude visual reading of the official page image, word by word, every digit, negation and punctuation mark; bound to text and image SHA-256",
+                "date": "2026-10-26",
+                "result": "passed",
+                "note": "JO 78/1975 page 9, 600 dpi line by line: dotless تولى، شىء، الذى، ويعفى as printed; all commas and both final full stops agree. AI reading, not a lawyer or human verification.",
+                "textSha256": "3bc72d08469c1087f2a495d1d08b4d2cce420222305b89b1adb0c9d81c8590e7",
+                "imageSha256s": [
+                  "c4d8afd33579dd47c57072aa58b708abf91e3686c5ad8ee16a53d1ab6464f0ea",
+                  "57347598989f90a37ed27a1df1503941cb218d3cf7834fd97379c9b3f68c6292",
+                  "9e24b7ce18c6e9b2a132f2bd61a980ab023f187e571ba906cbb3f3fe19762724"
+                ]
+              },
+              {
+                "check": "inventory-complete",
+                "method": "Priority-subset inventory: identity present in the introducing official publication and in the current official Ministry source; no repeal recorded in the ledger",
+                "date": "2026-10-26",
+                "result": "passed",
+                "note": "{\"scope\": \"priority-subset\", \"targets\": [\"124\", \"138\", \"139\", \"140\", \"308\", \"309\", \"379\"], \"identity\": \"138\", \"currentSource\": \"Ministry 2007 compilation (1,002/1,003 base labels; art. 41 explicitly repealed)\"}"
+              },
+              {
+                "check": "amendment-applied",
+                "method": "Ledger of every amending text listed by the Justice Ministry codes index (fetched 2026-10-26, lists texts to 12 Oct 2026); each touching text applied",
+                "date": "2026-10-26",
+                "result": "passed",
+                "note": "{\"introducedBy\": \"ordinance-75-58\", \"ledgerPublicationsTouchingArticle\": [\"ordinance-75-58\"], \"laterPublicationsInLedger\": [\"law-83-01\", \"law-88-14\", \"law-89-01\", \"law-05-10\", \"law-07-05\"], \"laterPublicationsTouchingArticle\": [], \"index\": {\"url\": \"https://droit.mjustice.gov.dz/fr/content/codes-0\", \"accessedOn\": \"2026-10-26\", \"sha256\": \"46e5a42bf31a5ebe981f8faef8c6300779e1bca204c1cf50010aad339ee24bfc\"}}"
+              }
+            ],
+            "reasons": []
+          },
+          "source": {
+            "publicationId": "ordinance-75-58",
+            "page": 9,
+            "endPage": null,
+            "printedPage": "997",
+            "textLayer": "",
+            "ocr": "المائة 138 : كل من تولى حراسة شىء وؤكانت له قدرة\nالاستعمال والتسييرء والرقابة» يعتبر مسؤولا عن الضرر ‏\nالذى يحدثه ذلك الشىء ‎٠‏\n\nويعفى من هذه المسؤولية الحارس للشىء اذا أثبت أن ذلك\nالضرر حدث بسبب لم يكن يتوقعه مثل عمل الضحية:ء أو عمل\nالغيرء أو الحالة الطارئة» أو القوة القاهمرة ‎٠‏\n",
+            "evidenceId": "civil-138-original",
+            "region": [
+              0.024,
+              0.65,
+              0.502,
+              0.771
+            ],
+            "fragments": [
+              {
+                "publicationId": "ordinance-75-58",
+                "page": 9,
+                "textLayer": "",
+                "ocr": "المائة 138 : كل من تولى حراسة شىء وؤكانت له قدرة\nالاستعمال والتسييرء والرقابة» يعتبر مسؤولا عن الضرر ‏\nالذى يحدثه ذلك الشىء ‎٠‏\n\nويعفى من هذه المسؤولية الحارس للشىء اذا أثبت أن ذلك\nالضرر حدث بسبب لم يكن يتوقعه مثل عمل الضحية:ء أو عمل\nالغيرء أو الحالة الطارئة» أو القوة القاهمرة ‎٠‏\n",
+                "evidenceId": "civil-138-original",
+                "region": [
+                  0.024,
+                  0.65,
+                  0.502,
+                  0.771
+                ],
+                "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+                "role": "body"
+              }
+            ]
+          },
+          "path": [
+            "الكتاب الثانى - الالتزامات والعقود",
+            "الباب الاول - مصادر الالتزام",
+            "الفصل الثالث - الفعل المستحق للتعويض",
+            "القسم الثالث - المسؤولية الناشئة عن الاشياء"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "civil-code:139",
+      "number": "139",
+      "canonicalNumber": "139",
+      "path": [
+        "الكتاب الثانى - الالتزامات والعقود",
+        "الباب الاول - مصادر الالتزام",
+        "الفصل الثالث - العمل المستحق للتعويض",
+        "القسم الثالث - المسؤولية الناشئة عن الاشياء"
+      ],
+      "availability": "text",
+      "versions": [
+        {
+          "versionId": "civil-code:139@ordinance-75-58",
+          "text": "حارس الحيوان، ولو لم يكن مالكا له، مسؤول عما يحدثه الحيوان من ضرر. ولو ضل الحيوان أو تسرب، مالم يثبت الحارس أن وقوع الحادث كان بسبب لا ينسب اليه.",
+          "paragraphs": [
+            "حارس الحيوان، ولو لم يكن مالكا له، مسؤول عما يحدثه الحيوان من ضرر. ولو ضل الحيوان أو تسرب، مالم يثبت الحارس أن وقوع الحادث كان بسبب لا ينسب اليه."
+          ],
+          "inForceFrom": "1975-07-05",
+          "inForceTo": null,
+          "temporalStatus": "resolved",
+          "introducedBy": "ordinance-75-58",
+          "status": "in-force",
+          "crossReferences": [],
+          "verification": {
+            "state": "checked",
+            "checks": [
+              {
+                "check": "discrepancy-resolved-from-image",
+                "method": "Explicit image review bound to text/image SHA-256",
+                "date": "2026-10-25",
+                "result": "passed",
+                "note": "Codex visual review, not a human or lawyer verification. One paragraph read word by word. Candidate agrees with visible words and punctuation, including the comma after له, full stop after ضرر, comma after تسرب and final اليه without added hamza. The source word is بسبب, resolving OCR يسبب. The source says مالم, not an inserted explanatory phrase. No substantive word or digit uncertainty remains in this crop. Exact before/after text, differences and image hashes are retained in research/civil-image-review-findings.json. Article labels and physical line wrapping are publication layout, not body paragraphs.",
+                "textSha256": "018fedcfb99171c690ecb137471b35b1261027ad737819287a3cfab615d43e81",
+                "imageSha256s": [
+                  "b1669b8f64e0444e01555a366f0f04a2f9b95556129852ce82698c3c9b055398"
+                ]
+              },
+              {
+                "check": "french-structure-matches",
+                "method": "Codex visual alignment of official Arabic/French page images; presence, numbering/alias and paragraph count only",
+                "date": "2026-10-25",
+                "result": "passed",
+                "note": "{\"arabicParagraphCount\": 1, \"arabicPdfPages\": [9], \"arabicPrintedPages\": [997], \"arabicSource\": \"A1975078\", \"code\": \"civil-code\", \"frenchNumber\": \"139\", \"frenchParagraphCount\": 1, \"frenchPdfPages\": [8], \"frenchPrintedPages\": [824], \"frenchSource\": \"F1975078\", \"number\": \"139\", \"publicationId\": \"ordinance-75-58\", \"status\": \"matching\"}"
+              },
+              {
+                "check": "discrepancy-resolved-from-image",
+                "method": "Claude visual reading of the official page image, word by word, every digit, negation and punctuation mark; bound to text and image SHA-256",
+                "date": "2026-10-26",
+                "result": "passed",
+                "note": "JO 78/1975 page 9, 600 dpi: مالم printed as one word; full stop after ضرر; اليه without hamza; final full stop. AI reading, not a lawyer or human verification.",
+                "textSha256": "018fedcfb99171c690ecb137471b35b1261027ad737819287a3cfab615d43e81",
+                "imageSha256s": [
+                  "b1669b8f64e0444e01555a366f0f04a2f9b95556129852ce82698c3c9b055398",
+                  "3319ae9eef0bda776274025d9f174c44ff3df46069e1c904f30ad05da5fee91f",
+                  "d2573d254ef9cd206fc3604a894e481ac0b18b3bce07a8bc3df4d065e28fc779"
+                ]
+              },
+              {
+                "check": "inventory-complete",
+                "method": "Priority-subset inventory: identity present in the introducing official publication and in the current official Ministry source; no repeal recorded in the ledger",
+                "date": "2026-10-26",
+                "result": "passed",
+                "note": "{\"scope\": \"priority-subset\", \"targets\": [\"124\", \"138\", \"139\", \"140\", \"308\", \"309\", \"379\"], \"identity\": \"139\", \"currentSource\": \"Ministry 2007 compilation (1,002/1,003 base labels; art. 41 explicitly repealed)\"}"
+              },
+              {
+                "check": "amendment-applied",
+                "method": "Ledger of every amending text listed by the Justice Ministry codes index (fetched 2026-10-26, lists texts to 12 Oct 2026); each touching text applied",
+                "date": "2026-10-26",
+                "result": "passed",
+                "note": "{\"introducedBy\": \"ordinance-75-58\", \"ledgerPublicationsTouchingArticle\": [\"ordinance-75-58\"], \"laterPublicationsInLedger\": [\"law-83-01\", \"law-88-14\", \"law-89-01\", \"law-05-10\", \"law-07-05\"], \"laterPublicationsTouchingArticle\": [], \"index\": {\"url\": \"https://droit.mjustice.gov.dz/fr/content/codes-0\", \"accessedOn\": \"2026-10-26\", \"sha256\": \"46e5a42bf31a5ebe981f8faef8c6300779e1bca204c1cf50010aad339ee24bfc\"}}"
+              }
+            ],
+            "reasons": []
+          },
+          "source": {
+            "publicationId": "ordinance-75-58",
+            "page": 9,
+            "endPage": null,
+            "printedPage": "997",
+            "textLayer": "",
+            "ocr": "المادة 139 : حارس الحيوان, ولو لم يكن مالكا له مسؤول\nعما يحدثه الحيوان من ضرر. ولو ضل الحيوان أو تسرب»\nمالم يثبت الحارس أن وقوع الحادث كان يسبب لا ينسب اليه.\n",
+            "evidenceId": "civil-139-original",
+            "region": [
+              0.023,
+              0.772,
+              0.5,
+              0.836
+            ],
+            "fragments": [
+              {
+                "publicationId": "ordinance-75-58",
+                "page": 9,
+                "textLayer": "",
+                "ocr": "المادة 139 : حارس الحيوان, ولو لم يكن مالكا له مسؤول\nعما يحدثه الحيوان من ضرر. ولو ضل الحيوان أو تسرب»\nمالم يثبت الحارس أن وقوع الحادث كان يسبب لا ينسب اليه.\n",
+                "evidenceId": "civil-139-original",
+                "region": [
+                  0.023,
+                  0.772,
+                  0.5,
+                  0.836
+                ],
+                "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+                "role": "body"
+              }
+            ]
+          },
+          "path": [
+            "الكتاب الثانى - الالتزامات والعقود",
+            "الباب الاول - مصادر الالتزام",
+            "الفصل الثالث - الفعل المستحق للتعويض",
+            "القسم الثالث - المسؤولية الناشئة عن الاشياء"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "civil-code:140",
+      "number": "140",
+      "canonicalNumber": "140",
+      "path": [
+        "الكتاب الثانى - الالتزامات والعقود",
+        "الباب الاول - مصادر الالتزام",
+        "الفصل الثالث - العمل المستحق للتعويض",
+        "القسم الثالث - المسؤولية الناشئة عن الاشياء"
+      ],
+      "availability": "text",
+      "versions": [
+        {
+          "versionId": "civil-code:140@ordinance-75-58",
+          "text": "من كان حائزا بأى وجه كان لعقار أو جزء منه، أو منقولات، حدث فيها حريق لا يكون مسؤولا نحو الغير عن الاضرار التى سببها هذا الحريق الا اذا ثبت أن الحريق ينسب الى خطئه أو خطأ من هو مسؤول عنهم.\nمالك البناء مسؤول عما يحدثه انهدام البناء من ضرر ولو كان انهداما جزئيا، مالم يثبت أن الحادث لا يرجع سببه الى اهمال فى الصيانة، أو قدم فى البناء، أو عيب فيه،\nويجوز لمن كان مهددا بضرر يصيبه من البناء أن يطالب المالك باتخاذ مايلزم من التدابير الضرورية للوقاية من الخطر فان لم يقم المالك بذلك، جاز الحصول على اذن من المحكمة فى اتخاذ هذه التدابير على حسابه.",
+          "paragraphs": [
+            "من كان حائزا بأى وجه كان لعقار أو جزء منه، أو منقولات، حدث فيها حريق لا يكون مسؤولا نحو الغير عن الاضرار التى سببها هذا الحريق الا اذا ثبت أن الحريق ينسب الى خطئه أو خطأ من هو مسؤول عنهم.",
+            "مالك البناء مسؤول عما يحدثه انهدام البناء من ضرر ولو كان انهداما جزئيا، مالم يثبت أن الحادث لا يرجع سببه الى اهمال فى الصيانة، أو قدم فى البناء، أو عيب فيه،",
+            "ويجوز لمن كان مهددا بضرر يصيبه من البناء أن يطالب المالك باتخاذ مايلزم من التدابير الضرورية للوقاية من الخطر فان لم يقم المالك بذلك، جاز الحصول على اذن من المحكمة فى اتخاذ هذه التدابير على حسابه."
+          ],
+          "inForceFrom": "1975-07-05",
+          "inForceTo": null,
+          "temporalStatus": "resolved",
+          "introducedBy": "ordinance-75-58",
+          "status": "in-force",
+          "crossReferences": [],
+          "verification": {
+            "state": "checked",
+            "checks": [
+              {
+                "check": "french-structure-matches",
+                "method": "Codex visual alignment of official Arabic/French page images; presence, numbering/alias and paragraph count only",
+                "date": "2026-10-25",
+                "result": "passed",
+                "note": "{\"arabicParagraphCount\": 3, \"arabicPdfPages\": [9, 10], \"arabicPrintedPages\": [997, 998], \"arabicSource\": \"A1975078\", \"code\": \"civil-code\", \"frenchNumber\": \"140\", \"frenchParagraphCount\": 3, \"frenchPdfPages\": [8], \"frenchPrintedPages\": [824], \"frenchSource\": \"F1975078\", \"note\": \"Arabic paragraph3 continues ontoPDF10; French all3 paragraphs are onPDF8.\", \"number\": \"140\", \"publicationId\": \"ordinance-75-58\", \"status\": \"matching\"}"
+              },
+              {
+                "check": "discrepancy-resolved-from-image",
+                "method": "Claude visual reading of the official page image, word by word, every digit, negation and punctuation mark; bound to text and image SHA-256",
+                "date": "2026-10-26",
+                "result": "passed",
+                "note": "JO 78/1975 pages 9-10 at 400 and 800 dpi. Settles the earlier quarantine: no mark between الخطر and فان (line break). Corrections read from the image: «مايلزم» printed as one word; «فان» without hamza (the hamza of أن in the same paragraph is clearly printed); paragraph 2 ends with the comma glyph «،» (same shape as the commas after الصيانة and البناء on that line, unlike the round full stop after عنهم) — a printing slip kept as published. فى dotless throughout. AI reading, not a lawyer or human verification.",
+                "textSha256": "a009c09cec2f279ec45388ed50f76f579e747b569a15837ca476cd0a53632c6f",
+                "imageSha256s": [
+                  "67f312d122366f8d0e575df06302f73412bdbda74d636d423ade077485808424",
+                  "62c438d17603bfa14370287809c93b5240f8f7cf095797fd57fa936846ab929a",
+                  "2d3eea59e8e41b4887bce78eec2828db64439d8e0fb7a7c27c982d7351d02861",
+                  "9e86c5974643ac71c578e1286e62b098854a80350a0ed831444cf76e2f88a3b2",
+                  "2a5c66dce60f77970332f6275f6e03bb1bb61bb06800e57996ab0b8f36c18431",
+                  "fe8406d8aa1b91ff8615572c5e205be4a228a0627c4cbefd94655ba218314e1e",
+                  "a0cf633bc7cb609286b6b4b309d6dc58e62664ed8c8241f35ece91951d1311c9",
+                  "677e9aaedea36774e6a913a31631eb1f154c94c32e3bc8964944686ebbc9404e"
+                ]
+              },
+              {
+                "check": "inventory-complete",
+                "method": "Priority-subset inventory: identity present in the introducing official publication and in the current official Ministry source; no repeal recorded in the ledger",
+                "date": "2026-10-26",
+                "result": "passed",
+                "note": "{\"scope\": \"priority-subset\", \"targets\": [\"124\", \"138\", \"139\", \"140\", \"308\", \"309\", \"379\"], \"identity\": \"140\", \"currentSource\": \"Ministry 2007 compilation (1,002/1,003 base labels; art. 41 explicitly repealed)\"}"
+              },
+              {
+                "check": "amendment-applied",
+                "method": "Ledger of every amending text listed by the Justice Ministry codes index (fetched 2026-10-26, lists texts to 12 Oct 2026); each touching text applied",
+                "date": "2026-10-26",
+                "result": "passed",
+                "note": "{\"introducedBy\": \"ordinance-75-58\", \"ledgerPublicationsTouchingArticle\": [\"ordinance-75-58\"], \"laterPublicationsInLedger\": [\"law-83-01\", \"law-88-14\", \"law-89-01\", \"law-05-10\", \"law-07-05\"], \"laterPublicationsTouchingArticle\": [], \"index\": {\"url\": \"https://droit.mjustice.gov.dz/fr/content/codes-0\", \"accessedOn\": \"2026-10-26\", \"sha256\": \"46e5a42bf31a5ebe981f8faef8c6300779e1bca204c1cf50010aad339ee24bfc\"}}"
+              }
+            ],
+            "reasons": []
+          },
+          "source": {
+            "publicationId": "ordinance-75-58",
+            "page": 9,
+            "endPage": 10,
+            "printedPage": "997",
+            "textLayer": "\n",
+            "ocr": "المادة 140 : من كان حائزا بأى وجه كان لعقار أو جزء\nمنه» أو منقولات, حدث فيها حريق لا يكون مسؤولا نحو الغير\nعن الاضرار التى سببها هذا الحريق الا اذا ثبت أن الحريق\nينسب الى خطئه أو خطأ من هو مسؤول عنهم ‎٠‏\n\nهالك البناء مسؤول عما يحدثه انهدام البناء من ضرر ولو\nكان انهداما جزئياء مالم يثبت أن الحادث لا يرجع سببه الى\nاهمال فى الصيانةء أو قدم فى البناءء أو عيب فيه .\n\nؤيجوز لمن كان مهددا بضرو يصيبه من البناء أن يطالب\nالمالك باتخاذ مايلزم من التدابين الضرورية للوقاية من الخطر\nفان لم يقم المالك بذلك, جاز الحضول عل اذن من المحكمة فى\nاتخاذ هذه التدابير على حسابه ‎٠‏ :\n",
+            "evidenceId": "civil-140-original-a+civil-140-original-b",
+            "region": [
+              0.023,
+              0.838,
+              0.5,
+              0.982
+            ],
+            "fragments": [
+              {
+                "publicationId": "ordinance-75-58",
+                "page": 9,
+                "textLayer": "",
+                "ocr": "المادة 140 : من كان حائزا بأى وجه كان لعقار أو جزء\nمنه» أو منقولات, حدث فيها حريق لا يكون مسؤولا نحو الغير\nعن الاضرار التى سببها هذا الحريق الا اذا ثبت أن الحريق\nينسب الى خطئه أو خطأ من هو مسؤول عنهم ‎٠‏\n\nهالك البناء مسؤول عما يحدثه انهدام البناء من ضرر ولو\nكان انهداما جزئياء مالم يثبت أن الحادث لا يرجع سببه الى\nاهمال فى الصيانةء أو قدم فى البناءء أو عيب فيه .\n",
+                "evidenceId": "civil-140-original-a",
+                "region": [
+                  0.023,
+                  0.838,
+                  0.5,
+                  0.982
+                ],
+                "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+                "role": "body"
+              },
+              {
+                "publicationId": "ordinance-75-58",
+                "page": 10,
+                "textLayer": "",
+                "ocr": "ؤيجوز لمن كان مهددا بضرو يصيبه من البناء أن يطالب\nالمالك باتخاذ مايلزم من التدابين الضرورية للوقاية من الخطر\nفان لم يقم المالك بذلك, جاز الحضول عل اذن من المحكمة فى\nاتخاذ هذه التدابير على حسابه ‎٠‏ :\n",
+                "evidenceId": "civil-140-original-b",
+                "region": [
+                  0.51,
+                  0.057,
+                  0.985,
+                  0.139
+                ],
+                "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+                "role": "body"
+              }
+            ]
+          },
+          "path": [
+            "الكتاب الثانى - الالتزامات والعقود",
+            "الباب الاول - مصادر الالتزام",
+            "الفصل الثالث - الفعل المستحق للتعويض",
+            "القسم الثالث - المسؤولية الناشئة عن الاشياء"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "civil-code:379",
+      "number": "379",
+      "canonicalNumber": "379",
+      "path": [
+        "الكتاب الثانى - الالتزامات والعقود",
+        "الباب السابع - العقود المتعلقة بالملكية",
+        "الفصل الاول - عقد البيع",
+        "القسم الاول - احكام عامة",
+        "2 - التزامات البائع"
+      ],
+      "availability": "text",
+      "versions": [
+        {
+          "versionId": "civil-code:379@ordinance-75-58",
+          "text": "يكون البائع ملزما بالضمان اذا لم يشتمل المبيع على الصفات التى تعهد بوجودها وقت التسليم الى المشترى أو اذا كان بالمبيع عيب ينقص من قيمته، أو من الانتفاع به بحسب الغاية المقصودة منه حسبما هو مذكور بعقد البيع، أو حسبما يظهر من طبيعته أو استعماله. فيكون البائع ضامنا لهذه العيوب ولو لم يكن عالما بوجودها.\nغير ان البائع لا يكون ضامنا للعيوب التى كان المشترى على علم بها وقت البيع، أو كان فى استطاعته أن يطلع عليها لو أنه فحص المبيع بعناية الرجل العادى، الا اذا أثبت المشترى أن البائع آكد له خلو المبيع من تلك العيوب أو أنه أخفاها غشا عنه.",
+          "paragraphs": [
+            "يكون البائع ملزما بالضمان اذا لم يشتمل المبيع على الصفات التى تعهد بوجودها وقت التسليم الى المشترى أو اذا كان بالمبيع عيب ينقص من قيمته، أو من الانتفاع به بحسب الغاية المقصودة منه حسبما هو مذكور بعقد البيع، أو حسبما يظهر من طبيعته أو استعماله. فيكون البائع ضامنا لهذه العيوب ولو لم يكن عالما بوجودها.",
+            "غير ان البائع لا يكون ضامنا للعيوب التى كان المشترى على علم بها وقت البيع، أو كان فى استطاعته أن يطلع عليها لو أنه فحص المبيع بعناية الرجل العادى، الا اذا أثبت المشترى أن البائع آكد له خلو المبيع من تلك العيوب أو أنه أخفاها غشا عنه."
+          ],
+          "inForceFrom": "1975-07-05",
+          "inForceTo": null,
+          "temporalStatus": "resolved",
+          "introducedBy": "ordinance-75-58",
+          "status": "in-force",
+          "crossReferences": [],
+          "verification": {
+            "state": "checked",
+            "checks": [
+              {
+                "check": "french-structure-matches",
+                "method": "Codex visual alignment of official Arabic/French page images; presence, numbering/alias and paragraph count only",
+                "date": "2026-10-25",
+                "result": "passed",
+                "note": "{\"arabicParagraphCount\": 2, \"arabicPdfPages\": [24], \"arabicPrintedPages\": [1012], \"arabicSource\": \"A1975078\", \"code\": \"civil-code\", \"frenchNumber\": \"379\", \"frenchParagraphCount\": 2, \"frenchPdfPages\": [20], \"frenchPrintedPages\": [836], \"frenchSource\": \"F1975078\", \"number\": \"379\", \"publicationId\": \"ordinance-75-58\", \"status\": \"matching\"}"
+              },
+              {
+                "check": "discrepancy-resolved-from-image",
+                "method": "Claude visual reading of the official page image, word by word, every digit, negation and punctuation mark; bound to text and image SHA-256",
+                "date": "2026-10-26",
+                "result": "passed",
+                "note": "JO 78/1975 page 24, 600 and 1200 dpi. One correction read from the image: «آكد» carries a madda, unlike the hamza of أن at the start of the same line (candidate had أكد). The final mark after عنه is a full stop; the two hairline ticks beside it are much thinner than this font's comma and are print specks. AI reading, not a lawyer or human verification.",
+                "textSha256": "b3a3253b147ab10408fa89189742ed8a6ad3960d7d4f518d6a147f92e8f00fb3",
+                "imageSha256s": [
+                  "96880790b74c473e41e38764a4b9ab5a0cb5e00c66a7c52658d9cae4e4506634",
+                  "e2fd4bd862fa5a6c5ad037100d9ee95c9fd98e9484904f6c9547a5af5c27afa8",
+                  "bda3e681b5cf98e76e27d0d8b2601104ad3f985e1c887acfa5186a5118e12ff5",
+                  "3f2d00fa6527d4006f6c3d65007d7ab647a4c50ad9352d6a0d7ee322d1216519",
+                  "5d9f9d88591a6f32be4f8230cfe7a2e19e4926d59dbb7b4f1f00688e2f14957f"
+                ]
+              },
+              {
+                "check": "inventory-complete",
+                "method": "Priority-subset inventory: identity present in the introducing official publication and in the current official Ministry source; no repeal recorded in the ledger",
+                "date": "2026-10-26",
+                "result": "passed",
+                "note": "{\"scope\": \"priority-subset\", \"targets\": [\"124\", \"138\", \"139\", \"140\", \"308\", \"309\", \"379\"], \"identity\": \"379\", \"currentSource\": \"Ministry 2007 compilation (1,002/1,003 base labels; art. 41 explicitly repealed)\"}"
+              },
+              {
+                "check": "amendment-applied",
+                "method": "Ledger of every amending text listed by the Justice Ministry codes index (fetched 2026-10-26, lists texts to 12 Oct 2026); each touching text applied",
+                "date": "2026-10-26",
+                "result": "passed",
+                "note": "{\"introducedBy\": \"ordinance-75-58\", \"ledgerPublicationsTouchingArticle\": [\"ordinance-75-58\"], \"laterPublicationsInLedger\": [\"law-83-01\", \"law-88-14\", \"law-89-01\", \"law-05-10\", \"law-07-05\"], \"laterPublicationsTouchingArticle\": [], \"index\": {\"url\": \"https://droit.mjustice.gov.dz/fr/content/codes-0\", \"accessedOn\": \"2026-10-26\", \"sha256\": \"46e5a42bf31a5ebe981f8faef8c6300779e1bca204c1cf50010aad339ee24bfc\"}}"
+              }
+            ],
+            "reasons": []
+          },
+          "source": {
+            "publicationId": "ordinance-75-58",
+            "page": 24,
+            "endPage": null,
+            "printedPage": "1012",
+            "textLayer": "",
+            "ocr": "المادة 379 : يكون البائع ملزما بالضمان اذا لم يشتمل المبيع\nعلى الصفات التى تعهد بوجودها وقت التسليم الى اللستمرى\nأو اذا كان بالمبيع عيب ينقص من قيمته, أو من الانتفاع به\nبحسب الغاية المقصودة منه حسبما هو مذكوز بعقد البيع ,\nأو حسنبما يظهر :من طبيعته أو استعماله ‎٠‏ فيكون البائع ضامنا\nلهذه العيوب ولو لم يكن عالما بوجودها ‎٠‏\n\nغير ان البائع لا يكون ضامنا للعيوب التى كان المسترى\nعلى علم بها وقت البيع» أو كان فى استطاعته أن يطلع عليها\nلو أنه فحص المبيع بعناية الرجل العادىء الا اذا أثبت المسترى\nأن البائع أكد له خلو المبيع من تلك العيوب أو أنه أخفاما\n",
+            "evidenceId": "civil-379-original",
+            "region": [
+              0.02,
+              0.485,
+              0.495,
+              0.71
+            ],
+            "fragments": [
+              {
+                "publicationId": "ordinance-75-58",
+                "page": 24,
+                "textLayer": "",
+                "ocr": "المادة 379 : يكون البائع ملزما بالضمان اذا لم يشتمل المبيع\nعلى الصفات التى تعهد بوجودها وقت التسليم الى اللستمرى\nأو اذا كان بالمبيع عيب ينقص من قيمته, أو من الانتفاع به\nبحسب الغاية المقصودة منه حسبما هو مذكوز بعقد البيع ,\nأو حسنبما يظهر :من طبيعته أو استعماله ‎٠‏ فيكون البائع ضامنا\nلهذه العيوب ولو لم يكن عالما بوجودها ‎٠‏\n\nغير ان البائع لا يكون ضامنا للعيوب التى كان المسترى\nعلى علم بها وقت البيع» أو كان فى استطاعته أن يطلع عليها\nلو أنه فحص المبيع بعناية الرجل العادىء الا اذا أثبت المسترى\nأن البائع أكد له خلو المبيع من تلك العيوب أو أنه أخفاما\n",
+                "evidenceId": "civil-379-original",
+                "region": [
+                  0.02,
+                  0.485,
+                  0.495,
+                  0.71
+                ],
+                "sourceSha256": "ba213b5beef85fb30959320b817594324e043842446c953cd86e22a074630ee9",
+                "role": "body"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

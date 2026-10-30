@@ -18,10 +18,12 @@ The lawyer fills in the case details, the application produces a structured firs
 
 **Try it without installing anything: https://dz-legal-assistant-ai.onrender.com.** The public web demo runs the same engine, law library and screens in the browser, with four fictitious sample cases. Its AI steps use the same model as the desktop (Gemma 3 4B), hosted, so it is not for real client data. See [docs/WEB-DEMO.md](docs/WEB-DEMO.md) (local run: `dotnet run --project src/DzLegal.Web`). The first visit after a quiet spell takes about a minute while the free server wakes up.
 
-**Law texts:** 39 articles of the Civil Code, the CPCA and the Commercial Code are loaded from the official PDFs. A build script checks that each text matches the letters of its PDF page ([docs/LAW-LIBRARY.md](docs/LAW-LIBRARY.md)); that check is not a lawyer's review. Limits:
-- the CPCA texts are the 2008 originals, not yet checked against the 2022 amendment (Law 22-13);
-- the family and labour articles in the claim catalog have **no text loaded yet**: the app shows them as number only and refuses any quotation of them;
-- a quotation is checked only against a loaded text.
+**Law texts:** 1,361 articles are loaded:
+- **the complete Family Code and the complete CPCA** (including the 2022 amendment, Law 22-13). They come from the law corpus, where every text was read against the official gazette page that published it;
+- **33 articles** of the Civil and Commercial Codes, proved letter by letter against their official PDFs;
+- **17 labour-law articles**, transcribed from the official page images.
+
+None of these checks is a lawyer's review ([docs/LAW-LIBRARY.md](docs/LAW-LIBRARY.md)). A quotation is checked only against a loaded text. The complete Civil Code follows when the corpus delivers it.
 
 ## Principles
 

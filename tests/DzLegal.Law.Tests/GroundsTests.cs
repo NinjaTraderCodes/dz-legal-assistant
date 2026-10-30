@@ -153,20 +153,26 @@ public sealed class ShippedCatalogTests
             Assert.True(a.Page > 0);
         });
 
-        // The Family Code and labour-law PDFs have no usable text layer: transcribed from the page images and read
-        // twice, each article with its page and the file it is printed in, and nothing marked verified.
-        Assert.Equal(["family-code", "labour-disputes", "labour-relations"], library.Codes.Where(c => c.Transcription is not null).Select(c => c.Id).Order(StringComparer.Ordinal));
+        // The labour-law PDFs have no usable text layer: transcribed from the page images and read twice. The Family
+        // Code and the CPCA come complete from the law corpus, each text read against the official gazette page that
+        // published it. Either way: each article with its page and the publication it is printed in, nothing marked
+        // verified.
+        Assert.Equal(["cpca", "family-code", "labour-disputes", "labour-relations"], library.Codes.Where(c => c.Transcription is not null).Select(c => c.Id).Order(StringComparer.Ordinal));
         Assert.All(library.Codes.Where(c => c.Transcription is not null), c =>
         {
             Assert.False(c.Verified);
             Assert.All(c.Articles, a =>
             {
+                var url = (a.Source ?? c.Source)!.Url;
                 Assert.Null(a.SourceExtract);
                 Assert.True(a.Page > 0);
                 Assert.False(a.Verified);
-                Assert.True(File.Exists(Path.Combine(LawRoot, "..", "..", (a.Source ?? c.Source)!.Url)) || (a.Source ?? c.Source)!.Url.StartsWith("docs/", StringComparison.Ordinal));
+                Assert.True(File.Exists(Path.Combine(LawRoot, "..", "..", url)) || url.StartsWith("docs/", StringComparison.Ordinal) || url.StartsWith("https://www.joradp.dz/FTP/jo-arabe/", StringComparison.Ordinal), url);
             });
         });
+        Assert.Equal((227, 1084), (library.FindCode("family-code")!.Articles.Count, library.FindCode("cpca")!.Articles.Count));
+        Assert.Contains("يمنح القاضي الولاية لمن أسندت له حضانة الأولاد", library.FindArticle("family-code", "87")!.Text, StringComparison.Ordinal);
+        Assert.Contains("في موضوع النفقة الغذائية بموطن الدائن بها", library.FindArticle("cpca", "426")!.Text, StringComparison.Ordinal);
         Assert.Contains("الخلافات الفردية للعمل", library.FindArticle("labour-disputes", "19")!.Text, StringComparison.Ordinal); // JO 6/1990, p. 242
         Assert.Contains("مدة ستة (6) أشهر", library.FindArticle("labour-relations", "73-4")!.Text, StringComparison.Ordinal);
         Assert.Contains("يجب أن تتضمن عريضة افتتاح الدعوى", library.FindArticle("cpca", "15")!.Text, StringComparison.Ordinal);

@@ -55,6 +55,8 @@ public sealed class TemplateRenderer
         root.Import("gendered", new Func<object?, string, string, string>(Gendered));
         root.Import("whereas", new Func<int, string, string>(Whereas));
         root.Import("requests", new Func<string?, ScriptArray>(RequestLines));
+        // The litigation area of the court section («قسم شؤون الأسرة» → family), as the grounds analysis reads it.
+        root.Import("area", new Func<string?, string?>(Law.LegalAreas.AreaOf));
         return root;
     }
 

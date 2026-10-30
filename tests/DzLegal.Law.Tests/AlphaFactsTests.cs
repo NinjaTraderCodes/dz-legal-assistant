@@ -78,7 +78,7 @@ public sealed class AlphaFactsTests
     [Fact]
     public void TheAnswerTemplateHasOneLinePerQuestionAndAValueSlotOnlyWhereOneIsTaken()
     {
-        Assert.Equal("1 | ? | ?\nr1 | ? | ?", ClaimFactReader.Template(Elements["khul"]));
+        Assert.Equal("1 | ? | ?\nr1 | ? | ?\nr2 | ? | ?\nr3 | ?\nr4 | ? | ?\nr5 | ?", ClaimFactReader.Template(Elements["khul"]));
         Assert.Equal("p | ?\n1 | ? | ?\n2 | ?\nr1 | ?\nr2 | ?\nr3 | ? | ?\nr4 | ?", ClaimFactReader.Template(Elements["custody"]));
     }
 

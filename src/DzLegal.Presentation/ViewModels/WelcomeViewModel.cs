@@ -10,16 +10,17 @@ public sealed partial class WelcomeViewModel : ObservableObject
     private readonly WelcomePreferences _preferences;
     private readonly Action _openSetup;
 
-    public WelcomeViewModel(WelcomePreferences preferences, Action openSetup)
+    public WelcomeViewModel(WelcomePreferences preferences, Action openSetup, Loc? localization = null)
     {
         ArgumentNullException.ThrowIfNull(preferences);
         ArgumentNullException.ThrowIfNull(openSetup);
         _preferences = preferences;
         _openSetup = openSetup;
-        L.SetLanguage(preferences.LoadLanguage());
+        L = localization ?? new Loc();
+        if (localization is null) L.SetLanguage(preferences.LoadLanguage());
     }
 
-    public Loc L { get; } = new();
+    public Loc L { get; }
 
     public bool IsRightToLeft => L.IsRightToLeft;
 

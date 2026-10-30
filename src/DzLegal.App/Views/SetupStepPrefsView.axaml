@@ -1,0 +1,28 @@
+<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DzLegal.Presentation.ViewModels"
+             x:Class="DzLegal.App.Views.SetupStepPrefsView" x:DataType="vm:SetupViewModel">
+  <StackPanel Spacing="10" HorizontalAlignment="Stretch">
+    <TextBlock Classes="setup-label" Text="{Binding L[PrefsLanguage]}" />
+    <ComboBox Name="ProfileLanguage" ItemsSource="{Binding LanguageOptions}" SelectedValueBinding="{Binding Value}" SelectedValue="{Binding Language, Mode=TwoWay}" HorizontalAlignment="Stretch" AutomationProperties.Name="{Binding L[PrefsLanguage]}">
+      <ComboBox.ItemTemplate><DataTemplate x:DataType="vm:SetupChoice"><TextBlock Text="{Binding Label}" /></DataTemplate></ComboBox.ItemTemplate>
+    </ComboBox>
+    <TextBlock Classes="setup-label" Text="{Binding L[PrefsTheme]}" />
+    <ComboBox Name="ProfileTheme" ItemsSource="{Binding ThemeOptions}" SelectedValueBinding="{Binding Value}" SelectedValue="{Binding Theme, Mode=TwoWay}" HorizontalAlignment="Stretch" AutomationProperties.Name="{Binding L[PrefsTheme]}">
+      <ComboBox.ItemTemplate><DataTemplate x:DataType="vm:SetupChoice"><TextBlock Text="{Binding Label}" /></DataTemplate></ComboBox.ItemTemplate>
+    </ComboBox>
+    <TextBlock Classes="setup-label" Text="{Binding L[PrefsEngine]}" />
+    <ComboBox Name="ProfileEngine" ItemsSource="{Binding EngineOptions}" SelectedValueBinding="{Binding Value}" SelectedValue="{Binding Engine, Mode=TwoWay}" HorizontalAlignment="Stretch" AutomationProperties.Name="{Binding L[PrefsEngine]}">
+      <ComboBox.ItemTemplate><DataTemplate x:DataType="vm:SetupChoice"><TextBlock Text="{Binding Label}" /></DataTemplate></ComboBox.ItemTemplate>
+    </ComboBox>
+    <CheckBox Content="{Binding L[PrefsBackground]}" IsChecked="{Binding AnalyseInBackground}" />
+    <TextBlock Classes="setup-label" Text="{Binding L[PrefsSaveFolder]}" />
+    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+      <TextBox Name="ProfileSaveFolder" Text="{Binding SaveFolder}" FlowDirection="LeftToRight" AutomationProperties.Name="{Binding L[PrefsSaveFolder]}" />
+      <Button Grid.Column="1" Classes="setup" Content="{Binding L[PrefsSaveFolderChoose]}" Command="{Binding ChooseSaveFolderCommand}" />
+    </Grid>
+    <WrapPanel Margin="0,18,0,0">
+      <Button Classes="setup" Content="{Binding L[ProfileImport]}" Command="{Binding ImportCommand}" Margin="0,0,10,10" />
+      <Button Classes="setup" Content="{Binding L[ProfileExport]}" Command="{Binding ExportCommand}" Margin="0,0,0,10" />
+    </WrapPanel>
+  </StackPanel>
+</UserControl>

@@ -111,3 +111,12 @@ layout, rendering and contrast checks pass.
 - New App tests file: `WelcomeTests.cs`.
 - The two supplied assets under the canonical `Assets/Images` Git paths.
 - This release note and eight PNGs under `docs/images/onboarding`.
+
+## Feature 1 edit exceptions
+
+The owner explicitly authorized edits to `src/DzLegal.App/Views/OnboardingWindow.cs`
+and `src/DzLegal.Storage/WelcomePreferences.cs`. Both were created by the Welcome
+feature on `djihane/onboarding`. The exception is limited to Step C: setup
+navigation, the setup-seen marker, and language/theme persistence through
+`preferences.json`. Neither file may be renamed or deleted. Existing tests and
+all other protection rules remain unchanged.

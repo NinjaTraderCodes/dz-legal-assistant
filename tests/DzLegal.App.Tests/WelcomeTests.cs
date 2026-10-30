@@ -31,6 +31,7 @@ public sealed class WelcomeTests : IDisposable
             () => { calls++; return setup; });
         var view = Assert.IsType<WelcomeView>(window.Content);
         var vm = Assert.IsType<WelcomeViewModel>(view.DataContext);
+        Assert.Equal(0, calls);
         vm.StartCommand.Execute(null);
         Assert.Same(setup, window.Content);
         Assert.Equal(1, calls);
@@ -39,17 +40,63 @@ public sealed class WelcomeTests : IDisposable
     }
 
     [AvaloniaTheory]
-    [InlineData("")]
-    [InlineData("{broken")]
-    [InlineData("{}")]
-    public void AnyPresentProfileGoesDirectlyToStartWithoutParsingOrOverwritingIt(string contents)
+    [InlineData("", false)]
+    [InlineData("{broken", false)]
+    [InlineData("null", false)]
+    [InlineData("[]", false)]
+    [InlineData("{}", true)]
+    public void PresentProfileShowsWelcomeBeforeRoutingWithoutOverwritingIt(string contents, bool goHome)
     {
         File.WriteAllText(Preferences.ProfilePath, contents);
-        var start = new Border();
-        var window = new OnboardingWindow(Preferences, () => throw new InvalidOperationException(), startScreen: () => start);
-        Assert.Same(start, window.Content);
-        Assert.Equal(contents, File.ReadAllText(Preferences.ProfilePath));
-        window.Close();
+        for (var launch = 0; launch < 2; launch++)
+        {
+            var start = new Border();
+            var setup = new Border();
+            var startCalls = 0;
+            var setupCalls = 0;
+            var window = new OnboardingWindow(Preferences, () => throw new InvalidOperationException(),
+                () => { setupCalls++; return setup; }, () => { startCalls++; return start; });
+            var welcome = Assert.IsType<WelcomeView>(window.Content);
+            Assert.Equal(0, startCalls);
+            Assert.Equal(0, setupCalls);
+            Assert.IsType<WelcomeViewModel>(welcome.DataContext).StartCommand.Execute(null);
+            Assert.Same(goHome ? start : setup, window.Content);
+            Assert.Equal(goHome ? 1 : 0, startCalls);
+            Assert.Equal(goHome ? 0 : 1, setupCalls);
+            Assert.Equal(contents, File.ReadAllText(Preferences.ProfilePath));
+            Assert.False(Preferences.HasSetupSeen);
+            window.Close();
+        }
+    }
+
+    [AvaloniaTheory]
+    [InlineData(null, "{}")]
+    [InlineData("{}", "{}")]
+    [InlineData("{broken", "{}")]
+    [InlineData("{broken", "{broken")]
+    [InlineData("{broken", "{\"skipped\":false}")]
+    [InlineData(null, "")]
+    public void SetupMarkerShowsWelcomeBeforeHomeOnEveryLaunch(string? profile, string marker)
+    {
+        if (profile is not null) File.WriteAllText(Preferences.ProfilePath, profile);
+        File.WriteAllText(Preferences.SetupSeenPath, marker);
+        for (var launch = 0; launch < 2; launch++)
+        {
+            var startCalls = 0;
+            var start = new Border();
+            var window = new OnboardingWindow(Preferences, () => throw new InvalidOperationException(),
+                setupStepOne: () => throw new InvalidOperationException(),
+                startScreen: () => { startCalls++; return start; });
+            var welcome = Assert.IsType<WelcomeView>(window.Content);
+            Assert.Equal(0, startCalls);
+            Assert.IsType<WelcomeViewModel>(welcome.DataContext).StartCommand.Execute(null);
+            Assert.Same(start, window.Content);
+            Assert.Equal(1, startCalls);
+            Assert.Equal(profile is not null, Preferences.HasProfile);
+            if (profile is not null) Assert.Equal(profile, File.ReadAllText(Preferences.ProfilePath));
+            Assert.Equal(marker, File.ReadAllText(Preferences.SetupSeenPath));
+            window.Close();
+        }
     }
 
     [Fact]

@@ -1,0 +1,28 @@
+<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DzLegal.Presentation.ViewModels"
+             x:Class="DzLegal.App.Views.SetupStepLawyerView" x:DataType="vm:SetupViewModel">
+  <StackPanel Spacing="10" HorizontalAlignment="Stretch">
+    <TextBlock Classes="setup-label" Text="{Binding L[ProfileNameAr]}" />
+    <TextBox Name="ProfileNameAr" Text="{Binding NameAr}" Classes.invalid="{Binding HasNameError}" AutomationProperties.Name="{Binding L[ProfileNameAr]}" FlowDirection="RightToLeft" />
+    <TextBlock Classes="setup-label" Text="{Binding L[ProfileNameFr]}" />
+    <TextBox Name="ProfileNameFr" Text="{Binding NameFr}" Classes.invalid="{Binding HasNameError}" AutomationProperties.Name="{Binding L[ProfileNameFr]}" FlowDirection="LeftToRight" />
+    <TextBlock Classes="setup-error" Text="{Binding L[ProfileNameTooLong]}" IsVisible="{Binding HasNameError}" />
+    <TextBlock Classes="setup-label" Text="{Binding L[ProfileGender]}" />
+    <ComboBox Name="ProfileGender" ItemsSource="{Binding GenderOptions}" SelectedValueBinding="{Binding Value}" SelectedValue="{Binding Gender, Mode=TwoWay}" HorizontalAlignment="Stretch" AutomationProperties.Name="{Binding L[ProfileGender]}">
+      <ComboBox.ItemTemplate><DataTemplate x:DataType="vm:SetupChoice"><TextBlock Text="{Binding Label}" /></DataTemplate></ComboBox.ItemTemplate>
+    </ComboBox>
+    <TextBlock Classes="setup-label" Text="{Binding L[ProfileCouncil]}" />
+    <TextBox Name="ProfileCouncil" Text="{Binding Council}" AutomationProperties.Name="{Binding L[ProfileCouncil]}" FlowDirection="RightToLeft" />
+    <TextBlock Classes="setup-note" Text="{Binding L[ProfileCouncilHint]}" />
+    <TextBlock Classes="setup-label" Text="{Binding L[ProfileBar]}" />
+    <TextBox Name="ProfileBar" Text="{Binding Bar}" AutomationProperties.Name="{Binding L[ProfileBar]}" FlowDirection="RightToLeft" />
+    <TextBlock Classes="setup-note" Text="{Binding L[ProfileBarHint]}" />
+    <CheckBox Content="{Binding AccreditationLabel}" IsChecked="{Binding SupremeCourt}" AutomationProperties.Name="{Binding AccreditationLabel}" />
+    <TextBlock Classes="setup-label" Text="{Binding L[ProfileStanding]}" />
+    <TextBox Name="ProfileStanding" Text="{Binding Standing}" AutomationProperties.Name="{Binding L[ProfileStanding]}" FlowDirection="RightToLeft" AcceptsReturn="True" MinHeight="76" TextWrapping="Wrap" />
+    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+      <TextBlock Classes="setup-note" Text="{Binding L[ProfileStandingNote]}" VerticalAlignment="Center" />
+      <Button Grid.Column="1" Classes="setup" Content="{Binding L[ProfileStandingRestore]}" Command="{Binding RestoreStandingCommand}" />
+    </Grid>
+  </StackPanel>
+</UserControl>

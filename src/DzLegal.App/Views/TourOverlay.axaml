@@ -7,6 +7,7 @@
     <Canvas Name="Shade" IsHitTestVisible="False" />
     <Canvas Name="Cards">
       <Border Name="TourCard" Classes="home-panel" Background="{DynamicResource OnboardingTourCardBrush}" Focusable="True" MaxWidth="{DynamicResource OnboardingTourWidth}"
+              BorderBrush="{DynamicResource OnboardingHighlightBrush}" BorderThickness="2" BoxShadow="{DynamicResource OnboardingTourCardShadow}"
               FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}"
               AutomationProperties.Name="{Binding Announcement}" AutomationProperties.HelpText="{Binding Text}"
               AutomationProperties.LiveSetting="Assertive" KeyboardNavigation.TabNavigation="Cycle">

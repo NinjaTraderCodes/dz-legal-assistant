@@ -64,6 +64,8 @@
           <SolidColorBrush x:Key="SetupSurfaceBrush" Color="#8024201B" />
           <!-- The tour card floats over the workbench, not over the blurred photograph: the glass panel would let the document show through. -->
           <SolidColorBrush x:Key="OnboardingTourCardBrush" Color="#F724201B" />
+          <!-- The card shares the panels' surface colour, so a gold edge and a deep shadow set it apart over them (owner, 31 Oct 2026). -->
+          <BoxShadows x:Key="OnboardingTourCardShadow">0 14 36 0 #B3000000</BoxShadows>
           <SolidColorBrush x:Key="WelcomeEdgeBrush" Color="#D2B981" />
           <SolidColorBrush x:Key="WelcomeFocusBrush" Color="#F2EDE5" />
           <SolidColorBrush x:Key="WelcomeButtonBorderBrush" Color="#D2B981" />
@@ -87,6 +89,7 @@
           <SolidColorBrush x:Key="WelcomeControlBrush" Color="#FFFFFF" />
           <SolidColorBrush x:Key="SetupSurfaceBrush" Color="#CCFFFFFF" />
           <SolidColorBrush x:Key="OnboardingTourCardBrush" Color="#F7FFFFFF" />
+          <BoxShadows x:Key="OnboardingTourCardShadow">0 14 36 0 #66000000</BoxShadows>
           <SolidColorBrush x:Key="WelcomeEdgeBrush" Color="#786039" />
           <SolidColorBrush x:Key="WelcomeFocusBrush" Color="#28231D" />
           <SolidColorBrush x:Key="WelcomeButtonBorderBrush" Color="#786039" />

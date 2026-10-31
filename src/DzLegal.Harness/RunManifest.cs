@@ -24,15 +24,23 @@ public sealed record RunManifest
 
     public required IReadOnlyDictionary<string, string> Options { get; init; }
 
-    public static RunManifest Create(string command, IReadOnlyList<string> models, IReadOnlyDictionary<string, string> folders, IReadOnlyDictionary<string, string> options) => new()
+    /// <summary>The machine state the run was made in: power source and scheme, processors, OS, local server version and model digests (<see cref="RunEnvironment"/>).</summary>
+    public IReadOnlyDictionary<string, string> Environment { get; init; } = new Dictionary<string, string>();
+
+    public static RunManifest Create(string command, IReadOnlyList<string> models, IReadOnlyDictionary<string, string> folders, IReadOnlyDictionary<string, string> options)
     {
-        Command = command,
-        StartedUtc = DateTimeOffset.UtcNow,
-        Commit = GitCommit(Directory.GetCurrentDirectory()),
-        Models = models,
-        Fingerprints = folders.ToDictionary(kv => kv.Key, kv => FolderHash(kv.Value)),
-        Options = options,
-    };
+        ArgumentNullException.ThrowIfNull(options);
+        return new()
+        {
+            Command = command,
+            StartedUtc = DateTimeOffset.UtcNow,
+            Commit = GitCommit(Directory.GetCurrentDirectory()),
+            Models = models,
+            Fingerprints = folders.ToDictionary(kv => kv.Key, kv => FolderHash(kv.Value)),
+            Options = options,
+            Environment = RunEnvironment.Capture(models, options.GetValueOrDefault("endpoint")),
+        };
+    }
 
     public void Write(string folder) =>
         File.WriteAllText(Path.Combine(folder, "manifest.json"), JsonSerializer.Serialize(this, Indented));

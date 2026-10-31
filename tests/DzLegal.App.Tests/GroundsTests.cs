@@ -75,10 +75,38 @@ public sealed class GroundsWorkflowTests
         Assert.False(vm.NeedsClaimConfirmation);
         Assert.False(vm.IsAnalysisStale);
 
-        // The model only saw the catalog's civil claims and the candidates' keys.
+        // The local model saw the catalog's civil claims, the lawyer's section as a hint, and the candidates' keys.
         var reading = recorder.Requests.Single(r => r.SectionId == GroundsAnalyzer.ReadingRequestId).UserPrompt;
         Assert.Contains("loan-repayment — استرداد مبلغ قرض", reading, StringComparison.Ordinal);
         Assert.DoesNotContain("khul", reading, StringComparison.Ordinal);
+        Assert.Contains("القسم الذي اختاره المحامي: القسم المدني", reading, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task AClaimTypeOfAnotherAreaThanTheSectionGetsANeutralNoteAndAnAdministrativeSectionAMessage()
+    {
+        // With a hosted engine every claim type is offered and the section is only a hint: a loan filed under the
+        // commercial section is still read as a loan, and the status says the section is unusual for it, without
+        // blocking anything.
+        var online = new ProviderOption("online", _ => "online", Analysis.Model, sendsCaseData: true);
+        var vm = Vm.Create(extra: online).Filled();
+        vm.Field("court.section").Value = "القسم التجاري";
+        await vm.AnalyseGroundsCommand.ExecuteAsync(null);
+        Assert.Equal("استرداد مبلغ قرض", vm.ReadingClaims);
+        Assert.Equal(vm.L.Format("AnalysisDone", 3, "recording") + " " + vm.L["AnalysisSectionNote"], vm.AnalysisStatus);
+        Assert.True(vm.NeedsClaimConfirmation);
+
+        vm.Field("court.section").Value = "القسم المدني";
+        await vm.AnalyseGroundsCommand.ExecuteAsync(null);
+        Assert.Equal(vm.L.Format("AnalysisDone", 3, "recording"), vm.AnalysisStatus);
+
+        var recorder = Analysis.Model();
+        var administrative = Vm.Create(recorder: recorder).Filled();
+        administrative.Field("court.section").Value = "المحكمة الإدارية";
+        await administrative.AnalyseGroundsCommand.ExecuteAsync(null);
+        Assert.Equal(administrative.L["AnalysisAdministrative"], administrative.AnalysisStatus);
+        Assert.Empty(administrative.AnalysedArticles);
+        Assert.Empty(recorder.Requests);
     }
 
     [Fact]

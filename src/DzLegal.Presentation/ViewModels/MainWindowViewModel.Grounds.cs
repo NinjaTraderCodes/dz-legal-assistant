@@ -156,6 +156,8 @@ public sealed partial class MainWindowViewModel
                 AnalysisActivity.BeginStep((int)stage, waitsForModel: stage != AnalysisStage.Searching));
             var analyzer = new GroundsAnalyzer(provider)
             {
+                // A hosted engine reads the right type from the whole catalogue; the local one keeps the section's area.
+                OfferAllClaimTypes = SelectedProvider.SendsCaseData,
                 OnPartial = (_, text) => AnalysisActivity.OnText(text),
                 OnCandidates = found => AnalysisActivity.SetDetail((int)AnalysisStage.Searching, L.Format("AnalysisCandidates", found.Count)),
             };
@@ -172,7 +174,9 @@ public sealed partial class MainWindowViewModel
 
             // Nothing is ticked yet: the lawyer first confirms the claim type (ConfirmClaim), or searches by hand.
             NoteAnswer(provider);
-            AnalysisStatus = analysis.ClaimIds.Count > 0 ? L.Format("AnalysisDone", analysis.Articles.Count, provider.Name) // the engine that answered
+            var section = inputs.GetValueOrDefault("court.section", string.Empty);
+            AnalysisStatus = analysis.ClaimIds.Count > 0 ? L.Format("AnalysisDone", analysis.Articles.Count, provider.Name) + SectionNote(analysis, section) // the engine that answered
+                : LegalAreas.AreaOf(section) == LegalAreas.Administrative ? L["AnalysisAdministrative"]
                 : HasReading ? L["AnalysisOutOfScope"]
                 : L.Format("AnalysisNothing", SelectedProvider.DisplayName);
         }
@@ -190,6 +194,17 @@ public sealed partial class MainWindowViewModel
             AnalysisActivity.Stop();
             (provider as IDisposable)?.Dispose();
         }
+    }
+
+    /// <summary>
+    /// A neutral note when the recognised claim type belongs to another area than the section the lawyer chose. The
+    /// section is the lawyer's input and only a hint to the model (31 Oct 2026); the note is not a blocker.
+    /// </summary>
+    private string SectionNote(GroundsAnalysis analysis, string section)
+    {
+        var sectionArea = LegalAreas.AreaOf(section);
+        var claimArea = _knowledge.Claims.FirstOrDefault(c => c.Id == analysis.ClaimIds[0])?.Area;
+        return sectionArea is null || claimArea is null || sectionArea == claimArea ? string.Empty : " " + L["AnalysisSectionNote"];
     }
 
     /// <summary>The lawyer confirms the recognised claim type: the articles that type rests on («لازمة») are ticked.</summary>

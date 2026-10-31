@@ -20,7 +20,7 @@ using DzLegal.Harness;
 //       Grounds as drafted today (A) beside skeleton-first grounds (B: the code states each article from its official
 //       text, the model writes only the arguments), one file per case, for a lawyer to compare.
 //   dzlegal-harness grounds --models <gemma3:4b,...|stub> [--out bench-grounds] [--law-root <data/law>] [--cases <grounds-cases>] [--endpoint ...]
-//       [--partition development,validation,robustness|release]
+//       [--partition development,validation,robustness|release] [--all-claims on|off]
 //       Runs the grounds analysis (read facts → search library → choose articles) on fictitious fact patterns and
 //       reports claim recognition, expected-article recall (final and by the model alone), the legal reference (required
 //       authorities, coverage gaps, excluded authorities proposed), time per case, and with --runs, how stable the
@@ -44,6 +44,10 @@ string Option(string name, string fallback)
 }
 
 dataRoot = Option("--data", dataRoot);
+
+// Every claim type whatever the court section: the default for hosted models (18 of 18 mismatching sections right,
+// 31 Oct 2026), not for the local model (2 wrong of 13 matching cases when all were offered). --all-claims on|off overrides.
+bool AllClaims(string model) => Option("--all-claims", HarnessModels.IsHosted(model) ? "on" : "off") == "on";
 
 if (args.Length > 1 && args[0] == "law" && args[1] == "import" && args.Length > 2)
 {
@@ -190,7 +194,7 @@ if (args.Length > 0 && args[0] == "grounds")
             }
 
             var runFolder = outRoot is null ? null : runs > 1 ? Path.Combine(outRoot, $"run-{run}") : outRoot;
-            var report = await GroundsEvaluator.EvaluateAsync(knowledge, groundsCases, paced, Console.Out, runFolder, maxFailures);
+            var report = await GroundsEvaluator.EvaluateAsync(knowledge, groundsCases, paced, Console.Out, runFolder, maxFailures, AllClaims(model));
             GroundsEvaluator.Print(report, knowledge, Console.Out);
             reports.Add(report);
             if (report.StoppedEarly)
@@ -344,7 +348,7 @@ if (args.Length > 0 && args[0] == "facts")
 
         using var paced = new PacedModelProvider(provider, HarnessModels.Pace(model, args.Contains("--delay-seconds") ? double.Parse(Option("--delay-seconds", "0"), CultureInfo.InvariantCulture) : -1));
         var report = alpha
-            ? await FactsEvaluator.RunAsync(factCases, $"{paced.Name} (alpha-01, claims {claimsMode})", AlphaFacts.Reader(paced, lawRoot, claimsMode), Console.Out, factOut)
+            ? await FactsEvaluator.RunAsync(factCases, $"{paced.Name} (alpha-01, claims {claimsMode})", AlphaFacts.Reader(paced, lawRoot, claimsMode, AllClaims(model)), Console.Out, factOut)
             : await FactsEvaluator.RunAsync(factCases, paced, prompt, Console.Out, factOut);
         var text = FactsEvaluator.Summary(report, speed.Table());
         Console.WriteLine(text);

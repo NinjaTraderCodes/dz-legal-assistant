@@ -207,6 +207,36 @@ public sealed class GroundsAnalyzerTests
     }
 
     [Fact]
+    public async Task EveryClaimTypeIsOfferedWhateverTheSectionAndTheSectionIsAHint()
+    {
+        // Upper-bound run of 31 Oct 2026: filtering the types by the section's area hid the right type from every model
+        // on all 18 mismatching sections; a khul under a civil section was read as an unpaid sale price.
+        var provider = new RecordingProvider(r => r.SectionId == GroundsAnalyzer.ReadingRequestId ? "نوع الدعوى: khul" : "fictitious-code:30 | أساس | سبب");
+        var analysis = await new GroundsAnalyzer(provider) { OfferAllClaimTypes = true }.AnalyseAsync(Knowledge(Library), "", "تطلب الزوجة مخالعة زوجها", "القسم المدني");
+
+        Assert.Equal(["khul"], analysis.ClaimIds);
+        var prompt = provider.Requests.Single(r => r.SectionId == GroundsAnalyzer.ReadingRequestId).UserPrompt;
+        Assert.Contains("القسم الذي اختاره المحامي: القسم المدني", prompt, StringComparison.Ordinal);
+        Assert.Contains("loan — ", prompt, StringComparison.Ordinal);
+        Assert.Contains("khul — ", prompt, StringComparison.Ordinal);
+        Assert.Contains("القسم الذي اختاره المحامي: غير محدد", GroundsAnalyzer.BuildReadingRequest(Knowledge(), "", "وقائع", [Loan]).UserPrompt, StringComparison.Ordinal);
+
+        // The local 4B model keeps the section's area (2 wrong types of 13 when all were offered, 0 with the filter).
+        var local = new RecordingProvider(r => r.SectionId == GroundsAnalyzer.ReadingRequestId ? "نوع الدعوى: khul" : "x");
+        var filtered = await new GroundsAnalyzer(local).AnalyseAsync(Knowledge(Library), "", "تطلب الزوجة مخالعة زوجها", "القسم المدني");
+        Assert.Empty(filtered.ClaimIds);
+        Assert.DoesNotContain("khul — ", local.Requests.Single(r => r.SectionId == GroundsAnalyzer.ReadingRequestId).UserPrompt, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void ASecondClaimTypeStaysOnlyInTheFirstOnesArea()
+    {
+        var reading = new FactsReading("", "", "", ["loan", "khul"], []);
+        Assert.Equal(["loan"], GroundsAnalyzer.SameAreaAsFirst(reading, [Loan, Khul]).ClaimIds);
+        Assert.Equal(["khul"], GroundsAnalyzer.SameAreaAsFirst(reading with { ClaimIds = ["khul"] }, [Loan, Khul]).ClaimIds);
+    }
+
+    [Fact]
     public async Task AnAdministrativeCourtIsOutOfScopeWithoutAskingTheModel()
     {
         // Bench of 13 Oct: Gemma 3 4B read an appeal against a wali's decision as «contract rescission».
@@ -244,7 +274,7 @@ public sealed class GroundsAnalyzerTests
         var analysis = await new GroundsAnalyzer(provider).AnalyseAsync(Knowledge(Library), "دين", "أقرض المدعي المدعى عليه ولم يرد", "القسم المدني", new InlineProgress(stages.Add));
 
         Assert.Equal([AnalysisStage.Reading, AnalysisStage.Searching, AnalysisStage.Selecting], stages);
-        Assert.Equal(["loan"], analysis.ClaimIds); // khul is a family claim: not offered for a civil section
+        Assert.Equal(["loan"], analysis.ClaimIds); // khul is a family claim: not offered for a civil section with a local model
         Assert.Equal("10", Assert.Single(analysis.Articles).Number);
         Assert.Equal(GroundsAnalyzer.FactsHash("دين", "أقرض المدعي المدعى عليه ولم يرد", "القسم المدني"), analysis.FactsHash);
         Assert.Equal("recording", analysis.Model);

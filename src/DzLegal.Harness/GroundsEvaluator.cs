@@ -219,7 +219,7 @@ public static class GroundsEvaluator
     /// Stop the batch after this many failed cases in a row (0: never), rather than recording a failure for every
     /// remaining case while a service is down.
     /// </param>
-    public static async Task<GroundsReport> EvaluateAsync(LegalKnowledge knowledge, IReadOnlyList<GroundsCase> cases, IModelProvider provider, TextWriter log, string? outFolder = null, int maxConsecutiveFailures = 0)
+    public static async Task<GroundsReport> EvaluateAsync(LegalKnowledge knowledge, IReadOnlyList<GroundsCase> cases, IModelProvider provider, TextWriter log, string? outFolder = null, int maxConsecutiveFailures = 0, bool offerAllClaimTypes = false)
     {
         ArgumentNullException.ThrowIfNull(knowledge);
         ArgumentNullException.ThrowIfNull(cases);
@@ -236,7 +236,7 @@ public static class GroundsEvaluator
         foreach (var c in cases)
         {
             var trace = new List<(string Step, string Text)>();
-            var analyzer = new GroundsAnalyzer(provider) { Trace = (step, text) => trace.Add((step, text)) };
+            var analyzer = new GroundsAnalyzer(provider) { OfferAllClaimTypes = offerAllClaimTypes, Trace = (step, text) => trace.Add((step, text)) };
             var started = Stopwatch.StartNew();
             GroundsAnalysis analysis;
             string? error = null;

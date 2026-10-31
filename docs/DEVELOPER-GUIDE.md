@@ -192,7 +192,7 @@ There are **six prompt files**. Two different mechanisms fill them, so be carefu
 What each variable holds:
 - `section_notes`: the section's `sourceField` value. For grounds this is `notes.grounds` *after* `DraftingInputs()` adds the ticked citations, see §5.3.
 - `legal_texts`: `LegalText.Block(...)`, the official text of each ticked article that is in the library. It is `null` when there is none, so `{{ if legal_texts }}` is false (see §13).
-- `{{ claims }}`: one line per catalog claim type of the court section's area, `id — label: description`, ending with `other`.
+- `{{ claims }}`: one line per claim type offered, `id — label: description`, ending with `other`: every type for a hosted engine (`GroundsAnalyzer.OfferAllClaimTypes`), the court section's area for the local model; the section itself is passed as `{{ section }}`, a hint only.
 - `{{ reading }}`: the five lines from stage 1.
 - `{{ candidates }}`: `key — citation — first 180 characters` for each candidate.
 
@@ -300,7 +300,7 @@ No model is called while typing. Everything here is deterministic and synchronou
 
 ```
 area   = LegalAreas.AreaOf(court.section)                    CatalogArticles.cs
-claims = catalog claim types of that area (all when unknown)
+claims = every catalog claim type for a hosted engine, the section's area for the local model (the section is a hint in the prompt; an administrative section abstains)
 
 Stage 1  Reading    BuildReadingRequest(read-facts.ar.txt)  → provider.StreamAsync (OnPartial)
                     ParseReading → FactsReading{Relationship, Breach, Sought, ClaimIds (≤2, "other" → none), SearchTerms}

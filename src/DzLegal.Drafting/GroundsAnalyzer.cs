@@ -94,15 +94,15 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
         }
 
         var area = LegalAreas.AreaOf(courtSection);
-        var claims = knowledge.Claims.Where(c => area is null || c.Area == area).ToList();
         if (area == LegalAreas.Administrative)
         {
             // Out of scope, said by the code: a small model offered «contract rescission» for an administrative appeal.
             return new GroundsAnalysis { FactsHash = FactsHash(subject, facts, courtSection), Model = _provider.Name };
         }
 
+        var claims = ClaimsOffered(knowledge, area);
         progress?.Report(AnalysisStage.Reading);
-        var reading = await ReadAsync(knowledge, subject, facts, claims, cancellationToken);
+        var reading = await ReadAsync(knowledge, subject, facts, courtSection, claims, cancellationToken);
 
         progress?.Report(AnalysisStage.Searching);
         var candidates = Candidates(knowledge, reading, claims);
@@ -155,10 +155,9 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
         return [.. required, .. selected.Where(s => required.All(r => r.Ref != s.Ref))];
     }
 
-    /// <summary>Streams one model answer, reporting the text so far, and returns the whole answer.</summary>
     /// <summary>
-    /// Stage 1 alone: the claim types the facts point to, among those of the court section's area (none for an
-    /// administrative section). The fact-reading benches use it to measure the whole chain.
+    /// Stage 1 alone: the claim types the facts point to, among every type of the catalog, with the court section as a
+    /// hint (none for an administrative section). The fact-reading benches use it to measure the whole chain.
     /// </summary>
     public Task<FactsReading> ReadClaimsAsync(LegalKnowledge knowledge, string subject, string facts, string? courtSection, CancellationToken cancellationToken = default)
     {
@@ -166,16 +165,45 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
         var area = LegalAreas.AreaOf(courtSection);
         return area == LegalAreas.Administrative
             ? Task.FromResult(FactsReading.Empty)
-            : ReadAsync(knowledge, subject, facts, [.. knowledge.Claims.Where(c => area is null || c.Area == area)], cancellationToken);
+            : ReadAsync(knowledge, subject, facts, courtSection, ClaimsOffered(knowledge, area), cancellationToken);
     }
 
-    private async Task<FactsReading> ReadAsync(LegalKnowledge knowledge, string subject, string facts, IReadOnlyList<ClaimType> claims, CancellationToken cancellationToken)
+    /// <summary>
+    /// True for the hosted models: every claim type is offered whatever the section, which the prompt gives as a hint
+    /// only. Filtering by the section's area hid the right type from every model on every mismatching section
+    /// (0 of 18, 31 Oct 2026), and a hosted model reads the right type from the whole catalogue (18 of 18). False, the
+    /// default, keeps the section's area for the local 4B model, which confuses types when all 21 are offered
+    /// (2 wrong of 13 matching-section cases against 0 with the filter, the same night).
+    /// </summary>
+    public bool OfferAllClaimTypes { get; init; }
+
+    private List<ClaimType> ClaimsOffered(LegalKnowledge knowledge, string? area) =>
+        OfferAllClaimTypes || area is null ? knowledge.Claims.ToList() : knowledge.Claims.Where(c => c.Area == area).ToList();
+
+    private async Task<FactsReading> ReadAsync(LegalKnowledge knowledge, string subject, string facts, string? courtSection, IReadOnlyList<ClaimType> claims, CancellationToken cancellationToken)
     {
-        var readingRequest = BuildReadingRequest(knowledge, subject, facts, claims);
+        var readingRequest = BuildReadingRequest(knowledge, subject, facts, claims, courtSection);
         Trace?.Invoke("reading.prompt", readingRequest.UserPrompt);
         var readingAnswer = await CollectAsync(AnalysisStage.Reading, readingRequest, cancellationToken);
         Trace?.Invoke("reading.answer", readingAnswer);
-        return Corrected(ParseReading(readingAnswer, claims), facts, claims);
+        return SameAreaAsFirst(Corrected(ParseReading(readingAnswer, claims), facts, claims), claims);
+    }
+
+    /// <summary>
+    /// A second claim type stays only in the first one's area (tatliq with the children's maintenance): one requête does
+    /// not join a loan to a khul', which the section's filter used to rule out before the section became a hint.
+    /// </summary>
+    public static FactsReading SameAreaAsFirst(FactsReading reading, IReadOnlyList<ClaimType> claims)
+    {
+        ArgumentNullException.ThrowIfNull(reading);
+        ArgumentNullException.ThrowIfNull(claims);
+        if (reading.ClaimIds.Count < 2)
+        {
+            return reading;
+        }
+
+        var area = claims.FirstOrDefault(c => c.Id == reading.ClaimIds[0])?.Area;
+        return area is null ? reading : reading with { ClaimIds = reading.ClaimIds.Where(id => claims.FirstOrDefault(c => c.Id == id)?.Area == area).ToList() };
     }
 
     private async Task<string> CollectAsync(AnalysisStage stage, ModelRequest request, CancellationToken cancellationToken)
@@ -197,12 +225,15 @@ public sealed partial class GroundsAnalyzer(IModelProvider provider)
         return Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(canonical)))[..16];
     }
 
-    public static ModelRequest BuildReadingRequest(LegalKnowledge knowledge, string subject, string facts, IReadOnlyList<ClaimType> claims)
+    /// <param name="courtSection">The section the lawyer chose, given to the model as a hint that may be wrong.</param>
+    public static ModelRequest BuildReadingRequest(LegalKnowledge knowledge, string subject, string facts, IReadOnlyList<ClaimType> claims, string? courtSection = null)
     {
         ArgumentNullException.ThrowIfNull(knowledge);
         ArgumentNullException.ThrowIfNull(claims);
+        var section = courtSection?.Trim() is { Length: > 0 } s ? s : "غير محدد";
         var user = knowledge.Prompts.ReadFacts
             .Replace("{{ subject }}", subject?.Trim() ?? string.Empty, StringComparison.Ordinal)
+            .Replace("{{ section }}", section, StringComparison.Ordinal)
             .Replace("{{ facts }}", facts?.Trim() ?? string.Empty, StringComparison.Ordinal)
             .Replace("{{ claims }}", string.Join('\n', claims.Append(OtherClaim).Select(c => c.Description.Length > 0 ? $"{c.Id} — {c.Label.Ar}: {c.Description}" : $"{c.Id} — {c.Label.Ar}")), StringComparison.Ordinal);
         return new ModelRequest(ReadingRequestId, string.Empty, TemplateRenderer.Normalize(user), facts?.Trim() ?? string.Empty) { MaxTokens = ReadingMaxTokens };

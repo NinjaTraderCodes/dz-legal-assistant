@@ -14,7 +14,8 @@ public static class AlphaFacts
     public const string Given = "given";
     public const string Read = "read";
 
-    public static Func<FactCase, CaseText, CancellationToken, Task<FactReading>> Reader(IModelProvider provider, string lawRoot, string claims)
+    /// <param name="offerAllClaimTypes">Every claim type whatever the section (hosted models); false keeps the section's area (local model).</param>
+    public static Func<FactCase, CaseText, CancellationToken, Task<FactReading>> Reader(IModelProvider provider, string lawRoot, string claims, bool offerAllClaimTypes = false)
     {
         ArgumentNullException.ThrowIfNull(provider);
         var knowledge = LegalKnowledgeLoader.Load(lawRoot);
@@ -25,7 +26,7 @@ public static class AlphaFacts
             throw new InvalidDataException($"{ClaimFactReader.ElementsFile} has no elements for the claim type '{missing.Id}'.");
         }
 
-        var analyzer = new GroundsAnalyzer(provider);
+        var analyzer = new GroundsAnalyzer(provider) { OfferAllClaimTypes = offerAllClaimTypes };
         return async (c, text, ct) =>
         {
             var expected = c.Claim.Length > 0 ? c.Claim : FactCase.OutOfScope;

@@ -57,6 +57,96 @@ public sealed class PhaseZeroWorkbenchTests : IDisposable
         window.Close();
     }
 
+    [AvaloniaTheory]
+    [InlineData("ar")]
+    [InlineData("en")]
+    public async Task HelpHomeFromTheStartScreenClosesHelpAndLeavesTheCaseUntouched(string language)
+    {
+        var loc = new Loc(); loc.SetLanguage(language);
+        using var model = Vm.Create(loc: loc).Filled();
+        var window = new MainWindow { DataContext = model, UserDataRoot = _folder.FullName };
+        window.Show(); Layout(window);
+        var inputs = model.FieldGroups.SelectMany(group => group.Fields).Select(field => field.Value).ToArray();
+        var sections = model.Sections.Select(section => section.Text).ToArray();
+        var selectedStep = model.SelectedStep;
+
+        window.FindControl<Button>("HomeButton")!.Focus();
+        window.KeyPress(Key.Enter, RawInputModifiers.None, PhysicalKey.Enter, null);
+        window.KeyRelease(Key.Enter, RawInputModifiers.None, PhysicalKey.Enter, null);
+        Layout(window);
+        var home = Assert.Single(window.OwnedWindows.OfType<HomeWindow>());
+        Assert.True(home.Home.HelpCommand.CanExecute(null));
+
+        var helpTask = home.Home.HelpCommand.ExecuteAsync(null);
+        Layout(home);
+        var help = Assert.Single(home.OwnedWindows.OfType<HelpWindow>());
+        var helpModel = Assert.IsType<HelpViewModel>(help.DataContext);
+        var helpHome = help.FindControl<Button>("HelpHome")!;
+        Assert.True(helpHome.IsEffectivelyVisible);
+        Assert.True(helpHome.IsEnabled);
+        Assert.Equal(loc["Home"], helpHome.GetVisualDescendants().OfType<TextBlock>().Single().Text);
+
+        await helpModel.HomeCommand.ExecuteAsync(null);
+        await helpTask;
+        Layout(home);
+        Assert.DoesNotContain(help, home.OwnedWindows);
+        Assert.True(home.IsVisible);
+        Assert.Same(model, window.DataContext);
+        Assert.Same(selectedStep, model.SelectedStep);
+        Assert.Equal(inputs, model.FieldGroups.SelectMany(group => group.Fields).Select(field => field.Value));
+        Assert.Equal(sections, model.Sections.Select(section => section.Text));
+        Assert.True(model.HasUnsavedChanges);
+        Assert.False(model.IsConfirmingReplace);
+
+        home.Home.BackToCaseCommand.Execute(null);
+        Layout(window);
+        window.Close();
+    }
+
+    [AvaloniaTheory]
+    [InlineData("ar")]
+    [InlineData("en")]
+    public async Task HelpHomeFromTheWorkbenchOpensTheStartScreenAndLeavesTheCaseUntouched(string language)
+    {
+        var loc = new Loc(); loc.SetLanguage(language);
+        using var model = Vm.Create(loc: loc).Filled();
+        var window = new MainWindow { DataContext = model, UserDataRoot = _folder.FullName };
+        window.Show(); Layout(window);
+        var inputs = model.FieldGroups.SelectMany(group => group.Fields).Select(field => field.Value).ToArray();
+        var sections = model.Sections.Select(section => section.Text).ToArray();
+        var selectedStep = model.SelectedStep;
+
+        var helpButton = window.FindControl<Button>("HelpButton")!;
+        helpButton.Focus();
+        window.KeyPress(Key.Enter, RawInputModifiers.None, PhysicalKey.Enter, null);
+        window.KeyRelease(Key.Enter, RawInputModifiers.None, PhysicalKey.Enter, null);
+        Layout(window);
+        var help = Assert.Single(window.OwnedWindows.OfType<HelpWindow>());
+        var helpModel = Assert.IsType<HelpViewModel>(help.DataContext);
+        var helpHome = help.FindControl<Button>("HelpHome")!;
+        Assert.True(helpHome.IsEffectivelyVisible);
+        Assert.True(helpHome.IsEnabled);
+        Assert.Equal(loc["Home"], helpHome.GetVisualDescendants().OfType<TextBlock>().Single().Text);
+
+        var homeTask = helpModel.HomeCommand.ExecuteAsync(null);
+        Layout(window);
+        var home = Assert.Single(window.OwnedWindows.OfType<HomeWindow>());
+        Assert.True(home.Home.HasOpenCase);
+        Assert.DoesNotContain(help, window.OwnedWindows);
+        Assert.Same(model, window.DataContext);
+        Assert.Same(selectedStep, model.SelectedStep);
+        Assert.Equal(inputs, model.FieldGroups.SelectMany(group => group.Fields).Select(field => field.Value));
+        Assert.Equal(sections, model.Sections.Select(section => section.Text));
+        Assert.True(model.HasUnsavedChanges);
+        Assert.False(model.IsConfirmingReplace);
+
+        home.Home.BackToCaseCommand.Execute(null);
+        Layout(window);
+        await homeTask;
+        Assert.DoesNotContain(home, window.OwnedWindows);
+        window.Close();
+    }
+
     [AvaloniaFact]
     public void ProfileOpensFromTheWorkbenchAndDoesNotChangeTheCurrentCase()
     {

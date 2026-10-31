@@ -58,7 +58,8 @@ public sealed class GuideVisualTests
     {
         foreach (var display in Displays())
         {
-            using var model = new HelpViewModel(Localization(display), () => Task.CompletedTask);
+            using var model = new HelpViewModel(Localization(display), () => Task.CompletedTask,
+                goHome: () => Task.CompletedTask);
             var window = new HelpWindow { DataContext = model };
             Show(window, display);
             Assert.Equal(display.Language == "ar" ? FlowDirection.RightToLeft : FlowDirection.LeftToRight, window.FlowDirection);
@@ -69,7 +70,11 @@ public sealed class GuideVisualTests
             Assert.False(Bounds(card, window).Intersects(Bounds(heading, window)));
             var rows = window.FindControl<ItemsControl>("HelpPages")!.GetVisualDescendants().OfType<Button>().ToArray();
             Assert.Equal(7, rows.Length);
-            Assert.Equal(9, content.GetVisualDescendants().OfType<SymbolIcon>().Count());
+            Assert.Equal(10, content.GetVisualDescendants().OfType<SymbolIcon>().Count());
+            var home = window.FindControl<Button>("HelpHome")!;
+            Assert.True(home.IsEffectivelyVisible);
+            Assert.True(home.IsEnabled);
+            Assert.Equal(Localization(display)["Home"], home.GetVisualDescendants().OfType<TextBlock>().Single().Text);
             Capture(window, display, "phase1-help-index");
             CheckTypography(content);
             CheckBorders(content, "SetupSurfaceBrush");
@@ -80,7 +85,9 @@ public sealed class GuideVisualTests
                 Assert.True(row.Bounds.Height >= 44);
                 Assert.True(row.IsEnabled);
             }
-            CheckKeyboardOrder(window, rows.Append(window.FindControl<Button>("HelpTour")!).ToArray());
+            AssertInside(window, home);
+            CheckKeyboardOrder(window, new[] { home }.Concat(rows).Append(window.FindControl<Button>("HelpTour")!).ToArray());
+            CheckFocus(window, home, display, "SetupSurfaceBrush", IsContrast(display));
             CheckFocus(window, window.FindControl<Button>("HelpTour")!, display, "SetupSurfaceBrush", IsContrast(display));
             foreach (var page in model.Pages)
             {
@@ -99,6 +106,8 @@ public sealed class GuideVisualTests
                 }
                 var back = window.FindControl<Button>("HelpBack")!;
                 AssertInside(window, back);
+                Assert.True(home.IsEffectivelyVisible);
+                Assert.Equal(Localization(display)["Home"], home.GetVisualDescendants().OfType<TextBlock>().Single().Text);
                 if (page.Number == 4) Capture(window, display, "phase1-help-page");
                 CheckTypography(content);
                 if (IsContrast(display))

@@ -21,12 +21,15 @@
           <SolidColorBrush x:Key="HairlineBrush" Color="#E4DFD4" />
           <SolidColorBrush x:Key="TextPrimaryBrush" Color="#1C2321" />
           <SolidColorBrush x:Key="TextMutedBrush" Color="#6A706D" />
-          <SolidColorBrush x:Key="AppBarBrush" Color="#16392F" />
+          <!-- Workbench accent uses the same brown/gold family as Home; dark values below are unchanged. -->
+          <SolidColorBrush x:Key="AppBarBrush" Color="#786039" />
           <SolidColorBrush x:Key="AppBarTextBrush" Color="#FFFFFF" />
-          <SolidColorBrush x:Key="AccentBrush" Color="#1E5A4B" />
-          <SolidColorBrush x:Key="AccentSoftBrush" Color="#E1EEE9" />
-          <SolidColorBrush x:Key="PrimaryButtonBrush" Color="#1E5A4B" />
-          <SolidColorBrush x:Key="PrimaryButtonTextBrush" Color="#FFFFFF" />
+          <SolidColorBrush x:Key="AccentBrush" Color="#786039" />
+          <SolidColorBrush x:Key="AccentSoftBrush" Color="#FFF3DC" />
+          <SolidColorBrush x:Key="PrimaryButtonBrush" Color="#C6A76D" />
+          <SolidColorBrush x:Key="PrimaryButtonTextBrush" Color="#28231D" />
+          <SolidColorBrush x:Key="DocumentFocusTintBrush" Color="#0A786039" />
+          <SolidColorBrush x:Key="DocumentHoverTintBrush" Color="#06786039" />
           <SolidColorBrush x:Key="PanelBrush" Color="#FFFFFF" />
           <SolidColorBrush x:Key="InputBorderBrush" Color="#8B8274" />
           <SolidColorBrush x:Key="FieldToolsBrush" Color="#DFE7E9" />
@@ -59,6 +62,8 @@
           <SolidColorBrush x:Key="AccentSoftBrush" Color="#423724" />
           <SolidColorBrush x:Key="PrimaryButtonBrush" Color="#C6A76D" />
           <SolidColorBrush x:Key="PrimaryButtonTextBrush" Color="#28231D" />
+          <SolidColorBrush x:Key="DocumentFocusTintBrush" Color="#0A1E5A4B" />
+          <SolidColorBrush x:Key="DocumentHoverTintBrush" Color="#061E5A4B" />
           <SolidColorBrush x:Key="FieldToolsBrush" Color="#DFE7E9" />
           <SolidColorBrush x:Key="FieldToolsTextBrush" Color="#344D5A" />
           <SolidColorBrush x:Key="DangerBrush" Color="#FFC0B3" />
@@ -74,7 +79,7 @@
   <Application.Styles>
     <FluentTheme>
       <FluentTheme.Palettes>
-        <ColorPaletteResources x:Key="Light" Accent="#1E5A4B" />
+        <ColorPaletteResources x:Key="Light" Accent="#786039" />
         <ColorPaletteResources x:Key="Dark" Accent="#C6A76D" />
       </FluentTheme.Palettes>
     </FluentTheme>

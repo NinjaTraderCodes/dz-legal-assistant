@@ -8,12 +8,14 @@ public sealed partial class HelpViewModel : ObservableObject, IDisposable
 {
     private readonly Func<Task> _startTour;
     private readonly Func<Task>? _openLibrary;
+    private readonly Func<Task>? _goHome;
 
-    public HelpViewModel(Loc localization, Func<Task> startTour, Func<Task>? openLibrary = null)
+    public HelpViewModel(Loc localization, Func<Task> startTour, Func<Task>? openLibrary = null, Func<Task>? goHome = null)
     {
         L = localization;
         _startTour = startTour;
         _openLibrary = openLibrary;
+        _goHome = goHome;
         Pages = Enumerable.Range(1, 7).Select(number => new HelpPageViewModel(number, L, Select)).ToArray();
         L.PropertyChanged += LanguageChanged;
     }
@@ -25,6 +27,7 @@ public sealed partial class HelpViewModel : ObservableObject, IDisposable
     public bool IsLibraryPage => SelectedPage?.Number == 7;
     public bool CanOpenLibrary => _openLibrary is not null;
     public bool ShowLibraryPageLink => CanOpenLibrary && IsLibraryPage;
+    public bool CanGoHome => _goHome is not null;
     public string Title => SelectedPage?.Title ?? L["HelpTitle"];
     public IReadOnlyList<HelpParagraphViewModel> Paragraphs => SelectedPage?.Paragraphs ?? [];
     [ObservableProperty] public partial HelpPageViewModel? SelectedPage { get; private set; }
@@ -37,6 +40,11 @@ public sealed partial class HelpViewModel : ObservableObject, IDisposable
     private async Task LibraryAsync()
     {
         if (_openLibrary is not null) await _openLibrary();
+    }
+    [RelayCommand(CanExecute = nameof(CanGoHome))]
+    private async Task HomeAsync()
+    {
+        if (_goHome is not null) await _goHome();
     }
     partial void OnSelectedPageChanged(HelpPageViewModel? value) => Refresh();
 

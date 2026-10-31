@@ -56,7 +56,9 @@ public partial class MainWindow : Window
 
     public string UserDataRoot { get; set; } = AppPaths.Default.Root;
 
-    private async void OpenHome(object? sender, RoutedEventArgs e) =>
+    private async void OpenHome(object? sender, RoutedEventArgs e) => await OpenHomeAsync();
+
+    internal async Task OpenHomeAsync() =>
         await new HomeWindow(this, UserDataRoot, path => App.OpenRecentCaseAsync(this, path)).ShowDialog(this);
 
     private async void OpenProfile(object? sender, RoutedEventArgs e) =>
@@ -65,7 +67,8 @@ public partial class MainWindow : Window
     private async void OpenHelp(object? sender, RoutedEventArgs e)
     {
         if (DataContext is MainWindowViewModel model)
-            await GuideNavigation.ShowHelpAsync(this, model.L, () => { model.StartTour(); return Task.CompletedTask; });
+            await GuideNavigation.ShowHelpAsync(this, model.L, () => { model.StartTour(); return Task.CompletedTask; },
+                goHome: () => GuideNavigation.ShowHomeAsync(this));
     }
 
     private void ObserveViewModel()

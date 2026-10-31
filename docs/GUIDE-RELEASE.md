@@ -313,3 +313,67 @@ No test was deleted, skipped or weakened. The only existing assertions changed w
 The production change is confined to the presentation view models, the new Avalonia views/styles, the Home and Help entry points, the symbol converter, the two resource files and the tests. The legal engine, law data, prompts and safety rules are untouched; PDF and Word output are unchanged.
 
 The one judgement call worth recording is the Help link callback. `GuideNavigation.CreateActions` now passes the library callback into `ShowHelpAsync`, so Help opened from Home shows the B7/index library link. Help opened from inside the library also shows the link, but its callback closes Help and returns to the already-open library instead of opening a second one. No other uncertainty or blocker remains.
+
+## Phase 3: light brown accent and Help Home
+
+Implemented on `djihane/guide` after `791d5a1`. The light workbench now uses the same brown/gold family as Home. Dark theme values are unchanged. Help gains a Home action on the index and all seven pages.
+
+### Light theme tokens
+
+| Token | Light before | Light now | Reused value |
+| --- | --- | --- | --- |
+| `AppBarBrush` | `#16392F` | `#786039` | Light `WelcomeMarkBrush` / `WelcomeEdgeBrush` |
+| `AccentBrush` | `#1E5A4B` | `#786039` | Light `WelcomeMarkBrush` |
+| `AccentSoftBrush` | `#E1EEE9` | `#FFF3DC` | Light `WarningSoftBrush` |
+| `PrimaryButtonBrush` | `#1E5A4B` | `#C6A76D` | `WelcomeGoldBrush` |
+| `PrimaryButtonTextBrush` | `#FFFFFF` | `#28231D` | `WelcomeButtonTextBrush` |
+| Fluent light palette `Accent` | `#1E5A4B` | `#786039` | Light `WelcomeMarkBrush` |
+| `DocumentFocusTintBrush` | hard-coded `#0A1E5A4B` | `#0A786039` | Brown alpha; dark keeps `#0A1E5A4B` |
+| `DocumentHoverTintBrush` | hard-coded `#061E5A4B` | `#06786039` | Brown alpha; dark keeps `#061E5A4B` |
+
+The two document tint brushes are new light-and-dark role tokens so the dark text-box tint stays byte-for-byte the same. `AppBarTextBrush` stays white because `#FFFFFF` on `#786039` measures 5.95:1. Primary text on the gold button measures 6.79:1, accent text on white 5.95:1, and accent text on the soft accent 5.41:1. The light Fluent accent is `#786039`, which is 5.95:1 on white, above the 3:1 focus/border requirement. Dark values and ratios are unchanged.
+
+The “Draft legal grounds” button shares `Button.primary` and `PrimaryButtonBrush` with Restore and the other primary actions, so it becomes gold in the light theme. There was no separate blue token to preserve. The semantic success/status greens (`SuccessBrush`, `SuccessSoftBrush`, the offline chip and the added-row tint) are not the accent token and were left untouched.
+
+### Help Home
+
+`HelpWindow` now shows an outlined `Home` button with the existing home icon in its header, beside the title. It uses the existing `Home` resource key, so no resx file changed. It is present on the index and all seven pages and follows the reading direction.
+
+`HelpViewModel` accepts an optional home callback. `GuideNavigation.ShowHomeAsync` implements the shared path:
+
+- Help opened from the workbench closes and opens the existing `HomeWindow` through `MainWindow.OpenHomeAsync`, exactly like the title-bar Home button.
+- Help opened from a start screen (`HomeWindow` or `OnboardingWindow`) closes Help and activates that existing start screen.
+- Help opened from inside the library closes Help and the library, then activates the start screen that owns the library.
+
+The open case, its unsaved values, the selected step and the model stay untouched. No save prompt or replacement path is entered. Escape still closes Help, Tab order follows the reading direction, and the Home button has the same visible focus ring as the other outlined buttons.
+
+### Files changed
+
+- `src/DzLegal.App/App.axaml`: light tokens, dark document tint tokens, light Fluent accent.
+- `src/DzLegal.App/Views/MainWindow.axaml`: document focus/hover styles now use the new theme tokens.
+- `src/DzLegal.App/Views/HelpWindow.axaml`: header Home button.
+- `src/DzLegal.Presentation/ViewModels/HelpViewModel.cs`: optional Home callback and command.
+- `src/DzLegal.App/Views/GuideNavigation.cs`: Help home callback and `ShowHomeAsync`.
+- `src/DzLegal.App/Views/MainWindow.axaml.cs`: reusable `OpenHomeAsync` and Help wiring.
+- `src/DzLegal.App/Views/LibraryWindow.axaml.cs`: Home from Help opened inside the library.
+- `tests/DzLegal.App.Tests/WorkbenchThemeTests.cs` (new): light token values, dark unchanged, and text/icon contrast.
+- `tests/DzLegal.App.Tests/PhaseZeroWorkbenchTests.cs`: two Arabic/English theories covering Help Home from the start screen and from the workbench, including case preservation.
+- `tests/DzLegal.App.Tests/GuideVisualTests.cs`: Help icon count and Home button visibility, Home string, focus and Tab order on the index and every page.
+- `tests/DzLegal.App.Tests/LibraryTests.cs` and `PhaseOneGuideTests.cs`: Help models now pass a no-op Home callback so rendered Help screens keep the button enabled.
+
+No test was deleted, skipped or weakened. The only existing assertion changed is the Help icon count from 9 to 10, because the new Home button adds one icon; the test still checks every icon and adds Home to the keyboard/focus checks.
+
+### Verification
+
+- Full Release build: **0 warnings, 0 errors**.
+- Complete Release suite: **898 passed, 0 failed, 0 skipped**; App 274, Drafting 396, Law 113, FormEngine 67, Storage 18, Documents 6, Web 24.
+- The four requested light-theme 1366 x 768 captures were regenerated and inspected in Arabic and English. Dark-theme captures were also inspected and remain unchanged.
+
+| Screen | Arabic light | English light |
+| --- | --- | --- |
+| Workbench title bar with brown accent | [View](images/guide/phase3-workbench-brown-ar-light-1366x768.png) | [View](images/guide/phase3-workbench-brown-en-light-1366x768.png) |
+| Help window with Home button | [View](images/guide/phase3-help-home-ar-light-1366x768.png) | [View](images/guide/phase3-help-home-en-light-1366x768.png) |
+
+### Scope and uncertainty
+
+No legal engine, law data, prompt, corpus, sample, tour, library feature, safety rule or web-demo source changed. No resx key was added. The one shared-token consequence is recorded above: the Draft legal grounds button is now gold in the light theme because it uses the same primary button token as Restore. No other uncertainty or blocker remains.

@@ -245,11 +245,11 @@
       <Setter Property="CaretBrush" Value="#1C2321" />
     </Style>
     <Style Selector="TextBox.document:focus /template/ Border#PART_BorderElement">
-      <Setter Property="Background" Value="#0A1E5A4B" />
+      <Setter Property="Background" Value="{DynamicResource DocumentFocusTintBrush}" />
       <Setter Property="BorderThickness" Value="0" />
     </Style>
     <Style Selector="TextBox.document:pointerover /template/ Border#PART_BorderElement">
-      <Setter Property="Background" Value="#061E5A4B" />
+      <Setter Property="Background" Value="{DynamicResource DocumentHoverTintBrush}" />
       <Setter Property="BorderThickness" Value="0" />
     </Style>
     <!-- A gentle pulse on whatever the model is working on right now. -->

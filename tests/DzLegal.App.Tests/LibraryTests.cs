@@ -278,7 +278,7 @@ public sealed class LibraryTests
         {
             calls++;
             return Task.CompletedTask;
-        });
+        }, goHome: () => Task.CompletedTask);
 
         Assert.True(help.CanOpenLibrary);
         Assert.False(help.ShowLibraryPageLink);
@@ -581,7 +581,7 @@ public sealed class LibraryTests
             {
                 calls++;
                 return Task.CompletedTask;
-            });
+            }, goHome: () => Task.CompletedTask);
             var window = new HelpWindow { DataContext = help };
             Show(window, display);
             var index = window.FindControl<Button>("HelpLibrary")!;

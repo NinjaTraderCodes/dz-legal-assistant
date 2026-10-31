@@ -15,11 +15,18 @@
     <Border Background="{DynamicResource WelcomeOverlayBrush}" />
     <Grid Name="HelpContent" RowDefinitions="Auto,*" Margin="{DynamicResource OnboardingPageMargin}" RowSpacing="{DynamicResource OnboardingPageGap}">
       <Border Name="HelpHeadingPanel" Background="{DynamicResource WelcomeReadingBrush}" CornerRadius="{DynamicResource OnboardingCardRadius}" Padding="{DynamicResource OnboardingHeaderPadding}">
-        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="{DynamicResource OnboardingPageGap}">
+        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="{DynamicResource OnboardingPageGap}">
           <Border Background="{DynamicResource WelcomeControlBrush}" CornerRadius="{DynamicResource ControlRadius}" Padding="{DynamicResource OnboardingIconPadding}" VerticalAlignment="Center">
             <ic:SymbolIcon Name="HelpHeadingIcon" Classes="onboarding-icon" Symbol="Info" />
           </Border>
           <TextBlock Name="HelpTitle" Grid.Column="1" Classes="onboarding-title" Text="{Binding Title}" />
+          <Button Name="HelpHome" Grid.Column="2" Classes="onboarding" Command="{Binding HomeCommand}"
+                  AutomationProperties.Name="{Binding L[Home]}" VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <ic:SymbolIcon Classes="onboarding-icon" Symbol="Home" VerticalAlignment="Center" />
+              <TextBlock Text="{Binding L[Home]}" FontSize="{DynamicResource OnboardingButtonSize}" TextWrapping="Wrap" />
+            </StackPanel>
+          </Button>
         </Grid>
       </Border>
       <Border Name="HelpCard" Grid.Row="1" Classes="onboarding-card" MaxWidth="{DynamicResource OnboardingContentWidth}" HorizontalAlignment="Stretch">

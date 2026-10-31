@@ -56,7 +56,13 @@ public partial class LibraryWindow : Window
         using var help = new HelpViewModel(
             _model.L,
             async () => { window.Close(); Close(); await _tour(); },
-            () => { window.Close(); return Task.CompletedTask; });
+            () => { window.Close(); return Task.CompletedTask; },
+            async () =>
+            {
+                var owner = Owner;
+                Close();
+                if (owner is Window window) await GuideNavigation.ShowHomeAsync(window);
+            });
         help.OpenPage(page);
         window.DataContext = help;
         await window.ShowDialog(this);

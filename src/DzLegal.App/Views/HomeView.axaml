@@ -103,7 +103,12 @@
             <StackPanel Grid.Column="2" Spacing="2"><Button Name="HomeHelp" Theme="{StaticResource HomeRowButton}" Classes="home" Content="{Binding L[HomeHelp]}" Command="{Binding HelpCommand}" /></StackPanel>
             <StackPanel Grid.Column="3" Spacing="2"><Button Name="HomeLibrary" Theme="{StaticResource HomeRowButton}" Classes="home" Content="{Binding L[HomeLibrary]}" Command="{Binding LibraryCommand}" /></StackPanel>
           </Grid>
-          <TextBlock Name="HomeOffline" Text="{Binding L[OfflineStatus]}" Classes="home-note" TextAlignment="Center" />
+          <!-- About is the fifth, smaller entry: it sits beside the offline note, not in the row of guide links. -->
+          <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+            <TextBlock Name="HomeOffline" Text="{Binding L[OfflineStatus]}" Classes="home-note" TextAlignment="Center" VerticalAlignment="Center" />
+            <Button Name="HomeAbout" Grid.Column="1" Classes="home" Content="{Binding L[AboutTitle]}" Command="{Binding AboutCommand}"
+                    AutomationProperties.Name="{Binding L[AboutTitle]}" Padding="12,4" FontSize="13" VerticalAlignment="Center" />
+          </Grid>
         </StackPanel>
       </Border>
     </Grid>

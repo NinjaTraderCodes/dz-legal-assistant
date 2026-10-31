@@ -68,7 +68,8 @@ public partial class MainWindow : Window
     {
         if (DataContext is MainWindowViewModel model)
             await GuideNavigation.ShowHelpAsync(this, model.L, () => { model.StartTour(); return Task.CompletedTask; },
-                goHome: () => GuideNavigation.ShowHomeAsync(this));
+                goHome: () => GuideNavigation.ShowHomeAsync(this),
+                openAbout: () => GuideNavigation.ShowAboutAsync(this, model, goHome: () => GuideNavigation.ShowHomeAsync(this)));
     }
 
     private void ObserveViewModel()

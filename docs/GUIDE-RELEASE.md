@@ -377,3 +377,136 @@ No test was deleted, skipped or weakened. The only existing assertion changed is
 ### Scope and uncertainty
 
 No legal engine, law data, prompt, corpus, sample, tour, library feature, safety rule or web-demo source changed. No resx key was added. The one shared-token consequence is recorded above: the Draft legal grounds button is now gold in the light theme because it uses the same primary button token as Restore. No other uncertainty or blocker remains.
+## Review fixes and the About page (brief 2, Phase 3)
+
+Done on `claude/guide-fixes`, after a review of `djihane/guide` at 9df6144. The default branch was merged in first (428acbe). The section above titled "Phase 3" is the brown light theme; the brief's Phase 3 is the About page, which this section adds.
+
+### Fixes from the review
+
+- **The tour card was see-through in dark mode.** It used `SetupSurfaceBrush`, which is 50% transparent in the dark theme, so the workbench showed through the text. The card now has its own opaque `OnboardingTourCardBrush`, in both themes.
+- **The tour outline touched the control it pointed at.** The shading and the outline are now drawn `OnboardingTourHighlightGap` (6 px) outside the anchor, clipped to the window. The card is still placed from the anchor itself.
+- **Library dates were in ISO form** (`2005-02-27`). Cards now say «27 فبراير 2005» / "27 February 2005", using the Algerian month names (`LibraryMonths`). A value that is not a full date, such as a year alone, is shown unchanged.
+- **The reading panel showed the text's reference twice.** The panel already has it in its header, so the second copy under it was removed. The panel now holds the article count only.
+
+### The About page
+
+It opens from two places: a small «حول التطبيق» button beside the offline note on the start screen, and a link under the Library button in Help (from the start screen and from the workbench). The page has its own Home button and closes with Escape. Escape on the notices view returns to the page first.
+
+The content follows the brief, in order:
+
+1. **Name and version.** The version is read from the assembly's `AssemblyInformationalVersionAttribute` (today 0.9.0).
+2. **Purpose.**
+3. **A draft, not legal advice.**
+4. **Offline and private.**
+   - When an online engine is offered, the existing `OnlineEngineStatus` notice is added under this paragraph.
+   - One line follows saying that the model and Ollama are not bundled.
+5. **Legal sources.** The line is counted from the loaded library (today 1361 articles from 6 texts), with a button to the library.
+6. **Team.** The three credits, then the ThirdUni line.
+7. **Licences.** A list of each bundled item with its licence, and a «إشعارات الأطراف الأخرى» button. The button shows `THIRD-PARTY-NOTICES.txt` inside the app, read-only and scrollable, left to right because the texts are English. If the file is missing, a message replaces it; the app does not fail.
+
+`src/DzLegal.App/THIRD-PARTY-NOTICES.txt` is copied next to the executable on build and publish. It was assembled from each package's own licence file, or the upstream repository's licence file when the package ships none. It holds the full text of every licence.
+
+### Corrections to the brief's licence table
+
+- **Inter.** The package `Avalonia.Fonts.Inter` is MIT. The Inter font inside it is OFL 1.1. Both are listed.
+- **Fluent icons.** The icons are Microsoft's Fluent UI System Icons (MIT). The `FluentIcons.Avalonia` packages that draw them are a separate MIT project by davidxuang. Both licences are in the file.
+- **Packages missing from the table.** The app also ships these, and they are now listed:
+  - `Avalonia.Angle.Windows.Natives`: BSD 3-Clause (ANGLE);
+  - `SkiaSharp` and `HarfBuzzSharp`: MIT;
+  - `System.IO.Packaging`: MIT;
+  - `MicroCom.Runtime` and `Tmds.DBus.Protocol`: MIT.
+- **QuestPDF.** Its native part bundles other libraries (Skia, HarfBuzz, FreeType, libpng and others). Their licence files, as shipped in the QuestPDF package, are included after the QuestPDF licence.
+- **Component names stay as data.** The names (Avalonia, Scriban and so on) and the licence names are proper names, so they sit in `AboutViewModel` rather than in the resource files. The welcome image's name and «صورة خاصة بالمشروع» are translated.
+
+### Files changed
+
+- **New.**
+  - `src/DzLegal.Presentation/ViewModels/AboutViewModel.cs`
+  - `src/DzLegal.App/Views/AboutWindow.axaml` and `.axaml.cs`
+  - `src/DzLegal.App/THIRD-PARTY-NOTICES.txt`
+  - `tests/DzLegal.App.Tests/AboutTests.cs`
+- **About wiring.**
+  - `src/DzLegal.App/Views/GuideNavigation.cs` (`ShowAboutAsync`, `AppVersion`, `LoadNotices`)
+  - `src/DzLegal.App/Views/MainWindow.axaml.cs`
+  - `src/DzLegal.App/Views/HomeView.axaml`
+  - `src/DzLegal.App/Views/HelpWindow.axaml`
+  - `src/DzLegal.Presentation/ViewModels/HomeGuideActions.cs`
+  - `src/DzLegal.Presentation/ViewModels/HomeViewModel.cs`
+  - `src/DzLegal.Presentation/ViewModels/HelpViewModel.cs`
+  - `src/DzLegal.App/DzLegal.App.csproj`
+- **Review fixes.**
+  - `src/DzLegal.App/Styles/Workbench.axaml`
+  - `src/DzLegal.App/Views/TourOverlay.axaml` and `.axaml.cs`
+  - `src/DzLegal.App/Views/LibraryView.axaml`
+  - `src/DzLegal.Presentation/ViewModels/LibraryTextViewModel.cs`
+- **Strings.** The 23 About keys and `LibraryMonths` were added to both resource files. The Arabic is the brief's Appendix A wording, unchanged. Four keys are not in Appendix A:
+  - `AboutWelcomeImage`
+  - `AboutNoticesBack`
+  - `AboutNoticesMissing`
+  - `LibraryMonths`
+
+### Tests
+
+- **New: `AboutTests` (21 tests).**
+  - **Version:** it is the one the build stamped.
+  - **Sources line:** it is counted from the library.
+  - **Wording and order:** they match Appendix A, and the team appears in order.
+  - **Licences:** every item the brief names is listed with its licence.
+  - **Notices file:**
+    - it ships with the app and holds every listed component;
+    - a missing file shows a message.
+  - **Online notice:** it appears only when an online engine is offered.
+  - **Rendering**, in Arabic and English, light and dark, at 1366×768 and 1920×1080:
+    - the parts appear in order;
+    - nothing overflows sideways;
+    - the library button works;
+    - the notices view works;
+    - Escape steps back, then closes.
+  - **Entry points:**
+    - start screen → About → Home leaves the open case untouched;
+    - workbench Help → About opens the page;
+    - Help hides the link when no About page is wired.
+- **New in `LibraryTests`:** `ACardShowsItsDateInWordsInBothLanguages`.
+- **Updated, still checking the same behaviour.**
+  - `LibraryTests`: the card's "as of" text now expects the date in words.
+  - `PhaseZeroWorkbenchTests`: the start-screen fixture also passes an About action, and the test now checks `HomeAbout` is enabled along with the other four.
+  - `PhaseOneGuideTests`:
+    - the Help screenshot fixture passes an About action, so the link is visible in the capture;
+    - the tour test still checks that the outline lines up with every anchor's left and right edges, now `OnboardingTourHighlightGap` outside them and clipped to the window.
+  - `GuideVisualTests`: the tour card's surface is now `OnboardingTourCardBrush`. The test now also checks that the card is nearly opaque (alpha ≥ F0). Its border and focus contrast checks now measure against that surface.
+
+No test was deleted, skipped or weakened.
+
+### Screenshots
+
+These come from the rendering tests (`DZLEGAL_SCREENSHOTS`), at 1366×768. All 24 About captures (two languages, two themes, two sizes, three views) were inspected; a selection is below.
+
+| Screen | Arabic | English |
+| --- | --- | --- |
+| About, top | [light](images/guide/fixes-phase3-about-ar-light-1366x768.png) | [dark](images/guide/fixes-phase3-about-en-dark-1366x768.png) |
+| About, sources, team, licences | [light](images/guide/fixes-phase3-about-end-ar-light-1366x768.png) | [dark](images/guide/fixes-phase3-about-end-en-dark-1366x768.png) |
+| Third-party notices | [dark](images/guide/fixes-phase3-about-notices-ar-dark-1366x768.png) | [light](images/guide/fixes-phase3-about-notices-en-light-1366x768.png) |
+| Tour card, dark (opaque, outline clear of the steps) | [dark](images/guide/fixes-phase1-tour1-ar-dark-1366x768.png) | [dark](images/guide/fixes-phase1-tour1-en-dark-1366x768.png) |
+| Start screen with About | [light](images/guide/fixes-phase0-recents-ar-light-1366x768.png) | [light](images/guide/fixes-phase0-recents-en-light-1366x768.png) |
+| Help index with About | [dark](images/guide/fixes-phase1-help-index-ar-dark-1366x768.png) | [light](images/guide/fixes-phase1-help-index-en-light-1366x768.png) |
+| Library cards, dates in words | [light](images/guide/fixes-phase2-library-list-ar-light-1366x768.png) | [light](images/guide/fixes-phase2-library-list-en-light-1366x768.png) |
+
+### Verification
+
+- **Build:** Release, **0 warnings, 0 errors**.
+- **Tests:** Release suite **920 passed, 0 failed, 0 skipped**.
+  - App 296
+  - Drafting 396
+  - Law 113
+  - FormEngine 67
+  - Storage 18
+  - Documents 6
+  - Web 24
+- **Resource files:** both have 501 keys, the same set.
+- **The real app:** it was started from the Release build under a virtual display, with a fresh profile, and opened on the welcome screen. The clicks through to About were checked by the headless tests, which drive the same windows; no input tool was available in that environment.
+
+### Scope and open points
+
+- **Areas not changed:** no legal engine, law data, prompt, corpus, sample, safety rule or web-demo source.
+- **Brown light theme:** the light theme was changed to brown in 9df6144. That change is kept as is; whether it was approved is a question for the project owner.
+- **Start-screen layout:** the offline note on the start screen now shares its row with the About button. It is centred in the space left of the button, not across the whole bar.

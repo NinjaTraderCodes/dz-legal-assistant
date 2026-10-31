@@ -16,6 +16,7 @@
     <AvaloniaResource Include="..\..\assets\fonts\*.ttf" Link="Assets\Fonts\%(Filename)%(Extension)" />
     <None Update="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="..\DzLegal.Web\Samples\debt.json" Link="Samples\debt.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="THIRD-PARTY-NOTICES.txt" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
     <!-- Personal overrides, git-ignored; copied next to the executable when present. -->
     <None Update="appsettings.local.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>

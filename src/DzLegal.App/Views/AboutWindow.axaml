@@ -1,0 +1,110 @@
+<Window xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:DzLegal.Presentation.ViewModels" xmlns:app="using:DzLegal.App" xmlns:ic="using:FluentIcons.Avalonia"
+        x:Class="DzLegal.App.Views.AboutWindow" x:DataType="vm:AboutViewModel"
+        Width="{DynamicResource OnboardingWindowWidth}" Height="{DynamicResource OnboardingWindowHeight}"
+        MinWidth="{DynamicResource OnboardingWindowMinWidth}" MinHeight="{DynamicResource OnboardingWindowMinHeight}"
+        WindowStartupLocation="CenterOwner" Title="{Binding L[AboutTitle]}"
+        FontFamily="{DynamicResource UiFont}" Background="{DynamicResource SurfaceBrush}"
+        Foreground="{DynamicResource WelcomeTextBrush}"
+        FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}">
+  <Window.Styles>
+    <StyleInclude Source="/Styles/Guide.axaml" />
+    <Style Selector="TextBlock.about-heading">
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="Margin" Value="0,0,0,6" />
+    </Style>
+    <Style Selector="StackPanel.about-section">
+      <Setter Property="Margin" Value="0,0,0,24" />
+    </Style>
+  </Window.Styles>
+  <Grid ClipToBounds="True">
+    <Border Name="AboutBackground" Background="{DynamicResource OnboardingPhotograph}" FlowDirection="LeftToRight">
+      <Border.Effect><BlurEffect Radius="{DynamicResource OnboardingBackgroundBlur}" /></Border.Effect>
+    </Border>
+    <Border Background="{DynamicResource WelcomeOverlayBrush}" />
+    <Grid Name="AboutContent" RowDefinitions="Auto,*" Margin="{DynamicResource OnboardingPageMargin}" RowSpacing="{DynamicResource OnboardingPageGap}">
+      <Border Name="AboutHeadingPanel" Background="{DynamicResource WelcomeReadingBrush}" CornerRadius="{DynamicResource OnboardingCardRadius}" Padding="{DynamicResource OnboardingHeaderPadding}">
+        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="{DynamicResource OnboardingPageGap}">
+          <Border Background="{DynamicResource WelcomeControlBrush}" CornerRadius="{DynamicResource ControlRadius}" Padding="{DynamicResource OnboardingIconPadding}" VerticalAlignment="Center">
+            <ic:SymbolIcon Classes="onboarding-icon" Symbol="Info" />
+          </Border>
+          <TextBlock Name="AboutTitle" Grid.Column="1" Classes="onboarding-title" Text="{Binding Title}" VerticalAlignment="Center" />
+          <Button Name="AboutHome" Grid.Column="2" Classes="onboarding" Command="{Binding HomeCommand}" IsVisible="{Binding CanGoHome}"
+                  AutomationProperties.Name="{Binding L[Home]}" VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <ic:SymbolIcon Classes="onboarding-icon" Symbol="Home" VerticalAlignment="Center" />
+              <TextBlock Text="{Binding L[Home]}" FontSize="{DynamicResource OnboardingButtonSize}" TextWrapping="Wrap" />
+            </StackPanel>
+          </Button>
+        </Grid>
+      </Border>
+      <Border Name="AboutCard" Grid.Row="1" Classes="onboarding-card" MaxWidth="{DynamicResource OnboardingContentWidth}" HorizontalAlignment="Stretch">
+        <Grid RowDefinitions="*,Auto" RowSpacing="{DynamicResource OnboardingPageGap}">
+          <Panel>
+            <ScrollViewer Name="AboutScroll" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" IsVisible="{Binding !IsShowingNotices}">
+              <StackPanel MaxWidth="{DynamicResource OnboardingReadingWidth}" HorizontalAlignment="Stretch">
+                <StackPanel Classes="about-section">
+                  <TextBlock Name="AboutProduct" Classes="onboarding-title" Text="{Binding L[AppTitle]}" />
+                  <TextBlock Name="AboutVersion" Classes="onboarding-secondary" Text="{Binding VersionText}" Margin="0,4,0,10" />
+                  <TextBlock Name="AboutPurpose" Classes="onboarding-body" Text="{Binding L[AboutPurpose]}" />
+                </StackPanel>
+                <StackPanel Classes="about-section">
+                  <TextBlock Classes="onboarding-body about-heading" Text="{Binding L[AboutDraftTitle]}" />
+                  <TextBlock Name="AboutDraft" Classes="onboarding-body" Text="{Binding L[AboutDraft]}" />
+                </StackPanel>
+                <StackPanel Classes="about-section">
+                  <TextBlock Classes="onboarding-body about-heading" Text="{Binding L[AboutPrivacyTitle]}" />
+                  <TextBlock Name="AboutPrivacy" Classes="onboarding-body" Text="{Binding L[AboutPrivacy]}" />
+                  <TextBlock Name="AboutOnlineNotice" Classes="onboarding-body" Text="{Binding L[OnlineEngineStatus]}" IsVisible="{Binding ShowsOnlineNotice}"
+                             Foreground="{DynamicResource WarningBrush}" Margin="0,8,0,0" />
+                  <TextBlock Name="AboutModelNote" Classes="onboarding-secondary" Text="{Binding L[AboutModelNote]}" Margin="0,8,0,0" />
+                </StackPanel>
+                <StackPanel Classes="about-section">
+                  <TextBlock Classes="onboarding-body about-heading" Text="{Binding L[AboutSourcesTitle]}" />
+                  <TextBlock Name="AboutSources" Classes="onboarding-body" Text="{Binding SourcesText}" />
+                  <Button Name="AboutLibrary" Classes="onboarding" Command="{Binding LibraryCommand}" IsVisible="{Binding CanOpenLibrary}"
+                          AutomationProperties.Name="{Binding L[AboutOpenLibrary]}" HorizontalAlignment="Left" Margin="0,10,0,0">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                      <ic:SymbolIcon Classes="onboarding-icon" Symbol="BookOpen" VerticalAlignment="Center" />
+                      <TextBlock Text="{Binding L[AboutOpenLibrary]}" FontSize="{DynamicResource OnboardingButtonSize}" TextWrapping="Wrap" />
+                    </StackPanel>
+                  </Button>
+                </StackPanel>
+                <StackPanel Classes="about-section">
+                  <TextBlock Classes="onboarding-body about-heading" Text="{Binding L[AboutTeamTitle]}" />
+                  <ItemsControl Name="AboutTeam" ItemsSource="{Binding Team}">
+                    <ItemsControl.ItemTemplate><DataTemplate x:DataType="x:String">
+                      <TextBlock Classes="onboarding-body" Text="{Binding}" />
+                    </DataTemplate></ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                  <TextBlock Name="AboutThirdUni" Classes="onboarding-secondary" Text="{Binding L[AboutThirdUni]}" Margin="0,8,0,0" />
+                </StackPanel>
+                <StackPanel Classes="about-section">
+                  <TextBlock Classes="onboarding-body about-heading" Text="{Binding L[AboutLicencesTitle]}" />
+                  <TextBlock Classes="onboarding-secondary" Text="{Binding L[AboutLicencesIntro]}" Margin="0,0,0,8" />
+                  <ItemsControl Name="AboutLicences" ItemsSource="{Binding Licences}">
+                    <ItemsControl.ItemTemplate><DataTemplate x:DataType="vm:AboutLicenceViewModel">
+                      <Grid ColumnDefinitions="*,Auto" ColumnSpacing="16" Margin="0,2">
+                        <TextBlock Classes="onboarding-secondary" Foreground="{DynamicResource WelcomeTextBrush}" Text="{Binding Name}" />
+                        <TextBlock Grid.Column="1" Classes="onboarding-secondary" Text="{Binding Licence}" />
+                      </Grid>
+                    </DataTemplate></ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                </StackPanel>
+              </StackPanel>
+            </ScrollViewer>
+            <ScrollViewer Name="AboutNoticesScroll" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" IsVisible="{Binding IsShowingNotices}">
+              <!-- The licence texts are English, so they read left to right in both interface languages. -->
+              <SelectableTextBlock Name="AboutNoticesText" Text="{Binding NoticesText}" FlowDirection="LeftToRight" TextWrapping="Wrap"
+                                   FontSize="{DynamicResource OnboardingSecondarySize}" Foreground="{DynamicResource WelcomeTextBrush}" />
+            </ScrollViewer>
+          </Panel>
+          <WrapPanel Grid.Row="1" HorizontalAlignment="Left">
+            <Button Name="AboutNotices" Classes="onboarding" Content="{Binding L[AboutNotices]}" Command="{Binding ShowNoticesCommand}" IsVisible="{Binding !IsShowingNotices}" />
+            <Button Name="AboutNoticesBack" Classes="onboarding" Content="{Binding L[AboutNoticesBack]}" Command="{Binding BackCommand}" IsVisible="{Binding IsShowingNotices}" />
+          </WrapPanel>
+        </Grid>
+      </Border>
+    </Grid>
+  </Grid>
+</Window>

@@ -54,6 +54,10 @@
                         IsVisible="{Binding CanOpenLibrary}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,12,0,0">
                   <TextBlock Text="{Binding L[HomeLibrary]}" FontSize="{DynamicResource OnboardingBodySize}" TextWrapping="Wrap" />
                 </Button>
+                <Button Name="HelpAbout" Classes="onboarding" Command="{Binding AboutCommand}" AutomationProperties.Name="{Binding L[AboutTitle]}"
+                        IsVisible="{Binding CanOpenAbout}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,12,0,0">
+                  <TextBlock Text="{Binding L[AboutTitle]}" FontSize="{DynamicResource OnboardingBodySize}" TextWrapping="Wrap" />
+                </Button>
               </StackPanel>
               <ItemsControl Name="HelpParagraphs" ItemsSource="{Binding Paragraphs}" IsVisible="{Binding !IsIndex}" MaxWidth="{DynamicResource OnboardingReadingWidth}" HorizontalAlignment="Stretch">
                 <ItemsControl.ItemTemplate><DataTemplate x:DataType="vm:HelpParagraphViewModel">

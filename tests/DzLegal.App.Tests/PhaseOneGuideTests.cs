@@ -357,7 +357,7 @@ public sealed class PhaseOneGuideTests : IDisposable
             Assert.True(model.SampleGuide.IsDone, model.ExportBlockers);
             Layout(window);
             if (size.Item1 == 1366 && scale == 1) Capture(window, "phase1-sample-finished-" + suffix);
-            using var help = new HelpViewModel(loc, () => Task.CompletedTask, goHome: () => Task.CompletedTask);
+            using var help = new HelpViewModel(loc, () => Task.CompletedTask, goHome: () => Task.CompletedTask, openAbout: () => Task.CompletedTask);
             var helpWindow = new HelpWindow { DataContext = help, Width = size.Item1 / scale, Height = size.Item2 / scale, RequestedThemeVariant = dark ? ThemeVariant.Dark : ThemeVariant.Light };
             helpWindow.Show(); helpWindow.SetRenderScaling(scale); Layout(helpWindow);
             if (size.Item1 == 1366 && scale == 1) Capture(helpWindow, "phase1-help-index-" + suffix);

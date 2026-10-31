@@ -92,11 +92,13 @@ public sealed partial class HomeViewModel : ObservableObject, IDisposable
     private bool CanBack() => CanInteract && HasOpenCase;
     private bool CanGuide() => CanInteract && _guides is not null;
     private bool CanLibrary() => CanInteract && _guides?.Library is not null;
+    private bool CanAbout() => CanInteract && _guides?.About is not null;
 
     [RelayCommand(CanExecute = nameof(CanGuide))] private async Task SampleAsync() => await RunGuideAsync(_guides!.Sample);
     [RelayCommand(CanExecute = nameof(CanGuide))] private async Task TourAsync() => await RunGuideAsync(_guides!.Tour);
     [RelayCommand(CanExecute = nameof(CanGuide))] private async Task HelpAsync() => await RunGuideAsync(_guides!.Help);
     [RelayCommand(CanExecute = nameof(CanLibrary))] private async Task LibraryAsync() => await RunGuideAsync(_guides!.Library!);
+    [RelayCommand(CanExecute = nameof(CanAbout))] private async Task AboutAsync() => await RunGuideAsync(_guides!.About!);
 
     private async Task RunGuideAsync(Func<Task> action)
     {
@@ -194,7 +196,7 @@ public sealed partial class HomeViewModel : ObservableObject, IDisposable
         NewPetitionCommand.NotifyCanExecuteChanged(); OpenCaseCommand.NotifyCanExecuteChanged();
         ResumeCommand.NotifyCanExecuteChanged(); BackToCaseCommand.NotifyCanExecuteChanged();
         SampleCommand.NotifyCanExecuteChanged(); TourCommand.NotifyCanExecuteChanged(); HelpCommand.NotifyCanExecuteChanged();
-        LibraryCommand.NotifyCanExecuteChanged();
+        LibraryCommand.NotifyCanExecuteChanged(); AboutCommand.NotifyCanExecuteChanged();
     }
     public void Dispose()
     {

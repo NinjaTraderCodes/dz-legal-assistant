@@ -17,6 +17,9 @@ public sealed partial class Home : IDisposable
     /// <summary>A draft file is small (the case and its text); anything larger is not one.</summary>
     private const long MaxDraftBytes = 2 * 1024 * 1024;
     private bool showGuide = true;
+
+    /// <summary>The desktop app's latest release; a stable address, whatever the version number.</summary>
+    private const string DownloadUrl = "https://github.com/NinjaTraderCodes/dz-legal-assistant/releases/latest";
     private int mobileTab;
     private readonly HashSet<string> _visited = new(StringComparer.Ordinal);
 

@@ -12,6 +12,10 @@ public static class WebText
         ["AboutDemo"] = (
             "This demo runs on hosted models (Nemotron 3 Ultra first, then Gemma 4 26B), on fictitious cases only. The form is processed by this server, and AI actions may send it to Google, OpenRouter or Groq; this browser also keeps a recovery copy. The desktop product runs a smaller model offline on the lawyer's computer, where a draft takes about two minutes on an ordinary laptop. The engine that answered is shown under the draft.",
             "يعمل هذا العرض بنماذج مستضافة (Nemotron 3 Ultra أولا، ثم Gemma 4 26B)، على قضايا وهمية فقط. يعالج هذا الخادم الاستمارة، وقد ترسلها عمليات الذكاء الاصطناعي إلى Google أو OpenRouter أو Groq، ويحتفظ المتصفح بنسخة احتياطية. أما المنتج المكتبي فيشغل نموذجا أصغر دون اتصال على حاسوب المحامي، وتستغرق المسودة فيه نحو دقيقتين على حاسوب عادي. يظهر تحت المسودة المحرك الذي أجاب."),
+        ["DownloadWindows"] = ("Download for Windows", "تنزيل نسخة Windows"),
+        ["DownloadNote"] = (
+            "The desktop app runs on the lawyer's own computer: offline with a local model (Ollama and gemma3:4b), or without AI using fill-in templates.",
+            "يعمل التطبيق المكتبي على حاسوب المحامي نفسه: دون اتصال بنموذج محلي (Ollama وgemma3:4b)، أو دون ذكاء اصطناعي بالقوالب."),
         ["NoEngine"] = (
             "AI is not configured on this server: the form, the formal check, editing and export work, and drafting uses fill-in templates.",
             "لم يهيأ الذكاء الاصطناعي على هذا الخادم: تعمل الاستمارة والمراجعة الشكلية والتحرير والتصدير، والصياغة بالقوالب."),

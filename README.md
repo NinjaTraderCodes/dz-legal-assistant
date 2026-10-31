@@ -18,7 +18,7 @@ The lawyer fills in the case details, the application produces a structured firs
 
 *Version 0.9.0. Screens in this README are rendered by the automated UI tests, with fictitious data; where a model is shown, it is a scripted test engine.*
 
-**Try it without installing anything: https://dz-legal-assistant-ai.onrender.com.** The public web demo runs the same engine, law library and screens in the browser, with four fictitious sample cases. Its AI steps use the same model as the desktop (Gemma 3 4B), hosted, so it is not for real client data. See [docs/WEB-DEMO.md](docs/WEB-DEMO.md) (local run: `dotnet run --project src/DzLegal.Web`). The first visit after a quiet spell takes about a minute while the free server wakes up.
+**Try it without installing anything: https://dz-legal-assistant-ai.onrender.com.** The public web demo runs the same engine, law library and screens in the browser, with four fictitious sample cases. Its AI steps use a much larger hosted model (Nemotron 3 Ultra on OpenRouter, then Gemma 4 26B), so it is not for real client data. The desktop app can be downloaded from the [latest release](https://github.com/NinjaTraderCodes/dz-legal-assistant/releases/latest). See [docs/WEB-DEMO.md](docs/WEB-DEMO.md) (local run: `dotnet run --project src/DzLegal.Web`). The first visit after a quiet spell takes about a minute while the free server wakes up.
 
 **Law texts:** 1,361 articles are loaded:
 - **the complete Family Code and the complete CPCA** (including the 2022 amendment, Law 22-13). They come from the law corpus, where every text was read against the official gazette page that published it;

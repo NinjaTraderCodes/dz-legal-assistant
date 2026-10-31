@@ -177,6 +177,10 @@ public sealed class GuideVisualTests
                 // The card has its own near-opaque surface: the dark setup surface is half transparent and let the workbench show through.
                 Assert.Equal(ColorOf(ResourceBrush(card, "OnboardingTourCardBrush")), ColorOf(card.Background!));
                 Assert.True(ColorOf(card.Background!).A >= 0xF0, $"{display}: tour card is see-through");
+                // The card shares the panels' surface, so a gold edge and a shadow set it apart (owner, 31 Oct 2026).
+                Assert.Equal(ColorOf(ResourceBrush(card, "OnboardingHighlightBrush")), ColorOf(card.BorderBrush!));
+                Assert.True(card.BorderThickness.Left >= 2, $"{display}: tour card edge {card.BorderThickness.Left}");
+                Assert.True(card.BoxShadow.Count > 0, $"{display}: tour card has no shadow");
                 Assert.Contains("home-note", overlay.FindControl<TextBlock>("TourCounter")!.Classes);
                 Assert.Contains("home-title", overlay.FindControl<TextBlock>("TourTitle")!.Classes);
                 Assert.Contains("home-text", overlay.FindControl<TextBlock>("TourText")!.Classes);

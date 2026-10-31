@@ -121,6 +121,10 @@ For the whole chain, with the claim type read by the analysis instead of given, 
 | Date | Version | Mode | Result | Summary |
 |---|---|---|---|---|
 | 30 Oct 2026 | `83cd421` | claim type given | 32 of 90 cases fully right, 63 s per case | `docs/baselines/2026-10-30-hidden-given/` |
+| 31 Oct 2026 | `140a353` | Nemotron 3 Ultra online, claim type given | 64 of 90 cases fully right, 4 s per case, 0 failed calls | `docs/baselines/2026-10-31-hidden-nemotron-given/` |
+| 31 Oct 2026 | `140a353` | Nemotron 3 Ultra online, claim type read | 60 of 90 in-catalogue cases fully right, claim type right on 85 of 90, 10 of 10 out-of-scope declined, 8 s per case | `docs/baselines/2026-10-31-hidden-nemotron-read/` |
+
+The two 31 October runs used the same reader (Alpha-01) as the first run, with only the model changed (and, in read mode, every claim type offered to the online model, the court section given as a hint). The set had already been seen at summary level, so they compare models on the same cases; they are not a fresh unseen measure. Both ran on battery power, recorded by the new run manifest.
 
 The first set (100 cases, written by Codex on 30 Oct 2026) has now been **seen at the level of the summary**: case names, error types and the codes involved. Its case texts were never opened by the developers; the results folder sent with the summary had its case files deleted unread. Under rule 7, it is no longer hidden for changes made from these results: the next measure of a changed reader needs a new set.
 

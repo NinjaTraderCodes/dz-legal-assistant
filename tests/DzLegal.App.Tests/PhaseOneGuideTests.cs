@@ -51,10 +51,14 @@ public sealed class PhaseOneGuideTests : IDisposable
             }).ToArray();
             var outlineStart = outline.TranslatePoint(default, window)!.Value;
             var outlineEnd = outline.TranslatePoint(new Point(outline.Bounds.Width, outline.Bounds.Height), window)!.Value;
-            Assert.True(Math.Abs(Math.Min(outlineStart.X, outlineEnd.X) - targetPoints.Min(point => point.X)) <= 1,
+            // The outline stands a small gap outside the target, so it never sits on the control's own edge; the window clips it.
+            var gap = (double)overlay.FindResource("OnboardingTourHighlightGap")!;
+            var expectedLeft = Math.Max(0, targetPoints.Min(point => point.X) - gap);
+            var expectedRight = Math.Min(window.Bounds.Width, targetPoints.Max(point => point.X) + gap);
+            Assert.True(Math.Abs(Math.Min(outlineStart.X, outlineEnd.X) - expectedLeft) <= 1,
                 $"Stop {index}: target={string.Join(';', targetPoints)}, local={overlay.HighlightBounds}, overlay={overlay.Bounds}, shade={overlay.FindControl<Canvas>("Shade")!.Bounds}, outline={outline.Bounds}, rendered={outlineStart}/{outlineEnd}");
-            Assert.InRange(Math.Min(outlineStart.X, outlineEnd.X), targetPoints.Min(point => point.X) - 1, targetPoints.Min(point => point.X) + 1);
-            Assert.InRange(Math.Max(outlineStart.X, outlineEnd.X), targetPoints.Max(point => point.X) - 1, targetPoints.Max(point => point.X) + 1);
+            Assert.InRange(Math.Min(outlineStart.X, outlineEnd.X), expectedLeft - 1, expectedLeft + 1);
+            Assert.InRange(Math.Max(outlineStart.X, outlineEnd.X), expectedRight - 1, expectedRight + 1);
             Assert.Contains(model.Tour.Title, AutomationProperties.GetName(overlay.FindControl<Border>("TourCard")!), StringComparison.Ordinal);
             Assert.Same(overlay.FindControl<Border>("TourCard"), window.FocusManager!.GetFocusedElement());
             window.KeyPress(language == "ar" ? Key.Left : Key.Right, RawInputModifiers.None, language == "ar" ? PhysicalKey.ArrowLeft : PhysicalKey.ArrowRight, null);

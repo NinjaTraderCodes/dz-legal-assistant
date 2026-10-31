@@ -117,8 +117,10 @@ public partial class TourOverlay : UserControl
             border.Bind(Border.BackgroundProperty, this.GetResourceObservable("OnboardingTourBackdropBrush"));
             Canvas.SetLeft(border, rectangle.X); Canvas.SetTop(border, rectangle.Y); Shade.Children.Add(border);
         }
-        if (target is { } t)
+        if (target is { } anchorRect)
         {
+            var gap = (double)this.FindResource("OnboardingTourHighlightGap")!;
+            var t = anchorRect.Inflate(gap).Intersect(new Rect(Bounds.Size));
             Dim(new Rect(0, 0, Bounds.Width, t.Top));
             Dim(new Rect(0, t.Bottom, Bounds.Width, Math.Max(0, Bounds.Height - t.Bottom)));
             Dim(new Rect(0, t.Top, t.Left, t.Height));

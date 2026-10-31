@@ -6,7 +6,7 @@
   <Grid FlowDirection="LeftToRight" ClipToBounds="True">
     <Canvas Name="Shade" IsHitTestVisible="False" />
     <Canvas Name="Cards">
-      <Border Name="TourCard" Classes="home-panel" Focusable="True" MaxWidth="{DynamicResource OnboardingTourWidth}"
+      <Border Name="TourCard" Classes="home-panel" Background="{DynamicResource OnboardingTourCardBrush}" Focusable="True" MaxWidth="{DynamicResource OnboardingTourWidth}"
               FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}"
               AutomationProperties.Name="{Binding Announcement}" AutomationProperties.HelpText="{Binding Text}"
               AutomationProperties.LiveSetting="Assertive" KeyboardNavigation.TabNavigation="Cycle">

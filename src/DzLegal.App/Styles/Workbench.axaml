@@ -39,6 +39,8 @@
       <x:Double x:Key="OnboardingTourMinWidth">240</x:Double>
       <x:Double x:Key="OnboardingTourEdgeSpace">32</x:Double>
       <x:Double x:Key="OnboardingTourAnchorGap">16</x:Double>
+      <!-- The highlight frame sits outside its target, so it never covers the target's first letters. -->
+      <x:Double x:Key="OnboardingTourHighlightGap">6</x:Double>
       <!-- The tour dims the live workbench with the same dark overlay character as Home. -->
       <LinearGradientBrush x:Key="OnboardingTourBackdropBrush" StartPoint="0%,0%" EndPoint="0%,100%">
         <GradientStop Color="#B81D201E" Offset="0" />
@@ -60,6 +62,8 @@
           <SolidColorBrush x:Key="WelcomeSecondaryBrush" Color="#ECE6DC" />
           <SolidColorBrush x:Key="WelcomeControlBrush" Color="#24201B" />
           <SolidColorBrush x:Key="SetupSurfaceBrush" Color="#8024201B" />
+          <!-- The tour card floats over the workbench, not over the blurred photograph: the glass panel would let the document show through. -->
+          <SolidColorBrush x:Key="OnboardingTourCardBrush" Color="#F724201B" />
           <SolidColorBrush x:Key="WelcomeEdgeBrush" Color="#D2B981" />
           <SolidColorBrush x:Key="WelcomeFocusBrush" Color="#F2EDE5" />
           <SolidColorBrush x:Key="WelcomeButtonBorderBrush" Color="#D2B981" />
@@ -82,6 +86,7 @@
           <SolidColorBrush x:Key="WelcomeSecondaryBrush" Color="#494238" />
           <SolidColorBrush x:Key="WelcomeControlBrush" Color="#FFFFFF" />
           <SolidColorBrush x:Key="SetupSurfaceBrush" Color="#CCFFFFFF" />
+          <SolidColorBrush x:Key="OnboardingTourCardBrush" Color="#F7FFFFFF" />
           <SolidColorBrush x:Key="WelcomeEdgeBrush" Color="#786039" />
           <SolidColorBrush x:Key="WelcomeFocusBrush" Color="#28231D" />
           <SolidColorBrush x:Key="WelcomeButtonBorderBrush" Color="#786039" />

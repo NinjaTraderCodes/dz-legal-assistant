@@ -87,6 +87,18 @@ public sealed class LibraryTests
     }
 
     [Fact]
+    public void ACardShowsItsDateInWordsInBothLanguages()
+    {
+        var loc = new Loc();
+        Assert.Equal("27 فبراير 2005", LibraryTextViewModel.FormatDate(loc, "2005-02-27"));
+        Assert.Equal("12 يوليو 2022", LibraryTextViewModel.FormatDate(loc, "2022-07-12"));
+        loc.SetLanguage("en");
+        Assert.Equal("27 February 2005", LibraryTextViewModel.FormatDate(loc, "2005-02-27"));
+        Assert.Equal("1975", LibraryTextViewModel.FormatDate(loc, "1975"));
+        Assert.Equal("2005-13-27", LibraryTextViewModel.FormatDate(loc, "2005-13-27"));
+    }
+
+    [Fact]
     public void CardsComeFromTheLoadedLibraryAndSummaryCountsThem()
     {
         var loc = new Loc();
@@ -111,7 +123,7 @@ public sealed class LibraryTests
             Assert.Equal(code.Reference, card.Reference);
             Assert.Equal(code.Edition ?? string.Empty, card.Edition);
             Assert.Equal(
-                string.IsNullOrWhiteSpace(code.ConsolidatedAsOf) ? string.Empty : loc.Format("LibraryAsOf", code.ConsolidatedAsOf),
+                string.IsNullOrWhiteSpace(code.ConsolidatedAsOf) ? string.Empty : loc.Format("LibraryAsOf", LibraryTextViewModel.FormatDate(loc, code.ConsolidatedAsOf)),
                 card.AsOfText);
             Assert.Equal(loc.Format("LibraryArticles", code.Articles.Count), card.ArticlesText);
             Assert.Equal(code.Partial ? loc["LibraryPartial"] : loc["LibraryComplete"], card.CoverageText);

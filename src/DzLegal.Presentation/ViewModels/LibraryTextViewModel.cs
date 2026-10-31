@@ -51,13 +51,29 @@ public sealed class LibraryTextViewModel
     public bool HasEdition => Edition.Length > 0;
     public string AsOfText => string.IsNullOrWhiteSpace(Code.ConsolidatedAsOf)
         ? string.Empty
-        : L.Format("LibraryAsOf", Code.ConsolidatedAsOf);
+        : L.Format("LibraryAsOf", FormatDate(L, Code.ConsolidatedAsOf));
     public bool HasAsOf => AsOfText.Length > 0;
     public string ArticlesText => L.Format("LibraryArticles", Code.Articles.Count);
     public bool IsPartial => Code.Partial;
     public string CoverageText => L[Code.Partial ? "LibraryPartial" : "LibraryComplete"];
     public string CoverageHint => Code.Partial ? L["LibraryPartialHint"] : string.Empty;
     public Uri? OfficialSource { get; }
+
+    /// <summary>"2005-02-27" as «27 فبراير 2005», with the month names the official references use; any other text as written.</summary>
+    public static string FormatDate(Loc localization, string date)
+    {
+        ArgumentNullException.ThrowIfNull(localization);
+        ArgumentNullException.ThrowIfNull(date);
+        var months = localization["LibraryMonths"].Split(',');
+        var parts = date.Split('-');
+        var invariant = System.Globalization.CultureInfo.InvariantCulture;
+        return months.Length == 12 && parts.Length == 3
+            && int.TryParse(parts[0], System.Globalization.NumberStyles.None, invariant, out var year)
+            && int.TryParse(parts[1], System.Globalization.NumberStyles.None, invariant, out var month) && month is >= 1 and <= 12
+            && int.TryParse(parts[2], System.Globalization.NumberStyles.None, invariant, out var day) && day is >= 1 and <= 31
+            ? string.Create(invariant, $"{day} {months[month - 1].Trim()} {year}")
+            : date;
+    }
     public IAsyncRelayCommand OpenCommand { get; }
     public IAsyncRelayCommand OfficialSourceCommand { get; }
     public LibraryBadgeViewModel CheckBadge { get; }

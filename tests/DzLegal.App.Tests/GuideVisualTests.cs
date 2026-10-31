@@ -174,7 +174,9 @@ public sealed class GuideVisualTests
             {
                 var card = overlay.FindControl<Border>("TourCard")!;
                 AssertInside(window, card);
-                Assert.Equal(ColorOf(ResourceBrush(card, "SetupSurfaceBrush")), ColorOf(card.Background!));
+                // The card has its own near-opaque surface: the dark setup surface is half transparent and let the workbench show through.
+                Assert.Equal(ColorOf(ResourceBrush(card, "OnboardingTourCardBrush")), ColorOf(card.Background!));
+                Assert.True(ColorOf(card.Background!).A >= 0xF0, $"{display}: tour card is see-through");
                 Assert.Contains("home-note", overlay.FindControl<TextBlock>("TourCounter")!.Classes);
                 Assert.Contains("home-title", overlay.FindControl<TextBlock>("TourTitle")!.Classes);
                 Assert.Contains("home-text", overlay.FindControl<TextBlock>("TourText")!.Classes);
@@ -196,7 +198,7 @@ public sealed class GuideVisualTests
                 }
                 if (stop is 0 or 3 or 5) Capture(window, display, "phase1-tour" + (stop + 1));
                 CheckTypography(card);
-                CheckBorders(card, "SetupSurfaceBrush");
+                CheckBorders(card, "OnboardingTourCardBrush");
                 if (IsContrast(display)) CheckContrast(window, card, display, "tour-" + (stop + 1));
                 var shade = overlay.FindControl<Canvas>("Shade")!;
                 var outline = Assert.IsType<Border>(shade.Children.Last());
@@ -215,7 +217,7 @@ public sealed class GuideVisualTests
                 }
                 var enabled = buttons.Where(button => button.IsEffectivelyEnabled).ToArray();
                 for (var index = 0; index < enabled.Length; index++)
-                    CheckFocus(window, enabled[index], display, "SetupSurfaceBrush", IsContrast(display) && stop == 0 && index == 0);
+                    CheckFocus(window, enabled[index], display, "OnboardingTourCardBrush", IsContrast(display) && stop == 0 && index == 0);
                 if (stop == 0) CheckKeyboardOrder(window, [buttons[0], buttons[2]]);
                 window.KeyPress(display.Language == "ar" ? Key.Left : Key.Right, RawInputModifiers.None,
                     display.Language == "ar" ? PhysicalKey.ArrowLeft : PhysicalKey.ArrowRight, null);

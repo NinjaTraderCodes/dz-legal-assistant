@@ -91,10 +91,7 @@
               MaxWidth="{DynamicResource OnboardingContentWidth}" HorizontalAlignment="Stretch">
           <Border Name="LibraryReadingPanel" Classes="home-panel">
             <Grid RowDefinitions="Auto,Auto" RowSpacing="8">
-              <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
-                <TextBlock Classes="library-reference" Text="{Binding OpenedText.Reference}" />
-                <TextBlock Grid.Column="1" Classes="home-note" Text="{Binding OpenedText.ArticlesText}" VerticalAlignment="Center" />
-              </Grid>
+              <TextBlock Classes="home-note" Text="{Binding OpenedText.ArticlesText}" VerticalAlignment="Center" />
               <Grid Grid.Row="1" ColumnDefinitions="*,Auto" ColumnSpacing="12">
                 <TextBox Name="LibrarySearchBox" Classes="library-search" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
                          PlaceholderText="{Binding L[LibrarySearch]}" AutomationProperties.Name="{Binding L[LibrarySearch]}" />

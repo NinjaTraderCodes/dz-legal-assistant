@@ -16,46 +16,6 @@
   <UserControl.Styles>
     <StyleInclude Source="/Styles/Workbench.axaml" />
     <Style Selector="TextBlock"><Setter Property="ToolTip.ShowOnDisabled" Value="True" /></Style>
-    <Style Selector="TextBlock.home-text">
-      <Setter Property="Foreground" Value="{DynamicResource WelcomeTextBrush}" /><Setter Property="FontSize" Value="16" /><Setter Property="TextWrapping" Value="Wrap" />
-    </Style>
-    <Style Selector="TextBlock.home-note">
-      <Setter Property="Foreground" Value="{DynamicResource WelcomeSecondaryBrush}" /><Setter Property="FontSize" Value="13" /><Setter Property="TextWrapping" Value="Wrap" />
-    </Style>
-    <Style Selector="Button.home">
-      <Setter Property="ToolTip.ShowOnDisabled" Value="True" />
-      <Setter Property="Background" Value="{DynamicResource WelcomeControlBrush}" /><Setter Property="Foreground" Value="{DynamicResource WelcomeTextBrush}" />
-      <Setter Property="BorderBrush" Value="{DynamicResource WelcomeEdgeBrush}" /><Setter Property="BorderThickness" Value="1" />
-      <Setter Property="CornerRadius" Value="10" /><Setter Property="MinHeight" Value="44" /><Setter Property="FontSize" Value="15" />
-      <Setter Property="Padding" Value="16,8" /><Setter Property="HorizontalContentAlignment" Value="Center" /><Setter Property="VerticalContentAlignment" Value="Center" />
-    </Style>
-    <Style Selector="Button.home.selected"><Setter Property="BorderThickness" Value="2" /><Setter Property="FontWeight" Value="SemiBold" /></Style>
-    <Style Selector="Button.home.main-action">
-      <Setter Property="Height" Value="58" /><Setter Property="MinHeight" Value="58" />
-      <Setter Property="Background" Value="{DynamicResource WelcomeGoldBrush}" /><Setter Property="Foreground" Value="{DynamicResource WelcomeButtonTextBrush}" />
-      <Setter Property="FontWeight" Value="SemiBold" />
-    </Style>
-    <Style Selector="Button.home.main-action:pointerover /template/ ContentPresenter">
-      <Setter Property="Background" Value="{DynamicResource WelcomeGoldBrush}" /><Setter Property="Foreground" Value="{DynamicResource WelcomeButtonTextBrush}" />
-    </Style>
-    <Style Selector="Button.home.primary">
-      <Setter Property="Background" Value="{DynamicResource WelcomeGoldBrush}" /><Setter Property="Foreground" Value="{DynamicResource WelcomeButtonTextBrush}" /><Setter Property="FontWeight" Value="SemiBold" />
-    </Style>
-    <Style Selector="Button.home:focus-visible">
-      <Setter Property="BorderBrush" Value="{DynamicResource WelcomeFocusBrush}" /><Setter Property="BorderThickness" Value="3" />
-    </Style>
-    <Style Selector="Button.home:pointerover /template/ ContentPresenter">
-      <Setter Property="Background" Value="{DynamicResource WelcomeControlBrush}" /><Setter Property="Foreground" Value="{DynamicResource WelcomeTextBrush}" />
-    </Style>
-    <Style Selector="Button.home.primary:pointerover /template/ ContentPresenter">
-      <Setter Property="Background" Value="{DynamicResource WelcomeGoldBrush}" /><Setter Property="Foreground" Value="{DynamicResource WelcomeButtonTextBrush}" />
-    </Style>
-    <Style Selector="Button.home:disabled /template/ ContentPresenter">
-      <Setter Property="Background" Value="{DynamicResource WelcomeControlBrush}" /><Setter Property="Foreground" Value="{DynamicResource WelcomeSecondaryBrush}" />
-    </Style>
-    <Style Selector="Border.home-panel">
-      <Setter Property="Background" Value="{DynamicResource SetupSurfaceBrush}" /><Setter Property="CornerRadius" Value="16" /><Setter Property="Padding" Value="20,16" />
-    </Style>
   </UserControl.Styles>
   <Grid ClipToBounds="True">
     <Image Name="HomeBackground" Stretch="UniformToFill"><Image.Effect><BlurEffect Radius="8" /></Image.Effect></Image>
@@ -64,7 +24,7 @@
       <Border Background="{DynamicResource WelcomeReadingBrush}" CornerRadius="16" Padding="16,8">
         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="20">
           <StackPanel Orientation="Horizontal" Spacing="16" VerticalAlignment="Center">
-            <TextBlock Text="{Binding L[WelcomeTitle]}" Classes="home-text" FontSize="26" FontWeight="SemiBold" />
+            <TextBlock Text="{Binding L[WelcomeTitle]}" Classes="home-title" />
             <TextBlock Text="{Binding L[Home]}" Classes="home-text" FontSize="20" VerticalAlignment="Center" />
           </StackPanel>
           <WrapPanel Grid.Column="1">

@@ -36,12 +36,19 @@
       <x:Double x:Key="OnboardingIconSize">20</x:Double>
       <x:Double x:Key="OnboardingBackgroundBlur">8</x:Double>
       <x:Double x:Key="OnboardingTourWidth">420</x:Double>
+      <x:Double x:Key="OnboardingTourMinWidth">240</x:Double>
       <x:Double x:Key="OnboardingTourEdgeSpace">32</x:Double>
       <x:Double x:Key="OnboardingTourAnchorGap">16</x:Double>
+      <!-- The tour dims the live workbench with the same dark overlay character as Home. -->
+      <LinearGradientBrush x:Key="OnboardingTourBackdropBrush" StartPoint="0%,0%" EndPoint="0%,100%">
+        <GradientStop Color="#B81D201E" Offset="0" />
+        <GradientStop Color="#B31D201E" Offset="0.5" />
+        <GradientStop Color="#B81D201E" Offset="1" />
+      </LinearGradientBrush>
       <StreamGeometry x:Key="WelcomeScalesGeometry">M48,9 L48,78 M43,9 C43,3 53,3 53,9 C53,15 43,15 43,9 M18,25 C28,25 34,18 48,18 C62,18 68,25 78,25 M23,25 L10,53 L36,53 Z M73,25 L60,53 L86,53 Z M10,53 C12,69 34,69 36,53 M60,53 C62,69 84,69 86,53 M42,78 L54,78 M38,85 C38,75 58,75 58,85 M28,88 L68,88</StreamGeometry>
       <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary x:Key="Dark">
-          <SolidColorBrush x:Key="OnboardingTourBackdropBrush" Color="#B81D201E" />
+          <SolidColorBrush x:Key="OnboardingHighlightBrush" Color="#C6A76D" />
           <SolidColorBrush x:Key="WelcomeReadingBrush" Color="Transparent" />
           <SolidColorBrush x:Key="WelcomeLanguageSurfaceBrush" Color="Transparent" />
           <LinearGradientBrush x:Key="WelcomeOverlayBrush" StartPoint="0%,0%" EndPoint="0%,100%">
@@ -62,7 +69,7 @@
           </LinearGradientBrush>
         </ResourceDictionary>
         <ResourceDictionary x:Key="Light">
-          <SolidColorBrush x:Key="OnboardingTourBackdropBrush" Color="#B8F2F0EA" />
+          <SolidColorBrush x:Key="OnboardingHighlightBrush" Color="#D2B981" />
           <SolidColorBrush x:Key="WelcomeReadingBrush" Color="#EFF2F0EA" />
           <SolidColorBrush x:Key="WelcomeLanguageSurfaceBrush" Color="Transparent" />
           <LinearGradientBrush x:Key="WelcomeOverlayBrush" StartPoint="0%,0%" EndPoint="0%,100%">
@@ -86,6 +93,56 @@
       </ResourceDictionary.ThemeDictionaries>
     </ResourceDictionary>
   </Styles.Resources>
+  <!-- Workbench's primary colour must be declared before the Home family so Home keeps its own gold. -->
+  <Style Selector="Button.primary"><Setter Property="Foreground" Value="{DynamicResource PrimaryButtonTextBrush}" /></Style>
+  <!-- Home's card, text and button treatment, shared so Help and the tour use the same family look. -->
+  <Style Selector="Border.home-panel">
+    <Setter Property="Background" Value="{DynamicResource SetupSurfaceBrush}" /><Setter Property="CornerRadius" Value="16" /><Setter Property="Padding" Value="20,16" />
+  </Style>
+  <Style Selector="TextBlock.home-text">
+    <Setter Property="Foreground" Value="{DynamicResource WelcomeTextBrush}" /><Setter Property="FontSize" Value="16" /><Setter Property="TextWrapping" Value="Wrap" />
+  </Style>
+  <Style Selector="TextBlock.home-title">
+    <Setter Property="Foreground" Value="{DynamicResource WelcomeTextBrush}" /><Setter Property="FontSize" Value="26" /><Setter Property="FontWeight" Value="SemiBold" /><Setter Property="TextWrapping" Value="Wrap" />
+  </Style>
+  <Style Selector="TextBlock.home-note">
+    <Setter Property="Foreground" Value="{DynamicResource WelcomeSecondaryBrush}" /><Setter Property="FontSize" Value="13" /><Setter Property="TextWrapping" Value="Wrap" />
+  </Style>
+  <Style Selector="Button.home">
+    <Setter Property="ToolTip.ShowOnDisabled" Value="True" />
+    <Setter Property="Background" Value="{DynamicResource WelcomeControlBrush}" /><Setter Property="Foreground" Value="{DynamicResource WelcomeTextBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource WelcomeEdgeBrush}" /><Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="10" /><Setter Property="MinHeight" Value="44" /><Setter Property="FontSize" Value="15" />
+    <Setter Property="Padding" Value="16,8" /><Setter Property="HorizontalContentAlignment" Value="Center" /><Setter Property="VerticalContentAlignment" Value="Center" />
+  </Style>
+  <Style Selector="Button.home.selected"><Setter Property="BorderThickness" Value="2" /><Setter Property="FontWeight" Value="SemiBold" /></Style>
+  <Style Selector="Button.home.main-action">
+    <Setter Property="Height" Value="58" /><Setter Property="MinHeight" Value="58" />
+    <Setter Property="Background" Value="{DynamicResource WelcomeGoldBrush}" /><Setter Property="Foreground" Value="{DynamicResource WelcomeButtonTextBrush}" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+  </Style>
+  <Style Selector="Button.home.primary">
+    <Setter Property="Background" Value="{DynamicResource WelcomeGoldBrush}" /><Setter Property="Foreground" Value="{DynamicResource WelcomeButtonTextBrush}" /><Setter Property="FontWeight" Value="SemiBold" />
+  </Style>
+  <Style Selector="Button.home:focus-visible">
+    <Setter Property="BorderBrush" Value="{DynamicResource WelcomeFocusBrush}" /><Setter Property="BorderThickness" Value="3" />
+  </Style>
+  <Style Selector="Button.home:pointerover /template/ ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource WelcomeControlBrush}" /><Setter Property="Foreground" Value="{DynamicResource WelcomeTextBrush}" />
+  </Style>
+  <Style Selector="Button.home.main-action:pointerover /template/ ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource WelcomeGoldBrush}" /><Setter Property="Foreground" Value="{DynamicResource WelcomeButtonTextBrush}" />
+  </Style>
+  <Style Selector="Button.home.primary:pointerover /template/ ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource WelcomeGoldBrush}" /><Setter Property="Foreground" Value="{DynamicResource WelcomeButtonTextBrush}" />
+  </Style>
+  <Style Selector="Button.home:disabled">
+    <Setter Property="BorderBrush" Value="{DynamicResource WelcomeEdgeBrush}" /><Setter Property="BorderThickness" Value="1" />
+  </Style>
+  <Style Selector="Button.home:disabled /template/ ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource WelcomeControlBrush}" /><Setter Property="Foreground" Value="{DynamicResource WelcomeSecondaryBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource WelcomeEdgeBrush}" />
+  </Style>
   <Style Selector="Border.onboarding-card">
     <Setter Property="Background" Value="{DynamicResource SetupSurfaceBrush}" />
     <Setter Property="CornerRadius" Value="{DynamicResource OnboardingCardRadius}" />
@@ -146,7 +203,6 @@
   </Style>
   <Style Selector="TextBlock.title"><Setter Property="FontSize" Value="18" /><Setter Property="Foreground" Value="{DynamicResource AccentBrush}" /></Style>
   <Style Selector="TextBlock.muted"><Setter Property="FontSize" Value="12.5" /></Style>
-  <Style Selector="Button.primary"><Setter Property="Foreground" Value="{DynamicResource PrimaryButtonTextBrush}" /></Style>
   <Style Selector="Button.outline"><Setter Property="BorderBrush" Value="{DynamicResource InputBorderBrush}" /></Style>
   <Style Selector="TextBox.input">
     <Setter Property="FontSize" Value="18" /><Setter Property="MinHeight" Value="44" />

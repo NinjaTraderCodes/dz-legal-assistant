@@ -126,23 +126,37 @@ public partial class TourOverlay : UserControl
             var outline = new Border { Width = t.Width, Height = t.Height };
             outline.Bind(Border.BorderThicknessProperty, this.GetResourceObservable("OnboardingFocusThickness"));
             outline.Bind(Border.CornerRadiusProperty, this.GetResourceObservable("ControlRadius"));
-            outline.Bind(Border.BorderBrushProperty, this.GetResourceObservable("WelcomeMarkBrush"));
+            outline.Bind(Border.BorderBrushProperty, this.GetResourceObservable("OnboardingHighlightBrush"));
             Canvas.SetLeft(outline, t.X); Canvas.SetTop(outline, t.Y); Shade.Children.Add(outline);
         }
         else Dim(new Rect(Bounds.Size));
         var edgeSpace = (double)this.FindResource("OnboardingTourEdgeSpace")!;
+        var minWidth = (double)this.FindResource("OnboardingTourMinWidth")!;
         var anchorGap = (double)this.FindResource("OnboardingTourAnchorGap")!;
-        TourCard.Width = Math.Min(TourCard.MaxWidth, Bounds.Width - edgeSpace);
-        TourCard.Measure(new Size(TourCard.Width, Bounds.Height - edgeSpace));
+        var maxWidth = Math.Min(TourCard.MaxWidth, Bounds.Width - edgeSpace * 2);
+        TourCard.Width = maxWidth;
+        TourCard.Measure(new Size(maxWidth, Bounds.Height - edgeSpace * 2));
         var size = TourCard.DesiredSize;
         var x = (Bounds.Width - size.Width) / 2;
         var y = (Bounds.Height - size.Height) / 2;
         if (target is { } anchor)
         {
-            if (anchor.Right + anchorGap + size.Width <= Bounds.Width - anchorGap) x = anchor.Right + anchorGap;
-            else if (anchor.Left - anchorGap - size.Width >= anchorGap) x = anchor.Left - anchorGap - size.Width;
-            else if (anchor.Bottom + anchorGap + size.Height <= Bounds.Height - anchorGap) y = anchor.Bottom + anchorGap;
-            else if (anchor.Top - anchorGap - size.Height >= anchorGap) y = anchor.Top - anchorGap - size.Height;
+            var rightSpace = Bounds.Width - edgeSpace - (anchor.Right + anchorGap);
+            var leftSpace = anchor.Left - anchorGap - edgeSpace;
+            if (rightSpace >= size.Width) x = anchor.Right + anchorGap;
+            else if (leftSpace >= size.Width) x = anchor.Left - anchorGap - size.Width;
+            else if (anchor.Bottom + anchorGap + size.Height <= Bounds.Height - edgeSpace) y = anchor.Bottom + anchorGap;
+            else if (anchor.Top - anchorGap - size.Height >= edgeSpace) y = anchor.Top - anchorGap - size.Height;
+            else if (Math.Max(rightSpace, leftSpace) >= minWidth)
+            {
+                // A large anchor can leave less than the preferred card width. Narrow the card
+                // on the wider side instead of covering the control the lawyer must see.
+                TourCard.Width = Math.Max(rightSpace, leftSpace);
+                TourCard.Measure(new Size(TourCard.Width, Bounds.Height - edgeSpace * 2));
+                size = TourCard.DesiredSize;
+                x = rightSpace >= leftSpace ? anchor.Right + anchorGap : anchor.Left - anchorGap - size.Width;
+                y = Math.Max(edgeSpace, Math.Min((Bounds.Height - size.Height) / 2, Bounds.Height - edgeSpace - size.Height));
+            }
         }
         Canvas.SetLeft(TourCard, x); Canvas.SetTop(TourCard, y);
     }

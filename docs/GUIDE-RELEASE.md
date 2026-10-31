@@ -159,16 +159,21 @@ The reference family uses the bundled photograph and WelcomeOverlayBrush, warm W
 Previously Help was a smaller 900 x 600 window with a workbench canvas, an opaque 12 px-corner card, 18/32 body typography, text-only index rows and a separate tour footer. The offer lacked the photograph/overlay and used a 24 px regular title. The tour used a 22 px title, workbench surfaces/counter colours, 8 px button corners and green primary/highlight styling in light mode. Guide button padding and focus colours also differed from onboarding.
 
 - Help now uses Home's window dimensions, page margins, blurred photograph, overlay, header and content-panel treatment. Seven consistent icon rows and the existing tour action share the index card. Page text wraps in a reading column and scrolls inside the card; Back to help stays inside its footer.
-- The offer uses the Welcome/setup photograph and overlay plus the existing confirmation-card surface and geometry. The tour card uses that same confirmation treatment, family title/body/counter typography, gold Next/Finish and secondary Back/Skip buttons.
+- The offer uses the Welcome/setup photograph, blurred by the same 8 px as Home, plus `WelcomeOverlayBrush` and one Home glass card. The tour card uses the same Home glass panel (`SetupSurfaceBrush`, 16 px radius, `20,16` padding, no border or shadow), Home title/body/counter typography and the same 44 px Home gold primary and outlined secondary button classes. The extra offer Info icon was removed so the dialog is a single Home-style card.
 - Existing Welcome palette, UiFont, regular Fluent icons and the single bundled photograph are reused. No font, icon package or image file was added or duplicated. The photograph keeps its original orientation in both reading directions.
 - A small opaque WelcomeControlBrush well protects the Help heading icon from the bright part of the photograph. Pixel checks found 2.84:1 without it in dark mode; the corrected icon meets the required contrast.
 - Primary captions explicitly use WelcomeButtonTextBrush inside the workbench, whose inherited text styling otherwise interfered with the tour caption in dark mode. Next/Finish still reads the same NextText binding and invokes the same command.
-- The highlight uses the existing WelcomeMarkBrush gold/bronze family token in both themes. The dimmed backdrop uses a dedicated shared brush. Highlight discovery, anchors, fallback, positioning equations, commands, keyboard handling, focus return and the tour view model are unchanged; existing spacing constants are read from visual resources.
+- The tour dims the live workbench with a dark gradient built from the existing Home dark-overlay stops (`#B81D201E` / `#B31D201E`) in both themes, replacing the light `#B8F2F0EA` veil. The highlighted anchor keeps a static 3 px gold ring. The light theme now uses `OnboardingHighlightBrush` `#D2B981` (the existing light-family logo/edge gold) because the previous `WelcomeMarkBrush` `#786039` measured only 1.03:1 against the new dark backdrop; dark uses `#C6A76D`.
+- The card stays next to the anchor and flips side. For a large anchor that leaves less than the preferred 420 px side (for example the Legal grounds panel at 125% scaling), the card narrows to the wider free side instead of covering the anchor. The card never intersects the highlight at any of the sixteen display modes; the anchor names, commands, keyboard handling, focus return and tour view model are unchanged.
 - The highlight/card/backdrop remain static. No animation was added, so reduced motion requires no alternate animation path. Repeated layouts retain the same highlight visuals, avoiding flicker.
+
+### Owner decisions
+
+The initial brief asked for a glass card with a thin border and shadow, the exact 58 px "New petition" button style, and an outlined disabled Back. Home has no bordered/shadowed glass panel, so the owner chose the actual Home glass panel: `SetupSurfaceBrush`, 16 px radius, `20,16` padding, no border and no shadow. Next/Finish and the offer's Yes use the 44 px Home `primary` gold style (the same one as Resume/Confirm), not the 58 px main-action. Disabled Back keeps its 1 px outline and uses secondary text instead of Fluent's borderless disabled look.
 
 ### Shared resources added
 
-Added `OnboardingPhotograph` in App.axaml, referencing the existing `Assets/Images/welcome-bg.jpg` once. Workbench.axaml exposes 35 visual resources so the Help/tour views reference family values rather than carrying separate pixel values:
+Added `OnboardingPhotograph` in App.axaml, referencing the existing `Assets/Images/welcome-bg.jpg` once. Workbench.axaml now exposes 37 visual resources so the Help/tour views reference family values rather than carrying separate pixel values:
 
 | Group | Resource keys |
 | --- | --- |
@@ -177,43 +182,46 @@ Added `OnboardingPhotograph` in App.axaml, referencing the existing `Assets/Imag
 | Shape / spacing | OnboardingEdgeThickness, OnboardingFocusThickness, OnboardingCardRadius, OnboardingButtonRadius, OnboardingPageGap, OnboardingDialogGap |
 | Typography | OnboardingTitleSize, OnboardingBodySize, OnboardingBodyLineHeight, OnboardingSecondarySize, OnboardingButtonSize |
 | Controls / content | OnboardingButtonHeight, OnboardingPrimaryMinWidth, OnboardingContentWidth, OnboardingReadingWidth, OnboardingDialogWidth, OnboardingIconSize, OnboardingBackgroundBlur |
-| Tour geometry | OnboardingTourWidth, OnboardingTourEdgeSpace, OnboardingTourAnchorGap |
-| Dimming | OnboardingTourBackdropBrush, with light/dark variants using the existing family tones |
+| Tour geometry | OnboardingTourWidth, OnboardingTourMinWidth, OnboardingTourEdgeSpace, OnboardingTourAnchorGap |
+| Dimming / highlight | OnboardingTourBackdropBrush (dark gradient in both themes), OnboardingHighlightBrush (light `#D2B981`, dark `#C6A76D`) |
 
-Shared `onboarding-*` styles in Workbench.axaml cover cards, dialogs, text, buttons, captions and focus. Guide.axaml references those styles and adds the icon treatment. Existing Welcome/setup/Home views and their appearance are unchanged. Existing ControlRadius and all Welcome* colour/font resources remain authoritative.
+Shared `onboarding-*` styles in Workbench.axaml cover cards, dialogs, text, buttons, captions and focus. Home's `home-panel`, `home-title`, `home-text`, `home-note`, `home` and `home primary` treatments moved from HomeView into the same shared stylesheet so the tour and offer reference them directly rather than copying values. Guide.axaml references those styles and adds the icon treatment. Normal Welcome/setup/Home states are unchanged; Home's disabled outline is now explicit and shared. Existing ControlRadius and all Welcome* colour/font resources remain authoritative.
 
 ### Tests and screenshot review
 
-Added three tests in `GuideVisualTests`; **no existing test was changed, deleted, skipped or weakened**:
+Added four tests in `GuideVisualTests`; **no test was deleted or skipped**. The three existing visual tests were extended for the new Home surface: their border/focus surface key is `SetupSurfaceBrush` instead of `WelcomeControlBrush`, and `home-note` (13 px) is accepted as secondary text. Every previous check remains:
 
 - `HelpIndexAndAllSevenPagesFitAndMeetRenderedContrastInEveryDisplayMode`
 - `TourOfferUsesTheFamilyCardAndButtonsWithoutClippingOrLowContrast`
 - `EveryTourStopFitsAndMeetsContrastWithGoldHighlightAndStableBackdrop`
+- `HomeAndTourUseTheSameFamilySurfaceAndButtons`
 
-Every layout, clipping, typography, border, Tab-order, arrow, Escape and focus-ring check covers all sixteen display modes: Arabic/English, light/dark, 1366 x 768 and 1920 x 1080, at 100% and 125% scaling. All seven Help pages are checked, including full paragraph retention and scrolling. All six tour stops are checked, including Next/Finish text, enabled/disabled Back, control bounds, button separation and gold highlight stability. Existing tour state/focus restoration tests remain intact.
+Every layout, clipping, typography, border, Tab-order, arrow, Escape and focus-ring check covers all sixteen display modes: Arabic/English, light/dark, 1366 x 768 and 1920 x 1080, at 100% and 125% scaling. All seven Help pages are checked, including full paragraph retention and scrolling. All six tour stops are checked, including Next/Finish text, enabled/disabled Back, control bounds, button separation, card/anchor non-overlap, dark-gradient stops and gold highlight stability. The new Home test checks that Home, the offer and the tour resolve the same `SetupSurfaceBrush` panel, `WelcomeGoldBrush` primary, `WelcomeControlBrush` secondary and `home-title` styles, and captures the Home comparison images. Existing tour state/focus restoration tests remain intact.
 
 Pixel contrast is measured on the four language/theme combinations at 1366 x 768 and 100% scaling. Size and scale change geometry, not palette, so these four cover every colour the screens can show. Measuring the other twelve full frames was redundant, and hundreds of full-frame headless Skia captures eventually blocked inside `SurfaceRenderTarget.Blit`; the four-combination pass completes reliably while still checking every rendered colour combination.
 
 Contrast follows WelcomeTests: hide foreground text/icons, render and read the actual background pixels, then compute WCAG luminance ratios, including opacity. This covers text over the real photograph and composited card surfaces. Button borders are checked against their rendered surroundings; focus checks sample the visible Fluent focus adorner; highlight checks use its rendered surroundings. Thresholds remain 4.5:1 for text and 3:1 for icons/borders/focus/highlight. Body text is 16 px, secondary text 13 px and buttons 15 px.
 
-Twenty final 1366 x 768 captures were opened and inspected individually. The sixteen existing Help/tour-stop images are replaced; four offer images are added. Sample-case and Phase 0 captures are unchanged.
+Twenty-eight final 1366 x 768 captures were opened and inspected individually. The sixteen existing Help/tour-stop images and the four offer images are replaced; four final-stop images and four Home comparison images are added. Sample-case and Phase 0 captures are unchanged.
 
 | Screen | Arabic light | Arabic dark | English light | English dark |
 | --- | --- | --- | --- | --- |
+| Home | [View](images/guide/phase1-home-ar-light-1366x768.png) | [View](images/guide/phase1-home-ar-dark-1366x768.png) | [View](images/guide/phase1-home-en-light-1366x768.png) | [View](images/guide/phase1-home-en-dark-1366x768.png) |
 | Help index | [View](images/guide/phase1-help-index-ar-light-1366x768.png) | [View](images/guide/phase1-help-index-ar-dark-1366x768.png) | [View](images/guide/phase1-help-index-en-light-1366x768.png) | [View](images/guide/phase1-help-index-en-dark-1366x768.png) |
 | Help page B4 | [View](images/guide/phase1-help-page-ar-light-1366x768.png) | [View](images/guide/phase1-help-page-ar-dark-1366x768.png) | [View](images/guide/phase1-help-page-en-light-1366x768.png) | [View](images/guide/phase1-help-page-en-dark-1366x768.png) |
 | Tour offer | [View](images/guide/phase1-tour-offer-ar-light-1366x768.png) | [View](images/guide/phase1-tour-offer-ar-dark-1366x768.png) | [View](images/guide/phase1-tour-offer-en-light-1366x768.png) | [View](images/guide/phase1-tour-offer-en-dark-1366x768.png) |
 | Tour stop 1 | [View](images/guide/phase1-tour1-ar-light-1366x768.png) | [View](images/guide/phase1-tour1-ar-dark-1366x768.png) | [View](images/guide/phase1-tour1-en-light-1366x768.png) | [View](images/guide/phase1-tour1-en-dark-1366x768.png) |
 | Tour stop 4 | [View](images/guide/phase1-tour4-ar-light-1366x768.png) | [View](images/guide/phase1-tour4-ar-dark-1366x768.png) | [View](images/guide/phase1-tour4-en-light-1366x768.png) | [View](images/guide/phase1-tour4-en-dark-1366x768.png) |
+| Tour stop 6 | [View](images/guide/phase1-tour6-ar-light-1366x768.png) | [View](images/guide/phase1-tour6-ar-dark-1366x768.png) | [View](images/guide/phase1-tour6-en-light-1366x768.png) | [View](images/guide/phase1-tour6-en-dark-1366x768.png) |
 
-Native verification launched the Release build (`dotnet run --project src/DzLegal.App -c Release --no-build`) and used Windows UI Automation to open Help, open the B4 page, return to the index and close Help with Escape, then start the tour from Home and leave it with Escape. The remaining Help pages and tour stops are exercised by the rendered tests. The per-user profile, preferences, setup marker and draft files were backed up before the launch and restored byte-for-byte afterwards, with matching SHA-256 hashes; no user file was deleted or left changed.
+Native verification launched the built Release executable and used Windows UI Automation to open Home, start the tour from Home, advance through stops 1, 4 and 6 (counter and title read back, last button read `Finish`) and close it with Escape. The offer dialog, the remaining tour stops and every Help page are exercised by the rendered tests. The per-user profile, preferences, setup marker and draft files were backed up before the launch and restored byte-for-byte afterwards, with matching SHA-256 hashes; no user file was deleted or left changed.
 
 ### Verification
 
 - Full Release build: **0 warnings, 0 errors**.
-- Complete Release suite: **877 passed, 0 failed, 0 skipped**; App 253, Drafting 396, Law 113, FormEngine 67, Storage 18, Documents 6, Web 24. Every test remains enabled.
-- The twenty captures were regenerated from the final source; the Help images are byte-identical to the committed captures, and every image was opened and inspected in both reading directions and both themes.
+- Complete Release suite: **878 passed, 0 failed, 0 skipped**; App 254, Drafting 396, Law 113, FormEngine 67, Storage 18, Documents 6, Web 24. Every test remains enabled.
+- The twenty-eight captures were regenerated from the final source; the Help images are byte-identical to the committed captures, and every image was opened and inspected in both reading directions and both themes.
 
 ### Scope
 
-Production changes are limited to App.axaml, Styles/Workbench.axaml, Styles/Guide.axaml, HelpWindow.axaml, TourOfferView.axaml, TourOverlay.axaml and its visual resource assignments in TourOverlay.axaml.cs. Outside those front-end files, only the new visual tests, this report and the twenty requested PNGs changed. No resx, view model, wording, engine, safety rule, tour logic/anchor, sample or web-demo source changed. No dependency, new project, runtime internet source or asset file was introduced.
+This follow-up's production changes are limited to Styles/Workbench.axaml, Views/HomeView.axaml, TourOfferView.axaml, TourOverlay.axaml and the visual positioning/resource assignments in TourOverlay.axaml.cs. The earlier App.axaml, Styles/Guide.axaml and HelpWindow.axaml work remains from the previous commit. Outside those front-end files, only `GuideVisualTests`, this report and the requested PNGs changed. No resx, view model, wording, engine, safety rule, anchor name or command, sample or web-demo source changed. The card-positioning fallback is visual layout only. No dependency, new project, runtime internet source or asset file was introduced.

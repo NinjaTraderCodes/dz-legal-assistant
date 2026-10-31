@@ -1,4 +1,6 @@
+using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Headless;
@@ -9,7 +11,10 @@ using Avalonia.Media.Imaging;
 using Avalonia.Styling;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
+using CommunityToolkit.Mvvm.Input;
 using DzLegal.App.Views;
+using DzLegal.Presentation.ViewModels;
+using DzLegal.Storage;
 using FluentIcons.Avalonia;
 
 namespace DzLegal.App.Tests;
@@ -122,16 +127,21 @@ public sealed class GuideVisualTests
             Show(window, display);
             var card = view.FindControl<Border>("TourOfferCard")!;
             AssertInside(window, card);
+            Assert.Equal(ColorOf(ResourceBrush(card, "SetupSurfaceBrush")), ColorOf(card.Background!));
+            Assert.IsType<BlurEffect>(view.FindControl<Border>("TourOfferBackground")!.Effect);
             var buttons = new[] { view.FindControl<Button>("AcceptTour")!, view.FindControl<Button>("DeclineTour")! };
             foreach (var control in buttons.Cast<Control>().Append(view.FindControl<TextBlock>("TourOfferTitle")!)) AssertInside(window, control);
             Assert.False(Bounds(buttons[0], window).Intersects(Bounds(buttons[1], window)));
+            Assert.Contains("home", buttons[0].Classes); Assert.Contains("primary", buttons[0].Classes);
+            Assert.Contains("home", buttons[1].Classes); Assert.DoesNotContain("primary", buttons[1].Classes);
+            Assert.Contains("home-title", view.FindControl<TextBlock>("TourOfferTitle")!.Classes);
             Capture(window, display, "phase1-tour-offer");
             CheckTypography(card);
-            CheckBorders(card, "WelcomeControlBrush");
+            CheckBorders(card, "SetupSurfaceBrush");
             if (IsContrast(display)) CheckContrast(window, card, display, "tour-offer");
             CheckKeyboardOrder(window, buttons);
             for (var index = 0; index < buttons.Length; index++)
-                CheckFocus(window, buttons[index], display, "WelcomeControlBrush", IsContrast(display) && index == 0);
+                CheckFocus(window, buttons[index], display, "SetupSurfaceBrush", IsContrast(display) && index == 0);
             Assert.Equal(0, yes); Assert.Equal(0, no);
             window.Close();
         }
@@ -149,28 +159,43 @@ public sealed class GuideVisualTests
             var priorStep = model.SelectedStep;
             model.StartTour(); Layout(window);
             var overlay = window.FindControl<TourOverlay>("GuideOverlay")!;
+            var backdrop = Assert.IsType<LinearGradientBrush>(overlay.FindResource("OnboardingTourBackdropBrush"));
+            Assert.All(backdrop.GradientStops, stop => Assert.True(Luminance(stop.Color) < 0.25, $"{display}: tour backdrop is not dark"));
             for (var stop = 0; stop < 6; stop++)
             {
                 var card = overlay.FindControl<Border>("TourCard")!;
                 AssertInside(window, card);
+                Assert.Equal(ColorOf(ResourceBrush(card, "SetupSurfaceBrush")), ColorOf(card.Background!));
+                Assert.Contains("home-note", overlay.FindControl<TextBlock>("TourCounter")!.Classes);
+                Assert.Contains("home-title", overlay.FindControl<TextBlock>("TourTitle")!.Classes);
+                Assert.Contains("home-text", overlay.FindControl<TextBlock>("TourText")!.Classes);
                 foreach (var name in new[] { "TourCounter", "TourTitle", "TourText", "TourNext", "TourBack", "TourSkip" })
                     AssertInside(window, overlay.FindControl<Control>(name)!);
                 var buttons = new[] { overlay.FindControl<Button>("TourNext")!, overlay.FindControl<Button>("TourBack")!, overlay.FindControl<Button>("TourSkip")! };
+                Assert.Contains("home", buttons[0].Classes); Assert.Contains("primary", buttons[0].Classes);
+                Assert.Contains("home", buttons[1].Classes); Assert.DoesNotContain("primary", buttons[1].Classes);
+                Assert.Contains("home", buttons[2].Classes); Assert.DoesNotContain("primary", buttons[2].Classes);
                 Assert.Equal(model.Tour.NextText, overlay.FindControl<TextBlock>("TourNextLabel")!.Text);
                 Assert.Equal(stop > 0, buttons[1].IsEffectivelyEnabled);
                 for (var first = 0; first < buttons.Length; first++)
                 for (var second = first + 1; second < buttons.Length; second++)
                     Assert.False(Bounds(buttons[first], window).Intersects(Bounds(buttons[second], window)));
-                if (stop is 0 or 3) Capture(window, display, "phase1-tour" + (stop + 1));
+                if (overlay.HighlightBounds is { } highlight)
+                {
+                    var cardRect = new Rect(Canvas.GetLeft(card), Canvas.GetTop(card), card.Bounds.Width, card.Bounds.Height);
+                    Assert.False(cardRect.Intersects(highlight), $"{display}/stop {stop + 1}: card {cardRect} covers anchor {highlight}");
+                }
+                if (stop is 0 or 3 or 5) Capture(window, display, "phase1-tour" + (stop + 1));
                 CheckTypography(card);
-                CheckBorders(card, "WelcomeControlBrush");
+                CheckBorders(card, "SetupSurfaceBrush");
                 if (IsContrast(display)) CheckContrast(window, card, display, "tour-" + (stop + 1));
                 var shade = overlay.FindControl<Canvas>("Shade")!;
                 var outline = Assert.IsType<Border>(shade.Children.Last());
-                var gold = ColorOf(ResourceBrush(overlay, "WelcomeMarkBrush"));
+                var gold = ColorOf(ResourceBrush(overlay, "OnboardingHighlightBrush"));
                 Assert.Equal(gold, ColorOf(outline.BorderBrush!));
                 Assert.Equal(((Thickness)overlay.FindResource("OnboardingFocusThickness")!).Left, outline.BorderThickness.Left);
                 Assert.Equal(((CornerRadius)overlay.FindResource("ControlRadius")!).TopLeft, outline.CornerRadius.TopLeft);
+                Assert.All(shade.Children.OfType<Border>().Where(border => !ReferenceEquals(border, outline)), dim => Assert.Same(backdrop, dim.Background));
                 var stable = shade.Children.ToArray();
                 Layout(window); overlay.PositionCard(); Layout(window);
                 Assert.Equal(stable, shade.Children.ToArray());
@@ -181,7 +206,7 @@ public sealed class GuideVisualTests
                 }
                 var enabled = buttons.Where(button => button.IsEffectivelyEnabled).ToArray();
                 for (var index = 0; index < enabled.Length; index++)
-                    CheckFocus(window, enabled[index], display, "WelcomeControlBrush", IsContrast(display) && stop == 0 && index == 0);
+                    CheckFocus(window, enabled[index], display, "SetupSurfaceBrush", IsContrast(display) && stop == 0 && index == 0);
                 if (stop == 0) CheckKeyboardOrder(window, [buttons[0], buttons[2]]);
                 window.KeyPress(display.Language == "ar" ? Key.Left : Key.Right, RawInputModifiers.None,
                     display.Language == "ar" ? PhysicalKey.ArrowLeft : PhysicalKey.ArrowRight, null);
@@ -194,6 +219,47 @@ public sealed class GuideVisualTests
             Assert.False(model.Tour.IsOpen);
             window.Close();
         }
+    }
+
+    [AvaloniaFact]
+    public void HomeAndTourUseTheSameFamilySurfaceAndButtons()
+    {
+        foreach (var display in ContrastDisplays())
+        {
+            var folder = Directory.CreateTempSubdirectory("dzlegal-guide-home-");
+            try
+            {
+                new ProfileStore(folder.FullName).Save(new LawyerProfile { NameAr = "محامية افتراضية", Gender = "female" });
+                using var model = new HomeViewModel(new RecentCasesStore(folder.FullName), new ProfileStore(folder.FullName),
+                    () => Task.CompletedTask, new VisualWorkspace(), display.Language);
+                var view = new HomeView { DataContext = model };
+                var window = new Window { Content = view };
+                Show(window, display);
+                var panel = view.GetVisualDescendants().OfType<Border>().First(border => border.Classes.Contains("home-panel"));
+                Assert.Equal(ColorOf(ResourceBrush(panel, "SetupSurfaceBrush")), ColorOf(panel.Background!));
+                var newButton = view.FindControl<Button>("HomeNew")!;
+                Assert.Equal(ColorOf(ResourceBrush(newButton, "WelcomeGoldBrush")), ColorOf(newButton.Background!));
+                var tourButton = view.FindControl<Button>("HomeTour")!;
+                Assert.Equal(ColorOf(ResourceBrush(tourButton, "WelcomeControlBrush")), ColorOf(tourButton.Background!));
+                Assert.Contains(view.GetVisualDescendants().OfType<TextBlock>(), text => text.Classes.Contains("home-title"));
+                Capture(window, display, "phase1-home");
+                window.Close();
+            }
+            finally { folder.Delete(true); }
+        }
+    }
+
+    private sealed class VisualWorkspace : IHomeWorkspace
+    {
+        public event PropertyChangedEventHandler? PropertyChanged { add { } remove { } }
+        public ICommand? NewCommand { get; } = new RelayCommand(() => { });
+        public ICommand? OpenCommand { get; } = new RelayCommand(() => { });
+        public ICommand? RestoreLastSessionCommand => null;
+        public ICommand? DismissRecoveryCommand => null;
+        public bool HasRecoverableDraft => false;
+        public bool HasOpenCase => false;
+        public Func<string, Task>? OpenRecent => null;
+        public void ShowCase() { }
     }
 
     private static void CheckKeyboardOrder(Window window, Button[] buttons)
@@ -230,7 +296,11 @@ public sealed class GuideVisualTests
     private static void CheckTypography(Control root)
     {
         var text = root.GetVisualDescendants().OfType<TextBlock>().Where(control => control.IsEffectivelyVisible && !control.GetVisualAncestors().OfType<SymbolIcon>().Any());
-        foreach (var label in text) Assert.True(label.FontSize >= (label.Classes.Contains("onboarding-secondary") ? 12.5 : 14));
+        foreach (var label in text)
+        {
+            var secondary = label.Classes.Contains("onboarding-secondary") || label.Classes.Contains("home-note");
+            Assert.True(label.FontSize >= (secondary ? 12.5 : 14));
+        }
     }
     private static void CheckBorders(Control root, string surfaceKey)
     {
@@ -245,8 +315,9 @@ public sealed class GuideVisualTests
         foreach (var point in new[] { new Point(rect.Left - 2, rect.Center.Y), new Point(rect.Right + 2, rect.Center.Y), new Point(rect.Center.X, rect.Top - 2), new Point(rect.Center.X, rect.Bottom + 2) })
         {
             if (point.X < 0 || point.Y < 0 || point.X >= pixels.Width / display.Scale || point.Y >= pixels.Height / display.Scale) continue;
-            var ratio = Ratio(ink, pixels.At(point.X, point.Y, display.Scale));
-            Assert.True(ratio >= 3, $"{display}: {label} contrast {ratio:F2}");
+            var background = pixels.At(point.X, point.Y, display.Scale);
+            var ratio = Ratio(ink, background);
+            Assert.True(ratio >= 3, $"{display}: {label} contrast {ratio:F2} at {point}, ink {ink}, background {background}, rect {rect}");
         }
     }
     private static void CheckContrast(Window window, Control root, Display display, string screen)
@@ -279,7 +350,9 @@ public sealed class GuideVisualTests
                 for (var y = Math.Max(0, (int)(item.Rect.Top * display.Scale)); y < Math.Min(pixels.Height, (int)(item.Rect.Bottom * display.Scale)); y++)
                 for (var x = Math.Max(0, (int)(item.Rect.Left * display.Scale)); x < Math.Min(pixels.Width, (int)(item.Rect.Right * display.Scale)); x++)
                     minimum = Math.Min(minimum, Ratio(item.Ink, pixels.Pixel(x, y), item.Opacity));
-                Assert.True(minimum >= item.Required, $"{display}/{screen}: {item.Control.Name ?? item.Control.GetType().Name} contrast {minimum:F2}, required {item.Required}");
+                var owner = item.Control.GetVisualAncestors().OfType<Button>().FirstOrDefault()?.Name;
+                var centre = pixels.At(item.Rect.Center.X, item.Rect.Center.Y, display.Scale);
+                Assert.True(minimum >= item.Required, $"{display}/{screen}: {item.Control.Name ?? item.Control.GetType().Name} ({owner}) contrast {minimum:F2}, required {item.Required}, ink {item.Ink}, centre {centre}");
                 measurements.Add($"{item.Control.Name ?? item.Control.GetType().Name}: {minimum:F2}:1");
             }
             if (Environment.GetEnvironmentVariable("DZLEGAL_SCREENSHOTS") is { Length: > 0 } folder)
@@ -296,9 +369,9 @@ public sealed class GuideVisualTests
     }
     private static Color ColorOf(IBrush brush) => Assert.IsAssignableFrom<ISolidColorBrush>(brush).Color;
     private static readonly double[] Linear = Enumerable.Range(0, 256).Select(channel => channel / 255d is var value && value <= .04045 ? value / 12.92 : Math.Pow((value + .055) / 1.055, 2.4)).ToArray();
+    private static double Luminance(Color color) => .2126 * Linear[color.R] + .7152 * Linear[color.G] + .0722 * Linear[color.B];
     private static double Ratio(Color ink, Color background, double opacity = 1)
     {
-        static double Luminance(Color color) => .2126 * Linear[color.R] + .7152 * Linear[color.G] + .0722 * Linear[color.B];
         var alpha = ink.A / 255d * opacity;
         var foreground = alpha >= 1 ? ink : Color.FromRgb((byte)(ink.R * alpha + background.R * (1 - alpha)), (byte)(ink.G * alpha + background.G * (1 - alpha)), (byte)(ink.B * alpha + background.B * (1 - alpha)));
         var first = Luminance(foreground); var second = Luminance(background);

@@ -1,0 +1,180 @@
+<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:DzLegal.Presentation.ViewModels" xmlns:ic="using:FluentIcons.Avalonia"
+        xmlns:app="using:DzLegal.App">
+  <StyleInclude Source="/Styles/Guide.axaml" />
+  <Styles.Resources>
+    <DataTemplate x:Key="LibraryBadgeTemplate" x:DataType="vm:LibraryBadgeViewModel">
+      <WrapPanel>
+        <Border Classes="library-badge"
+                Classes.tone-journal="{Binding IsJournal}"
+                Classes.tone-pdf="{Binding IsPdf}"
+                Classes.tone-images="{Binding IsImages}"
+                Classes.tone-pending="{Binding IsPending}"
+                Classes.tone-reviewed="{Binding IsReviewed}"
+                ToolTip.Tip="{Binding Hint}"
+                AutomationProperties.Name="{Binding Text}"
+                AutomationProperties.HelpText="{Binding Hint}"
+                Margin="0,0,8,4">
+          <Grid ColumnDefinitions="Auto,*" ColumnSpacing="6">
+            <ic:SymbolIcon Classes="library-badge-icon" Symbol="{Binding Icon, Converter={x:Static app:Converters.Symbol}}" VerticalAlignment="Center" />
+            <TextBlock Grid.Column="1" Classes="library-badge-text" Text="{Binding Text}" />
+          </Grid>
+        </Border>
+        <Button Classes="library-what" Command="{Binding WhatCommand}" AutomationProperties.Name="{Binding WhatLabel}" ToolTip.Tip="{Binding WhatLabel}" Margin="0,0,0,4">
+          <TextBlock Classes="library-what-text" Text="{Binding WhatLabel}" TextDecorations="Underline" TextWrapping="Wrap" />
+        </Button>
+      </WrapPanel>
+    </DataTemplate>
+  </Styles.Resources>
+
+  <Style Selector="Border.library-badge">
+    <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource WelcomeEdgeBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="8" />
+    <Setter Property="Padding" Value="10,4" />
+    <Setter Property="MaxWidth" Value="440" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+  </Style>
+  <Style Selector="TextBlock.library-badge-text">
+    <Setter Property="FontSize" Value="13" />
+    <Setter Property="TextWrapping" Value="Wrap" />
+    <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+  </Style>
+  <Style Selector="ic|SymbolIcon.library-badge-icon">
+    <Setter Property="FontSize" Value="16" />
+    <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+  </Style>
+  <Style Selector="Border.library-badge.tone-journal">
+    <Setter Property="Background" Value="{DynamicResource AccentSoftBrush}" />
+  </Style>
+  <Style Selector="Border.library-badge.tone-journal TextBlock.library-badge-text">
+    <Setter Property="Foreground" Value="{DynamicResource AccentBrush}" />
+  </Style>
+  <Style Selector="Border.library-badge.tone-journal ic|SymbolIcon.library-badge-icon">
+    <Setter Property="Foreground" Value="{DynamicResource AccentBrush}" />
+  </Style>
+
+  <Style Selector="Border.library-badge.tone-pdf">
+    <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}" />
+  </Style>
+  <Style Selector="Border.library-badge.tone-pdf TextBlock.library-badge-text">
+    <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+  </Style>
+  <Style Selector="Border.library-badge.tone-pdf ic|SymbolIcon.library-badge-icon">
+    <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+  </Style>
+
+  <Style Selector="Border.library-badge.tone-images TextBlock.library-badge-text">
+    <Setter Property="Foreground" Value="{DynamicResource WarningBrush}" />
+  </Style>
+  <Style Selector="Border.library-badge.tone-images ic|SymbolIcon.library-badge-icon">
+    <Setter Property="Foreground" Value="{DynamicResource WarningBrush}" />
+  </Style>
+
+  <Style Selector="Border.library-badge.tone-pending">
+    <Setter Property="Background" Value="{DynamicResource DangerSoftBrush}" />
+  </Style>
+  <Style Selector="Border.library-badge.tone-pending TextBlock.library-badge-text">
+    <Setter Property="Foreground" Value="{DynamicResource DangerBrush}" />
+  </Style>
+  <Style Selector="Border.library-badge.tone-pending ic|SymbolIcon.library-badge-icon">
+    <Setter Property="Foreground" Value="{DynamicResource DangerBrush}" />
+  </Style>
+
+  <Style Selector="Border.library-badge.tone-reviewed">
+    <Setter Property="Background" Value="{DynamicResource SuccessSoftBrush}" />
+  </Style>
+  <Style Selector="Border.library-badge.tone-reviewed TextBlock.library-badge-text">
+    <Setter Property="Foreground" Value="{DynamicResource SuccessBrush}" />
+  </Style>
+  <Style Selector="Border.library-badge.tone-reviewed ic|SymbolIcon.library-badge-icon">
+    <Setter Property="Foreground" Value="{DynamicResource SuccessBrush}" />
+  </Style>
+  <Style Selector="Button.library-what">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Foreground" Value="{DynamicResource WelcomeTextBrush}" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Padding" Value="2,2" />
+    <Setter Property="MinHeight" Value="32" />
+    <Setter Property="FontSize" Value="13" />
+    <Setter Property="HorizontalContentAlignment" Value="Center" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+  </Style>
+  <Style Selector="Button.library-what:focus-visible">
+    <Setter Property="BorderBrush" Value="{DynamicResource WelcomeFocusBrush}" />
+    <Setter Property="BorderThickness" Value="3" />
+    <Setter Property="CornerRadius" Value="6" />
+  </Style>
+
+  <Style Selector="TextBox.library-search">
+    <Setter Property="Background" Value="{DynamicResource WelcomeControlBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource WelcomeTextBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource WelcomeEdgeBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="10" />
+    <Setter Property="FontSize" Value="16" />
+    <Setter Property="MinHeight" Value="44" />
+    <Setter Property="Padding" Value="12,8" />
+  </Style>
+  <Style Selector="TextBox.library-search:focus">
+    <Setter Property="BorderBrush" Value="{DynamicResource WelcomeFocusBrush}" />
+    <Setter Property="BorderThickness" Value="3" />
+  </Style>
+
+  <Style Selector="ListBox.library-articles">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Padding" Value="0" />
+  </Style>
+  <Style Selector="ListBox.library-articles ListBoxItem">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="Margin" Value="0" />
+    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    <Setter Property="Focusable" Value="False" />
+  </Style>
+  <Style Selector="ListBox.library-articles ListBoxItem:selected /template/ ContentPresenter">
+    <Setter Property="Background" Value="Transparent" />
+  </Style>
+  <Style Selector="Border.library-article">
+    <Setter Property="Background" Value="{DynamicResource WelcomeControlBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource WelcomeEdgeBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="12" />
+    <Setter Property="Padding" Value="16,12" />
+    <Setter Property="Margin" Value="0,0,0,10" />
+  </Style>
+  <Style Selector="TextBlock.library-article-text">
+    <Setter Property="FontFamily" Value="{StaticResource DocumentFont}" />
+    <Setter Property="FontSize" Value="16" />
+    <Setter Property="LineHeight" Value="30" />
+    <Setter Property="TextWrapping" Value="Wrap" />
+    <Setter Property="TextTrimming" Value="None" />
+    <Setter Property="FlowDirection" Value="RightToLeft" />
+    <Setter Property="Foreground" Value="{DynamicResource WelcomeTextBrush}" />
+  </Style>
+  <Style Selector="TextBlock.library-path">
+    <Setter Property="FontSize" Value="13" />
+    <Setter Property="TextWrapping" Value="Wrap" />
+    <Setter Property="FlowDirection" Value="RightToLeft" />
+    <Setter Property="Foreground" Value="{DynamicResource WelcomeSecondaryBrush}" />
+  </Style>
+  <Style Selector="TextBlock.library-reference">
+    <Setter Property="FontSize" Value="15" />
+    <Setter Property="TextWrapping" Value="Wrap" />
+    <Setter Property="FlowDirection" Value="RightToLeft" />
+    <Setter Property="Foreground" Value="{DynamicResource WelcomeTextBrush}" />
+  </Style>
+  <Style Selector="TextBlock.library-edition">
+    <Setter Property="FontSize" Value="14" />
+    <Setter Property="TextWrapping" Value="Wrap" />
+    <Setter Property="FlowDirection" Value="RightToLeft" />
+    <Setter Property="Foreground" Value="{DynamicResource WelcomeTextBrush}" />
+  </Style>
+  <Style Selector="TextBlock.library-status">
+    <Setter Property="FontSize" Value="13" />
+    <Setter Property="TextWrapping" Value="Wrap" />
+    <Setter Property="Foreground" Value="{DynamicResource SuccessBrush}" />
+  </Style>
+</Styles>

@@ -225,3 +225,91 @@ Native verification launched the built Release executable and used Windows UI Au
 ### Scope
 
 This follow-up's production changes are limited to Styles/Workbench.axaml, Views/HomeView.axaml, TourOfferView.axaml, TourOverlay.axaml and the visual positioning/resource assignments in TourOverlay.axaml.cs. The earlier App.axaml, Styles/Guide.axaml and HelpWindow.axaml work remains from the previous commit. Outside those front-end files, only `GuideVisualTests`, this report and the requested PNGs changed. No resx, view model, wording, engine, safety rule, anchor name or command, sample or web-demo source changed. The card-positioning fallback is visual layout only. No dependency, new project, runtime internet source or asset file was introduced.
+
+## Phase 2: the read-only law library
+
+Implemented on `djihane/guide` after `876a04e`. Phase 0 and Phase 1 are unchanged apart from enabling the Home Library button and adding the Help links described below. No legal engine, form, prompt, law text, corpus, export rule or AI-authorship rule changed. The web demo gets none of these screens and still builds and passes `DzLegal.Web.Tests`.
+
+### What the lawyer sees
+
+- **Home.** `HomeLibrary` is enabled and opens the library; the old `HomeComingLater` note is gone. All four Home guide buttons now work.
+- **The list.** One card per text returned by `LawLibrary`, never a hardcoded count, title or article number. Each card shows the title, the official reference, the edition, `ConsolidatedAsOf`, the number of loaded articles, complete/partial coverage, the two evidence badges and an **Official source** button. Complete texts come first, then the largest article count.
+- **Summary and framing.** `LibrarySummary` sits above the cards, `LibraryIntro` under the page title, and `LibraryNote` in the footer. The page uses the same photograph, overlay, glass panel, radii, padding, text styles and gold primary buttons as Home, Welcome, setup, Help and the tour.
+- **Opening a text.** Articles appear in the order supplied by `LawLibrary`. Each row shows `LibraryArticle`, `LawArticle.Path`, the full right-to-left article text in Noto Naskh Arabic at 15 px or more, wrapped and never truncated, and `LibraryAmendedBy` when the article carries an amending reference.
+- **Search.** Reuses `ArticleSearch.Find`, restricted to the opened text. It accepts article numbers (`66`, `المادة 66`), words and Arabic letter variants, and shows `LibraryNoResult` when nothing matches. Search never reaches another text.
+- **Copy.** Each article has a Copy button producing the Appendix A citation `المادة {0} من {1}: {text}`, followed by `LibraryCopied`. Nothing else on the page is editable.
+- **Official source.** The button resolves the code's official URL through `OfficialLinks`, accepts it only when `OfficialLinks.IsOfficial` succeeds, falls back to `LawSourceManifest.OfficialSite` when the code's own URL is a local path, and opens the browser only on click through `IExternalLinks`.
+- **Badges.** Two independent badges. The first derives only from `LawCode.Check` (`OfficialJournalPage`, `OfficialPdfText`, `PageImagesReadTwice`); the second only from `LawCode.Verified`. Both are reusable, map a value to a tone, show an icon plus text (not colour alone), carry a tooltip and automation name, and link to Help page B7 through `LibraryWhat`.
+- **Navigation.** **Back to the list** and Escape return to the list; Escape on the list closes the library. Tab order follows the reading direction, focus is visible, Enter activates, and motion stays at or below 150 ms and is removed with reduced motion.
+- **Performance.** The article list is a virtualised `ListBox`; article view models are created only when a text is opened, never for every code at once. There is no blur on the reading surface and no per-item shadow.
+- **Help.** Help page B7 and the Help index now link to the library when a library action is available; the link is hidden in contexts where it would recurse.
+
+### Files changed
+
+New presentation and app files:
+
+- `src/DzLegal.Presentation/ViewModels/LibraryViewModel.cs`
+- `src/DzLegal.Presentation/ViewModels/LibraryTextViewModel.cs`
+- `src/DzLegal.Presentation/ViewModels/LibraryArticleViewModel.cs`
+- `src/DzLegal.Presentation/ViewModels/LibraryBadgeViewModel.cs`
+- `src/DzLegal.App/Views/LibraryView.axaml` and `.axaml.cs`
+- `src/DzLegal.App/Views/LibraryWindow.axaml` and `.axaml.cs`
+- `src/DzLegal.App/Styles/Library.axaml`
+
+Changed outside the new library files:
+
+- `src/DzLegal.App/Views/GuideNavigation.cs`: library entry point, Help callback and modal wiring.
+- `src/DzLegal.App/Views/HomeView.axaml`, `src/DzLegal.Presentation/ViewModels/HomeViewModel.cs` and `HomeGuideActions.cs`: enable the fourth Home action and report law-data failures.
+- `src/DzLegal.App/Views/HelpWindow.axaml` and `src/DzLegal.Presentation/ViewModels/HelpViewModel.cs`: optional library link on the index and page B7.
+- `src/DzLegal.App/Converters.cs`: string-to-`FluentIcons.Common.Symbol` converter for the reusable badge icon.
+- `src/DzLegal.Presentation/Resources/Strings.resx` and `Strings.en.resx`: all new Arabic/English wording; `HomeComingLater` removed from both.
+- `tests/DzLegal.App.Tests/LibraryTests.cs` (new).
+- `tests/DzLegal.App.Tests/PhaseZeroWorkbenchTests.cs`: four guide actions and all four Home buttons enabled; the test that only checked `HomeComingLater` was removed.
+- `tests/DzLegal.App.Tests/SetupTests.cs`: the resx scan now includes the `Library*` views.
+- `docs/GUIDE-RELEASE.md` and `docs/images/guide/phase2-*.png`.
+
+No file under `src/DzLegal.Drafting`, `src/DzLegal.Law`, `src/DzLegal.Domain`, `src/DzLegal.FormEngine`, `src/DzLegal.Documents`, `src/DzLegal.ModelProviders.*`, `src/DzLegal.Harness`, `data/` or the law-corpus folders changed.
+
+### Tests
+
+Added fifteen tests in `LibraryTests`:
+
+- cards, counts, coverage and ordering read from `LawLibrary`;
+- badge mapping from `LawCode.Check` and `LawCode.Verified`, including Help B7 links;
+- search by number, word and Arabic variants, restricted to the opened text, and `LibraryNoResult`;
+- amended-article reference;
+- Copy format and `LibraryCopied` in Arabic and English;
+- Official source is click-only and uses `IExternalLinks`;
+- Help index and page B7 links;
+- list and reading layout at all sixteen display combinations (Arabic/English, light/dark, 1366 x 768 and 1920 x 1080, 100% and 125%);
+- virtualisation and lazy article creation;
+- reading-direction Tab order and visible focus;
+- contrast of text, icons, borders and focus in both themes;
+- resx key coverage.
+
+No test was deleted, skipped or weakened. The only existing assertions changed were in `PhaseZeroWorkbenchTests`, where the expected Home state is now four enabled guide buttons, and `SetupTests`, where the existing resx scan was extended to the new library views.
+
+### Verification
+
+- Full Release build: **0 warnings, 0 errors**.
+- Complete Release suite: **893 passed, 0 failed, 0 skipped**; App 269, Drafting 396, Law 113, FormEngine 67, Storage 18, Documents 6, Web 24.
+- Native verification launched the built Release executable, opened Welcome, then Home, then the law library with Windows UI Automation. It opened the CPCA text, searched `66`, read Article 66, invoked Copy, checked the Arabic Appendix A clipboard text, returned to the list with **Back**, and closed the library. No stderr output or unhandled exception was produced. The per-user profile, preferences, setup marker and draft files were backed up before the launch and restored afterwards.
+- The 26 captures below were regenerated from the final source and inspected individually in Arabic and English, light and dark, at 1366 x 768 and 1920 x 1080, including the end of the list where the partial cards appear. The two extra end-of-list captures show the partial-coverage cards and their badges after scrolling.
+
+### Screenshots
+
+| Screen | Arabic light | Arabic dark | English light | English dark |
+| --- | --- | --- | --- | --- |
+| Library list, 1366 x 768 | [View](images/guide/phase2-library-list-ar-light-1366x768.png) | [View](images/guide/phase2-library-list-ar-dark-1366x768.png) | [View](images/guide/phase2-library-list-en-light-1366x768.png) | [View](images/guide/phase2-library-list-en-dark-1366x768.png) |
+| Library list, 1920 x 1080 | [View](images/guide/phase2-library-list-ar-light-1920x1080.png) | [View](images/guide/phase2-library-list-ar-dark-1920x1080.png) | [View](images/guide/phase2-library-list-en-light-1920x1080.png) | [View](images/guide/phase2-library-list-en-dark-1920x1080.png) |
+| Library reading, 1366 x 768 | [View](images/guide/phase2-library-reading-ar-light-1366x768.png) | [View](images/guide/phase2-library-reading-ar-dark-1366x768.png) | [View](images/guide/phase2-library-reading-en-light-1366x768.png) | [View](images/guide/phase2-library-reading-en-dark-1366x768.png) |
+| Library reading, 1920 x 1080 | [View](images/guide/phase2-library-reading-ar-light-1920x1080.png) | [View](images/guide/phase2-library-reading-ar-dark-1920x1080.png) | [View](images/guide/phase2-library-reading-en-light-1920x1080.png) | [View](images/guide/phase2-library-reading-en-dark-1920x1080.png) |
+| Help index with library link | [View](images/guide/phase2-help-index-ar-light-1366x768.png) | [View](images/guide/phase2-help-index-ar-dark-1366x768.png) | [View](images/guide/phase2-help-index-en-light-1366x768.png) | [View](images/guide/phase2-help-index-en-dark-1366x768.png) |
+| Help page B7 with library link | [View](images/guide/phase2-help-page-seven-ar-light-1366x768.png) | [View](images/guide/phase2-help-page-seven-ar-dark-1366x768.png) | [View](images/guide/phase2-help-page-seven-en-light-1366x768.png) | [View](images/guide/phase2-help-page-seven-en-dark-1366x768.png) |
+| Partial cards at the end of the list | [View](images/guide/phase2-library-list-end-ar-light-1920x1080.png) | | | [View](images/guide/phase2-library-list-end-en-dark-1920x1080.png) |
+
+### Scope and uncertainty
+
+The production change is confined to the presentation view models, the new Avalonia views/styles, the Home and Help entry points, the symbol converter, the two resource files and the tests. The legal engine, law data, prompts and safety rules are untouched; PDF and Word output are unchanged.
+
+The one judgement call worth recording is the Help link callback. `GuideNavigation.CreateActions` now passes the library callback into `ShowHelpAsync`, so Help opened from Home shows the B7/index library link. Help opened from inside the library also shows the link, but its callback closes Help and returns to the already-open library instead of opening a second one. No other uncertainty or blocker remains.

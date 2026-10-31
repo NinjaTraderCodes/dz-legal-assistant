@@ -150,7 +150,7 @@ public sealed class PhaseZeroWorkbenchTests : IDisposable
             var homeWorkbench = new Window { DataContext = homeModel };
             using var workspace = new HomeWorkspace(homeWorkbench, () => { }, openRecent: _ => Task.CompletedTask);
             using var home = new HomeViewModel(store, new ProfileStore(_folder.FullName), () => Task.CompletedTask,
-                workspace, localization: loc, guides: new HomeGuideActions(() => Task.CompletedTask, () => Task.CompletedTask, () => Task.CompletedTask));
+                workspace, localization: loc, guides: new HomeGuideActions(() => Task.CompletedTask, () => Task.CompletedTask, () => Task.CompletedTask, () => Task.CompletedTask));
             Assert.False(home.WorkspaceUnavailable);
             Assert.False(home.RecentOpeningUnavailable);
             var view = new HomeView { DataContext = home };
@@ -158,10 +158,8 @@ public sealed class PhaseZeroWorkbenchTests : IDisposable
                 RequestedThemeVariant = dark ? ThemeVariant.Dark : ThemeVariant.Light };
             homeWindow.Show(); homeWindow.SetRenderScaling(scale); Layout(homeWindow);
             Assert.Equal(3, home.RecentCases.Count);
-            foreach (var name in new[] { "HomeSample", "HomeTour", "HomeHelp" })
+            foreach (var name in new[] { "HomeSample", "HomeTour", "HomeHelp", "HomeLibrary" })
                 Assert.True(view.FindControl<Button>(name)!.IsEnabled);
-            Assert.False(view.FindControl<Button>("HomeLibrary")!.IsEnabled);
-            Assert.Equal(1, view.GetVisualDescendants().OfType<TextBlock>().Count(text => text.Text == loc["HomeComingLater"]));
             if (size.Item1 == 1366 && scale == 1) Capture(homeWindow, $"phase0-recents-{language}-{(dark ? "dark" : "light")}-1366x768");
             homeWindow.Close();
         }

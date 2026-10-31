@@ -43,6 +43,10 @@
                     <TextBlock Grid.Column="1" Text="{Binding L[StartTour]}" FontSize="{DynamicResource OnboardingBodySize}" TextWrapping="Wrap" />
                   </Grid>
                 </Button>
+                <Button Name="HelpLibrary" Classes="onboarding" Command="{Binding LibraryCommand}" AutomationProperties.Name="{Binding L[HomeLibrary]}"
+                        IsVisible="{Binding CanOpenLibrary}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,12,0,0">
+                  <TextBlock Text="{Binding L[HomeLibrary]}" FontSize="{DynamicResource OnboardingBodySize}" TextWrapping="Wrap" />
+                </Button>
               </StackPanel>
               <ItemsControl Name="HelpParagraphs" ItemsSource="{Binding Paragraphs}" IsVisible="{Binding !IsIndex}" MaxWidth="{DynamicResource OnboardingReadingWidth}" HorizontalAlignment="Stretch">
                 <ItemsControl.ItemTemplate><DataTemplate x:DataType="vm:HelpParagraphViewModel">
@@ -51,7 +55,11 @@
               </ItemsControl>
             </Panel>
           </ScrollViewer>
-          <Button Name="HelpBack" Grid.Row="1" Classes="onboarding" Content="{Binding L[HelpBack]}" Command="{Binding BackCommand}" IsVisible="{Binding !IsIndex}" HorizontalAlignment="Left" />
+          <WrapPanel Grid.Row="1" HorizontalAlignment="Left">
+            <Button Name="HelpBack" Classes="onboarding" Content="{Binding L[HelpBack]}" Command="{Binding BackCommand}" IsVisible="{Binding !IsIndex}" Margin="0,0,8,0" />
+            <Button Name="HelpLibraryPage" Classes="onboarding" Content="{Binding L[HomeLibrary]}" Command="{Binding LibraryCommand}"
+                    IsVisible="{Binding ShowLibraryPageLink}" />
+          </WrapPanel>
         </Grid>
       </Border>
     </Grid>

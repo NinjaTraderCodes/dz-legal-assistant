@@ -31,6 +31,10 @@ public static class Converters
     public static readonly IValueConverter DarkTheme =
         new FuncValueConverter<bool, Avalonia.Styling.ThemeVariant>(dark => dark ? Avalonia.Styling.ThemeVariant.Dark : Avalonia.Styling.ThemeVariant.Light);
 
+    /// <summary>The law-library badge icon, chosen by name in its view model.</summary>
+    public static readonly IValueConverter Symbol = new FuncValueConverter<string, FluentIcons.Common.Symbol>(
+        name => Enum.TryParse<FluentIcons.Common.Symbol>(name, out var symbol) ? symbol : FluentIcons.Common.Symbol.Info);
+
     public static readonly IValueConverter IsZero = new FuncValueConverter<int, bool>(v => v == 0);
 
     public static readonly IValueConverter IsOne = new FuncValueConverter<int, bool>(v => v == 1);

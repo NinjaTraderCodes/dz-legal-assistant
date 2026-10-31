@@ -1,0 +1,145 @@
+<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DzLegal.Presentation.ViewModels" xmlns:app="using:DzLegal.App"
+             xmlns:ic="using:FluentIcons.Avalonia"
+             x:Class="DzLegal.App.Views.LibraryView" x:DataType="vm:LibraryViewModel"
+             FontFamily="{DynamicResource UiFont}"
+             FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}">
+  <UserControl.Styles>
+    <StyleInclude Source="/Styles/Library.axaml" />
+  </UserControl.Styles>
+  <Grid ClipToBounds="True">
+    <Border Name="LibraryBackground" Background="{DynamicResource OnboardingPhotograph}" FlowDirection="LeftToRight">
+      <Border.Effect><BlurEffect Radius="{DynamicResource OnboardingBackgroundBlur}" /></Border.Effect>
+    </Border>
+    <Border Background="{DynamicResource WelcomeOverlayBrush}" />
+    <Grid Name="LibraryPage" RowDefinitions="Auto,*,Auto" RowSpacing="{DynamicResource OnboardingPageGap}"
+          Margin="{DynamicResource OnboardingPageMargin}">
+      <Border Name="LibraryHeadingPanel" Background="{DynamicResource WelcomeReadingBrush}"
+              CornerRadius="{DynamicResource OnboardingCardRadius}" Padding="{DynamicResource OnboardingHeaderPadding}">
+        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="{DynamicResource OnboardingPageGap}">
+          <Border Background="{DynamicResource WelcomeControlBrush}" CornerRadius="{DynamicResource ControlRadius}"
+                  Padding="{DynamicResource OnboardingIconPadding}" VerticalAlignment="Center">
+            <ic:SymbolIcon Name="LibraryHeadingIcon" Classes="onboarding-icon" Symbol="DocumentText" />
+          </Border>
+          <StackPanel Grid.Column="1" Spacing="2" VerticalAlignment="Center">
+            <TextBlock Name="LibraryTitleText" Classes="home-title" Text="{Binding Title}" />
+            <TextBlock Name="LibraryIntroText" Classes="home-note" Text="{Binding L[LibraryIntro]}" IsVisible="{Binding IsList}" />
+            <TextBlock Name="LibraryReadingReference" Classes="home-note" Text="{Binding OpenedText.Reference}"
+                       IsVisible="{Binding IsReading}" FlowDirection="RightToLeft" />
+          </StackPanel>
+          <Button Name="LibraryBack" Grid.Column="2" Classes="home" Content="{Binding L[LibraryBack]}"
+                  Command="{Binding BackCommand}" IsVisible="{Binding IsReading}" VerticalAlignment="Center" />
+        </Grid>
+      </Border>
+
+      <Grid Grid.Row="1">
+        <ScrollViewer Name="LibraryListScroll" IsVisible="{Binding IsList}" HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto">
+          <StackPanel Spacing="{DynamicResource OnboardingPageGap}" MaxWidth="{DynamicResource OnboardingContentWidth}"
+                      HorizontalAlignment="Stretch">
+            <Border Name="LibrarySummaryPanel" Classes="home-panel">
+              <TextBlock Name="LibrarySummaryText" Classes="home-text" Text="{Binding Summary}" />
+            </Border>
+            <ItemsControl Name="LibraryCards" ItemsSource="{Binding Texts}">
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:LibraryTextViewModel">
+                  <Border Classes="home-panel library-card" Width="620" Margin="0,0,12,12" VerticalAlignment="Top">
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="8">
+                      <TextBlock Classes="home-text" FontSize="20" FontWeight="SemiBold" Text="{Binding Title}" />
+                      <StackPanel Grid.Row="1" Spacing="2">
+                        <TextBlock Classes="home-note" Text="{Binding L[LibraryReference]}" />
+                        <TextBlock Classes="library-reference" Text="{Binding Reference}" IsVisible="{Binding HasReference}" />
+                      </StackPanel>
+                      <Grid Grid.Row="2" ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <StackPanel IsVisible="{Binding HasEdition}" Spacing="2">
+                          <TextBlock Classes="home-note" Text="{Binding L[LibraryEdition]}" />
+                          <TextBlock Classes="library-edition" Text="{Binding Edition}" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" IsVisible="{Binding HasAsOf}" Spacing="2">
+                          <TextBlock Classes="home-text" Text="{Binding AsOfText}" />
+                        </StackPanel>
+                      </Grid>
+                      <TextBlock Grid.Row="3" Classes="home-text" Text="{Binding ArticlesText}" />
+                      <StackPanel Grid.Row="4" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                        <TextBlock Classes="home-text" FontWeight="SemiBold" Text="{Binding CoverageText}"
+                                   ToolTip.Tip="{Binding CoverageHint}" AutomationProperties.HelpText="{Binding CoverageHint}" />
+                        <TextBlock Classes="home-note" Text="{Binding CoverageHint}" IsVisible="{Binding IsPartial}"
+                                   VerticalAlignment="Center" />
+                      </StackPanel>
+                      <StackPanel Grid.Row="5" Spacing="2">
+                        <ContentControl Content="{Binding CheckBadge}" ContentTemplate="{StaticResource LibraryBadgeTemplate}" />
+                        <ContentControl Content="{Binding ReviewBadge}" ContentTemplate="{StaticResource LibraryBadgeTemplate}" />
+                      </StackPanel>
+                      <WrapPanel Grid.Row="6">
+                        <Button Classes="home primary" Content="{Binding L[LibraryOpen]}" Command="{Binding OpenCommand}"
+                                Margin="0,0,8,8" AutomationProperties.Name="{Binding L[LibraryOpen]}" />
+                        <Button Classes="home" Content="{Binding L[LibraryOfficial]}" Command="{Binding OfficialSourceCommand}"
+                                Margin="0,0,8,8" AutomationProperties.Name="{Binding L[LibraryOfficial]}" />
+                      </WrapPanel>
+                    </Grid>
+                  </Border>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </ScrollViewer>
+
+        <Grid IsVisible="{Binding IsReading}" RowDefinitions="Auto,*" RowSpacing="{DynamicResource OnboardingPageGap}"
+              MaxWidth="{DynamicResource OnboardingContentWidth}" HorizontalAlignment="Stretch">
+          <Border Name="LibraryReadingPanel" Classes="home-panel">
+            <Grid RowDefinitions="Auto,Auto" RowSpacing="8">
+              <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                <TextBlock Classes="library-reference" Text="{Binding OpenedText.Reference}" />
+                <TextBlock Grid.Column="1" Classes="home-note" Text="{Binding OpenedText.ArticlesText}" VerticalAlignment="Center" />
+              </Grid>
+              <Grid Grid.Row="1" ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                <TextBox Name="LibrarySearchBox" Classes="library-search" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                         PlaceholderText="{Binding L[LibrarySearch]}" AutomationProperties.Name="{Binding L[LibrarySearch]}" />
+                <TextBlock Grid.Column="1" Name="LibraryStatus" Classes="library-status" Text="{Binding StatusMessage}"
+                           IsVisible="{Binding HasStatus}" VerticalAlignment="Center" />
+              </Grid>
+            </Grid>
+          </Border>
+          <Border Grid.Row="1" Classes="home-panel" Padding="12">
+            <Grid>
+              <ListBox Name="LibraryArticles" Classes="library-articles" ItemsSource="{Binding Articles}"
+                       Focusable="False" IsVisible="{Binding !HasNoResult}"
+                       ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <ListBox.ItemsPanel>
+                  <ItemsPanelTemplate><VirtualizingStackPanel /></ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                  <DataTemplate x:DataType="vm:LibraryArticleViewModel">
+                    <Border Classes="library-article">
+                      <Grid RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="6">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                          <TextBlock Classes="home-text" FontWeight="SemiBold" Text="{Binding NumberText}" />
+                          <Button Grid.Column="1" Classes="home" Content="{Binding L[LibraryCopy]}" Command="{Binding CopyCommand}"
+                                  AutomationProperties.Name="{Binding L[LibraryCopy]}" />
+                        </Grid>
+                        <TextBlock Grid.Row="1" Classes="library-path" Text="{Binding PathText}" IsVisible="{Binding HasPath}" />
+                        <TextBlock Grid.Row="2" Classes="library-article-text" Text="{Binding Text}" />
+                        <TextBlock Grid.Row="3" Classes="home-note" Text="{Binding AmendedByText}" IsVisible="{Binding HasAmendedBy}" />
+                      </Grid>
+                    </Border>
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
+              <TextBlock Name="LibraryNoResult" Classes="home-text" Text="{Binding L[LibraryNoResult]}"
+                         IsVisible="{Binding HasNoResult}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                         TextAlignment="Center" TextWrapping="Wrap" />
+            </Grid>
+          </Border>
+        </Grid>
+      </Grid>
+
+      <Border Grid.Row="2" Background="{DynamicResource WelcomeReadingBrush}"
+              CornerRadius="{DynamicResource OnboardingCardRadius}" Padding="12,8">
+        <TextBlock Name="LibraryNoteText" Classes="home-note" Text="{Binding Note}" TextAlignment="Center" />
+      </Border>
+    </Grid>
+  </Grid>
+</UserControl>

@@ -7,11 +7,13 @@ namespace DzLegal.Presentation.ViewModels;
 public sealed partial class HelpViewModel : ObservableObject, IDisposable
 {
     private readonly Func<Task> _startTour;
+    private readonly Func<Task>? _openLibrary;
 
-    public HelpViewModel(Loc localization, Func<Task> startTour)
+    public HelpViewModel(Loc localization, Func<Task> startTour, Func<Task>? openLibrary = null)
     {
         L = localization;
         _startTour = startTour;
+        _openLibrary = openLibrary;
         Pages = Enumerable.Range(1, 7).Select(number => new HelpPageViewModel(number, L, Select)).ToArray();
         L.PropertyChanged += LanguageChanged;
     }
@@ -20,6 +22,9 @@ public sealed partial class HelpViewModel : ObservableObject, IDisposable
     public IReadOnlyList<HelpPageViewModel> Pages { get; }
     public bool IsRightToLeft => L.IsRightToLeft;
     public bool IsIndex => SelectedPage is null;
+    public bool IsLibraryPage => SelectedPage?.Number == 7;
+    public bool CanOpenLibrary => _openLibrary is not null;
+    public bool ShowLibraryPageLink => CanOpenLibrary && IsLibraryPage;
     public string Title => SelectedPage?.Title ?? L["HelpTitle"];
     public IReadOnlyList<HelpParagraphViewModel> Paragraphs => SelectedPage?.Paragraphs ?? [];
     [ObservableProperty] public partial HelpPageViewModel? SelectedPage { get; private set; }
@@ -28,6 +33,11 @@ public sealed partial class HelpViewModel : ObservableObject, IDisposable
     private void Select(HelpPageViewModel page) => SelectedPage = page;
     [RelayCommand] private void Back() => SelectedPage = null;
     [RelayCommand] private async Task TourAsync() => await _startTour();
+    [RelayCommand(CanExecute = nameof(CanOpenLibrary))]
+    private async Task LibraryAsync()
+    {
+        if (_openLibrary is not null) await _openLibrary();
+    }
     partial void OnSelectedPageChanged(HelpPageViewModel? value) => Refresh();
 
     private void LanguageChanged(object? sender, PropertyChangedEventArgs args)
@@ -39,8 +49,8 @@ public sealed partial class HelpViewModel : ObservableObject, IDisposable
 
     private void Refresh()
     {
-        OnPropertyChanged(nameof(IsIndex)); OnPropertyChanged(nameof(Title));
-        OnPropertyChanged(nameof(Paragraphs)); OnPropertyChanged(nameof(IsRightToLeft));
+        OnPropertyChanged(nameof(IsIndex)); OnPropertyChanged(nameof(IsLibraryPage)); OnPropertyChanged(nameof(ShowLibraryPageLink));
+        OnPropertyChanged(nameof(Title)); OnPropertyChanged(nameof(Paragraphs)); OnPropertyChanged(nameof(IsRightToLeft));
     }
 
     public void Dispose() => L.PropertyChanged -= LanguageChanged;

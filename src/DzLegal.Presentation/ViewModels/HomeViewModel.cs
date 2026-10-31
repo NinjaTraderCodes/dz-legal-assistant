@@ -91,16 +91,18 @@ public sealed partial class HomeViewModel : ObservableObject, IDisposable
     private bool CanResume() => CanInteract && HasRecoverableDraft && _workspace?.RestoreLastSessionCommand?.CanExecute(null) == true;
     private bool CanBack() => CanInteract && HasOpenCase;
     private bool CanGuide() => CanInteract && _guides is not null;
+    private bool CanLibrary() => CanInteract && _guides?.Library is not null;
 
     [RelayCommand(CanExecute = nameof(CanGuide))] private async Task SampleAsync() => await RunGuideAsync(_guides!.Sample);
     [RelayCommand(CanExecute = nameof(CanGuide))] private async Task TourAsync() => await RunGuideAsync(_guides!.Tour);
     [RelayCommand(CanExecute = nameof(CanGuide))] private async Task HelpAsync() => await RunGuideAsync(_guides!.Help);
+    [RelayCommand(CanExecute = nameof(CanLibrary))] private async Task LibraryAsync() => await RunGuideAsync(_guides!.Library!);
 
     private async Task RunGuideAsync(Func<Task> action)
     {
         _busy = true; OnPropertyChanged(nameof(CanInteract)); NotifyCommands();
         try { await action(); }
-        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or InvalidOperationException or ArgumentException or System.Text.Json.JsonException)
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or InvalidOperationException or ArgumentException or System.Text.Json.JsonException or DzLegal.Law.LawDataException)
         { SetMessage("HomeActionFailed"); }
         finally { _busy = false; Reload(); OnPropertyChanged(nameof(CanInteract)); NotifyCommands(); }
     }
@@ -192,6 +194,7 @@ public sealed partial class HomeViewModel : ObservableObject, IDisposable
         NewPetitionCommand.NotifyCanExecuteChanged(); OpenCaseCommand.NotifyCanExecuteChanged();
         ResumeCommand.NotifyCanExecuteChanged(); BackToCaseCommand.NotifyCanExecuteChanged();
         SampleCommand.NotifyCanExecuteChanged(); TourCommand.NotifyCanExecuteChanged(); HelpCommand.NotifyCanExecuteChanged();
+        LibraryCommand.NotifyCanExecuteChanged();
     }
     public void Dispose()
     {

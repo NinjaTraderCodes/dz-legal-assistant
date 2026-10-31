@@ -9,8 +9,8 @@ namespace DzLegal.Harness;
 /// The engines the harness can measure, from a <c>--models</c> entry:
 /// <list type="bullet">
 /// <item><c>stub</c>: template mode, no AI.</item>
-/// <item><c>openrouter</c> or <c>openrouter:&lt;model&gt;</c>: OpenRouter (default google/gemma-3-4b-it, the web demo's
-/// engine), key from OPENROUTER_API_KEY. OPENROUTER_ENDPOINT overrides the address (a local mock in tests).</item>
+/// <item><c>openrouter</c> or <c>openrouter:&lt;model&gt;</c>: OpenRouter (default Nemotron 3 Ultra, the online model chosen
+/// on 31 Oct 2026), key from OPENROUTER_API_KEY. OPENROUTER_ENDPOINT overrides the address (a local mock in tests).</item>
 /// <item><c>google:&lt;model&gt;</c>: Google AI Studio, key from GOOGLE_API_KEY.</item>
 /// <item>anything else: a local Ollama model (gemma3:4b…).</item>
 /// </list>
@@ -18,7 +18,11 @@ namespace DzLegal.Harness;
 /// </summary>
 public static class HarnessModels
 {
-    public const string DefaultOpenRouterModel = "google/gemma-3-4b-it";
+    /// <summary>
+    /// Nemotron 3 Ultra, the online model chosen after the Alpha-02 upper-bound run (31 Oct 2026); its reasoning is
+    /// switched off by the provider. Give <c>openrouter:google/gemma-3-4b-it</c> for the offline model's own behaviour.
+    /// </summary>
+    public const string DefaultOpenRouterModel = "nvidia/nemotron-3-ultra-550b-a55b";
 
     /// <summary>
     /// Gemma 4 26B A4B, the web demo's model: Google AI Studio serves new keys only the large Gemma 4 models (26B A4B and
@@ -66,6 +70,7 @@ public static class HarnessModels
                 Model = model,
                 Timeout = timeout,
                 MergeSystemPrompt = model.Contains("gemma", StringComparison.OrdinalIgnoreCase) || model == "mock",
+                DisableReasoning = model.Contains("nemotron", StringComparison.OrdinalIgnoreCase),
                 RateLimit = rateLimit ?? RateLimitPolicy.None,
                 // Prefer whichever provider of this same model has capacity, instead of queuing on a busy one.
                 ProviderSort = "throughput",

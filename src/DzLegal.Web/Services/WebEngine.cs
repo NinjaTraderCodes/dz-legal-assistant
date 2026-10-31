@@ -255,6 +255,8 @@ public sealed partial class WebEngine : IDisposable
             Temperature = Settings.Temperature,
             MaxTokens = Settings.MaxTokens,
             MergeSystemPrompt = model.Contains("gemma", StringComparison.OrdinalIgnoreCase),
+            // Nemotron reasons first unless told not to, and the analysis's short answer caps would go to that reasoning.
+            DisableReasoning = model.Contains("nemotron", StringComparison.OrdinalIgnoreCase),
         }),
     };
 

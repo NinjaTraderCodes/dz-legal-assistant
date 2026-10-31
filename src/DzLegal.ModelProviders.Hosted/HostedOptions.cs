@@ -73,6 +73,14 @@ public sealed record OpenAiCompatibleOptions
     /// "latency"), with fallbacks to the others allowed. Null sends no preference (OpenRouter's default routing).
     /// </summary>
     public string? ProviderSort { get; init; }
+
+    /// <summary>
+    /// Models that reason before answering (Nemotron) spend the short answer caps of the analysis on their reasoning
+    /// and come back empty or cut off. True sends OpenRouter's reasoning switch off, and for a Nemotron model its own
+    /// system line «detailed thinking off» (upper-bound run of 31 Oct 2026: 0 failed calls with it, reasoning text
+    /// in the answer without it).
+    /// </summary>
+    public bool DisableReasoning { get; init; }
 }
 
 /// <summary>

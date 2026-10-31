@@ -48,11 +48,12 @@ public sealed class OpenAiCompatibleModelProvider : IModelProvider, IDisposable
         var turns = request.Turns(_options.MergeSystemPrompt).Select(t => new Message(t.Role, t.Text));
         IReadOnlyList<Message> messages = _options.MergeSystemPrompt
             ? [.. turns]
-            : [new Message("system", request.SystemPrompt), .. turns];
+            : [new Message("system", SystemPrompt(request)), .. turns];
         var maxTokens = request.MaxTokens is { } cap ? Math.Min(cap, _options.MaxTokens) : _options.MaxTokens;
         var body = new Request(_options.Model, messages, _options.Temperature, maxTokens, Stream: true)
         {
             Provider = _options.ProviderSort is { } sort ? new ProviderPreference(sort, AllowFallbacks: true) : null,
+            Reasoning = _options.DisableReasoning ? new ReasoningOptions(Enabled: false) : null,
         };
         using var response = await HostedHttp.SendAsync(
             _http,
@@ -106,7 +107,23 @@ public sealed class OpenAiCompatibleModelProvider : IModelProvider, IDisposable
         [JsonPropertyName("provider")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public ProviderPreference? Provider { get; init; }
+
+        [JsonPropertyName("reasoning")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public ReasoningOptions? Reasoning { get; init; }
     }
+
+    /// <summary>
+    /// Nemotron reads its reasoning switch from the system prompt («detailed thinking off»); the shared rules, if any,
+    /// follow it. Other models get the rules unchanged.
+    /// </summary>
+    private string SystemPrompt(ModelRequest request) =>
+        _options.DisableReasoning && _options.Model.Contains("nemotron", StringComparison.OrdinalIgnoreCase)
+            ? request.SystemPrompt.Length == 0 ? "detailed thinking off" : "detailed thinking off\n\n" + request.SystemPrompt
+            : request.SystemPrompt;
+
+    /// <summary>OpenRouter's unified reasoning switch: https://openrouter.ai/docs/use-cases/reasoning-tokens.</summary>
+    private sealed record ReasoningOptions([property: JsonPropertyName("enabled")] bool Enabled);
 
     /// <summary>OpenRouter's provider routing: https://openrouter.ai/docs/features/provider-routing.</summary>
     private sealed record ProviderPreference(

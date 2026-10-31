@@ -288,6 +288,33 @@ public class RateLimitTests
     private const string UpstreamLimited =
         """{"error":{"message":"Provider returned error","code":429,"metadata":{"raw":"google/gemma-3-4b-it is temporarily rate-limited upstream.","provider_name":"DeepInfra"}}}""";
 
+    [Fact]
+    public async Task ReasoningIsSwitchedOffForAModelThatThinksBeforeAnswering()
+    {
+        // Nemotron through OpenRouter returned the start of its reasoning as the answer (31 Oct 2026); with the switch
+        // off, 0 of 20 calls failed in the upper-bound run.
+        var handler = new FakeHandler(_ => GoogleAiProviderTests.Sse("""{"choices":[{"delta":{"content":"ok"}}]}"""));
+        using (var nemotron = new OpenAiCompatibleModelProvider(new OpenAiCompatibleOptions { Label = "OpenRouter", Endpoint = new Uri("https://openrouter.ai/api/v1/"), ApiKey = "k", Model = "nvidia/nemotron-3-ultra-550b-a55b", DisableReasoning = true }, handler))
+        {
+            await nemotron.GenerateAsync(Request, CancellationToken.None);
+        }
+
+        using (var plain = Provider(handler, RateLimitPolicy.None))
+        {
+            await plain.GenerateAsync(Request, CancellationToken.None);
+        }
+
+        using var first = JsonDocument.Parse(handler.Requests[0].Body);
+        Assert.False(first.RootElement.GetProperty("reasoning").GetProperty("enabled").GetBoolean());
+        var system = first.RootElement.GetProperty("messages")[0];
+        Assert.Equal("system", system.GetProperty("role").GetString());
+        Assert.StartsWith("detailed thinking off", system.GetProperty("content").GetString(), StringComparison.Ordinal);
+
+        using var second = JsonDocument.Parse(handler.Requests[1].Body);
+        Assert.False(second.RootElement.TryGetProperty("reasoning", out _));
+        Assert.DoesNotContain("detailed thinking", second.RootElement.GetProperty("messages")[0].GetProperty("content").GetString(), StringComparison.Ordinal);
+    }
+
     private static OpenAiCompatibleModelProvider Provider(FakeHandler handler, RateLimitPolicy policy) =>
         new(new OpenAiCompatibleOptions { Label = "OpenRouter", Endpoint = new Uri("https://openrouter.ai/api/v1/"), ApiKey = "k", Model = "google/gemma-3-4b-it", RateLimit = policy }, handler);
 

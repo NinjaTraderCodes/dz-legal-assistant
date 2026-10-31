@@ -65,7 +65,7 @@ Settings (`src/DzLegal.Web/appsettings.json`, section `Engines`; any of them can
 | Setting | Default | Meaning |
 |---|---|---|
 | `Order` | openrouter, google, groq | which service is tried first; a service without a key is skipped |
-| `OpenRouterModel` | `google/gemma-3-4b-it` | the desktop's model |
+| `OpenRouterModel` | `nvidia/nemotron-3-ultra-550b-a55b` | the online model chosen on 31 Oct 2026; reasoning is switched off for Nemotron ids |
 | `GoogleModels` | Gemma 4 26B A4B, Gemma 4 31B, then Gemma 3 | tried in order; models Google no longer serves are dropped at start-up |
 | `MaxConcurrentCalls` | 2 | model calls running at once, all visitors together |
 | `CallsPerSessionPerHour` | 60 | model calls per browser session per hour (a full run is about six) |

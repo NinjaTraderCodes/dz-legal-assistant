@@ -508,5 +508,20 @@ These come from the rendering tests (`DZLEGAL_SCREENSHOTS`), at 1366×768. All 2
 ### Scope and open points
 
 - **Areas not changed:** no legal engine, law data, prompt, corpus, sample, safety rule or web-demo source.
-- **Brown light theme:** the light theme was changed to brown in 9df6144. That change is kept as is; whether it was approved is a question for the project owner.
-- **Start-screen layout:** the offline note on the start screen now shares its row with the About button. It is centred in the space left of the button, not across the whole bar.
+- **Brown light theme:** approved by the project owner and kept.
+
+### After the owner's review
+
+- **Title-bar text on brown.** On the brown bar, «تعديلات غير محفوظة» and the document type were drawn in the page's muted text colour, at 1.18:1. They were nearly invisible, and the first is the lawyer's only sign that work is unsaved. Both now use a new `AppBarMutedBrush`:
+  - light: `#F5EDDF`, 5.1:1 on the bar;
+  - dark: `#C2B8A9`, the same colour as before, 9.0:1.
+
+  The new test `WorkbenchThemeTests.TheSaveStateAndDocumentTypeAreReadableOnTheTitleBar` checks both labels at 4.5:1 or more, in both languages and both themes.
+- **Start-screen note.** The offline note is centred on the whole bottom bar again. About sits at the row's end: the right in English, the left in Arabic. An empty column as wide as the button balances it. The new test `AboutTests.TheStartScreenKeepsTheOfflineNoteCentredBesideAbout` checks the centring, the position of About and that the two don't overlap, in both languages at 1366×768 and 1920×1080.
+
+| Screen | Arabic | English |
+| --- | --- | --- |
+| Title bar, light, with unsaved changes | [View](images/guide/fixes-titlebar-ar-light-1366x768.png) | [View](images/guide/fixes-titlebar-en-light-1366x768.png) |
+| Start screen, note centred | [View](images/guide/fixes-phase0-recents-ar-light-1366x768.png) | [View](images/guide/fixes-phase0-recents-en-light-1366x768.png) |
+
+After these two fixes, the Release build has **0 warnings**, and the suite has **928 passed, 0 failed, 0 skipped** (App 304).

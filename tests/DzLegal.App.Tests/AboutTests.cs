@@ -312,6 +312,35 @@ public sealed class AboutTests : IDisposable
         Assert.False(home.AboutCommand.CanExecute(null));
     }
 
+    [AvaloniaTheory]
+    [InlineData("ar", 1366, 768)]
+    [InlineData("en", 1366, 768)]
+    [InlineData("ar", 1920, 1080)]
+    [InlineData("en", 1920, 1080)]
+    public void TheStartScreenKeepsTheOfflineNoteCentredBesideAbout(string language, int width, int height)
+    {
+        var loc = new Loc(); loc.SetLanguage(language);
+        using var home = new HomeViewModel(new RecentCasesStore(_folder.FullName), new ProfileStore(_folder.FullName), () => Task.CompletedTask,
+            localization: loc, guides: new HomeGuideActions(() => Task.CompletedTask, () => Task.CompletedTask, () => Task.CompletedTask,
+                () => Task.CompletedTask, () => Task.CompletedTask));
+        var view = new HomeView { DataContext = home };
+        var window = new Window { Content = view, Width = width, Height = height };
+        window.Show(); Layout(window);
+        var row = OnWindow(view.FindControl<Grid>("HomeNoteRow")!, window);
+        var note = view.FindControl<TextBlock>("HomeOffline")!;
+        var about = view.FindControl<Button>("HomeAbout")!;
+        Assert.True(about.IsEffectivelyEnabled);
+        var noteRect = OnWindow(note, window);
+        var aboutRect = OnWindow(about, window);
+        Assert.InRange(noteRect.Center.X, row.Center.X - 1, row.Center.X + 1);
+        Assert.False(noteRect.Intersects(aboutRect), $"note {noteRect} meets About {aboutRect}");
+        // About sits at the row's end: the right in English, the left in Arabic.
+        var gapToEnd = language == "ar" ? aboutRect.Left - row.Left : row.Right - aboutRect.Right;
+        Assert.InRange(gapToEnd, -1, 1);
+        Capture(window, $"fixes-home-about-{language}-{width}x{height}");
+        window.Close();
+    }
+
     private static Rect OnWindow(Control control, Window window)
     {
         var first = control.TranslatePoint(default, window)!.Value;

@@ -321,7 +321,7 @@
         <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center" ClipToBounds="True">
           <Border Background="{DynamicResource PrimaryButtonBrush}" CornerRadius="8" Padding="7"><ic:SymbolIcon Symbol="Gavel" Foreground="{DynamicResource PrimaryButtonTextBrush}" FontSize="20" /></Border>
           <TextBlock FontSize="19" FontWeight="SemiBold" Foreground="{DynamicResource AppBarTextBrush}" VerticalAlignment="Center" Text="{Binding L[AppTitle]}" />
-          <TextBlock Classes="document-type" Foreground="{DynamicResource TextMutedBrush}" VerticalAlignment="Center" Text="{Binding DocumentTypeName}" />
+          <TextBlock Name="DocumentTypeText" Classes="document-type" Foreground="{DynamicResource AppBarMutedBrush}" VerticalAlignment="Center" Text="{Binding DocumentTypeName}" />
           <Border Width="1" Height="22" Background="#33FFFFFF" Margin="8,0" />
           <Button Name="HomeButton" Classes="bar" Click="OpenHome" ToolTip.Tip="{Binding L[Home]}" AutomationProperties.Name="{Binding L[Home]}" MinWidth="36" MinHeight="36">
             <ic:SymbolIcon Symbol="Home" Foreground="{DynamicResource AppBarTextBrush}" />
@@ -340,7 +340,7 @@
             <StackPanel Orientation="Horizontal" Spacing="6"><ic:SymbolIcon Symbol="Save" Foreground="{DynamicResource AppBarTextBrush}" /><TextBlock Foreground="{DynamicResource AppBarTextBrush}" Text="{Binding L[Save]}" /></StackPanel>
           </Button>
           <!-- Whether the case is saved: «تعديلات غير محفوظة», or the file and the time of the last save. -->
-          <TextBlock Name="SaveStateText" Foreground="{DynamicResource TextMutedBrush}" FontSize="12" TextTrimming="CharacterEllipsis" ToolTip.Tip="{Binding SaveStateText}" VerticalAlignment="Center" Text="{Binding SaveStateText}" IsVisible="{Binding HasSaveState}" />
+          <TextBlock Name="SaveStateText" Foreground="{DynamicResource AppBarMutedBrush}" FontSize="12" TextTrimming="CharacterEllipsis" ToolTip.Tip="{Binding SaveStateText}" VerticalAlignment="Center" Text="{Binding SaveStateText}" IsVisible="{Binding HasSaveState}" />
         </StackPanel>
         <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
           <Border Classes="chip" Background="#264CAF7F" VerticalAlignment="Center" IsVisible="{Binding IsOfflineEngine}">

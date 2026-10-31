@@ -1,8 +1,11 @@
 using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Threading;
 using Avalonia.Headless.XUnit;
 using Avalonia.Media;
 using Avalonia.Styling;
 using DzLegal.App.Views;
+using DzLegal.Presentation;
 
 namespace DzLegal.App.Tests;
 
@@ -51,6 +54,36 @@ public sealed class WorkbenchThemeTests
         {
             app.RequestedThemeVariant = previous;
         }
+    }
+
+    [AvaloniaTheory]
+    [InlineData("ar", false)]
+    [InlineData("en", false)]
+    [InlineData("ar", true)]
+    [InlineData("en", true)]
+    public void TheSaveStateAndDocumentTypeAreReadableOnTheTitleBar(string language, bool dark)
+    {
+        var app = Assert.IsType<App>(Application.Current);
+        var theme = dark ? ThemeVariant.Dark : ThemeVariant.Light;
+        // «تعديلات غير محفوظة» is the lawyer's only sign that work is unsaved, so it must read as body text does.
+        Assert.True(Ratio(ColorOf(app, "AppBarMutedBrush", theme), ColorOf(app, "AppBarBrush", theme)) >= 4.5);
+
+        var loc = new Loc(); loc.SetLanguage(language);
+        using var model = Vm.Create(loc: loc).Filled();
+        model.IsDarkTheme = dark;
+        var window = new MainWindow { DataContext = model, Width = 1920, Height = 1080, RequestedThemeVariant = theme };
+        window.Show(); window.UpdateLayout(); Dispatcher.UIThread.RunJobs();
+        Assert.True(model.HasUnsavedChanges);
+        var bar = ColorOf(app, "AppBarBrush", theme);
+        foreach (var name in new[] { "SaveStateText", "DocumentTypeText" })
+        {
+            var text = window.FindControl<TextBlock>(name)!;
+            Assert.True(text.IsEffectivelyVisible, name);
+            var ink = Assert.IsAssignableFrom<ISolidColorBrush>(text.Foreground).Color;
+            Assert.True(Ratio(ink, bar) >= 4.5, $"{name}: {Ratio(ink, bar):F2}:1");
+        }
+        Assert.Equal(loc["UnsavedChanges"], window.FindControl<TextBlock>("SaveStateText")!.Text);
+        window.Close();
     }
 
     private static Dictionary<string, Color> Palette(App app, ThemeVariant theme)

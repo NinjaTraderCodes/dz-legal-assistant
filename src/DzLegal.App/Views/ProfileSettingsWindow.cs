@@ -1,13 +1,14 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
+using Avalonia.Input;
 using DzLegal.App.Services;
 using DzLegal.Presentation.ViewModels;
 using DzLegal.Storage;
 
 namespace DzLegal.App.Views;
 
-/// <summary>The profile editor can be opened by the future workbench entry point.</summary>
+/// <summary>Profile changes apply to new cases without replacing the open case.</summary>
 public sealed class ProfileSettingsWindow : Window
 {
     private bool _allowClose;
@@ -26,6 +27,12 @@ public sealed class ProfileSettingsWindow : Window
             setupFiles: new SetupFileDialogs(() => this), isEditing: true, localization: localization);
         this.Bind(TitleProperty, new Binding("L[ProfileTitle]") { Source = Setup });
         Content = new SetupView { DataContext = Setup }.CreateHost();
+        KeyDown += (_, e) =>
+        {
+            if (e.Key != Key.Escape) return;
+            Setup.CloseEditorCommand.Execute(null);
+            e.Handled = true;
+        };
         Closing += (_, e) =>
         {
             if (_allowClose || !Setup.IsDirty) return;

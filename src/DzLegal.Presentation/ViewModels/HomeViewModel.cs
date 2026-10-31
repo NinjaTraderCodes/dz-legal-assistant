@@ -14,11 +14,13 @@ public sealed partial class HomeViewModel : ObservableObject, IDisposable
     private readonly IHomeWorkspace? _workspace;
     private readonly Func<Task> _openProfile;
     private readonly Func<string, bool> _exists;
+    private readonly HomeGuideActions? _guides;
     private bool _busy;
     private RecentCaseItem? _missing;
 
     public HomeViewModel(RecentCasesStore recent, ProfileStore profiles, Func<Task> openProfile,
-        IHomeWorkspace? workspace = null, string language = "ar", Func<string, bool>? exists = null, Loc? localization = null)
+        IHomeWorkspace? workspace = null, string language = "ar", Func<string, bool>? exists = null, Loc? localization = null,
+        HomeGuideActions? guides = null)
     {
         ArgumentNullException.ThrowIfNull(recent);
         ArgumentNullException.ThrowIfNull(profiles);
@@ -28,6 +30,7 @@ public sealed partial class HomeViewModel : ObservableObject, IDisposable
         _openProfile = openProfile;
         _workspace = workspace;
         _exists = exists ?? File.Exists;
+        _guides = guides;
         L = new HomeLocalization(localization);
         if (localization is null) L.SetLanguage(language);
         L.PropertyChanged += LanguageChanged;
@@ -87,6 +90,24 @@ public sealed partial class HomeViewModel : ObservableObject, IDisposable
     private bool CanOpen() => CanInteract && _workspace?.OpenCommand?.CanExecute(null) == true;
     private bool CanResume() => CanInteract && HasRecoverableDraft && _workspace?.RestoreLastSessionCommand?.CanExecute(null) == true;
     private bool CanBack() => CanInteract && HasOpenCase;
+    private bool CanGuide() => CanInteract && _guides is not null;
+    private bool CanLibrary() => CanInteract && _guides?.Library is not null;
+    private bool CanAbout() => CanInteract && _guides?.About is not null;
+
+    [RelayCommand(CanExecute = nameof(CanGuide))] private async Task SampleAsync() => await RunGuideAsync(_guides!.Sample);
+    [RelayCommand(CanExecute = nameof(CanGuide))] private async Task TourAsync() => await RunGuideAsync(_guides!.Tour);
+    [RelayCommand(CanExecute = nameof(CanGuide))] private async Task HelpAsync() => await RunGuideAsync(_guides!.Help);
+    [RelayCommand(CanExecute = nameof(CanLibrary))] private async Task LibraryAsync() => await RunGuideAsync(_guides!.Library!);
+    [RelayCommand(CanExecute = nameof(CanAbout))] private async Task AboutAsync() => await RunGuideAsync(_guides!.About!);
+
+    private async Task RunGuideAsync(Func<Task> action)
+    {
+        _busy = true; OnPropertyChanged(nameof(CanInteract)); NotifyCommands();
+        try { await action(); }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or InvalidOperationException or ArgumentException or System.Text.Json.JsonException or DzLegal.Law.LawDataException)
+        { SetMessage("HomeActionFailed"); }
+        finally { _busy = false; Reload(); OnPropertyChanged(nameof(CanInteract)); NotifyCommands(); }
+    }
 
     [RelayCommand(CanExecute = nameof(CanNew))] private async Task NewPetitionAsync() => await RunWorkspaceAsync(_workspace?.NewCommand);
     [RelayCommand(CanExecute = nameof(CanOpen))] private async Task OpenCaseAsync() => await RunWorkspaceAsync(_workspace?.OpenCommand);
@@ -174,6 +195,8 @@ public sealed partial class HomeViewModel : ObservableObject, IDisposable
     {
         NewPetitionCommand.NotifyCanExecuteChanged(); OpenCaseCommand.NotifyCanExecuteChanged();
         ResumeCommand.NotifyCanExecuteChanged(); BackToCaseCommand.NotifyCanExecuteChanged();
+        SampleCommand.NotifyCanExecuteChanged(); TourCommand.NotifyCanExecuteChanged(); HelpCommand.NotifyCanExecuteChanged();
+        LibraryCommand.NotifyCanExecuteChanged(); AboutCommand.NotifyCanExecuteChanged();
     }
     public void Dispose()
     {

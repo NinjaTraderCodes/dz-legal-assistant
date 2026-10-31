@@ -44,13 +44,15 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         string? autosaveFile = null,
         DzLegal.Law.LegalKnowledge? knowledge = null,
         IExternalLinks? links = null,
-        IProfileDefaults? profileDefaults = null)
+        IProfileDefaults? profileDefaults = null,
+        RecentCasesStore? recentCases = null)
     {
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentNullException.ThrowIfNull(providers);
         UseKnowledge(knowledge, links);
         _definition = definition;
         _files = files;
+        _recentCases = recentCases;
         _evaluations = evaluations;
         _today = today ?? (() => DateOnly.FromDateTime(DateTime.Now));
         _autosaveFile = autosaveFile;
@@ -242,7 +244,11 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
 
     partial void OnSelectedDraftTabChanged(int value) => SchedulePreview(TimeSpan.Zero);
 
-    partial void OnDraftWatermarkChanged(bool value) => SchedulePreview(TimeSpan.Zero);
+    partial void OnDraftWatermarkChanged(bool value)
+    {
+        if (IsSampleCase && !value) { DraftWatermark = true; return; }
+        SchedulePreview(TimeSpan.Zero);
+    }
 
     /// <summary>Renders the preview now (used by tests and when the tab opens).</summary>
     public async Task RefreshPreviewAsync(CancellationToken cancellationToken = default)
@@ -304,6 +310,9 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
 
     public void Dispose()
     {
+        _tour?.Dispose();
+        _sampleProbe?.Cancel(); _sampleProbe?.Dispose(); _sampleProbe = null;
+        SampleGuide?.Dispose();
         // A closed window or browser tab stops its running AI work: no tokens spent and no queue slot held for nobody.
         GenerateCommand.Cancel();
         AnalyseGroundsCommand.Cancel();
@@ -333,7 +342,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         var lines = new List<string>();
         foreach (var section in Sections)
         {
-            if (section.NeedsReview)
+            if (NeedsAiReview(section))
             {
                 lines.Add("• " + L.Format("BlockerUnreviewed", section.Title));
             }
@@ -395,8 +404,10 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         }
 
         var model = DocumentLayoutBuilder.Build(_definition, _draft.DeepCopy());
-        var bytes = await Task.Run(() => PdfRenderer.RenderPdf(model, new DocumentRenderOptions { DraftWatermark = DraftWatermark, AiAssisted = HasAiText }));
-        await ExportAsync(bytes, ".pdf", SaveKind.Pdf);
+        var sample = SampleGuide;
+        var options = new DocumentRenderOptions { DraftWatermark = DraftWatermark, AiAssisted = HasAiText };
+        var bytes = await Task.Run(() => PdfRenderer.RenderPdf(model, options));
+        await ExportAsync(bytes, ".pdf", SaveKind.Pdf, sample);
     }
 
     [RelayCommand]
@@ -408,11 +419,13 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         }
 
         var model = DocumentLayoutBuilder.Build(_definition, _draft.DeepCopy());
-        var bytes = await Task.Run(() => DocxRenderer.Render(model, new DocumentRenderOptions { DraftWatermark = DraftWatermark, AiAssisted = HasAiText }));
-        await ExportAsync(bytes, ".docx", SaveKind.Word);
+        var sample = SampleGuide;
+        var options = new DocumentRenderOptions { DraftWatermark = DraftWatermark, AiAssisted = HasAiText };
+        var bytes = await Task.Run(() => DocxRenderer.Render(model, options));
+        await ExportAsync(bytes, ".docx", SaveKind.Word, sample);
     }
 
-    private async Task ExportAsync(byte[] bytes, string extension, SaveKind kind)
+    private async Task ExportAsync(byte[] bytes, string extension, SaveKind kind, SampleGuideViewModel? sample)
     {
         var target = await _files.SaveAsync(SuggestedFileName() + extension, kind);
         if (target is not { } t)
@@ -426,6 +439,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         }
 
         SetStatus(L.Format("Exported", t.Name));
+        if (sample is not null && ReferenceEquals(sample, SampleGuide)) SampleExportSucceeded = true;
         IsEvaluationOpen = HasGeneratedDraft; // invite a quick verdict once a real draft is out
     }
 
@@ -714,6 +728,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     /// <summary>An empty case (after the lawyer chose: <see cref="NewCommand"/> asks first when there are unsaved changes).</summary>
     private void StartNew()
     {
+        EndSample();
         var inputs = CaseInputs.CreateDefaults(_definition, _today());
         ApplyProfileDefaults(inputs);
         LoadInputs(inputs);
@@ -765,33 +780,40 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     }
 
     /// <summary>Shows the file picker and opens the draft chosen (after <see cref="OpenCommand"/> asked about unsaved changes).</summary>
-    private async Task OpenFileAsync()
+    private async Task OpenFileAsync(string? path = null)
     {
-        var source = await _files.OpenAsync();
-        if (source is not { } s)
+        try
         {
-            return;
-        }
+            var source = path is null ? await _files.OpenAsync()
+                : _files is IHomeRecentFiles recentFiles ? await recentFiles.OpenPathAsync(path) : null;
+            if (source is not { } s) return;
 
-        DraftDocument loaded;
-        await using (s.Stream)
+            DraftDocument loaded;
+            await using (s.Stream)
+            {
+                loaded = await DraftFile.LoadAsync(s.Stream);
+            }
+
+            if (loaded.DocumentTypeId != _definition.Id)
+            {
+                SetStatus(L["WrongDocumentType"], isError: true);
+                return;
+            }
+
+            LoadDraft(loaded);
+            MarkSaved(s.Name);
+            RecordRecentCase(saved: false);
+            SetStatus(L.Format("Opened", s.Name));
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or System.Text.Json.JsonException or NotSupportedException or ArgumentException)
         {
-            loaded = await DraftFile.LoadAsync(s.Stream);
+            SetStatus(L.Format("Error", ex.Message), isError: true);
         }
-
-        if (loaded.DocumentTypeId != _definition.Id)
-        {
-            SetStatus(L["WrongDocumentType"], isError: true);
-            return;
-        }
-
-        LoadDraft(loaded);
-        MarkSaved(s.Name);
-        SetStatus(L.Format("Opened", s.Name));
     }
 
     private void LoadDraft(DraftDocument loaded)
     {
+        EndSample();
         var inputs = CaseInputs.CreateDefaults(_definition, _today());
         foreach (var (key, value) in loaded.Inputs)
         {
@@ -1200,7 +1222,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
             stem = stem.Replace(c, '_');
         }
 
-        return stem;
+        return IsSampleCase ? L["SampleFilePrefix"] + "-" + stem : stem;
     }
 
     private void SetStatus(string message, bool isError = false)

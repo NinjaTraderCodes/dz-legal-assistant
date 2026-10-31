@@ -148,6 +148,7 @@ public sealed class HomeTests : IDisposable
         window.Setup.GoNextCommand.Execute(null);
         Assert.True(window.Setup.ShowPrefsStep);
         window.Setup.FinishCommand.Execute(null);
+        Assert.IsType<TourOfferViewModel>(Assert.IsType<TourOfferView>(window.Content).DataContext).NotNowCommand.Execute(null);
         Assert.IsType<HomeView>(window.Content);
         window.Close();
         var saved = new OnboardingWindow(preferences, () => new Window());

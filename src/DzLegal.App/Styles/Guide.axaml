@@ -1,0 +1,11 @@
+<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ic="using:FluentIcons.Avalonia">
+  <StyleInclude Source="/Styles/Workbench.axaml" />
+  <Style Selector="ic|SymbolIcon.onboarding-icon">
+    <Setter Property="FontSize" Value="{DynamicResource OnboardingIconSize}" />
+    <Setter Property="Foreground" Value="{DynamicResource WelcomeMarkBrush}" />
+  </Style>
+  <Style Selector="Button.onboarding-primary ic|SymbolIcon.onboarding-icon">
+    <Setter Property="Foreground" Value="{DynamicResource WelcomeButtonTextBrush}" />
+  </Style>
+</Styles>

@@ -1,0 +1,28 @@
+<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DzLegal.Presentation.ViewModels" xmlns:app="using:DzLegal.App"
+             x:Class="DzLegal.App.Views.TourOverlay" x:DataType="vm:TourViewModel"
+             IsVisible="{Binding IsOpen}" FlowDirection="LeftToRight" Background="Transparent">
+  <UserControl.Styles><StyleInclude Source="/Styles/Guide.axaml" /></UserControl.Styles>
+  <Grid FlowDirection="LeftToRight" ClipToBounds="True">
+    <Canvas Name="Shade" IsHitTestVisible="False" />
+    <Canvas Name="Cards">
+      <Border Name="TourCard" Classes="home-panel" Background="{DynamicResource OnboardingTourCardBrush}" Focusable="True" MaxWidth="{DynamicResource OnboardingTourWidth}"
+              FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}"
+              AutomationProperties.Name="{Binding Announcement}" AutomationProperties.HelpText="{Binding Text}"
+              AutomationProperties.LiveSetting="Assertive" KeyboardNavigation.TabNavigation="Cycle">
+        <StackPanel Spacing="{DynamicResource OnboardingDialogGap}">
+          <TextBlock Name="TourCounter" Classes="home-note" Text="{Binding Counter}" />
+          <TextBlock Name="TourTitle" Classes="home-title" Text="{Binding Title}" />
+          <TextBlock Name="TourText" Classes="home-text" Text="{Binding Text}" />
+          <WrapPanel>
+            <Button Name="TourNext" Classes="home primary" AutomationProperties.Name="{Binding NextText}" Command="{Binding NextCommand}" Margin="{DynamicResource OnboardingActionMargin}">
+              <TextBlock Name="TourNextLabel" Foreground="{DynamicResource WelcomeButtonTextBrush}" Text="{Binding NextText}" />
+            </Button>
+            <Button Name="TourBack" Classes="home" Content="{Binding L[TourBack]}" Command="{Binding BackCommand}" Margin="{DynamicResource OnboardingActionMargin}" />
+            <Button Name="TourSkip" Classes="home" Content="{Binding L[TourSkip]}" Command="{Binding SkipCommand}" Margin="{DynamicResource OnboardingActionMargin}" />
+          </WrapPanel>
+        </StackPanel>
+      </Border>
+    </Canvas>
+  </Grid>
+</UserControl>

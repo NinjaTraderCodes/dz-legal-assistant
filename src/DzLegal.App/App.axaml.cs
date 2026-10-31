@@ -34,11 +34,14 @@ public partial class App : Application
         {
             InitializeTheme(new ThemePreferences(AppPaths.Default.Root));
             desktop.Exit += (_, _) => ClearTheme();
-            desktop.MainWindow = new OnboardingWindow(new WelcomePreferences(AppPaths.Default.Root), CreateMainWindow);
+            desktop.MainWindow = new OnboardingWindow(new WelcomePreferences(AppPaths.Default.Root), CreateMainWindow, openRecentCase: OpenRecentCaseAsync);
         }
 
         base.OnFrameworkInitializationCompleted();
     }
+
+    public static Task OpenRecentCaseAsync(Window workbench, string path) =>
+        workbench.DataContext is MainWindowViewModel model ? model.OpenRecentCaseAsync(path) : Task.CompletedTask;
 
     public static Window CreateMainWindow()
     {
@@ -48,7 +51,7 @@ public partial class App : Application
             var settings = AppSettings.Load(Path.Combine(AppContext.BaseDirectory, "appsettings.json"));
             var paths = AppPaths.Default;
             window.DataContext = Composition.CreateMainViewModel(
-                settings, new AvaloniaUserFiles(() => TopLevel.GetTopLevel(window), paths), paths, new Loc(), new AvaloniaExternalLinks(() => TopLevel.GetTopLevel(window)), profileDefaults: new ProfileDefaults(paths.Root));
+                settings, new AvaloniaUserFiles(() => TopLevel.GetTopLevel(window), paths), paths, new Loc(), new AvaloniaExternalLinks(() => TopLevel.GetTopLevel(window)), profileDefaults: new ProfileDefaults(paths.Root), recentCases: new RecentCasesStore(paths.Root));
             ((MainWindowViewModel)window.DataContext).IsDarkTheme = (Current as App)?.Themes?.IsDark ?? true;
             return window;
         }

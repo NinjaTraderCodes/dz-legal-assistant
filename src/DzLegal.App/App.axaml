@@ -8,6 +8,7 @@
       <FontFamily x:Key="UiFont">fonts:Inter#Inter, fonts:Naskh#Noto Naskh Arabic</FontFamily>
       <CornerRadius x:Key="CardRadius">12</CornerRadius>
       <CornerRadius x:Key="ControlRadius">8</CornerRadius>
+      <ImageBrush x:Key="OnboardingPhotograph" Source="avares://DzLegalAssistant/Assets/Images/welcome-bg.jpg" Stretch="UniformToFill" />
 
       <!-- Design tokens: one palette per theme variant. -->
       <ResourceDictionary.ThemeDictionaries>
@@ -20,12 +21,17 @@
           <SolidColorBrush x:Key="HairlineBrush" Color="#E4DFD4" />
           <SolidColorBrush x:Key="TextPrimaryBrush" Color="#1C2321" />
           <SolidColorBrush x:Key="TextMutedBrush" Color="#6A706D" />
-          <SolidColorBrush x:Key="AppBarBrush" Color="#16392F" />
+          <!-- Workbench accent uses the same brown/gold family as Home; dark values below are unchanged. -->
+          <SolidColorBrush x:Key="AppBarBrush" Color="#786039" />
           <SolidColorBrush x:Key="AppBarTextBrush" Color="#FFFFFF" />
-          <SolidColorBrush x:Key="AccentBrush" Color="#1E5A4B" />
-          <SolidColorBrush x:Key="AccentSoftBrush" Color="#E1EEE9" />
-          <SolidColorBrush x:Key="PrimaryButtonBrush" Color="#1E5A4B" />
-          <SolidColorBrush x:Key="PrimaryButtonTextBrush" Color="#FFFFFF" />
+          <!-- Secondary title-bar text (save state, document type): TextMutedBrush is for the page and vanishes on the brown bar. -->
+          <SolidColorBrush x:Key="AppBarMutedBrush" Color="#F5EDDF" />
+          <SolidColorBrush x:Key="AccentBrush" Color="#786039" />
+          <SolidColorBrush x:Key="AccentSoftBrush" Color="#FFF3DC" />
+          <SolidColorBrush x:Key="PrimaryButtonBrush" Color="#C6A76D" />
+          <SolidColorBrush x:Key="PrimaryButtonTextBrush" Color="#28231D" />
+          <SolidColorBrush x:Key="DocumentFocusTintBrush" Color="#0A786039" />
+          <SolidColorBrush x:Key="DocumentHoverTintBrush" Color="#06786039" />
           <SolidColorBrush x:Key="PanelBrush" Color="#FFFFFF" />
           <SolidColorBrush x:Key="InputBorderBrush" Color="#8B8274" />
           <SolidColorBrush x:Key="FieldToolsBrush" Color="#DFE7E9" />
@@ -54,10 +60,13 @@
           <SolidColorBrush x:Key="TextMutedBrush" Color="#C2B8A9" />
           <SolidColorBrush x:Key="AppBarBrush" Color="#1D1812" />
           <SolidColorBrush x:Key="AppBarTextBrush" Color="#F2EDE5" />
+          <SolidColorBrush x:Key="AppBarMutedBrush" Color="#C2B8A9" />
           <SolidColorBrush x:Key="AccentBrush" Color="#D2B981" />
           <SolidColorBrush x:Key="AccentSoftBrush" Color="#423724" />
           <SolidColorBrush x:Key="PrimaryButtonBrush" Color="#C6A76D" />
           <SolidColorBrush x:Key="PrimaryButtonTextBrush" Color="#28231D" />
+          <SolidColorBrush x:Key="DocumentFocusTintBrush" Color="#0A1E5A4B" />
+          <SolidColorBrush x:Key="DocumentHoverTintBrush" Color="#061E5A4B" />
           <SolidColorBrush x:Key="FieldToolsBrush" Color="#DFE7E9" />
           <SolidColorBrush x:Key="FieldToolsTextBrush" Color="#344D5A" />
           <SolidColorBrush x:Key="DangerBrush" Color="#FFC0B3" />
@@ -73,7 +82,7 @@
   <Application.Styles>
     <FluentTheme>
       <FluentTheme.Palettes>
-        <ColorPaletteResources x:Key="Light" Accent="#1E5A4B" />
+        <ColorPaletteResources x:Key="Light" Accent="#786039" />
         <ColorPaletteResources x:Key="Dark" Accent="#C6A76D" />
       </FluentTheme.Palettes>
     </FluentTheme>

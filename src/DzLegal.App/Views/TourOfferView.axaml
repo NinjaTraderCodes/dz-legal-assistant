@@ -1,0 +1,21 @@
+<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DzLegal.Presentation.ViewModels" xmlns:app="using:DzLegal.App"
+             x:Class="DzLegal.App.Views.TourOfferView" x:DataType="vm:TourOfferViewModel"
+             FontFamily="{DynamicResource UiFont}" FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}">
+  <UserControl.Styles><StyleInclude Source="/Styles/Guide.axaml" /></UserControl.Styles>
+  <Grid ClipToBounds="True">
+    <Border Name="TourOfferBackground" Background="{DynamicResource OnboardingPhotograph}" FlowDirection="LeftToRight">
+      <Border.Effect><BlurEffect Radius="{DynamicResource OnboardingBackgroundBlur}" /></Border.Effect>
+    </Border>
+    <Border Background="{DynamicResource WelcomeOverlayBrush}" />
+    <Border Name="TourOfferCard" Classes="home-panel" MaxWidth="{DynamicResource OnboardingDialogWidth}" Margin="{DynamicResource OnboardingPageMargin}" VerticalAlignment="Center" HorizontalAlignment="Center">
+      <StackPanel Spacing="{DynamicResource OnboardingDialogGap}">
+        <TextBlock Name="TourOfferTitle" Classes="home-title" Text="{Binding L[SetupOfferTour]}" />
+        <WrapPanel>
+          <Button Name="AcceptTour" Classes="home primary" Content="{Binding L[SetupOfferTourYes]}" Command="{Binding YesCommand}" Margin="{DynamicResource OnboardingActionMargin}" />
+          <Button Name="DeclineTour" Classes="home" Content="{Binding L[SetupOfferTourNo]}" Command="{Binding NotNowCommand}" Margin="{DynamicResource OnboardingActionMargin}" />
+        </WrapPanel>
+      </StackPanel>
+    </Border>
+  </Grid>
+</UserControl>

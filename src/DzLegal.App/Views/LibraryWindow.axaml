@@ -1,0 +1,12 @@
+<Window xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:DzLegal.Presentation.ViewModels" xmlns:app="using:DzLegal.App"
+        xmlns:views="using:DzLegal.App.Views"
+        x:Class="DzLegal.App.Views.LibraryWindow" x:DataType="vm:LibraryViewModel"
+        Width="{DynamicResource OnboardingWindowWidth}" Height="{DynamicResource OnboardingWindowHeight}"
+        MinWidth="{DynamicResource OnboardingWindowMinWidth}" MinHeight="{DynamicResource OnboardingWindowMinHeight}"
+        WindowStartupLocation="CenterOwner" Title="{Binding L[LibraryTitle]}"
+        FontFamily="{DynamicResource UiFont}" Background="{DynamicResource SurfaceBrush}"
+        Foreground="{DynamicResource WelcomeTextBrush}"
+        FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}">
+  <views:LibraryView />
+</Window>

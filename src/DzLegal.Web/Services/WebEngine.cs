@@ -282,15 +282,3 @@ public sealed partial class WebEngine : IDisposable
     [LoggerMessage(Level = LogLevel.Warning, Message = "No Gemma model is available to the Google key. Models it can use: {Models}")]
     private static partial void LogNoGemma(ILogger logger, IEnumerable<string> models);
 }
-
-/// <summary>A fictitious case a visitor can open in one click: case details only, so every step runs live.</summary>
-public sealed record SampleCase(string Id, LocalizedText Title, LocalizedText Summary, IReadOnlyDictionary<string, string> Inputs)
-{
-    public static IReadOnlyList<SampleCase> LoadAll(string folder) =>
-        Directory.Exists(folder)
-            ? Directory.GetFiles(folder, "*.json")
-                .Order(StringComparer.Ordinal)
-                .Select(f => JsonSerializer.Deserialize<SampleCase>(File.ReadAllText(f), DefinitionJson.Options)!)
-                .ToList()
-            : [];
-}

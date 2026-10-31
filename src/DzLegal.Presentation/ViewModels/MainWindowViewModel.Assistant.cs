@@ -30,7 +30,7 @@ public sealed partial class MainWindowViewModel
         _definition.RevisionShortcuts.Select(s => new ShortcutViewModel(s.Label.Get(L.Language), s.Instruction)).ToList();
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsAssistantOpen), nameof(AssistantTitle))]
+    [NotifyPropertyChangedFor(nameof(IsAssistantOpen), nameof(AssistantTitle), nameof(IsSampleGuideVisible), nameof(IsCheckPanelVisible))]
     public partial SectionViewModel? AssistantSection { get; set; }
 
     public bool IsAssistantOpen => AssistantSection is not null;
@@ -72,7 +72,7 @@ public sealed partial class MainWindowViewModel
     [RelayCommand]
     public async Task CheckModelStatusAsync()
     {
-        if (SelectedProvider is null)
+        if (SelectedProvider is null || IsTourActive)
         {
             return;
         }
@@ -81,7 +81,7 @@ public sealed partial class MainWindowViewModel
         ModelStatus = await option.ProbeAsync(CancellationToken.None);
         option.RefreshName();
         IsModelReady = ModelStatus.State is ModelState.Ready or ModelState.Unknown;
-        if (ModelStatus.State == ModelState.Ready && option.CanWarmUp && _warmUpStarted.Add(option.Key))
+        if (!IsTourActive && ModelStatus.State == ModelState.Ready && option.CanWarmUp && _warmUpStarted.Add(option.Key))
         {
             _ = WarmUpAsync(option);
         }
@@ -96,6 +96,7 @@ public sealed partial class MainWindowViewModel
             ModelState.Refused => L.Format("ModelRefusedCloud", ModelStatus.Detail),
             _ => string.Empty,
         };
+        if (IsSampleCase) await ProbeSampleModelAsync();
     }
 
     /// <summary>Engines whose warm-up was started, and those now loaded in memory (each warmed once per session).</summary>

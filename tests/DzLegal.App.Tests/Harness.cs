@@ -152,7 +152,7 @@ internal static class Vm
         ShippedKnowledge.Prompts);
 
     public static MainWindowViewModel Create(
-        FakeFiles? files = null,
+        IUserFiles? files = null,
         string provider = "stub",
         Loc? loc = null,
         string? autosaveFile = null,
@@ -162,7 +162,10 @@ internal static class Vm
         ProviderOption? extra = null,
         ITaskTimings? timings = null,
         IPowerStatus? power = null,
-        bool analyseInBackground = false)
+        bool analyseInBackground = false,
+        RecentCasesStore? recentCases = null,
+        bool noLocalModel = false,
+        IProfileDefaults? profileDefaults = null)
     {
         loc ??= new Loc();
         var definition = DefinitionLoader.Load(Path.Combine(AppContext.BaseDirectory, "data", "document-types", "requete-introductive"));
@@ -184,7 +187,9 @@ internal static class Vm
             provider = extra.Key;
         }
 
-        return new MainWindowViewModel(definition, providers, files ?? new FakeFiles(), new EvaluationStore(EvaluationsFolder), loc, provider, () => new DateOnly(2026, 9, 15), autosaveFile, knowledge ?? ShippedKnowledge, links)
+        if (noLocalModel) providers.RemoveAll(option => option.Key != "stub");
+
+        return new MainWindowViewModel(definition, providers, files ?? new FakeFiles(), new EvaluationStore(EvaluationsFolder), loc, provider, () => new DateOnly(2026, 9, 15), autosaveFile, knowledge ?? ShippedKnowledge, links, profileDefaults: profileDefaults, recentCases: recentCases)
         {
             Timings = timings ?? new TaskTimings(),
             Power = power ?? new NoPowerStatus(),

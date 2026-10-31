@@ -146,6 +146,8 @@ public class EngineSettingsTests
     [InlineData("gemma-4-26b-a4b-it", "Gemma 4 26B A4B")]
     [InlineData("google/gemma-3-4b-it", "Gemma 3 4B")]
     [InlineData("google/gemma-3-4b-it:free", "Gemma 3 4B")]
+    [InlineData("nvidia/nemotron-3-ultra-550b-a55b", "Nemotron 3 Ultra")]
+    [InlineData("nvidia/nemotron-3-ultra-550b-a55b:free", "Nemotron 3 Ultra")]
     [InlineData("meta-llama/llama-3.3-70b-instruct", "meta-llama/llama-3.3-70b-instruct")]
     [InlineData("llama-3.3-70b-versatile", "llama-3.3-70b-versatile")]
     public void ModelNamesAreShownReadably(string model, string shown) => Assert.Equal(shown, WebEngine.Pretty(model));
@@ -178,22 +180,25 @@ public class WebEngineTests
     }
 
     [Fact]
-    public void GoogleGemma4ComesFirstByDefaultThenOpenRouter()
+    public void NemotronOnOpenRouterComesFirstByDefaultThenGoogleGemma4()
     {
-        // Audit C-09: the 4B on OpenRouter left every argued paragraph blank on the live demo; Gemma 4 26B answers first.
+        // 31 Oct 2026: Nemotron 3 Ultra matched or beat Gemma 4 26B on every set, with no failed call; Google failed up to a
+        // third of its calls the same day, so Gemma 4 26B is the fallback.
         using var engine = Create(new EngineSettings { GoogleApiKey = "g", OpenRouterApiKey = "o", GoogleModels = ["gemma-4-26b-a4b-it"] });
+        using var vm = engine.CreateSession(new NoFiles(), new NoExternalLinks(), "en");
 
-        Assert.Equal(["gemma-4-26b-a4b-it (Google AI Studio)", "google/gemma-3-4b-it (OpenRouter)"], engine.EngineNames);
+        Assert.Equal("Nemotron 3 Ultra (demo server)", vm.SelectedProvider?.DisplayName);
+        Assert.Equal(["nvidia/nemotron-3-ultra-550b-a55b (OpenRouter)", "gemma-4-26b-a4b-it (Google AI Studio)"], engine.EngineNames);
     }
 
     [Fact]
-    public void TheOrderCanPutOpenRouterFirst()
+    public void TheOrderCanPutGoogleFirst()
     {
-        using var engine = Create(new EngineSettings { GoogleApiKey = "g", OpenRouterApiKey = "o", GoogleModels = ["gemma-4-26b-a4b-it"], Order = ["openrouter", "google"] });
+        using var engine = Create(new EngineSettings { GoogleApiKey = "g", OpenRouterApiKey = "o", GoogleModels = ["gemma-4-26b-a4b-it"], Order = ["google", "openrouter"] });
         using var vm = engine.CreateSession(new NoFiles(), new NoExternalLinks(), "en");
 
-        Assert.Equal("Gemma 3 4B (demo server)", vm.SelectedProvider?.DisplayName);
-        Assert.Equal(["google/gemma-3-4b-it (OpenRouter)", "gemma-4-26b-a4b-it (Google AI Studio)"], engine.EngineNames);
+        Assert.Equal("Gemma 4 26B A4B (demo server)", vm.SelectedProvider?.DisplayName);
+        Assert.Equal(["gemma-4-26b-a4b-it (Google AI Studio)", "nvidia/nemotron-3-ultra-550b-a55b (OpenRouter)"], engine.EngineNames);
     }
 
     [Fact]

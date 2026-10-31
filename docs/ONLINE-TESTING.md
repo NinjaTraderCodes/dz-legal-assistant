@@ -1,6 +1,6 @@
 # Online testing (temporary)
 
-During the testing phase we measure how well and how consistently the AI proposes articles and writes the narrative sections. The local model is slow on the team's laptops, so the same hosted engine the web demo uses (Gemma 3 4B on OpenRouter) can be used in two places:
+During the testing phase we measure how well and how consistently the AI proposes articles and writes the narrative sections. The local model is slow on the team's laptops, so the same hosted engine the web demo uses (Nemotron 3 Ultra on OpenRouter) can be used in two places:
 
 1. **A testing build of the desktop app**, with the online engine as a second choice beside the local model.
 2. **The test harness**, which runs the fictitious cases many times and reports correctness and stability.
@@ -24,12 +24,12 @@ Bash:
 OPENROUTER_API_KEY=sk-or-... dotnet run --project src/DzLegal.App -c Release -p:OnlineTesting=true
 ```
 
-- The engine list then offers a third option: **"Online test: google/gemma-3-4b-it via OpenRouter (case data leaves this computer)"**. The app still starts on the local model.
+- The engine list then offers a third option: **"Online test: nvidia/nemotron-3-ultra-550b-a55b via OpenRouter (case data leaves this computer)"**. The app still starts on the local model.
 - While the online engine is selected, the green "offline" chip in the top bar becomes an amber warning: "Online test engine: case data is sent to OpenRouter".
 - The window title ends with "(online testing build)", so screenshots and recordings from this build can't be mistaken for the product.
 - It uses the desktop's temperature and token limit, so its results can be compared with the local model. There is no fallback to another model, so every run is measured on the same one.
 - Optional variables:
-  - `OPENROUTER_MODEL` picks another model (default `google/gemma-3-4b-it`).
+  - `OPENROUTER_MODEL` picks another model (default `nvidia/nemotron-3-ultra-550b-a55b`, with its reasoning switched off; `google/gemma-3-4b-it` reproduces the local model's behaviour).
   - `OPENROUTER_ENDPOINT` points to another OpenAI-compatible server.
 - The testing build goes to its own folders (`bin/Release-online`, `obj/Release-online`), so it never mixes with a normal build.
 

@@ -65,8 +65,8 @@ public static class Composition
 
 #if ONLINE_TESTING
     /// <summary>
-    /// TEMPORARY, testing build only (docs/ONLINE-TESTING.md): the web demo's engine, Gemma 3 4B on OpenRouter, so the
-    /// team can measure the AI over many runs. Only when OPENROUTER_API_KEY is set; one engine, no fallback, with the
+    /// TEMPORARY, testing build only (docs/ONLINE-TESTING.md): the web demo's engine, Nemotron 3 Ultra on OpenRouter
+    /// (OPENROUTER_MODEL picks another), so the team can measure the AI over many runs. Only when OPENROUTER_API_KEY is set; one engine, no fallback, with the
     /// desktop's own temperature and length so results compare with the local model. The case notes leave the computer.
     /// </summary>
     private static ProviderOption? OnlineTestingOption(AppSettings settings)
@@ -77,7 +77,7 @@ public static class Composition
             return null;
         }
 
-        var model = Environment.GetEnvironmentVariable("OPENROUTER_MODEL") is { Length: > 0 } m ? m : "google/gemma-3-4b-it";
+        var model = Environment.GetEnvironmentVariable("OPENROUTER_MODEL") is { Length: > 0 } m ? m : "nvidia/nemotron-3-ultra-550b-a55b";
         var endpoint = Environment.GetEnvironmentVariable("OPENROUTER_ENDPOINT") is { Length: > 0 } e ? new Uri(e) : new Uri("https://openrouter.ai/api/v1/");
         var options = new DzLegal.ModelProviders.Hosted.OpenAiCompatibleOptions
         {
@@ -92,6 +92,8 @@ public static class Composition
             RateLimit = new DzLegal.ModelProviders.Hosted.RateLimitPolicy(TimeSpan.FromSeconds(90)),
             // Prefer whichever provider of this same model has capacity, instead of queuing on a busy one.
             ProviderSort = "throughput",
+            // Nemotron reasons first unless told not to, and the analysis's short answer caps would go to that reasoning.
+            DisableReasoning = model.Contains("nemotron", StringComparison.OrdinalIgnoreCase),
         };
         return new ProviderOption(
             "online",

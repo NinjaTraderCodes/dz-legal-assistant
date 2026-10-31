@@ -10,7 +10,7 @@ difference is where the AI model runs:
 | | Desktop app | Web demo |
 |---|---|---|
 | Form, formal check, legal points, templates, PDF/Word | on the laptop | on the demo server |
-| Model for the analysis and the drafting | Gemma 3 4B, **local** (Ollama); about 2 minutes per draft on a laptop CPU | Gemma 4 26B **hosted** on Google AI Studio first (larger than the desktop's model, said on the page), then Gemma 3 4B on OpenRouter, then Groq |
+| Model for the analysis and the drafting | Gemma 3 4B, **local** (Ollama); about 2 minutes per draft on a laptop CPU | Nemotron 3 Ultra **hosted** on OpenRouter first (much larger than the desktop's model, said on the page), then Gemma 4 26B on Google AI Studio, then Groq |
 | Case data | never leaves the computer | sent to the hosted model: **fictitious cases only** |
 | Screen logic (view models, strings) | `DzLegal.Presentation` | `DzLegal.Presentation` (the same code) |
 
@@ -26,12 +26,12 @@ Browser ──SignalR──► DzLegal.Web (ASP.NET Core, Blazor Server, one ins
                            per-visitor and per-network hourly limits (charged per call)
                            → the shared queue (ModelGate, 2 calls at a time)
                            → the engine chain (FallbackModelProvider, one set of engines for everyone):
-                                Gemma 4 on Google AI Studio       (when GOOGLE_API_KEY is set; models Google still serves, 26B first)
-                                → Gemma 3 4B on OpenRouter        (when OPENROUTER_API_KEY is set)
+                                Nemotron 3 Ultra on OpenRouter    (when OPENROUTER_API_KEY is set; reasoning switched off)
+                                → Gemma 4 on Google AI Studio     (when GOOGLE_API_KEY is set; models Google still serves, 26B first)
                                 → Groq                            (optional)
 ```
 
-> Gemma 4 26B answers first because, in the October audit, OpenRouter's Gemma 3 4B left every argued paragraph of the live sample blank. The page says the demo runs a larger hosted model than the desktop, lists the services the form may be sent to (Google, OpenRouter, Groq), and shows under the draft which engine answered. Each switch down the chain is logged: `Engine … skipped (…); the next engine in the chain answers instead`.
+> Nemotron 3 Ultra answers first because, on 31 October 2026, it matched or beat Gemma 4 26B on every test set, faster and with no failed call, while Google returned "internal error" on up to a third of its calls. (Before that, Gemma 4 26B led the chain: in the October audit OpenRouter's Gemma 3 4B left every argued paragraph of the live sample blank.) The page says the demo runs a larger hosted model than the desktop, lists the services the form may be sent to (Google, OpenRouter, Groq), and shows under the draft which engine answered. Each switch down the chain is logged: `Engine … skipped (…); the next engine in the chain answers instead`.
 >
 > The visitor's case is kept in the browser as a recovery copy for at most a day; «امسح نسخة المتصفح» deletes it and stops keeping one.
 
@@ -87,7 +87,7 @@ service to the smallest paid plan** (always on, five times the CPU), then back.
 
 **OpenRouter:**
 - Add a few dollars of credit and set a credit limit on the key.
-- Use the paid `google/gemma-3-4b-it` rather than the `:free` variant. The free variant is capped at about 50 requests a day for accounts that never bought $10 of credit.
+- Use the paid `nvidia/nemotron-3-ultra-550b-a55b` rather than the `:free` variant. Free variants are capped at about 50 requests a day for accounts that never bought $10 of credit.
 - When the credit runs out, the demo falls back to Google's free Gemma 4.
 
 Other hosts (Google Cloud Run: `deploy/cloud-run.sh` and `.ps1`; a paid Hugging Face Space: the `deploy-web-demo` workflow) run the same image.

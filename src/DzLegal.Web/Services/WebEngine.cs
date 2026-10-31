@@ -172,9 +172,17 @@ public sealed partial class WebEngine : IDisposable
     /// <summary>The model of every engine, in the order they are tried.</summary>
     private IEnumerable<string> EngineModels() => Families().SelectMany(f => f.Models);
 
-    /// <summary>"gemma-3-4b-it" → "Gemma 3 4B", "gemma-4-26b-a4b-it" → "Gemma 4 26B A4B", "google/gemma-3-4b-it:free" → "Gemma 3 4B".</summary>
+    /// <summary>
+    /// "gemma-3-4b-it" → "Gemma 3 4B", "gemma-4-26b-a4b-it" → "Gemma 4 26B A4B", "google/gemma-3-4b-it:free" → "Gemma 3 4B",
+    /// "nvidia/nemotron-3-ultra-550b-a55b" → "Nemotron 3 Ultra".
+    /// </summary>
     internal static string Pretty(string model)
     {
+        if (model.StartsWith("nvidia/nemotron-3-ultra", StringComparison.Ordinal))
+        {
+            return "Nemotron 3 Ultra";
+        }
+
         var bare = model.StartsWith("google/", StringComparison.Ordinal) ? model["google/".Length..] : model;
         bare = bare.Split(':')[0];
         if (bare != model)

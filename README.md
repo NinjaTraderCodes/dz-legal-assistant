@@ -4,8 +4,8 @@
 
 A desktop app that helps Algerian lawyers draft the *requête introductive d'instance* (statement of claim) in formal Arabic, checks that every element the law requires is present, and proposes the articles from the official texts. It runs offline: client files stay on the lawyer's own computer.
 
-| ▶ [Live demo](https://dz-legal-assistant-ai.onrender.com) | ⬇ [Download for Windows](https://github.com/NinjaTraderCodes/dz-legal-assistant/releases/latest) | 🎬 [Demo video](https://drive.google.com/file/d/1zFbKYu2HWJIQ3-o1_QB_Zs6JGhvXqLFW/view?usp=sharing) | 📄 [Pitch deck](https://drive.google.com/file/d/1k9K6tWyQsFWDLof60efMlhcdFuaJivwY/view?usp=sharing) |
-|---|---|---|---|
+| 🌐 [Website](https://dz-legal-assistant-ai.onrender.com) | ▶ [Live demo](https://dz-legal-assistant-ai.onrender.com/app) | ⬇ [Download for Windows](https://github.com/NinjaTraderCodes/dz-legal-assistant/releases/latest) | 🎬 [Demo video](https://drive.google.com/file/d/1zFbKYu2HWJIQ3-o1_QB_Zs6JGhvXqLFW/view?usp=sharing) | 📄 [Pitch deck](https://drive.google.com/file/d/1k9K6tWyQsFWDLof60efMlhcdFuaJivwY/view?usp=sharing) |
+|---|---|---|---|---|
 
 ![The workbench in English: the nine case steps, the Arabic petition drafted live, and the formal check](docs/images/readme/workbench-en.png)
 
@@ -73,7 +73,7 @@ Method and run records: [docs/HIDDEN-SET.md](docs/HIDDEN-SET.md) and [docs/basel
 
 ## Try it
 
-- **In the browser, nothing to install:** [the live demo](https://dz-legal-assistant-ai.onrender.com) runs the same engine, law library and screens, with four fictitious sample cases. Its AI uses a larger hosted model, so it is for fictitious data only.
+- **In the browser, nothing to install:** [the live demo](https://dz-legal-assistant-ai.onrender.com/app) runs the same engine, law library and screens, with four fictitious sample cases. Its AI uses a larger hosted model, so it is for fictitious data only.
 - **On Windows 10 or 11:** download the zip from the [latest release](https://github.com/NinjaTraderCodes/dz-legal-assistant/releases/latest), unzip it and run `DzLegalAssistant.exe`. It works fully offline. Without a model, choose "Without AI (fill-in templates)" in the draft panel. For the AI, install [Ollama](https://ollama.com) and run `ollama pull gemma3:4b` once.
 - **From the source code** (requires the [.NET 10 SDK](https://dotnet.microsoft.com/download)):
 

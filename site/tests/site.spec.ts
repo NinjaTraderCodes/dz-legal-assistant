@@ -41,11 +41,61 @@ test("the English home is English, left to right", async ({ request }) => {
     noInlineScript(html);
 });
 
-test("the submitted address keeps working and names the product", async ({ request }) => {
-    const response = await request.get("/", { maxRedirects: 0 });
-    expect(response.status()).toBe(200);
-    expect(await text(response)).toContain("DZ Legal Assistant");
-    csp(response);
+test("the submitted address serves the website in the visitor's language, English by default", async ({ request }) => {
+    // No language header at all: English, with the product's name on the page (what the uptime check greps for).
+    const plain = await request.get("/", { maxRedirects: 0, headers: { "Accept-Language": "" } });
+    expect(plain.status()).toBe(200);
+    const html = await text(plain);
+    expect(html).toMatch(/<html[^>]*lang="en"[^>]*dir="ltr"/);
+    expect(html).toContain("DZ Legal Assistant");
+    expect(html).toContain('rel="canonical" href="https://dz-legal-assistant-ai.onrender.com/en/"');
+    expect(html).not.toContain('name="robots"');
+    expect(plain.headers()["vary"]).toContain("Accept-Language");
+    csp(plain);
+    // An Arabic browser gets the Arabic home.
+    const arabic = await request.get("/", { maxRedirects: 0, headers: { "Accept-Language": "ar-DZ,fr;q=0.8" } });
+    expect(arabic.status()).toBe(200);
+    expect(await text(arabic)).toMatch(/<html[^>]*lang="ar"[^>]*dir="rtl"/);
+    // A remembered choice wins over the browser.
+    const remembered = await request.get("/", { maxRedirects: 0, headers: { "Accept-Language": "ar", Cookie: "dzlegal.lang=en" } });
+    expect(await text(remembered)).toMatch(/<html[^>]*lang="en"/);
+    // A French browser gets English.
+    const french = await request.get("/", { maxRedirects: 0, headers: { "Accept-Language": "fr-FR,fr;q=0.9" } });
+    expect(await text(french)).toMatch(/<html[^>]*lang="en"/);
+});
+
+test("every demo link on the site points to /app, and the demo keeps its own address and health check", async ({ page, request }) => {
+    for (const lang of ["ar", "en"]) {
+        await page.goto(`/${lang}/`);
+        const links = await page.locator('a[href^="/app"]').evaluateAll((as) => as.map((a) => a.getAttribute("href")));
+        expect(links.length, `${lang}: demo links`).toBeGreaterThanOrEqual(3);
+        for (const href of links) expect(href).toMatch(new RegExp(`^/app\\?lang=${lang}$`));
+    }
+    const app = await request.get("/app?lang=ar", { maxRedirects: 0 });
+    expect(app.status()).toBe(200);
+    expect(await text(app)).toMatch(/<html[^>]*lang="ar"[^>]*dir="rtl"/);
+    expect(await text(app)).toContain('name="robots" content="noindex"');
+    const health = await request.get("/healthz");
+    expect(health.status()).toBe(200);
+    expect(await health.json()).toMatchObject({ status: "ok", site: true });
+});
+
+// The fallback: an app started with a wrong Site__Root (no website folder) must still answer "/" with the demo.
+// Run it with FALLBACK_BASE_URL pointing at such an instance; it is skipped otherwise.
+test("without the website folder, the submitted address falls back to the demo", async ({ request }) => {
+    test.skip(!process.env.FALLBACK_BASE_URL, "FALLBACK_BASE_URL not set");
+    const base = process.env.FALLBACK_BASE_URL!;
+    const root = await request.get(base + "/", { maxRedirects: 0 });
+    expect(root.status()).toBe(200);
+    const html = await text(root);
+    expect(html).toContain('id="app-loading"');
+    expect(html).toContain("DZ Legal Assistant");
+    const health = await request.get(base + "/healthz");
+    expect(await health.json()).toMatchObject({ status: "ok", site: false });
+    const app = await request.get(base + "/app");
+    expect(app.status()).toBe(200);
+    const site = await request.get(base + "/en/", { maxRedirects: 0 });
+    expect(site.status()).toBe(404);
 });
 
 test("the language switch remembers the choice and comes back", async ({ request }) => {

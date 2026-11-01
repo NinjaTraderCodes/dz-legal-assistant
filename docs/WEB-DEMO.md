@@ -31,8 +31,11 @@ desktop's own, bundled with their licences.
 - **Design tokens:** `site/scripts/tokens.mjs` generates `site/src/styles/tokens.css` and
   `src/DzLegal.Web/wwwroot/tokens.css` from the desktop theme (`App.axaml`, `Styles/Workbench.axaml`); the build fails
   when they are stale, so the website never drifts from the product.
-- **`/` during the review:** the demo, until `Site:ServeRoot` is switched on; then `/` serves the home page in the
-  visitor's language and the demo lives at `/app`. Unknown paths get the site's own not-found page.
+- **`/`:** the home page in the visitor's language (the `dzlegal.lang` cookie, then the browser's Accept-Language,
+  then English), served at the address itself, no redirect; the demo lives at `/app`. The switch is `Site:ServeRoot`
+  in `appsettings.json`: set it to `false` and the demo answers at `/` again (rewritten internally to `/app`), which
+  is also what happens when the site folder is missing from the image. Unknown paths get the site's own not-found
+  page.
 - **Build:** the `Dockerfile` builds the site in a Node stage (`npm ci --omit=dev && npm run build`, about two minutes)
   and copies `site/dist` next to the app; the app finds it at `<base>/site` (setting `Site:Root`). Without the folder
   the app behaves exactly as before.

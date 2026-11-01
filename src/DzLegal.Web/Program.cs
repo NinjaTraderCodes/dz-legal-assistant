@@ -2,6 +2,7 @@ using DzLegal.Web.Components;
 using DzLegal.Web.Services;
 using DzLegal.Web.Site;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -78,6 +79,14 @@ else
     app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
 }
 
+// "/" belongs to the website once Site:ServeRoot is on. Otherwise (the switch off, or the site folder missing from the
+// image) the demo answers there, rewritten internally so the submitted address keeps working without a redirect.
+if (site.DemoAnswersRoot)
+{
+    app.UseRewriter(new RewriteOptions().AddRewrite("^$", "app", skipRemainingRules: true));
+}
+
+app.UseRouting();
 app.UseAntiforgery();
 app.UseStaticSite(site);
 

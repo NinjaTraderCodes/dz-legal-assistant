@@ -14,13 +14,15 @@ const views = arg("views", "home,app").split(",");
 const sizes = [[390, 844], [768, 1024], [1366, 768], [1920, 1080]];
 const langs = ["ar", "en"];
 const themes = ["light", "dark"];
-const paths = { home: (lang) => `/${lang}/`, "not-found": (lang) => `/${lang}/404/`, app: (lang) => `/app?lang=${lang}` };
+const paths = { home: (lang) => `/${lang}/`, "not-found": (lang) => `/${lang}/404/`, app: (lang) => `/app?lang=${lang}`, root: () => "/" };
+// "/" is captured on a phone and a desktop only: it serves the same page as /ar/ or /en/, chosen by the cookie.
+const sizesOf = (view) => (view === "root" ? sizes.filter(([w]) => w === 390 || w === 1920) : sizes);
 mkdirSync(out, { recursive: true });
 
 const browser = await chromium.launch();
 let count = 0;
 for (const view of views) {
-    for (const lang of langs) for (const theme of themes) for (const [width, height] of sizes) {
+    for (const lang of langs) for (const theme of themes) for (const [width, height] of sizesOf(view)) {
         // Reduced motion: the scroll story then shows its final state, which is what the report should show.
         const context = await browser.newContext({ viewport: { width, height }, deviceScaleFactor: 1, locale: lang === "ar" ? "ar-DZ" : "en-GB", reducedMotion: "reduce" });
         await context.addCookies([{ name: "dzlegal.theme", value: theme, url: base }, { name: "dzlegal.lang", value: lang, url: base }]);

@@ -115,7 +115,29 @@ public sealed class StaticSiteTests : IDisposable
     }
 
     [Fact]
-    public void ServeRootIsOffUntilAsked() => Assert.False(Site(serveRoot: false).ServeRoot);
+    public void TheRootServesTheSiteWhenAsked()
+    {
+        var site = Site(serveRoot: true);
+        Assert.True(site.ServeRoot);
+        Assert.False(site.DemoAnswersRoot);
+        Assert.Equal(Path.Combine(_root, "en", "index.html"), site.HomeFile("en"));
+    }
+
+    [Fact]
+    public void TheDemoAnswersTheRootWhenTheSwitchIsOff()
+    {
+        var site = Site(serveRoot: false);
+        Assert.False(site.ServeRoot);
+        Assert.True(site.DemoAnswersRoot);
+    }
+
+    [Fact]
+    public void TheDemoAnswersTheRootWhenTheSiteFolderIsMissing()
+    {
+        var site = StaticSite.Probe(new SiteOptions { Root = Path.Combine(_root, "nowhere"), ServeRoot = true }, Path.GetTempPath());
+        Assert.False(site.IsAvailable);
+        Assert.True(site.DemoAnswersRoot);
+    }
 
     [Theory]
     [InlineData("/en/download/", "en/download/index.html", null)]

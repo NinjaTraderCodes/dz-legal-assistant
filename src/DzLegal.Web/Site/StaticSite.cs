@@ -25,6 +25,9 @@ internal sealed class StaticSite
 
     public bool ServeRoot { get; }
 
+    /// <summary>"/" shows the demo whenever the site does not take it: the switch is off, or the folder is missing.</summary>
+    public bool DemoAnswersRoot => !ServeRoot;
+
     public static StaticSite Probe(SiteOptions options, string contentRoot)
     {
         ArgumentNullException.ThrowIfNull(options);

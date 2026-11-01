@@ -4,8 +4,8 @@
 
 A desktop app that helps Algerian lawyers draft the *requête introductive d'instance* (statement of claim) in formal Arabic, checks that every element the law requires is present, and proposes the articles from the official texts. It runs offline: client files stay on the lawyer's own computer.
 
-| ▶ [Live demo](https://dz-legal-assistant-ai.onrender.com) | ⬇ [Download for Windows](https://github.com/NinjaTraderCodes/dz-legal-assistant/releases/latest) | 🎬 [Demo video](https://drive.google.com/file/d/1zFbKYu2HWJIQ3-o1_QB_Zs6JGhvXqLFW/view?usp=sharing) | 📄 [Pitch deck](https://drive.google.com/file/d/1k9K6tWyQsFWDLof60efMlhcdFuaJivwY/view?usp=sharing) |
-|---|---|---|---|
+| 🌐 [Website](https://dz-legal-assistant-ai.onrender.com) | ▶ [Live demo](https://dz-legal-assistant-ai.onrender.com/app) | ⬇ [Download for Windows](https://github.com/NinjaTraderCodes/dz-legal-assistant/releases/latest) | 🎬 [Demo video](https://drive.google.com/file/d/1zFbKYu2HWJIQ3-o1_QB_Zs6JGhvXqLFW/view?usp=sharing) | 📄 [Pitch deck](https://drive.google.com/file/d/1k9K6tWyQsFWDLof60efMlhcdFuaJivwY/view?usp=sharing) |
+|---|---|---|---|---|
 
 ![The workbench in English: the nine case steps, the Arabic petition drafted live, and the formal check](docs/images/readme/workbench-en.png)
 

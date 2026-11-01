@@ -38,4 +38,22 @@ window.dzlegal = {
   forgetCase() {
     try { localStorage.removeItem("dzlegal.case"); } catch { }
   },
+  // The visitor's language and theme, shared with the website: a first-party cookie the server reads, and localStorage.
+  remember(key, value) {
+    try { document.cookie = key + "=" + value + "; Path=/; Max-Age=31536000; SameSite=Lax" + (location.protocol === "https:" ? "; Secure" : ""); } catch { }
+    try { localStorage.setItem(key, value); } catch { }
+  },
+  applyChoice(lang, dir, theme) {
+    const html = document.documentElement;
+    html.lang = lang;
+    html.dir = dir;
+    if (theme === "dark") html.setAttribute("data-theme", "dark"); else html.removeAttribute("data-theme");
+    this.remember("dzlegal.lang", lang);
+    this.remember("dzlegal.theme", theme);
+  },
+  // The shell shown before the circuit connects; the page has rendered once this is called.
+  hideLoading() {
+    const shell = document.getElementById("app-loading");
+    if (shell) shell.remove();
+  },
 };

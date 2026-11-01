@@ -19,6 +19,7 @@
 | `djihane/onboarding` | Djihane | Done: merged on 30 Oct through `claude/onboarding-fixes`, her 7 commits under her name. Can be deleted. |
 | `claude/onboarding-fixes` | Claude | Merged on 30 Oct: the fixes to the onboarding before merging (`docs/ONBOARDING-RELEASE.md`). Can be deleted. |
 | `djihane/guide` | Djihane | To be created from the default branch: the tour, the sample case, help, the law library page and the About page (`docs/briefs/GUIDE-BRIEF.pdf`). |
+| `fable/website` | Fable | Active since 1 Nov: the public website (`site/`, Astro) served by the demo's app at `/ar/` and `/en/`, the demo moved to `/app`, then the demo restyled on the desktop's tokens. One merge per phase; reports in `docs/website/`. |
 
 ## Archived
 

@@ -1,0 +1,50 @@
+---
+// How the AI is kept in its place: the three stages of the analysis, as the workbench's progress panel shows them,
+// the measured results with their mode and source, and the line that matters to a lawyer.
+import Icon from "./Icon.astro";
+import { t, type Lang } from "../i18n";
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const stages = [1, 2, 3].map((n) => ({ title: t(lang, `ai.stage${n}.title`), body: t(lang, `ai.stage${n}.body`), model: n !== 2 }));
+---
+<section class="section page ai" aria-labelledby="ai-title">
+    <div class="intro">
+        <h2 id="ai-title" class="h1">{t(lang, "ai.title")}</h2>
+        <p class="lead">{t(lang, "ai.lead")}</p>
+    </div>
+    <ol class="stages">
+        {stages.map((stage, i) => (
+            <li class="stage">
+                <span class={`dot ${i === 2 ? "active" : "done"}`} aria-hidden="true">{i < 2 && <Icon name="checkmark" size={12} />}</span>
+                <div>
+                    <h3 class="h3">{stage.title} {stage.model ? <span class="chip chip-accent"><Icon name="sparkle" size={12} /> AI</span> : <span class="chip chip-success"><Icon name="checkmark_circle" size={12} /> {lang === "ar" ? "برمجة" : "code"}</span>}</h3>
+                    <p>{stage.body}</p>
+                </div>
+            </li>
+        ))}
+    </ol>
+    <div class="measure card-alt">
+        <p>{t(lang, "ai.measure")}</p>
+        <p class="caption">{t(lang, "ai.measureNote")}</p>
+    </div>
+    <p class="sign h2">{t(lang, "ai.sign")}</p>
+</section>
+
+<style>
+    .ai { display: grid; gap: 36px; }
+    .intro { display: grid; gap: 16px; max-width: 820px; }
+    .stages { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .stage { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; background: var(--surface-alt); border: 1px solid var(--hairline); border-radius: var(--radius-control); padding: 14px 16px; }
+    .stage h3 { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 1.1rem; }
+    .stage p { font-size: 0.95rem; }
+    .dot { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; margin-top: 6px; }
+    .dot.done { background: var(--success-soft); color: var(--success); }
+    .dot.active { width: 10px; height: 10px; margin-inline: 4px; background: var(--accent); animation: pulse 0.9s ease-in-out infinite alternate; }
+    @keyframes pulse { to { opacity: 0.2; } }
+    .measure { display: grid; gap: 10px; max-width: 820px; }
+    .measure p { max-width: none; }
+    .sign { color: var(--accent); max-width: none; }
+    @media (max-width: 899px) { .stages { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce) { .dot.active { animation: none; } }
+</style>

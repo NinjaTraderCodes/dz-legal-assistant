@@ -113,6 +113,7 @@ dotnet run --project src/DzLegal.Web  # the web demo, locally
 ## Documentation
 
 - [docs/PRODUCT-DETAILS.md](docs/PRODUCT-DETAILS.md): the full technical description: analysis, drafting, checks, exports, local model set-up, benches and repository layout.
+- [docs/website/](docs/website/): the public website (`site/`, served by the demo's app at `/ar/` and `/en/`): one report per phase with screenshots, Lighthouse and axe results. How it is wired: [docs/WEB-DEMO.md](docs/WEB-DEMO.md).
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md): modules, data flow and design decisions.
 - [docs/DEVELOPER-GUIDE.md](docs/DEVELOPER-GUIDE.md): which file does what, where every prompt lives.
 - [docs/OFFLINE.md](docs/OFFLINE.md): what "offline" means here and how to verify it.

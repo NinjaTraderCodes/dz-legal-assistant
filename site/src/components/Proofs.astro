@@ -1,0 +1,38 @@
+---
+// What the product guarantees, in the vocabulary of its "Elements present" list: a check mark, a title, the fact.
+import Icon from "./Icon.astro";
+import { s, t, fmt, type Lang } from "../i18n";
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const items = [
+    { icon: "book_open", title: t(lang, "proofs.texts.title"), body: fmt(s(lang, "AboutSources"), "1,361", "6") + " " + t(lang, "proofs.texts.body") },
+    { icon: "shield_checkmark", title: t(lang, "proofs.offline.title"), body: t(lang, "proofs.offline.body") },
+    { icon: "checkmark_circle", title: t(lang, "proofs.review.title"), body: t(lang, "proofs.review.body") },
+];
+---
+<section class="section page proofs" aria-labelledby="proofs-title">
+    <h2 id="proofs-title" class="h2">{t(lang, "proofs.title")}</h2>
+    <ul class="list">
+        {items.map((item) => (
+            <li>
+                <span class="tick"><Icon name={item.icon} size={22} /></span>
+                <div>
+                    <h3 class="h3">{item.title}</h3>
+                    <p>{item.body}</p>
+                </div>
+            </li>
+        ))}
+    </ul>
+</section>
+
+<style>
+    .proofs { display: grid; gap: 28px; }
+    .list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
+    .list li { display: grid; grid-template-columns: auto 1fr; gap: 14px; padding: 24px 20px 28px; align-items: start; }
+    .list li + li { border-inline-start: 1px solid var(--hairline); }
+    .tick { display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--success-soft); color: var(--success); }
+    .list h3 { margin-bottom: 8px; }
+    .list p { font-size: 0.95rem; }
+    @media (max-width: 899px) { .list { grid-template-columns: 1fr; } .list li + li { border-inline-start: 0; border-top: 1px solid var(--hairline); } }
+</style>

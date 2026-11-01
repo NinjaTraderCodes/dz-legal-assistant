@@ -1,0 +1,36 @@
+---
+// The home page, in Arabic (/ar/) and English (/en/): the welcome, the problem, the guarantees, the nine steps on
+// paper, the AI in its place, the two ways to use the product, and the team.
+import Base from "../../layouts/Base.astro";
+import Hero from "../../components/Hero.astro";
+import Problem from "../../components/Problem.astro";
+import Proofs from "../../components/Proofs.astro";
+import StepStory from "../../components/StepStory.astro";
+import AiPanel from "../../components/AiPanel.astro";
+import DemoDownload from "../../components/DemoDownload.astro";
+import Team from "../../components/Team.astro";
+import { getImage } from "astro:assets";
+import welcome from "../../../../src/DzLegal.App/Assets/Images/welcome-bg.jpg";
+import { heroImage } from "../../components/Hero.astro";
+import { langs, s, t, type Lang } from "../../i18n";
+
+export function getStaticPaths() {
+    return langs.map((lang) => ({ params: { lang } }));
+}
+const lang = Astro.params.lang as Lang;
+// The welcome photograph is the largest thing on the first screen: the head preloads the same responsive set the hero renders.
+const hero = await getImage({ src: welcome, ...heroImage });
+const preloadImage = { src: hero.src, srcSet: hero.srcSet.attribute, sizes: heroImage.sizes };
+---
+<Base lang={lang} title={s(lang, "AppTitle")} description={t(lang, "meta.home.description")} path="/" preloadImage={preloadImage}>
+    <Hero lang={lang} />
+    <Problem lang={lang} />
+    <Proofs lang={lang} />
+    <StepStory lang={lang} />
+    <AiPanel lang={lang} />
+    <DemoDownload lang={lang} />
+    <Team lang={lang} />
+</Base>
+<script>
+    import "../../scripts/home";
+</script>

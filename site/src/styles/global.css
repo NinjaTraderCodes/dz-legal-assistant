@@ -1,0 +1,131 @@
+/* The website's stylesheet: Tailwind utilities on top of the product's design tokens (tokens.css is generated from
+   the desktop app's theme). Light is the default; dark applies with data-theme="dark" on <html>. Arabic is the first
+   language: Naskh gets the larger size and line-height the desktop gives it. */
+@import "tailwindcss";
+@import "./tokens.css";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+@custom-variant rtl (&:where([dir="rtl"], [dir="rtl"] *));
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-alt: var(--surface-alt);
+  --color-paper: var(--paper);
+  --color-paper-canvas: var(--paper-canvas);
+  --color-hairline: var(--hairline);
+  --color-ink: var(--text);
+  --color-muted: var(--muted);
+  --color-bar: var(--bar);
+  --color-bar-text: var(--bar-text);
+  --color-bar-muted: var(--bar-muted);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-gold: var(--gold);
+  --color-on-gold: var(--on-gold);
+  --color-edge: var(--edge);
+  --color-mark: var(--mark);
+  --color-input-border: var(--input-border);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --font-ui: var(--font-ui);
+  --font-doc: var(--font-doc);
+  --radius-control: var(--radius-control);
+  --radius-card: var(--radius-card);
+  --radius-button: var(--radius-button);
+  --radius-tour: var(--radius-onboarding-card);
+  --shadow-card: var(--shadow-card);
+  --shadow-paper: var(--shadow-paper);
+  --shadow-tour: var(--tour-card-shadow);
+}
+
+/* Fonts: Inter for Latin, Noto Naskh Arabic for Arabic script, exactly as the desktop's UiFont and DocumentFont. */
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("../assets/fonts/Inter-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("../assets/fonts/Inter-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Noto Naskh Arabic"; font-style: normal; font-weight: 400; font-display: swap; src: url("../assets/fonts/NotoNaskhArabic-Regular.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF; }
+@font-face { font-family: "Noto Naskh Arabic"; font-style: normal; font-weight: 700; font-display: swap; src: url("../assets/fonts/NotoNaskhArabic-Bold.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF; }
+
+@layer base {
+  /* Small text needs 4.5:1; the product's muted token reaches 4.4:1 on the canvas, so the site darkens it slightly. */
+  :root { --measure: 68ch; --page: 1180px; --gutter: clamp(16px, 4vw, 48px); --muted-aa: color-mix(in srgb, var(--muted) 78%, var(--text)); }
+  html { background: var(--canvas); background-image: var(--canvas-image); color: var(--text); font-family: var(--font-ui); font-size: 17px; line-height: 1.6; -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  html[lang="ar"] { font-size: 18px; line-height: 1.9; }
+  body { margin: 0; min-height: 100dvh; text-rendering: optimizeLegibility; }
+  h1, h2, h3, h4 { margin: 0; font-weight: 600; line-height: 1.15; text-wrap: balance; letter-spacing: -0.01em; }
+  html[lang="ar"] :is(h1, h2, h3, h4) { line-height: 1.4; letter-spacing: 0; }
+  p { margin: 0; max-width: var(--measure); }
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  a:hover { color: var(--text); }
+  :focus-visible { outline: 3px solid var(--edge); outline-offset: 3px; border-radius: 4px; }
+  ::selection { background: var(--accent-soft); color: var(--text); }
+  button { font: inherit; color: inherit; }
+  svg { display: inline-block; vertical-align: middle; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+  @view-transition { navigation: auto; }
+}
+
+@layer components {
+  .display { font-size: clamp(2.5rem, 1.5rem + 3.4vw, 4.5rem); line-height: 1.05; }
+  html[lang="ar"] .display { font-size: clamp(2.25rem, 1.4rem + 3vw, 4rem); line-height: 1.35; }
+  .h1 { font-size: clamp(2.125rem, 1.6rem + 1.8vw, 3.25rem); }
+  .h2 { font-size: clamp(1.625rem, 1.3rem + 1.1vw, 2.125rem); }
+  .h3 { font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem); }
+  .lead { font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.3125rem); line-height: 1.65; color: var(--welcome-secondary); }
+  html[lang="ar"] .lead { line-height: 1.9; }
+  .small { font-size: 0.875rem; }
+  .caption { font-size: 0.78rem; color: var(--muted-aa); }
+  .muted { color: var(--muted-aa); }
+  .doc { font-family: var(--font-doc); }
+  .page { width: min(var(--page), 100% - 2 * var(--gutter)); margin-inline: auto; }
+  .section { padding-block: clamp(64px, 10vw, 128px); }
+  .section + .section { padding-top: 0; }
+  /* Phones lay out a section only when it comes near the screen (the scroll story, desktop-only, measures its own height). */
+  @media (max-width: 899px) { .section { content-visibility: auto; contain-intrinsic-size: auto 900px; } }
+
+  /* The product's own controls (Workbench.axaml: Button.home, .primary, .main-action). */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: var(--h-onboarding-button); padding: 8px 20px; border: 1px solid var(--edge); border-radius: var(--radius-button); background: var(--welcome-control); color: var(--welcome-text); font-weight: 500; font-size: var(--size-onboarding-button); text-decoration: none; transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease; }
+  .btn:hover { color: var(--welcome-text); background: var(--surface-alt); }
+  .btn:active { transform: translateY(1px); }
+  .btn-gold { background: var(--welcome-gold); color: var(--welcome-button-text); border-color: var(--welcome-button-border); font-weight: 600; font-size: 17px; min-height: 48px; min-width: 208px; }
+  .btn-gold:hover { color: var(--welcome-button-text); background: var(--welcome-gold); filter: brightness(1.05); }
+  .btn-quiet { background: transparent; border-color: transparent; }
+  .btn-quiet:hover { background: var(--surface-alt); }
+
+  /* Panels and cards as in the workbench: Border.panel (radius 12, hairline, shadow) and Border.card. */
+  .panel { background: var(--panel); background-image: var(--panel-image); border: 1px solid var(--hairline); border-radius: var(--radius-card); box-shadow: var(--shadow-card); }
+  .card { background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--radius-card); padding: 16px; }
+  .card-alt { background: var(--surface-alt); border-radius: var(--radius-card); padding: 14px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 3px 10px; font-size: 12.5px; font-weight: 600; background: var(--warning-soft); color: var(--warning); }
+  .chip-success { background: var(--success-soft); color: var(--success); }
+  .chip-accent { background: var(--accent-soft); color: var(--accent); }
+  .finding { border-radius: 10px; padding: 12px 14px; background: var(--danger-soft); display: grid; gap: 4px; }
+  .finding.warning { background: var(--warning-soft); }
+  .finding.success { background: var(--success-soft); }
+  .hairline { border: 0; border-top: 1px solid var(--hairline); margin: 0; }
+
+  /* The paper sheet of the statement of claim with its draft watermark (MainWindow.axaml DocumentPaper). */
+  .paper-canvas { background: var(--paper-canvas); border-radius: 8px; padding: clamp(10px, 2vw, 18px); }
+  .paper { position: relative; overflow: hidden; background: var(--paper); color: #27241f; border-radius: 2px; box-shadow: var(--shadow-paper); padding: clamp(28px, 5vw, 56px) clamp(22px, 5vw, 64px); font-family: var(--font-doc); font-size: clamp(15px, 0.9rem + 0.4vw, 20.5px); line-height: 1.55; direction: rtl; text-align: right; }
+  .paper::before { content: "مسودة"; position: absolute; inset-inline: 0; top: 38%; text-align: center; font-size: clamp(64px, 12vw, 110px); font-weight: 700; color: rgb(39 36 31 / 0.08); transform: rotate(-35deg); pointer-events: none; }
+  .paper h3 { font-family: var(--font-doc); font-size: 1em; font-weight: 700; text-decoration: underline; margin-top: 1.2em; }
+  .paper p { max-width: none; }
+
+  /* Step list as in the case form (01–09, check marks). */
+  .steps { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
+  .step { display: grid; grid-template-columns: 3px 30px 1fr 22px; align-items: center; min-height: 32px; border-radius: 4px; font-size: 14px; }
+  html[lang="ar"] .step { font-size: 16px; }
+  .step .bar { width: 3px; height: 70%; border-radius: 1px; background: transparent; }
+  .step .num { font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .step .icon { color: var(--success); }
+  .step.current { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+  .step.current .bar { background: var(--accent); }
+  .step.missing .icon { color: var(--danger); }
+}

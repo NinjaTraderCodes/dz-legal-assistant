@@ -1,0 +1,21 @@
+---
+// The language pair of the welcome screen: العربية | English, the current one outlined. The other one links to the
+// server's /lang endpoint, which remembers the choice in a first-party cookie and comes back to the same page.
+import { otherLang, type Lang } from "../i18n";
+
+interface Props { lang: Lang; path: string }
+const { lang, path } = Astro.props;
+const other = otherLang(lang);
+const names: Record<Lang, string> = { ar: "العربية", en: "English" };
+---
+<div class="langs" role="group" aria-label={lang === "ar" ? "لغة الواجهة" : "Interface language"}>
+    <span class="lang selected" aria-current="true" lang={lang}>{names[lang]}</span>
+    <a class="lang" href={`/lang/${other}?to=${encodeURIComponent(`/${other}${path}`)}`} rel="nofollow" lang={other} hreflang={other}>{names[other]}</a>
+</div>
+
+<style>
+    .langs { display: inline-flex; gap: 6px; padding: 4px; border-radius: var(--radius-control); }
+    .lang { display: inline-flex; align-items: center; min-height: 40px; padding: 4px 14px; border: 1px solid var(--edge); border-radius: var(--radius-control); background: var(--welcome-control); color: var(--welcome-text); font-size: 14px; text-decoration: none; }
+    .lang.selected { border-width: 2px; font-weight: 600; padding-inline: 13px; }
+    a.lang:hover { background: var(--surface-alt); color: var(--welcome-text); }
+</style>

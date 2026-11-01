@@ -1,4 +1,5 @@
 @page "/"
+@page "/app"
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 @implements IDisposable
 @using DzLegal.Presentation.ViewModels
@@ -40,8 +41,8 @@
             @* The desktop app, for judges and lawyers who want it on their own computer: the latest release on GitHub. *@
             <a class="button-like" id="download-windows" href="@DownloadUrl" target="_blank" rel="noopener" title="@T("DownloadNote")"><Icon Name="arrow_download" /> @T("DownloadWindows")</a>
             <button type="button" aria-pressed="@(showGuide ? "true" : "false")" @onclick="() => showGuide = !showGuide"><Icon Name="question_circle" /> @T("GuideShow")</button>
-            <button type="button" aria-label="@T("Theme")" title="@T("Theme")" @onclick="() => Vm.ToggleThemeCommand.Execute(null)"><Icon Name="weather_moon" /></button>
-            <button type="button" lang="@(Lang == "en" ? "ar" : "en")" @onclick="() => Vm.SwitchLanguageCommand.Execute(null)"><Icon Name="translate" /> @L["SwitchLanguage"]</button>
+            <button type="button" aria-label="@T("Theme")" title="@T("Theme")" @onclick="ToggleThemeAsync"><Icon Name="weather_moon" /></button>
+            <button type="button" lang="@(Lang == "en" ? "ar" : "en")" @onclick="SwitchLanguageAsync"><Icon Name="translate" /> @L["SwitchLanguage"]</button>
         </div>
     </header>
 

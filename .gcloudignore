@@ -10,3 +10,12 @@ artifacts/
 docs/images/
 docs/pitch/
 **/appsettings.local.json
+
+# Website (site/): tooling and build outputs stay out of the build context
+site/node_modules/
+site/dist/
+site/.astro/
+site/src/assets/fonts/
+site/test-results/
+site/playwright-report/
+site/tests/reports/

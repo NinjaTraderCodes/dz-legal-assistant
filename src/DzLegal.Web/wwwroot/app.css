@@ -293,3 +293,13 @@ details.present summary { cursor: pointer; font-weight: 600; }
 .notice.export-blockers { display: grid; gap: 4px; }
 .section .reviewed { display: flex; gap: 6px; align-items: center; margin-top: 6px; }
 .answered-by { color: var(--ai); margin: 4px 0 0; }
+
+/* The welcome shown until the circuit connects (tokens.css: the product's own colours). Gone once the page renders. */
+.app-loading { position: fixed; inset: 0; z-index: 5; display: grid; place-content: center; justify-items: center; gap: 8px; padding: 24px;
+  background: var(--canvas); background-image: var(--canvas-image); color: var(--text); text-align: center; font: 16px/1.6 var(--ui); }
+.app-loading svg { color: var(--accent); margin-bottom: 12px; }
+.app-loading p { margin: 0; max-width: 36ch; }
+.app-loading-title { font-size: 22px; font-weight: 600; }
+.app-loading-text { color: var(--muted); }
+.app-loading-hint { color: var(--muted); font-size: 13px; }
+body:has(.app) .app-loading { display: none; }

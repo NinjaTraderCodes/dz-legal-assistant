@@ -1,0 +1,39 @@
+{
+  "name": "dz-legal-assistant-site",
+  "version": "0.9.1",
+  "private": true,
+  "description": "Public website of DZ Legal Assistant (Astro, static), served by src/DzLegal.Web at the demo's address.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "tokens": "node scripts/tokens.mjs",
+    "strings": "node scripts/strings.mjs",
+    "fonts": "node scripts/fonts.mjs",
+    "prebuild": "node scripts/tokens.mjs --check && node scripts/strings.mjs --check && node scripts/fonts.mjs",
+    "build": "astro build",
+    "postbuild": "node scripts/check-dist.mjs",
+    "dev": "node scripts/fonts.mjs && astro dev",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "playwright test",
+    "shots": "node scripts/shots.mjs",
+    "lighthouse": "node scripts/lighthouse.mjs"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.64.1",
+    "lighthouse": "13.6.0"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "3.7.4",
+    "@tailwindcss/vite": "4.3.3",
+    "astro": "7.4.4",
+    "fast-xml-parser": "5.11.2",
+    "gsap": "3.15.0",
+    "sharp": "0.35.5",
+    "subset-font": "2.9.0",
+    "tailwindcss": "4.3.3"
+  }
+}

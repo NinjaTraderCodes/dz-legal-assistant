@@ -38,16 +38,38 @@ The app also includes a first-run setup that fills the signature block of every 
 
 ## Results so far
 
+**What works without any AI**
+
 | What | Result |
 |---|---|
 | Automated tests | **937**, all passing |
 | Form checks (rule engine, no AI) | **360 of 360** correct on 24 test petitions |
 | Law texts | **1,361 articles** from 6 texts, including the complete Family Code and the complete CPCA |
 | Claim types covered | **21**: civil, commercial, family and labour |
-| 100 test cases written by a separate AI agent and never opened by the developers, online model (Nemotron 3 Ultra) | claim type right in **94%** (85 of 90); **67%** of cases fully right (60 of 90); **10 of 10** out-of-scope cases declined; 8 s per case |
-| The same 90 cases, local model (Gemma 3 4B), claim type given | **36%** fully right (32 of 90), about 1 minute per case |
 
-The local model is the weak point, which is why the lawyer confirms everything it proposes and why an online mode is next (below). Method and run records: [docs/HIDDEN-SET.md](docs/HIDDEN-SET.md).
+**How well the AI reads a case**
+
+Measured on 100 test cases written by a separate AI agent and never opened by the developers (90 within the app's claim types, 10 outside them). Both models had the same task: read the facts and find each party, event, date, amount and request, and whether each fact is stated, denied or disputed.
+
+| Same 90 cases, claim type given | Online model (Nemotron 3 Ultra) | Local model (Gemma 3 4B), on the laptop |
+|---|---:|---:|
+| Plaintiff's position right | 100% | 97% |
+| Decisive events found | 99% | 88% |
+| Dates linked to the right event | 95% | 80% |
+| Stated, denied or disputed read correctly | 93% | 81% |
+| Requests found | 99% | 93% |
+| **Cases with every detail right** | **71%** (64 of 90) | **36%** (32 of 90) |
+| Time per case | 4 s | about 1 min |
+
+"Every detail right" is the strictest score: one wrong date or amount fails the whole case. When the online model also reads the claim type itself, as in the live demo, it finds the right type in **94%** of cases (85 of 90), gets **67%** of cases fully right, and declines **all 10** out-of-scope cases instead of guessing, in 8 s per case.
+
+**What this means for the lawyer**
+
+- **The parts that make a petition admissible do not depend on the AI.** The form check is pure code, and the law is quoted from the official texts by code.
+- **The AI only proposes.** The lawyer confirms the claim type before anything is used, and reviews every AI-written section before export. The local model reads most details right, but often misses one per case, which is exactly what these confirmations are for.
+- **Two ways to get a stronger AI, both planned:** an optional online mode, where client names are hidden on the laptop and the lawyer sees exactly what is sent before it leaves; and larger local models for 16 GB laptops (Gemma 4 E4B is installed and being tested).
+
+Method and run records: [docs/HIDDEN-SET.md](docs/HIDDEN-SET.md) and [docs/baselines/](docs/baselines/).
 
 ## Try it
 
@@ -80,6 +102,7 @@ dotnet run --project src/DzLegal.Web  # the web demo, locally
 - **One document type so far:** the statement of claim. The Civil, Commercial and Labour codes are only partly loaded; the complete Civil Code is being checked against the Official Journal.
 - **The app drafts; it does not decide.** It does not judge the merits or guarantee a result, and the lawyer reviews and signs every petition.
 - **The web demo sends what is typed to a hosted model:** fictitious cases only. The desktop app sends nothing.
+- **The local model is the weak point today:** it is slower and less precise than the online model (table above). The desktop app stays offline by default; the online mode will be the lawyer's choice, case by case.
 
 ## What's next
 

@@ -25,24 +25,12 @@ In Algeria, a statement of claim that omits one element required by the Code of 
 
 Frames from the [demo video](https://drive.google.com/file/d/1zFbKYu2HWJIQ3-o1_QB_Zs6JGhvXqLFW/view?usp=sharing), recorded live with the local model (Gemma 3 4B) on an ordinary laptop without a graphics card. The waits are real and shown sped up; the banner gives the true duration.
 
-**Read in 3 min 17 s.** The AI shows how it understood the case and asks "Is this the type of claim?". Nothing is ticked before "Yes".
-
-<img src="docs/images/readme/live-ai-proposal-zoom.jpg" width="560" alt="The local model's reading of the facts and the question «Is this the type of claim?», with the proposed articles not yet ticked">
-
-**Drafted in 2 min 33 s.** The code quotes each article from the official text; the AI links the facts to it. The lawyer ticks "I have reviewed this section" before any export.
-
-![The legal grounds drafted in Arabic by the local model, with the box «I have reviewed this section and take responsibility for it» ticked](docs/images/readme/live-ai-grounds-zoom.jpg)
-
-<details><summary>The four steps of the run, full screen</summary>
-
 | | |
 |---|---|
 | ![The local model reading the facts: the three analysis stages and the true duration, 3 min 17 s](docs/images/readme/live-ai-reading-facts.jpg) | ![The AI's reading of the facts and the question «Is this the type of claim?»: nothing is ticked until the lawyer confirms](docs/images/readme/live-ai-proposal.jpg) |
 | **1. Reading the facts.** The local model reads the case and proposes the claim type (3 min 17 s on this laptop). | **2. The lawyer decides.** The AI's reading is shown with the question "Is this the type of claim?"; nothing is ticked before "Yes". |
 | ![The local model drafting the legal grounds from the confirmed articles: 2 min 33 s](docs/images/readme/live-ai-drafting.jpg) | ![The drafted legal grounds in Arabic, with the review box the lawyer must tick before export](docs/images/readme/live-ai-drafted-grounds.jpg) |
 | **3. Drafting the legal grounds** from the confirmed articles (2 min 33 s). The code quotes each rule; the AI links the facts to it. | **4. The lawyer reviews.** The AI-written section must be ticked "I have reviewed this section and take responsibility for it" before any export. |
-
-</details>
 
 The app also includes a first-run setup that fills the signature block of every petition, a guided tour, a sample case, help pages, and a law library showing each text's official source and how it was checked. It works in Arabic and English, in light and dark themes; the petition itself is always Arabic, right to left.
 

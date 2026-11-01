@@ -19,3 +19,12 @@ redteam-output/
 # Harness outputs run from the repository root
 w[0-9]*-*/
 skeleton/
+
+# Website (site/): build outputs and tooling
+site/node_modules/
+site/dist/
+site/.astro/
+site/src/assets/fonts/
+site/test-results/
+site/playwright-report/
+site/tests/reports/

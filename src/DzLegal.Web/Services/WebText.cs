@@ -9,6 +9,11 @@ public static class WebText
     private static readonly Dictionary<string, (string En, string Ar)> Strings = new(StringComparer.Ordinal)
     {
         ["DemoChip"] = ("Demo · fictitious cases only", "عرض تجريبي · قضايا وهمية فقط"),
+        ["Title"] = ("DZ Legal Assistant · demo", "مساعد صياغة العرائض · عرض تجريبي"),
+        ["Loading"] = ("Loading the demo…", "جارٍ تحميل العرض التجريبي…"),
+        ["LoadingHint"] = (
+            "The server wakes up on the first visit; this can take up to a minute.",
+            "يستيقظ الخادم عند أول زيارة، وقد يستغرق ذلك دقيقة."),
         ["AboutDemo"] = (
             "This demo runs on hosted models (Nemotron 3 Ultra first, then Gemma 4 26B), on fictitious cases only. The form is processed by this server, and AI actions may send it to Google, OpenRouter or Groq; this browser also keeps a recovery copy. The desktop product runs a smaller model offline on the lawyer's computer, where a draft takes about two minutes on an ordinary laptop. The engine that answered is shown under the draft.",
             "يعمل هذا العرض بنماذج مستضافة (Nemotron 3 Ultra أولا، ثم Gemma 4 26B)، على قضايا وهمية فقط. يعالج هذا الخادم الاستمارة، وقد ترسلها عمليات الذكاء الاصطناعي إلى Google أو OpenRouter أو Groq، ويحتفظ المتصفح بنسخة احتياطية. أما المنتج المكتبي فيشغل نموذجا أصغر دون اتصال على حاسوب المحامي، وتستغرق المسودة فيه نحو دقيقتين على حاسوب عادي. يظهر تحت المسودة المحرك الذي أجاب."),

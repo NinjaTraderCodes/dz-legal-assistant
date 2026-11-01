@@ -16,6 +16,32 @@ difference is where the AI model runs:
 
 The app bar says "Demo · fictitious cases only", and the guide explains that the product runs the model offline.
 
+## The website at the same address
+
+The public website (`site/`, Astro, static HTML) is served by the same app, so one address carries both: the site at
+`/ar/` and `/en/` (Arabic first, the product's language) and the demo at `/app`. Nothing is loaded from another origin,
+the page's Content Security Policy stays as strict as the demo's (no inline scripts), and the fonts and icons are the
+desktop's own, bundled with their licences.
+
+- **Language:** a remembered choice (`/lang/{code}` sets the first-party cookie `dzlegal.lang` and comes back), then
+  `?lang=`, then the browser (an Arabic browser gets Arabic, every other one English). `/app` follows the same rule, so
+  the page is already in the right language and direction before the circuit connects.
+- **Theme:** light unless the visitor chose dark (cookie `dzlegal.theme`, shared by the site and the demo). The
+  browser's own dark preference is not consulted.
+- **Design tokens:** `site/scripts/tokens.mjs` generates `site/src/styles/tokens.css` and
+  `src/DzLegal.Web/wwwroot/tokens.css` from the desktop theme (`App.axaml`, `Styles/Workbench.axaml`); the build fails
+  when they are stale, so the website never drifts from the product.
+- **`/` during the review:** the demo, until `Site:ServeRoot` is switched on; then `/` serves the home page in the
+  visitor's language and the demo lives at `/app`. Unknown paths get the site's own not-found page.
+- **Build:** the `Dockerfile` builds the site in a Node stage (`npm ci --omit=dev && npm run build`, about two minutes)
+  and copies `site/dist` next to the app; the app finds it at `<base>/site` (setting `Site:Root`). Without the folder
+  the app behaves exactly as before.
+- **Local run with the site:** `cd site && npm ci && npm run build`, then
+  `dotnet run --project src/DzLegal.Web --launch-profile http+site` (sets `Site__Root=../../site/dist`).
+- **Checks, run locally** (GitHub Actions are off): `npm test` (Playwright: the routes, the switch, the headers, the
+  demo shell; axe on every page), `npm run shots -- --out ../docs/website/<phase>` and
+  `npm run lighthouse -- --out ../docs/website/<phase>`. Each phase's reports live in `docs/website/`.
+
 ## How it is built
 
 ```

@@ -1,6 +1,8 @@
 using DzLegal.Web.Components;
 using DzLegal.Web.Services;
+using DzLegal.Web.Site;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,7 @@ builder.Services.AddSingleton(sp => new WebEngine(
     sp.GetRequiredService<EngineSettings>(),
     AppContext.BaseDirectory,
     sp.GetRequiredService<ILogger<WebEngine>>()));
+builder.Services.Configure<SiteOptions>(builder.Configuration.GetSection(SiteOptions.SectionName));
 
 builder.Services.AddHttpContextAccessor();
 
@@ -32,13 +35,7 @@ app.UseForwardedHeaders();
 // No framing by other sites, no third-party scripts: the page only talks to its own server.
 app.Use(async (context, next) =>
 {
-    var headers = context.Response.Headers;
-    headers.ContentSecurityPolicy =
-        "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; " +
-        "font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'";
-    headers.XContentTypeOptions = "nosniff";
-    headers["Referrer-Policy"] = "no-referrer";
-    headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()";
+    SecurityHeaders.Apply(context.Response.Headers);
     await next();
 });
 
@@ -55,8 +52,34 @@ _ = Task.Run(async () =>
     await engine.ResolveModelsAsync(null, lookup.Token);
 });
 
-app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
+// The public website (site/, built by Astro) is served next to the demo. Without it nothing changes: "/" is the demo
+// and unknown paths show its not-found page.
+var site = StaticSite.Probe(app.Services.GetRequiredService<IOptions<SiteOptions>>().Value, app.Environment.ContentRootPath);
+if (site.IsAvailable)
+{
+    SiteLog.SiteServed(app.Logger, site.Root, site.ServeRoot);
+    app.UseStatusCodePages(async statusContext =>
+    {
+        var context = statusContext.HttpContext;
+        if (context.Response.StatusCode != StatusCodes.Status404NotFound
+            || site.NotFoundFile(LanguageChoice.FromRequest(context.Request)) is not { } page)
+        {
+            return;
+        }
+
+        context.Response.ContentType = "text/html; charset=utf-8";
+        context.Response.Headers.CacheControl = "no-cache";
+        await context.Response.SendFileAsync(page, context.RequestAborted);
+    });
+}
+else
+{
+    SiteLog.SiteMissing(app.Logger, site.Root);
+    app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
+}
+
 app.UseAntiforgery();
+app.UseStaticSite(site);
 
 app.MapStaticAssets();
 
@@ -89,19 +112,34 @@ app.MapGet("/law-sources/{file}", (string file, WebEngine engine, HttpContext co
     return Results.File(path, "application/pdf", enableRangeProcessing: true);
 });
 
-// For uptime checks: is the server up, and is AI configured? Engine names and the queue stay in the server log.
-// GET or HEAD, whichever the monitor sends: an external monitor calling it every 5 minutes keeps the free host awake
-// (Render sleeps after 15 minutes without a request). "started" stays the same as long as the server never slept or
-// restarted, so it shows whether the pings work.
+// The visitor's language, remembered in a first-party cookie, then back to the page that asked (a local path only).
+app.MapGet("/lang/{code}", (string code, string? to, HttpContext context) =>
+{
+    if (LanguageSwitch.Plan(code, to) is not { } target)
+    {
+        return Results.NotFound();
+    }
+
+    context.Response.Cookies.Append(LanguageChoice.CookieName, code, LanguageSwitch.CookieOptions(context.Request.IsHttps));
+    return Results.LocalRedirect(target);
+});
+
+// For uptime checks: is the server up, is AI configured, and is the website built? Engine names and the queue stay in
+// the server log. GET or HEAD, whichever the monitor sends: an external monitor calling it every 5 minutes keeps the
+// free host awake (Render sleeps after 15 minutes without a request). "started" stays the same as long as the server
+// never slept or restarted, so it shows whether the pings work.
 var started = DateTimeOffset.UtcNow;
 app.MapMethods("/healthz", ["GET", "HEAD"], (WebEngine engine) => Results.Ok(new
 {
     status = "ok",
     ai = engine.Settings.HasAnyEngine,
+    site = site.IsAvailable,
     started = started.ToString("yyyy-MM-ddTHH:mm:ssZ", System.Globalization.CultureInfo.InvariantCulture),
 }));
 
+// The framework would add a second Content-Security-Policy header (frame-ancestors) to the circuit's pages; the
+// page's own policy already forbids framing, so one header carries the whole rule.
 app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+    .AddInteractiveServerRenderMode(o => o.ContentSecurityFrameAncestorsPolicy = null);
 
 app.Run();

@@ -1,0 +1,81 @@
+---
+// The nine steps beside the petition on paper: the one orchestrated moment of the page. With JavaScript the steps
+// tick and the sheet fills as the reader scrolls (src/scripts/home.ts); without it, and with reduced motion, the
+// final state is simply shown. The formal-check card is the workbench's own.
+import Icon from "./Icon.astro";
+import { steps, paper } from "../content/steps";
+import { s, t, type Lang } from "../i18n";
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+---
+<section id="how" class="section page story" aria-labelledby="story-title" data-story>
+    <header class="intro">
+        <h2 id="story-title" class="h1">{t(lang, "story.title")}</h2>
+        <p class="lead">{t(lang, "story.lead")}</p>
+    </header>
+    <div class="stage">
+        <div class="side">
+            <ol class="steps" aria-label={s(lang, "CaseForm") ?? "Case form"}>
+                {steps.map((step, i) => (
+                    <li class="step done" data-step={step.id}>
+                        <span class="bar"></span>
+                        <span class="num">{String(i + 1).padStart(2, "0")}</span>
+                        <span class="label">{step.label[lang]}</span>
+                        <span class="icon"><Icon name="checkmark_circle" size={14} /></span>
+                    </li>
+                ))}
+            </ol>
+            <div class="check card-alt" aria-live="polite">
+                <div class="score-row">
+                    <span class="muted">{s(lang, "ComplianceScore")}</span>
+                    <span class="score"><span data-score>9</span> / 9</span>
+                </div>
+                <div class="bar"><span data-bar style="width: 100%"></span></div>
+                <p class="verdict ok" data-present><Icon name="checkmark_circle" size={18} /> {t(lang, "story.present")}</p>
+                <p class="verdict ko" data-missing hidden><Icon name="error_circle" size={18} /> {t(lang, "story.missing")}</p>
+                <div class="finding" data-finding hidden>
+                    <strong>{t(lang, "problem.finding.title")}</strong>
+                    <span class="caption">{t(lang, "problem.finding.article")}</span>
+                </div>
+            </div>
+        </div>
+        <div class="paper-canvas">
+            <article class="paper" lang="ar" dir="rtl" aria-label="عريضة افتتاح دعوى (مثال خيالي)">
+                {paper.map((sec) => (
+                    <section data-paper-section={sec.id}>
+                        {sec.heading && <h3>{sec.heading}</h3>}
+                        {sec.lines.map((line) => <p>{line}</p>)}
+                        {sec.domicile && <p data-domicile>{sec.domicile}</p>}
+                    </section>
+                ))}
+            </article>
+        </div>
+    </div>
+    <p class="caption">{t(lang, "story.caption")}</p>
+</section>
+
+<style>
+    .story { display: grid; gap: 32px; }
+    .intro { display: grid; gap: 16px; max-width: 820px; }
+    .stage { display: grid; grid-template-columns: minmax(260px, 340px) minmax(0, 1fr); gap: clamp(20px, 3vw, 40px); align-items: start; }
+    .side { display: grid; gap: 20px; position: sticky; top: 88px; }
+    .steps { background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--radius-card); padding: 10px; }
+    .label { padding-inline: 4px; }
+    .check { display: grid; gap: 8px; }
+    .score-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+    .score { font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .muted { color: var(--muted-aa); font-size: 0.85rem; }
+    .bar { height: 6px; border-radius: 3px; background: var(--hairline); overflow: hidden; }
+    .bar span { display: block; height: 100%; background: var(--success); transition: width 300ms ease; }
+    .check.ko .bar span { background: var(--danger); }
+    .verdict { display: flex; gap: 8px; align-items: flex-start; font-weight: 600; font-size: 0.92rem; max-width: none; }
+    .verdict :global(.icon) { flex: none; margin-top: 3px; }
+    .verdict.ok { color: var(--success); }
+    .verdict.ko { color: var(--danger); }
+    .verdict[hidden], .finding[hidden] { display: none; }
+    .paper section { display: grid; gap: 0.35em; margin-top: 0.9em; }
+    .paper section:first-child { margin-top: 0; text-align: center; font-weight: 700; }
+    .paper section:first-child p:last-child { margin-top: 1em; font-size: 1.15em; }
+    @media (max-width: 899px) { .stage { grid-template-columns: 1fr; } .side { position: static; } }
+</style>

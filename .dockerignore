@@ -13,3 +13,12 @@ tests/
 .env
 bench*/
 redteam-output/
+
+# Website (site/): never send tooling or build outputs; the Node stage builds from the sources
+site/node_modules/
+site/dist/
+site/.astro/
+site/src/assets/fonts/
+site/test-results/
+site/playwright-report/
+site/tests/reports/

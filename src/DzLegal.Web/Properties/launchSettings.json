@@ -5,6 +5,16 @@
       "launchBrowser": true,
       "applicationUrl": "http://localhost:5080",
       "environmentVariables": { "ASPNETCORE_ENVIRONMENT": "Development" }
+    },
+    "http+site": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "applicationUrl": "http://localhost:5080",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "Site__Root": "../../site/dist",
+        "Site__ServeRoot": "false"
+      }
     }
   }
 }

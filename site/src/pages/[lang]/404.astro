@@ -1,0 +1,25 @@
+---
+// The page the server shows for an unknown address, in the visitor's language (/ar/404/, /en/404/).
+import Base from "../../layouts/Base.astro";
+import { langs, t, type Lang } from "../../i18n";
+
+export function getStaticPaths() {
+    return langs.map((lang) => ({ params: { lang } }));
+}
+const lang = Astro.params.lang as Lang;
+---
+<Base lang={lang} title={t(lang, "notFound.title")} description={t(lang, "notFound.body")} path="/404/" noindex>
+    <section class="section page lost">
+        <h1 class="h1">{t(lang, "notFound.title")}</h1>
+        <p class="lead">{t(lang, "notFound.body")}</p>
+        <div class="actions">
+            <a class="btn btn-gold" href={`/${lang}/`}>{t(lang, "notFound.home")}</a>
+            <a class="btn" href={`/app?lang=${lang}`}>{t(lang, "nav.demo")}</a>
+        </div>
+    </section>
+</Base>
+
+<style>
+    .lost { display: grid; gap: 20px; min-height: 50dvh; align-content: center; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+</style>

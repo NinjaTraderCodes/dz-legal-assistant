@@ -1,6 +1,7 @@
 using DzLegal.Presentation;
 using DzLegal.Presentation.ViewModels;
 using DzLegal.Web.Services;
+using DzLegal.Web.Site;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -39,11 +40,16 @@ public sealed partial class Home : IDisposable
 
     protected override void OnInitialized()
     {
-        // Judges read English; Arabic is one click away (the document itself is always Arabic).
+        // The language follows the visitor's remembered choice, then ?lang=, then the browser (an Arabic browser gets
+        // Arabic, every other one English); the document itself is always Arabic. The theme is light unless chosen:
+        // the website and the demo share both cookies.
         // The connection's address (after the proxy's X-Forwarded-For) keys the per-network limit.
+        var request = Http.HttpContext?.Request;
         var address = Http.HttpContext?.Connection.RemoteIpAddress?.ToString();
+        var language = LanguageChoice.Resolve(request?.Cookies[LanguageChoice.CookieName], LanguageQuery, request?.Headers.AcceptLanguage);
         _files = new BrowserFiles(Js);
-        Vm = Engine.CreateSession(_files, new BrowserLinks(Js), LanguageQuery == "ar" ? "ar" : "en", address);
+        Vm = Engine.CreateSession(_files, new BrowserLinks(Js), language, address);
+        Vm.IsDarkTheme = request?.Cookies[LanguageSwitch.ThemeCookieName] == "dark";
         _watcher = new ViewModelWatcher(Vm, RequestRender);
         if (Engine.Samples.Count > 0)
         {
@@ -52,6 +58,31 @@ public sealed partial class Home : IDisposable
     }
 
     private string T(string key) => WebText.Get(key, Lang);
+
+    private async Task ToggleThemeAsync()
+    {
+        Vm!.ToggleThemeCommand.Execute(null);
+        await RememberChoiceAsync();
+    }
+
+    private async Task SwitchLanguageAsync()
+    {
+        Vm!.SwitchLanguageCommand.Execute(null);
+        await RememberChoiceAsync();
+    }
+
+    /// <summary>The website and the demo share the visitor's language and theme: the page's own attributes, a cookie and localStorage.</summary>
+    private async Task RememberChoiceAsync()
+    {
+        try
+        {
+            await Js.InvokeVoidAsync("dzlegal.applyChoice", Lang, Vm!.IsRightToLeft ? "rtl" : "ltr", Vm.IsDarkTheme ? "dark" : "light");
+        }
+        catch (JSException)
+        {
+            // Storage can be unavailable; the choice then lasts for this session only.
+        }
+    }
 
     private int _renderPending;
     private int _changes;
@@ -72,11 +103,8 @@ public sealed partial class Home : IDisposable
 
         try
         {
-            // First visit: follow the browser's dark preference; the theme button switches it afterwards.
-            if (await Js.InvokeAsync<bool>("dzlegal.prefersDark"))
-            {
-                Vm!.IsDarkTheme = true;
-            }
+            // The branded shell shown while the circuit connected has done its job.
+            await Js.InvokeVoidAsync("dzlegal.hideLoading");
 
             // On a phone the guide would fill the first screen: it stays one tap away (Guide button).
             if (await Js.InvokeAsync<bool>("dzlegal.isNarrow"))

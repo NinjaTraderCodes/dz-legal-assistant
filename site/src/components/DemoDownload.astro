@@ -1,0 +1,39 @@
+---
+// The two ways to get the product: the browser demo (hosted model, fictitious cases) and the Windows download
+// (offline, local model or templates). Side by side, each with one plain action; the gold stays on the hero.
+import Icon from "./Icon.astro";
+import { t, fmt, type Lang } from "../i18n";
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const version = "0.9.1";
+---
+<section id="download" class="section page ways" aria-label={t(lang, "nav.download")}>
+    <div class="way panel">
+        <span class="chip">{lang === "ar" ? "عرض تجريبي · قضايا خيالية فقط" : "Demo · fictitious cases only"}</span>
+        <h2 class="h2">{t(lang, "demo.title")}</h2>
+        <p>{t(lang, "demo.body")}</p>
+        <a class="btn" href={`/app?lang=${lang}`}><Icon name="open" size={18} /> {t(lang, "demo.cta")}</a>
+    </div>
+    <div class="way panel">
+        <span class="chip chip-success"><Icon name="shield_checkmark" size={12} /> {lang === "ar" ? "دون اتصال" : "Offline"}</span>
+        <h2 class="h2">{t(lang, "download.title")}</h2>
+        <p>{t(lang, "download.body")}</p>
+        <ul class="reqs">
+            {[1, 2, 3].map((n) => <li><Icon name="checkmark" size={14} /> {t(lang, `download.req${n}`)}</li>)}
+        </ul>
+        <a class="btn" href="https://github.com/NinjaTraderCodes/dz-legal-assistant/releases/latest" rel="noopener"><Icon name="arrow_download" size={18} /> {t(lang, "download.cta")}</a>
+        <p class="caption">{fmt(t(lang, "download.note"), version)}</p>
+    </div>
+</section>
+
+<style>
+    .ways { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+    .way { display: grid; gap: 14px; align-content: start; padding: clamp(20px, 3vw, 32px); }
+    .way .chip { justify-self: start; }
+    .way .btn { justify-self: start; margin-top: 6px; }
+    .reqs { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 0.95rem; }
+    .reqs li { display: flex; gap: 8px; align-items: flex-start; }
+    .reqs :global(.icon) { flex: none; margin-top: 5px; color: var(--success); }
+    @media (max-width: 899px) { .ways { grid-template-columns: 1fr; } }
+</style>

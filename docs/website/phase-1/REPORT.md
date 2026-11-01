@@ -65,6 +65,11 @@ The Dockerfile gained a Node stage (`npm ci --omit=dev`, then `npm run build`, w
 
 After the merge, open `https://dz-legal-assistant-ai.onrender.com/ar/` and `/en/` in a private window; `/` is still the demo. Switch language and theme in the header; open the demo from the gold button; check `/healthz` shows `"site":true`. The flip to `/` is one setting (`Site:ServeRoot: true` in `appsettings.json`) plus removing `@page "/"` from `Home.razor`, prepared as phase 1b.
 
+## Review fixes (1 November, before the merge)
+
+1. **Build error under SDK 10.0.114 (CA1859):** `SecurityHeadersTests` declared the header dictionary through its interface; it now uses the concrete `HeaderDictionary` and reads the headers by name. Same behaviour checked. The whole solution was then built with 10.0.114 pinned (0 warnings, 0 errors) and with the default roll-forward (10.0.403 on the owner's machine); global.json is unchanged.
+2. **Misleading sentence on the site:** the hero and the footer showed the app's own line "Offline: no data leaves this computer", which next to a hosted demo reads as false. Both now carry a site-only sentence in both languages: "The desktop app works offline: client files never leave the lawyer's computer." / «التطبيق المكتبي يعمل دون اتصال: ملفات الموكّلين لا تغادر حاسوب المحامي.» The app's `OfflineStatus` string is unchanged. The home screenshots were recaptured.
+
 ## Known limits of this phase
 
 - The secondary pages (download, law library, privacy, about) are phase 2; the header links point to the home's sections until then.

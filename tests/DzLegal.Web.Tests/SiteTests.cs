@@ -158,14 +158,14 @@ public sealed class SecurityHeadersTests
     [Fact]
     public void ThePolicyAllowsOnlyThisOrigin()
     {
-        IHeaderDictionary headers = new HeaderDictionary();
+        var headers = new HeaderDictionary();
         SecurityHeaders.Apply(headers);
-        var policy = headers.ContentSecurityPolicy.ToString();
+        var policy = headers["Content-Security-Policy"].ToString();
         Assert.Contains("script-src 'self'", policy, StringComparison.Ordinal);
         Assert.Contains("frame-ancestors 'none'", policy, StringComparison.Ordinal);
         Assert.DoesNotContain("unsafe-eval", policy, StringComparison.Ordinal);
-        Assert.Single(headers.ContentSecurityPolicy);
+        Assert.Single(headers["Content-Security-Policy"]);
         Assert.Equal("no-referrer", headers["Referrer-Policy"]);
-        Assert.Equal("nosniff", headers.XContentTypeOptions);
+        Assert.Equal("nosniff", headers["X-Content-Type-Options"]);
     }
 }

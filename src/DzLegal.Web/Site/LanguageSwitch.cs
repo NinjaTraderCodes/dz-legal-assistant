@@ -8,6 +8,9 @@ internal static class LanguageSwitch
 {
     public const string ThemeCookieName = "dzlegal.theme";
 
+    /// <summary>Dark is the default of the site and the demo alike; only an explicit "light" choice changes it.</summary>
+    public static bool IsDarkTheme(string? themeCookie) => !string.Equals(themeCookie, "light", StringComparison.Ordinal);
+
     /// <summary>Returns the local path to redirect to, or null when the code is not a language the site has.</summary>
     public static string? Plan(string? code, string? returnTo)
     {

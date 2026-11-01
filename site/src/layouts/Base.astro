@@ -1,24 +1,32 @@
 ---
 // The page frame shared by every page: language and direction on <html>, the head (title, description, canonical,
 // hreflang, Open Graph, favicon, the theme script), the header and the footer. Everything comes from this origin.
+// Dark is the default theme and is written into the markup; theme-init.js lifts it only for a remembered light.
 import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { dirOf, localeOf, otherLang, s, t, type Lang } from "../i18n";
 import naskhUrl from "../assets/fonts/NotoNaskhArabic-Regular.woff2?url";
 import interUrl from "../assets/fonts/Inter-latin.woff2?url";
+import tokens from "../styles/tokens.css?raw";
 
-interface Props { lang: Lang; title: string; description: string; path: string; ogImage?: string; noindex?: boolean; preloadImage?: { src: string; srcSet: string; sizes: string } }
-const { lang, title, description, path, ogImage, noindex = false, preloadImage } = Astro.props;
+interface Props { lang: Lang; title: string; description: string; path: string; og?: string; noindex?: boolean; preloadImage?: { src: string; srcSet: string; sizes: string } }
+const { lang, title, description, path, og = "home", noindex = false, preloadImage } = Astro.props;
 const site = Astro.site?.toString().replace(/\/$/, "") ?? "";
 const canonical = `${site}/${lang}${path}`;
 const other = otherLang(lang);
 const appTitle = s(lang, "AppTitle");
 const fullTitle = title === appTitle ? appTitle : `${title} — ${appTitle}`;
-const image = `${site}${ogImage ?? `/og/home-${lang}.png`}`;
+const image = `${site}/og/${og}-${lang}.png`;
+// The browser frame's colour is the bar of the theme shown. Both values are read from the generated tokens here,
+// at build time, so the theme scripts never have to compute a style to find them.
+const [lightTokens, darkTokens = ""] = tokens.split('[data-theme="dark"]');
+const barOf = (block: string) => block.match(/--bar:\s*(#[0-9a-fA-F]{3,8})/)?.[1] ?? "#786039";
+const barLight = barOf(lightTokens);
+const barDark = barOf(darkTokens);
 ---
 <!doctype html>
-<html lang={lang} dir={dirOf(lang)}>
+<html lang={lang} dir={dirOf(lang)} data-theme="dark">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -30,9 +38,12 @@ const image = `${site}${ogImage ?? `/og/home-${lang}.png`}`;
     <link rel="alternate" hreflang={localeOf(other)} href={`${site}/${other}${path}`} />
     <link rel="alternate" hreflang="x-default" href={`${site}/ar${path}`} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {/* Every page shows the other language's name in its own script, so the text pages preload both faces and settle
+        their layout once. The home does not: its first screen is the photograph, which that second font would compete with. */}
     <link rel="preload" as="font" type="font/woff2" crossorigin href={lang === "ar" ? naskhUrl : interUrl} />
+    {!preloadImage && <link rel="preload" as="font" type="font/woff2" crossorigin href={lang === "ar" ? interUrl : naskhUrl} />}
     {preloadImage && <link rel="preload" as="image" href={preloadImage.src} imagesrcset={preloadImage.srcSet} imagesizes={preloadImage.sizes} fetchpriority="high" />}
-    <meta name="theme-color" content="#786039" />
+    <meta name="theme-color" content={barDark} data-light={barLight} data-dark={barDark} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={appTitle} />
     <meta property="og:title" content={fullTitle} />
@@ -51,7 +62,7 @@ const image = `${site}${ogImage ?? `/og/home-${lang}.png`}`;
     <main id="main" class="flex-1">
         <slot />
     </main>
-    <Footer lang={lang} />
+    <Footer lang={lang} path={path} />
     <script is:inline src="/ui.js" defer></script>
 </body>
 </html>

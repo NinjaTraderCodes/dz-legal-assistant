@@ -1,0 +1,125 @@
+---
+// The about page: what the product is and is not, who built it and how, its legal sources, the licences of what it
+// bundles, the documentation, and where it stands. The team and licence lists are the About screen's own.
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import Source from "../../components/Source.astro";
+import Icon from "../../components/Icon.astro";
+import law from "../../content/law.generated.json";
+import { langs, s, t, fmt, type Lang } from "../../i18n";
+import { blob, version } from "../../content/product";
+
+export function getStaticPaths() {
+    return langs.map((lang) => ({ params: { lang } }));
+}
+const lang = Astro.params.lang as Lang;
+const people = ["Lead", "Design", "Legal"].map((who) => {
+    const [name, role] = s(lang, `AboutTeam${who}`).split(" — ");
+    return { name, role, did: t(lang, `about.team.did.${who.toLowerCase()}`) };
+});
+// The desktop's About screen lists these (AboutViewModel.Licences); the full texts ship as THIRD-PARTY-NOTICES.txt.
+const desktopLicences: [string, string][] = [
+    ["Noto Naskh Arabic", "SIL Open Font License 1.1"],
+    ["Inter", "SIL Open Font License 1.1"],
+    ["Fluent UI System Icons, FluentIcons.Avalonia", "MIT"],
+    [s(lang, "AboutWelcomeImage"), s(lang, "AboutOwnImage")],
+    ["Avalonia", "MIT"],
+    ["Avalonia.Angle.Windows.Natives (ANGLE)", "BSD 3-Clause"],
+    ["CommunityToolkit.Mvvm", "MIT"],
+    ["DocumentFormat.OpenXml, System.IO.Packaging", "MIT"],
+    ["SkiaSharp, HarfBuzzSharp", "MIT"],
+    ["MicroCom.Runtime, Tmds.DBus.Protocol", "MIT"],
+    ["Scriban", "BSD 2-Clause"],
+    ["QuestPDF", "QuestPDF Community License"],
+];
+const docs = ["PRODUCT-DETAILS", "ARCHITECTURE", "OFFLINE", "LAW-LIBRARY", "HIDDEN-SET", "WEB-DEMO"];
+---
+<Base lang={lang} title={s(lang, "AboutTitle")} description={t(lang, "meta.about.description")} path="/about/" og="about">
+    <PageHead eyebrow={s(lang, "AboutTitle")} title={s(lang, "AppTitle")} lead={s(lang, "AboutPurpose")}>
+        <p class="small muted">{fmt(s(lang, "AboutVersion"), version)} · {s(lang, "AboutThirdUni")}</p>
+        <Source lang={lang} files={["Directory.Build.props", "src/DzLegal.Presentation/Resources/Strings.resx"]} />
+    </PageHead>
+
+    <section class="section page cols" aria-labelledby="what-title">
+        <div class="block panel">
+            <h2 id="what-title" class="h2">{t(lang, "about.what.title")}</h2>
+            <h3 class="h3">{s(lang, "AboutDraftTitle")}</h3>
+            <p>{s(lang, "AboutDraft")}</p>
+            <p>{t(lang, "about.what.decide")}</p>
+            <Source lang={lang} files={["README.md"]} />
+        </div>
+        <div class="block panel">
+            <h2 class="h2">{s(lang, "AboutSourcesTitle")}</h2>
+            <p>{fmt(s(lang, "AboutSources"), law.totals.articles.toLocaleString("en"), law.totals.texts)}</p>
+            <a class="btn" href={`/${lang}/law/`}><Icon name="book_open" size={18} /> {s(lang, "AboutOpenLibrary")}</a>
+            <Source lang={lang} files={["data/law/codes"]} />
+        </div>
+    </section>
+
+    <section class="section page" aria-labelledby="team-title">
+        <h2 id="team-title" class="h2">{s(lang, "AboutTeamTitle")}</h2>
+        <div class="people">
+            {people.map((p) => <article class="block card"><h3 class="h3">{p.name}</h3><p class="role">{p.role}</p><p class="small">{p.did}</p></article>)}
+        </div>
+        <Source lang={lang} files={["README.md"]} />
+    </section>
+
+    <section class="section page cols" aria-labelledby="built-title">
+        <div class="block panel">
+            <h2 id="built-title" class="h2">{t(lang, "about.built.title")}</h2>
+            <p>{t(lang, "about.built.ai")}</p>
+            <h3 class="h3">{t(lang, "about.built.stack.title")}</h3>
+            <p class="small">{t(lang, "about.built.stack")}</p>
+            <Source lang={lang} files={["README.md"]} />
+        </div>
+        <div class="block panel">
+            <h2 class="h2">{s(lang, "AboutLicencesTitle")}</h2>
+            <p class="small">{s(lang, "AboutLicencesIntro")}</p>
+            <ul class="licences">
+                {desktopLicences.map(([name, licence]) => <li><span>{name}</span><span class="caption">{licence}</span></li>)}
+            </ul>
+            <p class="caption">{s(lang, "AboutWelcomeImage")}: {t(lang, "about.licences.image")}</p>
+            <p class="small">{s(lang, "AboutModelNote")}</p>
+            <p class="small"><a href={blob("src/DzLegal.App/THIRD-PARTY-NOTICES.txt")} rel="noopener"><Icon name="document_text" size={16} /> {t(lang, "about.licences.notices")}</a></p>
+            <p class="small">{t(lang, "about.licences.site")} <a href="/licences/OFL-Inter.txt">Inter (OFL)</a>, <a href="/licences/OFL-NotoNaskhArabic.txt">Noto Naskh Arabic (OFL)</a>, <a href="/licences/MIT-FluentIcons.txt">Fluent UI System Icons (MIT)</a>.</p>
+            <Source lang={lang} files={["src/DzLegal.Presentation/ViewModels/AboutViewModel.cs", "src/DzLegal.App/Assets/Images/welcome-bg.LICENSE.txt"]} />
+        </div>
+    </section>
+
+    <section class="section page cols" aria-labelledby="status-title">
+        <div class="block card-alt">
+            <h2 id="status-title" class="h2">{t(lang, "about.status.title")}</h2>
+            <ul class="list plain">
+                {[1, 2, 3, 4].map((i) => <li><Icon name="info" size={16} /> <span>{t(lang, `about.status.${i}`)}</span></li>)}
+            </ul>
+            <Source lang={lang} files={["README.md"]} />
+        </div>
+        <div class="block card-alt">
+            <h2 class="h2">{t(lang, "about.next.title")}</h2>
+            <p class="small">{t(lang, "about.next.lead")}</p>
+            <ol class="steps-list">
+                {[1, 2, 3].map((i) => <li>{t(lang, `about.next.${i}`)}</li>)}
+            </ol>
+            <Source lang={lang} files={["README.md"]} />
+        </div>
+    </section>
+
+    <section class="section page" aria-labelledby="docs-title">
+        <h2 id="docs-title" class="h2">{t(lang, "about.docs.title")}</h2>
+        <ul class="docs">
+            {docs.map((doc, i) => <li><a href={blob(`docs/${doc}.md`)} rel="noopener" dir="ltr">docs/{doc}.md</a><span class="small">{t(lang, `about.docs.${i + 1}`)}</span></li>)}
+        </ul>
+    </section>
+</Base>
+
+<style>
+    .people { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-top: 16px; }
+    .role { color: var(--accent); font-weight: 600; }
+    .licences { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; font-size: 0.95rem; }
+    .licences li { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; border-top: 1px solid var(--hairline); }
+    .docs { margin: 16px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+    .docs li { display: grid; grid-template-columns: minmax(0, 260px) 1fr; gap: 6px 20px; padding: 10px 0; border-top: 1px solid var(--hairline); }
+    .docs a { overflow-wrap: anywhere; }
+    .block .btn { justify-self: start; }
+    @media (max-width: 899px) { .people { grid-template-columns: 1fr; } .docs li { grid-template-columns: 1fr; } }
+</style>

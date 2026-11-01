@@ -4,7 +4,7 @@
 @font-face { font-family: 'Inter'; font-style: normal; font-weight: 400 700; font-display: swap; src: url('/ui-fonts/Inter-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 /* DZ Legal Assistant, web demo. Same palette, fonts and icons as the desktop app (App.axaml): an app bar, the case
    form, the paper draft and the checks side by side; tabs on a phone. Every colour is a token, defined for light and
-   dark. The interface follows the app's own theme switch (.app.dark), and the browser's dark preference on first load. */
+   dark. The interface follows the app's own theme switch (.app.dark); dark is the default, as on the website. */
 :root {
   --canvas: #f2f0ea; --surface: #ffffff; --surface-alt: #f8f6f1; --paper: #ffffff; --paper-canvas: #e7e3da;
   --hairline: #e4dfd4; --text: #1c2321; --muted: #5f6662; --appbar: #16392f; --appbar-text: #ffffff;

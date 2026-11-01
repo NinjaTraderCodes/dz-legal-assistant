@@ -63,6 +63,15 @@ public sealed class LanguageSwitchTests
     [InlineData(null)]
     public void AnUnknownLanguageIsRefused(string? code) => Assert.Null(LanguageSwitch.Plan(code, "/"));
 
+    [Theory]
+    [InlineData(null, true)]
+    [InlineData("", true)]
+    [InlineData("dark", true)]
+    [InlineData("anything", true)]
+    [InlineData("light", false)]
+    public void DarkIsTheDefaultUnlessLightWasChosen(string? cookie, bool dark)
+        => Assert.Equal(dark, LanguageSwitch.IsDarkTheme(cookie));
+
     [Fact]
     public void TheCookieIsAYearLongAndNotHttpOnly()
     {

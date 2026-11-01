@@ -41,7 +41,7 @@ public sealed partial class Home : IDisposable
     protected override void OnInitialized()
     {
         // The language follows the visitor's remembered choice, then ?lang=, then the browser (an Arabic browser gets
-        // Arabic, every other one English); the document itself is always Arabic. The theme is light unless chosen:
+        // Arabic, every other one English); the document itself is always Arabic. The theme is dark unless light was chosen:
         // the website and the demo share both cookies.
         // The connection's address (after the proxy's X-Forwarded-For) keys the per-network limit.
         var request = Http.HttpContext?.Request;
@@ -49,7 +49,7 @@ public sealed partial class Home : IDisposable
         var language = LanguageChoice.Resolve(request?.Cookies[LanguageChoice.CookieName], LanguageQuery, request?.Headers.AcceptLanguage);
         _files = new BrowserFiles(Js);
         Vm = Engine.CreateSession(_files, new BrowserLinks(Js), language, address);
-        Vm.IsDarkTheme = request?.Cookies[LanguageSwitch.ThemeCookieName] == "dark";
+        Vm.IsDarkTheme = LanguageSwitch.IsDarkTheme(request?.Cookies[LanguageSwitch.ThemeCookieName]);
         _watcher = new ViewModelWatcher(Vm, RequestRender);
         if (Engine.Samples.Count > 0)
         {

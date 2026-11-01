@@ -1,0 +1,85 @@
+---
+// The privacy page: what the desktop app does on the network (nothing with case data), how the code enforces it,
+// how to verify it, where data is stored, and how the web demo and this website differ. From docs/OFFLINE.md and
+// docs/WEB-DEMO.md, in the words of the app's own About screen where it has them.
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import Source from "../../components/Source.astro";
+import Icon from "../../components/Icon.astro";
+import WithPath from "../../components/WithPath.astro";
+import { langs, s, t, type Lang } from "../../i18n";
+
+export function getStaticPaths() {
+    return langs.map((lang) => ({ params: { lang } }));
+}
+const lang = Astro.params.lang as Lang;
+const demoChip = lang === "ar" ? "عرض تجريبي · قضايا خيالية فقط" : "Demo · fictitious cases only";
+---
+<Base lang={lang} title={t(lang, "nav.privacy")} description={t(lang, "meta.privacy.description")} path="/privacy/" og="privacy">
+    <PageHead eyebrow={t(lang, "privacy.eyebrow")} title={s(lang, "AboutPrivacyTitle")} lead={s(lang, "AboutPrivacy")}>
+        <p>{t(lang, "privacy.lead2")}</p>
+        <p class="offline"><Icon name="shield_checkmark" size={16} /> {s(lang, "OfflineStatus")}</p>
+        <Source lang={lang} files={["docs/OFFLINE.md"]} />
+    </PageHead>
+
+    <section class="section page" aria-labelledby="network-title">
+        <div class="block panel">
+            <h2 id="network-title" class="h2">{t(lang, "privacy.network.title")}</h2>
+            <table class="table">
+                <thead><tr><th scope="col">{t(lang, "privacy.network.col1")}</th><th scope="col">{t(lang, "privacy.network.col2")}</th></tr></thead>
+                <tbody>
+                    {[1, 2, 3, 4, 5, 6].map((i) => <tr><th scope="row">{t(lang, `privacy.row${i}.c`)}</th><td>{t(lang, `privacy.row${i}.n`)}</td></tr>)}
+                </tbody>
+            </table>
+            <Source lang={lang} files={["docs/OFFLINE.md"]} />
+        </div>
+    </section>
+
+    <section class="section page cols" aria-labelledby="enforced-title">
+        <div class="block panel">
+            <h2 id="enforced-title" class="h2">{t(lang, "privacy.enforced.title")}</h2>
+            <ul class="list">
+                {[1, 2, 3, 4, 5].map((i) => <li><Icon name="lock_closed" size={16} /> <span>{t(lang, `privacy.enforced.${i}`)}</span></li>)}
+            </ul>
+            <Source lang={lang} files={["docs/OFFLINE.md", "src/DzLegal.ModelProviders.Ollama/LoopbackGuard.cs"]} />
+        </div>
+        <div class="block panel">
+            <h2 class="h2">{t(lang, "privacy.verify.title")}</h2>
+            <ol class="steps-list">
+                {[1, 2, 3, 4].map((i) => <li>{t(lang, `privacy.verify.${i}`)}</li>)}
+            </ol>
+            <h2 class="h3">{t(lang, "privacy.storage.title")}</h2>
+            <ul class="list plain">
+                <li><Icon name="folder_open" size={16} /> <span><WithPath text={t(lang, "privacy.storage.1")} path="%LOCALAPPDATA%\DzLegalAssistant\drafts" /></span></li>
+                <li><Icon name="folder_open" size={16} /> <span><WithPath text={t(lang, "privacy.storage.2")} path="%LOCALAPPDATA%\DzLegalAssistant\evaluations" /></span></li>
+                {[3, 4].map((i) => <li><Icon name="folder_open" size={16} /> <span>{t(lang, `privacy.storage.${i}`)}</span></li>)}
+            </ul>
+            <Source lang={lang} files={["docs/OFFLINE.md", "src/DzLegal.Presentation/Resources/Strings.resx"]} />
+        </div>
+    </section>
+
+    <section class="section page cols" aria-labelledby="demo-title">
+        <div class="block card-alt">
+            <span class="chip"><Icon name="warning" size={12} /> {demoChip}</span>
+            <h2 id="demo-title" class="h2">{t(lang, "privacy.demo.title")}</h2>
+            <p>{t(lang, "privacy.demo.lead")}</p>
+            <ul class="list plain">
+                {[1, 2, 3, 4].map((i) => <li><Icon name="info" size={16} /> <span>{t(lang, `privacy.demo.${i}`)}</span></li>)}
+            </ul>
+            <Source lang={lang} files={["docs/WEB-DEMO.md", "src/DzLegal.Web/wwwroot/dzlegal.js"]} />
+        </div>
+        <div class="block card-alt">
+            <h2 class="h2">{t(lang, "privacy.site.title")}</h2>
+            <ul class="list plain">
+                {[1, 2, 3, 4].map((i) => <li><Icon name="checkmark" size={16} /> <span>{t(lang, `privacy.site.${i}`)}</span></li>)}
+            </ul>
+            <Source lang={lang} files={["docs/WEB-DEMO.md", "src/DzLegal.Web/Site/SecurityHeaders.cs"]} />
+        </div>
+    </section>
+</Base>
+
+<style>
+    .offline { display: inline-flex; align-items: center; gap: 8px; color: var(--success); font-weight: 500; }
+    .block .chip { justify-self: start; }
+    .block .h3 { margin-top: 12px; }
+</style>

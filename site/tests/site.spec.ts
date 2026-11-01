@@ -148,11 +148,90 @@ test("the demo follows the browser's language and shows its welcome before the c
     await expect(page.locator(".app h1")).toContainText("DZ Legal Assistant");
 });
 
-test("the demo's theme and language buttons are remembered", async ({ page }) => {
+test("the demo's theme and language buttons are remembered; dark is its default", async ({ page, request }) => {
+    // A first visit is dark on the site and on the demo alike; a remembered "light" lifts it on both.
+    expect(await text(await request.get("/app?lang=en"))).toMatch(/<html[^>]*data-theme="dark"/);
+    expect(await text(await request.get("/app?lang=en", { headers: { Cookie: "dzlegal.theme=light" } }))).not.toContain('data-theme="dark"');
     await page.goto("/app?lang=en");
     await expect(page.locator(".app")).toBeVisible({ timeout: 30_000 });
+    await expect(page.locator(".app")).toHaveClass(/dark/);
     await page.getByRole("button", { name: /theme|dark|light/i }).first().click();
-    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+    await expect(page.locator(".app")).not.toHaveClass(/dark/);
+    await expect(page.locator("html")).not.toHaveAttribute("data-theme", "dark");
     const cookies = await page.context().cookies();
-    expect(cookies.find((c) => c.name === "dzlegal.theme")?.value).toBe("dark");
+    expect(cookies.find((c) => c.name === "dzlegal.theme")?.value).toBe("light");
+});
+
+test("the site is dark by default, and a chosen light theme is remembered for the demo too", async ({ page, request }) => {
+    for (const path of ["/en/", "/ar/download/", "/en/law/", "/ar/privacy/", "/en/about/"]) {
+        expect(await text(await request.get(path)), path).toMatch(/<html[^>]*data-theme="dark"/);
+    }
+    await page.goto("/en/");
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+    const toggle = page.locator("[data-theme-toggle]");
+    await expect(toggle).toHaveAttribute("aria-pressed", "true");
+    await toggle.click();
+    await expect(page.locator("html")).not.toHaveAttribute("data-theme", "dark");
+    await expect(toggle).toHaveAttribute("aria-pressed", "false");
+    expect((await page.context().cookies()).find((c) => c.name === "dzlegal.theme")?.value).toBe("light");
+    // The choice survives a reload (theme-init.js reads it before the first paint) and reaches the demo.
+    await page.reload();
+    await expect(page.locator("html")).not.toHaveAttribute("data-theme", "dark");
+    await page.goto("/app?lang=en");
+    await expect(page.locator("html")).not.toHaveAttribute("data-theme", "dark");
+    await expect(page.locator(".app")).toBeVisible({ timeout: 30_000 });
+    await expect(page.locator(".app")).not.toHaveClass(/dark/);
+});
+
+test("the four secondary pages exist in both languages, with their canonical and alternate links", async ({ request }) => {
+    for (const [path, arTitle, enTitle] of [["download", "التطبيق المكتبي لويندوز", "The desktop app for Windows"], ["law", "المكتبة القانونية", "Law library"], ["privacy", "بياناتك لا تغادر حاسوبك", "your data stays on your computer"], ["about", "حول التطبيق", "About"]]) {
+        for (const [lang, title] of [["ar", arTitle], ["en", enTitle]]) {
+            const response = await request.get(`/${lang}/${path}/`);
+            expect(response.status(), `${lang}/${path}`).toBe(200);
+            csp(response);
+            const html = await text(response);
+            expect(html).toMatch(new RegExp(`<html[^>]*lang="${lang}"[^>]*dir="${lang === "ar" ? "rtl" : "ltr"}"`));
+            expect(html).toContain(title);
+            expect(html).toContain(`rel="canonical" href="https://dz-legal-assistant-ai.onrender.com/${lang}/${path}/"`);
+            expect(html).toContain(`hreflang="${lang === "ar" ? "en" : "ar-DZ"}" href="https://dz-legal-assistant-ai.onrender.com/${lang === "ar" ? "en" : "ar"}/${path}/"`);
+            expect(html).toContain(`og:image" content="https://dz-legal-assistant-ai.onrender.com/og/${path}-${lang}.png"`);
+            expect(html).not.toContain('name="robots"');
+            noInlineScript(html);
+        }
+    }
+    const sitemap = await text(await request.get("/sitemap-0.xml"));
+    for (const path of ["download", "law", "privacy", "about"]) for (const lang of ["ar", "en"]) expect(sitemap).toContain(`<loc>https://dz-legal-assistant-ai.onrender.com/${lang}/${path}/</loc>`);
+    expect(sitemap).not.toContain("/404/");
+});
+
+test("the law library page counts the data files and every official source it links opens", async ({ page, request }) => {
+    await page.goto("/en/law/");
+    // 1,361 articles from 6 texts, 2 of them complete: the figures of data/law/codes, never typed by hand.
+    await expect(page.locator("h1")).toContainText("1,361 articles from 6 legal texts, 2 of them complete");
+    await expect(page.locator("article.law")).toHaveCount(6);
+    const links = await page.locator("article.law .links a").evaluateAll((as) => as.map((a) => a.getAttribute("href")!));
+    expect(links.length).toBeGreaterThanOrEqual(6);
+    for (const href of links) {
+        if (href.startsWith("/law-sources/")) {
+            const pdf = await request.get(href, { maxRedirects: 0 });
+            expect(pdf.status(), href).toBe(200);
+            expect(pdf.headers()["content-type"]).toContain("application/pdf");
+        } else {
+            expect(href, href).toMatch(/^https:\/\/www\.joradp\.dz\//);
+        }
+    }
+    const arabic = await text(await request.get("/ar/law/"));
+    expect(arabic).toContain("1,361 مادة من 6 نصوص قانونية، منها 2 كاملة");
+    expect(arabic).toContain("21 نوعاً من الدعاوى");
+});
+
+test("the demo link skips the page transition, so Chrome logs no aborted-transition error", async ({ page }) => {
+    const errors: string[] = [];
+    page.on("console", (message) => { if (message.type() === "error") errors.push(message.text()); });
+    page.on("pageerror", (error) => errors.push(error.message));
+    await page.goto("/en/");
+    await page.locator("header .nav a.nav-demo").click();
+    await expect(page).toHaveURL(/\/app\?lang=en$/);
+    await expect(page.locator(".app")).toBeVisible({ timeout: 30_000 });
+    expect(errors.filter((e) => /transition/i.test(e)), errors.join("\n")).toHaveLength(0);
 });

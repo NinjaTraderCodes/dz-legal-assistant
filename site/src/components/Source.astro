@@ -1,0 +1,15 @@
+---
+// The line under a figure or a claim: where in the repository it comes from. Every number on the site has one.
+import { t, type Lang } from "../i18n";
+import { blob } from "../content/product";
+
+interface Props { lang: Lang; files: string[]; note?: string }
+const { lang, files, note } = Astro.props;
+const separator = lang === "ar" ? "، " : ", ";
+---
+<p class="source caption">{t(lang, "source.label")} {files.map((file, i) => <><a href={blob(file)} rel="noopener" dir="ltr">{file}</a>{i < files.length - 1 ? separator : ""}</>)}{note && <> · {note}</>}</p>
+
+<style>
+    .source { margin-top: 6px; }
+    .source a { color: var(--muted-aa); overflow-wrap: anywhere; }
+</style>

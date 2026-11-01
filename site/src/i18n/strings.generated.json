@@ -1,5 +1,6 @@
 {
-  "_generated": "by site/scripts/strings.mjs from Strings.resx and Strings.en.resx; do not edit",
+  "_generated": "by site/scripts/strings.mjs from Strings.resx, Strings.en.resx and Directory.Build.props; do not edit",
+  "_version": "0.9.1",
   "AppTitle": {
     "ar": "مساعد صياغة العرائض",
     "en": "DZ Legal Assistant"
@@ -131,5 +132,169 @@
   "AboutWelcomeImage": {
     "ar": "صورة خلفية شاشة الترحيب",
     "en": "Welcome background image"
+  },
+  "AboutTitle": {
+    "ar": "حول التطبيق",
+    "en": "About"
+  },
+  "AboutVersion": {
+    "ar": "الإصدار {0}",
+    "en": "Version {0}"
+  },
+  "AboutTeamTitle": {
+    "ar": "فريق العمل",
+    "en": "Team"
+  },
+  "AboutSourcesTitle": {
+    "ar": "المصادر القانونية",
+    "en": "Legal sources"
+  },
+  "AboutLicencesTitle": {
+    "ar": "التراخيص",
+    "en": "Licences"
+  },
+  "AboutNotices": {
+    "ar": "إشعارات الأطراف الأخرى",
+    "en": "Third-party notices"
+  },
+  "AboutOpenLibrary": {
+    "ar": "فتح المكتبة القانونية",
+    "en": "Open the law library"
+  },
+  "LibraryTitle": {
+    "ar": "المكتبة القانونية",
+    "en": "Law library"
+  },
+  "LibraryIntro": {
+    "ar": "النصوص القانونية المحمَّلة في التطبيق، كما نُقلت من مصدرها الرسمي. تُستعمل دون اتصال.",
+    "en": "The legal texts loaded in the app, as taken from their official source. Used offline."
+  },
+  "LibrarySummary": {
+    "ar": "{0} مادة من {1} نصوص قانونية، منها {2} كاملة.",
+    "en": "{0} articles from {1} legal texts, {2} of them complete."
+  },
+  "LibraryArticles": {
+    "ar": "المواد المحمَّلة: {0}",
+    "en": "Articles loaded: {0}"
+  },
+  "LibraryReference": {
+    "ar": "المرجع",
+    "en": "Reference"
+  },
+  "LibraryEdition": {
+    "ar": "الطبعة",
+    "en": "Edition"
+  },
+  "LibraryAsOf": {
+    "ar": "محيّن إلى {0}",
+    "en": "Current to {0}"
+  },
+  "LibraryAmendedBy": {
+    "ar": "معدّلة بـ {0}",
+    "en": "Amended by {0}"
+  },
+  "LibraryOfficial": {
+    "ar": "المصدر الرسمي",
+    "en": "Official source"
+  },
+  "LibraryPartialHint": {
+    "ar": "تضم المكتبة المواد التي تعتمد عليها أنواع الدعاوى في التطبيق فقط.",
+    "en": "The library holds only the articles the app's claim types rely on."
+  },
+  "LibraryNotReviewed": {
+    "ar": "لم يراجعه محامٍ بعد",
+    "en": "Not yet reviewed by a lawyer"
+  },
+  "LibraryReviewed": {
+    "ar": "راجعه محامٍ",
+    "en": "Reviewed by a lawyer"
+  },
+  "LibraryNote": {
+    "ar": "تُستعمل المواد المحمَّلة فقط في الاقتراحات الآلية. يمكنك دائما ذكر مواد أخرى في ملاحظاتك.",
+    "en": "Only loaded articles are used in automatic suggestions. You can always cite other articles in your notes."
+  },
+  "LibraryMonths": {
+    "ar": "يناير,فبراير,مارس,أبريل,مايو,يونيو,يوليو,غشت,سبتمبر,أكتوبر,نوفمبر,ديسمبر",
+    "en": "January,February,March,April,May,June,July,August,September,October,November,December"
+  },
+  "LibraryWhat": {
+    "ar": "ماذا يعني هذا؟",
+    "en": "What does this mean?"
+  },
+  "LibraryCheckJournal": {
+    "ar": "قُرئ على صفحة الجريدة الرسمية",
+    "en": "Read against the Official Journal page"
+  },
+  "LibraryCheckJournalHint": {
+    "ar": "قورن نص كل مادة بصفحة الجريدة الرسمية التي نشرته، وطُبّقت عليه التعديلات المنشورة.",
+    "en": "Each article was compared with the Official Journal page that published it, with the published amendments applied."
+  },
+  "LibraryCheckPdf": {
+    "ar": "مطابق آليا لنص الملف الرسمي",
+    "en": "Matched automatically to the official file"
+  },
+  "LibraryCheckPdfHint": {
+    "ar": "وُجدت حروف كل مادة وأرقامها، بالترتيب نفسه، في نص ملف PDF الرسمي.",
+    "en": "Each article's letters and digits were found, in the same order, in the official PDF's text."
+  },
+  "LibraryCheckImages": {
+    "ar": "نُقل من صورة الصفحة وقُرئ مرتين",
+    "en": "Transcribed from the page image, read twice"
+  },
+  "LibraryCheckImagesHint": {
+    "ar": "الملف الرسمي صور فقط؛ نُقل النص منها ثم قُرئ مرة ثانية كلمة كلمة على الصور نفسها.",
+    "en": "The official file holds images only; the text was transcribed from them, then read again word by word against the same images."
+  },
+  "Help7Title": {
+    "ar": "المكتبة القانونية",
+    "en": "The legal library"
+  },
+  "Help7Body1": {
+    "ar": "يقتبس التطبيق نصوص المواد من المكتبة القانونية المحمَّلة فيه فقط، ولا يعتمد على ذاكرة الذكاء الاصطناعي.",
+    "en": "The app quotes articles only from its bundled legal library, not from AI memory."
+  },
+  "Help7Body2": {
+    "ar": "بعض النصوص كاملة، وبعضها جزئي يضم المواد التي تعتمد عليها أنواع الدعاوى في التطبيق فقط.",
+    "en": "Some laws are complete. Others contain only the articles used by the app’s supported claim types."
+  },
+  "Help7Body3": {
+    "ar": "لكل نص علامتان: الأولى تبيّن كيف نُقل النص وكيف قورن بمصدره الرسمي، والثانية تبيّن هل راجعه محامٍ.",
+    "en": "Each law has two indicators: how it was transcribed and compared with its official source, and whether a lawyer reviewed it."
+  },
+  "Help7Body4": {
+    "ar": "يمكنك فتح المصدر الرسمي لكل نص، وذكر مواد غير محمَّلة في ملاحظاتك.",
+    "en": "You can open each law’s official source and mention unbundled articles in your notes."
+  },
+  "Help1Body3": {
+    "ar": "لا تغادر أي معطيات حاسوبك، ويعمل التطبيق دون اتصال بالإنترنت.",
+    "en": "No data leaves your computer. The app works offline."
+  },
+  "Help2Body3": {
+    "ar": "يكتب البرنامج نص القاعدة القانونية ورقم المادة، ويكتب الذكاء الاصطناعي فقط الجمل التي تطبّقها على وقائع قضيتك.",
+    "en": "The program supplies the legal rule and article number. AI writes only the sentences applying them to your case facts."
+  },
+  "Help2Body4": {
+    "ar": "كل قسم كتبه الذكاء الاصطناعي مُعلَّم، ويجب أن تراجعه قبل التصدير.",
+    "en": "Every AI-written section is marked and must be reviewed before export."
+  },
+  "Help2Body5": {
+    "ar": "لا يقدّم الذكاء الاصطناعي رأيا قانونيا ولا يضمن نتيجة الدعوى. أنت المسؤول عن العريضة التي توقّعها.",
+    "en": "AI does not give legal advice or guarantee the outcome. You are responsible for the petition you sign."
+  },
+  "Help4Body1": {
+    "ar": "يُمنع التصدير حين يبقى ما يجب إتمامه قبل تقديم العريضة، مثل قسم كتبه الذكاء الاصطناعي ولم تراجعه بعد، أو فراغ «(...)» لم يُملأ، أو نص أطول مما تتسع له خانته. تظهر قائمة «قبل التصدير» ما بقي، ويُرفع المنع بمجرد إتمامه.",
+    "en": "Export is blocked while something still needs completion before filing: an unreviewed AI section, an unfilled “(...)” placeholder, or text too long for its field. “Before export” lists what remains. Completing it lifts the block."
+  },
+  "Help5Body2": {
+    "ar": "يحفظ التطبيق نسخة تلقائية أثناء العمل. إن أُغلق فجأة، يعرض عليك في المرة القادمة استئناف الجلسة السابقة.",
+    "en": "The app keeps a recovery copy while you work. After an unexpected close, it offers to resume your previous session."
+  },
+  "Help5Body3": {
+    "ar": "قبل بدء قضية جديدة أو فتح أخرى، يسألك التطبيق إن كانت لديك تعديلات غير محفوظة.",
+    "en": "Before starting a new case or opening another, the app asks if you have unsaved changes."
+  },
+  "PrivacyNote": {
+    "ar": "تُحفظ هذه البيانات على هذا الحاسوب فقط ولا تُرسل إلى أي جهة.",
+    "en": "These details are stored on this computer only and are never sent anywhere."
   }
 }

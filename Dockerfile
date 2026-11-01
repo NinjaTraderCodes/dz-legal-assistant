@@ -16,6 +16,10 @@ COPY src/DzLegal.App/Assets/Images/ /repo/src/DzLegal.App/Assets/Images/
 COPY src/DzLegal.Presentation/Resources/Strings.resx src/DzLegal.Presentation/Resources/Strings.en.resx /repo/src/DzLegal.Presentation/Resources/
 COPY src/DzLegal.Web/wwwroot/ /repo/src/DzLegal.Web/wwwroot/
 COPY assets/fonts/ /repo/assets/fonts/
+COPY data/law/codes/ /repo/data/law/codes/
+COPY data/law/claims/ /repo/data/law/claims/
+COPY data/law/sources.json /repo/data/law/sources.json
+COPY Directory.Build.props /repo/Directory.Build.props
 COPY site/ ./
 RUN npm run build
 

@@ -1,15 +1,15 @@
 ---
-// The theme tile of the welcome screen: a moon on the light theme, a sun on the dark one. ui.js wires the click and
-// remembers the choice; without JavaScript the page simply stays light.
+// The theme tile of the welcome screen: a sun on the dark theme (the default), a moon on the light one. ui.js wires
+// the click and remembers the choice; without JavaScript the page simply stays dark.
 import Icon from "./Icon.astro";
 import { t, type Lang } from "../i18n";
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 ---
-<button type="button" class="theme" data-theme-toggle aria-pressed="false" aria-label={t(lang, "theme.dark")} title={t(lang, "theme.dark")} data-label-dark={t(lang, "theme.dark")} data-label-light={t(lang, "theme.light")}>
-    <span data-icon="moon"><Icon name="weather_moon" /></span>
-    <span data-icon="sun" hidden><Icon name="weather_sunny" /></span>
+<button type="button" class="theme" data-theme-toggle aria-pressed="true" aria-label={t(lang, "theme.light")} title={t(lang, "theme.light")} data-label-dark={t(lang, "theme.dark")} data-label-light={t(lang, "theme.light")}>
+    <span data-icon="moon" hidden><Icon name="weather_moon" /></span>
+    <span data-icon="sun"><Icon name="weather_sunny" /></span>
 </button>
 
 <style>

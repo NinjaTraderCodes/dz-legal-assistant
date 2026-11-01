@@ -1,20 +1,25 @@
 ---
-// The foot of every page: the offline line of the welcome screen, the version, the repository and the licences of
-// what the site bundles (fonts and icons), as AGENTS.md requires.
+// The foot of every page: the offline line of the welcome screen, the pages, the repository, the version and the
+// licences of what the site bundles (fonts and icons), as AGENTS.md requires.
 import Icon from "./Icon.astro";
 import { s, t, fmt, type Lang } from "../i18n";
+import { pages, repoUrl, releasesUrl, version } from "../content/product";
 
-interface Props { lang: Lang }
-const { lang } = Astro.props;
-const version = "0.9.1";
+interface Props { lang: Lang; path: string }
+const { lang, path } = Astro.props;
+const current = (page: string) => (page === path ? "page" : undefined);
 ---
 <footer class="site-footer">
     <div class="page foot">
         <p class="offline"><Icon name="shield_checkmark" size={16} /> {t(lang, "site.offline")}</p>
-        <nav class="links" aria-label={t(lang, "footer.label")}>
-            <a href="https://github.com/NinjaTraderCodes/dz-legal-assistant" rel="noopener">{t(lang, "footer.github")}</a>
-            <a href="https://github.com/NinjaTraderCodes/dz-legal-assistant/releases/latest" rel="noopener">{t(lang, "footer.releases")}</a>
+        <nav class="links pages" aria-label={t(lang, "footer.pages")}>
+            <a href={`/${lang}/`} aria-current={current("/")}>{t(lang, "nav.home")}</a>
+            {pages(lang).filter((p) => p.key !== "how").map((link) => <a href={link.href} aria-current={current(link.path)}>{link.label}</a>)}
             <a href={`/app?lang=${lang}`}>{t(lang, "nav.demo")}</a>
+        </nav>
+        <nav class="links" aria-label={t(lang, "footer.label")}>
+            <a href={repoUrl} rel="noopener">{t(lang, "footer.github")}</a>
+            <a href={releasesUrl} rel="noopener">{t(lang, "footer.releases")}</a>
         </nav>
         <p class="caption">{fmt(t(lang, "footer.version"), version)} · {s(lang, "AboutThirdUni")}</p>
         <p class="caption">{t(lang, "footer.licences")} <a href="/licences/OFL-Inter.txt">Inter (OFL)</a>, <a href="/licences/OFL-NotoNaskhArabic.txt">Noto Naskh Arabic (OFL)</a>, <a href="/licences/MIT-FluentIcons.txt">Fluent UI System Icons (MIT)</a>.</p>
@@ -27,5 +32,6 @@ const version = "0.9.1";
     .offline { display: inline-flex; align-items: center; gap: 8px; color: var(--success); font-weight: 500; }
     .links { display: flex; flex-wrap: wrap; gap: 6px 20px; }
     .links a { color: var(--text); }
+    .pages a[aria-current="page"] { font-weight: 600; color: var(--accent); }
     .caption a { color: var(--muted); }
 </style>

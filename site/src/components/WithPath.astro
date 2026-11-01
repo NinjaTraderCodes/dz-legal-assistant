@@ -1,0 +1,8 @@
+---
+// A sentence with a file path or command in it, rendered left to right inside the sentence's own direction: in
+// Arabic, %LOCALAPPDATA%\... would otherwise be reordered by the bidi algorithm. The string holds {0} for the path.
+interface Props { text: string; path: string }
+const { text, path } = Astro.props;
+const [before, after] = text.split("{0}");
+---
+{before}<code class="inline-code" dir="ltr">{path}</code>{after}

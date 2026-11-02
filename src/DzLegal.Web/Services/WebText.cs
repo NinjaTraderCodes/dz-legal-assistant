@@ -31,6 +31,7 @@ public static class WebText
         ["GuideTitle"] = ("Try it in three minutes", "جربه في ثلاث دقائق"),
         ["GuideHide"] = ("Hide", "إخفاء"),
         ["GuideShow"] = ("Guide", "الدليل"),
+        ["More"] = ("More", "المزيد"),
         ["Guide1Title"] = ("Open a sample case", "افتح قضية نموذجية"),
         ["Guide1"] = ("All four are fictitious. The form fills in and the formal check updates.", "القضايا الأربع وهمية. تمتلئ الاستمارة وتتحدث المراجعة الشكلية."),
         ["Guide2Title"] = ("See the rules work, without AI", "شاهد القواعد تعمل، دون ذكاء اصطناعي"),

@@ -235,3 +235,22 @@ test("the demo link skips the page transition, so Chrome logs no aborted-transit
     await expect(page.locator(".app")).toBeVisible({ timeout: 30_000 });
     expect(errors.filter((e) => /transition/i.test(e)), errors.join("\n")).toHaveLength(0);
 });
+
+test("the demo's bar folds New, Open, Save and Guide behind More on a phone, and shows them on a desktop", async ({ page }) => {
+    // On a desktop the guide is the tour card, with the AI steps tagged as the desktop tags them, and nothing is folded.
+    await page.setViewportSize({ width: 1366, height: 768 });
+    await page.goto("/app?lang=en");
+    await expect(page.locator(".app")).toBeVisible({ timeout: 30_000 });
+    await expect(page.locator(".guide.tour")).toBeVisible();
+    await expect(page.locator(".guide .tag.ai")).toHaveCount(2);
+    const more = page.locator(".appbar .more-toggle");
+    await expect(more).toBeHidden();
+    await expect(page.getByRole("button", { name: "New" })).toBeVisible();
+    // On a phone the bar keeps the sample picker, the theme and the language; the rest waits behind More.
+    await page.setViewportSize({ width: 390, height: 844 });
+    await expect(more).toBeVisible();
+    await expect(page.getByRole("button", { name: "New" })).toBeHidden();
+    await more.click();
+    await expect(page.getByRole("button", { name: "New" })).toBeVisible();
+    await expect(more).toHaveAttribute("aria-expanded", "true");
+});

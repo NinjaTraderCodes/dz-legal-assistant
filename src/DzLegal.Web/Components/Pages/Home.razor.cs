@@ -19,6 +19,9 @@ public sealed partial class Home : IDisposable
     private const long MaxDraftBytes = 2 * 1024 * 1024;
     private bool showGuide = true;
 
+    /// <summary>On a phone, the bar folds New, Open, Save, Download and Guide behind one button; the screen state only.</summary>
+    private bool showMore;
+
     /// <summary>The desktop app's latest release; a stable address, whatever the version number.</summary>
     private const string DownloadUrl = "https://github.com/NinjaTraderCodes/dz-legal-assistant/releases/latest";
     private int mobileTab;

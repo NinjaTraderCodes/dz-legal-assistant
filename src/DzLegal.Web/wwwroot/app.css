@@ -124,6 +124,15 @@ label.check input { width: auto; min-height: 0; margin-top: 3px; accent-color: v
   .appbar .secondary > button, .appbar .secondary > .button-like { padding-inline: 9px; }
   .appbar .secondary .icon { vertical-align: middle; }
 }
+@media (min-width: 900px) {
+  /* The window layout of the desktop: the three panels fill the height and scroll inside. */
+  .app { height: 100vh; }
+  .columns { min-height: 0; align-items: stretch; }
+  /* A column that scrolls: its cards keep their own height (a grid with a bounded height let buttons collapse). */
+  .panel { max-height: 100%; overflow: auto; display: flex; flex-direction: column; }
+  .form-panel > *, .check-panel > * { flex: none; }
+  .draft-panel { overflow: hidden; }
+}
 @media (max-width: 1279px) {
   .columns { grid-template-columns: minmax(340px, 1fr) minmax(0, 1.4fr); }
   .check-panel { grid-column: 1 / -1; }
@@ -217,42 +226,78 @@ label.check input { width: auto; min-height: 0; margin-top: 3px; accent-color: v
 @keyframes pulse { 50% { opacity: .35; } }
 @keyframes slide { from { transform: translateX(-100%); } to { transform: translateX(340%); } }
 
-/* Draft: the paper on its canvas, with the draft watermark of the desktop editor. */
-.draft-actions { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
-.draft-actions select { width: auto; max-width: 100%; }
-.badge { border-radius: 999px; padding: 1px 8px; font-size: 11px; font-weight: 700; letter-spacing: .03em; background: var(--warning-soft); color: var(--warning); text-transform: uppercase; vertical-align: middle; }
-.toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; border-bottom: 1px solid var(--hairline); padding-bottom: 8px; }
+/* Draft, as the desktop lays it out: the title row with the badge at its end, the engine row with its status dot,
+   the one-row toolbar, the strip of the selected section, the paper (A4 proportions, the desktop's type and
+   spacing) in its own scroll area, and the review list docked under it. The paper is always light. */
+.draft-panel { display: flex; flex-direction: column; gap: 10px; }
+.panel-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.badge { border-radius: 999px; padding: 3px 10px; font-size: 12px; font-weight: 600; background: var(--warning-soft); color: var(--warning); white-space: nowrap; }
+.engine-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.engine-row select { width: auto; max-width: 100%; min-height: 38px; }
+.status-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--success); flex: none; }
+.status-dot.down { background: var(--danger); }
+.toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-height: 44px; border-bottom: 1px solid var(--hairline); padding-bottom: 6px; }
 .tabs { display: flex; gap: 2px; margin-inline-end: auto; }
-.tab { border: none; border-bottom: 2px solid transparent; border-radius: 0; background: none; padding: 6px 10px; color: var(--muted); min-height: 0; }
+.tab { border: none; border-bottom: 2px solid transparent; border-radius: 0; background: none; padding: 6px 10px; color: var(--muted); min-height: 32px; font-size: 13px; }
+.app[lang="ar"] .tab { font-size: 15px; }
 .tab:hover:not(:disabled) { background: none; border-color: transparent; border-bottom-color: var(--hairline); }
 .tab[aria-selected="true"] { color: var(--text); border-bottom-color: var(--accent); font-weight: 600; }
-.paper-canvas { background: var(--paper-canvas); border-radius: 8px; padding: 18px; display: grid; justify-items: center; gap: 14px; }
-.paper { position: relative; overflow: hidden; background: var(--paper); color: var(--paper-text); width: 100%; max-width: 760px; padding: 36px 44px; box-shadow: var(--shadow-paper); border-radius: 2px; display: grid; gap: 18px; }
-.paper.watermark::before { content: "مسودة"; position: absolute; inset-inline: 0; top: 38%; text-align: center; font: 700 110px/1 var(--font-doc); color: rgb(39 36 31 / 0.08); transform: rotate(-35deg); pointer-events: none; }
+.toolbar .tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.toolbar .tools label.check { font-size: 12.5px; align-items: center; }
+.toolbar .tools label.check input { margin-top: 0; }
+button.export { padding: 5px 8px; min-height: 32px; font-size: 12.5px; gap: 4px; }
+button.icon-only { padding: 5px 7px; min-height: 32px; }
+/* The strip of the selected section: the desktop's own colours (FieldTools), its small captions and actions. */
+.field-tools { background: var(--field-tools); color: var(--field-tools-text); border: 1px solid #b0c0c5; border-radius: 5px; padding: 6px 10px; display: grid; gap: 5px; }
+.field-tools .row { display: flex; flex-wrap: wrap; align-items: center; gap: 5px 10px; }
+.field-caption { font-size: 12.5px; color: var(--field-tools-text); }
+.app[lang="ar"] .field-caption { font-size: 15px; }
+.field-caption.strong { font-weight: 600; }
+.field-tools .hint { display: inline-flex; align-items: center; gap: 5px; flex: 1 1 220px; }
+.field-actions { display: flex; flex-wrap: wrap; gap: 4px; margin-inline-start: auto; }
+button.field-action { background: #f0f4f5; color: var(--field-tools-text); border: 1px solid #a9bbc2; border-radius: 4px; font-size: 12px; padding: 4px 8px; min-height: 30px; }
+.app[lang="ar"] button.field-action { font-size: 14px; }
+button.field-action:hover:not(:disabled) { background: #e4ebed; border-color: #a9bbc2; }
+.field-tools .confirm { background: #fff3dc; color: #5b3b00; border-radius: 4px; padding: 6px; display: flex; flex-wrap: wrap; gap: 4px; }
+/* The paper: the canvas scrolls, the sheet keeps A4 proportions and the desktop's margins, type and watermark. */
+.paper-scroll { background: var(--paper-canvas); border-radius: 8px; overflow: auto; flex: 1 1 auto; min-height: 0; }
+.paper { position: relative; overflow: hidden; background: var(--paper); color: var(--paper-text); margin: 16px auto; max-width: 794px; min-height: 1123px; padding: 42px 32px; border-radius: 1px; box-shadow: 0 2px 10px rgb(0 0 0 / 0.15); }
+/* The desktop widens the sheet margins on a large window (64,56) and narrows them on a tight one (24,32). */
+@media (min-width: 1600px) { .paper { padding: 56px 64px; } }
+@media (max-width: 1279px) { .paper { padding: 32px 24px; } }
+.paper.watermark::before { content: "مسودة"; position: absolute; top: 300px; inset-inline: 0; text-align: center; font: 700 110px/1 var(--font-doc); color: rgb(39 36 31 / 0.08); transform: rotate(-35deg); pointer-events: none; }
 .paper > * { position: relative; }
-.paper-canvas .page-img { width: 100%; max-width: 760px; box-shadow: var(--shadow-paper); background: #ffffff; }
-.preview-wait { color: var(--muted); }
-
-.section { display: grid; gap: 6px; }
-.section-head { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font: 12.5px var(--font-ui); color: var(--paper-muted); }
-.section-head .title { font-weight: 600; color: var(--paper-accent); }
-.section-head .origin { display: inline-flex; align-items: center; gap: 4px; }
-.section-head .origin.ai { color: var(--paper-accent); font-weight: 600; }
-.section-head .actions { margin-inline-start: auto; display: flex; gap: 2px; flex-wrap: wrap; }
-.section-head button.link { color: var(--paper-accent); }
-.section-head button.link:hover:not(:disabled) { background: rgb(120 96 57 / 0.1); }
-.section-text { font: 16px/2 var(--font-doc); color: var(--paper-text); white-space: pre-wrap; }
-textarea.section-text { background: transparent; border: 1px dashed transparent; border-radius: 4px; padding: 4px 6px; color: var(--paper-text); min-height: 0; box-shadow: none; }
-textarea.section-text:hover { border-color: var(--paper-hairline); background: rgb(120 96 57 / 0.024); }
-textarea.section-text:focus { border-color: var(--paper-accent); outline: none; background: rgb(120 96 57 / 0.039); box-shadow: none; }
+.section { position: relative; border-inline-start: 2px solid transparent; padding: 0 6px; }
+.section:hover { border-color: #b0c0c5; }
+.section.selected, .section:focus-within { border-color: #637e8c; }
+.section.selected { background: rgb(120 96 57 / 0.05); }
+/* An AI-written section is marked in the paper itself: the gold line and the AI tag. */
+.section.ai { border-color: var(--gold); }
+.ai-mark { position: absolute; top: 2px; inset-inline-end: 0; display: inline-flex; align-items: center; gap: 3px; border-radius: 999px; padding: 1px 7px; font: 600 10px/1.5 var(--font-ui); background: #fff3dc; color: #786039; }
+.document-heading { font: 700 20.5px/31px var(--font-doc); text-decoration: underline; color: var(--paper-text); }
+.section-text { font: 20.5px/31px var(--font-doc); color: var(--paper-text); white-space: pre-wrap; text-align: right; }
+.section.align-justify .section-text { text-align: justify; }
+.section.align-center .section-text { text-align: center; }
+.section.align-end .section-text { text-align: center; max-width: 260px; margin-inline-start: auto; }
+.section.bold .section-text { font-weight: 700; }
+textarea.section-text { display: block; width: 100%; background: transparent; border: 0; border-radius: 0; padding: 0; min-height: 31px; resize: none; box-shadow: none; field-sizing: content; }
+textarea.section-text:hover { border-color: transparent; }
+textarea.section-text:focus { outline: none; background: rgb(120 96 57 / 0.039); box-shadow: none; }
 .section.writing .section-text { background: rgb(198 167 109 / 0.14); }
-.writing-mark { color: var(--paper-accent); font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
-.writing-mark .pulse { width: 7px; height: 7px; border-radius: 50%; background: #c6a76d; animation: pulse 1s infinite; }
-.review { font: 13px/1.6 var(--font-ui); background: var(--paper-note); color: var(--paper-note-text); border-radius: 8px; padding: 8px 10px; white-space: pre-line; }
-.confirm { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font: 13px var(--font-ui); color: var(--paper-note-text); }
-.section .reviewed { display: flex; gap: 6px; align-items: center; margin-top: 6px; color: var(--paper-text); }
-.section .reviewed input { accent-color: var(--paper-accent); }
-.answered-by { color: var(--accent); margin: 4px 0 0; }
+/* The review list under the paper: the AI sections to tick, the review notes, the section being written. */
+.review-list { max-height: 150px; overflow: auto; display: grid; gap: 4px; flex: none; }
+.review-row { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; background: var(--surface-alt); border-radius: 4px; padding: 4px 8px; }
+.review-row .check { font-size: 12.5px; align-items: center; margin: 0; }
+.review-row .check input { margin-top: 0; }
+.review { font: 13px/1.5 var(--font-ui); color: var(--warning); white-space: pre-line; }
+.writing-mark { color: var(--text); display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
+.writing-mark .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: pulse 1s infinite; }
+.answered-by { color: var(--accent); margin: 0; }
+/* Preview: the PDF pages on the same canvas. */
+.paper-scroll.preview { display: grid; align-content: start; }
+.page-img { display: block; width: calc(100% - 36px); max-width: 860px; margin: 18px auto 0; background: #ffffff; box-shadow: 0 2px 10px rgb(0 0 0 / 0.2); }
+.paper-scroll.preview .page-img:last-child { margin-bottom: 18px; }
+.preview-wait { position: sticky; top: 10px; justify-self: center; z-index: 1; border-radius: 999px; padding: 3px 10px; font-size: 12px; background: var(--warning-soft); color: var(--text); }
 
 /* Assistant drawer */
 .drawer-backdrop { position: fixed; inset: 0; background: var(--overlay); z-index: 20; }
@@ -301,10 +346,10 @@ details.present summary { cursor: pointer; font-weight: 600; }
 .statusbar.error { color: var(--danger); }
 
 @media (max-width: 899px) {
-  .paper { padding: 22px 18px; }
-  .paper.watermark::before { font-size: 64px; }
-  .paper-canvas { padding: 10px; }
-  .section-text { font-size: 15px; }
+  .paper { padding: 22px 18px; min-height: 0; margin: 10px; }
+  .paper.watermark::before { font-size: 64px; top: 180px; }
+  .paper-scroll { overflow: visible; }
+  .section-text, .document-heading { font-size: 17px; line-height: 27px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .activity-steps li.active .dot, .progress-indeterminate span, .writing-mark .pulse { animation: none; }

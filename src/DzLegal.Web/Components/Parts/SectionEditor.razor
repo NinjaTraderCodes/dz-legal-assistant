@@ -1,51 +1,18 @@
+@using System.Globalization
+@using DzLegal.Domain
 @using DzLegal.Presentation.ViewModels
-@* One section of the requête on paper. Generated sections follow the form; narrative ones are written by the model and
-   stay editable. Same view model as the desktop editor. *@
-<div class="section @(Section.IsWriting ? "writing" : "")">
-    <div class="section-head" dir="@(Vm.IsRightToLeft ? "rtl" : "ltr")" lang="@Vm.L.Language">
-        <span class="title">@Section.Title</span>
-        @if (Section.IsWriting)
-        {
-            <span class="writing-mark"><span class="pulse"></span> @Vm.L["SectionWriting"]</span>
-        }
-        else if (Section.IsLocked)
-        {
-            <span class="origin"><Icon Name="lock_closed" Size="12" /> @Section.Hint</span>
-        }
-        else if (Section.IsEditable)
-        {
-            <span class="origin ai"><Icon Name="sparkle" Size="12" /> @Section.Hint</span>
-        }
-        else
-        {
-            <span class="origin">@Section.Hint</span>
-        }
-        <span class="actions">
-            @if (Section.CanOverride)
-            {
-                <button type="button" class="link" @onclick="() => Section.OverrideCommand.Execute(null)"><Icon Name="edit" Size="14" /> @Vm.L["EditManually"]</button>
-            }
-            @if (Section.IsOverridden)
-            {
-                <button type="button" class="link" @onclick="() => Section.RestoreCommand.Execute(null)">@Vm.L["RestoreFromForm"]</button>
-            }
-            @if (Section.IsEditable)
-            {
-                @if (Section.CanUndo)
-                {
-                    <button type="button" class="link" @onclick="() => Section.UndoCommand.Execute(null)"><Icon Name="arrow_undo" Size="14" /> @Vm.L["Undo"]</button>
-                }
-                <button type="button" class="link" disabled="@CommandRunner.IsAiBusy(Vm)" @onclick="() => CommandRunner.RunAsync(Vm, Section.RedraftCommand)"><Icon Name="arrow_clockwise" Size="14" /> @Vm.L["Redraft"]</button>
-                <button type="button" class="link" @onclick="() => Section.OpenAssistantCommand.Execute(null)"><Icon Name="sparkle" Size="14" /> @Vm.L["Assistant"]</button>
-            }
-        </span>
-    </div>
-    @if (Section.IsConfirmingRedraft)
+@* One section of the requête on paper, laid out as the desktop lays it out from the definition: alignment, weight,
+   the space before it, and an underlined heading when the definition prints one. Clicking or focusing it selects it
+   (the strip above the paper then shows its tools); an AI-written section carries its mark in the paper itself.
+   Same view model as the desktop editor. *@
+<div class="section @Classes" style="margin-top:@Spacing" @onclick="Select" @onfocusin="Select">
+    @if (Section.Definition.ShowTitle)
     {
-        <div class="confirm" dir="@(Vm.IsRightToLeft ? "rtl" : "ltr")" lang="@Vm.L.Language">
-            <button type="button" class="primary small" @onclick="() => CommandRunner.RunAsync(Vm, Section.RedraftCommand)">@Vm.L["ConfirmRedraft"]</button>
-            <button type="button" class="small" @onclick="() => Section.CancelRedraftCommand.Execute(null)">@Vm.L["Cancel"]</button>
-        </div>
+        <div class="document-heading">@Section.Definition.Title.Ar:</div>
+    }
+    @if (Section.IsAiWritten)
+    {
+        <span class="ai-mark" title="@Vm.L["NarrativeSectionHint"]"><Icon Name="sparkle" Size="10" /> @Vm.L["ModelTag"]</span>
     }
     @if (Section.IsReadOnly)
     {
@@ -53,15 +20,7 @@
     }
     else
     {
-        <textarea class="section-text" dir="auto" rows="@Rows" maxlength="12000" aria-label="@Section.Title" placeholder="@Section.Watermark" @bind="Section.Text" @bind:event="oninput"></textarea>
-    }
-    @if (Section.HasReview)
-    {
-        <div class="review" dir="@(Vm.IsRightToLeft ? "rtl" : "ltr")" lang="@Vm.L.Language">@Section.ReviewText</div>
-    }
-    @if (Section.IsAiWritten)
-    {
-        <label class="check small reviewed"><input type="checkbox" @bind="Section.IsReviewed" /> @Vm.L["ReviewedCheck"]</label>
+        <textarea class="section-text" dir="rtl" rows="@Rows" maxlength="12000" aria-label="@Section.Title" placeholder="@Section.Watermark" @bind="Section.Text" @bind:event="oninput"></textarea>
     }
 </div>
 
@@ -70,6 +29,24 @@
 
     [Parameter, EditorRequired] public MainWindowViewModel Vm { get; set; } = default!;
 
-    // Enough rows for the text (about 70 characters a line on the paper), so it reads like a page.
-    private int Rows => Math.Max(3, Section.Text.Split('\n').Sum(l => 1 + l.Length / 70));
+    [Parameter] public bool IsSelected { get; set; }
+
+    [Parameter] public EventCallback<SectionViewModel> OnSelect { get; set; }
+
+    private Task Select() => OnSelect.InvokeAsync(Section);
+
+    private string Classes => string.Join(' ', new[]
+    {
+        "align-" + Section.Definition.Layout.Align.ToString().ToLowerInvariant(),
+        Section.Definition.Layout.Bold ? "bold" : "",
+        Section.IsWriting ? "writing" : "",
+        Section.IsAiWritten ? "ai" : "",
+        IsSelected ? "selected" : "",
+    }.Where(c => c.Length > 0));
+
+    // The desktop converts the definition's points to pixels the same way.
+    private string Spacing => (Section.Definition.Layout.SpaceBefore * 1.12).ToString("0.##", CultureInfo.InvariantCulture) + "px";
+
+    // Enough rows for the text (about 60 characters a line at the paper's size), so it reads like a page.
+    private int Rows => Math.Max(1, Section.Text.Split('\n').Sum(l => 1 + l.Length / 60));
 }

@@ -1,5 +1,10 @@
+using System.IO.Compression;
 using DzLegal.Web.Site;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace DzLegal.Web.Tests;
 
@@ -90,7 +95,7 @@ public sealed class StaticSiteTests : IDisposable
 
     public StaticSiteTests()
     {
-        foreach (var file in new[] { "ar/index.html", "en/index.html", "ar/404/index.html", "en/download/index.html", "_astro/site.css", "robots.txt" })
+        foreach (var file in new[] { "ar/index.html", "en/index.html", "ar/404/index.html", "en/download/index.html", "_astro/site.css", "_astro/a.woff2", "robots.txt" })
         {
             var path = Path.Combine(_root, file.Replace('/', Path.DirectorySeparatorChar));
             Directory.CreateDirectory(Path.GetDirectoryName(path)!);
@@ -172,6 +177,50 @@ public sealed class StaticSiteTests : IDisposable
     [InlineData("/en\\download")]
     [InlineData("robots.txt")]
     public void NothingOutsideTheSiteIsServed(string path) => Assert.False(Site().TryResolve(path, out _, out _));
+
+    [Fact]
+    public async Task TheSiteLeavesCompressedAndTheDemoDoesNot()
+    {
+        var builder = WebApplication.CreateBuilder();
+        builder.WebHost.UseUrls("http://127.0.0.1:0");
+        builder.Logging.ClearProviders();
+        builder.Services.AddSiteCompression();
+        var app = builder.Build();
+        app.UseRouting();
+        app.UseStaticSite(Site());
+        app.MapGet("/app", () => Results.Text("<html>the demo</html>", "text/html"));
+        await app.StartAsync();
+        try
+        {
+            using var client = new HttpClient { BaseAddress = new Uri(app.Urls.Single()) };
+            client.DefaultRequestHeaders.AcceptEncoding.ParseAdd("br, gzip");
+
+            using var page = await client.GetAsync(new Uri("/ar/", UriKind.Relative));
+            Assert.Equal("br", page.Content.Headers.ContentEncoding.Single());
+            Assert.Contains("Accept-Encoding", page.Headers.Vary);
+            Assert.Equal("ar/index.html", await ReadBrotliAsync(page));
+
+            using var font = await client.GetAsync(new Uri("/_astro/a.woff2", UriKind.Relative));
+            Assert.Empty(font.Content.Headers.ContentEncoding);
+
+            using var demo = await client.GetAsync(new Uri("/app", UriKind.Relative));
+            Assert.Empty(demo.Content.Headers.ContentEncoding);
+            Assert.Equal("<html>the demo</html>", await demo.Content.ReadAsStringAsync());
+        }
+        finally
+        {
+            await app.StopAsync();
+            await app.DisposeAsync();
+        }
+    }
+
+    private static async Task<string> ReadBrotliAsync(HttpResponseMessage response)
+    {
+        await using var body = await response.Content.ReadAsStreamAsync();
+        await using var brotli = new BrotliStream(body, CompressionMode.Decompress);
+        using var reader = new StreamReader(brotli);
+        return await reader.ReadToEndAsync();
+    }
 
     [Fact]
     public void HtmlIsRevalidatedAndHashedAssetsAreImmutable()

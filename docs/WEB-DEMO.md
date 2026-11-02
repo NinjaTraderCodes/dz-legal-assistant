@@ -39,6 +39,10 @@ desktop's own, bundled with their licences.
   in `appsettings.json`: set it to `false` and the demo answers at `/` again (rewritten internally to `/app`), which
   is also what happens when the site folder is missing from the image. Unknown paths get the site's own not-found
   page.
+- **Compression:** the site leaves the server compressed (Brotli, else gzip: the Arabic home is 22 KB instead of
+  104 KB), as the host already does in front of it, so a local Lighthouse run sees what a visitor gets. Only the
+  site is compressed; the demo page carries the antiforgery token, which compressing would expose (BREACH), and is
+  left as it is, like the circuit. Fonts and images are compressed formats already.
 - **Build:** the `Dockerfile` builds the site in a Node stage (`npm ci --omit=dev && npm run build`, about two minutes)
   and copies `site/dist` next to the app; the app finds it at `<base>/site` (setting `Site:Root`). Without the folder
   the app behaves exactly as before.
@@ -46,8 +50,10 @@ desktop's own, bundled with their licences.
   `dotnet run --project src/DzLegal.Web --launch-profile http+site` (sets `Site__Root=../../site/dist`).
 - **Checks, run locally** (GitHub Actions are off): `npm test` (Playwright: the routes, the switch, the headers, the
   demo shell; axe on every page; `tests/guide.spec.ts` follows the five-step guide in the demo against an instance
-  whose AI is the local stand-in `tests/mock-model.mjs`, started as its header says, with `GUIDE_BASE_URL` set), `npm run shots -- --out ../docs/website/<phase>` and
-  `npm run lighthouse -- --out ../docs/website/<phase>`. Each phase's reports live in `docs/website/`.
+  whose AI is the local stand-in `tests/mock-model.mjs`, started as its header says, with `GUIDE_BASE_URL` set), `npm run shots -- --out ../docs/website/<phase>`,
+  `npm run lighthouse -- --out ../docs/website/<phase>`, `npm run budget` (what each page loads and the Lighthouse scores
+  against `site/budget.json`) and `npm run links` (a private window opens every page and follows every link).
+  Each phase's reports live in `docs/website/`.
 
 ## How it is built
 

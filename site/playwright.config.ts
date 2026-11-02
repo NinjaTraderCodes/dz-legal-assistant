@@ -12,5 +12,9 @@ export default defineConfig({
         trace: "retain-on-failure",
         locale: "en-GB",
     },
-    projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+    // Chromium every time; WebKit as a smoke run on request (WEBKIT=1), with the browser already installed here.
+    projects: [
+        { name: "chromium", use: { ...devices["Desktop Chrome"] } },
+        ...(process.env.WEBKIT ? [{ name: "webkit", use: { ...devices["Desktop Safari"] }, testMatch: /site\.spec\.ts/ }] : []),
+    ],
 });

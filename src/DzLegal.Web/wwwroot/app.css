@@ -123,12 +123,16 @@ label.check input { width: auto; min-height: 0; margin-top: 3px; accent-color: v
 .panel > h2 { margin-bottom: 2px; }
 .panel-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
 @media (min-width: 900px) and (max-width: 1599px) {
-  /* Up to 1600 px the bar shows the secondary commands as icons and the document type gives way: with the demo's own
-     items beside the desktop's, that is what keeps one row at 1366 and 1440. */
+  /* Up to 1600 px the document type gives way and Download and Guide show as icons; below 1440 px New, Open and Save
+     do too. With the demo's own items beside the desktop's, that is what keeps one row at 1366 and 1440. */
   .brand .doc-type { display: none; }
-  .appbar .secondary .label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  .appbar .secondary > button, .appbar .secondary > .button-like { padding-inline: 9px; }
+  .appbar .demo .secondary .label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .appbar .demo .secondary > button, .appbar .demo .secondary > .button-like { padding-inline: 9px; }
   .appbar .secondary .icon { vertical-align: middle; }
+}
+@media (min-width: 900px) and (max-width: 1439px) {
+  .appbar .tools.secondary .label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .appbar .tools.secondary > button, .appbar .tools.secondary > .button-like { padding-inline: 9px; }
 }
 @media (min-width: 900px) {
   /* The window layout of the desktop: the three panels fill the height and scroll inside. */
@@ -277,16 +281,16 @@ button.field-action:hover:not(:disabled) { background: #e4ebed; border-color: #a
 .field-tools .confirm { background: #fff3dc; color: #5b3b00; border-radius: 4px; padding: 6px; display: flex; flex-wrap: wrap; gap: 4px; }
 /* The paper: the canvas scrolls, the sheet keeps A4 proportions and the desktop's margins, type and watermark. */
 .paper-scroll { background: var(--paper-canvas); border-radius: 8px; overflow: auto; flex: 1 1 auto; min-height: 0; }
-.paper { position: relative; overflow: hidden; background: var(--paper); color: var(--paper-text); margin: 16px auto; max-width: 794px; min-height: 1123px; padding: 42px 32px; border-radius: 1px; box-shadow: 0 2px 10px rgb(0 0 0 / 0.15); }
+.paper { position: relative; overflow: hidden; background: var(--paper); color: var(--paper-text); width: calc(100% - 32px); margin: 16px auto; max-width: 794px; min-height: 1123px; padding: 42px 32px; border-radius: 1px; box-shadow: 0 2px 10px rgb(0 0 0 / 0.15); }
 /* The desktop widens the sheet margins on a large window (64,56) and narrows them on a tight one (24,32). */
 @media (min-width: 1600px) { .paper { padding: 56px 64px; } }
 @media (max-width: 1279px) { .paper { padding: 32px 24px; } }
 .paper.watermark::before { content: "مسودة"; position: absolute; top: 300px; inset-inline: 0; text-align: center; font: 700 110px/1 var(--font-doc); color: rgb(39 36 31 / 0.08); transform: rotate(-35deg); pointer-events: none; }
 .paper > * { position: relative; }
 .section { position: relative; border-inline-start: 2px solid transparent; padding: 0 6px; }
+/* As on the desktop: the side line appears on hover or focus only; the strip above the paper names the selection. */
 .section:hover { border-color: #b0c0c5; }
-.section.selected, .section:focus-within { border-color: #637e8c; }
-.section.selected { background: rgb(120 96 57 / 0.05); }
+.section:focus-within { border-color: #637e8c; }
 /* An AI-written section is marked in the paper itself: the gold line and the AI tag. */
 .section.ai { border-color: var(--gold); }
 .ai-mark { position: absolute; top: 2px; inset-inline-end: 0; display: inline-flex; align-items: center; gap: 3px; border-radius: 999px; padding: 1px 7px; font: 600 10px/1.5 var(--font-ui); background: #fff3dc; color: #786039; }

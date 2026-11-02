@@ -16,7 +16,7 @@
 <div class="app @(Vm.IsDarkTheme ? "dark" : "")" dir="@(Vm.IsRightToLeft ? "rtl" : "ltr")" lang="@Lang">
     <header class="appbar">
         <div class="brand">
-            <Icon Name="gavel" Size="22" />
+            <span class="brand-mark"><Icon Name="gavel" Size="20" /></span>
             <h1>@L["AppTitle"]</h1>
             <span class="doc-type">@Vm.DocumentTypeName</span>
             <span class="demo-chip">@T("DemoChip")</span>
@@ -29,6 +29,9 @@
                     <option value="@sample.Id">@sample.Title.Get(Lang)</option>
                 }
             </select>
+            @* On a phone the bar keeps the sample picker, the theme and the language; the rest folds behind More. *@
+            <button type="button" class="more-toggle" aria-expanded="@(showMore ? "true" : "false")" @onclick="() => showMore = !showMore"><Icon Name="chevron_down" Size="16" /> @T("More")</button>
+            <div class="secondary @(showMore ? "open" : "")">
             <button type="button" @onclick="() => Vm.NewCommand.Execute(null)"><Icon Name="add" /> @L["New"]</button>
             @* Open and Save as on the desktop: a draft file (.dzdraft.json) from and to the visitor's own disk. *@
             <label class="button-like" title="@L["Open"]"><Icon Name="folder_open" /> @L["Open"]<InputFile class="visually-hidden" accept=".json,application/json" OnChange="OpenDraftFile" /></label>
@@ -40,6 +43,7 @@
             @* The desktop app, for judges and lawyers who want it on their own computer: the latest release on GitHub. *@
             <a class="button-like" id="download-windows" href="@DownloadUrl" target="_blank" rel="noopener" title="@T("DownloadNote")"><Icon Name="arrow_download" /> @T("DownloadWindows")</a>
             <button type="button" aria-pressed="@(showGuide ? "true" : "false")" @onclick="() => showGuide = !showGuide"><Icon Name="question_circle" /> @T("GuideShow")</button>
+            </div>
             <button type="button" aria-label="@T("Theme")" title="@T("Theme")" @onclick="ToggleThemeAsync"><Icon Name="weather_moon" /></button>
             <button type="button" lang="@(Lang == "en" ? "ar" : "en")" @onclick="SwitchLanguageAsync"><Icon Name="translate" /> @L["SwitchLanguage"]</button>
         </div>
@@ -69,7 +73,7 @@
         }
         @if (showGuide)
         {
-            <section class="guide" aria-labelledby="guide-title">
+            <section class="guide tour" aria-labelledby="guide-title">
                 <div class="guide-head">
                     <h2 id="guide-title">@T("GuideTitle")</h2>
                     <button type="button" class="quiet small" @onclick="() => showGuide = false"><Icon Name="dismiss" Size="14" /> @T("GuideHide")</button>
@@ -91,12 +95,12 @@
                         <span class="actions"><button type="button" class="small" @onclick='() => GoToStep("defendant")'>@T("OpenDefendant")</button></span>
                     </li>
                     <li class="ai">
-                        <strong>@T("Guide3Title")</strong>
+                        <strong>@T("Guide3Title") <span class="tag ai"><Icon Name="sparkle" Size="12" /> @L["ModelTag"]</span></strong>
                         <p class="muted">@T("Guide3")</p>
                         <span class="actions"><button type="button" class="small" @onclick='() => GoToStep(MainWindowViewModel.GroundsStepId)'>@T("OpenGrounds")</button></span>
                     </li>
                     <li class="ai">
-                        <strong>@T("Guide4Title")</strong>
+                        <strong>@T("Guide4Title") <span class="tag ai"><Icon Name="sparkle" Size="12" /> @L["ModelTag"]</span></strong>
                         <p class="muted">@T("Guide4")</p>
                     </li>
                     <li>
@@ -273,7 +277,7 @@
             @if (Vm.SelectedDraftTab == 0)
             {
                 <div class="paper-canvas">
-                    <div class="paper" dir="rtl" lang="ar">
+                    <div class="paper @(Vm.DraftWatermark ? "watermark" : "")" dir="rtl" lang="ar">
                         @foreach (var section in Vm.Sections)
                         {
                             <SectionEditor Section="section" Vm="Vm" />

@@ -9,6 +9,7 @@ public static class WebText
     private static readonly Dictionary<string, (string En, string Ar)> Strings = new(StringComparer.Ordinal)
     {
         ["DemoChip"] = ("Demo · fictitious cases only", "عرض تجريبي · قضايا وهمية فقط"),
+        ["BackToSite"] = ("Back to the website", "العودة إلى الموقع"),
         ["Title"] = ("DZ Legal Assistant · demo", "مساعد صياغة العرائض · عرض تجريبي"),
         ["Loading"] = ("Loading the demo…", "جارٍ تحميل العرض التجريبي…"),
         ["LoadingHint"] = (

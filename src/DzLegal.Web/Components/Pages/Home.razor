@@ -16,8 +16,13 @@
 <div class="app @(Vm.IsDarkTheme ? "dark" : "")" dir="@(Vm.IsRightToLeft ? "rtl" : "ltr")" lang="@Lang">
     <header class="appbar">
         <div class="brand">
-            <span class="brand-mark"><Icon Name="gavel" Size="20" /></span>
-            <h1>@L["AppTitle"]</h1>
+            @* The brand leads back to the website's home. target="_top" makes it a full page load: "/" is the static
+               site, not a route of this app, so Blazor must not handle the link itself. The case stays in the
+               browser's recovery copy. *@
+            <a class="brand-link" href="/" target="_top" title="@T("BackToSite")">
+                <span class="brand-mark"><Icon Name="gavel" Size="20" /></span>
+                <h1>@L["AppTitle"]</h1>
+            </a>
             <span class="doc-type">@Vm.DocumentTypeName</span>
         </div>
         @* As on the desktop, next to the brand: New, Open, Save and the save state. Below 1440 px they show as icons

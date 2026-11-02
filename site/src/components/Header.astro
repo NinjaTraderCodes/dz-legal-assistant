@@ -1,35 +1,43 @@
 ---
-// The site's bar: the mark and the product name, the section links, the language pair and the theme toggle, in the
-// vocabulary of the desktop's welcome screen (two language buttons, the selected one outlined; a moon/sun tile).
+// The site's bar: the mark and the product name, the pages, the language pair and the theme toggle, in the
+// vocabulary of the desktop's welcome screen (two language buttons, the selected one outlined; a sun/moon tile).
+// On a phone the pages fold into a native disclosure under the bar; no script is needed for it.
 import ScalesMark from "./ScalesMark.astro";
 import LangSwitch from "./LangSwitch.astro";
 import ThemeToggle from "./ThemeToggle.astro";
+import Icon from "./Icon.astro";
 import { s, t, type Lang } from "../i18n";
+import { pages } from "../content/product";
 
 interface Props { lang: Lang; path: string }
 const { lang, path } = Astro.props;
 const home = `/${lang}/`;
-const links = [
-    [t(lang, "nav.problem"), `${home}#problem`],
-    [t(lang, "nav.how"), `${home}#how`],
-    [t(lang, "nav.download"), `${home}#download`],
-    [t(lang, "nav.team"), `${home}#team`],
-];
+const links = pages(lang);
+const demo = `/app?lang=${lang}`;
+const current = (page: string) => (page === path ? "page" : undefined);
 ---
 <header class="site-header">
     <div class="page bar">
-        <a href={home} class="brand" aria-label={s(lang, "AppTitle")}>
+        <a href={home} class="brand" aria-label={s(lang, "AppTitle")} aria-current={current("/")}>
             <span class="brand-mark"><ScalesMark size={26} /></span>
             <span class="brand-name">{s(lang, "AppTitle")}</span>
         </a>
         <nav class="nav" aria-label={t(lang, "nav.label")}>
-            {links.map(([label, href]) => <a href={href}>{label}</a>)}
-            <a href={`/app?lang=${lang}`} class="nav-demo">{t(lang, "nav.demo")}</a>
+            {links.map((link) => <a href={link.href} aria-current={current(link.path)}>{link.label}</a>)}
+            <a href={demo} class="nav-demo">{t(lang, "nav.demo")}</a>
         </nav>
         <div class="controls">
             <LangSwitch lang={lang} path={path} />
             <ThemeToggle lang={lang} />
         </div>
+        <details class="menu">
+            <summary><Icon name="chevron_down" size={16} /> {t(lang, "nav.menu")}</summary>
+            <nav aria-label={t(lang, "nav.label")}>
+                <a href={home} aria-current={current("/")}>{t(lang, "nav.home")}</a>
+                {links.map((link) => <a href={link.href} aria-current={current(link.path)}>{link.label}</a>)}
+                <a href={demo} class="nav-demo">{t(lang, "nav.demo")}</a>
+            </nav>
+        </details>
     </div>
 </header>
 
@@ -37,13 +45,21 @@ const links = [
     .site-header { position: sticky; top: 0; z-index: 40; background: color-mix(in srgb, var(--canvas) 94%, transparent); border-bottom: 1px solid var(--hairline); }
     /* The glass blur is a desktop touch: on phones it costs layout time on every scroll. */
     @media (min-width: 900px) { .site-header { background: color-mix(in srgb, var(--canvas) 86%, transparent); backdrop-filter: blur(10px); } }
-    .bar { display: flex; align-items: center; gap: 16px 24px; min-height: 64px; flex-wrap: wrap; padding-block: 8px; }
+    .bar { display: flex; align-items: center; gap: 12px 24px; min-height: 64px; flex-wrap: wrap; padding-block: 8px; }
     .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--text); text-decoration: none; font-weight: 600; font-size: 1.05rem; }
     .brand-mark { display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: var(--radius-control); background: var(--bar); color: var(--bar-text); }
     .nav { display: flex; flex-wrap: wrap; gap: 4px 18px; margin-inline-start: auto; font-size: 0.95rem; }
     .nav a { color: var(--text); text-decoration: none; padding: 6px 2px; border-bottom: 2px solid transparent; }
     .nav a:hover { border-bottom-color: var(--edge); }
+    .nav a[aria-current="page"] { border-bottom-color: var(--accent); font-weight: 600; }
     .nav-demo { font-weight: 600; color: var(--accent) !important; }
     .controls { display: flex; align-items: center; gap: 8px; }
-    @media (max-width: 899px) { .nav { display: none; } .controls { margin-inline-start: auto; } }
+    .menu { display: none; flex-basis: 100%; }
+    .menu summary { display: inline-flex; align-items: center; gap: 8px; list-style: none; cursor: pointer; min-height: 40px; padding: 4px 12px; border: 1px solid var(--edge); border-radius: var(--radius-control); background: var(--welcome-control); color: var(--welcome-text); font-size: 14px; }
+    .menu summary::-webkit-details-marker { display: none; }
+    .menu[open] summary :global(.icon) { transform: rotate(180deg); }
+    .menu nav { display: grid; padding: 8px 0 4px; }
+    .menu nav a { padding: 10px 4px; border-top: 1px solid var(--hairline); color: var(--text); text-decoration: none; }
+    .menu nav a[aria-current="page"] { color: var(--accent); font-weight: 600; }
+    @media (max-width: 899px) { .nav { display: none; } .controls { margin-inline-start: auto; } .menu { display: block; } }
 </style>

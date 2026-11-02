@@ -1,0 +1,17 @@
+---
+// The opening of a secondary page: a small label, the title, one lead sentence, and whatever the page adds.
+interface Props { eyebrow?: string; title: string; lead?: string }
+const { eyebrow, title, lead } = Astro.props;
+---
+<section class="section page head">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h1 class="h1">{title}</h1>
+    {lead && <p class="lead">{lead}</p>}
+    <slot />
+</section>
+
+<style>
+    .head { display: grid; gap: 14px; padding-top: clamp(40px, 6vw, 72px); padding-bottom: clamp(32px, 4vw, 48px); }
+    .eyebrow { color: var(--accent); font-weight: 600; font-size: 0.9rem; letter-spacing: 0.02em; }
+    .head .lead { max-width: 760px; }
+</style>

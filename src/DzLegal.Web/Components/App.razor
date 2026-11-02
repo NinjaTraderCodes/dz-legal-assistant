@@ -3,10 +3,10 @@
 @inject IHttpContextAccessor Http
 @{
     // The language and theme of the page itself, before the circuit exists: the visitor's remembered choice, the
-    // ?lang= query, or the browser's language; light unless dark was chosen.
+    // ?lang= query, or the browser's language; dark unless light was chosen (the site's default too).
     var request = HttpContext?.Request ?? Http.HttpContext?.Request;
     var lang = request is null ? LanguageChoice.English : LanguageChoice.FromRequest(request);
-    var dark = request?.Cookies[LanguageSwitch.ThemeCookieName] == "dark";
+    var dark = LanguageSwitch.IsDarkTheme(request?.Cookies[LanguageSwitch.ThemeCookieName]);
 }
 <!DOCTYPE html>
 <html lang="@lang" dir="@LanguageChoice.Dir(lang)" data-theme="@(dark ? "dark" : null)">

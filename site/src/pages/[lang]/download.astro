@@ -1,0 +1,96 @@
+---
+// The download page: the Windows app, how to install it, what it needs, the optional local model, where the data
+// lives, and where this version stands. Every figure names its source in the repository.
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import Source from "../../components/Source.astro";
+import Icon from "../../components/Icon.astro";
+import WithPath from "../../components/WithPath.astro";
+import { langs, s, t, fmt, type Lang } from "../../i18n";
+import { releaseUrl, releasesUrl, version } from "../../content/product";
+
+export function getStaticPaths() {
+    return langs.map((lang) => ({ params: { lang } }));
+}
+const lang = Astro.params.lang as Lang;
+---
+<Base lang={lang} title={t(lang, "nav.download")} description={t(lang, "meta.download.description")} path="/download/" og="download">
+    <PageHead eyebrow={t(lang, "dl.eyebrow")} title={t(lang, "dl.title")} lead={t(lang, "dl.lead")}>
+        <div class="actions">
+            <a class="btn btn-gold" href={releaseUrl} rel="noopener"><Icon name="arrow_download" size={18} /> {t(lang, "dl.cta")}</a>
+            <a class="btn btn-quiet" href={releasesUrl} rel="noopener">{t(lang, "dl.releases")}</a>
+        </div>
+        <p class="small meta"><span class="chip chip-success"><Icon name="shield_checkmark" size={12} /> {s(lang, "OfflineStatus")}</span> {fmt(t(lang, "dl.version"), version)}</p>
+        <Source lang={lang} files={["README.md", "Directory.Build.props"]} />
+    </PageHead>
+
+    <section class="section page cols" aria-label={t(lang, "dl.steps.title")}>
+        <div class="block panel">
+            <h2 class="h2">{t(lang, "dl.steps.title")}</h2>
+            <ol class="steps-list">
+                {[1, 2, 3, 4].map((n) => <li>{t(lang, `dl.step${n}`)}</li>)}
+            </ol>
+            <Source lang={lang} files={["README.md", "docs/PRODUCT-DETAILS.md"]} />
+        </div>
+        <div class="block panel">
+            <h2 class="h2">{t(lang, "dl.req.title")}</h2>
+            <ul class="list">
+                {["os", "runtime", "memory"].map((k) => <li><Icon name="checkmark" size={16} /> <span>{t(lang, `dl.req.${k}`)}</span></li>)}
+            </ul>
+            <Source lang={lang} files={["README.md", "docs/PRODUCT-DETAILS.md"]} />
+        </div>
+    </section>
+
+    <section class="section page" aria-label={t(lang, "dl.ai.title")}>
+        <div class="block panel">
+            <span class="chip chip-accent"><Icon name="sparkle" size={12} /> Ollama · gemma3:4b</span>
+            <h2 class="h2">{t(lang, "dl.ai.title")}</h2>
+            <p>{t(lang, "dl.ai.body")}</p>
+            <ol class="steps-list">
+                {[1, 2, 3].map((n) => <li>{t(lang, `dl.ai.step${n}`)}</li>)}
+            </ol>
+            <p class="small">{t(lang, "dl.ai.speed")}</p>
+            <Source lang={lang} files={["docs/PRODUCT-DETAILS.md", "README.md"]} />
+        </div>
+    </section>
+
+    <section class="section page cols" aria-label={t(lang, "dl.data.title")}>
+        <div class="block panel">
+            <h2 class="h2">{t(lang, "dl.data.title")}</h2>
+            <p><WithPath text={t(lang, "dl.data.body")} path="%LOCALAPPDATA%\DzLegalAssistant" /></p>
+            <p><a href={`/${lang}/privacy/`}>{t(lang, "dl.data.more")}</a></p>
+            <Source lang={lang} files={["docs/OFFLINE.md"]} />
+        </div>
+        <div class="block panel">
+            <h2 class="h2">{t(lang, "dl.source.title")}</h2>
+            <p>{t(lang, "dl.source.body")}</p>
+            <pre class="code" tabindex="0"><code>dotnet build
+dotnet test
+dotnet run --project src/DzLegal.App</code></pre>
+            <Source lang={lang} files={["README.md"]} />
+        </div>
+    </section>
+
+    <section class="section page cols" aria-label={t(lang, "dl.status.title")}>
+        <div class="block card-alt">
+            <h2 class="h3">{t(lang, "dl.status.title")}</h2>
+            <ul class="list plain">
+                {[1, 2, 3].map((n) => <li><Icon name="info" size={16} /> <span>{t(lang, `dl.status.${n}`)}</span></li>)}
+            </ul>
+            <Source lang={lang} files={["README.md"]} />
+        </div>
+        <div class="block card-alt">
+            <h2 class="h3">{t(lang, "dl.demo.title")}</h2>
+            <p>{t(lang, "dl.demo.body")}</p>
+            <a class="btn" href={`/app?lang=${lang}`}><Icon name="open" size={18} /> {t(lang, "demo.cta")}</a>
+        </div>
+    </section>
+</Base>
+
+<style>
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+    .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; color: var(--muted-aa); }
+    .block .btn { justify-self: start; }
+    .block .chip { justify-self: start; }
+    @media (max-width: 599px) { .actions .btn { width: 100%; } }
+</style>

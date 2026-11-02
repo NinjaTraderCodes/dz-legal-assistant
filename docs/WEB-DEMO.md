@@ -19,14 +19,15 @@ The app bar says "Demo · fictitious cases only", and the guide explains that th
 ## The website at the same address
 
 The public website (`site/`, Astro, static HTML) is served by the same app, so one address carries both: the site at
-`/ar/` and `/en/` (Arabic first, the product's language) and the demo at `/app`. Nothing is loaded from another origin,
+`/ar/` and `/en/` (Arabic first, the product's language), with its download, law library, privacy and about pages
+(`/<lang>/download/`, `/law/`, `/privacy/`, `/about/`), and the demo at `/app`. Nothing is loaded from another origin,
 the page's Content Security Policy stays as strict as the demo's (no inline scripts), and the fonts and icons are the
 desktop's own, bundled with their licences.
 
 - **Language:** a remembered choice (`/lang/{code}` sets the first-party cookie `dzlegal.lang` and comes back), then
   `?lang=`, then the browser (an Arabic browser gets Arabic, every other one English). `/app` follows the same rule, so
   the page is already in the right language and direction before the circuit connects.
-- **Theme:** light unless the visitor chose dark (cookie `dzlegal.theme`, shared by the site and the demo). The
+- **Theme:** dark unless the visitor chose light (cookie `dzlegal.theme`, shared by the site and the demo). The
   browser's own dark preference is not consulted.
 - **Design tokens:** `site/scripts/tokens.mjs` generates `site/src/styles/tokens.css` and
   `src/DzLegal.Web/wwwroot/tokens.css` from the desktop theme (`App.axaml`, `Styles/Workbench.axaml`); the build fails

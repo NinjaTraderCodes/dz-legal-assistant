@@ -1,0 +1,149 @@
+---
+// The law library page: the official texts the app quotes from, each with its reference, edition, article count,
+// how it was checked against its source, and the source itself. Everything comes from the data files through
+// scripts/law.mjs; the wording of the status labels is the app's own.
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import Source from "../../components/Source.astro";
+import Icon from "../../components/Icon.astro";
+import law from "../../content/law.generated.json";
+import { langs, s, t, fmt, type Lang } from "../../i18n";
+
+export function getStaticPaths() {
+    return langs.map((lang) => ({ params: { lang } }));
+}
+const lang = Astro.params.lang as Lang;
+
+type Code = (typeof law.codes)[number];
+const order = ["cpca", "family-code", "civil-code", "commercial-code", "labour-relations", "labour-disputes"];
+const codes = [...law.codes].sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+const complete = codes.filter((c) => !c.partial);
+const partial = codes.filter((c) => c.partial);
+const checks: Record<string, [string, string]> = {
+    officialJournalPage: ["LibraryCheckJournal", "LibraryCheckJournalHint"],
+    officialPdfText: ["LibraryCheckPdf", "LibraryCheckPdfHint"],
+    pageImagesReadTwice: ["LibraryCheckImages", "LibraryCheckImagesHint"],
+};
+const months = s(lang, "LibraryMonths").split(",");
+const date = (iso: string | null) => {
+    if (!iso) return null;
+    const [y, m, d] = iso.split("-").map(Number);
+    return `${d} ${months[m - 1]} ${y}`;
+};
+const n = (x: number) => x.toLocaleString("en");
+// A text imported from the Official Journal's site links to it; one typed from a bundled PDF links to the copy the
+// demo serves at /law-sources (the same files the desktop app opens).
+const link = (url: string) => (url.startsWith("http") ? { href: url, local: false } : { href: `/law-sources/${url.split("/").pop()}`, local: true });
+const summary = fmt(s(lang, "LibrarySummary"), n(law.totals.articles), law.totals.texts, law.totals.complete);
+const areaOrder = ["civil", "commercial", "family", "social"];
+const areas = [...law.claimAreas].sort((a, b) => areaOrder.indexOf(a.area) - areaOrder.indexOf(b.area));
+---
+<Base lang={lang} title={s(lang, "LibraryTitle")} description={t(lang, "meta.law.description")} path="/law/" og="law">
+    <PageHead eyebrow={s(lang, "LibraryTitle")} title={summary} lead={t(lang, "law.lead")}>
+        <p class="small">{s(lang, "LibraryIntro")}</p>
+        <Source lang={lang} files={["data/law/codes", "docs/LAW-LIBRARY.md"]} />
+    </PageHead>
+
+    {[[t(lang, "law.complete.title"), complete], [t(lang, "law.partial.title"), partial]].map(([title, group]) => (
+        <section class="section page group" aria-label={title as string}>
+            <h2 class="h2">{title as string}</h2>
+            <div class="cards">
+                {(group as Code[]).map((code) => {
+                    const [check, hint] = checks[code.check ?? ""] ?? ["LibraryCheckPdf", "LibraryCheckPdfHint"];
+                    return (
+                        <article class="law panel" id={code.id} aria-labelledby={`${code.id}-title`}>
+                            <div class="law-head">
+                                <h3 id={`${code.id}-title`} class="h3">{code.title[lang]}</h3>
+                                {lang === "en" && <p class="caption" lang="ar" dir="rtl">{code.title.ar}</p>}
+                                <div class="chips">
+                                    <span class={code.partial ? "chip" : "chip chip-success"}>{code.partial ? <Icon name="document_text" size={12} /> : <Icon name="checkmark_circle" size={12} />} {s(lang, code.partial ? "LibraryPartial" : "LibraryComplete")}</span>
+                                    <span class="chip chip-accent"><Icon name="book_open" size={12} /> {s(lang, check)}</span>
+                                    <span class="chip"><Icon name="person" size={12} /> {s(lang, code.verified ? "LibraryReviewed" : "LibraryNotReviewed")}</span>
+                                </div>
+                            </div>
+                            <p class="stat"><strong>{n(code.articles)}</strong><span class="caption">{fmt(s(lang, "LibraryArticles"), "").replace(/[:：]\s*$/, "")}</span></p>
+                            <dl class="facts">
+                                <dt>{s(lang, "LibraryReference")}</dt><dd lang="ar" dir="rtl">{code.reference}</dd>
+                                {code.edition && <><dt>{s(lang, "LibraryEdition")}</dt><dd lang="ar" dir="rtl">{code.edition}</dd></>}
+                                {code.joReference && <><dt>{t(lang, "law.card.jo")}</dt><dd lang="ar" dir="rtl">{code.joReference}</dd></>}
+                                {code.amendedBy.length > 0 && <><dt>{t(lang, "law.card.amended")}</dt><dd lang="ar" dir="rtl">{code.amendedBy.join("؛ ")}</dd></>}
+                                {code.consolidatedAsOf && <><dt>{fmt(s(lang, "LibraryAsOf"), "").trim()}</dt><dd>{date(code.consolidatedAsOf)}</dd></>}
+                            </dl>
+                            <p class="small hint">{s(lang, hint)}{code.partial && <> {s(lang, "LibraryPartialHint")}</>}</p>
+                            <p class="links">
+                                {code.sources.map((url, i) => { const target = link(url); return <a href={target.href} rel="noopener"><Icon name="document_pdf" size={16} /> {i === 0 ? t(lang, "law.card.file") : t(lang, "law.card.amendmentFile")}{target.local && <span class="caption"> ({t(lang, "law.card.local")})</span>}</a>; })}
+                            </p>
+                            {code.retrievedOn && <p class="caption">{fmt(t(lang, "law.card.retrieved"), date(code.retrievedOn)!)}</p>}
+                        </article>
+                    );
+                })}
+            </div>
+        </section>
+    ))}
+
+    <section class="section page" aria-labelledby="how-title">
+        <h2 id="how-title" class="h2">{t(lang, "law.how.title")}</h2>
+        <p class="lead">{s(lang, "Help7Body3")}</p>
+        <div class="cards three">
+            {Object.entries(checks).map(([key, [check, hint]]) => (
+                <div class="block card">
+                    <h3 class="h3">{s(lang, check)}</h3>
+                    <p class="small">{s(lang, hint)}</p>
+                    <p class="caption">{codes.filter((c) => c.check === key).map((c) => c.title[lang]).join(lang === "ar" ? "، " : ", ")}</p>
+                </div>
+            ))}
+        </div>
+        <Source lang={lang} files={["docs/LAW-LIBRARY.md", "src/DzLegal.Presentation/Resources/Strings.resx"]} />
+    </section>
+
+    <section class="section page cols" aria-labelledby="notes-title">
+        <div class="block panel">
+            <h2 id="notes-title" class="h2">{t(lang, "law.notes.title")}</h2>
+            <ul class="list">
+                {["Help7Body1", "Help7Body2", "LibraryNote", "Help7Body4"].map((key) => <li><Icon name="checkmark" size={16} /> <span>{s(lang, key)}</span></li>)}
+            </ul>
+            <p class="small">{t(lang, "law.inApp")}</p>
+        </div>
+        <div class="block card-alt">
+            <h2 class="h2">{t(lang, "law.honest.title")}</h2>
+            <ul class="list plain">
+                {[1, 2, 3].map((i) => <li><Icon name="info" size={16} /> <span>{t(lang, `law.honest.${i}`)}</span></li>)}
+            </ul>
+            <Source lang={lang} files={["README.md", "docs/LEGAL-VERIFICATION.md"]} />
+        </div>
+    </section>
+
+    <section class="section page" aria-labelledby="claims-title">
+        <h2 id="claims-title" class="h2">{t(lang, "law.claims.title")}</h2>
+        <p class="lead">{fmt(t(lang, "law.claims.lead"), law.totals.claimTypes, areas.length)}</p>
+        <div class="cards four">
+            {areas.map((area) => (
+                <div class="block card">
+                    <h3 class="h3">{t(lang, `area.${area.area}`)} <span class="caption">{area.claims.length}</span></h3>
+                    <ul class="claims">
+                        {area.claims.map((claim) => <li>{claim.label[lang]}</li>)}
+                    </ul>
+                </div>
+            ))}
+        </div>
+        <Source lang={lang} files={["data/law/claims", "README.md"]} />
+    </section>
+</Base>
+
+<style>
+    .group { display: grid; gap: 20px; }
+    .cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; align-items: start; margin-top: 8px; }
+    .cards.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .cards.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .law { display: grid; gap: 14px; padding: clamp(18px, 3vw, 28px); }
+    .law-head { display: grid; gap: 8px; }
+    .hint { color: var(--muted-aa); }
+    .links { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+    .links a { display: inline-flex; align-items: center; gap: 6px; }
+    .claims { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; font-size: 0.95rem; }
+    .claims li { padding-inline-start: 14px; position: relative; }
+    .claims li::before { content: ""; position: absolute; inset-inline-start: 0; top: 0.65em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+    .lead { margin-top: 8px; }
+    @media (max-width: 1099px) { .cards.four { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 899px) { .cards, .cards.three, .cards.four { grid-template-columns: 1fr; } }
+</style>

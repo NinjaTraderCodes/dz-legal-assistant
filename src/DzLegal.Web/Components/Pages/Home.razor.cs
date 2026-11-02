@@ -17,7 +17,14 @@ public sealed partial class Home : IDisposable
 
     /// <summary>A draft file is small (the case and its text); anything larger is not one.</summary>
     private const long MaxDraftBytes = 2 * 1024 * 1024;
-    private bool showGuide = true;
+    /// <summary>The five-step guide, an overlay card like the desktop's tour: closed on load, so the first screen shows the product.</summary>
+    private bool showGuide;
+
+    /// <summary>The slim invitation to the guide above the workbench; dismissing it is remembered for the visit (session storage).</summary>
+    private bool showInvite = true;
+
+    private bool _focusGuide;
+    private ElementReference guideCard;
 
     /// <summary>On a phone, the bar folds New, Open, Save, Download and Guide behind one button; the screen state only.</summary>
     private bool showMore;
@@ -101,6 +108,12 @@ public sealed partial class Home : IDisposable
     {
         if (!firstRender)
         {
+            if (_focusGuide)
+            {
+                _focusGuide = false;
+                try { await guideCard.FocusAsync(); } catch (JSException) { /* the card is not there any more */ }
+            }
+
             return;
         }
 
@@ -109,10 +122,10 @@ public sealed partial class Home : IDisposable
             // The branded shell shown while the circuit connected has done its job.
             await Js.InvokeVoidAsync("dzlegal.hideLoading");
 
-            // On a phone the guide would fill the first screen: it stays one tap away (Guide button).
-            if (await Js.InvokeAsync<bool>("dzlegal.isNarrow"))
+            // The invitation to the guide stays away for the rest of the visit once dismissed.
+            if (await Js.InvokeAsync<string?>("dzlegal.sessionGet", "dzlegal.guideInvite") == "hidden")
             {
-                showGuide = false;
+                showInvite = false;
                 StateHasChanged();
             }
 
@@ -150,6 +163,25 @@ public sealed partial class Home : IDisposable
         catch (Exception ex) when (ex is JSException or JSDisconnectedException or TaskCanceledException)
         {
             // The tab is closing or storage is unavailable: nothing to do.
+        }
+    }
+
+    private void OpenGuide()
+    {
+        showGuide = true;
+        _focusGuide = true;
+    }
+
+    private async Task DismissInvite()
+    {
+        showInvite = false;
+        try
+        {
+            await Js.InvokeVoidAsync("dzlegal.sessionSet", "dzlegal.guideInvite", "hidden");
+        }
+        catch (JSException)
+        {
+            // Storage unavailable: the invitation comes back on the next page load, nothing more.
         }
     }
 

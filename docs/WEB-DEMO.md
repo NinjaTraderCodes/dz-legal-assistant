@@ -19,8 +19,10 @@ The app bar says "Demo · fictitious cases only", and the guide explains that th
 ## The website at the same address
 
 The public website (`site/`, Astro, static HTML) is served by the same app, so one address carries both: the site at
-`/ar/` and `/en/` (Arabic first, the product's language), with its download, law library, privacy and about pages
-(`/<lang>/download/`, `/law/`, `/privacy/`, `/about/`), and the demo at `/app`. Nothing is loaded from another origin,
+`/ar/` and `/en/` (Arabic first, the product's language), with its guide, download, law library, privacy and about pages
+(`/<lang>/try/`, `/download/`, `/law/`, `/privacy/`, `/about/`), and the demo at `/app`. The guide ("Test it in 5 minutes") and
+the demo's own guide describe the same five steps with the same button names: the website reads them from
+`Strings.resx`, `WebText.cs` and the sample files at build time. Nothing is loaded from another origin,
 the page's Content Security Policy stays as strict as the demo's (no inline scripts), and the fonts and icons are the
 desktop's own, bundled with their licences.
 
@@ -43,7 +45,8 @@ desktop's own, bundled with their licences.
 - **Local run with the site:** `cd site && npm ci && npm run build`, then
   `dotnet run --project src/DzLegal.Web --launch-profile http+site` (sets `Site__Root=../../site/dist`).
 - **Checks, run locally** (GitHub Actions are off): `npm test` (Playwright: the routes, the switch, the headers, the
-  demo shell; axe on every page), `npm run shots -- --out ../docs/website/<phase>` and
+  demo shell; axe on every page; `tests/guide.spec.ts` follows the five-step guide in the demo against an instance
+  whose AI is the local stand-in `tests/mock-model.mjs`, started as its header says, with `GUIDE_BASE_URL` set), `npm run shots -- --out ../docs/website/<phase>` and
   `npm run lighthouse -- --out ../docs/website/<phase>`. Each phase's reports live in `docs/website/`.
 
 ## How it is built

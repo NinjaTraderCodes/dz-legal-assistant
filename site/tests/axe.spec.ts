@@ -2,7 +2,7 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
-const pages = (process.env.AXE_PAGES ?? "/ar/,/en/,/ar/download/,/en/download/,/ar/law/,/en/law/,/ar/privacy/,/en/privacy/,/ar/about/,/en/about/,/ar/404/,/en/404/").split(",");
+const pages = (process.env.AXE_PAGES ?? "/ar/,/en/,/ar/try/,/en/try/,/ar/download/,/en/download/,/ar/law/,/en/law/,/ar/privacy/,/en/privacy/,/ar/about/,/en/about/,/ar/404/,/en/404/").split(",");
 const themes = ["light", "dark"] as const;
 
 for (const path of pages) {

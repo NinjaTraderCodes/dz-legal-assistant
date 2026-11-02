@@ -32,19 +32,20 @@
             @* On a phone the bar keeps the sample picker, the theme and the language; the rest folds behind More. *@
             <button type="button" class="more-toggle" aria-expanded="@(showMore ? "true" : "false")" @onclick="() => showMore = !showMore"><Icon Name="chevron_down" Size="16" /> @T("More")</button>
             <div class="secondary @(showMore ? "open" : "")">
-            <button type="button" @onclick="() => Vm.NewCommand.Execute(null)"><Icon Name="add" /> @L["New"]</button>
+            @* Below 1440 px the bar shows these as icons: the label stays for the screen reader and as the tooltip. *@
+            <button type="button" title="@L["New"]" @onclick="() => Vm.NewCommand.Execute(null)"><Icon Name="add" /> <span class="label">@L["New"]</span></button>
             @* Open and Save as on the desktop: a draft file (.dzdraft.json) from and to the visitor's own disk. *@
-            <label class="button-like" title="@L["Open"]"><Icon Name="folder_open" /> @L["Open"]<InputFile class="visually-hidden" accept=".json,application/json" OnChange="OpenDraftFile" /></label>
-            <button type="button" @onclick="() => Run(Vm.SaveCommand)"><Icon Name="save" /> @L["Save"]</button>
+            <label class="button-like" title="@L["Open"]"><Icon Name="folder_open" /> <span class="label">@L["Open"]</span><InputFile class="visually-hidden" accept=".json,application/json" OnChange="OpenDraftFile" /></label>
+            <button type="button" title="@L["Save"]" @onclick="() => Run(Vm.SaveCommand)"><Icon Name="save" /> <span class="label">@L["Save"]</span></button>
             @if (Vm.HasSaveState)
             {
                 <span class="save-state">@Vm.SaveStateText</span>
             }
             @* The desktop app, for judges and lawyers who want it on their own computer: the latest release on GitHub. *@
-            <a class="button-like" id="download-windows" href="@DownloadUrl" target="_blank" rel="noopener" title="@T("DownloadNote")"><Icon Name="arrow_download" /> @T("DownloadWindows")</a>
-            <button type="button" aria-pressed="@(showGuide ? "true" : "false")" @onclick="() => showGuide = !showGuide"><Icon Name="question_circle" /> @T("GuideShow")</button>
+            <a class="button-like" id="download-windows" href="@DownloadUrl" target="_blank" rel="noopener" title="@T("DownloadWindows")"><Icon Name="arrow_download" /> <span class="label">@T("DownloadWindows")</span></a>
+            <button type="button" title="@T("GuideShow")" aria-pressed="@(showGuide ? "true" : "false")" @onclick="OpenGuide"><Icon Name="question_circle" /> <span class="label">@T("GuideShow")</span></button>
             </div>
-            <button type="button" aria-label="@T("Theme")" title="@T("Theme")" @onclick="ToggleThemeAsync"><Icon Name="weather_moon" /></button>
+            <button type="button" aria-label="@T("Theme")" title="@T("Theme")" aria-pressed="@(Vm.IsDarkTheme ? "true" : "false")" @onclick="ToggleThemeAsync"><Icon Name="@(Vm.IsDarkTheme ? "weather_sunny" : "weather_moon")" /></button>
             <button type="button" lang="@(Lang == "en" ? "ar" : "en")" @onclick="SwitchLanguageAsync"><Icon Name="translate" /> @L["SwitchLanguage"]</button>
         </div>
     </header>
@@ -71,48 +72,23 @@
                 <button type="button" class="small" @onclick="DiscardSavedCase">@T("DiscardCase")</button>
             </div>
         }
-        @if (showGuide)
-        {
-            <section class="guide tour" aria-labelledby="guide-title">
-                <div class="guide-head">
-                    <h2 id="guide-title">@T("GuideTitle")</h2>
-                    <button type="button" class="quiet small" @onclick="() => showGuide = false"><Icon Name="dismiss" Size="14" /> @T("GuideHide")</button>
-                </div>
-                <ol>
-                    <li>
-                        <strong>@T("Guide1Title")</strong>
-                        <p class="muted">@T("Guide1")</p>
-                        <span class="actions">
-                            @foreach (var sample in Engine.Samples)
-                            {
-                                <button type="button" class="small" @onclick="() => Open(sample)">@sample.Title.Get(Lang)</button>
-                            }
-                        </span>
-                    </li>
-                    <li>
-                        <strong>@T("Guide2Title")</strong>
-                        <p class="muted">@T("Guide2")</p>
-                        <span class="actions"><button type="button" class="small" @onclick='() => GoToStep("defendant")'>@T("OpenDefendant")</button></span>
-                    </li>
-                    <li class="ai">
-                        <strong>@T("Guide3Title") <span class="tag ai"><Icon Name="sparkle" Size="12" /> @L["ModelTag"]</span></strong>
-                        <p class="muted">@T("Guide3")</p>
-                        <span class="actions"><button type="button" class="small" @onclick='() => GoToStep(MainWindowViewModel.GroundsStepId)'>@T("OpenGrounds")</button></span>
-                    </li>
-                    <li class="ai">
-                        <strong>@T("Guide4Title") <span class="tag ai"><Icon Name="sparkle" Size="12" /> @L["ModelTag"]</span></strong>
-                        <p class="muted">@T("Guide4")</p>
-                    </li>
-                    <li>
-                        <strong>@T("Guide5Title")</strong>
-                        <p class="muted">@T("Guide5")</p>
-                    </li>
-                </ol>
+        @* The demo's warning, always on screen in one line; the full wording and the browser-copy button one click away. *@
+        <details class="disclosure">
+            <summary><Icon Name="warning" Size="14" /> <span class="line">@T("DisclosureLine")</span> <span class="details-label">@T("Details")</span></summary>
+            <div class="disclosure-body">
                 <p class="muted small">@T("AboutDemo")</p>
                 <p class="muted small">@T("DownloadNote") <a href="@DownloadUrl" target="_blank" rel="noopener">@T("DownloadWindows")</a></p>
                 <p class="row small"><button type="button" class="small" @onclick="ClearBrowserCopy">@T("ClearBrowserCopy")</button>
                     @if (_browserCopyCleared) { <span class="muted" role="status">@T("BrowserCopyCleared")</span> }</p>
-            </section>
+            </div>
+        </details>
+        @if (showInvite)
+        {
+            <div class="invite" role="region" aria-label="@T("GuideTitle")">
+                <span class="invite-text"><Icon Name="question_circle" Size="16" /> @T("GuideInvite")</span>
+                <button type="button" class="primary small" @onclick="OpenGuide">@T("GuideOpen")</button>
+                <button type="button" class="quiet small" aria-label="@T("GuideHide")" title="@T("GuideHide")" @onclick="DismissInvite"><Icon Name="dismiss" Size="14" /></button>
+            </div>
         }
     </div>
 
@@ -368,6 +344,48 @@
     {
         <div class="drawer-backdrop" @onclick="() => Vm.CloseAssistantCommand.Execute(null)"></div>
         <AssistantPanel Vm="Vm" />
+    }
+
+    @if (showGuide)
+    {
+        <div class="tour-backdrop" @onclick="() => showGuide = false"></div>
+        <section class="guide tour" role="dialog" aria-modal="true" aria-labelledby="guide-title" tabindex="-1" @ref="guideCard"
+                 @onkeydown="@(e => { if (e.Key == "Escape") showGuide = false; })">
+            <div class="guide-head">
+                <h2 id="guide-title">@T("GuideTitle")</h2>
+                <button type="button" class="quiet small" @onclick="() => showGuide = false"><Icon Name="dismiss" Size="14" /> @T("GuideHide")</button>
+            </div>
+            <ol>
+                <li>
+                    <strong>@T("Guide1Title")</strong>
+                    <p class="muted">@T("Guide1")</p>
+                    <span class="actions">
+                        @foreach (var sample in Engine.Samples)
+                        {
+                            <button type="button" class="small" @onclick="() => { showGuide = false; Open(sample); }">@sample.Title.Get(Lang)</button>
+                        }
+                    </span>
+                </li>
+                <li>
+                    <strong>@T("Guide2Title")</strong>
+                    <p class="muted">@T("Guide2")</p>
+                    <span class="actions"><button type="button" class="small" @onclick='() => { showGuide = false; GoToStep("defendant"); }'>@T("OpenDefendant")</button></span>
+                </li>
+                <li class="ai">
+                    <strong>@T("Guide3Title") <span class="tag ai"><Icon Name="sparkle" Size="12" /> @L["ModelTag"]</span></strong>
+                    <p class="muted">@T("Guide3")</p>
+                    <span class="actions"><button type="button" class="small" @onclick='() => { showGuide = false; GoToStep(MainWindowViewModel.GroundsStepId); }'>@T("OpenGrounds")</button></span>
+                </li>
+                <li class="ai">
+                    <strong>@T("Guide4Title") <span class="tag ai"><Icon Name="sparkle" Size="12" /> @L["ModelTag"]</span></strong>
+                    <p class="muted">@T("Guide4")</p>
+                </li>
+                <li>
+                    <strong>@T("Guide5Title")</strong>
+                    <p class="muted">@T("Guide5")</p>
+                </li>
+            </ol>
+        </section>
     }
 
     <footer class="statusbar @(Vm.IsError ? "error" : "")" role="status" aria-live="polite">

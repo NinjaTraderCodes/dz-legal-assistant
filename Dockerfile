@@ -15,6 +15,8 @@ COPY src/DzLegal.App/Styles/Workbench.axaml /repo/src/DzLegal.App/Styles/Workben
 COPY src/DzLegal.App/Assets/Images/ /repo/src/DzLegal.App/Assets/Images/
 COPY src/DzLegal.Presentation/Resources/Strings.resx src/DzLegal.Presentation/Resources/Strings.en.resx /repo/src/DzLegal.Presentation/Resources/
 COPY src/DzLegal.Web/wwwroot/ /repo/src/DzLegal.Web/wwwroot/
+COPY src/DzLegal.Web/Services/WebText.cs /repo/src/DzLegal.Web/Services/WebText.cs
+COPY src/DzLegal.Web/Samples/ /repo/src/DzLegal.Web/Samples/
 COPY assets/fonts/ /repo/assets/fonts/
 COPY data/law/codes/ /repo/data/law/codes/
 COPY data/law/claims/ /repo/data/law/claims/

@@ -45,14 +45,62 @@ This report grows with the phase: **checkpoint 1 is A and B** (the draft paper a
 | Playwright `guide.spec.ts` against the stand-in model | 1 passed, with the stand-in streaming slowly. The test's selectors followed the restructure: the review box is read in the list under the paper (`.review-list .reviewed`), the AI mark in the paper (`.section.ai`), and the origin text in the strip after selecting that section; it checks the same five steps and the same results |
 | `docker build` (local, through the ECR mirror of `node:22-alpine`, base images cached) | 203 s, success; the image answered `/healthz` and `/app?lang=ar` on a spare port |
 
-## Remaining differences after checkpoint 1
+## Checkpoint 2: C to F
 
-| Difference | Why / when |
+| State | Demo (1440×900) | Desktop |
+|---|---|---|
+| The first screen | ![](demo-first-ar-light-1440x900.png) | ![](desktop-ar.png) |
+| A missing element (the defendant's domicile cleared) | ![](demo-missing-ar-light-1440x900.png) | ![](desktop-missing.png) |
+| The AI proposal | ![](demo-proposal-ar-light-1440x900.png) | ![](desktop-grounds.png) |
+| Export blocked | ![](demo-blocked-ar-light-1440x900.png) | ![](desktop-review.png) |
+
+The first screen at 1366 and 1920: `app-<lang>-<theme>-<WxH>.png` beside `desktop-first-<lang>-<theme>-<W>.png`; every state in English and in dark: the same names with `en` and `dark`.
+
+**C. Case details.**
+1. The nine steps are the desktop's numbered list, 01 to 09, in one column at most 290 px tall: the number in small muted type, the step name, and at the end the status circle (✓ in green when complete, the red ! when something is missing, the amber ! for a warning); the current step on the accent background with the 3 px gold bar at its start. The missing mark now shows as soon as an element is missing, as the desktop's does (the demo used to wait until the step had been visited). The step number is part of the row, as on the desktop; the old "6" badge on the grounds pill is gone with the pills.
+2. Fields at the desktop's size: 40 px inputs with radius 8 on the alt surface, the hairline border, 15 px Naskh for the Arabic; the labels in 12 px muted type; the example ("e.g. Alger") moved from a line under the label into the empty box, as the desktop's watermark does; the step title at 18 px.
+3. "Step 1 of 9 · Back · Next" is docked at the bottom of the panel, Back outlined and Next gold, as on the desktop.
+
+**D. Formal check.**
+1. The score is the desktop's own string from `Strings.resx` («9 من 9», "9 / 9", `ScoreText`), at 22 px bold, in the score card on the alt surface.
+2. The progress bar fills in the accent colour.
+3. Missing elements are the desktop's pink cards: the red ! icon with the title, "CPCA art. 15-3", the explanation and the "Missing:" line; a warning is the same card in amber. The "To fix" heading went with them: the desktop has none.
+4. "Legal points to check" is a bordered card on the surface, the title at 14 px and the points at 12 px with the amber warning icon.
+5. "Elements present (9)" is the desktop's expander card with a chevron that turns when open; each element with its green ✓ and its article. The desktop-only "Evaluate this draft" card is not in the demo.
+
+**E. App bar.**
+1. In the desktop's order: the brand, then New (the DocumentAdd glyph, added from the bundled set), Open and Save with the save state beside them; at the far end the theme button and the language as plain text ("English" / «العربية»).
+2. The demo's items sit between the two groups: the "Demo · fictitious cases only" chip, the sample picker, Download for Windows and Guide. The bar fits one row at 1366 and 1440 in both languages: up to 1600 px the secondary commands (New, Open, Save, Download, Guide) show as icons with their label as tooltip and for the screen reader, and the document type beside the title gives way; at 1920 the labels are back. On phones the two groups fold behind "More" as before.
+
+**F. Type and spacing.** The desktop's sizes: body 14 px, panel titles 15 px semibold, the selected step's title 18 px, captions 12 px, cards padded 12 (bordered) and 14 (score) and 16 (panels), 10 px gaps inside the panels, 12 px between them; the columns are the desktop's 390 / flexible / 330 (360 / flexible / 300 under 1280 px, two columns under 1100, tabs on phones).
+
+## Checks (final)
+
+| Check | Result |
 |---|---|
-| Case details: step pills instead of the numbered list; "e.g." lines under the labels; smaller inputs | Part C, next push |
-| Formal check: "9 / 9" string, red/green progress bar, amber block for the legal points, plain expander | Part D, next push |
-| App bar order: the demo chip, the sample picker, Download and Guide sit between the brand and New/Open/Save; the language is an icon button with text | Part E, next push |
-| Type and spacing of the panels | Part F, next push |
-| The desktop's "Evaluate this draft" card, the Home, Help and Profile buttons, the offline chip | Desktop-only: the demo has no profile, no local files and no offline engine; the disclosure line and the demo chip take the chip's place |
-| The AI mark in the paper (gold line + "AI" tag) | Demo-only by the brief: the desktop marks the origin only in the strip and the review list |
-| The demo's extras: the disclosure line, the invitation, the sample picker, Download for Windows, Guide, "Answered by" | Demo-only, kept by the brief |
+| `dotnet build -c Release` (whole solution) | 0 warnings, 0 errors |
+| `dotnet test -c Release` | all green: Storage 18, Documents 6, FormEngine 67, Drafting 399, Web 73, Law 116, App 305 (984 in all), run with the local demo instances stopped |
+| `npm run build` | 14 pages, clean (the site is unchanged in this phase) |
+| Playwright `site.spec.ts` + `axe.spec.ts` | 44 passed, 1 skipped (the fallback test); axe 0 violations on the 14 pages and on the demo's first screen in both themes (the restructured findings cards had lost their darker muted shade for a moment; axe caught it, fixed) |
+| Playwright `guide.spec.ts` against the stand-in model | 1 passed. Its selectors followed the draft panel's restructure (the review box in the list under the paper, the AI mark in the paper, the origin in the strip); the steps and the results it checks are the same |
+| `docker build` (local, through the ECR mirror of `node:22-alpine`, base images cached) | 201 s, success; the image answered `/healthz` and `/app?lang=en` on a spare port |
+
+## Every visible difference that remains, and why
+
+| Difference | Why |
+|---|---|
+| The desktop's Home, Help and Profile buttons in the bar; the offline chip; the "Evaluate this draft" card; the sample banner | Desktop-only: the demo has no profile, no local files, no offline engine and no desktop sample tour; the demo chip and the disclosure line take the chip's place |
+| The demo's extras: the chip, the disclosure line with "Details", the invitation and its overlay, the sample picker, Download for Windows, Guide, "Answered by", the "AI is not configured" notice, the recovery banner, "Clear this browser's copy" | Demo-only, kept by the brief |
+| At 1440 px the desktop shows New, Open and Save with their labels; the demo shows icons up to 1600 px | The demo's five extra items share the row; with labels the bar would wrap at 1440. At 1920 the labels are back |
+| The AI-written section carries a gold line and an "AI" tag in the paper | Asked by the brief; the desktop marks the origin only in the strip and the review list |
+| The paper's left-edge section line is drawn at the inline start (the right edge in Arabic); the desktop draws it at the left in both languages | The web paper is a right-to-left document; the line sits where the reading starts. Same colours, same width |
+| The paper's text area is narrower on a 1366 window | The desktop gives its middle column 586 px there too, but its sheet margins narrow further ("tight" window); the demo narrows them at 1280 and keeps the A4 sheet otherwise |
+| The preview pages render at the same size as the desktop's (860 px at most) but the desktop's window is 1440 wide in the reference | Screen size only |
+| The step list's warning mark uses the amber ! and the missing mark the red !, both the Fluent ErrorCircle glyph as on the desktop; the demo's status bar and notices keep their wording | Same as the desktop |
+| On a phone the demo keeps its tabs (Case, Draft, Checks) and the page scrolls as a whole | The desktop has no phone layout |
+
+## Files changed
+
+- `src/DzLegal.Web/Components/Pages/Home.razor` (the bar, the step list, the draft panel, the formal check), `Home.razor.cs` (the selected section), `Components/Parts/SectionEditor.razor` (the paper section), `Components/Parts/FieldEditor.razor` (the example as watermark), `Components/Parts/IconPaths.cs` (the PDF, DocumentAdd and chevron glyphs), `wwwroot/app.css`.
+- `site/tests/guide.spec.ts` (selectors), `site/tests/mock-model.mjs` (`--slow`), `site/tests/states.mjs` (new: the state captures).
+- README unchanged. No string changed in `WebText.cs` or the resources.

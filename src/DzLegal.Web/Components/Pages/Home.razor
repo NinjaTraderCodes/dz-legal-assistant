@@ -19,21 +19,11 @@
             <span class="brand-mark"><Icon Name="gavel" Size="20" /></span>
             <h1>@L["AppTitle"]</h1>
             <span class="doc-type">@Vm.DocumentTypeName</span>
-            <span class="demo-chip">@T("DemoChip")</span>
         </div>
-        <div class="tools">
-            <select id="sample-picker" aria-label="@T("Samples")" value="" @onchange="OpenSample">
-                <option value="">@T("Samples")</option>
-                @foreach (var sample in Engine.Samples)
-                {
-                    <option value="@sample.Id">@sample.Title.Get(Lang)</option>
-                }
-            </select>
-            @* On a phone the bar keeps the sample picker, the theme and the language; the rest folds behind More. *@
-            <button type="button" class="more-toggle" aria-expanded="@(showMore ? "true" : "false")" @onclick="() => showMore = !showMore"><Icon Name="chevron_down" Size="16" /> @T("More")</button>
-            <div class="secondary @(showMore ? "open" : "")">
-            @* Below 1440 px the bar shows these as icons: the label stays for the screen reader and as the tooltip. *@
-            <button type="button" title="@L["New"]" @onclick="() => Vm.NewCommand.Execute(null)"><Icon Name="add" /> <span class="label">@L["New"]</span></button>
+        @* As on the desktop, next to the brand: New, Open, Save and the save state. Below 1440 px they show as icons
+           (the label stays for the screen reader and as the tooltip); on a phone they fold behind More. *@
+        <div class="tools secondary @(showMore ? "open" : "")">
+            <button type="button" title="@L["New"]" @onclick="() => Vm.NewCommand.Execute(null)"><Icon Name="document_add" /> <span class="label">@L["New"]</span></button>
             @* Open and Save as on the desktop: a draft file (.dzdraft.json) from and to the visitor's own disk. *@
             <label class="button-like" title="@L["Open"]"><Icon Name="folder_open" /> <span class="label">@L["Open"]</span><InputFile class="visually-hidden" accept=".json,application/json" OnChange="OpenDraftFile" /></label>
             <button type="button" title="@L["Save"]" @onclick="() => Run(Vm.SaveCommand)"><Icon Name="save" /> <span class="label">@L["Save"]</span></button>
@@ -41,12 +31,28 @@
             {
                 <span class="save-state">@Vm.SaveStateText</span>
             }
-            @* The desktop app, for judges and lawyers who want it on their own computer: the latest release on GitHub. *@
-            <a class="button-like" id="download-windows" href="@DownloadUrl" target="_blank" rel="noopener" title="@T("DownloadWindows")"><Icon Name="arrow_download" /> <span class="label">@T("DownloadWindows")</span></a>
-            <button type="button" title="@T("GuideShow")" aria-pressed="@(showGuide ? "true" : "false")" @onclick="OpenGuide"><Icon Name="question_circle" /> <span class="label">@T("GuideShow")</span></button>
+        </div>
+        @* The demo's own items, between the desktop's two groups: the chip, the sample picker, Download for Windows and Guide. *@
+        <div class="tools demo">
+            <span class="demo-chip">@T("DemoChip")</span>
+            <select id="sample-picker" aria-label="@T("Samples")" value="" @onchange="OpenSample">
+                <option value="">@T("Samples")</option>
+                @foreach (var sample in Engine.Samples)
+                {
+                    <option value="@sample.Id">@sample.Title.Get(Lang)</option>
+                }
+            </select>
+            <button type="button" class="more-toggle" aria-expanded="@(showMore ? "true" : "false")" @onclick="() => showMore = !showMore"><Icon Name="chevron_down" Size="16" /> @T("More")</button>
+            <div class="secondary @(showMore ? "open" : "")">
+                @* The desktop app, for judges and lawyers who want it on their own computer: the latest release on GitHub. *@
+                <a class="button-like" id="download-windows" href="@DownloadUrl" target="_blank" rel="noopener" title="@T("DownloadWindows")"><Icon Name="arrow_download" /> <span class="label">@T("DownloadWindows")</span></a>
+                <button type="button" title="@T("GuideShow")" aria-pressed="@(showGuide ? "true" : "false")" @onclick="OpenGuide"><Icon Name="question_circle" /> <span class="label">@T("GuideShow")</span></button>
             </div>
+        </div>
+        @* At the far end, as on the desktop: the theme button and the language as plain text. *@
+        <div class="tools end">
             <button type="button" aria-label="@T("Theme")" title="@T("Theme")" aria-pressed="@(Vm.IsDarkTheme ? "true" : "false")" @onclick="ToggleThemeAsync"><Icon Name="@(Vm.IsDarkTheme ? "weather_sunny" : "weather_moon")" /></button>
-            <button type="button" lang="@(Lang == "en" ? "ar" : "en")" @onclick="SwitchLanguageAsync"><Icon Name="translate" /> @L["SwitchLanguage"]</button>
+            <button type="button" class="lang" lang="@(Lang == "en" ? "ar" : "en")" @onclick="SwitchLanguageAsync">@L["SwitchLanguage"]</button>
         </div>
     </header>
 
@@ -107,21 +113,23 @@
                 {
                     var current = step == Vm.SelectedStep;
                     <button type="button" class="step @StepClass(step) @(current ? "selected" : "")" aria-current="@(current ? "step" : null)" @onclick="() => SelectStep(step)">
-                        <span class="mark">
-                            @if (step.IsDone)
+                        <span class="marker" aria-hidden="true"></span>
+                        <span class="num" aria-hidden="true">@($"{step.Number:00}")</span>
+                        <span class="label">@step.Label</span>
+                        <span class="state">
+                            @if (step.IsMissing)
                             {
-                                <Icon Name="checkmark" Size="12" />
+                                <Icon Name="error_circle" Size="13" />
                             }
-                            else if (step.IsMissing && Visited(step))
+                            else if (step.IsWarning)
                             {
-                                <span>!</span>
+                                <Icon Name="error_circle" Size="13" />
                             }
-                            else
+                            else if (step.IsDone)
                             {
-                                <span>@step.Number</span>
+                                <Icon Name="checkmark_circle" Size="13" />
                             }
                         </span>
-                        @step.Label
                     </button>
                 }
             </nav>
@@ -360,61 +368,59 @@
         @* ── The checks: form (rule engine, no AI) and substance ──────────── *@
         <section class="panel check-panel @(mobileTab == 2 ? "current" : "")" aria-labelledby="check-title">
             <h2 id="check-title">@L["Compliance"]</h2>
-            <div class="score-card @(Vm.IsAdmissible ? "ok" : "ko")">
+            <div class="score-card">
                 <div class="score-row">
                     <span class="muted">@L["ComplianceScore"]</span>
-                    <span class="score">@Vm.PresentCount / @Vm.ApplicableCount</span>
+                    <span class="score">@Vm.ScoreText</span>
                 </div>
                 <div class="bar" role="progressbar" aria-label="@L["ComplianceScore"]" aria-valuemin="0" aria-valuemax="@Vm.ApplicableCount" aria-valuenow="@Vm.PresentCount">
                     <span style="width:@(Vm.ApplicableCount == 0 ? 0 : 100 * Vm.PresentCount / Vm.ApplicableCount)%"></span>
                 </div>
-                <div class="summary"><Icon Name="@(Vm.IsAdmissible ? "checkmark_circle" : "error_circle")" /> @Vm.Summary</div>
+                <div class="summary @(Vm.IsAdmissible ? "ok" : "ko")"><Icon Name="@(Vm.IsAdmissible ? "checkmark_circle" : "error_circle")" Size="16" /> <span>@Vm.Summary</span></div>
                 @if (Vm.WarningSummary.Length > 0)
                 {
-                    <div class="small">@Vm.WarningSummary</div>
+                    <div class="small warning-text">@Vm.WarningSummary</div>
                 }
                 <div class="caveats muted small">
                     <span>@L["SummaryDisclaimer"]</span>
-                    <span>@L["Unverified"]</span>
+                    <span class="italic">@L["Unverified"]</span>
                 </div>
             </div>
 
             @if (Vm.HasSubstanceIssues)
             {
-                <h3>@L["SubstanceHeader"]</h3>
-                @foreach (var point in Vm.SubstanceIssues)
-                {
-                    <div class="legal-point"><Icon Name="warning" /> <span>@point</span></div>
-                }
+                <div class="card substance">
+                    <h3>@L["SubstanceHeader"]</h3>
+                    @foreach (var point in Vm.SubstanceIssues)
+                    {
+                        <div class="legal-point"><Icon Name="warning" Size="15" /> <span>@point</span></div>
+                    }
+                </div>
             }
 
-            @if (Vm.IssueFindings.Count > 0)
+            @foreach (var f in Vm.IssueFindings)
             {
-                <h3>@T("Issues")</h3>
-                @foreach (var f in Vm.IssueFindings)
-                {
-                    <button type="button" class="finding @(f.IsMissingMandatory ? "mandatory" : "warning")" @onclick="() => GoToFinding(f)">
-                        <strong>@f.Label</strong>
-                        <span class="article">@f.Article</span>
-                        @if (f.HasMessage)
-                        {
-                            <span class="small">@f.Message</span>
-                        }
-                        @if (f.HasMissingParts)
-                        {
-                            <span class="small muted">@f.MissingPartsText</span>
-                        }
-                    </button>
-                }
+                <button type="button" class="finding @(f.IsMissingMandatory ? "mandatory" : "warning")" @onclick="() => GoToFinding(f)">
+                    <span class="row"><Icon Name="error_circle" Size="16" /> <strong>@f.Label</strong></span>
+                    <span class="article">@f.Article</span>
+                    @if (f.HasMessage)
+                    {
+                        <span class="message">@f.Message</span>
+                    }
+                    @if (f.HasMissingParts)
+                    {
+                        <span class="article">@f.MissingPartsText</span>
+                    }
+                </button>
             }
 
-            <details class="present" open="@(Vm.IssueFindings.Count == 0)">
-                <summary>@Vm.PresentHeader</summary>
+            <details class="present card" open="@(Vm.IssueFindings.Count == 0)">
+                <summary><Icon Name="chevron_down" Size="16" /> <span>@Vm.PresentHeader</span></summary>
                 @foreach (var f in Vm.PresentFindings)
                 {
                     <div class="present-item">
-                        <span><Icon Name="checkmark" Size="14" /> @f.Label</span>
-                        <span class="article">@f.Article</span>
+                        <Icon Name="checkmark_circle" Size="14" />
+                        <span class="text"><span>@f.Label</span><span class="article">@f.Article</span></span>
                     </div>
                 }
             </details>

@@ -3,6 +3,7 @@
 // paper, the AI in its place, the two ways to use the product, and the team.
 import Base from "../../layouts/Base.astro";
 import Hero from "../../components/Hero.astro";
+import TryGuide from "../../components/TryGuide.astro";
 import Problem from "../../components/Problem.astro";
 import Proofs from "../../components/Proofs.astro";
 import StepStory from "../../components/StepStory.astro";
@@ -24,6 +25,7 @@ const preloadImage = { src: hero.src, srcSet: hero.srcSet.attribute, sizes: hero
 ---
 <Base lang={lang} title={s(lang, "AppTitle")} description={t(lang, "meta.home.description")} path="/" preloadImage={preloadImage}>
     <Hero lang={lang} />
+    <TryGuide lang={lang} compact />
     <Problem lang={lang} />
     <Proofs lang={lang} />
     <StepStory lang={lang} />

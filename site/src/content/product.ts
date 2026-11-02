@@ -15,6 +15,7 @@ export interface SitePage { key: string; path: string; href: string; label: stri
 export function pages(lang: Lang): SitePage[] {
     const page = (key: string, path: string) => ({ key, path, href: `/${lang}${path}`, label: t(lang, `nav.${key}`) });
     return [
+        page("try", "/try/"),
         { key: "how", path: "/#how", href: `/${lang}/#how`, label: t(lang, "nav.how") },
         page("library", "/law/"),
         page("download", "/download/"),

@@ -22,7 +22,13 @@ const KEYS = [
     "LibraryCheckJournal", "LibraryCheckJournalHint", "LibraryCheckPdf", "LibraryCheckPdfHint", "LibraryCheckImages", "LibraryCheckImagesHint",
     "Help7Title", "Help7Body1", "Help7Body2", "Help7Body3", "Help7Body4", "Help1Body3", "Help2Body3", "Help2Body4", "Help2Body5", "Help4Body1",
     "Help5Body2", "Help5Body3", "PrivacyNote",
+    // The buttons and labels the "Test it in 5 minutes" guide names, so the website says exactly what the demo shows.
+    "AnalyseGrounds", "ConfirmClaim", "Generate", "ExportPdf", "ExportWord", "ReviewedCheck", "Next", "Previous", "Preview", "Edit",
+    "Document", "Compliance", "ComplianceScore", "ExportBlocked", "NarrativeSectionHint", "ClaimConfirmPrompt", "ProviderStub", "Watermark",
 ];
+// The demo's own strings (src/DzLegal.Web/Services/WebText.cs) the guide names, exported as Web.<Key>.
+const WEB_KEYS = ["Samples", "OpenDefendant", "OpenGrounds", "GuideShow", "GuideOpen", "GuideInvite", "GuideTitle", "DisclosureLine", "Details", "DemoChip",
+    "Guide1Title", "Guide2Title", "Guide3Title", "Guide4Title", "Guide5Title"];
 
 const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@" });
 function load(file) {
@@ -37,6 +43,16 @@ for (const key of KEYS) {
     if (!(key in ar) || !(key in en)) throw new Error(`strings: key ${key} missing in a resx`);
     out[key] = { ar: ar[key], en: en[key] };
 }
+// The demo's strings live in a C# table: ["Key"] = ("English", "Arabic"), possibly over several lines.
+const webText = readFileSync(resolve(repo, "src/DzLegal.Web/Services/WebText.cs"), "utf8");
+for (const key of WEB_KEYS) {
+    const m = new RegExp(`\\["${key}"\\]\\s*=\\s*\\(\\s*"((?:[^"\\\\]|\\\\.)*)"\\s*,\\s*"((?:[^"\\\\]|\\\\.)*)"\\s*\\)`, "s").exec(webText);
+    if (!m) throw new Error(`strings: web text ${key} not found in WebText.cs`);
+    out["Web." + key] = { en: m[1], ar: m[2] };
+}
+// The sample case the guide opens, by its own title.
+const debt = JSON.parse(readFileSync(resolve(repo, "src/DzLegal.Web/Samples/debt.json"), "utf8").replace(/^﻿/, ""));
+out["Sample.debt"] = { en: debt.title.en, ar: debt.title.ar };
 // The version comes from the one place the product declares it.
 const version = readFileSync(resolve(repo, "Directory.Build.props"), "utf8").match(/<Version>([^<]+)<\/Version>/)?.[1];
 if (!version) throw new Error("strings: no <Version> in Directory.Build.props");

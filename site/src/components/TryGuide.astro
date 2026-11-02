@@ -1,0 +1,108 @@
+---
+// "Test it in 5 minutes": the five steps of the live demo, with what to click (the demo's own button labels, from
+// its string tables), what should happen, how long it takes, and why it matters for a lawyer. The compact form sits
+// under the home's hero; the full form is the /try/ page. The demo's guide describes the same steps.
+import Icon from "./Icon.astro";
+import Source from "./Source.astro";
+import { s, t, fmt, type Lang } from "../i18n";
+
+interface Props { lang: Lang; compact?: boolean; heading?: "h1" | "h2" }
+const { lang, compact = false, heading = "h2" } = Astro.props;
+const q = (key: string) => (lang === "ar" ? `«${s(lang, key)}»` : `“${s(lang, key)}”`);
+const steps = [
+    {
+        title: fmt(t(lang, "try.step1.title"), q("Sample.debt")),
+        click: fmt(t(lang, "try.step1.click"), q("Web.Samples"), q("Sample.debt")),
+        expect: fmt(t(lang, "try.step1.expect"), q("CaseForm"), q("Document"), q("Compliance")),
+        time: t(lang, "try.step1.time"),
+        why: t(lang, "try.step1.why"),
+    },
+    {
+        title: t(lang, "try.step2.title"),
+        click: fmt(t(lang, "try.step2.click"), q("Web.GuideShow"), q("Web.OpenDefendant"), q("Compliance")),
+        expect: fmt(t(lang, "try.step2.expect"), q("ExportPdf")),
+        time: t(lang, "try.step2.time"),
+        why: t(lang, "try.step2.why"),
+    },
+    {
+        title: fmt(t(lang, "try.step3.title"), s(lang, "AnalyseGrounds")),
+        click: fmt(t(lang, "try.step3.click"), q("Web.OpenGrounds"), q("AnalyseGrounds")),
+        expect: fmt(t(lang, "try.step3.expect"), q("ConfirmClaim")),
+        time: t(lang, "try.step3.time"),
+        why: t(lang, "try.step3.why"),
+    },
+    {
+        title: fmt(t(lang, "try.step4.title"), s(lang, "Generate")),
+        click: fmt(t(lang, "try.step4.click"), q("Document"), q("Generate")),
+        expect: fmt(t(lang, "try.step4.expect"), q("NarrativeSectionHint"), q("ReviewedCheck")),
+        time: t(lang, "try.step4.time"),
+        why: t(lang, "try.step4.why"),
+    },
+    {
+        title: t(lang, "try.step5.title"),
+        click: fmt(t(lang, "try.step5.click"), q("ExportPdf"), q("ReviewedCheck")),
+        expect: fmt(t(lang, "try.step5.expect"), q("ExportBlocked"), q("ExportWord"), q("Preview")),
+        time: t(lang, "try.step5.time"),
+        why: t(lang, "try.step5.why"),
+    },
+];
+const Heading = heading;
+// The step titles sit one level under the section's heading, whatever that is.
+const Sub = heading === "h1" ? "h2" : "h3";
+const labels = { click: t(lang, "try.click"), expect: t(lang, "try.expect"), time: t(lang, "try.time"), why: t(lang, "try.why") };
+---
+<section id="try" class={`section page try ${compact ? "compact" : ""}`} aria-labelledby="try-title">
+    <p class="eyebrow">{t(lang, "try.eyebrow")}</p>
+    <Heading id="try-title" class={heading === "h1" ? "h1" : "h2"}>{t(lang, "try.title")}</Heading>
+    <p class="lead">{t(lang, "try.lead")}</p>
+    <ol class="try-steps">
+        {steps.map((step, i) => (
+            <li class="try-step panel">
+                <span class="num" aria-hidden="true">{i + 1}</span>
+                <Sub class="h3">{step.title}</Sub>
+                <dl class="howto">
+                    <dt>{labels.click}</dt><dd>{step.click}</dd>
+                    {!compact && <><dt>{labels.expect}</dt><dd>{step.expect}</dd><dt>{labels.time}</dt><dd>{step.time}</dd><dt>{labels.why}</dt><dd>{step.why}</dd></>}
+                </dl>
+            </li>
+        ))}
+    </ol>
+    {!compact && (
+        <div class="note card-alt">
+            <Sub class="h3">{t(lang, "try.note.title")}</Sub>
+            <ul class="list plain">
+                {[1, 2, 3].map((n) => <li><Icon name="info" size={16} /> <span>{t(lang, `try.note.${n}`)}</span></li>)}
+            </ul>
+            <p class="small">{fmt(t(lang, "try.same"), q("Web.GuideShow"))}</p>
+        </div>
+    )}
+    <div class="actions">
+        <a class="btn btn-gold" href={`/app?lang=${lang}`}>{t(lang, "demo.cta")}</a>
+        {compact ? <a class="btn" href={`/${lang}/try/`}>{t(lang, "try.full")}</a> : <a class="btn" href={`/${lang}/`}>{t(lang, "nav.home")}</a>}
+    </div>
+    {!compact && <Source lang={lang} files={["src/DzLegal.Web/Services/WebText.cs", "src/DzLegal.Presentation/Resources/Strings.resx", "docs/WEB-DEMO.md", "docs/HIDDEN-SET.md", "src/DzLegal.Web/appsettings.json"]} />}
+</section>
+
+<style>
+    .try { display: grid; gap: 16px; }
+    .eyebrow { color: var(--accent); font-weight: 600; font-size: 0.9rem; }
+    .try .lead { max-width: 760px; }
+    .try-steps { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 14px; }
+    .try-step { position: relative; display: grid; gap: 8px; padding: 18px 20px 18px 64px; }
+    :global([dir="rtl"]) .try-step { padding: 18px 64px 18px 20px; }
+    .num { position: absolute; top: 18px; inset-inline-start: 20px; display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--gold); color: var(--on-gold); font-weight: 700; font-size: 0.95rem; }
+    .howto { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 16px; margin: 0; }
+    .howto dt { color: var(--muted-aa); font-weight: 600; font-size: 0.9rem; }
+    .howto dd { margin: 0; }
+    .compact .try-steps { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .compact .try-step { padding: 16px 16px 16px 16px; gap: 6px; }
+    :global([dir="rtl"]) .compact .try-step { padding: 16px; }
+    .compact .num { position: static; margin-bottom: 4px; }
+    .compact .howto { grid-template-columns: 1fr; gap: 2px; }
+    .compact .howto dt { display: none; }
+    .compact .howto dd { font-size: 0.95rem; color: var(--muted-aa); }
+    .note { display: grid; gap: 10px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px; }
+    @media (max-width: 1099px) { .compact .try-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 599px) { .howto { grid-template-columns: 1fr; gap: 2px 0; } .howto dd { margin-bottom: 6px; } .compact .try-steps { grid-template-columns: 1fr; } .actions .btn { width: 100%; } }
+</style>

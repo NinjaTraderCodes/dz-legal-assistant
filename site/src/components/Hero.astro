@@ -24,7 +24,7 @@ export const heroImage = { widths: [480, 768, 1280, 1920], sizes: "100vw", forma
             <a class="btn btn-gold" href={`/app?lang=${lang}`}>{t(lang, "hero.cta")}</a>
             <a class="btn btn-quiet" href="https://github.com/NinjaTraderCodes/dz-legal-assistant/releases/latest" rel="noopener"><Icon name="arrow_download" size={18} /> {t(lang, "hero.download")}</a>
         </div>
-        <p class="note small">{t(lang, "hero.note")}</p>
+        <p class="note small">{t(lang, "hero.note")} <a class="try-link" href={`/${lang}/try/`}>{t(lang, "nav.try")}</a></p>
     </div>
     <p class="offline small"><Icon name="shield_checkmark" size={16} /> {t(lang, "site.offline")}</p>
 </section>
@@ -42,7 +42,8 @@ export const heroImage = { widths: [480, 768, 1280, 1920], sizes: "100vw", forma
     .divider { width: 48px; height: 2px; background: var(--mark); margin-block: 20px; }
     .tagline { max-width: 560px; color: var(--welcome-secondary); }
     .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 32px; }
-    .note { margin-top: 20px; color: var(--welcome-secondary); max-width: 520px; }
+    .note { margin-top: 20px; color: var(--welcome-secondary); max-width: 560px; }
+    .try-link { color: var(--welcome-text); font-weight: 600; white-space: nowrap; }
     .offline { display: inline-flex; align-items: center; gap: 8px; margin-top: 24px; padding: 4px 12px; border-radius: var(--radius-control); background: var(--reading); color: var(--welcome-text); }
     :global([data-theme="dark"]) .offline { background: rgb(36 32 27 / 0.6); }
     @media (max-width: 599px) { .hero { min-height: 0; padding-top: 32px; } .reading { padding-inline: 16px; } .actions .btn { width: 100%; } }

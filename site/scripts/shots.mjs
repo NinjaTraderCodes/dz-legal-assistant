@@ -18,6 +18,7 @@ const langs = ["ar", "en"];
 const themes = ["light", "dark"];
 const paths = {
     home: (lang) => `/${lang}/`,
+    try: (lang) => `/${lang}/try/`,
     download: (lang) => `/${lang}/download/`,
     law: (lang) => `/${lang}/law/`,
     privacy: (lang) => `/${lang}/privacy/`,

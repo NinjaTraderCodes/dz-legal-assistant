@@ -237,12 +237,32 @@ test("the demo link skips the page transition, so Chrome logs no aborted-transit
 });
 
 test("the demo's bar folds New, Open, Save and Guide behind More on a phone, and shows them on a desktop", async ({ page }) => {
-    // On a desktop the guide is the tour card, with the AI steps tagged as the desktop tags them, and nothing is folded.
+    // On a desktop the guide waits behind its invitation; opened, it is the tour card with the AI steps tagged as the
+    // desktop tags them; nothing in the bar is folded.
     await page.setViewportSize({ width: 1366, height: 768 });
     await page.goto("/app?lang=en");
     await expect(page.locator(".app")).toBeVisible({ timeout: 30_000 });
+    await expect(page.locator(".guide.tour")).toHaveCount(0);
+    await expect(page.locator(".invite")).toBeVisible();
+    await page.locator(".invite").getByRole("button", { name: "Open the guide" }).click();
     await expect(page.locator(".guide.tour")).toBeVisible();
     await expect(page.locator(".guide .tag.ai")).toHaveCount(2);
+    await page.locator(".guide.tour").getByRole("button", { name: "Hide" }).click();
+    await expect(page.locator(".guide.tour")).toHaveCount(0);
+    // The one-line disclosure stays on screen; "Details" opens the full wording and the browser-copy button.
+    const disclosure = page.locator(".disclosure");
+    await expect(disclosure.locator("summary")).toContainText("fictitious cases only");
+    await expect(page.getByRole("button", { name: "Clear this browser's copy" })).toBeHidden();
+    await disclosure.locator("summary").click();
+    await expect(page.getByRole("button", { name: "Clear this browser's copy" })).toBeVisible();
+    await expect(disclosure).toContainText("hosted models");
+    // Dismissing the invitation is remembered for the visit.
+    await page.locator(".invite").getByRole("button", { name: "Hide" }).click();
+    await expect(page.locator(".invite")).toHaveCount(0);
+    await page.reload();
+    await expect(page.locator(".app")).toBeVisible({ timeout: 30_000 });
+    await expect(page.locator(".invite")).toHaveCount(0);
+    await expect(page.locator(".disclosure")).toBeVisible();
     const more = page.locator(".appbar .more-toggle");
     await expect(more).toBeHidden();
     await expect(page.getByRole("button", { name: "New" })).toBeVisible();

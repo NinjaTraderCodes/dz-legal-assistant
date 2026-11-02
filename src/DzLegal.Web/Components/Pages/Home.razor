@@ -348,17 +348,17 @@
                         @if (section.IsAiWritten)
                         {
                             <div class="review-row">
-                                <span class="muted small">@section.Title</span>
+                                <span class="muted small">@(section.Title)</span>
                                 <label class="check small reviewed"><input type="checkbox" @bind="section.IsReviewed" /> @L["ReviewedCheck"]</label>
                             </div>
                         }
                         @if (section.HasReview)
                         {
-                            <div class="review" dir="@(Vm.IsRightToLeft ? "rtl" : "ltr")" lang="@Vm.L.Language">@section.ReviewText</div>
+                            <div class="review" dir="@(Vm.IsRightToLeft ? "rtl" : "ltr")" lang="@Vm.L.Language">@(section.ReviewText)</div>
                         }
                         @if (section.IsWriting)
                         {
-                            <div class="writing-mark"><span class="pulse"></span> <span>@section.Title</span> <span>@L["SectionWriting"]</span></div>
+                            <div class="writing-mark"><span class="pulse"></span> <span>@(section.Title)</span> <span>@L["SectionWriting"]</span></div>
                         }
                     }
                 </div>

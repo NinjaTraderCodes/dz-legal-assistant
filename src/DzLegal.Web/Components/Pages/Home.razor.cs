@@ -32,6 +32,14 @@ public sealed partial class Home : IDisposable
     /// <summary>The desktop app's latest release; a stable address, whatever the version number.</summary>
     private const string DownloadUrl = "https://github.com/NinjaTraderCodes/dz-legal-assistant/releases/latest";
     private int mobileTab;
+
+    /// <summary>The section whose tools the strip above the paper shows: the one clicked or focused, else the first.</summary>
+    private string? selectedSectionId;
+
+    private SectionViewModel? SelectedSection => Vm is null ? null
+        : Vm.Sections.FirstOrDefault(s => s.Id == selectedSectionId) ?? Vm.Sections.FirstOrDefault();
+
+    private void SelectSection(SectionViewModel section) => selectedSectionId = section.Id;
     private readonly HashSet<string> _visited = new(StringComparer.Ordinal);
 
     [Inject] private WebEngine Engine { get; set; } = default!;

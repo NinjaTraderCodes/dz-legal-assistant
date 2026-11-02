@@ -67,10 +67,13 @@ test("the five steps of the guide happen in the demo as the website says", async
 
     // Step 4: draft the legal grounds; the section carries the AI mark and the review box.
     await page.getByRole("button", { name: label("Generate"), exact: true }).click();
-    const reviewBox = page.locator(".section .reviewed input");
+    const reviewBox = page.locator(".review-list .reviewed input");
     await expect(reviewBox).toHaveCount(1, { timeout: 90_000 });
-    await expect(page.locator(".section-head .origin").filter({ hasText: label("NarrativeSectionHint") })).toHaveCount(1);
-    await expect(page.locator(".section .reviewed")).toContainText(label("ReviewedCheck"));
+    // The AI-written section is marked in the paper itself; selecting it shows its origin in the strip above the paper.
+    await expect(page.locator(".paper .section.ai")).toHaveCount(1);
+    await page.locator(".paper .section.ai").click();
+    await expect(page.locator(".field-tools")).toContainText(label("NarrativeSectionHint"));
+    await expect(page.locator(".review-list .reviewed")).toContainText(label("ReviewedCheck"));
 
     // Step 5: export is refused before the tick and downloads after it.
     await page.getByRole("button", { name: label("ExportPdf") }).click();

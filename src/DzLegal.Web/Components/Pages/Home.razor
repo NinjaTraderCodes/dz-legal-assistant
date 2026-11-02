@@ -19,21 +19,11 @@
             <span class="brand-mark"><Icon Name="gavel" Size="20" /></span>
             <h1>@L["AppTitle"]</h1>
             <span class="doc-type">@Vm.DocumentTypeName</span>
-            <span class="demo-chip">@T("DemoChip")</span>
         </div>
-        <div class="tools">
-            <select id="sample-picker" aria-label="@T("Samples")" value="" @onchange="OpenSample">
-                <option value="">@T("Samples")</option>
-                @foreach (var sample in Engine.Samples)
-                {
-                    <option value="@sample.Id">@sample.Title.Get(Lang)</option>
-                }
-            </select>
-            @* On a phone the bar keeps the sample picker, the theme and the language; the rest folds behind More. *@
-            <button type="button" class="more-toggle" aria-expanded="@(showMore ? "true" : "false")" @onclick="() => showMore = !showMore"><Icon Name="chevron_down" Size="16" /> @T("More")</button>
-            <div class="secondary @(showMore ? "open" : "")">
-            @* Below 1440 px the bar shows these as icons: the label stays for the screen reader and as the tooltip. *@
-            <button type="button" title="@L["New"]" @onclick="() => Vm.NewCommand.Execute(null)"><Icon Name="add" /> <span class="label">@L["New"]</span></button>
+        @* As on the desktop, next to the brand: New, Open, Save and the save state. Below 1440 px they show as icons
+           (the label stays for the screen reader and as the tooltip); on a phone they fold behind More. *@
+        <div class="tools secondary @(showMore ? "open" : "")">
+            <button type="button" title="@L["New"]" @onclick="() => Vm.NewCommand.Execute(null)"><Icon Name="document_add" /> <span class="label">@L["New"]</span></button>
             @* Open and Save as on the desktop: a draft file (.dzdraft.json) from and to the visitor's own disk. *@
             <label class="button-like" title="@L["Open"]"><Icon Name="folder_open" /> <span class="label">@L["Open"]</span><InputFile class="visually-hidden" accept=".json,application/json" OnChange="OpenDraftFile" /></label>
             <button type="button" title="@L["Save"]" @onclick="() => Run(Vm.SaveCommand)"><Icon Name="save" /> <span class="label">@L["Save"]</span></button>
@@ -41,12 +31,28 @@
             {
                 <span class="save-state">@Vm.SaveStateText</span>
             }
-            @* The desktop app, for judges and lawyers who want it on their own computer: the latest release on GitHub. *@
-            <a class="button-like" id="download-windows" href="@DownloadUrl" target="_blank" rel="noopener" title="@T("DownloadWindows")"><Icon Name="arrow_download" /> <span class="label">@T("DownloadWindows")</span></a>
-            <button type="button" title="@T("GuideShow")" aria-pressed="@(showGuide ? "true" : "false")" @onclick="OpenGuide"><Icon Name="question_circle" /> <span class="label">@T("GuideShow")</span></button>
+        </div>
+        @* The demo's own items, between the desktop's two groups: the chip, the sample picker, Download for Windows and Guide. *@
+        <div class="tools demo">
+            <span class="demo-chip">@T("DemoChip")</span>
+            <select id="sample-picker" aria-label="@T("Samples")" value="" @onchange="OpenSample">
+                <option value="">@T("Samples")</option>
+                @foreach (var sample in Engine.Samples)
+                {
+                    <option value="@sample.Id">@sample.Title.Get(Lang)</option>
+                }
+            </select>
+            <button type="button" class="more-toggle" aria-expanded="@(showMore ? "true" : "false")" @onclick="() => showMore = !showMore"><Icon Name="chevron_down" Size="16" /> @T("More")</button>
+            <div class="secondary @(showMore ? "open" : "")">
+                @* The desktop app, for judges and lawyers who want it on their own computer: the latest release on GitHub. *@
+                <a class="button-like" id="download-windows" href="@DownloadUrl" target="_blank" rel="noopener" title="@T("DownloadWindows")"><Icon Name="arrow_download" /> <span class="label">@T("DownloadWindows")</span></a>
+                <button type="button" title="@T("GuideShow")" aria-pressed="@(showGuide ? "true" : "false")" @onclick="OpenGuide"><Icon Name="question_circle" /> <span class="label">@T("GuideShow")</span></button>
             </div>
+        </div>
+        @* At the far end, as on the desktop: the theme button and the language as plain text. *@
+        <div class="tools end">
             <button type="button" aria-label="@T("Theme")" title="@T("Theme")" aria-pressed="@(Vm.IsDarkTheme ? "true" : "false")" @onclick="ToggleThemeAsync"><Icon Name="@(Vm.IsDarkTheme ? "weather_sunny" : "weather_moon")" /></button>
-            <button type="button" lang="@(Lang == "en" ? "ar" : "en")" @onclick="SwitchLanguageAsync"><Icon Name="translate" /> @L["SwitchLanguage"]</button>
+            <button type="button" class="lang" lang="@(Lang == "en" ? "ar" : "en")" @onclick="SwitchLanguageAsync">@L["SwitchLanguage"]</button>
         </div>
     </header>
 
@@ -107,21 +113,23 @@
                 {
                     var current = step == Vm.SelectedStep;
                     <button type="button" class="step @StepClass(step) @(current ? "selected" : "")" aria-current="@(current ? "step" : null)" @onclick="() => SelectStep(step)">
-                        <span class="mark">
-                            @if (step.IsDone)
+                        <span class="marker" aria-hidden="true"></span>
+                        <span class="num" aria-hidden="true">@($"{step.Number:00}")</span>
+                        <span class="label">@step.Label</span>
+                        <span class="state">
+                            @if (step.IsMissing)
                             {
-                                <Icon Name="checkmark" Size="12" />
+                                <Icon Name="error_circle" Size="13" />
                             }
-                            else if (step.IsMissing && Visited(step))
+                            else if (step.IsWarning)
                             {
-                                <span>!</span>
+                                <Icon Name="error_circle" Size="13" />
                             }
-                            else
+                            else if (step.IsDone)
                             {
-                                <span>@step.Number</span>
+                                <Icon Name="checkmark_circle" Size="13" />
                             }
                         </span>
-                        @step.Label
                     </button>
                 }
             </nav>
@@ -205,25 +213,27 @@
         @* ── The statement of claim on paper: drafting, preview, export ──── *@
         <section class="panel draft-panel @(mobileTab == 1 ? "current" : "")" aria-labelledby="draft-title">
             <div class="panel-head">
-                <h2 id="draft-title">@L["Document"] <span class="badge">@L["DraftBadge"]</span></h2>
-                <div class="draft-actions">
-                    <select id="engine-picker" aria-label="@L["ProviderLabel"]" value="@Vm.SelectedProvider?.Key" @onchange="SelectProvider">
-                        @foreach (var p in Vm.Providers)
-                        {
-                            <option value="@p.Key">@p.DisplayName</option>
-                        }
-                    </select>
-                    @if (Vm.GenerateCommand.IsRunning)
-                    {
-                        <button type="button" @onclick="() => Vm.GenerateCancelCommand.Execute(null)"><Icon Name="stop" /> @L["Cancel"]</button>
-                    }
-                    else
-                    {
-                        <button type="button" class="ai" disabled="@CommandRunner.IsAiBusy(Vm)" @onclick="() => Run(Vm.GenerateCommand)"><Icon Name="sparkle" /> @L["Generate"]</button>
-                    }
-                </div>
+                <h2 id="draft-title">@L["Document"]</h2>
+                <span class="badge" title="@L["DraftBanner"]">@L["DraftBadge"]</span>
             </div>
-            <p class="muted small">@L["GenerateHint"]</p>
+            <div class="engine-row">
+                @* The desktop's status dot beside the engine: green when it can answer, red when it cannot; its text is the tooltip. *@
+                <span class="status-dot @(Engine.Settings.HasAnyEngine && Vm.IsModelReady ? "" : "down")" title="@(Vm.ModelStatusText.Length > 0 ? Vm.ModelStatusText : Engine.Settings.HasAnyEngine ? Vm.SelectedProvider?.DisplayName : T("NoEngine"))" aria-hidden="true"></span>
+                <select id="engine-picker" aria-label="@L["ProviderLabel"]" value="@Vm.SelectedProvider?.Key" @onchange="SelectProvider">
+                    @foreach (var p in Vm.Providers)
+                    {
+                        <option value="@p.Key">@p.DisplayName</option>
+                    }
+                </select>
+                @if (Vm.GenerateCommand.IsRunning)
+                {
+                    <button type="button" @onclick="() => Vm.GenerateCancelCommand.Execute(null)"><Icon Name="stop" /> @L["Cancel"]</button>
+                }
+                else
+                {
+                    <button type="button" class="ai" title="@L["GenerateHint"]" disabled="@CommandRunner.IsAiBusy(Vm)" @onclick="() => Run(Vm.GenerateCommand)"><Icon Name="sparkle" /> @L["Generate"]</button>
+                }
+            </div>
             @if (Vm.HasAnsweredBy)
             {
                 <p class="small answered-by" dir="ltr"><Icon Name="sparkle" Size="12" /> @Vm.AnsweredBy</p>
@@ -231,14 +241,68 @@
 
             <div class="toolbar">
                 <div class="tabs" role="tablist">
-                    <button type="button" role="tab" class="tab" aria-selected="@(Vm.SelectedDraftTab == 0 ? "true" : "false")" @onclick="() => Vm.SelectedDraftTab = 0"><Icon Name="edit" Size="16" /> @L["Edit"]</button>
-                    <button type="button" role="tab" class="tab" aria-selected="@(Vm.SelectedDraftTab == 1 ? "true" : "false")" @onclick="() => Vm.SelectedDraftTab = 1"><Icon Name="eye" Size="16" /> @L["Preview"]</button>
+                    <button type="button" role="tab" class="tab" aria-selected="@(Vm.SelectedDraftTab == 0 ? "true" : "false")" @onclick="() => Vm.SelectedDraftTab = 0">@L["Edit"]</button>
+                    <button type="button" role="tab" class="tab" aria-selected="@(Vm.SelectedDraftTab == 1 ? "true" : "false")" @onclick="() => Vm.SelectedDraftTab = 1">@L["Preview"]</button>
                 </div>
-                <label class="check small"><input id="watermark" type="checkbox" @bind="Vm.DraftWatermark" /> @L["Watermark"]</label>
-                <button type="button" class="small" @onclick="() => Run(Vm.ExportPdfCommand)"><Icon Name="arrow_download" Size="16" /> @L["ExportPdf"]</button>
-                <button type="button" class="small" @onclick="() => Run(Vm.ExportWordCommand)"><Icon Name="arrow_download" Size="16" /> @L["ExportWord"]</button>
-                <button type="button" class="small" @onclick="() => Run(Vm.CopyTextCommand)"><Icon Name="copy" Size="16" /> @L["CopyText"]</button>
+                <div class="tools">
+                    <label class="check" title="@Vm.WatermarkHint"><input id="watermark" type="checkbox" @bind="Vm.DraftWatermark" disabled="@Vm.IsSampleCase" /> @L["WatermarkShort"]</label>
+                    @* The short names of the desktop; the full names stay the accessible names and tooltips (the guides use them). *@
+                    <button type="button" class="export" title="@L["ExportPdf"]" aria-label="@L["ExportPdf"]" @onclick="() => Run(Vm.ExportPdfCommand)"><Icon Name="document_pdf" Size="16" /> PDF</button>
+                    <button type="button" class="export" title="@L["ExportWord"]" aria-label="@L["ExportWord"]" @onclick="() => Run(Vm.ExportWordCommand)"><Icon Name="document_text" Size="16" /> Word</button>
+                    <button type="button" class="quiet icon-only" title="@L["CopyText"]" aria-label="@L["CopyText"]" @onclick="() => Run(Vm.CopyTextCommand)"><Icon Name="copy" Size="18" /></button>
+                </div>
             </div>
+
+            @* The strip of the selected section, as on the desktop: its name, its origin, its tools. Not printed. *@
+            @if (Vm.SelectedDraftTab == 0 && SelectedSection is { } tools)
+            {
+                <div class="field-tools" title="@L["FieldControlsHint"]">
+                    <div class="row">
+                        <span class="field-caption strong">@tools.Title</span>
+                        <span class="field-caption hint">
+                            @if (tools.IsLocked)
+                            {
+                                <Icon Name="lock_closed" Size="12" />
+                            }
+                            else if (tools.IsOverridden)
+                            {
+                                <Icon Name="edit" Size="12" />
+                            }
+                            else if (tools.IsAiWritten)
+                            {
+                                <Icon Name="sparkle" Size="12" />
+                            }
+                            @tools.Hint
+                        </span>
+                        <span class="field-actions">
+                            @if (tools.CanOverride)
+                            {
+                                <button type="button" class="field-action" @onclick="() => tools.OverrideCommand.Execute(null)">@L["EditManually"]</button>
+                            }
+                            @if (tools.IsOverridden)
+                            {
+                                <button type="button" class="field-action" @onclick="() => tools.RestoreCommand.Execute(null)">@L["RestoreFromForm"]</button>
+                            }
+                            @if (tools.IsEditable)
+                            {
+                                @if (tools.CanUndo)
+                                {
+                                    <button type="button" class="field-action" @onclick="() => tools.UndoCommand.Execute(null)">@L["Undo"]</button>
+                                }
+                                <button type="button" class="field-action" disabled="@CommandRunner.IsAiBusy(Vm)" @onclick="() => CommandRunner.RunAsync(Vm, tools.RedraftCommand)">@L["Redraft"]</button>
+                                <button type="button" class="field-action" @onclick="() => tools.OpenAssistantCommand.Execute(null)">@L["Assistant"]</button>
+                            }
+                        </span>
+                    </div>
+                    @if (tools.IsConfirmingRedraft)
+                    {
+                        <div class="confirm">
+                            <button type="button" class="field-action" @onclick="() => CommandRunner.RunAsync(Vm, tools.RedraftCommand)">@L["ConfirmRedraft"]</button>
+                            <button type="button" class="field-action" @onclick="() => tools.CancelRedraftCommand.Execute(null)">@L["Cancel"]</button>
+                        </div>
+                    }
+                </div>
+            }
 
             @if (Vm.ShowsExportBlockers)
             {
@@ -252,18 +316,18 @@
 
             @if (Vm.SelectedDraftTab == 0)
             {
-                <div class="paper-canvas">
+                <div class="paper-scroll">
                     <div class="paper @(Vm.DraftWatermark ? "watermark" : "")" dir="rtl" lang="ar">
                         @foreach (var section in Vm.Sections)
                         {
-                            <SectionEditor Section="section" Vm="Vm" />
+                            <SectionEditor Section="section" Vm="Vm" IsSelected="@(section.Id == SelectedSection?.Id)" OnSelect="SelectSection" />
                         }
                     </div>
                 </div>
             }
             else
             {
-                <div class="paper-canvas" aria-busy="@(Vm.IsRenderingPreview ? "true" : "false")">
+                <div class="paper-scroll preview" aria-busy="@(Vm.IsRenderingPreview ? "true" : "false")">
                     @if (Vm.IsRenderingPreview)
                     {
                         <div class="preview-wait" role="status">@L["RenderingPreview"]</div>
@@ -274,66 +338,89 @@
                     }
                 </div>
             }
+
+            @* Review requirements stay visible for every section, independent of selection and paper scrolling, as on the desktop. *@
+            @if (Vm.Sections.Any(s => s.IsAiWritten || s.HasReview || s.IsWriting))
+            {
+                <div class="review-list">
+                    @foreach (var section in Vm.Sections)
+                    {
+                        @if (section.IsAiWritten)
+                        {
+                            <div class="review-row">
+                                <span class="muted small">@section.Title</span>
+                                <label class="check small reviewed"><input type="checkbox" @bind="section.IsReviewed" /> @L["ReviewedCheck"]</label>
+                            </div>
+                        }
+                        @if (section.HasReview)
+                        {
+                            <div class="review" dir="@(Vm.IsRightToLeft ? "rtl" : "ltr")" lang="@Vm.L.Language">@section.ReviewText</div>
+                        }
+                        @if (section.IsWriting)
+                        {
+                            <div class="writing-mark"><span class="pulse"></span> <span>@section.Title</span> <span>@L["SectionWriting"]</span></div>
+                        }
+                    }
+                </div>
+            }
         </section>
 
         @* ── The checks: form (rule engine, no AI) and substance ──────────── *@
         <section class="panel check-panel @(mobileTab == 2 ? "current" : "")" aria-labelledby="check-title">
             <h2 id="check-title">@L["Compliance"]</h2>
-            <div class="score-card @(Vm.IsAdmissible ? "ok" : "ko")">
+            <div class="score-card">
                 <div class="score-row">
                     <span class="muted">@L["ComplianceScore"]</span>
-                    <span class="score">@Vm.PresentCount / @Vm.ApplicableCount</span>
+                    <span class="score">@Vm.ScoreText</span>
                 </div>
                 <div class="bar" role="progressbar" aria-label="@L["ComplianceScore"]" aria-valuemin="0" aria-valuemax="@Vm.ApplicableCount" aria-valuenow="@Vm.PresentCount">
                     <span style="width:@(Vm.ApplicableCount == 0 ? 0 : 100 * Vm.PresentCount / Vm.ApplicableCount)%"></span>
                 </div>
-                <div class="summary"><Icon Name="@(Vm.IsAdmissible ? "checkmark_circle" : "error_circle")" /> @Vm.Summary</div>
+                <div class="summary @(Vm.IsAdmissible ? "ok" : "ko")"><Icon Name="@(Vm.IsAdmissible ? "checkmark_circle" : "error_circle")" Size="16" /> <span>@Vm.Summary</span></div>
                 @if (Vm.WarningSummary.Length > 0)
                 {
-                    <div class="small">@Vm.WarningSummary</div>
+                    <div class="small warning-text">@Vm.WarningSummary</div>
                 }
                 <div class="caveats muted small">
                     <span>@L["SummaryDisclaimer"]</span>
-                    <span>@L["Unverified"]</span>
+                    <span class="italic">@L["Unverified"]</span>
                 </div>
             </div>
 
             @if (Vm.HasSubstanceIssues)
             {
-                <h3>@L["SubstanceHeader"]</h3>
-                @foreach (var point in Vm.SubstanceIssues)
-                {
-                    <div class="legal-point"><Icon Name="warning" /> <span>@point</span></div>
-                }
+                <div class="card substance">
+                    <h3>@L["SubstanceHeader"]</h3>
+                    @foreach (var point in Vm.SubstanceIssues)
+                    {
+                        <div class="legal-point"><Icon Name="warning" Size="15" /> <span>@point</span></div>
+                    }
+                </div>
             }
 
-            @if (Vm.IssueFindings.Count > 0)
+            @foreach (var f in Vm.IssueFindings)
             {
-                <h3>@T("Issues")</h3>
-                @foreach (var f in Vm.IssueFindings)
-                {
-                    <button type="button" class="finding @(f.IsMissingMandatory ? "mandatory" : "warning")" @onclick="() => GoToFinding(f)">
-                        <strong>@f.Label</strong>
-                        <span class="article">@f.Article</span>
-                        @if (f.HasMessage)
-                        {
-                            <span class="small">@f.Message</span>
-                        }
-                        @if (f.HasMissingParts)
-                        {
-                            <span class="small muted">@f.MissingPartsText</span>
-                        }
-                    </button>
-                }
+                <button type="button" class="finding @(f.IsMissingMandatory ? "mandatory" : "warning")" @onclick="() => GoToFinding(f)">
+                    <span class="row"><Icon Name="error_circle" Size="16" /> <strong>@f.Label</strong></span>
+                    <span class="article">@f.Article</span>
+                    @if (f.HasMessage)
+                    {
+                        <span class="message">@f.Message</span>
+                    }
+                    @if (f.HasMissingParts)
+                    {
+                        <span class="article">@f.MissingPartsText</span>
+                    }
+                </button>
             }
 
-            <details class="present" open="@(Vm.IssueFindings.Count == 0)">
-                <summary>@Vm.PresentHeader</summary>
+            <details class="present card" open="@(Vm.IssueFindings.Count == 0)">
+                <summary><Icon Name="chevron_down" Size="16" /> <span>@Vm.PresentHeader</span></summary>
                 @foreach (var f in Vm.PresentFindings)
                 {
                     <div class="present-item">
-                        <span><Icon Name="checkmark" Size="14" /> @f.Label</span>
-                        <span class="article">@f.Article</span>
+                        <Icon Name="checkmark_circle" Size="14" />
+                        <span class="text"><span>@f.Label</span><span class="article">@f.Article</span></span>
                     </div>
                 }
             </details>

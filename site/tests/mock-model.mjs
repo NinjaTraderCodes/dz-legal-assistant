@@ -8,6 +8,8 @@ import { createServer } from "node:http";
 const arg = (name, fallback) => { const i = process.argv.indexOf("--" + name); return i > 0 ? process.argv[i + 1] : fallback; };
 const port = Number(arg("port", "5090"));
 const log = process.argv.includes("--log");
+// --slow <ms>: a pause between streamed pieces, so the demo's "writing" state can be seen and captured.
+const slow = Number(arg("slow", "0"));
 
 /** The prompt's list of known claim types ("id — name: when"), as ids; the loan claim first when it is offered. */
 function claimId(prompt) {
@@ -69,10 +71,13 @@ function answer(prompt) {
     return argument;
 }
 
-function sse(res, text) {
+async function sse(res, text) {
     res.writeHead(200, { "Content-Type": "text/event-stream; charset=utf-8", "Cache-Control": "no-cache" });
-    const pieces = text.match(/[^\n]{1,40}\n?/gu) ?? [text];
-    for (const piece of pieces) res.write(`data: ${JSON.stringify({ choices: [{ delta: { content: piece }, finish_reason: null }] })}\n\n`);
+    const pieces = text.match(/[^\n]{1,12}\n?/gu) ?? [text];
+    for (const piece of pieces) {
+        res.write(`data: ${JSON.stringify({ choices: [{ delta: { content: piece }, finish_reason: null }] })}\n\n`);
+        if (slow > 0) await new Promise((r) => setTimeout(r, slow));
+    }
     res.write(`data: ${JSON.stringify({ choices: [{ delta: {}, finish_reason: "stop" }], usage: { completion_tokens: pieces.length } })}\n\n`);
     res.write("data: [DONE]\n\n");
     res.end();

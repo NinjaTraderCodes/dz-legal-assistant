@@ -1,0 +1,30 @@
+| Page | Form | Performance | Accessibility | Best practices | SEO | LCP | CLS | TBT |
+|---|---|---|---|---|---|---|---|---|
+| /ar/ | mobile | 96 | 100 | 100 | 100 | 2.3 s | 0.033 | 160 ms |
+| /ar/ | desktop | 94 | 100 | 100 | 100 | 0.8 s | 0.007 | 180 ms |
+| /en/ | mobile | 99 | 100 | 100 | 100 | 2.0 s | 0 | 20 ms |
+| /en/ | desktop | 99 | 100 | 100 | 100 | 0.8 s | 0 | 10 ms |
+| /ar/try/ | mobile | 93 | 100 | 100 | 100 | 1.4 s | 0 | 300 ms |
+| /ar/try/ | desktop | 100 | 100 | 100 | 100 | 0.4 s | 0.001 | 0 ms |
+| /en/try/ | mobile | 99 | 100 | 100 | 100 | 1.1 s | 0 | 130 ms |
+| /en/try/ | desktop | 100 | 100 | 100 | 100 | 0.3 s | 0 | 0 ms |
+| /ar/download/ | mobile | 100 | 100 | 100 | 100 | 1.0 s | 0 | 10 ms |
+| /ar/download/ | desktop | 100 | 100 | 100 | 100 | 0.3 s | 0 | 0 ms |
+| /en/download/ | mobile | 100 | 100 | 100 | 100 | 1.0 s | 0 | 40 ms |
+| /en/download/ | desktop | 100 | 100 | 100 | 100 | 0.3 s | 0 | 0 ms |
+| /ar/law/ | mobile | 100 | 100 | 100 | 100 | 1.0 s | 0.039 | 10 ms |
+| /ar/law/ | desktop | 100 | 100 | 100 | 100 | 0.3 s | 0.004 | 0 ms |
+| /en/law/ | mobile | 98 | 100 | 100 | 100 | 1.3 s | 0 | 140 ms |
+| /en/law/ | desktop | 100 | 100 | 100 | 100 | 0.4 s | 0 | 20 ms |
+| /ar/privacy/ | mobile | 92 | 100 | 100 | 100 | 1.3 s | 0.03 | 340 ms |
+| /ar/privacy/ | desktop | 100 | 100 | 100 | 100 | 0.5 s | 0 | 20 ms |
+| /en/privacy/ | mobile | 96 | 100 | 100 | 100 | 1.1 s | 0 | 200 ms |
+| /en/privacy/ | desktop | 100 | 100 | 100 | 100 | 0.3 s | 0 | 0 ms |
+| /ar/about/ | mobile | 100 | 100 | 100 | 100 | 1.0 s | 0 | 80 ms |
+| /ar/about/ | desktop | 100 | 100 | 100 | 100 | 0.4 s | 0 | 10 ms |
+| /en/about/ | mobile | 98 | 100 | 100 | 100 | 1.1 s | 0 | 150 ms |
+| /en/about/ | desktop | 100 | 100 | 100 | 100 | 0.3 s | 0 | 10 ms |
+| /ar/404/ | mobile | 89 | 100 | 100 | 66 | 1.1 s | 0.177 | 190 ms |
+| /ar/404/ | desktop | 100 | 100 | 100 | 66 | 0.2 s | 0 | 0 ms |
+| /en/404/ | mobile | 90 | 100 | 100 | 66 | 0.9 s | 0.177 | 160 ms |
+| /en/404/ | desktop | 100 | 100 | 100 | 66 | 0.2 s | 0 | 0 ms |

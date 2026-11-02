@@ -18,6 +18,7 @@ builder.Services.AddSingleton(sp => new WebEngine(
     AppContext.BaseDirectory,
     sp.GetRequiredService<ILogger<WebEngine>>()));
 builder.Services.Configure<SiteOptions>(builder.Configuration.GetSection(SiteOptions.SectionName));
+builder.Services.AddSiteCompression();
 
 builder.Services.AddHttpContextAccessor();
 

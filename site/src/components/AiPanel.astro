@@ -1,12 +1,33 @@
 ---
-// How the AI is kept in its place: the three stages of the analysis, as the workbench's progress panel shows them,
-// the measured results with their mode and source, and the line that matters to a lawyer.
+// How the AI is kept in its place: the four stages, as the workbench's progress panel shows them, each with its frame
+// from the live recording with the local model; the measured results with their mode and source; and the line that
+// matters to a lawyer.
+import type { ImageMetadata } from "astro";
 import Icon from "./Icon.astro";
+import Shot from "./Shot.astro";
+import Source from "./Source.astro";
 import { t, type Lang } from "../i18n";
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
-const stages = [1, 2, 3].map((n) => ({ title: t(lang, `ai.stage${n}.title`), body: t(lang, `ai.stage${n}.body`), model: n !== 2 }));
+const frames = import.meta.glob<ImageMetadata>("../assets/shots/ai/*.png", { eager: true, import: "default" });
+const frame = (name: string) => {
+    const hit = Object.entries(frames).find(([path]) => path.endsWith(`/${name}.png`));
+    if (!hit) throw new Error(`missing picture ai/${name}.png in src/assets/shots (node scripts/crops.mjs)`);
+    return hit[1];
+};
+// Stage 2 is the code's own step: no model. Stage 4 is the one in progress on the panel, as drafting is the last.
+const stages = [1, 2, 3, 4].map((n) => ({
+    n,
+    title: t(lang, `ai.stage${n}.title`),
+    body: t(lang, `ai.stage${n}.body`),
+    caption: t(lang, `ai.shot.stage${n}`),
+    model: n !== 2,
+    // The recording's own timing line is a small strip, shown at its size; the panel's activity row and the drafted
+    // grounds fill their columns.
+    shots: n === 1 ? [{ img: frame("stage1-reading") }] : n === 2 ? [{ img: frame("stage2-candidates") }] : n === 3 ? [{ img: frame("stage3-proposal") }]
+        : [{ img: frame("stage4-timing"), natural: true }, { img: frame("stage4-drafting") }, { img: frame("stage4-drafted") }],
+}));
 ---
 <section class="section page ai" aria-labelledby="ai-title">
     <div class="intro">
@@ -16,17 +37,25 @@ const stages = [1, 2, 3].map((n) => ({ title: t(lang, `ai.stage${n}.title`), bod
     <ol class="stages">
         {stages.map((stage, i) => (
             <li class="stage">
-                <span class={`dot ${i === 2 ? "active" : "done"}`} aria-hidden="true">{i < 2 && <Icon name="checkmark" size={12} />}</span>
-                <div>
-                    <h3 class="h3">{stage.title} {stage.model ? <span class="chip chip-accent"><Icon name="sparkle" size={12} /> AI</span> : <span class="chip chip-success"><Icon name="checkmark_circle" size={12} /> {lang === "ar" ? "برمجة" : "code"}</span>}</h3>
-                    <p>{stage.body}</p>
+                <div class="row">
+                    <span class={`dot ${i === stages.length - 1 ? "active" : "done"}`} aria-hidden="true">{i < stages.length - 1 && <Icon name="checkmark" size={12} />}</span>
+                    <div>
+                        <h3 class="h3">{stage.title} {stage.model ? <span class="chip chip-accent"><Icon name="sparkle" size={12} /> AI</span> : <span class="chip chip-success"><Icon name="checkmark_circle" size={12} /> {lang === "ar" ? "برمجة" : "code"}</span>}</h3>
+                        <p>{stage.body}</p>
+                        {stage.n === 4 && <p class="time">{t(lang, "ai.stage4.time")}</p>}
+                    </div>
+                </div>
+                <div class="pictures">
+                    {stage.shots.map((shot, k) => <Shot lang={lang} light={shot.img} natural={shot.natural} alt={stage.caption} caption={k === stage.shots.length - 1 ? stage.caption : undefined} note={k === stage.shots.length - 1 ? t(lang, "shot.live") : undefined} width={stage.n === 4 ? 560 : 270} />)}
                 </div>
             </li>
         ))}
     </ol>
+    <Source lang={lang} files={["README.md"]} />
     <div class="measure card-alt">
         <p>{t(lang, "ai.measure")}</p>
         <p class="caption">{t(lang, "ai.measureNote")}</p>
+        <Source lang={lang} files={["docs/HIDDEN-SET.md"]} />
     </div>
     <p class="sign h2">{t(lang, "ai.sign")}</p>
 </section>
@@ -35,9 +64,16 @@ const stages = [1, 2, 3].map((n) => ({ title: t(lang, `ai.stage${n}.title`), bod
     .ai { display: grid; gap: 36px; }
     .intro { display: grid; gap: 16px; max-width: 820px; }
     .stages { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-    .stage { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; background: var(--surface-alt); border: 1px solid var(--hairline); border-radius: var(--radius-control); padding: 14px 16px; }
+    .stage { display: grid; gap: 14px; align-content: start; background: var(--surface-alt); border: 1px solid var(--hairline); border-radius: var(--radius-control); padding: 14px 16px 18px; }
+    /* The drafting stage, the long one, takes the whole last row. */
+    .stage:last-child { grid-column: 1 / -1; }
+    .stage:last-child .pictures { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; align-items: start; }
+    .stage:last-child .pictures :global(.shot:first-child) { grid-column: 1 / -1; }
+    .row { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; }
     .stage h3 { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 1.1rem; }
     .stage p { font-size: 0.95rem; }
+    .time { margin-top: 8px; font-weight: 600; }
+    .pictures { display: grid; gap: 12px; }
     .dot { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; margin-top: 6px; }
     .dot.done { background: var(--success-soft); color: var(--success); }
     .dot.active { width: 10px; height: 10px; margin-inline: 4px; background: var(--accent); animation: pulse 0.9s ease-in-out infinite alternate; }
@@ -45,6 +81,6 @@ const stages = [1, 2, 3].map((n) => ({ title: t(lang, `ai.stage${n}.title`), bod
     .measure { display: grid; gap: 10px; max-width: 820px; }
     .measure p { max-width: none; }
     .sign { color: var(--accent); max-width: none; }
-    @media (max-width: 899px) { .stages { grid-template-columns: 1fr; } }
+    @media (max-width: 899px) { .stages { grid-template-columns: 1fr; } .stage:last-child .pictures { grid-template-columns: 1fr; } }
     @media (prefers-reduced-motion: reduce) { .dot.active { animation: none; } }
 </style>

@@ -8,6 +8,7 @@ import Footer from "../components/Footer.astro";
 import { dirOf, localeOf, otherLang, s, t, type Lang } from "../i18n";
 import naskhUrl from "../assets/fonts/NotoNaskhArabic-Regular.woff2?url";
 import interUrl from "../assets/fonts/Inter-latin.woff2?url";
+import naskhBoldUrl from "../assets/fonts/NotoNaskhArabic-Bold.woff2?url";
 import tokens from "../styles/tokens.css?raw";
 
 interface Props { lang: Lang; title: string; description: string; path: string; og?: string; noindex?: boolean; preloadImage?: { src: string; srcSet: string; sizes: string } }
@@ -39,9 +40,14 @@ const barDark = barOf(darkTokens);
     <link rel="alternate" hreflang="x-default" href={`${site}/ar${path}`} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     {/* Every page shows the other language's name in its own script, so the text pages preload both faces and settle
-        their layout once. The home does not: its first screen is the photograph, which that second font would compete with. */}
+        their layout once. The English home preloads Inter only: its first screen is the photograph, which a second font
+        would compete with; the Arabic home preloads all three (the note below). */}
     <link rel="preload" as="font" type="font/woff2" crossorigin href={lang === "ar" ? naskhUrl : interUrl} />
-    {!preloadImage && <link rel="preload" as="font" type="font/woff2" crossorigin href={lang === "ar" ? interUrl : naskhUrl} />}
+    {(!preloadImage || lang === "ar") && <link rel="preload" as="font" type="font/woff2" crossorigin href={lang === "ar" ? interUrl : naskhUrl} />}
+    {/* The Arabic home preloads its bold face too: a face that arrives after the first paint re-lays out every text that
+        could use it (about 130 ms each on a phone, counted as blocking time); preloaded, the three faces arrive
+        together, before the paint. The English home keeps one face: its Arabic text is below the fold. */}
+    {preloadImage && lang === "ar" && <link rel="preload" as="font" type="font/woff2" crossorigin href={naskhBoldUrl} />}
     {preloadImage && <link rel="preload" as="image" href={preloadImage.src} imagesrcset={preloadImage.srcSet} imagesizes={preloadImage.sizes} fetchpriority="high" />}
     <meta name="theme-color" content={barDark} data-light={barLight} data-dark={barDark} />
     <meta property="og:type" content="website" />

@@ -3,7 +3,7 @@
 // (offline, local model or templates). Side by side, each with one plain action; the gold stays on the hero.
 import Icon from "./Icon.astro";
 import { t, fmt, type Lang } from "../i18n";
-import { releaseUrl, version } from "../content/product";
+import { downloadUrl, version } from "../content/product";
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -22,7 +22,7 @@ const { lang } = Astro.props;
         <ul class="reqs">
             {[1, 2, 3].map((n) => <li><Icon name="checkmark" size={14} /> {t(lang, `download.req${n}`)}</li>)}
         </ul>
-        <a class="btn" href={releaseUrl} rel="noopener"><Icon name="arrow_download" size={18} /> {t(lang, "download.cta")}</a>
+        <a class="btn" href={downloadUrl} rel="noopener"><Icon name="arrow_download" size={18} /> {t(lang, "download.cta")}</a>
         <p class="caption">{fmt(t(lang, "download.note"), version)} <a href={`/${lang}/download/`}>{t(lang, "download.more")}</a></p>
     </div>
 </section>

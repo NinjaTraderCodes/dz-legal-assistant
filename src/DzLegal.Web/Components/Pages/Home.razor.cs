@@ -30,7 +30,7 @@ public sealed partial class Home : IDisposable
     private bool showMore;
 
     /// <summary>The desktop app's latest release; a stable address, whatever the version number.</summary>
-    private const string DownloadUrl = "https://github.com/NinjaTraderCodes/dz-legal-assistant/releases/latest";
+    internal const string DownloadUrl = "https://github.com/NinjaTraderCodes/dz-legal-assistant/releases/download/v0.9.1/DzLegalAssistant-0.9.1-win-x64.zip";
     private int mobileTab;
 
     /// <summary>The section whose tools the strip above the paper shows: the one clicked or focused, else the first.</summary>

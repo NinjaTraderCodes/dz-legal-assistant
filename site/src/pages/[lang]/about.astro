@@ -7,7 +7,7 @@ import Source from "../../components/Source.astro";
 import Icon from "../../components/Icon.astro";
 import law from "../../content/law.generated.json";
 import { langs, s, t, fmt, type Lang } from "../../i18n";
-import { blob, version } from "../../content/product";
+import { version } from "../../content/product";
 
 export function getStaticPaths() {
     return langs.map((lang) => ({ params: { lang } }));
@@ -80,7 +80,7 @@ const docs = ["PRODUCT-DETAILS", "ARCHITECTURE", "OFFLINE", "LAW-LIBRARY", "HIDD
             </ul>
             <p class="caption">{s(lang, "AboutWelcomeImage")}: {t(lang, "about.licences.image")}</p>
             <p class="small">{s(lang, "AboutModelNote")}</p>
-            <p class="small"><a href={blob("src/DzLegal.App/THIRD-PARTY-NOTICES.txt")} rel="noopener"><Icon name="document_text" size={16} /> {t(lang, "about.licences.notices")}</a></p>
+            <p class="small"><Icon name="document_text" size={16} /> {t(lang, "about.licences.notices")}: <span dir="ltr">THIRD-PARTY-NOTICES.txt</span></p>
             <p class="small">{t(lang, "about.licences.site")} <a href="/licences/OFL-Inter.txt">Inter (OFL)</a>, <a href="/licences/OFL-NotoNaskhArabic.txt">Noto Naskh Arabic (OFL)</a>, <a href="/licences/MIT-FluentIcons.txt">Fluent UI System Icons (MIT)</a>.</p>
             <Source lang={lang} files={["src/DzLegal.Presentation/ViewModels/AboutViewModel.cs", "src/DzLegal.App/Assets/Images/welcome-bg.LICENSE.txt"]} />
         </div>
@@ -107,7 +107,7 @@ const docs = ["PRODUCT-DETAILS", "ARCHITECTURE", "OFFLINE", "LAW-LIBRARY", "HIDD
     <section class="section page" aria-labelledby="docs-title">
         <h2 id="docs-title" class="h2">{t(lang, "about.docs.title")}</h2>
         <ul class="docs">
-            {docs.map((doc, i) => <li><a href={blob(`docs/${doc}.md`)} rel="noopener" dir="ltr">docs/{doc}.md</a><span class="small">{t(lang, `about.docs.${i + 1}`)}</span></li>)}
+            {docs.map((doc, i) => <li><span class="doc" dir="ltr">docs/{doc}.md</span><span class="small">{t(lang, `about.docs.${i + 1}`)}</span></li>)}
         </ul>
     </section>
 </Base>
@@ -119,7 +119,7 @@ const docs = ["PRODUCT-DETAILS", "ARCHITECTURE", "OFFLINE", "LAW-LIBRARY", "HIDD
     .licences li { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; border-top: 1px solid var(--hairline); }
     .docs { margin: 16px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; }
     .docs li { display: grid; grid-template-columns: minmax(0, 260px) 1fr; gap: 6px 20px; padding: 10px 0; border-top: 1px solid var(--hairline); }
-    .docs a { overflow-wrap: anywhere; }
+    .docs .doc { overflow-wrap: anywhere; }
     .block .btn { justify-self: start; }
     @media (max-width: 899px) { .people { grid-template-columns: 1fr; } .docs li { grid-template-columns: 1fr; } }
 </style>

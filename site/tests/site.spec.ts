@@ -41,6 +41,39 @@ test("the English home is English, left to right", async ({ request }) => {
     noInlineScript(html);
 });
 
+test("the hero shows the app on a laptop: one picture for both languages, AVIF with a WebP fallback, beside the text on a laptop screen and under it on a phone", async ({ page, request }) => {
+    const files: string[] = [];
+    for (const lang of ["ar", "en"]) {
+        const html = await text(await request.get(`/${lang}/`));
+        const picture = html.match(/<div class="device"[^>]*>\s*<picture[^>]*>([\s\S]*?)<\/picture>/)?.[1] ?? "";
+        expect(picture).toMatch(/<source srcset="\/_astro\/laptop[^"]*\.avif 480w, [^"]*720w, [^"]*960w, [^"]*1440w" type="image\/avif"/);
+        expect(picture).toMatch(/<img src="\/_astro\/laptop[^"]*\.webp" srcset="\/_astro\/laptop[^"]*\.webp 480w, [^"]*720w, [^"]*960w, [^"]*1440w"/);
+        // Eager but behind the photograph and the fonts: the laptop is on the first screen and is not its largest element.
+        expect(picture).toMatch(/loading="eager"/);
+        expect(picture).toMatch(/fetchpriority="low"/);
+        expect(picture).toMatch(/width="1440" height="960"/);
+        expect(picture).toContain(lang === "ar" ? 'alt="التطبيق المكتبي على حاسوب محمول' : 'alt="The desktop app on a laptop');
+        expect(html).toMatch(/<link rel="preload" as="image" href="\/_astro\/welcome-bg[^"]*"/);
+        expect(html).not.toMatch(/<link rel="preload" as="image" href="\/_astro\/laptop/);
+        files.push(picture.match(/<img src="([^"]+)"/)?.[1] ?? "");
+    }
+    expect(files[0]).toBe(files[1]);
+    // Beside the text from 900 px, on the side the writing direction leaves free; below the buttons on a phone.
+    for (const lang of ["ar", "en"]) {
+        await page.setViewportSize({ width: 1366, height: 768 });
+        await page.goto(`/${lang}/`);
+        const laptop = await page.locator(".hero .laptop").boundingBox();
+        const title = await page.locator("#hero-title").boundingBox();
+        expect(laptop && title && Math.abs(laptop.y + laptop.height / 2 - (title.y + title.height / 2)) < 400).toBe(true);
+        if (lang === "en") expect(laptop!.x).toBeGreaterThan(title!.x + title!.width);
+        else expect(laptop!.x + laptop!.width).toBeLessThan(title!.x);
+        await page.setViewportSize({ width: 390, height: 844 });
+        const phoneLaptop = await page.locator(".hero .laptop").boundingBox();
+        const cta = await page.locator(".hero .btn-gold").boundingBox();
+        expect(phoneLaptop!.y).toBeGreaterThan(cta!.y + cta!.height);
+    }
+});
+
 test("the submitted address serves the website in the visitor's language, English by default", async ({ request }) => {
     // No language header at all: English, with the product's name on the page (what the uptime check greps for).
     const plain = await request.get("/", { maxRedirects: 0, headers: { "Accept-Language": "" } });

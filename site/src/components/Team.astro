@@ -1,15 +1,27 @@
 ---
-// Who built it, in the words of the About screen, plus the programme line and the honest note on how it was built.
+// Who built it: the names as the About screen gives them (Arabic script on the Arabic page), the role, and what each
+// person did in the words of the About page; then the programme line and the honest note on how it was built.
 import { s, t, type Lang } from "../i18n";
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
-const people = ["AboutTeamLead", "AboutTeamDesign", "AboutTeamLegal"].map((key) => s(lang, key));
+const people = ["Lead", "Design", "Legal"].map((who) => {
+    const [name, role] = s(lang, `AboutTeam${who}`).split(" — ");
+    return { name, role, did: t(lang, `about.team.did.${who.toLowerCase()}`) };
+});
 ---
 <section id="team" class="section page team" aria-labelledby="team-title">
     <h2 id="team-title" class="h2">{t(lang, "team.title")}</h2>
     <ul class="people">
-        {people.map((line) => { const [name, role] = line.split(" — "); return <li><strong>{name}</strong><span>{role}</span></li>; })}
+        {people.map((p) => (
+            <li class="card">
+                <div class="who">
+                    <strong class="name">{p.name}</strong>
+                    <span class="role">{p.role}</span>
+                </div>
+                <p class="small">{p.did}</p>
+            </li>
+        ))}
     </ul>
     <p class="lead">{s(lang, "AboutThirdUni")}</p>
     <p class="caption">{t(lang, "team.lead")}</p>
@@ -18,7 +30,9 @@ const people = ["AboutTeamLead", "AboutTeamDesign", "AboutTeamLegal"].map((key) 
 <style>
     .team { display: grid; gap: 20px; }
     .people { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-    .people li { display: grid; gap: 4px; padding: 16px 0; border-top: 2px solid var(--edge); }
-    .people span { color: var(--muted-aa); }
+    .people li { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; align-content: start; padding: 18px 20px 20px; border-top: 2px solid var(--edge); }
+    .who { display: grid; gap: 2px; }
+    .name { font-size: 1.1rem; }
+    .role { color: var(--accent); font-weight: 600; font-size: 0.95rem; }
     @media (max-width: 899px) { .people { grid-template-columns: 1fr; } }
 </style>

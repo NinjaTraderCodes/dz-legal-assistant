@@ -1,5 +1,6 @@
 // Small behaviours of the site, loaded at the end of the page: the theme toggle, remembered in a first-party
-// cookie and localStorage, and the hand-over to the demo. No framework, no network calls.
+// cookie and localStorage; the hand-over to the demo; the gentle reveal of steps as they scroll into view; and the
+// picture lightbox. No framework, no network calls.
 (function () {
   function remember(key, value) {
     try { document.cookie = key + "=" + value + "; Path=/; Max-Age=31536000; SameSite=Lax" + (location.protocol === "https:" ? "; Secure" : ""); } catch (e) { /* ignore */ }
@@ -42,4 +43,46 @@
     if (!url || /^\/app(?:[/?#]|$)/.test(new URL(url, location.href).pathname)) event.viewTransition.skipTransition();
   });
   // The language links set the cookie on the server (/lang/{code}); nothing to do here.
+
+  // Steps marked data-reveal fade and slide in as they scroll into view, and the line joining them fills up to the
+  // last one shown (--progress on the list). Only when motion is welcome: the attribute on <html> switches the
+  // styles on, so without it, or without this script, everything is simply visible.
+  var motion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: no-preference)").matches && "IntersectionObserver" in window;
+  var targets = document.querySelectorAll("[data-reveal]");
+  if (motion && targets.length) {
+    document.documentElement.setAttribute("data-motion", "");
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("in");
+        observer.unobserve(entry.target);
+        var list = entry.target.parentElement;
+        if (list && list.hasAttribute("data-progress")) {
+          var items = list.querySelectorAll("[data-reveal]"), shown = list.querySelectorAll("[data-reveal].in").length;
+          list.style.setProperty("--progress", Math.round((shown / items.length) * 100) + "%");
+        }
+      });
+    }, { threshold: 0.2 });
+    targets.forEach(function (target) { observer.observe(target); });
+  }
+
+  // A picture opens larger in the page's dialog: the version of the theme shown, at the size the button carries.
+  var dialog = document.querySelector("[data-lightbox-dialog]");
+  if (dialog && typeof dialog.showModal === "function") {
+    var image = dialog.querySelector("[data-lightbox-image]"), caption = dialog.querySelector("[data-lightbox-caption]");
+    document.querySelectorAll("[data-lightbox]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        var shown = Array.prototype.find.call(button.querySelectorAll("img"), function (img) { return img.getClientRects().length > 0; }) || button.querySelector("img");
+        if (!shown) return;
+        image.src = shown.getAttribute("data-full") || shown.currentSrc || shown.src;
+        image.alt = shown.alt;
+        var figure = button.closest("figure"), text = figure && figure.querySelector("figcaption");
+        caption.textContent = text ? text.textContent : "";
+        dialog.showModal();
+      });
+    });
+    // A click on the backdrop (the dialog itself, outside its content) closes it; Esc and the button are native.
+    dialog.addEventListener("click", function (event) { if (event.target === dialog) dialog.close(); });
+    dialog.addEventListener("close", function () { image.removeAttribute("src"); });
+  }
 })();

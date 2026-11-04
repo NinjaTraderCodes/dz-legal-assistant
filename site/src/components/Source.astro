@@ -1,13 +1,15 @@
 ---
 // The line under a figure or a claim: where in the repository it comes from. Every number on the site has one.
+// A document the site renders (docs-pages.ts) is linked as its page here; code and data stay on GitHub.
 import { t, type Lang } from "../i18n";
-import { blob } from "../content/product";
+import { blob } from "../content/repo";
+import { isDocPage, docPath } from "../content/docs-pages";
 
 interface Props { lang: Lang; files: string[]; note?: string }
 const { lang, files, note } = Astro.props;
 const separator = lang === "ar" ? "، " : ", ";
 ---
-<p class="source caption">{t(lang, "source.label")} {files.map((file, i) => <><a href={blob(file)} rel="noopener" dir="ltr">{file}</a>{i < files.length - 1 ? separator : ""}</>)}{note && <> · {note}</>}</p>
+<p class="source caption">{t(lang, "source.label")} {files.map((file, i) => <><a href={isDocPage(file) ? `/${lang}${docPath(file)}` : blob(file)} rel={isDocPage(file) ? undefined : "noopener"} dir="ltr">{file}</a>{i < files.length - 1 ? separator : ""}</>)}{note && <> · {note}</>}</p>
 
 <style>
     .source { margin-top: 6px; }

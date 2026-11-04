@@ -3,6 +3,7 @@
 // compact form under the hero; both come from TryGuide.astro, so they never diverge.
 import Base from "../../layouts/Base.astro";
 import TryGuide from "../../components/TryGuide.astro";
+import Lightbox from "../../components/Lightbox.astro";
 import { langs, t, type Lang } from "../../i18n";
 
 export function getStaticPaths() {
@@ -12,4 +13,5 @@ const lang = Astro.params.lang as Lang;
 ---
 <Base lang={lang} title={t(lang, "try.title")} description={t(lang, "meta.try.description")} path="/try/" og="try">
     <TryGuide lang={lang} heading="h1" />
+    <Lightbox lang={lang} />
 </Base>

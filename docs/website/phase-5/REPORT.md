@@ -106,3 +106,69 @@ Screenshots beside this report: `home-<ar|en>-<light|dark>-<390x844|1366x768|192
 - The five AI sentences on the sheet are illustrative wording in the register of the real draft; they await Khouloud's eye like the rest of the Arabic.
 - The "Review before export" card shows the web demo rather than the desktop app: the desktop frame of that state exists in one language and theme only (`workbench-export-blocked.png`), and the demo shows the same screen in both languages and themes. The caption says "The demo".
 - The site's header is two rows high at 1366 px (navigation, then language and theme); the story's pin now measures it instead of assuming 96 px. The header itself is unchanged.
+
+## Push B: the documentation pages, the guide's pictures and motion, the team text
+
+### Item 7: documentation rendered on the website
+
+The six documents the About page links to are pages of the site: `/en/docs/<name>/` and `/ar/docs/<name>/` for `product-details`, `architecture`, `offline`, `law-library`, `hidden-set` and `web-demo`, built from the Markdown at build time, nothing else rendered.
+
+- **How.** A content collection (`site/src/content.config.ts`, Astro's `glob` loader reading `../docs` for exactly the six files) and one page (`site/src/pages/[lang]/docs/[slug].astro`) with the site's layout: the document's H1 lifted into the page title, a sticky table of contents from its headings 2 and 3, code blocks highlighted by Shiki with CSS variables set from the site's tokens (so they follow the theme and load nothing at run time; fences without a language, the diagrams, stay plain), tables in a scrolling wrapper, pictures through `astro:assets` (lazy WebP with a `srcset`). The Markdown pipeline is Astro 7's Sätteri processor with one plugin, `site/src/content/docs-pages.ts`; `markdown.rehypePlugins` throws in Astro 7 without `@astrojs/markdown-remark`, so the plugin uses Sätteri's filtered visitors.
+- **Links.** A link to one of the six goes to its page (`../law-library/`, language-neutral, so one rendering serves both languages); any other link into the repository (`../README.md`, `ONLINE-TESTING.md`, code and data) goes to GitHub with `rel="noopener"`; external links stay. The "Source:" lines follow the same rule (`Source.astro`): `docs/PRODUCT-DETAILS.md`, `docs/OFFLINE.md`, `docs/HIDDEN-SET.md`, `docs/WEB-DEMO.md` and `docs/LAW-LIBRARY.md` now open on the site, `README.md`, `WebText.cs`, `appsettings.json`, `Directory.Build.props` and the data folders on GitHub. The About page's documentation list opens the pages, with the GitHub file as a second link.
+- **Languages.** The documents are English; the Arabic page shows the English text with the Arabic line «هذه الوثيقة متاحة بالإنجليزية فقط.» under the title, the article itself marked `lang="en" dir="ltr"`.
+- **Build.** The Dockerfile's site stage copies the six files and the nine pictures PRODUCT-DETAILS embeds; `.dockerignore` lets exactly those through under `docs/*`. One thing to know: Astro caches the rendered documents in `site/node_modules/.astro/`; after a change to the plugin that folder must go before `npm run build` (noted in `docs/WEB-DEMO.md`).
+- **Checks.** `site.spec.ts` covers the twelve pages (status, policy, `lang`/`dir`, canonical, alternates, the generic `og/docs-<lang>.png`, the table of contents, one H1, the Arabic note, the adapted links on product-details, nine lazy WebP pictures, `tabindex` on code blocks, the sibling link landing on its page, the sitemap); axe runs on three of them; `scripts/links.mjs` resolves relative links so the crawl follows them; `og.mjs` and `shots.mjs` know the `docs` page. Every page's HTML stays under the 30 KB gzip budget (product-details 22 KB).
+
+### Item 5: "Test it in 5 minutes", pictures and gentle motion
+
+- **Pictures.** Each of the five steps on `/try/` shows what the demo looks like at that point, cropped on what matters: the first screen with the sample (step 1), the red card citing CPCA art. 15-3 (step 2), the AI's reading and the question «هل هذا هو نوع الدعوى؟» (step 3), the drafted grounds with the AI mark and the review row (step 4), the refused export and then the ticked box (step 5). Arabic pictures on `/ar/`, English on `/en/`, both themes captured and the one matching the visitor's theme shown. Steps 3, 4 and 5 come from the real model runs described under push A (Nemotron 3 Ultra through OpenRouter, 3 November 2026, the fictitious «Unpaid loan» sample); steps 1 and 2 from the demo without a model call; each picture says which under it. The stand-in model was never used. Every rendition is under 80 KB and lazy; the compact guide on the home stays text-only.
+- **Lightbox.** A click (or Enter) on a picture opens it larger in one native `<dialog>` (`site/src/components/Lightbox.astro`, wired by `public/ui.js`): Esc, the close button and a click outside close it, and focus returns to the picture's button. No library, nothing inline.
+- **Motion.** When motion is welcome (`prefers-reduced-motion: no-preference`), `ui.js` sets `data-motion` on `<html>`; each step then fades and slides in as it scrolls into view, and a gold line down the step numbers fills up to the last step shown. Without that attribute (reduced motion, or no script) everything is simply visible and the line is full. A Playwright test checks the pictures, the dialog, the focus return and both motion states.
+
+### Item 6: team (the text; the photos follow in push C)
+
+The home's team section shows the fuller descriptions of the About page (`about.team.did.*`) under each name and role. In Arabic every name is in Arabic script: `AboutTeamDesign` in `src/DzLegal.Presentation/Resources/Strings.resx` now reads «جهان بن جدو — تصميم الواجهة وتجربة الاستخدام» (the owner's spelling, and the owner agreed to the change in the app's own string), `strings.generated.json` was regenerated, and `tests/DzLegal.App.Tests/AboutTests.cs` expects the new line (same assertion, same order). The English string is unchanged.
+
+### Checks (push B)
+
+| Check | Result |
+|---|---|
+| `npm run build` | 26 pages, `check-dist` clean |
+| `npm run budget` | every budget met; the documentation pages 13 to 22 KB gzip |
+| Playwright `site.spec.ts` + `axe.spec.ts` (Chromium) | 52 passed, 2 skipped; axe 0 violations on the 17 pages in both themes and the demo |
+| Lighthouse, `/try/` and three documentation pages | <<LIGHTHOUSE_B>> |
+| `npm run links` | <<LINKS_B>> |
+| `dotnet build -c Release` with SDK 10.0.114 pinned and with the default SDK | <<BUILD_B>> |
+| `dotnet test -c Release` | <<TESTS_B>> |
+| `docker build` (ECR mirror of `node:22-alpine`) | <<DOCKER_B>> |
+
+Screenshots beside this report: `try-<ar|en>-<light|dark>-<390x844|1366x768|1920x1080>.jpg` and `docs-*` (the product-details page) at the same sizes, full page.
+
+### Files changed in push B
+
+- `site/src/content/docs-pages.ts`, `site/src/content/repo.ts`, `site/src/content.config.ts`, `site/src/pages/[lang]/docs/[slug].astro` (new); `site/astro.config.mjs`, `site/package.json` and the lock file (`@astrojs/markdown-satteri`, Astro's own processor, declared), `site/src/content/product.ts`, `site/src/components/Source.astro`, `site/src/pages/[lang]/about.astro`, `site/src/styles/global.css`.
+- `site/src/components/TryGuide.astro`, `site/src/components/Lightbox.astro` (new), `site/src/components/Shot.astro`, `site/public/ui.js`, `site/src/pages/[lang]/try.astro`, `site/public/og/docs-<lang>.png` (new).
+- `site/src/components/Team.astro`; `src/DzLegal.Presentation/Resources/Strings.resx` and `tests/DzLegal.App.Tests/AboutTests.cs` (the designer's name in Arabic script); `site/src/i18n/*.json`, `strings.generated.json`.
+- `site/tests/site.spec.ts`, `site/tests/axe.spec.ts`, `site/scripts/links.mjs`, `site/scripts/og.mjs`, `site/scripts/shots.mjs`; `Dockerfile`, `.dockerignore`; `docs/WEB-DEMO.md`.
+
+### Arabic strings added in push B (for Khouloud)
+
+| Key | Arabic | English |
+|---|---|---|
+| `docs.englishOnly` | هذه الوثيقة متاحة بالإنجليزية فقط. | This document is in English. |
+| `docs.toc` | في هذه الصفحة | On this page |
+| `docs.github` | الملف على GitHub | The file on GitHub |
+| `shot.close` | إغلاق | Close |
+| `try.shot.1` | بعد فتح المثال: الخطوات التسع، والعريضة على الورق، والمراجعة الشكلية عند 8 من 9. | After opening the sample: the nine steps, the petition on paper, the formal check at 8 / 9. |
+| `try.shot.2` | البطاقة الحمراء: موطن المدعى عليه ناقص، المادة 15-3 من قانون الإجراءات المدنية والإدارية، و7 من 9. | The red card: the defendant's domicile missing, CPCA art. 15-3, 7 / 9. |
+| `try.shot.3` | قراءة الذكاء الاصطناعي للوقائع وسؤال «هل هذا هو نوع الدعوى؟». | The AI's reading of the facts and the question… |
+| `try.shot.4` | المناقشة القانونية المصوغة بعلامة الذكاء الاصطناعي، وخانة المراجعة تحتها. | The drafted legal grounds with the AI mark, and the review box under them. |
+| `try.shot.5` | التصدير مرفوض قبل المراجعة، ثم مسموح بعد التأشير على الخانة. | Export refused before the review, then allowed once the box is ticked. |
+| `try.shot.demo` | لقطة من العرض التجريبي، دون أي نداء للنموذج. | From the demo, without any model call. |
+| `try.shot.real` | لقطة من العرض التجريبي مع نموذجه المستضاف (Nemotron 3 Ultra عبر OpenRouter)، 3 نوفمبر 2026. | From the demo with its hosted model… |
+| `AboutTeamDesign` (app string) | جهان بن جدو — تصميم الواجهة وتجربة الاستخدام | Djihane Ben Djeddou — interface and experience design |
+
+### Unsure about (push B)
+
+- The documentation pages' meta description and Open Graph image are generic for the Arabic page (the document is English); the Arabic note leads the description.
+- The guide's compact form on the home keeps no pictures, to keep the home light; the full guide carries them.

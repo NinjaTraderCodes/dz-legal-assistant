@@ -9,9 +9,10 @@ import sharp from "sharp";
 
 const arg = (name, fallback) => { const i = process.argv.indexOf("--" + name); return i > 0 ? process.argv[i + 1] : fallback; };
 const base = arg("base", "http://localhost:5080");
-const pages = arg("pages", "home,try,download,law,privacy,about").split(",");
+const pages = arg("pages", "home,try,download,law,privacy,about,docs").split(",");
 const out = resolve(dirname(fileURLToPath(import.meta.url)), "..", "public", "og");
-const pathOf = (page, lang) => (page === "home" ? `/${lang}/` : `/${lang}/${page}/`);
+// "docs" is one image for the six document pages, taken from the first of them.
+const pathOf = (page, lang) => (page === "home" ? `/${lang}/` : page === "docs" ? `/${lang}/docs/product-details/` : `/${lang}/${page}/`);
 mkdirSync(out, { recursive: true });
 
 const browser = await chromium.launch();

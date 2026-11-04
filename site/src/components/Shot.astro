@@ -17,7 +17,7 @@ interface Props {
     dark?: ImageMetadata;
     alt: string;
     caption?: string;
-    /** The width the picture is shown at on wide screens, in CSS px: the rendition widths follow it. */
+    /** The width the picture is shown at on wide screens, in CSS px: the rendition widths follow it, and the figure stops a little past it. */
     width?: number;
     /** Shown at its own size, never stretched: for small strips cut from a 1x frame. */
     natural?: boolean;
@@ -33,7 +33,7 @@ const full = large ? await getImage({ src: light, format: "webp", width: Math.mi
 const fullDark = large && dark ? await getImage({ src: dark, format: "webp", width: Math.min(dark.width, 1600), quality: 80 }) : null;
 const Wrap = large ? "button" : "div";
 ---
-<figure class:list={["shot", natural && "natural", className]}>
+<figure class:list={["shot", natural && "natural", className]} style={natural ? undefined : `max-width: min(100%, ${Math.round(width * 1.15)}px)`}>
     <Wrap class="shot-frame" {...(large ? { type: "button", "data-lightbox": "", "aria-label": t(lang, "shot.open") } : {})}>
         <Image src={light} alt={alt} widths={widths} sizes={sizes} format="webp" quality={72} loading="lazy" decoding="async" class:list={["shot-img", dark ? "shot-light" : "shot-any"]} data-full={full?.src} />
         {dark && <Image src={dark} alt={alt} widths={widths} sizes={sizes} format="webp" quality={72} loading="lazy" decoding="async" class="shot-img shot-dark" data-full={fullDark?.src} />}

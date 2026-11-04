@@ -45,7 +45,8 @@ while (queue.length) {
     for (const href of hrefs) {
         if (!href || href.startsWith("#") || href.startsWith("mailto:")) continue;
         if (/^https?:\/\//.test(href)) { if (!external.has(href)) external.set(href, { status: null, from: path }); continue; }
-        const clean = href.split("#")[0];
+        // Relative links (the document pages link their siblings as ../<slug>/) resolve against the page.
+        const clean = new URL(href.split("#")[0], page.url()).pathname;
         if (clean.startsWith("/lang/")) {
             // The switch sets the cookie and comes back: checked once per language with a plain request, not followed.
             const r = await context.request.get(base + clean, { maxRedirects: 0 });

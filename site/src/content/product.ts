@@ -3,12 +3,12 @@
 import generated from "../i18n/strings.generated.json";
 import { t, type Lang } from "../i18n";
 
+import { repoUrl } from "./repo";
+
 export const version = (generated as { _version: string })._version;
-export const repoUrl = "https://github.com/NinjaTraderCodes/dz-legal-assistant";
+export { repoUrl, blob } from "./repo";
 export const releaseUrl = `${repoUrl}/releases/latest`;
 export const releasesUrl = `${repoUrl}/releases`;
-/** A file of the repository at its default branch, for the "source" lines under every figure. */
-export const blob = (path: string) => `${repoUrl}/blob/HEAD/${path}`;
 
 export interface SitePage { key: string; path: string; href: string; label: string }
 /** The site's pages after the home, in the order the header and the footer show them. */

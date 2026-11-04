@@ -246,8 +246,16 @@ test("the six documents are pages in both languages, with their links adapted an
             csp(response);
             const html = await text(response);
             expect(html).toMatch(new RegExp(`<html[^>]*lang="${lang}"[^>]*dir="${lang === "ar" ? "rtl" : "ltr"}"`));
-            // The document is English whatever the page's language, and the Arabic page says so.
-            expect(html).toContain('class="section page layout" lang="en" dir="ltr"');
+            // A summary in the page's language comes first: 5 to 8 points and the line for a lawyer. The full document
+            // follows, folded and closed, English whatever the page's language, and the Arabic page says so.
+            const summary = html.slice(html.indexOf('id="doc-summary"'), html.indexOf('id="doc-full"'));
+            const points = summary.match(/<li[ >]/g)?.length ?? 0;
+            expect(points, `${lang}/docs/${slug} points`).toBeGreaterThanOrEqual(5);
+            expect(points, `${lang}/docs/${slug} points`).toBeLessThanOrEqual(8);
+            expect(summary).toContain(lang === "ar" ? "ما يعنيه هذا للمحامي" : "What this means for a lawyer");
+            expect(summary).toMatch(lang === "ar" ? /[\u0600-\u06FF]{4,}/ : /\b(the|and)\b/);
+            expect(html).toMatch(/<details id="doc-full" class="full" data-fold(?![^>]*\sopen)[^>]*>\s*<summary[^>]*>(قراءة الوثيقة كاملة|Read the full document)</);
+            expect(html).toMatch(/<article class="body" lang="en" dir="ltr"/);
             if (lang === "ar") expect(html).toContain("هذه الوثيقة متاحة بالإنجليزية فقط");
             expect(html).toContain(`rel="canonical" href="https://dz-legal-assistant-ai.onrender.com/${lang}/docs/${slug}/"`);
             expect(html).toContain(`hreflang="${lang === "ar" ? "en" : "ar-DZ"}" href="https://dz-legal-assistant-ai.onrender.com/${lang === "ar" ? "en" : "ar"}/docs/${slug}/"`);
@@ -273,13 +281,32 @@ test("the six documents are pages in both languages, with their links adapted an
     expect(details.match(/<pre[^>]*tabindex="0"/g)?.length).toBeGreaterThanOrEqual(5);
     expect(details).toContain('class="table-wrap"');
     expect(details).toContain("<title>Product details — DZ Legal Assistant</title>");
-    // The sibling link lands on the sibling page.
+    // The sibling link lands on the sibling page (the full document opened first).
     await page.goto("/en/docs/product-details/");
+    await page.locator("#doc-full > summary").click();
     await page.locator('article.body a[href="../law-library/"]').first().click();
     await expect(page).toHaveURL(/\/en\/docs\/law-library\/$/);
     await expect(page.locator("h1")).toHaveText(/Law library/);
     const sitemap = await text(await request.get("/sitemap-0.xml"));
     for (const slug of slugs) for (const lang of ["ar", "en"]) expect(sitemap).toContain(`<loc>https://dz-legal-assistant-ai.onrender.com/${lang}/docs/${slug}/</loc>`);
+});
+
+test("a documentation page opens its folded document on a heading link from the contents, and on arriving with #anchor", async ({ page }) => {
+    await page.setViewportSize({ width: 1366, height: 900 });
+    for (const lang of ["ar", "en"]) {
+        await page.goto(`/${lang}/docs/product-details/`);
+        const fold = page.locator("#doc-full");
+        await expect(fold).not.toHaveAttribute("open", "");
+        // The contents list the summary, the line for a lawyer, the fold, and the document's headings under it.
+        await expect(page.locator('.toc a[href="#doc-summary"]')).toBeVisible();
+        await expect(page.locator('.toc a[href="#doc-lawyer"]')).toBeVisible();
+        await page.locator('.toc a[href="#principles"]').click();
+        await expect(fold).toHaveAttribute("open", "");
+        await expect(page.locator("#principles")).toBeInViewport();
+    }
+    await page.goto("/en/docs/offline/#how-it-is-enforced-in-code");
+    await expect(page.locator("#doc-full")).toHaveAttribute("open", "");
+    await expect(page.locator("#how-it-is-enforced-in-code")).toBeInViewport();
 });
 
 test("the guide page shows a picture of every step, opens one larger in a native dialog and closes it with Escape", async ({ page }) => {

@@ -1,6 +1,6 @@
 // Small behaviours of the site, loaded at the end of the page: the theme toggle, remembered in a first-party
-// cookie and localStorage; the hand-over to the demo; the gentle reveal of steps as they scroll into view; and the
-// picture lightbox. No framework, no network calls.
+// cookie and localStorage; the hand-over to the demo; the gentle reveal of steps as they scroll into view; the
+// picture lightbox; and the folded documents that open on a link to one of their headings. No framework, no network calls.
 (function () {
   function remember(key, value) {
     try { document.cookie = key + "=" + value + "; Path=/; Max-Age=31536000; SameSite=Lax" + (location.protocol === "https:" ? "; Secure" : ""); } catch (e) { /* ignore */ }
@@ -84,5 +84,27 @@
     // A click on the backdrop (the dialog itself, outside its content) closes it; Esc and the button are native.
     dialog.addEventListener("click", function (event) { if (event.target === dialog) dialog.close(); });
     dialog.addEventListener("close", function () { image.removeAttribute("src"); });
+  }
+
+  // A documentation page keeps the full document folded under its summary. A link to one of its headings, from the
+  // table of contents or another page, opens the fold first, so the browser can scroll to the heading.
+  function unfold(hash) {
+    if (!hash || hash.length < 2) return;
+    var target;
+    try { target = document.getElementById(decodeURIComponent(hash.slice(1))); } catch (e) { return; }
+    var fold = target && (target.matches("details[data-fold]") ? target : target.closest("details[data-fold]"));
+    if (!fold) return;
+    if (!fold.open) {
+      fold.open = true;
+      if (target !== fold) target.scrollIntoView();
+    }
+  }
+  if (document.querySelector("details[data-fold]")) {
+    unfold(location.hash);
+    window.addEventListener("hashchange", function () { unfold(location.hash); });
+    document.addEventListener("click", function (event) {
+      var link = event.target.closest && event.target.closest('a[href^="#"]');
+      if (link) unfold(link.getAttribute("href"));
+    });
   }
 })();

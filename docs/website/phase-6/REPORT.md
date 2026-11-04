@@ -201,6 +201,223 @@ The drawn pieces use only the app's existing strings (no new wording); `shot.liv
 - `site/src/components/AppPiece.astro`, `Shot.astro`, `Proofs.astro`, `AiPanel.astro`, `TryGuide.astro`; `site/src/content/steps.ts` (`splitGrounds`, `groundsTitle`) and `site/src/content/desktop-run.json` (new); `site/scripts/crops.mjs`, `site/scripts/strings.mjs`, `site/src/i18n/strings.generated.json`, `site.ar.json`, `site.en.json`; `site/tests/guide-shots.mjs`, `site/tests/site.spec.ts`; `site/src/assets/shots/desktop/*.png` (16 crops re-cut), `site/src/assets/shots/guide/step1-steps-*`, `step1-check-*` (new), `step4-grounds-*` (trimmed); deleted: `ai/stage4-drafting.png`, `ai/stage4-timing.png`, `guide/step1-sample-*`; this report and its captures.
 - The merge of the main branch (`28409d7`) brought only `docs/LAW-LIBRARY.md` and `docs/WEB-DEMO.md`.
 
+## Push 3: the documentation pages (phase 6, part B)
+
+The six documents were too long for a visitor. Each site page now opens with a short summary in the page's language, and the full document follows, folded. The files in `docs/` are unchanged.
+
+### What was built
+
+- **A summary at the top of each page,** in Arabic on `/ar/docs/…` and in English on `/en/docs/…`: 8 points and one line «ما يعنيه هذا للمحامي» / "What this means for a lawyer". One file per document and language, `site/src/content/docs-summaries/<slug>.<lang>.md` (the points as a Markdown list, the line in the front matter), read by a second content collection (`docSummaries` in `site/src/content.config.ts`, which requires the line). A missing file fails the build.
+- **The full document folded under it,** in a native `<details>` closed by default, its summary «قراءة الوثيقة كاملة» / "Read the full document". The document stays English, and on the Arabic page the existing note «هذه الوثيقة متاحة بالإنجليزية فقط.» now sits inside the fold, above the document it describes.
+- **The table of contents covers both parts:** «الخلاصة» / "Summary", the line for a lawyer, then "Read the full document" with the document's own headings nested under it (in English, left to right).
+- **The fold opens on demand.** A click on a heading in the contents, a link from another page, or arriving with `#anchor` opens the fold and scrolls to the heading (`public/ui.js`, `unfold`: on load, on `hashchange` and on a click on an in-page link). Without the script the fold opens with a click on its summary line, as any `<details>`.
+- **On a phone** the summary comes first, then the contents, then the fold, so the points are what a visitor reads first.
+- **The Arabic page is described in Arabic:** its meta description is the summary's line for a lawyer (the English page keeps the document's first paragraph).
+
+### Faithful to the documents
+
+Every point is taken from a sentence of its document; no point adds a claim or a figure. The summaries were checked again against the two documents corrected on the main branch (`28409d7`): the law library summary already gave the 1,361 articles of the table at the top of `LAW-LIBRARY.md`, which the corrected "Status" section now repeats; in the web demo summary, the point about storage now follows the corrected "Limits" line (Open and Save use a draft file on the visitor's own disk; nothing is saved on the server).
+
+### Where each point comes from
+
+Every point is a sentence of its document, shortened or merged with the sentence beside it; no point adds a claim or a figure. The Arabic and English summaries carry the same points in the same order. Line numbers are those of the file in `docs/` at `28409d7`.
+
+**`docs/OFFLINE.md`**
+
+| # | Point | From |
+|---|---|---|
+| 1 | No case data leaves the lawyer's computer; client data is covered by professional secrecy | introduction (3) |
+| 2 | Form, templates, storage, interface, template mode, grounds suggestions, library and search use no network | "What the application does on the network", table rows (13, 14, 16) |
+| 3 | The local model only at 127.0.0.1:11434; packets never leave the machine | same table, "Local model engine" row (15) |
+| 4 | Any other address refused without a DNS lookup; no proxy, no redirect; "cloud" models refused | "How it is enforced in code" (22 to 24) |
+| 5 | No telemetry, analytics, crash reporting or update check | table, last row (18); "How it is enforced in code" (26) |
+| 6 | Official-source links open only on a click; fixed data; only joradp.dz and mjustice.dz | table, "Official source" row (17) |
+| 7 | Drafts saved where the lawyer chooses, local app-data folder by default, nothing synchronised | "Where data is stored" (38, 41) |
+| 8 | The web demo is a separate program with a hosted model, for fictitious cases only | the note under the introduction (5) |
+| Lawyer | Draft with the network unplugged; the facts stay on the computer, as professional secrecy requires | introduction (3); "Verify it yourself" (31 to 33) |
+
+**`docs/HIDDEN-SET.md`**
+
+| # | Point | From |
+|---|---|---|
+| 1 | It measures the fact reading on cases its developers have never seen | "Purpose" (3) |
+| 2 | The 61 development cases give an optimistic score; the hidden set is the honest measure | introduction (5) |
+| 3 | Written by someone who has not worked on the reader; may not read the prompts, cases or results | "Rules" 1 to 3 (9 to 18) |
+| 4 | Never in the repository, never sent to the developers; only the summary is shared | "Rules" 4 and 6 (19, 23) |
+| 5 | About 100 fictitious cases in formal Arabic: 4 or 5 per claim type, 10 outside the catalogue | "Rules" 5 (20); "Content" (27 to 31) |
+| 6 | The cases read like a lawyer's notes | "Content" (33 to 42) |
+| 7 | The three runs: 32 of 90; 64 of 90; 60 of 90, claim type 85 of 90, 10 of 10 declined | "Runs", table (123 to 125) |
+| 8 | Once looked at, a set is no longer hidden; the next measure needs a new set | "Rules" 7 (25); "Runs" (129) |
+| Lawyer | How often the reading is fully right on unseen cases: the honest measure, not the optimistic one | "Purpose" (3); introduction (5) |
+
+**`docs/PRODUCT-DETAILS.md`**
+
+| # | Point | From |
+|---|---|---|
+| 1 | Formal Arabic, the petition's language (CPCA art. 8); Darija or French notes accepted, never refused or cut | introduction (5 to 7) |
+| 2 | 1,361 articles: Family Code and CPCA complete, 33 Civil and Commercial, 17 labour; none of these checks is a lawyer's review | "Law texts" (16 to 21) |
+| 3 | Identification, court, facts, dates, signature and requests from the form and the lawyer's lines; the model writes only the grounds | "Principles", "Grounded, not free-generating" (29) |
+| 4 | Reading, candidates without a model, the model's choice; nothing ticked before the claim type is confirmed | "Legal grounds: analysis of the facts" (39 to 41, 46) |
+| 5 | The code writes each article and its rule, the AI how the facts meet it; a citing or unknown-number answer asked again, then «(...)», which blocks export | "How the draft stays grounded" (54) |
+| 6 | Each AI section carries the review line; PDF, Word and copy refused until ticked and no «(...)»; editing is not reviewing | "Principles", "Assistive, never autonomous" (28) |
+| 7 | Analysis 2 to 3 minutes on a CPU-only laptop (117 to 181 s on an i5-1335U); template mode without a model | "Legal grounds: analysis of the facts" (38); "Quick start" (103) |
+| 8 | The claim catalogue is not yet verified by a lawyer; an audit found errors; corrections under way | the status note (59) |
+| Lawyer | Text for the lawyer to edit and sign; nothing AI-written leaves unreviewed | "Principles", "Assistive, never autonomous" (28) |
+
+**`docs/ARCHITECTURE.md`**
+
+| # | Point | From |
+|---|---|---|
+| 1 | Desktop and demo share everything below the shell; only the shell and provider differ; the desktop never references the hosted providers | "Modules and dependencies" (24) |
+| 2 | The formal check is one pure function: no I/O, no AI, no clock; runs on every keystroke | same section, FormEngine (27) |
+| 3 | Identification from the form through templates; the model writes only narrative sections, which limits invention | same section, Drafting (29); "Key decisions", "Generated vs narrative sections" (98) |
+| 4 | Each facts line becomes a «حيث إن» paragraph; small models reversed lender and borrower | "Data flow" step 0 (65) |
+| 5 | The model's text is checked: foreign script, unknown numbers, dropped numbers, stray Latin words, mostly non-Arabic text | "NarrativeChecks" (35 to 40) |
+| 6 | The checks cannot detect errors of meaning such as swapped roles; those remain the lawyer's review | same item (44) |
+| 7 | Each element: its article, a severity, a check from a small closed set; anything new is a new kind with tests | "The rule model" (74 to 91) |
+| 8 | Deterministic before AI: required articles from the catalogue, quotations checked against the text | "Key decisions", "Deterministic before AI" (104) |
+| Lawyer | What must be exact comes from the form; the model writes, it does not decide the law | "Key decisions" (98, 104) |
+
+**`docs/LAW-LIBRARY.md`**
+
+| # | Point | From |
+|---|---|---|
+| 1 | Articles quoted only from the local official texts, never from a model's memory; a 4B model cannot recall them reliably | introduction (3) |
+| 2 | 1,361 articles: Family Code 227 and CPCA 1,084 complete, 33 Civil and Commercial, 17 labour | the table at the top (5 to 11) |
+| 3 | Each text says how it was checked: Official Journal page, letter by letter against the PDF, or page images read twice | the table's "Proof" column (9 to 11); the `check` paragraph (21) |
+| 4 | No article marked verified until a lawyer has checked it | introduction (23) |
+| 5 | Nothing scraped, searched online or read from PDFs while the lawyer works; the analysis starts at the click | "How the grounds analysis works" (27) |
+| 6 | Under each suggestion: reference, place in the code, link, "not verified by a lawyer" tag | "Provenance shown under each suggested article" (129 to 133) |
+| 7 | No recognised claim type, no proposal; a small model does not use this way out, so the lawyer judges the claim type | step 2 (42); "Conclusion and decision" (116) |
+| 8 | The app never downloads anything; importing is a maintainer's task; the app reads offline | "Rules" 4 (140) |
+| Lawyer | Every proposed article is quoted from an official text with its reference and link; none yet checked by a lawyer | introduction (3, 23); "Provenance" (129 to 133) |
+
+**`docs/WEB-DEMO.md`**
+
+| # | Point | From |
+|---|---|---|
+| 1 | An offline desktop app; the demo lets anyone use the real product from a link | introduction (5, 6) |
+| 2 | The same engine, library and screen logic; only where the model runs differs | introduction (7, 8) |
+| 3 | Desktop Gemma 3 4B local; demo Nemotron 3 Ultra on OpenRouter, then Gemma 4 26B, then Groq | the comparison table (13) |
+| 4 | The demo sends the case to the hosted model: fictitious cases only | the comparison table (14) |
+| 5 | Nothing saved on the server; Open and Save use a file on the visitor's disk; otherwise a recovery copy in the browser | "Limits, stated plainly" (195, the passage corrected on the main branch); "How it is built" (94) |
+| 6 | Calls limited per visitor and per address; one shared queue, two at a time | "How it is built", the diagram (77, 78) |
+| 7 | Failures never end a session; the next engine answers; the visitor sees a plain message | "How it is built" (89 to 92) |
+| 8 | Even the larger model makes mistakes, so the checks matter: required articles always proposed, the program writes each rule | "Limits, stated plainly", AI quality (187 to 189) |
+| Lawyer | Invented cases only in the demo; real files in the desktop app, where nothing leaves the computer | the comparison table (14); introduction (5) |
+
+### Checks (push 3)
+
+| Check | Result |
+|---|---|
+| `npm run build` | 26 pages, `check-dist` clean (no repository link) |
+| Playwright `site.spec.ts` + `axe.spec.ts` (Chromium) | 54 passed, 1 skipped; axe 0 violations (both product-details pages and `/en/docs/architecture/` are in the axe list) |
+| New and updated tests | the documents test checks, on all twelve pages, 5 to 8 points in the page's language, the line for a lawyer, the closed fold and the English article, and opens the fold before following the sibling link; a new test opens the fold from a heading in the contents (Arabic and English) and on arriving with `#how-it-is-enforced-in-code` |
+| `npm run budget` | every budget met; the heaviest page, `/ar/docs/product-details/`, is 23.6 KB of HTML (gzip), under 30 KB |
+| `npm run links` | 37 internal, 11 outbound, 0 problems |
+| `dotnet build -c Release` with SDK 10.0.114 pinned and with the default SDK | 0 warnings, 0 errors with both (10.0.114 and 10.0.403); no file outside `site/` changed |
+| `dotnet test -c Release` | 986 of 986 green, the desktop project 305 of 305 in the parallel run this time |
+
+**Captures** in this folder: `docs-{ar,en}-{light,dark}-{390x844,1366x768,1920x1080}.jpg` (the product-details page, fold closed) and `docs-open-{ar,en}-{light,dark}-1366x768.jpg` (after a click on "Principles" in the contents: the fold open, the page at the heading).
+
+### New Arabic strings (push 3), for Khouloud
+
+| Key | Arabic | English |
+|---|---|---|
+| `docs.summary` | الخلاصة | Summary |
+| `docs.lawyer` | ما يعنيه هذا للمحامي | What this means for a lawyer |
+| `docs.readFull` | قراءة الوثيقة كاملة | Read the full document |
+
+The summaries themselves, every Arabic line, beside the English one:
+
+**`docs/PRODUCT-DETAILS.md`** (`site/src/content/docs-summaries/product-details.ar.md`)
+
+| # | Arabic | English |
+|---|---|---|
+| 1 | اللغة المدعومة هي العربية الفصحى، لغة العريضة نفسها (المادة 8 من قانون الإجراءات المدنية والإدارية)؛ وتُقبل الملاحظات المكتوبة بالدارجة أو بالفرنسية في معظمها، فلا تُرفض ولا تُقتطع. | The supported input is formal Arabic, the language the petition must be in (CPCA art. 8); notes in Darija or mostly in French are still accepted, never refused or cut. |
+| 2 | حُمّلت 1,361 مادة: قانون الأسرة كاملا، وقانون الإجراءات المدنية والإدارية كاملا مع تعديل 2022، و33 مادة من القانونين المدني والتجاري، و17 مادة من قانون العمل؛ ولا يُعدّ أي من هذه الفحوص مراجعةً من محام. | 1,361 articles are loaded: the complete Family Code, the complete CPCA with its 2022 amendment, 33 articles of the Civil and Commercial Codes and 17 labour-law articles; none of these checks is a lawyer's review. |
+| 3 | الهوية والجهة القضائية والوقائع والتواريخ وخانة التوقيع والطلبات تأتي من الاستمارة ومن سطورك أنت؛ ولا يكتب النموذج إلا المناقشة القانونية. | The identification, the court, the facts, the dates, the signature block and the requests come from the form and your own lines; the model writes only the legal grounds. |
+| 4 | يقرأ التحليل الوقائع، ثم يجمع المواد المرشحة من الفهرس دون أي نموذج، ثم يترك للنموذج الاختيار من بينها؛ ولا يُؤشَّر على أي شيء قبل أن تؤكد نوع الدعوى. | The analysis reads the facts, gathers the candidate articles from the catalogue without any model, and lets the model choose among them; nothing is ticked until you confirm the claim type. |
+| 5 | في المناقشة القانونية، تكتب البرمجة كل مادة وقاعدتها في سطر واحد، ولا يكتب الذكاء الاصطناعي إلا كيف تنطبق الوقائع عليها؛ والجواب الذي يذكر مادة أو يحمل رقما لا يرد في ملاحظاتك يُطلب مرة أخرى، ثم يُترك «(...)»، وهو ما يمنع التصدير. | In the grounds, the code writes each article and its one-line rule; the AI writes only how the facts meet it, and an answer that cites an article or has a number found nowhere in your notes is asked again, then left as «(...)», which blocks export. |
+| 6 | كل قسم كتبه الذكاء الاصطناعي يحمل «راجعت هذا القسم وأتحمل مضمونه»؛ ويُرفض التصدير إلى PDF وWord والنسخ حتى يُؤشَّر على كل قسم منها ولا يبقى أي «(...)»، وتعديل القسم لا يُعدّ مراجعة له. | Each AI-written section carries «راجعت هذا القسم وأتحمل مضمونه»; PDF, Word and copy are refused until every one is ticked and no «(...)» remains, and editing a section does not count as reviewing it. |
+| 7 | يستغرق التحليل نحو دقيقتين إلى ثلاث على حاسوب محمول دون بطاقة رسومات (117 إلى 181 ثانية قيست على معالج Intel i5-1335U)؛ ودون أي نموذج مثبّت، يبني وضع القوالب المسودة من القوالب ومن ملاحظاتك. | The analysis takes about 2 to 3 minutes on a laptop without a graphics card (117 to 181 s measured on an Intel i5-1335U); with no model installed, the template mode builds the draft from the templates and your notes. |
+| 8 | فهرس الدعاوى (أنواعها ومواده وما هو إلزامي منها) لم يتحقق منه محام بعد: وجدت فيه مراجعة مستقلة أخطاء، والتصحيحات جارية. | The claim catalogue (its claim types, articles and required flags) is not yet verified by a lawyer: an independent audit found errors in it, and corrections are under way. |
+| «ما يعنيه هذا للمحامي» | لا ينتج التطبيق إلا نصا تعدّله أنت وتوقّعه، ولا يغادره شيء كتبه الذكاء الاصطناعي قبل أن تراجعه. | The app only produces text for you to edit and sign, and nothing the AI wrote leaves it until you have reviewed it. |
+
+**`docs/ARCHITECTURE.md`** (`site/src/content/docs-summaries/architecture.ar.md`)
+
+| # | Arabic | English |
+|---|---|---|
+| 1 | يتقاسم التطبيق المكتبي والعرض التجريبي كل ما تحت واجهتيهما؛ ولا يختلفان إلا في الواجهة ومزوّد النموذج، والتطبيق المكتبي لا يرتبط أبدا بالمزوّدين المستضافين. | The desktop app and the web demo share everything below their shells; only the shell and the model provider differ, and the desktop never references the hosted providers. |
+| 2 | المراجعة الشكلية دالة واحدة خالصة، بلا قراءة أو كتابة ولا ذكاء اصطناعي ولا ساعة: نتيجتها ثابتة، وهي سريعة بما يكفي لتعمل مع كل حرف تكتبه. | The formal check is a single pure function with no input or output, no AI and no clock: deterministic, and fast enough to run on every keystroke. |
+| 3 | بيانات الهوية الحاسمة قانونا تأتي من الاستمارة مباشرة عبر القوالب؛ ولا يكتب النموذج إلا الأقسام السردية، وهو ما يحدّ من الاختلاق. | Legally critical identification data comes straight from the form, through templates; the model writes only the narrative sections, which limits invention. |
+| 4 | يصبح كل سطر من ملاحظات وقائعك فقرة «حيث إن»: فالنماذج الصغيرة عكست من أقرض ومن اقترض حين أعادت كتابة الوقائع. | Each line of your facts notes becomes a «حيث إن» paragraph: small models reversed who lent and who borrowed when they rewrote facts. |
+| 5 | يُفحص نص النموذج مقارنةً بمعطياتك: حروف من خط أجنبي، وأرقام لا ترد في أي مُدخل، وأرقام من ملاحظاتك أسقطها، وكلمات لاتينية دخيلة، ونص معظمه بغير العربية. | The model's text is checked against your material: foreign script, numbers found in no input, numbers from your notes that it dropped, stray Latin words, text mostly not in Arabic. |
+| 6 | لا تكشف هذه الفحوص أخطاء المعنى، كتبادل أدوار الأطراف: تلك تبقى من مراجعة المحامي. | These checks cannot detect errors of meaning, such as swapped roles: those remain the lawyer's review. |
+| 7 | يحمل كل بيان إلزامي مادته ودرجة خطورته وفحصا من مجموعة صغيرة مغلقة؛ وكل جديد يجب أن يكون نوعا جديدا له اختباراته، لا منطقا مخفيا في الواجهة. | Each mandatory element carries its article, a severity and a check from a small closed set; anything new must be a new kind with unit tests, never logic hidden in the interface. |
+| 8 | البرمجة قبل الذكاء الاصطناعي: المواد التي يفرضها نوع الدعوى يقترحها الفهرس لا النموذج، والاقتباسات تُقارن بنص المادة. | Deterministic before AI: the articles a claim type requires are proposed by the catalogue, not by the model, and quotations are checked against the article's text. |
+| «ما يعنيه هذا للمحامي» | ما يجب أن يكون دقيقا في عريضتك يأتي من استمارتك أنت، والنموذج يكتب ولا يقرر القانون. | What must be exact in your petition comes from your own form, and the model writes; it does not decide the law. |
+
+**`docs/OFFLINE.md`** (`site/src/content/docs-summaries/offline.ar.md`)
+
+| # | Arabic | English |
+|---|---|---|
+| 1 | بُني التطبيق المكتبي بحيث لا تغادر أي معطيات قضية حاسوبَ المحامي، لأن معطيات قضايا الموكلين يشملها السر المهني. | The desktop app is built so that no case data leaves the lawyer's computer, because client case data is covered by professional secrecy. |
+| 2 | الاستمارة والقوالب والحفظ والواجهة ووضع القوالب واقتراح الأسانيد والمكتبة القانونية والبحث عن المواد لا تستعمل الشبكة إطلاقا. | The form, the templates, the storage, the interface, the template mode, the grounds suggestions, the law library and the article search use no network at all. |
+| 3 | لا يُخاطَب النموذج المحلي إلا على العنوان 127.0.0.1:11434، وهو برنامج يعمل على الحاسوب نفسه: لا تغادر حزمه الجهاز. | The local model is reached only at 127.0.0.1:11434, a process on the same computer: its packets never leave the machine. |
+| 4 | يُرفض أي عنوان آخر دون أي استعلام DNS؛ ولا يمر اتصال النموذج عبر أي وسيط (proxy) ولا يتبع أي إعادة توجيه، وتُرفض نماذج Ollama «السحابية». | Any other address is refused without even a DNS lookup; the model's connection uses no proxy and follows no redirect, and Ollama "cloud" models are refused. |
+| 5 | لا يحتوي التطبيق على أي قياس عن بعد، ولا إحصاءات استعمال، ولا تقارير أعطال، ولا بحث عن التحديثات. | The app has no telemetry, analytics, crash reporting or update check. |
+| 6 | لا يُفتح رابط «المصدر الرسمي» في المتصفح إلا حين تنقر عليه؛ وهو معطى ثابت لا يُبنى أبدا من القضية، ولا تُقبل إلا روابط joradp.dz وmjustice.dz. | An "official source" link opens in the browser only when you click it; it is fixed data, never built from the case, and only joradp.dz and mjustice.dz links are accepted. |
+| 7 | تُحفظ المسودات حيث تختار، وافتراضيا في مجلد بيانات التطبيق المحلي على حاسوبك، ولا يُزامَن أي شيء مع أي مكان. | Drafts are saved where you choose, by default in your local application-data folder, and nothing is synchronised anywhere. |
+| 8 | العرض التجريبي على الإنترنت برنامج منفصل يرسل طلباته إلى نموذج مستضاف، لذلك فهو للقضايا الخيالية فقط. | The public web demo is a separate program that sends its prompts to a hosted model, so it is for fictitious cases only. |
+| «ما يعنيه هذا للمحامي» | يمكنك أن تصوغ عريضتك والحاسوب مفصول عن الشبكة: وقائع موكلك تبقى على حاسوبك، كما يقتضي السر المهني. | You can draft with the network unplugged: your client's facts stay on your computer, as professional secrecy requires. |
+
+**`docs/LAW-LIBRARY.md`** (`site/src/content/docs-summaries/law-library.ar.md`)
+
+| # | Arabic | English |
+|---|---|---|
+| 1 | لا يقتبس التطبيق أي مادة إلا من نسخته المحلية من النصوص العربية الرسمية، لا من ذاكرة نموذج: فنموذج بأربعة مليارات معامل لا يتذكر أرقام المواد ولا صياغتها بدقة. | The app quotes an article only from its local copy of the official Arabic texts, never from a model's memory: a 4-billion-parameter model cannot recall article numbers or wording reliably. |
+| 2 | حُمّلت اليوم 1,361 مادة: قانون الأسرة كاملا (227) وقانون الإجراءات المدنية والإدارية كاملا (1,084)، و33 مادة من القانونين المدني والتجاري، و17 مادة من قانون العمل. | 1,361 articles are loaded today: the complete Family Code (227) and the complete CPCA (1,084), 33 articles of the Civil and Commercial Codes, and 17 labour-law articles. |
+| 3 | يذكر كل نص كيف فُحص: قُرئ على صفحة الجريدة الرسمية التي نشرته، أو قورن حرفا حرفا بملفه الرسمي PDF، أو نُقل من صور الصفحات وقُرئ مرتين. | Each text says how it was checked: read against the Official Journal page that published it, proved letter by letter against its official PDF, or transcribed from page images and read twice. |
+| 4 | لا تُعلَّم أي مادة على أنها مُتحقَّق منها قبل أن يقارنها محام بصفحتها. | No article is marked verified until a lawyer has checked it against its page. |
+| 5 | لا يُجلب شيء من الإنترنت ولا يُبحث فيه ولا تُقرأ ملفات PDF أثناء عملك؛ ولا يبدأ التحليل إلا حين تنقر. | Nothing is scraped, searched online or read from PDFs while you work; the analysis starts only when you click. |
+| 6 | تحت كل مادة مقترحة: مرجعها الرسمي، وموضعها في القانون، ورابط إلى الوثيقة الرسمية، ووسم «لم يتحقق منها محام». | Under each suggested article: the official reference, its place in the code, a link to the official document, and a "not verified by a lawyer" tag. |
+| 7 | إذا لم يُتعرَّف على أي نوع دعوى فلا مرشح ولا اقتراح؛ لكن النموذج الصغير لا يستعمل هذا المخرج، فالمحامي هو من يحكم على نوع الدعوى المقترح. | With no recognised claim type there is no candidate and nothing is proposed; a small model does not use this way out, so the lawyer judges the proposed claim type. |
+| 8 | لا يُنزّل التطبيق أي شيء: استيراد النصوص مهمة يتولاها المطوّر وقت التطوير، والتطبيق المُوزَّع يقرأ نصوصه دون اتصال. | The app never downloads anything: importing a text is a maintainer's task at development time, and the shipped app reads its texts offline. |
+| «ما يعنيه هذا للمحامي» | كل مادة يقترحها التطبيق مقتبسة من نص رسمي، مع مرجعها ورابط مصدرها، لكن لم تُعلَّم أي منها بعدُ على أن محاميا راجعها. | Every article the app proposes is quoted from an official text, with its reference and source link, but none is yet marked as checked by a lawyer. |
+
+**`docs/HIDDEN-SET.md`** (`site/src/content/docs-summaries/hidden-set.ar.md`)
+
+| # | Arabic | English |
+|---|---|---|
+| 1 | تقيس المجموعة المخفية جودة قراءة التطبيق للوقائع، على قضايا لم يرها مطوّروه قط. | The hidden set measures how well the app reads the facts, on cases its developers have never seen. |
+| 2 | القضايا الـ61 المستعملة في التطوير بُني عليها القارئ وضُبط، فنتيجته عليها متفائلة؛ والمجموعة المخفية هي القياس الصادق. | The 61 development cases were used to build and tune the reader, so its score on them is optimistic; the hidden set is the honest measure. |
+| 3 | يكتبها شخص لم يعمل على القارئ، ولا يجوز له الاطلاع على تعليماته ولا على قضايا التطوير ولا على نتائج الاختبارات. | It is written by someone who has not worked on the reader, and who may not read its prompts, the development cases or the benchmark results. |
+| 4 | لا تدخل المستودع أبدا ولا تُرسل إلى المطوّرين؛ ولا يُشارَك منها إلا ملخص نتائجها. | It never enters the repository and is never sent to the developers; only its summary is shared. |
+| 5 | نحو 100 قضية خيالية بالعربية الفصحى: 4 أو 5 لكل نوع من أنواع الدعاوى الـ21 في الفهرس، و10 قضايا خارجه. | About 100 fictitious cases in formal Arabic: 4 or 5 for each of the 21 claim types of the catalogue, and 10 outside it. |
+| 6 | تُكتب القضايا كما يكتب المحامي ملاحظاته: تفاصيل جانبية، وتواريخ ومبالغ عدة، ووقائع لم تحدث، ووقائع ينكرها أحد الطرفين. | The cases read like a lawyer's notes: side details, several dates and amounts, facts that did not happen and facts one party denies. |
+| 7 | أصاب التشغيل الأول (30 أكتوبر 2026) القضية كاملةً في 32 من 90 مع إعطائه نوع الدعوى؛ وفي 31 أكتوبر 2026 أصاب نموذج Nemotron 3 Ultra عبر الإنترنت 64 من 90 مع إعطائه نوع الدعوى، و60 من 90 حين قرأ نوع الدعوى بنفسه، فأصاب نوع الدعوى في 85 من 90 وامتنع عن تصنيف القضايا العشر الخارجة عن الفهرس كلها. | The first run (30 October 2026) got 32 of 90 cases fully right with the claim type given; on 31 October 2026, Nemotron 3 Ultra online got 64 of 90 with the claim type given, and 60 of 90 with the claim type read, the claim type right on 85 of 90 and all 10 out-of-scope cases declined. |
+| 8 | متى اطُّلع على نتائج مجموعةٍ لم تعد مخفية: فالقياس التالي لقارئ مُعدَّل يحتاج إلى مجموعة جديدة. | Once its results have been looked at, a set is no longer hidden: the next measure of a changed reader needs a new set. |
+| «ما يعنيه هذا للمحامي» | تبيّن الأرقام كم مرة تكون قراءة الوقائع صحيحة كاملةً على قضايا لم يرها المطوّرون: هذا هو القياس الصادق، لا المتفائل. | The figures show how often the reading of the facts is fully right on cases the developers never saw: the honest measure, not the optimistic one. |
+
+**`docs/WEB-DEMO.md`** (`site/src/content/docs-summaries/web-demo.ar.md`)
+
+| # | Arabic | English |
+|---|---|---|
+| 1 | المنتج تطبيق مكتبي يعمل دون اتصال؛ ووُجد العرض التجريبي ليستعمل أي أحد المنتج الحقيقي من رابط، دون تثبيت أي شيء. | The product is an offline desktop app; the web demo exists so that anyone can use the real product from a link, without installing anything. |
+| 2 | يشغّل المحرك نفسه والمكتبة القانونية نفسها ومنطق الشاشات نفسه؛ والفرق الوحيد هو مكان عمل نموذج الذكاء الاصطناعي. | It runs the same engine, the same law library and the same screen logic; the one difference is where the AI model runs. |
+| 3 | في التطبيق المكتبي النموذج هو Gemma 3 4B، محليا؛ وفي العرض التجريبي هو Nemotron 3 Ultra المستضاف على OpenRouter أولا، ثم Gemma 4 26B على Google AI Studio، ثم Groq. | On the desktop the model is Gemma 3 4B, local; in the demo it is Nemotron 3 Ultra hosted on OpenRouter first, then Gemma 4 26B on Google AI Studio, then Groq. |
+| 4 | يرسل العرض التجريبي القضية إلى النموذج المستضاف، لذلك فهو للقضايا الخيالية فقط. | The demo sends the case to the hosted model, so it is for fictitious cases only. |
+| 5 | لا يحفظ العرض التجريبي أي شيء على الخادم: «فتح» و«حفظ» يقرآن ملف مسودة على قرص الزائر نفسه ويكتبانه، وما عدا ذلك لا تُحفظ القضية إلا نسخةً احتياطية في المتصفح. | The demo saves nothing on the server: Open and Save use a draft file on the visitor's own disk, and the case is otherwise kept only as a recovery copy in the browser. |
+| 6 | نداءات النموذج محدودة لكل زائر ولكل عنوان شبكة، وتمر عبر طابور واحد مشترك، نداءان في وقت واحد. | Model calls are limited per visitor and per network address, and go through one shared queue, two calls at a time. |
+| 7 | الأعطال لا تنهي جلسة الزائر أبدا: الخدمة المشغولة أو المتعطلة تُحيل الطلب إلى المحرك التالي، ويرى الزائر رسالة واضحة. | Failures never end a visitor's session: a busy or failing service hands the request to the next engine, and the visitor sees a plain message. |
+| 8 | حتى النموذج الأكبر في العرض التجريبي يخطئ، ولهذا تهم الفحوص: المواد التي يفرضها نوع الدعوى تُقترح دائما، والبرنامج يكتب قاعدة كل مادة مؤشَّر عليها. | Even the demo's larger model makes mistakes, which is why the checks matter: the articles a claim type requires are always proposed, and the program writes each ticked article's rule. |
+| «ما يعنيه هذا للمحامي» | جرّب العرض التجريبي بقضايا مختلَقة فقط: ملفاتك الحقيقية مكانها التطبيق المكتبي، حيث لا يغادر شيء حاسوبك. | Try the demo with invented cases only: your real files belong in the desktop app, where nothing leaves your computer. |
+
+### Files changed in push 3
+
+- `site/src/content/docs-summaries/*.md` (12, new), `site/src/content.config.ts`, `site/src/pages/[lang]/docs/[slug].astro`, `site/public/ui.js`, `site/src/i18n/site.ar.json` and `site.en.json` (three keys), `site/tests/site.spec.ts`; this report and its captures. Nothing outside `site/` and this folder.
+
 ## Three notes about the desktop app (to record, not to fix in this phase)
 
 1. **A clipped first letter in the paper view.** In the 1920 x 1080 captures of item 0 (`C:\Users\TheShadow\dz-laptop-shots\app-*-1920x1080.png`, outside the repository), and again in the scale-2 frames of push 2's second pass, a few lines of the grounds start with a clipped first letter at the right margin: «وبأنه» shows as «؛بأنه». The paper's text block clips the glyph that overhangs the line's start.

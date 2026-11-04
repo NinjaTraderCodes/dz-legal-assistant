@@ -186,3 +186,35 @@ Screenshots beside this report: `try-<ar|en>-<light|dark>-<390x844|1366x768|1920
 
 - The documentation pages' meta description and Open Graph image are generic for the Arabic page (the document is English); the Arabic note leads the description.
 - The guide's compact form on the home keeps no pictures, to keep the home light; the full guide carries them.
+
+## Push C: the team pictures (item 6, the rest)
+
+The home's team section shows a round picture beside each name (`site/src/components/Team.astro`): the project lead's and the designer's own photographs, provided by them and used with their permission, and for the legal reviewer an avatar illustration standing in for a photo, chosen by her (the "Notionists" set by Zoish, CC0 1.0, as the file's own metadata states). The files live in `site/src/assets/team/` with `NOTES.txt` saying exactly that. The photographs came as 512×512 JPEGs (31 KB and 40 KB) and are served as 96 px and 192 px WebP renditions of 1.4 to 4.2 KB; the avatar is served as its 18 KB SVG. Each picture has a meaningful alt text in the page's language («صورة هشام بن كيحول», "Avatar of Khouloud Otmane Cherif", …). The About page is unchanged.
+
+### Checks (push C)
+
+| Check | Result |
+|---|---|
+| `npm run build` | 26 pages, `check-dist` clean |
+| `npm run budget` | every budget met (home scripts 3.5 KB with `ui.js` grown by the reveal and the dialog, the story module unchanged) |
+| Playwright `site.spec.ts` + `axe.spec.ts` (Chromium) | 52 passed, 2 skipped; axe 0 violations |
+| `dotnet build -c Release` with SDK 10.0.114 pinned and with the default SDK | 0 warnings, 0 errors, both |
+| `dotnet test -c Release` | 986 passed, 0 failed, in 7 assemblies (the load-sensitive desktop test included this time), with every local instance stopped |
+| `docker build` (ECR mirror of `node:22-alpine`) | 219 s; the image serves `/` in Arabic and `/en/` with the team pictures (WebP renditions of 1.4 to 3.2 KB), and `/app` unchanged |
+
+Screenshots beside this report: `team-<ar|en>-<light|dark>-1366x768.jpg`.
+
+### Files changed in push C
+
+- `site/src/components/Team.astro`, `site/src/assets/team/` (`hicham.jpg`, `djihane.jpg`, `khouloud.svg`, `NOTES.txt`), `site/src/i18n/site.ar.json` and `site.en.json` (`team.photoAlt`, `team.avatarAlt`).
+
+### Arabic strings added in push C (for Khouloud)
+
+| Key | Arabic | English |
+|---|---|---|
+| `team.photoAlt` | صورة {0} | Photo of {0} |
+| `team.avatarAlt` | رسم رمزي يمثّل {0} | Avatar of {0} |
+
+## Still open after push C
+
+- **Item 1, the hero with the laptop:** waits for the owner's laptop image, made from the four captures delivered under item 0, and the owner's instructions in a later session.

@@ -30,6 +30,8 @@ if (only.includes("proofs")) {
         // The app bar's end: the offline badge beside the theme and language controls.
         crops.push({ out: `proofs/offline-${lang}-${theme}.png`, src: `${desktop}/workbench-1366-${lang}-${theme}.png`, box: lang === "en" ? box(960, 0, 1366, 54) : box(0, 0, 406, 54) });
     }
+    // The refused-export notice of the desktop app (docs/images/workbench-export-blocked.png: Arabic, light, one frame).
+    crops.push({ out: "proofs/export-blocked.png", src: resolve(siteDir, "../docs/images/workbench-export-blocked.png"), box: box(362, 270, 946, 350) });
     // The drafted grounds on the paper with the review box, from the live recording (one theme, shown in both).
     crops.push({ out: "proofs/grounds-live.png", src: `${live}/live-ai-drafted-grounds.jpg`, box: box(20, 120, 1800, 975) });
 }

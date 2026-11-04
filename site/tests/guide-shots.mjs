@@ -19,6 +19,9 @@ const steps = arg("steps", "1,2,3,4,5").split(",").map(Number);
 const mode = arg("mode", "real");
 // The viewport height: 768 for the first screen; taller for the drafted grounds, so more of the sheet shows in the panel.
 const height = Number(arg("height", "768"));
+// With --dump <file>, the drafted grounds of the run are written as JSON, verbatim from the page: the model line,
+// the date, the language of the run and the section's text, so the home's sheet can show real model output.
+const dump = arg("dump", "");
 mkdirSync(out, { recursive: true });
 
 const labels = {
@@ -98,6 +101,15 @@ for (const lang of langs) {
         await page.getByRole("button", { name: L.draft, exact: true }).click();
         await page.locator(".review-list .reviewed input").waitFor({ timeout: 240_000 });
         await page.waitForTimeout(800);
+        if (dump) {
+            const text = await page.locator(".paper .section.ai textarea").first().inputValue();
+            const answeredBy = (await page.locator(".answered-by").first().textContent().catch(() => "")) ?? "";
+            const engine = (await page.locator("#engine-picker option:checked").first().textContent().catch(() => "")) ?? "";
+            const record = { lang, date: new Date().toISOString().slice(0, 10), engine: engine.trim(), answeredBy: answeredBy.trim(), sample: L.sample, paragraphs: text.split(/\r?\n+/).map((p) => p.trim()).filter(Boolean) };
+            const { writeFileSync } = await import("node:fs");
+            writeFileSync(dump.replace(/\.json$/, "") + `-${lang}.json`, JSON.stringify(record, null, 2) + "\n");
+            console.log(`dumped ${record.paragraphs.length} paragraph(s) of the ${lang} run: ${record.answeredBy}`);
+        }
         if (steps.includes(4) && mode === "real") {
             await page.locator(".paper .section.ai").evaluate((el) => el.scrollIntoView({ block: "start" }));
             await page.locator(".paper .section.ai").click();

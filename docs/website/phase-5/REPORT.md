@@ -76,7 +76,7 @@ Screenshots beside this report: `home-<ar|en>-<light|dark>-<390x844|1366x768|192
 |---|---|---|
 | `story.lead` | تملأ القضية خطوةً خطوة، ويُبنى نص العريضة على الورق أمامك. المراجعة الشكلية تنبّهك فوراً إلى البيان الناقص وتذكر المادة التي تفرضه. وعندما يصوغ الذكاء الاصطناعي المناقشة القانونية، يقتبس البرنامج قاعدة كل مادة من النص الرسمي، ولا يكتب النموذج إلا كيف تنطبق على الوقائع، ثم يؤشّر المحامي على خانة المراجعة قبل أي تصدير. | The case fills in step by step… the lawyer ticks the review box before anything is exported. |
 | `story.caption` | لقطة من مكتب العمل: الحالة الشكلية تتغير مع كل حرف تكتبه، وتحمل المناقشة القانونية علامة الذكاء الاصطناعي إلى أن يراجعها المحامي. | From the workbench: … the legal grounds carry the AI mark until the lawyer has reviewed them. |
-| `story.chip.code` | برمجة · مقتبس من النص الرسمي | code · quoted from the official text |
+| `story.chip.code` | من النص الرسمي | From the official text |
 | `story.finding.grounds.title` | الأسانيد التي تقوم عليها الدعوى | Grounds on which the claim rests |
 | `story.finding.grounds.article` | المادة 15-5 من قانون الإجراءات المدنية والإدارية | Code of Civil and Administrative Procedure, art. 15-5 |
 | sheet, AI line 1 | وحيث إن المدعى عليه اقترض من المدعي 1,500,000 دج بتاريخ 15 جانفي 2025، | (the document, Arabic only) |
@@ -88,7 +88,7 @@ Screenshots beside this report: `home-<ar|en>-<light|dark>-<390x844|1366x768|192
 | `proofs.grounds.body` | يقتبس البرنامج قاعدة كل مادة مؤشَّر عليها من النص الرسمي، ولا يكتب الذكاء الاصطناعي إلا كيف تنطبق على الوقائع. تنبّه المراجعات إلى أي رقم لا يرد في الوقائع وأي قانون لم يذكره المحامي، ويحمل القسم علامة الذكاء الاصطناعي ولا يُصدَّر قبل مراجعته. | The code quotes the rule of each ticked article… cannot be exported before review. |
 | `proofs.shot.texts` | المكتبة القانونية في التطبيق: قانون الإجراءات المدنية والإدارية كاملاً، مقروءاً على صفحة الجريدة الرسمية. | The app's law library: … |
 | `proofs.shot.offline` | شريط التطبيق: «يعمل دون اتصال: لا تغادر أي معطيات هذا الحاسوب». | The app bar: … |
-| `proofs.shot.review` | العرض التجريبي: التصدير مرفوض ما دام قسم كتبه الذكاء الاصطناعي لم يُراجَع. | The demo: export refused … |
+| `proofs.shot.review` | التطبيق المكتبي: التصدير مرفوض ما دام قسم كتبه الذكاء الاصطناعي لم يُراجَع. | The desktop app: export refused … |
 | `proofs.shot.grounds` | من التسجيل الحي: المناقشة القانونية التي صاغها النموذج المحلي، مع خانة المراجعة. | From the live recording: … |
 | `ai.stage4.title` | صياغة المناقشة القانونية | Drafting the legal grounds |
 | `ai.stage4.body` | يكتب البرنامج قاعدة كل مادة مؤشَّر عليها من النص الرسمي، ويكتب النموذج كيف تنطبق على الوقائع فقط. الفقرة التي تذكر رقماً لا يرد في الوقائع أو قانوناً لم يذكره المحامي تُطلب مرة أخرى، وإلا تُترك «(...)» للمحامي، وهو ما يمنع التصدير. يحمل القسم علامة الذكاء الاصطناعي، ولا يُصدَّر قبل أن يؤشّر المحامي على خانة المراجعة. | The code writes the rule… ticks the review box. |
@@ -103,7 +103,7 @@ Screenshots beside this report: `home-<ar|en>-<light|dark>-<390x844|1366x768|192
 
 ### Unsure about (push A)
 
-- The five AI sentences on the sheet are illustrative wording in the register of the real draft; they await Khouloud's eye like the rest of the Arabic.
+- The grounds on the sheet were illustrative wording in push A; the follow-up below replaces them with real model output, verbatim.
 - The "Review before export" card shows the web demo rather than the desktop app: the desktop frame of that state exists in one language and theme only (`workbench-export-blocked.png`), and the demo shows the same screen in both languages and themes. The caption says "The demo".
 - The site's header is two rows high at 1366 px (navigation, then language and theme); the story's pin now measures it instead of assuming 96 px. The header itself is unchanged.
 
@@ -218,3 +218,42 @@ Screenshots beside this report: `team-<ar|en>-<light|dark>-1366x768.jpg`.
 ## Still open after push C
 
 - **Item 1, the hero with the laptop:** waits for the owner's laptop image, made from the four captures delivered under item 0, and the owner's instructions in a later session.
+
+## Follow-up to the review of pushes A, B and C
+
+One commit with the reviewer's five fixes, and the two notes asked for.
+
+1. **Step 06 shows real model output, verbatim.** The sheet's grounds are no longer illustrative: they are the three paragraphs the demo's hosted model wrote for the «Unpaid loan» sample in the **Arabic run of 4 November 2026** (engine picker: Nemotron 3 Ultra (خادم العرض); the page's own line: أجاب: nvidia/nemotron-3-ultra-550b-a55b (OpenRouter)), read from the page's DOM by `tests/guide-shots.mjs --dump` and kept in `site/src/content/grounds-run-ar.json`, from which `steps.ts` builds the section at build time. The pictures of steps 3 to 5 on `/ar/try/` come from the same run (and those on `/en/try/` from the English run of the same day, whose text differs slightly, as every run does). The split keeps the app's own: the paragraph opens with the articles and the catalogue's rule (`data/law/claims/civil.json`, the loan claim's `why` lines, which the code writes), and the model's application follows; `steps.ts` finds where the catalogue's wording ends and marks the rest as the model's. Long sentences wrap on the sheet, which makes the section taller than the frame at 1366 x 768, so the sheet now follows the line being written (a small addition to `story.ts`: before each line sweeps in, and before the review row appears, the sheet slides just enough to keep that line in view, never above the top of the section; on a 1080 px screen the section fits and nothing moves). The text, as the page gave it:
+
+> حيث إن المواد 106 و107 و450 من القانون المدني تقضي بأن العقد شريعة المتعاقدين، وبأنه يجب تنفيذ العقد طبقا لما اشتمل عليه وبحسن نية، وبأنه يلتزم المقترض برد نظير ما اقترضه عند نهاية القرض، وحيث إن المدعى عليه التزم بموجب عقد الاعتراف بالدين الموثق المؤرخ في 15/01/2025 برد المبلغ المقترض البالغ 1,500,000 دج في أجل أقصاه 30 جوان 2025، وأخل بهذا الالتزام بامتناعه عن السداد رغم حلول الأجل، فإن طلب المدعي إلزام المدعى عليه بأن يدفع للمدعي أصل الدين المقدر بـ 1,500,000 دج يكون مؤسسا قانونا.
+>
+> وحيث إن المادة 323 من القانون المدني تقضي بأن على الدائن إثبات الالتزام وعلى المدين إثبات التخلص منه، وحيث إن المدعي أثبت قيام الالتزام في ذمة المدعى عليه بنسخة عقد الاعتراف بالدين الموثق المؤرخ في 15/01/2025، ولم يثبت المدعى عليه التخلص منه.
+>
+> وحيث إن المادتين 179 و186 من القانون المدني تقضيان بأنه لا يستحق التعويض إلا بعد إعذار المدين، وبتعويض الدائن عن الضرر اللاحق من تأخر المدين في الوفاء بمبلغ من النقود، وحيث إن المدعى عليه تأخر في الوفاء بمبلغ الدين بعد إعذاره رسميا بمحضر المؤرخ في 10/07/2025، مما ألحق بالمدعي ضررا ناتجا عن المماطلة، فإن طلب المدعي إلزام المدعى عليه بأن يدفع للمدعي مبلغ 150,000 دج تعويضا عن الضرر الناتج عن المماطلة يكون مؤسسا قانونا.
+>
+
+2. **"Review before export" card:** the desktop app's own frame, `docs/images/workbench-export-blocked.png`, cropped to the refused-export notice (Arabic, light, one frame shown in both themes); the demo's toolbar is gone from the card.
+3. **The quoted-law chip:** «من النص الرسمي» / "From the official text".
+4. **Header:** one row from 900 px up, in both languages, at 1366 and 1920 (the page is capped at 1180 px at every width, so the same tighter spacing serves both; measured 65 px high in both languages at both widths, against 123 px before at 1920 and 115 px at 1366). Below 1200 px the controls may still wrap under the links; the phone layout is unchanged.
+5. **Team cards in English:** the role opens with a capital through CSS (`::first-letter` under `html[lang="en"]`); the app's strings are unchanged.
+
+**The desktop test.** `WaitingWorkflowTests.ClosingTheAppFreesTheLocalModelsMemoryAndAServerThatHangsDoesNotHoldItUp` (in `tests/DzLegal.App.Tests/WaitingTests.cs`) builds a view model with one local provider whose release never answers, calls `ReleaseModels()` and asserts two things: the release was asked (its counter is 1) and the call returned within `ReleaseWait` plus two seconds. `ReleaseModels()` queues each release on the thread pool (`Task.Run`) and waits at most `ReleaseWait` plus half a second for them all. When it fails, it is the first assertion (expected 1, actual 0, the test itself taking 2 s): the wait ran out before the thread pool had started the queued release, because the rest of the desktop suite, which xunit runs in parallel, was holding every pool thread at that moment. It is a timing-dependent test, not a regression; this branch touches neither the test nor the code it exercises. The evidence: in push B's full run it failed once and passed alone right after (8 of 8 in 3 s); push C's full run passed it with the rest (986 of 986, laptop plugged in); in the two full runs of this follow-up, on battery (60 to 67 percent, the desktop suite taking 6 min instead of 1.5 min plugged in), it failed both times with the same message, passed alone (8 of 8 in 5 s), and passed with the whole desktop suite when the collections ran one at a time (`dotnet test tests/DzLegal.App.Tests -c Release -- xUnit.ParallelizeTestCollections=false`: 305 of 305 in 5 min 53 s). Ollama listening on 11434 at the time of push B was my first guess and is not the cause: the test talks to no server. I changed neither the test nor `ReleaseModels()` (outside this brief); if the reviewer wants it steady under load, the release could be started with `TaskCreationOptions.LongRunning` so it gets its own thread, or the test could wait for the counter rather than for the pool.
+
+**The lock file.** Regenerating `site/package-lock.json` inside the node image changed 48 lines (41 added, 7 removed). Added: the optional packages `@emnapi/core` 1.11.3 and `@emnapi/runtime` 1.11.3, which `@img/sharp-wasm32` and `@tailwindcss/oxide-wasm32-wasi` (the WebAssembly fallbacks of sharp and Tailwind) list as optional dependencies and which the Windows install had left out of the lock, plus the bundled copies (1.11.1) that `@tailwindcss/oxide-wasm32-wasi` carries. Removed: six stale `"peer": true` flags. Every direct dependency keeps its version (`@astrojs/markdown-satteri` 0.4.6, `@astrojs/sitemap` 3.7.4, `@tailwindcss/vite` 4.3.3, `astro` 7.4.4, `fast-xml-parser` 5.11.2, `gsap` 3.15.0, `sharp` 0.35.5, `subset-font` 2.9.0, `tailwindcss` 4.3.3; dev: `@axe-core/playwright` 4.14.0, `@playwright/test` 1.64.1, `lighthouse` 13.6.0), and the 18 Windows packages (`@img/sharp-win32-x64`, `@rolldown/binding-win32-x64-msvc`, `@bruits/satteri-win32-x64-msvc`, …) are still listed; `npm ci` on this laptop after the change: succeeded in 20 s, the lock file untouched, `@img/sharp-win32-x64` and the other Windows packages installed.
+
+### Checks (follow-up)
+
+| Check | Result |
+|---|---|
+| `npm run build` | 26 pages, `check-dist` clean |
+| Playwright `site.spec.ts` + `axe.spec.ts` (Chromium) | 52 passed, 1 skipped; axe 0 violations |
+| `npm run budget` | every budget met (home scripts with the story module 47.8 KB of 60 KB) |
+| `dotnet build -c Release` with SDK 10.0.114 pinned and with the default SDK | 0 warnings, 0 errors with both (10.0.114 and 10.0.403) |
+| `dotnet test -c Release` | the six other projects green (681 of 681: Storage 18, Documents 6, FormEngine 67, Drafting 399, Web 75, Law 116); the desktop project 304 of 305 in both full parallel runs on battery (the one test above), 305 of 305 with the collections run one at a time |
+| `docker build` (ECR mirror of `node:22-alpine`) | built in 4 min 7 s; run on 7860: 200 on /, /ar/, /en/, /ar/try/, /en/try/, both product-details pages and /app; the sheet's real text and the new pictures are served (the refused-export crop 2.4 KB, the step 4 picture 70.7 KB, WebP) |
+
+The captures affected by the fixes were retaken (`story-*`, `proofs-*`, `team-*`, `home-*`, `try-*`).
+
+### Files changed in the follow-up
+
+- `site/src/content/steps.ts`, `site/src/scripts/story.ts`, `site/src/content/grounds-run-ar.json` and `grounds-run-en.json` (new, the runs' text), `site/tests/guide-shots.mjs` (`--dump`), `site/src/assets/shots/guide/step3-*`, `step4-*`, `step5-*` (the new runs), `site/src/assets/shots/proofs/export-blocked.png` (new), `site/scripts/crops.mjs`, `site/src/components/Proofs.astro`, `site/src/components/Header.astro`, `site/src/components/Team.astro`, `site/src/i18n/site.ar.json`, `site.en.json`, this report and its captures.

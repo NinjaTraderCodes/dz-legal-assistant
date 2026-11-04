@@ -61,5 +61,8 @@ const current = (page: string) => (page === path ? "page" : undefined);
     .menu nav { display: grid; padding: 8px 0 4px; }
     .menu nav a { padding: 10px 4px; border-top: 1px solid var(--hairline); color: var(--text); text-decoration: none; }
     .menu nav a[aria-current="page"] { color: var(--accent); font-weight: 600; }
+    /* From a laptop up the bar holds the mark, the seven links and the three controls in one row: the page is at most
+       1180 px wide at every width, so the same tighter spacing serves 1366 and 1920 alike, in both languages. */
+    @media (min-width: 900px) { .bar { gap: 12px 16px; } .nav { font-size: 0.875rem; gap: 4px 12px; } .controls { gap: 6px; } .brand { font-size: 1rem; gap: 8px; } }
     @media (max-width: 899px) { .nav { display: none; } .controls { margin-inline-start: auto; } .menu { display: block; } }
 </style>

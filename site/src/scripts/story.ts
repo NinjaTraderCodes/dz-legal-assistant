@@ -62,6 +62,15 @@ export function start(): void {
             const wanted = sec.offsetHeight > frame - 2 * pad ? 4 - sec.offsetTop : frame / 2 - (pad + sec.offsetTop + sec.offsetHeight / 2);
             return gsap.utils.clamp(lowest, 0, wanted);
         };
+        // The grounds can be taller than the frame on a laptop screen (the model's paragraphs are long): while they are
+        // written, the sheet follows the line being written so it stays in view, never scrolling above the section's top.
+        const topWithin = (el: HTMLElement) => { let y = 0; for (let n: HTMLElement | null = el; n && n !== paper; n = n.offsetParent as HTMLElement | null) y += n.offsetTop; return y; };
+        const yForLine = (sec: HTMLElement, line: HTMLElement) => () => {
+            const frame = canvas.clientHeight;
+            const pad = parseFloat(getComputedStyle(canvas).paddingTop) || 0;
+            const lowest = Math.min(0, frame - paper.offsetHeight - 2 * pad);
+            return gsap.utils.clamp(lowest, 0, Math.min(yFor(sec)(), frame - pad - 12 - (topWithin(line) + line.offsetHeight)));
+        };
 
         // Waiting sections are clipped away (not faded): hidden text is not read as low-contrast text, and the sheet
         // writes itself from the top as the reader scrolls. The grounds' lines are clipped from their end, so each one
@@ -100,6 +109,7 @@ export function start(): void {
                 tl.to(sec, { clipPath: "inset(0 0 0% 0)", duration: 0.5, ease: "power2.out" }, t + 0.3);
                 let at = t + 0.8;
                 for (const line of lines) {
+                    tl.to(paper, { y: yForLine(sec, line), duration: 0.25, ease: "power1.out" }, at);
                     if (line.hasAttribute("data-rule")) {
                         tl.to(line, { clipPath: "inset(0 0 0 0%)", duration: 0.4, ease: "none" }, at);
                         const chip = line.querySelector<HTMLElement>("[data-chip]");
@@ -113,6 +123,7 @@ export function start(): void {
                     }
                 }
                 if (review) {
+                    tl.to(paper, { y: yForLine(sec, review), duration: 0.25, ease: "power1.out" }, at);
                     tl.to(review, { opacity: 1, duration: 0.2 }, at + 0.1);
                     tl.set(review, { attr: { "data-done": 1 } }, at + 0.45);
                 }

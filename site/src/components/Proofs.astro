@@ -1,8 +1,8 @@
 ---
 // What the product guarantees, in the vocabulary of its "Elements present" list: a check mark, a title, the fact,
 // and a picture of the screen that shows it. The library and the app bar come from the desktop app's own frames
-// (the headless UI tests, both languages and themes); the refused export from the demo; the drafted grounds from
-// the live recording with the local model.
+// (the headless UI tests, both languages and themes); the refused export from the desktop app's own frame; the
+// drafted grounds from the live recording with the local model.
 import type { ImageMetadata } from "astro";
 import Icon from "./Icon.astro";
 import Shot from "./Shot.astro";
@@ -11,7 +11,7 @@ import { s, t, fmt, type Lang } from "../i18n";
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
-const shots = import.meta.glob<ImageMetadata>("../assets/shots/{proofs,guide}/*.png", { eager: true, import: "default" });
+const shots = import.meta.glob<ImageMetadata>("../assets/shots/proofs/*.png", { eager: true, import: "default" });
 const pick = (name: string) => {
     const hit = Object.entries(shots).find(([path]) => path.endsWith(`/${name}.png`));
     if (!hit) throw new Error(`missing picture ${name}.png in src/assets/shots (node scripts/crops.mjs, node tests/guide-shots.mjs)`);
@@ -21,7 +21,7 @@ const themed = (name: string) => ({ light: pick(`${name}-${lang}-light`), dark: 
 const items = [
     { icon: "book_open", title: t(lang, "proofs.texts.title"), body: fmt(s(lang, "AboutSources"), "1,361", "6") + " " + t(lang, "proofs.texts.body"), shot: themed("proofs/library"), caption: t(lang, "proofs.shot.texts") },
     { icon: "shield_checkmark", title: t(lang, "proofs.offline.title"), body: t(lang, "proofs.offline.body"), shot: themed("proofs/offline"), caption: t(lang, "proofs.shot.offline"), natural: true },
-    { icon: "checkmark_circle", title: t(lang, "proofs.review.title"), body: t(lang, "proofs.review.body"), shot: themed("guide/step5-refused"), caption: t(lang, "proofs.shot.review") },
+    { icon: "checkmark_circle", title: t(lang, "proofs.review.title"), body: t(lang, "proofs.review.body"), shot: { light: pick("proofs/export-blocked") }, caption: t(lang, "proofs.shot.review") },
     { icon: "sparkle", title: t(lang, "proofs.grounds.title"), body: t(lang, "proofs.grounds.body"), shot: { light: pick("proofs/grounds-live") }, caption: t(lang, "proofs.shot.grounds") },
 ];
 ---

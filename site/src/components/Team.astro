@@ -45,5 +45,7 @@ const people = (["Lead", "Design", "Legal"] as const).map((who) => {
     .lines { display: grid; gap: 2px; }
     .name { font-size: 1.1rem; }
     .role { color: var(--accent); font-weight: 600; font-size: 0.95rem; }
+    /* The app's English roles are lower-case fragments ("project lead and development"); the card opens them with a capital. */
+    :global(html[lang="en"]) .role::first-letter { text-transform: uppercase; }
     @media (max-width: 899px) { .people { grid-template-columns: 1fr; } }
 </style>

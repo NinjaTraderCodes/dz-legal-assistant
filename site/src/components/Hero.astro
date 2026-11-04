@@ -1,78 +1,61 @@
 ---
-// The welcome screen of the desktop app, on the web: the photograph under its overlay, the scales mark, the
-// product's own title and tagline, one gold action, the offline line, and the app itself on a laptop beside the
-// text (under it on a phone). The laptop's screen is a real capture of the app (src/assets/hero/NOTES.txt); the one
-// image serves both languages and themes and is never mirrored, so the Arabic layout turns the text, not the picture.
-import { Image, Picture } from "astro:assets";
-import welcome from "../../../src/DzLegal.App/Assets/Images/welcome-bg.jpg";
+// The first folder of the case file: the product's own title and tagline, the two actions (the demo filled, the
+// download outlined), the note on the demo, and the app itself on a laptop lying on the folder beside the text (under
+// it on a phone), with the one stamp of the screen, "works offline". The laptop's screen is a real capture of the app
+// (src/assets/hero/NOTES.txt); the one image serves both languages and themes and is never mirrored, so the Arabic
+// layout turns the text, not the picture.
+import { Picture } from "astro:assets";
 import laptop from "../assets/hero/laptop.png";
-import ScalesMark from "./ScalesMark.astro";
+import Folder from "./Folder.astro";
 import Icon from "./Icon.astro";
 import { s, t, type Lang } from "../i18n";
 import { downloadUrl } from "../content/product";
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
-/** The photograph's responsive set, shared with the page head's preload so the two name the same files. */
-export const heroImage = { widths: [480, 768, 1280, 1920], sizes: "100vw", format: "avif" as const, quality: 62 };
 /**
  * The laptop's responsive set: AVIF with a WebP fallback, the transparent background kept, 1440 the cap (the source is
  * 1536 wide, and the fallback <img> is told the same cap, or it would carry a fifth rendition at the source's size).
- * Beside the text it takes half the stage, at most 560 px; on a phone the whole width.
+ * Beside the text it takes a little under half the stage, at most 600 px; on a phone the whole width.
  */
-export const laptopImage = { widths: [480, 720, 960, 1440], sizes: "(min-width: 900px) min(50vw - 48px, 560px), calc(100vw - 32px)", formats: ["avif"] as const, fallbackFormat: "webp" as const, quality: 68 };
+export const laptopImage = { widths: [480, 720, 960, 1440], sizes: "(min-width: 900px) min(46vw - 40px, 600px), calc(100vw - 32px)", formats: ["avif"] as const, fallbackFormat: "webp" as const, quality: 68 };
 ---
-<section class="hero" aria-labelledby="hero-title">
-    <Image src={welcome} alt="" class="photo" widths={heroImage.widths} sizes={heroImage.sizes} format={heroImage.format} quality={heroImage.quality} loading="eager" fetchpriority="high" />
-    <div class="overlay" aria-hidden="true"></div>
-    <div class="stage">
+<Folder tone="salmon" no="01" tab={t(lang, "tab.hero")} class="hero" labelledby="hero-title">
+    <div class="page stage">
         <div class="reading">
-            <ScalesMark class="mark" size={88} />
             <h1 id="hero-title" class="display">{s(lang, "WelcomeTitle")}</h1>
-            <span class="divider" aria-hidden="true"></span>
-            <p class="lead tagline">{s(lang, "WelcomeTagline")}</p>
+            <p class="tagline">{s(lang, "WelcomeTagline")}</p>
             <div class="actions">
-                <a class="btn btn-gold" href={`/app?lang=${lang}`}>{t(lang, "hero.cta")}</a>
-                <a class="btn btn-quiet" href={downloadUrl} rel="noopener"><Icon name="arrow_download" size={18} /> {t(lang, "hero.download")}</a>
+                <a class="btn btn-primary" href={`/app?lang=${lang}`}>{t(lang, "hero.cta")}</a>
+                <a class="btn" href={downloadUrl} rel="noopener"><Icon name="arrow_download" size={18} /> {t(lang, "hero.download")}</a>
             </div>
             <p class="note small">{t(lang, "hero.note")} <a class="try-link" href={`/${lang}/try/`}>{t(lang, "nav.try")}</a></p>
         </div>
         <div class="device">
-            <Picture src={laptop} alt={t(lang, "hero.laptopAlt")} class="laptop" widths={laptopImage.widths} sizes={laptopImage.sizes} formats={laptopImage.formats} fallbackFormat={laptopImage.fallbackFormat} quality={laptopImage.quality} width={1440} height={960} loading="eager" decoding="async" fetchpriority="low" />
+            <Picture src={laptop} alt={t(lang, "hero.laptopAlt")} class="laptop" widths={laptopImage.widths} sizes={laptopImage.sizes} formats={laptopImage.formats} fallbackFormat={laptopImage.fallbackFormat} quality={laptopImage.quality} width={1440} height={960} loading="eager" decoding="async" fetchpriority="high" />
+            <p class="stamp offline" data-strike>{t(lang, "stamp.offline")}<small>{t(lang, "stamp.offline.small")}</small></p>
         </div>
     </div>
-    <p class="offline small"><Icon name="shield_checkmark" size={16} /> {t(lang, "site.offline")}</p>
-</section>
+</Folder>
 
 <style>
-    .hero { position: relative; min-height: min(92dvh, 900px); display: grid; grid-template-rows: 1fr auto; place-items: center; overflow: hidden; isolation: isolate; padding: clamp(24px, 4vw, 48px) var(--gutter) 20px; }
-    .photo { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: center; }
-    .overlay { position: absolute; inset: 0; z-index: -1; background: var(--overlay-image); }
-    .stage { display: grid; justify-items: center; gap: 28px; width: min(100%, 1180px); }
-    .reading { display: grid; justify-items: center; text-align: center; gap: 0; max-width: 760px; padding: clamp(24px, 4vw, 40px) clamp(20px, 4vw, 48px); border-radius: var(--radius-onboarding-card); background: var(--reading); }
-    :global([data-theme="dark"]) .reading { background: transparent; }
-    .mark { color: var(--mark); margin-bottom: 24px; }
-    h1 { color: var(--welcome-text); }
-    :global(html[lang="en"]) h1.display { font-size: clamp(2.25rem, 1.1rem + 3.2vw, 4rem); letter-spacing: 0.01em; white-space: nowrap; }
-    @media (max-width: 599px) { :global(html[lang="en"]) h1.display { white-space: normal; } }
-    .divider { width: 48px; height: 2px; background: var(--mark); margin-block: 20px; }
-    .tagline { max-width: 560px; color: var(--welcome-secondary); }
-    .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 32px; }
-    .note { margin-top: 20px; color: var(--welcome-secondary); max-width: 560px; }
-    .try-link { color: var(--welcome-text); font-weight: 600; white-space: nowrap; }
+    .hero { padding-block: clamp(40px, 6vw, 72px) clamp(64px, 8vw, 96px); }
+    .stage { display: grid; gap: 32px; }
+    .reading { display: grid; justify-items: start; align-content: center; }
+    .tagline { margin-top: 18px; max-width: 30ch; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+    .note { margin-top: 20px; color: var(--w-muted); max-width: 52ch; }
+    .try-link { font-weight: 600; white-space: nowrap; }
     /* The picture's box follows its ratio, so the text never moves when it arrives. */
-    .device { width: min(100%, 560px); }
-    .laptop { display: block; width: 100%; height: auto; filter: drop-shadow(0 24px 40px rgb(0 0 0 / 0.35)); }
-    .offline { display: inline-flex; align-items: center; gap: 8px; margin-top: 24px; padding: 4px 12px; border-radius: var(--radius-control); background: var(--reading); color: var(--welcome-text); }
-    :global([data-theme="dark"]) .offline { background: rgb(36 32 27 / 0.6); }
+    .device { position: relative; width: 100%; }
+    .laptop { display: block; width: 100%; height: auto; filter: var(--w-lift); }
+    .device .stamp { position: absolute; bottom: -4%; inset-inline-start: -2%; --stamp-turn: -5deg; font-size: 1.35rem; }
     /* Two columns from 900 px: the text in the first, the laptop in the second. The grid follows the writing direction,
        so Arabic reads the text on the right and sees the laptop on the left; the picture itself is the same. */
     @media (min-width: 900px) {
-        .stage { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: clamp(24px, 4vw, 56px); }
-        .reading { justify-items: start; text-align: start; max-width: none; }
-        :global(html[lang="en"]) h1.display { white-space: normal; font-size: clamp(2.25rem, 0.9rem + 2.8vw, 3.6rem); }
-        .actions { justify-content: flex-start; }
-        .device { width: 100%; justify-self: center; }
+        .hero { min-height: min(calc(100dvh - 64px - var(--w-tab-h)), 760px); display: grid; align-items: center; }
+        .stage { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: center; gap: clamp(32px, 4vw, 56px); }
+        .device .stamp { bottom: -7%; inset-inline-start: -7%; font-size: 1.6rem; }
     }
-    @media (max-width: 599px) { .hero { min-height: 0; padding-top: 32px; } .reading { padding-inline: 16px; } .actions .btn { width: 100%; } .stage { gap: 20px; } }
+    @media (max-width: 599px) { .actions .btn { width: 100%; } .device { margin-top: 8px; } .device .stamp { inset-inline-start: auto; inset-inline-end: 0; bottom: -10%; } }
 </style>

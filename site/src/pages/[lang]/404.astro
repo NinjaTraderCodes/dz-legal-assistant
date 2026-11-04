@@ -8,12 +8,12 @@ export function getStaticPaths() {
 }
 const lang = Astro.params.lang as Lang;
 ---
-<Base lang={lang} title={t(lang, "notFound.title")} description={t(lang, "notFound.body")} path="/404/" noindex>
+<Base lang={lang} title={t(lang, "notFound.title")} description={t(lang, "notFound.body")} path="/404/" noindex folder={{ tone: "kraft", tab: "404" }}>
     <section class="section page lost">
         <h1 class="h1">{t(lang, "notFound.title")}</h1>
         <p class="lead">{t(lang, "notFound.body")}</p>
         <div class="actions">
-            <a class="btn btn-gold" href={`/${lang}/`}>{t(lang, "notFound.home")}</a>
+            <a class="btn btn-primary" href={`/${lang}/`}>{t(lang, "notFound.home")}</a>
             <a class="btn" href={`/app?lang=${lang}`}>{t(lang, "nav.demo")}</a>
         </div>
     </section>

@@ -1,6 +1,7 @@
 ---
-// The home page, in Arabic (/ar/) and English (/en/): the welcome, the problem, the guarantees, the nine steps on
-// paper, the AI in its place, the two ways to use the product, and the team.
+// The home page, in Arabic (/ar/) and English (/en/), as one case file of eight folders: the welcome, the problem,
+// the nine steps on paper, the AI in its place, the guarantees with their exhibits, the five-minute test, the two ways
+// to use the product, and the team.
 import Base from "../../layouts/Base.astro";
 import Hero from "../../components/Hero.astro";
 import TryGuide from "../../components/TryGuide.astro";
@@ -11,25 +12,26 @@ import AiPanel from "../../components/AiPanel.astro";
 import DemoDownload from "../../components/DemoDownload.astro";
 import Team from "../../components/Team.astro";
 import { getImage } from "astro:assets";
-import welcome from "../../../../src/DzLegal.App/Assets/Images/welcome-bg.jpg";
-import { heroImage } from "../../components/Hero.astro";
+import laptop from "../../assets/hero/laptop.png";
+import { laptopImage } from "../../components/Hero.astro";
 import { langs, s, t, type Lang } from "../../i18n";
 
 export function getStaticPaths() {
     return langs.map((lang) => ({ params: { lang } }));
 }
 const lang = Astro.params.lang as Lang;
-// The welcome photograph is the largest thing on the first screen: the head preloads the same responsive set the hero renders.
-const hero = await getImage({ src: welcome, ...heroImage });
-const preloadImage = { src: hero.src, srcSet: hero.srcSet.attribute, sizes: heroImage.sizes };
+// The laptop is the largest thing on the first screen: the head preloads the same AVIF set the hero renders.
+const hero = await getImage({ src: laptop, widths: laptopImage.widths, format: "avif", quality: laptopImage.quality });
+// Its href is the largest rendition of the set, so the preload adds no file of its own.
+const preloadImage = { src: hero.srcSet.values.at(-1)?.url ?? hero.src, srcSet: hero.srcSet.attribute, sizes: laptopImage.sizes, type: "image/avif" };
 ---
 <Base lang={lang} title={s(lang, "AppTitle")} description={t(lang, "meta.home.description")} path="/" preloadImage={preloadImage}>
     <Hero lang={lang} />
-    <TryGuide lang={lang} compact />
     <Problem lang={lang} />
-    <Proofs lang={lang} />
     <StepStory lang={lang} />
     <AiPanel lang={lang} />
+    <Proofs lang={lang} />
+    <TryGuide lang={lang} compact />
     <DemoDownload lang={lang} />
     <Team lang={lang} />
 </Base>

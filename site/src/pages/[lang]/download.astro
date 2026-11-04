@@ -14,12 +14,12 @@ export function getStaticPaths() {
 }
 const lang = Astro.params.lang as Lang;
 ---
-<Base lang={lang} title={t(lang, "nav.download")} description={t(lang, "meta.download.description")} path="/download/" og="download">
-    <PageHead eyebrow={t(lang, "dl.eyebrow")} title={t(lang, "dl.title")} lead={t(lang, "dl.lead")}>
+<Base lang={lang} title={t(lang, "nav.download")} description={t(lang, "meta.download.description")} path="/download/" og="download" folder={{ tone: "kraft", tab: t(lang, "dl.eyebrow") }}>
+    <PageHead title={t(lang, "dl.title")} lead={t(lang, "dl.lead")}>
         <div class="actions">
-            <a class="btn btn-gold" href={downloadUrl} rel="noopener"><Icon name="arrow_download" size={18} /> {t(lang, "dl.cta")}</a>
+            <a class="btn btn-primary" href={downloadUrl} rel="noopener"><Icon name="arrow_download" size={18} /> {t(lang, "dl.cta")}</a>
         </div>
-        <p class="small meta"><span class="chip chip-success"><Icon name="shield_checkmark" size={12} /> {s(lang, "OfflineStatus")}</span> {fmt(t(lang, "dl.version"), version)}</p>
+        <p class="small meta"><span class="tag"><Icon name="shield_checkmark" size={12} /> {s(lang, "OfflineStatus")}</span> {fmt(t(lang, "dl.version"), version)}</p>
         <Source lang={lang} files={["README.md", "Directory.Build.props"]} />
     </PageHead>
 
@@ -42,7 +42,7 @@ const lang = Astro.params.lang as Lang;
 
     <section class="section page" aria-label={t(lang, "dl.ai.title")}>
         <div class="block panel">
-            <span class="chip chip-accent"><Icon name="sparkle" size={12} /> Ollama · gemma3:4b</span>
+            <span class="tag"><Icon name="sparkle" size={12} /> Ollama · gemma3:4b</span>
             <h2 class="h2">{t(lang, "dl.ai.title")}</h2>
             <p>{t(lang, "dl.ai.body")}</p>
             <ol class="steps-list">
@@ -88,8 +88,8 @@ dotnet run --project src/DzLegal.App</code></pre>
 
 <style>
     .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
-    .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; color: var(--muted-aa); }
+    .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; color: var(--w-muted); }
     .block .btn { justify-self: start; }
-    .block .chip { justify-self: start; }
+    .block .tag { justify-self: start; }
     @media (max-width: 599px) { .actions .btn { width: 100%; } }
 </style>

@@ -23,6 +23,7 @@ const paths = {
     law: (lang) => `/${lang}/law/`,
     privacy: (lang) => `/${lang}/privacy/`,
     about: (lang) => `/${lang}/about/`,
+    docs: (lang) => `/${lang}/docs/product-details/`,
     "not-found": (lang) => `/${lang}/404/`,
     app: (lang) => `/app?lang=${lang}`,
     // The demo after "Draft legal grounds" in template mode: the AI mark, the review box and the export blocker.

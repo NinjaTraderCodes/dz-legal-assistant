@@ -5,6 +5,9 @@
 @import "./tokens.css";
 
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+/* Code blocks of the rendered documents: Shiki writes var(--astro-code-*) per token; the values are the
+   site's tokens, so the blocks follow the theme without any file of their own. */
+:root { --astro-code-foreground: var(--text); --astro-code-background: var(--surface-alt); --astro-code-token-constant: var(--accent); --astro-code-token-string: var(--success); --astro-code-token-comment: var(--muted-aa); --astro-code-token-keyword: var(--accent); --astro-code-token-parameter: var(--text); --astro-code-token-function: var(--text); --astro-code-token-string-expression: var(--success); --astro-code-token-punctuation: var(--muted-aa); --astro-code-token-link: var(--accent); }
 @custom-variant rtl (&:where([dir="rtl"], [dir="rtl"] *));
 
 @theme inline {
@@ -72,6 +75,10 @@
   svg { display: inline-block; vertical-align: middle; }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
   @view-transition { navigation: auto; }
+  /* Steps that reveal as they scroll into view (ui.js): hidden only once the script has said motion is welcome. */
+  html[data-motion] [data-reveal] { opacity: 0; transform: translateY(12px); transition: opacity 400ms ease, transform 400ms ease; }
+  html[data-motion] [data-reveal].in { opacity: 1; transform: none; }
+  html[data-motion] [data-progress] { --progress: 0%; }
 }
 
 @layer components {

@@ -8,6 +8,7 @@ import Icon from "../../components/Icon.astro";
 import law from "../../content/law.generated.json";
 import { langs, s, t, fmt, type Lang } from "../../i18n";
 import { version } from "../../content/product";
+import { slugOf } from "../../content/docs-pages";
 
 export function getStaticPaths() {
     return langs.map((lang) => ({ params: { lang } }));
@@ -107,7 +108,7 @@ const docs = ["PRODUCT-DETAILS", "ARCHITECTURE", "OFFLINE", "LAW-LIBRARY", "HIDD
     <section class="section page" aria-labelledby="docs-title">
         <h2 id="docs-title" class="h2">{t(lang, "about.docs.title")}</h2>
         <ul class="docs">
-            {docs.map((doc, i) => <li><span class="doc" dir="ltr">docs/{doc}.md</span><span class="small">{t(lang, `about.docs.${i + 1}`)}</span></li>)}
+            {docs.map((doc, i) => <li><a class="doc" href={`/${lang}/docs/${slugOf(doc)}/`} dir="ltr">docs/{doc}.md</a><span class="small">{t(lang, `about.docs.${i + 1}`)}</span></li>)}
         </ul>
     </section>
 </Base>

@@ -43,6 +43,18 @@ desktop's own, bundled with their licences.
   104 KB), as the host already does in front of it, so a local Lighthouse run sees what a visitor gets. Only the
   site is compressed; the demo page carries the antiforgery token, which compressing would expose (BREACH), and is
   left as it is, like the circuit. Fonts and images are compressed formats already.
+- **Documentation pages:** six documents of `docs/` (`PRODUCT-DETAILS`, `ARCHITECTURE`, `OFFLINE`, `LAW-LIBRARY`,
+  `HIDDEN-SET`, `WEB-DEMO`) are rendered as pages at `/<lang>/docs/<name>/` from the Markdown at build time
+  (`site/src/content.config.ts` reads them from `../docs`; `site/src/content/docs-pages.ts` adapts their links:
+  a sibling of the six goes to its page, any other file of the repository to GitHub). They are English on both
+  pages, the Arabic page says so in one line. The Dockerfile copies exactly these files and the pictures they
+  embed (`.dockerignore` lets them through). Astro caches the rendered documents in `site/node_modules/.astro/`:
+  after a change to the plugin, delete that folder before `npm run build`, or the old HTML is reused.
+- **Pictures:** `site/src/assets/shots/` holds the PNG crops the pages show (the build makes WebP renditions).
+  `node scripts/crops.mjs --desktop <folder>` cuts the desktop app's frames (rendered by the headless UI tests with
+  `DZLEGAL_SCREENSHOTS`) and the live recording's frames; `node tests/guide-shots.mjs --base <instance>` captures
+  the five steps of the guide from the demo, and its AI steps must run against an instance with real keys, never
+  the stand-in model, since those pictures show model output.
 - **Build:** the `Dockerfile` builds the site in a Node stage (`npm ci --omit=dev && npm run build`, about two minutes)
   and copies `site/dist` next to the app; the app finds it at `<base>/site` (setting `Site:Root`). Without the folder
   the app behaves exactly as before.

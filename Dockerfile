@@ -22,6 +22,10 @@ COPY data/law/codes/ /repo/data/law/codes/
 COPY data/law/claims/ /repo/data/law/claims/
 COPY data/law/sources.json /repo/data/law/sources.json
 COPY Directory.Build.props /repo/Directory.Build.props
+# The six documents the site renders as pages (site/src/content.config.ts) and the pictures they embed.
+COPY docs/PRODUCT-DETAILS.md docs/ARCHITECTURE.md docs/OFFLINE.md docs/LAW-LIBRARY.md docs/HIDDEN-SET.md docs/WEB-DEMO.md /repo/docs/
+COPY docs/images/main-window-ar.png docs/images/main-window-grounds.png docs/images/main-window-requests.png docs/images/main-window-assistant.png docs/images/requete-pdf-page1.png docs/images/main-window-en.png docs/images/workbench-export-blocked.png docs/images/main-window-dark.png /repo/docs/images/
+COPY docs/images/onboarding/setup-1-en-light-1366x768.png /repo/docs/images/onboarding/
 COPY site/ ./
 RUN npm run build
 

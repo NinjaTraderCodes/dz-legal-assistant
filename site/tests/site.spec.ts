@@ -204,6 +204,79 @@ test("the four secondary pages exist in both languages, with their canonical and
     expect(sitemap).not.toContain("/404/");
 });
 
+test("the six documents are pages in both languages, with their links adapted and their pictures optimised", async ({ page, request }) => {
+    const slugs = ["product-details", "architecture", "offline", "law-library", "hidden-set", "web-demo"];
+    for (const slug of slugs) {
+        for (const lang of ["ar", "en"]) {
+            const response = await request.get(`/${lang}/docs/${slug}/`);
+            expect(response.status(), `${lang}/docs/${slug}`).toBe(200);
+            csp(response);
+            const html = await text(response);
+            expect(html).toMatch(new RegExp(`<html[^>]*lang="${lang}"[^>]*dir="${lang === "ar" ? "rtl" : "ltr"}"`));
+            // The document is English whatever the page's language, and the Arabic page says so.
+            expect(html).toContain('class="section page layout" lang="en" dir="ltr"');
+            if (lang === "ar") expect(html).toContain("هذه الوثيقة متاحة بالإنجليزية فقط");
+            expect(html).toContain(`rel="canonical" href="https://dz-legal-assistant-ai.onrender.com/${lang}/docs/${slug}/"`);
+            expect(html).toContain(`hreflang="${lang === "ar" ? "en" : "ar-DZ"}" href="https://dz-legal-assistant-ai.onrender.com/${lang === "ar" ? "en" : "ar"}/docs/${slug}/"`);
+            expect(html).toContain(`og:image" content="https://dz-legal-assistant-ai.onrender.com/og/docs-${lang}.png"`);
+            expect(html).toContain('<nav class="toc"');
+            expect(html).not.toContain('name="robots"');
+            noInlineScript(html);
+            // One H1 only: the document's own is lifted into the page title.
+            expect(html.match(/<h1/g)?.length).toBe(1);
+        }
+    }
+    // Links: a sibling document goes to its page; any other file of the repository is named as text (the site
+    // never links into the repository); outside links stay.
+    const details = await text(await request.get("/en/docs/product-details/"));
+    expect(details).toContain('href="../law-library/"');
+    expect(details).not.toContain("github.com/NinjaTraderCodes/dz-legal-assistant/blob");
+    expect(details).toContain("ONLINE-TESTING.md");
+    expect(details).toContain("README");
+    expect(details).toContain('href="https://ollama.com"');
+    expect(details.match(/<img /g)?.length).toBe(9);
+    expect(details.match(/loading="lazy"/g)?.length).toBe(9);
+    expect(details).toMatch(/src="\/_astro\/main-window-ar\.[^"]+\.webp"/);
+    expect(details.match(/<pre[^>]*tabindex="0"/g)?.length).toBeGreaterThanOrEqual(5);
+    expect(details).toContain('class="table-wrap"');
+    expect(details).toContain("<title>Product details — DZ Legal Assistant</title>");
+    // The sibling link lands on the sibling page.
+    await page.goto("/en/docs/product-details/");
+    await page.locator('article.body a[href="../law-library/"]').first().click();
+    await expect(page).toHaveURL(/\/en\/docs\/law-library\/$/);
+    await expect(page.locator("h1")).toHaveText(/Law library/);
+    const sitemap = await text(await request.get("/sitemap-0.xml"));
+    for (const slug of slugs) for (const lang of ["ar", "en"]) expect(sitemap).toContain(`<loc>https://dz-legal-assistant-ai.onrender.com/${lang}/docs/${slug}/</loc>`);
+});
+
+test("the guide page shows a picture of every step, opens one larger in a native dialog and closes it with Escape", async ({ page }) => {
+    await page.setViewportSize({ width: 1366, height: 900 });
+    await page.goto("/en/try/");
+    await expect(page.locator(".try-step")).toHaveCount(5);
+    // Every step carries at least one lazy picture in both themes; only the version of the theme shown has a box.
+    for (let i = 0; i < 5; i++) expect(await page.locator(".try-step").nth(i).locator("img").count()).toBeGreaterThanOrEqual(2);
+    const dark = page.locator(".try-step").first().locator("img.shot-dark").first();
+    const light = page.locator(".try-step").first().locator("img.shot-light").first();
+    await expect(dark).toBeVisible();
+    await expect(light).toBeHidden();
+    const dialog = page.locator("dialog[data-lightbox-dialog]");
+    await expect(dialog).toBeHidden();
+    await page.locator("button[data-lightbox]").first().click();
+    await expect(dialog).toBeVisible();
+    await expect(dialog.locator("img")).toHaveAttribute("src", /\/_astro\/step1-sample-en-dark[^"]*\.webp/);
+    await page.keyboard.press("Escape");
+    await expect(dialog).toBeHidden();
+    await expect(page.locator("button[data-lightbox]").first()).toBeFocused();
+    // The steps reveal as they scroll into view when motion is welcome, and stand visible without it.
+    await expect(page.locator("html")).toHaveAttribute("data-motion", "");
+    await page.locator(".try-step").last().scrollIntoViewIfNeeded();
+    await expect(page.locator(".try-step").last()).toHaveClass(/in/);
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.reload();
+    await expect(page.locator("html")).not.toHaveAttribute("data-motion", "");
+    await expect(page.locator(".try-step").last()).toBeVisible();
+});
+
 test("the law library page counts the data files and every official source it links opens", async ({ page, request }) => {
     await page.goto("/en/law/");
     // 1,361 articles from 6 texts, 2 of them complete: the figures of data/law/codes, never typed by hand.

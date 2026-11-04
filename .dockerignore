@@ -7,6 +7,22 @@ TestResults/
 artifacts/
 docs/*
 !docs/official-law-texts
+# The documents the website renders as pages, and the pictures they embed (the Dockerfile copies exactly these).
+!docs/PRODUCT-DETAILS.md
+!docs/ARCHITECTURE.md
+!docs/OFFLINE.md
+!docs/LAW-LIBRARY.md
+!docs/HIDDEN-SET.md
+!docs/WEB-DEMO.md
+!docs/images/main-window-ar.png
+!docs/images/main-window-grounds.png
+!docs/images/main-window-requests.png
+!docs/images/main-window-assistant.png
+!docs/images/requete-pdf-page1.png
+!docs/images/main-window-en.png
+!docs/images/workbench-export-blocked.png
+!docs/images/main-window-dark.png
+!docs/images/onboarding/setup-1-en-light-1366x768.png
 tests/
 **/appsettings.local.json
 *.key

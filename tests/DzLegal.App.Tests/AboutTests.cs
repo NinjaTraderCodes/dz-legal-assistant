@@ -70,7 +70,7 @@ public sealed class AboutTests : IDisposable
         Assert.Equal("مسودة تراجعها، لا استشارة قانونية", loc["AboutDraftTitle"]);
         Assert.Equal("يعمل دون اتصال، وبياناتك لا تغادر حاسوبك", loc["AboutPrivacyTitle"]);
         Assert.Equal(
-            ["هشام بن كيحول — قيادة المشروع وتطويره", "Djihane Ben Djeddou — تصميم الواجهة وتجربة الاستخدام", "خلود عثمان شريف — المراجعة القانونية"],
+            ["هشام بن كيحول — قيادة المشروع وتطويره", "جهان بن جدو — تصميم الواجهة وتجربة الاستخدام", "خلود عثمان شريف — المراجعة القانونية"],
             about.Team);
         Assert.Equal("طُوِّر هذا المشروع في إطار ThirdUni 2026.", loc["AboutThirdUni"]);
         loc.SetLanguage("en");

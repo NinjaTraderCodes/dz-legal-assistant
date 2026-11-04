@@ -1,0 +1,28 @@
+---
+// The one dialog a page needs to show a picture larger: a native <dialog>, filled and opened by ui.js when a
+// [data-lightbox] button is pressed (no library, nothing inline). Esc, the close button and a click outside the
+// picture close it, and focus returns to the button.
+import Icon from "./Icon.astro";
+import { t, type Lang } from "../i18n";
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+---
+<dialog class="lightbox" data-lightbox-dialog aria-label={t(lang, "shot.open")}>
+    <form method="dialog" class="bar">
+        <p class="caption" data-lightbox-caption></p>
+        <button type="submit" class="btn">
+            <Icon name="dismiss" size={16} /> {t(lang, "shot.close")}
+        </button>
+    </form>
+    <img alt="" data-lightbox-image />
+</dialog>
+
+<style>
+    .lightbox { width: min(96vw, 1400px); max-width: none; max-height: 96vh; margin: auto; padding: 12px; border: 1px solid var(--hairline); border-radius: var(--radius-card); background: var(--surface); color: var(--text); box-shadow: var(--shadow-card); }
+    .lightbox::backdrop { background: rgb(0 0 0 / 0.6); }
+    .bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0 0 10px; }
+    .bar .caption { margin: 0; color: var(--muted-aa); }
+    .lightbox img { display: block; max-width: 100%; max-height: calc(96vh - 80px); margin: 0 auto; border-radius: var(--radius-control); }
+    @media (max-width: 599px) { .lightbox { padding: 8px; } }
+</style>

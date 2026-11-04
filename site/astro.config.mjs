@@ -5,6 +5,8 @@
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
+import { satteri } from "@astrojs/markdown-satteri";
+import { docsHastPlugin } from "./src/content/docs-pages.ts";
 
 export default defineConfig({
     site: "https://dz-legal-assistant-ai.onrender.com",
@@ -17,6 +19,14 @@ export default defineConfig({
         routing: { prefixDefaultLocale: true, redirectToDefaultLocale: false },
     },
     devToolbar: { enabled: false },
+    // The six documents of docs/ (src/content.config.ts): their links and images adapted by the plugin, code
+    // highlighted with CSS variables the stylesheet defines from the site's tokens (nothing loaded at run time),
+    // the diagrams in fences without a language left as plain text.
+    markdown: {
+        processor: satteri({ hastPlugins: [docsHastPlugin()] }),
+        syntaxHighlight: { type: "shiki", excludeLangs: ["plaintext"] },
+        shikiConfig: { theme: "css-variables" },
+    },
     // The stylesheet is inlined: one render-blocking round trip fewer on a far-away host (inline styles are allowed by
     // the server's policy; inline scripts are not).
     build: { inlineStylesheets: "always", assets: "_astro" },

@@ -1,15 +1,19 @@
 ---
 // The nine steps beside the petition on paper: the one orchestrated moment of the page. With JavaScript the steps
-// tick and the sheet fills as the reader scrolls (src/scripts/home.ts); without it, and with reduced motion, the
-// final state is simply shown. The formal-check card is the workbench's own.
+// tick and the sheet fills as the reader scrolls (src/scripts/home.ts): the form first, then the legal grounds, where
+// the code's quoted rules and the AI's lines are told apart on the sheet and the review box is ticked. Without it,
+// and with reduced motion, the final state is simply shown. The formal-check card is the workbench's own.
 import Icon from "./Icon.astro";
-import { steps, paper } from "../content/steps";
+import Source from "./Source.astro";
+import { steps, paper, writingOrder } from "../content/steps";
 import { s, t, type Lang } from "../i18n";
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
+// The marks beside the Arabic document are in the reader's language, like the workbench's own tags.
+const ui = { lang, dir: lang === "ar" ? "rtl" : "ltr" } as const;
 ---
-<section id="how" class="section page story" aria-labelledby="story-title" data-story>
+<section id="how" class="section page story" aria-labelledby="story-title" data-story data-order={writingOrder.join(" ")}>
     <header class="intro">
         <h2 id="story-title" class="h1">{t(lang, "story.title")}</h2>
         <p class="lead">{t(lang, "story.lead")}</p>
@@ -34,25 +38,36 @@ const { lang } = Astro.props;
                 <div class="bar"><span data-bar style="width: 100%"></span></div>
                 <p class="verdict ok" data-present><Icon name="checkmark_circle" size={18} /> {t(lang, "story.present")}</p>
                 <p class="verdict ko" data-missing hidden><Icon name="error_circle" size={18} /> {t(lang, "story.missing")}</p>
-                <div class="finding" data-finding hidden>
+                <div class="finding" data-finding="domicile" hidden>
                     <strong>{t(lang, "problem.finding.title")}</strong>
                     <span class="caption">{t(lang, "problem.finding.article")}</span>
+                </div>
+                <div class="finding" data-finding="grounds" hidden>
+                    <strong>{t(lang, "story.finding.grounds.title")}</strong>
+                    <span class="caption">{t(lang, "story.finding.grounds.article")}</span>
                 </div>
             </div>
         </div>
         <div class="paper-canvas">
             <article class="paper" lang="ar" dir="rtl" aria-label="عريضة افتتاح دعوى (مثال خيالي)">
                 {paper.map((sec) => (
-                    <section data-paper-section={sec.id}>
+                    <section data-paper-section={sec.id} class:list={[sec.ai && "ai"]}>
+                        {sec.ai && <span class="ai-mark" {...ui}><Icon name="sparkle" size={10} /> {s(lang, "ModelTag")}</span>}
                         {sec.heading && <h3>{sec.heading}</h3>}
-                        {sec.lines.map((line) => <p>{line}</p>)}
+                        {sec.lines.map((line) => typeof line === "string"
+                            ? <p>{line}</p>
+                            : line.by === "code"
+                                ? <p class="rule" data-rule><q>{line.text}</q> <span class="chip-code" {...ui} data-chip><Icon name="checkmark_circle" size={11} /> {t(lang, "story.chip.code")}</span></p>
+                                : <p class="ai-line" data-ai>{line.text}</p>)}
                         {sec.domicile && <p data-domicile>{sec.domicile}</p>}
+                        {sec.review && <p class="review" {...ui} data-review data-done="1"><span class="box" aria-hidden="true"><Icon name="checkmark" size={11} /></span> {s(lang, "ReviewedCheck")}</p>}
                     </section>
                 ))}
             </article>
         </div>
     </div>
     <p class="caption">{t(lang, "story.caption")}</p>
+    <Source lang={lang} files={["README.md", "docs/PRODUCT-DETAILS.md"]} />
 </section>
 
 <style>
@@ -74,8 +89,22 @@ const { lang } = Astro.props;
     .verdict.ok { color: var(--success); }
     .verdict.ko { color: var(--danger); }
     .verdict[hidden], .finding[hidden] { display: none; }
+    /* The frame: while the story runs, the sheet scrolls inside a viewport-high window so the current section is in view. */
+    .story.framed .paper-canvas { height: calc(100vh - var(--story-top, 96px) - 16px); box-sizing: border-box; overflow: hidden; }
+    .story.framed .paper { will-change: transform; }
     .paper section { display: grid; gap: 0.35em; margin-top: 0.9em; }
     .paper section:first-child { margin-top: 0; text-align: center; font-weight: 700; }
     .paper section:first-child p:last-child { margin-top: 1em; font-size: 1.15em; }
+    /* The AI-written section, as the workbench shows it: a gold side line and the "AI" tag. The sheet is always light,
+       so these colours are the light theme's, fixed. */
+    .paper section.ai { position: relative; border-inline-start: 3px solid #c6a76d; padding-inline-start: 10px; margin-inline-start: -13px; }
+    .paper .ai-mark { position: absolute; top: 0.2em; inset-inline-end: 0; display: inline-flex; align-items: center; gap: 4px; padding: 1px 8px; border-radius: 999px; font: 600 10.5px/1.6 var(--font-ui); background: #fff3dc; color: #786039; }
+    .paper .rule q { quotes: "«" "»"; }
+    .paper .chip-code { display: inline-flex; align-items: center; gap: 4px; margin-inline-start: 6px; padding: 0 7px; border-radius: 999px; font: 600 10.5px/1.7 var(--font-ui); vertical-align: middle; white-space: nowrap; background: #e5f3ea; color: #2b7a4b; }
+    .paper .ai-line { width: fit-content; max-width: 100%; }
+    .paper .ai-line[data-writing="1"]::after { content: ""; display: inline-block; width: 2px; height: 1em; margin-inline-start: 3px; vertical-align: -0.15em; background: #c6a76d; }
+    .paper .review { display: inline-flex; align-items: center; gap: 8px; width: fit-content; max-width: 100%; margin-top: 0.5em; padding: 6px 10px; border-radius: 6px; background: #f3f1ec; color: #1c2321; font: 600 12.5px/1.5 var(--font-ui); }
+    .paper .review .box { display: inline-grid; place-items: center; flex: none; width: 16px; height: 16px; border-radius: 4px; border: 1.5px solid #a9a39a; background: #fff; color: transparent; }
+    .paper .review[data-done="1"] .box { background: #786039; border-color: #786039; color: #fff; }
     @media (max-width: 899px) { .stage { grid-template-columns: 1fr; } .side { position: static; } }
 </style>

@@ -1,6 +1,6 @@
 ---
-// The foot of every page: the offline line of the welcome screen, the pages, the version and the
-// licences of what the site bundles (fonts and icons), as AGENTS.md requires.
+// The foot of every page, the back cover of the case file: the offline line of the welcome screen, the pages, the
+// version and the licences of what the site bundles (fonts and icons), as AGENTS.md requires.
 import Icon from "./Icon.astro";
 import { s, t, fmt, type Lang } from "../i18n";
 import { pages, version } from "../content/product";
@@ -18,16 +18,17 @@ const current = (page: string) => (page === path ? "page" : undefined);
             <a href={`/app?lang=${lang}`}>{t(lang, "nav.demo")}</a>
         </nav>
         <p class="caption">{fmt(t(lang, "footer.version"), version)} · {s(lang, "AboutThirdUni")}</p>
-        <p class="caption">{t(lang, "footer.licences")} <a href="/licences/OFL-Inter.txt">Inter (OFL)</a>, <a href="/licences/OFL-NotoNaskhArabic.txt">Noto Naskh Arabic (OFL)</a>, <a href="/licences/MIT-FluentIcons.txt">Fluent UI System Icons (MIT)</a>.</p>
+        <p class="caption">{t(lang, "footer.licences")} <a href="/licences/OFL-MarkaziText.txt">Markazi Text (OFL)</a>, <a href="/licences/OFL-ReadexPro.txt">Readex Pro (OFL)</a>, <a href="/licences/OFL-ArefRuqaa.txt">Aref Ruqaa (OFL)</a>, <a href="/licences/OFL-Inter.txt">Inter (OFL)</a>, <a href="/licences/OFL-NotoNaskhArabic.txt">Noto Naskh Arabic (OFL)</a>, <a href="/licences/MIT-FluentIcons.txt">Fluent UI System Icons (MIT)</a>.</p>
     </div>
 </footer>
 
 <style>
-    .site-footer { border-top: 1px solid var(--hairline); margin-top: clamp(48px, 8vw, 96px); background: var(--surface-alt); }
-    .foot { display: grid; gap: 10px; padding-block: 32px 40px; }
-    .offline { display: inline-flex; align-items: center; gap: 8px; color: var(--success); font-weight: 500; }
+    .site-footer { background: var(--w-kraft); color: var(--w-text); }
+    .foot { display: grid; gap: 12px; padding-block: 36px 44px; border-top: 2px solid var(--w-text); }
+    .offline { display: inline-flex; align-items: center; gap: 8px; font-weight: 500; }
+    .offline :global(.icon) { color: var(--w-ink); }
     .links { display: flex; flex-wrap: wrap; gap: 6px 20px; }
-    .links a { color: var(--text); }
-    .pages a[aria-current="page"] { font-weight: 600; color: var(--accent); }
-    .caption a { color: var(--muted); }
+    .links a { color: var(--w-text); }
+    .pages a[aria-current="page"] { font-weight: 600; }
+    .caption a { color: var(--w-muted); }
 </style>

@@ -47,14 +47,15 @@
   // Steps marked data-reveal fade and slide in as they scroll into view, and the line joining them fills up to the
   // last one shown (--progress on the list). Only when motion is welcome: the attribute on <html> switches the
   // styles on, so without it, or without this script, everything is simply visible.
+  // Stamps marked data-strike strike once as they come into view (.struck); the scroll story strikes its own.
   var motion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: no-preference)").matches && "IntersectionObserver" in window;
-  var targets = document.querySelectorAll("[data-reveal]");
+  var targets = document.querySelectorAll("[data-reveal], [data-strike]");
   if (motion && targets.length) {
     document.documentElement.setAttribute("data-motion", "");
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
-        entry.target.classList.add("in");
+        entry.target.classList.add(entry.target.hasAttribute("data-strike") ? "struck" : "in");
         observer.unobserve(entry.target);
         var list = entry.target.parentElement;
         if (list && list.hasAttribute("data-progress")) {

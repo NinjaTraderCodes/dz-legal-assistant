@@ -1,8 +1,12 @@
-/* The website's stylesheet: Tailwind utilities on top of the product's design tokens (tokens.css is generated from
-   the desktop app's theme). Light is the default; dark applies with data-theme="dark" on <html>. Arabic is the first
-   language: Naskh gets the larger size and line-height the desktop gives it. */
+/* The website's stylesheet: Tailwind utilities, the desktop app's design tokens (tokens.css, generated from its theme,
+   for the pieces of the app the site shows) and the site's own world, the case file (world.css). Dark is the default;
+   light applies when data-theme is lifted from <html>. Arabic is the first language and gets the larger size. */
 @import "tailwindcss";
+/* Tailwind reads every word of the sources as a possible class: these appear only in comments and CSS values, and as
+   utilities they would only add unused rules (and their custom properties) to every page. */
+@source not inline("transform shadow outline blur filter transition resize border visible fixed");
 @import "./tokens.css";
+@import "./world.css";
 
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 /* Code blocks of the rendered documents: Shiki writes var(--astro-code-*) per token; the values are the
@@ -46,7 +50,8 @@
   --shadow-tour: var(--tour-card-shadow);
 }
 
-/* Fonts: Inter for Latin, Noto Naskh Arabic for Arabic script, exactly as the desktop's UiFont and DocumentFont. */
+/* The app's faces, for the petition and the pieces of the app: Inter for Latin, Noto Naskh Arabic for Arabic script,
+   exactly as the desktop's UiFont and DocumentFont. The site's own faces are in world.css. */
 @font-face { font-family: "Inter"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("../assets/fonts/Inter-latin.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 @font-face { font-family: "Inter"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("../assets/fonts/Inter-latin-ext.woff2") format("woff2");
@@ -59,18 +64,20 @@
 @layer base {
   /* Small text needs 4.5:1; the product's muted token reaches 4.4:1 on the canvas, so the site darkens it slightly. */
   :root { --measure: 68ch; --page: 1180px; --gutter: clamp(16px, 4vw, 48px); --muted-aa: color-mix(in srgb, var(--muted) 78%, var(--text)); }
-  html { background: var(--canvas); background-image: var(--canvas-image); color: var(--text); font-family: var(--font-ui); font-size: 17px; line-height: 1.6; -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
-  html[lang="ar"] { font-size: 18px; line-height: 1.9; }
+  html { background: var(--w-kraft); color: var(--w-text); font-family: var(--w-ui); font-size: 17px; line-height: 1.6; -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  html[lang="ar"] { font-size: 18px; line-height: 1.85; }
   body { margin: 0; min-height: 100dvh; text-rendering: optimizeLegibility; }
-  h1, h2, h3, h4 { margin: 0; font-weight: 600; line-height: 1.15; letter-spacing: -0.01em; }
+  h1, h2, h3, h4 { margin: 0; font-weight: 600; line-height: 1.15; letter-spacing: -0.005em; }
+  h1, h2 { font-family: var(--w-display); line-height: 1.08; }
   /* Balanced wrapping costs extra layout passes per heading: only the few large ones get it. */
   h1, h2 { text-wrap: balance; }
   html[lang="ar"] :is(h1, h2, h3, h4) { line-height: 1.4; letter-spacing: 0; }
+  html[lang="ar"] :is(h1, h2) { line-height: 1.3; }
   p { margin: 0; max-width: var(--measure); }
-  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
-  a:hover { color: var(--text); }
-  :focus-visible { outline: 3px solid var(--edge); outline-offset: 3px; border-radius: 4px; }
-  ::selection { background: var(--accent-soft); color: var(--text); }
+  a { color: var(--w-text); text-decoration-thickness: 1px; text-underline-offset: 4px; }
+  a:hover { text-decoration-thickness: 2px; }
+  :focus-visible { outline: 3px solid var(--w-focus); outline-offset: 3px; border-radius: 2px; }
+  ::selection { background: #d9d2f5; color: #1d1a17; }
   button { font: inherit; color: inherit; }
   svg { display: inline-block; vertical-align: middle; }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
@@ -82,16 +89,19 @@
 }
 
 @layer components {
-  .display { font-size: clamp(2.5rem, 1.5rem + 3.4vw, 4.5rem); line-height: 1.05; }
-  html[lang="ar"] .display { font-size: clamp(2.25rem, 1.4rem + 3vw, 4rem); line-height: 1.35; }
-  .h1 { font-size: clamp(2.125rem, 1.6rem + 1.8vw, 3.25rem); }
-  .h2 { font-size: clamp(1.625rem, 1.3rem + 1.1vw, 2.125rem); }
-  .h3 { font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem); }
-  .lead { font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.3125rem); line-height: 1.65; color: var(--welcome-secondary); }
-  html[lang="ar"] .lead { line-height: 1.9; }
+  /* Titles in Markazi Text, which reads smaller than a grotesque at the same size: the scale is set for it. */
+  .display { font-family: var(--w-display); font-weight: 600; font-size: clamp(3rem, 1.4rem + 3.6vw, 5rem); line-height: 1.02; }
+  html[lang="ar"] .display { font-size: clamp(2.75rem, 1.4rem + 3.2vw, 4.7rem); line-height: 1.25; }
+  .h1 { font-family: var(--w-display); font-size: clamp(2.25rem, 1.4rem + 2.3vw, 3.4rem); }
+  .h2 { font-family: var(--w-display); font-size: clamp(1.75rem, 1.3rem + 1.3vw, 2.4rem); }
+  .h3 { font-size: clamp(1.1rem, 1rem + 0.35vw, 1.3rem); }
+  .lead { font-size: clamp(1.0625rem, 1rem + 0.35vw, 1.25rem); line-height: 1.65; color: var(--w-muted); }
+  html[lang="ar"] .lead { line-height: 1.85; }
+  .tagline { font-family: var(--w-display); font-size: clamp(1.35rem, 0.95rem + 1vw, 1.9rem); line-height: 1.28; color: var(--w-text); }
+  html[lang="ar"] .tagline { line-height: 1.6; }
   .small { font-size: 0.875rem; }
-  .caption { font-size: 0.78rem; color: var(--muted-aa); }
-  .muted { color: var(--muted-aa); }
+  .caption { font-size: 0.8rem; color: var(--w-muted); }
+  .muted { color: var(--w-muted); }
   .doc { font-family: var(--font-doc); }
   .page { width: min(var(--page), 100% - 2 * var(--gutter)); margin-inline: auto; }
   .section { padding-block: clamp(64px, 10vw, 128px); }
@@ -99,44 +109,31 @@
   /* Phones lay out a section only when it comes near the screen (the scroll story, desktop-only, measures its own height). */
   @media (max-width: 899px) { .section { content-visibility: auto; contain-intrinsic-size: auto 900px; } }
 
-  /* The product's own controls (Workbench.axaml: Button.home, .primary, .main-action). */
-  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: var(--h-onboarding-button); padding: 8px 20px; border: 1px solid var(--edge); border-radius: var(--radius-button); background: var(--welcome-control); color: var(--welcome-text); font-weight: 500; font-size: var(--size-onboarding-button); text-decoration: none; transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease; }
-  .btn:hover { color: var(--welcome-text); background: var(--surface-alt); }
+  /* The site's controls: a carbon outline, or carbon filled for the one primary action of a screen; square corners. */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 8px 22px; border: 1.5px solid var(--w-btn); border-radius: 2px; background: transparent; color: var(--w-text); font-weight: 600; font-size: 0.95rem; line-height: 1.3; text-decoration: none; transition: background-color 160ms ease, color 160ms ease, transform 120ms ease; }
+  .btn:hover { background: color-mix(in srgb, var(--w-btn) 10%, transparent); text-decoration: none; }
   .btn:active { transform: translateY(1px); }
-  .btn-gold { background: var(--welcome-gold); color: var(--welcome-button-text); border-color: var(--welcome-button-border); font-weight: 600; font-size: 17px; min-height: 48px; min-width: 208px; }
-  .btn-gold:hover { color: var(--welcome-button-text); background: var(--welcome-gold); filter: brightness(1.05); }
-  .btn-quiet { background: transparent; border-color: transparent; }
-  .btn-quiet:hover { background: var(--surface-alt); }
+  .btn-primary { background: var(--w-btn); color: var(--w-btn-text); }
+  .btn-primary:hover { background: var(--w-btn); color: var(--w-btn-text); filter: brightness(1.18); }
 
-  /* Panels and cards as in the workbench: Border.panel (radius 12, hairline, shadow) and Border.card. */
-  .panel { background: var(--panel); background-image: var(--panel-image); border: 1px solid var(--hairline); border-radius: var(--radius-card); box-shadow: var(--shadow-card); }
-  .card { background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--radius-card); padding: 16px; }
-  .card-alt { background: var(--surface-alt); border-radius: var(--radius-card); padding: 14px; }
+  /* Cards and panels are sheets (world.css); a ruled block is text set on the folder under a heavy rule. */
+  .card { padding: 18px 20px; }
+  .card-alt { border-top: 2px solid var(--w-text); padding: 16px 0 0; }
   .chip { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 3px 10px; font-size: 12.5px; font-weight: 600; background: var(--warning-soft); color: var(--warning); }
   .chip-success { background: var(--success-soft); color: var(--success); }
   .chip-accent { background: var(--accent-soft); color: var(--accent); }
   .finding { border-radius: 10px; padding: 12px 14px; background: var(--danger-soft); display: grid; gap: 4px; }
   .finding.warning { background: var(--warning-soft); }
   .finding.success { background: var(--success-soft); }
-  .hairline { border: 0; border-top: 1px solid var(--hairline); margin: 0; }
+  .hairline { border: 0; border-top: 1px solid var(--w-rule); margin: 0; }
 
   /* The paper sheet of the statement of claim with its draft watermark (MainWindow.axaml DocumentPaper). */
-  .paper-canvas { background: var(--paper-canvas); border-radius: 8px; padding: clamp(10px, 2vw, 18px); }
-  .paper { position: relative; overflow: hidden; background: var(--paper); color: #27241f; border-radius: 2px; box-shadow: var(--shadow-paper); padding: clamp(28px, 5vw, 56px) clamp(22px, 5vw, 64px); font-family: var(--font-doc); font-size: clamp(15px, 0.9rem + 0.4vw, 20.5px); line-height: 1.55; direction: rtl; text-align: right; }
+  .paper-canvas { position: relative; }
+  .paper { position: relative; overflow: hidden; background: var(--paper); color: #27241f; border-radius: 2px; box-shadow: var(--w-shadow); padding: clamp(28px, 5vw, 56px) clamp(22px, 5vw, 64px); font-family: var(--font-doc); font-size: clamp(15px, 0.9rem + 0.4vw, 20.5px); line-height: 1.55; direction: rtl; text-align: right; }
   .paper::before { content: "مسودة"; position: absolute; inset-inline: 0; top: 38%; text-align: center; font-size: clamp(64px, 12vw, 110px); font-weight: 700; color: rgb(39 36 31 / 0.08); transform: rotate(-35deg); pointer-events: none; }
   .paper h3 { font-family: var(--font-doc); font-size: 1em; font-weight: 700; text-decoration: underline; margin-top: 1.2em; }
   .paper p { max-width: none; }
 
-  /* Step list as in the case form (01–09, check marks). */
-  .steps { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
-  .step { display: grid; grid-template-columns: 3px 30px 1fr 22px; align-items: center; min-height: 32px; border-radius: 4px; font-size: 14px; }
-  html[lang="ar"] .step { font-size: 16px; }
-  .step .bar { width: 3px; height: 70%; border-radius: 1px; background: transparent; }
-  .step .num { font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
-  .step .icon { color: var(--success); }
-  .step.current { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
-  .step.current .bar { background: var(--accent); }
-  .step.missing .icon { color: var(--danger); }
 }
 
 /* The secondary pages (download, law, privacy, about): blocks in two columns on wide screens, lists with a mark,
@@ -147,19 +144,19 @@
   .block > .h2 { margin-bottom: 4px; }
   .list { margin: 0; padding: 0; display: grid; gap: 10px; list-style: none; }
   .list li { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start; }
-  .list li .icon { margin-top: 6px; color: var(--success); }
-  .list.plain li .icon { color: var(--accent); }
+  .list li .icon { margin-top: 6px; color: var(--w-ink); }
+  .list.plain li .icon { color: var(--w-muted); }
   .steps-list { margin: 0; padding: 0; display: grid; gap: 12px; list-style: none; counter-reset: step; }
   .steps-list li { counter-increment: step; display: grid; grid-template-columns: 30px 1fr; gap: 12px; align-items: start; }
-  .steps-list li::before { content: counter(step, decimal-leading-zero); margin-top: 3px; font-size: 0.9rem; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--accent); }
+  .steps-list li::before { content: counter(step, decimal-leading-zero); margin-top: 3px; font-size: 0.85rem; font-weight: 500; font-variant-numeric: tabular-nums; color: var(--w-muted); }
   .table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
-  .table th, .table td { text-align: start; vertical-align: top; padding: 10px 12px; border-top: 1px solid var(--hairline); }
+  .table th, .table td { text-align: start; vertical-align: top; padding: 10px 12px; border-top: 1px solid var(--w-rule); }
   .table th { font-weight: 600; }
-  .table thead th { border-top: 0; color: var(--muted-aa); font-size: 0.85rem; }
+  .table thead th { border-top: 0; border-bottom: 2px solid var(--w-text); color: var(--w-muted); font-size: 0.85rem; }
   .table tbody th { width: 38%; }
-  .code { margin: 0; padding: 14px 16px; border: 1px solid var(--hairline); border-radius: var(--radius-control); background: var(--surface-alt); color: var(--text); font: 0.85rem/1.6 ui-monospace, "Cascadia Mono", Consolas, monospace; direction: ltr; text-align: left; overflow-x: auto; }
+  .code { margin: 0; padding: 14px 16px; border: 1px solid var(--w-rule); border-radius: 2px; background: color-mix(in srgb, var(--w-sheet) 14%, transparent); color: var(--w-text); font: 0.85rem/1.6 ui-monospace, "Cascadia Mono", Consolas, monospace; direction: ltr; text-align: left; overflow-x: auto; }
   .facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 16px; margin: 0; font-size: 0.95rem; }
-  .facts dt { color: var(--muted-aa); font-weight: 500; }
+  .facts dt { color: var(--w-muted); font-weight: 500; }
   .facts dd { margin: 0; }
   .stat { display: grid; gap: 2px; }
   .stat strong { font-size: 2rem; line-height: 1.1; font-weight: 600; font-variant-numeric: tabular-nums; }
@@ -170,5 +167,5 @@
 
 /* A path or command inside a sentence, kept left to right whatever the sentence's direction. */
 @layer components {
-  .inline-code { font: 0.9em/1.4 ui-monospace, "Cascadia Mono", Consolas, monospace; padding: 1px 6px; border: 1px solid var(--hairline); border-radius: 4px; background: var(--surface-alt); direction: ltr; unicode-bidi: isolate; white-space: nowrap; }
+  .inline-code { font: 0.9em/1.4 ui-monospace, "Cascadia Mono", Consolas, monospace; padding: 1px 6px; border: 1px solid var(--w-rule); border-radius: 2px; background: transparent; direction: ltr; unicode-bidi: isolate; white-space: nowrap; }
 }

@@ -1,0 +1,22 @@
+---
+// One folder of the case file (world.css): a full-width field in a cardboard colour, with its tab, numbered like a
+// register entry, rising above the top edge on the side where reading starts. The home lays out one per section.
+interface Props {
+    tone: "kraft" | "salmon" | "blue" | "green" | "yellow";
+    /** The register number on the tab, "01" to "08". */
+    no?: string;
+    /** The words on the tab. */
+    tab?: string;
+    id?: string;
+    labelledby?: string;
+    label?: string;
+    class?: string;
+    [attr: string]: unknown;
+}
+// Anything else (the parent's style scope among it) goes on the section.
+const { tone, no, tab, id, labelledby, label, class: className, ...rest } = Astro.props;
+---
+<section id={id} class:list={["folder", `tone-${tone}`, tab && "has-tab", className]} aria-labelledby={labelledby} aria-label={label} {...rest}>
+    {tab && <p class="tab">{no && <span class="no">{no}</span>}<span>{tab}</span></p>}
+    <slot />
+</section>

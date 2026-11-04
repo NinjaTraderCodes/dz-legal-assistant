@@ -1,0 +1,119 @@
+/* The website's own world, the case file (site/DESIGN.md): cardboard folders, white sheets filed on them, violet
+   registry stamps. tokens.css keeps the desktop app's theme for the pieces of the app the site shows; everything that
+   is the site itself reads the --w-* values here. Dark is the default theme (data-theme="dark" on <html>): the same
+   file in the archive room after hours, where the folders deepen and the sheets stay paper.
+   Every text colour below was measured at WCAG AA or better on every folder of its theme; red text is used only on
+   sheets, where it reaches 6:1 (on the light folders it would not reach 4.5:1). */
+:root {
+  --w-kraft: #cdbb98;
+  /* The kraft folder is a board one shade off the kraft ground, so its tab shows against the bar. */
+  --w-board: #d9caab;
+  --w-salmon: #e8a88f;
+  --w-blue: #a6c6da;
+  --w-green: #aecba3;
+  --w-yellow: #eccd74;
+  --w-text: #1d1a17;
+  --w-muted: #463d33;
+  --w-ink: #4a3b8f;
+  --w-rule: rgb(29 26 23 / 0.22);
+  --w-btn: #1d1a17;
+  --w-btn-text: #fbfaf6;
+  --w-focus: #1d1a17;
+  --w-shadow: 0 1px 0 rgb(0 0 0 / 0.08), 0 8px 18px -8px rgb(40 25 10 / 0.38);
+  --w-lift: drop-shadow(0 26px 30px rgb(40 20 10 / 0.38));
+  /* Sheets are paper in both themes. */
+  --w-sheet: #fbfaf6;
+  --w-sheet-text: #1d1a17;
+  --w-sheet-muted: #5b5249;
+  --w-sheet-rule: rgb(29 26 23 / 0.16);
+  --w-sheet-ink: #4a3b8f;
+  --w-sheet-red: #b3261e;
+  --w-metal: #8c8f94;
+  --w-display: "Markazi Text", "Noto Naskh Arabic", Georgia, serif;
+  --w-ui: "Readex Pro", "Noto Naskh Arabic", system-ui, "Segoe UI", sans-serif;
+  --w-stamp: "Aref Ruqaa", "Readex Pro", serif;
+  --w-tab-h: 40px;
+}
+:root[data-theme="dark"] {
+  --w-kraft: #1b1915;
+  --w-board: #26231e;
+  --w-salmon: #562a22;
+  --w-blue: #1f3341;
+  --w-green: #22352a;
+  --w-yellow: #3e3418;
+  --w-text: #ece7de;
+  --w-muted: #bfb4a4;
+  --w-ink: #b4a8f2;
+  --w-rule: rgb(236 231 222 / 0.2);
+  --w-btn: #f4f1ea;
+  --w-btn-text: #1d1a17;
+  --w-focus: #f4f1ea;
+  --w-shadow: 0 1px 0 rgb(0 0 0 / 0.3), 0 10px 22px -8px rgb(0 0 0 / 0.7);
+  --w-lift: drop-shadow(0 26px 34px rgb(0 0 0 / 0.65));
+  --w-sheet: #f4f1ea;
+}
+
+/* The faces: Markazi Text for titles, Readex Pro for text and controls, each in an Arabic and a Latin file so a page
+   fetches only the script it shows; Aref Ruqaa only inside stamps. */
+@font-face { font-family: "Markazi Text"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("../assets/fonts/Markazi-ar.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+FB50-FDFF, U+FE70-FEFF, U+200C-200F, U+2066-2069; }
+@font-face { font-family: "Markazi Text"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("../assets/fonts/Markazi-latin.woff2") format("woff2");
+  unicode-range: U+0020-007E, U+00A0-017F, U+2010-203A, U+20AC, U+2122, U+2190-2193, U+2212; }
+@font-face { font-family: "Readex Pro"; font-style: normal; font-weight: 300 700; font-display: swap; src: url("../assets/fonts/Readex-ar.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+FB50-FDFF, U+FE70-FEFF, U+200C-200F, U+2066-2069; }
+@font-face { font-family: "Readex Pro"; font-style: normal; font-weight: 300 700; font-display: swap; src: url("../assets/fonts/Readex-latin.woff2") format("woff2");
+  unicode-range: U+0020-007E, U+00A0-017F, U+2010-203A, U+20AC, U+2122, U+2190-2193, U+2212; }
+@font-face { font-family: "Aref Ruqaa"; font-style: normal; font-weight: 700; font-display: swap; src: url("../assets/fonts/Ruqaa-ar.woff2") format("woff2");
+  unicode-range: U+0621-0652, U+0660-0669, U+060C, U+200C-200D; }
+
+@layer components {
+  /* A folder: a full-width field of one cardboard colour, with its tab rising above its top edge on the side where
+     reading starts. The colour says which file the reader is in. */
+  .folder { position: relative; background: var(--w-tone, var(--w-board)); color: var(--w-text); padding-block: clamp(64px, 9vw, 112px); }
+  /* Each tab overlaps the bottom of the folder before it, so the stack reads as one file; only the first folder under
+     the bar leaves room for its tab. */
+  main > .folder.has-tab:first-child, main.folder.has-tab { margin-top: var(--w-tab-h); }
+  .folder.tight { padding-block: clamp(48px, 6vw, 72px); }
+  .tone-kraft { --w-tone: var(--w-board); }
+  .tone-salmon { --w-tone: var(--w-salmon); }
+  .tone-blue { --w-tone: var(--w-blue); }
+  .tone-green { --w-tone: var(--w-green); }
+  .tone-yellow { --w-tone: var(--w-yellow); }
+  .folder > .tab { position: absolute; bottom: 100%; inset-inline-start: max(var(--gutter), calc((100% - var(--page)) / 2)); display: flex; align-items: center; gap: 12px; height: var(--w-tab-h); margin: 0; padding: 0 26px; background: var(--w-tone, var(--w-board)); color: var(--w-text); font-size: 0.86rem; font-weight: 500; line-height: 1; white-space: nowrap; max-width: calc(100% - 2 * var(--gutter)); clip-path: polygon(0 100%, 14px 0, calc(100% - 14px) 0, 100% 100%); }
+  .folder > .tab .no { font-variant-numeric: tabular-nums; color: var(--w-muted); }
+
+  /* A sheet: paper filed on the folder, sharp-cornered, with a short firm shadow. It is paper in both themes, so it
+     carries its own text colours, and the app's tokens inside it take their light values (the app's pieces and
+     cards read them). */
+  .sheet, .panel, .card { position: relative; background: var(--w-sheet); color: var(--w-sheet-text); border-radius: 2px; box-shadow: var(--w-shadow);
+    --w-text: var(--w-sheet-text); --w-muted: var(--w-sheet-muted); --w-rule: var(--w-sheet-rule); --w-ink: var(--w-sheet-ink); --w-btn: #1d1a17; --w-btn-text: #fbfaf6; --w-focus: #1d1a17;
+    --text: #1c2321; --muted: #6a706d; --muted-aa: #545a57; --hairline: #e4dfd4; --surface: #ffffff; --surface-alt: #f8f6f1; --accent: #786039; --accent-soft: #fff3dc; --edge: #786039;
+    --success: #2b7a4b; --success-soft: #e5f3ea; --danger: #b3261e; --danger-soft: #fcebe9; --warning: #935600; --warning-soft: #fff3dc; --gold: #c6a76d; --on-gold: #28231d; }
+  :is(.sheet, .panel, .card) a:not(.btn) { color: var(--w-sheet-text); }
+  /* What holds a sheet to the folder: a paper clip at the top, or a staple at the corner. One per sheet. */
+  .clip { position: absolute; top: -14px; inset-inline-end: 34px; width: 22px; height: 58px; color: var(--w-metal); pointer-events: none; }
+  .staple { position: absolute; top: 16px; inset-inline-start: 22px; width: 34px; height: 3px; border-radius: 2px; background: #9a9da2; box-shadow: 0 1px 0 rgb(0 0 0 / 0.25); transform: rotate(-8deg); pointer-events: none; }
+
+  /* A registry stamp: violet ink in a double frame, slightly turned. It carries a status only, never an emblem, a
+     court's name or an imitation of an official seal. The ink's unevenness is the inline SVG filter #ink (Base.astro). */
+  .stamp { display: inline-grid; justify-items: center; gap: 6px; padding: 12px 22px; color: var(--w-ink); border: 3px solid currentColor; outline: 1.5px solid currentColor; outline-offset: 3px; border-radius: 3px; font-family: var(--w-stamp); font-weight: 700; font-size: 1.6rem; line-height: 1.2; white-space: nowrap; transform: rotate(var(--stamp-turn, -5deg)); filter: url(#ink); }
+  .sheet .stamp { mix-blend-mode: multiply; }
+  .stamp small { width: 100%; padding-top: 6px; border-top: 1.5px solid currentColor; font-family: var(--w-ui); font-size: 0.62rem; font-weight: 600; line-height: 1.3; text-align: center; white-space: normal; }
+  :lang(en) .stamp, .stamp:lang(en) { font-family: var(--w-ui); font-size: 1.1rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  :lang(en) .stamp small, .stamp:lang(en) small { letter-spacing: 0.02em; text-transform: none; }
+  /* A stamp strikes once when it comes into view (ui.js adds .struck), or when the story reaches it. */
+  html[data-motion] .stamp[data-strike]:not(.struck) { opacity: 0; }
+  html[data-motion] .stamp[data-strike].struck { animation: stamp-strike 170ms cubic-bezier(0.2, 0.9, 0.3, 1.2) both; }
+  @keyframes stamp-strike { from { opacity: 0; transform: rotate(var(--stamp-turn, -5deg)) scale(1.18); } to { opacity: 1; transform: rotate(var(--stamp-turn, -5deg)) scale(1); } }
+
+  /* The violet tick of the register, drawn like a pen stroke. */
+  /* The stroke's dash values are inherited by the shared drawing (#tick-shape, pathLength 30), so an undrawn tick is
+     simply stroke-dashoffset: 30 on the element. */
+  .tick { width: 24px; height: 20px; color: var(--w-ink); flex: none; stroke-dasharray: 30; stroke-dashoffset: 0; transition: stroke-dashoffset 260ms ease-out; }
+
+  /* A tag on the folder: a square frame in the text's colour (the app's own chips stay inside its pieces). */
+  .tag { display: inline-flex; align-items: center; gap: 6px; padding: 2px 9px; border: 1px solid currentColor; border-radius: 2px; color: var(--w-ink); font-size: 0.75rem; font-weight: 600; line-height: 1.6; white-space: nowrap; }
+
+  /* Registry numbering: entries are numbered like a register, not labelled. */
+  .reg-no { font-family: var(--w-ui); font-variant-numeric: tabular-nums; color: var(--w-muted); font-size: 0.82rem; font-weight: 500; }
+}

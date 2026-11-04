@@ -1,7 +1,7 @@
 // Pictures of the home page for a phase report: the story frame by frame (the pinned timeline scrolled to each
 // step, as a reader would see it) and the sections that carry screenshots, at laptop and desktop sizes, in both
 // languages and themes. Usage:
-//   node tests/home-shots.mjs --base http://localhost:5080 --out ../docs/website/phase-5 [--langs ar,en] [--themes dark,light] [--sizes 1366x768,1920x1080] [--story] [--sections proofs,ai,team]
+//   node tests/home-shots.mjs --base http://localhost:5080 --out ../docs/website/phase-5 [--langs ar,en] [--themes dark,light] [--sizes 1366x768,1920x1080] [--story] [--sections hero,proofs,ai,team]
 import { mkdirSync } from "node:fs";
 import { resolve } from "node:path";
 import { chromium } from "@playwright/test";
@@ -49,7 +49,7 @@ for (const [width, height] of sizes) for (const lang of langs) for (const theme 
     // The sticky header would cross a tall section's picture: it is hidden for these.
     if (sections.length) await page.addStyleTag({ content: ".site-header { visibility: hidden; }" });
     for (const s of sections) {
-        const el = page.locator({ proofs: "section.page.proofs", ai: "section.page.ai", team: "section.page.team", try: "section.page.try" }[s] ?? s);
+        const el = page.locator({ hero: "section.hero", proofs: "section.page.proofs", ai: "section.page.ai", team: "section.page.team", try: "section.page.try" }[s] ?? s);
         await el.scrollIntoViewIfNeeded();
         await page.waitForTimeout(600);
         await save(await el.screenshot({ animations: "disabled" }), `${s}-${lang}-${theme}-${width}x${height}`);

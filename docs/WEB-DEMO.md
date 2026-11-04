@@ -190,6 +190,6 @@ e-mail.
   - a paragraph that keeps attributing wrong content to an article is removed, and the lawyer sees what was removed;
   - the legal points flag a wrong basis, interest on a private loan, damages without formal notice, and an article from an unrelated area of law;
   - export is refused while the notes contain text addressed to an AI, a request line not in Arabic, or a prison sentence asked in a civil case.
-- **Law texts:** 39 articles are loaded, those the four sample cases rely on. A build script checks each one against the letters of its official PDF page; that is not a lawyer's review. None is yet marked "checked by a lawyer"; that review is under way. The CPCA texts are the 2008 originals; the 2022 amendment still has to be checked.
+- **Law texts:** 1,361 articles are loaded: the complete Family Code and the complete CPCA (with the 2022 amendment applied), and the articles of the Civil, Commercial and Labour texts that the claim types rely on ([LAW-LIBRARY.md](LAW-LIBRARY.md)). Each was checked against its official source by a build script or read against the Journal Officiel page; that is not a lawyer's review. None is yet marked "checked by a lawyer"; that review is under way.
 - **Speed** depends on the hosted service and on Render's small CPU. The status bar shows the queue when visitors wait.
-- The demo can't open files from the visitor's disk (it has sample cases instead), and it saves nothing on the server.
+- The demo saves nothing on the server: Open and Save read and write a draft file (`.dzdraft.json`) on the visitor's own disk, and the case is otherwise kept only as a recovery copy in the browser.

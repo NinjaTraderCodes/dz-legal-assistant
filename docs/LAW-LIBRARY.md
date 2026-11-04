@@ -194,12 +194,12 @@ The code file is written only when it validates: canonical and unique numbers, a
 
 ## Status
 
-**39 articles are loaded**: those the four sample cases rely on, from the PDFs in `docs/official-law-texts`.
-- Civil Code: SGG 2007 consolidated edition.
-- Commercial Code: SGG 2007 consolidated edition.
-- CPCA: Official Journal no. 21 of 2008, the original text. The 2022 amendment (Law 22-13) still has to be checked.
+**1,361 articles are loaded**, as the table at the top of this page shows:
+- Family Code (84-11 as amended by 05-02) and CPCA (08-09 as amended by 22-13): **complete**, 227 + 1,084 articles, imported from the law corpus.
+- Civil Code and Commercial Code: 33 articles, those the claim types rely on, typed from the SGG 2007 consolidated edition.
+- Labour relations and labour disputes: 17 articles, transcribed from Journal Officiel page images.
 
-How they were loaded:
+How the typed articles (Civil and Commercial codes) were loaded:
 - **Typed.** `data/law/curated-articles.json` holds the clean text of each article. Only spacing, punctuation and the letter ك (which these PDFs encode as آ) were corrected.
 - **Proved.** `python3 tools/law/build_codes.py` checks every text against its PDF: the same letters and digits in the same order, from the same page.
 - **Written.** The builder writes `data/law/codes/*.json` with the page, the edition and the source extract. The loader rejects any later edit that changes a letter.

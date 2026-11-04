@@ -1,0 +1,116 @@
+---
+// A piece of the app's interface drawn in HTML and CSS instead of photographed: crisp at any size, in the page's
+// theme and language, with the app's own strings (Strings.resx through strings.mjs) and the site's tokens. The
+// caption says "as the app shows it", never "screenshot". Five pieces: the offline badge of the app bar, the
+// refused-export notice, the AI tag with the review row of a section, the formal check card (with or without a
+// missing element), and a card of the law library built from law.generated.json.
+import Icon from "./Icon.astro";
+import law from "../content/law.generated.json";
+import { s, t, fmt, type Lang } from "../i18n";
+
+interface Finding { title: string; article: string }
+interface Props {
+    lang: Lang;
+    kind: "offline" | "export" | "review" | "check" | "library";
+    /** The section the export notice or the review row names (the paper's own heading). */
+    section?: string;
+    /** The review row: ticked or not. */
+    checked?: boolean;
+    /** The formal check: elements present out of nine, and the missing one when there is one. */
+    score?: number;
+    finding?: Finding;
+    /** The law library: the text's id in law.generated.json. */
+    code?: string;
+    caption?: string;
+    class?: string;
+}
+const { lang, kind, section = "", checked = true, score = 9, finding, code = "cpca", caption, class: className } = Astro.props;
+const dir = lang === "ar" ? "rtl" : "ltr";
+const text = law.codes.find((c) => c.id === code);
+if (kind === "library" && !text) throw new Error(`no law text ${code} in law.generated.json`);
+const missing = finding ? 1 : 0;
+---
+<figure class:list={["piece", className]}>
+    <div class:list={["piece-frame", kind]} lang={lang} dir={dir}>
+        {kind === "offline" && (
+            <span class="bar"><span class="badge"><Icon name="shield_checkmark" size={16} /> {s(lang, "OfflineStatus")}</span></span>
+        )}
+        {kind === "export" && (
+            <div class="notice" role="note">
+                <strong>{s(lang, "ExportBlocked")}</strong>
+                <ul><li>{fmt(s(lang, "BlockerUnreviewed"), section)}</li></ul>
+            </div>
+        )}
+        {kind === "review" && (
+            <div class="review">
+                <p class="section-line"><span class="name">{section}</span> <span class="chip chip-accent"><Icon name="sparkle" size={12} /> {s(lang, "ModelTag")}</span></p>
+                <p class="row"><span class:list={["box", checked && "on"]} aria-hidden="true">{checked && <Icon name="checkmark" size={12} />}</span> {s(lang, "ReviewedCheck")}</p>
+            </div>
+        )}
+        {kind === "check" && (
+            <div class="check">
+                <div class="score-row"><span class="muted">{s(lang, "ComplianceScore")}</span><span class="score">{score} / 9</span></div>
+                <div class="bar-track"><span class:list={["bar-fill", missing ? "ko" : "ok"]} style={`width: ${Math.round((score / 9) * 100)}%`}></span></div>
+                <p class:list={["verdict", missing ? "ko" : "ok"]}><Icon name={missing ? "error_circle" : "checkmark_circle"} size={18} /> {missing ? fmt(s(lang, "SummaryMissing"), String(missing)) : s(lang, "SummaryOk")}</p>
+                {finding && <div class="finding"><strong>{finding.title}</strong><span class="caption">{finding.article}</span></div>}
+            </div>
+        )}
+        {kind === "library" && text && (
+            <div class="library">
+                <h4 class="h3">{text.title[lang]}</h4>
+                <dl>
+                    <dt>{s(lang, "LibraryReference")}</dt><dd lang="ar" dir="rtl">{text.reference}</dd>
+                    <dt>{s(lang, "LibraryEdition")}</dt><dd lang="ar" dir="rtl">{text.edition}</dd>
+                </dl>
+                <p class="count">{fmt(s(lang, "LibraryArticles"), String(text.articles))} <span class="chip chip-success">{s(lang, text.partial ? "LibraryPartial" : "LibraryComplete")}</span></p>
+                <p class="checks"><span class="chip chip-success"><Icon name="checkmark_circle" size={12} /> {s(lang, "LibraryCheckJournal")}</span> <span class="chip chip-plain">{s(lang, text.verified ? "LibraryReviewed" : "LibraryNotReviewed")}</span></p>
+            </div>
+        )}
+    </div>
+    <figcaption class="small">{caption}{caption && " "}<span class="muted">{t(lang, "shot.replica")}</span></figcaption>
+</figure>
+
+<style>
+    .piece { display: grid; gap: 8px; margin: 0; }
+    .piece-frame { border: 1px solid var(--hairline); border-radius: var(--radius-control); background: var(--surface-alt); box-shadow: var(--shadow-card); padding: 14px 16px; font-size: 0.95rem; text-align: start; }
+    figcaption { color: var(--muted-aa); }
+    .muted { color: var(--muted-aa); }
+    /* The app bar's end: the badge sits on the bar's own colour. */
+    .piece-frame.offline { padding: 10px 14px; background: var(--bar); color: var(--bar-text); }
+    .bar { display: flex; }
+    .badge { display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px; border-radius: 999px; background: var(--success-soft); color: var(--success); font-weight: 600; font-size: 0.9rem; }
+    /* The refused-export notice: the app's amber note. */
+    .piece-frame.export { background: var(--warning-soft); border-color: color-mix(in srgb, var(--warning) 35%, var(--hairline)); }
+    .notice { display: grid; gap: 6px; }
+    .notice ul { margin: 0; padding-inline-start: 1.2em; }
+    /* The section's tag and review row, as the paper's footer shows them. */
+    .review { display: grid; gap: 10px; }
+    .section-line { display: flex; align-items: center; gap: 8px; }
+    .name { font-weight: 600; }
+    .row { display: flex; align-items: center; gap: 10px; }
+    .box { display: inline-grid; place-items: center; width: 18px; height: 18px; border: 1.5px solid var(--muted-aa); border-radius: 4px; flex: none; }
+    .box.on { background: var(--success); border-color: var(--success); color: #fff; }
+    /* The formal check card. */
+    .check { display: grid; gap: 10px; }
+    .score-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+    .score { font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .bar-track { height: 6px; border-radius: 3px; background: var(--hairline); overflow: hidden; }
+    .bar-fill { display: block; height: 100%; }
+    .bar-fill.ok { background: var(--success); }
+    .bar-fill.ko { background: var(--danger); }
+    .verdict { display: flex; gap: 8px; align-items: flex-start; font-weight: 600; max-width: none; }
+    .verdict.ok { color: var(--success); }
+    .verdict.ko { color: var(--danger); }
+    .verdict :global(.icon) { flex: none; margin-top: 3px; }
+    .finding { display: grid; gap: 2px; padding: 10px 12px; border-radius: var(--radius-control); background: var(--danger-soft); }
+    .finding strong { font-size: 0.95rem; }
+    /* The law library's card. */
+    .library { display: grid; gap: 10px; }
+    .library dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 0; font-size: 0.9rem; }
+    .library dt { color: var(--muted-aa); }
+    .library dd { margin: 0; }
+    .count { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+    .checks { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip { display: inline-flex; align-items: center; gap: 4px; }
+    .chip-plain { background: var(--hairline); color: var(--muted-aa); }
+</style>

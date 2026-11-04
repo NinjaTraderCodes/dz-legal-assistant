@@ -287,7 +287,15 @@ test("the guide page shows a picture of every step, opens one larger in a native
     await page.goto("/en/try/");
     await expect(page.locator(".try-step")).toHaveCount(5);
     // Every step carries at least one lazy picture in both themes; only the version of the theme shown has a box.
-    for (let i = 0; i < 5; i++) expect(await page.locator(".try-step").nth(i).locator("img").count()).toBeGreaterThanOrEqual(2);
+    // Steps 1, 3 and 4 carry real captures (a light and a dark file each); steps 2, 4 and 5 carry pieces of the interface
+    // drawn in HTML, captioned "as the app shows it", never as screenshots.
+    for (const [i, kind] of [[0, "img"], [1, "piece"], [2, "img"], [3, "both"], [4, "piece"]] as const) {
+        const step = page.locator(".try-step").nth(i);
+        if (kind !== "piece") expect(await step.locator("img").count()).toBeGreaterThanOrEqual(2);
+        if (kind !== "img") expect(await step.locator(".piece-frame").count()).toBeGreaterThanOrEqual(1);
+        if (kind === "piece") expect(await step.locator("img").count()).toBe(0);
+    }
+    for (const text of await page.locator(".piece figcaption").allTextContents()) expect(text).not.toMatch(/screenshot|لقطة/);
     const dark = page.locator(".try-step").first().locator("img.shot-dark").first();
     const light = page.locator(".try-step").first().locator("img.shot-light").first();
     await expect(dark).toBeVisible();

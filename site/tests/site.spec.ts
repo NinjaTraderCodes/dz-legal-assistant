@@ -304,7 +304,7 @@ test("the guide page shows a picture of every step, opens one larger in a native
     await expect(dialog).toBeHidden();
     await page.locator("button[data-lightbox]").first().click();
     await expect(dialog).toBeVisible();
-    await expect(dialog.locator("img")).toHaveAttribute("src", /\/_astro\/step1-sample-en-dark[^"]*\.webp/);
+    await expect(dialog.locator("img")).toHaveAttribute("src", /\/_astro\/step1-steps-en-dark[^"]*\.webp/);
     await page.keyboard.press("Escape");
     await expect(dialog).toBeHidden();
     await expect(page.locator("button[data-lightbox]").first()).toBeFocused();

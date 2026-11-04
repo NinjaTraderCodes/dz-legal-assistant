@@ -26,7 +26,7 @@ const KEYS = [
     "AnalyseGrounds", "ConfirmClaim", "Generate", "ExportPdf", "ExportWord", "ReviewedCheck", "Next", "Previous", "Preview", "Edit",
     "Document", "Compliance", "ComplianceScore", "ExportBlocked", "NarrativeSectionHint", "ClaimConfirmPrompt", "ProviderStub", "Watermark",
     // The tag on an AI-written section, shown on the home sheet; the pieces of the app the site draws itself (AppPiece.astro).
-    "ModelTag", "BlockerUnreviewed", "SummaryOk", "SummaryMissing",
+    "ModelTag", "BlockerUnreviewed", "SummaryOk", "SummaryMissing", "ProviderOllama", "ModelReady", "ActivityLive", "DraftFirstRun",
 ];
 // The demo's own strings (src/DzLegal.Web/Services/WebText.cs) the guide names, exported as Web.<Key>.
 const WEB_KEYS = ["Samples", "OpenDefendant", "OpenGrounds", "GuideShow", "GuideOpen", "GuideInvite", "GuideTitle", "DisclosureLine", "Details", "DemoChip",

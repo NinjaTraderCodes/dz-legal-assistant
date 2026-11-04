@@ -1,9 +1,10 @@
 ---
 // A piece of the app's interface drawn in HTML and CSS instead of photographed: crisp at any size, in the page's
 // theme and language, with the app's own strings (Strings.resx through strings.mjs) and the site's tokens. The
-// caption says "as the app shows it", never "screenshot". Five pieces: the offline badge of the app bar, the
-// refused-export notice, the AI tag with the review row of a section, the formal check card (with or without a
-// missing element), and a card of the law library built from law.generated.json.
+// caption says "as the app shows it", never "screenshot". Six pieces: the app bar with its offline badge and the
+// local model's status line, the refused-export notice, the AI tag with the review row of a section, the formal check
+// card (with or without a missing element), a card of the law library built from law.generated.json, and the drafting
+// activity panel with a line of the model's real output.
 import Icon from "./Icon.astro";
 import law from "../content/law.generated.json";
 import { s, t, fmt, type Lang } from "../i18n";
@@ -11,7 +12,7 @@ import { s, t, fmt, type Lang } from "../i18n";
 interface Finding { title: string; article: string }
 interface Props {
     lang: Lang;
-    kind: "offline" | "export" | "review" | "check" | "library";
+    kind: "offline" | "export" | "review" | "check" | "library" | "activity";
     /** The section the export notice or the review row names (the paper's own heading). */
     section?: string;
     /** The review row: ticked or not. */
@@ -21,10 +22,15 @@ interface Props {
     finding?: Finding;
     /** The law library: the text's id in law.generated.json. */
     code?: string;
+    /** The local engine's model, as the app names it (the status line and the activity panel). */
+    engine?: string;
+    /** The activity panel: what the model is writing, taken from a real run. */
+    live?: string;
     caption?: string;
     class?: string;
 }
-const { lang, kind, section = "", checked = true, score = 9, finding, code = "cpca", caption, class: className } = Astro.props;
+const { lang, kind, section = "", checked = true, score = 9, finding, code = "cpca", engine = "gemma3:4b", live = "", caption, class: className } = Astro.props;
+const engineName = fmt(s(lang, "ProviderOllama"), engine);
 const dir = lang === "ar" ? "rtl" : "ltr";
 const text = law.codes.find((c) => c.id === code);
 if (kind === "library" && !text) throw new Error(`no law text ${code} in law.generated.json`);
@@ -33,7 +39,19 @@ const missing = finding ? 1 : 0;
 <figure class:list={["piece", className]}>
     <div class:list={["piece-frame", kind]} lang={lang} dir={dir}>
         {kind === "offline" && (
-            <span class="bar"><span class="badge"><Icon name="shield_checkmark" size={16} /> {s(lang, "OfflineStatus")}</span></span>
+            <>
+                <div class="appbar"><span class="brand">{s(lang, "AppTitle")}</span><span class="badge"><Icon name="shield_checkmark" size={16} /> {s(lang, "OfflineStatus")}</span></div>
+                <p class="engine"><span class="dot" aria-hidden="true"></span> {fmt(s(lang, "ModelReady"), engineName)}</p>
+            </>
+        )}
+        {kind === "activity" && (
+            <div class="activity">
+                <p class="section-line"><span class="pulse" aria-hidden="true"></span><span class="name">{section}</span> <span class="muted small">{engineName}</span></p>
+                <div class="bar-track"><span class="bar-fill run" style="width: 62%"></span></div>
+                <p class="small muted">{s(lang, "ActivityLive")}</p>
+                <p class="live" lang="ar" dir="rtl">{live}</p>
+                <p class="small muted">{s(lang, "DraftFirstRun")}</p>
+            </div>
         )}
         {kind === "export" && (
             <div class="notice" role="note">
@@ -75,9 +93,19 @@ const missing = finding ? 1 : 0;
     .piece-frame { border: 1px solid var(--hairline); border-radius: var(--radius-control); background: var(--surface-alt); box-shadow: var(--shadow-card); padding: 14px 16px; font-size: 0.95rem; text-align: start; }
     figcaption { color: var(--muted-aa); }
     .muted { color: var(--muted-aa); }
-    /* The app bar's end: the badge sits on the bar's own colour. */
-    .piece-frame.offline { padding: 10px 14px; background: var(--bar); color: var(--bar-text); }
-    .bar { display: flex; }
+    /* The app bar with its badge, on the bar's own colour, and the engine's status line under it. */
+    .piece-frame.offline { padding: 0; overflow: hidden; }
+    .appbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; padding: 12px 16px; background: var(--bar); color: var(--bar-text); }
+    .brand { font-weight: 700; }
+    .engine { display: flex; align-items: center; gap: 8px; padding: 12px 16px; max-width: none; }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--success); flex: none; }
+    /* The drafting activity: the section being written, the progress, and the model's words as they arrive. */
+    .activity { display: grid; gap: 8px; }
+    .activity p { max-width: none; }
+    .pulse { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); flex: none; }
+    .bar-fill.run { background: var(--accent); }
+    .live { font-family: var(--font-doc); font-size: 1rem; line-height: 1.6; padding: 10px 12px; border-radius: var(--radius-control); background: var(--surface); border: 1px solid var(--hairline); }
+    .live::after { content: ""; display: inline-block; width: 2px; height: 1em; margin-inline-start: 2px; vertical-align: -0.15em; background: var(--accent); }
     .badge { display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px; border-radius: 999px; background: var(--success-soft); color: var(--success); font-weight: 600; font-size: 0.9rem; }
     /* The refused-export notice: the app's amber note. */
     .piece-frame.export { background: var(--warning-soft); border-color: color-mix(in srgb, var(--warning) 35%, var(--hairline)); }
@@ -89,7 +117,10 @@ const missing = finding ? 1 : 0;
     .name { font-weight: 600; }
     .row { display: flex; align-items: center; gap: 10px; }
     .box { display: inline-grid; place-items: center; width: 18px; height: 18px; border: 1.5px solid var(--muted-aa); border-radius: 4px; flex: none; }
-    .box.on { background: var(--success); border-color: var(--success); color: #fff; }
+    /* The tick takes the surface's colour: white on the dark green of the light theme, dark on the light green of the dark one. */
+    .box.on { background: var(--success); border-color: var(--success); color: var(--surface); }
+    /* A piece can sit inside a list card, whose global rule colours icons green and drops them: the tick keeps its own. */
+    .box.on :global(.icon) { color: var(--surface); margin: 0; }
     /* The formal check card. */
     .check { display: grid; gap: 10px; }
     .score-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
@@ -112,5 +143,6 @@ const missing = finding ? 1 : 0;
     .count { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
     .checks { display: flex; flex-wrap: wrap; gap: 8px; }
     .chip { display: inline-flex; align-items: center; gap: 4px; }
-    .chip-plain { background: var(--hairline); color: var(--muted-aa); }
+    /* The quiet chip keeps 4.5:1 in both themes: the frame's own surface with a hairline, not the hairline as a fill. */
+    .chip-plain { background: var(--surface-alt); border: 1px solid var(--hairline); color: var(--muted-aa); }
 </style>

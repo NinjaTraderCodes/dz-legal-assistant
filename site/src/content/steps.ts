@@ -24,6 +24,9 @@ export const steps: Step[] = [
     { id: "signature", label: { ar: "التاريخ والتوقيع", en: "Date and signature" }, section: "signature" },
 ];
 
+/** The grounds section's own title, as the app's review row and export notice name it (definition.json, sections). */
+export const groundsTitle: Record<Lang, string> = { ar: "المناقشة القانونية", en: "Legal grounds" };
+
 /**
  * The order the story writes the sections: the lawyer's own entries first, in document order, and the legal grounds
  * last, as in the app, where the AI drafts them once the facts are in and the formal check waits for them.
@@ -41,7 +44,8 @@ export const groundsRun = { model: run.answeredBy, engine: run.engine, date: run
 const rules: string[] = ((civil as { claims: { id: string; articles: { why: { ar: string } }[] }[] }).claims
     .find((claim) => claim.id === "loan-repayment")?.articles.map((article) => article.why.ar) ?? [])
     .flatMap((why) => [why, why.split(":").pop()?.trim() ?? why]);
-const groundsLines: PaperLine[] = run.paragraphs.flatMap((paragraph: string): PaperLine[] => {
+/** A paragraph of the grounds split where the catalogue's rule ends: the code's quotation, then the model's application. */
+export function splitGrounds(paragraph: string): PaperLine[] {
     let end = 0;
     for (const rule of rules) {
         const at = paragraph.indexOf(rule);
@@ -51,7 +55,8 @@ const groundsLines: PaperLine[] = run.paragraphs.flatMap((paragraph: string): Pa
     const rule = paragraph.slice(0, end).replace(/[،,\s]+$/, "");
     const application = paragraph.slice(end).replace(/^[،,.\s]+/, "");
     return application ? [{ by: "code", text: rule + "." }, { by: "ai", text: application }] : [{ by: "code", text: rule + "." }];
-});
+}
+const groundsLines: PaperLine[] = run.paragraphs.flatMap(splitGrounds);
 
 /** The petition on paper, section by section, always in Arabic (the document's language). */
 export const paper: PaperSection[] = [

@@ -24,9 +24,11 @@ interface Props {
     /** The provenance of the capture, as a short note under the picture. */
     note?: string;
     large?: boolean;
+    /** WebP quality: 72 by default; a page of dense text can take less and stay sharp at twice its size. */
+    quality?: number;
     class?: string;
 }
-const { lang, light, dark, alt, caption, width = 420, natural = false, note, large = false, class: className } = Astro.props;
+const { lang, light, dark, alt, caption, width = 420, natural = false, note, large = false, quality = 72, class: className } = Astro.props;
 // Shown at half the crop's pixel width at most, so it stays sharp on a high-density screen; the box is the picture's
 // own size, never stretched past it.
 const shown = natural ? light.width : Math.min(width, Math.floor(light.width / 2));
@@ -38,8 +40,8 @@ const Wrap = large ? "button" : "div";
 ---
 <figure class:list={["shot", natural && "natural", className]} style={natural ? undefined : `max-width: min(100%, ${shown}px)`}>
     <Wrap class="shot-frame" {...(large ? { type: "button", "data-lightbox": "", "aria-label": t(lang, "shot.open") } : {})}>
-        <Image src={light} alt={alt} widths={widths} sizes={sizes} format="webp" quality={72} loading="lazy" decoding="async" class:list={["shot-img", dark ? "shot-light" : "shot-any"]} data-full={full?.src} />
-        {dark && <Image src={dark} alt={alt} widths={widths} sizes={sizes} format="webp" quality={72} loading="lazy" decoding="async" class="shot-img shot-dark" data-full={fullDark?.src} />}
+        <Image src={light} alt={alt} widths={widths} width={widths.at(-1)} sizes={sizes} format="webp" quality={quality} loading="lazy" decoding="async" class:list={["shot-img", dark ? "shot-light" : "shot-any"]} data-full={full?.src} />
+        {dark && <Image src={dark} alt={alt} widths={widths} width={widths.at(-1)} sizes={sizes} format="webp" quality={quality} loading="lazy" decoding="async" class="shot-img shot-dark" data-full={fullDark?.src} />}
     </Wrap>
     {(caption || note) && <figcaption class="small">{caption}{caption && note && " "}{note && <span class="muted">{note}</span>}</figcaption>}
 </figure>

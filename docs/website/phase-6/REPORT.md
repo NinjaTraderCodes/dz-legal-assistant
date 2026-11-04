@@ -125,7 +125,84 @@ Every picture the site showed, with its source and its purpose. "Interface piece
 
 - `site/src/components/AppPiece.astro` (new), `Shot.astro`, `Proofs.astro`, `AiPanel.astro`, `TryGuide.astro`; `site/scripts/crops.mjs`, `site/scripts/strings.mjs` and `site/src/i18n/strings.generated.json`; `site/src/i18n/site.ar.json`, `site.en.json`; `site/src/assets/shots/desktop/*.png` (16 new crops); 30 pictures deleted; `site/tests/site.spec.ts`; this report and its captures.
 
-## Two notes about the desktop app (to record, not to fix in this phase)
+## Push 2, second pass: readable proof pictures, no empty space, the dark-theme contrast
 
-1. **A clipped first letter in the paper view.** In the 1920 x 1080 captures of item 0 (`C:\Users\TheShadow\dz-laptop-shots\app-*-1920x1080.png`, outside the repository) a few lines of the grounds start with a clipped first letter at the right margin: «وبأنه» shows as «؛بأنه». The paper's text block clips the glyph that overhangs the line's start.
+The reviewer's five points on `5b0ec4e`, in one commit after merging the main branch (`28409d7`).
+
+### The capture run
+
+The proof pictures of the home page now come from **one deliberate run** of the desktop app at scale 2, made for this purpose; nothing from earlier runs is used.
+
+| | |
+|---|---|
+| Tool | a scratch console app outside the repository (`C:\Users\TheShadow\dz-shot2x`) built on the video recorder's pattern: the app's own `MainWindow` and view model, rendered by Avalonia's headless platform with `SetRenderScaling(2)`, so the 1920 x 1080 layout comes out at 3840 x 2160 |
+| Started | 4 November 2026, 20:58:08 (+01:00); record written 21:03:35 |
+| Model | gemma3:4b through Ollama on `127.0.0.1:11434`, the app's local engine (`sendsCaseData: false`); the tool refuses to start when any of `OPENROUTER_API_KEY`, `GOOGLE_API_KEY`, `GROQ_API_KEY`, `DEEPINFRA_API_KEY` is set, and it ran with all four unset |
+| Case | the fictitious «Unpaid loan» sample; analysis 183 s, claim type confirmed, drafting 127 s (on battery), review ticked |
+| Frames | `app-{en,ar}-{light,dark}.png`, the paper scrolled to the drafted grounds |
+| Text check | for each of the four frames the tool read the paper's own rendered text for the grounds section and compared it with the section's text it dumped: **match in all four** (`renderedMatchesDump`); the dumped grounds are kept in `site/src/content/desktop-run.json` |
+
+The tool's process stayed open after writing its record; I stopped it by its PID (21908) six minutes later. The outputs of two earlier runs (20:24, and one between 20:29 and 20:31 that the stopped command still started, from a build without the scroll fix) were moved aside to `C:\Users\TheShadow\dz-laptop-shots\stale-205534\` and are not used.
+
+### What changed
+
+1. **The video's caption band and progress frame are gone.** The drafting stage shows a drawn activity panel (`AppPiece` kind `activity`): the section's title, the engine «النموذج المحلي (gemma3:4b)» / "Local model (gemma3:4b)", a progress bar, «ما يكتبه الذكاء الاصطناعي الآن» / "What the AI is writing now" over the opening words of the model's first application from the same run, and `DraftFirstRun`. All strings are the app's own (`ProviderOllama`, `ActivityLive`, `DraftFirstRun`, exported by `strings.mjs`); caption «الصياغة جارية: كلمات النموذج تظهر كما يكتبها. كما يعرضها التطبيق.». The last two recording frames (`ai/stage4-drafting.png`, `ai/stage4-timing.png`) are deleted, with the `ai` section of `crops.mjs` and the caption `shot.live`. No picture on the site comes from the video any more.
+2. **Readable pictures, from bigger crops.** Every crop is cut from the scale-2 frames, so each is twice the size it is shown at:
+
+   | Picture | Crop (px) | Shown at (CSS px, 1366 screen) |
+   |---|---|---|
+   | AI stage 1, the model's reading of the facts | 710 x 357 (en), 713 x 392 (ar) | the card's full width, about 350: the app's own size |
+   | AI stage 2, the proposed articles | 710 x 315 (en), 713 x 197 (ar) | the card's full width |
+   | AI stage 3, the panel's "you decide" statement and the Analyse button | 710 x 258 (en), 700 x 272 (ar) | the card's full width |
+   | AI stage 4 and the grounds guarantee, the drafted grounds | 1378 x 1030 (en), 1374 x 1020 (ar) | 560 |
+   | Guide step 1, the nine steps / the formal check at 8 / 9 | 760 x 616 / 640 x 562 (en), 640 x 484 (ar) | 380 / 320 |
+   | Guide step 3, the model's reading (demo, Nemotron) | 744 x 732 | 372 |
+   | Guide step 4, the drafted grounds (demo, Nemotron) | 1032 x 807 | 516 |
+
+   Guide step 1 used to be the whole demo window shown at about 320 px; it is now two parts at the app's own size, captured again from the demo at device scale 2 with no model call (`guide-shots.mjs --steps 1 --mode template`, the two clips around `#case-title` + `.form-panel .steps` and `#check-title` + `.check-panel .score-card`). The step 4 picture ended on a half-cut line; `guide-shots.mjs` now cuts a paper crop back to its last whole line (`trimToLastLine`, applied to the existing captures with `--retrim step4-grounds`, since capturing them again needs a paid model call). The AI stage 3 crop leaves out the confirmation note under the button: the app shows it in English in the Arabic interface (note 3 below).
+3. **No empty space.**
+   - The drafted grounds are cut inside the white sheet: no grey canvas, no margin wider than the text's own.
+   - The "Works offline" card draws the app bar with its badge and the local model's status line «النموذج المحلي (gemma3:4b): جاهز» / "Local model (gemma3:4b): ready" (`AppTitle`, `OfflineStatus`, `ModelReady`, `ProviderOllama`).
+   - The "Review before export" card shows the section's unticked review row above the refused-export notice; the "Drafting the legal grounds" card shows the ticked row under the paper. The section's title in both is the definition's own, «المناقشة القانونية» / "Legal grounds".
+   - The guarantee cards and the AI stage cards size to their content (`align-items: start`), so no card keeps an empty band; the drafted-grounds figure no longer stretches to its grid row.
+4. **Accessibility.** `.chip-plain` uses the frame's surface with a hairline border (4.5:1 or more in both themes); `axe.spec.ts` passes on `/en/` in dark again. The ticked box's check mark keeps the surface colour inside list cards (a global `.list li .icon` rule made it green on green).
+5. **Weight.** Every new rendition is lazy WebP. The drafted-grounds picture is encoded at quality 50 (dense text keeps sharp at twice its size), which brings its 2x rendition to 82 to 84 KB, the 1x one to about 33 KB; every other picture rendition of these sections is under 55 KB. The fallback `src` of each picture is now its largest rendition, so no file at the crop's full size is built. The only rendition over 80 KB elsewhere on the site is the documentation figure `main-window-en` (90 KB, phase 5, unchanged).
+
+Captions name the source: «التطبيق المكتبي، 4 نوفمبر 2026، النموذج المحلي gemma3:4b.» / "Desktop app, 4 November 2026, local model gemma3:4b." (the date before the model's Latin name keeps the Arabic order whole). The demo's captions now give the date of the runs that made them, 4 November 2026 (they said 3 November; the pictures were taken again on 4 November in phase 5's follow-up).
+
+**Captures** in this folder, 1366 px, both languages and themes, each looked at for readability and empty space: `proofs-*`, `ai-*`, `try-*`.
+
+### Checks (push 2, second pass)
+
+| Check | Result |
+|---|---|
+| `npm run build` | 26 pages, `check-dist` clean |
+| Playwright `site.spec.ts` + `axe.spec.ts` (Chromium) | 53 passed, 1 skipped; axe 0 violations (dark `/en/` included) |
+| `npm run budget` | every budget met |
+| `dotnet build -c Release` with SDK 10.0.114 pinned and with the default SDK | 0 warnings, 0 errors with both (10.0.114 and 10.0.403) |
+| `dotnet test -c Release` | the six other projects green (681 of 681); the desktop project 304 of 305 in the parallel run on battery (the timing-sensitive release test, note 2 below), 305 of 305 with the collections run one at a time |
+
+### New Arabic strings (push 2, second pass), for Khouloud
+
+| Key | Arabic | English |
+|---|---|---|
+| `shot.desktop` (reworded) | التطبيق المكتبي، 4 نوفمبر 2026، النموذج المحلي gemma3:4b. | Desktop app, 4 November 2026, local model gemma3:4b. |
+| `ai.shot.activity` (new) | الصياغة جارية: كلمات النموذج تظهر كما يكتبها. | Drafting in progress: the model's words appear as it writes them. |
+| `ai.shot.stage3` (reworded) | القرار للمحامي: يؤكد نوع الدعوى، ولا تُذكر في العريضة إلا المواد التي يؤشّر عليها. | The decision stays with the lawyer: they confirm the claim type, and only the articles they tick are cited. |
+| `ai.shot.stage4` (reworded) | المناقشة القانونية التي صاغها النموذج المحلي، على الورقة. | The legal grounds the local model drafted, on the paper. |
+| `proofs.shot.grounds` (reworded) | المناقشة القانونية التي صاغها النموذج المحلي، على الورقة. | The legal grounds the local model drafted, on the paper. |
+| `try.shot.1` (reworded) | بعد فتح المثال: الخطوات التسع، والمراجعة الشكلية عند 8 من 9. | After opening the sample: the nine steps, and the formal check at 8 / 9. |
+| `try.shot.real` (reworded, date corrected) | لقطة من العرض التجريبي، 4 نوفمبر 2026، مع نموذجه المستضاف (Nemotron 3 Ultra عبر OpenRouter). | From the demo, 4 November 2026, with its hosted model (Nemotron 3 Ultra through OpenRouter). |
+
+The drawn pieces use only the app's existing strings (no new wording); `shot.live` was removed.
+
+### Files changed in push 2, second pass
+
+- `site/src/components/AppPiece.astro`, `Shot.astro`, `Proofs.astro`, `AiPanel.astro`, `TryGuide.astro`; `site/src/content/steps.ts` (`splitGrounds`, `groundsTitle`) and `site/src/content/desktop-run.json` (new); `site/scripts/crops.mjs`, `site/scripts/strings.mjs`, `site/src/i18n/strings.generated.json`, `site.ar.json`, `site.en.json`; `site/tests/guide-shots.mjs`, `site/tests/site.spec.ts`; `site/src/assets/shots/desktop/*.png` (16 crops re-cut), `site/src/assets/shots/guide/step1-steps-*`, `step1-check-*` (new), `step4-grounds-*` (trimmed); deleted: `ai/stage4-drafting.png`, `ai/stage4-timing.png`, `guide/step1-sample-*`; this report and its captures.
+- The merge of the main branch (`28409d7`) brought only `docs/LAW-LIBRARY.md` and `docs/WEB-DEMO.md`.
+
+## Three notes about the desktop app (to record, not to fix in this phase)
+
+1. **A clipped first letter in the paper view.** In the 1920 x 1080 captures of item 0 (`C:\Users\TheShadow\dz-laptop-shots\app-*-1920x1080.png`, outside the repository), and again in the scale-2 frames of push 2's second pass, a few lines of the grounds start with a clipped first letter at the right margin: «وبأنه» shows as «؛بأنه». The paper's text block clips the glyph that overhangs the line's start.
 2. **The release test is timing-sensitive under the parallel suite.** `WaitingWorkflowTests.ClosingTheAppFreesTheLocalModelsMemoryAndAServerThatHangsDoesNotHoldItUp` queues the release on the thread pool and waits 2.5 s; when the rest of the desktop suite holds every pool thread (on battery, in particular) the queued task has not started when the wait ends and the test fails on its counter (expected 1, actual 0). It passes alone and passes with the collections run one at a time (`-- xUnit.ParallelizeTestCollections=false`). Details in `docs/website/phase-5/REPORT.md`, follow-up section.
+3. **One string missing from the Arabic resources.** `ClaimConfirmedStatus` («You confirmed the claim type; its required articles are ticked. Review the model's other proposals.») exists in `Strings.en.resx` only, so the Arabic interface shows it in English under «تحليل الوقائع» once the claim type is confirmed (visible in the scale-2 frames). The site's AI stage 3 crop stops above it.

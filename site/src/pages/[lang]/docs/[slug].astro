@@ -1,8 +1,11 @@
 ---
-// One of the six documents, rendered with the site's own layout: a table of contents from its headings, its code
-// blocks and tables styled, its links adapted (src/content/docs-pages.ts). The documents are written in English;
-// the Arabic page shows the same text with a line saying so.
-import { getCollection, render } from "astro:content";
+// One of the six documents, rendered with the site's own layout. A short summary comes first, in the page's language
+// (src/content/docs-summaries/<slug>.<lang>.md: the key points, each taken from a sentence of the document, and one
+// line for a lawyer); the full document follows, folded under a native <details>, with its code blocks and tables
+// styled and its links adapted (src/content/docs-pages.ts). The documents are written in English; on the Arabic page
+// the fold says so. The table of contents covers both parts; a link to one of the document's headings opens the fold
+// (public/ui.js).
+import { getCollection, getEntry, render } from "astro:content";
 import Base from "../../../layouts/Base.astro";
 import PageHead from "../../../components/PageHead.astro";
 import { langs, t, type Lang } from "../../../i18n";
@@ -14,37 +17,72 @@ export async function getStaticPaths() {
 const lang = Astro.params.lang as Lang;
 const { entry } = Astro.props;
 const { Content, headings, remarkPluginFrontmatter: meta } = await render(entry);
+const summary = await getEntry("docSummaries", `${entry.id}.${lang}`);
+if (!summary) throw new Error(`missing summary src/content/docs-summaries/${entry.id}.${lang}.md`);
+const { Content: Summary } = await render(summary);
 const name = entry.id.toUpperCase();
 const title = (meta?.title as string | undefined) ?? headings.find((h) => h.depth === 1)?.text ?? name;
-// The description is the document's first paragraph, as plain text.
+// The description: on the English page the document's first paragraph, as plain text; on the Arabic page the
+// summary's line for a lawyer, so the page is described in its own language.
 const firstParagraph = (entry.body ?? "").split(/\r?\n\s*\r?\n/).map((p) => p.trim()).find((p) => p && !/^[#`|<>-]/.test(p)) ?? "";
 const plain = firstParagraph.replace(/\[([^\]]+)\]\([^)]*\)/g, "$1").replace(/[`*_]/g, "").replace(/\s+/g, " ").slice(0, 160);
-const description = lang === "ar" ? `${t(lang, "docs.englishOnly")} ${plain}` : plain;
+const description = lang === "ar" ? summary.data.lawyer : plain;
 const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 ---
 <Base lang={lang} title={title} description={description} path={`/docs/${entry.id}/`} og="docs">
     <PageHead eyebrow={t(lang, "about.docs.title")} title={title}>
-        {lang === "ar" && <p class="lead">{t(lang, "docs.englishOnly")}</p>}
         <p class="source caption">{t(lang, "source.label")} <span dir="ltr">docs/{name}.md</span></p>
     </PageHead>
-    <div class="section page layout" lang="en" dir="ltr">
+    <div class="section page layout">
         <nav class="toc" aria-labelledby="toc-title">
-            <p id="toc-title" class="caption">{t("en", "docs.toc")}</p>
-            <ol>{toc.map((h) => <li class={`d${h.depth}`}><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
+            <p id="toc-title" class="caption">{t(lang, "docs.toc")}</p>
+            <ol>
+                <li><a href="#doc-summary">{t(lang, "docs.summary")}</a></li>
+                <li><a href="#doc-lawyer">{t(lang, "docs.lawyer")}</a></li>
+                <li>
+                    <a href="#doc-full">{t(lang, "docs.readFull")}</a>
+                    <ol lang="en" dir="ltr">{toc.map((h) => <li class={`d${h.depth}`}><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
+                </li>
+            </ol>
         </nav>
-        <article class="body"><Content /></article>
+        <div class="main">
+            <section id="doc-summary" class="summary" aria-labelledby="summary-title">
+                <h2 id="summary-title" class="h3">{t(lang, "docs.summary")}</h2>
+                <div class="points"><Summary /></div>
+                <p id="doc-lawyer" class="lawyer"><span class="label">{t(lang, "docs.lawyer")}</span> {summary.data.lawyer}</p>
+            </section>
+            <details id="doc-full" class="full" data-fold>
+                <summary>{t(lang, "docs.readFull")}</summary>
+                {lang === "ar" && <p class="note">{t(lang, "docs.englishOnly")}</p>}
+                <article class="body" lang="en" dir="ltr"><Content /></article>
+            </details>
+        </div>
     </div>
 </Base>
 
 <style>
     .layout { display: grid; grid-template-columns: minmax(0, 1fr) 240px; gap: 40px; align-items: start; padding-top: 0; }
+    .main { display: grid; gap: 28px; min-width: 0; }
     .toc { position: sticky; top: 88px; order: 2; font-size: 0.9rem; }
     .toc ol { margin: 8px 0 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+    .toc ol ol { margin-top: 6px; padding-inline-start: 12px; border-inline-start: 1px solid var(--hairline); }
     .toc .d3 { padding-inline-start: 14px; }
     .toc a { color: var(--muted-aa); }
     .toc a:hover { color: var(--text); }
+    /* The summary: the points in the page's language, then the line for a lawyer. */
+    .summary { display: grid; gap: 14px; padding: 22px 24px; border: 1px solid var(--hairline); border-radius: var(--radius-control); background: var(--surface-alt); scroll-margin-top: 96px; }
+    .points :global(ul) { margin: 0; padding-inline-start: 22px; display: grid; gap: 10px; }
+    .points :global(li) { max-width: var(--measure); line-height: 1.65; }
+    .lawyer { max-width: var(--measure); margin: 4px 0 0; padding: 12px 16px; border-inline-start: 3px solid var(--gold); border-radius: 6px; background: var(--surface); scroll-margin-top: 96px; }
+    .lawyer .label { display: block; margin-bottom: 4px; font-weight: 700; }
+    /* The full document, folded: its own summary line is the control. */
+    .full { scroll-margin-top: 96px; }
+    .full > summary { cursor: pointer; width: fit-content; padding: 10px 16px; border: 1px solid var(--hairline); border-radius: var(--radius-control); font-weight: 600; }
+    .full > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .full[open] > summary { margin-bottom: 20px; }
+    .note { margin: 0 0 16px; color: var(--muted-aa); }
     /* The documents are English prose: their own measure and rhythm, whatever the page's language. */
-    .body { display: grid; gap: 14px; font-size: 17px; line-height: 1.6; }
+    .body { display: grid; gap: 14px; font-size: 17px; line-height: 1.6; text-align: left; }
     .body :global(h2) { margin-top: 28px; font-size: 1.5rem; line-height: 1.3; scroll-margin-top: 96px; }
     .body :global(h3) { margin-top: 14px; font-size: 1.15rem; scroll-margin-top: 96px; }
     .body :global(h4) { margin-top: 8px; font-size: 1rem; }
@@ -62,5 +100,12 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
     .body :global(blockquote) { margin: 0; padding: 10px 14px; border-inline-start: 3px solid var(--gold); background: var(--surface-alt); border-radius: 6px; }
     .body :global(hr) { border: 0; border-top: 1px solid var(--hairline); margin: 12px 0; }
     .body :global(a) { overflow-wrap: anywhere; }
-    @media (max-width: 899px) { .layout { grid-template-columns: 1fr; } .toc { position: static; order: 0; } }
+    /* One column on a phone: the summary first, then the contents, then the fold, so the points are the first thing read. */
+    @media (max-width: 899px) {
+        .layout { grid-template-columns: 1fr; }
+        .main { display: contents; }
+        .summary { order: 1; padding: 18px 16px; }
+        .toc { position: static; order: 2; }
+        .full { order: 3; }
+    }
 </style>

@@ -6,6 +6,7 @@
 // for the steps that need no model, which --mode template selects. Dark is captured first (the demo's default),
 // then the demo's own theme button gives the same states in light: no second model call. Usage:
 //   node tests/guide-shots.mjs --base http://localhost:5080 --out src/assets/shots/guide [--langs ar,en] [--steps 1,2,3,4,5] [--mode real|template]
+//   node tests/guide-shots.mjs --retrim step4-grounds   (cut existing paper crops back to their last whole line)
 import { mkdirSync } from "node:fs";
 import { resolve } from "node:path";
 import { chromium } from "@playwright/test";
@@ -29,6 +30,48 @@ const labels = {
     en: { sample: "Unpaid loan", analyse: "Analyse the facts", confirm: "Yes, this is the claim type", draft: "Draft legal grounds", pdf: "Export PDF" },
 };
 
+/**
+ * Cuts a crop of the paper back to its last whole line of text. The rows with ink (any dark pixel: the paper is light in
+ * both themes; the right-hand edge, where the section's gold rule runs, is left out) form the text lines, small gaps
+ * inside a line (dots, marks) merged. When the last line touches the bottom and is shorter than the others, the panel
+ * cut through it, so the crop ends midway between it and the line above. A crop that ends on a whole line is kept.
+ */
+async function trimToLastLine(file) {
+    const { data, info } = await sharp(file).raw().toBuffer({ resolveWithObject: true });
+    const ink = [];
+    for (let y = 0; y < info.height; y++) {
+        let n = 0;
+        for (let x = 8; x < info.width - 24; x++) {
+            const i = (y * info.width + x) * info.channels;
+            if ((data[i] + data[i + 1] + data[i + 2]) / 3 < 140) n++;
+        }
+        ink.push(n > 2);
+    }
+    const lines = [];
+    for (let y = 0; y < info.height; y++) {
+        if (!ink[y]) continue;
+        const last = lines.at(-1);
+        if (last && y - last.end <= 8) last.end = y; else lines.push({ start: y, end: y });
+    }
+    if (lines.length < 3) return;
+    const heights = lines.slice(0, -1).map((l) => l.end - l.start).sort((m, n) => m - n);
+    const typical = heights[Math.floor(heights.length / 2)];
+    const tail = lines.at(-1);
+    if (tail.end < info.height - 2 || tail.end - tail.start >= 0.85 * typical) return;
+    const height = Math.round((lines.at(-2).end + tail.start) / 2);
+    const trimmed = await sharp(file).extract({ left: 0, top: 0, width: info.width, height }).png({ compressionLevel: 9 }).toBuffer();
+    await sharp(trimmed).toFile(file);
+    console.log(`trimmed ${file.split(/[\\/]/).pop()} to ${info.width}x${height}`);
+}
+
+// --retrim <names>: apply the trim to pictures already captured (the AI steps cost a model call to capture again).
+if (process.argv.includes("--retrim")) {
+    for (const name of arg("retrim", "").split(",").filter(Boolean)) {
+        for (const lang of langs) for (const t of ["dark", "light"]) await trimToLastLine(resolve(out, `${name}-${lang}-${t}.png`));
+    }
+    process.exit(0);
+}
+
 const browser = await chromium.launch();
 for (const lang of langs) {
     const L = labels[lang];
@@ -46,19 +89,20 @@ for (const lang of langs) {
         if (panel) { left = Math.max(left, panel.x); top = Math.max(top, panel.y); right = Math.min(right, panel.x + panel.width); bottom = Math.min(bottom, panel.y + panel.height); }
         return { x: left, y: top, width: right - left, height: bottom - top };
     };
-    const shot = async (name, clip) => {
+    const shot = async (name, clip, trim = false) => {
         const buffer = await page.screenshot({ clip, animations: "disabled" });
         const file = resolve(out, `${name}-${lang}-${await theme()}.png`);
         await sharp(buffer).png({ compressionLevel: 9 }).toFile(file);
+        if (trim) await trimToLastLine(file);
         console.log(`${name}-${lang}-${await theme()}.png ${Math.round(clip.width)}x${Math.round(clip.height)} @2x`);
     };
     const theme = async () => (await page.evaluate(() => document.documentElement.getAttribute("data-theme") === "dark")) ? "dark" : "light";
     const toggleTheme = async () => { await page.locator(".tools.end button[aria-pressed]").click(); await page.waitForTimeout(500); };
     // The same state in both themes: dark as loaded, then light through the demo's own button, then back.
-    const both = async (name, clipOf) => {
-        await shot(name, await clipOf());
+    const both = async (name, clipOf, trim = false) => {
+        await shot(name, await clipOf(), trim);
         await toggleTheme();
-        await shot(name, await clipOf());
+        await shot(name, await clipOf(), trim);
         await toggleTheme();
     };
 
@@ -67,9 +111,17 @@ for (const lang of langs) {
     await page.locator("#sample-picker").selectOption({ label: L.sample });
     await page.waitForTimeout(800);
 
+    // The box around several elements, with a margin: a part of the screen cut at the app's own size, so it reads.
+    const around = async (...selectors) => {
+        const boxes = await Promise.all(selectors.map((s) => page.locator(s).first().boundingBox()));
+        const x = Math.min(...boxes.map((b) => b.x)) - 12, y = Math.min(...boxes.map((b) => b.y)) - 12;
+        const right = Math.max(...boxes.map((b) => b.x + b.width)) + 12, bottom = Math.max(...boxes.map((b) => b.y + b.height)) + 4;
+        return { x: Math.max(0, x), y: Math.max(0, y), width: right - Math.max(0, x), height: bottom - Math.max(0, y) };
+    };
     if (steps.includes(1)) {
-        // The first screen with the sample open: the picker in the top bar, the nine steps, the petition, the check at 8 / 9.
-        await both("step1-sample", async () => { const panel = await page.locator(".draft-panel").boundingBox(); return { x: 0, y: 0, width: 1366, height: Math.min(height, panel.y + 440) }; });
+        // The sample open: the nine steps of the case, and the formal check at 8 / 9 (no model call).
+        await both("step1-steps", () => around("#case-title", ".form-panel .steps"));
+        await both("step1-check", () => around("#check-title", ".check-panel .score-card"));
     }
     if (steps.includes(2)) {
         await page.locator(".steps .step").nth(2).click();
@@ -115,7 +167,7 @@ for (const lang of langs) {
             await page.locator(".paper .section.ai").click();
             await page.waitForTimeout(300);
             // The section's top, with its AI mark, inside the visible part of the sheet.
-            await both("step4-grounds", async () => { const c = await union(".paper-scroll", ".paper .section.ai"); return { ...c, x: c.x - 16, width: c.width + 32, height: Math.min(c.height, 420) }; });
+            await both("step4-grounds", async () => { const c = await union(".paper-scroll", ".paper .section.ai"); return { ...c, x: c.x - 16, width: c.width + 32, height: Math.min(c.height, 420) }; }, true);
             await both("step4-review", () => union(null, ".review-list"));
         }
         if (steps.includes(5)) {

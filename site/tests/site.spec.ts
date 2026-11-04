@@ -246,8 +246,16 @@ test("the six documents are pages in both languages, with their links adapted an
             csp(response);
             const html = await text(response);
             expect(html).toMatch(new RegExp(`<html[^>]*lang="${lang}"[^>]*dir="${lang === "ar" ? "rtl" : "ltr"}"`));
-            // The document is English whatever the page's language, and the Arabic page says so.
-            expect(html).toContain('class="section page layout" lang="en" dir="ltr"');
+            // A summary in the page's language comes first: 5 to 8 points and the line for a lawyer. The full document
+            // follows, folded and closed, English whatever the page's language, and the Arabic page says so.
+            const summary = html.slice(html.indexOf('id="doc-summary"'), html.indexOf('id="doc-full"'));
+            const points = summary.match(/<li[ >]/g)?.length ?? 0;
+            expect(points, `${lang}/docs/${slug} points`).toBeGreaterThanOrEqual(5);
+            expect(points, `${lang}/docs/${slug} points`).toBeLessThanOrEqual(8);
+            expect(summary).toContain(lang === "ar" ? "ما يعنيه هذا للمحامي" : "What this means for a lawyer");
+            expect(summary).toMatch(lang === "ar" ? /[\u0600-\u06FF]{4,}/ : /\b(the|and)\b/);
+            expect(html).toMatch(/<details id="doc-full" class="full" data-fold(?![^>]*\sopen)[^>]*>\s*<summary[^>]*>(قراءة الوثيقة كاملة|Read the full document)</);
+            expect(html).toMatch(/<article class="body" lang="en" dir="ltr"/);
             if (lang === "ar") expect(html).toContain("هذه الوثيقة متاحة بالإنجليزية فقط");
             expect(html).toContain(`rel="canonical" href="https://dz-legal-assistant-ai.onrender.com/${lang}/docs/${slug}/"`);
             expect(html).toContain(`hreflang="${lang === "ar" ? "en" : "ar-DZ"}" href="https://dz-legal-assistant-ai.onrender.com/${lang === "ar" ? "en" : "ar"}/docs/${slug}/"`);
@@ -273,8 +281,9 @@ test("the six documents are pages in both languages, with their links adapted an
     expect(details.match(/<pre[^>]*tabindex="0"/g)?.length).toBeGreaterThanOrEqual(5);
     expect(details).toContain('class="table-wrap"');
     expect(details).toContain("<title>Product details — DZ Legal Assistant</title>");
-    // The sibling link lands on the sibling page.
+    // The sibling link lands on the sibling page (the full document opened first).
     await page.goto("/en/docs/product-details/");
+    await page.locator("#doc-full > summary").click();
     await page.locator('article.body a[href="../law-library/"]').first().click();
     await expect(page).toHaveURL(/\/en\/docs\/law-library\/$/);
     await expect(page.locator("h1")).toHaveText(/Law library/);
@@ -282,12 +291,38 @@ test("the six documents are pages in both languages, with their links adapted an
     for (const slug of slugs) for (const lang of ["ar", "en"]) expect(sitemap).toContain(`<loc>https://dz-legal-assistant-ai.onrender.com/${lang}/docs/${slug}/</loc>`);
 });
 
+test("a documentation page opens its folded document on a heading link from the contents, and on arriving with #anchor", async ({ page }) => {
+    await page.setViewportSize({ width: 1366, height: 900 });
+    for (const lang of ["ar", "en"]) {
+        await page.goto(`/${lang}/docs/product-details/`);
+        const fold = page.locator("#doc-full");
+        await expect(fold).not.toHaveAttribute("open", "");
+        // The contents list the summary, the line for a lawyer, the fold, and the document's headings under it.
+        await expect(page.locator('.toc a[href="#doc-summary"]')).toBeVisible();
+        await expect(page.locator('.toc a[href="#doc-lawyer"]')).toBeVisible();
+        await page.locator('.toc a[href="#principles"]').click();
+        await expect(fold).toHaveAttribute("open", "");
+        await expect(page.locator("#principles")).toBeInViewport();
+    }
+    await page.goto("/en/docs/offline/#how-it-is-enforced-in-code");
+    await expect(page.locator("#doc-full")).toHaveAttribute("open", "");
+    await expect(page.locator("#how-it-is-enforced-in-code")).toBeInViewport();
+});
+
 test("the guide page shows a picture of every step, opens one larger in a native dialog and closes it with Escape", async ({ page }) => {
     await page.setViewportSize({ width: 1366, height: 900 });
     await page.goto("/en/try/");
     await expect(page.locator(".try-step")).toHaveCount(5);
     // Every step carries at least one lazy picture in both themes; only the version of the theme shown has a box.
-    for (let i = 0; i < 5; i++) expect(await page.locator(".try-step").nth(i).locator("img").count()).toBeGreaterThanOrEqual(2);
+    // Steps 1, 3 and 4 carry real captures (a light and a dark file each); steps 2, 4 and 5 carry pieces of the interface
+    // drawn in HTML, captioned "as the app shows it", never as screenshots.
+    for (const [i, kind] of [[0, "img"], [1, "piece"], [2, "img"], [3, "both"], [4, "piece"]] as const) {
+        const step = page.locator(".try-step").nth(i);
+        if (kind !== "piece") expect(await step.locator("img").count()).toBeGreaterThanOrEqual(2);
+        if (kind !== "img") expect(await step.locator(".piece-frame").count()).toBeGreaterThanOrEqual(1);
+        if (kind === "piece") expect(await step.locator("img").count()).toBe(0);
+    }
+    for (const text of await page.locator(".piece figcaption").allTextContents()) expect(text).not.toMatch(/screenshot|لقطة/);
     const dark = page.locator(".try-step").first().locator("img.shot-dark").first();
     const light = page.locator(".try-step").first().locator("img.shot-light").first();
     await expect(dark).toBeVisible();
@@ -296,7 +331,7 @@ test("the guide page shows a picture of every step, opens one larger in a native
     await expect(dialog).toBeHidden();
     await page.locator("button[data-lightbox]").first().click();
     await expect(dialog).toBeVisible();
-    await expect(dialog.locator("img")).toHaveAttribute("src", /\/_astro\/step1-sample-en-dark[^"]*\.webp/);
+    await expect(dialog.locator("img")).toHaveAttribute("src", /\/_astro\/step1-steps-en-dark[^"]*\.webp/);
     await page.keyboard.press("Escape");
     await expect(dialog).toBeHidden();
     await expect(page.locator("button[data-lightbox]").first()).toBeFocused();

@@ -17,26 +17,31 @@ interface Props {
     dark?: ImageMetadata;
     alt: string;
     caption?: string;
-    /** The width the picture is shown at on wide screens, in CSS px: the rendition widths follow it, and the figure stops a little past it. */
+    /** The width the picture is shown at on wide screens, in CSS px, capped at half the crop's pixels: the rendition widths follow it. */
     width?: number;
     /** Shown at its own size, never stretched: for small strips cut from a 1x frame. */
     natural?: boolean;
     /** The provenance of the capture, as a short note under the picture. */
     note?: string;
     large?: boolean;
+    /** WebP quality: 72 by default; a page of dense text can take less and stay sharp at twice its size. */
+    quality?: number;
     class?: string;
 }
-const { lang, light, dark, alt, caption, width = 420, natural = false, note, large = false, class: className } = Astro.props;
-const widths = natural ? [light.width] : [width, width * 2].map(Math.round);
-const sizes = natural ? `${light.width}px` : `(min-width: 900px) ${width}px, calc(100vw - 32px)`;
-const full = large ? await getImage({ src: light, format: "webp", width: Math.min(light.width, 1600), quality: 80 }) : null;
-const fullDark = large && dark ? await getImage({ src: dark, format: "webp", width: Math.min(dark.width, 1600), quality: 80 }) : null;
+const { lang, light, dark, alt, caption, width = 420, natural = false, note, large = false, quality = 72, class: className } = Astro.props;
+// Shown at half the crop's pixel width at most, so it stays sharp on a high-density screen; the box is the picture's
+// own size, never stretched past it.
+const shown = natural ? light.width : Math.min(width, Math.floor(light.width / 2));
+const widths = natural ? [light.width] : [shown, Math.min(light.width, shown * 2)].map(Math.round);
+const sizes = natural ? `${light.width}px` : `(min-width: 900px) ${shown}px, calc(100vw - 32px)`;
+const full = large ? await getImage({ src: light, format: "webp", width: Math.min(light.width, 1280), quality: 74 }) : null;
+const fullDark = large && dark ? await getImage({ src: dark, format: "webp", width: Math.min(dark.width, 1280), quality: 74 }) : null;
 const Wrap = large ? "button" : "div";
 ---
-<figure class:list={["shot", natural && "natural", className]} style={natural ? undefined : `max-width: min(100%, ${Math.round(width * 1.15)}px)`}>
+<figure class:list={["shot", natural && "natural", className]} style={natural ? undefined : `max-width: min(100%, ${shown}px)`}>
     <Wrap class="shot-frame" {...(large ? { type: "button", "data-lightbox": "", "aria-label": t(lang, "shot.open") } : {})}>
-        <Image src={light} alt={alt} widths={widths} sizes={sizes} format="webp" quality={72} loading="lazy" decoding="async" class:list={["shot-img", dark ? "shot-light" : "shot-any"]} data-full={full?.src} />
-        {dark && <Image src={dark} alt={alt} widths={widths} sizes={sizes} format="webp" quality={72} loading="lazy" decoding="async" class="shot-img shot-dark" data-full={fullDark?.src} />}
+        <Image src={light} alt={alt} widths={widths} width={widths.at(-1)} sizes={sizes} format="webp" quality={quality} loading="lazy" decoding="async" class:list={["shot-img", dark ? "shot-light" : "shot-any"]} data-full={full?.src} />
+        {dark && <Image src={dark} alt={alt} widths={widths} width={widths.at(-1)} sizes={sizes} format="webp" quality={quality} loading="lazy" decoding="async" class="shot-img shot-dark" data-full={fullDark?.src} />}
     </Wrap>
     {(caption || note) && <figcaption class="small">{caption}{caption && note && " "}{note && <span class="muted">{note}</span>}</figcaption>}
 </figure>

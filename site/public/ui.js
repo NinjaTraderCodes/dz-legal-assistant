@@ -2,6 +2,9 @@
 // cookie and localStorage; the hand-over to the demo; the gentle reveal of steps as they scroll into view; the
 // picture lightbox; and the folded documents that open on a link to one of their headings. No framework, no network calls.
 (function () {
+  // The petition's and the app's faces were held back for the first screen (theme-init.js, world.css): let them load.
+  function faces() { setTimeout(function () { document.documentElement.removeAttribute("data-faces"); }, 0); }
+  if (document.readyState === "complete") faces(); else window.addEventListener("load", faces);
   function remember(key, value) {
     try { document.cookie = key + "=" + value + "; Path=/; Max-Age=31536000; SameSite=Lax" + (location.protocol === "https:" ? "; Secure" : ""); } catch (e) { /* ignore */ }
     try { localStorage.setItem(key, value); } catch (e) { /* ignore */ }

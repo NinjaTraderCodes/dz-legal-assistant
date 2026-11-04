@@ -2,6 +2,8 @@
 // Dark is the default and is already on <html>; only a remembered "light" changes it. The system preference is never
 // consulted. The same keys are read by the web demo at /app.
 (function () {
+  // The petition's faces wait until the page has loaded (world.css, data-faces; ui.js lifts it).
+  document.documentElement.setAttribute("data-faces", "later");
   try {
     var m = document.cookie.match(/(?:^|; )dzlegal\.theme=(light|dark)/);
     var theme = m ? m[1] : null;

@@ -109,5 +109,5 @@ const ui = { lang, dir: lang === "ar" ? "rtl" : "ltr" } as const;
     .paper .review { display: inline-flex; align-items: center; gap: 8px; width: fit-content; max-width: 100%; margin-top: 0.5em; padding: 6px 10px; border-radius: 6px; background: #f3f1ec; color: #1c2321; font: 600 12.5px/1.5 var(--font-ui); }
     .paper .review .box { display: inline-grid; place-items: center; flex: none; width: 16px; height: 16px; border-radius: 4px; border: 1.5px solid #a9a39a; background: #fff; color: transparent; }
     .paper .review[data-done="1"] .box { background: #786039; border-color: #786039; color: #fff; }
-    @media (max-width: 899px) { .stage { grid-template-columns: 1fr; } .side { position: static; } }
+    @media (max-width: 899px) { .stage { grid-template-columns: 1fr; } .side { position: relative; top: auto; } }
 </style>

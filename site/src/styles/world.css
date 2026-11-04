@@ -81,6 +81,16 @@
   .tone-yellow { --w-tone: var(--w-yellow); }
   .folder > .tab { position: absolute; bottom: 100%; inset-inline-start: max(var(--gutter), calc((100% - var(--page)) / 2)); display: flex; align-items: center; gap: 12px; height: var(--w-tab-h); margin: 0; padding: 0 26px; background: var(--w-tone, var(--w-board)); color: var(--w-text); font-size: 0.86rem; font-weight: 500; line-height: 1; white-space: nowrap; max-width: calc(100% - 2 * var(--gutter)); clip-path: polygon(0 100%, 14px 0, calc(100% - 14px) 0, 100% 100%); }
   .folder > .tab .no { font-variant-numeric: tabular-nums; color: var(--w-muted); }
+  /* Phones lay out a folder's contents only when they come near the screen, so the fonts of the petition, the app's
+     pieces and the stamps are not fetched for the first screen. The tab stays outside the contained box; the hero, whose
+     stamp overhangs, is not deferred (the scroll story, desktop-only, measures its own height). */
+  @media (max-width: 899px) { .folder:not(.hero) > .page { content-visibility: auto; contain-intrinsic-size: auto 900px; } }
+  /* The petition's and the app's faces (Noto Naskh Arabic, Inter) are used only far down the home, yet a phone fetches
+     them with the first layout, where they compete with the first screen (Lighthouse: 3.5 s LCP with them, 2.4 s
+     without). theme-init.js marks the page data-faces="later" and ui.js lifts it once the page has loaded; until then a
+     phone sets those texts in Markazi. Without scripts the mark is never set. Desktops are unaffected: the scroll story
+     measures the sheet in its own face. */
+  @media (max-width: 899px) { html[data-faces="later"] :is(.paper, .paper *, .live, .doc) { font-family: var(--w-display) !important; } }
 
   /* A sheet: paper filed on the folder, sharp-cornered, with a short firm shadow. It is paper in both themes, so it
      carries its own text colours, and the app's tokens inside it take their light values (the app's pieces and

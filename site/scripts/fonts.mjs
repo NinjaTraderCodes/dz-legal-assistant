@@ -4,7 +4,7 @@
 //    punctuation and converted to woff2, with its licence next to it; it sets the petition and the app's pieces;
 //  - the website's own faces (site/fonts, OFL, licences beside them and in public/licences): Markazi Text for titles,
 //    Readex Pro for text and controls, each cut into an Arabic and a Latin file so a page fetches only its script;
-//    Aref Ruqaa for the stamps, cut to Arabic letters.
+//    Aref Ruqaa for the stamps, cut to the letters of the stamp texts (stamp.* in site.ar.json).
 import { readFileSync, writeFileSync, mkdirSync, copyFileSync, existsSync, statSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -36,19 +36,22 @@ for (const name of ["Inter-latin.woff2", "Inter-latin-ext.woff2", "OFL-Inter.txt
 // the digits and punctuation an Arabic line uses. Readex Pro's second axis (HEXP) is pinned at its default.
 const latin = [[0x0020, 0x007e], [0x00a0, 0x017f], [0x2010, 0x2027], [0x2030, 0x203a], [0x20ac, 0x20ac], [0x2122, 0x2122], [0x2190, 0x2193], [0x2212, 0x2212]];
 const arabic = [[0x0600, 0x06ff], [0x0750, 0x077f], [0xfb50, 0xfdff], [0xfe70, 0xfeff], [0x0020, 0x0040], [0x00a0, 0x00a0], [0x00ab, 0x00ab], [0x00bb, 0x00bb], [0x2010, 0x2027], [0x200c, 0x200f], [0x2066, 0x2069]];
-const letters = [[0x0621, 0x064a], [0x064b, 0x0652], [0x0660, 0x0669], [0x0020, 0x0020], [0x060c, 0x060c], [0x200c, 0x200d]];
+// The stamps carry a few fixed words: Aref Ruqaa is cut to the letters of the Arabic stamp texts only.
+const siteAr = JSON.parse(readFileSync(resolve(siteDir, "src/i18n/site.ar.json"), "utf8"));
+const stampText = Object.entries(siteAr).filter(([key]) => /^stamp\.[a-z]+$/.test(key)).map(([, value]) => value).join("") + " ";
 const chars = (ranges) => { let s = ""; for (const [a, b] of ranges) for (let c = a; c <= b; c++) s += String.fromCodePoint(c); return s; };
 const own = [
     { src: "MarkaziText-Variable.ttf", dst: "Markazi-ar.woff2", text: chars(arabic) },
     { src: "MarkaziText-Variable.ttf", dst: "Markazi-latin.woff2", text: chars(latin) },
     { src: "ReadexPro-Variable.ttf", dst: "Readex-ar.woff2", text: chars(arabic), axes: { HEXP: 0, wght: { min: 300, max: 700 } } },
     { src: "ReadexPro-Variable.ttf", dst: "Readex-latin.woff2", text: chars(latin), axes: { HEXP: 0, wght: { min: 300, max: 700 } } },
-    { src: "ArefRuqaa-Bold.ttf", dst: "Ruqaa-ar.woff2", text: chars(letters) },
+    { src: "ArefRuqaa-Bold.ttf", dst: "Ruqaa-ar.woff2", text: stampText },
 ];
 for (const font of own) {
     const src = resolve(siteDir, "fonts", font.src);
     const dst = resolve(out, font.dst);
-    if (existsSync(dst) && statSync(dst).mtimeMs >= statSync(src).mtimeMs && statSync(dst).mtimeMs >= statSync(fileURLToPath(import.meta.url)).mtimeMs) continue;
+    const inputs = [src, fileURLToPath(import.meta.url), resolve(siteDir, "src/i18n/site.ar.json")];
+    if (existsSync(dst) && inputs.every((file) => statSync(dst).mtimeMs >= statSync(file).mtimeMs)) continue;
     const woff2 = await subsetFont(readFileSync(src), font.text, { targetFormat: "woff2", ...(font.axes ? { variationAxes: font.axes } : {}) });
     writeFileSync(dst, woff2);
     console.log(`fonts: ${font.dst} ${Math.round(woff2.length / 1024)} KB`);

@@ -39,7 +39,9 @@ const ui = { lang, dir: lang === "ar" ? "rtl" : "ltr" } as const;
     .problem { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.9fr); gap: clamp(32px, 6vw, 88px); align-items: center; }
     .text { display: grid; gap: 20px; }
     .fragment { display: grid; gap: 18px; padding: 30px 28px 24px; }
-    .doc { font-family: var(--font-doc); font-size: 1.05rem; line-height: 1.9; text-align: right; }
+    /* A drawn fragment, not the app's paper: set in the site's Naskh-rooted Markazi, already loaded for the titles, so
+       the first screen on a phone does not wait for the petition's own faces. */
+    .doc { font-family: var(--w-display); font-size: 1.2rem; line-height: 1.75; text-align: right; }
     .doc p { max-width: none; }
     .doc .title { text-align: center; font-weight: 700; margin-bottom: 8px; }
     .gap { display: flex; gap: 10px; align-items: baseline; }

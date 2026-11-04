@@ -136,11 +136,26 @@ The home's team section shows the fuller descriptions of the About page (`about.
 | `npm run build` | 26 pages, `check-dist` clean |
 | `npm run budget` | every budget met; the documentation pages 13 to 22 KB gzip |
 | Playwright `site.spec.ts` + `axe.spec.ts` (Chromium) | 52 passed, 2 skipped; axe 0 violations on the 17 pages in both themes and the demo |
-| Lighthouse, `/try/` and three documentation pages | <<LIGHTHOUSE_B>> |
-| `npm run links` | <<LINKS_B>> |
-| `dotnet build -c Release` with SDK 10.0.114 pinned and with the default SDK | <<BUILD_B>> |
-| `dotnet test -c Release` | <<TESTS_B>> |
-| `docker build` (ECR mirror of `node:22-alpine`) | <<DOCKER_B>> |
+| Lighthouse, `/try/` and three documentation pages | 100 on every category, mobile and desktop; mobile LCP 0.9 to 1.2 s; the rows are in `lighthouse-summary.md` and below |
+| `npm run links` | 37 internal paths and 11 outbound links, 0 problems (`links.md`); the twelve documentation pages crawled through the About page and their sibling links |
+| `dotnet build -c Release` with SDK 10.0.114 pinned and with the default SDK | 0 warnings, 0 errors, both |
+| `dotnet test -c Release` | 985 tests; the full run had one failure, `WaitingWorkflowTests.ClosingTheAppFreesTheLocalModelsMemoryAndAServerThatHangsDoesNotHoldItUp`, the load-sensitive one, with Ollama still listening on 11434 from the captures of item 0; it passed on its own right after (8 of 8 in its class), as in earlier phases |
+| `docker build` (ECR mirror of `node:22-alpine`) | 294 s after the lock file was regenerated inside the node image (the first attempt failed at `npm ci`: a lock written on Windows is not in sync for Linux); the image serves `/` in Arabic, `/en/try/`, `/en/docs/product-details/` with its pictures, `/ar/docs/offline/` and `/app` unchanged, with no link into the repository |
+
+Lighthouse, the guide and three documents (`lighthouse-summary.md`):
+
+| Page | Form | Performance | Accessibility | Best practices | SEO | LCP | CLS | TBT |
+|---|---|---|---|---|---|---|---|---|
+| /ar/try/ | mobile | 100 | 100 | 100 | 100 | 1.0 s | 0 | 40 ms |
+| /ar/try/ | desktop | 100 | 100 | 100 | 100 | 0.5 s | 0 | 0 ms |
+| /en/try/ | mobile | 100 | 100 | 100 | 100 | 0.9 s | 0 | 10 ms |
+| /en/try/ | desktop | 100 | 100 | 100 | 100 | 0.5 s | 0 | 0 ms |
+| /ar/docs/product-details/ | mobile | 100 | 100 | 100 | 100 | 1.2 s | 0 | 30 ms |
+| /ar/docs/product-details/ | desktop | 100 | 100 | 100 | 100 | 0.3 s | 0.001 | 0 ms |
+| /en/docs/product-details/ | mobile | 100 | 100 | 100 | 100 | 1.0 s | 0 | 10 ms |
+| /en/docs/product-details/ | desktop | 100 | 100 | 100 | 100 | 0.5 s | 0 | 0 ms |
+| /en/docs/law-library/ | mobile | 100 | 100 | 100 | 100 | 0.9 s | 0 | 0 ms |
+| /en/docs/law-library/ | desktop | 100 | 100 | 100 | 100 | 0.3 s | 0 | 0 ms |
 
 Screenshots beside this report: `try-<ar|en>-<light|dark>-<390x844|1366x768|1920x1080>.jpg` and `docs-*` (the product-details page) at the same sizes, full page.
 

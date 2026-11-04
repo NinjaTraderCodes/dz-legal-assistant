@@ -249,3 +249,14 @@ public sealed class SecurityHeadersTests
         Assert.Equal("nosniff", headers["X-Content-Type-Options"]);
     }
 }
+
+public sealed class DownloadLinkTests
+{
+    [Fact]
+    public void TheDemoDownloadsTheZipWithoutOpeningTheRepository()
+    {
+        var url = new Uri(DzLegal.Web.Components.Pages.Home.DownloadUrl);
+        Assert.Equal("github.com", url.Host);
+        Assert.Matches(@"^/NinjaTraderCodes/dz-legal-assistant/releases/download/[^/]+/[^/]+\.zip$", url.AbsolutePath);
+    }
+}

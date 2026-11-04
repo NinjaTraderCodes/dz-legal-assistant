@@ -6,6 +6,7 @@ import welcome from "../../../src/DzLegal.App/Assets/Images/welcome-bg.jpg";
 import ScalesMark from "./ScalesMark.astro";
 import Icon from "./Icon.astro";
 import { s, t, type Lang } from "../i18n";
+import { downloadUrl } from "../content/product";
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -22,7 +23,7 @@ export const heroImage = { widths: [480, 768, 1280, 1920], sizes: "100vw", forma
         <p class="lead tagline">{s(lang, "WelcomeTagline")}</p>
         <div class="actions">
             <a class="btn btn-gold" href={`/app?lang=${lang}`}>{t(lang, "hero.cta")}</a>
-            <a class="btn btn-quiet" href="https://github.com/NinjaTraderCodes/dz-legal-assistant/releases/latest" rel="noopener"><Icon name="arrow_download" size={18} /> {t(lang, "hero.download")}</a>
+            <a class="btn btn-quiet" href={downloadUrl} rel="noopener"><Icon name="arrow_download" size={18} /> {t(lang, "hero.download")}</a>
         </div>
         <p class="note small">{t(lang, "hero.note")} <a class="try-link" href={`/${lang}/try/`}>{t(lang, "nav.try")}</a></p>
     </div>

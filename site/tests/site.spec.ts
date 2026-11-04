@@ -226,11 +226,13 @@ test("the six documents are pages in both languages, with their links adapted an
             expect(html.match(/<h1/g)?.length).toBe(1);
         }
     }
-    // Links: a sibling document goes to its page, any other file of the repository to GitHub, outside links stay.
+    // Links: a sibling document goes to its page; any other file of the repository is named as text (the site
+    // never links into the repository); outside links stay.
     const details = await text(await request.get("/en/docs/product-details/"));
     expect(details).toContain('href="../law-library/"');
-    expect(details).toContain('href="https://github.com/NinjaTraderCodes/dz-legal-assistant/blob/HEAD/README.md"');
-    expect(details).toContain('href="https://github.com/NinjaTraderCodes/dz-legal-assistant/blob/HEAD/docs/ONLINE-TESTING.md"');
+    expect(details).not.toContain("github.com/NinjaTraderCodes/dz-legal-assistant/blob");
+    expect(details).toContain("ONLINE-TESTING.md");
+    expect(details).toContain("README");
     expect(details).toContain('href="https://ollama.com"');
     expect(details.match(/<img /g)?.length).toBe(9);
     expect(details.match(/loading="lazy"/g)?.length).toBe(9);

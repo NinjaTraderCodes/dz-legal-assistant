@@ -49,7 +49,7 @@
             </select>
             <button type="button" class="more-toggle" aria-expanded="@(showMore ? "true" : "false")" @onclick="() => showMore = !showMore"><Icon Name="chevron_down" Size="16" /> @T("More")</button>
             <div class="secondary @(showMore ? "open" : "")">
-                @* The desktop app, for judges and lawyers who want it on their own computer: the latest release on GitHub. *@
+                @* The desktop app, for judges and lawyers who want it on their own computer: the zip itself, so no GitHub page opens (change it with each release). *@
                 <a class="button-like" id="download-windows" href="@DownloadUrl" target="_blank" rel="noopener" title="@T("DownloadWindows")"><Icon Name="arrow_download" /> <span class="label">@T("DownloadWindows")</span></a>
                 <button type="button" title="@T("GuideShow")" aria-pressed="@(showGuide ? "true" : "false")" @onclick="OpenGuide"><Icon Name="question_circle" /> <span class="label">@T("GuideShow")</span></button>
             </div>

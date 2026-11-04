@@ -6,7 +6,6 @@ import { getCollection, render } from "astro:content";
 import Base from "../../../layouts/Base.astro";
 import PageHead from "../../../components/PageHead.astro";
 import { langs, t, type Lang } from "../../../i18n";
-import { blob } from "../../../content/repo";
 
 export async function getStaticPaths() {
     const docs = await getCollection("docs");
@@ -26,7 +25,7 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 <Base lang={lang} title={title} description={description} path={`/docs/${entry.id}/`} og="docs">
     <PageHead eyebrow={t(lang, "about.docs.title")} title={title}>
         {lang === "ar" && <p class="lead">{t(lang, "docs.englishOnly")}</p>}
-        <p class="small"><a href={blob(`docs/${name}.md`)} rel="noopener">{t(lang, "docs.github")} <span dir="ltr">docs/{name}.md</span></a></p>
+        <p class="source caption">{t(lang, "source.label")} <span dir="ltr">docs/{name}.md</span></p>
     </PageHead>
     <div class="section page layout" lang="en" dir="ltr">
         <nav class="toc" aria-labelledby="toc-title">

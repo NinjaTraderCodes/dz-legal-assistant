@@ -1,9 +1,9 @@
 ---
-// The foot of every page: the offline line of the welcome screen, the pages, the repository, the version and the
+// The foot of every page: the offline line of the welcome screen, the pages, the version and the
 // licences of what the site bundles (fonts and icons), as AGENTS.md requires.
 import Icon from "./Icon.astro";
 import { s, t, fmt, type Lang } from "../i18n";
-import { pages, repoUrl, releasesUrl, version } from "../content/product";
+import { pages, version } from "../content/product";
 
 interface Props { lang: Lang; path: string }
 const { lang, path } = Astro.props;
@@ -16,10 +16,6 @@ const current = (page: string) => (page === path ? "page" : undefined);
             <a href={`/${lang}/`} aria-current={current("/")}>{t(lang, "nav.home")}</a>
             {pages(lang).filter((p) => p.key !== "how").map((link) => <a href={link.href} aria-current={current(link.path)}>{link.label}</a>)}
             <a href={`/app?lang=${lang}`}>{t(lang, "nav.demo")}</a>
-        </nav>
-        <nav class="links" aria-label={t(lang, "footer.label")}>
-            <a href={repoUrl} rel="noopener">{t(lang, "footer.github")}</a>
-            <a href={releasesUrl} rel="noopener">{t(lang, "footer.releases")}</a>
         </nav>
         <p class="caption">{fmt(t(lang, "footer.version"), version)} · {s(lang, "AboutThirdUni")}</p>
         <p class="caption">{t(lang, "footer.licences")} <a href="/licences/OFL-Inter.txt">Inter (OFL)</a>, <a href="/licences/OFL-NotoNaskhArabic.txt">Noto Naskh Arabic (OFL)</a>, <a href="/licences/MIT-FluentIcons.txt">Fluent UI System Icons (MIT)</a>.</p>

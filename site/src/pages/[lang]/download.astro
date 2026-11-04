@@ -7,7 +7,7 @@ import Source from "../../components/Source.astro";
 import Icon from "../../components/Icon.astro";
 import WithPath from "../../components/WithPath.astro";
 import { langs, s, t, fmt, type Lang } from "../../i18n";
-import { releaseUrl, releasesUrl, version } from "../../content/product";
+import { downloadUrl, version } from "../../content/product";
 
 export function getStaticPaths() {
     return langs.map((lang) => ({ params: { lang } }));
@@ -17,8 +17,7 @@ const lang = Astro.params.lang as Lang;
 <Base lang={lang} title={t(lang, "nav.download")} description={t(lang, "meta.download.description")} path="/download/" og="download">
     <PageHead eyebrow={t(lang, "dl.eyebrow")} title={t(lang, "dl.title")} lead={t(lang, "dl.lead")}>
         <div class="actions">
-            <a class="btn btn-gold" href={releaseUrl} rel="noopener"><Icon name="arrow_download" size={18} /> {t(lang, "dl.cta")}</a>
-            <a class="btn btn-quiet" href={releasesUrl} rel="noopener">{t(lang, "dl.releases")}</a>
+            <a class="btn btn-gold" href={downloadUrl} rel="noopener"><Icon name="arrow_download" size={18} /> {t(lang, "dl.cta")}</a>
         </div>
         <p class="small meta"><span class="chip chip-success"><Icon name="shield_checkmark" size={12} /> {s(lang, "OfflineStatus")}</span> {fmt(t(lang, "dl.version"), version)}</p>
         <Source lang={lang} files={["README.md", "Directory.Build.props"]} />

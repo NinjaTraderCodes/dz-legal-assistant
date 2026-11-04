@@ -30,6 +30,10 @@ function inspect(path) {
     for (const m of html.matchAll(/<a\b[^>]*href="\/lang\/[^"]*"[^>]*>/g)) {
         if (!/rel="[^"]*nofollow/.test(m[0])) problems.push(`${rel}: /lang/ link without rel="nofollow"`);
     }
+    // The site links to the Windows download only, never to the repository or its release pages.
+    for (const m of html.matchAll(/href="(https:\/\/github\.com\/NinjaTraderCodes\/dz-legal-assistant[^"]*)"/gi)) {
+        if (!/\/releases\/download\/[^"/]+\/[^"/]+\.zip$/.test(m[1])) problems.push(`${rel}: link to the repository ${m[1]}`);
+    }
     if (!/<html\b[^>]*\slang="(ar|en)"/.test(html)) problems.push(`${rel}: <html> without lang`);
     if (!/<html\b[^>]*\sdir="(rtl|ltr)"/.test(html)) problems.push(`${rel}: <html> without dir`);
     for (const m of html.matchAll(/(?:src|href)="(https?:\/\/[^"]+)"/g)) {

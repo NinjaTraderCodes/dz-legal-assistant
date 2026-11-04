@@ -9,7 +9,7 @@ Scope: the public website in `site/` only. The desktop app, the demo at `/app` a
 - **Thesis.** The website is a lawyer's case file: each section is a folder or a sheet filed in it, and progress is shown the way a registry shows it, by stamps. It refuses both category defaults: the dark SaaS page with a neon accent (CyberLex) and the stock legal look (scales, books, gold on brown).
 - **Own world.** Flat colour fields in real cardboard-folder colours, sharp-cornered white sheets clipped onto them, violet registry stamps, carbon-black text. With the words removed, it should still read as "a file on a lawyer's desk".
 - **Story.** A lawyer understands in seconds that the assistant prepares the petition and checks it against the law. They believe it because they see the real screens and real output, filed like evidence. Then they try the demo or download the app.
-- **First viewport.** One salmon folder fills the screen, with its tab at the top on the reading-start side, carrying the product name. On the start half: the title in large Arabic type, one sentence below it, then two actions (Try the demo, Download for Windows). On the end half: the hero laptop image clipped onto the folder like a filed print, slightly overlapping the folder's edge. One stamp, «دون اتصال بالإنترنت» / "Works offline", sits half on the print and half on the folder.
+- **First viewport.** One salmon folder fills the screen, with its tab at the top on the reading-start side, carrying the product name. On the start half: the title in large Arabic type, one sentence below it, then two actions (Try the demo, Download for Windows). On the end half: the hero laptop (a transparent cut-out) lying on the folder with a firm shadow. One stamp, «دون اتصال بالإنترنت» / "Works offline", overlaps the laptop's corner and the folder.
 - **Signature moment.** In the nine-step story, each step is struck with a stamp when it completes, and the formal check counts up to 9 / 9. At the end the folder closes and receives «جاهزة للإيداع» / "Ready to file". It says *ready to file*, not *filed*, because the lawyer files it at court, not the software.
 - **Finish.** Unreviewed and undocumented is unfinished. The build ends with the finish review, the verdict, a rewritten DESIGN.md and every shipping image carrying its source.
 
@@ -19,7 +19,7 @@ A lawyer reads this at the office under ordinary daylight or strip lighting, or 
 - **light** is the folder on the desk;
 - **dark** is the same file in the archive room after hours: the folders deepen, but the sheets stay paper.
 
-**Open question for you:** keep dark as the default, or let this world open in light?
+**Decided (4 Nov 2026):** dark stays the default.
 
 ## Colour
 
@@ -81,7 +81,7 @@ With reduced motion, everything shows in its final state: stamps already struck 
 
 ## Never
 
-- State emblems, «الجمهورية الجزائرية الديمقراطية الشعبية», court names, real seal designs, or anything that suggests official endorsement.
+- State emblems, «الجمهورية الجزائرية الديمقراطية الشعبية», court names, real seal designs, or anything that suggests official endorsement, as site decoration. Inside the petition replica the document's own header lines stay, because they are part of the document.
 - Scales, gavels, columns, books or gold gradients as decoration. The brand mark stays as it is.
 - Fake paper texture, coffee stains, torn edges, leather or wood.
 - Small spaced-out labels above headings, grids of same-size cards, cards inside cards, gradient text, glow, or a coloured stripe down the side of a box.
@@ -92,6 +92,5 @@ With reduced motion, everything shows in its final state: stamps already struck 
 ## Honest risks
 
 - **Kitsch.** If the folders get textures or the stamps multiply, it turns old-fashioned. The rule is at most one stamp per screen, and flat colour only.
-- **The hero photograph** has its own scene. Framed as a filed print it can work, but it may need a tighter crop.
 - **Dark theme.** Cardboard colours lose their character when darkened; this needs real testing, not just inverted values.
 - **Font weight.** Three new families fit the budget only with careful subsetting.

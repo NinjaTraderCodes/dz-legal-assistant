@@ -1,8 +1,10 @@
-// The nine steps of the case form and the sections of the petition they fill, with the labels of the form
-// definition (data/document-types/requete-introductive/definition.json). The paper text is the fictitious sample
-// case the demo and the video use (src/DzLegal.Web/Samples/debt.json): no real person, place or case.
+// The nine steps of the case form and the petition they fill, with the labels of the form definition
+// (data/document-types/requete-introductive/definition.json). The petition is the app's own, section by section, for
+// the fictitious sample case the demo and the video use (src/DzLegal.Web/Samples/debt.json): src/content/paper-ar.json,
+// read from the demo's paper by tests/paper-dump.mjs. No real person, place or case.
 import type { Lang } from "../i18n";
 import run from "./grounds-run-ar.json";
+import appPaper from "./paper-ar.json";
 import civil from "../../../data/law/claims/civil.json";
 
 export interface Step { id: string; label: Record<Lang, string>; section: string }
@@ -10,7 +12,14 @@ export interface Step { id: string; label: Record<Lang, string>; section: string
 /** A line of the grounds: the rule of an article, written by code from the official text, or the AI's application of it. */
 export interface PaperLine { text: string; by: "code" | "ai" }
 
-export interface PaperSection { id: string; heading?: string; lines: (string | PaperLine)[]; domicile?: string; ai?: boolean; review?: boolean }
+/** One section of the app's paper: its layout from the form definition and its text, line breaks kept. */
+export interface PaperBlock { align: "start" | "center" | "justify" | "end"; bold: boolean; spaceBefore: number; heading: string | null; text: string }
+
+/** A paragraph of the legal grounds as the app writes it: one paragraph, the rule quoted by code and then the model's application. */
+export interface GroundsParagraph { rule: string; rest: string }
+
+/** The part of the petition one step of the form fills: one or more of the app's sections. */
+export interface PaperSection { id: string; blocks: PaperBlock[]; ai?: boolean; review?: boolean; grounds?: GroundsParagraph[]; domicile?: { before: string; domicile: string; after: string } }
 
 export const steps: Step[] = [
     { id: "court", label: { ar: "الجهة القضائية", en: "Court" }, section: "header" },
@@ -56,17 +65,37 @@ export function splitGrounds(paragraph: string): PaperLine[] {
     const application = paragraph.slice(end).replace(/^[،,.\s]+/, "");
     return application ? [{ by: "code", text: rule + "." }, { by: "ai", text: application }] : [{ by: "code", text: rule + "." }];
 }
-const groundsLines: PaperLine[] = run.paragraphs.flatMap(splitGrounds);
+/** The same split, keeping the paragraph's own text exactly: the app prints it whole, without quotation marks. */
+export function splitRule(paragraph: string): GroundsParagraph {
+    let end = 0;
+    for (const rule of rules) {
+        const at = paragraph.indexOf(rule);
+        if (at >= 0) end = Math.max(end, at + rule.length);
+    }
+    // The comma that joins the rule to the application stays with the rule, so the site's mark sits after it.
+    const comma = paragraph.slice(end).match(/^[،,]/)?.[0].length ?? 0;
+    return { rule: paragraph.slice(0, end + comma), rest: paragraph.slice(end + comma) };
+}
 
-/** The petition on paper, section by section, always in Arabic (the document's language). */
-export const paper: PaperSection[] = [
-    { id: "header", lines: ["الجمهورية الجزائرية الديمقراطية الشعبية", "مجلس قضاء الجزائر", "محكمة سيدي امحمد — القسم المدني", "عريضة افتتاح دعوى"] },
-    { id: "plaintiff", lines: ["لفائدة: السيد بن علي كريم، تاجر، القاطن بـ: 12 شارع ديدوش مراد، الجزائر.", "القائم في حقه الأستاذ حداد كريم، محام لدى مجلس قضاء الجزائر، الكائن مكتبه بـ: 04 شارع كريم بلقاسم، الجزائر.", "(مدعٍ)"] },
-    { id: "defendant", lines: ["ضد: السيد حمداني سمير،"], domicile: "القاطن بـ: 5 نهج العربي بن مهيدي، الجزائر." },
-    { id: "subject", lines: ["الموضوع: المطالبة بوفاء دين مع التعويض", "إلى السيد رئيس القسم المدني بمحكمة سيدي امحمد", "يتشرف المدعي بواسطة دفاعه أن يعرض على هيئتكم الموقرة ما يلي:"] },
-    { id: "facts", heading: "الوقائع:", lines: ["حيث إنه بتاريخ 15 جانفي 2025، اقترض المدعى عليه من المدعي مبلغا ماليا قدره 1,500,000 دج بموجب اعتراف بدين موثق.", "وحيث إنه اتفق الطرفان على إرجاع المبلغ في أجل أقصاه 30 جوان 2025.", "وحيث إنه رغم حلول الأجل وإعذار المدعى عليه رسميا عن طريق المحضر القضائي بتاريخ 10 جويلية 2025، امتنع عن السداد دون أي مبرر قانوني."] },
-    { id: "grounds", heading: "المناقشة القانونية:", ai: true, review: true, lines: groundsLines },
-    { id: "requests", heading: "لهذه الأسباب ومن أجلها:", lines: ["يلتمس المدعي من هيئة المحكمة الموقرة القضاء بما يلي:", "في الشكل: قبول الدعوى شكلا.", "في الموضوع: 1. إلزام المدعى عليه بأن يدفع للمدعي أصل الدين المقدر بـ 1,500,000 دج."] },
-    { id: "documents", heading: "قائمة المرفقات:", lines: ["1. نسخة من الاعتراف بالدين الموثق.", "2. محضر الإعذار المؤرخ في 10 جويلية 2025."] },
-    { id: "signature", lines: ["حرر بالجزائر في 2025/09/01", "عن المدعي، الأستاذ حداد كريم"] },
-];
+// Which step fills each of the app's thirteen sections, in the paper's order: the heading lines come with the court;
+// the subject, the address to the court and the paragraph on form with the claim; the requests' introduction and
+// list together; the place and date with the signature.
+const stepOfSection = ["court", "plaintiff", "defendant", "claim", "claim", "claim", "facts", "grounds", "requests", "requests", "documents", "signature", "signature"];
+const blocks = appPaper.sections as PaperBlock[];
+if (blocks.length !== stepOfSection.length || blocks[7].heading !== "المناقشة القانونية") throw new Error("src/content/paper-ar.json no longer matches the story's sections (node tests/paper-dump.mjs, then src/content/steps.ts)");
+/** The petition on paper, grouped by the step that fills it, always in Arabic (the document's language). */
+export const paper: PaperSection[] = steps.map((step) => {
+    const own = blocks.filter((_, i) => stepOfSection[i] === step.id);
+    const section: PaperSection = { id: step.id, blocks: own };
+    if (step.id === "grounds") Object.assign(section, { ai: true, review: true, grounds: run.paragraphs.map(splitRule) });
+    if (step.id === "defendant") {
+        // The domicile is the part of the defendant's line the story takes away: from «القاطن بـ:» to the line's end.
+        const text = own[0].text;
+        const at = text.indexOf("القاطن بـ:");
+        const eol = text.indexOf("\n", at);
+        if (at > 0) section.domicile = { before: text.slice(0, at), domicile: text.slice(at, eol < 0 ? undefined : eol), after: eol < 0 ? "" : text.slice(eol) };
+    }
+    return section;
+});
+/** Whether the app's paper carries the draft watermark for this sample (the sample case forces it). */
+export const paperWatermark = appPaper.watermark;

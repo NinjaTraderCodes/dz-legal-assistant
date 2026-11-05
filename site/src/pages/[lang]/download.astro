@@ -53,20 +53,12 @@ const lang = Astro.params.lang as Lang;
         </div>
     </section>
 
-    <section class="section page cols" aria-label={t(lang, "dl.data.title")}>
+    <section class="section page" aria-label={t(lang, "dl.data.title")}>
         <div class="block panel">
             <h2 class="h2">{t(lang, "dl.data.title")}</h2>
             <p><WithPath text={t(lang, "dl.data.body")} path="%LOCALAPPDATA%\DzLegalAssistant" /></p>
             <p><a href={`/${lang}/privacy/`}>{t(lang, "dl.data.more")}</a></p>
             <Source lang={lang} files={["docs/OFFLINE.md"]} />
-        </div>
-        <div class="block panel">
-            <h2 class="h2">{t(lang, "dl.source.title")}</h2>
-            <p>{t(lang, "dl.source.body")}</p>
-            <pre class="code" tabindex="0"><code>dotnet build
-dotnet test
-dotnet run --project src/DzLegal.App</code></pre>
-            <Source lang={lang} files={["README.md"]} />
         </div>
     </section>
 

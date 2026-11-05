@@ -17,7 +17,7 @@ public sealed partial class Home : IDisposable
 
     /// <summary>A draft file is small (the case and its text); anything larger is not one.</summary>
     private const long MaxDraftBytes = 2 * 1024 * 1024;
-    /// <summary>The five-step guide, an overlay card like the desktop's tour: closed on load, so the first screen shows the product.</summary>
+    /// <summary>The five-step guide (Home.Guide.cs), a card docked beside the work: closed on load, so the first screen shows the product.</summary>
     private bool showGuide;
 
     /// <summary>The slim invitation to the guide above the workbench; dismissing it is remembered for the visit (session storage).</summary>
@@ -122,11 +122,15 @@ public sealed partial class Home : IDisposable
                 try { await guideCard.FocusAsync(); } catch (JSException) { /* the card is not there any more */ }
             }
 
+            await UpdateGuideAsync();
             return;
         }
 
         try
         {
+            // The guide comes back where the visitor left it in this visit.
+            await RestoreGuideAsync();
+
             // The branded shell shown while the circuit connected has done its job.
             await Js.InvokeVoidAsync("dzlegal.hideLoading");
 
@@ -153,6 +157,7 @@ public sealed partial class Home : IDisposable
 
         // Saves every few seconds when something changed, in this browser only.
         _autosave = new Timer(_ => _ = InvokeAsync(SaveCaseAsync), null, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5));
+        await UpdateGuideAsync();
     }
 
     private async Task SaveCaseAsync()
@@ -172,12 +177,6 @@ public sealed partial class Home : IDisposable
         {
             // The tab is closing or storage is unavailable: nothing to do.
         }
-    }
-
-    private void OpenGuide()
-    {
-        showGuide = true;
-        _focusGuide = true;
     }
 
     private async Task DismissInvite()
@@ -287,6 +286,7 @@ public sealed partial class Home : IDisposable
         if (Engine.Samples.FirstOrDefault(s => s.Id == e.Value as string) is { } sample)
         {
             Open(sample);
+            NoteSampleOpened(sample.Id);
         }
     }
 

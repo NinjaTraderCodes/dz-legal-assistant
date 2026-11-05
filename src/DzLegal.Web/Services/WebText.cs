@@ -1,7 +1,7 @@
 namespace DzLegal.Web.Services;
 
 /// <summary>
-/// Strings that exist only on the web demo (banner, guided tour, sample picker). Everything else reuses the desktop
+/// Strings that exist only on the web demo (banner, guide, sample picker). Everything else reuses the desktop
 /// app's translated strings through <c>Loc</c>.
 /// </summary>
 public static class WebText
@@ -40,27 +40,53 @@ public static class WebText
         ["GuideShow"] = ("Guide", "الدليل"),
         ["More"] = ("More", "المزيد"),
         ["Guide1Title"] = ("Open the sample “Unpaid loan”", "افتح القضية النموذجية «قرض غير مسدد»"),
-        ["Guide1"] = (
-            "Pick it in “Open a sample case” (all four samples are fictitious). The form fills in, the petition appears on paper and the formal check shows 8 / 9: the legal grounds are not drafted yet.",
-            "اختره من «افتح قضية نموذجية» (القضايا الأربع وهمية). تمتلئ الاستمارة، وتظهر العريضة على الورق، وتعرض المراجعة الشكلية 8 / 9: الأسانيد القانونية لم تُصغ بعد."),
         ["Guide2Title"] = ("See the rules work, without AI", "شاهد القواعد تعمل، دون ذكاء اصطناعي"),
-        ["Guide2"] = (
-            "Clear the defendant's domicile: the formal check drops to 7 / 9 and a red card cites the Code of Civil and Administrative Procedure, art. 15. Export still works (the lawyer decides), but the card stays until you put it back.",
-            "امسح موطن المدعى عليه: تنخفض المراجعة الشكلية إلى 7 / 9، وتذكر بطاقة حمراء المادة 15 من قانون الإجراءات المدنية والإدارية. يبقى التصدير ممكناً (القرار للمحامي)، لكن البطاقة تبقى حتى تعيده."),
         ["Guide3Title"] = ("Analyse the facts, with AI", "حلل الوقائع، بالذكاء الاصطناعي"),
-        ["Guide3"] = (
-            "Press “Analyse the facts”. The AI reads the facts and proposes a claim type and articles from the catalog. Nothing is used before you press “Yes, this is the claim type”: confirming ticks the articles it requires, and you can change them.",
-            "اضغط «تحليل الوقائع». يقرأ الذكاء الاصطناعي الوقائع ويقترح نوع الدعوى ومواد من الفهرس. لا يُستعمل شيء قبل أن تضغط «نعم، هذا نوع الدعوى»: عند التأكيد تحدد المواد اللازمة له، ويمكنك تغييرها."),
         ["Guide4Title"] = ("Draft, with AI", "صغ، بالذكاء الاصطناعي"),
-        ["Guide4"] = (
-            "Press “Draft legal grounds”. Facts and requests use your own wording; the program writes each article's rule from the catalog and the AI writes how the facts meet it. Checks catch some errors; the legal reasoning stays the lawyer's to verify. Tick “reviewed” under the grounds.",
-            "اضغط «صياغة الأسانيد». تدرج الوقائع والطلبات كما كتبتها؛ يكتب البرنامج قاعدة كل مادة من الفهرس، ويكتب الذكاء الاصطناعي كيف تنطبق على الوقائع. تفحص الأداة بعض الأخطاء، ويبقى التحقق من الاستدلال القانوني على المحامي. أشر على «راجعت هذا القسم» تحت الأسانيد."),
         ["Guide5Title"] = ("Export, before and after the review", "صدّر، قبل المراجعة وبعدها"),
-        ["Guide5"] = (
-            "Press “Export PDF” before ticking “I have reviewed this section and take responsibility for it”: the export is refused and the reason is listed. Tick it, press “Export PDF” again, and the PDF downloads; “Export Word” works the same way. Preview shows the pages first if you like.",
-            "اضغط «تصدير PDF» قبل أن تؤشر على «راجعت هذا القسم وأتحمل مضمونه»: يُرفض التصدير ويُذكر السبب. أشّر عليها، واضغط «تصدير PDF» من جديد، فيُنزَّل الملف؛ و«تصدير Word» يعمل بالطريقة نفسها. وتعرض المعاينة الصفحات أولا إن شئت."),
-        ["OpenGrounds"] = ("Go to Legal grounds", "إلى الأسانيد القانونية"),
-        ["OpenDefendant"] = ("Go to Defendant", "إلى المدعى عليه"),
+        // The guide's card: one step at a time, and for each step what to use next. {0} and {1} are the app's own button
+        // and step names, quoted, so the hint always matches what is on screen.
+        ["GuideCount"] = ("Step {0} of {1}", "الخطوة {0} من {1}"),
+        ["GuidePoints"] = (
+            "The guide lights up what to use next; you press it yourself.",
+            "يضيء الدليل ما تستعمله بعد ذلك، وتضغطه أنت بنفسك."),
+        ["GuideFinish"] = ("Finish", "إنهاء"),
+        ["GuideDoneStep"] = ("This step is done already. Press {0}.", "أُنجزت هذه الخطوة من قبل. اضغط {0}."),
+        ["GuideStep"] = ("Open the {0} step.", "افتح خطوة {0}."),
+        ["Guide1Pick"] = (
+            "Pick {0} in {1}: it opens on arrival, and picking it again starts it afresh. The form fills in, the petition appears on paper and the check shows 8 / 9: the legal grounds are not drafted yet.",
+            "اختر {0} من {1}: تُفتح عند الوصول، واختيارها من جديد يبدؤها من أولها. تمتلئ الاستمارة، وتظهر العريضة على الورق، وتعرض المراجعة الشكلية 8 / 9: الأسانيد القانونية لم تُصغ بعد."),
+        ["Guide2Clear"] = ("Clear the defendant's domicile field.", "امسح خانة موطن المدعى عليه."),
+        ["Guide2Look"] = (
+            "The check dropped to {0} and a red card cites art. 15 of the Code of Civil and Administrative Procedure. Export still works: the lawyer decides. Type the domicile back (any address) to go on.",
+            "انخفضت المراجعة الشكلية إلى {0}، وتذكر بطاقة حمراء المادة 15 من قانون الإجراءات المدنية والإدارية. يبقى التصدير ممكنا: القرار للمحامي. أعد كتابة الموطن (أي عنوان) للمتابعة."),
+        ["Guide3Analyse"] = (
+            "Press {0}. The AI reads the facts and proposes a claim type and articles from the catalogue.",
+            "اضغط {0}. يقرأ الذكاء الاصطناعي الوقائع ويقترح نوع الدعوى ومواد من الفهرس."),
+        ["Guide3Wait"] = ("The AI is reading the facts. Nothing is used before you confirm.", "يقرأ الذكاء الاصطناعي الوقائع. لا يُستعمل شيء قبل تأكيدك."),
+        ["Guide3Confirm"] = (
+            "Nothing is used yet. If the claim type is right, press {0}: the articles it requires are ticked, and you can change them.",
+            "لم يُستعمل شيء بعد. إن كان نوع الدعوى صحيحا فاضغط {0}: تُحدَّد المواد اللازمة له، ويمكنك تغييرها."),
+        ["Guide3Articles"] = (
+            "No claim type was recognised: tick the articles the petition should cite, then press {0}.",
+            "لم يُتعرَّف على نوع الدعوى: حدّد المواد التي تذكرها العريضة، ثم اضغط {0}."),
+        ["Guide4Generate"] = (
+            "Press {0}. Facts and requests keep your wording; the program writes each article's rule from the catalogue and the AI writes how the facts meet it.",
+            "اضغط {0}. تُدرج الوقائع والطلبات كما كتبتها؛ يكتب البرنامج قاعدة كل مادة من الفهرس، ويكتب الذكاء الاصطناعي كيف تنطبق على الوقائع."),
+        ["Guide4Wait"] = (
+            "The AI is writing the legal grounds on the paper. The legal reasoning stays the lawyer's to verify.",
+            "يكتب الذكاء الاصطناعي الأسانيد القانونية على الورق، ويبقى التحقق من الاستدلال القانوني على المحامي."),
+        ["Guide5Early"] = (
+            "Press {0} now, before ticking the review box: the export is refused and the reason is listed.",
+            "اضغط {0} الآن، قبل التأشير على خانة المراجعة: يُرفض التصدير ويُذكر السبب."),
+        ["Guide5Tick"] = (
+            "Tick {0} under the paper: you take responsibility for the section the AI wrote.",
+            "أشّر على {0} تحت الورقة: تتحمل بذلك مضمون القسم الذي كتبه الذكاء الاصطناعي."),
+        ["Guide5Again"] = ("Press {0} again: the PDF downloads. {1} works the same way.", "اضغط {0} من جديد: يُنزَّل الملف. و{1} يعمل بالطريقة نفسها."),
+        ["Guide5Export"] = ("Press {0}: the PDF downloads. {1} works the same way.", "اضغط {0}: يُنزَّل الملف. و{1} يعمل بالطريقة نفسها."),
+        ["Guide5Done"] = (
+            "Done: the petition was exported after your review. Press {0} to close the guide.",
+            "انتهيت: صُدّرت العريضة بعد مراجعتك. اضغط {0} لإغلاق الدليل."),
         ["SampleOpened"] = ("Sample case opened: {0}. All names and facts are fictitious.", "فتحت القضية النموذجية: {0}. جميع الأسماء والوقائع وهمية."),
         ["Issues"] = ("To fix", "للتصحيح"),
         ["Waiting"] = ("{0} AI request(s) ahead of yours", "{0} طلب قبل طلبك"),

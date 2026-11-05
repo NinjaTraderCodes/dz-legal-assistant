@@ -13,7 +13,7 @@
     return;
 }
 
-<div class="app @(Vm.IsDarkTheme ? "dark" : "")" dir="@(Vm.IsRightToLeft ? "rtl" : "ltr")" lang="@Lang">
+<div class="app @(Vm.IsDarkTheme ? "dark" : "") @(showGuide ? "guiding" : "")" dir="@(Vm.IsRightToLeft ? "rtl" : "ltr")" lang="@Lang">
     <header class="appbar">
         <div class="brand">
             @* The brand leads back to the website's home. target="_top" makes it a full page load: "/" is the static
@@ -51,7 +51,7 @@
             <div class="secondary @(showMore ? "open" : "")">
                 @* The desktop app, for judges and lawyers who want it on their own computer: the zip itself, so no GitHub page opens (change it with each release). *@
                 <a class="button-like" id="download-windows" href="@DownloadUrl" target="_blank" rel="noopener" title="@T("DownloadWindows")"><Icon Name="arrow_download" /> <span class="label">@T("DownloadWindows")</span></a>
-                <button type="button" title="@T("GuideShow")" aria-pressed="@(showGuide ? "true" : "false")" @onclick="OpenGuide"><Icon Name="question_circle" /> <span class="label">@T("GuideShow")</span></button>
+                <button type="button" title="@T("GuideShow")" aria-pressed="@(showGuide ? "true" : "false")" @onclick="ToggleGuide"><Icon Name="question_circle" /> <span class="label">@T("GuideShow")</span></button>
             </div>
         </div>
         @* At the far end, as on the desktop: the theme button and the language as plain text. *@
@@ -93,7 +93,7 @@
                     @if (_browserCopyCleared) { <span class="muted" role="status">@T("BrowserCopyCleared")</span> }</p>
             </div>
         </details>
-        @if (showInvite)
+        @if (showInvite && !showGuide)
         {
             <div class="invite" role="region" aria-label="@T("GuideTitle")">
                 <span class="invite-text"><Icon Name="question_circle" Size="16" /> @T("GuideInvite")</span>
@@ -117,7 +117,7 @@
                 @foreach (var step in Vm.FieldGroups)
                 {
                     var current = step == Vm.SelectedStep;
-                    <button type="button" class="step @StepClass(step) @(current ? "selected" : "")" aria-current="@(current ? "step" : null)" @onclick="() => SelectStep(step)">
+                    <button type="button" class="step @StepClass(step) @(current ? "selected" : "")" data-step="@step.Id" aria-current="@(current ? "step" : null)" @onclick="() => SelectStep(step)">
                         <span class="marker" aria-hidden="true"></span>
                         <span class="num" aria-hidden="true">@($"{step.Number:00}")</span>
                         <span class="label">@step.Label</span>
@@ -252,8 +252,8 @@
                 <div class="tools">
                     <label class="check" title="@Vm.WatermarkHint"><input id="watermark" type="checkbox" @bind="Vm.DraftWatermark" disabled="@Vm.IsSampleCase" /> @L["WatermarkShort"]</label>
                     @* The short names of the desktop; the full names stay the accessible names and tooltips (the guides use them). *@
-                    <button type="button" class="export" title="@L["ExportPdf"]" aria-label="@L["ExportPdf"]" @onclick="() => Run(Vm.ExportPdfCommand)"><Icon Name="document_pdf" Size="16" /> PDF</button>
-                    <button type="button" class="export" title="@L["ExportWord"]" aria-label="@L["ExportWord"]" @onclick="() => Run(Vm.ExportWordCommand)"><Icon Name="document_text" Size="16" /> Word</button>
+                    <button type="button" class="export" data-export="pdf" title="@L["ExportPdf"]" aria-label="@L["ExportPdf"]" @onclick="() => ExportAsync(Vm.ExportPdfCommand)"><Icon Name="document_pdf" Size="16" /> PDF</button>
+                    <button type="button" class="export" data-export="word" title="@L["ExportWord"]" aria-label="@L["ExportWord"]" @onclick="() => ExportAsync(Vm.ExportWordCommand)"><Icon Name="document_text" Size="16" /> Word</button>
                     <button type="button" class="quiet icon-only" title="@L["CopyText"]" aria-label="@L["CopyText"]" @onclick="() => Run(Vm.CopyTextCommand)"><Icon Name="copy" Size="18" /></button>
                 </div>
             </div>
@@ -440,43 +440,42 @@
 
     @if (showGuide)
     {
-        <div class="tour-backdrop" @onclick="() => showGuide = false"></div>
-        <section class="guide tour" role="dialog" aria-modal="true" aria-labelledby="guide-title" tabindex="-1" @ref="guideCard"
-                 @onkeydown="@(e => { if (e.Key == "Escape") showGuide = false; })">
+        @* Not a dialog: the work stays usable beside it. The card says what to use next; the light is on the thing itself. *@
+        var pointer = Pointer();
+        <section class="guide-card" role="region" aria-labelledby="guide-title" tabindex="-1" @ref="guideCard" @onkeydown="OnGuideKey">
             <div class="guide-head">
                 <h2 id="guide-title">@T("GuideTitle")</h2>
-                <button type="button" class="quiet small" @onclick="() => showGuide = false"><Icon Name="dismiss" Size="14" /> @T("GuideHide")</button>
+                <span class="guide-count muted small">@string.Format(L.Culture, T("GuideCount"), guideStep, GuideSteps)</span>
+                <button type="button" class="quiet small" @onclick="CloseGuide"><Icon Name="dismiss" Size="14" /> @T("GuideHide")</button>
             </div>
-            <ol>
-                <li>
-                    <strong>@T("Guide1Title")</strong>
-                    <p class="muted">@T("Guide1")</p>
-                    <span class="actions">
-                        @foreach (var sample in Engine.Samples)
-                        {
-                            <button type="button" class="small" @onclick="() => { showGuide = false; Open(sample); }">@sample.Title.Get(Lang)</button>
-                        }
-                    </span>
-                </li>
-                <li>
-                    <strong>@T("Guide2Title")</strong>
-                    <p class="muted">@T("Guide2")</p>
-                    <span class="actions"><button type="button" class="small" @onclick='() => { showGuide = false; GoToStep("defendant"); }'>@T("OpenDefendant")</button></span>
-                </li>
-                <li class="ai">
-                    <strong>@T("Guide3Title") <span class="tag ai"><Icon Name="sparkle" Size="12" /> @L["ModelTag"]</span></strong>
-                    <p class="muted">@T("Guide3")</p>
-                    <span class="actions"><button type="button" class="small" @onclick='() => { showGuide = false; GoToStep(MainWindowViewModel.GroundsStepId); }'>@T("OpenGrounds")</button></span>
-                </li>
-                <li class="ai">
-                    <strong>@T("Guide4Title") <span class="tag ai"><Icon Name="sparkle" Size="12" /> @L["ModelTag"]</span></strong>
-                    <p class="muted">@T("Guide4")</p>
-                </li>
-                <li>
-                    <strong>@T("Guide5Title")</strong>
-                    <p class="muted">@T("Guide5")</p>
-                </li>
+            <ol class="guide-dots" aria-hidden="true">
+                @for (var n = 1; n <= GuideSteps; n++)
+                {
+                    <li class="@(n < guideStep ? "done" : n == guideStep ? "current" : "")"></li>
+                }
             </ol>
+            <h3 class="guide-step">
+                <span>@T($"Guide{guideStep}Title")</span>
+                @if (guideStep is 3 or 4)
+                {
+                    <span class="tag ai"><Icon Name="sparkle" Size="12" /> @L["ModelTag"]</span>
+                }
+            </h3>
+            <p class="guide-hint @(pointer.Done ? "done" : "")" aria-live="polite">
+                @if (pointer.Done)
+                {
+                    <Icon Name="checkmark_circle" Size="16" />
+                }
+                <span>@pointer.Hint</span>
+            </p>
+            @if (guideStep == 1)
+            {
+                <p class="muted small">@T("GuidePoints")</p>
+            }
+            <div class="guide-nav">
+                <button type="button" class="small" disabled="@(guideStep == 1)" @onclick="() => MoveGuide(-1)">@L["Previous"]</button>
+                <button type="button" class="small @(pointer.Done ? "primary" : "")" @onclick="() => MoveGuide(1)">@(guideStep == GuideSteps ? T("GuideFinish") : L["Next"])</button>
+            </div>
         </section>
     }
 

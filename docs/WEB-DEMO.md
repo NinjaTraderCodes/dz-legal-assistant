@@ -14,15 +14,18 @@ difference is where the AI model runs:
 | Case data | never leaves the computer | sent to the hosted model: **fictitious cases only** |
 | Screen logic (view models, strings) | `DzLegal.Presentation` | `DzLegal.Presentation` (the same code) |
 
-The app bar says "Demo · fictitious cases only", and the guide explains that the product runs the model offline.
+The app bar says "Demo · fictitious cases only", and the details under the disclosure line explain that the product runs the model offline.
 
 ## The website at the same address
 
 The public website (`site/`, Astro, static HTML) is served by the same app, so one address carries both: the site at
 `/ar/` and `/en/` (Arabic first, the product's language), with its guide, download, law library, privacy and about pages
 (`/<lang>/try/`, `/download/`, `/law/`, `/privacy/`, `/about/`), and the demo at `/app`. The guide ("Test it in 5 minutes") and
-the demo's own guide describe the same five steps with the same button names: the website reads them from
-`Strings.resx`, `WebText.cs` and the sample files at build time. Nothing is loaded from another origin,
+the demo's own guide take the same five steps with the same button names: the website reads them from
+`Strings.resx`, `WebText.cs` and the sample files at build time. The demo's guide is a card docked beside the work, one
+step at a time: it lights up the field or button to use next, never presses it, and moves on once the step is done
+(`Home.Guide.cs`, reading the view model's state). `/app?guide=1` opens it, as the try page's button does; its step is
+remembered for the visit. Nothing is loaded from another origin,
 the page's Content Security Policy stays as strict as the demo's (no inline scripts), and the fonts and icons are the
 desktop's own, bundled with their licences.
 

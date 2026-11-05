@@ -29,7 +29,7 @@ const KEYS = [
     "ModelTag", "BlockerUnreviewed", "SummaryOk", "SummaryMissing", "ProviderOllama", "ModelReady", "ActivityLive", "DraftFirstRun",
 ];
 // The demo's own strings (src/DzLegal.Web/Services/WebText.cs) the guide names, exported as Web.<Key>.
-const WEB_KEYS = ["Samples", "OpenDefendant", "OpenGrounds", "GuideShow", "GuideOpen", "GuideInvite", "GuideTitle", "DisclosureLine", "Details", "DemoChip",
+const WEB_KEYS = ["Samples", "GuideShow", "GuideOpen", "GuideFinish", "GuideInvite", "GuideTitle", "DisclosureLine", "Details", "DemoChip",
     "Guide1Title", "Guide2Title", "Guide3Title", "Guide4Title", "Guide5Title"];
 
 const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@" });

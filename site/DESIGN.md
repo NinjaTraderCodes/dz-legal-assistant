@@ -41,7 +41,7 @@ Each face is cut into an Arabic and a Latin file by `scripts/fonts.mjs`; a page 
 
 ## Materials
 
-- **Folder** (`Folder.astro`): full width, flat colour, a trapezoid tab on the reading-start side with a register number and a few words. Each tab overlaps the bottom of the folder above it, so the page reads as one stack. No texture.
+- **Folder** (`Folder.astro`): full width, its cardboard colour with a fine board grain and the light of a desk lamp (from the top on the reading-start side, the shade towards the far corner; centred in the dark theme), a trapezoid tab on the reading-start side with a register number and a few words. Each folder casts a soft shadow onto the one above it, and each tab overlaps the bottom of the folder above, so the page reads as one stack. The bar, the footer and the page ground carry the same grain without the lamp. Added on 5 Nov 2026, after the flat fields proved tiring to look at.
 - **Sheet** (`.sheet`, and `.panel` and `.card`, which are sheets): paper with 2 px corners and a short, firm shadow. A sheet carries at most one clip (`Clip.astro`) or one staple.
 - **Stamp** (`.stamp`): violet ink in a double frame, turned −5° to −7°, its edge and ink made uneven by the inline filter `#ink` in `Base.astro`. Two on the whole site: «دون اتصال بالإنترنت» / "Works offline" on the hero, «جاهزة للإيداع» / "Ready to file" on the register at 9 / 9, with the line «بعد مراجعة المحامي وتوقيعه» / "once the lawyer has reviewed and signed". No emblem, no court, no imitation of a seal.
 - **Register** (`StepStory.astro`): the nine entries ruled like a register, numbered 01 to 09, each ticked with a violet pen stroke (`#tick-shape`).
@@ -76,7 +76,7 @@ Secondary pages are one folder each (`Base.astro`, `folder`): try and documents 
 
 - State emblems, «الجمهورية الجزائرية الديمقراطية الشعبية», court names or seal designs as site decoration. Inside the petition the document's own header lines stay: they are part of the document.
 - Scales, gavels, columns, books or gold as decoration (the brand mark stays).
-- Paper texture, stains, torn edges, leather, wood.
+- Stains, torn edges, leather, wood, or a photographed paper texture. The folders' surface is a fine generated board grain under a lamp light (`--w-grain`, `--w-speck`, `--w-lamp`, `--w-shade` in world.css), faint enough to be felt rather than seen; it never carries meaning and never lowers text contrast.
 - Small spaced-out labels above headings, grids of same-size cards, cards in cards, gradient text, glow, a coloured stripe down the side of a box. (The gold line beside the AI-written section on the petition is the app's own authorship mark and stays.)
 - Italic display type; a typewriter look.
 - "Filed" or «مودعة» for what the software does.

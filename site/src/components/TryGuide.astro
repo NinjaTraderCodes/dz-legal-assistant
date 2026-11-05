@@ -79,7 +79,7 @@ const Heading = heading;
 const Sub = heading === "h1" ? "h2" : "h3";
 const labels = { click: t(lang, "try.click"), expect: t(lang, "try.expect"), time: t(lang, "try.time"), why: t(lang, "try.why") };
 ---
-<Folder tone={compact ? "blue" : "kraft"} no={compact ? "06" : undefined} tab={compact ? t(lang, "try.eyebrow") : undefined} id="try" class:list={["try-folder", !compact && "flat"]} labelledby="try-title">
+<Folder tone={compact ? "blue" : "kraft"} no={compact ? "05" : undefined} tab={compact ? t(lang, "try.eyebrow") : undefined} id="try" class:list={["try-folder", !compact && "flat"]} labelledby="try-title">
 <div class={`page try ${compact ? "compact" : ""}`}>
     <Heading id="try-title" class={heading === "h1" ? "h1" : "h2"}>{t(lang, "try.title")}</Heading>
     <p class="lead">{t(lang, "try.lead")}</p>

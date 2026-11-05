@@ -1,12 +1,11 @@
 ---
-// The home page, in Arabic (/ar/) and English (/en/), as one case file of eight folders: the welcome, the problem,
-// the nine steps on paper, the AI in its place, the guarantees with their exhibits, the five-minute test, the two ways
-// to use the product, and the team.
+// The home page, in Arabic (/ar/) and English (/en/), as one case file of seven folders: the welcome, the problem,
+// the nine steps on paper (closing on the two actions), the proof (the AI in its place, the measured results and the
+// guarantees), the five-minute test, the team, and the two ways to use the product, so the file ends on the action.
 import Base from "../../layouts/Base.astro";
 import Hero from "../../components/Hero.astro";
 import TryGuide from "../../components/TryGuide.astro";
 import Problem from "../../components/Problem.astro";
-import Proofs from "../../components/Proofs.astro";
 import StepStory from "../../components/StepStory.astro";
 import AiPanel from "../../components/AiPanel.astro";
 import DemoDownload from "../../components/DemoDownload.astro";
@@ -30,10 +29,9 @@ const preloadImage = { src: hero.srcSet.values.at(-1)?.url ?? hero.src, srcSet: 
     <Problem lang={lang} />
     <StepStory lang={lang} />
     <AiPanel lang={lang} />
-    <Proofs lang={lang} />
     <TryGuide lang={lang} compact />
-    <DemoDownload lang={lang} />
     <Team lang={lang} />
+    <DemoDownload lang={lang} />
 </Base>
 <script>
     import "../../scripts/home";

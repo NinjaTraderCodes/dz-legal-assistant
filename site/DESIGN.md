@@ -46,7 +46,7 @@ Each face is cut into an Arabic and a Latin file by `scripts/fonts.mjs`; a page 
 - **Stamp** (`.stamp`): violet ink in a double frame, turned −5° to −7°, its edge and ink made uneven by the inline filter `#ink` in `Base.astro`. Two on the whole site: «دون اتصال بالإنترنت» / "Works offline" on the hero, «جاهزة للإيداع» / "Ready to file" on the register at 9 / 9, with the line «بعد مراجعة المحامي وتوقيعه» / "once the lawyer has reviewed and signed". No emblem, no court, no imitation of a seal.
 - **Register** (`StepStory.astro`): the nine entries ruled like a register, numbered 01 to 09, each ticked with a violet pen stroke (`#tick-shape`).
 - **Report** (`CheckReport.astro`): the formal check typed on a sheet: the app's label, the score, nine boxes that fill with violet ink (red while an element is missing), the verdict.
-- **Log and exhibits**: the AI's four stages are a numbered log under a heavy rule, each with its capture beside it; the guarantees are a list of exhibits («المرفق 1», "Exhibit 1") with the piece of the app attached. The hidden-set figures (94%, 67%, 36%) are typed on a clipped sheet with their counts and their source.
+- **Log and guarantees**: the AI's four stages are a numbered log under a heavy rule, two of them with their capture beside them and the drafting stage with the live panel; the guarantees are one clipped sheet of four numbered entries with two pieces of the app attached beside it. The hidden-set figures (94%, 67%, 36%) are typed on a clipped sheet with their counts and their source.
 - **Buttons**: carbon fill (`.btn-primary`) for the one primary action of a block, carbon outline otherwise; 2 px corners, 48 px tall.
 - **Tags** (`.tag`): a square frame in violet ink; the app's own rounded chips stay inside its pieces.
 
@@ -56,12 +56,13 @@ Each face is cut into an Arabic and a Latin file by `scripts/fonts.mjs`; a page 
 |---|---|---|
 | 01 | salmon | the title, the tagline, Try the demo (filled), Download for Windows, the note; the laptop lying on the folder with the "works offline" stamp on its corner |
 | 02 | board | the problem; a petition fragment with the defendant's domicile blank, the red note under it with art. 15-3, the check at 7 / 9 |
-| 03 | salmon | the scroll story: the register and the petition |
-| 04 | board | the AI kept in its place: the drafting log and the results report |
-| 05 | salmon | the guarantees as exhibits |
-| 06 | blue | the five-minute test, five numbered sheets |
-| 07 | green | the demo and the download as two slips |
-| 08 | board | the team as a signature block: identity photos clipped to the file, the names over a rule |
+| 03 | salmon | the scroll story: the register and the petition; then, at the peak, one line and the two actions |
+| 04 | board | the proof: the drafting log (pictures on stages 01 and 03, the live panel on 04), the hidden-set report, and the guarantees as one numbered sheet with the law-library card and the refused-export notice attached |
+| 05 | blue | the five-minute test, five numbered sheets |
+| 06 | board | the team as a signature block: identity photos clipped to the file, the names over a rule |
+| 07 | green | the demo and the download as two slips: the file ends on the action |
+
+The home had eight folders until 5 Nov 2026; after the second Impeccable critique the AI log and the exhibits became one proof folder, the repeated pictures went (the drafted paper is the story's alone), an action strip follows the story, and the team moved before the download.
 
 Secondary pages are one folder each (`Base.astro`, `folder`): try and documents blue, privacy green, law yellow, download, about and 404 board. Their former labels above the title are now the folder's tab.
 
@@ -89,7 +90,7 @@ Secondary pages are one folder each (`Base.astro`, `folder`): try and documents 
 - **Sheets do not slide in.** Only the stamps strike and the try page's steps reveal; the rest is placed and still.
 - **One stamp text was not used**: «مستوفي الشروط الشكلية» would claim more than the form check proves.
 - **Added**: `--w-board` (so the kraft tab shows against the kraft bar), the dark salmon moved to `#562A22`, the deferred faces on phones, and the problem's fragment set in Markazi.
-- **Removed duplication**: the fourth guarantee attaches the reviewed row instead of repeating the drafted-grounds capture the log shows just above.
+- **Removed duplication**: the drafted-grounds paper appears once, in the story; the log and the guarantees attach only what nothing else on the home shows.
 
 ## Honest risks
 

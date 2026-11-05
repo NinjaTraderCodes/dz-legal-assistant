@@ -104,12 +104,13 @@ label.check input { width: auto; min-height: 0; margin-top: 3px; accent-color: v
 .invite-text { display: inline-flex; align-items: center; gap: 8px; flex: 1 1 260px; font-weight: 500; }
 .invite-text .icon { color: var(--accent); }
 
-/* The guide: the desktop's tour card (radius 16, its surface and shadow, gold), docked at the bottom of the window on
-   the reading-end side, over the checks column, so the form and the paper stay free; no backdrop, the work stays usable.
-   On a phone it spans the bottom of the screen, and the page leaves room under its content to scroll above it. */
-.guide-card { position: fixed; z-index: 31; inset-inline-end: 12px; bottom: 44px; width: min(330px, calc(100% - 24px)); max-height: calc(100vh - 120px); overflow: auto;
+/* The guide: the desktop's tour card (radius 16, its surface and shadow, gold). Its script places it beside what it
+   points at (.placed), or in the middle when there is nothing to point at; before that, and on a phone, it stands at
+   the bottom of the window, and the page leaves room under its content to scroll above it. */
+.guide-card { position: fixed; z-index: 31; inset-inline-end: 12px; bottom: 44px; width: min(340px, calc(100% - 24px)); max-height: calc(100vh - 24px); overflow: auto;
   background: var(--tour-card); background-image: var(--panel-image); border: 1px solid var(--hairline); border-radius: var(--radius-onboarding-card); box-shadow: var(--tour-card-shadow);
   padding: 14px 16px 12px; display: grid; gap: 8px; outline: none; }
+.guide-card.placed { inset: auto; transition: left .2s ease, top .2s ease; }
 .guide-card:focus-visible { outline: 3px solid var(--edge); outline-offset: 2px; }
 .guide-head { display: flex; align-items: center; gap: 8px; }
 .guide-head h2 { font-size: 14px; }
@@ -123,16 +124,21 @@ label.check input { width: auto; min-height: 0; margin-top: 3px; accent-color: v
 .guide-hint { display: flex; gap: 8px; align-items: flex-start; line-height: 1.55; }
 .guide-hint.done .icon { color: var(--success); margin-top: 3px; }
 .guide-nav { display: flex; justify-content: space-between; gap: 8px; padding-top: 2px; }
-@media (max-width: 1279px) { .guide-card { width: min(300px, calc(100% - 24px)); } }
 @media (max-width: 899px) {
   .guide-card { inset-inline: 8px; bottom: calc(8px + env(safe-area-inset-bottom, 0px)); width: auto; max-height: 46vh; }
   .app.guiding { padding-bottom: 46vh; }
 }
 
-/* What the guide points at: a gold ring and a slow glow on the element itself. It is never pressed for the visitor. */
-.guide-ring { outline: 3px solid var(--gold) !important; outline-offset: 2px; box-shadow: 0 0 0 6px color-mix(in srgb, var(--gold) 30%, transparent); position: relative; z-index: 2;
+/* Guide mode: the window dims slightly, except a hole around what the guide points at, ringed in gold with a slow glow.
+   The dim is drawn by the hole's own shadow and lets every click through: the guide never presses anything itself.
+   (.guide-ring marks the element itself, for the tests and the script.) */
+:root { --guide-dim: rgb(29 32 30 / 0.36); }
+:root[data-theme="dark"] { --guide-dim: rgb(0 0 0 / 0.42); }
+.guide-spot { position: fixed; z-index: 30; pointer-events: none; border-radius: 10px;
+  box-shadow: 0 0 0 3px var(--gold), 0 0 0 8px color-mix(in srgb, var(--gold) 28%, transparent), 0 0 0 200vmax var(--guide-dim);
   animation: guide-glow 1.8s ease-in-out infinite; }
-@keyframes guide-glow { 50% { box-shadow: 0 0 0 10px color-mix(in srgb, var(--gold) 8%, transparent); } }
+.guide-spot.empty { box-shadow: 0 0 0 200vmax var(--guide-dim); animation: none; }
+@keyframes guide-glow { 50% { box-shadow: 0 0 0 3px var(--gold), 0 0 0 12px color-mix(in srgb, var(--gold) 8%, transparent), 0 0 0 200vmax var(--guide-dim); } }
 
 /* Layout: the desktop's workspace (columns 390, *, 330 with 12 px gaps); two columns on a narrow window, tabs on a phone. */
 .mobile-tabs { display: none; }
@@ -404,7 +410,8 @@ details.present .present-item:last-child { padding-bottom: 10px; }
   .section-text, .document-heading { font-size: 17px; line-height: 27px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .activity-steps li.active .dot, .progress-indeterminate span, .writing-mark .pulse, .guide-ring { animation: none; }
+  .activity-steps li.active .dot, .progress-indeterminate span, .writing-mark .pulse, .guide-spot { animation: none; }
+  .guide-card.placed { transition: none; }
   button:active:not(:disabled) { transform: none; }
 }
 

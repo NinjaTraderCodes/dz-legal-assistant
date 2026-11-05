@@ -216,7 +216,14 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
 
     public bool HasAnsweredBy => AnsweredBy.Length > 0;
 
-    private void NoteAnswer(IModelProvider provider) => AnsweredBy = L.Format("AnsweredBy", provider.Name);
+    /// <summary>The engine's own name, kept so the line can be written again in the other language.</summary>
+    private string _answeredByName = string.Empty;
+
+    private void NoteAnswer(IModelProvider provider)
+    {
+        _answeredByName = provider.Name;
+        AnsweredBy = L.Format("AnsweredBy", provider.Name);
+    }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(SaveEvaluationCommand))]
@@ -902,6 +909,10 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         OnPropertyChanged(nameof(StepPosition));
         OnPropertyChanged(nameof(Shortcuts));
         OnPropertyChanged(nameof(AssistantTitle));
+        if (_answeredByName.Length > 0)
+        {
+            AnsweredBy = L.Format("AnsweredBy", _answeredByName);
+        }
         AnalysisActivity.Relocalize();
         GenerationActivity.Relocalize();
         AssistantActivity.Relocalize();

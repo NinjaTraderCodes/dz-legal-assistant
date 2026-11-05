@@ -156,6 +156,19 @@ public class MainWindowViewModelTests
     }
 
     [Fact]
+    public async Task TheEngineLineFollowsTheLanguage()
+    {
+        var vm = Vm.Create(recorder: new RecordingProvider(r => "حيث إن " + r.SourceText)).Filled();
+        await vm.GenerateCommand.ExecuteAsync(null);
+        var before = vm.AnsweredBy;
+
+        vm.SwitchLanguageCommand.Execute(null);
+
+        Assert.NotEqual(before, vm.AnsweredBy);
+        Assert.Equal(vm.L.Format("AnsweredBy", "recording"), vm.AnsweredBy);
+    }
+
+    [Fact]
     public async Task AnAiDraftCannotLeaveTheAppUntilTheLawyerReviewsIt()
     {
         var files = new FakeFiles();

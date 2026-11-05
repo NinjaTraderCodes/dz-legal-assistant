@@ -85,24 +85,44 @@ label.check input { width: auto; min-height: 0; margin-top: 3px; accent-color: v
 .notice.confirm-claim p { margin: 0; flex: 1 1 100%; }
 .notice.confirm-claim .row { display: flex; gap: 8px; flex-wrap: wrap; }
 .ok-text { color: var(--success); }
-.strip { padding-inline: 16px; padding-block: 12px 0; display: grid; gap: 10px; }
+.strip { padding-inline: 16px; padding-block: 8px 0; display: grid; gap: 8px; }
+
+/* The ribbon: one quiet line under the bar, no boxes. The demo's disclosure first (always there; its warning icon is
+   the only colour), the case this browser kept when there is one, and the invitation to the guide at the far end, each
+   separated by a hairline; their actions are links. On a phone the parts stack, one short line each. */
+.ribbon { display: flex; flex-wrap: wrap; align-items: center; row-gap: 2px; font-size: 13px; line-height: 1.45; color: var(--muted-aa); }
+.ribbon > * { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 8px; min-height: 30px; padding-inline: 14px; }
+.ribbon > :first-child { padding-inline-start: 0; }
+.ribbon > * + * { border-inline-start: 1px solid var(--hairline); }
+.ribbon .icon { color: var(--muted); }
+.ribbon button.link { font-size: 13px; padding: 2px 4px; }
+.ribbon button.link.strong { font-weight: 600; }
+.ribbon button.link.quiet-link { color: var(--muted-aa); }
+.ribbon button.icon-only { min-height: 26px; padding: 3px; }
+/* The invitation stands apart at the far end, without a hairline, so a line that wraps does not start with one. */
+.ribbon .invite { margin-inline-start: auto; border-inline-start: 0; }
+.ribbon .text, .ribbon .invite-text { display: inline-flex; align-items: center; gap: 6px; }
 
 /* The demo's warning: one line always on screen, the full wording and the browser-copy button one click away. */
-.disclosure { border-radius: 10px; background: var(--warning-soft); color: var(--text); padding: 0; }
-.disclosure summary { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 8px 14px; cursor: pointer; list-style: none; font-size: 13.5px; line-height: 1.4; }
+.ribbon > .disclosure { display: block; }
+.disclosure summary { display: flex; align-items: center; gap: 6px; min-height: 30px; cursor: pointer; list-style: none; color: var(--text); }
 .disclosure summary::-webkit-details-marker { display: none; }
 .disclosure summary .icon { color: var(--warning); }
-.disclosure summary .line { flex: 1 1 320px; }
-.disclosure summary .details-label { color: var(--accent); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.disclosure summary .details-label { color: var(--accent); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; margin-inline-start: 4px; white-space: nowrap; }
+.disclosure[open] { flex: 1 1 100%; }
 .disclosure[open] summary .details-label { text-decoration: none; }
-.disclosure-body { display: grid; gap: 8px; padding: 4px 14px 12px; border-top: 1px solid color-mix(in srgb, var(--warning) 25%, transparent); }
+.disclosure-body { display: grid; gap: 8px; margin-block: 4px 8px; padding: 10px 14px; border-radius: 10px; background: var(--warning-soft); color: var(--text); }
 .disclosure-body p { margin: 0; }
 .disclosure-body .row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
-
-/* The slim invitation to the guide; the guide itself is the docked card below. */
-.invite { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 6px 10px 6px 14px; border-radius: 10px; background: var(--accent-soft); color: var(--text); }
-.invite-text { display: inline-flex; align-items: center; gap: 8px; flex: 1 1 260px; font-weight: 500; }
-.invite-text .icon { color: var(--accent); }
+/* With all three parts on a window under 1440 px, the invitation keeps its link only, so the line stays one line. */
+@media (min-width: 900px) and (max-width: 1439px) { .ribbon:has(.saved-case) .invite .words { display: none; } }
+@media (max-width: 899px) {
+  .ribbon { flex-direction: column; align-items: stretch; }
+  .ribbon > * { padding-inline: 0; }
+  .ribbon > * + * { border-inline-start: 0; border-top: 1px solid var(--hairline); }
+  .ribbon .invite { margin-inline-start: 0; }
+  .ribbon .invite button.icon-only { margin-inline-start: auto; }
+}
 
 /* The guide: the desktop's tour card (radius 16, its surface and shadow, gold). Its script places it beside what it
    points at (.placed), or in the middle when there is nothing to point at; before that, and on a phone, it stands at

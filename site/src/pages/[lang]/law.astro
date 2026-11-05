@@ -38,8 +38,8 @@ const summary = fmt(s(lang, "LibrarySummary"), n(law.totals.articles), law.total
 const areaOrder = ["civil", "commercial", "family", "social"];
 const areas = [...law.claimAreas].sort((a, b) => areaOrder.indexOf(a.area) - areaOrder.indexOf(b.area));
 ---
-<Base lang={lang} title={s(lang, "LibraryTitle")} description={t(lang, "meta.law.description")} path="/law/" og="law">
-    <PageHead eyebrow={s(lang, "LibraryTitle")} title={summary} lead={t(lang, "law.lead")}>
+<Base lang={lang} title={s(lang, "LibraryTitle")} description={t(lang, "meta.law.description")} path="/law/" og="law" folder={{ tone: "yellow", tab: s(lang, "LibraryTitle") }}>
+    <PageHead title={summary} lead={t(lang, "law.lead")}>
         <p class="small">{s(lang, "LibraryIntro")}</p>
         <Source lang={lang} files={["data/law/codes", "docs/LAW-LIBRARY.md"]} />
     </PageHead>
@@ -56,9 +56,9 @@ const areas = [...law.claimAreas].sort((a, b) => areaOrder.indexOf(a.area) - are
                                 <h3 id={`${code.id}-title`} class="h3">{code.title[lang]}</h3>
                                 {lang === "en" && <p class="caption" lang="ar" dir="rtl">{code.title.ar}</p>}
                                 <div class="chips">
-                                    <span class={code.partial ? "chip" : "chip chip-success"}>{code.partial ? <Icon name="document_text" size={12} /> : <Icon name="checkmark_circle" size={12} />} {s(lang, code.partial ? "LibraryPartial" : "LibraryComplete")}</span>
-                                    <span class="chip chip-accent"><Icon name="book_open" size={12} /> {s(lang, check)}</span>
-                                    <span class="chip"><Icon name="person" size={12} /> {s(lang, code.verified ? "LibraryReviewed" : "LibraryNotReviewed")}</span>
+                                    <span class={"tag"}>{code.partial ? <Icon name="document_text" size={12} /> : <Icon name="checkmark_circle" size={12} />} {s(lang, code.partial ? "LibraryPartial" : "LibraryComplete")}</span>
+                                    <span class="tag"><Icon name="book_open" size={12} /> {s(lang, check)}</span>
+                                    <span class="tag"><Icon name="person" size={12} /> {s(lang, code.verified ? "LibraryReviewed" : "LibraryNotReviewed")}</span>
                                 </div>
                             </div>
                             <p class="stat"><strong>{n(code.articles)}</strong><span class="caption">{fmt(s(lang, "LibraryArticles"), "").replace(/[:：]\s*$/, "")}</span></p>
@@ -137,12 +137,12 @@ const areas = [...law.claimAreas].sort((a, b) => areaOrder.indexOf(a.area) - are
     .cards.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .law { display: grid; gap: 14px; padding: clamp(18px, 3vw, 28px); }
     .law-head { display: grid; gap: 8px; }
-    .hint { color: var(--muted-aa); }
+    .hint { color: var(--w-muted); }
     .links { display: flex; flex-wrap: wrap; gap: 6px 18px; }
     .links a { display: inline-flex; align-items: center; gap: 6px; }
     .claims { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; font-size: 0.95rem; }
     .claims li { padding-inline-start: 14px; position: relative; }
-    .claims li::before { content: ""; position: absolute; inset-inline-start: 0; top: 0.65em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+    .claims li::before { content: ""; position: absolute; inset-inline-start: 0; top: 0.65em; width: 6px; height: 6px; border-radius: 50%; background: var(--w-ink); }
     .lead { margin-top: 8px; }
     @media (max-width: 1099px) { .cards.four { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
     @media (max-width: 899px) { .cards, .cards.three, .cards.four { grid-template-columns: 1fr; } }

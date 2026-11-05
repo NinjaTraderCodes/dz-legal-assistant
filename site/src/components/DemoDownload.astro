@@ -1,39 +1,44 @@
 ---
-// The two ways to get the product: the browser demo (hosted model, fictitious cases) and the Windows download
-// (offline, local model or templates). Side by side, each with one plain action; the gold stays on the hero.
+// The two ways to get the product, as two slips filed side by side in the green folder (offline is its colour): the
+// browser demo (hosted model, fictitious cases) and the Windows download (offline, local model or templates), each
+// with one plain action.
 import Icon from "./Icon.astro";
+import Folder from "./Folder.astro";
 import { t, fmt, type Lang } from "../i18n";
 import { downloadUrl, version } from "../content/product";
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 ---
-<section id="download" class="section page ways" aria-label={t(lang, "nav.download")}>
-    <div class="way panel">
-        <span class="chip">{lang === "ar" ? "عرض تجريبي · قضايا خيالية فقط" : "Demo · fictitious cases only"}</span>
-        <h2 class="h2">{t(lang, "demo.title")}</h2>
-        <p>{t(lang, "demo.body")}</p>
-        <a class="btn" href={`/app?lang=${lang}`}><Icon name="open" size={18} /> {t(lang, "demo.cta")}</a>
+<Folder tone="green" no="07" tab={t(lang, "tab.ways")} id="download" label={t(lang, "nav.download")}>
+    <div class="page ways">
+        <div class="way sheet">
+            <span class="tag">{lang === "ar" ? "عرض تجريبي · قضايا خيالية فقط" : "Demo · fictitious cases only"}</span>
+            <h2 class="h2">{t(lang, "demo.title")}</h2>
+            <p>{t(lang, "demo.body")}</p>
+            <a class="btn btn-primary" href={`/app?lang=${lang}`}><Icon name="open" size={18} /> {t(lang, "demo.cta")}</a>
+        </div>
+        <div class="way sheet">
+            <span class="tag"><Icon name="shield_checkmark" size={12} /> {lang === "ar" ? "دون اتصال" : "Offline"}</span>
+            <h2 class="h2">{t(lang, "download.title")}</h2>
+            <p>{t(lang, "download.body")}</p>
+            <ul class="reqs">
+                {[1, 2, 3].map((n) => <li><Icon name="checkmark" size={14} /> {t(lang, `download.req${n}`)}</li>)}
+            </ul>
+            <a class="btn btn-primary" href={downloadUrl} rel="noopener"><Icon name="arrow_download" size={18} /> {t(lang, "download.cta")}</a>
+            <p class="caption">{fmt(t(lang, "download.note"), version)} <a href={`/${lang}/download/`}>{t(lang, "download.more")}</a></p>
+        </div>
     </div>
-    <div class="way panel">
-        <span class="chip chip-success"><Icon name="shield_checkmark" size={12} /> {lang === "ar" ? "دون اتصال" : "Offline"}</span>
-        <h2 class="h2">{t(lang, "download.title")}</h2>
-        <p>{t(lang, "download.body")}</p>
-        <ul class="reqs">
-            {[1, 2, 3].map((n) => <li><Icon name="checkmark" size={14} /> {t(lang, `download.req${n}`)}</li>)}
-        </ul>
-        <a class="btn" href={downloadUrl} rel="noopener"><Icon name="arrow_download" size={18} /> {t(lang, "download.cta")}</a>
-        <p class="caption">{fmt(t(lang, "download.note"), version)} <a href={`/${lang}/download/`}>{t(lang, "download.more")}</a></p>
-    </div>
-</section>
+</Folder>
 
 <style>
-    .ways { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
-    .way { display: grid; gap: 14px; align-content: start; padding: clamp(20px, 3vw, 32px); }
-    .way .chip { justify-self: start; }
+    .ways { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(20px, 3vw, 36px); align-items: start; }
+    .way { display: grid; gap: 14px; align-content: start; padding: clamp(22px, 3vw, 34px); }
+    .way:nth-child(2) { margin-top: 28px; }
+    .way .tag { justify-self: start; }
     .way .btn { justify-self: start; margin-top: 6px; }
     .reqs { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 0.95rem; }
     .reqs li { display: flex; gap: 8px; align-items: flex-start; }
-    .reqs :global(.icon) { flex: none; margin-top: 5px; color: var(--success); }
-    @media (max-width: 899px) { .ways { grid-template-columns: 1fr; } }
+    .reqs :global(.icon) { flex: none; margin-top: 5px; color: var(--w-sheet-ink); }
+    @media (max-width: 899px) { .ways { grid-template-columns: 1fr; } .way:nth-child(2) { margin-top: 0; } }
 </style>

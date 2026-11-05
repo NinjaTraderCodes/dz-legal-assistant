@@ -1,7 +1,7 @@
 ---
-// The site's bar: the mark and the product name, the pages, the language pair and the theme toggle, in the
-// vocabulary of the desktop's welcome screen (two language buttons, the selected one outlined; a sun/moon tile).
-// On a phone the pages fold into a native disclosure under the bar; no script is needed for it.
+// The site's bar, the label strip of the case file: the mark and the product name, the pages, the language pair and
+// the theme toggle, on the kraft ground. On a phone the pages fold into a native disclosure under the bar; no script
+// is needed for it.
 import ScalesMark from "./ScalesMark.astro";
 import LangSwitch from "./LangSwitch.astro";
 import ThemeToggle from "./ThemeToggle.astro";
@@ -19,7 +19,7 @@ const current = (page: string) => (page === path ? "page" : undefined);
 <header class="site-header">
     <div class="page bar">
         <a href={home} class="brand" aria-label={s(lang, "AppTitle")} aria-current={current("/")}>
-            <span class="brand-mark"><ScalesMark size={26} /></span>
+            <span class="brand-mark"><ScalesMark size={30} /></span>
             <span class="brand-name">{s(lang, "AppTitle")}</span>
         </a>
         <nav class="nav" aria-label={t(lang, "nav.label")}>
@@ -42,27 +42,29 @@ const current = (page: string) => (page === path ? "page" : undefined);
 </header>
 
 <style>
-    .site-header { position: sticky; top: 0; z-index: 40; background: color-mix(in srgb, var(--canvas) 94%, transparent); border-bottom: 1px solid var(--hairline); }
-    /* The glass blur is a desktop touch: on phones it costs layout time on every scroll. */
-    @media (min-width: 900px) { .site-header { background: color-mix(in srgb, var(--canvas) 86%, transparent); backdrop-filter: blur(10px); } }
+    .site-header { position: sticky; top: 0; z-index: 40; background: var(--w-kraft); color: var(--w-text); }
     .bar { display: flex; align-items: center; gap: 12px 24px; min-height: 64px; flex-wrap: wrap; padding-block: 8px; }
-    .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--text); text-decoration: none; font-weight: 600; font-size: 1.05rem; }
-    .brand-mark { display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: var(--radius-control); background: var(--bar); color: var(--bar-text); }
-    .nav { display: flex; flex-wrap: wrap; gap: 4px 18px; margin-inline-start: auto; font-size: 0.95rem; }
-    .nav a { color: var(--text); text-decoration: none; padding: 6px 2px; border-bottom: 2px solid transparent; }
-    .nav a:hover { border-bottom-color: var(--edge); }
-    .nav a[aria-current="page"] { border-bottom-color: var(--accent); font-weight: 600; }
-    .nav-demo { font-weight: 600; color: var(--accent) !important; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--w-text); text-decoration: none; font-family: var(--w-display); font-weight: 600; font-size: 1.4rem; line-height: 1.1; white-space: nowrap; }
+    .brand-mark { display: inline-grid; place-items: center; color: var(--w-text); }
+    .nav { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 18px; margin-inline-start: auto; font-size: 0.9rem; }
+    .nav a { color: var(--w-text); text-decoration: none; padding: 6px 2px; border-bottom: 2px solid transparent; }
+    .nav a:hover { border-bottom-color: var(--w-rule); }
+    .nav a[aria-current="page"] { border-bottom-color: var(--w-text); font-weight: 600; }
+    .nav a.nav-demo { padding: 5px 12px; border: 1.5px solid var(--w-btn); border-radius: 2px; font-weight: 600; }
+    .nav a.nav-demo:hover { background: color-mix(in srgb, var(--w-btn) 10%, transparent); }
     .controls { display: flex; align-items: center; gap: 8px; }
     .menu { display: none; flex-basis: 100%; }
-    .menu summary { display: inline-flex; align-items: center; gap: 8px; list-style: none; cursor: pointer; min-height: 40px; padding: 4px 12px; border: 1px solid var(--edge); border-radius: var(--radius-control); background: var(--welcome-control); color: var(--welcome-text); font-size: 14px; }
+    .menu summary { display: inline-flex; align-items: center; gap: 8px; list-style: none; cursor: pointer; min-height: 40px; padding: 4px 12px; border: 1.5px solid var(--w-btn); border-radius: 2px; color: var(--w-text); font-size: 14px; }
     .menu summary::-webkit-details-marker { display: none; }
     .menu[open] summary :global(.icon) { transform: rotate(180deg); }
     .menu nav { display: grid; padding: 8px 0 4px; }
-    .menu nav a { padding: 10px 4px; border-top: 1px solid var(--hairline); color: var(--text); text-decoration: none; }
-    .menu nav a[aria-current="page"] { color: var(--accent); font-weight: 600; }
+    .menu nav a { padding: 10px 4px; border-top: 1px solid var(--w-rule); color: var(--w-text); text-decoration: none; }
+    .menu nav a[aria-current="page"] { font-weight: 600; text-decoration: underline; }
     /* From a laptop up the bar holds the mark, the seven links and the three controls in one row: the page is at most
        1180 px wide at every width, so the same tighter spacing serves 1366 and 1920 alike, in both languages. */
-    @media (min-width: 900px) { .bar { gap: 12px 16px; } .nav { font-size: 0.875rem; gap: 4px 12px; } .controls { gap: 6px; } .brand { font-size: 1rem; gap: 8px; } }
+    @media (min-width: 900px) { .bar { gap: 12px 14px; flex-wrap: nowrap; } .nav { flex-wrap: nowrap; white-space: nowrap; font-size: 0.84rem; gap: 4px 12px; } .controls { gap: 4px; } .brand { font-size: 1.25rem; } }
+    @media (min-width: 900px) and (max-width: 1279px) { .brand-name { display: none; } .nav { gap: 4px 10px; font-size: 0.82rem; } }
     @media (max-width: 899px) { .nav { display: none; } .controls { margin-inline-start: auto; } .menu { display: block; } }
+    /* On a phone the bar keeps one row: a smaller name, and only the other language's link (the page is already in its own). */
+    @media (max-width: 599px) { .bar { gap: 8px 10px; } .brand { font-size: 1.1rem; gap: 6px; } .controls :global(.lang.selected) { display: none; } }
 </style>

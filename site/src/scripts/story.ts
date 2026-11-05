@@ -2,8 +2,8 @@
 // which slides inside its frame so the section being written stays in view. After the defendant, the domicile line is
 // taken away and the formal check drops to 2 of 9 with the article that requires it, then it comes back. The form is
 // written first (court to signature), the check reaches 8 of 9 and names the missing grounds, and the legal grounds
-// come last: the code's quoted rules appear, the AI's lines write themselves, the review box is ticked, 9 of 9.
-// Waiting sections are clipped, so the sheet fills from the top.
+// come last: the code's quoted rules appear, the AI's lines write themselves, the review box is ticked, 9 of 9, and
+// the register is stamped "ready to file", once. Waiting sections are clipped, so the sheet fills from the top.
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -34,6 +34,7 @@ export function start(): void {
         const lines = Array.from(grounds.querySelectorAll<HTMLElement>("[data-rule], [data-ai]"));
         const chips = Array.from(grounds.querySelectorAll<HTMLElement>("[data-chip]"));
         const review = grounds.querySelector<HTMLElement>("[data-review]");
+        const ready = story.querySelector<HTMLElement>("[data-ready]");
 
         // "ko" shows the red verdict and the named finding; "ok" the green verdict; neither while the form is being filled.
         const setScore = (n: number, verdict: "ok" | "ko" | "none", finding?: "domicile" | "grounds") => {
@@ -80,6 +81,7 @@ export function start(): void {
         gsap.set(lines, { clipPath: "inset(0 0 0 100%)" });
         gsap.set(chips, { opacity: 0 });
         if (review) gsap.set(review, { opacity: 0, attr: { "data-done": 0 } });
+        if (ready) gsap.set(ready, { autoAlpha: 0 });
         mark(1, order[0]);
         setScore(1, "none");
 
@@ -128,6 +130,8 @@ export function start(): void {
                     tl.set(review, { attr: { "data-done": 1 } }, at + 0.45);
                 }
                 tl.call(() => { mark(order.length, -1); setScore(9, "ok"); }, [], at + 0.55);
+                // The stamp strikes: a short drop onto the register, slightly over-pressed, then still.
+                if (ready) tl.fromTo(ready, { autoAlpha: 0, scale: 1.2 }, { autoAlpha: 1, scale: 1, duration: 0.2, ease: "back.out(2.5)" }, at + 0.75);
                 return;
             }
             tl.call(() => { mark(k + 1, index); setScore(k + 1, "none"); }, [], t);
@@ -157,6 +161,7 @@ export function start(): void {
             gsap.set([paper, ...sections, ...lines, ...chips], { clearProps: "all" });
             if (domicile) gsap.set(domicile, { clearProps: "opacity" });
             if (review) { gsap.set(review, { clearProps: "opacity" }); review.setAttribute("data-done", "1"); }
+            if (ready) gsap.set(ready, { clearProps: "all" });
             lines.forEach((line) => line.removeAttribute("data-writing"));
             story.classList.remove("framed");
             mark(order.length, -1);

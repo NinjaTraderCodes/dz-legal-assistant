@@ -1,11 +1,12 @@
 ---
 // "Test it in 5 minutes": the five steps of the live demo, with what to click (the demo's own button labels, from
-// its string tables), what should happen, how long it takes, and why it matters for a lawyer. The compact form sits
-// under the home's hero; the full form is the /try/ page, where each step shows what the demo looks like at that
+// its string tables), what should happen, how long it takes, and why it matters for a lawyer, each step a numbered
+// sheet. The compact form is the home's blue folder; the full form is the /try/ page (a blue folder of its own), where each step shows what the demo looks like at that
 // point (tests/guide-shots.mjs: the steps with AI output come from real model runs, never from the stand-in). The
 // demo's guide describes the same steps.
 import type { ImageMetadata } from "astro";
 import Icon from "./Icon.astro";
+import Folder from "./Folder.astro";
 import Shot from "./Shot.astro";
 import AppPiece from "./AppPiece.astro";
 import { groundsTitle } from "../content/steps";
@@ -78,14 +79,14 @@ const Heading = heading;
 const Sub = heading === "h1" ? "h2" : "h3";
 const labels = { click: t(lang, "try.click"), expect: t(lang, "try.expect"), time: t(lang, "try.time"), why: t(lang, "try.why") };
 ---
-<section id="try" class={`section page try ${compact ? "compact" : ""}`} aria-labelledby="try-title">
-    <p class="eyebrow">{t(lang, "try.eyebrow")}</p>
+<Folder tone={compact ? "blue" : "kraft"} no={compact ? "06" : undefined} tab={compact ? t(lang, "try.eyebrow") : undefined} id="try" class:list={["try-folder", !compact && "flat"]} labelledby="try-title">
+<div class={`page try ${compact ? "compact" : ""}`}>
     <Heading id="try-title" class={heading === "h1" ? "h1" : "h2"}>{t(lang, "try.title")}</Heading>
     <p class="lead">{t(lang, "try.lead")}</p>
     <ol class:list={["try-steps", !compact && "lined"]} {...(!compact ? { "data-progress": "" } : {})}>
         {steps.map((step, i) => (
-            <li class="try-step panel" {...(!compact ? { "data-reveal": "" } : {})}>
-                <span class="num" aria-hidden="true">{i + 1}</span>
+            <li class="try-step sheet" {...(!compact ? { "data-reveal": "" } : {})}>
+                <span class="num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
                 <div class="words">
                     <Sub class="h3">{step.title}</Sub>
                     <dl class="howto">
@@ -112,42 +113,42 @@ const labels = { click: t(lang, "try.click"), expect: t(lang, "try.expect"), tim
         </div>
     )}
     <div class="actions">
-        <a class="btn btn-gold" href={`/app?lang=${lang}`}>{t(lang, "demo.cta")}</a>
+        <a class="btn btn-primary" href={`/app?lang=${lang}`}>{t(lang, "demo.cta")}</a>
         {compact ? <a class="btn" href={`/${lang}/try/`}>{t(lang, "try.full")}</a> : <a class="btn" href={`/${lang}/`}>{t(lang, "nav.home")}</a>}
     </div>
     {!compact && <Source lang={lang} files={["src/DzLegal.Web/Services/WebText.cs", "src/DzLegal.Presentation/Resources/Strings.resx", "docs/WEB-DEMO.md", "docs/HIDDEN-SET.md", "src/DzLegal.Web/appsettings.json"]} />}
-</section>
+</div>
+</Folder>
 
 <style>
+    /* On the /try/ page the folder is the page's own (Base.astro): this one only lays the steps out. */
+    .try-folder.flat { background: transparent; padding-block: clamp(40px, 6vw, 72px) clamp(48px, 7vw, 88px); }
     .try { display: grid; gap: 16px; }
-    .eyebrow { color: var(--accent); font-weight: 600; font-size: 0.9rem; }
     .try .lead { max-width: 760px; }
-    .try-steps { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 14px; }
-    .try-step { position: relative; display: grid; gap: 8px; padding: 18px 20px 18px 64px; }
-    :global([dir="rtl"]) .try-step { padding: 18px 64px 18px 20px; }
-    .num { position: absolute; top: 18px; inset-inline-start: 20px; display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--gold); color: var(--on-gold); font-weight: 700; font-size: 0.95rem; }
+    .try-steps { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 16px; }
+    .try-step { display: grid; gap: 8px; padding: 22px 24px 22px; }
+    .num { font-family: var(--w-display); font-weight: 700; font-size: 2rem; line-height: 1; color: var(--w-sheet-ink); font-variant-numeric: tabular-nums; }
     .words { display: grid; gap: 8px; }
     .howto { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 16px; margin: 0; }
-    .howto dt { color: var(--muted-aa); font-weight: 600; font-size: 0.9rem; }
+    .howto dt { color: var(--w-sheet-muted); font-weight: 600; font-size: 0.9rem; }
     .howto dd { margin: 0; }
-    /* The full guide: the words beside the pictures, and a line down the numbers that fills as the steps come into view. */
+    /* The full guide: the number, the words, the pictures, on one sheet per step, joined by a violet line that fills as
+       the steps come into view. */
     .lined { position: relative; gap: 22px; }
-    .lined .try-step { grid-template-columns: minmax(0, 1fr) minmax(280px, 42%); gap: 12px 28px; align-items: start; }
-    .lined::before, .lined::after { content: ""; position: absolute; top: 48px; bottom: 48px; inset-inline-start: 35px; width: 2px; border-radius: 1px; }
-    .lined::before { background: var(--hairline); }
-    .lined::after { background: var(--gold); height: var(--progress, 100%); bottom: auto; max-height: calc(100% - 96px); transition: height 600ms ease; }
-    .lined .num { z-index: 1; }
+    .lined .try-step { grid-template-columns: 3.2rem minmax(0, 1fr) minmax(280px, 42%); gap: 12px 24px; align-items: start; }
+    .lined::before, .lined::after { content: ""; position: absolute; top: 48px; bottom: 48px; inset-inline-start: 46px; width: 2px; z-index: 1; }
+    .lined::before { background: var(--w-rule); }
+    .lined::after { background: var(--w-ink); height: var(--progress, 100%); bottom: auto; max-height: calc(100% - 96px); transition: height 600ms ease; }
+    .lined .try-step { z-index: 2; }
     .pictures { display: grid; gap: 12px; }
     .compact .try-steps { grid-template-columns: repeat(5, minmax(0, 1fr)); }
-    .compact .try-step { padding: 16px 16px 16px 16px; gap: 6px; }
-    :global([dir="rtl"]) .compact .try-step { padding: 16px; }
-    .compact .num { position: static; margin-bottom: 4px; }
+    .compact .try-step { padding: 20px 18px; gap: 8px; align-content: start; }
     .compact .howto { grid-template-columns: 1fr; gap: 2px; }
     .compact .howto dt { display: none; }
-    .compact .howto dd { font-size: 0.95rem; color: var(--muted-aa); }
+    .compact .howto dd { font-size: 0.93rem; color: var(--w-sheet-muted); }
     .note { display: grid; gap: 10px; }
-    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
     @media (max-width: 1099px) { .compact .try-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-    @media (max-width: 899px) { .lined .try-step { grid-template-columns: 1fr; } }
+    @media (max-width: 899px) { .lined .try-step { grid-template-columns: 1fr; } .lined::before, .lined::after { display: none; } }
     @media (max-width: 599px) { .howto { grid-template-columns: 1fr; gap: 2px 0; } .howto dd { margin-bottom: 6px; } .compact .try-steps { grid-template-columns: 1fr; } .actions .btn { width: 100%; } }
 </style>

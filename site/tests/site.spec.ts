@@ -41,20 +41,21 @@ test("the English home is English, left to right", async ({ request }) => {
     noInlineScript(html);
 });
 
-test("the hero shows the app on a laptop: one picture for both languages, AVIF with a WebP fallback, beside the text on a laptop screen and under it on a phone", async ({ page, request }) => {
+test("the hero shows the app on a laptop: one picture for both languages, AVIF with a WebP fallback, preloaded, beside the text on a laptop screen and under it on a phone", async ({ page, request }) => {
     const files: string[] = [];
     for (const lang of ["ar", "en"]) {
         const html = await text(await request.get(`/${lang}/`));
         const picture = html.match(/<div class="device"[^>]*>\s*<picture[^>]*>([\s\S]*?)<\/picture>/)?.[1] ?? "";
         expect(picture).toMatch(/<source srcset="\/_astro\/laptop[^"]*\.avif 480w, [^"]*720w, [^"]*960w, [^"]*1440w" type="image\/avif"/);
         expect(picture).toMatch(/<img src="\/_astro\/laptop[^"]*\.webp" srcset="\/_astro\/laptop[^"]*\.webp 480w, [^"]*720w, [^"]*960w, [^"]*1440w"/);
-        // Eager but behind the photograph and the fonts: the laptop is on the first screen and is not its largest element.
+        // Eager and first: with the case-file hero the laptop is the largest thing on the first screen, so the head
+        // preloads its AVIF set and the picture asks for it at high priority.
         expect(picture).toMatch(/loading="eager"/);
-        expect(picture).toMatch(/fetchpriority="low"/);
+        expect(picture).toMatch(/fetchpriority="high"/);
         expect(picture).toMatch(/width="1440" height="960"/);
         expect(picture).toContain(lang === "ar" ? 'alt="التطبيق المكتبي على حاسوب محمول' : 'alt="The desktop app on a laptop');
-        expect(html).toMatch(/<link rel="preload" as="image" href="\/_astro\/welcome-bg[^"]*"/);
-        expect(html).not.toMatch(/<link rel="preload" as="image" href="\/_astro\/laptop/);
+        expect(html).toMatch(/<link rel="preload" as="image" href="\/_astro\/laptop[^"]*\.avif"[^>]*type="image\/avif"/);
+        expect(html).not.toMatch(/welcome-bg/);
         files.push(picture.match(/<img src="([^"]+)"/)?.[1] ?? "");
     }
     expect(files[0]).toBe(files[1]);
@@ -69,7 +70,7 @@ test("the hero shows the app on a laptop: one picture for both languages, AVIF w
         else expect(laptop!.x + laptop!.width).toBeLessThan(title!.x);
         await page.setViewportSize({ width: 390, height: 844 });
         const phoneLaptop = await page.locator(".hero .laptop").boundingBox();
-        const cta = await page.locator(".hero .btn-gold").boundingBox();
+        const cta = await page.locator(".hero .btn-primary").boundingBox();
         expect(phoneLaptop!.y).toBeGreaterThan(cta!.y + cta!.height);
     }
 });

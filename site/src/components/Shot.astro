@@ -48,15 +48,15 @@ const Wrap = large ? "button" : "div";
 
 <style>
     .shot { display: grid; gap: 8px; margin: 0; }
-    .shot-frame { display: block; width: 100%; padding: 0; border: 1px solid var(--hairline); border-radius: var(--radius-control); overflow: hidden; background: var(--surface-alt); box-shadow: var(--shadow-card); text-align: start; }
+    .shot-frame { display: block; width: 100%; padding: 0; border: 0; border-radius: 2px; overflow: hidden; background: var(--surface-alt); box-shadow: var(--w-shadow); text-align: start; }
     .natural .shot-frame { width: fit-content; max-width: 100%; }
     button.shot-frame { cursor: zoom-in; }
-    button.shot-frame:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    button.shot-frame:focus-visible { outline: 3px solid var(--w-focus); outline-offset: 3px; }
     .shot :global(img) { display: block; width: 100%; height: auto; }
     .natural :global(img) { width: auto; max-width: 100%; }
     /* Only the version of the theme shown exists in the layout: the other is never fetched. */
     :global(html:not([data-theme="dark"])) .shot :global(img.shot-dark) { display: none; }
     :global(html[data-theme="dark"]) .shot :global(img.shot-light) { display: none; }
-    figcaption { color: var(--muted-aa); }
-    .muted { color: var(--muted); }
+    figcaption { color: var(--w-muted); }
+    .muted { color: var(--w-muted); }
 </style>

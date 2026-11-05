@@ -1,0 +1,40 @@
+---
+// The formal check typed on a sheet, as a report: the product's own label, the score out of nine, nine boxes that fill
+// with violet ink (red while an element is missing), and the verdict. The scroll story drives the same markup through
+// its data attributes (src/scripts/story.ts): data-score, data-bar (the filled share), data-present, data-missing.
+import Icon from "./Icon.astro";
+import { s, t, type Lang } from "../i18n";
+
+interface Props { lang: Lang; score: number; missing?: boolean; live?: boolean }
+const { lang, score, missing = false, live = false } = Astro.props;
+---
+<div class:list={["report check", missing && "ko"]} aria-live={live ? "polite" : undefined}>
+    <div class="score-row">
+        <span class="label">{s(lang, "ComplianceScore")}</span>
+        <span class="score" dir="ltr"><span data-score>{score}</span> / 9</span>
+    </div>
+    <div class="boxes" aria-hidden="true"><span class="fill" data-bar style={`width: ${Math.round((score / 9) * 1000) / 10}%`}></span></div>
+    {/* A still report carries only its verdict; the story's live one carries both, for the script to switch. */}
+    {(live || !missing) && <p class="verdict ok" data-present hidden={missing}><Icon name="checkmark_circle" size={18} /> {t(lang, "story.present")}</p>}
+    {(live || missing) && <p class="verdict ko" data-missing hidden={!missing}><Icon name="error_circle" size={18} /> {t(lang, "story.missing")}</p>}
+    <slot />
+</div>
+
+<style>
+    .report { display: grid; gap: 10px; padding-top: 16px; border-top: 2px solid var(--w-sheet-text); }
+    .score-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+    .label { font-size: 0.84rem; color: var(--w-sheet-muted); }
+    .score { font-family: var(--w-display); font-weight: 700; font-size: 2.3rem; line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; }
+    /* Nine boxes drawn as one track: the empty boxes are outlines, the filled share is the ink, both cut into nine by
+       the same mask, so the story can move one width and the boxes fill one by one. */
+    .boxes { position: relative; height: 12px; --nine: repeating-linear-gradient(to right, #000 0 calc(100% / 9 - 4px), transparent calc(100% / 9 - 4px) calc(100% / 9)); -webkit-mask: var(--nine); mask: var(--nine); background: color-mix(in srgb, var(--w-sheet-text) 14%, transparent); }
+    :global([dir="rtl"]) .boxes { --nine: repeating-linear-gradient(to left, #000 0 calc(100% / 9 - 4px), transparent calc(100% / 9 - 4px) calc(100% / 9)); }
+    .fill { position: absolute; inset-block: 0; inset-inline-start: 0; background: var(--w-sheet-ink); transition: width 260ms ease; }
+    .ko .fill { background: var(--w-sheet-red); }
+    .verdict { display: flex; gap: 8px; align-items: flex-start; font-size: 0.88rem; font-weight: 600; line-height: 1.55; max-width: none; }
+    .verdict :global(.icon) { flex: none; margin-top: 3px; }
+    .verdict.ok { color: var(--w-sheet-text); }
+    .verdict.ok :global(.icon) { color: var(--w-sheet-ink); }
+    .verdict.ko { color: var(--w-sheet-red); }
+    .verdict[hidden] { display: none; }
+</style>

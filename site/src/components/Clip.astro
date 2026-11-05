@@ -1,0 +1,6 @@
+---
+// The paper clip that holds a sheet to the folder (world.css, .clip): one drawing, referenced from the page's symbol.
+interface Props { class?: string }
+const { class: className } = Astro.props;
+---
+<svg class:list={["clip", className]} viewBox="0 0 22 58" aria-hidden="true"><use href="#clip-shape" /></svg>

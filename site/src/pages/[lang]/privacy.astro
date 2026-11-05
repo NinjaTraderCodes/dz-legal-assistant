@@ -15,8 +15,8 @@ export function getStaticPaths() {
 const lang = Astro.params.lang as Lang;
 const demoChip = lang === "ar" ? "عرض تجريبي · قضايا خيالية فقط" : "Demo · fictitious cases only";
 ---
-<Base lang={lang} title={t(lang, "nav.privacy")} description={t(lang, "meta.privacy.description")} path="/privacy/" og="privacy">
-    <PageHead eyebrow={t(lang, "privacy.eyebrow")} title={s(lang, "AboutPrivacyTitle")} lead={s(lang, "AboutPrivacy")}>
+<Base lang={lang} title={t(lang, "nav.privacy")} description={t(lang, "meta.privacy.description")} path="/privacy/" og="privacy" folder={{ tone: "green", tab: t(lang, "privacy.eyebrow") }}>
+    <PageHead title={s(lang, "AboutPrivacyTitle")} lead={s(lang, "AboutPrivacy")}>
         <p>{t(lang, "privacy.lead2")}</p>
         <p class="offline"><Icon name="shield_checkmark" size={16} /> {s(lang, "OfflineStatus")}</p>
         <Source lang={lang} files={["docs/OFFLINE.md"]} />
@@ -60,7 +60,7 @@ const demoChip = lang === "ar" ? "عرض تجريبي · قضايا خيالية
 
     <section class="section page cols" aria-labelledby="demo-title">
         <div class="block card-alt">
-            <span class="chip"><Icon name="warning" size={12} /> {demoChip}</span>
+            <span class="tag"><Icon name="warning" size={12} /> {demoChip}</span>
             <h2 id="demo-title" class="h2">{t(lang, "privacy.demo.title")}</h2>
             <p>{t(lang, "privacy.demo.lead")}</p>
             <ul class="list plain">
@@ -79,7 +79,7 @@ const demoChip = lang === "ar" ? "عرض تجريبي · قضايا خيالية
 </Base>
 
 <style>
-    .offline { display: inline-flex; align-items: center; gap: 8px; color: var(--success); font-weight: 500; }
-    .block .chip { justify-self: start; }
+    .offline { display: inline-flex; align-items: center; gap: 8px; color: var(--w-ink); font-weight: 500; }
+    .block .tag { justify-self: start; }
     .block .h3 { margin-top: 12px; }
 </style>

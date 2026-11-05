@@ -1,43 +1,54 @@
 ---
-// The problem in one sentence, beside the thing the product shows the lawyer: the formal check dropping to 7 of 9
-// with the article that requires the missing element. The card is the workbench's own finding card.
-import Icon from "./Icon.astro";
+// The problem in one sentence, beside what the product shows the lawyer: a fragment of the petition where the
+// defendant's domicile is missing, the red note in its margin with the article that requires it, and the formal check
+// typed under it at 7 of 9. The petition's text is the fictitious sample case's (src/content/steps.ts).
+import Folder from "./Folder.astro";
+import CheckReport from "./CheckReport.astro";
 import { s, t, type Lang } from "../i18n";
+import { paper } from "../content/steps";
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
+const defendant = paper.find((sec) => sec.id === "defendant");
+const ui = { lang, dir: lang === "ar" ? "rtl" : "ltr" } as const;
 ---
-<section id="problem" class="section page problem" aria-labelledby="problem-title">
-    <div class="text">
-        <h2 id="problem-title" class="h1">{t(lang, "problem.title")}</h2>
-        <p class="lead">{t(lang, "problem.body")}</p>
+<Folder tone="kraft" no="02" tab={t(lang, "tab.problem")} id="problem" labelledby="problem-title">
+    <div class="page problem">
+        <div class="text">
+            <h2 id="problem-title" class="h1">{t(lang, "problem.title")}</h2>
+            <p class="lead">{t(lang, "problem.body")}</p>
+        </div>
+        <aside class="sheet fragment" aria-label={s(lang, "Compliance")}>
+            <span class="staple" aria-hidden="true"></span>
+            <div class="doc" lang="ar" dir="rtl">
+                <p class="title">عريضة افتتاح دعوى</p>
+                {defendant?.lines.map((line) => <p>{line}</p>)}
+                <p class="gap" aria-hidden="true"><span>القاطن بـ:</span><span class="blank"></span></p>
+            </div>
+            <div class="margin-note" {...ui}>
+                <strong>{t(lang, "problem.finding.title")}</strong>
+                <span>{t(lang, "problem.finding.article")}</span>
+                <span>{t(lang, "problem.finding.text")}</span>
+            </div>
+            <CheckReport lang={lang} score={7} missing />
+        </aside>
     </div>
-    <aside class="check card" aria-label={s(lang, "Compliance")}>
-        <div class="score-row">
-            <span class="muted">{s(lang, "ComplianceScore")}</span>
-            <span class="score">7 / 9</span>
-        </div>
-        <div class="bar"><span style="width: 78%"></span></div>
-        <p class="verdict"><Icon name="error_circle" size={18} /> {t(lang, "story.missing")}</p>
-        <div class="finding">
-            <strong>{t(lang, "problem.finding.title")}</strong>
-            <span class="caption">{t(lang, "problem.finding.article")}</span>
-            <span class="small">{t(lang, "problem.finding.text")}</span>
-        </div>
-    </aside>
-</section>
+</Folder>
 
 <style>
-    .problem { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.8fr); gap: clamp(32px, 6vw, 96px); align-items: center; }
+    .problem { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.9fr); gap: clamp(32px, 6vw, 88px); align-items: center; }
     .text { display: grid; gap: 20px; }
-    .check { display: grid; gap: 10px; background: var(--surface-alt); box-shadow: var(--shadow-card); padding: 18px; }
-    .score-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
-    .score { font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
-    .muted { color: var(--muted-aa); font-size: 0.9rem; }
-    .bar { height: 6px; border-radius: 3px; background: var(--hairline); overflow: hidden; }
-    .bar span { display: block; height: 100%; background: var(--danger); }
-    .verdict { display: flex; gap: 8px; align-items: flex-start; color: var(--danger); font-weight: 600; max-width: none; }
-    .verdict :global(.icon) { flex: none; margin-top: 3px; }
-    .finding strong { font-size: 0.95rem; }
+    .fragment { display: grid; gap: 18px; padding: 30px 28px 24px; }
+    /* A drawn fragment, not the app's paper: set in the site's Naskh-rooted Markazi, already loaded for the titles, so
+       the first screen on a phone does not wait for the petition's own faces. */
+    .doc { font-family: var(--w-display); font-size: 1.2rem; line-height: 1.75; text-align: right; }
+    .doc p { max-width: none; }
+    .doc .title { text-align: center; font-weight: 700; margin-bottom: 8px; }
+    .gap { display: flex; gap: 10px; align-items: baseline; }
+    .blank { flex: 1; height: 1.1em; border-bottom: 2px dotted var(--w-sheet-red); background: color-mix(in srgb, var(--w-sheet-red) 7%, transparent); }
+    /* The note a reviewer writes under the gap: red, in the reader's language, tied to the gap by a red mark. */
+    .margin-note { position: relative; display: grid; gap: 2px; padding-top: 10px; color: var(--w-sheet-red); font-size: 0.9rem; line-height: 1.5; }
+    .margin-note::before { content: ""; position: absolute; top: 0; inset-inline-start: 0; width: 44px; height: 2px; background: currentColor; }
+    .margin-note strong { font-size: 0.95rem; }
     @media (max-width: 899px) { .problem { grid-template-columns: 1fr; } }
 </style>

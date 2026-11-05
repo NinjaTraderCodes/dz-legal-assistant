@@ -90,8 +90,9 @@ const missing = finding ? 1 : 0;
 
 <style>
     .piece { display: grid; gap: 8px; margin: 0; }
-    .piece-frame { border: 1px solid var(--hairline); border-radius: var(--radius-control); background: var(--surface-alt); box-shadow: var(--shadow-card); padding: 14px 16px; font-size: 0.95rem; text-align: start; }
-    figcaption { color: var(--muted-aa); }
+    .piece-frame { border: 1px solid var(--hairline); border-radius: var(--radius-control); background: var(--surface-alt); box-shadow: var(--w-shadow); padding: 14px 16px; font-size: 0.95rem; text-align: start; }
+    /* The caption sits on the folder, in the site's colours; the frame above it keeps the app's. */
+    figcaption, figcaption .muted { color: var(--w-muted); }
     .muted { color: var(--muted-aa); }
     /* The app bar with its badge, on the bar's own colour, and the engine's status line under it. */
     .piece-frame.offline { padding: 0; overflow: hidden; }

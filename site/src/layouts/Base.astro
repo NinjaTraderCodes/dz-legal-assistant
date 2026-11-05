@@ -2,29 +2,36 @@
 // The page frame shared by every page: language and direction on <html>, the head (title, description, canonical,
 // hreflang, Open Graph, favicon, the theme script), the header and the footer. Everything comes from this origin.
 // Dark is the default theme and is written into the markup; theme-init.js lifts it only for a remembered light.
+// A secondary page is one folder of the case file (`folder`: its colour and the words on its tab); the home lays
+// out its own folders, one per section.
 import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { dirOf, localeOf, otherLang, s, t, type Lang } from "../i18n";
-import naskhUrl from "../assets/fonts/NotoNaskhArabic-Regular.woff2?url";
-import interUrl from "../assets/fonts/Inter-latin.woff2?url";
-import naskhBoldUrl from "../assets/fonts/NotoNaskhArabic-Bold.woff2?url";
-import tokens from "../styles/tokens.css?raw";
+import markaziArUrl from "../assets/fonts/Markazi-ar.woff2?url";
+import markaziLatinUrl from "../assets/fonts/Markazi-latin.woff2?url";
+import readexArUrl from "../assets/fonts/Readex-ar.woff2?url";
+import readexLatinUrl from "../assets/fonts/Readex-latin.woff2?url";
+import world from "../styles/world.css?raw";
 
-interface Props { lang: Lang; title: string; description: string; path: string; og?: string; noindex?: boolean; preloadImage?: { src: string; srcSet: string; sizes: string } }
-const { lang, title, description, path, og = "home", noindex = false, preloadImage } = Astro.props;
+type Tone = "kraft" | "salmon" | "blue" | "green" | "yellow";
+interface Props { lang: Lang; title: string; description: string; path: string; og?: string; noindex?: boolean; preloadImage?: { src: string; srcSet: string; sizes: string; type?: string }; folder?: { tone: Tone; tab: string } }
+const { lang, title, description, path, og = "home", noindex = false, preloadImage, folder } = Astro.props;
 const site = Astro.site?.toString().replace(/\/$/, "") ?? "";
 const canonical = `${site}/${lang}${path}`;
 const other = otherLang(lang);
 const appTitle = s(lang, "AppTitle");
 const fullTitle = title === appTitle ? appTitle : `${title} — ${appTitle}`;
 const image = `${site}/og/${og}-${lang}.png`;
-// The browser frame's colour is the bar of the theme shown. Both values are read from the generated tokens here,
-// at build time, so the theme scripts never have to compute a style to find them.
-const [lightTokens, darkTokens = ""] = tokens.split('[data-theme="dark"]');
-const barOf = (block: string) => block.match(/--bar:\s*(#[0-9a-fA-F]{3,8})/)?.[1] ?? "#786039";
-const barLight = barOf(lightTokens);
-const barDark = barOf(darkTokens);
+// The browser frame's colour is the kraft ground of the theme shown, read from world.css here, at build time, so the
+// theme scripts never have to compute a style to find it.
+const [lightWorld, darkWorld = ""] = world.split('[data-theme="dark"]');
+const kraftOf = (block: string, fallback: string) => block.match(/--w-kraft:\s*(#[0-9a-fA-F]{3,8})/)?.[1] ?? fallback;
+const barLight = kraftOf(lightWorld, "#cdbb98");
+const barDark = kraftOf(darkWorld, "#1b1915");
+// The two faces of the page's script are preloaded: Readex Pro for its text and Markazi Text for its titles, so the
+// first screen settles once. The other script (the language switch's one word) and the petition's Naskh follow.
+const fonts = lang === "ar" ? [readexArUrl, markaziArUrl] : [readexLatinUrl, markaziLatinUrl];
 ---
 <!doctype html>
 <html lang={lang} dir={dirOf(lang)} data-theme="dark">
@@ -39,16 +46,8 @@ const barDark = barOf(darkTokens);
     <link rel="alternate" hreflang={localeOf(other)} href={`${site}/${other}${path}`} />
     <link rel="alternate" hreflang="x-default" href={`${site}/ar${path}`} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    {/* Every page shows the other language's name in its own script, so the text pages preload both faces and settle
-        their layout once. The English home preloads Inter only: its first screen is the photograph, which a second font
-        would compete with; the Arabic home preloads all three (the note below). */}
-    <link rel="preload" as="font" type="font/woff2" crossorigin href={lang === "ar" ? naskhUrl : interUrl} />
-    {(!preloadImage || lang === "ar") && <link rel="preload" as="font" type="font/woff2" crossorigin href={lang === "ar" ? interUrl : naskhUrl} />}
-    {/* The Arabic home preloads its bold face too: a face that arrives after the first paint re-lays out every text that
-        could use it (about 130 ms each on a phone, counted as blocking time); preloaded, the three faces arrive
-        together, before the paint. The English home keeps one face: its Arabic text is below the fold. */}
-    {preloadImage && lang === "ar" && <link rel="preload" as="font" type="font/woff2" crossorigin href={naskhBoldUrl} />}
-    {preloadImage && <link rel="preload" as="image" href={preloadImage.src} imagesrcset={preloadImage.srcSet} imagesizes={preloadImage.sizes} fetchpriority="high" />}
+    {fonts.map((href) => <link rel="preload" as="font" type="font/woff2" crossorigin href={href} />)}
+    {preloadImage && <link rel="preload" as="image" href={preloadImage.src} imagesrcset={preloadImage.srcSet} imagesizes={preloadImage.sizes} type={preloadImage.type} fetchpriority="high" />}
     <meta name="theme-color" content={barDark} data-light={barLight} data-dark={barDark} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={appTitle} />
@@ -63,17 +62,32 @@ const barDark = barOf(darkTokens);
     <script is:inline src="/theme-init.js"></script>
 </head>
 <body class="min-h-dvh flex flex-col">
+    {/* The stamps' ink: a slight unevenness of the edge and of the ink itself (world.css, .stamp). */}
+    <svg class="defs" width="0" height="0" aria-hidden="true" focusable="false">
+        <filter id="ink" x="-10%" y="-20%" width="120%" height="140%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" result="grain" />
+            <feDisplacementMap in="SourceGraphic" in2="grain" scale="1.4" result="edge" />
+            <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="3" result="cloud" />
+            <feColorMatrix in="cloud" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.3 1.75" result="mask" />
+            <feComposite in="edge" in2="mask" operator="in" />
+        </filter>
+        {/* The paper clip and the register's tick, drawn once and referenced (Clip.astro, StepStory.astro). */}
+        <symbol id="clip-shape" viewBox="0 0 22 58"><path d="M6 14 V46 a5 5 0 0 0 10 0 V8 a8 8 0 0 0 -16 0 V44" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" /></symbol>
+        <symbol id="tick-shape" viewBox="0 0 24 20"><path d="M2 11 C5 13 7 15 9 17 C13 10 17 6 22 2" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" pathLength="30" /></symbol>
+    </svg>
     <a href="#main" class="skip">{t(lang, "skip")}</a>
     <Header lang={lang} path={path} />
-    <main id="main" class="flex-1">
-        <slot />
-    </main>
+    {folder
+        ? <main id="main" class={`flex-1 folder flush has-tab tone-${folder.tone}`}><p class="tab">{folder.tab}</p><slot /></main>
+        : <main id="main" class="flex-1"><slot /></main>}
     <Footer lang={lang} path={path} />
     <script is:inline src="/ui.js" defer></script>
 </body>
 </html>
 
 <style is:global>
-    .skip { position: absolute; inset-inline-start: 16px; top: -100px; z-index: 50; padding: 10px 16px; border-radius: var(--radius-control); background: var(--gold); color: var(--on-gold); font-weight: 600; }
+    .skip { position: absolute; inset-inline-start: 16px; top: -100px; z-index: 50; padding: 10px 16px; border-radius: 2px; background: var(--w-btn); color: var(--w-btn-text); font-weight: 600; }
+    .defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+    .folder.flush { padding-block: 0; }
     .skip:focus { top: 12px; }
 </style>

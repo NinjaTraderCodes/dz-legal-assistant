@@ -35,8 +35,8 @@ const desktopLicences: [string, string][] = [
 ];
 const docs = ["PRODUCT-DETAILS", "ARCHITECTURE", "OFFLINE", "LAW-LIBRARY", "HIDDEN-SET", "WEB-DEMO"];
 ---
-<Base lang={lang} title={s(lang, "AboutTitle")} description={t(lang, "meta.about.description")} path="/about/" og="about">
-    <PageHead eyebrow={s(lang, "AboutTitle")} title={s(lang, "AppTitle")} lead={s(lang, "AboutPurpose")}>
+<Base lang={lang} title={s(lang, "AboutTitle")} description={t(lang, "meta.about.description")} path="/about/" og="about" folder={{ tone: "kraft", tab: s(lang, "AboutTitle") }}>
+    <PageHead title={s(lang, "AppTitle")} lead={s(lang, "AboutPurpose")}>
         <p class="small muted">{fmt(s(lang, "AboutVersion"), version)} · {s(lang, "AboutThirdUni")}</p>
         <Source lang={lang} files={["Directory.Build.props", "src/DzLegal.Presentation/Resources/Strings.resx"]} />
     </PageHead>
@@ -82,7 +82,7 @@ const docs = ["PRODUCT-DETAILS", "ARCHITECTURE", "OFFLINE", "LAW-LIBRARY", "HIDD
             <p class="caption">{s(lang, "AboutWelcomeImage")}: {t(lang, "about.licences.image")}</p>
             <p class="small">{s(lang, "AboutModelNote")}</p>
             <p class="small"><Icon name="document_text" size={16} /> {t(lang, "about.licences.notices")}: <span dir="ltr">THIRD-PARTY-NOTICES.txt</span></p>
-            <p class="small">{t(lang, "about.licences.site")} <a href="/licences/OFL-Inter.txt">Inter (OFL)</a>, <a href="/licences/OFL-NotoNaskhArabic.txt">Noto Naskh Arabic (OFL)</a>, <a href="/licences/MIT-FluentIcons.txt">Fluent UI System Icons (MIT)</a>.</p>
+            <p class="small">{t(lang, "about.licences.site")} <a href="/licences/OFL-MarkaziText.txt">Markazi Text (OFL)</a>, <a href="/licences/OFL-ReadexPro.txt">Readex Pro (OFL)</a>, <a href="/licences/OFL-ArefRuqaa.txt">Aref Ruqaa (OFL)</a>, <a href="/licences/OFL-Inter.txt">Inter (OFL)</a>, <a href="/licences/OFL-NotoNaskhArabic.txt">Noto Naskh Arabic (OFL)</a>, <a href="/licences/MIT-FluentIcons.txt">Fluent UI System Icons (MIT)</a>.</p>
             <Source lang={lang} files={["src/DzLegal.Presentation/ViewModels/AboutViewModel.cs", "src/DzLegal.App/Assets/Images/welcome-bg.LICENSE.txt"]} />
         </div>
     </section>
@@ -115,11 +115,11 @@ const docs = ["PRODUCT-DETAILS", "ARCHITECTURE", "OFFLINE", "LAW-LIBRARY", "HIDD
 
 <style>
     .people { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-top: 16px; }
-    .role { color: var(--accent); font-weight: 600; }
+    .role { color: var(--w-ink); font-weight: 600; }
     .licences { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; font-size: 0.95rem; }
-    .licences li { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; border-top: 1px solid var(--hairline); }
+    .licences li { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; border-top: 1px solid var(--w-rule); }
     .docs { margin: 16px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; }
-    .docs li { display: grid; grid-template-columns: minmax(0, 260px) 1fr; gap: 6px 20px; padding: 10px 0; border-top: 1px solid var(--hairline); }
+    .docs li { display: grid; grid-template-columns: minmax(0, 260px) 1fr; gap: 6px 20px; padding: 10px 0; border-top: 1px solid var(--w-rule); }
     .docs .doc { overflow-wrap: anywhere; }
     .block .btn { justify-self: start; }
     @media (max-width: 899px) { .people { grid-template-columns: 1fr; } .docs li { grid-template-columns: 1fr; } }

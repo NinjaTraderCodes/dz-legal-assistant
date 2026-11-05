@@ -14,8 +14,9 @@ const names: Record<Lang, string> = { ar: "العربية", en: "English" };
 </div>
 
 <style>
-    .langs { display: inline-flex; gap: 6px; padding: 4px; border-radius: var(--radius-control); }
-    .lang { display: inline-flex; align-items: center; min-height: 40px; padding: 4px 14px; border: 1px solid var(--edge); border-radius: var(--radius-control); background: var(--welcome-control); color: var(--welcome-text); font-size: 14px; text-decoration: none; }
-    .lang.selected { border-width: 2px; font-weight: 600; padding-inline: 13px; }
-    a.lang:hover { background: var(--surface-alt); color: var(--welcome-text); }
+    .langs { display: inline-flex; gap: 4px; }
+    .lang { display: inline-flex; align-items: center; min-height: 40px; padding: 4px 10px; border: 1.5px solid transparent; border-radius: 2px; color: var(--w-text); font-size: 14px; text-decoration: none; }
+    .lang.selected { border-color: var(--w-btn); font-weight: 600; }
+    a.lang { text-decoration: underline; text-underline-offset: 4px; }
+    a.lang:hover { text-decoration-thickness: 2px; }
 </style>

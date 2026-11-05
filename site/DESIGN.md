@@ -1,96 +1,98 @@
 # Design: the case file «الملف»
 
-<!-- Draft direction for approval. Built with the Impeccable method, derived by hand (its concept-seed program was not run). After the build, this file is rewritten from what was actually built, as Impeccable's finish step requires. -->
+<!-- Written from the built site (branch claude/case-file-site, 5 Nov 2026), after the finish review. The direction was approved as a draft on 4 Nov 2026; the candidate directions were derived by hand with the Impeccable method (its concept-seed program was not run). -->
 
-Scope: the public website in `site/` only. The desktop app, the demo at `/app` and every app screenshot keep their own look. `src/styles/tokens.css` (generated from the app theme) stays, and is used only where the site shows pieces of the app; the site's own world lives in a new layer.
+Scope: the public website in `site/` only. The desktop app, the demo at `/app` and every app screenshot keep their own look. `src/styles/tokens.css` is generated from the app's theme and still serves the pieces of the app the site draws (`AppPiece.astro`) and the petition; the site's own world is `src/styles/world.css`.
 
-## Contract
+## The idea
 
-- **Thesis.** The website is a lawyer's case file: each section is a folder or a sheet filed in it, and progress is shown the way a registry shows it, by stamps. It refuses both category defaults: the dark SaaS page with a neon accent (CyberLex) and the stock legal look (scales, books, gold on brown).
-- **Own world.** Flat colour fields in real cardboard-folder colours, sharp-cornered white sheets clipped onto them, violet registry stamps, carbon-black text. With the words removed, it should still read as "a file on a lawyer's desk".
-- **Story.** A lawyer understands in seconds that the assistant prepares the petition and checks it against the law. They believe it because they see the real screens and real output, filed like evidence. Then they try the demo or download the app.
-- **First viewport.** One salmon folder fills the screen, with its tab at the top on the reading-start side, carrying the product name. On the start half: the title in large Arabic type, one sentence below it, then two actions (Try the demo, Download for Windows). On the end half: the hero laptop (a transparent cut-out) lying on the folder with a firm shadow. One stamp, «دون اتصال بالإنترنت» / "Works offline", overlaps the laptop's corner and the folder.
-- **Signature moment.** In the nine-step story, each step is struck with a stamp when it completes, and the formal check counts up to 9 / 9. At the end the folder closes and receives «جاهزة للإيداع» / "Ready to file". It says *ready to file*, not *filed*, because the lawyer files it at court, not the software.
-- **Finish.** Unreviewed and undocumented is unfinished. The build ends with the finish review, the verdict, a rewritten DESIGN.md and every shipping image carrying its source.
+The website is a lawyer's case file. Each section of the home is a folder in a cardboard colour, with a numbered tab rising above its top edge; the real screens, the real AI output and the law are white sheets filed on the folders, held by a clip or a staple; progress is shown the way a registry shows it, with violet ink: ticks in a register and one stamp. It refuses both category defaults: the dark SaaS page with a neon accent, and the stock legal look (scales, books, gold on brown).
 
-## Scene: dark or light
-
-A lawyer reads this at the office under ordinary daylight or strip lighting, or on a phone in a court corridor between hearings. The scene argues for **light** as the native state of the world. You chose dark as the site's default earlier, so both themes are designed as equals:
-- **light** is the folder on the desk;
-- **dark** is the same file in the archive room after hours: the folders deepen, but the sheets stay paper.
-
-**Decided (4 Nov 2026):** dark stays the default.
+Dark is the default theme (decided 4 Nov 2026): the same file in the archive room after hours. The folders deepen; the sheets stay paper.
 
 ## Colour
 
-Strategy: **full palette**. Every folder colour has a job: it tells the visitor which file they are in. Colour works at the scale of the page: whole sections are coloured, never small accents scattered on a neutral background.
+Strategy: **full palette**. Each folder colour says which file the reader is in; whole sections are coloured, never small accents.
 
-| Role | Light | Dark | Job |
+| Token | Light | Dark | Job |
 |---|---|---|---|
-| Kraft (ground, folder backs) | `#CDBB98` | `#1B1915` | the desk / the archive shelf |
-| Salmon folder | `#E8A88F` | `#4A2D25` | home: the case |
-| Blue folder | `#A6C6DA` | `#1F3341` | documents and the guide |
-| Green folder | `#AECBA3` | `#22352A` | privacy and offline |
-| Yellow folder | `#ECCD74` | `#3E3418` | the law library |
-| Sheet | `#FBFAF6` | `#F4F1EA` | filed documents (always paper) |
-| Carbon (text) | `#1D1A17` | `#ECE7DE` (on folders) | reading text |
-| Violet stamp ink | `#4A3B8F` | `#B4A8F2` | status, completion, the stamp |
-| Red (missing element) | `#B3261E` | `#FF8A80` | only for what is missing, as in the app, and only on sheets |
+| `--w-kraft` | `#CDBB98` | `#1B1915` | the ground: the bar, the footer (back cover), the browser's theme colour |
+| `--w-board` | `#D9CAAB` | `#26231E` | the kraft folder, one shade off the ground so its tab shows against the bar |
+| `--w-salmon` | `#E8A88F` | `#562A22` | the home's own folders (01, 03, 05) |
+| `--w-blue` | `#A6C6DA` | `#1F3341` | the five-minute test, the try page, the documents |
+| `--w-green` | `#AECBA3` | `#22352A` | demo or download (07), privacy |
+| `--w-yellow` | `#ECCD74` | `#3E3418` | the law library |
+| `--w-sheet` | `#FBFAF6` | `#F4F1EA` | paper, in both themes |
+| `--w-text` | `#1D1A17` | `#ECE7DE` | text on folders (on sheets always `#1D1A17`) |
+| `--w-muted` | `#463D33` | `#BFB4A4` | secondary text on folders (on sheets `#5B5249`) |
+| `--w-ink` | `#4A3B8F` | `#B4A8F2` | violet ink: ticks, stamps, tags (on sheets always `#4A3B8F`) |
+| `--w-sheet-red` | `#B3261E` | same | what is missing, on sheets only |
 
-Every text and background pair must pass WCAG AA in both themes before it ships. Measured on this palette: carbon text on the light folders is 8.6 to 11.2 to 1; violet stamp ink is 4.5 to 5.9 to 1 on the light folders and 5.7 to 8.2 to 1 in dark; light text on the dark folders is 10 to 14 to 1. Red text fails on the light folders (3.2 to 4.2 to 1), so red appears only on white sheets (6.3 to 1).
+Measured: text on folders 8.6 to 14:1, muted text 5.3 to 11:1, violet ink 4.5 to 8.2:1, all at AA or better in both themes. Red text would fail on the light folders (3.2 to 4.2:1), so red appears only on sheets (6.3:1). A sheet re-declares the app's tokens at their light values, so the app's own cards and pieces stay legible on paper in the dark theme. axe reports 0 violations on every page in both themes.
 
 ## Type
 
-- **Display, Arabic and Latin: Markazi Text** (OFL, variable 400–700). It is a Naskh-rooted text face drawn with its own Latin, so English, and later French, sit with the Arabic as one family instead of a borrowed pairing. It is used for titles and big statements, and never in italics.
-- **Running text and controls, Arabic and Latin: Readex Pro** (OFL, variable). Clear at small sizes on a mid-range phone, with full French accents.
-- **Stamps only: Aref Ruqaa** (OFL). Ruqʿa is the hand of everyday Algerian administrative writing, which is exactly what a registry stamp carries. It is never used for headings or paragraphs. Stamps on English pages are set in Readex Pro semi-bold capitals.
-- **Pieces of the app and the petition: Noto Naskh Arabic**, as today, so replicas match the app.
+- **Titles: Markazi Text** (OFL, variable 400–700), Arabic and Latin from one family, so French will sit with them. Never italic. It also sets the petition fragment in "The problem" and, on phones until the page has loaded, the petition's text (below).
+- **Text and controls: Readex Pro** (OFL, variable, `HEXP` pinned).
+- **Stamps only: Aref Ruqaa** (OFL), the hand of everyday administrative writing, cut to the letters of the stamp texts (20 KB). English stamps are Readex Pro capitals.
+- **The petition and the app's pieces: Noto Naskh Arabic and Inter**, as in the app.
 
-All fonts are bundled locally, subset to the glyphs used, each with its licence file. Fonts stay within `fontsPerPageGzip` (220 KB); Aref Ruqaa is subset to the stamp texts only.
+Each face is cut into an Arabic and a Latin file by `scripts/fonts.mjs`; a page preloads its script's two faces (73.8 KB on Arabic pages, 61.1 KB on English ones). On a phone the petition's and the app's faces would be fetched with the first layout although they are used only far down the home; `theme-init.js` marks the page `data-faces="later"` and `ui.js` lifts it after load (Lighthouse mobile LCP 3.5 s with them, 2.4 s without). Desktops and visitors without scripts are not affected.
 
-## Materials and components
+## Materials
 
-- **Folder field:** a full-width colour section with a top tab (product word or section number) on the start side. The next folder's tab peeks above the previous section's bottom, so the page reads as a stack. It is flat colour: no noise texture, no stains, no torn edges.
-- **Sheet:** a white rectangle with 2 px corners and a short, firm shadow, as if it were lying on cardboard. It holds the real screenshots, real AI output and the law quotes. It is attached with a drawn paper clip or a staple (inline SVG), at most one per sheet.
-- **Stamp:** a rectangular or double-ring frame in violet ink, rotated between −6° and +4°, with slightly uneven ink (an SVG mask, not a photograph). It carries status only: «مستوفي الشروط الشكلية», «دون اتصال», «راجعه المحامي», «جاهزة للإيداع». It carries no state emblem, no court name and no imitation of an official seal.
-- **Registry numbering:** sections are numbered like entries in a register (01 to 09 in the story), set in Readex Pro tabular figures. This replaces small labels above headings.
-- **Buttons:** carbon fill with sheet-coloured text, or a carbon outline; 2 px corners, 48 px tall. The primary action is always carbon-filled.
-- **Figures and proof:** the measured results (94%, 360/360, 1,361 articles) are typed onto a sheet like a report, each with its source line under it, not set in a grid of cards.
+- **Folder** (`Folder.astro`): full width, flat colour, a trapezoid tab on the reading-start side with a register number and a few words. Each tab overlaps the bottom of the folder above it, so the page reads as one stack. No texture.
+- **Sheet** (`.sheet`, and `.panel` and `.card`, which are sheets): paper with 2 px corners and a short, firm shadow. A sheet carries at most one clip (`Clip.astro`) or one staple.
+- **Stamp** (`.stamp`): violet ink in a double frame, turned −5° to −7°, its edge and ink made uneven by the inline filter `#ink` in `Base.astro`. Two on the whole site: «دون اتصال بالإنترنت» / "Works offline" on the hero, «جاهزة للإيداع» / "Ready to file" on the register at 9 / 9, with the line «بعد مراجعة المحامي وتوقيعه» / "once the lawyer has reviewed and signed". No emblem, no court, no imitation of a seal.
+- **Register** (`StepStory.astro`): the nine entries ruled like a register, numbered 01 to 09, each ticked with a violet pen stroke (`#tick-shape`).
+- **Report** (`CheckReport.astro`): the formal check typed on a sheet: the app's label, the score, nine boxes that fill with violet ink (red while an element is missing), the verdict.
+- **Log and exhibits**: the AI's four stages are a numbered log under a heavy rule, each with its capture beside it; the guarantees are a list of exhibits («المرفق 1», "Exhibit 1") with the piece of the app attached. The hidden-set figures (94%, 67%, 36%) are typed on a clipped sheet with their counts and their source.
+- **Buttons**: carbon fill (`.btn-primary`) for the one primary action of a block, carbon outline otherwise; 2 px corners, 48 px tall.
+- **Tags** (`.tag`): a square frame in violet ink; the app's own rounded chips stay inside its pieces.
 
-## Page reach
+## The home, folder by folder
 
-| Page | Folder | Contents filed in it |
+| No. | Folder | Contents |
 |---|---|---|
-| Home | salmon | hero, the problem, the nine-step story, the AI section, proof, team |
-| Try / guide, Documents | blue | guide steps as numbered sheets; documents as sheets in the file |
-| Privacy | green | the offline statement stamped «دون اتصال» |
-| Law library | yellow | articles as sheets with their source text and code |
-| About, Download, 404 | kraft | plain sheets |
+| 01 | salmon | the title, the tagline, Try the demo (filled), Download for Windows, the note; the laptop lying on the folder with the "works offline" stamp on its corner |
+| 02 | board | the problem; a petition fragment with the defendant's domicile blank, the red note under it with art. 15-3, the check at 7 / 9 |
+| 03 | salmon | the scroll story: the register and the petition |
+| 04 | board | the AI kept in its place: the drafting log and the results report |
+| 05 | salmon | the guarantees as exhibits |
+| 06 | blue | the five-minute test, five numbered sheets |
+| 07 | green | the demo and the download as two slips |
+| 08 | board | the team as a signature block: identity photos clipped to the file, the names over a rule |
 
-The header becomes the folder's label strip; the footer is the back cover in kraft.
+Secondary pages are one folder each (`Base.astro`, `folder`): try and documents blue, privacy green, law yellow, download, about and 404 board. Their former labels above the title are now the folder's tab.
 
 ## Motion
 
-Things are **placed**, not floated:
-- sheets slide in 12 px and settle (180 ms, ease-out);
-- stamps strike: they scale from 1.15 to 1 in 120 ms, with a 1 px settle and an ink fade-in;
-- the closing folder is the only large movement, and it happens once;
-- there is no parallax, no fade-up on every block, and no scroll-jacking beyond the existing story.
-
-With reduced motion, everything shows in its final state: stamps already struck and the folder already closed.
+- **The scroll story** (desktop, motion welcome): the register is pinned beside the petition. Each entry is ticked as its section is written on the paper; after the defendant, the domicile disappears, the check drops and names art. 15-3, then it comes back; at 8 / 9 the check turns red and names the missing grounds; the grounds are written last (the quoted rule, then the AI's lines, then the review box), the check reaches 9 / 9 and the stamp strikes once.
+- **Stamps** elsewhere strike once as they come into view (`data-strike`, 170 ms).
+- The try page's steps keep their reveal and their filling line, now in violet.
+- No parallax and no fade-up on every block. With reduced motion, and on phones, the final state is shown: ticked, 9 / 9, stamped.
 
 ## Never
 
-- State emblems, «الجمهورية الجزائرية الديمقراطية الشعبية», court names, real seal designs, or anything that suggests official endorsement, as site decoration. Inside the petition replica the document's own header lines stay, because they are part of the document.
-- Scales, gavels, columns, books or gold gradients as decoration. The brand mark stays as it is.
-- Fake paper texture, coffee stains, torn edges, leather or wood.
-- Small spaced-out labels above headings, grids of same-size cards, cards inside cards, gradient text, glow, or a coloured stripe down the side of a box.
-- Italic display type, or a typewriter look for the whole page.
-- The word "filed" or «مودعة» for what the software does: it prepares; the lawyer files.
-- Any font, image or script loaded from another origin; any new image without its licence or source.
+- State emblems, «الجمهورية الجزائرية الديمقراطية الشعبية», court names or seal designs as site decoration. Inside the petition the document's own header lines stay: they are part of the document.
+- Scales, gavels, columns, books or gold as decoration (the brand mark stays).
+- Paper texture, stains, torn edges, leather, wood.
+- Small spaced-out labels above headings, grids of same-size cards, cards in cards, gradient text, glow, a coloured stripe down the side of a box. (The gold line beside the AI-written section on the petition is the app's own authorship mark and stays.)
+- Italic display type; a typewriter look.
+- "Filed" or «مودعة» for what the software does.
+- Anything loaded from another origin; any image without its licence or source.
+
+## Finish review: where the build departs from the approved draft
+
+- **The stamp is on the register, not on the petition**, and the folder does not close. The sample case forces the app's «مسودة» watermark on the paper, and a "ready to file" stamp over a draft watermark would contradict it; on the register it marks what is actually complete (9 / 9 and the review), and the petition stays a draft until the lawyer signs.
+- **Entries are ticked, not stamped**: nine stamps would break the one-stamp-per-screen rule. The register's violet ticks carry the same ink.
+- **Sheets do not slide in.** Only the stamps strike and the try page's steps reveal; the rest is placed and still.
+- **One stamp text was not used**: «مستوفي الشروط الشكلية» would claim more than the form check proves.
+- **Added**: `--w-board` (so the kraft tab shows against the kraft bar), the dark salmon moved to `#562A22`, the deferred faces on phones, and the problem's fragment set in Markazi.
+- **Removed duplication**: the fourth guarantee attaches the reviewed row instead of repeating the drafted-grounds capture the log shows just above.
 
 ## Honest risks
 
-- **Kitsch.** If the folders get textures or the stamps multiply, it turns old-fashioned. The rule is at most one stamp per screen, and flat colour only.
-- **Dark theme.** Cardboard colours lose their character when darkened; this needs real testing, not just inverted values.
-- **Font weight.** Three new families fit the budget only with careful subsetting.
+- **Kitsch** if stamps multiply or textures creep in: keep one stamp per screen and flat colour.
+- **The laptop in Arabic** faces the page's left edge, away from the text (noted in phase 6; unchanged).
+- **The phone swap**: a visitor who scrolls to the petition before the page has finished loading sees it in Markazi for a moment, then in Noto Naskh.

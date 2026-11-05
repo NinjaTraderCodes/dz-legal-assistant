@@ -347,6 +347,77 @@ test("the guide page shows a picture of every step, opens one larger in a native
     await expect(page.locator(".try-step").last()).toBeVisible();
 });
 
+test("the home's proof folder says who writes what in four lines, with the three figures and the four guarantees", async ({ page }) => {
+    await page.goto("/en/");
+    const proof = page.locator('section[aria-labelledby="ai-title"]');
+    await expect(proof.locator(".rows li")).toHaveCount(4);
+    // Stage 2 is the code's; the other three are the model's.
+    await expect(proof.locator(".rows li .tag.by-code")).toHaveCount(1);
+    await expect(proof.locator(".rows li").nth(1).locator(".tag.by-code")).toHaveCount(1);
+    await expect(proof.locator(".figures .figure")).toHaveCount(3);
+    await expect(proof.locator(".figures")).toContainText("85 / 90");
+    await expect(proof.locator(".guarantees li")).toHaveCount(4);
+    // One picture only, and every figure with its source.
+    await expect(proof.locator("figure.shot")).toHaveCount(1);
+    await expect(proof.locator(".results")).toContainText("docs/HIDDEN-SET.md");
+});
+
+test("the home's folder 05 shows the demo's guide step by step: tabs, one screen at a time, a pause button, still with reduced motion", async ({ page }) => {
+    await page.setViewportSize({ width: 1366, height: 900 });
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/en/");
+    const reel = page.locator("[data-reel]");
+    const tabs = reel.getByRole("tab");
+    await expect(tabs).toHaveCount(5);
+    await expect(reel.locator("[data-reel-panel]")).toHaveCount(5);
+    // Both themes of every step are there; only the theme shown has a box.
+    await expect(reel.locator("img.shot-dark")).toHaveCount(5);
+    await expect(reel.locator("img.shot-light")).toHaveCount(5);
+    await reel.scrollIntoViewIfNeeded();
+    // With reduced motion nothing moves by itself: the button offers to play.
+    await expect(reel.locator("[data-reel-toggle]")).toHaveText("Play", { useInnerText: true });
+    await expect(tabs.nth(0)).toHaveAttribute("aria-selected", "true");
+    await page.waitForTimeout(8_000);
+    await expect(tabs.nth(0)).toHaveAttribute("aria-selected", "true");
+    // A step is chosen by a click or the arrow keys, and only its screen is visible.
+    await tabs.nth(2).click();
+    await expect(tabs.nth(2)).toHaveAttribute("aria-selected", "true");
+    await expect(reel.locator("#reel-panel-3")).toBeVisible();
+    await expect(reel.locator("#reel-panel-1")).toBeHidden();
+    await expect(reel.locator("#reel-panel-3 .hint")).toContainText("Yes, this is the claim type");
+    await page.keyboard.press("ArrowDown");
+    await expect(tabs.nth(3)).toBeFocused();
+    await expect(tabs.nth(3)).toHaveAttribute("aria-selected", "true");
+    // The AI steps carry their tag, and the note names the engine that answered and the date of the run.
+    await expect(tabs.nth(2).locator(".tag")).toHaveText("AI");
+    await expect(tabs.nth(0).locator(".tag")).toHaveCount(0);
+    await expect(reel.locator(".note")).toContainText("answered by");
+    await expect(reel.getByRole("link", { name: "Open the demo with its guide" })).toHaveAttribute("href", "/app?lang=en&guide=1");
+});
+
+test("the guide reel moves on by itself while it is on screen, and waits while the pointer is over it", async ({ page }) => {
+    await page.setViewportSize({ width: 1366, height: 900 });
+    await page.goto("/en/");
+    const reel = page.locator("[data-reel]");
+    const tabs = reel.getByRole("tab");
+    await expect(reel.locator("[data-reel-toggle]")).toHaveText("Pause", { useInnerText: true });
+    // Off screen it waits on the first step.
+    await page.waitForTimeout(8_000);
+    await expect(tabs.nth(0)).toHaveAttribute("aria-selected", "true");
+    await reel.scrollIntoViewIfNeeded();
+    await page.mouse.move(2, 2);
+    await expect(tabs.nth(1)).toHaveAttribute("aria-selected", "true", { timeout: 10_000 });
+    await reel.locator("[data-reel-panel].current").hover();
+    await page.waitForTimeout(8_000);
+    await expect(tabs.nth(1)).toHaveAttribute("aria-selected", "true");
+    // Pause stops it for good.
+    await page.mouse.move(2, 2);
+    await reel.locator("[data-reel-toggle]").click();
+    await expect(reel.locator("[data-reel-toggle]")).toHaveText("Play", { useInnerText: true });
+    await page.waitForTimeout(8_000);
+    await expect(tabs.nth(1)).toHaveAttribute("aria-selected", "true");
+});
+
 test("the law library page counts the data files and every official source it links opens", async ({ page, request }) => {
     await page.goto("/en/law/");
     // 1,361 articles from 6 texts, 2 of them complete: the figures of data/law/codes, never typed by hand.

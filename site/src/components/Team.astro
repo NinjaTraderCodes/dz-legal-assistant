@@ -19,7 +19,7 @@ const people = (["Lead", "Design", "Legal"] as const).map((who) => {
     return { name, role, did: t(lang, `about.team.did.${who.toLowerCase()}`), ...pictures[who] };
 });
 ---
-<Folder tone="kraft" no="08" tab={t(lang, "tab.team")} id="team" labelledby="team-title">
+<Folder tone="kraft" no="06" tab={t(lang, "tab.team")} id="team" labelledby="team-title">
     <div class="page team">
         <h2 id="team-title" class="h1">{t(lang, "team.title")}</h2>
         <ul class="people">

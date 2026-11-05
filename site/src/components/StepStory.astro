@@ -11,6 +11,7 @@ import Clip from "./Clip.astro";
 import Icon from "./Icon.astro";
 import Source from "./Source.astro";
 import CheckReport from "./CheckReport.astro";
+import { downloadUrl } from "../content/product";
 import { steps, paper, writingOrder } from "../content/steps";
 import { s, t, type Lang } from "../i18n";
 
@@ -71,6 +72,14 @@ const ui = { lang, dir: lang === "ar" ? "rtl" : "ltr" } as const;
         </div>
         <p class="caption">{t(lang, "story.caption")}</p>
         <Source lang={lang} files={["README.md", "docs/PRODUCT-DETAILS.md"]} />
+        {/* The story is the page's peak: the two ways to try it follow at once, not eight screens further down. */}
+        <div class="next-step">
+            <p>{t(lang, "story.cta")}</p>
+            <div class="actions">
+                <a class="btn btn-primary" href={`/app?lang=${lang}`}>{t(lang, "hero.cta")}</a>
+                <a class="btn" href={downloadUrl} rel="noopener"><Icon name="arrow_download" size={18} /> {t(lang, "hero.download")}</a>
+            </div>
+        </div>
     </div>
 </Folder>
 
@@ -80,7 +89,7 @@ const ui = { lang, dir: lang === "ar" ? "rtl" : "ltr" } as const;
     .stage { display: grid; grid-template-columns: minmax(300px, 380px) minmax(0, 1fr); gap: clamp(24px, 3.5vw, 48px); align-items: start; }
     /* The register must fit a 768 px screen while the story holds it in place: compact rows, and the stamp set in the
        sheet's lower margin instead of taking a line of its own. It stays on the paper: its ink is the sheet's. */
-    .side { display: grid; gap: 14px; position: sticky; top: 96px; padding: 22px 22px 96px; }
+    .side { display: grid; gap: 14px; position: sticky; top: 96px; padding: 22px 22px 128px; }
     .register-title { font-size: 0.82rem; font-weight: 600; color: var(--w-sheet-muted); padding-bottom: 10px; border-bottom: 2px solid var(--w-sheet-text); margin-bottom: -14px; }
     .entries { list-style: none; margin: 0; padding: 0; }
     .step { display: grid; grid-template-columns: 2.4em minmax(0, 1fr) 28px; align-items: center; min-height: 34px; border-radius: 0; color: var(--w-sheet-text); border-bottom: 1px solid var(--w-sheet-rule); font-size: 0.95rem; transition: background-color 200ms ease; }
@@ -90,7 +99,7 @@ const ui = { lang, dir: lang === "ar" ? "rtl" : "ltr" } as const;
     .step.current { font-weight: 600; color: var(--w-sheet-text); background: color-mix(in srgb, var(--w-sheet-ink) 8%, transparent); }
     .finding { display: grid; gap: 2px; color: var(--w-sheet-red); font-size: 0.86rem; line-height: 1.5; }
     .finding[hidden] { display: none; }
-    .ready { position: absolute; bottom: 14px; inset-inline-end: 18px; margin: 0; --stamp-turn: -6deg; font-size: 1.5rem; }
+    .ready { position: absolute; bottom: 16px; inset-inline-end: 18px; margin: 0; --stamp-turn: -6deg; font-size: 1.5rem; }
     /* The frame: while the story runs, the sheet scrolls inside a viewport-high window so the current section is in view. */
     :global(.framed) .paper-canvas { height: calc(100vh - var(--story-top, 96px) - 16px); box-sizing: border-box; overflow: hidden; padding: 6px; margin: -6px; }
     :global(.framed) .paper { will-change: transform; }
@@ -109,5 +118,9 @@ const ui = { lang, dir: lang === "ar" ? "rtl" : "ltr" } as const;
     .paper .review { display: inline-flex; align-items: center; gap: 8px; width: fit-content; max-width: 100%; margin-top: 0.5em; padding: 6px 10px; border-radius: 6px; background: #f3f1ec; color: #1c2321; font: 600 12.5px/1.5 var(--font-ui); }
     .paper .review .box { display: inline-grid; place-items: center; flex: none; width: 16px; height: 16px; border-radius: 4px; border: 1.5px solid #a9a39a; background: #fff; color: transparent; }
     .paper .review[data-done="1"] .box { background: #786039; border-color: #786039; color: #fff; }
+    .next-step { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 32px; padding-top: 24px; border-top: 2px solid var(--w-text); }
+    .next-step p { font-family: var(--w-display); font-size: clamp(1.2rem, 1rem + 0.6vw, 1.5rem); line-height: 1.4; max-width: 40ch; }
+    .next-step .actions { display: flex; flex-wrap: wrap; gap: 12px; }
     @media (max-width: 899px) { .stage { grid-template-columns: 1fr; } .side { position: relative; top: auto; } }
+    @media (max-width: 599px) { .next-step .actions, .next-step .btn { width: 100%; } }
 </style>

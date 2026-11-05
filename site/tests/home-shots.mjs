@@ -49,7 +49,7 @@ for (const [width, height] of sizes) for (const lang of langs) for (const theme 
     // The sticky header would cross a tall section's picture: it is hidden for these.
     if (sections.length) await page.addStyleTag({ content: ".site-header { visibility: hidden; }" });
     for (const s of sections) {
-        const el = page.locator({ hero: "section.hero", proofs: "section.page.proofs", ai: "section.page.ai", team: "section.page.team", try: "section.page.try" }[s] ?? s);
+        const el = page.locator({ hero: "section.hero", proofs: ".guarantees", ai: ".page.ai", team: ".page.team", try: ".page.try" }[s] ?? s);
         await el.scrollIntoViewIfNeeded();
         await page.waitForTimeout(600);
         await save(await el.screenshot({ animations: "disabled" }), `${s}-${lang}-${theme}-${width}x${height}`);

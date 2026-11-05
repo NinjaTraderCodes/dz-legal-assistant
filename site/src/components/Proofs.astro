@@ -1,10 +1,9 @@
 ---
-// What the product guarantees, set out like the petition's list of attached documents: each guarantee is an exhibit,
-// numbered, with its title, the fact, and the thing itself attached beside it, as pieces of the interface drawn in
-// HTML (AppPiece.astro: the library's card from law.generated.json, the offline badge, the review row and the
-// refused-export notice). The drafted grounds themselves are the picture of the drafting log just above (AiPanel,
-// stage 04), so the fourth exhibit attaches the reviewed row under them rather than the same picture a second time.
-import Folder from "./Folder.astro";
+// What the software guarantees, inside the proof folder (AiPanel.astro): one sheet listing the four guarantees as
+// numbered entries, with two pieces of the app attached beside it, drawn in HTML (AppPiece.astro: the law library's
+// card from law.generated.json, and the refused-export notice). The offline badge and the drafted grounds are shown
+// elsewhere on the home (the hero's stamp, the story's paper), so they are not attached a second time.
+import Clip from "./Clip.astro";
 import AppPiece from "./AppPiece.astro";
 import Source from "./Source.astro";
 import { groundsTitle } from "../content/steps";
@@ -14,42 +13,42 @@ interface Props { lang: Lang }
 const { lang } = Astro.props;
 const groundsHeading = groundsTitle[lang];
 const items = [
-    { title: t(lang, "proofs.texts.title"), body: fmt(s(lang, "AboutSources"), "1,361", "6") + " " + t(lang, "proofs.texts.body"), pieces: [{ kind: "library" as const }], caption: t(lang, "proofs.shot.texts") },
-    { title: t(lang, "proofs.offline.title"), body: t(lang, "proofs.offline.body"), pieces: [{ kind: "offline" as const }], caption: t(lang, "proofs.shot.offline") },
-    { title: t(lang, "proofs.review.title"), body: t(lang, "proofs.review.body"), pieces: [{ kind: "review" as const, section: groundsHeading, checked: false }, { kind: "export" as const, section: groundsHeading }], caption: t(lang, "proofs.shot.review") },
-    { title: t(lang, "proofs.grounds.title"), body: t(lang, "proofs.grounds.body"), pieces: [{ kind: "review" as const, section: groundsHeading, checked: true }], caption: undefined },
+    { title: t(lang, "proofs.texts.title"), body: fmt(s(lang, "AboutSources"), "1,361", "6") + " " + t(lang, "proofs.texts.body") },
+    { title: t(lang, "proofs.offline.title"), body: t(lang, "proofs.offline.body") },
+    { title: t(lang, "proofs.review.title"), body: t(lang, "proofs.review.body") },
+    { title: t(lang, "proofs.grounds.title"), body: t(lang, "proofs.grounds.body") },
 ];
 ---
-<Folder tone="salmon" no="05" tab={t(lang, "tab.proofs")} labelledby="proofs-title">
-    <div class="page proofs">
-        <h2 id="proofs-title" class="h1">{t(lang, "proofs.title")}</h2>
-        <ol class="exhibits">
+<div class="guarantees">
+    <div class="sheet list">
+        <Clip />
+        <h3 id="proofs-title" class="list-title">{t(lang, "proofs.title")}</h3>
+        <ol>
             {items.map((item, i) => (
-                <li class="exhibit">
-                    <div class="words">
-                        <p class="reg-no">{fmt(t(lang, "proofs.exhibit"), String(i + 1))}</p>
-                        <h3 class="h3">{item.title}</h3>
-                        <p>{item.body}</p>
-                    </div>
-                    <div class="attached">
-                        {item.pieces.map((piece, k) => <AppPiece lang={lang} {...piece} caption={k === item.pieces.length - 1 ? item.caption : undefined} replicaNote={false} />)}
-                    </div>
+                <li>
+                    <span class="reg-no">{String(i + 1).padStart(2, "0")}</span>
+                    <div><strong>{item.title}</strong><p>{item.body}</p></div>
                 </li>
             ))}
         </ol>
-        <p class="caption">{t(lang, "proofs.replica")}</p>
         <Source lang={lang} files={["README.md", "docs/PRODUCT-DETAILS.md", "docs/OFFLINE.md", "data/law/codes"]} />
     </div>
-</Folder>
+    <div class="attached">
+        <AppPiece lang={lang} kind="library" caption={t(lang, "proofs.shot.texts")} replicaNote={false} />
+        <AppPiece lang={lang} kind="export" section={groundsHeading} caption={t(lang, "proofs.shot.review")} replicaNote={false} />
+        <p class="caption">{t(lang, "proofs.replica")}</p>
+    </div>
+</div>
 
 <style>
-    .proofs { display: grid; gap: 28px; }
-    /* The list of exhibits: one row per guarantee under a heavy rule, the words on the reading side and the exhibit
-       attached on the other, each as tall as what it holds. */
-    .exhibits { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--w-text); }
-    .exhibit { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 16px clamp(28px, 4vw, 56px); align-items: start; padding-block: 30px; border-bottom: 1px solid var(--w-rule); }
-    .words { display: grid; gap: 10px; align-content: start; }
-    .words p:not(.reg-no) { font-size: 0.97rem; }
-    .attached { display: grid; gap: 14px; }
-    @media (max-width: 899px) { .exhibit { grid-template-columns: 1fr; } }
+    .guarantees { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: clamp(24px, 3.5vw, 48px); align-items: start; }
+    .list { display: grid; gap: 14px; padding: 30px 30px 24px; }
+    .list-title { font-size: 0.9rem; font-weight: 600; color: var(--w-sheet-muted); padding-bottom: 10px; border-bottom: 2px solid var(--w-sheet-text); }
+    .list ol { list-style: none; margin: 0; padding: 0; }
+    .list li { display: grid; grid-template-columns: 2.4em minmax(0, 1fr); gap: 4px 10px; padding-block: 14px; border-bottom: 1px solid var(--w-sheet-rule); }
+    .list li .reg-no { padding-top: 3px; }
+    .list strong { display: block; margin-bottom: 4px; font-size: 1.02rem; }
+    .list li p { font-size: 0.93rem; max-width: none; }
+    .attached { display: grid; gap: 18px; padding-top: 28px; }
+    @media (max-width: 899px) { .guarantees { grid-template-columns: 1fr; } .attached { padding-top: 0; } }
 </style>

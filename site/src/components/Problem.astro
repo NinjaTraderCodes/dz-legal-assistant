@@ -1,7 +1,8 @@
 ---
 // The problem in one sentence, beside what the product shows the lawyer: a fragment of the petition where the
 // defendant's domicile is missing, the red note in its margin with the article that requires it, and the formal check
-// typed under it at 7 of 9. The petition's text is the fictitious sample case's (src/content/steps.ts).
+// typed under it at 7 of 9. The petition's text is the app's own for the fictitious sample case (src/content/steps.ts,
+// from src/content/paper-ar.json), with the domicile left blank.
 import Folder from "./Folder.astro";
 import CheckReport from "./CheckReport.astro";
 import { s, t, type Lang } from "../i18n";
@@ -9,7 +10,10 @@ import { paper } from "../content/steps";
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
-const defendant = paper.find((sec) => sec.id === "defendant");
+const defendant = paper.find((sec) => sec.id === "defendant")?.domicile;
+if (!defendant) throw new Error("the defendant's section has no domicile line (src/content/steps.ts)");
+// «القاطن بـ:», the words the app prints before the domicile, stay; what follows them is the blank.
+const [domicileLabel] = defendant.domicile.split(/(?<=:)/);
 const ui = { lang, dir: lang === "ar" ? "rtl" : "ltr" } as const;
 ---
 <Folder tone="kraft" no="02" tab={t(lang, "tab.problem")} id="problem" labelledby="problem-title">
@@ -22,8 +26,8 @@ const ui = { lang, dir: lang === "ar" ? "rtl" : "ltr" } as const;
             <span class="staple" aria-hidden="true"></span>
             <div class="doc" lang="ar" dir="rtl">
                 <p class="title">عريضة افتتاح دعوى</p>
-                {defendant?.lines.map((line) => <p>{line}</p>)}
-                <p class="gap" aria-hidden="true"><span>القاطن بـ:</span><span class="blank"></span></p>
+                <p class="gap"><span>{defendant.before.trim()} {domicileLabel}</span><span class="blank" aria-hidden="true"></span></p>
+                <p>{defendant.after.trim()}</p>
             </div>
             <div class="margin-note" {...ui}>
                 <strong>{t(lang, "problem.finding.title")}</strong>

@@ -32,11 +32,12 @@ const items = [
                         <p>{item.body}</p>
                     </div>
                     <div class="attached">
-                        {item.pieces.map((piece, k) => <AppPiece lang={lang} {...piece} caption={k === item.pieces.length - 1 ? item.caption : undefined} />)}
+                        {item.pieces.map((piece, k) => <AppPiece lang={lang} {...piece} caption={k === item.pieces.length - 1 ? item.caption : undefined} replicaNote={false} />)}
                     </div>
                 </li>
             ))}
         </ol>
+        <p class="caption">{t(lang, "proofs.replica")}</p>
         <Source lang={lang} files={["README.md", "docs/PRODUCT-DETAILS.md", "docs/OFFLINE.md", "data/law/codes"]} />
     </div>
 </Folder>

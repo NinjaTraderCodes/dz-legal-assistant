@@ -27,9 +27,11 @@ interface Props {
     /** The activity panel: what the model is writing, taken from a real run. */
     live?: string;
     caption?: string;
+    /** Say "as the app shows it" under this piece; a list that says it once for all its pieces passes false. */
+    replicaNote?: boolean;
     class?: string;
 }
-const { lang, kind, section = "", checked = true, score = 9, finding, code = "cpca", engine = "gemma3:4b", live = "", caption, class: className } = Astro.props;
+const { lang, kind, section = "", checked = true, score = 9, finding, code = "cpca", engine = "gemma3:4b", live = "", caption, replicaNote = true, class: className } = Astro.props;
 const engineName = fmt(s(lang, "ProviderOllama"), engine);
 const dir = lang === "ar" ? "rtl" : "ltr";
 const text = law.codes.find((c) => c.id === code);
@@ -85,7 +87,7 @@ const missing = finding ? 1 : 0;
             </div>
         )}
     </div>
-    <figcaption class="small">{caption}{caption && " "}<span class="muted">{t(lang, "shot.replica")}</span></figcaption>
+    {(caption || replicaNote) && <figcaption class="small">{caption}{caption && replicaNote && " "}{replicaNote && <span class="muted">{t(lang, "shot.replica")}</span>}</figcaption>}
 </figure>
 
 <style>

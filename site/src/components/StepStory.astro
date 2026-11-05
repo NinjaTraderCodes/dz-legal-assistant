@@ -48,7 +48,7 @@ const ui = { lang, dir: lang === "ar" ? "rtl" : "ltr" } as const;
                         <span>{t(lang, "story.finding.grounds.article")}</span>
                     </div>
                 </CheckReport>
-                <p class="stamp ready" data-ready>{t(lang, "stamp.ready")}<small>{t(lang, "stamp.ready.small")}</small></p>
+                <p class="stamp ready" data-ready>{t(lang, "stamp.ready")}<span class="sr-only">: </span><small>{t(lang, "stamp.ready.small")}</small></p>
             </div>
             <div class="paper-canvas">
                 <article class="paper" lang="ar" dir="rtl" aria-label="عريضة افتتاح دعوى (مثال خيالي)">

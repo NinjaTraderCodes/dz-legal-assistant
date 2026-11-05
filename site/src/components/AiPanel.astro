@@ -1,7 +1,8 @@
 ---
 // How the AI is kept in its place, as a drafting log: the four stages in order, each entry numbered, tagged AI or code,
 // with its picture from the desktop app's own capture clipped beside it (the drafting in progress from the live
-// recording); the measured results typed as a report with their mode and source; and the line that matters to a lawyer.
+// recording), their provenance stated once under the log; and the measured results typed as a report with their mode
+// and source.
 import type { ImageMetadata } from "astro";
 import Icon from "./Icon.astro";
 import Shot from "./Shot.astro";
@@ -23,7 +24,7 @@ const frame = (name: string) => {
 };
 // A crop of the desktop app rendered at scale 2 (src/content/desktop-run.json says which run), in the page's language,
 // light and dark.
-const desktop = (name: string) => ({ light: frame(`desktop/${name}-${lang}-light`), dark: frame(`desktop/${name}-${lang}-dark`), note: t(lang, "shot.desktop") });
+const desktop = (name: string) => ({ light: frame(`desktop/${name}-${lang}-light`), dark: frame(`desktop/${name}-${lang}-dark`) });
 // The activity panel shows the model's words as they arrive: the opening of its first application, from the same run.
 const firstApplication = desktopRun.paragraphs.flatMap(splitGrounds).find((line) => line.by === "ai")?.text ?? "";
 const live = firstApplication.split(/\s+/).slice(0, 14).join(" ");
@@ -53,17 +54,19 @@ const percent = lang === "ar" ? "٪" : "%";
                 <li class:list={["entry", stage.n === 4 && "last"]}>
                     <span class="reg-no">{String(stage.n).padStart(2, "0")}</span>
                     <div class="words">
-                        <h3 class="h3">{stage.title} {stage.model ? <span class="tag"><Icon name="sparkle" size={12} /> AI</span> : <span class="tag by-code"><Icon name="checkmark_circle" size={12} /> {t(lang, "ai.code")}</span>}</h3>
+                        {/* The tag sits beside the heading, not inside it, so the heading's name is the stage alone. */}
+                        <div class="entry-head"><h3 class="h3">{stage.title}</h3> {stage.model ? <span class="tag"><Icon name="sparkle" size={12} /> AI</span> : <span class="tag by-code"><Icon name="checkmark_circle" size={12} /> {t(lang, "ai.code")}</span>}</div>
                         <p>{stage.body}</p>
                         {stage.n === 4 && <p class="time">{t(lang, "ai.stage4.time")}</p>}
                         {stage.n === 4 && <AppPiece lang={lang} kind="activity" section={groundsTitle[lang]} live={live + " …"} caption={t(lang, "ai.shot.activity")} />}
                     </div>
                     <div class="picture">
-                        <Shot lang={lang} light={stage.shot.light} dark={stage.shot.dark} alt={stage.caption} caption={stage.caption} note={stage.shot.note} width={stage.n === 4 ? 520 : 400} quality={stage.n === 4 ? 50 : 72} />
+                        <Shot lang={lang} light={stage.shot.light} dark={stage.shot.dark} alt={stage.caption} caption={stage.caption} width={stage.n === 4 ? 520 : 400} quality={stage.n === 4 ? 50 : 72} />
                     </div>
                 </li>
             ))}
         </ol>
+        <p class="caption">{t(lang, "ai.shots")}</p>
         <Source lang={lang} files={["README.md"]} />
         <div class="sheet results">
             <Clip />
@@ -79,7 +82,6 @@ const percent = lang === "ar" ? "٪" : "%";
             <p class="caption">{t(lang, "ai.measureNote")}</p>
             <Source lang={lang} files={["docs/HIDDEN-SET.md"]} />
         </div>
-        <p class="sign">{t(lang, "ai.sign")}</p>
     </div>
 </Folder>
 
@@ -92,7 +94,7 @@ const percent = lang === "ar" ? "٪" : "%";
     .entry .reg-no { padding-top: 4px; font-size: 0.9rem; }
     .entry.last { grid-template-columns: 3em minmax(0, 1fr) minmax(0, 520px); }
     .words { display: grid; gap: 10px; align-content: start; }
-    .entry h3 { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+    .entry-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
     .entry p { font-size: 0.97rem; }
     .tag.by-code { color: var(--w-text); }
     .time { font-weight: 600; }
@@ -106,7 +108,6 @@ const percent = lang === "ar" ? "٪" : "%";
     .figure dd { margin: 0; display: flex; align-items: baseline; gap: 10px; }
     .value { font-family: var(--w-display); font-weight: 700; font-size: clamp(2.6rem, 2rem + 2vw, 3.6rem); line-height: 1; font-variant-numeric: tabular-nums; }
     .of { color: var(--w-sheet-muted); font-size: 0.9rem; font-variant-numeric: tabular-nums; }
-    .sign { font-family: var(--w-display); font-weight: 600; font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2.3rem); line-height: 1.3; max-width: none; }
     @media (max-width: 1099px) { .entry, .entry.last { grid-template-columns: 3em minmax(0, 1fr); } .picture { grid-column: 2; justify-items: start; } }
     @media (max-width: 699px) { .figures { grid-template-columns: 1fr; } .entry, .entry.last { grid-template-columns: 2.2em minmax(0, 1fr); gap: 12px 12px; } }
 </style>

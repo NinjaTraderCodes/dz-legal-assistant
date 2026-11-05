@@ -32,7 +32,8 @@ public sealed partial class Home
     /// <summary>The step was already done when it was entered (the visitor came back to it): it says so and waits for Next.</summary>
     private bool _stepDoneAtEntry;
 
-    /// <summary>The element last lit, so the browser is called only when the target changes, not on every render.</summary>
+    /// <summary>The target last sent (empty: the guide is open with nothing to point at; null: it is closed), so the
+    /// browser is called only when it changes, not on every render.</summary>
     private string? _pointed;
 
     /// <summary>What the guide points at and what its card says.</summary>
@@ -67,7 +68,8 @@ public sealed partial class Home
             case 2:
                 if (DomicileEmpty)
                 {
-                    return new(".score-card", Format("Guide2Look", vm.ScoreText));
+                    // The score and the red card it raised, lit together.
+            return new(".score-card, .finding.mandatory", Format("Guide2Look", vm.ScoreText));
                 }
 
                 return vm.SelectedStep?.Id == DefendantStepId
@@ -257,7 +259,8 @@ public sealed partial class Home
             }
         }
 
-        var target = showGuide ? Pointer().Target : null;
+        // The key tells a closed guide (null) from an open one with nothing to point at (empty).
+        var target = showGuide ? Pointer().Target ?? string.Empty : null;
         if (target == _pointed)
         {
             return;
@@ -266,7 +269,7 @@ public sealed partial class Home
         _pointed = target;
         try
         {
-            await Js.InvokeVoidAsync("dzlegal.point", target);
+            await Js.InvokeVoidAsync("dzlegal.point", target, target is not null);
         }
         catch (JSException)
         {

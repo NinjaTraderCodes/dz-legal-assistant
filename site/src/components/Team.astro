@@ -46,7 +46,7 @@ const people = (["Lead", "Design", "Legal"] as const).map((who) => {
     .team { display: grid; gap: 24px; }
     /* The signature block: three entries over a heavy rule, each a photo clipped to the file and the signed name. */
     .people { list-style: none; margin: 0; padding: 28px 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; border-top: 2px solid var(--w-text); }
-    .person { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 18px; align-items: start; }
+    .person { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 16px; align-items: start; }
     .photo { position: relative; display: block; padding: 6px 6px 14px; background: var(--w-sheet); box-shadow: var(--w-shadow); transform: rotate(-1.5deg); }
     .photo .clip { top: -16px; inset-inline-end: 10px; height: 46px; }
     .face { display: block; width: 84px; height: 100px; object-fit: cover; background: #e9e4da; }

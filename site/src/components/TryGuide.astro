@@ -127,7 +127,7 @@ const labels = { click: t(lang, "try.click"), expect: t(lang, "try.expect"), tim
     .try { display: grid; gap: 16px; }
     .try .lead { max-width: 760px; }
     .try-steps { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 16px; }
-    .try-step { display: grid; gap: 8px; padding: 22px 24px 22px; }
+    .try-step { display: grid; gap: 8px; padding: 24px 24px 24px; }
     .num { font-family: var(--w-display); font-weight: 700; font-size: 2rem; line-height: 1; color: var(--w-sheet-ink); font-variant-numeric: tabular-nums; }
     .words { display: grid; gap: 8px; }
     .howto { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 16px; margin: 0; }
@@ -135,9 +135,9 @@ const labels = { click: t(lang, "try.click"), expect: t(lang, "try.expect"), tim
     .howto dd { margin: 0; }
     /* The full guide: the number, the words, the pictures, on one sheet per step, joined by a violet line that fills as
        the steps come into view. */
-    .lined { position: relative; gap: 22px; }
+    .lined { position: relative; gap: 24px; }
     .lined .try-step { grid-template-columns: 3.2rem minmax(0, 1fr) minmax(280px, 42%); gap: 12px 24px; align-items: start; }
-    .lined::before, .lined::after { content: ""; position: absolute; top: 48px; bottom: 48px; inset-inline-start: 46px; width: 2px; z-index: 1; }
+    .lined::before, .lined::after { content: ""; position: absolute; top: 48px; bottom: 48px; inset-inline-start: 48px; width: 2px; z-index: 1; }
     .lined::before { background: var(--w-rule); }
     .lined::after { background: var(--w-ink); height: var(--progress, 100%); bottom: auto; max-height: calc(100% - 96px); transition: height 600ms ease; }
     .lined .try-step { z-index: 2; }

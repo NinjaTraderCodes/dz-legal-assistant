@@ -70,8 +70,8 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
     .toc a { color: var(--w-muted); }
     .toc a:hover { color: var(--w-text); }
     /* The summary: the points in the page's language, then the line for a lawyer. */
-    .summary { display: grid; gap: 14px; padding: 26px 28px; scroll-margin-top: 96px; }
-    .points :global(ul) { margin: 0; padding-inline-start: 22px; display: grid; gap: 10px; }
+    .summary { display: grid; gap: 14px; padding: 24px 28px; scroll-margin-top: 96px; }
+    .points :global(ul) { margin: 0; padding-inline-start: 24px; display: grid; gap: 10px; }
     .points :global(li) { max-width: var(--measure); line-height: 1.65; }
     .lawyer { max-width: var(--measure); margin: 4px 0 0; padding-top: 12px; border-top: 2px solid var(--w-sheet-text); scroll-margin-top: 96px; }
     .lawyer .label { display: block; margin-bottom: 4px; font-weight: 700; }
@@ -104,7 +104,7 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
     @media (max-width: 899px) {
         .layout { grid-template-columns: 1fr; }
         .main { display: contents; }
-        .summary { order: 1; padding: 20px 18px; }
+        .summary { order: 1; padding: 20px 20px; }
         .toc { position: static; order: 2; }
         .full { order: 3; }
     }

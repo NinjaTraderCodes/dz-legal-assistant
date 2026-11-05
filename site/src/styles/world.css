@@ -105,7 +105,7 @@
   .tone-blue { --w-tone: var(--w-blue); }
   .tone-green { --w-tone: var(--w-green); }
   .tone-yellow { --w-tone: var(--w-yellow); }
-  .folder > .tab { position: absolute; bottom: 100%; inset-inline-start: max(var(--gutter), calc((100% - var(--page)) / 2)); display: flex; align-items: center; gap: 12px; height: var(--w-tab-h); margin: 0; padding: 0 26px; background: var(--w-tone, var(--w-board)); color: var(--w-text); font-size: 0.86rem; font-weight: 500; line-height: 1; white-space: nowrap; max-width: calc(100% - 2 * var(--gutter)); clip-path: polygon(0 100%, 14px 0, calc(100% - 14px) 0, 100% 100%); background-image: var(--w-grain); }
+  .folder > .tab { position: absolute; bottom: 100%; inset-inline-start: max(var(--gutter), calc((100% - var(--page)) / 2)); display: flex; align-items: center; gap: 12px; height: var(--w-tab-h); margin: 0; padding: 0 24px; background: var(--w-tone, var(--w-board)); color: var(--w-text); font-size: 0.86rem; font-weight: 500; line-height: 1; white-space: nowrap; max-width: calc(100% - 2 * var(--gutter)); clip-path: polygon(0 100%, 14px 0, calc(100% - 14px) 0, 100% 100%); background-image: var(--w-grain); }
   .folder > .tab .no { font-variant-numeric: tabular-nums; color: var(--w-muted); }
   /* Phones lay out a folder's contents only when they come near the screen, so the fonts of the petition, the app's
      pieces and the stamps are not fetched for the first screen. The tab stays outside the contained box; the hero, whose
@@ -127,12 +127,12 @@
     --success: #2b7a4b; --success-soft: #e5f3ea; --danger: #b3261e; --danger-soft: #fcebe9; --warning: #935600; --warning-soft: #fff3dc; --gold: #c6a76d; --on-gold: #28231d; }
   :is(.sheet, .panel, .card) a:not(.btn) { color: var(--w-sheet-text); }
   /* What holds a sheet to the folder: a paper clip at the top, or a staple at the corner. One per sheet. */
-  .clip { position: absolute; top: -14px; inset-inline-end: 34px; width: 22px; height: 58px; color: var(--w-metal); pointer-events: none; }
-  .staple { position: absolute; top: 16px; inset-inline-start: 22px; width: 34px; height: 3px; border-radius: 2px; background: #9a9da2; box-shadow: 0 1px 0 rgb(0 0 0 / 0.25); transform: rotate(-8deg); pointer-events: none; }
+  .clip { position: absolute; top: -14px; inset-inline-end: 32px; width: 22px; height: 58px; color: var(--w-metal); pointer-events: none; }
+  .staple { position: absolute; top: 16px; inset-inline-start: 24px; width: 34px; height: 3px; border-radius: 2px; background: #9a9da2; box-shadow: 0 1px 0 rgb(0 0 0 / 0.25); transform: rotate(-8deg); pointer-events: none; }
 
   /* A registry stamp: violet ink in a double frame, slightly turned. It carries a status only, never an emblem, a
      court's name or an imitation of an official seal. The ink's unevenness is the inline SVG filter #ink (Base.astro). */
-  .stamp { display: inline-grid; justify-items: center; gap: 6px; padding: 12px 22px; color: var(--w-ink); border: 3px solid currentColor; outline: 1.5px solid currentColor; outline-offset: 3px; border-radius: 3px; font-family: var(--w-stamp); font-weight: 700; font-size: 1.6rem; line-height: 1.2; white-space: nowrap; transform: rotate(var(--stamp-turn, -5deg)); filter: url(#ink); }
+  .stamp { display: inline-grid; justify-items: center; gap: 6px; padding: 12px 24px; color: var(--w-ink); border: 3px solid currentColor; outline: 1.5px solid currentColor; outline-offset: 3px; border-radius: 3px; font-family: var(--w-stamp); font-weight: 700; font-size: 1.6rem; line-height: 1.2; white-space: nowrap; transform: rotate(var(--stamp-turn, -5deg)); filter: url(#ink); }
   .sheet .stamp { mix-blend-mode: multiply; }
   .stamp small { width: 100%; padding-top: 6px; border-top: 1.5px solid currentColor; font-family: var(--w-ui); font-size: max(12px, 0.62rem); font-weight: 600; line-height: 1.3; text-align: center; white-space: normal; }
   :lang(en) .stamp, .stamp:lang(en) { font-family: var(--w-ui); font-size: 1.1rem; letter-spacing: 0.08em; text-transform: uppercase; }

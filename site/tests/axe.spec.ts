@@ -33,3 +33,18 @@ for (const theme of themes) {
         expect(summary, summary.join("\n")).toHaveLength(0);
     });
 }
+
+// The demo with its guide open, in both languages: the docked card and the light on the element it points at.
+for (const theme of themes) {
+    for (const lang of ["en", "ar"]) {
+        test(`the demo with its guide open has no axe violations (${lang}, ${theme})`, async ({ page, context, baseURL }) => {
+            await context.addCookies([{ name: "dzlegal.theme", value: theme, url: baseURL! }]);
+            await page.goto(`/app?lang=${lang}&guide=1`);
+            await expect(page.locator(".guide-card")).toBeVisible({ timeout: 30_000 });
+            await expect(page.locator(".guide-ring")).toHaveCount(1);
+            const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
+            const summary = results.violations.map((v) => `${v.id} (${v.impact}): ${v.nodes.length} × ${v.help}\n` + v.nodes.map((n) => `    ${n.target.join(" ")}`).join("\n"));
+            expect(summary, summary.join("\n")).toHaveLength(0);
+        });
+    }
+}

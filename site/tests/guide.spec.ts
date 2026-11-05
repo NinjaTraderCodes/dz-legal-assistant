@@ -1,5 +1,6 @@
 // "Test it in 5 minutes", followed in the demo exactly as the website's guide says, with the same button labels (the
-// generated string tables the guide is built from), so the guide cannot go out of date. It runs against an instance
+// generated string tables the guide is built from), so the guide cannot go out of date; the demo's own guide lights up
+// each thing to use and moves on by itself as each step is done. It runs against an instance
 // whose AI is the local stand-in model (tests/mock-model.mjs), so every step completes and no credit is spent:
 //   node tests/mock-model.mjs &
 //   GROQ_API_KEY=x Engines__GroqEndpoint=http://127.0.0.1:5090/v1/ Engines__GroqModel=mock Site__Root=../../site/dist \
@@ -26,26 +27,34 @@ test("the five steps of the guide happen in the demo as the website says", async
     await expect(page.locator(".score")).toBeInViewport();
     await expect(page.locator(".disclosure summary")).toContainText(label("Web.DisclosureLine"));
     await expect(page.locator(".invite")).toContainText(label("Web.GuideInvite"));
-    await expect(page.locator(".guide.tour")).toHaveCount(0);
+    await expect(page.locator(".guide-card")).toHaveCount(0);
 
-    // Step 1: open the sample "Unpaid loan".
+    // The guide, opened from the top bar: one step at a time, the thing to use next lit up, never pressed for the visitor.
+    await page.getByRole("button", { name: label("Web.GuideShow"), exact: true }).click();
+    const guide = page.locator(".guide-card");
+    await expect(guide).toBeVisible();
+    await expect(guide).toContainText(label("Web.GuideTitle"));
+    const lit = page.locator(".guide-ring");
+    const atStep = (n: number) => expect(guide).toContainText(label(`Web.Guide${n}Title`));
+
+    // Step 1: open the sample "Unpaid loan"; the guide moves on by itself.
+    await atStep(1);
+    await expect(page.locator("#sample-picker")).toHaveClass(/guide-ring/);
     await page.locator("#sample-picker").selectOption({ label: label("Sample.debt") });
     await expect(page.locator(".score")).toHaveText("8 / 9");
     await expect(page.locator(".steps .step")).toHaveCount(9);
     await expect(page.locator(".paper")).toBeVisible();
 
-    // Step 2: clear the defendant's domicile, through the guide's own button.
-    await page.getByRole("button", { name: label("Web.GuideShow"), exact: true }).click();
-    const guide = page.locator(".guide.tour");
-    await expect(guide).toBeVisible();
-    await expect(guide).toContainText(label("Web.GuideTitle"));
-    await expect(guide.locator("li")).toHaveCount(5);
-    await guide.getByRole("button", { name: label("Web.OpenDefendant") }).click();
-    await expect(guide).toHaveCount(0);
+    // Step 2: clear the defendant's domicile, where the guide points.
+    await atStep(2);
+    await expect(lit).toHaveAttribute("data-step", "defendant");
+    await lit.click();
     const domicile = page.locator("#f-defendant-domicile");
+    await expect(domicile).toHaveClass(/guide-ring/);
     const address = await domicile.inputValue();
     await domicile.fill("");
     await expect(page.locator(".score")).toHaveText("7 / 9");
+    await expect(page.locator(".score-card")).toHaveClass(/guide-ring/);
     await expect(page.locator(".finding.mandatory").filter({ hasText: /15-3/ })).toHaveCount(1);
     // The formal check is advisory: export is not refused for a missing element (the lawyer decides).
     const earlyExport = page.waitForEvent("download", { timeout: 30_000 });
@@ -56,16 +65,21 @@ test("the five steps of the guide happen in the demo as the website says", async
     await expect(page.locator(".score")).toHaveText("8 / 9");
 
     // Step 3: analyse the facts; nothing is ticked before "Yes, this is the claim type".
-    await page.getByRole("button", { name: label("Web.GuideShow"), exact: true }).click();
-    await guide.getByRole("button", { name: label("Web.OpenGrounds") }).click();
+    await atStep(3);
+    await expect(lit).toHaveAttribute("data-step", "grounds");
+    await lit.click();
+    await expect(lit).toHaveText(label("AnalyseGrounds"));
     await page.getByRole("button", { name: label("AnalyseGrounds"), exact: true }).click();
     await expect(page.locator(".confirm-claim")).toBeVisible({ timeout: 60_000 });
     await expect(page.locator(".confirm-claim")).toContainText(label("ClaimConfirmPrompt").slice(0, 30));
     await expect(page.locator(".article-card.selected")).toHaveCount(0);
+    await expect(page.locator(".confirm-claim button.primary")).toHaveClass(/guide-ring/);
     await page.getByRole("button", { name: label("ConfirmClaim") }).click();
     await expect(page.locator(".article-card.selected").first()).toBeVisible();
 
     // Step 4: draft the legal grounds; the section carries the AI mark and the review box.
+    await atStep(4);
+    await expect(lit).toHaveText(label("Generate"));
     await page.getByRole("button", { name: label("Generate"), exact: true }).click();
     const reviewBox = page.locator(".review-list .reviewed input");
     await expect(reviewBox).toHaveCount(1, { timeout: 90_000 });
@@ -76,13 +90,21 @@ test("the five steps of the guide happen in the demo as the website says", async
     await expect(page.locator(".review-list .reviewed")).toContainText(label("ReviewedCheck"));
 
     // Step 5: export is refused before the tick and downloads after it.
+    await atStep(5);
+    await expect(lit).toHaveAttribute("aria-label", label("ExportPdf"));
     await page.getByRole("button", { name: label("ExportPdf") }).click();
     const blockers = page.locator(".export-blockers[role=alert]");
     await expect(blockers).toBeVisible();
     await expect(blockers).toContainText(label("ExportBlocked"));
+    await expect(page.locator(".review-list .reviewed")).toHaveClass(/guide-ring/);
     await reviewBox.check();
     await expect(page.locator(".export-blockers")).toHaveCount(0);
     const download = page.waitForEvent("download", { timeout: 30_000 });
     await page.getByRole("button", { name: label("ExportPdf") }).click();
     expect((await download).suggestedFilename()).toMatch(/\.pdf$/);
+    // Done: nothing is lit any more, and Finish closes the guide.
+    await expect(guide.locator(".guide-hint.done")).toBeVisible();
+    await expect(lit).toHaveCount(0);
+    await guide.getByRole("button", { name: label("Web.GuideFinish") }).click();
+    await expect(guide).toHaveCount(0);
 });

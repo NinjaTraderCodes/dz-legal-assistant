@@ -298,6 +298,36 @@ public class WebEngineTests
         Assert.True(changes > 0);
     }
 
+    [Theory]
+    [InlineData("en")]
+    [InlineData("ar")]
+    public void TheGuideHasATitleAndItsHintsForEveryStepInBothLanguages(string language)
+    {
+        string[] keys = ["GuideTitle", "GuideCount", "GuidePoints", "GuideFinish", "GuideDoneStep", "GuideStep", "GuideHide", "GuideShow", "GuideOpen", "GuideInvite",
+            "Guide1Pick", "Guide2Clear", "Guide2Look", "Guide3Analyse", "Guide3Wait", "Guide3Confirm", "Guide3Articles", "Guide4Generate", "Guide4Wait",
+            "Guide5Early", "Guide5Tick", "Guide5Again", "Guide5Export", "Guide5Done"];
+        foreach (var key in Enumerable.Range(1, Components.Pages.Home.GuideSteps).Select(n => $"Guide{n}Title").Concat(keys))
+        {
+            Assert.False(WebText.Get(key, language).StartsWith('['), $"{key} has no {language} text");
+        }
+    }
+
+    [Fact]
+    public void TheGuidesSampleHasTheStepsAndTheFieldItPointsAt()
+    {
+        using var engine = Create(new EngineSettings());
+        var sample = Assert.Single(engine.Samples, s => s.Id == Components.Pages.Home.SampleId);
+        using var vm = engine.CreateSession(new NoFiles(), new NoExternalLinks(), "en");
+        vm.OpenCase(sample.Inputs);
+
+        // Step 2 clears the defendant's domicile and watches the score drop; step 3 opens the grounds.
+        Assert.Contains(vm.FieldGroups, g => g.Id == Components.Pages.Home.DefendantStepId);
+        Assert.Contains(vm.FieldGroups, g => g.Id == Presentation.ViewModels.MainWindowViewModel.GroundsStepId);
+        var before = vm.PresentCount;
+        vm.Field(Components.Pages.Home.DomicileId).Value = "";
+        Assert.Equal(before - 1, vm.PresentCount);
+    }
+
     private sealed class NoFiles : IUserFiles
     {
         public Task<(Stream Stream, string Name)?> SaveAsync(string suggestedName, SaveKind kind) => Task.FromResult<(Stream, string)?>(null);

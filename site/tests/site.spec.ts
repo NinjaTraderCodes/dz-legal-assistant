@@ -103,7 +103,8 @@ test("every demo link on the site points to /app, and the demo keeps its own add
         await page.goto(`/${lang}/`);
         const links = await page.locator('a[href^="/app"]').evaluateAll((as) => as.map((a) => a.getAttribute("href")));
         expect(links.length, `${lang}: demo links`).toBeGreaterThanOrEqual(3);
-        for (const href of links) expect(href).toMatch(new RegExp(`^/app\\?lang=${lang}$`));
+        // The five-minute test's own button opens the demo with its guide on (&guide=1); every link keeps the language.
+        for (const href of links) expect(href).toMatch(new RegExp(`^/app\\?lang=${lang}(&guide=1)?$`));
     }
     const app = await request.get("/app?lang=ar", { maxRedirects: 0 });
     expect(app.status()).toBe(200);
@@ -379,18 +380,31 @@ test("the demo link skips the page transition, so Chrome logs no aborted-transit
 });
 
 test("the demo's bar folds New, Open, Save and Guide behind More on a phone, and shows them on a desktop", async ({ page }) => {
-    // On a desktop the guide waits behind its invitation; opened, it is the tour card with the AI steps tagged as the
-    // desktop tags them; nothing in the bar is folded.
+    // On a desktop the guide waits behind its invitation; opened, it is a card docked beside the work (not a dialog),
+    // one step at a time, lighting up what to use next, with the AI steps tagged as the desktop tags them; nothing in
+    // the bar is folded.
     await page.setViewportSize({ width: 1366, height: 768 });
     await page.goto("/app?lang=en");
     await expect(page.locator(".app")).toBeVisible({ timeout: 30_000 });
-    await expect(page.locator(".guide.tour")).toHaveCount(0);
+    const guide = page.locator(".guide-card");
+    await expect(guide).toHaveCount(0);
     await expect(page.locator(".invite")).toBeVisible();
     await page.locator(".invite").getByRole("button", { name: "Open the guide" }).click();
-    await expect(page.locator(".guide.tour")).toBeVisible();
-    await expect(page.locator(".guide .tag.ai")).toHaveCount(2);
-    await page.locator(".guide.tour").getByRole("button", { name: "Hide" }).click();
-    await expect(page.locator(".guide.tour")).toHaveCount(0);
+    await expect(guide).toBeVisible();
+    await expect(page.locator("[role=dialog]")).toHaveCount(0);
+    await expect(guide).toContainText("Step 1 of 5");
+    await expect(page.locator("#sample-picker")).toHaveClass(/guide-ring/);
+    // Steps 3 and 4 carry the AI tag; 1, 2 and 5 do not.
+    const tagged: boolean[] = [];
+    for (let step = 1; step <= 5; step++) {
+        await expect(guide).toContainText(`Step ${step} of 5`);
+        tagged.push(await guide.locator(".tag.ai").count() === 1);
+        if (step < 5) await guide.getByRole("button", { name: "Next" }).click();
+    }
+    expect(tagged).toEqual([false, false, true, true, false]);
+    await guide.getByRole("button", { name: "Hide" }).click();
+    await expect(guide).toHaveCount(0);
+    await expect(page.locator(".guide-ring")).toHaveCount(0);
     // The one-line disclosure stays on screen; "Details" opens the full wording and the browser-copy button.
     const disclosure = page.locator(".disclosure");
     await expect(disclosure.locator("summary")).toContainText("fictitious cases only");

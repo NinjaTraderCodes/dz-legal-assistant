@@ -4,7 +4,7 @@
 @font-face { font-family: "Inter"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("/ui-fonts/Inter-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 
 /* DZ Legal Assistant, web demo, on the product's own design tokens (tokens.css, generated from the desktop theme:
-   brown bar, gold primary action, cards with radius 12, the tour card with radius 16, the paper with its draft
+   brown bar, gold primary action, cards with radius 12, the guide's card with radius 16, the paper with its draft
    watermark). An app bar, the case form, the paper draft and the checks side by side; tabs on a phone. Dark is the
    default, as on the website; the theme follows html[data-theme] like the site, and the app mirrors it in .app.dark.
    The paper is always light, whatever the theme, so its text colours are fixed here. */
@@ -99,23 +99,40 @@ label.check input { width: auto; min-height: 0; margin-top: 3px; accent-color: v
 .disclosure-body p { margin: 0; }
 .disclosure-body .row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 
-/* The slim invitation to the guide; the guide itself is the overlay card below. */
+/* The slim invitation to the guide; the guide itself is the docked card below. */
 .invite { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 6px 10px 6px 14px; border-radius: 10px; background: var(--accent-soft); color: var(--text); }
 .invite-text { display: inline-flex; align-items: center; gap: 8px; flex: 1 1 260px; font-weight: 500; }
 .invite-text .icon { color: var(--accent); }
 
-/* The guide, drawn as the tour card of the desktop (radius 16, its surface and shadow, gold numbers), over a backdrop. */
-.tour-backdrop { position: fixed; inset: 0; z-index: 30; background: var(--tour-backdrop); }
-.guide.tour { position: fixed; z-index: 31; inset-inline: 0; top: 50%; margin-inline: auto; transform: translateY(-50%); width: min(1180px, calc(100% - 32px)); max-height: calc(100vh - 32px); overflow: auto;
-  background: var(--tour-card); background-image: var(--panel-image); border: 1px solid var(--hairline); border-radius: var(--radius-onboarding-card); box-shadow: var(--tour-card-shadow); padding: 18px 20px 16px; display: grid; gap: 12px; outline: none; }
-.guide-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.guide ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; counter-reset: step; }
-.guide li { counter-increment: step; display: grid; gap: 6px; align-content: start; padding: 12px; border-radius: 10px; background: var(--surface-alt); }
-.guide li::before { content: counter(step); display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%;
-  background: var(--gold); color: var(--on-gold); font-weight: 700; font-size: 12.5px; }
-.guide li strong { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px; }
-.guide .actions { display: flex; flex-wrap: wrap; gap: 6px; }
-.guide p { margin: 0; }
+/* The guide: the desktop's tour card (radius 16, its surface and shadow, gold), docked at the bottom of the window on
+   the reading-end side, over the checks column, so the form and the paper stay free; no backdrop, the work stays usable.
+   On a phone it spans the bottom of the screen, and the page leaves room under its content to scroll above it. */
+.guide-card { position: fixed; z-index: 31; inset-inline-end: 12px; bottom: 44px; width: min(330px, calc(100% - 24px)); max-height: calc(100vh - 120px); overflow: auto;
+  background: var(--tour-card); background-image: var(--panel-image); border: 1px solid var(--hairline); border-radius: var(--radius-onboarding-card); box-shadow: var(--tour-card-shadow);
+  padding: 14px 16px 12px; display: grid; gap: 8px; outline: none; }
+.guide-card:focus-visible { outline: 3px solid var(--edge); outline-offset: 2px; }
+.guide-head { display: flex; align-items: center; gap: 8px; }
+.guide-head h2 { font-size: 14px; }
+.guide-count { flex: 1; font-variant-numeric: tabular-nums; }
+.guide-dots { list-style: none; margin: 0; padding: 0; display: flex; gap: 4px; }
+.guide-dots li { flex: 1; height: 4px; border-radius: 2px; background: color-mix(in srgb, var(--muted) 30%, transparent); }
+.guide-dots li.done { background: color-mix(in srgb, var(--gold) 55%, transparent); }
+.guide-dots li.current { background: var(--gold); }
+.guide-step { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 15px; }
+.guide-card p { margin: 0; }
+.guide-hint { display: flex; gap: 8px; align-items: flex-start; line-height: 1.55; }
+.guide-hint.done .icon { color: var(--success); margin-top: 3px; }
+.guide-nav { display: flex; justify-content: space-between; gap: 8px; padding-top: 2px; }
+@media (max-width: 1279px) { .guide-card { width: min(300px, calc(100% - 24px)); } }
+@media (max-width: 899px) {
+  .guide-card { inset-inline: 8px; bottom: calc(8px + env(safe-area-inset-bottom, 0px)); width: auto; max-height: 46vh; }
+  .app.guiding { padding-bottom: 46vh; }
+}
+
+/* What the guide points at: a gold ring and a slow glow on the element itself. It is never pressed for the visitor. */
+.guide-ring { outline: 3px solid var(--gold) !important; outline-offset: 2px; box-shadow: 0 0 0 6px color-mix(in srgb, var(--gold) 30%, transparent); position: relative; z-index: 2;
+  animation: guide-glow 1.8s ease-in-out infinite; }
+@keyframes guide-glow { 50% { box-shadow: 0 0 0 10px color-mix(in srgb, var(--gold) 8%, transparent); } }
 
 /* Layout: the desktop's workspace (columns 390, *, 330 with 12 px gaps); two columns on a narrow window, tabs on a phone. */
 .mobile-tabs { display: none; }
@@ -387,7 +404,7 @@ details.present .present-item:last-child { padding-bottom: 10px; }
   .section-text, .document-heading { font-size: 17px; line-height: 27px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .activity-steps li.active .dot, .progress-indeterminate span, .writing-mark .pulse { animation: none; }
+  .activity-steps li.active .dot, .progress-indeterminate span, .writing-mark .pulse, .guide-ring { animation: none; }
   button:active:not(:disabled) { transform: none; }
 }
 

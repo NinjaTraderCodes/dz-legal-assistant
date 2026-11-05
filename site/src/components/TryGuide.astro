@@ -3,7 +3,7 @@
 // its string tables), what should happen, how long it takes, and why it matters for a lawyer, each step a numbered
 // sheet. The compact form is the home's blue folder; the full form is the /try/ page (a blue folder of its own), where each step shows what the demo looks like at that
 // point (tests/guide-shots.mjs: the steps with AI output come from real model runs, never from the stand-in). The
-// demo's guide describes the same steps.
+// demo's guide walks through the same steps, and the button here opens the demo with it.
 import type { ImageMetadata } from "astro";
 import Icon from "./Icon.astro";
 import Folder from "./Folder.astro";
@@ -36,7 +36,7 @@ const steps = [
     },
     {
         title: t(lang, "try.step2.title"),
-        click: fmt(t(lang, "try.step2.click"), q("Web.GuideShow"), q("Web.OpenDefendant"), q("Compliance")),
+        click: fmt(t(lang, "try.step2.click"), q("Compliance")),
         expect: fmt(t(lang, "try.step2.expect"), q("ExportPdf")),
         time: t(lang, "try.step2.time"),
         why: t(lang, "try.step2.why"),
@@ -46,7 +46,7 @@ const steps = [
     },
     {
         title: fmt(t(lang, "try.step3.title"), s(lang, "AnalyseGrounds")),
-        click: fmt(t(lang, "try.step3.click"), q("Web.OpenGrounds"), q("AnalyseGrounds")),
+        click: fmt(t(lang, "try.step3.click"), q("AnalyseGrounds")),
         expect: fmt(t(lang, "try.step3.expect"), q("ConfirmClaim")),
         time: t(lang, "try.step3.time"),
         why: t(lang, "try.step3.why"),
@@ -113,7 +113,8 @@ const labels = { click: t(lang, "try.click"), expect: t(lang, "try.expect"), tim
         </div>
     )}
     <div class="actions">
-        <a class="btn btn-primary" href={`/app?lang=${lang}`}>{t(lang, "demo.cta")}</a>
+        {/* The demo opens with its guide (?guide=1): the visitor came here to follow it. */}
+        <a class="btn btn-primary" href={`/app?lang=${lang}&guide=1`}>{t(lang, "try.cta")}</a>
         {compact ? <a class="btn" href={`/${lang}/try/`}>{t(lang, "try.full")}</a> : <a class="btn" href={`/${lang}/`}>{t(lang, "nav.home")}</a>}
     </div>
     {!compact && <Source lang={lang} files={["src/DzLegal.Web/Services/WebText.cs", "src/DzLegal.Presentation/Resources/Strings.resx", "docs/WEB-DEMO.md", "docs/HIDDEN-SET.md", "src/DzLegal.Web/appsettings.json"]} />}

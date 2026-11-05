@@ -75,32 +75,36 @@
                 <button type="button" class="small" @onclick="() => Vm.CancelReplaceCommand.Execute(null)">@L["Cancel"]</button>
             </div>
         }
-        @if (SavedCase is not null)
-        {
-            <div class="notice info" role="status">
-                <span class="grow">@string.Format(L.Culture, T("SavedCase"), SavedAt?.ToLocalTime().ToString("g", L.Culture))</span>
-                <button type="button" class="primary small" @onclick="RestoreSavedCase">@T("RestoreCase")</button>
-                <button type="button" class="small" @onclick="DiscardSavedCase">@T("DiscardCase")</button>
-            </div>
-        }
-        @* The demo's warning, always on screen in one line; the full wording and the browser-copy button one click away. *@
-        <details class="disclosure">
-            <summary><Icon Name="warning" Size="14" /> <span class="line">@T("DisclosureLine")</span> <span class="details-label">@T("Details")</span></summary>
-            <div class="disclosure-body">
-                <p class="muted small">@T("AboutDemo")</p>
-                <p class="muted small">@T("DownloadNote") <a href="@DownloadUrl" target="_blank" rel="noopener">@T("DownloadWindows")</a></p>
-                <p class="row small"><button type="button" class="small" @onclick="ClearBrowserCopy">@T("ClearBrowserCopy")</button>
-                    @if (_browserCopyCleared) { <span class="muted" role="status">@T("BrowserCopyCleared")</span> }</p>
-            </div>
-        </details>
-        @if (showInvite && !showGuide)
-        {
-            <div class="invite" role="region" aria-label="@T("GuideTitle")">
-                <span class="invite-text"><Icon Name="question_circle" Size="16" /> @T("GuideInvite")</span>
-                <button type="button" class="primary small" @onclick="OpenGuide">@T("GuideOpen")</button>
-                <button type="button" class="quiet small" aria-label="@T("GuideHide")" title="@T("GuideHide")" @onclick="DismissInvite"><Icon Name="dismiss" Size="14" /></button>
-            </div>
-        }
+        @* One quiet line under the bar: the demo's disclosure (always), the case this browser kept (when there is one),
+           and the invitation to the guide (until dismissed). Real alerts stay above it as notices. *@
+        <div class="ribbon">
+            @* The demo's warning, always on screen in one line; the full wording and the browser-copy button one click away. *@
+            <details class="disclosure">
+                <summary><Icon Name="warning" Size="14" /> <span class="line">@T("DisclosureLine") <span class="details-label">@T("Details")</span></span></summary>
+                <div class="disclosure-body">
+                    <p class="muted small">@T("AboutDemo")</p>
+                    <p class="muted small">@T("DownloadNote") <a href="@DownloadUrl" target="_blank" rel="noopener">@T("DownloadWindows")</a></p>
+                    <p class="row small"><button type="button" class="small" @onclick="ClearBrowserCopy">@T("ClearBrowserCopy")</button>
+                        @if (_browserCopyCleared) { <span class="muted" role="status">@T("BrowserCopyCleared")</span> }</p>
+                </div>
+            </details>
+            @if (SavedCase is not null)
+            {
+                <div class="saved-case" role="status">
+                    <span class="text"><Icon Name="save" Size="14" /> @string.Format(L.Culture, T("SavedCase"), SavedAtText)</span>
+                    <button type="button" class="link strong" @onclick="RestoreSavedCase">@T("RestoreCase")</button>
+                    <button type="button" class="link quiet-link" @onclick="DiscardSavedCase">@T("DiscardCase")</button>
+                </div>
+            }
+            @if (showInvite && !showGuide)
+            {
+                <div class="invite" role="region" aria-label="@T("GuideTitle")">
+                    <span class="invite-text"><Icon Name="question_circle" Size="14" /> <span class="words">@T("GuideInvite")</span></span>
+                    <button type="button" class="link strong" @onclick="OpenGuide">@T("GuideOpen")</button>
+                    <button type="button" class="quiet icon-only small" aria-label="@T("GuideHide")" title="@T("GuideHide")" @onclick="DismissInvite"><Icon Name="dismiss" Size="14" /></button>
+                </div>
+            }
+        </div>
     </div>
 
     <nav class="mobile-tabs" role="tablist" aria-label="@L["AppTitle"]">
@@ -474,7 +478,9 @@
             }
             <div class="guide-nav">
                 <button type="button" class="small" disabled="@(guideStep == 1)" @onclick="() => MoveGuide(-1)">@L["Previous"]</button>
-                <button type="button" class="small @(pointer.Done ? "primary" : "")" @onclick="() => MoveGuide(1)">@(guideStep == GuideSteps ? T("GuideFinish") : L["Next"])</button>
+                @* Next is locked until the step is done (the guide then moves on by itself); the reason is its tooltip. *@
+                @{ var canGoNext = CanGoNext(); }
+                <button type="button" class="small @(pointer.Done ? "primary" : "")" disabled="@(!canGoNext)" title="@(canGoNext ? null : T("GuideLocked"))" @onclick="() => MoveGuide(1)">@(guideStep == GuideSteps ? T("GuideFinish") : L["Next"])</button>
             </div>
         </section>
     }

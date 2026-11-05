@@ -85,30 +85,50 @@ label.check input { width: auto; min-height: 0; margin-top: 3px; accent-color: v
 .notice.confirm-claim p { margin: 0; flex: 1 1 100%; }
 .notice.confirm-claim .row { display: flex; gap: 8px; flex-wrap: wrap; }
 .ok-text { color: var(--success); }
-.strip { padding-inline: 16px; padding-block: 12px 0; display: grid; gap: 10px; }
+.strip { padding-inline: 16px; padding-block: 8px 0; display: grid; gap: 8px; }
+
+/* The ribbon: one quiet line under the bar, no boxes. The demo's disclosure first (always there; its warning icon is
+   the only colour), the case this browser kept when there is one, and the invitation to the guide at the far end, each
+   separated by a hairline; their actions are links. On a phone the parts stack, one short line each. */
+.ribbon { display: flex; flex-wrap: wrap; align-items: center; row-gap: 2px; font-size: 13px; line-height: 1.45; color: var(--muted-aa); }
+.ribbon > * { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 8px; min-height: 30px; padding-inline: 14px; }
+.ribbon > :first-child { padding-inline-start: 0; }
+.ribbon > * + * { border-inline-start: 1px solid var(--hairline); }
+.ribbon .icon { color: var(--muted); }
+.ribbon button.link { font-size: 13px; padding: 2px 4px; }
+.ribbon button.link.strong { font-weight: 600; }
+.ribbon button.link.quiet-link { color: var(--muted-aa); }
+.ribbon button.icon-only { min-height: 26px; padding: 3px; }
+/* The invitation stands apart at the far end, without a hairline, so a line that wraps does not start with one. */
+.ribbon .invite { margin-inline-start: auto; border-inline-start: 0; }
+.ribbon .text, .ribbon .invite-text { display: inline-flex; align-items: center; gap: 6px; }
 
 /* The demo's warning: one line always on screen, the full wording and the browser-copy button one click away. */
-.disclosure { border-radius: 10px; background: var(--warning-soft); color: var(--text); padding: 0; }
-.disclosure summary { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 8px 14px; cursor: pointer; list-style: none; font-size: 13.5px; line-height: 1.4; }
+.ribbon > .disclosure { display: block; }
+.disclosure summary { display: flex; align-items: center; gap: 6px; min-height: 30px; cursor: pointer; list-style: none; color: var(--text); }
 .disclosure summary::-webkit-details-marker { display: none; }
 .disclosure summary .icon { color: var(--warning); }
-.disclosure summary .line { flex: 1 1 320px; }
-.disclosure summary .details-label { color: var(--accent); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.disclosure summary .details-label { color: var(--accent); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; margin-inline-start: 4px; white-space: nowrap; }
+.disclosure[open] { flex: 1 1 100%; }
 .disclosure[open] summary .details-label { text-decoration: none; }
-.disclosure-body { display: grid; gap: 8px; padding: 4px 14px 12px; border-top: 1px solid color-mix(in srgb, var(--warning) 25%, transparent); }
+.disclosure-body { display: grid; gap: 8px; margin-block: 4px 8px; padding: 10px 14px; border-radius: 10px; background: var(--warning-soft); color: var(--text); }
 .disclosure-body p { margin: 0; }
 .disclosure-body .row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
-
-/* The slim invitation to the guide; the guide itself is the docked card below. */
-.invite { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 6px 10px 6px 14px; border-radius: 10px; background: var(--accent-soft); color: var(--text); }
-.invite-text { display: inline-flex; align-items: center; gap: 8px; flex: 1 1 260px; font-weight: 500; }
-.invite-text .icon { color: var(--accent); }
+/* With all three parts on a window under 1440 px, the invitation keeps its link only, so the line stays one line. */
+@media (min-width: 900px) and (max-width: 1439px) { .ribbon:has(.saved-case) .invite .words { display: none; } }
+@media (max-width: 899px) {
+  .ribbon { flex-direction: column; align-items: stretch; }
+  .ribbon > * { padding-inline: 0; }
+  .ribbon > * + * { border-inline-start: 0; border-top: 1px solid var(--hairline); }
+  .ribbon .invite { margin-inline-start: 0; }
+  .ribbon .invite button.icon-only { margin-inline-start: auto; }
+}
 
 /* The guide: the desktop's tour card (radius 16, its surface and shadow, gold). Its script places it beside what it
    points at (.placed), or in the middle when there is nothing to point at; before that, and on a phone, it stands at
    the bottom of the window, and the page leaves room under its content to scroll above it. */
 .guide-card { position: fixed; z-index: 31; inset-inline-end: 12px; bottom: 44px; width: min(340px, calc(100% - 24px)); max-height: calc(100vh - 24px); overflow: auto;
-  background: var(--tour-card); background-image: var(--panel-image); border: 1px solid var(--hairline); border-radius: var(--radius-onboarding-card); box-shadow: var(--tour-card-shadow);
+  background: var(--tour-card); background-image: var(--panel-image); border: 2px solid var(--gold); border-radius: var(--radius-onboarding-card); box-shadow: var(--tour-card-shadow);
   padding: 14px 16px 12px; display: grid; gap: 8px; outline: none; }
 .guide-card.placed { inset: auto; transition: left .2s ease, top .2s ease; }
 .guide-card:focus-visible { outline: 3px solid var(--edge); outline-offset: 2px; }
@@ -129,16 +149,16 @@ label.check input { width: auto; min-height: 0; margin-top: 3px; accent-color: v
   .app.guiding { padding-bottom: 46vh; }
 }
 
-/* Guide mode: the window dims slightly, except a hole around what the guide points at, ringed in gold with a slow glow.
-   The dim is drawn by the hole's own shadow and lets every click through: the guide never presses anything itself.
+/* What the guide points at: a gold ring drawn over the element (so a scrolling panel never cuts it), never pressed for
+   the visitor. At each new step the ring and the card's gold border pulse together three times, then stay still.
    (.guide-ring marks the element itself, for the tests and the script.) */
-:root { --guide-dim: rgb(29 32 30 / 0.36); }
-:root[data-theme="dark"] { --guide-dim: rgb(0 0 0 / 0.42); }
 .guide-spot { position: fixed; z-index: 30; pointer-events: none; border-radius: 10px;
-  box-shadow: 0 0 0 3px var(--gold), 0 0 0 8px color-mix(in srgb, var(--gold) 28%, transparent), 0 0 0 200vmax var(--guide-dim);
-  animation: guide-glow 1.8s ease-in-out infinite; }
-.guide-spot.empty { box-shadow: 0 0 0 200vmax var(--guide-dim); animation: none; }
-@keyframes guide-glow { 50% { box-shadow: 0 0 0 3px var(--gold), 0 0 0 12px color-mix(in srgb, var(--gold) 8%, transparent), 0 0 0 200vmax var(--guide-dim); } }
+  box-shadow: 0 0 0 3px var(--gold), 0 0 0 7px color-mix(in srgb, var(--gold) 22%, transparent); }
+.guide-spot.empty { display: none; }
+.guide-spot.nudge { animation: guide-spot-pulse 1.1s ease-in-out 3; }
+.guide-card.nudge { animation: guide-card-pulse 1.1s ease-in-out 3; }
+@keyframes guide-spot-pulse { 50% { box-shadow: 0 0 0 3px var(--gold), 0 0 0 13px color-mix(in srgb, var(--gold) 30%, transparent); } }
+@keyframes guide-card-pulse { 50% { box-shadow: var(--tour-card-shadow), 0 0 0 7px color-mix(in srgb, var(--gold) 35%, transparent); } }
 
 /* Layout: the desktop's workspace (columns 390, *, 330 with 12 px gaps); two columns on a narrow window, tabs on a phone. */
 .mobile-tabs { display: none; }
@@ -410,7 +430,7 @@ details.present .present-item:last-child { padding-bottom: 10px; }
   .section-text, .document-heading { font-size: 17px; line-height: 27px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .activity-steps li.active .dot, .progress-indeterminate span, .writing-mark .pulse, .guide-spot { animation: none; }
+  .activity-steps li.active .dot, .progress-indeterminate span, .writing-mark .pulse, .guide-spot.nudge, .guide-card.nudge { animation: none; }
   .guide-card.placed { transition: none; }
   button:active:not(:disabled) { transform: none; }
 }

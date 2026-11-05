@@ -112,6 +112,9 @@ public sealed partial class Home : IDisposable
 
     private DateTimeOffset? SavedAt { get; set; }
 
+    /// <summary>When the kept case was saved, short enough for the line under the bar: a copy older than a day is never offered.</summary>
+    private string? SavedAtText => SavedAt?.ToLocalTime().ToString(Lang == "ar" ? "d MMMM، HH:mm" : "d MMM, HH:mm", L.Culture);
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (!firstRender)

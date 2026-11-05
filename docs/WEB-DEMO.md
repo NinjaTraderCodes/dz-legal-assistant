@@ -22,10 +22,11 @@ The public website (`site/`, Astro, static HTML) is served by the same app, so o
 `/ar/` and `/en/` (Arabic first, the product's language), with its guide, download, law library, privacy and about pages
 (`/<lang>/try/`, `/download/`, `/law/`, `/privacy/`, `/about/`), and the demo at `/app`. The guide ("Test it in 5 minutes") and
 the demo's own guide take the same five steps with the same button names: the website reads them from
-`Strings.resx`, `WebText.cs` and the sample files at build time. The demo's guide shows one step at a time: the window
-dims slightly around the field or button to use next (the dim lets clicks through), the card stands beside it (in the
-middle when there is nothing to point at, at the bottom on a phone), it never presses anything, and it moves on once
-the step is done
+`Strings.resx`, `WebText.cs` and the sample files at build time. The demo's guide shows one step at a time: a gold ring
+marks the field or button to use next, the gold-bordered card stands beside it (in the middle when there is nothing to
+point at, at the bottom on a phone), and both pulse a few times at each new step. It never presses anything; it moves
+on once the step is done, and Next stays locked until then (a step done before can be passed again); when the model
+fails, it says so and asks to try again
 (`Home.Guide.cs`, reading the view model's state). `/app?guide=1` opens it, as the try page's button does; its step is
 remembered for the visit. Nothing is loaded from another origin,
 the page's Content Security Policy stays as strict as the demo's (no inline scripts), and the fonts and icons are the

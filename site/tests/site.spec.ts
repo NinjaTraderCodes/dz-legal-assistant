@@ -380,9 +380,8 @@ test("the demo link skips the page transition, so Chrome logs no aborted-transit
 });
 
 test("the demo's bar folds New, Open, Save and Guide behind More on a phone, and shows them on a desktop", async ({ page }) => {
-    // On a desktop the guide waits behind its invitation; opened, it is a card docked beside the work (not a dialog),
-    // one step at a time, lighting up what to use next, with the AI steps tagged as the desktop tags them; nothing in
-    // the bar is folded.
+    // On a desktop the guide waits behind its invitation; opened, it is a card beside the work (not a dialog), one step
+    // at a time, lighting up what to use next; nothing in the bar is folded.
     await page.setViewportSize({ width: 1366, height: 768 });
     await page.goto("/app?lang=en");
     await expect(page.locator(".app")).toBeVisible({ timeout: 30_000 });
@@ -394,21 +393,27 @@ test("the demo's bar folds New, Open, Save and Guide behind More on a phone, and
     await expect(page.locator("[role=dialog]")).toHaveCount(0);
     await expect(guide).toContainText("Step 1 of 5");
     await expect(page.locator("#sample-picker")).toHaveClass(/guide-ring/);
-    // Guide mode dims the window around a hole over the lit element, and the card stands beside it, not over it; the
-    // dim lets clicks through.
+    // The lit element carries a ring drawn over it (it lets clicks through), and the card stands beside it, not over it.
     await expect(page.locator(".guide-spot")).toHaveCount(1);
     await expect(page.locator(".guide-spot")).toHaveCSS("pointer-events", "none");
     await expect(guide).toHaveClass(/placed/);
     const [card, picker] = [await guide.boundingBox(), await page.locator("#sample-picker").boundingBox()];
     expect(card!.y >= picker!.y + picker!.height || card!.y + card!.height <= picker!.y || card!.x >= picker!.x + picker!.width || card!.x + card!.width <= picker!.x).toBe(true);
-    // Steps 3 and 4 carry the AI tag; 1, 2 and 5 do not.
-    const tagged: boolean[] = [];
-    for (let step = 1; step <= 5; step++) {
-        await expect(guide).toContainText(`Step ${step} of 5`);
-        tagged.push(await guide.locator(".tag.ai").count() === 1);
-        if (step < 5) await guide.getByRole("button", { name: "Next" }).click();
-    }
-    expect(tagged).toEqual([false, false, true, true, false]);
+    // Next is locked until the step is done; doing it moves the guide on by itself. Step 1 and 2 carry no AI tag (the
+    // AI steps are checked in tests/guide.spec.ts, which runs them).
+    const next = guide.getByRole("button", { name: "Next" });
+    await expect(next).toBeDisabled();
+    await expect(guide.locator(".tag.ai")).toHaveCount(0);
+    await page.locator("#sample-picker").selectOption("debt");
+    await expect(guide).toContainText("Step 2 of 5");
+    await expect(guide.locator(".tag.ai")).toHaveCount(0);
+    await expect(next).toBeDisabled();
+    // A step done before can be passed again with Next.
+    await guide.getByRole("button", { name: "Back" }).click();
+    await expect(guide).toContainText("Step 1 of 5");
+    await expect(next).toBeEnabled();
+    await next.click();
+    await expect(guide).toContainText("Step 2 of 5");
     await guide.getByRole("button", { name: "Hide" }).click();
     await expect(guide).toHaveCount(0);
     await expect(page.locator(".guide-ring")).toHaveCount(0);

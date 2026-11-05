@@ -1,19 +1,15 @@
 ---
-// The proof folder: how the AI is kept in its place, as a drafting log (the four stages in order, each numbered and
-// tagged AI or code; the two stages a lawyer acts on carry their picture from the desktop app's capture, the drafting
-// carries the live panel, and the paper itself is left to the story above); the measured results typed as a report;
-// and what the software guarantees, as one numbered sheet with two pieces of the app attached (Proofs.astro).
+// The proof folder, in three blocks: who writes what (the four stages in order, each one line, tagged AI or code,
+// with the one picture beside them, the model's reading of the facts from the desktop app's capture); the measured
+// results on one slim sheet with their source; and what the software guarantees, one line each. The drafted paper is
+// the story's (folder 03) and the review before export is the guide's (folder 05), so neither is shown again here.
 import type { ImageMetadata } from "astro";
 import Icon from "./Icon.astro";
 import Shot from "./Shot.astro";
 import Folder from "./Folder.astro";
 import Clip from "./Clip.astro";
-import AppPiece from "./AppPiece.astro";
-import desktopRun from "../content/desktop-run.json";
-import { groundsTitle, splitGrounds } from "../content/steps";
 import Source from "./Source.astro";
-import Proofs from "./Proofs.astro";
-import { t, type Lang } from "../i18n";
+import { s, t, fmt, type Lang } from "../i18n";
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -23,26 +19,20 @@ const frame = (name: string) => {
     if (!hit) throw new Error(`missing picture ${name}.png in src/assets/shots (node scripts/crops.mjs)`);
     return hit[1];
 };
-// A crop of the desktop app rendered at scale 2 (src/content/desktop-run.json says which run), in the page's language,
-// light and dark.
-const desktop = (name: string) => ({ light: frame(`desktop/${name}-${lang}-light`), dark: frame(`desktop/${name}-${lang}-dark`) });
-// The activity panel shows the model's words as they arrive: the opening of its first application, from the same run.
-const firstApplication = desktopRun.paragraphs.flatMap(splitGrounds).find((line) => line.by === "ai")?.text ?? "";
-const live = firstApplication.split(/\s+/).slice(0, 14).join(" ");
-
-// Stage 2 is the code's own step: no model, and no picture. Stages 1 and 3 carry their crop of the desktop capture;
-// stage 4 carries the drafting panel in progress (the drafted paper is the story's).
-const stages = [1, 2, 3, 4].map((n) => ({
-    n,
-    title: t(lang, `ai.stage${n}.title`),
-    body: t(lang, `ai.stage${n}.body`),
-    caption: t(lang, `ai.shot.stage${n}`),
-    model: n !== 2,
-    shot: n === 1 ? desktop("reading") : n === 3 ? desktop("confirm") : undefined,
-}));
-// The measured results, as the hidden-set report gives them (docs/HIDDEN-SET.md, the sentence ai.measure says the same).
+// The model's reading, cropped from the desktop app rendered at scale 2 (src/content/desktop-run.json says which run).
+const reading = { light: frame(`desktop/reading-${lang}-light`), dark: frame(`desktop/reading-${lang}-dark`) };
+// Stage 2 is the code's own step; the others are the model's.
+const rows = [1, 2, 3, 4].map((n) => ({ n, title: t(lang, `ai.stage${n}.title`), line: t(lang, `ai.row${n}`), model: n !== 2 }));
+// The measured results, as the hidden-set report gives them (docs/HIDDEN-SET.md).
 const figures = [{ value: "94", of: "85 / 90", label: t(lang, "ai.fig.1") }, { value: "67", of: "60 / 90", label: t(lang, "ai.fig.2") }, { value: "36", of: "32 / 90", label: t(lang, "ai.fig.3") }];
 const percent = lang === "ar" ? "٪" : "%";
+const guarantees = [
+    { title: t(lang, "proofs.texts.title"), line: fmt(s(lang, "AboutSources"), "1,361", "6") },
+    { title: t(lang, "proofs.offline.title"), line: t(lang, "proofs.offline.short") },
+    { title: t(lang, "proofs.review.title"), line: t(lang, "proofs.review.short") },
+    { title: t(lang, "proofs.grounds.title"), line: t(lang, "proofs.grounds.short") },
+];
+const no = (n: number) => String(n).padStart(2, "0");
 ---
 <Folder tone="kraft" no="04" tab={t(lang, "tab.ai")} labelledby="ai-title">
     <div class="page ai">
@@ -50,23 +40,21 @@ const percent = lang === "ar" ? "٪" : "%";
             <h2 id="ai-title" class="h1">{t(lang, "ai.title")}</h2>
             <p class="lead">{t(lang, "ai.lead")}</p>
         </div>
-        <ol class="log">
-            {stages.map((stage) => (
-                <li class:list={["entry", !stage.shot && stage.n !== 4 && "bare"]}>
-                    <span class="reg-no">{String(stage.n).padStart(2, "0")}</span>
-                    <div class="words">
-                        {/* The tag sits beside the heading, not inside it, so the heading's name is the stage alone. */}
-                        <div class="entry-head"><h3 class="h3">{stage.title}</h3> {stage.model ? <span class="tag"><Icon name="sparkle" size={12} /> AI</span> : <span class="tag by-code"><Icon name="checkmark_circle" size={12} /> {t(lang, "ai.code")}</span>}</div>
-                        <p>{stage.body}</p>
-                        {stage.n === 4 && <p class="time">{t(lang, "ai.stage4.time")}</p>}
-                    </div>
-                    {stage.shot && <div class="picture"><Shot lang={lang} light={stage.shot.light} dark={stage.shot.dark} alt={stage.caption} caption={stage.caption} width={400} quality={72} /></div>}
-                    {stage.n === 4 && <div class="picture"><AppPiece lang={lang} kind="activity" section={groundsTitle[lang]} live={live + " …"} caption={t(lang, "ai.shot.activity")} /></div>}
-                </li>
-            ))}
-        </ol>
-        <p class="caption">{t(lang, "ai.shots")}</p>
-        <Source lang={lang} files={["README.md"]} />
+        <div class="who">
+            <div>
+                <h3 class="label">{t(lang, "ai.who")}</h3>
+                <ol class="rows">
+                    {rows.map((row) => (
+                        <li>
+                            <span class="reg-no">{no(row.n)}</span>
+                            <span class="what"><strong>{row.title}</strong> {row.model ? <span class="tag">AI</span> : <span class="tag by-code"><Icon name="checkmark_circle" size={12} /> {t(lang, "ai.code")}</span>}</span>
+                            <span class="line">{row.line}</span>
+                        </li>
+                    ))}
+                </ol>
+            </div>
+            <Shot lang={lang} light={reading.light} dark={reading.dark} alt={t(lang, "ai.shot.stage1")} caption={t(lang, "ai.pic")} width={440} quality={72} class="picture" />
+        </div>
         <div class="sheet results">
             <Clip />
             <h3 class="results-title">{t(lang, "ai.fig.title")}</h3>
@@ -81,34 +69,51 @@ const percent = lang === "ar" ? "٪" : "%";
             <p class="caption">{t(lang, "ai.measureNote")}</p>
             <Source lang={lang} files={["docs/HIDDEN-SET.md"]} />
         </div>
-        <Proofs lang={lang} />
+        <div class="guarantees">
+            <h3 id="proofs-title" class="label">{t(lang, "proofs.title")}</h3>
+            <ol>
+                {guarantees.map((g, i) => (
+                    <li><span class="reg-no">{no(i + 1)}</span><p><strong>{g.title}</strong> {g.line}</p></li>
+                ))}
+            </ol>
+            <Source lang={lang} files={["README.md", "docs/PRODUCT-DETAILS.md", "docs/OFFLINE.md", "data/law/codes"]} />
+        </div>
     </div>
 </Folder>
 
 <style>
-    .ai { display: grid; gap: 36px; }
-    .intro { display: grid; gap: 16px; max-width: 820px; }
-    /* The log: one entry per stage under a heavy rule, the register number, the words, and the picture clipped beside. */
-    .log { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--w-text); }
-    .entry { display: grid; grid-template-columns: 3em minmax(0, 1fr) minmax(0, 400px); gap: 12px 32px; align-items: start; padding-block: 28px; border-bottom: 1px solid var(--w-rule); }
-    .entry .reg-no { padding-top: 4px; font-size: 0.9rem; }
-    .entry.bare { grid-template-columns: 3em minmax(0, 1fr); }
-    .entry .picture :global(.piece) { width: min(100%, 400px); }
-    .words { display: grid; gap: 10px; align-content: start; }
-    .entry-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
-    .entry p { font-size: 0.97rem; }
+    .ai { display: grid; gap: 40px; }
+    .intro { display: grid; gap: 14px; max-width: 760px; }
+    .label { font-size: 0.95rem; font-weight: 600; padding-bottom: 10px; border-bottom: 2px solid var(--w-text); }
+    /* Who writes what: a register of four lines, the tag and the one-line job beside each stage; the picture beside. */
+    .who { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 440px); gap: 24px 48px; align-items: start; }
+    .rows { list-style: none; margin: 0; padding: 0; }
+    .rows li { display: grid; grid-template-columns: 2.4em minmax(0, 18em) minmax(0, 1fr); gap: 4px 16px; align-items: baseline; padding-block: 14px; border-bottom: 1px solid var(--w-rule); }
+    .what { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
     .tag.by-code { color: var(--w-text); }
-    .time { font-weight: 600; }
-    .picture { display: grid; justify-items: end; }
-    /* The results, typed on a sheet: each figure large, its count and its exact mode beside it. */
-    .results { display: grid; gap: 16px; padding: 30px 30px 24px; max-width: 900px; }
+    .line { color: var(--w-muted); }
+    /* The results: three figures in one line on a slim sheet, each with its count. */
+    .results { display: grid; gap: 14px; padding: 24px 28px 20px; }
     .results-title { font-size: 0.9rem; font-weight: 600; color: var(--w-sheet-muted); padding-bottom: 10px; border-bottom: 2px solid var(--w-sheet-text); }
-    .figures { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px 28px; margin: 0; }
-    .figure { display: flex; flex-direction: column-reverse; gap: 6px; justify-content: flex-end; }
+    .figures { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 28px; margin: 0; }
+    .figure { display: flex; flex-direction: column-reverse; gap: 4px; justify-content: flex-end; }
     .figure dt { font-size: 0.9rem; line-height: 1.5; }
     .figure dd { margin: 0; display: flex; align-items: baseline; gap: 10px; }
-    .value { font-family: var(--w-display); font-weight: 700; font-size: clamp(2.6rem, 2rem + 2vw, 3.6rem); line-height: 1; font-variant-numeric: tabular-nums; }
+    .value { font-family: var(--w-display); font-weight: 700; font-size: clamp(2.2rem, 1.8rem + 1.6vw, 3rem); line-height: 1; font-variant-numeric: tabular-nums; }
     .of { color: var(--w-sheet-muted); font-size: 0.9rem; font-variant-numeric: tabular-nums; }
-    @media (max-width: 1099px) { .entry { grid-template-columns: 3em minmax(0, 1fr); } .picture { grid-column: 2; justify-items: start; } }
-    @media (max-width: 699px) { .figures { grid-template-columns: 1fr; } .entry, .entry.bare { grid-template-columns: 2.2em minmax(0, 1fr); gap: 12px 12px; } }
+    /* The guarantees: four numbered lines, two by two on a wide screen. */
+    .guarantees { display: grid; gap: 4px; }
+    .guarantees ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 40px; }
+    .guarantees li { display: grid; grid-template-columns: 2.4em minmax(0, 1fr); gap: 10px; padding-block: 14px; border-bottom: 1px solid var(--w-rule); }
+    .guarantees p { color: var(--w-muted); }
+    .guarantees strong { color: var(--w-text); margin-inline-end: 4px; }
+    @media (max-width: 1099px) {
+        .who { grid-template-columns: minmax(0, 1fr); }
+        .rows li { grid-template-columns: 2.4em minmax(0, 1fr); }
+        .line { grid-column: 2; }
+    }
+    @media (max-width: 699px) {
+        .figures, .guarantees ol { grid-template-columns: 1fr; }
+        .rows li, .guarantees li { grid-template-columns: 2em minmax(0, 1fr); gap: 4px 10px; }
+    }
 </style>

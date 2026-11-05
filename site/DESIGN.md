@@ -47,7 +47,8 @@ Each face is cut into an Arabic and a Latin file by `scripts/fonts.mjs`; a page 
 - **The petition** (`StepStory.astro`): the app's own paper for the fictitious sample, section by section, with the alignment, weight, spacing and headings the form definition gives it (`src/content/paper-ar.json`, read from the demo by `tests/paper-dump.mjs`; never retyped). The legal grounds are whole paragraphs as the app writes them, without quotation marks; the code's part is marked on the site only (a light underline and the "from the official text" chip).
 - **Register** (`StepStory.astro`): the nine entries ruled like a register, numbered 01 to 09, each ticked with a violet pen stroke (`#tick-shape`).
 - **Report** (`CheckReport.astro`): the formal check typed on a sheet: the app's label, the score, nine boxes that fill with violet ink (red while an element is missing), the verdict.
-- **Log and guarantees**: the AI's four stages are a numbered log under a heavy rule, two of them with their capture beside them and the drafting stage with the live panel; the guarantees are one clipped sheet of four numbered entries with two pieces of the app attached beside it. The hidden-set figures (94%, 67%, 36%) are typed on a clipped sheet with their counts and their source.
+- **Who writes what and the guarantees**: the AI's four stages are four ruled lines under a heavy rule, each with its AI or code tag and one line of what it does, beside one picture (the model's reading of the facts, from the desktop capture); the guarantees are four numbered lines, two by two. The hidden-set figures (94%, 67%, 36%) are typed on one slim clipped sheet with their counts and their source.
+- **The guide reel** (`GuideReel.astro`): the five steps as a register of tabs beside one screen of the demo, its guide's gold ring and card as they are at that step (`tests/guide-reel-shots.mjs`, steps 3 and 5 from a real run of the demo's hosted model, the engine that answered named under the reel), and the card's hint under it, verbatim.
 - **Buttons**: carbon fill (`.btn-primary`) for the one primary action of a block, carbon outline otherwise; 2 px corners, 48 px tall.
 - **Tags** (`.tag`): a square frame in violet ink; the app's own rounded chips stay inside its pieces.
 
@@ -58,12 +59,12 @@ Each face is cut into an Arabic and a Latin file by `scripts/fonts.mjs`; a page 
 | 01 | salmon | the title, the tagline, Try the demo (filled), Download for Windows, the note; the laptop lying on the folder with the "works offline" stamp on its corner |
 | 02 | board | the problem; a petition fragment with the defendant's domicile blank, the red note under it with art. 15-3, the check at 7 / 9 |
 | 03 | salmon | the scroll story: the register and the petition; then, at the peak, one line and the two actions |
-| 04 | board | the proof: the drafting log (pictures on stages 01 and 03, the live panel on 04), the hidden-set report, and the guarantees as one numbered sheet with the law-library card and the refused-export notice attached |
-| 05 | blue | the five-minute test, five numbered sheets |
+| 04 | board | the proof: who writes what (four lines, one picture), the hidden-set figures on one slim sheet, the four guarantees one line each (about 300 words, 682 before 5 Nov 2026) |
+| 05 | blue | the five-minute test as the demo's own guide, step by step: five tabs, one screen of the demo per step, the guide's hint, the demo with its guide one click away |
 | 06 | board | the team as a signature block: identity photos clipped to the file, the names over a rule |
 | 07 | green | the demo and the download as two slips: the file ends on the action |
 
-The home had eight folders until 5 Nov 2026; after the second Impeccable critique the AI log and the exhibits became one proof folder, the repeated pictures went (the drafted paper is the story's alone), an action strip follows the story, and the team moved before the download.
+Folder 04 lost its drafting log, its attached pieces and most of its words, and folder 05 became the guide reel, on 5 Nov 2026. The home had eight folders until that day; after the second Impeccable critique the AI log and the exhibits became one proof folder, the repeated pictures went (the drafted paper is the story's alone), an action strip follows the story, and the team moved before the download.
 
 Secondary pages are one folder each (`Base.astro`, `folder`): try and documents blue, privacy green, law yellow, download, about and 404 board. Their former labels above the title are now the folder's tab.
 
@@ -72,6 +73,7 @@ Secondary pages are one folder each (`Base.astro`, `folder`): try and documents 
 - **The scroll story** (desktop, motion welcome): the register is pinned beside the petition. Each entry is ticked as its section is written on the paper; after the defendant, the domicile disappears, the check drops and names art. 15-3, then it comes back; at 8 / 9 the check turns red and names the missing grounds; the grounds are written last (the quoted rule, then the AI's lines, then the review box), the check reaches 9 / 9 and the stamp strikes once.
 - **Stamps** elsewhere strike once as they come into view (`data-strike`, 170 ms).
 - The try page's steps keep their reveal and their filling line, now in violet.
+- **The guide reel** moves on by itself every 7 s while it is on screen: the current tab's violet line fills, then the next step shows. The pointer over it or the keyboard in it holds it, a click or the arrow keys choose a step and stop it, and its button pauses or plays it. With reduced motion it never moves by itself. Without scripts the five screens stand one under the other.
 - No parallax and no fade-up on every block. With reduced motion, and on phones, the final state is shown: ticked, 9 / 9, stamped.
 
 ## Never

@@ -32,6 +32,9 @@ public sealed partial class Home
     /// <summary>The step was already done when it was entered (the visitor came back to it): it says so and waits for Next.</summary>
     private bool _stepDoneAtEntry;
 
+    /// <summary>The furthest step reached. Next is locked until the step is done; a step done before can be passed again.</summary>
+    private int _furthest = 1;
+
     /// <summary>The target last sent (empty: the guide is open with nothing to point at; null: it is closed), so the
     /// browser is called only when it changes, not on every render.</summary>
     private string? _pointed;
@@ -69,7 +72,7 @@ public sealed partial class Home
                 if (DomicileEmpty)
                 {
                     // The score and the red card it raised, lit together.
-            return new(".score-card, .finding.mandatory", Format("Guide2Look", vm.ScoreText));
+                    return new(".score-card, .finding.mandatory", Format("Guide2Look", vm.ScoreText));
                 }
 
                 return vm.SelectedStep?.Id == DefendantStepId
@@ -86,6 +89,13 @@ public sealed partial class Home
                     return new(StepTarget(MainWindowViewModel.GroundsStepId), Format("GuideStep", Quote(StepLabel(MainWindowViewModel.GroundsStepId))));
                 }
 
+                // The model can fail or be cancelled (the panel's own status says why, under the button): the guide says
+                // so rather than repeating the first instruction.
+                if (vm.AnalysisStatus.Length > 0 && (vm.Analysis is null || vm.IsAnalysisStale))
+                {
+                    return new(".grounds button.ai", Format("GuideRetry", Quote(L["AnalyseGrounds"])));
+                }
+
                 if (vm.NeedsClaimConfirmation)
                 {
                     return new(".confirm-claim button.primary", Format("Guide3Confirm", Quote(L["ConfirmClaim"])));
@@ -96,9 +106,13 @@ public sealed partial class Home
                     ? new(".grounds", Format("Guide3Articles", Quote(L["Next"])))
                     : new(".grounds button.ai", Format("Guide3Analyse", Quote(L["AnalyseGrounds"])));
             case 4:
-                return vm.GenerateCommand.IsRunning
-                    ? new(".draft-panel .activity", T("Guide4Wait"))
-                    : new(".engine-row button.ai", Format("Guide4Generate", Quote(L["Generate"])));
+                if (vm.GenerateCommand.IsRunning)
+                {
+                    return new(".draft-panel .activity", T("Guide4Wait"));
+                }
+
+                // A failed draft is reported in the status bar as an error.
+                return new(".engine-row button.ai", Format(vm.IsError ? "GuideRetry" : "Guide4Generate", Quote(L["Generate"])));
             default:
                 if (_guideExported)
                 {
@@ -126,9 +140,18 @@ public sealed partial class Home
         _ => _guideExported,
     };
 
+    /// <summary>
+    /// Next moves on only past a step the visitor has done: one done before, one already done on arrival, or, when the
+    /// model recognised no claim type, once the visitor has ticked articles by hand. Otherwise the guide moves on by itself.
+    /// </summary>
+    private bool CanGoNext() =>
+        guideStep < _furthest || _stepDoneAtEntry || (guideStep == GuideSteps && _guideExported)
+        || (guideStep == 3 && Vm!.Analysis is not null && !Vm.IsAnalysisStale && !Vm.NeedsClaimConfirmation && Vm.HasSelectedArticles);
+
     private void EnterStep(int step)
     {
         guideStep = Math.Clamp(step, 1, GuideSteps);
+        _furthest = Math.Max(_furthest, guideStep);
         _guideSampleOpened = false;
         _domicileCleared = false;
         _guideExported = false;
@@ -162,10 +185,16 @@ public sealed partial class Home
 
     private async Task MoveGuide(int direction)
     {
+        if (direction > 0 && !CanGoNext())
+        {
+            return;
+        }
+
         if (direction > 0 && guideStep == GuideSteps)
         {
             // Finished: the next opening starts from the beginning.
             guideStep = 1;
+            _furthest = 1;
             await CloseGuide();
             return;
         }

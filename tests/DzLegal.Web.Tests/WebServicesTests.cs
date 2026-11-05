@@ -303,7 +303,7 @@ public class WebEngineTests
     [InlineData("ar")]
     public void TheGuideHasATitleAndItsHintsForEveryStepInBothLanguages(string language)
     {
-        string[] keys = ["GuideTitle", "GuideCount", "GuidePoints", "GuideFinish", "GuideDoneStep", "GuideStep", "GuideHide", "GuideShow", "GuideOpen", "GuideInvite",
+        string[] keys = ["GuideTitle", "GuideCount", "GuidePoints", "GuideFinish", "GuideLocked", "GuideRetry", "GuideDoneStep", "GuideStep", "GuideHide", "GuideShow", "GuideOpen", "GuideInvite",
             "Guide1Pick", "Guide2Clear", "Guide2Look", "Guide3Analyse", "Guide3Wait", "Guide3Confirm", "Guide3Articles", "Guide4Generate", "Guide4Wait",
             "Guide5Early", "Guide5Tick", "Guide5Again", "Guide5Export", "Guide5Done"];
         foreach (var key in Enumerable.Range(1, Components.Pages.Home.GuideSteps).Select(n => $"Guide{n}Title").Concat(keys))

@@ -48,9 +48,13 @@ public static class WebText
         // and step names, quoted, so the hint always matches what is on screen.
         ["GuideCount"] = ("Step {0} of {1}", "الخطوة {0} من {1}"),
         ["GuidePoints"] = (
-            "The guide lights up what to use next; you press it yourself.",
-            "يضيء الدليل ما تستعمله بعد ذلك، وتضغطه أنت بنفسك."),
+            "The guide lights up what to use next; you press it yourself, and it moves on once you have done the step.",
+            "يضيء الدليل ما تستعمله بعد ذلك، وتضغطه أنت بنفسك، فينتقل إلى ما بعده متى أنجزت الخطوة."),
         ["GuideFinish"] = ("Finish", "إنهاء"),
+        ["GuideLocked"] = ("Do this step to go on: the guide moves on by itself.", "أنجز هذه الخطوة للمتابعة: ينتقل الدليل وحده إلى ما بعدها."),
+        ["GuideRetry"] = (
+            "That did not finish this time; the app's own message says why. Press {0} to try again.",
+            "لم يكتمل ذلك هذه المرة، ورسالة التطبيق تذكر السبب. اضغط {0} لإعادة المحاولة."),
         ["GuideDoneStep"] = ("This step is done already. Press {0}.", "أُنجزت هذه الخطوة من قبل. اضغط {0}."),
         ["GuideStep"] = ("Open the {0} step.", "افتح خطوة {0}."),
         ["Guide1Pick"] = (

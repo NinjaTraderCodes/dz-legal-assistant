@@ -474,7 +474,9 @@
             }
             <div class="guide-nav">
                 <button type="button" class="small" disabled="@(guideStep == 1)" @onclick="() => MoveGuide(-1)">@L["Previous"]</button>
-                <button type="button" class="small @(pointer.Done ? "primary" : "")" @onclick="() => MoveGuide(1)">@(guideStep == GuideSteps ? T("GuideFinish") : L["Next"])</button>
+                @* Next is locked until the step is done (the guide then moves on by itself); the reason is its tooltip. *@
+                @{ var canGoNext = CanGoNext(); }
+                <button type="button" class="small @(pointer.Done ? "primary" : "")" disabled="@(!canGoNext)" title="@(canGoNext ? null : T("GuideLocked"))" @onclick="() => MoveGuide(1)">@(guideStep == GuideSteps ? T("GuideFinish") : L["Next"])</button>
             </div>
         </section>
     }

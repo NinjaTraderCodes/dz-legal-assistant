@@ -55,10 +55,10 @@ window.dzlegal = {
     this.remember("dzlegal.lang", lang);
     this.remember("dzlegal.theme", theme);
   },
-  // The guide's light. While the guide is open the window is dimmed, except a hole around what it points at (never
-  // clicked for the visitor, and the dim lets every click through), and its card stands beside that, or in the middle
-  // when there is nothing to point at. A frame loop follows the target as panels scroll and re-render. On a phone, a
-  // target in a panel that is not shown lights that panel's tab, and the card stays at the bottom of the screen.
+  // The guide's light: a gold ring over what it points at (never clicked for the visitor), and its card beside that, or
+  // in the middle when there is nothing to point at. At each new target the ring and the card pulse together a few
+  // times. A frame loop follows the target as panels scroll and re-render. On a phone, a target in a panel that is not
+  // shown lights that panel's tab, and the card stays at the bottom of the screen.
   point(selector, open) {
     const g = this._guide ??= { lit: [], frame: 0, spot: null, card: "" };
     if (!open) { this._unpoint(); return; }
@@ -70,6 +70,15 @@ window.dzlegal = {
       g.spot.setAttribute("aria-hidden", "true");
       document.body.appendChild(g.spot);
     }
+    // Restarted on each new target, so the eye is drawn to both at once.
+    requestAnimationFrame(() => {
+      for (const el of [g.spot, document.querySelector(".guide-card")]) {
+        if (!el) continue;
+        el.classList.remove("nudge");
+        void el.offsetWidth;
+        el.classList.add("nudge");
+      }
+    });
     if (!g.frame) {
       const tick = () => { g.frame = requestAnimationFrame(tick); this._follow(); };
       g.frame = requestAnimationFrame(tick);
@@ -134,7 +143,7 @@ window.dzlegal = {
     };
     const spot = g.spot;
     spot.classList.toggle("empty", !hole);
-    // The section assistant is a drawer of its own, over the work: the guide does not dim it.
+    // The section assistant is a drawer of its own, over the work: the ring stays off it.
     spot.hidden = !!document.querySelector(".assistant");
     const h = hole ?? { top: innerHeight / 2, left: innerWidth / 2, bottom: innerHeight / 2, right: innerWidth / 2 };
     const css = `top:${h.top}px;left:${h.left}px;width:${h.right - h.left}px;height:${h.bottom - h.top}px`;

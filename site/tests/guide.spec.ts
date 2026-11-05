@@ -35,7 +35,13 @@ test("the five steps of the guide happen in the demo as the website says", async
     await expect(guide).toBeVisible();
     await expect(guide).toContainText(label("Web.GuideTitle"));
     const lit = page.locator(".guide-ring");
-    const atStep = (n: number) => expect(guide).toContainText(label(`Web.Guide${n}Title`));
+    const next = guide.getByRole("button", { name: label("Next"), exact: true });
+    // Each step: its title, the AI tag on the two AI steps only, and Next locked until the step is done.
+    const atStep = async (n: number) => {
+        await expect(guide).toContainText(label(`Web.Guide${n}Title`));
+        await expect(guide.locator(".tag.ai")).toHaveCount(n === 3 || n === 4 ? 1 : 0);
+        if (n < 5) await expect(next).toBeDisabled();
+    };
 
     // Step 1: open the sample "Unpaid loan"; the guide moves on by itself.
     await atStep(1);
@@ -48,6 +54,7 @@ test("the five steps of the guide happen in the demo as the website says", async
     // Step 2: clear the defendant's domicile, where the guide points.
     await atStep(2);
     await expect(lit).toHaveAttribute("data-step", "defendant");
+    await expect(next).toBeDisabled();
     await lit.click();
     const domicile = page.locator("#f-defendant-domicile");
     await expect(domicile).toHaveClass(/guide-ring/);

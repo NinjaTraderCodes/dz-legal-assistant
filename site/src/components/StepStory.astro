@@ -94,7 +94,7 @@ const ui = { lang, dir: lang === "ar" ? "rtl" : "ltr" } as const;
     .stage { display: grid; grid-template-columns: minmax(300px, 380px) minmax(0, 1fr); gap: clamp(24px, 3.5vw, 48px); align-items: start; }
     /* The register must fit a 768 px screen while the story holds it in place: compact rows, and the stamp set in the
        sheet's lower margin instead of taking a line of its own. It stays on the paper: its ink is the sheet's. */
-    .side { display: grid; gap: 14px; position: sticky; top: 96px; padding: 22px 22px 128px; }
+    .side { display: grid; gap: 14px; position: sticky; top: 96px; padding: 24px 24px 128px; }
     .register-title { font-size: 0.82rem; font-weight: 600; color: var(--w-sheet-muted); padding-bottom: 10px; border-bottom: 2px solid var(--w-sheet-text); margin-bottom: -14px; }
     .entries { list-style: none; margin: 0; padding: 0; }
     .step { display: grid; grid-template-columns: 2.4em minmax(0, 1fr) 28px; align-items: center; min-height: 34px; border-radius: 0; color: var(--w-sheet-text); border-bottom: 1px solid var(--w-sheet-rule); font-size: 0.95rem; transition: background-color 200ms ease; }
@@ -104,7 +104,7 @@ const ui = { lang, dir: lang === "ar" ? "rtl" : "ltr" } as const;
     .step.current { font-weight: 600; color: var(--w-sheet-text); background: color-mix(in srgb, var(--w-sheet-ink) 8%, transparent); }
     .finding { display: grid; gap: 2px; color: var(--w-sheet-red); font-size: 0.86rem; line-height: 1.5; }
     .finding[hidden] { display: none; }
-    .ready { position: absolute; bottom: 16px; inset-inline-end: 18px; margin: 0; --stamp-turn: -6deg; font-size: 1.5rem; }
+    .ready { position: absolute; bottom: 16px; inset-inline-end: 16px; margin: 0; --stamp-turn: -6deg; font-size: 1.5rem; }
     /* The frame: while the story runs, the sheet scrolls inside a viewport-high window so the current section is in view. */
     :global(.framed) .paper-canvas { height: calc(100vh - var(--story-top, 96px) - 16px); box-sizing: border-box; overflow: hidden; padding: 6px; margin: -6px; }
     :global(.framed) .paper { will-change: transform; }

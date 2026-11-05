@@ -1,7 +1,5 @@
 ---
-// The foot of every page, the back cover of the case file: the offline line of the welcome screen, the pages, the
-// version and the licences of what the site bundles (fonts and icons), as AGENTS.md requires.
-import Icon from "./Icon.astro";
+// The foot of every page, the back cover of the case file: the pages, the version and the licences of what the site bundles (fonts and icons), as AGENTS.md requires.
 import { s, t, fmt, type Lang } from "../i18n";
 import { pages, version } from "../content/product";
 
@@ -11,7 +9,6 @@ const current = (page: string) => (page === path ? "page" : undefined);
 ---
 <footer class="site-footer">
     <div class="page foot">
-        <p class="offline"><Icon name="shield_checkmark" size={16} /> {t(lang, "site.offline")}</p>
         <nav class="links pages" aria-label={t(lang, "footer.pages")}>
             <a href={`/${lang}/`} aria-current={current("/")}>{t(lang, "nav.home")}</a>
             {pages(lang).filter((p) => p.key !== "how").map((link) => <a href={link.href} aria-current={current(link.path)}>{link.label}</a>)}
@@ -25,8 +22,6 @@ const current = (page: string) => (page === path ? "page" : undefined);
 <style>
     .site-footer { background: var(--w-grain) var(--w-kraft); color: var(--w-text); }
     .foot { display: grid; gap: 12px; padding-block: 36px 44px; border-top: 2px solid var(--w-text); }
-    .offline { display: inline-flex; align-items: center; gap: 8px; font-weight: 500; }
-    .offline :global(.icon) { color: var(--w-ink); }
     .links { display: flex; flex-wrap: wrap; gap: 6px 20px; }
     .links a { color: var(--w-text); }
     .pages a[aria-current="page"] { font-weight: 600; }

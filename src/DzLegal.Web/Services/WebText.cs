@@ -58,7 +58,7 @@ public static class WebText
         ["GuideDoneStep"] = ("This step is done already. Press {0}.", "أُنجزت هذه الخطوة من قبل. اضغط {0}."),
         ["GuideStep"] = ("Open the {0} step.", "افتح خطوة {0}."),
         ["Guide1Pick"] = (
-            "Pick {0} in {1}: it opens on arrival, and picking it again starts it afresh. The form fills in, the petition appears on paper and the check shows 8 / 9: the legal grounds are not drafted yet.",
+            "Pick {0} in {1}: it opens on arrival, and picking it again starts it afresh. The form fills in, the statement of claim appears on paper and the check shows 8 / 9: the legal grounds are not drafted yet.",
             "اختر {0} من {1}: تُفتح عند الوصول، واختيارها من جديد يبدؤها من أولها. تمتلئ الاستمارة، وتظهر العريضة على الورق، وتعرض المراجعة الشكلية 8 / 9: الأسانيد القانونية لم تُصغ بعد."),
         ["Guide2Clear"] = ("Clear the defendant's domicile field.", "امسح خانة موطن المدعى عليه."),
         ["Guide2Look"] = (
@@ -72,7 +72,7 @@ public static class WebText
             "Nothing is used yet. If the claim type is right, press {0}: the articles it requires are ticked, and you can change them.",
             "لم يُستعمل شيء بعد. إن كان نوع الدعوى صحيحا فاضغط {0}: تُحدَّد المواد اللازمة له، ويمكنك تغييرها."),
         ["Guide3Articles"] = (
-            "No claim type was recognised: tick the articles the petition should cite, then press {0}.",
+            "No claim type was recognised: tick the articles the statement of claim should cite, then press {0}.",
             "لم يُتعرَّف على نوع الدعوى: حدّد المواد التي تذكرها العريضة، ثم اضغط {0}."),
         ["Guide4Generate"] = (
             "Press {0}. Facts and requests keep your wording; the program writes each article's rule from the catalogue and the AI writes how the facts meet it.",
@@ -89,7 +89,7 @@ public static class WebText
         ["Guide5Again"] = ("Press {0} again: the PDF downloads. {1} works the same way.", "اضغط {0} من جديد: يُنزَّل الملف. و{1} يعمل بالطريقة نفسها."),
         ["Guide5Export"] = ("Press {0}: the PDF downloads. {1} works the same way.", "اضغط {0}: يُنزَّل الملف. و{1} يعمل بالطريقة نفسها."),
         ["Guide5Done"] = (
-            "Done: the petition was exported after your review. Press {0} to close the guide.",
+            "Done: the statement of claim was exported after your review. Press {0} to close the guide.",
             "انتهيت: صُدّرت العريضة بعد مراجعتك. اضغط {0} لإغلاق الدليل."),
         ["SampleOpened"] = ("Sample case opened: {0}. All names and facts are fictitious.", "فتحت القضية النموذجية: {0}. جميع الأسماء والوقائع وهمية."),
         ["Issues"] = ("To fix", "للتصحيح"),

@@ -7,6 +7,10 @@ A desktop app that helps Algerian lawyers draft the *requête introductive d'ins
 | 🌐 [Website](https://dz-legal-assistant-ai.onrender.com) | ▶ [Live demo](https://dz-legal-assistant-ai.onrender.com/app) | ⬇ [Download for Windows](https://github.com/NinjaTraderCodes/dz-legal-assistant/releases/latest) | 🎬 [Demo video](https://drive.google.com/file/d/1zFbKYu2HWJIQ3-o1_QB_Zs6JGhvXqLFW/view?usp=sharing) | 📄 [Pitch deck](https://drive.google.com/file/d/1k9K6tWyQsFWDLof60efMlhcdFuaJivwY/view?usp=sharing) |
 |---|---|---|---|---|
 
+![The desktop app in English, dark theme: the Unpaid loan sample with its legal grounds drafted by the local model gemma3:4b, the review box ticked, 9 of 9 mandatory elements present](docs/images/readme/desktop-en-dark.png)
+
+*The desktop app, offline, with the local model (Gemma 3 4B): the legal grounds drafted and reviewed, 9 of 9 mandatory elements present. The same screen [in Arabic](docs/images/readme/desktop-ar-dark.png), the app's default language.*
+
 ## The problem
 
 In Algeria, a statement of claim that omits one element required by the Code of Civil and Administrative Procedure (CPCA) can be rejected on form, before a judge reads the case. Lawyers check these elements from memory, under time pressure. Finding the right articles for the facts takes most of the drafting time. And online AI tools are not an option: sending a client's file outside the office breaks professional secrecy.

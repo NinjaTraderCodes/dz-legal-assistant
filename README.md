@@ -1,6 +1,6 @@
 # DZ Legal Assistant
 
-**The Grammarly for Algerian court petitions, which never leaves the lawyer's laptop.**
+**The Grammarly for the Algerian statement of claim, which never leaves the lawyer's laptop.**
 
 A desktop app that helps Algerian lawyers draft the *requête introductive d'instance* (statement of claim) in formal Arabic, checks that every element the law requires is present, and proposes the articles from the official texts. It runs offline: client files stay on the lawyer's own computer.
 
@@ -16,8 +16,8 @@ In Algeria, a statement of claim that omits one element required by the Code of 
 1. **The lawyer enters the case**: court, parties, facts and requests, in nine guided steps. The facts and requests stay exactly as the lawyer wrote them.
 2. **The AI reads the facts** and proposes the type of claim and the articles, chosen only from the official texts loaded in the app.
 3. **The lawyer confirms the claim type and ticks the articles.** Nothing is used before that confirmation.
-4. **The app drafts the legal grounds.** The code quotes each rule from the official text; the AI writes only how the facts meet it. Every AI-written section is marked and must be reviewed before the petition can be exported.
-5. **A rule engine, with no AI, checks every mandatory element** and names the article behind each missing one. Then the petition is exported to PDF or Word.
+4. **The app drafts the legal grounds.** The code quotes each rule from the official text; the AI writes only how the facts meet it. Every AI-written section is marked and must be reviewed before the statement of claim can be exported.
+5. **A rule engine, with no AI, checks every mandatory element** and names the article behind each missing one. Then the statement of claim is exported to PDF or Word.
 
 ### The AI at work: a real run on a laptop
 
@@ -30,7 +30,7 @@ Frames from the [demo video](https://drive.google.com/file/d/1zFbKYu2HWJIQ3-o1_Q
 | ![The local model drafting the legal grounds from the confirmed articles: 2 min 33 s](docs/images/readme/live-ai-drafting.jpg) | ![The drafted legal grounds in Arabic, with the review box the lawyer must tick before export](docs/images/readme/live-ai-drafted-grounds.jpg) |
 | **3. Drafting the legal grounds** from the confirmed articles (2 min 33 s). The code quotes each rule; the AI links the facts to it. | **4. The lawyer reviews.** The AI-written section must be ticked "I have reviewed this section and take responsibility for it" before any export. |
 
-The app also includes a first-run setup that fills the signature block of every petition, a guided tour, a sample case, help pages, and a law library showing each text's official source and how it was checked. It works in Arabic and English, in light and dark themes; the petition itself is always Arabic, right to left.
+The app also includes a first-run setup that fills the signature block of every statement of claim, a guided tour, a sample case, help pages, and a law library showing each text's official source and how it was checked. It works in Arabic and English, in light and dark themes; the statement of claim itself is always Arabic, right to left.
 
 ![The law library: each text with its official reference, its edition and how it was checked](docs/images/readme/law-library-en.png)
 
@@ -41,7 +41,7 @@ The app also includes a first-run setup that fills the signature block of every 
 | What | Result |
 |---|---|
 | Automated tests | **937**, all passing |
-| Form checks (rule engine, no AI) | **360 of 360** correct on 24 test petitions |
+| Form checks (rule engine, no AI) | **360 of 360** correct on 24 test statements of claim |
 | Law texts | **1,361 articles** from 6 texts, including the complete Family Code and the complete CPCA |
 | Claim types covered | **21**: civil, commercial, family and labour |
 
@@ -63,7 +63,7 @@ Measured on 100 test cases written by a separate AI agent and never opened by th
 
 **What this means for the lawyer**
 
-- **The parts that make a petition admissible do not depend on the AI.** The form check is pure code, and the law is quoted from the official texts by code.
+- **The parts that make a statement of claim admissible do not depend on the AI.** The form check is pure code, and the law is quoted from the official texts by code.
 - **The AI only proposes.** The lawyer confirms the claim type before anything is used, and reviews every AI-written section before export. The local model reads most details right, but often misses one per case, which is exactly what these confirmations are for.
 - **Two ways to get a stronger AI, both planned:** an optional online mode, where client names are hidden on the laptop and the lawyer sees exactly what is sent before it leaves; and larger local models for 16 GB laptops (Gemma 4 E4B is installed and being tested).
 
@@ -98,7 +98,7 @@ dotnet run --project src/DzLegal.Web  # the web demo, locally
 
 - **The legal rules and the claim catalogue are not yet verified by a practising lawyer.** Every rule is marked unverified in the data and in the app; an independent audit in October 2026 found errors in the catalogue, and corrections are under way. Checklist: [docs/LEGAL-VERIFICATION.md](docs/LEGAL-VERIFICATION.md).
 - **One document type so far:** the statement of claim. The Civil, Commercial and Labour codes are only partly loaded; the complete Civil Code is being checked against the Official Journal.
-- **The app drafts; it does not decide.** It does not judge the merits or guarantee a result, and the lawyer reviews and signs every petition.
+- **The app drafts; it does not decide.** It does not judge the merits or guarantee a result, and the lawyer reviews and signs every statement of claim.
 - **The web demo sends what is typed to a hosted model:** fictitious cases only. The desktop app sends nothing.
 - **The local model is the weak point today:** it is slower and less precise than the online model (table above). The desktop app stays offline by default; the online mode will be the lawyer's choice, case by case.
 

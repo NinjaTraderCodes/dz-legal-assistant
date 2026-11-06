@@ -433,6 +433,20 @@ test("the guide reel moves on by itself while it is on screen, and waits while t
     await expect(tabs.nth(1)).toHaveAttribute("aria-selected", "true");
 });
 
+test("the bar's How it works, followed from another page, lands on the story below the sticky bar, with motion too", async ({ page }) => {
+    await page.setViewportSize({ width: 1366, height: 768 });
+    await page.goto("/en/privacy/");
+    await page.locator('header a[href="/en/#how"]').first().click();
+    await expect(page).toHaveURL(/\/en\/#how$/);
+    // Once the scroll story has set itself up, the folder's top sits just under the bar and its tab, never off screen.
+    const top = () => page.evaluate(() => Math.round(document.getElementById("how")!.getBoundingClientRect().top));
+    await expect.poll(async () => { const y = await top(); return y >= 64 && y < 200; }, { timeout: 8_000 }).toBe(true);
+    // And it stays there once the page has settled.
+    await page.waitForTimeout(1_500);
+    expect(await top()).toBeGreaterThanOrEqual(64);
+    expect(await top()).toBeLessThan(200);
+});
+
 test("the law library page counts the data files and every official source it links opens", async ({ page, request }) => {
     await page.goto("/en/law/");
     // 1,361 articles from 6 texts, 2 of them complete: the figures of data/law/codes, never typed by hand.

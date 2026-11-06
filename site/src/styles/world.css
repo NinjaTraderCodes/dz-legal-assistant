@@ -15,6 +15,8 @@
   --w-text: #1d1a17;
   --w-muted: #463d33;
   --w-ink: #4a3b8f;
+  /* What reads on the ink when it fills a button: the one coloured action of a block. */
+  --w-ink-on: #ffffff;
   --w-rule: rgb(29 26 23 / 0.22);
   --w-btn: #1d1a17;
   --w-btn-text: #fbfaf6;
@@ -55,10 +57,11 @@
   --w-text: #ece7de;
   --w-muted: #bfb4a4;
   --w-ink: #b4a8f2;
+  --w-ink-on: #1d1a17;
   --w-rule: rgb(236 231 222 / 0.2);
-  --w-btn: #f4f1ea;
+  --w-btn: #fbfaf6;
   --w-btn-text: #1d1a17;
-  --w-focus: #f4f1ea;
+  --w-focus: #fbfaf6;
   --w-shadow: 0 1px 0 rgb(0 0 0 / 0.3), 0 10px 22px -8px rgb(0 0 0 / 0.7);
   --w-lift: drop-shadow(0 26px 34px rgb(0 0 0 / 0.65));
   --w-grain: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22260%22 height=%22260%22%3E%3Cfilter id=%22f%22 x=%220%22 y=%220%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.75 0.22%22 numOctaves=%223%22 seed=%224%22 stitchTiles=%22stitch%22/%3E%3CfeColorMatrix values=%220 0 0 0 1 0 0 0 0 0.95 0 0 0 0 0.85 0 0 0 0.07 0%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23f)%22/%3E%3C/svg%3E");
@@ -66,7 +69,8 @@
   --w-lamp: rgb(255 255 255 / 0.07);
   --w-shade: rgb(0 0 0 / 0.32);
   --w-stack: 0 -16px 30px -14px rgb(0 0 0 / 0.75), inset 0 1px 0 rgb(255 255 255 / 0.06);
-  --w-sheet: #f4f1ea;
+  /* The same paper as the light theme, near the app's white petition (a cream sheet read as a generated-page default). */
+  --w-sheet: #fbfaf6;
 }
 
 /* The faces: Markazi Text for titles, Readex Pro for text and controls, each in an Arabic and a Latin file so a page
@@ -122,7 +126,7 @@
      carries its own text colours, and the app's tokens inside it take their light values (the app's pieces and
      cards read them). */
   .sheet, .panel, .card { position: relative; background: var(--w-sheet); color: var(--w-sheet-text); border-radius: 2px; box-shadow: var(--w-shadow);
-    --w-text: var(--w-sheet-text); --w-muted: var(--w-sheet-muted); --w-rule: var(--w-sheet-rule); --w-ink: var(--w-sheet-ink); --w-btn: #1d1a17; --w-btn-text: #fbfaf6; --w-focus: #1d1a17;
+    --w-text: var(--w-sheet-text); --w-muted: var(--w-sheet-muted); --w-rule: var(--w-sheet-rule); --w-ink: var(--w-sheet-ink); --w-ink-on: #ffffff; --w-btn: #1d1a17; --w-btn-text: #fbfaf6; --w-focus: #1d1a17;
     --text: #1c2321; --muted: #6a706d; --muted-aa: #545a57; --hairline: #e4dfd4; --surface: #ffffff; --surface-alt: #f8f6f1; --accent: #786039; --accent-soft: #fff3dc; --edge: #786039;
     --success: #2b7a4b; --success-soft: #e5f3ea; --danger: #b3261e; --danger-soft: #fcebe9; --warning: #935600; --warning-soft: #fff3dc; --gold: #c6a76d; --on-gold: #28231d; }
   :is(.sheet, .panel, .card) a:not(.btn) { color: var(--w-sheet-text); }
@@ -148,7 +152,7 @@
   .tick { width: 24px; height: 20px; color: var(--w-ink); flex: none; stroke-dasharray: 30; stroke-dashoffset: 0; transition: stroke-dashoffset 260ms ease-out; }
 
   /* A tag on the folder: a square frame in the text's colour (the app's own chips stay inside its pieces). */
-  .tag { display: inline-flex; align-items: center; gap: 6px; padding: 2px 9px; border: 1px solid currentColor; border-radius: 2px; color: var(--w-ink); font-size: 0.75rem; font-weight: 600; line-height: 1.6; white-space: nowrap; }
+  .tag { display: inline-flex; align-items: center; gap: 6px; padding: 2px 9px; border: 1px solid currentColor; border-radius: 2px; color: var(--w-text); font-size: 0.75rem; font-weight: 600; line-height: 1.6; white-space: nowrap; }
 
   /* Registry numbering: entries are numbered like a register, not labelled. */
   .reg-no { font-family: var(--w-ui); font-variant-numeric: tabular-nums; color: var(--w-muted); font-size: 0.82rem; font-weight: 500; }

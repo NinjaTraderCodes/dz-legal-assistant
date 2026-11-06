@@ -5,6 +5,11 @@
   // The petition's and the app's faces were held back for the first screen (theme-init.js, world.css): let them load.
   function faces() { setTimeout(function () { document.documentElement.removeAttribute("data-faces"); }, 0); }
   if (document.readyState === "complete") faces(); else window.addEventListener("load", faces);
+  // The sticky bar's height, at this width, for scroll-padding-top (global.css).
+  var bar = document.querySelector(".site-header");
+  function barHeight() { if (bar) document.documentElement.style.setProperty("--header-h", bar.offsetHeight + "px"); }
+  barHeight();
+  window.addEventListener("resize", barHeight);
   function remember(key, value) {
     try { document.cookie = key + "=" + value + "; Path=/; Max-Age=31536000; SameSite=Lax" + (location.protocol === "https:" ? "; Secure" : ""); } catch (e) { /* ignore */ }
     try { localStorage.setItem(key, value); } catch (e) { /* ignore */ }
@@ -80,6 +85,7 @@
         if (!shown) return;
         image.src = shown.getAttribute("data-full") || shown.currentSrc || shown.src;
         image.alt = shown.alt;
+        image.hidden = false;
         var figure = button.closest("figure"), text = figure && figure.querySelector("figcaption");
         caption.textContent = text ? text.textContent : "";
         dialog.showModal();
@@ -87,7 +93,7 @@
     });
     // A click on the backdrop (the dialog itself, outside its content) closes it; Esc and the button are native.
     dialog.addEventListener("click", function (event) { if (event.target === dialog) dialog.close(); });
-    dialog.addEventListener("close", function () { image.removeAttribute("src"); });
+    dialog.addEventListener("close", function () { image.removeAttribute("src"); image.hidden = true; });
   }
 
   // A documentation page keeps the full document folded under its summary. A link to one of its headings, from the

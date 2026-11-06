@@ -23,7 +23,7 @@ export const laptopImage = { widths: [480, 720, 960, 1440], sizes: "(min-width: 
 <Folder tone="salmon" no="01" tab={t(lang, "tab.hero")} class="hero" labelledby="hero-title">
     <div class="page stage">
         <div class="reading">
-            <h1 id="hero-title" class="display">{s(lang, "WelcomeTitle")}</h1>
+            <h1 id="hero-title" class="display" translate={lang === "en" ? "no" : undefined}>{s(lang, "WelcomeTitle")}</h1>
             <p class="tagline">{s(lang, "WelcomeTagline")}</p>
             <div class="actions">
                 <a class="btn btn-primary" href={`/app?lang=${lang}`}>{t(lang, "hero.cta")}</a>

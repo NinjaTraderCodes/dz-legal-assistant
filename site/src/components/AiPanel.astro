@@ -72,8 +72,8 @@ const no = (n: number) => String(n).padStart(2, "0");
         <div class="guarantees">
             <h3 id="proofs-title" class="label">{t(lang, "proofs.title")}</h3>
             <ol>
-                {guarantees.map((g, i) => (
-                    <li><span class="reg-no">{no(i + 1)}</span><p><strong>{g.title}</strong> {g.line}</p></li>
+                {guarantees.map((g) => (
+                    <li><p><strong>{g.title}</strong> {g.line}</p></li>
                 ))}
             </ol>
             <Source lang={lang} files={["README.md", "docs/PRODUCT-DETAILS.md", "docs/OFFLINE.md", "data/law/codes"]} />
@@ -101,10 +101,10 @@ const no = (n: number) => String(n).padStart(2, "0");
     .figure dd { margin: 0; display: flex; align-items: baseline; gap: 10px; }
     .value { font-family: var(--w-display); font-weight: 700; font-size: clamp(2.2rem, 1.8rem + 1.6vw, 3rem); line-height: 1; font-variant-numeric: tabular-nums; }
     .of { color: var(--w-sheet-muted); font-size: 0.9rem; font-variant-numeric: tabular-nums; }
-    /* The guarantees: four numbered lines, two by two on a wide screen. */
+    /* The guarantees: four lines, two by two on a wide screen; not numbered, as they are not a sequence. */
     .guarantees { display: grid; gap: 4px; }
     .guarantees ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 40px; }
-    .guarantees li { display: grid; grid-template-columns: 2.4em minmax(0, 1fr); gap: 10px; padding-block: 14px; border-bottom: 1px solid var(--w-rule); }
+    .guarantees li { padding-block: 14px; border-bottom: 1px solid var(--w-rule); }
     .guarantees p { color: var(--w-muted); }
     .guarantees strong { color: var(--w-text); margin-inline-end: 4px; }
     @media (max-width: 1099px) {
@@ -114,6 +114,6 @@ const no = (n: number) => String(n).padStart(2, "0");
     }
     @media (max-width: 699px) {
         .figures, .guarantees ol { grid-template-columns: 1fr; }
-        .rows li, .guarantees li { grid-template-columns: 2em minmax(0, 1fr); gap: 4px 10px; }
+        .rows li { grid-template-columns: 2em minmax(0, 1fr); gap: 4px 10px; }
     }
 </style>

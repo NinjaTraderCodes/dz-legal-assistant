@@ -25,7 +25,7 @@ const { lang } = Astro.props;
             <ul class="reqs">
                 {[1, 2, 3].map((n) => <li><Icon name="checkmark" size={14} /> {t(lang, `download.req${n}`)}</li>)}
             </ul>
-            <a class="btn btn-primary" href={downloadUrl} rel="noopener"><Icon name="arrow_download" size={18} /> {t(lang, "download.cta")}</a>
+            <a class="btn" href={downloadUrl} rel="noopener"><Icon name="arrow_download" size={18} /> {t(lang, "download.cta")}</a>
             <p class="caption">{fmt(t(lang, "download.note"), version)} <a href={`/${lang}/download/`}>{t(lang, "download.more")}</a></p>
         </div>
     </div>

@@ -20,7 +20,7 @@ const current = (page: string) => (page === path ? "page" : undefined);
     <div class="page bar">
         <a href={home} class="brand" aria-label={s(lang, "AppTitle")} aria-current={current("/")}>
             <span class="brand-mark"><ScalesMark size={30} /></span>
-            <span class="brand-name">{s(lang, "AppTitle")}</span>
+            <span class="brand-name" translate={lang === "en" ? "no" : undefined}>{s(lang, "AppTitle")}</span>
         </a>
         <nav class="nav" aria-label={t(lang, "nav.label")}>
             {links.map((link) => <a href={link.href} aria-current={current(link.path)}>{link.label}</a>)}

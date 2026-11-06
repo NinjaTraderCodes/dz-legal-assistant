@@ -22,7 +22,7 @@ Strategy: **full palette**. Each folder colour says which file the reader is in;
 | `--w-blue` | `#A6C6DA` | `#1F3341` | the five-minute test, the try page, the documents |
 | `--w-green` | `#AECBA3` | `#22352A` | demo or download (07), privacy |
 | `--w-yellow` | `#ECCD74` | `#3E3418` | the law library |
-| `--w-sheet` | `#FBFAF6` | `#F4F1EA` | paper, in both themes |
+| `--w-sheet` | `#FBFAF6` | same | paper, in both themes (the dark theme's was the cream `#F4F1EA` until 6 Nov 2026: beside the app's white petition it read as a second paper, and it is the commonest default of generated pages) |
 | `--w-text` | `#1D1A17` | `#ECE7DE` | text on folders (on sheets always `#1D1A17`) |
 | `--w-muted` | `#463D33` | `#BFB4A4` | secondary text on folders (on sheets `#5B5249`) |
 | `--w-ink` | `#4A3B8F` | `#B4A8F2` | violet ink: ticks, stamps, tags (on sheets always `#4A3B8F`) |
@@ -49,8 +49,8 @@ Each face is cut into an Arabic and a Latin file by `scripts/fonts.mjs`; a page 
 - **Report** (`CheckReport.astro`): the formal check typed on a sheet: the app's label, the score, nine boxes that fill with violet ink (red while an element is missing), the verdict.
 - **Who writes what and the guarantees**: the AI's four stages are four ruled lines under a heavy rule, each with its AI or code tag and one line of what it does, beside one picture (the model's reading of the facts, from the desktop capture); the guarantees are four numbered lines, two by two. The hidden-set figures (94%, 67%, 36%) are typed on one slim clipped sheet with their counts and their source.
 - **The guide reel** (`GuideReel.astro`): the five steps as a register of tabs beside one screen of the demo, its guide's gold ring and card as they are at that step (`tests/guide-reel-shots.mjs`, steps 3 and 5 from a real run of the demo's hosted model; the note under the reel gives the dates and says the hosted model answered, without naming it: from the build machine the run fell back to Gemma 4 26B, whereas the live demo answers with Nemotron 3 Ultra), and the card's hint under it, verbatim.
-- **Buttons**: carbon fill (`.btn-primary`) for the one primary action of a block, carbon outline otherwise; 2 px corners, 48 px tall.
-- **Tags** (`.tag`): a square frame in violet ink; the app's own rounded chips stay inside its pieces.
+- **Buttons**: the one primary action of a block is filled with the violet ink (`.btn-primary`: `#4A3B8F` with white text in the light theme and on paper, `#B4A8F2` with carbon text on the dark folders), so the eye finds it first; every other button is a carbon or paper-white outline; 2 px corners, 48 px tall. Since 6 Nov 2026 (it was carbon or cream, the text's own neutral, and the stamp beside it drew the eye first).
+- **Tags** (`.tag`): a square frame in the text's own colour; the app's own rounded chips stay inside its pieces. Violet ink means act (the primary button) and stamped (ticks, the stamp, the reel's numbers), so the tags left it on 6 Nov 2026.
 
 ## The home, folder by folder
 

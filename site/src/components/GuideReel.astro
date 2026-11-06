@@ -2,7 +2,7 @@
 // Folder 05, "Test it in 5 minutes": the demo's own guide, step by step. The five steps are tabs; each shows the demo
 // as it looks at that step, the gold ring on what to press and the guide's card beside it, with the hint the card
 // shows, verbatim (tests/guide-reel-shots.mjs; steps 3 to 5 from a real run of the demo's hosted model). The reel
-// moves on by itself while it is on screen (reel.ts), stops on hover or focus, has a pause button, and stands still
+// moves on by itself while it is on screen, each step long enough to read its hint (reel.ts), stops on hover or focus, has a pause button, and stands still
 // with reduced motion. Without scripts the five steps are shown one under the other.
 import type { ImageMetadata } from "astro";
 import Folder from "./Folder.astro";
@@ -20,8 +20,16 @@ const pick = (n: number, theme: "light" | "dark") => {
 };
 const run = reel[lang];
 if (!run || run.steps.length !== 5) throw new Error(`guide-reel.json: the five steps in ${lang} (node tests/guide-reel-shots.mjs)`);
-const steps = run.steps.map((step) => ({ ...step, ai: step.step === 3 || step.step === 4, light: pick(step.step, "light"), dark: pick(step.step, "dark") }));
-const date = new Intl.DateTimeFormat(lang === "ar" ? "ar-DZ-u-nu-latn" : "en-GB", { day: "numeric", month: "long", year: "numeric" }).format(new Date(run.date));
+// Each step waits long enough to read its hint: 4 s, and a quarter of a second a word.
+const steps = run.steps.map((step) => ({
+    ...step, ai: step.step === 3 || step.step === 4, light: pick(step.step, "light"), dark: pick(step.step, "dark"),
+    wait: Math.round((4 + 0.25 * step.hint.split(/\s+/).length) * 10) / 10,
+    zoom: step.focus ? { x: step.focus.x, y: step.focus.y, scale: step.focus.zoom } : undefined,
+}));
+// The days the pictures were taken, one date or a range.
+const days = steps.map((step) => new Date(step.date)).sort((a, b) => +a - +b);
+const dates = new Intl.DateTimeFormat(lang === "ar" ? "ar-DZ-u-nu-latn" : "en-GB", { day: "numeric", month: "long", year: "numeric" });
+const date = +days[0] === +days.at(-1)! ? dates.format(days[0]) : dates.formatRange(days[0], days.at(-1)!);
 const no = (n: number) => String(n).padStart(2, "0");
 ---
 <Folder tone="blue" no="05" tab={t(lang, "try.eyebrow")} id="try" labelledby="try-title">
@@ -33,7 +41,7 @@ const no = (n: number) => String(n).padStart(2, "0");
         <div class="stage">
             <div class="step-tabs" role="tablist" aria-label={t(lang, "try.title")}>
                 {steps.map((step, i) => (
-                    <button type="button" role="tab" class="step-tab" id={`reel-tab-${step.step}`} aria-controls={`reel-panel-${step.step}`} aria-selected={i === 0 ? "true" : "false"} tabindex={i === 0 ? 0 : -1} data-reel-tab>
+                    <button type="button" role="tab" class="step-tab" style={`--reel-wait: ${step.wait}s`} id={`reel-tab-${step.step}`} aria-controls={`reel-panel-${step.step}`} aria-selected={i === 0 ? "true" : "false"} tabindex={i === 0 ? 0 : -1} data-reel-tab>
                         <span class="num">{no(step.step)}</span>
                         <span class="name">{step.title}{step.ai && <span class="tag">AI</span>}</span>
                         <span class="bar" aria-hidden="true"></span>
@@ -44,7 +52,7 @@ const no = (n: number) => String(n).padStart(2, "0");
                 {steps.map((step, i) => (
                     <div class:list={["screen", i === 0 && "current"]} role="tabpanel" id={`reel-panel-${step.step}`} aria-labelledby={`reel-tab-${step.step}`} data-reel-panel>
                         <p class="screen-title"><span class="num">{no(step.step)}</span> {step.title}</p>
-                        <Shot lang={lang} light={step.light} dark={step.dark} alt={fmt(t(lang, "reel.alt"), step.step, step.title)} width={720} large />
+                        <Shot lang={lang} light={step.light} dark={step.dark} alt={fmt(t(lang, "reel.alt"), step.step, step.title)} width={720} zoom={step.zoom} large />
                         <p class="hint">{step.hint}</p>
                     </div>
                 ))}
@@ -52,7 +60,7 @@ const no = (n: number) => String(n).padStart(2, "0");
         </div>
         <div class="foot">
             <button type="button" class="btn toggle" data-reel-toggle data-state="paused" hidden><span class="on">{t(lang, "reel.pause")}</span><span class="off">{t(lang, "reel.play")}</span></button>
-            <p class="small note">{fmt(t(lang, "reel.note"), date, run.answeredBy)}</p>
+            <p class="small note">{fmt(t(lang, "reel.note"), date)}</p>
         </div>
         <div class="actions">
             <a class="btn btn-primary" href={`/app?lang=${lang}&guide=1`}>{t(lang, "try.cta")}</a>

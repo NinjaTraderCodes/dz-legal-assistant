@@ -388,11 +388,25 @@ test("the home's folder 05 shows the demo's guide step by step: tabs, one screen
     await page.keyboard.press("ArrowDown");
     await expect(tabs.nth(3)).toBeFocused();
     await expect(tabs.nth(3)).toHaveAttribute("aria-selected", "true");
-    // The AI steps carry their tag, and the note names the engine that answered and the date of the run.
+    // The AI steps carry their tag, and the note says when the pictures were taken and that the demo's hosted model answered.
     await expect(tabs.nth(2).locator(".tag")).toHaveText("AI");
     await expect(tabs.nth(0).locator(".tag")).toHaveCount(0);
-    await expect(reel.locator(".note")).toContainText("answered by");
+    await expect(reel.locator(".note")).toContainText(/Captured from the demo on .*2026, with its hosted model/);
+    // Each step waits long enough to read its hint: the longer the hint, the longer the wait.
+    const waits = await tabs.evaluateAll((all) => all.map((tab) => parseFloat(getComputedStyle(tab).getPropertyValue("--reel-wait"))));
+    expect(waits.every((w) => w >= 7)).toBe(true);
+    expect(waits[0]).toBeGreaterThan(waits[4]);
     await expect(reel.getByRole("link", { name: "Open the demo with its guide" })).toHaveAttribute("href", "/app?lang=en&guide=1");
+});
+
+test("on a phone the guide reel shows the guide's card large, and the whole screen on a desktop", async ({ page }) => {
+    const scale = () => page.locator("#reel-panel-1 img:visible").first().evaluate((img) => new DOMMatrix(getComputedStyle(img).transform).a);
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/en/");
+    await page.locator("#reel-panel-1").scrollIntoViewIfNeeded();
+    expect(await scale()).toBeGreaterThanOrEqual(1.8);
+    await page.setViewportSize({ width: 1366, height: 900 });
+    expect(await scale()).toBe(1);
 });
 
 test("the guide reel moves on by itself while it is on screen, and waits while the pointer is over it", async ({ page }) => {
@@ -406,7 +420,8 @@ test("the guide reel moves on by itself while it is on screen, and waits while t
     await expect(tabs.nth(0)).toHaveAttribute("aria-selected", "true");
     await reel.scrollIntoViewIfNeeded();
     await page.mouse.move(2, 2);
-    await expect(tabs.nth(1)).toHaveAttribute("aria-selected", "true", { timeout: 10_000 });
+    // Step 1's hint is the longest: it waits its own time (under 20 s), then the reel moves on.
+    await expect(tabs.nth(1)).toHaveAttribute("aria-selected", "true", { timeout: 20_000 });
     await reel.locator("[data-reel-panel].current").hover();
     await page.waitForTimeout(8_000);
     await expect(tabs.nth(1)).toHaveAttribute("aria-selected", "true");

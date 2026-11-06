@@ -4,8 +4,9 @@
 // that answered, in src/content/guide-reel.json. Steps 3 and 5 show the model's real output (step 4 is the moment
 // before drafting), so run it against an instance with the owner's keys, never against the stand-in model (its text is
 // not AI output); --mock allows the stand-in for a trial run into another folder. A full run per language makes three
-// model calls (reading, choosing the articles, drafting); --until 4 stops before the drafting (two calls), and
-// --also <lang> takes each moment a second time in that language through the demo's language button (no call).
+// model calls (reading, choosing the articles, drafting); --until 4 stops before the drafting (two calls), --until 2
+// before any call, and --also <lang> takes each moment a second time in that language through the demo's language
+// button (no call). Each step's notes carry the date it was taken.
 //   node tests/guide-reel-shots.mjs --base http://localhost:5080 --langs ar,en [--steps 1,2,3,4,5] [--until 5]
 //     [--also en] [--out src/assets/shots/reel] [--mock]          (CHROMIUM_PATH selects a browser binary if needed)
 import { mkdirSync, readFileSync, writeFileSync, existsSync } from "node:fs";
@@ -34,9 +35,9 @@ const date = new Date().toISOString().slice(0, 10);
 /** Keeps a step's notes, replacing that step's earlier ones. */
 function note(lang, entry, answeredBy) {
     const r = (reel[lang] ??= { steps: [] });
-    r.steps = [...r.steps.filter((s) => s.step !== entry.step), entry].sort((a, b) => a.step - b.step);
+    r.steps = [...r.steps.filter((s) => s.step !== entry.step), { ...entry, date }].sort((a, b) => a.step - b.step);
     if (answeredBy) r.answeredBy = answeredBy;
-    r.date = date;
+    delete r.date;
     delete r.engine;
 }
 
@@ -93,6 +94,7 @@ for (const lang of langs) {
     // 1. The sample picker lit, on arrival.
     await page.locator("#sample-picker.guide-ring").waitFor();
     await shoot(1);
+    if (until < 2) { await context.close(); continue; }
     // 2. The domicile cleared: the score and its red cards lit, the card beside them.
     await page.locator("#sample-picker").selectOption("debt");
     await page.locator('.steps .step[data-step="defendant"].guide-ring').click();
@@ -102,6 +104,7 @@ for (const lang of langs) {
     await page.locator(".score-card.guide-ring").waitFor();
     await shoot(2);
     await domicile.fill(address);
+    if (until < 3) { await context.close(); continue; }
     // 3. The model's reading, and the confirmation it waits for.
     await page.locator('.steps .step[data-step="grounds"].guide-ring').click();
     await page.locator(".grounds button.ai.guide-ring").click();

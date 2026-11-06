@@ -56,7 +56,7 @@ The performance score still swings with the font timing (phase 5's lesson: the b
 
 | Key | Arabic | English |
 |---|---|---|
-| `hero.laptopAlt` (the picture's alt text) | التطبيق المكتبي على حاسوب محمول: عريضة بأسانيد صاغها النموذج المحلي، مراجعة، والبيانات الإلزامية 9 من 9 | The desktop app on a laptop: a petition with its grounds drafted by the local model, reviewed, 9 of 9 mandatory elements present |
+| `hero.laptopAlt` (the picture's alt text) | التطبيق المكتبي على حاسوب محمول: عريضة بأسانيد صاغها النموذج المحلي، مراجعة، والبيانات الإلزامية 9 من 9 | The desktop app on a laptop: a statement of claim with its grounds drafted by the local model, reviewed, 9 of 9 mandatory elements present |
 
 ## Push 2: the pictures on the site (phase 6, part A)
 
@@ -254,7 +254,7 @@ Every point is a sentence of its document, shortened or merged with the sentence
 
 | # | Point | From |
 |---|---|---|
-| 1 | Formal Arabic, the petition's language (CPCA art. 8); Darija or French notes accepted, never refused or cut | introduction (5 to 7) |
+| 1 | Formal Arabic, the language of the statement of claim (CPCA art. 8); Darija or French notes accepted, never refused or cut | introduction (5 to 7) |
 | 2 | 1,361 articles: Family Code and CPCA complete, 33 Civil and Commercial, 17 labour; none of these checks is a lawyer's review | "Law texts" (16 to 21) |
 | 3 | Identification, court, facts, dates, signature and requests from the form and the lawyer's lines; the model writes only the grounds | "Principles", "Grounded, not free-generating" (29) |
 | 4 | Reading, candidates without a model, the model's choice; nothing ticked before the claim type is confirmed | "Legal grounds: analysis of the facts" (39 to 41, 46) |
@@ -334,7 +334,7 @@ The summaries themselves, every Arabic line, beside the English one:
 
 | # | Arabic | English |
 |---|---|---|
-| 1 | اللغة المدعومة هي العربية الفصحى، لغة العريضة نفسها (المادة 8 من قانون الإجراءات المدنية والإدارية)؛ وتُقبل الملاحظات المكتوبة بالدارجة أو بالفرنسية في معظمها، فلا تُرفض ولا تُقتطع. | The supported input is formal Arabic, the language the petition must be in (CPCA art. 8); notes in Darija or mostly in French are still accepted, never refused or cut. |
+| 1 | اللغة المدعومة هي العربية الفصحى، لغة العريضة نفسها (المادة 8 من قانون الإجراءات المدنية والإدارية)؛ وتُقبل الملاحظات المكتوبة بالدارجة أو بالفرنسية في معظمها، فلا تُرفض ولا تُقتطع. | The supported input is formal Arabic, the language the statement of claim must be in (CPCA art. 8); notes in Darija or mostly in French are still accepted, never refused or cut. |
 | 2 | حُمّلت 1,361 مادة: قانون الأسرة كاملا، وقانون الإجراءات المدنية والإدارية كاملا مع تعديل 2022، و33 مادة من القانونين المدني والتجاري، و17 مادة من قانون العمل؛ ولا يُعدّ أي من هذه الفحوص مراجعةً من محام. | 1,361 articles are loaded: the complete Family Code, the complete CPCA with its 2022 amendment, 33 articles of the Civil and Commercial Codes and 17 labour-law articles; none of these checks is a lawyer's review. |
 | 3 | الهوية والجهة القضائية والوقائع والتواريخ وخانة التوقيع والطلبات تأتي من الاستمارة ومن سطورك أنت؛ ولا يكتب النموذج إلا المناقشة القانونية. | The identification, the court, the facts, the dates, the signature block and the requests come from the form and your own lines; the model writes only the legal grounds. |
 | 4 | يقرأ التحليل الوقائع، ثم يجمع المواد المرشحة من الفهرس دون أي نموذج، ثم يترك للنموذج الاختيار من بينها؛ ولا يُؤشَّر على أي شيء قبل أن تؤكد نوع الدعوى. | The analysis reads the facts, gathers the candidate articles from the catalogue without any model, and lets the model choose among them; nothing is ticked until you confirm the claim type. |
@@ -356,7 +356,7 @@ The summaries themselves, every Arabic line, beside the English one:
 | 6 | لا تكشف هذه الفحوص أخطاء المعنى، كتبادل أدوار الأطراف: تلك تبقى من مراجعة المحامي. | These checks cannot detect errors of meaning, such as swapped roles: those remain the lawyer's review. |
 | 7 | يحمل كل بيان إلزامي مادته ودرجة خطورته وفحصا من مجموعة صغيرة مغلقة؛ وكل جديد يجب أن يكون نوعا جديدا له اختباراته، لا منطقا مخفيا في الواجهة. | Each mandatory element carries its article, a severity and a check from a small closed set; anything new must be a new kind with unit tests, never logic hidden in the interface. |
 | 8 | البرمجة قبل الذكاء الاصطناعي: المواد التي يفرضها نوع الدعوى يقترحها الفهرس لا النموذج، والاقتباسات تُقارن بنص المادة. | Deterministic before AI: the articles a claim type requires are proposed by the catalogue, not by the model, and quotations are checked against the article's text. |
-| «ما يعنيه هذا للمحامي» | ما يجب أن يكون دقيقا في عريضتك يأتي من استمارتك أنت، والنموذج يكتب ولا يقرر القانون. | What must be exact in your petition comes from your own form, and the model writes; it does not decide the law. |
+| «ما يعنيه هذا للمحامي» | ما يجب أن يكون دقيقا في عريضتك يأتي من استمارتك أنت، والنموذج يكتب ولا يقرر القانون. | What must be exact in your statement of claim comes from your own form, and the model writes; it does not decide the law. |
 
 **`docs/OFFLINE.md`** (`site/src/content/docs-summaries/offline.ar.md`)
 

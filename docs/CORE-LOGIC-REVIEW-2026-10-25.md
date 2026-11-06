@@ -33,7 +33,7 @@ There are additional deterministic corrections. Examples include mapping an appa
 
 **Automatic candidate generation is currently catalogue-only.** Despite older comments describing a BM25 search, `GroundsAnalyzer.Candidates` collects only the articles assigned to the chosen claims. No recognized claim means no candidates. The generated search terms are parsed but do not expand this candidate set. BM25 is implemented and is used by the lawyer's manual article search.
 
-Model call 2 sees each candidate key, citation and the **first 180 characters** of its text. The parser keeps at most six model selections and uses the catalogue's role for each. `WithRequiredArticles` then adds the selected claim types' `required` articles even if the model omitted them. Consequently, “required” means a project catalogue policy, not an independently established statutory requirement to cite that article in every petition. Added required articles can make the final set larger than six.
+Model call 2 sees each candidate key, citation and the **first 180 characters** of its text. The parser keeps at most six model selections and uses the catalogue's role for each. `WithRequiredArticles` then adds the selected claim types' `required` articles even if the model omitted them. Consequently, “required” means a project catalogue policy, not an independently established statutory requirement to cite that article in every statement of claim. Added required articles can make the final set larger than six.
 
 The lawyer confirms the proposed claim type; confirmation ticks its required articles. Other selections and manual library search remain available. This is a valuable human control, but confirming a category is not the same as validating every associated article, date regime or factual condition.
 
@@ -82,7 +82,7 @@ These are concrete reasons not to claim completeness, rather than an attempt to 
 | Gap | Current repository state | Consequence |
 |---|---|---|
 | Animal and building/fire liability | Civil 139 and 140 absent; dog/wall test cases expect 138 | A catalogue-correct result can omit the more specific statutory rule |
-| Labour filing deadline | CPCA 504 absent | A formally populated petition does not establish that its filing deadline was met |
+| Labour filing deadline | CPCA 504 absent | A formally populated statement of claim does not establish that its filing deadline was met |
 | Commercial lease transition | Commercial 187 bis loaded; 187 bis 1 absent | The system cannot retrieve that transition article; selection needs contract-date/regime qualification |
 | Hidden defects in sale | Civil 379 absent; no dedicated claim branch | Nearest-category selection can confuse warranty and fraud |
 | Limitation review | Civil 308 and 309 absent | The library is insufficient for even these proposed limitation checks; exceptions/interruption require further modelling |
@@ -96,7 +96,7 @@ The earlier [16 October legal research](../legal-research/00-SUMMARY.md) had alr
 
 ## 5. Category completeness and suitability
 
-The 20 labels are a project catalogue of practical drafting situations. There is no demonstrated basis for calling them the complete Algerian action taxonomy, or even an exhaustive set for the four named areas. The application currently packages one introductory-petition definition; other document/procedure types are separate work.
+The 20 labels are a project catalogue of practical drafting situations. There is no demonstrated basis for calling them the complete Algerian action taxonomy, or even an exhaustive set for the four named areas. The application currently packages one statement-of-claim definition; other document/procedure types are separate work.
 
 The more important issue is the depth of each supported label. A commercial lease category combines landlord eviction and tenant indemnity across potentially different date regimes. Maintenance combines wife/child entitlement. A delivery category is available only in the commercial area although the requested performance can arise in an ordinary civil sale. A broad things-liability label is used for ordinary objects, animals and collapsed buildings. These require conditional branches, not merely more synonyms.
 

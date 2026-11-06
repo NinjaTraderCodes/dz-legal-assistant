@@ -134,7 +134,7 @@ There is no lawyer or legal reviewer. Legal facts come only from:
 ## 5. Evaluation
 
 - **Test cases come from published decisions.**
-  - The decision's facts are rewritten as a fictitious petition.
+  - The decision's facts are rewritten as a fictitious statement of claim.
   - The expected articles, cause and prerequisite are what the court applied.
 - **Contrast pairs** change one decisive fact.
 - **Out-of-scope cases** are included.

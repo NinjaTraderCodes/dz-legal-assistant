@@ -32,7 +32,7 @@ Branch `fable/website` (from `claude/stoic-fermat-mi1gko` at dc735e5, v0.9.1). B
 | Version 0.9.1 | `Directory.Build.props` |
 | Formal-check example "7 / 9", article 15-3, domicile missing | the sample case in the demo (`src/DzLegal.Web/Samples/debt.json`) with the defendant's domicile cleared, as in the video |
 
-The petition on paper is the fictitious sample case (`debt.json`); no real person, place or case.
+The statement of claim on paper is the fictitious sample case (`debt.json`); no real person, place or case.
 
 ## Checks
 

@@ -230,3 +230,53 @@ Apply these rules to each event at the granularity it describes, preserving attr
 - Remaining empirical uncertainties are explicit preconditions for Stop 2: usable four-way scores, exact cache behaviour/cost, score separability and calibration transfer, evidence selection, resource headroom and the unknown hidden-v2 distribution. The earlier missing reports remain missing; the recovered interim history above supersedes the seed's claim that no outside extraction/Alpha-02 experiments were recorded.
 
 **Stop here after committing, checking and pushing this report. Await the owner's answer before writing reader code or running the proposed experiments.**
+
+## Stop 2 — approved amendments and first gate result (6 November 2026)
+
+The owner approved Report 1 with three amendments, which supersede the original implementation order:
+
+1. Gate 1 (four usable single-token scores and suffix reuse), then gate 2 (fresh cost on original development cases, including short and long), precede all new case writing. A failed gate requires a stop and report.
+2. Rung 0 compares **unchanged Alpha-01** with installed `gemma4:e4b` and `gemma3:4b` on the original 40 in-catalogue development cases, and later on the frozen fitting families. Record each exact digest, licence, time and memory. This is a reference, not a runtime-model switch.
+3. Write, check and freeze all 144 fictitious cases and their split manifest, including a content hash, **before any Alpha-03 prompt or reader code**. Subsequent case edits require owner-adjudicated annotation errors and a disclosed new hash.
+
+Item 7 remains unchanged; the owner has reserved legal review of the dismissal example. It must not become an unreviewed legal conclusion merely by appearing in this report.
+
+### Gate 1: stopped on missing suffix reuse
+
+**The four-choice score probe worked, but the tested shared-prefix request shape did not reuse the case when its question suffix changed. Gate 1 is not passed.** No gate-2 runs, rung-0 inference, new cases, candidate prompt files, reader code, calibration or validation runs followed this result.
+
+The [gate summary](baselines/2026-11-06-alpha-03-gate-1/summary.md) records the requests, exact results, local artifact locations and hashes. At `5a3f846`, Ollama 0.40.15 on mains power, with CPU-only `gemma3:4b`, returned all four finite scores (`1`–`4`, each represented as a one-byte token at the first output position). Three questions about the original development case `loan-basic` shared the case/instructions inside one user message; only the final question changed. The first two requests share 1,026 user-text characters, with identical model options and output schema.
+
+| Request | Total prompt tokens | Cached tokens | Prompt evaluation seconds | Wall seconds |
+|---|---:|---:|---:|---:|
+| First element question | 413 | 0 | 20.472 | 20.681 |
+| Changed suffix, second element | 408 | 0 | 21.856 | 21.947 |
+| Changed suffix, third element | 404 | 0 | 22.083 | 22.217 |
+| Identical third-question user message, schema removed as a control | 404 | 399 | 0.942 | 1.011 |
+
+This is evidence against assuming cheap **within-message suffix changes** in this configuration. It is not evidence that every cache mechanism or message arrangement fails: the identical-message control reused work. Both constrained and unconstrained requests returned four finite choice scores; their label ranking was unchanged in the paired control, with a maximum absolute log-probability difference of about 0.128. No calibration or semantic accuracy conclusion is drawn from these probes.
+
+There was also one invalid request for 100 alternatives. The server rejected it with HTTP 400 (`top_logprobs` permits 0–20). The earlier smoke probe had already worked with 20; correcting the request to that supported value was a parameter correction, not recovery from an unsupported-score precondition. The failed request and empty response artifact remain in the external record. A one-token generation intentionally returns `done_reason: length`; no partial case answer was accepted as a fact sheet.
+
+### Reference metadata, without a rung-0 accuracy claim
+
+The installed tags are unchanged from Stop 1:
+
+| Model | Installed digest | Licence returned by local `/api/show` |
+|---|---|---|
+| `gemma3:4b` | `c30276f7dffec93a536d283e15088990454b8d21cf180a3d6eea4959e4147291` | Gemma Terms of Use |
+| `gemma4:e4b` | `dc35e8d9c6061baa6f0fa870975ab6932e2542b579b13ea0f199fa4bb7300c9c` | Apache License 2.0 |
+
+These are local metadata observations, not a redistribution review or a newly measured comparison. Rung 0 has **zero of 40 cases run for either model in Stop 2**. Time and peak-memory results therefore remain unavailable. One process-status sample after the smoke probe saw the runner at approximately 3.68 billion working-set bytes and the server at 36 million; that is not a peak or proof of fitting alongside the app. No weights, licence assets or model settings were installed or changed.
+
+### Proposed next action, awaiting the owner
+
+I would next test a **message-boundary form using the existing `ModelRequest.Earlier` mechanism**, placing the common case in an unchanged earlier turn and changing only the final question turn. The observed difference between changed and identical user messages makes that a specific hypothesis worth testing; it does not prove the server's cache is keyed by whole messages. This would remain a bounded capability probe, without cases, a candidate reader or a runtime change. If approved and it passes, gate 2 and rung 0 still have to be completed before writing and freezing the 144 cases.
+
+I have **not** run that alternative or silently changed the server, model or request strategy after the failed gate. Rung 0 is pending because the instruction to stop on a failed prerequisite takes precedence over continuing the measurement programme.
+
+### Change and check record
+
+Only this report and the gate summary are changed in this stop. No tests are added, modified, skipped or weakened. No source, existing prompt, catalogue or original case file is changed. Raw probe outputs stay outside the repository. Validation checks used in Stop 2: **0**; hidden material accessed: **none**. Build/test results for this documentation commit are reported in the handoff; the known intermittent unload-test failure from the Stop-1 post-commit run remains disclosed in that earlier handoff.
+
+**Stopped at gate 1. Await the owner's decision before any further model experiment or case writing.**

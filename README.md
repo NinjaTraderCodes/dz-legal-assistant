@@ -7,8 +7,6 @@ A desktop app that helps Algerian lawyers draft the *requête introductive d'ins
 | 🌐 [Website](https://dz-legal-assistant-ai.onrender.com) | ▶ [Live demo](https://dz-legal-assistant-ai.onrender.com/app) | ⬇ [Download for Windows](https://github.com/NinjaTraderCodes/dz-legal-assistant/releases/latest) | 🎬 [Demo video](https://drive.google.com/file/d/1zFbKYu2HWJIQ3-o1_QB_Zs6JGhvXqLFW/view?usp=sharing) | 📄 [Pitch deck](https://drive.google.com/file/d/1k9K6tWyQsFWDLof60efMlhcdFuaJivwY/view?usp=sharing) |
 |---|---|---|---|---|
 
-![The workbench in English: the nine case steps, the Arabic petition drafted live, and the formal check](docs/images/readme/workbench-en.png)
-
 ## The problem
 
 In Algeria, a statement of claim that omits one element required by the Code of Civil and Administrative Procedure (CPCA) can be rejected on form, before a judge reads the case. Lawyers check these elements from memory, under time pressure. Finding the right articles for the facts takes most of the drafting time. And online AI tools are not an option: sending a client's file outside the office breaks professional secrecy.

@@ -53,10 +53,10 @@ Use exactly the definitions of `docs/HIDDEN-SET.md`:
 
 **Rules the owner added after Codex's Report 1** (apply them exactly; the owner fills this in before handing you the brief):
 
-> **Agreed by the owner on 6 November 2026** (Codex's Report 1, `docs/ALPHA-03.md` item 7, on `codex/alpha-03`). **Pending:** a legal review of the dismissal example in rule 2; the owner removes this line once it is confirmed.
+> **Agreed by the owner on 6 November 2026** (Codex's Report 1, `docs/ALPHA-03.md` item 7, on `codex/alpha-03`).
 >
 > 1. **Affirmed:** the lawyer's notes assert the proposition, including a proposition that is itself negative: an assertion that wages were not paid affirms `wages_unpaid`. A document named in `documents.list` affirms the event it is named after. This records an assertion in the notes, **not judicial proof**.
-> 2. **Disputed:** a party denies or contests the same fact the plaintiff relies on. The plaintiff's assertion may be implicit in bringing the claim; it need not be written out. So «ينكر المدعى عليه استلام القرض» is **disputed**, not denied or absent. A contest attaches to its target proposition, not to every event in the sentence or the case: a denial of the alleged reason for a dismissal does not, by itself, dispute that the dismissal occurred.
+> 2. **Disputed:** a party denies or contests the same fact the plaintiff relies on. The plaintiff's assertion may be implicit in bringing the claim; it need not be written out. So «ينكر المدعى عليه استلام القرض» is **disputed**, not denied or absent. A contest attaches to the proposition the element states, not to every event in the sentence or the case. The dismissal element is «سرّح المدعى عليه المدعي أو فصله من العمل», the act alone: an employer who contests only its reason («يدعي المدعى عليه أن الفصل كان بسبب خطأ جسيم») leaves the dismissal **affirmed**; an employer who contests the act itself («ينكر أنه فصله ويدعي أنه ترك منصبه») makes it **disputed**. Whether a dismissal was justified or abusive is a legal question no element asks.
 > 3. **Denied:** the notes themselves state that the proposition did not happen, rather than reporting a party's opposition to it. For a notice, «لم يوجه أي إعذار» is denied. Negation is read against the whole element: «لم يدفع» affirms non-payment and denies payment; in «لم يدفع رغم إعذاره» the notice is affirmed.
 > 4. **Absent:** the notes contain no assertion, no notes-level denial, no party's contest and no named document for that proposition.
 >
@@ -88,7 +88,7 @@ When all the cases are written:
 
 ## 4. For the owner
 
-1. **When to hand this brief over:** the rule agreed from Codex's Report 1 is in the quoted block of § Labelling polarity. Once the legal review of its dismissal example is done, remove the «Pending» line (or correct the example), then start the author.
+1. **When to hand this brief over:** now. The rule agreed from Codex's Report 1 is in the quoted block of § Labelling polarity.
 2. **Who:** a fresh session of a model or person that has not seen this project's reader. Give it read access to the repository on the laptop and the folder `C:\dz-hidden-v2\`, and nothing more.
 3. **The run,** once each, on Codex's frozen commit, plugged in, one run at a time. Use these commands, and the command Codex gives in Report 2 for Alpha-03:
 

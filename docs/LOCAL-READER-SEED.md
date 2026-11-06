@@ -4,6 +4,8 @@
 
 **Date:** 6 November 2026. Figures come from `docs/baselines/` and `docs/HIDDEN-SET.md`; outside facts are listed with their sources at the end, and anything not checked by a run here is marked as such.
 
+**Corrected the same day** after Codex's Report 1 (`docs/ALPHA-03.md` on `codex/alpha-03`), which read two history folders on the owner's laptop that the repository does not have (`C:\Users\TheShadow\dz-alpha02-probes`, `dz-gliner25-benchmark-20261028`). The corrections are marked «Corrected:».
+
 ## 1. The problem, measured
 
 The figure is **32 of 90 hidden cases fully right (36%)**: `gemma3:4b` on the laptop, CPU only, the claim type given, reader Alpha-01 (`docs/baselines/2026-10-30-hidden-given/`). The online model (Nemotron 3 Ultra) reads the same 90 cases with the same reader and gets 64 (71%).
@@ -36,13 +38,14 @@ Computed from the summary's per-case lines; a forbidden reading is counted as po
    - 46 answer tokens written at 5.5 tokens/s (8 s);
    - 63 s in all, on battery.
 
-   Any design that sends more text per case pays at 22 tokens/s. A design that reuses an already-read prefix pays almost nothing for it.
-2. **Prompt tuning has stopped generalising.** Runs 1 to 4 of Alpha-01 brought the development cases down to about 4 critical errors in 56 (`docs/ALPHA-01.md`). The hidden set then gave 58 in 90. The rules added to the prompt fixed the cases they were written from. A fifth round of prompt rules is not the way forward.
+   Any design that sends more text per case pays at 22 tokens/s. A design that reuses an already-read prefix pays less for it. **Corrected:** how much less is not established; in Alpha-02's probes, identical prompts were reused, but changed prefixes or suffixes saved little, and the final warm-up saved 4 s of 48 s.
+2. **Prompt tuning has stopped generalising.** Runs 1 to 4 of Alpha-01 brought the development cases down to 3 of 40 with a critical error (run 4; 6 of 56 across development, validation and robustness, `docs/ALPHA-01.md`). The hidden set then gave 58 in 90. The rules added to the prompt fixed the cases they were written from. A fifth round of prompt rules is not the way forward.
 3. **The online model still makes 20 polarity errors.** A 550B model failing on the same thing points partly at the questions and the answer key:
    - Is a fact the defendant contests "disputed" or "affirmed by the plaintiff"?
    - Is «رغم إعذاره» a notice "stated"?
 
    Some of the 45 local polarity errors may be ambiguity, not weakness. It must be measured before it is fixed (section 6, step 0).
+4. **Corrected: the development set never tested polarity.** Its 40 in-catalogue cases hold 53 events, **all affirmed**, and none has a requests field or a documents list; the development and robustness cases together hold 60 events, all affirmed, and the 15 validation cases 1 denied and 1 disputed. Alpha-01 was tuned on a set that did not contain the task that fails most.
 
 ## 2. What exists today
 
@@ -89,16 +92,15 @@ From the repository's history (commits, `docs/`, `docs/baselines/`). Section 4 m
 | A larger model with the same reader | 31 Oct, Nemotron 3 Ultra online | 64 of 90; still 20 polarity errors. |
 | Other local models | before 26 Oct, `docs/PRODUCT-DETAILS.md` | `qwen2.5:3b` weaker; `qwen3:4b` too slow, reasons in English; `qwen2.5:7b` better drafting, slower. `gemma3n:e2b/e4b` listed to compare, no result recorded. |
 | multilingual-E5-small embeddings (int8 ONNX) for the claim type, by nearest description | before 25 Oct, `LOCAL-MODEL-REPORT.md` | The top three held the right claim in 37 of 46. **Similarity is not inference:** this is no evidence for or against an NLI judge. |
-| A path to score an outside tool (`facts export` / `facts score`, an example naming GLiNER 2.5) | `docs/FACT-READING.md` | The path exists; **no outside reader's result is recorded.** |
+| GLiNER 2.5 multilingual (`fastino/gliner2.5-multi-v1`), as a universal extraction reader, through `facts export` / `facts score` | 28 Oct, `C:\Users\TheShadow\dz-gliner25-benchmark-20261028` (outside the repository) | **Corrected:** it was measured. 13 s per case, 2.97 GB peak; **2 of 40 in-catalogue development cases fully right**, and not one date or amount bound. Record and typed-span schemas were worse. No claim type was given, so a claim-conditioned or trained encoder remains untested. |
 | Flash attention, a `q8_0` KV cache | advised to users in `docs/PRODUCT-DETAILS.md` | **Not measured.** |
-| The Alpha-02 brief: diagnosis, then a design, by an independent agent, target 80% at 90 s | 30 Oct, `docs/briefs/ALPHA-02-BRIEF.md` | **Its two reports were replies to the owner, not files. They are not in the repository, and this seed has not seen them.** A1–A4 (31 Oct: run manifest, court section as a hint, Nemotron) followed. |
+| The Alpha-02 brief: diagnosis, then a design, by an independent agent, target 80% at 90 s | 30 Oct, `docs/briefs/ALPHA-02-BRIEF.md` | Its two reports were replies to the owner, not files, and remain unavailable. A1–A4 (31 Oct: run manifest, court section as a hint, Nemotron) followed. |
+| **Corrected:** Alpha-02's probes: clause alignment, polarity decided by code from negation cues, focused follow-up questions, single-question prompts, English instructions, constrained JSON | 30–31 Oct, `C:\Users\TheShadow\dz-alpha02-probes\INTERIM-FINDINGS.md` (outside the repository) | On seen development material and composites, not a hidden measure. Alignment 7/10 (8/10 hand-tuned); single questions reported worse; English 2/4; JSON removed format slips but cost 441–588 answer tokens and 135–178 s; the pipeline took 51–117 s and still lost second facts and misread negation scope (a negated qualification made a dismissal «denied»). |
 
-**Never tried, as far as the repository shows:**
-- log-probabilities or calibration;
+**Never tried, as far as the repository and the two folders show:**
+- log-probabilities or calibration (complete scores for each choice);
 - several samples with a vote;
-- one short question per element over a cached prefix;
 - an NLI encoder;
-- negation or dispute cues in code (they were only prompt rules);
 - binding rules in code;
 - an "unsure" outcome;
 - Gemma 4 E4B, Qwen3.5 4B;
@@ -135,18 +137,18 @@ Notes:
 
 ### B. Short questions over one cached prefix (all errors; the enabler)
 
-**Before:** prefix reuse is in the app's analysis since Slice B (26 Oct); the fact reading was never split into short questions. New in its use, not in its mechanism.
+**Before:** prefix reuse is in the app's analysis since Slice B (26 Oct). **Corrected:** Alpha-02 tried focused and single-question prompts (reported worse), and its prefix reuse saved little once the prompt changed. Short questions alone are not new; only their use with complete choice scores (A) is.
 
 Put everything shared first: the instructions, the sentences, the values. Then ask each element as its own short turn.
 
-- **The cost works out.** The prefix (about 1,000 tokens, 45 s) is read once. Each question adds about 40 to 60 tokens (2 to 3 s at 22 tokens/s) and 1 to 6 answer tokens. Six questions come to about 60 to 65 s, today's budget, with a focused question each time.
+- **The cost, if reuse works.** The prefix (about 1,000 tokens, 45 s) is read once. Each question adds about 40 to 60 tokens (2 to 3 s at 22 tokens/s) and 1 to 6 answer tokens. Six questions come to about 60 to 65 s, today's budget, with a focused question each time.
 - **What it relies on:** Ollama keeps the prompt's KV state for a request that shares the prefix while the model stays loaded. The warm probe of 25 Oct showed reuse on an identical prompt.
 - **What must be measured:** reuse when only the suffix changes, through `prompt_eval_count`/`prompt_eval_duration`; with `num_parallel` 1, so one slot holds the cache.
 - **The fallback runtime:** `llama-server` (llama.cpp) offers explicit `cache_prompt` and slot save/restore. It would replace Ollama, a larger change to weigh: loopback only, licence MIT.
 
 ### C. Point first, judge second (binding, polarity)
 
-**Before:** partly. A model-written quote per value was probed on 25 Oct and gave wrong links that passed the presence check; Alpha-01 already shows each value's sentence and states the same-sentence rule in the prompt, and the model broke it 27 times. What is new is only the code enforcing the rule after a pointed sentence, so the pointing itself must be measured first: if it is as unreliable as the quotes, C adds nothing.
+**Before:** partly. A model-written quote per value was probed on 25 Oct and gave wrong links that passed the presence check; Alpha-01 already shows each value's sentence and states the same-sentence rule in the prompt, and the model broke it 27 times. What is new is only the code enforcing the rule after a pointed sentence, so the pointing itself must be measured first: if it is as unreliable as the quotes, C adds nothing. **Corrected:** Alpha-02's clause alignment was a version of this (7/10, and it lost second facts in a sentence); Codex's Report 1 proposes pointing to supporting and contesting sentences with the whole case visible, not one keyword per clause.
 
 For each element, the model first names **the sentence** that speaks of it (`s4`, or none). Pointing is a narrower task than judging, and a sentence id is checkable.
 
@@ -158,7 +160,7 @@ Cost: one extra short answer per element over the cached prefix (B).
 
 ### D. A small encoder as the polarity judge (polarity, missed events)
 
-**Before:** an embedding encoder (E5) was tried for the claim type by similarity and was weak (37/46 in the top three); an NLI cross-encoder, which judges a pair, was never tried. The scoring path for an outside reader exists and has no recorded result.
+**Before:** an embedding encoder (E5) was tried for the claim type by similarity and was weak (37/46 in the top three). **Corrected:** GLiNER 2.5 was measured as a universal extraction reader on 28 Oct and was poor (2 of 40, no value bound; section 2b). An NLI cross-encoder, which judges one (context, statement) pair, was never tried.
 
 Polarity is natural-language inference:
 - *premise:* the sentence;
@@ -182,7 +184,7 @@ The model answers entailment (stated), contradiction (denied) or neutral (absent
 
 ### E. A code layer for negation, attribution and dispute cues (polarity)
 
-**Before:** the same cues were tried as **prompt rules** (Alpha-01 runs 2–4) and did not hold on the hidden set. As code features or vetoes, never tried. The risk is the same overfitting: rules written from seen failures.
+**Before:** the same cues were tried as **prompt rules** (Alpha-01 runs 2–4) and did not hold on the hidden set. **Corrected:** Alpha-02 also tried them **in code**, deciding polarity from negation cues after clause alignment, and they mis-scoped negation. At most a trigger for a second look, never a verdict.
 
 Arabic marks most of these openly:
 - **negation:** لم، لن، لا، ليس، ما، غير، دون، عدم;
@@ -207,11 +209,11 @@ Each value gets a short code-made description:
 
 Score each (element, value) pair, by logprobs (A) or by the pointed sentence (C). Then choose by code, under constraints:
 - one value per slot;
-- a value on at most one event, unless the text repeats it;
+- **Corrected:** not "a value on at most one event": one written date can belong to two acts (a purchase and its payment on the same day);
 - **dates in a plausible order:** a contract before its breach, a notice before the claim;
 - **a requested amount** taken first from the requests field, and a monthly sum never given as a total when a total is written.
 
-10 of the 58 failures are request amounts of exactly the monthly-for-total kind.
+10 of the 58 failures are wrong requested amounts. **Corrected:** not only monthly for total; the hidden summary also shows damages and debt amounts swapped between requests.
 
 ### G. Constrained output, as plumbing
 
@@ -238,7 +240,7 @@ Disagreement is also a confidence signal for K. Measure the gain against the tim
 
 ### I. The model itself
 
-**Before:** `qwen2.5:3b` weaker, `qwen3:4b` too slow, `qwen2.5:7b` slower; Nemotron 71% with the same reader. Gemma 4 E4B, Qwen3.5 4B and `gemma3n` never measured on the fact bench.
+**Before:** `qwen2.5:3b` weaker, `qwen3:4b` too slow, `qwen2.5:7b` slower; Nemotron 71% with the same reader. Gemma 4 E4B, Qwen3.5 4B and `gemma3n` never measured on the fact bench. `gemma4:e4b` is installed on the laptop (Codex, Report 1).
 
 The candidates have to fit 16 GB of RAM, run on CPU and meet the time budget:
 
@@ -252,7 +254,7 @@ The candidates have to fit 16 GB of RAM, run on CPU and meet the time budget:
 
 **The rules for the comparison:**
 - every candidate goes through the same bench, on the same laptop, at the same settings;
-- record seconds per case and peak memory, as the harness already does;
+- record seconds per case and peak memory. **Corrected:** the harness records time and the machine state, **not** peak inference memory; that measurement has to be added;
 - the Ollama tags and version needed (Gemma 4 needs a recent Ollama) are checked on the machine, not taken from these notes.
 
 ### J. Fine-tuning on fictitious cases (the largest lever, the largest process)

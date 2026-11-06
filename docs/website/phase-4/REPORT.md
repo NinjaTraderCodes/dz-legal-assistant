@@ -4,7 +4,7 @@ Branch `fable/website`, on top of the default branch's phase-3c merge and the re
 
 ## The polish from the phase-3c review (pushed first, 9505a04)
 
-1. **Selection highlight:** the selected section on the paper is no longer shaded; as on the desktop, the side line shows on hover or focus only, and the strip above the paper names the selection. The petition's header looks like paper on load.
+1. **Selection highlight:** the selected section on the paper is no longer shaded; as on the desktop, the side line shows on hover or focus only, and the strip above the paper names the selection. The header of the statement of claim looks like paper on load.
 2. **Paper margins:** the sheet keeps the 16 px canvas margin on every side (`width: calc(100% - 32px)`), so the grey canvas shows around it as on the desktop.
 3. **Top bar:** New, Open and Save show their labels from 1440 px (Download for Windows and Guide stay icons up to 1600 px, the document type too); the bar holds one row at 1366 and 1440 in both languages (`app-*-1366x768.png`, `demo-first-*-1440x900.png` in `docs/website/phase-3c/`).
 

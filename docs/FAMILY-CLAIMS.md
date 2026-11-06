@@ -21,10 +21,10 @@ Legal answers on family procedure were received on 29 Oct 2026. They are **input
 | Family 72 | Housing for the custodian, or rent | The same. The custodian stays in the marital home until the housing judgment is carried out | Matches |
 | Family 87 | Guardianship goes with custody | «في حالة الطلاق، يمنح القاضي الولاية لمن أسندت له حضانة الأولاد» | Matches |
 | CPCA 13 | Standing | Capacity and interest; the judge raises their absence on his own motion | Matches |
-| CPCA 15 | Content of the petition | The 6 mandatory items | Matches |
-| CPCA 17 | Court fees | The petition is registered only once the fees are paid | Matches |
+| CPCA 15 | Content of the statement of claim | The 6 mandatory items | Matches |
+| CPCA 17 | Court fees | The statement of claim is registered only once the fees are paid | Matches |
 | CPCA 426 | Territorial jurisdiction | Divorce: the marital home. Custody and visitation: where custody is exercised. Nafaqa: the creditor's home. Guardianship: where it is exercised | Matches |
-| CPCA 438 | Serve the defendant and the prosecutor | In a **divorce suit**, the petition is served on the defendant and on the public prosecutor | Narrower: it is certain only for divorce suits |
+| CPCA 438 | Serve the defendant and the prosecutor | In a **divorce suit**, the statement of claim is served on the defendant and on the public prosecutor | Narrower: it is certain only for divorce suits |
 | CPCA 451 | Cited for the documents proving a tatliq, and for the khul compensation | The judge examines and qualifies the facts of a tatliq or khul request, and may order an inquiry or a medical expert report | Does not support that use. **The khul compensation rests on Family Code art. 54** |
 | CPCA 600 | (supports) A visitation judgment is enforced, not sued for again | Final judgments and summary orders are enforceable titles | Supports the point |
 | CPCA 323 | (found while checking) | Provisional execution is ordered, on request, in nafaqa and for the custodian's housing | Applied |
@@ -47,18 +47,18 @@ Legal answers on family procedure were received on 29 Oct 2026. They are **input
   - new requests: guardianship and provisional execution;
   - test case `custody-transfer` now belongs to `custody-forfeiture`, in both answer keys.
 
-## What practitioners' petitions changed (30 Oct 2026)
+## What practitioners' documents changed (30 Oct 2026)
 
 Five real documents with the names blanked out were read. They were not kept in the repository. Among them:
-- a khul petition, and a consensual-divorce petition (Tébessa, family section);
+- a khul statement of claim, and a consensual-divorce statement of claim (Tébessa, family section);
 - a defence memo and an appeal (Khenchela, family);
-- an urgent-procedure petition.
+- an urgent-procedure application.
 
-**What changed in the petition (form definition and templates):**
-- **The prosecutor line.** A family petition (court section in the family area) now names the prosecution after the parties, in practitioners' wording: «بحضور: السيد وكيل الجمهورية لدى محكمة …». Basis: Family 3 bis.
+**What changed in the statement of claim (form definition and templates):**
+- **The prosecutor line.** A family statement of claim (court section in the family area) now names the prosecution after the parties, in practitioners' wording: «بحضور: السيد وكيل الجمهورية لدى محكمة …». Basis: Family 3 bis.
 - **A «في الشكل» section, written by the code before the facts.** «حيث إن هذه العريضة جاءت مستوفية للشروط المنصوص عليها قانونا، سيما المواد 13 و14 و15 و17 من قانون الإجراءات المدنية والإدارية، مما يتعين معه قبولها شكلا». A family case adds art. 426. The Form Engine checks the art. 15 particulars; the lawyer answers for the rest.
 
-**What changed in the catalogue: follow-on requests.** The khul petition also asks for custody with guardianship, iddat and child maintenance, housing, the wife's furniture and jewellery, and costs. Each was checked against the official text before being added:
+**What changed in the catalogue: follow-on requests.** The khul statement of claim also asks for custody with guardianship, iddat and child maintenance, housing, the wife's furniture and jewellery, and costs. Each was checked against the official text before being added:
 
 | Request | Article |
 |---|---|
@@ -74,11 +74,11 @@ Five real documents with the names blanked out were read. They were not kept in 
 - **The reader** asks about these requests too (`data/law/claim-elements.json`).
 
 **Not done, for later:**
-- **Consensual divorce** («طلاق بالتراضي», Family 48, CPCA 427). It is a joint petition («بين … و …», signed by both spouses), so the form has to change.
-- **Each party's date and place of birth**, which family petitions give.
+- **Consensual divorce** («طلاق بالتراضي», Family 48, CPCA 427). It is a joint statement of claim («بين … و …», signed by both spouses), so the form has to change.
+- **Each party's date and place of birth**, which family statements of claim give.
 - **The claim named in the title** («عريضة افتتاح دعوى خلع / طبقا للمادة 54 من قانون الأسرة»).
 - **Attachments referenced inside the facts** («وثيقة مرفقة رقم 01»).
-- **Other documents:** the appeal, the defence memo and the urgent-procedure petition are document types the app does not draft yet.
+- **Other documents:** the appeal, the defence memo and the urgent-procedure application are document types the app does not draft yet.
 
 **Speed.** Tatliq now cites 13 articles and khul 12. The analysis gives the model at most 12 candidates, in catalogue order, so for tatliq the provisional-execution article (CPCA 323) is not among them. It stays in the catalogue and in the suggested requests. Its longer candidate list may make the article choice a few seconds slower for these two claim types; the grounds bench will show how much.
 

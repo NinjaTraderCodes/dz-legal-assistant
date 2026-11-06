@@ -8,7 +8,7 @@ The website's own visual world, chosen on 4 November 2026 from four directions (
 
 **Fonts** (`site/fonts/`, OFL, licences beside them and in `public/licences/`): Markazi Text for titles, Readex Pro for text, Aref Ruqaa for the stamps only, each subset per script by `scripts/fonts.mjs` (Markazi 46 + 29 KB, Readex 27 + 32 KB, Ruqaa 20 KB cut to the stamp texts). A page preloads its script's two faces: 73.8 KB on Arabic pages, 61.1 KB on English ones.
 
-**The home, eight folders**: 01 the hero (salmon: the title, the two actions, the laptop lying on the folder with the "works offline" stamp); 02 the problem (a petition fragment with the domicile blank, the red note with art. 15-3, the check at 7 / 9); 03 the scroll story (a register sheet ticked in violet beside the petition; at 9 / 9 the register is stamped «جاهزة للإيداع» / "Ready to file … once the lawyer has reviewed and signed"); 04 the AI as a numbered drafting log, with the hidden-set figures typed on a report sheet; 05 the guarantees as a list of exhibits; 06 the five-minute test (blue); 07 demo or download (green); 08 the team as a signature block. The five-minute strip moved from under the hero to 06, after the proof.
+**The home, eight folders**: 01 the hero (salmon: the title, the two actions, the laptop lying on the folder with the "works offline" stamp); 02 the problem (a fragment of a statement of claim with the domicile blank, the red note with art. 15-3, the check at 7 / 9); 03 the scroll story (a register sheet ticked in violet beside the statement of claim; at 9 / 9 the register is stamped «جاهزة للإيداع» / "Ready to file … once the lawyer has reviewed and signed"); 04 the AI as a numbered drafting log, with the hidden-set figures typed on a report sheet; 05 the guarantees as a list of exhibits; 06 the five-minute test (blue); 07 demo or download (green); 08 the team as a signature block. The five-minute strip moved from under the hero to 06, after the proof.
 
 **Secondary pages**: one folder each (try and documents blue, privacy green, law yellow, download, about and 404 board); their former labels above the title became the folder's tab. Cards and panels are sheets.
 
@@ -16,14 +16,14 @@ The website's own visual world, chosen on 4 November 2026 from four directions (
 
 ## Decisions worth a look
 
-- **The stamp is on the register, not the petition.** The sample case forces the app's «مسودة» watermark on the paper; "ready to file" over a draft mark would contradict the app. On the register it marks what is complete (9 / 9, reviewed). The approved mock-up had it on the petition.
-- **The problem's petition fragment is set in Markazi**, not Noto Naskh: it is a drawn fragment, and on a phone it sits close to the first screen.
+- **The stamp is on the register, not the statement of claim.** The sample case forces the app's «مسودة» watermark on the paper; "ready to file" over a draft mark would contradict the app. On the register it marks what is complete (9 / 9, reviewed). The approved mock-up had it on the statement of claim.
+- **The problem's fragment of the statement of claim is set in Markazi**, not Noto Naskh: it is a drawn fragment, and on a phone it sits close to the first screen.
 - **The fourth guarantee** attaches the reviewed row instead of the drafted-grounds capture, which the drafting log shows just above.
 - **The hero laptop is preloaded** and asked for at high priority: without the photograph it is the first screen's largest element (Lighthouse names `img.laptop` as LCP on both homes).
 
 ## Performance
 
-The first build measured 3.5 s (Arabic) and 3.0 s (English) mobile LCP against main's 2.3 and 2.0 s on the same machine. Cause: a phone fetched the petition's and the app's faces (Noto Naskh Arabic, Inter, about 190 KB) with the first layout, although they are used only far down the home. Fix: `theme-init.js` marks the page `data-faces="later"`, `ui.js` lifts it after load, and until then a phone sets those texts in Markazi (desktops and visitors without scripts are unaffected); folder contents are laid out lazily on phones as the sections were before. Result below. The Arabic home's HTML went over its 30 KB budget once (30.6 KB); Tailwind had emitted utilities for words found only in comments (`shadow`, `transform`, `filter`… and their 34 `@property` rules): they are excluded, and the page is 29.4 KB.
+The first build measured 3.5 s (Arabic) and 3.0 s (English) mobile LCP against main's 2.3 and 2.0 s on the same machine. Cause: a phone fetched the faces of the statement of claim and the app (Noto Naskh Arabic, Inter, about 190 KB) with the first layout, although they are used only far down the home. Fix: `theme-init.js` marks the page `data-faces="later"`, `ui.js` lifts it after load, and until then a phone sets those texts in Markazi (desktops and visitors without scripts are unaffected); folder contents are laid out lazily on phones as the sections were before. Result below. The Arabic home's HTML went over its 30 KB budget once (30.6 KB); Tailwind had emitted utilities for words found only in comments (`shadow`, `transform`, `filter`… and their 34 `@property` rules): they are excluded, and the page is 29.4 KB.
 
 Lighthouse 13, local instance, Chromium headless (`lighthouse-summary.md`):
 

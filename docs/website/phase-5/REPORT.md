@@ -173,7 +173,7 @@ Screenshots beside this report: `try-<ar|en>-<light|dark>-<390x844|1366x768|1920
 | `docs.englishOnly` | هذه الوثيقة متاحة بالإنجليزية فقط. | This document is in English. |
 | `docs.toc` | في هذه الصفحة | On this page |
 | `shot.close` | إغلاق | Close |
-| `try.shot.1` | بعد فتح المثال: الخطوات التسع، والعريضة على الورق، والمراجعة الشكلية عند 8 من 9. | After opening the sample: the nine steps, the petition on paper, the formal check at 8 / 9. |
+| `try.shot.1` | بعد فتح المثال: الخطوات التسع، والعريضة على الورق، والمراجعة الشكلية عند 8 من 9. | After opening the sample: the nine steps, the statement of claim on paper, the formal check at 8 / 9. |
 | `try.shot.2` | البطاقة الحمراء: موطن المدعى عليه ناقص، المادة 15-3 من قانون الإجراءات المدنية والإدارية، و7 من 9. | The red card: the defendant's domicile missing, CPCA art. 15-3, 7 / 9. |
 | `try.shot.3` | قراءة الذكاء الاصطناعي للوقائع وسؤال «هل هذا هو نوع الدعوى؟». | The AI's reading of the facts and the question… |
 | `try.shot.4` | المناقشة القانونية المصوغة بعلامة الذكاء الاصطناعي، وخانة المراجعة تحتها. | The drafted legal grounds with the AI mark, and the review box under them. |

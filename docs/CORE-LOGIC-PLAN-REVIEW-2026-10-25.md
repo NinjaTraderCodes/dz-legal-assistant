@@ -2,7 +2,7 @@
 
 25 October 2026 · Review of `core-logic-plan.md` · Repository baseline `543a518883d763ad4156320407d211af6f72b7c9`, branch `claude/stoic-fermat-mi1gko`.
 
-**Verdict: keep the architecture direction, but revise the guarantees and delivery sequence before implementation.** The plan correctly moves toward reviewed legal knowledge, explicit facts, conditional applicability, measured retrieval and independent evaluation. It does not yet establish that the proposed 4B pipeline can make every legal decision safely, produce a ready-to-sign petition from incomplete information, cover ordinary practice comprehensively, or retain the asserted latency on an 8 GB laptop.
+**Verdict: keep the architecture direction, but revise the guarantees and delivery sequence before implementation.** The plan correctly moves toward reviewed legal knowledge, explicit facts, conditional applicability, measured retrieval and independent evaluation. It does not yet establish that the proposed 4B pipeline can make every legal decision safely, produce a ready-to-sign statement of claim from incomplete information, cover ordinary practice comprehensively, or retain the asserted latency on an 8 GB laptop.
 
 The most consequential new observation from this review is experimental: a local schema-constrained Gemma extraction returned dates correctly but attached the unrelated source quote **«لم يُذكر»** to both supplied dates. The JSON matched the requested structure and every quote appeared verbatim in the input. The proposed quote-presence check would accept those incorrect evidence links. Structured output and provenance are useful controls; neither establishes that an assertion follows from its source.
 
@@ -81,7 +81,7 @@ Do not treat failure of prompted extraction as a problem that fine-tuning will n
 
 ### 2.4 Alleged, denied and proved facts are different dimensions
 
-The proposed `stated / denied / uncertain` status does not identify **who** asserts or denies a proposition. A plaintiff's allegation can be disputed and still properly appear as that plaintiff's allegation in a petition. Conversely, an unopposed narrative is not judicial proof.
+The proposed `stated / denied / uncertain` status does not identify **who** asserts or denies a proposition. A plaintiff's allegation can be disputed and still properly appear as that plaintiff's allegation in a statement of claim. Conversely, an unopposed narrative is not judicial proof.
 
 Use at least speaker/source, proposition polarity, whether it is contested, and documentary status. Unknown and conflicting are separate states. A document listed as “contract” establishes that the lawyer listed a contract, not that its unseen contents establish every required term. Keep “asserted basis,” “supporting material listed” and “legally established” separate. Section 4.4's reference to “proved facts” should become “supported input propositions, preserving their attribution and status.”
 
@@ -217,7 +217,7 @@ Start with the existing BM25 plus reviewed seeds/dependencies. Benchmark E5 ONNX
 
 ### 3.4 Latency: preserving 1–3 minutes is a target, not an established baseline
 
-The earlier adjacent battery full-flow baseline was 172.97 s on one company fixture; another earlier cold series was 208.62 s. Both excluded human confirmation/review and neither certified a physical 8 GB laptop. The 52–84 s figures elsewhere are drafting-stage measurements, not comparable complete petitions. [Speed study](C:/Users/TheShadow/dz-legal-assistant/SPEED-REPORT.md:9).
+The earlier adjacent battery full-flow baseline was 172.97 s on one company fixture; another earlier cold series was 208.62 s. Both excluded human confirmation/review and neither certified a physical 8 GB laptop. The 52–84 s figures elsewhere are drafting-stage measurements, not comparable complete statements of claim. [Speed study](C:/Users/TheShadow/dz-legal-assistant/SPEED-REPORT.md:9).
 
 Current extraction probes generated about 5 tokens/s and the shorter condition probes about 6.4–6.6 tokens/s. As a budgeting illustration, **500 additional generated tokens cost roughly 76–100 s of decoding**, before new prompt processing, model load or retries. Listing every event with quotations and dozens of condition answers can easily be longer than the old short reading/selection answers. Equal call counts do not imply equal work.
 

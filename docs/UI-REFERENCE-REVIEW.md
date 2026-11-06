@@ -14,7 +14,7 @@ Restoration verification: Release build **0 warnings / 0 errors**; **665 tests p
 
 ## What the original interface already does well
 
-The application is a petition drafting workspace. Its original main grid contains the case form, the draft and the review/assistant area together. Arabic places the form on the physical right and review on the left; English follows the original opposite ordering. The draft remains in the middle and is continuously visible. The assistant uses the existing review-side space. These relationships should remain the starting point for a visual study.
+The application is a workspace for drafting the statement of claim. Its original main grid contains the case form, the draft and the review/assistant area together. Arabic places the form on the physical right and review on the left; English follows the original opposite ordering. The draft remains in the middle and is continuously visible. The assistant uses the existing review-side space. These relationships should remain the starting point for a visual study.
 
 The original warm paper, document typography, familiar case-step labels and direct access to drafting/export are useful foundations. R3 changed the visual language and information hierarchy together: blue workbench chrome, icon navigation and a lower tools area. The next comparison should retain the original hierarchy and first change its visual treatment.
 
@@ -57,7 +57,7 @@ The imagery and glass-like appearance add atmosphere, but screenshots cannot est
 
 Preserve the original form/draft/review arrangement, Arabic/English pane ordering, existing case-step navigation, and current assistant behavior for the first comparison. Keep the draft large and visible. Apply the new treatment to the same screen and the same populated case so the visual difference is easy to judge.
 
-The reference sidebar navigates a practice-management product: clients, billing, hearings and calendar. Our current application has a different task. Its existing case steps should receive the stronger selected-state treatment; adding a second global sidebar would spend width without improving petition drafting.
+The reference sidebar navigates a practice-management product: clients, billing, hearings and calendar. Our current application has a different task. Its existing case steps should receive the stronger selected-state treatment; adding a second global sidebar would spend width without improving the drafting of the statement of claim.
 
 ### Preferred direction: warm charcoal and muted gold
 
@@ -103,6 +103,6 @@ For the next review, prepare a faithful charcoal/gold treatment of the **same re
 
 The restoration and reference-analysis review ended here. Following approval of the proposed direction, a separate [charcoal/gold comparison study](design-studies/charcoal-gold/index.html) now shows the restored original beside the proposal in Arabic and English, at laptop and large-window sizes, in editing and blocked-export states. [Study notes and verification](design-studies/charcoal-gold/README.md) describe its scope. Production views and styles remain unchanged.
 
-Following feedback on that proposal, [review study 02](design-studies/document-workspace/index.html) explores numbered case navigation, a cleaner page-based petition with contextual field controls outside the paper, a single-row draft toolbar and a subtle glass alternative. [The follow-up notes](design-studies/document-workspace/README.md) describe the layout concept and remaining interaction work. This is also an isolated mockup study; production styling and export formatting remain unchanged.
+Following feedback on that proposal, [review study 02](design-studies/document-workspace/index.html) explores numbered case navigation, a cleaner page-based statement of claim with contextual field controls outside the paper, a single-row draft toolbar and a subtle glass alternative. [The follow-up notes](design-studies/document-workspace/README.md) describe the layout concept and remaining interaction work. This is also an isolated mockup study; production styling and export formatting remain unchanged.
 
 The user subsequently approved implementation and merging into the existing default branch. The [production release notes](UI-WORKBENCH-RELEASE.md) record the implemented desktop UI, its preservation of the core engines and the completed regression checks. The studies above remain historical snapshots.

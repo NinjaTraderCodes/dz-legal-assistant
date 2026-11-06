@@ -74,6 +74,36 @@ Computed from the summary's per-case lines; a forbidden reading is counted as po
 - The 100-case hidden set has been **seen at summary level**. Under rule 7, a changed reader needs a **new hidden set** written by someone who has seen neither the prompts nor the cases.
 - The 61 cases in `tests/fact-cases` are development, validation and robustness.
 
+## 2b. What has already been tried, and what it gave
+
+From the repository's history (commits, `docs/`, `docs/baselines/`). Section 4 marks each technique against this list.
+
+| Tried | When, where | Result |
+|---|---|---|
+| One universal fact sheet in JSON, one call (17 relations, 38 events, 22 requests) | 29 Oct, `FactReader`, `docs/ALPHA-01.md` | 10 of 61 cases right, 48–59 s. The position took the list's first item; neighbouring codes were confused. It led to Alpha-01. |
+| Ollama `format` (JSON schema) for the claim type | before 25 Oct, `LOCAL-MODEL-REPORT.md` (on the owner's laptop, outside the repository) | 138 valid answers, 126 right. **The format was reliable; the judgement did not improve.** |
+| Schema-constrained extraction with a quote for each value | 25 Oct probe, 3 stories, `docs/CORE-LOGIC-PLAN-REVIEW-2026-10-25.md` §2.2 | The dates were right, but the "quotes" were «لم يُذكر», present in the text and wrong. **A model-written evidence link passes a presence check and can still be wrong.** |
+| Questions limited to the confirmed claim type; values found by code, chosen by number; the role by code | 29–30 Oct, Alpha-01 runs 1–4 | Development down to about 4 errors in 56; **hidden 58 in 90**. |
+| Prompt rules for negation scope («لم يدفع رغم إعذاره»), "disputed", documents as proof; a template instead of an example; a tolerant parser | Alpha-01 runs 2–4 | They fixed the cases they were written from. **The disputed loan stayed affirmed in all runs;** hidden polarity errors 45. |
+| The shared text first, so the server reuses it; article choice continues the same conversation (`ModelRequest.Earlier`) | 26 Oct, Slice B, `48ec080` | In the app's analysis (`read-facts.ar.txt`). **Prefix reuse exists; it was never used to split the fact reading into short questions.** |
+| A larger model with the same reader | 31 Oct, Nemotron 3 Ultra online | 64 of 90; still 20 polarity errors. |
+| Other local models | before 26 Oct, `docs/PRODUCT-DETAILS.md` | `qwen2.5:3b` weaker; `qwen3:4b` too slow, reasons in English; `qwen2.5:7b` better drafting, slower. `gemma3n:e2b/e4b` listed to compare, no result recorded. |
+| multilingual-E5-small embeddings (int8 ONNX) for the claim type, by nearest description | before 25 Oct, `LOCAL-MODEL-REPORT.md` | The top three held the right claim in 37 of 46. **Similarity is not inference:** this is no evidence for or against an NLI judge. |
+| A path to score an outside tool (`facts export` / `facts score`, an example naming GLiNER 2.5) | `docs/FACT-READING.md` | The path exists; **no outside reader's result is recorded.** |
+| Flash attention, a `q8_0` KV cache | advised to users in `docs/PRODUCT-DETAILS.md` | **Not measured.** |
+| The Alpha-02 brief: diagnosis, then a design, by an independent agent, target 80% at 90 s | 30 Oct, `docs/briefs/ALPHA-02-BRIEF.md` | **Its two reports were replies to the owner, not files. They are not in the repository, and this seed has not seen them.** A1–A4 (31 Oct: run manifest, court section as a hint, Nemotron) followed. |
+
+**Never tried, as far as the repository shows:**
+- log-probabilities or calibration;
+- several samples with a vote;
+- one short question per element over a cached prefix;
+- an NLI encoder;
+- negation or dispute cues in code (they were only prompt rules);
+- binding rules in code;
+- an "unsure" outcome;
+- Gemma 4 E4B, Qwen3.5 4B;
+- fine-tuning.
+
 ## 3. The five suggestions received, against this problem
 
 | Suggestion | Fits the 36%? | Why |
@@ -86,9 +116,11 @@ Computed from the summary's per-case lines; a forbidden reading is counted as po
 
 ## 4. The candidate techniques
 
-Each is stated as a hypothesis to measure, with the errors it aims at, its cost on this laptop and how it fits the code. **None has been run here yet.**
+Each is stated as a hypothesis to measure, with the errors it aims at, its cost on this laptop and how it fits the code. Each one's **Before** line says what the project already tried (section 2b). **None of the new parts has been run yet.**
 
 ### A. Score the choices instead of generating them (polarity)
+
+**Before:** never tried.
 
 Ask each question so that the answer is one token among four, A/B/C/D or 1/2/3/4 (check they are single tokens for the model), and read the **log-probabilities** of the four.
 
@@ -103,6 +135,8 @@ Notes:
 
 ### B. Short questions over one cached prefix (all errors; the enabler)
 
+**Before:** prefix reuse is in the app's analysis since Slice B (26 Oct); the fact reading was never split into short questions. New in its use, not in its mechanism.
+
 Put everything shared first: the instructions, the sentences, the values. Then ask each element as its own short turn.
 
 - **The cost works out.** The prefix (about 1,000 tokens, 45 s) is read once. Each question adds about 40 to 60 tokens (2 to 3 s at 22 tokens/s) and 1 to 6 answer tokens. Six questions come to about 60 to 65 s, today's budget, with a focused question each time.
@@ -111,6 +145,8 @@ Put everything shared first: the instructions, the sentences, the values. Then a
 - **The fallback runtime:** `llama-server` (llama.cpp) offers explicit `cache_prompt` and slot save/restore. It would replace Ollama, a larger change to weigh: loopback only, licence MIT.
 
 ### C. Point first, judge second (binding, polarity)
+
+**Before:** partly. A model-written quote per value was probed on 25 Oct and gave wrong links that passed the presence check; Alpha-01 already shows each value's sentence and states the same-sentence rule in the prompt, and the model broke it 27 times. What is new is only the code enforcing the rule after a pointed sentence, so the pointing itself must be measured first: if it is as unreliable as the quotes, C adds nothing.
 
 For each element, the model first names **the sentence** that speaks of it (`s4`, or none). Pointing is a narrower task than judging, and a sentence id is checkable.
 
@@ -121,6 +157,8 @@ Then:
 Cost: one extra short answer per element over the cached prefix (B).
 
 ### D. A small encoder as the polarity judge (polarity, missed events)
+
+**Before:** an embedding encoder (E5) was tried for the claim type by similarity and was weak (37/46 in the top three); an NLI cross-encoder, which judges a pair, was never tried. The scoring path for an outside reader exists and has no recorded result.
 
 Polarity is natural-language inference:
 - *premise:* the sentence;
@@ -144,6 +182,8 @@ The model answers entailment (stated), contradiction (denied) or neutral (absent
 
 ### E. A code layer for negation, attribution and dispute cues (polarity)
 
+**Before:** the same cues were tried as **prompt rules** (Alpha-01 runs 2–4) and did not hold on the hidden set. As code features or vetoes, never tried. The risk is the same overfitting: rules written from seen failures.
+
 Arabic marks most of these openly:
 - **negation:** لم، لن، لا، ليس، ما، غير، دون، عدم;
 - **attribution:** يدعي، يزعم، يقول، يؤكد، يتمسك;
@@ -157,6 +197,8 @@ Use them as **features**, not verdicts:
 **Scope is the trap.** «لم يدفع رغم إعذاره» negates the payment, not the notice, and run 1 tripped on exactly that. Every cue rule is measured on development and validation, not written from a failure. Arabic negation-scope work exists (Mahany et al., IJICIS 2023, a transformer; earlier rule-based systems).
 
 ### F. Binding as an assignment, with constraints (binding, request amounts)
+
+**Before:** never tried in code; the values list carries only the value, its kind and its sentence.
 
 Each value gets a short code-made description:
 - its sentence and field;
@@ -173,6 +215,8 @@ Score each (element, value) pair, by logprobs (A) or by the pointed sentence (C)
 
 ### G. Constrained output, as plumbing
 
+**Before:** tried for the claim type (126/138, no gain in judgement) and with quotes (wrong links). Not to be proposed again as a fix; only as the plumbing that A needs.
+
 There are two ways to get it:
 - **Ollama:** `format` with a small JSON schema, with enums per field: the status, and value ids limited to those of the right kind.
 - **llama-server:** a GBNF grammar for the existing line format, which costs fewer tokens than JSON.
@@ -184,6 +228,8 @@ Notes:
 
 ### H. Several samples, one vote
 
+**Before:** never tried.
+
 With a cached prefix (B), extra samples cost only their answer tokens. Options:
 - three samples at a moderate temperature, a vote per question (self-consistency, Wang et al. 2022);
 - or two phrasings of each question.
@@ -191,6 +237,8 @@ With a cached prefix (B), extra samples cost only their answer tokens. Options:
 Disagreement is also a confidence signal for K. Measure the gain against the time it adds.
 
 ### I. The model itself
+
+**Before:** `qwen2.5:3b` weaker, `qwen3:4b` too slow, `qwen2.5:7b` slower; Nemotron 71% with the same reader. Gemma 4 E4B, Qwen3.5 4B and `gemma3n` never measured on the fact bench.
 
 The candidates have to fit 16 GB of RAM, run on CPU and meet the time budget:
 
@@ -209,6 +257,8 @@ The candidates have to fit 16 GB of RAM, run on CPU and meet the time budget:
 
 ### J. Fine-tuning on fictitious cases (the largest lever, the largest process)
 
+**Before:** never tried; deferred on purpose by the 25 Oct review until the error classes were known.
+
 The earlier review asked for fine-tuning only once the residual error classes were known. **They now are:** polarity and binding.
 
 **The plan:**
@@ -225,6 +275,8 @@ The earlier review asked for fine-tuning only once the residual error classes we
 
 ### K. Let the reader say "unsure" (all errors; product)
 
+**Before:** never tried for elements; the Alpha-02 brief already left open "what the lawyer is asked to confirm".
+
 A narrow logprob margin (A), a split vote (H) or a cue veto (E) can produce an **"unsure" element**, shown to the lawyer to confirm, instead of a silent guess.
 
 - **The lawyer already confirms** the claim type with one click, so the same pattern fits elements.
@@ -232,6 +284,8 @@ A narrow logprob margin (A), a split vote (H) or a cue veto (E) can produce an *
 - **Low-confidence errors** that are caught are no longer silent errors. That is the safety the product promises, and it should be counted honestly, not hidden in the headline.
 
 ### L. Speed, to pay for B, C and H
+
+**Before:** advised to users, never measured.
 
 Settings to measure on the laptop:
 - flash attention;

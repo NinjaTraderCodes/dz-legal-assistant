@@ -2,7 +2,7 @@
 // Who built it, closing the file like a petition's signature block: each person's picture clipped on like an
 // identity photo in a file (the team's own photographs, and an avatar for the legal reviewer: see
 // src/assets/team/NOTES.txt), the name as the About screen gives it (Arabic script on the Arabic page), the role, and
-// what each person did in the words of the About page; then the programme line and the honest note on how it was built.
+// what each person did in one line (the About page keeps the full account); then the programme line and the honest note on how it was built.
 import { Image } from "astro:assets";
 import hicham from "../assets/team/hicham.jpg";
 import djihane from "../assets/team/djihane.jpg";
@@ -16,7 +16,7 @@ const { lang } = Astro.props;
 const pictures = { Lead: { src: hicham, avatar: false }, Design: { src: djihane, avatar: false }, Legal: { src: khouloud, avatar: true } };
 const people = (["Lead", "Design", "Legal"] as const).map((who) => {
     const [name, role] = s(lang, `AboutTeam${who}`).split(" — ");
-    return { name, role, did: t(lang, `about.team.did.${who.toLowerCase()}`), ...pictures[who] };
+    return { name, role, did: t(lang, `team.did.${who.toLowerCase()}`), ...pictures[who] };
 });
 ---
 <Folder tone="kraft" no="06" tab={t(lang, "tab.team")} id="team" labelledby="team-title">

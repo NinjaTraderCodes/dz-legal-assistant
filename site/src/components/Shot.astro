@@ -3,7 +3,8 @@
 // known before it loads. One <img> per picture, not a <picture> with AVIF and WebP sources and a PNG fallback: with
 // forty pictures on the home, the extra elements and candidates cost more main-thread time on a phone than AVIF
 // saves in bytes (measured with Lighthouse, phase 5). A picture can come in a light and a dark version, and only the
-// one matching the theme is shown (the other has no box, so a lazy browser never asks for it). With `large` the
+// one matching the theme is shown (the other has no box, so a lazy browser never asks for it). A phone can show one
+// part of it large (`zoom`). With `large` the
 // picture opens bigger in the page's Lightbox when clicked; ui.js wires the button, nothing inline.
 import { Image, getImage } from "astro:assets";
 import type { ImageMetadata } from "astro";
@@ -26,19 +27,28 @@ interface Props {
     large?: boolean;
     /** WebP quality: 72 by default; a page of dense text can take less and stay sharp at twice its size. */
     quality?: number;
+    /**
+     * On a phone, the part of the picture to show large: its centre (fractions of the width and height) and how many
+     * times larger. The whole picture still opens in the Lightbox.
+     */
+    zoom?: { x: number; y: number; scale: number };
     class?: string;
 }
-const { lang, light, dark, alt, caption, width = 420, natural = false, note, large = false, quality = 72, class: className } = Astro.props;
+const { lang, light, dark, alt, caption, width = 420, natural = false, note, large = false, quality = 72, zoom, class: className } = Astro.props;
 // Shown at half the crop's pixel width at most, so it stays sharp on a high-density screen; the box is the picture's
 // own size, never stretched past it.
 const shown = natural ? light.width : Math.min(width, Math.floor(light.width / 2));
 const widths = natural ? [light.width] : [shown, Math.min(light.width, shown * 2)].map(Math.round);
-const sizes = natural ? `${light.width}px` : `(min-width: 900px) ${shown}px, calc(100vw - 32px)`;
+const sizes = natural ? `${light.width}px` : `(min-width: 900px) ${shown}px, ${zoom ? `calc((100vw - 32px) * ${zoom.scale})` : "calc(100vw - 32px)"}`;
+// Scaling by z about a point O moves a point C to O + z(C - O); the origin that brings the zoom's centre to the middle
+// of the frame is O = (zC - 0.5) / (z - 1), kept inside the picture so the frame never shows past its edge.
+const origin = (c: number, z: number) => (z <= 1 ? 50 : Math.round(Math.min(1, Math.max(0, (z * c - 0.5) / (z - 1))) * 1000) / 10);
+const zoomStyle = zoom ? `--shot-z: ${zoom.scale}; --shot-ox: ${origin(zoom.x, zoom.scale)}%; --shot-oy: ${origin(zoom.y, zoom.scale)}%;` : "";
 const full = large ? await getImage({ src: light, format: "webp", width: Math.min(light.width, 1280), quality: 74 }) : null;
 const fullDark = large && dark ? await getImage({ src: dark, format: "webp", width: Math.min(dark.width, 1280), quality: 74 }) : null;
 const Wrap = large ? "button" : "div";
 ---
-<figure class:list={["shot", natural && "natural", className]} style={natural ? undefined : `max-width: min(100%, ${shown}px)`}>
+<figure class:list={["shot", natural && "natural", zoom && "zoom", className]} style={natural ? undefined : `max-width: min(100%, ${shown}px); ${zoomStyle}`}>
     <Wrap class="shot-frame" {...(large ? { type: "button", "data-lightbox": "", "aria-label": t(lang, "shot.open") } : {})}>
         <Image src={light} alt={alt} widths={widths} width={widths.at(-1)} sizes={sizes} format="webp" quality={quality} loading="lazy" decoding="async" class:list={["shot-img", dark ? "shot-light" : "shot-any"]} data-full={full?.src} />
         {dark && <Image src={dark} alt={alt} widths={widths} width={widths.at(-1)} sizes={sizes} format="webp" quality={quality} loading="lazy" decoding="async" class="shot-img shot-dark" data-full={fullDark?.src} />}
@@ -58,5 +68,9 @@ const Wrap = large ? "button" : "div";
     :global(html:not([data-theme="dark"])) .shot :global(img.shot-dark) { display: none; }
     :global(html[data-theme="dark"]) .shot :global(img.shot-light) { display: none; }
     figcaption { color: var(--w-muted); }
+    /* A phone shows the zoomed part of the picture, the frame cutting the rest. */
+    @media (max-width: 899px) {
+        .zoom :global(img) { transform: scale(var(--shot-z)); transform-origin: var(--shot-ox) var(--shot-oy); }
+    }
     .muted { color: var(--w-muted); }
 </style>

@@ -20,18 +20,26 @@ def error_set(row):
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("first_run_root", type=Path)
 parser.add_argument("rerun_root", type=Path)
+parser.add_argument("--allow-partial-diagnostic", action="store_true", help="Report completed calls only after a stopped run; never label this a 96-case repeat")
 args = parser.parse_args()
 assert args.first_run_root.resolve() != args.rerun_root.resolve(), "Preserve the first-run directory read-only"
 first_folder = args.first_run_root / "reference-gemma4-e4b"
 second_folder = args.rerun_root / "reference-gemma4-e4b"
-first, second = read(first_folder / "case-results.json"), read(second_folder / "case-results.json")
-assert len(first) == len(second) == 96
-assert [r["Name"] for r in first] == [r["Name"] for r in second]
+first, second_all = read(first_folder / "case-results.json"), read(second_folder / "case-results.json")
+completion = read(second_folder / "completion.json")
+assert len(first) == 96 and read(first_folder / "completion.json")["Complete"]
+assert [r["Name"] for r in second_all] == [r["Name"] for r in first[:len(second_all)]]
+second = [r for r in second_all if r["Failure"] is None and r["Timings"] is not None]
+if not args.allow_partial_diagnostic:
+    assert len(second) == 96 and completion["Complete"], "A full 96-case repeat is unavailable"
+else:
+    assert not completion["Complete"] and "precondition" in completion["StopReason"], "Partial mode is only a disclosed stopped-run diagnostic"
 assert read(first_folder / "manifest.json")["Fingerprints"] == read(second_folder / "manifest.json")["Fingerprints"]
-assert all(read(folder / "completion.json")["Complete"] for folder in (first_folder, second_folder))
 assert all(r["Failure"] is None and r["Timings"] is not None for r in first + second)
+first_by_name = {r["Name"]: r for r in first}
 rows = []
-for a, b in zip(first, second):
+for b in second:
+    a = first_by_name[b["Name"]]
     rows.append(dict(name=a["Name"], kind=a["Kind"], fold=a["Fold"],
                      answerExact=a["Answer"] == b["Answer"],
                      verdictSame=a["HasCritical"] == b["HasCritical"],
@@ -51,11 +59,15 @@ def counts(items):
 
 
 output = dict(rule="Owner instruction: first-run accuracy remains the semantic reference; rerun provides timing/memory and repeatability only. No replacement or selection of better answers.",
+              planned=96, completedCalls=len(second), fullRepeatAvailable=completion["Complete"],
+              blockedOrFailed=[r["Name"] for r in second_all if r["Failure"] is not None or r["Timings"] is None],
+              firstAccuracyRetained=sum(not r["HasCritical"] for r in first),
               answerMatch="Exact decoded string including whitespace and line endings; no normalization",
               verdictMatch="Same whole-case critical pass/fail; complete error-set and parsed-facts matches separately",
               firstSha256=hashlib.sha256((first_folder / "case-results.json").read_bytes()).hexdigest(),
               rerunSha256=hashlib.sha256((second_folder / "case-results.json").read_bytes()).hexdigest(),
               overall=counts(rows), byKind={kind: counts([r for r in rows if r["kind"] == kind]) for kind in ("polarity", "binding")},
               byFold={str(fold): counts([r for r in rows if r["fold"] == fold]) for fold in (1, 2, 3)}, rows=rows)
-(args.rerun_root / "repeatability.json").write_text(json.dumps(output, indent=2) + "\n", encoding="utf-8")
-print(json.dumps(output["overall"], indent=2))
+name = "partial-repeatability.json" if args.allow_partial_diagnostic else "repeatability.json"
+(args.rerun_root / name).write_text(json.dumps(output, indent=2) + "\n", encoding="utf-8")
+print(json.dumps({k: output[k] for k in ("planned", "completedCalls", "fullRepeatAvailable", "blockedOrFailed", "firstAccuracyRetained", "overall")}, indent=2))

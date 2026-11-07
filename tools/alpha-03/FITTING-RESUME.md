@@ -1,10 +1,24 @@
 # Authorised v3 fitting-stage checkpoint
 
+## CURRENT STOP — Firefox detected during authorised repeat
+
+No active model run. Session85496 ended with guard exit3:37 actual gemma4 calls completed; request38 (`a03-038`) blocked before HTTP at22:36:36UTC due Firefox PIDs17140/19020/13636. Power/app/monitor/headroom checks passed. Root `%TEMP%\dzlegal-alpha03-gemma4-repeat-20261107-232428`, sourcee54cd8b. Actual browser windows/user action not inspected; strict process presence is the implemented condition. Do not infer an idle/background exemption or resume automatically.
+
+Cleanup: model unloaded; owned app15480/monitor14548 closed normally, IDs historical only. WSearch stayed Running/Automatic, no pause; Best performance retained. Owner Firefox processes untouched. First root and its semantic baselines (G336/96,G4first69/96) unchanged; v3 hash9fc...da3a5 unchanged. No candidate/prompt/calibration/binding/audit/original validation inference.
+
+Partial repeatability:31/37 exact answers,37/37 critical verdicts,36/37 error multisets,34/37 parsed facts; both prefixes20/37 correct, zero verdict transitions. All37 native request bodies match the first run; no request38 file/timing. 59 planned cases received no inference. `partial-repeatability.json` explicitly says fullRepeatAvailable=false; default comparator still demands96. Do not claim a full repeat or replace69/96. See stopped-repeat summary and pending docs/comparator partial-mode commit/checks/push. Await owner's answer before another full96 run. Current stop supersedes active notes below.
+
 ## CURRENT AUTHORISATION — gemma4 repeat, then fitting/audit
 
 Owner answered the browser-condition stop: rerun **gemma4 only, all96 from case1**, keep completed gemma3. Report exact answer and critical pass/fail verdict matches against the first gemma4 run; additionally error-multiset/facts agreement and per-kind/fold counts. **First gemma4 accuracy/facts (69/96) remain the semantic reference**, not replaced by the timing repeat. New run supplies qualified timing/memory and diagnostic repeatability; no selective best answers. G3 stays36/96. Old root `%TEMP%\dzlegal-alpha03-v3-fitting-20261107-215737` remains read-only; do not overwrite its derived audit/hash files.
 
 New source changes pending model-selector/repeat-comparison commit/checks at this checkpoint. `Measure-FittingReferences.ps1 -ModelNames gemma4:e4b -RunRoot <new external root>` uses the already repaired per-request browser guard and unchanged reader/settings/ten-case reloads. `audit_references.py <new root> --models gemma4:e4b`; `compare_reference_repeat.py <old root> <new root>`; summariser discovers only actual reference directories. No new run starts before quiet/power/app/monitor verification and required post-commit checks. After full qualified repeat, continue fitting/audit as authorised, without asking again unless a stop rule fails. Current authorisation supersedes historical stops below.
+
+### ACTIVE repeat
+
+Commit **e54cd8b49ed00c02bc065d3546832b0dc570e763**, pushed; required Release build0warnings/errors and all990tests0failed/skipped passed. Active exec session **85496** runs gemma4-only96 fromcase1. Root `%TEMP%\dzlegal-alpha03-gemma4-repeat-20261107-232428`. Owned idle app PID **15480**, monitor PID **14548**; confirm identities before normal cleanup. WSearch remains Running/Automatic, no pause. Preflight about11.4GiB available, other CPU<.5 cores, mains/Best performance, no browser/Code, model unloaded, digest dc35e8d9...300c9c and Ollama0.40.15 unchanged. No concurrent build/test/model. Do not restart completed calls or write candidate code until this completes.
+
+At completion: normal model/app/monitor cleanup, then wire audit with `--models gemma4:e4b`, comparison against the old root (read-only), summariser/hash verification. First-run gemma4 accuracy69/96/facts stay the semantic baseline; repeat's accuracy diagnostic only. Commit/report complete qualified repeat and definitions before candidate implementation. Owner has already authorised continued grouped fitting/binding/primary-before-locked-audit; do not ask again absent stop failure. No validation. Frozen payload must remain9fc...da3a5.
 
 ## CURRENT STOP — browser condition failed
 

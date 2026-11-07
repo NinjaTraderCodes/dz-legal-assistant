@@ -83,6 +83,9 @@ foreach (var c in cases)
         Value(row, "date", true);
         Value(row, "amount", false);
         var gold = c.Gold.Events.SingleOrDefault(e => e.Kind == kind);
+        Check(row.TryGetProperty("decisive", out var decisive) && decisive.ValueKind is JsonValueKind.True or JsonValueKind.False, "dense event lacks explicit boolean decisive flag");
+        Check(kind != S(annotation, "target") || decisive.ValueKind == JsonValueKind.True, "contrast target is not decisive");
+        Check(gold is null || gold.Decisive == (decisive.ValueKind == JsonValueKind.True), "gold/dense decisive flags differ");
         Check(polarity == "absent" ? gold is null : gold is not null && gold.Polarity == polarity && (gold.Date ?? string.Empty) == S(row, "date") && (gold.Amount ?? string.Empty) == S(row, "amount"), "legacy event projection differs from dense key");
         Check(c.Gold.Forbidden.Any(f => f.Kind == kind) == (polarity != FactPolarity.Affirmed), "legacy forbidden projection differs");
     }

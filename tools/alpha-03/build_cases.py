@@ -68,11 +68,15 @@ def assemble():
         "D": lambda k, t: line(k, t, "documents.list"),
     })
     assert set(authored) == {f["id"] for f in plan["families"]}
+    decision_file = DATA / "revisions/v3-decisiveness.json"
+    assert decision_file.exists(), "Explicit owner-corrected decisive inventory required"
+    decisions = {(e["case"], e["event"]): e["decisive"] for e in json.loads(decision_file.read_text(encoding="utf-8"))["allEventDecisions"]}
     cases, members = [], []
     for family in plan["families"]:
         a = authored[family["id"]]
         claim = catalog[family["claim"]]
         for variant in a["variants"]:
+            case_name = "a03-" + str(len(cases) + 1).zfill(3)
             keys, sentences, inputs = {}, [], {"court.section": a["court"]}
             for field in FIELDS:
                 pieces = [x for x in variant["lines"] if x["field"] == field]
@@ -95,6 +99,7 @@ def assemble():
                 for k in ("evidence", "dateEvidence", "amountEvidence"):
                     row[k] = resolve(row[k])
                 row["documentsOnly"] = bool(row["evidence"]) and all(sentences[int(s[1:])-1]["field"] == "documents.list" for s in row["evidence"])
+                row["decisive"] = decisions[(case_name, row["kind"])]
                 dense_events.append(row)
             assert not rows, rows
             requests = {r["kind"]: dict(r) for r in variant["requests"]}
@@ -107,12 +112,12 @@ def assemble():
                 dense_requests.append(row)
             assert not requests, requests
             gold = dict(relation=a["role"][0], position=a["role"][1],
-                        events=[dict({k: e[k] for k in ("kind", "polarity", "date", "amount") if e[k] is not None}, decisive=True,
+                        events=[dict({k: e[k] for k in ("kind", "polarity", "date", "amount") if e[k] is not None}, decisive=e["decisive"],
                                      **({"actor": e["actor"]} if e["actor"] in ("plaintiff", "defendant") else {})) for e in dense_events if e["polarity"] != "absent"],
                         forbidden=[dict(kind=e["kind"]) for e in dense_events if e["polarity"] != "affirmed"],
                         requests=[{k: r[k] for k in ("kind", "amount") if r[k] is not None} for r in dense_requests if r["present"]])
             value_notes = [dict(v, evidence=resolve(v["evidence"])) for v in variant.get("valueNotes", [])]
-            c = dict(name="a03-" + str(len(cases) + 1).zfill(3), partition="development" if family["split"] == "fitting" else "alpha03-audit",
+            c = dict(name=case_name, partition="development" if family["split"] == "fitting" else "alpha03-audit",
                      family=family["id"], claim=family["claim"], inputs=inputs, gold=gold,
                      annotation=dict(familyKind=family["kind"], split=family["split"], fold=family["fold"], contrast=variant["variant"], target=family["target"],
                                      note=variant.get("note", ""), roleEvidence=resolve(a["roleEvidence"]), events=dense_events, requests=dense_requests, valueNotes=value_notes, sentences=sentences))

@@ -58,3 +58,23 @@ Natural rewrites preserving attribution/scope rather than simply deleting a clau
 Removed wording includes total/independent-amount emphasis, instructions not to count deposits or expenses, declarations that a number is not an amount, absent-value announcements and document-only/source-exclusion explanations. Basic factual units and legal nouns remain: a note still has to state a payment, rent obligation, security deposit, expense or actual remedy, without telling the reader which competing candidate to select. Ordinary `فقط` in a request can remain. No model answer motivated the review.
 
 The audit's disputed evidence is sparse: nine target propositions, ten disputed event labels overall. The disputed-recall gate is indicative only; the count and original threshold remain reported. This revision changes neither the split nor the gate to compensate for that limitation.
+
+## Revision 3 author review — owner-adjudicated decisive flags
+
+Review completed: 144/144 for omission criticality against the unchanged case text, requested remedies and claim catalogue. This is author review under the owner's corrected definition, not independent legal validation. The 25 interrupted reference answers were not used to select individual flags; the decision is a corpus-wide counterfactual omission rule. That partial run is excluded from all comparisons, without retrospective rescoring.
+
+548 dense events now carry explicit flags: 422 true / 126 false. Their 428 non-absent gold projections have 395 true / 33 false. All 108 polarity-family target decisions, including 27 absent targets, remain decisive. Non-target absence stays densely measured. No other annotation or input changes.
+
+Gold true-to-false changes (every affected event):
+
+| Cases | Event | Reason |
+|---|---|---|
+| a03-001–a03-008 | payment_made | Denied payment duplicates affirmed unpaid loan/debt |
+| a03-009–a03-012 | payment_made | Denied payment duplicates affirmed unpaid sale price |
+| a03-032 | payment_made | Historical payment without a restitution request; annulment/damages grounds remain |
+| a03-033–a03-036 | delivery_late, delivery_missing | Negative alternative breaches; actual broken-goods breach is affirmed other |
+| a03-037–a03-040 | delivery_missing | Delivered but nonconforming goods; affirmed other carries the claimed breach |
+| a03-069–a03-072 | notice_served | Prior demand is ancillary to titleless-occupation eviction/damages |
+| a03-073–a03-076 | payment_made | Denied payment duplicates affirmed unpaid commercial price |
+
+All remaining present events stay true for distinct grounds, performance/relationship facts, procedural context or the owner's target override. In particular, independently harmful acts stay separate, prior criminal rulings retain their adjudication context, lease start differs from formation/accrual, and the indemnity-seeking lessee's no-arrears assertion is not duplicated by an affirmed payment event. The full per-event inventory is `revisions/v3-decisiveness.json`; its verifier enforces exactly these 33 flag changes and every other field's identity against v2.

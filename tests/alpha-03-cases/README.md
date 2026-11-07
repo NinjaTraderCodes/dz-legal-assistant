@@ -62,3 +62,11 @@ python -B tools/alpha-03/freeze_cases.py --verify
 ```
 
 The audit has only nine disputed target labels and ten disputed event labels overall. Its disputed-recall gate is **indicative only**. Keep the predeclared counts and threshold visible; these few author-known examples do not establish precise population recall. No inference, fitting or audit run accompanied this correction.
+
+## Revision 3 — owner-adjudicated decisive flags
+
+The owner corrected the previous all-decisive default to the omission definition in `docs/HIDDEN-SET.md`. Every dense event now has an explicit boolean; each non-absent gold event carries the same flag. All contrast targets remain decisive. Redundant negative alternatives and ancillary history are non-decisive; distinct foundations, independent material grounds, remedy prerequisites and procedural/prior-adjudication facts remain decisive. The exact rule, 548 per-event decisions/reasons and all 33 changed gold flags are in `revisions/v3-decisiveness.json`. `annotation-rules.md` explains the cases.
+
+Only decisive flags change in case objects. Text, every polarity/value/date/actor/source/citation/request, family and split/fold remain identical to v2. `revisions/freeze-v2.json` preserves old hash `86a4e3701871184fcab58bdeb94b2a27426f067c95e094380f5045823db1e642`; the new hash is in `freeze.json`. Historical v2 text invariants are checked on their exact committed snapshot, then the v3 verifier proves the flags-only successor relationship. The builder still refuses frozen regeneration and now requires the explicit decision inventory.
+
+The 25 interrupted v2 fitting-reference calls are excluded from every comparison and never rescored as fresh v3 evidence. No candidate/audit inference or validation check preceded this correction. The owner authorised restarting both references from case 1, with unload/reload every ten cases, loads billed separately, browser/heavy apps closed, mains/Best performance and the 512 MiB guard retained. Dense denied-versus-absent measures are unchanged.

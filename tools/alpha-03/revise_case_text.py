@@ -139,7 +139,11 @@ def verify():
     assert (DATA / "revisions/freeze-v1.json").read_bytes() == blob("tests/alpha-03-cases/freeze.json")
     correction = load(RECORD)
     assert correction["revision"] == 2 and correction["predecessorCommit"] == BASE and correction["predecessorContentHash"] == OLD_HASH
-    before, after = json.loads(blob("tests/alpha-03-cases/cases.json")), load(DATA / "cases.json")
+    before = json.loads(blob("tests/alpha-03-cases/cases.json"))
+    successor = (DATA / "revisions/v3-decisiveness.json").exists()
+    # Preserve the original v2 proof on its exact historical snapshot. The v3
+    # verifier separately proves current content differs only in decisive flags.
+    after = json.loads(subprocess.check_output(["git", "show", "0511de639194298da9b94036ffc3ffb814eba226:tests/alpha-03-cases/cases.json"], cwd=ROOT)) if successor else load(DATA / "cases.json")
     changed, edits = invariants(before, after)
     assert changed == correction["changedCases"] and edits == correction["sentenceEdits"]
     assert len(edits) == correction["changedSentenceCount"]
@@ -160,7 +164,7 @@ def verify():
             member.pop("caseSha256")
     assert old_manifest == new_manifest, "Assignments or split policy changed"
     assert (DATA / "family-plan.json").read_bytes() == blob("tests/alpha-03-cases/family-plan.json")
-    print(f"Correction invariants: 144/144 label/value/date/source/split records unchanged; {len(changed)} case texts and {len(edits)} sentence texts changed.")
+    print(f"V2 correction invariants{' (historical snapshot)' if successor else ''}: 144/144 label/value/date/source/split records unchanged; {len(changed)} case texts and {len(edits)} sentence texts changed.")
 
 
 if __name__ == "__main__":

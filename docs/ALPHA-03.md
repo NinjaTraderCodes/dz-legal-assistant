@@ -540,3 +540,29 @@ The original evaluator recorded 23 decisive-event omissions across 17 completed 
 The model was unloaded, owned app closed normally, monitor stopped and **Windows Search restored Running/Automatic**. Best performance retained. The separate resident-gemma3 growth issue was not investigated. No cap increase, runner reset rescue, guard relaxation or model fallback followed. A bounded-batch residence protocol could be proposed to the owner, with cold loads/boundaries disclosed, but has not been authorised or run.
 
 Files outside `tools/alpha-03/`: this report and the linked summary only. Production code, prompts, law data, original tests and frozen corpus unchanged. Tests added/updated/skipped/weakened: none. Required post-commit Release build/full-test and push results are reported in the handoff. **Stopped on runtime precondition, before any candidate/audit; original validation model checks remain 0, hidden/evaluation access none.**
+
+## Owner-adjudicated v3: decisive flags and restarted measurement protocol
+
+The owner accepted the runtime stop, corrected the authored corpus's blanket decisive default and authorised a restart. **V3 is frozen at `9fc0eb6404903071aeaee4721f228a621cc71b772ea4afa45fb0230256fda3a5`**, replacing v2 content hash `86a4e3701871184fcab58bdeb94b2a27426f067c95e094380f5045823db1e642`. The v2 record is preserved in `tests/alpha-03-cases/revisions/freeze-v2.json`; the complete 548-event decision inventory and reasons are in `revisions/v3-decisiveness.json`. Case-file hash is `415fc5c2f0bcec7dbb41b0e12df7dcd06ccd3d03fb3d6feb8c2dee907275ab67`, split-manifest hash `1a9b132b481c7e3719f5f66b8f955c5aee56a2c16fc0e76b945520ef033e762f`.
+
+The applied rule is `docs/HIDDEN-SET.md`'s **decisive when missing this fact would get the case wrong**, with the owner's explicit override retaining every family's contrast target. Distinct claim foundations, independent material grounds, remedy prerequisites and material procedural/prior-adjudication facts remain decisive. Redundant negative alternatives and ancillary history that does not ground a sought remedy do not. Polarity alone never determines decisiveness. The lease's performance/accrual start differs from formation; prior criminal rulings remain distinct adjudication facts; the indemnity-seeking lessee's no-arrears assertion is not duplicated by an affirmed payment event. These are author-applied engineering annotations, not independent legal validation.
+
+Every dense event now has an explicit boolean: **422 true / 126 false**. All 428 non-absent legacy gold events have matching explicit flags: **395 true / 33 false**. All **108 contrast targets**, including 27 absent targets, remain decisive. Absent targets remain excluded from legacy gold events as before; their dense label and forbidden affirmation checks remain. The dense per-status and known-value/source measures keep all their labels and denominators: denied versus absent is still an error regardless of the decisive flag.
+
+Every gold true-to-false change:
+
+| Cases | Event(s) | Omission reason |
+|---|---|---|
+| a03-001–a03-008 | payment_made | Denied payment already carried by affirmed unpaid loan/debt |
+| a03-009–a03-012 | payment_made | Denied payment already carried by affirmed unpaid sale price |
+| a03-032 | payment_made | Historical payment; only annulment/damages sought, no restitution |
+| a03-033–a03-036 | delivery_late, delivery_missing | Actual broken-goods breach is affirmed other, not either denied alternative |
+| a03-037–a03-040 | delivery_missing | Actual nonconformity breach is affirmed other |
+| a03-069–a03-072 | notice_served | Ancillary prior demand in a titleless-occupation file |
+| a03-073–a03-076 | payment_made | Denied payment already carried by affirmed unpaid commercial price |
+
+The 33 changed gold flags comprise 29 fitting events and four audit events; all other gold flags remain true. Explicit dense flags are newly written for all 548 events, so all 144 case objects receive the added field. The invariant checker proves that after removing only decisive fields, v2 and v3 case objects are identical: **no text, polarity, value, date, actor, source, citation, request, family, split or fold changes**. It also enforces the exact per-event inventory and target flags. Historical v2 text checks run against their exact committed snapshot; the new successor proof is separate. The normal builder still refuses a frozen corpus and now requires the explicit decision inventory.
+
+Static results: existing harness **144 cases, no problem found**; strengthened dense checker **548 event labels, 368 request labels, 1,939 citation checks, zero problems**, built with zero warnings/errors; unchanged grouping and three folds; v3 payload/hash verification passes. The [v3 summary](baselines/2026-11-07-alpha-03-case-refreeze-v3/summary.md) records the correction and checks. Unit tests added/updated/skipped/weakened: none. Files outside `tools/alpha-03/`: corpus annotation/manifest/freeze/history/rule/review metadata, this report and that summary. Production code, original cases and reader prompts unchanged.
+
+The interrupted 25-call v2 partial reference is **discarded from every comparison**, preserved only as history, with no v3 rescoring or selective continuation. Both models restart at case 1. For every remaining timed run, close browser/heavy apps, retain mains/Best performance and the 512 MiB guard, and unload/reload every ten cases. Record each load/warm-up separately from case time and also report the total amortised bill, including loads. This owner-adjudicated residence policy supersedes the previous single resident batch; it does not investigate the separate memory-growth cause. References still precede candidate implementation; fitting-only grouped comparisons, primary fixed before the locked two-model audit, and the stop before validation all stand.

@@ -1,5 +1,21 @@
 # Authorised v3 fitting-stage checkpoint
 
+## CURRENT — complete repeat; continue fitting
+
+Second full gemma4 repeat **96/96 complete**, ten loads, source7539f76, session69373 ended normally. Root `%TEMP%\dzlegal-alpha03-gemma4-repeat2-20261107-235312`. Owned app14252/monitor13180 exited normally, model unloaded. Search Running/Automatic unchanged; Best performance retained. IDs historical only. No heavy benchmark active. This supersedes every older active/stop note below.
+
+Wire audit96/96 unchanged full requests, all source text; no cap/context/transport/browser failure. All746 timed samples mains/Best. Mean case15.448330, amortised16.469249 seconds; model WS7.273197/private7.998604/model+app7.424625GiB, minimum available4.063122. Background other CPU mean.731/p951.026 cores (mostly Task Manager/desktop), higher than G3 mean.384; disclose, not a controlled idle speedup. All260 new/500 first/119 stopped artifact hashes verified. Freeze9fc...da3a5 unchanged.
+
+Full repeatability84/96 exact answers,94/96 critical verdicts,92 error multisets,90 parsed facts. One fail-to-pass006 and pass-to-fail036. Both69/96 but different cases. First G4 accuracy/facts69/96 remain semantic reference; repeat costs only. G3 remains36/96. See `docs/baselines/2026-11-08-alpha-03-gemma4-repeat/summary.md` and `FITTING-PROTOCOL.md`.
+
+Finish this docs-only measurement commit, required post-commit Release build/full990 tests and push. Then implement/measure the single declared scored prompt/reader on fitting families only, both models, fixed/averaged order and finite global correction grid. **No candidate code exists yet.** No binding until score usefulness passes; stop/report on capability/runtime failures or both models' quality failure. Choose primary from fitting and record before locked two-model audit; stop after audit, no original validation. No further owner permission needed for that authorised continuation unless a stop rule fails. Do not modify frozen payload or old external records.
+
+## Historical active note — second full gemma4 repeat
+
+Owner said “Ready: restart all 96”. Session **69373** runs all96 gemma4 cases from case1, source **7539f762efde1ae994dd262f329c099ad7273011**. External root `%TEMP%\dzlegal-alpha03-gemma4-repeat2-20261107-235312`. This supersedes the stopped status below. Do not duplicate requests or reuse the stopped prefix. First gemma4 accuracy/facts69/96 and completed gemma3 reference36/96 remain retained.
+
+Owned idle app PID **14252**, monitor PID **13180**; confirm identities before normal cleanup. WSearch remains Running/Automatic, no pause. Mains/Best performance, no browser/Code, unchanged model/runtime, about11.2GiB initial available memory; recent other-CPU mean .420 cores before start. A preliminary .510-core preflight rejection made no model calls; timing began only after the quiet check passed. Reload every10 cases and all guards unchanged. No concurrent build/test/model or candidate code. On completion perform the full96 wire/repeatability/resource audits, commit/check/push the record, then continue authorised fitting and the locked audit. On an actual stop-rule failure preserve/clean up/report and wait.
+
 ## CURRENT STOP — Firefox detected during authorised repeat
 
 No active model run. Session85496 ended with guard exit3:37 actual gemma4 calls completed; request38 (`a03-038`) blocked before HTTP at22:36:36UTC due Firefox PIDs17140/19020/13636. Power/app/monitor/headroom checks passed. Root `%TEMP%\dzlegal-alpha03-gemma4-repeat-20261107-232428`, sourcee54cd8b. Actual browser windows/user action not inspected; strict process presence is the implemented condition. Do not infer an idle/background exemption or resume automatically.

@@ -47,3 +47,26 @@ Set-Content -LiteralPath (Join-Path $runRoot 'monitor.stop') -Value 'complete'
 These measurements do not score the status-only chains as complete readers. An order comparison reports observed changes in generated labels and score argmaxes; without repeated same-order controls it cannot attribute every change exclusively to order. No new cases or validation/hidden inputs are read by these scripts.
 
 The completed 7 November run is documented in `docs/baselines/2026-11-07-alpha-03-gate-2/summary.md` and the two rung-0 summaries. Its resident batches grew in memory within one runner PID; report observed batch peaks rather than extrapolating the reset-per-case footprint. The current authorised work stops before case writing.
+
+## Bounded follow-up authorised after gate 2
+
+`Measure-BlindHistory.ps1 -RunRoot <new external directory> -PriorRoot <accepted gate-2 directory>` performs only the three selected forward repeats and the three selected forward/reverse blind-history comparisons. It reuses the recorded original question messages and all sampling options. Repeat chains carry their new actual answers; they never replay old answers as history. Blind chains constrain output to bare JSON `null` while reading the raw four-label alternatives. The first blind call must establish one-token output and four finite label scores. Numeric `0` is the sole fallback if `null` cannot serve as a one-token constant or its schema is rejected. Once a neutral token is selected, it is fixed for every completed blind chain. A failed token/score/cache precondition stops that arm and is recorded; no missing score is filled in.
+
+The owner subsequently allowed only these answer/score/cache diagnostics on battery. `-AllowBatteryDiagnostic` records the actual power source and marks elapsed seconds informative only; it does not change `Power.ps1` or relax any timed model check. `Analyze-BlindHistory.ps1` independently audits all completed raw requests/responses and compares the old forward/reverse, repeated forward and blind forward/reverse results without model calls. It tolerates only `1e-12` of JSON floating-point serialization error and records the observed maximum.
+
+Build `ModelCheck/ModelCheck.csproj -c Release` before timing, then shut down build servers. This small console host directly uses the existing `AlphaFacts.Reader`, `OllamaModelProvider` and `FactsEvaluator`; production source and the reader's request construction stay unchanged. The sole model-setting change is `Think = false`. Its loopback request recorder verifies `think: false`, `stream: true`, CPU-only context 4096 and `num_predict: 300` on the wire. It preserves streaming instead of buffering responses for instrumentation.
+
+```powershell
+dotnet build tools/alpha-03/ModelCheck/ModelCheck.csproj -c Release
+# After build servers stop, mains/Best performance and resource/app setup are verified:
+& tools/alpha-03/Measure-BlindHistory.ps1 -RunRoot $runRoot -PriorRoot $acceptedGate2Directory
+& tools/alpha-03/Analyze-BlindHistory.ps1 -RunRoot $runRoot -PriorRoot $acceptedGate2Directory
+& tools/alpha-03/Measure-ThinkOff.ps1 -RunRoot $runRoot
+& tools/alpha-03/Analyze-ThinkOff.ps1 -RunRoot $runRoot
+```
+
+`Measure-ThinkOff.ps1 -RunRoot <directory with active resource monitor>` wraps the host with strict mains/Best performance checks, fresh model unloads, phase tagging, wire invocation metadata and timestamped stdout. Its output directory must be new. It leaves model unload, monitor shutdown and any explicitly authorised temporary Windows Search pause/restoration to the measurement session.
+
+The host plans 40 original in-catalogue development cases, serially. It stops at the first observed 300-token cap or technical failure, discloses attempted/unattempted counts and never increases the cap. Exact case times and native timings are saved beside the unchanged-evaluator summary; raw request bodies remain external. Use the resource monitor and pre/post power records as in the earlier run. No case writing, calibration or candidate prompt/reader implementation is part of this probe.
+
+The owner-only resident gemma3 memory note is in `docs/OWNER-GEMMA3-RESIDENT-MEMORY-NOTE-2026-11-07.md`. That issue is outside this follow-up and is not investigated here.

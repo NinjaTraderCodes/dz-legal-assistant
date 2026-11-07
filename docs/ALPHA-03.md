@@ -388,3 +388,40 @@ New tooling under `tools/alpha-03/`: accepted-fixture chain measurement, unchang
 The measurement tools/results are committed on `codex/alpha-03`, with required post-commit Release build/full-test results reported in the handoff. The previously observed unload-test scheduling failure remains disclosed in the preflight record; serial xUnit collection execution preserves all assertions. No claim of a new candidate, calibration gain, hidden-v2 readiness or final reader freeze is made. Validation model checks remain **0**; hidden/evaluation data access remains **none**; new case files remain **0**.
 
 **Stopped after gate 2, the order check and rung 0, before writing any case, as requested.**
+
+## Stop 2 — bounded repeat, blind-history and thinking-off probe (7 November 2026)
+
+**The forward repeat was stable; blind history retained usable scores/cache reuse but remained order-sensitive. Gemma4 with thinking off became a usable Alpha-01 reference: 39/40 without a critical error, 8.793 s/case, sampled model/server peak 7.813 GiB.** No new case, candidate prompt/reader or calibration followed these results.
+
+The owner authorised exactly three original-case forward repeats, forward/reverse blind histories on those same cases, and the original 40-case gemma4 reference with the existing provider's `think: false`. The owner subsequently allowed the first two parts on battery, with seconds informative only, and required a wait for mains before the third. That wait and confirmation occurred. No battery seconds were used to revise the accepted cost gate.
+
+| Diagnostic | Result |
+|---|---|
+| Same-order repeat, generated statuses | **0/17 changed** from the accepted forward run |
+| Same-order repeat, four-score argmaxes | **0/17 changed** |
+| Previous forward/reverse comparison | 6/17 generated; 8/17 argmax changes |
+| Blind forward/reverse argmax comparison | **4/17 changed** |
+| Blind usable positions | **34/34** one-token `0` outputs and four finite status scores |
+| Blind fresh calls / extensions | **6/6 cached zero; 28/28 reused 373–529 tokens** |
+
+The unchanged cases were `loan-no-section`, `loan-basic`, `non-delivery-machines`. Bare `null` emitted only `n` under the fixed one-token cap, so the authorised sole fallback `0` was used throughout the completed blind chains. Every extension preserved earlier messages and actual forced zeros verbatim; no earlier class choice was inserted. The independent raw audit covered all 51 usable repeat/blind requests with zero message/option/token/score/cache mismatches; the unusable null attempt remains separately recorded.
+
+This one repeat supports order/history dependence over observed run-to-run label variation on these cases. Blind history hides earlier choices but exposes earlier questions, their order and a fixed zero. It does not remove order dependence, and the small 8/17 versus 4/17 comparison is not evidence of a general accuracy improvement. No missing score was fabricated and no correction was fitted to these cases. Full per-case changes, power state, informative seconds, vectors/artifact references and hashes: [repeat/blind summary](baselines/2026-11-07-alpha-03-blind-history/summary.md).
+
+### Thinking-off reference
+
+On **mains and Best performance**, unchanged Alpha-01 with gemma4:e4b and `Think = false` completed **40/40** original in-catalogue development cases. All 40 wire requests retained streaming, CPU-only context 4096 and **300-token cap**. There were **zero cap hits or technical failures**; answers used 17–56 tokens. The bounded stop rule was first cap/technical failure, with no higher cap or retry. All forty therefore ran as planned.
+
+The existing evaluator found **one critical polarity error**: `annulment-fraud-land`, `concealment` denied instead of affirmed. Other critical error types: zero observed. Non-critical differences: unreadable-line occurrences in six cases (eight individual lines), and two missing requests (`divorce`, `reinstatement`). Position, decisive-event and date-binding columns were 100%; polarity 98%; requests 93%. These retain the existing sparse, all-affirmed development key's limits; denied/disputed competence and unseen-case gain remain unmeasured.
+
+Exact case-time mean/median/p95/maximum were **8.793 / 8.762 / 11.945 / 21.866 seconds**. Full host invocation was **352.823 seconds**, or 8.821/case, including the cold model load. Sampled model/server working-set peak **7.813 GiB**, simultaneous model + app peak **7.990 GiB**, minimum machine available physical memory **3.215 GiB**. These are batch observations, not long-session qualification. Installed digest `dc35e8d9c6061baa6f0fa870975ab6932e2542b579b13ea0f199fa4bb7300c9c`, local licence Apache 2.0, 6,583,656,505 disk bytes. No runtime model switch or weights redistribution occurred.
+
+There were **167 continuous power samples and zero mains/Best performance violations**. Windows Search became busy after mains connection, so timing waited. At the owner's explicit request its service was temporarily stopped without changing startup settings; quiet preflight preceded inference, and Running/Automatic was restored after it. The idle real app stayed resident, then closed normally; probe models were unloaded. Best performance remains configured. Full evaluator result, exact/native timings, memory/paging limits, request audit, reproducible commands and hashes: [thinking-off reference](baselines/2026-11-07-alpha-03-rung-0-gemma4-think-off/summary.md).
+
+### Scope, checks and stop
+
+Measurement-only additions under `tools/alpha-03/`: repeat/blind invocation and independent audit, thinking-off invocation and audit, and a small host that directly calls the existing reader/provider/evaluator. No production source or existing prompt/reader was modified. Files changed outside that folder: this report, the two summaries linked above, and the separate [owner memory note](OWNER-GEMMA3-RESIDENT-MEMORY-NOTE-2026-11-07.md). That note repeats the already accepted resident gemma3 observation (about 4.0 to 7.4 GiB); **no investigation of it was undertaken**.
+
+The measurement host built with 0 warnings/errors before inference; all four new PowerShell measurement/analysis files parsed cleanly, and both raw audits completed successfully. Required post-commit Release build/full-test results and branch push are reported in the handoff. Tests added/updated/skipped/weakened: **none**. The real app was run for residence; the measurement feature was exercised through the terminal/harness. No UI changes or screenshots were requested.
+
+Validation model checks remain **0**; hidden/evaluation access **none**; new case files **0**. The approved 144-case freeze still precedes all candidate prompt/reader implementation. **Stopped after this bounded probe, before writing any case, awaiting the owner's decision.**

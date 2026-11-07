@@ -91,7 +91,7 @@ dotnet run --project src/DzLegal.Web  # the web demo, locally
 | Who | Role | What they did |
 |---|---|---|
 | **Hicham Benkaihoul** | Founder and developer | Defined the product and its legal pipeline, directed and reviewed the AI coding agents that wrote most of the code, ran the benchmarks and the test campaigns, and tested the app. |
-| **Djihane Ben Djeddou** | UI/UX designer | Designed and built the lawyer's journey in the desktop app: the welcome screen, the setup, the lawyer's profile, the start screen, the guided tour with its sample case, the help pages and the law library, in Arabic and English, light and dark. |
+| **Djihane Bendjeddou** | UI/UX designer | Designed and built the lawyer's journey in the desktop app: the welcome screen, the setup, the lawyer's profile, the start screen, the guided tour with its sample case, the help pages and the law library, in Arabic and English, light and dark. |
 | **Khouloud Otmane Cherif** | Legal reviewer | Master's in private law, works in an Algerian law office. Reviewed legal points of the drafting and answered the team's questions on Algerian civil procedure and claim types, which shaped the family claims. |
 
 **AI tools used to build it.** Most of the code, tests and documentation were written by AI coding agents, directed and reviewed by the team: Claude Code (most of the app), OpenAI Codex (the law corpus, part of the workbench, the independent test cases) and OpenCode (the onboarding screens). The welcome image was generated with ChatGPT. Inside the desktop app, the only AI is the local model (Gemma 3 4B through Ollama); the web demo uses Nemotron 3 Ultra through OpenRouter.

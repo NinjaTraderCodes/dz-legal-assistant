@@ -44,11 +44,14 @@ const people = (["Lead", "Design", "Legal"] as const).map((who) => {
 
 <style>
     .team { display: grid; gap: 24px; }
-    /* The signature block: three entries over a heavy rule, each a photo clipped to the file and the signed name. */
-    .people { list-style: none; margin: 0; padding: 28px 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; border-top: 2px solid var(--w-text); }
+    /* The signature block: three entries over a heavy rule, each a photo clipped to the file and the signed name (the
+       rule leaves room for the raised clips). */
+    .people { list-style: none; margin: 0; padding: 40px 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; border-top: 2px solid var(--w-text); }
     .person { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 16px; align-items: start; }
-    .photo { position: relative; display: block; padding: 6px 6px 14px; background: var(--w-sheet); box-shadow: var(--w-shadow); transform: rotate(-1.5deg); }
-    .photo .clip { top: -16px; inset-inline-end: 10px; height: 46px; }
+    .photo { position: relative; display: block; padding: 14px 6px 14px; background: var(--w-sheet); box-shadow: var(--w-shadow); transform: rotate(-1.5deg); }
+    /* The clip grips the white border above the photo, never the picture: its 46 px end 2 px above the picture. It is
+       drawn by Clip.astro, so the selector must reach outside this component's scoped styles. */
+    .photo :global(.clip) { top: -34px; inset-inline-end: 10px; height: 46px; }
     .face { display: block; width: 84px; height: 100px; object-fit: cover; background: #e9e4da; }
     .lines { display: grid; gap: 4px; align-content: start; }
     .name { font-family: var(--w-display); font-size: 1.45rem; font-weight: 600; line-height: 1.2; padding-bottom: 6px; border-bottom: 1px solid var(--w-rule); }

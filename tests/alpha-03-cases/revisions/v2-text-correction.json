@@ -1,0 +1,2186 @@
+{
+  "revision": 2,
+  "ownerDecision": "Owner-adjudicated annotation-quality correction before inference: remove explanatory answer-key hints; retain labels, values, dates and source-sentence identities; use natural factual rewrites where deletion would be ambiguous.",
+  "predecessorCommit": "41a9a86e89fb0de6465d36609133f858f69e5754",
+  "predecessorContentHash": "a3eb985d8f3bafe6bbe43c6afcd742ca0debc09e5b106921c4d4cb352d3bac68",
+  "reviewedCaseCount": 144,
+  "reviewedDistinctSentences": 381,
+  "sourceEdits": [
+    {
+      "before": "في هذه المذكرة تطلب إبطال البيع وتعويضا قدره 210.000 دج فقط؛ لم تدرج طلب رد المدفوع",
+      "after": "تلتمس إبطال البيع وتعويضا قدره 210.000 دج فقط",
+      "reason": "Keep natural restrictive relief without explaining a missing refund request"
+    },
+    {
+      "before": "الطلب الحالي هو طرد الشاغل فقط، دون تعويض مالي في هذه الدعوى",
+      "after": "تلتمس طرد الشاغل فقط",
+      "reason": "Use natural restrictive relief without a redundant request-key exclusion"
+    },
+    {
+      "before": "تطلب إلزام البائع بتسليم المولد ولا تطلب الفسخ أو رد التسبيق حاليا",
+      "after": "تطلب إلزام البائع بتسليم المولد فقط",
+      "reason": "State the selected remedy naturally rather than enumerate unrequested remedies"
+    },
+    {
+      "before": "يطلب المشتري إلزام البائع بالتسليم فقط، ولا يلتمس رد مبلغ في هذا الطلب",
+      "after": "يطلب المشتري إلزام البائع بالتسليم فقط",
+      "reason": "Keep natural restrictive relief without a redundant refund exclusion"
+    },
+    {
+      "before": "رد التسبيق المحدد بـ120.000 دج",
+      "after": "رد التسبيق 120.000 دج",
+      "reason": "Remove specified-value emphasis"
+    },
+    {
+      "before": " فقط ولا يطلب الإدماج",
+      "after": " فقط",
+      "reason": "Keep natural restrictive relief without a redundant remedy exclusion"
+    },
+    {
+      "before": "؛ لا تتعلق بإقرار الدين",
+      "after": "",
+      "reason": "Remove instruction excluding the office receipt from acknowledgment evidence"
+    },
+    {
+      "before": "بثمن إجمالي 275.000 دج",
+      "after": "بثمن 275.000 دج",
+      "reason": "State the sale price without total-label emphasis"
+    },
+    {
+      "before": "يتفق الطرفان على أن الثمن لم يسدد كاملا، لكن حساب المستحق لم يحسم في الملاحظات",
+      "after": "يتفق الطرفان على أن الثمن لم يسدد كاملا، ويتنازعان في الحساب",
+      "reason": "Replace annotation-level missing-value explanation with the account dispute"
+    },
+    {
+      "before": "، ولم تدون قيمة القسط",
+      "after": "",
+      "reason": "Do not announce an unstated amount"
+    },
+    {
+      "before": "، ولم تحدد مبلغا نهائيا في طلبها",
+      "after": "",
+      "reason": "Remove missing-amount commentary"
+    },
+    {
+      "before": "صراحة ",
+      "after": "",
+      "reason": "Remove emphasized annotation cue"
+    },
+    {
+      "before": "تعويضا مستقلا",
+      "after": "تعويضا",
+      "reason": "Remove instruction separating remedy amounts"
+    },
+    {
+      "before": "، فلا تطلب رد ثمن أو تسبيق",
+      "after": "",
+      "reason": "Do not explain the absent refund in facts"
+    },
+    {
+      "before": "، وتتمسك الملاحظات بأن هذا الإخفاء هو سبب طلب الإبطال",
+      "after": "",
+      "reason": "Keep the concealment fact without annotation commentary"
+    },
+    {
+      "before": "؛ لا يوجد طلب باسترجاع مبلغ مدفوع",
+      "after": "",
+      "reason": "Remove explanatory refund exclusion after non-payment"
+    },
+    {
+      "before": "المدعية تميز في تعليماتها للمكتب بين ما دفعته من الثمن وما أنفقته على الفحص والنقل، وترفق صور لوحات الجهاز ومراسلات الورشة، وتقول إن الاطلاع على سجل الصيانة جعلها تعيد النظر في الصفقة وتتمسك بالتدليس",
+      "after": "أرسلت المدعية إلى المكتب صور لوحات الجهاز ومراسلات الورشة، وتقول إن الاطلاع على سجل الصيانة جعلها تعيد النظر في الصفقة وتتمسك بالتدليس",
+      "reason": "Remove instruction to distinguish payment and expense values"
+    },
+    {
+      "before": "ومجموع التعويض المطلوب ",
+      "after": "وتعويض قدره ",
+      "reason": "State the requested damages without total/value-key language"
+    },
+    {
+      "before": " وليست قيمة التعويض الملتمس",
+      "after": "",
+      "reason": "Remove exclusion of repair estimate from damages"
+    },
+    {
+      "before": " لا يدل على مبلغ",
+      "after": "",
+      "reason": "Remove identifier-as-distractor explanation"
+    },
+    {
+      "before": "، ولم تكن المطالبة بسبب تأخر الوصول",
+      "after": "",
+      "reason": "Retain actual on-time delivery and breakage, omit scope teaching"
+    },
+    {
+      "before": "؛ طلب التعويض مؤسس على هذه المخالفة مهما كان وقت التسليم",
+      "after": "",
+      "reason": "Remove teaching about independent claim grounds"
+    },
+    {
+      "before": "تعويضا إجماليا",
+      "after": "تعويضا",
+      "reason": "Use ordinary compensation request wording"
+    },
+    {
+      "before": "، والخلاف يخص المواصفات وحدها",
+      "after": "",
+      "reason": "Keep actual on-time delivery without a scope conclusion"
+    },
+    {
+      "before": "لا يطلب المضرور أجرة علاج شهرية بل تعويضا واحدا عن الضرر",
+      "after": "يطلب المضرور التعويض عن الإصابة",
+      "reason": "Remove comparison of hypothetical periodic treatment and damages"
+    },
+    {
+      "before": " ولا تقتصر المطالبة عليها",
+      "after": "",
+      "reason": "Do not explain that treatment cost is not the requested amount"
+    },
+    {
+      "before": "عن كامل الضرر",
+      "after": "عن الضرر",
+      "reason": "Remove aggregate emphasis"
+    },
+    {
+      "before": "، ولا يرد طلب مستقل لاسترداده",
+      "after": "",
+      "reason": "Let the requests field state the relief"
+    },
+    {
+      "before": "تعويضا شاملا",
+      "after": "تعويضا",
+      "reason": "Remove aggregate emphasis"
+    },
+    {
+      "before": "، والملاحظات لا تتناول نتيجة المسار الجزائي",
+      "after": "",
+      "reason": "Do not announce absence of a conviction statement"
+    },
+    {
+      "before": "؛ الإصابة المادية المذكورة تخص العربة وحدها",
+      "after": "",
+      "reason": "Keep the animal-harm denial without a classification conclusion"
+    },
+    {
+      "before": "، وأرقام جرد البضاعة لا تمثل أثمانها",
+      "after": "",
+      "reason": "Remove explanation of identifier distractors"
+    },
+    {
+      "before": "، والضرر الثابت في هذه الملاحظات صادر عن آلة الرفع فقط",
+      "after": "",
+      "reason": "Keep the building-collapse denial without source classification"
+    },
+    {
+      "before": "لم يسدد المستأجر بدلات متأخرة بلغ مجموعها 168.000 دج؛ لا يخلط هذا المجموع بالبدل الشهري",
+      "after": "لم يسدد المستأجر بدلات إيجار قدرها 168.000 دج",
+      "reason": "State arrears without total-versus-rate coaching"
+    },
+    {
+      "before": "المستند الوحيد المتعلق بالمطالبة: ",
+      "after": "",
+      "reason": "The documents field already identifies the source"
+    },
+    {
+      "before": "أبرم عقد الإيجار يوم {cd} ببدل شهري قدره {monthly} دج؛ مبلغ الضمان المدفوع {deposit} دج مستقل عن الأجرة",
+      "after": "عقد إيجار مؤرخ في {cd}، والكراء {monthly} دج كل شهر؛ دفع المستأجر {deposit} دج ضمانا",
+      "reason": "Use contractual acts and units rather than an exclusion rule",
+      "ambiguityAvoidingRewrite": true
+    },
+    {
+      "before": "تراكمت بدلات إيجار غير مسددة مجموعها {arrears} دج، ولا يدخل الضمان في هذا الحساب",
+      "after": "بقيت في ذمة المستأجر بدلات إيجار قدرها {arrears} دج",
+      "reason": "State the debt without telling how to treat the deposit"
+    },
+    {
+      "before": "الشقة تقع في عمارة تسكن المدعية في طابق آخر منها، وكان المستأجر يتسلم المفاتيح من الحارس عند غيابه عن البيت؛ لا تربط الحارس بالمستأجر علاقة إيجار ولا يطالب الحارس بمبلغ في هذا الملف",
+      "after": "الشقة تقع في عمارة تسكن المدعية في طابق آخر منها، وكان المستأجر يتسلم المفاتيح من الحارس عند غياب المؤجرة",
+      "reason": "Keep the background action, remove party/request exclusions"
+    },
+    {
+      "before": "؛ النزاع بشأن العداد لا يتضمن إنكارا لعقد الإيجار أو دفعا بانقضاء المتأخرات المذكورة",
+      "after": "",
+      "reason": "Remove a scope interpretation of the meter dispute"
+    },
+    {
+      "before": "احتفظت المؤجرة بإيصالات قديمة تخص فترات مدفوعة قبل الفترة محل المطالبة، وفصلتها عن الكشف الحالي حتى لا تختلط بالبدلات غير المسددة؛ ولا تتضمن تعليماتها للمكتب طلب تعويض عن الماء أو القفل",
+      "after": "احتفظت المؤجرة بإيصالات تخص فترات مدفوعة سابقة وأرفقتها بالكشف الحالي",
+      "reason": "State the older receipts without instructions to separate or ignore them"
+    },
+    {
+      "before": "؛ تحتفظ بالمطالبة المالية لملف آخر ولا تطلب دفع مبلغ هنا",
+      "after": "؛ مع حفظ حقها في المطالبة بالبدلات في دعوى أخرى",
+      "reason": "Use natural reservation of future relief"
+    },
+    {
+      "before": "المالك لا يطالب في هذا الملف ببدل إيجار، فالعلاقة ليست إيجارية",
+      "after": "لا توجد علاقة إيجار بين المالك والشاغل",
+      "reason": "Keep the relationship fact without instructions about remedy classification"
+    },
+    {
+      "before": " وليس أجرة شهرية",
+      "after": "",
+      "reason": "Remove explanation that damages are not a monthly rate"
+    },
+    {
+      "before": "تعويضا واحدا قدره",
+      "after": "تعويضا قدره",
+      "reason": "Remove one-sum emphasis"
+    },
+    {
+      "before": "، وليس تاريخ عقد الملكية",
+      "after": "",
+      "reason": "Remove date-binding exclusion"
+    },
+    {
+      "before": "ما زال جزء من حساب الشحنة غير مسدد، ولم يسجل الملخص مبلغ الرصيد النهائي",
+      "after": "ما زال جزء من حساب الشحنة غير مسدد والحساب محل خلاف",
+      "reason": "State the account dispute without missing-value commentary"
+    },
+    {
+      "before": "؛ لم يدون مبلغ هذا القسط في الملاحظات",
+      "after": "",
+      "reason": "Do not announce an unstated instalment amount"
+    },
+    {
+      "before": "، دون تحديد مبلغ نهائي في هذه المذكرة",
+      "after": "",
+      "reason": "Remove annotation commentary on unquantified relief"
+    },
+    {
+      "before": " دون أن يبين قيمته",
+      "after": "",
+      "reason": "Do not announce an unstated instalment amount"
+    },
+    {
+      "before": "بدلات متراكمة بلغ مجموعها 434.000 دج",
+      "after": "بدلات قدرها 434.000 دج",
+      "reason": "State the unpaid amount without total-label emphasis"
+    },
+    {
+      "before": "دفع مجموع المتأخرات 434.000 دج",
+      "after": "دفع المتأخرات البالغة 434.000 دج",
+      "reason": "Use ordinary arrears-request wording"
+    },
+    {
+      "before": "، ولم يقع نزاع بشأن صدور الرفض",
+      "after": "",
+      "reason": "Remove an assertion-status conclusion"
+    },
+    {
+      "before": "؛ النزاع في مقدار التعويض لا في الرفض",
+      "after": "",
+      "reason": "Remove a scope conclusion"
+    },
+    {
+      "before": "ثبت في ملاحظات الموكل رفض المالك تجديد إيجار المحل",
+      "after": "رفض المالك تجديد إيجار المحل",
+      "reason": "State the refusal without annotation framing"
+    },
+    {
+      "before": "، ويقر الطرفان بحصول ذلك",
+      "after": "",
+      "reason": "Remove a redundant status explanation"
+    },
+    {
+      "before": "سجلت مصاريف نقل التجهيزات بمبلغ {cost} دج ولا تمثل كامل التعويض",
+      "after": "فاتورة نقل التجهيزات بمبلغ {cost} دج",
+      "reason": "State the expense without saying it is not damages"
+    },
+    {
+      "before": "يلتمس المستأجر تعويض الاستحقاق بمجموع قدره {total} دج، وتقتصر طلباته على هذا التعويض",
+      "after": "يلتمس المستأجر {total} دج تعويض استحقاق",
+      "reason": "State actual relief without aggregate and exclusion cues"
+    },
+    {
+      "before": " ويتمسك بالمبلغ الأعلى المحدد في طلبه",
+      "after": "",
+      "reason": "Remove pointer from expert estimate to the answer-key amount"
+    },
+    {
+      "before": "كان الزوج قد طلق زوجة سابقة غير المدعى عليها في 07/04/2011، ثم انفصل عن المدعى عليها فعليا في 18/08/2023",
+      "after": "طلق الزوج زوجة أخرى في 07/04/2011، وانفصل عن المدعى عليها في 18/08/2023",
+      "reason": "Keep the prior marriage attribution as ordinary history, not a date-exclusion hint",
+      "ambiguityAvoidingRewrite": true
+    },
+    {
+      "before": "، ولا يطلب حقا متعلقا بالزواج السابق",
+      "after": "",
+      "reason": "Let the actual divorce/visitation requests stand"
+    },
+    {
+      "before": "؛ الأبناء راشدون ولا يوجد طلب زيارة",
+      "after": "؛ الأبناء راشدون",
+      "reason": "Keep the factual children context without a request-key explanation"
+    },
+    {
+      "before": "؛ تتمسك الملاحظات بهذا السبب مستقلا عما يقال عن مغادرته المسكن",
+      "after": "",
+      "reason": "Remove interpretation of an independent claim ground"
+    },
+    {
+      "before": "نفقة متأخرة حددتها بمجموع 240.000 دج",
+      "after": "نفقة متأخرة قدرها 240.000 دج",
+      "reason": "Use ordinary relief wording"
+    },
+    {
+      "before": "، ولا تنحصر الدعوى في واقعة الإيذاء",
+      "after": "",
+      "reason": "Remove commentary on how to scope harm and maintenance"
+    },
+    {
+      "before": "نفقة متأخرة بمجموع 315.000 دج",
+      "after": "نفقة متأخرة قدرها 315.000 دج",
+      "reason": "Use ordinary relief wording"
+    },
+    {
+      "before": "؛ تقتصر الوقائع المؤكدة على انقطاع النفقة",
+      "after": "",
+      "reason": "Keep the harm denial without a classification conclusion"
+    },
+    {
+      "before": "، دون أن يحسم هذا الإنكار مسألة النفقة",
+      "after": "",
+      "reason": "Remove interpretation of the denial's scope"
+    },
+    {
+      "before": "تطلب 30.000 دج نفقة عدة و90.000 دج متأخر نفقة الطفلين؛ الطلب المالي للنفقة بمجموع صريح 120.000 دج، والمعدل الشهري للطفلين 15.000 دج",
+      "after": "نفقة العدة 30.000 دج ومتأخر نفقة الطفلين 90.000 دج؛ تلتمس أداء 120.000 دج عنهما، ونفقة الطفلين 15.000 دج في الشهر",
+      "reason": "Retain actual requested relief and its component attributions without a total-key instruction",
+      "ambiguityAvoidingRewrite": true
+    },
+    {
+      "before": "كما تطلب بدل سكن إجماليا لهذه الفترة قدره 72.000 دج؛ معدل الإيجار 12.000 دج شهريا",
+      "after": "تلتمس 72.000 دج بدل سكن عن الفترة؛ كراء المسكن 12.000 دج في الشهر",
+      "reason": "Preserve the factual period request and rent unit without explaining their comparison",
+      "ambiguityAvoidingRewrite": true
+    },
+    {
+      "before": "نفقة العدة الملتمسة 42.000 دج فقط؛ ذكرت نفقة سابقة للطفلة بمعدل 18.000 دج شهريا لكنها لا تعيد طلبها هنا",
+      "after": "تلتمس 42.000 دج نفقة عدة فقط؛ نفقة الطفلة السابقة 18.000 دج في الشهر",
+      "reason": "Keep the past/current distinction with natural request scope, not a do-not-use instruction",
+      "ambiguityAvoidingRewrite": true
+    },
+    {
+      "before": "تطلب بدل إيجار شهريا قدره 14.000 دج، دون كتابة مجموع لعدة أشهر",
+      "after": "تلتمس 14.000 دج كل شهر بدل إيجار",
+      "reason": "State the actual periodic relief without announcing an absent aggregate"
+    },
+    {
+      "before": "؛ ليس هو المهر القديم",
+      "after": "",
+      "reason": "Remove explicit comparison between khul offer and dowry"
+    },
+    {
+      "before": "بمبلغ إجمالي قدره 55.000 دج",
+      "after": "قدرها 55.000 دج",
+      "reason": "Use ordinary waiting-period maintenance request wording"
+    },
+    {
+      "before": "تطلب مجموع نفقة قدره 168.000 دج، يتكون حسب الطلب من 48.000 دج للعدة و120.000 دج متأخر نفقة الابن؛ معدل نفقة الابن 20.000 دج شهريا",
+      "after": "تلتمس أداء 168.000 دج للنفقة؛ نفقة عدتها 48.000 دج ومتأخر نفقة الابن 120.000 دج، ونفقته 20.000 دج في الشهر",
+      "reason": "Preserve the aggregate actually sought and component attribution as ordinary notes",
+      "ambiguityAvoidingRewrite": true
+    },
+    {
+      "before": "تلتمس مجموع نفقة متأخرة للطفل قدره 180.000 دج",
+      "after": "تلتمس 180.000 دج نفقة متأخرة للطفل",
+      "reason": "Use ordinary maintenance request wording"
+    },
+    {
+      "before": "امتنع الأب عن النفقة؛ معدلها الشهري للطفل 16.000 دج ومجموع المتأخرات المدون 128.000 دج",
+      "after": "امتنع الأب عن النفقة؛ نفقة الطفل 16.000 دج كل شهر، وعليه 128.000 دج متأخرات",
+      "reason": "State the periodic entitlement and debt without rate/total-key language",
+      "ambiguityAvoidingRewrite": true
+    },
+    {
+      "before": "تطلب 128.000 دج نفقة متأخرة و80.000 دج بدل سكن إجماليا؛ معدل السكن 10.000 دج شهريا",
+      "after": "تلتمس 128.000 دج نفقة متأخرة و80.000 دج بدل سكن؛ كراء المسكن 10.000 دج في الشهر",
+      "reason": "Keep the actual housing relief and factual rent unit",
+      "ambiguityAvoidingRewrite": true
+    },
+    {
+      "before": " فقط ولا تطلب بدل إيجار",
+      "after": " فقط",
+      "reason": "Keep natural restrictive scope without explaining an unrequested remedy"
+    },
+    {
+      "before": "الأب لم ينفق على الطفلين؛ النفقة الشهرية المسجلة 24.000 دج، والمبلغ المتراكم المصرح به 216.000 دج",
+      "after": "الأب لم ينفق على الطفلين؛ نفقتهما 24.000 دج في الشهر وعليه 216.000 دج متأخرات",
+      "reason": "State actual entitlement and arrears without annotation-key framing",
+      "ambiguityAvoidingRewrite": true
+    },
+    {
+      "before": "النفقة الملتمسة عن الفترة 216.000 دج، وبدل السكن المطلوب 18.000 دج شهريا دون طلب مجموع آخر",
+      "after": "تلتمس 216.000 دج نفقة عن الفترة و18.000 دج كل شهر بدل سكن",
+      "reason": "State actual periodic relief without explaining absence of an aggregate"
+    },
+    {
+      "before": "تطلب 195.000 دج نفقة متأخرة وبدل سكن إجماليا قدره 78.000 دج للفترة المحددة، وهما طلبان منفصلان",
+      "after": "تلتمس 195.000 دج نفقة متأخرة و78.000 دج بدل سكن عن الفترة",
+      "reason": "Use natural remedy nouns instead of instructions separating their values"
+    },
+    {
+      "before": "، ولا يحسم هذا وحده مكان إقامة الطفلين",
+      "after": "",
+      "reason": "Do not announce that the school location fails to establish residence"
+    },
+    {
+      "before": "؛ يتمسك بهذا السبب مستقلا",
+      "after": "",
+      "reason": "Remove commentary on independent grounds"
+    },
+    {
+      "before": "سرحته المستخدمة في 11/09/2024؛ الفعل مسلم به بينهما لكن العامل ينازع في سبب التسريح الذي تسميه المستخدمة خطأ جسيما",
+      "after": "سرحته المستخدمة في 11/09/2024 بدعوى ارتكابه خطأ جسيما، وينكر العامل ارتكاب هذا الخطأ",
+      "reason": "State the dismissal and disputed reason without assigning their statuses for the reader",
+      "ambiguityAvoidingRewrite": true
+    },
+    {
+      "before": "في مراسلاته إلى المكتب يفرق العامل بين الاعتراض على الوقائع المهنية التي نسبت إليه وبين ما قالته المستخدمة عن كيفية انتهاء العمل، ويرفق أوراق الحضور والمراسلات حتى يقرأ كل ادعاء في سياقه",
+      "after": "أرفق العامل أوراق الحضور ومراسلاته مع المستخدمة بشأن الوقائع المهنية التي نسبت إليه وإنهاء العمل",
+      "reason": "Remove instructions to distinguish allegation scopes"
+    },
+    {
+      "before": "، ولم يعتبر تسليم الأغراض صلحا مع المستخدمة أو تنازلا عن الطلبات التي يوجه المكتب إلى إدراجها",
+      "after": "",
+      "reason": "Remove interpretation of an unrelated handover"
+    },
+    {
+      "before": "يطلب العامل إرفاق كشف المناوبات لتوضيح ظروف العمل دون إضافة طلب مالي مستقل عنه",
+      "after": "طلب العامل إرفاق كشف المناوبات مع أوراق الملف",
+      "reason": "Keep the attachment instruction without monetary-request exclusion"
+    },
+    {
+      "before": "، فينازعان في فعل الفصل ذاته",
+      "after": "",
+      "reason": "Actual opposing party assertions already state the disputed act"
+    },
+    {
+      "before": "، ولم تكن تلك بداية عقد التدريب السابق",
+      "after": "",
+      "reason": "Remove employment-date exclusion cue"
+    },
+    {
+      "before": "أنهت المستخدمة عمل المدعي بفصله في 07/10/2024، ويعترض العامل على المبرر المهني دون إنكار صدور الفصل",
+      "after": "فصلت المستخدمة المدعي في 07/10/2024 لسبب مهني يعترض عليه العامل",
+      "reason": "Retain reason contest naturally without a no-denial classification cue",
+      "ambiguityAvoidingRewrite": true
+    },
+    {
+      "before": "تقتصر الطلبات هنا على تعويض إجمالي 915.000 دج؛ لا يطلب إعادة الإدماج أو مبلغ الأجر الشهري",
+      "after": "يلتمس تعويضا قدره 915.000 دج فقط",
+      "reason": "Keep natural actual relief, remove monthly-wage exclusion"
+    },
+    {
+      "before": "لم تدفع المستخدمة أجور العاملة عن الفترة المطالب بها؛ مجموع المستحقات المدون 222.000 دج",
+      "after": "لم تدفع المستخدمة أجور العاملة عن الفترة المطالب بها، وتبلغ أجورها عنها 222.000 دج",
+      "reason": "State the wage debt without total-key framing"
+    },
+    {
+      "before": "؛ هذه الإشارة واردة في قائمة المستندات وحدها",
+      "after": "",
+      "reason": "Remove the explicit documentary-source hint"
+    }
+  ],
+  "changedCases": [
+    "a03-005",
+    "a03-006",
+    "a03-007",
+    "a03-008",
+    "a03-009",
+    "a03-010",
+    "a03-011",
+    "a03-012",
+    "a03-013",
+    "a03-014",
+    "a03-015",
+    "a03-016",
+    "a03-021",
+    "a03-022",
+    "a03-023",
+    "a03-024",
+    "a03-025",
+    "a03-026",
+    "a03-027",
+    "a03-028",
+    "a03-029",
+    "a03-030",
+    "a03-031",
+    "a03-032",
+    "a03-033",
+    "a03-034",
+    "a03-035",
+    "a03-036",
+    "a03-037",
+    "a03-038",
+    "a03-039",
+    "a03-040",
+    "a03-041",
+    "a03-042",
+    "a03-043",
+    "a03-044",
+    "a03-045",
+    "a03-046",
+    "a03-047",
+    "a03-048",
+    "a03-050",
+    "a03-053",
+    "a03-054",
+    "a03-055",
+    "a03-056",
+    "a03-057",
+    "a03-058",
+    "a03-059",
+    "a03-060",
+    "a03-061",
+    "a03-062",
+    "a03-063",
+    "a03-064",
+    "a03-065",
+    "a03-066",
+    "a03-067",
+    "a03-068",
+    "a03-069",
+    "a03-070",
+    "a03-071",
+    "a03-072",
+    "a03-077",
+    "a03-078",
+    "a03-079",
+    "a03-080",
+    "a03-081",
+    "a03-082",
+    "a03-083",
+    "a03-084",
+    "a03-085",
+    "a03-086",
+    "a03-087",
+    "a03-088",
+    "a03-089",
+    "a03-090",
+    "a03-091",
+    "a03-092",
+    "a03-093",
+    "a03-094",
+    "a03-095",
+    "a03-096",
+    "a03-098",
+    "a03-100",
+    "a03-101",
+    "a03-102",
+    "a03-103",
+    "a03-104",
+    "a03-105",
+    "a03-106",
+    "a03-107",
+    "a03-108",
+    "a03-109",
+    "a03-110",
+    "a03-111",
+    "a03-112",
+    "a03-113",
+    "a03-114",
+    "a03-115",
+    "a03-116",
+    "a03-117",
+    "a03-118",
+    "a03-119",
+    "a03-120",
+    "a03-121",
+    "a03-122",
+    "a03-123",
+    "a03-124",
+    "a03-125",
+    "a03-126",
+    "a03-127",
+    "a03-128",
+    "a03-129",
+    "a03-130",
+    "a03-131",
+    "a03-132",
+    "a03-137",
+    "a03-138",
+    "a03-139",
+    "a03-140",
+    "a03-141",
+    "a03-142",
+    "a03-143",
+    "a03-144"
+  ],
+  "changedSentenceCount": 219,
+  "sentenceEdits": [
+    {
+      "case": "a03-005",
+      "sentence": "s6",
+      "field": "documents.list",
+      "before": "نسخة وصل إيداع ملف المكتب رقم 90741 بتاريخ 06/01/2023؛ لا تتعلق بإقرار الدين",
+      "after": "نسخة وصل إيداع ملف المكتب رقم 90741 بتاريخ 06/01/2023"
+    },
+    {
+      "case": "a03-006",
+      "sentence": "s6",
+      "field": "documents.list",
+      "before": "نسخة وصل إيداع ملف المكتب رقم 90741 بتاريخ 06/01/2023؛ لا تتعلق بإقرار الدين",
+      "after": "نسخة وصل إيداع ملف المكتب رقم 90741 بتاريخ 06/01/2023"
+    },
+    {
+      "case": "a03-007",
+      "sentence": "s7",
+      "field": "documents.list",
+      "before": "نسخة وصل إيداع ملف المكتب رقم 90741 بتاريخ 06/01/2023؛ لا تتعلق بإقرار الدين",
+      "after": "نسخة وصل إيداع ملف المكتب رقم 90741 بتاريخ 06/01/2023"
+    },
+    {
+      "case": "a03-008",
+      "sentence": "s5",
+      "field": "documents.list",
+      "before": "نسخة وصل إيداع ملف المكتب رقم 90741 بتاريخ 06/01/2023؛ لا تتعلق بإقرار الدين",
+      "after": "نسخة وصل إيداع ملف المكتب رقم 90741 بتاريخ 06/01/2023"
+    },
+    {
+      "case": "a03-009",
+      "sentence": "s2",
+      "field": "notes.facts",
+      "before": "أبرم البيع في 08/04/2024 بثمن إجمالي 275.000 دج",
+      "after": "أبرم البيع في 08/04/2024 بثمن 275.000 دج"
+    },
+    {
+      "case": "a03-010",
+      "sentence": "s2",
+      "field": "notes.facts",
+      "before": "أبرم البيع في 08/04/2024 بثمن إجمالي 275.000 دج",
+      "after": "أبرم البيع في 08/04/2024 بثمن 275.000 دج"
+    },
+    {
+      "case": "a03-011",
+      "sentence": "s2",
+      "field": "notes.facts",
+      "before": "أبرم البيع في 08/04/2024 بثمن إجمالي 275.000 دج",
+      "after": "أبرم البيع في 08/04/2024 بثمن 275.000 دج"
+    },
+    {
+      "case": "a03-012",
+      "sentence": "s2",
+      "field": "notes.facts",
+      "before": "أبرم البيع في 08/04/2024 بثمن إجمالي 275.000 دج",
+      "after": "أبرم البيع في 08/04/2024 بثمن 275.000 دج"
+    },
+    {
+      "case": "a03-013",
+      "sentence": "s4",
+      "field": "notes.facts",
+      "before": "يتفق الطرفان على أن الثمن لم يسدد كاملا، لكن حساب المستحق لم يحسم في الملاحظات",
+      "after": "يتفق الطرفان على أن الثمن لم يسدد كاملا، ويتنازعان في الحساب"
+    },
+    {
+      "case": "a03-013",
+      "sentence": "s5",
+      "field": "notes.facts",
+      "before": "سدد المشتري قسطا من الثمن في 30/05/2024، ولم تدون قيمة القسط",
+      "after": "سدد المشتري قسطا من الثمن في 30/05/2024"
+    },
+    {
+      "case": "a03-013",
+      "sentence": "s6",
+      "field": "notes.requests",
+      "before": "تطلب المدعية إلزام المشتري بدفع المستحق بعد تصفية الحساب، ولم تحدد مبلغا نهائيا في طلبها",
+      "after": "تطلب المدعية إلزام المشتري بدفع المستحق بعد تصفية الحساب"
+    },
+    {
+      "case": "a03-014",
+      "sentence": "s4",
+      "field": "notes.facts",
+      "before": "يتفق الطرفان على أن الثمن لم يسدد كاملا، لكن حساب المستحق لم يحسم في الملاحظات",
+      "after": "يتفق الطرفان على أن الثمن لم يسدد كاملا، ويتنازعان في الحساب"
+    },
+    {
+      "case": "a03-014",
+      "sentence": "s6",
+      "field": "notes.requests",
+      "before": "تطلب المدعية إلزام المشتري بدفع المستحق بعد تصفية الحساب، ولم تحدد مبلغا نهائيا في طلبها",
+      "after": "تطلب المدعية إلزام المشتري بدفع المستحق بعد تصفية الحساب"
+    },
+    {
+      "case": "a03-015",
+      "sentence": "s4",
+      "field": "notes.facts",
+      "before": "يتفق الطرفان على أن الثمن لم يسدد كاملا، لكن حساب المستحق لم يحسم في الملاحظات",
+      "after": "يتفق الطرفان على أن الثمن لم يسدد كاملا، ويتنازعان في الحساب"
+    },
+    {
+      "case": "a03-015",
+      "sentence": "s5",
+      "field": "notes.facts",
+      "before": "يتمسك المشتري بأنه دفع قسطا في 30/05/2024، وتعترض البائعة صراحة على وقوع هذا الدفع",
+      "after": "يتمسك المشتري بأنه دفع قسطا في 30/05/2024، وتعترض البائعة على وقوع هذا الدفع"
+    },
+    {
+      "case": "a03-015",
+      "sentence": "s6",
+      "field": "notes.requests",
+      "before": "تطلب المدعية إلزام المشتري بدفع المستحق بعد تصفية الحساب، ولم تحدد مبلغا نهائيا في طلبها",
+      "after": "تطلب المدعية إلزام المشتري بدفع المستحق بعد تصفية الحساب"
+    },
+    {
+      "case": "a03-016",
+      "sentence": "s4",
+      "field": "notes.facts",
+      "before": "يتفق الطرفان على أن الثمن لم يسدد كاملا، لكن حساب المستحق لم يحسم في الملاحظات",
+      "after": "يتفق الطرفان على أن الثمن لم يسدد كاملا، ويتنازعان في الحساب"
+    },
+    {
+      "case": "a03-016",
+      "sentence": "s5",
+      "field": "notes.requests",
+      "before": "تطلب المدعية إلزام المشتري بدفع المستحق بعد تصفية الحساب، ولم تحدد مبلغا نهائيا في طلبها",
+      "after": "تطلب المدعية إلزام المشتري بدفع المستحق بعد تصفية الحساب"
+    },
+    {
+      "case": "a03-021",
+      "sentence": "s5",
+      "field": "notes.requests",
+      "before": "تلتمس فسخ عقد المقاولة وتعويضا مستقلا قدره 85.000 دج",
+      "after": "تلتمس فسخ عقد المقاولة وتعويضا قدره 85.000 دج"
+    },
+    {
+      "case": "a03-021",
+      "sentence": "s6",
+      "field": "notes.requests",
+      "before": "تطلب كذلك رد التسبيق المحدد بـ120.000 دج",
+      "after": "تطلب كذلك رد التسبيق 120.000 دج"
+    },
+    {
+      "case": "a03-022",
+      "sentence": "s4",
+      "field": "notes.facts",
+      "before": "لم تدفع صاحبة المشروع أي مبلغ للمقاول، فلا تطلب رد ثمن أو تسبيق",
+      "after": "لم تدفع صاحبة المشروع أي مبلغ للمقاول"
+    },
+    {
+      "case": "a03-022",
+      "sentence": "s5",
+      "field": "notes.requests",
+      "before": "تلتمس فسخ عقد المقاولة وتعويضا مستقلا قدره 85.000 دج",
+      "after": "تلتمس فسخ عقد المقاولة وتعويضا قدره 85.000 دج"
+    },
+    {
+      "case": "a03-023",
+      "sentence": "s5",
+      "field": "notes.requests",
+      "before": "تلتمس فسخ عقد المقاولة وتعويضا مستقلا قدره 85.000 دج",
+      "after": "تلتمس فسخ عقد المقاولة وتعويضا قدره 85.000 دج"
+    },
+    {
+      "case": "a03-024",
+      "sentence": "s4",
+      "field": "notes.requests",
+      "before": "تلتمس فسخ عقد المقاولة وتعويضا مستقلا قدره 85.000 دج",
+      "after": "تلتمس فسخ عقد المقاولة وتعويضا قدره 85.000 دج"
+    },
+    {
+      "case": "a03-025",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "أخفى البائع عن المشتري تعديلا في محرك الجهاز، وتتمسك الملاحظات بأن هذا الإخفاء هو سبب طلب الإبطال",
+      "after": "أخفى البائع عن المشتري تعديلا في محرك الجهاز"
+    },
+    {
+      "case": "a03-026",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "أخفى البائع عن المشتري تعديلا في محرك الجهاز، وتتمسك الملاحظات بأن هذا الإخفاء هو سبب طلب الإبطال",
+      "after": "أخفى البائع عن المشتري تعديلا في محرك الجهاز"
+    },
+    {
+      "case": "a03-026",
+      "sentence": "s4",
+      "field": "notes.facts",
+      "before": "لم يدفع المشتري شيئا من الثمن؛ لا يوجد طلب باسترجاع مبلغ مدفوع",
+      "after": "لم يدفع المشتري شيئا من الثمن"
+    },
+    {
+      "case": "a03-027",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "أخفى البائع عن المشتري تعديلا في محرك الجهاز، وتتمسك الملاحظات بأن هذا الإخفاء هو سبب طلب الإبطال",
+      "after": "أخفى البائع عن المشتري تعديلا في محرك الجهاز"
+    },
+    {
+      "case": "a03-028",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "أخفى البائع عن المشتري تعديلا في محرك الجهاز، وتتمسك الملاحظات بأن هذا الإخفاء هو سبب طلب الإبطال",
+      "after": "أخفى البائع عن المشتري تعديلا في محرك الجهاز"
+    },
+    {
+      "case": "a03-029",
+      "sentence": "s7",
+      "field": "notes.facts",
+      "before": "المدعية تميز في تعليماتها للمكتب بين ما دفعته من الثمن وما أنفقته على الفحص والنقل، وترفق صور لوحات الجهاز ومراسلات الورشة، وتقول إن الاطلاع على سجل الصيانة جعلها تعيد النظر في الصفقة وتتمسك بالتدليس",
+      "after": "أرسلت المدعية إلى المكتب صور لوحات الجهاز ومراسلات الورشة، وتقول إن الاطلاع على سجل الصيانة جعلها تعيد النظر في الصفقة وتتمسك بالتدليس"
+    },
+    {
+      "case": "a03-029",
+      "sentence": "s8",
+      "field": "notes.requests",
+      "before": "تلتمس إبطال البيع ورد 480.000 دج وتعويضا مستقلا قدره 130.000 دج",
+      "after": "تلتمس إبطال البيع ورد 480.000 دج وتعويضا قدره 130.000 دج"
+    },
+    {
+      "case": "a03-030",
+      "sentence": "s6",
+      "field": "notes.facts",
+      "before": "المدعية تميز في تعليماتها للمكتب بين ما دفعته من الثمن وما أنفقته على الفحص والنقل، وترفق صور لوحات الجهاز ومراسلات الورشة، وتقول إن الاطلاع على سجل الصيانة جعلها تعيد النظر في الصفقة وتتمسك بالتدليس",
+      "after": "أرسلت المدعية إلى المكتب صور لوحات الجهاز ومراسلات الورشة، وتقول إن الاطلاع على سجل الصيانة جعلها تعيد النظر في الصفقة وتتمسك بالتدليس"
+    },
+    {
+      "case": "a03-030",
+      "sentence": "s7",
+      "field": "notes.requests",
+      "before": "الطلبات: إبطال البيع وإرجاع 900.000 دج، ومجموع التعويض المطلوب صراحة 145.000 دج",
+      "after": "الطلبات: إبطال البيع وإرجاع 900.000 دج، وتعويض قدره 145.000 دج"
+    },
+    {
+      "case": "a03-031",
+      "sentence": "s4",
+      "field": "notes.facts",
+      "before": "أخفى البائع عدم صلاحية مضخة الآلة؛ فاتورة الإصلاح التقديرية 45.000 دج وليست قيمة التعويض الملتمس",
+      "after": "أخفى البائع عدم صلاحية مضخة الآلة؛ فاتورة الإصلاح التقديرية 45.000 دج"
+    },
+    {
+      "case": "a03-031",
+      "sentence": "s7",
+      "field": "notes.facts",
+      "before": "المدعية تميز في تعليماتها للمكتب بين ما دفعته من الثمن وما أنفقته على الفحص والنقل، وترفق صور لوحات الجهاز ومراسلات الورشة، وتقول إن الاطلاع على سجل الصيانة جعلها تعيد النظر في الصفقة وتتمسك بالتدليس",
+      "after": "أرسلت المدعية إلى المكتب صور لوحات الجهاز ومراسلات الورشة، وتقول إن الاطلاع على سجل الصيانة جعلها تعيد النظر في الصفقة وتتمسك بالتدليس"
+    },
+    {
+      "case": "a03-032",
+      "sentence": "s4",
+      "field": "notes.facts",
+      "before": "تقول الملاحظات إن البائع أخفى استهلاك المحرك؛ رقم ملف الصيانة 88410 لا يدل على مبلغ",
+      "after": "تقول الملاحظات إن البائع أخفى استهلاك المحرك؛ رقم ملف الصيانة 88410"
+    },
+    {
+      "case": "a03-032",
+      "sentence": "s7",
+      "field": "notes.facts",
+      "before": "المدعية تميز في تعليماتها للمكتب بين ما دفعته من الثمن وما أنفقته على الفحص والنقل، وترفق صور لوحات الجهاز ومراسلات الورشة، وتقول إن الاطلاع على سجل الصيانة جعلها تعيد النظر في الصفقة وتتمسك بالتدليس",
+      "after": "أرسلت المدعية إلى المكتب صور لوحات الجهاز ومراسلات الورشة، وتقول إن الاطلاع على سجل الصيانة جعلها تعيد النظر في الصفقة وتتمسك بالتدليس"
+    },
+    {
+      "case": "a03-032",
+      "sentence": "s8",
+      "field": "notes.requests",
+      "before": "في هذه المذكرة تطلب إبطال البيع وتعويضا قدره 210.000 دج فقط؛ لم تدرج طلب رد المدفوع",
+      "after": "تلتمس إبطال البيع وتعويضا قدره 210.000 دج فقط"
+    },
+    {
+      "case": "a03-033",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "وصلت الصناديق في الموعد لكنها مكسورة بسبب إخلال الناقل بطريقة التثبيت، ولم تكن المطالبة بسبب تأخر الوصول",
+      "after": "وصلت الصناديق في الموعد لكنها مكسورة بسبب إخلال الناقل بطريقة التثبيت"
+    },
+    {
+      "case": "a03-034",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "وصلت الصناديق في الموعد لكنها مكسورة بسبب إخلال الناقل بطريقة التثبيت، ولم تكن المطالبة بسبب تأخر الوصول",
+      "after": "وصلت الصناديق في الموعد لكنها مكسورة بسبب إخلال الناقل بطريقة التثبيت"
+    },
+    {
+      "case": "a03-035",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "وصلت الصناديق في الموعد لكنها مكسورة بسبب إخلال الناقل بطريقة التثبيت، ولم تكن المطالبة بسبب تأخر الوصول",
+      "after": "وصلت الصناديق في الموعد لكنها مكسورة بسبب إخلال الناقل بطريقة التثبيت"
+    },
+    {
+      "case": "a03-036",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "وصلت الصناديق في الموعد لكنها مكسورة بسبب إخلال الناقل بطريقة التثبيت، ولم تكن المطالبة بسبب تأخر الوصول",
+      "after": "وصلت الصناديق في الموعد لكنها مكسورة بسبب إخلال الناقل بطريقة التثبيت"
+    },
+    {
+      "case": "a03-037",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "سلمت التجهيزات فعلا لكنها مخالفة للمواصفات المتفق عليها؛ طلب التعويض مؤسس على هذه المخالفة مهما كان وقت التسليم",
+      "after": "سلمت التجهيزات فعلا لكنها مخالفة للمواصفات المتفق عليها"
+    },
+    {
+      "case": "a03-037",
+      "sentence": "s5",
+      "field": "notes.requests",
+      "before": "تطلب تعويضا إجماليا قدره 175.000 دج عن عدم المطابقة",
+      "after": "تطلب تعويضا قدره 175.000 دج عن عدم المطابقة"
+    },
+    {
+      "case": "a03-038",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "سلمت التجهيزات فعلا لكنها مخالفة للمواصفات المتفق عليها؛ طلب التعويض مؤسس على هذه المخالفة مهما كان وقت التسليم",
+      "after": "سلمت التجهيزات فعلا لكنها مخالفة للمواصفات المتفق عليها"
+    },
+    {
+      "case": "a03-038",
+      "sentence": "s4",
+      "field": "notes.facts",
+      "before": "لا يوجد تأخر في التسليم؛ فقد جرى في موعده، والخلاف يخص المواصفات وحدها",
+      "after": "لا يوجد تأخر في التسليم؛ فقد جرى في موعده"
+    },
+    {
+      "case": "a03-038",
+      "sentence": "s5",
+      "field": "notes.requests",
+      "before": "تطلب تعويضا إجماليا قدره 175.000 دج عن عدم المطابقة",
+      "after": "تطلب تعويضا قدره 175.000 دج عن عدم المطابقة"
+    },
+    {
+      "case": "a03-039",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "سلمت التجهيزات فعلا لكنها مخالفة للمواصفات المتفق عليها؛ طلب التعويض مؤسس على هذه المخالفة مهما كان وقت التسليم",
+      "after": "سلمت التجهيزات فعلا لكنها مخالفة للمواصفات المتفق عليها"
+    },
+    {
+      "case": "a03-039",
+      "sentence": "s6",
+      "field": "notes.requests",
+      "before": "تطلب تعويضا إجماليا قدره 175.000 دج عن عدم المطابقة",
+      "after": "تطلب تعويضا قدره 175.000 دج عن عدم المطابقة"
+    },
+    {
+      "case": "a03-040",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "سلمت التجهيزات فعلا لكنها مخالفة للمواصفات المتفق عليها؛ طلب التعويض مؤسس على هذه المخالفة مهما كان وقت التسليم",
+      "after": "سلمت التجهيزات فعلا لكنها مخالفة للمواصفات المتفق عليها"
+    },
+    {
+      "case": "a03-040",
+      "sentence": "s4",
+      "field": "notes.requests",
+      "before": "تطلب تعويضا إجماليا قدره 175.000 دج عن عدم المطابقة",
+      "after": "تطلب تعويضا قدره 175.000 دج عن عدم المطابقة"
+    },
+    {
+      "case": "a03-041",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "لا يطلب المضرور أجرة علاج شهرية بل تعويضا واحدا عن الضرر",
+      "after": "يطلب المضرور التعويض عن الإصابة"
+    },
+    {
+      "case": "a03-042",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "لا يطلب المضرور أجرة علاج شهرية بل تعويضا واحدا عن الضرر",
+      "after": "يطلب المضرور التعويض عن الإصابة"
+    },
+    {
+      "case": "a03-043",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "لا يطلب المضرور أجرة علاج شهرية بل تعويضا واحدا عن الضرر",
+      "after": "يطلب المضرور التعويض عن الإصابة"
+    },
+    {
+      "case": "a03-044",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "لا يطلب المضرور أجرة علاج شهرية بل تعويضا واحدا عن الضرر",
+      "after": "يطلب المضرور التعويض عن الإصابة"
+    },
+    {
+      "case": "a03-045",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "بلغت مصاريف العلاج المدونة في الفواتير 46.000 دج ولا تقتصر المطالبة عليها",
+      "after": "بلغت مصاريف العلاج المدونة في الفواتير 46.000 دج"
+    },
+    {
+      "case": "a03-045",
+      "sentence": "s4",
+      "field": "notes.requests",
+      "before": "تطلب تعويضا عن كامل الضرر قدره 390.000 دج",
+      "after": "تطلب تعويضا عن الضرر قدره 390.000 دج"
+    },
+    {
+      "case": "a03-046",
+      "sentence": "s4",
+      "field": "notes.requests",
+      "before": "تلتمس تعويضا إجماليا قدره 510.000 دج",
+      "after": "تلتمس تعويضا قدره 510.000 دج"
+    },
+    {
+      "case": "a03-047",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "يوجد وصل دواء بمبلغ 18.000 دج، ولا يرد طلب مستقل لاسترداده",
+      "after": "يوجد وصل دواء بمبلغ 18.000 دج"
+    },
+    {
+      "case": "a03-047",
+      "sentence": "s4",
+      "field": "notes.requests",
+      "before": "تطلب المدعية 285.000 دج تعويضا شاملا",
+      "after": "تطلب المدعية 285.000 دج تعويضا"
+    },
+    {
+      "case": "a03-048",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "فتح ملف الشكوى يوم 12/05/2025 تحت رقم 77429، والملاحظات لا تتناول نتيجة المسار الجزائي",
+      "after": "فتح ملف الشكوى يوم 12/05/2025 تحت رقم 77429"
+    },
+    {
+      "case": "a03-050",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "لم يصب المدعي بأي ضرر من كلب أو حيوان؛ الإصابة المادية المذكورة تخص العربة وحدها",
+      "after": "لم يصب المدعي بأي ضرر من كلب أو حيوان"
+    },
+    {
+      "case": "a03-053",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "لم يحصل حريق في المخزن، وأرقام جرد البضاعة لا تمثل أثمانها",
+      "after": "لم يحصل حريق في المخزن"
+    },
+    {
+      "case": "a03-053",
+      "sentence": "s5",
+      "field": "notes.requests",
+      "before": "تطلب تعويضا شاملا عن الضرر الذي تتمسك به بمقدار 760.000 دج",
+      "after": "تطلب تعويضا عن الضرر الذي تتمسك به بمقدار 760.000 دج"
+    },
+    {
+      "case": "a03-054",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "لم يحصل حريق في المخزن، وأرقام جرد البضاعة لا تمثل أثمانها",
+      "after": "لم يحصل حريق في المخزن"
+    },
+    {
+      "case": "a03-054",
+      "sentence": "s4",
+      "field": "notes.facts",
+      "before": "لم يقع انهيار بناء أو سقوط جدار، والضرر الثابت في هذه الملاحظات صادر عن آلة الرفع فقط",
+      "after": "لم يقع انهيار بناء أو سقوط جدار"
+    },
+    {
+      "case": "a03-054",
+      "sentence": "s5",
+      "field": "notes.requests",
+      "before": "تطلب تعويضا شاملا عن الضرر الذي تتمسك به بمقدار 760.000 دج",
+      "after": "تطلب تعويضا عن الضرر الذي تتمسك به بمقدار 760.000 دج"
+    },
+    {
+      "case": "a03-055",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "لم يحصل حريق في المخزن، وأرقام جرد البضاعة لا تمثل أثمانها",
+      "after": "لم يحصل حريق في المخزن"
+    },
+    {
+      "case": "a03-055",
+      "sentence": "s5",
+      "field": "notes.requests",
+      "before": "تطلب تعويضا شاملا عن الضرر الذي تتمسك به بمقدار 760.000 دج",
+      "after": "تطلب تعويضا عن الضرر الذي تتمسك به بمقدار 760.000 دج"
+    },
+    {
+      "case": "a03-056",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "لم يحصل حريق في المخزن، وأرقام جرد البضاعة لا تمثل أثمانها",
+      "after": "لم يحصل حريق في المخزن"
+    },
+    {
+      "case": "a03-056",
+      "sentence": "s4",
+      "field": "notes.requests",
+      "before": "تطلب تعويضا شاملا عن الضرر الذي تتمسك به بمقدار 760.000 دج",
+      "after": "تطلب تعويضا عن الضرر الذي تتمسك به بمقدار 760.000 دج"
+    },
+    {
+      "case": "a03-057",
+      "sentence": "s4",
+      "field": "notes.facts",
+      "before": "لم يسدد المستأجر بدلات متأخرة بلغ مجموعها 168.000 دج؛ لا يخلط هذا المجموع بالبدل الشهري",
+      "after": "لم يسدد المستأجر بدلات إيجار قدرها 168.000 دج"
+    },
+    {
+      "case": "a03-057",
+      "sentence": "s6",
+      "field": "documents.list",
+      "before": "المستند الوحيد المتعلق بالمطالبة: محضر توجيه المؤجر إعذارا بالدفع للمستأجر في 26/09/2023",
+      "after": "محضر توجيه المؤجر إعذارا بالدفع للمستأجر في 26/09/2023"
+    },
+    {
+      "case": "a03-058",
+      "sentence": "s4",
+      "field": "notes.facts",
+      "before": "لم يسدد المستأجر بدلات متأخرة بلغ مجموعها 168.000 دج؛ لا يخلط هذا المجموع بالبدل الشهري",
+      "after": "لم يسدد المستأجر بدلات إيجار قدرها 168.000 دج"
+    },
+    {
+      "case": "a03-059",
+      "sentence": "s4",
+      "field": "notes.facts",
+      "before": "لم يسدد المستأجر بدلات متأخرة بلغ مجموعها 168.000 دج؛ لا يخلط هذا المجموع بالبدل الشهري",
+      "after": "لم يسدد المستأجر بدلات إيجار قدرها 168.000 دج"
+    },
+    {
+      "case": "a03-060",
+      "sentence": "s4",
+      "field": "notes.facts",
+      "before": "لم يسدد المستأجر بدلات متأخرة بلغ مجموعها 168.000 دج؛ لا يخلط هذا المجموع بالبدل الشهري",
+      "after": "لم يسدد المستأجر بدلات إيجار قدرها 168.000 دج"
+    },
+    {
+      "case": "a03-061",
+      "sentence": "s2",
+      "field": "notes.facts",
+      "before": "أبرم عقد الإيجار يوم 18/09/2022 ببدل شهري قدره 34000 دج؛ مبلغ الضمان المدفوع 68000 دج مستقل عن الأجرة",
+      "after": "عقد إيجار مؤرخ في 18/09/2022، والكراء 34000 دج كل شهر؛ دفع المستأجر 68000 دج ضمانا"
+    },
+    {
+      "case": "a03-061",
+      "sentence": "s4",
+      "field": "notes.facts",
+      "before": "تراكمت بدلات إيجار غير مسددة مجموعها 204000 دج، ولا يدخل الضمان في هذا الحساب",
+      "after": "بقيت في ذمة المستأجر بدلات إيجار قدرها 204000 دج"
+    },
+    {
+      "case": "a03-061",
+      "sentence": "s5",
+      "field": "notes.facts",
+      "before": "الشقة تقع في عمارة تسكن المدعية في طابق آخر منها، وكان المستأجر يتسلم المفاتيح من الحارس عند غيابه عن البيت؛ لا تربط الحارس بالمستأجر علاقة إيجار ولا يطالب الحارس بمبلغ في هذا الملف",
+      "after": "الشقة تقع في عمارة تسكن المدعية في طابق آخر منها، وكان المستأجر يتسلم المفاتيح من الحارس عند غياب المؤجرة"
+    },
+    {
+      "case": "a03-061",
+      "sentence": "s6",
+      "field": "notes.facts",
+      "before": "اشتكى المستأجر من قراءة عداد الماء ومن إصلاح قفل الباب المشترك، وردت المؤجرة بأن هذه المسائل تعالج مع مسير العمارة؛ النزاع بشأن العداد لا يتضمن إنكارا لعقد الإيجار أو دفعا بانقضاء المتأخرات المذكورة",
+      "after": "اشتكى المستأجر من قراءة عداد الماء ومن إصلاح قفل الباب المشترك، وردت المؤجرة بأن هذه المسائل تعالج مع مسير العمارة"
+    },
+    {
+      "case": "a03-061",
+      "sentence": "s7",
+      "field": "notes.facts",
+      "before": "احتفظت المؤجرة بإيصالات قديمة تخص فترات مدفوعة قبل الفترة محل المطالبة، وفصلتها عن الكشف الحالي حتى لا تختلط بالبدلات غير المسددة؛ ولا تتضمن تعليماتها للمكتب طلب تعويض عن الماء أو القفل",
+      "after": "احتفظت المؤجرة بإيصالات تخص فترات مدفوعة سابقة وأرفقتها بالكشف الحالي"
+    },
+    {
+      "case": "a03-062",
+      "sentence": "s2",
+      "field": "notes.facts",
+      "before": "أبرم عقد الإيجار يوم 07/03/2023 ببدل شهري قدره 45000 دج؛ مبلغ الضمان المدفوع 90000 دج مستقل عن الأجرة",
+      "after": "عقد إيجار مؤرخ في 07/03/2023، والكراء 45000 دج كل شهر؛ دفع المستأجر 90000 دج ضمانا"
+    },
+    {
+      "case": "a03-062",
+      "sentence": "s4",
+      "field": "notes.facts",
+      "before": "تراكمت بدلات إيجار غير مسددة مجموعها 315000 دج، ولا يدخل الضمان في هذا الحساب",
+      "after": "بقيت في ذمة المستأجر بدلات إيجار قدرها 315000 دج"
+    },
+    {
+      "case": "a03-062",
+      "sentence": "s5",
+      "field": "notes.facts",
+      "before": "الشقة تقع في عمارة تسكن المدعية في طابق آخر منها، وكان المستأجر يتسلم المفاتيح من الحارس عند غيابه عن البيت؛ لا تربط الحارس بالمستأجر علاقة إيجار ولا يطالب الحارس بمبلغ في هذا الملف",
+      "after": "الشقة تقع في عمارة تسكن المدعية في طابق آخر منها، وكان المستأجر يتسلم المفاتيح من الحارس عند غياب المؤجرة"
+    },
+    {
+      "case": "a03-062",
+      "sentence": "s6",
+      "field": "notes.facts",
+      "before": "اشتكى المستأجر من قراءة عداد الماء ومن إصلاح قفل الباب المشترك، وردت المؤجرة بأن هذه المسائل تعالج مع مسير العمارة؛ النزاع بشأن العداد لا يتضمن إنكارا لعقد الإيجار أو دفعا بانقضاء المتأخرات المذكورة",
+      "after": "اشتكى المستأجر من قراءة عداد الماء ومن إصلاح قفل الباب المشترك، وردت المؤجرة بأن هذه المسائل تعالج مع مسير العمارة"
+    },
+    {
+      "case": "a03-062",
+      "sentence": "s7",
+      "field": "notes.facts",
+      "before": "احتفظت المؤجرة بإيصالات قديمة تخص فترات مدفوعة قبل الفترة محل المطالبة، وفصلتها عن الكشف الحالي حتى لا تختلط بالبدلات غير المسددة؛ ولا تتضمن تعليماتها للمكتب طلب تعويض عن الماء أو القفل",
+      "after": "احتفظت المؤجرة بإيصالات تخص فترات مدفوعة سابقة وأرفقتها بالكشف الحالي"
+    },
+    {
+      "case": "a03-063",
+      "sentence": "s2",
+      "field": "notes.facts",
+      "before": "أبرم عقد الإيجار يوم 26/01/2024 ببدل شهري قدره 26000 دج؛ مبلغ الضمان المدفوع 52000 دج مستقل عن الأجرة",
+      "after": "عقد إيجار مؤرخ في 26/01/2024، والكراء 26000 دج كل شهر؛ دفع المستأجر 52000 دج ضمانا"
+    },
+    {
+      "case": "a03-063",
+      "sentence": "s4",
+      "field": "notes.facts",
+      "before": "تراكمت بدلات إيجار غير مسددة مجموعها 156000 دج، ولا يدخل الضمان في هذا الحساب",
+      "after": "بقيت في ذمة المستأجر بدلات إيجار قدرها 156000 دج"
+    },
+    {
+      "case": "a03-063",
+      "sentence": "s5",
+      "field": "notes.facts",
+      "before": "الشقة تقع في عمارة تسكن المدعية في طابق آخر منها، وكان المستأجر يتسلم المفاتيح من الحارس عند غيابه عن البيت؛ لا تربط الحارس بالمستأجر علاقة إيجار ولا يطالب الحارس بمبلغ في هذا الملف",
+      "after": "الشقة تقع في عمارة تسكن المدعية في طابق آخر منها، وكان المستأجر يتسلم المفاتيح من الحارس عند غياب المؤجرة"
+    },
+    {
+      "case": "a03-063",
+      "sentence": "s6",
+      "field": "notes.facts",
+      "before": "اشتكى المستأجر من قراءة عداد الماء ومن إصلاح قفل الباب المشترك، وردت المؤجرة بأن هذه المسائل تعالج مع مسير العمارة؛ النزاع بشأن العداد لا يتضمن إنكارا لعقد الإيجار أو دفعا بانقضاء المتأخرات المذكورة",
+      "after": "اشتكى المستأجر من قراءة عداد الماء ومن إصلاح قفل الباب المشترك، وردت المؤجرة بأن هذه المسائل تعالج مع مسير العمارة"
+    },
+    {
+      "case": "a03-063",
+      "sentence": "s7",
+      "field": "notes.facts",
+      "before": "احتفظت المؤجرة بإيصالات قديمة تخص فترات مدفوعة قبل الفترة محل المطالبة، وفصلتها عن الكشف الحالي حتى لا تختلط بالبدلات غير المسددة؛ ولا تتضمن تعليماتها للمكتب طلب تعويض عن الماء أو القفل",
+      "after": "احتفظت المؤجرة بإيصالات تخص فترات مدفوعة سابقة وأرفقتها بالكشف الحالي"
+    },
+    {
+      "case": "a03-064",
+      "sentence": "s2",
+      "field": "notes.facts",
+      "before": "أبرم عقد الإيجار يوم 11/05/2023 ببدل شهري قدره 38000 دج؛ مبلغ الضمان المدفوع 76000 دج مستقل عن الأجرة",
+      "after": "عقد إيجار مؤرخ في 11/05/2023، والكراء 38000 دج كل شهر؛ دفع المستأجر 76000 دج ضمانا"
+    },
+    {
+      "case": "a03-064",
+      "sentence": "s4",
+      "field": "notes.facts",
+      "before": "تراكمت بدلات إيجار غير مسددة مجموعها 228000 دج، ولا يدخل الضمان في هذا الحساب",
+      "after": "بقيت في ذمة المستأجر بدلات إيجار قدرها 228000 دج"
+    },
+    {
+      "case": "a03-064",
+      "sentence": "s5",
+      "field": "notes.facts",
+      "before": "الشقة تقع في عمارة تسكن المدعية في طابق آخر منها، وكان المستأجر يتسلم المفاتيح من الحارس عند غيابه عن البيت؛ لا تربط الحارس بالمستأجر علاقة إيجار ولا يطالب الحارس بمبلغ في هذا الملف",
+      "after": "الشقة تقع في عمارة تسكن المدعية في طابق آخر منها، وكان المستأجر يتسلم المفاتيح من الحارس عند غياب المؤجرة"
+    },
+    {
+      "case": "a03-064",
+      "sentence": "s6",
+      "field": "notes.facts",
+      "before": "اشتكى المستأجر من قراءة عداد الماء ومن إصلاح قفل الباب المشترك، وردت المؤجرة بأن هذه المسائل تعالج مع مسير العمارة؛ النزاع بشأن العداد لا يتضمن إنكارا لعقد الإيجار أو دفعا بانقضاء المتأخرات المذكورة",
+      "after": "اشتكى المستأجر من قراءة عداد الماء ومن إصلاح قفل الباب المشترك، وردت المؤجرة بأن هذه المسائل تعالج مع مسير العمارة"
+    },
+    {
+      "case": "a03-064",
+      "sentence": "s7",
+      "field": "notes.facts",
+      "before": "احتفظت المؤجرة بإيصالات قديمة تخص فترات مدفوعة قبل الفترة محل المطالبة، وفصلتها عن الكشف الحالي حتى لا تختلط بالبدلات غير المسددة؛ ولا تتضمن تعليماتها للمكتب طلب تعويض عن الماء أو القفل",
+      "after": "احتفظت المؤجرة بإيصالات تخص فترات مدفوعة سابقة وأرفقتها بالكشف الحالي"
+    },
+    {
+      "case": "a03-064",
+      "sentence": "s9",
+      "field": "notes.requests",
+      "before": "تطلب إخلاء المسكن وفسخ الإيجار؛ تحتفظ بالمطالبة المالية لملف آخر ولا تطلب دفع مبلغ هنا",
+      "after": "تطلب إخلاء المسكن وفسخ الإيجار؛ مع حفظ حقها في المطالبة بالبدلات في دعوى أخرى"
+    },
+    {
+      "case": "a03-065",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "المالك لا يطالب في هذا الملف ببدل إيجار، فالعلاقة ليست إيجارية",
+      "after": "لا توجد علاقة إيجار بين المالك والشاغل"
+    },
+    {
+      "case": "a03-066",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "المالك لا يطالب في هذا الملف ببدل إيجار، فالعلاقة ليست إيجارية",
+      "after": "لا توجد علاقة إيجار بين المالك والشاغل"
+    },
+    {
+      "case": "a03-067",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "المالك لا يطالب في هذا الملف ببدل إيجار، فالعلاقة ليست إيجارية",
+      "after": "لا توجد علاقة إيجار بين المالك والشاغل"
+    },
+    {
+      "case": "a03-068",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "المالك لا يطالب في هذا الملف ببدل إيجار، فالعلاقة ليست إيجارية",
+      "after": "لا توجد علاقة إيجار بين المالك والشاغل"
+    },
+    {
+      "case": "a03-069",
+      "sentence": "s3",
+      "field": "notes.requests",
+      "before": "تطلب الطرد وتعويضا إجماليا عن الشغل غير المشروع قدره 170.000 دج",
+      "after": "تطلب الطرد وتعويضا عن الشغل غير المشروع قدره 170.000 دج"
+    },
+    {
+      "case": "a03-070",
+      "sentence": "s3",
+      "field": "notes.requests",
+      "before": "تلتمس الطرد و180.000 دج تعويضا شاملا وليس أجرة شهرية",
+      "after": "تلتمس الطرد و180.000 دج تعويضا"
+    },
+    {
+      "case": "a03-071",
+      "sentence": "s3",
+      "field": "notes.requests",
+      "before": "الطلب الحالي هو طرد الشاغل فقط، دون تعويض مالي في هذه الدعوى",
+      "after": "تلتمس طرد الشاغل فقط"
+    },
+    {
+      "case": "a03-072",
+      "sentence": "s3",
+      "field": "notes.requests",
+      "before": "تطلب الطرد وتعويضا واحدا قدره 430.000 دج عن كامل الضرر",
+      "after": "تطلب الطرد وتعويضا قدره 430.000 دج عن الضرر"
+    },
+    {
+      "case": "a03-072",
+      "sentence": "s5",
+      "field": "documents.list",
+      "before": "إعذار بالخروج من المالكة إلى الشاغل يوم 07/10/2022، وليس تاريخ عقد الملكية",
+      "after": "إعذار بالخروج من المالكة إلى الشاغل يوم 07/10/2022"
+    },
+    {
+      "case": "a03-077",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "ما زال جزء من حساب الشحنة غير مسدد، ولم يسجل الملخص مبلغ الرصيد النهائي",
+      "after": "ما زال جزء من حساب الشحنة غير مسدد والحساب محل خلاف"
+    },
+    {
+      "case": "a03-077",
+      "sentence": "s4",
+      "field": "notes.facts",
+      "before": "دفع العميل قسطا في 08/02/2025؛ لم يدون مبلغ هذا القسط في الملاحظات",
+      "after": "دفع العميل قسطا في 08/02/2025"
+    },
+    {
+      "case": "a03-077",
+      "sentence": "s5",
+      "field": "notes.requests",
+      "before": "يطلب المورد تصفية الحساب وإلزام العميل بالرصيد المستحق، دون تحديد مبلغ نهائي في هذه المذكرة",
+      "after": "يطلب المورد تصفية الحساب وإلزام العميل بالرصيد المستحق"
+    },
+    {
+      "case": "a03-078",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "ما زال جزء من حساب الشحنة غير مسدد، ولم يسجل الملخص مبلغ الرصيد النهائي",
+      "after": "ما زال جزء من حساب الشحنة غير مسدد والحساب محل خلاف"
+    },
+    {
+      "case": "a03-078",
+      "sentence": "s5",
+      "field": "notes.requests",
+      "before": "يطلب المورد تصفية الحساب وإلزام العميل بالرصيد المستحق، دون تحديد مبلغ نهائي في هذه المذكرة",
+      "after": "يطلب المورد تصفية الحساب وإلزام العميل بالرصيد المستحق"
+    },
+    {
+      "case": "a03-079",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "ما زال جزء من حساب الشحنة غير مسدد، ولم يسجل الملخص مبلغ الرصيد النهائي",
+      "after": "ما زال جزء من حساب الشحنة غير مسدد والحساب محل خلاف"
+    },
+    {
+      "case": "a03-079",
+      "sentence": "s4",
+      "field": "notes.facts",
+      "before": "يحتج العميل بقسط يقول إنه دفعه يوم 08/02/2025 دون أن يبين قيمته",
+      "after": "يحتج العميل بقسط يقول إنه دفعه يوم 08/02/2025"
+    },
+    {
+      "case": "a03-079",
+      "sentence": "s6",
+      "field": "notes.requests",
+      "before": "يطلب المورد تصفية الحساب وإلزام العميل بالرصيد المستحق، دون تحديد مبلغ نهائي في هذه المذكرة",
+      "after": "يطلب المورد تصفية الحساب وإلزام العميل بالرصيد المستحق"
+    },
+    {
+      "case": "a03-080",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "ما زال جزء من حساب الشحنة غير مسدد، ولم يسجل الملخص مبلغ الرصيد النهائي",
+      "after": "ما زال جزء من حساب الشحنة غير مسدد والحساب محل خلاف"
+    },
+    {
+      "case": "a03-080",
+      "sentence": "s4",
+      "field": "notes.requests",
+      "before": "يطلب المورد تصفية الحساب وإلزام العميل بالرصيد المستحق، دون تحديد مبلغ نهائي في هذه المذكرة",
+      "after": "يطلب المورد تصفية الحساب وإلزام العميل بالرصيد المستحق"
+    },
+    {
+      "case": "a03-081",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "لم يدفع المستأجر بدلات متراكمة بلغ مجموعها 434.000 دج",
+      "after": "لم يدفع المستأجر بدلات قدرها 434.000 دج"
+    },
+    {
+      "case": "a03-081",
+      "sentence": "s5",
+      "field": "notes.requests",
+      "before": "يطلب المؤجر إخلاء المحل ودفع مجموع المتأخرات 434.000 دج",
+      "after": "يطلب المؤجر إخلاء المحل ودفع المتأخرات البالغة 434.000 دج"
+    },
+    {
+      "case": "a03-082",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "لم يدفع المستأجر بدلات متراكمة بلغ مجموعها 434.000 دج",
+      "after": "لم يدفع المستأجر بدلات قدرها 434.000 دج"
+    },
+    {
+      "case": "a03-082",
+      "sentence": "s5",
+      "field": "notes.requests",
+      "before": "يطلب المؤجر إخلاء المحل ودفع مجموع المتأخرات 434.000 دج",
+      "after": "يطلب المؤجر إخلاء المحل ودفع المتأخرات البالغة 434.000 دج"
+    },
+    {
+      "case": "a03-083",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "لم يدفع المستأجر بدلات متراكمة بلغ مجموعها 434.000 دج",
+      "after": "لم يدفع المستأجر بدلات قدرها 434.000 دج"
+    },
+    {
+      "case": "a03-083",
+      "sentence": "s5",
+      "field": "notes.requests",
+      "before": "يطلب المؤجر إخلاء المحل ودفع مجموع المتأخرات 434.000 دج",
+      "after": "يطلب المؤجر إخلاء المحل ودفع المتأخرات البالغة 434.000 دج"
+    },
+    {
+      "case": "a03-084",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "لم يدفع المستأجر بدلات متراكمة بلغ مجموعها 434.000 دج",
+      "after": "لم يدفع المستأجر بدلات قدرها 434.000 دج"
+    },
+    {
+      "case": "a03-084",
+      "sentence": "s4",
+      "field": "notes.requests",
+      "before": "يطلب المؤجر إخلاء المحل ودفع مجموع المتأخرات 434.000 دج",
+      "after": "يطلب المؤجر إخلاء المحل ودفع المتأخرات البالغة 434.000 دج"
+    },
+    {
+      "case": "a03-085",
+      "sentence": "s5",
+      "field": "notes.facts",
+      "before": "رفض المؤجر تجديد الإيجار رغم طلب المستأجر، ولم يقع نزاع بشأن صدور الرفض",
+      "after": "رفض المؤجر تجديد الإيجار رغم طلب المستأجر"
+    },
+    {
+      "case": "a03-085",
+      "sentence": "s6",
+      "field": "notes.facts",
+      "before": "سجلت مصاريف نقل التجهيزات بمبلغ 96000 دج ولا تمثل كامل التعويض",
+      "after": "فاتورة نقل التجهيزات بمبلغ 96000 دج"
+    },
+    {
+      "case": "a03-085",
+      "sentence": "s7",
+      "field": "notes.requests",
+      "before": "يلتمس المستأجر تعويض الاستحقاق بمجموع قدره 1250000 دج، وتقتصر طلباته على هذا التعويض",
+      "after": "يلتمس المستأجر 1250000 دج تعويض استحقاق"
+    },
+    {
+      "case": "a03-086",
+      "sentence": "s4",
+      "field": "notes.facts",
+      "before": "قرر المالك عدم تجديد العقد للمستأجر؛ النزاع في مقدار التعويض لا في الرفض",
+      "after": "قرر المالك عدم تجديد العقد للمستأجر"
+    },
+    {
+      "case": "a03-086",
+      "sentence": "s5",
+      "field": "notes.facts",
+      "before": "سجلت مصاريف نقل التجهيزات بمبلغ 150000 دج ولا تمثل كامل التعويض",
+      "after": "فاتورة نقل التجهيزات بمبلغ 150000 دج"
+    },
+    {
+      "case": "a03-086",
+      "sentence": "s6",
+      "field": "notes.requests",
+      "before": "يلتمس المستأجر تعويض الاستحقاق بمجموع قدره 1800000 دج، وتقتصر طلباته على هذا التعويض",
+      "after": "يلتمس المستأجر 1800000 دج تعويض استحقاق"
+    },
+    {
+      "case": "a03-087",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "ثبت في ملاحظات الموكل رفض المالك تجديد إيجار المحل",
+      "after": "رفض المالك تجديد إيجار المحل"
+    },
+    {
+      "case": "a03-087",
+      "sentence": "s6",
+      "field": "notes.facts",
+      "before": "سجلت مصاريف نقل التجهيزات بمبلغ 106000 دج ولا تمثل كامل التعويض",
+      "after": "فاتورة نقل التجهيزات بمبلغ 106000 دج"
+    },
+    {
+      "case": "a03-087",
+      "sentence": "s7",
+      "field": "notes.requests",
+      "before": "يلتمس المستأجر تعويض الاستحقاق بمجموع قدره 1420000 دج، وتقتصر طلباته على هذا التعويض",
+      "after": "يلتمس المستأجر 1420000 دج تعويض استحقاق"
+    },
+    {
+      "case": "a03-088",
+      "sentence": "s5",
+      "field": "notes.facts",
+      "before": "أبلغ المؤجر المستأجر بأنه يرفض التجديد، ويقر الطرفان بحصول ذلك",
+      "after": "أبلغ المؤجر المستأجر بأنه يرفض التجديد"
+    },
+    {
+      "case": "a03-088",
+      "sentence": "s6",
+      "field": "notes.facts",
+      "before": "سجلت مصاريف نقل التجهيزات بمبلغ 132000 دج ولا تمثل كامل التعويض",
+      "after": "فاتورة نقل التجهيزات بمبلغ 132000 دج"
+    },
+    {
+      "case": "a03-088",
+      "sentence": "s7",
+      "field": "notes.facts",
+      "before": "قدر الخبير قيمة التعويض بـ1900000 دج، ويعترض المستأجر على هذا التقدير ويتمسك بالمبلغ الأعلى المحدد في طلبه",
+      "after": "قدر الخبير قيمة التعويض بـ1900000 دج، ويعترض المستأجر على هذا التقدير"
+    },
+    {
+      "case": "a03-088",
+      "sentence": "s8",
+      "field": "notes.requests",
+      "before": "يلتمس المستأجر تعويض الاستحقاق بمجموع قدره 2100000 دج، وتقتصر طلباته على هذا التعويض",
+      "after": "يلتمس المستأجر 2100000 دج تعويض استحقاق"
+    },
+    {
+      "case": "a03-089",
+      "sentence": "s6",
+      "field": "notes.requests",
+      "before": "تطلب إلزام البائع بتسليم المولد ولا تطلب الفسخ أو رد التسبيق حاليا",
+      "after": "تطلب إلزام البائع بتسليم المولد فقط"
+    },
+    {
+      "case": "a03-090",
+      "sentence": "s6",
+      "field": "notes.requests",
+      "before": "تطلب إلزام البائع بتسليم المولد ولا تطلب الفسخ أو رد التسبيق حاليا",
+      "after": "تطلب إلزام البائع بتسليم المولد فقط"
+    },
+    {
+      "case": "a03-091",
+      "sentence": "s6",
+      "field": "notes.requests",
+      "before": "تطلب إلزام البائع بتسليم المولد ولا تطلب الفسخ أو رد التسبيق حاليا",
+      "after": "تطلب إلزام البائع بتسليم المولد فقط"
+    },
+    {
+      "case": "a03-092",
+      "sentence": "s5",
+      "field": "notes.requests",
+      "before": "تطلب إلزام البائع بتسليم المولد ولا تطلب الفسخ أو رد التسبيق حاليا",
+      "after": "تطلب إلزام البائع بتسليم المولد فقط"
+    },
+    {
+      "case": "a03-093",
+      "sentence": "s5",
+      "field": "notes.requests",
+      "before": "يطلب المشتري إلزام البائع بالتسليم فقط، ولا يلتمس رد مبلغ في هذا الطلب",
+      "after": "يطلب المشتري إلزام البائع بالتسليم فقط"
+    },
+    {
+      "case": "a03-094",
+      "sentence": "s5",
+      "field": "notes.requests",
+      "before": "يطلب المشتري إلزام البائع بالتسليم فقط، ولا يلتمس رد مبلغ في هذا الطلب",
+      "after": "يطلب المشتري إلزام البائع بالتسليم فقط"
+    },
+    {
+      "case": "a03-095",
+      "sentence": "s5",
+      "field": "notes.requests",
+      "before": "يطلب المشتري إلزام البائع بالتسليم فقط، ولا يلتمس رد مبلغ في هذا الطلب",
+      "after": "يطلب المشتري إلزام البائع بالتسليم فقط"
+    },
+    {
+      "case": "a03-096",
+      "sentence": "s4",
+      "field": "notes.requests",
+      "before": "يطلب المشتري إلزام البائع بالتسليم فقط، ولا يلتمس رد مبلغ في هذا الطلب",
+      "after": "يطلب المشتري إلزام البائع بالتسليم فقط"
+    },
+    {
+      "case": "a03-098",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "كان الزوج قد طلق زوجة سابقة غير المدعى عليها في 07/04/2011، ثم انفصل عن المدعى عليها فعليا في 18/08/2023",
+      "after": "طلق الزوج زوجة أخرى في 07/04/2011، وانفصل عن المدعى عليها في 18/08/2023"
+    },
+    {
+      "case": "a03-098",
+      "sentence": "s4",
+      "field": "notes.requests",
+      "before": "طلبه هو الطلاق وزيارة ابنتهما، ولا يطلب حقا متعلقا بالزواج السابق",
+      "after": "طلبه هو الطلاق وزيارة ابنتهما"
+    },
+    {
+      "case": "a03-100",
+      "sentence": "s2",
+      "field": "notes.facts",
+      "before": "أول جلسة إصلاح عائلية بالمكتب كانت في 14/05/2025؛ الأبناء راشدون ولا يوجد طلب زيارة",
+      "after": "أول جلسة إصلاح عائلية بالمكتب كانت في 14/05/2025؛ الأبناء راشدون"
+    },
+    {
+      "case": "a03-101",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "امتنع الزوج عن الإنفاق عليها؛ تتمسك الملاحظات بهذا السبب مستقلا عما يقال عن مغادرته المسكن",
+      "after": "امتنع الزوج عن الإنفاق عليها"
+    },
+    {
+      "case": "a03-101",
+      "sentence": "s5",
+      "field": "notes.requests",
+      "before": "تطلب التطليق ونفقة متأخرة حددتها بمجموع 240.000 دج",
+      "after": "تطلب التطليق ونفقة متأخرة قدرها 240.000 دج"
+    },
+    {
+      "case": "a03-102",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "امتنع الزوج عن الإنفاق عليها؛ تتمسك الملاحظات بهذا السبب مستقلا عما يقال عن مغادرته المسكن",
+      "after": "امتنع الزوج عن الإنفاق عليها"
+    },
+    {
+      "case": "a03-102",
+      "sentence": "s5",
+      "field": "notes.requests",
+      "before": "تطلب التطليق ونفقة متأخرة حددتها بمجموع 240.000 دج",
+      "after": "تطلب التطليق ونفقة متأخرة قدرها 240.000 دج"
+    },
+    {
+      "case": "a03-103",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "امتنع الزوج عن الإنفاق عليها؛ تتمسك الملاحظات بهذا السبب مستقلا عما يقال عن مغادرته المسكن",
+      "after": "امتنع الزوج عن الإنفاق عليها"
+    },
+    {
+      "case": "a03-103",
+      "sentence": "s6",
+      "field": "notes.requests",
+      "before": "تطلب التطليق ونفقة متأخرة حددتها بمجموع 240.000 دج",
+      "after": "تطلب التطليق ونفقة متأخرة قدرها 240.000 دج"
+    },
+    {
+      "case": "a03-104",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "امتنع الزوج عن الإنفاق عليها؛ تتمسك الملاحظات بهذا السبب مستقلا عما يقال عن مغادرته المسكن",
+      "after": "امتنع الزوج عن الإنفاق عليها"
+    },
+    {
+      "case": "a03-104",
+      "sentence": "s4",
+      "field": "notes.requests",
+      "before": "تطلب التطليق ونفقة متأخرة حددتها بمجموع 240.000 دج",
+      "after": "تطلب التطليق ونفقة متأخرة قدرها 240.000 دج"
+    },
+    {
+      "case": "a03-105",
+      "sentence": "s2",
+      "field": "notes.facts",
+      "before": "لم ينفق الزوج على المدعية رغم حاجتها، ولا تنحصر الدعوى في واقعة الإيذاء",
+      "after": "لم ينفق الزوج على المدعية رغم حاجتها"
+    },
+    {
+      "case": "a03-105",
+      "sentence": "s4",
+      "field": "notes.requests",
+      "before": "تلتمس التطليق ونفقة متأخرة بمجموع 315.000 دج وتعويضا مستقلا قدره 120.000 دج",
+      "after": "تلتمس التطليق ونفقة متأخرة قدرها 315.000 دج وتعويضا قدره 120.000 دج"
+    },
+    {
+      "case": "a03-106",
+      "sentence": "s2",
+      "field": "notes.facts",
+      "before": "لم ينفق الزوج على المدعية رغم حاجتها، ولا تنحصر الدعوى في واقعة الإيذاء",
+      "after": "لم ينفق الزوج على المدعية رغم حاجتها"
+    },
+    {
+      "case": "a03-106",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "لم يضرب الزوج زوجته ولم يصدر عنه إيذاء؛ تقتصر الوقائع المؤكدة على انقطاع النفقة",
+      "after": "لم يضرب الزوج زوجته ولم يصدر عنه إيذاء"
+    },
+    {
+      "case": "a03-106",
+      "sentence": "s4",
+      "field": "notes.requests",
+      "before": "تلتمس التطليق ونفقة متأخرة بمجموع 315.000 دج وتعويضا مستقلا قدره 120.000 دج",
+      "after": "تلتمس التطليق ونفقة متأخرة قدرها 315.000 دج وتعويضا قدره 120.000 دج"
+    },
+    {
+      "case": "a03-107",
+      "sentence": "s2",
+      "field": "notes.facts",
+      "before": "لم ينفق الزوج على المدعية رغم حاجتها، ولا تنحصر الدعوى في واقعة الإيذاء",
+      "after": "لم ينفق الزوج على المدعية رغم حاجتها"
+    },
+    {
+      "case": "a03-107",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "ينكر الزوج ما تتمسك به الزوجة من أنه ضربها وأذاها، دون أن يحسم هذا الإنكار مسألة النفقة",
+      "after": "ينكر الزوج ما تتمسك به الزوجة من أنه ضربها وأذاها"
+    },
+    {
+      "case": "a03-107",
+      "sentence": "s4",
+      "field": "notes.requests",
+      "before": "تلتمس التطليق ونفقة متأخرة بمجموع 315.000 دج وتعويضا مستقلا قدره 120.000 دج",
+      "after": "تلتمس التطليق ونفقة متأخرة قدرها 315.000 دج وتعويضا قدره 120.000 دج"
+    },
+    {
+      "case": "a03-108",
+      "sentence": "s2",
+      "field": "notes.facts",
+      "before": "لم ينفق الزوج على المدعية رغم حاجتها، ولا تنحصر الدعوى في واقعة الإيذاء",
+      "after": "لم ينفق الزوج على المدعية رغم حاجتها"
+    },
+    {
+      "case": "a03-108",
+      "sentence": "s3",
+      "field": "notes.requests",
+      "before": "تلتمس التطليق ونفقة متأخرة بمجموع 315.000 دج وتعويضا مستقلا قدره 120.000 دج",
+      "after": "تلتمس التطليق ونفقة متأخرة قدرها 315.000 دج وتعويضا قدره 120.000 دج"
+    },
+    {
+      "case": "a03-109",
+      "sentence": "s5",
+      "field": "notes.requests",
+      "before": "تطلب 30.000 دج نفقة عدة و90.000 دج متأخر نفقة الطفلين؛ الطلب المالي للنفقة بمجموع صريح 120.000 دج، والمعدل الشهري للطفلين 15.000 دج",
+      "after": "نفقة العدة 30.000 دج ومتأخر نفقة الطفلين 90.000 دج؛ تلتمس أداء 120.000 دج عنهما، ونفقة الطفلين 15.000 دج في الشهر"
+    },
+    {
+      "case": "a03-109",
+      "sentence": "s6",
+      "field": "notes.requests",
+      "before": "كما تطلب بدل سكن إجماليا لهذه الفترة قدره 72.000 دج؛ معدل الإيجار 12.000 دج شهريا",
+      "after": "تلتمس 72.000 دج بدل سكن عن الفترة؛ كراء المسكن 12.000 دج في الشهر"
+    },
+    {
+      "case": "a03-110",
+      "sentence": "s4",
+      "field": "notes.requests",
+      "before": "نفقة العدة الملتمسة 42.000 دج فقط؛ ذكرت نفقة سابقة للطفلة بمعدل 18.000 دج شهريا لكنها لا تعيد طلبها هنا",
+      "after": "تلتمس 42.000 دج نفقة عدة فقط؛ نفقة الطفلة السابقة 18.000 دج في الشهر"
+    },
+    {
+      "case": "a03-110",
+      "sentence": "s5",
+      "field": "notes.requests",
+      "before": "تطلب بدل إيجار شهريا قدره 14.000 دج، دون كتابة مجموع لعدة أشهر",
+      "after": "تلتمس 14.000 دج كل شهر بدل إيجار"
+    },
+    {
+      "case": "a03-111",
+      "sentence": "s4",
+      "field": "notes.requests",
+      "before": "تلتمس الخلع مقابل بدل تعرضه الآن قدره 110.000 دج؛ ليس هو المهر القديم",
+      "after": "تلتمس الخلع مقابل بدل تعرضه الآن قدره 110.000 دج"
+    },
+    {
+      "case": "a03-111",
+      "sentence": "s5",
+      "field": "notes.requests",
+      "before": "تلتمس نفقة عدة بمبلغ إجمالي قدره 55.000 دج",
+      "after": "تلتمس نفقة عدة قدرها 55.000 دج"
+    },
+    {
+      "case": "a03-112",
+      "sentence": "s4",
+      "field": "notes.requests",
+      "before": "تطلب مجموع نفقة قدره 168.000 دج، يتكون حسب الطلب من 48.000 دج للعدة و120.000 دج متأخر نفقة الابن؛ معدل نفقة الابن 20.000 دج شهريا",
+      "after": "تلتمس أداء 168.000 دج للنفقة؛ نفقة عدتها 48.000 دج ومتأخر نفقة الابن 120.000 دج، ونفقته 20.000 دج في الشهر"
+    },
+    {
+      "case": "a03-113",
+      "sentence": "s5",
+      "field": "notes.requests",
+      "before": "تلتمس مجموع نفقة متأخرة للطفل قدره 180.000 دج",
+      "after": "تلتمس 180.000 دج نفقة متأخرة للطفل"
+    },
+    {
+      "case": "a03-114",
+      "sentence": "s5",
+      "field": "notes.requests",
+      "before": "تلتمس مجموع نفقة متأخرة للطفل قدره 180.000 دج",
+      "after": "تلتمس 180.000 دج نفقة متأخرة للطفل"
+    },
+    {
+      "case": "a03-115",
+      "sentence": "s6",
+      "field": "notes.requests",
+      "before": "تلتمس مجموع نفقة متأخرة للطفل قدره 180.000 دج",
+      "after": "تلتمس 180.000 دج نفقة متأخرة للطفل"
+    },
+    {
+      "case": "a03-116",
+      "sentence": "s4",
+      "field": "notes.requests",
+      "before": "تلتمس مجموع نفقة متأخرة للطفل قدره 180.000 دج",
+      "after": "تلتمس 180.000 دج نفقة متأخرة للطفل"
+    },
+    {
+      "case": "a03-117",
+      "sentence": "s2",
+      "field": "notes.facts",
+      "before": "امتنع الأب عن النفقة؛ معدلها الشهري للطفل 16.000 دج ومجموع المتأخرات المدون 128.000 دج",
+      "after": "امتنع الأب عن النفقة؛ نفقة الطفل 16.000 دج كل شهر، وعليه 128.000 دج متأخرات"
+    },
+    {
+      "case": "a03-117",
+      "sentence": "s3",
+      "field": "notes.requests",
+      "before": "تطلب 128.000 دج نفقة متأخرة و80.000 دج بدل سكن إجماليا؛ معدل السكن 10.000 دج شهريا",
+      "after": "تلتمس 128.000 دج نفقة متأخرة و80.000 دج بدل سكن؛ كراء المسكن 10.000 دج في الشهر"
+    },
+    {
+      "case": "a03-118",
+      "sentence": "s4",
+      "field": "notes.requests",
+      "before": "تلتمس 154.000 دج نفقة متأخرة فقط ولا تطلب بدل إيجار",
+      "after": "تلتمس 154.000 دج نفقة متأخرة فقط"
+    },
+    {
+      "case": "a03-119",
+      "sentence": "s2",
+      "field": "notes.facts",
+      "before": "الأب لم ينفق على الطفلين؛ النفقة الشهرية المسجلة 24.000 دج، والمبلغ المتراكم المصرح به 216.000 دج",
+      "after": "الأب لم ينفق على الطفلين؛ نفقتهما 24.000 دج في الشهر وعليه 216.000 دج متأخرات"
+    },
+    {
+      "case": "a03-119",
+      "sentence": "s3",
+      "field": "notes.requests",
+      "before": "النفقة الملتمسة عن الفترة 216.000 دج، وبدل السكن المطلوب 18.000 دج شهريا دون طلب مجموع آخر",
+      "after": "تلتمس 216.000 دج نفقة عن الفترة و18.000 دج كل شهر بدل سكن"
+    },
+    {
+      "case": "a03-120",
+      "sentence": "s3",
+      "field": "notes.requests",
+      "before": "تطلب 195.000 دج نفقة متأخرة وبدل سكن إجماليا قدره 78.000 دج للفترة المحددة، وهما طلبان منفصلان",
+      "after": "تلتمس 195.000 دج نفقة متأخرة و78.000 دج بدل سكن عن الفترة"
+    },
+    {
+      "case": "a03-121",
+      "sentence": "s2",
+      "field": "notes.facts",
+      "before": "تؤكد الملاحظات أن المدرسة قريبة من مسكن الأم، ولا يحسم هذا وحده مكان إقامة الطفلين",
+      "after": "تؤكد الملاحظات أن المدرسة قريبة من مسكن الأم"
+    },
+    {
+      "case": "a03-122",
+      "sentence": "s2",
+      "field": "notes.facts",
+      "before": "تؤكد الملاحظات أن المدرسة قريبة من مسكن الأم، ولا يحسم هذا وحده مكان إقامة الطفلين",
+      "after": "تؤكد الملاحظات أن المدرسة قريبة من مسكن الأم"
+    },
+    {
+      "case": "a03-123",
+      "sentence": "s2",
+      "field": "notes.facts",
+      "before": "تؤكد الملاحظات أن المدرسة قريبة من مسكن الأم، ولا يحسم هذا وحده مكان إقامة الطفلين",
+      "after": "تؤكد الملاحظات أن المدرسة قريبة من مسكن الأم"
+    },
+    {
+      "case": "a03-124",
+      "sentence": "s2",
+      "field": "notes.facts",
+      "before": "تؤكد الملاحظات أن المدرسة قريبة من مسكن الأم، ولا يحسم هذا وحده مكان إقامة الطفلين",
+      "after": "تؤكد الملاحظات أن المدرسة قريبة من مسكن الأم"
+    },
+    {
+      "case": "a03-125",
+      "sentence": "s2",
+      "field": "notes.facts",
+      "before": "تؤكد ملاحظات الأب أن الأم أهملت رعاية الطفل وتعليمه بصورة تعرضه للخطر؛ يتمسك بهذا السبب مستقلا",
+      "after": "تؤكد ملاحظات الأب أن الأم أهملت رعاية الطفل وتعليمه بصورة تعرضه للخطر"
+    },
+    {
+      "case": "a03-126",
+      "sentence": "s2",
+      "field": "notes.facts",
+      "before": "تؤكد ملاحظات الأب أن الأم أهملت رعاية الطفل وتعليمه بصورة تعرضه للخطر؛ يتمسك بهذا السبب مستقلا",
+      "after": "تؤكد ملاحظات الأب أن الأم أهملت رعاية الطفل وتعليمه بصورة تعرضه للخطر"
+    },
+    {
+      "case": "a03-127",
+      "sentence": "s2",
+      "field": "notes.facts",
+      "before": "تؤكد ملاحظات الأب أن الأم أهملت رعاية الطفل وتعليمه بصورة تعرضه للخطر؛ يتمسك بهذا السبب مستقلا",
+      "after": "تؤكد ملاحظات الأب أن الأم أهملت رعاية الطفل وتعليمه بصورة تعرضه للخطر"
+    },
+    {
+      "case": "a03-128",
+      "sentence": "s2",
+      "field": "notes.facts",
+      "before": "تؤكد ملاحظات الأب أن الأم أهملت رعاية الطفل وتعليمه بصورة تعرضه للخطر؛ يتمسك بهذا السبب مستقلا",
+      "after": "تؤكد ملاحظات الأب أن الأم أهملت رعاية الطفل وتعليمه بصورة تعرضه للخطر"
+    },
+    {
+      "case": "a03-129",
+      "sentence": "s2",
+      "field": "notes.facts",
+      "before": "تنازل الأب صراحة عن حضانة الطفل في 26/04/2024؛ تطلب الأم نقلها إليها لهذا السبب",
+      "after": "تنازل الأب عن حضانة الطفل في 26/04/2024؛ تطلب الأم نقلها إليها لهذا السبب"
+    },
+    {
+      "case": "a03-130",
+      "sentence": "s2",
+      "field": "notes.facts",
+      "before": "تنازل الأب صراحة عن حضانة الطفل في 26/04/2024؛ تطلب الأم نقلها إليها لهذا السبب",
+      "after": "تنازل الأب عن حضانة الطفل في 26/04/2024؛ تطلب الأم نقلها إليها لهذا السبب"
+    },
+    {
+      "case": "a03-131",
+      "sentence": "s2",
+      "field": "notes.facts",
+      "before": "تنازل الأب صراحة عن حضانة الطفل في 26/04/2024؛ تطلب الأم نقلها إليها لهذا السبب",
+      "after": "تنازل الأب عن حضانة الطفل في 26/04/2024؛ تطلب الأم نقلها إليها لهذا السبب"
+    },
+    {
+      "case": "a03-132",
+      "sentence": "s2",
+      "field": "notes.facts",
+      "before": "تنازل الأب صراحة عن حضانة الطفل في 26/04/2024؛ تطلب الأم نقلها إليها لهذا السبب",
+      "after": "تنازل الأب عن حضانة الطفل في 26/04/2024؛ تطلب الأم نقلها إليها لهذا السبب"
+    },
+    {
+      "case": "a03-137",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "سرحته المستخدمة في 11/09/2024؛ الفعل مسلم به بينهما لكن العامل ينازع في سبب التسريح الذي تسميه المستخدمة خطأ جسيما",
+      "after": "سرحته المستخدمة في 11/09/2024 بدعوى ارتكابه خطأ جسيما، وينكر العامل ارتكاب هذا الخطأ"
+    },
+    {
+      "case": "a03-137",
+      "sentence": "s5",
+      "field": "notes.facts",
+      "before": "في مراسلاته إلى المكتب يفرق العامل بين الاعتراض على الوقائع المهنية التي نسبت إليه وبين ما قالته المستخدمة عن كيفية انتهاء العمل، ويرفق أوراق الحضور والمراسلات حتى يقرأ كل ادعاء في سياقه",
+      "after": "أرفق العامل أوراق الحضور ومراسلاته مع المستخدمة بشأن الوقائع المهنية التي نسبت إليه وإنهاء العمل"
+    },
+    {
+      "case": "a03-137",
+      "sentence": "s6",
+      "field": "notes.facts",
+      "before": "زار العامل مقر المؤسسة لاسترجاع أغراضه الشخصية وسلم نسخا من أوراقه لممثل العمال، ولم يعتبر تسليم الأغراض صلحا مع المستخدمة أو تنازلا عن الطلبات التي يوجه المكتب إلى إدراجها",
+      "after": "زار العامل مقر المؤسسة لاسترجاع أغراضه الشخصية وسلم نسخا من أوراقه لممثل العمال"
+    },
+    {
+      "case": "a03-137",
+      "sentence": "s7",
+      "field": "notes.facts",
+      "before": "توجد في الملف كشوف أجر قديمة ومراسلات عن توزيع المناوبات، وتتضمن المراسلات خلافا على من كان يدير المناوبات في الفترة الأخيرة؛ يطلب العامل إرفاق كشف المناوبات لتوضيح ظروف العمل دون إضافة طلب مالي مستقل عنه",
+      "after": "توجد في الملف كشوف أجر قديمة ومراسلات عن توزيع المناوبات، وتتضمن المراسلات خلافا على من كان يدير المناوبات في الفترة الأخيرة؛ طلب العامل إرفاق كشف المناوبات مع أوراق الملف"
+    },
+    {
+      "case": "a03-137",
+      "sentence": "s8",
+      "field": "notes.requests",
+      "before": "يلتمس إعادة الإدماج وتعويضا مستقلا قدره 780.000 دج",
+      "after": "يلتمس إعادة الإدماج وتعويضا قدره 780.000 دج"
+    },
+    {
+      "case": "a03-138",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "يقول العامل إن المستخدمة فصلته في 17/02/2025؛ تنكر المستخدمة أنها فصلته وتقول إنه استقال، فينازعان في فعل الفصل ذاته",
+      "after": "يقول العامل إن المستخدمة فصلته في 17/02/2025؛ تنكر المستخدمة أنها فصلته وتقول إنه استقال"
+    },
+    {
+      "case": "a03-138",
+      "sentence": "s5",
+      "field": "notes.facts",
+      "before": "في مراسلاته إلى المكتب يفرق العامل بين الاعتراض على الوقائع المهنية التي نسبت إليه وبين ما قالته المستخدمة عن كيفية انتهاء العمل، ويرفق أوراق الحضور والمراسلات حتى يقرأ كل ادعاء في سياقه",
+      "after": "أرفق العامل أوراق الحضور ومراسلاته مع المستخدمة بشأن الوقائع المهنية التي نسبت إليه وإنهاء العمل"
+    },
+    {
+      "case": "a03-138",
+      "sentence": "s6",
+      "field": "notes.facts",
+      "before": "زار العامل مقر المؤسسة لاسترجاع أغراضه الشخصية وسلم نسخا من أوراقه لممثل العمال، ولم يعتبر تسليم الأغراض صلحا مع المستخدمة أو تنازلا عن الطلبات التي يوجه المكتب إلى إدراجها",
+      "after": "زار العامل مقر المؤسسة لاسترجاع أغراضه الشخصية وسلم نسخا من أوراقه لممثل العمال"
+    },
+    {
+      "case": "a03-138",
+      "sentence": "s7",
+      "field": "notes.facts",
+      "before": "توجد في الملف كشوف أجر قديمة ومراسلات عن توزيع المناوبات، وتتضمن المراسلات خلافا على من كان يدير المناوبات في الفترة الأخيرة؛ يطلب العامل إرفاق كشف المناوبات لتوضيح ظروف العمل دون إضافة طلب مالي مستقل عنه",
+      "after": "توجد في الملف كشوف أجر قديمة ومراسلات عن توزيع المناوبات، وتتضمن المراسلات خلافا على من كان يدير المناوبات في الفترة الأخيرة؛ طلب العامل إرفاق كشف المناوبات مع أوراق الملف"
+    },
+    {
+      "case": "a03-138",
+      "sentence": "s8",
+      "field": "notes.requests",
+      "before": "يطلب تعويضا عن الفصل قدره 1.100.000 دج فقط ولا يطلب الإدماج",
+      "after": "يطلب تعويضا عن الفصل قدره 1.100.000 دج فقط"
+    },
+    {
+      "case": "a03-139",
+      "sentence": "s4",
+      "field": "notes.facts",
+      "before": "في مراسلاته إلى المكتب يفرق العامل بين الاعتراض على الوقائع المهنية التي نسبت إليه وبين ما قالته المستخدمة عن كيفية انتهاء العمل، ويرفق أوراق الحضور والمراسلات حتى يقرأ كل ادعاء في سياقه",
+      "after": "أرفق العامل أوراق الحضور ومراسلاته مع المستخدمة بشأن الوقائع المهنية التي نسبت إليه وإنهاء العمل"
+    },
+    {
+      "case": "a03-139",
+      "sentence": "s5",
+      "field": "notes.facts",
+      "before": "زار العامل مقر المؤسسة لاسترجاع أغراضه الشخصية وسلم نسخا من أوراقه لممثل العمال، ولم يعتبر تسليم الأغراض صلحا مع المستخدمة أو تنازلا عن الطلبات التي يوجه المكتب إلى إدراجها",
+      "after": "زار العامل مقر المؤسسة لاسترجاع أغراضه الشخصية وسلم نسخا من أوراقه لممثل العمال"
+    },
+    {
+      "case": "a03-139",
+      "sentence": "s6",
+      "field": "notes.facts",
+      "before": "توجد في الملف كشوف أجر قديمة ومراسلات عن توزيع المناوبات، وتتضمن المراسلات خلافا على من كان يدير المناوبات في الفترة الأخيرة؛ يطلب العامل إرفاق كشف المناوبات لتوضيح ظروف العمل دون إضافة طلب مالي مستقل عنه",
+      "after": "توجد في الملف كشوف أجر قديمة ومراسلات عن توزيع المناوبات، وتتضمن المراسلات خلافا على من كان يدير المناوبات في الفترة الأخيرة؛ طلب العامل إرفاق كشف المناوبات مع أوراق الملف"
+    },
+    {
+      "case": "a03-140",
+      "sentence": "s2",
+      "field": "notes.facts",
+      "before": "في 18/03/2020 بدأ العمل بأجر شهري 61.000 دج، ولم تكن تلك بداية عقد التدريب السابق",
+      "after": "في 18/03/2020 بدأ العمل بأجر شهري 61.000 دج"
+    },
+    {
+      "case": "a03-140",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "أنهت المستخدمة عمل المدعي بفصله في 07/10/2024، ويعترض العامل على المبرر المهني دون إنكار صدور الفصل",
+      "after": "فصلت المستخدمة المدعي في 07/10/2024 لسبب مهني يعترض عليه العامل"
+    },
+    {
+      "case": "a03-140",
+      "sentence": "s5",
+      "field": "notes.facts",
+      "before": "في مراسلاته إلى المكتب يفرق العامل بين الاعتراض على الوقائع المهنية التي نسبت إليه وبين ما قالته المستخدمة عن كيفية انتهاء العمل، ويرفق أوراق الحضور والمراسلات حتى يقرأ كل ادعاء في سياقه",
+      "after": "أرفق العامل أوراق الحضور ومراسلاته مع المستخدمة بشأن الوقائع المهنية التي نسبت إليه وإنهاء العمل"
+    },
+    {
+      "case": "a03-140",
+      "sentence": "s6",
+      "field": "notes.facts",
+      "before": "زار العامل مقر المؤسسة لاسترجاع أغراضه الشخصية وسلم نسخا من أوراقه لممثل العمال، ولم يعتبر تسليم الأغراض صلحا مع المستخدمة أو تنازلا عن الطلبات التي يوجه المكتب إلى إدراجها",
+      "after": "زار العامل مقر المؤسسة لاسترجاع أغراضه الشخصية وسلم نسخا من أوراقه لممثل العمال"
+    },
+    {
+      "case": "a03-140",
+      "sentence": "s7",
+      "field": "notes.facts",
+      "before": "توجد في الملف كشوف أجر قديمة ومراسلات عن توزيع المناوبات، وتتضمن المراسلات خلافا على من كان يدير المناوبات في الفترة الأخيرة؛ يطلب العامل إرفاق كشف المناوبات لتوضيح ظروف العمل دون إضافة طلب مالي مستقل عنه",
+      "after": "توجد في الملف كشوف أجر قديمة ومراسلات عن توزيع المناوبات، وتتضمن المراسلات خلافا على من كان يدير المناوبات في الفترة الأخيرة؛ طلب العامل إرفاق كشف المناوبات مع أوراق الملف"
+    },
+    {
+      "case": "a03-140",
+      "sentence": "s8",
+      "field": "notes.requests",
+      "before": "تقتصر الطلبات هنا على تعويض إجمالي 915.000 دج؛ لا يطلب إعادة الإدماج أو مبلغ الأجر الشهري",
+      "after": "يلتمس تعويضا قدره 915.000 دج فقط"
+    },
+    {
+      "case": "a03-141",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "لم تدفع المستخدمة أجور العاملة عن الفترة المطالب بها؛ مجموع المستحقات المدون 222.000 دج",
+      "after": "لم تدفع المستخدمة أجور العاملة عن الفترة المطالب بها، وتبلغ أجورها عنها 222.000 دج"
+    },
+    {
+      "case": "a03-141",
+      "sentence": "s5",
+      "field": "documents.list",
+      "before": "محضر عدم مصالحة بين العاملة والمستخدمة محرر في 18/03/2025؛ هذه الإشارة واردة في قائمة المستندات وحدها",
+      "after": "محضر عدم مصالحة بين العاملة والمستخدمة محرر في 18/03/2025"
+    },
+    {
+      "case": "a03-142",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "لم تدفع المستخدمة أجور العاملة عن الفترة المطالب بها؛ مجموع المستحقات المدون 222.000 دج",
+      "after": "لم تدفع المستخدمة أجور العاملة عن الفترة المطالب بها، وتبلغ أجورها عنها 222.000 دج"
+    },
+    {
+      "case": "a03-143",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "لم تدفع المستخدمة أجور العاملة عن الفترة المطالب بها؛ مجموع المستحقات المدون 222.000 دج",
+      "after": "لم تدفع المستخدمة أجور العاملة عن الفترة المطالب بها، وتبلغ أجورها عنها 222.000 دج"
+    },
+    {
+      "case": "a03-144",
+      "sentence": "s3",
+      "field": "notes.facts",
+      "before": "لم تدفع المستخدمة أجور العاملة عن الفترة المطالب بها؛ مجموع المستحقات المدون 222.000 دج",
+      "after": "لم تدفع المستخدمة أجور العاملة عن الفترة المطالب بها، وتبلغ أجورها عنها 222.000 دج"
+    }
+  ],
+  "ambiguityAvoidingRewriteCases": [
+    "a03-061",
+    "a03-062",
+    "a03-063",
+    "a03-064",
+    "a03-098",
+    "a03-109",
+    "a03-110",
+    "a03-112",
+    "a03-117",
+    "a03-119",
+    "a03-137",
+    "a03-140"
+  ],
+  "unchangedCases": [
+    "a03-001",
+    "a03-002",
+    "a03-003",
+    "a03-004",
+    "a03-017",
+    "a03-018",
+    "a03-019",
+    "a03-020",
+    "a03-049",
+    "a03-051",
+    "a03-052",
+    "a03-073",
+    "a03-074",
+    "a03-075",
+    "a03-076",
+    "a03-097",
+    "a03-099",
+    "a03-133",
+    "a03-134",
+    "a03-135",
+    "a03-136"
+  ],
+  "invariantResult": "All labels, values, dates, actors, source IDs/fields/citation edges, numeric tokens per sentence, families, splits and folds unchanged; only input text and sentence-snapshot text changed",
+  "labelAndCitationHashBefore": "8676499900ce8e8b012a54bb68537d51f1ee9d8609361297e0d739b07142819c"
+}

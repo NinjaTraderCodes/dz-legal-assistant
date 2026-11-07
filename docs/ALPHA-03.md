@@ -430,7 +430,7 @@ Validation model checks remain **0**; hidden/evaluation access **none**; new cas
 
 **The approved corpus is written, checked and frozen: 144 fictitious cases in 36 families, covering all 21 claims. No inference on these cases and no new candidate reader/prompt/calibration code preceded or followed the freeze.** The earlier authorised probes remain original-development measurements only.
 
-Content hash: **`a3eb985d8f3bafe6bbe43c6afcd742ca0debc09e5b106921c4d4cb352d3bac68`**. [Freeze record](../tests/alpha-03-cases/freeze.json), [corpus instructions](../tests/alpha-03-cases/README.md), [split manifest](../tests/alpha-03-cases/split-manifest.json), [complete summary](baselines/2026-11-07-alpha-03-case-freeze/summary.md).
+Content hash: **`a3eb985d8f3bafe6bbe43c6afcd742ca0debc09e5b106921c4d4cb352d3bac68`**. [Archived first freeze record](../tests/alpha-03-cases/revisions/freeze-v1.json), [corpus instructions](../tests/alpha-03-cases/README.md), [split manifest](../tests/alpha-03-cases/split-manifest.json), [complete summary](baselines/2026-11-07-alpha-03-case-freeze/summary.md).
 
 | Group | Families / cases | Polarity families / cases | Binding families / cases |
 |---|---:|---:|---:|
@@ -461,3 +461,58 @@ The owner's two fitting variables remain explicit and separate from case authors
 Files outside `tools/alpha-03/`: the new `tests/alpha-03-cases/` corpus/metadata, this report, the new freeze summary and **one root `.gitattributes` rule** that pins the frozen tool-attributes file to LF for Windows byte-hash portability. All `src/`, `data/`, original `tests/fact-cases/`, UI and lawyer-safety code remain unchanged. Unit tests added/updated/skipped/weakened: none; the new corpus checker and guard were exercised through the CLI. The real-app launch/normal-close smoke evidence is from the accepted preceding probe; runtime code is unchanged and there is no new app-facing feature or screenshot requirement here. Required post-commit Release build/full-test and push results are reported in the handoff.
 
 Candidate/fitting/audit model runs on this corpus: **0**. Original validation model checks: **0**. Hidden/evaluation data access: **none**. **Stopped after the 144-case freeze, before candidate runs, for owner review.**
+
+## Stop 2 — owner-adjudicated text correction and second freeze (7 November 2026)
+
+**Re-frozen after removing artificial explanatory hints from the notes. All labels, values, dates, source identities and links, families, splits and folds are unchanged. No inference preceded or followed the correction.** The owner accepted the first freeze's hashes, facts check, coverage, splits and sampled labels, then adjudicated this text-only annotation-quality correction. This is the explicitly authorised exception to the frozen-data rule.
+
+| Version | Content SHA-256 |
+|---|---|
+| First freeze, commit `41a9a86` | `a3eb985d8f3bafe6bbe43c6afcd742ca0debc09e5b106921c4d4cb352d3bac68` |
+| Second freeze, current | `86a4e3701871184fcab58bdeb94b2a27426f067c95e094380f5045823db1e642` |
+
+The [old record](../tests/alpha-03-cases/revisions/freeze-v1.json) is preserved byte-for-byte; the [current record](../tests/alpha-03-cases/freeze.json) links to it. The [correction inventory](../tests/alpha-03-cases/revisions/v2-text-correction.json) includes the owner's decision, 93 source-edit rules, the full case/sentence before-and-after text, the changed IDs and the invariant result. The current hash covers 17 payload files, including this history and the bounded correction checker. It is a data re-freeze, not a candidate-reader freeze for hidden v2.
+
+### What changed and what was held fixed
+
+All **144 cases / 381 distinct sentences** were reviewed. **123 cases and 219 sentence texts changed**: 85 fitting cases and 38 audit cases. The other 21 case objects are identical. Removed wording includes `صراحة`, `بمجموع صريح`, instructions not to count a deposit or expense, declarations that a number is not an amount, explanations that a document does not establish an event, missing-value announcements, and statements telling the reader how to scope an assertion. Basic facts, transaction nouns, actual requests and time units remain; natural `فقط` can remain.
+
+The correction was previewed outside the repository, checked, then applied to the authored source and assembled static cases. A comparison against the pinned first commit proves that every gold/dense label and value, date, actor, document-source marker, role, case ID, sentence ID/field, evidence edge and group assignment is unchanged. **Every numeric token, including competing figures and identifiers, stays in the same source sentence and in the same order.** No sentence is added, removed, split, merged or moved. Only the input text and its matching sentence-snapshot text change; manifest hashes are recomputed for that text. The family-plan bytes remain unchanged.
+
+The immutable label/citation projection has SHA-256 **`8676499900ce8e8b012a54bb68537d51f1ee9d8609361297e0d739b07142819c`**, identical before/after. This excludes the deliberately rewritten sentence text; source identities and links are separately checked. The correction checker reads local Git objects from `41a9a86`, so that predecessor must be present in the checkout. No predictions, candidate outputs or private history were used.
+
+**Cases changed (complete list):**
+
+`a03-005`, `a03-006`, `a03-007`, `a03-008`, `a03-009`, `a03-010`, `a03-011`, `a03-012`, `a03-013`, `a03-014`, `a03-015`, `a03-016`;
+`a03-021`, `a03-022`, `a03-023`, `a03-024`, `a03-025`, `a03-026`, `a03-027`, `a03-028`, `a03-029`, `a03-030`, `a03-031`, `a03-032`;
+`a03-033`, `a03-034`, `a03-035`, `a03-036`, `a03-037`, `a03-038`, `a03-039`, `a03-040`, `a03-041`, `a03-042`, `a03-043`, `a03-044`;
+`a03-045`, `a03-046`, `a03-047`, `a03-048`, `a03-050`, `a03-053`, `a03-054`, `a03-055`, `a03-056`, `a03-057`, `a03-058`, `a03-059`;
+`a03-060`, `a03-061`, `a03-062`, `a03-063`, `a03-064`, `a03-065`, `a03-066`, `a03-067`, `a03-068`, `a03-069`, `a03-070`, `a03-071`;
+`a03-072`, `a03-077`, `a03-078`, `a03-079`, `a03-080`, `a03-081`, `a03-082`, `a03-083`, `a03-084`, `a03-085`, `a03-086`, `a03-087`;
+`a03-088`, `a03-089`, `a03-090`, `a03-091`, `a03-092`, `a03-093`, `a03-094`, `a03-095`, `a03-096`, `a03-098`, `a03-100`, `a03-101`;
+`a03-102`, `a03-103`, `a03-104`, `a03-105`, `a03-106`, `a03-107`, `a03-108`, `a03-109`, `a03-110`, `a03-111`, `a03-112`, `a03-113`;
+`a03-114`, `a03-115`, `a03-116`, `a03-117`, `a03-118`, `a03-119`, `a03-120`, `a03-121`, `a03-122`, `a03-123`, `a03-124`, `a03-125`;
+`a03-126`, `a03-127`, `a03-128`, `a03-129`, `a03-130`, `a03-131`, `a03-132`, `a03-137`, `a03-138`, `a03-139`, `a03-140`, `a03-141`;
+`a03-142`, `a03-143`, `a03-144`.
+
+### Natural rewrites used to preserve attribution or scope
+
+Simply deleting a whole explanatory clause could obscure the underlying transaction, period, party or contested proposition. The following cases use natural factual rewrites instead; none retains an unresolved label ambiguity:
+
+| Cases | Attribution/scope retained |
+|---|---|
+| `a03-061`, `a03-062`, `a03-063`, `a03-064` | The contractual monthly obligation and the actual payment of a security deposit, without telling the reader to exclude the deposit |
+| `a03-098` | Earlier divorce from another wife, expressed as marital history rather than a date-exclusion instruction |
+| `a03-109`, `a03-110`, `a03-112` | Actual relief, waiting-period/child components, earlier child maintenance and housing periods/units, without answer-key total labels |
+| `a03-117`, `a03-119` | Periodic entitlement and accrued debt stated as facts, without rate-versus-total coaching |
+| `a03-137`, `a03-140` | Dismissal asserted while its reason is contested, without saying how to label the act |
+
+### Checks, audit interpretation and stop
+
+The existing harness still reports **144 cases; no problem found**. The unchanged dense checker passes **548 event labels, 368 request labels and 1,939 citation checks with zero problems**. Structure/group checks and the new old-versus-current invariant check pass. Family kinds remain 27 polarity / 9 binding; fitting/audit remain 96/48 with the same three fitting folds. Current facts text spans 93–761 characters, with six cases at least 700 characters; all read fields span 157–868. These replace the earlier version's text-length observations, not its unchanged labels or groups.
+
+**The audit contains only nine disputed target propositions and ten disputed event labels overall across its 48 cases. Its disputed-recall gate is indicative only.** One target answer changes target recall by 11.1 percentage points. Report the original threshold and exact counts alongside observations; these few author-known cases cannot establish precise population recall. No split or label is altered to compensate for that limitation.
+
+The [second-freeze summary](baselines/2026-11-07-alpha-03-case-refreeze/summary.md) records commands and hashes. Tools changed only for this bounded owner-authorised correction, history-aware freeze verification and LF preservation; the normal builder still refuses a frozen corpus. Files outside `tools/alpha-03/`: changed corpus text/metadata and the new revision history under `tests/alpha-03-cases/`, this report and the new summary. All production code, prompts, law data and original fact cases remain unchanged. Unit tests added/updated/skipped/weakened: none. Required post-commit Release build/full-test and branch push results are reported in the handoff.
+
+Corpus inference, fitting, calibration, candidate runs and validation model checks remain **0**; hidden/evaluation access remains **none**. **Stopped after the owner-adjudicated second freeze, before any inference.**

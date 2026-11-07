@@ -16,6 +16,9 @@ PAYLOAD = ["tests/alpha-03-cases/" + p for p in (
     "source/authoring.py", "cases.json", "split-manifest.json", "review.md", "static-check.txt")]
 PAYLOAD += ["tools/alpha-03/" + p for p in (
     ".gitattributes", "build_cases.py", "freeze_cases.py", "CaseCheck/CaseCheck.csproj", "CaseCheck/Program.cs")]
+PAYLOAD += ["tests/alpha-03-cases/revisions/freeze-v1.json",
+            "tests/alpha-03-cases/revisions/v2-text-correction.json",
+            "tools/alpha-03/revise_case_text.py"]
 
 
 def sha(raw):
@@ -31,6 +34,7 @@ def load(name):
 
 
 def check():
+    subprocess.run([sys.executable, "-B", str(ROOT / "tools/alpha-03/revise_case_text.py"), "--verify"], check=True, cwd=ROOT)
     plan, manifest, cases = load("family-plan.json"), load("split-manifest.json"), load("cases.json")["cases"]
     families = {f["id"]: f for f in plan["families"]}
     groups = collections.defaultdict(list)
@@ -134,8 +138,11 @@ def main():
         assert "Review completed: 144/144" in review
         result = subprocess.run(["dotnet", str(ROOT / "tools/alpha-03/CaseCheck/bin/Release/net10.0/CaseCheck.dll"), str(DATA), str(ROOT / "data/law")], check=True, capture_output=True, text=True)
         (DATA / "static-check.txt").write_text(result.stdout, encoding="utf-8", newline="\n")
-        value = dict(schemaVersion=1, caseCount=144, familyCount=36, createdUtc=datetime.datetime.now(datetime.timezone.utc).isoformat(),
-                     sourceBaseCommit="05c0f398b0de0913f07508d4cf51216bd3bd166a", corpusInferenceBeforeFreeze=0,
+        previous = load("revisions/freeze-v1.json")
+        correction = load("revisions/v2-text-correction.json")
+        value = dict(schemaVersion=1, revision=2, caseCount=144, familyCount=36, createdUtc=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                     sourceBaseCommit=correction["predecessorCommit"], predecessorContentHash=previous["contentHash"],
+                     correctionAuthority=correction["ownerDecision"], unchangedLabelAndCitationHash=correction["labelAndCitationHashBefore"], corpusInferenceBeforeFreeze=0,
                      contentHash=digest(), algorithm="SHA256 of sorted repository-relative UTF8 path + LF + raw file bytes, concatenated; freeze.json excluded to avoid self-reference",
                      files=fingerprints(), mutationPolicy="No case, source or split edit after freeze except owner-adjudicated annotation correction, disclosed with a new hash")
         with (DATA / "freeze.json").open("x", encoding="utf-8", newline="\n") as output:

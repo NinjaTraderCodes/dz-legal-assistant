@@ -45,3 +45,20 @@ python -B tools/alpha-03/freeze_cases.py --verify
 ```
 
 Before the first freeze only, `build_cases.py` assembles the fixed authoring source and `freeze_cases.py --freeze` runs the static checker and writes the one-way freeze record. Both refuse overwriting a frozen corpus. After freezing, **no case, source, family assignment or split is edited** except an owner-adjudicated annotation correction, explicitly disclosed with a new version/content hash. Do not regenerate cases from observed predictions. Review limitations are recorded, not disguised as independent legal annotation.
+
+## Revision 2 — owner-adjudicated removal of text hints
+
+The owner reviewed the first freeze, then authorised removing explanatory answer-key language before any inference. All 144 files were reviewed through their 381 distinct sentences. The revision changes 123 case texts / 219 sentence texts; 21 cases remain byte-for-byte identical as case objects. Labels, values, dates, actors, event/request states, sentence IDs and fields, evidence links, families, splits and folds are unchanged. Numeric tokens are identical in order within each source sentence; sentence text itself and its exact snapshot necessarily change together.
+
+`revisions/freeze-v1.json` preserves the initial freeze record. `revisions/v2-text-correction.json` records the owner's decision, source edits, complete per-case/per-sentence before/after text, all changed IDs and the 12 cases requiring natural attribution/scope rewrites rather than indiscriminate deletion. The original content hash was `a3eb985d8f3bafe6bbe43c6afcd742ca0debc09e5b106921c4d4cb352d3bac68`; the current hash and predecessor link are in `freeze.json`. The 17-file current payload includes the history and bounded correction checker.
+
+The correction uses ordinary acts, document descriptions, remedy nouns and factual time units. It removes instructions to exclude a number, treat another as the total, infer an absent statement, or distinguish sources for the reader. Natural restrictive request wording such as `فقط` remains where appropriate. Gold-only explanations in `valueNotes` remain unchanged and must never be supplied to a reader.
+
+Verify the correction against the committed first version as well as the current freeze. The invariant comparison reads pinned local Git objects and requires the predecessor commit `41a9a86` to be available in the checkout:
+
+```powershell
+python -B tools/alpha-03/revise_case_text.py --verify
+python -B tools/alpha-03/freeze_cases.py --verify
+```
+
+The audit has only nine disputed target labels and ten disputed event labels overall. Its disputed-recall gate is **indicative only**. Keep the predeclared counts and threshold visible; these few author-known examples do not establish precise population recall. No inference, fitting or audit run accompanied this correction.

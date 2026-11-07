@@ -75,7 +75,7 @@ The owner-only resident gemma3 memory note is in `docs/OWNER-GEMMA3-RESIDENT-MEM
 
 The subsequent owner-authorised data stage is complete in `tests/alpha-03-cases/`: 144 fictitious cases, 36 families, 96 fitting/48 audit cases, with polarity/binding family kinds and source-linked dense keys. The case README, annotation rules, review and `freeze.json` record its exact scope and mutation policy. This is author-known internal development/audit material, never hidden v2.
 
-`build_cases.py` only assembles hand-authored fixtures from `source/authoring.py` and the preassigned family plan; it has no provider, classifier, prompt or model calls. It refuses regeneration after freeze. `CaseCheck` uses the existing catalogue, sentence splitting and value checks for dense validation. `freeze_cases.py --verify` independently reconstructs groups, checks membership/digests and verifies the 14-file payload hash. `--freeze` was a one-time operation after semantic review; do not overwrite it.
+`build_cases.py` only assembles hand-authored fixtures from `source/authoring.py` and the preassigned family plan; it has no provider, classifier, prompt or model calls. It refuses regeneration after freeze. `CaseCheck` uses the existing catalogue, sentence splitting and value checks for dense validation. `freeze_cases.py --verify` independently reconstructs groups, checks membership/digests and verifies the current payload hash. `--freeze` refuses an existing record; do not overwrite it.
 
 ```powershell
 dotnet build tools/alpha-03/CaseCheck/CaseCheck.csproj -c Release
@@ -84,3 +84,5 @@ python -B tools/alpha-03/freeze_cases.py --verify
 ```
 
 The owner requires future grouped fitting comparisons of fixed-order blind history versus forward/reverse score averaging, and every candidate on both gemma3:4b and gemma4:e4b with thinking off, reporting costs and separate family-kind results. No such run or candidate implementation is part of this data freeze. The current stop is after checking/committing/pushing the frozen corpus.
+
+The owner subsequently adjudicated removal of explanatory text hints before inference. Revision 2 changes 123 case texts while retaining every annotation, value/date and source-sentence identity/link. It archives the first record and includes the exact edit inventory in the new 17-file payload. `revise_case_text.py --verify` compares against pinned local Git objects from `41a9a86`, verifies all invariants and requires that predecessor to be present. Its `--prepare` mode was bounded to that owner-approved correction, using a temporary preview and static checks; it refuses a later frozen version. Normal case regeneration remains blocked after the re-freeze. Run the verification command, not preparation, on this completed version.

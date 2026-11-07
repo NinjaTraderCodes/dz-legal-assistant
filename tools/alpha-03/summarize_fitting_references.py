@@ -126,6 +126,7 @@ def main():
         if any(r["Name"] not in fitting for r in rows):
             raise ValueError("Non-fitting record: analysis refused")
         completed = [r for r in rows if r["Timings"] is not None]
+        loads = read(folder / "loads.json") if (folder / "loads.json").exists() else []
         samples = [s for s in resources if completion["StartedUtc"][:23] <= s["utc"][:23] <= completion["FinishedUtc"][:23]]
         paging = [s["paging"] for s in samples if s.get("pagingSampleUpdated") and s.get("paging")]
         best = "ded574b5-45a0-4f42-8737-46345c09c238"
@@ -134,6 +135,11 @@ def main():
             completion=completion, inferenceCompleted=len(completed),
             blockedBeforeNativeTiming=[r["Name"] for r in rows if r["Timings"] is None],
             actualRequestFiles=len(list(folder.glob("call-*-request.json"))),
+            reloads=loads,
+            warmupWallSeconds=stats([r["WarmupWallSeconds"] for r in loads]),
+            unloadWallSeconds=sum(r["UnloadWallSeconds"] for r in loads),
+            nativeLoadSeconds=stats([r["NativeLoadSeconds"] for r in loads if r["NativeLoadSeconds"] is not None]),
+            amortizedSecondsIncludingLoads=completion["BatchSeconds"] / len(completed) if completed else None,
             overall=quality(completed, cases, catalog),
             byKind={kind: quality([r for r in completed if r["Kind"] == kind], cases, catalog) for kind in ("polarity", "binding")},
             byFold={str(fold): quality([r for r in completed if r["Fold"] == fold], cases, catalog) for fold in (1, 2, 3)},

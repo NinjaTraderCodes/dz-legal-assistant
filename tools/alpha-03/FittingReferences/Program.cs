@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Security.Cryptography;
 using System.Text.Json;
+using DzLegal.Alpha03.Measurement;
 using DzLegal.Domain.Serialization;
 using DzLegal.Drafting;
 using DzLegal.Harness;
@@ -27,10 +28,10 @@ Directory.CreateDirectory(output);
 using var frozen = JsonDocument.Parse(File.ReadAllText(Path.Combine(casesRoot, "freeze.json")));
 using var manifest = JsonDocument.Parse(File.ReadAllText(Path.Combine(casesRoot, "split-manifest.json")));
 var caseBytes = File.ReadAllBytes(Path.Combine(casesRoot, "cases.json"));
-if (frozen.RootElement.GetProperty("contentHash").GetString() != "86a4e3701871184fcab58bdeb94b2a27426f067c95e094380f5045823db1e642"
-    || Convert.ToHexStringLower(SHA256.HashData(caseBytes)) != "bd2ebc0c649c92375100f18f8eb533f03d0e4f3de102652c9084a1ab2f191204")
+if (frozen.RootElement.GetProperty("contentHash").GetString() != "9fc0eb6404903071aeaee4721f228a621cc71b772ea4afa45fb0230256fda3a5"
+    || Convert.ToHexStringLower(SHA256.HashData(caseBytes)) != "415fc5c2f0bcec7dbb41b0e12df7dcd06ccd3d03fb3d6feb8c2dee907275ab67")
 {
-    throw new InvalidDataException("The reviewed second freeze is required.");
+    throw new InvalidDataException("The owner-adjudicated v3 freeze is required.");
 }
 
 var members = manifest.RootElement.GetProperty("members").EnumerateArray()
@@ -58,7 +59,7 @@ RunManifest.Create("alpha03-fitting-reference", [model],
     {
         ["reader"] = "unchanged Alpha-01, claims given", ["selection"] = "96 fitting manifest members only",
         ["endpoint"] = "http://127.0.0.1:11434", ["thinking"] = model == "gemma4:e4b" ? "false" : "non-thinking model; option omitted",
-        ["residence"] = "fresh batch start, resident across cases; no per-case reset", ["maxTokens"] = "300",
+        ["residence"] = "unload/reload before cases 1,11,...,91; separate CPU/context-matched empty warm-up; no retries", ["maxTokens"] = "300",
         ["operationalStop"] = "power/app/monitor precondition, available physical below 512 MiB or model private + app working set exceeds physical; no retries",
     }).Write(output);
 
@@ -71,12 +72,49 @@ using var provider = new OllamaModelProvider(new OllamaOptions { Model = model, 
 var read = AlphaFacts.Reader(provider, lawRoot, AlphaFacts.Given);
 var results = new List<FactCaseResult>();
 var observations = new List<object>();
+var loads = new List<object>();
 var options = new JsonSerializerOptions { WriteIndented = true };
+using var reloadClient = new HttpClient(LoopbackGuard.CreateHandler()) { BaseAddress = new Uri("http://127.0.0.1:11434/"), Timeout = TimeSpan.FromMinutes(2) };
 var started = DateTimeOffset.UtcNow;
 var clock = System.Diagnostics.Stopwatch.StartNew();
 var stop = "completed 96 fitting cases";
 foreach (var c in cases)
 {
+    if (results.Count % 10 == 0)
+    {
+        var reloadClock = System.Diagnostics.Stopwatch.StartNew();
+        try
+        {
+            var batch = results.Count / 10 + 1;
+            await File.WriteAllTextAsync(Path.Combine(runRoot, "phase.txt"), "reload-reference-" + model.Replace(':', '-') + ":batch-" + batch.ToString(CultureInfo.InvariantCulture));
+            var prefix = "batch-" + batch.ToString("D2", CultureInfo.InvariantCulture);
+            var loadStarted = DateTimeOffset.UtcNow;
+            var unloadClock = System.Diagnostics.Stopwatch.StartNew();
+            await GenerateAsync(new { model, keep_alive = 0 }, prefix + "-unload");
+            unloadClock.Stop();
+            await MeasurementGuard.WaitAfterAsync(runRoot, DateTimeOffset.UtcNow);
+            await MeasurementGuard.CheckAsync(runRoot);
+            var warmClock = System.Diagnostics.Stopwatch.StartNew();
+            var warm = await GenerateAsync(new { model, keep_alive = "15m", options = new { num_ctx = 4096, num_gpu = 0 } }, prefix + "-warmup");
+            warmClock.Stop();
+            await MeasurementGuard.WaitAfterAsync(runRoot, DateTimeOffset.UtcNow);
+            await MeasurementGuard.CheckAsync(runRoot);
+            loads.Add(new { Batch = batch, FirstCase = c.Name, StartedUtc = loadStarted, FinishedUtc = DateTimeOffset.UtcNow,
+                UnloadWallSeconds = unloadClock.Elapsed.TotalSeconds, WarmupWallSeconds = warmClock.Elapsed.TotalSeconds,
+                NativeLoadSeconds = warm.TryGetProperty("load_duration", out var duration) ? duration.GetDouble() / 1e9 : (double?)null });
+            await File.WriteAllTextAsync(Path.Combine(output, "loads.json"), JsonSerializer.Serialize(loads, options));
+        }
+        catch (Exception ex) when (ex is IOException or HttpRequestException or TaskCanceledException)
+        {
+            stop = "stopped at planned reload: " + ex.Message;
+            await File.WriteAllTextAsync(Path.Combine(output, "reload-failure.json"), JsonSerializer.Serialize(new
+            {
+                BeforeCase = c.Name, Utc = DateTimeOffset.UtcNow, Seconds = reloadClock.Elapsed.TotalSeconds, Failure = ex.Message,
+            }, options));
+            break;
+        }
+    }
+
     var member = members[c.Name];
     var kind = member.GetProperty("familyKind").GetString();
     await File.WriteAllTextAsync(Path.Combine(runRoot, "phase.txt"), "reference-" + model.Replace(':', '-') + ":" + kind + ":" + c.Name);
@@ -89,6 +127,7 @@ foreach (var c in cases)
     observations.Add(new
     {
         c.Name, c.Family, Kind = kind, Fold = member.GetProperty("fold").GetInt32(),
+        Batch = (results.Count - 1) / 10 + 1,
         Seconds = result.Elapsed.TotalSeconds, result.Failure, result.HasCritical, result.Errors,
         ReachedCap = cap, Timings = lastTiming, result.Facts, result.Answer,
     });
@@ -116,10 +155,30 @@ await File.WriteAllTextAsync(Path.Combine(output, "completion.json"), JsonSerial
 {
     Model = model, Planned = 96, Attempted = results.Count, Unattempted = 96 - results.Count,
     StopReason = stop, StartedUtc = started, FinishedUtc = DateTimeOffset.UtcNow, BatchSeconds = clock.Elapsed.TotalSeconds,
+    LoadCount = loads.Count, CaseSeconds = results.Sum(r => r.Elapsed.TotalSeconds),
     Complete = results.Count == 96 && stop == "completed 96 fitting cases",
 }, options));
 Console.WriteLine(stop);
 return stop == "completed 96 fitting cases" ? 0 : 3;
+
+async Task<JsonElement> GenerateAsync<T>(T body, string name)
+{
+    var bytes = JsonSerializer.SerializeToUtf8Bytes(body);
+    await File.WriteAllBytesAsync(Path.Combine(output, name + "-request.json"), bytes);
+    using var content = new StringContent(System.Text.Encoding.UTF8.GetString(bytes), System.Text.Encoding.UTF8, "application/json");
+    using var response = await reloadClient.PostAsync("api/generate", content);
+    var raw = await response.Content.ReadAsByteArrayAsync();
+    await File.WriteAllBytesAsync(Path.Combine(output, name + "-response.json"), raw);
+    response.EnsureSuccessStatusCode();
+    using var document = JsonDocument.Parse(raw);
+    if (!document.RootElement.GetProperty("done").GetBoolean()
+        || document.RootElement.TryGetProperty("eval_count", out var count) && count.GetInt32() != 0)
+    {
+        throw new IOException("MEASUREMENT PRECONDITION: empty load request unexpectedly generated tokens");
+    }
+
+    return document.RootElement.Clone();
+}
 
 internal sealed class Recorder(string model, string output, string runRoot) : DelegatingHandler(LoopbackGuard.CreateHandler())
 {
@@ -127,31 +186,7 @@ internal sealed class Recorder(string model, string output, string runRoot) : De
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        var resourcePath = Path.Combine(runRoot, "resources.jsonl");
-        using (var stream = new FileStream(resourcePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-        {
-            stream.Seek(-Math.Min(stream.Length, 65536), SeekOrigin.End);
-            using var reader = new StreamReader(stream);
-            var lines = (await reader.ReadToEndAsync(cancellationToken)).Split('\n', StringSplitOptions.RemoveEmptyEntries);
-            JsonDocument? resource = null;
-            foreach (var line in lines.Reverse())
-            {
-                try { resource = JsonDocument.Parse(line); break; }
-                catch (JsonException) { }
-            }
-            using var sample = resource ?? throw new IOException("MEASUREMENT PRECONDITION: no resource sample");
-            var r = sample.RootElement;
-            var p = r.GetProperty("power");
-            const string best = "ded574b5-45a0-4f42-8737-46345c09c238";
-            if ((DateTimeOffset.UtcNow - DateTimeOffset.Parse(r.GetProperty("utc").GetString()!, CultureInfo.InvariantCulture)).TotalSeconds > 10
-                || p.GetProperty("acLineStatus").GetInt32() != 1 || p.GetProperty("actualOverlayGuid").GetString() != best
-                || p.GetProperty("effectiveOverlayGuid").GetString() != best || p.GetProperty("configuredAcGuid").GetString() != best
-                || r.GetProperty("appWorkingSetBytes").GetInt64() <= 0 || r.GetProperty("availablePhysicalBytes").GetInt64() < 512L * 1024 * 1024
-                || r.GetProperty("modelPrivateBytes").GetInt64() + r.GetProperty("appWorkingSetBytes").GetInt64() > r.GetProperty("totalPhysicalBytes").GetInt64())
-            {
-                throw new IOException("MEASUREMENT PRECONDITION: power, app, monitor or physical-memory headroom failed; see resource log");
-            }
-        }
+        await MeasurementGuard.CheckAsync(runRoot, cancellationToken);
         var body = await request.Content!.ReadAsByteArrayAsync(cancellationToken);
         using var document = JsonDocument.Parse(body);
         var root = document.RootElement;

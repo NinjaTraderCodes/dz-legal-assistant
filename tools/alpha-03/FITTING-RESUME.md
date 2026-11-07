@@ -1,4 +1,10 @@
-# Stopped fitting-stage checkpoint
+# Authorised v3 fitting-stage checkpoint
+
+The owner accepted the interruption and authorised a restart from case 1 for both models after a decisive-only v3 correction. Current freeze hash `9fc0eb6404903071aeaee4721f228a621cc71b772ea4afa45fb0230256fda3a5`, commit `b0757400aa69b78ca816a9c0c856d476cd05c4af`. Its Release build and all 990 tests passed. No frozen payload edits after that commit. All 25 historical partial predictions below are excluded from every comparison; no retrospective v3 rescore.
+
+Owner residence protocol: browser/heavy apps closed; mains/Best performance; unload/reload every ten cases, empty CPU/context-matched warm-up separate from case time; record all loads and total amortised bill; 512 MiB guard retained. Current reference host pins v3, reloads before 1/11/.../91, records exact load operations and stops before another model on failure. Finish the measurement-source commit/checks, quiet preflight and fresh external run setup before invocation. No candidate prompt/reader until both references finish. Fitting-only grouped protocol, primary selected before locked two-model audit, stop before validation still apply.
+
+## Historical interruption, retained unchanged as evidence
 
 Branch `codex/alpha-03`; source base `e539b8e13c075974ca8c778c90b6e88b6905be99`. Frozen corpus hash `86a4e3701871184fcab58bdeb94b2a27426f067c95e094380f5045823db1e642`; never edit its payload.
 

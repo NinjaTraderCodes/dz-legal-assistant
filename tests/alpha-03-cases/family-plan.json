@@ -1,0 +1,382 @@
+{
+  "schemaVersion": 1,
+  "author": "Codex",
+  "provenance": "Fictitious development material; Report 1 taxonomy and owner annotation/realism decisions only; no candidate inference used",
+  "splitSeed": "ALPHA-03-Report-1-family-split-v1",
+  "splitAlgorithm": "Whole claim groups; divorce-by-husband reserved for audit and khul for fold-1. Remaining claims sorted by SHA256(seed + LF + claim). Deterministic depth-first first feasible allocation in bucket order audit, fold-1, fold-2, fold-3, with family capacities 12/8/8/8 and binding-family capacities 3/2/2/2. No case text or outcome used.",
+  "familyCount": 36,
+  "casesPerFamily": 4,
+  "fittingFamilies": 24,
+  "auditFamilies": 12,
+  "families": [
+    {
+      "id": "f01",
+      "claim": "loan-repayment",
+      "kind": "polarity",
+      "target": "notice_served",
+      "theme": "loan demand and irrelevant negation",
+      "split": "fitting",
+      "fold": 3,
+      "leakageGroup": "loan-repayment"
+    },
+    {
+      "id": "f02",
+      "claim": "loan-repayment",
+      "kind": "polarity",
+      "target": "debt_acknowledged",
+      "theme": "acknowledgment separate from transfer",
+      "split": "fitting",
+      "fold": 3,
+      "leakageGroup": "loan-repayment"
+    },
+    {
+      "id": "f03",
+      "claim": "unpaid-sale-price",
+      "kind": "polarity",
+      "target": "notice_served",
+      "theme": "seller delivery and payment demand",
+      "split": "fitting",
+      "fold": 2,
+      "leakageGroup": "unpaid-sale-price"
+    },
+    {
+      "id": "f04",
+      "claim": "unpaid-sale-price",
+      "kind": "polarity",
+      "target": "payment_made",
+      "theme": "unquantified instalment and disputed balance",
+      "split": "fitting",
+      "fold": 2,
+      "leakageGroup": "unpaid-sale-price"
+    },
+    {
+      "id": "f05",
+      "claim": "contract-rescission",
+      "kind": "polarity",
+      "target": "notice_served",
+      "theme": "work stoppage and cure demand",
+      "split": "fitting",
+      "fold": 1,
+      "leakageGroup": "contract-rescission"
+    },
+    {
+      "id": "f06",
+      "claim": "contract-rescission",
+      "kind": "polarity",
+      "target": "payment_made",
+      "theme": "price payable on completion and claimed advance",
+      "split": "fitting",
+      "fold": 1,
+      "leakageGroup": "contract-rescission"
+    },
+    {
+      "id": "f07",
+      "claim": "sale-annulment-fraud",
+      "kind": "polarity",
+      "target": "payment_made",
+      "theme": "fraud allegation with or without price payment",
+      "split": "fitting",
+      "fold": 1,
+      "leakageGroup": "sale-annulment-fraud"
+    },
+    {
+      "id": "f08",
+      "claim": "sale-annulment-fraud",
+      "kind": "binding",
+      "target": null,
+      "theme": "price restitution versus damages and dated documents",
+      "substitution": "Denied/absent concealment would remove the fraud allegation grounding this scenario",
+      "split": "fitting",
+      "fold": 1,
+      "leakageGroup": "sale-annulment-fraud"
+    },
+    {
+      "id": "f09",
+      "claim": "contract-damages",
+      "kind": "polarity",
+      "target": "notice_served",
+      "theme": "transport damage and separate demand",
+      "split": "fitting",
+      "fold": 1,
+      "leakageGroup": "contract-damages"
+    },
+    {
+      "id": "f10",
+      "claim": "contract-damages",
+      "kind": "polarity",
+      "target": "delivery_late",
+      "theme": "defective goods independently ground damages",
+      "split": "fitting",
+      "fold": 1,
+      "leakageGroup": "contract-damages"
+    },
+    {
+      "id": "f11",
+      "claim": "tort-damages",
+      "kind": "polarity",
+      "target": "criminal_conviction",
+      "theme": "civil harm with independent criminal-history status",
+      "split": "fitting",
+      "fold": 3,
+      "leakageGroup": "tort-damages"
+    },
+    {
+      "id": "f12",
+      "claim": "tort-damages",
+      "kind": "binding",
+      "target": null,
+      "theme": "incident and judgment dates, expense and damages amounts",
+      "substitution": "Denied/absent personal harm would remove the tort alleged in this scenario",
+      "split": "fitting",
+      "fold": 3,
+      "leakageGroup": "tort-damages"
+    },
+    {
+      "id": "f13",
+      "claim": "liability-for-things",
+      "kind": "polarity",
+      "target": "harm_by_animal",
+      "theme": "cart accident and separate alleged dog injury",
+      "split": "fitting",
+      "fold": 2,
+      "leakageGroup": "liability-for-things"
+    },
+    {
+      "id": "f14",
+      "claim": "liability-for-things",
+      "kind": "polarity",
+      "target": "harm_by_building",
+      "theme": "machine damage and separate alleged wall collapse",
+      "split": "fitting",
+      "fold": 2,
+      "leakageGroup": "liability-for-things"
+    },
+    {
+      "id": "f15",
+      "claim": "unpaid-rent",
+      "kind": "polarity",
+      "target": "notice_served",
+      "theme": "unpaid rent and notice attribution",
+      "split": "audit",
+      "fold": null,
+      "leakageGroup": "unpaid-rent"
+    },
+    {
+      "id": "f16",
+      "claim": "unpaid-rent",
+      "kind": "binding",
+      "target": null,
+      "theme": "monthly rent, arrears, deposit and request totals",
+      "substitution": "Denied/absent arrears would remove this unpaid-rent claim's basis",
+      "split": "audit",
+      "fold": null,
+      "leakageGroup": "unpaid-rent"
+    },
+    {
+      "id": "f17",
+      "claim": "eviction-occupier-without-title",
+      "kind": "polarity",
+      "target": "notice_served",
+      "theme": "titleless occupation and demand to leave",
+      "split": "fitting",
+      "fold": 3,
+      "leakageGroup": "eviction-occupier-without-title"
+    },
+    {
+      "id": "f18",
+      "claim": "eviction-occupier-without-title",
+      "kind": "binding",
+      "target": null,
+      "theme": "ownership, occupation and service dates with property identifiers",
+      "substitution": "Denied/absent titleless occupation would remove this eviction claim's basis",
+      "split": "fitting",
+      "fold": 3,
+      "leakageGroup": "eviction-occupier-without-title"
+    },
+    {
+      "id": "f19",
+      "claim": "commercial-debt",
+      "kind": "polarity",
+      "target": "notice_served",
+      "theme": "delivered supplies and formal demand",
+      "split": "audit",
+      "fold": null,
+      "leakageGroup": "commercial-debt"
+    },
+    {
+      "id": "f20",
+      "claim": "commercial-debt",
+      "kind": "polarity",
+      "target": "payment_made",
+      "theme": "account balance and contested unquantified credit",
+      "split": "audit",
+      "fold": null,
+      "leakageGroup": "commercial-debt"
+    },
+    {
+      "id": "f21",
+      "claim": "commercial-lease-eviction",
+      "kind": "polarity",
+      "target": "eviction_notice",
+      "theme": "lessor arrears claim and eviction warning",
+      "split": "fitting",
+      "fold": 2,
+      "leakageGroup": "commercial-lease-eviction"
+    },
+    {
+      "id": "f22",
+      "claim": "commercial-lease-eviction",
+      "kind": "binding",
+      "target": null,
+      "theme": "lessee seeks compensation, rates beside total and notice dates",
+      "substitution": "Denied/absent renewal refusal would remove this lessee compensation scenario's basis",
+      "split": "fitting",
+      "fold": 2,
+      "leakageGroup": "commercial-lease-eviction"
+    },
+    {
+      "id": "f23",
+      "claim": "sale-non-delivery",
+      "kind": "polarity",
+      "target": "notice_served",
+      "theme": "buyer awaits delivery after advance",
+      "split": "audit",
+      "fold": null,
+      "leakageGroup": "sale-non-delivery"
+    },
+    {
+      "id": "f24",
+      "claim": "sale-non-delivery",
+      "kind": "polarity",
+      "target": "payment_made",
+      "theme": "delivery obligation with price payable on delivery",
+      "split": "audit",
+      "fold": null,
+      "leakageGroup": "sale-non-delivery"
+    },
+    {
+      "id": "f25",
+      "claim": "divorce-by-husband",
+      "kind": "binding",
+      "target": null,
+      "theme": "marriage versus separation and document dates; divorce and visitation requests",
+      "substitution": "Owner decision: marriage affirmed; no artificial denied/absent marriage file",
+      "split": "audit",
+      "fold": null,
+      "leakageGroup": "divorce-by-husband"
+    },
+    {
+      "id": "f26",
+      "claim": "tatliq",
+      "kind": "polarity",
+      "target": "abandonment",
+      "theme": "non-maintenance independently grounds requested dissolution",
+      "split": "audit",
+      "fold": null,
+      "leakageGroup": "tatliq"
+    },
+    {
+      "id": "f27",
+      "claim": "tatliq",
+      "kind": "polarity",
+      "target": "spouse_harm",
+      "theme": "non-maintenance and separately attributed injury allegation",
+      "split": "audit",
+      "fold": null,
+      "leakageGroup": "tatliq"
+    },
+    {
+      "id": "f28",
+      "claim": "khul",
+      "kind": "binding",
+      "target": null,
+      "theme": "khul offer, waiting-period and child maintenance, housing, monthly versus total",
+      "substitution": "Owner decision: marriage affirmed; no artificial denied/absent marriage file",
+      "split": "fitting",
+      "fold": 1,
+      "leakageGroup": "khul"
+    },
+    {
+      "id": "f29",
+      "claim": "nafaqa",
+      "kind": "polarity",
+      "target": "divorce",
+      "theme": "maintenance claim while married or divorced",
+      "split": "fitting",
+      "fold": 2,
+      "leakageGroup": "nafaqa"
+    },
+    {
+      "id": "f30",
+      "claim": "nafaqa",
+      "kind": "binding",
+      "target": null,
+      "theme": "maintenance periods and housing, marriage/divorce documents",
+      "substitution": "Denied/absent non-maintenance would remove this arrears claim's basis",
+      "split": "fitting",
+      "fold": 2,
+      "leakageGroup": "nafaqa"
+    },
+    {
+      "id": "f31",
+      "claim": "custody",
+      "kind": "polarity",
+      "target": "custody_held",
+      "theme": "mother seeks custody; children with mother, in care, contested or unspecified",
+      "split": "fitting",
+      "fold": 1,
+      "leakageGroup": "custody"
+    },
+    {
+      "id": "f32",
+      "claim": "custody-forfeiture",
+      "kind": "polarity",
+      "target": "custodian_remarried",
+      "theme": "separate alleged unfitness and remarriage",
+      "split": "fitting",
+      "fold": 3,
+      "leakageGroup": "custody-forfeiture"
+    },
+    {
+      "id": "f33",
+      "claim": "custody-forfeiture",
+      "kind": "polarity",
+      "target": "custodian_abroad",
+      "theme": "independent relinquishment and alleged foreign settlement",
+      "split": "fitting",
+      "fold": 3,
+      "leakageGroup": "custody-forfeiture"
+    },
+    {
+      "id": "f34",
+      "claim": "visitation",
+      "kind": "polarity",
+      "target": "custody_judgment",
+      "theme": "prior visitation order or first request after refusal",
+      "split": "audit",
+      "fold": null,
+      "leakageGroup": "visitation"
+    },
+    {
+      "id": "f35",
+      "claim": "abusive-dismissal",
+      "kind": "binding",
+      "target": null,
+      "theme": "employment/dismissal/conciliation dates; contested reason versus contested act",
+      "substitution": "Denied/absent dismissal would remove this dismissal claim's basis; realistic disputed act retained",
+      "split": "audit",
+      "fold": null,
+      "leakageGroup": "abusive-dismissal"
+    },
+    {
+      "id": "f36",
+      "claim": "unpaid-wages",
+      "kind": "polarity",
+      "target": "conciliation_failed",
+      "theme": "unpaid wages and separate conciliation record",
+      "split": "audit",
+      "fold": null,
+      "leakageGroup": "unpaid-wages"
+    }
+  ]
+}

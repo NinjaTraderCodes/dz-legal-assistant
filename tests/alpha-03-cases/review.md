@@ -1,0 +1,48 @@
+# Author review record
+
+**Review completed: 144/144.** Codex authored and performed a separate semantic pass over all 36 families and all four contrasts, before any candidate inference. This is an author review, not a second human annotation or independent legal validation. Static checks additionally use the repository's actual catalogue, sentence splitter and value normalizers; they do not establish legal truth.
+
+The review checked the complete common facts as well as each contrast: a denial must target the full asked proposition, a party contest is disputed, an absent target must not be asserted elsewhere, and every case must retain a realistic claim basis. Binding variants were checked against the requested remedy and its particular source, including document dates, prior third-party events, amounts not requested and rate/total distinctions. All case/source corrections occurred before the freeze, without predictions.
+
+| Family | Cases | Kind | Semantic review focus |
+|---|---|---|---|
+| f01 | 001–004 | polarity | Notice differs from unrelated no-pledge/no-payment statements; implicit plaintiff assertion in party denial |
+| f02 | 005–008 | polarity | Loan remains asserted; separate acknowledgment, cross-sentence contest and office receipt identifier |
+| f03 | 009–012 | polarity | Seller delivery conceded while notice is contested; non-payment remains affirmed |
+| f04 | 013–016 | polarity | Unquantified instalment and account balance; no fabricated monetary binding |
+| f05 | 017–020 | polarity | Stopped works ground rescission independently of demand; irrelevant key handover negation |
+| f06 | 021–024 | polarity | Work stoppage remains; restitution requested only for asserted/disputed advance |
+| f07 | 025–028 | polarity | Fraud remains alleged in all cases; payment may be denied/absent without destroying annulment basis |
+| f08 | 029–032 | binding | Actual payment versus total price, expenses and damages; no refund request in fourth case |
+| f09 | 033–036 | polarity | Damaged cargo grounds damages; explicit on-time delivery differs from notice status |
+| f10 | 037–040 | polarity | Nonconformity grounds claim even if delivery was on time; delay date is actual alleged delivery date |
+| f11 | 041–044 | polarity | Civil injury remains asserted regardless of criminal conviction status |
+| f12 | 045–048 | binding | Injury versus conviction/medical/copy dates; expenses/rates versus requested damages; no conviction assertion in fourth case |
+| f13 | 049–052 | polarity | Cart harm remains; role text does not pre-assert the optional dog injury |
+| f14 | 053–056 | polarity | Machine damage remains; alleged wall collapse separate from irrelevant no-fire statement |
+| f15 | 057–060 | polarity | Named notice document alone affirms notice; party contest leaves lease-start date conceded |
+| f16 | 061–064 | binding | Monthly rent, arrears and deposit; partial monetary claim in second, no monetary claim in fourth; request negation scoped correctly |
+| f17 | 065–068 | polarity | Titleless occupation remains; notice to leave independently varies |
+| f18 | 069–072 | binding | Title/occupation/service/copy dates and cadastral IDs; third case seeks eviction without damages |
+| f19 | 073–076 | polarity | Supply and full unpaid value remain; shipment record is not a demand |
+| f20 | 077–080 | polarity | Open-account instalment; defendant assertion contested by plaintiff is still disputed; no invented balance |
+| f21 | 081–084 | polarity | Lessor arrears claim; eviction warning does not automatically assert renewal refusal |
+| f22 | 085–088 | binding | Plaintiff is lessee; paid rent denies arrears, defendant sends warning; compensation differs from monthly rent/moving costs/expert estimate |
+| f23 | 089–092 | polarity | Missing delivery after advance; no refund/termination request merely because payment occurred |
+| f24 | 093–096 | polarity | Price payable on delivery permits a no-advance claim; delivery request remains regardless of advance status |
+| f25 | 097–100 | binding | Marriage affirmed; separation, previous third-party divorce and copy dates not substituted for current marriage; visitation only where requested |
+| f26 | 101–104 | polarity | Non-maintenance independently grounds dissolution; abandonment actor is defendant |
+| f27 | 105–108 | polarity | Non-maintenance remains; harm denial scoped to harm, not marriage/named document |
+| f28 | 109–112 | binding | Marriage affirmed; offer, historical dowry, waiting-period/child components, explicit aggregates and monthly housing; no invented aggregate |
+| f29 | 113–116 | polarity | Child maintenance is realistic whether parents divorced, still married, contesting divorce, or divorce unstated |
+| f30 | 117–120 | binding | Marriage/divorce/copy dates; arrears and housing amounts, including actual monthly requests; no imputed event amount where catalogue asks none |
+| f31 | 121–124 | polarity | Present parental care differs from child residence in a centre, contest over grandmother's care, or unstated residence; mother can seek custody throughout |
+| f32 | 125–128 | polarity | Independent alleged unfitness remains; remarriage with a non-mahram varies without dropping claim basis |
+| f33 | 129–132 | polarity | Independent relinquishment remains; settlement abroad differs from a temporary visit |
+| f34 | 133–136 | polarity | A first visitation request remains realistic without prior visitation judgment; divorce is a separate event |
+| f35 | 137–140 | binding | Reason disputed → act affirmed; act disputed → disputed; document-only act, three distinct dates, wage rate versus damages |
+| f36 | 141–144 | polarity | Unpaid wages remain; named conciliation document versus pending procedural record, party contest or silence; pending case is preparation notes |
+
+Pre-freeze corrections found through these checks included a missing abandonment actor, a phrase that could have implied animal harm in all four variants, a notice-only source marker despite other marital assertions, and request wording whose negation could have scoped over eviction. They were corrected in source and regenerated before freezing. No original cases were changed and no model answer motivated a correction.
+
+The cases intentionally include concise and longer notes, ordinary affirmed controls, inverse/negative propositions, multiple events in a sentence, cross-sentence disputes, document-only assertions, role variants, identifiers, rates beside totals and more than one legitimate value in a cited sentence. Longer notes are still synthetic and do not certify coverage of real multi-page files. All post-freeze annotation concerns go to the owner for adjudication and a disclosed new hash; no silent repairs.

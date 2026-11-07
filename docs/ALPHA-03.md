@@ -425,3 +425,39 @@ Measurement-only additions under `tools/alpha-03/`: repeat/blind invocation and 
 The measurement host built with 0 warnings/errors before inference; all four new PowerShell measurement/analysis files parsed cleanly, and both raw audits completed successfully. Required post-commit Release build/full-test results and branch push are reported in the handoff. Tests added/updated/skipped/weakened: **none**. The real app was run for residence; the measurement feature was exercised through the terminal/harness. No UI changes or screenshots were requested.
 
 Validation model checks remain **0**; hidden/evaluation access **none**; new case files **0**. The approved 144-case freeze still precedes all candidate prompt/reader implementation. **Stopped after this bounded probe, before writing any case, awaiting the owner's decision.**
+
+## Stop 2 — 144-case data freeze (7 November 2026)
+
+**The approved corpus is written, checked and frozen: 144 fictitious cases in 36 families, covering all 21 claims. No inference on these cases and no new candidate reader/prompt/calibration code preceded or followed the freeze.** The earlier authorised probes remain original-development measurements only.
+
+Content hash: **`a3eb985d8f3bafe6bbe43c6afcd742ca0debc09e5b106921c4d4cb352d3bac68`**. [Freeze record](../tests/alpha-03-cases/freeze.json), [corpus instructions](../tests/alpha-03-cases/README.md), [split manifest](../tests/alpha-03-cases/split-manifest.json), [complete summary](baselines/2026-11-07-alpha-03-case-freeze/summary.md).
+
+| Group | Families / cases | Polarity families / cases | Binding families / cases |
+|---|---:|---:|---:|
+| Fitting | 24 / 96 | 18 / 72 | 6 / 24 |
+| Internal audit | 12 / 48 | 9 / 36 | 3 / 12 |
+| Each of 3 fitting folds | 8 / 32 | 6 / 24 | 2 / 8 |
+
+The plan's seeded allocation and pre-authoring hash were fixed before case prose. Related families are grouped by claim, so neither a claim's paraphrases/number substitutions nor its role variants cross fitting/audit or fitting folds. Fitting covers 13 claims, audit 8; all 21 appear overall. The static checker reconstructs this assignment. This is deliberately stricter than a random row split, with heterogeneous folds and no claim of population representativeness.
+
+### Owner realism amendment and annotation
+
+The owner rejected artificial denied/absent marriage files for divorce and khul, and authorised analogous substitutions wherever denial/absence would remove the realistic basis of the scenario. **Nine families are binding families**, with reasons recorded in the plan/manifest: fraud's core concealment scenario, personal-harm core scenario, rent arrears, titleless occupation, lessee renewal-refusal compensation, divorce, khul, maintenance arrears and dismissal. The other **27 families retain all four target polarity contrasts**, giving 27 targets of each class overall (18 each on fitting, 9 each on audit). Ancillary denials do not erase an independent asserted claim basis.
+
+Marriage is affirmed in every divorce/khul file. Their contrasts distinguish marriage from separation, a previous third-party divorce and document dates; and khul offers from historical dowry, waiting-period/child-maintenance components, actual requested aggregates and monthly housing amounts. Every relevant value is tied to its source sentence. Dismissal follows the settled act-only rule: contested reason affirmed; contested act disputed. No new tie/conflict rule was introduced.
+
+Dense keys contain **548 event labels** (340 affirmed, 60 denied, 28 disputed, 120 absent), **368 request labels**, 78 competing-value notes and 32 document-only event annotations. They cover all asked items rather than only decisive targets. Role, event, request and value evidence uses actual `CaseText` IDs. Known-null bindings are not filled by arithmetic. The existing evaluator projection remains separate from dense absence/request/completeness checks; the original keys, evaluator and pass mark are unchanged.
+
+The author reviewed all **144/144** cases against item 7 and the realism amendment, including common text, alternate sources and request scope. This is an author review, not independent legal validation. Pre-freeze corrections included actor mapping, a common sentence pre-asserting an intended optional event, documentary markers and a request negation with excessive scope. No prediction motivated an edit. The [review record](../tests/alpha-03-cases/review.md) gives each family's check and limitations. No unresolved contradictory annotation was retained.
+
+### Checks, fitting requirements and stop
+
+The existing harness found **no problems in 144 cases**. The new static checker, using unchanged production sentence/value/catalogue APIs, passed **1,939 citation checks** with zero problems and built with zero warnings/errors. Structural checks passed membership, exact 96/48 grouping, three fitting folds, both kinds in every group, date/amount syntax, no duplicate inputs and no substantial cross-split numeric templates. Notes span 93–1,007 characters (12 at least 700); all read fields together span 186–1,126 characters. Longer real files remain outside this synthetic coverage.
+
+The one-way freeze includes cases, per-case/file hashes, plan, authored source, rules, review and checking tools. Regeneration was attempted after freezing and refused; verification confirmed the same content hash. No case, source or split has changed since. Owner-adjudicated annotation corrections alone may change case data later, with a disclosed new hash.
+
+The owner's two fitting variables remain explicit and separate from case authorship: **fixed-order blind history versus forward/reverse score averaging**, charging the complete cost of both; and **every candidate on gemma3:4b and gemma4:e4b with thinking off**, side by side with time/memory. Use the same grouped fitting protocol and report polarity/binding families separately. Predeclare precise averaging/selection details before inference. Neither becomes the runtime model from these comparisons. No fitting or audit run is authorised by this freeze record itself.
+
+Files outside `tools/alpha-03/`: the new `tests/alpha-03-cases/` corpus/metadata, this report, the new freeze summary and **one root `.gitattributes` rule** that pins the frozen tool-attributes file to LF for Windows byte-hash portability. All `src/`, `data/`, original `tests/fact-cases/`, UI and lawyer-safety code remain unchanged. Unit tests added/updated/skipped/weakened: none; the new corpus checker and guard were exercised through the CLI. The real-app launch/normal-close smoke evidence is from the accepted preceding probe; runtime code is unchanged and there is no new app-facing feature or screenshot requirement here. Required post-commit Release build/full-test and push results are reported in the handoff.
+
+Candidate/fitting/audit model runs on this corpus: **0**. Original validation model checks: **0**. Hidden/evaluation data access: **none**. **Stopped after the 144-case freeze, before candidate runs, for owner review.**

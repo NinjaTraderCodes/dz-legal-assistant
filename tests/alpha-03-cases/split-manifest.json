@@ -1,0 +1,1531 @@
+{
+  "schemaVersion": 1,
+  "planSha256": "d780cea2fe8cbb9ea2ef6a9be7160d374f2ade161219ef119fee45d7845de10b",
+  "casesFileSha256": "867b6ac35c4502158e7a575cfd4abb4804cdfb364c636255a0d18019980a1516",
+  "families": [
+    {
+      "id": "f01",
+      "claim": "loan-repayment",
+      "kind": "polarity",
+      "target": "notice_served",
+      "theme": "loan demand and irrelevant negation",
+      "split": "fitting",
+      "fold": 3,
+      "leakageGroup": "loan-repayment"
+    },
+    {
+      "id": "f02",
+      "claim": "loan-repayment",
+      "kind": "polarity",
+      "target": "debt_acknowledged",
+      "theme": "acknowledgment separate from transfer",
+      "split": "fitting",
+      "fold": 3,
+      "leakageGroup": "loan-repayment"
+    },
+    {
+      "id": "f03",
+      "claim": "unpaid-sale-price",
+      "kind": "polarity",
+      "target": "notice_served",
+      "theme": "seller delivery and payment demand",
+      "split": "fitting",
+      "fold": 2,
+      "leakageGroup": "unpaid-sale-price"
+    },
+    {
+      "id": "f04",
+      "claim": "unpaid-sale-price",
+      "kind": "polarity",
+      "target": "payment_made",
+      "theme": "unquantified instalment and disputed balance",
+      "split": "fitting",
+      "fold": 2,
+      "leakageGroup": "unpaid-sale-price"
+    },
+    {
+      "id": "f05",
+      "claim": "contract-rescission",
+      "kind": "polarity",
+      "target": "notice_served",
+      "theme": "work stoppage and cure demand",
+      "split": "fitting",
+      "fold": 1,
+      "leakageGroup": "contract-rescission"
+    },
+    {
+      "id": "f06",
+      "claim": "contract-rescission",
+      "kind": "polarity",
+      "target": "payment_made",
+      "theme": "price payable on completion and claimed advance",
+      "split": "fitting",
+      "fold": 1,
+      "leakageGroup": "contract-rescission"
+    },
+    {
+      "id": "f07",
+      "claim": "sale-annulment-fraud",
+      "kind": "polarity",
+      "target": "payment_made",
+      "theme": "fraud allegation with or without price payment",
+      "split": "fitting",
+      "fold": 1,
+      "leakageGroup": "sale-annulment-fraud"
+    },
+    {
+      "id": "f08",
+      "claim": "sale-annulment-fraud",
+      "kind": "binding",
+      "target": null,
+      "theme": "price restitution versus damages and dated documents",
+      "substitution": "Denied/absent concealment would remove the fraud allegation grounding this scenario",
+      "split": "fitting",
+      "fold": 1,
+      "leakageGroup": "sale-annulment-fraud"
+    },
+    {
+      "id": "f09",
+      "claim": "contract-damages",
+      "kind": "polarity",
+      "target": "notice_served",
+      "theme": "transport damage and separate demand",
+      "split": "fitting",
+      "fold": 1,
+      "leakageGroup": "contract-damages"
+    },
+    {
+      "id": "f10",
+      "claim": "contract-damages",
+      "kind": "polarity",
+      "target": "delivery_late",
+      "theme": "defective goods independently ground damages",
+      "split": "fitting",
+      "fold": 1,
+      "leakageGroup": "contract-damages"
+    },
+    {
+      "id": "f11",
+      "claim": "tort-damages",
+      "kind": "polarity",
+      "target": "criminal_conviction",
+      "theme": "civil harm with independent criminal-history status",
+      "split": "fitting",
+      "fold": 3,
+      "leakageGroup": "tort-damages"
+    },
+    {
+      "id": "f12",
+      "claim": "tort-damages",
+      "kind": "binding",
+      "target": null,
+      "theme": "incident and judgment dates, expense and damages amounts",
+      "substitution": "Denied/absent personal harm would remove the tort alleged in this scenario",
+      "split": "fitting",
+      "fold": 3,
+      "leakageGroup": "tort-damages"
+    },
+    {
+      "id": "f13",
+      "claim": "liability-for-things",
+      "kind": "polarity",
+      "target": "harm_by_animal",
+      "theme": "cart accident and separate alleged dog injury",
+      "split": "fitting",
+      "fold": 2,
+      "leakageGroup": "liability-for-things"
+    },
+    {
+      "id": "f14",
+      "claim": "liability-for-things",
+      "kind": "polarity",
+      "target": "harm_by_building",
+      "theme": "machine damage and separate alleged wall collapse",
+      "split": "fitting",
+      "fold": 2,
+      "leakageGroup": "liability-for-things"
+    },
+    {
+      "id": "f15",
+      "claim": "unpaid-rent",
+      "kind": "polarity",
+      "target": "notice_served",
+      "theme": "unpaid rent and notice attribution",
+      "split": "audit",
+      "fold": null,
+      "leakageGroup": "unpaid-rent"
+    },
+    {
+      "id": "f16",
+      "claim": "unpaid-rent",
+      "kind": "binding",
+      "target": null,
+      "theme": "monthly rent, arrears, deposit and request totals",
+      "substitution": "Denied/absent arrears would remove this unpaid-rent claim's basis",
+      "split": "audit",
+      "fold": null,
+      "leakageGroup": "unpaid-rent"
+    },
+    {
+      "id": "f17",
+      "claim": "eviction-occupier-without-title",
+      "kind": "polarity",
+      "target": "notice_served",
+      "theme": "titleless occupation and demand to leave",
+      "split": "fitting",
+      "fold": 3,
+      "leakageGroup": "eviction-occupier-without-title"
+    },
+    {
+      "id": "f18",
+      "claim": "eviction-occupier-without-title",
+      "kind": "binding",
+      "target": null,
+      "theme": "ownership, occupation and service dates with property identifiers",
+      "substitution": "Denied/absent titleless occupation would remove this eviction claim's basis",
+      "split": "fitting",
+      "fold": 3,
+      "leakageGroup": "eviction-occupier-without-title"
+    },
+    {
+      "id": "f19",
+      "claim": "commercial-debt",
+      "kind": "polarity",
+      "target": "notice_served",
+      "theme": "delivered supplies and formal demand",
+      "split": "audit",
+      "fold": null,
+      "leakageGroup": "commercial-debt"
+    },
+    {
+      "id": "f20",
+      "claim": "commercial-debt",
+      "kind": "polarity",
+      "target": "payment_made",
+      "theme": "account balance and contested unquantified credit",
+      "split": "audit",
+      "fold": null,
+      "leakageGroup": "commercial-debt"
+    },
+    {
+      "id": "f21",
+      "claim": "commercial-lease-eviction",
+      "kind": "polarity",
+      "target": "eviction_notice",
+      "theme": "lessor arrears claim and eviction warning",
+      "split": "fitting",
+      "fold": 2,
+      "leakageGroup": "commercial-lease-eviction"
+    },
+    {
+      "id": "f22",
+      "claim": "commercial-lease-eviction",
+      "kind": "binding",
+      "target": null,
+      "theme": "lessee seeks compensation, rates beside total and notice dates",
+      "substitution": "Denied/absent renewal refusal would remove this lessee compensation scenario's basis",
+      "split": "fitting",
+      "fold": 2,
+      "leakageGroup": "commercial-lease-eviction"
+    },
+    {
+      "id": "f23",
+      "claim": "sale-non-delivery",
+      "kind": "polarity",
+      "target": "notice_served",
+      "theme": "buyer awaits delivery after advance",
+      "split": "audit",
+      "fold": null,
+      "leakageGroup": "sale-non-delivery"
+    },
+    {
+      "id": "f24",
+      "claim": "sale-non-delivery",
+      "kind": "polarity",
+      "target": "payment_made",
+      "theme": "delivery obligation with price payable on delivery",
+      "split": "audit",
+      "fold": null,
+      "leakageGroup": "sale-non-delivery"
+    },
+    {
+      "id": "f25",
+      "claim": "divorce-by-husband",
+      "kind": "binding",
+      "target": null,
+      "theme": "marriage versus separation and document dates; divorce and visitation requests",
+      "substitution": "Owner decision: marriage affirmed; no artificial denied/absent marriage file",
+      "split": "audit",
+      "fold": null,
+      "leakageGroup": "divorce-by-husband"
+    },
+    {
+      "id": "f26",
+      "claim": "tatliq",
+      "kind": "polarity",
+      "target": "abandonment",
+      "theme": "non-maintenance independently grounds requested dissolution",
+      "split": "audit",
+      "fold": null,
+      "leakageGroup": "tatliq"
+    },
+    {
+      "id": "f27",
+      "claim": "tatliq",
+      "kind": "polarity",
+      "target": "spouse_harm",
+      "theme": "non-maintenance and separately attributed injury allegation",
+      "split": "audit",
+      "fold": null,
+      "leakageGroup": "tatliq"
+    },
+    {
+      "id": "f28",
+      "claim": "khul",
+      "kind": "binding",
+      "target": null,
+      "theme": "khul offer, waiting-period and child maintenance, housing, monthly versus total",
+      "substitution": "Owner decision: marriage affirmed; no artificial denied/absent marriage file",
+      "split": "fitting",
+      "fold": 1,
+      "leakageGroup": "khul"
+    },
+    {
+      "id": "f29",
+      "claim": "nafaqa",
+      "kind": "polarity",
+      "target": "divorce",
+      "theme": "maintenance claim while married or divorced",
+      "split": "fitting",
+      "fold": 2,
+      "leakageGroup": "nafaqa"
+    },
+    {
+      "id": "f30",
+      "claim": "nafaqa",
+      "kind": "binding",
+      "target": null,
+      "theme": "maintenance periods and housing, marriage/divorce documents",
+      "substitution": "Denied/absent non-maintenance would remove this arrears claim's basis",
+      "split": "fitting",
+      "fold": 2,
+      "leakageGroup": "nafaqa"
+    },
+    {
+      "id": "f31",
+      "claim": "custody",
+      "kind": "polarity",
+      "target": "custody_held",
+      "theme": "mother seeks custody; children with mother, in care, contested or unspecified",
+      "split": "fitting",
+      "fold": 1,
+      "leakageGroup": "custody"
+    },
+    {
+      "id": "f32",
+      "claim": "custody-forfeiture",
+      "kind": "polarity",
+      "target": "custodian_remarried",
+      "theme": "separate alleged unfitness and remarriage",
+      "split": "fitting",
+      "fold": 3,
+      "leakageGroup": "custody-forfeiture"
+    },
+    {
+      "id": "f33",
+      "claim": "custody-forfeiture",
+      "kind": "polarity",
+      "target": "custodian_abroad",
+      "theme": "independent relinquishment and alleged foreign settlement",
+      "split": "fitting",
+      "fold": 3,
+      "leakageGroup": "custody-forfeiture"
+    },
+    {
+      "id": "f34",
+      "claim": "visitation",
+      "kind": "polarity",
+      "target": "custody_judgment",
+      "theme": "prior visitation order or first request after refusal",
+      "split": "audit",
+      "fold": null,
+      "leakageGroup": "visitation"
+    },
+    {
+      "id": "f35",
+      "claim": "abusive-dismissal",
+      "kind": "binding",
+      "target": null,
+      "theme": "employment/dismissal/conciliation dates; contested reason versus contested act",
+      "substitution": "Denied/absent dismissal would remove this dismissal claim's basis; realistic disputed act retained",
+      "split": "audit",
+      "fold": null,
+      "leakageGroup": "abusive-dismissal"
+    },
+    {
+      "id": "f36",
+      "claim": "unpaid-wages",
+      "kind": "polarity",
+      "target": "conciliation_failed",
+      "theme": "unpaid wages and separate conciliation record",
+      "split": "audit",
+      "fold": null,
+      "leakageGroup": "unpaid-wages"
+    }
+  ],
+  "members": [
+    {
+      "name": "a03-001",
+      "family": "f01",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "polarity",
+      "caseSha256": "cfb78d2ec53cb98de68ce6e0c73b315a3d3068dcc7d585c47bed47079c8afafc"
+    },
+    {
+      "name": "a03-002",
+      "family": "f01",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "polarity",
+      "caseSha256": "96c0e7ca228967fa7de465c0720924a35f1db1ff815fd35ba3525705fb68d61e"
+    },
+    {
+      "name": "a03-003",
+      "family": "f01",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "polarity",
+      "caseSha256": "7356aa3c263f95074a2fc56e33b997aed4a9108e01f046a6effd8dcc0b0c4c64"
+    },
+    {
+      "name": "a03-004",
+      "family": "f01",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "polarity",
+      "caseSha256": "ab8d1c613e3b6d1ae1bfc1423a35f64e0a6f1845846d28d61a1c2ced2c11fe33"
+    },
+    {
+      "name": "a03-005",
+      "family": "f02",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "polarity",
+      "caseSha256": "802aabbfb2adfd8c7769218e7b45d0e42580650bcaa63818ebf782914ca58349"
+    },
+    {
+      "name": "a03-006",
+      "family": "f02",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "polarity",
+      "caseSha256": "3fcb49baa5280da6ea04375b63979b9f2c8c2a7fd97da2ade3a2874663de0f3b"
+    },
+    {
+      "name": "a03-007",
+      "family": "f02",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "polarity",
+      "caseSha256": "65babb342a4aacf8075fbb26580cc59b663ae779d045aa4071ddf4af8c776df1"
+    },
+    {
+      "name": "a03-008",
+      "family": "f02",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "polarity",
+      "caseSha256": "6ba1ddba8fb14619cc97f7354935b5acc4f122ef0b6ac3725eac020a6386ec57"
+    },
+    {
+      "name": "a03-009",
+      "family": "f03",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "polarity",
+      "caseSha256": "67afb267086be0d2d41fc576c96e032d485243e176bfc9ac24d9311c73f0e87c"
+    },
+    {
+      "name": "a03-010",
+      "family": "f03",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "polarity",
+      "caseSha256": "292903486b90c419fae6b3b6027389553999c6400a89b69ae3e73dcc5c5cad49"
+    },
+    {
+      "name": "a03-011",
+      "family": "f03",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "polarity",
+      "caseSha256": "c8fb5cee88c9c671f9209ee90fec7dfe7878b0db0d4b35c411b79c9f7a6e9deb"
+    },
+    {
+      "name": "a03-012",
+      "family": "f03",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "polarity",
+      "caseSha256": "94a415d9eb07318f612f33d1a9731b8e588c743d51e736b6e59598a3560fd4e3"
+    },
+    {
+      "name": "a03-013",
+      "family": "f04",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "polarity",
+      "caseSha256": "df0728b3e30cd90896db2a35c92acb8776f00c382e1e53c42232419d3d6ba6c0"
+    },
+    {
+      "name": "a03-014",
+      "family": "f04",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "polarity",
+      "caseSha256": "88bd044bdc9aa4bae208af1586dda8f07c069657b8c8ec7b1b775563e70bd740"
+    },
+    {
+      "name": "a03-015",
+      "family": "f04",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "polarity",
+      "caseSha256": "c5f107c1769f5484bc4b759407f94a80f84188bb54a21242ae217ba0b127d4ab"
+    },
+    {
+      "name": "a03-016",
+      "family": "f04",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "polarity",
+      "caseSha256": "d35028e778a4e596ac860634f8ece87c18d8ed926e3240bdcec76671696d08ba"
+    },
+    {
+      "name": "a03-017",
+      "family": "f05",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "polarity",
+      "caseSha256": "861fadf017f1fc0cbdff4e2eacb815b3696b037074c61431aa5b2e284e73d21c"
+    },
+    {
+      "name": "a03-018",
+      "family": "f05",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "polarity",
+      "caseSha256": "34d5229d8bbc676ad22f247792443a9d0bbe28155acd2d152af4d1254d7c7815"
+    },
+    {
+      "name": "a03-019",
+      "family": "f05",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "polarity",
+      "caseSha256": "38aa030b9bfa1ae22a43e36f68b29173775c2d8fe86b74dd3924f6b182eb86b1"
+    },
+    {
+      "name": "a03-020",
+      "family": "f05",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "polarity",
+      "caseSha256": "d414710c7f7c7acae7fcff93b56b9443b28b23f4420829008ed02c01c936b2bd"
+    },
+    {
+      "name": "a03-021",
+      "family": "f06",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "polarity",
+      "caseSha256": "a03d369596577f66ba30a2e981eb3d255a38287a70cdbb97abca4caa1df57fd1"
+    },
+    {
+      "name": "a03-022",
+      "family": "f06",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "polarity",
+      "caseSha256": "c73c3cdf7785ba9995503807db2494fa7a0aa13d8be619a0101cdd356f57c3b7"
+    },
+    {
+      "name": "a03-023",
+      "family": "f06",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "polarity",
+      "caseSha256": "70e1f25eedb1e1e980a2e66f70d06425d06661a73f31a71fbc7fccb828dc4fef"
+    },
+    {
+      "name": "a03-024",
+      "family": "f06",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "polarity",
+      "caseSha256": "5182492f40d0cc50451fd4fabab5f6a50bf6e39ff66206908951e2c9695f615b"
+    },
+    {
+      "name": "a03-025",
+      "family": "f07",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "polarity",
+      "caseSha256": "2b7a0461060379e053c3d9b4132af942a45a0c46a1125c7a8c901ef3e301dc72"
+    },
+    {
+      "name": "a03-026",
+      "family": "f07",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "polarity",
+      "caseSha256": "7b60a08cf4314dcef04b994d5b3ca0a466484fea8e7068c4513947627db1ad36"
+    },
+    {
+      "name": "a03-027",
+      "family": "f07",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "polarity",
+      "caseSha256": "ca0830bde17d0959706e2dca910b42bedb071ccd5d09242526539055578e3df6"
+    },
+    {
+      "name": "a03-028",
+      "family": "f07",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "polarity",
+      "caseSha256": "e873844afd2f5127f0285c10420cc9cf4165793cde7135edc59a916a6ac9d10d"
+    },
+    {
+      "name": "a03-029",
+      "family": "f08",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "binding",
+      "caseSha256": "8cd647b096a203eac920080a9dbd203e802da4f7659f8b39d3a69fe9e8499483"
+    },
+    {
+      "name": "a03-030",
+      "family": "f08",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "binding",
+      "caseSha256": "d2bb4cd7a4ba6aa48b924e033bfa6b6c51cfe6b0942ee2ae019cb54e51ed3ac9"
+    },
+    {
+      "name": "a03-031",
+      "family": "f08",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "binding",
+      "caseSha256": "8d6532377b6a0409ab22bf623ff97135aa4d8cfdacc9d71056c113230f65feba"
+    },
+    {
+      "name": "a03-032",
+      "family": "f08",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "binding",
+      "caseSha256": "0046951e9966ff5ee45504635e9f4c7fd56166043c9acab79de446607b11ecab"
+    },
+    {
+      "name": "a03-033",
+      "family": "f09",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "polarity",
+      "caseSha256": "86e4a594710b2ff8c876901592a810c491c5d152d384b8353695e933e761ff63"
+    },
+    {
+      "name": "a03-034",
+      "family": "f09",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "polarity",
+      "caseSha256": "971754278fbcc633a8b533f90022046aa424457e200ec537d3ab24824d7804f0"
+    },
+    {
+      "name": "a03-035",
+      "family": "f09",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "polarity",
+      "caseSha256": "4774cd5858e0e4f5bd45cb2e976eb5e7f0fab4151ce6bec336cce6e5243cefee"
+    },
+    {
+      "name": "a03-036",
+      "family": "f09",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "polarity",
+      "caseSha256": "81736ca0eacd76a428c39a72b0f4b2db20f79605bd22c60c3e2c4c6ebda5a4c1"
+    },
+    {
+      "name": "a03-037",
+      "family": "f10",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "polarity",
+      "caseSha256": "fb01f470fa8121192d3bfea4ba22d594f8018cfc4cfa885ac5ccfc29f7d7c2e1"
+    },
+    {
+      "name": "a03-038",
+      "family": "f10",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "polarity",
+      "caseSha256": "04ae94ed71ab78b3c02942cd3ace32dd385b812eb5aa7e4483e0c3dadb6342fe"
+    },
+    {
+      "name": "a03-039",
+      "family": "f10",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "polarity",
+      "caseSha256": "826018f494bf4bfb0d51c9d261247851c48c43f9052a3da679e6d49b897e6466"
+    },
+    {
+      "name": "a03-040",
+      "family": "f10",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "polarity",
+      "caseSha256": "8e29e0ae9d1df376a89889e77ed739a8e6f64d8b2881438fa98701986b2e25f9"
+    },
+    {
+      "name": "a03-041",
+      "family": "f11",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "polarity",
+      "caseSha256": "332ac361ab1d13b8380c899a94f5f4e544cbe7f5a9e7d318e91969247866a993"
+    },
+    {
+      "name": "a03-042",
+      "family": "f11",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "polarity",
+      "caseSha256": "b0ea5ccf7083212c0070b9f337c8106ba7420b449b0dad61e668fd8e2c44afe6"
+    },
+    {
+      "name": "a03-043",
+      "family": "f11",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "polarity",
+      "caseSha256": "494e8614cd0d82698f3f0c42dc76a632e5d9c7ce8cef8da2f732a069c9623402"
+    },
+    {
+      "name": "a03-044",
+      "family": "f11",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "polarity",
+      "caseSha256": "745855f4304638110d848a5c00028a4b17c4e0fc220df9f4d1e56db456c3e79f"
+    },
+    {
+      "name": "a03-045",
+      "family": "f12",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "binding",
+      "caseSha256": "ac45d02a89a7560215e2d0812fd9faaaf0df619684fe3d1e7d4c2205c673d765"
+    },
+    {
+      "name": "a03-046",
+      "family": "f12",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "binding",
+      "caseSha256": "60ad74b668e7917189f9548131f8f36c588938bc07f5dc13e027aec6331681e5"
+    },
+    {
+      "name": "a03-047",
+      "family": "f12",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "binding",
+      "caseSha256": "a6f4d66e8577732ab7e4b3efe29c85b94e3792fe759d5bea3db2b122cb0bf4be"
+    },
+    {
+      "name": "a03-048",
+      "family": "f12",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "binding",
+      "caseSha256": "49614e7d119c18a52ed530c2d6c043009c12606ad03e9a37e3a8fe8f539a9c06"
+    },
+    {
+      "name": "a03-049",
+      "family": "f13",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "polarity",
+      "caseSha256": "c1f4ca004effe23d6adc61bfc8fdc3f650963e195e9c30ffdd8eabfe4e9d0b75"
+    },
+    {
+      "name": "a03-050",
+      "family": "f13",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "polarity",
+      "caseSha256": "a34fdf84b038041c259703945ca4b94005801c5e8efd136e18f7f402ec2aa83a"
+    },
+    {
+      "name": "a03-051",
+      "family": "f13",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "polarity",
+      "caseSha256": "a8a035f472461573cb70a24787c58d01cd19d5827731bc683e202ee0c517b7fd"
+    },
+    {
+      "name": "a03-052",
+      "family": "f13",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "polarity",
+      "caseSha256": "77668c787f3107e2e012b91d34f95ef9fa95f97e07cfb46dd2672842e926d731"
+    },
+    {
+      "name": "a03-053",
+      "family": "f14",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "polarity",
+      "caseSha256": "772dd72da132a5bd98d9e3a24da863388e5500811bd3cefd617fb06bb86cbd8b"
+    },
+    {
+      "name": "a03-054",
+      "family": "f14",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "polarity",
+      "caseSha256": "15033128ec1810f50b543ec52b5e6138738df2873d37f17e94b17f5810a038c1"
+    },
+    {
+      "name": "a03-055",
+      "family": "f14",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "polarity",
+      "caseSha256": "4005146131bbb6c84666d68f31568ec48ba2d58ce77063c45eb2b3b02385a25f"
+    },
+    {
+      "name": "a03-056",
+      "family": "f14",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "polarity",
+      "caseSha256": "33cdcb1ac8b087e616419c441ba2deba1788b6e17f388d53e351128150106c42"
+    },
+    {
+      "name": "a03-057",
+      "family": "f15",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "f52fb4f419332b5ba2b0331d8e5d6c1053acc309314c39195c721db9da3828e3"
+    },
+    {
+      "name": "a03-058",
+      "family": "f15",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "7f8e1ddb8da9c6ee62e9c7022e6c9cb729b03026099d87687e7be38ed61527ef"
+    },
+    {
+      "name": "a03-059",
+      "family": "f15",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "91ec45cb247ac50c7b70d9300839072a1ca238e7af49573e70b7b64b10fe36fb"
+    },
+    {
+      "name": "a03-060",
+      "family": "f15",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "0c4aa4588c502f3b144a1db750feacb95dfa5cd86202a54163f862892038dc49"
+    },
+    {
+      "name": "a03-061",
+      "family": "f16",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "binding",
+      "caseSha256": "303dcd129849ce4fc022db522890c177dedbaf138cfd15634fb89dff7481d0f7"
+    },
+    {
+      "name": "a03-062",
+      "family": "f16",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "binding",
+      "caseSha256": "647a298f9f6e484f0bcc4db1433e1373209c5d706545e9d894fb0350753aed41"
+    },
+    {
+      "name": "a03-063",
+      "family": "f16",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "binding",
+      "caseSha256": "007f4134a2893260b99043040db047a76e97d45f473d331826479e5bb618e754"
+    },
+    {
+      "name": "a03-064",
+      "family": "f16",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "binding",
+      "caseSha256": "683cfb4abe308cbf15a453a4cc84522841bcd73962ae9fcbc8229c44a438a67d"
+    },
+    {
+      "name": "a03-065",
+      "family": "f17",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "polarity",
+      "caseSha256": "f76ef91e8f3d693c65379373e089618b5c20c729423cfc5eaf954dde6a68673a"
+    },
+    {
+      "name": "a03-066",
+      "family": "f17",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "polarity",
+      "caseSha256": "76245eefb178deb62df68dbda2fdd74bc0bafdcd1f4252c9cc59671578eac0ca"
+    },
+    {
+      "name": "a03-067",
+      "family": "f17",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "polarity",
+      "caseSha256": "a67fea8f6d200a64510ab0803ced1ccee0fdf931f2876ed6ece4dff4ff242ab9"
+    },
+    {
+      "name": "a03-068",
+      "family": "f17",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "polarity",
+      "caseSha256": "b0290cf145c2c8b71fe8153d4d11ae69d95388ae78e6d6abaf5497676a69af41"
+    },
+    {
+      "name": "a03-069",
+      "family": "f18",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "binding",
+      "caseSha256": "997bb020912419708c5451b51114d545c519840a2796577a1e68dbd8c1988aae"
+    },
+    {
+      "name": "a03-070",
+      "family": "f18",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "binding",
+      "caseSha256": "9014d338eed69f53278a0d01b191cb9c336f2becc118c7dc8070670a8b8b16e6"
+    },
+    {
+      "name": "a03-071",
+      "family": "f18",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "binding",
+      "caseSha256": "30b7ddb883c8fe7f1dad2916782e04855eff2afed1c76d3f71b7185cf3e5e82e"
+    },
+    {
+      "name": "a03-072",
+      "family": "f18",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "binding",
+      "caseSha256": "5d7f451f0fabeaf9e1f51aab20981514a867f51be5e602c46253a086da3896c1"
+    },
+    {
+      "name": "a03-073",
+      "family": "f19",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "d36f09d8adfd3a31a9254a81cd17d3bb7ba8fa509c7751f382a7a5f7615f4ac7"
+    },
+    {
+      "name": "a03-074",
+      "family": "f19",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "26f0283f8963e988b64a55d6fec31269f07317225860a376d5579d5d6886be7b"
+    },
+    {
+      "name": "a03-075",
+      "family": "f19",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "259cc00610a251884f798999673147a146112945e2cae986e032b7c4870aca19"
+    },
+    {
+      "name": "a03-076",
+      "family": "f19",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "a311197fe97d285bbb3e8168c5bc8394230b2b2aa83b222fbb41db8b8ccd9fab"
+    },
+    {
+      "name": "a03-077",
+      "family": "f20",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "49ee9c8d658a5874e8e4f5203233be8b3c06b5015983a0f0e74ad09f65ca1c75"
+    },
+    {
+      "name": "a03-078",
+      "family": "f20",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "873633ab78710b6f881d34afbc8361e20091f1a33b1333cf519aca1a6031a567"
+    },
+    {
+      "name": "a03-079",
+      "family": "f20",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "001eec9788d97b12244ee5232e1d34ef84c334f5787597a9284a2457d674b817"
+    },
+    {
+      "name": "a03-080",
+      "family": "f20",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "b2b0a6dd59c514c2dd972c2d36eb2560179c13c0e04b5dbdfd328a420ff8d7cc"
+    },
+    {
+      "name": "a03-081",
+      "family": "f21",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "polarity",
+      "caseSha256": "e2742d90bad7f74a8c41a8512006b893d3f73940d68921b655a3a26e265d06a6"
+    },
+    {
+      "name": "a03-082",
+      "family": "f21",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "polarity",
+      "caseSha256": "6c00e007bd20cebbc986f38bceffc8e1dced8cf2bf81a323995ae0033597f59b"
+    },
+    {
+      "name": "a03-083",
+      "family": "f21",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "polarity",
+      "caseSha256": "e0e865465670909d4935c50c1e6ac7212abc83b2113b919b968088de71657950"
+    },
+    {
+      "name": "a03-084",
+      "family": "f21",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "polarity",
+      "caseSha256": "82449b8d61bf727551e90c23e507005d5b48d89e56ac70d3322391d72c2581ef"
+    },
+    {
+      "name": "a03-085",
+      "family": "f22",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "binding",
+      "caseSha256": "61bea415deefffa828581b7c439ff45240e039e3eee44877e0239c457c57f3bf"
+    },
+    {
+      "name": "a03-086",
+      "family": "f22",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "binding",
+      "caseSha256": "247f16b2b3d2599e07347671cb9b5aa97f97da964f668bca3f892dac9a5448bc"
+    },
+    {
+      "name": "a03-087",
+      "family": "f22",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "binding",
+      "caseSha256": "24ceec21b3fceb094466fd5bd458f896ee4cc7243913748ccc7cc67b370f2c90"
+    },
+    {
+      "name": "a03-088",
+      "family": "f22",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "binding",
+      "caseSha256": "584fac6cd46d28773313038ef4b6826fc29c6eadfcb621e604789ade07e68143"
+    },
+    {
+      "name": "a03-089",
+      "family": "f23",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "9d285486c6a048363427e14153791c64e43abda58aefc1741ef9ddbeeff2a3e1"
+    },
+    {
+      "name": "a03-090",
+      "family": "f23",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "358cecb41ff9c3ff8a843aedeff26e042c983eec94e9f6c14e3ee8fa9dc499ca"
+    },
+    {
+      "name": "a03-091",
+      "family": "f23",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "7b282efeec1e411d98844b95a3d4d10a594e53df0370c176affe954003180839"
+    },
+    {
+      "name": "a03-092",
+      "family": "f23",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "9e150b956597c71f3afdfae29d1376648060ac2c0db82f8e9d4ad8b597ade688"
+    },
+    {
+      "name": "a03-093",
+      "family": "f24",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "a11f35512bb59f497972d32538ed5b1f002314986f2737887187d4e2bbe17109"
+    },
+    {
+      "name": "a03-094",
+      "family": "f24",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "d311872cf7aa968f234661cc9830ea2793d6cac956ab69ec2b8131b8b33311f5"
+    },
+    {
+      "name": "a03-095",
+      "family": "f24",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "932727081dcd77e57f78878eb95ab3d7d3f542114e8d8f8ecd22ab1663b9950e"
+    },
+    {
+      "name": "a03-096",
+      "family": "f24",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "b3fa3ec8cf5475844c21c051560ff4bd8030483ede5d7dccf232fc2b2881c3c0"
+    },
+    {
+      "name": "a03-097",
+      "family": "f25",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "binding",
+      "caseSha256": "a813f03031d672be43c69ce6fea56dfa66c277647907e4d34a2be36c1f3f6227"
+    },
+    {
+      "name": "a03-098",
+      "family": "f25",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "binding",
+      "caseSha256": "fcdb6d91f41dd0a0f826e2a2772e8b8703c8c16f3e3a4d2d5ecde172405d4ff1"
+    },
+    {
+      "name": "a03-099",
+      "family": "f25",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "binding",
+      "caseSha256": "49ac7cf94ee67a002e50218a534b406bd22925719877c8cf4176596567ec2929"
+    },
+    {
+      "name": "a03-100",
+      "family": "f25",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "binding",
+      "caseSha256": "a89df196f693fe71304c548987832396e6a06b63f06ae8ab4cca85a298ae6de7"
+    },
+    {
+      "name": "a03-101",
+      "family": "f26",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "498e1768832234d8b7be9444dcdb60e3b51a2c42213d33a0824b0a17e84c494d"
+    },
+    {
+      "name": "a03-102",
+      "family": "f26",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "138156477f167ad6ebb9a754eb49b9c1c2e77c2a73cd11aed14ea14bed728df7"
+    },
+    {
+      "name": "a03-103",
+      "family": "f26",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "6d81b53ba2feeae1275d072aa0fe7866e8c77b3955c4c63983166b400769ef2d"
+    },
+    {
+      "name": "a03-104",
+      "family": "f26",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "1c05b7917622eb46a74daa497c4a526e0e9456aefa4d102baf5927c11e7b2136"
+    },
+    {
+      "name": "a03-105",
+      "family": "f27",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "200285b2324899cb7a1a41e907f351be6909542620b89f0071987516507002e8"
+    },
+    {
+      "name": "a03-106",
+      "family": "f27",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "3871e521c54dd8d93bd37338eb0318b251a9e74a0c1988d09b1a3aa99469d89f"
+    },
+    {
+      "name": "a03-107",
+      "family": "f27",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "385ddefc06c88cc0d850a4a97d551efbdc31c36fc8018d5989dc22b3a8e95f31"
+    },
+    {
+      "name": "a03-108",
+      "family": "f27",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "c23d1bc4f9bed0902b9808289c805250877708abda06195fda3e7b6628fb7b03"
+    },
+    {
+      "name": "a03-109",
+      "family": "f28",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "binding",
+      "caseSha256": "eeee94e349a1e88267f1fc81d6b5f8c953092c05019cadd396a51bb31f59c2c2"
+    },
+    {
+      "name": "a03-110",
+      "family": "f28",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "binding",
+      "caseSha256": "6e38750f14f9e03d866003af0807f338a73f0bcb0f89a78abbc88a8129b2791e"
+    },
+    {
+      "name": "a03-111",
+      "family": "f28",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "binding",
+      "caseSha256": "c4d8533cf0dba452d24dda652f4ec6b54537aeac9a2db4b04b9d67734da7afce"
+    },
+    {
+      "name": "a03-112",
+      "family": "f28",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "binding",
+      "caseSha256": "559e60b06c8e6e38821310e5728e95836be8ff7f82bbade2a1459eeb71766f5e"
+    },
+    {
+      "name": "a03-113",
+      "family": "f29",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "polarity",
+      "caseSha256": "596af4ac01ef7eecfa54484a46329c8589ec513831c629e56d89e29a494db174"
+    },
+    {
+      "name": "a03-114",
+      "family": "f29",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "polarity",
+      "caseSha256": "c4b121ec7b85cfe19f39f47ab7c8fd85d74b27636ef69152b859086365040202"
+    },
+    {
+      "name": "a03-115",
+      "family": "f29",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "polarity",
+      "caseSha256": "ed5fa52cbf2c8801c82e4b7e15f38c4d9b586f11b8964c1b09a333b89150d300"
+    },
+    {
+      "name": "a03-116",
+      "family": "f29",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "polarity",
+      "caseSha256": "e691dcd5ae18a69a8fb8baff66bf729f60a03fce070965de32588b935143e683"
+    },
+    {
+      "name": "a03-117",
+      "family": "f30",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "binding",
+      "caseSha256": "43d6e562c0de062b346588b07ced245c6a5294732f7fac5766a5a3ccf3c7ea66"
+    },
+    {
+      "name": "a03-118",
+      "family": "f30",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "binding",
+      "caseSha256": "588eeca1297c852719cd54b1670d844c687be77de46f6cc57b334719087eba48"
+    },
+    {
+      "name": "a03-119",
+      "family": "f30",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "binding",
+      "caseSha256": "2b5619a7d208996180564e831de7070d82e8cc08e6f9f6a35f41641dae404f71"
+    },
+    {
+      "name": "a03-120",
+      "family": "f30",
+      "split": "fitting",
+      "fold": 2,
+      "familyKind": "binding",
+      "caseSha256": "170fc4a7b443a55845c4a56c3a0d7650d6fb27a2a1e0b8f50b6edc973c1fbdc1"
+    },
+    {
+      "name": "a03-121",
+      "family": "f31",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "polarity",
+      "caseSha256": "853811a8f59506e44c26056114b8a0987be403716913e446905e4542f6d37897"
+    },
+    {
+      "name": "a03-122",
+      "family": "f31",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "polarity",
+      "caseSha256": "b4073037a0c2213d4fa0615ddb8d372fbd69416d30dfa42952b2b9f12a1415b5"
+    },
+    {
+      "name": "a03-123",
+      "family": "f31",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "polarity",
+      "caseSha256": "afa2b89d0fe5c3e9d24c5a16738658fc2698fc5d48927c061142d92a5b5f1331"
+    },
+    {
+      "name": "a03-124",
+      "family": "f31",
+      "split": "fitting",
+      "fold": 1,
+      "familyKind": "polarity",
+      "caseSha256": "849b2eda10d41db0c67399974ed6d3df9524f56fcf4bb5a2c6b861ee2d9d97b1"
+    },
+    {
+      "name": "a03-125",
+      "family": "f32",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "polarity",
+      "caseSha256": "61474638e070f6b850f94429f97864abad25626ee7e7eacf6e94075d3ced867f"
+    },
+    {
+      "name": "a03-126",
+      "family": "f32",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "polarity",
+      "caseSha256": "1b52f3754972e5a9869bff17e44f1c6df16f44f6fe93c3bee3c96017c8a97e08"
+    },
+    {
+      "name": "a03-127",
+      "family": "f32",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "polarity",
+      "caseSha256": "0ba8754e22740c611dd345bae5d114148dcd166dd84a9290eb19f2c320c3b000"
+    },
+    {
+      "name": "a03-128",
+      "family": "f32",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "polarity",
+      "caseSha256": "53037bc01e75ee382af2c0746ef65942214744959dbc7ef73390d5c27fa2a746"
+    },
+    {
+      "name": "a03-129",
+      "family": "f33",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "polarity",
+      "caseSha256": "a76377301a82ab43af9279007066548e4fb30ee13cde09c70d2ef2cc71e7f842"
+    },
+    {
+      "name": "a03-130",
+      "family": "f33",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "polarity",
+      "caseSha256": "a231ce677f0ee1a4411a7a954906ef74f2a2beddb5d2f33d57a346ac7d278b4a"
+    },
+    {
+      "name": "a03-131",
+      "family": "f33",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "polarity",
+      "caseSha256": "82cd1313b40d0e94e77df9a96f6ffe824cb458aef40a6c173a03c1bb45349b0f"
+    },
+    {
+      "name": "a03-132",
+      "family": "f33",
+      "split": "fitting",
+      "fold": 3,
+      "familyKind": "polarity",
+      "caseSha256": "6158384bc5876fbbde7e343e0b9c60c61a50bf983882f59c3445c49b7be3aa04"
+    },
+    {
+      "name": "a03-133",
+      "family": "f34",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "a870bf23a9a3bc151b037303f7d77f4c7f0074142679f31dc923d0b44fa70b95"
+    },
+    {
+      "name": "a03-134",
+      "family": "f34",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "ac8368ccbd7c70eb4f411bcdf5b50381531568f43edd2aa3ab2bb2a2219803c4"
+    },
+    {
+      "name": "a03-135",
+      "family": "f34",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "06c34bcdf8663a8039ebf91e751c63b99a27c26795d6a28a54f5e83505ce6e66"
+    },
+    {
+      "name": "a03-136",
+      "family": "f34",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "c6f30faeb27ae97b6b471bb9e2d501cc25fc91fa0ad283f47eae22d65e379afc"
+    },
+    {
+      "name": "a03-137",
+      "family": "f35",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "binding",
+      "caseSha256": "0fd186d31e7dbf915c74785d9cd228cb65f5031a7c2271080271d3e3a930185c"
+    },
+    {
+      "name": "a03-138",
+      "family": "f35",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "binding",
+      "caseSha256": "d2420dab712096bbc6d827615ca4e3864a2dd4a073e732fe896780a27f597ca7"
+    },
+    {
+      "name": "a03-139",
+      "family": "f35",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "binding",
+      "caseSha256": "6590c3cec1edf8dc97d76d2e42d9727dc4024ba78259c6699fd99456c9fe2a72"
+    },
+    {
+      "name": "a03-140",
+      "family": "f35",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "binding",
+      "caseSha256": "8cd6c314cc8851a70af4372d1503c9b22772341a2765e1d6b225dbaf9aa6d9b2"
+    },
+    {
+      "name": "a03-141",
+      "family": "f36",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "f2acc7c6913ade49b50b659c3ed1b0301dbf200f7151bbb8df9bb04244a4f7b7"
+    },
+    {
+      "name": "a03-142",
+      "family": "f36",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "636462df74f659171339c1e708268c24dedbf317865a1cbd2cdd8ffd8afb5152"
+    },
+    {
+      "name": "a03-143",
+      "family": "f36",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "2731df540e904d3b493d5cb6c8d4b7c4850accc87f147c6b4ae3e455ba6400c0"
+    },
+    {
+      "name": "a03-144",
+      "family": "f36",
+      "split": "audit",
+      "fold": null,
+      "familyKind": "polarity",
+      "caseSha256": "700ee8adbf92438bc4403b30264a70321d522179656961aeb28c59dfc3025bbf"
+    }
+  ],
+  "policy": "Fitting families only for grouped selection. Freeze candidate before one audit aggregate inspection; no repairs from audit errors. Both family kinds reported separately."
+}

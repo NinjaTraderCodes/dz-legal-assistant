@@ -70,3 +70,17 @@ dotnet build tools/alpha-03/ModelCheck/ModelCheck.csproj -c Release
 The host plans 40 original in-catalogue development cases, serially. It stops at the first observed 300-token cap or technical failure, discloses attempted/unattempted counts and never increases the cap. Exact case times and native timings are saved beside the unchanged-evaluator summary; raw request bodies remain external. Use the resource monitor and pre/post power records as in the earlier run. No case writing, calibration or candidate prompt/reader implementation is part of this probe.
 
 The owner-only resident gemma3 memory note is in `docs/OWNER-GEMMA3-RESIDENT-MEMORY-NOTE-2026-11-07.md`. That issue is outside this follow-up and is not investigated here.
+
+## Authored case freeze
+
+The subsequent owner-authorised data stage is complete in `tests/alpha-03-cases/`: 144 fictitious cases, 36 families, 96 fitting/48 audit cases, with polarity/binding family kinds and source-linked dense keys. The case README, annotation rules, review and `freeze.json` record its exact scope and mutation policy. This is author-known internal development/audit material, never hidden v2.
+
+`build_cases.py` only assembles hand-authored fixtures from `source/authoring.py` and the preassigned family plan; it has no provider, classifier, prompt or model calls. It refuses regeneration after freeze. `CaseCheck` uses the existing catalogue, sentence splitting and value checks for dense validation. `freeze_cases.py --verify` independently reconstructs groups, checks membership/digests and verifies the 14-file payload hash. `--freeze` was a one-time operation after semantic review; do not overwrite it.
+
+```powershell
+dotnet build tools/alpha-03/CaseCheck/CaseCheck.csproj -c Release
+dotnet tools/alpha-03/CaseCheck/bin/Release/net10.0/CaseCheck.dll tests/alpha-03-cases data/law
+python -B tools/alpha-03/freeze_cases.py --verify
+```
+
+The owner requires future grouped fitting comparisons of fixed-order blind history versus forward/reverse score averaging, and every candidate on both gemma3:4b and gemma4:e4b with thinking off, reporting costs and separate family-kind results. No such run or candidate implementation is part of this data freeze. The current stop is after checking/committing/pushing the frozen corpus.

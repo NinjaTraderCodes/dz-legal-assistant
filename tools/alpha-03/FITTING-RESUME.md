@@ -1,5 +1,19 @@
 # Authorised v3 fitting-stage checkpoint
 
+## PAUSED AT OWNER REQUEST — no candidate inference
+
+Owner asked for a safe pause and a remaining-time estimate. **Do not continue model work until the owner resumes.** No inference/monitor/app process remains active; gemma4 repeat complete and unloaded. Complete-repeat commit `a8bf3fd77e26396e68e41be57162d76a324476fe` passed Release0warnings/errors and all990 tests, pushed/remote verified. Semantic references remain first G336/96/G469/96; new G4 full96 cost/repeatability only. All external roots and freeze unchanged.
+
+A harness-only source checkpoint is prepared, **not yet live-qualified**: `src/DzLegal.Harness/ScoredStatusReader.cs`, single `tools/alpha-03/scored-status.ar.txt`, `tools/alpha-03/ScoredFitting/` collector and synthetic-HTTP protocol tests. No old reader/provider/prompt/catalogue/app path changed. No calibration/OOF evaluator/binding/compatibility/audit implementation or inference. Capability mode selects only the first fitting input, forward/reverse; fitting mode96. Prompt/input construction has no gold/annotation/family/fold data. Actual zero history, exact finite1–4 scores, reuse on every extension, context and measurement guards; no fallback. Planned reload every10 complete cases; raw requests/responses and loads external. The single prompt has not been adjusted from any model answer because none has been requested.
+
+Resume after verifying the checkpoint's post-commit build/full tests/push recorded in the handoff. Review source/protocol, re-verify freeze/digests, fresh mains/Best-performance/closed-browser/quiet/app/monitor setup. First run bounded **capability** mode on gemma3 then gemma4, serially, using fresh external output subdirectories:
+
+`dotnet tools/alpha-03/ScoredFitting/bin/Release/net10.0/ScoredFitting.dll capability gemma3:4b tests/alpha-03-cases data/law tools/alpha-03/scored-status.ar.txt <fresh-output> <resource-root>`
+
+Repeat command for gemma4 with a different fresh output; stop the entire stage on any score/cache/context/runtime precondition failure, preserve raw records and report/wait. Do not change prompt/schema/top20/missing-score policy to rescue failure. First-position cache is reported separately; only extensions require positive reuse. After both pass, implement any missing collection wrapper/auditor and collect full fitting chains, then the exact finite grouped order/calibration selection in `FITTING-PROTOCOL.md`. No binding before a passing score path. Primary from fitting before locked two-model audit, stop before validation. No hidden paths. Old active notes below are historical only.
+
+Estimate given: roughly6–10 hours remaining if gates pass, including implementation/checks, two-model fitting, gated binding and compatibility/locked audit. This is a planning estimate, not an active run; capability failure can stop much sooner. Preserve the owner's pause across sessions until an explicit resume.
+
 ## CURRENT — complete repeat; continue fitting
 
 Second full gemma4 repeat **96/96 complete**, ten loads, source7539f76, session69373 ended normally. Root `%TEMP%\dzlegal-alpha03-gemma4-repeat2-20261107-235312`. Owned app14252/monitor13180 exited normally, model unloaded. Search Running/Automatic unchanged; Best performance retained. IDs historical only. No heavy benchmark active. This supersedes every older active/stop note below.

@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <Description>Frozen fitting-only blind-history score collection.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../../src/DzLegal.Harness/DzLegal.Harness.csproj" />
+    <Compile Include="../FittingReferences/MeasurementGuard.cs" Link="MeasurementGuard.cs" />
+  </ItemGroup>
+</Project>

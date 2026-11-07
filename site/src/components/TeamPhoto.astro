@@ -1,0 +1,29 @@
+---
+// One team member's picture, clipped on like an identity photo in a file: the team's own photographs, and an avatar for
+// the legal reviewer (src/assets/team/NOTES.txt). Used by the home's team folder and by the about page, so both show the
+// same picture the same way.
+import { Image } from "astro:assets";
+import hicham from "../assets/team/hicham.jpg";
+import djihane from "../assets/team/djihane.jpg";
+import khouloud from "../assets/team/khouloud.svg";
+import Clip from "./Clip.astro";
+import { t, fmt, type Lang } from "../i18n";
+
+export type Member = "Lead" | "Design" | "Legal";
+interface Props { lang: Lang; who: Member; name: string }
+const { lang, who, name } = Astro.props;
+const pictures = { Lead: { src: hicham, avatar: false }, Design: { src: djihane, avatar: false }, Legal: { src: khouloud, avatar: true } };
+const { src, avatar } = pictures[who];
+---
+<span class="photo">
+    <Clip />
+    <Image src={src} alt={fmt(t(lang, avatar ? "team.avatarAlt" : "team.photoAlt"), name)} width={96} height={96} widths={[96, 192]} sizes="96px" format={avatar ? undefined : "webp"} loading="lazy" decoding="async" class="face" />
+</span>
+
+<style>
+    .photo { position: relative; display: block; padding: 14px 6px 14px; background: var(--w-sheet); box-shadow: var(--w-shadow); transform: rotate(-1.5deg); }
+    /* The clip grips the white border above the photo, never the picture: its 46 px end 2 px above the picture. It is
+       drawn by Clip.astro, so the selector must reach outside this component's scoped styles. */
+    .photo :global(.clip) { top: -34px; inset-inline-end: 10px; height: 46px; }
+    .face { display: block; width: 84px; height: 100px; object-fit: cover; background: #e9e4da; }
+</style>

@@ -10,6 +10,7 @@ def read(path):
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("run_root", type=Path)
+parser.add_argument("--models", nargs="+", choices=("gemma3:4b", "gemma4:e4b"), default=("gemma3:4b", "gemma4:e4b"))
 args = parser.parse_args()
 workspace = Path(__file__).resolve().parents[2]
 manifest = read(workspace / "tests/alpha-03-cases/split-manifest.json")
@@ -17,7 +18,7 @@ names = [m["name"] for m in manifest["members"] if m["split"] == "fitting"]
 cases = {c["name"]: c for c in read(workspace / "tests/alpha-03-cases/cases.json")["cases"] if c["name"] in names}
 resources = [json.loads(line) for line in (args.run_root / "resources.jsonl").read_text(encoding="utf-8-sig").splitlines()]
 result = {}
-for model in ("gemma3:4b", "gemma4:e4b"):
+for model in args.models:
     folder = args.run_root / ("reference-" + model.replace(":", "-"))
     rows, loads, completion = read(folder / "case-results.json"), read(folder / "loads.json"), read(folder / "completion.json")
     assert [r["Name"] for r in rows] == names and len(names) == 96

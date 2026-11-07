@@ -1,5 +1,11 @@
 # Authorised v3 fitting-stage checkpoint
 
+## CURRENT AUTHORISATION — gemma4 repeat, then fitting/audit
+
+Owner answered the browser-condition stop: rerun **gemma4 only, all96 from case1**, keep completed gemma3. Report exact answer and critical pass/fail verdict matches against the first gemma4 run; additionally error-multiset/facts agreement and per-kind/fold counts. **First gemma4 accuracy/facts (69/96) remain the semantic reference**, not replaced by the timing repeat. New run supplies qualified timing/memory and diagnostic repeatability; no selective best answers. G3 stays36/96. Old root `%TEMP%\dzlegal-alpha03-v3-fitting-20261107-215737` remains read-only; do not overwrite its derived audit/hash files.
+
+New source changes pending model-selector/repeat-comparison commit/checks at this checkpoint. `Measure-FittingReferences.ps1 -ModelNames gemma4:e4b -RunRoot <new external root>` uses the already repaired per-request browser guard and unchanged reader/settings/ten-case reloads. `audit_references.py <new root> --models gemma4:e4b`; `compare_reference_repeat.py <old root> <new root>`; summariser discovers only actual reference directories. No new run starts before quiet/power/app/monitor verification and required post-commit checks. After full qualified repeat, continue fitting/audit as authorised, without asking again unless a stop rule fails. Current authorisation supersedes historical stops below.
+
 ## CURRENT STOP — browser condition failed
 
 **No active benchmark.** Both 96-case references finished in session 6772 (now closed), source a6e95c3. Final audit found Brave active in 20 gemma4 samples 21:53:09–21:53:50 UTC (a03-114–116/reload 9), other CPU peak 5.698 cores, available minimum .841 GiB. Start-only browser check missed reopening live. Gemma4 timing/memory comparison unqualified. Stop/report before any candidate; wait for owner's decision on a full 96-case gemma4 restart. Keep all outputs; do not selectively retry or use v2 partial. Gemma3's completed 96-case reference is retained.

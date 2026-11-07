@@ -318,3 +318,73 @@ The next eligible shape is **(b)** for gate 2. Before it starts, the owner must 
 Only this report and the new probe summary are edited for this continuation. No tests or application/harness/provider code changed. I have left this documentation update uncommitted while waiting for the CPU to be available, so the repository's required post-commit build/test cycle does not add a heavy competing job. The last committed documentation (`759a901`) already passed its Release build and all 990 tests. This continuation does not claim a new build/test result.
 
 **Waiting before gate 2, as explicitly requested. No further model calls are authorised by this record while that wait is pending.**
+
+## Stop 2 — timing preflight (7 November 2026)
+
+The owner confirmed that competing CPU work had finished and authorised gate 2 on shape (b), a small reverse-order check, then unchanged Alpha-01 with both installed models on the original 40 development cases, followed by a stop before case writing. The preceding gate-1 record was committed and pushed to `codex/alpha-03` as `5dc52cb`.
+
+The post-commit Release build passed with **0 warnings and 0 errors**. The first full test run had 989 passes and the previously recorded unload-test failure (`Expected 1, Actual 0`). The unchanged test passed alone. A second full run repeated that failure and was interrupted while still in app tests; it is not reported as a completed run. The subsequent complete run, `dotnet test -c Release --no-build -m:1 -- xUnit.ParallelizeTestCollections=false`, passed **all 990 tests, with 0 skipped**. This uses a [documented xUnit runner setting](https://xunit.net/docs/config-runsettings) to execute collections serially. No assertion, test, source behaviour or repository test configuration was changed. The production cause of the intermittent failure has not been fixed in this task.
+
+The prepared measurement tools in `tools/alpha-03/` reuse the accepted external scalar fixture. The forward plan covers all **147 catalogue event questions across 40 cases**, with fresh caches and separate model-load measurements. Three cases were selected for reversal before inference: `loan-no-section`, `loan-basic`, `non-delivery-machines`. The retained Alpha-01 pass supplies roles, binding and requests and must be counted in the projected total cost. Original notes span only 62–172 characters, limiting what their longer half can establish. These are authorised measurement fixtures; no candidate reader, new prompt wording or new cases have been written.
+
+**Timing has not started.** After build-server shutdown, the mains-power preflight failed. A direct Windows `GetSystemPowerStatus` check at **2026-11-07 15:06:09 UTC** returned `ACLineStatus = 0` (offline), battery **29%**. The app and resource monitor had not been started, and gate 2/rung 0 made **zero inference calls**. The brief requires plugged-in timing, so the owner was asked to connect mains power and this work is waiting for that answer. The external record is `%TEMP%\dzlegal-alpha03-gate2-20261107\preflight-stop.json`. Prepared tooling and this preflight note remain uncommitted pending the measurements and their final report. No validation or hidden input has been used.
+
+## Stop 2 — interrupted timings and terminal handoff (7 November 2026)
+
+The owner connected mains, selected Best performance and required that mode for every timed run. Windows AC/overlay queries initially still reported efficiency mode. The requested Best performance AC mode was applied and verified before inference; all sampled timed-phase actual/effective/configured mode values agree with `ded574b5-45a0-4f42-8737-46345c09c238`. The Balanced base plan remained active separately. The measurement tools now record and check those power values, alongside CPU load, simultaneous model/server/app memory, machine headroom and paging.
+
+The attempted gate-2 run completed **21 chains and 85 status responses**, all with four finite single-token scores; **64/64 extensions reused cached tokens**, all first calls cached zero, and the largest prompt was 571 tokens. Diagnostic chain mean was 12.780 seconds with separate empty warm-up mean 4.225 seconds. These figures **do not qualify gate 2**: monitoring found sustained VS Code C# Dev Kit CPU work, with other processes averaging 1.461 core equivalents and peaking at 4.276. Available physical memory also briefly fell to about 46 MiB. Whole-reader cost, memory fit, reverse-order effects and both rung-0 comparisons remain unresolved. Details and artifact hashes are in the [interrupted-run summary](baselines/2026-11-07-alpha-03-gate-2-interrupted/summary.md).
+
+The owner explained that this agent is running inside VS Code's terminal and asked for a pause to reopen it from standalone PowerShell before closing VS Code. The benchmark was stopped, its model unloaded, its resource monitor stopped and its idle app asked to close normally. Owner processes were left untouched; Best performance remains enabled. [Resume instructions](../tools/alpha-03/RESUME.md) preserve the exact state and outstanding work. A clean run must use a new external directory and must not be pooled with these interrupted timings.
+
+Measurement tools and this diagnostic record remain local and uncommitted at the handoff. The last successful commit/push is still `5dc52cb`; its Release build and all 990 tests passed as recorded above. No post-commit check is claimed for the pending tools. No reader, new prompt wording, new cases, source changes, test changes, validation check or hidden-data access occurred. The next step remains the authorised gate-2/order/rung-0 measurements, then committing/pushing tools and results with required checks, and stopping **before any case writing**.
+
+## Stop 2 — completed cost/order/reference measurements (7 November 2026)
+
+**The cost/context gate passes on the original development cases; accuracy and integrated memory qualification remain open.** Shape (b) completed all **147 event questions in 40 fresh forward chains**, mean **11.358 seconds**. Adding the full unchanged gemma3 Alpha-01 batch cost for roles, binding and requests gives a **24.532 s/case projected mean**, below 90 seconds. Maximum scored prompt was **571 tokens**. This is a sum of separately measured components, with no new candidate reader implemented or timed end to end. Substantially longer notes still need measurement.
+
+The owner moved the agent to standalone PowerShell and closed VS Code. Every timed run used **mains power and Best performance**, verified through actual, effective and configured AC mode GUIDs `ded574b5-45a0-4f42-8737-46345c09c238`, with zero sampled violations. The Balanced base plan was recorded separately. No other model benchmark, build or test ran concurrently. Ordinary OS/desktop/agent load remained recorded rather than assumed to be zero. Raw outputs occupy a new external directory; the interrupted run was not pooled into the results.
+
+| Measurement | Result |
+|---|---|
+| Shape (b), all forward/reverse status positions | **164/164** single-token responses with four finite scores |
+| Fresh first calls / literal-history extensions | **43/43** cached zero / **121/121** reused 353–529 tokens |
+| Generated statuses changed under reversal | **6/17**, across all three checked cases |
+| Four-score argmaxes changed under reversal | **8/17** |
+| Unchanged Alpha-01, gemma3:4b | **38/40 without a critical error**, 0 call failures; bench mean **13 s/case** |
+| Unchanged Alpha-01, gemma4:e4b | **0 successful readings**, **40/40 length-limit failures**; bench mean **39 s/case** |
+
+An independent audit of the stored artifacts verified all request settings, exact previous-message preservation, actual generated-answer history and the first `loan-basic` prompt's equality with the accepted fixture, with **zero mismatches**. No missing class score was fabricated. The four-score argmax is diagnostic here; no calibration was fitted.
+
+### Cost and order implications
+
+The shorter 20 original notes (62–99 characters) took a mean 11.097 seconds for their complete status chains; the longer 20 (100–172 characters) took 11.619 seconds. With the retained baseline's rounded case rows added, the respective projected means are **23.047** and **25.919 seconds**. These groups have different claim/question mixes and both contain very short notes; they do not establish cost on realistic lengthy files or dedicated requests/documents fields.
+
+The forward chain's median/p95/maximum are 11.271/14.776/15.336 seconds. Empty runner loading averaged a separate 3.082 seconds. The 24.532-second projection uses the full gemma3 CLI wall time, including setup/report overhead, divided by 40, plus the chain mean. Alpha-01's normal across-case server cache behaviour was retained; its existing provider does not expose cached-token counters. The eventual integrated reader must be measured under its actual call/reset policy, including additional binding/evidence work. Do not compare this short development-set projection directly with the older hidden-set 63-second mean under different inputs/power conditions.
+
+The order check is a warning about the carrier design, even though cache reuse works. Later answers can see earlier generated answers. Reversal changed score argmaxes as well as sampled digits; the small check cannot isolate every change from runtime/sampling variation without same-order repeats. It gives no evidence that a global correction will remove that dependence. The original all-affirmed key must not become the fitting signal for denied/disputed choices. The approved 144-case freeze and grouped fitting/audit protocol still precede any candidate prompt/reader implementation.
+
+### Reference quality and memory implications
+
+Gemma3's two critical errors were a plaintiff-position error in `contract-damages` and a missed decisive notice in `rent-basic`. Existing non-critical omissions remain disclosed in its summary. Its 100% polarity column is conditional on the old sparse key, whose development/robustness events are all affirmed; it is not evidence of denied/disputed competence. No evaluator, key or pass-mark rule was changed.
+
+Gemma4 was run exactly as authorised: the same reader and 300-token cap, with thinking left unset. Every call reached that cap and the existing provider rejected the cutoff before a fact reading reached the evaluator. Its “Critical errors: none” line therefore cannot be read as semantic success. The metadata advertises thinking capability, but this run did not isolate how the allowance was spent. No thinking-off, higher-cap or other rescue variant was run, and no runtime model switch was made.
+
+The reset-per-case score chains had sampled model/server peak **4.082 GiB**, simultaneous model-plus-app peak **4.260 GiB**, with at least **5.323 GiB** whole-machine physical memory available. The resident references reveal a separate limit:
+
+| Resident reference | Model/server sampled peak GiB | Simultaneous model + app peak GiB | Minimum available physical GiB |
+|---|---:|---:|---:|
+| gemma3:4b | **7.852** | 7.954 | 1.808 |
+| gemma4:e4b | **9.942** | 10.042 | 0.396 |
+
+Each batch used one runner PID throughout. Gemma3's early/late mean model footprint grew from about 4.001 to 7.377 GiB; gemma4's from 6.607 to 9.840 GiB. The growth's cause and plateau were not established. Updated samples observed no page outputs, with page-read spikes and zero median reads; machine commit reached 18.996 GiB for gemma4. These measurements do not certify absence of all paging or persistent integrated-reader memory stability. A case reset is a possible future policy with an observed loading bill, not a fix implemented or qualified here. The fresh-chain footprint must not be substituted for the observed resident-batch peaks.
+
+### Records, scope and stop
+
+Full protocol, per-group timings, order changes, hashes and memory limits: [gate 2](baselines/2026-11-07-alpha-03-gate-2/summary.md). Full existing-evaluator results, each critical error, licence, digest, disk size, timing and memory: [gemma3 rung 0](baselines/2026-11-07-alpha-03-rung-0-gemma3-4b/summary.md), [gemma4 rung 0](baselines/2026-11-07-alpha-03-rung-0-gemma4-e4b/summary.md). The [interrupted attempt](baselines/2026-11-07-alpha-03-gate-2-interrupted/summary.md) remains separately disclosed. Raw data, wire audit, manifests and resource logs stay at `%TEMP%\dzlegal-alpha03-gate2-clean-20261107-165004`.
+
+New tooling under `tools/alpha-03/`: accepted-fixture chain measurement, unchanged Alpha-01 invocation, resource/paging sampling, power verification, README and the retained historical terminal-handoff checkpoint. Files changed outside that folder are only this report and the four new baseline summaries named above. The existing `src/`, `data/` and `tests/` contents are unchanged. Tests added/updated/skipped/weakened: **none**. The real app was launched for memory residence; the feature was exercised through the authorised terminal/harness commands. No UI change or screenshot was requested.
+
+The measurement tools/results are committed on `codex/alpha-03`, with required post-commit Release build/full-test results reported in the handoff. The previously observed unload-test scheduling failure remains disclosed in the preflight record; serial xUnit collection execution preserves all assertions. No claim of a new candidate, calibration gain, hidden-v2 readiness or final reader freeze is made. Validation model checks remain **0**; hidden/evaluation data access remains **none**; new case files remain **0**.
+
+**Stopped after gate 2, the order check and rung 0, before writing any case, as requested.**

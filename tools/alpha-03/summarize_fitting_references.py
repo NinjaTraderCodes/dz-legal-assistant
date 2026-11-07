@@ -109,6 +109,26 @@ def quality(rows, cases, catalog):
                 seconds=stats([r["Seconds"] for r in rows]))
 
 
+def resource_stats(samples):
+    if not samples:
+        return None
+    best = "ded574b5-45a0-4f42-8737-46345c09c238"
+    paging = [s["paging"] for s in samples if s.get("pagingSampleUpdated") and s.get("paging")]
+    return dict(samples=len(samples),
+        powerValidSamples=sum(s["power"]["acLineStatus"] == 1 and all(s["power"][key] == best for key in ("actualOverlayGuid", "effectiveOverlayGuid", "configuredAcGuid")) for s in samples),
+        modelWorkingSetPeak=max(s["modelWorkingSetBytes"] for s in samples),
+        modelPrivatePeak=max(s["modelPrivateBytes"] for s in samples),
+        modelAppWorkingSetPeak=max(s["modelWorkingSetBytes"] + s["appWorkingSetBytes"] for s in samples),
+        availablePhysicalMinimum=min(s["availablePhysicalBytes"] for s in samples),
+        commitPeak=max(s["commitBytes"] for s in samples),
+        otherCores=stats([s["otherCores"] or 0 for s in samples]),
+        monitorCores=stats([s["powershellCores"] or 0 for s in samples]),
+        pagingFreshSamples=len(paging),
+        pageReadsPeak=max((p["PageReadsPersec"] for p in paging), default=None),
+        pagesInputPeak=max((p["PagesInputPersec"] for p in paging), default=None),
+        pagesOutputPeak=max((p["PagesOutputPersec"] for p in paging), default=None))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("run_root", type=Path)
@@ -121,6 +141,8 @@ def main():
     resources = [json.loads(line) for line in (args.run_root / "resources.jsonl").read_text(encoding="utf-8-sig").splitlines()]
     output = {}
     for folder in sorted(args.run_root.glob("reference-*")):
+        if not folder.is_dir():
+            continue
         completion = read(folder / "completion.json")
         rows = read(folder / "case-results.json")
         if any(r["Name"] not in fitting for r in rows):
@@ -128,9 +150,6 @@ def main():
         completed = [r for r in rows if r["Timings"] is not None]
         loads = read(folder / "loads.json") if (folder / "loads.json").exists() else []
         samples = [s for s in resources if completion["StartedUtc"][:23] <= s["utc"][:23] <= completion["FinishedUtc"][:23]]
-        paging = [s["paging"] for s in samples if s.get("pagingSampleUpdated") and s.get("paging")]
-        best = "ded574b5-45a0-4f42-8737-46345c09c238"
-        valid_power = sum(s["power"]["acLineStatus"] == 1 and all(s["power"][key] == best for key in ("actualOverlayGuid", "effectiveOverlayGuid", "configuredAcGuid")) for s in samples)
         output[completion["Model"]] = dict(
             completion=completion, inferenceCompleted=len(completed),
             blockedBeforeNativeTiming=[r["Name"] for r in rows if r["Timings"] is None],
@@ -143,26 +162,16 @@ def main():
             overall=quality(completed, cases, catalog),
             byKind={kind: quality([r for r in completed if r["Kind"] == kind], cases, catalog) for kind in ("polarity", "binding")},
             byFold={str(fold): quality([r for r in completed if r["Fold"] == fold], cases, catalog) for fold in (1, 2, 3)},
-            resources=dict(samples=len(samples), powerValidSamples=valid_power,
-                modelWorkingSetPeak=max(s["modelWorkingSetBytes"] for s in samples),
-                modelPrivatePeak=max(s["modelPrivateBytes"] for s in samples),
-                modelAppWorkingSetPeak=max(s["modelWorkingSetBytes"] + s["appWorkingSetBytes"] for s in samples),
-                availablePhysicalMinimum=min(s["availablePhysicalBytes"] for s in samples),
-                commitPeak=max(s["commitBytes"] for s in samples),
-                otherCores=stats([s["otherCores"] or 0 for s in samples]),
-                monitorCores=stats([s["powershellCores"] or 0 for s in samples]),
-                pagingFreshSamples=len(paging),
-                pageReadsPeak=max(p["PageReadsPersec"] for p in paging),
-                pagesInputPeak=max(p["PagesInputPersec"] for p in paging),
-                pagesOutputPeak=max(p["PagesOutputPersec"] for p in paging)),
+            resources=resource_stats(samples),
+            resourcesByKind={kind: resource_stats([s for s in samples if ":" + kind + ":" in s["phase"]]) for kind in ("polarity", "binding")},
             promptTokens=stats([r["Timings"]["PromptTokens"] for r in completed]),
             answerTokens=stats([r["Timings"]["AnswerTokens"] for r in completed]))
     target = args.run_root / "reference-analysis.json"
     target.write_text(json.dumps(output, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     hashes = {p.relative_to(args.run_root).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
-              for p in sorted(args.run_root.rglob("*")) if p.is_file() and p.name != "artifact-hashes.json"}
+              for p in sorted(args.run_root.rglob("*")) if p.is_file() and p.name not in ("artifact-hashes.json", "analysis-stdout.txt")}
     (args.run_root / "artifact-hashes.json").write_text(json.dumps(hashes, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps(output, ensure_ascii=True, indent=2))
+    print("Saved reference-analysis.json and artifact-hashes.json; no inference. Console trace excluded from fingerprints.")
 
 
 if __name__ == "__main__":

@@ -7,6 +7,21 @@ using DzLegal.Drafting;
 using DzLegal.Harness;
 using DzLegal.ModelProviders.Ollama;
 
+if (args.Length == 2 && args[0] == "--check-guard")
+{
+    try
+    {
+        await MeasurementGuard.CheckAsync(args[1]);
+        Console.WriteLine("Measurement preconditions accepted; no model call.");
+        return 0;
+    }
+    catch (IOException ex)
+    {
+        Console.WriteLine(ex.Message);
+        return 3;
+    }
+}
+
 if (args.Length != 5 || args[0] is not ("gemma3:4b" or "gemma4:e4b"))
 {
     Console.Error.WriteLine("Usage: FittingReferences <model> <frozen cases root> <law root> <external output> <resource run root>");

@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Diagnostics;
 using System.Text.Json;
 
 namespace DzLegal.Alpha03.Measurement;
@@ -43,8 +44,10 @@ internal static class MeasurementGuard
         using var sample = await LatestAsync(runRoot, cancellationToken);
         var r = sample.RootElement;
         var p = r.GetProperty("power");
+        var browsers = BrowserProcesses();
         const string best = "ded574b5-45a0-4f42-8737-46345c09c238";
         var reason = File.Exists(Path.Combine(runRoot, "measurement.stop")) ? "operator stop recorded"
+            : browsers.Count > 0 ? "browser or VS Code reopened during timed run"
             : (DateTimeOffset.UtcNow - Time(r)).TotalSeconds > 10 ? "stale resource monitor"
             : p.GetProperty("acLineStatus").GetInt32() != 1 ? "mains disconnected"
             : p.GetProperty("actualOverlayGuid").GetString() != best || p.GetProperty("effectiveOverlayGuid").GetString() != best || p.GetProperty("configuredAcGuid").GetString() != best ? "Best performance not verified"
@@ -56,11 +59,30 @@ internal static class MeasurementGuard
         {
             await File.WriteAllTextAsync(Path.Combine(runRoot, "precondition-failure.json"), JsonSerializer.Serialize(new
             {
-                Utc = DateTimeOffset.UtcNow, Reason = reason, Sample = r,
+                Utc = DateTimeOffset.UtcNow, Reason = reason, BrowserProcesses = browsers, Sample = r,
             }, Options), cancellationToken);
             throw new IOException("MEASUREMENT PRECONDITION: " + reason);
         }
     }
 
     private static DateTimeOffset Time(JsonElement sample) => DateTimeOffset.Parse(sample.GetProperty("utc").GetString()!, CultureInfo.InvariantCulture);
+
+    private static List<BrowserProcess> BrowserProcesses()
+    {
+        var result = new List<BrowserProcess>();
+        foreach (var name in new[] { "brave", "chrome", "msedge", "firefox", "Code" })
+        {
+            foreach (var process in Process.GetProcessesByName(name))
+            {
+                using (process)
+                {
+                    result.Add(new BrowserProcess(name, process.Id));
+                }
+            }
+        }
+
+        return result;
+    }
+
+    private sealed record BrowserProcess(string Name, int Id);
 }

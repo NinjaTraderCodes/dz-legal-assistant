@@ -76,7 +76,7 @@ public sealed class AboutTests : IDisposable
         loc.SetLanguage("en");
         Assert.Equal("About", about.Title);
         Assert.Equal(
-            ["Hicham Benkaihoul — project lead and development", "Djihane Ben Djeddou — interface and experience design", "Khouloud Otmane Cherif — legal review"],
+            ["Hicham Benkaihoul — project lead and development", "Djihane Bendjeddou — interface and experience design", "Khouloud Otmane Cherif — legal review"],
             about.Team);
         Assert.Equal("Built as part of ThirdUni 2026.", loc["AboutThirdUni"]);
     }

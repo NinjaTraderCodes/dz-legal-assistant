@@ -5,6 +5,7 @@ import Base from "../../layouts/Base.astro";
 import PageHead from "../../components/PageHead.astro";
 import Source from "../../components/Source.astro";
 import Icon from "../../components/Icon.astro";
+import TeamPhoto, { type Member } from "../../components/TeamPhoto.astro";
 import law from "../../content/law.generated.json";
 import { langs, s, t, fmt, type Lang } from "../../i18n";
 import { version } from "../../content/product";
@@ -14,9 +15,9 @@ export function getStaticPaths() {
     return langs.map((lang) => ({ params: { lang } }));
 }
 const lang = Astro.params.lang as Lang;
-const people = ["Lead", "Design", "Legal"].map((who) => {
+const people = (["Lead", "Design", "Legal"] as Member[]).map((who) => {
     const [name, role] = s(lang, `AboutTeam${who}`).split(" — ");
-    return { name, role, did: t(lang, `about.team.did.${who.toLowerCase()}`) };
+    return { who, name, role, did: t(lang, `about.team.did.${who.toLowerCase()}`) };
 });
 // The desktop's About screen lists these (AboutViewModel.Licences); the full texts ship as THIRD-PARTY-NOTICES.txt.
 const desktopLicences: [string, string][] = [
@@ -60,7 +61,12 @@ const docs = ["PRODUCT-DETAILS", "ARCHITECTURE", "OFFLINE", "LAW-LIBRARY", "HIDD
     <section class="section page" aria-labelledby="team-title">
         <h2 id="team-title" class="h2">{s(lang, "AboutTeamTitle")}</h2>
         <div class="people">
-            {people.map((p) => <article class="block card"><h3 class="h3">{p.name}</h3><p class="role">{p.role}</p><p class="small">{p.did}</p></article>)}
+            {people.map((p) => (
+                <article class="block card person">
+                    <TeamPhoto lang={lang} who={p.who} name={p.name} />
+                    <div class="lines"><h3 class="h3">{p.name}</h3><p class="role">{p.role}</p><p class="small">{p.did}</p></div>
+                </article>
+            ))}
         </div>
         <Source lang={lang} files={["README.md"]} />
     </section>
@@ -114,7 +120,11 @@ const docs = ["PRODUCT-DETAILS", "ARCHITECTURE", "OFFLINE", "LAW-LIBRARY", "HIDD
 </Base>
 
 <style>
-    .people { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-top: 16px; }
+    /* Each card opens with the member's clipped photo, its clip rising over the card's top edge as if pinned to it. */
+    .people { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-top: 36px; }
+    .person { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 16px; align-items: start; }
+    .person :global(.photo) { justify-self: start; }
+    .person .lines { display: grid; gap: 6px; align-content: start; }
     .role { color: var(--w-ink); font-weight: 600; }
     .licences { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; font-size: 0.95rem; }
     .licences li { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; border-top: 1px solid var(--w-rule); }
@@ -123,4 +133,5 @@ const docs = ["PRODUCT-DETAILS", "ARCHITECTURE", "OFFLINE", "LAW-LIBRARY", "HIDD
     .docs .doc { overflow-wrap: anywhere; }
     .block .btn { justify-self: start; }
     @media (max-width: 899px) { .people { grid-template-columns: 1fr; } .docs li { grid-template-columns: 1fr; } }
+    @media (max-width: 479px) { .person { grid-template-columns: 1fr; } }
 </style>

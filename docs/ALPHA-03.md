@@ -215,7 +215,7 @@ For every added component keep an on/off comparison: focus/cache shape, score ve
 The following is the owner's clarification of the **existing annotation rule**, to be used unchanged by the hidden-v2 author:
 
 1. **Affirmed (`stated` in an Alpha-01 answer):** the lawyer's notes assert the particular proposition, including a proposition which is itself negative. Thus an assertion of unpaid wages affirms `wages_unpaid`. A document named in `documents.list` affirms the event it is named after. The reader records an assertion in the lawyer's notes, **not judicial proof**. A source-only-from-documents marker may be recorded as information and does not alter polarity.
-2. **Disputed:** a party denies or contests the same fact that the plaintiff relies on. The plaintiff's assertion may be implicit in bringing the claim; it need not be repeated in the notes. Therefore “the defendant denies receiving the loan” is **disputed**, not denied or absent. Contest attaches to its target proposition, not every event in the sentence or case. A denial of the alleged reason for a dismissal does not, by itself, dispute that the dismissal occurred.
+2. **Disputed:** a party denies or contests the same fact that the plaintiff relies on. The plaintiff's assertion may be implicit in bringing the claim; it need not be repeated in the notes. Therefore “the defendant denies receiving the loan” is **disputed**, not denied or absent. Contest attaches to its target proposition, not every event in the sentence or case. For the dismissal element «سرّح المدعى عليه المدعي أو فصله من العمل», which describes the act alone, a contested reason leaves the dismissal affirmed; a contested act makes it disputed. This is the owner's settled annotation decision, supplied directly for this report; the hidden-v2 brief was not opened.
 3. **Denied:** the notes themselves state that the proposition did not happen, rather than merely reporting a party's opposition to it. For a notice event, «لم يوجه أي إعذار» is denied. Negation must be interpreted relative to the complete element: «لم يدفع» affirms non-payment and denies payment. A negation elsewhere in the sentence must not reverse an unrelated conceded event such as notice in «لم يدفع رغم إعذاره».
 4. **Absent:** no assertion, notes-level denial, party contest or named-document assertion of that proposition is present. An unanswered or malformed model decision is **unresolved**, not evidence that the text is absent.
 
@@ -239,7 +239,7 @@ The owner approved Report 1 with three amendments, which supersede the original 
 2. Rung 0 compares **unchanged Alpha-01** with installed `gemma4:e4b` and `gemma3:4b` on the original 40 in-catalogue development cases, and later on the frozen fitting families. Record each exact digest, licence, time and memory. This is a reference, not a runtime-model switch.
 3. Write, check and freeze all 144 fictitious cases and their split manifest, including a content hash, **before any Alpha-03 prompt or reader code**. Subsequent case edits require owner-adjudicated annotation errors and a disclosed new hash.
 
-Item 7 remains unchanged; the owner has reserved legal review of the dismissal example. It must not become an unreviewed legal conclusion merely by appearing in this report.
+The owner initially reserved review of the dismissal example, then settled it in the subsequent gate-1 authorisation: the element describes the act alone, so a contested reason leaves the act affirmed and a contested act makes it disputed. Item 7 now records that decision. No other annotation rule changed, and no part of the hidden-v2 brief was read.
 
 ### Gate 1: stopped on missing suffix reuse
 
@@ -280,3 +280,41 @@ I have **not** run that alternative or silently changed the server, model or req
 Only this report and the gate summary are changed in this stop. No tests are added, modified, skipped or weakened. No source, existing prompt, catalogue or original case file is changed. Raw probe outputs stay outside the repository. Validation checks used in Stop 2: **0**; hidden material accessed: **none**. Build/test results for this documentation commit are reported in the handoff; the known intermittent unload-test failure from the Stop-1 post-commit run remains disclosed in that earlier handoff.
 
 **Stopped at gate 1. Await the owner's decision before any further model experiment or case writing.**
+
+## Stop 2 — bounded gate-1 continuation (6 November 2026)
+
+The owner authorised three request arrangements on the same original development case, `loan-basic`, serially, using the same model and sampling settings. This supersedes the preceding gate-1 pause for those probes only. The owner also required an explicit wait **before gate 2**, because another job is using the laptop's CPU.
+
+**Gate 1 passes on append-only shape (b), within this bounded probe. Gate 2 has not started.** Shape (a) did not reuse the prefix, and the tested one-call shape (c) did not supply all four class scores at every status position. The [full summary](baselines/2026-11-06-alpha-03-gate-1-shapes/summary.md) records all eight calls, totals, token positions and artifact hashes.
+
+| Shape | Calls | Cached tokens, in call order | Four finite scores at every status? | Wall seconds, in call order |
+|---|---:|---|---|---|
+| (a) Unchanged earlier case turn; changed final question | 3 | 0, 0, 0 | Yes, at all three tested answers | 33.118, 21.665, 24.517 |
+| (b) Exact append-only conversation, carrying actual one-token answers | 3 | 0, 408, 440 | Yes, at all three tested answers | 17.955, 2.348, 2.506 |
+| (c) One six-status array per case, fixed order/template | 2 | 0, 516 | **No:** choice `3` missing at the first status in both calls; the other five statuses each have all four | 27.003, 3.941 |
+
+### What was actually sent and checked
+
+For (a), the common case/instructions are an unchanged user turn, followed by the fixed neutral assistant acknowledgement `حاضر.`, then a separate final user question. The acknowledgement is a fixed fixture, not a model judgement or read fact. Only the question changes across the three requests; each request is independent of the preceding answer.
+
+For (b), the first user message contains the common case and question 1. Requests 2 and 3 preserve every previous message exactly, then add the actual preceding assistant answer and the next question. The recorded answers are `1`, `2`, `3`; none was replaced with a gold answer or a score argmax. An artifact check confirmed the earlier message arrays were unchanged and the appended answer contents were verbatim. All four label alternatives are finite at the first/only output token of each request. The observed continuation cache counts therefore satisfy the reuse part of this bounded gate.
+
+For (c), a single user message asks all six original loan elements at once, with a fixed six-position template and an array schema whose items are integer enums `[1,2,3,4]`. Its cap is 64 tokens to allow all six statuses and framing, rather than the one-token cap for (a)/(b); all other model/sampling options remain the same. Each call completed with a valid six-element array and 19 generated tokens. The status token indices are 1, 4, 7, 10, 13 and 16 (zero-based). Both calls lack choice `3` in `top_logprobs: 20` at index 1. A missing score was not treated as zero, negative infinity, or a known low probability. Although valid, this particular array format does not pass the full-score gate. No further schema/wording variants were tried.
+
+The same call-(c) request and seed produced different arrays on its cold and cached executions. This is another reason not to equate a fixed seed or schema with stable semantic decisions. These probes are not accuracy comparisons: no prediction was scored against gold, and no wording was adjusted from an answer's correctness.
+
+### Interpretation and design trade-off
+
+The results are **consistent with** the owner's hypothesis that extension is reusable where cutting back to change a suffix is not. They do not establish Gemma's sliding-window implementation as the cause: no cache internals were inspected, and only one case and three element questions were used for (a)/(b). Cached-token counters, not wall-time improvements alone, support the observed reuse.
+
+Shapes **(b) and (c) expose earlier generated answers to later decisions**, as Alpha-01 does within its existing answer. That departs from Report 1's preference for independent questions. A wrong earlier answer, the ordered choice codes and repeat penalties may influence later scores; calibration would have to be evaluated on that actual ordered, generated-history distribution. Do not substitute corrected history at runtime or report conditional token probabilities as independent marginal judgements. Shape (b)'s cache success does not establish reading accuracy or make that dependence harmless.
+
+These wall times are **diagnostic gate-1 observations under the owner's reported concurrent CPU load**, not gate-2 timing evidence or a demonstration of the 90-second budget. A (b) chain covering only three questions is not a complete six-element reader, and does not include Alpha-01 value binding, requests or role work.
+
+### Next step and current pause
+
+The next eligible shape is **(b)** for gate 2. Before it starts, the owner must confirm that the other heavy CPU job has finished. No fresh-cost measurement, rung-0 inference, fitting-family writing, candidate prompt/reader code or validation/hidden run has started. The 144-case freeze still precedes any candidate prompt or reader implementation; the authorised wire fixtures do not become a shipped prompt.
+
+Only this report and the new probe summary are edited for this continuation. No tests or application/harness/provider code changed. I have left this documentation update uncommitted while waiting for the CPU to be available, so the repository's required post-commit build/test cycle does not add a heavy competing job. The last committed documentation (`759a901`) already passed its Release build and all 990 tests. This continuation does not claim a new build/test result.
+
+**Waiting before gate 2, as explicitly requested. No further model calls are authorised by this record while that wait is pending.**

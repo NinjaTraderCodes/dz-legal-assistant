@@ -1,6 +1,8 @@
 # Alpha-03 measurement probes
 
-**Current handoff:** the owner froze unchanged Alpha-01 with gemma4:e4b and thinking off. The completed gemma3 offline diagnosis gives 36/96 baseline, 21/96 uncalibrated and 23/96 corrected critical-error-free cases, with 26/63/46 false affirmations. No scored arm is selected. See [OWNER-RUN.md](OWNER-RUN.md) for the two owner-only commands and [OWNER-FREEZE.json](OWNER-FREEZE.json) for source/model fingerprints. Do not run hidden v2 or another model experiment as an agent. The historical probe and fitting instructions below do not authorise further work.
+**New authorised task after the frozen comparison:** `--think` now also applies to `grounds` and `draft`, with omission preserving defaults. [APP-BENCHMARKS.md](APP-BENCHMARKS.md) describes the default development/robustness comparison, ten-case reloads and existing memory/power/browser guards. This authorises no hidden or validation run. Its new source commit does not change the historical frozen candidate at `cda67fc`.
+
+**Historical frozen handoff:** the owner froze unchanged Alpha-01 with gemma4:e4b and thinking off. The completed gemma3 offline diagnosis gives 36/96 baseline, 21/96 uncalibrated and 23/96 corrected critical-error-free cases, with 26/63/46 false affirmations. No scored arm is selected. See [OWNER-RUN.md](OWNER-RUN.md) for the two frozen commands and [OWNER-FREEZE.json](OWNER-FREEZE.json) for that commit's source/model fingerprints. The historical probe and fitting instructions below do not authorise further work.
 
 Run from the repository root in Windows PowerShell with .NET 10 and the already installed Ollama models. The owner authorised these bounded measurements before the 144-case freeze. They replay the accepted gate-1 wire fixture on the original development inputs; candidate reader and prompt work still awaits the freeze.
 

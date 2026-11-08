@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -11,6 +12,88 @@ namespace DzLegal.Law.Tests;
 
 public sealed class HarnessThinkingTests
 {
+    [Theory]
+    [InlineData("facts")]
+    [InlineData("grounds")]
+    [InlineData("draft")]
+    public void CommandsShareThinkingValidationWithoutChangingOmission(string command)
+    {
+        Assert.Null(HarnessModels.ThinkingOption([command, "--models", "gemma4:e4b"]));
+        Assert.False(HarnessModels.ThinkingOption([command, "--think", "false"]));
+        Assert.True(HarnessModels.ThinkingOption([command, "--think", "true"]));
+        Assert.Throws<ArgumentException>(() => HarnessModels.ThinkingOption([command, "--think"]));
+        Assert.Throws<ArgumentException>(() => HarnessModels.ThinkingOption([command, "--think", "invalid"]));
+    }
+
+    [Theory]
+    [InlineData("grounds", null)]
+    [InlineData("grounds", false)]
+    [InlineData("draft", null)]
+    [InlineData("draft", false)]
+    public async Task RealCommandsPassTheOverrideAndPreserveOmittedDefaults(string command, bool? think)
+    {
+        var folder = Directory.CreateTempSubdirectory("dz-alpha03-thinking-cli-");
+        using var server = new TcpListener(IPAddress.Loopback, 0);
+        server.Start();
+        using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(60));
+        var requests = new List<string>();
+        var pump = Task.Run(async () =>
+        {
+            try
+            {
+                while (!timeout.IsCancellationRequested)
+                {
+                    var body = await CaptureAsync(server, timeout.Token, allowMetadata: true);
+                    if (body.Length > 0) { requests.Add(body); }
+                }
+            }
+            catch (OperationCanceledException) when (timeout.IsCancellationRequested) { }
+            catch (SocketException) when (timeout.IsCancellationRequested) { }
+        });
+        try
+        {
+            var cases = Directory.CreateDirectory(Path.Combine(folder.FullName, "inputs")).FullName;
+            await File.WriteAllTextAsync(Path.Combine(cases, "fixture.json"), command == "grounds"
+                ? """{"cases":[{"name":"fixture","facts":"Fictitious notes.","expect":"","partition":"development"}]}"""
+                : """{"name":"fixture","inputs":{"notes.facts":"اتفق الطرفان على بيع منقول.","notes.grounds":"لم ينفذ المدعى عليه الاتفاق ويلتمس المدعي إلزامه بتنفيذه.","notes.requests":"إلزام المدعى عليه بتنفيذ الاتفاق."}}""");
+            var start = new ProcessStartInfo("dotnet") { UseShellExecute = false, RedirectStandardOutput = true, RedirectStandardError = true, WorkingDirectory = folder.FullName };
+            foreach (var argument in new[]
+            {
+                "exec", "--runtimeconfig", Path.Combine(AppContext.BaseDirectory, "DzLegal.Law.Tests.runtimeconfig.json"),
+                "--depsfile", Path.Combine(AppContext.BaseDirectory, "DzLegal.Law.Tests.deps.json"), typeof(HarnessModels).Assembly.Location,
+                command, "--models", "gemma4:e4b", "--cases", cases, "--out", Path.Combine(folder.FullName, "output"),
+                "--endpoint", $"http://127.0.0.1:{((IPEndPoint)server.LocalEndpoint).Port}",
+                "--law-root", Path.Combine(AppContext.BaseDirectory, "data", "law"),
+                "--data", Path.Combine(AppContext.BaseDirectory, "data", "document-types"),
+            }) { start.ArgumentList.Add(argument); }
+            if (think.HasValue) { start.ArgumentList.Add("--think"); start.ArgumentList.Add(think.Value ? "true" : "false"); }
+            using var process = Process.Start(start)!;
+            var stdout = process.StandardOutput.ReadToEndAsync(timeout.Token);
+            var stderr = process.StandardError.ReadToEndAsync(timeout.Token);
+            try { await process.WaitForExitAsync(timeout.Token); }
+            finally { if (!process.HasExited) { process.Kill(entireProcessTree: true); } }
+            Assert.True(process.ExitCode == 0, await stdout + await stderr);
+        }
+        finally
+        {
+            timeout.Cancel();
+            server.Stop();
+            await pump;
+            Assert.StartsWith(Path.GetFullPath(Path.Combine(Path.GetTempPath(), "dz-alpha03-thinking-cli-")), Path.GetFullPath(folder.FullName), StringComparison.OrdinalIgnoreCase);
+            folder.Delete(recursive: true);
+        }
+
+        Assert.NotEmpty(requests);
+        foreach (var request in requests)
+        {
+            using var body = JsonDocument.Parse(request);
+            if (think.HasValue) { Assert.Equal(think.Value, body.RootElement.GetProperty("think").GetBoolean()); }
+            else { Assert.False(body.RootElement.TryGetProperty("think", out _)); }
+            Assert.Equal(0, body.RootElement.GetProperty("options").GetProperty("num_gpu").GetInt32());
+            Assert.Equal(4096, body.RootElement.GetProperty("options").GetProperty("num_ctx").GetInt32());
+        }
+    }
+
     [Theory]
     [InlineData("gemma3:4b", null, null)]
     [InlineData("gemma4:e4b", null, null)]
@@ -59,12 +142,12 @@ public sealed class HarnessThinkingTests
         Assert.Throws<ArgumentException>(() => HarnessModels.Create("google", new Uri("http://127.0.0.1:9"), TimeSpan.FromSeconds(1), think: false));
     }
 
-    private static async Task<string> CaptureAsync(TcpListener server, CancellationToken cancellationToken)
+    private static async Task<string> CaptureAsync(TcpListener server, CancellationToken cancellationToken, bool allowMetadata = false)
     {
         using var client = await server.AcceptTcpClientAsync(cancellationToken);
         await using var stream = client.GetStream();
         using var reader = new StreamReader(stream, Encoding.ASCII, leaveOpen: true);
-        Assert.Equal("POST /api/chat HTTP/1.1", await reader.ReadLineAsync(cancellationToken));
+        var requestLine = await reader.ReadLineAsync(cancellationToken);
         var headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         while (await reader.ReadLineAsync(cancellationToken) is { Length: > 0 } line)
         {
@@ -72,6 +155,14 @@ public sealed class HarnessThinkingTests
             headers[parts[0]] = parts[1].Trim();
         }
 
+        if (allowMetadata && requestLine is "GET /api/version HTTP/1.1" or "GET /api/tags HTTP/1.1")
+        {
+            var metadata = requestLine.Contains("/version", StringComparison.Ordinal) ? """{"version":"fixture"}""" : """{"models":[]}""";
+            await ReplyAsync(stream, metadata, cancellationToken);
+            return string.Empty;
+        }
+
+        Assert.Equal("POST /api/chat HTTP/1.1", requestLine);
         var body = new StringBuilder();
         if (headers.TryGetValue("Content-Length", out var length))
         {
@@ -88,9 +179,14 @@ public sealed class HarnessThinkingTests
         }
 
         const string payload = """{"message":{"content":"fixture"},"done":true} """;
+        await ReplyAsync(stream, payload, cancellationToken);
+        return body.ToString();
+    }
+
+    private static async Task ReplyAsync(NetworkStream stream, string payload, CancellationToken cancellationToken)
+    {
         var reply = Encoding.ASCII.GetBytes($"HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: {payload.Length}\r\nConnection: close\r\n\r\n{payload}");
         await stream.WriteAsync(reply, cancellationToken);
-        return body.ToString();
     }
 
     private static async Task<string> ReadAsync(StreamReader reader, int length, CancellationToken cancellationToken)

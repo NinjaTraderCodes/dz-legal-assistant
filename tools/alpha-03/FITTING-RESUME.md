@@ -1,5 +1,13 @@
 # Authorised v3 fitting-stage checkpoint
 
+## NEW TASK — default grounds and draft comparison
+
+Owner authorised `--think` for grounds/draft without default changes and timed default app benchmarks: G3 reference and G4 thinking off, mains/Best performance, ten-case reloads, 512 MiB guard, browsers closed. No hidden/validation data. Previous owner-run outputs and consoles remain forbidden; the historical freeze remains `cda67fcd94bfaab83515da2bfa5dd0ff07b5bfce`. Work only on `codex/alpha-03`.
+
+Implementation/pre-timing checkpoint: shared `HarnessModels.ThinkingOption`, both CLI/provider paths and conditional manifest options; opt-in `BenchmarkMeasurement` wraps the existing evaluators with guarded requests and complete-case boundaries. Same prompts/scorers/caps/defaults. New tools `Measure-AppBenchmarks.ps1` and `analyze_app_benchmarks.py`; protocol `APP-BENCHMARKS.md`. Defaults are 46 grounds (44 development/2 robustness, four out of scope) and five drafts (3 development/2 robustness), no validation. All 17 focused mock/protocol tests and solution build pass, 0 warnings/errors. No real model inference yet. Finish diff review/commit, required post-commit build/full suite (expected 1022 tests), stop build servers, then quiet mains/Best/app/owner-closed-browser preflight and the serial runner in a fresh external directory. Do not touch owner evaluation inputs/results/consoles.
+
+After runs: stop monitors/unload through the runner, independently audit own default-case outputs/resources, write both side-by-side summaries, report source/conditions/time/memory/quality limits in `docs/ALPHA-03.md`, commit/check/push and stop. If a technical guard fails, preserve partials and report before another model; no automatic retry. Earlier frozen handoff/stop/active notes below are historical.
+
 ## FINAL HANDOFF — owner resumed for freeze only
 
 The owner resumed on battery to finish source/privacy review, full tests, commit/push and the two exact owner commands. No timing, model benchmark or hidden-v2 execution is authorised to the agent. The independent frozen candidate is **unchanged Alpha-01, gemma4:e4b, think=false**; baseline is unchanged Alpha-01 gemma3 with thinking omitted. `OWNER-RUN.md` contains the shared guarded-wrapper commands and mains/Best-performance prerequisites; `OWNER-FREEZE.json` pins source/model identity and lists every task-changed file outside harness/tools. The original reader, prompt, catalogue, provider/options, AlphaFacts and FactsEvaluator are unchanged against task start `c86048dd8bab2b889c5164530624b8354f51afa1`.

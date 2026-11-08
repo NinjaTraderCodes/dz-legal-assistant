@@ -18,6 +18,24 @@ namespace DzLegal.Harness;
 /// </summary>
 public static class HarnessModels
 {
+    /// <summary>Shared facts/grounds/draft override; omission retains model-specific defaults.</summary>
+    public static bool? ThinkingOption(IReadOnlyList<string> arguments)
+    {
+        ArgumentNullException.ThrowIfNull(arguments);
+        for (var i = 0; i < arguments.Count; i++)
+        {
+            if (arguments[i] != "--think")
+            {
+                continue;
+            }
+
+            return i + 1 < arguments.Count && bool.TryParse(arguments[i + 1], out var value)
+                ? value : throw new ArgumentException("--think must be true or false.", nameof(arguments));
+        }
+
+        return null;
+    }
+
     /// <summary>
     /// Nemotron 3 Ultra, the online model chosen after the Alpha-02 upper-bound run (31 Oct 2026); its reasoning is
     /// switched off by the provider. Give <c>openrouter:google/gemma-3-4b-it</c> for the offline model's own behaviour.

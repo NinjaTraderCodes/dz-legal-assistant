@@ -11,7 +11,9 @@ using DzLegal.Harness;
 //   dzlegal-harness ping [--models openrouter[:<model>] | google[:<model>] | deepinfra[:<model>]]
 //       OpenRouter: whose limit stops it (key status, then a tiny and a drafting-sized request). Google: which Gemma
 //       models the key can call, then a tiny request to the model (default gemma-4-26b-a4b-it). Keys are never shown.
-//   Batch options for draft and grounds: --runs N (repeat each case), --case <name> (one case), --delay-seconds S,
+//   Batch options for draft and grounds: --think true|false (omitted preserves defaults),
+//   --measurement-root <active resource-monitor folder> (opt-in guarded, single-model run),
+//   --runs N (repeat each case), --case <name> (one case), --delay-seconds S,
 //   --rate-limit-wait-seconds S (hosted: wait out "too many requests", default 120 per call),
 //   --max-consecutive-failures N (stop a model's batch after N failed cases in a row, default 3; 0 = never).
 //   dzlegal-harness draft --models <m1,m2,...|stub> [--out bench] [--cases <folder>] [--endpoint http://127.0.0.1:11434] [--timeout-minutes 15]
@@ -48,6 +50,13 @@ dataRoot = Option("--data", dataRoot);
 // Every claim type whatever the court section: the default for hosted models (18 of 18 mismatching sections right,
 // 31 Oct 2026), not for the local model (2 wrong of 13 matching cases when all were offered). --all-claims on|off overrides.
 bool AllClaims(string model) => Option("--all-claims", HarnessModels.IsHosted(model) ? "on" : "off") == "on";
+
+bool? think = null;
+if (args.Length > 0 && args[0] is "facts" or "grounds" or "draft")
+{
+    try { think = HarnessModels.ThinkingOption(args); }
+    catch (ArgumentException) { Console.Error.WriteLine($"{args[0]}: --think must be true or false."); return 2; }
+}
 
 if (args.Length > 1 && args[0] == "law" && args[1] == "import" && args.Length > 2)
 {
@@ -143,6 +152,12 @@ if (args.Length > 0 && args[0] == "grounds")
         }
     }
 
+    if (args.Contains("--measurement-root") && groundsCases.Any(c => c.Partition is not ("development" or "robustness")))
+    {
+        Console.Error.WriteLine("Guarded app benchmarks accept development and robustness cases only.");
+        return 2;
+    }
+
     if (outRoot is not null)
     {
         var lawRoot = Option("--law-root", Path.Combine(AppContext.BaseDirectory, "data", "law"));
@@ -155,13 +170,13 @@ if (args.Length > 0 && args[0] == "grounds")
                 ["documentTypes"] = Path.Combine(AppContext.BaseDirectory, "data", "document-types"),
                 ["cases"] = casesFolder,
             },
-            new Dictionary<string, string>
+            BenchmarkMeasurement.Options(new Dictionary<string, string>
             {
                 ["runs"] = runs.ToString(CultureInfo.InvariantCulture),
                 ["partition"] = string.Join(',', partition),
                 ["case"] = args.Contains("--case") ? Option("--case", string.Empty) : "all",
                 ["endpoint"] = Option("--endpoint", "http://127.0.0.1:11434"),
-            }).Write(outRoot);
+            }, think, args.Contains("--measurement-root") ? Option("--measurement-root", string.Empty) : null)).Write(outRoot);
     }
 
     foreach (var model in models)
@@ -174,34 +189,48 @@ if (args.Length > 0 && args[0] == "grounds")
 
         var speed = new SpeedLog();
         var reports = new List<GroundsReport>();
-        for (var run = 1; run <= runs; run++)
+        await using var measurement = args.Contains("--measurement-root")
+            ? BenchmarkMeasurement.Create(model, new Uri(Option("--endpoint", "http://127.0.0.1:11434")),
+                Option("--measurement-root", string.Empty), outRoot, models.Length, runs, Console.Out) : null;
+        try
         {
-            DzLegal.Drafting.IModelProvider provider;
-            try
+            for (var run = 1; run <= runs; run++)
             {
-                provider = HarnessModels.Create(model, new Uri(Option("--endpoint", "http://127.0.0.1:11434")), TimeSpan.FromMinutes(10), speed, HarnessModels.Waiting(rateLimitWait, Console.Out));
-            }
-            catch (ArgumentException ex)
-            {
-                Console.Error.WriteLine($"grounds: {ex.Message}");
-                return 2;
-            }
+                DzLegal.Drafting.IModelProvider provider;
+                try
+                {
+                    provider = HarnessModels.Create(model, new Uri(Option("--endpoint", "http://127.0.0.1:11434")), TimeSpan.FromMinutes(10), speed, HarnessModels.Waiting(rateLimitWait, Console.Out), think);
+                    provider = measurement?.Guard(provider) ?? provider;
+                }
+                catch (ArgumentException ex)
+                {
+                    Console.Error.WriteLine($"grounds: {ex.Message}");
+                    return 2;
+                }
 
-            using var paced = new PacedModelProvider(provider, HarnessModels.Pace(model, delaySeconds));
-            if (runs > 1)
-            {
-                Console.WriteLine($" run {run}/{runs}");
-            }
+                using var paced = new PacedModelProvider(provider, HarnessModels.Pace(model, delaySeconds));
+                if (runs > 1)
+                {
+                    Console.WriteLine($" run {run}/{runs}");
+                }
 
-            var runFolder = outRoot is null ? null : runs > 1 ? Path.Combine(outRoot, $"run-{run}") : outRoot;
-            var report = await GroundsEvaluator.EvaluateAsync(knowledge, groundsCases, paced, Console.Out, runFolder, maxFailures, AllClaims(model));
-            GroundsEvaluator.Print(report, knowledge, Console.Out);
-            reports.Add(report);
-            if (report.StoppedEarly)
-            {
-                Console.WriteLine($"  {model}: remaining runs skipped; try again later or with --delay-seconds.");
-                break;
+                var runFolder = outRoot is null ? null : runs > 1 ? Path.Combine(outRoot, $"run-{run}") : outRoot;
+                var report = await GroundsEvaluator.EvaluateAsync(knowledge, groundsCases, paced, Console.Out, runFolder, maxFailures, AllClaims(model), measurement);
+                GroundsEvaluator.Print(report, knowledge, Console.Out);
+                reports.Add(report);
+                if (report.StoppedEarly)
+                {
+                    Console.WriteLine($"  {model}: remaining runs skipped; try again later or with --delay-seconds.");
+                    break;
+                }
             }
+            measurement?.Complete();
+        }
+        catch (Exception ex) when (measurement is not null)
+        {
+            measurement.Fail(ex);
+            Console.Error.WriteLine("Guarded grounds run stopped; see measurement metadata.");
+            return 3;
         }
 
         if (reports.Count > 1)
@@ -230,18 +259,6 @@ if (args.Length > 0 && args[0] == "grounds")
 
 if (args.Length > 0 && args[0] == "facts")
 {
-    bool? think = null;
-    if (args.Contains("--think"))
-    {
-        if (!bool.TryParse(Option("--think", string.Empty), out var value))
-        {
-            Console.Error.WriteLine("facts: --think must be true or false.");
-            return 2;
-        }
-
-        think = value;
-    }
-
     if (args.Contains("--measurement-root"))
     {
         if (!args.Contains("--alpha") || Option("--claims", AlphaFacts.Given) != AlphaFacts.Given || !args.Contains("--out"))
@@ -402,23 +419,33 @@ if (args.Length > 0 && args[0] == "draft")
         return 2;
     }
 
-    await DraftBench.RunAsync(
-        new BenchOptions
-        {
-            Models = models,
-            DataRoot = dataRoot,
-            CasesFolder = Option("--cases", Path.Combine(AppContext.BaseDirectory, "drafting-cases")),
-            OutFolder = Option("--out", "bench"),
-            Endpoint = new Uri(Option("--endpoint", "http://127.0.0.1:11434")),
-            Timeout = TimeSpan.FromMinutes(double.Parse(Option("--timeout-minutes", "15"), CultureInfo.InvariantCulture)),
-            Runs = Math.Max(1, int.Parse(Option("--runs", "1"), CultureInfo.InvariantCulture)),
-            Case = args.Contains("--case") ? Option("--case", string.Empty) : null,
-            DelaySeconds = args.Contains("--delay-seconds") ? double.Parse(Option("--delay-seconds", "0"), CultureInfo.InvariantCulture) : -1,
-            LawRoot = Option("--law-root", Path.Combine(AppContext.BaseDirectory, "data", "law")),
-            RateLimitWait = TimeSpan.FromSeconds(double.Parse(Option("--rate-limit-wait-seconds", "120"), CultureInfo.InvariantCulture)),
-            MaxConsecutiveFailures = int.Parse(Option("--max-consecutive-failures", "3"), CultureInfo.InvariantCulture),
-        },
-        Console.Out);
+    try
+    {
+        await DraftBench.RunAsync(
+            new BenchOptions
+            {
+                Models = models,
+                DataRoot = dataRoot,
+                CasesFolder = Option("--cases", Path.Combine(AppContext.BaseDirectory, "drafting-cases")),
+                OutFolder = Option("--out", "bench"),
+                Endpoint = new Uri(Option("--endpoint", "http://127.0.0.1:11434")),
+                Timeout = TimeSpan.FromMinutes(double.Parse(Option("--timeout-minutes", "15"), CultureInfo.InvariantCulture)),
+                Runs = Math.Max(1, int.Parse(Option("--runs", "1"), CultureInfo.InvariantCulture)),
+                Case = args.Contains("--case") ? Option("--case", string.Empty) : null,
+                DelaySeconds = args.Contains("--delay-seconds") ? double.Parse(Option("--delay-seconds", "0"), CultureInfo.InvariantCulture) : -1,
+                LawRoot = Option("--law-root", Path.Combine(AppContext.BaseDirectory, "data", "law")),
+                RateLimitWait = TimeSpan.FromSeconds(double.Parse(Option("--rate-limit-wait-seconds", "120"), CultureInfo.InvariantCulture)),
+                MaxConsecutiveFailures = int.Parse(Option("--max-consecutive-failures", "3"), CultureInfo.InvariantCulture),
+                Think = think,
+                MeasurementRoot = args.Contains("--measurement-root") ? Option("--measurement-root", string.Empty) : null,
+            },
+            Console.Out);
+    }
+    catch (Exception) when (args.Contains("--measurement-root"))
+    {
+        Console.Error.WriteLine("Guarded draft run stopped; see measurement metadata.");
+        return 3;
+    }
     return 0;
 }
 

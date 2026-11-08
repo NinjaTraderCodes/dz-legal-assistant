@@ -219,7 +219,7 @@ public static class GroundsEvaluator
     /// Stop the batch after this many failed cases in a row (0: never), rather than recording a failure for every
     /// remaining case while a service is down.
     /// </param>
-    public static async Task<GroundsReport> EvaluateAsync(LegalKnowledge knowledge, IReadOnlyList<GroundsCase> cases, IModelProvider provider, TextWriter log, string? outFolder = null, int maxConsecutiveFailures = 0, bool offerAllClaimTypes = false)
+    public static async Task<GroundsReport> EvaluateAsync(LegalKnowledge knowledge, IReadOnlyList<GroundsCase> cases, IModelProvider provider, TextWriter log, string? outFolder = null, int maxConsecutiveFailures = 0, bool offerAllClaimTypes = false, BenchmarkMeasurement? measurement = null)
     {
         ArgumentNullException.ThrowIfNull(knowledge);
         ArgumentNullException.ThrowIfNull(cases);
@@ -235,6 +235,7 @@ public static class GroundsEvaluator
         var consecutiveFailures = 0;
         foreach (var c in cases)
         {
+            if (measurement is not null) { await measurement.BeforeCaseAsync(c.Name); }
             var trace = new List<(string Step, string Text)>();
             var analyzer = new GroundsAnalyzer(provider) { OfferAllClaimTypes = offerAllClaimTypes, Trace = (step, text) => trace.Add((step, text)) };
             var started = Stopwatch.StartNew();
@@ -263,6 +264,17 @@ public static class GroundsEvaluator
             if (modelFolder is not null)
             {
                 await File.WriteAllTextAsync(Path.Combine(modelFolder, Safe(c.Name) + ".md"), CaseReport(result, trace));
+            }
+
+            if (measurement is not null)
+            {
+                await measurement.AfterCaseAsync(c.Name, result.Elapsed, error, new
+                {
+                    c.Partition, c.Expect, ClaimIds = analysis.ClaimIds, result.ClaimExact, result.ClaimAcceptable,
+                    ExpectedArticles = c.ExpectArticles, result.ExpectedFound, result.ModelExpectedFound,
+                    result.Selected, result.OffClaim, result.Abstained, result.LegalFound, result.Proposable,
+                    result.ExcludedProposed, result.NotInLibrary,
+                });
             }
 
             consecutiveFailures = error is null ? 0 : consecutiveFailures + 1;

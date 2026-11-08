@@ -22,14 +22,44 @@ def time(value):
     return datetime.fromisoformat(value.replace("Z", "+00:00"))
 
 
+def resources_summary(samples):
+    if not samples:
+        return None
+    paging = [s["paging"] for s in samples if s.get("pagingSampleUpdated") and s.get("paging")]
+    return dict(samples=len(samples), powerValidSamples=len(samples),
+        modelWorkingSetPeak=max(s["modelWorkingSetBytes"] for s in samples),
+        modelPrivatePeak=max(s["modelPrivateBytes"] for s in samples),
+        modelAppWorkingSetPeak=max(s["modelWorkingSetBytes"] + s["appWorkingSetBytes"] for s in samples),
+        availableMinimum=min(s["availablePhysicalBytes"] for s in samples), commitPeak=max(s["commitBytes"] for s in samples),
+        otherCores=stats([s["otherCores"] or 0 for s in samples]), monitorCores=stats([s["powershellCores"] or 0 for s in samples]),
+        pagingFreshSamples=len(paging), pageReadsPeak=max((s["PageReadsPersec"] for s in paging), default=None),
+        pagesInputPeak=max((s["PagesInputPersec"] for s in paging), default=None),
+        pagesOutputPeak=max((s["PagesOutputPersec"] for s in paging), default=None))
+
+
+def costs(rows):
+    if not rows:
+        return None
+    return dict(cases=len(rows), forwardSeconds=stats([r["Chains"][0]["WallSeconds"] for r in rows]),
+                reverseSeconds=stats([r["Chains"][1]["WallSeconds"] for r in rows]),
+                pairedCaseSeconds=stats([r["Seconds"] for r in rows]))
+
+
+def phase_case(sample):
+    parts = sample["phase"].split(":")
+    return parts[-2] if len(parts) >= 3 else ""
+
+
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("run_root", type=Path)
 parser.add_argument("--mode", choices=("capability", "fitting"), required=True)
 parser.add_argument("--models", nargs="+", choices=("gemma3:4b", "gemma4:e4b"), default=("gemma3:4b", "gemma4:e4b"))
 args = parser.parse_args()
+assert len(args.models) == len(set(args.models))
 workspace = Path(__file__).resolve().parents[2]
 manifest = read(workspace / "tests/alpha-03-cases/split-manifest.json")
-names = [m["name"] for m in manifest["members"] if m["split"] == "fitting"]
+members = {m["name"]: m for m in manifest["members"] if m["split"] == "fitting"}
+names = list(members)
 if args.mode == "capability":
     names = names[:1]
 cases = {c["name"]: c for c in read(workspace / "tests/alpha-03-cases/cases.json")["cases"] if c["name"] in names}
@@ -50,6 +80,7 @@ for model in args.models:
     first_cache, extension_cache, prompt_tokens = [], [], []
     for row in rows:
         case = cases[row["Name"]]
+        assert row["Kind"] == members[row["Name"]]["familyKind"] and row["Fold"] == members[row["Name"]]["fold"]
         elements = catalog[case["claim"]]["elements"]
         render = "\n".join(f'{s["id"]} [{labels[s["field"]]}] {s["text"]}' for s in case["annotation"]["sentences"])
         common = prompt.replace("{{ case }}", render).replace("{{ claim }}", case["claim"])
@@ -114,11 +145,21 @@ for model in args.models:
         reverseSeconds=stats([r["Chains"][1]["WallSeconds"] for r in rows]),
         caseSeconds=stats([r["Seconds"] for r in rows]), batchSeconds=completion["BatchSeconds"],
         amortizedSeconds=completion["BatchSeconds"] / len(rows), loads=loads,
-        resources=dict(samples=len(samples), powerValidSamples=len(samples), modelWorkingSetPeak=max(s["modelWorkingSetBytes"] for s in samples),
-            modelPrivatePeak=max(s["modelPrivateBytes"] for s in samples), modelAppWorkingSetPeak=max(s["modelWorkingSetBytes"] + s["appWorkingSetBytes"] for s in samples),
-            availableMinimum=min(s["availablePhysicalBytes"] for s in samples), otherCores=stats([s["otherCores"] for s in samples])))
+        resources=resources_summary(samples),
+        byKind={kind: dict(costs=costs([r for r in rows if r["Kind"] == kind]),
+            resources=resources_summary([s for s in samples if members.get(phase_case(s), {}).get("familyKind") == kind]))
+            for kind in ("polarity", "binding")},
+        resourcesByOrder={order: resources_summary([s for s in samples if s["phase"].endswith(":" + order)]) for order in ("forward", "reverse")},
+        resourceAttribution="Component samples within a paired collection; forward-only residence is not an independently measured complete pipeline")
+    if len(rows) == 96:
+        lengths = {name: sum(len(cases[name]["inputs"].get(field, "")) for field in labels) for name in names}
+        ordered = sorted(names, key=lambda name: (lengths[name], name))
+        output[model]["byLength"] = {label: dict(allReadFieldsCharacters=dict(min=min(lengths[n] for n in group), max=max(lengths[n] for n in group)),
+            costs=costs([r for r in rows if r["Name"] in group]))
+            for label, group in (("shorterHalf", ordered[:48]), ("longerHalf", ordered[48:]))}
 assert not (args.run_root / "precondition-failure.json").exists()
-(args.run_root / (args.mode + "-audit.json")).write_text(json.dumps(output, indent=2) + "\n", encoding="utf-8")
+suffix = "" if set(args.models) == {"gemma3:4b", "gemma4:e4b"} else "-" + args.models[0].replace(":", "-")
+(args.run_root / (args.mode + "-audit" + suffix + ".json")).write_text(json.dumps(output, indent=2) + "\n", encoding="utf-8")
 hashes = {str(p.relative_to(args.run_root)): hashlib.sha256(p.read_bytes()).hexdigest()
           for p in sorted(args.run_root.rglob("*")) if p.is_file() and p.name not in ("artifact-hashes.json", "audit-stdout.txt")}
 (args.run_root / "artifact-hashes.json").write_text(json.dumps(hashes, indent=2) + "\n", encoding="utf-8")

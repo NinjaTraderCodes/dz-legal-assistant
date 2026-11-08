@@ -13,15 +13,23 @@ foreach($model in $ModelNames){
     $folder=Join-Path $RunRoot ($Mode+'-'+$model.Replace(':','-'))
     if(Test-Path -LiteralPath $folder){throw 'Fresh output required; no restart within a prior collection.'}
     $started=[DateTime]::UtcNow
-    & dotnet $binary $Mode $model tests/alpha-03-cases data/law tools/alpha-03/scored-status.ar.txt $folder $RunRoot 2>&1 | ForEach-Object {
-        $line=[string]$_
-        Add-Content -LiteralPath (Join-Path $RunRoot ($model.Replace(':','-')+'-stdout.txt')) -Value $line -Encoding utf8
-        Write-Output $line
+    $code=1
+    $nativeError=$null
+    try {
+        & dotnet $binary $Mode $model tests/alpha-03-cases data/law tools/alpha-03/scored-status.ar.txt $folder $RunRoot 2>&1 | ForEach-Object {
+            $line=[string]$_
+            Add-Content -LiteralPath (Join-Path $RunRoot ($model.Replace(':','-')+'-stdout.txt')) -Value $line -Encoding utf8
+            Write-Output $line
+        }
+        $code=$LASTEXITCODE
+    } catch {
+        $nativeError=$_.Exception.Message
+        Add-Content -LiteralPath (Join-Path $RunRoot ($model.Replace(':','-')+'-native-error.txt')) -Value $nativeError -Encoding utf8
+    } finally {
+        @{exitCode=$code;nativeError=$nativeError;startedUtc=$started.ToString('o');finishedUtc=[DateTime]::UtcNow.ToString('o');power=(Get-AlphaPower)}|ConvertTo-Json -Depth 6|Set-Content (Join-Path $RunRoot ($model.Replace(':','-')+'-process-completion.json')) -Encoding utf8
+        Invoke-RestMethod -Uri http://127.0.0.1:11434/api/generate -Method Post -ContentType application/json -Body (@{model=$model;keep_alive=0}|ConvertTo-Json) -TimeoutSec 60|ConvertTo-Json|Set-Content (Join-Path $RunRoot ($model.Replace(':','-')+'-final-unload.json')) -Encoding utf8
     }
-    $code=$LASTEXITCODE
-    @{exitCode=$code;startedUtc=$started.ToString('o');finishedUtc=[DateTime]::UtcNow.ToString('o');power=(Get-AlphaPower)}|ConvertTo-Json -Depth 6|Set-Content (Join-Path $RunRoot ($model.Replace(':','-')+'-process-completion.json')) -Encoding utf8
-    Invoke-RestMethod -Uri http://127.0.0.1:11434/api/generate -Method Post -ContentType application/json -Body (@{model=$model;keep_alive=0}|ConvertTo-Json) -TimeoutSec 60|ConvertTo-Json|Set-Content (Join-Path $RunRoot ($model.Replace(':','-')+'-final-unload.json')) -Encoding utf8
-    if($code -ne 0){throw ('Scored collection stopped with code '+$code+'; no next model or fitting phase.')}
+    if($nativeError -or $code -ne 0){throw ('Scored collection stopped with code '+$code+'; no next model or fitting phase.')}
     Assert-AlphaPower|Out-Null
 }
 Set-Content -LiteralPath (Join-Path $RunRoot 'phase.txt') -Value ($Mode+'-complete') -Encoding utf8

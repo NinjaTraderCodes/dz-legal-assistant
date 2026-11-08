@@ -73,10 +73,14 @@ var options = new JsonSerializerOptions { WriteIndented = true };
 var started = DateTimeOffset.UtcNow;
 var batchClock = Stopwatch.StartNew();
 string? failure = null;
+string? activeCase = null;
+bool? activeReverse = null;
 try
 {
     foreach (var input in selected)
     {
+        activeCase = input.Name;
+        activeReverse = null;
         if (rows.Count % 10 == 0)
         {
             var batch = rows.Count / 10 + 1;
@@ -106,6 +110,7 @@ try
         var caseClock = Stopwatch.StartNew();
         foreach (var reverse in new[] { false, true })
         {
+            activeReverse = reverse;
             await PhaseAsync("score-" + mode + "-" + model.Replace(':', '-') + ":" + input.Name + ":" + (reverse ? "reverse" : "forward"));
             chains.Add(await reader.ReadAsync(text, catalog[input.Claim], reverse));
         }
@@ -117,15 +122,19 @@ try
         Console.WriteLine(input.Name + ": both chains complete, " + recorder.Calls + " total four-score positions");
     }
 }
-catch (Exception ex) when (ex is IOException or HttpRequestException or TaskCanceledException or JsonException or InvalidOperationException or KeyNotFoundException)
+catch (Exception ex) when (ex is IOException or InvalidDataException or HttpRequestException or TaskCanceledException
+    or JsonException or InvalidOperationException or KeyNotFoundException or FormatException)
 {
     failure = ex.GetType().Name + ": " + ex.Message;
+    await SaveAsync("failure.json", new { Failure = failure, Case = activeCase, Reverse = activeReverse,
+        LastNativeCall = recorder.Calls, Utc = DateTimeOffset.UtcNow });
     Console.WriteLine("Stopped on capability/runtime precondition: " + failure);
 }
 
 await SaveAsync("completion.json", new { Model = model, Mode = mode, Planned = selected.Length, Completed = rows.Count,
     Complete = failure is null && rows.Count == selected.Length, Failure = failure, StartedUtc = started,
-    FinishedUtc = DateTimeOffset.UtcNow, BatchSeconds = batchClock.Elapsed.TotalSeconds, Calls = recorder.Calls, LoadCount = loads.Count });
+    FinishedUtc = DateTimeOffset.UtcNow, BatchSeconds = batchClock.Elapsed.TotalSeconds, Calls = recorder.Calls, LoadCount = loads.Count,
+    StoppedCase = failure is null ? null : activeCase, StoppedReverse = failure is null ? null : activeReverse });
 return failure is null ? 0 : 3;
 
 Task PhaseAsync(string phase) => File.WriteAllTextAsync(Path.Combine(runRoot, "phase.txt"), phase);

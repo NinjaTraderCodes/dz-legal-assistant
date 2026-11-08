@@ -90,6 +90,23 @@ public sealed class ScoredStatusReaderTests
     }
 
     [Fact]
+    public async Task AnUnavailableClassStopsBeforeTheNextQuestionWithoutRetry()
+    {
+        var calls = 0;
+        using var client = new HttpClient(new Handler(_ =>
+        {
+            calls++;
+            var response = Response();
+            response["logprobs"]![0]!["top_logprobs"]!.AsArray().RemoveAt(3);
+            return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(response.ToJsonString()) });
+        })) { BaseAddress = new Uri("http://127.0.0.1:11434/") };
+        var reader = new ScoredStatusReader(client, "gemma4:e4b", "{{ claim }} {{ case }}");
+        var claim = new ClaimElements { Claim = "test", Elements = [new() { Event = "money_lent", Label = "أقرض" }, new() { Event = "notice_served", Label = "أعذر" }] };
+        await Assert.ThrowsAsync<InvalidDataException>(() => reader.ReadAsync(CaseText.From(new Dictionary<string, string>()), claim, false));
+        Assert.Equal(1, calls);
+    }
+
+    [Fact]
     public void StatusAblationKeepsBindingsAndRequestsAndDoesNotInventRecoveredValues()
     {
         var value = new FactValue("100", "100", ValueCheck.InCitedSentence);

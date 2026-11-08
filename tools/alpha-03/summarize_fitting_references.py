@@ -65,14 +65,16 @@ def quality(rows, cases, catalog):
         event_ids = {e["event"]: str(i + 1) for i, e in enumerate(questions["elements"])}
         for gold in case["annotation"]["events"]:
             predicted = events.get(gold["kind"])
-            label = predicted["Polarity"] if predicted else (
-                "absent" if event_ids[gold["kind"]] in absences else "unresolved")
+            label = (("affirmed", "denied", "disputed", "absent")[row["StatusChoices"][gold["kind"]] - 1]
+                     if "StatusChoices" in row else predicted["Polarity"] if predicted else (
+                         "absent" if event_ids[gold["kind"]] in absences else "unresolved"))
             confusion[gold["polarity"]][label] += 1
             if gold["kind"] == case["annotation"]["target"]:
                 targets[gold["polarity"]][label] += 1
             counts["askedEvents"] += 1
             counts["statusCorrect"] += label == gold["polarity"]
             counts["unresolvedStatus"] += label == "unresolved"
+            counts["decisiveOmissions"] += gold["decisive"] and gold["polarity"] != "absent" and predicted is None
             if gold["polarity"] != "affirmed":
                 counts["nonAffirmedLabels"] += 1
                 counts["nonAffirmedErrors"] += label != gold["polarity"]

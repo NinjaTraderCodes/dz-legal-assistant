@@ -50,10 +50,15 @@ public static class HarnessModels
     /// <param name="timeout">Longest wait for one answer.</param>
     /// <param name="speed">Receives Ollama's timings, when the engine is local.</param>
     /// <param name="rateLimit">For hosted engines: how long to wait out "too many requests" before a call fails.</param>
+    /// <param name="think">Explicit local Ollama thinking switch; null preserves the existing model-specific default.</param>
     /// <exception cref="ArgumentException">A hosted engine without its key.</exception>
-    public static IModelProvider Create(string spec, Uri ollamaEndpoint, TimeSpan timeout, SpeedLog? speed = null, RateLimitPolicy? rateLimit = null)
+    public static IModelProvider Create(string spec, Uri ollamaEndpoint, TimeSpan timeout, SpeedLog? speed = null, RateLimitPolicy? rateLimit = null, bool? think = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(spec);
+        if (think.HasValue && (spec == "stub" || IsHosted(spec)))
+        {
+            throw new ArgumentException("--think applies only to local Ollama models.", nameof(think));
+        }
         if (spec == "stub")
         {
             return new StubModelProvider();
@@ -110,7 +115,7 @@ public static class HarnessModels
             Model = spec,
             Timeout = timeout,
             // Reasoning models answer far faster with thinking disabled; others reject the flag.
-            Think = spec.StartsWith("qwen3", StringComparison.OrdinalIgnoreCase) ? false : null,
+            Think = think ?? (spec.StartsWith("qwen3", StringComparison.OrdinalIgnoreCase) ? false : (bool?)null),
         })
         { OnTimings = speed is null ? null : speed.Add };
     }

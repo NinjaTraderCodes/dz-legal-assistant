@@ -28,7 +28,7 @@ using DzLegal.Harness;
 //   dzlegal-harness facts --models <gemma3:4b,qwen3.5:2b,...> [--out bench-facts] [--partition development,validation,robustness] [--case <name>]
 //       The fact-reading step (docs/FACT-READING.md): each reader extracts roles, events, dates, amounts and requests,
 //       scored against the answer key in tests/fact-cases, critical errors counted per case.
-//   dzlegal-harness facts --alpha [--claims given|read] --models <...>   Alpha-01 (docs/ALPHA-01.md): the case is read
+//   dzlegal-harness facts --alpha [--claims given|read] --models <...> [--think true|false]   Alpha-01 (docs/ALPHA-01.md): the case is read
 //       against its claim type, given (the answer key's) or read by the analysis's first step; the role follows from it.
 //   dzlegal-harness facts check --cases <folder>   checks a case set written elsewhere (docs/HIDDEN-SET.md) without
 //       showing its text: codes, claim types, values written in the case, answers the Alpha-01 questions can express.
@@ -230,6 +230,32 @@ if (args.Length > 0 && args[0] == "grounds")
 
 if (args.Length > 0 && args[0] == "facts")
 {
+    bool? think = null;
+    if (args.Contains("--think"))
+    {
+        if (!bool.TryParse(Option("--think", string.Empty), out var value))
+        {
+            Console.Error.WriteLine("facts: --think must be true or false.");
+            return 2;
+        }
+
+        think = value;
+    }
+
+    if (args.Contains("--measurement-root"))
+    {
+        if (!args.Contains("--alpha") || Option("--claims", AlphaFacts.Given) != AlphaFacts.Given || !args.Contains("--out"))
+        {
+            Console.Error.WriteLine("GUARD measurement requires Alpha-01, claims given, and an output folder.");
+            return 2;
+        }
+
+        return await FactRunMeasurement.RunCommandAsync(Option("--cases", string.Empty),
+            Option("--law-root", Path.Combine(AppContext.BaseDirectory, "data", "law")), Option("--out", string.Empty),
+            Option("--models", string.Empty), think, Option("--measurement-root", string.Empty),
+            Option("--endpoint", "http://127.0.0.1:11434"), Console.Out);
+    }
+
     var factCases = FactsEvaluator.LoadCases(Option("--cases", Path.Combine(AppContext.BaseDirectory, "fact-cases")));
     if (args.Length > 1 && args[1] == "check")
     {
@@ -302,6 +328,18 @@ if (args.Length > 0 && args[0] == "facts")
     {
         Directory.CreateDirectory(factOut);
         File.WriteAllText(Path.Combine(factOut, "summary.md"), "# Fact reading bench" + Environment.NewLine + Environment.NewLine);
+        var factOptions = new Dictionary<string, string>
+        {
+            ["reader"] = alpha ? "alpha-01, claims " + claimsMode : "lines",
+            ["partition"] = string.Join(',', factPartition),
+            ["case"] = args.Contains("--case") ? Option("--case", string.Empty) : "all",
+            ["endpoint"] = Option("--endpoint", "http://127.0.0.1:11434"),
+        };
+        if (think.HasValue)
+        {
+            factOptions["think"] = think.Value ? "true" : "false";
+        }
+
         RunManifest.Create(
             "facts",
             readers,
@@ -314,13 +352,7 @@ if (args.Length > 0 && args[0] == "facts")
                     ["cases"] = Option("--cases", Path.Combine(AppContext.BaseDirectory, "fact-cases")),
                 }
                 : new Dictionary<string, string> { ["prompt"] = Path.Combine(lawRoot, DzLegal.Drafting.FactReader.PromptFile), ["cases"] = Option("--cases", Path.Combine(AppContext.BaseDirectory, "fact-cases")) },
-            new Dictionary<string, string>
-            {
-                ["reader"] = alpha ? "alpha-01, claims " + claimsMode : "lines",
-                ["partition"] = string.Join(',', factPartition),
-                ["case"] = args.Contains("--case") ? Option("--case", string.Empty) : "all",
-                ["endpoint"] = Option("--endpoint", "http://127.0.0.1:11434"),
-            })
+            factOptions)
             .Write(factOut);
     }
 
@@ -338,7 +370,7 @@ if (args.Length > 0 && args[0] == "facts")
         DzLegal.Drafting.IModelProvider provider;
         try
         {
-            provider = HarnessModels.Create(model, new Uri(Option("--endpoint", "http://127.0.0.1:11434")), TimeSpan.FromMinutes(10), speed, HarnessModels.Waiting(TimeSpan.FromSeconds(120), Console.Out));
+            provider = HarnessModels.Create(model, new Uri(Option("--endpoint", "http://127.0.0.1:11434")), TimeSpan.FromMinutes(10), speed, HarnessModels.Waiting(TimeSpan.FromSeconds(120), Console.Out), think);
         }
         catch (ArgumentException ex)
         {

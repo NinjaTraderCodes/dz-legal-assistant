@@ -38,8 +38,21 @@ if (cases.Count != 96)
 }
 
 var catalog = ClaimFactReader.LoadElements(Path.Combine(workspace, "data", "law"));
+using var predictions = JsonDocument.Parse(File.ReadAllText(args[2]));
+if (predictions.RootElement.GetProperty("corpusHash").GetString() != "9fc0eb6404903071aeaee4721f228a621cc71b772ea4afa45fb0230256fda3a5")
+{
+    throw new InvalidDataException("Predictions target another corpus.");
+}
+
+var models = predictions.RootElement.GetProperty("candidates").EnumerateArray()
+    .Select(c => c.GetProperty("model").GetString()!).Distinct(StringComparer.Ordinal).ToArray();
+if (models.Length == 0 || models.Any(m => m is not ("gemma3:4b" or "gemma4:e4b")))
+{
+    throw new InvalidDataException("Only the declared local-model records may be evaluated.");
+}
+
 var references = new Dictionary<string, Dictionary<string, JsonElement>>(StringComparer.Ordinal);
-foreach (var model in new[] { "gemma3:4b", "gemma4:e4b" })
+foreach (var model in models)
 {
     var baselineBytes = File.ReadAllBytes(Path.Combine(args[1], "reference-" + model.Replace(':', '-'), "case-results.json"));
     var expected = model == "gemma3:4b" ? "0dc3123e10bcedfc77566f1c71bec35925d4e446dc327ebf9b51d221a09ff91b"
@@ -68,12 +81,6 @@ foreach (var model in new[] { "gemma3:4b", "gemma4:e4b" })
     }
 
     references[model] = rows;
-}
-
-using var predictions = JsonDocument.Parse(File.ReadAllText(args[2]));
-if (predictions.RootElement.GetProperty("corpusHash").GetString() != "9fc0eb6404903071aeaee4721f228a621cc71b772ea4afa45fb0230256fda3a5")
-{
-    throw new InvalidDataException("Predictions target another corpus.");
 }
 
 var results = new List<object>();

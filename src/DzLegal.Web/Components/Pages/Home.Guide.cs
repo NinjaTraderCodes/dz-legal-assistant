@@ -1,4 +1,5 @@
 using DzLegal.Presentation.ViewModels;
+using DzLegal.Web.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
@@ -34,6 +35,9 @@ public sealed partial class Home
 
     /// <summary>The furthest step reached. Next is locked until the step is done; a step done before can be passed again.</summary>
     private int _furthest = 1;
+
+    /// <summary>The furthest guide step already counted in this session, so going back and forth counts each step once.</summary>
+    private int _counted;
 
     /// <summary>The target last sent (empty: the guide is open with nothing to point at; null: it is closed), so the
     /// browser is called only when it changes, not on every render.</summary>
@@ -152,6 +156,12 @@ public sealed partial class Home
     {
         guideStep = Math.Clamp(step, 1, GuideSteps);
         _furthest = Math.Max(_furthest, guideStep);
+        if (guideStep > _counted)
+        {
+            _counted = guideStep;
+            Note(VisitKinds.Guide, guideStep.ToString(System.Globalization.CultureInfo.InvariantCulture));
+        }
+
         _guideSampleOpened = false;
         _domicileCleared = false;
         _guideExported = false;
@@ -193,6 +203,7 @@ public sealed partial class Home
         if (direction > 0 && guideStep == GuideSteps)
         {
             // Finished: the next opening starts from the beginning.
+            Note(VisitKinds.Guide, "finished");
             guideStep = 1;
             _furthest = 1;
             await CloseGuide();
@@ -224,6 +235,7 @@ public sealed partial class Home
     private async Task ExportAsync(CommunityToolkit.Mvvm.Input.IAsyncRelayCommand command)
     {
         await Run(command);
+        Note(VisitKinds.Export, (command == Vm!.ExportPdfCommand ? "pdf" : "word") + (Vm.HasExportBlockers ? " refused" : string.Empty));
         if (showGuide && guideStep == GuideSteps && !Vm!.HasExportBlockers && !Vm.IsError)
         {
             _guideExported = true;

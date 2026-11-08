@@ -48,6 +48,8 @@ public sealed partial class Home : IDisposable
 
     [Inject] private IHttpContextAccessor Http { get; set; } = default!;
 
+    [Inject] private VisitRecorder Visits { get; set; } = default!;
+
     [SupplyParameterFromQuery(Name = "lang")] private string? LanguageQuery { get; set; }
 
     private MainWindowViewModel? Vm { get; set; }
@@ -66,7 +68,7 @@ public sealed partial class Home : IDisposable
         var address = Http.HttpContext?.Connection.RemoteIpAddress?.ToString();
         var language = LanguageChoice.Resolve(request?.Cookies[LanguageChoice.CookieName], LanguageQuery, request?.Headers.AcceptLanguage);
         _files = new BrowserFiles(Js);
-        Vm = Engine.CreateSession(_files, new BrowserLinks(Js), language, address);
+        Vm = Engine.CreateSession(_files, new BrowserLinks(Js), language, address, kind => Note(VisitKinds.Ai, kind));
         Vm.IsDarkTheme = LanguageSwitch.IsDarkTheme(request?.Cookies[LanguageSwitch.ThemeCookieName]);
         _watcher = new ViewModelWatcher(Vm, RequestRender);
         if (Engine.Samples.Count > 0)
@@ -290,8 +292,12 @@ public sealed partial class Home : IDisposable
         {
             Open(sample);
             NoteSampleOpened(sample.Id);
+            Note(VisitKinds.Sample, sample.Id);
         }
     }
+
+    /// <summary>One anonymous count of what the visitor did here: its kind and a code (sample id, step, AI call kind).</summary>
+    private void Note(string kind, string detail) => Visits.Demo(kind, Vm?.L.Language ?? "-", detail);
 
     private void SelectProvider(ChangeEventArgs e) =>
         Vm!.SelectedProvider = Vm.Providers.FirstOrDefault(p => p.Key == e.Value as string) ?? Vm.SelectedProvider;

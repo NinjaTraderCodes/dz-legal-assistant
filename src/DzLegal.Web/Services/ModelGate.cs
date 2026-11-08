@@ -58,7 +58,8 @@ public sealed class ProtectedModelProvider(
     IModelProvider inner,
     ModelGate gate,
     IReadOnlyList<CallQuota> quotas,
-    Action<string>? logFailure = null) : IModelProvider, IDisposable
+    Action<string>? logFailure = null,
+    Action<string>? onCall = null) : IModelProvider, IDisposable
 {
     public const string Unavailable =
         "The AI service did not answer. Try again in a minute; the formal check, editing and export keep working.";
@@ -87,6 +88,8 @@ public sealed class ProtectedModelProvider(
         }
 
         using var slot = await gate.EnterAsync(cancellationToken);
+        // Counted once the call is admitted (the visit counts: its kind only, never the request's text).
+        onCall?.Invoke(request.SectionId);
         await using var pieces = inner.StreamAsync(request, cancellationToken).GetAsyncEnumerator(cancellationToken);
         while (true)
         {

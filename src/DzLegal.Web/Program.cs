@@ -22,6 +22,15 @@ builder.Services.AddSiteCompression();
 
 builder.Services.AddHttpContextAccessor();
 
+// Anonymous visit counts (docs/WEB-DEMO.md, "Visit counting"): only with a database, DATABASE_URL in the host's settings
+// (Visits:Store = memory keeps them in memory, for a local run). Nothing identifying is ever recorded; see VisitEvent.
+IVisitStore? visitStore = builder.Configuration["Visits:Store"] == "memory"
+    ? new MemoryVisitStore()
+    : PostgresVisitStore.FromUrl(builder.Configuration["DATABASE_URL"]);
+builder.Services.AddSingleton(sp => new VisitRecorder(visitStore, sp.GetRequiredService<ILogger<VisitRecorder>>()));
+builder.Services.AddHostedService(sp => sp.GetRequiredService<VisitRecorder>());
+var statsToken = builder.Configuration["STATS_TOKEN"];
+
 // Behind the host's proxy (Render): the visitor's address is the last one the proxy adds to X-Forwarded-For.
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
@@ -44,6 +53,20 @@ app.Use(async (context, next) =>
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
+}
+
+// A page someone looked at is counted after it was sent, so counting never delays or breaks a page.
+var visits = app.Services.GetRequiredService<VisitRecorder>();
+if (visits.Enabled)
+{
+    app.Use(async (context, next) =>
+    {
+        await next();
+        if (VisitFilter.ShouldCount(context))
+        {
+            visits.Record(VisitFilter.PageView(context, visits.Now));
+        }
+    });
 }
 
 // Check which configured Gemma models Google still serves, without delaying the start (the host's wake-up is slow enough).
@@ -147,9 +170,53 @@ app.MapMethods("/healthz", ["GET", "HEAD"], (WebEngine engine) => Results.Ok(new
     started = started.ToString("yyyy-MM-ddTHH:mm:ssZ", System.Globalization.CultureInfo.InvariantCulture),
 }));
 
+// The owner's view of the visit counts, behind the browser's sign-in box (STATS_TOKEN as the password). Without the
+// token the address does not exist.
+app.MapGet("/stats", async (HttpContext context, string? days) =>
+{
+    if (await StatsAccess(context) is { } refused)
+    {
+        return refused;
+    }
+
+    var span = VisitStats.Days(days);
+    var events = visits.Store is { } store ? await VisitStats.ReadAsync(store, visits.Now, span, context.RequestAborted) : [];
+    return Results.Content(VisitStats.Html(events, span, visits.Now), "text/html; charset=utf-8");
+});
+app.MapGet("/stats.csv", async (HttpContext context, string? days) =>
+{
+    if (await StatsAccess(context) is { } refused)
+    {
+        return refused;
+    }
+
+    var events = visits.Store is { } store ? await VisitStats.ReadAsync(store, visits.Now, VisitStats.Days(days), context.RequestAborted) : [];
+    context.Response.Headers.ContentDisposition = "attachment; filename=\"visits.csv\"";
+    return Results.Text("\uFEFF" + VisitStats.Csv(events), "text/csv; charset=utf-8");
+});
+
 // The framework would add a second Content-Security-Policy header (frame-ancestors) to the circuit's pages; the
 // page's own policy already forbids framing, so one header carries the whole rule.
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode(o => o.ContentSecurityFrameAncestorsPolicy = null);
 
 app.Run();
+
+Task<IResult?> StatsAccess(HttpContext context)
+{
+    context.Response.Headers.CacheControl = "no-store";
+    context.Response.Headers["X-Robots-Tag"] = "noindex, nofollow";
+    IResult? refused = VisitStats.Check(context.Request, statsToken) switch
+    {
+        VisitStats.Access.Hidden => Results.NotFound(),
+        VisitStats.Access.Ask => AskForToken(context),
+        _ => null,
+    };
+    return Task.FromResult(refused);
+}
+
+static IResult AskForToken(HttpContext context)
+{
+    context.Response.Headers.WWWAuthenticate = "Basic realm=\"stats\", charset=\"UTF-8\"";
+    return Results.Unauthorized();
+}

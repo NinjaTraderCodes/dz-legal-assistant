@@ -105,9 +105,10 @@ public sealed partial class WebEngine : IDisposable
 
     /// <summary>
     /// A fresh view model for one browser session, with the hosted engine first and "without AI" as the alternative.
-    /// <paramref name="address"/> is the visitor's network address, for the per-address limit.
+    /// <paramref name="address"/> is the visitor's network address, for the per-address limit; <paramref name="onAiCall"/>
+    /// hears each admitted AI call's kind (grounds.reading…), for the anonymous visit counts.
     /// </summary>
-    public MainWindowViewModel CreateSession(IUserFiles files, IExternalLinks links, string language, string? address = null)
+    public MainWindowViewModel CreateSession(IUserFiles files, IExternalLinks links, string language, string? address = null, Action<string>? onAiCall = null)
     {
         var loc = new Loc();
         loc.SetLanguage(language);
@@ -127,7 +128,7 @@ public sealed partial class WebEngine : IDisposable
             providers.Add(new ProviderOption(
                 "hosted",
                 l => l.Language == "en" ? $"{PrimaryModel} (demo server)" : $"{PrimaryModel} (خادم العرض)",
-                () => new ProtectedModelProvider(CreateChain(), Gate, quotas, reason => LogFailed(_log, reason)),
+                () => new ProtectedModelProvider(CreateChain(), Gate, quotas, reason => LogFailed(_log, reason), onAiCall),
                 sendsCaseData: true));
         }
 

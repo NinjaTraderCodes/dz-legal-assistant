@@ -64,16 +64,16 @@ const demoChip = lang === "ar" ? "عرض تجريبي · قضايا خيالية
             <h2 id="demo-title" class="h2">{t(lang, "privacy.demo.title")}</h2>
             <p>{t(lang, "privacy.demo.lead")}</p>
             <ul class="list plain">
-                {[1, 2, 3, 4, 5].map((i) => <li><Icon name="info" size={16} /> <span>{t(lang, `privacy.demo.${i}`)}</span></li>)}
+                {[1, 2, 3, 4, 5, 6].map((i) => <li><Icon name="info" size={16} /> <span>{t(lang, `privacy.demo.${i}`)}</span></li>)}
             </ul>
-            <Source lang={lang} files={["docs/WEB-DEMO.md", "src/DzLegal.Web/wwwroot/dzlegal.js"]} />
+            <Source lang={lang} files={["docs/WEB-DEMO.md", "src/DzLegal.Web/wwwroot/dzlegal.js", "src/DzLegal.Web/Services/Visits.cs"]} />
         </div>
         <div class="block card-alt">
             <h2 class="h2">{t(lang, "privacy.site.title")}</h2>
             <ul class="list plain">
-                {[1, 2, 3, 4].map((i) => <li><Icon name="checkmark" size={16} /> <span>{t(lang, `privacy.site.${i}`)}</span></li>)}
+                {[1, 2, 3, 4, 5].map((i) => <li><Icon name="checkmark" size={16} /> <span>{t(lang, `privacy.site.${i}`)}</span></li>)}
             </ul>
-            <Source lang={lang} files={["docs/WEB-DEMO.md", "src/DzLegal.Web/Site/SecurityHeaders.cs"]} />
+            <Source lang={lang} files={["docs/WEB-DEMO.md", "src/DzLegal.Web/Site/SecurityHeaders.cs", "src/DzLegal.Web/Services/Visits.cs"]} />
         </div>
     </section>
 </Base>

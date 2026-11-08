@@ -149,6 +149,38 @@ service to the smallest paid plan** (always on, five times the CPU), then back.
 
 Other hosts (Google Cloud Run: `deploy/cloud-run.sh` and `.ps1`; a paid Hugging Face Space: the `deploy-web-demo` workflow) run the same image.
 
+## Visit counting (anonymous)
+
+The server can count visits to the website and steps in the demo, to see when and how the site is used. It is off until
+a database is configured, and the privacy page says what is counted (`privacy.site.5` and `privacy.demo.6` in
+`site/src/i18n/site.*.json`).
+
+**What is recorded,** one row per event (`src/DzLegal.Web/Services/Visits.cs`):
+
+| Event | Kept |
+|---|---|
+| A page viewed (`page`) | time, page path without its query, language, the referring site's **host only**, and the browser's `Sec-Fetch-Site` (an arrival from another site, a typed address, or a click inside the site) |
+| In the demo | a sample opened (`sample`, its id), a guide step reached (`guide`, 1 to 5, then `finished`), an AI call admitted (`ai`, its kind: `grounds.reading` for an analysis, `grounds-argued` for a draft), an export (`export`, pdf or word, `refused` when the review blocked it) |
+
+**What is never recorded:** the IP address, the browser string (read only to leave out bots), cookies or any other
+identifier, and anything typed. `VisitEvent` has no field for them, and a test fails if one is added. Not counted at all:
+our uptime checks, bots, link previews, headless test browsers, prefetches, assets, `/healthz` and `/stats`.
+
+**Setting it up on Render** (the host restarts often and its disk is wiped, so the counts need a database):
+1. *New → PostgreSQL*, plan **Free**, region **Frankfurt** (the web service's). Render's free databases expire after a
+   limited time (30 days when this was written): enough for an evaluation period, then delete it or move to a paid plan.
+2. In the web service's *Environment*: `DATABASE_URL` = the database's **Internal Database URL**, and `STATS_TOKEN` = a
+   long random password (for example the output of `openssl rand -base64 24`). Neither goes in the repository.
+3. Save: the service redeploys, creates its table and logs «Visit counting: the database is ready.»
+
+**Reading it:** open `/stats` (the browser asks for a user name, any, and the password: `STATS_TOKEN`). It shows the totals,
+a table by day, the referring sites of arrivals, the pages, and the demo's steps, in Algeria time; `?days=30` widens it (at
+most 60). `/stats.csv` downloads every event. Without `STATS_TOKEN` both addresses answer 404.
+
+**If the database fails,** pages are served as usual: counting happens after the page is sent, the events wait in a
+bounded queue, and a failed write is dropped with one warning a minute in the server log. Locally, `Visits:Store=memory`
+counts in memory without a database.
+
 ## No wake-up wait: the options (checked 20 Oct 2026)
 
 **Vercel cannot run this demo as it is built.** The demo is Blazor Server: one long-running .NET process keeps each

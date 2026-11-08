@@ -30,9 +30,7 @@ const description = lang === "ar" ? summary.data.lawyer : plain;
 const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 ---
 <Base lang={lang} title={title} description={description} path={`/docs/${entry.id}/`} og="docs" folder={{ tone: "blue", tab: t(lang, "about.docs.title") }}>
-    <PageHead title={title}>
-        <p class="source caption">{t(lang, "source.label")} <span dir="ltr">docs/{name}.md</span></p>
-    </PageHead>
+    <PageHead title={title} />
     <div class="section page layout">
         <nav class="toc" aria-labelledby="toc-title">
             <p id="toc-title" class="caption">{t(lang, "docs.toc")}</p>

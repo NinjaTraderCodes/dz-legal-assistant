@@ -58,6 +58,7 @@ const no = (n: number) => String(n).padStart(2, "0");
         </div>
         <div class="sheet results">
             <Clip />
+            <p class="new"><span class="tag">{t(lang, "ai.new")}</span></p>
             <h3 class="results-title">{t(lang, "ai.fig.title")}</h3>
             <dl class="figures">
                 {figures.map((f) => (
@@ -96,6 +97,9 @@ const no = (n: number) => String(n).padStart(2, "0");
     /* The results: three figures in one line on a slim sheet, each with its count. */
     .results { display: grid; gap: 14px; padding: 24px 28px 20px; }
     .results-title { font-size: 0.9rem; font-weight: 600; color: var(--w-sheet-muted); padding-bottom: 10px; border-bottom: 2px solid var(--w-sheet-text); }
+    /* What changed since the submission, said openly above the figures; it may wrap on a phone. */
+    .new { margin: 0; padding-inline-end: 44px; }
+    .new .tag { color: var(--w-sheet-text); white-space: normal; }
     .figures { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 28px; margin: 0; }
     .figure { display: flex; flex-direction: column-reverse; gap: 4px; justify-content: flex-end; }
     .figure dt { font-size: 0.9rem; line-height: 1.5; }

@@ -23,8 +23,9 @@ const frame = (name: string) => {
 const reading = { light: frame(`desktop/reading-${lang}-light`), dark: frame(`desktop/reading-${lang}-dark`) };
 // Stage 2 is the code's own step; the others are the model's.
 const rows = [1, 2, 3, 4].map((n) => ({ n, title: t(lang, `ai.stage${n}.title`), line: t(lang, `ai.row${n}`), model: n !== 2 }));
-// The measured results, as the hidden-set report gives them (docs/HIDDEN-SET.md).
-const figures = [{ value: "94", of: "85 / 90", label: t(lang, "ai.fig.1") }, { value: "67", of: "60 / 90", label: t(lang, "ai.fig.2") }, { value: "36", of: "32 / 90", label: t(lang, "ai.fig.3") }];
+// The measured results, as the hidden-set report gives them (docs/HIDDEN-SET.md): the two local models on the same second
+// set, then the online model on the first.
+const figures = [{ value: "64", of: "58 / 90", label: t(lang, "ai.fig.1") }, { value: "43", of: "39 / 90", label: t(lang, "ai.fig.2") }, { value: "71", of: "64 / 90", label: t(lang, "ai.fig.3") }];
 const percent = lang === "ar" ? "٪" : "%";
 const guarantees = [
     { title: t(lang, "proofs.texts.title"), line: fmt(s(lang, "AboutSources"), "1,361", "6") },

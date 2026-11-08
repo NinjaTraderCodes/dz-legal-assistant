@@ -27,7 +27,7 @@ public static class Composition
             Temperature = settings.Ollama.Temperature,
             MaxTokens = settings.Ollama.MaxTokens,
             RepeatPenalty = settings.Ollama.RepeatPenalty,
-            Think = settings.Ollama.Think,
+            Think = OllamaModelChoice.ThinkFor(settings.Ollama.Model, settings.Ollama.Think),
             KeepAlive = settings.Ollama.KeepAlive,
         };
 

@@ -1,5 +1,15 @@
 # Authorised v3 fitting-stage checkpoint
 
+## CURRENT — owner resumed; scored capability passed
+
+Owner explicitly resumed and manually closed Brave. **Do not close browsers yourself again; owner handles that.** On source11fb3b2 (post-commit solution/collector0warnings/errors,1001tests passed/pushed), both models passed the bounded actual-reader capability probe: first frozen fitting input001, forward/reverse,12/12 finite byte-exact score sets and10/10 cache extensions per model; independent exact prompt/source/history/wire audit passes. No semantic scoring or prompt adjustment. V3 hash and both model digests unchanged. Prompt hashf697cdf9769765e60ddc6031e20584b10f2dd9293fef80012a6004aa2ef39d8d.
+
+Raw root `%TEMP%\dzlegal-alpha03-scored-capability-20261108-145017`, all89 artifact hashes verified. Owned app15044/monitor11004 exited normally, both models unloaded; Search Running/Automatic unchanged, Best performance retained. IDs historical only; no active benchmark. Capability summary at `docs/baselines/2026-11-08-alpha-03-scored-capability/summary.md`. Do not rerun that probe or modify its prompt from correctness; it is not an accuracy result. All timing on mains/Best; maximum contexts723/711, minimum available6.90/4.52GiB.
+
+Pending this checkpoint's tools/docs commit/checks: generic `audit_scored_collection.py` independently verifies completed exact prompts/prefixes/bytes/finite scores/cache/load/power/headroom and hashes external records; serial `Measure-ScoredFitting.ps1` stops on any failure and leaves browser closing to owner. No reader/prompt change after11fb3b2; full fitting has not started yet. Finish commit, required Release/full1001 tests and push, then fresh quiet mains/Best/owner-closed-browser/app/monitor setup and `Measure-ScoredFitting.ps1 -Mode fitting` on96 fitting cases per model, G3 then G4,744 positions/model, ten reloads/model. Do not run build/test/calibrator concurrently with model timing. No current unresolved owner question.
+
+If any position loses scores/cache/context/runtime preconditions, stop/report/wait under the brief. If both quality paths later fail, stop; a passing model may continue while the other's quality failure is reported. Keep first G3/G4 semantic references and qualified-repeat G4 cost; finite grouped protocol unchanged. No binding before score usefulness. Primary chosen/recorded from fitting before locked two-model audit, stop after audit before validation. Hidden paths and old external records untouched. Pause below is historical and revoked by owner's resume.
+
 ## PAUSED AT OWNER REQUEST — no candidate inference
 
 Owner asked for a safe pause and a remaining-time estimate. **Do not continue model work until the owner resumes.** No inference/monitor/app process remains active; gemma4 repeat complete and unloaded. Complete-repeat commit `a8bf3fd77e26396e68e41be57162d76a324476fe` passed Release0warnings/errors and all990 tests, pushed/remote verified. Semantic references remain first G336/96/G469/96; new G4 full96 cost/repeatability only. All external roots and freeze unchanged.

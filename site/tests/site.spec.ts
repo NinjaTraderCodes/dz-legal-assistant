@@ -355,7 +355,7 @@ test("the home's proof folder says who writes what in four lines, with the three
     await expect(proof.locator(".rows li .tag.by-code")).toHaveCount(1);
     await expect(proof.locator(".rows li").nth(1).locator(".tag.by-code")).toHaveCount(1);
     await expect(proof.locator(".figures .figure")).toHaveCount(3);
-    await expect(proof.locator(".figures")).toContainText("85 / 90");
+    await expect(proof.locator(".figures")).toContainText("58 / 90");
     await expect(proof.locator(".guarantees li")).toHaveCount(4);
     // One picture only, and every figure with its source.
     await expect(proof.locator("figure.shot")).toHaveCount(1);

@@ -48,7 +48,7 @@ DZ Legal Assistant helps an Algerian lawyer draft the statement of claim in form
 ## Evidence on Hand
 
 - Real product imagery: the hero laptop with a real capture (`site/src/assets/hero/laptop.png`), four real 1920×1080 and 3840×2160 captures of the desktop app with the local model's drafted grounds, demo captures from real Nemotron 3 Ultra runs (`site/src/content/grounds-run-*.json`, `desktop-run.json`), the live recording frames (`docs/images/readme/`).
-- Measured results: the hidden test set (`docs/HIDDEN-SET.md`): 94% claim type, 67% fully right online, 36% fully right locally, 10/10 out-of-scope declined; Form Engine 360/360; 1,361 articles from 6 texts; 21 claim types.
+- Measured results: the hidden test set (`docs/HIDDEN-SET.md`): first set: 94% claim type, 67% fully right online (71% with the claim type given), 10/10 out-of-scope declined; second set, claim type given: 64% fully right locally with Gemma 4 E4B, 43% with Gemma 3 4B; Form Engine 360/360; 1,361 articles from 6 texts; 21 claim types.
 - Team: Hicham Benkaihoul (lead), Djihane Bendjeddou / جهان بن جدو (UI/UX), Khouloud Otmane Cherif (legal review), with photos or avatar in `site/src/assets/team/`.
 - **Absent, never to be fabricated:** testimonials, client logos, user counts, prices, press coverage, a lawyer's verification of the legal rules (not done yet: every rule is marked unverified).
 

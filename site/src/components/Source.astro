@@ -1,18 +1,18 @@
 ---
-// The line under a figure or a claim: where in the repository it comes from. Every number on the site has one.
-// The file is named, not linked: the site does not send visitors to the repository. The six documents the site
-// renders (src/content/docs-pages.ts) are the exception: they are linked to their own pages here.
+// The line under a figure or a claim: where it comes from. The callers name the repository files behind it, so the
+// code keeps the trail, but the site shows only the documents it renders as its own pages (src/content/docs-pages.ts),
+// by their titles: it neither links nor names anything else of the repository. With no such page, there is no line.
 import { t, type Lang } from "../i18n";
 import { isDocPage, docPath } from "../content/docs-pages";
 
 interface Props { lang: Lang; files: string[]; note?: string }
 const { lang, files, note } = Astro.props;
+const pages = files.filter(isDocPage);
 const separator = lang === "ar" ? "، " : ", ";
 ---
-<p class="source caption">{t(lang, "source.label")} {files.map((file, i) => <>{isDocPage(file) ? <a class="file" href={`/${lang}${docPath(file)}`} dir="ltr">{file}</a> : <span class="file" dir="ltr">{file}</span>}{i < files.length - 1 ? separator : ""}</>)}{note && <> · {note}</>}</p>
+{(pages.length > 0 || note) && <p class="source caption">{t(lang, "source.label")} {pages.map((file, i) => <><a class="file" href={`/${lang}${docPath(file)}`}>{t(lang, `doc.${file.slice("docs/".length, -".md".length)}`)}</a>{i < pages.length - 1 ? separator : ""}</>)}{note && <>{pages.length > 0 ? " · " : ""}{note}</>}</p>}
 
 <style>
     .source { margin-top: 6px; }
-    .source .file { color: var(--w-muted); overflow-wrap: anywhere; }
-    .source a.file { text-decoration: underline; }
+    .source .file { color: var(--w-muted); text-decoration: underline; overflow-wrap: anywhere; }
 </style>

@@ -359,7 +359,7 @@ test("the home's proof folder says who writes what in four lines, with the three
     await expect(proof.locator(".guarantees li")).toHaveCount(4);
     // One picture only, and every figure with its source.
     await expect(proof.locator("figure.shot")).toHaveCount(1);
-    await expect(proof.locator(".results")).toContainText("docs/HIDDEN-SET.md");
+    await expect(proof.locator(".results a[href=\"/en/docs/hidden-set/\"]")).toHaveText("Hidden test set");
 });
 
 test("the home's folder 05 shows the demo's guide step by step: tabs, one screen at a time, a pause button, still with reduced motion", async ({ page }) => {

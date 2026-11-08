@@ -1,6 +1,7 @@
 param([Parameter(Mandatory=$true)][string]$RunRoot)
 $ErrorActionPreference='Stop'
 . (Join-Path $PSScriptRoot 'Power.ps1')
+. (Join-Path $PSScriptRoot 'AppBenchmarkProcess.ps1')
 $repo=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..')).TrimEnd('\')
 $root=[IO.Path]::GetFullPath($RunRoot).TrimEnd('\')
 if($root -eq $repo -or $root.StartsWith($repo+'\',[StringComparison]::OrdinalIgnoreCase) -or $root.StartsWith('\\')){throw 'Use a fresh local directory outside the repository.'}
@@ -24,9 +25,9 @@ foreach($command in @('grounds','draft')){
     $folder=Join-Path $root ($command+'-'+$model.Replace(':','-'))
     New-Item -ItemType Directory -Path $folder|Out-Null
     Assert-AlphaPower|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $folder 'power-before.json') -Encoding utf8
-    @{command=$command;model=$model;digest=$digests[$model];think=$(if($model -eq 'gemma4:e4b'){'false'}else{'omitted'});cases='default development and robustness only';reloadEvery=10;minimumAvailableMiB=512}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $folder 'measurement-plan.json') -Encoding utf8
+    @{command=$command;model=$model;digest=$digests[$model];think=$(if($model -eq 'gemma4:e4b'){'false'}else{'omitted'});cases='default development and robustness only';reloadEvery=10;minimumAvailableMiB=512;sharedResourceAppend=$true}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $folder 'measurement-plan.json') -Encoding utf8
     $monitorScript=Join-Path $PSScriptRoot 'Measure-Resources.ps1'
-    $monitor=Start-Process -FilePath powershell.exe -ArgumentList @('-NoProfile','-ExecutionPolicy','RemoteSigned','-File',('"'+$monitorScript+'"'),'-RunRoot',('"'+$folder+'"')) -WindowStyle Hidden -PassThru -RedirectStandardOutput (Join-Path $folder 'monitor-stdout.txt') -RedirectStandardError (Join-Path $folder 'monitor-stderr.txt')
+    $monitor=Start-Process -FilePath powershell.exe -ArgumentList @('-NoProfile','-ExecutionPolicy','RemoteSigned','-File',('"'+$monitorScript+'"'),'-RunRoot',('"'+$folder+'"'),'-SharedAppend') -WindowStyle Hidden -PassThru -RedirectStandardOutput (Join-Path $folder 'monitor-stdout.txt') -RedirectStandardError (Join-Path $folder 'monitor-stderr.txt')
     try{
         $ready=$false
         for($attempt=0;$attempt -lt 60;$attempt++){
@@ -47,7 +48,7 @@ foreach($command in @('grounds','draft')){
         $started=[DateTimeOffset]::UtcNow
         Write-Output ($command+' '+$model+' started '+$started.ToString('o'))
         $stdout=Join-Path $folder 'stdout.txt'
-        $process=Start-Process -FilePath dotnet.exe -ArgumentList $argumentLine -WorkingDirectory $repo -WindowStyle Hidden -PassThru -RedirectStandardOutput $stdout -RedirectStandardError (Join-Path $folder 'stderr.txt')
+        $process=Start-AppBenchmarkProcess -FilePath dotnet.exe -Arguments $argumentLine -WorkingDirectory $repo -Stdout $stdout -Stderr (Join-Path $folder 'stderr.txt')
         $lastProgress=''
         while(-not $process.HasExited){
             Start-Sleep -Seconds 2
@@ -56,8 +57,7 @@ foreach($command in @('grounds','draft')){
                 if($progress -and $progress -ne $lastProgress){Write-Output ($command+' '+$model+' '+$progress);$lastProgress=$progress}
             }
         }
-        $process.WaitForExit()
-        $code=$process.ExitCode
+        $code=Get-AppBenchmarkExitCode -Process $process
         @{exitCode=$code;startedUtc=$started.ToString('o');finishedUtc=[DateTimeOffset]::UtcNow.ToString('o')}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $folder 'process-completion.json') -Encoding utf8
         Assert-AlphaPower|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $folder 'power-after.json') -Encoding utf8
         Write-Output ($command+' '+$model+' ended with code '+$code)

@@ -3,13 +3,17 @@ import argparse
 import hashlib
 import json
 import math
+import re
 from datetime import datetime
 from pathlib import Path
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("run_root", type=Path)
 parser.add_argument("--write-docs", action="store_true")
+parser.add_argument("--report-suffix", default="")
 args = parser.parse_args()
+if args.report_suffix and not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", args.report_suffix):
+    raise ValueError("Use a lowercase alphanumeric/hyphen report suffix")
 repo = Path(__file__).resolve().parents[2]
 read = lambda p: json.loads(p.read_text(encoding="utf-8-sig"))
 best = "ded574b5-45a0-4f42-8737-46345c09c238"
@@ -119,7 +123,7 @@ if args.write_docs:
     starts = [read(p / "process-completion.json")["startedUtc"] for p in roots if (p / "process-completion.json").exists()]
     day = datetime.fromisoformat(min(starts)).astimezone().date().isoformat() if starts else datetime.now().date().isoformat()
     for command in ("grounds", "draft"):
-        destination = repo / "docs/baselines" / (day + "-alpha-03-app-" + command)
+        destination = repo / "docs/baselines" / (day + "-alpha-03-app-" + command + ("-" + args.report_suffix if args.report_suffix else ""))
         if destination.exists():
             raise ValueError("Refusing to overwrite a previous report")
         destination.mkdir(parents=True)
@@ -135,13 +139,15 @@ if args.write_docs:
             lines.append("| " + label + " | " + " | ".join(values) + " |")
         def number(value):
             return "n/a" if value is None else f"{value:.6f}"
+        def fraction(found, expected):
+            return f"{found}/{expected}" if expected else "n/a (no such cases measured)"
         row("Complete guarded run", lambda r: str(r["complete"]))
         for part in ("development", "robustness"):
             row(part + " cases", lambda r, p=part: r["quality"]["byPartition"][p]["cases"])
             if command == "grounds":
                 row(part + " claim exact", lambda r, p=part: f'{r["quality"]["byPartition"][p]["claimExact"]}/{r["quality"]["byPartition"][p]["cases"]}')
                 row(part + " core recall", lambda r, p=part: f'{r["quality"]["byPartition"][p]["coreFound"]}/{r["quality"]["byPartition"][p]["coreExpected"]}')
-                row(part + " out-of-scope declined", lambda r, p=part: f'{r["quality"]["byPartition"][p]["outOfScopeDeclined"]}/{r["quality"]["byPartition"][p]["outOfScope"]}')
+                row(part + " out-of-scope declined", lambda r, p=part: fraction(r["quality"]["byPartition"][p]["outOfScopeDeclined"], r["quality"]["byPartition"][p]["outOfScope"]))
             else:
                 row(part + " formally complete", lambda r, p=part: f'{r["quality"]["byPartition"][p]["formallyComplete"]}/{r["quality"]["byPartition"][p]["cases"]}')
                 for key in ("Hard", "Numbers", "Latin", "Ungrounded", "WrongLaw", "RemovedWrongLaw", "LegalPoints", "CopiesRemoved", "Retried", "FellBack", "casesWithFallback"):
@@ -167,5 +173,5 @@ if args.write_docs:
                 lines.append(f'| {load["BeforeOrdinal"]} | {load["UnloadWallSeconds"]:.6f} | {load["WarmupWallSeconds"]:.6f} | {load["NativeLoadSeconds"]} |')
             summary = folder / "summary.md"
             lines += ["", "## Original " + model + " harness summary", "", summary.read_text(encoding="utf-8-sig") if summary.exists() else "No complete harness summary; partial run only."]
-        (destination / "summary.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+        (destination / "summary.md").write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
 print(json.dumps({c: {m: dict(complete=r.get("complete", False), quality=r.get("quality"), resources=r.get("resources")) for m, r in values.items()} for c, values in results.items()}, indent=2))

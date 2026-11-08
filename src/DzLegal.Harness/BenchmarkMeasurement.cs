@@ -26,6 +26,8 @@ public sealed class BenchmarkMeasurement : IAsyncDisposable
     private string? _failure;
     private bool _complete;
     private ModelTimings? _last;
+    private int _sharingRetries;
+    private int? _failureHResult;
 
     public BenchmarkMeasurement(string model, Uri endpoint, string root, TextWriter log,
         HttpMessageHandler? handler = null, Func<Task>? guard = null, Func<DateTimeOffset, Task>? wait = null)
@@ -122,14 +124,27 @@ public sealed class BenchmarkMeasurement : IAsyncDisposable
     public void Fail(Exception error)
     {
         ArgumentNullException.ThrowIfNull(error);
-        _failure ??= error.GetType().Name + ": " + error.Message;
+        if (_failure is null)
+        {
+            _failure = error.GetType().Name + ": " + error.Message;
+            _failureHResult = error.HResult;
+        }
     }
 
     private async Task CheckAsync()
     {
         if (_failure is not null) { throw new IOException(_failure); }
-        try { await _guard(); }
-        catch (Exception error) { Fail(error); throw; }
+        for (var attempt = 0; ; attempt++)
+        {
+            try { await _guard(); return; }
+            catch (IOException error) when (attempt < 10 && (error.HResult & 0xffff) is 32 or 33)
+            {
+                // PowerShell's append handle can briefly deny reads. Re-read fresh state; never retry a model call.
+                _sharingRetries++;
+                await Task.Delay(25);
+            }
+            catch (Exception error) { Fail(error); throw; }
+        }
     }
 
     private async Task BeforeRequestAsync()
@@ -187,7 +202,8 @@ public sealed class BenchmarkMeasurement : IAsyncDisposable
         _clock.Stop();
         await SaveAsync("measurement-completion.json", new { Model = _model, StartedUtc = _started, FinishedUtc = DateTimeOffset.UtcNow,
             Complete = _complete && _failure is null && _pending is null, Failure = _failure, PendingCase = _pending,
-            Cases = _cases.Count, Calls = _calls.Count, Loads = _loads.Count, BatchSeconds = _clock.Elapsed.TotalSeconds });
+            Cases = _cases.Count, Calls = _calls.Count, Loads = _loads.Count, BatchSeconds = _clock.Elapsed.TotalSeconds,
+            ResourceSharingRetries = _sharingRetries, FailureHResult = _failureHResult });
         _http.Dispose();
         if (cleanupFailed && _complete) { throw new IOException("Final model unload failed; measured run incomplete."); }
     }

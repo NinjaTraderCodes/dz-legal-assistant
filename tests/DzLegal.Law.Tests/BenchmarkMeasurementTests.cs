@@ -73,6 +73,34 @@ public sealed class BenchmarkMeasurementTests
 
     private static readonly ModelRequest Request = new("fixture", string.Empty, "fixture", "fixture");
 
+    [Theory]
+    [InlineData(2, true)]
+    [InlineData(100, false)]
+    public async Task ResourceSharingRetryIsBoundedAndNeverRetriesInference(int sharingFailures, bool succeeds)
+    {
+        using var folder = new FixtureFolder();
+        using var handler = new Handler();
+        var checks = 0;
+        var provider = new Counter();
+        await using var measurement = new BenchmarkMeasurement("fixture", new Uri("http://127.0.0.1:9"), folder.Path,
+            TextWriter.Null, handler, () => ++checks <= sharingFailures
+                ? Task.FromException(new IOException("fixture sharing violation", unchecked((int)0x80070020))) : Task.CompletedTask,
+            _ => Task.CompletedTask);
+        var guarded = measurement.Guard(provider);
+        if (succeeds)
+        {
+            Assert.Equal("fixture", await guarded.GenerateAsync(Request, CancellationToken.None));
+            Assert.Equal(1, provider.Calls);
+            Assert.Equal(4, checks); // two blocked reads, one fresh pre-call read, one fresh post-call read
+        }
+        else
+        {
+            await Assert.ThrowsAsync<IOException>(() => guarded.GenerateAsync(Request, CancellationToken.None));
+            Assert.Equal(0, provider.Calls);
+            Assert.Equal(11, checks);
+        }
+    }
+
     [Fact]
     public async Task NativeContextWarningStopsBeforeAnotherRequest()
     {

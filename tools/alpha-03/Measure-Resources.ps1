@@ -1,6 +1,7 @@
-﻿param([Parameter(Mandatory=$true)][string]$RunRoot)
+﻿param([Parameter(Mandatory=$true)][string]$RunRoot,[switch]$SharedAppend)
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'Power.ps1')
+if($SharedAppend){. (Join-Path $PSScriptRoot 'SharedResourceAppend.ps1')}
 Add-Type -TypeDefinition @"
 using System;
 using System.Runtime.InteropServices;
@@ -45,7 +46,9 @@ while (-not (Test-Path -LiteralPath (Join-Path $RunRoot 'monitor.stop'))) {
   $record = [ordered]@{power=(Get-AlphaPower);utc=$now.ToString('o');phase=$phase;intervalSeconds=$elapsed;totalPhysicalBytes=$memory.totalPhys;availablePhysicalBytes=$memory.availPhys;memoryLoad=$memory.load;commitBytes=($memory.totalPage-$memory.availPage);commitLimitBytes=$memory.totalPage;powershellCores=(@($usage | Where-Object name -eq 'powershell') | Measure-Object cores -Sum).Sum;modelWorkingSetBytes=($models | Measure-Object WorkingSet64 -Sum).Sum;modelPrivateBytes=($models | Measure-Object PrivateMemorySize64 -Sum).Sum;appWorkingSetBytes=($apps | Measure-Object WorkingSet64 -Sum).Sum;modelProcesses=@($models | ForEach-Object { [pscustomobject]@{id=$_.Id;name=$_.ProcessName;workingSet=$_.WorkingSet64;peakWorkingSet=$_.PeakWorkingSet64;privateBytes=$_.PrivateMemorySize64} });otherCores=($other | Measure-Object cores -Sum).Sum;topOther=@($other | Sort-Object cores -Descending | Select-Object -First 3);monitorPid=$PID}
   $record.paging = $paging
   $record.pagingSampleUpdated = (($sampleIndex % 5) -eq 1)
-  Add-Content -LiteralPath (Join-Path $RunRoot 'resources.jsonl') -Value ($record | ConvertTo-Json -Depth 6 -Compress) -Encoding utf8
+  $line=$record | ConvertTo-Json -Depth 6 -Compress
+  if($SharedAppend){Add-SharedResourceLine -Path (Join-Path $RunRoot 'resources.jsonl') -Line $line}
+  else{Add-Content -LiteralPath (Join-Path $RunRoot 'resources.jsonl') -Value $line -Encoding utf8}
   } catch {
     Add-Content -LiteralPath (Join-Path $RunRoot 'monitor-errors.log') -Value ([DateTime]::UtcNow.ToString('o') + ' ' + $_.Exception.Message) -Encoding utf8
   }

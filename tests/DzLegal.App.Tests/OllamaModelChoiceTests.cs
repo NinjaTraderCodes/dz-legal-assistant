@@ -48,4 +48,25 @@ public class OllamaModelChoiceTests
         Assert.Equal("dz-gemma3-4b-text", OllamaModelChoice.TextOnlyModelFor("gemma3:4b", "dz-gemma3-4b-text"));
         Assert.Null(OllamaModelChoice.TextOnlyModelFor("qwen2.5:7b-instruct", "dz-gemma3-4b-text"));
     }
+
+    [Theory]
+    [InlineData("gemma4:e4b", null, false)]
+    [InlineData("gemma4:e2b", null, false)]
+    [InlineData("GEMMA4", null, false)]
+    [InlineData("gemma4:e4b", true, true)]
+    [InlineData("gemma3:4b", null, null)]
+    [InlineData("dz-gemma3-4b-text", null, null)]
+    [InlineData("qwen3:4b", false, false)]
+    [InlineData("gemma40-like:1b", null, null)]
+    public void Gemma4RunsWithThinkingOffUnlessTheSettingsSayOtherwise(string model, bool? configured, bool? sent) =>
+        Assert.Equal(sent, OllamaModelChoice.ThinkFor(model, configured));
+
+    [Fact]
+    public void TheShippedDefaultModelIsUnchangedAndSendsNoThinkingSwitch()
+    {
+        var settings = new OllamaSettings();
+
+        Assert.Equal("gemma3:4b", settings.Model);
+        Assert.Null(OllamaModelChoice.ThinkFor(settings.Model, settings.Think));
+    }
 }

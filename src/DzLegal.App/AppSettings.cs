@@ -80,7 +80,10 @@ public sealed record OllamaSettings
     public int MaxTokens { get; init; } = 1500;
     public double RepeatPenalty { get; init; } = 1.1;
 
-    /// <summary>Set to false for reasoning models such as qwen3; leave null otherwise.</summary>
+    /// <summary>
+    /// Set to false for reasoning models such as qwen3; leave null otherwise. Gemma 4 runs with thinking off unless this
+    /// is set (OllamaModelChoice.ThinkFor).
+    /// </summary>
     public bool? Think { get; init; }
 
     /// <summary>Load the model into memory in the background when the app starts, so the first request is faster.</summary>

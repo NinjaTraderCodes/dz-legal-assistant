@@ -119,6 +119,14 @@ Shipped defaults: `defaultProvider` `"ollama"` (or `"stub"` for template mode), 
 
 A non-loopback `endpoint` is refused. Further optional keys: `temperature` (0.2), `maxTokens` (1000), `repeatPenalty` (1.1), and `"think": false` for reasoning models such as `qwen3`.
 
+**Gemma 4 E4B, on 16 GB of RAM.** After `ollama pull gemma4:e4b` (about 6.6 GB, with a recent Ollama that knows Gemma 4), choose it with:
+
+```jsonc
+{ "ollama": { "model": "gemma4:e4b" } }
+```
+
+The app switches its thinking off by itself (`"think": false` unless the setting says otherwise): with thinking on, Gemma 4 spent the whole answer allowance thinking on every fact reading. Measured so far, on the owner's laptop on mains power: on the second hidden test set, the fact reader (Alpha-01, in the test bench) got **58 of 90** cases fully right with `gemma4:e4b` against **39** with `gemma3:4b`, at 21 s against 28 s per case, with a model memory peak of about 7.2 GB (`docs/HIDDEN-SET.md`). The app's own analysis and drafting with Gemma 4 are measured separately (`docs/baselines/`). On 8 GB of RAM, keep `gemma3:4b`.
+
 ### Speed on a CPU-only laptop (8 GB)
 
 What to expect from a 4B model on CPU: the first request after start-up loads the model (10–40 s). The app warms it up in the background and keeps it in memory for 15 minutes after the last request (`ollama.keepAlive`), then Ollama frees the memory; closing the app frees it at once. After that, most of the wait is the model **reading** the prompt, and then it writes a few words per second.

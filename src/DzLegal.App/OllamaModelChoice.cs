@@ -27,6 +27,18 @@ public sealed class OllamaModelChoice
         _current = configured;
     }
 
+    /// <summary>
+    /// The thinking switch to send: the setting when it is given; otherwise off for Gemma 4, and unset for every other
+    /// model (Ollama refuses the switch for models without it). Gemma 4 thinks before answering unless told not to, and
+    /// with thinking on it spent the whole answer allowance thinking on every fact reading (gemma4:e4b, 40 of 40, 7 Nov
+    /// 2026); with it off it answered all 40 (docs/PRODUCT-DETAILS.md).
+    /// </summary>
+    public static bool? ThinkFor(string model, bool? configured) => configured ?? (IsGemma4(model) ? false : null);
+
+    /// <summary>gemma4, gemma4:e4b, gemma4:e2b…: the Gemma 4 family as Ollama names it.</summary>
+    public static bool IsGemma4(string? model) =>
+        model is not null && (model.Equals("gemma4", StringComparison.OrdinalIgnoreCase) || model.StartsWith("gemma4:", StringComparison.OrdinalIgnoreCase));
+
     /// <summary>The text-only model to prefer for these settings: only in place of <see cref="TextOnlySource"/>.</summary>
     public static string? TextOnlyModelFor(string configuredModel, string? textOnlyModel) =>
         string.Equals(configuredModel, TextOnlySource, StringComparison.OrdinalIgnoreCase) ? textOnlyModel : null;

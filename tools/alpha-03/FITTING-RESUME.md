@@ -1,5 +1,11 @@
 # Authorised v3 fitting-stage checkpoint
 
+## FINAL HANDOFF — owner resumed for freeze only
+
+The owner resumed on battery to finish source/privacy review, full tests, commit/push and the two exact owner commands. No timing, model benchmark or hidden-v2 execution is authorised to the agent. The independent frozen candidate is **unchanged Alpha-01, gemma4:e4b, think=false**; baseline is unchanged Alpha-01 gemma3 with thinking omitted. `OWNER-RUN.md` contains the shared guarded-wrapper commands and mains/Best-performance prerequisites; `OWNER-FREEZE.json` pins source/model identity and lists every task-changed file outside harness/tools. The original reader, prompt, catalogue, provider/options, AlphaFacts and FactsEvaluator are unchanged against task start `c86048dd8bab2b889c5164530624b8354f51afa1`.
+
+Offline diagnosis is complete: 36/21/23 critical-error-free cases out of 96; false affirmations 26/63/46. No new inference or refit. Earlier full-test attempts were interrupted at the owner's pause and are not passing-suite evidence. The final handoff reports the new full-suite outcome and final pushed commit. No final hidden commands have been executed by the agent; no evaluation files/results accessed. Stop after delivery and await the owner. Historical pause/stop/active notes below are superseded.
+
 ## PAUSED BY OWNER — revised independent Alpha-01 freeze task
 
 Owner explicitly requested a safe pause. **Do not resume work or issue final execution commands until owner resumes.** Latest task replaces scored-reader development: (1) offline G3 diagnosis only, (2) skip G4 missing-label probe/order-correction tuning/binding/48audit for now, (3) freeze unchanged Alpha-01 G4 thinking off with minimal CLI override, tests and two exact owner commands, never access evaluation folder. Owner selected G4 independently before diagnostic results. This task is not yet complete; final freeze/commands remain pending.

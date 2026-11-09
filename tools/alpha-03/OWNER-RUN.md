@@ -2,6 +2,8 @@
 
 ## 9 November phone-model extension (new owner authorisation)
 
+**Stage3 is finished. Do not rerun the commands.** Source5ffc12c passed build0/all1034tests before timing. G4E2Bexit0,14:29:55.4649521–14:42:14.3025971UTC;G3nE2Bexit0,14:42:19.3470322–15:12:42.2507829UTC. Both fresh runs completed once; fullconsoles remainunread. [Aggregate report](../../docs/baselines/2026-11-09-alpha-03-hidden-v2-phone-models/summary.md) uses only the four permitted summaries and preserves every aggregatefield/rounding limit. Models unloaded, temporaryawake restored, Searchstate/startup unchanged, ownerapp remainsidletemplate. No input, percase output, console or supporting evaluation metadata was read/copied. Stop after final report/checks/push.
+
 Both pulls completed with exit0, serially, before timing. [PHONE-MODELS.json](PHONE-MODELS.json) records their locally installed identities and protocol, SHA256 `ba783d092f5d8ef11d177ee84a690052245c810b76796ab151a765d1e8317cda`:
 
 | Tag | Digest | Licence | Installed bytes | Think |

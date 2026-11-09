@@ -78,7 +78,9 @@ public sealed partial class MainWindowViewModel
         }
 
         var option = SelectedProvider;
-        ModelStatus = await option.ProbeAsync(CancellationToken.None);
+        var status = await option.ProbeAsync(CancellationToken.None);
+        if (SelectedProvider != option || IsTourActive) return;
+        ModelStatus = status;
         option.RefreshName();
         IsModelReady = ModelStatus.State is ModelState.Ready or ModelState.Unknown;
         if (!IsTourActive && ModelStatus.State == ModelState.Ready && option.CanWarmUp && _warmUpStarted.Add(option.Key))
@@ -92,6 +94,7 @@ public sealed partial class MainWindowViewModel
             ModelState.Ready when _warmUpStarted.Contains(option.Key) && !_warmUpFailed.Contains(option.Key) => L.Format("ModelWarming", option.DisplayName),
             ModelState.Ready => L.Format("ModelReady", option.DisplayName),
             ModelState.NotRunning => L["ModelNotRunning"],
+            ModelState.MemoryLow => L["ModelMemoryLow"],
             ModelState.ModelMissing => L.Format("ModelMissing", ModelStatus.Detail),
             ModelState.Refused => L.Format("ModelRefusedCloud", ModelStatus.Detail),
             _ => string.Empty,

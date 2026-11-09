@@ -53,9 +53,16 @@ public partial class App : Application
             var paths = AppPaths.Default;
             var engine = new ManagedOllama(new Uri(settings.Ollama.Endpoint),
                 new WindowsEngineLauncher(Path.Combine(AppContext.BaseDirectory, "engine", "ollama", "ollama.exe"), paths.Root));
+            var setup = new LocalModelSetupService(paths.Root, engine);
             window.Closed += (_, _) => engine.Dispose();
             window.DataContext = Composition.CreateMainViewModel(
-                settings, new AvaloniaUserFiles(() => TopLevel.GetTopLevel(window), paths), paths, new Loc(), new AvaloniaExternalLinks(() => TopLevel.GetTopLevel(window)), profileDefaults: new ProfileDefaults(paths.Root), recentCases: new RecentCasesStore(paths.Root), engine: engine);
+                setup.PreferTemplates ? settings with { DefaultProvider = "stub" } : settings, new AvaloniaUserFiles(() => TopLevel.GetTopLevel(window), paths), paths, new Loc(), new AvaloniaExternalLinks(() => TopLevel.GetTopLevel(window)), profileDefaults: new ProfileDefaults(paths.Root), recentCases: new RecentCasesStore(paths.Root), engine: engine, readiness: setup.CanUseAsync);
+            var model = (MainWindowViewModel)window.DataContext;
+            model.ModelSetup = new ModelSetupViewModel(model.L, setup,
+                () => model.SelectedProvider = model.Providers.First(p => p.Key == "stub"),
+                async () => { model.SelectedProvider = model.Providers.First(p => p.Key == "ollama"); await model.CheckModelStatusAsync(); });
+            window.Opened += async (_, _) => await model.ModelSetup.RefreshAsync();
+            window.Closed += (_, _) => model.ModelSetup.Dispose();
             ((MainWindowViewModel)window.DataContext).IsDarkTheme = (Current as App)?.Themes?.IsDark ?? true;
             return window;
         }

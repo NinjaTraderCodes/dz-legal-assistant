@@ -59,6 +59,37 @@ public sealed class LocalOllamaApi : IDisposable
             && info.EnumerateObject().Any();
     }
 
+    internal async Task<(string Digest, string BlobRoot)?> LocationAsync(SupportedModel model, CancellationToken cancellationToken)
+    {
+        using var tagsResponse = await http.GetAsync("api/tags", cancellationToken).ConfigureAwait(false);
+        tagsResponse.EnsureSuccessStatusCode();
+        using var tags = await JsonDocument.ParseAsync(await tagsResponse.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false), cancellationToken: cancellationToken).ConfigureAwait(false);
+        var found = tags.RootElement.GetProperty("models").EnumerateArray().FirstOrDefault(m => m.GetProperty("name").GetString() == model.Name);
+        if (found.ValueKind == JsonValueKind.Undefined || !found.TryGetProperty("digest", out var digest)
+            || digest.GetString()?.Replace("sha256:", "", StringComparison.Ordinal) != model.ManifestSha256) return null;
+        using var response = await http.PostAsJsonAsync("api/show", new { model = model.Name }, cancellationToken).ConfigureAwait(false);
+        response.EnsureSuccessStatusCode();
+        using var json = await JsonDocument.ParseAsync(await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false), cancellationToken: cancellationToken).ConfigureAwait(false);
+        var root = json.RootElement;
+        if (HasRemote(root, "remote_host") || HasRemote(root, "remote_model")) return null;
+        if (!root.TryGetProperty("modelfile", out var file)) return null;
+        var from = file.GetString()?.Split('\n').FirstOrDefault(l => l.StartsWith("FROM ", StringComparison.Ordinal));
+        var path = from?[5..].Trim().Trim('"');
+        if (path is null || !Path.IsPathFullyQualified(path)
+            || !model.Blobs.Any(b => "sha256-" + b.Sha256 == Path.GetFileName(path))) return null;
+        return (model.ManifestSha256, Path.GetDirectoryName(path)!);
+    }
+
+    internal async Task<bool> IsLoadedAsync(string model, CancellationToken cancellationToken)
+    {
+        using var response = await http.GetAsync("api/ps", cancellationToken).ConfigureAwait(false);
+        response.EnsureSuccessStatusCode();
+        using var json = await JsonDocument.ParseAsync(await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false), cancellationToken: cancellationToken).ConfigureAwait(false);
+        return json.RootElement.GetProperty("models").EnumerateArray().Any(m =>
+            m.TryGetProperty("name", out var name) && name.GetString() == model
+            && m.TryGetProperty("context_length", out var context) && context.GetInt32() == 4096);
+    }
+
     private static bool HasRemote(JsonElement root, string property) => root.TryGetProperty(property, out var value)
         && value.ValueKind != JsonValueKind.Null && (value.ValueKind != JsonValueKind.String || !string.IsNullOrWhiteSpace(value.GetString()));
 

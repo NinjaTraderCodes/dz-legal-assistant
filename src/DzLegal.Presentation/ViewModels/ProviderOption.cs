@@ -10,6 +10,7 @@ public enum ModelState
     Ready,
     NotRunning,
     ModelMissing,
+    MemoryLow,
 
     /// <summary>The configured model would send prompts off this computer (an Ollama cloud model): refused.</summary>
     Refused,

@@ -15,18 +15,20 @@ public sealed class OllamaModelChoice
     private readonly OllamaOptions configured;
     private readonly string? textOnlyModel;
     private readonly ILocalEngine? engine;
+    private readonly Func<Uri, string, CancellationToken, Task<ModelState>>? readiness;
 
     /// <summary>The model the text-only one is built from (tools/model/New-TextOnlyModel.ps1).</summary>
     public const string TextOnlySource = "gemma3:4b";
 
     private volatile OllamaOptions _current;
 
-    public OllamaModelChoice(OllamaOptions configured, string? textOnlyModel, ILocalEngine? engine = null)
+    public OllamaModelChoice(OllamaOptions configured, string? textOnlyModel, ILocalEngine? engine = null, Func<Uri, string, CancellationToken, Task<ModelState>>? readiness = null)
     {
         ArgumentNullException.ThrowIfNull(configured);
         this.configured = configured;
         this.textOnlyModel = textOnlyModel;
         this.engine = engine;
+        this.readiness = readiness;
         _current = configured with { Think = ThinkFor(configured.Model, configured.Think) };
     }
 
@@ -64,13 +66,20 @@ public sealed class OllamaModelChoice
             var installed = await api.InstalledAsync(cancellationToken);
             var automatic = configured.Model is "gemma3:4b" or "gemma4:e4b";
             var candidates = automatic ? new[] { "gemma4:e4b", textOnlyModel, "gemma3:4b" } : new[] { configured.Model };
+            var memoryLow = false;
             foreach (var model in candidates.Where(m => Installed(installed, m)))
             {
                 if (!await api.IsLocalModelAsync(model!, cancellationToken)) continue;
+                if (readiness is not null)
+                {
+                    var state = await readiness(endpoint, model!, cancellationToken);
+                    memoryLow |= state == ModelState.MemoryLow;
+                    if (state != ModelState.Ready) continue;
+                }
                 _current = configured with { Endpoint = endpoint, Model = model!, Think = ThinkFor(model!, configured.Think) };
                 return new ModelStatus(ModelState.Ready, model!);
             }
-            return new ModelStatus(ModelState.ModelMissing, configured.Model);
+            return new ModelStatus(memoryLow ? ModelState.MemoryLow : ModelState.ModelMissing, configured.Model);
         }
         catch (Exception ex) when (ex is ModelProviderException or HttpRequestException or OperationCanceledException
             or IOException or UnauthorizedAccessException or System.ComponentModel.Win32Exception or JsonException or InvalidOperationException)

@@ -17,7 +17,7 @@ public static class Composition
     /// <summary>The offline law library and claim catalog (never downloaded by the app).</summary>
     public static string LawRoot => Path.Combine(AppContext.BaseDirectory, "data", "law");
 
-    public static IReadOnlyList<ProviderOption> CreateProviders(AppSettings settings, ILocalEngine? engine = null)
+    public static IReadOnlyList<ProviderOption> CreateProviders(AppSettings settings, ILocalEngine? engine = null, Func<Uri, string, CancellationToken, Task<ModelState>>? readiness = null, Loc? loc = null)
     {
         ArgumentNullException.ThrowIfNull(settings);
         var ollama = new OllamaOptions
@@ -33,13 +33,16 @@ public static class Composition
         };
 
         // The text-only model replaces gemma3:4b only: a lawyer who configured another model keeps it.
-        var choice = new OllamaModelChoice(ollama, OllamaModelChoice.TextOnlyModelFor(ollama.Model, settings.Ollama.TextOnlyModel), engine);
+        var localizer = loc ?? new Loc();
+        if (loc is null) localizer.SetLanguage(settings.Language);
+        var choice = new OllamaModelChoice(ollama, OllamaModelChoice.TextOnlyModelFor(ollama.Model, settings.Ollama.TextOnlyModel), engine, readiness);
         List<ProviderOption> options =
         [
             new ProviderOption(
                 "ollama",
                 loc => loc.Format("ProviderOllama", choice.Options.Model),
-                () => new OllamaModelProvider(choice.Options),
+                () => readiness is null ? new OllamaModelProvider(choice.Options) : new VerifiedLocalProvider(
+                    ct => choice.ProbeAsync(ct), () => new OllamaModelProvider(choice.Options), () => choice.Options.Model, localizer),
                 ct => choice.ProbeAsync(ct),
                 settings.Ollama.WarmUp ? ct => WarmUpOllamaAsync(choice.Options, ct) : null,
                 release: ct => UnloadOllamaAsync(choice.Options, ct)),
@@ -181,7 +184,7 @@ public static class Composition
         await provider.UnloadAsync(cancellationToken);
     }
 
-    public static MainWindowViewModel CreateMainViewModel(AppSettings settings, IUserFiles files, AppPaths paths, Loc loc, IExternalLinks? links = null, IProfileDefaults? profileDefaults = null, RecentCasesStore? recentCases = null, ILocalEngine? engine = null)
+    public static MainWindowViewModel CreateMainViewModel(AppSettings settings, IUserFiles files, AppPaths paths, Loc loc, IExternalLinks? links = null, IProfileDefaults? profileDefaults = null, RecentCasesStore? recentCases = null, ILocalEngine? engine = null, Func<Uri, string, CancellationToken, Task<ModelState>>? readiness = null)
     {
         ArgumentNullException.ThrowIfNull(settings);
         ArgumentNullException.ThrowIfNull(paths);
@@ -192,7 +195,7 @@ public static class Composition
         var definition = DefinitionLoader.Load(Path.Combine(DataRoot, "requete-introductive"));
         return new MainWindowViewModel(
             definition,
-            CreateProviders(settings, engine),
+            CreateProviders(settings, engine, readiness, loc),
             files,
             new EvaluationStore(paths.Evaluations),
             loc,

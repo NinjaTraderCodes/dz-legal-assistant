@@ -1,0 +1,49 @@
+<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DzLegal.Presentation.ViewModels" xmlns:app="using:DzLegal.App"
+             xmlns:services="using:DzLegal.Presentation.Services"
+             x:Class="DzLegal.App.Views.ModelSetupView" x:DataType="vm:ModelSetupViewModel"
+             FlowDirection="{Binding IsRightToLeft, Converter={x:Static app:Converters.RightToLeft}}">
+  <Border Background="{DynamicResource SurfaceAltBrush}" BorderBrush="{DynamicResource HairlineBrush}" BorderThickness="1"
+          CornerRadius="8" Padding="10" Margin="0,0,0,10">
+    <StackPanel Spacing="6">
+      <Button Name="ModelSetupToggle" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Command="{Binding ToggleCommand}">
+        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+          <TextBlock FontWeight="SemiBold" Text="{Binding L[ModelSetupTitle]}" />
+          <TextBlock Grid.Column="1" FontSize="12" Text="{Binding CompactStatus}" ToolTip.Tip="{Binding StatusText}" TextTrimming="CharacterEllipsis" MaxWidth="280" />
+        </Grid>
+      </Button>
+      <StackPanel IsVisible="{Binding IsExpanded}" Spacing="6">
+            <StackPanel IsVisible="{Binding HasProgress}" Spacing="4">
+              <ProgressBar Minimum="0" Maximum="100" Value="{Binding Percent}" IsIndeterminate="{Binding IsIndeterminate}" />
+              <TextBlock Text="{Binding ProgressText}" IsVisible="{Binding HasTransferProgress}" TextWrapping="Wrap" FontSize="12" />
+              <TextBlock Text="{Binding SpeedText}" IsVisible="{Binding HasTransferProgress}" TextWrapping="Wrap" FontSize="12" />
+            </StackPanel>
+        <ScrollViewer MaxHeight="260" HorizontalScrollBarVisibility="Disabled">
+          <StackPanel Spacing="7">
+            <TextBlock Name="ModelSetupStatus" TextWrapping="Wrap" FontWeight="SemiBold" Text="{Binding StatusText}" />
+            <TextBlock TextWrapping="Wrap" Text="{Binding Recommendation}" />
+            <ComboBox ItemsSource="{Binding Models}" SelectedItem="{Binding SelectedModel}" IsEnabled="{Binding !IsBusy}" HorizontalAlignment="Stretch">
+              <ComboBox.ItemTemplate><DataTemplate x:DataType="services:SetupModel"><TextBlock Text="{Binding Name}" FlowDirection="LeftToRight" /></DataTemplate></ComboBox.ItemTemplate>
+            </ComboBox>
+            <TextBlock TextWrapping="Wrap" Text="{Binding L[ModelSetupDisclosure]}" FontSize="12" />
+            <TextBlock TextWrapping="Wrap" Text="{Binding DiskText}" FontSize="12" />
+            <StackPanel IsVisible="{Binding !IsBusy}" Spacing="4">
+            <TextBlock TextWrapping="Wrap" Text="{Binding TermsLabel}" FontWeight="SemiBold" FontSize="12" />
+            <ScrollViewer MaxHeight="95" HorizontalScrollBarVisibility="Disabled">
+              <TextBlock Name="ModelSetupTerms" Text="{Binding TermsText}" TextWrapping="Wrap" FontSize="11" FlowDirection="LeftToRight" />
+            </ScrollViewer>
+            </StackPanel>
+
+          </StackPanel>
+        </ScrollViewer>
+        <WrapPanel>
+          <Button Name="ModelSetupDownload" Margin="0,0,6,6" Command="{Binding DownloadCommand}" Content="{Binding DownloadLabel}" IsVisible="{Binding ShowDownload}" />
+          <Button Margin="0,0,6,6" Command="{Binding CancelCommand}" Content="{Binding L[ModelSetupCancel]}" IsVisible="{Binding CanCancel}" />
+          <Button Margin="0,0,6,6" Command="{Binding UseLocalCommand}" Content="{Binding L[ModelSetupUse]}" IsVisible="{Binding IsReady}" />
+          <Button Margin="0,0,6,6" Command="{Binding RefreshCommand}" Content="{Binding L[ModelSetupRefresh]}" IsVisible="{Binding ShowRefresh}" />
+        </WrapPanel>
+        <Button Name="ModelSetupNotNow" Command="{Binding NotNowCommand}" Content="{Binding L[ModelSetupNotNow]}" HorizontalAlignment="Stretch" />
+      </StackPanel>
+    </StackPanel>
+  </Border>
+</UserControl>

@@ -52,7 +52,11 @@ public sealed class ManagedOllama : ILocalEngine
 
     public bool IsManaged { get { lock (sync) return session?.IsManaged == true; } }
 
-    public async Task<LocalEngineSession> EnsureAsync(CancellationToken cancellationToken)
+    public Task<LocalEngineSession> EnsureAsync(CancellationToken cancellationToken) => EnsureCoreAsync(false, cancellationToken);
+
+    public Task<LocalEngineSession> EnsureManagedAsync(CancellationToken cancellationToken) => EnsureCoreAsync(true, cancellationToken);
+
+    private async Task<LocalEngineSession> EnsureCoreAsync(bool managedOnly, CancellationToken cancellationToken)
     {
         using var linked = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, lifetime.Token);
         await gate.WaitAsync(linked.Token).ConfigureAwait(false);
@@ -63,7 +67,7 @@ public sealed class ManagedOllama : ILocalEngine
                 ObjectDisposedException.ThrowIf(disposed, this);
                 if (session is { IsManaged: true } && process?.HasExited == false) return session;
             }
-            if (await compatible(existing, linked.Token).ConfigureAwait(false))
+            if (!managedOnly && await compatible(existing, linked.Token).ConfigureAwait(false))
             {
                 lock (sync)
                 {

@@ -177,6 +177,12 @@ our uptime checks, bots, link previews, headless test browsers, prefetches, asse
 a table by day, the referring sites of arrivals, the pages, and the demo's steps, in Algeria time; `?days=30` widens it (at
 most 60). `/stats.csv` downloads every event. Without `STATS_TOKEN` both addresses answer 404.
 
+**The owner's own visits are left out.** Opening `/stats` or `/stats.csv` with the password marks that browser with a
+cookie (`dzlegal.owner`, HttpOnly, a year): from then on, nothing it does on the site or in the demo is counted. Its value
+is derived from `STATS_TOKEN` (it neither reveals nor stands for it), so a new token unmarks every browser. Open `/stats`
+once on each browser or phone you use. A visitor never receives this cookie, so the privacy page's list of cookies stays
+true for them.
+
 **If the database fails,** pages are served as usual: counting happens after the page is sent, the events wait in a
 bounded queue, and a failed write is dropped with one warning a minute in the server log. Locally, `Visits:Store=memory`
 counts in memory without a database.

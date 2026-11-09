@@ -1,4 +1,6 @@
 using System.Globalization;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Channels;
 using DzLegal.Web.Site;
@@ -44,10 +46,28 @@ public static partial class VisitFilter
     private const int MaxLength = 120;
 
     /// <summary>
-    /// A page someone looked at: a GET answered with an HTML page, from a browser (not our uptime checks, a bot, a link
-    /// preview, a headless test browser or a prefetch), and not one of the demo's or the server's own paths.
+    /// The cookie that marks the owner's own browser, written when /stats opens with the token, so the owner's checks of
+    /// the site do not mix with visitors'. A visitor never receives it.
     /// </summary>
-    public static bool ShouldCount(HttpContext context)
+    public const string OwnerCookie = "dzlegal.owner";
+
+    /// <summary>
+    /// The mark the owner's browser carries: derived from the token, so it cannot be guessed and does not reveal it, and a
+    /// new token unmarks every browser. Null without a token.
+    /// </summary>
+    public static string? OwnerMark(string? token) =>
+        string.IsNullOrEmpty(token) ? null : Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes("dzlegal.owner:" + token)))[..32];
+
+    public static bool IsOwner(string? cookie, string? mark) =>
+        mark is not null && cookie is not null
+        && CryptographicOperations.FixedTimeEquals(Encoding.UTF8.GetBytes(cookie), Encoding.UTF8.GetBytes(mark));
+
+    /// <summary>
+    /// A page someone looked at: a GET answered with an HTML page, from a browser (not our uptime checks, a bot, a link
+    /// preview, a headless test browser or a prefetch, nor the owner's marked browser), and not one of the demo's or the
+    /// server's own paths.
+    /// </summary>
+    public static bool ShouldCount(HttpContext context, string? ownerMark = null)
     {
         ArgumentNullException.ThrowIfNull(context);
         var request = context.Request;
@@ -60,6 +80,11 @@ public static partial class VisitFilter
         var path = request.Path.Value ?? "/";
         if (path.StartsWith("/_", StringComparison.Ordinal) || path.StartsWith("/healthz", StringComparison.OrdinalIgnoreCase)
             || path.StartsWith("/stats", StringComparison.OrdinalIgnoreCase) || path.StartsWith("/lang/", StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
+        }
+
+        if (IsOwner(request.Cookies[OwnerCookie], ownerMark))
         {
             return false;
         }
@@ -140,6 +165,11 @@ public sealed partial class VisitRecorder : BackgroundService
     public IVisitStore? Store { get; }
 
     public bool Enabled => Store is not null;
+
+    /// <summary>The owner's mark (VisitFilter.OwnerMark): nothing from a browser carrying it is counted.</summary>
+    public string? OwnerMark { get; init; }
+
+    public bool IsOwner(string? cookie) => VisitFilter.IsOwner(cookie, OwnerMark);
 
     public DateTimeOffset Now => _time.GetUtcNow();
 

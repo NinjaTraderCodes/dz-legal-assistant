@@ -125,7 +125,22 @@ A non-loopback `endpoint` is refused. Further optional keys: `temperature` (0.2)
 { "ollama": { "model": "gemma4:e4b" } }
 ```
 
-The app switches its thinking off by itself (`"think": false` unless the setting says otherwise): with thinking on, Gemma 4 spent the whole answer allowance thinking on every fact reading. Measured so far, on the owner's laptop on mains power: on the second hidden test set, the fact reader (Alpha-01, in the test bench) got **58 of 90** cases fully right with `gemma4:e4b` against **39** with `gemma3:4b`, at 21 s against 28 s per case, with a model memory peak of about 7.2 GB (`docs/HIDDEN-SET.md`). The app's own analysis and drafting with Gemma 4 are measured separately (`docs/baselines/`). On 8 GB of RAM, keep `gemma3:4b`.
+The app switches its thinking off by itself (`"think": false` unless the setting says otherwise): with thinking on, Gemma 4 spent the whole answer allowance thinking on every fact reading. Measured so far, on the owner's laptop on mains power: on the second hidden test set, the fact reader (Alpha-01, in the test bench) got **58 of 90** cases fully right with `gemma4:e4b` against **39** with `gemma3:4b`, at 21 s against 28 s per case, with a model memory peak of about 7.2 GB (`docs/HIDDEN-SET.md`). The app's own steps were then measured on the 46 fictitious development cases, unchanged app, one model at a time (9 Nov 2026, `docs/baselines/2026-11-09-alpha-03-app-grounds-stage-1/` and `…-app-draft-stage-2/`):
+
+| App step, development cases | `gemma3:4b` | `gemma4:e4b`, thinking off |
+|---|---:|---:|
+| Analysis: claim type exact | 41 of 46 | **46 of 46** |
+| Analysis: core articles found (model's own choice) | 41 of 68 | **49 of 68** |
+| Analysis: core articles found (with the articles the claim type always adds) | 48 of 68 | **51 of 68** |
+| Analysis: out-of-scope cases declined | 3 of 4 | **4 of 4** |
+| Analysis: time per case | 70 s | **56 s** |
+| Drafting (12 cases): formally complete | 11 of 12 | 11 of 12 |
+| Drafting: automatic issues (wrong law, numbers, Latin words, ungrounded terms) | 0 | 0 |
+| Drafting: sections retried | 1 | **0** |
+| Drafting: time per case | 39 s | **25 s** |
+| Highest memory, model + app, either step | 9.5 GB | **8.3 GB** |
+
+Both models had no failure, time-out, empty or cut-off answer. The 24 drafted grounds are kept side by side in `docs/baselines/2026-11-09-alpha-03-app-draft-stage-2/outputs/`; read against the case notes, neither model swapped roles or invented a fact, and Gemma 4's grounds were closer to the facts in seven of the twelve cases (Gemma 3 missed the decisive fact in two of them). These are development cases the app was tuned on, so both results are optimistic, and the automatic checks do not judge legal correctness. On 8 GB of RAM, keep `gemma3:4b`.
 
 ### Speed on a CPU-only laptop (8 GB)
 

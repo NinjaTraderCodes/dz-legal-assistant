@@ -1,0 +1,48 @@
+{
+  "recordedUtc": "2026-11-09T14:20:07.8658932+00:00",
+  "purpose": "Owner-authorised unchanged Alpha-01 phone comparison; both digests recorded before any Stage3 timing",
+  "models": [
+    {
+      "model": "gemma4:e2b",
+      "digest": "b37049369adfe3d2b653af0ab301a062ca5cbe96ace6aa0d3f2559ee9b563fc2",
+      "bytes": 4587156505,
+      "family": "gemma4",
+      "parameterSize": "4.6B",
+      "quantization": "Q4_K_M",
+      "license": "Apache 2.0",
+      "capabilities": [
+        "completion",
+        "vision",
+        "audio",
+        "tools",
+        "thinking"
+      ],
+      "thinkSent": "false"
+    },
+    {
+      "model": "gemma3n:e2b",
+      "digest": "dae166dc6a5e93061da12b75b887ce7c72cb91785d547b88c7503047f8411ffd",
+      "bytes": 7836324540,
+      "family": "gemma3n",
+      "parameterSize": "4.5B",
+      "quantization": "Q4_K_M",
+      "license": "Gemma Terms of Use",
+      "capabilities": [
+        "completion",
+        "vision"
+      ],
+      "thinkSent": "omitted"
+    }
+  ],
+  "cpuOnly": true,
+  "context": 4096,
+  "maxTokens": 300,
+  "temperature": 0.2,
+  "repeatPenalty": 1.1,
+  "reloadEvery": 10,
+  "minimumAvailableMiB": 512,
+  "order": [
+    "gemma4:e2b",
+    "gemma3n:e2b"
+  ]
+}

@@ -2,6 +2,15 @@
 
 ## 9 November phone-model extension (new owner authorisation)
 
+Both pulls completed with exit0, serially, before timing. [PHONE-MODELS.json](PHONE-MODELS.json) records their locally installed identities and protocol, SHA256 `ba783d092f5d8ef11d177ee84a690052245c810b76796ab151a765d1e8317cda`:
+
+| Tag | Digest | Licence | Installed bytes | Think |
+|---|---|---|---:|---|
+| gemma4:e2b | `b37049369adfe3d2b653af0ab301a062ca5cbe96ace6aa0d3f2559ee9b563fc2` | Apache2.0 | 4,587,156,505 | false |
+| gemma3n:e2b | `dae166dc6a5e93061da12b75b887ce7c72cb91785d547b88c7503047f8411ffd` | Gemma Terms of Use | 7,836,324,540 | omitted |
+
+After the freeze checks, `Measure-PhoneModels.ps1 -MetadataRoot <existing separate download-metadata folder>` runs the same wrapper serially, checks fresh paths and pins, keeps each whole console redirected/unread, and records only its own launch times/exits/service/awake state outside evaluation outputs. Search is temporarily stopped only if busy and restored; startup type is never changed. The original reader/settings/cap remain fixed. Exact fresh phone summary paths end in `hidden-v2-alpha01-gemma4-e2b-think-off-2026-11-09/summary.md` and `hidden-v2-alpha01-gemma3n-e2b-2026-11-09/summary.md` under the parent below. Neither command has run at this pre-timing checkpoint. Do not rerun after either folder exists.
+
 After pushing Stage2, the owner authorises Stage3 without another wait: `ollama pull gemma4:e2b`, then `ollama pull gemma3n:e2b`, recording each installed digest before timing. The same wrapper additionally accepts these two tags, with **-Think false for gemma4:e2b** and **no Think argument for gemma3n:e2b**. Each phone command must pass `-ExpectedDigest <recorded SHA256>`; only these new approved tags accept a newly recorded pin. The two original model/digest/thinking pairs below remain pinned and cannot be overridden. All reader, parser, scorer and inference defaults are unchanged.
 
 The wrapper opts into the repaired shared resource writer, retains the native exit handle, temporarily prevents sleep and restores the prior thread state. It rejects concurrent builds/tests and a resident model before the run. Same serial execution, fresh output, ten-case reload,512MiB guard, idle app, mains/Best performance, closed browsers/VSCode and no automatic retry. Stdout/stderr consoles remain redirected and unread. A failed precondition stops the stage, not a next-model retry.

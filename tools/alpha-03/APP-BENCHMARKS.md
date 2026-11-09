@@ -1,5 +1,7 @@
 # Default app benchmark comparison
 
+**Stage2 finished:** [12-case draft report](../../docs/baselines/2026-11-09-alpha-03-app-draft-stage-2/summary.md). Both exits0, formal11/12,7legalpoints, no hard/number/Latin/ungrounded/wrong-law issues; G4=25.237689s,WS/private7.212105/7.936943GiB; G3=38.629184s,6.288589/6.672466. One G3sectionretry/no fallbacks; three G3app-stopped streams lack final native timing. All380 samples pass; originals unchanged. Push/check this report, then proceed to already authorised Stage3; no new go required.
+
 **Current go: Stage2 then Stage3 without another wait.** The owner amended Stage2 to the **12 existing files unchanged**, from `tests/drafting-cases` and `tests/drafting-cases-more`; do not write/adapt cases. `DRAFT-STAGE-2.json` pins their order, bytes and coverage before inference. Use the same12 for G4thinkfalse then G3thinkomitted:
 
 ```powershell

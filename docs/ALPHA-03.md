@@ -723,3 +723,30 @@ The owner approved restarting from case1 in a fresh directory, keeping the 8 Nov
 The runner now accepts an explicit stage and model order, preserving its legacy no-switch plan. A thread-scoped system-awake request is restored in finally, with timestamps recorded; no power or sleep settings change. The owner additionally authorises pausing busy Windows Search. Opt-in measurement samples its three-process CPU group for five seconds before each model and temporarily stops WSearch only above0.5 core equivalents, restoring an originally running service at the end without changing startup type. At the last pre-timing check it was idle and had not been stopped. The existing mains/**Best performance**, idle template-mode app, closed browsers/VSCode, ten-case reload and **512MiB** guards still apply unchanged.
 
 Per-call measurement now identifies timeout, empty-answer and cut-off exceptions separately, while preserving the app's existing exception, cap and fallback behaviour. Two new mock tests cover timeout versus empty metadata; the existing cutoff test additionally verifies the saved outcome. PowerShell fixtures verify native exits, shared I/O, grounds-only G4-first ordering and sleep-state restoration without a model call. The offline interim reporter pins the old prefix hash, exact27 IDs and cases/law/form fingerprints. The final offline analyser can produce only the authorised grounds report and verifies the actual recorded thinking option. No reader, legal prompt/data, original case, inference setting, app/UI or provider default changes in this preparation. Additional changes outside the harness are confined to tools, its existing test file, this report and the two superseded baseline reports. Build and full-suite outcomes are recorded with the stage handoff; no real-model restart has occurred at this preparation point.
+
+## Stage1 completed: full default grounds comparison
+
+**Gemma4 did better on these46 cases and used less time and sampled memory.** This completes only Stage1. Stop and wait for the owner's go before drafting or the phone-model stage; no runtime model is changed on these results. The [complete grounds report](baselines/2026-11-09-alpha-03-app-grounds-stage-1/summary.md) includes both unmodified harness summaries, the separate development/robustness measures, model-only recall, each load and the requested interim.
+
+| Measure, all46 | gemma4:e4b, think=false | gemma3:4b, thinking omitted |
+|---|---:|---:|
+| Claim exact | 46/46 | 41/46 |
+| Core recall, final app proposals | 51/68 | 48/68 |
+| Model-only core recall | 49/68 | 41/68 |
+| Out-of-scope declined | 4/4 | 3/4 |
+| Off-claim articles | 0 | 18 |
+| Seconds/case, loads separate | 56.231844 | 69.931247 |
+| Amortised seconds/case | 57.412001 | 70.559730 |
+| Model working-set / private peaks, GiB | 8.007034 / 8.733517 | 9.319675 / 9.709381 |
+| Concurrent model+app working-set peak, GiB | 8.265053 | 9.542950 |
+| Available-memory minimum, GiB | 2.793434 | 2.229450 |
+| Timeouts / empty / cut-off / at-cap answers | 0 / 0 / 0 / 0 | 0 / 0 / 0 / 0 |
+| Case failures / context flags / sharing retries | 0 / 0 / 0 | 0 / 0 / 0 |
+
+Both runs started at case1 in fresh output folders, gemma4 first then gemma3, source **7eb9d5b99d8d41f8eba43ff186ba27fe786a7530**. Each completed46 cases with native exit0, five empty warm-ups at1/11/21/31/41, actual thinking options recorded, no overlap, request/case retry or recovery rerun. All2776 timed samples pass mains/**Best performance**, app presence and unchanged512MiB/physical-memory guards; input fingerprints and all174 per-model artifact hashes were independently rechecked. The pre-timing Release build had **0 warnings/errors** and all **1026 tests passed**. Actual guarded grounds CLI runs exercise the feature; no UI or screenshot change applies. The final handoff records required post-report-commit build/tests and push.
+
+As requested, the interim was posted at gemma4 case27 while it continued: same27 IDs and input fingerprints, old interrupted gemma3 **25/27 claim,30/43 core,76.926293s/case**, new gemma4 **27/27,33/43,60.318588s**. These25 development/two robustness cases contain no out-of-scope example. The old 8 November partial reports and raw data remain intact, marked superseded; their prefix is never substituted for the new full reference.
+
+The owner confirmed the app idle in template mode and browsers/VSCode closed before timing; build servers were stopped. Windows Search measured0 cores in both preflights, so no service was stopped or startup setting changed. During early gemma4, Task Manager used about0.75 CPU cores; its normal close succeeded at00:11:08.7567148 UTC, recorded as a background-window event. Those early timings remain included and unadjusted. Mean background CPU was0.275594/0.301622 cores (G4/G3), with full p95/max values in the report. Gemma4 used about19.6% fewer case seconds in this single serial pass; that is descriptive, without a run-to-run uncertainty estimate. Core recall includes the app's catalogue additions and is75% even with gemma4; exact claim choice does not mean complete legal grounds. Sampling can miss short memory peaks; the resident-memory growth cause was not investigated.
+
+Raw public-default root `%TEMP%\dzlegal-alpha03-stage1-20261109-010521`; aggregate analysis SHA256 `713913216db1e81ed71c5e1711f1be492bd67e401ec850eb3fa1965e83dc804c`, per-model hash-manifest SHA256 `ec4df8d610ec5c0f5e8eca44654ceeadc27e6d5e6358329e8dc1f671994ca39d`. The sleep-inhibition state was restored, Ollama lists no model, and the agent-opened idle app closed normally after timing. No hidden or validation path, previous owner output/console, draft case or phone model was opened, run or pulled. Result changes outside the already authorised harness/tools/test areas are this report and baseline documentation only. There is no unresolved Stage1 precondition or result-classification uncertainty; later stages remain unauthorised until a new go.

@@ -1,5 +1,7 @@
 # Default app benchmark comparison
 
+**Stage1 finished on9 November:** both46-case grounds runs exited0 and passed all recorded guards. [Full comparison](../../docs/baselines/2026-11-09-alpha-03-app-grounds-stage-1/summary.md): gemma4 claim46/46/core51/68/56.231844s; gemma3 claim41/46/core48/68/69.931247s. Models unloaded, awake state restored, Search remained running. **Wait for a new owner go before Stage2 or3.** The commands below document reproduction, not permission to rerun.
+
 **Current authorisation (9 November): Stage 1 only.** Restart all 46 grounds cases in a fresh external directory, **gemma4:e4b first, then gemma3:4b**. At gemma4 case27, report its first27 against the preserved gemma3 prefix on the same IDs, then continue. After both complete, report and wait. Draft and phone-model stages need a separate owner go. No hidden or validation data is used in this stage.
 
 Source `e31e298` completed 27/46 gemma3 grounds cases, then a transient resource-log sharing violation stopped the collector. Its native exit-code recorder lost the code; it remains null in the original record. The 8 November reports are retained and marked superseded by this staged restart. Never splice that prefix into a complete run.

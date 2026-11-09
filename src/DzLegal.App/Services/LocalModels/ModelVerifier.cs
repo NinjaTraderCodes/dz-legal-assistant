@@ -31,6 +31,8 @@ internal sealed class ModelVerifier : IDisposable
             verified[key] = fingerprint;
             return true;
         }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        { return false; }
         finally { gate.Release(); }
     }
 

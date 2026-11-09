@@ -60,7 +60,7 @@ public partial class App : Application
             var model = (MainWindowViewModel)window.DataContext;
             model.ModelSetup = new ModelSetupViewModel(model.L, setup,
                 () => model.SelectedProvider = model.Providers.First(p => p.Key == "stub"),
-                async () => { model.SelectedProvider = model.Providers.First(p => p.Key == "ollama"); await model.CheckModelStatusAsync(); });
+                async () => { model.SelectedProvider = model.Providers.First(p => p.Key == "ollama"); await model.CheckModelStatusAsync(); }, new AvaloniaModelPackFiles(() => TopLevel.GetTopLevel(window), model.L));
             window.Opened += async (_, _) => await model.ModelSetup.RefreshAsync();
             window.Closed += (_, _) => model.ModelSetup.Dispose();
             ((MainWindowViewModel)window.DataContext).IsDarkTheme = (Current as App)?.Themes?.IsDark ?? true;

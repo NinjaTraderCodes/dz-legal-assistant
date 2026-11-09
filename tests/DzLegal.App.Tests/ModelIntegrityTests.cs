@@ -37,6 +37,30 @@ public class ModelIntegrityTests
     }
 
     [Fact]
+    public async Task AnUnreadableBlobIsNeverTreatedAsVerified()
+    {
+        var parent = Path.Combine(AppPaths.Default.Root, "model-setup-tests");
+        var root = Path.Combine(parent, Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(root);
+        try
+        {
+            var bytes = Encoding.UTF8.GetBytes("fictitious model bytes");
+            var blob = new ModelBlob(Convert.ToHexStringLower(SHA256.HashData(bytes)), bytes.Length);
+            var model = new SupportedModel("fictitious:1", "", "", [blob], "Fictitious terms", 1);
+            var path = Path.Combine(root, "sha256-" + blob.Sha256);
+            await File.WriteAllBytesAsync(path, bytes);
+            using var unavailable = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.None);
+            using var verifier = new ModelVerifier();
+            Assert.False(await verifier.VerifyAsync(model, root, CancellationToken.None));
+        }
+        finally
+        {
+            Assert.Equal(Path.GetFullPath(parent), Path.GetDirectoryName(Path.GetFullPath(root)));
+            Directory.Delete(root, recursive: true);
+        }
+    }
+
+    [Fact]
     public void EveryManifestComponentAppearsInTheBuiltInBlobInventory()
     {
         foreach (var model in SupportedModels.All)

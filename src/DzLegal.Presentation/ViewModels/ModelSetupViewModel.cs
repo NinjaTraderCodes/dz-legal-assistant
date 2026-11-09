@@ -11,12 +11,17 @@ public sealed partial class ModelSetupViewModel : ObservableObject, IDisposable
     private readonly Action templates;
     private readonly Func<Task> useLocal;
     private readonly CancellationTokenSource lifetime = new();
-    public ModelSetupViewModel(Loc loc, ILocalModelSetup service, Action templates, Func<Task> useLocal)
+    private bool selectingFromResult;
+    private int selectionCheck;
+    internal Task SelectionTask { get; private set; } = Task.CompletedTask;
+    public ModelSetupViewModel(Loc loc, ILocalModelSetup service, Action templates, Func<Task> useLocal, IModelPackFiles? files = null)
     {
         L = loc;
         this.service = service;
         this.templates = templates;
         this.useLocal = useLocal;
+        this.files = files;
+        packs = service as ILocalModelPacks;
         SelectedModel = Models[0];
         L.PropertyChanged += Localized;
     }
@@ -32,17 +37,17 @@ public sealed partial class ModelSetupViewModel : ObservableObject, IDisposable
     public partial ModelSetupProgress Progress { get; set; } = new(ModelSetupStage.Checking, "gemma3:4b");
 
     public bool IsRightToLeft => L.IsRightToLeft;
-    public bool IsReady => Progress.Stage == ModelSetupStage.Ready;
-    public bool CanDownload => !IsBusy && !IsReady && Progress.Stage != ModelSetupStage.MemoryLow;
+    public bool IsReady => Progress.Stage is ModelSetupStage.Ready or ModelSetupStage.Exported || readyBeforeExport && !IsBusy;
+    public bool CanDownload => !IsBusy && !IsReady && pendingPack is null && Progress.Stage != ModelSetupStage.MemoryLow;
     public bool CanUseLocal => !IsBusy && IsReady;
     public bool HasProgress => IsBusy;
-    public bool HasTransferProgress => IsBusy && Progress.Stage == ModelSetupStage.Downloading;
-    public bool ShowDownload => !IsBusy && !IsReady && Progress.Stage != ModelSetupStage.MemoryLow;
+    public bool HasTransferProgress => IsBusy && Progress.Stage is ModelSetupStage.Downloading or ModelSetupStage.Importing or ModelSetupStage.Exporting;
+    public bool ShowDownload => !IsBusy && !IsReady && pendingPack is null && Progress.Stage != ModelSetupStage.MemoryLow;
     public bool ShowRefresh => !IsBusy;
-    public bool CanCancel => IsBusy && Progress.Stage is ModelSetupStage.Preparing or ModelSetupStage.Downloading or ModelSetupStage.Verifying or ModelSetupStage.Testing;
-    public string CompactStatus => Progress.Stage == ModelSetupStage.Downloading && Progress.Total > 0
+    public bool CanCancel => IsBusy && Progress.Stage is ModelSetupStage.Preparing or ModelSetupStage.Downloading or ModelSetupStage.Verifying or ModelSetupStage.Testing or ModelSetupStage.Importing or ModelSetupStage.Exporting;
+    public string CompactStatus => HasTransferProgress && Progress.Total > 0
         ? L.Format("ModelSetupCompactProgress", StatusText, Percent.ToString("F0", L.Culture)) : StatusText;
-    public bool IsIndeterminate => Progress.Stage != ModelSetupStage.Downloading || Progress.Total <= 0;
+    public bool IsIndeterminate => !HasTransferProgress || Progress.Total <= 0;
     public double Percent => Progress.Total > 0 ? Math.Clamp(100d * Progress.Completed / Progress.Total, 0, 100) : 0;
     public string Recommendation => IsReady ? L.Format("ModelSetupInstalled", SelectedModel.Name)
         : L.Format("ModelSetupRecommendation", SelectedModel.Name, Bytes(SelectedModel.Bytes));
@@ -61,7 +66,12 @@ public sealed partial class ModelSetupViewModel : ObservableObject, IDisposable
 
     partial void OnSelectedModelChanged(SetupModel value)
     {
-        if (Progress.Model != value.Name) Progress = new ModelSetupProgress(ModelSetupStage.Available, value.Name);
+        if (!selectingFromResult && Progress.Model != value.Name)
+        {
+            pendingPack = null;
+            readyBeforeExport = false;
+            SelectionTask = RefreshSelectedAsync(value.Name);
+        }
         NotifyState();
     }
     partial void OnIsBusyChanged(bool value) => NotifyState();
@@ -69,11 +79,39 @@ public sealed partial class ModelSetupViewModel : ObservableObject, IDisposable
     private void Localized(object? sender, PropertyChangedEventArgs e) => NotifyState();
     private void NotifyState()
     {
-        foreach (var property in new[] { nameof(IsRightToLeft), nameof(IsReady), nameof(CanDownload), nameof(CanUseLocal), nameof(HasProgress), nameof(HasTransferProgress), nameof(ShowDownload), nameof(ShowRefresh), nameof(CanCancel), nameof(CompactStatus), nameof(IsIndeterminate), nameof(Percent), nameof(Recommendation), nameof(TermsText), nameof(TermsLabel), nameof(ProgressText), nameof(SpeedText), nameof(DiskText), nameof(StatusText), nameof(DownloadLabel) })
+        foreach (var property in new[] { nameof(IsRightToLeft), nameof(IsReady), nameof(CanDownload), nameof(CanUseLocal), nameof(HasProgress), nameof(HasTransferProgress), nameof(ShowDownload), nameof(ShowRefresh), nameof(CanCancel), nameof(CompactStatus), nameof(IsIndeterminate), nameof(Percent), nameof(Recommendation), nameof(TermsText), nameof(TermsLabel), nameof(ProgressText), nameof(SpeedText), nameof(DiskText), nameof(StatusText), nameof(DownloadLabel), nameof(CanImport), nameof(CanExport), nameof(CanInstallPack), nameof(PendingFileName) })
             OnPropertyChanged(property);
         DownloadCommand.NotifyCanExecuteChanged();
         UseLocalCommand.NotifyCanExecuteChanged();
         CancelCommand.NotifyCanExecuteChanged();
+        ChoosePackCommand.NotifyCanExecuteChanged();
+        InstallPackCommand.NotifyCanExecuteChanged();
+        SavePackCommand.NotifyCanExecuteChanged();
+    }
+
+    private void SelectKnownModel(string name)
+    {
+        selectingFromResult = true;
+        try { SelectedModel = Models.First(m => m.Name == name); }
+        finally { selectingFromResult = false; }
+    }
+
+    private async Task RefreshSelectedAsync(string name)
+    {
+        var check = Interlocked.Increment(ref selectionCheck);
+        IsBusy = true;
+        Progress = new ModelSetupProgress(ModelSetupStage.Checking, name);
+        try
+        {
+            var result = await service.InspectModelAsync(name, lifetime.Token);
+            if (check == selectionCheck && SelectedModel.Name == name) Progress = result;
+        }
+        catch (OperationCanceledException) { }
+        catch (Exception ex) when (ex is IOException or HttpRequestException or InvalidOperationException or UnauthorizedAccessException)
+        {
+            if (check == selectionCheck) Progress = new ModelSetupProgress(ModelSetupStage.EngineFailed, name);
+        }
+        finally { if (check == selectionCheck) IsBusy = false; }
     }
 
     [RelayCommand]
@@ -86,7 +124,12 @@ public sealed partial class ModelSetupViewModel : ObservableObject, IDisposable
         IsExpanded = false;
     }
     [RelayCommand(CanExecute = nameof(CanCancel))]
-    private void Cancel() => DownloadCommand.Cancel();
+    private void Cancel()
+    {
+        DownloadCommand.Cancel();
+        InstallPackCommand.Cancel();
+        SavePackCommand.Cancel();
+    }
 
     [RelayCommand(CanExecute = nameof(CanUseLocal))]
     private async Task UseLocalAsync()
@@ -99,12 +142,14 @@ public sealed partial class ModelSetupViewModel : ObservableObject, IDisposable
     public async Task RefreshAsync()
     {
         if (IsBusy) return;
+        pendingPack = null;
+        readyBeforeExport = false;
         IsBusy = true;
         try
         {
             Progress = new ModelSetupProgress(ModelSetupStage.Checking, SelectedModel.Name);
             Progress = await service.InspectAsync(lifetime.Token);
-            SelectedModel = Models.First(m => m.Name == Progress.Model);
+            SelectKnownModel(Progress.Model);
             IsExpanded = !IsReady && !service.PreferTemplates;
         }
         catch (OperationCanceledException) { }

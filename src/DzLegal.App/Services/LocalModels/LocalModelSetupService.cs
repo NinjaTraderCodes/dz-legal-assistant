@@ -5,7 +5,7 @@ using DzLegal.Presentation.ViewModels;
 
 namespace DzLegal.App.Services.LocalModels;
 
-public sealed class LocalModelSetupService : ILocalModelSetup, IDisposable
+public sealed partial class LocalModelSetupService : ILocalModelSetup, ILocalModelPacks, IDisposable
 {
     private static readonly string[] Preference = ["gemma4:e4b", "gemma3:4b"];
     public const long DiskReserveBytes = 2L * 1024 * 1024 * 1024;
@@ -65,22 +65,33 @@ public sealed class LocalModelSetupService : ILocalModelSetup, IDisposable
         return ModelState.Ready;
     }
 
-    public async Task<ModelSetupProgress> InspectAsync(CancellationToken cancellationToken)
+    public Task<ModelSetupProgress> InspectAsync(CancellationToken cancellationToken) => InspectCoreAsync(null, cancellationToken);
+    public Task<ModelSetupProgress> InspectModelAsync(string model, CancellationToken cancellationToken)
     {
-        var recommended = WindowsComputerResources.RecommendedModel(resources.InstalledMemoryBytes);
+        _ = SupportedModels.Find(model);
+        return InspectCoreAsync(model, cancellationToken);
+    }
+
+    private async Task<ModelSetupProgress> InspectCoreAsync(string? selected, CancellationToken cancellationToken)
+    {
+        var recommended = selected ?? WindowsComputerResources.RecommendedModel(resources.InstalledMemoryBytes);
         try
         {
             var session = await engine.EnsureAsync(cancellationToken).ConfigureAwait(false);
             using var api = new LocalOllamaApi(session.Endpoint);
             var installed = await api.InstalledAsync(cancellationToken).ConfigureAwait(false);
             var memoryLow = false;
-            foreach (var name in Preference.Where(installed.Contains))
+            var verificationFailed = false;
+            var candidates = selected is null ? Preference : [selected];
+            foreach (var name in candidates.Where(installed.Contains))
             {
                 var state = await CanUseAsync(session.Endpoint, name, cancellationToken).ConfigureAwait(false);
                 if (state == ModelState.Ready) return new ModelSetupProgress(ModelSetupStage.Ready, name);
                 memoryLow |= state == ModelState.MemoryLow;
+                verificationFailed |= state == ModelState.ModelMissing;
             }
             if (memoryLow) return new ModelSetupProgress(ModelSetupStage.MemoryLow, recommended);
+            if (verificationFailed) return new ModelSetupProgress(ModelSetupStage.VerificationFailed, recommended);
             var model = SupportedModels.Find(recommended);
             var free = resources.FreeDiskBytes(root);
             var required = RequiredDisk(model);

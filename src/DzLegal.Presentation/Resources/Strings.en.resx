@@ -773,7 +773,7 @@ Imported on {1}</value></data>
   <data name="AboutNoticesBack" xml:space="preserve"><value>Back to About</value></data>
   <data name="AboutNoticesMissing" xml:space="preserve"><value>The notices file THIRD-PARTY-NOTICES.txt was not found next to the app. Reinstall the app to restore it.</value></data>
   <data name="ModelSetupTitle" xml:space="preserve"><value>Local AI</value></data>
-  <data name="ModelSetupRecommendation" xml:space="preserve"><value>Recommended model: {0} — download about {1}.</value></data>
+  <data name="ModelSetupRecommendation" xml:space="preserve"><value>Recommended model: {0} — model files about {1}.</value></data>
   <data name="ModelSetupDisclosure" xml:space="preserve"><value>Downloading starts only when you click Download. The engine contacts model download servers; case files and the text you write are not sent. You can keep working with templates.</value></data>
   <data name="ModelSetupTerms" xml:space="preserve"><value>Terms for {0} — original text below</value></data>
   <data name="ModelSetupBytes" xml:space="preserve"><value>{0}% — {1} of {2}</value></data>
@@ -784,14 +784,14 @@ Imported on {1}</value></data>
   <data name="ModelSetupDownload" xml:space="preserve"><value>Download model ({0})</value></data>
   <data name="ModelSetupNotNow" xml:space="preserve"><value>Not now — continue with templates</value></data>
   <data name="ModelSetupUse" xml:space="preserve"><value>Use local AI</value></data>
-  <data name="ModelSetupCancel" xml:space="preserve"><value>Cancel download</value></data>
+  <data name="ModelSetupCancel" xml:space="preserve"><value>Cancel</value></data>
   <data name="ModelSetupRefresh" xml:space="preserve"><value>Check again</value></data>
   <data name="ModelSetupEstimating" xml:space="preserve"><value>Estimating time remaining…</value></data>
   <data name="ModelSetupChecking" xml:space="preserve"><value>Checking this computer and installed models…</value></data>
   <data name="ModelSetupAvailable" xml:space="preserve"><value>Set up a model now, or continue with templates.</value></data>
   <data name="ModelSetupPreparing" xml:space="preserve"><value>Starting the local engine…</value></data>
   <data name="ModelSetupDownloading" xml:space="preserve"><value>Downloading the model…</value></data>
-  <data name="ModelSetupCancelled" xml:space="preserve"><value>Download stopped. Retry to resume from saved parts where possible.</value></data>
+  <data name="ModelSetupCancelled" xml:space="preserve"><value>Operation cancelled. Retry can resume a download; a file operation can be started again.</value></data>
   <data name="ModelSetupVerifying" xml:space="preserve"><value>Verifying model files…</value></data>
   <data name="ModelSetupTesting" xml:space="preserve"><value>Testing the model locally, without case data.</value></data>
   <data name="ModelSetupReady" xml:space="preserve"><value>The model is ready to use on this computer.</value></data>
@@ -804,4 +804,21 @@ Imported on {1}</value></data>
   <data name="ModelSetupRetry" xml:space="preserve"><value>Retry</value></data>
   <data name="ModelSetupCompactProgress" xml:space="preserve"><value>{0} {1}%</value></data>
   <data name="ModelSetupInstalled" xml:space="preserve"><value>{0} is installed and verified; no download is needed.</value></data>
+  <data name="ModelSetupImport" xml:space="preserve"><value>Install model from a file…</value></data>
+  <data name="ModelSetupInstallPack" xml:space="preserve"><value>Install this model</value></data>
+  <data name="ModelSetupExport" xml:space="preserve"><value>Save model to a file…</value></data>
+  <data name="ModelSetupPackFileType" xml:space="preserve"><value>Model pack</value></data>
+  <data name="ModelSetupChoosePack" xml:space="preserve"><value>Choose a model pack</value></data>
+  <data name="ModelSetupSavePackTitle" xml:space="preserve"><value>Save model pack</value></data>
+  <data name="ModelSetupPackSelected" xml:space="preserve"><value>Selected file: {0}</value></data>
+  <data name="ModelSetupPackNote" xml:space="preserve"><value>Packs contain public model files only. Importing and saving a pack use no Internet. Only the two model versions pinned in this app release are accepted.</value></data>
+  <data name="ModelSetupImportSelected" xml:space="preserve"><value>Review the model terms, then choose Install this model. Nothing is downloaded.</value></data>
+  <data name="ModelSetupImporting" xml:space="preserve"><value>Checking and installing the model pack…</value></data>
+  <data name="ModelSetupExporting" xml:space="preserve"><value>Checking and saving the model pack…</value></data>
+  <data name="ModelSetupExported" xml:space="preserve"><value>The verified model pack is saved. You can share it by USB.</value></data>
+  <data name="ModelSetupInvalidPack" xml:space="preserve"><value>This file does not match a supported model pack, or it is damaged. Choose another file.</value></data>
+  <data name="ModelSetupPackTooLarge" xml:space="preserve"><value>The selected drive uses FAT32, whose 4 GB file limit is too small. Use an exFAT or NTFS drive.</value></data>
+  <data name="ModelSetupImportFailed" xml:space="preserve"><value>The model pack could not be installed. Check that the file is readable and try again.</value></data>
+  <data name="ModelSetupExportFailed" xml:space="preserve"><value>The model pack could not be saved. Check the destination and try again.</value></data>
+  <data name="ModelSetupModelLabel" xml:space="preserve"><value>Model to check or install</value></data>
 </root>

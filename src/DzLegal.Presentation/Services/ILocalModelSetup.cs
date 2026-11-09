@@ -4,6 +4,7 @@ public enum ModelSetupStage
 {
     Checking, Available, Preparing, Downloading, Cancelled, Verifying, Testing, Ready,
     ConnectionFailed, DiskFull, MemoryLow, VerificationFailed, EngineFailed,
+    ImportSelected, Importing, Exporting, Exported, InvalidPack, PackTooLarge, ImportFailed, ExportFailed,
 }
 
 public sealed record SetupModel(string Name, long Bytes, string Terms, long RequiredMemoryBytes);
@@ -14,6 +15,7 @@ public interface ILocalModelSetup
 {
     IReadOnlyList<SetupModel> Models { get; }
     Task<ModelSetupProgress> InspectAsync(CancellationToken cancellationToken);
+    Task<ModelSetupProgress> InspectModelAsync(string model, CancellationToken cancellationToken);
     Task DownloadAsync(string model, IProgress<ModelSetupProgress> progress, CancellationToken cancellationToken);
     void RememberTemplates();
     void RememberLocal();

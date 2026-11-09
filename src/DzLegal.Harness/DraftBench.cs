@@ -55,6 +55,7 @@ public sealed record BenchOptions
 {
     public required IReadOnlyList<string> Models { get; init; }
     public required string CasesFolder { get; init; }
+    public string? ExtraCasesFolder { get; init; }
     public required string OutFolder { get; init; }
     public required string DataRoot { get; init; }
     public Uri Endpoint { get; init; } = new("http://127.0.0.1:11434");
@@ -99,7 +100,13 @@ public static partial class DraftBench
         ArgumentNullException.ThrowIfNull(options);
         ArgumentNullException.ThrowIfNull(log);
         var definition = DefinitionLoader.Load(Path.Combine(options.DataRoot, "requete-introductive"));
-        var cases = DraftingCaseLoader.LoadAll(options.CasesFolder).Where(c => options.Case is null || c.Id == options.Case).ToList();
+        var cases = DraftingCaseLoader.LoadAll(options.CasesFolder).ToList();
+        if (options.ExtraCasesFolder is not null) { cases.AddRange(DraftingCaseLoader.LoadAll(options.ExtraCasesFolder)); }
+        cases = cases.Where(c => options.Case is null || c.Id == options.Case).ToList();
+        if (cases.Select(c => c.Id).Distinct(StringComparer.Ordinal).Count() != cases.Count)
+        {
+            throw new ArgumentException("Drafting case IDs must be unique across the supplied folders.", nameof(options));
+        }
         if (options.MeasurementRoot is not null && cases.Any(c => c.Partition is not ("development" or "robustness")))
         {
             throw new ArgumentException("Guarded app benchmarks accept development and robustness cases only.", nameof(options));
@@ -118,13 +125,15 @@ public static partial class DraftBench
             .AppendLine("|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|---|");
 
         var speed = new StringBuilder();
-        if (options.Think.HasValue || options.MeasurementRoot is not null)
+        if (options.Think.HasValue || options.MeasurementRoot is not null || options.ExtraCasesFolder is not null)
         {
-            RunManifest.Create("draft", options.Models, new Dictionary<string, string>
+            var inputs = new Dictionary<string, string>
             {
                 ["cases"] = options.CasesFolder, ["documentTypes"] = options.DataRoot,
                 ["law"] = options.LawRoot ?? string.Empty,
-            }, BenchmarkMeasurement.Options(new Dictionary<string, string>
+            };
+            if (options.ExtraCasesFolder is not null) { inputs["extraCases"] = options.ExtraCasesFolder; }
+            RunManifest.Create("draft", options.Models, inputs, BenchmarkMeasurement.Options(new Dictionary<string, string>
             {
                 ["runs"] = runs.ToString(ci), ["case"] = options.Case ?? "all", ["endpoint"] = options.Endpoint.ToString(),
             }, options.Think, options.MeasurementRoot)).Write(options.OutFolder);

@@ -7,6 +7,29 @@ namespace DzLegal.Law.Tests;
 
 public sealed class FactRunMeasurementTests
 {
+    [Theory]
+    [InlineData("gemma4:e2b", false)]
+    [InlineData("gemma3n:e2b", null)]
+    public void PhoneModelsRequirePinnedDigestsAndTheAgreedThinkingOption(string model, bool? think)
+    {
+        var digest = new string('a', 64);
+        Assert.Equal(digest, FactRunMeasurement.ResolveDigest(model, think, digest.ToUpperInvariant()));
+        Assert.Throws<ArgumentException>(() => FactRunMeasurement.ResolveDigest(model, think));
+        Assert.Throws<ArgumentException>(() => FactRunMeasurement.ResolveDigest(model, think, "unknown"));
+        Assert.Throws<ArgumentException>(() => FactRunMeasurement.ResolveDigest(model, think, new string('x', 64)));
+        Assert.Throws<ArgumentException>(() => FactRunMeasurement.ResolveDigest(model, true, digest));
+    }
+
+    [Theory]
+    [InlineData("gemma3:4b", null, "c30276f7dffec93a536d283e15088990454b8d21cf180a3d6eea4959e4147291")]
+    [InlineData("gemma4:e4b", false, "dc35e8d9c6061baa6f0fa870975ab6932e2542b579b13ea0f199fa4bb7300c9c")]
+    public void OriginalOwnerModelsKeepTheirFrozenDigest(string model, bool? think, string digest)
+    {
+        Assert.Equal(digest, FactRunMeasurement.ResolveDigest(model, think));
+        Assert.Throws<ArgumentException>(() => FactRunMeasurement.ResolveDigest(model, think, new string('a', 64)));
+        Assert.Throws<ArgumentException>(() => FactRunMeasurement.ResolveDigest("unapproved:e2b", think, digest));
+    }
+
     [Fact]
     public async Task ReloadsAtOneElevenAndTwentyOneAndNeverPrintsPrivateLines()
     {

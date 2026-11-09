@@ -33,7 +33,7 @@ public sealed class FactRunMeasurement : IDisposable
     }
 
     public static async Task<int> RunCommandAsync(string casesRoot, string lawRoot, string output, string model,
-        bool? think, string measurementRoot, string endpoint, TextWriter progress)
+        bool? think, string measurementRoot, string endpoint, TextWriter progress, string? expectedDigest = null)
     {
         ArgumentNullException.ThrowIfNull(progress);
         var root = Path.GetFullPath(output);
@@ -47,12 +47,7 @@ public sealed class FactRunMeasurement : IDisposable
 
         try
         {
-            var digest = model switch
-            {
-                "gemma3:4b" when think is null => "c30276f7dffec93a536d283e15088990454b8d21cf180a3d6eea4959e4147291",
-                "gemma4:e4b" when think is false => "dc35e8d9c6061baa6f0fa870975ab6932e2542b579b13ea0f199fa4bb7300c9c",
-                _ => throw new ArgumentException("The measured owner runs are frozen to baseline gemma3 and thinking-off gemma4."),
-            };
+            var digest = ResolveDigest(model, think, expectedDigest);
             Directory.CreateDirectory(root);
             var address = new Uri(endpoint);
             var speed = new SpeedLog();
@@ -76,7 +71,7 @@ public sealed class FactRunMeasurement : IDisposable
                 throw new InvalidDataException("Expected nonempty cases with unique names.");
             }
 
-            var options = new Dictionary<string, string> { ["reader"] = "alpha-01, claims given", ["endpoint"] = endpoint,
+            var options = new Dictionary<string, string> { ["reader"] = "alpha-01, claims given", ["endpoint"] = endpoint, ["digest"] = digest,
                 ["residence"] = "unload/reload every10 cases;512MiB guard; app resident; mains/Best performance", ["console"] = "counts and guard events only" };
             if (think.HasValue)
             {
@@ -86,8 +81,9 @@ public sealed class FactRunMeasurement : IDisposable
             RunManifest.Create("facts", [model], new Dictionary<string, string>
             { ["prompt"] = Path.Combine(lawRoot, ClaimFactReader.PromptFile), ["elements"] = Path.Combine(lawRoot, ClaimFactReader.ElementsFile), ["cases"] = casesRoot }, options).Write(root);
             var read = AlphaFacts.Reader(provider, lawRoot, AlphaFacts.Given);
+            var identity = $"Model: {model}; digest: {digest}; think value sent: {(think is false ? "false" : "omitted")}.\n";
             return await run.RunAsync(cases, provider.Name + " (alpha-01, claims given)", async (c, t, ct) =>
-            { last = null; return await read(c, t, ct); }, () => last?.PromptMayBeTruncated == true, speed);
+            { last = null; return await read(c, t, ct); }, () => last?.PromptMayBeTruncated == true, speed, identity);
         }
         catch (Exception ex)
         {
@@ -97,8 +93,32 @@ public sealed class FactRunMeasurement : IDisposable
         }
     }
 
+    public static string ResolveDigest(string model, bool? think, string? expectedDigest = null)
+    {
+        var pinned = (model, think) switch
+        {
+            ("gemma3:4b", null) => "c30276f7dffec93a536d283e15088990454b8d21cf180a3d6eea4959e4147291",
+            ("gemma4:e4b", false) => "dc35e8d9c6061baa6f0fa870975ab6932e2542b579b13ea0f199fa4bb7300c9c",
+            ("gemma4:e2b", false) or ("gemma3n:e2b", null) => null,
+            _ => throw new ArgumentException("Measured owner runs require an approved model and its agreed thinking value.", nameof(model)),
+        };
+        if (pinned is not null)
+        {
+            if (expectedDigest is not null && !pinned.Equals(expectedDigest, StringComparison.OrdinalIgnoreCase))
+            {
+                throw new ArgumentException("The original model digest cannot be overridden.", nameof(expectedDigest));
+            }
+            return pinned;
+        }
+        if (expectedDigest is not { Length: 64 } || !expectedDigest.All(char.IsAsciiHexDigit))
+        {
+            throw new ArgumentException("Phone models require their previously recorded SHA-256 digest.", nameof(expectedDigest));
+        }
+        return expectedDigest.ToLowerInvariant();
+    }
+
     public async Task<int> RunAsync(IReadOnlyList<FactCase> cases, string readerName,
-        Func<FactCase, CaseText, CancellationToken, Task<FactReading>> read, Func<bool> contextTruncated, SpeedLog? speed = null)
+        Func<FactCase, CaseText, CancellationToken, Task<FactReading>> read, Func<bool> contextTruncated, SpeedLog? speed = null, string? identity = null)
     {
         ArgumentNullException.ThrowIfNull(cases);
         ArgumentNullException.ThrowIfNull(read);
@@ -171,7 +191,7 @@ public sealed class FactRunMeasurement : IDisposable
             " GiB; concurrent model+app working-set peak: " + GiB(resources.ModelAppPeak) + " GiB; minimum machine available: " + GiB(resources.AvailableMinimum) +
             $" GiB. Resource samples: {resources.Samples}; invalid power/headroom samples: {resources.InvalidSamples}. Sampling can miss short peaks.\n\n" +
             (failure is null ? "Run complete.\n" : "Run incomplete; see private measurement metadata.\n");
-        await File.WriteAllTextAsync(Path.Combine(_root, "summary.md"), "# Alpha-01 owner run\n\n" + FactsEvaluator.Summary(new FactsReport(readerName, results), speed?.Table()) + measurement);
+        await File.WriteAllTextAsync(Path.Combine(_root, "summary.md"), "# Alpha-01 owner run\n\n" + identity + "\n" + FactsEvaluator.Summary(new FactsReport(readerName, results), speed?.Table()) + measurement);
         await SaveAsync("measurement-resources.json", resources);
         await SaveAsync("measurement-completion.json", new { Planned = cases.Count, Attempted = results.Count, Unattempted = cases.Count - results.Count,
             Complete = failure is null && results.Count == cases.Count, Failure = failure, StartedUtc = started, FinishedUtc = DateTimeOffset.UtcNow,

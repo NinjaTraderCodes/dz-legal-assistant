@@ -26,11 +26,13 @@ public sealed class HarnessThinkingTests
     }
 
     [Theory]
-    [InlineData("grounds", null)]
-    [InlineData("grounds", false)]
-    [InlineData("draft", null)]
-    [InlineData("draft", false)]
-    public async Task RealCommandsPassTheOverrideAndPreserveOmittedDefaults(string command, bool? think)
+    [InlineData("grounds", null, false)]
+    [InlineData("grounds", false, false)]
+    [InlineData("draft", null, false)]
+    [InlineData("draft", false, false)]
+    [InlineData("draft", null, true)]
+    [InlineData("draft", false, true)]
+    public async Task RealCommandsPassTheOverrideAndPreserveOmittedDefaults(string command, bool? think, bool extraCases)
     {
         var folder = Directory.CreateTempSubdirectory("dz-alpha03-thinking-cli-");
         using var server = new TcpListener(IPAddress.Loopback, 0);
@@ -66,6 +68,12 @@ public sealed class HarnessThinkingTests
                 "--law-root", Path.Combine(AppContext.BaseDirectory, "data", "law"),
                 "--data", Path.Combine(AppContext.BaseDirectory, "data", "document-types"),
             }) { start.ArgumentList.Add(argument); }
+            if (extraCases)
+            {
+                var extra = Directory.CreateDirectory(Path.Combine(folder.FullName, "extra")).FullName;
+                await File.WriteAllTextAsync(Path.Combine(extra, "another.json"), """{"name":"another","extends":"../inputs/fixture.json","inputs":{}}""");
+                start.ArgumentList.Add("--extra-cases"); start.ArgumentList.Add(extra);
+            }
             if (think.HasValue) { start.ArgumentList.Add("--think"); start.ArgumentList.Add(think.Value ? "true" : "false"); }
             using var process = Process.Start(start)!;
             var stdout = process.StandardOutput.ReadToEndAsync(timeout.Token);
@@ -73,6 +81,12 @@ public sealed class HarnessThinkingTests
             try { await process.WaitForExitAsync(timeout.Token); }
             finally { if (!process.HasExited) { process.Kill(entireProcessTree: true); } }
             Assert.True(process.ExitCode == 0, await stdout + await stderr);
+            if (extraCases)
+            {
+                Assert.Contains("2 cases", await File.ReadAllTextAsync(Path.Combine(folder.FullName, "output", "summary.md")), StringComparison.Ordinal);
+                using var manifest = JsonDocument.Parse(await File.ReadAllTextAsync(Path.Combine(folder.FullName, "output", "manifest.json")));
+                Assert.True(manifest.RootElement.GetProperty("Fingerprints").TryGetProperty("extraCases", out _));
+            }
         }
         finally
         {
@@ -98,6 +112,8 @@ public sealed class HarnessThinkingTests
     [InlineData("gemma3:4b", null, null)]
     [InlineData("gemma4:e4b", null, null)]
     [InlineData("gemma4:e4b", false, false)]
+    [InlineData("gemma4:e2b", false, false)]
+    [InlineData("gemma3n:e2b", null, null)]
     [InlineData("gemma4:e4b", true, true)]
     [InlineData("qwen3:4b", null, false)]
     public async Task ExplicitThinkingReachesTheWireAndOmissionPreservesDefaults(string model, bool? think, bool? expected)

@@ -1,5 +1,16 @@
 # Default app benchmark comparison
 
+**Current go: Stage2 then Stage3 without another wait.** The owner amended Stage2 to the **12 existing files unchanged**, from `tests/drafting-cases` and `tests/drafting-cases-more`; do not write/adapt cases. `DRAFT-STAGE-2.json` pins their order, bytes and coverage before inference. Use the same12 for G4thinkfalse then G3thinkomitted:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy RemoteSigned -File tools/alpha-03/Measure-AppBenchmarks.ps1 -RunRoot "<fresh external directory>" -Stage draft -Gemma4First -IncludeMoreDrafts -PauseBusySearch
+python -B tools/alpha-03/analyze_app_benchmarks.py "<same directory>" --stage draft --include-more-drafts --write-docs --report-suffix stage-2
+```
+
+Optional `draft --extra-cases <folder>` appends that folder's existing files to the first folder's ordered batch, retains their original relative `extends` resolution, checks unique IDs and fingerprints both folders. The normal one-folder default is unchanged. All12 share one reload cadence per model (before1/11), not two separate batches. The runner checks the pinned original hashes before timing. Coverage is limited to eight primary types plus the explicit lease-rescission component in08; the manifest lists the12 other catalogue types without a distinct case. Auxiliary loan damages are not counted as a standalone damages case.
+
+Push the Stage2 report after required checks, then proceed directly to Stage3: pull both approved phone models, record digests before timing, G4E2Bthinkfalse first and G3nE2Bthinkomitted next. Use the owner wrapper, same Alpha-01 reader/settings/cap/guards, fresh external outputs. Agent may read only the four exact `summary.md` files needed for the comparison, never the hidden input folder, case outputs or consoles. Stop after Stage3, or immediately on any failed precondition. Earlier stage-specific stop notes below are historical.
+
 **Stage1 finished on9 November:** both46-case grounds runs exited0 and passed all recorded guards. [Full comparison](../../docs/baselines/2026-11-09-alpha-03-app-grounds-stage-1/summary.md): gemma4 claim46/46/core51/68/56.231844s; gemma3 claim41/46/core48/68/69.931247s. Models unloaded, awake state restored, Search remained running. **Wait for a new owner go before Stage2 or3.** The commands below document reproduction, not permission to rerun.
 
 **Current authorisation (9 November): Stage 1 only.** Restart all 46 grounds cases in a fresh external directory, **gemma4:e4b first, then gemma3:4b**. At gemma4 case27, report its first27 against the preserved gemma3 prefix on the same IDs, then continue. After both complete, report and wait. Draft and phone-model stages need a separate owner go. No hidden or validation data is used in this stage.

@@ -270,7 +270,8 @@ if (args.Length > 0 && args[0] == "facts")
         return await FactRunMeasurement.RunCommandAsync(Option("--cases", string.Empty),
             Option("--law-root", Path.Combine(AppContext.BaseDirectory, "data", "law")), Option("--out", string.Empty),
             Option("--models", string.Empty), think, Option("--measurement-root", string.Empty),
-            Option("--endpoint", "http://127.0.0.1:11434"), Console.Out);
+            Option("--endpoint", "http://127.0.0.1:11434"), Console.Out,
+            args.Contains("--expected-digest") ? Option("--expected-digest", string.Empty) : null);
     }
 
     var factCases = FactsEvaluator.LoadCases(Option("--cases", Path.Combine(AppContext.BaseDirectory, "fact-cases")));
@@ -427,6 +428,7 @@ if (args.Length > 0 && args[0] == "draft")
                 Models = models,
                 DataRoot = dataRoot,
                 CasesFolder = Option("--cases", Path.Combine(AppContext.BaseDirectory, "drafting-cases")),
+                ExtraCasesFolder = args.Contains("--extra-cases") ? Option("--extra-cases", string.Empty) : null,
                 OutFolder = Option("--out", "bench"),
                 Endpoint = new Uri(Option("--endpoint", "http://127.0.0.1:11434")),
                 Timeout = TimeSpan.FromMinutes(double.Parse(Option("--timeout-minutes", "15"), CultureInfo.InvariantCulture)),

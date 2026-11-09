@@ -1,5 +1,6 @@
 param([Parameter(Mandatory=$true)][string]$RunRoot,
-      [ValidateSet('all','grounds','draft')][string]$Stage='all',[switch]$Gemma4First,[switch]$PauseBusySearch)
+      [ValidateSet('all','grounds','draft')][string]$Stage='all',[switch]$Gemma4First,[switch]$PauseBusySearch,
+      [switch]$IncludeMoreDrafts)
 $ErrorActionPreference='Stop'
 . (Join-Path $PSScriptRoot 'Power.ps1')
 . (Join-Path $PSScriptRoot 'AppBenchmarkProcess.ps1')
@@ -8,6 +9,15 @@ $repo=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..')).TrimEnd('\')
 $root=[IO.Path]::GetFullPath($RunRoot).TrimEnd('\')
 if($root -eq $repo -or $root.StartsWith($repo+'\',[StringComparison]::OrdinalIgnoreCase) -or $root.StartsWith('\\')){throw 'Use a fresh local directory outside the repository.'}
 if(Test-Path -LiteralPath $root){throw 'Run directory already exists; no overwrite or automatic retry.'}
+$draftCases=Join-Path $repo 'tests/drafting-cases'
+if($IncludeMoreDrafts -and $Stage -ne 'draft'){throw '-IncludeMoreDrafts requires -Stage draft.'}
+if($IncludeMoreDrafts){
+    $draftManifest=Get-Content -LiteralPath (Join-Path $PSScriptRoot 'DRAFT-STAGE-2.json') -Raw|ConvertFrom-Json
+    if(@($draftManifest.cases).Count -ne 12){throw 'Expected the locked12-case manifest.'}
+    foreach($entry in $draftManifest.cases){if((Get-FileHash -LiteralPath (Join-Path $repo $entry.path) -Algorithm SHA256).Hash.ToLowerInvariant() -ne $entry.sha256){throw 'An original drafting case differs from the locked manifest.'}}
+    $actualDraftFiles=@(Get-ChildItem -LiteralPath (Join-Path $repo 'tests/drafting-cases'),(Join-Path $repo 'tests/drafting-cases-more') -Filter '*.json' -File)
+    if($actualDraftFiles.Count -ne 12){throw 'The original drafting folders no longer contain exactly12 files.'}
+}
 $binary=Join-Path $repo 'src/DzLegal.Harness/bin/Release/net10.0/DzLegal.Harness.dll'
 if(-not(Test-Path -LiteralPath $binary)){throw 'Build the Release harness before timing.'}
 $digests=@{'gemma3:4b'='c30276f7dffec93a536d283e15088990454b8d21cf180a3d6eea4959e4147291';'gemma4:e4b'='dc35e8d9c6061baa6f0fa870975ab6932e2542b579b13ea0f199fa4bb7300c9c'}
@@ -46,7 +56,7 @@ try{
     New-Item -ItemType Directory -Path $folder|Out-Null
     if($PauseBusySearch){@{originalState=$searchOriginal.State;originalStartMode=$searchOriginal.StartMode;measuredCores=$searchCores;pausedByThisStage=$searchPaused}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $folder 'search-state.json') -Encoding utf8}
     Assert-AlphaPower|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $folder 'power-before.json') -Encoding utf8
-    @{command=$command;model=$model;digest=$digests[$model];think=$(if($model -eq 'gemma4:e4b'){'false'}else{'omitted'});cases='default development and robustness only';reloadEvery=10;minimumAvailableMiB=512;sharedResourceAppend=$true;preventSleep=$true;stage=$Stage}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $folder 'measurement-plan.json') -Encoding utf8
+    @{command=$command;model=$model;digest=$digests[$model];think=$(if($model -eq 'gemma4:e4b'){'false'}else{'omitted'});cases=$(if($IncludeMoreDrafts){'12 unchanged original drafting files'}else{'default development and robustness only'});includeMoreDrafts=$IncludeMoreDrafts.IsPresent;draftCaseManifestHash=$(if($IncludeMoreDrafts){$draftManifest.contentHash}else{$null});reloadEvery=10;minimumAvailableMiB=512;sharedResourceAppend=$true;preventSleep=$true;stage=$Stage}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $folder 'measurement-plan.json') -Encoding utf8
     $monitorScript=Join-Path $PSScriptRoot 'Measure-Resources.ps1'
     $monitor=Start-Process -FilePath powershell.exe -ArgumentList @('-NoProfile','-ExecutionPolicy','RemoteSigned','-File',('"'+$monitorScript+'"'),'-RunRoot',('"'+$folder+'"'),'-SharedAppend') -WindowStyle Hidden -PassThru -RedirectStandardOutput (Join-Path $folder 'monitor-stdout.txt') -RedirectStandardError (Join-Path $folder 'monitor-stderr.txt')
     try{
@@ -62,7 +72,8 @@ try{
         if(-not $ready){throw 'Quiet preflight not met; no benchmark started.'}
         $arguments=@($binary,$command,'--models',$model,'--out',$folder,'--measurement-root',$folder,'--endpoint','http://127.0.0.1:11434','--law-root',(Join-Path $repo 'data/law'),'--data',(Join-Path $repo 'data/document-types'))
         if($command -eq 'grounds'){$arguments+=@('--cases',(Join-Path $repo 'tests/grounds-cases'),'--partition','development,robustness')}
-        else{$arguments+=@('--cases',(Join-Path $repo 'tests/drafting-cases'))}
+        else{$arguments+=@('--cases',$draftCases)}
+        if($command -eq 'draft' -and $IncludeMoreDrafts){$arguments+=@('--extra-cases',(Join-Path $repo 'tests/drafting-cases-more'))}
         if($model -eq 'gemma4:e4b'){$arguments+=@('--think','false')}
         $argumentLine=($arguments|ForEach-Object{'"'+$_+'"'})-join ' '
         $argumentLine|Set-Content -LiteralPath (Join-Path $folder 'command.txt') -Encoding utf8

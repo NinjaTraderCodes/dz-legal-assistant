@@ -12,6 +12,7 @@ parser.add_argument("run_root", type=Path)
 parser.add_argument("--write-docs", action="store_true")
 parser.add_argument("--report-suffix", default="")
 parser.add_argument("--stage", choices=("all", "grounds", "draft"), default="all")
+parser.add_argument("--include-more-drafts", action="store_true")
 args = parser.parse_args()
 if args.report_suffix and not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", args.report_suffix):
     raise ValueError("Use a lowercase alphanumeric/hyphen report suffix")
@@ -20,7 +21,11 @@ read = lambda p: json.loads(p.read_text(encoding="utf-8-sig"))
 best = "ded574b5-45a0-4f42-8737-46345c09c238"
 models = ("gemma3:4b", "gemma4:e4b")
 grounds = [c for c in read(repo / "tests/grounds-cases/cases.json")["cases"] if c.get("partition", "development") in ("development", "robustness")]
-drafts = [(p.stem, read(p).get("partition", "development")) for p in sorted((repo / "tests/drafting-cases").glob("*.json"))]
+draft_folder = repo / "tests/drafting-cases"
+drafts = [(p.stem, read(p).get("partition", "development")) for p in sorted(draft_folder.glob("*.json"))]
+if args.include_more_drafts:
+    drafts += [(p.stem, read(p).get("partition", "development")) for p in sorted((repo / "tests/drafting-cases-more").glob("*.json"))]
+assert len({name for name, _ in drafts}) == len(drafts)
 assert all(part in ("development", "robustness") for _, part in drafts)
 expected = {"grounds": [c["name"] for c in grounds], "draft": [name for name, _ in drafts]}
 
@@ -102,6 +107,11 @@ for command in commands:
         loads = read(folder / "measurement-loads.json") if (folder / "measurement-loads.json").exists() else []
         calls = read(folder / "measurement-calls.json") if (folder / "measurement-calls.json").exists() else []
         plan = read(folder / "measurement-plan.json")
+        if command == "draft" and args.include_more_drafts:
+            manifest = read(repo / "tools/alpha-03/DRAFT-STAGE-2.json")
+            assert plan["includeMoreDrafts"] and plan["draftCaseManifestHash"] == manifest["contentHash"]
+            assert all(hashlib.sha256((repo / c["path"]).read_bytes()).hexdigest() == c["sha256"] for c in manifest["cases"])
+            assert [c["id"] for c in manifest["cases"]] == expected["draft"]
         options = read(folder / "manifest.json")["Options"]
         assert (options.get("think") == "false") if model == "gemma4:e4b" else ("think" not in options)
         assert plan["think"] == ("false" if model == "gemma4:e4b" else "omitted")

@@ -1,0 +1,142 @@
+{
+  "formatVersion": 1,
+  "ownerDecision": "Use the 12 existing drafting files exactly, no new or adapted case; same order both models; gemma4 thinking off then gemma3 omitted",
+  "coverageRule": "Direct subjects/requests only; contract-rescission is the explicit lease-termination component in08, not a separate case; ancillary delay damages do not cover a standalone contract-damages claim. Company-price case09 covers unpaid-sale-price, not an independent commercial-debt scenario.",
+  "cases": [
+    {
+      "id": "01-debt-arabic",
+      "path": "tests/drafting-cases/01-debt-arabic.json",
+      "sha256": "698ad64ddc5194d3e750ab85d35ba8d717077b09508b8f3ad41a0a504f8c8a66",
+      "partition": "development",
+      "coveredClaims": [
+        "loan-repayment"
+      ]
+    },
+    {
+      "id": "02-debt-french-notes",
+      "path": "tests/drafting-cases/02-debt-french-notes.json",
+      "sha256": "cc7201ff01f3d90cea9a3f460b44b5d918ad6b4552056abcc745b3d7eb32c709",
+      "partition": "robustness",
+      "coveredClaims": [
+        "loan-repayment"
+      ]
+    },
+    {
+      "id": "03-rent-darija-notes",
+      "path": "tests/drafting-cases/03-rent-darija-notes.json",
+      "sha256": "b963cc969dca2cfd845727b1fdf62533573ea3bcaa70617c20cc070c995efcaa",
+      "partition": "robustness",
+      "coveredClaims": [
+        "unpaid-rent"
+      ]
+    },
+    {
+      "id": "04-company-defendant",
+      "path": "tests/drafting-cases/04-company-defendant.json",
+      "sha256": "33cfe984205bd58ec3d5c35f6382bc9200371c8c1cd3e6a8f94c01771a6f17e0",
+      "partition": "development",
+      "coveredClaims": [
+        "sale-non-delivery"
+      ]
+    },
+    {
+      "id": "05-real-property",
+      "path": "tests/drafting-cases/05-real-property.json",
+      "sha256": "6be4dcd2a58c80ca43a1879b86c6acb2afa2a7d4395f348c0451b529ca267af8",
+      "partition": "development",
+      "coveredClaims": [
+        "sale-annulment-fraud"
+      ]
+    },
+    {
+      "id": "06-tatliq",
+      "path": "tests/drafting-cases-more/06-tatliq.json",
+      "sha256": "3dfa61e5242939add4f7035ac1aacaed53555f5fe260f7deb06a92e0fd4a9a4f",
+      "partition": "development",
+      "coveredClaims": [
+        "tatliq"
+      ]
+    },
+    {
+      "id": "07-wages",
+      "path": "tests/drafting-cases-more/07-wages.json",
+      "sha256": "8c03be72ab724c03c4704d4214090d36483a15dfc0fc55690f224e12df0cf630",
+      "partition": "development",
+      "coveredClaims": [
+        "unpaid-wages"
+      ]
+    },
+    {
+      "id": "08-rent-eviction",
+      "path": "tests/drafting-cases-more/08-rent-eviction.json",
+      "sha256": "cb77ba0477ffe5695743fc05f45e1bdd4eede47f969ea2104e81a9319585341b",
+      "partition": "development",
+      "coveredClaims": [
+        "unpaid-rent",
+        "contract-rescission"
+      ]
+    },
+    {
+      "id": "09-company-plaintiff",
+      "path": "tests/drafting-cases-more/09-company-plaintiff.json",
+      "sha256": "d160ed1284e933704844d0478267eb3aa378ed592d2640733e1eb902fa431023",
+      "partition": "development",
+      "coveredClaims": [
+        "unpaid-sale-price"
+      ]
+    },
+    {
+      "id": "10-niltamis",
+      "path": "tests/drafting-cases-more/10-niltamis.json",
+      "sha256": "508aca3d788c12763b5aa6c4a0bbd4749ff5517b3b14f5842f1eb37bf4744b51",
+      "partition": "development",
+      "coveredClaims": [
+        "loan-repayment"
+      ]
+    },
+    {
+      "id": "11-tort-woman",
+      "path": "tests/drafting-cases-more/11-tort-woman.json",
+      "sha256": "ff0b8c1e238774896f73452403e16592aa7c9a70e434efccb54f059a18f11912",
+      "partition": "development",
+      "coveredClaims": [
+        "tort-damages"
+      ]
+    },
+    {
+      "id": "12-app-run-18-oct",
+      "path": "tests/drafting-cases-more/12-app-run-18-oct.json",
+      "sha256": "2151d374bc32072e67dfff432e7f812dc6687a8b0e7df9f165bb5bdcddeedb30",
+      "partition": "development",
+      "coveredClaims": [
+        "loan-repayment"
+      ]
+    }
+  ],
+  "coveredClaims": [
+    "contract-rescission",
+    "loan-repayment",
+    "sale-annulment-fraud",
+    "sale-non-delivery",
+    "tatliq",
+    "tort-damages",
+    "unpaid-rent",
+    "unpaid-sale-price",
+    "unpaid-wages"
+  ],
+  "notCoveredClaims": [
+    "abusive-dismissal",
+    "commercial-debt",
+    "commercial-lease-eviction",
+    "contract-damages",
+    "custody",
+    "custody-forfeiture",
+    "divorce-by-husband",
+    "eviction-occupier-without-title",
+    "khul",
+    "liability-for-things",
+    "nafaqa",
+    "visitation"
+  ],
+  "contentHash": "aacb10fbbf04413a8bb8de27b8c3ee704b50a5c411dbe535e705a28ee8937432"
+}

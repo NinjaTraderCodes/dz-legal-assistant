@@ -42,7 +42,7 @@ public static class Composition
                 () => new OllamaModelProvider(choice.Options),
                 ct => choice.ProbeAsync(ct),
                 settings.Ollama.WarmUp ? ct => WarmUpOllamaAsync(choice.Options, ct) : null,
-                release: ct => engine is null || engine.IsManaged ? UnloadOllamaAsync(choice.Options, ct) : Task.CompletedTask),
+                release: ct => UnloadOllamaAsync(choice.Options, ct)),
             new ProviderOption("stub", loc => loc["ProviderStub"], () => new StubModelProvider()),
         ];
 #if ONLINE_TESTING

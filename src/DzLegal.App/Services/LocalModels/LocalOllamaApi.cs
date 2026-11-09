@@ -7,6 +7,10 @@ namespace DzLegal.App.Services.LocalModels;
 /// <summary>Setup requests contain model identities only; case inference keeps its existing provider.</summary>
 public sealed class LocalOllamaApi : IDisposable
 {
+    // The pinned Gemma 4 GGUF config (7ca1ae56...) declares requires=0.30.9;
+    // Gemma 3 support predates it (0.6.0). See MODEL-SETUP-IMPLEMENTATION.md.
+    public static Version MinimumVersion { get; } = new(0, 30, 9);
+
     private readonly HttpClient http;
 
     public LocalOllamaApi(Uri endpoint, HttpMessageHandler? handler = null)
@@ -26,7 +30,8 @@ public sealed class LocalOllamaApi : IDisposable
         using var response = await http.GetAsync("api/version", cancellationToken).ConfigureAwait(false);
         response.EnsureSuccessStatusCode();
         using var json = await JsonDocument.ParseAsync(await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false), cancellationToken: cancellationToken).ConfigureAwait(false);
-        return json.RootElement.TryGetProperty("version", out var version) && version.GetString() == "0.40.15";
+        return json.RootElement.TryGetProperty("version", out var version) && version.ValueKind == JsonValueKind.String
+            && Version.TryParse(version.GetString(), out var parsed) && parsed.Build >= 0 && parsed >= MinimumVersion;
     }
 
     public async Task<IReadOnlyList<string>> InstalledAsync(CancellationToken cancellationToken)

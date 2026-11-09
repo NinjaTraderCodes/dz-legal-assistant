@@ -17,8 +17,9 @@ public sealed class WindowsEngineLauncher(string executable, string root) : IEng
         return WindowsEngineProcess.Start(executable, root, port);
     }
 
-    internal static ProcessStartInfo StartInfo(string executable, string root, int port)
+    internal static ProcessStartInfo StartInfo(string executable, string root, int port, Func<string, string?>? readEnvironment = null)
     {
+        readEnvironment ??= Environment.GetEnvironmentVariable;
         var info = new ProcessStartInfo(Path.GetFullPath(executable))
         {
             UseShellExecute = false,
@@ -30,7 +31,12 @@ public sealed class WindowsEngineLauncher(string executable, string root) : IEng
         info.ArgumentList.Add("serve");
         info.Environment.Clear();
         foreach (var name in new[] { "SystemRoot", "WINDIR", "COMSPEC", "PROCESSOR_ARCHITECTURE", "NUMBER_OF_PROCESSORS" })
-            if (Environment.GetEnvironmentVariable(name) is { } value) info.Environment[name] = value;
+            if (readEnvironment(name) is { } value) info.Environment[name] = value;
+        // Only the engine's explicit HTTPS pulls use the office proxy. App HTTP stays proxy-free.
+        if (readEnvironment("HTTPS_PROXY") is { Length: > 0 } proxy) info.Environment["HTTPS_PROXY"] = proxy;
+        var exclusions = readEnvironment("NO_PROXY");
+        info.Environment["NO_PROXY"] = string.IsNullOrWhiteSpace(exclusions)
+            ? "127.0.0.1,localhost,::1" : exclusions + ",127.0.0.1,localhost,::1";
         info.Environment["PATH"] = Environment.SystemDirectory;
         info.Environment["USERPROFILE"] = Path.Combine(root, "engine-home");
         info.Environment["LOCALAPPDATA"] = Path.Combine(root, "engine-home", "local");

@@ -63,7 +63,7 @@ Measured on test cases written by separate AI agents and never opened by the dev
 | **Cases with every detail right** | **64%** (58 of 90) | **43%** (39 of 90) |
 | Time per case, laptop without a graphics card | 21 s | 28 s |
 
-"Every detail right" is the strictest score: one wrong date or amount fails the whole case. These figures measure our fact reader (Alpha-01) in the test bench; the desktop app's own analysis and drafting with Gemma 4 are measured separately. Most of Gemma 4's remaining errors are one kind: a fact the other party disputes, read as stated.
+"Every detail right" is the strictest score: one wrong date or amount fails the whole case. These figures measure our fact reader (Alpha-01) in the test bench. In the desktop app's own steps, on its 46 development cases, Gemma 4 E4B also chose the claim type right in 46 of 46 (Gemma 3 4B: 41) and drafted the legal grounds as cleanly, a third faster ([docs/PRODUCT-DETAILS.md](docs/PRODUCT-DETAILS.md)); those cases were used to build the app, so the hidden set above remains the honest measure. Most of Gemma 4's remaining errors are one kind: a fact the other party disputes, read as stated.
 
 On the first set (31 October 2026, another 90 cases), the online model (Nemotron 3 Ultra) got **71%** of cases fully right in 4 s per case, against 36% for Gemma 3 4B on battery. When it also reads the claim type itself, as in the live demo, it finds the right type in **94%** of cases (85 of 90), gets **67%** fully right, and declines **all 10** out-of-scope cases instead of guessing.
 

@@ -1,3 +1,5 @@
+using System.Text.Json;
+using DzLegal.App.Services.LocalModels;
 using DzLegal.Drafting;
 using DzLegal.ModelProviders.Ollama;
 using DzLegal.Presentation.ViewModels;
@@ -5,26 +7,27 @@ using DzLegal.Presentation.ViewModels;
 namespace DzLegal.App;
 
 /// <summary>
-/// Which local model the app talks to. The text-only model (the same Gemma language weights without the unused image
-/// part, about 0.8 GB less memory, identical answers; created by tools/model/New-TextOnlyModel.ps1) is preferred when
-/// it is installed; otherwise the configured model. Decided by each probe, before the warm-up and the first request.
+/// Chooses verified local installed models; automatic selection prefers Gemma 4, then Gemma 3.
+/// Explicit advanced model settings are preserved. Thinking is resolved after each selection.
 /// </summary>
 public sealed class OllamaModelChoice
 {
     private readonly OllamaOptions configured;
     private readonly string? textOnlyModel;
+    private readonly ILocalEngine? engine;
 
     /// <summary>The model the text-only one is built from (tools/model/New-TextOnlyModel.ps1).</summary>
     public const string TextOnlySource = "gemma3:4b";
 
     private volatile OllamaOptions _current;
 
-    public OllamaModelChoice(OllamaOptions configured, string? textOnlyModel)
+    public OllamaModelChoice(OllamaOptions configured, string? textOnlyModel, ILocalEngine? engine = null)
     {
         ArgumentNullException.ThrowIfNull(configured);
         this.configured = configured;
         this.textOnlyModel = textOnlyModel;
-        _current = configured;
+        this.engine = engine;
+        _current = configured with { Think = ThinkFor(configured.Model, configured.Think) };
     }
 
     /// <summary>
@@ -54,22 +57,23 @@ public sealed class OllamaModelChoice
             return new ModelStatus(ModelState.Refused, configured.Model);
         }
 
-        using var provider = new OllamaModelProvider(configured with { Timeout = TimeSpan.FromSeconds(3) }, handler);
         try
         {
-            var installed = await provider.GetInstalledModelsAsync(cancellationToken);
-            var model = Installed(installed, textOnlyModel) ? textOnlyModel!
-                : Installed(installed, configured.Model) ? configured.Model
-                : null;
-            if (model is null)
+            var endpoint = engine is null ? configured.Endpoint : (await engine.EnsureAsync(cancellationToken)).Endpoint;
+            using var api = new LocalOllamaApi(endpoint, handler);
+            var installed = await api.InstalledAsync(cancellationToken);
+            var automatic = configured.Model is "gemma3:4b" or "gemma4:e4b";
+            var candidates = automatic ? new[] { "gemma4:e4b", textOnlyModel, "gemma3:4b" } : new[] { configured.Model };
+            foreach (var model in candidates.Where(m => Installed(installed, m)))
             {
-                return new ModelStatus(ModelState.ModelMissing, configured.Model);
+                if (!await api.IsLocalModelAsync(model!, cancellationToken)) continue;
+                _current = configured with { Endpoint = endpoint, Model = model!, Think = ThinkFor(model!, configured.Think) };
+                return new ModelStatus(ModelState.Ready, model!);
             }
-
-            _current = configured with { Model = model };
-            return new ModelStatus(ModelState.Ready, model);
+            return new ModelStatus(ModelState.ModelMissing, configured.Model);
         }
-        catch (Exception ex) when (ex is ModelProviderException or TaskCanceledException)
+        catch (Exception ex) when (ex is ModelProviderException or HttpRequestException or OperationCanceledException
+            or IOException or UnauthorizedAccessException or System.ComponentModel.Win32Exception or JsonException or InvalidOperationException)
         {
             return new ModelStatus(ModelState.NotRunning, configured.Model);
         }

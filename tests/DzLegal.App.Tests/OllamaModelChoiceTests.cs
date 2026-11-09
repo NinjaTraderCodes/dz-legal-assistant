@@ -12,6 +12,8 @@ public class OllamaModelChoiceTests
     {
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
+            if (request.RequestUri!.AbsolutePath == "/api/show")
+                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{\"details\":{\"format\":\"gguf\"},\"model_info\":{\"general.architecture\":\"gemma3\"}}", Encoding.UTF8, "application/json") });
             var json = "{\"models\":[" + string.Join(',', models.Select(m => $"{{\"name\":\"{m}\"}}")) + "]}";
             return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(json, Encoding.UTF8, "application/json") });
         }
@@ -68,5 +70,24 @@ public class OllamaModelChoiceTests
 
         Assert.Equal("gemma3:4b", settings.Model);
         Assert.Null(OllamaModelChoice.ThinkFor(settings.Model, settings.Think));
+    }
+
+    [Fact]
+    public async Task FallingBackFromGemma4ToGemma3DoesNotSendAThinkingSwitch()
+    {
+        var choice = new OllamaModelChoice(new OllamaOptions { Model = "gemma4:e4b" }, null);
+        Assert.False(choice.Options.Think);
+        Assert.Equal(ModelState.Ready, (await choice.ProbeAsync(CancellationToken.None, new TagsHandler("gemma3:4b"))).State);
+        Assert.Equal("gemma3:4b", choice.Options.Model);
+        Assert.Null(choice.Options.Think);
+    }
+
+    [Fact]
+    public async Task AnExplicitAdvancedModelKeepsItsOwnThinkingSetting()
+    {
+        var choice = new OllamaModelChoice(new OllamaOptions { Model = "qwen3:4b", Think = false }, null);
+        Assert.Equal(ModelState.Ready, (await choice.ProbeAsync(CancellationToken.None, new TagsHandler("gemma4:e4b", "qwen3:4b"))).State);
+        Assert.Equal("qwen3:4b", choice.Options.Model);
+        Assert.False(choice.Options.Think);
     }
 }

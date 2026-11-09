@@ -10,6 +10,17 @@
     <!-- The generated P/Invoke for the Windows power state (Services/WindowsPowerStatus.cs). -->
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  <PropertyGroup>
+    <OllamaBundleRoot>$(MSBuildThisFileDirectory)..\..\artifacts\ollama-0.40.15</OllamaBundleRoot>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Services/LocalModels/engine-files.json" LogicalName="DzLegal.App.EngineFiles" />
+    <Content Include="$(OllamaBundleRoot)\**\*" Link="engine\ollama\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="..\..\assets\engines\ollama\*.txt" Link="engine\ollama\notices\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+  <Target Name="RequireBundledOllama" BeforeTargets="PrepareForPublish">
+    <Error Condition="!Exists('$(OllamaBundleRoot)\ollama.exe')" Text="Prepare the pinned CPU engine first: tools/model-setup/Prepare-Engine.ps1. No runtime download is allowed." />
+  </Target>
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
     <!-- Shared Arabic fonts (also embedded in PDFs by DzLegal.Documents). -->

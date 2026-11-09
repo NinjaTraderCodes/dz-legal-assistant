@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using DzLegal.App.Services;
+using DzLegal.App.Services.LocalModels;
 using DzLegal.App.Views;
 using DzLegal.Presentation.Services;
 using DzLegal.Storage;
@@ -50,8 +51,11 @@ public partial class App : Application
         {
             var settings = AppSettings.Load(Path.Combine(AppContext.BaseDirectory, "appsettings.json"));
             var paths = AppPaths.Default;
+            var engine = new ManagedOllama(new Uri(settings.Ollama.Endpoint),
+                new WindowsEngineLauncher(Path.Combine(AppContext.BaseDirectory, "engine", "ollama", "ollama.exe"), paths.Root));
+            window.Closed += (_, _) => engine.Dispose();
             window.DataContext = Composition.CreateMainViewModel(
-                settings, new AvaloniaUserFiles(() => TopLevel.GetTopLevel(window), paths), paths, new Loc(), new AvaloniaExternalLinks(() => TopLevel.GetTopLevel(window)), profileDefaults: new ProfileDefaults(paths.Root), recentCases: new RecentCasesStore(paths.Root));
+                settings, new AvaloniaUserFiles(() => TopLevel.GetTopLevel(window), paths), paths, new Loc(), new AvaloniaExternalLinks(() => TopLevel.GetTopLevel(window)), profileDefaults: new ProfileDefaults(paths.Root), recentCases: new RecentCasesStore(paths.Root), engine: engine);
             ((MainWindowViewModel)window.DataContext).IsDarkTheme = (Current as App)?.Themes?.IsDark ?? true;
             return window;
         }

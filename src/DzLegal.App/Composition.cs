@@ -1,4 +1,5 @@
 using DzLegal.App.Services;
+using DzLegal.App.Services.LocalModels;
 using DzLegal.Domain;
 using DzLegal.Domain.Serialization;
 using DzLegal.Drafting;
@@ -16,7 +17,7 @@ public static class Composition
     /// <summary>The offline law library and claim catalog (never downloaded by the app).</summary>
     public static string LawRoot => Path.Combine(AppContext.BaseDirectory, "data", "law");
 
-    public static IReadOnlyList<ProviderOption> CreateProviders(AppSettings settings)
+    public static IReadOnlyList<ProviderOption> CreateProviders(AppSettings settings, ILocalEngine? engine = null)
     {
         ArgumentNullException.ThrowIfNull(settings);
         var ollama = new OllamaOptions
@@ -27,12 +28,12 @@ public static class Composition
             Temperature = settings.Ollama.Temperature,
             MaxTokens = settings.Ollama.MaxTokens,
             RepeatPenalty = settings.Ollama.RepeatPenalty,
-            Think = OllamaModelChoice.ThinkFor(settings.Ollama.Model, settings.Ollama.Think),
+            Think = settings.Ollama.Think,
             KeepAlive = settings.Ollama.KeepAlive,
         };
 
         // The text-only model replaces gemma3:4b only: a lawyer who configured another model keeps it.
-        var choice = new OllamaModelChoice(ollama, OllamaModelChoice.TextOnlyModelFor(ollama.Model, settings.Ollama.TextOnlyModel));
+        var choice = new OllamaModelChoice(ollama, OllamaModelChoice.TextOnlyModelFor(ollama.Model, settings.Ollama.TextOnlyModel), engine);
         List<ProviderOption> options =
         [
             new ProviderOption(
@@ -41,7 +42,7 @@ public static class Composition
                 () => new OllamaModelProvider(choice.Options),
                 ct => choice.ProbeAsync(ct),
                 settings.Ollama.WarmUp ? ct => WarmUpOllamaAsync(choice.Options, ct) : null,
-                release: ct => UnloadOllamaAsync(choice.Options, ct)),
+                release: ct => engine is null || engine.IsManaged ? UnloadOllamaAsync(choice.Options, ct) : Task.CompletedTask),
             new ProviderOption("stub", loc => loc["ProviderStub"], () => new StubModelProvider()),
         ];
 #if ONLINE_TESTING
@@ -180,7 +181,7 @@ public static class Composition
         await provider.UnloadAsync(cancellationToken);
     }
 
-    public static MainWindowViewModel CreateMainViewModel(AppSettings settings, IUserFiles files, AppPaths paths, Loc loc, IExternalLinks? links = null, IProfileDefaults? profileDefaults = null, RecentCasesStore? recentCases = null)
+    public static MainWindowViewModel CreateMainViewModel(AppSettings settings, IUserFiles files, AppPaths paths, Loc loc, IExternalLinks? links = null, IProfileDefaults? profileDefaults = null, RecentCasesStore? recentCases = null, ILocalEngine? engine = null)
     {
         ArgumentNullException.ThrowIfNull(settings);
         ArgumentNullException.ThrowIfNull(paths);
@@ -191,7 +192,7 @@ public static class Composition
         var definition = DefinitionLoader.Load(Path.Combine(DataRoot, "requete-introductive"));
         return new MainWindowViewModel(
             definition,
-            CreateProviders(settings),
+            CreateProviders(settings, engine),
             files,
             new EvaluationStore(paths.Evaluations),
             loc,

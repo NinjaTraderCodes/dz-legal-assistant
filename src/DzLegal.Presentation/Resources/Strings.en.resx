@@ -755,8 +755,8 @@ Imported on {1}</value></data>
   <data name="AboutDraftTitle" xml:space="preserve"><value>A draft to review, not legal advice</value></data>
   <data name="AboutDraft" xml:space="preserve"><value>The app proposes a draft for you to review and edit. It does not judge the merits or guarantee the outcome; you are responsible for the statement of claim you sign.</value></data>
   <data name="AboutPrivacyTitle" xml:space="preserve"><value>Works offline; your data stays on your computer</value></data>
-  <data name="AboutPrivacy" xml:space="preserve"><value>The AI model runs on your computer. Case data is never sent anywhere, and the app collects no usage statistics.</value></data>
-  <data name="AboutModelNote" xml:space="preserve"><value>The local model and Ollama are not bundled; you install them under their own terms.</value></data>
+  <data name="AboutPrivacy" xml:space="preserve"><value>Models run on this computer. Case files, prompts and answers are never sent to a server. The app collects no usage statistics and downloads nothing automatically. Only when you choose Download model or Retry does the engine contact the model registry and download servers; they receive your IP address, requested model and normal download connection information, without case text. You can install or save a model pack for USB sharing without Internet.</value></data>
+  <data name="AboutModelNote" xml:space="preserve"><value>The CPU Ollama engine is included, with no tray app or automatic updater. Model terms are shown before download or installation from a file. A compatible existing local Ollama can be reused; its own updates and settings remain independent of this app.</value></data>
   <data name="AboutSourcesTitle" xml:space="preserve"><value>Legal sources</value></data>
   <data name="AboutSources" xml:space="preserve"><value>{0} articles from {1} legal texts, taken from the Official Journal of Algeria.</value></data>
   <data name="AboutOpenLibrary" xml:space="preserve"><value>Open the law library</value></data>
@@ -821,4 +821,8 @@ Imported on {1}</value></data>
   <data name="ModelSetupImportFailed" xml:space="preserve"><value>The model pack could not be installed. Check that the file is readable and try again.</value></data>
   <data name="ModelSetupExportFailed" xml:space="preserve"><value>The model pack could not be saved. Check the destination and try again.</value></data>
   <data name="ModelSetupModelLabel" xml:space="preserve"><value>Model to check or install</value></data>
+  <data name="AboutEngineName" xml:space="preserve"><value>Ollama</value></data>
+  <data name="AboutEngineLicence" xml:space="preserve"><value>MIT</value></data>
+  <data name="AboutRuntimeName" xml:space="preserve"><value>LLVM, MinGW-w64, winpthreads</value></data>
+  <data name="AboutRuntimeLicence" xml:space="preserve"><value>Bundled CPU runtime licence notices</value></data>
 </root>

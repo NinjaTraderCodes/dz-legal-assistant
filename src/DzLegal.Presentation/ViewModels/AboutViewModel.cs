@@ -65,6 +65,8 @@ public sealed partial class AboutViewModel : ObservableObject, IDisposable
         new("MicroCom.Runtime, Tmds.DBus.Protocol", "MIT"),
         new("Scriban", "BSD 2-Clause"),
         new("QuestPDF", "QuestPDF Community License"),
+        new(L["AboutEngineName"], L["AboutEngineLicence"]),
+        new(L["AboutRuntimeName"], L["AboutRuntimeLicence"]),
     ];
 
     [ObservableProperty] public partial bool IsShowingNotices { get; private set; }

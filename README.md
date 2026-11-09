@@ -78,7 +78,7 @@ Method and run records: [docs/HIDDEN-SET.md](docs/HIDDEN-SET.md) and [docs/basel
 ## Try it
 
 - **In the browser, nothing to install:** [the live demo](https://dz-legal-assistant-ai.onrender.com/app) runs the same engine, law library and screens, with four fictitious sample cases. Its AI uses a larger hosted model, so it is for fictitious data only.
-- **On Windows 10 or 11:** download the zip from the [latest release](https://github.com/NinjaTraderCodes/dz-legal-assistant/releases/latest), unzip it and run `DzLegalAssistant.exe`. It works fully offline. Without a model, choose "Without AI (fill-in templates)" in the draft panel. For the AI, install [Ollama](https://ollama.com) and run `ollama pull gemma3:4b` once.
+- **On Windows 10 or 11:** download the zip from the [latest release](https://github.com/NinjaTraderCodes/dz-legal-assistant/releases/latest), unzip it and run `DzLegalAssistant.exe`. It works fully offline. Without a model, choose "Without AI (fill-in templates)" in the draft panel. For AI in v0.10.0, open the Local AI setup card: the CPU engine is included, and you can download the recommended model on your click or install a verified `.dzmodel` pack from a USB drive. No separate Ollama install or terminal command is needed. Model terms are shown first; Not now keeps templates usable.
 - **From the source code** (requires the [.NET 10 SDK](https://dotnet.microsoft.com/download)):
 
 ```bash
@@ -96,7 +96,7 @@ dotnet run --project src/DzLegal.Web  # the web demo, locally
 | **Djihane Bendjeddou** | UI/UX designer | Designed and built the lawyer's journey in the desktop app: the welcome screen, the setup, the lawyer's profile, the start screen, the guided tour with its sample case, the help pages and the law library, in Arabic and English, light and dark. |
 | **Khouloud Otmane Cherif** | Legal reviewer | Master's in private law, works in an Algerian law office. Reviewed legal points of the drafting and answered the team's questions on Algerian civil procedure and claim types, which shaped the family claims. |
 
-**AI tools used to build it.** Most of the code, tests and documentation were written by AI coding agents, directed and reviewed by the team: Claude Code (most of the app), OpenAI Codex (the law corpus, part of the workbench, the independent test cases) and OpenCode (the onboarding screens). The welcome image was generated with ChatGPT. Inside the desktop app, the only AI is the local model (Gemma 3 4B through Ollama); the web demo uses Nemotron 3 Ultra through OpenRouter.
+**AI tools used to build it.** Most of the code, tests and documentation were written by AI coding agents, directed and reviewed by the team: Claude Code (most of the app), OpenAI Codex (the law corpus, part of the workbench, the independent test cases) and OpenCode (the onboarding screens). The welcome image was generated with ChatGPT. Inside the desktop app, the only AI is the local model (Gemma 4 E4B or Gemma 3 4B through Ollama); the web demo uses Nemotron 3 Ultra through OpenRouter.
 
 **Tech stack.** C# and .NET 10; Avalonia (desktop interface); Blazor Server (web demo); QuestPDF (PDF) and Open XML SDK (Word); Scriban (templates); Ollama (local model); OpenRouter (the web demo's hosted model).
 

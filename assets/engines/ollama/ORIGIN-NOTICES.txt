@@ -1,0 +1,22 @@
+Bundled engine provenance (developer packaging; no runtime engine downloads)
+
+Official release: https://github.com/ollama/ollama/releases/tag/v0.40.15
+Asset: ollama-windows-amd64.zip
+Archive SHA-256: 9ca74a7ab66ec86870b1eecac7df160df08dc4e3a291ab5d2d59bcf9310221c6
+Source: https://github.com/ollama/ollama/tree/v0.40.15
+
+Prepare-Engine.ps1 verifies the full archive and every retained CPU file
+against src/DzLegal.App/Services/LocalModels/engine-files.json.
+The NVIDIA and Vulkan directories are excluded. CPU variants are retained.
+OLLAMA-LICENSE.txt is the engine's MIT licence; LLVM-LICENSE.txt,
+MINGW-COPYING.txt and WINPTHREADS-COPYING.txt preserve runtime notices.
+The upstream runtime's additional licence files remain beside its libraries.
+Full copies of these four notices also appear in THIRD-PARTY-NOTICES.txt.
+
+Model files are not included in the app package. The exact supported public
+manifests, blob sizes/hashes and original model terms are embedded in
+src/DzLegal.App/Services/LocalModels/supported-models.json.
+Gemma 4 E4B CPU manifest: dc35e8d9c6061baa6f0fa870975ab6932e2542b579b13ea0f199fa4bb7300c9c
+Gemma 3 4B CPU manifest: c30276f7dffec93a536d283e15088990454b8d21cf180a3d6eea4959e4147291
+Public registry: https://registry.ollama.ai/v2/library/gemma4/blobs/sha256:dc35e8d9c6061baa6f0fa870975ab6932e2542b579b13ea0f199fa4bb7300c9c
+Public registry: https://registry.ollama.ai/v2/library/gemma3/blobs/sha256:c30276f7dffec93a536d283e15088990454b8d21cf180a3d6eea4959e4147291

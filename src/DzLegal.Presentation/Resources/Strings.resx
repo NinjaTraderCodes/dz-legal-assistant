@@ -755,8 +755,8 @@
   <data name="AboutDraftTitle" xml:space="preserve"><value>مسودة تراجعها، لا استشارة قانونية</value></data>
   <data name="AboutDraft" xml:space="preserve"><value>يقترح التطبيق مسودة تراجعها وتعدّلها. لا يحكم على موضوع الدعوى ولا يضمن نتيجتها، وأنت المسؤول عن العريضة التي توقّعها.</value></data>
   <data name="AboutPrivacyTitle" xml:space="preserve"><value>يعمل دون اتصال، وبياناتك لا تغادر حاسوبك</value></data>
-  <data name="AboutPrivacy" xml:space="preserve"><value>يعمل نموذج الذكاء الاصطناعي على حاسوبك. لا تُرسَل بيانات القضايا إلى أي جهة، ولا يجمع التطبيق أي إحصاءات عن استعماله.</value></data>
-  <data name="AboutModelNote" xml:space="preserve"><value>النموذج المحلي وبرنامج Ollama لا يُرفقان بالتطبيق؛ تثبّتهما أنت وفق شروطهما الخاصة.</value></data>
+  <data name="AboutPrivacy" xml:space="preserve"><value>تعمل النماذج على هذا الجهاز، ولا تُرسل ملفات القضايا أو الأسئلة أو الأجوبة إلى أي خادم. لا يجمع التطبيق إحصاءات استخدام ولا ينزّل شيئاً تلقائياً. عند اختيار «تنزيل النموذج» أو «إعادة المحاولة» فقط، يتصل المحرك بسجل النماذج وخوادم تنزيلها؛ وتتلقى عنوان اتصال الإنترنت واسم النموذج وبيانات الاتصال المعتادة، دون نصوص القضايا. يمكن تثبيت النموذج من ملف أو حفظه للمشاركة عبر USB دون إنترنت.</value></data>
+  <data name="AboutModelNote" xml:space="preserve"><value>محرك Ollama للمعالج مُرفق بالتطبيق، دون برنامج في علبة النظام أو محدّث تلقائي. تُعرض شروط النموذج قبل تنزيله أو تثبيته من ملف. يمكن استعمال Ollama محلي متوافق موجود مسبقاً؛ وتبقى تحديثاته وإعداداته مستقلة عن هذا التطبيق.</value></data>
   <data name="AboutSourcesTitle" xml:space="preserve"><value>المصادر القانونية</value></data>
   <data name="AboutSources" xml:space="preserve"><value>{0} مادة من {1} نصوص قانونية، مأخوذة من الجريدة الرسمية للجمهورية الجزائرية.</value></data>
   <data name="AboutOpenLibrary" xml:space="preserve"><value>فتح المكتبة القانونية</value></data>
@@ -821,4 +821,8 @@
   <data name="ModelSetupImportFailed" xml:space="preserve"><value>تعذّر تثبيت حزمة النموذج. تحقق من إمكانية قراءة الملف ثم أعد المحاولة.</value></data>
   <data name="ModelSetupExportFailed" xml:space="preserve"><value>تعذّر حفظ حزمة النموذج. تحقق من مكان الحفظ ثم أعد المحاولة.</value></data>
   <data name="ModelSetupModelLabel" xml:space="preserve"><value>النموذج المراد التحقق منه أو تثبيته</value></data>
+  <data name="AboutEngineName" xml:space="preserve"><value>Ollama</value></data>
+  <data name="AboutEngineLicence" xml:space="preserve"><value>MIT</value></data>
+  <data name="AboutRuntimeName" xml:space="preserve"><value>LLVM, MinGW-w64, winpthreads</value></data>
+  <data name="AboutRuntimeLicence" xml:space="preserve"><value>إشعارات تراخيص مكتبات المعالج المُرفقة</value></data>
 </root>

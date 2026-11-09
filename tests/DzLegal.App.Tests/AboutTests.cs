@@ -197,6 +197,14 @@ public sealed class AboutTests : IDisposable
         }
         Capture(window, $"phase3-about-{language}-{(dark ? "dark" : "light")}-{width}x{height}");
 
+        var privacy = window.FindControl<TextBlock>("AboutPrivacy")!;
+        var privacyTop = privacy.TranslatePoint(default, (Visual)scroll.Content!)!.Value.Y;
+        scroll.Offset = new Vector(0, Math.Max(0, privacyTop - 45)); Layout(window);
+        var privacyBounds = OnWindow(privacy, window);
+        Assert.True(privacyBounds.Y >= OnWindow(scroll, window).Y);
+        Assert.True(privacyBounds.Bottom <= OnWindow(scroll, window).Bottom + 0.5);
+        Capture(window, $"model-setup-privacy-{language}-{(dark ? "dark" : "light")}-{width}x{height}");
+
         scroll.Offset = new Vector(0, scroll.Extent.Height); Layout(window);
         Assert.True(window.FindControl<Control>("AboutLibrary")!.IsEffectivelyVisible);
         await about.LibraryCommand.ExecuteAsync(null);

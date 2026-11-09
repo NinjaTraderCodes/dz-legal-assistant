@@ -1,6 +1,6 @@
 {
   "_generated": "by site/scripts/strings.mjs from Strings.resx, Strings.en.resx and Directory.Build.props; do not edit",
-  "_version": "0.9.1",
+  "_version": "0.10.0",
   "AppTitle": {
     "ar": "مساعد صياغة العرائض",
     "en": "DZ Legal Assistant"
@@ -94,12 +94,12 @@
     "en": "Works offline; your data stays on your computer"
   },
   "AboutPrivacy": {
-    "ar": "يعمل نموذج الذكاء الاصطناعي على حاسوبك. لا تُرسَل بيانات القضايا إلى أي جهة، ولا يجمع التطبيق أي إحصاءات عن استعماله.",
-    "en": "The AI model runs on your computer. Case data is never sent anywhere, and the app collects no usage statistics."
+    "ar": "تعمل النماذج على هذا الجهاز، ولا تُرسل ملفات القضايا أو الأسئلة أو الأجوبة إلى أي خادم. لا يجمع التطبيق إحصاءات استخدام ولا ينزّل شيئاً تلقائياً. عند اختيار «تنزيل النموذج» أو «إعادة المحاولة» فقط، يتصل المحرك بسجل النماذج وخوادم تنزيلها؛ وتتلقى عنوان اتصال الإنترنت واسم النموذج وبيانات الاتصال المعتادة، دون نصوص القضايا. يمكن تثبيت النموذج من ملف أو حفظه للمشاركة عبر USB دون إنترنت.",
+    "en": "Models run on this computer. Case files, prompts and answers are never sent to a server. The app collects no usage statistics and downloads nothing automatically. Only when you choose Download model or Retry does the engine contact the model registry and download servers; they receive your IP address, requested model and normal download connection information, without case text. You can install or save a model pack for USB sharing without Internet."
   },
   "AboutModelNote": {
-    "ar": "النموذج المحلي وبرنامج Ollama لا يُرفقان بالتطبيق؛ تثبّتهما أنت وفق شروطهما الخاصة.",
-    "en": "The local model and Ollama are not bundled; you install them under their own terms."
+    "ar": "محرك Ollama للمعالج مُرفق بالتطبيق، دون برنامج في علبة النظام أو محدّث تلقائي. تُعرض شروط النموذج قبل تنزيله أو تثبيته من ملف. يمكن استعمال Ollama محلي متوافق موجود مسبقاً؛ وتبقى تحديثاته وإعداداته مستقلة عن هذا التطبيق.",
+    "en": "The CPU Ollama engine is included, with no tray app or automatic updater. Model terms are shown before download or installation from a file. A compatible existing local Ollama can be reused; its own updates and settings remain independent of this app."
   },
   "AboutSources": {
     "ar": "{0} مادة من {1} نصوص قانونية، مأخوذة من الجريدة الرسمية للجمهورية الجزائرية.",

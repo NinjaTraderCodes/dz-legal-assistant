@@ -28,7 +28,7 @@ const demoChip = lang === "ar" ? "عرض تجريبي · قضايا خيالية
             <table class="table">
                 <thead><tr><th scope="col">{t(lang, "privacy.network.col1")}</th><th scope="col">{t(lang, "privacy.network.col2")}</th></tr></thead>
                 <tbody>
-                    {[1, 2, 3, 4, 5, 6].map((i) => <tr><th scope="row">{t(lang, `privacy.row${i}.c`)}</th><td>{t(lang, `privacy.row${i}.n`)}</td></tr>)}
+                    {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => <tr><th scope="row">{t(lang, `privacy.row${i}.c`)}</th><td>{t(lang, `privacy.row${i}.n`)}</td></tr>)}
                 </tbody>
             </table>
             <Source lang={lang} files={["docs/OFFLINE.md"]} />
@@ -39,7 +39,7 @@ const demoChip = lang === "ar" ? "عرض تجريبي · قضايا خيالية
         <div class="block panel">
             <h2 id="enforced-title" class="h2">{t(lang, "privacy.enforced.title")}</h2>
             <ul class="list">
-                {[1, 2, 3, 4, 5].map((i) => <li><Icon name="lock_closed" size={16} /> <span>{t(lang, `privacy.enforced.${i}`)}</span></li>)}
+                {[1, 2, 3, 4, 5, 6].map((i) => <li><Icon name="lock_closed" size={16} /> <span>{t(lang, `privacy.enforced.${i}`)}</span></li>)}
             </ul>
             <Source lang={lang} files={["docs/OFFLINE.md", "src/DzLegal.ModelProviders.Ollama/LoopbackGuard.cs"]} />
         </div>
@@ -52,7 +52,7 @@ const demoChip = lang === "ar" ? "عرض تجريبي · قضايا خيالية
             <ul class="list plain">
                 <li><Icon name="folder_open" size={16} /> <span><WithPath text={t(lang, "privacy.storage.1")} path="%LOCALAPPDATA%\DzLegalAssistant\drafts" /></span></li>
                 <li><Icon name="folder_open" size={16} /> <span><WithPath text={t(lang, "privacy.storage.2")} path="%LOCALAPPDATA%\DzLegalAssistant\evaluations" /></span></li>
-                {[3, 4].map((i) => <li><Icon name="folder_open" size={16} /> <span>{t(lang, `privacy.storage.${i}`)}</span></li>)}
+                {[3, 4, 5].map((i) => <li><Icon name="folder_open" size={16} /> <span>{t(lang, `privacy.storage.${i}`)}</span></li>)}
             </ul>
             <Source lang={lang} files={["docs/OFFLINE.md", "src/DzLegal.Presentation/Resources/Strings.resx"]} />
         </div>

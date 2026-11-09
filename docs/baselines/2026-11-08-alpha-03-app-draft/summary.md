@@ -1,5 +1,7 @@
 # App draft benchmark: gemma3 versus thinking-off gemma4
 
+**Superseded by the owner-authorised staged plan of 9 November; retained, not deleted.** This records an unattempted default five-case drafting run. The newly requested 20-case Stage 2 requires a separate owner go and a fixed case list before inference.
+
 **Neither drafting model was run.** The preceding gemma3 grounds batch stopped after 27/46 cases on a resource-log sharing violation in the collector. The serial runner stopped before gemma4 grounds and both drafting runs, as required by the precondition rule. No drafting score, time, peak memory, cap or failure count was measured; “not measured” is not zero or success. See the [grounds stop record](../2026-11-08-alpha-03-app-grounds/summary.md) for the evidence, preserved partials and collector-only repair. No inference was retried. A fresh full four-run restart requires the owner's decision.
 
 Default fictitious development/robustness cases only; no hidden or validation inference. Ordinary app prompts, parser, legal data, model caps and fallback behavior unchanged.

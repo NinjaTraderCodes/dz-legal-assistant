@@ -1,5 +1,7 @@
 # App grounds benchmark: gemma3 versus thinking-off gemma4
 
+**Superseded for the owner-authorised 9 November restart.** Retained intact as the interrupted run's record and the same-27-case interim reference. It is not the completed Stage 1 baseline; replacement results will be recorded separately.
+
 **Stopped on a collector I/O race after 27/46 gemma3 cases. No complete comparison is available.** The guard could not open the live `resources.jsonl` while PowerShell's resource monitor held its append handle. This is a measurement failure. All 54 model calls completed with zero model errors, cap hits and context flags. No gemma4 grounds or drafting run started; no case was retried.
 
 The recorded prefix contains 25 development and two robustness cases; 19 development cases, including all four out-of-scope cases, were never attempted. Every number below is descriptive of that prefix only, and must not be used as the full baseline. The harness's final summary was never reached; its existing case reports and exact-metric JSON remain intact. The original launcher recorded a null native exit code; the wrapper itself exited 1. The missing code is not reconstructed or overwritten.

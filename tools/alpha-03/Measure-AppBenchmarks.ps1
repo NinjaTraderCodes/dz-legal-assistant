@@ -1,7 +1,9 @@
-param([Parameter(Mandatory=$true)][string]$RunRoot)
+param([Parameter(Mandatory=$true)][string]$RunRoot,
+      [ValidateSet('all','grounds','draft')][string]$Stage='all',[switch]$Gemma4First,[switch]$PauseBusySearch)
 $ErrorActionPreference='Stop'
 . (Join-Path $PSScriptRoot 'Power.ps1')
 . (Join-Path $PSScriptRoot 'AppBenchmarkProcess.ps1')
+. (Join-Path $PSScriptRoot 'AppBenchmarkAwake.ps1')
 $repo=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..')).TrimEnd('\')
 $root=[IO.Path]::GetFullPath($RunRoot).TrimEnd('\')
 if($root -eq $repo -or $root.StartsWith($repo+'\',[StringComparison]::OrdinalIgnoreCase) -or $root.StartsWith('\\')){throw 'Use a fresh local directory outside the repository.'}
@@ -10,11 +12,29 @@ $binary=Join-Path $repo 'src/DzLegal.Harness/bin/Release/net10.0/DzLegal.Harness
 if(-not(Test-Path -LiteralPath $binary)){throw 'Build the Release harness before timing.'}
 $digests=@{'gemma3:4b'='c30276f7dffec93a536d283e15088990454b8d21cf180a3d6eea4959e4147291';'gemma4:e4b'='dc35e8d9c6061baa6f0fa870975ab6932e2542b579b13ea0f199fa4bb7300c9c'}
 New-Item -ItemType Directory -Path $root|Out-Null
-foreach($command in @('grounds','draft')){
- foreach($model in @('gemma3:4b','gemma4:e4b')){
+$searchOriginal=if($PauseBusySearch){Get-CimInstance Win32_Service -Filter "Name='WSearch'"}else{$null}
+$searchPauseAttempted=$false
+$searchPaused=$false
+$awakePrevious=Enter-AppBenchmarkAwake
+$awakeStarted=[DateTimeOffset]::UtcNow
+try{
+ @{requested=$true;previous=$awakePrevious;startedUtc=$awakeStarted.ToString('o')}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $root 'awake-state.json') -Encoding utf8
+ foreach($job in @(Get-AppBenchmarkPlan -Stage $Stage -Gemma4First:$Gemma4First)){
+    $command=$job.Command
+    $model=$job.Model
     Assert-AlphaPower|Out-Null
     if(@(Get-Process -Name brave,chrome,msedge,firefox,Code,dotnet,testhost,MSBuild,VBCSCompiler -ErrorAction SilentlyContinue).Count){throw 'Close browsers/VS Code and finish all builds/tests before timing.'}
     if(-not @(Get-Process -Name DzLegalAssistant -ErrorAction SilentlyContinue).Count){throw 'Leave the desktop app open and idle in template mode.'}
+    $searchCores=$null
+    if($PauseBusySearch){
+        $searchCores=Get-AppSearchActivity
+        if($searchCores -gt .5 -and (Get-Service WSearch).Status -eq 'Running'){
+            $searchPauseAttempted=$true
+            Stop-Service -Name WSearch -ErrorAction Stop
+            (Get-Service WSearch).WaitForStatus('Stopped',[TimeSpan]::FromSeconds(20))
+            $searchPaused=$true
+        }
+    }
     $tags=Invoke-RestMethod -Uri http://127.0.0.1:11434/api/tags -TimeoutSec 10
     if(@($tags.models|Where-Object {$_.name -eq $model -and $_.digest -eq $digests[$model]}).Count -ne 1){throw 'Installed model digest differs from the recorded model.'}
     $loaded=Invoke-RestMethod -Uri http://127.0.0.1:11434/api/ps -TimeoutSec 10
@@ -24,8 +44,9 @@ foreach($command in @('grounds','draft')){
     }
     $folder=Join-Path $root ($command+'-'+$model.Replace(':','-'))
     New-Item -ItemType Directory -Path $folder|Out-Null
+    if($PauseBusySearch){@{originalState=$searchOriginal.State;originalStartMode=$searchOriginal.StartMode;measuredCores=$searchCores;pausedByThisStage=$searchPaused}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $folder 'search-state.json') -Encoding utf8}
     Assert-AlphaPower|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $folder 'power-before.json') -Encoding utf8
-    @{command=$command;model=$model;digest=$digests[$model];think=$(if($model -eq 'gemma4:e4b'){'false'}else{'omitted'});cases='default development and robustness only';reloadEvery=10;minimumAvailableMiB=512;sharedResourceAppend=$true}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $folder 'measurement-plan.json') -Encoding utf8
+    @{command=$command;model=$model;digest=$digests[$model];think=$(if($model -eq 'gemma4:e4b'){'false'}else{'omitted'});cases='default development and robustness only';reloadEvery=10;minimumAvailableMiB=512;sharedResourceAppend=$true;preventSleep=$true;stage=$Stage}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $folder 'measurement-plan.json') -Encoding utf8
     $monitorScript=Join-Path $PSScriptRoot 'Measure-Resources.ps1'
     $monitor=Start-Process -FilePath powershell.exe -ArgumentList @('-NoProfile','-ExecutionPolicy','RemoteSigned','-File',('"'+$monitorScript+'"'),'-RunRoot',('"'+$folder+'"'),'-SharedAppend') -WindowStyle Hidden -PassThru -RedirectStandardOutput (Join-Path $folder 'monitor-stdout.txt') -RedirectStandardError (Join-Path $folder 'monitor-stderr.txt')
     try{
@@ -50,11 +71,16 @@ foreach($command in @('grounds','draft')){
         $stdout=Join-Path $folder 'stdout.txt'
         $process=Start-AppBenchmarkProcess -FilePath dotnet.exe -Arguments $argumentLine -WorkingDirectory $repo -Stdout $stdout -Stderr (Join-Path $folder 'stderr.txt')
         $lastProgress=''
+        $interimPosted=$false
         while(-not $process.HasExited){
             Start-Sleep -Seconds 2
             if(Test-Path -LiteralPath $stdout){
                 $progress=(@(Get-Content -LiteralPath $stdout -Tail 5|Where-Object {$_ -match '^PROGRESS |^GUARD '}) -join ' ')
                 if($progress -and $progress -ne $lastProgress){Write-Output ($command+' '+$model+' '+$progress);$lastProgress=$progress}
+                if($command -eq 'grounds' -and $model -eq 'gemma4:e4b' -and -not $interimPosted -and @([regex]::Matches($progress,'PROGRESS (\d+)')|Where-Object {[int]$_.Groups[1].Value -ge 27}).Count){
+                    Write-Output ('INTERIM27_READY '+$folder)
+                    $interimPosted=$true
+                }
             }
         }
         $code=Get-AppBenchmarkExitCode -Process $process
@@ -69,4 +95,19 @@ foreach($command in @('grounds','draft')){
         if($monitor -and -not $monitor.HasExited){$monitor.WaitForExit(10000)|Out-Null}
     }
  }
+}finally{
+    try{
+        Exit-AppBenchmarkAwake -Previous $awakePrevious
+        @{requested=$true;previous=$awakePrevious;startedUtc=$awakeStarted.ToString('o');restoredUtc=[DateTimeOffset]::UtcNow.ToString('o')}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $root 'awake-state.json') -Encoding utf8
+    }finally{
+        if($PauseBusySearch){
+            if($searchPauseAttempted -and $searchOriginal.State -eq 'Running'){
+                $service=Get-Service WSearch
+                if($service.Status -eq 'StopPending'){$service.WaitForStatus('Stopped',[TimeSpan]::FromSeconds(20))}
+                if((Get-Service WSearch).Status -eq 'Stopped'){Start-Service WSearch; (Get-Service WSearch).WaitForStatus('Running',[TimeSpan]::FromSeconds(20))}
+            }
+            $after=Get-CimInstance Win32_Service -Filter "Name='WSearch'"
+            @{originalState=$searchOriginal.State;originalStartMode=$searchOriginal.StartMode;pauseAttempted=$searchPauseAttempted;paused=$searchPaused;finalState=$after.State;finalStartMode=$after.StartMode}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $root 'search-session.json') -Encoding utf8
+        }
+    }
 }

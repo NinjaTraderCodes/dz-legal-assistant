@@ -28,6 +28,7 @@ public sealed class BenchmarkMeasurement : IAsyncDisposable
     private ModelTimings? _last;
     private int _sharingRetries;
     private int? _failureHResult;
+    private Exception? _requestError;
 
     public BenchmarkMeasurement(string model, Uri endpoint, string root, TextWriter log,
         HttpMessageHandler? handler = null, Func<Task>? guard = null, Func<DateTimeOffset, Task>? wait = null)
@@ -151,13 +152,21 @@ public sealed class BenchmarkMeasurement : IAsyncDisposable
     {
         await CheckAsync();
         _last = null;
+        _requestError = null;
     }
 
     private async Task AfterRequestAsync(ModelRequest request, double seconds, bool stream)
     {
         var cap = Math.Min(request.MaxTokens ?? 1500, 1500);
         _calls.Add(new { Case = _pending, request.SectionId, Stream = stream, Cap = cap, Seconds = seconds,
-            Native = _last, LimitReached = _last is null ? (bool?)null : _last.AnswerTokens >= cap });
+            Native = _last, LimitReached = _last is null ? (bool?)null : _last.AnswerTokens >= cap,
+            RequestError = _requestError is null ? null : new
+            {
+                Type = _requestError.GetType().Name, _requestError.Message,
+                CutOff = _requestError is ModelProviderException { IsCutOff: true },
+                Timeout = IsTimeout(_requestError),
+                EmptyAnswer = _requestError.Message.Contains("empty answer", StringComparison.OrdinalIgnoreCase),
+            } });
         await SaveAsync("measurement-calls.json", _calls);
         if (_last?.PromptMayBeTruncated == true) { _failure ??= "Native context precondition failed."; }
         await CheckAsync();
@@ -167,8 +176,12 @@ public sealed class BenchmarkMeasurement : IAsyncDisposable
 
     private void RequestFailed(Exception error)
     {
+        _requestError = error;
         if (error is not ModelProviderException { IsCutOff: true }) { Fail(error); }
     }
+
+    private static bool IsTimeout(Exception? error) => error is TimeoutException or TaskCanceledException
+        || error?.InnerException is { } inner && IsTimeout(inner);
 
     private async Task<bool> MoveNextAsync(IAsyncEnumerator<string> stream)
     {

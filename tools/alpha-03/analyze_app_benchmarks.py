@@ -11,6 +11,7 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("run_root", type=Path)
 parser.add_argument("--write-docs", action="store_true")
 parser.add_argument("--report-suffix", default="")
+parser.add_argument("--stage", choices=("all", "grounds", "draft"), default="all")
 args = parser.parse_args()
 if args.report_suffix and not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", args.report_suffix):
     raise ValueError("Use a lowercase alphanumeric/hyphen report suffix")
@@ -82,7 +83,8 @@ def describe(command, rows):
 
 
 results, roots = {}, []
-for command in ("grounds", "draft"):
+commands = ("grounds", "draft") if args.stage == "all" else (args.stage,)
+for command in commands:
     results[command] = {}
     for model in models:
         folder = args.run_root / (command + "-" + model.replace(":", "-"))
@@ -99,6 +101,10 @@ for command in ("grounds", "draft"):
         assert all(r["Metrics"]["Partition"] in ("development", "robustness") for r in rows)
         loads = read(folder / "measurement-loads.json") if (folder / "measurement-loads.json").exists() else []
         calls = read(folder / "measurement-calls.json") if (folder / "measurement-calls.json").exists() else []
+        plan = read(folder / "measurement-plan.json")
+        options = read(folder / "manifest.json")["Options"]
+        assert (options.get("think") == "false") if model == "gemma4:e4b" else ("think" not in options)
+        assert plan["think"] == ("false" if model == "gemma4:e4b" else "omitted")
         resource = resources(folder, completion)
         complete = completion["Complete"] and len(rows) == len(expected[command]) and not resource["invalidPowerOrHeadroomSamples"]
         if complete:
@@ -110,6 +116,11 @@ for command in ("grounds", "draft"):
             nativeCalls=len(calls), callsWithoutFinalNativeTiming=sum(c["Native"] is None for c in calls),
             nativeAnswerAtCap=sum(c["LimitReached"] is True for c in calls),
             contextFlags=sum(c["Native"] is not None and c["Native"]["PromptMayBeTruncated"] for c in calls))
+        results[command][model].update(thinkSent=plan["think"],
+            timeouts=sum(bool((c.get("RequestError") or {}).get("Timeout")) for c in calls),
+            emptyAnswers=sum(bool((c.get("RequestError") or {}).get("EmptyAnswer")) for c in calls),
+            cutOffAnswers=sum(bool((c.get("RequestError") or {}).get("CutOff")) for c in calls),
+            callErrors=sum(c.get("RequestError") is not None for c in calls))
 
 target = args.run_root / "app-benchmark-analysis.json"
 if target.exists():
@@ -122,7 +133,7 @@ hashes = {str(p.relative_to(args.run_root)).replace("\\", "/"): hashlib.sha256(p
 if args.write_docs:
     starts = [read(p / "process-completion.json")["startedUtc"] for p in roots if (p / "process-completion.json").exists()]
     day = datetime.fromisoformat(min(starts)).astimezone().date().isoformat() if starts else datetime.now().date().isoformat()
-    for command in ("grounds", "draft"):
+    for command in commands:
         destination = repo / "docs/baselines" / (day + "-alpha-03-app-" + command + ("-" + args.report_suffix if args.report_suffix else ""))
         if destination.exists():
             raise ValueError("Refusing to overwrite a previous report")
@@ -142,6 +153,14 @@ if args.write_docs:
         def fraction(found, expected):
             return f"{found}/{expected}" if expected else "n/a (no such cases measured)"
         row("Complete guarded run", lambda r: str(r["complete"]))
+        row("think value sent", lambda r: r["thinkSent"])
+        row("timeouts / empty answers / cut-off answers", lambda r: f'{r["timeouts"]} / {r["emptyAnswers"]} / {r["cutOffAnswers"]}')
+        row("All cases: failures", lambda r: r["quality"]["all"]["failures"])
+        if command == "grounds":
+            row("All cases: claim exact", lambda r: f'{r["quality"]["all"]["claimExact"]}/{r["quality"]["all"]["cases"]}')
+            row("All cases: core recall", lambda r: f'{r["quality"]["all"]["coreFound"]}/{r["quality"]["all"]["coreExpected"]}')
+            row("All cases: model-only core recall", lambda r: f'{r["quality"]["all"]["modelCoreFound"]}/{r["quality"]["all"]["coreExpected"]}')
+            row("All cases: out-of-scope declined", lambda r: fraction(r["quality"]["all"]["outOfScopeDeclined"], r["quality"]["all"]["outOfScope"]))
         for part in ("development", "robustness"):
             row(part + " cases", lambda r, p=part: r["quality"]["byPartition"][p]["cases"])
             if command == "grounds":

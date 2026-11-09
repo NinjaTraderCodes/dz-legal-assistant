@@ -1,6 +1,12 @@
 # Authorised v3 fitting-stage checkpoint
 
-## CURRENT STOP — app benchmark collector race, no further inference
+## CURRENT AUTHORISATION — 9 November staged app restart
+
+Owner approved a fresh case1 restart with the repaired collector and retaining the 8 November partials as superseded. **Run Stage1 only: all46 default grounds cases, G4 think=false first, then G3 thinking omitted.** At G4 case27 post same27 interim versus old G3 prefix, then continue. Report after both and wait for go; no draft/phone-model run or pull yet. Stage2 is a future fixed20-case subset covering all claim types, to be chosen/listed before inference. Stage3 is also future and cannot begin on this authorisation. Never access existing owner evaluation inputs, outputs or consoles.
+
+Preparation adds stage/model-order switches, temporary thread sleep inhibition restored in finally, explicit timeout/empty/cutoff metadata without changing inference, and an offline same27 reporter. Owner allows pausing busy Windows Search: optional five-second group CPU check (>0.5 cores) stops WSearch only if busy and restores its originally running state afterwards; no startup setting changes. Last live Search group check was idle, so nothing has been stopped. Final build/tests/commit/push and mains/Best/browsers/VSCode/app-template-idle checks precede any model timing. Use APP-BENCHMARKS.md's Stage1 command, fresh external root, no concurrent build/test work. Historical checkpoints below are superseded.
+
+## Historical stop — app benchmark collector race
 
 Source `e31e298624f6e4943a147ff92abf418e8f768c99` was pushed after 0-warning/error Release build and all 1022 tests passed. Owner closed Brave; app was closed normally for a DLL-locking build, then reopened by agent as PID14796 and owner confirmed template/idle. Serial default app runner session23255 ended with outer exit1. Raw root `%TEMP%\dzlegal-alpha03-app-benchmarks-20261108-210534`, **not an owner evaluation path**: only this new default-case output is available for inspection.
 

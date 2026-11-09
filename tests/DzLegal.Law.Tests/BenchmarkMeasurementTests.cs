@@ -67,11 +67,39 @@ public sealed class BenchmarkMeasurementTests
         var cutoff = measurement.Guard(new Cutoff());
         var error = await Assert.ThrowsAsync<ModelProviderException>(() => cutoff.GenerateAsync(Request, CancellationToken.None));
         Assert.True(error.IsCutOff);
+        using var calls = JsonDocument.Parse(await File.ReadAllTextAsync(System.IO.Path.Combine(folder.Path, "measurement-calls.json")));
+        Assert.True(calls.RootElement[1].GetProperty("RequestError").GetProperty("CutOff").GetBoolean());
         await measurement.AfterCaseAsync("fixture", TimeSpan.Zero, null, new { AppUsedItsExistingFallback = true });
         measurement.Complete();
     }
 
     private static readonly ModelRequest Request = new("fixture", string.Empty, "fixture", "fixture");
+
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public async Task RequestFailureMetadataDistinguishesTimeoutAndEmptyAnswer(bool timeout)
+    {
+        using var folder = new FixtureFolder();
+        using var handler = new Handler();
+        await using var measurement = new BenchmarkMeasurement("fixture", new Uri("http://127.0.0.1:9"), folder.Path,
+            TextWriter.Null, handler, () => Task.CompletedTask, _ => Task.CompletedTask);
+        var guarded = measurement.Guard(new FailedAnswer(timeout));
+        await Assert.ThrowsAsync<IOException>(() => guarded.GenerateAsync(Request, CancellationToken.None));
+        using var calls = JsonDocument.Parse(await File.ReadAllTextAsync(System.IO.Path.Combine(folder.Path, "measurement-calls.json")));
+        var error = calls.RootElement[0].GetProperty("RequestError");
+        Assert.Equal(timeout, error.GetProperty("Timeout").GetBoolean());
+        Assert.Equal(!timeout, error.GetProperty("EmptyAnswer").GetBoolean());
+        Assert.False(error.GetProperty("CutOff").GetBoolean());
+    }
+
+    private sealed class FailedAnswer(bool timeout) : IModelProvider
+    {
+        public string Name => "fixture";
+        public Task<string> GenerateAsync(ModelRequest request, CancellationToken cancellationToken) => throw (timeout
+            ? new ModelProviderException("fixture timeout", new TaskCanceledException())
+            : new ModelProviderException("The local model returned an empty answer."));
+    }
 
     [Theory]
     [InlineData(2, true)]

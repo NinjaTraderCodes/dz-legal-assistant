@@ -33,7 +33,7 @@ public sealed partial class LocalModelSetupService
                 throw new ModelSetupException(ModelSetupStage.VerificationFailed);
             var ready = await CanUseAsync(session.Endpoint, model.Name, linked.Token).ConfigureAwait(false);
             if (ready == ModelState.ModelMissing) throw new ModelSetupException(ModelSetupStage.VerificationFailed);
-            if (ready == ModelState.MemoryLow) { progress.Report(new ModelSetupProgress(ModelSetupStage.MemoryLow, model.Name)); return; }
+            if (ready == ModelState.MemoryLow) { progress.Report(new ModelSetupProgress(ModelSetupStage.MemoryLow, model.Name, FilesVerified: true)); return; }
             progress.Report(new ModelSetupProgress(ModelSetupStage.Testing, model.Name));
             await SelfTestAsync(session.Endpoint, model.Name, linked.Token).ConfigureAwait(false);
             progress.Report(new ModelSetupProgress(ModelSetupStage.Ready, model.Name));
@@ -62,7 +62,7 @@ public sealed partial class LocalModelSetupService
             if (location is null || !await api.IsLocalModelAsync(model, linked.Token).ConfigureAwait(false))
                 throw new ModelSetupException(ModelSetupStage.VerificationFailed);
             await new ModelPackStore(ModelsRoot, resources).ExportAsync(supported, location.Value.BlobRoot, path, progress, linked.Token).ConfigureAwait(false);
-            progress.Report(new ModelSetupProgress(ModelSetupStage.Exported, model));
+            progress.Report(new ModelSetupProgress(ModelSetupStage.Exported, model, FilesVerified: true));
         }
         catch (ModelSetupException ex) when (ex.Stage == ModelSetupStage.InvalidPack)
         { throw new ModelSetupException(ModelSetupStage.VerificationFailed); }

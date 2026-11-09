@@ -37,25 +37,25 @@ public sealed partial class ModelSetupViewModel : ObservableObject, IDisposable
     public partial ModelSetupProgress Progress { get; set; } = new(ModelSetupStage.Checking, "gemma3:4b");
 
     public bool IsRightToLeft => L.IsRightToLeft;
-    public bool IsReady => Progress.Stage is ModelSetupStage.Ready or ModelSetupStage.Exported || readyBeforeExport && !IsBusy;
-    public bool CanDownload => !IsBusy && !IsReady && pendingPack is null && Progress.Stage != ModelSetupStage.MemoryLow;
+    public bool IsReady => Progress.Stage == ModelSetupStage.Ready || readyBeforeExport && !IsBusy;
+    public bool CanDownload => !IsBusy && !HasVerifiedFiles && pendingPack is null && Progress.Stage != ModelSetupStage.MemoryLow;
     public bool CanUseLocal => !IsBusy && IsReady;
     public bool HasProgress => IsBusy;
     public bool HasTransferProgress => IsBusy && Progress.Stage is ModelSetupStage.Downloading or ModelSetupStage.Importing or ModelSetupStage.Exporting;
-    public bool ShowDownload => !IsBusy && !IsReady && pendingPack is null && Progress.Stage != ModelSetupStage.MemoryLow;
+    public bool ShowDownload => !IsBusy && !HasVerifiedFiles && pendingPack is null && Progress.Stage != ModelSetupStage.MemoryLow;
     public bool ShowRefresh => !IsBusy;
     public bool CanCancel => IsBusy && Progress.Stage is ModelSetupStage.Preparing or ModelSetupStage.Downloading or ModelSetupStage.Verifying or ModelSetupStage.Testing or ModelSetupStage.Importing or ModelSetupStage.Exporting;
     public string CompactStatus => HasTransferProgress && Progress.Total > 0
         ? L.Format("ModelSetupCompactProgress", StatusText, Percent.ToString("F0", L.Culture)) : StatusText;
     public bool IsIndeterminate => !HasTransferProgress || Progress.Total <= 0;
     public double Percent => Progress.Total > 0 ? Math.Clamp(100d * Progress.Completed / Progress.Total, 0, 100) : 0;
-    public string Recommendation => IsReady ? L.Format("ModelSetupInstalled", SelectedModel.Name)
+    public string Recommendation => HasVerifiedFiles ? L.Format("ModelSetupInstalled", SelectedModel.Name)
         : L.Format("ModelSetupRecommendation", SelectedModel.Name, Bytes(SelectedModel.Bytes));
     public string TermsText => SelectedModel.Terms;
     public string TermsLabel => L.Format("ModelSetupTerms", SelectedModel.Name);
     public string ProgressText => Progress.Total > 0 ? L.Format("ModelSetupBytes", Percent.ToString("F0", L.Culture), Bytes(Progress.Completed), Bytes(Progress.Total)) : L["ModelSetupEstimating"];
     public string SpeedText => Progress.BytesPerSecond > 0 ? L.Format("ModelSetupSpeed", Bytes((long)Progress.BytesPerSecond), Math.Ceiling(Math.Max(0, Progress.Total - Progress.Completed) / Progress.BytesPerSecond / 60).ToString("F0", L.Culture)) : L["ModelSetupEstimating"];
-    public string DiskText => !IsReady && Progress.RequiredDiskBytes > 0 ? L.Format("ModelSetupDisk", Bytes(Progress.FreeDiskBytes), Bytes(Progress.RequiredDiskBytes)) : string.Empty;
+    public string DiskText => !HasVerifiedFiles && Progress.RequiredDiskBytes > 0 ? L.Format("ModelSetupDisk", Bytes(Progress.FreeDiskBytes), Bytes(Progress.RequiredDiskBytes)) : string.Empty;
     public string StatusText => L["ModelSetup" + Progress.Stage];
     public string DownloadLabel => Progress.Stage is ModelSetupStage.Cancelled or ModelSetupStage.ConnectionFailed or ModelSetupStage.VerificationFailed
         ? L["ModelSetupRetry"] : L.Format("ModelSetupDownload", Bytes(SelectedModel.Bytes));
@@ -70,6 +70,7 @@ public sealed partial class ModelSetupViewModel : ObservableObject, IDisposable
         {
             pendingPack = null;
             readyBeforeExport = false;
+            verifiedBeforeExport = false;
             SelectionTask = RefreshSelectedAsync(value.Name);
         }
         NotifyState();
@@ -79,7 +80,7 @@ public sealed partial class ModelSetupViewModel : ObservableObject, IDisposable
     private void Localized(object? sender, PropertyChangedEventArgs e) => NotifyState();
     private void NotifyState()
     {
-        foreach (var property in new[] { nameof(IsRightToLeft), nameof(IsReady), nameof(CanDownload), nameof(CanUseLocal), nameof(HasProgress), nameof(HasTransferProgress), nameof(ShowDownload), nameof(ShowRefresh), nameof(CanCancel), nameof(CompactStatus), nameof(IsIndeterminate), nameof(Percent), nameof(Recommendation), nameof(TermsText), nameof(TermsLabel), nameof(ProgressText), nameof(SpeedText), nameof(DiskText), nameof(StatusText), nameof(DownloadLabel), nameof(CanImport), nameof(CanExport), nameof(CanInstallPack), nameof(PendingFileName) })
+        foreach (var property in new[] { nameof(IsRightToLeft), nameof(IsReady), nameof(CanDownload), nameof(CanUseLocal), nameof(HasProgress), nameof(HasTransferProgress), nameof(ShowDownload), nameof(ShowRefresh), nameof(CanCancel), nameof(CompactStatus), nameof(IsIndeterminate), nameof(Percent), nameof(Recommendation), nameof(TermsText), nameof(TermsLabel), nameof(ProgressText), nameof(SpeedText), nameof(DiskText), nameof(StatusText), nameof(DownloadLabel), nameof(CanImport), nameof(CanExport), nameof(HasVerifiedFiles), nameof(CanInstallPack), nameof(PendingFileName) })
             OnPropertyChanged(property);
         DownloadCommand.NotifyCanExecuteChanged();
         UseLocalCommand.NotifyCanExecuteChanged();
@@ -144,6 +145,7 @@ public sealed partial class ModelSetupViewModel : ObservableObject, IDisposable
         if (IsBusy) return;
         pendingPack = null;
         readyBeforeExport = false;
+        verifiedBeforeExport = false;
         IsBusy = true;
         try
         {

@@ -44,7 +44,7 @@ internal sealed class FakeModelSetup : ILocalModelSetup, ILocalModelPacks
     {
         Exports++;
         if (Export is not null) return Export(progress, cancellationToken);
-        progress.Report(new ModelSetupProgress(ModelSetupStage.Exported, model));
+        progress.Report(new ModelSetupProgress(ModelSetupStage.Exported, model, FilesVerified: true));
         return Task.CompletedTask;
     }
     public Task DownloadAsync(string model, IProgress<ModelSetupProgress> progress, CancellationToken cancellationToken)
@@ -194,6 +194,24 @@ public class ModelSetupViewTests
     }
 
     [Fact]
+    public async Task VerifiedModelFilesCanBeSharedWithoutEnoughMemoryToLoadTheModel()
+    {
+        var service = new FakeModelSetup();
+        using var vm = new ModelSetupViewModel(new Loc(), service, () => { }, () => Task.CompletedTask, new FakePackFiles())
+        { Progress = new ModelSetupProgress(ModelSetupStage.MemoryLow, "gemma3:4b", FilesVerified: true) };
+        Assert.False(vm.CanUseLocal);
+        Assert.True(vm.CanExport);
+        Assert.False(vm.ShowDownload);
+        await vm.SavePackCommand.ExecuteAsync(null);
+        Assert.Equal(1, service.Exports);
+        Assert.Equal(ModelSetupStage.Exported, vm.Progress.Stage);
+        Assert.False(vm.CanUseLocal);
+        Assert.True(vm.CanExport);
+        Assert.False(vm.ShowDownload);
+        Assert.Equal(0, service.Downloads);
+    }
+
+    [Fact]
     public async Task ExportFailuresExposeOnlyLocalisedCategories()
     {
         var service = new FakeModelSetup { Export = (_, _) => throw new IOException("private diagnostic content") };
@@ -256,7 +274,7 @@ public class ModelSetupViewTests
                     SelectedModel = info,
                     IsExpanded = true,
                     IsBusy = stage is ModelSetupStage.Checking or ModelSetupStage.Downloading or ModelSetupStage.Verifying or ModelSetupStage.Testing or ModelSetupStage.Preparing or ModelSetupStage.Importing or ModelSetupStage.Exporting,
-                    Progress = new ModelSetupProgress(stage, modelName, 3_000_000_000, info.Bytes, 2_000_000, stage == ModelSetupStage.DiskFull ? 1_000_000_000 : 12_000_000_000, info.Bytes + LocalModelSetupService.DiskReserveBytes),
+                    Progress = new ModelSetupProgress(stage, modelName, 3_000_000_000, info.Bytes, 2_000_000, stage == ModelSetupStage.DiskFull ? 1_000_000_000 : 12_000_000_000, info.Bytes + LocalModelSetupService.DiskReserveBytes, FilesVerified: stage == ModelSetupStage.MemoryLow),
                 };
                 if (stage is ModelSetupStage.ImportSelected or ModelSetupStage.ImportFailed)
                 {
@@ -267,10 +285,10 @@ public class ModelSetupViewTests
                         vm.InstallPackCommand.ExecuteAsync(null).GetAwaiter().GetResult();
                     }
                 }
-                if (stage is ModelSetupStage.ExportFailed or ModelSetupStage.PackTooLarge)
+                if (stage is ModelSetupStage.ExportFailed or ModelSetupStage.PackTooLarge or ModelSetupStage.Exported)
                 {
                     vm.Progress = new ModelSetupProgress(ModelSetupStage.Ready, modelName);
-                    setup.Export = (_, _) => throw new ModelSetupException(stage);
+                    if (stage != ModelSetupStage.Exported) setup.Export = (_, _) => throw new ModelSetupException(stage);
                     vm.SavePackCommand.ExecuteAsync(null).GetAwaiter().GetResult();
                 }
                 Assert.Equal(stage, vm.Progress.Stage);

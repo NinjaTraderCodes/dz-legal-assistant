@@ -9,8 +9,10 @@ public sealed partial class ModelSetupViewModel
     private readonly ILocalModelPacks? packs;
     private string? pendingPack;
     private bool readyBeforeExport;
+    private bool verifiedBeforeExport;
     public bool CanImport => !IsBusy && files is not null && packs is not null;
-    public bool CanExport => CanImport && IsReady;
+    public bool HasVerifiedFiles => IsReady || Progress.FilesVerified && Progress.Model == SelectedModel.Name || verifiedBeforeExport;
+    public bool CanExport => CanImport && HasVerifiedFiles;
     public bool CanInstallPack => CanImport && pendingPack is not null && !IsReady;
     public string PendingFileName => pendingPack is null ? string.Empty : L.Format("ModelSetupPackSelected", Path.GetFileName(pendingPack));
 
@@ -23,6 +25,7 @@ public sealed partial class ModelSetupViewModel
             if (path is null) return;
             pendingPack = null;
             readyBeforeExport = false;
+            verifiedBeforeExport = false;
             IsBusy = true;
             Progress = new ModelSetupProgress(ModelSetupStage.Checking, SelectedModel.Name);
             var model = await packs!.ReadPackAsync(path, lifetime.Token);
@@ -60,10 +63,12 @@ public sealed partial class ModelSetupViewModel
             var path = await files!.PickExportAsync(model);
             if (path is null) return;
             readyBeforeExport = IsReady;
+            verifiedBeforeExport = HasVerifiedFiles;
             await RunPackAsync(ModelSetupStage.Exporting, (progress, ct) => packs!.ExportAsync(model, path, progress, ct), cancellationToken);
             if (Progress.Stage is ModelSetupStage.VerificationFailed or ModelSetupStage.MemoryLow)
             {
                 readyBeforeExport = false;
+                if (Progress.Stage == ModelSetupStage.VerificationFailed) verifiedBeforeExport = false;
                 NotifyState();
             }
         }

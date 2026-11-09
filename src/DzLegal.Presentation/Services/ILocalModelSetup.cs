@@ -9,7 +9,7 @@ public enum ModelSetupStage
 
 public sealed record SetupModel(string Name, long Bytes, string Terms, long RequiredMemoryBytes);
 public sealed record ModelSetupProgress(ModelSetupStage Stage, string Model, long Completed = 0, long Total = 0,
-    double BytesPerSecond = 0, long FreeDiskBytes = 0, long RequiredDiskBytes = 0);
+    double BytesPerSecond = 0, long FreeDiskBytes = 0, long RequiredDiskBytes = 0, bool FilesVerified = false);
 
 public interface ILocalModelSetup
 {

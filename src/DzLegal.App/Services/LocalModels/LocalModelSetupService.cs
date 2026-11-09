@@ -80,17 +80,17 @@ public sealed partial class LocalModelSetupService : ILocalModelSetup, ILocalMod
             var session = await engine.EnsureAsync(cancellationToken).ConfigureAwait(false);
             using var api = new LocalOllamaApi(session.Endpoint);
             var installed = await api.InstalledAsync(cancellationToken).ConfigureAwait(false);
-            var memoryLow = false;
+            string? memoryLow = null;
             var verificationFailed = false;
             var candidates = selected is null ? Preference : [selected];
             foreach (var name in candidates.Where(installed.Contains))
             {
                 var state = await CanUseAsync(session.Endpoint, name, cancellationToken).ConfigureAwait(false);
                 if (state == ModelState.Ready) return new ModelSetupProgress(ModelSetupStage.Ready, name);
-                memoryLow |= state == ModelState.MemoryLow;
+                if (state == ModelState.MemoryLow) memoryLow ??= name;
                 verificationFailed |= state == ModelState.ModelMissing;
             }
-            if (memoryLow) return new ModelSetupProgress(ModelSetupStage.MemoryLow, recommended);
+            if (memoryLow is not null) return new ModelSetupProgress(ModelSetupStage.MemoryLow, memoryLow, FilesVerified: true);
             if (verificationFailed) return new ModelSetupProgress(ModelSetupStage.VerificationFailed, recommended);
             var model = SupportedModels.Find(recommended);
             var free = resources.FreeDiskBytes(root);
@@ -168,7 +168,7 @@ public sealed partial class LocalModelSetupService : ILocalModelSetup, ILocalMod
                 throw new ModelSetupException(ModelSetupStage.VerificationFailed);
             var state = await CanUseAsync(session.Endpoint, model, linked.Token).ConfigureAwait(false);
             if (state == ModelState.ModelMissing) throw new ModelSetupException(ModelSetupStage.VerificationFailed);
-            if (state == ModelState.MemoryLow) { progress.Report(new ModelSetupProgress(ModelSetupStage.MemoryLow, model)); return; }
+            if (state == ModelState.MemoryLow) { progress.Report(new ModelSetupProgress(ModelSetupStage.MemoryLow, model, FilesVerified: true)); return; }
             await SelfTestAsync(session.Endpoint, model, linked.Token).ConfigureAwait(false);
             progress.Report(new ModelSetupProgress(ModelSetupStage.Ready, model));
         }

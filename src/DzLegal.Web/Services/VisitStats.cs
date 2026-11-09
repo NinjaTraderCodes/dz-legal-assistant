@@ -73,7 +73,8 @@ public static class VisitStats
           .Append("table{border-collapse:collapse;margin-top:8px}th,td{padding:4px 10px;border-bottom:1px solid #ddd6c8;text-align:left;vertical-align:top}")
           .Append("td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}.muted{color:#6b6458}.totals span{display:inline-block;margin-right:20px}</style></head><body>")
           .Append(CultureInfo.InvariantCulture, $"<h1>Visits, last {days} days</h1>")
-          .Append(CultureInfo.InvariantCulture, $"<p class=\"muted\">Algeria time (UTC+1). Generated {VisitTime.Local(now)}. Anonymous counts: no address, no browser string, no identifier, nothing typed. <a href=\"/stats.csv?days={days}\">Download every event (CSV)</a></p>");
+          .Append(CultureInfo.InvariantCulture, $"<p class=\"muted\">Algeria time (UTC+1). Generated {VisitTime.Local(now)}. Anonymous counts: no address, no browser string, no identifier, nothing typed. <a href=\"/stats.csv?days={days}\">Download every event (CSV)</a></p>")
+          .Append("<p class=\"muted\">Opening this page marks this browser as yours: from now on, its own visits to the site and the demo are not counted (cookie dzlegal.owner, kept a year).</p>");
 
         sb.Append("<p class=\"totals\">")
           .Append(Total("page views", pages.Count))

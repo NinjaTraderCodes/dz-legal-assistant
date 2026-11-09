@@ -27,9 +27,12 @@ builder.Services.AddHttpContextAccessor();
 IVisitStore? visitStore = builder.Configuration["Visits:Store"] == "memory"
     ? new MemoryVisitStore()
     : PostgresVisitStore.FromUrl(builder.Configuration["DATABASE_URL"]);
-builder.Services.AddSingleton(sp => new VisitRecorder(visitStore, sp.GetRequiredService<ILogger<VisitRecorder>>()));
-builder.Services.AddHostedService(sp => sp.GetRequiredService<VisitRecorder>());
 var statsToken = builder.Configuration["STATS_TOKEN"];
+builder.Services.AddSingleton(sp => new VisitRecorder(visitStore, sp.GetRequiredService<ILogger<VisitRecorder>>())
+{
+    OwnerMark = VisitFilter.OwnerMark(statsToken),
+});
+builder.Services.AddHostedService(sp => sp.GetRequiredService<VisitRecorder>());
 
 // Behind the host's proxy (Render): the visitor's address is the last one the proxy adds to X-Forwarded-For.
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
@@ -62,7 +65,7 @@ if (visits.Enabled)
     app.Use(async (context, next) =>
     {
         await next();
-        if (VisitFilter.ShouldCount(context))
+        if (VisitFilter.ShouldCount(context, visits.OwnerMark))
         {
             visits.Record(VisitFilter.PageView(context, visits.Now));
         }
@@ -212,6 +215,15 @@ Task<IResult?> StatsAccess(HttpContext context)
         VisitStats.Access.Ask => AskForToken(context),
         _ => null,
     };
+
+    // The owner has signed in: mark this browser, so its own visits stop being counted (docs/WEB-DEMO.md).
+    if (refused is null && visits.OwnerMark is { } mark)
+    {
+        var options = LanguageSwitch.CookieOptions(context.Request.IsHttps);
+        options.HttpOnly = true;
+        context.Response.Cookies.Append(VisitFilter.OwnerCookie, mark, options);
+    }
+
     return Task.FromResult(refused);
 }
 

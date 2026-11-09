@@ -14,6 +14,7 @@ public sealed partial class Home : IDisposable
 {
     private ViewModelWatcher? _watcher;
     private BrowserFiles? _files;
+    private bool _countVisits = true;
 
     /// <summary>A draft file is small (the case and its text); anything larger is not one.</summary>
     private const long MaxDraftBytes = 2 * 1024 * 1024;
@@ -67,6 +68,7 @@ public sealed partial class Home : IDisposable
         var request = Http.HttpContext?.Request;
         var address = Http.HttpContext?.Connection.RemoteIpAddress?.ToString();
         var language = LanguageChoice.Resolve(request?.Cookies[LanguageChoice.CookieName], LanguageQuery, request?.Headers.AcceptLanguage);
+        _countVisits = !Visits.IsOwner(request?.Cookies[VisitFilter.OwnerCookie]);
         _files = new BrowserFiles(Js);
         Vm = Engine.CreateSession(_files, new BrowserLinks(Js), language, address, kind => Note(VisitKinds.Ai, kind));
         Vm.IsDarkTheme = LanguageSwitch.IsDarkTheme(request?.Cookies[LanguageSwitch.ThemeCookieName]);
@@ -297,7 +299,13 @@ public sealed partial class Home : IDisposable
     }
 
     /// <summary>One anonymous count of what the visitor did here: its kind and a code (sample id, step, AI call kind).</summary>
-    private void Note(string kind, string detail) => Visits.Demo(kind, Vm?.L.Language ?? "-", detail);
+    private void Note(string kind, string detail)
+    {
+        if (_countVisits)
+        {
+            Visits.Demo(kind, Vm?.L.Language ?? "-", detail);
+        }
+    }
 
     private void SelectProvider(ChangeEventArgs e) =>
         Vm!.SelectedProvider = Vm.Providers.FirstOrDefault(p => p.Key == e.Value as string) ?? Vm.SelectedProvider;

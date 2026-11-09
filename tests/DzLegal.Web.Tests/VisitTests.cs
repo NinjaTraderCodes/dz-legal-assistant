@@ -108,6 +108,45 @@ public class VisitFilterTests
         Assert.False(VisitFilter.ShouldCount(post));
     }
 
+    [Fact]
+    public void TheOwnersMarkedBrowserIsNotCountedAndNoOneElseIsAffected()
+    {
+        var mark = VisitFilter.OwnerMark("s3cret-token");
+        var owner = Page("/en/");
+        owner.Request.Headers.Cookie = $"{VisitFilter.OwnerCookie}={mark}";
+        Assert.False(VisitFilter.ShouldCount(owner, mark));
+
+        var guessed = Page("/en/");
+        guessed.Request.Headers.Cookie = $"{VisitFilter.OwnerCookie}=1";
+        Assert.True(VisitFilter.ShouldCount(guessed, mark));
+        Assert.True(VisitFilter.ShouldCount(Page("/en/"), mark));
+
+        // Without a token there is no mark, and a cookie left from an old token no longer hides anyone.
+        Assert.True(VisitFilter.ShouldCount(owner, null));
+        Assert.True(VisitFilter.ShouldCount(owner, VisitFilter.OwnerMark("a-new-token")));
+    }
+
+    [Fact]
+    public void TheOwnersMarkIsDerivedFromTheTokenWithoutRevealingIt()
+    {
+        Assert.Null(VisitFilter.OwnerMark(null));
+        Assert.Null(VisitFilter.OwnerMark(string.Empty));
+        var mark = VisitFilter.OwnerMark("s3cret-token")!;
+        Assert.Equal(mark, VisitFilter.OwnerMark("s3cret-token"));
+        Assert.Matches("^[0-9a-f]{32}$", mark);
+        Assert.DoesNotContain("s3cret", mark, StringComparison.Ordinal);
+        Assert.NotEqual(mark, VisitFilter.OwnerMark("s3cret-token2"));
+    }
+
+    [Fact]
+    public void TheRecorderKnowsTheOwnersBrowserForTheDemosSteps()
+    {
+        var recorder = new VisitRecorder(new MemoryVisitStore(), NullLogger<VisitRecorder>.Instance) { OwnerMark = VisitFilter.OwnerMark("s3cret-token") };
+        Assert.True(recorder.IsOwner(VisitFilter.OwnerMark("s3cret-token")));
+        Assert.False(recorder.IsOwner(null));
+        Assert.False(new VisitRecorder(new MemoryVisitStore(), NullLogger<VisitRecorder>.Instance).IsOwner(VisitFilter.OwnerMark("s3cret-token")));
+    }
+
     /// <summary>
     /// The privacy page promises no address, no browser string, no identifier and nothing typed: the event has no field
     /// for any of them. Adding a field fails this test, so the promise and the privacy page are revisited together.

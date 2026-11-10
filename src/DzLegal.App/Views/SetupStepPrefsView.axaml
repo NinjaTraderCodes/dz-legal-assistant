@@ -14,7 +14,6 @@
     <ComboBox Name="ProfileEngine" ItemsSource="{Binding EngineOptions}" SelectedValueBinding="{Binding Value}" SelectedValue="{Binding Engine, Mode=TwoWay}" HorizontalAlignment="Stretch" AutomationProperties.Name="{Binding L[PrefsEngine]}">
       <ComboBox.ItemTemplate><DataTemplate x:DataType="vm:SetupChoice"><TextBlock Text="{Binding Label}" /></DataTemplate></ComboBox.ItemTemplate>
     </ComboBox>
-    <CheckBox Content="{Binding L[PrefsBackground]}" IsChecked="{Binding AnalyseInBackground}" />
     <TextBlock Classes="setup-label" Text="{Binding L[PrefsSaveFolder]}" />
     <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
       <TextBox Name="ProfileSaveFolder" Text="{Binding SaveFolder}" FlowDirection="LeftToRight" AutomationProperties.Name="{Binding L[PrefsSaveFolder]}" />

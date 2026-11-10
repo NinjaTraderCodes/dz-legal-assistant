@@ -209,7 +209,7 @@ public static class Composition
             BuildLabel = BuildLabel,
             Timings = new TaskTimings(Path.Combine(paths.Root, "timings.json")),
             Power = new WindowsPowerStatus(),
-            AnalyseInBackground = settings.AnalyseInBackground,
+            AnalyseInBackground = false,
         };
     }
 }

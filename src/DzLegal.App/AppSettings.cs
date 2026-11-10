@@ -17,10 +17,9 @@ public sealed record AppSettings
     public string Language { get; init; } = "ar";
 
     /// <summary>
-    /// Start the grounds analysis when the lawyer leaves the facts step (local model only), so it runs while they fill
-    /// the next steps. Nothing is relied on before the lawyer confirms the claim type.
+    /// Retained for older settings files. The desktop now starts analysis only on an explicit click.
     /// </summary>
-    public bool AnalyseInBackground { get; init; } = true;
+    public bool AnalyseInBackground { get; init; }
 
     public OllamaSettings Ollama { get; init; } = new();
 

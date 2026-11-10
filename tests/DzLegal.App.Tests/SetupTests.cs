@@ -372,14 +372,14 @@ public sealed class SetupTests : IDisposable
                     Assert.True(origin.Y >= 0 && origin.Y + button.Bounds.Height <= window.Bounds.Height + 1);
                     Assert.True(origin.X >= 0 && origin.X + button.Bounds.Width <= window.Bounds.Width + 1);
                 }
-                if (scale == 1 && size.Item1 == 1366)
+                if (scale == 1)
                     Capture(window, $"setup-{step + 1}-{language}-{(dark ? "dark" : "light")}-{size.Item1}x{size.Item2}");
                 if (step == 1)
                 {
                     var scroll = view.FindControl<ScrollViewer>("StepScroll")!;
                     scroll.Offset = new Vector(0, scroll.Extent.Height);
                     Layout(window);
-                    if (scale == 1 && size.Item1 == 1366)
+                    if (scale == 1)
                         Capture(window, $"setup-office-lower-{language}-{(dark ? "dark" : "light")}-{size.Item1}x{size.Item2}");
                 }
             }
@@ -467,6 +467,7 @@ public sealed class SetupTests : IDisposable
             Assert.Equal("parties-date", vm.FileNaming);
         }
         var prefs = Assert.IsType<SetupStepPrefsView>(view.FindControl<ContentControl>("SetupStepHost")!.Content);
+        Assert.DoesNotContain(prefs.GetVisualDescendants().OfType<CheckBox>(), control => Equals(control.Content, vm.L["PrefsBackground"]));
         prefs.FindControl<ComboBox>("ProfileLanguage")!.SelectedIndex = 0;
         Layout(window);
         Assert.Equal("ar", vm.Language);

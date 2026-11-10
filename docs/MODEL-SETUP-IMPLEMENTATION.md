@@ -172,3 +172,25 @@ Changes outside App/Presentation and their tests: this implementation record, do
 All **192** current setup captures were inspected through their 24 eight-variant review sheets, including the new version-change state and both Gemma 3 terms/ready states. Originals and sheets remain under the per-user model-setup-screenshots/M5-revision-fix folder, outside git. The screenshot test passed. The website's shared-string checks and 26-page build/output checks passed; no generated site change was needed. The continuation helper's installed-package check was exercised against a fictitious archive: matching bytes passed, changed bytes failed, and the fixture was not overwritten.
 
 Desktop controls were rechecked using the prescribed skill and supported API. The native pipe is still unavailable (os error 2); no real app interaction is claimed for this repair. The owner-assisted continuation therefore remains necessary. The mandatory post-commit build/full-suite results accompany the push.
+## Delivered repair and battery-only functional continuation
+
+Repair **009b533** is pushed on codex/model-setup. Its mandatory post-commit Release build completed with **zero warnings/errors**, and the complete .NET suite passed **1,117 tests**, none skipped, including the unchanged shutdown test. The desktop project passed all 402 tests. It took longer than earlier runs and became mostly idle, then completed without termination or restart. A stack-only Microsoft developer diagnostic tool was installed in the task cache during that wait; the test process ended before any capture, and no dump/trace was made. That tool is not shipped with the app.
+
+The replacement acceptance package is still app source **009b533**, self-contained win-x64, v0.10.0. All three reviewed inventory digests were checked in its published assembly, no personal override was present, and the public copy's SHA-256 matches. The earlier c0486b9 package and its first-run evidence remain preserved.
+
+| Package | Extracted bytes | ZIP bytes | ZIP SHA-256 |
+|---|---:|---:|---|
+| Before, 0.9.1 (4e57c96) | 251,397,010 | 90,272,016 | facc4f2b752fa76977d4daa348aadfbc58364e3d6b02633c7b68eb6c648a1d4e |
+| Replacement, 0.10.0 (009b533) | 336,451,503 | 121,460,512 | c82b569ee9aab34a71ef8e4f39afa4583468c176865ccb18d2133ab0c9f36b20 |
+
+The replacement adds **31,188,496 compressed bytes** and **85,054,493 extracted bytes** over the same-settings baseline. Model weights are separate. Static size/hash checks do not measure battery performance.
+
+After the owner explicitly requested a pause, all work remained saved. On resumption the owner stated that the laptop was on battery, then explicitly selected **“Allow functional-only battery checks”**: sleep must be prevented, no performance/memory collection, and those measurements remain for mains.
+
+The acceptance tool now has an explicit FunctionalOnly switch. Its default measured mode keeps the mains/Best performance precondition and existing sampling. Functional-only mode uses a separate schema and filename: package/standard-account provenance, qualitative owner milestones and app exit code only. It records no start/end or event timestamps, installed/available/peak memory, CPU rates, disk figures or connection samples. It does not query memory counters for that mode. The app's own operational RAM/disk checks, including its 512 MiB floor, remain active. A common execution-state request prevents idle sleep until the app closes; the owner must keep the monitor window running.
+
+The launcher still checks the known package and installation, standard account, and absence of a conflicting app/Ollama. Downloads remain the owner's explicit click. Existing installation/model/partial/case data are preserved. The functional wrapper is staged separately, keeping the previously supplied measured wrapper and helper intact.
+
+Added tools/model-setup/Test-Acceptance.ps1 exercises the real functional record/monitor with a short-lived, case-free process: normal exit and save, truthful existing-data provenance, no invented milestone, and no timestamps/resource fields. Package validation and PowerShell syntax also pass. This is a developer test, not a model benchmark. The mandatory post-commit build and full suite accompany this tool/documentation push.
+
+No application, protected project, legal data or web-demo source changes belong to this continuation; the published application package is unchanged. M5 remains pending: owner-assisted successful download/cancel/resume, first analysis, full-size export, physically disconnected restart/import and the measurements reserved for mains. Functional results cannot replace those cost/memory measurements.

@@ -5,7 +5,8 @@ param(
     [string]$PackageFolder = 'C:\Users\Public\Documents\DzLegalAssistant-M5-c0486b9',
     [ValidatePattern('^[0-9a-fA-F]{64}$')][string]$PackageSha256 = '716c1306d55a5420a996d4cdff24e9a70665036fbbe78b3f588d8a38dcc0fa89',
     [ValidatePattern('^[A-Za-z0-9-]+$')][string]$InstallationName = 'DzLegalAssistant-M5-c0486b9',
-    [switch]$ValidateOnly
+    [switch]$ValidateOnly,
+    [switch]$FunctionalOnly
 )
 $ErrorActionPreference = 'Stop'
 $handoff = [IO.Path]::GetFullPath($PackageFolder)
@@ -36,7 +37,7 @@ function Test-Power {
 }
 if ((Get-FileHash -LiteralPath $archive -Algorithm SHA256).Hash -ne $expectedHash) { throw 'Package hash mismatch. Stop.' }
 if ($ValidateOnly) { 'PASS: package hash checked; app not launched.'; exit 0 }
-if (-not (Test-Power)) { throw 'Mains and Best performance are required.' }
+if (-not $FunctionalOnly -and -not (Test-Power)) { throw 'Mains and Best performance are required.' }
 if (@(Get-Process -Name brave,chrome,msedge,firefox,opera,vivaldi,Code -ErrorAction SilentlyContinue).Count -gt 0) {
     throw 'Close browsers and VS Code before this check.'
 }
@@ -81,11 +82,23 @@ if (Test-Path -LiteralPath (Join-Path $install 'appsettings.local.json')) { thro
 $exe = Join-Path $install 'DzLegalAssistant.exe'
 if (-not (Test-Path -LiteralPath $exe -PathType Leaf)) { throw 'The acceptance package is not installed in this account.' }
 $installedKiB = [UInt64]0
-if (-not [M5AcceptanceResources]::GetPhysicallyInstalledSystemMemory([ref]$installedKiB)) { throw 'Installed RAM check failed.' }
+if (-not $FunctionalOnly -and -not [M5AcceptanceResources]::GetPhysicallyInstalledSystemMemory([ref]$installedKiB)) { throw 'Installed RAM check failed.' }
 $events = [Collections.Generic.List[object]]::new()
 $samples = [Collections.Generic.List[object]]::new()
-$recordPath = Join-Path $handoff ('M5-' + $Phase + '-' + [DateTime]::UtcNow.ToString('yyyyMMddTHHmmssZ') + '-' + [Guid]::NewGuid().ToString('N') + '.json')
-$record = [ordered]@{
+$recordName = if ($FunctionalOnly) { 'M5-' + $Phase + '-functional-' + [Guid]::NewGuid().ToString('N') + '.json' }
+    else { 'M5-' + $Phase + '-' + [DateTime]::UtcNow.ToString('yyyyMMddTHHmmssZ') + '-' + [Guid]::NewGuid().ToString('N') + '.json' }
+$recordPath = Join-Path $handoff $recordName
+function New-FunctionalRecord {
+    param([string]$Phase, [string]$PackageSha256, [bool]$StandardAccount, [bool]$FreshAppData, [bool]$NormalOllamaAbsent)
+    return [ordered]@{
+        schema = 2; phase = $Phase; checkType = 'functional-only'; packageSha256 = $PackageSha256.ToLowerInvariant()
+        standardAccount = $StandardAccount; freshAppDataAtStart = $FreshAppData; normalOllamaAbsent = $NormalOllamaAbsent
+        performanceMeasurementsCollected = $false; exitCode = $null; events = [Collections.Generic.List[object]]::new()
+    }
+}
+$record = if ($FunctionalOnly) {
+    New-FunctionalRecord -Phase $Phase -PackageSha256 $expectedHash -StandardAccount $standard -FreshAppData $freshRoot -NormalOllamaAbsent $normalOllamaAbsent
+} else { [ordered]@{
     schema = 1; phase = $Phase; packageSha256 = $expectedHash.ToLowerInvariant()
     standardAccount = $standard; freshAppDataAtStart = $freshRoot; normalOllamaAbsent = $normalOllamaAbsent
     installedMemoryBytes = $installedKiB * 1024; powerMode = 'Best performance'; acAtStart = $true
@@ -93,9 +106,33 @@ $record = [ordered]@{
     startUtc = [DateTime]::UtcNow.ToString('o'); endUtc = $null; exitCode = $null
     peakWorkingSetBytes = 0L; peakPrivateBytes = 0L; minimumAvailableMemoryBytes = [long]::MaxValue
     events = $events; samples = $samples
-}
+} }
+$events = $record.events
 function Save-Record {
     [IO.File]::WriteAllText($recordPath, ($record | ConvertTo-Json -Depth 6), [Text.UTF8Encoding]::new($false))
+}
+function Wait-FunctionalApp {
+    param(
+        [Parameter(Mandatory=$true)][Diagnostics.Process]$App,
+        [Parameter(Mandatory=$true)][Collections.IDictionary]$Record,
+        [Parameter(Mandatory=$true)][Collections.IDictionary]$Markers,
+        [Parameter(Mandatory=$true)][scriptblock]$Save
+    )
+    while (-not $App.HasExited) {
+        if (-not [Console]::IsInputRedirected -and [Console]::KeyAvailable) {
+            $key = [Console]::ReadKey($true).KeyChar.ToString().ToUpperInvariant()
+            if ($Markers.Contains($key)) {
+                $Record.events.Add([ordered]@{ event=$Markers[$key] })
+                'Recorded: ' + $Markers[$key]
+                & $Save
+            }
+        }
+        Start-Sleep -Milliseconds 200
+        $App.Refresh()
+    }
+    $App.WaitForExit()
+    $Record.exitCode = $App.ExitCode
+    & $Save
 }
 $markers = @{
     I='idle-before-download'; D='download-click'; C='cancelled'; R='retry-click'; T='templates-during-transfer'
@@ -105,13 +142,20 @@ $markers = @{
 'Optional milestone keys, pressed in THIS console after each app action:'
 'I idle; D Download; C cancelled; R Retry; T templates during transfer; V ready; A analysis; E export; O offline import; F failure.'
 'Close the app normally when finished. Keep this console open until it records the result.'
+if ($FunctionalOnly) { 'FUNCTIONAL ONLY: no timings, memory, disk or connection measurements are collected. The app keeps its own resource guards.' }
 if ([M5AcceptanceResources]::SetThreadExecutionState([uint32]2147483651) -eq 0) { throw 'Cannot prevent automatic sleep. App not started.' }
 try { $app = Start-Process -FilePath $exe -WorkingDirectory $install -PassThru }
 catch { [void][M5AcceptanceResources]::SetThreadExecutionState([uint32]2147483648); throw 'App launch failed.' }
 $owned = @{}
-$owned[$app.Id] = $app.StartTime.ToUniversalTime().Ticks
-$nextSample = [DateTime]::UtcNow
+if (-not $FunctionalOnly) {
+    $owned[$app.Id] = $app.StartTime.ToUniversalTime().Ticks
+    $nextSample = [DateTime]::UtcNow
+}
 try {
+    if ($FunctionalOnly) {
+        Wait-FunctionalApp -App $app -Record $record -Markers $markers -Save { Save-Record }
+        return
+    }
     while (-not $app.HasExited) {
         if ([Console]::KeyAvailable) {
             $key = [Console]::ReadKey($true).KeyChar.ToString().ToUpperInvariant()
@@ -181,10 +225,12 @@ try {
     }
     if ($app.HasExited) { $app.WaitForExit(); $record.exitCode = $app.ExitCode }
 } catch {
-    $events.Add([ordered]@{utc=[DateTime]::UtcNow.ToString('o');event='monitor-failure';category=$_.Exception.GetType().Name})
+    $failure = [ordered]@{event='monitor-failure';category=$_.Exception.GetType().Name}
+    if (-not $FunctionalOnly) { $failure.utc = [DateTime]::UtcNow.ToString('o') }
+    $events.Add($failure)
     Write-Warning 'The acceptance monitor failed. Close the app normally and report that fact; no model process was killed.'
 } finally {
-    $record.endUtc = [DateTime]::UtcNow.ToString('o')
+    if (-not $FunctionalOnly) { $record.endUtc = [DateTime]::UtcNow.ToString('o') }
     Save-Record
     [void][M5AcceptanceResources]::SetThreadExecutionState([uint32]2147483648)
     'Acceptance record saved in the public M5 handoff folder. No case text was recorded.'

@@ -94,7 +94,7 @@ A human reading of the 24 drafts found no swapped roles or invented facts in eit
 - **Licences:** every model, dataset and library shipped must allow redistribution; say which licence each of your proposals depends on.
 - **Data:** tests and samples use fictitious cases only. You may propose generating synthetic fictitious cases; say how their realism and legal accuracy would be checked by a practising lawyer.
 - **Evaluation honesty:** the hidden sets v1 and v2 are now seen at summary level. Any change to the reader or the pipeline must be measured on a **new hidden set (v3) by an independent author**. Never propose tuning against hidden-set results.
-- **This session is research only:** do not change the repository.
+- **This session is research only:** change no existing file. Work on your own branch, `fable/architecture-review`, created from `claude/case-file-site`. The only thing you write is your report, as one new file, `docs/research/FABLE-ARCHITECTURE-REPORT.md`, pushed to that branch. Never merge, and never push to any other branch. If you cannot push, give the whole report in your answer instead.
 
 ## What to deliver
 

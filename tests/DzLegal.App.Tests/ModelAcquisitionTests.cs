@@ -31,16 +31,19 @@ public class ModelAcquisitionTests
         Assert.Equal(expected, WindowsComputerResources.RecommendedModel(memory));
 
     [Fact]
-    public void TheBuiltInInventoryPinsExactlyTwoManifestsAndTheirEntireBlobClosure()
+    public void TheTwoModelChoicesPinEveryKnownManifestAndItsEntireBlobClosure()
     {
         Assert.Equal(["gemma3:4b", "gemma4:e4b"], SupportedModels.All.Select(m => m.Name));
-        foreach (var model in SupportedModels.All)
+        foreach (var model in SupportedModels.Known)
         {
             Assert.Equal(model.ManifestSha256, Convert.ToHexStringLower(SHA256.HashData(model.Manifest)));
             Assert.NotEmpty(model.Terms);
             Assert.All(model.Blobs, blob => { Assert.Equal(64, blob.Sha256.Length); Assert.True(blob.Size > 0); });
         }
-        Assert.Equal(3349593375, SupportedModels.Find("gemma3:4b").Info.Bytes);
+        Assert.Equal(3350272403, SupportedModels.Find("gemma3:4b").Info.Bytes);
+        Assert.Equal(3349593375, SupportedModels.Versions("gemma3:4b").Single(m => m.ManifestSha256 == "c30276f7dffec93a536d283e15088990454b8d21cf180a3d6eea4959e4147291").Info.Bytes);
+        Assert.Equal(3, SupportedModels.Known.Count);
+        Assert.Equal(3, SupportedModels.Known.Select(m => m.ManifestSha256).Distinct(StringComparer.Ordinal).Count());
         Assert.Equal(6583656505, SupportedModels.Find("gemma4:e4b").Info.Bytes);
     }
 
@@ -56,7 +59,6 @@ public class ModelAcquisitionTests
     }
 
     [Theory]
-    [InlineData("{\"digest\":\"unexpected\",\"total\":100,\"completed\":1}")]
     [InlineData("{\"digest\":\"sha256:model\",\"total\":101,\"completed\":1}")]
     [InlineData("{\"digest\":\"sha256:model\",\"total\":100,\"completed\":-1}")]
     public void UnknownOrOversizedTransfersFailClosed(string json) =>
@@ -93,4 +95,23 @@ public class ModelAcquisitionTests
         Assert.Empty(capture.Values);
         Assert.Equal(2147483648, LocalModelSetupService.DiskReserveBytes);
     }
+    [Fact]
+    public void AChangedModelRevisionFailsWithAnActionableVersionStatus()
+    {
+        var failure = Assert.Throws<ModelSetupException>(() => new PullProgress(Tiny()).Parse(
+            "{\"digest\":\"sha256:unexpected\",\"total\":100,\"completed\":1}"));
+        Assert.Equal(ModelSetupStage.ModelVersionChanged, failure.Stage);
+    }
+
+    [Fact]
+    public void TheRegistryRevisionIsAcceptedOnlyByItsOwnReviewedInventory()
+    {
+        var current = SupportedModels.Find("gemma3:4b");
+        var legacy = SupportedModels.Versions(current.Name).Single(m => m != current);
+        var weight = current.Blobs.Single(b => b.Size > 2_000_000_000);
+        var line = $$"""{"digest":"sha256:{{weight.Sha256}}","total":{{weight.Size}},"completed":1024}""";
+        Assert.Equal(1024, new PullProgress(current).Parse(line).Completed);
+        Assert.Equal(ModelSetupStage.ModelVersionChanged, Assert.Throws<ModelSetupException>(() => new PullProgress(legacy).Parse(line)).Stage);
+    }
+
 }

@@ -223,4 +223,22 @@ public class ModelPackTests
         Assert.Equal("previous export", await File.ReadAllTextAsync(fixture.Pack));
         Assert.Empty(Directory.GetFiles(fixture.Root, ".dzmodel-*.tmp"));
     }
+    [Fact]
+    public async Task AnOlderPinnedPackKeepsItsExactRevisionThroughReadAndImport()
+    {
+        using var fixture = new Fixture();
+        var manifest = Encoding.UTF8.GetBytes("{\"fixture\":\"fictitious-new-revision\"}");
+        var current = fixture.Model with
+        {
+            ManifestSha256 = Convert.ToHexStringLower(SHA256.HashData(manifest)),
+            ManifestBase64 = Convert.ToBase64String(manifest),
+        };
+        var store = new ModelPackStore(fixture.Target, fixture.Resources, [current, fixture.Model]);
+        await store.ExportAsync(fixture.Model, fixture.Source, fixture.Pack, new Capture(), CancellationToken.None);
+        Assert.Equal(fixture.Model.ManifestSha256, (await store.ReadModelAsync(fixture.Pack, CancellationToken.None)).ManifestSha256);
+        var installed = await store.ImportAsync(fixture.Pack, fixture.Model.Name, new Capture(), CancellationToken.None);
+        Assert.Equal(fixture.Model.ManifestSha256, installed.ManifestSha256);
+        Assert.Equal(fixture.Model.Manifest, await File.ReadAllBytesAsync(installed.ManifestPath(fixture.Target)));
+    }
+
 }

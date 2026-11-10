@@ -3,7 +3,7 @@ namespace DzLegal.Presentation.Services;
 public enum ModelSetupStage
 {
     Checking, Available, Preparing, Downloading, Cancelled, Verifying, Testing, Ready,
-    ConnectionFailed, DiskFull, MemoryLow, VerificationFailed, EngineFailed,
+    ConnectionFailed, DiskFull, MemoryLow, VerificationFailed, ModelVersionChanged, EngineFailed,
     ImportSelected, Importing, Exporting, Exported, InvalidPack, PackTooLarge, ImportFailed, ExportFailed,
 }
 

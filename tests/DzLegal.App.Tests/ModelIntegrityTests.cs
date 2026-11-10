@@ -63,7 +63,7 @@ public class ModelIntegrityTests
     [Fact]
     public void EveryManifestComponentAppearsInTheBuiltInBlobInventory()
     {
-        foreach (var model in SupportedModels.All)
+        foreach (var model in SupportedModels.Known)
         {
             using var json = JsonDocument.Parse(model.Manifest);
             var components = new[] { json.RootElement.GetProperty("config") }
@@ -72,4 +72,36 @@ public class ModelIntegrityTests
             Assert.Equal(expected, model.Blobs.Select(b => (b.Sha256, b.Size)));
         }
     }
+    [Fact]
+    public async Task ADifferentRevisionCannotBorrowAnEarlierVerificationWithEqualFileAttributes()
+    {
+        var parent = Path.Combine(AppPaths.Default.Root, "model-setup-tests");
+        var root = Path.Combine(parent, Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(root);
+        try
+        {
+            var bytes = Encoding.UTF8.GetBytes("fictitious version one");
+            var other = Encoding.UTF8.GetBytes("fictitious version two");
+            Assert.Equal(bytes.Length, other.Length);
+            var first = new ModelBlob(Convert.ToHexStringLower(SHA256.HashData(bytes)), bytes.Length);
+            var second = new ModelBlob(Convert.ToHexStringLower(SHA256.HashData(other)), other.Length);
+            var firstPath = Path.Combine(root, "sha256-" + first.Sha256);
+            var secondPath = Path.Combine(root, "sha256-" + second.Sha256);
+            await File.WriteAllBytesAsync(firstPath, bytes);
+            await File.WriteAllBytesAsync(secondPath, bytes); // wrong content, with the same length and timestamp
+            var time = File.GetLastWriteTimeUtc(firstPath);
+            File.SetLastWriteTimeUtc(secondPath, time);
+            var model = new SupportedModel("fictitious:1", new string('a', 64), "", [first], "Fictitious terms", 1);
+            var next = model with { ManifestSha256 = new string('b', 64), Blobs = [second] };
+            using var verifier = new ModelVerifier();
+            Assert.True(await verifier.VerifyAsync(model, root, CancellationToken.None));
+            Assert.False(await verifier.VerifyAsync(next, root, CancellationToken.None));
+        }
+        finally
+        {
+            Assert.Equal(Path.GetFullPath(parent), Path.GetDirectoryName(Path.GetFullPath(root)));
+            Directory.Delete(root, recursive: true);
+        }
+    }
+
 }

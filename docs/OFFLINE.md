@@ -29,7 +29,7 @@ The non-blocking card recommends Gemma 4 E4B from **16 GiB of installed RAM**, o
 
 | Supported pinned CPU model | Public model bytes | Approximate size | Terms shown before acquisition |
 |---|---:|---:|---|
-| `gemma3:4b` | 3,349,593,375 | 3.1 GiB | Original Gemma terms embedded with the inventory |
+| `gemma3:4b` | 3,350,272,403 | 3.1 GiB | Original Gemma terms embedded with the inventory |
 | `gemma4:e4b` | 6,583,656,505 | 6.1 GiB | Original Apache 2.0 text embedded with the inventory |
 
 Download shows progress, bytes, speed and estimated time left. Cancel stops this request; Retry reuses saved partial data where the engine supports it. Disk checks keep **2 GiB free** in the model-store drive, credit allocated partial files and recheck while transferring. “Not now” selects templates and remains available during setup; it does not secretly cancel an authorised transfer. The form and template workflow remain usable.
@@ -41,6 +41,8 @@ An unsupported, changed or damaged model fails its built-in identity check and i
 On a computer with the supported model installed and verified, choose **Save model to a file…**. Choose a local destination or USB drive. Export hashes the expected files as it writes a temporary `.dzmodel`, then publishes the completed file. It contains only public model files and the exact supported manifest, including original terms. It excludes cases, prompts, answers, settings, history, profile, engine home and credentials. Use exFAT or NTFS for the Gemma 4 pack; FAT32 cannot hold a file over 4 GB.
 
 On the offline computer choose **Install model from a file…**, select the pack, review its model terms, then choose **Install this model**. Every entry must match the app's built-in manifest, SHA-256 and size list. No signing key, external trust list, arbitrary model or executable is accepted. Import rejects unsafe archive paths, extra/missing/duplicate entries, symlinks, bad sizes, excessive expansion and unbounded ZIP64 metadata. It checks all archive blobs even when a local copy exists, stages verified files, and publishes the manifest last. Cancelling or failing verification preserves the previous model; partial verified cache data from a later engine failure can be reused.
+
+A release can recognise several fixed revisions of either supported model. Previously verified installations and matching packs remain usable when their revision is still in the built-in list. Export saves the exact installed revision. Fresh downloads use the reviewed current revision; if the online tag changes to unknown files, the card asks for an app update or a matching local pack instead of retrying the same incompatible download.
 
 Keep the app release and its matching model pack together for colleagues. A pack for another inventory version is rejected. See [MODEL-SETUP-IMPLEMENTATION.md](MODEL-SETUP-IMPLEMENTATION.md) for the exact format and test record. Filesystem operations on a user-selected cloud-synced or shared location remain under that storage system's control; the offline route uses local storage/USB.
 

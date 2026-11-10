@@ -13,7 +13,7 @@ internal sealed class ModelVerifier : IDisposable
         await gate.WaitAsync(cancellationToken).ConfigureAwait(false);
         try
         {
-            var key = model.Name + "|" + Path.GetFullPath(blobRoot);
+            var key = model.Name + "|" + model.ManifestSha256 + "|" + Path.GetFullPath(blobRoot);
             var fingerprint = string.Join('|', model.Blobs.Select(b =>
             {
                 var info = new FileInfo(Path.Combine(blobRoot, "sha256-" + b.Sha256));

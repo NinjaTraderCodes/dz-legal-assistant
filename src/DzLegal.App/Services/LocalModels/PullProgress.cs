@@ -32,7 +32,7 @@ internal sealed class PullProgress(SupportedModel model)
             var count = root.TryGetProperty("completed", out var c) ? c.GetInt64() : 0;
             var blob = model.Blobs.FirstOrDefault(b => "sha256:" + b.Sha256 == digest);
             var expected = digest == "sha256:model" ? model.Info.Bytes : blob?.Size
-                ?? throw new ModelSetupException(ModelSetupStage.VerificationFailed);
+                ?? throw new ModelSetupException(ModelSetupStage.ModelVersionChanged);
             if (total < 0 || total > expected || count < 0 || count > expected)
                 throw new ModelSetupException(ModelSetupStage.VerificationFailed);
             completed[digest] = Math.Max(completed.GetValueOrDefault(digest), count);

@@ -14,12 +14,14 @@ internal sealed record SupportedModel(string Name, string ManifestSha256, string
 
 internal static class SupportedModels
 {
-    public static IReadOnlyList<SupportedModel> All { get; } = Load();
+    public static IReadOnlyList<SupportedModel> All { get; } = Load("DzLegal.App.SupportedModels");
+    public static IReadOnlyList<SupportedModel> Known { get; } = [.. All, .. Load("DzLegal.App.LegacyModels")];
+    public static IReadOnlyList<SupportedModel> Versions(string name) => Known.Where(m => m.Name == name).ToArray();
     public static SupportedModel Find(string name) => All.FirstOrDefault(m => m.Name == name)
         ?? throw new ModelSetupException(ModelSetupStage.VerificationFailed);
-    private static List<SupportedModel> Load()
+    private static List<SupportedModel> Load(string resource)
     {
-        using var input = typeof(SupportedModels).Assembly.GetManifestResourceStream("DzLegal.App.SupportedModels")
+        using var input = typeof(SupportedModels).Assembly.GetManifestResourceStream(resource)
             ?? throw new IOException("The supported model inventory is missing.");
         return JsonSerializer.Deserialize<List<SupportedModel>>(input, JsonSerializerOptions.Web)
             ?? throw new IOException("The supported model inventory is invalid.");

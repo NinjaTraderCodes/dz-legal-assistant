@@ -51,17 +51,18 @@ public sealed partial class LocalModelSetupService
     public async Task ExportAsync(string model, string path, IProgress<ModelSetupProgress> progress, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(progress);
-        var supported = SupportedModels.Find(model);
+        var versions = SupportedModels.Versions(model);
+        if (versions.Count == 0) throw new ModelSetupException(ModelSetupStage.VerificationFailed);
         using var linked = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, lifetime.Token);
         await acquisition.WaitAsync(linked.Token).ConfigureAwait(false);
         try
         {
             var session = await engine.EnsureAsync(linked.Token).ConfigureAwait(false);
             using var api = new LocalOllamaApi(session.Endpoint);
-            var location = await api.LocationAsync(supported, linked.Token).ConfigureAwait(false);
+            var location = await api.LocationAsync(versions, linked.Token).ConfigureAwait(false);
             if (location is null || !await api.IsLocalModelAsync(model, linked.Token).ConfigureAwait(false))
                 throw new ModelSetupException(ModelSetupStage.VerificationFailed);
-            await new ModelPackStore(ModelsRoot, resources).ExportAsync(supported, location.Value.BlobRoot, path, progress, linked.Token).ConfigureAwait(false);
+            await new ModelPackStore(ModelsRoot, resources).ExportAsync(location.Value.Model, location.Value.BlobRoot, path, progress, linked.Token).ConfigureAwait(false);
             progress.Report(new ModelSetupProgress(ModelSetupStage.Exported, model, FilesVerified: true));
         }
         catch (ModelSetupException ex) when (ex.Stage == ModelSetupStage.InvalidPack)

@@ -38,11 +38,11 @@ public sealed partial class ModelSetupViewModel : ObservableObject, IDisposable
 
     public bool IsRightToLeft => L.IsRightToLeft;
     public bool IsReady => Progress.Stage == ModelSetupStage.Ready || readyBeforeExport && !IsBusy;
-    public bool CanDownload => !IsBusy && !HasVerifiedFiles && pendingPack is null && Progress.Stage != ModelSetupStage.MemoryLow;
+    public bool CanDownload => !IsBusy && !HasVerifiedFiles && pendingPack is null && Progress.Stage is not (ModelSetupStage.MemoryLow or ModelSetupStage.ModelVersionChanged);
     public bool CanUseLocal => !IsBusy && IsReady;
     public bool HasProgress => IsBusy;
     public bool HasTransferProgress => IsBusy && Progress.Stage is ModelSetupStage.Downloading or ModelSetupStage.Importing or ModelSetupStage.Exporting;
-    public bool ShowDownload => !IsBusy && !HasVerifiedFiles && pendingPack is null && Progress.Stage != ModelSetupStage.MemoryLow;
+    public bool ShowDownload => !IsBusy && !HasVerifiedFiles && pendingPack is null && Progress.Stage is not (ModelSetupStage.MemoryLow or ModelSetupStage.ModelVersionChanged);
     public bool ShowRefresh => !IsBusy;
     public bool CanCancel => IsBusy && Progress.Stage is ModelSetupStage.Preparing or ModelSetupStage.Downloading or ModelSetupStage.Verifying or ModelSetupStage.Testing or ModelSetupStage.Importing or ModelSetupStage.Exporting;
     public string CompactStatus => HasTransferProgress && Progress.Total > 0

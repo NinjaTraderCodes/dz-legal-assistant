@@ -59,15 +59,18 @@ public sealed class LocalOllamaApi : IDisposable
             && info.EnumerateObject().Any();
     }
 
-    internal async Task<(string Digest, string BlobRoot)?> LocationAsync(SupportedModel model, CancellationToken cancellationToken)
+    internal async Task<(SupportedModel Model, string BlobRoot)?> LocationAsync(
+        IReadOnlyList<SupportedModel> versions, CancellationToken cancellationToken)
     {
+        var name = versions[0].Name;
         using var tagsResponse = await http.GetAsync("api/tags", cancellationToken).ConfigureAwait(false);
         tagsResponse.EnsureSuccessStatusCode();
         using var tags = await JsonDocument.ParseAsync(await tagsResponse.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false), cancellationToken: cancellationToken).ConfigureAwait(false);
-        var found = tags.RootElement.GetProperty("models").EnumerateArray().FirstOrDefault(m => m.GetProperty("name").GetString() == model.Name);
-        if (found.ValueKind == JsonValueKind.Undefined || !found.TryGetProperty("digest", out var digest)
-            || digest.GetString()?.Replace("sha256:", "", StringComparison.Ordinal) != model.ManifestSha256) return null;
-        using var response = await http.PostAsJsonAsync("api/show", new { model = model.Name }, cancellationToken).ConfigureAwait(false);
+        var found = tags.RootElement.GetProperty("models").EnumerateArray().FirstOrDefault(m => m.GetProperty("name").GetString() == name);
+        if (found.ValueKind == JsonValueKind.Undefined || !found.TryGetProperty("digest", out var digest)) return null;
+        var model = versions.FirstOrDefault(m => m.ManifestSha256 == digest.GetString()?.Replace("sha256:", "", StringComparison.Ordinal));
+        if (model is null) return null;
+        using var response = await http.PostAsJsonAsync("api/show", new { model = name }, cancellationToken).ConfigureAwait(false);
         response.EnsureSuccessStatusCode();
         using var json = await JsonDocument.ParseAsync(await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false), cancellationToken: cancellationToken).ConfigureAwait(false);
         var root = json.RootElement;
@@ -77,7 +80,7 @@ public sealed class LocalOllamaApi : IDisposable
         var path = from?[5..].Trim().Trim('"');
         if (path is null || !Path.IsPathFullyQualified(path)
             || !model.Blobs.Any(b => "sha256-" + b.Sha256 == Path.GetFileName(path))) return null;
-        return (model.ManifestSha256, Path.GetDirectoryName(path)!);
+        return (model, Path.GetDirectoryName(path)!);
     }
 
     internal async Task<bool> IsLoadedAsync(string model, CancellationToken cancellationToken)

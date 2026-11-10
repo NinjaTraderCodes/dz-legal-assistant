@@ -9,7 +9,7 @@ namespace DzLegal.App.Services.LocalModels;
 /// <summary>The pack contains only a built-in manifest and its exact content-addressed payload.</summary>
 internal sealed class ModelPackStore(string modelRoot, IComputerResources resources, IReadOnlyList<SupportedModel>? inventory = null)
 {
-    private readonly IReadOnlyList<SupportedModel> models = inventory ?? SupportedModels.All;
+    private readonly IReadOnlyList<SupportedModel> models = inventory ?? SupportedModels.Known;
     private readonly string root = Path.GetFullPath(modelRoot);
 
     public async Task<SupportedModel> ReadModelAsync(string path, CancellationToken cancellationToken)

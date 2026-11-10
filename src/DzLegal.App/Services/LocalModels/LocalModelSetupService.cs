@@ -52,12 +52,14 @@ public sealed partial class LocalModelSetupService : ILocalModelSetup, ILocalMod
     {
         using var linked = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, lifetime.Token);
         using var api = new LocalOllamaApi(endpoint);
-        var supported = SupportedModels.All.FirstOrDefault(m => m.Name == name);
-        if (supported is not null)
+        var versions = SupportedModels.Versions(name);
+        SupportedModel? supported = null;
+        if (versions.Count > 0)
         {
-            var location = await api.LocationAsync(supported, linked.Token).ConfigureAwait(false);
-            if (location is null || !await verifier.VerifyAsync(supported, location.Value.BlobRoot, linked.Token).ConfigureAwait(false))
+            var location = await api.LocationAsync(versions, linked.Token).ConfigureAwait(false);
+            if (location is null || !await verifier.VerifyAsync(location.Value.Model, location.Value.BlobRoot, linked.Token).ConfigureAwait(false))
                 return ModelState.ModelMissing;
+            supported = location.Value.Model;
         }
         if (resources.AvailableMemoryBytes < 512UL * 1024 * 1024) return ModelState.MemoryLow;
         if (supported is not null && resources.AvailableMemoryBytes < (ulong)(supported.RequiredMemoryBytes + 512L * 1024 * 1024)

@@ -331,4 +331,57 @@ public class ModelSetupViewTests
         }
         finally { app.RequestedThemeVariant = originalTheme; }
     }
+    [Fact]
+    public async Task CancellingGemma4ThenSelectingGemma3AllowsANewDownload()
+    {
+        var started = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var attempt = 0;
+        var service = new FakeModelSetup
+        {
+            Download = async (progress, ct) =>
+            {
+                if (++attempt == 1) { started.SetResult(); await Task.Delay(Timeout.Infinite, ct); }
+                else progress.Report(new ModelSetupProgress(ModelSetupStage.Ready, "gemma3:4b"));
+            },
+        };
+        using var vm = new ModelSetupViewModel(new Loc(), service, () => { }, () => Task.CompletedTask);
+        vm.SelectedModel = vm.Models.Single(m => m.Name == "gemma4:e4b");
+        await vm.SelectionTask;
+        var first = vm.DownloadCommand.ExecuteAsync(null);
+        await started.Task;
+        vm.CancelCommand.Execute(null);
+        await first;
+        Assert.Equal(ModelSetupStage.Cancelled, vm.Progress.Stage);
+        vm.SelectedModel = vm.Models.Single(m => m.Name == "gemma3:4b");
+        await vm.SelectionTask;
+        Assert.True(vm.CanDownload);
+        Assert.True(vm.DownloadCommand.CanExecute(null));
+        await vm.DownloadCommand.ExecuteAsync(null);
+        Assert.Equal(2, service.Downloads);
+        Assert.True(vm.CanUseLocal);
+        Assert.Equal("gemma3:4b", vm.Progress.Model);
+    }
+
+    [Theory]
+    [InlineData("ar")]
+    [InlineData("en")]
+    public async Task AnUnknownOnlineRevisionOffersFileInstallationAndTemplatesWithoutAnEndlessRetry(string language)
+    {
+        var loc = new Loc();
+        loc.SetLanguage(language);
+        var service = new FakeModelSetup { Download = (_, _) => throw new ModelSetupException(ModelSetupStage.ModelVersionChanged) };
+        var templates = false;
+        using var vm = new ModelSetupViewModel(loc, service, () => templates = true, () => Task.CompletedTask, new FakePackFiles());
+        await vm.DownloadCommand.ExecuteAsync(null);
+        Assert.Equal(ModelSetupStage.ModelVersionChanged, vm.Progress.Stage);
+        Assert.False(vm.ShowDownload);
+        Assert.False(vm.DownloadCommand.CanExecute(null));
+        Assert.False(vm.CanUseLocal);
+        Assert.True(vm.CanImport);
+        Assert.Equal(loc["ModelSetupModelVersionChanged"], vm.StatusText);
+        Assert.DoesNotContain("ModelSetupModelVersionChanged", vm.StatusText, StringComparison.Ordinal);
+        vm.NotNowCommand.Execute(null);
+        Assert.True(templates);
+    }
+
 }

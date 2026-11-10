@@ -15,6 +15,7 @@
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="Services/LocalModels/supported-models.json" LogicalName="DzLegal.App.SupportedModels" />
+    <EmbeddedResource Include="Services/LocalModels/supported-models-legacy.json" LogicalName="DzLegal.App.LegacyModels" />
     <EmbeddedResource Include="Services/LocalModels/engine-files.json" LogicalName="DzLegal.App.EngineFiles" />
     <Content Include="$(OllamaBundleRoot)\**\*" Link="engine\ollama\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
     <Content Include="..\..\assets\engines\ollama\*.txt" Link="engine\ollama\notices\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />

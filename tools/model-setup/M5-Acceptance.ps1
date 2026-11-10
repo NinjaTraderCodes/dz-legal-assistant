@@ -1,14 +1,17 @@
-﻿# Owner-assisted M5 acceptance only. No model request, case-file access or authentication.
+﻿# Owner-assisted M5 acceptance only. No model request, user case-file access or authentication.
 [CmdletBinding()]
 param(
-    [ValidateSet('FirstOnline', 'Offline')][string]$Phase = 'FirstOnline',
+    [ValidateSet('FirstOnline', 'ContinueOnline', 'Offline')][string]$Phase = 'FirstOnline',
+    [string]$PackageFolder = 'C:\Users\Public\Documents\DzLegalAssistant-M5-c0486b9',
+    [ValidatePattern('^[0-9a-fA-F]{64}$')][string]$PackageSha256 = '716c1306d55a5420a996d4cdff24e9a70665036fbbe78b3f588d8a38dcc0fa89',
+    [ValidatePattern('^[A-Za-z0-9-]+$')][string]$InstallationName = 'DzLegalAssistant-M5-c0486b9',
     [switch]$ValidateOnly
 )
 $ErrorActionPreference = 'Stop'
-$handoff = 'C:\Users\Public\Documents\DzLegalAssistant-M5-c0486b9'
+$handoff = [IO.Path]::GetFullPath($PackageFolder)
 $archive = Join-Path $handoff 'DzLegalAssistant-0.10.0-win-x64.zip'
-$expectedHash = '716C1306D55A5420A996D4CDFF24E9A70665036FBBE78B3F588D8A38DCC0FA89'
-$install = Join-Path $env:LOCALAPPDATA 'Programs\DzLegalAssistant-M5-c0486b9'
+$expectedHash = $PackageSha256
+$install = Join-Path (Join-Path $env:LOCALAPPDATA 'Programs') $InstallationName
 $appRoot = Join-Path $env:LOCALAPPDATA 'DzLegalAssistant'
 
 Add-Type -TypeDefinition @"
@@ -51,7 +54,30 @@ if ($Phase -eq 'FirstOnline') {
         throw 'This account is not fresh for the first-start check. Nothing was changed.'
     }
     Expand-Archive -LiteralPath $archive -DestinationPath $install
+} elseif ($Phase -eq 'ContinueOnline') {
+    if ($freshRoot -or -not $normalOllamaAbsent) { throw 'Continuation requires the existing standard-account app data and no separate Ollama installation.' }
+    if (-not (Test-Path -LiteralPath $install)) { Expand-Archive -LiteralPath $archive -DestinationPath $install }
 }
+# Reuse only this exact package. Never overwrite an installation or touch its model/draft data.
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+$zip = [IO.Compression.ZipFile]::OpenRead($archive)
+try {
+    foreach ($entry in $zip.Entries) {
+        if ([string]::IsNullOrEmpty($entry.Name)) { continue }
+        $target = [IO.Path]::GetFullPath((Join-Path $install $entry.FullName))
+        $prefix = [IO.Path]::GetFullPath($install) + [IO.Path]::DirectorySeparatorChar
+        if (-not $target.StartsWith($prefix, [StringComparison]::OrdinalIgnoreCase)) { throw 'Invalid packaged path.' }
+        if (-not (Test-Path -LiteralPath $target -PathType Leaf) -or (Get-Item -LiteralPath $target).Length -ne $entry.Length) {
+            throw 'Installation does not match this package. Nothing was overwritten.'
+        }
+        $source = $entry.Open()
+        $hash = [Security.Cryptography.SHA256]::Create()
+        try { $expected = [BitConverter]::ToString($hash.ComputeHash($source)).Replace('-','') }
+        finally { $source.Dispose(); $hash.Dispose() }
+        if ((Get-FileHash -LiteralPath $target -Algorithm SHA256).Hash -ne $expected) { throw 'Installed package check failed.' }
+    }
+} finally { $zip.Dispose() }
+if (Test-Path -LiteralPath (Join-Path $install 'appsettings.local.json')) { throw 'Personal overrides are not allowed in the acceptance package.' }
 $exe = Join-Path $install 'DzLegalAssistant.exe'
 if (-not (Test-Path -LiteralPath $exe -PathType Leaf)) { throw 'The acceptance package is not installed in this account.' }
 $installedKiB = [UInt64]0

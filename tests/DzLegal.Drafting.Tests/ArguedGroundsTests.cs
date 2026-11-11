@@ -74,7 +74,7 @@ public class ArguedGroundsTests
         LegalText[] texts = [new("119", Civil, "في العقود الملزمة للجانبين، إذا لم يوف أحد المتعاقدين بالتزامه جاز للمتعاقد الآخر بعد اعذاره المدين أن يطالب بتنفيذ العقد أو فسخه.\nويجوز للقاضي أن يمنح المدين أجلا حسب الظروف.") { Role = "basis", Gist = "الفسخ بعد الإعذار مع التعويض إذا طلب المؤجر الفسخ والطرد" }];
         var rule = new ArguedGroup("الفسخ", texts, [], string.Empty, null).RuleSentence;
 
-        Assert.Equal("المادة 119 من القانون المدني تنص على أنه: «في العقود الملزمة للجانبين، إذا لم يوف أحد المتعاقدين بالتزامه جاز للمتعاقد الآخر بعد اعذاره المدين أن يطالب بتنفيذ العقد أو فسخه»", rule);
+        Assert.Equal("المادة 119 من القانون المدني تنص على أنه: «في العقود الملزمة للجانبين، إذا لم يوف أحد المتعاقدين بالتزامه جاز للمتعاقد الآخر بعد اعذاره المدين أن يطالب بتنفيذ العقد أو فسخه. ويجوز للقاضي أن يمنح المدين أجلا حسب الظروف»", rule);
         Assert.DoesNotContain("المؤجر", rule, StringComparison.Ordinal);
         // The code's own quotation passes the check that catches a misquoted article.
         Assert.DoesNotContain(NarrativeChecks.Check("حيث إن " + rule + "، وحيث إن المدعى عليه لم يف.", string.Empty, new Dictionary<string, string>(), legalTexts: texts), i => i.IsWrongArticleContent);
@@ -94,6 +94,27 @@ public class ArguedGroundsTests
         Assert.False(inner.EndsWith('،'));
         LegalText[] texts = [new("186", Civil, text) { Role = "damages" }];
         Assert.DoesNotContain(NarrativeChecks.Check("حيث إن المادة 186 من القانون المدني تنص على أنه: " + quote + "، وحيث إن المدعى عليه تأخر.", string.Empty, new Dictionary<string, string>(), legalTexts: texts), i => i.IsWrongArticleContent);
+    }
+
+    [Fact]
+    public void AShortArticleIsQuotedWholeSoARuleInItsSecondParagraphIsNotLost()
+    {
+        // Art. 187 مكرر of the Commercial Code: the first paragraph is about the form of the lease; the eviction rule the
+        // claim rests on is the second.
+        var text = "تحرر عقود الإيجار المبرمة ابتداء من تاريخ نشر هذا القانون في الشكل الرسمي، وذلك تحت طائلة البطلان.\nيلزم المستأجر بمغادرة الأمكنة المستأجرة بانتهاء الأجل المحدد في العقد.";
+
+        Assert.Equal("«تحرر عقود الإيجار المبرمة ابتداء من تاريخ نشر هذا القانون في الشكل الرسمي، وذلك تحت طائلة البطلان. يلزم المستأجر بمغادرة الأمكنة المستأجرة بانتهاء الأجل المحدد في العقد»", ArguedGroup.Quote(text));
+    }
+
+    [Fact]
+    public void AnArticleThatOpensAListIsQuotedUpToTheListAndMarkedAsCut()
+    {
+        // Art. 53 of the Family Code: «… للأسباب الآتية:» then the grounds one per line. A quotation ending on a colon would
+        // promise a list it does not give.
+        var text = "يجوز للزوجة أن تطلب التطليق للأسباب الآتية:\n" + string.Join("\n", Enumerable.Range(1, 10).Select(i => $"{i} – سبب من أسباب التطليق يذكره القانون بتفصيل يطول على سطر واحد،"));
+        Assert.True(text.Length > ArguedGroup.WholeLimit);
+
+        Assert.Equal("«يجوز للزوجة أن تطلب التطليق للأسباب الآتية» …", ArguedGroup.Quote(text));
     }
 
     [Fact]

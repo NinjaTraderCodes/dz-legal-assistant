@@ -44,7 +44,7 @@ The app also includes a first-run setup that fills the signature block of every 
 
 | What | Result |
 |---|---|
-| Automated tests | **1,036**, all passing |
+| Automated tests | **1,038**, all passing |
 | Form checks (rule engine, no AI) | **360 of 360** correct on 24 test statements of claim |
 | Law texts | **1,361 articles** from 6 texts, including the complete Family Code and the complete CPCA |
 | Claim types covered | **21**: civil, commercial, family and labour |

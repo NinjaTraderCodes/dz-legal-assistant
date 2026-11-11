@@ -30,8 +30,8 @@ public sealed partial record ArguedGroup(string Topic, IReadOnlyList<LegalText> 
     /// The sentence the code writes to open the paragraph: each article quoted from its official text, «المادة 119 من
     /// القانون المدني تنص على أنه: «في العقود الملزمة للجانبين، …»», so the law in the draft is the law's own words, never
     /// a paraphrase (the catalog's one-line rules once stated a usage note as the content of art. 119: audit of 11 Nov).
-    /// The first paragraph of the article is quoted; a long one is cut at a comma, with «…» outside the quotation so what
-    /// is quoted stays an exact extract. Articles whose text is not loaded are cited by number only. Empty for a paragraph
+    /// A short article is quoted whole, a long one by its first paragraph, cut at a comma if need be, with «…» outside the
+    /// quotation so what is quoted stays an exact extract. Articles whose text is not loaded are cited by number only. Empty for a paragraph
     /// that cites no article (a line of the lawyer's own argument).
     /// </summary>
     public string RuleSentence
@@ -50,13 +50,31 @@ public sealed partial record ArguedGroup(string Topic, IReadOnlyList<LegalText> 
         }
     }
 
-    /// <summary>The longest quotation of an article's first paragraph, in characters, before it is cut at a comma.</summary>
+    /// <summary>The longest quotation of a long article's first paragraph, in characters, before it is cut at a comma.</summary>
     internal const int QuoteLimit = 320;
 
-    /// <summary>«…» around the article's first paragraph, verbatim; a long one cut at the last comma before the limit.</summary>
+    /// <summary>An article up to this length is quoted whole: its rule may sit in a later paragraph (art. 187 مكرر).</summary>
+    internal const int WholeLimit = 450;
+
+    /// <summary>
+    /// «…» around the article's words, verbatim: the whole article when it is short, otherwise its first paragraph,
+    /// cut at the last comma before the limit. A paragraph that opens a list («للأسباب الآتية:») is marked «…».
+    /// </summary>
     internal static string Quote(string text)
     {
-        var first = (text ?? string.Empty).ReplaceLineEndings("\n").Split('\n').Select(l => Spaces().Replace(l, " ").Trim()).FirstOrDefault(l => l.Length > 0) ?? string.Empty;
+        var paragraphs = (text ?? string.Empty).ReplaceLineEndings("\n").Split('\n').Select(l => Spaces().Replace(l, " ").Trim()).Where(l => l.Length > 0).ToList();
+        var whole = string.Join(" ", paragraphs);
+        if (whole.Length <= WholeLimit && !whole.EndsWith(':'))
+        {
+            return $"«{whole.TrimEnd('.', ' ')}»";
+        }
+
+        var first = paragraphs.FirstOrDefault() ?? string.Empty;
+        if (first.EndsWith(':'))
+        {
+            return $"«{first.TrimEnd(':', ' ')}» …";
+        }
+
         if (first.Length <= QuoteLimit)
         {
             return $"«{first.TrimEnd('.', ' ')}»";

@@ -28,6 +28,14 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     // Refresh re-renders templates only; it never calls a model.
     private readonly DraftingService _templates = new(new StubModelProvider());
 
+    /// <summary>
+    /// Whether the formal check last found a mandatory element missing. The admissibility paragraph reads it
+    /// (<c>form_incomplete</c>), so the draft never asserts compliance while the check says otherwise.
+    /// </summary>
+    private bool _formIncomplete;
+
+    private Dictionary<string, object?> TemplateExtras => new(StringComparer.Ordinal) { ["form_incomplete"] = _formIncomplete };
+
     private readonly List<FieldViewModel> _fields = [];
     private readonly string? _autosaveFile;
     private DraftDocument _draft;
@@ -254,6 +262,11 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     partial void OnDraftWatermarkChanged(bool value)
     {
         if (IsSampleCase && !value) { DraftWatermark = true; return; }
+        if (Report is not null)
+        {
+            // Not while the constructor sets the default: the case and its first check do not exist yet.
+            UpdateExportBlockers();
+        }
         SchedulePreview(TimeSpan.Zero);
     }
 
@@ -364,6 +377,14 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         // fixed in the notes: no review tick lifts them.
         lines.AddRange(CurrentSubstanceIssues().Where(i => SubstanceChecks.BlocksExport(i.Kind)).Select(i => "• " + DescribeSubstance(i)));
         lines.AddRange(FieldsTooLong().Select(f => "• " + L.Format("BlockerTooLong", f.Label, f.MaxLength)));
+
+        // A petition the formal check calls inadmissible leaves the app only as a marked draft: the draft mark is the
+        // lawyer's explicit, visible override.
+        if (!DraftWatermark && Report is { } report)
+        {
+            lines.AddRange(MissingMandatory(report).Select(f => "• " + L.Format("BlockerMandatory", f.Element.Label.Get(L.Language))));
+        }
+
         ExportBlockers = string.Join("\n", lines);
         if (!HasExportBlockers)
         {
@@ -386,6 +407,9 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     }
 
     private bool HasAiText => _draft.Sections.Any(s => s.AiWritten);
+
+    private static IEnumerable<Finding> MissingMandatory(ComplianceReport report) =>
+        report.Findings.Where(f => f.Element.Severity == Severity.Inadmissible && f.Status == ElementStatus.Missing);
 
     private void OnSectionReviewChanged(SectionViewModel section)
     {
@@ -725,7 +749,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         section.IsOverridden = overridden;
         if (!overridden)
         {
-            _draft = _templates.Refresh(_definition, _draft, CurrentInputs());
+            _draft = _templates.Refresh(_definition, _draft, CurrentInputs(), TemplateExtras);
             SyncSections(overwriteNarrative: false);
         }
 
@@ -829,7 +853,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
 
         LoadInputs(inputs);
         _reviewedCase = null;
-        _draft = _templates.Refresh(_definition, loaded, inputs);
+        _draft = _templates.Refresh(_definition, loaded, inputs, TemplateExtras);
         LoadGroundsState(loaded);
         _generatedSnapshot = null;
         HasGeneratedDraft = false;
@@ -925,7 +949,7 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
     private void OnInputChanged()
     {
         UpdateVisibility();
-        _draft = _templates.Refresh(_definition, _draft, CurrentInputs());
+        _draft = _templates.Refresh(_definition, _draft, CurrentInputs(), TemplateExtras);
         SyncSections(overwriteNarrative: false);
         UpdateAnalysisStaleness();
         WithdrawReviewsIfCaseChanged();
@@ -1076,6 +1100,17 @@ public sealed partial class MainWindowViewModel : ObservableObject, IDisposable
         _reviewedCase ??= CaseFingerprint();
 
         Report = ComplianceChecker.Check(_definition, _draft);
+
+        // The admissibility paragraph follows the check: re-rendered only when a mandatory element goes missing or comes
+        // back. The paragraph is not itself checked, so the report stays as it is.
+        var incomplete = MissingMandatory(Report).Any();
+        if (incomplete != _formIncomplete)
+        {
+            _formIncomplete = incomplete;
+            _draft = _templates.Refresh(_definition, _draft, CurrentInputs(), TemplateExtras);
+            SyncSections(overwriteNarrative: false);
+        }
+
         var ordered = Report.Findings
             .OrderBy(f => f.Status switch
             {

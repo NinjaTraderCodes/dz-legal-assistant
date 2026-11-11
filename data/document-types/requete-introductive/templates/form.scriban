@@ -2,5 +2,11 @@
 # Admissibility, written by the code as practitioners open the discussion: the CPCA articles every requête must meet
 # (standing, a written petition, its mandatory particulars, the fees), and for a family case the territorial
 # jurisdiction of art. 426. The Form Engine checks the art. 15 particulars; the lawyer answers for the rest.
+# While the Form Engine reports a mandatory particular missing (form_incomplete, set by the app), the document does not
+# assert compliance: it says the paragraph waits for them, so the draft never contradicts the formal check.
 ~}}
+{{~ if form_incomplete ~}}
+(تُكتب هذه الفقرة متى اكتملت البيانات الإلزامية للعريضة.)
+{{~ else ~}}
 حيث إن هذه العريضة جاءت مستوفية للشروط المنصوص عليها قانونا، سيما المواد 13 و14 و15 و17{{ if (area court.section) == "family" }} و426{{ end }} من قانون الإجراءات المدنية والإدارية، مما يتعين معه قبولها شكلا.
+{{~ end ~}}

@@ -700,6 +700,52 @@ public class MainWindowViewModelTests
     }
 
     [Fact]
+    public async Task TheAdmissibilityParagraphNeverClaimsComplianceTheFormalCheckDenies()
+    {
+        // Audit of 11 Nov: the paragraph «في الشكل» asserted that the petition met arts. 13 to 17 while the check, beside
+        // it, reported a mandatory element missing. It now waits for them, and comes back as soon as they are present.
+        var vm = Vm.Create().Filled();
+        var form = vm.Sections.Single(s => s.Id == "form");
+        Assert.Contains(vm.IssueFindings, f => f.ElementId == "art15.5.grounds");
+        Assert.Contains("متى اكتملت البيانات الإلزامية", form.Text, StringComparison.Ordinal);
+        Assert.DoesNotContain("مستوفية للشروط", form.Text, StringComparison.Ordinal);
+
+        await vm.GenerateCommand.ExecuteAsync(null);
+        Assert.DoesNotContain(vm.IssueFindings, f => f.ElementId == "art15.5.grounds");
+        Assert.Contains("حيث إن هذه العريضة جاءت مستوفية للشروط", form.Text, StringComparison.Ordinal);
+
+        // A mandatory element removed again: the paragraph waits again.
+        vm.Field("defendant.lastName").Value = string.Empty;
+        vm.Field("defendant.firstName").Value = string.Empty;
+        Assert.NotEmpty(vm.IssueFindings);
+        Assert.Contains("متى اكتملت البيانات الإلزامية", form.Text, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task APetitionMissingAMandatoryElementLeavesTheAppOnlyAsAMarkedDraft()
+    {
+        var files = new FakeFiles();
+        var vm = Vm.Create(files).Filled();
+        var grounds = vm.Report!.Findings.Single(f => f.Element.Id == "art15.5.grounds").Element.Label.Get(vm.L.Language);
+        var blocker = vm.L.Format("BlockerMandatory", grounds);
+
+        // With the draft mark (the default) the lawyer may export a draft for review.
+        Assert.True(vm.DraftWatermark);
+        Assert.DoesNotContain(blocker, vm.ExportBlockers, StringComparison.Ordinal);
+
+        // Without it, the document would leave as a final petition: held back, with the reason named.
+        vm.DraftWatermark = false;
+        Assert.Contains(blocker, vm.ExportBlockers, StringComparison.Ordinal);
+        await vm.ExportPdfCommand.ExecuteAsync(null);
+        Assert.Empty(files.SavedByKind);
+        Assert.True(vm.IsExportBlockedShown);
+
+        // Once the element is present, the reason goes.
+        await vm.GenerateCommand.ExecuteAsync(null);
+        Assert.DoesNotContain(blocker, vm.ExportBlockers, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public async Task ATextLongerThanTheFieldTakesIsKeptWholeAndHoldsBackTheAiAndTheExport()
     {
         // Design review of 22 Oct: the text used to be cut to 8,000 letters without a word, which could drop a fact.

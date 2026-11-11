@@ -78,7 +78,8 @@ public sealed partial class DraftingService
     /// Applies new inputs to an existing draft without calling the model: generated sections are
     /// re-rendered, conditional sections added or removed, and the lawyer's narrative text kept as is.
     /// </summary>
-    public DraftDocument Refresh(DocumentTypeDefinition definition, DraftDocument draft, IReadOnlyDictionary<string, string> inputs)
+    /// <param name="extra">Values the templates may read beside the inputs, such as <c>form_incomplete</c>.</param>
+    public DraftDocument Refresh(DocumentTypeDefinition definition, DraftDocument draft, IReadOnlyDictionary<string, string> inputs, IReadOnlyDictionary<string, object?>? extra = null)
     {
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentNullException.ThrowIfNull(draft);
@@ -98,16 +99,16 @@ public sealed partial class DraftingService
                 }
                 : draft.FindSection(s.Id) is { Overridden: true } manual
                     ? new DraftSection { Id = s.Id, Text = manual.Text, Overridden = true }
-                    : new DraftSection { Id = s.Id, Text = RenderGenerated(definition, s, inputs) })
+                    : new DraftSection { Id = s.Id, Text = RenderGenerated(definition, s, inputs, extra) })
             .ToList();
 
         return draft with { Inputs = new Dictionary<string, string>(inputs, StringComparer.Ordinal), Sections = sections };
     }
 
-    public string RenderGenerated(DocumentTypeDefinition definition, SectionDefinition section, IReadOnlyDictionary<string, string> inputs)
+    public string RenderGenerated(DocumentTypeDefinition definition, SectionDefinition section, IReadOnlyDictionary<string, string> inputs, IReadOnlyDictionary<string, object?>? extra = null)
     {
         ArgumentNullException.ThrowIfNull(section);
-        return section.Template is null ? string.Empty : _renderer.RenderFile(definition, section.Template, inputs);
+        return section.Template is null ? string.Empty : _renderer.RenderFile(definition, section.Template, inputs, extra);
     }
 
     /// <summary>Builds the prompt pair for a narrative section. Exposed so prompts can be inspected and tested.</summary>

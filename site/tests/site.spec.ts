@@ -493,6 +493,9 @@ test("the demo's bar folds New, Open, Save and Guide behind More on a phone, and
     await expect(page.locator(".invite").getByRole("button", { name: "Open the guide" })).toHaveClass(/primary/);
     await expect(page.locator(".finding.mandatory .next-step")).toContainText("“Analyse the facts”");
     await expect(page.locator(".finding.mandatory .next-step")).toContainText("“Draft legal grounds”");
+    // It keeps pulsing until the guide has been opened; afterwards it rests.
+    await expect(page.locator(".invite")).not.toHaveClass(/calm/);
+    expect(await page.locator(".invite").evaluate((e) => getComputedStyle(e).animationIterationCount)).toBe("infinite");
     await page.locator(".invite").getByRole("button", { name: "Open the guide" }).click();
     await expect(guide).toBeVisible();
     await expect(page.locator("[role=dialog]")).toHaveCount(0);
@@ -521,6 +524,7 @@ test("the demo's bar folds New, Open, Save and Guide behind More on a phone, and
     await expect(guide).toContainText("Step 2 of 5");
     await guide.getByRole("button", { name: "Hide" }).click();
     await expect(guide).toHaveCount(0);
+    await expect(page.locator(".invite")).toHaveClass(/calm/);
     await expect(page.locator(".guide-ring")).toHaveCount(0);
     await expect(page.locator(".guide-spot")).toHaveCount(0);
     // The one-line disclosure stays on screen; "Details" opens the full wording and the browser-copy button.

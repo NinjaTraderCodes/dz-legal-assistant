@@ -1,0 +1,120 @@
+{
+ "model": "alger-ia/dziribert",
+ "name": "dziribert",
+ "parameters": 124458262,
+ "epochs": 5,
+ "train_notes": 1392,
+ "train_seconds": 2792,
+ "train_tokens": 303235,
+ "synthetic_dev_accuracy": 0.8667,
+ "test_plain": [
+  37,
+  46,
+  35,
+  44,
+  2,
+  2,
+  4,
+  4
+ ],
+ "test_section_masked": [
+  38,
+  46,
+  36,
+  44,
+  2,
+  2,
+  4,
+  4
+ ],
+ "errors_plain": [
+  [
+   "loan-acknowledgment",
+   "loan-repayment",
+   "tort-damages"
+  ],
+  [
+   "things-dog",
+   "liability-for-things",
+   "tort-damages"
+  ],
+  [
+   "occupation-flat",
+   "eviction-occupier-without-title",
+   "other"
+  ],
+  [
+   "commercial-supplies",
+   "commercial-debt",
+   "unpaid-sale-price"
+  ],
+  [
+   "tatliq-harm",
+   "tatliq",
+   "other"
+  ],
+  [
+   "nafaqa-children",
+   "nafaqa",
+   "custody-forfeiture"
+  ],
+  [
+   "dismissal",
+   "abusive-dismissal",
+   "other"
+  ],
+  [
+   "wages",
+   "unpaid-wages",
+   "abusive-dismissal"
+  ],
+  [
+   "rent-shop-civil-words",
+   "commercial-lease-eviction",
+   "unpaid-rent"
+  ]
+ ],
+ "errors_masked": [
+  [
+   "loan-acknowledgment",
+   "loan-repayment",
+   "tort-damages"
+  ],
+  [
+   "things-dog",
+   "liability-for-things",
+   "tort-damages"
+  ],
+  [
+   "occupation-flat",
+   "eviction-occupier-without-title",
+   "other"
+  ],
+  [
+   "commercial-supplies",
+   "commercial-debt",
+   "unpaid-sale-price"
+  ],
+  [
+   "tatliq-harm",
+   "tatliq",
+   "other"
+  ],
+  [
+   "nafaqa-children",
+   "nafaqa",
+   "custody-forfeiture"
+  ],
+  [
+   "dismissal",
+   "abusive-dismissal",
+   "other"
+  ],
+  [
+   "wages",
+   "unpaid-wages",
+   "abusive-dismissal"
+  ]
+ ],
+ "torch_threads": 10
+}

@@ -1,0 +1,135 @@
+{
+ "model": "jhu-clsp/mmBERT-small",
+ "name": "mmbert-small",
+ "parameters": 140650006,
+ "epochs": 5,
+ "train_notes": 1392,
+ "train_seconds": 2313,
+ "train_tokens": 435920,
+ "synthetic_dev_accuracy": 0.9133,
+ "test_plain": [
+  35,
+  46,
+  34,
+  44,
+  1,
+  2,
+  4,
+  4
+ ],
+ "test_section_masked": [
+  37,
+  46,
+  36,
+  44,
+  1,
+  2,
+  4,
+  4
+ ],
+ "errors_plain": [
+  [
+   "loan-acknowledgment",
+   "loan-repayment",
+   "other"
+  ],
+  [
+   "loan-no-section",
+   "loan-repayment",
+   "eviction-occupier-without-title"
+  ],
+  [
+   "contract-damages-2",
+   "contract-damages",
+   "tort-damages"
+  ],
+  [
+   "things-dog",
+   "liability-for-things",
+   "tort-damages"
+  ],
+  [
+   "rent-darija",
+   "unpaid-rent",
+   "commercial-lease-eviction"
+  ],
+  [
+   "commercial-supplies",
+   "commercial-debt",
+   "other"
+  ],
+  [
+   "commercial-lease",
+   "commercial-lease-eviction",
+   "eviction-occupier-without-title"
+  ],
+  [
+   "tatliq-harm",
+   "tatliq",
+   "other"
+  ],
+  [
+   "nafaqa-children",
+   "nafaqa",
+   "other"
+  ],
+  [
+   "rent-shop-civil-words",
+   "commercial-lease-eviction",
+   "unpaid-rent"
+  ],
+  [
+   "annulment-fraud-land",
+   "sale-annulment-fraud",
+   "other"
+  ]
+ ],
+ "errors_masked": [
+  [
+   "loan-acknowledgment",
+   "loan-repayment",
+   "other"
+  ],
+  [
+   "loan-no-section",
+   "loan-repayment",
+   "eviction-occupier-without-title"
+  ],
+  [
+   "contract-damages-2",
+   "contract-damages",
+   "tort-damages"
+  ],
+  [
+   "things-dog",
+   "liability-for-things",
+   "tort-damages"
+  ],
+  [
+   "rent-darija",
+   "unpaid-rent",
+   "commercial-lease-eviction"
+  ],
+  [
+   "commercial-supplies",
+   "commercial-debt",
+   "other"
+  ],
+  [
+   "tatliq-harm",
+   "tatliq",
+   "other"
+  ],
+  [
+   "nafaqa-children",
+   "nafaqa",
+   "other"
+  ],
+  [
+   "annulment-fraud-land",
+   "sale-annulment-fraud",
+   "other"
+  ]
+ ],
+ "torch_threads": 10
+}

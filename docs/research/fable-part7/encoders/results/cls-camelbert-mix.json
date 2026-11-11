@@ -1,0 +1,110 @@
+{
+ "model": "CAMeL-Lab/bert-base-arabic-camelbert-mix",
+ "name": "camelbert-mix",
+ "parameters": 109098262,
+ "epochs": 5,
+ "train_notes": 1392,
+ "train_seconds": 3716,
+ "train_tokens": 354100,
+ "synthetic_dev_accuracy": 0.84,
+ "test_plain": [
+  37,
+  46,
+  36,
+  44,
+  1,
+  2,
+  4,
+  4
+ ],
+ "test_section_masked": [
+  40,
+  46,
+  39,
+  44,
+  1,
+  2,
+  4,
+  4
+ ],
+ "errors_plain": [
+  [
+   "contract-damages-2",
+   "contract-damages",
+   "tort-damages"
+  ],
+  [
+   "things-dog",
+   "liability-for-things",
+   "tort-damages"
+  ],
+  [
+   "rent-darija",
+   "unpaid-rent",
+   "eviction-occupier-without-title"
+  ],
+  [
+   "commercial-lease",
+   "commercial-lease-eviction",
+   "eviction-occupier-without-title"
+  ],
+  [
+   "divorce-husband",
+   "divorce-by-husband",
+   "other"
+  ],
+  [
+   "tatliq-harm",
+   "tatliq",
+   "tort-damages"
+  ],
+  [
+   "khul",
+   "khul",
+   "tort-damages"
+  ],
+  [
+   "nafaqa-children",
+   "nafaqa",
+   "tort-damages"
+  ],
+  [
+   "rent-shop-civil-words",
+   "commercial-lease-eviction",
+   "unpaid-rent"
+  ]
+ ],
+ "errors_masked": [
+  [
+   "contract-damages-2",
+   "contract-damages",
+   "tort-damages"
+  ],
+  [
+   "things-dog",
+   "liability-for-things",
+   "tort-damages"
+  ],
+  [
+   "rent-darija",
+   "unpaid-rent",
+   "eviction-occupier-without-title"
+  ],
+  [
+   "divorce-husband",
+   "divorce-by-husband",
+   "other"
+  ],
+  [
+   "tatliq-harm",
+   "tatliq",
+   "tort-damages"
+  ],
+  [
+   "nafaqa-children",
+   "nafaqa",
+   "other"
+  ]
+ ],
+ "torch_threads": 10
+}

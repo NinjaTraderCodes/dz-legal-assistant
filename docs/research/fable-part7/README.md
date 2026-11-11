@@ -2,7 +2,7 @@
 
 Working files behind Part 7 of `../FABLE-ARCHITECTURE-REPORT.md`, pushed so that the reviewer can read exactly what runs. Brief: `docs/briefs/FABLE-ARABIC-SMALL-MODELS-BRIEF.md` (branch `claude/case-file-site`). Nothing here is used by the app. Fictitious data only; no hidden-set text; no model or encoder weights.
 
-State on 11 November 2026, evening: the guarded run of the generative models has **not** started; two of the encoder trainings are still running.
+State on 11 November 2026, 21:15: the model list is final and reviewed; the guarded run of the generative models has **not** started; the last encoder training (multilingual-e5-small) is still running.
 
 ## 1. The guarded run of the generative models (`run/`)
 
@@ -28,10 +28,12 @@ If a model or a stage fails in the night, the follow-up is the same command with
 | 1 | `jais3-0.9b-low:latest` | `IFM/Jais-3-0.9B-GGUF`, `Jais-3-0.9B-Q4_K_M.gguf`, template edited as above | 666,192,384 | Apache 2.0 | yes | omitted |
 | 2 | `hf.co/mradermacher/jais-family-590m-chat-GGUF:Q4_K_M` | `jais-family-590m-chat.Q4_K_M.gguf` (community conversion of `inception42/jais-family-590m-chat`) | 503,581,952 | Apache 2.0 | yes | omitted |
 | 3 | `hf.co/tiiuae/Falcon-H1-1.5B-Deep-Instruct-GGUF:Q4_K_M` | `Falcon-H1-1.5B-Deep-Instruct-Q4_K_M.gguf` | 938,465,920 | TII Falcon Licence | yes, with conditions: the acceptable-use policy passed on as an enforceable term, the licence given to recipients, and the TII statement in public statements about a derivative | omitted |
-| 4 | `hf.co/unsloth/Qwen3.5-2B-GGUF:Q4_K_M` (digest pending: download in progress) | `unsloth/Qwen3.5-2B-GGUF`, `Qwen3.5-2B-Q4_K_M.gguf` | 1,280,835,840 | Apache 2.0 | yes | to be settled by a smoke test after the download |
+| 4 | `hf.co/unsloth/Qwen3.5-2B-GGUF:Q4_K_M` | `unsloth/Qwen3.5-2B-GGUF`, `Qwen3.5-2B-Q4_K_M.gguf` | 1,280,835,840 (Ollama also installs the repository's vision part, 668,227,264: 1,949,063,585 installed) | Apache 2.0 | yes | `false` (the string `"false"` in `models.json`, so that the runner adds `--think false`) |
 | 5 | `jais3-3.7b-low:latest` | `IFM/Jais-3-3.7B-GGUF`, `Jais-3-3.7B-Q4_K_M.gguf`, template edited as above | 3,156,606,176 | Apache 2.0 | yes | omitted |
 
 Licence and size sources, with links and dates: section 7.7 of the report (F1-S1, S6, S7, S14).
+
+**Qwen3.5-2B and thinking** (checked on 11 November with the harness's options): with `think: false` it answers directly (3 answer tokens on a one-word test; 45 on average through the reader); with no thinking value it reasons for all 300 tokens and returns an empty answer. The harness switches thinking off by itself only for names that start with `qwen3`, so the value is set in `models.json`. The 8-bit copy that was on the laptop (`qwen3.5:2b`, 2.68 GB) has been removed and is not measured.
 
 **Why Jais 3 runs as an edited copy.** As downloaded, with what the harness sends (no thinking flag, or `think: false`), Jais-3-0.9B spends all 300 answer tokens on a reasoning trace and returns an empty answer. Ollama 0.40.16 rejects `think: "low"` for this download and ignores a Modelfile template. The maker's no-trace mode is selected inside the chat template, so the template's default is changed in a copy. Each answer then begins with two marker lines that the unchanged parsers skip; the fact summaries count them as "unreadable lines", which are not critical errors.
 
@@ -50,8 +52,8 @@ Licence and size sources, with links and dates: section 7.7 of the report (F1-S1
 | `alger-ia/dziribert` | Apache 2.0 | 124 M | 86.7 % | 37 | 38 | 4 of 4 |
 | `jhu-clsp/mmBERT-small` | MIT | 141 M | 91.3 % | 35 | 37 | 4 of 4 |
 | `microsoft/Multilingual-MiniLM-L12-H384` (alternate) | MIT | 118 M | 24.7 % | 6 | 6 | 4 of 4 |
-| `CAMeL-Lab/bert-base-arabic-camelbert-mix` | Apache 2.0 | 110 M | training | | | |
-| `intfloat/multilingual-e5-small` | MIT | 118 M | to train | | | |
+| `CAMeL-Lab/bert-base-arabic-camelbert-mix` | Apache 2.0 | 109 M | 84.0 % | 37 | 40 | 4 of 4 |
+| `intfloat/multilingual-e5-small` | MIT | 118 M | training | | | |
 
 - The MiniLM alternate did not learn under this recipe (24.7 % on its own synthetic check); its 6 of 46 are the four out-of-scope cases and two others. It says the recipe is too short for that shape, not that the shape cannot do the task.
 - Per-case errors are in `encoders/results/cls-<name>.json`.
@@ -83,6 +85,10 @@ Measured with each model's own tokenizer on the repository's fictitious notes (5
 | DziriBERT | 1.50 |
 | CAMeLBERT-mix | 1.47 |
 
-## 4. What will be added after the run
+## 4. Draft of Part 7
 
-Each model's hidden v2 `summary.md` (nothing else from those folders), the analysis results on the 46 development cases, the 12 drafts per model, the remaining encoder results, and the draft of Part 7.
+`PART-7-DRAFT.md` holds the sections that are ready: 7.1 (candidates), 7.2 (method) and 7.7 (sources).
+
+## 5. What will be added after the run
+
+Each model's hidden v2 `summary.md` (nothing else from those folders), the analysis results on the 46 development cases, the 12 drafts per model, the remaining encoder results (with speed and memory measured on an idle CPU), and the rest of Part 7.

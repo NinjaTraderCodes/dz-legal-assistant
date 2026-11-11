@@ -107,6 +107,15 @@ label.check input { width: auto; min-height: 0; margin-top: 3px; accent-color: v
 .ribbon .invite .icon { color: var(--gold); }
 .ribbon .invite .words { font-weight: 600; }
 .ribbon .invite button.primary { min-height: 26px; padding: 2px 12px; border-radius: 999px; }
+/* It draws the eye once, a second after the page settles: four slow glows of its gold outline and two light sheens
+   across it, then it rests, so it never competes with the work. Hovering brings the glow back. */
+.ribbon .invite { position: relative; overflow: hidden; isolation: isolate; animation: invite-glow 1.8s ease-in-out 1s 4; }
+.ribbon .invite::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; transform: translateX(-120%);
+  background: linear-gradient(105deg, transparent 25%, color-mix(in srgb, var(--gold) 60%, transparent) 50%, transparent 75%);
+  animation: invite-sheen 1.8s ease-in-out 1.4s 2; }
+.ribbon .invite:hover, .ribbon .invite:focus-within { box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 30%, transparent); }
+@keyframes invite-glow { 50% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--gold) 32%, transparent), 0 0 16px 2px color-mix(in srgb, var(--gold) 38%, transparent); } }
+@keyframes invite-sheen { to { transform: translateX(120%); } }
 .ribbon .text, .ribbon .invite-text { display: inline-flex; align-items: center; gap: 6px; }
 
 /* The demo's warning: one line always on screen, the full wording and the browser-copy button one click away. */
@@ -438,7 +447,8 @@ details.present .present-item:last-child { padding-bottom: 10px; }
   .section-text, .document-heading { font-size: 17px; line-height: 27px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .activity-steps li.active .dot, .progress-indeterminate span, .writing-mark .pulse, .guide-spot.nudge, .guide-card.nudge { animation: none; }
+  .activity-steps li.active .dot, .progress-indeterminate span, .writing-mark .pulse, .guide-spot.nudge, .guide-card.nudge,
+  .ribbon .invite, .ribbon .invite::after { animation: none; }
   .guide-card.placed { transition: none; }
   button:active:not(:disabled) { transform: none; }
 }

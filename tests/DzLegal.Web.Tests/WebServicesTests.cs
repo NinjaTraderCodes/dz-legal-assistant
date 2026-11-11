@@ -301,6 +301,17 @@ public class WebEngineTests
     [Theory]
     [InlineData("en")]
     [InlineData("ar")]
+    public void TheGroundsNextStepNamesTheAppsOwnButtonsInBothLanguages(string language)
+    {
+        // The hint under the red grounds finding quotes the buttons by their on-screen names: two before the analysis, one after.
+        Assert.Equal(2, CountPlaceholders(WebText.Get("NextAnalyse", language)));
+        Assert.Equal(1, CountPlaceholders(WebText.Get("NextDraft", language)));
+        static int CountPlaceholders(string text) => System.Text.RegularExpressions.Regex.Count(text, @"\{[01]\}");
+    }
+
+    [Theory]
+    [InlineData("en")]
+    [InlineData("ar")]
     public void TheGuideHasATitleAndItsHintsForEveryStepInBothLanguages(string language)
     {
         string[] keys = ["GuideTitle", "GuideCount", "GuidePoints", "GuideFinish", "GuideLocked", "GuideRetry", "GuideDoneStep", "GuideStep", "GuideHide", "GuideShow", "GuideOpen", "GuideInvite",

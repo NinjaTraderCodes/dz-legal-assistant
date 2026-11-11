@@ -81,6 +81,17 @@ public sealed partial class Home : IDisposable
 
     private string T(string key) => WebText.Get(key, Lang);
 
+    /// <summary>The form's "grounds" element (CPCA art. 15-5): empty in every sample until the AI drafts it.</summary>
+    private const string GroundsElementId = "art15.5.grounds";
+
+    /// <summary>
+    /// What resolves the red grounds finding, so a first-time visitor reads it as the next step and not as a fault: the
+    /// guide's order (analyse, confirm the claim type, draft), shortened once the analysis is done.
+    /// </summary>
+    private string GroundsNextStep => Vm!.Analysis is null
+        ? string.Format(L.Culture, T("NextAnalyse"), L["AnalyseGrounds"], L["Generate"])
+        : string.Format(L.Culture, T("NextDraft"), L["Generate"]);
+
     private async Task ToggleThemeAsync()
     {
         Vm!.ToggleThemeCommand.Execute(null);

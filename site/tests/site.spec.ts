@@ -488,6 +488,11 @@ test("the demo's bar folds New, Open, Save and Guide behind More on a phone, and
     const guide = page.locator(".guide-card");
     await expect(guide).toHaveCount(0);
     await expect(page.locator(".invite")).toBeVisible();
+    // A first-time visitor sees where to start: the invitation's button is a primary one, and the red grounds finding
+    // names the next step with the app's own button names.
+    await expect(page.locator(".invite").getByRole("button", { name: "Open the guide" })).toHaveClass(/primary/);
+    await expect(page.locator(".finding.mandatory .next-step")).toContainText("“Analyse the facts”");
+    await expect(page.locator(".finding.mandatory .next-step")).toContainText("“Draft legal grounds”");
     await page.locator(".invite").getByRole("button", { name: "Open the guide" }).click();
     await expect(guide).toBeVisible();
     await expect(page.locator("[role=dialog]")).toHaveCount(0);

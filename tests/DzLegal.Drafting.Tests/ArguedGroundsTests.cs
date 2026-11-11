@@ -18,6 +18,10 @@ public class ArguedGroundsTests
     private const string Notes = "- المادة 450 من القانون المدني\n- المادة 106 من القانون المدني\n- المادة 107 من القانون المدني\n- المادة 323 من القانون المدني\n- المادة 454 من القانون المدني\n- المادة 179 من القانون المدني\n- المادة 186 من القانون المدني";
     private const string Requests = "إلزام المدعى عليه بأن يدفع للمدعي 1500000 دج.\nإلزامه بأن يدفع 150000 دج تعويضا عن التأخير.";
 
+    /// <summary>The rule sentence the code writes for these ticked articles: each quoted from its own text.</summary>
+    private static string Rule(params string[] numbers) =>
+        string.Join("، و", numbers.Select(n => Ticked.Single(t => t.Number == n)).Select(t => $"{t.Citation} تنص على أنه: {ArguedGroup.Quote(t.Text)}"));
+
     [Fact]
     public void TheArticlesAreGroupedByTheirPartInTheClaimAndALimitIsLeftOut()
     {
@@ -63,6 +67,57 @@ public class ArguedGroundsTests
     }
 
     [Fact]
+    public void TheRuleIsTheArticlesOwnTextNeverTheCatalogsParaphrase()
+    {
+        // Audit of 11 Nov: a usage note of the catalog («الفسخ بعد الإعذار مع التعويض إذا طلب المؤجر الفسخ والطرد») was
+        // stated as the content of art. 119. The rule sentence now quotes the article; the gist is not used for it.
+        LegalText[] texts = [new("119", Civil, "في العقود الملزمة للجانبين، إذا لم يوف أحد المتعاقدين بالتزامه جاز للمتعاقد الآخر بعد اعذاره المدين أن يطالب بتنفيذ العقد أو فسخه.\nويجوز للقاضي أن يمنح المدين أجلا حسب الظروف.") { Role = "basis", Gist = "الفسخ بعد الإعذار مع التعويض إذا طلب المؤجر الفسخ والطرد" }];
+        var rule = new ArguedGroup("الفسخ", texts, [], string.Empty, null).RuleSentence;
+
+        Assert.Equal("المادة 119 من القانون المدني تنص على أنه: «في العقود الملزمة للجانبين، إذا لم يوف أحد المتعاقدين بالتزامه جاز للمتعاقد الآخر بعد اعذاره المدين أن يطالب بتنفيذ العقد أو فسخه. ويجوز للقاضي أن يمنح المدين أجلا حسب الظروف»", rule);
+        Assert.DoesNotContain("المؤجر", rule, StringComparison.Ordinal);
+        // The code's own quotation passes the check that catches a misquoted article.
+        Assert.DoesNotContain(NarrativeChecks.Check("حيث إن " + rule + "، وحيث إن المدعى عليه لم يف.", string.Empty, new Dictionary<string, string>(), legalTexts: texts), i => i.IsWrongArticleContent);
+    }
+
+    [Fact]
+    public void ALongArticleIsCutAtACommaAndWhatIsQuotedStaysAnExactExtract()
+    {
+        var clause = "إذا كان محل الالتزام بين أفراد مبلغا من النقود عين مقداره وقت رفع الدعوى، ";
+        var text = string.Concat(Enumerable.Repeat(clause, 8)) + "فيجب عليه أن يعوض للدائن الضرر.";
+        var quote = ArguedGroup.Quote(text);
+
+        Assert.EndsWith("» …", quote, StringComparison.Ordinal);
+        var inner = quote[1..quote.IndexOf('»', StringComparison.Ordinal)];
+        Assert.True(inner.Length <= ArguedGroup.QuoteLimit);
+        Assert.StartsWith(inner, text, StringComparison.Ordinal);
+        Assert.False(inner.EndsWith('،'));
+        LegalText[] texts = [new("186", Civil, text) { Role = "damages" }];
+        Assert.DoesNotContain(NarrativeChecks.Check("حيث إن المادة 186 من القانون المدني تنص على أنه: " + quote + "، وحيث إن المدعى عليه تأخر.", string.Empty, new Dictionary<string, string>(), legalTexts: texts), i => i.IsWrongArticleContent);
+    }
+
+    [Fact]
+    public void AShortArticleIsQuotedWholeSoARuleInItsSecondParagraphIsNotLost()
+    {
+        // Art. 187 مكرر of the Commercial Code: the first paragraph is about the form of the lease; the eviction rule the
+        // claim rests on is the second.
+        var text = "تحرر عقود الإيجار المبرمة ابتداء من تاريخ نشر هذا القانون في الشكل الرسمي، وذلك تحت طائلة البطلان.\nيلزم المستأجر بمغادرة الأمكنة المستأجرة بانتهاء الأجل المحدد في العقد.";
+
+        Assert.Equal("«تحرر عقود الإيجار المبرمة ابتداء من تاريخ نشر هذا القانون في الشكل الرسمي، وذلك تحت طائلة البطلان. يلزم المستأجر بمغادرة الأمكنة المستأجرة بانتهاء الأجل المحدد في العقد»", ArguedGroup.Quote(text));
+    }
+
+    [Fact]
+    public void AnArticleThatOpensAListIsQuotedUpToTheListAndMarkedAsCut()
+    {
+        // Art. 53 of the Family Code: «… للأسباب الآتية:» then the grounds one per line. A quotation ending on a colon would
+        // promise a list it does not give.
+        var text = "يجوز للزوجة أن تطلب التطليق للأسباب الآتية:\n" + string.Join("\n", Enumerable.Range(1, 10).Select(i => $"{i} – سبب من أسباب التطليق يذكره القانون بتفصيل يطول على سطر واحد،"));
+        Assert.True(text.Length > ArguedGroup.WholeLimit);
+
+        Assert.Equal("«يجوز للزوجة أن تطلب التطليق للأسباب الآتية» …", ArguedGroup.Quote(text));
+    }
+
+    [Fact]
     public void ALimitTheLawyerArguesInTheNotesStays()
     {
         var groups = ArguedGrounds.Plan("المادة 454 من القانون المدني: لا فوائد على القرض بين الأفراد، فالمدعي لا يطلبها.", Ticked, Requests);
@@ -83,9 +138,11 @@ public class ArguedGroundsTests
         }, inputs, Ticked);
 
         var lines = draft.Text.Split('\n');
-        Assert.Equal("حيث إن المواد 106 و107 و450 من القانون المدني تقضي بأن العقد شريعة المتعاقدين، وبأنه يجب تنفيذ العقد طبقا لما اشتمل عليه وبحسن نية، وبأنه يلتزم المقترض برد نظير ما اقترضه عند نهاية القرض، وحيث إن المدعى عليه اقترض مبلغ 1500000 دج ولم يرده، فإن طلب المدعي إلزام المدعى عليه بأن يدفع للمدعي 1500000 دج يكون مؤسسا قانونا.", lines[0]);
-        Assert.Equal("وحيث إن المادة 323 من القانون المدني تقضي بأن على الدائن إثبات الالتزام وعلى المدين إثبات التخلص منه، وحيث إن الدين ثابت بموجب اعتراف بدين.", lines[1]);
-        Assert.Equal("وحيث إن المادتين 179 و186 من القانون المدني تقضيان بأنه لا يستحق التعويض إلا بعد إعذار المدين، وبتعويض الدائن عن الضرر اللاحق من تأخر المدين في الوفاء بمبلغ من النقود، وحيث إن (...).", lines[2]);
+        // The rule is each article's own text, quoted by the code (audit of 11 Nov: no paraphrase states the law).
+        Assert.Equal("حيث إن " + Rule("106", "107", "450") + "، وحيث إن المدعى عليه اقترض مبلغ 1500000 دج ولم يرده، فإن طلب المدعي إلزام المدعى عليه بأن يدفع للمدعي 1500000 دج يكون مؤسسا قانونا.", lines[0]);
+        Assert.StartsWith("حيث إن المادة 106 من القانون المدني تنص على أنه: «العقد شريعة المتعاقدين»، والمادة 107 من القانون المدني تنص على أنه: «يجب تنفيذ العقد", lines[0], StringComparison.Ordinal);
+        Assert.Equal("وحيث إن " + Rule("323") + "، وحيث إن الدين ثابت بموجب اعتراف بدين.", lines[1]);
+        Assert.Equal("وحيث إن " + Rule("179", "186") + "، وحيث إن (...).", lines[2]);
         Assert.DoesNotContain("تعفي", draft.Text, StringComparison.Ordinal);
         Assert.Contains("cites article 179", Assert.Single(draft.Problems), StringComparison.Ordinal);
         Assert.Contains("تعفي الدائن", Assert.Single(draft.Rejected), StringComparison.Ordinal);
@@ -137,9 +194,10 @@ public class ArguedGroundsTests
 
         Assert.Empty(draft.Problems);
         Assert.Equal(3, draft.Text.Split('\n').Length);
-        Assert.DoesNotContain("«", draft.Text, StringComparison.Ordinal);
+        // The only quotations are the code's, of the articles' own text: the model's applications quote nothing.
+        Assert.All(draft.Text.Split('\n'), l => Assert.DoesNotContain("«", l[(l.LastIndexOf('»') + 1)..], StringComparison.Ordinal));
         var request = Assert.Single(provider.Requests);
-        Assert.Contains("بداية الفقرة (يكتبها البرنامج): وحيث إن المادة 323 من القانون المدني تقضي بأن على الدائن إثبات الالتزام", request.UserPrompt, StringComparison.Ordinal);
+        Assert.Contains("بداية الفقرة (يكتبها البرنامج): وحيث إن " + Rule("323"), request.UserPrompt, StringComparison.Ordinal);
         Assert.DoesNotContain("454", request.UserPrompt, StringComparison.Ordinal);
 
         // No «[1]»: behind OpenRouter, DeepInfra took an answer starting with «[» for a function call and sent no text.
@@ -448,7 +506,7 @@ public class ArguedGroundsTests
             r.UserPrompt.EndsWith("ودون ذكر أي مادة أو قانون.", StringComparison.Ordinal)
                 ? r.UserPrompt.Contains("اكتب الآن مكان «…» في الفقرة 2", StringComparison.Ordinal)
                     // copies the opening the code writes, article included: only what follows is kept
-                    ? "2- وحيث إن المادة 323 من القانون المدني تقضي بأن على الدائن إثبات الالتزام وعلى المدين إثبات التخلص منه، وحيث إن الدين ثابت باعتراف بدين.\nوحيث إن شيئا آخر."
+                    ? "2- وحيث إن " + Rule("323") + "، وحيث إن الدين ثابت باعتراف بدين.\nوحيث إن شيئا آخر."
                     : r.UserPrompt.Contains("اكتب الآن مكان «…» في الفقرة 3", StringComparison.Ordinal)
                         ? "وحيث إن المدعى عليه أعذر ولم يف."
                         : "وحيث إن المدعى عليه تهرب من الوفاء رغم المساعي الودية."
@@ -542,7 +600,7 @@ public class ArguedGroundsTests
 
         var lines = draft.Text.Split('\n');
         Assert.Equal("حيث إن الدعوى رفعت أمام القسم المدني وفق الأشكال المقررة في قانون الإجراءات المدنية والإدارية، فهي مقبولة شكلا.", lines[0]);
-        Assert.StartsWith("وحيث إن المواد 106 و107 و450", lines[1], StringComparison.Ordinal);
+        Assert.StartsWith("وحيث إن " + Rule("106", "107", "450"), lines[1], StringComparison.Ordinal);
         Assert.Equal(4, lines.Length);
         Assert.Single(provider.Requests);
         Assert.DoesNotContain("مقبولية", provider.Requests[0].UserPrompt, StringComparison.Ordinal);

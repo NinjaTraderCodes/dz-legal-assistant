@@ -282,7 +282,7 @@ public class DraftingServiceTests
 
         // The answer cites an article twice: the rule sentence stays, the application is left for the lawyer.
         var grounds = draft.FindSection("grounds")!;
-        Assert.Equal("حيث إن المادة 106 من القانون المدني تقضي بأن العقد شريعة المتعاقدين، وحيث إن (...).", grounds.Text);
+        Assert.Equal("حيث إن المادة 106 من القانون المدني تنص على أنه: «العقد شريعة المتعاقدين، فلا يجوز نقضه، ولا تعديله الا باتفاق الطرفين»، وحيث إن (...).", grounds.Text);
         Assert.Contains("المادة 107", Assert.Single(grounds.RemovedText), StringComparison.Ordinal);
         Assert.Equal([DraftingNoteCodes.Retried, DraftingNoteCodes.ArgumentLeftForLawyer], grounds.DraftingNotes);
         Assert.DoesNotContain(provider.Requests, r => r.SectionId == "grounds");

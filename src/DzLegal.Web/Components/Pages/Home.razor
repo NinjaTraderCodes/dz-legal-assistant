@@ -100,7 +100,7 @@
             {
                 <div class="invite" role="region" aria-label="@T("GuideTitle")">
                     <span class="invite-text"><Icon Name="question_circle" Size="14" /> <span class="words">@T("GuideInvite")</span></span>
-                    <button type="button" class="link strong" @onclick="OpenGuide">@T("GuideOpen")</button>
+                    <button type="button" class="primary small" @onclick="OpenGuide">@T("GuideOpen")</button>
                     <button type="button" class="quiet icon-only small" aria-label="@T("GuideHide")" title="@T("GuideHide")" @onclick="DismissInvite"><Icon Name="dismiss" Size="14" /></button>
                 </div>
             }
@@ -419,6 +419,10 @@
                     @if (f.HasMissingParts)
                     {
                         <span class="article">@f.MissingPartsText</span>
+                    }
+                    @if (f.ElementId == GroundsElementId && Engine.Settings.HasAnyEngine)
+                    {
+                        <span class="next-step"><Icon Name="sparkle" Size="14" /> <span>@GroundsNextStep</span></span>
                     }
                 </button>
             }

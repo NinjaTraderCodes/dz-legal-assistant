@@ -32,6 +32,11 @@ public static class WebText
         ["GuideTitle"] = ("Try it in 5 minutes", "جرّبه في خمس دقائق"),
         ["GuideInvite"] = ("New here? Try it in 5 minutes.", "جديد هنا؟ جرّبه في خمس دقائق."),
         ["GuideOpen"] = ("Open the guide", "افتح الدليل"),
+        // The next step under the red grounds finding; {0} and {1} are the app's own button names.
+        ["NextAnalyse"] = (
+            "Next: click here, press “{0}”, confirm the claim type, then “{1}”.",
+            "الخطوة التالية: اضغط هنا، ثم «{0}»، وأكّد نوع الدعوى، ثم «{1}»."),
+        ["NextDraft"] = ("Next: press “{0}” above the document.", "الخطوة التالية: اضغط «{0}» فوق المسودة."),
         ["DisclosureLine"] = (
             "This demo sends what you type to a hosted model: fictitious cases only.",
             "يرسل هذا العرض ما تكتبه إلى نموذج مستضاف: قضايا وهمية فقط."),

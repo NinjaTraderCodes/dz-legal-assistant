@@ -148,7 +148,9 @@ public sealed class GroundsWorkflowTests
         await vm.GenerateCommand.ExecuteAsync(null);
 
         var grounds = recorder.Requests.First(r => r.SectionId == DzLegal.Drafting.ArguedGrounds.RequestId);
-        Assert.Contains("المادتين 106 و450 من القانون المدني تقضيان", grounds.UserPrompt, StringComparison.Ordinal);
+        // Both get their rule, each quoted from its own text.
+        Assert.Contains("المادة 106 من القانون المدني تنص على أنه: «", grounds.UserPrompt, StringComparison.Ordinal);
+        Assert.Contains("المادة 450 من القانون المدني تنص على أنه: «", grounds.UserPrompt, StringComparison.Ordinal);
         Assert.DoesNotContain("سند آخر", grounds.UserPrompt, StringComparison.Ordinal);
         Assert.DoesNotContain(new ArticleRef("civil-code", "106"), vm.SelectedArticles); // drafting uses it; the selection is unchanged
     }
@@ -170,10 +172,10 @@ public sealed class GroundsWorkflowTests
 
         await vm.GenerateCommand.ExecuteAsync(null);
 
-        // Argued grounds: the code writes each ticked article's rule from the catalog; the model only applies it.
+        // Argued grounds: the code writes each ticked article's rule, quoted from its text; the model only applies it.
         var grounds = recorder.Requests.First(r => r.SectionId == DzLegal.Drafting.ArguedGrounds.RequestId);
-        Assert.Contains("بداية الفقرة (يكتبها البرنامج): حيث إن المادة 450 من القانون المدني تقضي", grounds.UserPrompt, StringComparison.Ordinal);
-        Assert.StartsWith("حيث إن المادة 450 من القانون المدني تقضي", vm.Sections.Single(s => s.Id == "grounds").Text, StringComparison.Ordinal);
+        Assert.Contains("بداية الفقرة (يكتبها البرنامج): حيث إن المادة 450 من القانون المدني تنص على أنه: «", grounds.UserPrompt, StringComparison.Ordinal);
+        Assert.StartsWith("حيث إن المادة 450 من القانون المدني تنص على أنه: «", vm.Sections.Single(s => s.Id == "grounds").Text, StringComparison.Ordinal);
         Assert.Empty(vm.Field("notes.grounds").Value); // the lawyer's box is not touched
 
         // An article the lawyer neither ticked nor wrote is flagged, and so is a ticked article the text dropped.

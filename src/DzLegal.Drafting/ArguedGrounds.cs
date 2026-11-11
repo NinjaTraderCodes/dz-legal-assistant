@@ -27,28 +27,52 @@ public sealed partial record ArguedGroup(string Topic, IReadOnlyList<LegalText> 
     public bool IsLawyersLine => Texts.Count == 0 && Unloaded.Count == 0;
 
     /// <summary>
-    /// The sentence the code writes to open the paragraph, from the catalog's one-line rules, so the model never states
-    /// the law: «المادتين 106 و107 من القانون المدني تقضيان بأن العقد شريعة المتعاقدين، وبأنه يجب تنفيذ العقد…».
-    /// Articles with no rule, and articles whose text is not loaded, are cited by number only. Empty for a paragraph
+    /// The sentence the code writes to open the paragraph: each article quoted from its official text, «المادة 119 من
+    /// القانون المدني تنص على أنه: «في العقود الملزمة للجانبين، …»», so the law in the draft is the law's own words, never
+    /// a paraphrase (the catalog's one-line rules once stated a usage note as the content of art. 119: audit of 11 Nov).
+    /// The first paragraph of the article is quoted; a long one is cut at a comma, with «…» outside the quotation so what
+    /// is quoted stays an exact extract. Articles whose text is not loaded are cited by number only. Empty for a paragraph
     /// that cites no article (a line of the lawyer's own argument).
     /// </summary>
     public string RuleSentence
     {
         get
         {
-            var withRule = Texts.Where(t => !string.IsNullOrWhiteSpace(t.Gist)).ToList();
-            var byNumber = Texts.Where(t => string.IsNullOrWhiteSpace(t.Gist)).Select(t => $"المادة {t.Number} من {t.CitationName}").Concat(Unloaded).ToList();
-            if (withRule.Count == 0)
+            var quoted = Texts.Where(t => !string.IsNullOrWhiteSpace(t.Text)).ToList();
+            var byNumber = Texts.Where(t => string.IsNullOrWhiteSpace(t.Text)).Select(t => t.Citation).Concat(Unloaded).ToList();
+            if (quoted.Count == 0)
             {
                 return byNumber.Count > 0 ? "الدعوى تستند إلى " + string.Join(" و", byNumber) : string.Empty;
             }
 
-            var verb = withRule.Count == 2 ? "تقضيان" : "تقضي";
-            var rules = withRule.Select(t => RuleClause(t.Gist!)).Distinct().ToList();
-            var sentence = $"{string.Join(" و", Cite(withRule))} {verb} {string.Join("، و", rules)}";
+            var sentence = string.Join("، و", quoted.Select(t => $"{t.Citation} تنص على أنه: {Quote(t.Text)}"));
             return byNumber.Count > 0 ? sentence + "، وذلك طبقا لل" + string.Join(" و", byNumber)[2..] : sentence;
         }
     }
+
+    /// <summary>The longest quotation of an article's first paragraph, in characters, before it is cut at a comma.</summary>
+    internal const int QuoteLimit = 320;
+
+    /// <summary>«…» around the article's first paragraph, verbatim; a long one cut at the last comma before the limit.</summary>
+    internal static string Quote(string text)
+    {
+        var first = (text ?? string.Empty).ReplaceLineEndings("\n").Split('\n').Select(l => Spaces().Replace(l, " ").Trim()).FirstOrDefault(l => l.Length > 0) ?? string.Empty;
+        if (first.Length <= QuoteLimit)
+        {
+            return $"«{first.TrimEnd('.', ' ')}»";
+        }
+
+        var cut = first.LastIndexOfAny(['،', '؛'], QuoteLimit);
+        if (cut < QuoteLimit / 4)
+        {
+            cut = first.LastIndexOf(' ', QuoteLimit);
+        }
+
+        return $"«{first[..cut].TrimEnd('،', '؛', ' ')}» …";
+    }
+
+    [GeneratedRegex(@"\s+")]
+    private static partial Regex Spaces();
 
     /// <summary>
     /// A one-line rule after «تقضي»: a sentence («العقد شريعة المتعاقدين») takes «بأن», a clause opening with a verb or
@@ -99,11 +123,11 @@ public sealed partial record ArguedGroup(string Topic, IReadOnlyList<LegalText> 
 }
 
 /// <summary>
-/// Argued grounds, as Algerian petitions write them: articles cited by number with their rule in one line, not quoted
-/// in full. The code plans the paragraphs from the catalog roles (the obligation and its breach, its proof, the
-/// compensation; "limit" articles such as no interest on a private loan are warnings for the lawyer, not grounds) and
-/// writes each paragraph's rule sentence from the catalog's one-line rules («المادتين 106 و107 من القانون المدني
-/// تقضيان بأن…»), so the law in the draft is never the model's. The model writes only how the facts meet the rule. An
+/// Argued grounds, as Algerian petitions write them: each article cited and quoted from its official text. The code
+/// plans the paragraphs from the catalog roles (the obligation and its breach, its proof, the compensation; "limit"
+/// articles such as no interest on a private loan are warnings for the lawyer, not grounds) and writes each
+/// paragraph's rule sentence from the articles' own words («المادة 106 من القانون المدني تنص على أنه: «العقد شريعة
+/// المتعاقدين…»»), so the law in the draft is never the model's and never a paraphrase. The model writes only how the facts meet the rule. An
 /// application that cites (a clause after its facts that names an article is cut first) or quotes an article, has a
 /// number found nowhere in the notes, or fails the other checks is
 /// asked once more, then left as «(...)» for the lawyer.

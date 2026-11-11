@@ -24,6 +24,9 @@ public sealed partial class Home : IDisposable
     /// <summary>The slim invitation to the guide above the workbench; dismissing it is remembered for the visit (session storage).</summary>
     private bool showInvite = true;
 
+    /// <summary>The invitation keeps pulsing until the guide has been opened once on this page.</summary>
+    private bool _guideOpenedThisVisit;
+
     private bool _focusGuide;
     private ElementReference guideCard;
 

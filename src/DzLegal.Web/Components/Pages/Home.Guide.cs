@@ -183,6 +183,7 @@ public sealed partial class Home
     private void OpenGuide()
     {
         showGuide = true;
+        _guideOpenedThisVisit = true;
         _focusGuide = true;
         EnterStep(guideStep);
     }

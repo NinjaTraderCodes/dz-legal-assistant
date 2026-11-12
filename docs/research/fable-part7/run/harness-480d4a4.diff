@@ -1,5 +1,14 @@
 --- a/src/DzLegal.Harness/FactRunMeasurement.cs
 +++ b/src/DzLegal.Harness/FactRunMeasurement.cs
+@@ -72,7 +72,7 @@
+             }
+ 
+             var options = new Dictionary<string, string> { ["reader"] = "alpha-01, claims given", ["endpoint"] = endpoint, ["digest"] = digest,
+-                ["residence"] = "unload/reload every10 cases;512MiB guard; app resident; mains/Best performance", ["console"] = "counts and guard events only" };
++                ["residence"] = "unload/reload every10 cases;512MiB guard; app resident; " + (MeasurementGuard.BatteryRun ? "battery, Windows power mode as found" : "mains/Best performance"), ["console"] = "counts and guard events only" };
+             if (think.HasValue)
+             {
+                 options["think"] = think.Value ? "true" : "false";
 @@ -100,6 +100,8 @@
              ("gemma3:4b", null) => "c30276f7dffec93a536d283e15088990454b8d21cf180a3d6eea4959e4147291",
              ("gemma4:e4b", false) => "dc35e8d9c6061baa6f0fa870975ab6932e2542b579b13ea0f199fa4bb7300c9c",
@@ -9,3 +18,62 @@
              _ => throw new ArgumentException("Measured owner runs require an approved model and its agreed thinking value.", nameof(model)),
          };
          if (pinned is not null)
+@@ -185,7 +187,7 @@
+         }
+ 
+         var bill = results.Count == 0 ? "n/a" : (clock.Elapsed.TotalSeconds / results.Count).ToString("F3", CultureInfo.InvariantCulture);
+-        var measurement = $"\n\n## Measurement\n\nMains / Best performance required; reload every10 cases;512MiB guard; app resident.\n\n" +
++        var measurement = "\n\n## Measurement\n\n" + (MeasurementGuard.BatteryRun ? "Battery run: on battery throughout, Windows power mode as found (not Best performance)" : "Mains / Best performance required") + "; reload every10 cases;512MiB guard; app resident.\n\n" +
+             $"Full batch including loads/waits: {clock.Elapsed.TotalSeconds.ToString("F3", CultureInfo.InvariantCulture)} s; per attempted case: {bill} s. Loads: {loads.Count}.\n\n" +
+             "Sampled model/server working-set peak: " + GiB(resources.ModelWorkingSetPeak) + " GiB; private peak: " + GiB(resources.ModelPrivatePeak) +
+             " GiB; concurrent model+app working-set peak: " + GiB(resources.ModelAppPeak) + " GiB; minimum machine available: " + GiB(resources.AvailableMinimum) +
+@@ -236,8 +238,11 @@
+                 result.AvailableMinimum = result.AvailableMinimum is null ? available : Math.Min(result.AvailableMinimum.Value, available);
+                 var p = r.GetProperty("power");
+                 const string best = "ded574b5-45a0-4f42-8737-46345c09c238";
+-                if (p.GetProperty("acLineStatus").GetInt32() != 1 || p.GetProperty("energySaver").GetInt32() != 0
+-                    || OverlayKeys.Any(k => p.GetProperty(k).GetString() != best)
++                var powerInvalid = MeasurementGuard.BatteryRun
++                    ? p.GetProperty("acLineStatus").GetInt32() != 0
++                    : p.GetProperty("acLineStatus").GetInt32() != 1 || p.GetProperty("energySaver").GetInt32() != 0
++                        || OverlayKeys.Any(k => p.GetProperty(k).GetString() != best);
++                if (powerInvalid
+                     || available < 512L * 1024 * 1024 || app <= 0 || privateBytes + app > r.GetProperty("totalPhysicalBytes").GetInt64())
+                 {
+                     result.InvalidSamples++;
+--- a/src/DzLegal.Harness/BenchmarkMeasurement.cs
++++ b/src/DzLegal.Harness/BenchmarkMeasurement.cs
+@@ -63,7 +63,7 @@
+     {
+         ArgumentNullException.ThrowIfNull(options);
+         if (think.HasValue) { options["think"] = think.Value ? "true" : "false"; }
+-        if (root is not null) { options["measurement-root"] = root; options["residence"] = "reload every10 cases;512MiB;app resident;mains/Best performance"; }
++        if (root is not null) { options["measurement-root"] = root; options["residence"] = "reload every10 cases;512MiB;app resident;" + (MeasurementGuard.BatteryRun ? "battery, Windows power mode as found" : "mains/Best performance"); }
+         return options;
+     }
+ 
+--- a/tools/alpha-03/FittingReferences/MeasurementGuard.cs
++++ b/tools/alpha-03/FittingReferences/MeasurementGuard.cs
+@@ -8,6 +8,10 @@
+ {
+     private static readonly JsonSerializerOptions Options = new() { WriteIndented = true };
+ 
++    // Part 7 scratch copy (outside the repository): the battery runner sets this for a run that must stay on battery.
++    // Then the laptop must NOT be on mains and Best performance is not required; every other condition is unchanged.
++    internal static bool BatteryRun => Environment.GetEnvironmentVariable("DZLEGAL_PART7_POWER") == "battery";
++
+     internal static async Task<JsonDocument> LatestAsync(string runRoot, CancellationToken cancellationToken = default)
+     {
+         using var stream = new FileStream(Path.Combine(runRoot, "resources.jsonl"), FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+@@ -49,8 +53,9 @@
+         var reason = File.Exists(Path.Combine(runRoot, "measurement.stop")) ? "operator stop recorded"
+             : browsers.Count > 0 ? "browser or VS Code reopened during timed run"
+             : (DateTimeOffset.UtcNow - Time(r)).TotalSeconds > 10 ? "stale resource monitor"
+-            : p.GetProperty("acLineStatus").GetInt32() != 1 ? "mains disconnected"
+-            : p.GetProperty("actualOverlayGuid").GetString() != best || p.GetProperty("effectiveOverlayGuid").GetString() != best || p.GetProperty("configuredAcGuid").GetString() != best ? "Best performance not verified"
++            : BatteryRun && p.GetProperty("acLineStatus").GetInt32() != 0 ? "mains connected during a battery run"
++            : !BatteryRun && p.GetProperty("acLineStatus").GetInt32() != 1 ? "mains disconnected"
++            : !BatteryRun && (p.GetProperty("actualOverlayGuid").GetString() != best || p.GetProperty("effectiveOverlayGuid").GetString() != best || p.GetProperty("configuredAcGuid").GetString() != best) ? "Best performance not verified"
+             : r.GetProperty("appWorkingSetBytes").GetInt64() <= 0 ? "idle app not resident"
+             : r.GetProperty("availablePhysicalBytes").GetInt64() < 512L * 1024 * 1024 ? "machine available physical below 512 MiB"
+             : r.GetProperty("modelPrivateBytes").GetInt64() + r.GetProperty("appWorkingSetBytes").GetInt64() > r.GetProperty("totalPhysicalBytes").GetInt64() ? "model private plus app working set exceeds physical RAM"

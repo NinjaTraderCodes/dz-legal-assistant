@@ -2,15 +2,16 @@
 
 Working files behind Part 7 of `../FABLE-ARCHITECTURE-REPORT.md`, pushed so that the reviewer can read exactly what runs. Brief: `docs/briefs/FABLE-ARABIC-SMALL-MODELS-BRIEF.md` (branch `claude/case-file-site`). Nothing here is used by the app. Fictitious data only; no hidden-set text; no model or encoder weights.
 
-State on 11 November 2026, 21:15: the model list is final and reviewed; the guarded run of the generative models has **not** started; the last encoder training (multilingual-e5-small) is still running.
+State on 12 November 2026, 15:50: the model list is final and reviewed; **no guarded run has started**. The mains run planned for the night of 11 November was not launched; the owner now wants the run on battery (section 1b), and its runner awaits review. All encoder trainings are finished; the last result and the speed and memory figures are still to be added.
 
 ## 1. The guarded run of the generative models (`run/`)
 
 | File | What it is |
 |---|---|
 | `run/Run-ArabicModels.ps1` | The runner the owner launches. Same guards and argument lines as `tools/alpha-03/Run-OwnerAlpha01.ps1` and `Measure-AppBenchmarks.ps1` at `480d4a4`; three stages per model: `facts` (hidden set v2, claim type given), `grounds` (the app's analysis on the 46 development cases), `draft` (the 12 locked files of stage 2, checked against `DRAFT-STAGE-2.json`). |
+| `run/Run-ArabicModels-Battery.ps1` | The battery variant (section 1b). |
 | `run/models.json` | The models, in running order, each with the digest recorded after download. The runner skips a model whose installed digest differs. |
-| `run/harness-480d4a4.diff` | The only difference between the frozen harness (`480d4a4`, `codex/alpha-03`) and the scratch copy that runs: two added lines, a comment and one switch arm, so that a model outside the four Gemma names runs in guarded mode when its recorded digest is given. |
+| `run/harness-480d4a4.diff` | The only difference between the frozen harness (`480d4a4`, `codex/alpha-03`) and the scratch copy that runs: (1) two added lines, a comment and one switch arm, so that a model outside the four Gemma names runs in guarded mode when its recorded digest is given; (2) since 12 November, the battery mode described in section 1b (three files in all). |
 | `run/make_low_effort.py` | How the two Jais 3 files were prepared: a copy of the maker's GGUF with two edits in its chat template (default reasoning effort "low"; the low-effort opening closes its empty block and ends with a line break). Weights byte-identical (hash over all tensors printed by the script). |
 
 **The command** (PowerShell; mains power and Best performance; the desktop app open and idle in template mode; VS Code and browsers closed):
@@ -38,6 +39,68 @@ Licence and size sources, with links and dates: section 7.7 of the report (F1-S1
 **Why Jais 3 runs as an edited copy.** As downloaded, with what the harness sends (no thinking flag, or `think: false`), Jais-3-0.9B spends all 300 answer tokens on a reasoning trace and returns an empty answer. Ollama 0.40.16 rejects `think: "low"` for this download and ignores a Modelfile template. The maker's no-trace mode is selected inside the chat template, so the template's default is changed in a copy. Each answer then begins with two marker lines that the unchanged parsers skip; the fact summaries count them as "unreadable lines", which are not critical errors.
 
 **Not rehearsed in guarded mode.** The harness refuses to start while VS Code is open, and this session runs inside VS Code. Checked instead: the script parses; every digest in `models.json` matches the installed model; each stage ran outside guarded mode on a few development cases (smoke tests, not results); a guarded start reached the resource-monitor check, so the added switch arm works.
+
+## 1b. Battery variant (12 November 2026, at the owner's request; not started)
+
+The owner wants the whole measurement run on battery, as a realistic-use measurement. `run/Run-ArabicModels-Battery.ps1` is a copy of the runner above in which only the power handling and the order differ. Battery timings will be kept apart from the mains figures of 8 and 9 November in every table that shows time.
+
+**What differs from `Run-ArabicModels.ps1`.**
+
+| Point | Battery variant |
+|---|---|
+| Power | The laptop must be on battery for the whole run (`acLineStatus` 0). Best performance is not required; the Windows power mode is left as found and recorded in `power-before.json` and `power-after.json` of every stage (battery percent, time, mode, energy saver). |
+| Before each stage | Battery at 25 % or more; otherwise the run stops cleanly, with nothing started. |
+| During a stage | Below 15 % the runner writes the harness's own operator-stop file (`measurement.stop`); the stage is marked `complete: false`, `lowBatteryStop: true` in `RUN-INDEX.json` and is never counted. If the harness has not stopped after 5 minutes its process is ended. The run then stops. |
+| When the run stops | It prints, and writes to `REMAINING.txt`, the stages that remain, in order, and the exact command to resume in a new run folder. |
+| Order | By stage: `facts` for the five models (jais3-0.9b-low, jais-family-590m, Falcon-H1-1.5B-Deep, Qwen3.5-2B, jais3-3.7b-low), then `grounds` for the five, then `draft` for the five, then `gemma4:e4b` (thinking off, committed digest `dc35e8d9…`) on `grounds` and `draft` only, as the battery speed reference. A guard refuses `facts` for any `gemma` model. |
+| New switches | `-StartAt <n>` starts at stage n of the plan; `-PlanOnly` prints the plan and exits without creating anything. |
+| Per stage, also recorded | `energySaverSamples`: how many resource samples of the stage had Windows' energy saver on. |
+
+Unchanged: the hidden-folder handling, the browser, editor, build and idle-app guards, the quiet-CPU preflight, the digest check, every argument line, the 12-file drafting check, fresh output folder, no retry.
+
+**The resume command uses `-StartAt`, not only `-Only` and `-Stages`.** With the order by stage, what remains after a stop is not a rectangle of models by stages (for example two models still to do on `facts`, then everything on `grounds` and `draft`), so one `-Only`/`-Stages` pair cannot express it. The plan is deterministic, so `-StartAt n` with the same `-Stages` and `-Only` resumes exactly; the runner prints that command itself. `-Only` and `-Stages` still work as filters.
+
+**The frozen harness refuses battery by itself**, in two places, so the runner alone could not do this: its live guard stops with "mains disconnected" or "Best performance not verified", and at the end of a fact run every resource sample taken off mains or outside Best performance is counted invalid, which makes the run incomplete. The scratch harness therefore has a battery mode, switched on only by the environment variable `DZLEGAL_PART7_POWER=battery` that the battery runner sets (`run/harness-480d4a4.diff`, now three files):
+
+- live guard (`MeasurementGuard.cs`): in battery mode it stops with "mains connected during a battery run" if the charger is plugged in, and does not require Best performance; without the variable it behaves exactly as before;
+- end-of-run sample check (`FactRunMeasurement.cs`): in battery mode a sample is invalid if the laptop was on mains; the memory and idle-app conditions are unchanged;
+- labels: the summary and the run manifest say "Battery run: on battery throughout, Windows power mode as found (not Best performance)" instead of "Mains / Best performance required".
+
+The whole scratch tree was compared with `git archive 480d4a4` (source, data, prompts, cases): only these three files differ.
+
+**Two errors found in the runner reviewed in `1e8b3a1` / `167d753`, and fixed in both runners.** They were found by `-PlanOnly`; the mains run was never started, so nothing was lost.
+
+1. `$PSScriptRoot` is empty inside `param()` defaults in Windows PowerShell 5.1 when a script is started with `-File`, so the default path of `models.json` failed at once. The default is now set after `param()`.
+2. `@(Get-Content … | ConvertFrom-Json)` gives one element holding the whole list in Windows PowerShell 5.1, so the five models were seen as one model whose name was the five names joined, and every stage would have been skipped at the digest check. The list is now assigned first and wrapped after.
+
+**Rehearsed** on 12 November on battery, with a stand-in for the harness (a process that waits and exits 0; no model, no hidden folder) and the guards that cannot pass inside VS Code relaxed in the rehearsal copy only: a normal stage (the stand-in received `DZLEGAL_PART7_POWER=battery`; `power-before.json`, `power-after.json` and the index were written); a stage that hits the lower battery limit (stop file written, stage marked not counted, remaining stages and resume command printed); and a battery below the before-stage minimum (nothing started). The real guarded path still cannot be rehearsed from inside VS Code.
+
+**What was found on this laptop on battery** (12 November, 15:35, 86 %):
+
+- The Windows power mode on battery is **Best power efficiency**, not Balanced (the power plan is Balanced). It is left as found and recorded.
+- **Energy saver switches on at 30 %** (the plan's battery setting). With the limits of 25 % and 15 %, any stage that runs below 30 % runs with energy saver on, which is a different speed regime. The runner records it per stage (`energySaverSamples`), and the report will mark those timings. Keeping every timing in one regime would need the limits above 30 %, at the cost of more charges.
+- Battery: 47.3 Wh at full charge (52.5 Wh by design, 763 cycles).
+
+**Estimated minutes per stage on battery.** No model has yet been timed on battery on this laptop, so these are ranges, from the mains figures (Gemma 4 E4B: 21 s per case on the hidden set, 56 s on the analysis, 25 s per draft) and from smoke tests of each model on a busy CPU. The first stage will calibrate them: the runner prints the battery percent before and after every stage.
+
+| Model | `facts` (100 files) | `grounds` (46 cases) | `draft` (12 files) |
+|---|---:|---:|---:|
+| jais3-0.9b-low | 30 to 45 | 30 to 45 | 8 to 12 |
+| jais-family-590m | 8 to 15 | 8 to 15 | 3 to 6 |
+| Falcon-H1-1.5B-Deep | 30 to 50 | 30 to 45 | 12 to 18 |
+| Qwen3.5-2B (4-bit) | 12 to 18 | 12 to 20 | 5 to 8 |
+| jais3-3.7b-low | 35 to 60 | 40 to 60 | 12 to 20 |
+| gemma4:e4b (reference) | not run | 65 to 105 | 8 to 13 |
+
+Total: about 6 to 9 hours of running. One charge gives roughly 35 to 40 Wh between 100 % and the limits, which is about 1.5 to 2.5 hours under load, so **about 3 to 6 charges**, most likely 4 or 5.
+
+**The command** (PowerShell; charger unplugged; the desktop app open and idle in template mode; VS Code and browsers closed):
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy RemoteSigned -File "C:\Users\TheShadow\dz-arch-research\F\run\Run-ArabicModels-Battery.ps1" -RunRoot "C:\Users\TheShadow\dz-arabic-runs\battery-1"
+```
+
+To see the plan without running anything, add `-PlanOnly`.
 
 ## 2. Encoders as claim-type classifiers (`encoders/`, `synthetic-data/`)
 

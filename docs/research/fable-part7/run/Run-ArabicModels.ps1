@@ -6,9 +6,11 @@
 # This script never opens, lists or copies the hidden case folder: only the harness receives its path.
 param([Parameter(Mandatory=$true)][string]$RunRoot,
       [string]$Stages='facts,grounds',
-      [string]$ModelsFile=(Join-Path $PSScriptRoot 'models.json'),
+      [string]$ModelsFile='',
       [string]$Only='')
 $ErrorActionPreference='Stop'
+# Windows PowerShell 5.1 leaves $PSScriptRoot empty inside param() defaults when started with -File, so the default is set here.
+if(-not $ModelsFile){$ModelsFile=Join-Path $PSScriptRoot 'models.json'}
 $repo='C:\Users\TheShadow\dz-arch-research\F\harness-480d4a4'
 $tools=Join-Path $repo 'tools\alpha-03'
 . (Join-Path $tools 'Power.ps1')
@@ -33,7 +35,9 @@ if($stageList -contains 'draft'){
     $actualDraftFiles=@(Get-ChildItem -LiteralPath (Join-Path $repo 'tests\drafting-cases'),(Join-Path $repo 'tests\drafting-cases-more') -Filter '*.json' -File)
     if($actualDraftFiles.Count -ne 12){throw 'The original drafting folders no longer contain exactly 12 files.'}
 }
-$models=@(Get-Content -LiteralPath $ModelsFile -Raw|ConvertFrom-Json)
+# Windows PowerShell 5.1 passes a JSON array down the pipeline as ONE object, so it is assigned first and wrapped after.
+$parsedModels=Get-Content -LiteralPath $ModelsFile -Raw|ConvertFrom-Json
+$models=@($parsedModels)
 if($Only){$wanted=@($Only.Split(',')|ForEach-Object{$_.Trim()});$models=@($models|Where-Object{$_.model -in $wanted})}
 if(-not $models.Count){throw 'No model to run.'}
 foreach($m in $models){if($m.digest -notmatch '^[a-f0-9]{64}$'){throw ('Missing recorded digest for '+$m.model)}}

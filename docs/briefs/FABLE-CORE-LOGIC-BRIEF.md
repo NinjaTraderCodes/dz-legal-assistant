@@ -1,6 +1,6 @@
 # Brief: the core logic and the classifier, built to be right
 
-*For Fable, 12 November 2026. Branch `fable/core-logic`, from `claude/stoic-fermat-mi1gko`. Part 7 of the architecture report closes first (step 0).*
+*For Fable, 12 November 2026 (revised the same day: step 2 checks Codex's corpus instead of rebuilding it; step 3 is formal Arabic only). Branch `fable/core-logic`, from `claude/stoic-fermat-mi1gko`. Part 7 of the architecture report closes first (step 0).*
 
 ## The goal
 
@@ -37,13 +37,22 @@ Also answer the 22 questions of the owner's Legal Review page, copied in `docs/b
 
 Write the records under `docs/research/core-logic/rules/` with a JSON schema. Do not edit `data/`: the records are integrated into the app later, by the reviewer.
 
-## Step 2. The missing articles
+## Step 2. The missing articles: check Codex's corpus, do not redo it
 
-Every article a rule record cites must exist in the app's library with its official text. Start from what exists: `data/law/codes/` and the corpus being built on `codex/law-corpus` (`data/law/corpus/`, read it, do not change it). List what is missing (at least Civil Code arts. 101, 133, 180, 181, 308, 309, 312, 321; the Commercial Code articles on commercial leases and their deadlines; Law 90-04; CPCA arts. 37 to 40, 800, 801) and collect the official texts from the Official Journal (JORADP) or the Supreme Court's publications, with the source, the date and the amending texts. Write them under `docs/research/core-logic/law/`, in the format of `data/law/codes/`.
+Every article a rule record cites must exist with its official, in-force text. Most of that work already exists, so **do not rebuild a corpus**. Codex has spent weeks on one (`codex/law-corpus`, head `9b60990`): `data/law/corpus/<code>/articles.json` holds each article with its versions, the amending text, the in-force dates and a state (checked, partly-checked, unsettled); `ledger.json` and `report.json` record the sources, the gaps and the unsettled points; `docs/LAW-CORPUS-*.md` and `tools/law-corpus/` explain the method. As of 30 October: CPCA and the Family Code are complete in coverage (175 and 232 articles still "unsettled"); the Civil Code is partial (321 articles, its priority chapters); the Commercial Code is partial; the labour laws (90-11, 90-04) are not in it, and only `data/law/codes/` has them.
+
+Work only on **the articles the rule records of step 1 cite**, not on the whole corpus:
+
+1. **Inventory by script.** List every cited article and look it up in the corpus and in `data/law/codes/`: present and checked, present but partly-checked or unsettled, or missing.
+2. **Compare by script.** Where an article is in both, compare the two texts automatically (normalised Arabic: hamza forms, ta marbuta, alef maqsura, spacing). Agreement between the corpus and the app's library, which was proved against the official PDFs, counts as a check.
+3. **Check by hand only what remains:** the disagreements, the unsettled and partly-checked articles that are cited, and the missing ones. For those, read the official text (JORADP, or the Supreme Court's publications) with the amending texts, using Codex's sources and tools where they help.
+4. **Write only the delta**, under `docs/research/core-logic/law/`: the missing articles in the format of `data/law/codes/`, and a list of corrections to the corpus, each with the source, the date and the exact wording. Do not change `data/law/corpus/`, `tools/law-corpus/` or the `codex/law-corpus` branch: the corrections go to the owner, who passes them to Codex.
+
+Expect at least these to be missing or unsettled: Civil Code arts. 101, 133, 180, 181, 308, 309, 312, 321; the Commercial Code articles on commercial leases and their deadlines; Law 90-04; CPCA arts. 37 to 40, 800, 801. Report how many cited articles were checked by script, how many by hand, and how many corrections you found.
 
 ## Step 3. High-quality lawyer notes, and hidden set v3
 
-Build the notes the classifier and the reader are trained and tested on: what an Algerian lawyer really writes before drafting, in formal Arabic, Darija in Arabic script, French, and mixtures; short and long; tidy and hurried; with negations ("no notice was served"), corrections, irrelevant details, several claims in one note, figures and dates in every format, and near-miss cases outside the 21 types (administrative, criminal, family matters not covered).
+Build the notes the classifier and the reader are trained and tested on: what an Algerian lawyer really writes before drafting. **Formal Arabic only** for this stage: no Darija, no French, no mixed notes (the owner's decision; other languages may come later). Within formal Arabic, vary everything else: short and long; tidy and hurried; with negations ("لم يوجه أي إعذار"), corrections, irrelevant details, several claims in one note, figures and dates in every format (Arabic and Western digits, «12/03/2025», «12 مارس 2025», months as Algerians name them: جانفي، فيفري ...), and near-miss cases outside the 21 types (administrative, criminal, family matters not covered).
 
 - Every note carries its gold answer: the claim type and every structured slot of step 4, derived from the rule records.
 - **Quality without humans:** each note is labelled independently by at least two judges of different model families; a note whose labels disagree is rewritten or discarded. A sample is re-read adversarially for realism and for leakage of the label into the wording.
@@ -58,7 +67,7 @@ From a note, produce what the rules need:
 - the **structured slots** the rules check: formal notice served (yes, no, unknown) and its date and means; non-conciliation record and its delivery date; contract date (before or after the 2005 commercial-lease reform); whether a party is a public body; whether the property is registered; amounts and what each one is for; the requests asked; the events with their dates and their polarity (stated, denied, disputed);
 - for every answer, the words of the note it comes from, so the lawyer sees why.
 
-You are free in the method: a fine-tuned encoder, a model designed and trained from scratch for Algerian legal notes (its own tokenizer for Arabic, Darija and French; morphology; a legal lexicon), a hybrid of rules and learning, distillation from a large model, an ensemble. Polarity is the hardest part today (23 of Jais-3-3.7B's 40 critical errors on hidden v2): treat it as a first-class problem. Measure each idea; keep what wins.
+You are free in the method: a fine-tuned encoder, a model designed and trained from scratch for Algerian legal notes (its own tokenizer for formal legal Arabic; morphology; a legal lexicon), a hybrid of rules and learning, distillation from a large model, an ensemble. Polarity is the hardest part today (23 of Jais-3-3.7B's 40 critical errors on hidden v2): treat it as a first-class problem. Measure each idea; keep what wins.
 
 **Constraints:** runs on CPU in .NET (ONNX Runtime, MIT licence) or in plain code; at most about 150 MB on disk; under one second per note on the laptop; every licence allows commercial redistribution; nothing from the hidden sets in training.
 

@@ -2,7 +2,7 @@
 
 Working files behind Part 7 of `../FABLE-ARCHITECTURE-REPORT.md`, pushed so that the reviewer can read exactly what runs. Brief: `docs/briefs/FABLE-ARABIC-SMALL-MODELS-BRIEF.md` (branch `claude/case-file-site`). Nothing here is used by the app. Fictitious data only; no hidden-set text; no model or encoder weights.
 
-State on 12 November 2026, 15:50: the model list is final and reviewed; **no guarded run has started**. The mains run planned for the night of 11 November was not launched; the owner now wants the run on battery (section 1b), and its runner awaits review. All encoder trainings are finished; the last result and the speed and memory figures are still to be added.
+State on 12 November 2026, 21:15: **the hidden set v2 stage is complete for the five generative models** (three on battery, two on mains at the owner's decision): results in `results/hidden-v2/README.md`. The analysis and drafting stages (sessions 2 and 3) have not started and await the reviewer's choice of models. All encoder trainings are finished; the last result and the speed and memory figures are still to be added.
 
 ## 1. The guarded run of the generative models (`run/`)
 

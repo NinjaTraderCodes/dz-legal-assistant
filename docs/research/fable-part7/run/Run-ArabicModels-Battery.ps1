@@ -199,6 +199,8 @@ try{
     $index|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $root 'RUN-INDEX.json') -Encoding utf8
     try{Stop-Resident}catch{Write-Output $_.Exception.Message}
     if($lowBattery){$stopReason=('battery fell below '+$stopBelow+' % during '+$stage+' '+$model);$nextStep=$step;break}
+    # A stage cut short because the charger was plugged in is resumed too (12 November: Falcon was left out of the resume).
+    if(-not $complete -and $afterRaw.acLineStatus -ne 0){$stopReason=('the charger was plugged in during '+$stage+' '+$model);$nextStep=$step;break}
     if($code -ne 0){Write-Output ('Stage '+$stage+' did not complete for '+$model+'; no retry. The other stages still run.')}
   }
 } finally {

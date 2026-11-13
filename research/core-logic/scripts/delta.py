@@ -192,6 +192,8 @@ def entry(batch: str, job_name: str, article: str, text_paragraphs: list[str] | 
     s = next(a for a in rd.load(fetch.first_reading_path(batch, job_name, job))["articles"] if fetch.article_key(a) == article)
     c = next(a for a in rd.load(os.path.join(folder, f"{job_name}.codex.json"))["articles"] if fetch.article_key(a) == article)
     s, used_fills = fetch.apply_fills(job, s)
+    # a fill of the second reading is reported too: it is how that reading came to agree
+    used_fills += [f for f in fetch.apply_fills(job, c)[1] if f not in used_fills]
     paragraphs = text_paragraphs or row.get("settledParagraphs") or s["paragraphs"]
     text = "\n".join(paragraphs)
     fr = french_check(job, article, "\n".join(french_paragraphs) if french_paragraphs else text)

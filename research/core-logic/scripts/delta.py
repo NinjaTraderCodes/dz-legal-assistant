@@ -57,11 +57,46 @@ def french_evidence(year: int, issue: int) -> dict | None:
     return None
 
 
+def french_reading(code: str, version: str, article: str) -> tuple[dict, dict] | None:
+    """Before 2003: the Sonnet reading of the French page (a job with language French), matched to the article by its
+    position in the job's list (the reader is asked for the French numbering, "324 quater (or 324 bis 2)")."""
+    for batch in sorted(os.listdir(rd.JOBS)):
+        folder = os.path.join(rd.JOBS, batch)
+        if not batch.startswith("french-") or not os.path.isdir(folder):
+            continue
+        for name in sorted(os.listdir(folder)):
+            if not name.endswith(".json") or name.count(".") > 1 or name == "agents.txt":
+                continue
+            job = rd.load(os.path.join(folder, name))
+            if job.get("language") != "French" or job["code"] != code or job["version"] != version or article not in job["articles"]:
+                continue
+            ans_path = os.path.join(folder, name[:-5] + ".sonnet.json")
+            if not os.path.exists(ans_path):
+                continue
+            arts = rd.load(ans_path)["articles"]
+            i = job["articles"].index(article)
+            if len(arts) == len(job["articles"]) and arts[i]["found"]:
+                return job, arts[i]
+    return None
+
+
 def french_check(job: dict, article: str, arabic: str, french_number: str | None = None) -> dict:
-    """From 2003 on: the French article cut from the scan's kept text, and the numbers compared."""
-    iss = issue_of(job["source"]["url"])
+    """From 2003 on: the French article cut from the scan's kept text; before 2003: the Sonnet reading of the French
+    page. The numbers are compared."""
+    iss = issue_of(job["source"]["url"]) or (job["code"].startswith("labour") and (1990, 0))
     if not iss or iss[0] < 2003:
-        return {"status": "pending", "why": "French page images to be read (issue before 2003)"}
+        found = french_reading(job["code"], job["version"], article)
+        if not found:
+            return {"status": "pending", "why": "no French page reading yet (issue before 2003)"}
+        fjob, fr = found
+        if re.search(r"\d\s*\[؟\]|\[؟\]\s*\d|\(\s*\[؟\]\s*\)", "\n".join(fr["paragraphs"])):
+            # The French check compares numbers only: a [؟] in a word does not stop it; one at a number does.
+            return {"status": "pending", "why": "the French page reading has a [؟] at a number: read again"}
+        chk = french.check(arabic, "\n".join(fr["paragraphs"]))
+        src = {"url": fjob["source"]["url"], "sha256": fjob["source"]["sha256"],
+               "retrievedOn": retrieved_on(fjob["source"]["url"], fjob["source"]["localPdf"])}
+        return {"status": "equal" if chk["equal"] else "mismatch", "check": chk, "source": src,
+                "frenchPdfPage": fjob["pages"][max(0, fr["where"]["image"] - 1)]}
     ev = french_evidence(*iss)
     if not ev or not ev.get("readable", True):
         return {"status": "pending", "why": "the French issue is not in the scan's evidence or is unread"}

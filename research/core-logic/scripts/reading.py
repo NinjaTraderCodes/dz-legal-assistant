@@ -722,6 +722,9 @@ def main(argv: list[str] | None = None) -> int:
         job = load(a.job)
         got = collect(job, a.agent)
         base = os.path.join(JOBS, job["batch"], job["job"])
+        if got["problems"] == ["no final answer"]:
+            print("NOT FINISHED (no final answer yet): nothing recorded")
+            return 2
         if got["problems"]:
             # Discarded, like a Codex call that ran a command: nothing of its answer is kept or used.
             with open(base + ".sonnet.discarded.txt", "a", encoding="utf-8", newline="\n") as f:

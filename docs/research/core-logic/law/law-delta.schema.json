@@ -121,7 +121,6 @@
       "additionalProperties": false,
       "required": [
         "pdfPage",
-        "printedPage",
         "readings",
         "agreement",
         "frenchChecked"
@@ -131,7 +130,8 @@
           "type": "integer"
         },
         "printedPage": {
-          "type": "integer"
+          "type": "integer",
+          "description": "The page number printed on the Journal page; absent when it was not read (the PDF page is pdfPage)."
         },
         "dpi": {
           "type": "integer"

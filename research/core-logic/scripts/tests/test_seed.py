@@ -52,3 +52,13 @@ def test_page_pairs_never_cut_an_article_that_runs_on():
     assert runs[0] == {"pages": [26, 27], "articles": ["306", "312"]}
     assert runs[1] == {"pages": [27, 28], "articles": ["323"]}
     assert runs[2] == {"pages": [34, 35], "articles": ["405"]}
+
+
+def test_the_french_check_compares_numbers_not_their_writing():
+    import french
+    assert french.check("ستة (6) أشهر من المادة 323 مكرر 1", "six (6) mois de l'article 323 ter")["equal"]
+    assert french.check("على 100.000 دينار", "à 100.000 DA")["equal"]
+    assert not french.check("ستة (6) أشهر", "huit (8) mois")["equal"]
+    assert french.french_number("187 مكرر 1")[0] == "187 ter"
+    text = "Art. 2. — L'article 169 est modifié :\n« Art. 169. — Les dispositions.\n« Art. 170. — Autre."
+    assert french.cut(text, "169").strip().startswith("— Les dispositions")

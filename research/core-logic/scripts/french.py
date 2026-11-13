@@ -41,19 +41,24 @@ def french_number(article: str) -> list[str]:
 def cut(text: str, article: str) -> str | None:
     """The text of «Art. N.» up to the next «Art.» heading, in a French issue's text layer."""
     for head in french_number(article):
-        pat = re.compile(r"(?:^|\n)\s*«?\s*Art(?:icle)?\.?\s*" + re.escape(head).replace(r"\ ", r"\s+") + r"(?![\w])\s*[.\-—–:]",
+        pat = re.compile(r"(?:^|\n)\s*[«\"“]?\s*Art(?:icle)?\.?\s*" + re.escape(head).replace(r"\ ", r"\s+") + r"(?![\w])\s*[.\-—–:]",
                          re.I)
         m = pat.search(text)
         if m:
             rest = text[m.end():]
-            nxt = re.search(r"\n\s*«?\s*Art(?:icle)?\.?\s*\d", rest)
+            nxt = re.search(r"\n\s*[«\"“]?\s*Art(?:icle)?\.?\s*\d", rest)
             return rest[: nxt.start()] if nxt else rest[:4000]
     return None
 
 
 def numbers(text: str) -> Counter:
-    """The integers written in digits (Arabic or Western), as a multiset. Years of dates count too."""
-    return Counter(int(x) for x in re.findall(r"\d+", text.translate(DIGITS)))
+    """The integers written in digits (Arabic or Western), as a multiset. Years of dates count too. Thousands
+    separators are joined («100.000» is one number); the k of «N مكرر k» is dropped, since the French writes it as a
+    word (ter, quater, …)."""
+    t = text.translate(DIGITS)
+    t = re.sub(r"(\d+)\s*مكرر\s*\d+", r"\1", t)
+    t = re.sub(r"\b(\d{1,3}(?:[.\s ]\d{3})+)\b", lambda m: re.sub(r"[.\s ]", "", m.group(1)), t)
+    return Counter(int(x) for x in re.findall(r"\d+", t))
 
 
 def check(arabic: str, french: str) -> dict:

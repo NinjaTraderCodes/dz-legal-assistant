@@ -11,6 +11,7 @@ difference goes to the settler. The store is not involved: these articles are no
 from __future__ import annotations
 
 import json
+import re
 import os
 import sys
 
@@ -110,8 +111,9 @@ def compare(batch: str, job_name: str) -> list[dict]:
     folder = os.path.join(rd.JOBS, batch)
     s = rd.load(os.path.join(folder, f"{job_name}.sonnet.json"))
     c = rd.load(os.path.join(folder, f"{job_name}.codex.json"))
-    by_s = {x["article"]: x for x in s["articles"]}
-    by_c = {x["article"]: x for x in c["articles"]}
+    # A reader may echo the heading («المادة 324 مكرر 3» for «324 مكرر 3»): the key is the number alone.
+    by_s = {re.sub(r"^المادة\s+", "", x["article"]).strip(): x for x in s["articles"]}
+    by_c = {re.sub(r"^المادة\s+", "", x["article"]).strip(): x for x in c["articles"]}
     rows = []
     for art in job["articles"]:
         if art in job.get("rereadArticles", []):

@@ -21,7 +21,8 @@ TATWEEL = "ـ"
 ALEF = str.maketrans({"أ": "ا", "إ": "ا", "آ": "ا", "ٱ": "ا"})
 DIGITS = str.maketrans("٠١٢٣٤٥٦٧٨٩۰۱۲۳۴۵۶۷۸۹", "01234567890123456789")
 # Punctuation (Arabic and Latin, brackets, quotation marks, dashes) is removed with the spaces around it.
-PUNCT = re.compile(r"[،؛؟٪-٭۔.,;:!?()\[\]{}«»\"'“”‘’\-–—_/\\*…]+")
+# The Journal of 1975 prints its full stops as a bullet or a middle dot («•», «·»): punctuation too.
+PUNCT = re.compile(r"[،؛؟٪-٭۔.,;:!?()\[\]{}«»\"'“”‘’\-–—_/\\*…•·]+")
 NEGATIONS = ("لا", "لم", "لن", "ليس", "غير", "إلا", "ما لم", "دون")
 
 

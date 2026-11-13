@@ -63,3 +63,8 @@ def test_level_2s_spaces_between_words_only():
     assert textcmp.level("و79", "و 78") == "none"
     # paragraph division is not a space: level 3, not 2s
     assert textcmp.level("الأولى.\nالثانية.", "الأولى. الثانية.") == "3"
+
+
+def test_the_1975_bullet_full_stop_is_punctuation():
+    assert textcmp.level("نص الحكم •", "نص الحكم .") in ("1", "2")
+    assert textcmp.level("الرئيسية· ويجب", "الرئيسية ويجب") == "2"

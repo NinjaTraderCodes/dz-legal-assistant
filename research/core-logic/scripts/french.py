@@ -57,6 +57,9 @@ def numbers(text: str) -> Counter:
     separators are joined («100.000» is one number); the k of «N مكرر k» is dropped, since the French writes it as a
     word (ter, quater, …)."""
     t = text.translate(DIGITS)
+    # Hijri dates («22 جمادى الثانية عام 1411») are printed in the Arabic only; the French gives the Gregorian date.
+    t = re.sub(r"\d+\s+(?:محرم|صفر|ربيع الأول|ربيع الثاني|ربيع الآخر|جمادى الأولى|جمادى الثانية|جمادى الآخرة|رجب|شعبان|"
+               r"رمضان|شوال|ذي القعدة|ذو القعدة|ذي الحجة|ذو الحجة)\s+عام\s+\d+", " ", t)
     t = re.sub(r"(\d+)\s*مكرر\s*\d+", r"\1", t)
     t = re.sub(r"\b(\d{1,3}(?:[.\s ]\d{3})+)\b", lambda m: re.sub(r"[.\s ]", "", m.group(1)), t)
     return Counter(int(x) for x in re.findall(r"\d+", t))

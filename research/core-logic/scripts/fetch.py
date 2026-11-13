@@ -128,6 +128,8 @@ def compare(batch: str, job_name: str) -> list[dict]:
         if s_fills or c_fills:
             row["filled"] = {"first": [f["filled"] for f in s_fills], "second": [f["filled"] for f in c_fills],
                              "settledBy": (s_fills or c_fills)[0]["settledBy"]}
+        if row["result"] == "differ":
+            apply_settlements(f"{job['batch']}/{job_name}", row, s_read)
         rows.append(row)
     with open(os.path.join(folder, f"{job_name}.fetch.json"), "w", encoding="utf-8", newline="\n") as f:
         json.dump(rows, f, ensure_ascii=False, indent=1)
@@ -144,6 +146,111 @@ def main(argv: list[str] | None = None) -> int:
         for r in compare(argv[1], argv[2]):
             print(r["article"], r["result"], r["level"], [(d.get("first", "")[:40], d.get("second", "")[:40]) for d in r["differences"]])
     return 0
+
+
+
+# --- settling the differences between the two readings of a missing article -------------------------------------
+SETTLEMENTS = os.path.join(rd.JOBS, "fetch-settlements.jsonl")
+
+
+def orthographic(a: str, b: str) -> bool:
+    return textcmp.level(a or "", b or "") in AGREE
+
+
+def settle_prep(name: str, jobs: list[tuple[str, str]]) -> dict:
+    """Every non-orthographic difference of the given (batch, job) comparisons goes to one settle run: the two words as X
+    and Y in random order (which reader wrote which is not shown), both columns of every page at 600 dpi."""
+    entries = []
+    for batch, job_name in jobs:
+        job = rd.load(rd.job_path(batch, job_name))
+        bands = rd.column_bands(job)
+        for r in rd.load(os.path.join(rd.JOBS, batch, f"{job_name}.fetch.json")):
+            if r["result"] != "differ":
+                continue
+            for d in r["differences"]:
+                if d["kind"] == "words" and orthographic(d["first"], d["second"]):
+                    continue
+                entries.append({"job": job, "bands": bands, "article": r["article"], "paragraph": None,
+                                "kind": d["kind"], "store": d["first"], "reading": d["second"],
+                                "before": d.get("before", ""), "after": d.get("after", "")})
+    items, key = rd.settle_items(entries, name)
+    for k, e in zip(key, entries):  # in this path "store" means the first reading and "reading" the second
+        k.update(job=f"{e['job']['batch']}/{e['job']['job']}", first=k.pop("storeWords"), second=k.pop("readingWords"))
+        k["X"] = {"store": "first", "reading": "second"}[k["X"]]
+        k["Y"] = {"store": "first", "reading": "second"}[k["Y"]]
+    out = os.path.join(rd.JOBS, f"settle-{name}")
+    os.makedirs(out, exist_ok=True)
+    with open(os.path.join(out, "prompt.txt"), "w", encoding="utf-8", newline="\n") as f:
+        f.write(rd.settle_prompt(items))
+    images = sorted({b for e in entries for b in e["bands"]} | {im["path"] for e in entries for im in e["job"]["images"]})
+    with open(os.path.join(out, "key.json"), "w", encoding="utf-8", newline="\n") as f:
+        json.dump({"key": key, "images": images}, f, ensure_ascii=False, indent=1)
+    return {"items": len(entries), "images": len(images), "folder": out}
+
+
+def settle_record(name: str, agent_id: str, settler: str = "claude-opus-5-5") -> list[dict]:
+    folder = os.path.join(rd.JOBS, f"settle-{name}")
+    key = rd.load(os.path.join(folder, "key.json"))
+    got = rd.collect({"images": []}, agent_id, allowed_images=key["images"])
+    if got["problems"]:
+        raise ValueError(f"discard the settle run: {got['problems']}")
+    with open(os.path.join(folder, "answer.raw.txt"), "w", encoding="utf-8", newline="\n") as f:
+        f.write(got["answerText"])
+    answer, _ = rd.first_json(got["answerText"])
+    out = []
+    with open(SETTLEMENTS, "a", encoding="utf-8", newline="\n") as f:
+        for k, a in zip(key["key"], answer):
+            printed = a.get("printed", a.get("decision", a.get("choice")))
+            side = k[printed] if printed in ("X", "Y") else "neither"
+            row = {"job": k["job"], "article": k["article"], "first": k["first"], "second": k["second"], "printed": side,
+                   "words": a.get("words", ""), "sure": bool(a.get("sure")), "seen": a.get("seen", ""), "by": settler,
+                   "run": f"settle-{name}", "agent": agent_id}
+            f.write(json.dumps(row, ensure_ascii=False) + "\n")
+            out.append(row)
+    return out
+
+
+def settled_words(job_key: str, article: str, d: dict) -> str | None:
+    """The words the page prints for one difference, if a sure settlement exists (the latest run wins)."""
+    if not os.path.exists(SETTLEMENTS):
+        return None
+    with open(SETTLEMENTS, encoding="utf-8") as f:
+        rows = [json.loads(line) for line in f if line.strip()]
+    for s in reversed(rows):
+        if s["job"] == job_key and s["article"] == article and s["first"] == d["first"] and s["second"] == d["second"]:
+            if not s["sure"]:
+                return None
+            return {"first": d["first"], "second": d["second"]}.get(s["printed"], s["words"])
+    return None
+
+
+def apply_settlements(job_key: str, row: dict, first: dict) -> None:
+    """Every real difference settled, sure -> the article is settled by a third reading; its text is the first reading
+    with each difference replaced by what the page prints. Orthographic differences keep the first reading's spelling."""
+    paras = list(first["paragraphs"])
+    for d in row["differences"]:
+        if d["kind"] == "words" and orthographic(d["first"], d["second"]):
+            continue
+        words = settled_words(job_key, row["article"], d)
+        if words is None:
+            return
+        if d["kind"] != "words":
+            return  # a paragraph-division difference is settled by hand, not by replacement
+        if d["first"]:
+            hit = next((i for i, p in enumerate(paras) if d["first"] in p), None)
+            if hit is None:
+                return
+            paras[hit] = paras[hit].replace(d["first"], words, 1)
+        else:  # the first reading lacks words the page prints: insert after the context
+            ctx = (d.get("before") or "").split()[-3:]
+            anchor = " ".join(ctx)
+            hit = next((i for i, p in enumerate(paras) if anchor and anchor in p), None)
+            if hit is None:
+                return
+            paras[hit] = paras[hit].replace(anchor, f"{anchor} {words}", 1)
+        d["settled"] = words
+    row["result"] = "settled"
+    row["settledParagraphs"] = paras
 
 
 if __name__ == "__main__":

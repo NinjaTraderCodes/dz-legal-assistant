@@ -78,3 +78,25 @@ def test_a_fill_replaces_only_the_marked_gap_and_names_its_source(tmp_path, monk
     assert out["paragraphs"] == ["في المادتين 169 و 170"] and out["unreadable"] == [] and used
     other, none = fetch.apply_fills({"code": "commercial-code", "version": "w"}, r)
     assert other is r and not none
+
+
+def test_a_settled_difference_replaces_the_first_readings_words(tmp_path, monkeypatch):
+    import json
+    import fetch
+    f = tmp_path / "s.jsonl"
+    f.write_text(json.dumps({"job": "b/j", "article": "337", "first": "لصلحته", "second": "لمصلحته", "printed": "first",
+                             "words": "لصلحته", "sure": True, "seen": "x", "by": "o"}, ensure_ascii=False) + "\n", encoding="utf-8")
+    monkeypatch.setattr(fetch, "SETTLEMENTS", str(f))
+    row = {"article": "337", "result": "differ", "differences": [
+        {"kind": "words", "first": "لصلحته", "second": "لمصلحته"}, {"kind": "words", "first": "مالم", "second": "ما لم"}]}
+    fetch.apply_settlements("b/j", row, {"paragraphs": ["تغني من تقررت لصلحته مالم يوجد نص"]})
+    assert row["result"] == "settled" and row["settledParagraphs"] == ["تغني من تقررت لصلحته مالم يوجد نص"]
+    row2 = {"article": "343", "result": "differ", "differences": [{"kind": "words", "first": "يجوز", "second": "تجوز"}]}
+    fetch.apply_settlements("b/j", row2, {"paragraphs": ["يجوز"]})
+    assert row2["result"] == "differ"  # not settled yet
+
+
+def test_hijri_dates_are_left_out_of_the_french_number_check():
+    import french
+    ar = "القانون رقم 91-02 المؤرخ في 22 جمادى الثانية عام 1411 الموافق 8 يناير سنة 1991"
+    assert french.check(ar, "la loi n° 91-02 du 8 janvier 1991")["equal"]

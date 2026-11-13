@@ -142,6 +142,14 @@ def text_as_of(code: str, version: str) -> str:
     return f"19{m.group(1)}" if m and int(m.group(1)) > 50 else (f"20{m.group(1)}" if m else "unknown")
 
 
+# Codes the app's library does not have (law/README.md, "Corrections for the library": a new code id needs `newCode`).
+NEW_CODES = {
+    "law-22-13": {"citationName": "القانون رقم 22-13",
+                  "reference": "القانون رقم 22-13 المؤرخ في 13 ذي الحجة عام 1443 الموافق 12 يوليو سنة 2022، يعدل ويتمم "
+                               "القانون رقم 08-09 المتضمن قانون الإجراءات المدنية والإدارية (ج.ر. عدد 48 لسنة 2022)"},
+}
+
+
 def entry(batch: str, job_name: str, article: str, text_paragraphs: list[str] | None = None,
           composed_note: str | None = None) -> tuple[dict | None, str]:
     job = rd.load(rd.job_path(batch, job_name))
@@ -153,7 +161,7 @@ def entry(batch: str, job_name: str, article: str, text_paragraphs: list[str] | 
     s = next(a for a in rd.load(os.path.join(folder, f"{job_name}.sonnet.json"))["articles"] if a["article"] == article)
     c = next(a for a in rd.load(os.path.join(folder, f"{job_name}.codex.json"))["articles"] if a["article"] == article)
     s, used_fills = fetch.apply_fills(job, s)
-    paragraphs = text_paragraphs or s["paragraphs"]
+    paragraphs = text_paragraphs or row.get("settledParagraphs") or s["paragraphs"]
     text = "\n".join(paragraphs)
     fr = french_check(job, article, text)
     if fr["status"] == "pending":
@@ -199,6 +207,8 @@ def entry(batch: str, job_name: str, article: str, text_paragraphs: list[str] | 
                     "retrievedOn": retrieved_on(job["source"]["url"], job["source"]["localPdf"])},
          "version": version, "textAsOf": text_as_of(code, version), "proof": proof,
          "neededBy": needed_by(code, article)}
+    if code in NEW_CODES:
+        e["newCode"] = NEW_CODES[code]
     if note:
         e["note"] = " ".join(note)
     return e, "ok"

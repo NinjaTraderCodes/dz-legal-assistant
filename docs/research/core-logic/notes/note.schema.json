@@ -1,0 +1,417 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "note.schema.json",
+  "title": "One lawyer note with its gold answer and its history",
+  "description": "One JSON object per line in a .jsonl file. The same shape for training, development, mirror, challenge, clean and hidden notes. Writers and judges give quotes; the script build-spans adds the positions. Only the keywords type, properties, required, additionalProperties, items, enum, const and $ref are used.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "set",
+    "text",
+    "gold",
+    "provenance",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Stable and meaningless: n-000123. Never encodes the claim type."
+    },
+    "set": {
+      "enum": [
+        "train",
+        "dev",
+        "mirror",
+        "challenge",
+        "clean",
+        "composed",
+        "pilot",
+        "crossCheck",
+        "hiddenV3"
+      ]
+    },
+    "text": {
+      "$ref": "#/$defs/text"
+    },
+    "gold": {
+      "$ref": "#/$defs/labels",
+      "description": "The agreed answer: what writer and judge both gave. In a training note, a field they disagreed on is absent from gold and listed in blanked."
+    },
+    "blanked": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Training notes only. Paths of the fields left without a label, as specs/notes-pipeline.md (section 5) lists them: events/<claim>/<kind>/polarity, events/<claim>/<kind>/date, slots/<id>, requests, values. The claim type is never blanked: a disagreement on it drops the note."
+    },
+    "provenance": {
+      "$ref": "#/$defs/provenance"
+    },
+    "status": {
+      "enum": [
+        "kept",
+        "keptWithBlanks",
+        "dropped",
+        "rewritten"
+      ]
+    },
+    "dropReason": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "text": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "facts"
+      ],
+      "properties": {
+        "subject": {
+          "type": "string"
+        },
+        "facts": {
+          "type": "string"
+        },
+        "requests": {
+          "type": "string"
+        },
+        "documents": {
+          "type": "string"
+        }
+      }
+    },
+    "quote": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "field",
+        "quote"
+      ],
+      "properties": {
+        "field": {
+          "enum": [
+            "subject",
+            "facts",
+            "requests",
+            "documents"
+          ]
+        },
+        "quote": {
+          "type": "string",
+          "description": "Exact words of the note, copied letter for letter."
+        },
+        "occurrence": {
+          "type": "integer",
+          "description": "1-based, when the words occur more than once in the field. Default 1."
+        },
+        "start": {
+          "type": "integer",
+          "description": "SCRIPT: UTF-16 offset in the field."
+        },
+        "length": {
+          "type": "integer",
+          "description": "SCRIPT."
+        }
+      }
+    },
+    "value": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "at"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "date",
+            "amount"
+          ]
+        },
+        "at": {
+          "$ref": "#/$defs/quote"
+        },
+        "normalized": {
+          "type": "string",
+          "description": "yyyy-mm-dd, yyyy-mm or yyyy for a date; digits for an amount, in dinars, with two decimals after a point only for a real fraction. Absent when the guide gives no normalised form. A judge may answer unclear."
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Event kinds, request kinds or slot ids; empty for none."
+        },
+        "relative": {
+          "type": "boolean"
+        },
+        "calendar": {
+          "enum": [
+            "gregorian",
+            "hijri"
+          ]
+        },
+        "currency": {
+          "type": "string"
+        },
+        "amountDisputed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claim",
+        "kind",
+        "polarity"
+      ],
+      "properties": {
+        "claim": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "polarity": {
+          "enum": [
+            "stated",
+            "denied",
+            "disputed",
+            "notMentioned",
+            "unclear",
+            "blanked"
+          ],
+          "description": "unclear is a judge's answer only; it never appears in gold. blanked appears only in the gold of a training note: writer and judge disagreed on this element, so it carries no label (it is not notMentioned) and is listed in blanked."
+        },
+        "actor": {
+          "enum": [
+            "plaintiff",
+            "defendant",
+            "other",
+            "unknown"
+          ]
+        },
+        "disputedBy": {
+          "enum": [
+            "plaintiff",
+            "defendant",
+            "other"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/quote"
+          }
+        },
+        "date": {
+          "$ref": "#/$defs/value"
+        },
+        "amount": {
+          "$ref": "#/$defs/value"
+        }
+      }
+    },
+    "slot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "slot",
+        "value"
+      ],
+      "properties": {
+        "slot": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "description": "yes, no, unknown, a normalised date, digits, a choice id; unclear for a judge; blanked in the gold of a training note when writer and judge disagreed."
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/quote"
+          }
+        }
+      }
+    },
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "evidence"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string"
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/quote"
+          }
+        },
+        "amount": {
+          "$ref": "#/$defs/value"
+        }
+      }
+    },
+    "labels": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claims",
+        "events",
+        "slots",
+        "requests",
+        "values"
+      ],
+      "properties": {
+        "claims": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Claim ids, or the single value outside. A judge may answer unclear."
+        },
+        "outsideKind": {
+          "type": "string"
+        },
+        "claimEvidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/quote"
+          }
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/event"
+          },
+          "description": "One entry for EVERY element of every labelled claim type, notMentioned included."
+        },
+        "slots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/slot"
+          },
+          "description": "One entry for every slot with readFromNote true."
+        },
+        "requests": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/request"
+          }
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/value"
+          },
+          "description": "Every date and amount of the note."
+        }
+      }
+    },
+    "party": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "family",
+        "model",
+        "date"
+      ],
+      "properties": {
+        "family": {
+          "enum": [
+            "openai",
+            "anthropic",
+            "local",
+            "code"
+          ]
+        },
+        "model": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        },
+        "call": {
+          "type": "string",
+          "description": "The id of the writing or judging call: for Codex the event-log file name; for a Claude agent the batch id. Notes of one call never sit on both sides of a split."
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "writer",
+        "trainingAllowed",
+        "composedByCode"
+      ],
+      "properties": {
+        "writer": {
+          "$ref": "#/$defs/party"
+        },
+        "judges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/party"
+          }
+        },
+        "scenario": {
+          "type": "string",
+          "description": "The scenario id of the sampler; absent for hidden v3 (its writers use their own plan)."
+        },
+        "scenarioFamily": {
+          "type": "string",
+          "description": "Notes of one family never sit on both sides of a split."
+        },
+        "styleCard": {
+          "type": "string"
+        },
+        "polarityFamily": {
+          "type": "string",
+          "description": "For notes written as a group that differs only in polarity: the group id. A group is never split."
+        },
+        "trainingAllowed": {
+          "type": "boolean",
+          "description": "False when the terms report of step 3 says the writer's outputs may be used for research and testing only."
+        },
+        "composedByCode": {
+          "type": "boolean",
+          "description": "True for a note assembled by code from short phrases. Such notes are capped at a quarter of any training set and never enter a test set."
+        },
+        "guideVersion": {
+          "type": "string"
+        },
+        "writerLabels": {
+          "$ref": "#/$defs/labels"
+        },
+        "judgeLabels": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/labels"
+          }
+        },
+        "samplerCommit": {
+          "type": "string",
+          "description": "The commit of the sampler that drew the scenario; absent for sets that do not use the sampler."
+        },
+        "seed": {
+          "type": "string",
+          "description": "The sampler seed."
+        },
+        "schemeVersion": {
+          "type": "string",
+          "description": "The commit that froze the label scheme (notes/SCHEME.md)."
+        }
+      }
+    }
+  }
+}

@@ -26,4 +26,4 @@ dotnet test  research/core-logic/CoreLogic.sln -c Release # all green
 - A new package goes in `research/core-logic/Directory.Packages.props`, never in a project file and never in the root list. Check first that its licence allows commercial redistribution, and record it in the handbook.
 - Projects here may **read** the app's projects (a project reference). They never change them.
 - No folder may be named `bench…`: the repository's `.gitignore` hides such folders.
-- Nothing here loads anything from the internet at run time, and nothing reads a hidden test set.
+- Nothing the reader or the evaluator runs loads anything from the internet, and nothing reads a hidden test set. The one exception is a research tool, not part of what the app would ship: `scripts/oj_fetch.py`, the single door to `joradp.dz` for the Official Journal scan.

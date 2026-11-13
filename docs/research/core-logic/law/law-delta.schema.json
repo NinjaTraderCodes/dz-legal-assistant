@@ -1,0 +1,496 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "law-delta.schema.json",
+  "title": "The law delta: what the rule records need that the app's library and Codex's corpus do not give",
+  "description": "One file, law-delta.json. Three lists: articles that are missing (in the library's own format, with the proof of their reading), corrections for Codex's corpus (in the shape of its own conflict records), corrections for the app's library. Only the keywords type, properties, required, additionalProperties, items, enum, const and $ref are used. The file law/unused-articles.json (articles fetched and read that no final record cites) has the same shape.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "builtOn",
+    "corpusCommit",
+    "libraryCommit",
+    "articles",
+    "corpusCorrections",
+    "libraryCorrections"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0"
+    },
+    "builtOn": {
+      "type": "string",
+      "description": "yyyy-mm-dd"
+    },
+    "corpusCommit": {
+      "type": "string",
+      "description": "The commit of codex/law-corpus the delta was checked against (9b60990 unless the owner names a newer one)."
+    },
+    "libraryCommit": {
+      "type": "string",
+      "description": "The commit of fable/core-logic whose data/law/codes was read."
+    },
+    "articles": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/article"
+      }
+    },
+    "corpusCorrections": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/corpusCorrection"
+      }
+    },
+    "libraryCorrections": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/libraryCorrection"
+      }
+    }
+  },
+  "$defs": {
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "url",
+        "sha256",
+        "retrievedOn"
+      ],
+      "description": "The same three fields as the library's own source object.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "The Official Journal issue (joradp.dz) or the official consolidated text."
+        },
+        "sha256": {
+          "type": "string",
+          "description": "SHA-256 of the downloaded file."
+        },
+        "retrievedOn": {
+          "type": "string",
+          "description": "yyyy-mm-dd"
+        }
+      }
+    },
+    "reading": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "by",
+        "model",
+        "date",
+        "imageSha256s",
+        "textSha256"
+      ],
+      "properties": {
+        "by": {
+          "enum": [
+            "first",
+            "second",
+            "third"
+          ]
+        },
+        "model": {
+          "type": "string",
+          "description": "The exact model id: claude-sonnet-5-5, claude-opus-5-5, or for Codex the model named in the call's event log; when the log names none, \"codex-cli <version> (default model)\"."
+        },
+        "date": {
+          "type": "string"
+        },
+        "imageSha256s": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The page images the reader was given."
+        },
+        "textSha256": {
+          "type": "string",
+          "description": "SHA-256 of the text this reader returned, before any comparison."
+        },
+        "codexLog": {
+          "type": "string",
+          "description": "For a Codex reading: the file name of the call's event log (specs/codex-calls.md)."
+        }
+      }
+    },
+    "proof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pdfPage",
+        "printedPage",
+        "readings",
+        "agreement",
+        "frenchChecked"
+      ],
+      "properties": {
+        "pdfPage": {
+          "type": "integer"
+        },
+        "printedPage": {
+          "type": "integer"
+        },
+        "dpi": {
+          "type": "integer"
+        },
+        "readings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reading"
+          }
+        },
+        "agreement": {
+          "enum": [
+            "twoAgree",
+            "settledByThird"
+          ],
+          "description": "twoAgree: the first two readings are the same letters (level 2 of specs/article-store.md). settledByThird: they differed and a third reader, shown the image and both readings, settled each difference."
+        },
+        "differences": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/difference"
+          }
+        },
+        "frenchChecked": {
+          "type": "boolean",
+          "description": "True when every number, period and article number of the Arabic text was found equal in the French edition of the same issue."
+        },
+        "french": {
+          "$ref": "#/$defs/source"
+        },
+        "frenchPdfPage": {
+          "type": "integer"
+        },
+        "numbers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The numbers and periods compared with the French edition, as written in Arabic."
+        },
+        "consolidatedPdf": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status"
+          ],
+          "description": "Civil and Commercial Code only: the comparison with the official consolidated PDF of 2007, at level 2 (the same letters; the consolidated text modernises some spellings, so level 1 is not required).",
+          "properties": {
+            "status": {
+              "enum": [
+                "sameLetters",
+                "differs",
+                "notInConsolidated"
+              ],
+              "description": "notInConsolidated: the wording is later than the consolidation, or an older wording it no longer prints."
+            },
+            "note": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "difference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "first",
+        "second",
+        "settled",
+        "reason"
+      ],
+      "properties": {
+        "first": {
+          "type": "string"
+        },
+        "second": {
+          "type": "string"
+        },
+        "settled": {
+          "type": "string",
+          "description": "The words kept."
+        },
+        "reason": {
+          "type": "string",
+          "description": "What the third reader saw on the image."
+        },
+        "kind": {
+          "enum": [
+            "word",
+            "digit",
+            "paragraphDivision",
+            "spellingOnly"
+          ],
+          "description": "spellingOnly: a hamza seat or another spelling habit of the printing; recorded, never a correction."
+        },
+        "paragraph": {
+          "type": "integer"
+        }
+      }
+    },
+    "article": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "number",
+        "text",
+        "page",
+        "source",
+        "version",
+        "textAsOf",
+        "proof",
+        "neededBy"
+      ],
+      "description": "code plus the library's own article fields (number, path, text, repealed, amendedBy, page, source, note), plus version, textAsOf, proof and neededBy. The app's loader ignores the fields it does not know.",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "An existing code id (the article is merged into that file), or a new id for a text the library does not have (then newCode is required)."
+        },
+        "newCode": {
+          "$ref": "#/$defs/newCode"
+        },
+        "number": {
+          "type": "string",
+          "description": "Canonical number."
+        },
+        "path": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "text": {
+          "type": "string",
+          "description": "The article as printed, paragraphs separated by a line break. Modern spelling is NOT applied: the words and letters of the page."
+        },
+        "repealed": {
+          "type": "boolean"
+        },
+        "amendedBy": {
+          "type": "string",
+          "description": "As in the library: one string naming the amending text (for example «القانون رقم 22-13 المؤرخ في 12 يوليو 2022»)."
+        },
+        "page": {
+          "type": "integer",
+          "description": "As in the library: the page of the SOURCE DOCUMENT the text was read from (for an Official Journal issue, the PDF page). The printed page number is in proof.printedPage."
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "note": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string",
+          "description": "The publication that gives this wording: ordinance-75-58, law-05-10, law-22-13 ..."
+        },
+        "textAsOf": {
+          "type": "string",
+          "description": "yyyy-mm-dd: the date up to which the Official Journal scan looked for a later amendment."
+        },
+        "proof": {
+          "$ref": "#/$defs/proof"
+        },
+        "neededBy": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The rule records that cite the article."
+        },
+        "governs": {
+          "$ref": "#/$defs/governs"
+        },
+        "supersededWording": {
+          "type": "boolean",
+          "description": "True for an older wording that still governs some cases (the same number has a newer wording in force). It is delivered for the rule records' quotes and is NOT merged into the app's code file, whose loader refuses a number that appears twice; the reviewer decides how the library holds two wordings."
+        }
+      }
+    },
+    "newCode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "citationName",
+        "reference"
+      ],
+      "properties": {
+        "citationName": {
+          "type": "string"
+        },
+        "reference": {
+          "type": "string"
+        }
+      }
+    },
+    "officialSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "url",
+        "pdfPage"
+      ],
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "pdfPage": {
+          "type": "integer"
+        }
+      }
+    },
+    "corpusCorrection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reviewedOn",
+        "article",
+        "kind",
+        "currentWitness",
+        "originalArabic",
+        "officialSources",
+        "finding",
+        "exactWording",
+        "verificationEffect",
+        "readings"
+      ],
+      "description": "The fields of Codex's own conflict records (reviewedOn, article, currentWitness, originalArabic, originalFrench, officialSources, queries, officialIndex, finding, verificationEffect), plus kind, exactWording and readings.",
+      "properties": {
+        "reviewedOn": {
+          "type": "string"
+        },
+        "article": {
+          "type": "string",
+          "description": "The corpus id: civil-code:309."
+        },
+        "kind": {
+          "enum": [
+            "wording",
+            "missingVersion",
+            "wrongStatus",
+            "missingArticle",
+            "paragraphDivision",
+            "stateTooHigh",
+            "stateTooLow"
+          ]
+        },
+        "currentWitness": {
+          "type": "string",
+          "description": "What the corpus holds today (the version id and the words in question)."
+        },
+        "originalArabic": {
+          "type": "string",
+          "description": "What the Official Journal page prints."
+        },
+        "originalFrench": {
+          "type": "string"
+        },
+        "officialSources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/officialSource"
+          }
+        },
+        "queries": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "officialIndex": {
+          "type": "string"
+        },
+        "finding": {
+          "type": "string",
+          "description": "One or two plain sentences: what is wrong and how it was seen."
+        },
+        "exactWording": {
+          "type": "string",
+          "description": "The exact text the corpus should hold after the correction (the whole paragraph)."
+        },
+        "verificationEffect": {
+          "type": "string",
+          "description": "What the correction does to the article's state, in Codex's own terms."
+        },
+        "readings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reading"
+          }
+        }
+      }
+    },
+    "libraryCorrection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "article",
+        "kind",
+        "finding",
+        "source",
+        "integration"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "article": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "repealedStillPresent",
+            "wording",
+            "outdatedVersion",
+            "missingAmendedBy",
+            "wrongParagraphs"
+          ]
+        },
+        "finding": {
+          "type": "string"
+        },
+        "exactWording": {
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "pdfPage": {
+          "type": "integer"
+        },
+        "integration": {
+          "type": "string",
+          "description": "What the integrator must change: which generator input (curated-articles.json, transcribed-articles.json, the corpus import) and which tests guard it."
+        }
+      }
+    },
+    "governs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ar",
+        "en"
+      ],
+      "description": "For an article with more than one wording: which cases this wording governs, with the transitional text that says so.",
+      "properties": {
+        "ar": {
+          "type": "string"
+        },
+        "en": {
+          "type": "string"
+        },
+        "transitionalCite": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

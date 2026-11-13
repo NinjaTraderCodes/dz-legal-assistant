@@ -45,7 +45,6 @@ public enum FindingKind
     Exit,
     Document,
     Boundary,
-    Limit,
 }
 
 /// <summary>One thing the rules have to say about the case.</summary>
@@ -67,6 +66,13 @@ public sealed record RuleFinding
 
     /// <summary>"A" to "D"; "D" when the item carries no grading yet.</summary>
     public required string Grade { get; init; }
+
+    /// <summary>
+    /// True for a grade D item: the app shows the finding as a warning with the mark "to check". Never weaker than a warning:
+    /// a finding with this mark has <see cref="Effect"/> = <see cref="FindingEffect.Warn"/> wherever its item declares a warning
+    /// or a block.
+    /// </summary>
+    public required bool ToCheck { get; init; }
 
     /// <summary>The text for the lawyer, from the record. Arabic and English, like every text that lives in data.</summary>
     public required LocalizedText Message { get; init; }

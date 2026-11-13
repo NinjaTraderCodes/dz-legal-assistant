@@ -4,9 +4,17 @@
     {
       "id": "notice_served",
       "type": "yesNoUnknown",
-      "question": { "ar": "هل وُجّه إعذار إلى المدعى عليه قبل رفع الدعوى؟", "en": "Was a formal notice sent to the defendant before the claim?" },
-      "help": { "ar": "الإعذار: إنذار رسمي بالوفاء أو بالتنفيذ، عادة عن طريق محضر قضائي.", "en": "A formal notice: an official demand to pay or to perform, usually served by a bailiff." },
-      "askedFor": ["*"],
+      "question": {
+        "ar": "هل وُجّه إعذار إلى المدعى عليه قبل رفع الدعوى؟",
+        "en": "Was a formal notice sent to the defendant before the claim?"
+      },
+      "help": {
+        "ar": "الإعذار: إنذار رسمي بالوفاء أو بالتنفيذ، عادة عن طريق محضر قضائي.",
+        "en": "A formal notice: an official demand to pay or to perform, usually served by a bailiff."
+      },
+      "askedFor": [
+        "*"
+      ],
       "fromEvent": "notice_served",
       "readFromNote": true,
       "origin": "brief"
@@ -14,9 +22,17 @@
     {
       "id": "notice_date",
       "type": "date",
-      "question": { "ar": "ما تاريخ تبليغ الإعذار؟", "en": "On what date was the formal notice served?" },
-      "askedFor": ["*"],
-      "askedWhen": { "slot": "notice_served", "is": "yes" },
+      "question": {
+        "ar": "ما تاريخ تبليغ الإعذار؟",
+        "en": "On what date was the formal notice served?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "askedWhen": {
+        "slot": "notice_served",
+        "is": "yes"
+      },
       "fromEvent": "notice_served",
       "readFromNote": true,
       "origin": "brief"
@@ -24,22 +40,54 @@
     {
       "id": "notice_means",
       "type": "choice",
-      "question": { "ar": "بأي وسيلة وُجّه الإعذار؟", "en": "By what means was the formal notice sent?" },
+      "question": {
+        "ar": "بأي وسيلة وُجّه الإعذار؟",
+        "en": "By what means was the formal notice sent?"
+      },
       "choices": [
-        { "id": "bailiff", "label": { "ar": "محضر قضائي", "en": "A bailiff" } },
-        { "id": "registered_letter", "label": { "ar": "رسالة مضمونة مع إشعار بالاستلام", "en": "A registered letter with acknowledgement of receipt" } },
-        { "id": "other", "label": { "ar": "وسيلة أخرى", "en": "Another means" } }
+        {
+          "id": "bailiff",
+          "label": {
+            "ar": "محضر قضائي",
+            "en": "A bailiff"
+          }
+        },
+        {
+          "id": "registered_letter",
+          "label": {
+            "ar": "رسالة مضمونة مع إشعار بالاستلام",
+            "en": "A registered letter with acknowledgement of receipt"
+          }
+        },
+        {
+          "id": "other",
+          "label": {
+            "ar": "وسيلة أخرى",
+            "en": "Another means"
+          }
+        }
       ],
-      "askedFor": ["*"],
-      "askedWhen": { "slot": "notice_served", "is": "yes" },
+      "askedFor": [
+        "*"
+      ],
+      "askedWhen": {
+        "slot": "notice_served",
+        "is": "yes"
+      },
       "readFromNote": true,
       "origin": "brief"
     },
     {
       "id": "nonconciliation_record",
       "type": "yesNoUnknown",
-      "question": { "ar": "هل حرر مكتب المصالحة محضرا بعدم المصالحة؟", "en": "Did the conciliation office draw up a record of non-conciliation?" },
-      "askedFor": ["abusive-dismissal", "unpaid-wages"],
+      "question": {
+        "ar": "هل حرر مكتب المصالحة محضرا بعدم المصالحة؟",
+        "en": "Did the conciliation office draw up a record of non-conciliation?"
+      },
+      "askedFor": [
+        "abusive-dismissal",
+        "unpaid-wages"
+      ],
       "fromEvent": "conciliation_failed",
       "readFromNote": true,
       "origin": "brief"
@@ -47,44 +95,78 @@
     {
       "id": "nonconciliation_record_delivered_on",
       "type": "date",
-      "question": { "ar": "ما تاريخ تسليم محضر عدم المصالحة؟", "en": "On what date was the non-conciliation record delivered?" },
-      "help": { "ar": "تاريخ التسليم، لا تاريخ الجلسة: منه يبدأ أجل الستة أشهر.", "en": "The date of delivery, not the date of the hearing: the six-month period runs from it." },
-      "askedFor": ["abusive-dismissal", "unpaid-wages"],
-      "askedWhen": { "slot": "nonconciliation_record", "is": "yes" },
-      "fromEvent": "conciliation_failed",
+      "question": {
+        "ar": "ما تاريخ تسليم محضر عدم المصالحة؟",
+        "en": "On what date was the non-conciliation record delivered?"
+      },
+      "help": {
+        "ar": "تاريخ التسليم، لا تاريخ المحضر ولا تاريخ الجلسة.",
+        "en": "The date of delivery, not the date of the record or of the hearing."
+      },
+      "askedFor": [
+        "abusive-dismissal",
+        "unpaid-wages"
+      ],
+      "askedWhen": {
+        "slot": "nonconciliation_record",
+        "is": "yes"
+      },
       "readFromNote": true,
       "origin": "brief"
     },
     {
       "id": "contract_date",
       "type": "date",
-      "question": { "ar": "ما تاريخ إبرام العقد؟", "en": "On what date was the contract made?" },
-      "help": { "ar": "في الإيجار التجاري يحدد هذا التاريخ النظام المطبق: قبل تعديل 2005 أو بعده.", "en": "For a commercial lease this date decides which regime applies: before or after the 2005 reform." },
-      "askedFor": ["*"],
+      "question": {
+        "ar": "ما تاريخ إبرام العقد؟",
+        "en": "On what date was the contract made?"
+      },
+      "help": {
+        "ar": "في الإيجار التجاري يحدد هذا التاريخ النظام المطبق: قبل تعديل 2005 أو بعده.",
+        "en": "For a commercial lease this date decides which regime applies: before or after the 2005 reform."
+      },
+      "askedFor": [
+        "*"
+      ],
       "readFromNote": true,
       "origin": "brief"
     },
     {
       "id": "public_body_party",
       "type": "yesNoUnknown",
-      "question": { "ar": "هل أحد الأطراف هو الدولة أو ولاية أو بلدية أو مؤسسة عمومية ذات طابع إداري؟", "en": "Is one of the parties the State, a wilaya, a commune or a public administrative body?" },
-      "askedFor": ["*"],
+      "question": {
+        "ar": "هل أحد الأطراف هو الدولة أو ولاية أو بلدية أو مؤسسة عمومية ذات طابع إداري؟",
+        "en": "Is one of the parties the State, a wilaya, a commune or a public administrative body?"
+      },
+      "askedFor": [
+        "*"
+      ],
       "readFromNote": true,
       "origin": "brief"
     },
     {
       "id": "property_registered",
       "type": "yesNoUnknown",
-      "question": { "ar": "هل العقار مشهر بالمحافظة العقارية؟", "en": "Is the property published at the land registry?" },
-      "askedFor": ["*"],
+      "question": {
+        "ar": "هل العقار مشهر بالمحافظة العقارية؟",
+        "en": "Is the property published at the land registry?"
+      },
+      "askedFor": [
+        "*"
+      ],
       "readFromNote": true,
       "origin": "brief"
     },
     {
       "id": "wages_due_from",
       "type": "date",
-      "question": { "ar": "ما تاريخ استحقاق أقدم أجر مطالب به؟", "en": "On what date did the oldest wage claimed fall due?" },
-      "askedFor": ["unpaid-wages"],
+      "question": {
+        "ar": "ما تاريخ استحقاق أقدم أجر مطالب به؟",
+        "en": "On what date did the oldest wage claimed fall due?"
+      },
+      "askedFor": [
+        "unpaid-wages"
+      ],
       "fromEvent": "wages_unpaid",
       "readFromNote": false,
       "origin": "unpaid-wages"
@@ -92,34 +174,64 @@
     {
       "id": "defendant_resides_abroad",
       "type": "yesNoUnknown",
-      "question": { "ar": "هل يقيم المدعى عليه خارج التراب الوطني؟", "en": "Does the defendant live outside the national territory?" },
-      "askedFor": ["abusive-dismissal", "unpaid-wages"],
-      "askedWhen": { "slot": "nonconciliation_record", "is": "no" },
+      "question": {
+        "ar": "هل يقيم المدعى عليه خارج التراب الوطني؟",
+        "en": "Does the defendant live outside the national territory?"
+      },
+      "askedFor": [
+        "abusive-dismissal",
+        "unpaid-wages"
+      ],
+      "askedWhen": {
+        "slot": "nonconciliation_record",
+        "is": "no"
+      },
       "readFromNote": false,
       "origin": "labour-prelitigation"
     },
     {
       "id": "employer_in_bankruptcy_or_settlement",
       "type": "yesNoUnknown",
-      "question": { "ar": "هل صاحب العمل في حالة إفلاس أو تسوية قضائية؟", "en": "Is the employer bankrupt or in judicial settlement?" },
-      "askedFor": ["abusive-dismissal", "unpaid-wages"],
-      "askedWhen": { "slot": "nonconciliation_record", "is": "no" },
+      "question": {
+        "ar": "هل صاحب العمل في حالة إفلاس أو تسوية قضائية؟",
+        "en": "Is the employer bankrupt or in judicial settlement?"
+      },
+      "askedFor": [
+        "abusive-dismissal",
+        "unpaid-wages"
+      ],
+      "askedWhen": {
+        "slot": "nonconciliation_record",
+        "is": "no"
+      },
       "readFromNote": false,
       "origin": "labour-prelitigation"
     },
     {
       "id": "worker_is_public_servant",
       "type": "yesNoUnknown",
-      "question": { "ar": "هل المدعي موظف أو عون خاضع للقانون الأساسي للمؤسسات والإدارات العمومية؟", "en": "Is the plaintiff a civil servant or an agent under the statute of public institutions and administrations?" },
-      "askedFor": ["abusive-dismissal", "unpaid-wages"],
+      "question": {
+        "ar": "هل المدعي موظف أو عون خاضع للقانون الأساسي للمؤسسات والإدارات العمومية؟",
+        "en": "Is the plaintiff a civil servant or an agent under the statute of public institutions and administrations?"
+      },
+      "askedFor": [
+        "abusive-dismissal",
+        "unpaid-wages"
+      ],
       "readFromNote": false,
       "origin": "labour-prelitigation"
     },
     {
       "id": "work_accident_or_occupational_illness",
       "type": "yesNoUnknown",
-      "question": { "ar": "هل أنهي عقد العمل أو علق بسبب حادث عمل أو مرض مهني؟", "en": "Was the employment contract ended or suspended because of a work accident or an occupational illness?" },
-      "askedFor": ["abusive-dismissal", "unpaid-wages"],
+      "question": {
+        "ar": "هل أنهي عقد العمل أو علق بسبب حادث عمل أو مرض مهني؟",
+        "en": "Was the employment contract ended or suspended because of a work accident or an occupational illness?"
+      },
+      "askedFor": [
+        "abusive-dismissal",
+        "unpaid-wages"
+      ],
       "readFromNote": false,
       "origin": "labour-prelitigation"
     }

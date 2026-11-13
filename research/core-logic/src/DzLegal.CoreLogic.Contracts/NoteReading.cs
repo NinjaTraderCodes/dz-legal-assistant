@@ -74,18 +74,20 @@ public sealed record ValueReading
 {
     public required ValueKind Kind { get; init; }
 
-    /// <summary>yyyy-mm-dd (or yyyy for a lone year) for a date; digits only, in dinars, for an amount.</summary>
+    /// <summary>yyyy-mm-dd, yyyy-mm when the day is missing, or yyyy for a lone year; digits only, in dinars, for an amount.</summary>
     public required string Normalized { get; init; }
     public required TextSpan Span { get; init; }
 
-    /// <summary>What the value is for: the event kind or request kind it belongs to, or a role of slots.json; empty when not linked.</summary>
-    public string Role { get; init; } = string.Empty;
+    /// <summary>What the value is for: event kinds, request kinds or slot ids; empty when not linked. One value may serve two (the contract's date is also the slot contract_date).</summary>
+    public IReadOnlyList<string> Roles { get; init; } = [];
     public double Confidence { get; init; } = 1.0;
 }
 
 /// <summary>One event of FactVocabulary.Events, as the note tells it.</summary>
 public sealed record EventReading
 {
+    /// <summary>The claim type whose element this is. Several claim types share event kinds (notice_served occurs in eight), so the kind alone does not name an element.</summary>
+    public required string Claim { get; init; }
     public required string Kind { get; init; }
     public required Polarity Polarity { get; init; }
     public required double Confidence { get; init; }
@@ -101,7 +103,7 @@ public sealed record EventReading
     public ValueReading? Date { get; init; }
     public ValueReading? Amount { get; init; }
 
-    /// <summary>Empty exactly when <see cref="Polarity"/> is <see cref="Polarity.NotMentioned"/>.</summary>
+    /// <summary>Empty when <see cref="Polarity"/> is <see cref="Polarity.NotMentioned"/>; may be empty when <see cref="Abstained"/>; never empty for an answered Stated, Denied or Disputed.</summary>
     public IReadOnlyList<TextSpan> Evidence { get; init; } = [];
 }
 

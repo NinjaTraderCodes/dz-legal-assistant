@@ -37,6 +37,9 @@ public enum ChecklistSource
     DerivationA,
     DerivationB,
     Codex,
+
+    /// <summary>A question taken from the app's own claim catalogue (data/law/claims): its articles and prerequisites are leads, not law.</summary>
+    Catalogue,
     NovemberUnit,
     Adversary,
 }
@@ -89,6 +92,14 @@ public enum RaisedBy
     Unclear,
 }
 
+/// <summary>How a period is counted; the meaning of each value is in the schema.</summary>
+public enum CountingMethod
+{
+    ExcludeFirstAndLastDay,
+    ExcludeFirstDay,
+    Inclusive,
+}
+
 public enum PeriodUnit
 {
     Day,
@@ -121,17 +132,19 @@ public enum ExampleAuthor
     DerivationC,
     BoundaryWriter,
     Reconciler,
+    Verifier,
 }
 
 /// <summary>
 /// What a finding does in the app. There is one blocking effect only, and it is the app's existing one: the clean export is
 /// blocked and the export with the «مسودة» mark stays allowed (owner's decision of 12 November 2026). Never add a harder stop.
+/// "To check" is not an effect: it is a mark on a warning (<see cref="Grading.ToCheck"/>, <c>RuleFinding.ToCheck</c>), so that
+/// it can never be weaker than a warning (owner's decision of 13 November 2026).
 /// </summary>
 public enum FindingEffect
 {
     BlockCleanExport,
     Warn,
-    ToCheck,
     Ask,
     None,
 }
@@ -209,6 +222,12 @@ public sealed record Grading
 {
     public required string Grade { get; init; }
     public required IReadOnlyList<string> Reasons { get; init; }
+
+    /// <summary>
+    /// True exactly when the grade is D: the item rests on no official text, or on a text not yet verified. It still warns,
+    /// and the warning carries the mark "to check". It never blocks the clean export and is never silent.
+    /// </summary>
+    public required bool ToCheck { get; init; }
 }
 
 /// <summary>One way of reading an unclear text. An open point keeps every reading, not only the one chosen.</summary>
@@ -236,7 +255,7 @@ public sealed record Statement
 
 /// <summary>
 /// A test on the case's slots. Exactly one of <see cref="All"/>, <see cref="Any"/>, <see cref="Not"/> or <see cref="Slot"/> is set.
-/// A slot that is not known makes the test unknown, never false: the evaluator then asks, and warns in the meantime.
+/// A slot that is not known makes the test unknown, never false: the evaluator then asks (specs/rule-evaluator.md).
 /// </summary>
 public sealed record SlotCondition
 {
@@ -351,13 +370,23 @@ public sealed record ValueExtract
     public string? Sanction { get; init; }
 }
 
+/// <summary>The counting rule of a deadline, in a form the evaluator can run, with the statements it comes from.</summary>
+public sealed record CountingRule
+{
+    public required CountingMethod Method { get; init; }
+    public bool ExtendToWorkingDay { get; init; }
+    public required IReadOnlyList<string> Basis { get; init; }
+}
+
 public sealed record Deadline
 {
     public required string Id { get; init; }
     public required DeadlineKind Kind { get; init; }
     public required Period Period { get; init; }
     public required PeriodStart StartsFrom { get; init; }
-    public string? Counting { get; init; }
+
+    /// <summary>Null when the texts do not settle how the period is counted; the deadline is then interpretive.</summary>
+    public CountingRule? Counting { get; init; }
     public required RaisedBy RaisedBy { get; init; }
     public SlotCondition? When { get; init; }
 
@@ -432,7 +461,15 @@ public sealed record Boundary
 public sealed record ExpectedFinding
 {
     public required string Ref { get; init; }
+
+    /// <summary>The item's declared effect, before the grade.</summary>
     public required FindingEffect Effect { get; init; }
+
+    /// <summary>Written by the grading script in a final record: what the app shows once the grade is applied.</summary>
+    public FindingEffect? ShownEffect { get; init; }
+
+    /// <summary>Written by the grading script in a final record: true when the item is grade D.</summary>
+    public bool? ToCheck { get; init; }
 }
 
 public sealed record Expectation
@@ -467,6 +504,16 @@ public sealed record OpenPoint
     public IReadOnlyList<string> Refs { get; init; } = [];
 }
 
+/// <summary>A slot a derivation needs that slots.json does not have yet. A final record has none.</summary>
+public sealed record ProposedSlot
+{
+    public required string Id { get; init; }
+    public required SlotType Type { get; init; }
+    public required LocalizedText Question { get; init; }
+    public IReadOnlyList<SlotChoice> Choices { get; init; } = [];
+    public required string Why { get; init; }
+}
+
 public sealed record RecordHistory
 {
     public string? Reconciliation { get; init; }
@@ -499,6 +546,7 @@ public sealed record RuleRecord
     public IReadOnlyList<RequiredDocument> Documents { get; init; } = [];
     public IReadOnlyList<Boundary> Boundaries { get; init; } = [];
     public IReadOnlyList<string> Slots { get; init; } = [];
+    public IReadOnlyList<ProposedSlot> ProposedSlots { get; init; } = [];
     public IReadOnlyList<WorkedExample> Examples { get; init; } = [];
     public IReadOnlyList<OpenPoint> OpenPoints { get; init; } = [];
     public RecordHistory? History { get; init; }

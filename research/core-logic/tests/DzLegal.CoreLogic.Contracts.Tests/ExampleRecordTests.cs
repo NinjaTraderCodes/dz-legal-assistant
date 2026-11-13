@@ -51,7 +51,7 @@ public sealed class ExampleRecordTests
         Assert.All(record.Checklist.SelectMany(line => line.Refs), reference => Assert.Contains(reference, items));
         Assert.All(record.OpenPoints.SelectMany(point => point.Refs), reference => Assert.Contains(reference, items));
         Assert.All(record.Examples.SelectMany(example => example.Expect.Findings), finding => Assert.Contains(finding.Ref, items));
-        Assert.All(record.Deadlines.Where(deadline => deadline.Counting is not null), deadline => Assert.Contains(deadline.Counting!, statements));
+        Assert.All(record.Deadlines.SelectMany(deadline => deadline.Counting?.Basis ?? []), reference => Assert.Contains(reference, statements));
     }
 
     [Theory]
@@ -136,12 +136,80 @@ public sealed class ExampleRecordTests
                 Assert.Equal(FindingEffect.Warn, step.EffectWhenMissing);
             }
         });
-        Assert.All(record.Court?.Exits ?? [], exit => Assert.Contains(exit.Effect, new[] { FindingEffect.Warn, FindingEffect.ToCheck }));
+        Assert.All(record.Court?.Exits ?? [], exit => Assert.Equal(FindingEffect.Warn, exit.Effect));
+    }
+
+    [Theory]
+    [MemberData(nameof(HandbookFiles.ExampleNames), MemberType = typeof(HandbookFiles))]
+    public void ToCheckIsAMarkOnGradeDAndNothingElse(string name)
+    {
+        var record = HandbookFiles.Example(name);
+        var gradings = record.Basis.Select(statement => statement.Grading)
+            .Concat(record.Elements.Select(element => element.Grading))
+            .Concat(record.Requests.Select(request => request.Grading))
+            .Concat(record.Deadlines.Select(deadline => deadline.Grading))
+            .Concat(record.PriorSteps.Select(step => step.Grading))
+            .Concat(record.Documents.Select(document => document.Grading))
+            .Concat(record.Boundaries.Select(boundary => boundary.Grading))
+            .Concat(record.Court?.Territory.Select(rule => rule.Grading) ?? [])
+            .Concat(record.Court?.Exits.Select(exit => exit.Grading) ?? [])
+            .Append(record.Court?.Section?.Grading)
+            .OfType<Grading>()
+            .ToList();
+        Assert.NotEmpty(gradings);
+        Assert.All(gradings, grading => Assert.Equal(grading.Grade == Grades.D, grading.ToCheck));
+    }
+
+    [Theory]
+    [MemberData(nameof(HandbookFiles.ExampleNames), MemberType = typeof(HandbookFiles))]
+    public void WhatTheAppShowsFollowsTheGradeAndIsNeverWeakerThanAWarning(string name)
+    {
+        var record = HandbookFiles.Example(name);
+        var grades = new Dictionary<string, Grading?>(StringComparer.Ordinal);
+        foreach (var deadline in record.Deadlines) { grades[deadline.Id] = deadline.Grading; }
+        foreach (var step in record.PriorSteps) { grades[step.Id] = step.Grading; }
+        foreach (var document in record.Documents) { grades[document.Id] = document.Grading; }
+        foreach (var boundary in record.Boundaries) { grades[boundary.Id] = boundary.Grading; }
+        foreach (var exit in record.Court?.Exits ?? []) { grades[exit.Id] = exit.Grading; }
+
+        var expected = record.Examples.SelectMany(example => example.Expect.Findings).ToList();
+        Assert.NotEmpty(expected);
+        Assert.All(expected, finding =>
+        {
+            var grading = grades[finding.Ref];
+            Assert.NotNull(grading);
+            Assert.NotNull(finding.ShownEffect);
+            Assert.Equal(grading.Grade == Grades.D, finding.ToCheck);
+            var shown = finding.Effect == FindingEffect.BlockCleanExport && grading.Grade != Grades.A ? FindingEffect.Warn : finding.Effect;
+            Assert.Equal(shown, finding.ShownEffect);
+        });
+
+        // The owner's rule of 13 November 2026, in one line: a rule that declares a warning or a block is never shown as less than a warning.
+        Assert.DoesNotContain(expected, finding =>
+            finding.Effect is FindingEffect.BlockCleanExport or FindingEffect.Warn
+            && finding.ShownEffect is not (FindingEffect.BlockCleanExport or FindingEffect.Warn));
+    }
+
+    [Theory]
+    [MemberData(nameof(HandbookFiles.ExampleNames), MemberType = typeof(HandbookFiles))]
+    public void AFinalRecordProposesNoSlot(string name) => Assert.Empty(HandbookFiles.Example(name).ProposedSlots);
+
+    [Fact]
+    public void TheContractRefusesAWrongCaseAnUnknownFieldAndAnEnumWrittenAsANumber()
+    {
+        const string Good = """{ "id": "s", "type": "date", "question": { "ar": "؟", "en": "?" }, "why": "w" }""";
+        Assert.Equal(SlotType.Date, System.Text.Json.JsonSerializer.Deserialize<ProposedSlot>(Good, ContractJson.Options)!.Type);
+        Assert.Throws<System.Text.Json.JsonException>(() =>
+            System.Text.Json.JsonSerializer.Deserialize<ProposedSlot>(Good.Replace("\"id\"", "\"Id\"", StringComparison.Ordinal), ContractJson.Options));
+        Assert.Throws<System.Text.Json.JsonException>(() =>
+            System.Text.Json.JsonSerializer.Deserialize<ProposedSlot>(Good.Replace("\"date\"", "1", StringComparison.Ordinal), ContractJson.Options));
+        Assert.Throws<System.Text.Json.JsonException>(() =>
+            System.Text.Json.JsonSerializer.Deserialize<ProposedSlot>(Good.Replace("\"why\"", "\"extra\": 1, \"why\"", StringComparison.Ordinal), ContractJson.Options));
     }
 
     [Fact]
     public void TheOnlyBlockingEffectIsTheBlockOfTheCleanExport() =>
-        Assert.Equal(["BlockCleanExport", "Warn", "ToCheck", "Ask", "None"], Enum.GetNames<FindingEffect>());
+        Assert.Equal(["BlockCleanExport", "Warn", "Ask", "None"], Enum.GetNames<FindingEffect>());
 
     [Fact]
     public void TheClaimExampleCarriesTheModuleBlocksItImports()
@@ -179,7 +247,7 @@ public sealed class ExampleRecordTests
     private static IEnumerable<string> BasisRefs(RuleRecord record) =>
         record.Elements.SelectMany(element => element.Basis.Concat(element.Proof.SelectMany(proof => proof.Basis)))
             .Concat(record.Requests.SelectMany(request => request.Basis))
-            .Concat(record.Deadlines.SelectMany(deadline => deadline.Basis.Concat(deadline.Readings.SelectMany(reading => reading.Basis))))
+            .Concat(record.Deadlines.SelectMany(deadline => deadline.Basis.Concat(deadline.Readings.SelectMany(reading => reading.Basis)).Concat(deadline.Counting?.Basis ?? [])))
             .Concat(record.PriorSteps.SelectMany(step => step.Basis
                 .Concat(step.NotRequiredWhen.SelectMany(exemption => exemption.Basis))
                 .Concat(step.AcceptedMeans.SelectMany(means => means.Basis))))

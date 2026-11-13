@@ -111,8 +111,13 @@ Breaking one of these is not a judgment call. If a rule stops you, stop and tell
 
 **Tools and downloads that are allowed.** Anything not on this list: ask the owner first.
 - Already on the laptop: .NET 10; Python 3.12 with pytest; the Python environment `C:\Users\TheShadow\dz-arch-research\venv` (torch 2.15.0+cpu, transformers 5.22.2, onnxruntime 1.31.1), left from Part 7; `pdftotext` and `pdftoppm`; Windows PowerShell 5.1 (PowerShell 7 is **not** installed: never write `pwsh`); Codex CLI; Ollama with the local models of Part 7 (Gemma 4 E4B, the Jais 3 copies, Qwen3.5-2B, Gemma 3 4B).
-- The local copy of the CAMeLBERT-mix encoder: `C:\Users\TheShadow\dz-arch-research\F\models\camelbert-mix`.
-- Downloads: issues of the Official Journal from `joradp.dz` (Arabic and French), through the one fetching script; CAMeLBERT-MSA from its official model page (record size, hash, licence link and date); the NuGet packages `Microsoft.ML.OnnxRuntime` and `Microsoft.ML.Tokenizers` (MIT) when step 4 starts; a small pure-Python package from PyPI into that environment when a script needs one (record its name, version and licence in the step report).
+- **The encoders step 4 starts from, and no other:** the two original pre-trained models, each downloaded from its official page, in the revision named here (both Apache 2.0, read from the pages on 13 November 2026):
+  - `CAMeL-Lab/bert-base-arabic-camelbert-mix` (https://huggingface.co/CAMeL-Lab/bert-base-arabic-camelbert-mix, revision `9be352797bdf28a9ae21e2ae582aaaca7abdb22d`). **Why:** it is the encoder Part 7 measured on this very task, and the best of six there (37 of 46 development cases alone, 40 with the section filter). It was trained on formal Arabic, dialects and classical Arabic together.
+  - `CAMeL-Lab/bert-base-arabic-camelbert-msa` (https://huggingface.co/CAMeL-Lab/bert-base-arabic-camelbert-msa, revision `277069fd3645fedb22b746caf38d111aadee0241`). **Why:** the notes of this stage are formal Arabic only, and this variant was trained on formal Arabic only. Part 7 did not measure it.
+  - Both have the same shape and size, so either fits the 150 MB limit in its 8-bit form. Train the same heads on both, compare them on dev and challenge, and **keep one**: the reader ships a single encoder. If they are within a point of each other, keep CAMeLBERT-mix, the one with measured evidence.
+  - For each download record the size and SHA-256 of every file, the revision, the licence link and the date, and put the files in `C:\Users\TheShadow\dz-core-research\models\pretrained\`. No account is needed; if the page asks for one, stop and ask the owner.
+- **Never start from a Part 7 fine-tuned copy.** The classifiers Part 7 trained (CAMeLBERT-mix among them) were fine-tuned on notes written by Claude models, which are usable for a measurement and **not for anything that ships**. They were removed from the laptop on 13 November 2026; their result files remain as evidence (`git show fable/architecture-review:docs/research/fable-part7/encoders/results/...`). If such a copy ever turns up again, do not use it as a starting point, as a teacher, or as a source of weights.
+- Downloads: issues of the Official Journal from `joradp.dz` (Arabic and French), through the one fetching script; the two pre-trained encoders named above; the NuGet packages `Microsoft.ML.OnnxRuntime` and `Microsoft.ML.Tokenizers` (MIT) when step 4 starts; a small pure-Python package from PyPI when a script needs one, installed into an environment of your own under `C:\Users\TheShadow\dz-core-research\`, never into Part 7's, which is used as it is (record the package's name, version and licence in the step report).
 - The Official Journal PDFs already in the repository (`docs/official-law-texts/`) are read where they are.
 
 **Branches and folders.**
@@ -397,7 +402,7 @@ Expected length: three to four weeks, paced mostly by Codex's usage limits and b
 
 **Why this shape:** safeguards 22 to 24. Full specification: [specs/reader.md](specs/reader.md), [specs/scorer.md](specs/scorer.md).
 
-**Inputs.** The notes; the contract `INoteReader`; the Part 7 encoder results; the Python environment and the encoder copy named in section 3.
+**Inputs.** The notes; the contract `INoteReader`; the Part 7 encoder results; the Python environment and the two original pre-trained encoders named in section 3 (never a Part 7 fine-tuned copy).
 
 > **The encoders' size, time and memory were measured on the owner's laptop on 13 November 2026**, on mains power with Best performance: the 8-bit CAMeLBERT-mix is 104.8 MB, takes about 9 ms on a short note and 0.28 s on a window of 512 tokens, in about 0.51 GiB of memory, and lost 2 of 46 development cases against its 32-bit form. The table is in [specs/reader.md](specs/reader.md) (rung 4). Time is not the constraint; size forces the 8-bit form, and the 8-bit form must be the one that is scored.
 

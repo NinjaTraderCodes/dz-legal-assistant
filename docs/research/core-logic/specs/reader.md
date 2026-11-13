@@ -15,8 +15,8 @@ Everything below is allowed without asking. **Anything else is a stop point: ask
 | The Python environment of Part 7 | `C:\Users\TheShadow\dz-arch-research\venv` (Python 3.12.10; torch 2.15.0+cpu, transformers 5.22.2, onnxruntime 1.31.1, onnx 1.23.2, scikit-learn 1.9.1, tokenizers 0.23.3, sentencepiece 0.2.3, numpy 2.5.4) | Use it as it is: install nothing into it. Record its package list with every result. |
 | Python 3.12 with pytest | `C:\Users\TheShadow\AppData\Local\Programs\Python\Python312` (`py -3.12`, pytest 9.0.3) | for the Python scripts' tests. The default `python` is 3.14 and has none of the packages above. |
 | `pdftotext`, `pdftoppm` | installed | |
-| CAMeLBERT-mix | the local copy `C:\Users\TheShadow\dz-arch-research\F\models\camelbert-mix` | Copy it to `C:\Users\TheShadow\dz-core-research\models\camelbert-mix\` with its SHA-256, size, licence link and date, and use the copy (the original belongs to Part 7's folder). |
-| CAMeLBERT-MSA | its official model page (`CAMeL-Lab/bert-base-arabic-camelbert-msa`) | record size, SHA-256, licence link and date of the download |
+| CAMeLBERT-mix, **the original pre-trained model** | its official model page: https://huggingface.co/CAMeL-Lab/bert-base-arabic-camelbert-mix, revision `9be352797bdf28a9ae21e2ae582aaaca7abdb22d` (Apache 2.0, read on 13 November 2026) | Download into `C:\Users\TheShadow\dz-core-research\models\pretrained\camelbert-mix\`; record the size and SHA-256 of every file, the revision, the licence link and the date. |
+| CAMeLBERT-MSA, **the original pre-trained model** | its official model page: https://huggingface.co/CAMeL-Lab/bert-base-arabic-camelbert-msa, revision `277069fd3645fedb22b746caf38d111aadee0241` (Apache 2.0, read on 13 November 2026) | Download into `...\models\pretrained\camelbert-msa\`; the same records. |
 | The Official Journal issues | joradp.dz, through the one fetch script `oj-fetch` | step 2 |
 | NuGet `Microsoft.ML.OnnxRuntime` and `Microsoft.ML.Tokenizers` (MIT) | NuGet, when step 4 starts | in `research/core-logic/Directory.Packages.props` only |
 | The local Ollama models of Part 7 | already installed | step 5; digests in `docs/research/fable-part7/run/models.json` on the branch `fable/architecture-review` |
@@ -59,7 +59,12 @@ Character 2- to 5-grams (after the level-2 normalisation of [article-store.md](a
 
 ### Rung 4. A frozen encoder with heads
 
-**Encoder.** Start with **CAMeLBERT-mix** (`CAMeL-Lab/bert-base-arabic-camelbert-mix`, Apache 2.0, 109 M parameters): on Part 7's 46 open cases it identified the claim type in 37 alone and 40 with the section filter, the best of six encoders, level with DziriBERT (37 and 38) and ahead of mmBERT-small (35 and 37); the two multilingual small models were far behind (e5-small 9 and 12, MiniLM 6 and 6). Since the notes are now formal Arabic only, also try **CAMeLBERT-MSA** (same licence, trained on formal Arabic). Check each model's licence file on the day and record the link and date.
+**Encoder.** Two candidates, both original pre-trained models from their official pages (the table above), both Apache 2.0, both 109 M parameters:
+
+- **CAMeLBERT-mix** (`CAMeL-Lab/bert-base-arabic-camelbert-mix`), trained on formal Arabic, dialects and classical Arabic. **Why it is first:** it is the encoder Part 7 measured on this task. Fine-tuned there, it identified the claim type on 37 of the 46 open cases alone and 40 with the section filter, the best of six encoders, level with DziriBERT (37 and 38) and ahead of mmBERT-small (35 and 37); the two multilingual small models were far behind (e5-small 9 and 12, MiniLM 6 and 6).
+- **CAMeLBERT-MSA** (`CAMeL-Lab/bert-base-arabic-camelbert-msa`), trained on formal Arabic only. **Why it is tried:** the notes of this stage are formal Arabic only. Part 7 did not measure it.
+
+Train the same heads on both and compare them on dev and challenge; **keep one** (the reader ships a single encoder), and when they are within a point of each other keep CAMeLBERT-mix, the one with measured evidence. Part 7's own fine-tuned classifier is evidence about the encoder, never a starting point: it was trained on notes written by Claude models. Both repositories give a WordPiece vocabulary file (`vocab.txt`) and no `tokenizer.json`: build the .NET tokenizer from the vocabulary file, and take the lower-casing and accent settings from each model's `tokenizer_config.json`, not from memory.
 
 **Size and speed.**
 

@@ -150,6 +150,30 @@ NEW_CODES = {
 }
 
 
+def consolidated_note(code: str, version: str, article: str, text: str) -> tuple[str, str | None]:
+    """What the consolidated edition prints where it differs, and what the Journal page prints there (the settler's
+    decision, fetch.consolidated_record). A sure decision for the consolidated words would mean both readers misread
+    the page: the entry is held until its text is corrected by hand."""
+    said = []
+    for d in consolidated.word_differences(code, text):
+        where = f"«{d['consolidated']}» for «{d['ours']}»"
+        if d["orthographic"]:
+            said.append(f"{where} (orthographic)")
+            continue
+        st = fetch.consolidated_settled(code, version, article, d)
+        if st is None or not st["sure"]:
+            # the same two words may already have been decided between the two readers (one reader read what the
+            # consolidated edition prints): that look at the page settles this place too
+            run = fetch.page_holds(code, version, article, d["ours"], d["consolidated"])
+            said.append(f"{where}; the Journal page prints «{d['ours']}» ({run}, sure)" if run else f"{where} (not settled)")
+        elif st["printed"] == "ours":
+            said.append(f"{where}; the Journal page prints «{d['ours']}» ({st['run']}, sure)")
+        else:
+            return "", (f"consolidated: the settler reads «{st['words'] or d['consolidated']}» on the page where both "
+                        f"readers read «{d['ours']}» ({st['run']}): correct the text by hand")
+    return "the consolidated edition prints " + "; ".join(said), None
+
+
 def entry(batch: str, job_name: str, article: str, text_paragraphs: list[str] | None = None,
           composed_note: str | None = None) -> tuple[dict | None, str]:
     job = rd.load(rd.job_path(batch, job_name))
@@ -158,22 +182,24 @@ def entry(batch: str, job_name: str, article: str, text_paragraphs: list[str] | 
     row = rows.get(article)
     if not row or row["result"] not in ("twoAgree", "settled"):
         return None, f"readings: {row and row['result']}"
-    s = next(a for a in rd.load(os.path.join(folder, f"{job_name}.sonnet.json"))["articles"] if a["article"] == article)
-    c = next(a for a in rd.load(os.path.join(folder, f"{job_name}.codex.json"))["articles"] if a["article"] == article)
+    _, first_job = fetch.first_reading_job(batch, job_name, job)
+    s = next(a for a in rd.load(fetch.first_reading_path(batch, job_name, job))["articles"] if fetch.article_key(a) == article)
+    c = next(a for a in rd.load(os.path.join(folder, f"{job_name}.codex.json"))["articles"] if fetch.article_key(a) == article)
     s, used_fills = fetch.apply_fills(job, s)
     paragraphs = text_paragraphs or row.get("settledParagraphs") or s["paragraphs"]
     text = "\n".join(paragraphs)
     fr = french_check(job, article, text)
     if fr["status"] == "pending":
         return None, f"French: {fr['why']}"
-    page = job["pages"][max(0, s["where"]["image"] - 1)]
+    page = first_job["pages"][max(0, s["where"]["image"] - 1)]
     code, version = job["code"], job["version"]
     imgs = [im["sha256"] for im in job["images"]]
+    first_imgs = [im["sha256"] for im in first_job["images"]]
     meta = os.path.join(folder, f"{job_name}.sonnet.meta.json")
     proof = {
         "pdfPage": page, "dpi": job.get("dpi", 300),
         "readings": [
-            {"by": "first", "model": rd.SONNET, "date": job.get("date") or "2026-11-13", "imageSha256s": imgs,
+            {"by": "first", "model": rd.SONNET, "date": job.get("date") or "2026-11-13", "imageSha256s": first_imgs,
              "textSha256": rd.sha_text("\n".join(s["paragraphs"]))},
             {"by": "second", "model": f"{rd.codex_run.PINNED_VERSION} (default model)", "date": "2026-11-13",
              "imageSha256s": imgs, "textSha256": rd.sha_text("\n".join(c["paragraphs"])), "codexLog": f"{job_name}.jsonl"},
@@ -198,6 +224,11 @@ def entry(batch: str, job_name: str, article: str, text_paragraphs: list[str] | 
         cp = consolidated.check(code, text)
         proof["consolidatedPdf"] = {"status": cp["status"],
                                     "note": f"{cp['pdf']} p{cp['pdfPage']}: coverage {cp['coverage']}, {cp['stretches']} stretch(es)"}
+        if cp["status"] == "differs":
+            said, why = consolidated_note(code, version, article, text)
+            if why:
+                return None, why
+            proof["consolidatedPdf"]["note"] += "; " + said
     if composed_note:
         note.append(composed_note)
     for fl in used_fills:

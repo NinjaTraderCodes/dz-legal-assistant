@@ -13,6 +13,7 @@ from __future__ import annotations
 import os
 import re
 import sys
+import unicodedata
 from collections import Counter
 
 TEXT = r"C:\Users\TheShadow\dz-core-research\journal-text"
@@ -40,7 +41,9 @@ def french_number(article: str) -> list[str]:
 
 
 def cut(text: str, article: str) -> str | None:
-    """The text of «Art. N.» up to the next «Art.» heading, in a French issue's text layer."""
+    """The text of «Art. N.» up to the next «Art.» heading, in a French issue's text layer. Accents are dropped first:
+    the Journal writes «quinquiès» as well as «quinquies» (Law 05-10, art. 45)."""
+    text = "".join(c for c in unicodedata.normalize("NFD", text) if not unicodedata.combining(c))
     for head in french_number(article):
         pat = re.compile(r"(?:^|\n)\s*[«\"“]?\s*Art(?:icle)?\.?\s*" + re.escape(head).replace(r"\ ", r"\s+") + r"(?![\w])\s*[.\-—–:]",
                          re.I)

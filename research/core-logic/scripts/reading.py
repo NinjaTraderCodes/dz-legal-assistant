@@ -285,6 +285,10 @@ def settled_result(job: dict, art: str, cmp: dict) -> str:
     return "unsettled"
 
 
+# The results a re-reading records in law/readings.jsonl (law/README.md, "Re-readings").
+RECORDED = ("agrees", "storeDiffers", "unsettled")
+
+
 def ingest(job: dict, answer: dict, reader: str, tool_uses: int | None = None, date: str | None = None,
            codex_log: str | None = None, store: st.Store | None = None, write: bool = True,
            skip: dict | None = None, why: str | None = None) -> list[dict]:
@@ -332,7 +336,7 @@ def ingest(job: dict, answer: dict, reader: str, tool_uses: int | None = None, d
         if counts:
             with open(READINGS, "a", encoding="utf-8", newline="\n") as f:
                 for r in rows:
-                    if r["storeTextSha256"] and r["result"] in ("agrees", "unsettled"):
+                    if r["storeTextSha256"] and r["result"] in RECORDED:
                         f.write(json.dumps(r, ensure_ascii=False) + "\n")
     return rows
 
@@ -483,6 +487,59 @@ def column_bands(job: dict, dpi: int = 600) -> list[str]:
     return out
 
 
+# The settler's image viewer reduces a large image before the model sees it: a 600-dpi column (2409 x 6533 pixels) or
+# an 800-dpi one (3212 x 8711) reached the settler at about 185 dpi, no sharper than the 300-dpi page (13 November
+# 2026, settle-cons-b-800). A close-up is therefore cut in tiles small enough to be shown at full size.
+TILE_SIDE, TILE_AREA, TILE_OVERLAP = 1400, 1_100_000, 150
+
+
+def tiles(job: dict, where: dict, dpi: int = 600) -> list[dict]:
+    """Full-resolution tiles of the region where the first reader placed the article, with a margin, and of the next
+    column too when the article reaches the foot of its column. Tiles overlap, so no printed line is only ever cut."""
+    from PIL import Image
+    cols = [where["column"]] if where["column"] in ("right", "left") else ["right", "left"]
+    regions = [(where["image"], c, max(0.0, where["top"] - 0.08), min(1.0, where["bottom"] + 0.08)) for c in cols]
+    if where["bottom"] > 0.85 or where.get("continues"):
+        if cols[-1] == "right":
+            regions.append((where["image"], "left", 0.0, 0.45))
+        elif where["image"] < len(job["pages"]):
+            regions.append((where["image"] + 1, "right", 0.0, 0.45))
+    out = []
+    for img, col, top, bottom in regions:
+        if img < 1:
+            continue
+        path = band(job, {"image": img, "column": col, "top": 0.0, "bottom": 1.0}, dpi=dpi, margin=0.0)
+        tdir = os.path.join(os.path.dirname(path), "tiles")
+        os.makedirs(tdir, exist_ok=True)
+        im = Image.open(path)
+        w, h = im.size
+        n_w = -(-w // TILE_SIDE)
+        tw = min(w, -(-w // n_w) + (TILE_OVERLAP if n_w > 1 else 0))
+        th = min(TILE_SIDE, TILE_AREA // tw)
+        y, y1 = int(top * h), int(bottom * h)
+        while True:
+            ye = min(y1, y + th)
+            for k in range(n_w):
+                x = 0 if k == 0 else min(w - tw, k * (w // n_w) - TILE_OVERLAP // 2)
+                tp = os.path.join(tdir, f"{os.path.splitext(os.path.basename(path))[0]}-y{y:05d}-{ye:05d}-x{k}.png")
+                if not os.path.exists(tp):
+                    im.crop((x, y, x + tw, ye)).save(tp)
+                part = ("whole width" if n_w == 1 else "left part" if k == 0 else
+                        "right part" if k == n_w - 1 else f"part {k + 1} from the left")
+                out.append({"path": tp, "image": img, "column": col, "from": round(y / h, 3), "to": round(ye / h, 3),
+                            "part": part})
+            if ye >= y1:
+                break
+            y = ye - TILE_OVERLAP
+    return out
+
+
+def settle_images(entries: list[dict]) -> list[str]:
+    """Every image a settle run may open: the pages, and the close-ups (or the older column bands)."""
+    return sorted({b for e in entries for b in e.get("bands", [])} | {t["path"] for e in entries for t in e.get("tiles", [])}
+                  | {im["path"] for e in entries for im in e["job"]["images"]})
+
+
 def settle_items(entries: list[dict], seed: str) -> tuple[str, list[dict]]:
     """entries: {job, article, paragraph, kind, store, reading, before, after, bands}. Returns the {{items}} text and the
     key (which of X and Y is the store's or first wording), kept by the script and never shown to the settler."""
@@ -491,10 +548,18 @@ def settle_items(entries: list[dict], seed: str) -> tuple[str, list[dict]]:
         flip = int(hashlib.sha256(f"{seed}|{n}|{e['article']}".encode()).hexdigest(), 16) % 2 == 1
         x, y = (e["reading"], e["store"]) if flip else (e["store"], e["reading"])
         pages = "\n".join(f"  - `{im['path']}`" for im in e["job"]["images"])
-        bands = "\n".join(f"  - `{b}`" for b in e["bands"])
+        if e.get("tiles"):
+            close = "\n".join(f"  - `{t['path']}`: page {t['image']}, {t['column']} column, {t['part']}, from "
+                              f"{round(t['from'] * 100)} % to {round(t['to'] * 100)} % of the page's height"
+                              for t in e["tiles"])
+            close = ("- Close-ups at full resolution (600 dpi; open only the one or two that hold the line, after "
+                     f"finding it on the page):\n{close}\n")
+        else:
+            bands = "\n".join(f"  - `{b}`" for b in e["bands"])
+            close = f"- Bands (600 dpi; each page's right column, then its left column):\n{bands}\n"
         lines.append(
             f"**Difference {n}.** Article {e['article']}, paragraph {e.get('paragraph') or '?'}, kind `{e['kind']}`.\n"
-            f"- Pages (300 dpi), in order:\n{pages}\n- Bands (600 dpi; each page's right column, then its left column):\n{bands}\n"
+            f"- Pages (300 dpi), in order:\n{pages}\n{close}"
             f"- Ten words before: «{e.get('before', '')}»\n- Ten words after: «{e.get('after', '')}»\n"
             f"- X: «{x}»\n- Y: «{y}»")
         key.append({"n": n, "article": e["article"], "code": e["job"]["code"], "version": e["job"]["version"],
@@ -559,33 +624,38 @@ def settle_record(name: str, agent_id: str, settler: str = "claude-opus-5-5") ->
     return verdicts
 
 
-def settle_prep(name: str, family: str = "claude") -> dict:
-    """Every unsettled difference of law/readings.jsonl from one family's readings: the band is cut, the items are
-    written with X and Y in random order, and the key is kept apart in jobs/settle-<name>/."""
+def settle_prep(name: str, family: str = "claude", recheck: bool = False) -> dict:
+    """Every unsettled difference of law/readings.jsonl from one family's readings: the close-ups are cut, the items
+    are written with X and Y in random order, and the key is kept apart in jobs/settle-<name>/. `recheck`: the settled
+    differences too (a look again at full resolution)."""
     entries, seen = [], set()
     with open(READINGS, encoding="utf-8") as f:
         rows = [json.loads(line) for line in f if line.strip()]
     for r in rows:
-        if r["result"] != "unsettled" or r["family"] != family or (r["code"], r["article"]) in seen:
+        if r["family"] != family or (r["code"], r["article"]) in seen or not r["differences"]:
+            continue
+        if r["result"] != "unsettled" and not recheck:
             continue
         seen.add((r["code"], r["article"]))
         batch, jname = r["job"].split("/", 1)
         job = load(job_path(batch, jname))
         ans = load(os.path.join(JOBS, batch, f"{jname}.{'sonnet' if family == 'claude' else 'codex'}.json"))
-        bands = column_bands(job)
+        a = next(x for x in ans["articles"] if x["article"] == r["article"])
+        close = tiles(job, dict(a["where"], continues=a.get("continuesOnNextPage")))
         for d in r["differences"]:
             if textcmp.level(d["store"] or "", d["reading"] or "") in ("1", "2", "2o", "2s"):
                 continue  # orthographic (spacing, hamza seat): nothing to settle
-            entries.append({"job": job, "bands": bands, "article": r["article"], "paragraph": d.get("paragraph"),
+            entries.append({"job": job, "tiles": close, "article": r["article"], "paragraph": d.get("paragraph"),
                             "kind": d["kind"], "store": d["store"], "reading": d["reading"],
                             "before": (d.get("context") or {}).get("before", ""),
                             "after": (d.get("context") or {}).get("after", ""), "readingLine": r["job"]})
     items, key = settle_items(entries, name)
     out = os.path.join(JOBS, f"settle-{name}")
     os.makedirs(out, exist_ok=True)
-    with open(os.path.join(out, "prompt.txt"), "w", encoding="utf-8", newline="\n") as f:
+    prompt_path = os.path.join(out, "prompt.txt")
+    with open(prompt_path, "w", encoding="utf-8", newline="\n") as f:
         f.write(settle_prompt(items))
-    images = sorted({b for e in entries for b in e["bands"]} | {im["path"] for e in entries for im in e["job"]["images"]})
+    images = settle_images(entries) + [prompt_path]
     with open(os.path.join(out, "key.json"), "w", encoding="utf-8", newline="\n") as f:
         json.dump({"key": key, "images": images, "lines": [e["readingLine"] for e in entries]}, f, ensure_ascii=False, indent=1)
     return {"items": len(entries), "images": images, "folder": out}
@@ -627,10 +697,10 @@ def ingest_composite(article: str, version: str, base: tuple[dict, dict], amendi
            "composedFrom": {"base": f"{b_job['batch']}/{b_job['job']}",
                             "amending": f"{parts[-1]['batch']}/{parts[-1]['job']}" if amending else None,
                             "repealedParagraphs": repealed}}
-    if write and row["result"] in ("agrees", "unsettled"):
+    if write and row["result"] in RECORDED:
         with open(READINGS, "a", encoding="utf-8", newline="\n") as f:
             f.write(json.dumps(row, ensure_ascii=False) + "\n")
-    if write and record and row["result"] in ("agrees", "unsettled"):
+    if write and record and row["result"] in RECORDED:
         log = os.path.join(JOBS, "composites.jsonl")
         with open(log, "a", encoding="utf-8", newline="\n") as f:
             f.write(json.dumps({"article": article, "version": version, "reader": reader, "base": row["composedFrom"],
@@ -655,6 +725,11 @@ def rebuild() -> int:
             jname, fam = name.split(".")[0], name.split(".")[1]
             rows = load(os.path.join(folder, name))
             job = load(os.path.join(folder, jname + ".json"))
+            if job["kind"] == "fetch":
+                if not job.get("rereadArticles") or rows[0]["why"] != job.get("rereadWhy"):
+                    continue  # the collector's own comparison of a fetch answer, not a re-reading
+                # the store's articles that a fetch job's pages also show (fetch.reread_ingest)
+                job = dict(job, kind="reread", why=job["rereadWhy"], articles=job["rereadArticles"], job=jname)
             answer = load(os.path.join(folder, f"{jname}.{'codex' if fam == 'codex' else 'sonnet'}.json"))
             skip = {r["article"]: r["result"].split(": ", 1)[1] for r in rows if str(r["result"]).startswith("skipped: ")}
             ingest(job, answer, rows[0]["reader"], None, date=rows[0]["date"], codex_log=rows[0].get("codexLog"),

@@ -267,6 +267,30 @@ def local_pdf(url: str | None, sha_index: dict) -> str | None:
     return fetched if os.path.exists(fetched) else None
 
 
+# Errors found in the corpus ledger's touched lists (13 Nov 2026), settled in the official consolidated Civil Code of
+# 2007 (tier 2, docs/official-law-texts/75-58_wipo_Version.pdf pp 57-58, footnotes): the seed uses the corrected lists;
+# the corpus itself is not changed (a corpus correction for the owner to pass on).
+LEDGER_CORRECTIONS = {
+    ("civil-code", "law-88-14"): {"remove": ["324 مكرر"],
+                                  "why": "no article «324 مكرر» exists: Law 88-14 added 324 مكرر 1 to 324 مكرر 7"},
+    ("civil-code", "law-05-10"): {"replace": {"324 مكرر 4": "324 مكرر 3"},
+                                  "why": "Law 05-10 amended 324 مكرر 3 (footnote 2 p58); 324 مكرر 4 is Law 88-14's"},
+}
+
+
+def correct_ledger(code: str, pub: dict) -> dict:
+    fix = LEDGER_CORRECTIONS.get((code, pub["id"]))
+    if not fix:
+        return pub
+    touched = []
+    for t in pub.get("articlesTouched", []):
+        a = t if isinstance(t, str) else t.get("article")
+        if a in fix.get("remove", []):
+            continue
+        touched.append(fix.get("replace", {}).get(a, a))
+    return dict(pub, articlesTouched=touched)
+
+
 def load_all(store_path: str):
     s = st.Store(store_path)
     corpus, ledgers, sha_index = {}, {}, {}
@@ -276,7 +300,8 @@ def load_all(store_path: str):
             files[hashlib.sha256(fh.read()).hexdigest()] = "docs/official-law-texts/" + os.path.basename(f)
     for code in st.CORPUS_CODES:
         corpus[code] = json.loads(st._git_show(f"data/law/corpus/{code}/articles.json"))["articles"]
-        ledgers[code] = sorted(json.loads(st._git_show(f"data/law/corpus/{code}/ledger.json"))["publications"],
+        ledgers[code] = sorted((correct_ledger(code, p) for p in
+                                json.loads(st._git_show(f"data/law/corpus/{code}/ledger.json"))["publications"]),
                                key=lambda p: p["date"])
         for p in ledgers[code]:
             a = p.get("arabic") or {}

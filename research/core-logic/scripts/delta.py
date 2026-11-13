@@ -152,6 +152,7 @@ def entry(batch: str, job_name: str, article: str, text_paragraphs: list[str] | 
         return None, f"readings: {row and row['result']}"
     s = next(a for a in rd.load(os.path.join(folder, f"{job_name}.sonnet.json"))["articles"] if a["article"] == article)
     c = next(a for a in rd.load(os.path.join(folder, f"{job_name}.codex.json"))["articles"] if a["article"] == article)
+    s, used_fills = fetch.apply_fills(job, s)
     paragraphs = text_paragraphs or s["paragraphs"]
     text = "\n".join(paragraphs)
     fr = french_check(job, article, text)
@@ -191,6 +192,8 @@ def entry(batch: str, job_name: str, article: str, text_paragraphs: list[str] | 
                                     "note": f"{cp['pdf']} p{cp['pdfPage']}: coverage {cp['coverage']}, {cp['stretches']} stretch(es)"}
     if composed_note:
         note.append(composed_note)
+    for fl in used_fills:
+        note.append(f"«{fl['marked']}» on the page ({fl['why']}) is read as «{fl['filled']}», settled by {fl['settledBy']}.")
     e = {"code": code, "number": article, "text": text, "page": page,
          "source": {"url": job["source"]["url"], "sha256": job["source"]["sha256"],
                     "retrievedOn": retrieved_on(job["source"]["url"], job["source"]["localPdf"])},

@@ -4,9 +4,9 @@
   "store": {
    "library": "005b557cdc1103a7cd518ef08ec275ce4a130b85c03147a60f87340d787e43c1",
    "corpus": "9b60990",
-   "delta": "66f3378a7d2ae7dc3fd2af4661ff127b36402bbc67b60496c19d2a4de1d91b80",
+   "delta": "43210503bfcf299f30d573e57195cecca880cfcc82ce05b6cccfeb04b9387898",
    "unused": null,
-   "readings": "4bea11c6545c9b8a221c954d254306116e148e1747f2580b01d6e24954c87504",
+   "readings": "f8c67fcde01c38f60f4486c715aa5ad635cf2f646265a7f4fa75bf7acb2958f3",
    "ledger": null
   },
   "storeFile": "articles.json",
@@ -14,16 +14,17 @@
   "corpusCommit": "9b60990"
  },
  "counts": {
-  "articles": 274,
+  "articles": 273,
   "byAction": {
-   "none": 33,
+   "none": 48,
    "reread": 121,
-   "fetch": 120
+   "fetch": 104
   },
   "byCodeActionWhy": {
-   "civil-code|fetch|missing": 52,
+   "civil-code|fetch|missing": 36,
    "civil-code|none|libraryProof": 12,
    "civil-code|none|libraryProofAndCorpus": 17,
+   "civil-code|none|twoFamilies": 15,
    "civil-code|reread|corpusOnly": 4,
    "commercial-code|fetch|missing": 32,
    "commercial-code|none|libraryProof": 3,
@@ -37,7 +38,7 @@
    "law-22-13|fetch|missing": 3
   },
   "critical": 186,
-  "mayNotExist": 112
+  "mayNotExist": 97
  },
  "items": [
   {
@@ -769,8 +770,8 @@
    "state": "inForce",
    "store": "corpus",
    "version": "ordinance-75-58",
-   "verified": false,
-   "verifiedBy": null,
+   "verified": true,
+   "verifiedBy": "corpusAndReread",
    "corpusState": "checked",
    "guardFlag": false,
    "inForceNote": false,
@@ -838,27 +839,25 @@
    "criticalWhy": [
     "module:periods"
    ],
-   "state": "missing",
-   "referenceOnlyInCorpus": false,
-   "action": "fetch",
-   "why": "missing",
-   "readers": [
-    "claude-sonnet-5-5",
-    "codex"
-   ],
-   "mayNotExist": true,
+   "state": "inForce",
+   "store": "delta",
+   "version": "ordinance-75-58",
+   "verified": true,
+   "verifiedBy": "twoFamilies",
+   "corpusState": null,
+   "guardFlag": false,
+   "inForceNote": false,
+   "action": "none",
+   "why": "twoFamilies",
+   "readers": [],
+   "mayNotExist": false,
    "olderWording": null,
    "where": {
     "version": "ordinance-75-58",
     "url": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
-    "issue": "78",
-    "pdfPage": [
-     19,
-     20
-    ],
+    "pdfPage": 19,
     "endPage": null,
-    "method": "anchors",
-    "anchorCount": 210,
+    "method": "store",
     "localPdf": "docs/official-law-texts/75-58_Original_Version.pdf"
    }
   },
@@ -873,27 +872,25 @@
    "criticalWhy": [
     "module:periods"
    ],
-   "state": "missing",
-   "referenceOnlyInCorpus": false,
-   "action": "fetch",
-   "why": "missing",
-   "readers": [
-    "claude-sonnet-5-5",
-    "codex"
-   ],
-   "mayNotExist": true,
+   "state": "inForce",
+   "store": "delta",
+   "version": "ordinance-75-58",
+   "verified": true,
+   "verifiedBy": "twoFamilies",
+   "corpusState": null,
+   "guardFlag": false,
+   "inForceNote": false,
+   "action": "none",
+   "why": "twoFamilies",
+   "readers": [],
+   "mayNotExist": false,
    "olderWording": null,
    "where": {
     "version": "ordinance-75-58",
     "url": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
-    "issue": "78",
-    "pdfPage": [
-     19,
-     20
-    ],
+    "pdfPage": 19,
     "endPage": null,
-    "method": "anchors",
-    "anchorCount": 210,
+    "method": "store",
     "localPdf": "docs/official-law-texts/75-58_Original_Version.pdf"
    }
   },
@@ -945,27 +942,25 @@
    "criticalWhy": [
     "module:periods"
    ],
-   "state": "missing",
-   "referenceOnlyInCorpus": false,
-   "action": "fetch",
-   "why": "missing",
-   "readers": [
-    "claude-sonnet-5-5",
-    "codex"
-   ],
-   "mayNotExist": true,
+   "state": "inForce",
+   "store": "delta",
+   "version": "ordinance-75-58",
+   "verified": true,
+   "verifiedBy": "twoFamilies",
+   "corpusState": null,
+   "guardFlag": false,
+   "inForceNote": false,
+   "action": "none",
+   "why": "twoFamilies",
+   "readers": [],
+   "mayNotExist": false,
    "olderWording": null,
    "where": {
     "version": "ordinance-75-58",
     "url": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
-    "issue": "78",
-    "pdfPage": [
-     19,
-     20
-    ],
+    "pdfPage": 20,
     "endPage": null,
-    "method": "anchors",
-    "anchorCount": 210,
+    "method": "store",
     "localPdf": "docs/official-law-texts/75-58_Original_Version.pdf"
    }
   },
@@ -980,27 +975,25 @@
    "criticalWhy": [
     "module:periods"
    ],
-   "state": "missing",
-   "referenceOnlyInCorpus": false,
-   "action": "fetch",
-   "why": "missing",
-   "readers": [
-    "claude-sonnet-5-5",
-    "codex"
-   ],
-   "mayNotExist": true,
+   "state": "inForce",
+   "store": "delta",
+   "version": "ordinance-75-58",
+   "verified": true,
+   "verifiedBy": "twoFamilies",
+   "corpusState": null,
+   "guardFlag": false,
+   "inForceNote": false,
+   "action": "none",
+   "why": "twoFamilies",
+   "readers": [],
+   "mayNotExist": false,
    "olderWording": null,
    "where": {
     "version": "ordinance-75-58",
     "url": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
-    "issue": "78",
-    "pdfPage": [
-     19,
-     20
-    ],
+    "pdfPage": 20,
     "endPage": null,
-    "method": "anchors",
-    "anchorCount": 210,
+    "method": "store",
     "localPdf": "docs/official-law-texts/75-58_Original_Version.pdf"
    }
   },
@@ -1050,27 +1043,25 @@
    "criticalWhy": [
     "module:periods"
    ],
-   "state": "missing",
-   "referenceOnlyInCorpus": false,
-   "action": "fetch",
-   "why": "missing",
-   "readers": [
-    "claude-sonnet-5-5",
-    "codex"
-   ],
-   "mayNotExist": true,
+   "state": "inForce",
+   "store": "delta",
+   "version": "ordinance-75-58",
+   "verified": true,
+   "verifiedBy": "twoFamilies",
+   "corpusState": null,
+   "guardFlag": false,
+   "inForceNote": false,
+   "action": "none",
+   "why": "twoFamilies",
+   "readers": [],
+   "mayNotExist": false,
    "olderWording": null,
    "where": {
     "version": "ordinance-75-58",
     "url": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
-    "issue": "78",
-    "pdfPage": [
-     19,
-     20
-    ],
+    "pdfPage": 20,
     "endPage": null,
-    "method": "anchors",
-    "anchorCount": 210,
+    "method": "store",
     "localPdf": "docs/official-law-texts/75-58_Original_Version.pdf"
    }
   },
@@ -1085,27 +1076,25 @@
    "criticalWhy": [
     "module:periods"
    ],
-   "state": "missing",
-   "referenceOnlyInCorpus": false,
-   "action": "fetch",
-   "why": "missing",
-   "readers": [
-    "claude-sonnet-5-5",
-    "codex"
-   ],
-   "mayNotExist": true,
+   "state": "inForce",
+   "store": "delta",
+   "version": "ordinance-75-58",
+   "verified": true,
+   "verifiedBy": "twoFamilies",
+   "corpusState": null,
+   "guardFlag": false,
+   "inForceNote": false,
+   "action": "none",
+   "why": "twoFamilies",
+   "readers": [],
+   "mayNotExist": false,
    "olderWording": null,
    "where": {
     "version": "ordinance-75-58",
     "url": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
-    "issue": "78",
-    "pdfPage": [
-     19,
-     20
-    ],
+    "pdfPage": 20,
     "endPage": null,
-    "method": "anchors",
-    "anchorCount": 210,
+    "method": "store",
     "localPdf": "docs/official-law-texts/75-58_Original_Version.pdf"
    }
   },
@@ -1120,27 +1109,25 @@
    "criticalWhy": [
     "module:periods"
    ],
-   "state": "missing",
-   "referenceOnlyInCorpus": false,
-   "action": "fetch",
-   "why": "missing",
-   "readers": [
-    "claude-sonnet-5-5",
-    "codex"
-   ],
-   "mayNotExist": true,
+   "state": "inForce",
+   "store": "delta",
+   "version": "ordinance-75-58",
+   "verified": true,
+   "verifiedBy": "twoFamilies",
+   "corpusState": null,
+   "guardFlag": false,
+   "inForceNote": false,
+   "action": "none",
+   "why": "twoFamilies",
+   "readers": [],
+   "mayNotExist": false,
    "olderWording": null,
    "where": {
     "version": "ordinance-75-58",
     "url": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
-    "issue": "78",
-    "pdfPage": [
-     19,
-     20
-    ],
+    "pdfPage": 20,
     "endPage": null,
-    "method": "anchors",
-    "anchorCount": 210,
+    "method": "store",
     "localPdf": "docs/official-law-texts/75-58_Original_Version.pdf"
    }
   },
@@ -1155,27 +1142,25 @@
    "criticalWhy": [
     "module:periods"
    ],
-   "state": "missing",
-   "referenceOnlyInCorpus": false,
-   "action": "fetch",
-   "why": "missing",
-   "readers": [
-    "claude-sonnet-5-5",
-    "codex"
-   ],
-   "mayNotExist": true,
+   "state": "inForce",
+   "store": "delta",
+   "version": "ordinance-75-58",
+   "verified": true,
+   "verifiedBy": "twoFamilies",
+   "corpusState": null,
+   "guardFlag": false,
+   "inForceNote": false,
+   "action": "none",
+   "why": "twoFamilies",
+   "readers": [],
+   "mayNotExist": false,
    "olderWording": null,
    "where": {
     "version": "ordinance-75-58",
     "url": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
-    "issue": "78",
-    "pdfPage": [
-     19,
-     20
-    ],
+    "pdfPage": 20,
     "endPage": null,
-    "method": "anchors",
-    "anchorCount": 210,
+    "method": "store",
     "localPdf": "docs/official-law-texts/75-58_Original_Version.pdf"
    }
   },
@@ -1190,27 +1175,25 @@
    "criticalWhy": [
     "module:periods"
    ],
-   "state": "missing",
-   "referenceOnlyInCorpus": false,
-   "action": "fetch",
-   "why": "missing",
-   "readers": [
-    "claude-sonnet-5-5",
-    "codex"
-   ],
-   "mayNotExist": true,
+   "state": "inForce",
+   "store": "delta",
+   "version": "ordinance-75-58",
+   "verified": true,
+   "verifiedBy": "twoFamilies",
+   "corpusState": null,
+   "guardFlag": false,
+   "inForceNote": false,
+   "action": "none",
+   "why": "twoFamilies",
+   "readers": [],
+   "mayNotExist": false,
    "olderWording": null,
    "where": {
     "version": "ordinance-75-58",
     "url": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
-    "issue": "78",
-    "pdfPage": [
-     19,
-     20
-    ],
+    "pdfPage": 20,
     "endPage": null,
-    "method": "anchors",
-    "anchorCount": 210,
+    "method": "store",
     "localPdf": "docs/official-law-texts/75-58_Original_Version.pdf"
    }
   },
@@ -1227,27 +1210,25 @@
     "brief",
     "module:periods"
    ],
-   "state": "missing",
-   "referenceOnlyInCorpus": false,
-   "action": "fetch",
-   "why": "missing",
-   "readers": [
-    "claude-sonnet-5-5",
-    "codex"
-   ],
+   "state": "inForce",
+   "store": "delta",
+   "version": "ordinance-75-58",
+   "verified": true,
+   "verifiedBy": "twoFamilies",
+   "corpusState": null,
+   "guardFlag": false,
+   "inForceNote": false,
+   "action": "none",
+   "why": "twoFamilies",
+   "readers": [],
    "mayNotExist": false,
    "olderWording": null,
    "where": {
     "version": "ordinance-75-58",
     "url": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
-    "issue": "78",
-    "pdfPage": [
-     19,
-     20
-    ],
+    "pdfPage": 20,
     "endPage": null,
-    "method": "anchors",
-    "anchorCount": 210,
+    "method": "store",
     "localPdf": "docs/official-law-texts/75-58_Original_Version.pdf"
    }
   },
@@ -1262,27 +1243,25 @@
    "criticalWhy": [
     "module:periods"
    ],
-   "state": "missing",
-   "referenceOnlyInCorpus": false,
-   "action": "fetch",
-   "why": "missing",
-   "readers": [
-    "claude-sonnet-5-5",
-    "codex"
-   ],
-   "mayNotExist": true,
+   "state": "inForce",
+   "store": "delta",
+   "version": "ordinance-75-58",
+   "verified": true,
+   "verifiedBy": "twoFamilies",
+   "corpusState": null,
+   "guardFlag": false,
+   "inForceNote": false,
+   "action": "none",
+   "why": "twoFamilies",
+   "readers": [],
+   "mayNotExist": false,
    "olderWording": null,
    "where": {
     "version": "ordinance-75-58",
     "url": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
-    "issue": "78",
-    "pdfPage": [
-     19,
-     20
-    ],
+    "pdfPage": 20,
     "endPage": null,
-    "method": "anchors",
-    "anchorCount": 210,
+    "method": "store",
     "localPdf": "docs/official-law-texts/75-58_Original_Version.pdf"
    }
   },
@@ -1417,36 +1396,6 @@
   },
   {
    "code": "civil-code",
-   "article": "324 مكرر",
-   "sources": [
-    "pointer:proof"
-   ],
-   "fromMemoryOnly": false,
-   "critical": false,
-   "criticalWhy": [],
-   "state": "missing",
-   "referenceOnlyInCorpus": false,
-   "action": "fetch",
-   "why": "missing",
-   "readers": [
-    "claude-sonnet-5-5",
-    "codex"
-   ],
-   "mayNotExist": true,
-   "olderWording": null,
-   "where": {
-    "version": "law-88-14",
-    "url": "https://www.joradp.dz/FTP/jo-arabe/1988/A1988018.pdf",
-    "issue": "18",
-    "pdfPage": null,
-    "endPage": null,
-    "method": "pageMap",
-    "anchorCount": 0,
-    "localPdf": "C:\\Users\\TheShadow\\dz-core-research\\oj-pdf\\A1988018.pdf"
-   }
-  },
-  {
-   "code": "civil-code",
    "article": "324 مكرر 1",
    "sources": [
     "pointer:proof",
@@ -1528,14 +1477,17 @@
    "mayNotExist": true,
    "olderWording": null,
    "where": {
-    "version": "law-88-14",
-    "url": "https://www.joradp.dz/FTP/jo-arabe/1988/A1988018.pdf",
-    "issue": "18",
-    "pdfPage": null,
+    "version": "law-05-10",
+    "url": "https://www.joradp.dz/FTP/jo-arabe/2005/A2005044.pdf",
+    "issue": "44",
+    "pdfPage": [
+     24,
+     25
+    ],
     "endPage": null,
-    "method": "pageMap",
-    "anchorCount": 0,
-    "localPdf": "C:\\Users\\TheShadow\\dz-core-research\\oj-pdf\\A1988018.pdf"
+    "method": "anchors",
+    "anchorCount": 36,
+    "localPdf": "C:\\Users\\TheShadow\\dz-core-research\\oj-pdf\\A2005044.pdf"
    }
   },
   {
@@ -1558,17 +1510,14 @@
    "mayNotExist": true,
    "olderWording": null,
    "where": {
-    "version": "law-05-10",
-    "url": "https://www.joradp.dz/FTP/jo-arabe/2005/A2005044.pdf",
-    "issue": "44",
-    "pdfPage": [
-     24,
-     25
-    ],
+    "version": "law-88-14",
+    "url": "https://www.joradp.dz/FTP/jo-arabe/1988/A1988018.pdf",
+    "issue": "18",
+    "pdfPage": null,
     "endPage": null,
-    "method": "anchors",
-    "anchorCount": 36,
-    "localPdf": "C:\\Users\\TheShadow\\dz-core-research\\oj-pdf\\A2005044.pdf"
+    "method": "pageMap",
+    "anchorCount": 0,
+    "localPdf": "C:\\Users\\TheShadow\\dz-core-research\\oj-pdf\\A1988018.pdf"
    }
   },
   {
@@ -1798,27 +1747,25 @@
    "fromMemoryOnly": false,
    "critical": false,
    "criticalWhy": [],
-   "state": "missing",
-   "referenceOnlyInCorpus": false,
-   "action": "fetch",
-   "why": "missing",
-   "readers": [
-    "claude-sonnet-5-5",
-    "codex"
-   ],
-   "mayNotExist": true,
+   "state": "inForce",
+   "store": "delta",
+   "version": "law-05-10",
+   "verified": true,
+   "verifiedBy": "twoFamilies",
+   "corpusState": null,
+   "guardFlag": false,
+   "inForceNote": false,
+   "action": "none",
+   "why": "twoFamilies",
+   "readers": [],
+   "mayNotExist": false,
    "olderWording": null,
    "where": {
     "version": "law-05-10",
     "url": "https://www.joradp.dz/FTP/jo-arabe/2005/A2005044.pdf",
-    "issue": "44",
-    "pdfPage": [
-     24,
-     25
-    ],
+    "pdfPage": 24,
     "endPage": null,
-    "method": "anchors",
-    "anchorCount": 36,
+    "method": "store",
     "localPdf": "C:\\Users\\TheShadow\\dz-core-research\\oj-pdf\\A2005044.pdf"
    }
   },
@@ -2028,27 +1975,25 @@
    "fromMemoryOnly": false,
    "critical": false,
    "criticalWhy": [],
-   "state": "missing",
-   "referenceOnlyInCorpus": false,
-   "action": "fetch",
-   "why": "missing",
-   "readers": [
-    "claude-sonnet-5-5",
-    "codex"
-   ],
-   "mayNotExist": true,
+   "state": "inForce",
+   "store": "delta",
+   "version": "law-05-10",
+   "verified": true,
+   "verifiedBy": "twoFamilies",
+   "corpusState": null,
+   "guardFlag": false,
+   "inForceNote": false,
+   "action": "none",
+   "why": "twoFamilies",
+   "readers": [],
+   "mayNotExist": false,
    "olderWording": null,
    "where": {
     "version": "law-05-10",
     "url": "https://www.joradp.dz/FTP/jo-arabe/2005/A2005044.pdf",
-    "issue": "44",
-    "pdfPage": [
-     24,
-     25
-    ],
+    "pdfPage": 25,
     "endPage": null,
-    "method": "anchors",
-    "anchorCount": 36,
+    "method": "store",
     "localPdf": "C:\\Users\\TheShadow\\dz-core-research\\oj-pdf\\A2005044.pdf"
    }
   },
@@ -2061,27 +2006,25 @@
    "fromMemoryOnly": false,
    "critical": false,
    "criticalWhy": [],
-   "state": "missing",
-   "referenceOnlyInCorpus": false,
-   "action": "fetch",
-   "why": "missing",
-   "readers": [
-    "claude-sonnet-5-5",
-    "codex"
-   ],
-   "mayNotExist": true,
+   "state": "inForce",
+   "store": "delta",
+   "version": "law-05-10",
+   "verified": true,
+   "verifiedBy": "twoFamilies",
+   "corpusState": null,
+   "guardFlag": false,
+   "inForceNote": false,
+   "action": "none",
+   "why": "twoFamilies",
+   "readers": [],
+   "mayNotExist": false,
    "olderWording": null,
    "where": {
     "version": "law-05-10",
     "url": "https://www.joradp.dz/FTP/jo-arabe/2005/A2005044.pdf",
-    "issue": "44",
-    "pdfPage": [
-     24,
-     25
-    ],
+    "pdfPage": 25,
     "endPage": null,
-    "method": "anchors",
-    "anchorCount": 36,
+    "method": "store",
     "localPdf": "C:\\Users\\TheShadow\\dz-core-research\\oj-pdf\\A2005044.pdf"
    }
   },
@@ -2094,27 +2037,25 @@
    "fromMemoryOnly": false,
    "critical": false,
    "criticalWhy": [],
-   "state": "missing",
-   "referenceOnlyInCorpus": false,
-   "action": "fetch",
-   "why": "missing",
-   "readers": [
-    "claude-sonnet-5-5",
-    "codex"
-   ],
-   "mayNotExist": true,
+   "state": "inForce",
+   "store": "delta",
+   "version": "law-05-10",
+   "verified": true,
+   "verifiedBy": "twoFamilies",
+   "corpusState": null,
+   "guardFlag": false,
+   "inForceNote": false,
+   "action": "none",
+   "why": "twoFamilies",
+   "readers": [],
+   "mayNotExist": false,
    "olderWording": null,
    "where": {
     "version": "law-05-10",
     "url": "https://www.joradp.dz/FTP/jo-arabe/2005/A2005044.pdf",
-    "issue": "44",
-    "pdfPage": [
-     24,
-     25
-    ],
+    "pdfPage": 25,
     "endPage": null,
-    "method": "anchors",
-    "anchorCount": 36,
+    "method": "store",
     "localPdf": "C:\\Users\\TheShadow\\dz-core-research\\oj-pdf\\A2005044.pdf"
    }
   },
@@ -4246,7 +4187,7 @@
    "store": "library",
    "version": "law-08-09",
    "verified": true,
-   "verifiedBy": "corpusChecked",
+   "verifiedBy": "ojPageReread",
    "corpusState": "checked",
    "guardFlag": false,
    "inForceNote": false,
@@ -4855,7 +4796,7 @@
    "store": "library",
    "version": "law-08-09",
    "verified": true,
-   "verifiedBy": "corpusChecked",
+   "verifiedBy": "ojPageReread",
    "corpusState": "checked",
    "guardFlag": false,
    "inForceNote": false,
@@ -4888,7 +4829,7 @@
    "store": "library",
    "version": "law-08-09",
    "verified": true,
-   "verifiedBy": "corpusChecked",
+   "verifiedBy": "ojPageReread",
    "corpusState": "checked",
    "guardFlag": false,
    "inForceNote": false,
@@ -5109,7 +5050,7 @@
    "store": "library",
    "version": "law-08-09",
    "verified": true,
-   "verifiedBy": "corpusChecked",
+   "verifiedBy": "ojPageReread",
    "corpusState": "checked",
    "guardFlag": false,
    "inForceNote": false,
@@ -5462,7 +5403,7 @@
    "store": "library",
    "version": "law-08-09",
    "verified": true,
-   "verifiedBy": "corpusChecked",
+   "verifiedBy": "ojPageReread",
    "corpusState": "checked",
    "guardFlag": false,
    "inForceNote": false,
@@ -5534,7 +5475,7 @@
    "store": "library",
    "version": "law-08-09",
    "verified": true,
-   "verifiedBy": "corpusChecked",
+   "verifiedBy": "ojPageReread",
    "corpusState": "checked",
    "guardFlag": false,
    "inForceNote": false,
@@ -5604,7 +5545,7 @@
    "store": "library",
    "version": "law-08-09",
    "verified": true,
-   "verifiedBy": "corpusChecked",
+   "verifiedBy": "ojPageReread",
    "corpusState": "checked",
    "guardFlag": false,
    "inForceNote": false,
@@ -5744,7 +5685,7 @@
    "store": "library",
    "version": "law-08-09",
    "verified": true,
-   "verifiedBy": "corpusChecked",
+   "verifiedBy": "ojPageReread",
    "corpusState": "checked",
    "guardFlag": false,
    "inForceNote": false,
@@ -5779,7 +5720,7 @@
    "store": "library",
    "version": "law-08-09",
    "verified": true,
-   "verifiedBy": "corpusChecked",
+   "verifiedBy": "ojPageReread",
    "corpusState": "checked",
    "guardFlag": false,
    "inForceNote": false,
@@ -5814,7 +5755,7 @@
    "store": "library",
    "version": "law-08-09",
    "verified": true,
-   "verifiedBy": "corpusChecked",
+   "verifiedBy": "ojPageReread",
    "corpusState": "checked",
    "guardFlag": false,
    "inForceNote": false,
@@ -5851,7 +5792,7 @@
    "store": "library",
    "version": "law-08-09",
    "verified": true,
-   "verifiedBy": "corpusChecked",
+   "verifiedBy": "ojPageReread",
    "corpusState": "checked",
    "guardFlag": false,
    "inForceNote": false,
@@ -6314,7 +6255,7 @@
    "store": "library",
    "version": "law-08-09",
    "verified": true,
-   "verifiedBy": "corpusChecked",
+   "verifiedBy": "ojPageReread",
    "corpusState": "checked",
    "guardFlag": false,
    "inForceNote": false,
@@ -7022,7 +6963,7 @@
    "store": "library",
    "version": "ordinance-05-02",
    "verified": true,
-   "verifiedBy": "corpusChecked",
+   "verifiedBy": "ojPageReread",
    "corpusState": "checked",
    "guardFlag": false,
    "inForceNote": true,
@@ -7097,7 +7038,7 @@
    "store": "library",
    "version": "ordinance-05-02",
    "verified": true,
-   "verifiedBy": "corpusChecked",
+   "verifiedBy": "ojPageReread",
    "corpusState": "checked",
    "guardFlag": false,
    "inForceNote": true,
@@ -7503,7 +7444,7 @@
    "store": "library",
    "version": "law-84-11",
    "verified": true,
-   "verifiedBy": "corpusChecked",
+   "verifiedBy": "ojPageReread",
    "corpusState": "checked",
    "guardFlag": false,
    "inForceNote": true,
@@ -7536,7 +7477,7 @@
    "store": "library",
    "version": "law-84-11",
    "verified": true,
-   "verifiedBy": "corpusChecked",
+   "verifiedBy": "ojPageReread",
    "corpusState": "checked",
    "guardFlag": false,
    "inForceNote": true,

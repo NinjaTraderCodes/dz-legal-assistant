@@ -62,3 +62,19 @@ def test_the_french_check_compares_numbers_not_their_writing():
     assert french.french_number("187 مكرر 1")[0] == "187 ter"
     text = "Art. 2. — L'article 169 est modifié :\n« Art. 169. — Les dispositions.\n« Art. 170. — Autre."
     assert french.cut(text, "169").strip().startswith("— Les dispositions")
+
+
+def test_a_fill_replaces_only_the_marked_gap_and_names_its_source(tmp_path, monkeypatch):
+    import json
+    import fetch
+    f = tmp_path / "fills.jsonl"
+    f.write_text(json.dumps({"code": "commercial-code", "article": "171", "version": "v", "marked": "16[؟]",
+                             "filled": "169", "settledBy": "consolidated p52", "why": "blotted"}, ensure_ascii=False) + "\n",
+                 encoding="utf-8")
+    monkeypatch.setattr(fetch, "FILLS", str(f))
+    job = {"code": "commercial-code", "version": "v"}
+    r = {"article": "171", "paragraphs": ["في المادتين 16[؟] و 170"], "unreadable": [{"paragraph": 1, "about": "x"}]}
+    out, used = fetch.apply_fills(job, r)
+    assert out["paragraphs"] == ["في المادتين 169 و 170"] and out["unreadable"] == [] and used
+    other, none = fetch.apply_fills({"code": "commercial-code", "version": "w"}, r)
+    assert other is r and not none

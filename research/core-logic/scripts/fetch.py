@@ -78,6 +78,33 @@ def compare_pair(a: dict, b: dict) -> dict:
     return {"result": "differ", "level": lv, "differences": diffs}
 
 
+FILLS = os.path.join(rd.JOBS, "fills.jsonl")
+
+
+def fills() -> list[dict]:
+    """Marked gaps settled from another source on the owner's instruction (a blotted digit read in the official
+    consolidated edition, tier 2): applied to the readings before comparison, and named in the delta's note."""
+    if not os.path.exists(FILLS):
+        return []
+    with open(FILLS, encoding="utf-8") as f:
+        return [json.loads(line) for line in f if line.strip()]
+
+
+def apply_fills(job: dict, reading: dict) -> tuple[dict, list[dict]]:
+    used = []
+    paras = list(reading["paragraphs"])
+    for fl in fills():
+        if (fl["code"], fl["article"], fl["version"]) != (job["code"], reading["article"], job["version"]):
+            continue
+        for i, p in enumerate(paras):
+            if fl["marked"] in p:
+                paras[i] = p.replace(fl["marked"], fl["filled"])
+                used.append(fl)
+    if not used:
+        return reading, []
+    return dict(reading, paragraphs=paras, unreadable=[]), used
+
+
 def compare(batch: str, job_name: str) -> list[dict]:
     job = rd.load(rd.job_path(batch, job_name))
     folder = os.path.join(rd.JOBS, batch)
@@ -92,8 +119,14 @@ def compare(batch: str, job_name: str) -> list[dict]:
         if art not in by_s or art not in by_c:
             rows.append({"article": art, "result": "notAnswered", "level": None, "differences": []})
             continue
-        rows.append({"article": art, **compare_pair(by_s[art], by_c[art]),
-                     "where": by_s[art]["where"], "continues": [by_s[art]["continuesOnNextPage"], by_c[art]["continuesOnNextPage"]]})
+        s_read, s_fills = apply_fills(job, by_s[art])
+        c_read, c_fills = apply_fills(job, by_c[art])
+        row = {"article": art, **compare_pair(s_read, c_read),
+               "where": by_s[art]["where"], "continues": [by_s[art]["continuesOnNextPage"], by_c[art]["continuesOnNextPage"]]}
+        if s_fills or c_fills:
+            row["filled"] = {"first": [f["filled"] for f in s_fills], "second": [f["filled"] for f in c_fills],
+                             "settledBy": (s_fills or c_fills)[0]["settledBy"]}
+        rows.append(row)
     with open(os.path.join(folder, f"{job_name}.fetch.json"), "w", encoding="utf-8", newline="\n") as f:
         json.dump(rows, f, ensure_ascii=False, indent=1)
     return rows

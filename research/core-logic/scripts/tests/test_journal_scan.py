@@ -56,3 +56,37 @@ def test_the_masthead_date():
 def test_unrelated_text_gives_nothing():
     hits, visas = classes("Décret exécutif portant organisation de l'administration centrale du ministère.")
     assert hits == [] and visas == {}
+
+
+def _shift(text):
+    """The broken font of some 2005 issues, applied to plain text: 29 code points lower, accents as plain letters."""
+    back = {v: k for k, v in js.ACCENTS.items()}
+    return "".join(back.get(c, chr(ord(c) - js.SHIFT) if 0x20 <= ord(c) <= 0x7A else c) for c in text)
+
+
+def test_a_shifted_line_is_decoded_and_a_plain_line_is_left_alone():
+    plain = "La présente loi modifie et complète la loi n° 75-59 portant code de commerce."
+    pages, count = js.repair([_shift(plain) + "\n" + plain])
+    assert count == 1
+    assert pages[0].split("\n") == [plain, plain]
+
+
+def test_the_search_finds_an_amendment_in_shifted_text():
+    pages, _ = js.repair([_shift("Art. 2. — L'article 32 de la loi n° 08-09 susvisée est modifié comme suit :")])
+    hits, _ = js.search(pages)
+    assert ("cpca", "operative") in [(h["instrument"], h["class"]) for h in hits]
+
+
+def test_a_list_of_names_is_readable_and_shifted_names_are_decoded():
+    names = "Hannachi Bouazziz Boutebba Ziani Guellati Achouri Assami Menidjel Djaider Benabdelkader Baroud Maizi"
+    assert js.repair_line(names) == (names, False)
+    decoded, changed = js.repair_line(_shift(names))
+    assert changed and decoded == names
+
+
+def test_the_readability_check_flags_a_page_that_does_not_read_as_french():
+    french = "La présente loi a pour objet de modifier et compléter la loi relative aux relations de travail. " * 6
+    garbled = _shift(french).replace("\x03", "\x03")  # what pdftotext gives for the broken font, before any repair
+    assert js.unreadable_pages([french]) == []
+    assert js.unreadable_pages([french, garbled]) == [2]
+    assert js.unreadable_pages(["12 345 678"]) == []  # a table without words is not judged

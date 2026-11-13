@@ -111,3 +111,10 @@ def test_obeys_a_robots_file_that_forbids_the_path(tmp_path, monkeypatch):
 
 def test_robots_rules_for_another_agent_do_not_apply():
     assert oj_fetch._parse_robots("User-agent: Googlebot\nDisallow: /\n\nUser-agent: *\nDisallow: /private\n") == ["/private"]
+
+
+def test_a_lock_being_written_is_not_taken_for_a_stale_one(home, tmp_path):
+    h, _ = home
+    open(os.path.join(h, "joradp.lock"), "w").close()  # created, not yet written: its holder is writing it
+    with pytest.raises(oj_fetch.Busy):
+        oj_fetch.fetch("https://www.joradp.dz/FTP/a.pdf", str(tmp_path), "second", wait=0, home=h)

@@ -8,13 +8,14 @@ The owner wants Codex kept away from the repositories and from every hidden test
 
 | Test | Result |
 |---|---|
-| Codex asked to read a file under `C:\Users\TheShadow\...` (outside its working folder) | **Refused by Windows** ("Accès refusé"): the sandbox runs commands as another local user, who has no right to the owner's profile. |
+| Codex asked to read a file under `C:\Users\TheShadow\...` (outside its working folder), 12 November | **Refused by Windows** ("Accès refusé"): the sandbox runs commands as another local user, who had no right to that folder then. |
+| The same probe, 13 November (the executor's first session) | **Read successfully.** By then several folders of the owner's profile carried an explicit grant `CodexSandboxUsers:(OI)(CI)(RX)` (read and list, inherited by everything below): `dz-core-research`, `dz-fable-core`, `dz-arch-research`, `.claude`, `.codex`; and `(M)` (modify) on the main folder `dz-legal-assistant`. Nobody in this work set them: Codex's own Windows sandbox (`sandbox = "elevated"` in its configuration) adds such grants to folders it works in. The event-log check rejected the call, as it must. |
 | Codex asked to read a file in a folder at the root of `C:` | **Read successfully.** Root folders inherit read access for every local user. |
 | Codex asked for a one-word answer and told not to use tools | No command was run; the event log holds one message only. |
 | `whoami` inside the sandbox (13 November) | `CodexSandboxOffline`: the model's commands run as that separate local account. |
 | Codex given a scanned Official Journal page as an image | It transcribed article 19 of Law 90-04 with 65 of 66 words equal to the library's text. |
 
-So: `C:\dz-hidden-v2` and `C:\dz-hidden-v3` are at the root of `C:` and **could be read by a sandboxed Codex call that chose to look**. The sandbox is not a wall around them.
+So: `C:\dz-hidden-v2` and `C:\dz-hidden-v3` are at the root of `C:`, and the working folders of this work (the store, the note sets while they are built, the scenarios and the writers' labels in `dz-core-research`; the worktree; Claude Code's own transcripts in `.claude`) all **could be read by a sandboxed Codex call that chose to look**. The sandbox is not a wall around any of them.
 
 **The owner decided on 13 November 2026 that no folder is locked:** the access rights of the hidden folders are never changed. The protection is: the no-open rule for the builder and its agents; an empty scratch folder with a read-only sandbox for every Codex call; and **the event-log check below, which discards any call that opened a file or ran a command.** That check is therefore not a formality: it is the one thing that would catch Codex looking where it must not. Never weaken it.
 
@@ -85,11 +86,19 @@ For each call the script keeps a provenance record (committed for non-hidden wor
 - The pilot of step 3 measures how many calls a usage window allows; the calendar is derived from that and reported to the owner.
 - If the limit bites, Codex's calls go first to hidden set v3 and the mirror test, then the development notes, then the rule reviews, and last to training volume.
 
+## The owner's three safeguards (13 November 2026)
+
+The owner accepted the read access described above, kept the event-log check as the protection, changed no permission, and added three safeguards. `codex_run.py` enforces the first two in code: `call()` refuses to run (`Gate`) unless both hold.
+
+1. **A read probe at the start of every day's batch.** Probe 2 below is run first each day. **No real call is made that day unless the probe was rejected by the check** (`codex_run.py probe2` writes `C:\Users\TheShadow\dz-core-research\codex-daily-probe.json` with the day, the version and the result; `call()` reads it).
+2. **Codex CLI stays at 0.167.0 for the whole task.** `call()` checks `codex --version` against `codex-cli 0.167.0`. If Codex updated itself, re-run both probes before any real call **and tell the owner**.
+3. **Nothing from a discarded call is ever used, not even part of its output.** A rejected or refused call's answer is not parsed or stored, and its last-message file is deleted at once; only the event log stays, for the record, and it is read only to classify the call. Its items go back to the queue under the one rule above, to be sent afresh.
+
 ## Checks before the first real call of a session ("done when")
 
 1. `codex --version` is recorded, and from `codex login status` only "logged in: yes" or "no" (never the account it names). If the version differs from 0.167.0, the two probes below are run again and their results compared with this file; any difference is reported to the owner before real calls start.
 2. **Probe 1 (no tool):** a one-word answer under a schema. Accepted; the log holds `agent_message` only.
-3. **Probe 2 (profile canary):** Codex is asked to read a canary file under `C:\Users\TheShadow\dz-core-research\canary\`. Expected: the event-log check **rejects** the call (it ran a command). The probe script, and only it, may print the probe command's own output, to show that the read was refused ("access denied").
+3. **Probe 2 (profile canary):** Codex is asked to read a canary file under `C:\Users\TheShadow\dz-core-research\canary\`. Expected: the event-log check **rejects** the call (it ran a command). The probe script, and only it, may print the probe command's own output. On 12 November that output was "access denied"; since 13 November it is the canary's content (the grant above). **The pass mark is the rejection**, not the denial: the rejection is the protection.
 4. The rejection path is exercised: the script's test suite feeds it a stored log that contains a `command_execution` item and expects a rejection, and a stored log of a usage-limit failure (written by hand from the rule above until a real one is seen) and expects a refusal that stops the batch.
 
 The stored logs of the probes are in `C:\Users\TheShadow\dz-core-research\codex-probes\`: `p1` (probe 1), `p2` (probe 2), `p4` (a page reading with `-i`: `agent_message` only, so a page reading passes the rule). `p3` (a read of a folder at the root of `C:`) and `p5` (a test of a folder lock) belong to the tests of the table above and to the lock the owner withdrew on 13 November: they are not run again.

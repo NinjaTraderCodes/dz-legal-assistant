@@ -56,6 +56,8 @@ The scan calls the same function for each issue, so it releases the lock between
 
 1. Download it through `oj-fetch` to a temporary folder outside the repository. Note its SHA-256 and size.
 2. Extract the text page by page (`pdftotext`, installed in `/mingw64/bin`) and **keep the text** in `C:\Users\TheShadow\dz-core-research\journal-text\<YYYY>\F<YYYY><NNN>.txt` (public law text, a few hundred KB per issue; outside the repository, never committed). If the issue has fewer than 200 characters of text per page on average, mark it **blind**.
+   - **The shifted font (found on 13 November 2026).** Some issues of 2005 print part of their text in a font whose text layer is shifted: each character 29 code points lower (`'LPDQFKH` for «Dimanche»), spaces and digits as control characters, accented letters as plain ones. Such text has characters, so it is not blind, but no pattern can match it. Every line that carries those control characters is decoded when its decoded form is clearly more French, by a letter-pair model learnt from clean pages (`research/core-logic/scripts/french_bigrams.json`, built by `journal_scan.py model` from the kept text of 2007). The evidence line records `textVersion` and `decodedLines`.
+   - **The readability check (owner, 13 November 2026).** After that repair, every page with at least 300 letters must read as French by the same model (no less French than the least French clean page seen, with half a bit of margin; tables of names and figures pass). A page that fails is listed in `unreadablePages`. **An issue that is blind or has an unreadable page is `readable: false`: it is listed as unread, never as "no match"**, its hits do not count as a search, and its table of contents is read from page images like a blind issue's (below). The summary gives the number of unread issues per year.
 3. Read the issue's date from the masthead of page 1 (French, for example « Dimanche 17 juillet 2022 »).
 4. Search every page with the current patterns. For each hit, record the instrument, the pattern, the page, and the sentence around it (at most 300 characters).
 5. Classify each hit by rule:
@@ -84,9 +86,10 @@ Steps 4 and 5 are a separate pass over the kept text, so that they can be run ag
 
 - `issueDate`: the date printed on the issue (the owner's "date"). `dateSource`: `masthead`; `triage` when a blind issue's date was read from its page image; `unread` (with `issueDate: null`) until then. `readOn` is only the day the scan read it.
 - `error`: for an issue that could not be fetched or read, the error, with `sha256` null; otherwise null.
-- **`textAsOf`** (used by the store and the grades) is the latest `issueDate` such that every issue up to it is in the evidence list with no `error` and no `unread` date.
+- `readable`, `unreadablePages`, `textVersion`, `decodedLines`: the readability check and the repair above.
+- **`textAsOf`** (used by the store and the grades) is the latest `issueDate` such that every issue up to it is in the evidence list with no `error`, no `unread` date, and either `readable: true` or a triage answer read from its page images.
 
-A summary file `journal-scan/SUMMARY.md` gives, per year: issues read, blind issues, issues in error, hits by class and instrument, the patterns' version, and the scan's start and end dates.
+A summary file `journal-scan/SUMMARY.md` gives, per year: issues fetched, **unread issues** (blind or failing the readability check), issues in error, issues with decoded lines, hits by class, the patterns' version, and the scan's start and end dates.
 
 ## The test the scan must pass before it is trusted
 
@@ -130,9 +133,9 @@ For every entry of the article store, the store build then computes:
 - `ledgerRefs`: the ledger entries that touch it (`<instrument>/<id>`, the same name the rule record's `source.ledgerRefs` uses);
 - `ledgerClean`: true when the entry's version is the one introduced by the latest of those entries (or by the original text when there is none) and the instrument is covered by the patterns, false otherwise. False sends the article to the hand check of step 2.
 
-## Blind issues
+## Blind and unread issues
 
-An issue without a text layer is listed as blind. Its first pages (the table of contents, and the masthead with the date) are rendered as images and read by a triage agent (Sonnet 5.5, the same prompt, told that the issue is blind), which lists the titles and the issue's date; titles that name one of the instruments are treated as title hits. If more than a handful of issues of a year are blind, say so in the summary: that year is weaker evidence.
+An issue without a text layer is listed as blind; an issue that fails the readability check is listed as unread in the same way. Its first pages (the table of contents, and the masthead with the date) are rendered as images and read by a triage agent (Sonnet 5.5, the same prompt, told that the issue is blind), which lists the titles and the issue's date; titles that name one of the instruments are treated as title hits. If more than a handful of issues of a year are blind, say so in the summary: that year is weaker evidence.
 
 ## Before 2003
 

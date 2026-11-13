@@ -149,6 +149,128 @@ def masthead_date(first_page: str) -> str | None:
         return None
 
 
+# Some issues (seen in 2005) print part of their text in a font whose text layer is shifted: every character is
+# written 29 code points lower ("'LPDQFKH" for "Dimanche"), spaces as \x03, digits as control characters, and the
+# accented letters as plain ones (p for é, q for è ...). Such text passes the "blind" test (it has characters) but no
+# pattern can ever match it. The test of French is a letter-pair model learnt from issues whose text layer is clean
+# (`french_bigrams.json`, built by `journal_scan.py model`): a line is decoded when its decoded form is clearly more
+# French than its raw form; a page is unreadable when, after that repair, it is less French than the clean pages ever
+# are. Names, tables and headings read as French enough by this measure; shifted text does not. Raise TEXT_VERSION
+# when this changes.
+TEXT_VERSION = 3
+SHIFT = 29
+ACCENTS = {"p": "é", "q": "è", "r": "ê", "s": "ë", "j": "à", "k": "â", "d": "ç", "v": "î", "w": "ï", "{": "ô", "x": "ù", "y": "û"}
+MODEL_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "french_bigrams.json")
+MIN_LETTERS = 12       # shorter lines are left as they are
+MIN_PAGE_LETTERS = 300  # pages with fewer letters (tables, signatures) are not judged
+MARGIN = 0.8           # bits per letter pair by which the decoded line must be more French
+SHIFT_MARK = re.compile(r"[\x03-\x08\x0e-\x1f]")
+_MODEL = None
+
+
+def _letters(text: str) -> str:
+    return re.sub(r" +", " ", re.sub(r"[^a-z]", " ", fold(text))).strip()
+
+
+def model() -> dict:
+    global _MODEL
+    if _MODEL is None:
+        with open(MODEL_PATH, encoding="utf-8") as f:
+            _MODEL = json.load(f)
+    return _MODEL
+
+
+def plausibility(text: str, min_letters: int = MIN_LETTERS) -> float | None:
+    """Average log2 probability of the text's letter pairs under the model; None for too little text."""
+    t = _letters(text)
+    if sum(c != " " for c in t) < min_letters:
+        return None
+    lp, alphabet = model()["logprob"], model()["alphabet"]
+    pairs = [lp[alphabet.index(a)][alphabet.index(b)] for a, b in zip(" " + t, t + " ")]
+    return sum(pairs) / len(pairs)
+
+
+def decode_shifted(line: str) -> str:
+    out = []
+    for c in line:
+        o = ord(c)
+        if 3 <= o <= 0x5D:
+            out.append(chr(o + SHIFT))
+        else:
+            out.append(ACCENTS.get(c, c))
+    return "".join(out)
+
+
+def repair_line(line: str) -> tuple[str, bool]:
+    # Only a line that carries the shifted font's own marks (spaces and digits come out as control characters) is ever
+    # decoded: short clean lines ("de l'article 5.") can look less French than their "decoded" form by chance.
+    if not SHIFT_MARK.search(line):
+        return line, False
+    raw = plausibility(line)
+    decoded = decode_shifted(line)
+    dec = plausibility(decoded)
+    if dec is None:
+        return line, False
+    if raw is None:
+        # Shifted capitals come out as digits and signs ("-2851$/2)),&,(/" for "JOURNAL OFFICIEL"), so the raw line
+        # has almost no letters: decode it when the decoded line reads as French as a clean page does.
+        return (decoded, True) if dec > model()["pageFloor"] + MARGIN else (line, False)
+    if dec > raw + MARGIN:
+        return decoded, True
+    return line, False
+
+
+def unreadable_pages(pages: list[str]) -> list[int]:
+    """The readability check: pages (1-based) with enough letters whose text is less French than clean pages ever are."""
+    floor = model()["pageFloor"]
+    bad = []
+    for n, page in enumerate(pages, start=1):
+        score = plausibility(page, MIN_PAGE_LETTERS)
+        if score is not None and score < floor:
+            bad.append(n)
+    return bad
+
+
+def build_model(paths: list[str]) -> dict:
+    """Letter-pair log probabilities from pages without any control character (a clean text layer)."""
+    alphabet = " abcdefghijklmnopqrstuvwxyz"
+    counts = [[1] * len(alphabet) for _ in alphabet]  # add-one smoothing
+    clean_pages = []
+    for path in paths:
+        with open(path, encoding="utf-8") as f:
+            for page in f.read().split("\f"):
+                if re.search(r"[\x03-\x08\x0e-\x1f]", page):
+                    continue
+                t = _letters(page)
+                if sum(c != " " for c in t) < MIN_PAGE_LETTERS:
+                    continue
+                clean_pages.append(page)
+                for a, b in zip(" " + t, t + " "):
+                    counts[alphabet.index(a)][alphabet.index(b)] += 1
+    import math
+    logprob = [[round(math.log2(c / sum(row)), 4) for c in row] for row in counts]
+    global _MODEL
+    _MODEL = {"alphabet": alphabet, "logprob": logprob, "pageFloor": 0.0, "pages": len(clean_pages)}
+    scores = sorted(plausibility(p, MIN_PAGE_LETTERS) for p in clean_pages)
+    # The floor: half a bit below the least French clean page seen (tables of names and figures included).
+    _MODEL["pageFloor"] = round(scores[0] - 0.5, 4)
+    _MODEL["cleanPageScores"] = {"min": scores[0], "p01": scores[len(scores) // 100], "median": scores[len(scores) // 2]}
+    return _MODEL
+
+
+def repair(pages: list[str]) -> tuple[list[str], int]:
+    """Decodes the shifted lines of every page. Returns the pages and the number of lines decoded."""
+    fixed, count = [], 0
+    for page in pages:
+        lines = []
+        for line in page.split("\n"):
+            new, changed = repair_line(line)
+            lines.append(new)
+            count += changed
+        fixed.append("\n".join(lines))
+    return fixed, count
+
+
 def extract_pages(pdf: str) -> list[str]:
     out = subprocess.run([PDFTOTEXT, "-enc", "UTF-8", pdf, "-"], capture_output=True, timeout=300)
     if out.returncode != 0:
@@ -196,7 +318,8 @@ def read_issue(year: int, issue: int, tmp: str) -> dict:
     pdf = fetched["file"]
     try:
         line["sha256"], line["bytes"] = fetched["sha256"], fetched["bytes"]
-        pages = extract_pages(pdf)
+        pages, decoded_lines = repair(extract_pages(pdf))
+        line["textVersion"], line["decodedLines"] = TEXT_VERSION, decoded_lines
         text = "\f".join(pages)
         os.makedirs(os.path.dirname(_kept_text_path(year, issue)), exist_ok=True)
         with open(_kept_text_path(year, issue), "w", encoding="utf-8", newline="\n") as f:
@@ -204,6 +327,9 @@ def read_issue(year: int, issue: int, tmp: str) -> dict:
         chars = sum(len(p.strip()) for p in pages)
         line.update(pages=len(pages), textChars=chars, textSha256=hashlib.sha256(text.encode("utf-8")).hexdigest(),
                     blind=(chars / max(1, len(pages))) < 200)
+        bad = unreadable_pages(pages)
+        line["unreadablePages"] = bad
+        line["readable"] = not line["blind"] and not bad
         if pages:
             date = masthead_date(pages[0])
             if date:
@@ -297,6 +423,22 @@ def research() -> None:
             if line.get("sha256") and os.path.exists(path):
                 with open(path, encoding="utf-8") as f:
                     pages = f.read().split("\f")
+                if line.get("textVersion", 1) < TEXT_VERSION:
+                    pages, decoded_lines = repair(pages)
+                    text = "\f".join(pages)
+                    with open(path, "w", encoding="utf-8", newline="\n") as f:
+                        f.write(text)
+                    chars = sum(len(p.strip()) for p in pages)
+                    line.update(textVersion=TEXT_VERSION, decodedLines=decoded_lines, textChars=chars,
+                                textSha256=hashlib.sha256(text.encode("utf-8")).hexdigest(),
+                                blind=(chars / max(1, len(pages))) < 200)
+                    if pages and not line.get("issueDate"):
+                        date = masthead_date(pages[0])
+                        if date:
+                            line["issueDate"], line["dateSource"] = date, "masthead"
+                bad = unreadable_pages(pages)
+                line["unreadablePages"] = bad
+                line["readable"] = not line.get("blind") and not bad
                 line["hits"], line["visaHits"] = search(pages)
                 line["patternsVersion"] = PATTERNS_VERSION
         save_evidence(year, lines)
@@ -309,6 +451,10 @@ def known() -> int:
         line = load_evidence(year).get(issue)
         if not line or not line.get("sha256"):
             print(f"NOT READ YET  {label} (issue {issue} of {year})")
+            ok = False
+            continue
+        if line.get("readable") is False:
+            print(f"UNREAD  {label} (issue {issue} of {year}): the text does not read as French")
             ok = False
             continue
         found = [h for h in line["hits"] if h["instrument"] == instrument and h["class"] in ("title", "operative")]
@@ -331,16 +477,22 @@ def summary() -> None:
             for h in l["hits"]:
                 counts[(h["class"], h["instrument"])] = counts.get((h["class"], h["instrument"]), 0) + 1
         rows.append((m.group(1), len(read), sum(1 for l in read if l.get("blind")), sum(1 for l in lines.values() if l.get("error")),
-                     sum(1 for l in read if l.get("dateSource") == "unread"), counts,
+                     sum(1 for l in read if l.get("dateSource") == "unread"), sum(1 for l in read if l.get("decodedLines")),
+                     sum(1 for l in read if l.get("readable") is False), counts,
                      sorted({l.get("patternsVersion") for l in read})))
     out = ["# The Official Journal scan: summary", "",
            "French edition, from issue 1 of 2003. Specification: `../../specs/official-journal-scan.md`. "
            "One line per issue in `issues-<year>.jsonl`.", "",
-           "| Year | Issues read | Blind | In error | Date unread | Title hits | Operative hits | Other hits | Patterns |",
-           "|---|---:|---:|---:|---:|---:|---:|---:|---|"]
-    for year, n, blind, err, unread, counts, pv in rows:
+           "An issue with **decoded lines** printed part of its text in a font whose text layer is shifted; those lines were "
+           "decoded before the search (see `TEXT_VERSION` in the script).", "",
+           "**Unread** issues are those whose text could not be read: blind (no text layer) or failing the readability check "
+           "(a page of enough words that does not read as French). They are listed as unread, never as \"no match\", and "
+           "their tables of contents are read from page images by the triage.", "",
+           "| Year | Issues fetched | Unread | of which blind | In error | Date unread | With decoded lines | Title hits | Operative hits | Other hits | Patterns |",
+           "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|"]
+    for year, n, blind, err, unread, dec, unr, counts, pv in rows:
         by = lambda cls: sum(v for (c, _), v in counts.items() if c == cls)  # noqa: E731
-        out.append(f"| {year} | {n} | {blind} | {err} | {unread} | {by('title')} | {by('operative')} | {by('other')} | {','.join(map(str, pv))} |")
+        out.append(f"| {year} | {n} | {unr} | {blind} | {err} | {unread} | {dec} | {by('title')} | {by('operative')} | {by('other')} | {','.join(map(str, pv))} |")
     with open(os.path.join(EVIDENCE, "SUMMARY.md"), "w", encoding="utf-8", newline="\n") as f:
         f.write("\n".join(out) + "\n")
     print("\n".join(out))
@@ -357,7 +509,17 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("search")
     sub.add_parser("known")
     sub.add_parser("summary")
+    mo = sub.add_parser("model")
+    mo.add_argument("--years", default="2007", help="years whose kept text trains the letter-pair model")
     args = parser.parse_args(argv)
+    if args.cmd == "model":
+        import glob as _glob
+        paths = [p for y in args.years.split(",") for p in sorted(_glob.glob(os.path.join(TEXT, y, "*.txt")))]
+        m = build_model(paths)
+        with open(MODEL_PATH, "w", encoding="utf-8", newline="\n") as f:
+            json.dump(m, f, indent=0)
+        print(json.dumps({k: m[k] for k in ("pages", "pageFloor", "cleanPageScores")}))
+        return 0
     if args.cmd == "run":
         years = [int(y) for y in args.years.split(",")] if args.years else \
             [2005, 2007, 2022] + [y for y in range(FIRST_YEAR, args.to_year + 1) if y not in (2005, 2007, 2022)]

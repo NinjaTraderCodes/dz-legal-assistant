@@ -118,13 +118,20 @@ class Lock:
                 held = json.load(f)
             age = (_now() - dt.datetime.fromisoformat(held["at"])).total_seconds()
             alive = _process_alive(int(held.get("pid", 0)))
+        except FileNotFoundError:
+            return
         except (OSError, ValueError, KeyError):
-            held, age, alive = {}, STALE_SECONDS + 1, False
+            # The holder may be writing the file at this very moment: an unreadable lock is stale only when it is old.
+            try:
+                age = time.time() - os.path.getmtime(self.path)
+            except OSError:
+                return
+            held, alive = {}, age <= STALE_SECONDS
         if not alive or age > STALE_SECONDS:
             try:
                 os.remove(self.path)
                 _log(self.home, f"stale lock removed (held by {held.get('caller')} pid {held.get('pid')}, age {int(age)} s)")
-            except FileNotFoundError:
+            except (FileNotFoundError, PermissionError):
                 pass
 
     def __enter__(self) -> "Lock":
@@ -141,10 +148,16 @@ class Lock:
             time.sleep(min(self.poll, max(0.1, deadline - time.monotonic())))
 
     def __exit__(self, *exc) -> None:
-        try:
-            os.remove(self.path)
-        except FileNotFoundError:
-            pass
+        # On Windows a file another process is reading cannot be removed for that instant: try again briefly.
+        for _ in range(50):
+            try:
+                os.remove(self.path)
+                return
+            except FileNotFoundError:
+                return
+            except PermissionError:
+                time.sleep(0.1)
+        _log(self.home, "could not remove the lock after 5 s; it will be cleared as stale")
 
 
 def _http_get(url: str) -> tuple[int, bytes]:

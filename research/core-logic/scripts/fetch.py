@@ -157,19 +157,23 @@ def orthographic(a: str, b: str) -> bool:
     return textcmp.level(a or "", b or "") in AGREE
 
 
-def settle_prep(name: str, jobs: list[tuple[str, str]]) -> dict:
+def settle_prep(name: str, jobs: list[tuple[str, str]], dpi: int = 600, only: dict | None = None) -> dict:
     """Every non-orthographic difference of the given (batch, job) comparisons goes to one settle run: the two words as X
     and Y in random order (which reader wrote which is not shown), both columns of every page at 600 dpi."""
     entries = []
     for batch, job_name in jobs:
         job = rd.load(rd.job_path(batch, job_name))
-        bands = rd.column_bands(job)
+        bands = rd.column_bands(job, dpi=dpi)
         for r in rd.load(os.path.join(rd.JOBS, batch, f"{job_name}.fetch.json")):
             if r["result"] != "differ":
                 continue
+            if only is not None and r["article"] not in only.get(job_name, []):
+                continue  # a second look covers only the articles still open
             for d in r["differences"]:
                 if d["kind"] == "words" and orthographic(d["first"], d["second"]):
                     continue
+                if settled_words(f"{batch}/{job_name}", r["article"], d) is not None:
+                    continue  # already settled, sure
                 entries.append({"job": job, "bands": bands, "article": r["article"], "paragraph": None,
                                 "kind": d["kind"], "store": d["first"], "reading": d["second"],
                                 "before": d.get("before", ""), "after": d.get("after", "")})

@@ -476,7 +476,12 @@ public sealed record Expectation
 {
     public CourtSection? Section { get; init; }
     public required IReadOnlyList<ExpectedFinding> Findings { get; init; }
-    public IReadOnlyList<string> Questions { get; init; } = [];
+
+    /// <summary>
+    /// The slots the evaluator must ask for, compared as a set. Null when the example does not state them (not checked);
+    /// empty when nothing may be asked. The two must stay apart, so this is not defaulted to an empty list.
+    /// </summary>
+    public IReadOnlyList<string>? Questions { get; init; }
 }
 
 public sealed record WorkedExample

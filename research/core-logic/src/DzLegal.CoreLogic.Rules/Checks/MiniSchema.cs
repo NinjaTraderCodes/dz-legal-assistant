@@ -1,14 +1,14 @@
 using System.Globalization;
 using System.Text.Json;
 
-namespace DzLegal.CoreLogic.Contracts.Tests;
+namespace DzLegal.CoreLogic.Rules.Checks;
 
 /// <summary>
 /// A validator for the small part of JSON Schema that the handbook's schemas use: type, properties, required,
 /// additionalProperties, items, enum, const and $ref (to #/$defs/name only). Small on purpose: no package is needed, and a
 /// schema that uses anything else fails <see cref="UnsupportedKeywords"/> instead of being half checked.
 /// </summary>
-internal static class MiniSchema
+public static class MiniSchema
 {
     private static readonly HashSet<string> Checked =
         ["type", "properties", "required", "additionalProperties", "items", "enum", "const", "$ref"];

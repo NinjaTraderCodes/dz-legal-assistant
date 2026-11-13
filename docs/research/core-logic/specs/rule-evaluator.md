@@ -64,7 +64,6 @@ Every item below produces **one finding** (also when its effect is `none`), so t
 
 **Territory rules and requests** produce no finding and ask no question. They are data the app shows.
 
-`FindingKind.Limit` is produced by no item.
 
 ## From the declared effect to the effect
 
@@ -88,7 +87,7 @@ Apply, in this order: the grade table of [../rules/GRADES.md](../rules/GRADES.md
 
 The boundary-case writer's files (`rules/boundary-cases/<unit>.json`, format in [../prompts/rules-boundary-cases.md](../prompts/rules-boundary-cases.md)) are never edited after they are written. They name no item; `rules examples --boundary` matches each case to items and runs it:
 
-1. **Matching.** The case's `expect.about` (`[<code> <article> ¶<n>]`) matches every deadline, prior step, exit and boundary whose `basis` holds a statement citing that article (and that paragraph, when one is given). A case that matches no item is reported: a rule the record may have missed.
+1. **Matching.** The case's `expect.about` (`[<code> <article> ¶<n>]`) matches every deadline, prior step, exit and boundary whose `basis` holds a statement citing that article (and that paragraph, when one is given), and also every deadline whose `counting.basis` and every prior step whose exemptions (`notRequiredWhen[].basis`) cite it (executor's decision of 13 November 2026, from the evaluator's build: an exemption paragraph would otherwise match nothing). A case that matches no item is reported: a rule the record may have missed.
 2. **Expected declared effect**, by `expect.outcome`:
 
 | Outcome | The matched item must declare |

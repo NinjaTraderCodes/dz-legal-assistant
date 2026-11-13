@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Core logic: the one rule evaluator (specs/rule-evaluator.md), and the checks every rule record must pass (specs/record-checks.md, "rules check"). The rules tool and the tests call this project; nothing else implements either.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DzLegal.CoreLogic.Contracts\DzLegal.CoreLogic.Contracts.csproj" />
+  </ItemGroup>
+</Project>

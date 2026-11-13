@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>rules</AssemblyName>
+    <RootNamespace>DzLegal.CoreLogic.Rules.Tool</RootNamespace>
+    <Description>The rules tool: check, eval, examples (specs/rule-evaluator.md, specs/record-checks.md). Built once by the executor; agents run the built rules.exe and never build.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DzLegal.CoreLogic.Rules\DzLegal.CoreLogic.Rules.csproj" />
+    <!-- Read only, for FactVocabulary: the event and request kinds a record may name. -->
+    <ProjectReference Include="..\..\..\..\src\DzLegal.Drafting\DzLegal.Drafting.csproj" />
+  </ItemGroup>
+</Project>

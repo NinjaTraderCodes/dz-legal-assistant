@@ -5,7 +5,10 @@ Research code for `docs/research/core-logic/HANDBOOK.md`. It is **not** part of 
 | Folder | What it holds |
 |---|---|
 | `src/DzLegal.CoreLogic.Contracts` | The contract only, no logic: the shape of a rule record (`RuleRecord.cs`), the rule evaluator's interface and findings (`RuleEvaluation.cs`), the note reader's interface and answers (`NoteReading.cs`), the slot list (`Slots.cs`). `docs/research/core-logic/INTEGRATION-CONTRACT.md` explains each one. |
-| `tests/DzLegal.CoreLogic.Contracts.Tests` | Loads the handbook's example records, the schema and `slots.json` through the contract. They are the same checks every real record must pass. |
+| `src/DzLegal.CoreLogic.Rules` | The one rule evaluator (`RuleEvaluator`, `docs/research/core-logic/specs/rule-evaluator.md`): conditions, period counting with its unsourced placeholders (`Periods`), the grade table, the worked-example, `--against` and boundary-case runners; and under `Checks/` the one copy of the record checks (`RecordChecks`, `MiniSchema`, `specs/record-checks.md`). |
+| `src/DzLegal.CoreLogic.Rules.Tool` | The `rules` command (`check`, `eval`, `examples`). It reads `slots.json`, the schema, `data/law` and `rules/final` from the worktree at run time, so the built tool stays valid when they change. |
+| `tests/DzLegal.CoreLogic.Contracts.Tests` | Loads the handbook's example records, the schema and `slots.json` through the contract, and holds the examples to every check of `RecordChecks`. |
+| `tests/DzLegal.CoreLogic.Rules.Tests` | The evaluator's tests (truth table, every branch, the grade table, counting, determinism, both examples) and a planted error for each record check. |
 
 Steps 1 to 6 add their projects here (one project per concern, each with its tests), and add them to `CoreLogic.sln`.
 
@@ -19,6 +22,16 @@ dotnet test  -c Release                                   # root solution: all g
 dotnet build research/core-logic/CoreLogic.sln -c Release # 0 warnings, 0 errors
 dotnet test  research/core-logic/CoreLogic.sln -c Release # all green
 ```
+
+The `rules` tool, once built (agents are given this path and never build):
+
+```
+research\core-logic\src\DzLegal.CoreLogic.Rules.Tool\bin\Release\net10.0\rules.exe check    [--quoted] [--store <articles.json>] [--modules <dir>] <record.json>...
+research\core-logic\src\DzLegal.CoreLogic.Rules.Tool\bin\Release\net10.0\rules.exe eval     --records <record.json>... --case <case.json>
+research\core-logic\src\DzLegal.CoreLogic.Rules.Tool\bin\Release\net10.0\rules.exe examples <record.json>... [--against <other.json> --idmap <unit.idmap.json>] [--boundary <cases.json>] [--json]
+```
+
+Exit code 0: everything passed; 1: a check failed or a case differed; 2: the command could not run. Every command takes `--root <worktree>` (default: the worktree the tool was built in). An id map is a JSON array of `{ "kind", "a", "b", "reconciled" }`; a record's column is taken from its stage (a final record uses the reconciled column).
 
 ## Rules of this folder
 

@@ -1,6 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <ProjectReference Include="..\..\src\DzLegal.CoreLogic.Contracts\DzLegal.CoreLogic.Contracts.csproj" />
+    <!-- The record checks live in the Rules project (one copy, which rules check runs too); these tests call them. -->
+    <ProjectReference Include="..\..\src\DzLegal.CoreLogic.Rules\DzLegal.CoreLogic.Rules.csproj" />
     <!-- Read only, for FactVocabulary: the event and request kinds a record may name. -->
     <ProjectReference Include="..\..\..\..\src\DzLegal.Drafting\DzLegal.Drafting.csproj" />
   </ItemGroup>
@@ -13,5 +15,6 @@
     <Content Include="..\..\..\..\docs\research\core-logic\notes\note.schema.json" Link="handbook\note.schema.json" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="..\..\..\..\docs\research\core-logic\notes\guide-test.json" Link="handbook\guide-test.json" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="..\..\..\..\data\law\claims\*.json" Link="app\claims\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\..\..\data\law\claim-elements.json" Link="app\claim-elements.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

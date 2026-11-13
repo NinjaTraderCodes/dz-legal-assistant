@@ -1,4 +1,6 @@
 using System.Text.Json;
+using DzLegal.CoreLogic.Rules.Checks;
+using DzLegal.Drafting;
 
 namespace DzLegal.CoreLogic.Contracts.Tests;
 
@@ -19,8 +21,10 @@ internal static class HandbookFiles
 
     public static JsonElement ExampleJson(string name) => Parse(Path.Combine(Root, "examples", name));
 
+    public static string ExampleText(string name) => File.ReadAllText(Path.Combine(Root, "examples", name));
+
     public static RuleRecord Example(string name) =>
-        JsonSerializer.Deserialize<RuleRecord>(File.ReadAllText(Path.Combine(Root, "examples", name)), ContractJson.Options)!;
+        JsonSerializer.Deserialize<RuleRecord>(ExampleText(name), ContractJson.Options)!;
 
     public static SlotCatalogue Slots() =>
         JsonSerializer.Deserialize<SlotCatalogue>(File.ReadAllText(Path.Combine(Root, "slots.json")), ContractJson.Options)!;
@@ -38,6 +42,27 @@ internal static class HandbookFiles
         }
 
         return ids;
+    }
+
+    /// <summary>
+    /// What <c>rules check</c> checks a record against, built from the copies beside the tests. The example module stands in
+    /// for rules/final, so that a claim record that is not yet flattened can be resolved.
+    /// </summary>
+    public static RecordCheckContext CheckContext(bool quoted = false, ArticleStoreIndex? store = null)
+    {
+        var module = ExamplePaths.Select(path => Example(Path.GetFileName(path))).Single(record => record.Kind == RecordKind.Module);
+        return new RecordCheckContext
+        {
+            Schema = Schema(),
+            Slots = Slots(),
+            ClaimIds = ClaimIds(),
+            ClaimNeeds = ClaimNeeds.Parse(File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "app", "claim-elements.json"))),
+            EventKinds = FactVocabulary.Events.ToHashSet(StringComparer.Ordinal),
+            RequestKinds = FactVocabulary.Requests.ToHashSet(StringComparer.Ordinal),
+            Module = id => id == module.Id ? module : null,
+            Store = store,
+            Quoted = quoted,
+        };
     }
 
     private static JsonElement Parse(string path)

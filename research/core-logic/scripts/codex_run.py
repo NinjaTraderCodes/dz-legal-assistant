@@ -79,7 +79,11 @@ def check(events: list[dict], exit_code: int, stderr: str, last_file_text: str |
         return {"status": REJECTED, "reason": "toolUse", "offending": offending, "answer": None, "usage": None}
     if exit_code != 0:
         return {"status": REJECTED, "reason": "exitCode", "offending": None, "answer": None, "usage": None}
-    if failed_event or not completed:
+    if failed_event:
+        # An error event (for example a dropped connection that Codex retried) discards the call even if the turn
+        # completed afterwards: the safe side, and the items are sent afresh.
+        return {"status": REJECTED, "reason": "errorEvent", "offending": None, "answer": None, "usage": None}
+    if not completed:
         return {"status": REJECTED, "reason": "noTurnCompleted", "offending": None, "answer": None, "usage": None}
     messages = [e["item"].get("text", "") for e in events
                 if e.get("type") == "item.completed" and e.get("item", {}).get("type") == "agent_message"]

@@ -38,8 +38,8 @@ BRIEF = [
     ("family-code", ["53"]),
     ("labour-disputes", ["1-40"]),  # Law 90-04, the whole law (its last article is confirmed by the reading)
     ("labour-relations", ["73", "73-1", "73-2", "73-3", "73-4"]),
-    # Law 22-13 art. 13 (entry into force of the new court rules) and art. 15: law/README.md, "Entry into force".
-    ("law-22-13", ["13", "15"]),
+    # Law 22-13 art. 13 (entry into force of the new court rules), art. 14 (repeals) and art. 15: law/README.md.
+    ("law-22-13", ["13", "14", "15"]),  # 14 repeals CPCA 32 paras 7-10 (read 13 Nov)
 ]
 
 # HANDBOOK section 6, "where to start". A "?" pointer is from memory: it is seeded all the same, and marked.

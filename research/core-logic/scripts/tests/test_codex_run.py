@@ -102,3 +102,11 @@ def test_the_gate_needs_the_pinned_version_and_todays_rejected_probe(tmp_path, m
     monkeypatch.setattr(cr, "version", lambda: "codex-cli 0.168.0")
     with pytest.raises(cr.Gate):
         cr.gate_open("2026-11-14")  # Codex updated itself
+
+
+def test_an_error_event_discards_the_call_even_when_the_turn_completes():
+    ok = {"type": "agent_message", "text": '{"word": "x"}'}
+    events = ev(ok)
+    events.insert(2, {"type": "error", "message": "failed to connect to Responses WebSocket"})
+    r = cr.check(events, 0, "", '{"word": "x"}', SCHEMA)
+    assert r["status"] == "rejected" and r["reason"] == "errorEvent" and r["answer"] is None

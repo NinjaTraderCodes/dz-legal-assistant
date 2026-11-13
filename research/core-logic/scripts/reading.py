@@ -41,6 +41,44 @@ SONNET, CODEX_MODEL = "claude-sonnet-5-5", "codex"
 KINDS = ("reread", "fetch", "calibration")
 WHYS = ("criticalUse", "corpusOnly", "labour", "guard", "disagreement", "missing", "calibration")
 UNREADABLE = "[؟]"
+UNCHANGED = "بدون تغيير"  # «(الباقي بدون تغيير)», «(المطات من 1 إلى 6 بدون تغيير)»
+ITEM = re.compile(r"^\s*(\d+)\s*[-–—]")
+
+
+def _blocks(paragraphs: list[str]) -> tuple[list[str], dict[str, list[str]], list[str]]:
+    """(lead paragraphs, numbered item -> its paragraphs with the unnumbered ones that follow it, item order)."""
+    lead, items, order, cur = [], {}, [], None
+    for p in paragraphs:
+        m = ITEM.match(p)
+        if m:
+            cur = m.group(1)
+            items[cur] = [p]
+            order.append(cur)
+        elif cur is None:
+            lead.append(p)
+        else:
+            items[cur].append(p)
+    return lead, items, order
+
+
+def compose(base: list[str], amending: list[str] | None = None, repealed: list[int] | None = None) -> list[str]:
+    """The wording an amending text makes of a base article. `amending`: the amending text as printed, where
+    «… بدون تغيير» stands for what it keeps; its lead paragraphs replace the base's first ones, one for one, and each
+    numbered item replaces the base's item of the same number (with its sub-paragraphs). `repealed`: paragraph
+    numbers (from 1) of the base that the amending text repeals."""
+    out = [p for i, p in enumerate(base, 1) if i not in set(repealed or [])]
+    if not amending:
+        return out
+    printed = [p for p in amending if UNCHANGED not in p]
+    a_lead, a_items, _ = _blocks(printed)
+    b_lead, b_items, b_order = _blocks(out)
+    if len(a_lead) > len(b_lead):
+        raise ValueError("the amending text has more lead paragraphs than the base")
+    new_lead = a_lead + b_lead[len(a_lead):]
+    unknown = [n for n in a_items if n not in b_items]
+    if unknown:
+        raise ValueError(f"the amending text adds items {unknown}: compose them by hand, with a recorded decision")
+    return new_lead + [p for n in b_order for p in (a_items.get(n) or b_items[n])]
 
 
 def sha_file(path: str) -> str:
@@ -151,7 +189,11 @@ def prompt(job: dict, who: str) -> str:
 # --- Codex -----------------------------------------------------------------------------------------------------------
 def run_codex(job: dict) -> dict:
     out_dir = os.path.join(JOBS, job["batch"])
-    r = codex_run.call(prompt(job, "codex"), "page-reading", job["batch"], job["job"], SCHEMA,
+    call_id, n = job["job"], 1
+    while os.path.exists(os.path.join(codex_run.LOGS, "page-reading", job["batch"], call_id + ".jsonl")):
+        n += 1  # a call sent afresh after a discarded one keeps the first call's log for the record
+        call_id = f"{job['job']}-r{n}"
+    r = codex_run.call(prompt(job, "codex"), "page-reading", job["batch"], call_id, SCHEMA,
                        images=[im["path"] for im in job["images"]], provenance=os.path.join(out_dir, "codex-calls.jsonl"),
                        template="law-read-page.md", template_version=template_version())
     if r["status"] == codex_run.ACCEPTED:
@@ -182,7 +224,10 @@ def compare_article(store_paragraphs: list[str], reading: dict, images: int = 1)
     if not reading["found"]:
         return {"level": "none", "result": "notFound", "differences": []}
     text = "\n".join(reading["paragraphs"])
-    if UNREADABLE in text or reading["unreadable"]:
+    if UNCHANGED in text:
+        # An amending text that reprints only the replaced part: compared only once composed with the base text.
+        return {"level": None, "result": "partialPrint", "differences": []}
+    if UNREADABLE in text:  # an "unreadable" note without a [؟] in the text is a remark (punctuation), kept apart
         # A reading with a [؟] mark is not a reading: re-render at a higher resolution and read again.
         return {"level": "none", "result": "unreadableMark", "differences": []}
     if reading["continuesOnNextPage"] and reading["where"]["image"] >= images:
@@ -203,6 +248,39 @@ def compare_article(store_paragraphs: list[str], reading: dict, images: int = 1)
 
 def family_of(reader: str) -> str:
     return "codex" if reader.startswith("codex") else "claude"
+
+
+SETTLEMENTS = os.path.join(JOBS, "settlements.jsonl")
+
+
+def settlements() -> list[dict]:
+    if not os.path.exists(SETTLEMENTS):
+        return []
+    with open(SETTLEMENTS, encoding="utf-8") as f:
+        return [json.loads(line) for line in f if line.strip()]
+
+
+def settled_result(job: dict, art: str, cmp: dict) -> str:
+    """Apply the recorded settlements (law/README.md, "When one reading differs from the store's text"): every
+    difference settled, sure, for the store's words -> agrees; settled, sure, for the reading and confirmed by the other
+    family -> storeDiffers (a correction); anything else stays unsettled."""
+    if cmp["result"] != "unsettled":
+        return cmp["result"]
+    known = [s for s in settlements() if s["code"] == job["code"] and s["article"] == art and s["version"] == job["version"]]
+    verdicts = []
+    for d in cmp["differences"]:
+        if textcmp.level(d["store"] or "", d["reading"] or "") in ("1", "2", "2o", "2s"):
+            verdicts.append("store")  # a spacing or hamza-seat difference left inside a longer one: orthographic
+            continue
+        s = next((s for s in reversed(known) if s["storeWords"] == d["store"] and s["readingWords"] == d["reading"]), None)  # the latest run wins
+        if s:
+            d.update(settled=s["settled"], by=s["by"], seen=s["seen"], sure=s["sure"])
+        verdicts.append(s["verdict"] if s else "open")
+    if verdicts and all(v == "store" for v in verdicts):
+        return "agrees"
+    if "reading" in verdicts and "open" not in verdicts:
+        return "storeDiffers"
+    return "unsettled"
 
 
 def ingest(job: dict, answer: dict, reader: str, tool_uses: int | None = None, date: str | None = None,
@@ -241,7 +319,7 @@ def ingest(job: dict, answer: dict, reader: str, tool_uses: int | None = None, d
             "answerSha256": text_sha, "codexLog": codex_log,
             "comparedWith": f"store:{(e or {}).get('store')}@{st.CORPUS_COMMIT}" if e else None,
             "storeTextSha256": (e or {}).get("textSha256"),
-            "level": cmp["level"], "differences": cmp["differences"], "result": cmp["result"],
+            "level": cmp["level"], "differences": cmp["differences"], "result": settled_result(job, art, cmp),
             "job": f"{job['batch']}/{job['job']}", "pagesInRun": len(job["pages"]),
         })
     if write:
@@ -393,20 +471,32 @@ def band(job: dict, where: dict, dpi: int = 600, margin: float = 0.03) -> str:
     return prefix + ".png"
 
 
+def column_bands(job: dict, dpi: int = 600) -> list[str]:
+    """Both columns of every page of the job at 600 dpi (the first settle runs showed that a band cut around the
+    article's start misses a difference printed in the other column or on the next page)."""
+    out = []
+    for i in range(1, len(job["pages"]) + 1):
+        for col in ("right", "left"):
+            out.append(band(job, {"image": i, "column": col, "top": 0.0, "bottom": 1.0}, dpi=dpi, margin=0.0))
+    return out
+
+
 def settle_items(entries: list[dict], seed: str) -> tuple[str, list[dict]]:
-    """entries: {job, where, article, paragraph, kind, store, reading, before, after}. Returns the {{items}} text and the
+    """entries: {job, article, paragraph, kind, store, reading, before, after, bands}. Returns the {{items}} text and the
     key (which of X and Y is the store's or first wording), kept by the script and never shown to the settler."""
     lines, key = [], []
     for n, e in enumerate(entries, 1):
         flip = int(hashlib.sha256(f"{seed}|{n}|{e['article']}".encode()).hexdigest(), 16) % 2 == 1
         x, y = (e["reading"], e["store"]) if flip else (e["store"], e["reading"])
-        page_img = e["job"]["images"][max(0, e["where"]["image"] - 1)]["path"]
+        pages = "\n".join(f"  - `{im['path']}`" for im in e["job"]["images"])
+        bands = "\n".join(f"  - `{b}`" for b in e["bands"])
         lines.append(
             f"**Difference {n}.** Article {e['article']}, paragraph {e.get('paragraph') or '?'}, kind `{e['kind']}`.\n"
-            f"- Page (300 dpi): `{page_img}`\n- Band (600 dpi): `{e['band']}`\n"
+            f"- Pages (300 dpi), in order:\n{pages}\n- Bands (600 dpi; each page's right column, then its left column):\n{bands}\n"
             f"- Ten words before: «{e.get('before', '')}»\n- Ten words after: «{e.get('after', '')}»\n"
             f"- X: «{x}»\n- Y: «{y}»")
-        key.append({"n": n, "article": e["article"], "X": "reading" if flip else "store", "Y": "store" if flip else "reading",
+        key.append({"n": n, "article": e["article"], "code": e["job"]["code"], "version": e["job"]["version"],
+                    "X": "reading" if flip else "store", "Y": "store" if flip else "reading",
                     "storeWords": e["store"], "readingWords": e["reading"]})
     return "\n\n".join(lines), key
 
@@ -434,6 +524,39 @@ def apply_settlement(key: list[dict], answer: list[dict], other_family_agrees: d
     return out
 
 
+def settle_record(name: str, agent_id: str, settler: str = "claude-opus-5-5") -> list[dict]:
+    """Collect a settle run's answer from its transcript (access check on the key's images), apply the rule, and append
+    the verdicts to jobs/settlements.jsonl, which `ingest` reads. The other family "agrees with the reading" when its
+    own reading of the article has the same differing words against the store."""
+    folder = os.path.join(JOBS, f"settle-{name}")
+    key = load(os.path.join(folder, "key.json"))
+    got = collect({"images": []}, agent_id, allowed_images=key["images"])
+    if got["problems"]:
+        raise ValueError(f"discard the settle run: {got['problems']}")
+    with open(os.path.join(folder, "answer.raw.txt"), "w", encoding="utf-8", newline="\n") as f:
+        f.write(got["answerText"])
+    t = got["answerText"].strip()
+    m = re.match(r"```(?:json)?\s*", t)
+    answer, _ = json.JSONDecoder().raw_decode(t[m.end():] if m else t)
+    norm = [{"printed": a.get("printed", a.get("decision", a.get("choice"))), "sure": bool(a.get("sure")),
+             "seen": a.get("seen", ""), "words": a.get("words", "")} for a in answer]
+    with open(READINGS, encoding="utf-8") as f:
+        rows = [json.loads(line) for line in f if line.strip()]
+    other = {}
+    for k in key["key"]:
+        other[k["article"]] = any(r["family"] == "codex" and r["code"] == k["code"] and r["article"] == k["article"]
+                                  and r["version"] == k["version"] and
+                                  any(d["reading"] == k["readingWords"] for d in r["differences"]) for r in rows)
+    verdicts = apply_settlement(key["key"], norm, other)
+    with open(SETTLEMENTS, "a", encoding="utf-8", newline="\n") as f:
+        for k, v in zip(key["key"], verdicts):
+            f.write(json.dumps({"code": k["code"], "article": k["article"], "version": k["version"],
+                                "storeWords": k["storeWords"], "readingWords": k["readingWords"], "settled": v["settled"],
+                                "sure": v["sure"], "seen": v["seen"], "by": settler, "verdict": v["verdict"],
+                                "run": f"settle-{name}", "agent": agent_id}, ensure_ascii=False) + "\n")
+    return verdicts
+
+
 def settle_prep(name: str, family: str = "claude") -> dict:
     """Every unsettled difference of law/readings.jsonl from one family's readings: the band is cut, the items are
     written with X and Y in random order, and the key is kept apart in jobs/settle-<name>/."""
@@ -447,10 +570,11 @@ def settle_prep(name: str, family: str = "claude") -> dict:
         batch, jname = r["job"].split("/", 1)
         job = load(job_path(batch, jname))
         ans = load(os.path.join(JOBS, batch, f"{jname}.{'sonnet' if family == 'claude' else 'codex'}.json"))
-        where = next(a["where"] for a in ans["articles"] if a["article"] == r["article"])
-        b = band(job, where)
+        bands = column_bands(job)
         for d in r["differences"]:
-            entries.append({"job": job, "where": where, "band": b, "article": r["article"], "paragraph": d.get("paragraph"),
+            if textcmp.level(d["store"] or "", d["reading"] or "") in ("1", "2", "2o", "2s"):
+                continue  # orthographic (spacing, hamza seat): nothing to settle
+            entries.append({"job": job, "bands": bands, "article": r["article"], "paragraph": d.get("paragraph"),
                             "kind": d["kind"], "store": d["store"], "reading": d["reading"],
                             "before": (d.get("context") or {}).get("before", ""),
                             "after": (d.get("context") or {}).get("after", ""), "readingLine": r["job"]})
@@ -459,10 +583,57 @@ def settle_prep(name: str, family: str = "claude") -> dict:
     os.makedirs(out, exist_ok=True)
     with open(os.path.join(out, "prompt.txt"), "w", encoding="utf-8", newline="\n") as f:
         f.write(settle_prompt(items))
-    images = sorted({e["band"] for e in entries} | {e["job"]["images"][max(0, e["where"]["image"] - 1)]["path"] for e in entries})
+    images = sorted({b for e in entries for b in e["bands"]} | {im["path"] for e in entries for im in e["job"]["images"]})
     with open(os.path.join(out, "key.json"), "w", encoding="utf-8", newline="\n") as f:
         json.dump({"key": key, "images": images, "lines": [e["readingLine"] for e in entries]}, f, ensure_ascii=False, indent=1)
     return {"items": len(entries), "images": images, "folder": out}
+
+
+def ingest_composite(article: str, version: str, base: tuple[dict, dict], amending: tuple[dict, dict] | None,
+                     reader: str, repealed: list[int] | None = None, date: str | None = None,
+                     store: st.Store | None = None, write: bool = True, record: bool = True) -> dict:
+    """One reading of an article in the wording an amending text made of it: the base page's reading composed with
+    the amending page's reading (or with the repealed paragraphs), compared with the store's text of `version`.
+    base, amending: (job, answer); both readings are by the same family (`reader`)."""
+    import datetime as dt
+    store = store or st.Store()
+    b_job, b_ans = base
+    b = next(a for a in b_ans["articles"] if a["article"] == article)
+    parts = [b_job]
+    for r in [b] + ([next(a for a in amending[1]["articles"] if a["article"] == article)] if amending else []):
+        if not r["found"] or UNREADABLE in "\n".join(r["paragraphs"]):
+            raise ValueError(f"{article}: a part is not found or holds [؟]: not a reading")
+        if [u for u in r["unreadable"] if UNCHANGED not in "".join(r["paragraphs"][u["paragraph"] - 1:u["paragraph"]])]:
+            raise ValueError(f"{article}: a part has an unreadable mark outside the «بدون تغيير» lines")
+    a_pars = None
+    if amending:
+        parts.append(amending[0])
+        a_pars = next(a for a in amending[1]["articles"] if a["article"] == article)["paragraphs"]
+    composed = compose(b["paragraphs"], a_pars, repealed)
+    e = store.get(b_job["code"], article, version)
+    cmp = compare_article(e["paragraphs"], {**b, "paragraphs": composed, "continuesOnNextPage": False, "unreadable": []})
+    main_job = parts[-1]
+    row = {"code": b_job["code"], "article": article, "version": version, "why": "criticalUse", "reader": reader,
+           "family": family_of(reader), "date": date or dt.date.today().isoformat(),
+           "source": {"url": main_job["source"]["url"], "sha256": main_job["source"]["sha256"],
+                      "pdfPage": main_job["pages"][0], "printedPage": None},
+           "imageSha256s": [im["sha256"] for j in parts for im in j["images"]],
+           "textSha256": sha_text("\n".join(composed)), "answerSha256": None, "codexLog": None,
+           "comparedWith": f"store:{e['store']}@{st.CORPUS_COMMIT}", "storeTextSha256": e["textSha256"],
+           "level": cmp["level"], "differences": cmp["differences"], "result": cmp["result"],
+           "job": " + ".join(f"{j['batch']}/{j['job']}" for j in parts), "pagesInRun": len(b_job["pages"]),
+           "composedFrom": {"base": f"{b_job['batch']}/{b_job['job']}",
+                            "amending": f"{parts[-1]['batch']}/{parts[-1]['job']}" if amending else None,
+                            "repealedParagraphs": repealed}}
+    if write and row["result"] in ("agrees", "unsettled"):
+        with open(READINGS, "a", encoding="utf-8", newline="\n") as f:
+            f.write(json.dumps(row, ensure_ascii=False) + "\n")
+    if write and record and row["result"] in ("agrees", "unsettled"):
+        log = os.path.join(JOBS, "composites.jsonl")
+        with open(log, "a", encoding="utf-8", newline="\n") as f:
+            f.write(json.dumps({"article": article, "version": version, "reader": reader, "base": row["composedFrom"],
+                                "date": row["date"]}, ensure_ascii=False) + "\n")
+    return row
 
 
 def rebuild() -> int:
@@ -486,6 +657,21 @@ def rebuild() -> int:
             skip = {r["article"]: r["result"].split(": ", 1)[1] for r in rows if str(r["result"]).startswith("skipped: ")}
             ingest(job, answer, rows[0]["reader"], None, date=rows[0]["date"], codex_log=rows[0].get("codexLog"),
                    store=s, skip=skip, why=rows[0]["why"])
+    comp = os.path.join(JOBS, "composites.jsonl")
+    if os.path.exists(comp):
+        with open(comp, encoding="utf-8") as f:
+            for line in f:
+                c = json.loads(line)
+                b_batch, b_job = c["base"]["base"].split("/", 1)
+                bj = load(job_path(b_batch, b_job))
+                fam = "codex" if c["reader"].startswith("codex") else "sonnet"
+                base = (bj, load(os.path.join(JOBS, b_batch, f"{b_job}.{fam}.json")))
+                amending = None
+                if c["base"]["amending"]:
+                    a_batch, a_job = c["base"]["amending"].split("/", 1)
+                    amending = (load(job_path(a_batch, a_job)), load(os.path.join(JOBS, a_batch, f"{a_job}.{fam}.json")))
+                ingest_composite(c["article"], c["version"], base, amending, c["reader"], c["base"]["repealedParagraphs"],
+                                 date=c["date"], store=s, record=False)
     with open(READINGS, encoding="utf-8") as f:
         return sum(1 for line in f if line.strip())
 

@@ -52,3 +52,14 @@ def test_differences_give_ten_words_of_context_and_the_original_words():
     d = textcmp.compare(a, b)["differences"]
     assert len(d) == 1 and d[0]["a"] == "كلمة15" and d[0]["b"] == "تغيير"
     assert len(d[0]["before"].split()) == 10 and len(d[0]["after"].split()) == 10
+
+
+def test_level_2s_spaces_between_words_only():
+    assert textcmp.level("في التاريخ المحدد أو حدث له مانع", "في التاريخ المحدد أوحدث له مانع") == "2s"
+    assert textcmp.level("المواد 78 و79 و80", "المواد 78 و 79 و 80") == "2s"
+    assert textcmp.level("ما لم ينص", "مالم ينص") == "2s"
+    # a letter, a digit or a negation still differs
+    assert textcmp.level("ولا يحسب يوم", "ويحسب يوم") == "none"
+    assert textcmp.level("و79", "و 78") == "none"
+    # paragraph division is not a space: level 3, not 2s
+    assert textcmp.level("الأولى.\nالثانية.", "الأولى. الثانية.") == "3"

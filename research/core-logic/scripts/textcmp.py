@@ -54,6 +54,12 @@ def level(a: str, b: str) -> str:
         return "2"
     if any(_seats(norm2(a), v) == _seats(norm2(b), v) for v in (0, 1)):
         return "2o"
+    # Level 2s: the same letters in each paragraph, but for the spaces between words. The Journal's print joins or
+    # splits words after a non-joining letter (أو حدث / أوحدث, و79 / و 79, ما لم / مالم) and a reader cannot always
+    # tell (CPCA 441, 13 November 2026). Orthographic, like 2o: recorded, never a correction.
+    pa, pb = norm2(a).split("\n"), norm2(b).split("\n")
+    if len(pa) == len(pb) and all(x.replace(" ", "") == y.replace(" ", "") for x, y in zip(pa, pb)):
+        return "2s"
     a3, b3 = norm2(a, keep_lines=False), norm2(b, keep_lines=False)
     if a3 == b3 or any(_seats(a3, v) == _seats(b3, v) for v in (0, 1)):
         return "3"
@@ -92,6 +98,6 @@ def differences(a: str, b: str, context: int = 10) -> list[dict]:
 def compare(a: str, b: str) -> dict:
     lv = level(a, b)
     result = {"level": lv, "differences": []}
-    if lv in ("2o", "3", "none"):
+    if lv in ("2o", "2s", "3", "none"):
         result["differences"] = differences(a, b)
     return result

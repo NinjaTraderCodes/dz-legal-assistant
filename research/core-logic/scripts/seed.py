@@ -26,6 +26,7 @@ import store as st  # noqa: E402
 REPO = st.REPO
 OUT = os.path.join(st.LAW, "seed-inventory.json")
 LOCAL_PDFS = os.path.join(REPO, "docs", "official-law-texts")
+FETCHED = r"C:\Users\TheShadow\dz-core-research\oj-pdf"
 
 # --- the seed ---------------------------------------------------------------------------------------------------------
 # Items: (code, spec, source). A spec is one article number, "a-b" (every article from a to b that a source holds, plus
@@ -259,7 +260,11 @@ def local_pdf(url: str | None, sha_index: dict) -> str | None:
         return None
     if url.startswith("docs/"):
         return url
-    return sha_index.get(url)
+    if url in sha_index:
+        return sha_index[url]
+    # an issue downloaded through oj-fetch for the seed (kept until its readings are recorded, then deleted)
+    fetched = os.path.join(FETCHED, os.path.basename(url))
+    return fetched if os.path.exists(fetched) else None
 
 
 def load_all(store_path: str):
@@ -323,14 +328,84 @@ def inventory(store_path: str = st.DEFAULT_OUT, out: str = OUT) -> dict:
     return doc
 
 
+def plan_pairs(items: list[dict]) -> list[dict]:
+    """Group articles of one issue into runs of a page pair [p, p+1]. Each article is given with its first page; the
+    pair also holds a continuation onto the next page, which a page record may miss (CPCA 419 on 13 November)."""
+    by_page: dict[int, list[dict]] = {}
+    for it in items:
+        by_page.setdefault(it["page"], []).append(it)
+    runs, left = [], {p: list(v) for p, v in by_page.items()}
+    for p in sorted(by_page):
+        here = left.get(p) or []
+        if not here:
+            continue
+        arts = [it["article"] for it in here]
+        left[p] = []
+        # the next page's articles join this pair only if they end on it; one that runs on starts its own pair
+        nxt = left.get(p + 1) or []
+        fits = [it for it in nxt if (it.get("end") or it["page"]) <= p + 1]
+        arts += [it["article"] for it in fits]
+        left[p + 1] = [it for it in nxt if it not in fits]
+        runs.append({"pages": [p, p + 1], "articles": sorted(set(arts), key=num_key)})
+    return runs
+
+
+def page_count(pdf: str) -> int:
+    import subprocess
+    exe = r"C:\Users\TheShadow\AppData\Local\Programs\MiKTeX\miktex\bin\x64\pdfinfo.exe"
+    out = subprocess.run([exe, pdf], capture_output=True, text=True).stdout
+    return int(re.search(r"Pages:\s+(\d+)", out).group(1))
+
+
+def jobs(inv_path: str, batch: str, why: str, codes: list[str], skip: set | None = None) -> list[dict]:
+    """Page-pair jobs for the re-readings of one kind, from the inventory (articles with a known page only)."""
+    import reading
+    with open(inv_path, encoding="utf-8") as f:
+        inv = json.load(f)
+    groups: dict[tuple, list[dict]] = {}
+    for r in inv["items"]:
+        if r["action"] != "reread" or r["why"] != why or r["code"] not in codes:
+            continue
+        if (r["code"], r["article"]) in (skip or set()):
+            continue
+        w = r["where"] or {}
+        page = w.get("pdfPage")
+        if isinstance(page, list):
+            page = page[0]
+        if not page or not w.get("localPdf"):
+            continue
+        groups.setdefault((r["code"], w["version"], w["localPdf"], w.get("url")), []).append(
+            {"article": r["article"], "page": int(page), "end": w.get("endPage")})
+    made = []
+    for (code, version, pdf, url), items in sorted(groups.items()):
+        pdf_abs = pdf if os.path.isabs(pdf) else os.path.join(REPO, pdf)
+        last = page_count(pdf_abs)
+        for run in plan_pairs(items):
+            pages = [p for p in run["pages"] if p <= last]
+            stem = os.path.splitext(os.path.basename(pdf))[0]
+            name = f"{code}-{stem}-p{pages[0]:03d}"
+            made.append(reading.make_job(batch, name, code, version, pdf, pages, run["articles"], "reread", why,
+                                         source_url=url))
+    return made
+
+
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="seed")
     sub = p.add_subparsers(dest="cmd", required=True)
     i = sub.add_parser("inventory")
     i.add_argument("--store", default=st.DEFAULT_OUT)
     i.add_argument("--out", default=OUT)
+    j = sub.add_parser("jobs")
+    j.add_argument("batch"); j.add_argument("--why", required=True); j.add_argument("--codes", required=True)
+    j.add_argument("--inventory", default=OUT)
+    j.add_argument("--skip", default="", help="code:article,... already read")
     a = p.parse_args(argv)
     sys.stdout.reconfigure(encoding="utf-8")
+    if a.cmd == "jobs":
+        skip = {tuple(x.split(":", 1)) for x in a.skip.split(",") if x}
+        for d in jobs(a.inventory, a.batch, a.why, a.codes.split(","), skip):
+            print(d["job"], d["pages"], ",".join(d["articles"]))
+        return 0
     doc = inventory(a.store, a.out)
     print(json.dumps(doc["counts"], ensure_ascii=False, indent=1))
     return 0

@@ -103,9 +103,9 @@ A fresh page reading of an article that the library or the corpus already holds 
 - `reader`: the exact model id (`claude-sonnet-5-5`; for Codex, `codex-cli <version> (default model)` unless the log names a model). `family`: `claude` or `codex`.
 - `textSha256`: the SHA-256 of the text the reader returned, before any comparison. `codexLog`: for a Codex reading, the file name of the call's event log.
 - `comparedWith` and `storeTextSha256`: the store text the reading was compared with. If that text changes, the line no longer counts and the comparison is run again.
-- `level`: the level `text-compare` reached against the store's text: `"1"`, `"2"`, `"2o"`, `"3"` or `"none"`.
+- `level`: the level `text-compare` reached against the store's text: `"1"`, `"2"`, `"2o"`, `"2s"`, `"3"` or `"none"`.
 - `differences`: one entry per difference, `{ "paragraph", "kind": "words" | "paragraphBreak", "store", "reading", "settled": "store" | "reading" | "neither", "by": "claude-opus-5-5", "seen", "sure" }`.
-- `result`: `agrees` (level 1, 2 or 2o; or every difference settled, sure, for the store's text); `storeDiffers` (a difference settled, sure, for the reading, and confirmed by the other family's reading: a correction goes into `law-delta.json`); `unsettled` (anything else: not verified, and the items citing the article are grade D).
+- `result`: `agrees` (level 1, 2, 2o or 2s; or every difference settled, sure, for the store's text); `storeDiffers` (a difference settled, sure, for the reading, and confirmed by the other family's reading: a correction goes into `law-delta.json`); `unsettled` (anything else: not verified, and the items citing the article are grade D).
 
 **When one reading differs from the store's text.** Be modest: Codex's corpus was built with more care than any single reading here, and the library's texts were proved too. So: (1) a reading by the other family (`why: "disagreement"`), blind like the first; (2) each differing word goes to Opus 5.5 ([../prompts/law-settle-difference.md](../prompts/law-settle-difference.md)) with the store's words and the reading's words as X and Y in random order, unlabelled; (3) the store's text is held wrong only when the settler is sure for the reading **and** the other family's reading agrees with it on those words. Two families and the image, never one reader.
 

@@ -170,7 +170,7 @@ class Builder:
                 if e["_libraryProof"]:
                     if e["agreement"] is None:
                         return True, "libraryProof"
-                    if e["agreement"] in ("identical", "level2", "level2o") and e["corpusState"] == "checked":
+                    if e["agreement"] in ("identical", "level2", "level2o", "level2s") and e["corpusState"] == "checked":
                         return True, "libraryProofAndCorpus"
                     if readings:
                         return True, "libraryProofAndReread"
@@ -211,7 +211,7 @@ class Builder:
                     agreement = None
                     if text_from_library:
                         lv = textcmp.level("\n".join(paragraphs), "\n".join(v.get("paragraphs") or []))
-                        agreement = {"1": "identical", "2": "level2", "2o": "level2o", "3": "level3"}.get(lv, "differs")
+                        agreement = {"1": "identical", "2": "level2", "2o": "level2o", "2s": "level2s", "3": "level3"}.get(lv, "differs")
                     e = {
                         "code": code, "article": number, "version": v["introducedBy"],
                         "inForce": is_last and v["status"] != "repealed",

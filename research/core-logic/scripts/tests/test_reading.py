@@ -63,6 +63,8 @@ def test_a_question_mark_or_a_missing_article_is_not_a_reading():
     assert rd.compare_article(["نص"], reading(["نص"], unreadable=[{"paragraph": 1, "about": "x"}]))["result"] == "unreadableMark"
     assert rd.compare_article(["نص"], reading([], found=False))["result"] == "notFound"
     assert rd.compare_article(["نص"], reading(["نص"], cont=True))["result"] == "incomplete"
+    # followed onto the next image of the same run: compared, not cut off
+    assert rd.compare_article(["نص"], reading(["نص"], cont=True), images=2)["result"] == "agrees"
 
 
 def test_critical_articles_are_read_one_page_or_a_pair_at_a_time():
@@ -77,3 +79,37 @@ def test_an_answer_must_match_the_schema():
     assert rd.parse_answer("```json\n" + json.dumps(ok, ensure_ascii=False) + "\n```") == ok
     with pytest.raises(ValueError):
         rd.parse_answer(json.dumps({"articles": [{"article": "1"}]}))
+
+
+def test_settle_items_hide_the_source_and_the_key_maps_back():
+    job = dict(JOB)
+    entries = [{"job": job, "where": {"image": 1}, "band": "b.png", "article": str(400 + i), "paragraph": 1,
+                "kind": "words", "store": "أو حدث", "reading": "أوحدث", "before": "", "after": ""} for i in range(8)]
+    text, key = rd.settle_items(entries, "seed")
+    assert "store" not in text.lower() and "reading" not in text.lower() and "corpus" not in text.lower()
+    assert {k["X"] for k in key} == {"store", "reading"}  # both orders occur over eight items
+    for k in key:
+        assert {k["X"], k["Y"]} == {"store", "reading"}
+    assert rd.settle_items(entries, "seed")[1] == key  # reproducible
+    assert "{{" not in rd.settle_prompt(text)
+
+
+def test_the_store_is_held_wrong_only_with_a_sure_settler_and_the_other_family():
+    key = [{"article": "441", "X": "reading", "Y": "store"}]
+    sure_reading = [{"printed": "X", "sure": True, "seen": "s", "words": "w"}]
+    assert rd.apply_settlement(key, sure_reading, {"441": True})[0]["verdict"] == "reading"
+    assert rd.apply_settlement(key, sure_reading, {"441": False})[0]["verdict"] == "open"
+    assert rd.apply_settlement(key, [{"printed": "Y", "sure": True, "seen": "", "words": ""}], {})[0]["verdict"] == "store"
+    assert rd.apply_settlement(key, [{"printed": "Y", "sure": False, "seen": "", "words": ""}], {})[0]["verdict"] == "open"
+    assert rd.apply_settlement(key, [{"printed": "neither", "sure": True, "seen": "", "words": ""}], {})[0]["verdict"] == "open"
+
+
+def test_a_reader_remark_is_kept_apart_never_read_as_text():
+    obj, rest = rd.first_json('```json\n{"articles": []}\n```\n\nNote: the article is not here.')
+    assert obj == {"articles": []} and rest.startswith("Note:")
+    a = reading(["نص"])
+    a["where"]["note"] = "x"
+    a["whereNote"] = "y"
+    clean, removed = rd.strip_extra({"articles": [a], "note": "z"})
+    assert "note" not in clean["articles"][0]["where"] and "whereNote" not in clean["articles"][0]
+    assert sorted(removed) == ["419:where.note", "419:whereNote", "top:note"]

@@ -43,3 +43,12 @@ def test_the_actions_follow_the_law_readme():
     assert act({"code": "civil-code"}, dict(co, guardFlag=True))["why"] == "guard"
     lib = dict(cp, verifiedBy="libraryProof")
     assert act({"code": "civil-code"}, lib)["action"] == "none"
+
+
+def test_page_pairs_never_cut_an_article_that_runs_on():
+    items = [{"article": "306", "page": 26}, {"article": "323", "page": 27, "end": 28}, {"article": "312", "page": 27},
+             {"article": "405", "page": 34}]
+    runs = seed.plan_pairs(items)
+    assert runs[0] == {"pages": [26, 27], "articles": ["306", "312"]}
+    assert runs[1] == {"pages": [27, 28], "articles": ["323"]}
+    assert runs[2] == {"pages": [34, 35], "articles": ["405"]}

@@ -60,6 +60,7 @@ def french_evidence(year: int, issue: int) -> dict | None:
 def french_reading(code: str, version: str, article: str) -> tuple[dict, dict] | None:
     """Before 2003: the Sonnet reading of the French page (a job with language French), matched to the article by its
     position in the job's list (the reader is asked for the French numbering, "324 quater (or 324 bis 2)")."""
+    latest = None
     for batch in sorted(os.listdir(rd.JOBS)):
         folder = os.path.join(rd.JOBS, batch)
         if not batch.startswith("french-") or not os.path.isdir(folder):
@@ -76,8 +77,8 @@ def french_reading(code: str, version: str, article: str) -> tuple[dict, dict] |
             arts = rd.load(ans_path)["articles"]
             i = job["articles"].index(article)
             if len(arts) == len(job["articles"]) and arts[i]["found"]:
-                return job, arts[i]
-    return None
+                latest = (job, arts[i])  # a later batch (a re-read) takes precedence
+    return latest
 
 
 def french_check(job: dict, article: str, arabic: str, french_number: str | None = None) -> dict:
@@ -90,8 +91,14 @@ def french_check(job: dict, article: str, arabic: str, french_number: str | None
             return {"status": "pending", "why": "no French page reading yet (issue before 2003)"}
         fjob, fr = found
         if re.search(r"\d\s*\[؟\]|\[؟\]\s*\d|\(\s*\[؟\]\s*\)", "\n".join(fr["paragraphs"])):
-            # The French check compares numbers only: a [؟] in a word does not stop it; one at a number does.
-            return {"status": "pending", "why": "the French page reading has a [؟] at a number: read again"}
+            # The French check compares numbers only: a [؟] in a word does not stop it; one at a number does. Read again
+            # at 400 dpi; if the number is still illegible there, the French print itself is: recorded, never guessed.
+            if fjob.get("dpi", 300) < 400:
+                return {"status": "pending", "why": "the French page reading has a [؟] at a number: read again at 400 dpi"}
+            src = {"url": fjob["source"]["url"], "sha256": fjob["source"]["sha256"],
+                   "retrievedOn": retrieved_on(fjob["source"]["url"], fjob["source"]["localPdf"])}
+            return {"status": "illegible", "why": "a number of the French edition is illegible even at 400 dpi "
+                    f"({fjob['batch']}/{fjob['job']}); the Arabic stands, unchecked against the French", "source": src}
         chk = french.check(arabic, "\n".join(fr["paragraphs"]))
         src = {"url": fjob["source"]["url"], "sha256": fjob["source"]["sha256"],
                "retrievedOn": retrieved_on(fjob["source"]["url"], fjob["source"]["localPdf"])}

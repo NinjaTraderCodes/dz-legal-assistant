@@ -35,6 +35,7 @@ def french_number(article: str) -> list[str]:
         out.append(f"{n} {BIS[suffix]}")
     k = re.search(r"\d+", suffix)
     out.append(f"{n} bis {k.group(0)}" if k else f"{n} bis")
+    out = list(dict.fromkeys(out))
     return out
 
 

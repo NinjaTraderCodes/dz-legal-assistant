@@ -163,7 +163,9 @@ def image_note(job: dict) -> str:
 
 def article_numbers(job: dict) -> str:
     if job["language"] == "French":
-        return ", ".join(f"Art. {a}" for a in job["articles"])
+        import french  # the French edition numbers inserted articles «bis, ter, …», not «مكرر»
+        return ", ".join("Art. " + " (or ".join(french.french_number(a)) + (")" if len(french.french_number(a)) > 1 else "")
+                         for a in job["articles"])
     return "، ".join(f"المادة {a}" for a in job["articles"])
 
 

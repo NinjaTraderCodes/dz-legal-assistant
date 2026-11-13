@@ -2,7 +2,7 @@
 
 Working files behind Part 7 of `../FABLE-ARCHITECTURE-REPORT.md`, pushed so that the reviewer can read exactly what runs. Brief: `docs/briefs/FABLE-ARABIC-SMALL-MODELS-BRIEF.md` (branch `claude/case-file-site`). Nothing here is used by the app. Fictitious data only; no hidden-set text; no model or encoder weights.
 
-State on 12 November 2026, 21:15: **the hidden set v2 stage is complete for the five generative models** (three on battery, two on mains at the owner's decision): results in `results/hidden-v2/README.md`. The analysis and drafting stages (sessions 2 and 3) have not started and await the reviewer's choice of models. All encoder trainings are finished; the last result and the speed and memory figures are still to be added.
+Final state, 13 November 2026: **Part 7 is closed.** The hidden set v2 stage was run for the five generative models (three on battery, two on mains at the owner's decision): results in `results/hidden-v2/README.md`. The analysis and drafting stages (sessions 2 and 3) were **not run**: a new brief (`docs/briefs/FABLE-CORE-LOGIC-BRIEF.md`, 12 November) closed Part 7 without them. The five encoders are trained and tested, and four of them were exported, compressed to 8-bit and timed on mains power on 13 November (section 2). The text of Part 7 is in `../FABLE-ARCHITECTURE-REPORT.md`.
 
 ## 1. The guarded run of the generative models (`run/`)
 
@@ -108,7 +108,7 @@ To see the plan without running anything, add `-PlanOnly`.
 
 **Recipe, fixed before any test result** (`encoders/train_cls.py`): 5 epochs, AdamW, learning rate 3e-5 with 6 % warm-up and linear decay, batch 16, at most 160 tokens, weight decay 0.01, seed 20261111; 10 % of the synthetic notes of each class held out as a synthetic check (150 notes), 1,392 trained on. "With the section filter" allows only the claim types of the court section's area, plus "other", as the app does for the local model.
 
-**Results so far.**
+**Results.**
 
 | Encoder | Licence | Parameters | Synthetic check | 46 cases, alone | 46 cases, with the section filter | Out of scope declined |
 |---|---|---:|---:|---:|---:|---:|
@@ -116,18 +116,30 @@ To see the plan without running anything, add `-PlanOnly`.
 | `jhu-clsp/mmBERT-small` | MIT | 141 M | 91.3 % | 35 | 37 | 4 of 4 |
 | `microsoft/Multilingual-MiniLM-L12-H384` (alternate) | MIT | 118 M | 24.7 % | 6 | 6 | 4 of 4 |
 | `CAMeL-Lab/bert-base-arabic-camelbert-mix` | Apache 2.0 | 109 M | 84.0 % | 37 | 40 | 4 of 4 |
-| `intfloat/multilingual-e5-small` | MIT | 118 M | training | | | |
+| `intfloat/multilingual-e5-small` | MIT | 118 M | 49.3 % | 9 | 12 | 4 of 4 |
 
+- multilingual-e5-small did not learn under this recipe either (49.3 % on its own synthetic check).
 - The MiniLM alternate did not learn under this recipe (24.7 % on its own synthetic check); its 6 of 46 are the four out-of-scope cases and two others. It says the recipe is too short for that shape, not that the shape cannot do the task.
 - Per-case errors are in `encoders/results/cls-<name>.json`.
 - Training seconds in those files are **not** clean timings: other work ran on the laptop at the same time.
 
-**Compressed to 8-bit** (ONNX, dynamic quantisation; `encoders/export_measure.py`, `encoders/ort_run.py`), first pass. File size and accuracy are final; speed and memory will be re-measured on an idle CPU and are not given here.
+**Compressed to 8-bit** (ONNX, dynamic quantisation; `encoders/export_measure.py`, `encoders/ort_run.py`, `encoders/ort_len.py`, run by `encoders/run_mains_timing.py`). Measured on 13 November 2026 from 18:43 to 18:45: mains power, Windows power mode Best performance, energy saver off, each model alone in a fresh process, 4 threads, one note at a time. The editor that ran the measurement was open; all other processes together used about 3 % of the CPU just before.
 
-| Encoder | 32-bit file | 8-bit file | 8-bit: 46 cases alone / with the section filter |
-|---|---:|---:|---:|
-| DziriBERT | 475 MB | 119 MB | 36 / 37 |
-| mmBERT-small | 537 MB | 135 MB | 31 / 33 |
+| Encoder | Form | Model file | Tokenizer file | 46 cases, alone | With the section filter | Load | Time per note, development notes | 128 tokens | 256 tokens | 512 tokens | Peak memory, working set | Peak memory, private |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| CAMeLBERT-mix | 32-bit | 416.4 MB | 0.7 MB | 37 | 40 | 0.7 s | 25.6 ms (about 26 tokens) | 101 ms | 246 ms | 485 ms | 0.55 GiB | 0.90 GiB |
+| CAMeLBERT-mix | 8-bit | 104.8 MB | 0.7 MB | 35 | 38 | 0.3 s | 9.4 ms (about 26 tokens) | 48 ms | 99 ms | 276 ms | 0.19 GiB | 0.51 GiB |
+| DziriBERT | 32-bit | 475.0 MB | 1.2 MB | 37 | 38 | 0.9 s | 24.5 ms (about 27 tokens) | 86 ms | 195 ms | 475 ms | 0.67 GiB | 1.01 GiB |
+| DziriBERT | 8-bit | 119.4 MB | 1.2 MB | 36 | 37 | 0.3 s | 10.6 ms (about 27 tokens) | 44 ms | 101 ms | 264 ms | 0.22 GiB | 0.54 GiB |
+| mmBERT-small | 32-bit | 537.0 MB | 32.8 MB | 35 | 37 | 2.3 s | 19.8 ms (about 40 tokens) | 57 ms | 129 ms | 424 ms | 1.01 GiB | 1.51 GiB |
+| mmBERT-small | 8-bit | 135.0 MB | 32.8 MB | 31 | 33 | 1.8 s | 11.4 ms (about 40 tokens) | 37 ms | 85 ms | 237 ms | 0.41 GiB | 0.78 GiB |
+| multilingual-e5-small | 32-bit | 449.1 MB | 16.3 MB | 9 | 12 | 1.1 s | 9.9 ms (about 32 tokens) | 32 ms | 66 ms | 281 ms | 1.10 GiB | 1.60 GiB |
+| multilingual-e5-small | 8-bit | 112.8 MB | 16.3 MB | 11 | 13 | 0.7 s | 5.2 ms (about 32 tokens) | 24 ms | 46 ms | 228 ms | 0.50 GiB | 0.85 GiB |
+
+- The development notes are short (26 to 40 tokens), so the three length columns time one note of 128, 256 and 512 tokens (a real note's words repeated to that length; median of 20 runs after 3 warm-up runs). Memory is the peak of the measuring process on the 46 development notes.
+- Result files: `encoders/results/onnx-<name>.json` (accuracy, size, time, memory), `onnx-length-<name>.json` (time by length), `onnx-conditions.json` (the power state before, between and after).
+- **Battery figures, kept apart:** `encoders/results/battery-12nov/` holds the first pass of 12 November for DziriBERT and mmBERT-small, taken on battery in Windows' Best power efficiency mode. Sizes and accuracy are the same; the times are about twice as long and must not be compared with the table above.
+- The exported and compressed model files are not in the repository.
 
 **Synthetic data** (`synthetic-data/`): `make_plan.py` draws, for each note, the class, the language style (formal Arabic 52 %, Darija 26 %, French 14 %, formal Arabic with French terms 8 %), the length, the voice, whether a legal term may appear, and how many dates and amounts; `writer-instructions.md` is the text the four writers received; `sample-20.jsonl` holds 20 of the 1,542 notes with their plan attributes. Limits to keep in mind: "other" has 240 notes against 62 per claim type; the notes were written by Claude models, which is acceptable for this measurement, whereas a classifier shipped in the product would need data from a teacher whose terms allow it (Part 4 of the report).
 
@@ -148,10 +160,10 @@ Measured with each model's own tokenizer on the repository's fictitious notes (5
 | DziriBERT | 1.50 |
 | CAMeLBERT-mix | 1.47 |
 
-## 4. Draft of Part 7
+## 4. The text of Part 7
 
-`PART-7-DRAFT.md` holds the sections that are ready: 7.1 (candidates), 7.2 (method) and 7.7 (sources).
+It is in `../FABLE-ARCHITECTURE-REPORT.md` (sections 7.1 to 7.7). The earlier file `PART-7-DRAFT.md` of this folder is removed: the report replaces it.
 
-## 5. What will be added after the run
+## 5. What was not run
 
-Each model's hidden v2 `summary.md` (nothing else from those folders), the analysis results on the 46 development cases, the 12 drafts per model, the remaining encoder results (with speed and memory measured on an idle CPU), and the rest of Part 7.
+The analysis stage (the 46 development cases) and the drafting stage (the 12 stage 2 cases) were not run for any of the five generative models. Step 4 of the Part 7 brief (one LoRA fine-tune) was not run. The request-kind classifier was not trained. The report says so in 7.2, 7.4 and 7.5.

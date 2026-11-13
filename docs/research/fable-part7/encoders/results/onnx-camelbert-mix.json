@@ -1,0 +1,30 @@
+{
+ "name": "camelbert-mix",
+ "fp32": {
+  "load_s": 0.7,
+  "ms_median": 25.6,
+  "ms_max": 40.4,
+  "peak_working_set_mb": 568,
+  "peak_private_mb": 921,
+  "tokens_mean": 26.2,
+  "file_mb": 416.4,
+  "correct_plain": 37,
+  "correct_section_masked": 40,
+  "of": 46,
+  "threads": 4
+ },
+ "int8": {
+  "load_s": 0.3,
+  "ms_median": 9.4,
+  "ms_max": 17.4,
+  "peak_working_set_mb": 192,
+  "peak_private_mb": 525,
+  "tokens_mean": 26.2,
+  "file_mb": 104.8,
+  "correct_plain": 35,
+  "correct_section_masked": 38,
+  "of": 46,
+  "threads": 4
+ },
+ "tokenizer_mb": 0.7
+}

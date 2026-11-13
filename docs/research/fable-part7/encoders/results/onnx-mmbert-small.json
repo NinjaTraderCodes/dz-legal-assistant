@@ -1,0 +1,30 @@
+{
+ "name": "mmbert-small",
+ "fp32": {
+  "load_s": 2.26,
+  "ms_median": 19.8,
+  "ms_max": 42.4,
+  "peak_working_set_mb": 1039,
+  "peak_private_mb": 1547,
+  "tokens_mean": 39.5,
+  "file_mb": 537.0,
+  "correct_plain": 35,
+  "correct_section_masked": 37,
+  "of": 46,
+  "threads": 4
+ },
+ "int8": {
+  "load_s": 1.8,
+  "ms_median": 11.4,
+  "ms_max": 22.6,
+  "peak_working_set_mb": 420,
+  "peak_private_mb": 794,
+  "tokens_mean": 39.5,
+  "file_mb": 135.0,
+  "correct_plain": 31,
+  "correct_section_masked": 33,
+  "of": 46,
+  "threads": 4
+ },
+ "tokenizer_mb": 32.8
+}

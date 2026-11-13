@@ -1,0 +1,30 @@
+{
+ "name": "e5-small",
+ "fp32": {
+  "load_s": 1.05,
+  "ms_median": 9.9,
+  "ms_max": 17.2,
+  "peak_working_set_mb": 1122,
+  "peak_private_mb": 1639,
+  "tokens_mean": 32.2,
+  "file_mb": 449.1,
+  "correct_plain": 9,
+  "correct_section_masked": 12,
+  "of": 46,
+  "threads": 4
+ },
+ "int8": {
+  "load_s": 0.67,
+  "ms_median": 5.2,
+  "ms_max": 10.7,
+  "peak_working_set_mb": 513,
+  "peak_private_mb": 868,
+  "tokens_mean": 32.2,
+  "file_mb": 112.8,
+  "correct_plain": 11,
+  "correct_section_masked": 13,
+  "of": 46,
+  "threads": 4
+ },
+ "tokenizer_mb": 16.3
+}

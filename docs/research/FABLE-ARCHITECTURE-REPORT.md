@@ -1,10 +1,10 @@
-Research and invention parts complete
+Research and invention parts complete; Part 7 (measurements) closed on 13 November 2026
 
 # DZ Legal Assistant: independent audit and architecture review
 
-**Brief:** `docs/briefs/FABLE-ARCHITECTURE-BRIEF.md` (10 November 2026). **Repository state examined:** commit `4544e32` of `claude/case-file-site`, identical in code to the default branch `claude/stoic-fermat-mi1gko` (`ed06cd1`); the branches `codex/model-setup` (`cf86f36`) and `codex/law-corpus` (`9b60990`) read without change. **Written:** 10 and 11 November 2026, research only; no existing file was changed.
+**Brief:** `docs/briefs/FABLE-ARCHITECTURE-BRIEF.md` (10 November 2026). **Repository state examined:** commit `4544e32` of `claude/case-file-site`, identical in code to the default branch `claude/stoic-fermat-mi1gko` (`ed06cd1`); the branches `codex/model-setup` (`cf86f36`) and `codex/law-corpus` (`9b60990`) read without change. **Written:** 10 to 13 November 2026; no existing file was changed.
 
-**What this file holds.** Research and invention only. Part 1 audits the product; Part 2 studies model size; Part 3 lists the product's atomic decisions; Part 4 gives the arithmetic of training; Part 5 surveys the state of the art; **Part 6** asks whether a complete system under 1 GB can match Gemma 4 E4B on the product's language tasks, proposes architectures and the experiments that would prove or refute the one recommended. The verdict on the product, the decisions and the roadmap are the owner's and are not in this file.
+**What this file holds.** Research and invention in Parts 1 to 6; measurement in Part 7. Part 1 audits the product; Part 2 studies model size; Part 3 lists the product's atomic decisions; Part 4 gives the arithmetic of training; Part 5 surveys the state of the art; **Part 6** asks whether a complete system under 1 GB can match Gemma 4 E4B on the product's language tasks, proposes architectures and the experiments that would prove or refute the one recommended. **Part 7**, added afterwards, measures Arabic-first small models and five encoders on the owner's laptop and answers one question: is any ready-made model under 1 GB good enough today? The verdict on the product, the decisions and the roadmap are the owner's and are not in this file.
 
 **How to read the labels.** **[K]** known: a source is given (a file and line at `4544e32`, a law article quoted from the repository's library, or a web page with its link and date). **[E]** estimated: the arithmetic is shown. **[S]** speculated: reasoning without evidence yet. Legal statements are quoted in Arabic from the repository's library (`data/law/codes/*.json`, whose CPCA and Family Code are complete) or from a source the research units read; anything not verified that way is marked `TO CONFIRM WITH A PRACTISING LAWYER`. Court decisions and real cases are never used; every case mentioned is fictitious.
 
@@ -17,7 +17,7 @@ Research and invention parts complete
 
 Unit ids appear in citations below ("A08-05", "C06 §2.4"). The unit files are working papers kept outside the repository; every fact this report relies on is restated here with its own source. Four earlier project reports by other agents (on the local model, speed, CPU architecture and harness techniques, 14 to 18 October 2026) were read with the owner's permission and are cited as unpublished project reports.
 
-**What I could not do.** I ran no model and no measurement on the laptop: every timing and memory figure comes from the project's committed summaries or the earlier reports. I did not open the hidden test sets, only their committed summaries.
+**What I could not do.** In Parts 1 to 6 I ran no model and no measurement on the laptop: every timing and memory figure there comes from the project's committed summaries or the earlier reports. Part 7 is different: it is measured, on the owner's laptop, between 11 and 13 November 2026, and says for each figure whether it was taken on battery or on mains. I did not open the hidden test sets, only their summaries.
 
 ---
 
@@ -1188,6 +1188,304 @@ Opened on 11 November 2026; quoted passages matched against the fetched pages. "
 | D7-P55 | Kmainasi, Shahroor, Al-Ghraibah: Can Large Language Models Predict the Outcome of Judicial Decisions? | https://arxiv.org/abs/2501.09768 | Jan 2025 | . | no second check |
 | D7-P57 | Zhou, Wu, Chen et al: ClaimGen-CN: A Large-scale Chinese Dataset for Legal Claim Generation | https://arxiv.org/abs/2508.17234 | Aug 2025 | . | no second check |
 
+## Part 7. Arabic-first small models, measured on this laptop
+
+**Why this part exists.** The owner's verdict on Part 6 was that it gave more questions than solutions. This part runs models on the laptop with the project's own test bench and reports numbers. Papers are used only to choose what to run.
+
+**What "measured" means here.** Every accuracy, time and memory figure below was produced on the i5-1335U laptop (16 GB, no GPU) on 11 November 2026 or later, with Ollama 0.40.16. Two of the five generative models and all the encoder timings were taken on mains power with Windows set to Best performance; three generative models were run on battery, at the owner's decision of 12 November. Every table that shows a time says which, and battery and mains times are never compared. Figures for Gemma 4 E4B, Gemma 3 4B, Gemma 4 E2B and Gemma 3n E2B are the committed ones of 8 and 9 November (Ollama 0.40.15) and were not rerun.
+
+### 7.1 The candidates (Step 1)
+
+One research unit (F1) verified each candidate through the Hugging Face API and its model card on 11 November 2026: 21 source records, sources in 7.7. A model whose licence forbids commercial redistribution is listed, marked and not measured.
+
+**Generative models up to about 2B parameters, Arabic-first or Arabic-strong.** Scores are the Jais 3 report's own table (ArabicMMLU / Arabic Legal (HELM) / IFEval-Ar), without a reasoning trace, vendor-run on unquantised weights; they are the reason to measure, not a measurement.
+
+| Model | Released | Parameters | Licence: commercial redistribution? | 4-bit file | Published Arabic scores | Decision |
+|---|---|---|---|---|---|---|
+| `inception42/Jais-3-0.9B` | 29 Sep 2026 | 1.08B | Apache 2.0: yes | 666 MB | 60.0 / 55.6 / 63.4 | **measure** |
+| `inception42/Jais-3-3.7B` | 29 Sep 2026 | 3.7B by name (5.06B counted on the Hub) | Apache 2.0: yes | 3.16 GB | 76.4 / 64.1 / 71.0 (above Gemma 4 E4B's 70.6 / 59.2 / 67.8) | **measure**, as the larger reference |
+| `tiiuae/Falcon-H1-1.5B-Deep-Instruct` | 1 May 2025 | 1.55B | TII Falcon licence: yes, with conditions to pass on | 938 MB | 48.7 / 48.8 / 49.3 | **measure** |
+| `inception42/jais-family-590m-chat` | 2 Aug 2024 | 0.77B | Apache 2.0: yes | 504 MB | ArabicMMLU 39.1 (its card) | **measure** (context only 2,048 tokens) |
+| `Qwen/Qwen3.5-2B` | 28 Feb 2026 | 1.88B | Apache 2.0: yes | 1.28 GB | 44.9 / 27.1 / 40.4 | **measure**, as the multilingual control |
+| `ibm-research/granite-4.0-h-3b-ar` | 16 Jun 2026 | 3.4B | Apache 2.0: yes | 2.06 GB | 59.8 / 56.1 / 43.1 | not measured: above 2B, weak instruction following |
+| `silma-ai/SILMA-Kashif-2B-Instruct-v1.0` | 26 Jan 2025 | 2.6B | Gemma terms: with conditions | 1.71 GB | 4.90 of 10 on SILMA's own benchmark | not measured: its maker says it is for retrieval-augmented use only |
+| `MBZUAI-Paris/Atlas-Chat-2B` | 16 Sep 2024 | 2.6B | Gemma terms: with conditions | 1.71 GB | DarijaMMLU 45.0 | not measured: Moroccan Darija, 1.7 GB |
+| Falcon-H1-Arabic (3B and up), Falcon-Arabic | announced 5 Jan 2026 | 3B+ | not published | no weights | vendor: about 62 % on OALL | cannot be measured: still no public weights |
+| `hammh0a/Hala-350M`, `-700M`, `-1.2B` | 13 Sep 2025 | 0.35 to 1.17B | CC BY-NC 4.0: **no** | 731 MB (1.2B) | 45.0 / 41.1 / 44.1 | **excluded by licence** |
+| `CohereLabs/tiny-aya-global` | 2026 | 3.3B | CC BY-NC: **no** | 2.14 GB | 55.9 / 52.2 / 58.2 | **excluded by licence** |
+| `inception42/jais-family-1p3b-chat`, `-2p7b-chat` | 2 Aug 2024 | 1.56B, 2.95B | Apache 2.0: yes (gated) | 1.05 GB, 2.61 GB | ArabicMMLU 42.2, 50.0 | not measured: below Jais-3-0.9B at a larger size |
+| `RightNowAI/RightNow-Arabic-0.5B-Turbo` | 10 Apr 2026 | 0.52B | Apache 2.0: yes | 424 MB | ArabicMMLU 23.2 (below the 25 % chance level) | not measured |
+| ArabianGPT, AraGPT2, `darja-gpt-50m` | 2021 to 2026 | 0.05 to 1.6B | mixed | none | none | raw language models with no instruction tuning |
+
+- [K] No instruction-tuned generative model for **Algerian** Darija of 2B or less exists on the Hub (searches for "algerian", "dziri", "darija", "darja"; F1 S11). No Ollama library tag exists for any Arabic-first model; all pulls are `hf.co/<repo>:Q4_K_M` (F1 S4).
+- [K] **Jais 3 thinks by default.** Its chat template sets `reasoning_effort` to "high" when nothing is passed and has no off switch; "low" opens the answer with an empty block and writes no trace (F1 S2, S5). Ollama forwards a string `think` value as `reasoning_effort`, but a boolean `think: false`, which is all the project's harness can send, is ignored by this template (F1 S3). How this was handled is in 7.2.
+
+**Encoders.**
+
+| Model | Parameters | Licence: commercial redistribution of fine-tuned weights? | fp32 file | Tokenizer | Decision |
+|---|---|---|---|---|---|
+| `jhu-clsp/mmBERT-small` (21 Aug 2025) | 140M (42M outside the embeddings) | MIT: yes | 564 MB | 256,000 sub-words; Algerian Arabic in its language list | **measure** |
+| `CAMeL-Lab/bert-base-arabic-camelbert-mix` | 110M | Apache 2.0: yes | 439 MB | 30,000 Arabic word-pieces; trained on formal, dialectal and classical Arabic | **measure** |
+| `alger-ia/dziribert` | 124M | Apache 2.0: yes | 498 MB | 50,000 word-pieces; Algerian text in Arabic and Latin script | **measure** |
+| `intfloat/multilingual-e5-small` (30 Jun 2023) | 118M (21M outside the embeddings) | MIT: yes | 471 MB | 250,037 SentencePiece | **measure** |
+| `microsoft/Multilingual-MiniLM-L12-H384` | same shape as e5-small | MIT: yes | 471 MB | same | alternate to e5-small |
+| `aubmindlab/bert-base-arabertv02`, AraELECTRA | 135M | own licence: commercial use allowed, **fine-tuned weights must carry the same licence** | 543 MB | 64,000 word-pieces | not measured: share-alike on the weights we would ship |
+| `UBC-NLP/MARBERTv2`, `ARBERTv2` | 163M | "exclusively for research": **no** | 654 MB | 100,000 word-pieces | **excluded by licence** |
+| `NAMAA-Space/AraModernBert-Base-V1.0` | 150M | Apache 2.0: yes | 598 MB | 50,280 | not measured: Arabic XNLI 0.47 on its own card |
+| DZAIR, algerianDeBERTa (2026) | 60M to 124M | Apache 2.0 / custom code | 242 MB+ | — | not measured: below DziriBERT on their own tests |
+
+**Shortlist.** Generative (5): Jais-3-0.9B (the only model under 1 GB with Arabic and legal scores near Gemma 4 E2B); Falcon-H1-1.5B-Deep (second-best Arabic evidence under 1 GB, no thinking mode); jais-family-590m (the only other Arabic-first Apache model under 1 GB); Qwen3.5-2B (what a multilingual model of the same class does, to show what "Arabic-first" buys); Jais-3-3.7B (the reference: half E4B's file, above it on the vendor's Arabic tests). Encoders (4): mmBERT-small, CAMeLBERT-mix, DziriBERT, multilingual-e5-small.
+
+### 7.2 How the generative models were run (Step 2), and what differs from the 9 November run
+
+The brief asks for the project's own instruments, unchanged, exactly as for the Gemma 4 E2B run. That was not possible to the letter. Every deviation was put to the owner or the reviewer before any run, and is stated here so that it can be judged. The runner, the model list and the harness difference were reviewed in `docs/research/fable-part7/` (commits `1e8b3a1`, `167d753`, `17c1e62`) before the first run.
+
+1. **The owner's guarded command accepts four model names only.** `tools/alpha-03/Run-OwnerAlpha01.ps1` (commit `480d4a4` of `codex/alpha-03`) validates `-Model` against `gemma3:4b`, `gemma4:e4b`, `gemma4:e2b`, `gemma3n:e2b`, and the frozen harness has the same lock inside its guarded mode (`FactRunMeasurement.ResolveDigest`). [K]
+   - **What was done:** a scratch copy of the frozen source, outside the repository, with **one added switch arm** in `src/DzLegal.Harness/FactRunMeasurement.cs`, so that any other model runs only with its recorded digest, as the two phone models did. The reader, its prompt, the parser, the scorer and every inference option (CPU only, context 4,096, temperature 0.2, repeat penalty 1.1, 300-token cap, reload every ten cases, 512 MiB memory guard) are untouched. A runner, also outside the repository, repeats the owner's wrapper (the desktop app open and idle, no browser, editor or build running, a quiet-CPU preflight, a fresh output folder, no retry) and takes the models and their digests from a list.
+2. **The guard refuses to start while VS Code is open**, and this session runs inside VS Code. The owner launched every run himself from a PowerShell window. I read only each run's `summary.md` and the run indexes; I never opened the hidden folder or any other file of a run folder.
+3. **Jais 3 cannot be used as downloaded.** [K, measured] With what the harness sends (no thinking flag, or `think: false`), Jais-3-0.9B spent all 300 answer tokens on a reasoning trace and returned an empty answer. Ollama 0.40.16 rejects the "low" setting for this download ("does not support thinking"), ignores a Modelfile template, and mis-tokenises a replaced template. The maker's no-trace mode is selected inside the chat template, so each Jais 3 model ran as a **copy of its GGUF file with two edits in the maker's chat template** (metadata only): the default reasoning effort is "low", and the low-effort opening closes its empty block and ends with a line break. The weights are byte-identical (same hash over all tensors). Each answer then begins with two marker lines that the unchanged parsers skip; the summaries count them as "unreadable lines", which are not critical errors. This packaging is part of the result: the model does not run in the app as published.
+4. **Qwen3.5-2B** is the 4-bit file from the Hub (`hf.co/unsloth/Qwen3.5-2B-GGUF:Q4_K_M`). The harness switches thinking off by itself only for names that start with `qwen3`, so `--think false` was passed: with it the model answers directly; without it, it reasons for all 300 answer tokens and returns nothing (checked before the run). Ollama installs the repository's vision part with it (668 MB), so the installed size is 1.95 GB for a 1.28 GB language file.
+5. **Power.** On 12 November the owner decided to run on battery, as a realistic-use measurement. The frozen harness refuses battery in two places (its live guard, and the end-of-run check that counts every sample taken off mains as invalid), so the scratch copy received a battery mode, switched on only by an environment variable that the battery runner sets: the harness then refuses mains instead of battery and does not require Best performance; memory, idle-app, browser and stop-file conditions are unchanged, and the summary says "Battery run". Limits: 25 % of battery before a stage, and a stage stopped (never counted) below 15 %.
+   - **Three models completed on battery** (Windows mode "Best power efficiency"; no energy-saver sample in any counted stage). **Two completed on mains with Best performance**, at the owner's decision, after their battery stages were interrupted (Falcon when the charger was plugged in; Jais-3-3.7B once at the 15 % limit and once more above it).
+   - **Accuracy does not depend on the power source; time does.** Battery and mains times are in separate columns in every table below, and must not be compared with each other.
+6. **Two errors in the first runner** were found by a dry run before anything had been launched, and fixed: under Windows PowerShell 5.1 the default path of the model list was empty, and the five models were read as one. The mains run planned for the night of 11 November was never started.
+7. **The summaries pushed for review carry no per-case lines** (hidden case names with error types), as in the committed comparison of 9 November. I did not read those lines.
+
+**Not run.** The brief's two other measurements (the app's analysis on the 46 development cases, and the drafting comparison on the 12 stage 2 files) were **not run for any of the five models**: on 12 November the owner closed Part 7 after the hidden-set stage. Smoke tests of a few development cases were used only to check that each stage starts; they are not results and are not reported as such.
+
+**Other differences from 8 and 9 November:** Ollama is 0.40.16 (it was 0.40.15); the comparison models were not rerun, as the brief instructs.
+
+**What is reported for each model:** from the hidden v2 summary, cases fully right and every field of the summary table, seconds per case, the peak memory lines; the file size; and tokens per Arabic word, measured on the repository's own fictitious notes (57 notes, 1,261 words).
+
+### 7.3 The five generative models on hidden set v2 (measured)
+
+Fact reading with the unchanged Alpha-01 reader, claim type given: 90 cases read, 10 out-of-catalogue cases left out, one serial pass per model on 12 November 2026. [K, measured] "Fully right" is the scorer's count of cases without a critical error. The four Gemma rows are the committed figures of 8 and 9 November (`docs/baselines/2026-11-09-alpha-03-hidden-v2-phone-models/summary.md` on `codex/alpha-03`), not rerun.
+
+**Accuracy: every field of the summary table.**
+
+| Model | File | Fully right (of 90) | 95 % interval | Plaintiff position | Decisive events found | Dates on the right event | Polarity right | Requests found | Failures |
+|---|---:|---:|---|---:|---:|---:|---:|---:|---:|
+| Gemma 4 E4B (the app's model; committed) | 5.49 GB + 0.99 GB vision | **58** | 54 to 74 % | 100 % | 98 % | 92 % | 91 % | 95 % | 0 |
+| **Jais-3-3.7B**, no-trace copy | 3.16 GB | **50** | 45 to 65 % | 94 % | 97 % | 80 % | 90 % | 98 % | 0 |
+| Gemma 3n E2B (committed) | 7.8 GB installed | 42 | 37 to 57 % | 97 % | 93 % | 77 % | 86 % | 69 % | 0 |
+| Gemma 4 E2B (committed) | 4.6 GB installed | 41 | 36 to 56 % | 93 % | 93 % | 89 % | 85 % | 63 % | 0 |
+| Gemma 3 4B (committed) | 3.3 GB installed | 39 | 34 to 54 % | 94 % | 89 % | 83 % | 86 % | 92 % | 0 |
+| **Falcon-H1-1.5B-Deep** | 0.94 GB | **25** | 20 to 38 % | 86 % | 86 % | 58 % | 86 % | 79 % | 0 |
+| **Qwen3.5-2B**, 4-bit, thinking off | 1.28 GB (1.95 GB installed) | **21** | 16 to 33 % | 90 % | 93 % | 58 % | 73 % | 77 % | 0 |
+| **Jais-3-0.9B**, no-trace copy | 0.67 GB | **14** | 10 to 24 % | 82 % | 52 % | 70 % | 76 % | 49 % | 0 |
+| **jais-family-590m** | 0.50 GB | **2** | 1 to 8 % | 81 % | 1 % | 100 % (of the few values it gave) | 50 % | 0 % | 0 |
+
+- **No model of 2B parameters or less comes near Gemma 4 E4B.** The best of them, Falcon-H1-1.5B-Deep, reads 25 of 90 cases without a critical error against 58; the model the vendor's Arabic tests put level with Gemma 4 E2B, Jais-3-0.9B, reads 14.
+- **Jais-3-3.7B is the only candidate in reach**: 50 of 90, 8 cases behind Gemma 4 E4B and 11 ahead of Gemma 3 4B, with a file about half the size of E4B's.
+- **What one pass can and cannot show.** [E] The intervals above are Wilson intervals on 90 cases. Unpaired, the 8-case gap between Gemma 4 E4B and Jais-3-3.7B has p ≈ 0.22, and the 11-case gap between Jais-3-3.7B and Gemma 3 4B has p ≈ 0.10: neither is established by one pass. A paired comparison needs the per-case lines, which I did not read.
+
+**Critical errors by kind** (a case can have several):
+
+| Model | Polarity | Missing decisive event | Date on wrong event | Amount on wrong event | Plaintiff position | Forbidden reading | Request amount | Actor swapped |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Jais-3-3.7B | 23 | 4 | 6 | 8 | 5 | 6 | 3 | 2 |
+| Falcon-H1-1.5B-Deep | 32 | 19 | 27 | 17 | 13 | 9 | 8 | 3 |
+| Qwen3.5-2B | 70 | 10 | 10 | 16 | 9 | 14 | 23 | 1 |
+| Jais-3-0.9B | 34 | 64 | 9 | 6 | 16 | 11 | 1 | 2 |
+| jais-family-590m | 1 | 133 | 0 | 0 | 17 | 0 | 0 | 0 |
+
+- **Polarity is the first error of every model that finds the events**: 23 of the critical errors of Jais-3-3.7B, 32 of Falcon's, 70 of Qwen's. The two smallest models fail earlier: they do not find the events at all (64 and 133 missing).
+- Other differences, not critical: Jais-3-3.7B: unreadable lines 90, missing event 31, date not given 25, amount not given 11, relation 3, missing request 3. Falcon: missing request 37, date not given 35, unreadable lines 25, missing event 23, amount not given 7, relation 5. Qwen3.5-2B: date not given 55, missing request 40, unreadable lines 15, amount not given 10, missing event 5, relation 4. Jais-3-0.9B: unreadable lines 90, missing request 90, missing event 66, date not given 16, amount not given 14, relation 8. jais-family-590m: missing request 176, missing event 135, unreadable lines 83, relation 8. The "unreadable lines 90" of the two Jais 3 models are the two marker lines of the no-trace copy (7.2).
+
+**Time per case. Battery and mains figures must not be compared with each other.**
+
+| Model | Power during the counted stage | Seconds per case, **battery** | Seconds per case, **mains** | Per attempted file (s) | Answer tokens (avg) | Prompt read (tokens/s) | Writing (tokens/s) | Battery used |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| Jais-3-0.9B | battery, Best power efficiency | 17 | | 15.576 | 178 | 134.9 | 17.2 | 21 points (74 → 53 %) |
+| jais-family-590m | battery, Best power efficiency | 10 | | 9.418 | 210 | 249.6 | 31.4 | 13 points (53 → 40 %) |
+| Qwen3.5-2B | battery, Best power efficiency | 16 | | 15.338 | 46 | 76.6 | 13.6 | 21 points (57 → 36 %) |
+| Falcon-H1-1.5B-Deep | mains, Best performance | | 16 | 14.401 | 52 | 87.7 | 17.4 | not on battery |
+| Jais-3-3.7B | mains, Best performance | | 20 | 18.148 | 41 | 51.7 | 8.4 | not on battery |
+| Gemma 4 E4B (committed, 8 Nov) | mains, Best performance | | 21 | 20.019 | | | | |
+| Gemma 4 E2B (committed, 9 Nov) | mains, Best performance | | 7 | 7.194 | 54 | 249.7 | 19.7 | |
+| Gemma 3n E2B (committed, 9 Nov) | mains, Best performance | | 19 | 18.081 | 48 | 69.1 | 14.1 | |
+| Gemma 3 4B (committed, 8 Nov) | mains, Best performance | | 28 | 25.919 | | | | |
+
+- "Per attempted file" is the whole batch (100 files, 10 loads, waits) divided by 100. Battery drain under load was about 0.8 points per minute.
+- The small Jais models are not fast in practice: Jais-3-0.9B writes 178 tokens per answer on average, four times the others, so a 0.67 GB model takes as long per case on battery as Qwen3.5-2B.
+
+**Memory** (sampled every two seconds; short peaks can be missed):
+
+| Model | Model working-set peak | Model private peak | Model + app peak | Lowest memory left on the machine |
+|---|---:|---:|---:|---:|
+| Jais-3-0.9B | 1.440 GiB | 1.504 GiB | 1.698 GiB | 9.116 GiB |
+| jais-family-590m | 1.682 GiB | 1.745 GiB | 1.904 GiB | 8.928 GiB |
+| Qwen3.5-2B | 2.780 GiB | 3.594 GiB | 3.031 GiB | 8.484 GiB |
+| Jais-3-3.7B | 4.597 GiB | 4.683 GiB | 4.763 GiB | 6.924 GiB |
+| Falcon-H1-1.5B-Deep | 5.352 GiB | 5.559 GiB | 5.520 GiB | 5.996 GiB |
+| Gemma 4 E4B (committed) | 7.244 GiB | 7.968 GiB | 7.424 GiB | 3.684 GiB |
+| Gemma 4 E2B (committed) | 4.844 GiB | 5.537 GiB | 5.094 GiB | 6.003 GiB |
+| Gemma 3n E2B (committed) | 6.674 GiB | 7.574 GiB | 6.858 GiB | 4.537 GiB |
+| Gemma 3 4B (committed) | 6.237 GiB | 6.620 GiB | 6.484 GiB | 3.684 GiB |
+
+- **No generative model stays under 1 GiB of memory**, whatever its file size: the smallest file (0.50 GB) peaks at 1.7 GiB. Falcon-H1-1.5B-Deep needs more memory than Jais-3-3.7B (5.6 against 4.7 GiB) for a file a third of the size.
+- Jais-3-3.7B peaks 3.3 GiB below Gemma 4 E4B and 1.9 GiB below Gemma 3 4B. With the app it stays under 5 GiB (4.8), the first model of this accuracy class to do so. Whether that is enough on an 8 GB machine is not measured: this laptop has 16 GB, and no 8 GB machine has been tried.
+
+**Tokens per Arabic word** (each model's own tokenizer on the repository's fictitious notes; 57 notes, 1,261 words). Fewer tokens per word means a shorter prompt and a faster answer for the same text.
+
+| Tokenizer | Tokens per word |
+|---|---:|
+| Gemma 4 E4B and Gemma 3 4B (the app's models) | 2.27 |
+| Falcon-H1-1.5B-Deep | 2.20 |
+| Qwen3.5-2B | 2.14 |
+| Jais-3-0.9B | 1.82 |
+| Jais-3-3.7B | 1.48 |
+| jais-family-590m | 1.39 |
+| mmBERT-small | 2.29 |
+| multilingual-e5-small, Multilingual-MiniLM | 1.77 |
+| DziriBERT | 1.50 |
+| CAMeLBERT-mix | 1.47 |
+
+- The Arabic-first tokenizers need a third fewer tokens than Gemma's for the same note: Jais-3-3.7B reads the fact prompt in 759 tokens on average where Falcon needs 1,104 and Gemma 4 E2B 1,085.
+
+**The sessions.**
+
+| Run folder | Stage | Result | Battery | Why it ended |
+|---|---|---|---|---|
+| `battery-facts-1` | Jais-3-0.9B | complete | 74 → 53 % | |
+| `battery-facts-1` | jais-family-590m | complete | 53 → 40 % | |
+| `battery-facts-1` | Falcon-H1-1.5B-Deep | not complete, not counted | 40 → 26 % | the charger was plugged in during the stage |
+| `battery-facts-2` | Qwen3.5-2B | complete | 57 → 36 % | |
+| `battery-facts-2` | Jais-3-3.7B | not complete, not counted | 36 → 14 % | the 15 % limit; energy saver was on for part of it |
+| `battery-facts-3` | Jais-3-3.7B | not complete, not counted | 32 → 18 % | stopped by the harness above the limit (the charger was plugged in, by the owner's account); energy saver on for part of it |
+| `mains-facts-1` | Falcon-H1-1.5B-Deep | complete | mains | |
+| `mains-facts-1` | Jais-3-3.7B | complete | mains | |
+
+The five counted stages have zero invalid power or headroom samples, and the three battery ones have zero energy-saver samples. The summaries, without their per-case lines, and the run indexes are in `docs/research/fable-part7/results/hidden-v2/`.
+
+### 7.4 Encoders as claim-type classifiers (Step 3, measured)
+
+**Task.** 22 classes: the 21 claim types and "other". Each encoder was fine-tuned on the laptop on synthetic fictitious notes only, then tested **once** on the 46 development cases of `tests/grounds-cases/cases.json` (44 development, 2 robustness; 4 of them out of scope, expected "other"). In the app's own analysis on the same 46 cases, Gemma 4 E4B gets 46 and Gemma 3 4B gets 41 (committed stage 1 figures).
+
+**Training notes.** 1,542 notes written for this measurement by four Claude subagents from a plan drawn by code: 62 per claim type and 240 "other"; formal Arabic 807, Darija 394, French 217, formal Arabic with French terms 124. The writers were forbidden to open any `tests` or `baselines` folder. No hidden-set case was used, ever. Two limits: "other" is over-represented (240 against 62), and notes written by Claude models are acceptable for this measurement but not for a classifier shipped in the product (Part 4).
+
+**Recipe, fixed before any test result:** 5 epochs, AdamW, learning rate 3e-5 with 6 % warm-up and linear decay, batch 16, at most 160 tokens, seed 20261111; 10 % of each class held out as a synthetic check (150 notes), 1,392 trained on. "With the section filter" allows only the claim types of the court section's area, plus "other", as the app does for the local model. The scripts, the plan generator, the writers' instructions, 20 sample notes and every result file are in `docs/research/fable-part7/`.
+
+| Encoder | Licence | Parameters | Synthetic check | 46 cases, alone | 46 cases, with the section filter | Out of scope declined |
+|---|---|---:|---:|---:|---:|---:|
+| `CAMeL-Lab/bert-base-arabic-camelbert-mix` | Apache 2.0 | 109 M | 84.0 % | 37 | **40** | 4 of 4 |
+| `alger-ia/dziribert` | Apache 2.0 | 124 M | 86.7 % | 37 | 38 | 4 of 4 |
+| `jhu-clsp/mmBERT-small` | MIT | 141 M | 91.3 % | 35 | 37 | 4 of 4 |
+| `intfloat/multilingual-e5-small` | MIT | 118 M | 49.3 % | 9 | 12 | 4 of 4 |
+| `microsoft/Multilingual-MiniLM-L12-H384` (alternate) | MIT | 118 M | 24.7 % | 6 | 6 | 4 of 4 |
+| *Gemma 4 E4B, in the app's analysis (committed)* | | | | *46* | | *4 of 4* |
+| *Gemma 3 4B, in the app's analysis (committed)* | | | | *41* | | *3 of 4* |
+
+- **The best encoder, with the section filter, is one case behind Gemma 3 4B** (40 against 41) and six behind Gemma 4 E4B, after about an hour of training on 62 notes per class. That is the 32-bit model; its 8-bit form, the one that would ship, gets 38 (below).
+- **The two small-shape encoders did not learn under this recipe** (49 % and 25 % on their own synthetic check): the recipe is too short for a 384-wide model. That says the recipe failed, not that the shape cannot do the task. I did not rerun them with another recipe: the choice would have been made after seeing the test cases.
+- **The errors are between neighbours.** CAMeLBERT-mix alone: contract damages, liability for an animal, a taṭlīq for harm, a khulʿ and children's maintenance all read as tort damages; a Darija rent claim and a commercial lease read as eviction of an occupier; a commercial-lease case written in civil words read as unpaid rent; a divorce by the husband read as "other". The section filter repairs three of the nine.
+- **Not done:** the request-kind classifier (no encoder was clearly ahead), and a second run with balanced classes (it would have been chosen after seeing the errors).
+- Training time is not reported as a measurement: other work ran on the laptop during the trainings. [E] The order of magnitude is 100 to 190 training tokens per second for these encoders on this CPU, so an hour for 1,400 short notes and five epochs.
+
+**Compressed to 8-bit** (ONNX, dynamic quantisation; one note at a time, 4 threads, in a fresh process, on mains with Best performance and an idle CPU):
+
+| Encoder | Form | Model file | Tokenizer file | 46 cases, alone | With the section filter | Load | Time per note, development notes | 128 tokens | 256 tokens | 512 tokens | Peak memory, working set | Peak memory, private |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| CAMeLBERT-mix | 32-bit | 416.4 MB | 0.7 MB | 37 | 40 | 0.7 s | 25.6 ms (about 26 tokens) | 101 ms | 246 ms | 485 ms | 0.55 GiB | 0.90 GiB |
+| CAMeLBERT-mix | 8-bit | 104.8 MB | 0.7 MB | 35 | 38 | 0.3 s | 9.4 ms (about 26 tokens) | 48 ms | 99 ms | 276 ms | 0.19 GiB | 0.51 GiB |
+| DziriBERT | 32-bit | 475.0 MB | 1.2 MB | 37 | 38 | 0.9 s | 24.5 ms (about 27 tokens) | 86 ms | 195 ms | 475 ms | 0.67 GiB | 1.01 GiB |
+| DziriBERT | 8-bit | 119.4 MB | 1.2 MB | 36 | 37 | 0.3 s | 10.6 ms (about 27 tokens) | 44 ms | 101 ms | 264 ms | 0.22 GiB | 0.54 GiB |
+| mmBERT-small | 32-bit | 537.0 MB | 32.8 MB | 35 | 37 | 2.3 s | 19.8 ms (about 40 tokens) | 57 ms | 129 ms | 424 ms | 1.01 GiB | 1.51 GiB |
+| mmBERT-small | 8-bit | 135.0 MB | 32.8 MB | 31 | 33 | 1.8 s | 11.4 ms (about 40 tokens) | 37 ms | 85 ms | 237 ms | 0.41 GiB | 0.78 GiB |
+| multilingual-e5-small | 32-bit | 449.1 MB | 16.3 MB | 9 | 12 | 1.1 s | 9.9 ms (about 32 tokens) | 32 ms | 66 ms | 281 ms | 1.10 GiB | 1.60 GiB |
+| multilingual-e5-small | 8-bit | 112.8 MB | 16.3 MB | 11 | 13 | 0.7 s | 5.2 ms (about 32 tokens) | 24 ms | 46 ms | 228 ms | 0.50 GiB | 0.85 GiB |
+
+The development notes are short, so the last columns time each model on one note of 128, 256 and 512 tokens (a real note's words repeated to that length; 20 runs after 3 warm-up runs, median). Memory is the peak of the whole measuring process on the 46 development notes; in the 512-token run the 8-bit CAMeLBERT-mix peaked at 0.24 GiB working set and 0.62 GiB private.
+
+- **Measured on 13 November 2026, from 18:43 to 18:45:** mains power, Windows power mode Best performance, energy saver off, battery 65 % to 66 %. The editor that ran the measurement was open and a browser's background process was present; all other processes together used about 3 % of the CPU just before. Each model ran alone, in a fresh process.
+- **The 8-bit form costs accuracy on these 46 cases:** CAMeLBERT-mix loses 2 cases (37 to 35 alone, 40 to 38 with the section filter), DziriBERT 1 (37 to 36, 38 to 37), mmBERT-small 4 (35 to 31, 37 to 33). Dynamic quantisation only was tried: no calibration set, no training that takes quantisation into account. On 46 cases a difference of one or two is within chance.
+- **Size:** the 8-bit CAMeLBERT-mix is 104.8 MB with a 0.7 MB tokenizer; DziriBERT 119.4 MB; mmBERT-small 135.0 MB, and its tokenizer adds 32.8 MB.
+- **Speed:** 9 to 11 ms per short note in 8-bit for the three Arabic-capable encoders, about 0.1 s at 256 tokens, and at most 0.28 s at 512 tokens, the longest input these BERT models accept. The 8-bit form is about twice as fast as the 32-bit one.
+- **Battery, kept apart:** on 12 November the same two files measured on battery, in Windows' Best power efficiency mode, gave 26.3 ms (DziriBERT) and 23.7 ms (mmBERT-small) per development note in 8-bit, against 10.6 and 11.4 ms on mains: about half the speed. Sizes and accuracy were the same.
+- multilingual-e5-small is in the table for completeness: it did not learn under the recipe (above), so its accuracy says nothing about the 8-bit form.
+
+### 7.5 The answer (Step 5)
+
+**One table: every measured model against Gemma 4 E4B.** Two different tasks were measured, so the table has two blocks. Times marked "battery" and "mains" must not be compared with each other.
+
+| Model | Accuracy | Size on disk | Peak memory | Time per case |
+|---|---|---:|---:|---|
+| ***Reading the facts of a note (hidden set v2, 90 cases, claim type given)*** | | | | |
+| Gemma 4 E4B (the app's model; committed) | **58 of 90** | 5.49 GB + 0.99 GB vision | 7.97 GiB | 21 s, mains |
+| Jais-3-3.7B, no-trace copy | **50 of 90** | 3.16 GB | 4.68 GiB | 20 s, mains |
+| Gemma 3 4B (today's lighter default; committed) | 39 of 90 | 3.3 GB installed | 6.62 GiB | 28 s, mains |
+| Falcon-H1-1.5B-Deep | 25 of 90 | 0.94 GB | 5.56 GiB | 16 s, mains |
+| Qwen3.5-2B, 4-bit | 21 of 90 | 1.28 GB (1.95 GB installed) | 3.59 GiB | 16 s, battery |
+| Jais-3-0.9B, no-trace copy | 14 of 90 | 0.67 GB | 1.50 GiB | 17 s, battery |
+| jais-family-590m | 2 of 90 | 0.50 GB | 1.75 GiB | 10 s, battery |
+| ***Choosing the claim type (46 development cases)*** | | | | |
+| Gemma 4 E4B, in the app's analysis (committed) | **46 of 46** | as above | 8.73 GiB | 56 s, mains (the whole analysis: claim type and articles) |
+| Gemma 3 4B, in the app's analysis (committed) | 41 of 46 | as above | 9.71 GiB | 70 s, mains (the whole analysis) |
+| CAMeLBERT-mix classifier, 8-bit, with the section filter | 38 of 46 (40 in 32-bit) | 106 MB | 0.51 GiB | 9 ms per short note, 0.28 s at 512 tokens, mains |
+| DziriBERT classifier, 8-bit, with the section filter | 37 of 46 (38 in 32-bit) | 121 MB | 0.54 GiB | 11 ms per short note, 0.26 s at 512 tokens, mains |
+| mmBERT-small classifier, 8-bit, with the section filter | 33 of 46 (37 in 32-bit) | 168 MB | 0.78 GiB | 11 ms per short note, 0.24 s at 512 tokens, mains |
+
+Memory is the model's sampled private peak for the generative models, and the private peak of the whole process for the encoders. The encoders' sizes include the tokenizer file.
+
+**The recommendation, in plain words.**
+
+1. **No ready-made model under 1 GB is good enough today.** The best file under 1 GB, Falcon-H1-1.5B-Deep, reads 25 of 90 cases without a critical error against 58 for Gemma 4 E4B, and it needs 5.6 GiB of memory. The model the vendor's Arabic tests put level with Gemma 4 E2B, Jais-3-0.9B, reads 14; Gemma 4 E2B reads 41. None of the five stays under 1 GiB of memory.
+2. **Jais-3-3.7B is the candidate to replace Gemma 3 4B as the default.** Against Gemma 3 4B it reads 50 cases against 39, in a download of the same size (3.16 GB against 3.3 GB), with 1.9 GiB less memory and in less time (20 s against 28 s per case, both on mains), under Apache 2.0. Gemma 4 E4B stays the most accurate (58), at twice the download.
+   - **Why "candidate" and not "replacement":** the 11-case gap comes from one pass per model, and chance alone produces such a gap about one time in ten; the app's own analysis and its drafting were not measured with this model; and it does not run as published. It needs the prepared copy (7.2) and it is not in the Ollama registry, so set-up would have to fetch it from Hugging Face.
+   - **What would settle it:** the two unmeasured stages (the analysis on the 46 development cases and the 12 stage 2 drafts), then a second pass on a hidden set.
+3. **A small classifier could make the app useful without the AI.** An Arabic encoder of 105 to 120 MB in its 8-bit form, fine-tuned for an hour on 62 synthetic notes per class, picks the claim type on 37 to 38 of the 46 development cases with the section filter (38 to 40 before it is compressed), in about 11 ms per short note, a quarter of a second for the longest note it accepts, and about half a gibibyte of memory (7.4). Compressed, that is three to four cases behind Gemma 3 4B and eight to nine behind Gemma 4 E4B, with a first recipe and mixed-language notes. It does not read facts: it chooses among 22 answers.
+4. **The smallest thing that is good enough today, and the step that would close the gap.** For reading facts it is Jais-3-3.7B (3.16 GB), 8 cases under Gemma 4 E4B. The brief's Step 4 (one LoRA fine-tune with an allowed teacher) was open by its own rule, since the best model is within 10 cases of E4B; it was not run. The owner has chosen another route, which these measurements support: the decisions that can hurt a lawyer are rules (Part 1), and the hard part of reading is polarity, the first critical error of every model that finds the events (23 of the 57 critical errors of Jais-3-3.7B, in 40 cases). The next step is therefore the rules, a body of notes and a small classifier and reader built for this task (`docs/briefs/FABLE-CORE-LOGIC-BRIEF.md`), not a larger ready-made model.
+
+**What these measurements do not show.** One pass per model on 90 hidden cases; formal Arabic only in that set; no measurement on an 8 GB machine; battery and mains times mixed across models, so the five models' speeds are comparable only within the same power column; and the encoders were tested on 46 development cases that the team wrote, which is a small and friendly set.
+
+### 7.6 What changed since Part 6
+
+Part 6 ran nothing: it reasoned from published scores. Part 7 measured, on this laptop, with the project's instruments. What the measurements did to Part 6:
+
+| Part 6 said | Part 7 measured | What follows |
+|---|---|---|
+| Jais-3-0.9B is "the only model under 1 GB with Arabic scores near E4B" (vendor: Arabic legal 55.6 against 59.2), and architecture C rests on it (6.2). [K, vendor] | 14 of 90 on fact reading, against 58 for Gemma 4 E4B and 41 for Gemma 4 E2B, which the same vendor table puts level with it. It finds half of the decisive events and writes answers four times longer than the others. | Vendor multiple-choice scores did not predict reading a lawyer's note. Architecture C is refuted as drafted; so is any design that leans on a ready-made generator under 2B for the semantic judgement. |
+| "No Arabic evidence exists at this size" for a tiny generator making the semantic judgement (6.3). | There is evidence now, and it is negative: 25, 21, 14 and 2 of 90 for the four models under 2B. | The judgement must come from a model trained for it, or from the lawyer. |
+| Peak memory under 1 GB is reachable for a small generator with a capped context (architecture C: 870 MB estimated at a 2,048-token context). [E] | No generative model stayed under 1 GiB: 1.5 GiB for the 0.67 GB file and 1.7 GiB for the 0.50 GB file, at the harness's 4,096-token context. | The 1 GB memory limit excludes every generator measured here. Only the encoders respect it. |
+| Reader 1 of the recommended architecture R is mmBERT-small, 143 MB in 8-bit (6.3). [E] | Its 8-bit file is 135 MB, as estimated. But it came third on claim type (35 of 46, 37 with the section filter) and lost four cases when compressed (31), where the Arabic encoders lost one or none. | The size estimate held; the choice of encoder did not. An Arabic encoder (CAMeLBERT, DziriBERT) is the better base. |
+| Reader 2 is a multilingual MiniLM, "a second opinion from different weights" (6.3). | Under the same recipe it did not learn (6 of 46); its sibling multilingual-e5-small reached 9. | A second reader of that shape needs its own recipe; as planned, it adds nothing. |
+| Claim type by a fine-tuned encoder: "likely" (6.3, the odds). | 37 to 40 of 46 after an hour of training on 62 notes per class, one case behind Gemma 3 4B. | Still likely, not shown: the test set is 46 friendly cases and the notes were mixed-language. |
+| Reading stance (stated, denied, disputed) with forced answers: "probably not" at this size. | Not measured for encoders. For generators, polarity is the first critical error of every model that finds the events. | Unchanged, and now the centre of the next brief. |
+| Jais-3-3.7B was outside Part 6's scope (over 1 GB). | 50 of 90, at half Gemma 4 E4B's download and 3.3 GiB less memory. | The practical gain of Part 7 is a better default at the size of Gemma 3 4B, not a system under 1 GB. |
+| The proof plan (6.4) needed lawyers' hours and about 46 US dollars of hosted compute. | The owner has since decided: no human reviewer and no spending. | 6.4 is replaced by the core-logic brief of 12 November 2026: rules with their own proof, notes written and judged by two model families, a classifier and reader measured on a new hidden set. |
+
+**What Part 6 got right:** the footprint arithmetic of the encoders; that a 1 GB system cannot rest on a ready-made generator; that the decisions which can hurt a lawyer are not text generation. **What it got wrong:** trusting a vendor's Arabic scores as a reason to shortlist a 0.9B generator, and choosing the encoders by their published multilingual scores instead of measuring them.
+
+### 7.7 Sources for Part 7
+
+Opened on 11 November 2026 by unit F1 through the Hugging Face API (`https://huggingface.co/api/models/<repo>?blobs=true`) and each model card; 47 quoted passages were matched against the fetched pages. "Date" is the publication or repository date. Ids continue the earlier numbering as F1-S1 to F1-S21. Everything in 7.3 to 7.5 is this part's own measurement and has no outside source.
+
+| Id | Source | Link | Date | How directly it applies |
+|---|---|---|---|---|
+| F1-S1 | Jais 3 model cards and official GGUF repositories (sizes, licence, settings; "Quantized variants have not been separately evaluated yet") | https://huggingface.co/inception42/Jais-3-0.9B ; https://huggingface.co/IFM/Jais-3-0.9B-GGUF ; https://huggingface.co/IFM/Jais-3-3.7B-GGUF | 2026-09-29; GGUF 2026-10-12 | direct |
+| F1-S2 | Jais 3 chat template (the reasoning effort defaults to `'high'`; "Supported values: high, medium, low.") | https://huggingface.co/inception42/Jais-3-0.9B/raw/main/chat_template.jinja | 2026-09-29 | direct: thinking is on unless "low" is passed |
+| F1-S3 | Ollama 0.40.16: bundled llama.cpp build and how `think` reaches the template; llama.cpp pull request 29535 ("model : add K2 Horizon dense and MoVA support") | https://github.com/ollama/ollama/releases/tag/v0.40.16 ; https://github.com/ggml-org/llama.cpp/pull/29535 | 2026-11-09; 2026-10-06 | direct |
+| F1-S4 | Ollama library (no Arabic-first model) and the Hugging Face pull syntax | https://ollama.com/library ; https://huggingface.co/docs/hub/ollama | read 2026-11-11 | direct |
+| F1-S5 | Jais 3 technical report: Arabic and legal scores with and without a reasoning trace, Gemma 4 E2B and E4B on the same scale | https://arxiv.org/abs/2611.10224 | 2026-11-06 | direct for choosing; vendor-run, unquantised, multiple-choice |
+| F1-S6 | Jais family of 2024 (590M to 2.7B; context 2,048; ArabicMMLU 39.1 / 42.2 / 50.0) and community GGUF files | https://huggingface.co/inception42/jais-family-590m-chat ; https://huggingface.co/mradermacher/jais-family-590m-chat-GGUF | 2024-08-02 | indirect |
+| F1-S7 | Falcon-H1 small models and the TII Falcon licence ("royalty free and without charge"; the use policy passed on as an enforceable term; the TII statement) | https://huggingface.co/tiiuae/Falcon-H1-1.5B-Deep-Instruct-GGUF ; https://falconllm.tii.ae/falcon-terms-and-conditions.html | 2025-05-01; licence December 2024 | direct |
+| F1-S8 | Falcon-H1-Arabic announcement; no public weights (six repository ids answer HTTP 401; none of TII's 137 public repositories has "Arabic" in its name) | https://huggingface.co/blog/tiiuae/falcon-h1-arabic | 2026-01-05 | direct: cannot be measured |
+| F1-S9 | SILMA Kashif 2B ("should ONLY be used in RAG setups") and the Gemma terms | https://huggingface.co/silma-ai/SILMA-Kashif-2B-Instruct-v1.0 ; https://ai.google.dev/gemma/terms | 2025-01-26; terms 2026-04-01 | indirect |
+| F1-S10 | Atlas-Chat-2B ("instruction-tuned for Darija, the colloquial Arabic of Morocco") | https://huggingface.co/MBZUAI-Paris/Atlas-Chat-2B | 2024-09-16 | indirect: Moroccan |
+| F1-S11 | Hub searches for Algerian Darija generators (`algerian`, `dziri`, `darija`, `darja`, `arq`, `maghreb`); `darja-gpt-50m`, `Qwen3-4B-Algerian-Darja` | https://huggingface.co/touati-kamel/darja-gpt-50m ; https://huggingface.co/DarjaCore/Qwen3-4B-Algerian-Darja | 2026-09-23 | direct: none of 2B or less with instructions |
+| F1-S12 | IBM Arabic Granite | https://huggingface.co/ibm-research/granite-4.0-h-3b-ar | 2026-06-16 | indirect: above 2B |
+| F1-S13 | Other Arabic-first small generators found by search (Hala: "license: cc-by-nc-4.0"; ArabianGPT: "a raw pre-trained model"; RightNow-Arabic-0.5B) | https://huggingface.co/hammh0a/Hala-1.2B ; https://huggingface.co/riotu-lab/ArabianGPT-08B-V2 ; https://huggingface.co/RightNowAI/RightNow-Arabic-0.5B-Turbo | 2025-09-13; 2024; 2026-04-10 | screening |
+| F1-S14 | Qwen3.5-2B GGUF files (the multilingual control) | https://huggingface.co/unsloth/Qwen3.5-2B-GGUF | 2026-02-28 | direct |
+| F1-S15 | DziriBERT card and paper ("at least as good as MARBERT on the Algerian dialect and even much better when dealing with Roman characters") | https://huggingface.co/alger-ia/dziribert ; https://arxiv.org/abs/2109.12346 | 2021-09-25 | direct; tweets, not legal notes |
+| F1-S16 | Other Algerian encoders of 2026 (DZAIR, algerianDeBERTa, MagharibiBERT) | https://huggingface.co/algerian-nlp/DZAIR ; https://huggingface.co/81melody/algerianDeBERTa | 2026-09-16; 2026-04-20 | indirect; self-reported |
+| F1-S17 | CAMeLBERT cards | https://huggingface.co/CAMeL-Lab/bert-base-arabic-camelbert-mix | April 2021 | direct |
+| F1-S18 | AraBERT and AraELECTRA licence ("you must distribute your contributions under the same license as this one") | https://github.com/aub-mind/arabert/blob/master/arabert/LICENSE | 2020 to 2021 | direct for the licence |
+| F1-S19 | MARBERT and ARBERT ("exclusively for research") | https://github.com/UBC-NLP/marbert | 2021 | direct: excluded |
+| F1-S20 | Small multilingual encoders with MIT licences (mmBERT-small, Multilingual-MiniLM-L12-H384, multilingual-e5-small) | https://huggingface.co/jhu-clsp/mmBERT-small ; https://huggingface.co/microsoft/Multilingual-MiniLM-L12-H384 ; https://huggingface.co/intfloat/multilingual-e5-small | 2025-08-21; 2022; 2023-06-30 | direct |
+| F1-S21 | Small Arabic encoders of 2025 and 2026 (AraModernBERT, Waqf arabic-modernbert-unified and others) | https://huggingface.co/NAMAA-Space/AraModernBert-Base-V1.0 | 2025-02-01 | screening |
+
+**The project's own comparison figures** (not rerun): the hidden set v2 summaries for Gemma 4 E4B (58 of 90), Gemma 3 4B (39), Gemma 4 E2B (41) and Gemma 3n E2B (42); the stage 1 analysis results (claim type 46 of 46 for Gemma 4 E4B, 41 of 46 for Gemma 3 4B); and the stage 2 drafts, all committed on `codex/alpha-03` at `480d4a4` under `docs/baselines/`.
+
 ## Where the evidence disagrees with the brief
 
 1. **"The smallest system with at least Gemma 4 E4B's accuracy on our tasks"** presumes that fact reading is a product task. The app does not run the fact reader; its two analysis calls are beaten or matched by a pick list and a lookup (Part 2.1). What the model is for has to be decided before its size.
@@ -1199,7 +1497,8 @@ Opened on 11 November 2026; quoted passages matched against the fetched pages. "
 
 ## What I could not verify
 
-- Every timing and memory figure is the project's own; I ran nothing. No 8 GB machine has ever been measured.
+- In Parts 1 to 6 every timing and memory figure is the project's own; I ran nothing there. No 8 GB machine has ever been measured.
+- Part 7's limits: one pass per model on the 90 hidden cases; three models timed on battery and two on mains, so speeds compare only within one power column; the analysis and drafting stages of Jais-3-3.7B were not run; the encoders were trained on notes written by Claude models (usable for a measurement, not for a shipped classifier) and tested on 46 development cases the team wrote; the 8-bit forms were made by dynamic quantisation only.
 - The shares of court sections come from four regions' published tables; no national breakdown exists, and some council sites show copied tables (Part 1.1).
 - Articles outside the repository's library (Civil Code 101, 133, 139, 140, 308, 309, 312, 333 to 336, 456 and others) were quoted by the units from the corpus branch or from the 2007 government compilation hosted by WIPO, not from a Journal Officiel page; their current wording is `TO CONFIRM WITH A PRACTISING LAWYER`. So are: whether the six-month labour period runs from the minute's date or its delivery; whether a payment order suits the showcase debts; whether the prosecutor must be served outside divorce suits; and whether Ordinance 03-05 art. 11 is unamended.
 - Whether a claimant's petition changes when the notes say a fact is disputed (the question that decides half of the hidden-set "critical errors").

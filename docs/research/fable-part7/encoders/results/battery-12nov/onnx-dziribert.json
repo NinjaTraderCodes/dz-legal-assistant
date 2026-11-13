@@ -1,0 +1,30 @@
+{
+ "name": "dziribert",
+ "fp32": {
+  "load_s": 1.68,
+  "ms_median": 50.8,
+  "ms_max": 97.9,
+  "peak_working_set_mb": 686,
+  "peak_private_mb": 1035,
+  "tokens_mean": 27.3,
+  "file_mb": 475.0,
+  "correct_plain": 37,
+  "correct_section_masked": 38,
+  "of": 46,
+  "threads": 4
+ },
+ "int8": {
+  "load_s": 0.65,
+  "ms_median": 26.3,
+  "ms_max": 43.5,
+  "peak_working_set_mb": 223,
+  "peak_private_mb": 556,
+  "tokens_mean": 27.3,
+  "file_mb": 119.4,
+  "correct_plain": 36,
+  "correct_section_masked": 37,
+  "of": 46,
+  "threads": 4
+ },
+ "tokenizer_mb": 1.2
+}

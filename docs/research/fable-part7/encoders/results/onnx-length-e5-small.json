@@ -1,0 +1,48 @@
+{
+ "name": "e5-small",
+ "threads": 4,
+ "fp32": {
+  "by_tokens": {
+   "32": {
+    "ms_median": 8.5,
+    "ms_max": 9.1
+   },
+   "128": {
+    "ms_median": 31.8,
+    "ms_max": 40.8
+   },
+   "256": {
+    "ms_median": 66.3,
+    "ms_max": 101.9
+   },
+   "512": {
+    "ms_median": 280.6,
+    "ms_max": 320.7
+   }
+  },
+  "peak_working_set_mb": 1122,
+  "peak_private_mb": 1639
+ },
+ "int8": {
+  "by_tokens": {
+   "32": {
+    "ms_median": 4.4,
+    "ms_max": 6.7
+   },
+   "128": {
+    "ms_median": 23.6,
+    "ms_max": 23.8
+   },
+   "256": {
+    "ms_median": 45.8,
+    "ms_max": 55.5
+   },
+   "512": {
+    "ms_median": 227.7,
+    "ms_max": 256.4
+   }
+  },
+  "peak_working_set_mb": 513,
+  "peak_private_mb": 896
+ }
+}

@@ -1,0 +1,48 @@
+{
+ "name": "dziribert",
+ "threads": 4,
+ "fp32": {
+  "by_tokens": {
+   "32": {
+    "ms_median": 28.8,
+    "ms_max": 29.7
+   },
+   "128": {
+    "ms_median": 85.7,
+    "ms_max": 106.4
+   },
+   "256": {
+    "ms_median": 194.9,
+    "ms_max": 307.4
+   },
+   "512": {
+    "ms_median": 474.9,
+    "ms_max": 557.6
+   }
+  },
+  "peak_working_set_mb": 686,
+  "peak_private_mb": 1034
+ },
+ "int8": {
+  "by_tokens": {
+   "32": {
+    "ms_median": 11.7,
+    "ms_max": 12.8
+   },
+   "128": {
+    "ms_median": 43.6,
+    "ms_max": 55.7
+   },
+   "256": {
+    "ms_median": 100.9,
+    "ms_max": 107.2
+   },
+   "512": {
+    "ms_median": 264.3,
+    "ms_max": 289.0
+   }
+  },
+  "peak_working_set_mb": 259,
+  "peak_private_mb": 656
+ }
+}

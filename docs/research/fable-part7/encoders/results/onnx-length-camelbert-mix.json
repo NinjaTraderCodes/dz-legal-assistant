@@ -1,0 +1,48 @@
+{
+ "name": "camelbert-mix",
+ "threads": 4,
+ "fp32": {
+  "by_tokens": {
+   "32": {
+    "ms_median": 31.1,
+    "ms_max": 33.6
+   },
+   "128": {
+    "ms_median": 101.0,
+    "ms_max": 124.7
+   },
+   "256": {
+    "ms_median": 246.0,
+    "ms_max": 316.9
+   },
+   "512": {
+    "ms_median": 484.8,
+    "ms_max": 668.1
+   }
+  },
+  "peak_working_set_mb": 568,
+  "peak_private_mb": 948
+ },
+ "int8": {
+  "by_tokens": {
+   "32": {
+    "ms_median": 13.4,
+    "ms_max": 14.7
+   },
+   "128": {
+    "ms_median": 47.8,
+    "ms_max": 53.5
+   },
+   "256": {
+    "ms_median": 98.6,
+    "ms_max": 154.9
+   },
+   "512": {
+    "ms_median": 276.5,
+    "ms_max": 308.4
+   }
+  },
+  "peak_working_set_mb": 243,
+  "peak_private_mb": 640
+ }
+}

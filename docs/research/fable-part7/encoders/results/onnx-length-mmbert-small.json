@@ -1,0 +1,48 @@
+{
+ "name": "mmbert-small",
+ "threads": 4,
+ "fp32": {
+  "by_tokens": {
+   "32": {
+    "ms_median": 18.1,
+    "ms_max": 22.0
+   },
+   "128": {
+    "ms_median": 56.9,
+    "ms_max": 72.6
+   },
+   "256": {
+    "ms_median": 128.9,
+    "ms_max": 153.3
+   },
+   "512": {
+    "ms_median": 423.8,
+    "ms_max": 533.7
+   }
+  },
+  "peak_working_set_mb": 1039,
+  "peak_private_mb": 1546
+ },
+ "int8": {
+  "by_tokens": {
+   "32": {
+    "ms_median": 12.9,
+    "ms_max": 15.0
+   },
+   "128": {
+    "ms_median": 37.4,
+    "ms_max": 54.7
+   },
+   "256": {
+    "ms_median": 84.6,
+    "ms_max": 108.6
+   },
+   "512": {
+    "ms_median": 237.0,
+    "ms_max": 375.8
+   }
+  },
+  "peak_working_set_mb": 421,
+  "peak_private_mb": 794
+ }
+}

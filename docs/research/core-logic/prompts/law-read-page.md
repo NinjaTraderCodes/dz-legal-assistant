@@ -31,7 +31,11 @@ Transcribe each of these articles from the images, exactly as printed: **{{artic
 - In "where", say where the article is printed: which image (counted from 1), which column, and the top and bottom of the article as fractions of the page's height (0 at the top, 1 at the bottom). Rough is enough.
 - If an article is not on these pages, set "found" to false and "where" to `{"image": 0, "column": "none", "top": 0, "bottom": 0}`. If it continues beyond the images, set "continuesOnNextPage" to true and transcribe what is visible.
 
-Return only the JSON object.
+Return only the JSON object, with one item per article asked for, in this shape:
+
+`{"articles": [{"article": "<the number as asked>", "found": true, "paragraphs": ["…"], "unreadable": [{"paragraph": 1, "about": "…"}], "continuesOnNextPage": false, "numbersSeen": ["…"], "where": {"image": 1, "column": "right", "top": 0.1, "bottom": 0.3}}]}`
+
+("column" is one of "right", "left", "full", "none"; "unreadable" is an empty list when every word is legible.)
 
 --- LAST LINE (Sonnet agent) ---
 

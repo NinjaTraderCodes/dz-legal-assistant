@@ -42,7 +42,7 @@ KINDS = ("reread", "fetch", "calibration")
 WHYS = ("criticalUse", "corpusOnly", "labour", "guard", "disagreement", "missing", "calibration")
 UNREADABLE = "[؟]"
 UNCHANGED = "بدون تغيير"  # «(الباقي بدون تغيير)», «(المطات من 1 إلى 6 بدون تغيير)»
-ITEM = re.compile(r"^\s*(\d+)\s*[-–—]")
+ITEM = re.compile(r"^\s*(\d+)\s*[-–—ـ]")  # the 1975 Journal numbers its items «1 ـ», with a tatweel
 
 
 def _blocks(paragraphs: list[str]) -> tuple[list[str], dict[str, list[str]], list[str]]:

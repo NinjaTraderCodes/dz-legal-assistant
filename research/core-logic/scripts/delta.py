@@ -150,7 +150,8 @@ NEW_CODES = {
 }
 
 
-def consolidated_note(code: str, version: str, article: str, text: str) -> tuple[str, str | None]:
+def consolidated_note(code: str, version: str, article: str, text: str,
+                      base_version: str | None = None) -> tuple[str, str | None]:
     """What the consolidated edition prints where it differs, and what the Journal page prints there (the settler's
     decision, fetch.consolidated_record). A sure decision for the consolidated words would mean both readers misread
     the page: the entry is held until its text is corrected by hand."""
@@ -164,7 +165,8 @@ def consolidated_note(code: str, version: str, article: str, text: str) -> tuple
         if st is None or not st["sure"]:
             # the same two words may already have been decided between the two readers (one reader read what the
             # consolidated edition prints): that look at the page settles this place too
-            run = fetch.page_holds(code, version, article, d["ours"], d["consolidated"])
+            # a composed wording keeps paragraphs of its base wording: a look at the base page counts for them
+            run = fetch.page_holds(code, (version, base_version or version), article, d["ours"], d["consolidated"])
             said.append(f"{where}; the Journal page prints «{d['ours']}» ({run}, sure)" if run else f"{where} (not settled)")
         elif st["printed"] == "ours":
             said.append(f"{where}; the Journal page prints «{d['ours']}» ({st['run']}, sure)")
@@ -175,7 +177,11 @@ def consolidated_note(code: str, version: str, article: str, text: str) -> tuple
 
 
 def entry(batch: str, job_name: str, article: str, text_paragraphs: list[str] | None = None,
-          composed_note: str | None = None) -> tuple[dict | None, str]:
+          composed_note: str | None = None, french_paragraphs: list[str] | None = None,
+          consolidated_proof: bool = True, base_version: str | None = None) -> tuple[dict | None, str]:
+    """`french_paragraphs`: the Arabic that the French check compares, when it is not the whole text (an amending
+    text's French prints only what it changes). `consolidated_proof`: False for a wording the 2007 consolidated
+    edition does not print (an older wording no longer in force in 2007; law/README.md, step 7)."""
     job = rd.load(rd.job_path(batch, job_name))
     folder = os.path.join(rd.JOBS, batch)
     rows = {r["article"]: r for r in rd.load(os.path.join(folder, f"{job_name}.fetch.json"))}
@@ -188,7 +194,7 @@ def entry(batch: str, job_name: str, article: str, text_paragraphs: list[str] | 
     s, used_fills = fetch.apply_fills(job, s)
     paragraphs = text_paragraphs or row.get("settledParagraphs") or s["paragraphs"]
     text = "\n".join(paragraphs)
-    fr = french_check(job, article, text)
+    fr = french_check(job, article, "\n".join(french_paragraphs) if french_paragraphs else text)
     if fr["status"] == "pending":
         return None, f"French: {fr['why']}"
     page = first_job["pages"][max(0, s["where"]["image"] - 1)]
@@ -220,12 +226,12 @@ def entry(batch: str, job_name: str, article: str, text_paragraphs: list[str] | 
                     f"the French: {fr['check']['onlyInFrench']}. The Arabic stands; deadlines resting on it are interpretive.")
     else:
         note.append(f"French check: {fr['why']}.")
-    if code in ("civil-code", "commercial-code"):
+    if code in ("civil-code", "commercial-code") and consolidated_proof:
         cp = consolidated.check(code, text)
         proof["consolidatedPdf"] = {"status": cp["status"],
                                     "note": f"{cp['pdf']} p{cp['pdfPage']}: coverage {cp['coverage']}, {cp['stretches']} stretch(es)"}
         if cp["status"] == "differs":
-            said, why = consolidated_note(code, version, article, text)
+            said, why = consolidated_note(code, version, article, text, base_version)
             if why:
                 return None, why
             proof["consolidatedPdf"]["note"] += "; " + said
@@ -243,6 +249,52 @@ def entry(batch: str, job_name: str, article: str, text_paragraphs: list[str] | 
     if note:
         e["note"] = " ".join(note)
     return e, "ok"
+
+
+# Law 05-02 rewrote the opening of Commercial Code arts 169, 170 and 192 (its art. 187 bis 1 keeps the renewal of
+# older leases under the law in force when the lease was made): both wordings are delivered (law/README.md, "Two
+# wordings of one article").
+GOVERNS_0502 = {
+    "ordinance-75-59": {
+        "ar": "تجديد عقود الإيجار المبرمة قبل نشر القانون رقم 05-02، إذ يبقى خاضعا للتشريع الساري المفعول بتاريخ إبرام عقد الإيجار.",
+        "en": "The renewal of leases concluded before the publication of Law 05-02, which remains subject to the legislation "
+              "in force on the date the lease was concluded. How far this wording reaches beyond renewal is a matter of "
+              "reading.",
+        "transitionalCite": "commercial-code 187 مكرر 1 (law-05-02)"},
+    "law-05-02": {
+        "ar": "عقود الإيجار المبرمة ابتداء من نشر القانون رقم 05-02، وكل ما لا تبقيه المادة 187 مكرر 1 تحت التشريع السابق.",
+        "en": "Leases concluded from the publication of Law 05-02 on, and whatever art. 187 bis 1 does not keep under the "
+              "earlier legislation.",
+        "transitionalCite": "commercial-code 187 مكرر 1 (law-05-02)"},
+}
+
+
+def two_wordings(article: str, old: tuple[str, str], amending: tuple[str, str]) -> list[dict]:
+    """The older wording (supersededWording) and the amended one, composed from the amending text's printed paragraphs
+    and the older wording (reading.compose). old, amending: (batch, fetch job)."""
+    out = []
+    e_old, why = entry(*old, article, consolidated_proof=False)
+    if e_old is None:
+        raise ValueError(f"{article} old wording: {why}")
+    e_old.update(governs=GOVERNS_0502[e_old["version"]], supersededWording=True)
+    out.append(e_old)
+    a_batch, a_job = amending
+    a_row = {r["article"]: r for r in rd.load(os.path.join(rd.JOBS, a_batch, f"{a_job}.fetch.json"))}[article]
+    a_job_doc = rd.load(rd.job_path(a_batch, a_job))
+    a_first = next(a for a in rd.load(os.path.join(rd.JOBS, a_batch, f"{a_job}.sonnet.json"))["articles"]
+                   if fetch.article_key(a) == article)
+    printed = a_row.get("settledParagraphs") or fetch.apply_fills(a_job_doc, a_first)[0]["paragraphs"]
+    composed = rd.compose(e_old["text"].split("\n"), printed)
+    note = (f"Composed: the paragraphs that Law 05-02 prints ({a_batch}/{a_job}) with the rest of the 1975 wording "
+            f"({old[0]}/{old[1]}), as the amending text's «الباقي بدون تغيير» says (reading.compose). The French check "
+            f"covers the printed paragraphs; the 1975 French covered the rest.")
+    e_new, why = entry(a_batch, a_job, article, text_paragraphs=composed, composed_note=note,
+                       french_paragraphs=[p for p in printed if rd.UNCHANGED not in p], base_version=e_old["version"])
+    if e_new is None:
+        raise ValueError(f"{article} amended wording: {why}")
+    e_new["governs"] = GOVERNS_0502[e_new["version"]]
+    out.append(e_new)
+    return out
 
 
 def write(entries: list[dict]) -> None:

@@ -306,7 +306,7 @@ def consolidated_settled(code: str, version: str, article: str, d: dict) -> dict
     return None
 
 
-def page_holds(code: str, version: str, article: str, ours: str, other: str) -> str | None:
+def page_holds(code: str, versions: tuple[str, ...], article: str, ours: str, other: str) -> str | None:
     """The run of the latest settlement between the two readers that is sure for `ours` against words equal to `other`
     at level 2, if that settlement is the latest for its difference: the Journal page was looked at for these words."""
     if not os.path.exists(SETTLEMENTS):
@@ -320,7 +320,7 @@ def page_holds(code: str, version: str, article: str, ours: str, other: str) -> 
         if art != article or not s["sure"]:
             continue
         job = rd.load(rd.job_path(*job_key.split("/", 1)))
-        if (job["code"], job["version"]) != (code, version):
+        if job["code"] != code or job["version"] not in versions:
             continue
         printed = {"first": first, "second": second}.get(s["printed"], s["words"])
         alternative = second if printed == first else first

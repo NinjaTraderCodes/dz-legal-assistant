@@ -399,7 +399,7 @@ Expected length: three to four weeks, paced mostly by Codex's usage limits and b
 
 **Inputs.** The notes; the contract `INoteReader`; the Part 7 encoder results; the Python environment and the encoder copy named in section 3.
 
-> **A gap in this handbook, marked:** the encoders' time per note, memory and size on the owner's laptop (32-bit and 8-bit) were not measured when this was written, because the laptop was on battery. The author fills the box in [specs/reader.md](specs/reader.md) (rung 4) when the owner plugs the laptop in. If the box is still empty when you reach rung 4, measure it yourself under the measurement rule of section 3, and report it.
+> **The encoders' size, time and memory were measured on the owner's laptop on 13 November 2026**, on mains power with Best performance: the 8-bit CAMeLBERT-mix is 104.8 MB, takes about 9 ms on a short note and 0.28 s on a window of 512 tokens, in about 0.51 GiB of memory, and lost 2 of 46 development cases against its 32-bit form. The table is in [specs/reader.md](specs/reader.md) (rung 4). Time is not the constraint; size forces the 8-bit form, and the 8-bit form must be the one that is scored.
 
 **Order.** The ladder of [specs/reader.md](specs/reader.md): the scorer first; plain code; the linear model; the frozen encoder with heads; (only if needed) training the encoder; polarity throughout; one bounded from-scratch experiment; calibration and abstention; clean against Codex-trained; the .NET reader with parity tests and laptop measurements. Then the mirror set's one scoring of the final candidates, the **pre-commitment**, and the owner's **one run** on hidden v3.
 
@@ -499,7 +499,7 @@ Step reports are also committed, as `docs/research/core-logic/reports/step-<n>.m
 
 Honest gaps, so that you do not take silence for a decision:
 
-1. **The encoder timings** (the marked box in [specs/reader.md](specs/reader.md)).
+1. **The reader's own time and memory in .NET.** The encoders were timed in Python on 13 November ([specs/reader.md](specs/reader.md), rung 4); the .NET reader, with its heads and its windows, is yours to measure.
 2. **The two example records are hand-made** and their legal content is unverified. They are graded with the real state of 13 November, when no text had been re-read for this work: most of their items are grade D, so their rules warn with the mark "to check". Their worked examples were written before any evaluator existed; one reader worked them by hand against the specification and they held, but step 2's first pass is their real test.
 3. **How a period is counted** is for the `periods` module to derive. Until it is final, the evaluator's counting is an engineering placeholder behind one function, not a statement of the law.
 4. **The slot list is a seed**: the brief's slots and the examples'. The final records will add slots; which ones the reader reads from the note is decided at the scheme freeze.

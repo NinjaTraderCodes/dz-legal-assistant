@@ -63,11 +63,28 @@ Character 2- to 5-grams (after the level-2 normalisation of [article-store.md](a
 
 **Size and speed.**
 
-> **GAP, for the author to fill after the mains timing of Part 7 (owner plugs in the laptop):** time per note, peak memory and size on disk of each encoder, 32-bit and 8-bit, on the owner's laptop. Known so far (sizes measured on battery; timings not valid): 8-bit DziriBERT 119.4 MB (36 and 37 of 46), 8-bit mmBERT-small 135.0 MB (31 and 33 of 46). A base-size BERT is about 420 MB in 32-bit and about 110 MB in 8-bit, so **the 150 MB limit forces the 8-bit form, and every score that counts must be measured on the 8-bit model**, not on the 32-bit one it was trained as.
+> **Measured on the owner's laptop on 13 November 2026** (18:43 to 18:45; mains power, Windows power mode Best performance, energy saver off; ONNX Runtime 1.31.1 in Python, 4 threads, one note at a time, each model alone in a fresh process). Result files and scripts: `docs/research/fable-part7/encoders/` on the branch `fable/architecture-review`.
+>
+> | Encoder (fine-tuned as Part 7's claim-type classifier) | Form | Model file | Tokenizer | 46 cases, alone / with the section filter | Time per short note (about 26 to 40 tokens) | 128 tokens | 256 tokens | 512 tokens | Peak memory, private |
+> |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+> | CAMeLBERT-mix | 32-bit | 416.4 MB | 0.7 MB | 37 / 40 | 25.6 ms | 101 ms | 246 ms | 485 ms | 0.90 GiB |
+> | CAMeLBERT-mix | 8-bit | 104.8 MB | 0.7 MB | 35 / 38 | 9.4 ms | 48 ms | 99 ms | 276 ms | 0.51 GiB |
+> | DziriBERT | 32-bit | 475.0 MB | 1.2 MB | 37 / 38 | 24.5 ms | 86 ms | 195 ms | 475 ms | 1.01 GiB |
+> | DziriBERT | 8-bit | 119.4 MB | 1.2 MB | 36 / 37 | 10.6 ms | 44 ms | 101 ms | 264 ms | 0.54 GiB |
+> | mmBERT-small | 32-bit | 537.0 MB | 32.8 MB | 35 / 37 | 19.8 ms | 57 ms | 129 ms | 424 ms | 1.51 GiB |
+> | mmBERT-small | 8-bit | 135.0 MB | 32.8 MB | 31 / 33 | 11.4 ms | 37 ms | 85 ms | 237 ms | 0.78 GiB |
+>
+> What the figures say for this step:
+> - **Time is not the constraint.** The 8-bit CAMeLBERT-mix takes 9 ms on a short note and 0.28 s on a full window of 512 tokens; a note of two windows stays near half a second. The limit of one second per note leaves room for the heads and for the plain-code rung.
+> - **Size forces the 8-bit form.** 104.8 MB in 8-bit against 416.4 MB in 32-bit; the limit is about 150 MB for everything. **Every score that counts must be measured on the 8-bit model**, not on the 32-bit one it was trained as.
+> - **The 8-bit form cost accuracy in Part 7:** CAMeLBERT-mix lost 2 of 46 cases (37 to 35 alone, 40 to 38 with the section filter), DziriBERT 1, mmBERT-small 4. That was dynamic quantisation, with no calibration and no training that takes quantisation into account, on 46 cases where one or two is within chance. Measure the loss on dev at each rung; if it is more than a point on any target, try a calibrated or quantisation-aware form before giving up the model.
+> - **Memory:** about 0.51 GiB private for the 8-bit model in Python (0.19 GiB working set); the .NET process will differ and must be measured.
+> - mmBERT-small's tokenizer file alone is 32.8 MB, which puts its 8-bit form over the limit with the runtime.
+> - On battery, in Windows' Best power efficiency mode, the same files were about twice as slow (12 November). The one-second limit should be checked there too, and reported apart.
 
-If the box is still empty when you reach this rung, measure it yourself under the measurement rule (HANDBOOK section 3) and put your figures in `docs/research/core-logic/reports/step-4.md`, not in Part 7's folder. Two facts to carry into that measurement:
-- **Part 7's timings were taken on inputs of about 27 tokens.** A long note (about a page, some 350 words) is about 515 CAMeLBERT tokens at Part 7's 1.47 tokens per word, so one or two windows of 512. Measure the median and the 95th percentile per note on dev notes of each length class, not per sentence.
-- **The budget leaves room for one encoder.** About 110 MB for the 8-bit encoder, about 20 MB for ONNX Runtime's native library (win-x64 only), about 1 MB for the tokenizer, plus the heads and the thresholds: about 130 MB.
+Two facts to carry into your own measurements of the .NET reader, which go in `docs/research/core-logic/reports/step-4.md`:
+- **A long note is more than one window.** A long note (about a page, some 350 words) is about 515 CAMeLBERT tokens at Part 7's 1.47 tokens per word, so one or two windows of 512. Measure the median and the 95th percentile per note on dev notes of each length class, not per sentence.
+- **The budget leaves room for one encoder.** About 105 MB for the 8-bit encoder, about 20 MB for ONNX Runtime's native library (win-x64 only), about 1 MB for the tokenizer, plus the heads and the thresholds: about 130 MB.
 
 **One pass, several heads.** Encode the note once (fields joined with a separator token and a field marker; notes longer than the window are cut into overlapping windows and the heads' outputs merged by maximum). On the token vectors:
 

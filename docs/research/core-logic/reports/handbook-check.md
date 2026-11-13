@@ -72,6 +72,6 @@ Then four Opus 5.5 agents applied the fixes, each owning a separate set of files
 1. The handbook is long (about 60 files). The check found contradictions between files and they were fixed, but a second consistency pass was not run after the fixes. The frame's tests, a link check (182 links, all resolving) and a search for known leftovers were.
 2. Four agents edited separate files from one list of decisions. Where two of them had to agree on a detail (a script's name, a figure), the author aligned what the logs showed; a detail the logs did not show may still differ.
 3. The clean notes hold no "outside the catalogue" case, because code cannot turn an English telling fact into Arabic without writing the wording itself. A classifier trained on clean notes alone would therefore not learn that class from them. The owner has been told.
-4. The encoder timings are still a marked gap (the laptop was on battery).
+4. The encoder timings were a marked gap when the check ran (the laptop was on battery). They were measured on mains power later the same day and are now in `specs/reader.md`.
 
 The nine reports, the author's decisions and the four fixers' logs are kept outside the repository, in `C:\Users\TheShadow\dz-core-research\handbook-check\`.

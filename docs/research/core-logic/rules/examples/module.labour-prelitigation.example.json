@@ -1,0 +1,1121 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "module",
+  "id": "labour-prelitigation",
+  "label": {
+    "ar": "المصالحة قبل الدعوى العمالية وأجل رفعها",
+    "en": "Labour disputes: conciliation before the claim, and the time limit to file it"
+  },
+  "verified": false,
+  "stage": "final",
+  "derivedBy": {
+    "role": "format example written by hand",
+    "model": "claude-fable-5-2",
+    "date": "2026-11-13"
+  },
+  "appliesTo": [
+    "abusive-dismissal",
+    "unpaid-wages"
+  ],
+  "checklist": [
+    {
+      "id": "k1",
+      "item": "Is an attempt at conciliation required before the claim, and before which body?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p1",
+        "b1"
+      ]
+    },
+    {
+      "id": "k2",
+      "item": "When is the conciliation not required?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p1",
+        "b2",
+        "x1",
+        "b3"
+      ]
+    },
+    {
+      "id": "k3",
+      "item": "Time limit to file after a failed conciliation, its starting event and its sanction.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "d1",
+        "b7"
+      ]
+    },
+    {
+      "id": "k4",
+      "item": "How the time limit is counted.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b8"
+      ]
+    },
+    {
+      "id": "k5",
+      "item": "Steps inside the employer's organisation and before the labour inspector that come before the conciliation office (Law 90-04, first articles).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "note": "Articles 3 to 5 and 26 to 30 of Law 90-04 are not in the article store on 13 November 2026 (the library holds articles 1, 2, 19, 31, 32, 36 and 37). Requested from the law delta; this line must be answered before the module is final."
+    },
+    {
+      "id": "k6",
+      "item": "Does the court raise the forfeiture of CPCA art. 504 of its own motion?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "o2",
+        "b12",
+        "b13"
+      ]
+    }
+  ],
+  "basis": [
+    {
+      "id": "b1",
+      "role": "prerequisite",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "19",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "كل خلاف فردي في العمل يعرض وجوبا على مكتب المصالحة قبل أي دعوى.",
+        "en": "Every individual labour dispute must go to the conciliation office before any court action."
+      },
+      "required": true,
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجب أن يكون كل خلاف فردي خاص بالعمل موضوع محاولة للصلح أمام مكتب المصالحة قبل مباشرة أي دعوى قضائية.",
+          "sha256": "26b716ea5e41a99b82fae7d9df96601a622bccc314b3562a71890c0ad1c3a022"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library"
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "singleDerivation",
+          "notAttacked",
+          "scanNotRun"
+        ]
+      }
+    },
+    {
+      "id": "b2",
+      "role": "prerequisite",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "19",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "المصالحة اختيارية إذا كان المدعى عليه يقيم خارج التراب الوطني، أو في حالة إفلاس صاحب العمل أو تسويته القضائية.",
+        "en": "Conciliation is optional when the defendant lives abroad, or when the employer is bankrupt or in judicial settlement."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "يعتبر إجراء المصالحة المنصوص عليه في الفقرة السابقة اختياريا عندما يقيم المدعى عليه خارج التراب الوطني أو حالة الإفلاس أو تسوية قضائية من قبل صاحب العمل.",
+          "sha256": "901865853d1d20fec278c554371c4865470e12c1d5e85359268545735038cf3e"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library"
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "singleDerivation",
+          "notAttacked",
+          "scanNotRun"
+        ]
+      }
+    },
+    {
+      "id": "b3",
+      "role": "limit",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "19",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "خلافات الموظفين والأعوان الخاضعين للقانون الأساسي للمؤسسات والإدارات العمومية خارجة عن اختصاص مكاتب المصالحة.",
+        "en": "Disputes of civil servants and agents under the statute of public institutions and administrations are outside the conciliation offices."
+      },
+      "quote": [
+        {
+          "paragraph": 3,
+          "text": "ويستثنى من مجال اختصاص مكاتب المصالحة الخلافات الفردية للعمل التي يكون طرفا فيها الموظفون والأعوان الخاضعون للقانون الأساسي للمؤسسات والإدارات العمومية.",
+          "sha256": "81332438a291f4104602a7912e4380bd59b6ec32c2372b1e78da0b557e76dd55"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library"
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "singleDerivation",
+          "notAttacked",
+          "scanNotRun"
+        ]
+      }
+    },
+    {
+      "id": "b4",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "31",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "عند عدم الاتفاق يحرر المكتب محضرا بعدم المصالحة.",
+        "en": "When the parties do not agree, the office draws up a record of non-conciliation."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "وفي حالة عدم الاتفاق بين الأطراف يعد المكتب محضرا بعدم المصالحة.",
+          "sha256": "74ccb184c2306a178f468ff8a47b3fca2c50418988873ec98528a836da21b4b4"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library"
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "singleDerivation",
+          "notAttacked",
+          "scanNotRun"
+        ]
+      }
+    },
+    {
+      "id": "b5",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "36"
+      },
+      "says": {
+        "ar": "بعد عدم المصالحة ترفع الدعوى أمام المحكمة الفاصلة في المسائل الاجتماعية.",
+        "en": "After a failed conciliation, the claim is brought before the court sitting in labour matters."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "في حالة عدم المصالحة، يرفع الطرف الذي له مصلحة دعوى أمام المحكمة الفاصلة في المسائل الاجتماعية.",
+          "sha256": "86283fe6dc24121cf4fb9ae063e86b8cafffeeaf29433eeb17ab017599d726c3"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library"
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "singleDerivation",
+          "notAttacked",
+          "scanNotRun"
+        ]
+      }
+    },
+    {
+      "id": "b6",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "37"
+      },
+      "says": {
+        "ar": "ترفق العريضة بنسخة من محضر عدم المصالحة.",
+        "en": "A copy of the non-conciliation record is attached to the petition."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "ترفق العريضة الموجهة إلى المحكمة بنسخة من محضر عدم المصالحة الصادر عن مكتب المصالحة كما هو مبين في المواد من 26 إلى 32 من هذا القانون.",
+          "sha256": "b353540400ce1e3015dc16404568fdbbaaf479a4c45c4b825faff96167a4c3e9"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library"
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "singleDerivation",
+          "notAttacked",
+          "scanNotRun"
+        ]
+      }
+    },
+    {
+      "id": "b7",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "504"
+      },
+      "says": {
+        "ar": "ترفع الدعوى أمام القسم الاجتماعي في أجل ستة أشهر من تسليم محضر عدم الصلح، تحت طائلة سقوط الحق في رفعها.",
+        "en": "The claim is filed with the social section within six months of the delivery of the non-conciliation record, on pain of forfeiture of the right to sue."
+      },
+      "required": true,
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجب رفع الدعوى أمام القسم الاجتماعي في أجل لا يتجاوز ستة (6) أشهر من تاريخ تسليم محضر عدم الصلح، وذلك تحت طائلة سقوط الحق في رفع الدعوى.",
+          "sha256": "bfcde739161e987854f43ba66026dc4db5de1474dcd8472dbcf3da9bb3b9e3c2"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library"
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "singleDerivation",
+          "notAttacked",
+          "scanNotRun"
+        ]
+      }
+    },
+    {
+      "id": "b8",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "405",
+        "paragraphs": [
+          1,
+          4
+        ]
+      },
+      "says": {
+        "ar": "تحسب آجال هذا القانون كاملة: لا يحسب يوم التبليغ ولا يوم انقضاء الأجل، ويمدد الأجل إلى أول يوم عمل إذا لم يكن يومه الأخير يوم عمل.",
+        "en": "The periods of this code are counted in full: neither the day of notification nor the last day counts, and a period ending on a non-working day runs to the next working day."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تحسب كل الآجال المنصوص عليها في هذا القانون كاملة، ولا يحسب يوم التبليغ أو التبليغ الرسمي ويوم انقضاء الأجل.",
+          "sha256": "984ad2c57d7899fc351e66cf44c516ce38db8c8f481d3105c8239f3c7edc4a25"
+        },
+        {
+          "paragraph": 4,
+          "text": "إذا كان اليوم الأخير من الأجل ليس يوم عمل كليا أو جزئيا، يمدد الأجل إلى أول يوم عمل موالي.",
+          "sha256": "0a3c836f720ec1fed37b2b4a51a001d1210d91b6c830291d2bae84f72aaa5f1f"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library"
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "singleDerivation",
+          "notAttacked",
+          "scanNotRun"
+        ]
+      }
+    },
+    {
+      "id": "b9",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "500",
+        "paragraphs": [
+          1,
+          3
+        ]
+      },
+      "says": {
+        "ar": "القسم الاجتماعي مختص اختصاصا مانعا بتنفيذ وتعليق وإنهاء عقود العمل.",
+        "en": "The social section alone hears the performance, suspension and termination of employment contracts."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يختص القسم الاجتماعي اختصاصا مانعا في المواد الآتية :",
+          "sha256": "d54fe7b73c1ca959b8d0d504b667b87fc8c356549935a88a7ef4b5c044853348"
+        },
+        {
+          "paragraph": 3,
+          "text": "2 - تنفيذ وتعليق وإنهاء عقود العمل والتكوين والتمهين،",
+          "sha256": "91c857d8bcd1019219994ba9fb5c44061535eb92c2c0577c299db80a939d5f40"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library"
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "singleDerivation",
+          "notAttacked",
+          "scanNotRun"
+        ]
+      }
+    },
+    {
+      "id": "b10",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "501",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "المحكمة المختصة إقليميا: مكان إبرام عقد العمل أو تنفيذه، أو موطن المدعى عليه.",
+        "en": "Territory: the court of the place where the employment contract was made or performed, or of the defendant's domicile."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يؤول الاختصاص الإقليمي إلى المحكمة التي تم في دائرة اختصاصها إبرام عقد العمل أو تنفيذه أو التي يوجد بها موطن المدعى عليه.",
+          "sha256": "3d56ff0497da83f0471275721b6d287173806d91f079da2eda44724bd309be27"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library"
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "singleDerivation",
+          "notAttacked",
+          "scanNotRun"
+        ]
+      }
+    },
+    {
+      "id": "b11",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "501",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "إذا أنهي العقد أو علق بسبب حادث عمل أو مرض مهني فالاختصاص لمحكمة موطن المدعي.",
+        "en": "When the contract ended or was suspended because of a work accident or an occupational illness, the court of the plaintiff's domicile."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "غير أنه في حالة إنهاء أو تعليق عقد العمل بسبب حادث عمل أو مرض مهني، يؤول الاختصاص إلى المحكمة التي يوجد بها موطن المدعي.",
+          "sha256": "530e06a21665a82453cbcdd69e8aab345cbd7af1f41cf8ecddf6c509f9e42c6a"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library"
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "singleDerivation",
+          "notAttacked",
+          "scanNotRun"
+        ]
+      }
+    },
+    {
+      "id": "b12",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "67"
+      },
+      "says": {
+        "ar": "انقضاء الأجل المسقط دفع بعدم القبول.",
+        "en": "The expiry of a forfeiture period is a plea of inadmissibility."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "الدفع بعدم القبول، هو الدفع الذي يرمي إلى التصريح بعدم قبول طلب الخصم لانعدام الحق في التقاضي، كانعدام الصفة وانعدام المصلحة والتقادم وانقضاء الأجل المسقط وحجية الشيء المقضي فيه، وذلك دون النظر في موضوع النزاع.",
+          "sha256": "fba9f904e04f3a56db762ad140dad2695ba18a6e53d916c5e40c0bca28d0b892"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library"
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "singleDerivation",
+          "notAttacked",
+          "scanNotRun"
+        ]
+      }
+    },
+    {
+      "id": "b13",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "69"
+      },
+      "says": {
+        "ar": "يثير القاضي تلقائيا الدفع بعدم القبول إذا كان من النظام العام.",
+        "en": "The judge raises a plea of inadmissibility of his own motion when it is a matter of public order."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجب على القاضي أن يثير تلقائيا، الدفع بعدم القبول إذا كان من النظام العام، لاسيما عند عدم احترام آجال طرق الطعن أو عند غياب طرق الطعن.",
+          "sha256": "42f484aedff31580c54f7e153085f7a87360690ce4f44dfa6ae543765d29a81a"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library"
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "singleDerivation",
+          "notAttacked",
+          "scanNotRun"
+        ]
+      }
+    },
+    {
+      "id": "b14",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "32",
+        "paragraphs": [
+          5,
+          6
+        ]
+      },
+      "says": {
+        "ar": "حيث لا توجد أقسام ينظر القسم المدني في كل النزاعات عدا الاجتماعية، والقضية المجدولة أمام قسم غير مختص تحال إلى القسم المعني.",
+        "en": "Where a court has no sections, the civil section hears everything except labour cases; a case listed before the wrong section is sent to the right one."
+      },
+      "quote": [
+        {
+          "paragraph": 5,
+          "text": "غير أنه في المحاكم التي لم تنشأ فيها الأقسام، يبقى القسم المدني هو الذي ينظر في جميع النزاعات باستثناء القضايا الاجتماعية.",
+          "sha256": "95bb748ec413c4a862a0527db34cc1b2df6df36ba8011bd1a602b29bce9eea6c"
+        },
+        {
+          "paragraph": 6,
+          "text": "في حالة جدولة قضية أمام قسم غير القسم المعني بالنظر فيها، يحال الملف إلى القسم المعني عن طريق أمانة الضبط، بعد إخبار رئيس المحكمة مسبقا.",
+          "sha256": "c11c3a08fb2d762db1a0229d30942d1aeecfb7058ab5dc808822e433c203d100"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library"
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "singleDerivation",
+          "notAttacked",
+          "scanNotRun"
+        ]
+      }
+    }
+  ],
+  "court": {
+    "section": {
+      "value": "social",
+      "basis": [
+        "b9",
+        "b14"
+      ],
+      "message": {
+        "ar": "النزاع الفردي في العمل ينظر فيه القسم الاجتماعي دون غيره (المادة 500 من قانون الإجراءات المدنية والإدارية). تحقق من القسم المكتوب في العريضة.",
+        "en": "An individual labour dispute is heard by the social section alone (CPCA art. 500). Check the section written on the petition."
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "singleDerivation",
+          "notAttacked",
+          "scanNotRun"
+        ]
+      }
+    },
+    "territory": [
+      {
+        "id": "t1",
+        "rule": {
+          "ar": "محكمة مكان إبرام عقد العمل أو مكان تنفيذه أو موطن المدعى عليه.",
+          "en": "The court of the place where the employment contract was made or performed, or of the defendant's domicile."
+        },
+        "basis": [
+          "b10"
+        ],
+        "grading": {
+          "grade": "B",
+          "reasons": [
+            "singleDerivation",
+            "notAttacked",
+            "scanNotRun"
+          ]
+        }
+      },
+      {
+        "id": "t2",
+        "rule": {
+          "ar": "محكمة موطن المدعي.",
+          "en": "The court of the plaintiff's domicile."
+        },
+        "when": {
+          "slot": "work_accident_or_occupational_illness",
+          "is": "yes"
+        },
+        "basis": [
+          "b11"
+        ],
+        "grading": {
+          "grade": "B",
+          "reasons": [
+            "singleDerivation",
+            "notAttacked",
+            "scanNotRun"
+          ]
+        }
+      }
+    ],
+    "exits": [
+      {
+        "id": "x1",
+        "when": {
+          "slot": "worker_is_public_servant",
+          "is": "yes"
+        },
+        "goesTo": "administrativeCourt",
+        "effect": "warn",
+        "message": {
+          "ar": "المدعي موظف أو عون خاضع للقانون الأساسي للمؤسسات والإدارات العمومية: نزاعه خارج عن اختصاص مكاتب المصالحة (المادة 19 الفقرة 3 من القانون 90-04). تحقق من الجهة القضائية المختصة قبل تحرير هذه العريضة.",
+          "en": "The plaintiff is a civil servant or an agent under the statute of public institutions and administrations: the dispute is outside the conciliation offices (Law 90-04 art. 19 para. 3). Check which court is competent before drafting this petition."
+        },
+        "basis": [
+          "b3"
+        ],
+        "interpretive": true,
+        "interpretiveNote": "Article 19 paragraph 3 says the conciliation offices are not competent. It does not say which court is. The destination is a reading, to be settled by the module on cases that leave the ordinary courts.",
+        "grading": {
+          "grade": "C",
+          "reasons": [
+            "interpretive",
+            "singleDerivation",
+            "notAttacked",
+            "scanNotRun"
+          ]
+        }
+      }
+    ]
+  },
+  "deadlines": [
+    {
+      "id": "d1",
+      "kind": "forfeiture",
+      "period": {
+        "value": 6,
+        "unit": "month"
+      },
+      "startsFrom": {
+        "slot": "nonconciliation_record_delivered_on",
+        "event": "conciliation_failed",
+        "description": {
+          "ar": "تاريخ تسليم محضر عدم الصلح",
+          "en": "The date the non-conciliation record was delivered"
+        }
+      },
+      "counting": "b8",
+      "raisedBy": "unclear",
+      "when": {
+        "slot": "nonconciliation_record",
+        "is": "yes"
+      },
+      "effectWhenExpired": "blockCleanExport",
+      "warnBandDays": 15,
+      "message": {
+        "ar": "أجل رفع الدعوى أمام القسم الاجتماعي ستة (6) أشهر من تاريخ تسليم محضر عدم الصلح، تحت طائلة سقوط الحق في رفع الدعوى (المادة 504 من قانون الإجراءات المدنية والإدارية). تحقق من تاريخ التسليم.",
+        "en": "The claim must be filed with the social section within six (6) months of the delivery of the non-conciliation record, on pain of forfeiture of the right to sue (CPCA art. 504). Check the delivery date."
+      },
+      "basis": [
+        "b7",
+        "b8"
+      ],
+      "extract": {
+        "period": "ستة (6) أشهر",
+        "sanction": "سقوط الحق في رفع الدعوى"
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "singleDerivation",
+          "notAttacked",
+          "scanNotRun"
+        ]
+      }
+    }
+  ],
+  "priorSteps": [
+    {
+      "id": "p1",
+      "kind": "labourConciliation",
+      "notRequiredWhen": [
+        {
+          "when": {
+            "slot": "defendant_resides_abroad",
+            "is": "yes"
+          },
+          "basis": [
+            "b2"
+          ],
+          "note": {
+            "ar": "المصالحة اختيارية.",
+            "en": "Conciliation is optional."
+          }
+        },
+        {
+          "when": {
+            "slot": "employer_in_bankruptcy_or_settlement",
+            "is": "yes"
+          },
+          "basis": [
+            "b2"
+          ],
+          "note": {
+            "ar": "المصالحة اختيارية.",
+            "en": "Conciliation is optional."
+          }
+        }
+      ],
+      "slots": [
+        "nonconciliation_record",
+        "defendant_resides_abroad",
+        "employer_in_bankruptcy_or_settlement"
+      ],
+      "effectWhenMissing": "warn",
+      "effectWhenUnknown": "ask",
+      "message": {
+        "ar": "لم تذكر محاولة الصلح أمام مكتب المصالحة ولا محضر عدم المصالحة. المادة 19 من القانون 90-04 توجب عرض كل خلاف فردي في العمل على مكتب المصالحة قبل أي دعوى، والمادة 37 توجب إرفاق العريضة بنسخة من المحضر.",
+        "en": "The notes mention neither the conciliation attempt nor the non-conciliation record. Law 90-04 art. 19 requires every individual labour dispute to go to the conciliation office before any claim, and art. 37 requires a copy of the record with the petition."
+      },
+      "basis": [
+        "b1",
+        "b4",
+        "b6"
+      ],
+      "interpretive": true,
+      "interpretiveNote": "Article 19 states the duty, not its sanction. That a claim filed without the attempt is inadmissible is a reading; the rule therefore warns and does not block.",
+      "grading": {
+        "grade": "C",
+        "reasons": [
+          "interpretive",
+          "singleDerivation",
+          "notAttacked",
+          "scanNotRun"
+        ]
+      }
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc1",
+      "name": {
+        "ar": "نسخة من محضر عدم المصالحة",
+        "en": "A copy of the non-conciliation record"
+      },
+      "why": {
+        "ar": "ترفق بالعريضة، وتاريخ تسليمه هو بداية أجل الستة أشهر.",
+        "en": "It is attached to the petition, and its delivery date starts the six-month period."
+      },
+      "basis": [
+        "b6",
+        "b7"
+      ],
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "singleDerivation",
+          "notAttacked",
+          "scanNotRun"
+        ]
+      }
+    }
+  ],
+  "boundaries": [
+    {
+      "id": "n1",
+      "looksLike": {
+        "ar": "نزاع عمل، والمدعي موظف في إدارة أو مؤسسة عمومية ذات طابع إداري.",
+        "en": "A labour dispute in which the plaintiff is a civil servant of an administration or a public administrative body."
+      },
+      "isActually": "outside:administrative",
+      "tellingFacts": [
+        {
+          "ar": "صفة المدعي: موظف، عون متعاقد لدى إدارة، بلدية، ولاية، مؤسسة عمومية ذات طابع إداري.",
+          "en": "The plaintiff's status: civil servant, contract agent of an administration, a commune, a wilaya, a public administrative body."
+        }
+      ],
+      "when": {
+        "slot": "worker_is_public_servant",
+        "is": "yes"
+      },
+      "slots": [
+        "worker_is_public_servant"
+      ],
+      "message": {
+        "ar": "هذا النزاع لا يبدو من النزاعات الفردية في العمل التي تعرض على مكتب المصالحة والقسم الاجتماعي.",
+        "en": "This does not look like an individual labour dispute for the conciliation office and the social section."
+      },
+      "basis": [
+        "b3"
+      ],
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "singleDerivation",
+          "notAttacked",
+          "scanNotRun"
+        ]
+      }
+    }
+  ],
+  "slots": [
+    "nonconciliation_record",
+    "nonconciliation_record_delivered_on",
+    "defendant_resides_abroad",
+    "employer_in_bankruptcy_or_settlement",
+    "worker_is_public_servant",
+    "work_accident_or_occupational_illness"
+  ],
+  "examples": [
+    {
+      "id": "ex1",
+      "by": "derivationA",
+      "title": "Record delivered seven weeks before the petition: in time.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2026-01-10",
+        "worker_is_public_servant": "no"
+      },
+      "expect": {
+        "section": "social",
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex2",
+      "by": "derivationA",
+      "title": "Record delivered nine months before the petition: the right to sue is forfeited.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2025-06-01",
+        "worker_is_public_servant": "no"
+      },
+      "expect": {
+        "section": "social",
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "blockCleanExport"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex3",
+      "by": "derivationA",
+      "title": "Record delivered six months before the petition, to the day: inside the band, so a warning whatever the counting rule gives.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2025-09-01",
+        "worker_is_public_servant": "no"
+      },
+      "expect": {
+        "section": "social",
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex4",
+      "by": "derivationA",
+      "title": "Nothing is known about the conciliation: the rule asks.",
+      "petitionDate": "2026-03-01",
+      "slots": {},
+      "expect": {
+        "section": "social",
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "ask"
+          },
+          {
+            "ref": "d1",
+            "effect": "ask"
+          },
+          {
+            "ref": "x1",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "nonconciliation_record",
+          "worker_is_public_servant"
+        ]
+      }
+    },
+    {
+      "id": "ex7",
+      "by": "derivationA",
+      "title": "The record exists and its delivery date is not known: the rule asks for the date.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "worker_is_public_servant": "no"
+      },
+      "expect": {
+        "section": "social",
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          },
+          {
+            "ref": "d1",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "nonconciliation_record_delivered_on"
+        ]
+      }
+    },
+    {
+      "id": "ex8",
+      "by": "derivationA",
+      "title": "The plaintiff is a civil servant: the case may leave the social section.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "no",
+        "defendant_resides_abroad": "no",
+        "employer_in_bankruptcy_or_settlement": "no",
+        "worker_is_public_servant": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x1",
+            "effect": "warn"
+          },
+          {
+            "ref": "n1",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex5",
+      "by": "derivationA",
+      "title": "No conciliation, and the employer lives abroad: the attempt is optional.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "no",
+        "defendant_resides_abroad": "yes",
+        "employer_in_bankruptcy_or_settlement": "no",
+        "worker_is_public_servant": "no"
+      },
+      "expect": {
+        "section": "social",
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex6",
+      "by": "derivationA",
+      "title": "No conciliation and no exception: a warning, never a block.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "no",
+        "defendant_resides_abroad": "no",
+        "employer_in_bankruptcy_or_settlement": "no",
+        "worker_is_public_servant": "no"
+      },
+      "expect": {
+        "section": "social",
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "warn"
+          }
+        ]
+      }
+    }
+  ],
+  "openPoints": [
+    {
+      "id": "o1",
+      "question": {
+        "ar": "ما جزاء رفع الدعوى دون محاولة الصلح؟",
+        "en": "What is the sanction for a claim filed without the conciliation attempt?"
+      },
+      "why": {
+        "ar": "المادة 19 تنص على الوجوب ولا تذكر الجزاء.",
+        "en": "Article 19 states the duty and names no sanction."
+      },
+      "protectiveReading": {
+        "ar": "ينبه المحامي إلى غياب المحضر دون منع التصدير.",
+        "en": "The lawyer is warned that the record is missing; the export is not blocked."
+      },
+      "grade": "C",
+      "refs": [
+        "p1"
+      ]
+    },
+    {
+      "id": "o2",
+      "question": {
+        "ar": "هل يثير القاضي تلقائيا سقوط الحق المنصوص عليه في المادة 504؟",
+        "en": "Does the judge raise the forfeiture of article 504 of his own motion?"
+      },
+      "why": {
+        "ar": "المادة 67 تعد انقضاء الأجل المسقط دفعا بعدم القبول، والمادة 69 توجب إثارته تلقائيا إذا كان من النظام العام، ولا نص يقول إن أجل المادة 504 من النظام العام.",
+        "en": "Article 67 makes the expiry of a forfeiture period a plea of inadmissibility, and article 69 has the judge raise it when it is of public order; no text says the period of article 504 is of public order."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "يثيره القاضي تلقائيا.",
+            "en": "The judge raises it of his own motion."
+          },
+          "basis": [
+            "b12",
+            "b13"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "لا يثار إلا بدفع من المدعى عليه.",
+            "en": "It is raised only on the defendant's plea."
+          },
+          "basis": [
+            "b12"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "يعامل الأجل كأنه يثار تلقائيا: انقضاؤه يمنع التصدير النظيف.",
+        "en": "The period is treated as raised by the court: once expired, the clean export is blocked."
+      },
+      "grade": "C",
+      "refs": [
+        "d1"
+      ]
+    },
+    {
+      "id": "o3",
+      "question": {
+        "ar": "هل عدلت المواد المستشهد بها من القانون 90-04 بعد 1990؟",
+        "en": "Were the cited articles of Law 90-04 amended after 1990?"
+      },
+      "why": {
+        "ar": "نص المكتبة هو نص 1990، ولم يجر بعد مسح الجريدة الرسمية.",
+        "en": "The library's text is the 1990 text, and the Official Journal scan has not run yet."
+      },
+      "protectiveReading": {
+        "ar": "تبقى الدرجة B على الأكثر إلى أن يثبت المسح خلو السجل من تعديل.",
+        "en": "The grade stays at B at most until the scan shows a clean ledger."
+      },
+      "grade": "D",
+      "refs": [
+        "b1",
+        "b2",
+        "b3",
+        "b4",
+        "b5",
+        "b6"
+      ]
+    }
+  ],
+  "history": {
+    "reconciliation": "None: a format example written by hand, not a product of the method.",
+    "attacks": "None."
+  }
+}

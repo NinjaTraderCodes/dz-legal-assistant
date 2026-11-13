@@ -1,0 +1,437 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rule-record.schema.json",
+  "title": "Rule record of DZ Legal Assistant (a claim type or a shared module)",
+  "description": "One record per claim type of data/law/claims and one per shared module. Authors (agents) write pointers and structured values; scripts write the fields marked SCRIPT (quote, source, grading). Only the keywords type, properties, required, additionalProperties, items, enum, const and $ref are used, so that the small validator in research/core-logic can check every record.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "kind", "id", "label", "verified", "stage", "derivedBy", "basis"],
+  "properties": {
+    "schemaVersion": { "const": "1.0" },
+    "kind": { "enum": ["claim", "module"] },
+    "id": { "type": "string", "description": "The claim id of data/law/claims (for example unpaid-wages), or the module id (for example labour-prelitigation)." },
+    "label": { "$ref": "#/$defs/text" },
+    "verified": { "const": false, "description": "Always false: no lawyer has verified any record." },
+    "stage": { "enum": ["derivationA", "derivationB", "derivationC", "reconciled", "final"] },
+    "derivedBy": { "$ref": "#/$defs/derivedBy" },
+    "area": { "enum": ["civil", "commercial", "family", "social"], "description": "Claims only: the area of the catalogue file the claim comes from." },
+    "appliesTo": { "type": "array", "items": { "type": "string" }, "description": "Modules only: the claim ids the module applies to, or the single value * for all." },
+    "imports": { "type": "array", "items": { "$ref": "#/$defs/import" }, "description": "Claims only: the blocks of shared modules that apply. A script copies them into the final record." },
+    "checklist": { "type": "array", "items": { "$ref": "#/$defs/checklistItem" } },
+    "basis": { "type": "array", "items": { "$ref": "#/$defs/statement" } },
+    "elements": { "type": "array", "items": { "$ref": "#/$defs/element" } },
+    "requests": { "type": "array", "items": { "$ref": "#/$defs/request" } },
+    "court": { "$ref": "#/$defs/court" },
+    "deadlines": { "type": "array", "items": { "$ref": "#/$defs/deadline" } },
+    "priorSteps": { "type": "array", "items": { "$ref": "#/$defs/priorStep" } },
+    "documents": { "type": "array", "items": { "$ref": "#/$defs/document" } },
+    "boundaries": { "type": "array", "items": { "$ref": "#/$defs/boundary" } },
+    "slots": { "type": "array", "items": { "type": "string" }, "description": "Every slot id this record's conditions, deadlines and prior steps read. Each must exist in slots.json." },
+    "examples": { "type": "array", "items": { "$ref": "#/$defs/example" } },
+    "openPoints": { "type": "array", "items": { "$ref": "#/$defs/openPoint" } },
+    "history": { "$ref": "#/$defs/history" }
+  },
+  "$defs": {
+    "text": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ar", "en"],
+      "properties": { "ar": { "type": "string" }, "en": { "type": "string" } }
+    },
+    "derivedBy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "model", "date"],
+      "properties": {
+        "role": { "type": "string" },
+        "model": { "type": "string" },
+        "date": { "type": "string", "description": "yyyy-mm-dd" }
+      }
+    },
+    "import": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["module", "blocks", "how"],
+      "properties": {
+        "module": { "type": "string" },
+        "blocks": { "type": "array", "items": { "type": "string" }, "description": "Ids of statements, deadlines, prior steps, exits, territory rules, documents or boundaries of the module." },
+        "how": { "$ref": "#/$defs/text", "description": "Why and how the module applies to this claim type." }
+      }
+    },
+    "checklistItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "item", "from", "answer"],
+      "properties": {
+        "id": { "type": "string" },
+        "item": { "type": "string", "description": "What must be checked, as listed before any text was read." },
+        "from": { "type": "array", "items": { "enum": ["derivationA", "derivationB", "codex", "novemberUnit", "adversary"] } },
+        "answer": { "enum": ["applies", "doesNotApply", "searchedNotFound"] },
+        "refs": { "type": "array", "items": { "type": "string" }, "description": "Ids of the record's items that answer this line." },
+        "note": { "type": "string" }
+      }
+    },
+    "cite": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "article"],
+      "properties": {
+        "code": { "type": "string", "description": "A code id of the article store: civil-code, commercial-code, cpca, family-code, labour-relations, labour-disputes, or an id added by the law delta." },
+        "article": { "type": "string", "description": "Canonical number, as ArticleNumbers.Canonical writes it: 504, 187 مكرر, 73-4." },
+        "paragraphs": { "type": "array", "items": { "type": "integer" }, "description": "1-based numbers of the paragraphs cited (the lines of the article's text). Empty or absent: the whole article. A numbered item of a list is a paragraph." },
+        "version": { "type": "string", "description": "Optional: the publication id of the version cited (for example law-22-13). Absent: the version in force." }
+      }
+    },
+    "quotedParagraph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["paragraph", "text", "sha256"],
+      "properties": {
+        "paragraph": { "type": "integer" },
+        "text": { "type": "string" },
+        "sha256": { "type": "string", "description": "SHA-256 of the UTF-8 text, lower-case hex." }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tier", "store"],
+      "properties": {
+        "tier": { "enum": [1, 2, 3], "description": "1: Official Journal page. 2: official consolidated text. 3: anything else (a lead only)." },
+        "store": { "enum": ["library", "corpus", "delta"] },
+        "textAsOf": { "type": "string", "description": "yyyy-mm-dd: the date up to which amendments were looked for." },
+        "ledgerRefs": { "type": "array", "items": { "type": "string" } },
+        "ledgerClean": { "type": "boolean" }
+      }
+    },
+    "grading": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["grade", "reasons"],
+      "properties": {
+        "grade": { "enum": ["A", "B", "C", "D"] },
+        "reasons": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "reading": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reading"],
+      "properties": {
+        "reading": { "$ref": "#/$defs/text" },
+        "basis": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "statement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "role", "cite", "says"],
+      "properties": {
+        "id": { "type": "string" },
+        "role": { "enum": ["basis", "proof", "damages", "procedure", "limit", "prerequisite"] },
+        "cite": { "$ref": "#/$defs/cite" },
+        "says": { "$ref": "#/$defs/text", "description": "What this text establishes for this claim, in plain words. Not a paraphrase to be shown in a petition." },
+        "required": { "type": "boolean", "description": "True when the article is always proposed for this claim type." },
+        "interpretive": { "type": "boolean", "description": "True when the statement rests on a reading and not on the words alone. It then cannot be graded above C." },
+        "interpretiveNote": { "type": "string" },
+        "quote": { "type": "array", "items": { "$ref": "#/$defs/quotedParagraph" }, "description": "SCRIPT. Never typed by an agent." },
+        "source": { "$ref": "#/$defs/provenance", "description": "SCRIPT." },
+        "grading": { "$ref": "#/$defs/grading", "description": "SCRIPT." }
+      }
+    },
+    "condition": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A test on the case's slots. Exactly one of all, any, not or slot is set. A slot that is not known makes the test unknown, never false.",
+      "properties": {
+        "all": { "type": "array", "items": { "$ref": "#/$defs/condition" } },
+        "any": { "type": "array", "items": { "$ref": "#/$defs/condition" } },
+        "not": { "$ref": "#/$defs/condition" },
+        "slot": { "type": "string" },
+        "is": { "type": "string" },
+        "in": { "type": "array", "items": { "type": "string" } },
+        "includes": { "type": "string", "description": "For list slots (requests, claim types): the list holds this value." },
+        "before": { "type": "string", "description": "yyyy-mm-dd: the slot's date is strictly before it." },
+        "after": { "type": "string", "description": "yyyy-mm-dd: the slot's date is on or after it." },
+        "known": { "type": "boolean" }
+      }
+    },
+    "proof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["means"],
+      "properties": {
+        "means": { "type": "string" },
+        "basis": { "type": "array", "items": { "type": "string" } },
+        "note": { "$ref": "#/$defs/text" }
+      }
+    },
+    "element": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "toProve", "basis"],
+      "properties": {
+        "id": { "type": "string" },
+        "toProve": { "$ref": "#/$defs/text" },
+        "factsToState": { "type": "array", "items": { "$ref": "#/$defs/text" } },
+        "events": { "type": "array", "items": { "type": "string" }, "description": "Event kinds of FactVocabulary that carry this element." },
+        "slots": { "type": "array", "items": { "type": "string" } },
+        "burden": { "enum": ["plaintiff", "defendant"] },
+        "proof": { "type": "array", "items": { "$ref": "#/$defs/proof" } },
+        "basis": { "type": "array", "items": { "type": "string" }, "description": "Ids of statements." },
+        "grading": { "$ref": "#/$defs/grading", "description": "SCRIPT." }
+      }
+    },
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "accessory", "text", "basis"],
+      "properties": {
+        "id": { "type": "string" },
+        "kind": { "type": "string", "description": "A request kind of FactVocabulary." },
+        "accessory": { "type": "boolean" },
+        "text": { "$ref": "#/$defs/text", "description": "The usual request line; ar is the formal Arabic line with (...) where the lawyer fills a value." },
+        "amount": { "type": "boolean" },
+        "when": { "$ref": "#/$defs/condition" },
+        "basis": { "type": "array", "items": { "type": "string" } },
+        "grading": { "$ref": "#/$defs/grading", "description": "SCRIPT." }
+      }
+    },
+    "sectionAlternative": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["when", "value", "basis"],
+      "properties": {
+        "when": { "$ref": "#/$defs/condition" },
+        "value": { "enum": ["civil", "realEstate", "family", "social", "commercial", "other"] },
+        "basis": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "sectionRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "basis", "message"],
+      "properties": {
+        "value": { "enum": ["civil", "realEstate", "family", "social", "commercial", "other"] },
+        "basis": { "type": "array", "items": { "type": "string" } },
+        "alternatives": { "type": "array", "items": { "$ref": "#/$defs/sectionAlternative" } },
+        "message": { "$ref": "#/$defs/text", "description": "Shown when the lawyer's section differs from the one proposed." },
+        "interpretive": { "type": "boolean" },
+        "interpretiveNote": { "type": "string" },
+        "grading": { "$ref": "#/$defs/grading", "description": "SCRIPT." }
+      }
+    },
+    "territoryRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "rule", "basis"],
+      "properties": {
+        "id": { "type": "string" },
+        "rule": { "$ref": "#/$defs/text" },
+        "when": { "$ref": "#/$defs/condition" },
+        "basis": { "type": "array", "items": { "type": "string" } },
+        "grading": { "$ref": "#/$defs/grading", "description": "SCRIPT." }
+      }
+    },
+    "exit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "when", "goesTo", "effect", "message", "basis"],
+      "properties": {
+        "id": { "type": "string" },
+        "when": { "$ref": "#/$defs/condition" },
+        "goesTo": { "enum": ["administrativeCourt", "specialisedCommercialCourt", "paymentOrder", "criminalCourt", "otherSection", "outsideCatalogue"] },
+        "effect": { "enum": ["warn", "toCheck"] },
+        "message": { "$ref": "#/$defs/text" },
+        "basis": { "type": "array", "items": { "type": "string" } },
+        "interpretive": { "type": "boolean" },
+        "interpretiveNote": { "type": "string" },
+        "grading": { "$ref": "#/$defs/grading", "description": "SCRIPT." }
+      }
+    },
+    "court": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "section": { "$ref": "#/$defs/sectionRule" },
+        "territory": { "type": "array", "items": { "$ref": "#/$defs/territoryRule" } },
+        "exits": { "type": "array", "items": { "$ref": "#/$defs/exit" } }
+      }
+    },
+    "period": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "unit"],
+      "properties": {
+        "value": { "type": "integer" },
+        "unit": { "enum": ["day", "month", "year"] }
+      }
+    },
+    "startsFrom": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slot", "description"],
+      "properties": {
+        "slot": { "type": "string", "description": "The date slot the period runs from." },
+        "event": { "type": "string", "description": "The event kind of FactVocabulary whose date fills the slot, when there is one." },
+        "description": { "$ref": "#/$defs/text" }
+      }
+    },
+    "extract": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The exact words of the quoted text that carry the value. A script checks that they are in the quote and that they mean the structured value.",
+      "properties": {
+        "period": { "type": "string" },
+        "sanction": { "type": "string" }
+      }
+    },
+    "deadline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "period", "startsFrom", "raisedBy", "effectWhenExpired", "message", "basis"],
+      "properties": {
+        "id": { "type": "string" },
+        "kind": { "enum": ["forfeiture", "limitation", "procedural"] },
+        "period": { "$ref": "#/$defs/period" },
+        "startsFrom": { "$ref": "#/$defs/startsFrom" },
+        "counting": { "type": "string", "description": "The id of the counting rule of the periods module that applies (for example periods.c1)." },
+        "raisedBy": { "enum": ["courtOfOwnMotion", "pleaOnly", "unclear"] },
+        "when": { "$ref": "#/$defs/condition" },
+        "effectWhenExpired": { "enum": ["blockCleanExport", "warn"], "description": "blockCleanExport only for a forfeiture graded A; the evaluator lowers it to warn otherwise." },
+        "warnBandDays": { "type": "integer", "description": "The rule warns when the last day is within this many days, before or after." },
+        "message": { "$ref": "#/$defs/text" },
+        "basis": { "type": "array", "items": { "type": "string" } },
+        "extract": { "$ref": "#/$defs/extract" },
+        "interpretive": { "type": "boolean" },
+        "interpretiveNote": { "type": "string" },
+        "readings": { "type": "array", "items": { "$ref": "#/$defs/reading" } },
+        "grading": { "$ref": "#/$defs/grading", "description": "SCRIPT." }
+      }
+    },
+    "exception": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["when", "basis"],
+      "properties": {
+        "when": { "$ref": "#/$defs/condition" },
+        "basis": { "type": "array", "items": { "type": "string" } },
+        "note": { "$ref": "#/$defs/text" }
+      }
+    },
+    "means": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label"],
+      "properties": {
+        "id": { "type": "string" },
+        "label": { "$ref": "#/$defs/text" },
+        "basis": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "priorStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "slots", "effectWhenMissing", "effectWhenUnknown", "message", "basis"],
+      "properties": {
+        "id": { "type": "string" },
+        "kind": { "enum": ["formalNotice", "labourConciliation", "commercialConciliation", "landRegistryPublication", "noticeToQuit", "reconciliationAttempt", "mediation", "other"] },
+        "requiredWhen": { "$ref": "#/$defs/condition" },
+        "notRequiredWhen": { "type": "array", "items": { "$ref": "#/$defs/exception" } },
+        "slots": { "type": "array", "items": { "type": "string" } },
+        "acceptedMeans": { "type": "array", "items": { "$ref": "#/$defs/means" } },
+        "effectWhenMissing": { "enum": ["blockCleanExport", "warn"] },
+        "effectWhenUnknown": { "enum": ["ask", "warn"] },
+        "message": { "$ref": "#/$defs/text" },
+        "basis": { "type": "array", "items": { "type": "string" } },
+        "interpretive": { "type": "boolean" },
+        "interpretiveNote": { "type": "string" },
+        "grading": { "$ref": "#/$defs/grading", "description": "SCRIPT." }
+      }
+    },
+    "document": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "why"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "$ref": "#/$defs/text" },
+        "requiredWhen": { "$ref": "#/$defs/condition" },
+        "why": { "$ref": "#/$defs/text" },
+        "basis": { "type": "array", "items": { "type": "string" } },
+        "grading": { "$ref": "#/$defs/grading", "description": "SCRIPT." }
+      }
+    },
+    "boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "looksLike", "isActually", "tellingFacts", "message"],
+      "properties": {
+        "id": { "type": "string" },
+        "looksLike": { "$ref": "#/$defs/text" },
+        "isActually": { "type": "string", "description": "claim:<id> for another claim type of the catalogue, or outside:<short kind> (outside:administrative, outside:criminal, outside:payment-order ...)." },
+        "tellingFacts": { "type": "array", "items": { "$ref": "#/$defs/text" } },
+        "when": { "$ref": "#/$defs/condition" },
+        "slots": { "type": "array", "items": { "type": "string" } },
+        "message": { "$ref": "#/$defs/text" },
+        "basis": { "type": "array", "items": { "type": "string" } },
+        "grading": { "$ref": "#/$defs/grading", "description": "SCRIPT." }
+      }
+    },
+    "expectedFinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ref", "effect"],
+      "properties": {
+        "ref": { "type": "string", "description": "The id of the deadline, prior step, exit, document or boundary." },
+        "effect": { "enum": ["blockCleanExport", "warn", "toCheck", "ask", "none"] }
+      }
+    },
+    "expectation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["findings"],
+      "properties": {
+        "section": { "enum": ["civil", "realEstate", "family", "social", "commercial", "other"] },
+        "findings": { "type": "array", "items": { "$ref": "#/$defs/expectedFinding" } },
+        "questions": { "type": "array", "items": { "type": "string" }, "description": "Slot ids the evaluator must ask for." }
+      }
+    },
+    "example": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "by", "title", "petitionDate", "slots", "expect"],
+      "properties": {
+        "id": { "type": "string" },
+        "by": { "enum": ["derivationA", "derivationB", "derivationC", "boundaryWriter", "reconciler"] },
+        "title": { "type": "string" },
+        "petitionDate": { "type": "string", "description": "yyyy-mm-dd" },
+        "slots": { "type": "object", "description": "Slot id to value, as strings: yes, no, unknown, a date yyyy-mm-dd, digits for an amount, a choice id; requests is a list of request kinds." },
+        "expect": { "$ref": "#/$defs/expectation" }
+      }
+    },
+    "openPoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "question", "why", "protectiveReading", "grade"],
+      "properties": {
+        "id": { "type": "string" },
+        "question": { "$ref": "#/$defs/text" },
+        "why": { "$ref": "#/$defs/text" },
+        "readings": { "type": "array", "items": { "$ref": "#/$defs/reading" } },
+        "protectiveReading": { "$ref": "#/$defs/text" },
+        "grade": { "enum": ["C", "D"] },
+        "refs": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "history": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "reconciliation": { "type": "string" },
+        "attacks": { "type": "string" },
+        "agreementBeforeReconciliation": { "type": "string", "description": "SCRIPT: for example 31 of 38 fields." }
+      }
+    }
+  }
+}

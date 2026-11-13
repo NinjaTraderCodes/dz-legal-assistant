@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Core logic, contract only: the shapes of a rule record, of the rule evaluator's findings and of the note reader's answers. No logic. See docs/research/core-logic/INTEGRATION-CONTRACT.md.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\src\DzLegal.Domain\DzLegal.Domain.csproj" />
+  </ItemGroup>
+</Project>

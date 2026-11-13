@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\DzLegal.CoreLogic.Contracts\DzLegal.CoreLogic.Contracts.csproj" />
+    <!-- Read only, for FactVocabulary: the event and request kinds a record may name. -->
+    <ProjectReference Include="..\..\..\..\src\DzLegal.Drafting\DzLegal.Drafting.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- The handbook's own files are the test data: a record, the schema and the slot list cannot drift from the contract unnoticed. -->
+    <Content Include="..\..\..\..\docs\research\core-logic\rules\rule-record.schema.json" Link="handbook\rule-record.schema.json" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\..\..\docs\research\core-logic\rules\examples\*.json" Link="handbook\examples\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\..\..\docs\research\core-logic\slots.json" Link="handbook\slots.json" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\..\..\data\law\claims\*.json" Link="app\claims\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

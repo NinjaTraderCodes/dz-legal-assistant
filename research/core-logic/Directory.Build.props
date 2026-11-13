@@ -1,0 +1,4 @@
+<Project>
+  <!-- Research projects keep every root rule: net10.0, nullable, warnings as errors, analysis level. Add nothing here that relaxes them. -->
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+</Project>

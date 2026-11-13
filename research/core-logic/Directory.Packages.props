@@ -1,0 +1,13 @@
+<Project>
+  <!--
+    Central package versions for the research projects: the root list, plus the packages only research needs.
+    Add a package HERE, never in a .csproj and never in the root file (the root file belongs to the app).
+    Before adding one: check its licence allows commercial redistribution and record it in docs/research/core-logic/HANDBOOK.md.
+    Planned for step 4 (not added yet, so that nothing is downloaded before it is needed):
+      Microsoft.ML.OnnxRuntime 1.31.1 (MIT)
+      Microsoft.ML.Tokenizers 3.0.0 (MIT)
+  -->
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Packages.props', '$(MSBuildThisFileDirectory)../'))" />
+  <ItemGroup>
+  </ItemGroup>
+</Project>

@@ -104,6 +104,10 @@ The output for each pair: the level reached, and when below level 2 the list of 
 
 `inventory-cited` reads every `cite` of every record (both derivations, then the final ones) and writes, per (code, article, version): present where, state, `verified`, `verifiedBy`, whether a critical item cites it, and what must be done (`nothing`, `compare`, `rereadPage`, `fetch`). Its totals are the figures the brief asks for: how many cited articles were checked by script, how many by a page reading, how many corrections were found.
 
+## The text views (what the derivers read)
+
+The store file is too large for an agent to read whole (3.5 MB). `store_text.py` writes, beside it, one text file per code (`store\text\<code>.txt`): the same entries in article order, each paragraph on its own line labelled exactly as a cite counts it (`[civil-code 179 ¶1] …`), each article's line giving its version, «not in force» or «repealed», and the store's note on it. Headings are the store's path, or where the store has none the official consolidated edition's headings (`records.consolidated_chapters`, marked as such): only headings come from the edition, never a word of an article. The first line gives the store file's SHA-256, so a view is tied to the store it came from. Rebuild the views whenever the store is rebuilt; derivers read the views and `rules check` checks their cites against the store file itself.
+
 ## Done when
 
 - The store builds from pinned inputs, twice, to the same hash.

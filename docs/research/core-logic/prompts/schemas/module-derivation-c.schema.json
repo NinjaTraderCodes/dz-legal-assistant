@@ -1,0 +1,421 @@
+{
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "statements",
+  "deadlines",
+  "priorSteps",
+  "sections",
+  "territory",
+  "exits",
+  "openPoints",
+  "missingTexts"
+ ],
+ "properties": {
+  "statements": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "code",
+     "article",
+     "paragraphs",
+     "says",
+     "role",
+     "interpretive"
+    ],
+    "properties": {
+     "code": {
+      "type": "string"
+     },
+     "article": {
+      "type": "string"
+     },
+     "paragraphs": {
+      "type": "array",
+      "items": {
+       "type": "integer"
+      }
+     },
+     "says": {
+      "type": "string"
+     },
+     "role": {
+      "type": "string",
+      "enum": [
+       "basis",
+       "proof",
+       "damages",
+       "procedure",
+       "limit",
+       "prerequisite"
+      ]
+     },
+     "interpretive": {
+      "type": "boolean"
+     }
+    }
+   }
+  },
+  "deadlines": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "kind",
+     "periodValue",
+     "periodUnit",
+     "startsFromEvent",
+     "countingWords",
+     "raisedBy",
+     "sanctionWords",
+     "periodWords",
+     "basis",
+     "interpretive"
+    ],
+    "properties": {
+     "kind": {
+      "type": "string",
+      "enum": [
+       "forfeiture",
+       "limitation",
+       "procedural"
+      ]
+     },
+     "periodValue": {
+      "type": "integer"
+     },
+     "periodUnit": {
+      "type": "string",
+      "enum": [
+       "day",
+       "month",
+       "year"
+      ]
+     },
+     "startsFromEvent": {
+      "type": "string"
+     },
+     "countingWords": {
+      "type": "string"
+     },
+     "raisedBy": {
+      "type": "string",
+      "enum": [
+       "courtOfOwnMotion",
+       "pleaOnly",
+       "unclear"
+      ]
+     },
+     "sanctionWords": {
+      "type": "string"
+     },
+     "periodWords": {
+      "type": "string"
+     },
+     "basis": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "code",
+        "article",
+        "paragraphs"
+       ],
+       "properties": {
+        "code": {
+         "type": "string"
+        },
+        "article": {
+         "type": "string"
+        },
+        "paragraphs": {
+         "type": "array",
+         "items": {
+          "type": "integer"
+         }
+        }
+       }
+      }
+     },
+     "interpretive": {
+      "type": "boolean"
+     }
+    }
+   }
+  },
+  "priorSteps": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "kind",
+     "requiredWhen",
+     "notRequiredWhen",
+     "sanctionIfMissing",
+     "basis",
+     "interpretive"
+    ],
+    "properties": {
+     "kind": {
+      "type": "string",
+      "enum": [
+       "formalNotice",
+       "labourConciliation",
+       "commercialConciliation",
+       "landRegistryPublication",
+       "noticeToQuit",
+       "reconciliationAttempt",
+       "mediation",
+       "other"
+      ]
+     },
+     "requiredWhen": {
+      "type": "string"
+     },
+     "notRequiredWhen": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "sanctionIfMissing": {
+      "type": "string"
+     },
+     "basis": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "code",
+        "article",
+        "paragraphs"
+       ],
+       "properties": {
+        "code": {
+         "type": "string"
+        },
+        "article": {
+         "type": "string"
+        },
+        "paragraphs": {
+         "type": "array",
+         "items": {
+          "type": "integer"
+         }
+        }
+       }
+      }
+     },
+     "interpretive": {
+      "type": "boolean"
+     }
+    }
+   }
+  },
+  "sections": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "matter",
+     "section",
+     "basis"
+    ],
+    "properties": {
+     "matter": {
+      "type": "string"
+     },
+     "section": {
+      "type": "string",
+      "enum": [
+       "civil",
+       "realEstate",
+       "family",
+       "social",
+       "commercial",
+       "other"
+      ]
+     },
+     "basis": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "code",
+        "article",
+        "paragraphs"
+       ],
+       "properties": {
+        "code": {
+         "type": "string"
+        },
+        "article": {
+         "type": "string"
+        },
+        "paragraphs": {
+         "type": "array",
+         "items": {
+          "type": "integer"
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "territory": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "rule",
+     "when",
+     "basis"
+    ],
+    "properties": {
+     "rule": {
+      "type": "string"
+     },
+     "when": {
+      "type": "string"
+     },
+     "basis": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "code",
+        "article",
+        "paragraphs"
+       ],
+       "properties": {
+        "code": {
+         "type": "string"
+        },
+        "article": {
+         "type": "string"
+        },
+        "paragraphs": {
+         "type": "array",
+         "items": {
+          "type": "integer"
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "exits": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "when",
+     "goesTo",
+     "basis"
+    ],
+    "properties": {
+     "when": {
+      "type": "string"
+     },
+     "goesTo": {
+      "type": "string",
+      "enum": [
+       "administrativeCourt",
+       "specialisedCommercialCourt",
+       "paymentOrder",
+       "criminalCourt",
+       "otherSection",
+       "outsideCatalogue"
+      ]
+     },
+     "basis": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "code",
+        "article",
+        "paragraphs"
+       ],
+       "properties": {
+        "code": {
+         "type": "string"
+        },
+        "article": {
+         "type": "string"
+        },
+        "paragraphs": {
+         "type": "array",
+         "items": {
+          "type": "integer"
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "openPoints": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "question",
+     "readings"
+    ],
+    "properties": {
+     "question": {
+      "type": "string"
+     },
+     "readings": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  "missingTexts": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "code",
+     "article",
+     "why"
+    ],
+    "properties": {
+     "code": {
+      "type": "string"
+     },
+     "article": {
+      "type": "string"
+     },
+     "why": {
+      "type": "string"
+     }
+    }
+   }
+  }
+ }
+}

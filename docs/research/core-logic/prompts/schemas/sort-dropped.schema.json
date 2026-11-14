@@ -1,0 +1,47 @@
+{
+ "type": "array",
+ "items": {
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+   "n",
+   "field",
+   "cause",
+   "right",
+   "explanation",
+   "guideDefect"
+  ],
+  "properties": {
+   "n": {
+    "type": "integer"
+   },
+   "field": {
+    "type": "string"
+   },
+   "cause": {
+    "type": "string",
+    "enum": [
+     "writer",
+     "checker",
+     "note",
+     "guide"
+    ]
+   },
+   "right": {
+    "type": "string",
+    "enum": [
+     "writer",
+     "checker",
+     "neither",
+     "bothReadingsHold"
+    ]
+   },
+   "explanation": {
+    "type": "string"
+   },
+   "guideDefect": {
+    "type": "string"
+   }
+  }
+ }
+}

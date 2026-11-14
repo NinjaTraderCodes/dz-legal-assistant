@@ -6,8 +6,8 @@ Codex (OpenAI's CLI, `codex exec`) is the second model family of this task. It i
 
 | Role | Calls | How they run | Prompt |
 |---|---|---|---|
-| **1. Note writer:** the pilot, the training notes, half of dev and of the challenge set, the slot packs | about 360 | **the writer pool**: 2 to 4 calls at once, 20 notes per call, each call in its own empty scratch folder | `notes-write.md` |
-| **2. Second family for checks:** the support check of every unit; the blind view on boundary cases the verifier set aside; a second page reading **only where no other two-family or mechanical proof exists** (the labour laws, an article being added to the delta, a corpus text whose own check was a Claude reading) | about 75 | **the background queue**: one call at a time, never waited for more than ten minutes | `rules-support-check-codex.md`, `boundary-second-view-codex.md`, `law-read-page.md` |
+| **1. Note writer:** the pilot, the training notes, half of dev and of the challenge set, the slot packs | about 415 | **the writer pool**: 2 to 4 calls at once, 20 notes per call, each call in its own empty scratch folder | `notes-write.md` |
+| **2. Second family for checks:** the support check of every unit; the blind view on boundary cases the verifier set aside; a second page reading **only where no other two-family or mechanical proof exists** (the labour laws, an article being added to the delta, a corpus text whose own check was a Claude reading; the full list of cases is the table "When Codex reads a page" of [article-store.md](article-store.md)) | about 105 | **the background queue**: one call at a time, never waited for more than ten minutes | `rules-support-check-codex.md`, `boundary-second-view-codex.md`, `law-read-page.md` |
 | **3. Training backup,** only with the owner's approval after Opus could not get a training run working | 0 unless approved | its own section below; the one role that is not read-only | – |
 
 **Codex does not:** derive a rule, attack a record, write a checklist, relabel or judge a note, filter a note, review or rank anything, or receive any text of a hidden set or of the mirror set. A script that sends Codex anything else is a defect.
@@ -112,6 +112,22 @@ Both live in `scripts/codex_run.py`, with tests in `scripts/tests/test_codex_run
 
 **Tests the pool and the queue must have:** two calls running at once never share a scratch folder, and a scratch folder is empty when its call starts; a rejected call's scenarios return to the queue once and never a third time; a refusal stops new calls and leaves the queue as it was; two rejections in a row stop one writer and not the others; the gate refuses every call when the day's probe is missing; every child process starts without either API key.
 
+### Files, formats and lifecycle
+
+| Thing | Where and what |
+|---|---|
+| A pool calls file | JSONL, one call per line, written by `notes write`: `{"call": "<id>", "role": "write", "set": "train", "prompt": "<file>", "schema": "<file>", "out": "<file>", "scenarios": ["s-000123", "…"]}`. The pool only reads it |
+| The pool's log | `<work>\codex-logs\write\pool-<date>.jsonl`: one line per call: its id, the writer's number, start and end, `accepted`, `rejectedToolUse`, `rejectedOther` or `refused` |
+| Who updates the notes queue | **only the notes tool.** `notes ingest --call <id>` reads the pool's log and the call's answer: an accepted call's notes go through `writer-labels`, `build-spans` and the code checks; a rejected call's scenarios go back to `drawn` with `attempts` raised by one; a refused call's scenarios are left as they were. One retry per scenario in all, whether the first attempt was lost to a rejected call or to a failed code check |
+| `queue add` | `PY codex_run.py queue add <role> --prompt <file> --schema <file> --out <file> [--image <file> …] [--id <call id>]` (a page reading passes its images; `reading.py codex --queue` uses it) |
+| The queue's files | `<work>\codex-queue\queue.jsonl` (one line per call with its state: `waiting`, `running`, `accepted`, `rejected`, `refused`), and `run.lock`, which holds the process id of `queue run` |
+| `queue run` | started detached (`subprocess.Popen` with `DETACHED_PROCESS` and `CREATE_NEW_PROCESS_GROUP`); it is alive exactly when `run.lock` names a live process; `queue status` says so. The pool has its own `pool.lock` in `<work>\codex-logs\write\` |
+| "Nothing is running" (every session) | no `run.lock` and no `pool.lock` names a live process. Agents of an earlier session are never running |
+| The gate refuses (the day changed, the CLI's version changed) | the pool and the queue stop cleanly: running calls finish and are checked, nothing new starts, the files are left as they are. **A pool does not run past midnight**: the read probe is run by the executor at the start of the next day's batch, never by the pool itself |
+| The scratch folder | `<work>\codex-scratch\<role>\<call id>\`, made for the call and removed after it (today's `call()` uses one folder per role: change it) |
+
+**The pilot's pace when nothing is refused.** 25 calls may never meet a limit. Then the pilot reports the calls made and their token totals as a **lower bound** of what a window allows, and the calendar uses the forecast's 300 writing calls a week until a refusal has shown the real window. A refusal in the middle of the pilot: the remaining calls of that pool size run after the window, at the same size.
+
 ## The training backup (role 3: only with the owner's approval)
 
 **When.** Opus runs every training on the laptop. If a training run fails three times, or a day is lost ([reader.md](reader.md), rung 5), the executor stops and asks the owner, with what was tried and the errors. **Nothing below happens without the owner's yes, in the owner's words, for that one problem.**
@@ -123,6 +139,14 @@ Both live in `scripts/codex_run.py`, with tests in `scripts/tests/test_codex_run
 - a file `TASK.md`: the failing command, its error output, what was tried, and the sentence "Work only inside this folder."
 
 **The call.** `codex exec` with `-C` on that folder and the sandbox mode that lets it write there (`-s workspace-write`), `--ephemeral`, `--json`; no network access is switched on (the folder holds everything). The daily probe and the pinned version apply. **The event-log rule for this role is different, and stricter in one way:** commands and file changes are expected, so the script instead reads every `command_execution` and file-change item and **rejects the session if any path in it lies outside the backup folder**, or names `C:\dz-hidden`, another repository, `.claude`, or `dz-core-research` outside `codex-train`. A rejected session's folder is deleted whole, nothing from it is used, and the owner is told. At most three sessions per approval; say so when asking.
+
+**The one path outside the folder.** Codex must run the training code to debug it, and torch exists only in Part 7's environment. So the session may **read and execute, never write,** `C:\Users\TheShadow\dz-arch-research\venv\` (its `python.exe` is named in `TASK.md`); the path check allows that one folder beside the backup folder, for reading only.
+
+**What else is copied, by kind of failure.** A failure of the heads' training: nothing more. A failure of rung 5 (the encoder's top layers): also the original encoder's files and the stored lower-layer outputs of the training notes. A tokenizer or offset failure is a .NET matter and is never a backup job.
+
+**Before the diff is applied**, a script scans the changed code for absolute paths, `..`, paths built from environment variables, and network calls (`http`, `socket`, `urllib`, `requests`, `subprocess` with a program other than the venv's Python): any hit outside the two allowed folders rejects the session, as a path in a command does.
+
+**If the three sessions do not solve it:** stop. The owner chooses: do without that rung, or a free GPU (HANDBOOK section 8).
 
 **What comes back.** The changed training code, as a diff against the copy the executor put there. The executor reads the diff, applies it to the repository as its own commit (the message says "training code written by Codex under the owner's approval of `<date>`"), runs the tests, and **runs the training itself**, from the repository, with the real loader. No model file, checkpoint or score produced inside the backup folder is used or reported: the run that counts is Opus's. Then the folder is deleted.
 

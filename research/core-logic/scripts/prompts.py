@@ -164,6 +164,26 @@ def oj_fetch_command(unit: str, role: str) -> str:
     return f"{PYTHON} {script} --caller {role}-{unit} --wait 600 --out {out}"
 
 
+FAMILY_UNITS = {"divorce-by-husband", "tatliq", "khul", "nafaqa", "custody", "custody-forfeiture", "visitation",
+                "conciliation-mediation"}
+LEAD_GROUPS = {"labour modules": LABOUR_UNITS, "family modules": FAMILY_UNITS}
+
+
+def leads_for(unit: str) -> str:
+    """The triage leads recorded for this unit (law/journal-scan/triage-other-wave.json, `leads`), one per line, or
+    "none". A lead is addressed to a unit by its id or to a group of units ("labour modules", "family modules"). The
+    untriaged hits of the instruments a record cites are added by the driver (specs/unit-driver.md, stage 7a)."""
+    path = os.path.join(CL, "law", "journal-scan", "triage-other-wave.json")
+    if not os.path.isfile(path):
+        return "none"
+    with open(path, encoding="utf-8") as f:
+        leads = json.load(f).get("leads", [])
+    mine = [x for x in leads if x.get("for") == unit or unit in LEAD_GROUPS.get(x.get("for", ""), ())]
+    if not mine:
+        return "none"
+    return "\n".join(f"- Official Journal issue {x['issue']}: {x['text']}. {x['what']}" for x in mine)
+
+
 def _run_file(unit: str, name: str) -> str:
     """A text the stage-7 script wrote for this unit (stage7.py render / pairs), in the working folder."""
     path = os.path.join(RUNS, unit, name)
@@ -194,7 +214,7 @@ def values_for(prompt: str, unit: str) -> dict[str, str]:
         ledger = os.path.join(CL, "law", "amendment-ledger.json")
         base.update(record_path=os.path.join(CL, "rules", "reconciled", "quoted", f"{unit}.json"),
                     ledger_path=ledger if os.path.isfile(ledger) else "(none yet: the amendment ledger does not exist)",
-                    oj_fetch=oj_fetch_command(unit, 'adversary'))
+                    oj_fetch=oj_fetch_command(unit, 'adversary'), leads=leads_for(unit))
     elif prompt == "rules-attack":
         base.update(unit_label=f"module {unit}: {module_row(unit)['question']}", slots=slots(unit, english_only=True),
                     record_text=_run_file(unit, "record_text.txt"))

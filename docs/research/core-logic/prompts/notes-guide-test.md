@@ -32,6 +32,8 @@ For every item give: "id"; "answer"; "rule" (the rule, case number, note letter 
 
 Use no tool. Everything you need is in this prompt, and your answer is your reply. (If you were told to read this prompt from a file, that one read is allowed, and nothing after it.) Do not read or write any memory file, do not open the plan file or the state file, and do not look for any other file. Do not run any command and do not open any file.
 
+**Two more forms of question.** An item whose ask is `role:<claim>` asks which side the plaintiff is on for that claim type (the guide's section 3b): answer `<relation>/<position>`, or `unknown`. An item whose ask is a slot with choices is answered by the choice's id (for example `bailiff`, `registered_letter`, `other`), or `unknown`.
+
 ## Your answer
 
 Return only one JSON object, with no text before or after it:

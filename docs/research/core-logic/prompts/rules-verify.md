@@ -1,6 +1,6 @@
 # Verifier of attacks
 
-- **Model:** Opus 5.5, fresh agent with web fetch (official sites only). 17 runs: units grouped two by two, modules first.
+- **Model:** Opus 5.5, fresh agent with web fetch (official sites only). **One run per unit** (33 first runs), and one follow-up run whenever [../specs/unit-driver.md](../specs/unit-driver.md) asks for one ("Follow-up verifier runs": then the record it corrects is the last final candidate, quoted, and its register is `<unit>.attacks.followup<n>.json`).
 - **Give it:** this prompt, filled. It reads only its allow-list: the quoted reconciled records of its units, their attack lists, the reconciliation reports (for the boundary cases the reconciler disputes), the store and the ledger. Never the derivations, the final records or any other report.
 - **Placeholders:**
   - `{{worktree}}` (`C:\Users\TheShadow\dz-fable-core`); `{{units}}`.
@@ -11,10 +11,10 @@
   - `{{candidate_paths}}`: where the corrected record goes, `rules/final-candidates/<unit>.json`.
   - `{{requests_path}}`: `law/requests.jsonl`.
   - `{{store_path}}`, `{{store_text}}` (its text views), `{{ledger_path}}` (`law/amendment-ledger.json` as far as the scan has run), `{{rules_tool}}`, `{{oj_fetch}}` (the absolute command line of `research/core-logic/scripts/oj_fetch.py` run with Python 3.12, complete but for the URL: `--caller`, `--wait <seconds>` and `--out <a folder of the run in the working folder>`; the first unit's prompt lacked them: the one script through which every download from joradp.dz goes).
-- **The planted-error test** ([../specs/record-checks.md](../specs/record-checks.md)) uses this prompt unchanged, with every path placeholder pointing into `C:\Users\TheShadow\dz-core-research\planted\` and the units named `p-01` …: nothing of the real `rules/final/` or `rules/reports/` is then in its allow-list, and nothing real is overwritten.
-- **Output:** the register (the file `grade-records` reads; its shape is in the prompt's body since the first module, whose verifier never saw this header): every attack with `"verdict": "fixed" | "refuted" | "open"`, `"verifierQuote"` (the official words that decide it, with code, article, paragraph or the Official Journal reference), `"change"` (what was changed in the record, when fixed). And the corrected record, which keeps `"stage": "reconciled"` (only `grade-records` sets `final`).
+- **The planted-error rounds** ([../specs/planted-errors.md](../specs/planted-errors.md)) use this prompt unchanged, with every path placeholder pointing into `C:\Users\TheShadow\dz-core-research\planted\round-<n>\` and the units named `p<n>-01` … and `c<n>-01` …: nothing of the real `rules/final/` or `rules/reports/` is then in its allow-list, and nothing real is overwritten.
+- **Output:** the register (the file `records.py grade` reads; its shape is in the prompt's body since the first module, whose verifier never saw this header): every attack with `"verdict": "fixed" | "refuted" | "open"`, `"verifierQuote"` (the official words that decide it, with code, article, paragraph or the Official Journal reference), `"change"` (what was changed in the record, when fixed). And the corrected record, which keeps `"stage": "reconciled"` (only `records.py grade` sets `final`).
 - **Why a separate verifier:** an attacker is paid to doubt and a reconciler has a record to defend. The verifier decides each attack on one question only: what does the official text say?
-- **After it:** the scripts run again on the corrected record (`quote-records`, `check-values`, `flag-neighbours`, `rules check`, `rules examples`), then `flatten-imports` and `grade-records` produce `rules/final/<unit>.json`.
+- **After it:** the scripts run again on the corrected record (`records.py quote`, `check-values`, `flag-neighbours`, `rules check`, `rules examples`), then `records.py flatten` and `records.py grade` produce `rules/final/<unit>.json`.
 
 --- PROMPT ---
 
@@ -51,7 +51,7 @@ A decision of the Supreme Court changes a rule only if you fetched its text from
 
 **Do not** decide an attack by which side argues better, by majority, or by what is usual. **Do not** soften a rule to make an attack go away: if the text supports the rule, the rule stays. An item you add that the record did not have is graded lower for that reason alone; add it when the text requires it all the same.
 
-**The register** of a unit is one JSON object: `{ "unit": "<unit id>", "attacks": [ … ] }`, one entry per attack, each `{ "id", "who": "adversary" | "attack" | "codex" | "support" | "derivationC" | "boundaryCase" | "neighbourFlag" | "owner" | "store", "target": "<item id, or several separated by commas>", "kind", "claim", "verdict": "fixed" | "refuted" | "open", "verifierQuote": "<the official words that decide it>", "quoteRef": "<code, article, paragraph, or the Official Journal issue and page>", "change": "<what you changed in the record, when fixed>" }`. Keep the attack's own id (`adv-…`, `cdx-…`, `sup-…`), and give a boundary case the id `bc-<case id>`.
+**The register** of a unit is one JSON object: `{ "unit": "<unit id>", "attacks": [ … ] }`, one entry per attack, each `{ "id", "who": "adversary" | "attack" | "codex" | "support" | "derivationC" | "boundaryCase" | "neighbourFlag" | "values" | "owner" | "store", "target": "<item id, or several separated by commas>", "kind", "claim", "verdict": "fixed" | "refuted" | "open", "verifierQuote": "<the official words that decide it>", "quoteRef": "<code, article, paragraph, or the Official Journal issue and page>", "change": "<what you changed in the record, when fixed>" }`. Keep the attack's own id (`adv-…`, `cdx-…`, `sup-…`), and give a boundary case the id `bc-<case id>`.
 
 Write every register (every attack, none dropped) and every corrected record (stage `reconciled`, `"verified": false`). Run `{{rules_tool}} check --store {{store_path}}` and `{{rules_tool}} examples` on each corrected record; add a worked example for every attack you marked fixed (the case the attack described, with the corrected outcome; `"by": "verifier"`).
 
@@ -59,6 +59,7 @@ Write every register (every attack, none dropped) and every corrected record (st
 
 ## Ids, and the two kinds of finding that are not attacks
 
+- **A value mismatch** (`who: "values"`, id `values-…`) is a number, a unit or a sanction word of an item that a script could not find in the item's quoted text. **A store refusal** (`who: "store"`, id `store-…`) is a cite the store does not hold as written. Decide each from the text, like an attack.
 - **Keep each entry's own id** as its file gives it: `adv-…` (the adversary), `atk-…` or `cdx-…` (the attack), `sup-…` (the support check), `c-…` (the third derivation), `bc-…` (a boundary case), `flag-…` (a neighbour flag), `done-…`, `uncertain-…`, `owner-…`, `store-…`.
 - **A neighbour flag** (`who: "neighbourFlag"`) is a paragraph next to a cited one that opens an exception or refers back, and that no line of the record answers. Decide it from the text: either cite it where it changes a rule, or add a line to the record's `checklist` with `"answer": "doesNotApply"` and a note that names the article and says why. Its verdict is `fixed` in the first case, `refuted` in the second.
 - **A boundary case** (`who: "boundaryCase"`) is a case written from the texts alone by an agent that saw no record, with the outcome it expects and the tool's message for this record. Decide from the text whether the record or the case is right. **Never edit a boundary-case file.**

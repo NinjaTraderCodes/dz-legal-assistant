@@ -141,6 +141,8 @@ What you write is the **declared** effect: what the texts call for. A script lat
   "message": { ... }, "basis": [ ... ], "interpretive": false }
 ```
 
+**A step says "done" only when nothing about it is still open.** If the texts require the step to be made by certain means, or before a certain moment, the step's own rule must test them: list the means in `acceptedMeans`, and put the timing in a condition. A record must never tell the lawyer that a step was done while another of its items still asks or warns about that same step's means or date. (A rule for record writers, set on 14 November 2026.)
+
 The **first** slot of `slots` is the step's own (was it done?). Evaluation: if `requiredWhen` is false, `none`; unknown, `ask`. If the step was done (`yes`), `none`. If it is unknown, `effectWhenUnknown` (and the step's slot is asked); the exemptions are not asked before the lawyer says the step was not done. If it was not done: any exemption true gives `none`; none true and one unknown gives `ask`; all false gives `effectWhenMissing`.
 
 ### Court: section, territory, exits

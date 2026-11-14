@@ -1,6 +1,6 @@
 # Boundary-case writer
 
-- **Model:** Sonnet 5.5, fresh agent. 11 runs: one per module whose question in the handbook's table names a time limit, a prior step or an exit, and the rest grouped by area. The executor fixes the units of each run (`{{units}}`) from the handbook's table, **before** any derivation of them runs.
+- **Model:** Sonnet 5.5, fresh agent, **one run per unit** (33 runs; the first handbook grouped units by area: no longer). `{{units}}` holds the one unit. The run happens at stage 2d, beside the derivations and blind to them.
 - **Give it:** this prompt, filled. It reads only `rules/DERIVER-GUIDE.md` (for the meaning of slots and dates) and the files it writes. **Never:** any derivation, any record, the examples, any report, `slots.json`, `rules/GRADES.md`, `specs/rule-evaluator.md`.
 - **Placeholders:**
   - `{{worktree}}`: `C:\Users\TheShadow\dz-fable-core`.

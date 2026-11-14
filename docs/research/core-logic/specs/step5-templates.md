@@ -22,9 +22,24 @@
 
 If the definition has changed when step 5 starts, redo this table from the file and say so in the report. Read the file; never change it.
 
+**What step 5 does not cover.** The app also uses its model for two other things: revising a section on the lawyer's request (`revisionPrompt`, `revisionShortcuts`) and tidying the requests' wording (`formaliseRequestsPrompt`). A set-up without a generative model loses both. Step 5's second answer is about drafting the petition; the report names these two features as what a template-only app would give up.
+
 ## 2. The fact sheets
 
-**120 sheets, 20 per claim type**, drawn by the sampler (`notes sample --set step5 --seed 5`), with these constraints: one claim type per sheet; no `outside`; every element `stated`, `denied` or `disputed` in a way a petition would assert (the cells of [../notes/SCHEME.md](../notes/SCHEME.md), section 8); the cast from the fictitious lists, with a court, a section and a lawyer added from lists of the same kind.
+**120 sheets, 20 per claim type**, drawn by the sampler (`notes sample --set step5 --seed 5`), with these constraints: one claim type per sheet; no `outside`; only the parts of a scenario that code can render in Arabic (no `how`, `contest`, extra value or distractor, as for clean notes); the drawn cells of [../notes/SCHEME.md](../notes/SCHEME.md), section 8; the cast from the fictitious lists.
+
+**Where each Arabic string of a sheet comes from** (code only; no model):
+
+| String | Source |
+|---|---|
+| a fact's sentence | the phrase table (part B) |
+| a party's capacity | the role's `label` in `claim-elements.json` |
+| the parties | their fictitious names, with the gender or the kind of legal person the cast gives; the templates and the sheets name the parties, they never write «المدعي» for one whose gender they would have to guess |
+| the court and its section | «محكمة » and the cast's place; the section from a fixed table by the claim type's area |
+| the lawyer | a fictitious name of the cast lists with «الأستاذ» or «الأستاذة» |
+| a code's citation name | `citationName` of `data/law/sources.json`, or the delta's `newCode` name for a special law |
+| a request's label | `claim-elements.json` |
+| dates and amounts | one fixed form: «12/03/2025»; «384.000 دج» |
 
 `notes step5-sheets` then runs the rule evaluator on each scenario with the six final records and writes `docs/research/core-logic/results/step-5/sheets/<nnn>.json`:
 
@@ -33,16 +48,16 @@ If the definition has changed when step 5 starts, redo this table from the file 
   "n": 17, "claim": "unpaid-wages",
   "cast": { "plaintiff": "…", "defendant": "…", "lawyer": "…", "court": "…", "section": "…", "place": "…", "date": "2026-03-10" },
   "facts": [ { "id": "f1", "element": "unpaid-wages/employment_started", "proposition": "<the element's Arabic proposition>",
-               "polarity": "stated", "actor": "plaintiff", "date": "2019-09-03", "amount": null, "disputedHow": null } ],
+               "polarity": "stated", "actor": "plaintiff", "disputedBy": null, "date": "2019-09-03", "amount": null } ],
   "requests": [ { "kind": "wages", "label": "<Arabic label>", "amount": 384000 } ],
   "grounds": [ { "g": 1, "element": "unpaid-wages/wages_unpaid", "facts": ["f2"],
-                 "articles": [ { "name": "<the code's Arabic citation name>", "code": "law-90-11", "article": "…", "paragraphs": [1],
+                 "articles": [ { "name": "<the code's Arabic citation name>", "code": "law-90-11", "article": "…", "paragraphs": [1], "role": "basis",
                                  "quote": "<the quoted paragraphs, from the final record>", "says": "<the record's English line>" } ] } ]
 }
 ```
 
-- **`grounds` holds two elements per sheet:** the first element of the claim type in the record's order that has a `basis`, and one more drawn at random among the others that have one. 240 paragraphs in all. An element whose record gives it no article is never drawn (there would be nothing to apply).
-- Dates, amounts and names appear on the sheet exactly once each, in normal form; the rendering to Arabic (below) is by code.
+- **`grounds` holds two elements per sheet, drawn by seed** among the elements that are `stated` on the sheet and that the record gives a `basis` (a petition argues a fact it asserts). 240 paragraphs in all. An element whose record gives it no article is never drawn (there would be nothing to apply). `role` is the role the record gives the cited statement.
+- Each date, amount and name is on the sheet in normal form; the rendering to Arabic is by code. (An amount may be both a fact's and a request's: it is then the same value twice.)
 - **The sheets are frozen (committed) before any writer runs,** with the templates and the phrase tables. Nothing of them changes after the first output exists.
 
 ## 3. The writers
@@ -55,12 +70,12 @@ If the definition has changed when step 5 starts, redo this table from the file 
 | **J4** | Jais-3-3.7B (`jais3-3.7b-low`) | over 1 GB |
 | **G4** | Gemma 4 E4B (`gemma4:e4b`, think off) | over 1 GB; the app's model today |
 
-All local, on loopback, one model loaded at a time, with the digests recorded in Part 7 (`git show fable/architecture-review:docs/research/fable-part7/run/models.json`). One sheet per call, temperature 0.2, a fixed seed. A tested script strips the marker lines a Jais 3 copy may put at the start of its answer before anything reads an output.
+All local, on loopback, one model loaded at a time, with the digests recorded in Part 7 (`git show fable/architecture-review:docs/research/fable-part7/run/models.json`). One sheet per call. **The request, the same for every model:** Ollama's `/api/chat` on `127.0.0.1`, one user message (the filled prompt), `stream` false, `think` false where the model has it, options `temperature` 0.2, `seed` 5, `num_ctx` 4096, `num_predict` 220 for part A and 400 for part B; `keep_alive` 0 on a model's last call, so that the next model starts alone. Timings are of warm calls: each model's first output is written but not timed. The script is `scripts/step5_write.py`. A tested script strips the marker lines a Jais 3 copy may put at the start of its answer before anything reads an output.
 
 ### Part A. The legal discussion (`grounds`): one paragraph per element
 
 - **Models:** [../prompts/gen-apply-law.md](../prompts/gen-apply-law.md), one call per (sheet, element): 240 calls per model, at most about 220 output tokens.
-- **Template T-A.** Three sentences, each from data, none from a model at run time:
+- **Template T-A.** Three kinds of sentence, each from data, none from a model at run time. With several facts under one ground, sentence 1 is repeated per fact; with several articles, sentence 2 per article; sentence 3 comes once, by the role of the first article:
   1. the fact: «حيث أن » + the fact's sentence from the phrase table (below), with its date and amount;
   2. the text: «وحيث أن المادة {article} من {name} تنص على أنه: «{quote}»» (the quote inserted by code, whole paragraphs);
   3. the application, one fixed sentence by the role the record gives the cited statement:
@@ -68,22 +83,22 @@ All local, on loopback, one model loaded at a time, with the digests recorded in
      - `proof`: «وحيث أن المدعي يقدم ضمن مرفقات هذه العريضة ما يثبت الواقعة المذكورة وفق ما يقتضيه هذا النص.»
      - `damages`: «وحيث أن شروط التعويض التي يقررها هذا النص متوفرة في قضية الحال على النحو المبين أعلاه.»
      - `prerequisite`, `procedure`, `limit`: «وحيث أن المدعي احترم ما يوجبه هذا النص قبل رفع دعواه على النحو المبين أعلاه.»
-  The four sentences are this handbook's starting text. Before the freeze a fresh Sonnet 5.5 agent checks their Arabic once (correct, formal, natural in a petition) and may propose a corrected sentence; the executor applies it. After the freeze they do not change.
+  The four sentences are this handbook's starting text. Before the sheets are committed a fresh Sonnet 5.5 agent checks their Arabic once ([../prompts/arabic-check.md](../prompts/arabic-check.md)) and may propose a corrected sentence, which a script applies. After that commit they do not change.
 
 ### Part B. The facts section (`facts`)
 
 - **Models:** [../prompts/gen-facts.md](../prompts/gen-facts.md), one call per sheet: 120 calls per model, at most about 400 output tokens.
-- **Template T-B.** One «حيث» paragraph per fact, in date order, from **the phrase table**: for each element of the six claim types (23 elements), two short Arabic sentences with places for the date and the amount: the fact asserted, and the fact negated (for a `denied` element). A `disputed` fact takes the asserted sentence followed by «، وهو ما ينازع فيه المدعى عليه».
-- **Who writes the phrase table.** The executor (Opus 5.5), from each element's Arabic proposition in `claim-elements.json`: 46 sentences. It states facts only: no article, no legal qualification. A fresh Sonnet 5.5 agent checks the Arabic of all 46 in one run. (These are product templates, not training notes: [../notes/TERMS.md](../notes/TERMS.md) does not forbid a Claude model here.) The table is `research/core-logic/src/DzLegal.CoreLogic.Templates/phrases.json`, committed and frozen with the sheets.
+- **Template T-B.** One «حيث» paragraph per fact, in date order, from **the phrase table**: for each element of the six claim types (23 elements), two short Arabic sentences with places for the date and the amount: the fact asserted, and the fact negated (for a `denied` element). A `disputed` fact takes the asserted sentence followed by «، وهو ما ينازع فيه » and the name of the party the sheet's `disputedBy` gives. The sentences name the parties by the places `{plaintiff}` and `{defendant}`.
+- **Who writes the phrase table.** The executor (Opus 5.5), from each element's Arabic proposition in `claim-elements.json`: 46 sentences. It states facts only: no article, no legal qualification. A fresh Sonnet 5.5 agent checks the Arabic of all 46 in one run ([../prompts/arabic-check.md](../prompts/arabic-check.md)). (These are product templates, not training notes: [../notes/TERMS.md](../notes/TERMS.md) does not forbid a Claude model here.) The table is `research/core-logic/src/DzLegal.CoreLogic.Templates/phrases.json`, committed and frozen with the sheets.
 - **The baseline that needs no measure:** the app's behaviour today, the lawyer's own text. It is faithful by definition and is reported as a line of the table, not judged.
 
 ## 4. The measures
 
 **1. Faithfulness, by script, on every output** (the main measure; `scripts/step5_faithful.py`, with tests). An output is **unfaithful** as soon as one of these holds:
 
-- it holds a number, a date, an amount or an article reference that is not on its sheet, after the normalisations of the labelling guide, section 8 (digits in either script, numbers in words, dates in every format, sums with their units);
-- it holds a name that is on the script's list of all cast names of the 120 sheets and is not on its own sheet (a script cannot recognise every invented Arabic name: the judges check the rest, and the report says so);
-- **part A:** it puts between «» or quotation marks words that are not a stretch of the sheet's quoted article, or cites an article number other than the sheet's;
+- it holds a date, an amount or an article number that is not on its sheet. Dates and amounts are found by the reader's own parsers (`reader values --text`, so that there is one implementation), with the normalisations of the labelling guide's section 8; an article number is a number that follows «المادة» or «المواد». Everything on the sheet counts as "on the sheet", the quoted article's own words and the code's name included. Plain counting words and ordinals («الأول», «واحد», «ثلاث جمل») are not values: the parsers do not emit them;
+- it holds a full name of the cast lists that is not on its own sheet (compared as whole names after the level-2 normalisation; a script cannot recognise every invented Arabic name: the judges check the rest, and the report says so);
+- **part A:** it puts between «» or quotation marks a stretch of more than three words that is not, after the level-2 normalisation, a stretch of the article quoted **for that ground**; or it cites an article number other than that ground's;
 - **part B:** a date or an amount of the sheet's facts is **missing** from it (a fact without either cannot be checked for presence by script: the judges do).
 
 Reported per part and per writer: outputs faithful over outputs, with the Wilson interval. The template is run through the same script: a template that fails it is a bug to fix before the freeze.
@@ -92,7 +107,7 @@ Reported per part and per writer: outputs faithful over outputs, with the Wilson
 
 | Part | Judged | Runs per judge |
 |---|---|---:|
-| A | 120 paragraphs: the first element of each sheet | 8 |
+| A | 120 paragraphs: one of each sheet's two, drawn by seed | 8 |
 | B | 60 sheets, drawn by seed | 4 |
 
 **24 judge runs in all (12 Sonnet, 12 Opus); say so before launching.** The usable rate that counts for a writer is **the lower of the two judges'**. Both judges are Claude models: say so beside every usable rate (HANDBOOK section 5b). That is why faithfulness, which no model decides, is the main measure.
@@ -109,7 +124,7 @@ Reported per part and per writer: outputs faithful over outputs, with the Wilson
 
 | Set-up | Holds | Under 1 GB (1,000,000,000 bytes)? |
 |---|---|---|
-| S0 | the reader and templates | yes (about 0.13 GB, to be measured) |
+| S0 | the reader and templates | yes (about 0.13 GB: the reader's files as they stand when step 5 is reported, the 8-bit encoder and the heads of rung 4; the figure is updated when rung 9 is done) |
 | S1 | S0 and Jais-3-0.9B | yes if the measured sum is under 1 GB (about 0.8 GB expected) |
 | S2 | S0 and Qwen3.5-2B | no |
 | S3 | S0 and Jais-3-3.7B | no |
@@ -127,7 +142,7 @@ Reported per part and per writer: outputs faithful over outputs, with the Wilson
 
 **Answer 1, how much templates can write:** the sections whose smallest passing set-up is S0, listed; and for `grounds`, T-A's two rates beside the best model's.
 
-**Answer 2, under 1 GB:** **yes** when, for every measured section, the smallest passing set-up is S0 or S1 (for `facts`, the lawyer's own text always counts as S0); otherwise **no**, naming the section that needs more and the smallest set-up that passes it. If no set-up passes a section: say so, with each writer's rates, the kinds of error, and whether training could plausibly fix them. **Nothing is fine-tuned without the owner's word.**
+**Answer 2, under 1 GB:** **yes** when, for every measured section, the measured bytes of the smallest passing set-up are under 1,000,000,000 (for `facts`, the lawyer's own text always counts as S0); otherwise **no**, naming the section that needs more and the smallest set-up that passes it. If no set-up passes a section: say so, with each writer's rates, the kinds of error, and whether training could plausibly fix them. **Nothing is fine-tuned without the owner's word.**
 
 ## 6. Decision table
 
@@ -145,9 +160,9 @@ Reported per part and per writer: outputs faithful over outputs, with the Wilson
 
 ## 7. Done when
 
-1. The sheets, the templates and the phrase table are committed before the first output; the Arabic check of the template sentences and of the phrase table is recorded.
+1. The sheets, the templates and the phrase table are committed before the first output; the two Arabic checks (the template sentences; the phrase table) are recorded.
 2. Every writer's outputs for parts A and B exist (stripped), under `docs/research/core-logic/results/step-5/`, with the run log naming each model's digest.
-3. The faithfulness report covers every output; the script's tests pass (an invented date, an invented amount in words, a wrong article number, a quote that is not in the article, a missing date in part B, a clean output).
+3. The faithfulness report covers every output; the script's tests pass (an invented date, an invented amount in words, a wrong article number, a quote that is not in the article, a number inside the quoted article, an ordinal word, a name of another sheet, a missing date in part B, a clean output).
 4. Both judges answered every sampled sheet; no run used a tool.
 5. `reports/step-5.md` holds the table of section 5, the two answers in one sentence each, the intervals, time, memory and sizes, and the sentence on one model family.
 

@@ -1,0 +1,51 @@
+{
+ "type": "array",
+ "items": {
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+   "article",
+   "paragraph",
+   "kind",
+   "printed",
+   "words",
+   "seen",
+   "sure"
+  ],
+  "properties": {
+   "article": {
+    "type": "string"
+   },
+   "paragraph": {
+    "type": [
+     "integer",
+     "null"
+    ]
+   },
+   "kind": {
+    "type": "string",
+    "enum": [
+     "words",
+     "paragraphBreak"
+    ]
+   },
+   "printed": {
+    "type": "string",
+    "enum": [
+     "X",
+     "Y",
+     "neither"
+    ]
+   },
+   "words": {
+    "type": "string"
+   },
+   "seen": {
+    "type": "string"
+   },
+   "sure": {
+    "type": "boolean"
+   }
+  }
+ }
+}

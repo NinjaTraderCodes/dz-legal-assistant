@@ -31,7 +31,7 @@ Compare article numbers on `canonicalNumber` (the library's `number` is already 
 
 ## The store's entry
 
-The store is **keyed by (code, article, version)**. Every wording the inputs hold is an entry: the corpus's earlier versions, the library's one wording, the delta's entries (two wordings of one article are two delta entries). A lookup without a version returns the wording in force; a `cite.version` selects another, and `quote-records` honours it (it fails when that version is not in the store).
+The store is **keyed by (code, article, version)**. Every wording the inputs hold is an entry: the corpus's earlier versions, the library's one wording, the delta's entries (two wordings of one article are two delta entries). A lookup without a version returns the wording in force; a `cite.version` selects another, and `records.py quote` honours it (it fails when that version is not in the store).
 
 ```json
 {
@@ -62,7 +62,7 @@ The store is **keyed by (code, article, version)**. Every wording the inputs hol
 - **Text: the delta, then the library, then the corpus**, for the version asked. The library holds one wording; it is used only for the version it is. For CPCA and the Family Code that is the corpus's last version (the library is the corpus's import). For a library-only Civil or Commercial article (among those the claims cite: Civil 164, 174, 176, 179, 186, 323, 324 مكرر 1, 324 مكرر 5, 333, 674; Commercial 30, 173, 176), its version is the latest text of the merged ledger (Codex's ledger and the scan's) that touches the article and is dated on or before the consolidated edition (Civil Code: `consolidatedAsOf` 2007-05-13); otherwise the original ordinance. When the edition gives no date (the Commercial Code's file has none), the version is the latest text touching the article before 2007 and `ledgerClean` stays false until a page reading confirms it. When the library's wording is older than the corpus's last version, the corpus's text is served and the delta carries a `libraryCorrection` of kind `outdatedVersion`.
 - `store`: the input the text was taken from. `tier`: 1 for a text read from an Official Journal page (corpus; the library's labour laws, CPCA and Family Code; the delta), 2 for the library's Civil and Commercial Codes (official consolidated PDF). A tier-3 text never enters the store.
 - `inForceNote`: what is known about the date from which the wording applies, when that is not plain. Filled from the corpus report's `unsettled` reason for the version (for CPCA, the Law 22-13 art. 13 lead; for Commercial 187 مكرر and 187 مكرر 1, the reason the report gives), marked as a lead, until the provision is read on its Official Journal page (Law 22-13 art. 13: JO 48 of 17 July 2022); then the note quotes that reading. The modules on court sections and on exits from the ordinary courts must answer it: it is a line of their checklist ([../law/README.md](../law/README.md), "Entry into force").
-- `frenchCheck` (delta entries only; null elsewhere): `equal` when `proof.frenchChecked` is true; `mismatch` when it is false and `proof.french` is present; `noFrench` when the French edition does not hold the article (`note` says why). `grade-records` treats a deadline resting on a `mismatch` or `noFrench` entry as interpretive ([../law/README.md](../law/README.md), step 6).
+- `frenchCheck` (delta entries only; null elsewhere): `equal` when `proof.frenchChecked` is true; `mismatch` when it is false and `proof.french` is present; `noFrench` when the French edition does not hold the article (`note` says why). `records.py grade` treats a deadline resting on a `mismatch` or `noFrench` entry as interpretive ([../law/README.md](../law/README.md), step 6).
 - **`verified` is about the text only.** It says that the words were checked by the method below. It never means that a lawyer checked anything, and it is never copied into the library's own `verified` field (the app's field for a lawyer's check).
 
 ## When is an article `verified`?
@@ -87,11 +87,23 @@ The store is **keyed by (code, article, version)**. Every wording the inputs hol
 | `corpusChecked` | `oneFamily` | Codex's check of its own copy |
 | not verified | none | the entry has no `proof`; an item resting on it is grade D |
 
-**A second page reading by Codex is asked for only where the label would otherwise stay `oneFamily` on the Claude side** (owner, 14 November 2026): the labour laws (`libraryAndCodexReread`), an article being added to the delta, and a corpus version whose own `checks` name a Claude reading. Everywhere else one Sonnet reading against the corpus's text is already two families.
+**When Codex reads a page** (owner, 14 November 2026: "the second page readings where no other two-family or mechanical proof exists"). This table is the one place the cases are listed; `records.py inventory` (phase D) applies it and writes, for every cited article, its readers.
 
-**The corpus's checker** is taken to be Codex (the corpus is Codex's work), so the fresh reading of a corpus text is by Sonnet 5.5; when a version's `checks` name a Claude reading, the fresh reading is by Codex instead.
+| Case | Readers |
+|---|---|
+| An article being added to the delta (missing from the store, or a new wording the triage found) | Sonnet, then Codex; Opus settles a difference |
+| An article of Law 90-11 or 90-04 held by the library | **Codex only** (the library's two readings were Claude's) |
+| A corpus version whose own `checks` name a Claude reading | Codex |
+| A Civil or Commercial Code article held by the corpus only, whose state is not `checked` | one reading by each family |
+| A re-reading that differs from the store's text | a reading by the other family, blind |
+| A word a reader could not read (`[؟]`) | the other family reads the close-up |
+| Everything else that needs a reading (a corpus text checked by Codex; a CPCA or Family Code article in critical use) | Sonnet only: with the corpus it is already two families |
 
-**The critical use rule (the only place it is stated).** `verified` is necessary but not always enough. For an item that is **a deadline, a prior step, a section rule or an exit**, `corpusChecked` alone does not satisfy condition 2 of the grades ([../rules/GRADES.md](../rules/GRADES.md)): every article in the item's basis needs a fresh page reading recorded in `readings.jsonl`, that is, any `verifiedBy` other than `corpusChecked`. For every other item, `corpusChecked` is enough. `grade-records` applies this; the store only reports `verifiedBy`. The reason: for CPCA and the Family Code, "checked" is Codex's check of its own copy, and the items that can block or send a case elsewhere must not rest on one family's reading. In practice the first pass re-reads every CPCA and Family Code seed article, so the rule rarely has to wait.
+**A wording settled by a third reading** is `twoFamilies` only where the settled words are the Codex reading's (the settler, a Claude model, and Codex then agree). Where the settler sided with the Claude reading against Codex, one more blind Codex reading of the close-up is asked; if it still differs, the entry's proof is `oneFamily`, and an item in critical use that rests on it cannot be grade A.
+
+**The corpus's checker is read per version**, from the version's own `checks`: it is Codex unless they name a Claude reading (the corpus is Codex's work, but some of its versions were checked by a Claude reading: the first pass of 13 and 14 November therefore holds both Claude and Codex re-readings of CPCA articles). The fresh reading is by the other family.
+
+**The critical use rule (the only place it is stated).** `verified` is necessary but not always enough. For an item that is **a deadline, a prior step, a section rule or an exit**, `corpusChecked` alone does not satisfy condition 2 of the grades ([../rules/GRADES.md](../rules/GRADES.md)): every article in the item's basis needs a fresh page reading recorded in `readings.jsonl`, that is, any `verifiedBy` other than `corpusChecked`. For every other item, `corpusChecked` is enough. `records.py grade` applies this; the store only reports `verifiedBy`. The reason: for CPCA and the Family Code, "checked" is Codex's check of its own copy, and the items that can block or send a case elsewhere must not rest on one family's reading. In practice the first pass re-reads every CPCA and Family Code seed article, so the rule rarely has to wait.
 
 The first probe of a page reading (12 November): Codex read art. 19 of Law 90-04 from the page image and gave 65 of 66 words as the library has them; the one difference («يقدم» for «يقيم») was Codex's misreading, settled by looking at the image. Expect that order of error, and expect it in both directions.
 

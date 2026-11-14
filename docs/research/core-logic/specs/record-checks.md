@@ -4,19 +4,19 @@
 
 All scripts live in `research/core-logic/` (C# for anything the evaluator shares; Python is allowed for the text scripts, run with Python 3.12, `C:\Users\TheShadow\AppData\Local\Programs\Python\Python312\python.exe`, which has pytest; tests by `<that python> -m pytest research/core-logic/scripts/tests`). Each has tests on small fixtures **before** it is used on a record. Each prints a summary and writes its report to the path of the table "Where the reports go" below.
 
-**A file an agent wrote is never rewritten by a script.** Scripts write beside it: `quote-records` writes a quoted copy in a `quoted/` folder next to the agent's file (for example `rules/derivations/a/quoted/<unit>.json`, `rules/reconciled/quoted/<unit>.json`), and every later stage reads the quoted copy. So the derivations stay exactly as the agents returned them.
+**A file an agent wrote is never rewritten by a script.** Scripts write beside it: `records.py quote` writes a quoted copy in a `quoted/` folder next to the agent's file (for example `rules/derivations/a/quoted/<unit>.json`, `rules/reconciled/quoted/<unit>.json`), and every later stage reads the quoted copy. So the derivations stay exactly as the agents returned them.
 
 | Script | Reads | Writes | Fails the record when |
 |---|---|---|---|
 | `rules check` | a record | nothing | it breaks the schema, the contract, a reference, the slot list, an effect rule, or (with `--store`) cites what the store does not hold |
-| `quote-records` | a record, the article store | the quoted copy: `quote`, `source` in every statement | a cited article, version or paragraph does not exist, or is repealed |
+| `records.py quote` | a record, the article store | the quoted copy: `quote`, `source` in every statement | a cited article, version or paragraph does not exist, or is repealed |
 | `check-values` | a quoted record | a report | a period, an article number or a sanction word in a field is not what the quoted text says |
 | `flag-neighbours` | a quoted record, the store | a report | (never fails; lists what a reader must look at) |
 | `merge-checklists` | the from-memory lists, the catalogue entry, the November unit | the merged checklist | (never fails) |
-| `compare-derivations` | records A and B of one unit (quoted) | the difference list, the id map | (never fails; its list is the reconciler's agenda) |
+| `records.py compare` | records A and B of one unit (quoted) | the difference list, the id map | (never fails; its list is the reconciler's agenda) |
 | `compare-c` | the third derivation of a module (Sonnet, flat route), as returned, and A and B | the C comparison | (never fails) |
-| `flatten-imports` | a claim record, its final modules | the flattened claim record | a block does not exist, or an id collides |
-| `grade-records` | a quoted record, the id map, the difference list, the attack register, the amendment ledger | `grading` in every graded item; `shownEffect`, `toCheck` in examples | (never fails) |
+| `records.py flatten` | a claim record, its final modules | the flattened claim record | a block does not exist, or an id collides |
+| `records.py grade` | a quoted record, the id map, the difference list, the attack register, the amendment ledger | `grading` in every graded item; `shownEffect`, `toCheck` in examples | (never fails) |
 | `check-checklist` | a record, the merged checklist, the neighbour flags | a report | a checklist line or a flag has no answer |
 
 ## `rules check`
@@ -32,9 +32,9 @@ The tests of `research/core-logic/tests/DzLegal.CoreLogic.Contracts.Tests`, made
 7. Each condition has exactly one of `all`, `any`, `not`, `slot`.
 8. Script fields. A file written by an agent (derivation, reconciled, final-candidate) must **not** contain `quote`, `source`, `grading`, `history.agreementBeforeReconciliation` or an example's `shownEffect` / `toCheck`. With `--quoted`, the script fields `quote` and `source` are accepted (a quoted copy). A final record must contain `quote`, `source` and `grading` for every statement.
 9. For a claim record: every element of the claim in `data/law/claim-elements.json` is carried by at least one `elements[].events`, and every request kind listed there appears in `requests` (or is imported). A missing one is allowed only with a checklist line that says why.
-10. With `--store <articles.json>`: every `cite` is in the store (code, article, the version when given, each paragraph), and none is repealed. This is the same lookup as `quote-records`, run early so that a deriver who cites a missing text is told at once.
+10. With `--store <articles.json>`: every `cite` is in the store (code, article, the version when given, each paragraph), and none is repealed. This is the same lookup as `records.py quote`, run early so that a deriver who cites a missing text is told at once.
 
-## `quote-records`: agents point, the script quotes
+## `records.py quote`: agents point, the script quotes
 
 For every statement: look the `cite` up in the store, which is keyed by (code, article, version) (the version in force when `cite.version` is absent; the version it names otherwise, and the script fails when that version is not in the store); take the paragraphs listed (all of them when `paragraphs` is empty or absent); write, in the quoted copy, `quote` (paragraph number, exact text, SHA-256 of the UTF-8 text) and `source` (`tier`, `store`, and later `textAsOf`, `ledgerRefs`, `ledgerClean` from the amendment ledger).
 
@@ -58,7 +58,7 @@ For every statement that cites some paragraphs of an article and not all: list e
 
 Each flag must be **answered in the record**: the paragraph is cited by another statement, or a checklist line with `doesNotApply` names it and says why. `check-checklist` refuses a final record with an unanswered flag. In the example module, paragraph 2 of CPCA art. 501 («غير أنه في حالة ...») is cited by its own statement, `b11`; in the example claim, the uncited second paragraph of Civil Code art. 309 is answered by checklist line `k8`. Those are the two patterns.
 
-## `compare-derivations`: A against B, field by field, then case by case
+## `records.py compare`: A against B, field by field, then case by case
 
 Two derivations do not use the same ids, so the comparison works on **content** (on the quoted copies):
 
@@ -71,7 +71,7 @@ Two derivations do not use the same ids, so the comparison works on **content** 
 
 Then **case by case**: `rules examples` runs A's worked examples, B's, and the boundary-case writer's through both records (rule-evaluator.md, "Boundary cases"). Every case on which the two records give a different declared effect for matched items, a different `LastDay` or `DaysLeft`, a different section or a different set of questions is a difference, even when the fields look equal. This catches what the field comparison cannot: two records with the same period and different conditions, or a different counting inside the warning band.
 
-Outputs: `reports/<unit>.differences.json` and `reports/<unit>.idmap.json` (the item ids of A, B and, once it exists, the reconciled record, matched by content; `rules examples --against` and `grade-records` read it). The **agreement rate before reconciliation**: matched and equal fields over all compared fields, per kind of field. That rate is condition 4 of the grades, item by item, **always A against B**, and a headline figure of the step 1 report. **The comparison runs before the reconciler sees anything**, and its reports are committed before the reconciled record.
+Outputs: `reports/<unit>.differences.json` and `reports/<unit>.idmap.json` (the item ids of A, B and, once it exists, the reconciled record, matched by content; `rules examples --against` and `records.py grade` read it). The **agreement rate before reconciliation**: matched and equal fields over all compared fields, per kind of field. That rate is condition 4 of the grades, item by item, **always A against B**, and a headline figure of the step 1 report. **The comparison runs before the reconciler sees anything**, and its reports are committed before the reconciled record.
 
 ## `compare-c`: the third derivation of a module, kept as returned
 
@@ -81,7 +81,7 @@ Output: `reports/<unit>.c-comparison.json`. C never counts in condition 4. **A m
 
 **How it reads C, and cites** (fixed on the first module, 14 November 2026, when the first version read C as if it were a record and so saw none of its cites): C is read in its own schema (`prompts/schemas/module-derivation-c.schema.json`), never as a record. Cites are compared per paragraph (a cite without paragraphs covers the whole article). A cite counts against C only for an article of the texts C was given (`--texts reports/<unit>.texts.json`): C cannot cite what it was not shown. The rows still list every cite, with `inTextsGivenToC`, so the reconciler sees what A and B found outside those chapters.
 
-## `flatten-imports`
+## `records.py flatten`
 
 For each `imports` entry of a claim record, in order:
 
@@ -97,7 +97,7 @@ Copied items keep the module's `grading`. The module's worked examples and check
 
 **A claim record never restates a module's rule in its own words.** If a derivation writes its own labour-conciliation deadline inside `unpaid-wages`, the reconciler replaces it by the import and reports a difference between the claim's version and the module's, which is one more independent check of the module.
 
-## `grade-records`
+## `records.py grade`
 
 Implements [../rules/GRADES.md](../rules/GRADES.md) exactly, from its inputs: the quoted record; `reports/<unit>.idmap.json` and `reports/<unit>.differences.json` (an item of the record that the id map does not trace to both A and B gets `addedAfterDerivation`; an imported item keeps the module's grading); the attack register `reports/<unit>.attacks.json`; the amendment ledger of step 2; the store's `verified`, `verifiedBy` and `frenchCheck` for each cited (code, article, version). It applies the critical-use rule of condition 2 exactly as [article-store.md](article-store.md) states it ("The critical use rule": for a deadline, a prior step, a section rule or an exit, every cited article needs a `verifiedBy` other than `corpusChecked`), and treats a deadline resting on an entry whose `frenchCheck` is `mismatch` or `noFrench` as interpretive (condition 3). It writes `grading` everywhere the schema allows it, `history.agreementBeforeReconciliation`, and, in every worked example's expected findings, `shownEffect` and `toCheck` (what the app shows once the grade is applied, all slots confirmed). It sets `"stage": "final"` and writes `rules/final/<unit>.json`. It also reads the owner's two decision files of 14 November 2026, `law/text-disputes.json` (a paragraph kept with two readings: grade C, reason `disputedText`) and `law/triage-status.json` (a code whose triage is not complete: reason `triageOpen`, never A); see [../rules/GRADES.md](../rules/GRADES.md).
 
@@ -120,7 +120,7 @@ Derivation C and the boundary-case writer must not get texts chosen by someone w
 - every article of each chapter (the library's `path`, or the corpus's) that contains an article named in the unit's "where to start" line of the handbook's module table, or requested in `law/requests.jsonl` for the unit (by an earlier run); for a claim type, the articles of its catalogue entry stand for the "where to start" line;
 - **From the second module on (the owner's decision of 14 November 2026, after Civil Code 164 was missed):** every chapter the module's seed inventory touches, and never anything from A's or B's records. `records.py unit-texts <unit> --seed law/seed-inventory.json` (`seed_starts`) takes the module's seed articles (`pointer:<unit>` in the inventory), goes one heading up from each one's chapter, and adds every chapter under that heading that holds any seed-inventory article, whatever its source. The pointer's own chapter alone would still have missed 164: 164 is in the seed inventory for three claim types, not for formal-notice, and sits in the chapter before 176 to 187 under the same title «الباب الثاني آثار الالتزام». Measured on formal-notice: the rule adds the chapters of 164 and of the contract's formation, nullity and effects; the cited paragraphs outside the texts given fall from A 12, B 6 to A 11, B 5 (of 27 cited by A or B). The rest are exceptions in other chapters and codes (sale 392, lease 480, works 553 and 558, Commercial Code 177, CPCA 306, 310, 406): no chapter rule reaches them, and the step 1 report gives this count for every module (`compare-c` writes it as `outsideTextsGiven`).
 - whole chapters, every paragraph numbered, rendered as `[<code> <article> ¶<n>] <text>`.
-- where the store has no chapter for an article (the library carries no headings, and the corpus lacks some articles: Civil Code 160 to 188), the chapter is the deepest heading of the **official consolidated edition** (tier 2), read by `records.py unit-texts` in the order the edition prints its articles; only the headings are taken from the edition, never a word of an article. An article whose heading is not found stands alone, marked `noHeadingFound`. A chapter member missing from the store is fetched and read (law/README.md) **before** the texts are committed: formal-notice's chapter needed Civil Code 177, 178, 183 to 185 and 187 (14 November 2026).
+- where the store has no chapter for an article (the library carries no headings, and the corpus lacks some articles: Civil Code 160 to 188), the chapter is the deepest heading of the **official consolidated edition** (tier 2), read by `records.py unit-texts` in the order the edition prints its articles; only the headings are taken from the edition, never a word of an article. An article whose heading is not found stands alone, marked `noHeadingFound`. A chapter member missing from the store is listed in the file as `missingFromStore`. **It is fetched and read (law/README.md) before the texts are committed only when its chapter holds one of the unit's own pointer articles** (formal-notice's chapter needed Civil Code 177, 178, 183 to 185 and 187, 14 November 2026); the members of the other chapters stay listed, and phase D fetches those a final record cites.
 
 ## Where the reports go
 
@@ -132,8 +132,8 @@ All under `docs/research/core-logic/rules/reports/`, committed:
 | `<unit>.checklist.json` | `merge-checklists` | stage 4 |
 | `<unit>.flags.<a\|b\|reconciled>.json` | `flag-neighbours` | stages 4 and 6 |
 | `<unit>.values.<a\|b\|reconciled\|final>.json` | `check-values` | stages 4, 6 and 9 |
-| `<unit>.differences.json` | `compare-derivations` | stage 4, committed before the reconciler runs |
-| `<unit>.idmap.json` | `compare-derivations` (A, B), completed for the reconciled record at stage 6 | stages 4 and 6 |
+| `<unit>.differences.json` | `records.py compare` | stage 4, committed before the reconciler runs |
+| `<unit>.idmap.json` | `records.py compare` (A, B), completed for the reconciled record at stage 6 | stages 4 and 6 |
 | `<unit>.c-comparison.json` | `compare-c` (modules only) | stage 4 |
 | `<unit>.reconciliation.md` | the reconciler | stage 5 |
 | `<unit>.attacks.adversary.json` | the adversary | stage 7 |
@@ -142,11 +142,11 @@ All under `docs/research/core-logic/rules/reports/`, committed:
 | `<unit>.boundary-view.json` | Codex's blind view on boundary cases the verifier set aside | stage 8b |
 | `<unit>.support.json` | the support check, split back per unit by its script | stage 7 |
 | `<unit>.attacks.json` | the verifier: the register of every attack and its verdict | stage 8 |
-| `<unit>.grades.json` | `grade-records` (the grades and reasons per item) | stage 9 |
-| `grades.md` | the executor: the grade report of [../rules/GRADES.md](../rules/GRADES.md) | end of step 1 |
+| `<unit>.grades.json` | `records.py grade` (the grades and reasons per item) | stage 9 |
+| `grades.md` | `unit.py regrade --all`: the grade report of [../rules/GRADES.md](../rules/GRADES.md) | after each planted-error round, and in phase D after the regrade |
 | `planted-errors.md`, `planted-errors.json` | `planted.py score`: the rates of both planted-error rounds ([planted-errors.md](planted-errors.md)) | phases B and D |
 
-**Shapes.** Each report gets a JSON schema with a test at its first use (as the Codex output schemas do). At least: a difference is `{ "id", "kind", "a", "b", "field", "matchedOn" }`; an id-map entry is `{ "kind", "a", "b", "reconciled" }`; an attack in the register is `{ "id", "who": "adversary" | "attack" | "codex" | "support" | "derivationC" | "boundaryCase" | "neighbourFlag" | "owner" | "store", "target", "kind", "claim", "evidence", "verdict": "fixed" | "refuted" | "open", "verifierQuote", "change" }`.
+**Shapes.** Each report gets a JSON schema with a test at its first use (as the Codex output schemas do). At least: a difference is `{ "id", "kind", "a", "b", "field", "matchedOn" }`; an id-map entry is `{ "kind", "a", "b", "reconciled" }`; an attack in the register is `{ "id", "who": "adversary" | "attack" | "codex" | "support" | "derivationC" | "boundaryCase" | "neighbourFlag" | "values" | "owner" | "store", "target", "kind", "claim", "verdict": "fixed" | "refuted" | "open", "verifierQuote", "quoteRef", "change" }`.
 
 ## The planted-error test
 

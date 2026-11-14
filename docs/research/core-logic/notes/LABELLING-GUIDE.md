@@ -38,7 +38,7 @@ The file format is [`note.schema.json`](note.schema.json). Writers and judges gi
 
 - Label the claim the lawyer wants to bring, as the note shows it, by the **facts and the requests together**. The same facts can carry different claims: an unpaid price with a request to pay is `unpaid-sale-price`; with a request to undo the sale it is `contract-rescission`.
 - **Several claims in one note:** label each one that has its own request (a worker who asks for his unpaid wages and for reinstatement after dismissal: `unpaid-wages` and `abusive-dismissal`). At most three. A fact mentioned in passing, with no request, is not a claim.
-- **`outside`:** the matter is not one of the 21 types. Give `outsideKind`, one of: `administrative` (a claim against the State, a wilaya, a commune or a public administrative body; annulment of an administrative decision), `criminal` (a complaint, a civil party before the criminal judge), `family-other` (inheritance, kafala, proof of marriage or of descent, guardianship of an adult), `civil-status` (correction of a civil-status record), `property-other` (partition, boundary, pre-emption, possession), `payment-order` (a request for an order to pay), `urgent` (a request to the judge of urgent matters), `enforcement`, `company`, `other`. `outside` is never combined with a claim id.
+- **`outside`:** the matter is not one of the 21 types. Give `outsideKind`, one of: `administrative` (a claim **against** the State, a ministry, a wilaya, a commune or a public institution of an administrative character; annulment of an administrative decision. A public body that is the plaintiff does not by itself put a note outside), `criminal` (a complaint, a civil party before the criminal judge), `family-other` (inheritance, kafala, proof of marriage or of descent, guardianship of an adult), `civil-status` (correction of a civil-status record), `property-other` (partition, boundary, pre-emption, possession), `payment-order` (a request for an order to pay), `urgent` (a request to the judge of urgent matters), `enforcement`, `company`, `other`. `outside` is never combined with a claim id.
 - **Near the border:** the frozen label scheme carries a table "looks like / is / what tells them apart" ([SCHEME.md](SCHEME.md), section 9; the rule records' `boundaries` add rows to it later). Use it; do not decide a border from your own knowledge of the law.
 
 ## 3b. The plaintiff's role
@@ -47,7 +47,7 @@ Seven claim types can be brought from more than one side: `contract-rescission`,
 
 - **The plaintiff is the lawyer's client** unless the note says otherwise. Read the role from what the note says of that party: «موكلي المشتري»، «بصفته المؤجر»، «الأم الحاضنة»، «صاحب المشروع».
 - **Label the relation the note describes,** not the one the claim type lists first: a contract for works is `works_contract`, not `sale`. A contract that fits none of the named relations takes the claim type's `other` pair when it has one.
-- **`unknown`** (both parts, no quote) when a careful reader cannot tell from the note which side the plaintiff is on, or which of the listed relations the contract is. Do not guess from the requests alone when two roles could ask for the same thing.
+- **`unknown`** (both parts, no quote) when a careful reader cannot tell from the note which side the plaintiff is on, or which of the listed relations the contract is. It is the role's only uncertain answer (there is no `unclear` for a role). Do not guess from the requests alone when two roles could ask for the same thing.
 - **The role has no polarity.** When the other party contests the plaintiff's capacity («ينازع في صفته»), the label is still what the note states of the plaintiff.
 - For the fourteen other claim types the role is fixed by the claim type; nobody labels it.
 
@@ -125,6 +125,8 @@ Learn these; most disagreements between judges come from them. Their sentences i
 | 34 | «لا تدين المؤسسة للعامل بأي أجر متأخر، وطلبه يقتصر على التعويض» (`unpaid-wages`) | `wages_unpaid` **denied** | Read the meaning against the whole element (rule 3), not the grammatical form. The proposition is that wages due were not paid; a sentence that says nothing remains due says it is false. Rule 1's negative propositions are those that say the element's own content («لم يتقاض أجوره»). |
 | 35 | `facts`: «ينفي المشتري أن يكون قد وقع عقد البيع المحتج به»; `documents`: «عقد البيع» (`unpaid-sale-price`) | `contract_concluded` disputed, `disputedBy: defendant` | To deny one's signature on the contract is to contest that one concluded it. The named document does not override the contest (section 4). |
 | 36 | «تعتبر المستخدمة أن تسريح العامل كان جزاء لتأخره المتكرر» | `dismissal` stated | An employer who gives a reason for ending the work relation admits the act (rule 2). Every name of the act is the act: فصل، تسريح، عزل، إنهاء علاقة العمل. |
+
+**The actor of an element.** `claim-elements.json` gives each element its usual actor: `plaintiff`, `defendant`, or a position (`lessor`, `lessee` …), which means the plaintiff when it is the plaintiff's position and the defendant otherwise. Where it gives none (a contract concluded, a marriage), the actor is `unknown` unless the note says who acted.
 
 ## 5. The 75 elements
 
@@ -271,7 +273,7 @@ Notes to the table:
 
 ## 6. Slots
 
-A slot is a question the app will ask the lawyer ([`../slots.json`](../slots.json)). The reader proposes an answer when the note gives one. **A slot is not a copy of an event:** its question may be narrower. Label each slot with `readFromNote: true`, for every note, by these rules. `unknown` carries no quote.
+A slot is a question the app will ask the lawyer ([`../slots.json`](../slots.json)). The reader proposes an answer when the note gives one. **A slot is not a copy of an event:** its question may be narrower. Label each slot with `readFromNote: true`, for every note, by these rules. On a note of a claim type the slot is not asked for (SCHEME.md, section 5: the two labour slots outside the two labour types), and on a note outside the catalogue, the slot is `unknown` and is not scored. `unknown` carries no quote.
 
 | Slot | `yes` / value when | `no` when | `unknown` when |
 |---|---|---|---|
@@ -281,14 +283,14 @@ A slot is a question the app will ask the lawyer ([`../slots.json`](../slots.jso
 | `nonconciliation_record` | the note states the record, names it in `documents`, or says the conciliation before the office failed | the note says the dispute was not put to the conciliation office, or that no record was drawn up | nothing on conciliation; an attempt whose outcome is not said |
 | `nonconciliation_record_delivered_on` | the date the note gives for the **delivery** of the record («سلم بتاريخ», «استلم المحضر في», «تسلم نسخة منه يوم»), also when given as the same day as another date of the note (section 8) | — | the note gives only the date of the record or of the hearing («محضر مؤرخ في», «جلسة») → that date goes to the event, and this slot stays unknown |
 | `contract_date` | the date of the contract named by the claim type's `contract_concluded` element (the sale, the lease, the contract of section 5.2) | — | not given, or a relative one; and always for a claim type without a `contract_concluded` element, even when the note dates another contract (a loan, a marriage, an employment: those dates go to their own events) |
-| `public_body_party` | a party is named as one of the bodies in the list frozen with the label scheme ([SCHEME.md](SCHEME.md), section 5: the State, a ministry, a wilaya, a commune, a public institution of an administrative character) | every party is a private person or a company, in the note's own words; also when the note itself names a party as a public company or as a public institution of an industrial and commercial character (neither is on the list) | a party's nature is not clear from the note (a "مؤسسة" with nothing more) |
+| `public_body_party` | a party is named as one of the bodies in the list frozen with the label scheme ([SCHEME.md](SCHEME.md), section 5: the State, a ministry, a wilaya, a commune, a public institution of an administrative character) | every party is a private person or a company, in the note's own words; also when the note itself names a party as a public company («شركة عمومية», «مؤسسة عمومية اقتصادية») or as a public institution of an industrial and commercial character (neither is on the list) | a party's nature is not clear from the note («مؤسسة» or «مؤسسة عمومية» with nothing more) |
 | `property_registered` | the note says the property or its title is published or has a land book (مشهر بالمحافظة العقارية، دفتر عقاري، عقد رسمي مشهر) | the note says it is not (غير مشهر، عقد عرفي غير مشهر) | nothing on publication; or no property in the case |
 
 The trap that matters most: **the date of the non-conciliation record is not the date of its delivery.** The six-month period of CPCA art. 504 runs from delivery. A reader that copies the record's date into the delivery slot would make the app compute a wrong last day. When the note has one date and does not say which it is («محضر عدم المصالحة بتاريخ 15 فيفري 2026»), it is the record's date.
 
 **`notice_date` and `notice_means` follow `notice_served`.** They are `unknown` whenever `notice_served` is not `yes`, even when the note gives the date or the means of an intended notice or of an informal demand («ينوي الموكل إعذاره بواسطة محضر قضائي»: `notice_means` unknown). The app asks them only after a formal notice (`askedWhen` in `slots.json`).
 
-Slots with `readFromNote: false` are not labelled; the app asks the lawyer. The label-scheme freeze of step 3 fixes the final list (a slot is read from the note only if lawyers usually write the fact, and if a deadline, a prior step or an exit depends on it). A slot that becomes `readFromNote: true` at the freeze gets its row in the table above, and its items in the guide test, before the scheme is frozen.
+Slots with `readFromNote: false` are not labelled; the app asks the lawyer. Scheme 1.0 fixes the list at the eight slots of the table above ([SCHEME.md](SCHEME.md), section 5). A slot that a rule record adds later stays a question for the lawyer; if it is later decided that the reader should read it ([../specs/scheme-extension.md](../specs/scheme-extension.md)), it gets its row in the table above and its six items in the guide test first, and the guide's version is bumped.
 
 ## 7. Requests
 

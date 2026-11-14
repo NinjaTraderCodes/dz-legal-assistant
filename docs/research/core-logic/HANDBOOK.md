@@ -104,7 +104,7 @@ The owner is the product owner and developer. A reviewer (another Claude) writes
 
 ### 14 November 2026, evening: the new order and Codex's three roles
 
-1. **The order, by impact on the software:** "the reader of the lawyer's notes comes first, the high-harm rules in parallel, the law clean-up later." Steps 3 and 4 start now, on a label scheme frozen now. Step 1 runs beside them, "high-harm modules first (limitation and periods with CPCA 504, labour conciliation, courts and sections and exits from the ordinary courts), then the claim types". Step 5 once a few claim types are final. Deferred until before the freeze: step 2's second pass, text passes beyond what a record needs, the remaining Journal triage, the Legal Review answers, "with rules on unverified text staying grade D ("to check", never block) until then". Hidden v3 and the freeze last.
+1. **The order, by impact on the software:** "the reader of the lawyer's notes comes first, the high-harm rules in parallel, the law clean-up later." Steps 3 and 4 start now, on a label scheme frozen now. Step 1 runs beside them, "high-harm modules first (limitation and periods with CPCA 504, labour conciliation, courts and sections and exits from the ordinary courts), then claim types". Step 5 once a few claim types are final. Deferred until before the freeze: step 2's second pass, text passes beyond what a record needs, the remaining Journal triage, the Legal Review answers, "with rules on unverified text staying grade D ("to check", never block) until then". Hidden v3 and the freeze last.
 2. **Codex has three roles, and no other:**
    - "Note writer: the pilot, the training notes, and development and challenge notes alongside Claude's (20 notes per call, 2 to 4 calls in parallel, each in its own empty scratch folder, read-only sandbox, event-log check)."
    - "Second family for checks: the support check, the blind view on disputed boundary cases, and the second page readings where no other two-family or mechanical proof exists, in the background. No attack on every record."
@@ -114,8 +114,8 @@ The owner is the product owner and developer. A reviewer (another Claude) writes
 5. **The filter on training notes is not Claude:** "code checks and a local model (Gemma 4 E4B or Jais-3-3.7B) decide keep or drop; Opus only measures label noise on a sample and stops to show me if it passes 10 %."
 6. **Claude never writes training notes:** "Claude (Opus or Sonnet) writes test notes, the mirror set and hidden v3, never training notes, unless Anthropic authorizes it."
 7. **What may tune the reader:** "anything that changes the reader (encoder choice, early stopping, temperature scaling, thresholds, head selection) is tuned only on the Codex half of dev and on clean notes. The Sonnet half is used only to measure and report, never to choose or tune. Same for the challenge set."
-8. **Blocking.** A rule may block the clean export "only when the text was proved mechanically or by two families, the value is matched by script, derivations A and B agreed, no attack is open, and the planted-error round caught that kind of error 90 % of the time; otherwise the rule warns." A Codex check counts as the second family.
-9. **Party kinds** in the label scheme are the app's relation and plaintiff-position lists and each event's actor.
+8. **Blocking.** A rule may block the clean export "only when the text was proved mechanically or by two families, the value is matched by script, derivations A and B agreed, no attack is open, and the planted-error round caught that kind of error 90 % of the time; otherwise the rule warns. If Codex passes the speed trial, a Codex check counts as the second family for these conditions." (Of the trial the owner then said: "Today's figures already pass"; so a Codex check counts.)
+9. **Party kinds.** The owner confirmed the plan's reading: the app's relation and plaintiff-position lists and each event's actor, added to the reader's output as an optional part. ([notes/SCHEME.md](notes/SCHEME.md), section 3, says exactly which pairs that covers, and which values of the app's lists it never outputs.)
 10. **The laptop** writes and filters notes every night on mains, and by day whenever the owner says it is free.
 11. **Process.** Light checks after each commit, the full CI before every push; one driver for a unit's stages; the owner's questions bundled per batch of units.
 
@@ -133,7 +133,7 @@ Breaking one of these is not a judgment call. If a rule stops you, stop and tell
 
 **Money, keys, accounts.**
 - $0. No paid API, service or rented machine. No new account without asking.
-- **The two API keys.** `OPENROUTER_API_KEY` and `GOOGLE_API_KEY` are Windows user variables, so every process inherits them. `research/core-logic/scripts/clean_env.py` removes them from every script that imports it (all of them do), from every Codex call, and from a shell command run as `python clean_env.py <command>`. Agents started by the Agent tool inherit the session's environment, which no script can change: **the session itself should be started through the wrapper** (section 7, "Every session"). Until it is, every agent prompt keeps its line "remove both keys before your first command". Never print, log or commit a key.
+- **The two API keys.** `OPENROUTER_API_KEY` and `GOOGLE_API_KEY` are Windows user variables, so every process inherits them. `research/core-logic/scripts/clean_env.py` removes them from every script that imports it (all of them do), from every Codex call, and from a shell command run as `python clean_env.py <command>`. Agents started by the Agent tool inherit the session's environment, which no script can change: **the session itself is started through the wrapper, and no agent is launched from a session whose key check does not print `clean`** (section 7, "Every session": the owner's rule is that the removal is automatic, not a prompt instruction). The prompts' own line "remove both keys before your first command" stays as a second safeguard. Never print, log or commit a key.
 - The owner's name and email address never go into a prompt, a search, a request header or a file sent anywhere.
 
 **Who may write what (terms).** Training notes are written by Codex, by the local models, or by code. **A Claude model never writes a training note, never labels one, and never decides whether one is kept.** Claude writes and relabels test sets, and measures. Every note records its writer, its filter and its relabellers ([notes/TERMS.md](notes/TERMS.md)).
@@ -141,7 +141,7 @@ Breaking one of these is not a judgment call. If a rule stops you, stop and tell
 **What may tune the reader.** A choice that changes the reader (the encoder, an epoch count, a temperature, a threshold, which head or rung is kept) is made only on notes written by Codex or by a local model: the Codex half of dev, the Codex half of the challenge set, and the clean-dev notes. Notes written by Sonnet (the other halves, the mirror set, hidden v3) only measure. The loader enforces this ([specs/notes-pipeline.md](specs/notes-pipeline.md), "The loader").
 
 **Tools and downloads that are allowed.** Anything not on this list: ask the owner first.
-- Already on the laptop: .NET 10; Python 3.12 with pytest (`C:\Users\TheShadow\AppData\Local\Programs\Python\Python312\python.exe`); the Python environment `C:\Users\TheShadow\dz-arch-research\venv` (torch 2.15.0+cpu, transformers 5.22.2, onnxruntime 1.31.1), left from Part 7, used as it is; `pdftotext` and `pdftoppm`; Windows PowerShell 5.1 (PowerShell 7 is **not** installed: never write `pwsh`); Codex CLI 0.167.0; Ollama with `gemma4:e4b`, `jais3-3.7b-low`, `jais3-0.9b-low`, `hf.co/unsloth/Qwen3.5-2B-GGUF:Q4_K_M` and `gemma3:4b`.
+- Already on the laptop: .NET 10; Python 3.12 with pytest (`C:\Users\TheShadow\AppData\Local\Programs\Python\Python312\python.exe`); the Python environment `C:\Users\TheShadow\dz-arch-research\venv` (torch 2.15.0+cpu, transformers 5.22.2, onnxruntime 1.31.1, onnx 1.23.2, scikit-learn 1.9.1, numpy 2.5.4), left from Part 7, used as it is; `pdftotext` and `pdftoppm`; Windows PowerShell 5.1 (PowerShell 7 is **not** installed: never write `pwsh`); Codex CLI 0.167.0; Ollama with `gemma4:e4b`, `jais3-3.7b-low`, `jais3-0.9b-low`, `hf.co/unsloth/Qwen3.5-2B-GGUF:Q4_K_M` and `gemma3:4b`.
 - **The encoders step 4 starts from, and no other:** the two original pre-trained models, each from its official page, in the revision named here (both Apache 2.0, read on 13 November 2026): `CAMeL-Lab/bert-base-arabic-camelbert-mix`, revision `9be352797bdf28a9ae21e2ae582aaaca7abdb22d`; and `CAMeL-Lab/bert-base-arabic-camelbert-msa`, revision `277069fd3645fedb22b746caf38d111aadee0241`. For each download record the size and SHA-256 of every file, the revision, the licence link and the date, and put the files in `C:\Users\TheShadow\dz-core-research\models\pretrained\`. No account is needed; if the page asks for one, stop and ask the owner.
 - **Never start from a Part 7 fine-tuned copy.** Those were fine-tuned on notes written by Claude models and are not for anything that ships.
 - Downloads: issues of the Official Journal from `joradp.dz`, through the one fetching script; the two encoders above; the NuGet packages `Microsoft.ML.OnnxRuntime` 1.31.1 and `Microsoft.ML.Tokenizers` 3.0.0 (MIT); a small pure-Python package from PyPI when a script needs one, installed into an environment of your own under `C:\Users\TheShadow\dz-core-research\`, never into Part 7's (record its name, version and licence in the report).
@@ -154,7 +154,7 @@ Breaking one of these is not a judgment call. If a rule stops you, stop and tell
 - **Note sets are not committed** (the repository is public). They live in `C:\Users\TheShadow\dz-core-research\notes-work\sets\<set>.jsonl`, and the repository holds their counts, statistics and SHA-256. Ask the owner before committing any set.
 - Never name a folder `bench…` (the repository ignores such folders).
 
-**After every commit: the light checks.** `python research/core-logic/scripts/check_commit.py` (about a minute): the commit touches nothing outside the two folders; `research/core-logic/CoreLogic.sln` builds with 0 warnings and its tests pass; `python -m pytest research/core-logic/scripts/tests` passes. **Before every push: the full CI**, on a CPU as idle as you can get: the root solution's build and tests, the research solution's, pytest, and one build of both solutions with SDK 10.0.115 through a temporary `global.json`, restored afterwards. Never delete, skip or weaken a test; never suppress a warning. Small commits, clear messages, ending with the `Co-Authored-By:` line of the model that made them. Nothing is built while an agent is running the rules tool, and nothing is built, tested or committed while a training or a timing runs.
+**After every commit: the light checks.** `PY research\core-logic\scripts\check_commit.py` (`PY` is the Python of section 7, "Every session"; about a minute): the commit touches nothing outside the two folders; pytest passes; and, when the commit touches the research code, its tests, a schema or an example, `research\core-logic\CoreLogic.sln` builds with 0 warnings and its tests pass. A failing check is fixed in a new commit; a failing head is never pushed. **Before every push: the full CI**, on a CPU as idle as you can get: the root solution's build and tests, the research solution's, pytest, and one build of both solutions with SDK 10.0.115. **That build is the one named exception to the two-folders rule** (the owner's standing practice): in the worktree's root `global.json` set `sdk.version` to `10.0.115` and `rollForward` to `disable`, build both solutions, then `git checkout -- global.json`, and check that `git status` shows it unchanged. It is never committed. Never delete, skip or weaken a test; never suppress a warning. Small commits, clear messages, ending with the `Co-Authored-By:` line of the model that made them. Agents run a published copy of the rules tool, so a build does not disturb them ([specs/unit-driver.md](specs/unit-driver.md)); nothing is built, tested or committed while a training or a timing runs.
 
 **Data.** Fictitious only: no real person, company or case. Notes are **formal Arabic only** (no Darija, no French, no mixed text).
 
@@ -174,18 +174,18 @@ Breaking one of these is not a judgment call. If a rule stops you, stop and tell
 |---|---|---|
 | **You: the executor.** All code, scripts and tests; training the reader; orchestration; reports | Opus 5.5 | |
 | Derivation A; reconciler; verifier of attacks; adversary with web access; settling a difference between two page readings; sorting of dropped notes | Opus 5.5 (fresh agents) | the roles that need the deepest reading of a text |
-| Derivation B; **third derivation of a module, by the flat route**; **attack on the finished record**; boundary-case writer; Official Journal triage; first page reading; checking a new slot's Arabic question | Sonnet 5.5 (fresh agents) | a different model from A; the record is Opus's, so Sonnet attacks it |
+| Derivation B; **third derivation of a module, by the flat route**; **attack on the finished record**; boundary-case writer; Official Journal triage; first page reading; checking short Arabic strings (a new slot's question, step 5's template sentences) | Sonnet 5.5 (fresh agents) | a different model from A; the record is Opus's, so Sonnet attacks it |
 | **Note writer:** the pilot, the training notes, half of dev, half of the challenge set, the polarity families | **Codex** | the owner's decision of 14 November |
 | **Second family for checks:** the support check; the blind view on disputed boundary cases; a second page reading where no other two-family or mechanical proof exists | **Codex** | the owner's decision of 14 November |
-| Filter of training notes (keep, blank or drop) | code, then a local model: the better of Gemma 4 E4B and Jais-3-3.7B at the filter trial | never Claude (terms) |
+| Filter of training notes (keep, blank or drop) | code, then a local model: the better of Gemma 4 E4B and Jais-3-3.7B at the filter trial (for the clean notes: the local model that did not write them, if it passed the trial) | never Claude (terms) |
 | Label-noise measurement on training notes | Opus 5.5 (no tool) | measures only; changes no note |
-| The other half of dev and of the challenge set; planners and writers of the mirror set and hidden v3 | Sonnet 5.5 (fresh, isolated for v3) | Claude writes test sets only |
-| Blind relabelling: Codex-written test notes | Sonnet 5.5 (no tool) | two families |
-| Blind relabelling: Sonnet-written test notes, the mirror set, hidden v3 | Opus 5.5 (no tool; isolated for v3) | one family: see section 5b |
+| The other half of dev and of the challenge set; planners and writers of the mirror set and hidden v3 | Sonnet 5.5 (fresh; isolated for the mirror set and v3) | Claude writes test sets only |
+| Blind relabelling: Codex-written test notes; the clean dev and test splits; the probe pool, once | Sonnet 5.5 (no tool) | two families |
+| Blind relabelling: Sonnet-written test notes; the mirror set and hidden v3 | Opus 5.5 (no tool for the open sets; for the mirror set and hidden v3 an isolated agent that reads one file and writes one) | one family: see section 5b |
 | Third blind judge of the mirror set | Sonnet 5.5, by the closed question-sheet route | differs from the relabeller by model and by route |
 | Legal Review answers | Opus 5.5 and Sonnet 5.5, independently; each then attacks the other's answer | two answers by two models |
 | Guide test (and the scheme's 75 cell items); ranking of the two clean writers; the two judges of step 5 | Sonnet 5.5 and Opus 5.5, independently | |
-| Realism review | Sonnet 5.5 for notes written by Codex or a local model; Opus 5.5 for notes written by Sonnet | a model that did not write the note |
+| Realism review (test sets only, never a training set) | Sonnet 5.5 for notes written by Codex or a local model; Opus 5.5 for notes written by Sonnet | a model that did not write the note |
 | Clean notes, and the phrases of the composed notes | the better writer of Jais-3-3.7B and Gemma 4 E4B (local) | the owner's decision of 12 November |
 | Petition sections in step 5 | templates in code, Jais-3-0.9B, Qwen3.5-2B, Jais-3-3.7B, Gemma 4 E4B (local) | the candidates Part 7 measured |
 | Rebuild from the freeze document (step 6) | Sonnet 5.5 | if the lighter model can follow it, it is clear enough |
@@ -199,7 +199,7 @@ Seven rules about agents:
 2. **You orchestrate; you do not take a role that must be independent of you.** You never "finish" a derivation, "fix" a label, map a free-text answer onto a record by hand, or "complete" a v3 batch yourself. A failed run is run again by a fresh agent. **A file an agent wrote is never rewritten by a script or by you**: a change to a record goes through a verifier run.
 3. **Absolute paths.** An agent's shell may start in another folder, on another branch. Every prompt for an agent that reads or writes files opens by naming the worktree and says where the agent may read and write.
 4. **Allow-lists.** A prompt says which paths the agent may read. Everything else is off limits, and the prompts name the tempting places. Every fresh agent is handed the user's memory index and `AGENTS.md` automatically; the prompts forbid following them.
-5. **Judges use no tool.** A relabeller, a guide tester, a realism reviewer, the noise measurer, the sorter of dropped notes, a ranker or a page reader gets its inputs in the prompt (or as the listed image files) and answers in its reply. A script copies the answer from the agent's transcript and checks that no other tool was used; a run with any other tool use is discarded and run again.
+5. **Judges use no tool.** A relabeller, a guide tester, a realism reviewer, the noise measurer, the sorter of dropped notes, a ranker or a page reader gets its inputs in its prompt file (or as the listed image files) and answers in its reply. Reading that one file is the only tool call it may make. `records.py ingest-reply` copies the answer from the agent's transcript and checks that; a run with any other tool use is discarded and run again. **One exception:** the isolated relabellers of the mirror set and of hidden v3 read one file, write one file and reply with two integers, and their transcripts are never read ([specs/hidden-v3-commands.md](specs/hidden-v3-commands.md)).
 6. **Everything an agent must produce is described in the prompt's body.** The text above the line `--- PROMPT ---` is for you; the agent never sees it. Three runs were lost on 14 November because an output shape sat only in a header. `tests/test_prompts.py` checks each prompt whose answer has a schema.
 7. **A known bias, to state wherever a mirror or v3 score appears:** the mirror set and hidden v3 are written by Sonnet and relabelled by Opus, both Claude models. Section 5b says what that weakens.
 
@@ -237,7 +237,7 @@ Each line names the error that would pass unseen without it. **(review)** marks 
 | 26 | **The freeze is rebuilt by a lighter model in a clean clone.** | A freeze document only its author can follow. |
 | 27 | **Derivers read a neutral guide, not the files that hold answers**; allow-lists; absolute paths. | The grade table and the slot list's help texts stated things the derivers were supposed to find. |
 | 28 | **A proof label on every result** (`twoFamilies`, `mechanical`, `oneFamily`). | A reader of a report cannot otherwise tell a check made by two families from one made inside one. |
-| 29 | **Known-truth probes for the relabeller**: code-composed notes with certain labels, mixed blind into what Opus relabels. | The relabeller's own error rate would otherwise be unknown. |
+| 29 | **Known-truth probes for the relabeller**: two code-composed notes, their labels confirmed by a blind Sonnet relabel, mixed blind into every relabel batch of the mirror set and of hidden v3. | The relabeller's own error rate would otherwise be unknown. |
 | 30 | **The local filter is tested with decoys and planted contradictions, and Opus measures the label noise it leaves.** | A small local model that answers "yes" to everything would keep every wrong note. |
 | 31 | **One driver for a unit's stages; the verifier receives every kind of finding at once** (first module). | Stages run by hand were skipped or run out of order; the verifier had to be run three times. |
 | 32 | **"Done" never beside an open question** about the same step (first module, owner's rule). | A lawyer reads "notice: done" and misses the warning that its means is doubtful. |
@@ -245,13 +245,33 @@ Each line names the error that would pass unseen without it. **(review)** marks 
 
 ## 5b. Where the proof is weaker than the first handbook's, and what compensates
 
-The first handbook used a second model family against every model-made product. The owner's decision of 14 November keeps Codex for the closed checks and the note writing, and moves five roles to Claude models. Say what follows plainly **wherever a result of these roles appears** (a report table, a grade summary, the freeze document):
+The first handbook used a second model family against every model-made product. The owner's decision of 14 November keeps Codex for the closed checks and the note writing, and moves the roles of the table below to Claude models. Say what follows plainly **wherever a result of these roles appears** (a report table, a grade summary, the freeze document):
 
 1. **The rules.** Derivations A, B and C, the attack, the adversary and the verifier are all Claude models. A legal belief they share (for example a French-law habit that Algerian law does not have) is invisible to all of them. Planted errors cannot measure this: nobody can plant what nobody knows. What still guards a rule: the quotes and the values come from scripts; **Codex's support check still reads every statement against its text**; the adversary must bring official sources; the Journal triage brings special laws as leads.
 2. **The mirror set and hidden v3.** Their writer (Sonnet) and relabeller (Opus) are both Claude models, and **a case of these sets is its writer's own** (the owner's decision of 12 November: "from their own plan"), not made by code. So nothing outside the family checks one of their labels: a label error both models make survives. A note is kept only when the writer's labels and the blind relabel are equal on every field.
 3. **The Sonnet-written halves of dev and of the challenge set** are relabelled by Opus: one family again, on sets that only measure. There the scenario is made by code, so a note is kept only when the code-made labels and the blind relabel are equal: one voice outside the family remains.
 
+4. **The Journal triage, the settlements of page readings, the Legal Review answers, the guide test and the cells table** are made by Claude models only. The triage decides what the amendment ledger holds, and a grade A needs a clean ledger.
+5. **The relabellers of the mirror set and of hidden v3 cannot be watched.** Nothing technical stops one from opening the writers' labels, and the builder never reads a transcript of an agent that saw hidden notes ([specs/hidden-v3-commands.md](specs/hidden-v3-commands.md), section 1, says what narrows this risk).
+
+**What each role that left Codex lost, and what stands in for it:**
+
+| Role in the first handbook (Codex) | Now | What is lost | What compensates |
+|---|---|---|---|
+| Third derivation of a module | Sonnet, by the flat route | a second family's reading of the module | another route (texts only, closed values, a script compares); Codex's support check |
+| Checklist from memory before each claim type | cut | a third memory | the two derivers' lists, the catalogue's questions, the triage leads |
+| Attack on every finished record | Sonnet | a second family's close reading | Codex's support check of every statement; planted errors |
+| The cross-check sample (roles reversed) | the two halves of dev and of the challenge set | nothing: the halves measure the same thing on the sets that count | per-writer scores |
+| Blind relabel of the mirror set and of hidden v3 | Opus | any check of those labels outside the Claude family | the probes; the mirror's third judge by another route |
+| Third judge of the mirror set | Sonnet, by closed question sheets | a judge of another model than the writer | another route; said beside the figure |
+| Second judge of step 5 | Opus | a second family's taste | the faithfulness script decides; the lower judge counts |
+| Attack on the Legal Review answers | each answer attacked by the other Claude model | a second family | cites checked by script; "no text" said where no text settles |
+| Guide test, realism review, ranking of the clean writers | Sonnet and Opus | a second family's reading of the guide and of the notes | the code-made scenario for labels; the filter trial's planted contradictions |
+
 **Compensations, each with its own specification:**
+
+- **Mechanical checks, which no model decides:** quotes inserted by script from the store; numbers and sanction words read from the quoted text; the neighbour flags; the store's refusal of a cite; the boundary runner; the code checks of a note (every date, amount, quote and name); the parsers; step 5's faithfulness script.
+- **Swapped routes:** where the same family checks its own work, it does so by another road: the third derivation from flat texts against derivations made with the store and the tool; the attack on a rendered record without tools against a verifier with them; the third judge's closed sheets against the relabeller's free labelling; each Legal Review answer attacked by the other model.
 
 - **Planted errors, early and counted per kind** ([specs/planted-errors.md](specs/planted-errors.md)). Round 1 runs as soon as `formal-notice` and the four high-harm modules are final; round 2 on six claim types. A rule may block only if its kinds of error were caught 90 % of the time.
 - **Known-truth probes** ([specs/hidden-v3-commands.md](specs/hidden-v3-commands.md), "Probes for the relabeller"): two code-composed notes in every batch Opus relabels. Their labels are certain; a batch under 95 % on them is relabelled; they are never scored as test notes.
@@ -272,7 +292,7 @@ The first handbook used a second model family against every model-made product. 
 | `court-sections` (high-harm) | Which section of the court hears which matter; what happens when a court has no sections or a case is listed before the wrong one. | CPCA 32, 423?, 500, 512, 515, 531?, 536 مكرر |
 | `territorial-jurisdiction` | Which court by place, for each kind of matter; the special rules (real property, family, labour, contracts, torts); whether the rule is of public order. | CPCA 37 to 40, 426, 501, 45 to 47? |
 | `ordinary-court-exits` (high-harm) | Which cases leave the ordinary courts: administrative courts; the specialised commercial courts; the criminal judge; and procedures that replace a claim (order to pay). What tells them apart. | CPCA 800, 801, 536 مكرر and following, 306? |
-| `periods` (high-harm) | Limitation and forfeiture: the general periods, **how a period is counted**, what starts, suspends and interrupts it, who may raise it, whether the court raises it of its own motion; the counting of procedural periods. | Civil Code 308 to 322 (308, 309, 312, 321 named by the brief); CPCA 405, 67 to 69 |
+| `periods` (high-harm) | Limitation and forfeiture: the general periods, **how a period is counted**, what starts, suspends and interrupts it, who may raise it, whether the court raises it of its own motion; the counting of procedural periods. | Civil Code 308 to 322 (308, 309, 312, 321 named by the brief); CPCA 405, 67 to 69; and CPCA 504, the time limit of the labour claim, as the first period these rules must count (its own deadline item is written in `labour-prelitigation`, which is reconciled after `periods` is final and reads it) |
 | `formal-notice` (done) | When a formal notice is required before a claim or before damages, its form and means, when it is not needed, and the effect of its absence. | Civil Code 119, 179, 180, 181 |
 | `labour-prelitigation` (high-harm) | Conciliation before a labour claim, its exceptions, the record, the time limit to file and its sanction, the section and the court. | Law 90-04 arts. 19 and following (and its first articles), 36, 37; CPCA 500 to 510 |
 | `land-registry-publication` | When a petition about real property must be published at the land registry, how, and the sanction. | CPCA 17, 519? |
@@ -306,126 +326,136 @@ One executor session runs two tracks by day. Codex writes notes in the backgroun
 | Phase | Reader track (steps 3 and 4) | Rules track (step 1) |
 |---|---|---|
 | **0** | Close `formal-notice`. Retool: the light checks, the driver, Codex's pool, the grade rule. | – |
-| **A** | Scheme 1.0 frozen; scorer; parsers; sampler; the pilot and the filter trial. **Stop point.** | The four high-harm modules |
-| **B** | Dev and challenge sets; training notes to 4,000; the first rungs; the learning curve. **Stop point.** | Planted-error round 1; the other 7 modules; the 21 claim types |
+| **A** | Scheme 1.0 frozen; scorer; parsers and the reader's front end; sampler; the pilot and the filter trial. **Stop point.** | The four high-harm modules |
+| **B** | Dev and challenge sets; training notes to 4,000; the clean-writer trial and the composed notes; the first rungs; the learning curve. **Stop point.** | Planted-error round 1; the other 7 modules; the 21 claim types; planted-error round 2 after the sixth |
 | **C** | Fine-tuning if needed; clean notes; calibration; the .NET reader | Step 5, once 6 claim types are final |
-| **D** | Slot packs and heads for the slots the records added | The deferred law work; planted-error round 2 |
-| **E** | The mirror set; the pre-commitment; hidden v3; the freeze (step 6) | – |
+| **D** | Slot packs and heads for the slots the records added | The deferred law work; the regrade; the Legal Review answers |
+| **E** | Two stop points; the mirror set; the two pre-commitments; hidden v3; the freeze (step 6) | – |
 
 Expected end: about 15 December 2026 (section 9).
 
 ### Every session
 
-1. Read `C:\Users\TheShadow\dz-core-research\STATE.md` as [STATE-FORMAT.md](STATE-FORMAT.md) says. Do not act from memory of a conversation.
-2. `python research\core-logic\scripts\clean_env.py --check` in your shell. It prints `clean`, or the names of the keys it was started with.
-3. `git status`, `git log -3` in the worktree; read the last lines of `ledger\runs.jsonl`.
-4. If Codex will be used today: `codex --version` must print `0.167.0`; then `python research\core-logic\scripts\codex_run.py probe2` must be **rejected** by the check.
+`PY` below, and in every file this handbook links, is `C:\Users\TheShadow\AppData\Local\Programs\Python\Python312\python.exe -X utf8`. **Never type bare `python`**: on this laptop it is another Python, without pytest. Paths are under the worktree `C:\Users\TheShadow\dz-fable-core` unless they start with a drive; `<work>` is `C:\Users\TheShadow\dz-core-research`.
+
+1. Read `<work>\STATE.md` as [STATE-FORMAT.md](STATE-FORMAT.md) says. Do not act from memory of a conversation.
+2. `PY research\core-logic\scripts\clean_env.py --check`. It prints `clean`, or the names of the keys the session was started with. **This is a gate** (first row of the table).
+3. `git status` and `git log -3`; the last lines of `<work>\ledger\runs.jsonl`.
+4. If Codex will be used today: `codex --version` must print `codex-cli 0.167.0`; `codex login status` (note only "logged in: yes" or "no"); `PY research\core-logic\scripts\codex_run.py probe1` must be accepted and `… probe2` must be **rejected** by the check.
+
+**You are ready when:** the state file's "next action" is the thing you are about to do; the key check printed `clean`; nothing is running that you do not know of; and, for a Codex day, the gate file of today exists.
 
 | Situation | Do |
 |---|---|
-| The key check prints key names | Tell the owner once that day: "start VS Code with `python C:\Users\TheShadow\dz-fable-core\research\core-logic\scripts\clean_env.py code C:\Users\TheShadow\dz-legal-assistant` after closing every VS Code window". Go on; agent prompts keep their key line; every script and Codex call is clean anyway. |
-| The ledger shows a run still "running" and nothing is running | Mark it `failed`. A derivation, a reconciled record or a verifier output from that run is deleted and the run is launched again fresh. A Codex batch: accepted answers are kept, the rest is queued again once. |
-| Codex's version is not 0.167.0 | No Codex call. Run both probes, tell the owner, wait. |
-| The probe is not rejected | No Codex call that day. Tell the owner. |
-| The worktree has uncommitted files | Finished outputs: check them (schema, tests) and commit. Half-written agent outputs: delete, rerun. Never complete one by hand. |
+| The key check prints key names | **Launch no agent.** Tell the owner: "close every VS Code window, then start it with `C:\Users\TheShadow\AppData\Local\Programs\Python\Python312\python.exe C:\Users\TheShadow\dz-fable-core\research\core-logic\scripts\clean_env.py code C:\Users\TheShadow\dz-legal-assistant`". Scripts and Codex calls are clean whatever the session holds, and may run meanwhile. (The owner's rule of 14 November: the removal is automatic, never a prompt instruction. The prompts' own key line stays as a second safeguard, never as the first.) |
+| Is something still running? | Agents of an earlier session are never running. The Codex pool or queue runs exactly when its lock file names a live process ([specs/codex-calls.md](specs/codex-calls.md)). The Official Journal scan and the local filter resume from their own lists. |
+| The ledger shows a run "running" and nothing is running | Mark it `failed`. A file that run half wrote: if git tracks it, `git checkout -- <path>`; otherwise delete it. Then launch the run again, fresh. A Codex batch: accepted answers are kept; the rest goes back to the queue by the rules of [specs/codex-calls.md](specs/codex-calls.md). |
+| Codex's version is not 0.167.0 | No Codex call. Run both probes, tell the owner, wait. Do not update or reinstall anything yourself. |
+| The second probe is not rejected | No Codex call that day. Tell the owner. |
+| The worktree has uncommitted files | Finished outputs: check them (schema, tests) and commit. Half-written agent outputs: as above. Never complete one by hand. |
 
-### Phase 0. Close formal-notice and retool (about one day)
+### Phase 0. Close formal-notice and retool (about a day and a half)
 
 **Why first:** the module is one run from done, and every later unit needs the tools the first module showed were missing.
 
-**Inputs.** `C:\Users\TheShadow\dz-core-research\runs\step1\formal-notice\rules-verify-followup2.prompt.md` (the prepared prompt); `rules/reports/formal-notice.attacks.followup2-input.json`; the working-folder scripts of 14 November (`stage4.py`, `stage6.py`, `run_codex.py`, `run_codex_c.py`, `run_boundary_view.py`, `followup_prep.py`, `text_pass.py`, `collect_batch.py`, `codex_queue.py`, `ingest_queue.py`).
+**Inputs.** `<work>\runs\step1\formal-notice\rules-verify-followup2.prompt.md` (a prompt prepared on 14 November); `docs\research\core-logic\rules\reports\formal-notice.attacks.followup2-input.json` (its two entries: `owner-done`, `store-120`); the working-folder scripts of 14 November ([specs/unit-driver.md](specs/unit-driver.md) says what becomes of each).
 
-**Do, in this order.**
+**Do, in this order.** `R` stands for `docs\research\core-logic\rules`.
 
-1. **Launch the prepared run** (Opus 5.5, fresh): its prompt is the file above, unchanged. It applies the owner's rule 7 of 14 November to the three notice steps and changes the cite of statement `b12` from «civil-code 120 ¶2» to ¶1. Outputs: `rules/reports/formal-notice.attacks.followup2.json`, and a new `rules/final-candidates/formal-notice.json`.
-2. **Run the scripts on the result** (from `research\core-logic\scripts`, with the Python of section 3; `<T>` is the rules tool, `<S>` the store file, both named in [specs/unit-driver.md](specs/unit-driver.md)):
-   - `<T> check --store <S> ..\..\..\docs\research\core-logic\rules\final-candidates\formal-notice.json`
-   - `python records.py quote <the same file>`
-   - `python records.py check-values <quoted> --report <reports>\formal-notice.values.final.json`
-   - `python records.py flag-neighbours <quoted> --report <reports>\formal-notice.flags.final.json`
-   - `<T> examples <file>` and `<T> examples <file> --boundary ..\..\..\docs\research\core-logic\rules\boundary-cases\formal-notice.json --json`
-   - move any new `proposedSlots` into `slots.json` (the rule of [specs/unit-driver.md](specs/unit-driver.md), stage 9)
-   - `python records.py grade <quoted> --idmap … --differences … --attacks <reports>\formal-notice.attacks.json --attacks …attacks.followup.json --attacks …attacks.followup2.json --out …\final\formal-notice.json --report …formal-notice.grades.json`
-   - `python records.py check-checklist …\final\formal-notice.json --checklist …formal-notice.checklist.json --flags …formal-notice.flags.final.json --report …formal-notice.checklist-check.json`
-3. Update the module's row in [reports/step-1-tracking.md](reports/step-1-tracking.md): the grades, and the boundary count under the owner's runner.
-4. **Retool** (code with tests, in `research/core-logic/scripts/` unless said):
-   - `check_commit.py`: the light checks of section 3.
-   - `unit.py`: the driver of [specs/unit-driver.md](specs/unit-driver.md). It absorbs the working-folder scripts listed above; after it, nothing of the pipeline lives outside the repository.
-   - `codex_run.py`: the writer pool and the background queue of [specs/codex-calls.md](specs/codex-calls.md).
-   - `records.py grade` and `store.py`: the proof label and the owner's blocking rule ([rules/GRADES.md](rules/GRADES.md), [specs/article-store.md](specs/article-store.md)).
-   - `records.py ingest-reply`: copies a no-tool agent's JSON reply from its transcript, checks it against a schema file and writes it to its output path. Used for derivation C, the attack, the relabellers and every judge.
-5. Commit after each item with the light checks; then the full CI; push.
+1. **`check_commit.py` and the published rules tool first** (items 1 and 2 of the retool list of [specs/unit-driver.md](specs/unit-driver.md)), so that every later commit is checked and no build can disturb an agent.
+2. **The follow-up run** (Opus 5.5, fresh). Fill the prompt again from today's template (the prepared file was filled before the template gained the `owner` and `store` kinds): `PY research\core-logic\scripts\prompts.py fill rules-verify --unit formal-notice --out <work>\runs\step1\formal-notice\rules-verify-followup2.prompt.md`, then set its record, input and register paths to the follow-up's (the final candidate; `…followup2-input.json`; `…followup2.json`), as the prepared file had them. It applies the owner's rule 7 of 14 November to the three notice steps and changes the cite of statement `b12` from «civil-code 120 ¶2» to ¶1. Write its ledger lines by hand (the driver does not exist yet). Outputs: `R\reports\formal-notice.attacks.followup2.json`, a new `R\final-candidates\formal-notice.json`.
+3. **The scripts on the result** (from `research\core-logic\scripts`; `<T>` and `<S>` are the tool and the store of [specs/unit-driver.md](specs/unit-driver.md); `C` is `..\..\..\docs\research\core-logic\rules`):
+   - `<T> check --store <S> C\final-candidates\formal-notice.json`
+   - `PY records.py quote C\final-candidates\formal-notice.json` (it writes `C\final-candidates\quoted\formal-notice.json`)
+   - `PY records.py check-values C\final-candidates\quoted\formal-notice.json --report C\reports\formal-notice.values.final.json`
+   - `PY records.py flag-neighbours C\final-candidates\quoted\formal-notice.json --report C\reports\formal-notice.flags.final.json`
+   - `<T> examples C\final-candidates\formal-notice.json`, and `<T> examples C\final-candidates\formal-notice.json --boundary C\boundary-cases\formal-notice.json --json > <work>\runs\step1\formal-notice\boundary.final.json`
+   - `PY records.py grade C\final-candidates\quoted\formal-notice.json --idmap C\reports\formal-notice.idmap.json --differences C\reports\formal-notice.differences.json --attacks C\reports\formal-notice.attacks.json --attacks C\reports\formal-notice.attacks.followup.json --attacks C\reports\formal-notice.attacks.followup2.json --out C\final\formal-notice.json --report C\reports\formal-notice.grades.json`
+   - `PY records.py check-checklist C\final\formal-notice.json --checklist C\reports\formal-notice.checklist.json --flags C\reports\formal-notice.flags.final.json --report C\reports\formal-notice.checklist-check.json`
+4. **The rest of the retool list** (items 3 to 13 of [specs/unit-driver.md](specs/unit-driver.md), each with tests, one commit each).
+5. **Regrade formal-notice with the new grade** (`PY unit.py regrade --all`) and rewrite its rows of [reports/step-1-tracking.md](reports/step-1-tracking.md) (`PY unit.py tracking formal-notice`). **Expect no item at grade A**: no planted-error round has run (`plantedNotRun`), so every item that declared a block warns. That is the owner's rule working, not a fault.
+6. The full CI; push.
 
 **Done when.**
-- `rules check` passes on `final/formal-notice.json`; `check-checklist` reports `ok: true`; no item is grade D for an unverified text; boundary cases bc6, bc8 and bc12 pass (expected 8 of 12; the other four are bc3, bc4, bc9, which two families hold wrong, and bc7, which is open).
-- `unit.py status formal-notice` shows every stage done from the files alone.
-- `check_commit.py` passes on its own commit; `tests/test_codex_run.py` covers the pool (two calls never share a scratch folder; a discarded call's notes go back to the queue once).
-- Nothing of the pipeline remains only under `C:\Users\TheShadow\dz-core-research\` except working data.
+- `<T> check --store` passes on `final\formal-notice.json`; `check-checklist` reports `ok: true`; no item is grade D for an unverified text; no item is grade A; every item has `textProof` and `proof`.
+- Boundary cases bc6, bc8 and bc12 pass, **or** each one that still fails after one more follow-up is in `reports\questions\batch-1.md` with the runner's message (expected: 8 of 12; the other four are bc3, bc4, bc9, which two families hold wrong, and bc7, which is open).
+- `PY unit.py status formal-notice` shows every stage done from the files alone (the legacy map).
+- Every test the retool list names passes; `check_commit.py` passes on its own commit.
 
 | Situation | Do |
 |---|---|
-| bc6, bc8 or bc12 still fails after the run | Read the runner's message. If a step still says "done" beside an open boundary item, run the same prompt once more with that message added as an attack. If it fails again, put it in the owner's question batch and go on. |
-| The run changed an example's expected outcome | Allowed only where the owner's rule requires it (a step that said "done" now stays open). List each in the tracking file. Any other changed expectation: discard the run, rerun fresh. |
-| `rules check --store` fails on a cite | The store has no such paragraph. Do not edit the record: one more verifier run with the failure as an attack. |
+| bc6, bc8 or bc12 still fails after the run | One more follow-up: `PY unit.py verify-input formal-notice --followup` (it writes `…followup3-input.json` with the runner's message as an `owner` entry), one verifier run, the scripts again. Still failing: `PY unit.py questions --batch 1 formal-notice`, and go on. |
+| The run changed an example's expected outcome | Allowed only where the owner's rule requires it (a step that said "done" now stays open). List each in the tracking file. Any other changed expectation: `git checkout -- docs\research\core-logic\rules\final-candidates\formal-notice.json`, rerun fresh. **Check this before step 3**: `quote` overwrites the quoted copy. |
+| `<T> check --store` fails on a cite | The store has no such paragraph. Do not edit the record: a follow-up with the failure as a `store` entry. |
+| The follow-up changed statement `b12` | Its support-check answer is stale: `PY unit.py codex formal-notice` asks Codex again for the changed statements; until it returns the item's `proof` is `oneFamily`. |
 | The full CI fails only on `WaitingWorkflowTests.ClosingTheAppFreesTheLocalModelsMemory…` | Run that test alone three times. If it passes three times, push and say so in the report. Once a day, at a pause, run the full CI on an idle CPU until it is green. |
-| Any other CI failure | Do not push. Fix the cause. |
+| Any other CI failure, or `check_commit.py` fails | Do not push. Fix the cause in a new commit. |
 
-**Report to the owner:** the commit id; formal-notice's final grades and boundary count; the tools added; anything uncertain.
+**Traps.** Do not absorb `run_codex_c.py`: Codex no longer derives. Do not publish the tool while an agent is running. Do not "fix" a failing boundary case by editing its file: case files are never edited.
 
-### Phase A, reader track. The scheme, the yardstick and the pilot (about three days)
+**Report to the owner** (no stop point): the commit id; formal-notice's grades (none A, and why) and its boundary count; the tools added; the sentence that every check on this module except Codex's support check was made by Claude models (section 5b); anything uncertain.
 
-**Why this shape:** safeguards 15 to 17, 22 and 30. Specifications: [notes/SCHEME.md](notes/SCHEME.md), [specs/scorer.md](specs/scorer.md), [specs/scenario-sampler.md](specs/scenario-sampler.md), [specs/notes-pipeline.md](specs/notes-pipeline.md), [specs/reader.md](specs/reader.md) (rungs 1 and 2).
+### Phase A, reader track. The scheme, the yardstick and the pilot (about four days)
 
-**Inputs.** `data/law/claim-elements.json`, `data/law/claims/*.json`, `slots.json`, the labelling guide, `notes/guide-test.json`, the contract `INoteReader`.
+**Why this shape:** safeguards 15 to 17, 22 and 30. Specifications: [notes/SCHEME.md](notes/SCHEME.md), [specs/scorer.md](specs/scorer.md), [specs/scenario-sampler.md](specs/scenario-sampler.md), [specs/notes-pipeline.md](specs/notes-pipeline.md) (its "commands of the notes tool" table names every command below), [specs/reader.md](specs/reader.md) (rungs 1 and 2, "The front end").
+
+**Inputs.** `data\law\claim-elements.json`, `data\law\claims\*.json`, `src\DzLegal.Drafting\CaseFacts.cs` (read only); `docs\research\core-logic\slots.json`; the labelling guide; `notes\guide-test.json` (45 items); the contract `INoteReader`.
+
+**Outputs.** The frozen `notes\SCHEME.md`; `notes\cells-test.json`; the projects `DzLegal.CoreLogic.Scoring`, `DzLegal.CoreLogic.Notes`, `DzLegal.CoreLogic.Reader` (front end and plain code) under `research\core-logic\src`, with tests; `research\core-logic\train\export_encoder.py`; `<work>\models\pretrained\camelbert-mix\` and the 8-bit encoder with their hashes; `<work>\notes-work\` (the queue, the pilot's notes); `reports\pilot.md`.
 
 **Do, in this order.**
 
-1. **Freeze scheme 1.0** ([specs/notes-pipeline.md](specs/notes-pipeline.md), section 1; 5 runs, say so first). Run [prompts/notes-guide-items.md](prompts/notes-guide-items.md) (Sonnet, one run) for 20 new guide-test items on what the revision added (the plaintiff's role, the public-body list, the eight slots' edge cases); then the guide test ([prompts/notes-guide-test.md](prompts/notes-guide-test.md)) with Sonnet and with Opus, no tool, on all 65 items; then the same two models on the 75 cell items that fill the table of `notes/SCHEME.md`, section 8. When no item is unexplained and the cells table is written, fill the hashes of `notes/SCHEME.md`, set its status line to `frozen at <commit id>`, commit, and write the commit id in the state file.
-2. **The scorer** (`DzLegal.CoreLogic.Scoring`) with its six tests; record its hash in the state file **before any model exists**.
-3. **The plain code of rung 2** (`DzLegal.CoreLogic.Reader`): the date and amount parsers and the polarity cue table, with their tests.
-4. **The notes code** (`DzLegal.CoreLogic.Notes`): sampler v1, style cards, fictitious cast lists, `build-spans`, the code checks, the loader with its refusals.
-5. **The pilot:** 500 scenarios, 25 Codex calls of 20 notes, with the pool at 2 writers, then 3, then 4 ([specs/codex-calls.md](specs/codex-calls.md)). State "25 Codex calls" to the owner before the first.
-6. **The filter trial** on 100 pilot notes ([specs/notes-pipeline.md](specs/notes-pipeline.md), "The filter trial"); then the winning filter on all 500, at night or on a free day.
-7. **The noise measurement:** Opus relabels 100 kept notes blind ([prompts/notes-noise-audit.md](prompts/notes-noise-audit.md), 4 runs of 25), a script lists the fields that differ from the kept labels, and one sorting run says which side is right ([specs/notes-pipeline.md](specs/notes-pipeline.md), "The noise measurement"). 5 Opus runs. It changes no note.
-8. **The pilot report** `reports/pilot.md` and the calendar. **Stop point.**
+1. **Freeze scheme 1.0** ([specs/notes-pipeline.md](specs/notes-pipeline.md), section 1; **5 runs**, say so first): 30 new guide-test items (one Sonnet run); the guide test on all 75 items (Sonnet, Opus); the 75 cell items of [prompts/notes-cells.md](prompts/notes-cells.md) (Sonnet, Opus). Then the freeze commit and the stamp commit.
+2. **The contract, the loader, the scorer, in that order** ([specs/scorer.md](specs/scorer.md), "What the scorer's hash covers"): `RoleReading` and `ClaimGuess.Role` in `NoteReading.cs` with a contract test; the loader with its refusals; the scorer with its tests, the role line and the tuning score. Record the scorer's hash in the state file **before any model exists**.
+3. **The plain code and the front end** ([specs/reader.md](specs/reader.md), rung 2 and "The front end"): the date and amount parsers and the cue table with `cues.json`; the tokenizer, the windows, `reader ids`, `reader encode`; the download of CAMeLBERT-mix and its 8-bit export.
+4. **The notes code:** sampler version 1, the style cards, the fictitious cast lists, `writer-labels`, `build-spans`, the code checks, the filter's sheet builder, the commands of the notes tool.
+5. **The pilot:** 500 scenarios; 25 Codex calls of 20 notes (at most 5 more for scenarios that come back), the pool at 2 writers, then 3, then 4 ([specs/codex-calls.md](specs/codex-calls.md)). Say "25 to 30 Codex calls" to the owner before the first.
+6. **The filter trial** on 100 pilot notes, for both local models; then the winning filter on all 500, at night or on a free day.
+7. **The noise measurement:** 100 kept notes: 4 Opus runs relabel them blind ([prompts/notes-noise-audit.md](prompts/notes-noise-audit.md)), a script lists the fields that differ, one Opus sorting run per 40 differing fields says which side is right ([specs/notes-pipeline.md](specs/notes-pipeline.md), "The label noise"). It changes no note.
+8. **The pilot report** `reports\pilot.md` (its contents: [specs/notes-pipeline.md](specs/notes-pipeline.md), section 2) and the calendar. **Stop point.**
 
 **Done when.**
-- `notes/SCHEME.md` is frozen, with its hashes and its cells table filled; the guide-test results file shows both testers on all 65 items.
-- The scorer's six tests pass; its hash is in the state file.
-- The parsers reach 98 % on the code-made value corpus (every written form in [specs/reader.md](specs/reader.md), rung 2).
-- The loader's refusal tests pass (a test-set note in training; a Sonnet-written note for tuning; a note without provenance).
-- The pilot report gives: seconds per Codex call and calls per window at 2, 3 and 4 writers; notes rejected by the code checks, by reason; the filter trial's table; notes kept, blanked, dropped, per polarity; the measured label noise with its interval; the calendar to 4,000 notes.
+- `notes\SCHEME.md` is frozen and stamped, its hashes and cells table filled; the guide-test results show both testers on all 75 items; no item is unexplained.
+- The scorer's tests pass (the role line and the tuning score among them); its hash is in the state file.
+- The parsers read 98 % of the code-made value corpus exactly; the cue table gives no wrong vote on the guide's 36 hard cases; the .NET piece ids equal the Python tokenizer's on the 500 pilot notes, every difference explained.
+- The loader's refusal tests pass (a test-set note in training; a Sonnet-written note for tuning; a note without provenance; more than a quarter composed).
+- The pilot report holds every item of its list, the feasibility paragraph and the calendar to 4,000 notes.
 
 | Situation | Do |
 |---|---|
-| A guide-test item is answered differently by the two testers, or against its key | Fix the guide's wording, bump its version, rerun that item with both. Still different: the item's label becomes `unclear` (blank in training, dropped in tests) and it goes in the question batch. Do not freeze with an unexplained item. |
+| A guide-test item is answered differently by the two testers, or against its key | Fix the guide's wording, bump its version, rerun that item with both. Still two answers: write the item into SCHEME.md's list of known gaps and into the owner's question batch; it then counts as explained. Do not freeze with an unexplained item. (The cell items are outside this rule.) |
+| The items run returns fewer than 30 items, or lists `problems` | Fewer: a fresh run for the missing number. Each problem is a defect of the guide: fix it, bump the version, before the guide test. |
 | A Codex call is rejected by the event-log check | Its notes are discarded and its scenarios go back to the queue once. Two rejections in a row from one writer: stop that writer, keep the others, tell the owner. |
-| A usage-limit refusal | Stop the pool. Record the time. Do not retry before the window the refusal names. Report the calls made in the window: that figure is the calendar's input. |
-| More than 30 % of a call's notes fail the code checks | Read ten failures. If one cause explains most (a format, a date written otherwise), fix the prompt once, bump its version, rerun two calls. Still over 30 %: stop point. |
-| Neither local model passes the filter trial (catches under 80 % of planted contradictions, or rejects over 15 % of good notes) | Keep the better one for the pilot, mark every pilot note `filterWeak`, and put the question to the owner at the pilot stop point with the table. Do not start volume. |
-| The noise measurement is over 10 % | Stop. Show the owner the figure, the interval and the three most common kinds of wrong label (described, with one fictitious example each). |
-| The noise is between 5 % and 10 % | Go on; tighten the filter's sheet for the most common kind; measure again on the next 1,000. |
+| A usage-limit refusal | The pool stops. Record the time and the calls made. Do not retry before the window the refusal names; the remaining calls of that pool size run then. Report the calls of the window: that figure is the calendar's input. With no refusal at all, report the calls and tokens as a lower bound. |
+| More than 30 % of a call's notes fail the code checks | Read ten failures. One cause explains more than half: fix the prompt once, bump its version, rerun two calls. Still over 30 %: stop point. |
+| Neither local model passes the filter trial | Keep the one that caught the larger share of its plants, mark every pilot note `filterWeak`, and put the question to the owner at the pilot stop point with the table. Do not start volume. |
+| The label noise is over 10 % | Stop. Show the owner the figure, the share of notes with a wrong label and the three most common kinds (described, with one fictitious example each). |
+| The label noise is between 5 % and 10 % | Go on; change the sheet for the most common kind, for the notes filtered from then on; measure again on the next 1,000; say so in the report. |
+| The filter alone would need more than 8 laptop nights at the measured pace | A question for the owner at the pilot stop point (a shorter sheet, or the faster model). |
 | The laptop is on battery, or the owner needs it | The filter does not run. It resumes from its queue; nothing is lost. |
 
-**Traps.** The pilot's notes are training notes: no Claude model reads them except the noise measurer, and its answers change no note. Do not tune the filter on the notes the noise measurer read. Do not freeze the scheme after the pilot: its labels would then follow the notes.
+**Traps.** The pilot's notes are training notes: the only Claude readings of them are the noise measurement's, the sorting of blanked fields, and your own reading of failures when a row above says "read"; none changes a note. The sheet is never tried again on the 100 measured notes. Do not freeze the scheme after the pilot: its labels would then follow the notes. Do not let a pool run past midnight: the day's probe is yours to run.
 
-**Report to the owner (stop point):** the pilot report; the calendar; the count of Codex calls and Claude runs needed for phase B; the one question: "go on to 4,000 training notes with this filter and this pace?"
+**Report to the owner (stop point):** the pilot report; the calendar; the count of Codex calls, Claude runs and laptop nights that phase B needs; the sentence that the guide test and the cells table were decided by two Claude models; the one question: "go on to 4,000 training notes with this filter and this pace?"
 
 ### Phases A and B, rules track. One unit through the driver
 
-**Why this shape:** safeguards 2 to 4, 8 to 14, 27, 31 and 32. Specifications: [specs/unit-driver.md](specs/unit-driver.md), [specs/record-checks.md](specs/record-checks.md), [rules/GRADES.md](rules/GRADES.md).
+**Why this shape:** safeguards 2 to 4, 8 to 14, 27, 31 and 32. Specifications: [specs/unit-driver.md](specs/unit-driver.md) (every command, file and stage), [specs/record-checks.md](specs/record-checks.md), [rules/GRADES.md](rules/GRADES.md), [specs/planted-errors.md](specs/planted-errors.md).
+
+**Inputs, for a unit.** The store and its text views; `law\seed-inventory.json`; `slots.json`; for a claim type, the final records of the modules it imports. **Outputs:** the files of the stage table, all under `docs\research\core-logic\rules\`, and the unit's rows of `reports\step-1-tracking.md`.
 
 **The order of units.**
 
-1. **Phase A, the high-harm modules:** `periods`, then `labour-prelitigation`, `court-sections` and `ordinary-court-exits`. `periods` goes first and alone, because it fixes how a period is counted and every deadline cites it; the other three may run their stages 0 to 4 beside it, but **no unit with a deadline is reconciled before `periods` is final**.
+1. **Phase A, the high-harm modules:** `periods`, then `labour-prelitigation`, `court-sections` and `ordinary-court-exits`. `periods` goes first and alone, because it fixes how a period is counted and every deadline cites it; the other three may run their stages 0 to 4 beside it, but **no other unit with a deadline is reconciled before `periods` is final**. When `periods` is final, the evaluator's counting is replaced by what it established ([specs/unit-driver.md](specs/unit-driver.md), last paragraph).
 2. **Phase B:** planted-error round 1 on the five final modules. Then the other seven modules, three in flight: `territorial-jurisdiction`, `petition-formal-elements`, `proof`, `accessory-requests`, `land-registry-publication`, `conciliation-mediation`, `commercial-lease-regimes`.
-3. **Then the claim types**, three in flight, the first six chosen so that step 5 can start: `unpaid-wages`, `abusive-dismissal`, `loan-repayment`, `unpaid-rent`, `commercial-debt`, `nafaqa`; then the remaining fifteen, area by area. A claim type is not reconciled before every module it imports is **final**.
+3. **Then the claim types**, three in flight, the first six chosen so that step 5 can start: `unpaid-wages`, `abusive-dismissal`, `loan-repayment`, `unpaid-rent`, `commercial-debt`, `nafaqa`; **planted-error round 2 as soon as those six are final**; then the remaining fifteen, area by area. A claim type is not reconciled before every module it imports is **final**.
 
-**The stages of a unit.** `python unit.py next <unit>` runs the scripts that are due and prints the agent launches that are due, each with its model and its filled prompt file; `python unit.py done <unit> <stage> <agent id>` records a returned run. The driver writes the run ledger.
+**The stages of a unit.** `PY unit.py next <unit>` runs the scripts that are due and prints the agent launches that are due, each with its model and its filled prompt file; `PY unit.py done <unit> <stage> <agent id>` records a returned run. The driver writes the run ledger.
 
 | # | Stage | Who | Prompt or script | Output |
 |---|---|---|---|---|
 | 0 | The unit's texts: every chapter its seed articles touch, and one heading up | script | `records.py unit-texts <unit> --seed` | `reports/<unit>.texts.json` |
+| 0b | The French sources of derivation B | script; a Sonnet reading only for pages before 2003 | [specs/unit-driver.md](specs/unit-driver.md) | `law/french-sources.json` |
 | 2 | Derivation A and derivation B, blind to each other | Opus 5.5; Sonnet 5.5 | `rules-derive-a.md`, `rules-derive-b.md` | `derivations/a|b/<unit>.*` |
 | 2c | Third derivation (modules only), flat | Sonnet 5.5, no tool | `rules-derive-c.md` | `derivations/c/<unit>.json` |
 | 2d | Boundary cases, blind to all records; never edited afterwards | Sonnet 5.5 | `rules-boundary-cases.md` | `boundary-cases/<unit>.json` |
@@ -433,133 +463,175 @@ Expected end: about 15 December 2026 (section 9).
 | 4 | Check, quote, values, flags, merged checklist, A against B by field and by case, C's comparison. **Commit.** | scripts | [specs/record-checks.md](specs/record-checks.md) | `reports/<unit>.*` |
 | 5 | Reconcile | Opus 5.5 | `rules-reconcile.md` | `reconciled/<unit>.json`, `reports/<unit>.reconciliation.md` |
 | 6 | Scripts again; the id map completed; the boundary cases run | scripts | | `reports/<unit>.*` |
-| 7 | Adversary (web); attack; support check with seeded pairs | Opus 5.5; Sonnet 5.5; **Codex** (queue) | `rules-adversary.md`, `rules-attack.md`, `rules-support-check-codex.md` | `reports/<unit>.attacks.*.json`, `.support.json` |
-| 8 | Verify **everything at once**: the three attack lists, C's differences, the unanswered neighbour flags, the boundary cases the record fails | Opus 5.5 | `rules-verify.md` | `reports/<unit>.attacks.json`, `final-candidates/<unit>.json` |
+| 7 | Adversary (web); attack; support check with seeded pairs | Opus 5.5; Sonnet 5.5; **Codex** (queue) | `rules-adversary.md`, `rules-attack.md`, `rules-support-check-codex.md` | `reports/<unit>.attacks.adversary.json`, `.attacks.sonnet.json`, `.support.json` |
+| 8 | Verify **everything at once**: the attack lists, C's differences, the value mismatches, the store's refusals, the unanswered neighbour flags, the boundary cases the record fails | Opus 5.5 | `rules-verify.md` | `reports/<unit>.attacks.json`, `final-candidates/<unit>.json` |
 | 8b | Blind view on boundary cases the verifier set aside | **Codex** (queue) | `boundary-second-view-codex.md` | `reports/<unit>.boundary-view.json` |
-| 9 | Scripts again; slots; flatten (claim types); grade; checklist check; the tracking row | scripts | | `final/<unit>.json` |
+| 9 | Scripts again; slots; flatten (claim types); grade; checklist check; the tracking rows | scripts | | `final/<unit>.json` |
 
-**In parallel:** stages 2, 2c and 2d of one unit; the same stage across up to three units. Say the number of runs before each launch (a module: 8 Claude runs and 2 Codex calls; a claim type: 7 and 2; one more verifier run whenever stage 8b, a leftover flag or a late support check asks for it).
+**In parallel:** stages 2, 2c and 2d of one unit; the same stage across up to three units. **One run per unit for every agent stage.** Say the number of runs before each launch: a module has 8 Claude runs and 2 Codex calls; a claim type 7 and 2; one more verifier run for each follow-up.
 
-**The owner's questions, bundled.** Each unit's reconciler and verifier leave open points. The driver collects those marked "for the owner" into `reports/questions/batch-<n>.md`, one file per three units: each question in one plain sentence, the readings, **the protective reading the record already applies**, and what would change with each answer. The work never waits for a batch.
+**The owner's questions, bundled.** `PY unit.py questions --batch <n> <units>` writes `reports/questions/batch-<n>.md` for each batch of three units: each question in one plain sentence, the readings, **the protective reading the record already applies**, and what would change with each answer. The work never waits for a batch; an answer becomes an `owner` entry of a follow-up.
 
-**Done when, for a unit.** `rules check` passes on the final record; every worked example passes; `check-checklist` is `ok`; no final record has a `proposedSlots` entry; every statement has a quote, a source, a grade and a proof label written by script; every difference between A and B has an outcome; every attack has a verdict with a quote; the unit's row in the tracking file is filled (agreement before reconciliation, examples changed by a deriver, boundary cases passed, cites outside the texts given).
+**Done when, for a unit.** `<T> check --store` passes on the final record; every worked example passes; `check-checklist` is `ok`; no final record has a `proposedSlots` entry; every statement has a quote, a source, a grade and a proof label written by script; `unit.py status` shows stage 5 and stage 8 done (every difference has its line; every finding has a verdict with a quote); the unit's rows of the tracking file are filled.
+
+**Done when, for the track.** Phase A: the four high-harm modules are final. Phase B: all 33 units are final, both planted-error rounds are scored in `rules/reports/planted-errors.md`, and `rules/reports/grades.md` is written (texts still "to check" until phase D).
 
 | Situation | Do |
 |---|---|
-| A deriver's run ends without its record, or its record fails `rules check` | Delete what it wrote. Launch the same prompt fresh. Never repair it. Two failures: read the tool's message; if the prompt or the guide is at fault, fix it (version bump), then a third run. |
-| A deriver requests a text the store lacks | If a rule of the unit must cite it: fetch and read it now (first reading Sonnet, second Codex, mechanical proofs; [law/README.md](law/README.md)), then rerun **that derivation** fresh. If it is only context: list it; it waits for phase D. |
-| A deriver changed one of its own examples after running the tool | Allowed when only the expected questions changed and the rule did not. Record it in the tracking file. If an expected effect changed: keep the run, and add the example as a case difference for the reconciler. |
-| Stage 0 lists chapter members missing from the store | Fetch only those in a chapter that holds one of the unit's own pointer articles. The others are listed in `texts.json` as `missingFromStore` and wait for phase D. |
-| The unit cites an instrument whose triage is open (Commercial Code, Family Code, labour laws) | Go on. Its items cannot be grade A (`triageOpen`). The driver gives the adversary every untriaged title or operative hit that names the instrument, as leads to read in the Journal. |
+| A deriver's run ends without its record, or its record fails `<T> check --store` | Delete what it wrote. Launch the same prompt fresh. Never repair it. Two failures: read the tool's message; if the prompt or the guide is at fault, fix it (version bump), then a third run. |
+| A deriver requests a text the store lacks | `need: basis`: fetch and read it now ([law/README.md](law/README.md): an article added to the delta gets a Sonnet and a Codex reading), then rerun **that derivation** fresh. `need: context`: listed; phase D decides. |
+| Stage 0b finds no French text for an instrument | The entry says so, and derivation B is told so in its prompt. It is a line of the tracking file, not a stop. |
+| A deriver changed one of its own examples after running the tool | Its reply lists it. Allowed when only the expected questions changed and the rule did not; record it in the tracking file. If an expected effect changed: keep the run, and add the example as a case difference for the reconciler. |
+| Stage 0 lists chapter members missing from the store | Fetch only those in a chapter that holds one of the unit's own pointer articles. The others stay listed as `missingFromStore`; phase D fetches those a final record cites. |
+| The unit cites an instrument whose triage is open (Commercial Code, Family Code, labour laws) | Go on. Its items cannot be grade A (`triageOpen`, `preScanGap`). The adversary's `{{leads}}` holds every untriaged hit that names the instrument. |
 | A and B agree on under 40 % of compared fields | Go on to the reconciler; say so in the tracking file. Under 25 % on two units running: stop and read both prompts for a shared misunderstanding before the next unit. |
 | The reconciler adds an item neither derivation had | Kept; graded `addedAfterDerivation` (never A). The verifier is told to test it first. |
-| The support check accepts more than one seeded false pair in five | Its "yes" answers in that call do not count. Run the call once more with fresh pairs. Again: stop Codex for this role and tell the owner (the owner's condition for trying the local models). |
-| A unit waits more than 10 minutes for the Codex queue, or Codex refuses for a usage limit | Record it. The unit goes on without the Codex answer; its items carry `supportCheckPending` and cannot be A until the call returns. Tell the owner at the next report. |
-| The verifier sets a boundary case aside | Stage 8b. Codex agrees with the verifier: the case stays a counted failure with the two-family reason. Codex agrees with the case's writer: the case becomes **uncertain**, and one more verifier run makes the record keep both readings and warn. |
-| A step says "done" while another item still asks or warns about the same step | The runner reports it. One more verifier run with the owner's rule 7 of 14 November as the attack. |
-| After stage 9 a neighbour flag is unanswered | It comes from a statement the verifier added. One more verifier run with the flags as attacks. This should be rare: stage 8 already hands the verifier every flag. |
-| A store correction changes the paragraph numbers of a cited article | One verifier run changes the cites. Never by script. |
+| The support check accepts more than one seeded false pair in five | Its "yes" answers in that call do not count. Run the call once more with fresh pairs. Again: stop Codex for this role and tell the owner (stop point "Codex fails its bar"). |
+| A unit waits more than 10 minutes for the Codex queue, or Codex refuses for a usage limit | Record it. The unit goes on; its items carry `supportCheckPending` and cannot be A until the call returns and a follow-up has decided its findings. |
+| The verifier sets a boundary case aside | Stage 8b. Codex gives the record's answer: the case stays a counted failure with the two-family reason. Codex gives the case writer's answer, or a third answer: the case becomes **uncertain**, and a follow-up makes the record keep both readings and warn. |
+| A boundary case differs from the record only by its last day | Not sent to Codex. It goes into the question batch with both dates, and counts as a failure meanwhile. |
+| A boundary case fails only because the evaluator knows no holiday or rest day | An evaluator limit: a line of the tracking file, not an attack. |
+| A step says "done" while another item still asks or warns about the same step | The runner reports it; it is an `owner` entry of the verifier's input (rule 7 of 14 November). |
+| An attack names an item that a claim record imports from a module | It goes to the module's next follow-up; then the module is regraded and the claim types that import it are re-flattened and regraded. |
+| After stage 9 a neighbour flag is unanswered, a value does not match, or the store refuses a cite | A follow-up. More than two verifier runs on one unit: say so in the unit's batch. |
+| A store correction changes the paragraph numbers of a cited article | A follow-up changes the cites. Never by script. |
 | A unit's item is grade D for an unverified text | Expected before phase D. It warns, marked "to check". List it; do not start a text pass for it. |
-| You "know" a record is wrong | Raise an attack with a source and send it through the verifier like any other. |
+| You "know" a record is wrong | Raise an attack with a source and send it through a follow-up like any other. |
 
-**Traps.** Deriving a claim type before its modules are final bakes a module's unsettled point into many records. Sonnet's B is not a lesser A: check the reconciliation reports for "A's reasoning" used as a reason. The adversary will bring many tier-3 leads; an unconfirmed specific lead becomes an open point, not a dismissal. Case law is not in the store: a rule that needs a Supreme Court principle is `interpretive`, grade C at best. Building the research solution replaces the rules tool: never while an agent that runs it is working.
+**Traps.** Deriving a claim type before its modules are final bakes a module's unsettled point into many records. Sonnet's B is not a lesser A: check the reconciliation reports for "A's reasoning" used as a reason. The adversary will bring many tier-3 leads; an unconfirmed specific lead becomes an open point, not a dismissal. Case law is not in the store: a rule that needs a Supreme Court principle is `interpretive`, grade C at best. Publish the rules tool only when no agent of a unit is running.
 
-**Planted-error rounds** ([specs/planted-errors.md](specs/planted-errors.md)). Round 1 after the fifth final module; round 2 after the sixth final claim type. Until round 2 a kind of error counts as caught only at 5 of 5.
+**Planted-error rounds** ([specs/planted-errors.md](specs/planted-errors.md)). Round 1 after the fifth final module; round 2 after the sixth final claim type. After each: `PY unit.py regrade --all`. Until round 2 a kind counts as caught only when every one of its plants was caught and there were at least three. Neither round is a stop point.
 
-**Report to the owner, after each batch of three units:** the commit id; units final; for each: agreement before reconciliation, attacks fixed, refuted and open, grades with how many may block, boundary cases passed; the proof sentence of section 5b; the question batch file; what is next.
+**Report to the owner, after each batch of three units:** the commit id; units final; for each: agreement before reconciliation, attacks fixed, refuted and open, grades with how many may block, boundary cases passed; the proof sentence of section 5b; the question batch file; the running totals of runs and calls against section 9; what is next.
 
 ### Phase B, reader track. The sets, the volume and the first rungs (about a week)
 
-**Why this shape:** safeguards 16, 18, 20 and 23. Specifications: [specs/notes-pipeline.md](specs/notes-pipeline.md), [specs/reader.md](specs/reader.md), [specs/probes.md](specs/probes.md).
+**Why this shape:** safeguards 16, 18, 20 and 23. Specifications: [specs/notes-pipeline.md](specs/notes-pipeline.md) (sections 3 to 10 and its commands table), [specs/reader.md](specs/reader.md) (rungs 3 and 4), [specs/probes.md](specs/probes.md).
+
+**Inputs.** The owner's answer at the pilot stop point (the pace, the filter); the frozen scheme; the notes tool; the front end and the 8-bit encoder. **Outputs:** `<work>\notes-work\sets\*.jsonl` with their counts and SHA-256 in the repository; `<work>\reader\cache\`; `research\core-logic\train\` (`train_heads.py`, `decode.py`, `linear.py`, with tests); `reports\learning-curve.md`.
 
 **Do.**
 
-1. **Dev and challenge sets.** Dev: 600 notes, 300 written by Codex and 300 by Sonnet, from scenarios drawn the same way. Challenge: 12 difficulties of 50, half and half. Polarity families (about 300 groups of 3 to 4) sit inside the sets: about 200 groups in train, 100 in dev and challenge, each group written in one call by one writer. Relabel blind: Codex-written notes by Sonnet, Sonnet-written notes by Opus ([prompts/notes-judge.md](prompts/notes-judge.md), 25 notes a run, no tool). A test note is kept only if the scenario's labels (which are the writer's) and the blind relabel are equal on every field.
-2. **Training notes to 4,000 kept.** Codex writes; the code checks and the local filter decide; blank-and-keep under the owner's rule; refills for the polarities and slots that lose most. Opus measures the noise on 100 of every 1,000 kept.
-3. **Composed notes.** The better local writer supplies the phrases ([specs/notes-pipeline.md](specs/notes-pipeline.md), "Composed notes"); code composes; at most a quarter of any training set.
-4. **Rungs 3 and 4** of [specs/reader.md](specs/reader.md): the linear baseline; the encoder choice at 1,000 notes; the frozen encoder with its heads at 1,000, 2,000 and 4,000, three seeds, with and without composed notes. Every choice on the Codex half of dev.
-5. **The learning-curve report** `reports/learning-curve.md`. **Stop point.**
+1. **Dev and challenge sets** (`notes sample`, `notes write`, `notes ingest`, `notes relabel`, `notes compare`). Dev: 600 kept, 300 written by Codex and 300 by Sonnet, from scenarios drawn the same way. Challenge: 12 difficulties of 50, 25 by each writer, by the recipes of [specs/scenario-sampler.md](specs/scenario-sampler.md). Relabel blind: Codex-written notes by Sonnet, Sonnet-written notes by Opus ([prompts/notes-judge.md](prompts/notes-judge.md), 25 notes a run, no tool). A test note is kept only if the scenario's labels and the blind relabel are equal on every field.
+2. **Training notes to 4,000 kept.** Codex writes; the code checks and the local filter decide; blank-and-keep under the owner's rule; the cells are counted at 3,000, so that the refills fall inside the 4,000. Opus measures the noise on 100 of every 1,000 kept.
+3. **The clean-writer trial** (20 scenarios, both local models, two ranking runs: [specs/notes-pipeline.md](specs/notes-pipeline.md), section 8, point 1), then **the phrases and the composed notes** (section 9): 1,500 composed notes and the 150 probes; the probes confirmed by one blind Sonnet relabel (6 runs).
+4. **The cache** (`reader encode`) for every open note.
+5. **Rungs 3 and 4** of [specs/reader.md](specs/reader.md), in its fixed order of choices: the linear baseline; the encoder choice at 1,000 notes (CAMeLBERT-MSA is downloaded and exported for this); the loss variant; the frozen encoder with its heads at 1,000, 2,000 and 4,000, three seeds, with and without composed notes; the one comparison of the 8-bit form with the 32-bit one. **Every choice on the tune notes** (the Codex halves of dev and of the challenge set).
+6. **The probes and the reviews** ([specs/probes.md](specs/probes.md)): near-copies and leakage on every open set; the realism review of the two halves of dev (about 6 runs; the clean test split's in phase C); the odd-one-out (2 runs).
+7. **The learning-curve report** `reports\learning-curve.md`. **Stop point.**
 
-**Done when.** Each set meets its "done when" in [specs/notes-pipeline.md](specs/notes-pipeline.md); every kept note is schema-valid with its provenance; the curve report shows, per point and per seed, each target of [specs/scorer.md](specs/scorer.md) on the Codex half and on the Sonnet half of dev, and the challenge set per difficulty; the probes of [specs/probes.md](specs/probes.md) are reported.
+**Done when.** Each set meets its line of the "done when" table of [specs/notes-pipeline.md](specs/notes-pipeline.md), section 7; every kept note is schema-valid with its provenance; a test asserts that no note with `trainingAllowed: true` has a Claude model as writer, filter or relabeller; the curve report shows, per size and per seed, the tuning score and each target of [specs/scorer.md](specs/scorer.md) on the Codex half and on the Sonnet half of dev, the challenge set per difficulty and per writer, the style gap, and the probes.
 
 | Situation | Do |
 |---|---|
-| The Sonnet half of dev scores more than 5 points under the Codex half | Report it as the style gap. Do **not** tune on the Sonnet half. Allowed answers, in order: more style cards for the Codex writer; a larger composed share up to its cap; then fine-tuning (phase C). |
-| A polarity or a slot has under 60 known examples at 4,000 | Targeted scenarios for it in the next Codex calls, before the curve report. |
-| Composed notes lower the Codex-half score at two of the three points | Drop them from the shipped recipe; say so. |
-| The curve still rises by more than 1.5 points from 2,000 to 4,000 and a target is missed | The report recommends more notes, with the Codex calls and nights they cost. The owner decides. |
-| The curve is flat and a target is missed by more than 2 points | The report recommends fine-tuning (phase C), not more notes. |
-| MSA and mix are within a point | Keep mix. |
-| The relabel drops more than 35 % of a writer's test notes | Read the dropped fields' counts by kind. One kind dominates: fix the guide or the writer prompt, rerun that batch. Otherwise go on; the rate is reported. |
+| The style gap is more than 5 points | Report it. **Change nothing because of it.** At the stop point the owner may choose a remedy (more style cards for the Codex writer; more composed notes, up to a quarter; rung 5); it is then judged on the tune notes. |
+| A cell is under its share of 60 when 3,000 notes are kept | Targeted scenarios for it in the calls that lead to 4,000. Still under 60 at 4,000: reported with its count. Nothing beyond 4,000 is written before the owner's answer. |
+| Composed notes lower the tuning score, beyond the spread, at two of the three sizes | Drop them from the shipped recipe; say so. |
+| The tuning score still rises by more than 1.5 points from 2,000 to 4,000 and a target is missed on the tune notes | The report recommends more notes, with the Codex calls and nights they cost. The owner decides. |
+| The curve is flat and a target is missed by more than 2 points on the tune notes | The report recommends rung 5 (phase C), not more notes. The owner decides. |
+| CAMeLBERT-MSA is not better than mix by a full point of the tuning score, beyond the spread | Keep mix. |
+| The relabel drops more than 35 % of a writer's test notes | [specs/notes-pipeline.md](specs/notes-pipeline.md), decision table. A fault seen only on Sonnet-written notes changes no prompt: it is reported. |
+| The composed notes or the phrases are not ready when the curve is drawn | Draw the curve without them and say so; add their rows when they exist. |
+| You are about to choose something from a figure on a Sonnet-written note | Do not. Choose on the tune notes; report the other figure beside it. |
 
-**Report to the owner (stop point):** the curve; what it means in one paragraph; the style gap; the recommendation; the one question: "more notes, fine-tuning, or go on as it is?"
+**Traps.** The Sonnet halves share their writer with the mirror set and hidden v3: a reader chosen on them is fitted to the hidden set's manner. A realism review never reads a training set. A polarity group is written together and relabelled apart. The cache is keyed by the encoder's hash: never mix vectors of two encoders.
+
+**Report to the owner (stop point):** the curve; what it means in one paragraph; the style gap; the cells still short; the recommendation by the two rows above; the sentence that the Sonnet-half figures rest on labels two Claude models agreed on; the one question: "more notes, fine-tuning, or go on as it is?"
 
 ### Phase C. The reader finished, and step 5 (about a week)
 
+**Inputs.** The owner's answer at the learning-curve stop point; the 4,000 training notes and their cache; six final claim types for step 5. **Outputs:** the clean set; the reader's five files per candidate under `<work>\models\reader\<candidate>\` with their hashes in the repository; `DzLegal.CoreLogic.Reader` complete; `reports\reader.md`; `docs\research\core-logic\results\step-5\`; `reports\step-5.md`.
+
 **Reader track** ([specs/reader.md](specs/reader.md), rungs 5 to 9).
 
-1. **Fine-tuning**, only under the rule of [specs/reader.md](specs/reader.md) ("Rung 5"); two overnight runs at most.
-2. **Clean notes:** the trial (20 notes from each local model, the same scenarios), then 1,000 by the better writer: 700 for training, 100 clean-dev, 200 as the clean test split. Then the comparison "clean against Codex-trained" at equal size.
-3. **Calibration and abstention** on the Codex half of dev and on clean-dev.
-4. **The .NET reader:** `DzLegal.CoreLogic.Reader` implements `INoteReader`; parity on 200 dev notes; time, memory and bytes on mains.
+1. **Rung 5 (training the encoder's top layers), only if** its rule fires on the tune notes **and** the owner answered "fine-tuning"; two overnight runs at most.
+2. **Clean notes:** 1,000 by the better local writer: 700 for training, 100 clean-dev, 200 as the clean test split ([specs/notes-pipeline.md](specs/notes-pipeline.md), section 8); the realism review of the clean test split (3 runs); one noise measurement on the clean training notes. Then rung 7: clean against Codex-trained.
+3. **Rungs 6 and 8:** the rule vote; calibration and thresholds, on the tune notes (now with the clean dev split).
+4. **Rung 9:** the heads in .NET, the decoding, `INoteReader`; parity on 200 notes of the Codex half of dev; time, memory and bytes under the measuring guard.
+
+**Done when (reader track).** `reports\reader.md` holds items 0 to 6 and 8 of [specs/reader.md](specs/reader.md)'s list; parity passed (the same labels, confidences within 0.01); the thresholds file of each candidate is hashed; a note takes under one second (median and 95th percentile, per length class) and the reader's files are under 150 MB, or the report says by how much they miss; `dotnet test` is green in a clone without model files.
 
 | Situation | Do |
 |---|---|
 | A training run fails (a crash, a loss that does not fall, an out-of-memory error) | Two more attempts, each with one named change. After the third failure or one lost day: stop and ask the owner. Only with the owner's approval does the Codex training backup start ([specs/codex-calls.md](specs/codex-calls.md)). |
-| The 8-bit model loses more than a point against the 32-bit one | Static quantisation with 200 training notes for calibration; then, if needed, one fine-tuning epoch with the quantised weights simulated. Report both figures. |
-| The reader in .NET differs from Python by more than 0.01 on a confidence | A tokenizer or offset fault. Find the first differing token on the parity notes; do not relax the bar. |
-| A note takes more than one second | Measure per stage. Usual cause: more than two windows. Cap the windows at three and report the notes it affects. |
-| The clean-trained reader is within 2 points of the Codex-trained one on claim type and polarity | Tell the owner: the owner's decision of 12 November then plans the shipped reader on clean notes only. Both candidates go to the mirror set. |
+| The backup's three sessions do not solve it | Stop. The owner chooses: do without that rung, or a free GPU. |
+| The 8-bit model loses more than a point of the tuning score against the 32-bit one | Static quantisation with 200 training notes for calibration; then, if needed, one epoch with the quantised weights simulated. Report both figures. |
+| The reader in .NET differs from Python by more than 0.01 on a confidence | A tokenizer, offset or stitching fault. Find the first differing piece on the parity notes; do not relax the bar. |
+| A note takes more than one second | Measure per stage. Usual cause: three windows. Report the notes affected; the cap goes to two only if the tuning score does not fall beyond the spread. |
+| The clean-trained reader is close ([specs/notes-pipeline.md](specs/notes-pipeline.md), section 8: within 2 points on four lines, on the tune notes) | Tell the owner: the decision of 12 November then plans the shipped reader on clean notes only, as that section's point 5 defines it. Both candidates go to the mirror set, each with its own files. |
 | Training would need more than two overnight runs | Stop point. |
+| A timing's guard failed | The figure is void. Measure again on mains, idle. |
 
-**Step 5** ([specs/step5-templates.md](specs/step5-templates.md)), once six claim types are final. In the app today, thirteen of the petition's fourteen sections are already written by templates, and one by the model: the legal discussion. So step 5 measures the two sections a model could still be needed for: **the legal discussion** (one paragraph per element, from the record's articles and the confirmed facts) and **the facts**. 120 fact sheets; each part written by a template and by the four local models; the faithfulness script on every output; two blind judges (Sonnet and Opus) on a sample, 24 runs; time, memory and the bytes of each set-up; about two laptop nights. The requests stay the lawyer's own lines, as the app's own audit decided. **Done when** `reports/step-5.md` holds the one table (for each section, the smallest set-up that is faithful 98 % of the time and usable 90 % of the time) and the two answers: how much templates can write, and whether the app can work under 1 GB. **Nothing is fine-tuned without the owner's word.**
+**Step 5** ([specs/step5-templates.md](specs/step5-templates.md)), once six claim types are final. In the app today, thirteen of the petition's fourteen sections are already written by templates, and one by the model: the legal discussion. So step 5 measures the two sections a model could still be needed for: **the legal discussion** (one paragraph per element, from the record's articles and the confirmed facts) and **the facts**. 120 fact sheets; each part written by a template and by the four local models; the faithfulness script on every output; two blind judges (Sonnet and Opus) on a sample, 24 runs; two Arabic checks of the templates (Sonnet); time, memory and the bytes of each set-up; about two laptop nights. The requests stay the lawyer's own lines, as the app's own audit decided. **Done when** `reports\step-5.md` holds the one table (for each section, the smallest set-up that is faithful 98 % of the time and usable 90 % of the time) and the two answers: how much templates can write, and whether the app can work under 1 GB. Its own decision table is in the specification. **Nothing is fine-tuned without the owner's word.**
 
-**Report to the owner:** the commit id; the ladder table with intervals; size, time and memory; the step 5 table and its one-sentence conclusion; what did not work.
+**Traps.** A 32-bit score is not the reader's. A fine-tuned encoder's score counts only after quantisation, a new cache and refitted heads. A "clean only" reader never uses an encoder trained on Codex notes. In step 5 the script decides faithfulness; a judge never overrules it, and no model rewrites the requests.
 
-### Phase D. The slots the records added, and the deferred law work (about four days)
+**Report to the owner:** the commit id; the ladder table with intervals, the Codex half and the Sonnet half side by side; size, time and memory; the step 5 table and its two answers; the one-family sentences (the Sonnet-half figures; step 5's judges); what did not work.
 
-**Reader track.** For each slot the final records added, decide by the table of [specs/scheme-extension.md](specs/scheme-extension.md) whether it stays a question for the lawyer or becomes a reader output. For those that do: the guide row, the six guide-test items, the note pack, the head, the proof that older outputs did not change. The scheme becomes 1.1.
+### Phase D. The slots the records added, and the deferred law work (about five days)
 
-**Rules track**, in this order:
+**Inputs.** The 33 final records and `slots.json`; the scan's evidence files; `law\triage-status.json`; the reader of phase C and its cache. **Outputs:** `notes\SCHEME.md` section 10 filled (and scheme 1.1 if a slot is read); `law\inventory.json`, `law\law-delta.json`, `law\amendment-ledger.json`, `law\triage-status.json`, `law\REPORT.md`; every `final\*.json` regraded; `rules\reports\grades.md`; `docs\research\core-logic\legal-review-answers.md`.
 
-1. **The remaining Journal triage:** the title and operative hits of the Commercial Code, the Family Code and the labour laws ([prompts/journal-hit-triage.md](prompts/journal-hit-triage.md); about 67 Sonnet runs, 8 at a time; say the number first). Then `python ledger.py build` and `law/triage-status.json`.
-2. **The text pass:** `python records.py inventory` on every final record; a page reading for every cited article that is not verified, grouped by issue (an article in critical use on one page or a pair of pages per run). First reading Sonnet. **A second reading by Codex only where the proof needs one:** the labour laws, an article added to the delta, a corpus text whose own check was a Claude reading. Settlements by Opus on full-resolution tiles. Corrections go to the delta.
-3. **Step 2's second pass:** the delta trimmed to what the final records cite; `law/amendment-ledger.json`; `law/REPORT.md`; the downloaded PDFs deleted ([law/README.md](law/README.md), "Done when").
-4. **Regrade every record;** planted-error round 2; the grade report ([rules/GRADES.md](rules/GRADES.md), last section).
-5. **The Legal Review answers** ([prompts/legal-review-answer.md](prompts/legal-review-answer.md), [prompts/legal-review-attack.md](prompts/legal-review-attack.md)): the 22 questions by section, one answer by Opus and one by Sonnet, each attacked by the other; you write `docs/research/core-logic/legal-review-answers.md`.
+**Reader track.** For each slot the final records added, decide by the table of [specs/scheme-extension.md](specs/scheme-extension.md) whether it is derived, stays a question for the lawyer, or becomes a reader output. For those that do: the guide row, six guide-test items, the note pack, the head, the proof that older outputs did not change, its own threshold; only then `readFromNote: true`. The scheme becomes 1.1. That specification holds this track's decision table.
+
+**Rules track**, in the order of the table "Phase D: the deferred law work, step by step" of [law/README.md](law/README.md):
+
+1. **The remaining Journal triage** (`PY triage.py plan` prints the runs: about 50 to 100 Sonnet runs, 8 at a time; **say the number first**); the special laws the records cite; `triage.py status`; `ledger.py build`.
+2. **The texts before the scan's first year** (three labour texts, four Commercial Code texts), read from their Journal pages.
+3. **The text pass:** `PY records.py inventory --out law\inventory.json` says which cited article needs which reading ([specs/article-store.md](specs/article-store.md), "When Codex reads a page"): every article that is not verified, or only `corpusChecked` under a deadline, a prior step, a section rule or an exit. Settlements by Opus on close-ups. Corrections go to the delta.
+4. **Step 2's second pass:** `delta.py trim`; `law\REPORT.md`; the Journal PDFs deleted.
+5. **`PY unit.py regrade --all`**, then `rules\reports\grades.md` ([rules/GRADES.md](rules/GRADES.md), last section).
+6. **The Legal Review answers** ([prompts/legal-review-answer.md](prompts/legal-review-answer.md), [prompts/legal-review-attack.md](prompts/legal-review-attack.md)): the 22 questions in five groups, one answer by Opus and one by Sonnet (10 runs), each attacked by the other model (10 runs); you write `legal-review-answers.md` with the three marks, no typed grade.
+
+**Done when.** Every added slot has its decision and the row that decided it; every slot to be read passed rows 2, 4, 7 and 8 of the specification, or is reported "read, below target". `triage-status.json` is complete for every code, or a code is listed as open with its reason; every cited article is verified or listed at grade D with its reason; `grades.md` is written after the regrade, with the proof labels and both planted-error rounds; the 22 answers each have their mark and their cite lines; `law\REPORT.md` gives the figures the brief asks for.
 
 | Situation | Do |
 |---|---|
-| The triage finds a text that amends an article a final record cites | Fetch the amending text; add the wording to the delta; rebuild the store; one verifier run on each record that cites it, with the change as the attack; regrade. |
-| A page reading differs from the store | The settlement rule of [law/README.md](law/README.md). A difference of paragraph division only: a `paragraphDivision` correction, as for Civil Code 120. |
+| The triage finds a text that amends an article a final record cites | Fetch the amending text; add the wording to the delta (two readings); rebuild the store; a follow-up on each record that cites it, with the change as the attack; regrade. |
+| A page reading differs from the store | A reading by the other family, then the settlement rule of [law/README.md](law/README.md). A difference of paragraph division only: a `paragraphDivision` correction, as for Civil Code 120. |
+| A wording correction touches an article a final record cites | Re-quote. If `check-values` then differs, or the meaning changes: a follow-up, and a Codex support check of the changed statements. |
+| A settled wording is not the Codex reading's | One more blind Codex reading of the close-up; still different: the entry's proof is `oneFamily` ([specs/article-store.md](specs/article-store.md)). |
 | A reader copied the article's heading | The comparison already drops it (`reading.drop_heading`). |
 | A text stays unverified after the pass | Its items stay grade D and are listed in the grade report, with the reason. |
+| A triage answer stays `unsure` after a fresh re-read | The code's triage stays open; its items stay at B; the report names the issue. |
 | The scan misses a known amendment | Say the scan is not trusted; every `ledgerClean` false; grades fall to B. Do not patch the scan by hand. |
+| A slot needs a value type the scheme lacks | Stop point. |
 
-**Report to the owner:** the commit id; the figures the brief asks for (cited articles checked by script, by a reading, corrections found); the corrections for the corpus and for the library; the final grades and how many items may block; the planted-error rates; the Legal Review answers' file.
+**Traps.** `ledger.py` reads triage answers two folders deep: use the work folder the table names. An article of the two labour laws is read by Codex only: a Sonnet reading adds nothing there. The labour ministry's site is not an allowed source: the Journal's pages are. A slot pack is training material: Codex writes it, the local filter decides, and no Claude model judges whether its notes "state the slot".
+
+**Report to the owner:** the commit id; the figures the brief asks for (cited articles checked by script, by a reading, corrections found); the corrections for the corpus and for the library; the final grades and how many items may block; the planted-error rates; the slots' decisions; the Legal Review answers' file; the sentences of section 5b (the triage, the settlements and the Legal Review rest on Claude models).
 
 ### Phase E. The mirror set, hidden v3 and the freeze (about a week)
 
-Specifications: [specs/hidden-v3-commands.md](specs/hidden-v3-commands.md), [specs/scorer.md](specs/scorer.md), [prompts/freeze-rebuild.md](prompts/freeze-rebuild.md).
+Specifications: [specs/hidden-v3-commands.md](specs/hidden-v3-commands.md) (every command, the loop, its own decision table), [specs/scorer.md](specs/scorer.md), [prompts/freeze-rebuild.md](prompts/freeze-rebuild.md).
+
+**Inputs.** The at most two final candidates with their files; the probe pool; everything the generation method needs, to be frozen. **Outputs:** the mirror set (`<work>\mirror`, `<work>\mirror-relabel`, `<work>\mirror-results`); `docs\research\core-logic\results\mirror\` and `results\hidden-v3\` (`PRECOMMIT.md`, `RUNS.md`, the summaries); `docs\research\core-logic\FREEZE.md`.
 
 1. **Freeze the generation method** (commit id recorded).
-2. **The mirror set** (about 440 kept notes in v3's proportions), with the v3 roles, prompts and commands, in an open folder: Sonnet writes, Opus relabels with the known-truth probes mixed in, a fresh Sonnet is the third judge by the question-sheet route. It is the rehearsal of every v3 command. **Stop point before any v3 writer runs.**
-3. **Score the at most two final candidates on the mirror set, once.** Write `PRECOMMIT.md`; push.
-4. **Hidden v3:** `v3 init`, planner, writers, validate, relabel, compare, refills, probes, finalize. **The owner runs the one scoring command, once.**
-5. **Step 6:** `docs/research/core-logic/FREEZE.md`; a fresh Sonnet rebuilds from it in a clean clone.
+2. **Stop point "Before the mirror's planner":** the Workflow opt-in and the permission rules ([specs/hidden-v3-commands.md](specs/hidden-v3-commands.md), sections 1 and 6).
+3. **The mirror set** (about 440 kept notes in v3's proportions), with the v3 roles, prompts and commands: isolated Sonnet agents write; isolated Opus agents relabel, two known-truth probes in every batch; `v3 audit-relabel`; a fresh Sonnet is the third judge by the question-sheet route. It is the rehearsal of every v3 command.
+4. **The mirror's `PRECOMMIT.md`; then the at most two candidates are scored on the mirror, once.**
+5. **Stop point "Before the v3 planner":** the rehearsal's result and its figures.
+6. **Hidden v3:** `v3 init`, planner, writers, validate, the relabel loop, compare, probes, refills (three rounds in all), finalize.
+7. **v3's `PRECOMMIT.md`; push. The owner runs the one scoring command, once.** No commit between that file and the run.
+8. **Step 6:** `docs\research\core-logic\FREEZE.md`; a fresh Sonnet rebuilds from it in a clean clone ([prompts/freeze-rebuild.md](prompts/freeze-rebuild.md)).
+
+**Done when.** The ten points of [specs/hidden-v3-commands.md](specs/hidden-v3-commands.md), "Done when", hold; `RUNS.md` and the summaries are committed; the rebuild's figures equal the freeze document's, the mirror and v3 figures being checked from their committed summaries; your context holds no v3 text (if it ever did, that is reported).
 
 | Situation | Do |
 |---|---|
-| A reply from a v3 writer or relabeller holds text | Stop, discard the batch, tell the owner. |
-| The memory folder changed after a hidden-set agent ran | Stop, tell the owner in one line, without any text. |
-| A quota cell is short after three refill rounds | Stop point: the cells and their counts. |
-| The relabeller is under 95 % on the known-truth probes | Its labels are not trusted for that batch: rerun the batch with a fresh Opus; under 95 % again: stop point, with the per-field rates. |
+| A reply from a v3 planner, writer or relabeller holds text | Stop, discard the batch, tell the owner in one line without the text, wait. (On the mirror: discard, a fresh agent, count it, go on.) |
+| The memory folder changed after a hidden-set agent ran | Stop, tell the owner in one line, start no new session before the owner has looked. |
+| A quota cell is short after three rounds (the first and two refills) | Stop point: the cells and their counts. |
+| A relabel batch is under the probe bar (two or more wrong fields on its two probes) | Its notes are relabelled by a fresh Opus; a second time for the same notes: stop point, with the per-field rates. |
+| The mirror's label noise is over 5 % of notes, or more than half of its notes were dropped, or the pooled probe rate is under 95 % | Bring it to the stop point "Before the v3 planner"; v3 waits for the owner. |
+| The rehearsal finds a defect after the freeze of the generation method | [specs/hidden-v3-commands.md](specs/hidden-v3-commands.md), section 6's table: fix, version bump, an amendment of the frozen method, that mirror stage again. |
 | The mirror score is more than 3 points under the Sonnet half of dev | Say so in `PRECOMMIT.md`. Nothing is tuned; the mirror chooses nothing. |
-| A rebuilt figure differs from the freeze document | Fix the document or the command, never the figure. |
+| A rebuilt figure differs from the freeze document | Fix the document or its command and run the step again, never the figure. At most two full rebuilds. |
 
-**Traps.** The mirror set chooses nothing. A hidden-set command is debugged on the mirror set, never by looking. Never change the access rights of a hidden folder. Balanced sets are not realistic sets; say so beside every score. After the v3 run nothing is tuned on what the summary shows. With 100 notes a 90 % target is "met" only from 96 right; with 200 notes a 95 % target only from 197: several v3 targets will most likely come out "inconclusive". Say this to the owner before the run.
+**Traps.** The mirror set chooses nothing. A hidden-set command is debugged on fixtures or on a marked copy of the mirror, never by looking. Never change the access rights of a hidden folder. Never open a relabel prompt file "to check it". Balanced sets are not realistic sets; say so beside every score. After the v3 run nothing is tuned on what the summary shows. With 100 notes a 90 % target is "met" only from 96 right; with 200 notes a 95 % target only from 197: several v3 targets will most likely come out "inconclusive". Say this to the owner before the run.
 
-**Report to the owner:** the commit id; each target as met, not met or inconclusive, the worst test set of at least 200 notes as the headline; the mirror's prediction beside the v3 result; the bias sentence of section 4, rule 7; what the reviewer needs to integrate.
+**Report to the owner:** the commit id; each target as met, not met or inconclusive, the worst test set of at least 200 notes as the headline; the mirror's prediction beside the v3 result; the probe rate and the third judge's figure; the sentences of section 5b on the one model family and on the relabeller's unchecked tool use; what the reviewer needs to integrate.
 
 ## 8. Stop points: when you must wait for the owner
 
@@ -568,12 +640,15 @@ At each of these: commit and push what is done; update the state file; make sure
 | Stop point | What you bring | What the owner decides |
 |---|---|---|
 | **The pilot** (phase A) | the pilot report, the calendar, the runs and calls phase B needs | go on to volume; the pace |
+| **More than 30 % of a call's notes fail the code checks, after one fix of the prompt** | ten failures described, the fix tried | change the writer prompt, or stop |
 | **Label noise over 10 %** (any time) | the figure, its interval, the kinds of wrong label | change the filter, the writer, or stop |
 | **The learning curve** (phase B) | the curve, the style gap, the recommendation | more notes, fine-tuning, or go on |
 | **Opus cannot get a training run working** (phase C) | what was tried, the errors | the Codex training backup, or not |
 | **Training beyond two overnight runs** | the time of one epoch, what was tried | yes or no; a free GPU or not |
-| **A change of meaning of an existing label** (scheme 2.0) | the label, why, what must be relabelled | yes or no |
-| **Before the v3 writers** (phase E) | the mirror rehearsal's result; how many agents | the opt-in to a workflow; the permission, in the owner's Claude Code settings, for agents to read and write under the mirror folder, `C:\dz-hidden-v3` and the `-relabel` folder beside each |
+| **A change of meaning of an existing label** (scheme 2.0), or a slot that needs a value type the contract lacks | the label or the slot, why, what must be relabelled or changed | yes or no |
+| **Before the mirror's planner** (phase E) | the generation method's commit; how many agents the mirror and v3 need | the opt-in to a workflow; the permission rules, in the owner's Claude Code settings, for agents under the mirror folder, `C:\dz-hidden-v3` and the `-relabel` folder beside each (which role may read and write what: [specs/hidden-v3-commands.md](specs/hidden-v3-commands.md), section 1) |
+| **Before the v3 planner** (phase E) | the mirror rehearsal's result: its label noise, drop rate, probe rate, the audit of its relabellers | go on to v3, or not |
+| **The relabeller is under the probe bar twice** for the same notes | the probes' per-field rates | what to do |
 | **A shortfall in v3's quotas** | the short cells with their counts | accept, or more rounds |
 | **Running hidden v3** | the pre-commitment commit, the one command, what the sizes can prove | the owner runs it, once |
 | **The hidden v2 comparison** (optional) | the question of [specs/v2-adapter.md](specs/v2-adapter.md) | accept the adapter, or drop the comparison |
@@ -591,17 +666,19 @@ State the count before every fan-out, and keep the ledger ([STATE-FORMAT.md](STA
 
 | | Opus runs | Sonnet runs | Codex calls | Main items |
 |---|---:|---:|---:|---|
-| Step 1 (32 units, two planted-error rounds) | about 165 | about 140 | about 55 | per unit: A, reconcile, adversary, verify (Opus); B, boundary cases, attack, and for a module C (Sonnet); support check and boundary view (Codex). Planted rounds: 22 attacks, 22 verifier runs |
-| Deferred law work (phase D) | about 25 | about 135 | about 30 | triage 67; first page readings about 60; second readings only where needed; settlements; Legal Review: 10 answers and 10 attacks |
-| Step 3 | about 175 | about 240 | about 415 | Codex: pilot 25, training about 300, its halves of dev and challenge about 46, slot packs about 45. Sonnet: its halves 46, relabelling Codex's and the clean splits about 54, mirror and v3 planners and writers about 93, the third judge 18, realism, guide test. Opus: relabelling Sonnet's halves 38, the mirror 24 and v3 about 70, the noise measurements 25, realism, sorting |
-| Steps 4 to 6 | about 12 | about 15 | 0 | step 5's judges (12 each); the Arabic checks of its templates; the rebuild |
-| **Total** | **about 375** | **about 530** | **about 500** | |
+| Step 1 (32 units, two planted-error rounds) | about 165 | about 150 | about 75 | per unit: A, reconcile, adversary, verify (Opus); B, boundary cases, attack, and for a module C (Sonnet); the support check and the boundary view (Codex). Planted rounds: 22 attacks, 22 verifier runs, 22 support calls. Arabic checks of new slots' questions: about 11 |
+| Deferred law work (phase D) | about 25 | about 150 | about 30 | triage 50 to 100 (the plan command prints the number); first page readings about 60; second readings only where the inventory says; settlements; Legal Review: 10 answers and 10 attacks |
+| Step 3 | about 175 | about 235 | about 415 | Codex: pilot 25 to 30, training about 300, its halves of dev and challenge about 46, slot packs about 25 a slot. Sonnet: its halves 46, relabelling Codex's halves, the clean splits and the probe pool about 60, mirror and v3 planners and writers about 93, the third judge 18, realism 6, guide test and cells 5. Opus: relabelling Sonnet's halves 38, the mirror 24 and v3 about 70, the noise measurements about 30, realism 3, sorting 5, guide test and cells 2 |
+| Steps 4 to 6 | about 12 | about 17 | 0 | step 5's judges (12 each); the Arabic checks of its templates (2); the rebuild (2) |
+| **Total** | **about 375** | **about 550** | **about 520** | |
 
-**These figures were recomputed on 14 November 2026 from the detailed specifications, and they are higher than the plan the owner approved the same day (345 Opus, 410 Sonnet, 435 Codex).** The plan had not counted: the writers and relabellers of the mirror set and of hidden v3 in full (about 190 runs between them), the Sonnet-written halves of dev and of the challenge set, the two planted-error rounds' own runs, and the slot packs. Nothing was added that the plan did not describe. Tell the owner the running totals against this table in every report.
+**These figures were recomputed on 14 November 2026 from the detailed specifications, after the cold read, and they are higher than the plan the owner approved the same day (345 Opus, 410 Sonnet, 435 Codex).** The plan had not counted: the writers and relabellers of the mirror set and of hidden v3 in full (about 190 runs between them), the Sonnet-written halves of dev and of the challenge set, the two planted-error rounds' own runs and support calls, the slot packs, and the triage's real number of issues. Nothing was added that the plan did not describe. Tell the owner the running totals against this table in every report.
 
-**The laptop:** about 14 nights or free-day sessions (4 for the filter, 3 for the clean notes, 3 for training runs, 2 for step 5's writers, 2 spare). The plan said 11: the filter's sheet is longer than first estimated (about 20 to 25 seconds a note, to be measured at the filter trial), and step 5's writing had not been counted.
+**The laptop:** about 17 nights or free-day sessions: about 7 for the local filter (every note it must read: pilot 500, trial 400, training about 5,100, clean 1,300, 4,500 short phrase notes, at an estimated 25 to 30 seconds a note), 2 for writing the clean notes, 2 for the phrases, 3 for training runs, 2 for step 5's writers, 1 spare. The plan said 11: the filter's sheet is longer than first estimated, and the phrases and step 5's writing had not been counted. **The pilot report recomputes this from measured seconds per note**; more than 8 filter nights is a question for the owner at that stop point.
 
-**If something must give:** hidden v3 and the mirror set first, then dev and the challenge set, then the rule checks, and training volume last. Do **not** save by skipping a blind relabel, the third judge of the mirror set, the seeded pairs or the planted errors.
+**Is the note generation feasible on this laptop?** On these estimates, yes: about 17 sessions before 10 December, with 23 nights available from 17 November. It is not measured: nobody has timed a local model writing or filtering a whole note. The pilot measures both, and its report gives the answer as a plain yes or no. A fallback without Codex (4,000 clean training notes written locally) would take about 12 more nights.
+
+**Priority when a limit bites** (the first is protected most; the last gives way first): hidden v3 and the mirror set; dev and the challenge set; the rule checks; training volume. Do **not** save by skipping a blind relabel, the third judge of the mirror set, the seeded pairs or the planted errors.
 
 **Forecast** (made on 14 November 2026; assumptions: about 10 working hours a day from 17 November; Codex's limits allow about 300 writing calls within a week; the laptop every night and on free days; the owner's answers within a day; no Claude usage limit stops the work):
 
@@ -622,7 +699,19 @@ Keep a line in each report: where the work stands against this table, and why if
 
 Every report to the owner is short and in plain language (the owner is a developer, not a lawyer and not a machine-learning specialist): **what is done** (with the commit id), **what is uncertain**, **what is next**, and, at a stop point, **the one question**. Numbers come with their meaning. Never round a result up. Never present a model's agreement as verification. When a target is missed, say so in the first paragraph. Where a result rests on checks inside one model family, say so in the same sentence (section 5b).
 
-Reports are also committed under `docs/research/core-logic/reports/`: `pilot.md`, `learning-curve.md`, `step-1-tracking.md` (one row per unit, kept up to date by the driver), `questions/batch-<n>.md`, `planted-errors.md`, `step-5.md`, `step-2b.md`, `reader.md`, `legal-review/`.
+Reports are also committed. Under `docs/research/core-logic/reports/`: `pilot.md`, `learning-curve.md`, `reader.md`, `step-5.md`, `step-1-tracking.md` (kept up to date by the driver), `questions/batch-<n>.md`, `legal-review/`. Under `docs/research/core-logic/rules/reports/`: `planted-errors.md` and `.json`, `grades.md`. Under `docs/research/core-logic/law/`: `REPORT.md`. Under `docs/research/core-logic/results/`: the pre-commitments, `RUNS.md` and the summaries.
+
+**Which report carries which proof sentence** (the owner: "State it wherever a result appears"). Each of these says, in its first lines, what its figures rest on:
+
+| Report | The sentence it must carry |
+|---|---|
+| the phase 0 report; every batch report of the rules track; `step-1-tracking.md` (header); `questions/batch-<n>.md`; `rules/reports/grades.md` | derivations, attack, adversary and verifier are Claude models; Codex's support check is the one reading by another family; a belief the Claude models share is not caught; the triage behind the amendment ledger is one Sonnet reading per issue |
+| `notes/GUIDE-TEST-RESULTS.md`; the cells table of `notes/SCHEME.md`; `pilot.md` (its guide-test part) | decided by two Claude models |
+| `learning-curve.md`; `reader.md`; the phase C report | the Codex halves and the clean splits rest on two families; the Sonnet halves on labels two Claude models agreed on, with a code-made scenario |
+| `step-5.md` | faithfulness is a script's; both judges of usability are Claude models |
+| `law/REPORT.md`; the phase D report | which texts are `mechanical`, `twoFamilies`, `oneFamily`; settlements are Opus's |
+| `legal-review-answers.md` | answers and attacks are Claude models' only; no lawyer checked them |
+| the mirror's and v3's `PRECOMMIT.md` and summaries; the phase E report; `FREEZE.md` | writer and relabeller are both Claude models and a case is its writer's own; the probe rate and the third judge's figure are floors; a relabeller's tool use is not checked |
 
 ## 11. What this handbook did not settle
 
@@ -636,4 +725,7 @@ Honest gaps, so that you do not take silence for a decision:
 6. **The module list** is a plan (section 6).
 7. **What v3 can prove** is limited by its size.
 8. **OpenAI's terms were not read** (section 2). The owner decided on the owner's own reading.
-9. **This revision was checked on the night of 14 November** by cold readers and critics ([reports/handbook-check-2.md](reports/handbook-check-2.md)). Its phases A to E have never been run. The first unit through the driver, and the pilot, are their real test.
+9. **What a Claude model writes that the notes are made from** (the sampler's code, the style cards, the English seed lines, the prompts, the guide, the cells table, the fixed Arabic lines for the local writers). The planner reads the owner's decision as allowing these, since none is a training note; the owner has not ruled on it ([notes/TERMS.md](notes/TERMS.md)).
+10. **What may change the writer prompt, the style cards and the sampler:** only findings on notes written by Codex or a local model. That is the planner's reading of the owner's tuning rule, applied one step back from the reader.
+11. **Whether a v3 relabeller peeks** cannot be known (section 5b, point 5).
+12. **This revision was checked on the night of 14 November** by cold readers and critics ([reports/handbook-check-2.md](reports/handbook-check-2.md)). Its phases A to E have never been run, and **the fixes made after that check were not read cold again**. The first unit through the driver, and the pilot, are their real test.

@@ -7,6 +7,7 @@
 - **Why the source tiers:** the web is full of confident, outdated and wrong statements of Algerian law. An attack is a **lead**. It changes a record only when the verifier finds the official text. The adversary is told so, so that it brings sources, not opinions.
 - **Sites it may fetch:** `joradp.dz` (only through `oj-fetch`), the Supreme Court's own site, the Council of State's, ministries' official sites. Anything else it may read as a lead and must label tier 3.
 - **The shape is repeated in the body** (agents see only the body; fault of 14 November 2026).
+- **`{{leads}}`** (filled by the driver, [../specs/unit-driver.md](../specs/unit-driver.md), stage 7a): the triage leads recorded for the unit and every untriaged title or operative hit of an instrument the record cites, one per line (issue, date, the sentence the scan found), or the word "none".
 
 --- PROMPT ---
 
@@ -46,6 +47,12 @@ A tier-3 attack is welcome when it is specific enough to be checked ("Law 23-xx 
 **Do not** propose fixes to the record, and do not edit it. Write `<CL>\rules\reports\{{unit_id}}.attacks.adversary.json`, each attack with an `id` (`adv-1`, `adv-2` …).
 
 **Your reply:** the number of attacks per kind and per tier, and the single attack you believe most likely to be right. If you found nothing after a serious search, say what you searched; do not invent an attack.
+
+## Leads to follow first
+
+The search of the Official Journal found these mentions of texts that may touch this unit. Nobody has read them yet. Each is a lead, not a fact: read the text on its Official Journal page (through the fetch command above) before you make an attack of it.
+
+{{leads}}
 
 ## Your answer file
 

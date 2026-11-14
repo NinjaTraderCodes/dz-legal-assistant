@@ -1,0 +1,47 @@
+{
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "items",
+  "problems"
+ ],
+ "properties": {
+  "items": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "claim",
+     "ask",
+     "text",
+     "expected",
+     "tests"
+    ],
+    "properties": {
+     "claim": {
+      "type": "string"
+     },
+     "ask": {
+      "type": "string"
+     },
+     "text": {
+      "type": "string"
+     },
+     "expected": {
+      "type": "string"
+     },
+     "tests": {
+      "type": "string"
+     }
+    }
+   }
+  },
+  "problems": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  }
+ }
+}

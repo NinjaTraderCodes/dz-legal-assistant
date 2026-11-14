@@ -1,6 +1,6 @@
 # Realism review by the other family
 
-- **Model:** one reviewer per note, a model that did not write it: **Sonnet 5.5 for notes written by Codex or by a local model** (another family), **Opus 5.5 for notes written by Sonnet** (the same family: say so beside the figure). Fresh agents, 40 notes per run. 200 notes per set, or 100 if the owner takes that saving ([../specs/probes.md](../specs/probes.md), section 3).
+- **Model:** one reviewer per note, a model that did not write it: **Sonnet 5.5 for notes written by Codex or by a local model** (another family), **Opus 5.5 for notes written by Sonnet** (the same family: say so beside the figure). Fresh agents, 40 notes per run. 100 notes of each of three test sets (the two halves of dev, the clean test split), never a training set ([../specs/probes.md](../specs/probes.md), section 3).
 - **A reviewer uses no tool** except one read of its own prompt file. Its answer is its reply, copied by `records.py ingest-reply` and checked against `schemas/realism.schema.json`; a run with any other tool use is discarded and run again by a fresh agent.
 - **Placeholders:** `{{notes}}` (text only, numbered; for the odd-one-out variant, 90 generated notes with 10 of the app's formal-Arabic drafting cases mixed in at random positions, and the extra question at the end).
 - **Output** (the agent's reply, checked against `schemas/realism.schema.json`): `{ "notes": [{ "n", "workingNote": 1-5, "formalArabic": 1-5, "coherent": 1-5, "labelWords": boolean, "defects": [string] }], "patterns": [string], "otherHand": [integer] }`.

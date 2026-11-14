@@ -1,6 +1,6 @@
 # Grades: how sure a rule is, and what it may do
 
-**No lawyer checks the records.** So no agent may say how sure it is: a model's "high confidence" is worth nothing. A grade is **computed by a script** from facts that can be checked: is the text official, was it verified, did two independent derivations agree, did it survive attack, was the Official Journal searched for amendments. The grading script is `grade-records` (see [../specs/record-checks.md](../specs/record-checks.md)); it writes the `grading` field of every graded item. No agent types a grade, except the grade of an open point (C or D).
+**No lawyer checks the records.** So no agent may say how sure it is: a model's "high confidence" is worth nothing. A grade is **computed by a script** from facts that can be checked: is the text official, was it verified, did two independent derivations agree, did it survive attack, was the Official Journal searched for amendments. The grading script is `records.py grade` (see [../specs/record-checks.md](../specs/record-checks.md)); it writes the `grading` field of every graded item. No agent types a grade, except the grade of an open point (C or D).
 
 Derivers do not read this file: they read [DERIVER-GUIDE.md](DERIVER-GUIDE.md), which says what they need without anything they are meant to find in the texts.
 
@@ -11,30 +11,32 @@ Derivers do not read this file: they read [DERIVER-GUIDE.md](DERIVER-GUIDE.md), 
 | 1 | `noOfficialText` | The item rests on at least one statement whose quote comes from tier 1 (an Official Journal page) or tier 2 (an official consolidated text). | `basis` is not empty and every statement in it has a `quote` and `source.tier` of 1 or 2. |
 | 2 | `textNotVerified` | Every text the item rests on is verified. | The article store marks the entry (code, article, version) `verified` (see [../specs/article-store.md](../specs/article-store.md): what counts differs per code). **Critical use**, applied exactly as article-store.md states it ("The critical use rule"): for an item that is a deadline, a prior step, a section rule or an exit, `corpusChecked` alone is not enough: every article in its basis needs a fresh page reading recorded in `law/readings.jsonl`, that is, any `verifiedBy` other than `corpusChecked`. For other items `corpusChecked` is enough. |
 | 3 | `interpretive` | The item says what the words say; it is not a reading. | Neither the item nor any statement in its `basis` has `"interpretive": true`. A deadline without `counting` is interpretive (the texts did not settle how it is counted). A deadline resting on a store entry whose French check (`frenchCheck`) is `mismatch` or `noFrench` is interpretive. |
-| 4 | `disagreedBeforeReconciliation` | Derivations A and B gave the same value for this item **before** the reconciler saw them. | The comparison report of A and B (`compare-derivations`), through the id map of the unit (`reports/<unit>.idmap.json`). Always A against B: the third derivation of a module (Sonnet, by the flat route) never counts here. `singleDerivation` when there was only one; `addedAfterDerivation` when neither A nor B had the item (the reconciler or the verifier added it). |
+| 4 | `disagreedBeforeReconciliation` | Derivations A and B gave the same value for this item **before** the reconciler saw them. | The comparison report of A and B (`records.py compare`), through the id map of the unit (`reports/<unit>.idmap.json`). Always A against B: the third derivation of a module (Sonnet, by the flat route) never counts here. `singleDerivation` when there was only one; `addedAfterDerivation` when neither A nor B had the item (the reconciler or the verifier added it). |
 | 5 | `attackOpen` | No attack on the item is open. | The attack register: every attack that names the item is `refuted` or `fixed`, with the verifier's quote. `notAttacked` when no attack pass ran. `supportCheckPending` while Codex's support check of the unit has not returned, or returned with its seeded pairs failed ([../specs/unit-driver.md](../specs/unit-driver.md), stage 8). |
 | 6 | `ledgerNotClean` | The Official Journal scan found no later text that touches a cited article, up to `source.textAsOf`. | `source.ledgerClean` of every statement in `basis`. `scanNotRun` before the scan; `scanBlind` when an issue of the period could not be read; `triageOpen` while the triage of the scan's hits for a cited code is not complete (owner, 14 Nov 2026). |
-| 7 | `checkerWeak: <kind>` | The planted-error rounds showed that the checks catch this item's kinds of error. | `rules/reports/planted-errors.json` ([../specs/planted-errors.md](../specs/planted-errors.md)): every kind that speaks for the item's sort was caught at least 90 % of the time over the rounds run so far (5 of 5 while only round 1 has run). `plantedNotRun` before round 1: **no item is grade A before round 1.** |
+| 7 | `checkerWeak: <kind>` | The planted-error rounds showed that the checks catch this item's kinds of error. | `rules/reports/planted-errors.json` ([../specs/planted-errors.md](../specs/planted-errors.md)): every kind that speaks for the item's sort was caught at least 90 % of the time over the rounds run so far (while only round 1 has run: every plant of the kind, with at least 3 plants). `plantedNotRun` before round 1: **no item is grade A before round 1.** |
 
 For a deadline there is one more test inside condition 1: the words of `extract.period` and `extract.sanction` are in the quoted text, and the script reads the same number and unit from them as `period` holds (`valueMismatch` when not). A deadline without `extract` fails condition 1.
 
 A code in `reasons` may be followed by the texts it concerns: `textNotVerified: <code> <article>, <code> <article>`.
 
-**Items that the comparison never saw.** An item of a claim record copied from a module by `flatten-imports` keeps the module's grading. An item added by the reconciler or the verifier that neither A nor B had fails condition 4 with `addedAfterDerivation`, so it is graded B at most: it may warn, never block. A difference between the third derivation and a value on which A and B agreed does not touch condition 4: it becomes an attack in the unit's register, and the verifier decides it (condition 5).
+**Items that the comparison never saw.** An item of a claim record copied from a module by `records.py flatten` keeps the module's grading. An item added by the reconciler or the verifier that neither A nor B had fails condition 4 with `addedAfterDerivation`, so it is graded B at most: it may warn, never block. A difference between the third derivation and a value on which A and B agreed does not touch condition 4: it becomes an attack in the unit's register, and the verifier decides it (condition 5).
 
 ## The owner's blocking rule (14 November 2026, evening)
 
-In the owner's words: a rule may block the clean export "only when the text was proved mechanically or by two families, the value is matched by script, derivations A and B agreed, no attack is open, and the planted-error round caught that kind of error 90 % of the time; otherwise the rule warns." A Codex check counts as the second family.
+In the owner's words: a rule may block the clean export "only when the text was proved mechanically or by two families, the value is matched by script, derivations A and B agreed, no attack is open, and the planted-error round caught that kind of error 90 % of the time; otherwise the rule warns. If Codex passes the speed trial, a Codex check counts as the second family for these conditions." The owner then said of the trial: "Today's figures already pass". So a Codex check counts.
 
 | The owner's condition | Where it is tested |
 |---|---|
 | the text was proved mechanically or by two families | conditions 1 and 2, with the critical use rule: an item that may block never rests on a text whose proof label is `oneFamily` (below) |
-| the value is matched by script | the deadline test inside condition 1 (`valueMismatch`) |
+| the value is matched by script | the deadline test inside condition 1 (`valueMismatch`). A prior step has no number to match: for it this condition is met by the script's quote of every cited paragraph |
 | derivations A and B agreed | condition 4 |
 | no attack is open | condition 5, `supportCheckPending` included |
 | the planted-error round caught that kind of error 90 % of the time | condition 7 |
 
 Conditions 3 and 6 are this handbook's and stay: a reading never blocks, and a text the Journal scan has not cleared never blocks.
+
+**If Codex fails its bar** (HANDBOOK section 8) and the owner chooses the local models as the second view: a local model's check is **not** a second family for these conditions unless the owner says so in words. Until then the items it would cover keep `supportCheckPending` and warn.
 
 ## The proof label
 
@@ -56,10 +58,10 @@ The label is information for the reader of a report. It does not change a grade 
 
 ## The owner's decisions of 14 November 2026 on step 2a
 
-Two inputs of `grade-records` record decisions the owner took on the step 2a report:
+Two inputs of `records.py grade` record decisions the owner took on the step 2a report:
 
 - **A text kept with two readings** (`law/text-disputes.json`): a paragraph whose official wording is probably misprinted, or whose reading is not settled, and that the owner decided to keep with both readings. An item resting on such a paragraph is graded **C** with the reason `disputedText: <code> <article>`, even when the store does not verify the text (it would otherwise be D); the record keeps both readings (an open point with the two `readings`), and the warning carries them. The first one: Law 90-04 art. 19 ¶2 (the page prints «يقدم», the French edition and the library «يقيم»).
-- **The triage of the Official Journal scan, per code** (`law/triage-status.json`): until the triage of the hits that touch a code is complete, an item resting on that code fails condition 6 with the reason `triageOpen: <code>`, so it cannot be A. The owner set the order: the Civil Code and the CPCA first; the Commercial Code, the Family Code and the labour laws before the first module or record that relies on each.
+- **The triage of the Official Journal scan, per code** (`law/triage-status.json`): until the triage of the hits that touch a code is complete, an item resting on that code fails condition 6 with the reason `triageOpen: <code>`, so it cannot be A. The owner first set the order "the Civil Code and the CPCA first; the Commercial Code, the Family Code and the labour laws before the first module or record that relies on each". **The evening decision of 14 November replaced the second half:** the remaining triage is deferred to phase D, and until it is done every item resting on those codes carries `triageOpen` and warns. The triage itself is one Sonnet reading per Journal issue: condition 6 rests on one model family, and the grade report says so.
 
 ## The grade
 

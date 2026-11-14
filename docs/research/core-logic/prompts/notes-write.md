@@ -8,6 +8,7 @@
 - **Why "write first, then point":** asked for labels and text together, a model writes the label's words into the note. Asked to write a lawyer's note and afterwards to point at the words that carry each fact, it notices when its note does not say what the scenario says.
 - **Why the scenario's facts are in English:** so that no Arabic phrasing comes from the sampler. Every Arabic word of a note is the writer's.
 - **The shape is repeated in the body** (agents see only the body; fault of 14 November 2026).
+- **What the writer is not given:** the scenario's `petitionDate` and `outcome` are removed before the scenario is rendered (a date the note must not carry; a result the writer must not know). `contest-amount` gives the other side's figure its own `values` entry, with the event kind as its role and `amountDisputed: true`. Codex's `writer.model` is recorded as "codex-cli 0.167.0 (default model)".
 
 --- PROMPT ---
 
@@ -54,6 +55,7 @@ These notes will be read by a program that must find the facts in them. So each 
 - `role:<claim>`: only when the scenario gives a "role" for that claim type: the words that show which party the plaintiff is;
 - `event:<claim>/<kind>`: for each event that is not `notMentioned`, the words that carry its polarity (for `disputed`, the contest, and the assertion too when you wrote it; for an event with a "contest", the admission and the contest);
 - `event-date:<claim>/<kind>` and `event-amount:<claim>/<kind>`: the event's date and amount, as written;
+- `contest-amount:<claim>/<kind>`: for an event with a "contest" of its amount, the other side's figure, as written;
 - `slot:<id>`: each slot that is not `unknown`;
 - `request:<kind>` and `request-amount:<kind>`: each request and its amount;
 - `value:<what>`: each extra value, with its "what" exactly as the scenario gives it.
@@ -75,6 +77,6 @@ Return only one JSON object, with no text before or after it:
 `{ "notes": [ { "n": 1, "subject": "…", "facts": "…", "requests": "…", "documents": "…", "facts_of_scenario": [ { "ref": "event:unpaid-wages/wages_unpaid", "expressed": true, "quotes": [ { "field": "facts", "quote": "<words copied exactly from your note>", "occurrence": 1 } ] } ] } ] }`
 
 - One entry of "notes" per scenario, "n" being the scenario's number. "subject", "facts", "requests" and "documents" are the note's four fields; a field the lawyer would leave empty is `""`.
-- "facts_of_scenario": one entry for **every** fact of the scenario. "ref" names the fact exactly: `claim`, `role:<claim>`, `event:<claim>/<kind>`, `event-date:<claim>/<kind>`, `event-amount:<claim>/<kind>`, `slot:<id>`, `request:<kind>`, `request-amount:<kind>`, `value:<what>`.
+- "facts_of_scenario": one entry for **every** fact of the scenario. "ref" names the fact exactly: `claim`, `role:<claim>`, `event:<claim>/<kind>`, `event-date:<claim>/<kind>`, `event-amount:<claim>/<kind>`, `contest-amount:<claim>/<kind>`, `slot:<id>`, `request:<kind>`, `request-amount:<kind>`, `value:<what>`.
 - "expressed": true when your note states the fact; then give one to three quotes. false is allowed only for an extra value the scenario marks optional; then "quotes" is an empty list.
 - A quote's "field" is one of "subject", "facts", "requests", "documents"; "quote" is copied letter for letter from that field of your own note; "occurrence" counts from 1 when the same words appear more than once in the field.

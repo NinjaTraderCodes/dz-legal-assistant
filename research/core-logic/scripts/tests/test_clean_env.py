@@ -56,3 +56,16 @@ def test_a_codex_call_runs_in_an_environment_without_the_keys(tmp_path, monkeypa
     schema.write_text('{"type": "object"}', encoding="utf-8")
     codex_run.call("p", "role", "batch", "c1", str(schema), _probe=True)
     assert clean_env.holds_a_key(seen["env"]) == []
+
+
+def test_the_command_wrapper_finds_a_cmd_file_by_its_bare_name_and_starts_it_clean(tmp_path):
+    """`clean_env.py code <folder>` is how the owner starts the editor: `code` is a .cmd file on Windows."""
+    if os.name != "nt":
+        return
+    (tmp_path / "hello.cmd").write_text(
+        "@echo off\r\nif defined OPENROUTER_API_KEY (echo holds) else (echo clean)\r\n", encoding="ascii")
+    env = dict(os.environ, OPENROUTER_API_KEY="dummy-not-a-key", GOOGLE_API_KEY="dummy-not-a-key")
+    env["PATH"] = str(tmp_path) + os.pathsep + env.get("PATH", "")
+    script = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "clean_env.py")
+    done = subprocess.run([sys.executable, script, "hello"], env=env, capture_output=True, text=True)
+    assert done.returncode == 0 and done.stdout.strip() == "clean", (done.stdout, done.stderr)

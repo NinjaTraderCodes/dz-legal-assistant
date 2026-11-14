@@ -12,6 +12,7 @@ inherits a clean environment; `clean_env()` and `run()` give the same guarantee 
 from __future__ import annotations
 
 import os
+import shutil
 import subprocess
 import sys
 
@@ -49,6 +50,14 @@ INHERITED = holds_a_key()  # what this process was started with, for --check (na
 scrub()  # importing this module is enough: every script of this folder imports it, directly or through store.py
 
 
+def resolve(argv: list[str]) -> list[str]:
+    """The command with its program found on PATH. Windows starts `code`, `npm` and the like through a .cmd file,
+    which subprocess does not find by its bare name (found on 14 November 2026: the owner's own start command
+    `clean_env.py code <folder>` failed with FileNotFoundError)."""
+    found = shutil.which(argv[0])
+    return [found, *argv[1:]] if found else argv
+
+
 def main(argv: list[str]) -> int:
     if argv == ["--check"]:
         found = INHERITED
@@ -57,7 +66,7 @@ def main(argv: list[str]) -> int:
     if not argv:
         print(__doc__)
         return 2
-    return run(argv).returncode
+    return run(resolve(argv)).returncode
 
 
 if __name__ == "__main__":

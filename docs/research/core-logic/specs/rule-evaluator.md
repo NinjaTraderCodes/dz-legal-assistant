@@ -129,7 +129,7 @@ rules eval    --records <file>... --case <case.json>                     # print
 rules examples <record.json>... [--against <other-record.json> --idmap <unit.idmap.json>] [--boundary <cases.json>]
 ```
 
-`rules examples` runs every worked example (exit code 1 on any difference). `--against` runs the examples of record X on record Y, after mapping item ids through `reports/<unit>.idmap.json` (written by `compare-derivations`); it is how step 1 finds that two derivations give different outcomes on the same case. `--boundary` runs a boundary-case file as above.
+`rules examples` runs every worked example (exit code 1 on any difference). `--against` runs the examples of record X on record Y, after mapping item ids through `reports/<unit>.idmap.json` (written by `records.py compare`); it is how step 1 finds that two derivations give different outcomes on the same case. `--boundary` runs a boundary-case file as above.
 
 `case.json` has its own shape: `{ "claimIds": [...], "petitionDate": "yyyy-mm-dd", "slots": { "<slot>": "<value>", "requests": ["..."] }, "section": "social" }` (`claimIds` and `section` are optional; a worked example has neither).
 

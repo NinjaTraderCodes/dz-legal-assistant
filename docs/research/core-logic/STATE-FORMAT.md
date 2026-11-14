@@ -28,10 +28,10 @@ Waiting for the owner: <nothing | the question, asked on <date>, in the owner's 
 Running in the background: <nothing | what, started when, where its output goes>
 
 ## 3. Counters
-Opus runs: step 1: <n>/135   deferred law work: <n>/25   step 3: <n>/165   steps 4-6: <n>/20
-Sonnet runs: step 1: <n>/120   deferred law work: <n>/135   step 3: <n>/135   steps 4-6: <n>/20
-Codex calls: note writing <n>/360 (pool size <n>)   checks <n>/75; accepted <n>, rejected for tool use <n>, invalid <n>, refused <n>; today <n>; first refusal today at <time>; units that waited over ten minutes <n>
-Laptop sessions (nights and free days): filter <n>/4   clean notes <n>/3   training <n>/3   step 5 <n>/2   spare <n>/2
+Opus runs: step 1: <n>/165   deferred law work: <n>/25   step 3: <n>/175   steps 4-6: <n>/12
+Sonnet runs: step 1: <n>/150   deferred law work: <n>/150   step 3: <n>/235   steps 4-6: <n>/17
+Codex calls: note writing <n>/415 (pool size <n>)   checks <n>/105; accepted <n>, rejected for tool use <n>, invalid <n>, refused <n>; today <n>; first refusal today at <time>; units that waited over ten minutes <n>
+Laptop sessions (nights and free days): filter <n>/7   clean notes <n>/2   phrases <n>/2   training <n>/3   step 5 <n>/2   spare <n>/1   (the pilot report recomputes these from measured seconds per note)
 Units: final <n>/33   reconciled <n>   derived A <n>  B <n>  C <n>/12
 Notes: train <kept>/<written>  dev Codex half … Sonnet half …  challenge …  clean train/dev/test …  composed …  probe …  mirror …; last noise measurement <percent> on <date>
 Hidden v3: <not started | planned | written <count> | relabelled | finalized sha <…> | run on <date>>
@@ -74,8 +74,8 @@ A note counts for a set only in the states `kept` and `keptWithBlanks`. A note t
 3. **Check nothing is still running:** background shells, agents (list them; do not start new ones before you know), a Codex batch, the Official Journal scan (resumable by design: it continues from its evidence list). If a run in the ledger says `running` and nothing is running, mark it `failed`.
 4. **Half-finished outputs.** Each kind has its rule:
    - a derivation or a reconciled record that fails `rules check`, or whose agent did not return: **delete it and run the unit again with a fresh agent**. Never complete another agent's half-record yourself, and never show a fresh deriver the half-record;
-   - a Codex batch: accepted answers are kept, the rest of the batch is queued again (scenarios "not written", never "dropped"). A rejected call's answer is discarded and the same prompt is never sent again automatically; its items go back to the queue once. Two consecutive failed calls of any kind stop the batch ([specs/codex-calls.md](specs/codex-calls.md));
-   - a relabel run (or any no-tool run) that did not return, or that used a tool other than the one read of its prompt file: its notes go back to the state `spansBuilt` and are relabelled by a fresh agent; nothing of its partial answer is kept;
+   - a Codex batch: accepted answers are kept, the rest of the batch is queued again (scenarios "not written", never "dropped"). A rejected call's answer is discarded and the same prompt is never sent again automatically; its items go back to the queue once. Two rejections in a row from one writer of the pool stop that writer and no other; two failed calls in a row stop the background queue; a refusal for a usage limit stops everything ([specs/codex-calls.md](specs/codex-calls.md));
+   - a relabel run (or any no-tool run of an open set) that did not return, or that used a tool other than the one read of its prompt file (the isolated relabellers of the mirror and of v3 are checked by `v3 relabel collect` instead): its notes go back to the state `spansBuilt` and are relabelled by a fresh agent; nothing of its partial answer is kept;
    - the local filter or the clean writer stopped in the middle: it resumes from the queue; a note half answered is asked again;
    - a v3 batch whose writer did not return its numbers: `v3 discard --batch <n>`, then a new writer;
    - a training run: restart from its last checkpoint, or from the start if it kept none; the result must name its seed either way.

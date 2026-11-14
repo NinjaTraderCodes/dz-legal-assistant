@@ -19,7 +19,7 @@ For each case below you have: which section of a statement of claim (عريضة 
 For each candidate:
 
 - "faithful": true only if **every** date, sum, name, number and article reference in the paragraph is in the facts or the texts given, and the paragraph attributes to an article nothing that the article's text does not say. List anything else in "invented" (the invented date, sum, article, or the claim the article does not make). Check each number against the sheet; do not trust the overall impression.
-- "appliesTheText" (1 to 5): does it connect the fact to the text and draw the consequence for this case, without merely restating the article or the facts?
+- "appliesTheText" (1 to 5): for a paragraph of the legal discussion: does it connect the fact to the text and draw the consequence for this case, without merely restating the article or the facts? **For a facts section** (no legal text on the sheet) the same mark means: is every fact of the sheet told, once, in order, with nothing argued and nothing left out?
 - "legalArabic" (1 to 5): correct formal legal Arabic as used in Algerian pleadings; natural; no padding.
 - "usable": true if a lawyer could keep the paragraph with at most a light edit. A paragraph that is not faithful is never usable.
 

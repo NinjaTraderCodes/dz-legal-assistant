@@ -18,15 +18,15 @@ For each slot with `readFromNote: false` whose `origin` is a final record, apply
 
 | The slot | Decision | Why |
 |---|---|---|
-| is filled by an event the scheme already has (its value follows from an element's polarity or date) | **Derived**: set `fromEvent`; no head | the reader already reads the event |
+| is filled by something the reader or the app already has: an event (its polarity or its date), another slot with the petition date, or the claim type | **Derived**: set `derivedFrom`; no head | nothing new has to be read |
 | is a fact lawyers do not usually write in a first note (a contract clause's exact wording, a fact about the other party's internal state, a procedural detail learned later) | **Asked**: stays a question | the reader would abstain almost always |
 | can be asked in one short question and is needed by fewer than two claim types | **Asked** | a question costs the lawyer seconds; a head costs a note pack and a night |
-| is the kind of fact a note states plainly, and a rule that warns or blocks reads it, for two claim types or more | **Read**: a new reader output | this is where the reader saves the lawyer work |
+| is the kind of fact a note states plainly, and a rule that warns or blocks reads it, for two claim types or more (counted by `records.py slot-use`: the claim records whose flattened items with a warn or block effect test the slot) | **Read**: a new reader output | this is where the reader saves the lawyer work |
 | none of the above | **Asked**, and listed in the phase report | the cheap choice, reversible later |
 
 Write the decisions in `notes/SCHEME.md` (the table "Slots added after 1.0"), one line per slot with the row that decided. The owner sees the table in the phase D report; an "Asked" can become "Read" in a later version at no cost.
 
-**Derived slots.** `slots.json` gets `"fromEvent": "<event kind>"` and, in `notes/SCHEME.md`, the mapping: which polarity gives `yes`, `no`, `unknown`; which of the event's values gives a date or amount slot. The reader computes the slot in plain code from its event reading. A test checks each mapping on five made-up readings.
+**Derived slots.** `slots.json` gets `"derivedFrom": { "event": "<kind>" }`, `{ "slot": "<id>", "with": "petitionDate" }` or `{ "claim": true }`, and `notes/SCHEME.md` the mapping (which polarity gives `yes`, `no`, `unknown`; which value gives the date; which claim types give which choice). `readFromNote` stays false and the scheme's version does not change: the slot is computed in plain code, by the reader when it comes from an event and by the app's own code otherwise. A test checks each mapping on five made-up readings. (`fromEvent`, which some slots already carry, keeps its old meaning, the event a slot's question is about; it does not mark a derived slot.)
 
 ## Step 3: for a slot that is to be read
 
@@ -35,13 +35,13 @@ Do these in order. Nothing here touches the encoder.
 | # | Do | Check |
 |---|---|---|
 | 1 | Add the slot's row to the labelling guide, section 6: what makes it `yes`, `no`, `unknown`; what does **not** count; two worked sentences for each value. Bump the guide's version. | – |
-| 2 | Six new guide-test items for it ([../prompts/notes-guide-items.md](../prompts/notes-guide-items.md)), run by Sonnet and Opus ([../prompts/notes-guide-test.md](../prompts/notes-guide-test.md)). | Both testers agree with the key on all six, or the guide is fixed and the items rerun |
+| 2 | Six new guide-test items for it ([../prompts/notes-guide-items.md](../prompts/notes-guide-items.md), `{{count}}` = 6), run by Sonnet and Opus ([../prompts/notes-guide-test.md](../prompts/notes-guide-test.md)). | Both testers agree with the key on all six, or the guide is fixed and the items rerun |
 | 3 | Add the slot to the sampler: the claim types it is drawn for (the record's `askedFor`), its values' shares (a third each unless the record says a value is rare), and which other facts must hold for a value to make sense. | The sampler's tests |
-| 4 | **The slot pack.** About 400 training notes whose scenarios fix the slot (Codex writes; the code checks and the local filter decide, as for any training note), of which at most a quarter composed by code; and about 100 dev notes, half by Codex and half by Sonnet, relabelled blind as dev notes are. State the calls before launching: about 22 Codex calls and 8 Claude runs per slot; several slots share packs when one scenario can fix them together. | At least 60 kept training notes for each value; at least 15 kept dev notes for each value in each half |
-| 5 | Set `readFromNote: true` in `slots.json`; set the scheme to the next minor version; commit. | `SlotCatalogueTests` |
+| 4 | **The slot pack.** About 400 training notes whose scenarios fix the slot (Codex writes; the code checks and the local filter decide, as for any training note), of which at most a quarter composed by code; and about 160 dev notes, 80 by Codex and 80 by Sonnet, relabelled blind as dev notes are. State the calls before launching: about 25 Codex calls and 12 Claude runs per slot; several slots share packs when one scenario can fix them together. **A date slot:** the pack fixes whether the note gives the date and how it is written. | A yes/no or choice slot: at least 60 kept training notes for each value, and at least 15 kept dev notes for each value in each half. A date slot: at least 150 kept training notes with the date and 100 without, and 40 kept dev notes with the date in each half; its score is the share with the exact normal form |
+| 5 | Set the scheme to the next minor version (the slot enters `notes/SCHEME.md`, section 10, as "Read"); commit. `readFromNote` stays false until row 8 has passed. | `SlotCatalogueTests` |
 | 6 | **Train the head** on the stored encoder outputs ([reader.md](reader.md), "A new head"). Only notes whose `schemeVersion` knows the slot carry a loss for it. Minutes on the laptop. | The head's score on the Codex half of the slot's dev notes, with its interval |
 | 7 | **Prove nothing else moved.** Export the heads file; run the reader on the whole of dev with the old and the new heads file. | Every output that existed before is identical, value and confidence; the test `OlderOutputsUnchanged` |
-| 8 | Calibrate the new head's threshold on the Codex half of its dev notes and on clean-dev notes that know the slot. | Coverage at least 90 % at the slot's target, or the slot is reported as "read, below target" |
+| 8 | Fit the new head's own temperature and threshold on the Codex half of its dev pack (no clean note knows a later slot). Then set `readFromNote: true` in `slots.json`. | Coverage at least 90 % at the slot's target; otherwise the slot stays `readFromNote: false` (the app keeps asking), its head ships switched off, and the report says "read, below target" |
 
 ## Why older outputs cannot move
 
@@ -67,7 +67,8 @@ Do these in order. Nothing here touches the encoder.
 | Situation | Do |
 |---|---|
 | Two final records propose the same fact under two ids | The verifier of the later record maps its id to the earlier one. One slot. |
-| A read slot's head is under its target on the Codex half of its dev pack | Keep the slot as "asked" in the app's default; ship the head with its threshold at the level that reaches the target (it will abstain more). Report the coverage. Do not write a second pack without telling the owner the cost. |
-| The pack's notes rarely state the slot although the scenario fixed it | The writer prompt's scenario line for that slot is unclear: fix the line, bump the prompt version, rewrite the pack's first 40 notes; if still under half, the slot becomes "asked". |
-| A slot needs a value type the scheme lacks (a list, a number that is not an amount) | Stop point: it changes the contract. |
+| A read slot's head is under its target on the Codex half of its dev pack | `readFromNote` stays false: the app keeps asking. Report the head's score and coverage. Do not write a second pack without telling the owner the cost. |
+| A pack's dev half keeps fewer than 15 notes for a value after its relabel | One refill call for that value; still short: the slot's figures are reported with their counts and marked "too few to conclude". |
+| The pack's notes rarely state the slot although the scenario fixed it (measured by code and by the local filter, never by reading: the filter answers "the note does not say" for more than half of the pack's first 40 notes) | The scenario line for that slot is unclear: fix the line, bump the prompt version, rewrite those 40 notes; if still over half, the slot becomes "asked". |
+| A slot needs a value type the scheme lacks (a list, a number that is not an amount) | Stop point (HANDBOOK section 8): it changes the contract. |
 | `OlderOutputsUnchanged` fails | A head read something outside the encoder's outputs, or the encoder file changed. Find which; never relax the test. |

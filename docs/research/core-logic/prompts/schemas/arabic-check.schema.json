@@ -1,0 +1,36 @@
+{
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "items"
+ ],
+ "properties": {
+  "items": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "n",
+     "ok",
+     "corrected",
+     "why"
+    ],
+    "properties": {
+     "n": {
+      "type": "integer"
+     },
+     "ok": {
+      "type": "boolean"
+     },
+     "corrected": {
+      "type": "string"
+     },
+     "why": {
+      "type": "string"
+     }
+    }
+   }
+  }
+ }
+}

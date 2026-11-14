@@ -158,7 +158,10 @@ BODY_SCHEMAS = [("rules-derive-c", "module-derivation-c.schema.json"), ("rules-a
                 ("v3-blind-relabel", "notes-judge.schema.json"), ("notes-third-judge", "third-judge.schema.json"),
                 ("notes-filter-local", "filter-sheet.schema.json"), ("notes-noise-audit", "notes-judge.schema.json"),
                 ("notes-guide-test", "guide-test.schema.json"), ("notes-realism-review", "realism.schema.json"),
-                ("notes-clean-rank", "clean-rank.schema.json"), ("gen-judge", "gen-judge.schema.json")]
+                ("notes-clean-rank", "clean-rank.schema.json"), ("gen-judge", "gen-judge.schema.json"),
+                ("notes-cells", "cells.schema.json"), ("arabic-check", "arabic-check.schema.json"),
+                ("notes-guide-items", "guide-items.schema.json"), ("notes-sort-dropped", "sort-dropped.schema.json"),
+                ("law-settle-difference", "settle-difference.schema.json")]
 
 
 @pytest.mark.parametrize("prompt,schema_file", BODY_SCHEMAS)
@@ -200,3 +203,10 @@ def test_the_relabel_prompts_share_the_relabellers_labelling_text_word_for_word(
     shape = judge[judge.index('One entry of "notes" per note'):]
     assert labelling in hidden and shape.rstrip() in hidden
     assert "Use no tool." not in hidden and "{{labels_path}}" in hidden and '"relabelled"' in hidden
+
+
+def test_the_adversary_gets_the_triage_leads_recorded_for_its_unit():
+    assert prompts.leads_for("formal-notice") == "none"
+    labour = prompts.leads_for("unpaid-wages")
+    assert labour.startswith("- Official Journal issue ") and "free zone" in labour
+    assert "Official Journal issue" in prompts.leads_for("ordinary-court-exits")

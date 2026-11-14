@@ -44,7 +44,7 @@
       "items": {
         "type": "string"
       },
-      "description": "Training notes only. Paths of the fields left without a label, as specs/notes-pipeline.md (section 5) lists them: events/<claim>/<kind>/polarity, events/<claim>/<kind>/date, slots/<id>, requests, values. The claim type is never blanked: a disagreement on it drops the note."
+      "description": "Training notes only. Paths of the fields left without a label, exactly as specs/notes-pipeline.md (section 5) lists them: events/<claim>/<kind>/polarity, slots/<id>, roles/<claim>, requests/<kind>, values/<field>:<start>, values/<field>:<start>/roles."
     },
     "provenance": {
       "$ref": "#/$defs/provenance"
@@ -55,7 +55,8 @@
         "keptWithBlanks",
         "dropped",
         "rewritten"
-      ]
+      ],
+      "description": "kept, keptWithBlanks, dropped; rewritten: an invalid note whose scenario went back to the queue (kept only in the store of dropped notes)."
     },
     "dropReason": {
       "type": "string"
@@ -347,8 +348,10 @@
             "openai",
             "anthropic",
             "local",
-            "code"
-          ]
+            "code",
+            "human"
+          ],
+          "description": "human: the app's own cases, written by people before this work."
         },
         "model": {
           "type": "string"
@@ -405,7 +408,8 @@
           "description": "True for a note assembled by code from short phrases. Such notes are capped at a quarter of any training set and never enter a test set."
         },
         "guideVersion": {
-          "type": "string"
+          "type": "string",
+          "description": "The guide's version, for example 1.1."
         },
         "writerLabels": {
           "$ref": "#/$defs/labels"
@@ -426,7 +430,7 @@
         },
         "schemeVersion": {
           "type": "string",
-          "description": "The scheme's version and the commit that froze it, for example 1.0@<commit> (notes/SCHEME.md)."
+          "description": "The scheme's version and its freeze commit, for example 1.0@<commit> (notes/SCHEME.md)."
         },
         "filter": {
           "$ref": "#/$defs/filter",
@@ -439,6 +443,10 @@
         "pack": {
           "type": "string",
           "description": "For a note of a slot pack: the slot's id (specs/scheme-extension.md)."
+        },
+        "difficulty": {
+          "type": "string",
+          "description": "For a challenge note: its difficulty's id (specs/scenario-sampler.md, the recipes)."
         }
       }
     },

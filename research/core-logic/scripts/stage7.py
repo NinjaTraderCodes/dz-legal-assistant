@@ -1,7 +1,7 @@
-"""Stage 7 of step 1: what the two Codex checks of a reconciled record are given, and what is done with their answers
+"""Stage 7 of step 1: what the attack (Sonnet's since 14 November 2026) and Codex's support check of a reconciled record are given, and what is done with their answers
 (prompts/rules-attack.md, prompts/rules-support-check-codex.md, specs/record-checks.md).
 
-    python stage7.py render <quoted reconciled.json> --out <file>        -> {{record_text}} of the Codex attack
+    python stage7.py render <quoted reconciled.json> --out <file>        -> {{record_text}} of the attack
     python stage7.py pairs <quoted reconciled.json>... --batch <name> --out <pairs.txt> [--seed n]
                                                                           -> {{pairs}}; the key goes to support-keys\\
     python stage7.py split <answer.json> --batch <name>                   -> rules/reports/<unit>.support.json
@@ -140,7 +140,7 @@ def items(record: dict) -> list[dict]:
     return [i for i in out if i["texts"] and i["statement"]]
 
 
-# --- the Codex attack's {{record_text}} ---------------------------------------------------------------------------------
+# --- the attack's {{record_text}} ---------------------------------------------------------------------------------
 def _label(t: dict) -> str:
     return f"[{t['code']} {t['article']} ¶{t['paragraph']}]"
 

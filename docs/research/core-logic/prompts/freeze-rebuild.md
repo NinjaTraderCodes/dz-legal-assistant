@@ -13,6 +13,9 @@
 - **Output:** `{{report_path}}`: for every figure of `FREEZE.md` that can be rebuilt from open data: the command run, the figure obtained, equal or not; every step where the document was unclear, wrong or silent; every file whose hash differs.
 - **Done when:** every open figure is rebuilt equal (identical for deterministic steps; within the stated spread over seeds for training), or the difference is explained and `FREEZE.md` is corrected and the rebuild run again from the top.
 - **`{{freeze_commit}}`**: the id of the commit that holds `FREEZE.md`.
+- **What `FREEZE.md` must hold** (the executor writes it; the rebuilder follows it): every product with its path and SHA-256 (the rule records, the delta and the ledger, the scheme and the guide, the reader's five files, the thresholds); every figure of the final reports with the command that gives it; the commit of each frozen method; the sentences of HANDBOOK section 5b on what one model family cannot see, with the probe rate, the third judge's figure and the sentence on the relabeller's unchecked tool use; what was not done.
+- **What the rebuild does not redo:** the mirror set and hidden v3 are never scored again; their figures are checked against the committed summaries. Only the shipped reader is retrained.
+- **How it is run:** the executor makes the clean clone from the local repository (`git clone C:\Users\TheShadow\dz-fable-core C:\Users\TheShadow\dz-core-research\rebuild\<date>`, no network) and copies the model files and note sets the document names. The retraining takes a night: a first run starts it and stops; a second run, the next day, compares. **At most two full rebuilds.** A rebuilt figure that differs is never edited: the document or its command is fixed and the step is run again.
 
 --- PROMPT ---
 

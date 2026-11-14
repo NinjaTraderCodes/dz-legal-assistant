@@ -99,6 +99,29 @@ The scorer is run on these test sets, and only these:
 
 They are scored with what their labels allow, reported beside every result, and too few to carry a verdict. They are written by people: if the reader does well on v3 and badly on them, believe them.
 
+### The tuning score
+
+One number, used for every choice that changes the reader ([reader.md](reader.md), rule 1). `score --tuning` computes it on the notes the loader gives for `tune`, pooled, from readings made by the phase B decoder (before rung 8 the reader always answers; from rung 8 on an abstention counts as wrong). It is the mean of four numbers:
+
+1. **Claim:** with the type unknown, the share of notes whose answered set of claim types equals the gold set exactly (`outside` is a class like the others).
+2. **Polarity:** with the type given, over the elements of the gold claim types: the mean of four shares, one per gold polarity (`stated`, `denied`, `disputed`, `notMentioned`), each the share of that polarity's elements answered right. (A reader that never says "not mentioned" loses a quarter.)
+3. **Slots:** the mean of two shares over (note, slot) pairs, the eight slots pooled, on notes of claim types the slot is asked for: pairs whose gold value is known, answered with that value (a date slot: the same normal form); and pairs whose gold value is `unknown`, answered `unknown`.
+4. **Requests:** the micro-averaged F1 over (note, request kind) pairs.
+
+A scorer test computes it by hand on six made-up readings. It is part of the scorer and of its hash.
+
+### The plaintiff's role, slot packs, and scheme versions
+
+- **A role line:** over the notes of the seven claim types that offer a choice, with the type given: the share whose `Role` is the gold pair; abstentions reported as for the other lines. It has no target of the brief's; it is reported.
+- **A slot is scored only on notes of the claim types it is asked for**; elsewhere it is labelled `unknown` and not counted.
+- **A slot pack's dev notes** are scored only for their slot (`--pack <slot id>`), and never enter a `dev` figure.
+- **An output that a note's `schemeVersion` does not know** is unlabelled for that note: not scored.
+- Gold values marked `relative`, Hijri or in a foreign currency are counted apart: the parsers do not emit them.
+
+### What the scorer's hash covers
+
+The sources of `DzLegal.CoreLogic.Scoring`, of `DzLegal.CoreLogic.Contracts` (it parses readings with them) and of the loader in `DzLegal.CoreLogic.Notes`. So the contract's `RoleReading`, the role line, the tuning score and the loader are written **before** the hash is recorded (phase A: contract, loader, scorer, in that order).
+
 ### Per-writer rows (owner, 14 November 2026)
 
 `dev` and `challenge` are written half by Codex and half by Sonnet. Every table of an open run therefore has three rows per set: **the Codex half, the Sonnet half, and both**, each with its count and interval, and the gap between the halves. The scorer reads the writer's family from each note's provenance and takes `--by-writer` (on by default for these two sets).
@@ -106,6 +129,8 @@ They are scored with what their labels allow, reported beside every result, and 
 The scorer also takes `--purpose tune|measure` and passes it to the loader ([notes-pipeline.md](notes-pipeline.md), "The loader"): with `tune` it is given no Sonnet-written note, and its output file is marked `tune`. **A figure used to choose anything about the reader must come from a `tune` output; a `measure` output is for reports only.** The training and calibration scripts refuse a `measure` file as input.
 
 The headline rule above does not change: the worst test set of at least 200 notes, where each set counts whole (both halves).
+
+**Options the hidden-set run needs:** `--probes <file>` (the set's `final\probes.json`, the one other file the scorer reads); `--agreed-only <file>` (a gold file of dropped notes holding only the fields writer and relabeller agreed on: the drop-flattery figure); one summary per candidate, named `summary-<candidate>.md`. The first line of every summary of a mirror or v3 run is fixed: "These notes were written by one Claude model and relabelled by another; no second model family checked their labels."
 
 ## `summary.md` for a hidden set: the exact contents
 

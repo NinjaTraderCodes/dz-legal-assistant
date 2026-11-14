@@ -40,7 +40,19 @@ The first clause is why no Claude output enters the training of the reader. No a
 | **Write a test note** (dev, challenge, mirror, hidden v3) | yes (half of dev and of the challenge set) | yes | yes (the clean test split) | never (composed notes are never test notes) |
 | **Relabel a test note blind, and so decide whether it is kept** | no | yes | no | – |
 
-"Measure, changing nothing" is meant strictly: a training note that the noise measurement finds wrong is **neither corrected nor dropped because of it**. The measurement can only stop the work or make the owner change the filter.
+"Measure, changing nothing" is meant strictly: a training note that the noise measurement finds wrong is **neither corrected nor dropped because of it**. What a measurement may lead to: over 10 %, the work stops and the owner decides; between 5 and 10 %, the executor changes the filter's sheet **for the notes filtered from then on** and says so in its next report ([../specs/notes-pipeline.md](../specs/notes-pipeline.md), section 5). No note already kept is touched.
+
+## What a Claude model does write, so that the owner knows it
+
+No Claude model writes a training note. But the executor is a Claude model, and it writes what the notes are made **from**:
+
+- the code of the sampler, which decides each case and its labels;
+- the style cards and the English seed lines (how a fact is contested, what puts a case outside the catalogue, which words name an act);
+- the prompts, the labelling guide and the filter's question sheet;
+- the cells table of the scheme (two Claude models decide which combinations are drawn);
+- the fixed Arabic lines that render a scenario for the local writers, and the Arabic of step 5's templates.
+
+None of these is a training note: the reader is trained on Arabic text written by Codex or by a local model, with labels made by code. **This is the planner's reading of the owner's decision, not a point the owner ruled on.** If the owner reads Anthropic's clause more widely, these inputs would have to be written otherwise, and the owner should say so before the pilot.
 
 ## How the rule is enforced
 

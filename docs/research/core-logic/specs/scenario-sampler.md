@@ -11,7 +11,7 @@ The first handbook built the sampler after every rule record was final. Since 14
 | What the first design took from the rule records | Version 1 takes it from |
 |---|---|
 | the claim types, their elements, actors, date and amount flags, requests | `data/law/claim-elements.json` (read only) |
-| the plaintiff's role, for the seven claim types that offer a choice | the claim type's `roles` in the same file: drawn uniformly, written into the scenario as `"roles": { "<claim>": { "relation", "position" } }`, and always to be expressed by the note |
+| the plaintiff's role, for the seven claim types that offer a choice | the claim type's `roles` in the same file: drawn uniformly, written into the scenario as `"roles": { "<claim>": { "relation", "position" } }`, and always to be expressed by the note (no scenario leaves the role unsaid) |
 | which polarity of which element is a note a lawyer would write | the cells table of SCHEME.md, section 8 |
 | which two claim types occur together | the pairs listed in SCHEME.md, section 9 |
 | near-misses and their telling fact | SCHEME.md, section 9, table B: the outside kind's English seed lines, drawn for the claim types it names |
@@ -63,7 +63,7 @@ When more records are final (phase B onwards), new sets are drawn with their out
 4. **Dates.** Drawn so that events are in a possible order, and so that deadlines land, across the set, far inside, far outside and **inside the warning band** on both sides. For a deadline of a final record, the evaluator computes the last day and the sampler places the petition date around it.
 5. **Sums.** Plausible for the claim (a monthly wage between the legal minimum and a senior salary; a commercial invoice from tens of thousands to tens of millions of dinars), with remainders that add up when a partial payment is drawn (paid + owed = total), and with **one unrelated amount** in about a third of notes.
 6. **Requests.** From the claim type's requests in `claim-elements.json`, each with a probability; sometimes a request that belongs to a neighbouring claim (the boundary cases).
-7. **Cast.** Names, companies, communes, streets from **fictitious lists** built once by code: given names × family names recombined, company names from invented roots; a check refuses any full name that exactly equals an entry of a small list of well-known public figures and companies. No real person, no real case number. Lists of at least 400 given names, 600 family names, 300 company roots, all 58 wilayas' communes by name only.
+7. **Cast.** Names, companies, places, streets from **fictitious lists** built once by code (places: the names of the 58 wilayas, typed once into the lists; no download): given names × family names recombined, company names from invented roots; a check refuses any full name that exactly equals an entry of a small list of well-known public figures and companies. No real person, no real case number. Lists of at least 400 given names, 600 family names, 300 company roots, the 58 wilayas' names.
 8. **Style card** (below), drawn independently of everything above, so that no style correlates with a label.
 9. **Coherence.** Run the evaluator on the final records that exist (version 1, above). Reject a scenario whose slots contradict each other; keep the outcome when there is one.
 
@@ -106,10 +106,29 @@ A card never names a claim type, an element or a polarity. A probe checks that n
 
 Hidden set v3 and its mirror set do **not** use this sampler: a planner writes quotas, and each writer invents its own cases to them ([hidden-v3-commands.md](hidden-v3-commands.md)). That is the point of a hidden set: it must not share the sampler's blind spots.
 
+## The challenge set's recipes
+
+One row per difficulty. The sampler sets the scenario's `difficulty` (copied into the note's `provenance.difficulty`), forces the constraint and the style value, and the note must pass the code check or it is invalid (rewritten once, like any note).
+
+| Difficulty (`difficulty`) | The scenario must have | Style value forced | Code check on the note |
+|---|---|---|---|
+| `restriction` | an event that is partly true: a payment made for less than what is owed (both amounts in the scenario) | negation manner: restriction | «إلا», «سوى» or «غير» after a negation particle, in the sentence of that event's quote |
+| `doubleNegation` | a `stated` event | negation manner: double negation («لا ينكر», «لم يمتنع عن») | two negation cues of the cue table in the sentence of that event's quote |
+| `contestOfAmount` | a `stated` event with a `contest` of its amount | – | both figures found by the parsers |
+| `contestOfCause` | a `stated` event with a `contest` of its cause | – | a quote for the contest |
+| `informalDemand` | `notice_served` = `unknown`, and a distractor line "the client asked for payment by word of mouth, by phone or by message" | – | none of the formal-notice words of the guide's slot table in the note |
+| `recordAgainstDelivery` | a labour scenario with the record's date and a different delivery date, or only one of the two | – | exactly the scenario's dates found by the parsers |
+| `correction` | any scenario; one extra value marked as first written wrong | extras: a correction mid-note | a correction marker («بل», «والصحيح», «تصحيح», «عفوا») |
+| `despite` | a `stated` event to be told inside a concession | – | «رغم», «بالرغم من» or «مع أن» in the sentence of that event's quote |
+| `intention` | an event `notMentioned`, and a distractor line "the client intends to do it" for that same event | – | a cue of intention («سوف», «يعتزم», «ينوي», «سـ») and no quote for that event |
+| `documentAgainstContest` | a `disputed` event and a document named after it | fields: all four, documents as a list | a non-empty `documents` field and a quote for the contest |
+| `twoClaims` | a two-claim scenario | – | a `claim` quote for each |
+| `nearMiss` | an `outside` near-miss | – | the quote of the telling fact |
+
 ## Tests
 
 - Every scenario passes the evaluator without contradiction; rejected draws are counted, by reason.
-- Over 10,000 draws: every element × polarity cell is non-empty; every `readFromNote` slot takes every value; the deadline outcomes cover none, warn (band), block; no style parameter has a mutual information with any label above a small threshold (report the largest).
+- Over 10,000 draws: every element × polarity cell **that the cells table of SCHEME.md (section 8) marks as drawn** is non-empty, and no other cell is; every `readFromNote` slot takes every value; **when a final record with a deadline exists**, the deadline outcomes cover none, warn (band) and, where an item may block, block; no style parameter has a mutual information with any label above 0.02 bits (report the largest).
 - The same seed gives the same scenarios. The seed and the sampler's commit are recorded with every set, and in every note's provenance once the schema has the fields.
 - No name of the cast equals an entry of the refusal list.
 

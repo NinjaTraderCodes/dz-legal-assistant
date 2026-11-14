@@ -8,6 +8,7 @@
 - **Why blind to the source:** told that one wording is "the library's" or "the corpus's", a model sides with it. The page decides, not the pedigree.
 - **If `sure` is false or `printed` is "neither":** a second Opus run looks at close-ups at 800 dpi (tiles of the same size, so a smaller part of the page each); if still unsure, the article is **not verified**, and every item citing it is grade D.
 - **The shape is repeated in the body** (agents see only the body; fault of 14 November 2026).
+- **Schema file:** `schemas/settle-difference.schema.json` (the array of the body), checked by `reading.py settle-record`.
 
 --- PROMPT ---
 

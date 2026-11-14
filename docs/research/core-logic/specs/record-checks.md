@@ -117,6 +117,7 @@ Codex's derivation C and the boundary-case writer must not get texts chosen by s
 
 - every article of each chapter (the library's `path`, or the corpus's) that contains an article named in the unit's "where to start" line of the handbook's module table, or requested in `law/requests.jsonl` for the unit (by an earlier run); for a claim type, the articles of its catalogue entry stand for the "where to start" line;
 - whole chapters, every paragraph numbered, rendered as `[<code> <article> ¶<n>] <text>`.
+- where the store has no chapter for an article (the library carries no headings, and the corpus lacks some articles: Civil Code 160 to 188), the chapter is the deepest heading of the **official consolidated edition** (tier 2), read by `records.py unit-texts` in the order the edition prints its articles; only the headings are taken from the edition, never a word of an article. An article whose heading is not found stands alone, marked `noHeadingFound`. A chapter member missing from the store is fetched and read (law/README.md) **before** the texts are committed: formal-notice's chapter needed Civil Code 177, 178, 183 to 185 and 187 (14 November 2026).
 
 ## Where the reports go
 

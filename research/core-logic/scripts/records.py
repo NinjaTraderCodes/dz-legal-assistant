@@ -13,6 +13,7 @@ Agents point, scripts quote and check. A file an agent wrote is never rewritten:
     python records.py grade <quoted.json> [--idmap f] [--differences f] [--attacks f] --out <final.json> [--report f]
     python records.py check-checklist <record.json> --checklist <file> [--flags <file> ...] --report <file>
     python records.py inventory <final records...> --out <file>
+    python records.py unit-texts <unit> <code:article>... --out <reports/unit.texts.json>
 """
 from __future__ import annotations
 
@@ -866,6 +867,85 @@ def inventory_cited(records: list) -> list:
     return [dict(v, units=sorted(v["units"])) for _, v in rows]
 
 
+# --- the texts of a unit (record-checks.md, "The texts given to Codex and to the boundary writer") ----------------------
+HEADING = re.compile(r"^(الكتاب|الباب|الفصل|القسم)")
+LEVELS = ("الكتاب", "الباب", "الفصل", "القسم")
+
+
+def consolidated_chapters(code: str) -> dict:
+    """Article -> its headings, read from the official consolidated edition (tier 2) where the store has no path: the
+    library carries no headings, and the corpus lacks some articles (Civil Code 160 to 188). Only headings are taken
+    from the edition, never a word of an article."""
+    import consolidated
+    import subprocess
+    import unicodedata
+    pdf = consolidated.PDFS[code]
+    n = int(re.search(r"Pages:\s+(\d+)", subprocess.run([consolidated.PDFINFO, pdf], capture_output=True,
+                                                          text=True).stdout).group(1))
+    path = ["", "", "", ""]
+    out, last = {}, 0
+    for p in range(1, n + 1):
+        t = subprocess.run([consolidated.PDFTOTEXT, "-enc", "UTF-8", "-f", str(p), "-l", str(p), pdf, "-"],
+                           capture_output=True).stdout.decode("utf-8", "replace")
+        t = unicodedata.normalize("NFKC", re.sub("[‪-‮‎‏]", "", t)).translate(textcmp.DIGITS)
+        for line in t.split("\n"):
+            joined = line.replace(" ", "")
+            h = HEADING.match(joined)
+            if h and len(joined) < 70:
+                level = LEVELS.index(h.group(1))
+                path[level] = re.sub(r"\s+", " ", line).strip(" ()0123456789")
+                for k in range(level + 1, 4):
+                    path[k] = ""
+                continue
+            m = re.match(r"^المادة:?(\d+)(مكرر\d*)?", joined)
+            if m and int(m.group(1)) >= last and int(m.group(1)) <= last + 20:  # articles come in order; a mention elsewhere does not
+                last = int(m.group(1))
+                number = m.group(1) + ((" مكرر" + (" " + m.group(2)[4:] if m.group(2)[4:] else "")) if m.group(2) else "")
+                out.setdefault(number, [x for x in path if x])
+    return out
+
+
+def unit_texts(unit: str, starts: list[tuple[str, str]], store: st.Store, edition_paths: dict | None = None) -> dict:
+    """Every article of each chapter that holds a starting article, whole, each paragraph numbered «[code article ¶n]».
+    A chapter is the store's path when it has one; otherwise the deepest heading of the official consolidated edition."""
+    chapters, seen = [], set()
+    for code, article in starts:
+        e = store.get(code, article)
+        if e is None:
+            chapters.append({"code": code, "start": article, "path": None, "from": "notInStore", "articles": []})
+            continue
+        missing = []
+        if e.get("path"):
+            path, source = e["path"], "store"
+            members = [x["article"] for x in store.chapter(code, path)]
+        else:
+            paths = (edition_paths or {}).get(code) or consolidated_chapters(code)
+            path = paths.get(article)
+            source = "consolidatedEdition" if path else "noHeadingFound"
+            members = [a for a, pth in paths.items() if pth == path and store.get(code, a)] if path else [article]
+            missing = [a for a, pth in paths.items() if path and pth == path and not store.get(code, a)]
+        key = (code, tuple(path or [article]))
+        if key in seen:
+            continue
+        seen.add(key)
+        members = sorted(set(members), key=st._num_key)
+        chapters.append({"code": code, "start": article, "path": path, "from": source, "articles": members,
+                         "missingFromStore": sorted(missing, key=st._num_key)})  # fetch these before committing
+    lines = []
+    for ch in chapters:
+        lines.append(f"## {ch['code']}: {' / '.join(ch['path'] or [ch['start']])}")
+        for a in ch["articles"]:
+            e = store.get(ch["code"], a)
+            for n, p in enumerate(e["paragraphs"], 1):
+                lines.append(f"[{ch['code']} {a} ¶{n}] {p}")
+    return {"unit": unit, "rule": "every article of each chapter that holds a starting article (record-checks.md); "
+                                  "the chapter is the store's path, or the deepest heading of the official consolidated "
+                                  "edition when the store has none",
+            "starts": [{"code": c, "article": a} for c, a in starts], "chapters": chapters,
+            "rendered": "\n".join(lines), "renderedSha256": sha("\n".join(lines))}
+
+
+
 # --- command line --------------------------------------------------------------------------------------------------------
 def quoted_path(record_path: str) -> str:
     return os.path.join(os.path.dirname(os.path.abspath(record_path)), "quoted", os.path.basename(record_path))
@@ -893,6 +973,8 @@ def main(argv=None) -> int:
     k = sub.add_parser("check-checklist"); k.add_argument("record"); k.add_argument("--checklist", required=True)
     k.add_argument("--flags", action="append", default=[]); k.add_argument("--report", required=True)
     i = sub.add_parser("inventory"); i.add_argument("records", nargs="+"); i.add_argument("--out", required=True)
+    ut = sub.add_parser("unit-texts"); ut.add_argument("unit"); ut.add_argument("starts", nargs="+", help="code:article")
+    ut.add_argument("--out", required=True)
     a = p.parse_args(argv)
     sys.stdout.reconfigure(encoding="utf-8")
 
@@ -968,6 +1050,12 @@ def main(argv=None) -> int:
         print("ok" if r["ok"] else f"unanswered lines {r['unansweredLines']}, flags {r['unansweredFlags']}, "
                                     f"refs {r['refsNotInRecord']}")
         return 0 if r["ok"] else 1
+    elif a.cmd == "unit-texts":
+        doc = unit_texts(a.unit, [tuple(x.split(":", 1)) for x in a.starts], the_store(None))
+        save(a.out, doc)
+        missing = [m for ch in doc["chapters"] for m in ch["missingFromStore"]]
+        print(f"{len(doc['chapters'])} chapter(s); missing from the store: {missing or 'none'}")
+        return 1 if missing else 0
     elif a.cmd == "inventory":
         inv = inventory_cited([load(x) for x in a.records])
         save(a.out, inv)

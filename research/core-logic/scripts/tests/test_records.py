@@ -250,3 +250,22 @@ def test_a_disputed_paragraph_gives_c_even_when_the_text_is_not_verified():
 def test_the_owners_files_load():
     assert any(t["article"] == "19" for t in rc.text_disputes())
     assert "civil-code" not in rc.triage_complete()
+
+
+def test_unit_texts_takes_the_store_chapter_or_the_edition_heading():
+    a = entry("19", ["أول"])
+    a["path"] = ["الباب الأول"]
+    b = entry("20", ["ثان"])
+    b["path"] = ["الباب الأول"]
+    c = entry("176", ["فقرة أولى", "فقرة ثانية"])
+    c["path"] = []
+    d = entry("177", ["فقرة"])
+    d["path"] = []
+    store = FakeStore([a, b, c, d])
+    store.chapter = lambda code, path: [e for e in (a, b) if e["path"] == path]
+    edition = {"cpca": {"176": ["الفصل الثاني"], "177": ["الفصل الثاني"], "178": ["الفصل الثاني"]}}
+    doc = rc.unit_texts("u", [("cpca", "19"), ("cpca", "176")], store, edition)
+    assert [(ch["from"], ch["articles"]) for ch in doc["chapters"]] == [("store", ["19", "20"]),
+                                                                         ("consolidatedEdition", ["176", "177"])]
+    assert "[cpca 176 ¶2] فقرة ثانية" in doc["rendered"]
+    assert doc["chapters"][1]["missingFromStore"] == ["178"]  # in the edition, not in the store: named, to be fetched

@@ -12,6 +12,14 @@ This file is filled in as each module passes stage 4 and stage 9. The step 1 rep
 
 **Reading the first row.** The low slot agreement (4 of 16) is mostly naming: A and B each proposed six or seven slots for the exemptions of Civil Code 181 under different ids, which the comparison cannot match and the reconciler maps. The boundary cases fail mostly where the writer marked an outcome `unsettled` (the texts do not settle it) and a record stays silent, and where an exemption has no slot yet. Final figures for the module come after stage 9.
 
+## After reconciliation and verification
+
+| Module | Blind boundary cases passed: A / B / reconciled / final candidate | Disputed by the reconciler | Verifier on those | Attacks: fixed / refuted / open | Grades (items) | Why D |
+|---|---|---|---|---|---|---|
+| `formal-notice` | 3 / 4 / 3 / 3 of 12 | 4 (bc3, bc4, bc7, bc9) | bc3, bc4, bc9: the case's expectation refuted (the exemption facts are unknown, so the text gives "ask", not "step missing"); bc7 open (both readings kept) | 25 / 15 / 7 of 47 | A 10, B 16, C 4, D 24 (first grading, before step 2's second pass) | 24 items cite one of 13 articles not yet verified: Civil Code 120, 121, 392, 469 مكرر 1, 480, 502, 507 مكرر, 507 مكرر 1, 553, 558 (corpus only: one fresh page reading each) and CPCA 310, 311, 406 (critical use: a fresh page reading) |
+
+**On the blind cases.** The reconciler and the verifier are both Opus 5.5, and the verifier sided with the record on three of the four disputed cases. The other five failures are of one kind: a case names a paragraph, and every item citing that paragraph must meet the case's expectation, so an item that rightly stays silent (a step already taken) fails a case another item answers. Whether an `unsettled` or `ask` case should need every matched item or at least one to respond is a question about the boundary-case runner, not about this record, and is put to the owner.
+
 ## Case differences by run (before reconciliation)
 
 | Module | A's examples on B | B's examples on A | Boundary cases on A | on B | decided differently by A and B |

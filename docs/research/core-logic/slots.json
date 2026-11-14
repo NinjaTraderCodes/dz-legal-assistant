@@ -234,6 +234,110 @@
       ],
       "readFromNote": false,
       "origin": "labour-prelitigation"
+    },
+    {
+      "id": "default_on_due_date_agreed",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل ينص العقد على أن المدين يعتبر معذرا بمجرد حلول الأجل دون حاجة إلى أي إجراء آخر؟",
+        "en": "Does the contract say that the debtor is in default by the mere arrival of the due date, without any further step?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "formal-notice"
+    },
+    {
+      "id": "performance_impossible_or_useless_by_debtor",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل أصبح تنفيذ الالتزام متعذرا أو غير مجد بفعل المدين؟",
+        "en": "Has performance of the obligation become impossible or useless through the debtor's own act?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "formal-notice"
+    },
+    {
+      "id": "obligation_is_tort_compensation",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل محل الالتزام المطالب به تعويض ترتب عن عمل مضر؟",
+        "en": "Is the obligation claimed compensation arising from a harmful act?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "formal-notice"
+    },
+    {
+      "id": "return_of_thing_known_stolen_or_unduly_received",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل محل الالتزام رد شيء يعلم المدين أنه مسروق، أو شيء تسلمه دون حق وهو عالم بذلك؟",
+        "en": "Is the obligation to return a thing the debtor knows was stolen, or a thing he received without right knowing it?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "formal-notice"
+    },
+    {
+      "id": "debtor_refused_in_writing",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل صرح المدين كتابة بأنه لا ينوي تنفيذ التزامه؟",
+        "en": "Has the debtor declared in writing that he does not intend to perform?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "formal-notice"
+    },
+    {
+      "id": "movable_sale_price_unpaid_at_term",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل المدعي هو البائع في بيع عروض أو منقولات عين فيه أجل لدفع الثمن وتسلم المبيع، وحل الأجل دون دفع الثمن، دون اتفاق على خلاف ذلك؟",
+        "en": "Is the plaintiff the seller in a sale of goods or other movables with a fixed term for paying the price and taking delivery, which passed with the price unpaid, and no agreement to the contrary?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "formal-notice"
+    },
+    {
+      "id": "commercial_lease",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل الإيجار إيجار محل تجاري يخضع لأحكام الإيجار في القانون التجاري؟",
+        "en": "Is the lease a lease of business premises governed by the lease provisions of the Commercial Code?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "formal-notice"
+    },
+    {
+      "id": "contract_sets_notice_terms",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل يحدد العقد شكلا أو أجلا أو جهة معينة للإعذار قبل المطالبة أو الفسخ أو حلول الدين؟",
+        "en": "Does the contract set a form, a period or an addressee for the notice before a claim, a rescission or the acceleration of the debt?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "formal-notice"
     }
   ]
 }

@@ -65,18 +65,34 @@ def cond_en(c) -> str:
     return json.dumps(c, ensure_ascii=False)
 
 
+def _lead_ins(stmts: dict) -> dict:
+    """(code, article) -> the quoted paragraph 1 of that article when it introduces a list (ends with a colon): an item
+    of the list says nothing without it («لا ضرورة لاعذار المدين فى الحالات الآتية :» before «ـ اذا كان محل الالتزام …»).
+    Taken only from the record's own quotes; the first module's pairs lacked it and the checker rightly said "partly"."""
+    out = {}
+    for s in stmts.values():
+        for q in s.get("quote", []):
+            if q["paragraph"] == 1 and q["text"].rstrip().endswith((":", "：")):
+                out[(s["cite"]["code"], s["cite"]["article"])] = q["text"]
+    return out
+
+
 def _texts(stmts: dict, ids: list) -> list[dict]:
-    out, seen = [], set()
+    out, seen, leads = [], set(), _lead_ins(stmts)
     for i in ids:
         s = stmts.get(i)
         if not s:
             continue
         for q in s.get("quote", []):
             k = (s["cite"]["code"], s["cite"]["article"], q["paragraph"])
+            lead = leads.get(k[:2])
+            if q["paragraph"] > 1 and lead and k[:2] + (1,) not in seen:
+                seen.add(k[:2] + (1,))
+                out.append({"code": k[0], "article": k[1], "paragraph": 1, "text": lead})
             if k not in seen:
                 seen.add(k)
                 out.append({"code": k[0], "article": k[1], "paragraph": k[2], "text": q["text"]})
-    return out
+    return sorted(out, key=lambda t: (t["code"], st._num_key(t["article"]), t["paragraph"])) if out else out
 
 
 def _start(d: dict) -> str:
@@ -100,9 +116,12 @@ def items(record: dict) -> list[dict]:
             sentence += f"; it applies when {cond_en(d['when'])}"
         out.append({"unit": unit, "item": d["id"], "statement": sentence + ".", "texts": _texts(stmts, d.get("basis", []))})
     for p in record.get("priorSteps", []):
-        out.append({"unit": unit, "item": p["id"],
-                    "statement": f"Before a claim in which {cond_en(p.get('requiredWhen'))}, "
-                                 f"{STEP_WORDS.get(p['kind'], STEP_WORDS['other'])}.",
+        exemptions = [(x.get("note") or {}).get("en") or cond_en(x.get("when")) for x in p.get("notRequiredWhen", [])]
+        sentence = (f"Before a claim in which {cond_en(p.get('requiredWhen'))}, "
+                    f"{STEP_WORDS.get(p['kind'], STEP_WORDS['other'])}")
+        if exemptions:  # without them the sentence reads as unconditional, and the checker rightly says "no"
+            sentence += ", except when: " + "; ".join(e.rstrip(".") for e in exemptions)
+        out.append({"unit": unit, "item": p["id"], "statement": sentence + ".",
                     "texts": _texts(stmts, p.get("basis", []))})
         for n, x in enumerate(p.get("notRequiredWhen", []), 1):
             note = (x.get("note") or {}).get("en") or cond_en(x.get("when"))

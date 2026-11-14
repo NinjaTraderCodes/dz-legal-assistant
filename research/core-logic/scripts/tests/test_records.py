@@ -378,3 +378,12 @@ def test_prior_steps_of_one_kind_are_matched_on_their_condition_first():
     y = record(priorSteps=steps([("q2", "rescission"), ("q1", "damages")]))
     pairs = rc.content_pairs(x, y)
     assert pairs[("priorStep", "p1")] == "q1" and pairs[("priorStep", "p2")] == "q2"
+
+
+def test_the_register_may_be_a_list_or_an_object_and_a_target_may_name_several_items():
+    attacks = [{"id": "x", "target": "p3, k25", "verdict": "open"}]
+    assert rc.register_attacks({"unit": "u", "attacks": attacks}) == attacks == rc.register_attacks(attacks)
+    assert rc.attack_targets(attacks[0]) == {"p3", "k25"}
+    q, _ = rc.quote_record(record(), STORE)
+    _, report = rc.grade_record(q, STORE, attacks=[{"target": "b9, d1", "verdict": "open"}], disputes=[], triaged={"cpca"})
+    assert "attackOpen" in {r["item"]: r for r in report["items"]}["d1"]["reasons"]

@@ -883,6 +883,19 @@ def disputed(cite: dict, disputes: list[dict]) -> dict | None:
     return None
 
 
+def register_attacks(register) -> list[dict]:
+    """The verifier's register: a list of attacks, or an object holding them under "attacks" (the first module's
+    verifier wrote the second, with the unit and the corrected record's path beside the list)."""
+    if register is None:
+        return None
+    return register["attacks"] if isinstance(register, dict) else register
+
+
+def attack_targets(attack: dict) -> set[str]:
+    """An attack's target: one item id, or several separated by commas («p3, k25, o6, exR2»)."""
+    return {x.strip() for x in str(attack.get("target", "")).split(",") if x.strip()}
+
+
 def grade_record(record: dict, store: st.Store, idmap=None, differences=None, attacks=None, disputes=None,
                  triaged=None) -> tuple:
     """GRADES.md exactly, with the owner's decisions of 14 Nov 2026: a paragraph kept with two readings
@@ -948,7 +961,7 @@ def grade_record(record: dict, store: st.Store, idmap=None, differences=None, at
                     reasons.append("disagreedBeforeReconciliation")
             if attacks is None:
                 reasons.append("notAttacked")
-            elif any(t.get("target") == iid and t.get("verdict") not in ("refuted", "fixed") for t in attacks):
+            elif any(iid in attack_targets(t) and t.get("verdict") not in ("refuted", "fixed") for t in attacks):
                 reasons.append("attackOpen")
             if not all(s.get("source", {}).get("ledgerClean") for s in basis):
                 why = {(e or {}).get("ledgerReason") for e in entries}
@@ -1251,7 +1264,7 @@ def main(argv=None) -> int:
     elif a.cmd == "grade":
         rec, report = grade_record(load(a.record), the_store(a.store), load(a.idmap) if a.idmap else None,
                                    load(a.differences)["differences"] if a.differences else None,
-                                   load(a.attacks) if a.attacks else None)
+                                   register_attacks(load(a.attacks)) if a.attacks else None)
         save(a.out, rec)
         if a.report:
             save(a.report, report)

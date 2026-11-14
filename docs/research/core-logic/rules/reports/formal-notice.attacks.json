@@ -1,0 +1,609 @@
+{
+ "unit": "formal-notice",
+ "record": "docs/research/core-logic/rules/reconciled/quoted/formal-notice.json",
+ "corrected": "docs/research/core-logic/rules/final-candidates/formal-notice.json",
+ "role": "verifier",
+ "model": "claude-opus-5-5",
+ "date": "2026-11-14",
+ "searched": {
+  "store": "Store text views: civil-code 106, 119-121, 164, 176, 179-186, 323 مكرر, 323 مكرر 1, 392, 469 مكرر 1, 502, 507 مكرر, 507 مكرر 1, 553, 558; commercial-code 172-177, 187, 187 مكرر, 187 مكرر 1, 194; cpca 306-311.",
+  "officialJournal": [
+   {
+    "url": "https://www.joradp.dz/FTP/jo-arabe/1995/A1995013.pdf",
+    "issue": "1995 n. 13",
+    "pages": "6-7",
+    "sha256": "13c2abf3d66e0344c3ceeefb32cddb18429efa7472acd37f47e763ffaae2cbd5"
+   },
+   {
+    "url": "https://www.joradp.dz/FTP/jo-arabe/2006/A2006015.pdf",
+    "issue": "2006 n. 15",
+    "pages": "3-6",
+    "sha256": "2363ede8c5d5ad5eb735bc0e64753b25845e114177895905e3fcfd1ab07d2193"
+   }
+  ],
+  "supremeCourt": "coursupreme.dz decisions 1009298 (10-09-2015) and 1094447 (15-03-2018), read through a fetch tool limited to short verbatim excerpts.",
+  "notFound": "Decree 76-147 and executive decree 08-142 in the Official Journal (not located); amendments of ordinance 95-07 after law 06-04 (not searched)."
+ },
+ "counts": {
+  "fixed": 25,
+  "refuted": 15,
+  "open": 7,
+  "total": 47
+ },
+ "attacks": [
+  {
+   "id": "adv-1",
+   "who": "adversary",
+   "target": "p3, k25, o6, exR2",
+   "claim": "469 مكرر 1 ends a lease at its term with no notice to quit; p3 warns on every eviction and k25 says the lease chapter has no other notice rule.",
+   "verdict": "fixed",
+   "verifierQuote": "«ينتهي الإيجار بانقضاء المدة المتفق عليها دون حاجة إلى تنبيه بالإخلاء.» ؛ «يجب على المستأجر أن يرد العين المؤجرة عند انتهاء مدة الإيجار»",
+   "quoteRef": "[civil-code 469 مكرر 1 ¶1] (law 07-05, store); [civil-code 502 ¶1] (store)",
+   "reasoning": "The store text shows k25 was wrong (the lease chapter has notice rules beyond 480) and the record never cited 469 مكرر 1. The texts speak of the notice to quit, not of the formal notice of art. 180, so whether an eviction after the term needs a إعذار stays open (o6); p3 keeps the protective warning. The transitional rule (507 مكرر ¶1) ended in 2017 except for tenants aged sixty at publication (¶2), whose earlier regime is not in the store.",
+   "change": "Added b27 (469 مكرر 1 ¶1), b28 (502 ¶1), b30 (507 مكرر ¶1-2); new boundary n8 (eviction with no notice) warns and names these texts; o6 gains the reading 'no notice after the term' and the 507 مكرر ¶2 gap; k25 note and refs corrected.",
+   "examples": [
+    "exV1"
+   ]
+  },
+  {
+   "id": "adv-2",
+   "who": "adversary",
+   "target": "p3, n3, k26, k55, m3/m4",
+   "claim": "Commercial leases: 187 مكرر ¶2 (no notice to quit after law 05-02) and 187 مكرر 1 / 173 ¶5 (old leases: notice to quit by reasoned extrajudicial act, else void) are missing.",
+   "verdict": "fixed",
+   "verifierQuote": "«يلزم المستأجر بمغادرة الأمكنة المستأجرة بانتهاء الأجل المحدد في العقد دون حاجة إلى توجيه تنبيه بالإخلاء ودون الحق في الحصول على تعويض الاستحقاق المنصوص عليه في هذا القانون، ما لم يشترط الأطراف خلاف ذلك.» ؛ «يبقى تجديد عقود الإيجار المبرمة قبل النشر المذكور في المادة 187 مكرر أعلاه، خاضعا للتشريع الساري المفعول بتاريخ إبرام عقد الإيجار.» ؛ «ويجب أن يتم التنبيه بالإخلاء بعقد غير قضائي وأن تبين فيه الأسباب التي أدت إلى توجيهه مع إعادة ذكر مضمون المادة 194، وإلا اعتبر باطلا.»",
+   "quoteRef": "[commercial-code 187 مكرر ¶2], [commercial-code 187 مكرر 1 ¶1] (law 05-02, store); [commercial-code 173 ¶5] (store); see also [commercial-code 173 ¶1]",
+   "reasoning": "The store holds all three texts. The record treated a commercial eviction only through the generic p3 and a note on art. 177. It is incomplete: the notice to quit (a different act from the إعذار) is the step that ends an old-regime commercial lease, with its own void-form rule, and a new-regime lease ends at its term without it. The store notes that the commencement of 187 مكرر is unsettled (no national date); the message tells the lawyer to check the lease's date.",
+   "change": "Proposed slot commercial_lease; n3 now has a when (eviction and commercial_lease=yes), warns, and cites b23 and new b31 (173 ¶1), b32 (173 ¶5), b33 (187 مكرر ¶2), b34 (187 مكرر 1 ¶1); k26 and k55 refs updated.",
+   "examples": [
+    "exV2"
+   ]
+  },
+  {
+   "id": "adv-3",
+   "who": "adversary",
+   "target": "p1, k1, k50, o4",
+   "claim": "Art. 502 ¶1 is a contrary text under 179 for the holding-over indemnity.",
+   "verdict": "open",
+   "verifierQuote": "«فإذا أبقاها تحت يده دون حق وجب عليه أن يدفع للمؤجر تعويضا باعتبار القيمة الإيجارية للعين وباعتبار ما لحق المؤجر من ضرر.» ؛ «لا يستحق التعويض إلا بعد اعذار المدين ما لم يوجد نص مخالف لذلك.»",
+   "quoteRef": "[civil-code 502 ¶1]; [civil-code 179 ¶1] (store)",
+   "reasoning": "Art. 502 is silent on notice; silence does not show it is a 'contrary text' under 179, and nothing in the store says either way. Both readings kept; p1 keeps warning (protective).",
+   "change": "Added b28 (502 ¶1) and open point o10 (grade C) with both readings; k1 and k50 now name 502."
+  },
+  {
+   "id": "adv-4",
+   "who": "adversary",
+   "target": "p2, p3, acceptedMeans, k33, k42",
+   "claim": "Ordinance 95-07 art. 16 sets the insurer's notice (registered letter, 30 days, rescission 10 days after suspension).",
+   "verdict": "fixed",
+   "verifierQuote": "«المادة 16 : في العقود المجددة تلقائيا : ... 3 - في حالة عدم الدفع، يجب على المؤمن أن يعذر المؤمن له بواسطة رسالة مضمونة الوصول مع الإشعار بالإستلام بدفع القسط المطلوب خلال الثلاثين (30) يوما التالية لانقضاء الأجل المحدد في 2 أعلاه، ... 5 - للمؤمن الحق في فسخ العقد بعد عشرة (10) أيام من إيقاف الضمانات، ويجب تبليغ الفسخ للمؤمن له بواسطة رسالة مضمونة الوصول مع الإشعار بالإستلام»",
+   "quoteRef": "Ordinance 95-07, art. 16 ¶3 and ¶5, Official Journal 1995, issue 13, pages 6-7 (A1995013.pdf, sha256 13c2abf3d66e0344c3ceeefb32cddb18429efa7472acd37f47e763ffaae2cbd5). Law 06-04 (Official Journal 2006, issue 15, page 3 (A2006015.pdf, sha256 2363ede8c5d5ad5eb735bc0e64753b25845e114177895905e3fcfd1ab07d2193) to page 6) amends arts. 2, 14, 30, 33 and later, not art. 16.",
+   "reasoning": "Confirmed on the Official Journal page. The adversary left out that art. 16 is headed «في العقود المجددة تلقائيا» (automatically renewed contracts). The text is not in the store: the item is an open point of grade D until step 2 reads it; no rule can cite it yet. Later amendments of ordinance 95-07 after 2006 were not searched.",
+   "change": "Request appended (ordinance-95-07 art. 16, askedBy verifier); open point o11 (grade D); k33 and k42 refer to it.",
+   "examples": [
+    "exV3"
+   ]
+  },
+  {
+   "id": "adv-5",
+   "who": "adversary",
+   "target": "p1, k1, k50, o4, k52",
+   "claim": "Ordinance 95-07 art. 14 (law 06-04) gives delay interest from the settlement term without notice.",
+   "verdict": "open",
+   "verifierQuote": "«المادة 14 : إذا لم يدفع التعويض المذكور في المادة 13 أعلاه، في الآجال المحددة في الشروط العامة لعقد التأمين، يحق للمستفيد طلب هذا التعويض بإضافة الفوائد عن كل يوم تأخير، على نسبة إعادة الخصم.»",
+   "quoteRef": "Law 06-04 art. 3 rewriting ordinance 95-07 art. 14, Official Journal 2006, issue 15, page 3 (A2006015.pdf, sha256 2363ede8c5d5ad5eb735bc0e64753b25845e114177895905e3fcfd1ab07d2193); earlier wording OJ 1995 issue 13 page 6.",
+   "reasoning": "Text confirmed. It does not mention notice; whether it is a contrary text under 179 is a reading, as for 502. Not in the store: open point grade D and request.",
+   "change": "Request appended (ordinance-95-07 art. 14); open point o12 (grade D); k1 and k50 name it. p1 keeps warning."
+  },
+  {
+   "id": "adv-6",
+   "who": "adversary",
+   "target": "o1, k19, k53, p1, p3",
+   "claim": "The Supreme Court holds the lawsuit stands as notice for successive obligations after one notice at the first default.",
+   "verdict": "open",
+   "verifierQuote": "«ولئن كان هذا الإعذار غير لازم مبدئيّا في حالة تنفيذ الالتزامات المتتالية» ... «تكون الدعوى المرفوعة بمثابة هذا الإعذار»",
+   "quoteRef": "Supreme Court, commercial and maritime chamber, decision 1009298 of 10-09-2015, fetched from coursupreme.dz (short verbatim excerpts through the fetch tool); statute read: [civil-code 180 ¶1] «أو بما يقوم مقام الانذار»",
+   "reasoning": "The decision is a reading of art. 180 for successive obligations; it does not settle o1 generally, and the app cannot know whether a first notice was given at the first default. Kept as a third, case-law reading of o1 (interpretive); the protective warning stays.",
+   "change": "o1 gains the Court's conditional reading (basis b5, b36) and a note in its why."
+  },
+  {
+   "id": "adv-7",
+   "who": "adversary",
+   "target": "p1, p2, p3, acceptedMeans, proposedSlots",
+   "claim": "A contract clause requiring a particular notice is not handled.",
+   "verdict": "fixed",
+   "verifierQuote": "«وهذا الشرط لا يعفي من الاعذار، الذي يحدد حسب العرف عند عدم تحديده من طرف المتعاقدين.» ؛ «العقد شريعة المتعاقدين، فلا يجوز نقضه، ولا تعديله الا باتفاق الطرفين، أو للاسباب التي يقررها القانون.»",
+   "quoteRef": "[civil-code 120 ¶2]; [civil-code 106 ¶1] (store). Also Supreme Court decision 1009298 (coursupreme.dz): «كما أنه لا يمكن اعتبار إقامة الدعوى الحالية بمثابة الإعذار», on a ground of «مخالفة المادة 106 من القانون المدني».",
+   "reasoning": "120 ¶2 says the notice is what the parties determine, and 106 ¶1 binds them to it; the record never asked whether the contract sets the notice. Applying 120 ¶2 beyond the rescission clause rests on 106 ¶1 and the Court's decision.",
+   "change": "Proposed slot contract_sets_notice_terms; new boundary n10 (notice served, contract sets terms) warns, basis b36 (106 ¶1) and b12; existing examples given the slot 'no' so they keep testing the same case.",
+   "examples": [
+    "exV4"
+   ]
+  },
+  {
+   "id": "adv-8",
+   "who": "adversary",
+   "target": "p2, p3, notRequiredWhen, k25",
+   "claim": "Public-housing leases: refusal to execute a rent judgment dispenses with notice (decision 1094447); 507 مكرر 1 is not cited.",
+   "verdict": "fixed",
+   "verifierQuote": "«تبقى الإيجارات ذات الاستعمال السكني المبرمة مع المؤسسات العمومية المختصة خاضعة للأحكام الخاصة بها.» ؛ «الامتناع عن تنفيذ حكم قضائي حائز للصيغة التنفيذية يقضي بإلزام المستأجر بتسديد بدل الإيجار» «يغني عن توجيه الاعذار، ويترتب عليه فسخ عقد الإيجار»",
+   "quoteRef": "[civil-code 507 مكرر 1 ¶1] (store); Supreme Court, real-estate chamber, decision 1094447 of 15-03-2018 (coursupreme.dz), resting on art. 17 of decree 76-147",
+   "reasoning": "The store text shows the record incomplete: public-institution housing leases follow their own provisions, which the record never mentioned. The Court's exemption rests on decree 76-147, not in the store and not located in the Official Journal: open point of grade D, protective warning kept.",
+   "change": "Added b29 (507 مكرر 1 ¶1), named in n8's message; request appended for decree 76-147 art. 17 (and 08-142); open point o13 (grade D).",
+   "examples": [
+    "exV5"
+   ]
+  },
+  {
+   "id": "adv-9",
+   "who": "adversary",
+   "target": "acceptedMeans m3, o2, k66",
+   "claim": "m3's label adds 'registered letter with acknowledgement of receipt' to art. 180.",
+   "verdict": "fixed",
+   "verifierQuote": "«ويجوز أن يتم الاعذار عن طريق البريد على الوجه المبين في هذا القانون»",
+   "quoteRef": "[civil-code 180 ¶1] (store)",
+   "reasoning": "The paragraph names no registered letter; m3's label put words in the text. The postal way stays unfound (o2, D), so a postal notice is now flagged (protective reading of o2).",
+   "change": "m3 label in p1, p2 and p3 no longer says 'registered letter with acknowledgement'; new boundary n11 warns when notice_means=registered_letter; k5 and k8 refs updated.",
+   "examples": [
+    "exV6"
+   ]
+  },
+  {
+   "id": "adv-10",
+   "who": "adversary",
+   "target": "b23, n3",
+   "claim": "b23 and n3 omit the one-month period of art. 177 ¶2.",
+   "verdict": "fixed",
+   "verifierQuote": "«الا اذا تواصل ارتكابها أو تجديدها لاكثر من شهر بعد انذار المؤجر بتوقفها»",
+   "quoteRef": "[commercial-code 177 ¶2] (store)",
+   "reasoning": "b23's 'says' and n3's message left out the one-month condition. Law 05-02 not touching art. 177 is the adversary's check; the store gives the ordinance 75-59 wording.",
+   "change": "b23 says now has the month and the two kinds of breach; n3's message names the month.",
+   "examples": [
+    "exV7"
+   ]
+  },
+  {
+   "id": "adv-11",
+   "who": "adversary",
+   "target": "acceptedMeans m2, b22",
+   "claim": "m2 ignores the three-month lapse of an order on petition.",
+   "verdict": "fixed",
+   "verifierQuote": "«كل أمر على عريضة لم ينفذ خلال أجل ثلاثة (3) أشهر من تاريخ صدوره، يسقط ولا يرتب أي أثر.»",
+   "quoteRef": "[cpca 311 ¶3] (law 08-09, store; not in law 22-13's list)",
+   "reasoning": "A warning directed by an order on petition rests on an order that lapses if not executed in three months; m2 accepted it with no condition. The rule language cannot compare the order's date with the service date.",
+   "change": "Added b35 (cpca 311 ¶3); m2's label names the three-month lapse and its basis adds b35.",
+   "examples": [
+    "exV8"
+   ]
+  },
+  {
+   "id": "adv-12",
+   "who": "adversary",
+   "target": "b10, doc4, n1, o8",
+   "claim": "An electronic refusal may satisfy 181 ¶5 (323 مكرر 1).",
+   "verdict": "open",
+   "verifierQuote": "«اذا صرح المدين كتابة أنه لا ينوى تنفيذ التزامه» ؛ «يعتبر الإثبات بالكتابة في الشكل الإلكتروني كالإثبات بالكتابة على الورق، بشرط إمكانية التأكد من هوية الشخص الذي أصدرها وأن تكون معدة ومحفوظة في ظروف تضمن سلامتها.»",
+   "quoteRef": "[civil-code 181 ¶5]; [civil-code 323 مكرر 1 ¶1] (law 05-10, store)",
+   "reasoning": "323 مكرر 1 is a rule of proof; applying it to the 'writing' of 181 ¶5 is a reading. Both readings kept.",
+   "change": "Open point o14 (grade C); k8 refs it."
+  },
+  {
+   "id": "cdx-1",
+   "who": "codexAttack",
+   "target": "p1",
+   "claim": "179 does not require notice before filing.",
+   "verdict": "open",
+   "verifierQuote": "«لا يستحق التعويض إلا بعد اعذار المدين ما لم يوجد نص مخالف لذلك.»",
+   "quoteRef": "[civil-code 179 ¶1] (store)",
+   "reasoning": "The paragraph conditions entitlement, not filing. The record already treats this as a reading: p1 is interpretive, warns and never blocks, and o5 and o9 keep the readings on the sanction and on notice before or after filing. No change."
+  },
+  {
+   "id": "cdx-2",
+   "who": "codexAttack",
+   "target": "b23",
+   "claim": "b23 drops the more-than-a-month condition.",
+   "verdict": "fixed",
+   "verifierQuote": "«الا اذا تواصل ارتكابها أو تجديدها لاكثر من شهر بعد انذار المؤجر بتوقفها»",
+   "quoteRef": "[commercial-code 177 ¶2] (store)",
+   "reasoning": "Same as adv-10.",
+   "change": "b23 says and n3 message corrected.",
+   "examples": [
+    "exV7"
+   ]
+  },
+  {
+   "id": "cdx-3",
+   "who": "codexAttack",
+   "target": "p2",
+   "claim": "The 392 exemption ignores a contrary agreement.",
+   "verdict": "refuted",
+   "verifierQuote": "«وهذا ما لم يوجد اتفاق على خلاف ذلك.»",
+   "quoteRef": "[civil-code 392 ¶1] (store)",
+   "reasoning": "The exemption's slot movable_sale_price_unpaid_at_term asks «... دون اتفاق على خلاف ذلك؟»: a contract that requires notice makes the answer 'no', and p2 warns. The condition is carried by the slot. (The exemption's note omitted it; fixed under sup-33.)"
+  },
+  {
+   "id": "cdx-4",
+   "who": "codexAttack",
+   "target": "p2",
+   "claim": "The 392 exemption does not check the claimant is the seller.",
+   "verdict": "fixed",
+   "verifierQuote": "«يكون البيع مفسوخا وجوبا في صالح البائع ودون سابق انذار»",
+   "quoteRef": "[civil-code 392 ¶1] (store)",
+   "reasoning": "The slot question did not say the plaintiff is the seller, so a buyer could answer 'yes'.",
+   "change": "The question of movable_sale_price_unpaid_at_term now asks whether the plaintiff is the seller; p2's exemption note says so.",
+   "examples": [
+    "exV9"
+   ]
+  },
+  {
+   "id": "cdx-5",
+   "who": "codexAttack",
+   "target": "p1, p2, p3",
+   "claim": "The slot catalogue has neither requests nor the exemption facts.",
+   "verdict": "refuted",
+   "verifierQuote": "«اذا كان محل الالتزام تعويضا ترتب عن عمل مضر»",
+   "quoteRef": "[civil-code 181 ¶3] (store)",
+   "reasoning": "The record declares obligation_is_tort_compensation and the four other exemption facts in proposedSlots, and requests is the reserved list slot; rules check accepts them. Contract damages and tort compensation are told apart by that slot."
+  },
+  {
+   "id": "cdx-6",
+   "who": "codexAttack",
+   "target": "b23",
+   "claim": "b23 lifts 177 ¶2 out of the refusal-to-renew context.",
+   "verdict": "fixed",
+   "verifierQuote": "«يجوز للمؤجر أن يرفض تجديد الايجار دون أن يلزم بسداد أى تعويض، اذا برهن عن سبب خطير ومشروع تجاه المستأجر المخلى المحل .» ؛ «لا يجوز الادعاء بالمخالفة المقترفة من قبل المستأجر نظرا لاحكام المادة 172»",
+   "quoteRef": "[commercial-code 177 ¶1] and [commercial-code 177 ¶2] (store)",
+   "reasoning": "177 ¶2 qualifies the refusal to renew without indemnity of ¶1; b23 read as a rule for any breach.",
+   "change": "b23 says now places the condition in the refusal to renew without indemnity.",
+   "examples": [
+    "exV7"
+   ]
+  },
+  {
+   "id": "cdx-7",
+   "who": "codexAttack",
+   "target": "b15",
+   "claim": "b15 drops 'between individuals'.",
+   "verdict": "fixed",
+   "verifierQuote": "«إذا كان محل الالتزام بين أفراد مبلغا من النقود عين مقداره وقت رفع الدعوى»",
+   "quoteRef": "[civil-code 186 ¶1] (store)",
+   "reasoning": "b15 dropped 'between individuals'.",
+   "change": "b15 says now names it.",
+   "examples": [
+    "exV11"
+   ]
+  },
+  {
+   "id": "cdx-8",
+   "who": "codexAttack",
+   "target": "n3",
+   "claim": "From memory: law 05-02 arts. 187 bis and 187 bis 1.",
+   "verdict": "fixed",
+   "verifierQuote": "«يلزم المستأجر بمغادرة الأمكنة المستأجرة بانتهاء الأجل المحدد في العقد دون حاجة إلى توجيه تنبيه بالإخلاء»",
+   "quoteRef": "[commercial-code 187 مكرر ¶2], [commercial-code 187 مكرر 1 ¶1] (law 05-02, store)",
+   "reasoning": "The attack was from memory; the store confirms it. Same correction as adv-2.",
+   "change": "n3 widened (see adv-2).",
+   "examples": [
+    "exV2"
+   ]
+  },
+  {
+   "id": "cdx-9",
+   "who": "codexAttack",
+   "target": "p3",
+   "claim": "From memory: law 07-05 art. 469 bis 1.",
+   "verdict": "fixed",
+   "verifierQuote": "«ينتهي الإيجار بانقضاء المدة المتفق عليها دون حاجة إلى تنبيه بالإخلاء.»",
+   "quoteRef": "[civil-code 469 مكرر 1 ¶1] (law 07-05, store)",
+   "reasoning": "From memory; confirmed in the store. Same correction as adv-1 (p3 keeps the protective warning under o6).",
+   "change": "b27, n8, o6 (see adv-1).",
+   "examples": [
+    "exV1"
+   ]
+  },
+  {
+   "id": "sup-1",
+   "who": "supportCheck",
+   "target": "b14",
+   "claim": "",
+   "verdict": "fixed",
+   "verifierQuote": "«إذا استحال على المدين أن ينفذ الالتزام عينا حكم عليه بتعويض الضرر الناجم عن عدم تنفيذ التزامه»",
+   "quoteRef": "[civil-code 176 ¶1] (store)",
+   "reasoning": "b14 omitted the condition of impossibility of performance in kind.",
+   "change": "b14 says rewritten.",
+   "examples": [
+    "exV12"
+   ]
+  },
+  {
+   "id": "sup-8",
+   "who": "supportCheck",
+   "target": "p2 notRequiredWhen[1]",
+   "claim": "",
+   "verdict": "refuted",
+   "verifierQuote": "«يجوز الاتفاق على أن يعتبر العقد مفسوخا بحكم القانون» ... «وهذا الشرط لا يعفي من الاعذار» ؛ «كما يجوز أن يكون مترتبا على اتفاق يقضي بأن يكون المدين معذرا بمجرد حلول الاجل»",
+   "quoteRef": "[civil-code 120 ¶1-2]; [civil-code 180 ¶1] (store)",
+   "reasoning": "Read together, the two articles name two different agreements: the rescission clause, which does not dispense with notice, and the default-on-term agreement, which is a form of notice. The parenthesis is right."
+  },
+  {
+   "id": "sup-9",
+   "who": "supportCheck",
+   "target": "b20",
+   "claim": "",
+   "verdict": "fixed",
+   "verifierQuote": "«عندما يتم المقاول العمل ويضعه تحت تصرف رب العمل»",
+   "quoteRef": "[civil-code 558 ¶1] (law 05-10, store)",
+   "reasoning": "b20 omitted completion and placing at disposal.",
+   "change": "b20 says rewritten.",
+   "examples": [
+    "exV13"
+   ]
+  },
+  {
+   "id": "sup-11",
+   "who": "supportCheck",
+   "target": "b12",
+   "claim": "",
+   "verdict": "refuted",
+   "verifierQuote": "«يجوز الاتفاق على أن يعتبر العقد مفسوخا بحكم القانون عند عدم الوفاء بالالتزامات الناشئة عنه» ؛ «وهذا الشرط لا يعفي من الاعذار»",
+   "quoteRef": "[civil-code 120 ¶1] and [civil-code 120 ¶2] (store)",
+   "reasoning": "«وهذا الشرط» refers to the clause of ¶1, an agreed rescission clause; b11 cites ¶1."
+  },
+  {
+   "id": "sup-14",
+   "who": "supportCheck",
+   "target": "b4",
+   "claim": "",
+   "verdict": "refuted",
+   "verifierQuote": "«يجبر المدين بعد اعذاره طبقا للمادتين 180 و181» ؛ «لا ضرورة لاعذار المدين فى الحالات الآتية :»",
+   "quoteRef": "[civil-code 164 ¶1]; [civil-code 181 ¶1] (store)",
+   "reasoning": "164 refers to 181, whose ¶1 is the list of cases with no notice: the exemptions."
+  },
+  {
+   "id": "sup-16",
+   "who": "supportCheck",
+   "target": "b13",
+   "claim": "",
+   "verdict": "refuted",
+   "verifierQuote": "«وتطبق فى هذه الحالة أحكام المواد 176 الى 181.» ؛ «لا يستحق التعويض إلا بعد اعذار المدين» ؛ «لا ضرورة لاعذار المدين فى الحالات الآتية :»",
+   "quoteRef": "[civil-code 183 ¶1]; [civil-code 179 ¶1]; [civil-code 181 ¶1] (store)",
+   "reasoning": "Articles 176 to 181 contain the rules on compensation (176), notice (179, 180) and its exemptions (181); the summary is right."
+  },
+  {
+   "id": "sup-20",
+   "who": "supportCheck",
+   "target": "b10",
+   "claim": "",
+   "verdict": "fixed",
+   "verifierQuote": "«لا ضرورة لاعذار المدين فى الحالات الآتية :» ... «ـ اذا صرح المدين كتابة أنه لا ينوى تنفيذ التزامه .»",
+   "quoteRef": "[civil-code 181 ¶1] and [civil-code 181 ¶5] (store)",
+   "reasoning": "¶5 alone is a list item; the words 'no notice' are in ¶1.",
+   "change": "b10 now cites ¶1 and ¶5.",
+   "examples": [
+    "exV14"
+   ]
+  },
+  {
+   "id": "sup-22",
+   "who": "supportCheck",
+   "target": "b25",
+   "claim": "",
+   "verdict": "refuted",
+   "verifierQuote": "«القسم الثالث - في أوامر الأداء» ؛ «يفصل الرئيس في الطلب بأمر» ؛ «يسلم رئيس أمناء الضبط إلى الدائن نسخة رسمية من أمرالأداء.»",
+   "quoteRef": "CPCA book I, title VIII, chapter V, section 3 heading; [cpca 307 ¶1]; [cpca 308 ¶1] (store)",
+   "reasoning": "306 ¶1 sits in the section on orders to pay and the next articles name the order; b25 is already marked interpretive."
+  },
+  {
+   "id": "sup-24",
+   "who": "supportCheck",
+   "target": "b15",
+   "claim": "",
+   "verdict": "fixed",
+   "verifierQuote": "«إذا كان محل الالتزام بين أفراد مبلغا من النقود»",
+   "quoteRef": "[civil-code 186 ¶1] (store)",
+   "reasoning": "Same as cdx-7.",
+   "change": "b15 says names 'between individuals'.",
+   "examples": [
+    "exV11"
+   ]
+  },
+  {
+   "id": "sup-25",
+   "who": "supportCheck",
+   "target": "b7",
+   "claim": "",
+   "verdict": "fixed",
+   "verifierQuote": "«لا ضرورة لاعذار المدين فى الحالات الآتية :» ... «ـ اذا تعذر تنفيذ الالتزام أو أصبح غير مجد بفعل المدين .»",
+   "quoteRef": "[civil-code 181 ¶1] and [civil-code 181 ¶2] (store)",
+   "reasoning": "As sup-20.",
+   "change": "b7 now cites ¶1 and ¶2.",
+   "examples": [
+    "exV15"
+   ]
+  },
+  {
+   "id": "sup-29",
+   "who": "supportCheck",
+   "target": "p2",
+   "claim": "",
+   "verdict": "refuted",
+   "verifierQuote": "«لا ضرورة لاعذار المدين فى الحالات الآتية :» ؛ «يكون البيع مفسوخا وجوبا في صالح البائع ودون سابق انذار»",
+   "quoteRef": "[civil-code 181 ¶1]; [civil-code 392 ¶1] (store)",
+   "reasoning": "p2 is not unconditional: its notRequiredWhen holds the 180 agreement, 181 ¶2 and ¶5, and 392 ¶1, and it warns, never blocks. The checker saw only the step's summary sentence."
+  },
+  {
+   "id": "sup-32",
+   "who": "supportCheck",
+   "target": "b8",
+   "claim": "",
+   "verdict": "fixed",
+   "verifierQuote": "«لا ضرورة لاعذار المدين فى الحالات الآتية :» ... «ـ اذا كان محل الالتزام تعويضا ترتب عن عمل مضر .»",
+   "quoteRef": "[civil-code 181 ¶1] and [civil-code 181 ¶3] (store)",
+   "reasoning": "As sup-20.",
+   "change": "b8 now cites ¶1 and ¶3.",
+   "examples": [
+    "exV16"
+   ]
+  },
+  {
+   "id": "sup-33",
+   "who": "supportCheck",
+   "target": "p2 notRequiredWhen[4]",
+   "claim": "",
+   "verdict": "fixed",
+   "verifierQuote": "«وهذا ما لم يوجد اتفاق على خلاف ذلك.»",
+   "quoteRef": "[civil-code 392 ¶1] (store)",
+   "reasoning": "The slot question carried the condition (cdx-3), but the exemption's note did not.",
+   "change": "The note now says 'and nothing was agreed to the contrary' and names the seller.",
+   "examples": [
+    "exV10"
+   ]
+  },
+  {
+   "id": "sup-37",
+   "who": "supportCheck",
+   "target": "b9",
+   "claim": "",
+   "verdict": "fixed",
+   "verifierQuote": "«لا ضرورة لاعذار المدين فى الحالات الآتية :» ... «ـ اذا كان محل الالتزام رد شىء يعلم المدين أنه مسروق ، أو شىء تسلمه دون حق وهو عالم بذلك .»",
+   "quoteRef": "[civil-code 181 ¶1] and [civil-code 181 ¶4] (store)",
+   "reasoning": "As sup-20.",
+   "change": "b9 now cites ¶1 and ¶4.",
+   "examples": [
+    "exV17"
+   ]
+  },
+  {
+   "id": "sup-40",
+   "who": "supportCheck",
+   "target": "b2",
+   "claim": "",
+   "verdict": "fixed",
+   "verifierQuote": "«إذا لم يوف أحد المتعاقدين بالتزامه جاز للمتعاقد الآخر بعد اعذاره المدين»",
+   "quoteRef": "[civil-code 119 ¶1] (store)",
+   "reasoning": "b2 omitted the failure to perform.",
+   "change": "b2 says rewritten.",
+   "examples": [
+    "exV18"
+   ]
+  },
+  {
+   "id": "sup-44",
+   "who": "supportCheck",
+   "target": "b18",
+   "claim": "",
+   "verdict": "fixed",
+   "verifierQuote": "«فإذا انقضى هذا الأجل دون أن يرجع المقاول إلى الطريقة الصحيحة جاز لرب العمل أن يطلب إما فسخ العقد»",
+   "quoteRef": "[civil-code 553 ¶1] (law 05-10, store)",
+   "reasoning": "b18 omitted the condition.",
+   "change": "b18 says rewritten.",
+   "examples": [
+    "exV19"
+   ]
+  },
+  {
+   "id": "sup-47",
+   "who": "supportCheck",
+   "target": "p3",
+   "claim": "",
+   "verdict": "refuted",
+   "verifierQuote": "«ـ اذا كان محل الالتزام رد شىء يعلم المدين أنه مسروق ، أو شىء تسلمه دون حق وهو عالم بذلك .»",
+   "quoteRef": "[civil-code 181 ¶4] (store)",
+   "reasoning": "p3 is not a blanket rule: its notRequiredWhen holds the 180 agreement and 181 ¶2 to ¶5, including this exemption (exR1, ex10)."
+  },
+  {
+   "id": "sup-48",
+   "who": "supportCheck",
+   "target": "p1",
+   "claim": "",
+   "verdict": "open",
+   "verifierQuote": "«لا يستحق التعويض إلا بعد اعذار المدين ما لم يوجد نص مخالف لذلك.»",
+   "quoteRef": "[civil-code 179 ¶1] (store)",
+   "reasoning": "p1 already carries the 180 and 181 exemptions. Whether 179 is a step before filing is the reading already open in o5 and o9 (as cdx-1); 'contrary texts' are listed where found (392; 186, 502 and insurance as open points o4, o10, o12). No further change."
+  },
+  {
+   "id": "sup-52",
+   "who": "supportCheck",
+   "target": "b23",
+   "claim": "",
+   "verdict": "fixed",
+   "verifierQuote": "«غير أنه اذا كان الامر يتعلق اما بعدم تنفيذ التزام واما بالتوقف عن استغلال المحل التجارى دون سبب جدي ومشروع» ... «الا اذا تواصل ارتكابها أو تجديدها لاكثر من شهر»",
+   "quoteRef": "[commercial-code 177 ¶2] (store)",
+   "reasoning": "As adv-10 and cdx-6.",
+   "change": "b23 says rewritten.",
+   "examples": [
+    "exV7"
+   ]
+  },
+  {
+   "id": "c-1",
+   "who": "derivationC",
+   "target": "cite [civil-code 119 ¶2]",
+   "claim": "",
+   "verdict": "refuted",
+   "verifierQuote": "«كما يجوز له أن يرفض الفسخ إذا كان ما لم يوف به المدين قليل الأهمية بالنسبة إلى كامل الالتزامات.»",
+   "quoteRef": "[civil-code 119 ¶2] (store)",
+   "reasoning": "The paragraph limits the rescission of p2; citing it (b3) is right."
+  },
+  {
+   "id": "c-2",
+   "who": "derivationC",
+   "target": "cite [civil-code 176 ¶1]",
+   "claim": "",
+   "verdict": "refuted",
+   "verifierQuote": "«حكم عليه بتعويض الضرر الناجم عن عدم تنفيذ التزامه ... ويكون الحكم كذلك إذا تأخر المدين في تنفيذ التزامه.»",
+   "quoteRef": "[civil-code 176 ¶1] (store)",
+   "reasoning": "It states the compensation that 179 makes conditional on notice; b14 is a damages statement, rightly kept."
+  },
+  {
+   "id": "c-3",
+   "who": "derivationC",
+   "target": "cite [civil-code 186 ¶1]",
+   "claim": "",
+   "verdict": "refuted",
+   "verifierQuote": "«إذا كان محل الالتزام بين أفراد مبلغا من النقود عين مقداره وقت رفع الدعوى وتأخر المدين في الوفاء به، فيجب عليه أن يعوض للدائن الضرر اللاحق من هذا التأخير.»",
+   "quoteRef": "[civil-code 186 ¶1] (store)",
+   "reasoning": "It bears on whether delay damages need notice (o4); citing it (b15) is right."
+  },
+  {
+   "id": "bc3",
+   "who": "boundaryCase",
+   "target": "p1",
+   "claim": "",
+   "verdict": "refuted",
+   "verifierQuote": "«لا ضرورة لاعذار المدين فى الحالات الآتية :»",
+   "quoteRef": "[civil-code 181 ¶1] (store); also [civil-code 180 ¶1]",
+   "reasoning": "The case expects stepMissing with the exemption facts unknown. Under 181 ¶1 and 180 ¶1 the step depends on those facts, so the record asks; the text gives 'ask', not 'missing'."
+  },
+  {
+   "id": "bc4",
+   "who": "boundaryCase",
+   "target": "p2",
+   "claim": "",
+   "verdict": "refuted",
+   "verifierQuote": "«لا ضرورة لاعذار المدين فى الحالات الآتية :» ؛ «يكون البيع مفسوخا وجوبا في صالح البائع ودون سابق انذار»",
+   "quoteRef": "[civil-code 181 ¶1]; [civil-code 392 ¶1] (store)",
+   "reasoning": "Same as bc3 for rescission: the exemptions are unknown, so the text gives 'ask'."
+  },
+  {
+   "id": "bc9",
+   "who": "boundaryCase",
+   "target": "p2",
+   "claim": "",
+   "verdict": "refuted",
+   "verifierQuote": "«وهذا الشرط لا يعفي من الاعذار»",
+   "quoteRef": "[civil-code 120 ¶2] (store)",
+   "reasoning": "120 ¶2 removes only the rescission clause as an exemption; the other exemptions of p2 remain unknown in the case, so the text gives 'ask'."
+  },
+  {
+   "id": "bc7",
+   "who": "boundaryCase",
+   "target": "p1",
+   "claim": "",
+   "verdict": "open",
+   "verifierQuote": "«لا يستحق التعويض إلا بعد اعذار المدين ما لم يوجد نص مخالف لذلك.»",
+   "quoteRef": "[civil-code 179 ¶1] (store)",
+   "reasoning": "The case (damages only, notice dated after the petition) expects stepMissing. 179 ties entitlement, not filing, to notice; 119 ¶1 does not apply to a damages-only claim. Both readings stand (o9); the rule language cannot compare the notice date with the petition date, and the messages ask the lawyer to check it."
+  }
+ ]
+}

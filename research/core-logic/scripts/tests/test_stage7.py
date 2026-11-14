@@ -72,3 +72,13 @@ def test_more_than_one_seeded_pair_in_five_accepted_makes_every_yes_untrusted():
     doc = stage7.split(answers, key)["u"]
     assert doc["seededAccepted"] == 2 and doc["yesTrusted"] is False
     assert len(doc["attacks"]) == 8 and {a["kind"] for a in doc["attacks"]} == {"untrustedCall"}
+
+
+def test_a_list_item_is_paired_with_its_lead_in_and_a_step_names_its_exemptions():
+    q = quoted()
+    q["basis"][1]["quote"] = [{"paragraph": 2, "text": "البند الثاني."}]
+    q["basis"].append({"id": "b9", "role": "procedure", "cite": {"code": "cpca", "article": "504", "paragraphs": [1]},
+                       "says": {"ar": "", "en": "Lead-in."}, "quote": [{"paragraph": 1, "text": "في الحالات الآتية :"}]})
+    got = {i["item"]: i for i in stage7.items(q)}
+    assert [t["paragraph"] for t in got["b2"]["texts"]] == [1, 2]
+    assert got["p1"]["statement"].endswith("except when: Two months passed.")

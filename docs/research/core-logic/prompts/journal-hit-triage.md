@@ -43,7 +43,19 @@ Do this:
 4. For each matched sentence, find the text it belongs to (its kind, number, date and title) and read its operative articles: which articles of which instrument it replaces, amends, completes, inserts or repeals. List each one in "articlesTouched". Read the Arabic edition for the article numbers (the Arabic numbering is the official one: «مكرر», «مكرر 1»).
 5. Note any transitional provision: the date of entry into force, and whether the old wording keeps governing existing contracts or pending cases. Copy that sentence.
 6. A matched sentence that turns out to be only a citation in a decree's visa («Vu la loi n° …»), an application decree that changes no article of the instrument, or another law with a similar number, goes in "falseHits" with the reason.
-7. "confidence": "read" when you read the operative articles on the page image; "unsure" when the page is a poor scan, the list of touched articles may be incomplete, or the Arabic and French disagree. Say which.
+7. "confidence": "read" when you read the operative articles on the page image; "unsure" when the page is a poor scan, the list of touched articles may be incomplete, or the Arabic and French disagree. Say which in "unsureWhy".
+
+8. Write one output file per issue, `{{work_folder}}\triage-<year>-<number>.json` (for example `triage-2005-044.json`), UTF-8 without a byte-order mark, exactly in this shape:
+
+```
+{ "issue": "<year>-<number>", "issueDate": "yyyy-mm-dd" | null,
+  "files": [{ "url": "<the URL you downloaded>", "sha256": "<as oj-fetch printed it>" }],
+  "texts": [{ "kind": "law" | "ordinance" | "decree" | "rectification" | "other", "number": "<as printed>", "date": "yyyy-mm-dd",
+              "title": "<as printed, French>", "amends": "<one of the instrument ids above, or none>", "pdfPages": [<int>],
+              "articlesTouched": [{ "article": "<Arabic numbering: 187 مكرر 1>", "how": "replaced" | "amended" | "completed" | "inserted" | "repealed", "citedByARecord": true | false }],
+              "transitional": "<the sentence, or empty>", "confidence": "read" | "unsure", "unsureWhy": "<empty when read>" }],
+  "falseHits": [{ "page": <int>, "why": "<what the sentence really is>" }] }
+```
 
 Do not summarise the law, and do not judge whether an amendment matters for a rule: list what the text does. When the output file is written, delete the PDFs in `{{work_folder}}`; keep the hashes.
 

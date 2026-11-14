@@ -22,16 +22,18 @@ Handbook: C:\Users\TheShadow\dz-fable-core\docs\research\core-logic\HANDBOOK.md 
 Last pushed commit: <id>   Last local commit: <id>   Working tree: clean | <what is uncommitted and why>
 
 ## 2. Now
-Step: <1..6>   Stage: <name from the handbook's step table>
+Phase: <0 | A | B | C | D | E>   Reader track: <stage>   Rules track: <units in flight, each with its stage>
 Next action: <one sentence, exact enough to do without thinking>
 Waiting for the owner: <nothing | the question, asked on <date>, in the owner's words if answered>
 Running in the background: <nothing | what, started when, where its output goes>
 
 ## 3. Counters
-Claude agent runs: step 1-2: <n>/230   step 3: <n>/320 (405 at 25 notes per judge run)   steps 4-6: <n>/12
-Codex calls: step 1-2: <n>/165   step 3: <n>/440   steps 4-6: <n>/15; accepted <n>, rejected for tool use <n>, invalid <n>, refused <n>; today <n>; first refusal today at <time>
+Opus runs: step 1: <n>/135   deferred law work: <n>/25   step 3: <n>/165   steps 4-6: <n>/20
+Sonnet runs: step 1: <n>/120   deferred law work: <n>/135   step 3: <n>/135   steps 4-6: <n>/20
+Codex calls: note writing <n>/360 (pool size <n>)   checks <n>/75; accepted <n>, rejected for tool use <n>, invalid <n>, refused <n>; today <n>; first refusal today at <time>; units that waited over ten minutes <n>
+Laptop sessions (nights and free days): filter <n>/4   clean notes <n>/3   training <n>/3   step 5 <n>/2   spare <n>/2
 Units: final <n>/33   reconciled <n>   derived A <n>  B <n>  C <n>/12
-Notes: train <kept>/<written>  dev …  challenge …  mirror …  clean …  composed …
+Notes: train <kept>/<written>  dev Codex half … Sonnet half …  challenge …  clean train/dev/test …  composed …  probe …  mirror …; last noise measurement <percent> on <date>
 Hidden v3: <not started | planned | written <count> | relabelled | finalized sha <…> | run on <date>>
 
 ## 4. Log (newest last; never rewrite an entry)
@@ -60,10 +62,10 @@ It answers, after a stop: what was running, what finished, and **which agent saw
 `notes-work\queue.jsonl`: one line per scenario, rewritten by the scripts as the note moves on, so that a stop in the middle of step 3 loses nothing and repeats nothing:
 
 ```json
-{"scenario": "s-004211", "set": "train", "family": "f-0931", "state": "drawn" | "written" | "spansBuilt" | "judged" | "kept" | "keptWithBlanks" | "dropped" | "invalid", "writeCall": "<call id>", "judgeRun": "<run id>", "attempts": 1, "note": "n-000123"}
+{"scenario": "s-004211", "set": "train", "family": "f-0931", "writer": "codex" | "sonnet" | "local" | "code", "state": "drawn" | "written" | "spansBuilt" | "checked" | "kept" | "keptWithBlanks" | "dropped" | "invalid", "writeCall": "<call id>", "checkRun": "<the filter's run id, or the relabel run's>", "attempts": 1, "note": "n-000123"}
 ```
 
-A note counts for a set only in the states `kept` and `keptWithBlanks`. A note that is `written` and not yet judged belongs to no set and is never trained on. The scenarios and the writers' labels stay in `notes-work\` (outside the repository) until their set is finished, so that no judge can open them.
+A note counts for a set only in the states `kept` and `keptWithBlanks`. A note that is `written` and not yet checked (by the local filter for a training note, by its blind relabeller for a test note) belongs to no set and is never trained on. The scenarios and the writers' labels stay in `notes-work\` (outside the repository) until their set is finished, so that no relabeller can open them.
 
 ## Resuming after a stop
 
@@ -73,11 +75,12 @@ A note counts for a set only in the states `kept` and `keptWithBlanks`. A note t
 4. **Half-finished outputs.** Each kind has its rule:
    - a derivation or a reconciled record that fails `rules check`, or whose agent did not return: **delete it and run the unit again with a fresh agent**. Never complete another agent's half-record yourself, and never show a fresh deriver the half-record;
    - a Codex batch: accepted answers are kept, the rest of the batch is queued again (scenarios "not written", never "dropped"). A rejected call's answer is discarded and the same prompt is never sent again automatically; its items go back to the queue once. Two consecutive failed calls of any kind stop the batch ([specs/codex-calls.md](specs/codex-calls.md));
-   - a judge run that did not return, or that used a tool: its notes go back to the state `spansBuilt` and are judged by a fresh agent; nothing of its partial answer is kept;
+   - a relabel run (or any no-tool run) that did not return, or that used a tool other than the one read of its prompt file: its notes go back to the state `spansBuilt` and are relabelled by a fresh agent; nothing of its partial answer is kept;
+   - the local filter or the clean writer stopped in the middle: it resumes from the queue; a note half answered is asked again;
    - a v3 batch whose writer did not return its numbers: `v3 discard --batch <n>`, then a new writer;
    - a training run: restart from its last checkpoint, or from the start if it kept none; the result must name its seed either way.
 5. **Re-run the cheap checks** before building on old outputs: both solutions build and test; `rules check` on every record of the current stage; the store rebuilds to the recorded hash.
-6. **Independence check.** Before launching any agent that must be independent (a deriver, a judge, a v3 writer), confirm from the ledger that its inputs exclude what it must not see. If your own context now holds something a fresh agent must not get (you read derivation A; you are about to brief derivation B), that is fine, **as long as the prompt template is used unchanged** and you add nothing to it.
+6. **Independence check.** Before launching any agent that must be independent (a deriver, a relabeller, a v3 writer), confirm from the ledger that its inputs exclude what it must not see. If your own context now holds something a fresh agent must not get (you read derivation A; you are about to brief derivation B), that is fine, **as long as the prompt template is used unchanged** and you add nothing to it.
 7. **If you cannot tell whether a hidden set was exposed** (a command printed something unexpected, a reply held text), stop and tell the owner. Do not decide alone that it was harmless.
 8. Update part 2, then continue with "Next action".
 

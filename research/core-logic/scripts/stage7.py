@@ -1,5 +1,5 @@
 """Stage 7 of step 1: what the two Codex checks of a reconciled record are given, and what is done with their answers
-(prompts/rules-attack-codex.md, prompts/rules-support-check-codex.md, specs/record-checks.md).
+(prompts/rules-attack.md, prompts/rules-support-check-codex.md, specs/record-checks.md).
 
     python stage7.py render <quoted reconciled.json> --out <file>        -> {{record_text}} of the Codex attack
     python stage7.py pairs <quoted reconciled.json>... --batch <name> --out <pairs.txt> [--seed n]

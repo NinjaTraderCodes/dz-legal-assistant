@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "note.schema.json",
   "title": "One lawyer note with its gold answer and its history",
-  "description": "One JSON object per line in a .jsonl file. The same shape for training, development, mirror, challenge, clean and hidden notes. Writers and judges give quotes; the script build-spans adds the positions. Only the keywords type, properties, required, additionalProperties, items, enum, const and $ref are used.",
+  "description": "One JSON object per line in a .jsonl file. The same shape for training, development, challenge, clean, composed, probe, mirror and hidden notes. Writers and relabellers give quotes; the script build-spans adds the positions. Only the keywords type, properties, required, additionalProperties, items, enum, const and $ref are used.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -21,22 +21,23 @@
     "set": {
       "enum": [
         "train",
-        "dev",
-        "mirror",
-        "challenge",
-        "clean",
-        "composed",
         "pilot",
-        "crossCheck",
+        "composed",
+        "clean",
+        "dev",
+        "challenge",
+        "probe",
+        "mirror",
         "hiddenV3"
-      ]
+      ],
+      "description": "specs/notes-pipeline.md, section 7. crossCheck was removed on 14 November 2026: the two halves of dev and of challenge do its job."
     },
     "text": {
       "$ref": "#/$defs/text"
     },
     "gold": {
       "$ref": "#/$defs/labels",
-      "description": "The agreed answer: what writer and judge both gave. In a training note, a field they disagreed on is absent from gold and listed in blanked."
+      "description": "The agreed answer. For a training note: the scenario's labels, less the fields the filter blanked. For a test note: the labels on which the scenario (or, for mirror and hiddenV3, the writer) and the blind relabel are equal."
     },
     "blanked": {
       "type": "array",
@@ -58,6 +59,14 @@
     },
     "dropReason": {
       "type": "string"
+    },
+    "split": {
+      "enum": [
+        "train",
+        "dev",
+        "test"
+      ],
+      "description": "Only for set clean (700 train, 100 dev, 200 test) and for a slot pack (train or dev)."
     }
   },
   "$defs": {
@@ -288,6 +297,13 @@
             "$ref": "#/$defs/quote"
           }
         },
+        "roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/role"
+          },
+          "description": "The plaintiff's role, one entry per labelled claim type (SCHEME.md, section 3). Optional: a note labelled before guide version 1.1 has none."
+        },
         "events": {
           "type": "array",
           "items": {
@@ -362,7 +378,8 @@
           "type": "array",
           "items": {
             "$ref": "#/$defs/party"
-          }
+          },
+          "description": "The blind relabellers of a test note (family, model, date, run). Empty for a training note: no model labels one."
         },
         "scenario": {
           "type": "string",
@@ -381,7 +398,7 @@
         },
         "trainingAllowed": {
           "type": "boolean",
-          "description": "False when the terms report of step 3 says the writer's outputs may be used for research and testing only."
+          "description": "True only when the writer's family is openai, local or code, the filter's family is local or code, and the note is in no test set (notes/TERMS.md). False for every note a Claude model wrote."
         },
         "composedByCode": {
           "type": "boolean",
@@ -409,7 +426,77 @@
         },
         "schemeVersion": {
           "type": "string",
-          "description": "The commit that froze the label scheme (notes/SCHEME.md)."
+          "description": "The scheme's version and the commit that froze it, for example 1.0@<commit> (notes/SCHEME.md)."
+        },
+        "filter": {
+          "$ref": "#/$defs/filter",
+          "description": "Training notes only: what decided keep, blank or drop."
+        },
+        "filterWeak": {
+          "type": "boolean",
+          "description": "True for a note filtered by a model that did not pass the filter trial (HANDBOOK, phase A)."
+        },
+        "pack": {
+          "type": "string",
+          "description": "For a note of a slot pack: the slot's id (specs/scheme-extension.md)."
+        }
+      }
+    },
+    "role": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claim",
+        "relation",
+        "position"
+      ],
+      "properties": {
+        "claim": {
+          "type": "string"
+        },
+        "relation": {
+          "type": "string",
+          "description": "A relation of FactVocabulary.Relations, or unknown."
+        },
+        "position": {
+          "type": "string",
+          "description": "A position of FactVocabulary.Positions, or unknown. The pair is one of the claim type's roles in claim-elements.json."
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/quote"
+          }
+        }
+      }
+    },
+    "filter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "family",
+        "model",
+        "version",
+        "date"
+      ],
+      "properties": {
+        "family": {
+          "enum": [
+            "local",
+            "code"
+          ],
+          "description": "Never openai, never anthropic: owner, 14 November 2026."
+        },
+        "model": {
+          "type": "string",
+          "description": "The Ollama tag and digest of the filter model."
+        },
+        "version": {
+          "type": "string",
+          "description": "The sheet's version, for example filter-sheet-1."
+        },
+        "date": {
+          "type": "string"
         }
       }
     }

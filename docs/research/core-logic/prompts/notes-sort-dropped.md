@@ -1,12 +1,13 @@
 # Sorting the dropped and blanked notes
 
 - **Model:** Opus 5.5, fresh agent. A random 150 to 200 notes among those dropped or blanked in the pilot, train, dev and challenge sets, about 25 per run. **Never hidden v3, and never the mirror set**: the mirror chooses nothing, and its notes come from v3's writers, not from scenarios.
-- **The sorter uses no tool.** The guide and the cases are pasted in the prompt, it needs no file path, and its answer is its reply. The executor reads the run's reported tool-use count: a run with any tool use is discarded and run again by a fresh agent.
-- **Give it:** for each note: its text, the scenario, the writer's labels, the judge's labels, and the fields on which they differ. This is the one role that sees both sides.
+- **The sorter uses no tool** except one read of its own prompt file. Its answer is its reply, copied by `records.py ingest-reply`. A run with any other tool use is discarded and run again by a fresh agent.
+- **Give it:** for each note: its text, the scenario, the writer's labels, the checker's labels (the local filter's answers for a training note, the relabeller's for a test note), and the fields on which they differ. This is the one role that sees both sides. It changes no note: it is a measurement.
 - **Placeholders:** `{{guide}}`, `{{cases}}`.
-- **Output:** JSON array: `{ "n", "field", "cause": "writer" | "judge" | "note" | "guide", "right": "writer" | "judge" | "neither" | "both readings hold", "explanation", "guideDefect": "<the rule or case that is missing or unclear, when cause is guide>" }` (one entry per differing field).
-- **How it is used:** the four shares are reported. `guide` entries are fixed in the guide (then the guide test runs again and the scheme version changes). If `judge` is above about a quarter, the judging prompt or the judge is the problem. `writer` entries of one kind (say, restriction read as negation) go into the writer's prompt as a warning in general terms, never as a copied example.
+- **Output:** JSON array: `{ "n", "field", "cause": "writer" | "checker" | "note" | "guide", "right": "writer" | "checker" | "neither" | "bothReadingsHold", "explanation", "guideDefect": "<the rule or case that is missing or unclear, when cause is guide>" }` (one entry per differing field).
+- **How it is used:** the four shares are reported. `guide` entries are fixed in the guide (then the guide test runs again and the scheme version changes). If `checker` is above about a quarter, the filter's sheet, the relabelling prompt or the checker is the problem. `writer` entries of one kind (say, restriction read as negation) go into the writer's prompt as a warning in general terms, never as a copied example.
 - **Why:** dropping disagreements silently removes exactly the hard notes, and hides whether the writer, the judge or the guide is at fault. This sorting is how the pipeline learns.
+- **The shape is repeated in the body** (agents see only the body; fault of 14 November 2026).
 
 --- PROMPT ---
 
@@ -35,4 +36,15 @@ Do not split the difference. If the guide clearly decides, the cause is the writ
 
 Return only the JSON array.
 
-Use no tool. Everything you need is in this message, and your answer is your reply. Do not read or write any memory file, do not open the plan file or the state file, and do not look for any other file.
+Use no tool. Everything you need is in this prompt, and your answer is your reply. (If you were told to read this prompt from a file, that one read is allowed, and nothing after it.) Do not read or write any memory file, do not open the plan file or the state file, and do not look for any other file.
+
+## Your answer
+
+Return only one JSON array, with no text before or after it, **one entry per differing field**:
+
+`[ { "n": 1, "field": "<the field that differs, as the case names it>", "cause": "writer" | "checker" | "note" | "guide", "right": "writer" | "checker" | "neither" | "bothReadingsHold", "explanation": "<one or two sentences>", "guideDefect": "<the rule or case that is missing or unclear>" } ]`
+
+- "n": the case's number as given.
+- "cause": who or what produced the difference: "writer" (the note does not say what the scenario asked for, or its labels are wrong), "checker" (the checker misread a note that is clear), "note" (the note itself is ambiguous), "guide" (the guide does not settle it).
+- "right": whose label is right under the guide: "writer", "checker", "neither", or "bothReadingsHold".
+- "guideDefect": only when "cause" is "guide"; otherwise `""`.

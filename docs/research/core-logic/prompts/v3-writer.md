@@ -9,7 +9,7 @@
 - **If a reply ever holds anything else** (a note, a label, an excerpt, an explanation of any kind): stop; do not answer the agent; run `v3 discard --batch {{batch}}`; tell the owner in one line without repeating the text. A fresh writer then writes the batch again, with the same number and line.
 - **After each run returns:** `v3 memory compare`. On `memory changed: yes`: stop, do not open the memory folder, tell the owner.
 - **The builder never opens this agent's transcript.**
-- **Why the writer also labels:** the gold answer of a hidden note is the writer's labels **confirmed by a blind relabelling** by another family (Codex). A note on which the two differ in any field is dropped. So the writer must label by the guide, exactly, and quote its own words.
+- **Why the writer also labels:** the gold answer of a hidden note is the writer's labels **confirmed by a blind relabelling** by an isolated Opus 5.5 agent (the same model family as the writer: [../specs/hidden-v3-commands.md](../specs/hidden-v3-commands.md), section 7b). A note on which the two differ in any field is dropped. So the writer must label by the guide, exactly, and quote its own words.
 
 --- PROMPT ---
 
@@ -46,3 +46,5 @@ You are writing one batch of a **hidden test set**: working notes that Algerian 
 Write one JSON object per line, one line per note, to `{{root}}\notes\batch-{{batch}}.jsonl`.
 
 When both files are written, reply with the two numbers only.
+
+You run no command.

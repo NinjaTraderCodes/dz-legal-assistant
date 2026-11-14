@@ -4,7 +4,7 @@
 
 **Why there is exactly one.** The same code must (1) run the worked examples of both derivations through both records in step 1, (2) decide, in the scenario sampler of step 3, what a generated case should produce, (3) compute "blocks" and "warns" from the gold answers of hidden set v3, and (4) later run in the app. Two implementations would disagree on an edge, and nobody would see it. So: one project (`DzLegal.CoreLogic.Rules`), no second copy in Python or anywhere else. A script that needs an evaluation calls the .NET tool `rules eval` (below).
 
-**Who writes it.** Opus 5.5 (the executor), in step 2's first pass (HANDBOOK §7, item 3), before any derivation is compared. It needs only this file, [../rules/GRADES.md](../rules/GRADES.md) and the contract.
+**Who writes it.** Opus 5.5 (the executor), in step 2's first pass (done on 13 November 2026), before any derivation is compared. It needs only this file, [../rules/GRADES.md](../rules/GRADES.md) and the contract.
 
 **Derivers do not read this file.** The deriver's guide ([../rules/DERIVER-GUIDE.md](../rules/DERIVER-GUIDE.md)) describes the evaluation they need in neutral words; keep the two in agreement when either changes.
 
@@ -117,7 +117,7 @@ A case whose expectation is wrong under the text is never corrected: the reconci
   1. Calendar arithmetic for months and years: the same day number in the last month, or that month's last day when it is shorter.
   2. The non-working days used by `extendToWorkingDay`: a constant list of weekly rest days (Friday and Saturday), unsourced until the `periods` module cites the text that sets them. Official holidays are **not** known to the evaluator, which is one reason for the warning band.
   3. A deadline **without** `counting` (the texts did not settle it; the deadline is interpretive and so warns at most): counted as `excludeFirstDay` without extension, only so that a date can be shown.
-- The `periods` module is finalised before any unit with a deadline is reconciled (HANDBOOK §7); every record writes its own `counting`, citing its own statements.
+- The `periods` module is finalised before any unit with a deadline is reconciled (HANDBOOK section 7, "The order of units"); every record writes its own `counting`, citing its own statements.
 
 ## The command-line tool
 

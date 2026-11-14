@@ -1,0 +1,55 @@
+{
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "pairs"
+ ],
+ "properties": {
+  "pairs": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "n",
+     "kFaithful",
+     "lFaithful",
+     "kErrors",
+     "lErrors",
+     "betterArabic"
+    ],
+    "properties": {
+     "n": {
+      "type": "integer"
+     },
+     "kFaithful": {
+      "type": "boolean"
+     },
+     "lFaithful": {
+      "type": "boolean"
+     },
+     "kErrors": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "lErrors": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "betterArabic": {
+      "type": "string",
+      "enum": [
+       "K",
+       "L",
+       "same"
+      ]
+     }
+    }
+   }
+  }
+ }
+}

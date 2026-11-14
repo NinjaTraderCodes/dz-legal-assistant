@@ -2,6 +2,16 @@
 
 Codex (OpenAI's CLI, `codex exec`) is the second model family of this task. It is called from scripts only, never interactively. This file fixes how it is called and how every call is checked. The rules here are hard rules: a result that did not pass them is thrown away.
 
+## Codex's three roles, and no other (owner, 14 November 2026)
+
+| Role | Calls | How they run | Prompt |
+|---|---|---|---|
+| **1. Note writer:** the pilot, the training notes, half of dev and of the challenge set, the slot packs | about 360 | **the writer pool**: 2 to 4 calls at once, 20 notes per call, each call in its own empty scratch folder | `notes-write.md` |
+| **2. Second family for checks:** the support check of every unit; the blind view on boundary cases the verifier set aside; a second page reading **only where no other two-family or mechanical proof exists** (the labour laws, an article being added to the delta, a corpus text whose own check was a Claude reading) | about 75 | **the background queue**: one call at a time, never waited for more than ten minutes | `rules-support-check-codex.md`, `boundary-second-view-codex.md`, `law-read-page.md` |
+| **3. Training backup,** only with the owner's approval after Opus could not get a training run working | 0 unless approved | its own section below; the one role that is not read-only | – |
+
+**Codex does not:** derive a rule, attack a record, write a checklist, relabel or judge a note, filter a note, review or rank anything, or receive any text of a hidden set or of the mirror set. A script that sends Codex anything else is a defect.
+
 ## Why these rules exist
 
 The owner wants Codex kept away from the repositories and from every hidden test set. A read-only sandbox does not guarantee that by itself. Measured on this laptop on 12 November 2026 (codex-cli 0.167.0, logged in with ChatGPT):
@@ -37,7 +47,7 @@ codex exec "<prompt, or - to read it from standard input>" ^
 - **Standard input.** Give the prompt on standard input (prompt argument `-`) when it is long or holds Arabic text; otherwise redirect standard input from the null device. Without either, Codex prints "Reading additional input from stdin..." and waits.
 - **`--ephemeral` is mandatory:** no session file is kept on disk, so no later agent can read a transcript.
 - **`--output-schema` is mandatory** for every call whose answer a script reads. The last message is then a JSON object that matches the schema. The same text is written to the `-o` file.
-- **The scratch folder** is `C:\Users\TheShadow\dz-core-research\codex-scratch\<role>\`, outside every repository. It must be **empty** when the call starts, except for calls that are meant to read files placed there on purpose (none in the present plan: law texts are sent inside the prompt).
+- **The scratch folder** is `C:\Users\TheShadow\dz-core-research\codex-scratch\<role>\<call id>\`, outside every repository: **one new, empty folder per call**, created by the script just before the call and removed after it. Two calls never share a folder, whether they run one after the other or at the same time. Nothing is ever placed in it: law texts and notes are sent inside the prompt, images with `-i`.
 - **Environment.** Both keys are Windows user variables, so every process inherits them unless something removes them. Since the owner's decision of 14 November 2026 the removal is automatic, not an instruction: `scripts/clean_env.py` removes both from any process that imports it (every script of the folder does, directly or through `store.py`), the Codex call takes its environment from `clean_env()`, and a command started from a shell goes through `python clean_env.py <command>`. `tests/test_clean_env.py` checks, with dummy values, that each of those launches sees neither key. No key is ever passed to Codex; it uses the ChatGPT login.
 - **Model.** Do not pass `-m`: the subscription's default is used. Record the CLI version (`codex --version`) with every batch.
 - **Cost.** $0: the calls run under the owner's existing ChatGPT plan. A call carries about 17,000 input tokens of overhead before the prompt. Respect the plan's limits: see "Pacing" below.
@@ -72,19 +82,51 @@ Every Codex prompt in `prompts/` ends with the same sentence: "Do not run any co
 | Kind of call | Event log and last message |
 |---|---|
 | Notes, reviews, rule checks, page readings | `C:\Users\TheShadow\dz-core-research\codex-logs\<role>\<batch>\<call>.jsonl` and `.json`. Outside the repository. Never committed. |
-| Anything that touches hidden set v3 (blind relabelling) | **Inside the hidden folder only**, under `C:\dz-hidden-v3\_codex\`. The script prints counts only. See `specs/hidden-v3-commands.md`. |
+| Anything of a hidden set or of the mirror set | **Never sent to Codex.** Their relabeller is an isolated Opus agent ([hidden-v3-commands.md](hidden-v3-commands.md)). |
 
-For each call the script keeps a provenance record (committed for non-hidden work, as one line of a JSONL file under `docs/research/core-logic/notes/provenance/` or the step's own folder): call id, role, prompt template name and version, CLI version, date and time, token usage, accepted, rejected (and why: tool use or other) or refused, and the SHA-256 of the prompt and of the answer. Never the text of a hidden note.
+For each call the script keeps a provenance record (committed for non-hidden work, as one line of a JSONL file under `docs/research/core-logic/notes/provenance/` or the step's own folder): call id, role, prompt template name and version, CLI version, date and time, token usage, accepted, rejected (and why: tool use or other) or refused, and the SHA-256 of the prompt and of the answer. The record of a note-writing call also names the pool's writer number.
 
-## Pacing
+## The writer pool and the background queue
 
-- One call at a time. No parallel Codex calls.
-- Work in batches across the day. After each batch, the script records how many calls were accepted, rejected (for tool use, and for other reasons, apart) and refused for a usage limit, and the time of the first refusal. After each day of batches, send the owner a two-line progress note: calls accepted, rejected and refused; what was produced; what is next.
+Both live in `scripts/codex_run.py`, with tests in `scripts/tests/test_codex_run.py`. Every call they make goes through `call()`, so the gate (daily probe, pinned version) and the event-log check apply to each call exactly as before.
+
+**The writer pool** (role 1 only). `python codex_run.py pool --queue <calls file> --writers <n>`:
+
+- `<n>` is 2, 3 or 4. Each writer takes the next call of the queue, creates its own empty scratch folder, runs the call, checks its event log, writes its provenance line, removes the folder. A call's prompt is built by `notes write` before it enters the queue; the pool never builds a prompt.
+- **The pilot sets the size.** Its 25 calls run 8 at 2 writers, 8 at 3, 9 at 4. The size used for volume is the largest at which no usage-limit refusal occurred and the share of rejected calls was not more than 5 points over the share at 2 writers. The pilot report gives the three rows (seconds per call, accepted, rejected, refused) and the size chosen.
+- **A rejected call** follows the one rule above: its 20 scenarios go back to the queue once. **Two rejections in a row from one writer stop that writer**; the others go on, and the owner is told at the next report.
+- **A usage-limit refusal stops the whole pool at once.** Calls already running finish and are checked; no new call starts. The script records the time, the calls made since the window opened, and the window the refusal names. The next `pool` run resumes from the queue. Never loop on a refusal.
+
+**The background queue** (role 2). `python codex_run.py queue add <role> <prompt file> <schema> <output file>`, `queue run`, `queue status`:
+
+- One call at a time, in the order added, **beside the pool** (so at most five Codex processes at once). `unit.py codex <unit>` adds a unit's calls and starts `queue run` in the background if it is not running.
+- **Nothing waits for it more than ten minutes.** A unit whose support check has not returned goes on to its verifier; its items carry `supportCheckPending` and cannot be grade A until the call returns ([unit-driver.md](unit-driver.md), stage 8). Record every such wait; if waits over ten minutes become usual, that is the stop point "Codex fails its bar".
+- Two failed calls in a row stop the queue; the executor reads the reason before starting it again.
+- When a usage window reopens, the queue's waiting calls go before the pool's.
+
+**Pacing, for both.**
+
+- After each day, a two-line progress note to the owner: calls accepted, rejected (for tool use, and for other reasons, apart) and refused; what was produced; what is next.
 - **How a usage-limit refusal is recognised:** the Codex process fails (a non-zero exit, an `error` or `turn.failed` event, or no `turn.completed`) and its standard output, standard error or event log holds a message about a limit, a quota or a rate (for example "usage limit", "quota", "rate limit", HTTP 429). The script reads the message only to classify the failure, and logs the class, never the text. A refused call is not a rejection: its items stay where they are in the queue.
-- A refusal for a usage limit stops the batch at once: the script records where it stopped, and the next batch, later in the day or the next day, resumes from there. Never loop on a refusal.
-- **Two consecutive failed calls of any kind stop the batch** (refused, rejected, timed out, or failed for a reason the script does not know). The script records where it stopped and why; the executor reads the reason before the next batch starts. This is what keeps an unknown failure from running through a whole queue.
-- The pilot of step 3 measures how many calls a usage window allows; the calendar is derived from that and reported to the owner.
-- If the limit bites, Codex's calls go first to hidden set v3 and the mirror test, then the development notes, then the rule reviews, and last to training volume.
+- **If the limit bites,** Codex's calls go, in this order, to: the checks of units that are waiting (role 2); the Codex halves of dev and of the challenge set; the slot packs; training volume last.
+
+**Tests the pool and the queue must have:** two calls running at once never share a scratch folder, and a scratch folder is empty when its call starts; a rejected call's scenarios return to the queue once and never a third time; a refusal stops new calls and leaves the queue as it was; two rejections in a row stop one writer and not the others; the gate refuses every call when the day's probe is missing; every child process starts without either API key.
+
+## The training backup (role 3: only with the owner's approval)
+
+**When.** Opus runs every training on the laptop. If a training run fails three times, or a day is lost ([reader.md](reader.md), rung 5), the executor stops and asks the owner, with what was tried and the errors. **Nothing below happens without the owner's yes, in the owner's words, for that one problem.**
+
+**The folder.** `C:\Users\TheShadow\dz-core-research\codex-train\<date>\`, made new for the job. The executor copies into it, and nothing else:
+
+- the training code: a copy of `research/core-logic/train/` (files, not a git clone);
+- the stored encoder outputs of **training notes only**, and their labels, written there by `notes export --purpose train` (the loader refuses every other note). 200 of them, split off by family, serve as the folder's own check set. No dev, challenge, clean-test, mirror or hidden note, no test id list, no result file of any test set;
+- a file `TASK.md`: the failing command, its error output, what was tried, and the sentence "Work only inside this folder."
+
+**The call.** `codex exec` with `-C` on that folder and the sandbox mode that lets it write there (`-s workspace-write`), `--ephemeral`, `--json`; no network access is switched on (the folder holds everything). The daily probe and the pinned version apply. **The event-log rule for this role is different, and stricter in one way:** commands and file changes are expected, so the script instead reads every `command_execution` and file-change item and **rejects the session if any path in it lies outside the backup folder**, or names `C:\dz-hidden`, another repository, `.claude`, or `dz-core-research` outside `codex-train`. A rejected session's folder is deleted whole, nothing from it is used, and the owner is told. At most three sessions per approval; say so when asking.
+
+**What comes back.** The changed training code, as a diff against the copy the executor put there. The executor reads the diff, applies it to the repository as its own commit (the message says "training code written by Codex under the owner's approval of `<date>`"), runs the tests, and **runs the training itself**, from the repository, with the real loader. No model file, checkpoint or score produced inside the backup folder is used or reported: the run that counts is Opus's. Then the folder is deleted.
+
+**What it does not change.** Codex writes code here, not notes: [../notes/TERMS.md](../notes/TERMS.md) is untouched. Every choice that changes the reader is still made by the executor on the tune notes ([reader.md](reader.md), rule 1).
 
 ## The owner's three safeguards (13 November 2026)
 
@@ -106,7 +148,8 @@ The stored logs of the probes are in `C:\Users\TheShadow\dz-core-research\codex-
 ## Traps
 
 - **Do not weaken the allowed list** because a batch has many rejections. Many rejections mean the prompt invites tool use: fix the prompt.
-- **Do not print Codex's answer to the console in a hidden-set script.** The console of the agent that launches the script is part of that agent's context.
+- **No text of a hidden set or of the mirror set goes into a Codex prompt,** in any role.
+- **Do not let two calls share a scratch folder** to save time: the pool gives each call its own.
 - **Do not reuse a scratch folder that is not empty.** Codex reads what it finds there.
 - **A sandbox is not a boundary for folders at the root of `C:`.** Never assume a folder is safe from Codex because the call was read-only.
 - **No access right is changed to protect a hidden set** (owner's decision, 13 November 2026). Do not "add a lock to be safe": on this laptop the account and the computer share the name `TheShadow`, and a grant by account name shut the owner's own account out of a test folder.

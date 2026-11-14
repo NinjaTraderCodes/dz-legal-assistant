@@ -1,22 +1,18 @@
-# Blind judge of the applied-law sentences (step 5)
+# Blind judge of the petition sections (step 5)
 
-- **Models:** Sonnet 5.5 (fresh agent, 15 sheets per run) and Codex (8 sheets per call), independently. This is Codex's second role as a blind judge (owner's decision of 12 November).
-- **No tool.** The Sonnet judge uses no tool: its inputs are pasted into the prompt and its answer is its reply. The executor reads the run's reported tool-use count; **a run with any tool use is discarded and run again by a fresh agent**, as a Codex call that ran a command is discarded. The paragraph "Where you work" below is sent to Sonnet only; Codex gets the prompt without it (it runs in an empty scratch folder, and its prompt ends with the no-command sentence).
-- **Placeholders:** `{{worktree}}` (`C:\Users\TheShadow\dz-fable-core`, branch `fable/core-logic`; named only so that the judge knows it is off limits). `{{sheets}}`: for each sheet, the articles, the facts, the element to argue, and the candidates' paragraphs (with any Jais marker lines already stripped) labelled with letters **in random order per sheet** (the template's output is one of the candidates, unmarked; outputs that the faithfulness script already rejected are **still included**, so that the judges' ability to notice invented items can be measured against the script).
-- **Output** (Codex schema `schemas/gen-judge.schema.json`, or the agent's reply): `{ "sheets": [{ "n", "candidates": [{ "letter", "faithful": boolean, "invented": [string], "appliesTheText": 1-5, "legalArabic": 1-5, "usable": boolean }], "best": "<letter>", "templateGoodEnough": "<the letter you think is a fixed template, or none>" }] }`.
-- **What is measured.** (1) The script's faithfulness rate per writer (the main measure): the share of outputs with no invented item ([gen-apply-law.md](gen-apply-law.md)). (2) Each judge's `usable` rate per writer, and where the two judges differ. (3) How often each writer is `best`. Every rate with its Wilson interval.
-- **Conclusion rule, fixed in advance, in this order of precedence.** The usable rate that counts for a writer is **the lower of the two judges'**. "Faithful" is the script's rate. The rule compares point estimates; the intervals are reported beside them (with about 120 sheets: 98 % is 118 outputs or more, 90 % is 108 or more).
-  1. If the template is usable in at least 90 % of sheets, and no model exceeds the template's usable rate by more than 10 points while being faithful in at least 98 %: **no generative model is needed** for this sentence.
-  2. Otherwise, if a model is faithful in at least 98 % and usable in at least 90 %: **name it** (if several, the one with the highest usable rate); no fine-tuning is needed.
-  3. Otherwise: **put the evidence to the owner**: each writer's rates, the kinds of error, and whether training could plausibly fix them (say which).
-
-  **Nothing is fine-tuned without the owner's word.**
+- **Models:** Sonnet 5.5 and Opus 5.5, independently, fresh agents, 15 sheets per run. (Codex was the second judge until the owner's decision of 14 November 2026.)
+- **No tool** except one read of the judge's own prompt file. Its answer is its reply, copied by `records.py ingest-reply` and checked against `schemas/gen-judge.schema.json`; **a run with any other tool use is discarded and run again by a fresh agent**. Both judges get the whole body.
+- **Placeholders:** `{{worktree}}` (`C:\Users\TheShadow\dz-fable-core`, branch `fable/core-logic`; named only so that the judge knows it is off limits). `{{sheets}}`: for each sheet, the section to write and what it must contain, the facts, the articles (for the grounds section), and the candidates' texts ([../specs/step5-templates.md](../specs/step5-templates.md)) (with any Jais marker lines already stripped) labelled with letters **in random order per sheet** (the template's output is one of the candidates, unmarked; outputs that the faithfulness script already rejected are **still included**, so that the judges' ability to notice invented items can be measured against the script).
+- **Output** (the agent's reply, checked against `schemas/gen-judge.schema.json`): `{ "sheets": [{ "n", "candidates": [{ "letter", "faithful": boolean, "invented": [string], "appliesTheText": 1-5, "legalArabic": 1-5, "usable": boolean }], "best": "<letter>", "templateGoodEnough": "<the letter you think is a fixed template, or none>" }] }`.
+- **What is measured.** (1) The script's faithfulness rate per writer (the main measure). (2) Each judge's `usable` rate per writer, and where the two judges differ. (3) How often each writer is `best`. Every rate with its Wilson interval. Judged: 120 paragraphs of part A and 60 sheets of part B (24 runs).
+- **The bars and the conclusion, fixed in advance:** [../specs/step5-templates.md](../specs/step5-templates.md), section 5. A writer passes a part when it is faithful in at least 98 % (the script) and usable in at least 90 % (**the lower of the two judges' rates**). Both judges are Claude models; say so beside every usable rate. **Nothing is fine-tuned without the owner's word.**
+- **The shape is repeated in the body** (agents see only the body; fault of 14 November 2026).
 
 --- PROMPT ---
 
-**Where you work** (Sonnet only). You work without tools. Do not open any file and run no command: not in the repository (`{{worktree}}`), not in `C:\Users\TheShadow\dz-core-research`, not in any memory, plan or state file, and nowhere else. Everything you need is below, and your answer is your reply.
+**Where you work.** You work without tools. (If you were told to read this prompt from a file, that one read is allowed, and nothing after it.) Do not open any other file and run no command: not in the repository (`{{worktree}}`), not in `C:\Users\TheShadow\dz-core-research`, not in any memory, plan or state file, and nowhere else. Everything you need is below, and your answer is your reply.
 
-For each case below you have: official Algerian legal texts, the facts established in a file, what a paragraph of a statement of claim (عريضة افتتاح دعوى) is supposed to argue, and several candidate paragraphs written by different authors, labelled with letters.
+For each case below you have: which section of a statement of claim (عريضة افتتاح دعوى) is to be written and what it must contain, the facts established in the file, the official Algerian legal texts when the section applies one, and several candidate texts for that section written by different authors, labelled with letters.
 
 {{sheets}}
 
@@ -31,4 +27,15 @@ Then "best": the letter of the best usable candidate (or "none"). And "templateG
 
 Judge each case on its own; the letters are shuffled from case to case.
 
-Do not run any command and do not open any file.
+## Your answer
+
+Return only one JSON object, with no text before or after it:
+
+`{ "sheets": [ { "n": 1, "candidates": [ { "letter": "A", "faithful": true, "invented": ["…"], "appliesTheText": 4, "legalArabic": 4, "usable": true } ], "best": "A", "templateGoodEnough": "none" } ] }`
+
+- One entry of "sheets" per sheet, "n" being the sheet's number as given; in it one entry of "candidates" per candidate, "letter" being its letter.
+- "faithful": false as soon as the paragraph holds a fact, date, amount, name or article number that is not on the sheet. "invented": each such item, copied; an empty list when faithful.
+- "appliesTheText" and "legalArabic": whole numbers from 1 (poor) to 5 (excellent).
+- "usable": true only when a lawyer could keep the paragraph with light editing **and** it is faithful.
+- "best": the letter of the best usable candidate of the sheet, or "none" when no candidate is usable.
+- "templateGoodEnough": the letter of the candidate you think is a fixed template, or "none".

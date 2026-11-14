@@ -56,7 +56,7 @@ The store is **keyed by (code, article, version)**. Every wording the inputs hol
 }
 ```
 
-- `path`: the article's place in its code (the library's `path`, or the corpus's), so that "the whole chapter" of an article can be listed by script: the texts given to Codex and to the boundary writer, and a deriver's reading of neighbours, depend on it.
+- `path`: the article's place in its code (the library's `path`, or the corpus's), so that "the whole chapter" of an article can be listed by script: the texts given to derivation C and to the boundary writer, and a deriver's reading of neighbours, depend on it.
 - `paragraphs`: the lines of the text (the library's `text` split on line breaks; the corpus's `paragraphs`; the delta's `text` split on line breaks). A numbered item of a list is a paragraph. A `cite` counts them from 1.
 - **Status, and which version is in force, always come from the corpus** when the code is in the corpus (repealed or not; which version is last). A library article that the corpus says is repealed is served as repealed: the six CPCA articles above come out `repealed: true`, with no paragraphs to quote, whatever the library holds (the delta carries the `libraryCorrection`). `statusFrom` says where the status came from: `corpus`; `library` for a code or an article the corpus does not have (the labour laws; library-only Civil and Commercial articles; reference-only entries); `delta` for a delta article. A delta correction of kind `wrongStatus` overrides the corpus. A `libraryCorrection` of kind `wording` replaces the library's text by its `exactWording` (the article as the page prints it); the entry carries `correctedFromLibrary: true`, and its re-readings are compared with the corrected text (first used for Law 90-11 art. 73 as Law 91-29 worded it, 14 November 2026).
 - **Text: the delta, then the library, then the corpus**, for the version asked. The library holds one wording; it is used only for the version it is. For CPCA and the Family Code that is the corpus's last version (the library is the corpus's import). For a library-only Civil or Commercial article (among those the claims cite: Civil 164, 174, 176, 179, 186, 323, 324 مكرر 1, 324 مكرر 5, 333, 674; Commercial 30, 173, 176), its version is the latest text of the merged ledger (Codex's ledger and the scan's) that touches the article and is dated on or before the consolidated edition (Civil Code: `consolidatedAsOf` 2007-05-13); otherwise the original ordinance. When the edition gives no date (the Commercial Code's file has none), the version is the latest text touching the article before 2007 and `ledgerClean` stays false until a page reading confirms it. When the library's wording is older than the corpus's last version, the corpus's text is served and the delta carries a `libraryCorrection` of kind `outdatedVersion`.
@@ -77,6 +77,17 @@ The store is **keyed by (code, article, version)**. Every wording the inputs hol
 | Laws 90-11 and 90-04 | The library's text, plus one fresh page reading by Codex (the library's two readings were both Claude's). | `libraryAndCodexReread` |
 | Anything in the delta | Two readings by two families agree at level 2 (or 2o), or a third reading settled each difference; the French check was done (`proof.french` present, or `note` says why there is no French text); for a Civil or Commercial Code article, `proof.consolidatedPdf` is present. | `twoFamilies` |
 | A code in neither the library nor the corpus (a special law), or a corpus code the library lacks (Civil Status) | Only as a delta article, with `newCode`. Its `ledgerClean` is false (`scanNotRun`) until the scan's patterns cover the instrument ([official-journal-scan.md](official-journal-scan.md)). | `twoFamilies` |
+
+**The proof label** (`proof` on every verified entry, written by `store.py build` from `verifiedBy`; owner's decision of 14 November 2026: every result says how it was proved):
+
+| `verifiedBy` | `proof` | Why |
+|---|---|---|
+| `libraryProof`, `libraryProofAndCorpus`, `libraryProofAndReread` | `mechanical` | the letters were proved by script against the official consolidated PDF |
+| `corpusAndReread`, `corpusAndTwoReadings`, `ojPageReread`, `libraryAndCodexReread`, `twoFamilies` | `twoFamilies` | Codex (its corpus, or its reading) and a Claude reading agree, or a third reading settled them |
+| `corpusChecked` | `oneFamily` | Codex's check of its own copy |
+| not verified | none | the entry has no `proof`; an item resting on it is grade D |
+
+**A second page reading by Codex is asked for only where the label would otherwise stay `oneFamily` on the Claude side** (owner, 14 November 2026): the labour laws (`libraryAndCodexReread`), an article being added to the delta, and a corpus version whose own `checks` name a Claude reading. Everywhere else one Sonnet reading against the corpus's text is already two families.
 
 **The corpus's checker** is taken to be Codex (the corpus is Codex's work), so the fresh reading of a corpus text is by Sonnet 5.5; when a version's `checks` name a Claude reading, the fresh reading is by Codex instead.
 

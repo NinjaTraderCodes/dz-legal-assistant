@@ -12,6 +12,7 @@
 - **It never touches:** the hidden sets (the v3 figures are checked only by comparing the committed `summary.md` with what `FREEZE.md` quotes), the original worktree, any paid service, any download not listed in `FREEZE.md`.
 - **Output:** `{{report_path}}`: for every figure of `FREEZE.md` that can be rebuilt from open data: the command run, the figure obtained, equal or not; every step where the document was unclear, wrong or silent; every file whose hash differs.
 - **Done when:** every open figure is rebuilt equal (identical for deterministic steps; within the stated spread over seeds for training), or the difference is explained and `FREEZE.md` is corrected and the rebuild run again from the top.
+- **`{{freeze_commit}}`**: the id of the commit that holds `FREEZE.md`.
 
 --- PROMPT ---
 
@@ -34,3 +35,5 @@ You are checking that a piece of research can be reproduced by someone who did n
 Write your report to `{{report_path}}`: first the table of figures; then, in order, every place where the document failed you, quoting the sentence and saying what was missing. Be exact and unsparing: the purpose is to find where the document is not enough.
 
 **Your reply:** the number of figures rebuilt equal, within spread, different and not rebuilt; and the three most serious gaps in the document.
+
+Two rules for the rebuild: **only the shipped reader is retrained**; every other trained figure is checked from the stored files the freeze document names, not retrained. **Built programs are not hashed** (two builds of the same source differ); model files, data files and source files are. The commit you check against is `{{freeze_commit}}`.

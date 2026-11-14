@@ -3,7 +3,7 @@ same inputs built the same way. Each prompt file holds its rules above «--- PRO
 below it; every «{{name}}» must be filled, and a prompt with a placeholder left is refused.
 
     python prompts.py fill rules-derive-a --unit formal-notice --out <file>
-    python prompts.py fill rules-derive-c-codex --unit formal-notice --out <file>
+    python prompts.py fill rules-derive-c --unit formal-notice --out <file>
     python prompts.py fill rules-boundary-cases --unit formal-notice --out <file>
 
 Sources: the handbook's module table (section 6), slots.json, FactVocabulary in src/DzLegal.Drafting/CaseFacts.cs, the
@@ -75,7 +75,7 @@ def handbook_modules() -> list[dict]:
         text = f.read()
     rows = []
     for line in text.split("\n"):
-        m = re.match(r"^\| `([a-z-]+)` \| (.+?) \| (.+?) \|$", line)
+        m = re.match(r"^\| `([a-z-]+)`(?: \((?:high-harm|done)\))? \| (.+?) \| (.+?) \|$", line)
         if m and m.group(1) not in {r["id"] for r in rows}:
             rows.append({"id": m.group(1), "question": m.group(2).strip(), "start": m.group(3).strip()})
     if len(rows) != 12:
@@ -181,7 +181,7 @@ def values_for(prompt: str, unit: str) -> dict[str, str]:
                     vocabulary=vocabulary())
         if prompt == "rules-derive-b":
             base["french_sources"] = french_sources(unit)
-    elif prompt == "rules-derive-c-codex":
+    elif prompt == "rules-derive-c":
         r = module_row(unit)
         base.update(module_question=f"{r['question']} Where to start (pointers, not statements of the law): {r['start']}",
                     slots=slots(unit, english_only=True), texts=unit_texts(unit)["rendered"])
@@ -195,7 +195,7 @@ def values_for(prompt: str, unit: str) -> dict[str, str]:
         base.update(record_path=os.path.join(CL, "rules", "reconciled", "quoted", f"{unit}.json"),
                     ledger_path=ledger if os.path.isfile(ledger) else "(none yet: the amendment ledger does not exist)",
                     oj_fetch=oj_fetch_command(unit, 'adversary'))
-    elif prompt == "rules-attack-codex":
+    elif prompt == "rules-attack":
         base.update(unit_label=f"module {unit}: {module_row(unit)['question']}", slots=slots(unit, english_only=True),
                     record_text=_run_file(unit, "record_text.txt"))
     elif prompt == "rules-support-check-codex":
@@ -211,7 +211,10 @@ def values_for(prompt: str, unit: str) -> dict[str, str]:
             return "\n" + "\n".join(f"- `{u}`: " + ", ".join(one(p) for p in paths_of(u)) for u in units)
 
         def attacks_of(u):
-            paths = [os.path.join(reports, f"{u}.attacks.adversary.json"), os.path.join(reports, f"{u}.attacks.codex.json"),
+            attack = os.path.join(reports, f"{u}.attacks.sonnet.json")
+            if not os.path.isfile(attack) and os.path.isfile(os.path.join(reports, f"{u}.attacks.codex.json")):
+                attack = os.path.join(reports, f"{u}.attacks.codex.json")  # the first module's attack was Codex's
+            paths = [os.path.join(reports, f"{u}.attacks.adversary.json"), attack,
                      (os.path.join(reports, f"{u}.support.json"), "(its `attacks` list: the \"no\" and \"partly\" answers)")]
             if os.path.isfile(os.path.join(reports, f"{u}.c-comparison.json")):
                 paths.append((os.path.join(reports, f"{u}.c-comparison.json"), "(its `attacks` list only)"))

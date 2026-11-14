@@ -4,13 +4,13 @@
 
 **Owner's decisions (12 November 2026), binding:**
 - **Writer:** isolated Claude subagents, used only for this, write v3 **from their own plan** straight into `C:\dz-hidden-v3`, and reply with **counts only** (no note, no label, no excerpt).
-- **Checker:** a **fresh Codex session relabels every note blind**; a script checks each label against the text; disagreements are **dropped and refilled**. Only counts come out.
+- **Checker:** every note is **relabelled blind**; a script checks each label against the text; disagreements are **dropped and refilled**. Only counts come out. The owner first gave this role to Codex; **since the owner's decision of 14 November 2026 (evening) the relabeller is an isolated Opus 5.5 agent**, because relabelling is not one of Codex's three roles. Writer (Sonnet) and relabeller (Opus) are therefore both Claude models, and **the cases are the writers' own, not code-made**: no voice outside the family checks a v3 label. What compensates is in section 7b.
 - No Gemma or Jais model judges v3.
 - **Size:** about 1,100 notes: 40 per claim type (840), 200 near-miss notes outside the catalogue, about 60 more for the two rarest slots. Every `readFromNote` slot at least 100 times with a value other than `unknown`; at least 150 denied and 150 disputed events.
 - Its gold answers hold **only what is in the note**; "blocks" and "warns" are computed from them by the rule evaluator.
 - The builder never opens the folder, lists it, searches it, or reads the writers' transcripts. Only `summary.md` leaves, after the owner's one run.
 
-The brief said v3 is "read only by the owner's command". The owner's decision above added the checker: Codex reads every note's text, and the builder's `v3` commands read the notes and print counts only. Nothing else reads the folder.
+The brief said v3 is "read only by the owner's command". The owner's decisions above added the checker: an isolated relabeller reads every note's text (never the writer's labels), and the builder's `v3` commands read the notes and print counts only. Nothing else reads the folder. **No text of v3 or of the mirror set is ever sent to Codex.**
 
 ## Who may do what
 
@@ -18,11 +18,12 @@ The brief said v3 is "read only by the owner's command". The owner's decision ab
 |---|---|---|
 | The builder (the executor, Opus 5.5) | write and test the `v3` scripts on made-up fixtures and on the mirror set; launch `v3` commands that print counts; read `summary.md` after the run | open, list or search `C:\dz-hidden-v3*`; read a writer's transcript; print or log a note; send a message to a planner or a writer; read the mirror's notes to improve the sampler or the prompts |
 | The planner and the writers (isolated Sonnet 5.5 agents) | read `<root>\inputs\`; the planner writes `<root>\plan\design.json`; a writer writes its own `plan\batch-<nnn>.cases.json` and `notes\batch-<nnn>.jsonl` | open anything outside `<root>`: the repository, the training, dev or mirror notes, the sampler, the classifier, a memory file, the plan or state file; reply with anything but integers |
-| The relabeller (Codex, fresh session per call) | read the note texts the script sends in the prompt | run a command or open a file (the event-log rule); see the writer's labels |
+| The relabellers (isolated Opus 5.5 agents, one fresh agent per relabel batch) | read **one file**: their own prompt file in `<root>-relabel\`, which holds the guide and 25 note texts; write **one file**: their labels file beside it | open `<root>` or anything else; see the writer's labels, the plan or a note's id; reply with anything but integers |
+| The third judge (fresh Sonnet 5.5 agents, **mirror set only**) | answer the closed sheets a script builds from the mirror's kept notes | see the agreed labels; judge anything of v3 |
 | The scripts | read and write inside the set's folder | print anything but counts, fixed status words and the SHA-256 that `v3 finalize` prints |
 | The owner | everything; runs the one scoring command | — |
 
-`<root>` is `C:\dz-hidden-v3` for v3 and `C:\Users\TheShadow\dz-core-research\mirror` for the mirror set.
+`<root>` is `C:\dz-hidden-v3` for v3 and `C:\Users\TheShadow\dz-core-research\mirror` for the mirror set. `<root>-relabel` is the folder beside it with `-relabel` added to its name (`C:\dz-hidden-v3-relabel`, `…\mirror-relabel`). The no-open rule covers `C:\dz-hidden-v3-relabel` like every `C:\dz-hidden*` folder.
 
 ## 1. What protects the hidden folders (owner's decision, 13 November 2026)
 
@@ -34,13 +35,17 @@ The protection of both hidden sets is exactly these three things, and nothing el
 2. **Codex's empty scratch folder and read-only sandbox.** Every Codex call starts in an empty folder outside every repository, with `-s read-only` and `--ephemeral`. Codex is given text in its prompt; it is never pointed at a file.
 3. **The Codex event-log check.** Every call's own event log is read by the script, and **a call in which the model ran a command or opened a file is discarded whole**: its answer is not parsed, not stored, not used ([codex-calls.md](codex-calls.md)). The check sees what the model does with its tools; the CLI's own reading of its configuration at start-up leaves no event and is not what the check is for.
 
-**Know what the sandbox does not do.** Measured on this laptop on 12 November: a read-only Codex sandbox **can read a folder at the root of `C:`** (the model's commands run as the local account `CodexSandboxOffline`, and root folders give every local account read access). So the sandbox is not a wall around the hidden folders. That is exactly why check 3 is mandatory and may never be weakened: if Codex ever tried to look, the call would be thrown away, counted apart, and the work on v3 would stop until the owner decides (section 5, `v3 relabel`).
+**Know what the sandbox does not do.** Measured on this laptop on 12 November: a read-only Codex sandbox **can read a folder at the root of `C:`** (the model's commands run as the local account `CodexSandboxOffline`, and root folders give every local account read access). So the sandbox is not a wall around the hidden folders. That is exactly why check 3 is mandatory and may never be weakened: if Codex ever tried to look, the call would be thrown away, counted apart, and the work would stop until the owner decides (HANDBOOK section 8, "A suspected exposure of a hidden set").
 
-`v3 init` creates `C:\dz-hidden-v3` and `C:\dz-hidden-v3-results` if they do not exist. It changes no access right.
+`v3 init` creates `C:\dz-hidden-v3`, `C:\dz-hidden-v3-relabel` and `C:\dz-hidden-v3-results` if they do not exist. It changes no access right.
+
+**Since 14 November 2026 no Codex call carries any text of a hidden set or of the mirror set.** Points 2 and 3 above still matter: they are what keeps the Codex calls of the other roles (note writing, rule checks) from reading a hidden folder.
+
+**What keeps the relabel blind.** The relabellers are Claude agents under the owner's account: nothing technical stops one from opening `<root>\notes\`, where the writers' labels are. The protection is the structure and the rule: a relabeller's whole task is one file in **another folder**, which holds texts only; its prompt names no other path; it may open nothing else; it replies with two integers. The builder cannot check a relabeller's tool calls, because it never reads a transcript of an agent that saw hidden notes. A relabeller that copied the writer's labels would raise the kept rate and hide label errors; the mirror's third judge (section 7b) is what would show it.
 
 **Two more paths a leak could take, closed by rules:**
 - **Auto-loaded context.** Every fresh subagent receives the user's memory index and the repository's `AGENTS.md`. So the planner and writer prompts forbid reading or writing any memory file, the plan file (`C:\Users\TheShadow\.claude\plans\reactive-squishing-blossom.md`) and the state file (`C:\Users\TheShadow\dz-core-research\STATE.md`), and anything outside `<root>`. And after each planner or writer run, `v3 memory compare` (section 5) compares the memory folder's file list, sizes and times with a snapshot taken before the run, and prints only `memory changed: yes` or `memory changed: no`. **On yes: stop, do not read the memory folder, tell the owner.** A writer that saved a memory would put hidden content into every later session of the builder.
-- **Messages and logs.** Every exception is caught at the top of every command and of the run script and printed as a fixed code; its detail, and the standard error of every child process (Codex, the reader, the scorer), go to a file **inside** `<root>` or the results folder. Nothing a hidden set holds may reach a console, `%TEMP%`, the Windows event log or a file outside those two folders.
+- **Messages and logs.** Every exception is caught at the top of every command and of the run script and printed as a fixed code; its detail, and the standard error of every child process (the reader, the scorer), go to a file **inside** `<root>` or the results folder. Nothing a hidden set holds may reach a console, `%TEMP%`, the Windows event log or a file outside those two folders.
 
 ## 2. The layout inside the folder
 
@@ -49,9 +54,12 @@ The protection of both hidden sets is exactly these three things, and nothing el
   inputs\        put there by v3 init; no note (the list below)
   plan\          design.json (the planner's quotas per batch); batch-<nnn>.cases.json (each writer's own cases)
   notes\         batch-<nnn>.jsonl, written by the writers (note.schema.json, set = hiddenV3 or mirror)
-  _codex\        event logs, answers and standard error of the blind relabelling
-  work\          compare results, drops, refill quotas, error details
+  work\          compare results, drops, refill quotas, error details; relabel\map.json (which relabel batch and
+                 number is which note, and where the probes are)
   final\         v3.jsonl (the kept notes with gold), v3.sha256, probes.json, RUN-STARTED
+<root>-relabel\  batch-<nnn>.prompt.md (the whole prompt of one relabel batch: the guide, the scheme's lists, 25 note
+                 texts with call-local numbers) and batch-<nnn>.labels.json (written by that batch's relabeller).
+                 No id, no label of a writer, no plan.
 C:\dz-hidden-v3-results\<run>\   readings, standard error of each child, summary.json, summary.md
 ```
 
@@ -63,7 +71,7 @@ For the mirror set, `<root>` is `C:\Users\TheShadow\dz-core-research\mirror` and
 |---|---|---|
 | `guide.md` | the labelling guide, frozen version | `docs/research/core-logic/notes/LABELLING-GUIDE.md` at the scheme's commit |
 | `scheme.md` | the frozen scheme: the 21 claim types with their elements and requests, the `readFromNote` slots with their values, and the table of element × polarity cells that a lawyer would still write a note for | `notes/SCHEME.md` |
-| `boundaries.md` | the boundary table: for each claim type, what looks like it and is not, and what tells them apart | the table built at the end of step 1 |
+| `boundaries.md` | the boundary table: for each claim type, what looks like it and is not, and what tells them apart | `notes/SCHEME.md`, section 9, at the scheme version frozen with the generation method |
 | `quotas.json` | the set's quotas (format below) | written by `v3 init` from `--set` |
 | `note.schema.json` | the format of a note | `notes/note.schema.json` |
 | `design.schema.json`, `cases.schema.json` | the formats of the two plan files (below) | the `DzLegal.CoreLogic.Hidden` project, where a test checks them against this section |
@@ -85,7 +93,7 @@ For the mirror set, `<root>` is `C:\Users\TheShadow\dz-core-research\mirror` and
 }
 ```
 
-The status is provisional: `v3 compare` sets `dropped` and the drop reason, and moves the writer's labels to `provenance.writerLabels` and Codex's to `provenance.judgeLabels`. Batch numbers are unique in a set: refill batches continue the numbering. So no two notes can share an id, and no id can collide with an open note's (`n-…`).
+The status is provisional: `v3 compare` sets `dropped` and the drop reason, and moves the writer's labels to `provenance.writerLabels` and the relabeller's to `provenance.judgeLabels`. Batch numbers are unique in a set: refill batches continue the numbering. So no two notes can share an id, and no id can collide with an open note's (`n-…`).
 
 ## 3. The quotas, stated so that they can be met together
 
@@ -177,20 +185,21 @@ An outside case has `"claims": ["outside"]` and `"outside": { "resembles": "<cla
 
 ## 5. The commands (project `DzLegal.CoreLogic.Hidden`, tool `v3`)
 
-Every command prints **only** lines of the form `name: integer` or a fixed status word, and exits non-zero on failure with a fixed error code, never with data. Every command that touches a set takes `--root <folder>`, which has **no default**. Each is developed on made-up fixture notes in temporary folders, then run for real on the mirror set; a test puts a marker string in fixture notes and asserts that the marker appears in **no** console output and in no file outside `--root` and its results folder: the named places are the console, `%TEMP%`, `%USERPROFILE%\.codex\`, `C:\Users\TheShadow\dz-core-research\codex-scratch\`, `C:\Users\TheShadow\dz-core-research\codex-logs\`, the worktree, the rest of `C:\Users\TheShadow\dz-core-research\`, and the Windows Application event log. The same marker test runs once on the mirror before the first v3 command. No test ever runs a command on a hidden folder: the tests use temporary folders only, and the refusals that protect a hidden path (the scorer's, section 9) are tested with a protected prefix the test chooses.
+Every command prints **only** lines of the form `name: integer` or a fixed status word, and exits non-zero on failure with a fixed error code, never with data. Every command that touches a set takes `--root <folder>`, which has **no default**. Each is developed on made-up fixture notes in temporary folders, then run for real on the mirror set; a test puts a marker string in fixture notes and asserts that the marker appears in **no** console output and in no file outside `--root` and its results folder: the named places are the console, `%TEMP%`, `%USERPROFILE%\.codex\`, `C:\Users\TheShadow\dz-core-research\codex-scratch\`, `C:\Users\TheShadow\dz-core-research\codex-logs\`, the worktree, the rest of `C:\Users\TheShadow\dz-core-research\`, and the Windows Application event log. (`--root`'s own `-relabel` folder is, with the results folder, the only other place a note's text may be.) The same marker test runs once on the mirror before the first v3 command. No test ever runs a command on a hidden folder: the tests use temporary folders only, and the refusals that protect a hidden path (the scorer's, section 9) are tested with a protected prefix the test chooses.
 
 | Command | What it does | Prints |
 |---|---|---|
-| `v3 init --root <root> --set hiddenV3\|mirror --first-round-factor <f>` | creates the folders if needed (it changes no access right); copies `inputs\` (section 2); writes `quotas.json` and `writing-rules.json` | `ready` |
+| `v3 init --root <root> --set hiddenV3\|mirror --first-round-factor <f>` | creates the folders if needed, the `-relabel` folder included (it changes no access right); copies `inputs\` (section 2); writes `quotas.json` and `writing-rules.json` | `ready` |
 | `v3 memory snapshot --memory <folder>` / `v3 memory compare --memory <folder>` | records, then compares, the memory folder's file names, sizes and times; never opens a file in it. The snapshot is kept in `C:\Users\TheShadow\dz-core-research\memory-snapshot.json` | `memory changed: yes` or `memory changed: no` |
 | `v3 validate --plan` | the plan files (section 4) | counts |
 | `v3 validate` | each batch file: schema; ids by the rule; `set` and provenance as `writing-rules.json` says; quotes found; formal Arabic; no cast name from the refusal list; no 6-word window from the guide or the prompts. It then writes each quote's `start` and `length` (the code of `build-spans`) | counts: notes valid, invalid per reason |
-| `v3 relabel` | sends the notes' **text only** to Codex, 10 to 20 per call (the pilot's measure of sag decides), prompt [../prompts/v3-blind-relabel.md](../prompts/v3-blind-relabel.md); event-log rule and the one rule for a rejected call ([codex-calls.md](codex-calls.md)); two consecutive failed calls stop the batch; logs, answers and Codex's standard error under `_codex\`; resumable | counts: `calls accepted`, `calls rejected tool use`, `calls rejected other`, `calls refused`, `notes relabelled` |
-| `v3 compare` | writer's labels against Codex's, by the rules of the notes pipeline; **any disagreement, and any `unclear`, drops the note** | counts: kept, dropped; kept per claim type, per element × polarity, per slot value |
+| `v3 relabel prepare --probes <probe set file>` | cuts the valid notes not yet relabelled into relabel batches of 25 texts, **two of them known-truth probes** at random positions (section 7b); for each batch writes `<root>-relabel\batch-<nnn>.prompt.md` from [../prompts/v3-blind-relabel.md](../prompts/v3-blind-relabel.md) (the guide, the scheme's lists and the 25 texts with call-local numbers: **never** an id, a writer's label or anything of the plan) and records the mapping in `<root>\work\relabel\map.json`; resumable | counts: `relabel batches`, `notes queued`, `probes mixed in` |
+| `v3 relabel collect` | for each `batch-<nnn>.labels.json`: the schema (`prompts/schemas/notes-judge.schema.json`); every quote found in its note; every element of the answered claim types answered; one entry per text. An invalid file is set aside and its notes go back to the queue **once**. It scores each batch's two probes against their certain labels; **a batch under the probe bar is set aside whole and its notes queued again once** (section 7b). It writes the spans | counts: `batches valid`, `batches invalid`, `batches under the probe bar`, `notes relabelled`, `probe fields`, `probe fields right` |
+| `v3 compare` | writer's labels against the relabeller's, by the rules of the notes pipeline (section 4b); **any disagreement, and any `unclear`, drops the note** | counts: kept, dropped; kept per claim type, per element × polarity, per slot value |
 | `v3 probes --open <folder> …` | near-copies inside the set and against the open sets (train, dev, challenge, clean, composed, pilot, and the mirror when the set is v3), read from the folders the state file lists for them; drops set notes that are near-copies of an open note. It also trains the shallow leakage model **by cross-validation inside the set only** and writes its accuracy to `final\probes.json` **without printing it**: no accuracy of any model on v3 is printed before the run; it appears only in `summary.md` | near-copy counts only |
 | `v3 probes --against <open set file>` | after `finalize`: near-copies between a newly written open set and the finalized set. Every open set written after v3 is finalized (more training notes, new open notes after a missed target) passes it before it is used | near-copy counts only |
 | `v3 quotas` | compares the kept counts with the kept targets; writes the refill to `work\refill.json`, already split into numbered refill batches, each with a line in the format of a `design.json` entry | counts: cells short, notes to write, refill batches |
-| `v3 discard --batch <nnn>` / `v3 discard --plan` | deletes that batch's cases and notes (or `design.json`) inside the folder | `discarded` |
+| `v3 discard --batch <nnn>` / `v3 discard --plan` / `v3 discard --relabel <nnn>` | deletes that batch's cases and notes (or `design.json`) inside the folder; or that relabel batch's labels file, queuing its notes again | `discarded` |
 | `v3 finalize [--accept-shortfall <file>]` | writes `final\v3.jsonl`, its SHA-256, and the evaluator's outcome for each note's gold slots; refuses if a kept target is not met, except the cells the file lists | `final`, counts, the SHA-256 |
 | `v3 stats` | the same counts again, at any time | counts |
 
@@ -198,14 +207,14 @@ Every command prints **only** lines of the form `name: integer` or a fixed statu
 
 ## 6. The planner and the writers
 
-All are **Sonnet 5.5** agents started fresh (no fork: a fork would inherit the builder's context, and the builder's context must not travel either way). Prompts: [../prompts/v3-planner.md](../prompts/v3-planner.md), [../prompts/v3-writer.md](../prompts/v3-writer.md), with `{{set}}` = `hiddenV3` or `mirror`.
+The planner and the writers are **Sonnet 5.5** agents, the relabellers **Opus 5.5** agents, all started fresh (no fork: a fork would inherit the builder's context, and the builder's context must not travel either way). Prompts: [../prompts/v3-planner.md](../prompts/v3-planner.md), [../prompts/v3-writer.md](../prompts/v3-writer.md), with `{{set}}` = `hiddenV3` or `mirror`.
 
-**How their replies come back: the owner decides, before the mirror's planner runs** (stop point: "A workflow", HANDBOOK section 8). Ask the owner, in one message, for two things together, and state the fan-out (mirror: 1 planner, about 22 writers, refills, and one planted rehearsal run; v3: 1 planner, about 55 writers, refills):
+**How their replies come back: the owner decides, before the mirror's planner runs** (stop point "Before the v3 writers", HANDBOOK section 8). Ask the owner, in one message, for two things together, and state the fan-out (mirror: 1 planner, about 22 writers, about 24 relabellers, refills, one planted rehearsal run, and about 18 third-judge runs; v3: 1 planner, about 55 writers, about 60 relabellers, refills):
 
-1. **The owner's opt-in, in the owner's own words, to the Workflow tool** for the planners and writers of the mirror and of v3. The Workflow runs them with a reply schema of **integers only** (`{"batches", "notes"}` for the planner, `{"batch", "written"}` for a writer): a reply that holds text is rejected by the schema and **cannot** reach the builder. This is the default route.
-2. **The owner's permission, in the owner's own Claude Code settings, for agents to read and write under `C:\Users\TheShadow\dz-core-research\mirror` and `C:\dz-hidden-v3`.** Both folders are outside the session's working folders, and a background agent cannot answer a permission prompt. This is a setting of Claude Code, not an access right of a folder: no folder's access rights change. Either route needs it.
+1. **The owner's opt-in, in the owner's own words, to the Workflow tool** for the planners, writers and relabellers of the mirror and of v3. The Workflow runs them with a reply schema of **integers only** (`{"batches", "notes"}` for the planner, `{"batch", "written"}` for a writer, `{"batch", "relabelled"}` for a relabeller): a reply that holds text is rejected by the schema and **cannot** reach the builder. This is the default route.
+2. **The owner's permission, in the owner's own Claude Code settings, for agents to read and write under `C:\Users\TheShadow\dz-core-research\mirror`, `…\mirror-relabel`, `C:\dz-hidden-v3` and `C:\dz-hidden-v3-relabel`.** These folders are outside the session's working folders, and a background agent cannot answer a permission prompt. This is a setting of Claude Code, not an access right of a folder: no folder's access rights change. Either route needs it.
 
-**The rehearsal.** The mirror set is built with exactly the route, prompts and commands v3 will use, so building it rehearses the whole chain. On the Workflow route, add one planted run: a writer prompt that asks for a reply holding a marker sentence; the builder must receive the schema's rejection without the marker. No v3 planner or writer runs before the mirror chain has run to `v3 finalize` with no reply that held text, no tool-use rejection and `memory changed: no` after every run.
+**The rehearsal.** The mirror set is built with exactly the route, prompts and commands v3 will use, so building it rehearses the whole chain. On the Workflow route, add one planted run: a writer prompt that asks for a reply holding a marker sentence; the builder must receive the schema's rejection without the marker. No v3 planner, writer or relabeller runs before the mirror chain has run to `v3 finalize` with no reply that held text, no batch left under the probe bar and `memory changed: no` after every run.
 
 **Without the owner's opt-in:** the Agent tool, the numbers-only rule of the prompts, and **the discard rule**: any reply that is not exactly the two integers is treated as a leak, whatever it holds. On this route a text reply reaches the builder's context before anyone can judge it; that is why it is the fallback, and the report names the route that ran.
 
@@ -215,7 +224,7 @@ All are **Sonnet 5.5** agents started fresh (no fork: a fork would inherit the b
 2. **One planner run.** Reads `inputs\`; writes `plan\design.json`; replies with two integers. Then `v3 memory compare` and `v3 validate --plan`. The planner invents the quota lines from the guide, the scheme, the boundary table and the quotas: **it is not drawn by the sampler**, and it is told nothing about how the training notes were made.
 3. **Writer runs,** one per batch, a few in parallel (say how many before launching). Each reads its line of `design.json` and `inputs\`, **invents its own 25 cases and writes them first to `plan\batch-<nnn>.cases.json`**, then writes `notes\batch-<nnn>.jsonl`, and replies `{"batch": <n>, "written": <n>}`. A writer that cannot write its file replies `written: 0` and nothing else. After each run returns: `v3 memory compare`.
 4. **If a reply ever holds anything but the integers** (a note, a label, an excerpt, an explanation): stop. Do not continue the conversation with that agent. Run `v3 discard --batch <nnn>` (or `--plan`), and tell the owner what happened in one line, without repeating the text. The batch is written again by a fresh writer with the same batch number and line, who invents new cases.
-5. `v3 validate --plan`, `v3 validate`, `v3 relabel`, `v3 compare`, `v3 probes`.
+5. `v3 validate --plan`, `v3 validate`, `v3 relabel prepare`; then **one fresh relabeller per relabel batch**, a few in parallel (say how many first), each launched with one sentence that names only its prompt file (`<root>-relabel\batch-<nnn>.prompt.md`) and replying `{"batch": <n>, "relabelled": <n>}`; after each run `v3 memory compare`; a reply that holds anything but the integers is a leak (point 4: `v3 discard --relabel <nnn>`, a fresh relabeller). Then `v3 relabel collect`, `v3 compare`, `v3 probes`. `records.py ingest-reply` is **never** run on a planner's, a writer's or a relabeller's transcript.
 6. **Refills:** `v3 quotas`, then one fresh refill writer per refill batch (`{{round}}` = `refill 2`, then `refill 3`; `{{batch}}` = the refill batch's number), then steps 5 and 6 again. **At most three rounds in all: the first and two refill rounds.** The probes run in every round before `v3 quotas`, so that a near-copy dropped late is refilled like any other loss. A cell still short after the third round goes to the owner (section 3).
 7. `v3 finalize`.
 
@@ -225,11 +234,39 @@ The writers' transcripts stay on disk in Claude Code's own folders. **The builde
 
 **What it is for:** to predict v3 and to give v3's result its error bars. **It chooses nothing.** It is never used to decide when to stop climbing the ladder, whether composed notes stay, clean against Codex-trained, the learning curve, thresholds or prompts: all of those are decided on dev and challenge (and the clean test split where relevant). The builder does not read mirror notes to improve the sampler or the prompts, and its dropped notes are not sorted into guide feedback.
 
-**When:** after the generation method is frozen (step 3, stage 10: commit id recorded), immediately before v3, with the same roles, prompts and commands. Building it earlier would let several hundred notes written by v3's planner and writer prompts shape the training material for weeks.
+**When:** after the generation method is frozen (notes pipeline, section 11: commit id recorded), immediately before v3, with the same roles, prompts and commands. Building it earlier would let several hundred notes written by v3's planner and writer prompts shape the training material for weeks.
 
 **What is measured on it:**
-- When it is built: the third blind judge (Opus 5.5, `notes-judge.md`) labels every kept note; the share of kept notes where the third judge differs from the agreed label, per field, is the label-noise figure ([probes.md](probes.md), section 4).
+- When it is built: the third blind judge and the probes (section 7b).
 - **Once, at the pre-commitment, for the at most two final candidates:** their scores on the mirror (the prediction of v3, with intervals), and the drop-flattery figure (their score on the dropped mirror notes against the kept ones). The mirror is scored by the run script of section 9 with its mirror paths, which rehearses that script too. Its pre-commitment is `docs/research/core-logic/results/mirror/PRECOMMIT.md` and its trace `docs/research/core-logic/results/mirror/RUNS.md`.
+
+## 7b. What stands in for a second family: the probes and the third judge
+
+Writer and relabeller are both Claude models, and a v3 case is its writer's own. So two measures are added, and their figures go into the pre-commitment beside every mirror and v3 score.
+
+### Probes for the relabeller
+
+**What they are.** About 150 notes composed by code ([notes-pipeline.md](notes-pipeline.md), section 9), set apart as `set: "probe"` and never trained on. Their labels are exact by construction: no model chose them.
+
+**How they are used.** `v3 relabel prepare --probes <file>` puts **two probes in every relabel batch**, at random positions, drawn without replacement until the pool is used up and then again (a fresh relabeller has no memory of another batch). The relabeller cannot tell that a text is a probe from anything it is told. `v3 relabel collect` compares its labels for the two probes with their certain labels, field by field, by the rules of the notes pipeline (section 4b).
+
+**The bar.** A batch is **under the probe bar** when fewer than 95 % of its probes' counted fields are right (fields counted as in the notes pipeline, section 5; with two probes that is usually more than one wrong field). Its labels are set aside and its notes are relabelled by a fresh Opus agent. Under the bar again: **stop point**, with the per-field rates (probes are open notes, so their rates may be shown).
+
+**What is reported:** over all batches, the probe fields right over the probe fields, with its interval, per kind of field. **And its limit, in the same sentence:** composed notes are simpler than written ones, so this rate is an upper bound on the relabeller's accuracy on real notes.
+
+Probes never enter `final\v3.jsonl` and are never scored as test notes.
+
+### The third judge, on the mirror set only
+
+After the mirror is finalised, every kept note is judged once more, **by another route**: not a free labelling, but a sheet of closed questions.
+
+1. `notes third-judge-sheets --set mirror` builds, for each kept note, a numbered list of questions with lettered options, from the scheme and the note's agreed claim types (never from its other labels): which kind of claim (the agreed type among three near ones and "none of these"); for every element of those claim types and for two decoy elements, what the note says about it (happened; did not happen; the parties disagree; not mentioned); each slot's own question; for each request of those claim types and one decoy, whether the note asks for it; for a claim type with a choice of role, which role; for each date and amount the plain-code parsers found, what it is the date or the amount of (the candidate roles and "none of these").
+2. Fresh **Sonnet 5.5** agents, no tool, 25 notes per run (about 18 runs for 440 notes), answer the sheets ([../prompts/notes-third-judge.md](../prompts/notes-third-judge.md)). They never see a label.
+3. A script compares each answer with the agreed label. **The label-noise figure** of the mirror is the share of kept notes on which the third judge differs from the agreed label, per kind of field, with its interval ([probes.md](probes.md), section 4). A note where a decoy is answered as present is counted apart (the judge's own error).
+
+**Say beside the figure:** the third judge is a Claude model, like the writer and the relabeller. An error all three share is not counted, so the figure is a floor, not an estimate of every wrong label. It stands for v3 as well: v3 is never judged a third time.
+
+Also on the mirror, as a mechanical cross-check that needs no model: the share of labelled dates and amounts whose normal form differs from what the plain-code parsers read at the same place. It is reported, and nothing is dropped because of it (dropping by the reader's own parser would bias the set towards what the reader can read).
 
 ## 8. Before the run: the commitment (step 4, last item before v3)
 
@@ -241,7 +278,7 @@ One commit, pushed, whose id the owner receives with the command. It holds, unde
 - the targets, the two settings, the three-verdict rule and the headline rule (copied from [scorer.md](scorer.md));
 - the exact contents of `summary.md`;
 - the SHA-256 of `final\v3.jsonl` as `v3 finalize` printed it, and the accepted-shortfall file if there is one;
-- the mirror set's results for the same candidates, scored once: the prediction of the v3 score, the label-noise and drop-flattery figures, each with its interval, stated **before** the run;
+- the mirror set's results for the same candidates, scored once: the prediction of the v3 score, the label-noise and drop-flattery figures, each with its interval, stated **before** the run; the relabeller's probe rate on the mirror and on v3; and the sentence of section 7b on what one model family cannot see;
 - how many candidates are run. **At most two** (for example the main reader and the clean-notes-trained one), both named here. More candidates would turn a hidden set into a tuning set.
 
 **Hashes are of sources and model files, not of built programs.** A program built in another folder or with another SDK does not hash the same, so the step 6 rebuild could never match it. The reader's source hash and the scorer's hash are each the SHA-256 of a list: the path and SHA-256 of each source file of the project, as committed (`git show <commit>:<path>`, so a clone's line-end settings do not change it), sorted by path.
@@ -284,9 +321,9 @@ The builder then reads `summary.md` and reports: each target as met, not met (co
 
 ## 10. Done when
 
-1. The first-call probes of [codex-calls.md](codex-calls.md) passed in this session, including the stored-log test of the rejection path; no access right of any hidden folder was changed.
+1. No text of the mirror set or of v3 was sent to Codex; no access right of any hidden folder was changed.
 2. Every `v3` command, and `Run-HiddenV3.ps1` under Windows PowerShell 5.1, passed its marker test on fixtures, then on the mirror set.
-3. The mirror set is built after the generation freeze, by the route the owner chose: no reply that held text, no tool-use rejection, `memory changed: no` after every run; its counts, its SHA-256 and the label-noise figure are reported.
+3. The mirror set is built after the generation freeze, by the route the owner chose: no reply that held text, no batch left under the probe bar, `memory changed: no` after every run; its counts, its SHA-256, the probe rate and the label-noise figure are reported.
 4. `v3 finalize` printed `final` with every kept target met (or the owner accepted the named cells of an accepted-shortfall file).
 5. `PRECOMMIT.md` is pushed and its commit id is with the owner.
 6. After the run: `RUNS.md` and the `summary.md` files are committed; the builder's context holds no v3 text (if it ever did, that is reported).
@@ -295,7 +332,8 @@ The builder then reads `summary.md` and reports: each target as met, not met (co
 
 - **"Just a quick look to debug."** There is no debugging of v3 by looking. A v3 command that fails is debugged on fixtures or on the mirror set, where the same code runs on open notes. If the failure cannot be reproduced there, report it to the owner with the error code.
 - **Exception messages carry data.** A stack trace with a note's text in it is a leak. Catch at the top, print a fixed code, keep the detail inside the folder (section 1).
-- **A tool-use rejection on a hidden set is not a retry.** It means Codex tried to look. Stop the work on v3 and tell the owner ("A suspected exposure of a hidden set", HANDBOOK section 8).
-- **The relabel prompt goes through Codex's service.** That is the owner's decision (Codex is the checker). It contains fictitious notes only.
+- **A relabeller's reply that holds text is a leak, not a retry.** Stop, discard that relabel batch, tell the owner in one line without the text ("A suspected exposure of a hidden set", HANDBOOK section 8).
+- **Never put a writer's label, a note's id or a plan line into the `-relabel` folder,** and never name `<root>` in a relabel prompt. The relabel is blind only as long as that folder holds texts alone.
+- **Do not read a relabel prompt file "to check it".** It holds hidden notes. Its builder is tested on fixtures and on the mirror.
 - **Do not let the planner or a writer see the sampler, the style cards or the training notes.** Shared blind spots are what a hidden set is there to expose.
 - **Do not tune anything on the mirror set.** It is the rehearsal and the forecast of v3, not a development set.

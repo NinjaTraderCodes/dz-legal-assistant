@@ -1,0 +1,581 @@
+{
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "notes"
+ ],
+ "properties": {
+  "notes": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "n",
+     "claims",
+     "claimEvidence",
+     "roles",
+     "events",
+     "slots",
+     "requests",
+     "values",
+     "remarks"
+    ],
+    "properties": {
+     "n": {
+      "type": "integer"
+     },
+     "claims": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "outsideKind": {
+      "type": "string"
+     },
+     "claimEvidence": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "field",
+        "quote",
+        "occurrence"
+       ],
+       "properties": {
+        "field": {
+         "type": "string",
+         "enum": [
+          "subject",
+          "facts",
+          "requests",
+          "documents"
+         ]
+        },
+        "quote": {
+         "type": "string"
+        },
+        "occurrence": {
+         "type": "integer"
+        }
+       }
+      }
+     },
+     "events": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "claim",
+        "kind",
+        "polarity",
+        "actor",
+        "evidence"
+       ],
+       "properties": {
+        "claim": {
+         "type": "string"
+        },
+        "kind": {
+         "type": "string"
+        },
+        "polarity": {
+         "type": "string",
+         "enum": [
+          "stated",
+          "denied",
+          "disputed",
+          "notMentioned",
+          "unclear"
+         ]
+        },
+        "actor": {
+         "type": "string",
+         "enum": [
+          "plaintiff",
+          "defendant",
+          "other",
+          "unknown"
+         ]
+        },
+        "disputedBy": {
+         "type": "string",
+         "enum": [
+          "plaintiff",
+          "defendant",
+          "other"
+         ]
+        },
+        "evidence": {
+         "type": "array",
+         "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+           "field",
+           "quote",
+           "occurrence"
+          ],
+          "properties": {
+           "field": {
+            "type": "string",
+            "enum": [
+             "subject",
+             "facts",
+             "requests",
+             "documents"
+            ]
+           },
+           "quote": {
+            "type": "string"
+           },
+           "occurrence": {
+            "type": "integer"
+           }
+          }
+         }
+        },
+        "date": {
+         "type": "object",
+         "additionalProperties": false,
+         "required": [
+          "kind",
+          "at",
+          "normalized",
+          "roles"
+         ],
+         "properties": {
+          "kind": {
+           "type": "string",
+           "enum": [
+            "date",
+            "amount"
+           ]
+          },
+          "at": {
+           "type": "object",
+           "additionalProperties": false,
+           "required": [
+            "field",
+            "quote",
+            "occurrence"
+           ],
+           "properties": {
+            "field": {
+             "type": "string",
+             "enum": [
+              "subject",
+              "facts",
+              "requests",
+              "documents"
+             ]
+            },
+            "quote": {
+             "type": "string"
+            },
+            "occurrence": {
+             "type": "integer"
+            }
+           }
+          },
+          "normalized": {
+           "type": "string"
+          },
+          "roles": {
+           "type": "array",
+           "items": {
+            "type": "string"
+           }
+          },
+          "relative": {
+           "type": "boolean"
+          },
+          "calendar": {
+           "type": "string",
+           "enum": [
+            "gregorian",
+            "hijri"
+           ]
+          },
+          "currency": {
+           "type": "string"
+          },
+          "amountDisputed": {
+           "type": "boolean"
+          }
+         }
+        },
+        "amount": {
+         "type": "object",
+         "additionalProperties": false,
+         "required": [
+          "kind",
+          "at",
+          "normalized",
+          "roles"
+         ],
+         "properties": {
+          "kind": {
+           "type": "string",
+           "enum": [
+            "date",
+            "amount"
+           ]
+          },
+          "at": {
+           "type": "object",
+           "additionalProperties": false,
+           "required": [
+            "field",
+            "quote",
+            "occurrence"
+           ],
+           "properties": {
+            "field": {
+             "type": "string",
+             "enum": [
+              "subject",
+              "facts",
+              "requests",
+              "documents"
+             ]
+            },
+            "quote": {
+             "type": "string"
+            },
+            "occurrence": {
+             "type": "integer"
+            }
+           }
+          },
+          "normalized": {
+           "type": "string"
+          },
+          "roles": {
+           "type": "array",
+           "items": {
+            "type": "string"
+           }
+          },
+          "relative": {
+           "type": "boolean"
+          },
+          "calendar": {
+           "type": "string",
+           "enum": [
+            "gregorian",
+            "hijri"
+           ]
+          },
+          "currency": {
+           "type": "string"
+          },
+          "amountDisputed": {
+           "type": "boolean"
+          }
+         }
+        }
+       }
+      }
+     },
+     "slots": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "slot",
+        "value",
+        "evidence"
+       ],
+       "properties": {
+        "slot": {
+         "type": "string"
+        },
+        "value": {
+         "type": "string"
+        },
+        "evidence": {
+         "type": "array",
+         "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+           "field",
+           "quote",
+           "occurrence"
+          ],
+          "properties": {
+           "field": {
+            "type": "string",
+            "enum": [
+             "subject",
+             "facts",
+             "requests",
+             "documents"
+            ]
+           },
+           "quote": {
+            "type": "string"
+           },
+           "occurrence": {
+            "type": "integer"
+           }
+          }
+         }
+        }
+       }
+      }
+     },
+     "requests": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "kind",
+        "evidence"
+       ],
+       "properties": {
+        "kind": {
+         "type": "string"
+        },
+        "evidence": {
+         "type": "array",
+         "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+           "field",
+           "quote",
+           "occurrence"
+          ],
+          "properties": {
+           "field": {
+            "type": "string",
+            "enum": [
+             "subject",
+             "facts",
+             "requests",
+             "documents"
+            ]
+           },
+           "quote": {
+            "type": "string"
+           },
+           "occurrence": {
+            "type": "integer"
+           }
+          }
+         }
+        },
+        "amount": {
+         "type": "object",
+         "additionalProperties": false,
+         "required": [
+          "kind",
+          "at",
+          "normalized",
+          "roles"
+         ],
+         "properties": {
+          "kind": {
+           "type": "string",
+           "enum": [
+            "date",
+            "amount"
+           ]
+          },
+          "at": {
+           "type": "object",
+           "additionalProperties": false,
+           "required": [
+            "field",
+            "quote",
+            "occurrence"
+           ],
+           "properties": {
+            "field": {
+             "type": "string",
+             "enum": [
+              "subject",
+              "facts",
+              "requests",
+              "documents"
+             ]
+            },
+            "quote": {
+             "type": "string"
+            },
+            "occurrence": {
+             "type": "integer"
+            }
+           }
+          },
+          "normalized": {
+           "type": "string"
+          },
+          "roles": {
+           "type": "array",
+           "items": {
+            "type": "string"
+           }
+          },
+          "relative": {
+           "type": "boolean"
+          },
+          "calendar": {
+           "type": "string",
+           "enum": [
+            "gregorian",
+            "hijri"
+           ]
+          },
+          "currency": {
+           "type": "string"
+          },
+          "amountDisputed": {
+           "type": "boolean"
+          }
+         }
+        }
+       }
+      }
+     },
+     "values": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "kind",
+        "at",
+        "normalized",
+        "roles"
+       ],
+       "properties": {
+        "kind": {
+         "type": "string",
+         "enum": [
+          "date",
+          "amount"
+         ]
+        },
+        "at": {
+         "type": "object",
+         "additionalProperties": false,
+         "required": [
+          "field",
+          "quote",
+          "occurrence"
+         ],
+         "properties": {
+          "field": {
+           "type": "string",
+           "enum": [
+            "subject",
+            "facts",
+            "requests",
+            "documents"
+           ]
+          },
+          "quote": {
+           "type": "string"
+          },
+          "occurrence": {
+           "type": "integer"
+          }
+         }
+        },
+        "normalized": {
+         "type": "string"
+        },
+        "roles": {
+         "type": "array",
+         "items": {
+          "type": "string"
+         }
+        },
+        "relative": {
+         "type": "boolean"
+        },
+        "calendar": {
+         "type": "string",
+         "enum": [
+          "gregorian",
+          "hijri"
+         ]
+        },
+        "currency": {
+         "type": "string"
+        },
+        "amountDisputed": {
+         "type": "boolean"
+        }
+       }
+      }
+     },
+     "remarks": {
+      "type": "string"
+     },
+     "roles": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "claim",
+        "relation",
+        "position",
+        "evidence"
+       ],
+       "properties": {
+        "claim": {
+         "type": "string"
+        },
+        "relation": {
+         "type": "string"
+        },
+        "position": {
+         "type": "string"
+        },
+        "evidence": {
+         "type": "array",
+         "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+           "field",
+           "quote",
+           "occurrence"
+          ],
+          "properties": {
+           "field": {
+            "type": "string",
+            "enum": [
+             "subject",
+             "facts",
+             "requests",
+             "documents"
+            ]
+           },
+           "quote": {
+            "type": "string"
+           },
+           "occurrence": {
+            "type": "integer"
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

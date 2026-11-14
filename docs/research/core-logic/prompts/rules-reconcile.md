@@ -20,7 +20,7 @@ Two agents derived the legal rules for the same unit independently, by different
 - **Read only:**
   1. `<CL>\rules\rule-record.schema.json`, `<CL>\rules\DERIVER-GUIDE.md`, `<CL>\rules\GRADES.md`, `<CL>\specs\rule-evaluator.md`, `<CL>\slots.json`.
   2. The difference list `<R>.differences.json` and the id map `<R>.idmap.json`.
-  3. The two derivations as quoted by the script: `<CL>\rules\derivations\a\quoted\{{unit_id}}.json` and `<CL>\rules\derivations\b\quoted\{{unit_id}}.json`. For a module, also Codex's derivation as it returned it, `<CL>\rules\derivations\c\{{unit_id}}.json`, and its comparison `<R>.c-comparison.json`.
+  3. The two derivations as quoted by the script: `<CL>\rules\derivations\a\quoted\{{unit_id}}.json` and `<CL>\rules\derivations\b\quoted\{{unit_id}}.json`. For a module, also the third derivation as it was returned, `<CL>\rules\derivations\c\{{unit_id}}.json`, and its comparison `<R>.c-comparison.json`.
   4. The merged checklist `<R>.checklist.json`, the neighbour flags `<R>.flags.a.json` and `<R>.flags.b.json`, the value reports `<R>.values.a.json` and `<R>.values.b.json`.
   5. The boundary cases `<CL>\rules\boundary-cases\{{unit_id}}.json` (or the file of the run that held this unit).
   6. The article store `{{store_path}}` (and its text views, one file per code, in `{{store_text}}`: the same entries with each paragraph labelled as a cite counts it; read these, since the JSON file is too large to read whole): the only source of law.
@@ -42,7 +42,7 @@ Each entry of the difference list is one difference between derivation A and der
 
 **Proposed slots.** The two derivers named new facts independently, with different ids. Map them: decide which proposed slots of A and B are the same fact, keep **one** id for each in the record's `proposedSlots` (with its question in Arabic and English), and write the mapping in your report. A fact that only one side needed is a difference like any other.
 
-**Codex's derivation (modules).** Read what "C says" beside the items. Use it as evidence; it is never a reason by itself. Where C differs mechanically from a value A and B agreed on, the script has already sent that difference to the verifier as an attack: you need not settle it, but say in your report if the text settles it.
+**The third derivation (modules).** Read what "C says" beside the items. Use it as evidence; it is never a reason by itself. Where C differs mechanically from a value A and B agreed on, the script has already sent that difference to the verifier as an attack: you need not settle it, but say in your report if the text settles it.
 
 ## Then, beyond the differences
 
@@ -60,3 +60,7 @@ Each entry of the difference list is one difference between derivation A and der
 Run `{{rules_tool}} check --store {{store_path}} <CL>\rules\reconciled\{{unit_id}}.json`, `{{rules_tool}} examples <CL>\rules\reconciled\{{unit_id}}.json` and `{{rules_tool}} examples <CL>\rules\reconciled\{{unit_id}}.json --boundary <the boundary-case file>`, and fix the record where the text supports the case.
 
 **Your reply:** the counts (differences settled by the text / both right / not settled / needing a text), the number of boundary cases you dispute, and the three points you are least sure of.
+
+A line appended to `<CL>\law\requests.jsonl` has this shape: `{"code": "…", "article": "…", "askedBy": "reconciler", "unit": "{{unit_id}}", "why": "…"}`.
+
+**The owner's rule on "done" (14 November 2026):** a prior step may say it was done only when nothing about that same step is still asked or warned about by another item of the record (its means, its date). Otherwise the step stays open and leaves the answer to those items.

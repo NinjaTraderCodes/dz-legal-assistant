@@ -36,7 +36,7 @@ def header_shapes(prompt: str) -> dict[str, dict[str, list[str] | None]]:
 def test_derivation_c_schema_matches_the_prompt_header():
     with open(os.path.join(SCHEMAS, "module-derivation-c.schema.json"), encoding="utf-8") as f:
         schema = json.load(f)
-    shapes = header_shapes("rules-derive-c-codex")
+    shapes = header_shapes("rules-derive-c")
     assert set(shapes) == set(schema["properties"]) == set(schema["required"])
     for name, fields in shapes.items():
         item = schema["properties"][name]["items"]
@@ -52,7 +52,7 @@ def test_fill_refuses_a_placeholder_left_empty():
     assert prompts.fill("a {{one}}", {"one": "1"}) == "a 1"
 
 
-@pytest.mark.parametrize("name", ["rules-derive-a", "rules-derive-b", "rules-derive-c-codex", "rules-boundary-cases",
+@pytest.mark.parametrize("name", ["rules-derive-a", "rules-derive-b", "rules-derive-c", "rules-boundary-cases",
                                   "rules-reconcile", "rules-adversary", "rules-verify"])
 def test_every_placeholder_of_a_step_1_prompt_has_a_filling_rule(name):
     _, body = prompts.template(name)
@@ -118,7 +118,7 @@ def same_shape(shape, schema) -> None:
         assert schema["type"] == shape and "enum" not in schema
 
 
-@pytest.mark.parametrize("prompt,schema_file", [("rules-attack-codex", "attacks.schema.json"),
+@pytest.mark.parametrize("prompt,schema_file", [("rules-attack", "attacks.schema.json"),
                                                 ("rules-support-check-codex", "support.schema.json"),
                                                 ("boundary-second-view-codex", "boundary-view.schema.json")])
 def test_codex_schema_matches_its_prompt_header(prompt, schema_file):
@@ -126,7 +126,7 @@ def test_codex_schema_matches_its_prompt_header(prompt, schema_file):
         same_shape(header_object_shape(prompt, schema_file), json.load(f))
 
 
-@pytest.mark.parametrize("name,file", [("rules-attack-codex", "record_text.txt"),
+@pytest.mark.parametrize("name,file", [("rules-attack", "record_text.txt"),
                                        ("rules-support-check-codex", "support-pairs.txt")])
 def test_codex_stage_7_prompts_take_their_text_from_the_stage_7_files(name, file, tmp_path, monkeypatch):
     monkeypatch.setattr(prompts, "RUNS", str(tmp_path))
@@ -137,3 +137,66 @@ def test_codex_stage_7_prompts_take_their_text_from_the_stage_7_files(name, file
     _, body = prompts.template(name)
     values = prompts.values_for(name, "formal-notice")
     assert not set(prompts.PLACEHOLDER.findall(body)) - set(values) and "the text" in values.values()
+
+
+def schema_words(schema, keys: set, values: set) -> None:
+    """Every property name and every string of an enum, at any depth."""
+    for k, v in schema.get("properties", {}).items():
+        keys.add(k)
+        schema_words(v, keys, values)
+    if isinstance(schema.get("items"), dict):
+        schema_words(schema["items"], keys, values)
+    values.update(v for v in schema.get("enum", []) if isinstance(v, str))
+
+
+# Safeguard 33: an agent sees only the body. Three runs were lost on 14 November 2026 because a shape sat in a header.
+BODY_SCHEMAS = [("rules-derive-c", "module-derivation-c.schema.json"), ("rules-attack", "attacks.schema.json"),
+                ("rules-support-check-codex", "support.schema.json"),
+                ("boundary-second-view-codex", "boundary-view.schema.json"), ("law-read-page", "page-reading.schema.json"),
+                ("legal-review-attack", "legal-review-attack.schema.json"),
+                ("notes-write", "notes-write.schema.json"), ("notes-judge", "notes-judge.schema.json"),
+                ("v3-blind-relabel", "notes-judge.schema.json"), ("notes-third-judge", "third-judge.schema.json"),
+                ("notes-filter-local", "filter-sheet.schema.json"), ("notes-noise-audit", "notes-judge.schema.json"),
+                ("notes-guide-test", "guide-test.schema.json"), ("notes-realism-review", "realism.schema.json"),
+                ("notes-clean-rank", "clean-rank.schema.json"), ("gen-judge", "gen-judge.schema.json")]
+
+
+@pytest.mark.parametrize("prompt,schema_file", BODY_SCHEMAS)
+def test_the_body_names_every_key_and_every_closed_value_of_its_schema(prompt, schema_file):
+    with open(os.path.join(SCHEMAS, schema_file), encoding="utf-8") as f:
+        schema = json.load(f)
+    keys, values = set(), set()
+    schema_words(schema, keys, values)
+    _, body = prompts.template(prompt)
+    missing = sorted(w for w in keys | values if f'"{w}"' not in body)
+    assert not missing, f"{prompt}: the body does not name {missing}"
+
+
+def test_every_schema_file_named_by_a_prompt_exists():
+    for name in sorted(os.listdir(prompts.PROMPTS)):
+        if name.endswith(".md"):
+            with open(os.path.join(prompts.PROMPTS, name), encoding="utf-8") as f:
+                for schema_file in set(re.findall(r"schemas[/\\]([\w-]+\.schema\.json)", f.read())):
+                    assert os.path.isfile(os.path.join(SCHEMAS, schema_file)), (name, schema_file)
+
+
+def test_no_prompt_names_a_prompt_file_that_does_not_exist():
+    names = {n for n in os.listdir(prompts.PROMPTS) if n.endswith(".md")}
+    for name in sorted(names):
+        with open(os.path.join(prompts.PROMPTS, name), encoding="utf-8") as f:
+            for link in set(re.findall(r"\]\(([\w-]+\.md)\)", f.read())):
+                assert link in names, (name, link)
+
+
+def test_the_relabel_prompts_share_the_relabellers_labelling_text_word_for_word():
+    """The noise measurement and the hidden sets' relabeller must apply the guide exactly as the open sets' relabeller
+    does: their bodies are notes-judge.md's, except where the answer goes."""
+    _, judge = prompts.template("notes-judge")
+    _, noise = prompts.template("notes-noise-audit")
+    _, hidden = prompts.template("v3-blind-relabel")
+    assert noise == judge
+    start = judge.index("==== FOR EACH NOTE ====")
+    labelling = judge[start:judge.index("Use no tool.")]
+    shape = judge[judge.index('One entry of "notes" per note'):]
+    assert labelling in hidden and shape.rstrip() in hidden
+    assert "Use no tool." not in hidden and "{{labels_path}}" in hidden and '"relabelled"' in hidden

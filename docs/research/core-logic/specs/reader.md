@@ -1,10 +1,18 @@
-# Specification: the classifier and the reader (step 4)
+# Specification: the reader of lawyer notes (step 4)
 
 **The job.** From a lawyer's note, produce what the rules need, each answer with the words it comes from: the contract `INoteReader` (`research/core-logic/src/DzLegal.CoreLogic.Contracts/NoteReading.cs`). The reader **proposes**; the lawyer confirms. An honest "I do not know" (abstention) is a good answer: the app then asks. A confident wrong answer is the failure to avoid.
 
+**Revised on 14 November 2026.** The reader now comes first (owner, 14 November 2026). It is built on the label scheme frozen now ([../notes/SCHEME.md](../notes/SCHEME.md), version 1.0), it is trained on notes written by Codex, by a local model or by code, and **nothing that changes it is chosen on a note a Claude model wrote**. Slots that the rules add later become extra outputs without retraining from zero ([scheme-extension.md](scheme-extension.md); "A new head" below).
+
 **Targets on hidden v3** (the brief): claim type 95 %; outside the catalogue recognised 95 %; polarity 95 %; each other slot 90 %; abstentions counted separately. Exact definitions, and what each size can prove: [scorer.md](scorer.md).
 
-**Limits** (the brief): CPU only; in .NET (ONNX Runtime, MIT) or plain code; about 150 MB on disk at most, everything included; under one second per note on the owner's laptop (i5-1335U, 16 GB, no GPU); every licence allows commercial redistribution; nothing from a hidden set in training. **Training** happens on the same laptop; a free GPU (Kaggle, Colab free tier) only after asking the owner, with fictitious notes and code only, no hidden data, no payment details, no new account without a yes.
+**Limits** (the brief): CPU only; in .NET (ONNX Runtime, MIT) or plain code; about 150 MB on disk at most, everything included; under one second per note on the owner's laptop (i5-1335U, 16 GB, no GPU); every licence allows commercial redistribution; nothing from a hidden set in training. **Training** happens on the same laptop, at night on mains and on days the owner says it is free; a free GPU (Kaggle, Colab free tier) only after asking the owner, with fictitious notes and code only, no hidden data, no payment details, no new account without a yes.
+
+## Three rules that come before any experiment
+
+1. **The tuning rule (owner, 14 November 2026).** "Anything that changes the reader (encoder choice, early stopping, temperature scaling, thresholds, head selection) is tuned only on the Codex half of dev and on clean notes. The Sonnet half is used only to measure and report, never to choose or tune. Same for the challenge set." In this file, **a choice** is any of: which encoder; when training stops; a setting picked by comparing runs (a learning rate, a loss variant, a weight); which rung, head or recipe is kept; whether composed notes stay; a temperature; a threshold; whether the rule vote is on; the cap on windows; the form of quantisation. Every choice is made with the loader's purpose `tune` ([notes-pipeline.md](notes-pipeline.md), "The loader"), which refuses every Sonnet-written note. The training and calibration scripts have no other way to read a note.
+2. **Every score that counts is measured on the 8-bit files, through the .NET tokenizer's ids.** A 32-bit score, or a score on Python's own tokenisation, is never reported as the reader's.
+3. **No Claude output trains the reader** ([../notes/TERMS.md](../notes/TERMS.md)). The loader's purpose `train` refuses such a note. Part 7's fine-tuned copies were trained on Claude-written notes and are never a starting point.
 
 ## What you may use
 
@@ -18,31 +26,45 @@ Everything below is allowed without asking. **Anything else is a stop point: ask
 | CAMeLBERT-mix, **the original pre-trained model** | its official model page: https://huggingface.co/CAMeL-Lab/bert-base-arabic-camelbert-mix, revision `9be352797bdf28a9ae21e2ae582aaaca7abdb22d` (Apache 2.0, read on 13 November 2026) | Download into `C:\Users\TheShadow\dz-core-research\models\pretrained\camelbert-mix\`; record the size and SHA-256 of every file, the revision, the licence link and the date. |
 | CAMeLBERT-MSA, **the original pre-trained model** | its official model page: https://huggingface.co/CAMeL-Lab/bert-base-arabic-camelbert-msa, revision `277069fd3645fedb22b746caf38d111aadee0241` (Apache 2.0, read on 13 November 2026) | Download into `...\models\pretrained\camelbert-msa\`; the same records. |
 | The Official Journal issues | joradp.dz, through the one fetch script `oj-fetch` | step 2 |
-| NuGet `Microsoft.ML.OnnxRuntime` and `Microsoft.ML.Tokenizers` (MIT) | NuGet, when step 4 starts | in `research/core-logic/Directory.Packages.props` only |
+| NuGet `Microsoft.ML.OnnxRuntime` 1.31.1 and `Microsoft.ML.Tokenizers` 3.0.0 (MIT) | NuGet, in phase A | in `research/core-logic/Directory.Packages.props` only |
 | The local Ollama models of Part 7 | already installed | step 5; digests in `docs/research/fable-part7/run/models.json` on the branch `fable/architecture-review` |
 
 **Part 7's files are on another branch.** Read them with `git show fable/architecture-review:docs/research/fable-part7/<path>` (for example `encoders/results/cls-camelbert-mix.json`, `run/models.json`). Never write there.
 
 **Model files are never committed.** An 8-bit base encoder is over GitHub's 100 MB limit, and a commit holding one would block every later push. Models, token vectors and checkpoints live in `C:\Users\TheShadow\dz-core-research\models\`; the repository holds their SHA-256, their sizes and the exact commands that rebuild them. **Unit tests use a tiny fixture model committed for the plumbing** (a few kilobytes: it checks loading, shapes, offsets and the contract, not accuracy). Accuracy and parity runs are commands, not unit tests, so `dotnet test` is green in a clean clone that has no model file.
 
-## The ladder: cheapest first, each rung measured before the next
+## The ladder: cheapest first, each rung with its stop rule
 
-**Every rung is reported on dev, challenge, the clean test split and the app's own cases**, in both settings, with intervals. **Stop climbing when the targets are met on dev and challenge with margin**: at the rates that the size table of [scorer.md](scorer.md) says would be "met" at v3's sizes, not merely at the target. Report every rung, also the ones that lost: the brief says "measure each idea; keep what wins". **The mirror set chooses nothing**: it is scored once, for the at most two final candidates, at the pre-commitment ([hidden-v3-commands.md](hidden-v3-commands.md), section 7).
+**Stop climbing when the targets are met on the Codex half of dev and of the challenge set with margin**: at the rates that the size table of [scorer.md](scorer.md) says would be "met" at v3's sizes, not merely at the target. Report every rung, also the ones that lost: the brief says "measure each idea; keep what wins". **The mirror set chooses nothing.**
 
-| # | Rung | Cost | What it gives |
-|---|---|---|---|
-| 1 | **The scorer**, with its tests | half a day | the yardstick, fixed before any model |
-| 2 | **Plain code:** exact reading of dates and amounts; rules for negation, restriction, refusal verbs and dispute verbs | 2 days | the floor; every value with its exact span; an independent vote on polarity |
-| 3 | **A linear model on character n-grams** for the claim type and for outside | hours | a strong, tiny, fast baseline; and the leakage probe |
-| 4 | **A pre-trained Arabic encoder, frozen,** with light heads | 2 days | claim type, each element's polarity with its words, value-to-role links, slots, in one pass |
-| 5 | **The same with the top layers trained,** then one or two full overnight runs | 2 to 4 days | only if rung 4 misses a target |
-| 6 | **Polarity as its own problem** | throughout | families, challenge set, rule vote, abstention |
-| 7 | **A small model trained from scratch** on notes and law text | one day, bounded | the brief's invitation to invent; kept only if it wins |
-| 8 | **Calibration and abstention** | 1 day | confidences that mean something |
-| 9 | **Clean-trained against Codex-trained** | hours | which notes the shipped classifier is trained on |
-| 10 | **In .NET,** with the same tokenizer | 2 days | the thing the app can run |
+| # | Rung | Phase | Cost | Stops when |
+|---|---|---|---|---|
+| 1 | **The scorer**, with its six tests | A | half a day | the tests are green and its hash is in the state file, before any model exists |
+| 2 | **Plain code:** the date and amount parsers; the table of polarity cues | A | 2 days | dates and amounts: 98 % exact on the code-made value corpus (below); then 95 % on the Codex half of dev when it exists. Under the bar: fix the parser, never the corpus |
+| 3 | **A linear model on character n-grams** for the claim type and for outside | B | hours | reported. It is the "no deep model" line and the leakage probe; nothing is decided on it |
+| 4 | **A pre-trained Arabic encoder, frozen, with light heads:** (a) the encoder choice at 1,000 notes; (b) the learning curve at 1,000, 2,000 and 4,000, with and without composed notes | B | 2 to 3 days, minutes per run | (a) by the rule in "Rung 4"; (b) at the report: **owner stop point** |
+| 5 | **Training the encoder's top layers** | C | at most two overnight runs | run **only if** a target is missed by more than 2 points on the Codex half of dev at 4,000 notes **and** the curve is flat (under 1.5 points from 2,000 to 4,000). Stops after two overnight runs: more is an owner stop point |
+| 6 | **Polarity as its own problem** | throughout | – | reported per polarity, per difficulty and per family at every rung |
+| 7 | **Clean against Codex-trained**, at equal size | C | hours | the table exists; "close" is within 2 points on claim type and polarity |
+| 8 | **Calibration and abstention** | C | 1 day | each target met on the tune notes at its coverage floor, or reported as not met with the best pair |
+| 9 | **In .NET**, with the same tokenizer | C | 2 days | parity: the same labels as Python, confidences within 0.01, on 200 dev notes; under one second a note; the size counted |
+| 10 | **The mirror set, once; the pre-commitment; hidden v3** | E | – | at most two candidates; the owner's one run ([hidden-v3-commands.md](hidden-v3-commands.md)) |
 
-**Two optional rungs, measured only if cheap** (an afternoon each, after rung 7): an **ensemble** of the rules, the linear model and the encoder (a vote or a small stacker trained on dev's folds; the rules and the linear model add a few megabytes, so it fits the budget); and **distillation** of the big encoder into rung 7's small model (the small model trained on the big one's outputs over the training notes; it would win on size and speed if it came within a point). An ensemble with a second encoder does not fit: one 8-bit encoder already takes most of the 150 MB (rung 4, "Size and speed").
+**Not on the ladder unless needed:** a small model trained from scratch (the brief's invitation: its own tokenizer of about 8,000 pieces, a 4-layer, 256-wide encoder, masked-word pre-training on the notes and the law texts, one day, kept only within a point of the big encoder or better); an ensemble of the rules, the linear model and the encoder; distillation into the small model. Try one only if the 8-bit encoder cannot fit the 150 MB or a target is still missed after rung 5, and say so to the owner first: each is "training beyond the plan" in cost.
+
+### What is measured on which set
+
+| What | Notes | Loader purpose |
+|---|---|---|
+| Training (the loss) | `train`, `pilot` when allowed, `composed` up to a quarter, `clean` split `train` (rung 7), a slot pack's train part | `train` |
+| Every choice (rule 1) | the Codex half of `dev`; the Codex half of `challenge` (for choices about polarity); `clean` split `dev`; the Codex half of a slot pack's dev part | `tune` |
+| Every reported score | both halves of `dev` and of `challenge`, **shown per writer**, per difficulty and per polarity family; the clean test split; the app's own cases | `measure` |
+| The forecast of v3 | `mirror`, once, for the at most two final candidates | `measure`, at the pre-commitment only |
+| The verdict | hidden v3, once, run by the owner | – |
+
+**The tuning score.** Where a rule below says "better on the tune notes", it means this one number, computed by the scorer on the notes the loader gives for `tune`: the mean of (1) claim-type accuracy with the type unknown, (2) polarity accuracy over the elements the gold labels as `stated`, `denied` or `disputed`, with the type given, (3) accuracy on slots with a known value, (4) the F1 of request kinds. Three seeds; the mean over seeds is compared, and a difference under the seeds' spread is "no difference".
+
+**The style gap.** At every rung report the Codex half and the Sonnet half of dev side by side. A gap of more than 5 points is a finding for the owner (HANDBOOK, phase B decision table), never something to tune away on the Sonnet half.
 
 ### Rung 2. Plain code
 
@@ -51,20 +73,22 @@ Everything below is allowed without asking. **Anything else is a stop point: ask
 - **Polarity cues,** as a table with scopes, tested sentence by sentence against the hard cases of the guide's section 4.2 and its 41 kind rows: negation particles (لم، لا، لن، ما، ليس، غير، عدم، دون، بدون، بلا، انعدام، لا وجود لـ); **restriction** (لم/لا/ما … إلا / سوى / غير: the scope after the particle is affirmed); refusal and omission verbs (امتنع، رفض، تخلف، تقاعس، أحجم، أغفل، أهمل); dispute verbs with their subject (ينكر، ينفي، ينازع، يدعي، يزعم، يتمسك، يدفع بـ، يطعن في); "despite" (رغم، مع أن، بالرغم من: the clause after it is affirmed); future and intention (سـ، سوف، يعتزم، ينوي: not an event).
 - The rules give, for an element whose trigger words they find, a polarity vote and the span. They do not need to be right everywhere: they must be **independent of the learned model**, so that a disagreement means something.
 
+**The code-made value corpus** (rung 2's own test, needing no note): code renders 2,000 dates and 2,000 amounts in every written form of the style cards ([scenario-sampler.md](scenario-sampler.md)) inside carrier sentences, each with its normal form and its span. The parsers must read 98 % of them exactly (value and span). The corpus's generator and the parsers are written from the guide's section 8, not from each other.
+
 This rung alone is scored on every open test set. Its date and amount reading is expected to be near exact and is what the final reader uses for values; a learned model only links values to roles.
 
 ### Rung 3. The linear model
 
-Character 2- to 5-grams (after the level-2 normalisation of [article-store.md](article-store.md)), TF-IDF, a linear classifier, one-vs-rest so that two claims can both fire, plus an `outside` class. Trained in seconds; a few megabytes. Report it everywhere as the "no deep model" line. Its largest weights are the leakage probe ([probes.md](probes.md)).
+Character 2- to 5-grams (after the level-2 normalisation of [article-store.md](article-store.md)), TF-IDF, a linear classifier, one-vs-rest so that two claims can both fire, plus an `outside` class. Regularisation strength chosen among 1, 10 and 100 on the tune notes. Trained in seconds; a few megabytes. Report it everywhere as the "no deep model" line. Its largest weights are the leakage probe ([probes.md](probes.md)).
 
 ### Rung 4. A frozen encoder with heads
 
 **Encoder.** Two candidates, both original pre-trained models from their official pages (the table above), both Apache 2.0, both 109 M parameters:
 
-- **CAMeLBERT-mix** (`CAMeL-Lab/bert-base-arabic-camelbert-mix`), trained on formal Arabic, dialects and classical Arabic. **Why it is first:** it is the encoder Part 7 measured on this task. Fine-tuned there, it identified the claim type on 37 of the 46 open cases alone and 40 with the section filter, the best of six encoders, level with DziriBERT (37 and 38) and ahead of mmBERT-small (35 and 37); the two multilingual small models were far behind (e5-small 9 and 12, MiniLM 6 and 6).
+- **CAMeLBERT-mix** (`CAMeL-Lab/bert-base-arabic-camelbert-mix`), trained on formal Arabic, dialects and classical Arabic. **Why it is first:** it is the encoder Part 7 measured on this task. Fine-tuned there, it identified the claim type on 37 of the 46 open cases alone and 40 with the section filter, the best of six encoders.
 - **CAMeLBERT-MSA** (`CAMeL-Lab/bert-base-arabic-camelbert-msa`), trained on formal Arabic only. **Why it is tried:** the notes of this stage are formal Arabic only. Part 7 did not measure it.
 
-Train the same heads on both and compare them on dev and challenge; **keep one** (the reader ships a single encoder), and when they are within a point of each other keep CAMeLBERT-mix, the one with measured evidence. Part 7's own fine-tuned classifier is evidence about the encoder, never a starting point: it was trained on notes written by Claude models. Both repositories give a WordPiece vocabulary file (`vocab.txt`) and no `tokenizer.json`: build the .NET tokenizer from the vocabulary file, and take the lower-casing and accent settings from each model's `tokenizer_config.json`, not from memory.
+**The encoder choice (rung 4a).** With 1,000 training notes, the same heads and recipe on both encoders, three seeds each: **keep CAMeLBERT-mix unless CAMeLBERT-MSA is better by a full point of the tuning score.** The reader ships one encoder. Part 7's own fine-tuned classifier is evidence about the encoder, never a starting point. Both repositories give a WordPiece vocabulary file (`vocab.txt`) and no `tokenizer.json`: build the .NET tokenizer from the vocabulary file, and take the lower-casing and accent settings from each model's `tokenizer_config.json`, not from memory.
 
 **Size and speed.**
 
@@ -87,74 +111,146 @@ Train the same heads on both and compare them on dev and challenge; **keep one**
 > - mmBERT-small's tokenizer file alone is 32.8 MB, which puts its 8-bit form over the limit with the runtime.
 > - On battery, in Windows' Best power efficiency mode, the same files were about twice as slow (12 November). The one-second limit should be checked there too, and reported apart.
 
-Two facts to carry into your own measurements of the .NET reader, which go in `docs/research/core-logic/reports/step-4.md`:
+Two facts to carry into your own measurements of the .NET reader, which go in `docs/research/core-logic/reports/reader.md`:
 - **A long note is more than one window.** A long note (about a page, some 350 words) is about 515 CAMeLBERT tokens at Part 7's 1.47 tokens per word, so one or two windows of 512. Measure the median and the 95th percentile per note on dev notes of each length class, not per sentence.
 - **The budget leaves room for one encoder.** About 105 MB for the 8-bit encoder, about 20 MB for ONNX Runtime's native library (win-x64 only), about 1 MB for the tokenizer, plus the heads and the thresholds: about 130 MB.
 
-**One pass, several heads.** Encode the note once (fields joined with a separator token and a field marker; notes longer than the window are cut into overlapping windows and the heads' outputs merged by maximum). On the token vectors:
+**The input.** One sequence per note: `[CLS] subject [SEP] facts [SEP] requests [SEP] documents [SEP]` (an empty field keeps its `[SEP]`). Every piece carries its **field** (0 to 3) and its **offset** in the field as the lawyer typed it (UTF-16 start and length), kept through normalisation and tokenisation. No marker piece is added to the vocabulary: the heads add a learned field embedding (4 rows) to the token vectors, so a frozen encoder needs no new piece.
 
-- **Claim type:** a linear layer on the pooled vector, sigmoid per type plus `outside`. Answers = the types above their threshold, at most three.
-- **Polarity with evidence, per element:** each element (claim type, event kind) has a learned query vector; attention of the query over the tokens gives (a) a 4-way polarity for that element and (b) per-token evidence weights, trained against the gold evidence spans. The evidence span answered is the best-scoring stretch; **an answer other than `NotMentioned` with no span above the floor is turned into an abstention by the reader itself**.
-- **Value roles:** for each date and amount that rung 2 found, the vector of its span joined with each candidate role's query → belongs or not. A value may have several roles.
-- **Slots:** each `readFromNote` slot as a small classification head with the same evidence mechanism; date slots as value roles.
-- **Requests:** multi-label over the request kinds, with evidence.
+**Windows.** At most 512 pieces per window, special pieces included. A longer note is cut into windows that overlap by 128 pieces, at most **three** windows (a note beyond three is cut there and counted in the report). The windows' token vectors are **stitched** into one sequence for the whole note: in an overlap each piece keeps the vector from the window in which it lies farther from the window's edge. The note vector is the mean of the windows' `[CLS]` vectors. The heads then see one sequence, whatever the note's length.
 
-Frozen first: run the **8-bit** encoder once over all notes, through ONNX Runtime with the .NET tokenizer's ids (rung 10), store the token vectors, and train the heads in minutes on CPU. Heads trained on 32-bit vectors would see shifted inputs once run on the 8-bit encoder, so their scores would not count. The vectors are 768 numbers of 2 bytes per token: about 1.2 to 1.8 GB for 4,000 notes of 200 to 300 tokens, several GB for all the open sets. They live in `C:\Users\TheShadow\dz-core-research\models\vectors\`, never in the repository. That makes the learning curve, the with/without-composed comparison and the seeds cheap.
+**One pass, several heads.** `X` is the stitched sequence (T pieces × 768). All heads share two layers: `Z = dropout(GELU(Linear 768→256 (X + field embedding)))` (T × 256) and `c = GELU(Linear 768→256 (note vector))`. A **query** is a learned vector of 256 numbers. For a query `q`: the token logits are `u = Z · (W q) / 16` with one shared 256×256 matrix `W`; the **evidence scores** are `sigmoid(u)`; the **pooled vector** is `v = softmax(u) · Z`. So one set of logits both chooses the words and gathers them.
 
-**Blanked fields** carry no loss (notes pipeline, section 5). Class weights or focal loss for the rare polarities; report both.
+| Head | Parameters | Output | Loss |
+|---|---|---|---|
+| **Claim type** | `Linear 256→22` on `c` | one sigmoid per claim type and one for `outside`. Answers: the classes over their threshold, at most three; `outside` only alone | binary cross-entropy |
+| **Elements** | one query per element (75); shared `Linear 512→4` (polarity), `Linear 512→4` (actor), `Linear 512→3` (disputedBy), each on `[v; q]` | polarity `stated`, `denied`, `disputed`, `notMentioned`; the actor; who disputes | focal loss (γ = 2) on polarity; cross-entropy on actor and disputedBy where the gold gives them |
+| **Evidence** | none of its own: the token logits `u` of each query | the best contiguous stretch of pieces (the stretch that maximises the sum of `sigmoid(u) − 0.5`), mapped back to a `TextSpan` | binary cross-entropy against the gold quotes' pieces, for every label that carries a quote |
+| **Values to roles** | a table of 256-number role vectors (one per event kind, request kind and date slot); `Linear 768→256`, GELU, `Linear 256→1` on `[z; ctx; r]`, where `z` is the mean of `Z` over the value's pieces, `ctx` the mean over 16 pieces each side, `r` the role vector | for each date and amount that rung 2 found and each candidate role: belongs or not. Candidates: the event kinds of the answered claim types that take that kind of value, the request kinds (amounts), the date slots | binary cross-entropy |
+| **Requests** | one query per request kind (24); shared `Linear 512→1` | asked or not, with evidence; the amount comes from the roles head | binary cross-entropy |
+| **Slots** | one query per yes/no or choice slot (5 in scheme 1.0); its own `Linear 512→k` (k = 3, or the choices and `unknown`) | the value, with evidence. The three date slots are value roles | cross-entropy |
+| **Parties** (output 2 of the scheme) | one query per claim type that offers a choice of role (7); its own `Linear 512→(roles + 1)` | the plaintiff's role, or `unknown` | cross-entropy |
+
+All heads together are under one million numbers: a few megabytes.
+
+**The parties head.** The contract gains an optional part: `ClaimGuess.Role` (`RoleReading`: `Relation`, `Position`, `Confidence`, `Abstained`, `Evidence`), null when the reader gives none. For the 14 claim types with one role the reader fills it from `claim-elements.json`, with the claim's own evidence. Add the record to `NoteReading.cs` with a contract test, and the line to [../INTEGRATION-CONTRACT.md](../INTEGRATION-CONTRACT.md), section 4, in the commit that adds the head. An integrator that ignores `Role` loses nothing.
+
+**What the reader enforces on itself.** An answer other than `notMentioned` or `unknown` whose best stretch has no piece with an evidence score of 0.5 or more becomes an **abstention**. When the rule vote of rung 2 and the head disagree on an element's polarity, the reader abstains on that element (kept only if it is better on the tune notes: rung 6).
+
+**The stored encoder outputs.** Run the **8-bit** encoder once over every open note, in .NET, through ONNX Runtime with the .NET tokenizer's ids (`reader encode`, rung 9's tool), and store per note: `<work>\reader\cache\<first 12 hex digits of the encoder file's SHA-256>\<note id>.npy` (the stitched vectors, 16-bit floats, T × 768, and the note vector) and `<note id>.json` (the piece ids, each piece's field and offsets). `<work>` is `C:\Users\TheShadow\dz-core-research`. About 1.5 GB for 4,000 notes, about 3 GB for all open sets. Heads trained on 32-bit vectors would see shifted inputs once run on the 8-bit encoder, so their scores would not count. The cache makes the learning curve, the seeds and every later head cost minutes.
+
+**The recipe for the heads** (`research/core-logic/train/train_heads.py`, with tests on a tiny fixture):
+
+| Setting | Value |
+|---|---|
+| Optimiser | AdamW, learning rate 1e-3, weight decay 0.01, 5 % linear warm-up then cosine decay, gradient norm clipped at 1.0 |
+| Batch | 32 notes |
+| Epochs | at most 20; **early stopping on the tuning score** (purpose `tune`), patience 3 |
+| Dropout | 0.1 on `Z` |
+| Loss weights | claim 1; polarity 2; evidence 1; actor and disputedBy 0.5; value roles 1; requests 1; slots 1; parties 0.5 |
+| Rare classes | focal loss on polarity; also one run with plain cross-entropy and inverse-frequency class weights. Keep the better on the tune notes; report both |
+| Blanked fields | no loss (notes pipeline, section 5). A field the note's scheme version does not know: no loss |
+| Polarity families | the members of a family go into the same batch |
+| Seeds | 11, 22, 33 |
+| Environment | Part 7's Python environment, as it is; 4 threads; nothing else running |
+
+A run on cached vectors takes minutes. The learning curve is 3 sizes × 3 seeds × 2 (with and without composed notes) = 18 runs: one evening.
 
 ### Rung 5. Training the encoder
 
-Only if rung 4 misses. First the top two to four layers at a small learning rate; then, if still short, one full overnight run (measure the time for one epoch first and tell the owner before a run of more than one night; anything beyond two overnight runs is "training beyond the plan": an owner stop point). Quantise to 8 bits after training and **score the 8-bit model**; if the loss from quantisation is more than a point on any target, try quantisation-aware fine-tuning before giving up the larger model. No commit, build or test suite runs while a training or a timing runs: commits wait for the CPU to be idle.
+**Only under the rule of the ladder's table.** If it runs:
+
+1. **Top two layers.** The lower ten layers stay frozen: store their outputs once (32-bit) and train the top two layers and the heads on them. Learning rate 2e-5 for the encoder layers and 5e-4 for the heads, batch 16, 3 epochs, the same early stopping. Measure one epoch's time first; **tell the owner before any run longer than one night.**
+2. **Quantise** the trained encoder to 8 bits; **rebuild the cache** with it; **refit the heads** on the new cache for at most 5 epochs; score that. A fine-tuned encoder's score before this step is not the reader's.
+3. If the top two layers gained at least a point of the tuning score and a target is still missed: the same with the top four layers, as the second and last overnight run.
+4. If the 8-bit copy loses more than a point against the 32-bit one: static quantisation with 200 training notes for calibration; then, if still more than a point, one more epoch with the quantised weights simulated. Report both figures.
+
+After two overnight runs, anything more is "training beyond the plan": an owner stop point. No commit, build or test suite runs while a training or a timing runs.
+
+**If a training run cannot be made to work** (a crash, a loss that does not fall, an out-of-memory error): two more attempts, each with one named change (a smaller batch, 384 pieces per window, a lower learning rate). After the third failure or one lost day: **stop and ask the owner.** Only with the owner's approval does the Codex training backup start ([codex-calls.md](codex-calls.md), "The training backup").
 
 ### Rung 6. Polarity, a first-class problem
 
 It was 23 of Jais-3-3.7B's 40 critical errors on hidden v2. So:
 
 - **Polarity families** in training and in test: one scenario written three or four times, only one element's polarity changed. Never split between sides. Score **per family**: a family is right only if every member is.
-- **The challenge set:** at least 50 notes per difficulty, with the difficulties listed in [scenario-sampler.md](scenario-sampler.md) (the challenge set's row). Results per difficulty, always. At 50 notes a difficulty can show a weakness but cannot prove a 95 % target (scorer.md, size table).
-- **Contrast in training:** pairs from a family in the same batch; optionally a contrastive term that pushes their element vectors apart.
-- **The rule vote:** when rung 2's rules and the model disagree on an element's polarity, the reader **abstains** on that element (to be measured: does this raise accuracy on answers enough to pay for the coverage it costs?). Report accuracy and coverage with and without it.
+- **The challenge set:** 50 notes per difficulty, 25 by each writer ([scenario-sampler.md](scenario-sampler.md)). Results per difficulty and per writer, always. At 50 notes a difficulty can show a weakness but cannot prove a 95 % target.
+- **The rule vote:** when rung 2's cues and the head disagree on an element's polarity, the reader abstains on that element. Measure accuracy on answers and coverage with and without it **on the Codex half of the challenge set and of dev**; keep it if accuracy on answers rises by at least a point while coverage stays over its floor. Report both rows.
 - **Errors by kind:** stated↔denied flips are the critical ones; count them separately everywhere.
 
-### Rung 7. A small model from scratch (bounded: one day)
+### Rung 7. Clean against Codex-trained
 
-The brief invites it: "a model designed and trained from scratch for Algerian legal notes (its own tokenizer for formal legal Arabic; morphology; a legal lexicon)". One honest attempt: a tokenizer of about 8,000 pieces trained on the notes and on the official law texts of the article store; a 4-layer, 256-wide encoder (about 5 to 8 M parameters, under 30 MB); pre-training by masked words on the same texts for a few hours; the same heads. Compare on dev and challenge with rungs 3 and 4 at equal training notes. **Keep it only if it is within a point of the big encoder** (it would then win on size and speed) **or better.** Otherwise report the numbers and drop it. Do not spend a second day.
+At equal size (700 notes each), the same recipe, three seeds: score both on dev and challenge (per writer) and on the clean test split. Then the reader trained on the 700 clean notes against the best Codex-trained reader actually built. **"Close" = within 2 points on claim type and on polarity, on the Codex half of dev** (this handbook's working value, not the owner's). The table decides which notes train the shipped reader (notes pipeline, section 8); if close, both candidates go to the mirror set.
 
 ### Rung 8. Confidence and abstention
 
-- **Calibrate** on dev (temperature scaling per head, or isotonic regression if the reliability table is crooked): among answers given with confidence c, a share c are right.
-- **Thresholds** for abstention are chosen on dev, **subject to the coverage floors fixed in advance** ([scorer.md](scorer.md)): a reader that abstains on half the notes meets no target. Aim them at the accuracy that would be "met" at v3's size (scorer.md, size table: for example 96.4 % on the claim type, 98.5 % on outside, 96 % on a slot's known values), not at the bare target: a reader tuned to exactly 95 % on dev will come out "inconclusive" on v3.
-- Check the calibration on challenge and the clean test split without retuning. A reader that is calibrated on dev and overconfident on clean notes has learned the generator; say so.
-- The thresholds file is part of the reader (hashed in `ReaderInfo.Files` and in the pre-commitment).
+`research/core-logic/train/calibrate.py`, purpose `tune` only (the Codex half of dev and the clean dev split, together):
 
-### Rung 9. Clean against Codex-trained
+- **Temperature scaling**, one temperature per group of heads (claim; polarity; slots; requests; value roles; parties), fitted by minimising the negative log-likelihood. If a group's reliability table is still crooked (a bin off by more than 5 points with at least 50 answers), isotonic regression for that group.
+- **Thresholds**, one per group: the lowest threshold at which accuracy on answered items reaches the rate that would be "met" at v3's size ([scorer.md](scorer.md), size table: for example 96.4 % on the claim type, 98.5 % on outside, 96 % on a slot's known values) while coverage stays at or over its floor (scorer.md). If no threshold does both: keep the one at the coverage floor and report "target not met at the floor", with the accuracy reached.
+- **Check, without retuning,** on the Sonnet halves, the challenge set and the clean test split. A reader calibrated on the tune notes and overconfident on the Sonnet half has learned Codex's manner; say so.
+- The temperatures and thresholds are one file, `reader-thresholds.json`, hashed in `ReaderInfo.Files` and in the pre-commitment.
 
-At equal size (1,000 notes each), same recipe, three seeds: score both on dev, challenge and the clean test split. "Close" = within 2 points on claim type and polarity. The table decides which notes train the shipped classifier (notes pipeline, section 8). Also: with and without composed notes, at each size, decided on dev and challenge.
+### Rung 9. In .NET
 
-### Rung 10. In .NET
-
-- **The .NET tokenizer is the reference.** Train on the token ids that `Microsoft.ML.Tokenizers` produces (a small .NET tool writes ids and offsets for every note; the Python training code reads them). Never tokenise in Python for training and in .NET for use: a single differing piece shifts every evidence span.
-- **Offsets:** evidence must point into the **original** string (UTF-16 units, before normalisation). Keep the offset map through normalisation and tokenisation; test it by round trip on notes with diacritics, tatweel, Arabic-Indic digits, a zero-width joiner and mixed line breaks.
-- **Export** to ONNX; quantise to 8 bits; run in ONNX Runtime from the project `DzLegal.CoreLogic.Reader` implementing `INoteReader`. The model files are loaded from a folder given at start (the reader's tests point it at the fixture model). **Parity test** (a command, run on the real model): on 200 dev notes, the .NET reader's answers equal the Python model's (same labels; confidences within 0.01 before quantisation; after quantisation, report the label changes).
-- **Measure** on the laptop, on mains with Best performance and an idle CPU: time per note (median and 95th percentile, short and long notes), peak memory, bytes on disk of everything the reader loads. Under one second and about 150 MB, or the report says by how much it misses.
-- Packages go in `research/core-logic/Directory.Packages.props` only (`Microsoft.ML.OnnxRuntime`, `Microsoft.ML.Tokenizers`, both MIT). **Check the current API in the packages' own documentation before writing against it**; do not write quantisation or tokenizer calls from memory.
+- **The .NET tokenizer is the reference.** Training uses the piece ids that `Microsoft.ML.Tokenizers` produces (`reader ids`), never Python's own tokenisation: a single differing piece shifts every evidence span.
+- **Offsets:** evidence points into the **original** string (UTF-16 units, before normalisation). Test the offset map by round trip on notes with diacritics, tatweel, Arabic-Indic digits, a zero-width joiner and mixed line breaks.
+- **The files the reader loads**, from a folder given at start (the tests point it at a tiny fixture model): `reader-encoder.onnx` (8-bit, about 105 MB), `reader-heads.onnx` (a few megabytes; inputs: the stitched vectors, the field ids, the note vector; outputs: every head's logits), `reader-thresholds.json`, `reader-labels.json` (the order of every class and query, and the scheme version), `vocab.txt`. **The encoder and the heads are two files on purpose**: a new head changes only the heads file ([scheme-extension.md](scheme-extension.md)). `ReaderInfo.Files` holds the SHA-256 of all five; `ReaderInfo.Version` is `1.<the scheme's minor version>.<build>`.
+- **The project** `DzLegal.CoreLogic.Reader` implements `INoteReader`: the tokenizer, the windows and the stitching, the two ONNX sessions, the decoding, the parsers and the cue table of rung 2, the abstention rules. **The tool** `reader`: `reader ids --notes <file> --out <folder>` (piece ids and offsets), `reader encode --notes <file> --model <folder>` (writes the cache), `reader read --note <file> --model <folder>` (prints a `NoteReading` as JSON), `reader parity --notes <file> --python <file>`, `reader time --notes <file>`.
+- **Export:** the heads with `train/export_heads.py` (ONNX, the opset ONNX Runtime 1.31.1 supports); the encoder quantised as Part 7 did (`git show fable/architecture-review:docs/research/fable-part7/encoders/` holds the script), from the original weights or from rung 5's.
+- **Parity** (a command, run on the real model): on 200 notes of the Codex half of dev, the .NET reader's labels equal the Python heads' on the same cache, and every confidence is within 0.01.
+- **Measure** on the laptop, on mains with Best performance and an idle CPU: time per note (median and 95th percentile, for each length class), peak memory, bytes on disk of everything the reader loads. Under one second and about 150 MB, or the report says by how much it misses.
+- Packages go in `research/core-logic/Directory.Packages.props` only (`Microsoft.ML.OnnxRuntime` 1.31.1, `Microsoft.ML.Tokenizers` 3.0.0, both MIT). **Check the current API in the packages' own documentation before writing against it**; do not write quantisation or tokenizer calls from memory.
 - Everything the reader loads is a local file. No download at run time, ever.
 
-## What the step 4 report contains
+## A new head: a slot the rules added later
 
-1. The ladder table, every rung, on dev, challenge, the clean test split and the app's own cases: the targets' measures with intervals, both settings.
+For a slot that [scheme-extension.md](scheme-extension.md) decides the reader should read:
+
+1. Add the slot to `reader-labels.json` **at the end** of its list (an existing position never moves).
+2. `train/train_heads.py --new-head <slot id> --from <heads checkpoint>`: **only the new query and the new slot's own `Linear 512→k` are trained.** The shared layers (`Z`, `c`, `W`), every other query and every other layer are frozen and copied bit for bit. The loss is counted only on notes whose `schemeVersion` knows the slot (the slot's pack). AdamW 1e-3, at most 20 epochs, early stopping on the slot's accuracy on the Codex half of its pack's dev part.
+3. Export a new `reader-heads.onnx`. **`OlderOutputsUnchanged`** (a command, run on the real files): on the whole of dev, every output that existed before is identical, value and confidence, with the old and the new heads file. It cannot fail unless a shared layer moved: find which, never relax it.
+4. Fit the new head's temperature and threshold on the tune notes that know the slot. `ReaderInfo.Version` takes the scheme's new minor version.
+
+A date slot needs no head: add its role vector to the roles table and train that one vector the same way.
+
+**If the encoder was fine-tuned** (rung 5), a later head is trained on that encoder's cache; the encoder is never fine-tuned again for a slot.
+
+## Decision table
+
+| Situation | Do |
+|---|---|
+| CAMeLBERT-MSA and mix are within a point at rung 4a | Keep mix. |
+| The Sonnet half of dev is more than 5 points under the Codex half | Report it as the style gap. Do not tune on the Sonnet half. In order: more style cards for the Codex writer; a larger composed share up to its cap; then rung 5 if its own rule allows. |
+| A head is under its target on the tune notes at 4,000 and the curve still rises by more than 1.5 points | The curve report recommends more notes for that head's cells, with their cost. The owner decides. |
+| A head is under its target and the curve is flat | Rung 5, if its rule allows; otherwise the head ships with the threshold that reaches the target (it abstains more), and the coverage is reported. |
+| Composed notes lower the tuning score at two of the three sizes | Drop them from the shipped recipe; say so. |
+| The rule vote costs more coverage than its floor allows | Ship without it; report both rows. |
+| The 8-bit encoder loses more than a point against the 32-bit one | Rung 5, point 4 (static quantisation first). |
+| .NET and Python differ by more than 0.01 on a confidence | A tokenizer, offset or stitching fault. Find the first differing piece on the parity notes; do not relax the bar. |
+| A note takes more than one second | Measure per stage. Usual cause: three windows. Report the notes affected; do not lower the cap below three without the tune notes showing no loss. |
+| The cache does not fit on the disk | Store 4,000 training notes and the test sets only; recompute the rest when needed. Never store 32-bit vectors. |
+| A package's API is not what this file assumes | The package's documentation wins. Note the difference in the report. |
+| A training run fails three times, or a day is lost | Stop and ask the owner (rung 5, last paragraph). |
+| The reader meets every target on the tune notes before rung 5 | Do not run rung 5. |
+| You are about to look at a Sonnet-half score to decide something | Stop: that is the tuning rule. Decide on the tune notes, then report the Sonnet half. |
+
+## What the step 4 report contains (`reports/reader.md`)
+
+1. The ladder table, every rung: the targets' measures with intervals, both settings, **the Codex half and the Sonnet half of dev and of the challenge set side by side**, the clean test split, the app's own cases.
 2. Polarity per class, per difficulty, per family; critical flips.
-3. The learning curve and the clean-versus-Codex table (both decided on dev and challenge).
-4. Size, time, memory in .NET.
-5. The probes (leakage, masking, writer identity).
-6. The pre-commitment for v3, with the mirror set's scores for the at most two final candidates (scored once); then, after the owner's run, the three-verdict table, with the headline by the rule of [scorer.md](scorer.md), and the plain sentence on what the sizes can prove.
-7. What did not work, with numbers.
+3. The learning curve; the encoder choice; the clean-against-Codex table; with and without composed notes.
+4. Calibration: the reliability tables on the tune notes and, unchanged, on the Sonnet halves.
+5. Size, time, memory in .NET; the parity result.
+6. The probes ([probes.md](probes.md)).
+7. The pre-commitment for v3, with the mirror set's scores for the at most two final candidates (scored once); then, after the owner's run, the three-verdict table, the headline by the rule of [scorer.md](scorer.md), and the plain sentence on what the sizes can prove.
+8. What did not work, with numbers.
 
 ## Traps
 
-- **Choosing on the mirror set.** Models, thresholds and the stopping point are chosen on dev and challenge. The mirror set is scored once, for the at most two final candidates, to predict v3.
+- **Choosing on the Sonnet half, the mirror set or a hidden set.** Rule 1. The loader refuses; do not go around it.
 - **A 32-bit score reported for an 8-bit product.**
 - **Evidence that is right by accident.** Score evidence overlap; a right polarity pointing at the wrong words will mislead the lawyer who checks it.
-- **Outside the catalogue is not "low confidence".** Train it as a class with near-miss notes, and also measure the open-set behaviour: notes of a kind never seen (hold one `outsideKind` out of training entirely and test on it).
+- **Outside the catalogue is not "low confidence".** Train it as a class with near-miss notes, and also measure the open-set behaviour: hold one `outsideKind` out of training entirely and test on it.
 - **The app's own cases are few and written by people.** If the reader does well on v3 and badly on them, believe them.
+- **Codex's manner.** The training notes have one writer. The Sonnet half, the clean test split and the app's own cases are the three places where that shows; report all three at every rung.

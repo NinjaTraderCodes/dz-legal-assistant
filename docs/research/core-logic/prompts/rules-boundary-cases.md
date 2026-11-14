@@ -5,7 +5,7 @@
 - **Placeholders:**
   - `{{worktree}}`: `C:\Users\TheShadow\dz-fable-core`.
   - `{{units}}`: ids and one-line subjects.
-  - `{{texts}}`: for each unit, its `rules/reports/<unit>.texts.json`, fixed and committed by rule before any derivation of the unit ran ([../specs/record-checks.md](../specs/record-checks.md), "The texts given to Codex and to the boundary writer"), rendered `[<code> <article> ¶<n>] <text>`. Never a selection made after reading A or B: a deadline both derivers missed must not be missed by the cases too.
+  - `{{texts}}`: for each unit, its `rules/reports/<unit>.texts.json`, fixed and committed by rule before any derivation of the unit ran ([../specs/record-checks.md](../specs/record-checks.md), "The texts given to derivation C and to the boundary writer"), rendered `[<code> <article> ¶<n>] <text>`. Never a selection made after reading A or B: a deadline both derivers missed must not be missed by the cases too.
   - `{{slots}}`: the slot list as derivers get it (id, type, question; no help text).
   - `{{request_kinds}}`: the request kinds of `FactVocabulary`, the values of the reserved `requests` slot.
 - **Why the shape is in the prompt's body:** the first run (formal-notice, 14 November 2026) received only the body, found no format, and wrote one of its own that the tool cannot read; it also had no list of request kinds and invented one. That run was set aside unused.
@@ -73,3 +73,5 @@ Each file is one JSON array of cases, exactly in this shape (no other key, no wr
 Once a file is written, do not edit it.
 
 **Your reply:** the number of cases per unit; every point where the texts did not let you fix the expected outcome or the last day; every fact a case needed that no slot holds.
+
+You run no command.

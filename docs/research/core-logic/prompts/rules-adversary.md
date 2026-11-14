@@ -6,6 +6,7 @@
 - **Output:** `rules/reports/{{unit_id}}.attacks.adversary.json`: an array of attacks, each `{ "id", "target": "<item id>", "kind": "amendment" | "specialLaw" | "exception" | "procedure" | "caseLaw" | "misreading" | "missing", "claim", "source": { "tier": 1 | 2 | 3, "url", "what", "retrievedOn" }, "quoteArabic", "consequence" }`.
 - **Why the source tiers:** the web is full of confident, outdated and wrong statements of Algerian law. An attack is a **lead**. It changes a record only when the verifier finds the official text. The adversary is told so, so that it brings sources, not opinions.
 - **Sites it may fetch:** `joradp.dz` (only through `oj-fetch`), the Supreme Court's own site, the Council of State's, ministries' official sites. Anything else it may read as a lead and must label tier 3.
+- **The shape is repeated in the body** (agents see only the body; fault of 14 November 2026).
 
 --- PROMPT ---
 
@@ -45,3 +46,16 @@ A tier-3 attack is welcome when it is specific enough to be checked ("Law 23-xx 
 **Do not** propose fixes to the record, and do not edit it. Write `<CL>\rules\reports\{{unit_id}}.attacks.adversary.json`, each attack with an `id` (`adv-1`, `adv-2` …).
 
 **Your reply:** the number of attacks per kind and per tier, and the single attack you believe most likely to be right. If you found nothing after a serious search, say what you searched; do not invent an attack.
+
+## Your answer file
+
+`<CL>\rules\reports\{{unit_id}}.attacks.adversary.json` is one JSON array, one entry per attack:
+
+`[ { "id": "adv-1", "target": "<the id of the item you attack, or several separated by commas>", "kind": "amendment" | "specialLaw" | "exception" | "procedure" | "caseLaw" | "misreading" | "missing", "claim": "<one or two sentences>", "source": { "tier": 1, "url": "…", "what": "<the text: its name, number, date, article, page>", "retrievedOn": "yyyy-mm-dd" }, "quoteArabic": "<the Arabic words of the source that carry the attack>", "consequence": "<what the record should do differently>" } ]`
+
+- "kind": "amendment" (a later text changed a cited article), "specialLaw" (another law governs some of these cases), "exception" (a provision of the same code changes the rule for some cases), "procedure" (a procedural rule the record ignores), "caseLaw" (a Supreme Court or Council of State principle), "misreading" (an item says what its quoted text does not), "missing" (a common situation the record does not handle).
+- "source.tier": 1 for a page of the Official Journal; 2 for an official consolidated text or a decision read on the court's own site; 3 for anything else, which is a lead only.
+
+**Sites you may fetch:** `joradp.dz`, only through the command above; the Supreme Court's own site; the Council of State's; ministries' official sites. Anything else you may read as a lead and must label tier 3.
+
+The folder named after `--out` in the fetch command is yours to read and write, although it lies under `C:\Users\TheShadow\dz-core-research\`. If the ledger path above says the ledger does not exist, say so in your reply and search for amendments yourself.

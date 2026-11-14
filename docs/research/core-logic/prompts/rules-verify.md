@@ -5,7 +5,7 @@
 - **Placeholders:**
   - `{{worktree}}` (`C:\Users\TheShadow\dz-fable-core`); `{{units}}`.
   - `{{record_paths}}`: the quoted reconciled records (`rules/reconciled/quoted/<unit>.json`).
-  - `{{attack_paths}}`: per unit, `rules/reports/<unit>.attacks.adversary.json`, `.attacks.codex.json`, the "no" and "partly" answers of `.support.json`, and, for a module, the entries of `.c-comparison.json` marked as attacks (Codex's derivation differing from a value A and B agreed on).
+  - `{{attack_paths}}`: per unit, `rules/reports/<unit>.attacks.adversary.json`, `.attacks.sonnet.json` (the first module: `.attacks.codex.json`), the "no" and "partly" answers of `.support.json`, and, for a module, the entries of `.c-comparison.json` marked as attacks (the third derivation differing from a value A and B agreed on). **Once `unit.py` exists (phase 0), the placeholder holds one file per unit instead: `rules/reports/<unit>.attacks.input.json`, built by `unit.py verify-input`, which gathers all of these with the unanswered neighbour flags, the failed boundary cases and the owner's "done" rule** ([../specs/unit-driver.md](../specs/unit-driver.md), stage 8).
   - `{{reconciliation_paths}}`: `rules/reports/<unit>.reconciliation.md`.
   - `{{register_paths}}`: where the register goes, `rules/reports/<unit>.attacks.json`.
   - `{{candidate_paths}}`: where the corrected record goes, `rules/final-candidates/<unit>.json`.
@@ -51,8 +51,16 @@ A decision of the Supreme Court changes a rule only if you fetched its text from
 
 **Do not** decide an attack by which side argues better, by majority, or by what is usual. **Do not** soften a rule to make an attack go away: if the text supports the rule, the rule stays. An item you add that the record did not have is graded lower for that reason alone; add it when the text requires it all the same.
 
-**The register** of a unit is one JSON object: `{ "unit": "<unit id>", "attacks": [ … ] }`, one entry per attack, each `{ "id", "who": "adversary" | "codex" | "support" | "derivationC" | "boundaryCase", "target": "<item id, or several separated by commas>", "kind", "claim", "verdict": "fixed" | "refuted" | "open", "verifierQuote": "<the official words that decide it>", "quoteRef": "<code, article, paragraph, or the Official Journal issue and page>", "change": "<what you changed in the record, when fixed>" }`. Keep the attack's own id (`adv-…`, `cdx-…`, `sup-…`), and give a boundary case the id `bc-<case id>`.
+**The register** of a unit is one JSON object: `{ "unit": "<unit id>", "attacks": [ … ] }`, one entry per attack, each `{ "id", "who": "adversary" | "attack" | "codex" | "support" | "derivationC" | "boundaryCase" | "neighbourFlag" | "owner" | "store", "target": "<item id, or several separated by commas>", "kind", "claim", "verdict": "fixed" | "refuted" | "open", "verifierQuote": "<the official words that decide it>", "quoteRef": "<code, article, paragraph, or the Official Journal issue and page>", "change": "<what you changed in the record, when fixed>" }`. Keep the attack's own id (`adv-…`, `cdx-…`, `sup-…`), and give a boundary case the id `bc-<case id>`.
 
 Write every register (every attack, none dropped) and every corrected record (stage `reconciled`, `"verified": false`). Run `{{rules_tool}} check --store {{store_path}}` and `{{rules_tool}} examples` on each corrected record; add a worked example for every attack you marked fixed (the case the attack described, with the corrected outcome; `"by": "verifier"`).
 
 **Your reply:** per unit, the counts fixed / refuted / open, and each fixed attack in one line.
+
+## Ids, and the two kinds of finding that are not attacks
+
+- **Keep each entry's own id** as its file gives it: `adv-…` (the adversary), `atk-…` or `cdx-…` (the attack), `sup-…` (the support check), `c-…` (the third derivation), `bc-…` (a boundary case), `flag-…` (a neighbour flag), `done-…`, `uncertain-…`, `owner-…`, `store-…`.
+- **A neighbour flag** (`who: "neighbourFlag"`) is a paragraph next to a cited one that opens an exception or refers back, and that no line of the record answers. Decide it from the text: either cite it where it changes a rule, or add a line to the record's `checklist` with `"answer": "doesNotApply"` and a note that names the article and says why. Its verdict is `fixed` in the first case, `refuted` in the second.
+- **A boundary case** (`who: "boundaryCase"`) is a case written from the texts alone by an agent that saw no record, with the outcome it expects and the tool's message for this record. Decide from the text whether the record or the case is right. **Never edit a boundary-case file.**
+- **A line appended to the requests file** has this shape: `{"code": "…", "article": "…", "askedBy": "verifier", "unit": "<unit id>", "why": "…"}`.
+- **The owner's rule on "done" (14 November 2026):** a prior step may say it was done only when nothing about that same step is still asked or warned about by another item (its means, its date). Otherwise the step itself stays open and leaves the answer to those items. The lawyer must never see "done" beside an open question about the same step.

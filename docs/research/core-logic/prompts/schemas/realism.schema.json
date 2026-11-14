@@ -1,0 +1,61 @@
+{
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "notes",
+  "patterns",
+  "otherHand"
+ ],
+ "properties": {
+  "notes": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "n",
+     "workingNote",
+     "formalArabic",
+     "coherent",
+     "labelWords",
+     "defects"
+    ],
+    "properties": {
+     "n": {
+      "type": "integer"
+     },
+     "workingNote": {
+      "type": "integer"
+     },
+     "formalArabic": {
+      "type": "integer"
+     },
+     "coherent": {
+      "type": "integer"
+     },
+     "labelWords": {
+      "type": "boolean"
+     },
+     "defects": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  "patterns": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "otherHand": {
+   "type": "array",
+   "items": {
+    "type": "integer"
+   }
+  }
+ }
+}

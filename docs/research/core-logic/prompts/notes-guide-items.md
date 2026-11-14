@@ -1,14 +1,14 @@
 # New items for a rerun of the guide test
 
 - **Model:** Sonnet 5.5, fresh agent, one run per rerun of the guide test (after every change to the labelling guide; [notes-guide-test.md](notes-guide-test.md)).
-- **No tool.** The guide and the list of changed sections are pasted in the prompt; the answer is the reply. A run with any tool use is discarded and run again by a fresh agent. In particular the agent never sees `notes/guide-test.json`: items written by someone who knows the existing ones would only repeat them.
+- **No tool** except one read of the agent's own prompt file. Its answer is its reply, copied by `records.py ingest-reply`. A run with any other tool use is discarded and run again by a fresh agent. In particular the agent never opens `notes/guide-test.json`: it would see the existing items and their keys.
 - **Placeholders:** `{{guide}}` (the whole of `notes/LABELLING-GUIDE.md`, as changed), `{{sections}}` (the sections, rules, hard cases and table rows that changed since the last run, each named as the guide numbers it).
-- **Output** (the agent's reply): `{ "items": [{ "claim": string, "ask": "event:<kind>" | "slot:<id>" | "value", "text": string, "expected": string, "tests": string }] }`. A script gives each item the next free id and appends it to `notes/guide-test.json`.
+- **Output** (the agent's reply): `{ "items": [{ "claim": string, "ask": "event:<kind>" | "slot:<id>" | "value", "text": string, "expected": string, "tests": string }] }`. A script gives each item the next free id and appends it to `notes/guide-test.json`. (The body's shape is the reference: it also has `problems`.)
 - **Why:** a rerun only on the old items would pass by construction, because the guide was fixed on exactly those. New items on the changed sections test whether the fix made the guide clear or only made it agree with the old answers. The new items then go to both testers like the old ones; an item on which the two testers and the expected answer do not agree is a defect of the guide **or of the item**, and the executor decides which.
 
 --- PROMPT ---
 
-Use no tool. Everything you need is in this message, and your answer is your reply. Do not read or write any memory file, do not open the plan file or the state file, and do not look for any other file. Do not run any command.
+Use no tool. Everything you need is in this prompt, and your answer is your reply. (If you were told to read this prompt from a file, that one read is allowed, and nothing after it.) Do not read or write any memory file, do not open the plan file or the state file, and do not look for any other file. Do not run any command.
 
 Below is a labelling guide for working notes that Algerian lawyers write in formal Arabic before drafting a statement of claim. Some parts of it were changed recently. You write test items for those parts: short extracts whose label a careful reader must be able to give from the guide alone.
 

@@ -14,7 +14,7 @@ All scripts live in `research/core-logic/` (C# for anything the evaluator shares
 | `flag-neighbours` | a quoted record, the store | a report | (never fails; lists what a reader must look at) |
 | `merge-checklists` | the from-memory lists, the catalogue entry, the November unit | the merged checklist | (never fails) |
 | `compare-derivations` | records A and B of one unit (quoted) | the difference list, the id map | (never fails; its list is the reconciler's agenda) |
-| `compare-c` | Codex's derivation of a module, as returned, and A and B | the C comparison | (never fails) |
+| `compare-c` | the third derivation of a module (Sonnet, flat route), as returned, and A and B | the C comparison | (never fails) |
 | `flatten-imports` | a claim record, its final modules | the flattened claim record | a block does not exist, or an id collides |
 | `grade-records` | a quoted record, the id map, the difference list, the attack register, the amendment ledger | `grading` in every graded item; `shownEffect`, `toCheck` in examples | (never fails) |
 | `check-checklist` | a record, the merged checklist, the neighbour flags | a report | a checklist line or a flag has no answer |
@@ -75,7 +75,7 @@ Outputs: `reports/<unit>.differences.json` and `reports/<unit>.idmap.json` (the 
 
 ## `compare-c`: the third derivation of a module, kept as returned
 
-Codex's derivation of a module (`rules/derivations/c/<unit>.json`) is **not** turned into a record; nobody maps it by hand. `compare-c` compares only its mechanical fields with A and B: the cited (code, article, paragraphs); each deadline's kind, period value and unit, the period and sanction words (read by the `check-values` reader), `raisedBy`; each prior step's kind; each exit's destination; the sections. Its free-text fields (starting events, conditions, exemptions, matters, open points) are listed as "C says" beside the matching items of A and B, for the reconciler to read.
+The third derivation of a module (`rules/derivations/c/<unit>.json`; Sonnet 5.5 by the flat route since 14 November 2026, Codex for the first module) is **not** turned into a record; nobody maps it by hand. `compare-c` compares only its mechanical fields with A and B: the cited (code, article, paragraphs); each deadline's kind, period value and unit, the period and sanction words (read by the `check-values` reader), `raisedBy`; each prior step's kind; each exit's destination; the sections. Its free-text fields (starting events, conditions, exemptions, matters, open points) are listed as "C says" beside the matching items of A and B, for the reconciler to read.
 
 Output: `reports/<unit>.c-comparison.json`. C never counts in condition 4. **A mechanical difference between C and a value on which A and B agreed is marked as an attack** (`who: derivationC`), goes to the verifier with the other attacks, and enters the unit's register like any other. C's agreement with A and B is reported apart from the A-against-B rate.
 
@@ -103,9 +103,9 @@ Implements [../rules/GRADES.md](../rules/GRADES.md) exactly, from its inputs: th
 
 ## The merged checklist and `check-checklist`
 
-Before reading any text, each deriver lists from memory what a lawyer must check for the unit; Codex does the same for each claim type without seeing anything (`rules/derivations/codex/<unit>.checklist.json`). `merge-checklists` merges, into `reports/<unit>.checklist.json` (`[{ "id", "item", "from": [...] }]`):
+Before reading any text, each deriver lists from memory what a lawyer must check for the unit. (A third list, by Codex before each claim type, was cut on 14 November 2026: Codex keeps three roles. What is lost is a third memory; the derivers' two lists, the catalogue's questions and the triage leads remain.) `merge-checklists` merges, into `reports/<unit>.checklist.json` (`[{ "id", "item", "from": [...] }]`):
 
-- the derivers' lists (`derivationA`, `derivationB`) and Codex's (`codex`);
+- the derivers' lists (`derivationA`, `derivationB`); for the first module only, also Codex's (`codex`), written before the cut;
 - the questions of the author's November unit for this unit, copied word for word by the executor (`novemberUnit`);
 - for a claim type, **the catalogue's own answers turned into questions** (`catalogue`): each article of its `data/law/claims` entry ("Is art. N the right basis for …, and which paragraph?"), each prerequisite, each required document, each suggested request. The derivers are not shown these (their brief is the claim's id, label, description, elements and requests), so that their agreement is not anchored on the catalogue; but the final record must answer each of them.
 
@@ -113,9 +113,9 @@ Exact duplicates are merged; near-duplicates are left, a longer list costs nothi
 
 Why: the checklist is written before the text narrows the mind. A point nobody found in the text ("is there a special law for this?") stays visible as a line that had to be answered, not as a silence.
 
-## The texts given to Codex and to the boundary writer
+## The texts given to derivation C and to the boundary writer
 
-Codex's derivation C and the boundary-case writer must not get texts chosen by someone who has read A and B. Their texts are fixed by a rule, written to `reports/<unit>.texts.json` and committed **before any derivation of the unit runs**:
+Derivation C and the boundary-case writer must not get texts chosen by someone who has read A and B. Their texts are fixed by a rule, written to `reports/<unit>.texts.json` and committed **before any derivation of the unit runs**:
 
 - every article of each chapter (the library's `path`, or the corpus's) that contains an article named in the unit's "where to start" line of the handbook's module table, or requested in `law/requests.jsonl` for the unit (by an earlier run); for a claim type, the articles of its catalogue entry stand for the "where to start" line;
 - **From the second module on (the owner's decision of 14 November 2026, after Civil Code 164 was missed):** every chapter the module's seed inventory touches, and never anything from A's or B's records. `records.py unit-texts <unit> --seed law/seed-inventory.json` (`seed_starts`) takes the module's seed articles (`pointer:<unit>` in the inventory), goes one heading up from each one's chapter, and adds every chapter under that heading that holds any seed-inventory article, whatever its source. The pointer's own chapter alone would still have missed 164: 164 is in the seed inventory for three claim types, not for formal-notice, and sits in the chapter before 176 to 187 under the same title «الباب الثاني آثار الالتزام». Measured on formal-notice: the rule adds the chapters of 164 and of the contract's formation, nullity and effects; the cited paragraphs outside the texts given fall from A 12, B 6 to A 11, B 5 (of 27 cited by A or B). The rest are exceptions in other chapters and codes (sale 392, lease 480, works 553 and 558, Commercial Code 177, CPCA 306, 310, 406): no chapter rule reaches them, and the step 1 report gives this count for every module (`compare-c` writes it as `outsideTextsGiven`).
@@ -137,39 +137,24 @@ All under `docs/research/core-logic/rules/reports/`, committed:
 | `<unit>.c-comparison.json` | `compare-c` (modules only) | stage 4 |
 | `<unit>.reconciliation.md` | the reconciler | stage 5 |
 | `<unit>.attacks.adversary.json` | the adversary | stage 7 |
-| `<unit>.attacks.codex.json` | the Codex attack, through its script | stage 7 |
+| `<unit>.attacks.sonnet.json` | the Sonnet attack, copied by `records.py ingest-reply` (the first module's file is `formal-notice.attacks.codex.json`) | stage 7 |
+| `<unit>.attacks.input.json` | `unit.py verify-input`: every finding the verifier must decide, in one file ([unit-driver.md](unit-driver.md)) | stage 8 |
+| `<unit>.boundary-view.json` | Codex's blind view on boundary cases the verifier set aside | stage 8b |
 | `<unit>.support.json` | the support check, split back per unit by its script | stage 7 |
 | `<unit>.attacks.json` | the verifier: the register of every attack and its verdict | stage 8 |
 | `<unit>.grades.json` | `grade-records` (the grades and reasons per item) | stage 9 |
 | `grades.md` | the executor: the grade report of [../rules/GRADES.md](../rules/GRADES.md) | end of step 1 |
-| `planted-errors.md` | the executor: the rates of the planted-error test | after all units |
+| `planted-errors.md`, `planted-errors.json` | `planted.py score`: the rates of both planted-error rounds ([planted-errors.md](planted-errors.md)) | phases B and D |
 
-**Shapes.** Each report gets a JSON schema with a test at its first use (as the Codex output schemas do). At least: a difference is `{ "id", "kind", "a", "b", "field", "matchedOn" }`; an id-map entry is `{ "kind", "a", "b", "reconciled" }`; an attack in the register is `{ "id", "who": "adversary" | "codex" | "support" | "derivationC" | "boundaryCase", "target", "kind", "claim", "evidence", "verdict": "fixed" | "refuted" | "open", "verifierQuote", "change" }`.
+**Shapes.** Each report gets a JSON schema with a test at its first use (as the Codex output schemas do). At least: a difference is `{ "id", "kind", "a", "b", "field", "matchedOn" }`; an id-map entry is `{ "kind", "a", "b", "reconciled" }`; an attack in the register is `{ "id", "who": "adversary" | "attack" | "codex" | "support" | "derivationC" | "boundaryCase" | "neighbourFlag" | "owner" | "store", "target", "kind", "claim", "evidence", "verdict": "fixed" | "refuted" | "open", "verifierQuote", "change" }`.
 
 ## The planted-error test
 
-Proof that the checkers work, before their silence is believed. It runs on copies **outside the repository**, under `C:\Users\TheShadow\dz-core-research\planted\`, so that nothing can be diffed against `rules/final/` and no real register or candidate is overwritten.
-
-Take 8 final records and copy them there under new unit ids (`p-01` … `p-08`, in file names, report names and the prompts' placeholders; the record's own `id` field is unchanged, because `rules check` needs it). A script plants **50 errors, each of the ten kinds below five times**, spread over the 8 copies, and keeps the answer key in `planted\key\`, which no agent is given:
-
-| Planted error | Must be caught by |
-|---|---|
-| a period changed (6 months → 3) | `check-values` |
-| a paragraph number shifted by one | the support check (Codex) or the verifier |
-| the exception paragraph removed from the cites | `flag-neighbours` |
-| limitation and forfeiture swapped | `check-values` (sanction words) |
-| the starting event changed (delivery → date of the record) | the support check, the attack |
-| a real article cited for something it does not say | the support check |
-| a repealed article cited | `quote-records` |
-| an exemption dropped from a prior step | the attack, `rules examples` (the boundary cases) |
-| `raisedBy` changed | the attack |
-| a block declared for a limitation | `rules check` |
-
-Then run the whole chain on the copies: the scripts, the Codex support check, the Codex attack, the verifier, with **the same prompts**, their path placeholders pointing into `planted\` (the verifier's allow-list then holds no path of the real `rules/final/` or `rules/reports/`). Outputs stay there. Report, per kind of error, planted and found, in `rules/reports/planted-errors.md`: only the rates are committed. **If a kind is found less than four times in five, its checker is not trusted** (a working bar: below it, a checker misses more than one error in five, and its silence on real records means little): fix the checker or the prompt, plant new errors, run again, and state the final rates. The agents are told only "check this record"; never that errors were planted.
+Moved to its own specification, [planted-errors.md](planted-errors.md): twelve kinds, two rounds (after the fifth final module; after the sixth final claim type), planted and control copies outside the repository, the same prompts and models as a real unit, and a rate per kind that the grade script reads (condition 7 of [../rules/GRADES.md](../rules/GRADES.md)).
 
 ## The support check
 
-Run in batches of 40 pairs **across units** (modules first, then the claim types by area): about 26 Codex calls in all ([../prompts/rules-support-check-codex.md](../prompts/rules-support-check-codex.md)). The script splits each batch's answers back into `reports/<unit>.support.json`. The first module, taken end to end alone (HANDBOOK §11.8), gets a smaller batch of its own.
+One Codex call per unit, through the background queue ([codex-calls.md](codex-calls.md)), at most 40 pairs a call (a longer unit takes two): about 33 to 40 calls in all ([../prompts/rules-support-check-codex.md](../prompts/rules-support-check-codex.md)). `stage7.py pairs` writes the pairs with their seeded false ones and keeps the key outside the repository; `stage7.py split` writes `reports/<unit>.support.json` with `seededAccepted`, `seededTotal` and `yesTrusted`. **It is the one check of a rule's wording against its text made by another model family**: the item's proof label rests on it ([../rules/GRADES.md](../rules/GRADES.md), "The proof label"). The verifier never waits more than ten minutes for it (`supportCheckPending`).
 
 ## Traps
 

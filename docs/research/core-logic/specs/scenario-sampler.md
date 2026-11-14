@@ -1,8 +1,25 @@
 # Specification: the scenario sampler and the style cards
 
-**Why a sampler.** If a model is asked for "a lawyer's note about unpaid wages", it writes the same tidy note a thousand times, and it decides the facts itself, so nobody knows the right labels. The sampler turns this round: **code decides the case** (the claim type, each element's polarity, each slot, the dates, the sums, what is asked), checks it is legally coherent with the one rule evaluator, and gives the writer a scenario to turn into a note. The gold answer exists before the note does; the writer's job is only the wording, and the judge checks that the wording says what the scenario says.
+**Why a sampler.** If a model is asked for "a lawyer's note about unpaid wages", it writes the same tidy note a thousand times, and it decides the facts itself, so nobody knows the right labels. The sampler turns this round: **code decides the case** (the claim type, each element's polarity, each slot, the dates, the sums, what is asked), checks it is legally coherent with the one rule evaluator, and gives the writer a scenario to turn into a note. The gold answer exists before the note does; the writer's job is only the wording, and a checker (the local filter for a training note, a blind relabeller for a test note) checks that the wording says what the scenario says.
 
-**Who writes it.** Opus 5.5, in step 3, after the final rule records exist and the label scheme is frozen. Project `DzLegal.CoreLogic.Notes` (C#, so that it calls the evaluator in process), tool `notes sample`.
+**Who writes it.** Opus 5.5, in phase A, as soon as the label scheme is written ([../notes/SCHEME.md](../notes/SCHEME.md)). Project `DzLegal.CoreLogic.Notes` (C#, so that it calls the evaluator in process), tool `notes sample`.
+
+## Version 1: drawing without final rule records
+
+The first handbook built the sampler after every rule record was final. Since 14 November 2026 the reader comes first, so **version 1 draws from what exists**, and each place that needed a record has a rule:
+
+| What the first design took from the rule records | Version 1 takes it from |
+|---|---|
+| the claim types, their elements, actors, date and amount flags, requests | `data/law/claim-elements.json` (read only) |
+| the plaintiff's role, for the seven claim types that offer a choice | the claim type's `roles` in the same file: drawn uniformly, written into the scenario as `"roles": { "<claim>": { "relation", "position" } }`, and always to be expressed by the note |
+| which polarity of which element is a note a lawyer would write | the cells table of SCHEME.md, section 8 |
+| which two claim types occur together | the pairs listed in SCHEME.md, section 9 |
+| near-misses and their telling fact | SCHEME.md, section 9, table B: the outside kind's English seed lines, drawn for the claim types it names |
+| the `how` line of a denied or disputed event | a list of two to four English lines per element, written by the executor from the element's proposition (who contests, with what story); seeds, never wording, and never a statement of the law |
+| coherence, and the `outcome` of a scenario | the rule evaluator **on the records that are final when the set is drawn** (`rules/final/*.json`: `formal-notice` at first). A scenario gets an `outcome` only for those; with no final record that applies, `outcome` is absent and coherence is the slot table of the guide applied in reverse |
+| dates placed around a deadline's last day | only for a deadline of a final record; otherwise dates are drawn in a possible order and nothing more |
+
+When more records are final (phase B onwards), new sets are drawn with their outcomes; **sets already drawn are not redrawn**. The sampler's commit and seed are in every note's provenance, so each set says which version drew it. A change of the sampler after the generation method is frozen is not allowed ([notes-pipeline.md](notes-pipeline.md), section 11).
 
 ## A scenario
 
@@ -31,7 +48,7 @@
 
 - `family`: scenarios that share a skeleton (same claim, same polarity pattern, values changed) share a family. **A family never sits on both sides of a split.**
 - `actor`: who did it, from the element's usual actor in `claim-elements.json` (`unknown` where it names none), or drawn where the guide says the actor varies (`commercial-lease-eviction/rent_unpaid`). The writer's labels take it from here: the writer chooses no label.
-- `how`: for a `denied` or `disputed` event, a short English line on the manner (who contests, with what story), drawn from a list per element written with the rule records' boundaries. It is a seed, not wording: the writer never sees Arabic from the sampler.
+- `how`: for a `denied` or `disputed` event, a short English line on the manner (who contests, with what story), drawn from a list per element (version 1, above). It is a seed, not wording: the writer never sees Arabic from the sampler.
 - `contest`: on a `stated` event only, a contest that leaves the proposition standing: `{ "of": "amount" | "cause", "by": "plaintiff" | "defendant", "how": "<English line>", "amount": <the other side's figure, for an amount> }`. The guide decides these (cases 5 and 31; note a): the polarity stays `stated`; a contest of the amount gives `amountDisputed: true` to both figures. Without this field the writer, told to write no more than the scenario, could not write the challenge set's contests of amount and of cause.
 - `extraValues`: each has a `what` unique within the scenario (the writer's reference is `value:<what>`). `optional: true` is allowed **only** here: a lawyer does not note every figure, so the writer may leave such a value out. Every other fact of the scenario must be in the note.
 - `distractors`: English lines for details that are not facts of the case. They hold no date and no amount (an amount the note should carry is an extra value), and the writer gives them no reference.
@@ -40,15 +57,15 @@
 
 ## How a scenario is drawn
 
-1. **Claim.** Uniform over the 21 types for the base sets; about 12 % two-claim notes (pairs that the rule records' boundaries name as occurring together); about 12 % `outside` with an `outsideKind`, of which at least half are **near-misses built from a real type** (take a type's scenario and change the one telling fact its boundary names; that fact is the scenario's `outsideFact`).
+1. **Claim.** Uniform over the 21 types for the base sets; about 12 % two-claim notes (the pairs of SCHEME.md, section 9); about 12 % `outside` with an `outsideKind`, of which at least half are **near-misses built from a real type** (take a type's scenario and add the one telling fact of SCHEME.md, section 9, table B; that fact is the scenario's `outsideFact`).
 2. **Polarity pattern.** For each element of the claim: draw a polarity from a table tuned so that, over a set, **every element appears with every polarity**, and `denied` and `disputed` are far more frequent than in life (about 15 % each of mentioned events): polarity is the hard part, and a set that mirrors life would hold too few to learn or to measure. Some `stated` events also carry a `contest` of their amount or their cause. Forbidden patterns are removed by rule, not by hand: a pattern is kept only if it is **a case a lawyer would still write a note about** (a loan note with `money_lent` denied by the notes themselves is no loan claim: drop it or turn it into `outside`).
 3. **Slots.** Each `readFromNote` slot gets a value consistent with the events (section 6 of the labelling guide): the generator applies the guide's slot table in reverse. Deliberately include the divergent cases: an oral demand with no formal notice; a record with its date and no delivery date; a delivery date alone.
-4. **Dates.** Drawn so that events are in a possible order, and so that deadlines land, across the set, far inside, far outside and **inside the warning band** on both sides. The evaluator computes the last day; the sampler places the petition date around it.
+4. **Dates.** Drawn so that events are in a possible order, and so that deadlines land, across the set, far inside, far outside and **inside the warning band** on both sides. For a deadline of a final record, the evaluator computes the last day and the sampler places the petition date around it.
 5. **Sums.** Plausible for the claim (a monthly wage between the legal minimum and a senior salary; a commercial invoice from tens of thousands to tens of millions of dinars), with remainders that add up when a partial payment is drawn (paid + owed = total), and with **one unrelated amount** in about a third of notes.
-6. **Requests.** From the record's usual requests, each with a probability; sometimes a request that belongs to a neighbouring claim (the boundary cases).
+6. **Requests.** From the claim type's requests in `claim-elements.json`, each with a probability; sometimes a request that belongs to a neighbouring claim (the boundary cases).
 7. **Cast.** Names, companies, communes, streets from **fictitious lists** built once by code: given names × family names recombined, company names from invented roots; a check refuses any full name that exactly equals an entry of a small list of well-known public figures and companies. No real person, no real case number. Lists of at least 400 given names, 600 family names, 300 company roots, all 58 wilayas' communes by name only.
 8. **Style card** (below), drawn independently of everything above, so that no style correlates with a label.
-9. **Coherence.** Run the evaluator. Reject a scenario whose slots contradict each other; keep the outcome.
+9. **Coherence.** Run the evaluator on the final records that exist (version 1, above). Reject a scenario whose slots contradict each other; keep the outcome when there is one.
 
 ## Style cards
 
@@ -78,12 +95,14 @@ A card never names a claim type, an element or a polarity. A probe checks that n
 |---|---:|---|---|
 | pilot | 500 | the base recipe | measuring the pipeline before freezing it |
 | train | 4,000 (first batch) | base recipe | training; learning curve at 1,000, 2,000, 4,000 |
-| dev | 600 (400 if the owner takes that saving) | base recipe, families disjoint from train | choosing models and thresholds |
-| challenge | at least 50 per difficulty: restriction (لم … إلا / سوى); double negation; contest of the amount only; contest of the cause only; an oral or informal demand; record date against delivery date; correction mid-note; «رغم» (despite); an intention; a named document against an explicit contest; two claims; near-miss. **This is the one list**; the reader's specification reports results per difficulty from it | targeted recipes | polarity as its own problem |
-| cross-check | 300 | base recipe | the cross-check gap (notes pipeline, section 6); never trained on |
-| clean | 1,000, of which 200 (by family) are the clean test split | base recipe | the clean-notes track (notes pipeline, section 8) |
-| mirror | about 440 kept (about 330 with the saving) | **not drawn by this sampler**: the v3 roles (planner, writers, Codex relabeller), with v3's prompts and commands, after the generation method is frozen, in v3's proportions (16 per claim type, 80 near-miss, about 24 for the two rarest slots) | predicting v3, once, for the final candidates; rehearsing the v3 commands. It chooses nothing |
-| polarity families | 300 groups of 3 to 4 | one scenario, each polarity of one element, everything else equal. **Inside the sets above, not in addition:** about 200 groups in train, 100 in dev and challenge | training and testing polarity; a group is never split |
+| dev | 600 kept (400 if the owner takes that saving): **300 written by Codex, 300 by Sonnet 5.5** | base recipe, families disjoint from train; the two halves from the same seed stream, split by family | the Codex half tunes and measures; the Sonnet half only measures ([notes-pipeline.md](notes-pipeline.md), sections 6 and 7) |
+| challenge | 50 per difficulty, **25 by each writer**: restriction (لم … إلا / سوى); double negation; contest of the amount only; contest of the cause only; an oral or informal demand; record date against delivery date; correction mid-note; «رغم» (despite); an intention; a named document against an explicit contest; two claims; near-miss. **This is the one list**; the reader's specification reports results per difficulty from it | targeted recipes | polarity as its own problem; the same rule for the two halves |
+| clean | 1,000 kept, split by family: 700 `train`, 100 `dev`, 200 `test` | base recipe, without the parts given only in English | the clean-notes track (notes pipeline, section 8) |
+| a slot pack | about 400 train and about 100 dev (half by each writer) per slot the reader is to read | scenarios that fix the slot's values | [scheme-extension.md](scheme-extension.md) |
+| probe | about 150 composed notes, set apart | the composer | the relabeller's known-truth probes ([hidden-v3-commands.md](hidden-v3-commands.md), section 7b); never trained on |
+| step5 | 120 sheets, 20 for each of six final claim types | the base recipe with the constraints of [step5-templates.md](step5-templates.md) | step 5's fact sheets; not notes |
+| mirror | about 440 kept (about 330 with the saving) | **not drawn by this sampler**: the v3 roles (planner, writers, isolated Opus relabellers), with v3's prompts and commands, after the generation method is frozen, in v3's proportions (16 per claim type, 80 near-miss, about 24 for the two rarest slots) | predicting v3, once, for the final candidates; rehearsing the v3 commands. It chooses nothing |
+| polarity families | 300 groups of 3 to 4 | one scenario, each polarity of one element, everything else equal. **Inside the sets above, not in addition:** about 200 groups in train, 100 in dev and challenge. A group is written in one call by one writer | training and testing polarity; a group is never split |
 
 Hidden set v3 and its mirror set do **not** use this sampler: a planner writes quotas, and each writer invents its own cases to them ([hidden-v3-commands.md](hidden-v3-commands.md)). That is the point of a hidden set: it must not share the sampler's blind spots.
 
@@ -98,4 +117,4 @@ Hidden set v3 and its mirror set do **not** use this sampler: a planner writes q
 
 - **Balanced is not realistic, and that is deliberate.** Say so in every report that gives a score: the sets over-represent denied and disputed events and near-misses. The clean test split and the app's own cases ([notes-pipeline.md](notes-pipeline.md), section 7) are reported beside every score as the counterweight.
 - **Do not let the sampler write Arabic.** The moment code emits Arabic phrases, the notes carry a template the classifier can learn. The only code-composed notes are the separate, marked `composed` set (see [notes-pipeline.md](notes-pipeline.md)).
-- **A scenario the evaluator cannot evaluate** (a slot the records never read) is a sign the label scheme and the records have drifted: stop and reconcile them, do not patch the sampler.
+- **A scenario the evaluator cannot evaluate** with the final records that exist is expected in version 1 when no final record reads its slots: it simply has no `outcome`. If a **final** record reads a slot the scheme does not have, that is [scheme-extension.md](scheme-extension.md)'s case: the slot starts as a question for the lawyer; do not patch the sampler.

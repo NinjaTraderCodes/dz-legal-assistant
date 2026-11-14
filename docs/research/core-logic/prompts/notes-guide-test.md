@@ -1,13 +1,14 @@
 # The guide test
 
-- **Models:** Sonnet 5.5 (fresh agent) and Codex (one call), each given the labelling guide and the same items. Run before the label scheme is frozen, and again after every change to the guide ([../specs/notes-pipeline.md](../specs/notes-pipeline.md), section 1).
-- **A Claude tester uses no tool.** The guide and the items are pasted in the prompt, it needs no file path, and its answer is its reply. The executor reads the run's reported tool-use count: a run with any tool use is discarded and run again by a fresh agent, exactly as a Codex call that ran a command is discarded. A rejected Codex call follows the one rule of the notes pipeline, section 3.
+- **Models:** Sonnet 5.5 and Opus 5.5, independently, fresh agents, each given the labelling guide and the same items. Run before the label scheme is frozen, and again after every change to the guide ([../specs/notes-pipeline.md](../specs/notes-pipeline.md), section 1).
+- **A tester uses no tool** except one read of its own prompt file. Its answer is its reply, copied by `records.py ingest-reply` and checked against `schemas/guide-test.schema.json`; a run with any other tool use is discarded and run again by a fresh agent.
 - **Placeholders:** `{{guide}}` (the whole of `notes/LABELLING-GUIDE.md`), `{{items}}` (from `notes/guide-test.json`: for each item only `id`, `claim`, `ask`, `text`; **never** `expected` or `tests`).
-- **Output schema (Codex) / reply (Sonnet):** `schemas/guide-test.schema.json`: `{ "answers": [{ "id": integer, "answer": string, "rule": string, "unsure": boolean }] }`.
+- **Output** (the agent's reply), `schemas/guide-test.schema.json`: `{ "answers": [{ "id": integer, "answer": string, "rule": string, "unsure": boolean }] }`.
 - **Each rerun has two parts:** the existing items, each of which must still give its expected answer; and about 20 new items on the sections of the guide that changed, written with their expected answers by a fresh Sonnet 5.5 agent that is given the guide but not `guide-test.json`, then added to the file. A rerun only on items the guide was fixed on would pass by construction.
 - **Reading the result (script `guide-test compare`):** for each item, the two testers' answers and the expected one. Every item where the three are not equal is listed. For each, the executor decides: the guide is unclear (fix the guide, add or reword a case), the expected answer is wrong (fix the file, say so), or a tester misread a clear rule. "Misread" stands **only when the other tester gave the expected answer and named the same rule**; otherwise the guide is the problem. If the same tester misreads the same rule twice, the guide's wording of that rule is the problem after all. Items marked `unsure` are read too, even when the answer is right: they show where the guide leaves a choice. **The scheme is not frozen while an item is unexplained.**
 - **Why:** the guide is the one document every writer and judge shares. If it lets two careful readers differ, agreement between them later measures the guide's gaps, not the notes' quality.
 - First run (13 November 2026, on the handbook's first version): [../notes/GUIDE-TEST-RESULTS.md](../notes/GUIDE-TEST-RESULTS.md).
+- **The shape is repeated in the body** (agents see only the body; fault of 14 November 2026).
 
 --- PROMPT ---
 
@@ -29,4 +30,12 @@ Each item gives the claim type of the note it comes from, what is asked, and the
 
 For every item give: "id"; "answer"; "rule" (the rule, case number, note letter or table row of the guide you applied, in a few words); "unsure": true if the guide did not clearly decide and you had to choose.
 
-Use no tool. Everything you need is in this message, and your answer is your reply. Do not read or write any memory file, do not open the plan file or the state file, and do not look for any other file. Do not run any command and do not open any file.
+Use no tool. Everything you need is in this prompt, and your answer is your reply. (If you were told to read this prompt from a file, that one read is allowed, and nothing after it.) Do not read or write any memory file, do not open the plan file or the state file, and do not look for any other file. Do not run any command and do not open any file.
+
+## Your answer
+
+Return only one JSON object, with no text before or after it:
+
+`{ "answers": [ { "id": 12, "answer": "<your answer to the item's question>", "rule": "<the section, rule or case number of the guide you applied>", "unsure": false } ] }`
+
+One entry per item, "id" being the item's own number. "unsure": true when the guide left you a choice, even if you think your answer is right.

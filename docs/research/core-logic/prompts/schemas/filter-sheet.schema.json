@@ -1,0 +1,22 @@
+{
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "answers"
+ ],
+ "properties": {
+  "answers": {
+   "type": "array",
+   "items": {
+    "type": "string",
+    "enum": [
+     "a",
+     "b",
+     "c",
+     "d",
+     "e"
+    ]
+   }
+  }
+ }
+}

@@ -1,0 +1,90 @@
+{
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "notes"
+ ],
+ "properties": {
+  "notes": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "n",
+     "subject",
+     "facts",
+     "requests",
+     "documents",
+     "facts_of_scenario"
+    ],
+    "properties": {
+     "n": {
+      "type": "integer"
+     },
+     "subject": {
+      "type": "string"
+     },
+     "facts": {
+      "type": "string"
+     },
+     "requests": {
+      "type": "string"
+     },
+     "documents": {
+      "type": "string"
+     },
+     "facts_of_scenario": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "ref",
+        "expressed",
+        "quotes"
+       ],
+       "properties": {
+        "ref": {
+         "type": "string"
+        },
+        "expressed": {
+         "type": "boolean"
+        },
+        "quotes": {
+         "type": "array",
+         "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+           "field",
+           "quote",
+           "occurrence"
+          ],
+          "properties": {
+           "field": {
+            "type": "string",
+            "enum": [
+             "subject",
+             "facts",
+             "requests",
+             "documents"
+            ]
+           },
+           "quote": {
+            "type": "string"
+           },
+           "occurrence": {
+            "type": "integer"
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

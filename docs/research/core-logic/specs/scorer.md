@@ -99,6 +99,14 @@ The scorer is run on these test sets, and only these:
 
 They are scored with what their labels allow, reported beside every result, and too few to carry a verdict. They are written by people: if the reader does well on v3 and badly on them, believe them.
 
+### Per-writer rows (owner, 14 November 2026)
+
+`dev` and `challenge` are written half by Codex and half by Sonnet. Every table of an open run therefore has three rows per set: **the Codex half, the Sonnet half, and both**, each with its count and interval, and the gap between the halves. The scorer reads the writer's family from each note's provenance and takes `--by-writer` (on by default for these two sets).
+
+The scorer also takes `--purpose tune|measure` and passes it to the loader ([notes-pipeline.md](notes-pipeline.md), "The loader"): with `tune` it is given no Sonnet-written note, and its output file is marked `tune`. **A figure used to choose anything about the reader must come from a `tune` output; a `measure` output is for reports only.** The training and calibration scripts refuse a `measure` file as input.
+
+The headline rule above does not change: the worst test set of at least 200 notes, where each set counts whole (both halves).
+
 ## `summary.md` for a hidden set: the exact contents
 
 Fixed here, so that nothing else can leave the hidden folder. No note text, no quote, no note id, no cast name, no per-note line. **Every table merges cells under 3 into "other"**, so that no single note can be reconstructed.

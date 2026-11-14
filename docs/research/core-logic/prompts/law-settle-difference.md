@@ -3,10 +3,11 @@
 - **Model:** Opus 5.5, a fresh agent that opens the images with its Read tool, on the image paths it is given and nothing else. One run settles all the differences of up to about ten articles.
 - **Used for:** two page readings of a missing article that differ ([../law/README.md](../law/README.md), step 5); a fresh page reading that differs from the store's text ("Re-readings"); a wording of the consolidated PDF that differs from the page reading (step 7). In every case the two wordings are shown the same way, and the settler is not told where either comes from.
 - **Placeholders:** `{{worktree}}`; `{{items}}`: for each difference, its kind (`words` or `paragraphBreak`), the absolute image paths (the page at 300 dpi, and close-ups at 600 dpi cut by script in tiles of at most 1400 pixels a side and 1.1 million pixels, over the region where the first reader said the article is, with the next column when the article reaches the foot of its column: the image viewer reduces a larger image before the model sees it, so a whole 600-dpi column reached the settler at about 185 dpi, no sharper than the page; measured on 13 November 2026), the article number, the paragraph, the ten words before and after, and the two candidates **labelled X and Y in random order**. For a `paragraphBreak` item, X and Y are "a new paragraph starts before the word «…»" and "the text runs on", in random order.
-- **Output:** JSON array, one entry per difference: `{ "article", "paragraph", "kind", "printed": "X" | "Y" | "neither", "words": "<what the page prints>", "seen": "<what you see on the image that decides it: letter shapes, dots, the digit, the line break>", "sure": true | false }`.
+- **Output:** JSON array, one entry per difference: `{ "article", "paragraph", "kind", "printed": "X" | "Y" | "neither", "words": "<what the page prints, only when the answer is neither; otherwise empty>", "seen": "<what you see on the image that decides it: letter shapes, dots, the digit, the line break>", "sure": true | false }`.
 - **Checking a run:** the executor reads the run's reported tool-use count. A run with more tool uses than twice the number of images in `{{items}}` is discarded and run again by a fresh agent.
 - **Why blind to the source:** told that one wording is "the library's" or "the corpus's", a model sides with it. The page decides, not the pedigree.
 - **If `sure` is false or `printed` is "neither":** a second Opus run looks at close-ups at 800 dpi (tiles of the same size, so a smaller part of the page each); if still unsure, the article is **not verified**, and every item citing it is grade D.
+- **The shape is repeated in the body** (agents see only the body; fault of 14 November 2026).
 
 --- PROMPT ---
 
@@ -30,3 +31,14 @@ Do not use the meaning of the sentence to choose, except to notice that a candid
 Return only the JSON array.
 
 Do not open any file other than the images named in the items, and do not run any command.
+
+## Your answer
+
+Return only one JSON array, with no text before or after it, one entry per difference, in the order given:
+
+`[ { "article": "<the article number as given>", "paragraph": 2, "kind": "words" | "paragraphBreak", "printed": "X" | "Y" | "neither", "words": "", "seen": "<what you see on the image that decides it: letter shapes, dots, the digit, the line break>", "sure": true } ]`
+
+- "article", "paragraph", "kind": copied from the difference as given ("paragraph" is `null` when none was given).
+- "printed": which candidate the page prints, or "neither".
+- "words": the words the page prints, **only when "printed" is "neither"**; otherwise `""`.
+- "sure": false when the image does not let you decide beyond doubt. A marked doubt is useful; a guess is harmful.

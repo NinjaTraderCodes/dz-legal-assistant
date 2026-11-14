@@ -1,0 +1,39 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "The amendment ledger (specs/official-journal-scan.md, \"From hits to a ledger\")",
+ "type": "object",
+ "additionalProperties": false,
+ "required": ["builtOn", "scanFrom", "textAsOf", "patternsVersion", "codes", "instruments"],
+ "properties": {
+  "builtOn": {"type": "string"},
+  "scanFrom": {"type": "string"},
+  "textAsOf": {"type": ["string", "null"], "description": "The latest issue date such that every issue up to it is read (no error, a known date, a readable text or a triage answer from its page images)."},
+  "patternsVersion": {"type": "integer"},
+  "codes": {"type": "array", "items": {"type": "string"}, "description": "The codes the ledger covers: those whose triage is complete (law/triage-status.json). An article of another code is not covered (ledgerClean false)."},
+  "instruments": {"type": "object", "additionalProperties": {"type": "array", "items": {"$ref": "#/$defs/entry"}}}
+ },
+ "$defs": {
+  "entry": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": ["id", "kind", "number", "date", "issue", "pages", "articlesTouched", "transitional", "foundBy", "triage"],
+   "properties": {
+    "id": {"type": "string", "description": "The version id the store uses (law-05-10)."},
+    "kind": {"type": "string"},
+    "number": {"type": "string"},
+    "date": {"type": ["string", "null"]},
+    "issue": {"type": "object", "additionalProperties": false, "required": ["year", "number", "date", "sha256"],
+              "properties": {"year": {"type": "integer"}, "number": {"type": "integer"}, "date": {"type": ["string", "null"]},
+                             "sha256": {"type": ["string", "null"]}}},
+    "pages": {"type": "array", "items": {"type": "integer"}},
+    "articlesTouched": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["article", "how"],
+      "properties": {"article": {"type": "string"},
+                     "how": {"enum": ["replaced", "amended", "completed", "inserted", "repealed", "touched"]},
+                     "detail": {"type": "string"}}}},
+    "transitional": {"type": "string"},
+    "foundBy": {"type": "array", "items": {"enum": ["scan", "codex-ledger", "consolidated-edition"]}},
+    "triage": {"type": ["string", "null"], "description": "The triage answer's file, under C:\\Users\\TheShadow\\dz-core-research\\triage (outside the repository)."}
+   }
+  }
+ }
+}

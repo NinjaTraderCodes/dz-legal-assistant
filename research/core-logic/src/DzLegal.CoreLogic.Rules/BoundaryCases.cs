@@ -12,6 +12,7 @@ public enum BoundaryOutcome
     Late,
     LastDay,
     StepMissing,
+    StepDone,
     StepExempt,
     LeavesOrdinaryCourt,
     Ask,
@@ -153,7 +154,7 @@ public static class BoundaryCases
         var kind = boundaryCase.Expect.Outcome switch
         {
             BoundaryOutcome.InTime or BoundaryOutcome.Late or BoundaryOutcome.LastDay => FindingKind.Deadline,
-            BoundaryOutcome.StepMissing or BoundaryOutcome.StepExempt => FindingKind.PriorStep,
+            BoundaryOutcome.StepMissing or BoundaryOutcome.StepDone or BoundaryOutcome.StepExempt => FindingKind.PriorStep,
             BoundaryOutcome.LeavesOrdinaryCourt => FindingKind.Exit,
             _ => (FindingKind?)null,
         };
@@ -225,7 +226,7 @@ public static class BoundaryCases
                 };
             case BoundaryOutcome.StepMissing:
                 return Expect(record.PriorSteps.Single(item => item.Id == id).EffectWhenMissing);
-            case BoundaryOutcome.StepExempt:
+            case BoundaryOutcome.StepDone or BoundaryOutcome.StepExempt:
                 return Expect(FindingEffect.None);
             case BoundaryOutcome.LeavesOrdinaryCourt:
                 return Expect(FindingEffect.Warn);

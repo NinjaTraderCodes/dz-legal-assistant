@@ -7,7 +7,9 @@
   - `{{units}}`: ids and one-line subjects.
   - `{{texts}}`: for each unit, its `rules/reports/<unit>.texts.json`, fixed and committed by rule before any derivation of the unit ran ([../specs/record-checks.md](../specs/record-checks.md), "The texts given to Codex and to the boundary writer"), rendered `[<code> <article> ¶<n>] <text>`. Never a selection made after reading A or B: a deadline both derivers missed must not be missed by the cases too.
   - `{{slots}}`: the slot list as derivers get it (id, type, question; no help text).
-- **Output:** `rules/boundary-cases/<unit>.json`: an array of cases, each `{ "id", "title", "petitionDate", "slots": {...}, "expect": { "about": "[<code> <article> ¶<n>]", "outcome": "inTime" | "late" | "lastDay" | "stepMissing" | "stepExempt" | "leavesOrdinaryCourt" | "ask" | "unsettled", "lastDay": "yyyy-mm-dd" (when the case is about a time limit and the texts let the writer compute it), "why": "<the words of the text>" } }`.
+  - `{{request_kinds}}`: the request kinds of `FactVocabulary`, the values of the reserved `requests` slot.
+- **Why the shape is in the prompt's body:** the first run (formal-notice, 14 November 2026) received only the body, found no format, and wrote one of its own that the tool cannot read; it also had no list of request kinds and invented one. That run was set aside unused.
+- **Output:** `rules/boundary-cases/<unit>.json`: an array of cases, each `{ "id", "title", "petitionDate", "slots": {...}, "expect": { "about": "[<code> <article> ¶<n>]", "outcome": "inTime" | "late" | "lastDay" | "stepMissing" | "stepDone" | "stepExempt" | "leavesOrdinaryCourt" | "ask" | "unsettled", "lastDay": "yyyy-mm-dd" (when the case is about a time limit and the texts let the writer compute it), "why": "<the words of the text>" } }`.
 - **These files are never edited after they are written**: not by the reconciler, not by the verifier, not by the executor. A case whose expectation is wrong under the text is recorded as such in the reconciliation report.
 - **How they are used:** `rules examples --boundary` runs them through A and B, then the reconciled and final records ([../specs/rule-evaluator.md](../specs/rule-evaluator.md), "Boundary cases"). The two records are compared on `LastDay` and `DaysLeft` as well as on effects, so that a difference in counting shows even inside the warning band; a case the two records decide differently is a difference.
 - **Why a separate agent:** the derivers test their own records with their own examples, and tend to write examples their record passes. Cases written from the text alone, by someone who has seen no record, test both records equally.
@@ -46,6 +48,27 @@ For each unit, write cases that sit **on the edges**, where a careless rule goes
 4. **The starting event:** when the text names a specific event (the delivery of a record, the notification of a decision, the day the debt fell due), write a case where a nearby date (the date of the record, of the decision) would give the other answer.
 
 `about` names the paragraph the case tests, copied exactly as the texts above label it: `[<code> <article> ¶<n>]`. Use only the slots listed; if a case needs a fact no slot holds, leave the case out and name the fact in your reply. Dates are `yyyy-mm-dd`; use petition dates in 2026. At least 12 cases per unit that has a time limit, at least 6 for the others. Every case is fictitious and holds no names.
+
+## The file
+
+Each file is one JSON array of cases, exactly in this shape (no other key, no wrapper object):
+
+```json
+[{"id": "bc1", "title": "<one line>", "petitionDate": "2026-06-15",
+  "slots": {"<slot id>": "<value>", "requests": ["<request kind>"]},
+  "expect": {"about": "[<code> <article> ¶<n>]", "outcome": "<one of the outcomes below>",
+             "lastDay": "yyyy-mm-dd", "why": "<the words of the text you applied, and your reasoning>"}}]
+```
+
+- Slot values: `yes`, `no` or `unknown` for a yes/no slot; `yyyy-mm-dd` for a date; a choice id for a choice. A slot the case says nothing about is left out (it is then unknown).
+- `requests` is a reserved list slot: the request kinds the petition asks for, from this list only: {{request_kinds}}. Leave it out when the case does not turn on what is asked.
+- `lastDay` only when the case is about a time limit and the texts let you compute it; otherwise leave the key out.
+- `outcome`, what the rule the case tests should do:
+  - `inTime`: a time limit not yet passed; `late`: passed; `lastDay`: the petition is filed on the last day itself;
+  - `stepMissing`: a required prior step was not taken and no exemption applies; `stepDone`: the step was taken; `stepExempt`: it was not taken and an exemption applies;
+  - `leavesOrdinaryCourt`: the case goes to a court or procedure outside the ordinary courts;
+  - `ask`: the rule cannot decide without a fact the case leaves unknown, so it must ask the lawyer;
+  - `unsettled`: the texts do not settle the outcome; the rule must warn, never decide.
 
 Once a file is written, do not edit it.
 

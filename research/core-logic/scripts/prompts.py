@@ -131,6 +131,12 @@ def vocabulary() -> str:
     return "\n".join(out)
 
 
+def request_kinds() -> str:
+    """The request kinds alone (the values of the reserved `requests` slot), for the boundary writer."""
+    line = vocabulary().splitlines()[1]
+    return line.split(":** ", 1)[1]
+
+
 def unit_texts(unit: str) -> dict:
     with open(os.path.join(CL, "rules", "reports", f"{unit}.texts.json"), encoding="utf-8") as f:
         return json.load(f)
@@ -161,7 +167,7 @@ def values_for(prompt: str, unit: str) -> dict[str, str]:
         base.update(module_question=f"{r['question']} Where to start (pointers, not statements of the law): {r['start']}",
                     slots=slots(unit, english_only=True), texts=unit_texts(unit)["rendered"])
     elif prompt == "rules-boundary-cases":
-        base.update(units=f"- `{unit}`: {module_row(unit)['question']}", slots=slots(unit),
+        base.update(units=f"- `{unit}`: {module_row(unit)['question']}", slots=slots(unit), request_kinds=request_kinds(),
                     texts=f"### {unit}\n\n" + unit_texts(unit)["rendered"])
     else:
         raise KeyError(f"no filling rule for {prompt}")

@@ -96,6 +96,7 @@ The boundary-case writer's files (`rules/boundary-cases/<unit>.json`, format in 
 | `late` | a deadline: `effectWhenExpired` outside its band, `warn` inside it |
 | `lastDay` | a deadline: `warn` (`DaysLeft` = 0) |
 | `stepMissing` | a prior step: `effectWhenMissing` |
+| `stepDone` | a prior step: `none` (the step was taken) |
 | `stepExempt` | a prior step: `none` |
 | `leavesOrdinaryCourt` | an exit: `warn` |
 | `ask` | the item: `ask` |

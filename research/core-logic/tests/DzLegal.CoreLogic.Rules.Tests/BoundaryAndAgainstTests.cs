@@ -42,6 +42,7 @@ public sealed class BoundaryAndAgainstTests
 
     [Theory]
     [InlineData("[labour-disputes 19 ¶1]", "stepMissing", "\"nonconciliation_record\": \"no\", \"defendant_resides_abroad\": \"no\", \"employer_in_bankruptcy_or_settlement\": \"no\", \"worker_is_public_servant\": \"no\"")]
+    [InlineData("[labour-disputes 19 ¶1]", "stepDone", "\"nonconciliation_record\": \"yes\", \"nonconciliation_record_delivered_on\": \"2026-02-01\", \"worker_is_public_servant\": \"no\"")]
     [InlineData("[labour-disputes 19 ¶2]", "stepExempt", "\"nonconciliation_record\": \"no\", \"defendant_resides_abroad\": \"yes\", \"worker_is_public_servant\": \"no\"")] // through the exemption's basis
     [InlineData("[labour-disputes 19 ¶3]", "leavesOrdinaryCourt", "\"worker_is_public_servant\": \"yes\"")]
     [InlineData("[labour-disputes 19 ¶3]", "ask", "")]

@@ -10,7 +10,7 @@
   - `{{register_paths}}`: where the register goes, `rules/reports/<unit>.attacks.json`.
   - `{{candidate_paths}}`: where the corrected record goes, `rules/final-candidates/<unit>.json`.
   - `{{requests_path}}`: `law/requests.jsonl`.
-  - `{{store_path}}`, `{{ledger_path}}` (`law/amendment-ledger.json` as far as the scan has run), `{{rules_tool}}`, `{{oj_fetch}}` (the absolute command line of `research/core-logic/scripts/oj_fetch.py` run with Python 3.12: the one script through which every download from joradp.dz goes).
+  - `{{store_path}}`, `{{store_text}}` (its text views), `{{ledger_path}}` (`law/amendment-ledger.json` as far as the scan has run), `{{rules_tool}}`, `{{oj_fetch}}` (the absolute command line of `research/core-logic/scripts/oj_fetch.py` run with Python 3.12: the one script through which every download from joradp.dz goes).
 - **The planted-error test** ([../specs/record-checks.md](../specs/record-checks.md)) uses this prompt unchanged, with every path placeholder pointing into `C:\Users\TheShadow\dz-core-research\planted\` and the units named `p-01` …: nothing of the real `rules/final/` or `rules/reports/` is then in its allow-list, and nothing real is overwritten.
 - **Output:** the register (the file `grade-records` reads): every attack with `"verdict": "fixed" | "refuted" | "open"`, `"verifierQuote"` (the official words that decide it, with code, article, paragraph or the Official Journal reference), `"change"` (what was changed in the record, when fixed). And the corrected record, which keeps `"stage": "reconciled"` (only `grade-records` sets `final`).
 - **Why a separate verifier:** an attacker is paid to doubt and a reconciler has a record to defend. The verifier decides each attack on one question only: what does the official text say?
@@ -26,7 +26,7 @@ Attacks were made on legal rule records of an Algerian civil-procedure assistant
 **The records:** {{record_paths}}
 **The attacks:** {{attack_paths}}
 **The reconciler's reports** (read them only for the boundary cases the reconciler disputes): {{reconciliation_paths}}
-**The article store** (the texts already verified): `{{store_path}}`. **The amendment ledger:** `{{ledger_path}}`.
+**The article store** (the texts already verified): `{{store_path}}` (and its text views, one file per code, in `{{store_text}}`: the same entries with each paragraph labelled as a cite counts it; read these, since the JSON file is too large to read whole). **The amendment ledger:** `{{ledger_path}}`.
 
 ## What you may open
 

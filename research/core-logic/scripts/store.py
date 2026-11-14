@@ -285,6 +285,20 @@ class Builder:
                 # The schema does not yet say which status the correction sets: refuse rather than ignore it.
                 raise NotImplementedError("a wrongStatus correction exists: extend the store and the schema first")
 
+        # corrections of wording: the library's text is not what the page prints (settled from the page, confirmed by
+        # the other family and the French edition); the store serves the page's wording, so that quotes are right and
+        # the re-readings are compared with it again
+        for c in self.i.delta.get("libraryCorrections", []):
+            if c.get("kind") != "wording":
+                continue
+            hits = [e for e in entries.values() if e["code"] == c["code"] and e["article"] == c["article"]
+                    and e["store"] == "library"]
+            if not hits or not c.get("exactWording"):
+                raise ValueError(f"a wording correction of {c['code']} {c['article']} has no library entry or no wording")
+            for e in hits:
+                e["paragraphs"] = c["exactWording"].split("\n")
+                e["correctedFromLibrary"] = True
+
         # verification, the ledger, and the final shape
         out = []
         for key in sorted(entries, key=lambda k: (k[0], _num_key(k[1]), k[2])):

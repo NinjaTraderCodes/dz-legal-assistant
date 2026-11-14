@@ -706,8 +706,40 @@ def _verified(store: st.Store, cite: dict, critical: bool) -> bool:
     return not (critical and e.get("verifiedBy") == "corpusChecked")
 
 
-def grade_record(record: dict, store: st.Store, idmap=None, differences=None, attacks=None) -> tuple:
-    """GRADES.md exactly. Returns (the final record, the grades report)."""
+DISPUTES = os.path.join(st.LAW, "text-disputes.json")
+TRIAGE = os.path.join(st.LAW, "triage-status.json")
+
+
+def text_disputes() -> list[dict]:
+    """The open disputes of law/text-disputes.json (owner's decisions of 14 Nov 2026)."""
+    return [t for t in (load(DISPUTES).get("texts", []) if os.path.exists(DISPUTES) else []) if t.get("status") == "open"]
+
+
+def triage_complete() -> set[str]:
+    """The codes whose triage of the scan's hits is complete; a missing file means none is."""
+    doc = load(TRIAGE) if os.path.exists(TRIAGE) else {"codes": {}}
+    return {c for c, v in doc.get("codes", {}).items() if v.get("complete")}
+
+
+def disputed(cite: dict, disputes: list[dict]) -> dict | None:
+    for t in disputes:
+        if (t["code"], t["article"]) != (cite["code"], cite["article"]):
+            continue
+        if cite.get("version") and t.get("version") and cite["version"] != t["version"]:
+            continue
+        cited = set(cite.get("paragraphs") or [])
+        if not cited or not t.get("paragraphs") or cited & set(t["paragraphs"]):
+            return t
+    return None
+
+
+def grade_record(record: dict, store: st.Store, idmap=None, differences=None, attacks=None, disputes=None,
+                 triaged=None) -> tuple:
+    """GRADES.md exactly, with the owner's decisions of 14 Nov 2026: a paragraph kept with two readings
+    (law/text-disputes.json) gives grade C, never D, and the mark to check where the owner asked; a code whose triage is
+    not complete (law/triage-status.json) keeps every item resting on it below A. Returns (record, grades report)."""
+    disputes = text_disputes() if disputes is None else disputes
+    triaged = triage_complete() if triaged is None else triaged
     rec = copy.deepcopy(record)
     stmts = statements(rec)
     values = {p["item"] for p in check_values(rec)["problems"] if p["problem"] in
@@ -735,8 +767,10 @@ def grade_record(record: dict, store: st.Store, idmap=None, differences=None, at
             reasons_d.append("noOfficialText")
         if kind == "deadline" and iid in values:
             reasons_d.append("valueMismatch")
+        in_dispute = [(s, disputed(s["cite"], disputes)) for s in basis]
+        in_dispute = [(s, t) for s, t in in_dispute if t]
         unverified = sorted({f"{s['cite']['code']} {s['cite']['article']}" for s in basis
-                             if not _verified(store, s["cite"], critical)})
+                             if not _verified(store, s["cite"], critical) and not disputed(s["cite"], disputes)})
         if unverified:
             reasons_d.append("textNotVerified: " + ", ".join(unverified))
         if reasons_d:
@@ -744,12 +778,15 @@ def grade_record(record: dict, store: st.Store, idmap=None, differences=None, at
         else:
             reasons = []
             interpretive = bool(x.get("interpretive") or any(s.get("interpretive") for s in basis))
+            if in_dispute:
+                interpretive = True
+                reasons.append("disputedText: " + ", ".join(sorted({f"{t['code']} {t['article']}" for _, t in in_dispute})))
             if kind == "deadline" and not x.get("counting"):
                 interpretive = True
             entries = [store.get(s["cite"]["code"], s["cite"]["article"], s["cite"].get("version")) for s in basis]
             if kind == "deadline" and any(e and e.get("frenchCheck") in ("mismatch", "noFrench") for e in entries):
                 interpretive = True
-            if interpretive:
+            if interpretive and not in_dispute:
                 reasons.append("interpretive")
             if idmap is None:
                 reasons.append("singleDerivation")
@@ -767,7 +804,11 @@ def grade_record(record: dict, store: st.Store, idmap=None, differences=None, at
                 why = {(e or {}).get("ledgerReason") for e in entries}
                 reasons.append("scanBlind" if "scanBlind" in why else "scanNotRun" if "scanNotRun" in why
                                else "ledgerNotClean")
-            g = {"grade": "C" if interpretive else ("B" if reasons else "A"), "reasons": reasons, "toCheck": False}
+            open_codes = sorted({s["cite"]["code"] for s in basis} - triaged)
+            if open_codes:
+                reasons.append("triageOpen: " + ", ".join(open_codes))
+            g = {"grade": "C" if interpretive else ("B" if reasons else "A"), "reasons": reasons,
+                 "toCheck": any(t.get("toCheck") for _, t in in_dispute)}
         x["grading"] = g
         report.append({"item": iid, "kind": kind, **g})
     graded = {item_id(k, x): x["grading"] for k, x in items(rec)}
@@ -777,7 +818,7 @@ def grade_record(record: dict, store: st.Store, idmap=None, differences=None, at
             if g is None:
                 continue
             f["shownEffect"] = "warn" if f["effect"] == "blockCleanExport" and g["grade"] != "A" else f["effect"]
-            f["toCheck"] = g["grade"] == "D"
+            f["toCheck"] = bool(g["toCheck"])
     if idmap is not None and differences is not None:
         pairs = [r for r in idmap if r.get("a") and r.get("b")]
         bad = {("a", d["aId"]) for d in differences if d.get("aId")} | {("b", d["bId"]) for d in differences if d.get("bId")}

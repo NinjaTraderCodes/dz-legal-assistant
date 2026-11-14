@@ -13,13 +13,20 @@ Derivers do not read this file: they read [DERIVER-GUIDE.md](DERIVER-GUIDE.md), 
 | 3 | `interpretive` | The item says what the words say; it is not a reading. | Neither the item nor any statement in its `basis` has `"interpretive": true`. A deadline without `counting` is interpretive (the texts did not settle how it is counted). A deadline resting on a store entry whose French check (`frenchCheck`) is `mismatch` or `noFrench` is interpretive. |
 | 4 | `disagreedBeforeReconciliation` | Derivations A and B gave the same value for this item **before** the reconciler saw them. | The comparison report of A and B (`compare-derivations`), through the id map of the unit (`reports/<unit>.idmap.json`). Always A against B: the third derivation of a module (Codex) never counts here. `singleDerivation` when there was only one; `addedAfterDerivation` when neither A nor B had the item (the reconciler or the verifier added it). |
 | 5 | `attackOpen` | No attack on the item is open. | The attack register: every attack that names the item is `refuted` or `fixed`, with the verifier's quote. `notAttacked` when no attack pass ran. |
-| 6 | `ledgerNotClean` | The Official Journal scan found no later text that touches a cited article, up to `source.textAsOf`. | `source.ledgerClean` of every statement in `basis`. `scanNotRun` before the scan; `scanBlind` when an issue of the period could not be read. |
+| 6 | `ledgerNotClean` | The Official Journal scan found no later text that touches a cited article, up to `source.textAsOf`. | `source.ledgerClean` of every statement in `basis`. `scanNotRun` before the scan; `scanBlind` when an issue of the period could not be read; `triageOpen` while the triage of the scan's hits for a cited code is not complete (owner, 14 Nov 2026). |
 
 For a deadline there is one more test inside condition 1: the words of `extract.period` and `extract.sanction` are in the quoted text, and the script reads the same number and unit from them as `period` holds (`valueMismatch` when not). A deadline without `extract` fails condition 1.
 
 A code in `reasons` may be followed by the texts it concerns: `textNotVerified: <code> <article>, <code> <article>`.
 
 **Items that the comparison never saw.** An item of a claim record copied from a module by `flatten-imports` keeps the module's grading. An item added by the reconciler or the verifier that neither A nor B had fails condition 4 with `addedAfterDerivation`, so it is graded B at most: it may warn, never block. A difference between the Codex derivation and a value on which A and B agreed does not touch condition 4: it becomes an attack in the unit's register, and the verifier decides it (condition 5).
+
+## The owner's decisions of 14 November 2026
+
+Two inputs of `grade-records` record decisions the owner took on the step 2a report:
+
+- **A text kept with two readings** (`law/text-disputes.json`): a paragraph whose official wording is probably misprinted, or whose reading is not settled, and that the owner decided to keep with both readings. An item resting on such a paragraph is graded **C** with the reason `disputedText: <code> <article>`, even when the store does not verify the text (it would otherwise be D); the record keeps both readings (an open point with the two `readings`), and the warning carries them. The first one: Law 90-04 art. 19 ¶2 (the page prints «يقدم», the French edition and the library «يقيم»).
+- **The triage of the Official Journal scan, per code** (`law/triage-status.json`): until the triage of the hits that touch a code is complete, an item resting on that code fails condition 6 with the reason `triageOpen: <code>`, so it cannot be A. The owner set the order: the Civil Code and the CPCA first; the Commercial Code, the Family Code and the labour laws before the first module or record that relies on each.
 
 ## The grade
 

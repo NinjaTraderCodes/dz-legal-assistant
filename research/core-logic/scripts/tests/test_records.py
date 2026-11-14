@@ -144,7 +144,7 @@ def test_compare_c_turns_a_lone_difference_into_an_attack():
 
 def test_grade_follows_the_table():
     q, _ = rc.quote_record(record(), STORE)
-    final, report = rc.grade_record(q, STORE)
+    final, report = rc.grade_record(q, STORE, disputes=[], triaged={"cpca"})
     g = {row["item"]: row for row in report["items"]}
     assert g["d1"]["grade"] == "B" and g["d1"]["reasons"] == ["singleDerivation", "notAttacked", "scanNotRun"]
     assert final["examples"][0]["expect"]["findings"][0]["shownEffect"] == "warn"
@@ -156,7 +156,7 @@ def test_grade_follows_the_table():
     idmap = [{"kind": "deadline", "a": "d1", "b": "dd", "reconciled": None},
              {"kind": "statement", "a": "b1", "b": "s1", "reconciled": None},
              {"kind": "statement", "a": "b2", "b": "s2", "reconciled": None}]
-    final, report = rc.grade_record(q, clean, idmap=idmap, differences=[], attacks=[])
+    final, report = rc.grade_record(q, clean, idmap=idmap, differences=[], attacks=[], disputes=[], triaged={"cpca"})
     assert {r["item"]: r["grade"] for r in report["items"]}["d1"] == "A"
     assert final["examples"][0]["expect"]["findings"][0]["shownEffect"] == "blockCleanExport"
     assert final["history"]["agreementBeforeReconciliation"] == "3 of 3 matched items"
@@ -168,7 +168,7 @@ def test_grade_d_for_an_unverified_text_and_corpus_checked_in_critical_use():
                        "says": {"ar": "", "en": ""}})
     r["deadlines"][0]["basis"] = ["b1", "b3"]
     q, _ = rc.quote_record(r, STORE)
-    _, report = rc.grade_record(q, STORE)
+    _, report = rc.grade_record(q, STORE, disputes=[], triaged={"cpca"})
     g = {row["item"]: row for row in report["items"]}
     assert g["d1"]["grade"] == "D" and g["d1"]["reasons"] == ["textNotVerified: cpca 19"] and g["d1"]["toCheck"]
     assert g["b3"]["grade"] == "D"  # a statement in critical use: corpusChecked is not enough
@@ -178,7 +178,7 @@ def test_grade_c_for_a_deadline_without_counting_or_a_french_mismatch():
     r = record()
     del r["deadlines"][0]["counting"]
     q, _ = rc.quote_record(r, STORE)
-    _, report = rc.grade_record(q, STORE)
+    _, report = rc.grade_record(q, STORE, disputes=[], triaged={"cpca"})
     assert {x["item"]: x["grade"] for x in report["items"]}["d1"] == "C"
 
 
@@ -215,3 +215,38 @@ def test_merge_checklists_merges_exact_duplicates_only():
 def test_inventory_lists_each_cited_article_once():
     inv = rc.inventory_cited([record(), record(id="m-two")])
     assert [(x["article"], x["units"]) for x in inv] == [("503", ["m-test", "m-two"]), ("504", ["m-test", "m-two"])]
+
+
+def test_an_untriaged_code_keeps_every_item_below_a():
+    clean = FakeStore([entry("503", STORE.get("cpca", "503")["paragraphs"], clean=True, reason=None),
+                       entry("504", STORE.get("cpca", "504")["paragraphs"], clean=True, reason=None)])
+    q, _ = rc.quote_record(record(), clean)
+    idmap = [{"kind": "deadline", "a": "d1", "b": "dd", "reconciled": None},
+             {"kind": "statement", "a": "b1", "b": "s1", "reconciled": None}]
+    final, report = rc.grade_record(q, clean, idmap=idmap, differences=[], attacks=[], disputes=[], triaged=set())
+    d1 = {r["item"]: r for r in report["items"]}["d1"]
+    assert d1["grade"] == "B" and d1["reasons"] == ["triageOpen: cpca"]
+    assert final["examples"][0]["expect"]["findings"][0]["shownEffect"] == "warn"
+
+
+def test_a_disputed_paragraph_gives_c_even_when_the_text_is_not_verified():
+    store = FakeStore([entry("503", STORE.get("cpca", "503")["paragraphs"], verified=False, by=None),
+                       entry("504", STORE.get("cpca", "504")["paragraphs"])])
+    q, _ = rc.quote_record(record(), store)
+    dispute = [{"code": "cpca", "article": "503", "version": "law-08-09", "paragraphs": [1], "status": "open",
+                "toCheck": False, "readings": [{"ar": "x", "en": "x"}, {"ar": "y", "en": "y"}]}]
+    final, report = rc.grade_record(q, store, disputes=dispute, triaged={"cpca"})
+    g = {r["item"]: r for r in report["items"]}
+    assert g["d1"]["grade"] == "C" and g["d1"]["reasons"][0] == "disputedText: cpca 503" and not g["d1"]["toCheck"]
+    assert g["b1"]["grade"] == "C"
+    _, report = rc.grade_record(q, store, disputes=[], triaged={"cpca"})
+    assert {r["item"]: r["grade"] for r in report["items"]}["d1"] == "D"  # without the owner's decision: unverified
+    dispute[0]["paragraphs"] = [2]  # a dispute on another paragraph does not touch a cite of paragraph 1 only
+    q["basis"][0]["cite"]["paragraphs"] = [1]
+    _, report = rc.grade_record(q, store, disputes=dispute, triaged={"cpca"})
+    assert {r["item"]: r["grade"] for r in report["items"]}["d1"] == "D"
+
+
+def test_the_owners_files_load():
+    assert any(t["article"] == "19" for t in rc.text_disputes())
+    assert "civil-code" not in rc.triage_complete()

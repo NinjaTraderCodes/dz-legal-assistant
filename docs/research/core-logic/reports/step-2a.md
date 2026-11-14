@@ -169,3 +169,18 @@ with the formal-notice module alone, as decided; the terms report is written dur
 - **A smaller first wave:** the Civil Code and the CPCA only (the formal-notice module and the court modules come first): 65 issues in **58 runs**, plus the 5 short runs above; the rest after step 1's first records.
 
 Either way, the 161 issues with only other hits are first looked through by me from the sentences the scan matched, and only those that are not plainly decrees applying a law go to triage; I will give you that number before they run.
+
+## Addendum: the owner's decisions of 14 November 2026, applied
+
+- **Law 91-29 art. 73 is settled**: the page (Opus 5.5, full resolution), Codex and the French edition of the same issue
+  («liées à ses obligations professionnelles **ou** celles dont l'inexécution pourrait porter préjudice», JO 68 of 1991,
+  p. 7 of the PDF) all give «أو التي»: the conditions are alternative. The library correction is in
+  `law/law-delta.json` (`libraryCorrections`), the store serves the corrected wording, and the article is verified.
+  The seed list now has **271 of 273** verified.
+- **Law 90-04 art. 19 ¶2** stays as printed, with the probable misprint recorded: `law/text-disputes.json` makes every
+  rule item resting on that paragraph grade C, with both readings kept.
+- **Triage**: the first wave (Civil Code and CPCA, 58 runs, and the 5 short runs for the unread issues and dates) is
+  approved; the other codes are triaged before the first module or record that relies on each. `law/triage-status.json`
+  keeps every item resting on a code whose triage is not complete below grade A (reason `triageOpen`).
+- **Art. 73-2** stays open: the French («se faire assister d'un travailleur de son choix») does not decide between the
+  two Arabic forms, which mean the same.

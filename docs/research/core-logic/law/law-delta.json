@@ -7063,5 +7063,20 @@
   }
  ],
  "corpusCorrections": [],
- "libraryCorrections": []
+ "libraryCorrections": [
+  {
+   "code": "labour-relations",
+   "article": "73",
+   "kind": "wording",
+   "finding": "Law 91-29 (JO 68 of 25 Dec. 1991), which gave art. 73 of Law 90-11 its wording, prints in the first item of the list «تنفيذ التعليمات المرتبطة بالتزاماته المهنية أو التي قد تلحق أضرارا بالمؤسسة»; the library has «والتي». With «و» the instructions refused must both concern the worker's duties and be harmful; with «أو» either is enough. Settled from the page: Opus 5.5 at full resolution, sure (settle-lab9129-a, re-checked in settle-rc-g); Codex read «أو التي» (fetch-20261113/lab9011-91-29-p009); the French edition of the same issue prints «liées à ses obligations professionnelles ou celles dont l'inexécution pourrait porter préjudice à l'entreprise» (F1991068 p7, french-20261114/frl9129-p007). The other «والتي» of the article (paragraph 2) is right and stays. Owner's decision of 14 Nov 2026: settle fully before step 1 uses it, then add the correction.",
+   "exactWording": "يتم التسريح التأديبي في حالة ارتكاب العامل أخطاء جسيمة.\nوعلاوة على الأخطاء الجسيمة، التي يعاقب عليها التشريع الجزائي والتي ترتكب أثناء العمل، تعتبر على الخصوص أخطاء جسيمة، يحتمل أن ينجر عنها التسريح بدون مهلة العطلة وبدون علاوات، الأفعال الآتية:\n– إذا رفض العامل، بدون عذر مقبول، تنفيذ التعليمات المرتبطة بالتزاماته المهنية أو التي قد تلحق أضرارا بالمؤسسة، والصادرة من السلطة السلمية التي يعينها المستخدم أثناء الممارسة العادية لسلطاته،\n– إذا أفضى معلومات مهنية تتعلق بالتقنيات والتكنولوجيا وطرق الصنع والتنظيم أو وثائق داخلية للهيئة المستخدمة، إلا إذا أذنت السلطة السلمية بها أو أجازها القانون،\n– إذا شارك في توقف جماعي وتشاوري عن العمل خرقا للأحكام التشريعية الجاري بها العمل في هذا المجال،\n– إذا قام بأعمال عنف،\n– إذا تسبب عمدا في أضرار مادية تصيب البنايات والمنشآت والآلات والأدوات والمواد الأولية والأشياء الأخرى التي لها علاقة بالعمل،\n– إذا رفض تنفيذ أمر التسخير الذي تم تبليغه وفقا لأحكام التشريع المعمول به،\n– إذا تناول الكحول أو المخدرات داخل أماكن العمل.",
+   "source": {
+    "url": "docs/official-law-texts/A1991068.pdf",
+    "sha256": "f9d1dc6a42e87bed52b98ca99aeda954b40dad75dc4ed83435dc00bbec72c327",
+    "retrievedOn": "2026-10-16"
+   },
+   "pdfPage": 9,
+   "integration": "In the generator input of the labour texts (data/law/transcribed-articles.json, built by tools/law/build_transcribed.py), replace «المهنية والتي قد تلحق» by «المهنية أو التي قد تلحق» in art. 73 of labour-relations (one occurrence; the «والتي» of paragraph 2 stays), rebuild data/law/codes/labour-relations.json, and keep the law tests green."
+  }
+ ]
 }

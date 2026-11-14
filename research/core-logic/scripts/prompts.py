@@ -28,6 +28,8 @@ STORE_JSON = os.path.join(WORK, "store", "articles.json")
 STORE_TEXT = os.path.join(WORK, "store", "text")
 RULES_TOOL = os.path.join(st.REPO, "research", "core-logic", "src", "DzLegal.CoreLogic.Rules.Tool", "bin", "Release",
                           "net10.0", "rules.exe")
+RUNS = os.path.join(WORK, "runs", "step1")
+PYTHON = r"C:\Users\TheShadow\AppData\Local\Programs\Python\Python312\python.exe"
 MARK = "--- PROMPT ---"
 PLACEHOLDER = re.compile(r"\{\{(\w+)\}\}")
 LABOUR_UNITS = {"labour-prelitigation", "abusive-dismissal", "unpaid-wages"}
@@ -154,6 +156,15 @@ def french_sources(unit: str) -> str:
     return "\n" + "\n".join(lines)
 
 
+def _run_file(unit: str, name: str) -> str:
+    """A text the stage-7 script wrote for this unit (stage7.py render / pairs), in the working folder."""
+    path = os.path.join(RUNS, unit, name)
+    if not os.path.isfile(path):
+        raise FileNotFoundError(f"{path}: write it with stage7.py first")
+    with open(path, encoding="utf-8") as f:
+        return f.read().strip("\n")
+
+
 def values_for(prompt: str, unit: str) -> dict[str, str]:
     base = {"worktree": st.REPO, "unit_id": unit, "module_id": unit, "unit_kind": "module",
             "store_path": STORE_JSON, "store_text": STORE_TEXT, "rules_tool": RULES_TOOL}
@@ -171,6 +182,16 @@ def values_for(prompt: str, unit: str) -> dict[str, str]:
                     texts=f"### {unit}\n\n" + unit_texts(unit)["rendered"])
     elif prompt == "rules-reconcile":
         base["module_finals"] = "none"  # a module imports nothing; claim records get their modules' final paths
+    elif prompt == "rules-adversary":
+        ledger = os.path.join(CL, "law", "amendment-ledger.json")
+        base.update(record_path=os.path.join(CL, "rules", "reconciled", "quoted", f"{unit}.json"),
+                    ledger_path=ledger if os.path.isfile(ledger) else "(none yet: the amendment ledger does not exist)",
+                    oj_fetch=f"{PYTHON} {os.path.join(os.path.dirname(os.path.abspath(__file__)), 'oj_fetch.py')}")
+    elif prompt == "rules-attack-codex":
+        base.update(unit_label=f"module {unit}: {module_row(unit)['question']}", slots=slots(unit, english_only=True),
+                    record_text=_run_file(unit, "record_text.txt"))
+    elif prompt == "rules-support-check-codex":
+        base["pairs"] = _run_file(unit, "support-pairs.txt")
     else:
         raise KeyError(f"no filling rule for {prompt}")
     return base

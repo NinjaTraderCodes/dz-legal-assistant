@@ -1,0 +1,53 @@
+{
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "attacks",
+  "nothingFound"
+ ],
+ "properties": {
+  "attacks": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "target",
+     "kind",
+     "claim",
+     "evidenceWords",
+     "fromMemory"
+    ],
+    "properties": {
+     "target": {
+      "type": "string"
+     },
+     "kind": {
+      "type": "string",
+      "enum": [
+       "misreading",
+       "exception",
+       "missing",
+       "amendmentSuspected",
+       "specialLawSuspected",
+       "wrongEffect",
+       "wrongCondition"
+      ]
+     },
+     "claim": {
+      "type": "string"
+     },
+     "evidenceWords": {
+      "type": "string"
+     },
+     "fromMemory": {
+      "type": "boolean"
+     }
+    }
+   }
+  },
+  "nothingFound": {
+   "type": "boolean"
+  }
+ }
+}

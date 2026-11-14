@@ -1,0 +1,37 @@
+{
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "answers"
+ ],
+ "properties": {
+  "answers": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "n",
+     "supports",
+     "missingOrWrong"
+    ],
+    "properties": {
+     "n": {
+      "type": "integer"
+     },
+     "supports": {
+      "type": "string",
+      "enum": [
+       "yes",
+       "partly",
+       "no"
+      ]
+     },
+     "missingOrWrong": {
+      "type": "string"
+     }
+    }
+   }
+  }
+ }
+}

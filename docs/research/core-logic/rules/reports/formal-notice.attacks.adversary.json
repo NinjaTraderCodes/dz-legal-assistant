@@ -1,0 +1,167 @@
+{
+ "unit": "formal-notice",
+ "record": "docs/research/core-logic/rules/reconciled/quoted/formal-notice.json",
+ "role": "adversary",
+ "date": "2026-11-14",
+ "searched": {
+  "amendments": "Amendment ledger (civil-code, cpca, law-22-13 since 2003): no instrument touches Civil Code 119, 120, 164, 176, 179-187, 323, 392 or 502. Commercial Code is outside the ledger. I checked law 05-02 in OJ 2005 issue 11, pages 8-9: art. 177 is untouched. One web search found no amendment to the Civil Code after law 07-05. No amendment attack is made.",
+  "officialJournal": [
+   "https://www.joradp.dz/FTP/jo-arabe/2007/A2007031.pdf",
+   "https://www.joradp.dz/FTP/jo-arabe/2005/A2005011.pdf",
+   "https://www.joradp.dz/FTP/jo-arabe/1995/A1995013.pdf",
+   "https://www.joradp.dz/FTP/jo-arabe/2006/A2006015.pdf"
+  ],
+  "supremeCourt": "Searched coursupreme.dz for الإعذار with art. 119, art. 180, the petition, eviction and art. 469 مكرر 1. Decisions 1009298, 1094447 and 1225016 were read through a fetch tool that returns excerpts. Decision 1408475 confirms the record's art. 181 reading and is not an attack. Decision 988324 is said to apply art. 119 to all obligations, but its page returned 404 and it is not used.",
+  "notFound": "No Supreme Court decision found on whether the lack of notice makes a claim inadmissible or only unfounded (o5), or on art. 186 (o4)."
+ },
+ "attacks": [
+  {
+   "id": "adv-1",
+   "kind": "exception-in-same-code",
+   "targets": ["p3", "exR2", "exB7", "o6", "k25"],
+   "claim": "A lease ends by law when its agreed term runs out, with no notice to quit (Civil Code art. 469 مكرر 1 ¶1, law 07-05). The most common eviction claim is a tenant who stays after the term. The record still treats every 'eviction' request as needing a prior notice: p3 warns when there is none (exR2), and there is no slot for 'lease ended at its term'. k25 says the lease chapter has no notice rule other than art. 480 for the lessor's maintenance, but art. 469 مكرر 1 is in the same chapter and in the store, and the record never cites it.",
+   "whatRecordDoes": "requests=[eviction], notice_served=no, every art. 181 exemption 'no' -> p3 warns 'notice missing' (exR2). The lawyer is told that a step is missing when the law says no step is needed. Nothing tells him that the claim rests on the expired term.",
+   "evidence": [
+    {"tier": 1, "source": "Official Journal 2007, issue 31 (13 May 2007), page 4: law 07-05 inserting art. 469 مكرر 1 into the Civil Code", "url": "https://www.joradp.dz/FTP/jo-arabe/2007/A2007031.pdf", "quote": "ينتهي الإيجار بانقضاء المدة المتفق عليها دون حاجة إلى تنبيه بالإخلاء."},
+    {"tier": 2, "source": "Store text, Civil Code art. 507 مكرر ¶1 (law 07-05, same issue): the transitional rule", "quote": "تبقى الإيجارات المبرمة في ظل التشريع السابق خاضعة له مدة عشر (10) سنوات، ابتداء من تاريخ نشر هذا القانون في الجريدة الرسمية."}
+   ],
+   "note": "There is a further case the record does not cover. Under art. 507 مكرر ¶2, a tenant aged 60 when the law was published keeps the right to stay for life under the earlier legislation. An eviction against such a tenant follows the earlier regime, which is not in the store.",
+   "confidence": "high"
+  },
+  {
+   "id": "adv-2",
+   "kind": "special-law",
+   "targets": ["p3", "n3", "k26", "k55", "acceptedMeans m3/m4"],
+   "claim": "Commercial leases are covered only by n3, the art. 177 warning for a breach. The record misses two rules. (a) For leases concluded since law 05-02, the tenant must leave at the term with no notice to quit and no eviction indemnity, unless the parties agreed otherwise (Commercial Code art. 187 مكرر ¶2). (b) For leases concluded before that law, art. 187 مكرر 1 keeps their renewal under the law in force when the lease was concluded. Under that regime the lease ends only by a notice to quit given at least six months before the term, made by an extrajudicial act stating the reasons and reciting art. 194, failing which it is void (art. 173 ¶1, ¶5). The record has the same generic p3 for a commercial eviction in both cases. It accepts any of m1 to m4, including a registered letter (m3), which is void for an old lease, and it warns about a missing notice that a new lease does not need.",
+   "whatRecordDoes": "Commercial lease concluded in 2015 and expired, requests=[eviction], notice_served=no -> p3 warns (wrong). Commercial lease from 1999, notice to quit sent by registered letter (notice_means=post) -> nothing is flagged, yet art. 173 ¶5 makes that notice void.",
+   "evidence": [
+    {"tier": 1, "source": "Official Journal 2005, issue 11 (9 February 2005), page 9: law 05-02 art. 3 inserting Commercial Code arts. 187 مكرر and 187 مكرر 1 (the article itself is on page 8)", "url": "https://www.joradp.dz/FTP/jo-arabe/2005/A2005011.pdf", "quote": "يلزم المستأجر بمغادرة الأمكنة المستأجرة بانتهاء الأجل المحدد في العقد دون حاجة إلى توجيه تنبيه بالإخلاء ودون الحق في الحصول على تعويض الاستحقاق المنصوص عليه في هذا القانون، ما لم يشترط الأطراف خلاف ذلك."},
+    {"tier": 1, "source": "Same page, art. 187 مكرر 1", "url": "https://www.joradp.dz/FTP/jo-arabe/2005/A2005011.pdf", "quote": "يبقى تجديد عقود الإيجار المبرمة قبل النشر المذكور في المادة 187 مكرر أعلاه، خاضعا للتشريع الساري المفعول بتاريخ إبرام عقد الإيجار."},
+    {"tier": 2, "source": "Store text, Commercial Code art. 173 ¶5", "quote": "ويجب أن يتم التنبيه بالإخلاء بعقد غير قضائي وأن تبين فيه الأسباب التي أدت إلى توجيهه مع إعادة ذكر مضمون المادة 194، وإلا اعتبر باطلا."},
+    {"tier": 2, "source": "Supreme Court, commercial and maritime chamber, decision 1225016 of 12-10-2017 (applies art. 187 مكرر)", "url": "https://coursupreme.dz/decision/%D8%A7%D9%84%D9%82%D8%B1%D8%A7%D8%B1-%D8%B1%D9%82%D9%85-1225016-%D8%A7%D9%84%D9%85%D8%A4%D8%B1%D8%AE-%D9%81%D9%8A-12-10-2017/", "quote": "لا يعد بقاء المستأجر بالأمكنة بعد إنتهاء مدة عقد الإيجار دليلا على إستمرارية العقد بل شاغلا فقط ولا يستفيد من الحقوق المترتبة عن صفة المستأجر."}
+   ],
+   "confidence": "high"
+  },
+  {
+   "id": "adv-3",
+   "kind": "exception-in-same-code",
+   "targets": ["p1", "k1", "k50", "o4"],
+   "claim": "Under Civil Code art. 502 ¶1, a tenant who keeps the premises without right after the term must pay the lessor compensation, measured on the rental value and the harm. The article ties the compensation to holding over and does not require a notice. It is a candidate 'contrary text' under art. 179. k1 and k50 list the contrary texts found (181, 392, possibly 186) and do not list art. 502. The indemnity for occupation (تعويض عن الشغل), usually asked together with eviction, therefore goes through p1, which warns of a missing notice.",
+   "whatRecordDoes": "requests=[eviction, damages], lease expired, notice_served=no -> p1 warns 'compensation is due only after notice'. The record has no reading under which art. 502 makes the occupation indemnity due without notice.",
+   "evidence": [
+    {"tier": 2, "source": "Store text, Civil Code art. 502 ¶1 (ordinance 75-58 wording; not touched by law 07-05 per the ledger)", "quote": "يجب على المستأجر أن يرد العين المؤجرة عند انتهاء مدة الإيجار فإذا أبقاها تحت يده دون حق وجب عليه أن يدفع للمؤجر تعويضا باعتبار القيمة الإيجارية للعين وباعتبار ما لحق المؤجر من ضرر."}
+   ],
+   "note": "That art. 502 dispenses with notice is a reading, but it is at least as strong as the record's own reading of art. 186 (o4), which the record does list.",
+   "confidence": "medium"
+  },
+  {
+   "id": "adv-4",
+   "kind": "special-law",
+   "targets": ["p2", "p3", "acceptedMeans", "k33", "k42"],
+   "claim": "Insurance has its own statutory notice for an unpaid premium (ordinance 95-07, art. 16):\n- The insurer must give the insured notice (يعذر) by registered letter with acknowledgement of receipt, to pay within 30 days after the 15-day payment term.\n- Cover is suspended when the 30 days pass.\n- The insurer may rescind 10 days after the suspension. The rescission is notified by registered letter, and the insurer keeps the right to the premium for the period covered.\nThe record has no insurance case. It accepts any means (m1 to m4), sets no period for any notice (k33: 'No general period'), and knows only the general art. 119 path.",
+   "whatRecordDoes": "An insurer suing for an unpaid premium or for rescission, notice_served=yes, notice_means=bailiff, served 5 days before the petition -> no finding at all. Yet the statutory form is a registered letter, and the 30-day and 10-day periods were not respected.",
+   "evidence": [
+    {"tier": 1, "source": "Official Journal 1995, issue 13, page 6: ordinance 95-07 art. 16 ¶3", "url": "https://www.joradp.dz/FTP/jo-arabe/1995/A1995013.pdf", "quote": "في حالة عدم الدفع، يجب على المؤمن أن يعذر المؤمن له بواسطة رسالة مضمونة الوصول مع الإشعار بالإستلام بدفع القسط المطلوب خلال الثلاثين (30) يوما التالية لانقضاء الأجل المحدد في 2 أعلاه."},
+    {"tier": 1, "source": "Official Journal 1995, issue 13, page 7: art. 16 ¶5", "url": "https://www.joradp.dz/FTP/jo-arabe/1995/A1995013.pdf", "quote": "للمؤمن الحق في فسخ العقد بعد عشرة (10) أيام من إيقاف الضمانات، ويجب تبليغ الفسخ للمؤمن له بواسطة رسالة مضمونة الوصول مع الإشعار بالإستلام"},
+    {"tier": 1, "source": "Official Journal 2006, issue 15 (12 March 2006), pages 3-5: law 06-04 amending ordinance 95-07. The articles it amends are 2, 14, 30, 33, 60, 62, 68, 69, 71, 73, 76, 90 and others; art. 16 is not among them.", "url": "https://www.joradp.dz/FTP/jo-arabe/2006/A2006015.pdf", "quote": "(no amendment of art. 16 found in this issue)"}
+   ],
+   "note": "I checked art. 16 against law 06-04 only. I did not search for later amendments of ordinance 95-07 after 2006.",
+   "confidence": "high"
+  },
+  {
+   "id": "adv-5",
+   "kind": "special-law",
+   "targets": ["p1", "k1", "k50", "o4", "k52"],
+   "claim": "An insured or beneficiary suing an insurer for an indemnity paid late has a contrary text under art. 179. Ordinance 95-07 art. 14, rewritten by law 06-04 art. 3, gives interest for each day of delay at the rediscount rate once the settlement term of the general conditions has passed. The 1995 wording also gave damages for delay once the settlement term passed. Neither wording mentions a notice. p1 warns about a missing notice, and k1 and k50 list no such text.",
+   "whatRecordDoes": "requests=[payment, damages] against an insurer, notice_served=no -> p1 warns that compensation is due only after notice, and p3 warns too. The delay interest under art. 14 runs from the contractual settlement term.",
+   "evidence": [
+    {"tier": 1, "source": "Official Journal 2006, issue 15, page 3: law 06-04 art. 3 rewriting art. 14 of ordinance 95-07", "url": "https://www.joradp.dz/FTP/jo-arabe/2006/A2006015.pdf", "quote": "إذا لم يدفع التعويض المذكور في المادة 13 أعلاه، في الآجال المحددة في الشروط العامة لعقد التأمين، يحق للمستفيد طلب هذا التعويض بإضافة الفوائد عن كل يوم تأخير، على نسبة إعادة الخصم."},
+    {"tier": 1, "source": "Official Journal 1995, issue 13, page 6: the original art. 14 (earlier wording)", "url": "https://www.joradp.dz/FTP/jo-arabe/1995/A1995013.pdf", "quote": "بعد انقضاء أجل التسوية المشار إليه في الفقرة الأولى من المادة 13 أعلاه، يجوز للمؤمن له أن يطالب، زيادة عن التعويض المستحق، بتعويض الأضرار اللاحقة به من جراء هذا التأخير."}
+   ],
+   "confidence": "medium-high"
+  },
+  {
+   "id": "adv-6",
+   "kind": "court-principle",
+   "targets": ["o1", "k19", "k53", "p1", "p3"],
+   "claim": "The Supreme Court has ruled on the two questions the record leaves open in o1 ('no text in the store speaks of the petition'):\n- For successive or continuing obligations (instalments, rent, loan repayments), notice is in principle not required, except for at least one notice when the debtor fails to perform the first of them.\n- Once that condition is met, the lawsuit itself stands as that notice.\nThe record gives o1 only two readings: the petition always stands as notice, or a separate prior notice is always required. It does not give the Court's conditional reading, and it has no slot for successive obligations.",
+   "whatRecordDoes": "A claim for unpaid monthly instalments, requests=[payment, damages], notice_served=no, no art. 181 exemption -> p1 and p3 warn. Under the Court's reading, the lawsuit can stand as the notice. o1 stays at grade C with no mention of this decision.",
+   "evidence": [
+    {"tier": 2, "source": "Supreme Court, commercial and maritime chamber, decision 1009298 of 10-09-2015 (court website)", "url": "https://coursupreme.dz/decision/%D8%A7%D9%84%D9%82%D8%B1%D8%A7%D8%B1-%D8%B1%D9%82%D9%85-1009298-%D8%A7%D9%84%D9%85%D8%A4%D8%B1%D8%AE-%D9%81%D9%8A-10-09-2015/", "quote": "ولئن كان هذا الإعذار غير لازم مبدئيّا في حالة تنفيذ الالتزامات المتتالية أو المستمرّة ... فإنه يطلب على الأقلّ إعذارا واحدا عند الامتناع عن تنفيذ أوّل التزام من هذه الالتزامات المتتالية أو المستمرّة ... وإذا توفرّ هذا الشرط الأخير تكون الدعوى المرفوعة بمثابة هذا الإعذار"}
+   ],
+   "note": "I read the quotes from the court's page through a fetch tool that returns excerpts. Read the full text before relying on it.",
+   "confidence": "medium"
+  },
+  {
+   "id": "adv-7",
+   "kind": "missing-case",
+   "targets": ["p1", "p2", "p3", "acceptedMeans", "proposedSlots"],
+   "claim": "The record handles one kind of contract clause: one that removes the notice (default_on_due_date_agreed). It does not handle the opposite clause, where the contract requires a particular notice (form, period, or addressee) before the creditor may accelerate, claim or rescind. Art. 120 ¶2 leaves the notice to what the parties determine. The Supreme Court has quashed a judgment for disregarding a notice stipulated in a loan agreement, and held that the lawsuit could not replace it.",
+   "whatRecordDoes": "A bank loan whose agreement requires a 15-day written notice before demanding repayment of the whole loan. The bank serves a bailiff warning 2 days before filing, notice_served=yes, notice_means=bailiff -> no finding. Nothing asks whether the contract fixes a form or period for the notice.",
+   "evidence": [
+    {"tier": 2, "source": "Supreme Court decision 1009298 of 10-09-2015 (principle)", "url": "https://coursupreme.dz/decision/%D8%A7%D9%84%D9%82%D8%B1%D8%A7%D8%B1-%D8%B1%D9%82%D9%85-1009298-%D8%A7%D9%84%D9%85%D8%A4%D8%B1%D8%AE-%D9%81%D9%8A-10-09-2015/", "quote": "لابد من توجيه الإعذار للمدين, بغرض تسديد الدين, مادام الدائن (البنك) لم يوقع جدول الاستهلاك الذي يبين آجال الاستفادة وأداء الدين."},
+    {"tier": 2, "source": "Store text, Civil Code art. 120 ¶2", "quote": "وهذا الشرط لا يعفي من الاعذار، الذي يحدد حسب العرف عند عدم تحديده من طرف المتعاقدين."}
+   ],
+   "confidence": "medium"
+  },
+  {
+   "id": "adv-8",
+   "kind": "court-principle",
+   "targets": ["p2", "p3", "notRequiredWhen lists", "k25"],
+   "claim": "For leases of public housing managed by the real-estate promotion and management offices (decree 76-147), the Supreme Court held that the tenant's refusal to execute an enforceable judgment ordering him to pay rent dispenses with any notice and entails rescission of the lease. It quashed an appeal judgment that had rejected the claim only for lack of the notice under decrees 08-142 and 97-506. The record's exemption list does not include this case, and the record never mentions that public-body residential leases keep their own rules (Civil Code art. 507 مكرر 1).",
+   "whatRecordDoes": "An office (OPGI) sues for rescission and eviction after a final rent judgment was not executed, notice_served=no -> p2 and p3 warn. The Court says no notice was needed.",
+   "evidence": [
+    {"tier": 2, "source": "Supreme Court, real-estate chamber, decision 1094447 of 15-03-2018 (court website)", "url": "https://coursupreme.dz/decision/%D8%A7%D9%84%D9%82%D8%B1%D8%A7%D8%B1%D8%B1%D9%82%D9%85-1094447-%D8%A7%D9%84%D8%B5%D8%A7%D8%AF%D8%B1-%D8%A8%D8%AA%D8%A7%D8%B1%D9%8A%D8%AE-15-03-2018/", "quote": "الامتناع عن تنفيذ حكم قضائي حائز للصيغة التنفيذية يقضي بإلزام المستأجر بتسديد بدل الإيجار يغني عن توجيه الاعذار، ويترتب عليه فسخ عقد الإيجار."},
+    {"tier": 2, "source": "Store text, Civil Code art. 507 مكرر 1 (law 07-05)", "quote": "تبقى الإيجارات ذات الاستعمال السكني المبرمة مع المؤسسات العمومية المختصة خاضعة للأحكام الخاصة بها."},
+    {"tier": 3, "source": "The decision's own summary of decree 76-147 art. 17 and executive decree 08-142; I did not read these decrees in the OJ", "quote": "تقتضي أن مخالفة أحكامه تؤدي إلى فسخ عقد الإيجار وتعرض المتسبب للطرد الفوري، و لا تشترط أي اعذار"}
+   ],
+   "confidence": "medium"
+  },
+  {
+   "id": "adv-9",
+   "kind": "misreading",
+   "targets": ["acceptedMeans m3 (p1, p2, p3)", "o2", "k66"],
+   "claim": "The label of means m3 puts words into art. 180. It says the code's postal way is '(رسالة مضمونة مع إشعار بالاستلام)'. Art. 180 says only «عن طريق البريد على الوجه المبين في هذا القانون», and the record itself says no text setting out that way was found (o2 at grade D, k66 searchedNotFound). The label states as the law's own form something the words do not contain. It also makes a registered letter an accepted means with no finding, while o2's protective reading prefers a bailiff warning.",
+   "whatRecordDoes": "notice_means=post -> no warning at all (n1 fires only for 'other'). Yet the record cannot say what form the code requires for a postal notice.",
+   "evidence": [
+    {"tier": 2, "source": "Store text, Civil Code art. 180 ¶1 (as quoted in the record's b5)", "quote": "ويجوز أن يتم الاعذار عن طريق البريد على الوجه المبين في هذا القانون"}
+   ],
+   "confidence": "medium"
+  },
+  {
+   "id": "adv-10",
+   "kind": "misreading",
+   "targets": ["b23", "n3"],
+   "claim": "b23's 'says' and n3's message leave out the time condition in Commercial Code art. 177 ¶2. The breach can be invoked only if it continued or was repeated for more than a month after the warning. b23 says only 'continued after the lessor's warning', and n3 mentions only the form. k33 mentions the month, but the item a lawyer sees (n3) does not. Also, b23 has ledgerClean false only because the ledger does not cover the Commercial Code. I checked law 05-02 (OJ 2005, issue 11, pages 8-9): it amends arts. 146, 169, 170 and 192 and inserts 187 مكرر and 187 مكرر 1, and does not touch art. 177.",
+   "whatRecordDoes": "A refusal to renew filed 10 days after the art. 177 warning -> n3 points to the form only and says nothing about the one-month period.",
+   "evidence": [
+    {"tier": 2, "source": "Store text, Commercial Code art. 177 ¶2 (as quoted in the record's b23)", "quote": "الا اذا تواصل ارتكابها أو تجديدها لاكثر من شهر بعد انذار المؤجر بتوقفها"},
+    {"tier": 1, "source": "Official Journal 2005, issue 11, pages 8-9 (law 05-02, arts. 1-4): art. 177 is not amended", "url": "https://www.joradp.dz/FTP/jo-arabe/2005/A2005011.pdf", "quote": "المادة 2 : تعدل المواد 146 و169 و170 من الأمر رقم 75-59"}
+   ],
+   "confidence": "medium"
+  },
+  {
+   "id": "adv-11",
+   "kind": "procedural-rule",
+   "targets": ["acceptedMeans m2", "b22"],
+   "claim": "Means m2, a warning directed on an order of the court president under CPCA art. 310 ¶2, is accepted with no condition. Under CPCA art. 311 ¶3, an order on petition that is not executed within three months of its date lapses and has no effect. A warning served more than three months after the order rests on a lapsed order. The record does not cite art. 311.",
+   "whatRecordDoes": "notice_means=court-order means (m2), order dated 1 January, warning served 15 May -> no finding.",
+   "evidence": [
+    {"tier": 2, "source": "Store text, CPCA art. 311 ¶3 (law 08-09; not in law 22-13's list of amended articles)", "quote": "كل أمر على عريضة لم ينفذ خلال أجل ثلاثة (3) أشهر من تاريخ صدوره، يسقط ولا يرتب أي أثر."}
+   ],
+   "confidence": "medium-low"
+  },
+  {
+   "id": "adv-12",
+   "kind": "missing-case",
+   "targets": ["b10", "doc4", "n1", "o8", "debtor_refused_in_writing"],
+   "claim": "The written-refusal exemption (art. 181 ¶5, «صرح المدين كتابة») does not say what counts as writing. Since law 05-10, the Civil Code treats electronic writing as equal to writing on paper, if the author's identity can be checked and the writing is kept intact (arts. 323 مكرر and 323 مكرر 1). Elsewhere the record lists 'an e-mail' among the doubtful means (n1, o8), so a lawyer whose debtor refused by e-mail or text message is led to answer 'no' and to send a needless notice. The record never says that an electronic refusal can satisfy ¶5.",
+   "whatRecordDoes": "The debtor's e-mail says 'I will not pay'. The lawyer, reading n1 and o8, answers debtor_refused_in_writing=no -> p1 and p3 warn, with no hint that art. 323 مكرر 1 may make the e-mail 'writing'.",
+   "evidence": [
+    {"tier": 2, "source": "Store text, Civil Code art. 323 مكرر 1 (inserted by law 05-10, OJ 2005 issue 44 per the ledger)", "quote": "يعتبر الإثبات بالكتابة في الشكل الإلكتروني كالإثبات بالكتابة على الورق، بشرط إمكانية التأكد من هوية الشخص الذي أصدرها وأن تكون معدة ومحفوظة في ظروف تضمن سلامتها."}
+   ],
+   "note": "Art. 323 مكرر 1 is a rule of proof. Applying it to the 'writing' of art. 181 ¶5 is a reading.",
+   "confidence": "low"
+  }
+ ]
+}

@@ -53,7 +53,7 @@ def test_fill_refuses_a_placeholder_left_empty():
 
 
 @pytest.mark.parametrize("name", ["rules-derive-a", "rules-derive-b", "rules-derive-c-codex", "rules-boundary-cases",
-                                  "rules-reconcile", "rules-adversary"])
+                                  "rules-reconcile", "rules-adversary", "rules-verify"])
 def test_every_placeholder_of_a_step_1_prompt_has_a_filling_rule(name):
     _, body = prompts.template(name)
     values = prompts.values_for(name, "formal-notice")

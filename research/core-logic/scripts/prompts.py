@@ -156,6 +156,14 @@ def french_sources(unit: str) -> str:
     return "\n" + "\n".join(lines)
 
 
+def oj_fetch_command(unit: str, role: str) -> str:
+    """The one door to joradp.dz, complete but for the URL (oj_fetch.py: --caller, --wait <seconds>, --out). The
+    first unit's prompts gave only the script and "--wait", and the adversary had to find the arguments itself."""
+    out = os.path.join(RUNS, unit.replace("+", "-"), f"oj-{role}")
+    script = os.path.join(os.path.dirname(os.path.abspath(__file__)), "oj_fetch.py")
+    return f"{PYTHON} {script} --caller {role}-{unit} --wait 600 --out {out}"
+
+
 def _run_file(unit: str, name: str) -> str:
     """A text the stage-7 script wrote for this unit (stage7.py render / pairs), in the working folder."""
     path = os.path.join(RUNS, unit, name)
@@ -186,12 +194,39 @@ def values_for(prompt: str, unit: str) -> dict[str, str]:
         ledger = os.path.join(CL, "law", "amendment-ledger.json")
         base.update(record_path=os.path.join(CL, "rules", "reconciled", "quoted", f"{unit}.json"),
                     ledger_path=ledger if os.path.isfile(ledger) else "(none yet: the amendment ledger does not exist)",
-                    oj_fetch=f"{PYTHON} {os.path.join(os.path.dirname(os.path.abspath(__file__)), 'oj_fetch.py')}")
+                    oj_fetch=oj_fetch_command(unit, 'adversary'))
     elif prompt == "rules-attack-codex":
         base.update(unit_label=f"module {unit}: {module_row(unit)['question']}", slots=slots(unit, english_only=True),
                     record_text=_run_file(unit, "record_text.txt"))
     elif prompt == "rules-support-check-codex":
         base["pairs"] = _run_file(unit, "support-pairs.txt")
+    elif prompt == "rules-verify":
+        # one unit, or two joined by "+" (the verifier takes units two by two, modules first)
+        units = unit.split("+")
+        rules_dir, reports = os.path.join(CL, "rules"), os.path.join(CL, "rules", "reports")
+
+        def listing(paths_of):
+            def one(p):  # a path, or (path, note): the note stays outside the backticks
+                return f"`{p[0]}` {p[1]}" if isinstance(p, tuple) else f"`{p}`"
+            return "\n" + "\n".join(f"- `{u}`: " + ", ".join(one(p) for p in paths_of(u)) for u in units)
+
+        def attacks_of(u):
+            paths = [os.path.join(reports, f"{u}.attacks.adversary.json"), os.path.join(reports, f"{u}.attacks.codex.json"),
+                     (os.path.join(reports, f"{u}.support.json"), "(its `attacks` list: the \"no\" and \"partly\" answers)")]
+            if os.path.isfile(os.path.join(reports, f"{u}.c-comparison.json")):
+                paths.append((os.path.join(reports, f"{u}.c-comparison.json"), "(its `attacks` list only)"))
+            return paths
+
+        ledger = os.path.join(CL, "law", "amendment-ledger.json")
+        base.update(units=", ".join(f"`{u}`" for u in units),
+                    record_paths=listing(lambda u: [os.path.join(rules_dir, "reconciled", "quoted", f"{u}.json")]),
+                    attack_paths=listing(attacks_of),
+                    reconciliation_paths=listing(lambda u: [os.path.join(reports, f"{u}.reconciliation.md")]),
+                    register_paths=listing(lambda u: [os.path.join(reports, f"{u}.attacks.json")]),
+                    candidate_paths=listing(lambda u: [os.path.join(rules_dir, "final-candidates", f"{u}.json")]),
+                    requests_path=os.path.join(CL, "law", "requests.jsonl"),
+                    ledger_path=ledger if os.path.isfile(ledger) else "(none yet: the amendment ledger does not exist)",
+                    oj_fetch=oj_fetch_command(unit, 'verify'))
     else:
         raise KeyError(f"no filling rule for {prompt}")
     return base

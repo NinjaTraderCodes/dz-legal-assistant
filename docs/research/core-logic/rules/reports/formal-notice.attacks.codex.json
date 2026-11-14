@@ -1,0 +1,86 @@
+{
+ "attacks": [
+  {
+   "target": "p1",
+   "kind": "misreading",
+   "claim": "Article 179 makes notice a condition of compensation becoming due; it does not expressly require notice before filing the claim. With notice_served=no at filing, p1 therefore asserts a mandatory pre-filing step that its citation does not establish.",
+   "evidenceWords": "لا يستحق التعويض إلا بعد اعذار المدين ما لم يوجد نص مخالف لذلك.",
+   "fromMemory": false,
+   "id": "cdx-1",
+   "who": "codexAttack"
+  },
+  {
+   "target": "b23",
+   "kind": "misreading",
+   "claim": "The rule drops the requirement that the breach continue or recur for more than one month after the warning. For notice_served=yes and notice_date=2026-11-01, continuation through 2026-11-14 would satisfy b23's wording but not the quoted provision.",
+   "evidenceWords": "الا اذا تواصل ارتكابها أو تجديدها لاكثر من شهر بعد انذار المؤجر بتوقفها",
+   "fromMemory": false,
+   "id": "cdx-2",
+   "who": "codexAttack"
+  },
+  {
+   "target": "p2",
+   "kind": "wrongCondition",
+   "claim": "With notice_served=no and movable_sale_price_unpaid_at_term=yes, p2 removes the notice requirement even if the contract expressly requires notice before rescission. Article 392 preserves contrary agreements, but the exemption has no corresponding condition.",
+   "evidenceWords": "وهذا ما لم يوجد اتفاق على خلاف ذلك.",
+   "fromMemory": false,
+   "id": "cdx-3",
+   "who": "codexAttack"
+  },
+  {
+   "target": "p2",
+   "kind": "wrongCondition",
+   "claim": "The movable-sale exemption does not check that the claimant is the seller. It can therefore exempt a buyer seeking rescission from notice merely because movable_sale_price_unpaid_at_term=yes, although Article 392 establishes this mechanism in the seller's favour.",
+   "evidenceWords": "يكون البيع مفسوخا وجوبا في صالح البائع ودون سابق انذار",
+   "fromMemory": false,
+   "id": "cdx-4",
+   "who": "codexAttack"
+  },
+  {
+   "target": "p1",
+   "kind": "missing",
+   "claim": "The permitted slot catalogue contains neither requests nor any of p1's five exemption predicates; p2 and p3 have the same structural problem. For example, notice_served=no cannot be distinguished between contractual damages and tort compensation using the permitted facts, although Article 181 expressly exempts the latter.",
+   "evidenceWords": "اذا كان محل الالتزام تعويضا ترتب عن عمل مضر",
+   "fromMemory": false,
+   "id": "cdx-5",
+   "who": "codexAttack"
+  },
+  {
+   "target": "b23",
+   "kind": "misreading",
+   "claim": "The uncited Article 176 establishes the context: refusal to renew without paying eviction compensation. b23 instead states a condition for invoking any commercial tenant's breach, potentially importing the special instrument and recital requirements into an ordinary claim for unpaid rent.",
+   "evidenceWords": "يجوز للمؤجر أن يرفض تجديد الإيجار، غير أنه ينبغي عليه فيما عدا الاستثناءات المنصوص عليها في المادة 177 وما يليها أن يسدد للمستأجر المخلي التعويض",
+   "fromMemory": false,
+   "id": "cdx-6",
+   "who": "codexAttack"
+  },
+  {
+   "target": "b15",
+   "kind": "misreading",
+   "claim": "The paraphrase drops Article 186's express qualification that the monetary obligation is between individuals. For public_body_party=yes, b15 consequently asserts coverage without addressing a limitation present in its source.",
+   "evidenceWords": "إذا كان محل الالتزام بين أفراد مبلغا من النقود",
+   "fromMemory": false,
+   "id": "cdx-7",
+   "who": "codexAttack"
+  },
+  {
+   "target": "n3",
+   "kind": "amendmentSuspected",
+   "claim": "I recall Law 05-02 of 6 February 2005 adding Commercial Code Articles 187 bis and 187 bis 1, distinguishing later commercial leases and providing departure at the agreed term without notice to vacate unless otherwise agreed. Verify those provisions and their publication-date cutoff against contract_date before presenting Article 177 as the applicable notice regime.",
+   "evidenceWords": "",
+   "fromMemory": true,
+   "id": "cdx-8",
+   "who": "codexAttack"
+  },
+  {
+   "target": "p3",
+   "kind": "amendmentSuspected",
+   "claim": "I recall Law 07-05 of 13 May 2007 inserting Civil Code Article 469 bis 1, under which a fixed-term lease ends at its agreed expiry without notice to vacate. Check that provision and its transitional application against contract_date to determine whether p3 wrongly requires prior notice for an eviction following expiry.",
+   "evidenceWords": "",
+   "fromMemory": true,
+   "id": "cdx-9",
+   "who": "codexAttack"
+  }
+ ],
+ "nothingFound": false
+}

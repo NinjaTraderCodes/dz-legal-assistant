@@ -1,0 +1,1741 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "module",
+  "id": "formal-notice",
+  "label": {
+    "ar": "الإعذار",
+    "en": "Formal notice"
+  },
+  "verified": false,
+  "stage": "derivationB",
+  "derivedBy": {
+    "role": "derivationB",
+    "model": "claude-sonnet-5-5",
+    "date": "2026-11-14"
+  },
+  "appliesTo": [
+    "*"
+  ],
+  "checklist": [
+    {
+      "id": "k1",
+      "item": "Is the claim one for which a formal notice (الإعذار) is a precondition of damages for delay, or of the claim itself?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p1",
+        "b1",
+        "b7",
+        "b10"
+      ],
+      "note": "Damages, performance and rescission follow the notice."
+    },
+    {
+      "id": "k2",
+      "item": "Was a formal notice actually sent to the defendant before filing, and is there proof of it?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p1",
+        "doc1",
+        "doc2"
+      ]
+    },
+    {
+      "id": "k3",
+      "item": "On what date was the notice served, and did the defendant receive it (acknowledgement of receipt)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "doc2"
+      ],
+      "note": "No text fixes how the date is proved; the slot notice_date is kept by the app and not read by a rule."
+    },
+    {
+      "id": "k4",
+      "item": "By what means was it sent: bailiff, registered letter with acknowledgement of receipt, or another means; which means does the law accept?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p1",
+        "p2",
+        "b2",
+        "b18"
+      ]
+    },
+    {
+      "id": "k5",
+      "item": "Does the notice clearly call on the debtor to perform, and does it fix a reasonable period to comply?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "note": "No text in the store on the content of a notice or on a period to comply; searched articles on default in the Civil Code, Commercial Code and Code of Civil and Administrative Procedure."
+    },
+    {
+      "id": "k6",
+      "item": "Is the notice addressed to the right person, at the right address, and in the right capacity (debtor, heir, representative)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "note": "Nothing on addressee or capacity; the postal provision referred to by art. 180 was requested."
+    },
+    {
+      "id": "k7",
+      "item": "Does the contract itself state that the debtor is in default by the mere passing of the term, without notice?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p1",
+        "b2",
+        "doc3"
+      ]
+    },
+    {
+      "id": "k8",
+      "item": "Is the obligation one with a fixed term, so that default arises by the term itself?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p1",
+        "b2",
+        "o1"
+      ],
+      "note": "The Arabic requires an agreement."
+    },
+    {
+      "id": "k9",
+      "item": "Is the notice unnecessary because performance has become impossible or useless through the debtor's act?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p1",
+        "b3"
+      ]
+    },
+    {
+      "id": "k10",
+      "item": "Is the notice unnecessary because the debtor has declared in writing that he will not perform?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p1",
+        "b6",
+        "doc4"
+      ]
+    },
+    {
+      "id": "k11",
+      "item": "Is the notice unnecessary for a debt of money arising from a wrongful act, or for restitution of something taken without right?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p1",
+        "b4",
+        "b5"
+      ]
+    },
+    {
+      "id": "k12",
+      "item": "Is the notice unnecessary for a debt of something received without right, with bad faith of the recipient?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p1",
+        "b5"
+      ],
+      "note": "Covered by the third indent."
+    },
+    {
+      "id": "k13",
+      "item": "Is the notice unnecessary in a case where the law itself provides that default is automatic?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p1",
+        "b1",
+        "b14"
+      ],
+      "note": "Art. 179 yields to a contrary text; art. 392 is one."
+    },
+    {
+      "id": "k14",
+      "item": "What is the effect of the absence of a notice: inadmissibility of the claim, or only refusal of damages for delay?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p1",
+        "o2"
+      ]
+    },
+    {
+      "id": "k15",
+      "item": "From what date do damages for delay and legal interest run: from the notice, from the filing, or from the term?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b12",
+        "o4"
+      ]
+    },
+    {
+      "id": "k16",
+      "item": "Does the claim itself (the filing of the petition) stand in place of a notice for any request?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "note": "No text says the filing replaces the notice; see o3."
+    },
+    {
+      "id": "k17",
+      "item": "In commercial matters, is a notice needed, and does the form differ?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "note": "Searched Commercial Code for notice: only the lease articles."
+    },
+    {
+      "id": "k18",
+      "item": "Does a notice to quit or a notice to pay in a lease follow a separate regime (see the commercial lease module)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n1",
+        "b17"
+      ]
+    },
+    {
+      "id": "k19",
+      "item": "Can the notice be replaced by a conciliation step or a prior formal summons required for the particular claim?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "k20",
+      "item": "Does the notice interrupt a limitation period or only place the debtor in default?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "note": "No article makes the notice a cause of interruption; see the periods module."
+    },
+    {
+      "id": "k21",
+      "item": "Is a notice needed before rescission of a contract for non-performance, and may the judge grant a period of grace?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b7",
+        "b8"
+      ]
+    },
+    {
+      "id": "k22",
+      "item": "Can the lawyer keep a copy of the notice and of the receipt in the file as documents to annex to the petition?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "doc1",
+        "doc2"
+      ]
+    },
+    {
+      "id": "k23",
+      "item": "Is the notice valid if sent by a means not accepted by law, and can the court still treat it as notice?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p2",
+        "o5"
+      ]
+    },
+    {
+      "id": "k24",
+      "item": "Must the notice be in Arabic, and signed by whom?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "note": "No text on language or signature of the notice."
+    },
+    {
+      "id": "k25",
+      "item": "Is a fresh notice needed when the amount or the obligation changed after the first notice?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "note": "No text on a fresh notice after a change."
+    },
+    {
+      "id": "k26",
+      "item": "In joint or indivisible obligations, to whom must the notice go?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "note": "No text on joint or indivisible obligations in the store; searched the Civil Code on default."
+    },
+    {
+      "id": "k27",
+      "item": "Is a notice needed against a public body, and does a different prior step apply?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "The administrative-procedure notices of the CPCA are court acts inside a case, not a step before a claim."
+    },
+    {
+      "id": "k28",
+      "item": "What must the petition say about the notice (date, means, result) so that the court can check it?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "doc1",
+        "doc2"
+      ]
+    },
+    {
+      "id": "k29",
+      "item": "What the store's note on art. 119 raises: the text is a current snapshot, the historical regimes are deferred.",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b7",
+        "o2"
+      ],
+      "note": "The record follows the text in force; no amendment of the article was found in the store."
+    }
+  ],
+  "basis": [
+    {
+      "id": "b1",
+      "role": "prerequisite",
+      "cite": {
+        "code": "civil-code",
+        "article": "179",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "لا يستحق التعويض إلا بعد إعذار المدين ما لم يوجد نص مخالف.",
+        "en": "Damages are due only after the debtor is put in default, unless a text says otherwise."
+      },
+      "required": true,
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "لا يستحق التعويض إلا بعد اعذار المدين ما لم يوجد نص مخالف لذلك.",
+          "sha256": "904e4454527c5d23aba3f3ffa5717fe6a6e9df0e72618227b450738be0799cd6"
+        }
+      ],
+      "source": {
+        "tier": 2,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b2",
+      "role": "procedure",
+      "cite": {
+        "code": "civil-code",
+        "article": "180",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يكون الإعذار بإنذار أو بما يقوم مقامه أو عن طريق البريد، أو باتفاق يجعل المدين معذرا بحلول الأجل دون إجراء آخر.",
+        "en": "Default is created by a notice or an equivalent act, by post, or by an agreement that the debtor is in default when the term falls due."
+      },
+      "required": true,
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يكون اعذار المدين بانذاره، أو بما يقوم مقام الانذار، ويجوز أن يتم الاعذار عن طريق البريد على الوجه المبين في هذا القانون، كما يجوز أن يكون مترتبا على اتفاق يقضي بأن يكون المدين معذرا بمجرد حلول الاجل دون حاجة الى أى اجراء آخر .",
+          "sha256": "e62b3881bf75ba1d4533cdcfb33570d8575726c3d4a31c6506cb08128822e203"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "delta",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b3",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "181",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "لا حاجة إلى الإعذار إذا تعذر التنفيذ أو صار غير مجد بفعل المدين.",
+        "en": "No notice is needed where the debtor's own act made performance impossible or pointless."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "ـ اذا تعذر تنفيذ الالتزام أو أصبح غير مجد بفعل المدين .",
+          "sha256": "ad8c2ee13c2691aee7952d926d93d9060d97a17275d123aa0175445cf2f63743"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "delta",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b4",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "181",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "لا حاجة إلى الإعذار إذا كان محل الالتزام تعويضا عن عمل مضر.",
+        "en": "No notice is needed where the obligation is compensation for a harmful act."
+      },
+      "quote": [
+        {
+          "paragraph": 3,
+          "text": "ـ اذا كان محل الالتزام تعويضا ترتب عن عمل مضر .",
+          "sha256": "4a4d7d372feb46b254a04f6e630ed001956effc557b8ede43e6437e5f6e5eea3"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "delta",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b5",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "181",
+        "paragraphs": [
+          4
+        ]
+      },
+      "says": {
+        "ar": "لا حاجة إلى الإعذار في رد شيء يعلم المدين أنه مسروق أو تسلمه دون حق وهو عالم بذلك.",
+        "en": "No notice is needed to recover a thing the debtor knows to be stolen or knowingly received without right."
+      },
+      "quote": [
+        {
+          "paragraph": 4,
+          "text": "ـ اذا كان محل الالتزام رد شىء يعلم المدين أنه مسروق ، أو شىء تسلمه دون حق وهو عالم بذلك .",
+          "sha256": "732e41e2b71d47077c61822b511edc23280461d76bf1c70455ffa343f7ecc298"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "delta",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b6",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "181",
+        "paragraphs": [
+          5
+        ]
+      },
+      "says": {
+        "ar": "لا حاجة إلى الإعذار إذا صرح المدين كتابة بأنه لا ينوى تنفيذ التزامه.",
+        "en": "No notice is needed where the debtor states in writing that he does not intend to perform."
+      },
+      "quote": [
+        {
+          "paragraph": 5,
+          "text": "ـ اذا صرح المدين كتابة أنه لا ينوى تنفيذ التزامه .",
+          "sha256": "75b2714cf8d13f9096753e8fcc156425b79ee1a0e45478f55b08a893a841df01"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "delta",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b7",
+      "role": "prerequisite",
+      "cite": {
+        "code": "civil-code",
+        "article": "119",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "في العقد الملزم للجانبين يسبق طلبَ التنفيذ أو الفسخ إعذارُ المدين.",
+        "en": "In a bilateral contract, the creditor asks for performance or rescission after putting the debtor in default."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "في العقود الملزمة للجانبين، إذا لم يوف أحد المتعاقدين بالتزامه جاز للمتعاقد الآخر بعد اعذاره المدين أن يطالب بتنفيذ العقد أو فسخه، مع التعويض في الحالتين إذا اقتضى الحال ذلك.",
+          "sha256": "29cf2ea3931e3607aa0fc6cbb55a487c25addb4dbd10a809d139a39c07119a40"
+        }
+      ],
+      "source": {
+        "tier": 2,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b8",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "119",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "للقاضي أن يمنح المدين أجلا وأن يرفض الفسخ إذا كان ما لم يوف به قليل الأهمية.",
+        "en": "The judge may give the debtor time, and may refuse rescission if the unperformed part is of little importance."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "ويجوز للقاضي أن يمنح المدين أجلا حسب الظروف، كما يجوز له أن يرفض الفسخ إذا كان ما لم يوف به المدين قليل الأهمية بالنسبة إلى كامل الالتزامات.",
+          "sha256": "a7720b576d6507eed56002baf16bb75329259e9ed9e4499bba1222f1aa7f17ff"
+        }
+      ],
+      "source": {
+        "tier": 2,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b9",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "120",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "شرط الفسخ بحكم القانون لا يعفي من الإعذار، ويحدد أجله حسب العرف عند عدم تحديده.",
+        "en": "A clause of automatic rescission does not remove the notice; its period follows custom if the parties fixed none."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "وهذا الشرط لا يعفي من الاعذار، الذي يحدد حسب العرف عند عدم تحديده من طرف المتعاقدين.",
+          "sha256": "dd5aadaed3c37610d276d67584c9d5e90e41257a0eb98c110ba088b24eeb7034"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "corpus",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b10",
+      "role": "prerequisite",
+      "cite": {
+        "code": "civil-code",
+        "article": "164",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجبر المدين بعد إعذاره على التنفيذ العيني متى كان ممكنا.",
+        "en": "The debtor is compelled to perform in kind, if possible, after being put in default."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجبر المدين بعد اعذاره طبقا للمادتين 180 و181 على تنفيذ التزامه تنفيذا عينيا، متى كان ذلك ممكنا.",
+          "sha256": "226306cbea9ef2cbdeb3cd4e26024f390a41b8ae923c15358829b4a8e3f8d814"
+        }
+      ],
+      "source": {
+        "tier": 2,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b11",
+      "role": "damages",
+      "cite": {
+        "code": "civil-code",
+        "article": "176",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يحكم بالتعويض عن عدم التنفيذ أو عن التأخر في التنفيذ.",
+        "en": "Damages are awarded for non-performance, and also for delay in performance."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "إذا استحال على المدين أن ينفذ الالتزام عينا حكم عليه بتعويض الضرر الناجم عن عدم تنفيذ التزامه، ما لم يثبت أن استحالة التنفيذ نشأت عن سبب لا يد له فيه، ويكون الحكم كذلك إذا تأخر المدين في تنفيذ التزامه.",
+          "sha256": "1e8500536095b9320c134e966bc9bdcd169836fd9dc05aad8d0bfe7530c60e29"
+        }
+      ],
+      "source": {
+        "tier": 2,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b12",
+      "role": "damages",
+      "cite": {
+        "code": "civil-code",
+        "article": "186",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "إذا كان محل الالتزام مبلغا من النقود عين مقداره وقت رفع الدعوى وتأخر المدين، عوض الدائن عن ضرر التأخير.",
+        "en": "For a sum of money fixed at the time of filing, the debtor who delays compensates the creditor for the harm of delay."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "إذا كان محل الالتزام بين أفراد مبلغا من النقود عين مقداره وقت رفع الدعوى وتأخر المدين في الوفاء به، فيجب عليه أن يعوض للدائن الضرر اللاحق من هذا التأخير.",
+          "sha256": "00b799a43d4cc961714f61254309e9ede55d608823465ab21fbddb9394d46b3c"
+        }
+      ],
+      "source": {
+        "tier": 2,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b13",
+      "role": "damages",
+      "cite": {
+        "code": "civil-code",
+        "article": "183",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "التعويض المتفق عليه مسبقا تطبق عليه أحكام المواد المتعلقة بالإعذار.",
+        "en": "Agreed compensation is subject to the rules on default and notice."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجوز للمتعاقدين أن يحددا مقدما قيمة التعويض بالنص عليها فى العقد، أو فى اتفاق لاحق. وتطبق فى هذه الحالة أحكام المواد 176 الى 181.",
+          "sha256": "7847ca1b7a66214064af4c4f9bc9813f366a79ba572c8fb3a2a4b3fb2c318707"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "delta",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b14",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "392",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "في بيع المنقولات بأجل لدفع الثمن يفسخ البيع وجوبا دون سابق إنذار عند حلول الأجل ما لم يتفق على خلافه.",
+        "en": "In a sale of movables with a term for the price, the sale is rescinded without prior notice when the term falls due, unless agreed otherwise."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "في بيع العروض وغيرها من المنقولات إذا عين أجل لدفع الثمن وتسلم المبيع يكون البيع مفسوخا وجوبا في صالح البائع ودون سابق انذار إذا لم يدفع الثمن عند حلول الأجل وهذا ما لم يوجد اتفاق على خلاف ذلك.",
+          "sha256": "31b7d32d972b4fae65105f30e40c340e7961883a84977ef77eae887506aa29cc"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "corpus",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b15",
+      "role": "prerequisite",
+      "cite": {
+        "code": "civil-code",
+        "article": "480",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يسبق مطالبة المستأجر بالفسخ أو بإنقاص الإيجار لعدم الصيانة إعذار المؤجر بمحرر غير قضائي.",
+        "en": "A tenant claims rescission or a rent reduction for lack of upkeep only after notice to the lessor by a non-judicial instrument."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "في حالة عدم تنفيذ المؤجر لالتزامه بالصيانة وبعد إعذاره بموجب محرر غير قضائي، يجوز للمستأجر المطالبة بفسخ العقد أو إنقاص بدل الإيجار، دون الإخلال بحقه في التعويض.",
+          "sha256": "7829a9ff93141539c81301ba7ee275027c3b841f075f87ee43f5ed9e0584aca2"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "corpus",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "civil-code/law-07-05"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b16",
+      "role": "prerequisite",
+      "cite": {
+        "code": "civil-code",
+        "article": "558",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "رفض رب العمل التسلم بعد دعوته بإنذار رسمي يجعل العمل مسلما إليه.",
+        "en": "An owner who refuses delivery after an official notice is treated as having received the work."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "عندما يتم المقاول العمل ويضعه تحت تصرف رب العمل، وجب على هذا الأخير أن يبادر إلى تسلمه في أقرب وقت ممكن بحسب ما هو جار في المعاملات، فإذا امتنع دون سبب مشروع عن التسلم رغم دعوته إلى ذلك بإنذار رسمي اعتبر أن العمل قد سلم إليه، ويتحمل كل ما يترتب على ذلك من آثار.",
+          "sha256": "9a315f47dff941389d2a3ea809c09234283bc428b39635804f6e5a478972c9e0"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "corpus",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "civil-code/law-05-10"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b17",
+      "role": "prerequisite",
+      "cite": {
+        "code": "commercial-code",
+        "article": "177",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "إنذار المؤجر بالمخالفة يكون بعقد غير قضائي مع بيان السبب وإلا بطل.",
+        "en": "A notice to a tenant of a breach must be by a non-judicial act stating the reason, or it is void."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "غير أنه اذا كان الامر يتعلق اما بعدم تنفيذ التزام واما بالتوقف عن استغلال المحل التجارى دون سبب جدي ومشروع فانه لا يجوز الادعاء بالمخالفة المقترفة من قبل المستأجر نظرا لاحكام المادة 172، الا اذا تواصل ارتكابها أو تجديدها لاكثر من شهر بعد انذار المؤجر بتوقفها. ويجب أن يتم هذا الانذار والا كان باطلا بعقد غير قضائى مع ايضاح السبب المستند اليه وذكر مضمون هذه الفقرة :",
+          "sha256": "4175bab6fae3efcc26217a5c02607c7da20856f0c492a0ad5e4b72b89bd6330e"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "delta",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b18",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "310",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يجوز تقديم طلب توجيه إنذار إلى رئيس الجهة القضائية المختصة.",
+        "en": "A request to have a notice issued may be presented to the president of the competent court."
+      },
+      "interpretive": true,
+      "interpretiveNote": "The article regulates the president's order; that such a notice counts as formal notice under the Civil Code is a reading.",
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "تقدم الطلبات الرامية إلى إثبات الحالة أو توجيه إنذار أو إجراء استجواب في موضوع لا يمس بحقوق الأطراف، إلى رئيس الجهة القضائية المختصة، ليفصل فيها خلال أجل أقصاه ثلاثة (3) أيام من تاريخ إيداع الطلب.",
+          "sha256": "bf25ce1ff6ea247da5c86025125969026b5cabf1c0f4ab97b8242e55224e0e13"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    }
+  ],
+  "priorSteps": [
+    {
+      "id": "p1",
+      "kind": "formalNotice",
+      "slots": [
+        "notice_served",
+        "notice_means",
+        "requests",
+        "default_by_term_agreement",
+        "performance_impossible_by_debtor",
+        "debt_is_tort_compensation",
+        "debtor_knew_thing_stolen_or_wrongly_received",
+        "debtor_declared_in_writing_refusal",
+        "movable_sale_price_unpaid_at_term"
+      ],
+      "requiredWhen": {
+        "any": [
+          {
+            "slot": "requests",
+            "includes": "damages"
+          },
+          {
+            "slot": "requests",
+            "includes": "rescission"
+          },
+          {
+            "slot": "requests",
+            "includes": "delivery"
+          },
+          {
+            "slot": "requests",
+            "includes": "payment"
+          }
+        ]
+      },
+      "notRequiredWhen": [
+        {
+          "when": {
+            "slot": "default_by_term_agreement",
+            "is": "yes"
+          },
+          "basis": [
+            "b2"
+          ],
+          "note": {
+            "ar": "اتفاق على أن المدين معذر بحلول الأجل.",
+            "en": "Agreement that the debtor is in default at the term."
+          }
+        },
+        {
+          "when": {
+            "slot": "performance_impossible_by_debtor",
+            "is": "yes"
+          },
+          "basis": [
+            "b3"
+          ],
+          "note": {
+            "ar": "تعذر التنفيذ بفعل المدين.",
+            "en": "Performance made impossible by the debtor."
+          }
+        },
+        {
+          "when": {
+            "slot": "debt_is_tort_compensation",
+            "is": "yes"
+          },
+          "basis": [
+            "b4"
+          ],
+          "note": {
+            "ar": "تعويض عن عمل مضر.",
+            "en": "Compensation for a harmful act."
+          }
+        },
+        {
+          "when": {
+            "slot": "debtor_knew_thing_stolen_or_wrongly_received",
+            "is": "yes"
+          },
+          "basis": [
+            "b5"
+          ],
+          "note": {
+            "ar": "رد شيء مسروق أو متسلم دون حق مع العلم.",
+            "en": "Return of a thing stolen or knowingly received without right."
+          }
+        },
+        {
+          "when": {
+            "slot": "debtor_declared_in_writing_refusal",
+            "is": "yes"
+          },
+          "basis": [
+            "b6"
+          ],
+          "note": {
+            "ar": "تصريح كتابي بعدم التنفيذ.",
+            "en": "Written statement of refusal."
+          }
+        },
+        {
+          "when": {
+            "all": [
+              {
+                "slot": "requests",
+                "includes": "rescission"
+              },
+              {
+                "slot": "movable_sale_price_unpaid_at_term",
+                "is": "yes"
+              }
+            ]
+          },
+          "basis": [
+            "b14"
+          ],
+          "note": {
+            "ar": "فسخ بيع منقول بعدم دفع الثمن عند الأجل.",
+            "en": "Rescission of a movable sale for unpaid price at the term."
+          }
+        }
+      ],
+      "acceptedMeans": [
+        {
+          "id": "m1",
+          "label": {
+            "ar": "محضر قضائي (إنذار)",
+            "en": "A bailiff's notice"
+          },
+          "basis": [
+            "b2"
+          ]
+        },
+        {
+          "id": "m2",
+          "label": {
+            "ar": "رسالة مضمونة مع إشعار بالاستلام (البريد)",
+            "en": "Registered letter with acknowledgement of receipt (post)"
+          },
+          "basis": [
+            "b2"
+          ]
+        },
+        {
+          "id": "m3",
+          "label": {
+            "ar": "إنذار بأمر من رئيس الجهة القضائية",
+            "en": "A notice ordered by the president of the court"
+          },
+          "basis": [
+            "b18"
+          ]
+        },
+        {
+          "id": "m4",
+          "label": {
+            "ar": "ما يقوم مقام الإنذار",
+            "en": "An act equivalent to a notice"
+          },
+          "basis": [
+            "b2"
+          ]
+        }
+      ],
+      "effectWhenMissing": "warn",
+      "effectWhenUnknown": "ask",
+      "message": {
+        "ar": "المواد 179 و119 و164 من القانون المدني: لا يستحق التعويض ولا يطلب التنفيذ أو الفسخ إلا بعد إعذار المدين، وتستثنى الحالات المبينة في المادة 181 والمادة 180 والمادة 392. تحقق من وجود الإعذار أو من انطباق إحدى الاستثناءات.",
+        "en": "Civil Code arts. 179, 119 and 164: damages, performance or rescission follow a notice to the debtor, subject to the cases of art. 181, art. 180 and art. 392. Check that a notice was sent or that an exception applies."
+      },
+      "basis": [
+        "b1",
+        "b7",
+        "b10",
+        "b2",
+        "b3",
+        "b4",
+        "b5",
+        "b6",
+        "b14"
+      ],
+      "interpretive": true,
+      "interpretiveNote": "The texts make damages, performance and rescission follow the notice but state no sanction on the claim itself; the means named are a reading of the words 'notice or what stands in its place' and of the postal route."
+    },
+    {
+      "id": "p2",
+      "kind": "other",
+      "slots": [
+        "other_means_equivalent_to_notice",
+        "notice_served",
+        "notice_means"
+      ],
+      "requiredWhen": {
+        "all": [
+          {
+            "slot": "notice_served",
+            "is": "yes"
+          },
+          {
+            "slot": "notice_means",
+            "is": "other"
+          }
+        ]
+      },
+      "effectWhenMissing": "warn",
+      "effectWhenUnknown": "warn",
+      "message": {
+        "ar": "المادة 180 من القانون المدني: يكون الإعذار بإنذار أو بما يقوم مقامه أو عن طريق البريد؛ تحقق من أن الوسيلة الأخرى المستعملة تقوم مقام الإنذار.",
+        "en": "Civil Code art. 180: default arises by a notice, an equivalent act or by post; check that the other means used stands in place of a notice."
+      },
+      "basis": [
+        "b2",
+        "b18"
+      ],
+      "interpretive": true,
+      "interpretiveNote": "The text does not list the equivalent acts; the lawyer must judge whether the means used is one."
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc1",
+      "name": {
+        "ar": "نسخة من الإعذار",
+        "en": "Copy of the notice"
+      },
+      "requiredWhen": {
+        "slot": "notice_served",
+        "is": "yes"
+      },
+      "why": {
+        "ar": "لإثبات الإعذار وتاريخه ومضمونه.",
+        "en": "To prove the notice, its date and its content."
+      },
+      "basis": [
+        "b2"
+      ]
+    },
+    {
+      "id": "doc2",
+      "name": {
+        "ar": "محضر التبليغ أو إشعار الاستلام",
+        "en": "Bailiff's record or acknowledgement of receipt"
+      },
+      "requiredWhen": {
+        "slot": "notice_served",
+        "is": "yes"
+      },
+      "why": {
+        "ar": "لإثبات وصول الإعذار إلى المدين.",
+        "en": "To prove the notice reached the debtor."
+      },
+      "basis": [
+        "b2"
+      ]
+    },
+    {
+      "id": "doc3",
+      "name": {
+        "ar": "بند الاتفاق على الإعذار بحلول الأجل",
+        "en": "The clause making the debtor in default at the term"
+      },
+      "requiredWhen": {
+        "slot": "default_by_term_agreement",
+        "is": "yes"
+      },
+      "why": {
+        "ar": "يستند إليه الإعفاء من الإعذار.",
+        "en": "The exemption from notice rests on it."
+      },
+      "basis": [
+        "b2"
+      ]
+    },
+    {
+      "id": "doc4",
+      "name": {
+        "ar": "تصريح المدين الكتابي بعدم التنفيذ",
+        "en": "The debtor's written refusal"
+      },
+      "requiredWhen": {
+        "slot": "debtor_declared_in_writing_refusal",
+        "is": "yes"
+      },
+      "why": {
+        "ar": "يستند إليه الإعفاء من الإعذار.",
+        "en": "The exemption from notice rests on it."
+      },
+      "basis": [
+        "b6"
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "id": "n1",
+      "looksLike": {
+        "ar": "إنذار المستأجر أو المؤجر في عقد إيجار تجاري",
+        "en": "A notice to a commercial tenant or landlord"
+      },
+      "isActually": "outside:notice-to-quit",
+      "tellingFacts": [
+        {
+          "ar": "إنذار بعقد غير قضائي مع بيان السبب.",
+          "en": "A non-judicial act stating the reason."
+        }
+      ],
+      "message": {
+        "ar": "المادة 177 من القانون التجاري: إنذار المؤجر بمخالفة المستأجر يخضع لشكل خاص؛ راجع وحدة الإيجار التجاري.",
+        "en": "Commercial Code art. 177: a notice of a tenant's breach follows its own form; see the commercial-lease module."
+      },
+      "basis": [
+        "b17"
+      ]
+    },
+    {
+      "id": "n2",
+      "looksLike": {
+        "ar": "محضر عدم المصالحة في نزاع عمل",
+        "en": "A record of non-conciliation in a labour dispute"
+      },
+      "isActually": "outside:labour-conciliation",
+      "tellingFacts": [
+        {
+          "ar": "يحرره مكتب المصالحة ولا يوجه إلى المدين لإعذاره.",
+          "en": "Drawn up by the conciliation office, not sent to the debtor to put him in default."
+        }
+      ],
+      "message": {
+        "ar": "محضر عدم المصالحة ليس إعذارا بمعنى المادة 180 من القانون المدني؛ راجع وحدة المصالحة العمالية.",
+        "en": "A record of non-conciliation is not a notice under Civil Code art. 180; see the labour-conciliation module."
+      },
+      "basis": [
+        "b2"
+      ]
+    },
+    {
+      "id": "n3",
+      "looksLike": {
+        "ar": "إعذار المؤجر بعدم الصيانة",
+        "en": "A notice to a lessor for failure of upkeep"
+      },
+      "isActually": "outside:lease-maintenance",
+      "tellingFacts": [
+        {
+          "ar": "يشترط محرر غير قضائي.",
+          "en": "A non-judicial instrument is required."
+        }
+      ],
+      "message": {
+        "ar": "المادة 480 من القانون المدني: إعذار المؤجر بعدم الصيانة يكون بمحرر غير قضائي؛ تحقق من الشكل.",
+        "en": "Civil Code art. 480: notice to a lessor for lack of upkeep is by a non-judicial instrument; check the form."
+      },
+      "basis": [
+        "b15"
+      ]
+    },
+    {
+      "id": "n4",
+      "looksLike": {
+        "ar": "دعوة رب العمل إلى تسلم العمل",
+        "en": "A call on the owner to take delivery of work"
+      },
+      "isActually": "outside:contract-for-work",
+      "tellingFacts": [
+        {
+          "ar": "إنذار رسمي يرتب اعتبار العمل مسلما.",
+          "en": "An official notice that makes the work treated as delivered."
+        }
+      ],
+      "message": {
+        "ar": "المادة 558 من القانون المدني: الإنذار الرسمي لرب العمل يرتب اعتبار العمل مسلما؛ راجع شكله.",
+        "en": "Civil Code art. 558: an official notice to the owner makes the work treated as delivered; check its form."
+      },
+      "basis": [
+        "b16"
+      ]
+    }
+  ],
+  "slots": [
+    "notice_served",
+    "notice_means",
+    "requests",
+    "default_by_term_agreement",
+    "performance_impossible_by_debtor",
+    "debt_is_tort_compensation",
+    "debtor_knew_thing_stolen_or_wrongly_received",
+    "debtor_declared_in_writing_refusal",
+    "movable_sale_price_unpaid_at_term",
+    "other_means_equivalent_to_notice"
+  ],
+  "proposedSlots": [
+    {
+      "id": "default_by_term_agreement",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل اتفق الطرفان على أن يكون المدين معذرا بمجرد حلول الأجل؟",
+        "en": "Did the parties agree that the debtor is in default by the mere falling due of the term?"
+      },
+      "why": "Read by prior step p1 or p2; art. 180 makes the fact matter."
+    },
+    {
+      "id": "performance_impossible_by_debtor",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل تعذر التنفيذ أو صار غير مجد بفعل المدين؟",
+        "en": "Did the debtor's own act make performance impossible or pointless?"
+      },
+      "why": "Read by prior step p1 or p2; art. 181 indent 1 makes the fact matter."
+    },
+    {
+      "id": "debt_is_tort_compensation",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل محل الالتزام تعويض عن عمل مضر؟",
+        "en": "Is the obligation compensation for a harmful act?"
+      },
+      "why": "Read by prior step p1 or p2; art. 181 indent 2 makes the fact matter."
+    },
+    {
+      "id": "debtor_knew_thing_stolen_or_wrongly_received",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل المطلوب رد شيء يعلم المدين أنه مسروق أو تسلمه دون حق عالما بذلك؟",
+        "en": "Is the claim to recover a thing the debtor knows to be stolen or knowingly received without right?"
+      },
+      "why": "Read by prior step p1 or p2; art. 181 indent 3 makes the fact matter."
+    },
+    {
+      "id": "debtor_declared_in_writing_refusal",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل صرح المدين كتابة بأنه لا ينوى تنفيذ التزامه؟",
+        "en": "Did the debtor state in writing that he does not intend to perform?"
+      },
+      "why": "Read by prior step p1 or p2; art. 181 indent 4 makes the fact matter."
+    },
+    {
+      "id": "movable_sale_price_unpaid_at_term",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل الدعوى فسخ بيع منقول لم يدفع ثمنه عند حلول الأجل؟",
+        "en": "Is the claim the rescission of a sale of movables whose price was not paid when the term fell due?"
+      },
+      "why": "Read by prior step p1 or p2; art. 392 makes the fact matter."
+    },
+    {
+      "id": "other_means_equivalent_to_notice",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل الوسيلة الأخرى المستعملة تقوم مقام الإنذار (عمل قضائي أو رسمي مماثل)؟",
+        "en": "Does the other means used stand in place of a notice (a similar judicial or official act)?"
+      },
+      "why": "Read by prior step p1 or p2; art. 180 'equivalent act' makes the fact matter."
+    }
+  ],
+  "examples": [
+    {
+      "id": "ex1",
+      "by": "derivationB",
+      "title": "Debt unpaid, notice by bailiff, damages asked.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "requests": [
+          "payment",
+          "damages"
+        ],
+        "notice_served": "yes",
+        "notice_means": "bailiff"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          },
+          {
+            "ref": "p2",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex2",
+      "by": "derivationB",
+      "title": "Unpaid price, no notice, no exception: warning.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "default_by_term_agreement": "no",
+        "performance_impossible_by_debtor": "no",
+        "debt_is_tort_compensation": "no",
+        "debtor_knew_thing_stolen_or_wrongly_received": "no",
+        "debtor_declared_in_writing_refusal": "no",
+        "requests": [
+          "damages"
+        ],
+        "notice_served": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex3",
+      "by": "derivationB",
+      "title": "Damages for a harmful act: no notice needed.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "requests": [
+          "damages"
+        ],
+        "notice_served": "no",
+        "debt_is_tort_compensation": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex4",
+      "by": "derivationB",
+      "title": "Notice not known: ask.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "requests": [
+          "damages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "ask"
+          },
+          {
+            "ref": "p2",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "notice_served",
+          "notice_means"
+        ]
+      }
+    },
+    {
+      "id": "ex5",
+      "by": "derivationB",
+      "title": "No notice, one exemption unknown: ask for it.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "requests": [
+          "rescission"
+        ],
+        "notice_served": "no",
+        "default_by_term_agreement": "no",
+        "performance_impossible_by_debtor": "no",
+        "debt_is_tort_compensation": "no",
+        "debtor_knew_thing_stolen_or_wrongly_received": "no",
+        "debtor_declared_in_writing_refusal": "unknown",
+        "movable_sale_price_unpaid_at_term": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "debtor_declared_in_writing_refusal"
+        ]
+      }
+    },
+    {
+      "id": "ex6",
+      "by": "derivationB",
+      "title": "Notice by another means, equivalence unknown: warning.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "requests": [
+          "damages"
+        ],
+        "notice_served": "yes",
+        "notice_means": "other",
+        "other_means_equivalent_to_notice": "unknown"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          },
+          {
+            "ref": "p2",
+            "effect": "warn"
+          }
+        ],
+        "questions": [
+          "other_means_equivalent_to_notice"
+        ]
+      }
+    },
+    {
+      "id": "ex7",
+      "by": "derivationB",
+      "title": "Near miss: eviction only, no damages: no notice rule here.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "requests": [
+          "eviction"
+        ],
+        "notice_served": "no",
+        "notice_means": "other"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          },
+          {
+            "ref": "p2",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex8",
+      "by": "derivationB",
+      "title": "Sale of movables, price unpaid at term, rescission: no notice.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "default_by_term_agreement": "no",
+        "performance_impossible_by_debtor": "no",
+        "debt_is_tort_compensation": "no",
+        "debtor_knew_thing_stolen_or_wrongly_received": "no",
+        "debtor_declared_in_writing_refusal": "no",
+        "requests": [
+          "rescission"
+        ],
+        "notice_served": "no",
+        "movable_sale_price_unpaid_at_term": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex9",
+      "by": "derivationB",
+      "title": "Agreement that the term puts in default: no notice.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "notice_served": "no",
+        "default_by_term_agreement": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ]
+      }
+    }
+  ],
+  "openPoints": [
+    {
+      "id": "o1",
+      "question": {
+        "ar": "هل يكفي أجل محدد دون اتفاق صريح على الإعذار بحلوله؟",
+        "en": "Does a fixed term alone, without an agreement, put the debtor in default?"
+      },
+      "why": {
+        "ar": "المادة 180 تشترط اتفاقا.",
+        "en": "Article 180 speaks of an agreement."
+      },
+      "protectiveReading": {
+        "ar": "وجه إنذارا ما لم يوجد اتفاق ثابت.",
+        "en": "Send a notice unless a clear agreement exists."
+      },
+      "grade": "C",
+      "refs": [
+        "p1",
+        "b2"
+      ],
+      "readings": [
+        {
+          "reading": {
+            "ar": "يكفي الأجل وحده.",
+            "en": "The term alone suffices."
+          }
+        },
+        {
+          "reading": {
+            "ar": "يلزم اتفاق.",
+            "en": "An agreement is needed."
+          }
+        }
+      ]
+    },
+    {
+      "id": "o2",
+      "question": {
+        "ar": "ما أثر غياب الإعذار: رفض التعويض أم عدم قبول الدعوى؟",
+        "en": "Does a missing notice mean refused damages or an inadmissible claim?"
+      },
+      "why": {
+        "ar": "النصوص تربط الاستحقاق بالإعذار ولا تذكر جزاء على الدعوى.",
+        "en": "The texts tie entitlement to the notice and state no sanction on the claim."
+      },
+      "protectiveReading": {
+        "ar": "تحذير دون حجب.",
+        "en": "Warn, never block."
+      },
+      "grade": "C",
+      "refs": [
+        "p1",
+        "b1",
+        "b7"
+      ],
+      "readings": [
+        {
+          "reading": {
+            "ar": "يرفض التعويض فقط.",
+            "en": "Only damages are refused."
+          }
+        },
+        {
+          "reading": {
+            "ar": "لا تقبل الدعوى.",
+            "en": "The claim is inadmissible."
+          }
+        }
+      ]
+    },
+    {
+      "id": "o3",
+      "question": {
+        "ar": "هل يكفي رفع الدعوى نفسها إعذارا؟",
+        "en": "Does the filing of the claim itself serve as a notice?"
+      },
+      "why": {
+        "ar": "لا نص في المخزن؛ أمر منسوب إلى الذاكرة والاجتهاد.",
+        "en": "No text in the store; rests on memory and case law."
+      },
+      "protectiveReading": {
+        "ar": "اعتبر الإعذار السابق مطلوبا.",
+        "en": "Treat a prior notice as required."
+      },
+      "grade": "D",
+      "refs": [
+        "p1"
+      ]
+    },
+    {
+      "id": "o4",
+      "question": {
+        "ar": "من أي تاريخ يسري تعويض التأخير في دين النقود؟",
+        "en": "From what date does delay compensation run on a money debt?"
+      },
+      "why": {
+        "ar": "المادة 186 تربط التعويض بدين معين المقدار وقت رفع الدعوى.",
+        "en": "Article 186 ties it to a sum fixed at filing."
+      },
+      "protectiveReading": {
+        "ar": "اذكر تاريخ الإعذار وتاريخ الدعوى.",
+        "en": "State both the notice date and the filing date."
+      },
+      "grade": "C",
+      "refs": [
+        "b12",
+        "b1"
+      ],
+      "readings": [
+        {
+          "reading": {
+            "ar": "من الإعذار.",
+            "en": "From the notice."
+          }
+        },
+        {
+          "reading": {
+            "ar": "من رفع الدعوى.",
+            "en": "From the filing."
+          }
+        }
+      ]
+    },
+    {
+      "id": "o5",
+      "question": {
+        "ar": "هل المحضر القضائي هو الوسيلة الوحيدة للإنذار؟",
+        "en": "Is the bailiff the only means of notice?"
+      },
+      "why": {
+        "ar": "المادة 180 لا تسمي وسيلة.",
+        "en": "Article 180 names no bailiff."
+      },
+      "protectiveReading": {
+        "ar": "قبول المحضر والبريد المضمون وتنبيه على غيرها.",
+        "en": "Accept bailiff and registered post, warn on others."
+      },
+      "grade": "C",
+      "refs": [
+        "p1",
+        "p2",
+        "b2"
+      ]
+    },
+    {
+      "id": "o6",
+      "question": {
+        "ar": "ما شكل الإنذار البريدي وما وصوله المعتبر؟",
+        "en": "What are the form and effective receipt of a postal notice?"
+      },
+      "why": {
+        "ar": "المادة 180 تحيل إلى بيان في القانون لم نجده في المخزن.",
+        "en": "Article 180 refers to a provision of the code not found in the store."
+      },
+      "protectiveReading": {
+        "ar": "اطلب إشعار الاستلام.",
+        "en": "Keep the acknowledgement of receipt."
+      },
+      "grade": "D",
+      "refs": [
+        "p1",
+        "b2"
+      ]
+    }
+  ]
+}

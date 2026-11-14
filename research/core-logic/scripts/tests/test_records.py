@@ -135,11 +135,44 @@ def test_compare_derivations_matches_on_content_and_reports_the_period():
     assert [(d["kind"], d["field"]) for d in r["differences"]] == [("deadline", "period")]
 
 
+def c_answer(rec: dict) -> dict:
+    """Codex's answer in its own schema (module-derivation-c.schema.json), carrying the same content as the record."""
+    stmts = rc.statements(rec)
+    basis = lambda ids: [{"code": stmts[i]["cite"]["code"], "article": stmts[i]["cite"]["article"],  # noqa: E731
+                          "paragraphs": stmts[i]["cite"].get("paragraphs") or []} for i in ids if i in stmts]
+    return {"statements": [dict(x, says="", role="basis", interpretive=False) for x in basis(list(stmts))],
+            "deadlines": [{"kind": d["kind"], "periodValue": d["period"]["value"], "periodUnit": d["period"]["unit"],
+                           "startsFromEvent": "", "countingWords": "", "raisedBy": d.get("raisedBy", "unclear"),
+                           "sanctionWords": "", "periodWords": "", "basis": basis(d["basis"]), "interpretive": False}
+                          for d in rec.get("deadlines", [])],
+            "priorSteps": [{"kind": p["kind"], "requiredWhen": "", "notRequiredWhen": [], "sanctionIfMissing": "",
+                            "basis": [], "interpretive": False} for p in rec.get("priorSteps", [])],
+            "sections": [], "territory": [], "exits": [], "openPoints": [], "missingTexts": []}
+
+
+def test_compare_c_reads_codex_in_its_own_shape_and_finds_no_difference_on_the_same_content():
+    a, b = record(), record()
+    r = rc.compare_c(c_answer(a), a, b)
+    assert r["attacks"] == []
+    assert any(row["field"].startswith("cite [") and row["c"] for row in r["rows"])
+
+
 def test_compare_c_turns_a_lone_difference_into_an_attack():
-    a, b, c = record(), record(), record()
-    c["deadlines"][0]["period"] = {"value": 3, "unit": "month"}
+    a, b = record(), record()
+    c = c_answer(a)
+    c["deadlines"][0]["periodValue"], c["deadlines"][0]["periodUnit"] = 3, "month"
     r = rc.compare_c(c, a, b)
     assert len(r["attacks"]) == 1 and r["attacks"][0]["who"] == "derivationC"
+
+
+def test_compare_c_holds_a_missing_cite_against_c_only_inside_the_texts_it_was_given():
+    a, b = record(), record()
+    c = c_answer(a)
+    dropped = c["statements"].pop(0)
+    unit = (dropped["code"], dropped["article"])
+    assert [x["target"] for x in rc.compare_c(c, a, b)["attacks"]] != []
+    assert rc.compare_c(c, a, b, given=set())["attacks"] == []
+    assert rc.compare_c(c, a, b, given={unit})["attacks"] != []
 
 
 def test_grade_follows_the_table():
@@ -269,3 +302,17 @@ def test_unit_texts_takes_the_store_chapter_or_the_edition_heading():
                                                                          ("consolidatedEdition", ["176", "177"])]
     assert "[cpca 176 ¶2] فقرة ثانية" in doc["rendered"]
     assert doc["chapters"][1]["missingFromStore"] == ["178"]  # in the edition, not in the store: named, to be fetched
+
+
+def test_add_cases_keeps_only_failed_cross_record_results_and_replaces_an_earlier_run():
+    doc = {"differences": [{"id": "x1", "kind": "statement"}], "agreementTotal": {"equal": 1, "compared": 2}}
+    r = lambda rid, case, ok: {"recordId": rid, "caseId": case, "title": "", "differences": [] if ok else ["d"], "passed": ok}  # noqa: E731
+    runs = {"aOnB": [r("u", "ex1", False), r("u on u", "ex1", False), r("u on u", "ex2", True)],
+            "boundaryAB": [r("u", "bc1", False), r("u (A) | u (B)", "bc1", False)],
+            "boundaryA": [r("u", "bc2", False)]}
+    out = rc.add_cases(doc, runs)
+    assert [(d["id"], d["field"]) for d in out["differences"][1:]] == [("x2", "aOnB ex1"), ("x3", "boundaryA bc2"),
+                                                                       ("x4", "boundaryAB bc1")]
+    assert out["agreementTotal"] == doc["agreementTotal"] and out["caseDifferences"] == 3
+    again = rc.add_cases(out, {"bOnA": [r("u on u", "ex9", False)]})
+    assert [d["field"] for d in again["differences"] if d["kind"] == "case"] == ["bOnA ex9"]

@@ -8,7 +8,8 @@ Agents point, scripts quote and check. A file an agent wrote is never rewritten:
     python records.py merge-checklists <unit> --a <a.checklist.json> --b <b.checklist.json> [--codex <file>]
                       [--november <file>] [--claim <claim id>] --out <file>
     python records.py compare <a-quoted.json> <b-quoted.json> --differences <file> --idmap <file>
-    python records.py compare-c <c.json> <a-quoted.json> <b-quoted.json> --out <file>
+    python records.py add-cases <differences.json> [--aOnB f] [--bOnA f] [--boundaryA f] [--boundaryB f] [--boundaryAB f]
+    python records.py compare-c <c.json> <a-quoted.json> <b-quoted.json> --out <file> [--texts <unit.texts.json>]
     python records.py flatten <claim.json> --modules <dir> --out <file>
     python records.py grade <quoted.json> [--idmap f] [--differences f] [--attacks f] --out <final.json> [--report f]
     python records.py check-checklist <record.json> --checklist <file> [--flags <file> ...] --report <file>
@@ -557,31 +558,106 @@ def compare_derivations(a: dict, b: dict) -> dict:
             "agreementTotal": {"equal": total[0], "compared": total[1]}}
 
 
+# --- the case-by-case half of compare-derivations ----------------------------------------------------------------------
+CASE_RUNS = ("aOnB", "bOnA", "boundaryA", "boundaryB", "boundaryAB")
+
+
+def case_differences(runs: dict[str, list]) -> list[dict]:
+    """The `rules examples --json` results of a unit, as differences (record-checks.md, compare-derivations, "case by
+    case"): A's examples run on B (`aOnB`) and B's on A (`bOnA`) through the id map; the boundary cases through A alone,
+    B alone (a case the record decides against the writer's expectation) and through both together (`boundaryAB`: a
+    case the two records decide differently). Only failed results are differences; a passed one is agreement."""
+    out = []
+    for label in CASE_RUNS:
+        for r in runs.get(label) or []:
+            if r["passed"]:
+                continue
+            if label == "boundaryAB" and " | " not in r["recordId"]:
+                continue  # the two-record run repeats each record's own check; those come from boundaryA and boundaryB
+            if label in ("aOnB", "bOnA") and " on " not in r["recordId"]:
+                continue  # the record's own examples, run first by the tool: already checked by the deriver
+            out.append({"kind": "case", "field": f"{label} {r['caseId']}", "case": r["caseId"], "run": label,
+                        "title": r.get("title", ""), "detail": r["differences"], "matchedOn": "case"})
+    return out
+
+
+def add_cases(doc: dict, runs: dict[str, list]) -> dict:
+    """Adds the case differences to a differences report, replacing those of an earlier run; ids continue the list.
+    The agreement rate (condition 4) stays the field comparison's: a case difference is agenda, not a field."""
+    kept = [d for d in doc["differences"] if d.get("kind") != "case"]
+    n = max([int(d["id"][1:]) for d in kept if str(d.get("id", "")).startswith("x") and d["id"][1:].isdigit()] or [0])
+    cases = case_differences(runs)
+    for i, d in enumerate(cases, n + 1):
+        d["id"] = f"x{i}"
+    return dict(doc, differences=kept + cases, caseRuns=sorted(k for k in runs if runs[k] is not None),
+                caseDifferences=len(cases))
+
+
 # --- compare-c ---------------------------------------------------------------------------------------------------------
-def compare_c(c: dict, a: dict, b: dict) -> dict:
-    """Codex's derivation of a module, as returned, against A and B on its mechanical fields only. A mechanical
-    difference with a value on which A and B agree becomes an attack (who: derivationC)."""
-    def mech(rec):
-        out = {"cites": sorted({_canon({"code": s["cite"]["code"], "article": s["cite"]["article"],
-                                        "paragraphs": sorted(s["cite"].get("paragraphs") or [])})
-                                for s in rec.get("basis", [])}),
-               "deadlines": {}, "priorSteps": sorted(p["kind"] for p in rec.get("priorSteps", [])),
-               "exits": sorted(e["goesTo"] for e in rec.get("court", {}).get("exits", [])),
-               "section": rec.get("court", {}).get("section", {}).get("value")}
-        for d in rec.get("deadlines", []):
-            words = (d.get("extract") or {}).get("period", "")
-            read = read_periods(words) if words else []
-            out["deadlines"][_canon(_main_article(rec, d))] = {
-                "kind": d["kind"], "period": d["period"], "raisedBy": d.get("raisedBy"),
-                "periodWordsRead": read[0] if read else None, "sanctionWords": (d.get("extract") or {}).get("sanction")}
-        return out
-    mc, ma, mb = mech(c), mech(a), mech(b)
+def _units(cites) -> set:
+    """Cites as (code, article, paragraph) units; a cite without paragraphs is the whole article (paragraph None)."""
+    out = set()
+    for c in cites:
+        ps = c.get("paragraphs") or []
+        out |= {(c["code"], c["article"], p) for p in ps} if ps else {(c["code"], c["article"], None)}
+    return out
+
+
+def _covers(units: set, unit: tuple) -> bool:
+    return unit in units or (unit[0], unit[1], None) in units
+
+
+def _mech_record(rec: dict) -> dict:
+    out = {"cites": _units(s["cite"] for s in rec.get("basis", [])), "deadlines": {},
+           "priorSteps": sorted({p["kind"] for p in rec.get("priorSteps", [])}),
+           "exits": sorted({e["goesTo"] for e in (rec.get("court") or {}).get("exits", [])}),
+           "sections": sorted({v for v in [((rec.get("court") or {}).get("section") or {}).get("value")] if v})}
+    for d in rec.get("deadlines", []):
+        words = (d.get("extract") or {}).get("period", "")
+        read = read_periods(words) if words else []
+        out["deadlines"][_canon(_main_article(rec, d))] = {
+            "kind": d["kind"], "period": d["period"], "raisedBy": d.get("raisedBy"),
+            "periodWordsRead": read[0] if read else None, "sanctionWords": (d.get("extract") or {}).get("sanction")}
+    return out
+
+
+def _mech_c(c: dict) -> dict:
+    """Codex's answer in its own shape (prompts/schemas/module-derivation-c.schema.json), never a record."""
+    out = {"cites": _units(c.get("statements", [])), "deadlines": {},
+           "priorSteps": sorted({p["kind"] for p in c.get("priorSteps", [])}),
+           "exits": sorted({e["goesTo"] for e in c.get("exits", [])}),
+           "sections": sorted({s["section"] for s in c.get("sections", [])})}
+    for d in c.get("deadlines", []):
+        main = (d["basis"][0]["code"], d["basis"][0]["article"]) if d.get("basis") else None
+        read = read_periods(d.get("periodWords", "")) if d.get("periodWords") else []
+        out["deadlines"][_canon(main)] = {
+            "kind": d["kind"], "period": {"value": d["periodValue"], "unit": d["periodUnit"]},
+            "raisedBy": d.get("raisedBy"), "periodWordsRead": read[0] if read else None,
+            "sanctionWords": d.get("sanctionWords")}
+    return out
+
+
+def compare_c(c: dict, a: dict, b: dict, given: set | None = None) -> dict:
+    """Codex's derivation of a module, as returned in its own shape, against A and B on its mechanical fields only. A
+    mechanical difference with a value on which A and B agree becomes an attack (who: derivationC). Cites are compared
+    per paragraph, and only within the texts C was given (`given`: (code, article) pairs; None = no limit): C cannot
+    cite what it was not shown, and its silence there says nothing."""
+    mc, ma, mb = _mech_c(c), _mech_record(a), _mech_record(b)
     rows, attacks = [], []
-    for key in ("priorSteps", "exits", "section", "cites"):
+    for key in ("priorSteps", "exits", "sections"):
         rows.append({"field": key, "c": mc[key], "a": ma[key], "b": mb[key]})
         if ma[key] == mb[key] and mc[key] != ma[key]:
             attacks.append({"who": "derivationC", "target": key, "kind": "mechanicalDifference",
                             "claim": f"C gives {mc[key]} where A and B agree on {ma[key]}"})
+    for unit in sorted(mc["cites"] | ma["cites"] | mb["cites"], key=lambda u: (u[0], u[1], u[2] or 0)):
+        ia, ib, ic = _covers(ma["cites"], unit), _covers(mb["cites"], unit), _covers(mc["cites"], unit)
+        label = f"[{unit[0]} {unit[1]}" + (f" ¶{unit[2]}]" if unit[2] else "]")
+        shown = given is None or (unit[0], unit[1]) in given
+        rows.append({"field": f"cite {label}", "c": ic, "a": ia, "b": ib, "inTextsGivenToC": shown})
+        if shown and ia == ib and ic != ia:
+            attacks.append({"who": "derivationC", "target": f"cite {label}", "kind": "mechanicalDifference",
+                            "claim": (f"C cites {label}, which neither A nor B cites" if ic
+                                      else f"A and B both cite {label}; C does not")})
     for art in sorted(set(mc["deadlines"]) | set(ma["deadlines"]) | set(mb["deadlines"])):
         dc, da, db = mc["deadlines"].get(art), ma["deadlines"].get(art), mb["deadlines"].get(art)
         rows.append({"field": f"deadline {art}", "c": dc, "a": da, "b": db})
@@ -591,7 +667,7 @@ def compare_c(c: dict, a: dict, b: dict) -> dict:
                 attacks.append({"who": "derivationC", "target": f"deadline {art}", "kind": "mechanicalDifference",
                                 "claim": f"{name}: C gives {vc} where A and B agree on {va}"})
     return {"rows": rows, "attacks": attacks,
-            "cSays": {k: c.get(k) for k in ("openPoints", "boundaries", "documents") if c.get(k)}}
+            "cSays": {k: c.get(k) for k in ("openPoints", "missingTexts") if c.get(k)}}
 
 
 # --- flatten-imports ---------------------------------------------------------------------------------------------------
@@ -963,8 +1039,12 @@ def main(argv=None) -> int:
         m.add_argument(f"--{name}")
     c = sub.add_parser("compare"); c.add_argument("a"); c.add_argument("b")
     c.add_argument("--differences", required=True); c.add_argument("--idmap", required=True)
+    ac = sub.add_parser("add-cases"); ac.add_argument("differences")
+    for name in CASE_RUNS:
+        ac.add_argument(f"--{name}")
     cc = sub.add_parser("compare-c"); cc.add_argument("c"); cc.add_argument("a"); cc.add_argument("b")
     cc.add_argument("--out", required=True)
+    cc.add_argument("--texts", help="the unit's reports/<unit>.texts.json: cites outside it are not held against C")
     fl = sub.add_parser("flatten"); fl.add_argument("claim"); fl.add_argument("--modules", required=True)
     fl.add_argument("--out", required=True)
     g = sub.add_parser("grade"); g.add_argument("record"); g.add_argument("--out", required=True)
@@ -1024,8 +1104,16 @@ def main(argv=None) -> int:
         save(a.idmap, r["idmap"])
         t = r["agreementTotal"]
         print(f"{len(r['differences'])} difference(s); agreement {t['equal']} of {t['compared']}")
+    elif a.cmd == "add-cases":
+        runs = {name: load(getattr(a, name)) for name in CASE_RUNS if getattr(a, name)}
+        doc = add_cases(load(a.differences), runs)
+        save(a.differences, doc)
+        print(f"{doc['caseDifferences']} case difference(s) from {', '.join(doc['caseRuns'])}")
     elif a.cmd == "compare-c":
-        r = compare_c(load(a.c), load(a.a), load(a.b))
+        given = None
+        if a.texts:
+            given = {(ch["code"], art) for ch in load(a.texts)["chapters"] for art in ch["articles"]}
+        r = compare_c(load(a.c), load(a.a), load(a.b), given)
         save(a.out, r)
         print(f"{len(r['attacks'])} attack(s) from C")
     elif a.cmd == "flatten":

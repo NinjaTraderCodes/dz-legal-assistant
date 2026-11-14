@@ -1,0 +1,1560 @@
+{
+  "differences": [
+    {
+      "id": "x1",
+      "kind": "statement",
+      "field": "role",
+      "a": "procedure",
+      "b": "limit",
+      "aId": "b3",
+      "bId": "b8",
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x2",
+      "kind": "statement",
+      "field": "cite",
+      "a": {
+        "code": "civil-code",
+        "article": "120",
+        "paragraphs": [
+          1
+        ]
+      },
+      "b": null,
+      "aId": "b11",
+      "bId": null,
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x3",
+      "kind": "statement",
+      "field": "role",
+      "a": "prerequisite",
+      "b": "limit",
+      "aId": "b12",
+      "bId": "b9",
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x4",
+      "kind": "statement",
+      "field": "cite",
+      "a": {
+        "code": "civil-code",
+        "article": "121",
+        "paragraphs": [
+          1
+        ]
+      },
+      "b": null,
+      "aId": "b26",
+      "bId": null,
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x5",
+      "kind": "statement",
+      "field": "cite",
+      "a": {
+        "code": "civil-code",
+        "article": "181",
+        "paragraphs": [
+          1
+        ]
+      },
+      "b": null,
+      "aId": "b6",
+      "bId": null,
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x6",
+      "kind": "statement",
+      "field": "cite",
+      "a": {
+        "code": "civil-code",
+        "article": "323",
+        "paragraphs": [
+          1
+        ]
+      },
+      "b": null,
+      "aId": "b24",
+      "bId": null,
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x7",
+      "kind": "statement",
+      "field": "cite",
+      "a": {
+        "code": "civil-code",
+        "article": "553",
+        "paragraphs": [
+          1
+        ]
+      },
+      "b": null,
+      "aId": "b18",
+      "bId": null,
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x8",
+      "kind": "statement",
+      "field": "cite",
+      "a": {
+        "code": "civil-code",
+        "article": "553",
+        "paragraphs": [
+          2
+        ]
+      },
+      "b": null,
+      "aId": "b19",
+      "bId": null,
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x9",
+      "kind": "statement",
+      "field": "role",
+      "a": "procedure",
+      "b": "prerequisite",
+      "aId": "b20",
+      "bId": "b16",
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x10",
+      "kind": "statement",
+      "field": "cite",
+      "a": {
+        "code": "cpca",
+        "article": "306",
+        "paragraphs": [
+          1
+        ]
+      },
+      "b": null,
+      "aId": "b25",
+      "bId": null,
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x11",
+      "kind": "statement",
+      "field": "interpretive",
+      "a": false,
+      "b": true,
+      "aId": "b22",
+      "bId": "b18",
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x12",
+      "kind": "statement",
+      "field": "cite",
+      "a": {
+        "code": "cpca",
+        "article": "406",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "b": null,
+      "aId": "b21",
+      "bId": null,
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x13",
+      "kind": "priorStep",
+      "field": "present",
+      "a": "p2",
+      "b": null,
+      "aId": "p2",
+      "bId": null,
+      "matchedOn": "none"
+    },
+    {
+      "id": "x14",
+      "kind": "priorStep",
+      "field": "present",
+      "a": "p3",
+      "b": null,
+      "aId": "p3",
+      "bId": null,
+      "matchedOn": "none"
+    },
+    {
+      "id": "x15",
+      "kind": "priorStep",
+      "field": "present",
+      "a": null,
+      "b": "p2",
+      "aId": null,
+      "bId": "p2",
+      "matchedOn": "none"
+    },
+    {
+      "id": "x16",
+      "kind": "priorStep",
+      "field": "requiredWhen",
+      "a": {
+        "slot": "requests",
+        "includes": "damages"
+      },
+      "b": {
+        "any": [
+          {
+            "slot": "requests",
+            "includes": "damages"
+          },
+          {
+            "slot": "requests",
+            "includes": "rescission"
+          },
+          {
+            "slot": "requests",
+            "includes": "delivery"
+          },
+          {
+            "slot": "requests",
+            "includes": "payment"
+          }
+        ]
+      },
+      "aId": "p1",
+      "bId": "p1",
+      "matchedOn": "kind"
+    },
+    {
+      "id": "x17",
+      "kind": "priorStep",
+      "field": "notRequiredWhen",
+      "a": [
+        "{\"is\": \"yes\", \"slot\": \"debtor_refused_in_writing\"}",
+        "{\"is\": \"yes\", \"slot\": \"default_on_due_date_agreed\"}",
+        "{\"is\": \"yes\", \"slot\": \"obligation_is_tort_compensation\"}",
+        "{\"is\": \"yes\", \"slot\": \"performance_impossible_or_useless_by_debtor\"}",
+        "{\"is\": \"yes\", \"slot\": \"return_of_thing_known_stolen_or_unduly_received\"}"
+      ],
+      "b": [
+        "{\"all\": [{\"includes\": \"rescission\", \"slot\": \"requests\"}, {\"is\": \"yes\", \"slot\": \"movable_sale_price_unpaid_at_term\"}]}",
+        "{\"is\": \"yes\", \"slot\": \"debt_is_tort_compensation\"}",
+        "{\"is\": \"yes\", \"slot\": \"debtor_declared_in_writing_refusal\"}",
+        "{\"is\": \"yes\", \"slot\": \"debtor_knew_thing_stolen_or_wrongly_received\"}",
+        "{\"is\": \"yes\", \"slot\": \"default_by_term_agreement\"}",
+        "{\"is\": \"yes\", \"slot\": \"performance_impossible_by_debtor\"}"
+      ],
+      "aId": "p1",
+      "bId": "p1",
+      "matchedOn": "kind"
+    },
+    {
+      "id": "x18",
+      "kind": "element",
+      "field": "present",
+      "a": "e1",
+      "b": null,
+      "aId": "e1",
+      "bId": null,
+      "matchedOn": "none"
+    },
+    {
+      "id": "x19",
+      "kind": "slot",
+      "field": "used",
+      "a": null,
+      "b": "debt_is_tort_compensation",
+      "aId": null,
+      "bId": null,
+      "matchedOn": "slotId"
+    },
+    {
+      "id": "x20",
+      "kind": "slot",
+      "field": "used",
+      "a": null,
+      "b": "debtor_declared_in_writing_refusal",
+      "aId": null,
+      "bId": null,
+      "matchedOn": "slotId"
+    },
+    {
+      "id": "x21",
+      "kind": "slot",
+      "field": "used",
+      "a": null,
+      "b": "debtor_knew_thing_stolen_or_wrongly_received",
+      "aId": null,
+      "bId": null,
+      "matchedOn": "slotId"
+    },
+    {
+      "id": "x22",
+      "kind": "slot",
+      "field": "used",
+      "a": "debtor_refused_in_writing",
+      "b": null,
+      "aId": null,
+      "bId": null,
+      "matchedOn": "slotId"
+    },
+    {
+      "id": "x23",
+      "kind": "slot",
+      "field": "used",
+      "a": null,
+      "b": "default_by_term_agreement",
+      "aId": null,
+      "bId": null,
+      "matchedOn": "slotId"
+    },
+    {
+      "id": "x24",
+      "kind": "slot",
+      "field": "used",
+      "a": "default_on_due_date_agreed",
+      "b": null,
+      "aId": null,
+      "bId": null,
+      "matchedOn": "slotId"
+    },
+    {
+      "id": "x25",
+      "kind": "slot",
+      "field": "used",
+      "a": "notice_date",
+      "b": null,
+      "aId": null,
+      "bId": null,
+      "matchedOn": "slotId"
+    },
+    {
+      "id": "x26",
+      "kind": "slot",
+      "field": "used",
+      "a": "obligation_is_tort_compensation",
+      "b": null,
+      "aId": null,
+      "bId": null,
+      "matchedOn": "slotId"
+    },
+    {
+      "id": "x27",
+      "kind": "slot",
+      "field": "used",
+      "a": null,
+      "b": "other_means_equivalent_to_notice",
+      "aId": null,
+      "bId": null,
+      "matchedOn": "slotId"
+    },
+    {
+      "id": "x28",
+      "kind": "slot",
+      "field": "used",
+      "a": null,
+      "b": "performance_impossible_by_debtor",
+      "aId": null,
+      "bId": null,
+      "matchedOn": "slotId"
+    },
+    {
+      "id": "x29",
+      "kind": "slot",
+      "field": "used",
+      "a": "performance_impossible_or_useless_by_debtor",
+      "b": null,
+      "aId": null,
+      "bId": null,
+      "matchedOn": "slotId"
+    },
+    {
+      "id": "x30",
+      "kind": "slot",
+      "field": "used",
+      "a": "return_of_thing_known_stolen_or_unduly_received",
+      "b": null,
+      "aId": null,
+      "bId": null,
+      "matchedOn": "slotId"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex1",
+      "case": "ex1",
+      "run": "aOnB",
+      "title": "Clean case: payment and damages, notice served by bailiff.",
+      "detail": [
+        "p2: no counterpart in the id map",
+        "p3: no counterpart in the id map",
+        "n1: no counterpart in the id map"
+      ],
+      "matchedOn": "case",
+      "id": "x31"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex2",
+      "case": "ex2",
+      "run": "aOnB",
+      "title": "Rescission and damages, no notice, no exemption: warnings.",
+      "detail": [
+        "p1: declared ask, expected warn (p1: notice_served no, exemptions unknown, asks default_by_term_agreement, performance_impossible_by_debtor, debt_is_tort_compensation, debtor_knew_thing_stolen_or_wrongly_received, debtor_declared_in_writing_refusal -> ask; grade D -> ask, to check)",
+        "p2: no counterpart in the id map",
+        "p3: no counterpart in the id map",
+        "questions: asked {debt_is_tort_compensation, debtor_declared_in_writing_refusal, debtor_knew_thing_stolen_or_wrongly_received, default_by_term_agreement, performance_impossible_by_debtor}, expected {}",
+        "p1 -> p1: declared warn against ask",
+        "questions: {} against {debt_is_tort_compensation, debtor_declared_in_writing_refusal, debtor_knew_thing_stolen_or_wrongly_received, default_by_term_agreement, performance_impossible_by_debtor}"
+      ],
+      "matchedOn": "case",
+      "id": "x32"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex3",
+      "case": "ex3",
+      "run": "aOnB",
+      "title": "Damages asked, notice unknown: ask whether it was served.",
+      "detail": [
+        "p2: no counterpart in the id map",
+        "p3: no counterpart in the id map",
+        "n1: no counterpart in the id map"
+      ],
+      "matchedOn": "case",
+      "id": "x33"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex4",
+      "case": "ex4",
+      "run": "aOnB",
+      "title": "Tort compensation without notice: exempt.",
+      "detail": [
+        "p1: declared ask, expected none (p1: notice_served no, exemptions unknown, asks default_by_term_agreement, performance_impossible_by_debtor, debt_is_tort_compensation, debtor_knew_thing_stolen_or_wrongly_received, debtor_declared_in_writing_refusal -> ask; grade D -> ask, to check)",
+        "questions: asked {debt_is_tort_compensation, debtor_declared_in_writing_refusal, debtor_knew_thing_stolen_or_wrongly_received, default_by_term_agreement, performance_impossible_by_debtor}, expected {}",
+        "p1 -> p1: declared none against ask",
+        "questions: {} against {debt_is_tort_compensation, debtor_declared_in_writing_refusal, debtor_knew_thing_stolen_or_wrongly_received, default_by_term_agreement, performance_impossible_by_debtor}"
+      ],
+      "matchedOn": "case",
+      "id": "x34"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex5",
+      "case": "ex5",
+      "run": "aOnB",
+      "title": "Written refusal by the debtor: no notice needed for rescission or damages.",
+      "detail": [
+        "p1: declared ask, expected none (p1: notice_served no, exemptions unknown, asks default_by_term_agreement, performance_impossible_by_debtor, debt_is_tort_compensation, debtor_knew_thing_stolen_or_wrongly_received, debtor_declared_in_writing_refusal, movable_sale_price_unpaid_at_term -> ask; grade D -> ask, to check)",
+        "p2: no counterpart in the id map",
+        "questions: asked {debt_is_tort_compensation, debtor_declared_in_writing_refusal, debtor_knew_thing_stolen_or_wrongly_received, default_by_term_agreement, movable_sale_price_unpaid_at_term, performance_impossible_by_debtor}, expected {}",
+        "p1 -> p1: declared none against ask",
+        "questions: {} against {debt_is_tort_compensation, debtor_declared_in_writing_refusal, debtor_knew_thing_stolen_or_wrongly_received, default_by_term_agreement, movable_sale_price_unpaid_at_term, performance_impossible_by_debtor}"
+      ],
+      "matchedOn": "case",
+      "id": "x35"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex6",
+      "case": "ex6",
+      "run": "aOnB",
+      "title": "Sale of movables, price unpaid at the term: rescission without prior warning.",
+      "detail": [
+        "p2: no counterpart in the id map"
+      ],
+      "matchedOn": "case",
+      "id": "x36"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex7",
+      "case": "ex7",
+      "run": "aOnB",
+      "title": "Contract clause: debtor in default on the due date.",
+      "detail": [
+        "p1: declared ask, expected none (p1: notice_served no, exemptions unknown, asks default_by_term_agreement, performance_impossible_by_debtor, debt_is_tort_compensation, debtor_knew_thing_stolen_or_wrongly_received, debtor_declared_in_writing_refusal -> ask; grade D -> ask, to check)",
+        "p3: no counterpart in the id map",
+        "questions: asked {debt_is_tort_compensation, debtor_declared_in_writing_refusal, debtor_knew_thing_stolen_or_wrongly_received, default_by_term_agreement, performance_impossible_by_debtor}, expected {}",
+        "p1 -> p1: declared none against ask",
+        "questions: {} against {debt_is_tort_compensation, debtor_declared_in_writing_refusal, debtor_knew_thing_stolen_or_wrongly_received, default_by_term_agreement, performance_impossible_by_debtor}"
+      ],
+      "matchedOn": "case",
+      "id": "x37"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex8",
+      "case": "ex8",
+      "run": "aOnB",
+      "title": "No notice, exemptions unknown: ask for them.",
+      "detail": [
+        "n1: no counterpart in the id map",
+        "questions: asked {debt_is_tort_compensation, debtor_declared_in_writing_refusal, debtor_knew_thing_stolen_or_wrongly_received, default_by_term_agreement, performance_impossible_by_debtor}, expected {debtor_refused_in_writing, default_on_due_date_agreed, obligation_is_tort_compensation, performance_impossible_or_useless_by_debtor, return_of_thing_known_stolen_or_unduly_received}",
+        "questions: {debtor_refused_in_writing, default_on_due_date_agreed, obligation_is_tort_compensation, performance_impossible_or_useless_by_debtor, return_of_thing_known_stolen_or_unduly_received} against {debt_is_tort_compensation, debtor_declared_in_writing_refusal, debtor_knew_thing_stolen_or_wrongly_received, default_by_term_agreement, performance_impossible_by_debtor}"
+      ],
+      "matchedOn": "case",
+      "id": "x38"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex9",
+      "case": "ex9",
+      "run": "aOnB",
+      "title": "Notice given by another means (a phone call): the means is flagged.",
+      "detail": [
+        "n1: no counterpart in the id map",
+        "questions: asked {other_means_equivalent_to_notice}, expected {}",
+        "questions: {} against {other_means_equivalent_to_notice}"
+      ],
+      "matchedOn": "case",
+      "id": "x39"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex10",
+      "case": "ex10",
+      "run": "aOnB",
+      "title": "Return of a thing knowingly received without right: exempt.",
+      "detail": [
+        "p3: no counterpart in the id map"
+      ],
+      "matchedOn": "case",
+      "id": "x40"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex11",
+      "case": "ex11",
+      "run": "aOnB",
+      "title": "A divorce petition: the notice rules do not apply.",
+      "detail": [
+        "p2: no counterpart in the id map",
+        "p3: no counterpart in the id map",
+        "n1: no counterpart in the id map",
+        "questions: asked {notice_means, notice_served}, expected {}",
+        "questions: {} against {notice_means, notice_served}"
+      ],
+      "matchedOn": "case",
+      "id": "x41"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex12",
+      "case": "ex12",
+      "run": "aOnB",
+      "title": "Delivery and damages, performance made impossible by the debtor's act: exempt.",
+      "detail": [
+        "p1: declared ask, expected none (p1: notice_served no, exemptions unknown, asks default_by_term_agreement, performance_impossible_by_debtor, debt_is_tort_compensation, debtor_knew_thing_stolen_or_wrongly_received, debtor_declared_in_writing_refusal -> ask; grade D -> ask, to check)",
+        "p3: no counterpart in the id map",
+        "questions: asked {debt_is_tort_compensation, debtor_declared_in_writing_refusal, debtor_knew_thing_stolen_or_wrongly_received, default_by_term_agreement, performance_impossible_by_debtor}, expected {}",
+        "p1 -> p1: declared none against ask",
+        "questions: {} against {debt_is_tort_compensation, debtor_declared_in_writing_refusal, debtor_knew_thing_stolen_or_wrongly_received, default_by_term_agreement, performance_impossible_by_debtor}"
+      ],
+      "matchedOn": "case",
+      "id": "x42"
+    },
+    {
+      "kind": "case",
+      "field": "bOnA ex1",
+      "case": "ex1",
+      "run": "bOnA",
+      "title": "Debt unpaid, notice by bailiff, damages asked.",
+      "detail": [
+        "p2: no counterpart in the id map"
+      ],
+      "matchedOn": "case",
+      "id": "x43"
+    },
+    {
+      "kind": "case",
+      "field": "bOnA ex2",
+      "case": "ex2",
+      "run": "bOnA",
+      "title": "Unpaid price, no notice, no exception: warning.",
+      "detail": [
+        "p1: declared ask, expected warn (p1: notice_served no, exemptions unknown, asks default_on_due_date_agreed, performance_impossible_or_useless_by_debtor, obligation_is_tort_compensation, return_of_thing_known_stolen_or_unduly_received, debtor_refused_in_writing -> ask; grade D -> ask, to check)",
+        "p1 -> p1: declared warn against ask",
+        "questions: {} against {debtor_refused_in_writing, default_on_due_date_agreed, obligation_is_tort_compensation, performance_impossible_or_useless_by_debtor, return_of_thing_known_stolen_or_unduly_received}"
+      ],
+      "matchedOn": "case",
+      "id": "x44"
+    },
+    {
+      "kind": "case",
+      "field": "bOnA ex3",
+      "case": "ex3",
+      "run": "bOnA",
+      "title": "Damages for a harmful act: no notice needed.",
+      "detail": [
+        "p1: declared ask, expected none (p1: notice_served no, exemptions unknown, asks default_on_due_date_agreed, performance_impossible_or_useless_by_debtor, obligation_is_tort_compensation, return_of_thing_known_stolen_or_unduly_received, debtor_refused_in_writing -> ask; grade D -> ask, to check)",
+        "p1 -> p1: declared none against ask",
+        "questions: {} against {debtor_refused_in_writing, default_on_due_date_agreed, obligation_is_tort_compensation, performance_impossible_or_useless_by_debtor, return_of_thing_known_stolen_or_unduly_received}"
+      ],
+      "matchedOn": "case",
+      "id": "x45"
+    },
+    {
+      "kind": "case",
+      "field": "bOnA ex4",
+      "case": "ex4",
+      "run": "bOnA",
+      "title": "Notice not known: ask.",
+      "detail": [
+        "p2: no counterpart in the id map"
+      ],
+      "matchedOn": "case",
+      "id": "x46"
+    },
+    {
+      "kind": "case",
+      "field": "bOnA ex5",
+      "case": "ex5",
+      "run": "bOnA",
+      "title": "No notice, one exemption unknown: ask for it.",
+      "detail": [
+        "p1: declared none, expected ask (p1: requiredWhen false -> none; grade D -> none, to check)",
+        "questions: asked {debtor_refused_in_writing, default_on_due_date_agreed, performance_impossible_or_useless_by_debtor}, expected {debtor_declared_in_writing_refusal}",
+        "p1 -> p1: declared ask against none",
+        "questions: {debtor_declared_in_writing_refusal} against {debtor_refused_in_writing, default_on_due_date_agreed, performance_impossible_or_useless_by_debtor}"
+      ],
+      "matchedOn": "case",
+      "id": "x47"
+    },
+    {
+      "kind": "case",
+      "field": "bOnA ex6",
+      "case": "ex6",
+      "run": "bOnA",
+      "title": "Notice by another means, equivalence unknown: warning.",
+      "detail": [
+        "p2: no counterpart in the id map",
+        "questions: asked {}, expected {other_means_equivalent_to_notice}",
+        "questions: {other_means_equivalent_to_notice} against {}"
+      ],
+      "matchedOn": "case",
+      "id": "x48"
+    },
+    {
+      "kind": "case",
+      "field": "bOnA ex7",
+      "case": "ex7",
+      "run": "bOnA",
+      "title": "Near miss: eviction only, no damages: no notice rule here.",
+      "detail": [
+        "p2: no counterpart in the id map"
+      ],
+      "matchedOn": "case",
+      "id": "x49"
+    },
+    {
+      "kind": "case",
+      "field": "bOnA ex9",
+      "case": "ex9",
+      "run": "bOnA",
+      "title": "Agreement that the term puts in default: no notice.",
+      "detail": [
+        "questions: {} against {debtor_refused_in_writing, default_on_due_date_agreed, obligation_is_tort_compensation, performance_impossible_or_useless_by_debtor, return_of_thing_known_stolen_or_unduly_received}"
+      ],
+      "matchedOn": "case",
+      "id": "x50"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryA bc3",
+      "case": "bc3",
+      "run": "boundaryA",
+      "title": "No notice at all, claim for damages, no exemption fact known",
+      "detail": [
+        "p1: declared ask, the outcome StepMissing needs warn (p1: notice_served no, exemptions unknown, asks default_on_due_date_agreed, performance_impossible_or_useless_by_debtor, obligation_is_tort_compensation, return_of_thing_known_stolen_or_unduly_received, debtor_refused_in_writing -> ask; grade D -> ask, to check)"
+      ],
+      "matchedOn": "case",
+      "id": "x51"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryA bc4",
+      "case": "bc4",
+      "run": "boundaryA",
+      "title": "No notice, claim for rescission of a bilateral contract",
+      "detail": [
+        "p2: declared ask, the outcome StepMissing needs warn (p2: notice_served no, exemptions unknown, asks default_on_due_date_agreed, performance_impossible_or_useless_by_debtor, debtor_refused_in_writing, movable_sale_price_unpaid_at_term -> ask; grade D -> ask, to check)"
+      ],
+      "matchedOn": "case",
+      "id": "x52"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryA bc6",
+      "case": "bc6",
+      "run": "boundaryA",
+      "title": "Notice sent by an unlisted means",
+      "detail": [
+        "p1: declared none: an unsettled case must not be silent (p1: notice_served yes, the step was done -> none; grade D -> none, to check)",
+        "p2: declared none: an unsettled case must not be silent (p2: requiredWhen false -> none; grade D -> none, to check)",
+        "p3: declared none: an unsettled case must not be silent (p3: requiredWhen false -> none; grade D -> none, to check)",
+        "n2: the item gave no finding"
+      ],
+      "matchedOn": "case",
+      "id": "x53"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryA bc7",
+      "case": "bc7",
+      "run": "boundaryA",
+      "title": "The notice is dated after the petition",
+      "detail": [
+        "p2: declared none, the outcome StepMissing needs warn (p2: requiredWhen false -> none; grade D -> none, to check)"
+      ],
+      "matchedOn": "case",
+      "id": "x54"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryA bc8",
+      "case": "bc8",
+      "run": "boundaryA",
+      "title": "Notice dated on the petition day itself",
+      "detail": [
+        "p1: declared none: an unsettled case must not be silent (p1: notice_served yes, the step was done -> none; grade D -> none, to check)"
+      ],
+      "matchedOn": "case",
+      "id": "x55"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryA bc9",
+      "case": "bc9",
+      "run": "boundaryA",
+      "title": "Rescission clause in the contract, no notice sent",
+      "detail": [
+        "p2: declared ask, the outcome StepMissing needs warn (p2: notice_served no, exemptions unknown, asks default_on_due_date_agreed, performance_impossible_or_useless_by_debtor, debtor_refused_in_writing, movable_sale_price_unpaid_at_term -> ask; grade D -> ask, to check)"
+      ],
+      "matchedOn": "case",
+      "id": "x56"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryA bc10",
+      "case": "bc10",
+      "run": "boundaryA",
+      "title": "Claim only for payment of the price, no notice",
+      "detail": [
+        "p2: declared none: an unsettled case must not be silent (p2: requiredWhen false -> none; grade D -> none, to check)",
+        "n7: the item gave no finding"
+      ],
+      "matchedOn": "case",
+      "id": "x57"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryA bc11",
+      "case": "bc11",
+      "run": "boundaryA",
+      "title": "Eviction claim only, no notice, texts given silent",
+      "detail": [
+        "p2: declared none: an unsettled case must not be silent (p2: requiredWhen false -> none; grade D -> none, to check)",
+        "n7: the item gave no finding"
+      ],
+      "matchedOn": "case",
+      "id": "x58"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryA bc12",
+      "case": "bc12",
+      "run": "boundaryA",
+      "title": "Notice served, means unknown",
+      "detail": [
+        "p1: declared none, the outcome Ask needs ask (p1: notice_served yes, the step was done -> none; grade D -> none, to check)",
+        "p2: declared none, the outcome Ask needs ask (p2: requiredWhen false -> none; grade D -> none, to check)",
+        "p3: declared none, the outcome Ask needs ask (p3: requiredWhen false -> none; grade D -> none, to check)",
+        "n2: the item gave no finding"
+      ],
+      "matchedOn": "case",
+      "id": "x59"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryB bc3",
+      "case": "bc3",
+      "run": "boundaryB",
+      "title": "No notice at all, claim for damages, no exemption fact known",
+      "detail": [
+        "p1: declared ask, the outcome StepMissing needs warn (p1: notice_served no, exemptions unknown, asks default_by_term_agreement, performance_impossible_by_debtor, debt_is_tort_compensation, debtor_knew_thing_stolen_or_wrongly_received, debtor_declared_in_writing_refusal -> ask; grade D -> ask, to check)"
+      ],
+      "matchedOn": "case",
+      "id": "x60"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryB bc4",
+      "case": "bc4",
+      "run": "boundaryB",
+      "title": "No notice, claim for rescission of a bilateral contract",
+      "detail": [
+        "p1: declared ask, the outcome StepMissing needs warn (p1: notice_served no, exemptions unknown, asks default_by_term_agreement, performance_impossible_by_debtor, debt_is_tort_compensation, debtor_knew_thing_stolen_or_wrongly_received, debtor_declared_in_writing_refusal, movable_sale_price_unpaid_at_term -> ask; grade D -> ask, to check)"
+      ],
+      "matchedOn": "case",
+      "id": "x61"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryB bc6",
+      "case": "bc6",
+      "run": "boundaryB",
+      "title": "Notice sent by an unlisted means",
+      "detail": [
+        "p1: declared none: an unsettled case must not be silent (p1: notice_served yes, the step was done -> none; grade D -> none, to check)",
+        "n2: the item gave no finding"
+      ],
+      "matchedOn": "case",
+      "id": "x62"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryB bc7",
+      "case": "bc7",
+      "run": "boundaryB",
+      "title": "The notice is dated after the petition",
+      "detail": [
+        "p1: declared none, the outcome StepMissing needs warn (p1: notice_served yes, the step was done -> none; grade D -> none, to check)"
+      ],
+      "matchedOn": "case",
+      "id": "x63"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryB bc8",
+      "case": "bc8",
+      "run": "boundaryB",
+      "title": "Notice dated on the petition day itself",
+      "detail": [
+        "p1: declared none: an unsettled case must not be silent (p1: notice_served yes, the step was done -> none; grade D -> none, to check)"
+      ],
+      "matchedOn": "case",
+      "id": "x64"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryB bc9",
+      "case": "bc9",
+      "run": "boundaryB",
+      "title": "Rescission clause in the contract, no notice sent",
+      "detail": [
+        "[civil-code 120 ¶2] matches no item: a rule the record may have missed"
+      ],
+      "matchedOn": "case",
+      "id": "x65"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryB bc11",
+      "case": "bc11",
+      "run": "boundaryB",
+      "title": "Eviction claim only, no notice, texts given silent",
+      "detail": [
+        "p1: declared none: an unsettled case must not be silent (p1: requiredWhen false -> none; grade D -> none, to check)"
+      ],
+      "matchedOn": "case",
+      "id": "x66"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryB bc12",
+      "case": "bc12",
+      "run": "boundaryB",
+      "title": "Notice served, means unknown",
+      "detail": [
+        "p1: declared none, the outcome Ask needs ask (p1: notice_served yes, the step was done -> none; grade D -> none, to check)",
+        "n2: the item gave no finding"
+      ],
+      "matchedOn": "case",
+      "id": "x67"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc2",
+      "case": "bc2",
+      "run": "boundaryAB",
+      "title": "Notice by registered letter with acknowledgement of receipt before a claim for damages",
+      "detail": [
+        "formal-notice (DerivationA): [PriorStep none last day none days left none; PriorStep none last day none days left none; PriorStep none last day none days left none] questions {}",
+        "formal-notice (DerivationB): [PriorStep none last day none days left none; PriorStep none last day none days left none] questions {}"
+      ],
+      "matchedOn": "case",
+      "id": "x68"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc3",
+      "case": "bc3",
+      "run": "boundaryAB",
+      "title": "No notice at all, claim for damages, no exemption fact known",
+      "detail": [
+        "formal-notice (DerivationA): [PriorStep ask last day none days left none] questions {debtor_refused_in_writing, default_on_due_date_agreed, obligation_is_tort_compensation, performance_impossible_or_useless_by_debtor, return_of_thing_known_stolen_or_unduly_received}",
+        "formal-notice (DerivationB): [PriorStep ask last day none days left none] questions {debt_is_tort_compensation, debtor_declared_in_writing_refusal, debtor_knew_thing_stolen_or_wrongly_received, default_by_term_agreement, performance_impossible_by_debtor}"
+      ],
+      "matchedOn": "case",
+      "id": "x69"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc4",
+      "case": "bc4",
+      "run": "boundaryAB",
+      "title": "No notice, claim for rescission of a bilateral contract",
+      "detail": [
+        "formal-notice (DerivationA): [PriorStep ask last day none days left none] questions {debtor_refused_in_writing, default_on_due_date_agreed, movable_sale_price_unpaid_at_term, performance_impossible_or_useless_by_debtor}",
+        "formal-notice (DerivationB): [PriorStep ask last day none days left none] questions {debt_is_tort_compensation, debtor_declared_in_writing_refusal, debtor_knew_thing_stolen_or_wrongly_received, default_by_term_agreement, movable_sale_price_unpaid_at_term, performance_impossible_by_debtor}"
+      ],
+      "matchedOn": "case",
+      "id": "x70"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc6",
+      "case": "bc6",
+      "run": "boundaryAB",
+      "title": "Notice sent by an unlisted means",
+      "detail": [
+        "formal-notice (DerivationA): [Boundary warn last day none days left none; Boundary: no finding; PriorStep none last day none days left none; PriorStep none last day none days left none; PriorStep none last day none days left none] questions {}",
+        "formal-notice (DerivationB): [Boundary: no finding; PriorStep none last day none days left none; PriorStep warn last day none days left none] questions {other_means_equivalent_to_notice}"
+      ],
+      "matchedOn": "case",
+      "id": "x71"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc9",
+      "case": "bc9",
+      "run": "boundaryAB",
+      "title": "Rescission clause in the contract, no notice sent",
+      "detail": [
+        "formal-notice (DerivationA): [PriorStep ask last day none days left none] questions {debtor_refused_in_writing, default_on_due_date_agreed, movable_sale_price_unpaid_at_term, performance_impossible_or_useless_by_debtor}",
+        "formal-notice (DerivationB): [] questions {debt_is_tort_compensation, debtor_declared_in_writing_refusal, debtor_knew_thing_stolen_or_wrongly_received, default_by_term_agreement, movable_sale_price_unpaid_at_term, performance_impossible_by_debtor}"
+      ],
+      "matchedOn": "case",
+      "id": "x72"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc10",
+      "case": "bc10",
+      "run": "boundaryAB",
+      "title": "Claim only for payment of the price, no notice",
+      "detail": [
+        "formal-notice (DerivationA): [Boundary: no finding; PriorStep none last day none days left none] questions {debtor_refused_in_writing, default_on_due_date_agreed, obligation_is_tort_compensation, performance_impossible_or_useless_by_debtor, return_of_thing_known_stolen_or_unduly_received}",
+        "formal-notice (DerivationB): [PriorStep ask last day none days left none] questions {debt_is_tort_compensation, debtor_declared_in_writing_refusal, debtor_knew_thing_stolen_or_wrongly_received, default_by_term_agreement, performance_impossible_by_debtor}"
+      ],
+      "matchedOn": "case",
+      "id": "x73"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc11",
+      "case": "bc11",
+      "run": "boundaryAB",
+      "title": "Eviction claim only, no notice, texts given silent",
+      "detail": [
+        "formal-notice (DerivationA): [Boundary: no finding; PriorStep none last day none days left none] questions {}",
+        "formal-notice (DerivationB): [PriorStep none last day none days left none] questions {}"
+      ],
+      "matchedOn": "case",
+      "id": "x74"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc12",
+      "case": "bc12",
+      "run": "boundaryAB",
+      "title": "Notice served, means unknown",
+      "detail": [
+        "formal-notice (DerivationA): [Boundary ask last day none days left none; Boundary: no finding; PriorStep none last day none days left none; PriorStep none last day none days left none; PriorStep none last day none days left none] questions {notice_means}",
+        "formal-notice (DerivationB): [Boundary: no finding; PriorStep ask last day none days left none; PriorStep none last day none days left none] questions {notice_means}"
+      ],
+      "matchedOn": "case",
+      "id": "x75"
+    }
+  ],
+  "sideBySide": {
+    "documents": {
+      "a": [
+        {
+          "id": "doc1",
+          "name": {
+            "ar": "محضر الإعذار المحرر من المحضر القضائي، أو الرسالة مع ما يثبت إرسالها واستلامها",
+            "en": "The bailiff's record of the notice, or the letter with proof of sending and receipt"
+          },
+          "requiredWhen": {
+            "slot": "notice_served",
+            "is": "yes"
+          },
+          "why": {
+            "ar": "يثبت وقوع الإعذار وتاريخه ووسيلته (المادة 180 من القانون المدني).",
+            "en": "Proves that notice was given, its date and its means (Civil Code article 180)."
+          },
+          "basis": [
+            "b5",
+            "b21"
+          ]
+        },
+        {
+          "id": "doc2",
+          "name": {
+            "ar": "العقد المتضمن بند اعتبار المدين معذرا بمجرد حلول الأجل",
+            "en": "The contract with the clause that the debtor is in default on the due date"
+          },
+          "requiredWhen": {
+            "slot": "default_on_due_date_agreed",
+            "is": "yes"
+          },
+          "why": {
+            "ar": "يثبت الاتفاق الذي يغني عن الإعذار (المادة 180 من القانون المدني).",
+            "en": "Proves the agreement that replaces the notice (Civil Code article 180)."
+          },
+          "basis": [
+            "b5"
+          ]
+        },
+        {
+          "id": "doc3",
+          "name": {
+            "ar": "المحرر الذي صرح فيه المدين بأنه لا ينوي تنفيذ التزامه",
+            "en": "The writing in which the debtor declared he does not intend to perform"
+          },
+          "requiredWhen": {
+            "slot": "debtor_refused_in_writing",
+            "is": "yes"
+          },
+          "why": {
+            "ar": "يثبت حالة الإعفاء من الإعذار (المادة 181 من القانون المدني).",
+            "en": "Proves the exemption from notice (Civil Code article 181)."
+          },
+          "basis": [
+            "b10"
+          ]
+        }
+      ],
+      "b": [
+        {
+          "id": "doc1",
+          "name": {
+            "ar": "نسخة من الإعذار",
+            "en": "Copy of the notice"
+          },
+          "requiredWhen": {
+            "slot": "notice_served",
+            "is": "yes"
+          },
+          "why": {
+            "ar": "لإثبات الإعذار وتاريخه ومضمونه.",
+            "en": "To prove the notice, its date and its content."
+          },
+          "basis": [
+            "b2"
+          ]
+        },
+        {
+          "id": "doc2",
+          "name": {
+            "ar": "محضر التبليغ أو إشعار الاستلام",
+            "en": "Bailiff's record or acknowledgement of receipt"
+          },
+          "requiredWhen": {
+            "slot": "notice_served",
+            "is": "yes"
+          },
+          "why": {
+            "ar": "لإثبات وصول الإعذار إلى المدين.",
+            "en": "To prove the notice reached the debtor."
+          },
+          "basis": [
+            "b2"
+          ]
+        },
+        {
+          "id": "doc3",
+          "name": {
+            "ar": "بند الاتفاق على الإعذار بحلول الأجل",
+            "en": "The clause making the debtor in default at the term"
+          },
+          "requiredWhen": {
+            "slot": "default_by_term_agreement",
+            "is": "yes"
+          },
+          "why": {
+            "ar": "يستند إليه الإعفاء من الإعذار.",
+            "en": "The exemption from notice rests on it."
+          },
+          "basis": [
+            "b2"
+          ]
+        },
+        {
+          "id": "doc4",
+          "name": {
+            "ar": "تصريح المدين الكتابي بعدم التنفيذ",
+            "en": "The debtor's written refusal"
+          },
+          "requiredWhen": {
+            "slot": "debtor_declared_in_writing_refusal",
+            "is": "yes"
+          },
+          "why": {
+            "ar": "يستند إليه الإعفاء من الإعذار.",
+            "en": "The exemption from notice rests on it."
+          },
+          "basis": [
+            "b6"
+          ]
+        }
+      ]
+    },
+    "boundaries": {
+      "a": [
+        {
+          "id": "n1",
+          "looksLike": {
+            "ar": "إعذار وجه بوسيلة غير الإنذار بمحضر قضائي أو البريد",
+            "en": "A notice sent by a means other than a bailiff's warning or the post"
+          },
+          "isActually": "outside:means-to-check",
+          "tellingFacts": [
+            {
+              "ar": "مكالمة، رسالة إلكترونية، رسالة عادية دون إثبات، أو تنبيه شفهي.",
+              "en": "A phone call, an e-mail, an ordinary letter without proof, or an oral reminder."
+            }
+          ],
+          "when": {
+            "all": [
+              {
+                "any": [
+                  {
+                    "slot": "requests",
+                    "includes": "damages"
+                  },
+                  {
+                    "slot": "requests",
+                    "includes": "rescission"
+                  },
+                  {
+                    "slot": "requests",
+                    "includes": "payment"
+                  },
+                  {
+                    "slot": "requests",
+                    "includes": "delivery"
+                  },
+                  {
+                    "slot": "requests",
+                    "includes": "restitution"
+                  }
+                ]
+              },
+              {
+                "slot": "notice_served",
+                "is": "yes"
+              },
+              {
+                "slot": "notice_means",
+                "is": "other"
+              }
+            ]
+          },
+          "slots": [
+            "requests",
+            "notice_served",
+            "notice_means"
+          ],
+          "message": {
+            "ar": "المادة 180 من القانون المدني: يكون الإعذار بالإنذار أو بما يقوم مقامه أو بالبريد على الوجه المبين في القانون. تحقق من أن الوسيلة المستعملة تحقق ذلك.",
+            "en": "Civil Code article 180: notice is given by a warning, by an act standing in its place, or by post as the code provides. Check that the means used qualifies."
+          },
+          "basis": [
+            "b5",
+            "b21"
+          ]
+        },
+        {
+          "id": "n2",
+          "looksLike": {
+            "ar": "شرط فسخ اتفاقي يبدو أنه يغني عن الإعذار",
+            "en": "An agreed rescission clause that seems to make notice unnecessary"
+          },
+          "isActually": "outside:notice-still-required",
+          "tellingFacts": [
+            {
+              "ar": "العقد ينص على الفسخ بقوة القانون دون حكم، ولا ينص صراحة على أن المدين معذر بحلول الأجل.",
+              "en": "The contract provides for rescission by law without judgment, but does not say the debtor is in default on the due date."
+            }
+          ],
+          "message": {
+            "ar": "المادة 120 من القانون المدني: شرط الفسخ الاتفاقي لا يعفي من الإعذار. أما المادة 180 فتجيز الاتفاق على أن المدين معذر بحلول الأجل.",
+            "en": "Civil Code article 120: an agreed rescission clause does not dispense with notice. Article 180 separately allows agreeing that the debtor is in default on the due date."
+          },
+          "basis": [
+            "b11",
+            "b12",
+            "b5"
+          ]
+        },
+        {
+          "id": "n3",
+          "looksLike": {
+            "ar": "إنذار المستأجر التجاري بوقف المخالفة",
+            "en": "The warning to a commercial tenant to stop a breach"
+          },
+          "isActually": "outside:commercial-lease-regimes",
+          "tellingFacts": [
+            {
+              "ar": "إيجار محل تجاري، ورفض تجديد بسبب مخالفة المستأجر.",
+              "en": "A lease of business premises, and a refusal to renew for the tenant's breach."
+            }
+          ],
+          "message": {
+            "ar": "المادة 177 من القانون التجاري: هذا الإنذار يخضع لشكل خاص (عقد غير قضائي مسبب يذكر مضمون الفقرة) تحت طائلة البطلان. انظر وحدة الإيجار التجاري.",
+            "en": "Commercial Code article 177: this warning has its own form (a reasoned extrajudicial act reciting the paragraph), failing which it is void. See the commercial-lease module."
+          },
+          "basis": [
+            "b23"
+          ]
+        },
+        {
+          "id": "n4",
+          "looksLike": {
+            "ar": "إعذار المؤجر بالصيانة قبل طلب الفسخ أو إنقاص الأجرة",
+            "en": "Notice to a lessor to maintain before claiming rescission or a rent reduction"
+          },
+          "isActually": "outside:lease-maintenance-notice",
+          "tellingFacts": [
+            {
+              "ar": "المستأجر هو المدعي، والإخلال هو عدم الصيانة.",
+              "en": "The tenant is the plaintiff, and the breach is the failure to maintain."
+            }
+          ],
+          "message": {
+            "ar": "المادة 480 من القانون المدني: يكون إعذار المؤجر بالصيانة بمحرر غير قضائي. تحقق من شكل الإعذار.",
+            "en": "Civil Code article 480: the notice to the lessor to maintain is given by an extrajudicial instrument. Check the form of the notice."
+          },
+          "basis": [
+            "b17",
+            "b21"
+          ]
+        },
+        {
+          "id": "n5",
+          "looksLike": {
+            "ar": "إنذار المقاول بتصحيح طريقة التنفيذ، أو إنذار رب العمل بالتسلم",
+            "en": "A warning to a contractor to correct the work, or to an owner to take delivery"
+          },
+          "isActually": "outside:works-contract-warning",
+          "tellingFacts": [
+            {
+              "ar": "عقد مقاولة؛ عيب في طريقة التنفيذ أثناء العمل، أو امتناع عن التسلم.",
+              "en": "A works contract; defective work in progress, or a refusal to take delivery."
+            }
+          ],
+          "message": {
+            "ar": "المادتان 553 و558 من القانون المدني: إنذار بالتصحيح في أجل معقول قبل الفسخ ما لم يكن الإصلاح مستحيلا، وإنذار رسمي بالتسلم. تحقق من الإنذار الخاص.",
+            "en": "Civil Code articles 553 and 558: a warning to correct within a reasonable time before rescission unless correction is impossible, and an official warning to take delivery. Check the specific warning."
+          },
+          "basis": [
+            "b18",
+            "b19",
+            "b20"
+          ]
+        },
+        {
+          "id": "n6",
+          "looksLike": {
+            "ar": "مطالبة بدين نقدي ثابت بالكتابة",
+            "en": "A claim for a sum of money proved in writing"
+          },
+          "isActually": "outside:payment-order",
+          "tellingFacts": [
+            {
+              "ar": "دين نقدي مستحق، معين المقدار، ثابت بالكتابة.",
+              "en": "A money debt that is due, fixed in amount and proved in writing."
+            }
+          ],
+          "message": {
+            "ar": "المادة 306 من قانون الإجراءات المدنية والإدارية: طريق الأمر بالأداء متاح لهذا الدين، وشروطه لا تذكر الإعذار. انظر وحدة الخروج من الدعوى العادية.",
+            "en": "Code of Civil and Administrative Procedure article 306: the order-to-pay route is open for such a debt, and its conditions do not mention notice. See the ordinary-court-exits module."
+          },
+          "basis": [
+            "b25"
+          ]
+        },
+        {
+          "id": "n7",
+          "looksLike": {
+            "ar": "عقد ملزم للجانبين استحال تنفيذه",
+            "en": "A bilateral contract whose performance became impossible"
+          },
+          "isActually": "outside:rescission-by-law",
+          "tellingFacts": [
+            {
+              "ar": "انقضاء الالتزام لاستحالة التنفيذ، لا لامتناع المدين.",
+              "en": "The obligation ended because performance became impossible, not because the debtor refused."
+            }
+          ],
+          "message": {
+            "ar": "المادة 121 من القانون المدني: ينفسخ العقد بحكم القانون عند استحالة التنفيذ، وهي حالة غير الفسخ القضائي بعد الإعذار.",
+            "en": "Civil Code article 121: the contract is rescinded by law when performance becomes impossible, a case distinct from judicial rescission after notice."
+          },
+          "basis": [
+            "b26",
+            "b2"
+          ]
+        }
+      ],
+      "b": [
+        {
+          "id": "n1",
+          "looksLike": {
+            "ar": "إنذار المستأجر أو المؤجر في عقد إيجار تجاري",
+            "en": "A notice to a commercial tenant or landlord"
+          },
+          "isActually": "outside:notice-to-quit",
+          "tellingFacts": [
+            {
+              "ar": "إنذار بعقد غير قضائي مع بيان السبب.",
+              "en": "A non-judicial act stating the reason."
+            }
+          ],
+          "message": {
+            "ar": "المادة 177 من القانون التجاري: إنذار المؤجر بمخالفة المستأجر يخضع لشكل خاص؛ راجع وحدة الإيجار التجاري.",
+            "en": "Commercial Code art. 177: a notice of a tenant's breach follows its own form; see the commercial-lease module."
+          },
+          "basis": [
+            "b17"
+          ]
+        },
+        {
+          "id": "n2",
+          "looksLike": {
+            "ar": "محضر عدم المصالحة في نزاع عمل",
+            "en": "A record of non-conciliation in a labour dispute"
+          },
+          "isActually": "outside:labour-conciliation",
+          "tellingFacts": [
+            {
+              "ar": "يحرره مكتب المصالحة ولا يوجه إلى المدين لإعذاره.",
+              "en": "Drawn up by the conciliation office, not sent to the debtor to put him in default."
+            }
+          ],
+          "message": {
+            "ar": "محضر عدم المصالحة ليس إعذارا بمعنى المادة 180 من القانون المدني؛ راجع وحدة المصالحة العمالية.",
+            "en": "A record of non-conciliation is not a notice under Civil Code art. 180; see the labour-conciliation module."
+          },
+          "basis": [
+            "b2"
+          ]
+        },
+        {
+          "id": "n3",
+          "looksLike": {
+            "ar": "إعذار المؤجر بعدم الصيانة",
+            "en": "A notice to a lessor for failure of upkeep"
+          },
+          "isActually": "outside:lease-maintenance",
+          "tellingFacts": [
+            {
+              "ar": "يشترط محرر غير قضائي.",
+              "en": "A non-judicial instrument is required."
+            }
+          ],
+          "message": {
+            "ar": "المادة 480 من القانون المدني: إعذار المؤجر بعدم الصيانة يكون بمحرر غير قضائي؛ تحقق من الشكل.",
+            "en": "Civil Code art. 480: notice to a lessor for lack of upkeep is by a non-judicial instrument; check the form."
+          },
+          "basis": [
+            "b15"
+          ]
+        },
+        {
+          "id": "n4",
+          "looksLike": {
+            "ar": "دعوة رب العمل إلى تسلم العمل",
+            "en": "A call on the owner to take delivery of work"
+          },
+          "isActually": "outside:contract-for-work",
+          "tellingFacts": [
+            {
+              "ar": "إنذار رسمي يرتب اعتبار العمل مسلما.",
+              "en": "An official notice that makes the work treated as delivered."
+            }
+          ],
+          "message": {
+            "ar": "المادة 558 من القانون المدني: الإنذار الرسمي لرب العمل يرتب اعتبار العمل مسلما؛ راجع شكله.",
+            "en": "Civil Code art. 558: an official notice to the owner makes the work treated as delivered; check its form."
+          },
+          "basis": [
+            "b16"
+          ]
+        }
+      ]
+    }
+  },
+  "proposedSlots": {
+    "a": [
+      {
+        "id": "default_on_due_date_agreed",
+        "type": "yesNoUnknown",
+        "question": {
+          "ar": "هل ينص العقد على أن المدين يعتبر معذرا بمجرد حلول الأجل دون حاجة إلى أي إجراء آخر؟",
+          "en": "Does the contract say that the debtor is in default by the mere arrival of the due date, without any further step?"
+        },
+        "why": "Prior steps p1, p2 and p3 read it as an exemption; Civil Code article 180 lets the parties agree that the debtor is put on notice by the arrival of the due date."
+      },
+      {
+        "id": "performance_impossible_or_useless_by_debtor",
+        "type": "yesNoUnknown",
+        "question": {
+          "ar": "هل أصبح تنفيذ الالتزام متعذرا أو غير مجد بفعل المدين؟",
+          "en": "Has performance of the obligation become impossible or useless through the debtor's own act?"
+        },
+        "why": "Prior steps p1, p2 and p3 read it as an exemption; Civil Code article 181 (second paragraph) dispenses with the notice in that case."
+      },
+      {
+        "id": "obligation_is_tort_compensation",
+        "type": "yesNoUnknown",
+        "question": {
+          "ar": "هل محل الالتزام المطالب به تعويض ترتب عن عمل مضر (مسؤولية تقصيرية)؟",
+          "en": "Is the obligation claimed compensation arising from a harmful act (tort)?"
+        },
+        "why": "Prior steps p1 and p3 read it as an exemption; Civil Code article 181 (third paragraph) dispenses with the notice when the obligation is compensation for a harmful act."
+      },
+      {
+        "id": "return_of_thing_known_stolen_or_unduly_received",
+        "type": "yesNoUnknown",
+        "question": {
+          "ar": "هل محل الالتزام رد شيء يعلم المدين أنه مسروق، أو شيء تسلمه دون حق وهو عالم بذلك؟",
+          "en": "Is the obligation to return a thing the debtor knows was stolen, or a thing he received without right knowing it?"
+        },
+        "why": "Prior steps p1 and p3 read it as an exemption; Civil Code article 181 (fourth paragraph)."
+      },
+      {
+        "id": "debtor_refused_in_writing",
+        "type": "yesNoUnknown",
+        "question": {
+          "ar": "هل صرح المدين كتابة بأنه لا ينوي تنفيذ التزامه؟",
+          "en": "Has the debtor declared in writing that he does not intend to perform?"
+        },
+        "why": "Prior steps p1, p2 and p3 read it as an exemption, and document doc3 lists the writing; Civil Code article 181 (fifth paragraph)."
+      },
+      {
+        "id": "movable_sale_price_unpaid_at_term",
+        "type": "yesNoUnknown",
+        "question": {
+          "ar": "هل يتعلق الأمر ببيع عروض أو منقولات عين فيه أجل لدفع الثمن وتسلم المبيع، وحل الأجل دون دفع الثمن، دون اتفاق على خلاف ذلك؟",
+          "en": "Is this a sale of goods or other movables with a fixed term for paying the price and taking delivery, which passed with the price unpaid, and no agreement to the contrary?"
+        },
+        "why": "Prior step p2 reads it as an exemption to the notice before rescission; Civil Code article 392 makes such a sale rescinded in the seller's favour without prior warning."
+      }
+    ],
+    "b": [
+      {
+        "id": "default_by_term_agreement",
+        "type": "yesNoUnknown",
+        "question": {
+          "ar": "هل اتفق الطرفان على أن يكون المدين معذرا بمجرد حلول الأجل؟",
+          "en": "Did the parties agree that the debtor is in default by the mere falling due of the term?"
+        },
+        "why": "Read by prior step p1 or p2; art. 180 makes the fact matter."
+      },
+      {
+        "id": "performance_impossible_by_debtor",
+        "type": "yesNoUnknown",
+        "question": {
+          "ar": "هل تعذر التنفيذ أو صار غير مجد بفعل المدين؟",
+          "en": "Did the debtor's own act make performance impossible or pointless?"
+        },
+        "why": "Read by prior step p1 or p2; art. 181 indent 1 makes the fact matter."
+      },
+      {
+        "id": "debt_is_tort_compensation",
+        "type": "yesNoUnknown",
+        "question": {
+          "ar": "هل محل الالتزام تعويض عن عمل مضر؟",
+          "en": "Is the obligation compensation for a harmful act?"
+        },
+        "why": "Read by prior step p1 or p2; art. 181 indent 2 makes the fact matter."
+      },
+      {
+        "id": "debtor_knew_thing_stolen_or_wrongly_received",
+        "type": "yesNoUnknown",
+        "question": {
+          "ar": "هل المطلوب رد شيء يعلم المدين أنه مسروق أو تسلمه دون حق عالما بذلك؟",
+          "en": "Is the claim to recover a thing the debtor knows to be stolen or knowingly received without right?"
+        },
+        "why": "Read by prior step p1 or p2; art. 181 indent 3 makes the fact matter."
+      },
+      {
+        "id": "debtor_declared_in_writing_refusal",
+        "type": "yesNoUnknown",
+        "question": {
+          "ar": "هل صرح المدين كتابة بأنه لا ينوى تنفيذ التزامه؟",
+          "en": "Did the debtor state in writing that he does not intend to perform?"
+        },
+        "why": "Read by prior step p1 or p2; art. 181 indent 4 makes the fact matter."
+      },
+      {
+        "id": "movable_sale_price_unpaid_at_term",
+        "type": "yesNoUnknown",
+        "question": {
+          "ar": "هل الدعوى فسخ بيع منقول لم يدفع ثمنه عند حلول الأجل؟",
+          "en": "Is the claim the rescission of a sale of movables whose price was not paid when the term fell due?"
+        },
+        "why": "Read by prior step p1 or p2; art. 392 makes the fact matter."
+      },
+      {
+        "id": "other_means_equivalent_to_notice",
+        "type": "yesNoUnknown",
+        "question": {
+          "ar": "هل الوسيلة الأخرى المستعملة تقوم مقام الإنذار (عمل قضائي أو رسمي مماثل)؟",
+          "en": "Does the other means used stand in place of a notice (a similar judicial or official act)?"
+        },
+        "why": "Read by prior step p1 or p2; art. 180 'equivalent act' makes the fact matter."
+      }
+    ]
+  },
+  "agreement": {
+    "element": {
+      "equal": 0,
+      "compared": 1
+    },
+    "priorStep": {
+      "equal": 2,
+      "compared": 7
+    },
+    "slot": {
+      "equal": 4,
+      "compared": 16
+    },
+    "statement": {
+      "equal": 32,
+      "compared": 44
+    }
+  },
+  "agreementTotal": {
+    "equal": 38,
+    "compared": 68
+  },
+  "caseRuns": [
+    "aOnB",
+    "bOnA",
+    "boundaryA",
+    "boundaryAB",
+    "boundaryB"
+  ],
+  "caseDifferences": 45
+}

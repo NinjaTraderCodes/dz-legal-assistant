@@ -79,6 +79,8 @@ Codex's derivation of a module (`rules/derivations/c/<unit>.json`) is **not** tu
 
 Output: `reports/<unit>.c-comparison.json`. C never counts in condition 4. **A mechanical difference between C and a value on which A and B agreed is marked as an attack** (`who: derivationC`), goes to the verifier with the other attacks, and enters the unit's register like any other. C's agreement with A and B is reported apart from the A-against-B rate.
 
+**How it reads C, and cites** (fixed on the first module, 14 November 2026, when the first version read C as if it were a record and so saw none of its cites): C is read in its own schema (`prompts/schemas/module-derivation-c.schema.json`), never as a record. Cites are compared per paragraph (a cite without paragraphs covers the whole article). A cite counts against C only for an article of the texts C was given (`--texts reports/<unit>.texts.json`): C cannot cite what it was not shown. The rows still list every cite, with `inTextsGivenToC`, so the reconciler sees what A and B found outside those chapters.
+
 ## `flatten-imports`
 
 For each `imports` entry of a claim record, in order:

@@ -169,6 +169,8 @@ def values_for(prompt: str, unit: str) -> dict[str, str]:
     elif prompt == "rules-boundary-cases":
         base.update(units=f"- `{unit}`: {module_row(unit)['question']}", slots=slots(unit), request_kinds=request_kinds(),
                     texts=f"### {unit}\n\n" + unit_texts(unit)["rendered"])
+    elif prompt == "rules-reconcile":
+        base["module_finals"] = "none"  # a module imports nothing; claim records get their modules' final paths
     else:
         raise KeyError(f"no filling rule for {prompt}")
     return base

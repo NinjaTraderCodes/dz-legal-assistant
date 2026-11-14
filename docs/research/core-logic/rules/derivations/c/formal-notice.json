@@ -1,0 +1,287 @@
+{
+ "statements": [
+  {
+   "code": "civil-code",
+   "article": "119",
+   "paragraphs": [
+    1
+   ],
+   "says": "For a bilateral contract, the other party's nonperformance permits a claim for performance or rescission after notice to the debtor, with damages where appropriate.",
+   "role": "prerequisite",
+   "interpretive": false
+  },
+  {
+   "code": "civil-code",
+   "article": "120",
+   "paragraphs": [
+    2
+   ],
+   "says": "An automatic-rescission clause does not dispense with notice, which is determined by custom when the contracting parties have not specified it.",
+   "role": "prerequisite",
+   "interpretive": false
+  },
+  {
+   "code": "civil-code",
+   "article": "179",
+   "paragraphs": [
+    1
+   ],
+   "says": "Compensation is not due until the debtor has been put on notice, unless a provision states otherwise.",
+   "role": "damages",
+   "interpretive": false
+  },
+  {
+   "code": "civil-code",
+   "article": "180",
+   "paragraphs": [
+    1
+   ],
+   "says": "The debtor may be put on notice by a warning or an act equivalent to a warning.",
+   "role": "procedure",
+   "interpretive": false
+  },
+  {
+   "code": "civil-code",
+   "article": "180",
+   "paragraphs": [
+    1
+   ],
+   "says": "Notice may be given by post in the manner prescribed by the Civil Code.",
+   "role": "procedure",
+   "interpretive": false
+  },
+  {
+   "code": "civil-code",
+   "article": "180",
+   "paragraphs": [
+    1
+   ],
+   "says": "An agreement may make the debtor automatically in default when the obligation falls due, without any further procedure.",
+   "role": "procedure",
+   "interpretive": false
+  },
+  {
+   "code": "civil-code",
+   "article": "181",
+   "paragraphs": [
+    1
+   ],
+   "says": "Notice is unnecessary in the cases listed in this article.",
+   "role": "limit",
+   "interpretive": false
+  },
+  {
+   "code": "civil-code",
+   "article": "181",
+   "paragraphs": [
+    2
+   ],
+   "says": "Notice is unnecessary when the debtor's act makes performance impossible or useless.",
+   "role": "limit",
+   "interpretive": false
+  },
+  {
+   "code": "civil-code",
+   "article": "181",
+   "paragraphs": [
+    3
+   ],
+   "says": "Notice is unnecessary when the obligation is compensation arising from a harmful act.",
+   "role": "limit",
+   "interpretive": false
+  },
+  {
+   "code": "civil-code",
+   "article": "181",
+   "paragraphs": [
+    4
+   ],
+   "says": "Notice is unnecessary for returning a thing the debtor knows is stolen or received without entitlement while knowing that fact.",
+   "role": "limit",
+   "interpretive": false
+  },
+  {
+   "code": "civil-code",
+   "article": "181",
+   "paragraphs": [
+    5
+   ],
+   "says": "Notice is unnecessary when the debtor declares in writing an intention not to perform the obligation.",
+   "role": "limit",
+   "interpretive": false
+  },
+  {
+   "code": "civil-code",
+   "article": "183",
+   "paragraphs": [
+    1
+   ],
+   "says": "Articles 176 to 181 also apply to compensation fixed in the contract or a subsequent agreement.",
+   "role": "damages",
+   "interpretive": false
+  }
+ ],
+ "deadlines": [],
+ "priorSteps": [
+  {
+   "kind": "formalNotice",
+   "requiredWhen": "Before claiming performance or rescission of a bilateral contract following the other party's nonperformance under article 119 paragraph 1; an automatic-rescission clause alone does not dispense with notice under article 120 paragraph 2.",
+   "notRequiredWhen": [
+    "An agreement makes the debtor automatically in default when the obligation falls due, without further procedure; its interaction with article 120 paragraph 2 remains an open point.",
+    "The debtor's act makes performance impossible or useless.",
+    "The obligation is compensation arising from a harmful act.",
+    "The obligation is returning a thing the debtor knows is stolen.",
+    "The obligation is returning a thing received without entitlement while the debtor knew that fact.",
+    "The debtor declares in writing an intention not to perform."
+   ],
+   "sanctionIfMissing": "none stated",
+   "basis": [
+    {
+     "code": "civil-code",
+     "article": "119",
+     "paragraphs": [
+      1
+     ]
+    },
+    {
+     "code": "civil-code",
+     "article": "120",
+     "paragraphs": [
+      2
+     ]
+    },
+    {
+     "code": "civil-code",
+     "article": "180",
+     "paragraphs": [
+      1
+     ]
+    },
+    {
+     "code": "civil-code",
+     "article": "181",
+     "paragraphs": [
+      1,
+      2,
+      3,
+      4,
+      5
+     ]
+    }
+   ],
+   "interpretive": true
+  },
+  {
+   "kind": "formalNotice",
+   "requiredWhen": "Before compensation becomes due, including compensation fixed by agreement; article 179 paragraph 1 does not expressly require notice before filing the claim.",
+   "notRequiredWhen": [
+    "A contrary provision dispenses with notice.",
+    "An agreement makes the debtor automatically in default when the obligation falls due, without further procedure.",
+    "The debtor's act makes performance impossible or useless.",
+    "The obligation is compensation arising from a harmful act.",
+    "The obligation is returning a thing the debtor knows is stolen.",
+    "The obligation is returning a thing received without entitlement while the debtor knew that fact.",
+    "The debtor declares in writing an intention not to perform."
+   ],
+   "sanctionIfMissing": "Compensation is not due before notice, subject to the applicable exceptions; no procedural filing sanction is stated.",
+   "basis": [
+    {
+     "code": "civil-code",
+     "article": "179",
+     "paragraphs": [
+      1
+     ]
+    },
+    {
+     "code": "civil-code",
+     "article": "180",
+     "paragraphs": [
+      1
+     ]
+    },
+    {
+     "code": "civil-code",
+     "article": "181",
+     "paragraphs": [
+      1,
+      2,
+      3,
+      4,
+      5
+     ]
+    },
+    {
+     "code": "civil-code",
+     "article": "183",
+     "paragraphs": [
+      1
+     ]
+    }
+   ],
+   "interpretive": true
+  }
+ ],
+ "sections": [],
+ "territory": [],
+ "exits": [],
+ "openPoints": [
+  {
+   "question": "What procedural consequence follows when notice required by article 119 or article 120 is missing?",
+   "readings": [
+    "Article 119 expressly places notice before the demand for performance or rescission, and article 120 preserves notice despite an automatic-rescission clause.",
+    "The supplied texts do not select inadmissibility, rejection on the merits, postponement, or an opportunity to cure as the procedural consequence."
+   ]
+  },
+  {
+   "question": "Must notice for compensation precede filing, and can judicial service or later notice satisfy the requirement?",
+   "readings": [
+    "Article 179 expressly conditions entitlement to compensation on notice, without expressly prescribing notice before filing.",
+    "A claim for performance or rescission accompanied by damages also engages article 119's prior-notice wording.",
+    "Article 180 permits an equivalent to a warning, but the supplied texts do not establish whether service of a claim qualifies or whether notice during proceedings cures an earlier omission."
+   ]
+  },
+  {
+   "question": "Does an article 180 automatic-default agreement satisfy the notice retained by article 120?",
+   "readings": [
+    "Article 180 can be read as supplying deemed notice at maturity, satisfying the notice requirement without a separate act.",
+    "Article 120 specifically preserves notice for automatic rescission; the supplied texts do not expressly address whether its requirement is satisfied by the separate agreement contemplated by article 180."
+   ]
+  },
+  {
+   "question": "Which notice means, contents and service events are sufficient?",
+   "readings": [
+    "Article 180 permits a warning, an equivalent act, and postal notice complying with the Code.",
+    "The supplied text neither requires a bailiff exclusively nor establishes that registered post with acknowledgement of receipt automatically satisfies every requirement.",
+    "The choice other cannot automatically be rejected because equivalent acts are permitted, but qualifying acts are not defined.",
+    "The texts do not determine whether dispatch, delivery or receipt is decisive, or whether a non-conciliation record constitutes an equivalent warning."
+   ]
+  },
+  {
+   "question": "Does article 120 paragraph 2 prescribe a notice period?",
+   "readings": [
+    "It refers to determination by the parties or, failing that, custom, without supplying a numerical period.",
+    "The wording does not expressly identify whether that determination concerns timing, notice arrangements, or both; no minimum waiting period or counting rule can be derived."
+   ]
+  },
+  {
+   "question": "Can the available slots establish every prerequisite and exemption?",
+   "readings": [
+    "The slots do not establish the relief sought, bilateral contractual nonperformance, an automatic-default agreement, or the circumstances listed in article 181.",
+    "Consequently, notice_served being no does not by itself establish a breach of the notice requirement, and notice_served being yes does not establish compliance with unspecified formal requirements.",
+    "The supplied paragraphs establish no formal-notice variation based on the remaining employment, public-body, property-registration, residence or contract-date slots."
+   ]
+  }
+ ],
+ "missingTexts": [
+  {
+   "code": "civil-code",
+   "article": "not identified in the supplied texts",
+   "why": "Article 180 paragraph 1 refers to postal notice in the manner prescribed by the Code, but the provisions prescribing that manner are absent; their article numbers cannot be identified from the supplied text."
+  },
+  {
+   "code": "not identified in the supplied texts",
+   "article": "not identified in the supplied texts",
+   "why": "Procedural provisions would be needed to determine the filing consequence of missing notice, whether judicial service is an equivalent warning, and whether an omission can be cured during proceedings; no such provisions or article numbers are supplied."
+  }
+ ]
+}

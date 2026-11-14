@@ -1177,8 +1177,9 @@ def main(argv=None) -> int:
     fl = sub.add_parser("flatten"); fl.add_argument("claim"); fl.add_argument("--modules", required=True)
     fl.add_argument("--out", required=True)
     g = sub.add_parser("grade"); g.add_argument("record"); g.add_argument("--out", required=True)
-    for name in ("idmap", "differences", "attacks", "report", "store"):
+    for name in ("idmap", "differences", "report", "store"):
         g.add_argument(f"--{name}")
+    g.add_argument("--attacks", action="append", help="a register; repeat for a follow-up register")
     k = sub.add_parser("check-checklist"); k.add_argument("record"); k.add_argument("--checklist", required=True)
     k.add_argument("--flags", action="append", default=[]); k.add_argument("--report", required=True)
     i = sub.add_parser("inventory"); i.add_argument("records", nargs="+"); i.add_argument("--out", required=True)
@@ -1264,7 +1265,7 @@ def main(argv=None) -> int:
     elif a.cmd == "grade":
         rec, report = grade_record(load(a.record), the_store(a.store), load(a.idmap) if a.idmap else None,
                                    load(a.differences)["differences"] if a.differences else None,
-                                   register_attacks(load(a.attacks)) if a.attacks else None)
+                                   [x for path in a.attacks for x in register_attacks(load(path))] if a.attacks else None)
         save(a.out, rec)
         if a.report:
             save(a.report, report)

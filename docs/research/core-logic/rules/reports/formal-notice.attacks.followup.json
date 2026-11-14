@@ -1,0 +1,99 @@
+{
+ "unit": "formal-notice",
+ "record": "docs/research/core-logic/rules/final-candidates/quoted/formal-notice.json",
+ "corrected": "docs/research/core-logic/rules/final-candidates/formal-notice.json",
+ "input": "docs/research/core-logic/rules/reports/formal-notice.attacks.followup-input.json",
+ "role": "verifier",
+ "model": "claude-opus-5-5",
+ "date": "2026-11-14",
+ "searched": {
+  "store": "Store text views: civil-code 119, 179, 180, 469 مكرر, 469 مكرر 1, 469 مكرر 2; commercial-code 171-174, 187, 187 مكرر, 187 مكرر 1, 188, 189. Reconciler's report, section 3 and table rows x53, x55, x59, x62, x64, x67, x71, x75.",
+  "officialJournal": [],
+  "supremeCourt": "Not searched: no attack rests on a decision.",
+  "notFound": "Nothing: every text these attacks rest on is in the store, so nothing was fetched and no request was added."
+ },
+ "counts": {
+  "fixed": 0,
+  "refuted": 5,
+  "open": 1,
+  "total": 6
+ },
+ "attacks": [
+  {
+   "id": "flag-f-b27-p2",
+   "who": "neighbourFlag",
+   "target": "b27",
+   "kind": "exception",
+   "claim": "[civil-code 469 مكرر 1 ¶2] is next to what b27 cites, opens with «غير أنه», and the record neither cites it nor says why it does not apply.",
+   "verdict": "refuted",
+   "verifierQuote": "«ينتهي الإيجار بانقضاء المدة المتفق عليها دون حاجة إلى تنبيه بالإخلاء.» ؛ «غير أنه يجوز للمستأجر إنهاء عقد الإيجار قبل ذلك لسبب عائلي أو مهني. ويجب عليه إخطار المؤجر بموجب محرر غير قضائي يتضمن إشعارا لمدة شهرين.»",
+   "quoteRef": "[civil-code 469 مكرر 1 ¶1] and [civil-code 469 مكرر 1 ¶2] (law 07-05, store)",
+   "reasoning": "¶2 is an exception to the time at which the lease ends, open to the tenant only («يجوز للمستأجر إنهاء عقد الإيجار قبل ذلك»), and it puts a notice on the tenant, not on the lessor. It does not touch what b27 states and n8 uses: a lease that runs to its agreed term ends then without a notice to quit. Nor is the tenant's «إخطار» the formal notice to a debtor of art. 180. b27 is right as written.",
+   "change": "No rule changed. Checklist line k77 (doesNotApply) now records why ¶2 does not apply, so the record says it."
+  },
+  {
+   "id": "flag-f-b31-previous",
+   "who": "neighbourFlag",
+   "target": "b31",
+   "kind": "exception",
+   "claim": "[commercial-code 172 ¶1] is next to what b31 cites, opens with «refers to 173», and the record neither cites it nor says why it does not apply.",
+   "verdict": "refuted",
+   "verifierQuote": "«لا يجوز التمسك بحق التجديد الا من طرف المستأجرين او المحول اليهم او ذوى الحقوق الذين يثبتون بانهم يستغلون متجرا بأنفسهم أو بواسطة تابعيهم اما منذ سنتين متتابعتين ...» ؛ «لا ينتهي إيجار المحلات الخاصة بهذه الأحكام إلا بأثر تنبيه بالإخلاء حسبما جرت عليه العادات المحلية وفي مدة ستة أشهر قبل الأجل على الأقل.»",
+   "quoteRef": "[commercial-code 172 ¶1]; [commercial-code 173 ¶1] (store)",
+   "reasoning": "172 ¶1 limits who may invoke the right to renewal. 173 ¶1 is not made subject to it: it ends «إيجار المحلات الخاصة بهذه الأحكام» only by a notice to quit, with no reference to 172. The reference between the two runs the other way (172 ¶4 dates the end of the period by 173). b31 states 173 ¶1 correctly; who holds the right to renewal belongs to commercial-lease-regimes, to which n3 sends the lawyer.",
+   "change": "No rule changed. Checklist line k78 (doesNotApply) records why 172 ¶1 does not apply."
+  },
+  {
+   "id": "flag-f-b34-next",
+   "who": "neighbourFlag",
+   "target": "b34",
+   "kind": "exception",
+   "claim": "[commercial-code 188 ¶1] is next to what b34 cites, opens with «إلا إذا», and the record neither cites it nor says why it does not apply.",
+   "verdict": "refuted",
+   "verifierQuote": "«يحظر أى ايجار كلى أو جزئى من الباطن، الا اذا اشترط خلاف ذلك بموجب عقد الايجار أو موافقة المؤجر .» ؛ «يبقى تجديد عقود الإيجار المبرمة قبل النشر المذكور في المادة 187 مكرر أعلاه، خاضعا للتشريع الساري المفعول بتاريخ إبرام عقد الإيجار.»",
+   "quoteRef": "[commercial-code 188 ¶1]; [commercial-code 187 مكرر 1 ¶1] (store)",
+   "reasoning": "The «الا اذا» of 188 ¶1 is an exception to the ban on subleasing, inside 188; it does not qualify the transitional rule of 187 مكرر 1 that b34 states. 188 ¶4 (the tenant tells the owner of a planned sublease by extrajudicial act or registered letter) is not a formal notice to a debtor either. b34 is right as written.",
+   "change": "No rule changed. Checklist line k79 (doesNotApply) records why 188 ¶1 does not apply."
+  },
+  {
+   "id": "bc-bc6",
+   "who": "boundaryCase",
+   "target": "p1",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc6 (notice by an unlisted means, damages; petition 2026-06-15; notice 2026-05-20, means other) expects «unsettled» about [civil-code 180 ¶1]: the text does not say which other means stand in for a notice. The runner says p1 declares none and so settles what the case leaves open.",
+   "verdict": "refuted",
+   "verifierQuote": "«يكون اعذار المدين بانذاره، أو بما يقوم مقام الانذار، ويجوز أن يتم الاعذار عن طريق البريد على الوجه المبين في هذا القانون»",
+   "quoteRef": "[civil-code 180 ¶1] (store)",
+   "reasoning": "The case is right that 180 ¶1 does not list what «يقوم مقام الانذار», and the record already gives that outcome: n1, which cites 180 ¶1 (b5), warns whenever the means is «other» and says the article does not list such acts (ex9 and exR3 show it), and o8 keeps both readings with 'always warn' as the protective one. p1 does not decide the means: its own slot is whether a notice was served, and m4 accepts only «ما يقوم مقام الإنذار» in the article's own words. The prior-step evaluation stops at a served notice, so the means is n1's to flag, and it does. The record does not settle what the text leaves open.",
+   "change": "None."
+  },
+  {
+   "id": "bc-bc8",
+   "who": "boundaryCase",
+   "target": "no matched item warns or asks, p1",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc8 (notice served by a bailiff on the petition day itself, damages; petition 2026-06-15) expects «unsettled» about [civil-code 179 ¶1]: the texts require notice before the claim but do not say whether a notice of the same day suffices. No matched item warns or asks, and p1 declares none.",
+   "verdict": "open",
+   "verifierQuote": "«لا يستحق التعويض إلا بعد اعذار المدين ما لم يوجد نص مخالف لذلك.» ؛ «جاز للمتعاقد الآخر بعد اعذاره المدين أن يطالب بتنفيذ العقد أو فسخه»",
+   "quoteRef": "[civil-code 179 ¶1]; [civil-code 119 ¶1] (store)",
+   "reasoning": "179 ¶1 puts the entitlement to compensation «بعد اعذار المدين» without naming the filing, and 119 ¶1 puts the claim for performance or rescission «بعد اعذاره المدين» without saying whether the same day counts. Neither text, nor any other in the store, decides a notice served on the petition's day; both readings were already kept in o9 (grade C), and the reconciler agreed the case is right. But the record gave no warning and no question on this case, so the protective reading was not the rule in effect: the rule language cannot compare notice_date with the petition date, and p1 stops at a served notice. The record now asks the lawyer, and warns when the notice was not served before the petition's day.",
+   "change": "Proposed slot notice_before_petition_day (yes/no/unknown). New boundary n12 (basis b1, b2): when a request that triggers p1, p2 or p3 is made and a notice was served, it warns when the notice was not served before the petition's day and asks when that is unknown. o9: why, protective reading and refs (n12) updated; k40 note and refs updated. Examples that serve a notice before the petition now state notice_before_petition_day = yes (ex1, ex9, exR3, exR6, exV3, exV4, exV6, exV7, exV8, exV12, exV13, exV18, exV19: each notice date precedes its petition date); ex3 (notice unknown) now also expects n12 to ask. p1 stays as it was: its own slot is whether a notice was served.",
+   "examples": [
+    "exV20",
+    "exV21"
+   ]
+  },
+  {
+   "id": "bc-bc12",
+   "who": "boundaryCase",
+   "target": "p1",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc12 (notice served, means unknown, damages; petition 2026-06-15; notice 2026-05-01) expects «ask» about [civil-code 180 ¶1]: the means decides whether it is a warning, a postal notice or another act, so the rule must ask notice_means. The runner says p1 declares none.",
+   "verdict": "refuted",
+   "verifierQuote": "«يكون اعذار المدين بانذاره، أو بما يقوم مقام الانذار، ويجوز أن يتم الاعذار عن طريق البريد على الوجه المبين في هذا القانون»",
+   "quoteRef": "[civil-code 180 ¶1] (store)",
+   "reasoning": "180 ¶1 makes the means matter, and the record asks for it: n1 (means «other») and n11 (registered letter), both citing 180 ¶1 (b5), are unknown when notice_means is missing and ask for it (exR6 shows n1 asking for notice_means on this case). p1 answers only whether a notice was served, which the case says it was. The case's outcome, ask, is the record's.",
+   "change": "None (exR6 now also states notice_before_petition_day = yes, for the change made under bc-bc8)."
+  }
+ ]
+}

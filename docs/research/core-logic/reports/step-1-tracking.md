@@ -20,6 +20,12 @@ This file is filled in as each module passes stage 4 and stage 9. The step 1 rep
 
 **On the blind cases.** The reconciler and the verifier are both Opus 5.5, and the verifier sided with the record on three of the four disputed cases. The other five failures are of one kind: a case names a paragraph, and every item citing that paragraph must meet the case's expectation, so an item that rightly stays silent (a step already taken) fails a case another item answers. Whether an `unsettled` or `ask` case should need every matched item or at least one to respond is a question about the boundary-case runner, not about this record, and is put to the owner.
 
+## After the text pass, the runner change and the follow-up (14 November 2026, owner's decisions)
+
+| Module | Blind boundary cases passed, final record: old runner / owner's runner | Still failing, and why | Second family on the disputed cases | Grades |
+|---|---|---|---|---|
+| `formal-notice` | 3 / 5 of 12 | bc3, bc4, bc9: the writer expects "step missing" where the exemption facts are unknown; the verifier (Opus) and Codex, blind, both answer "ask", so the case files' expectations are held wrong by two families (they stay unedited and counted as failures). bc7: open, both readings kept. bc6, bc8, bc12: the notice step says "done" once a notice was sent, while the boundary items n1, n11 and n12 ask or warn about its means or its date; under the owner's runner rule that silence contradicts the open case, while the follow-up verifier holds that the step answers a different question (was a notice sent?) | Codex: "ask" on bc3, bc4, bc9 (none becomes uncertain) | A 12, B 32, C 6, D 5: every D on Civil Code 120, whose printed single paragraph the store splits in two (the record cites 120 ¶2) |
+
 ## Case differences by run (before reconciliation)
 
 | Module | A's examples on B | B's examples on A | Boundary cases on A | on B | decided differently by A and B |

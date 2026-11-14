@@ -1,0 +1,47 @@
+{
+ "unit": "formal-notice",
+ "attacks": [
+  {
+   "id": "flag-f-b27-p2",
+   "who": "neighbourFlag",
+   "target": "b27",
+   "kind": "exception",
+   "claim": "[civil-code 469 مكرر 1 ¶2] is next to what b27 cites, opens with «غير أنه», and the record neither cites it nor says why it does not apply: «غير أنه يجوز للمستأجر إنهاء عقد الإيجار قبل ذلك لسبب عائلي أو مهني. ويجب عليه إخطار المؤجر بموجب محرر غير قضائي يتضمن إشعارا لمدة شهرين.»"
+  },
+  {
+   "id": "flag-f-b31-previous",
+   "who": "neighbourFlag",
+   "target": "b31",
+   "kind": "exception",
+   "claim": "[commercial-code 172 ¶1] is next to what b31 cites, opens with «refers to 173», and the record neither cites it nor says why it does not apply: «لا يجوز التمسك بحق التجديد الا من طرف المستأجرين او المحول اليهم او ذوى الحقوق الذين يثبتون بانهم يستغلون متجرا بأنفسهم أو بواسطة تابعيهم اما منذ سنتين متتابعتين وفقا لايجار واحد او اكثر مقيدة بصفة متتالية اما منذ اربع سنوات متتابعة وفقا لايجار واحد او اكثر متتالية شفاهية كانت او كتابية .»"
+  },
+  {
+   "id": "flag-f-b34-next",
+   "who": "neighbourFlag",
+   "target": "b34",
+   "kind": "exception",
+   "claim": "[commercial-code 188 ¶1] is next to what b34 cites, opens with «إلا إذا», and the record neither cites it nor says why it does not apply: «يحظر أى ايجار كلى أو جزئى من الباطن، الا اذا اشترط خلاف ذلك بموجب عقد الايجار أو موافقة المؤجر .»"
+  },
+  {
+   "id": "bc-bc6-runner",
+   "who": "boundaryCase",
+   "target": "p1",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc6 (Notice sent by an unlisted means; petition 2026-06-15; slots {\"notice_served\": \"yes\", \"notice_date\": \"2026-05-20\", \"notice_means\": \"other\", \"requests\": [\"damages\"]}) expects «unsettled» about [civil-code 180 ¶1], because: 180 ¶1 says notice is by 'انذاره، أو بما يقوم مقام الانذار', by post, or by agreement. The text does not say which other means 'stand in for' a notice (e.g. an e-mail or a message); the text does not settle this. The rule must warn, not decide. The record gives: p1: declared none although it applies, which settles what the outcome Unsettled leaves open (p1: notice_served yes, the step was done -> none; grade D -> none, to check)"
+  },
+  {
+   "id": "bc-bc8-runner",
+   "who": "boundaryCase",
+   "target": "no matched item warns or asks, p1",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc8 (Notice dated on the petition day itself; petition 2026-06-15; slots {\"notice_served\": \"yes\", \"notice_date\": \"2026-06-15\", \"notice_means\": \"bailiff\", \"requests\": [\"damages\"]}) expects «unsettled» about [civil-code 179 ¶1], because: The texts require notice before the claim ('بعد اعذار') but do not say whether a notice of the same day suffices; the text does not settle this. The record gives: no matched item warns or asks: the outcome Unsettled needs one that does | p1: declared none although it applies, which settles what the outcome Unsettled leaves open (p1: notice_served yes, the step was done -> none; grade D -> none, to check)"
+  },
+  {
+   "id": "bc-bc12-runner",
+   "who": "boundaryCase",
+   "target": "p1",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc12 (Notice served, means unknown; petition 2026-06-15; slots {\"notice_served\": \"yes\", \"notice_date\": \"2026-05-01\", \"requests\": [\"damages\"]}) expects «ask» about [civil-code 180 ¶1], because: The notice was served but the means is missing; whether it is a notice (bailiff), postal (registered letter) or another means (180 ¶1) cannot be judged, so the rule must ask notice_means. The record gives: p1: declared none although it applies, which settles what the outcome Ask leaves open (p1: notice_served yes, the step was done -> none; grade D -> none, to check)"
+  }
+ ]
+}

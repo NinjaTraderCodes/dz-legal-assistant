@@ -28,7 +28,8 @@
     "debtor_refused_in_writing",
     "movable_sale_price_unpaid_at_term",
     "commercial_lease",
-    "contract_sets_notice_terms"
+    "contract_sets_notice_terms",
+    "notice_before_petition_day"
   ],
   "proposedSlots": [
     {
@@ -102,6 +103,15 @@
         "en": "Does the contract set a form, a period or an addressee for the notice before a claim, a rescission or the acceleration of the debt?"
       },
       "why": "Boundary n10 reads it: Civil Code article 120 paragraph 2 says the notice «يحدد حسب العرف عند عدم تحديده من طرف المتعاقدين», and article 106 paragraph 1 makes the contract the law of the parties."
+    },
+    {
+      "id": "notice_before_petition_day",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل بلغ الإعذار إلى المدين قبل يوم رفع الدعوى، لا في يومه ولا بعده؟",
+        "en": "Was the notice served on the debtor before the day the petition is filed, not on that day or after it?"
+      },
+      "why": "Boundary n12 reads it (verifier, boundary case bc8): Civil Code article 179 paragraph 1 makes compensation due «بعد اعذار المدين» and article 119 paragraph 1 allows the claim «بعد اعذاره المدين», and neither says whether a notice served on the petition's day, or after it, suffices (open point o9). The rule language cannot compare notice_date with the petition date, so the lawyer is asked; the slot can be dropped once the evaluator compares the two dates."
     }
   ],
   "basis": [
@@ -2583,6 +2593,80 @@
         ],
         "toCheck": false
       }
+    },
+    {
+      "id": "n12",
+      "looksLike": {
+        "ar": "إعذار بلغ في يوم رفع الدعوى أو بعده",
+        "en": "A notice served on the day the petition is filed, or after it"
+      },
+      "isActually": "outside:notice-not-before-petition",
+      "tellingFacts": [
+        {
+          "ar": "تاريخ تبليغ الإعذار هو تاريخ العريضة نفسه أو لاحق له.",
+          "en": "The notice was served on the petition's date or later."
+        }
+      ],
+      "when": {
+        "all": [
+          {
+            "any": [
+              {
+                "slot": "requests",
+                "includes": "damages"
+              },
+              {
+                "slot": "requests",
+                "includes": "rescission"
+              },
+              {
+                "slot": "requests",
+                "includes": "payment"
+              },
+              {
+                "slot": "requests",
+                "includes": "delivery"
+              },
+              {
+                "slot": "requests",
+                "includes": "restitution"
+              },
+              {
+                "slot": "requests",
+                "includes": "eviction"
+              }
+            ]
+          },
+          {
+            "slot": "notice_served",
+            "is": "yes"
+          },
+          {
+            "slot": "notice_before_petition_day",
+            "is": "no"
+          }
+        ]
+      },
+      "slots": [
+        "requests",
+        "notice_served",
+        "notice_before_petition_day"
+      ],
+      "message": {
+        "ar": "المادتان 179 و119 من القانون المدني: لا يستحق التعويض إلا بعد إعذار المدين، ويطالب بتنفيذ العقد أو فسخه بعد إعذاره، ولا تبين أي منهما هل يكفي إعذار بلغ في يوم رفع الدعوى أو بعده. تحقق من تاريخ الإعذار بالنسبة إلى تاريخ العريضة.",
+        "en": "Civil Code articles 179 and 119: compensation is due only after the debtor is put on notice, and performance or rescission is claimed after notice; neither says whether a notice served on the day the petition is filed, or after it, suffices. Check the notice date against the petition date."
+      },
+      "basis": [
+        "b1",
+        "b2"
+      ],
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation"
+        ],
+        "toCheck": false
+      }
     }
   ],
   "openPoints": [
@@ -2929,8 +3013,8 @@
         "en": "Does a notice served on the day of the petition, or after it, suffice?"
       },
       "why": {
-        "ar": "المادة 119 تجعل المطالبة بعد الإعذار، والمادة 179 تجعل استحقاق التعويض بعده دون ذكر رفع الدعوى؛ ولا يقارن التطبيق تاريخ الإعذار بتاريخ العريضة.",
-        "en": "Article 119 puts the claim after the notice; article 179 puts the entitlement to compensation after it, without mentioning the filing. The app does not compare the notice date with the petition date."
+        "ar": "المادة 119 تجعل المطالبة بعد الإعذار، والمادة 179 تجعل استحقاق التعويض بعده دون ذكر رفع الدعوى؛ ولا يقارن التطبيق تاريخ الإعذار بتاريخ العريضة، فيسأل المحامي هل بلغ الإعذار قبل يوم العريضة (n12).",
+        "en": "Article 119 puts the claim after the notice; article 179 puts the entitlement to compensation after it, without mentioning the filing. The app does not compare the notice date with the petition date, so it asks the lawyer whether the notice was served before the petition's day (n12)."
       },
       "readings": [
         {
@@ -2953,15 +3037,16 @@
         }
       ],
       "protectiveReading": {
-        "ar": "التحقق من أن تاريخ الإعذار سابق على العريضة؛ الرسائل والوثيقة الأولى تطلب ذلك.",
-        "en": "Check that the notice date precedes the petition; the messages and the first document ask for it."
+        "ar": "التنبيه عند إعذار بلغ في يوم العريضة أو بعده، والسؤال عن ذلك عند جهله (n12)؛ والرسائل والوثيقة الأولى تطلب التحقق من أن تاريخ الإعذار سابق على العريضة.",
+        "en": "Warn when the notice was served on the petition's day or after it, and ask when that is not known (n12); the messages and the first document ask to check that the notice date precedes the petition."
       },
       "grade": "C",
       "refs": [
         "p1",
         "p2",
         "p3",
-        "doc1"
+        "doc1",
+        "n12"
       ]
     },
     {
@@ -3711,9 +3796,10 @@
         "doc1",
         "doc2",
         "e1",
-        "o9"
+        "o9",
+        "n12"
       ],
-      "note": "No text fixes how the date is proved; the slot notice_date is kept by the app. The rule language cannot compare it with the petition date, so the messages and doc1 ask the lawyer to check it (o9)."
+      "note": "No text fixes how the date is proved; the slot notice_date is kept by the app. The rule language cannot compare it with the petition date, so boundary n12 asks whether the notice was served before the petition's day and warns when it was not, and the messages and doc1 ask the lawyer to check it (o9)."
     },
     {
       "id": "k41",
@@ -4166,6 +4252,44 @@
       ],
       "answer": "doesNotApply",
       "note": "176 paragraph 1 sets the eviction indemnity owed when the lessor refuses renewal; it says nothing of a notice. It belongs to commercial-lease-regimes."
+    },
+    {
+      "id": "k77",
+      "item": "Neighbour flag (on b27, added after attack adv-1): civil-code 469 مكرر 1 paragraph 2, which opens with «غير أنه»: does it bear on the notice?",
+      "from": [
+        "adversary"
+      ],
+      "answer": "doesNotApply",
+      "refs": [
+        "b27",
+        "n8"
+      ],
+      "note": "Paragraph 2 lets the tenant end the lease before its term for a family or professional reason, by an extrajudicial instrument giving two months' notice to the lessor. It is the tenant's own notice, not the formal notice of article 180, and it leaves paragraph 1 whole: a lease that runs to its agreed term ends then without a notice to quit, which is all b27 and n8 rely on for the lessor's claim to vacate. A tenant's early termination belongs to a lease claim."
+    },
+    {
+      "id": "k78",
+      "item": "Neighbour flag (on b31, added after attack adv-2): commercial-code 172 paragraph 1, the article before 173: does it bear on the notice?",
+      "from": [
+        "adversary"
+      ],
+      "answer": "doesNotApply",
+      "refs": [
+        "b31",
+        "n3"
+      ],
+      "note": "172 paragraph 1 limits who may invoke the right to renewal («لا يجوز التمسك بحق التجديد الا ...»: two consecutive years of running the business under a written lease, four under an oral one). 173 paragraph 1 is not made subject to it: it ends «إيجار المحلات الخاصة بهذه الأحكام» only by a notice to quit. Who has the right to renewal belongs to commercial-lease-regimes; n3 already sends the lawyer there."
+    },
+    {
+      "id": "k79",
+      "item": "Neighbour flag (on b34, added after attack adv-2): commercial-code 188 paragraph 1, the article after 187 مكرر 1: does it bear on the notice?",
+      "from": [
+        "adversary"
+      ],
+      "answer": "doesNotApply",
+      "refs": [
+        "b34"
+      ],
+      "note": "188 paragraph 1 forbids a sublease unless the lease stipulates otherwise or the lessor agrees («يحظر أى ايجار كلى أو جزئى من الباطن، الا اذا اشترط خلاف ذلك بموجب عقد الايجار أو موافقة المؤجر»); its «الا اذا» is an exception to the ban on subleasing, not to the transitional rule of 187 مكرر 1 that b34 states. Paragraph 4 of 188 (the tenant informs the owner of a planned sublease by extrajudicial act or registered letter) is not a formal notice to a debtor either."
     }
   ],
   "examples": [
@@ -4180,6 +4304,7 @@
           "damages"
         ],
         "notice_served": "yes",
+        "notice_before_petition_day": "yes",
         "notice_date": "2026-02-01",
         "notice_means": "bailiff",
         "contract_sets_notice_terms": "no"
@@ -4292,11 +4417,18 @@
             "effect": "ask",
             "shownEffect": "ask",
             "toCheck": false
+          },
+          {
+            "ref": "n12",
+            "effect": "ask",
+            "shownEffect": "ask",
+            "toCheck": false
           }
         ],
         "questions": [
           "notice_served",
-          "notice_means"
+          "notice_means",
+          "notice_before_petition_day"
         ]
       }
     },
@@ -4455,6 +4587,7 @@
           "damages"
         ],
         "notice_served": "yes",
+        "notice_before_petition_day": "yes",
         "notice_means": "other",
         "contract_sets_notice_terms": "no"
       },
@@ -4829,6 +4962,7 @@
           "rescission"
         ],
         "notice_served": "yes",
+        "notice_before_petition_day": "yes",
         "notice_date": "2026-02-01",
         "notice_means": "other",
         "contract_sets_notice_terms": "no"
@@ -4934,6 +5068,7 @@
           "damages"
         ],
         "notice_served": "yes",
+        "notice_before_petition_day": "yes",
         "notice_date": "2026-02-01",
         "contract_sets_notice_terms": "no"
       },
@@ -5050,6 +5185,7 @@
           "rescission"
         ],
         "notice_served": "yes",
+        "notice_before_petition_day": "yes",
         "notice_date": "2026-03-05",
         "notice_means": "bailiff",
         "contract_sets_notice_terms": "no"
@@ -5094,6 +5230,7 @@
           "payment"
         ],
         "notice_served": "yes",
+        "notice_before_petition_day": "yes",
         "notice_date": "2026-03-08",
         "notice_means": "bailiff",
         "contract_sets_notice_terms": "yes"
@@ -5175,6 +5312,7 @@
           "damages"
         ],
         "notice_served": "yes",
+        "notice_before_petition_day": "yes",
         "notice_date": "2026-02-01",
         "notice_means": "registered_letter",
         "contract_sets_notice_terms": "no"
@@ -5213,6 +5351,7 @@
           "eviction"
         ],
         "notice_served": "yes",
+        "notice_before_petition_day": "yes",
         "notice_date": "2026-02-28",
         "notice_means": "bailiff",
         "commercial_lease": "yes"
@@ -5244,6 +5383,7 @@
           "damages"
         ],
         "notice_served": "yes",
+        "notice_before_petition_day": "yes",
         "notice_date": "2026-02-15",
         "notice_means": "bailiff",
         "contract_sets_notice_terms": "no"
@@ -5364,6 +5504,7 @@
           "damages"
         ],
         "notice_served": "yes",
+        "notice_before_petition_day": "yes",
         "notice_date": "2026-02-01",
         "notice_means": "bailiff",
         "contract_sets_notice_terms": "no"
@@ -5390,6 +5531,7 @@
           "payment"
         ],
         "notice_served": "yes",
+        "notice_before_petition_day": "yes",
         "notice_date": "2026-02-01",
         "notice_means": "bailiff",
         "contract_sets_notice_terms": "no"
@@ -5512,6 +5654,7 @@
           "rescission"
         ],
         "notice_served": "yes",
+        "notice_before_petition_day": "yes",
         "notice_date": "2026-02-01",
         "notice_means": "bailiff",
         "contract_sets_notice_terms": "no"
@@ -5538,6 +5681,7 @@
           "rescission"
         ],
         "notice_served": "yes",
+        "notice_before_petition_day": "yes",
         "notice_date": "2026-02-01",
         "notice_means": "bailiff",
         "contract_sets_notice_terms": "no"
@@ -5549,6 +5693,79 @@
             "effect": "none",
             "shownEffect": "none",
             "toCheck": true
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "exV20",
+      "by": "verifier",
+      "title": "bc8: damages, bailiff notice dated the petition day itself, the lawyer not yet asked: n12 asks whether the notice came before the petition's day (o9); p1 stays silent once a notice was served.",
+      "petitionDate": "2026-06-15",
+      "slots": {
+        "requests": [
+          "damages"
+        ],
+        "notice_served": "yes",
+        "notice_date": "2026-06-15",
+        "notice_means": "bailiff",
+        "contract_sets_notice_terms": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          },
+          {
+            "ref": "n1",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          },
+          {
+            "ref": "n12",
+            "effect": "ask",
+            "shownEffect": "ask",
+            "toCheck": false
+          }
+        ],
+        "questions": [
+          "notice_before_petition_day"
+        ]
+      }
+    },
+    {
+      "id": "exV21",
+      "by": "verifier",
+      "title": "bc8 answered: damages, the notice was served on the petition's day, not before it: n12 warns (articles 179 and 119 do not say whether such a notice suffices, o9).",
+      "petitionDate": "2026-06-15",
+      "slots": {
+        "requests": [
+          "damages"
+        ],
+        "notice_served": "yes",
+        "notice_before_petition_day": "no",
+        "notice_date": "2026-06-15",
+        "notice_means": "bailiff",
+        "contract_sets_notice_terms": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          },
+          {
+            "ref": "n12",
+            "effect": "warn",
+            "shownEffect": "warn",
+            "toCheck": false
           }
         ],
         "questions": []

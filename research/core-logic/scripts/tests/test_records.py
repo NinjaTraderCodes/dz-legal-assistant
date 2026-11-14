@@ -316,3 +316,39 @@ def test_add_cases_keeps_only_failed_cross_record_results_and_replaces_an_earlie
     assert out["agreementTotal"] == doc["agreementTotal"] and out["caseDifferences"] == 3
     again = rc.add_cases(out, {"bOnA": [r("u on u", "ex9", False)]})
     assert [d["field"] for d in again["differences"] if d["kind"] == "case"] == ["bOnA ex9"]
+
+
+class PathStore:
+    """Only what seed_starts reads: an entry's path."""
+
+    def __init__(self, paths):
+        self.paths = paths
+
+    def get(self, code, article, version=None):
+        return {"path": self.paths.get(article)} if article in self.paths else None
+
+
+def test_seed_starts_go_one_heading_up_from_a_pointer_and_take_the_chapters_holding_seed_articles():
+    book, title = "الكتاب الثاني", "الباب الثاني - آثار الالتزام"
+    store = PathStore({"179": [book, title, "الفصل الثاني"], "164": [book, title, "الفصل الأول"],
+                       "189": [book, title, "الفصل الثالث", "القسم الأول"], "124": [book, "الباب الأول", "الفصل الثالث"]})
+    seed = [{"code": "civil-code", "article": "179", "sources": ["pointer:formal-notice"]},
+            {"code": "civil-code", "article": "164", "sources": ["claims:x"]},
+            {"code": "civil-code", "article": "189", "sources": ["claims:y"]},
+            {"code": "civil-code", "article": "124", "sources": ["claims:z"]},
+            {"code": "cpca", "article": "164", "sources": ["claims:x"]}]
+    got = rc.seed_starts("formal-notice", seed, store, edition_paths={"civil-code": {}})
+    assert got == [("civil-code", "164"), ("civil-code", "179"), ("civil-code", "189")]
+
+
+def test_heading_paths_compare_across_the_store_and_the_edition_spellings():
+    assert rc._norm_path(["الكتاب الثانى - الالتزامات", "الباب الاول - مصادر"]) == rc._norm_path(
+        ["الكتاب الثاني الالتزامات", "الباب الأول مصادر"])
+
+
+def test_compare_c_counts_the_cites_outside_the_texts_given():
+    a, b = record(), record()
+    r = rc.compare_c(c_answer(a), a, b, given=set())
+    o = r["outsideTextsGiven"]
+    assert o["both"] == o["a"] == o["b"] == o["citedByAOrB"] == 2 and o["paragraphs"]
+    assert rc.compare_c(c_answer(a), a, b)["outsideTextsGiven"] is None

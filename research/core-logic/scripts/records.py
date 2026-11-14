@@ -666,7 +666,14 @@ def compare_c(c: dict, a: dict, b: dict, given: set | None = None) -> dict:
             if da and db and va == vb and vc != va:
                 attacks.append({"who": "derivationC", "target": f"deadline {art}", "kind": "mechanicalDifference",
                                 "claim": f"{name}: C gives {vc} where A and B agree on {va}"})
+    cite_rows = [r for r in rows if r["field"].startswith("cite ")]
+    outside = [r for r in cite_rows if r.get("inTextsGivenToC") is False and (r["a"] or r["b"])]
     return {"rows": rows, "attacks": attacks,
+            "outsideTextsGiven": None if given is None else {
+                "a": sum(1 for r in outside if r["a"]), "b": sum(1 for r in outside if r["b"]),
+                "both": sum(1 for r in outside if r["a"] and r["b"]),
+                "citedByAOrB": sum(1 for r in cite_rows if r["a"] or r["b"]),
+                "paragraphs": [r["field"][5:] for r in outside]},
             "cSays": {k: c.get(k) for k in ("openPoints", "missingTexts") if c.get(k)}}
 
 
@@ -981,6 +988,47 @@ def consolidated_chapters(code: str) -> dict:
     return out
 
 
+_HEAD_NORM = str.maketrans({"ى": "ي", "أ": "ا", "إ": "ا", "آ": "ا"})
+
+
+def _norm_path(path) -> tuple:
+    """Headings compared across sources: the store's path writes «الباب الأول - مصادر الالتزام», the edition
+    «الباب الأول مصادر الالتزام», and the two spell ى and ي, أ and ا differently."""
+    return tuple(re.sub(r"[\s\-–]", "", h).translate(_HEAD_NORM) for h in (path or []))
+
+
+def seed_starts(unit: str, seed_items: list[dict], store: st.Store, edition_paths: dict | None = None) -> list:
+    """The owner's rule of 14 November 2026 for the texts given to derivation C and the boundary writer: every chapter
+    the module's seed inventory touches, never anything from A's or B's records. The module's seed articles are those
+    the seed inventory lists from the handbook's pointer for it (`pointer:<unit>`). For each, go one heading up from its
+    chapter, and take every chapter under that heading that holds any seed-inventory article (whatever its source): the
+    first module showed that a pointer's own chapter is too narrow (Civil Code 164, in the chapter before 176 to 187)."""
+    edition_paths = dict(edition_paths or {})
+
+    def path_of(code, article):
+        e = store.get(code, article)
+        if e is not None and e.get("path"):
+            return e["path"]
+        if code not in edition_paths:
+            edition_paths[code] = consolidated_chapters(code) if code in ("civil-code", "commercial-code") else {}
+        return edition_paths[code].get(article)
+
+    pointers = [(i["code"], i["article"]) for i in seed_items if f"pointer:{unit}" in i.get("sources", [])]
+    starts = set(pointers)
+    for code, article in pointers:
+        path = path_of(code, article)
+        if not path:
+            continue
+        parent = _norm_path(path)[:-1]
+        for i in seed_items:
+            if i["code"] != code or (i["code"], i["article"]) in starts:
+                continue
+            other = path_of(i["code"], i["article"])
+            if other and _norm_path(other)[:len(parent)] == parent and len(_norm_path(other)) > len(parent):
+                starts.add((i["code"], i["article"]))
+    return sorted(starts, key=lambda s: (s[0], st._num_key(s[1])))
+
+
 def unit_texts(unit: str, starts: list[tuple[str, str]], store: st.Store, edition_paths: dict | None = None) -> dict:
     """Every article of each chapter that holds a starting article, whole, each paragraph numbered «[code article ¶n]».
     A chapter is the store's path when it has one; otherwise the deepest heading of the official consolidated edition."""
@@ -1053,7 +1101,8 @@ def main(argv=None) -> int:
     k = sub.add_parser("check-checklist"); k.add_argument("record"); k.add_argument("--checklist", required=True)
     k.add_argument("--flags", action="append", default=[]); k.add_argument("--report", required=True)
     i = sub.add_parser("inventory"); i.add_argument("records", nargs="+"); i.add_argument("--out", required=True)
-    ut = sub.add_parser("unit-texts"); ut.add_argument("unit"); ut.add_argument("starts", nargs="+", help="code:article")
+    ut = sub.add_parser("unit-texts"); ut.add_argument("unit"); ut.add_argument("starts", nargs="*", help="code:article")
+    ut.add_argument("--seed", help="law/seed-inventory.json: take the starting articles from it (seed_starts)")
     ut.add_argument("--out", required=True)
     a = p.parse_args(argv)
     sys.stdout.reconfigure(encoding="utf-8")
@@ -1116,6 +1165,10 @@ def main(argv=None) -> int:
         r = compare_c(load(a.c), load(a.a), load(a.b), given)
         save(a.out, r)
         print(f"{len(r['attacks'])} attack(s) from C")
+        if r["outsideTextsGiven"]:
+            o = r["outsideTextsGiven"]
+            print(f"cited paragraphs outside the texts given: A {o['a']}, B {o['b']}, both {o['both']} "
+                  f"(of {o['citedByAOrB']} cited by A or B)")
     elif a.cmd == "flatten":
         claim = load(a.claim)
         mods = {imp["module"]: load(os.path.join(a.modules, f"{imp['module']}.json")) for imp in claim.get("imports", [])}
@@ -1139,7 +1192,15 @@ def main(argv=None) -> int:
                                     f"refs {r['refsNotInRecord']}")
         return 0 if r["ok"] else 1
     elif a.cmd == "unit-texts":
-        doc = unit_texts(a.unit, [tuple(x.split(":", 1)) for x in a.starts], the_store(None))
+        store_ = the_store(None)
+        if a.seed:
+            starts = seed_starts(a.unit, load(a.seed)["items"], store_)
+            print("starting articles from the seed inventory:", ", ".join(f"{c}:{x}" for c, x in starts))
+        else:
+            starts = [tuple(x.split(":", 1)) for x in a.starts]
+        doc = unit_texts(a.unit, starts, store_)
+        doc["rule"] += ("; the starting articles are the module's seed articles and every seed article one heading above "
+                        "their chapters (seed_starts, the owner's rule of 14 November 2026)") if a.seed else ""
         save(a.out, doc)
         missing = [m for ch in doc["chapters"] for m in ch["missingFromStore"]]
         print(f"{len(doc['chapters'])} chapter(s); missing from the store: {missing or 'none'}")

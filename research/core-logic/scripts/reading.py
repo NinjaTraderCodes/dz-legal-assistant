@@ -262,13 +262,14 @@ def settlements() -> list[dict]:
         return [json.loads(line) for line in f if line.strip()]
 
 
-def settled_result(job: dict, art: str, cmp: dict) -> str:
+def settled_result(job: dict, art: str, cmp: dict, versions: tuple | None = None) -> str:
     """Apply the recorded settlements (law/README.md, "When one reading differs from the store's text"): every
     difference settled, sure, for the store's words -> agrees; settled, sure, for the reading and confirmed by the other
     family -> storeDiffers (a correction); anything else stays unsettled."""
     if cmp["result"] != "unsettled":
         return cmp["result"]
-    known = [s for s in settlements() if s["code"] == job["code"] and s["article"] == art and s["version"] == job["version"]]
+    versions = versions or (job["version"],)  # a composed wording also takes the settlements of its base page
+    known = [s for s in settlements() if s["code"] == job["code"] and s["article"] == art and s["version"] in versions]
     verdicts = []
     for d in cmp["differences"]:
         if textcmp.level(d["store"] or "", d["reading"] or "") in ("1", "2", "2o", "2s"):
@@ -673,7 +674,9 @@ def ingest_composite(article: str, version: str, base: tuple[dict, dict], amendi
     b = next(a for a in b_ans["articles"] if a["article"] == article)
     parts = [b_job]
     for r in [b] + ([next(a for a in amending[1]["articles"] if a["article"] == article)] if amending else []):
-        if not r["found"] or UNREADABLE in "\n".join(r["paragraphs"]):
+        # A [؟] inside the «بدون تغيير» line (a reader unsure how many dots the print puts around it) touches no
+        # word: compose drops that line. Anywhere else it means the part is not a reading.
+        if not r["found"] or UNREADABLE in "\n".join(p for p in r["paragraphs"] if UNCHANGED not in p):
             raise ValueError(f"{article}: a part is not found or holds [؟]: not a reading")
         if [u for u in r["unreadable"] if UNCHANGED not in "".join(r["paragraphs"][u["paragraph"] - 1:u["paragraph"]])]:
             raise ValueError(f"{article}: a part has an unreadable mark outside the «بدون تغيير» lines")
@@ -692,7 +695,8 @@ def ingest_composite(article: str, version: str, base: tuple[dict, dict], amendi
            "imageSha256s": [im["sha256"] for j in parts for im in j["images"]],
            "textSha256": sha_text("\n".join(composed)), "answerSha256": None, "codexLog": None,
            "comparedWith": f"store:{e['store']}@{st.CORPUS_COMMIT}", "storeTextSha256": e["textSha256"],
-           "level": cmp["level"], "differences": cmp["differences"], "result": cmp["result"],
+           "level": cmp["level"], "differences": cmp["differences"],
+           "result": settled_result({"code": b_job["code"], "version": version}, article, cmp, (version, b_job["version"])),
            "job": " + ".join(f"{j['batch']}/{j['job']}" for j in parts), "pagesInRun": len(b_job["pages"]),
            "composedFrom": {"base": f"{b_job['batch']}/{b_job['job']}",
                             "amending": f"{parts[-1]['batch']}/{parts[-1]['job']}" if amending else None,

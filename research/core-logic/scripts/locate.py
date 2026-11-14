@@ -14,6 +14,9 @@ import json
 import re
 import subprocess
 import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import clean_env  # noqa: E402,F401  (removes the owner's two API keys from this process: every launch inherits that)
 
 PDFTOTEXT = r"C:\Program Files\Git\mingw64\bin\pdftotext.exe"
 PDFINFO = r"C:\Users\TheShadow\AppData\Local\Programs\MiKTeX\miktex\bin\x64\pdfinfo.exe"

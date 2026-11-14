@@ -161,3 +161,21 @@ def test_the_real_store_builds_twice_to_the_same_hash_with_the_known_facts(tmp_p
     for n in ("18", "19", "22", "23", "24", "25"):
         assert s.get("civil-code", n)["guardFlag"] is True, n
     assert s.get("civil-code", "182")["store"] == "library"
+
+
+def paragraph_division(wording):
+    return {"articles": [], "libraryCorrections": [], "corpusCorrections": [{
+        "reviewedOn": "2026-11-14", "article": "civil-code:309", "kind": "paragraphDivision", "currentWitness": "two",
+        "originalArabic": "one", "officialSources": [{"url": "u", "pdfPage": 1}], "finding": "f", "exactWording": wording,
+        "verificationEffect": "v", "readings": []}]}
+
+
+def test_a_paragraph_division_correction_joins_the_corpus_paragraphs(tmp_path):
+    s = build(tmp_path, delta=paragraph_division("يتقادم بخمس سنوات. غير أنه لا يسقط الريع."))
+    e = s.get("civil-code", "309")
+    assert e["paragraphs"] == ["يتقادم بخمس سنوات. غير أنه لا يسقط الريع."] and e["correctedParagraphDivision"] is True
+
+
+def test_a_paragraph_division_correction_that_changes_a_word_is_refused(tmp_path):
+    with pytest.raises(ValueError, match="changes words"):
+        build(tmp_path, delta=paragraph_division("يتقادم بست سنوات. غير أنه لا يسقط الريع."))

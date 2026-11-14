@@ -25,6 +25,7 @@ import unicodedata
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import oj_fetch  # noqa: E402
+import clean_env  # noqa: E402,F401  (removes the owner's two API keys from this process: every launch inherits that)
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
 EVIDENCE = os.path.join(REPO, "docs", "research", "core-logic", "law", "journal-scan")

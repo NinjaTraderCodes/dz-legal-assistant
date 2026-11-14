@@ -21,6 +21,7 @@ import unicodedata
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import textcmp  # noqa: E402
+import clean_env  # noqa: E402,F401  (removes the owner's two API keys from this process: every launch inherits that)
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
 PDFS = {"civil-code": os.path.join(REPO, "docs", "official-law-texts", "75-58_wipo_Version.pdf"),

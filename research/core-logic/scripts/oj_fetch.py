@@ -24,6 +24,8 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import clean_env  # noqa: E402,F401  (removes the owner's two API keys from this process: every launch inherits that)
 
 HOME = os.environ.get("OJ_FETCH_HOME", r"C:\Users\TheShadow\dz-core-research\oj-fetch")
 USER_AGENT = "dz-law-scan/1.0 (research; one request at a time)"

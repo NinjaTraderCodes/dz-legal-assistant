@@ -19,6 +19,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import textcmp  # noqa: E402
+import clean_env  # noqa: E402,F401  (removes the owner's two API keys from this process: every launch inherits that)
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
 LAW = os.path.join(REPO, "docs", "research", "core-logic", "law")
@@ -298,6 +299,22 @@ class Builder:
             for e in hits:
                 e["paragraphs"] = c["exactWording"].split("\n")
                 e["correctedFromLibrary"] = True
+
+        # corrections of paragraph division: the corpus divides an article where the page does not (Civil Code 120,
+        # 14 Nov 2026; owner's decision). Only the division changes: the words must stay the corpus's, or it is refused.
+        for c in self.i.delta.get("corpusCorrections", []):
+            if c.get("kind") != "paragraphDivision":
+                continue
+            code, number = c["article"].split(":", 1)
+            hits = [e for e in entries.values() if e["code"] == code and e["article"] == number and e["store"] == "corpus"
+                    and e["inForce"]]
+            if not hits:
+                raise ValueError(f"a paragraph-division correction of {c['article']} has no corpus entry in force")
+            for e in hits:
+                if " ".join(" ".join(e["paragraphs"]).split()) != " ".join(c["exactWording"].split()):
+                    raise ValueError(f"the paragraph-division correction of {c['article']} changes words, not only the division")
+                e["paragraphs"] = c["exactWording"].split("\n")
+                e["correctedParagraphDivision"] = True
 
         # verification, the ledger, and the final shape
         out = []

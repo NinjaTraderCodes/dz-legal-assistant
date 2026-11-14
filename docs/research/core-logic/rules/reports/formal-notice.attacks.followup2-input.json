@@ -1,0 +1,19 @@
+{
+ "unit": "formal-notice",
+ "attacks": [
+  {
+   "id": "owner-done",
+   "who": "owner",
+   "target": "p1, p2, p3",
+   "kind": "wrongEffect",
+   "claim": "The owner's decision of 14 November 2026, to apply as given: «The notice step may say \"done\" only when the means is a listed one and the notice came before the petition day; otherwise it stays open and leaves the answer to n1, n11 and n12. The lawyer must never see \"done\" beside an open question about the same notice.» Today each notice step declares none (\"the step was done\") as soon as notice_served is yes, while n1, n11 and n12 ask or warn about the notice's means (notice_means) and its date (notice_before_petition_day); the blind boundary cases bc6, bc8 and bc12 fail for that reason. Change the steps so that this cannot happen, keep every exemption and every other behaviour as it is, add a worked example for each of the three situations (a listed means and a notice before the petition day: done; a means not listed or unknown: open; a notice not before the petition day or that fact unknown: open), and do not edit the boundary-case file."
+  },
+  {
+   "id": "store-120",
+   "who": "store",
+   "target": "b12",
+   "kind": "misreading",
+   "claim": "The article store now holds Civil Code 120 as one paragraph, as the Official Journal prints it (a paragraph-division correction of the corpus, settled from the page by two families and an Opus settlement; owner's decision of 14 November 2026). Every cite of «civil-code 120 ¶2» must become «civil-code 120 ¶1» (the same words, now in the one paragraph); keep each statement's own says."
+  }
+ ]
+}

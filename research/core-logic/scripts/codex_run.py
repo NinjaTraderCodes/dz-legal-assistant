@@ -18,6 +18,8 @@ import re
 import shutil
 import subprocess
 import sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import clean_env  # noqa: E402,F401  (removes the owner's two API keys from this process: every launch inherits that)
 
 WORK = os.environ.get("CODEX_WORK", r"C:\Users\TheShadow\dz-core-research")
 SCRATCH = os.path.join(WORK, "codex-scratch")
@@ -161,7 +163,7 @@ def call(prompt: str, role: str, batch: str, call_id: str, schema_path: str, ima
            "--output-schema", schema_path, "-o", last_file]
     if images:
         cmd += ["-i", *images]  # -i takes a list and must come last
-    env = {k: v for k, v in os.environ.items() if k not in ("OPENROUTER_API_KEY", "GOOGLE_API_KEY")}
+    env = clean_env.clean_env()
     started = dt.datetime.now(dt.timezone.utc)
     try:
         p = subprocess.run(cmd, input=prompt.encode("utf-8"), capture_output=True, env=env, timeout=TIMEOUT, cwd=scratch)

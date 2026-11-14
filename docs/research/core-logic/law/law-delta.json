@@ -7407,7 +7407,61 @@
    }
   }
  ],
- "corpusCorrections": [],
+ "corpusCorrections": [
+  {
+   "reviewedOn": "2026-11-14",
+   "article": "civil-code:120",
+   "kind": "paragraphDivision",
+   "currentWitness": "ordinance-75-58: two paragraphs, the second beginning «وهذا الشرط لا يعفي من الاعذار».",
+   "originalArabic": "The Official Journal (JO 78 of 30 Sept. 1975, PDF page 8, left column) prints article 120 as one paragraph: «… وبدون حاجة الى حكم قضائى. وهـــذا الشرط لا يعفى من الاعذار …»; the line carrying «قضائى.» runs on with «وهذا» stretched to the margin, and the next line starts at the margin without an indent.",
+   "officialSources": [
+    {
+     "url": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+     "pdfPage": 8
+    }
+   ],
+   "finding": "The corpus divides article 120 into two paragraphs where the page prints one; the words are the same. Seen by the Sonnet and the Codex readings (both one paragraph) and settled by Opus at 600 dpi, sure. A cite of «120 ¶2» therefore cites half a printed paragraph.",
+   "exactWording": "يجوز الاتفاق على أن يعتبر العقد مفسوخا بحكم القانون عند عدم الوفاء بالالتزامات الناشئة عنه بمجرد تحقيق الشروط المتفق عليها وبدون حاجة إلى حكم قضائي. وهذا الشرط لا يعفي من الاعذار، الذي يحدد حسب العرف عند عدم تحديده من طرف المتعاقدين.",
+   "verificationEffect": "The paragraph division only: the corpus's words are kept; the article becomes one paragraph, and its re-reading is compared with that text.",
+   "readings": [
+    {
+     "by": "first",
+     "model": "claude-sonnet-5-5",
+     "date": "2026-11-14",
+     "imageSha256s": [
+      "af7894a7b9059077895c512d4af3a553310f7a2cc8b55a30e4c4d84732738e16",
+      "2cb6f0c58f4f36878c5a81948f1e8e937a28c2353bb0115c6f132b2238985e62"
+     ],
+     "textSha256": "6416997d8b9259115aad73402b87fad269b67a26dcea3147e4cc56e14990f8db"
+    },
+    {
+     "by": "second",
+     "model": "codex-cli 0.167.0 (default model)",
+     "date": "2026-11-14",
+     "imageSha256s": [
+      "af7894a7b9059077895c512d4af3a553310f7a2cc8b55a30e4c4d84732738e16"
+     ],
+     "textSha256": "de8ebf979b6d2ccfcc85d4ffb2f94ef1d5a9c15481b0afdfeef58991eb7c68f6",
+     "codexLog": "civil-code-A1975078-p008-codex.jsonl"
+    },
+    {
+     "by": "third",
+     "model": "claude-opus-5-5",
+     "date": "2026-11-14",
+     "imageSha256s": [
+      "af7894a7b9059077895c512d4af3a553310f7a2cc8b55a30e4c4d84732738e16",
+      "2cfccbcf70a68cf27ddfc228d208f00e52464ca9720f6573ae5d927a5d761da4",
+      "2e2da26b5447f8aaa8ffd4817c3e17264ba76d98add2fb7dadc786d1603a3702",
+      "acb7fb8b32cd588e19d4252634c742536311698831635521adf05c7873b4620c",
+      "d688c0bffb3bd1beb64e89f97b2e1603b2af5ff7ab0f29e9a7cf39502d78fbb0",
+      "5111fe88f729b3938e1e75a225150b3b02ce139e91c9264080de964f88ec216d",
+      "dcd0a1a26f52adf52dd5537b21d75a011c71d2d673c2659e4e455fd392e9df47"
+     ],
+     "textSha256": "758d9cc6bebcf0d6656d85eec1019db575f1549540922ddbb7e73953abab04a3"
+    }
+   ]
+  }
+ ],
  "libraryCorrections": [
   {
    "code": "labour-relations",

@@ -8,6 +8,7 @@ Agents point, scripts quote and check. A file an agent wrote is never rewritten:
     python records.py merge-checklists <unit> --a <a.checklist.json> --b <b.checklist.json> [--codex <file>]
                       [--november <file>] [--claim <claim id>] --out <file>
     python records.py compare <a-quoted.json> <b-quoted.json> --differences <file> --idmap <file>
+    python records.py complete-idmap <idmap.json> <a-quoted.json> <b-quoted.json> <reconciled-quoted.json>
     python records.py add-cases <differences.json> [--aOnB f] [--bOnA f] [--boundaryA f] [--boundaryB f] [--boundaryAB f]
     python records.py compare-c <c.json> <a-quoted.json> <b-quoted.json> --out <file> [--texts <unit.texts.json>]
     python records.py flatten <claim.json> --modules <dir> --out <file>
@@ -558,6 +559,71 @@ def compare_derivations(a: dict, b: dict) -> dict:
             "agreementTotal": {"equal": total[0], "compared": total[1]}}
 
 
+# --- the id map completed for the reconciled record (stage 6) ----------------------------------------------------------
+def _articles_of(rec: dict, ids: list) -> tuple:
+    return tuple(_cited_articles(rec, ids))
+
+
+CONTENT_KEYS = {
+    # kind: (list name or getter, [key functions, tried in order]); the same keys as compare_derivations, with finer
+    # first keys where one record may hold several items of one kind (three formal-notice steps in the first module)
+    "statement": (lambda r: r.get("basis", []), [lambda r, s: _stmt_key(s)]),
+    "deadline": (lambda r: r.get("deadlines", []), [lambda r, d: _main_article(r, d),
+                                                    lambda r, d: (d["kind"], _canon(d["period"]))]),
+    "priorStep": (lambda r: r.get("priorSteps", []), [lambda r, x: (x["kind"], _canon(x.get("requiredWhen"))),
+                                                      lambda r, x: (x["kind"], _articles_of(r, x.get("basis", []))),
+                                                      lambda r, x: x["kind"]]),
+    "territory": (lambda r: (r.get("court") or {}).get("territory", []), [lambda r, x: _main_article(r, x)]),
+    "exit": (lambda r: (r.get("court") or {}).get("exits", []), [lambda r, e: (e["goesTo"], _main_article(r, e)),
+                                                                 lambda r, e: e["goesTo"]]),
+    "element": (lambda r: r.get("elements", []), [lambda r, e: tuple(sorted(e.get("events", [])))]),
+    "request": (lambda r: r.get("requests", []), [lambda r, q: q["kind"]]),
+}
+
+
+def content_pairs(x_rec: dict, y_rec: dict) -> dict:
+    """(kind, id in x) -> id in y, items matched on content by the first key that matches, one to one."""
+    out = {}
+    for kind, (get, keys) in CONTENT_KEYS.items():
+        left, right = list(get(x_rec)), list(get(y_rec))
+        for keyf in keys:
+            for x in list(left):
+                kx = keyf(x_rec, x)
+                if kx is None:
+                    continue
+                y = next((y for y in right if keyf(y_rec, y) == kx), None)
+                if y is not None:
+                    out[(kind, x["id"])] = y["id"]
+                    left.remove(x)
+                    right.remove(y)
+    if "section" in (x_rec.get("court") or {}) and "section" in (y_rec.get("court") or {}):
+        out[("section", "section")] = "section"
+    return out
+
+
+def complete_idmap(idmap: list[dict], a: dict, b: dict, rec: dict) -> list[dict]:
+    """Fills `reconciled` in each row of the A-B id map, matching on content (record-checks.md); a reconciled item that
+    no row reaches gets a row of its own with a and b empty (grade: addedAfterDerivation). When A's and B's sides lead
+    to different reconciled items, A's wins and the row says so."""
+    pa, pb = content_pairs(a, rec), content_pairs(b, rec)
+    out, used = [], set()
+    for row in idmap:
+        row = dict(row)
+        ra = pa.get((row["kind"], row.get("a"))) if row.get("a") else None
+        rb = pb.get((row["kind"], row.get("b"))) if row.get("b") else None
+        row["reconciled"] = ra or rb
+        if ra and rb and ra != rb:
+            row["conflict"] = f"A's item matches {ra}, B's matches {rb}"
+        if row["reconciled"]:
+            used.add((row["kind"], row["reconciled"]))
+        out.append(row)
+    for kind, (get, _) in CONTENT_KEYS.items():
+        for x in get(rec):
+            if (kind, x["id"]) not in used:
+                out.append({"kind": kind, "a": None, "b": None, "reconciled": x["id"]})
+    return out
+
+
 # --- the case-by-case half of compare-derivations ----------------------------------------------------------------------
 CASE_RUNS = ("aOnB", "bOnA", "boundaryA", "boundaryB", "boundaryAB")
 
@@ -1087,6 +1153,8 @@ def main(argv=None) -> int:
         m.add_argument(f"--{name}")
     c = sub.add_parser("compare"); c.add_argument("a"); c.add_argument("b")
     c.add_argument("--differences", required=True); c.add_argument("--idmap", required=True)
+    ci = sub.add_parser("complete-idmap"); ci.add_argument("idmap"); ci.add_argument("a"); ci.add_argument("b")
+    ci.add_argument("reconciled")
     ac = sub.add_parser("add-cases"); ac.add_argument("differences")
     for name in CASE_RUNS:
         ac.add_argument(f"--{name}")
@@ -1153,6 +1221,13 @@ def main(argv=None) -> int:
         save(a.idmap, r["idmap"])
         t = r["agreementTotal"]
         print(f"{len(r['differences'])} difference(s); agreement {t['equal']} of {t['compared']}")
+    elif a.cmd == "complete-idmap":
+        rows = complete_idmap(load(a.idmap), load(a.a), load(a.b), load(a.reconciled))
+        save(a.idmap, rows)
+        both = sum(1 for r in rows if r["reconciled"] and r["a"] and r["b"])
+        new = sum(1 for r in rows if r["reconciled"] and not r["a"] and not r["b"])
+        print(f"{sum(1 for r in rows if r['reconciled'])} reconciled item(s) traced: {both} to both A and B, "
+              f"{new} to neither; {sum(1 for r in rows if r.get('conflict'))} conflict(s)")
     elif a.cmd == "add-cases":
         runs = {name: load(getattr(a, name)) for name in CASE_RUNS if getattr(a, name)}
         doc = add_cases(load(a.differences), runs)

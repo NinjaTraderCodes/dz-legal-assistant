@@ -282,7 +282,8 @@ def test_a_disputed_paragraph_gives_c_even_when_the_text_is_not_verified():
 
 def test_the_owners_files_load():
     assert any(t["article"] == "19" for t in rc.text_disputes())
-    assert "civil-code" not in rc.triage_complete()
+    # the live file: Civil Code and CPCA triage complete since 14 Nov 2026; the Family Code not yet
+    assert {"civil-code", "cpca"} <= rc.triage_complete() and "family-code" not in rc.triage_complete()
 
 
 def test_unit_texts_takes_the_store_chapter_or_the_edition_heading():
@@ -352,3 +353,28 @@ def test_compare_c_counts_the_cites_outside_the_texts_given():
     o = r["outsideTextsGiven"]
     assert o["both"] == o["a"] == o["b"] == o["citedByAOrB"] == 2 and o["paragraphs"]
     assert rc.compare_c(c_answer(a), a, b)["outsideTextsGiven"] is None
+
+
+def test_complete_idmap_traces_reconciled_items_by_content_and_adds_new_ones():
+    a, b = record(), record()
+    b["basis"][0]["id"], b["deadlines"][0]["basis"], b["deadlines"][0]["counting"]["basis"] = "s9", ["s9"], ["s9"]
+    idmap = rc.compare_derivations(a, b)["idmap"]
+    rec = record()
+    rec["basis"][1]["id"] = "r2"
+    rec["basis"].append({"id": "r3", "role": "procedure", "cite": {"code": "cpca", "article": "505"},
+                         "says": {"ar": "", "en": ""}})
+    rows = rc.complete_idmap(idmap, a, b, rec)
+    by_rec = {r["reconciled"]: r for r in rows if r["reconciled"]}
+    assert (by_rec["b1"]["a"], by_rec["b1"]["b"]) == ("b1", "s9")
+    assert (by_rec["r2"]["a"], by_rec["r2"]["b"]) == ("b2", "b2")
+    assert (by_rec["r3"]["a"], by_rec["r3"]["b"]) == (None, None)
+    assert by_rec["d1"]["a"] == by_rec["d1"]["b"] == "d1"
+
+
+def test_prior_steps_of_one_kind_are_matched_on_their_condition_first():
+    steps = lambda ids_and_requests: [{"id": i, "kind": "formalNotice", "requiredWhen": {"slot": "requests", "includes": q},  # noqa: E731
+                                       "basis": []} for i, q in ids_and_requests]
+    x = record(priorSteps=steps([("p1", "damages"), ("p2", "rescission")]))
+    y = record(priorSteps=steps([("q2", "rescission"), ("q1", "damages")]))
+    pairs = rc.content_pairs(x, y)
+    assert pairs[("priorStep", "p1")] == "q1" and pairs[("priorStep", "p2")] == "q2"

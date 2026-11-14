@@ -66,6 +66,19 @@ public sealed class RuleEvaluator : IRuleEvaluator
     /// <summary>An effect as records write it: "blockCleanExport", "warn", "ask", "none".</summary>
     public static string Name(FindingEffect effect) => JsonNamingPolicy.CamelCase.ConvertName(effect.ToString());
 
+    /// <summary>
+    /// True when the item does not apply to the case: its condition (a prior step's <c>requiredWhen</c>, a deadline's,
+    /// exit's or boundary's <c>when</c>) is false. Such a finding is silent because the item is not about the case, not
+    /// because it settles anything. Read from the trace this evaluator writes ("p2: requiredWhen false -> none; ...").
+    /// </summary>
+    public static bool IsNotApplicable(RuleFinding finding)
+    {
+        ArgumentNullException.ThrowIfNull(finding);
+        return finding.Trace is { } trace
+            && (trace.StartsWith($"{finding.Ref}: requiredWhen false ->", StringComparison.Ordinal)
+                || trace.StartsWith($"{finding.Ref}: when false ->", StringComparison.Ordinal));
+    }
+
     private sealed class QuestionList
     {
         private readonly List<(string Slot, List<string> NeededBy)> questions = [];

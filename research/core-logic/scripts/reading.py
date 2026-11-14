@@ -225,6 +225,7 @@ def compare_article(store_paragraphs: list[str], reading: dict, images: int = 1)
     the last image (a reader may set the flag for an article it followed onto the next image of the same run)."""
     if not reading["found"]:
         return {"level": "none", "result": "notFound", "differences": []}
+    reading, dropped = drop_heading(reading)
     text = "\n".join(reading["paragraphs"])
     if UNCHANGED in text:
         # An amending text that reprints only the replaced part: compared only once composed with the base text.
@@ -245,7 +246,26 @@ def compare_article(store_paragraphs: list[str], reading: dict, images: int = 1)
         for d in textcmp.differences(store_text, text):
             diffs.append({"paragraph": None, "kind": "words", "store": d["a"], "reading": d["b"],
                           "context": {"before": d["before"], "after": d["after"]}, **pending})
-    return {"level": lv, "result": "agrees" if lv in ("1", "2", "2o", "2s") else "unsettled", "differences": diffs}
+    out = {"level": lv, "result": "agrees" if lv in ("1", "2", "2o", "2s") else "unsettled", "differences": diffs}
+    if dropped:
+        out["headingDropped"] = dropped
+    return out
+
+
+def drop_heading(reading: dict) -> tuple[dict, str | None]:
+    """The reading prompt asks for the article without its heading «المادة …». An amending text prints the amended
+    article inside quotation marks with its heading («"المادة 121 : في العقود …»), and a reader may copy it (Civil Code
+    121, 14 November 2026; the settler confirmed it is the heading, not the paragraph). Only the heading of the article
+    asked is dropped, and only at the very start of the first paragraph; the result says what was dropped."""
+    if not reading.get("paragraphs"):
+        return reading, None
+    number = re.escape(str(reading.get("article", "")).translate(textcmp.DIGITS)).replace(r"\ ", r"\s+")
+    first = reading["paragraphs"][0].translate(textcmp.DIGITS)
+    m = re.match(r'^[\s"«“]*المـ*ادة\s+' + number + r"\s*:?\s*", first)
+    if not m or not number:
+        return reading, None
+    rest = reading["paragraphs"][0][m.end():] if len(first) == len(reading["paragraphs"][0]) else first[m.end():]
+    return dict(reading, paragraphs=[rest] + reading["paragraphs"][1:]), m.group(0).strip()
 
 
 def family_of(reader: str) -> str:

@@ -171,18 +171,26 @@ public static class BoundaryCases
         }
 
         var signature = new List<string>();
+        var open = boundaryCase.Expect.Outcome is BoundaryOutcome.Ask or BoundaryOutcome.Unsettled;
+        var found = new List<RuleFinding>();
         foreach (var (itemKind, id) in relevant)
         {
             var finding = outcome.Findings.FirstOrDefault(f => f.Ref == id);
             if (finding is null)
             {
-                differences.Add($"{id}: the item gave no finding");
+                if (!open)
+                {
+                    // An ask or unsettled case is answered by the matched items together (OpenCaseProblems).
+                    differences.Add($"{id}: the item gave no finding");
+                }
+
                 signature.Add($"{itemKind}: no finding");
                 continue;
             }
 
             signature.Add($"{itemKind} {RuleEvaluator.Name(finding.DeclaredEffect)} last day {(finding.LastDay is { } day ? Dates.Write(day) : "none")} days left {finding.DaysLeft?.ToString(System.Globalization.CultureInfo.InvariantCulture) ?? "none"}");
-            if (Problem(record, boundaryCase.Expect.Outcome, id, finding) is { } problem)
+            found.Add(finding);
+            if (!open && Problem(record, boundaryCase.Expect.Outcome, id, finding) is { } problem)
             {
                 differences.Add($"{id}: {problem} ({finding.Trace})");
             }
@@ -197,8 +205,48 @@ public static class BoundaryCases
             }
         }
 
+        if (open && matched.Count > 0)
+        {
+            differences.AddRange(OpenCaseProblems(boundaryCase.Expect.Outcome, found));
+        }
+
         signature.Sort(StringComparer.Ordinal);
         return (differences, $"[{string.Join("; ", signature)}] questions {questions}");
+    }
+
+    /// <summary>
+    /// An ask or unsettled case is answered by the items it matches together (the owner's rule of 14 November 2026):
+    /// at least one must give the expected response (ask; for unsettled, warn or ask), and none may contradict it: no
+    /// block, and no item that applies to the case staying silent, which would assert that the question is settled.
+    /// An item whose condition is false does not apply and is left out; a warning does not contradict an ask.
+    /// </summary>
+    public static IReadOnlyList<string> OpenCaseProblems(BoundaryOutcome outcome, IReadOnlyList<RuleFinding> findings)
+    {
+        ArgumentNullException.ThrowIfNull(findings);
+        var problems = new List<string>();
+        bool Responds(FindingEffect effect) => outcome == BoundaryOutcome.Ask
+            ? effect == FindingEffect.Ask
+            : effect is FindingEffect.Warn or FindingEffect.Ask;
+        if (!findings.Any(finding => Responds(finding.DeclaredEffect)))
+        {
+            problems.Add(outcome == BoundaryOutcome.Ask
+                ? "no matched item asks: the outcome Ask needs one that does"
+                : "no matched item warns or asks: the outcome Unsettled needs one that does");
+        }
+
+        foreach (var finding in findings)
+        {
+            if (finding.DeclaredEffect == FindingEffect.BlockCleanExport)
+            {
+                problems.Add($"{finding.Ref}: declared blockCleanExport, which contradicts the outcome {outcome} ({finding.Trace})");
+            }
+            else if (finding.DeclaredEffect == FindingEffect.None && !RuleEvaluator.IsNotApplicable(finding))
+            {
+                problems.Add($"{finding.Ref}: declared none although it applies, which settles what the outcome {outcome} leaves open ({finding.Trace})");
+            }
+        }
+
+        return problems;
     }
 
     // What the matched item must declare, by the case's outcome (the table of specs/rule-evaluator.md); null when it does.
@@ -230,17 +278,9 @@ public static class BoundaryCases
                 return Expect(FindingEffect.None);
             case BoundaryOutcome.LeavesOrdinaryCourt:
                 return Expect(FindingEffect.Warn);
-            case BoundaryOutcome.Ask:
-                return Expect(FindingEffect.Ask);
             default:
-                // Unsettled: never silent, and never a block unless the item is a matter of reading (which caps it at a warning).
-                var interpretive = record.Deadlines.FirstOrDefault(item => item.Id == id) is { } d ? RecordItems.IsInterpretive(record, d)
-                    : record.PriorSteps.FirstOrDefault(item => item.Id == id) is { } s ? RecordItems.IsInterpretive(record, s)
-                    : record.Court?.Exits.FirstOrDefault(item => item.Id == id) is { } x ? RecordItems.IsInterpretive(record, x.Interpretive, x.Basis)
-                    : RecordItems.IsInterpretive(record, false, record.Boundaries.First(item => item.Id == id).Basis);
-                return declared == FindingEffect.None ? "declared none: an unsettled case must not be silent"
-                    : declared == FindingEffect.BlockCleanExport && !interpretive ? "declared blockCleanExport: an unsettled case must not block"
-                    : null;
+                // Ask and Unsettled are judged over all matched items together: OpenCaseProblems.
+                throw new InvalidOperationException($"the outcome {outcome} is judged by OpenCaseProblems");
         }
     }
 }

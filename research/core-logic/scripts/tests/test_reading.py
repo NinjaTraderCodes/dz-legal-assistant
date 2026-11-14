@@ -133,3 +133,14 @@ def test_an_amending_text_printed_in_part_is_composed_with_the_base():
     assert rd.compare_article(["x"], reading(["1– جديد", "(الباقي بدون تغيير)"]))["result"] == "partialPrint"
     with pytest.raises(ValueError):
         rd.compose(base, ["4 - بند جديد،"])
+
+
+def test_a_heading_the_reader_copied_from_an_amending_text_is_dropped_before_comparing():
+    reading = {"article": "121", "found": True, "continuesOnNextPage": False, "where": {"image": 1},
+               "paragraphs": ['"المادة 121 : في العقود الملزمة للجانبين إذا انقضى التزام"']}
+    out = rd.compare_article(["في العقود الملزمة للجانبين إذا انقضى التزام"], reading)
+    assert out["result"] == "agrees" and out["headingDropped"].startswith('"المادة 121')
+    other = dict(reading, article="122")  # only the heading of the article asked
+    assert rd.compare_article(["في العقود الملزمة للجانبين إذا انقضى التزام"], other)["result"] == "unsettled"
+    mid = dict(reading, paragraphs=["نص يذكر المادة 121 في وسطه"])
+    assert rd.drop_heading(mid)[1] is None

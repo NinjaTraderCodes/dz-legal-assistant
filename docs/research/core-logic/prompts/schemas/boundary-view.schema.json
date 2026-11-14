@@ -1,0 +1,40 @@
+{
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "cases"
+ ],
+ "properties": {
+  "cases": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "id",
+     "answer",
+     "why",
+     "decidingWords"
+    ],
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "answer": {
+      "type": "string",
+      "enum": [
+       "ask",
+       "stepMissing"
+      ]
+     },
+     "why": {
+      "type": "string"
+     },
+     "decidingWords": {
+      "type": "string"
+     }
+    }
+   }
+  }
+ }
+}

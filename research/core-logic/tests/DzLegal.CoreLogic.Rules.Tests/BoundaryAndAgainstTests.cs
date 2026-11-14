@@ -29,8 +29,8 @@ public sealed class BoundaryAndAgainstTests
     [Theory]
     [InlineData("[cpca 504 ¶1]", "inTime", "2026-03-01", null, "the outcome InTime needs none")]
     [InlineData("[cpca 504 ¶1]", "late", "2026-03-01", "2025-12-03", "the case says 2025-12-03")]
-    [InlineData("[cpca 504 ¶1]", "unsettled", "2025-07-01", null, "must not be silent")]
-    [InlineData("[cpca 504 ¶1]", "unsettled", "2026-07-01", null, "must not block")]
+    [InlineData("[cpca 504 ¶1]", "unsettled", "2025-07-01", null, "settles what the outcome Unsettled leaves open")] // silent although it applies (owner, 14 Nov)
+    [InlineData("[cpca 504 ¶1]", "unsettled", "2026-07-01", null, "declared blockCleanExport, which contradicts")] // a block contradicts an open case
     [InlineData("[cpca 999 ¶1]", "late", "2026-03-01", null, "matches no item")]
     [InlineData("[labour-disputes 19 ¶1]", "late", "2026-03-01", null, "matches no Deadline")]
     [InlineData("cpca 504", "late", "2026-03-01", null, "is not written")]

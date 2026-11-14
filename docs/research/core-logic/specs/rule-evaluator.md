@@ -99,9 +99,10 @@ The boundary-case writer's files (`rules/boundary-cases/<unit>.json`, format in 
 | `stepDone` | a prior step: `none` (the step was taken) |
 | `stepExempt` | a prior step: `none` |
 | `leavesOrdinaryCourt` | an exit: `warn` |
-| `ask` | the item: `ask` |
-| `unsettled` | the item is `interpretive`, or declares `warn` or `ask`: never `blockCleanExport` and never silent |
+| `ask` | judged over all matched items together (owner, 14 November 2026): at least one declares `ask`, and none contradicts it (none declares `blockCleanExport`; none that applies declares `none`) |
+| `unsettled` | judged over all matched items together (owner, 14 November 2026): at least one declares `warn` or `ask`, and none contradicts it (none declares `blockCleanExport`; none that applies declares `none`) |
 
+   For `ask` and `unsettled`, an item **applies** unless its own condition is false (a prior step's `requiredWhen`, a deadline's, exit's or boundary's `when`): such an item is silent because the case is not about it, and is left out. An item that applies and declares `none` asserts that the question is settled, which is the opposite of what the case says. A warning does not contradict an `ask`: the app treats it as no weaker than a question. The first version judged each matched item alone, so a step that rightly stayed silent (already taken) failed a case another item answered (formal-notice, 5 of its 12 cases).
 3. **Last day.** For a deadline, when the case has `expect.lastDay`, the evaluator's `LastDay` must equal it.
 4. **Between two records.** Run on records A and B (and on the reconciled record), the two runs are compared on **`LastDay` and `DaysLeft`** of matched deadlines, as well as on declared effects and questions, so that a difference in counting shows even inside the warning band. Every difference goes into `reports/<unit>.differences.json`.
 

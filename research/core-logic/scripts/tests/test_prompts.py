@@ -119,7 +119,8 @@ def same_shape(shape, schema) -> None:
 
 
 @pytest.mark.parametrize("prompt,schema_file", [("rules-attack-codex", "attacks.schema.json"),
-                                                ("rules-support-check-codex", "support.schema.json")])
+                                                ("rules-support-check-codex", "support.schema.json"),
+                                                ("boundary-second-view-codex", "boundary-view.schema.json")])
 def test_codex_schema_matches_its_prompt_header(prompt, schema_file):
     with open(os.path.join(SCHEMAS, schema_file), encoding="utf-8") as f:
         same_shape(header_object_shape(prompt, schema_file), json.load(f))

@@ -238,3 +238,102 @@ def test_seed_slots_are_hidden_by_id_and_a_final_modules_slots_are_shown(tmp_pat
     assert "new_from_module" in shown and "wages_due_from" not in shown
     assert "wages_due_from" in prompts.slots("loan-repayment")
 
+
+
+# --- retool item 5: every step-1 prompt for a claim type (specs/unit-driver.md) --------------------------------------
+MODULES = prompts.handbook_modules()
+
+
+@pytest.fixture
+def tmp_cl(tmp_path, monkeypatch):
+    """A folder standing for <CL>: the real module table and slots, no record of any unit."""
+    cl = tmp_path / "cl"
+    for sub in ("rules/final", "rules/derivations/a", "rules/derivations/b", "rules/reports", "law"):
+        (cl / sub).mkdir(parents=True)
+    with open(os.path.join(prompts.CL, "slots.json"), encoding="utf-8") as f:
+        (cl / "slots.json").write_text(f.read(), encoding="utf-8")
+    monkeypatch.setattr(prompts, "CL", str(cl))
+    monkeypatch.setattr(prompts, "handbook_modules", lambda: MODULES)
+    return cl
+
+
+def test_a_claim_type_is_briefed_from_the_catalogue_and_the_elements_table_without_the_catalogues_articles():
+    values = prompts.values_for("rules-derive-a", "abusive-dismissal")
+    brief = values["unit_brief"]
+    assert values["unit_kind"] == "claim" and prompts.unit_kind("formal-notice") == "module"
+    assert "`dismissal`" in brief and "`conciliation_failed`" in brief and "`reinstatement`" in brief
+    _, entry = prompts.claims()["abusive-dismissal"]
+    for hidden in [a["why"]["ar"] for a in entry["articles"]] + [x["ar"] for x in entry.get("prerequisites", [])]:
+        assert hidden not in brief  # they become checklist questions, from: catalogue
+    assert "wages_due_from" not in values["slots"]  # a labour claim type: the seed slots stay hidden
+
+
+def test_every_placeholder_of_a_step_1_prompt_is_filled_for_a_claim_type(tmp_cl, monkeypatch):
+    (tmp_cl / "law" / "french-sources.json").write_text(json.dumps({"units": {"loan-repayment": [
+        {"what": "the Civil Code, articles on the loan", "paths": []}]}}), encoding="utf-8")
+    monkeypatch.setattr(prompts, "FRENCH_SOURCES", str(tmp_cl / "law" / "french-sources.json"))
+    monkeypatch.setattr(prompts, "unit_texts", lambda u: {"rendered": "[civil-code 450 ¶1] نص"})
+    monkeypatch.setattr(prompts, "_run_file", lambda u, name: "the record as text")
+    for name in ("rules-derive-a", "rules-derive-b", "rules-boundary-cases", "rules-reconcile", "rules-adversary",
+                 "rules-attack", "rules-verify"):
+        _, body = prompts.template(name)
+        values = prompts.values_for(name, "loan-repayment")
+        assert not set(prompts.PLACEHOLDER.findall(body)) - set(values), name
+    assert "No French text was prepared for the Civil Code, articles on the loan: say so in your checklist." in \
+        prompts.values_for("rules-derive-b", "loan-repayment")["french_sources"]
+    assert prompts.values_for("rules-attack", "loan-repayment")["unit_label"].startswith("claim type loan-repayment: ")
+    with pytest.raises(ValueError):
+        prompts.values_for("rules-derive-c", "loan-repayment")
+    with pytest.raises(KeyError):  # stage 0b has not run for it
+        prompts.french_sources("unpaid-wages")
+
+
+def test_module_finals_give_a_claim_every_final_module_and_a_unit_with_a_deadline_periods(tmp_cl):
+    final, a = tmp_cl / "rules" / "final", tmp_cl / "rules" / "derivations" / "a"
+    assert prompts.module_finals(["formal-notice"], strict=True) == "none"
+    (a / "labour-prelitigation.json").write_text(json.dumps({"deadlines": [{"id": "d1"}]}), encoding="utf-8")
+    with pytest.raises(ValueError):  # stage 5 waits for periods
+        prompts.module_finals(["labour-prelitigation"], strict=True)
+    assert prompts.module_finals(["labour-prelitigation"]) == "none"  # a verifier is not refused
+    (final / "periods.json").write_text("{}", encoding="utf-8")
+    assert prompts.module_finals(["labour-prelitigation"]).strip() == f"- `{final / 'periods.json'}`"
+    (final / "formal-notice.json").write_text("{}", encoding="utf-8")
+    (a / "loan-repayment.json").write_text(json.dumps({"imports": [{"module": "proof"}]}), encoding="utf-8")
+    with pytest.raises(ValueError):  # it imports a module that is not final
+        prompts.module_finals(["loan-repayment"], strict=True)
+    listed = prompts.module_finals(["loan-repayment"])
+    assert "formal-notice.json" in listed and "periods.json" in listed and "proof.json" not in listed
+    assert prompts.values_for("rules-verify", "loan-repayment")["module_finals"] == listed
+
+
+def test_the_verifier_reads_the_gathered_input_once_verify_input_has_written_it(tmp_cl):
+    reports = tmp_cl / "rules" / "reports"
+    assert "attacks.adversary.json" in prompts.values_for("rules-verify", "formal-notice")["attack_paths"]
+    (reports / "formal-notice.attacks.input.json").write_text("{}", encoding="utf-8")
+    paths = prompts.values_for("rules-verify", "formal-notice")["attack_paths"]
+    assert "attacks.input.json" in paths and "adversary" not in paths
+
+
+def test_the_outcome_meanings_are_those_of_the_second_views_body():
+    _, body = prompts.template("boundary-second-view-codex")
+    for word, meaning in prompts.OUTCOME_MEANINGS.items():
+        assert f'"{word}": {meaning}' in body, word
+
+
+def test_the_second_view_is_blind_to_the_expectation_and_offers_the_two_words_in_dispute(monkeypatch):
+    """Stage 8b: the expected word and the record's `actual` word, alphabetical; never the case's `why`."""
+    monkeypatch.setattr(prompts, "unit_texts", lambda u: {"rendered": "[civil-code 119 ¶1] في العقود الملزمة"})
+    values = prompts.values_for("boundary-second-view-codex", "formal-notice", cases=["bc3"],
+                                run=[{"caseId": "bc3", "actual": "ask"}])
+    _, body = prompts.template("boundary-second-view-codex")
+    assert not set(prompts.PLACEHOLDER.findall(body)) - set(values)
+    assert values["choices"].splitlines() == [f'- "ask": {prompts.OUTCOME_MEANINGS["ask"]}.',
+                                              f'- "stepMissing": {prompts.OUTCOME_MEANINGS["stepMissing"]}.']
+    with open(os.path.join(prompts.CL, "rules", "boundary-cases", "formal-notice.json"), encoding="utf-8") as f:
+        bc3 = next(c for c in json.load(f) if c["id"] == "bc3")
+    assert bc3["expect"]["why"] not in values["cases"] and "Nothing else is known about the case." in values["cases"]
+    assert values["subject"].startswith("this subject: when a formal notice is required")
+    assert "(Further paragraphs of the same texts:)" in values["texts"]  # the record cites more than 119 ¶1
+    with pytest.raises(ValueError):  # the same word on both sides is not a choice
+        prompts.values_for("boundary-second-view-codex", "formal-notice", cases=["bc3"],
+                           run=[{"caseId": "bc3", "actual": "stepMissing"}])

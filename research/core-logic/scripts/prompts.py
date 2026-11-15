@@ -41,16 +41,21 @@ LABOUR_UNITS = {"labour-prelitigation", "abusive-dismissal", "unpaid-wages"}
 SEED_SLOTS = {"wages_due_from", "defendant_resides_abroad", "employer_in_bankruptcy_or_settlement",
               "worker_is_public_servant", "work_accident_or_occupational_illness"}
 
-# The French texts for derivation B, by module (french/INDEX.md in the working folder lists what exists). A unit not
-# listed here cannot be filled for B until its French chapter is prepared.
-FRENCH = {
-    "formal-notice": [
-        ("Civil Code (Ordinance 75-58), French Official Journal 78 of 1975, pages 6 to 10 of the PDF, images: the chapters "
-         "on the effects of obligations and the formal notice (art. 175 is on pages 8 and 9, arts. 180 and 181 on pages 9 "
-         "and 10)", [os.path.join(WORK, "french", "civil-code", f"F1975078-p{p:03d}-300.png") for p in range(6, 11)]),
-        ("Law 05-10 of 2005 amending the Civil Code, French Official Journal 44 of 2005, text",
-         [os.path.join(WORK, "french", "civil-code", "F2005044-law-05-10.txt")]),
-    ],
+# The French texts for derivation B, by unit: <CL>\law\french-sources.json (stage 0b of specs/unit-driver.md).
+FRENCH_SOURCES = os.path.join(CL, "law", "french-sources.json")
+
+# The outcome words of a boundary case, as the body of boundary-second-view-codex.md gives them (a test holds the two
+# word for word).
+OUTCOME_MEANINGS = {
+    "inTime": "the time limit has not passed on the petition date",
+    "late": "the time limit has passed",
+    "lastDay": "the petition date is the last day of the time limit",
+    "stepMissing": "a step required before filing was not done, and the rule must say so",
+    "stepDone": "the step was done as the texts require",
+    "stepExempt": "the texts exempt this case from the step",
+    "leavesOrdinaryCourt": "the case does not belong before the ordinary court",
+    "ask": "the answer depends on a fact that is unknown, and the rule must ask the lawyer for it",
+    "unsettled": "the texts do not settle the outcome, and the rule must warn without deciding",
 }
 
 
@@ -98,6 +103,128 @@ def module_row(unit: str) -> dict:
 
 def modules_table() -> str:
     return "\n".join(f"- `{r['id']}`: {r['question']}" for r in handbook_modules())
+
+
+def claims() -> dict:
+    """The claim types of the catalogue: id -> (area, the catalogue entry)."""
+    out = {}
+    folder = os.path.join(st.REPO, "data", "law", "claims")
+    for name in sorted(os.listdir(folder)):
+        with open(os.path.join(folder, name), encoding="utf-8") as f:
+            doc = json.load(f)
+        for c in doc["claims"]:
+            out[c["id"]] = (doc["area"], c)
+    return out
+
+
+def claim_elements(unit: str) -> dict:
+    with open(os.path.join(st.REPO, "data", "law", "claim-elements.json"), encoding="utf-8") as f:
+        doc = json.load(f)
+    row = next((c for c in doc["claims"] if c["claim"] == unit), None)
+    if row is None:
+        raise KeyError(f"{unit} has no row in claim-elements.json")
+    return row
+
+
+def unit_kind(unit: str) -> str:
+    """"module" or "claim", the record's own `kind` (rule-record.schema.json)."""
+    if any(r["id"] == unit for r in handbook_modules()):
+        return "module"
+    if unit in claims():
+        return "claim"
+    raise KeyError(f"{unit} is neither a module of the handbook's table nor a claim type of the catalogue")
+
+
+def unit_brief_claim(unit: str) -> str:
+    """The claim as the catalogue and the elements table describe it, never the catalogue's articles, prerequisites,
+    documents or suggested requests: those become checklist questions (from: catalogue) in the merged checklist."""
+    area, c = claims()[unit]
+    el = claim_elements(unit)
+    lines = [f"- **The claim:** `{unit}`, {c['label']['ar']} / {c['label']['en']} (area: {area}).",
+             f"- **What the lawyer brings:** {c['description']}"]
+    if el.get("roles"):
+        lines.append("- **Who the plaintiff is:** " + "; ".join(
+            f"{r['label']} (relation `{r['relation']}`, position `{r['position']}`)" for r in el["roles"]))
+    lines.append("- **The elements** (what must be proved, each an event kind of the vocabulary):")
+    for e in el["elements"]:
+        extra = [f"by the {e['actor']}"] if e.get("actor") else []
+        extra += ["with a date"] if e.get("date") else []
+        extra += ["with an amount"] if e.get("amount") else []
+        lines.append(f"  - `{e['event']}`" + (f" ({', '.join(extra)})" if extra else "") + f": {e['label']}")
+    lines.append("- **The requests** (request kinds of the vocabulary):")
+    for q in el.get("requests", []):
+        lines.append(f"  - `{q['kind']}`" + (" (with an amount)" if q.get("amount") else "") + f": {q['label']}")
+    return "\n".join(lines)
+
+
+def unit_brief(unit: str) -> str:
+    return unit_brief_module(unit) if unit_kind(unit) == "module" else unit_brief_claim(unit)
+
+
+def unit_line(unit: str) -> str:
+    """One line naming the unit and its subject (`{{units}}`)."""
+    if unit_kind(unit) == "module":
+        return f"- `{unit}`: {module_row(unit)['question']}"
+    area, c = claims()[unit]
+    return f"- `{unit}`: claim type, {c['label']['en']} ({c['label']['ar']}): {c['description']}"
+
+
+def unit_label(unit: str) -> str:
+    if unit_kind(unit) == "module":
+        return f"module {unit}: {module_row(unit)['question']}"
+    area, c = claims()[unit]
+    return f"claim type {unit}: {c['label']['en']} ({c['label']['ar']}): {c['description']}"
+
+
+def subject(unit: str) -> str:
+    """What disputed boundary cases are about, for the second view: the subject, never an answer."""
+    if unit_kind(unit) == "module":
+        q = module_row(unit)["question"].rstrip(".")
+        return f"this subject: {q[0].lower()}{q[1:]}"
+    area, c = claims()[unit]
+    return f"this claim: {c['label']['en']} ({c['description'].rstrip('.')})"
+
+
+def _records_of(unit: str) -> list[dict]:
+    """The records of a unit written so far (A, B, reconciled, final candidate), to see whether it has a deadline."""
+    out = []
+    for sub_ in (("derivations", "a"), ("derivations", "b"), ("reconciled",), ("final-candidates",)):
+        path = os.path.join(CL, "rules", *sub_, f"{unit}.json")
+        if os.path.isfile(path):
+            with open(path, encoding="utf-8") as f:
+                out.append(json.load(f))
+    return out
+
+
+def has_deadline(unit: str) -> bool:
+    return any(r.get("deadlines") for r in _records_of(unit))
+
+
+def module_finals(units: list[str], strict: bool = False) -> str:
+    """The final module records a reconciler or a verifier may read (stage 5): for a claim every final module (it
+    imports or may import any); for a unit with a deadline, other than periods itself, final/periods.json. With
+    `strict` (the reconciler), a claim whose derivations import a module that is not final, or a unit with a deadline
+    while periods is not final, is refused: stage 5 waits for them."""
+    final = os.path.join(CL, "rules", "final")
+    paths = []
+    for u in units:
+        if unit_kind(u) == "claim":
+            finals = [r["id"] for r in handbook_modules() if os.path.isfile(os.path.join(final, f"{r['id']}.json"))]
+            if strict:
+                imported = {i["module"] for r in _records_of(u) for i in r.get("imports", [])}
+                missing = sorted(imported - set(finals))
+                if missing:
+                    raise ValueError(f"{u} imports modules that are not final: {', '.join(missing)}")
+            paths += [os.path.join(final, f"{m}.json") for m in finals]
+        if u != "periods" and has_deadline(u):
+            periods = os.path.join(final, "periods.json")
+            if not os.path.isfile(periods):
+                if strict:
+                    raise ValueError(f"{u} has a deadline and periods is not final: stage 5 waits for it")
+                continue
+            paths.append(periods)
+    paths = list(dict.fromkeys(paths))
+    return "\n" + "\n".join(f"- `{x}`" for x in paths) if paths else "none"
 
 
 def unit_brief_module(unit: str) -> str:
@@ -151,14 +278,22 @@ def unit_texts(unit: str) -> dict:
 
 
 def french_sources(unit: str) -> str:
-    if unit not in FRENCH:
-        raise KeyError(f"no French texts prepared for {unit}: add them to french/INDEX.md and to FRENCH first")
+    """The French texts of stage 0b. A unit stage 0b has not reached is refused; an instrument for which no French
+    text could be prepared becomes a sentence for the deriver (the filler never throws for a missing chapter)."""
+    with open(FRENCH_SOURCES, encoding="utf-8") as f:
+        units = json.load(f)["units"]
+    if unit not in units:
+        raise KeyError(f"stage 0b has not run for {unit}: law/french-sources.json has no entry")
     lines = []
-    for what, paths in FRENCH[unit]:
-        for p in paths:
-            if not os.path.isfile(p):
-                raise FileNotFoundError(p)
-        lines.append(f"- {what}: " + ", ".join(f"`{p}`" for p in paths))
+    for e in units[unit]:
+        if not e.get("paths"):
+            lines.append(f"- No French text was prepared for {e['what']}: say so in your checklist.")
+            continue
+        paths = [os.path.join(WORK, *x.split("/")) for x in e["paths"]]
+        for x in paths:
+            if not os.path.isfile(x):
+                raise FileNotFoundError(x)
+        lines.append(f"- {e['what']}: " + ", ".join(f"`{x}`" for x in paths))
     return "\n" + "\n".join(lines)
 
 
@@ -190,6 +325,64 @@ def leads_for(unit: str) -> str:
     return "\n".join(f"- Official Journal issue {x['issue']}: {x['text']}. {x['what']}" for x in mine)
 
 
+def _slot_fact(slot_id: str, value, slots_by_id: dict) -> str:
+    if slot_id == "requests":
+        return "the petition asks for: " + ", ".join(f"`{k}`" for k in value)
+    s = slots_by_id.get(slot_id)
+    if s is None:
+        return f"`{slot_id}`: {value}"
+    shown = value
+    for c in s.get("choices") or []:
+        if c["id"] == value:
+            shown = c["label"]["en"]
+    return f"{s['question']['en']} {shown}"
+
+
+def second_view(unit: str, case_ids: list[str], run: list[dict]) -> dict[str, str]:
+    """The placeholders of boundary-second-view-codex (stage 8b): the cases without their `why` or expected outcome,
+    the two words in dispute for each (expected and actual, alphabetical), and the texts with every paragraph that an
+    item matched by a case cites and the unit's texts lack."""
+    with open(os.path.join(CL, "rules", "boundary-cases", f"{unit}.json"), encoding="utf-8") as f:
+        cases = {c["id"]: c for c in json.load(f)}
+    actual = {r["caseId"]: r.get("actual") for r in run}
+    with open(os.path.join(CL, "slots.json"), encoding="utf-8") as f:
+        slots_by_id = {s["id"]: s for s in json.load(f)["slots"]}
+    with open(os.path.join(CL, "rules", "final-candidates", "quoted", f"{unit}.json"), encoding="utf-8") as f:
+        record = json.load(f)
+    import records as rc
+    import stage7
+    stmts = rc.statements(record)
+    words, case_lines, cited = set(), [], []
+    for cid in case_ids:
+        c = cases[cid]
+        expected, got = c["expect"]["outcome"], actual.get(cid)
+        if got is None:
+            raise ValueError(f"{cid}: the run has no `actual` outcome (run the published tool with --json)")
+        if got == expected:
+            raise ValueError(f"{cid}: expected and actual are both {got}: not a choice of words (a last-day "
+                             "difference goes to the owner's question batch)")
+        words |= {expected, got}
+        facts = [f"the petition is dated {c['petitionDate']}"] + [_slot_fact(k, v, slots_by_id)
+                                                                   for k, v in c["slots"].items()]
+        case_lines.append(f"- **{cid}** ({c['title']}): " + "; ".join(facts) + ". Nothing else is known about the case.")
+        m = re.match(r"\[(\S+) (.+?) ¶(\d+)\]", c["expect"].get("about", ""))
+        if m:
+            code, article, para = m.group(1), m.group(2), int(m.group(3))
+            hit = {i for i, s in stmts.items() if s["cite"]["code"] == code and s["cite"]["article"] == article
+                   and any(q["paragraph"] == para for q in s.get("quote", []))}
+            for _, x in rc.items(record):
+                ids = rc.basis_ids(x) if "basis" in x or "counting" in x else [x.get("id")]
+                if hit & set(ids):
+                    cited += ids
+    rendered = unit_texts(unit)["rendered"]
+    further = [t_ for t_ in stage7._texts(stmts, list(dict.fromkeys(cited)))
+               if stage7._label(t_) not in rendered]
+    texts = rendered + ("\n\n(Further paragraphs of the same texts:)\n" +
+                        "\n".join(f"{stage7._label(t_)} {t_['text']}" for t_ in further) if further else "")
+    choices = "\n".join(f"- \"{w}\": {OUTCOME_MEANINGS[w]}." for w in sorted(words))
+    return {"subject": subject(unit), "texts": texts, "cases": "\n".join(case_lines), "choices": choices}
+
+
 def _run_file(unit: str, name: str) -> str:
     """A text the stage-7 script wrote for this unit (stage7.py render / pairs), in the working folder."""
     path = os.path.join(RUNS, unit, name)
@@ -199,33 +392,41 @@ def _run_file(unit: str, name: str) -> str:
         return f.read().strip("\n")
 
 
-def values_for(prompt: str, unit: str, followup: int = 0) -> dict[str, str]:
-    base = {"worktree": st.REPO, "unit_id": unit, "module_id": unit, "unit_kind": "module",
+def values_for(prompt: str, unit: str, followup: int = 0, cases: list[str] | None = None,
+               run: list[dict] | None = None) -> dict[str, str]:
+    kind = unit_kind(unit.split("+")[0])
+    base = {"worktree": st.REPO, "unit_id": unit, "module_id": unit, "unit_kind": kind,
             "store_path": STORE_JSON, "store_text": STORE_TEXT, "rules_tool": RULES_TOOL}
     if prompt in ("rules-derive-a", "rules-derive-b"):
-        base.update(unit_brief=unit_brief_module(unit), modules_table=modules_table(), slots=slots(unit),
+        base.update(unit_brief=unit_brief(unit), modules_table=modules_table(), slots=slots(unit),
                     vocabulary=vocabulary())
         if prompt == "rules-derive-b":
             base["french_sources"] = french_sources(unit)
     elif prompt == "rules-derive-c":
+        if kind != "module":
+            raise ValueError("derivation C is for modules only (HANDBOOK, stage 2c)")
         r = module_row(unit)
         base.update(module_question=f"{r['question']} Where to start (pointers, not statements of the law): {r['start']}",
                     slots=slots(unit, english_only=True), texts=unit_texts(unit)["rendered"])
     elif prompt == "rules-boundary-cases":
-        base.update(units=f"- `{unit}`: {module_row(unit)['question']}", slots=slots(unit), request_kinds=request_kinds(),
+        base.update(units=unit_line(unit), slots=slots(unit), request_kinds=request_kinds(),
                     texts=f"### {unit}\n\n" + unit_texts(unit)["rendered"])
     elif prompt == "rules-reconcile":
-        base["module_finals"] = "none"  # a module imports nothing; claim records get their modules' final paths
+        base["module_finals"] = module_finals([unit], strict=True)
     elif prompt == "rules-adversary":
         ledger = os.path.join(CL, "law", "amendment-ledger.json")
         base.update(record_path=os.path.join(CL, "rules", "reconciled", "quoted", f"{unit}.json"),
                     ledger_path=ledger if os.path.isfile(ledger) else "(none yet: the amendment ledger does not exist)",
                     oj_fetch=oj_fetch_command(unit, 'adversary'), leads=leads_for(unit))
     elif prompt == "rules-attack":
-        base.update(unit_label=f"module {unit}: {module_row(unit)['question']}", slots=slots(unit, english_only=True),
+        base.update(unit_label=unit_label(unit), slots=slots(unit, english_only=True),
                     record_text=_run_file(unit, "record_text.txt"))
     elif prompt == "rules-support-check-codex":
         base["pairs"] = _run_file(unit, "support-pairs.txt")
+    elif prompt == "boundary-second-view-codex":
+        if not cases or run is None:
+            raise ValueError("the second view needs --cases and --run (the boundary run printed with --json)")
+        base.update(second_view(unit, cases, run))
     elif prompt == "rules-verify":
         # one unit, or two joined by "+" (the verifier takes units two by two, modules first)
         units = unit.split("+")
@@ -237,6 +438,9 @@ def values_for(prompt: str, unit: str, followup: int = 0) -> dict[str, str]:
             return "\n" + "\n".join(f"- `{u}`: " + ", ".join(one(p) for p in paths_of(u)) for u in units)
 
         def attacks_of(u):
+            gathered = os.path.join(reports, f"{u}.attacks.input.json")  # unit.py verify-input (stage 8)
+            if os.path.isfile(gathered):
+                return [gathered]
             attack = os.path.join(reports, f"{u}.attacks.sonnet.json")
             if not os.path.isfile(attack) and os.path.isfile(os.path.join(reports, f"{u}.attacks.codex.json")):
                 attack = os.path.join(reports, f"{u}.attacks.codex.json")  # the first module's attack was Codex's
@@ -271,7 +475,7 @@ def values_for(prompt: str, unit: str, followup: int = 0) -> dict[str, str]:
                                                             "(the corrected record replaces it)")]),
                         requests_path=os.path.join(CL, "law", "requests.jsonl"),
                         ledger_path=ledger if os.path.isfile(ledger) else "(none yet: the amendment ledger does not exist)",
-                        oj_fetch=oj_fetch_command(u, 'verify'))
+                        oj_fetch=oj_fetch_command(u, 'verify'), module_finals=module_finals([u]))
             return base
         base.update(units=", ".join(f"`{u}`" for u in units),
                     record_paths=listing(lambda u: [os.path.join(rules_dir, "reconciled", "quoted", f"{u}.json")]),
@@ -281,7 +485,7 @@ def values_for(prompt: str, unit: str, followup: int = 0) -> dict[str, str]:
                     candidate_paths=listing(lambda u: [os.path.join(rules_dir, "final-candidates", f"{u}.json")]),
                     requests_path=os.path.join(CL, "law", "requests.jsonl"),
                     ledger_path=ledger if os.path.isfile(ledger) else "(none yet: the amendment ledger does not exist)",
-                    oj_fetch=oj_fetch_command(unit, 'verify'))
+                    oj_fetch=oj_fetch_command(unit, 'verify'), module_finals=module_finals(units))
     else:
         raise KeyError(f"no filling rule for {prompt}")
     return base
@@ -295,13 +499,19 @@ def main(argv=None) -> int:
     f.add_argument("--unit", required=True)
     f.add_argument("--out", required=True)
     f.add_argument("--followup", type=int, default=0, help="rules-verify only: the number of the follow-up run")
+    f.add_argument("--cases", help="boundary-second-view-codex only: the case ids, comma-separated")
+    f.add_argument("--run", help="boundary-second-view-codex only: the boundary run printed with --json")
     a = p.parse_args(argv)
     if a.cmd == "fill":
         if unit.published_tool() is None:
             print("the rules tool is not published: run unit.py tool first", file=sys.stderr)
             return 1
         _, body = template(a.prompt)
-        text = fill(body, values_for(a.prompt, a.unit, a.followup))
+        run = None
+        if a.run:
+            with open(a.run, encoding="utf-8-sig") as fh:
+                run = json.load(fh)
+        text = fill(body, values_for(a.prompt, a.unit, a.followup, a.cases.split(",") if a.cases else None, run))
         with open(a.out, "w", encoding="utf-8", newline="\n") as fh:
             fh.write(text)
         print(a.out, len(text), "characters")

@@ -823,7 +823,8 @@ def launch(u: Unit, stage: str, ledger: str = LEDGER) -> str:
                    "model": f"claude-{model}-5-5", "unit": u.id, "stage": stage, "prompt": f"{prompt}.md@{commit}",
                    "started": now(), "status": "running", "outputs": []}, ledger)
     return (f"LAUNCH  stage {stage}  {prompt}  model: {model}  fresh agent, background  (run {rid})\n"
-            "PROMPT  Your whole task is written in one file. Read it first with your Read tool and follow it exactly,\n"
+            "PROMPT  Your whole task is written in one file. Read it first with your Read tool, in one call with allow_large\n"
+            "        set to true (a long file is otherwise cut short), and follow it exactly,\n"
             f"        including its list of what you may open: {path}. That file is the only\n"
             "        thing you may open before its own allow-list takes over. Your final reply is the short reply that "
             "file asks for.\n"

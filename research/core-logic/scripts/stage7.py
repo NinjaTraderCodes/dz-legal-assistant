@@ -2,9 +2,12 @@
 (prompts/rules-attack.md, prompts/rules-support-check-codex.md, specs/record-checks.md).
 
     python stage7.py render <quoted reconciled.json> --out <file>        -> {{record_text}} of the attack
-    python stage7.py pairs <quoted reconciled.json>... --batch <name> --out <pairs.txt> [--seed n]
+    python stage7.py pairs <quoted reconciled.json>... --batch <name> --out <pairs.txt> [--seed n] [--unit <id>]
                                                                           -> {{pairs}}; the key goes to support-keys\\
-    python stage7.py split <answer.json> --batch <name>                   -> rules/reports/<unit>.support.json
+    python stage7.py split <answer.json> --batch <name> [--root <folder>] -> <root>/reports/<unit>.support.json
+
+--unit names the unit when one record is given (a planted copy keeps its record's own `id`, so the unit id must come
+from outside); --root replaces docs/research/core-logic/rules (the planted-error rounds write under their own root).
 
 The key of the seeded false pairs is written outside the repository (support-keys\\<batch>.json) and never shown to the
 checker. Sentences are built from the items' structured values and their `says`; nothing here states law of its own.
@@ -100,9 +103,10 @@ def _start(d: dict) -> str:
     return s.get("slot", "") if isinstance(s, dict) else s
 
 
-def items(record: dict) -> list[dict]:
-    """Every checkable item of a quoted record as (unit, item, English statement, the quoted texts it rests on)."""
-    unit, stmts, out = record["id"], rc.statements(record), []
+def items(record: dict, unit: str | None = None) -> list[dict]:
+    """Every checkable item of a quoted record as (unit, item, English statement, the quoted texts it rests on). The
+    unit is the record's own id unless one is given (a planted copy)."""
+    unit, stmts, out = unit or record["id"], rc.statements(record), []
     for s in record.get("basis", []):
         out.append({"unit": unit, "item": s["id"], "statement": (s.get("says") or {}).get("en", ""),
                     "texts": _texts(stmts, [s["id"]])})
@@ -191,11 +195,13 @@ def _mutate(statement: str, rnd: random.Random) -> tuple[str, str] | None:
     return rnd.choice(options) if options else None
 
 
-def build_pairs(records: list[dict], seed: int = 0) -> tuple[list[dict], dict]:
+def build_pairs(records: list[dict], seed: int = 0, unit: str | None = None) -> tuple[list[dict], dict]:
     """Real pairs from every item, plus one seeded false pair for every four real ones (so one in five of the batch):
     a statement with another article's text, or a changed statement with its own text. Shuffled together."""
     rnd = random.Random(seed)
-    real = [dict(i, seeded=None) for r in records for i in items(r)]
+    if unit and len(records) != 1:
+        raise ValueError("--unit names the unit of one record")
+    real = [dict(i, seeded=None) for r in records for i in items(r, unit)]
     n_seeded = max(1, round(len(real) / (SEEDED_SHARE - 1)))
     seeded = []
     for k in range(n_seeded):
@@ -255,8 +261,9 @@ def main(argv=None) -> int:
     r = sub.add_parser("render"); r.add_argument("record"); r.add_argument("--out", required=True)
     r.add_argument("--store")
     q = sub.add_parser("pairs"); q.add_argument("records", nargs="+"); q.add_argument("--batch", required=True)
-    q.add_argument("--out", required=True); q.add_argument("--seed", type=int, default=0)
+    q.add_argument("--out", required=True); q.add_argument("--seed", type=int, default=0); q.add_argument("--unit")
     s = sub.add_parser("split"); s.add_argument("answer"); s.add_argument("--batch", required=True)
+    s.add_argument("--root", help="replaces docs/research/core-logic/rules: <root>/reports receives the answers")
     a = p.parse_args(argv)
     sys.stdout.reconfigure(encoding="utf-8")
     if a.cmd == "render":
@@ -265,7 +272,7 @@ def main(argv=None) -> int:
             f.write(text)
         print(a.out, len(text), "characters")
     elif a.cmd == "pairs":
-        pairs, key = build_pairs([rc.load(x) for x in a.records], a.seed)
+        pairs, key = build_pairs([rc.load(x) for x in a.records], a.seed, a.unit)
         os.makedirs(KEYS, exist_ok=True)
         rc.save(os.path.join(KEYS, f"{a.batch}.json"), key)
         with open(a.out, "w", encoding="utf-8", newline="\n") as f:
@@ -274,7 +281,9 @@ def main(argv=None) -> int:
     elif a.cmd == "split":
         key = rc.load(os.path.join(KEYS, f"{a.batch}.json"))
         for unit, doc in split(rc.load(a.answer), key).items():
-            rc.save(os.path.join(REPORTS, f"{unit}.support.json"), doc)
+            reports = os.path.join(a.root, "reports") if a.root else REPORTS
+            os.makedirs(reports, exist_ok=True)
+            rc.save(os.path.join(reports, f"{unit}.support.json"), doc)
             print(unit, len(doc["pairs"]), "pairs,", len(doc["attacks"]), "attacks; seeded accepted",
                   doc["seededAccepted"], "of", doc["seededTotal"], "; yes trusted:", doc["yesTrusted"])
     return 0

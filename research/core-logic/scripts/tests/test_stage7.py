@@ -1,5 +1,6 @@
 """Stage 7 inputs and outputs: the record rendered for the Codex attack, the support pairs with their seeded false
 pairs, and the split of the support answers (rules-attack-codex.md, rules-support-check-codex.md)."""
+import json
 import os
 import sys
 
@@ -82,3 +83,18 @@ def test_a_list_item_is_paired_with_its_lead_in_and_a_step_names_its_exemptions(
     got = {i["item"]: i for i in stage7.items(q)}
     assert [t["paragraph"] for t in got["b2"]["texts"]] == [1, 2]
     assert got["p1"]["statement"].endswith("except when: Two months passed.")
+
+
+def test_a_planted_copy_is_paired_under_the_unit_id_given_and_split_under_its_root(tmp_path, monkeypatch):
+    """A planted copy keeps its record's own id; its pairs and its support report carry the copy's id instead."""
+    pairs, key = stage7.build_pairs([quoted()], seed=1, unit="p1-01")
+    assert {p["unit"] for p in key["pairs"]} == {"p1-01"}
+    answer = {"answers": [{"n": p["n"], "supports": "yes", "missingOrWrong": ""} for p in key["pairs"]]}
+    keys = tmp_path / "keys"
+    keys.mkdir()
+    (keys / "b.json").write_text(json.dumps(key), encoding="utf-8")
+    (tmp_path / "a.json").write_text(json.dumps(answer), encoding="utf-8")
+    monkeypatch.setattr(stage7, "KEYS", str(keys))
+    assert stage7.main(["split", str(tmp_path / "a.json"), "--batch", "b", "--root", str(tmp_path / "root")]) == 0
+    assert (tmp_path / "root" / "reports" / "p1-01.support.json").exists()
+

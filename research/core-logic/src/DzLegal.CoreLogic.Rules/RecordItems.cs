@@ -66,6 +66,11 @@ public static class RecordItems
             var deadline = record.Deadlines[i];
             Add($"deadlines[{i}].basis", deadline.Basis);
             Add($"deadlines[{i}].counting.basis", deadline.Counting?.Basis ?? []);
+            for (var j = 0; j < deadline.OtherCountings.Count; j++)
+            {
+                Add($"deadlines[{i}].otherCountings[{j}].basis", deadline.OtherCountings[j].Basis);
+            }
+
             for (var j = 0; j < deadline.Readings.Count; j++)
             {
                 Add($"deadlines[{i}].readings[{j}].basis", deadline.Readings[j].Basis);

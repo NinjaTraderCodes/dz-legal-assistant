@@ -58,6 +58,34 @@ public sealed class EvaluatorTests
         Assert.Equal(expected, Build.Run(record, Build.Case("start=2026-01-06"), LastDay.AddDays(5)).Finding("d1").DeclaredEffect);
     }
 
+    /// <summary>
+    /// The owner's rule of 15 November 2026: where the defensible countings give different last days, the deadline blocks
+    /// only once the latest has passed and warns on the days in between. Ten days from 6 January 2026: the first day
+    /// excluded gives Friday 16 January; neither end day counted, run to a working day, gives Sunday 18 January.
+    /// </summary>
+    [Theory]
+    [InlineData("2026-01-15", FindingEffect.None)]
+    [InlineData("2026-01-16", FindingEffect.Warn)]  // the earliest last day
+    [InlineData("2026-01-17", FindingEffect.Warn)]  // between the two: never a block
+    [InlineData("2026-01-18", FindingEffect.Warn)]  // the latest defensible last day
+    [InlineData("2026-01-19", FindingEffect.BlockCleanExport)]  // only now
+    public void WhereCountingsDifferTheDeadlineBlocksOnlyAfterTheLatestLastDay(string petition, FindingEffect expected)
+    {
+        var deadline = Build.Deadline(band: 0) with
+        {
+            OtherCountings = [new CountingRule { Method = CountingMethod.ExcludeFirstAndLastDay, ExtendToWorkingDay = true, Basis = ["s1"] }],
+        };
+        var finding = Build.Run(Build.Record() with { Deadlines = [deadline] }, Build.Case("start=2026-01-06"),
+            DateOnly.Parse(petition, System.Globalization.CultureInfo.InvariantCulture)).Finding("d1");
+        Assert.Equal(expected, finding.DeclaredEffect);
+        Assert.Equal(new DateOnly(2026, 1, 16), finding.LastDay);
+        Assert.Equal(new DateOnly(2026, 1, 18), finding.LatestLastDay);
+    }
+
+    [Fact]
+    public void OneCountingGivesNoLatestLastDay() =>
+        Assert.Null(Build.Run(Build.Record() with { Deadlines = [Build.Deadline()] }, Build.Case("start=2026-01-06"), LastDay).Finding("d1").LatestLastDay);
+
     [Fact]
     public void ABandOfZeroWarnsOnTheLastDayOnly()
     {

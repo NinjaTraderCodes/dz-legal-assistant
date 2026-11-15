@@ -79,11 +79,12 @@ def item_id(kind: str, item: dict) -> str:
 
 
 def basis_ids(item: dict) -> list[str]:
-    """Every statement an item rests on: its basis, its counting's, its exemptions', its alternatives', its proofs'."""
+    """Every statement an item rests on: its basis, its counting's (and its other countings'), its exemptions', its
+    alternatives', its proofs'."""
     ids = list(item.get("basis", []))
     if isinstance(item.get("counting"), dict):
         ids += item["counting"].get("basis", [])
-    for key in ("notRequiredWhen", "alternatives", "proof", "acceptedMeans", "readings"):
+    for key in ("notRequiredWhen", "alternatives", "proof", "acceptedMeans", "readings", "otherCountings"):
         for x in item.get(key, []) or []:
             if isinstance(x, dict):
                 ids += x.get("basis", [])
@@ -284,8 +285,8 @@ def check_values(record: dict) -> dict:
             problems.append({"item": d["id"], "problem": "kindNotInText", "kind": "limitation"})
         if not has_forfeiture and not has_limitation:
             notes.append({"item": d["id"], "note": "interpretive: the quoted text has no word of forfeiture or limitation"})
-        if isinstance(d.get("counting"), dict):
-            for b in d["counting"].get("basis", []):
+        for c in ([d["counting"]] if isinstance(d.get("counting"), dict) else []) + list(d.get("otherCountings") or []):
+            for b in c.get("basis", []):
                 if b not in stmts or not stmts[b].get("quote"):
                     problems.append({"item": d["id"], "problem": "countingBasisNotQuoted", "statement": b})
     for s in record.get("basis", []):

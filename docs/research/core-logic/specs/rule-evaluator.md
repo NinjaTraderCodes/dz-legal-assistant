@@ -43,10 +43,12 @@ Every item below produces **one finding** (also when its effect is `none`), so t
 **Deadline.**
 1. If `when` is present and false: `none`. If unknown: `ask`, with questions for the slots of `when`. Stop.
 2. If the slot of `startsFrom` is unknown: `ask`, with a question for it. Stop.
-3. Compute the last day (see "Counting a period") and `DaysLeft = lastDay − petitionDate` in days.
-4. If `|DaysLeft| ≤ warnBandDays` (default 15 when absent): declared effect `warn`.
-5. Else if `DaysLeft < 0`: declared effect `effectWhenExpired`.
+3. Compute the last day (see "Counting a period") and `DaysLeft = lastDay − petitionDate` in days. **When the deadline lists `otherCountings`** (the other defensible ways of counting the period, each with its basis), compute a last day for each: `LastDay` is the earliest, `LatestLastDay` the latest (null when they agree), and `DaysLeftLatest = LatestLastDay − petitionDate`.
+4. If `DaysLeft ≤ warnBandDays` and `DaysLeftLatest ≥ −warnBandDays` (default 15 when absent): declared effect `warn`. With one counting this is `|DaysLeft| ≤ warnBandDays`.
+5. Else if `DaysLeftLatest < 0`: declared effect `effectWhenExpired`.
 6. Else: `none`.
+
+**The owner's rule of 15 November 2026 (step 3 to 5):** where the readings differ on a forfeiture's last day, the record never blocks on the earlier reading: it warns from the band before the earliest last day through the band after the latest defensible one, and only then takes `effectWhenExpired`. The deadline's message states the readings and their sources.
 
 `LastDay` and `DaysLeft` are set on the finding whenever step 3 ran.
 

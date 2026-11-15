@@ -925,6 +925,13 @@
           "$ref": "#/$defs/counting",
           "description": "Absent when the texts do not settle how the period is counted; the deadline is then interpretive."
         },
+        "otherCountings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/counting"
+          },
+          "description": "The other defensible ways of counting the same period, each citing its own statements. Where they give a later last day than `counting`, the deadline warns until the latest one (and its band) has passed and only then takes effectWhenExpired (the owner's rule of 15 November 2026). The message states the readings with their sources."
+        },
         "raisedBy": {
           "enum": [
             "courtOfOwnMotion",

@@ -226,8 +226,8 @@ public sealed class RuleEvaluator : IRuleEvaluator
         public void Deadline(Deadline deadline)
         {
             var used = new List<string>();
-            void Finish(FindingEffect declared, string branch, DateOnly? lastDay = null, int? daysLeft = null) =>
-                Add(FindingKind.Deadline, deadline.Id, declared, deadline.Grading, deadline.Message, deadline.Basis, used, branch, lastDay, daysLeft);
+            void Finish(FindingEffect declared, string branch, DateOnly? lastDay = null, int? daysLeft = null, DateOnly? latest = null) =>
+                Add(FindingKind.Deadline, deadline.Id, declared, deadline.Grading, deadline.Message, deadline.Basis, used, branch, lastDay, daysLeft, latest);
 
             if (deadline.When is { } whenCondition)
             {
@@ -250,24 +250,30 @@ public sealed class RuleEvaluator : IRuleEvaluator
             }
 
             var start = slots.Date(startSlot);
-            var lastDay = Periods.LastDay(start, deadline.Period, deadline.Counting);
+            var lastDays = new[] { deadline.Counting }.Concat(deadline.OtherCountings)
+                .Select(counting => Periods.LastDay(start, deadline.Period, counting)).ToList();
+            var lastDay = lastDays.Min();
+            var latest = lastDays.Max();
             var daysLeft = lastDay.DayNumber - petitionDate.DayNumber;
+            var daysLeftLatest = latest.DayNumber - petitionDate.DayNumber;
             var band = deadline.WarnBandDays ?? DefaultWarnBandDays;
 
             // Inside the band the declared effect is a warning, whatever the counting gives: holidays and the act that started
-            // the period are beyond what the app can see.
-            var inBand = Math.Abs(daysLeft) <= band;
-            var effect = inBand ? FindingEffect.Warn : daysLeft < 0 ? deadline.EffectWhenExpired : FindingEffect.None;
+            // the period are beyond what the app can see. Where the defensible countings differ (the owner's rule of 15 November
+            // 2026), the band runs from before the earliest last day to after the latest, and only then does the effect apply.
+            var inBand = daysLeft <= band && daysLeftLatest >= -band;
+            var effect = inBand ? FindingEffect.Warn : daysLeftLatest < 0 ? deadline.EffectWhenExpired : FindingEffect.None;
             var days = daysLeft switch
             {
                 > 0 => string.Create(CultureInfo.InvariantCulture, $"{daysLeft} days left"),
                 0 => "on the last day",
                 _ => string.Create(CultureInfo.InvariantCulture, $"{-daysLeft} days late"),
             };
+            var latestText = latest == lastDay ? "" : $" (latest defensible {Dates.Write(latest)})";
             var branchText = string.Create(
                 CultureInfo.InvariantCulture,
-                $"start {Dates.Write(start)}, last day {Dates.Write(lastDay)}, petition {Dates.Write(petitionDate)}, {days}, {(inBand ? "inside" : "outside")} band {band}");
-            Finish(effect, branchText, lastDay, daysLeft);
+                $"start {Dates.Write(start)}, last day {Dates.Write(lastDay)}{latestText}, petition {Dates.Write(petitionDate)}, {days}, {(inBand ? "inside" : "outside")} band {band}");
+            Finish(effect, branchText, lastDay, daysLeft, latest == lastDay ? null : latest);
         }
 
         public void Boundary(Boundary boundary)
@@ -328,7 +334,8 @@ public sealed class RuleEvaluator : IRuleEvaluator
             List<string> used,
             string branch,
             DateOnly? lastDay = null,
-            int? daysLeft = null)
+            int? daysLeft = null,
+            DateOnly? latestLastDay = null)
         {
             var grade = GradeTable.GradeOf(grading);
             var proposed = used.Any(slots.IsProposed);
@@ -359,6 +366,7 @@ public sealed class RuleEvaluator : IRuleEvaluator
                 Basis = Cites(basis),
                 SlotsUsed = [.. used.Distinct(StringComparer.Ordinal)],
                 LastDay = lastDay,
+                LatestLastDay = latestLastDay,
                 DaysLeft = daysLeft,
                 Trace = trace,
             });

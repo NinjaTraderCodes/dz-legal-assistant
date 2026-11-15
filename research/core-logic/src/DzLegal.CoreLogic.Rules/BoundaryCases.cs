@@ -153,7 +153,7 @@ public static class BoundaryCases
 
         return
         [
-            .. record.Deadlines.Where(item => Cites(item.Basis.Concat(item.Counting?.Basis ?? []))).Select(item => (FindingKind.Deadline, item.Id)),
+            .. record.Deadlines.Where(item => Cites(item.Basis.Concat(item.Counting?.Basis ?? []).Concat(item.OtherCountings.SelectMany(c => c.Basis)))).Select(item => (FindingKind.Deadline, item.Id)),
             .. record.PriorSteps.Where(item => Cites(item.Basis.Concat(item.NotRequiredWhen.SelectMany(exemption => exemption.Basis)))).Select(item => (FindingKind.PriorStep, item.Id)),
             .. (record.Court?.Exits ?? []).Where(item => Cites(item.Basis)).Select(item => (FindingKind.Exit, item.Id)),
             .. record.Boundaries.Where(item => Cites(item.Basis)).Select(item => (FindingKind.Boundary, item.Id)),

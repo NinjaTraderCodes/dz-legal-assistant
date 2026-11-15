@@ -81,8 +81,14 @@ public sealed record RuleFinding
     public required IReadOnlyList<Cite> Basis { get; init; }
     public IReadOnlyList<string> SlotsUsed { get; init; } = [];
 
-    /// <summary>For a deadline: its last day, counted by the periods module.</summary>
+    /// <summary>For a deadline: its last day, counted by the periods module (the earliest, when its countings differ).</summary>
     public DateOnly? LastDay { get; init; }
+
+    /// <summary>
+    /// For a deadline whose defensible countings give different last days: the latest of them. Null when they agree. The
+    /// deadline warns from its band before <see cref="LastDay"/> through its band after this day, and blocks only after.
+    /// </summary>
+    public DateOnly? LatestLastDay { get; init; }
 
     /// <summary>For a deadline: the days left on the petition's date (negative when it has passed).</summary>
     public int? DaysLeft { get; init; }

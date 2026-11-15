@@ -409,6 +409,13 @@ public sealed record Deadline
 
     /// <summary>Null when the texts do not settle how the period is counted; the deadline is then interpretive.</summary>
     public CountingRule? Counting { get; init; }
+
+    /// <summary>
+    /// The other defensible ways of counting the same period, each citing its own statements (the owner's rule of 15 November
+    /// 2026: where readings differ on a deadline's last day, it may block only once the latest defensible last day has
+    /// passed, and warns on the days in between). Empty when the texts allow one counting only.
+    /// </summary>
+    public IReadOnlyList<CountingRule> OtherCountings { get; init; } = [];
     public required RaisedBy RaisedBy { get; init; }
     public SlotCondition? When { get; init; }
 

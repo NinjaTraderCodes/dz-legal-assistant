@@ -1,0 +1,60 @@
+{
+  "unit": "periods",
+  "attacks": [
+    {
+      "id": "values-d5",
+      "who": "values",
+      "target": "d5",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"d5\", \"problem\": \"messageArticleNotInBasis\", \"lang\": \"ar\", \"articles\": [\"36\"]}",
+      "verdict": "fixed",
+      "verifierQuote": "[labour-disputes 36 ¶1] في حالة عدم المصالحة، يرفع الطرف الذي له مصلحة دعوى أمام المحكمة الفاصلة في المسائل الاجتماعية. [cpca 504 ¶1] يجب رفع الدعوى أمام القسم الاجتماعي في أجل لا يتجاوز ستة (6) أشهر من تاريخ تسليم محضر عدم الصلح، وذلك تحت طائلة سقوط الحق في رفع الدعوى.",
+      "quoteRef": "labour-disputes (law 90-04) 36 ¶1, law-90-04 wording, store; cpca 504 ¶1, law-08-09 wording, store",
+      "change": "The Arabic message of d5 cites 'المادة 36 منه' (law 90-04) for the statement that the law sets no other filing period, but no statement of the record cited that article. The text is in the store and bears the statement out: 36 ¶1 sends the claim to the social court and names no period. Added statement b46 (labour-disputes 36 ¶1, role procedure) and put it in d5's basis; the message is unchanged on this point. Worked example ex58."
+    },
+    {
+      "id": "values-d5-2",
+      "who": "values",
+      "target": "d5",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"d5\", \"problem\": \"messagePeriodDiffers\", \"read\": [{\"value\": 2, \"unit\": \"day\", \"words\": \"اليومين\", \"conflict\": false}]}",
+      "verdict": "refuted",
+      "verifierQuote": "[cpca 504 ¶1] يجب رفع الدعوى أمام القسم الاجتماعي في أجل لا يتجاوز ستة (6) أشهر من تاريخ تسليم محضر عدم الصلح، وذلك تحت طائلة سقوط الحق في رفع الدعوى.",
+      "quoteRef": "cpca 504 ¶1, law-08-09 wording, store",
+      "change": "No change to the period: d5's period is six months, as 504 ¶1 says, and its message names 'ستة (6) أشهر'. The words the script read, 'آخر اليومين', meant 'the later of the two last days' of the two first-day readings (o4), not a period of two days. To keep the message from being read as a period, the sentence now reads 'لا يمنع التصدير إلا بعد انقضاء الأجل في القراءة التي تنتهي متأخرة وانقضاء هامشه، وينبه قبل ذلك'; the rule (block only after the later last day and its band) is unchanged."
+    },
+    {
+      "id": "values-d5-3",
+      "who": "values",
+      "target": "d5",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"d5\", \"problem\": \"messageArticleNotInBasis\", \"lang\": \"en\", \"articles\": [\"36\"]}",
+      "verdict": "fixed",
+      "verifierQuote": "[labour-disputes 36 ¶1] في حالة عدم المصالحة، يرفع الطرف الذي له مصلحة دعوى أمام المحكمة الفاصلة في المسائل الاجتماعية.",
+      "quoteRef": "labour-disputes (law 90-04) 36 ¶1, law-90-04 wording, store",
+      "change": "Same finding in the English message ('its article 36'): fixed by the same statement b46 (labour-disputes 36 ¶1) added to d5's basis. Worked example ex58."
+    },
+    {
+      "id": "values-d9",
+      "who": "values",
+      "target": "d9",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"d9\", \"problem\": \"messageArticleNotInBasis\", \"lang\": \"ar\", \"articles\": [\"36\"]}",
+      "verdict": "fixed",
+      "verifierQuote": "[labour-disputes 36 ¶1] في حالة عدم المصالحة، يرفع الطرف الذي له مصلحة دعوى أمام المحكمة الفاصلة في المسائل الاجتماعية. [cpca 504 ¶1] يجب رفع الدعوى أمام القسم الاجتماعي في أجل لا يتجاوز ستة (6) أشهر من تاريخ تسليم محضر عدم الصلح، وذلك تحت طائلة سقوط الحق في رفع الدعوى.",
+      "quoteRef": "labour-disputes (law 90-04) 36 ¶1, law-90-04 wording, store; cpca 504 ¶1, law-08-09 wording, store",
+      "change": "The Arabic message of d9 cites 'المادة 36 منه' (law 90-04) with no statement citing it. Added b46 (labour-disputes 36 ¶1) to d9's basis; the text names no period, as the message says. Worked example ex59."
+    },
+    {
+      "id": "values-d9-2",
+      "who": "values",
+      "target": "d9",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"d9\", \"problem\": \"messageArticleNotInBasis\", \"lang\": \"en\", \"articles\": [\"36\"]}",
+      "verdict": "fixed",
+      "verifierQuote": "[labour-disputes 36 ¶1] في حالة عدم المصالحة، يرفع الطرف الذي له مصلحة دعوى أمام المحكمة الفاصلة في المسائل الاجتماعية.",
+      "quoteRef": "labour-disputes (law 90-04) 36 ¶1, law-90-04 wording, store",
+      "change": "Same finding in the English message ('its article 36'): fixed by b46 in d9's basis. Worked example ex59."
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+ "unit": "ordinary-court-exits",
+ "attacks": [
+  {
+   "id": "values-d5",
+   "who": "values",
+   "target": "d5",
+   "kind": "misreading",
+   "claim": "check-values: {\"item\": \"d5\", \"problem\": \"noExtract\"}",
+   "verdict": "refuted",
+   "verifierQuote": "يعد سكوت الجهة الإدارية المتظلم أمامها عن الرد، خلال شهرين (2)، بمثابة قرار بالرفض ويبدأ هذا الأجل من تاريخ تبليغ التظلم. / وفي حالة سكوت الجهة الإدارية، يستفيد المتظلم من أجل شهرين (2)، لتقديم طعنه القضائي، الذي يسري من تاريخ انتهاء أجل الشهرين (2) المشار إليه في الفقرة أعلاه.",
+   "quoteRef": "cpca 830 ¶2 and ¶3 (store, version law-08-09)",
+   "change": "None. The text sets two periods of two months, the second running from the end of the first; the record's four months from the notification of the grievance is their sum, and no words of the text state four months for this case, so no extract can be copied letter for letter. d5 stays interpretive, as its note says."
+  },
+  {
+   "id": "values-d5-2",
+   "who": "values",
+   "target": "d5",
+   "kind": "misreading",
+   "claim": "check-values: {\"item\": \"d5\", \"problem\": \"messagePeriodDiffers\", \"read\": [{\"value\": 2, \"unit\": \"month\", \"words\": \"شهرين\", \"conflict\": false}, {\"value\": 2, \"unit\": \"month\", \"words\": \"شهرين\", \"conflict\": false}]}",
+   "verdict": "refuted",
+   "verifierQuote": "يعد سكوت الجهة الإدارية المتظلم أمامها عن الرد، خلال شهرين (2)، بمثابة قرار بالرفض ويبدأ هذا الأجل من تاريخ تبليغ التظلم. / وفي حالة سكوت الجهة الإدارية، يستفيد المتظلم من أجل شهرين (2)، لتقديم طعنه القضائي، الذي يسري من تاريخ انتهاء أجل الشهرين (2) المشار إليه في الفقرة أعلاه.",
+   "quoteRef": "cpca 830 ¶2 and ¶3 (store, version law-08-09)",
+   "change": "None. The two «شهرين» the script read are the two periods of 830 ¶2 and ¶3; the message adds that the period therefore ends «بعد أربعة (4) أشهر من تاريخ تبليغ التظلم», which is the record's period."
+  },
+  {
+   "id": "owner-latest-last-day",
+   "who": "owner",
+   "target": "d1,d2,d5",
+   "kind": "wrongCondition",
+   "claim": "The owner's rule of 15 November 2026: where the readings differ on a forfeiture's last day, the record must not block on the earlier reading. Block only once the latest defensible last day has passed, warn on the days in between, and state both readings with their sources (including whether CPCA art. 405 applies to the deadline of Law 90-04 and of CPCA 504). Apply it to every forfeiture of this record: keep in `counting` the reading the record holds; list in `otherCountings` every other defensible counting of the same period (the same shape, each citing the statements it rests on: for example 405 ¶1 and ¶4 against a reading that the end day counts or that no extension applies); and make the message name each reading and its source. The rules tool now blocks only after the latest of their last days and its band, and warns before. A forfeiture whose texts allow one counting only needs no change; say so in the register.",
+   "verdict": "fixed",
+   "verifierQuote": "تحسب كل الآجال المنصوص عليها في هذا القانون كاملة، ولا يحسب يوم التبليغ أو التبليغ الرسمي ويوم انقضاء الأجل. / إذا كان اليوم الأخير من الأجل ليس يوم عمل كليا أو جزئيا، يمدد الأجل إلى أول يوم عمل موالي. // يحدد أجل الطعن أمام المحكمة الإدارية بأربعة (4) أشهر، يسري من تاريخ التبليغ الشخصي بنسخة من القرار الإداري الفردي، أو من تاريخ نشر القرار الإداري الجماعي أو التنظيمي. // في حالة رد الجهة الإدارية خلال الأجل الممنوح لها، يبدأ سريان أجل شهرين (2) من تاريخ تبليغ الرفض. // وفي حالة سكوت الجهة الإدارية، يستفيد المتظلم من أجل شهرين (2)، لتقديم طعنه القضائي، الذي يسري من تاريخ انتهاء أجل الشهرين (2) المشار إليه في الفقرة أعلاه. // كل أمر أداء لم يطلب إمهاره بالصيغة التنفيذية خلال سنة واحدة (1) من تاريخ صدوره، يسقط ولا يرتب أي أثر.",
+   "quoteRef": "cpca 405 ¶1 and ¶4; cpca 829 ¶1; cpca 830 ¶4 and ¶3; cpca 309 ¶2 (store)",
+   "change": "Every deadline of this record is a period of the CPCA itself, which 405 ¶1 reaches by its words «كل الآجال المنصوص عليها في هذا القانون» (Law 90-04 and CPCA 504 are not deadlines of this record), and every deadline already warns rather than blocks (effectWhenExpired warn). d2 needs no change: it runs from «تاريخ تبليغ الرفض», a notification, so 405 ¶1 and ¶4 allow one counting only. d1: counting kept (excludeFirstAndLastDay, extended); otherCountings adds excludeFirstDay [b14, b22, b23] for a published decision, since 405 ¶1 names only the day of notification (the doubt the earlier verdict sup-48 accepted for d3); it gives the earlier last day; message and interpretiveNote name both countings and their articles. d5: counting kept; otherCountings adds excludeFirstDay [b16, b22, b23] (the two months of 830 ¶3 run from the end of the silence, not from a notification); a third reading (each two-month period counted on its own under 405 ¶1 and ¶4, so the period ends at least a day later and more when the silence ends on a non-working day) cannot be written in the counting shape and is added to readings and named in the message; d5 warns after its last day as well, so nothing blocks on the earlier counting. d3 (labelled procedural, but «يسقط»): counting excludeFirstDay kept (the earlier last day); otherCountings adds excludeFirstAndLastDay [b49, b22, b23]; message names both readings, and the rule warns until the later last day; o15's protective reading reworded to match. Examples v-owner-d3 and v-owner-d5 (petition between the earlier and the later last day: warn)."
+  }
+ ]
+}

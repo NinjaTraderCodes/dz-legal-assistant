@@ -11,6 +11,8 @@ using DzLegal.CoreLogic.Notes;
 // Every command takes --repo <folder> (the worktree); without it the tool finds the repository above it.
 const string Usage = "usage: notes guide-items --prepare|--ingest … | guide-test --prepare|--compare … | cells --prepare|--write-table … [--repo <folder>]";
 
+Console.OutputEncoding = System.Text.Encoding.UTF8;  // the items and problems are Arabic
+
 if (args.Length < 2)
 {
     Console.Error.WriteLine(Usage);

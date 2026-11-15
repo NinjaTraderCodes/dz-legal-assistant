@@ -113,7 +113,81 @@ Not every polarity of every element is a note a lawyer would write: a loan note 
 
 | Claim type | Event kind | `denied` drawn | Sonnet | Opus |
 |---|---|---|---|---|
-| *(75 rows, written by the script at the freeze)* | | | | |
+| `loan-repayment` | `money_lent` | no | no | no |
+| `loan-repayment` | `debt_acknowledged` | yes | yes | yes |
+| `loan-repayment` | `deadline_passed` | yes | yes | yes |
+| `loan-repayment` | `payment_made` | yes | yes | yes |
+| `loan-repayment` | `debt_unpaid` | no | no | no |
+| `loan-repayment` | `notice_served` | yes | yes | yes |
+| `unpaid-sale-price` | `contract_concluded` | no | no | no |
+| `unpaid-sale-price` | `goods_delivered` | yes | yes | yes |
+| `unpaid-sale-price` | `payment_made` | yes | yes | yes |
+| `unpaid-sale-price` | `price_unpaid` | no | no | no |
+| `unpaid-sale-price` | `notice_served` | yes | yes | yes |
+| `contract-rescission` | `contract_concluded` | no | no | no |
+| `contract-rescission` | `payment_made` | yes | yes | yes |
+| `contract-rescission` | `delivery_missing` | yes | yes | yes |
+| `contract-rescission` | `work_stopped` | yes | yes | yes |
+| `contract-rescission` | `notice_served` | yes | yes | yes |
+| `sale-annulment-fraud` | `contract_concluded` | no | no | no |
+| `sale-annulment-fraud` | `concealment` | no | no | no |
+| `sale-annulment-fraud` | `payment_made` | yes | yes | yes |
+| `contract-damages` | `contract_concluded` | no | no | no |
+| `contract-damages` | `delivery_late` | yes | yes | yes |
+| `contract-damages` | `delivery_missing` | yes | yes | yes |
+| `contract-damages` | `work_stopped` | yes | yes | yes |
+| `contract-damages` | `other` | yes | yes | yes |
+| `contract-damages` | `notice_served` | yes | yes | yes |
+| `tort-damages` | `harm_by_person` | no | no | no |
+| `tort-damages` | `criminal_conviction` | yes | yes | yes |
+| `liability-for-things` | `harm_by_thing` | yes | yes | yes |
+| `liability-for-things` | `harm_by_animal` | yes | yes | yes |
+| `liability-for-things` | `harm_by_building` | yes | yes | yes |
+| `unpaid-rent` | `contract_concluded` | no | no | no |
+| `unpaid-rent` | `lease_started` | yes | yes | yes |
+| `unpaid-rent` | `rent_unpaid` | no | no | no |
+| `unpaid-rent` | `notice_served` | yes | yes | yes |
+| `eviction-occupier-without-title` | `occupation_without_title` | no | no | no |
+| `eviction-occupier-without-title` | `notice_served` | yes | yes | yes |
+| `commercial-debt` | `goods_delivered` | no | no | no |
+| `commercial-debt` | `payment_made` | yes | yes | yes |
+| `commercial-debt` | `price_unpaid` | no | no | no |
+| `commercial-debt` | `notice_served` | yes | yes | yes |
+| `commercial-lease-eviction` | `contract_concluded` | no | no | no |
+| `commercial-lease-eviction` | `rent_unpaid` | yes | yes | yes |
+| `commercial-lease-eviction` | `eviction_notice` | yes | yes | yes |
+| `commercial-lease-eviction` | `lease_renewal_refused` | yes | yes | yes |
+| `sale-non-delivery` | `contract_concluded` | no | no | no |
+| `sale-non-delivery` | `payment_made` | yes | yes | yes |
+| `sale-non-delivery` | `deadline_passed` | yes | yes | yes |
+| `sale-non-delivery` | `delivery_missing` | no | no | no |
+| `sale-non-delivery` | `notice_served` | yes | yes | yes |
+| `divorce-by-husband` | `marriage` | no | no | no |
+| `tatliq` | `marriage` | no | no | no |
+| `tatliq` | `abandonment` | yes | yes | yes |
+| `tatliq` | `maintenance_unpaid` | yes | yes | yes |
+| `tatliq` | `spouse_harm` | yes | yes | yes |
+| `khul` | `marriage` | no | no | no |
+| `nafaqa` | `marriage` | no | no | no |
+| `nafaqa` | `divorce` | yes | yes | yes |
+| `nafaqa` | `maintenance_unpaid` | yes | no | yes |
+| `custody` | `divorce` | yes | yes | yes |
+| `custody` | `custody_held` | yes | yes | yes |
+| `custody-forfeiture` | `custody_judgment` | yes | yes | yes |
+| `custody-forfeiture` | `custodian_remarried` | yes | yes | yes |
+| `custody-forfeiture` | `custody_renounced` | yes | yes | yes |
+| `custody-forfeiture` | `custodian_unfit` | yes | yes | yes |
+| `custody-forfeiture` | `custody_unclaimed` | yes | yes | yes |
+| `custody-forfeiture` | `custodian_abroad` | yes | yes | yes |
+| `visitation` | `divorce` | yes | yes | yes |
+| `visitation` | `custody_judgment` | yes | yes | yes |
+| `visitation` | `visitation_refused` | yes | yes | yes |
+| `abusive-dismissal` | `employment_started` | no | no | no |
+| `abusive-dismissal` | `dismissal` | no | no | no |
+| `abusive-dismissal` | `conciliation_failed` | yes | yes | yes |
+| `unpaid-wages` | `employment_started` | no | no | no |
+| `unpaid-wages` | `wages_unpaid` | no | no | no |
+| `unpaid-wages` | `conciliation_failed` | yes | yes | yes |
 
 ## 9. The boundary table, version 1
 

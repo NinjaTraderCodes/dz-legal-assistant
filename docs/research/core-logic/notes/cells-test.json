@@ -1,0 +1,530 @@
+{
+  "about": "The cell items of SCHEME.md, section 8 (written by `notes cells --prepare` from data/law/claim-elements.json): for each element, whether a note whose own author denies it is still a note for that claim type. No expected answer: a cell is not drawn only when both deciders answer no.",
+  "items": [
+    {
+      "id": 1001,
+      "claim": "loan-repayment",
+      "event": "money_lent",
+      "claimLabel": "استرداد مبلغ قرض",
+      "proposition": "سلّم المدعي المدعى عليه مبلغا على سبيل القرض أو السلفة"
+    },
+    {
+      "id": 1002,
+      "claim": "loan-repayment",
+      "event": "debt_acknowledged",
+      "claimLabel": "استرداد مبلغ قرض",
+      "proposition": "اعترف المدعى عليه بالدين كتابة أو بإقرار"
+    },
+    {
+      "id": 1003,
+      "claim": "loan-repayment",
+      "event": "deadline_passed",
+      "claimLabel": "استرداد مبلغ قرض",
+      "proposition": "حلّ أجل الرد المتفق عليه"
+    },
+    {
+      "id": 1004,
+      "claim": "loan-repayment",
+      "event": "payment_made",
+      "claimLabel": "استرداد مبلغ قرض",
+      "proposition": "دفع المدعى عليه جزءا من المبلغ"
+    },
+    {
+      "id": 1005,
+      "claim": "loan-repayment",
+      "event": "debt_unpaid",
+      "claimLabel": "استرداد مبلغ قرض",
+      "proposition": "لم يرد المدعى عليه المبلغ أو باقيه"
+    },
+    {
+      "id": 1006,
+      "claim": "loan-repayment",
+      "event": "notice_served",
+      "claimLabel": "استرداد مبلغ قرض",
+      "proposition": "وُجّه إلى المدعى عليه إعذار أو تنبيه أو مطالبة بالرد"
+    },
+    {
+      "id": 1007,
+      "claim": "unpaid-sale-price",
+      "event": "contract_concluded",
+      "claimLabel": "المطالبة بثمن مبيع غير مدفوع",
+      "proposition": "إبرام البيع بين الطرفين"
+    },
+    {
+      "id": 1008,
+      "claim": "unpaid-sale-price",
+      "event": "goods_delivered",
+      "claimLabel": "المطالبة بثمن مبيع غير مدفوع",
+      "proposition": "سلّم المدعي المبيع للمدعى عليه"
+    },
+    {
+      "id": 1009,
+      "claim": "unpaid-sale-price",
+      "event": "payment_made",
+      "claimLabel": "المطالبة بثمن مبيع غير مدفوع",
+      "proposition": "دفع المدعى عليه جزءا من الثمن"
+    },
+    {
+      "id": 1010,
+      "claim": "unpaid-sale-price",
+      "event": "price_unpaid",
+      "claimLabel": "المطالبة بثمن مبيع غير مدفوع",
+      "proposition": "لم يدفع المدعى عليه الثمن أو باقيه"
+    },
+    {
+      "id": 1011,
+      "claim": "unpaid-sale-price",
+      "event": "notice_served",
+      "claimLabel": "المطالبة بثمن مبيع غير مدفوع",
+      "proposition": "وُجّه إلى المدعى عليه إعذار أو تنبيه أو مطالبة بالدفع"
+    },
+    {
+      "id": 1012,
+      "claim": "contract-rescission",
+      "event": "contract_concluded",
+      "claimLabel": "فسخ عقد لعدم التنفيذ",
+      "proposition": "إبرام العقد بين الطرفين"
+    },
+    {
+      "id": 1013,
+      "claim": "contract-rescission",
+      "event": "payment_made",
+      "claimLabel": "فسخ عقد لعدم التنفيذ",
+      "proposition": "دفع المدعي الثمن أو تسبيقا منه"
+    },
+    {
+      "id": 1014,
+      "claim": "contract-rescission",
+      "event": "delivery_missing",
+      "claimLabel": "فسخ عقد لعدم التنفيذ",
+      "proposition": "لم يسلم المدعى عليه الشيء محل العقد"
+    },
+    {
+      "id": 1015,
+      "claim": "contract-rescission",
+      "event": "work_stopped",
+      "claimLabel": "فسخ عقد لعدم التنفيذ",
+      "proposition": "توقف المدعى عليه عن الأشغال أو أخل بتنفيذها"
+    },
+    {
+      "id": 1016,
+      "claim": "contract-rescission",
+      "event": "notice_served",
+      "claimLabel": "فسخ عقد لعدم التنفيذ",
+      "proposition": "وُجّه إلى المدعى عليه إعذار أو تنبيه بالتنفيذ"
+    },
+    {
+      "id": 1017,
+      "claim": "sale-annulment-fraud",
+      "event": "contract_concluded",
+      "claimLabel": "إبطال عقد للتدليس",
+      "proposition": "إبرام العقد بين الطرفين"
+    },
+    {
+      "id": 1018,
+      "claim": "sale-annulment-fraud",
+      "event": "concealment",
+      "claimLabel": "إبطال عقد للتدليس",
+      "proposition": "كتم المدعى عليه واقعة عمدا أو استعمل حيلا دفعت المدعي إلى التعاقد"
+    },
+    {
+      "id": 1019,
+      "claim": "sale-annulment-fraud",
+      "event": "payment_made",
+      "claimLabel": "إبطال عقد للتدليس",
+      "proposition": "دفع المدعي الثمن"
+    },
+    {
+      "id": 1020,
+      "claim": "contract-damages",
+      "event": "contract_concluded",
+      "claimLabel": "تعويض عن الإخلال بالتزام تعاقدي",
+      "proposition": "إبرام العقد بين الطرفين"
+    },
+    {
+      "id": 1021,
+      "claim": "contract-damages",
+      "event": "delivery_late",
+      "claimLabel": "تعويض عن الإخلال بالتزام تعاقدي",
+      "proposition": "تأخر المدعى عليه في التسليم أو التنفيذ عن الموعد المتفق عليه"
+    },
+    {
+      "id": 1022,
+      "claim": "contract-damages",
+      "event": "delivery_missing",
+      "claimLabel": "تعويض عن الإخلال بالتزام تعاقدي",
+      "proposition": "لم يسلم المدعى عليه ما التزم بتسليمه"
+    },
+    {
+      "id": 1023,
+      "claim": "contract-damages",
+      "event": "work_stopped",
+      "claimLabel": "تعويض عن الإخلال بالتزام تعاقدي",
+      "proposition": "توقف المدعى عليه عن الأشغال أو أخل بتنفيذها"
+    },
+    {
+      "id": 1024,
+      "claim": "contract-damages",
+      "event": "other",
+      "claimLabel": "تعويض عن الإخلال بالتزام تعاقدي",
+      "proposition": "أخل المدعى عليه بالتزام تعاقدي آخر"
+    },
+    {
+      "id": 1025,
+      "claim": "contract-damages",
+      "event": "notice_served",
+      "claimLabel": "تعويض عن الإخلال بالتزام تعاقدي",
+      "proposition": "وُجّه إلى المدعى عليه إعذار أو تنبيه بالتنفيذ"
+    },
+    {
+      "id": 1026,
+      "claim": "tort-damages",
+      "event": "harm_by_person",
+      "claimLabel": "تعويض عن ضرر بسبب خطأ (مسؤولية تقصيرية)",
+      "proposition": "ارتكب المدعى عليه فعلا ضارا (اعتداء، إهمال، تشهير، إتلاف)"
+    },
+    {
+      "id": 1027,
+      "claim": "tort-damages",
+      "event": "criminal_conviction",
+      "claimLabel": "تعويض عن ضرر بسبب خطأ (مسؤولية تقصيرية)",
+      "proposition": "صدر حكم جزائي بإدانة المدعى عليه"
+    },
+    {
+      "id": 1028,
+      "claim": "liability-for-things",
+      "event": "harm_by_thing",
+      "claimLabel": "مسؤولية حارس الشيء",
+      "proposition": "أحدث شيء في حراسة المدعى عليه ضررا (تسرب مياه، آلة، سيارة…)"
+    },
+    {
+      "id": 1029,
+      "claim": "liability-for-things",
+      "event": "harm_by_animal",
+      "claimLabel": "مسؤولية حارس الشيء",
+      "proposition": "أحدث حيوان في حراسة المدعى عليه ضررا"
+    },
+    {
+      "id": 1030,
+      "claim": "liability-for-things",
+      "event": "harm_by_building",
+      "claimLabel": "مسؤولية حارس الشيء",
+      "proposition": "انهدم بناء أو جزء منه في حراسة المدعى عليه فأحدث ضررا"
+    },
+    {
+      "id": 1031,
+      "claim": "unpaid-rent",
+      "event": "contract_concluded",
+      "claimLabel": "المطالبة ببدلات إيجار غير مدفوعة",
+      "proposition": "إبرام عقد الإيجار وبدله"
+    },
+    {
+      "id": 1032,
+      "claim": "unpaid-rent",
+      "event": "lease_started",
+      "claimLabel": "المطالبة ببدلات إيجار غير مدفوعة",
+      "proposition": "بداية الانتفاع بالعين المؤجرة"
+    },
+    {
+      "id": 1033,
+      "claim": "unpaid-rent",
+      "event": "rent_unpaid",
+      "claimLabel": "المطالبة ببدلات إيجار غير مدفوعة",
+      "proposition": "لم يدفع المدعى عليه بدلات الإيجار المستحقة"
+    },
+    {
+      "id": 1034,
+      "claim": "unpaid-rent",
+      "event": "notice_served",
+      "claimLabel": "المطالبة ببدلات إيجار غير مدفوعة",
+      "proposition": "وُجّه إلى المدعى عليه إعذار أو تنبيه أو مطالبة بالدفع"
+    },
+    {
+      "id": 1035,
+      "claim": "eviction-occupier-without-title",
+      "event": "occupation_without_title",
+      "claimLabel": "طرد شاغل بدون سند",
+      "proposition": "يشغل المدعى عليه عقار المدعي دون عقد أو سند"
+    },
+    {
+      "id": 1036,
+      "claim": "eviction-occupier-without-title",
+      "event": "notice_served",
+      "claimLabel": "طرد شاغل بدون سند",
+      "proposition": "وُجّه إلى المدعى عليه إعذار أو مطالبة بالخروج"
+    },
+    {
+      "id": 1037,
+      "claim": "commercial-debt",
+      "event": "goods_delivered",
+      "claimLabel": "المطالبة بدين تجاري",
+      "proposition": "سلّم المدعي للمدعى عليه بضائع أو خدمات"
+    },
+    {
+      "id": 1038,
+      "claim": "commercial-debt",
+      "event": "payment_made",
+      "claimLabel": "المطالبة بدين تجاري",
+      "proposition": "دفع المدعى عليه جزءا من المبلغ"
+    },
+    {
+      "id": 1039,
+      "claim": "commercial-debt",
+      "event": "price_unpaid",
+      "claimLabel": "المطالبة بدين تجاري",
+      "proposition": "لم يسدد المدعى عليه قيمة البضائع أو الفواتير أو باقيها"
+    },
+    {
+      "id": 1040,
+      "claim": "commercial-debt",
+      "event": "notice_served",
+      "claimLabel": "المطالبة بدين تجاري",
+      "proposition": "وُجّه إلى المدعى عليه إعذار أو تنبيه أو مطالبة بالدفع"
+    },
+    {
+      "id": 1041,
+      "claim": "commercial-lease-eviction",
+      "event": "contract_concluded",
+      "claimLabel": "إيجار تجاري: الإخلاء أو تعويض الاستحقاق",
+      "proposition": "إبرام عقد الإيجار التجاري"
+    },
+    {
+      "id": 1042,
+      "claim": "commercial-lease-eviction",
+      "event": "rent_unpaid",
+      "claimLabel": "إيجار تجاري: الإخلاء أو تعويض الاستحقاق",
+      "proposition": "لم يدفع المستأجر بدلات الإيجار"
+    },
+    {
+      "id": 1043,
+      "claim": "commercial-lease-eviction",
+      "event": "eviction_notice",
+      "claimLabel": "إيجار تجاري: الإخلاء أو تعويض الاستحقاق",
+      "proposition": "وجه المؤجر تنبيها بالإخلاء"
+    },
+    {
+      "id": 1044,
+      "claim": "commercial-lease-eviction",
+      "event": "lease_renewal_refused",
+      "claimLabel": "إيجار تجاري: الإخلاء أو تعويض الاستحقاق",
+      "proposition": "رفض المؤجر تجديد الإيجار"
+    },
+    {
+      "id": 1045,
+      "claim": "sale-non-delivery",
+      "event": "contract_concluded",
+      "claimLabel": "عدم تسليم المبيع",
+      "proposition": "إبرام البيع بين الطرفين"
+    },
+    {
+      "id": 1046,
+      "claim": "sale-non-delivery",
+      "event": "payment_made",
+      "claimLabel": "عدم تسليم المبيع",
+      "proposition": "دفع المدعي الثمن أو جزءا منه"
+    },
+    {
+      "id": 1047,
+      "claim": "sale-non-delivery",
+      "event": "deadline_passed",
+      "claimLabel": "عدم تسليم المبيع",
+      "proposition": "حلّ أجل التسليم المتفق عليه"
+    },
+    {
+      "id": 1048,
+      "claim": "sale-non-delivery",
+      "event": "delivery_missing",
+      "claimLabel": "عدم تسليم المبيع",
+      "proposition": "لم يسلم المدعى عليه المبيع"
+    },
+    {
+      "id": 1049,
+      "claim": "sale-non-delivery",
+      "event": "notice_served",
+      "claimLabel": "عدم تسليم المبيع",
+      "proposition": "وُجّه إلى المدعى عليه إعذار أو تنبيه بالتسليم"
+    },
+    {
+      "id": 1050,
+      "claim": "divorce-by-husband",
+      "event": "marriage",
+      "claimLabel": "الطلاق بإرادة الزوج",
+      "proposition": "انعقاد الزواج بين الطرفين"
+    },
+    {
+      "id": 1051,
+      "claim": "tatliq",
+      "event": "marriage",
+      "claimLabel": "التطليق بطلب من الزوجة",
+      "proposition": "انعقاد الزواج بين الطرفين"
+    },
+    {
+      "id": 1052,
+      "claim": "tatliq",
+      "event": "abandonment",
+      "claimLabel": "التطليق بطلب من الزوجة",
+      "proposition": "هجر المدعى عليه المدعية"
+    },
+    {
+      "id": 1053,
+      "claim": "tatliq",
+      "event": "maintenance_unpaid",
+      "claimLabel": "التطليق بطلب من الزوجة",
+      "proposition": "امتنع المدعى عليه عن الإنفاق"
+    },
+    {
+      "id": 1054,
+      "claim": "tatliq",
+      "event": "spouse_harm",
+      "claimLabel": "التطليق بطلب من الزوجة",
+      "proposition": "أضر المدعى عليه بالمدعية (ضرب أو إيذاء)"
+    },
+    {
+      "id": 1055,
+      "claim": "khul",
+      "event": "marriage",
+      "claimLabel": "الخلع",
+      "proposition": "انعقاد الزواج بين الطرفين"
+    },
+    {
+      "id": 1056,
+      "claim": "nafaqa",
+      "event": "marriage",
+      "claimLabel": "النفقة",
+      "proposition": "انعقاد الزواج بين الطرفين"
+    },
+    {
+      "id": 1057,
+      "claim": "nafaqa",
+      "event": "divorce",
+      "claimLabel": "النفقة",
+      "proposition": "وقع الطلاق بين الطرفين"
+    },
+    {
+      "id": 1058,
+      "claim": "nafaqa",
+      "event": "maintenance_unpaid",
+      "claimLabel": "النفقة",
+      "proposition": "امتنع المدعى عليه عن الإنفاق"
+    },
+    {
+      "id": 1059,
+      "claim": "custody",
+      "event": "divorce",
+      "claimLabel": "إسناد الحضانة وتوابعها",
+      "proposition": "وقع الطلاق بين الطرفين"
+    },
+    {
+      "id": 1060,
+      "claim": "custody",
+      "event": "custody_held",
+      "claimLabel": "إسناد الحضانة وتوابعها",
+      "proposition": "يقيم الأبناء حاليا عند أحد الوالدين"
+    },
+    {
+      "id": 1061,
+      "claim": "custody-forfeiture",
+      "event": "custody_judgment",
+      "claimLabel": "إسقاط الحضانة ونقلها",
+      "proposition": "صدر حكم سابق أسند الحضانة للمدعى عليه"
+    },
+    {
+      "id": 1062,
+      "claim": "custody-forfeiture",
+      "event": "custodian_remarried",
+      "claimLabel": "إسقاط الحضانة ونقلها",
+      "proposition": "تزوجت الحاضنة بغير قريب محرم للمحضون، أي بأجنبي عنه"
+    },
+    {
+      "id": 1063,
+      "claim": "custody-forfeiture",
+      "event": "custody_renounced",
+      "claimLabel": "إسقاط الحضانة ونقلها",
+      "proposition": "تنازل الحاضن عن الحضانة"
+    },
+    {
+      "id": 1064,
+      "claim": "custody-forfeiture",
+      "event": "custodian_unfit",
+      "claimLabel": "إسقاط الحضانة ونقلها",
+      "proposition": "اختل لدى الحاضن شرط من شروط الحضانة (الرعاية، التعليم، الحماية، الصحة أو الخلق)"
+    },
+    {
+      "id": 1065,
+      "claim": "custody-forfeiture",
+      "event": "custody_unclaimed",
+      "claimLabel": "إسقاط الحضانة ونقلها",
+      "proposition": "لم يطلب صاحب الحق الحضانة مدة تزيد عن سنة دون عذر"
+    },
+    {
+      "id": 1066,
+      "claim": "custody-forfeiture",
+      "event": "custodian_abroad",
+      "claimLabel": "إسقاط الحضانة ونقلها",
+      "proposition": "استوطن الحاضن أو يريد الاستيطان في بلد أجنبي"
+    },
+    {
+      "id": 1067,
+      "claim": "visitation",
+      "event": "divorce",
+      "claimLabel": "حق الزيارة",
+      "proposition": "وقع الطلاق بين الطرفين"
+    },
+    {
+      "id": 1068,
+      "claim": "visitation",
+      "event": "custody_judgment",
+      "claimLabel": "حق الزيارة",
+      "proposition": "صدر حكم سابق حدد حق الزيارة"
+    },
+    {
+      "id": 1069,
+      "claim": "visitation",
+      "event": "visitation_refused",
+      "claimLabel": "حق الزيارة",
+      "proposition": "منع المدعى عليه المدعي من رؤية الأبناء"
+    },
+    {
+      "id": 1070,
+      "claim": "abusive-dismissal",
+      "event": "employment_started",
+      "claimLabel": "التسريح التعسفي",
+      "proposition": "التحق المدعي بالعمل لدى المدعى عليه"
+    },
+    {
+      "id": 1071,
+      "claim": "abusive-dismissal",
+      "event": "dismissal",
+      "claimLabel": "التسريح التعسفي",
+      "proposition": "سرّح المدعى عليه المدعي أو فصله من العمل"
+    },
+    {
+      "id": 1072,
+      "claim": "abusive-dismissal",
+      "event": "conciliation_failed",
+      "claimLabel": "التسريح التعسفي",
+      "proposition": "حرر محضر عدم المصالحة"
+    },
+    {
+      "id": 1073,
+      "claim": "unpaid-wages",
+      "event": "employment_started",
+      "claimLabel": "المطالبة بالأجور غير المدفوعة",
+      "proposition": "التحق المدعي بالعمل لدى المدعى عليه"
+    },
+    {
+      "id": 1074,
+      "claim": "unpaid-wages",
+      "event": "wages_unpaid",
+      "claimLabel": "المطالبة بالأجور غير المدفوعة",
+      "proposition": "لم يدفع المدعى عليه الأجور أو المستحقات"
+    },
+    {
+      "id": 1075,
+      "claim": "unpaid-wages",
+      "event": "conciliation_failed",
+      "claimLabel": "المطالبة بالأجور غير المدفوعة",
+      "proposition": "حرر محضر عدم المصالحة"
+    }
+  ]
+}

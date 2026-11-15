@@ -1,0 +1,93 @@
+{
+  "unit": "periods",
+  "attacks": [
+    {
+      "id": "uncertain-bc10",
+      "who": "owner",
+      "target": "d5",
+      "kind": "wrongEffect",
+      "claim": "Boundary case bc10 (one-year wage period whose last day, 5 July 2026, is an official holiday) is uncertain: one family alone may not settle it. Keep both readings in an open point and make the item warn. The case keeps the reading that the extension of cpca 405 ¶4 may reach a civil limitation period; the record reads 405 ¶1 and ¶3 as confined to the periods and holidays 'of this law' and ends the period on its last day (civil-code 314 ¶1). Both texts are in the store and neither says in words whether a limitation period that ends on a holiday runs on. d5 is matched only through 405; its own counting is not in question.",
+      "verdict": "open",
+      "verifierQuote": "تحسب كل الآجال المنصوص عليها في هذا القانون كاملة ... تعتبر أيام عطلة، بمفهوم هذا القانون، أيام الأعياد الرسمية وأيام الراحة الأسبوعية طبقا للنصوص الجاري بها العمل. إذا كان اليوم الأخير من الأجل ليس يوم عمل كليا أو جزئيا، يمدد الأجل إلى أول يوم عمل موالي. / تحسب مدة التقادم بالايام لا بالساعات، ولا يحسب اليوم الاول وتكمل المدة بانقضاء آخر يوم منها .",
+      "quoteRef": "cpca 405 ¶1, ¶3 and ¶4; civil-code 314 ¶1",
+      "change": "New open point o16 (grade C) with both readings (no extension: b11, b32, b34; extension to the next working day: b35, b34), refs d1 to d4, d6 to d8, d5, b35, o7; protective reading: take the last day without extension and warn in the band, which covers the days an extension could add. d1, d4, d7, d8 made interpretive with readings that keep both; d2, d3, d6 interpretiveNote names o16; every limitation message now says the extension is kept with its readings; k5 note no longer settles it. extendToWorkingDay stays false (the earlier day). d5 unchanged. Example ex52 (d3 warns under both readings)."
+    },
+    {
+      "id": "uncertain-bc11",
+      "who": "owner",
+      "target": "d1, d2",
+      "kind": "wrongEffect",
+      "claim": "Boundary case bc11 (wage claim; a bailiff's formal notice served inside the year) is uncertain: keep both readings in an open point and make the item warn. The case keeps the reading that the notice may be the interrupting 'تنبيه' of 317 ¶1, after which a new period runs (319 ¶1); the record does not count it as one and counts from the due date. 317 ¶1 names the 'تنبيه' without defining it. d1 and d2 are matched through 317 ¶1; the item the case means is d3.",
+      "verdict": "open",
+      "verifierQuote": "ينقطع التقادم بالمطالبة القضائية ولو رفعت الدعوى الى محكمة غير مختصة بالتنبيه أو بالحجز، وبالطلب الذى يتقدم به الدائن لقبول حقه فى تفليسة المـدين أو فى توزيع أو بأى عمل يقوم به الدائن اثناء مرافعة لاثبات حقه . / اذا انقطع التقادم بدأ تقادم جديد يسرى من وقت انتهاء الاثر المترتب على سبب الانقطاع وتكون مدته هى مدة التقادم الاول .",
+      "quoteRef": "civil-code 317 ¶1; civil-code 319 ¶1",
+      "change": "Open point o8 (grade C) now asks about a bailiff's formal notice and a registered letter, keeps two new readings (they interrupt: b18, b20; the command meant is the order to pay before enforcement, so they do not unless they carry the debtor's acknowledgment: b18, b19), names bc11 and bc12, and refs d1 to d4, d6 to d8; protective reading: do not rely on them, count from the due date, warn near the last day. d1 and the other limitation deadlines are interpretive or name o8 in their note, and their messages say the effect of a notice or letter is kept with its readings. Example ex53 (d3 warns)."
+    },
+    {
+      "id": "uncertain-bc12",
+      "who": "owner",
+      "target": "d1, d2",
+      "kind": "wrongEffect",
+      "claim": "Boundary case bc12 (wage claim; a registered letter claiming the debt sent inside the year) is uncertain: keep both readings in an open point and make the item warn. The case keeps the reading that the letter may interrupt; the record reads the acts of 317 ¶1 and the acknowledgment of 318 ¶1 as the only interrupting events and counts from the due date. Neither paragraph says whether a creditor's letter is a 'تنبيه'.",
+      "verdict": "open",
+      "verifierQuote": "ينقطع التقادم بالمطالبة القضائية ولو رفعت الدعوى الى محكمة غير مختصة بالتنبيه أو بالحجز ... / ينقطع التقادم اذا أقر المدين بحق الدائن اقرارا صريحا أو ضمنيا ويعتبر اقرارا ضمنيا أن يترك المدين تحت يد الدائن مالا له مرهونا رهنا حيازيا تأمينا لوفاء الدين .",
+      "quoteRef": "civil-code 317 ¶1; civil-code 318 ¶1",
+      "change": "Same change as uncertain-bc11: o8 keeps the letter reading beside the record's, refs the limitation deadlines; protective reading counts from the due date and warns. Example ex53."
+    },
+    {
+      "id": "uncertain-bc16",
+      "who": "owner",
+      "target": "d1",
+      "kind": "wrongEffect",
+      "claim": "Boundary case bc16 (payment under a contract made five months before) is uncertain: keep both readings in an open point and make the item warn. The case reads that the due date cannot precede the contract, so fifteen years cannot have run and the claim is in time; the record starts limitation on the due date (315 ¶1), which it asks for, since a contract may record an older debt. 315 ¶1 names the due date and says nothing of the contract date.",
+      "verdict": "open",
+      "verifierQuote": "لا يبدأ سريان التقادم فيما لم يردَ فيــه نص خاص الا من اليوم الذى يصبح فيه الدين مستحق الاداء .",
+      "quoteRef": "civil-code 315 ¶1",
+      "change": "New open point o17 (grade C) with both readings (due date asked: b12; in time whenever the contract is more recent than the period: b12, b1), refs d1, b12; protective reading: ask for the due date and do not report the claim in time before it is known. d1 made interpretive, its readings keep both, its message says whether the contract date can stand in for the due date is kept with its readings. The evaluator gives a deadline with an unknown start only 'ask', never 'warn' (DERIVER-GUIDE section 5); asking is not silent and is the more protective of the two, so d1 keeps asking, and once the due date is given it counts and warns near the last day. Example ex54."
+    },
+    {
+      "id": "uncertain-bc5",
+      "who": "owner",
+      "target": "d1, d2, d3, d6, d7, d8",
+      "kind": "wrongEffect",
+      "claim": "Boundary case bc5 (wages due since 28 February 2021; five years across the leap day of 2024) is uncertain: keep both readings in an open point and make the item warn. The case doubts whether five years are counted by the calendar (ending on 28 February 2026) or as a fixed number of days (1825, ending on 27 February 2026); the record counts by the calendar under civil-code 3 ¶1. Civil-code 314 ¶1 counts a limitation period 'in days, not hours', and 3 ¶1 counts periods by the calendar 'unless the law provides otherwise': the texts can be read either way on the leap day. The same question reaches every deadline counted in years.",
+      "verdict": "open",
+      "verifierQuote": "تحسب الآجال بالتقويم الميلادى مالم ينص القانون على خلاف ذلك. / تحسب مدة التقادم بالايام لا بالساعات، ولا يحسب اليوم الاول وتكمل المدة بانقضاء آخر يوم منها .",
+      "quoteRef": "civil-code 3 ¶1; civil-code 314 ¶1",
+      "change": "New open point o15 (grade C) with both readings (calendar: b27, b11; fixed count of days: b11), refs d1 to d4, d6 to d8, b11, b27. Protective rule: the calendar count stays, and each band is widened by the leap days the period can hold, so the deadline warns wherever the day count would (warnBandDays d1 and d2 19, d4 and d8 17, d3, d6 and d7 16); an expired limitation only warns under both. d1, d4, d7, d8 made interpretive with readings that keep both; d2, d3, d6 interpretiveNote names o15; every limitation message says the counting of years is kept with its readings; k5 note no longer settles it. Example ex50 (d4 warns under both readings sixteen days before the calendar last day)."
+    },
+    {
+      "id": "uncertain-bc6",
+      "who": "owner",
+      "target": "d8",
+      "kind": "wrongEffect",
+      "claim": "Boundary case bc6 (wage claim late under every reading, about 309 ¶1) is uncertain: keep both readings in an open point and make the item warn. The case reads 309 ¶1 as one deadline for every periodic renewable right, wages included, so d8 should speak; the record carries the wages 309 ¶1 names by d4 (from the oldest wage's due date) and keeps d8 silent in a wage claim. 309 ¶1 names wages among the periodic rights; whether one year (312 ¶3) or five years govern wages is already open point o1.",
+      "verdict": "open",
+      "verifierQuote": "يتقادم بخمس سنوات كل حق دورى متجدد ولو أقر به المدين كأجرة المبانى، والديون المتأخرة، والمرتبات والاجور، والمعاشات. / ـ المبالغ المستحقة للعمال والاجراء الآخرون مقابل عملهم .",
+      "quoteRef": "civil-code 309 ¶1; civil-code 312 ¶1 and ¶3",
+      "change": "o1 now names bc6 and bc7, records the case's reading (309 ¶1 as one deadline reaching wages) beside the record's (d4 for wages, d8 silent), and refs d8. d8 and d4 made interpretive with readings that keep both; d8's message says the wages claimed get their own warning. The item warns: d4 gives the five-year warning and d3 the one-year warning in a wage claim, so the five years of 309 ¶1 are never silent; d8 is not made to repeat them. Example ex51."
+    },
+    {
+      "id": "uncertain-bc7",
+      "who": "owner",
+      "target": "d8",
+      "kind": "wrongEffect",
+      "claim": "Boundary case bc7 (wage claim the day after the five-year last day, 15 June 2026, about 309 ¶1) is uncertain: keep both readings in an open point and make the item warn. As bc6: the case reads the periodic-rights deadline as reaching wages; the record carries them by d4, which gives the same last day.",
+      "verdict": "open",
+      "verifierQuote": "يتقادم بخمس سنوات كل حق دورى متجدد ولو أقر به المدين كأجرة المبانى، والديون المتأخرة، والمرتبات والاجور، والمعاشات. / تحسب مدة التقادم بالايام لا بالساعات، ولا يحسب اليوم الاول وتكمل المدة بانقضاء آخر يوم منها .",
+      "quoteRef": "civil-code 309 ¶1; civil-code 314 ¶1",
+      "change": "Same change as uncertain-bc6 (o1, d4 and d8 interpretive with both readings, d8 message). Example ex51: petition on 16 June 2026, d4 warns (one day past 15 June 2026), d3 warns, d8 silent."
+    },
+    {
+      "id": "uncertain-bc9",
+      "who": "owner",
+      "target": "d5",
+      "kind": "wrongEffect",
+      "claim": "Boundary case bc9 (one-year wage period whose last day, 12 June 2026, is a Friday) is uncertain: keep both readings in an open point and make the item warn. As bc10: the case keeps the reading that 405 ¶4 may extend a civil limitation period to the next working day; the record ends it on its last day (314 ¶1), reading 405 ¶1 as confined to the periods 'of this law'. d5 is matched only through 405.",
+      "verdict": "open",
+      "verifierQuote": "تحسب كل الآجال المنصوص عليها في هذا القانون كاملة، ولا يحسب يوم التبليغ أو التبليغ الرسمي ويوم انقضاء الأجل. / إذا كان اليوم الأخير من الأجل ليس يوم عمل كليا أو جزئيا، يمدد الأجل إلى أول يوم عمل موالي.",
+      "quoteRef": "cpca 405 ¶1 and ¶4; civil-code 314 ¶1",
+      "change": "Same change as uncertain-bc10 (open point o16, limitation deadlines interpretive or naming o16, messages, k5 note; extendToWorkingDay stays false, the earlier day; d5 unchanged). Example ex52: petition on Sunday 14 June 2026, in time on the extension reading, two days late on the record's; d3 warns."
+    }
+  ]
+}

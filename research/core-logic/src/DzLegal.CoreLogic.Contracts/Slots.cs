@@ -51,6 +51,12 @@ public sealed record SlotDefinition
 
     /// <summary>Where the slot comes from: "brief" for the brief's own list, or the id of the rule record that needs it.</summary>
     public required string Origin { get; init; }
+
+    /// <summary>
+    /// For a slot a rule record proposed: the proposer's reason, kept as it was written (specs/unit-driver.md, "Stage 9:
+    /// the slots"). Never shown to the lawyer.
+    /// </summary>
+    public string? Why { get; init; }
 }
 
 public sealed record SlotCatalogue

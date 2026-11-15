@@ -836,10 +836,10 @@
         ]
       },
       "effectWhenExpired": "warn",
-      "warnBandDays": 15,
+      "warnBandDays": 19,
       "message": {
-        "ar": "المادة 308 من القانون المدني: يتقادم الالتزام بخمس عشرة (15) سنة من يوم استحقاقه (المادة 315) فيما عدا ما ورد فيه نص خاص، وتحسب المدة وفق المادة 314، ولا تقضي به المحكمة تلقائيا (المادة 321). وتسري هذه المدة أيضا على الريع المستحق على الحائز سيء النية أو على متصرف المال المشاع (المادة 309)، وعلى الحق الذي حرر به سند (المادة 313، محل قراءتين). تحقق من تاريخ الاستحقاق ومن كل انقطاع أو وقف، ومنه عدم أهلية الدائن أو غيابه أو الحكم عليه بعقوبة جنائية ولو كان له نائب قانوني (المواد 316 و317 و318)، ومن وجود نص خاص بمدة أقصر، كدعاوى عقد التأمين والأوراق التجارية والضمان الاجتماعي (نقاط مفتوحة).",
-        "en": "Civil Code, article 308: an obligation is time-barred after 15 years from the day it falls due (article 315), save where a special text applies; counted under article 314; the court does not apply it of its own motion (article 321). The same period governs revenue owed by a possessor in bad faith or by the manager of jointly owned property (article 309), and a right for which a written instrument was drawn up (article 313, two readings kept). Check the due date, any interruption or suspension, including the creditor's incapacity, absence or criminal sentence even where he has a legal representative (articles 316, 317, 318), and whether a special text sets a shorter period, such as actions on an insurance contract, on bills and cheques, or social-security disputes (open points)."
+        "ar": "المادة 308 من القانون المدني: يتقادم الالتزام بخمس عشرة (15) سنة من يوم استحقاقه (المادة 315) فيما عدا ما ورد فيه نص خاص، وتحسب المدة وفق المادة 314، ولا تقضي به المحكمة تلقائيا (المادة 321). وتسري هذه المدة أيضا على الريع المستحق على الحائز سيء النية أو على متصرف المال المشاع (المادة 309)، وعلى الحق الذي حرر به سند (المادة 313، محل قراءتين). تحقق من تاريخ الاستحقاق ومن كل انقطاع أو وقف، ومنه عدم أهلية الدائن أو غيابه أو الحكم عليه بعقوبة جنائية ولو كان له نائب قانوني (المواد 316 و317 و318)، ومن وجود نص خاص بمدة أقصر، كدعاوى عقد التأمين والأوراق التجارية والضمان الاجتماعي (نقاط مفتوحة). وطريقة حساب السنوات، وامتداد المدة إذا انتهت في يوم عطلة، وأثر الإعذار أو الرسالة في قطعها، وكفاية تاريخ العقد عن تاريخ الاستحقاق، محل قراءات محفوظة (نقاط مفتوحة).",
+        "en": "Civil Code, article 308: an obligation is time-barred after 15 years from the day it falls due (article 315), save where a special text applies; counted under article 314; the court does not apply it of its own motion (article 321). The same period governs revenue owed by a possessor in bad faith or by the manager of jointly owned property (article 309), and a right for which a written instrument was drawn up (article 313, two readings kept). Check the due date, any interruption or suspension, including the creditor's incapacity, absence or criminal sentence even where he has a legal representative (articles 316, 317, 318), and whether a special text sets a shorter period, such as actions on an insurance contract, on bills and cheques, or social-security disputes (open points). How the years are counted, whether the period runs on when it ends on a holiday, whether a formal notice or a letter interrupts it, and whether the contract date can stand in for the due date are kept with their readings (open points)."
       },
       "basis": [
         "b1",
@@ -857,7 +857,35 @@
       "extract": {
         "period": "خمسة عشرة سنة",
         "sanction": "يتقادم الالتزام"
-      }
+      },
+      "interpretive": true,
+      "interpretiveNote": "Four readings rest under this deadline, kept open on the owner's instruction (verifier, follow-up 1, boundary cases bc5, bc9, bc10, bc11, bc12, bc16). How a year is counted: by the Gregorian calendar (civil-code 3 ¶1) or as a fixed number of days (314 ¶1 'بالايام لا بالساعات'), open point o15. Whether a period ending on a non-working day runs to the next working day (cpca 405 ¶4) or ends on that day (405 ¶1 speaks of the periods 'في هذا القانون'), open point o16. Whether a formal notice by bailiff or a registered letter is an interrupting 'تنبيه' (317 ¶1), open point o8. Whether a contract made less than the period ago shows the claim in time without its due date (315 ¶1), open point o17. The rule follows the protective reading of each: calendar counting with a band widened by the leap days fifteen years can hold, so a fixed count of days also warns; no extension; no interruption by a notice or letter; the due date is asked. Either way an expired period only warns.",
+      "readings": [
+        {
+          "reading": {
+            "ar": "تحسب السنوات بالتقويم الميلادي، وتكمل المدة بانقضاء آخر يوم منها ولو كان يوم عطلة، ولا يقطعها الإعذار ولا الرسالة، وتبدأ من تاريخ الاستحقاق الذي يسأل عنه المحامي.",
+            "en": "Years are counted by the calendar, the period is complete at the end of its last day even if a holiday, a formal notice or a letter does not interrupt it, and it starts on the due date, which the lawyer is asked for."
+          },
+          "basis": [
+            "b11",
+            "b27",
+            "b12",
+            "b18"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "تحسب السنة بعدد ثابت من الأيام، وتمدد المدة إلى أول يوم عمل إذا انتهت في يوم عطلة، ويقطعها الإعذار بواسطة المحضر أو الرسالة، وتعد الدعوى في أجلها متى كان العقد المنشئ للالتزام أحدث من المدة.",
+            "en": "A year is a fixed number of days, a period ending on a holiday runs to the next working day, a formal notice by bailiff or a letter interrupts it, and the claim is in time whenever the contract that created the obligation is more recent than the period."
+          },
+          "basis": [
+            "b11",
+            "b18",
+            "b35",
+            "b1"
+          ]
+        }
+      ]
     },
     {
       "id": "d2",
@@ -888,10 +916,10 @@
         "is": "yes"
       },
       "effectWhenExpired": "warn",
-      "warnBandDays": 15,
+      "warnBandDays": 19,
       "message": {
-        "ar": "المادة 133 من القانون المدني: تسقط دعوى التعويض بانقضاء خمس عشرة (15) سنة من يوم وقوع الفعل الضار. تحقق من تاريخ الفعل الضار ومن كل سبب قاطع للمدة (المادتان 317 و318) أو موقف لها، ومنه عدم أهلية المضرور ولو كان له نائب قانوني (المادة 316)، مع مراعاة القراءتين المحفوظتين.",
-        "en": "Civil Code, article 133: the compensation action falls after 15 years from the day of the harmful act. Check the date of the act and any event that interrupted the period (articles 317, 318) or suspended it, including the victim's incapacity even where he has a legal representative (article 316), keeping in mind the two readings recorded."
+        "ar": "المادة 133 من القانون المدني: تسقط دعوى التعويض بانقضاء خمس عشرة (15) سنة من يوم وقوع الفعل الضار. تحقق من تاريخ الفعل الضار ومن كل سبب قاطع للمدة (المادتان 317 و318) أو موقف لها، ومنه عدم أهلية المضرور ولو كان له نائب قانوني (المادة 316)، مع مراعاة القراءتين المحفوظتين. وطريقة حساب السنوات، وامتداد المدة إذا انتهت في يوم عطلة، وأثر الإعذار أو الرسالة في قطعها، محل قراءات محفوظة (نقاط مفتوحة).",
+        "en": "Civil Code, article 133: the compensation action falls after 15 years from the day of the harmful act. Check the date of the act and any event that interrupted the period (articles 317, 318) or suspended it, including the victim's incapacity even where he has a legal representative (article 316), keeping in mind the two readings recorded. How the years are counted, whether the period runs on when it ends on a holiday, and whether a formal notice or a letter interrupts it are kept with their readings (open points)."
       },
       "basis": [
         "b28",
@@ -906,7 +934,7 @@
         "sanction": "تسقط دعوى التعويض"
       },
       "interpretive": true,
-      "interpretiveNote": "The article says the action 'falls' (تسقط) and sits outside the limitation section; whether it is a limitation governed by the rules on suspension, interruption and pleading, or a forfeiture, is a reading, and so is who raises it. Either way an expired period is shown as a warning.",
+      "interpretiveNote": "The article says the action 'falls' (تسقط) and sits outside the limitation section; whether it is a limitation governed by the rules on suspension, interruption and pleading, or a forfeiture, is a reading, and so is who raises it. Either way an expired period is shown as a warning. Three more readings are kept open on the owner's instruction (verifier, follow-up 1, boundary cases bc5, bc9 to bc12): how a year is counted (open point o15), whether a period ending on a non-working day runs to the next working day (o16), and whether a formal notice or a letter interrupts it (o8). The rule keeps calendar counting with a band widened by the leap days fifteen years can hold, no extension, and no interruption by a notice or letter.",
       "readings": [
         {
           "reading": {
@@ -961,10 +989,10 @@
         "includes": "wages"
       },
       "effectWhenExpired": "warn",
-      "warnBandDays": 15,
+      "warnBandDays": 16,
       "message": {
-        "ar": "المادة 312 من القانون المدني: تتقادم بسنة واحدة (1) المبالغ المستحقة للعمال مقابل عملهم، ومن يتمسك بهذا التقادم يحلف أنه أدى الدين، ولا تقضي به المحكمة تلقائيا (المادة 321). تحقق من تاريخ استحقاق كل أجر مطالب به ومن كل سبب قاطع للتقادم (المواد 317 و318 و319) أو موقف له، كمانع يمنع الدائن من المطالبة أو عدم أهليته أو غيابه أو الحكم عليه بعقوبة جنائية دون نائب قانوني (المادة 316)، ومن تحرير سند بالحق (المادة 313، محل قراءتين). مدة الأجور محل قراءتين محفوظتين.",
-        "en": "Civil Code, article 312: sums owed to workers for their work are time-barred after 1 year; whoever relies on it must swear that he paid, and the court does not apply it of its own motion (article 321). Check the due date of each wage claimed, any act that interrupted the period (articles 317, 318, 319) and anything that suspended it, such as an impediment that kept the creditor from claiming or his incapacity, absence or criminal sentence without a legal representative (article 316), and whether a written instrument was drawn up for the right (article 313, two readings kept). The period for wages is kept with two readings."
+        "ar": "المادة 312 من القانون المدني: تتقادم بسنة واحدة (1) المبالغ المستحقة للعمال مقابل عملهم، ومن يتمسك بهذا التقادم يحلف أنه أدى الدين، ولا تقضي به المحكمة تلقائيا (المادة 321). تحقق من تاريخ استحقاق كل أجر مطالب به ومن كل سبب قاطع للتقادم (المواد 317 و318 و319) أو موقف له، كمانع يمنع الدائن من المطالبة أو عدم أهليته أو غيابه أو الحكم عليه بعقوبة جنائية دون نائب قانوني (المادة 316)، ومن تحرير سند بالحق (المادة 313، محل قراءتين). مدة الأجور محل قراءتين محفوظتين. وطريقة حساب السنوات، وامتداد المدة إذا انتهت في يوم عطلة، وأثر الإعذار أو الرسالة في قطعها، محل قراءات محفوظة (نقاط مفتوحة).",
+        "en": "Civil Code, article 312: sums owed to workers for their work are time-barred after 1 year; whoever relies on it must swear that he paid, and the court does not apply it of its own motion (article 321). Check the due date of each wage claimed, any act that interrupted the period (articles 317, 318, 319) and anything that suspended it, such as an impediment that kept the creditor from claiming or his incapacity, absence or criminal sentence without a legal representative (article 316), and whether a written instrument was drawn up for the right (article 313, two readings kept). The period for wages is kept with two readings. How the years are counted, whether the period runs on when it ends on a holiday, and whether a formal notice or a letter interrupts it are kept with their readings (open points)."
       },
       "basis": [
         "b7",
@@ -984,7 +1012,7 @@
         "sanction": "تتقادم"
       },
       "interpretive": true,
-      "interpretiveNote": "The Civil Code gives two periods that both read on wage arrears: one year for sums owed to workers for their work, and five years for periodic rights including wages. The texts do not say which prevails; the record warns from the shorter one, and d4 warns at five years under both readings.",
+      "interpretiveNote": "The Civil Code gives two periods that both read on wage arrears: one year for sums owed to workers for their work, and five years for periodic rights including wages. The texts do not say which prevails; the record warns from the shorter one, and d4 warns at five years under both readings. Three more readings are kept open on the owner's instruction (verifier, follow-up 1, boundary cases bc5, bc9 to bc12): how a year is counted (open point o15), whether a period ending on a non-working day, such as a Friday or an official holiday, runs to the next working day (o16), and whether a bailiff's formal notice or a registered letter interrupts it (o8). The rule keeps the earlier last day of each (calendar counting with a band widened by one leap day, no extension, no interruption by a notice or letter), so the item warns under every reading near the last day.",
       "readings": [
         {
           "reading": {
@@ -1036,10 +1064,10 @@
         "includes": "wages"
       },
       "effectWhenExpired": "warn",
-      "warnBandDays": 15,
+      "warnBandDays": 17,
       "message": {
-        "ar": "المادة 309 من القانون المدني: تتقادم المرتبات والأجور بخمس (5) سنوات ولو أقر بها المدين، ولا تقضي به المحكمة تلقائيا (المادة 321). تحقق من تاريخ استحقاق كل أجر مطالب به؛ وما استحق قبل خمس سنوات من رفع الدعوى معرض للدفع بالتقادم. وتحقق من تحرير سند بالحق (المادة 313، محل قراءتين).",
-        "en": "Civil Code, article 309: salaries and wages are time-barred after 5 years, even if the debtor acknowledged them, and the court does not apply it of its own motion (article 321). Check the due date of each wage claimed; wages that fell due more than five years before filing are exposed to a limitation plea. Check also whether a written instrument was drawn up for the right (article 313, two readings kept)."
+        "ar": "المادة 309 من القانون المدني: تتقادم المرتبات والأجور بخمس (5) سنوات ولو أقر بها المدين، ولا تقضي به المحكمة تلقائيا (المادة 321). تحقق من تاريخ استحقاق كل أجر مطالب به؛ وما استحق قبل خمس سنوات من رفع الدعوى معرض للدفع بالتقادم. وتحقق من تحرير سند بالحق (المادة 313، محل قراءتين). وطريقة حساب السنوات، وامتداد المدة إذا انتهت في يوم عطلة، وأثر الإعذار أو الرسالة في قطعها، محل قراءات محفوظة (نقاط مفتوحة).",
+        "en": "Civil Code, article 309: salaries and wages are time-barred after 5 years, even if the debtor acknowledged them, and the court does not apply it of its own motion (article 321). Check the due date of each wage claimed; wages that fell due more than five years before filing are exposed to a limitation plea. Check also whether a written instrument was drawn up for the right (article 313, two readings kept). How the years are counted, whether the period runs on when it ends on a holiday, and whether a formal notice or a letter interrupts it are kept with their readings (open points)."
       },
       "basis": [
         "b2",
@@ -1051,7 +1079,32 @@
       "extract": {
         "period": "خمس سنوات",
         "sanction": "يتقادم"
-      }
+      },
+      "interpretive": true,
+      "interpretiveNote": "Kept open on the owner's instruction (verifier, follow-up 1, boundary cases bc5, bc6, bc7). How five years are counted across a leap day: by the Gregorian calendar (civil-code 3 ¶1), so five years from 28 February end on 28 February, or as a fixed number of days (314 ¶1 'بالايام لا بالساعات'), which ends a day or two earlier (open point o15). Whether a period ending on a non-working day runs on (o16), and whether a formal notice or a letter interrupts it (o8), are kept the same way. Which deadline carries the five years of 309 ¶1 for wages: this one, read from the date of the oldest wage, while the deadline on other periodic rights (d8) stays silent in a wage claim; the boundary cases read 309 ¶1 as one deadline for every periodic right; the period and its start are the same under both, and whether one year or five governs wages is o1. The rule keeps calendar counting with a band widened by the two leap days five years can hold, so a fixed count of days also warns.",
+      "readings": [
+        {
+          "reading": {
+            "ar": "تحسب السنوات الخمس بالتقويم الميلادي من يوم الاستحقاق إلى مثله، ويحمل هذا الأجل مدة الأجور وحدها.",
+            "en": "The five years are counted by the calendar from the due date to the same day, and this deadline alone carries the period for wages."
+          },
+          "basis": [
+            "b2",
+            "b11",
+            "b27"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "تحسب السنوات الخمس بعدد ثابت من الأيام دون اعتبار اليوم الكبيس، وتسري مدة الحقوق الدورية المتجددة على الأجور بالأجل نفسه الذي يسري على غيرها.",
+            "en": "The five years are a fixed number of days, leap days left out, and the period of periodic renewable rights reaches wages through the same deadline as the other periodic rights."
+          },
+          "basis": [
+            "b2",
+            "b11"
+          ]
+        }
+      ]
     },
     {
       "id": "d5",
@@ -1247,10 +1300,10 @@
         ]
       },
       "effectWhenExpired": "warn",
-      "warnBandDays": 15,
+      "warnBandDays": 16,
       "message": {
-        "ar": "المادة 310 من القانون المدني: تتقادم بسنتين (2) حقوق الأطباء والصيادلة والمحامين والمهندسين والخبراء ووكلاء التفليسة والسماسرة والأساتذة والمعلمين عن عمل مهنتهم ومصاريفهم، ولا تقضي به المحكمة تلقائيا (المادة 321). والنص الفرنسي للمادة يذكر أيضا الجراحين وجراحي الأسنان والقابلات والمهندسين المعماريين والمربين (قراءتان محفوظتان). تحقق من تاريخ الاستحقاق ومن تاريخ إتمام العمل، إذ قد يبدأ التقادم من إتمام الخدمات (المادة 313، قراءتان محفوظتان)، ومن تحرير سند بالحق، ومن كل سبب قاطع للتقادم أو موقف له (المواد 316 و317 و318).",
-        "en": "Civil Code, article 310: the fees and expenses of the listed professions for their professional work are time-barred after 2 years, and the court does not apply it of its own motion (article 321). The French text of the article also names surgeons, dental surgeons, midwives, architects and educators (two readings kept). Check the due date and the date the work was completed, since limitation may start when the services are completed (article 313, two readings kept), whether a written instrument was drawn up for the right, and any act that interrupted or suspended the period (articles 316, 317, 318)."
+        "ar": "المادة 310 من القانون المدني: تتقادم بسنتين (2) حقوق الأطباء والصيادلة والمحامين والمهندسين والخبراء ووكلاء التفليسة والسماسرة والأساتذة والمعلمين عن عمل مهنتهم ومصاريفهم، ولا تقضي به المحكمة تلقائيا (المادة 321). والنص الفرنسي للمادة يذكر أيضا الجراحين وجراحي الأسنان والقابلات والمهندسين المعماريين والمربين (قراءتان محفوظتان). تحقق من تاريخ الاستحقاق ومن تاريخ إتمام العمل، إذ قد يبدأ التقادم من إتمام الخدمات (المادة 313، قراءتان محفوظتان)، ومن تحرير سند بالحق، ومن كل سبب قاطع للتقادم أو موقف له (المواد 316 و317 و318). وطريقة حساب السنوات، وامتداد المدة إذا انتهت في يوم عطلة، وأثر الإعذار أو الرسالة في قطعها، محل قراءات محفوظة (نقاط مفتوحة).",
+        "en": "Civil Code, article 310: the fees and expenses of the listed professions for their professional work are time-barred after 2 years, and the court does not apply it of its own motion (article 321). The French text of the article also names surgeons, dental surgeons, midwives, architects and educators (two readings kept). Check the due date and the date the work was completed, since limitation may start when the services are completed (article 313, two readings kept), whether a written instrument was drawn up for the right, and any act that interrupted or suspended the period (articles 316, 317, 318). How the years are counted, whether the period runs on when it ends on a holiday, and whether a formal notice or a letter interrupts it are kept with their readings (open points)."
       },
       "basis": [
         "b4",
@@ -1269,7 +1322,7 @@
         "sanction": "تتقادم"
       },
       "interpretive": true,
-      "interpretiveNote": "Two readings rest under this deadline (verifier, attacks atk-8 and adv-6). Its starting day: 315 ¶1 starts limitation on the due date, while 313 ¶1 starts 'the rights named in articles 309 and 311' when the creditors complete their services, words that fit these professionals (open point o2). Its list: the Arabic edition of the Official Journal names doctors, pharmacists, lawyers, engineers, experts, bankruptcy agents, brokers, professors and teachers; the French edition of the same issue (1975 no. 78, p. 832) also names surgeons, dental surgeons, midwives, architects and educators (open point o11). The rule follows the protective reading of each: the question names the longer list, and the message sends the lawyer to the completion of the work.",
+      "interpretiveNote": "Two readings rest under this deadline (verifier, attacks atk-8 and adv-6). Its starting day: 315 ¶1 starts limitation on the due date, while 313 ¶1 starts 'the rights named in articles 309 and 311' when the creditors complete their services, words that fit these professionals (open point o2). Its list: the Arabic edition of the Official Journal names doctors, pharmacists, lawyers, engineers, experts, bankruptcy agents, brokers, professors and teachers; the French edition of the same issue (1975 no. 78, p. 832) also names surgeons, dental surgeons, midwives, architects and educators (open point o11). The rule follows the protective reading of each: the question names the longer list, and the message sends the lawyer to the completion of the work. Three more readings are kept open on the owner's instruction (verifier, follow-up 1, boundary cases bc5, bc9 to bc12): how a year is counted (open point o15), whether a period ending on a non-working day runs to the next working day (o16), and whether a formal notice or a letter interrupts it (o8); the rule keeps calendar counting with a band widened by one leap day, no extension, and no interruption by a notice or letter.",
       "readings": [
         {
           "reading": {
@@ -1335,10 +1388,10 @@
         ]
       },
       "effectWhenExpired": "warn",
-      "warnBandDays": 15,
+      "warnBandDays": 16,
       "message": {
-        "ar": "المادة 312 من القانون المدني: تتقادم بسنة واحدة (1) حقوق التجار والصناع عن أشياء وردوها لغير المتجرين فيها وحقوق أصحاب الفنادق والمطاعم، ومن يتمسك بهذا التقادم يحلف أنه أدى الدين، ولا تقضي به المحكمة تلقائيا (المادة 321). تحقق من تاريخ الاستحقاق ومن كل سبب قاطع للتقادم أو موقف له (المواد 316 و317 و318 و319)، ومن تحرير سند بالحق (المادة 313، محل قراءتين).",
-        "en": "Civil Code, article 312: the claims of merchants and craftsmen for things supplied to persons who do not trade in them, and of hotel and restaurant keepers, are time-barred after 1 year; whoever relies on it must swear that he paid, and the court does not apply it of its own motion (article 321). Check the due date, any act that interrupted or suspended the period (articles 316, 317, 318, 319), and whether a written instrument was drawn up for the right (article 313, two readings kept)."
+        "ar": "المادة 312 من القانون المدني: تتقادم بسنة واحدة (1) حقوق التجار والصناع عن أشياء وردوها لغير المتجرين فيها وحقوق أصحاب الفنادق والمطاعم، ومن يتمسك بهذا التقادم يحلف أنه أدى الدين، ولا تقضي به المحكمة تلقائيا (المادة 321). تحقق من تاريخ الاستحقاق ومن كل سبب قاطع للتقادم أو موقف له (المواد 316 و317 و318 و319)، ومن تحرير سند بالحق (المادة 313، محل قراءتين). وطريقة حساب السنوات، وامتداد المدة إذا انتهت في يوم عطلة، وأثر الإعذار أو الرسالة في قطعها، محل قراءات محفوظة (نقاط مفتوحة).",
+        "en": "Civil Code, article 312: the claims of merchants and craftsmen for things supplied to persons who do not trade in them, and of hotel and restaurant keepers, are time-barred after 1 year; whoever relies on it must swear that he paid, and the court does not apply it of its own motion (article 321). Check the due date, any act that interrupted or suspended the period (articles 316, 317, 318, 319), and whether a written instrument was drawn up for the right (article 313, two readings kept). How the years are counted, whether the period runs on when it ends on a holiday, and whether a formal notice or a letter interrupts it are kept with their readings (open points)."
       },
       "basis": [
         "b6",
@@ -1356,7 +1409,33 @@
       "extract": {
         "period": "تتقادم بسنة واحدة",
         "sanction": "تتقادم"
-      }
+      },
+      "interpretive": true,
+      "interpretiveNote": "Kept open on the owner's instruction (verifier, follow-up 1, boundary case bc5 and, by the same texts, bc9 to bc12): how a year is counted, by the Gregorian calendar (civil-code 3 ¶1) or as a fixed number of days (314 ¶1), open point o15; whether a period ending on a non-working day runs to the next working day, o16; whether a formal notice or a letter interrupts it, o8. The rule keeps the earlier last day of each, with a band widened by one leap day, so the item warns under every reading near the last day.",
+      "readings": [
+        {
+          "reading": {
+            "ar": "تحسب السنة بالتقويم الميلادي، وتكمل المدة بانقضاء آخر يوم منها ولو كان يوم عطلة، ولا يقطعها الإعذار ولا الرسالة.",
+            "en": "The year is counted by the calendar, the period is complete at the end of its last day even if a holiday, and a formal notice or a letter does not interrupt it."
+          },
+          "basis": [
+            "b11",
+            "b27",
+            "b18"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "تحسب السنة بعدد ثابت من الأيام، وتمدد المدة إلى أول يوم عمل إذا انتهت في يوم عطلة، ويقطعها الإعذار بواسطة المحضر أو الرسالة.",
+            "en": "The year is a fixed number of days, a period ending on a holiday runs to the next working day, and a formal notice by bailiff or a letter interrupts it."
+          },
+          "basis": [
+            "b11",
+            "b18",
+            "b35"
+          ]
+        }
+      ]
     },
     {
       "id": "d8",
@@ -1400,10 +1479,10 @@
         ]
       },
       "effectWhenExpired": "warn",
-      "warnBandDays": 15,
+      "warnBandDays": 17,
       "message": {
-        "ar": "المادة 309 من القانون المدني: يتقادم بخمس (5) سنوات كل حق دوري متجدد ولو أقر به المدين، كأجرة المباني والديون المتأخرة والمعاشات، ولا تقضي به المحكمة تلقائيا (المادة 321). تحقق من تاريخ استحقاق أقدم مبلغ مطالب به ومن كل سبب قاطع للتقادم، ومن تحرير سند بالحق (المادة 313، محل قراءتين). ولا يشمل هذا الريع المستحق على الحائز سيء النية أو على متصرف المال المشاع.",
-        "en": "Civil Code, article 309: every periodic renewable right, such as building rent, arrears and pensions, is time-barred after 5 years even if the debtor acknowledged it, and the court does not apply it of its own motion (article 321). Check the due date of the oldest sum claimed, any act that interrupted the period, and whether a written instrument was drawn up for the right (article 313, two readings kept). This does not cover revenue owed by a possessor in bad faith or by the manager of jointly owned property."
+        "ar": "المادة 309 من القانون المدني: يتقادم بخمس (5) سنوات كل حق دوري متجدد ولو أقر به المدين، كأجرة المباني والديون المتأخرة والمعاشات، ولا تقضي به المحكمة تلقائيا (المادة 321). تحقق من تاريخ استحقاق أقدم مبلغ مطالب به ومن كل سبب قاطع للتقادم، ومن تحرير سند بالحق (المادة 313، محل قراءتين). ولا يشمل هذا الريع المستحق على الحائز سيء النية أو على متصرف المال المشاع. أما الأجور المطالب بها فينبه إلى مدتها تنبيه الأجور. وطريقة حساب السنوات، وامتداد المدة إذا انتهت في يوم عطلة، وأثر الإعذار أو الرسالة في قطعها، محل قراءات محفوظة (نقاط مفتوحة).",
+        "en": "Civil Code, article 309: every periodic renewable right, such as building rent, arrears and pensions, is time-barred after 5 years even if the debtor acknowledged it, and the court does not apply it of its own motion (article 321). Check the due date of the oldest sum claimed, any act that interrupted the period, and whether a written instrument was drawn up for the right (article 313, two readings kept). This does not cover revenue owed by a possessor in bad faith or by the manager of jointly owned property. Wages claimed get their own warning on the wage periods. How the years are counted, whether the period runs on when it ends on a holiday, and whether a formal notice or a letter interrupts it are kept with their readings (open points)."
       },
       "basis": [
         "b2",
@@ -1416,7 +1495,32 @@
       "extract": {
         "period": "بخمس سنوات",
         "sanction": "يتقادم"
-      }
+      },
+      "interpretive": true,
+      "interpretiveNote": "Kept open on the owner's instruction (verifier, follow-up 1, boundary cases bc5, bc6, bc7). The boundary cases read 309 ¶1 as one deadline that also reaches a wage claim; the record carries the wages 309 ¶1 names by d4, from the date of the oldest wage, and keeps this deadline silent in a wage claim so that the same five years are not warned twice. The period and its start are the same under both readings, and d4 warns where this deadline would; whether one year or five governs wages is open point o1. How the years are counted (o15), whether a period ending on a non-working day runs on (o16), and whether a formal notice or a letter interrupts it (o8) are kept the same way; the band is widened by the two leap days five years can hold.",
+      "readings": [
+        {
+          "reading": {
+            "ar": "يحمل هذا الأجل الحقوق الدورية المتجددة غير الأجور، وتحمل مدة الأجور تنبيهات الأجور، وتحسب السنوات بالتقويم الميلادي.",
+            "en": "This deadline carries the periodic renewable rights other than wages, the wage warnings carry the wage period, and years are counted by the calendar."
+          },
+          "basis": [
+            "b2",
+            "b11",
+            "b27"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "يسري أجل الحقوق الدورية المتجددة على الأجور أيضا، وتحسب السنوات بعدد ثابت من الأيام.",
+            "en": "The periodic-rights deadline also reaches wages, and years are a fixed number of days."
+          },
+          "basis": [
+            "b2",
+            "b11"
+          ]
+        }
+      ]
     }
   ],
   "documents": [
@@ -1481,8 +1585,8 @@
         "en": "Are wage arrears time-barred after one year or after five years?"
       },
       "why": {
-        "ar": "يذكر القانون المدني الأجور ضمن الحقوق الدورية التي تتقادم بخمس سنوات، ويجعل المبالغ المستحقة للعمال مقابل عملهم تتقادم بسنة، دون بيان أيهما يغلب. ولم يوجد في المخزن نص خاص في تشريع العمل.",
-        "en": "The Civil Code lists wages among the periodic rights time-barred after five years, and also makes sums owed to workers for their work time-barred after one year, without saying which prevails. No labour-law text on the point is in the store."
+        "ar": "يذكر القانون المدني الأجور ضمن الحقوق الدورية التي تتقادم بخمس سنوات، ويجعل المبالغ المستحقة للعمال مقابل عملهم تتقادم بسنة، دون بيان أيهما يغلب. ولم يوجد في المخزن نص خاص في تشريع العمل. وقرأت حالتان حديتان مدة الخمس سنوات على دعوى الأجور بوصفها أجل الحقوق الدورية المتجددة نفسه، بينما يحملها السجل بتنبيه خاص بالأجور يبدأ من استحقاق أقدم أجر؛ والمدة وبدايتها واحدة في القراءتين، ويبقى السؤال مفتوحا بقرار المالك.",
+        "en": "The Civil Code lists wages among the periodic rights time-barred after five years, and also makes sums owed to workers for their work time-barred after one year, without saying which prevails. No labour-law text on the point is in the store. Two boundary cases (bc6, bc7) read the five years on a wage claim as the periodic-rights deadline itself (d8), while the record carries them by a wage deadline from the oldest wage's due date (d4) and keeps d8 silent in a wage claim; the period and its start are the same under both, and the point is kept open on the owner's instruction (verifier, follow-up 1)."
       },
       "readings": [
         {
@@ -1513,6 +1617,7 @@
       "refs": [
         "d3",
         "d4",
+        "d8",
         "b7",
         "b2"
       ]
@@ -1717,12 +1822,12 @@
     {
       "id": "o8",
       "question": {
-        "ar": "هل يزول انقطاع التقادم إذا سقطت الخصومة أو رفضت الدعوى شكلا أو تنازل عنها المدعي، وهل يعد الإعذار تنبيها قاطعا؟",
-        "en": "Does the interruption of limitation survive if the proceedings lapse, the claim is dismissed for form, or the plaintiff withdraws it; and is a formal notice an interrupting command to pay?"
+        "ar": "هل يزول انقطاع التقادم إذا سقطت الخصومة أو رفضت الدعوى شكلا أو تنازل عنها المدعي، وهل يعد الإعذار بواسطة المحضر أو الرسالة المضمونة المطالبة بالدين تنبيها قاطعا؟",
+        "en": "Does the interruption of limitation survive if the proceedings lapse, the claim is dismissed for form, or the plaintiff withdraws it; and is a formal notice served by a bailiff, or a registered letter claiming the debt, an interrupting command to pay?"
       },
       "why": {
-        "ar": "يقطع التقادم بالمطالبة القضائية ولو أمام محكمة غير مختصة، ولا يجوز الاحتجاج بإجراءات الخصومة الساقطة، ولا نص يبين أثر ذلك على الانقطاع. كما لا يبين النص هل يعد الإعذار تنبيها.",
-        "en": "A judicial claim interrupts limitation even before a court without jurisdiction, and no step of lapsed proceedings may be relied on; no text says how this affects the interruption. Nor does the text say whether a formal notice counts as an interrupting command to pay."
+        "ar": "يقطع التقادم بالمطالبة القضائية ولو أمام محكمة غير مختصة، ولا يجوز الاحتجاج بإجراءات الخصومة الساقطة، ولا نص يبين أثر ذلك على الانقطاع. كما لا يبين النص هل يعد الإعذار أو الرسالة تنبيها: يذكر النص «التنبيه» دون تعريف، ولا يقطع التقادم بفعل الدائن خارج القضاء غير التنبيه والحجز وطلب القبول في التفليسة أو التوزيع، ويقطعه إقرار المدين. وقرأت حالتان حديتان الإعذار والرسالة قراءة قد تجعلهما قاطعين، ويبقى السؤال مفتوحا بقرار المالك.",
+        "en": "A judicial claim interrupts limitation even before a court without jurisdiction, and no step of lapsed proceedings may be relied on; no text says how this affects the interruption. Nor does the text say whether a formal notice or a letter counts as an interrupting command to pay: it names the «التنبيه» without defining it; outside court, only that command, a seizure and a filing in bankruptcy or distribution are named among the creditor's acts, and the debtor's acknowledgment also interrupts. Two boundary cases (bc11: a bailiff's notice; bc12: a registered letter) keep the reading that these may interrupt; the point is kept open on the owner's instruction (verifier, follow-up 1)."
       },
       "readings": [
         {
@@ -1743,17 +1848,44 @@
             "b44",
             "b18"
           ]
+        },
+        {
+          "reading": {
+            "ar": "الإعذار بواسطة المحضر أو الرسالة المضمونة المطالبة بالدين تنبيه يقطع التقادم، ويبدأ من تاريخه تقادم جديد بالمدة نفسها.",
+            "en": "A formal notice served by a bailiff, or a registered letter claiming the debt, is a command that interrupts limitation, and a new period of the same length runs from it."
+          },
+          "basis": [
+            "b18",
+            "b20"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "التنبيه المقصود هو التكليف بالوفاء السابق للتنفيذ، فلا يقطع الإعذار ولا الرسالة التقادم ما لم يتضمنا إقرارا من المدين.",
+            "en": "The command meant is the order to pay that precedes enforcement, so neither a formal notice nor a letter interrupts limitation unless it carries the debtor's acknowledgment."
+          },
+          "basis": [
+            "b18",
+            "b19"
+          ]
         }
       ],
       "protectiveReading": {
-        "ar": "عدم الاعتماد على مطالبة سابقة ساقطة أو على إعذار لقطع التقادم، وحساب المدة من الاستحقاق.",
-        "en": "Do not rely on a lapsed earlier claim, or on a formal notice, to interrupt limitation; count from the due date."
+        "ar": "عدم الاعتماد على مطالبة سابقة ساقطة أو على إعذار أو رسالة لقطع التقادم، وحساب المدة من الاستحقاق، والتنبيه قرب آخر يوم منها.",
+        "en": "Do not rely on a lapsed earlier claim, or on a formal notice or a letter, to interrupt limitation; count from the due date and warn near its last day."
       },
       "grade": "C",
       "refs": [
         "b18",
         "b44",
-        "doc2"
+        "doc2",
+        "d1",
+        "d2",
+        "d3",
+        "d4",
+        "d6",
+        "d7",
+        "d8"
       ]
     },
     {
@@ -1936,6 +2068,146 @@
         "d2",
         "o3"
       ]
+    },
+    {
+      "id": "o15",
+      "question": {
+        "ar": "هل تحسب سنوات التقادم بالتقويم الميلادي من يوم إلى مثله، أم بعدد ثابت من الأيام لا يعتد فيه باليوم الكبيس؟",
+        "en": "Are the years of a limitation period counted by the calendar, from a day to the same day, or as a fixed number of days in which a leap day does not count?"
+      },
+      "why": {
+        "ar": "تجعل المادة 3 من القانون المدني الآجال تحسب بالتقويم الميلادي ما لم ينص القانون على خلاف ذلك، وتجعل المادة 314 مدة التقادم تحسب بالأيام لا بالساعات. وقرأت حالة حدية هذه العبارة قراءة تجعل السنة عددا ثابتا من الأيام، فتنتهي المدة التي تمر بيوم كبيس قبل يومها في التقويم بيوم أو أكثر. ويبقى السؤال مفتوحا بقرار المالك.",
+        "en": "Civil-code 3 ¶1 counts periods by the Gregorian calendar unless the law provides otherwise, and civil-code 314 ¶1 counts a limitation period 'in days, not hours'. A boundary case (bc5, five years from 28 February 2021) keeps the reading that a year is a fixed number of days, so a period that crosses a leap day ends a day or more before its calendar day. Kept open on the owner's instruction (verifier, follow-up 1)."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "تحسب السنوات بالتقويم الميلادي، فتنتهي خمس سنوات تبدأ في الثامن والعشرين من فبراير في الثامن والعشرين من فبراير.",
+            "en": "Years are counted by the calendar: five years from 28 February end on 28 February."
+          },
+          "basis": [
+            "b27",
+            "b11"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "تحسب السنة بعدد ثابت من الأيام لأن مدة التقادم تحسب بالأيام، فتنتهي المدة قبل يومها في التقويم بقدر الأيام الكبيسة التي تمر بها.",
+            "en": "A year is a fixed number of days, since a limitation period is counted in days, so the period ends before its calendar day by the number of leap days it crosses."
+          },
+          "basis": [
+            "b11"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "الحساب بالتقويم مع توسيع هامش التنبيه بعدد الأيام الكبيسة الممكنة في المدة، حتى ينبه الأجل حيث تنبه القراءة الأخرى؛ وانقضاء المدة لا يؤدي إلا إلى تنبيه.",
+        "en": "Count by the calendar and widen the warning band by the leap days the period can hold, so the deadline warns wherever the other reading would; an expired period only warns."
+      },
+      "grade": "C",
+      "refs": [
+        "d1",
+        "d2",
+        "d3",
+        "d4",
+        "d6",
+        "d7",
+        "d8",
+        "b11",
+        "b27"
+      ]
+    },
+    {
+      "id": "o16",
+      "question": {
+        "ar": "إذا انتهت مدة تقادم مدني في يوم ليس يوم عمل، كيوم جمعة أو عيد رسمي، هل تمدد إلى أول يوم عمل موال؟",
+        "en": "When a civil limitation period ends on a day that is not a working day, such as a Friday or an official holiday, does it run to the next working day?"
+      },
+      "why": {
+        "ar": "تجعل المادة 314 من القانون المدني المدة تكمل بانقضاء آخر يوم منها، ولا تذكر التمديد. وقاعدة التمديد في المادة 405 من قانون الإجراءات المدنية والإدارية تخص «الآجال المنصوص عليها في هذا القانون» وأيام العطل «بمفهوم هذا القانون». وقرأت حالتان حديتان التمديد قراءة قد تشمل مدة التقادم لأن الدعوى ترفع وفق هذا القانون. ويبقى السؤال مفتوحا بقرار المالك.",
+        "en": "Civil-code 314 ¶1 completes the period at the end of its last day and says nothing of an extension. The extension of cpca 405 ¶4 belongs to a rule that counts 'the periods laid down in this law' (¶1) and defines holidays 'in the sense of this law' (¶3). Two boundary cases (bc9: a last day on a Friday; bc10: a last day on 5 July) keep the reading that the extension may reach a limitation period, since the claim is filed under that Code. Kept open on the owner's instruction (verifier, follow-up 1)."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "لا تمدد مدة التقادم المدني، لأن قاعدة التمديد تخص آجال قانون الإجراءات المدنية والإدارية.",
+            "en": "A civil limitation period is not extended, since the extension rule belongs to the periods of the procedure code."
+          },
+          "basis": [
+            "b11",
+            "b32",
+            "b34"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "تمدد المدة إلى أول يوم عمل موال إذا انتهت في يوم عطلة، لأن رفع الدعوى إجراء يخضع لقانون الإجراءات المدنية والإدارية.",
+            "en": "The period runs to the next working day when it ends on a holiday, since filing the claim is a step governed by the procedure code."
+          },
+          "basis": [
+            "b35",
+            "b34"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "عدم الاعتماد على التمديد، وحساب آخر يوم دون تمديد، والتنبيه في الهامش المحيط به الذي يشمل أيام التمديد الممكنة؛ وانقضاء المدة لا يؤدي إلا إلى تنبيه.",
+        "en": "Do not rely on an extension; take the last day without it and warn in the band around it, which covers the days an extension could add; an expired period only warns."
+      },
+      "grade": "C",
+      "refs": [
+        "d1",
+        "d2",
+        "d3",
+        "d4",
+        "d6",
+        "d7",
+        "d8",
+        "d5",
+        "b35",
+        "o7"
+      ]
+    },
+    {
+      "id": "o17",
+      "question": {
+        "ar": "إذا كان العقد المنشئ للالتزام أحدث من مدة التقادم ولم يعرف تاريخ الاستحقاق، هل تعد الدعوى في أجلها دون السؤال عن تاريخ الاستحقاق؟",
+        "en": "When the contract that created the obligation is more recent than the limitation period and the due date is not known, is the claim in time without asking for the due date?"
+      },
+      "why": {
+        "ar": "لا يبدأ التقادم إلا من اليوم الذي يصبح فيه الدين مستحق الأداء، ولا يذكر النص تاريخ العقد. وقرأت حالة حدية (عقد أبرم قبل خمسة أشهر) أن الاستحقاق لا يسبق العقد فلا يمكن أن تكون المدة قد انقضت، بينما يسأل السجل عن تاريخ الاستحقاق لأن العقد قد يثبت دينا أقدم منه. ويبقى السؤال مفتوحا بقرار المالك.",
+        "en": "Civil-code 315 ¶1 starts limitation only on the day the debt becomes due, and says nothing of the contract date. A boundary case (bc16, a contract made five months before) reads that the due date cannot precede the contract, so the period cannot have run; the record asks for the due date, since a contract may record a debt older than itself. Kept open on the owner's instruction (verifier, follow-up 1)."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "يبدأ التقادم من تاريخ الاستحقاق، ويسأل عنه المحامي ولو كان العقد حديثا.",
+            "en": "Limitation starts on the due date, which the lawyer is asked for even when the contract is recent."
+          },
+          "basis": [
+            "b12"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "لا يسبق الاستحقاق العقد المنشئ للالتزام، فتعد الدعوى في أجلها متى كان العقد أحدث من المدة.",
+            "en": "The due date cannot precede the contract that created the obligation, so the claim is in time whenever the contract is more recent than the period."
+          },
+          "basis": [
+            "b12",
+            "b1"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "السؤال عن تاريخ الاستحقاق وعدم الحكم بأن الدعوى في أجلها قبل معرفته؛ وبعد إدخاله يحسب الأجل وينبه قرب آخر يوم منه.",
+        "en": "Ask for the due date and do not report the claim in time before it is known; once it is given, the deadline is counted and warns near its last day."
+      },
+      "grade": "C",
+      "refs": [
+        "d1",
+        "b12"
+      ]
     }
   ],
   "checklist": [
@@ -2014,9 +2286,11 @@
         "d4",
         "d6",
         "d7",
-        "d8"
+        "d8",
+        "o15",
+        "o16"
       ],
-      "note": "314 ¶1 and civil-code 3 ¶1 (Gregorian calendar). No text extends a civil limitation period ending on a holiday: cpca 405 speaks only of the periods of that Code, so extendToWorkingDay is false."
+      "note": "314 ¶1 and civil-code 3 ¶1 (Gregorian calendar). Whether a year is counted by the calendar or as a fixed number of days is kept open (o15); whether a civil limitation period ending on a holiday runs to the next working day is kept open too (o16: cpca 405 ¶1 speaks of the periods 'في هذا القانون', and boundary cases bc9 and bc10 keep the other reading). The rule takes the earlier last day of each (calendar, extendToWorkingDay false) and widens each band by the leap days the period can hold, so the deadlines warn under every reading near the last day (verifier, follow-up 1)."
     },
     {
       "id": "k6",
@@ -4207,6 +4481,149 @@
             "ref": "d9",
             "effect": "none"
           }
+        ]
+      }
+    },
+    {
+      "id": "ex50",
+      "by": "verifier",
+      "title": "Wages due since 28 February 2021, petition on 12 February 2026 (uncertain-bc5, o15): the calendar's last day is 28 February 2026, sixteen days off; a fixed count of days ends a day earlier, fifteen days off. The band widened by the leap days makes d4 warn under both readings; d3 warns, d8 stays silent in a wage claim.",
+      "petitionDate": "2026-02-12",
+      "slots": {
+        "wages_due_from": "2021-02-28",
+        "obligation_is_tort_compensation": "no",
+        "nonconciliation_record": "no",
+        "requests": [
+          "wages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d4",
+            "effect": "warn"
+          },
+          {
+            "ref": "d3",
+            "effect": "warn"
+          },
+          {
+            "ref": "d8",
+            "effect": "none"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex51",
+      "by": "verifier",
+      "title": "Wage claim the day after the five-year last day, 15 June 2026 (uncertain-bc6, uncertain-bc7, o1): the five years of 309 ¶1 on wages warn through d4 and the one-year reading through d3; d8, the deadline on other periodic rights, stays silent so the same period is not warned twice.",
+      "petitionDate": "2026-06-16",
+      "slots": {
+        "wages_due_from": "2021-06-15",
+        "obligation_is_tort_compensation": "no",
+        "nonconciliation_record": "no",
+        "requests": [
+          "wages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d4",
+            "effect": "warn"
+          },
+          {
+            "ref": "d3",
+            "effect": "warn"
+          },
+          {
+            "ref": "d8",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex52",
+      "by": "verifier",
+      "title": "Wages due on 12 June 2025; the one-year last day, 12 June 2026, is a Friday; petition on Sunday 14 June 2026 (uncertain-bc9, uncertain-bc10, o16): on the extension reading the claim is in time, on the record's it is two days late; d3 warns under both.",
+      "petitionDate": "2026-06-14",
+      "slots": {
+        "wages_due_from": "2025-06-12",
+        "obligation_is_tort_compensation": "no",
+        "nonconciliation_record": "no",
+        "requests": [
+          "wages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d3",
+            "effect": "warn"
+          },
+          {
+            "ref": "d4",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex53",
+      "by": "verifier",
+      "title": "Wages due on 1 March 2025, a bailiff's formal notice or a registered letter sent on 1 October 2025, petition on 20 March 2026 (uncertain-bc11, uncertain-bc12, o8): on the reading that the notice or letter interrupts, a new year runs from it and the claim is in time; the record counts from the due date and d3 warns.",
+      "petitionDate": "2026-03-20",
+      "slots": {
+        "wages_due_from": "2025-03-01",
+        "obligation_is_tort_compensation": "no",
+        "nonconciliation_record": "no",
+        "requests": [
+          "wages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d3",
+            "effect": "warn"
+          },
+          {
+            "ref": "d4",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex54",
+      "by": "verifier",
+      "title": "Payment under a contract made five months before, due date not given (uncertain-bc16, o17): the case reads the claim as in time; the record does not conclude that before the due date is known, and d1 asks for it.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "obligation_is_tort_compensation": "no",
+        "nonconciliation_record": "no",
+        "claim_is_professional_fees": "no",
+        "claim_is_trader_supply_or_hotel": "no",
+        "claim_is_periodic_renewable_right": "no",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "debt_due_date"
         ]
       }
     }

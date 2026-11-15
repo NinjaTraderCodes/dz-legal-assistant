@@ -677,7 +677,7 @@ def status(u: Unit) -> list[tuple[str, str]]:
         aside = views_set_aside(u)
         s["8b"] = f"due (unit.py codex): {', '.join(send)}" if send else \
             "done" + (f" (no second view, Codex rejected twice: {', '.join(aside)}: uncertain)" if aside else "")
-    if s["8"] != "done" or s["8b"] != "done":
+    if s["8"] != "done" or not s["8b"].startswith("done"):
         s["9"] = "waiting for 8" + ("" if s["8"] != "done" else "b")
     else:
         grades = u.r("grades.json")

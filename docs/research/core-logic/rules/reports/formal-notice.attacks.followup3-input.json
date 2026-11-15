@@ -1,0 +1,82 @@
+{
+ "unit": "formal-notice",
+ "attacks": [
+  {
+   "id": "bc-bc1",
+   "who": "boundaryCase",
+   "target": "p2",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc1 (Notice served by a bailiff before a claim for rescission; petition 2026-06-15; slots {\"notice_served\": \"yes\", \"notice_date\": \"2026-05-10\", \"notice_means\": \"bailiff\", \"requests\": [\"rescission\"]}) expects «stepDone» about [civil-code 119 ¶1], because: 119 ¶1: the other party may demand execution or rescission 'بعد اعذاره المدين'. A notice was served before filing, by a bailiff, which is the plain form of 'انذار' (180 ¶1). The runner says: p2: declared ask, the outcome StepDone needs none (p2: requiredWhen unknown, asks notice_before_petition_day -> ask; grade D -> ask, to check)"
+  },
+  {
+   "id": "uncertain-bc7",
+   "who": "owner",
+   "target": "p1",
+   "kind": "wrongEffect",
+   "claim": "Boundary case bc7 is uncertain: the verifier set it aside, and Codex, reading the texts blind, gave «stepMissing» (the case writer expected «stepMissing»): Civil-code 179 ¶1 requires notice before damages become due: service on 2026-06-20 followed the petition dated 2026-06-15, contradicting the answer ‘yes’. Bailiff service is recognized by cpca 406 ¶1, but does not establish notice before filing; article 179 does not itself prescribe automatic inadmissibility of the petition. Deciding words: «لا يستحق التعويض إلا بعد اعذار المدين ما لم يوجد نص مخالف لذلك. يقصد بالتبليغ الرسمي، التبليغ الذي يتم بموجب محضر يعده المحضر القضائي.». Keep both readings in an open point and make the item warn; do not settle it either way."
+  },
+  {
+   "id": "sup-7",
+   "who": "support",
+   "target": "p2",
+   "kind": "partlySupported",
+   "claim": "Before a claim in which the petition asks for rescission and (notice served is unknown or notice served is no or (notice means is bailiff and notice before petition day is yes)), the debtor must first be put on notice (formal notice), except when: Agreement that the debtor is in default on the due date (not the same as an agreed rescission clause); Performance impossible or useless through the debtor's act; The debtor declared in writing he will not perform; The plaintiff is the seller of movables with a term for price and delivery, passed unpaid, and nothing was agreed to the contrary: rescission in the seller's favour without prior warning. | partly: The TEXT does not state the notice-status test involving unknown service, no service, or bailiff service before the petition day. Article 119 states the notice-before-rescission rule for bilateral contracts upon non-performance, rather than every rescission petition."
+  },
+  {
+   "id": "sup-18",
+   "who": "support",
+   "target": "b25",
+   "kind": "partlySupported",
+   "claim": "A creditor of a sum of money due, fixed in amount and proved in writing may ask the court president for an order to pay by petition. | partly: The TEXT permits a petition for a qualifying money debt but does not expressly identify the requested relief as an order to pay."
+  },
+  {
+   "id": "sup-25-f3",
+   "who": "support",
+   "target": "p3",
+   "kind": "partlySupported",
+   "claim": "Before a claim in which (the petition asks for payment or the petition asks for delivery or the petition asks for restitution or the petition asks for eviction) and (notice served is unknown or notice served is no or (notice means is bailiff and notice before petition day is yes)), the debtor must first be put on notice (formal notice), except when: Agreement that the debtor is in default on the due date; Performance impossible or useless through the debtor's act; Compensation for a harmful act; Return of a thing known stolen or knowingly received without right; The debtor declared in writing he will not perform. | partly: The TEXT does not state the listed petition categories or the notice-status test involving unknown service, no service, or bailiff service before the petition day. It does not establish a universal pre-filing requirement for all payment, delivery, restitution and eviction claims; Articles 119 and 164 concern bilateral contractual non-performance and possible performance in kind, respectively."
+  },
+  {
+   "id": "sup-27",
+   "who": "support",
+   "target": "b30",
+   "kind": "partlySupported",
+   "claim": "Leases made under the earlier legislation stayed under it for ten (10) years from publication; natural persons aged sixty (60) at publication who had a right to stay under the earlier legislation keep it until their death. | partly: The lifetime right to remain expressly concerns residential premises: «الأمكنة المعدة للسكن». The STATEMENT omits that condition."
+  },
+  {
+   "id": "sup-29-f3",
+   "who": "support",
+   "target": "b13",
+   "kind": "partlySupported",
+   "claim": "Damages fixed in advance by the parties are subject to the rules on compensation, notice and its exemptions. | partly: The TEXT applies Articles 176–181 but does not provide their contents or identify them as including notice and its exemptions."
+  },
+  {
+   "id": "sup-34",
+   "who": "support",
+   "target": "b4",
+   "kind": "partlySupported",
+   "claim": "The debtor is compelled to perform in kind, where possible, after being put on notice under the rules on notice and its exemptions. | partly: The TEXT requires notice in accordance with Articles 180 and 181 but does not state any notice exemption or identify the referenced articles as containing exemptions."
+  },
+  {
+   "id": "sup-44-f3",
+   "who": "support",
+   "target": "b23",
+   "kind": "partlySupported",
+   "claim": "In refusing to renew a commercial lease without indemnity, a breach consisting of non-performance of an obligation or of ceasing to run the business without serious and legitimate reason can be invoked only if it continued or was repeated for more than a month after the lessor's warning to stop it; the warning must be made by an extrajudicial act stating the reason and reciting the paragraph, failing which it is void. | partly: The TEXT does not state that this concerns refusing renewal of a commercial lease without indemnity. It references Article 172 without providing its contents."
+  },
+  {
+   "id": "sup-49",
+   "who": "support",
+   "target": "p2",
+   "kind": "partlySupported",
+   "claim": "This prior step is not required when: Agreement that the debtor is in default on the due date (not the same as an agreed rescission clause). | partly: The TEXT supports default on the due date without further procedure, but does not discuss an agreed rescission clause or state the parenthetical distinction from such a clause."
+  },
+  {
+   "id": "sup-65",
+   "who": "support",
+   "target": "p1",
+   "kind": "partlySupported",
+   "claim": "Before a claim in which the petition asks for damages and (notice served is unknown or notice served is no or (notice means is bailiff and notice before petition day is yes)), the debtor must first be put on notice (formal notice), except when: Agreement that the debtor is in default on the due date; Performance impossible or useless through the debtor's act; Compensation for a harmful act; Return of a thing known stolen or knowingly received without right; The debtor declared in writing he will not perform. | partly: The TEXT makes notice a condition of entitlement to compensation but does not expressly require notice before filing the petition or state the notice-status/bailiff/before-petition-day test. Article 179 also allows exceptions wherever a contrary text exists, beyond the specifically listed cases."
+  }
+ ]
+}

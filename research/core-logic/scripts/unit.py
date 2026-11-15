@@ -56,6 +56,9 @@ AGENTS = {"2a": ("rules-derive-a", "opus", False), "2b": ("rules-derive-b", "son
 CODEX_STAGES = {"7c": "rules-support-check-codex", "8b": "boundary-second-view-codex"}
 # The first module was made before the driver: its attack is Codex's and its follow-up 1 files carry no number.
 LEGACY = {"formal-notice"}
+# Reports written before the reconcile prompt named the fixed lines (16 November 2026): their differences are bold
+# bullets, and their disputed cases bullets under the heading «Boundary cases disputed».
+BULLET_REPORTS = {"periods"}
 
 
 # --- the published tool (retool item 2) -----------------------------------------------------------------------------
@@ -388,7 +391,11 @@ def first_input(u: Unit) -> dict:
     cases = {c["id"]: c for c in load(u.boundary)} if os.path.isfile(u.boundary) else {}
     disputed = set()
     if os.path.isfile(u.r("reconciliation.md")):
-        disputed = set(re.findall(r"^disputed (\S+):", open(u.r("reconciliation.md"), encoding="utf-8").read(), re.M))
+        report = open(u.r("reconciliation.md"), encoding="utf-8").read()
+        disputed = set(re.findall(r"^disputed (\S+):", report, re.M))
+        if u.id in BULLET_REPORTS:  # the bullets under the heading of the disputed boundary cases
+            section = re.search(r"^## Boundary cases disputed.*?$(.*?)(?=^## |\Z)", report, re.M | re.S)
+            disputed |= set(re.findall(r"^- \*\*(bc\d+)\*\*", section.group(1), re.M)) if section else set()
     for res in results:
         cid = res["caseId"]
         if cid in cases and (not res["passed"] or cid in disputed):
@@ -537,6 +544,19 @@ def _committed(paths: list[str]) -> bool:
                for r in rel)
 
 
+def bullet_ids(report: str) -> set[str]:
+    """The difference ids a bold bullet names: «- **x70, x81, x93** …» and ranges «- **x44 to x48** …»."""
+    ids = set()
+    for head in re.findall(r"^- \*\*([^*\n]+)\*\*", report, re.M):
+        for part in head.split(","):
+            m = re.fullmatch(r"\s*x(\d+)\s+to\s+x(\d+)\s*", part)
+            if m:
+                ids |= {f"x{n}" for n in range(int(m.group(1)), int(m.group(2)) + 1)}
+            elif re.fullmatch(r"\s*x\d+\s*", part):
+                ids.add(part.strip())
+    return ids
+
+
 def stage4_reports(u: Unit) -> list[str]:
     names = ["values.a.json", "values.b.json", "flags.a.json", "flags.b.json", "checklist.json", "differences.json",
              "idmap.json"] + (["c-comparison.json"] if u.kind == "module" else [])
@@ -581,6 +601,8 @@ def status(u: Unit) -> list[tuple[str, str]]:
         # the first module's report predates the fixed lines: its outcomes are table rows «| x1 | … |»
         form = r"^(?:difference {0}:|\| {0} \|)" if u.id in LEGACY else r"^difference {0}:"
         missing = [i for i in ids if not re.search(form.format(re.escape(i)), text, re.M)]
+        if u.id in BULLET_REPORTS:  # written before the prompt named the fixed form: «- **x70, x81** …», «- **x44 to x48** …»
+            missing = [i for i in missing if i not in bullet_ids(text)]
         s["5"] = "done" if not missing else f"blocked: no «difference <id>:» line for {', '.join(missing[:8])}"
     else:
         s["5"] = need("4")

@@ -2,4 +2,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\DzLegal.CoreLogic.Reader\DzLegal.CoreLogic.Reader.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <!-- The code-made value corpus (scripts/value_corpus.py, seed 11): rung 2's own test, needing no note. -->
+    <Content Include="value-corpus.jsonl" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project>

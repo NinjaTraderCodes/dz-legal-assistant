@@ -1,0 +1,1775 @@
+{
+  "differences": [
+    {
+      "id": "x1",
+      "kind": "statement",
+      "field": "cite",
+      "a": {
+        "code": "civil-code",
+        "article": "3",
+        "paragraphs": [
+          1
+        ]
+      },
+      "b": null,
+      "aId": "b27",
+      "bId": null,
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x2",
+      "kind": "statement",
+      "field": "cite",
+      "a": null,
+      "b": {
+        "code": "civil-code",
+        "article": "311",
+        "paragraphs": [
+          1
+        ]
+      },
+      "aId": null,
+      "bId": "b36",
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x3",
+      "kind": "statement",
+      "field": "interpretive",
+      "a": true,
+      "b": false,
+      "aId": "b7",
+      "bId": "b6",
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x4",
+      "kind": "statement",
+      "field": "role",
+      "a": "proof",
+      "b": "procedure",
+      "aId": "b8",
+      "bId": "b7",
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x5",
+      "kind": "statement",
+      "field": "interpretive",
+      "a": true,
+      "b": false,
+      "aId": "b9",
+      "bId": "b8",
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x6",
+      "kind": "statement",
+      "field": "role",
+      "a": "procedure",
+      "b": "limit",
+      "aId": "b23",
+      "bId": "b22",
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x7",
+      "kind": "statement",
+      "field": "cite",
+      "a": {
+        "code": "civil-code",
+        "article": "323",
+        "paragraphs": [
+          1
+        ]
+      },
+      "b": null,
+      "aId": "b42",
+      "bId": null,
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x8",
+      "kind": "statement",
+      "field": "cite",
+      "a": {
+        "code": "cpca",
+        "article": "226",
+        "paragraphs": [
+          1
+        ]
+      },
+      "b": null,
+      "aId": "b44",
+      "bId": null,
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x9",
+      "kind": "statement",
+      "field": "cite",
+      "a": {
+        "code": "cpca",
+        "article": "322",
+        "paragraphs": [
+          1
+        ]
+      },
+      "b": null,
+      "aId": "b38",
+      "bId": null,
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x10",
+      "kind": "statement",
+      "field": "cite",
+      "a": {
+        "code": "cpca",
+        "article": "322",
+        "paragraphs": [
+          2
+        ]
+      },
+      "b": null,
+      "aId": "b39",
+      "bId": null,
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x11",
+      "kind": "statement",
+      "field": "cite",
+      "a": {
+        "code": "labour-disputes",
+        "article": "30",
+        "paragraphs": [
+          2
+        ]
+      },
+      "b": null,
+      "aId": "b41",
+      "bId": null,
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x12",
+      "kind": "statement",
+      "field": "cite",
+      "a": {
+        "code": "labour-disputes",
+        "article": "37",
+        "paragraphs": [
+          1
+        ]
+      },
+      "b": null,
+      "aId": "b40",
+      "bId": null,
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x13",
+      "kind": "deadline",
+      "field": "present",
+      "a": null,
+      "b": "d5",
+      "aId": null,
+      "bId": "d5",
+      "matchedOn": "none"
+    },
+    {
+      "id": "x14",
+      "kind": "deadline",
+      "field": "present",
+      "a": null,
+      "b": "d6",
+      "aId": null,
+      "bId": "d6",
+      "matchedOn": "none"
+    },
+    {
+      "id": "x15",
+      "kind": "deadline",
+      "field": "when",
+      "a": {
+        "all": [
+          {
+            "slot": "obligation_is_tort_compensation",
+            "is": "no"
+          },
+          {
+            "not": {
+              "slot": "requests",
+              "includes": "wages"
+            }
+          }
+        ]
+      },
+      "b": {
+        "slot": "obligation_is_tort_compensation",
+        "is": "no"
+      },
+      "aId": "d1",
+      "bId": "d3",
+      "matchedOn": "mainArticle"
+    },
+    {
+      "id": "x16",
+      "kind": "deadline",
+      "field": "startsFrom",
+      "a": {
+        "slot": "obligation_due_date",
+        "event": "debt_unpaid"
+      },
+      "b": {
+        "slot": "debt_due_date",
+        "event": null
+      },
+      "aId": "d1",
+      "bId": "d3",
+      "matchedOn": "mainArticle"
+    },
+    {
+      "id": "x17",
+      "kind": "deadline",
+      "field": "counting",
+      "a": {
+        "method": "excludeFirstDay",
+        "extendToWorkingDay": false,
+        "articles": [
+          [
+            "civil-code",
+            "3"
+          ],
+          [
+            "civil-code",
+            "314"
+          ]
+        ]
+      },
+      "b": {
+        "method": "excludeFirstDay",
+        "extendToWorkingDay": false,
+        "articles": [
+          [
+            "civil-code",
+            "314"
+          ]
+        ]
+      },
+      "aId": "d1",
+      "bId": "d3",
+      "matchedOn": "mainArticle"
+    },
+    {
+      "id": "x18",
+      "kind": "deadline",
+      "field": "raisedBy",
+      "a": "unclear",
+      "b": "pleaOnly",
+      "aId": "d2",
+      "bId": "d4",
+      "matchedOn": "mainArticle"
+    },
+    {
+      "id": "x19",
+      "kind": "deadline",
+      "field": "counting",
+      "a": {
+        "method": "excludeFirstDay",
+        "extendToWorkingDay": false,
+        "articles": [
+          [
+            "civil-code",
+            "3"
+          ],
+          [
+            "civil-code",
+            "314"
+          ]
+        ]
+      },
+      "b": {
+        "method": "excludeFirstDay",
+        "extendToWorkingDay": false,
+        "articles": [
+          [
+            "civil-code",
+            "314"
+          ]
+        ]
+      },
+      "aId": "d2",
+      "bId": "d4",
+      "matchedOn": "mainArticle"
+    },
+    {
+      "id": "x20",
+      "kind": "deadline",
+      "field": "counting",
+      "a": {
+        "method": "excludeFirstDay",
+        "extendToWorkingDay": false,
+        "articles": [
+          [
+            "civil-code",
+            "3"
+          ],
+          [
+            "civil-code",
+            "314"
+          ]
+        ]
+      },
+      "b": {
+        "method": "excludeFirstDay",
+        "extendToWorkingDay": false,
+        "articles": [
+          [
+            "civil-code",
+            "314"
+          ]
+        ]
+      },
+      "aId": "d3",
+      "bId": "d2",
+      "matchedOn": "mainArticle"
+    },
+    {
+      "id": "x21",
+      "kind": "deadline",
+      "field": "when",
+      "a": {
+        "slot": "requests",
+        "includes": "wages"
+      },
+      "b": {
+        "slot": "claim_is_periodic_renewable_right",
+        "is": "yes"
+      },
+      "aId": "d4",
+      "bId": "d7",
+      "matchedOn": "mainArticle"
+    },
+    {
+      "id": "x22",
+      "kind": "deadline",
+      "field": "startsFrom",
+      "a": {
+        "slot": "wages_due_from",
+        "event": "wages_unpaid"
+      },
+      "b": {
+        "slot": "debt_due_date",
+        "event": null
+      },
+      "aId": "d4",
+      "bId": "d7",
+      "matchedOn": "mainArticle"
+    },
+    {
+      "id": "x23",
+      "kind": "deadline",
+      "field": "counting",
+      "a": {
+        "method": "excludeFirstDay",
+        "extendToWorkingDay": false,
+        "articles": [
+          [
+            "civil-code",
+            "3"
+          ],
+          [
+            "civil-code",
+            "314"
+          ]
+        ]
+      },
+      "b": {
+        "method": "excludeFirstDay",
+        "extendToWorkingDay": false,
+        "articles": [
+          [
+            "civil-code",
+            "314"
+          ]
+        ]
+      },
+      "aId": "d4",
+      "bId": "d7",
+      "matchedOn": "mainArticle"
+    },
+    {
+      "id": "x24",
+      "kind": "deadline",
+      "field": "when",
+      "a": {
+        "all": [
+          {
+            "slot": "nonconciliation_record",
+            "is": "yes"
+          },
+          {
+            "any": [
+              {
+                "slot": "forfeiture_lifted_by_order",
+                "known": false
+              },
+              {
+                "slot": "forfeiture_lifted_by_order",
+                "is": "no"
+              }
+            ]
+          }
+        ]
+      },
+      "b": {
+        "slot": "nonconciliation_record",
+        "is": "yes"
+      },
+      "aId": "d5",
+      "bId": "d1",
+      "matchedOn": "mainArticle"
+    },
+    {
+      "id": "x25",
+      "kind": "element",
+      "field": "present",
+      "a": "e1",
+      "b": null,
+      "aId": "e1",
+      "bId": null,
+      "matchedOn": "none"
+    },
+    {
+      "id": "x26",
+      "kind": "element",
+      "field": "present",
+      "a": "e2",
+      "b": null,
+      "aId": "e2",
+      "bId": null,
+      "matchedOn": "none"
+    },
+    {
+      "id": "x27",
+      "kind": "element",
+      "field": "present",
+      "a": "e3",
+      "b": null,
+      "aId": "e3",
+      "bId": null,
+      "matchedOn": "none"
+    },
+    {
+      "id": "x28",
+      "kind": "slot",
+      "field": "used",
+      "a": null,
+      "b": "claim_is_periodic_renewable_right",
+      "aId": null,
+      "bId": null,
+      "matchedOn": "slotId"
+    },
+    {
+      "id": "x29",
+      "kind": "slot",
+      "field": "used",
+      "a": null,
+      "b": "claim_is_professional_fees",
+      "aId": null,
+      "bId": null,
+      "matchedOn": "slotId"
+    },
+    {
+      "id": "x30",
+      "kind": "slot",
+      "field": "used",
+      "a": null,
+      "b": "claim_is_trader_supply_or_hotel",
+      "aId": null,
+      "bId": null,
+      "matchedOn": "slotId"
+    },
+    {
+      "id": "x31",
+      "kind": "slot",
+      "field": "used",
+      "a": null,
+      "b": "debt_due_date",
+      "aId": null,
+      "bId": null,
+      "matchedOn": "slotId"
+    },
+    {
+      "id": "x32",
+      "kind": "slot",
+      "field": "used",
+      "a": null,
+      "b": "defendant_resides_abroad",
+      "aId": null,
+      "bId": null,
+      "matchedOn": "slotId"
+    },
+    {
+      "id": "x33",
+      "kind": "slot",
+      "field": "used",
+      "a": null,
+      "b": "employer_in_bankruptcy_or_settlement",
+      "aId": null,
+      "bId": null,
+      "matchedOn": "slotId"
+    },
+    {
+      "id": "x34",
+      "kind": "slot",
+      "field": "used",
+      "a": "forfeiture_lifted_by_order",
+      "b": null,
+      "aId": null,
+      "bId": null,
+      "matchedOn": "slotId"
+    },
+    {
+      "id": "x35",
+      "kind": "slot",
+      "field": "used",
+      "a": "obligation_due_date",
+      "b": null,
+      "aId": null,
+      "bId": null,
+      "matchedOn": "slotId"
+    },
+    {
+      "id": "x36",
+      "kind": "slot",
+      "field": "used",
+      "a": null,
+      "b": "worker_is_public_servant",
+      "aId": null,
+      "bId": null,
+      "matchedOn": "slotId"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex1",
+      "case": "ex1",
+      "run": "aOnB",
+      "title": "Ordinary debt, due six years ago, no labour record: nothing to report.",
+      "detail": [
+        "d1 -> d3: declared ask, expected none (d3: start debt_due_date unknown, asks debt_due_date -> ask; grade D -> ask, to check)",
+        "d4 -> d7: declared ask, expected none (d7: when unknown, asks claim_is_periodic_renewable_right -> ask; grade D -> ask, to check)",
+        "questions: asked {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, debt_due_date, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, worker_is_public_servant}, expected {}",
+        "d1 -> d3: declared none against ask",
+        "d1 -> d3: last day 2035-03-01 (3027 days left) against none",
+        "d4 -> d7: declared none against ask",
+        "questions: {} against {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, debt_due_date, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x37"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex2",
+      "case": "ex2",
+      "run": "aOnB",
+      "title": "Ordinary debt due eighteen years ago: limitation has run, a warning only.",
+      "detail": [
+        "d1 -> d3: declared ask, expected warn (d3: start debt_due_date unknown, asks debt_due_date -> ask; grade D -> ask, to check)",
+        "d1 -> d3: declared warn against ask",
+        "d1 -> d3: last day 2023-05-10 (-1286 days left) against none",
+        "d4 -> d7: declared none against ask",
+        "questions: {} against {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, debt_due_date, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x38"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex3",
+      "case": "ex3",
+      "run": "aOnB",
+      "title": "Ordinary debt nine days before the fifteenth anniversary of its due date: inside the band.",
+      "detail": [
+        "d1 -> d3: declared ask, expected warn (d3: start debt_due_date unknown, asks debt_due_date -> ask; grade D -> ask, to check)",
+        "d1 -> d3: declared warn against ask",
+        "d1 -> d3: last day 2026-11-25 (9 days left) against none",
+        "d4 -> d7: declared none against ask",
+        "questions: {nonconciliation_record} against {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, debt_due_date, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x39"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex4",
+      "case": "ex4",
+      "run": "aOnB",
+      "title": "Labour claim filed two and a half months after the record, recent wages: clean.",
+      "detail": [
+        "d4 -> d7: declared ask, expected none (d7: when unknown, asks claim_is_periodic_renewable_right -> ask; grade D -> ask, to check)",
+        "d1 -> d3: declared ask, expected none (d3: start debt_due_date unknown, asks debt_due_date -> ask; grade D -> ask, to check)",
+        "questions: asked {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, debt_due_date, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, worker_is_public_servant}, expected {}",
+        "d1 -> d3: declared none against ask",
+        "d4 -> d7: declared none against ask",
+        "d4 -> d7: last day 2031-06-30 (1687 days left) against none",
+        "questions: {} against {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, debt_due_date, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x40"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex5",
+      "case": "ex5",
+      "run": "aOnB",
+      "title": "Labour claim a year after the record: forfeiture, the clean export is blocked; the oldest wage is over a year old.",
+      "detail": [
+        "d4 -> d7: declared ask, expected none (d7: when unknown, asks claim_is_periodic_renewable_right -> ask; grade D -> ask, to check)",
+        "d1 -> d3: declared none against ask",
+        "d4 -> d7: declared none against ask",
+        "d4 -> d7: last day 2030-09-30 (1414 days left) against none",
+        "questions: {} against {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, debt_due_date, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x41"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex6",
+      "case": "ex6",
+      "run": "aOnB",
+      "title": "Same late labour claim, but the forfeiture was lifted by the president's order.",
+      "detail": [
+        "d5 -> d1: declared blockCleanExport, expected none (d1: start 2025-11-02, last day 2026-05-03, petition 2026-11-16, 197 days late, outside band 15 -> blockCleanExport; grade D -> warn, to check)",
+        "questions: asked {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, debt_due_date, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, worker_is_public_servant}, expected {}",
+        "d1 -> d3: declared none against ask",
+        "d4 -> d7: declared none against ask",
+        "d4 -> d7: last day 2031-03-31 (1596 days left) against none",
+        "d5 -> d1: declared none against blockCleanExport",
+        "d5 -> d1: last day none against 2026-05-03 (-197 days left)",
+        "questions: {} against {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, debt_due_date, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x42"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex7",
+      "case": "ex7",
+      "run": "aOnB",
+      "title": "Labour claim filed a day or two after the six months: inside the band, a warning.",
+      "detail": [
+        "d1 -> d3: declared none against ask",
+        "d4 -> d7: declared none against ask",
+        "d4 -> d7: last day 2031-04-30 (1626 days left) against none",
+        "questions: {} against {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, debt_due_date, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x43"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex8",
+      "case": "ex8",
+      "run": "aOnB",
+      "title": "Record drawn up but its delivery date and the wage dates are not known: the rules ask.",
+      "detail": [
+        "questions: asked {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, debt_due_date, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record_delivered_on, wages_due_from, worker_is_public_servant}, expected {nonconciliation_record_delivered_on, wages_due_from}",
+        "d1 -> d3: declared none against ask",
+        "questions: {nonconciliation_record_delivered_on, wages_due_from} against {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, debt_due_date, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record_delivered_on, wages_due_from, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x44"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex9",
+      "case": "ex9",
+      "run": "aOnB",
+      "title": "Nothing known on a payment claim: the rules ask what kind of obligation it is and whether there was a record.",
+      "detail": [
+        "d4 -> d7: declared ask, expected none (d7: when unknown, asks claim_is_periodic_renewable_right -> ask; grade D -> ask, to check)",
+        "questions: asked {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record, obligation_is_tort_compensation, worker_is_public_servant}, expected {nonconciliation_record, obligation_is_tort_compensation}",
+        "d4 -> d7: declared none against ask",
+        "questions: {nonconciliation_record, obligation_is_tort_compensation} against {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record, obligation_is_tort_compensation, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x45"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex10",
+      "case": "ex10",
+      "run": "aOnB",
+      "title": "Compensation for a harmful act four days before fifteen years have passed: a warning.",
+      "detail": [
+        "questions: asked {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, worker_is_public_servant}, expected {}",
+        "d4 -> d7: declared none against ask",
+        "questions: {} against {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x46"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex11",
+      "case": "ex11",
+      "run": "aOnB",
+      "title": "Compensation for a recent harmful act: nothing to report.",
+      "detail": [
+        "questions: asked {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, worker_is_public_servant}, expected {}",
+        "d4 -> d7: declared none against ask",
+        "questions: {} against {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x47"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex12",
+      "case": "ex12",
+      "run": "aOnB",
+      "title": "Compensation for a harmful act whose date is not known: the rule asks.",
+      "detail": [
+        "questions: asked {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, harmful_act_date, worker_is_public_servant}, expected {harmful_act_date}",
+        "d4 -> d7: declared none against ask",
+        "questions: {harmful_act_date} against {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, harmful_act_date, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x48"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex13",
+      "case": "ex13",
+      "run": "aOnB",
+      "title": "Ordinary debt whose due date is not known: the rule asks.",
+      "detail": [
+        "questions: asked {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, debt_due_date, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, worker_is_public_servant}, expected {obligation_due_date}",
+        "d4 -> d7: declared none against ask",
+        "questions: {obligation_due_date} against {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, debt_due_date, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x49"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex14",
+      "case": "ex14",
+      "run": "aOnB",
+      "title": "Oldest wage fell due a year and six days ago: the one-year reading warns, the five-year one does not.",
+      "detail": [
+        "d4 -> d7: declared ask, expected none (d7: when unknown, asks claim_is_periodic_renewable_right -> ask; grade D -> ask, to check)",
+        "d1 -> d3: declared none against ask",
+        "d4 -> d7: declared none against ask",
+        "d4 -> d7: last day 2030-11-10 (1455 days left) against none",
+        "questions: {} against {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, debt_due_date, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x50"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex15",
+      "case": "ex15",
+      "run": "aOnB",
+      "title": "Oldest wage fell due almost eight years ago: both readings warn.",
+      "detail": [
+        "d4 -> d7: declared ask, expected warn (d7: when unknown, asks claim_is_periodic_renewable_right -> ask; grade D -> ask, to check)",
+        "d1 -> d3: declared none against ask",
+        "d4 -> d7: declared warn against ask",
+        "d4 -> d7: last day 2024-01-31 (-1020 days left) against none",
+        "questions: {} against {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, debt_due_date, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x51"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex16",
+      "case": "ex16",
+      "run": "aOnB",
+      "title": "Labour claim with no record (conciliation not held): the six-month period does not run here.",
+      "detail": [
+        "questions: asked {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, debt_due_date, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, worker_is_public_servant}, expected {}",
+        "d1 -> d3: declared none against ask",
+        "d4 -> d7: declared none against ask",
+        "d4 -> d7: last day 2031-08-31 (1749 days left) against none",
+        "questions: {} against {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, debt_due_date, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x52"
+    },
+    {
+      "kind": "case",
+      "field": "bOnA ex1",
+      "case": "ex1",
+      "run": "bOnA",
+      "title": "Labour claim filed far inside the six months.",
+      "detail": [
+        "n1: no counterpart in the id map",
+        "d3 -> d1: last day 2041-01-10 (5389 days left) against none",
+        "d7 -> d4: last day none against 2031-01-01 (1727 days left)"
+      ],
+      "matchedOn": "case",
+      "id": "x53"
+    },
+    {
+      "kind": "case",
+      "field": "bOnA ex2",
+      "case": "ex2",
+      "run": "bOnA",
+      "title": "Labour claim a year after delivery of the record: forfeited.",
+      "detail": [
+        "d7 -> d4: declared ask against none",
+        "questions: {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, obligation_is_tort_compensation, worker_is_public_servant} against {obligation_is_tort_compensation}"
+      ],
+      "matchedOn": "case",
+      "id": "x54"
+    },
+    {
+      "kind": "case",
+      "field": "bOnA ex3",
+      "case": "ex3",
+      "run": "bOnA",
+      "title": "Labour claim four days after the last day: inside the band, a warning.",
+      "detail": [
+        "d7 -> d4: declared ask against none",
+        "questions: {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, obligation_is_tort_compensation, worker_is_public_servant} against {obligation_is_tort_compensation}"
+      ],
+      "matchedOn": "case",
+      "id": "x55"
+    },
+    {
+      "kind": "case",
+      "field": "bOnA ex4",
+      "case": "ex4",
+      "run": "bOnA",
+      "title": "Record delivered, date not given: ask for it.",
+      "detail": [
+        "questions: asked {nonconciliation_record_delivered_on, obligation_due_date}, expected {nonconciliation_record_delivered_on}",
+        "d3 -> d1: declared none against ask",
+        "d3 -> d1: last day 2041-01-10 (5389 days left) against none",
+        "questions: {nonconciliation_record_delivered_on} against {nonconciliation_record_delivered_on, obligation_due_date}"
+      ],
+      "matchedOn": "case",
+      "id": "x56"
+    },
+    {
+      "kind": "case",
+      "field": "bOnA ex5",
+      "case": "ex5",
+      "run": "bOnA",
+      "title": "No record: the six-month rule does not apply.",
+      "detail": [
+        "d7 -> d4: declared ask against none",
+        "questions: {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, obligation_is_tort_compensation, worker_is_public_servant} against {obligation_is_tort_compensation}"
+      ],
+      "matchedOn": "case",
+      "id": "x57"
+    },
+    {
+      "kind": "case",
+      "field": "bOnA ex6",
+      "case": "ex6",
+      "run": "bOnA",
+      "title": "Wages claimed from more than a year before: a warning.",
+      "detail": [
+        "d3 -> d1: declared ask against none",
+        "d7 -> d4: declared ask against none",
+        "d7 -> d4: last day none against 2029-01-15 (1051 days left)",
+        "questions: {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record, obligation_is_tort_compensation, worker_is_public_servant} against {nonconciliation_record, obligation_is_tort_compensation}"
+      ],
+      "matchedOn": "case",
+      "id": "x58"
+    },
+    {
+      "kind": "case",
+      "field": "bOnA ex7",
+      "case": "ex7",
+      "run": "bOnA",
+      "title": "Wages due three months ago: inside the year.",
+      "detail": [
+        "d3 -> d1: declared ask against none",
+        "d7 -> d4: declared ask against none",
+        "d7 -> d4: last day none against 2030-12-01 (1736 days left)",
+        "questions: {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record, obligation_is_tort_compensation, worker_is_public_servant} against {nonconciliation_record, obligation_is_tort_compensation}"
+      ],
+      "matchedOn": "case",
+      "id": "x59"
+    },
+    {
+      "kind": "case",
+      "field": "bOnA ex8",
+      "case": "ex8",
+      "run": "bOnA",
+      "title": "Wages due a year and five days before: inside the band.",
+      "detail": [
+        "d3 -> d1: declared ask against none",
+        "d7 -> d4: declared ask against none",
+        "d7 -> d4: last day none against 2030-03-10 (1456 days left)",
+        "questions: {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record, obligation_is_tort_compensation, worker_is_public_servant} against {nonconciliation_record, obligation_is_tort_compensation}"
+      ],
+      "matchedOn": "case",
+      "id": "x60"
+    },
+    {
+      "kind": "case",
+      "field": "bOnA ex9",
+      "case": "ex9",
+      "run": "bOnA",
+      "title": "Near miss: an old debt, but the petition asks for payment, not wages.",
+      "detail": [
+        "d7 -> d4: declared ask against none",
+        "questions: {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record, obligation_is_tort_compensation, worker_is_public_servant} against {nonconciliation_record, obligation_is_tort_compensation}"
+      ],
+      "matchedOn": "case",
+      "id": "x61"
+    },
+    {
+      "kind": "case",
+      "field": "bOnA ex10",
+      "case": "ex10",
+      "run": "bOnA",
+      "title": "Compensation for a harmful act sixteen years ago.",
+      "detail": [
+        "d7 -> d4: declared ask against none",
+        "questions: {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record, worker_is_public_servant} against {nonconciliation_record}"
+      ],
+      "matchedOn": "case",
+      "id": "x62"
+    },
+    {
+      "kind": "case",
+      "field": "bOnA ex11",
+      "case": "ex11",
+      "run": "bOnA",
+      "title": "Compensation for a harmful act three years ago.",
+      "detail": [
+        "d7 -> d4: declared ask against none",
+        "questions: {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record, worker_is_public_servant} against {nonconciliation_record}"
+      ],
+      "matchedOn": "case",
+      "id": "x63"
+    },
+    {
+      "kind": "case",
+      "field": "bOnA ex12",
+      "case": "ex12",
+      "run": "bOnA",
+      "title": "Professional fees due three years before: past two years.",
+      "detail": [
+        "d5: no counterpart in the id map",
+        "d7 -> d4: declared ask against none",
+        "questions: {claim_is_periodic_renewable_right, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record, obligation_is_tort_compensation, worker_is_public_servant} against {nonconciliation_record, obligation_is_tort_compensation}"
+      ],
+      "matchedOn": "case",
+      "id": "x64"
+    },
+    {
+      "kind": "case",
+      "field": "bOnA ex13",
+      "case": "ex13",
+      "run": "bOnA",
+      "title": "Rent arrears: six years old.",
+      "detail": [
+        "d7 -> d4: declared none, expected warn (d4: when false -> none; grade D -> none, to check)",
+        "d7 -> d4: declared warn against none",
+        "d7 -> d4: last day 2025-01-01 (-424 days left) against none",
+        "questions: {claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record, obligation_is_tort_compensation, worker_is_public_servant} against {nonconciliation_record, obligation_is_tort_compensation}"
+      ],
+      "matchedOn": "case",
+      "id": "x65"
+    },
+    {
+      "kind": "case",
+      "field": "bOnA ex14",
+      "case": "ex14",
+      "run": "bOnA",
+      "title": "Hotel bill unpaid for two years.",
+      "detail": [
+        "d6: no counterpart in the id map",
+        "d7 -> d4: declared ask against none",
+        "questions: {claim_is_periodic_renewable_right, claim_is_professional_fees, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record, obligation_is_tort_compensation, worker_is_public_servant} against {nonconciliation_record, obligation_is_tort_compensation}"
+      ],
+      "matchedOn": "case",
+      "id": "x66"
+    },
+    {
+      "kind": "case",
+      "field": "bOnA ex15",
+      "case": "ex15",
+      "run": "bOnA",
+      "title": "Defendant abroad and civil servant plaintiff: boundary warnings.",
+      "detail": [
+        "n1: no counterpart in the id map",
+        "n2: no counterpart in the id map",
+        "n3: no counterpart in the id map",
+        "d7 -> d4: declared ask against none",
+        "questions: {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, nonconciliation_record, obligation_is_tort_compensation} against {nonconciliation_record, obligation_is_tort_compensation}"
+      ],
+      "matchedOn": "case",
+      "id": "x67"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryA bc2",
+      "case": "bc2",
+      "run": "boundaryA",
+      "title": "Wage claim, one day before the first anniversary of the due date",
+      "detail": [
+        "d1: declared none without a last day, the outcome InTime needs one (d1: when false -> none; grade D -> none, to check)",
+        "d1: last day none, the case says 2026-06-15",
+        "d2: declared ask without a last day, the outcome InTime needs one (d2: when unknown, asks obligation_is_tort_compensation -> ask; grade D -> ask, to check)",
+        "d2: last day none, the case says 2026-06-15",
+        "d4: last day 2030-06-15, the case says 2026-06-15"
+      ],
+      "matchedOn": "case",
+      "id": "x68"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryA bc5",
+      "case": "bc5",
+      "run": "boundaryA",
+      "title": "Five-year edge across a leap day: calendar years against 1825 days",
+      "detail": [
+        "d1: last day none, the case says 2026-02-28",
+        "d2: last day none, the case says 2026-02-28",
+        "d3: last day 2022-02-28, the case says 2026-02-28"
+      ],
+      "matchedOn": "case",
+      "id": "x69"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryA bc8",
+      "case": "bc8",
+      "run": "boundaryA",
+      "title": "Five-year edge: the day before, which only the five-year reading keeps in time",
+      "detail": [
+        "d4: last day 2026-06-15, the case says 2022-06-15"
+      ],
+      "matchedOn": "case",
+      "id": "x70"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryA bc9",
+      "case": "bc9",
+      "run": "boundaryA",
+      "title": "One-year last day falls on a Friday; petition on the Sunday after",
+      "detail": [
+        "d5: last day none, the case says 2026-06-12"
+      ],
+      "matchedOn": "case",
+      "id": "x71"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryA bc10",
+      "case": "bc10",
+      "run": "boundaryA",
+      "title": "One-year last day falls on 5 July, a possible official holiday; petition the day after",
+      "detail": [
+        "[cpca 405 ¶3] matches no item: a rule the record may have missed"
+      ],
+      "matchedOn": "case",
+      "id": "x72"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryA bc11",
+      "case": "bc11",
+      "run": "boundaryA",
+      "title": "Bailiff's notice served inside the year: does it interrupt the limitation period",
+      "detail": [
+        "d1: last day none, the case says 2026-03-01",
+        "d2: last day none, the case says 2026-03-01"
+      ],
+      "matchedOn": "case",
+      "id": "x73"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryA bc12",
+      "case": "bc12",
+      "run": "boundaryA",
+      "title": "Notice by registered letter inside the year: not a judicial claim, notice or seizure",
+      "detail": [
+        "d1: last day none, the case says 2026-03-01",
+        "d2: last day none, the case says 2026-03-01"
+      ],
+      "matchedOn": "case",
+      "id": "x74"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryA bc16",
+      "case": "bc16",
+      "run": "boundaryA",
+      "title": "Contract made five months before the petition: in time whatever the due date",
+      "detail": [
+        "d1: declared ask without a last day, the outcome InTime needs one (d1: when unknown, asks obligation_is_tort_compensation -> ask; grade D -> ask, to check)"
+      ],
+      "matchedOn": "case",
+      "id": "x75"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryA bc18",
+      "case": "bc18",
+      "run": "boundaryA",
+      "title": "Wage claim where the due date of the oldest wage is nearly a year back and the worker is in a notice dispute",
+      "detail": [
+        "d1: declared none without a last day, the outcome InTime needs one (d1: when false -> none; grade D -> none, to check)",
+        "d1: last day none, the case says 2026-06-16",
+        "d2: declared ask without a last day, the outcome InTime needs one (d2: when unknown, asks obligation_is_tort_compensation -> ask; grade D -> ask, to check)",
+        "d2: last day none, the case says 2026-06-16",
+        "d4: last day 2030-06-16, the case says 2026-06-16"
+      ],
+      "matchedOn": "case",
+      "id": "x76"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryB bc2",
+      "case": "bc2",
+      "run": "boundaryB",
+      "title": "Wage claim, one day before the first anniversary of the due date",
+      "detail": [
+        "d3: declared ask without a last day, the outcome InTime needs one (d3: when unknown, asks obligation_is_tort_compensation -> ask; grade D -> ask, to check)",
+        "d3: last day none, the case says 2026-06-15",
+        "d4: declared ask without a last day, the outcome InTime needs one (d4: when unknown, asks obligation_is_tort_compensation -> ask; grade D -> ask, to check)",
+        "d4: last day none, the case says 2026-06-15",
+        "d5: declared ask without a last day, the outcome InTime needs one (d5: when unknown, asks claim_is_professional_fees -> ask; grade D -> ask, to check)",
+        "d5: last day none, the case says 2026-06-15",
+        "d6: declared ask without a last day, the outcome InTime needs one (d6: when unknown, asks claim_is_trader_supply_or_hotel -> ask; grade D -> ask, to check)",
+        "d6: last day none, the case says 2026-06-15",
+        "d7: declared ask without a last day, the outcome InTime needs one (d7: when unknown, asks claim_is_periodic_renewable_right -> ask; grade D -> ask, to check)",
+        "d7: last day none, the case says 2026-06-15"
+      ],
+      "matchedOn": "case",
+      "id": "x77"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryB bc5",
+      "case": "bc5",
+      "run": "boundaryB",
+      "title": "Five-year edge across a leap day: calendar years against 1825 days",
+      "detail": [
+        "d2: last day 2022-02-28, the case says 2026-02-28",
+        "d3: last day none, the case says 2026-02-28",
+        "d4: last day none, the case says 2026-02-28",
+        "d5: last day none, the case says 2026-02-28",
+        "d6: last day none, the case says 2026-02-28",
+        "d7: last day none, the case says 2026-02-28"
+      ],
+      "matchedOn": "case",
+      "id": "x78"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryB bc6",
+      "case": "bc6",
+      "run": "boundaryB",
+      "title": "Wage claim, oldest wage due more than five years before: late under every reading",
+      "detail": [
+        "d7: declared ask without a last day, the outcome Late needs one (d7: when unknown, asks claim_is_periodic_renewable_right -> ask; grade D -> ask, to check)"
+      ],
+      "matchedOn": "case",
+      "id": "x79"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryB bc7",
+      "case": "bc7",
+      "run": "boundaryB",
+      "title": "Five-year edge: the day after the last day under the five-year reading",
+      "detail": [
+        "d7: declared ask without a last day, the outcome Late needs one (d7: when unknown, asks claim_is_periodic_renewable_right -> ask; grade D -> ask, to check)"
+      ],
+      "matchedOn": "case",
+      "id": "x80"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryB bc8",
+      "case": "bc8",
+      "run": "boundaryB",
+      "title": "Five-year edge: the day before, which only the five-year reading keeps in time",
+      "detail": [
+        "d7: last day none, the case says 2022-06-15"
+      ],
+      "matchedOn": "case",
+      "id": "x81"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryB bc9",
+      "case": "bc9",
+      "run": "boundaryB",
+      "title": "One-year last day falls on a Friday; petition on the Sunday after",
+      "detail": [
+        "d1: last day none, the case says 2026-06-12"
+      ],
+      "matchedOn": "case",
+      "id": "x82"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryB bc10",
+      "case": "bc10",
+      "run": "boundaryB",
+      "title": "One-year last day falls on 5 July, a possible official holiday; petition the day after",
+      "detail": [
+        "[cpca 405 ¶3] matches no item: a rule the record may have missed"
+      ],
+      "matchedOn": "case",
+      "id": "x83"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryB bc16",
+      "case": "bc16",
+      "run": "boundaryB",
+      "title": "Contract made five months before the petition: in time whatever the due date",
+      "detail": [
+        "d3: declared ask without a last day, the outcome InTime needs one (d3: when unknown, asks obligation_is_tort_compensation -> ask; grade D -> ask, to check)"
+      ],
+      "matchedOn": "case",
+      "id": "x84"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryB bc18",
+      "case": "bc18",
+      "run": "boundaryB",
+      "title": "Wage claim where the due date of the oldest wage is nearly a year back and the worker is in a notice dispute",
+      "detail": [
+        "d3: declared ask without a last day, the outcome InTime needs one (d3: when unknown, asks obligation_is_tort_compensation -> ask; grade D -> ask, to check)",
+        "d3: last day none, the case says 2026-06-16",
+        "d4: declared ask without a last day, the outcome InTime needs one (d4: when unknown, asks obligation_is_tort_compensation -> ask; grade D -> ask, to check)",
+        "d4: last day none, the case says 2026-06-16",
+        "d5: declared ask without a last day, the outcome InTime needs one (d5: when unknown, asks claim_is_professional_fees -> ask; grade D -> ask, to check)",
+        "d5: last day none, the case says 2026-06-16",
+        "d6: declared ask without a last day, the outcome InTime needs one (d6: when unknown, asks claim_is_trader_supply_or_hotel -> ask; grade D -> ask, to check)",
+        "d6: last day none, the case says 2026-06-16",
+        "d7: declared ask without a last day, the outcome InTime needs one (d7: when unknown, asks claim_is_periodic_renewable_right -> ask; grade D -> ask, to check)",
+        "d7: last day none, the case says 2026-06-16"
+      ],
+      "matchedOn": "case",
+      "id": "x85"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc1",
+      "case": "bc1",
+      "run": "boundaryAB",
+      "title": "Wage claim, oldest wage due only five months before the petition: far inside every reading",
+      "detail": [
+        "periods (DerivationA): [Deadline none last day 2027-01-10 days left 209] questions {nonconciliation_record, obligation_is_tort_compensation}",
+        "periods (DerivationB): [Deadline none last day 2027-01-10 days left 209] questions {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record, obligation_is_tort_compensation, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x86"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc2",
+      "case": "bc2",
+      "run": "boundaryAB",
+      "title": "Wage claim, one day before the first anniversary of the due date",
+      "detail": [
+        "periods (DerivationA): [Deadline ask last day none days left none; Deadline none last day 2030-06-15 days left 1462; Deadline none last day none days left none; Deadline warn last day 2026-06-15 days left 1] questions {nonconciliation_record, obligation_is_tort_compensation}",
+        "periods (DerivationB): [Deadline ask last day none days left none; Deadline ask last day none days left none; Deadline ask last day none days left none; Deadline ask last day none days left none; Deadline ask last day none days left none; Deadline warn last day 2026-06-15 days left 1] questions {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record, obligation_is_tort_compensation, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x87"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc3",
+      "case": "bc3",
+      "run": "boundaryAB",
+      "title": "Wage claim filed on the anniversary of the due date: one-year reading on its last day, five-year reading far in time",
+      "detail": [
+        "periods (DerivationA): [Deadline warn last day 2026-06-15 days left 0] questions {nonconciliation_record, obligation_is_tort_compensation}",
+        "periods (DerivationB): [Boundary ask last day none days left none; Deadline warn last day 2026-06-15 days left 0] questions {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record, obligation_is_tort_compensation, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x88"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc4",
+      "case": "bc4",
+      "run": "boundaryAB",
+      "title": "Wage claim, one day after the first anniversary of the due date",
+      "detail": [
+        "periods (DerivationA): [Deadline warn last day 2026-06-15 days left -1] questions {nonconciliation_record, obligation_is_tort_compensation}",
+        "periods (DerivationB): [Boundary ask last day none days left none; Deadline warn last day 2026-06-15 days left -1] questions {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record, obligation_is_tort_compensation, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x89"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc5",
+      "case": "bc5",
+      "run": "boundaryAB",
+      "title": "Five-year edge across a leap day: calendar years against 1825 days",
+      "detail": [
+        "periods (DerivationA): [Deadline ask last day none days left none; Deadline none last day none days left none; Deadline warn last day 2022-02-28 days left -1461; Deadline warn last day 2026-02-28 days left 0] questions {nonconciliation_record, obligation_is_tort_compensation}",
+        "periods (DerivationB): [Deadline ask last day none days left none; Deadline ask last day none days left none; Deadline ask last day none days left none; Deadline ask last day none days left none; Deadline ask last day none days left none; Deadline warn last day 2022-02-28 days left -1461] questions {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record, obligation_is_tort_compensation, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x90"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc6",
+      "case": "bc6",
+      "run": "boundaryAB",
+      "title": "Wage claim, oldest wage due more than five years before: late under every reading",
+      "detail": [
+        "periods (DerivationA): [Deadline warn last day 2025-03-01 days left -471] questions {nonconciliation_record, obligation_is_tort_compensation}",
+        "periods (DerivationB): [Deadline ask last day none days left none; Deadline warn last day 2021-03-01 days left -1932] questions {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record, obligation_is_tort_compensation, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x91"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc7",
+      "case": "bc7",
+      "run": "boundaryAB",
+      "title": "Five-year edge: the day after the last day under the five-year reading",
+      "detail": [
+        "periods (DerivationA): [Deadline warn last day 2026-06-15 days left -1] questions {nonconciliation_record, obligation_is_tort_compensation}",
+        "periods (DerivationB): [Deadline ask last day none days left none; Deadline warn last day 2022-06-15 days left -1462] questions {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record, obligation_is_tort_compensation, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x92"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc8",
+      "case": "bc8",
+      "run": "boundaryAB",
+      "title": "Five-year edge: the day before, which only the five-year reading keeps in time",
+      "detail": [
+        "periods (DerivationA): [Deadline warn last day 2026-06-15 days left 1] questions {nonconciliation_record, obligation_is_tort_compensation}",
+        "periods (DerivationB): [Deadline ask last day none days left none; Deadline warn last day 2022-06-15 days left -1460] questions {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record, obligation_is_tort_compensation, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x93"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc9",
+      "case": "bc9",
+      "run": "boundaryAB",
+      "title": "One-year last day falls on a Friday; petition on the Sunday after",
+      "detail": [
+        "periods (DerivationA): [Deadline ask last day none days left none] questions {nonconciliation_record, obligation_is_tort_compensation}",
+        "periods (DerivationB): [Deadline ask last day none days left none] questions {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record, obligation_is_tort_compensation, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x94"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc10",
+      "case": "bc10",
+      "run": "boundaryAB",
+      "title": "One-year last day falls on 5 July, a possible official holiday; petition the day after",
+      "detail": [
+        "periods (DerivationA): [] questions {nonconciliation_record, obligation_is_tort_compensation}",
+        "periods (DerivationB): [] questions {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record, obligation_is_tort_compensation, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x95"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc11",
+      "case": "bc11",
+      "run": "boundaryAB",
+      "title": "Bailiff's notice served inside the year: does it interrupt the limitation period",
+      "detail": [
+        "periods (DerivationA): [Deadline ask last day none days left none; Deadline none last day none days left none] questions {nonconciliation_record, obligation_is_tort_compensation}",
+        "periods (DerivationB): [Boundary ask last day none days left none] questions {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record, obligation_is_tort_compensation, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x96"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc12",
+      "case": "bc12",
+      "run": "boundaryAB",
+      "title": "Notice by registered letter inside the year: not a judicial claim, notice or seizure",
+      "detail": [
+        "periods (DerivationA): [Deadline ask last day none days left none; Deadline none last day none days left none] questions {nonconciliation_record, obligation_is_tort_compensation}",
+        "periods (DerivationB): [Boundary ask last day none days left none] questions {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record, obligation_is_tort_compensation, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x97"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc13",
+      "case": "bc13",
+      "run": "boundaryAB",
+      "title": "Contract made fifteen years ago less one day: the due date is not the contract date",
+      "detail": [
+        "periods (DerivationA): [Deadline ask last day none days left none; Deadline none last day none days left none; Deadline none last day none days left none] questions {nonconciliation_record, obligation_is_tort_compensation}",
+        "periods (DerivationB): [Deadline ask last day none days left none; Deadline ask last day none days left none; Deadline ask last day none days left none; Deadline none last day none days left none] questions {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record, obligation_is_tort_compensation, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x98"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc14",
+      "case": "bc14",
+      "run": "boundaryAB",
+      "title": "Contract made exactly fifteen years before the petition",
+      "detail": [
+        "periods (DerivationA): [Deadline ask last day none days left none] questions {nonconciliation_record, obligation_is_tort_compensation}",
+        "periods (DerivationB): [Deadline ask last day none days left none] questions {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record, obligation_is_tort_compensation, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x99"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc15",
+      "case": "bc15",
+      "run": "boundaryAB",
+      "title": "Contract made fifteen years and one day before the petition",
+      "detail": [
+        "periods (DerivationA): [Deadline ask last day none days left none; Deadline none last day none days left none; Deadline none last day none days left none] questions {nonconciliation_record, obligation_is_tort_compensation}",
+        "periods (DerivationB): [Deadline ask last day none days left none; Deadline ask last day none days left none; Deadline ask last day none days left none; Deadline none last day none days left none] questions {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record, obligation_is_tort_compensation, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x100"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc16",
+      "case": "bc16",
+      "run": "boundaryAB",
+      "title": "Contract made five months before the petition: in time whatever the due date",
+      "detail": [
+        "periods (DerivationA): [Deadline ask last day none days left none] questions {nonconciliation_record, obligation_is_tort_compensation}",
+        "periods (DerivationB): [Deadline ask last day none days left none] questions {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record, obligation_is_tort_compensation, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x101"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc17",
+      "case": "bc17",
+      "run": "boundaryAB",
+      "title": "Wage claim without the due date of the oldest wage",
+      "detail": [
+        "periods (DerivationA): [Deadline ask last day none days left none; Deadline ask last day none days left none; Deadline none last day none days left none] questions {nonconciliation_record, obligation_is_tort_compensation, wages_due_from}",
+        "periods (DerivationB): [Deadline ask last day none days left none; Deadline ask last day none days left none; Deadline ask last day none days left none; Deadline ask last day none days left none] questions {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record, obligation_is_tort_compensation, wages_due_from, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x102"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc18",
+      "case": "bc18",
+      "run": "boundaryAB",
+      "title": "Wage claim where the due date of the oldest wage is nearly a year back and the worker is in a notice dispute",
+      "detail": [
+        "periods (DerivationA): [Deadline ask last day none days left none; Deadline none last day 2030-06-16 days left 1462; Deadline none last day none days left none; Deadline warn last day 2026-06-16 days left 1] questions {nonconciliation_record, obligation_is_tort_compensation}",
+        "periods (DerivationB): [Deadline ask last day none days left none; Deadline ask last day none days left none; Deadline ask last day none days left none; Deadline ask last day none days left none; Deadline ask last day none days left none; Deadline warn last day 2026-06-16 days left 1] questions {claim_is_periodic_renewable_right, claim_is_professional_fees, claim_is_trader_supply_or_hotel, defendant_resides_abroad, employer_in_bankruptcy_or_settlement, nonconciliation_record, obligation_is_tort_compensation, worker_is_public_servant}"
+      ],
+      "matchedOn": "case",
+      "id": "x103"
+    }
+  ],
+  "sideBySide": {
+    "documents": {
+      "a": [
+        {
+          "id": "doc1",
+          "name": {
+            "ar": "نسخة من محضر عدم المصالحة تبين تاريخ تسليمه",
+            "en": "A copy of the non-conciliation record showing the date it was delivered"
+          },
+          "requiredWhen": {
+            "slot": "nonconciliation_record",
+            "is": "yes"
+          },
+          "why": {
+            "ar": "ترفق بالعريضة، ويبدأ من تاريخ تسليمها أجل الستة أشهر.",
+            "en": "It is attached to the petition, and the six-month period runs from the date of its delivery."
+          },
+          "basis": [
+            "b40",
+            "b37"
+          ]
+        },
+        {
+          "id": "doc2",
+          "name": {
+            "ar": "ما يثبت انقطاع التقادم: إقرار المدين، أو مطالبة قضائية أو تنبيه أو حجز سابق",
+            "en": "Proof that limitation was interrupted: the debtor's acknowledgment, or an earlier judicial claim, command to pay or seizure"
+          },
+          "why": {
+            "ar": "يرد به الدائن على الدفع بالتقادم إن كانت المدة قد انقضت من يوم الاستحقاق.",
+            "en": "The creditor uses it to meet a limitation plea where the period from the due date has run."
+          },
+          "basis": [
+            "b18",
+            "b19"
+          ]
+        }
+      ],
+      "b": [
+        {
+          "id": "doc1",
+          "name": {
+            "ar": "ما يثبت تاريخ بدء المدة (تاريخ الاستحقاق، أو تسليم محضر عدم الصلح، أو وقوع الفعل الضار)",
+            "en": "Proof of the day the period starts (due date, delivery of the non-conciliation record, or the harmful act)"
+          },
+          "why": {
+            "ar": "يبدأ الأجل من هذا اليوم بحسب المواد 315 و504 و133.",
+            "en": "The period runs from this day under articles 315, 504 and 133."
+          },
+          "basis": [
+            "b11",
+            "b35",
+            "b26"
+          ]
+        },
+        {
+          "id": "doc2",
+          "name": {
+            "ar": "ما يثبت سبب قطع التقادم (مطالبة قضائية أو تنبيه أو حجز أو إقرار كتابي)",
+            "en": "Proof of an act that interrupted limitation (a judicial claim, a commandment, a seizure or a written acknowledgment)"
+          },
+          "why": {
+            "ar": "ينقطع التقادم بهذه الأعمال وفق المادتين 317 و318 ويبدأ تقادم جديد.",
+            "en": "These acts interrupt limitation under articles 317 and 318 and a new period starts."
+          },
+          "basis": [
+            "b17",
+            "b18",
+            "b19"
+          ]
+        }
+      ]
+    },
+    "boundaries": {
+      "a": [],
+      "b": [
+        {
+          "id": "n1",
+          "looksLike": {
+            "ar": "مدة تمدد لمدة شهرين لإقامة الخصم خارج الوطن",
+            "en": "A period extended by two months because a party lives abroad"
+          },
+          "isActually": "outside:procedural-periods",
+          "tellingFacts": [
+            {
+              "ar": "التمديد مقرر لآجال المعارضة والاستئناف والتماس إعادة النظر والطعن بالنقض وحدها",
+              "en": "The extension is stated for opposition, appeal, request for retraction and cassation only"
+            }
+          ],
+          "when": {
+            "slot": "defendant_resides_abroad",
+            "is": "yes"
+          },
+          "slots": [
+            "defendant_resides_abroad"
+          ],
+          "message": {
+            "ar": "المادة 404 تمدد بشهرين آجال المعارضة والاستئناف والتماس إعادة النظر والطعن بالنقض فقط؛ تحقق أنها لا تشمل أجل رفع الدعوى ولا مدد التقادم.",
+            "en": "Article 404 extends by 2 months only the periods of opposition, appeal, retraction and cassation; check that it does not cover the filing period or the limitation periods."
+          },
+          "basis": [
+            "b30"
+          ]
+        },
+        {
+          "id": "n2",
+          "looksLike": {
+            "ar": "دعوى أجور عادية ضد صاحب عمل",
+            "en": "An ordinary wage claim against an employer"
+          },
+          "isActually": "outside:bankruptcy",
+          "tellingFacts": [
+            {
+              "ar": "صاحب العمل في إفلاس أو تسوية قضائية",
+              "en": "The employer is bankrupt or in judicial settlement"
+            }
+          ],
+          "when": {
+            "slot": "employer_in_bankruptcy_or_settlement",
+            "is": "yes"
+          },
+          "slots": [
+            "employer_in_bankruptcy_or_settlement"
+          ],
+          "message": {
+            "ar": "المادة 317: طلب قبول الحق في تفليسة المدين يقطع التقادم؛ تحقق هل قدم هذا الطلب وفي أي تاريخ.",
+            "en": "Article 317: a request to admit the debt in the debtor's bankruptcy interrupts limitation; check whether this request was made and on what date."
+          },
+          "basis": [
+            "b17"
+          ]
+        },
+        {
+          "id": "n3",
+          "looksLike": {
+            "ar": "أجر عامل خاضع لتقادم السنة",
+            "en": "A worker's wage under the one-year limitation"
+          },
+          "isActually": "outside:public-service",
+          "tellingFacts": [
+            {
+              "ar": "المدعي موظف أو عون خاضع للقانون الأساسي للوظيفة العمومية",
+              "en": "The plaintiff is a civil servant or agent under the public-service statute"
+            }
+          ],
+          "when": {
+            "slot": "worker_is_public_servant",
+            "is": "yes"
+          },
+          "slots": [
+            "worker_is_public_servant"
+          ],
+          "message": {
+            "ar": "المادتان 312 و504 وضعتا للعمال والأجراء في الدعوى الاجتماعية؛ تحقق هل تسري على موظف خاضع للقانون الأساسي للوظيفة العمومية.",
+            "en": "Articles 312 and 504 are written for workers and employees in the social claim; check whether they apply to a civil servant under the public-service statute."
+          },
+          "basis": [
+            "b6",
+            "b35"
+          ]
+        }
+      ]
+    }
+  },
+  "proposedSlots": {
+    "a": [
+      {
+        "id": "obligation_due_date",
+        "type": "date",
+        "question": {
+          "ar": "ما تاريخ استحقاق الدين أو الالتزام المطالب به؟",
+          "en": "On what date did the debt or obligation claimed fall due?"
+        },
+        "why": "Deadline d1 runs from it: the Civil Code makes limitation run from the day the debt becomes due when no special text applies (civil-code 315 ¶1). No existing slot holds the due date of an ordinary debt (wages_due_from holds only wages; contract_date is the day of the contract, not of the due date)."
+      },
+      {
+        "id": "harmful_act_date",
+        "type": "date",
+        "question": {
+          "ar": "ما تاريخ وقوع الفعل الضار؟",
+          "en": "On what date did the harmful act occur?"
+        },
+        "why": "Deadline d2 runs from it: the compensation action falls after fifteen years from the day of the harmful act (civil-code 133 ¶1). No existing slot holds that date."
+      },
+      {
+        "id": "forfeiture_lifted_by_order",
+        "type": "yesNoUnknown",
+        "question": {
+          "ar": "هل صدر أمر من رئيس الجهة القضائية برفع السقوط بسبب قوة قاهرة أو أحداث أثرت في السير العادي لمرفق العدالة؟",
+          "en": "Has the president of the court lifted the forfeiture by order, for force majeure or events that disturbed the normal working of the courts?"
+        },
+        "why": "Deadline d5 reads it: the CPCA excepts force majeure and events affecting the courts from the forfeiture of its periods, and the forfeiture is lifted by the president's order on petition (cpca 322 ¶1 and ¶2). Absent or unknown, it is not asked and the deadline applies."
+      }
+    ],
+    "b": [
+      {
+        "id": "debt_due_date",
+        "type": "date",
+        "question": {
+          "ar": "ما تاريخ استحقاق الدين (أقدم مبلغ مطالب به)؟",
+          "en": "On what date did the debt (the oldest sum claimed) fall due?"
+        },
+        "why": "Deadlines d3, d5, d6 and d7 run from the day the debt becomes payable; the general rule on the start of limitation makes the due date the starting day."
+      },
+      {
+        "id": "harmful_act_date",
+        "type": "date",
+        "question": {
+          "ar": "ما تاريخ وقوع الفعل الضار؟",
+          "en": "On what date did the harmful act happen?"
+        },
+        "why": "Deadline d4 (the compensation claim) runs from the day of the harmful act."
+      },
+      {
+        "id": "claim_is_professional_fees",
+        "type": "yesNoUnknown",
+        "question": {
+          "ar": "هل الدين أتعاب أو مصاريف مستحقة لطبيب أو صيدلي أو محام أو مهندس أو خبير أو وكيل تفليسة أو سمسار أو أستاذ أو معلم عن عمل مهنته؟",
+          "en": "Is the debt a fee or expense owed to a doctor, pharmacist, lawyer, engineer, expert, bankruptcy agent, broker, professor or teacher for the work of his profession?"
+        },
+        "why": "Deadline d5 reads it; the article on professional fees sets a shorter period."
+      },
+      {
+        "id": "claim_is_trader_supply_or_hotel",
+        "type": "yesNoUnknown",
+        "question": {
+          "ar": "هل الدين ثمن أشياء ورّدها تاجر أو صانع لشخص لا يتجر فيها، أو أجر إقامة أو طعام لدى فندق أو مطعم؟",
+          "en": "Is the debt the price of things supplied by a trader or craftsman to a person who does not trade in them, or the charge of a hotel or restaurant for lodging or meals?"
+        },
+        "why": "Deadline d6 reads it; the article on one-year rights lists these debts."
+      },
+      {
+        "id": "claim_is_periodic_renewable_right",
+        "type": "yesNoUnknown",
+        "question": {
+          "ar": "هل الدين حق دوري متجدد كأجرة العقار أو الديون المتأخرة أو المرتبات أو المعاشات؟",
+          "en": "Is the debt a periodic renewable right such as rent, arrears, salaries or pensions?"
+        },
+        "why": "Deadline d7 reads it; the article on periodic rights sets a five-year period for them."
+      }
+    ]
+  },
+  "agreement": {
+    "deadline": {
+      "equal": 25,
+      "compared": 37
+    },
+    "element": {
+      "equal": 0,
+      "compared": 3
+    },
+    "slot": {
+      "equal": 6,
+      "compared": 15
+    },
+    "statement": {
+      "equal": 66,
+      "compared": 78
+    }
+  },
+  "agreementTotal": {
+    "equal": 97,
+    "compared": 133
+  },
+  "caseRuns": [
+    "aOnB",
+    "bOnA",
+    "boundaryA",
+    "boundaryAB",
+    "boundaryB"
+  ],
+  "caseDifferences": 67
+}

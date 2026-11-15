@@ -16,13 +16,13 @@ public sealed class WritingTests : IDisposable
 
     public WritingTests() => Directory.CreateDirectory(work);
 
-    private static SamplerData Data => LazyData.Value;
+    internal static SamplerData Data => LazyData.Value;
 
     private static StyleCard ShortCard => Data.Cards.First(c => c.Parameters["length"] == "short");
 
     public void Dispose() => Directory.Delete(work, recursive: true);
 
-    private static JsonObject Scenario() => JsonNode.Parse($$$"""
+    internal static JsonObject Scenario() => JsonNode.Parse($$$"""
         {"id":"s-fx-00001","set":"pilot","family":"f-fx-00001","claims":["unpaid-sale-price","contract-damages"],"outsideKind":null,
          "roles":{"contract-damages":{"relation":"sale","position":"seller"}},
          "events":[
@@ -54,7 +54,7 @@ public sealed class WritingTests : IDisposable
 
     private const string Requests = "إلزام المشتري بدفع 1.000.000 دج وتعويض قدره 150.000 دج.";
 
-    private static JsonObject Note(string facts = Facts, string requests = Requests)
+    internal static JsonObject Note(string facts = Facts, string requests = Requests)
     {
         JsonObject F(string reference, params (string Field, string Quote)[] quotes) => new()
         {

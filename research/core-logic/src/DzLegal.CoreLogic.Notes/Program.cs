@@ -14,6 +14,7 @@ using DzLegal.CoreLogic.Notes;
 //   notes sample --set <set> --count <n> --seed <n> [--groups <n>] [--writer codex|sonnet] [--work <folder>] [--out <file>]
 //   notes write --set <set> --calls <n> --writer codex|sonnet [--work <folder>]
 //   notes ingest --call <id> [--reply <file>] [--rejected] [--work <folder>]
+//   notes filter-sheet --note <id> --set <set>; notes filter --set <set> --model <ollama tag> [--limit <n>]
 // Every command takes --repo <folder> (the worktree); without it the tool finds the repository above it.
 const string Usage = "usage: notes guide-items --prepare|--ingest … | guide-test --prepare|--compare … | cells --prepare|--write-table … [--repo <folder>]";
 
@@ -157,6 +158,14 @@ try
             return DzLegal.CoreLogic.Notes.Writing.IngestCommand.Run(files,
                 positional.FirstOrDefault(p => !p.StartsWith("--", StringComparison.Ordinal)) ?? throw new ArgumentException("--call <id>"),
                 options, positional.Where(p => p.StartsWith("--", StringComparison.Ordinal)).ToHashSet(StringComparer.Ordinal));
+
+        case ("filter-sheet", "--note"):
+            return DzLegal.CoreLogic.Notes.Filtering.FilterCommand.RunSheet(files,
+                positional.FirstOrDefault() ?? throw new ArgumentException("--note <id>"), options);
+
+        case ("filter", "--set"):
+            return DzLegal.CoreLogic.Notes.Filtering.FilterCommand.Run(files,
+                positional.FirstOrDefault() ?? throw new ArgumentException("--set <name>"), options);
 
         case ("sample", "--set"):
             return DzLegal.CoreLogic.Notes.Sampler.SampleCommand.Run(files,

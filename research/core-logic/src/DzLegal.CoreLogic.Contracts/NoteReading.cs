@@ -55,6 +55,28 @@ public sealed record ClaimGuess
     /// <summary>Calibrated: among answers given with confidence c, a share c are right on the development notes.</summary>
     public required double Confidence { get; init; }
     public IReadOnlyList<TextSpan> Evidence { get; init; } = [];
+
+    /// <summary>
+    /// Which side the plaintiff is on, for this claim type (scheme 1.0, section 3). Optional: null when the reader gives
+    /// none; an integrator may ignore it and loses nothing.
+    /// </summary>
+    public RoleReading? Role { get; init; }
+}
+
+/// <summary>
+/// The plaintiff's role for one claim type: a (relation, position) pair of that claim type's roles in
+/// claim-elements.json (FactVocabulary.Relations and Positions). For the fourteen claim types with one role the reader
+/// fills it from the catalogue; for the seven with a choice it reads it from the note, or abstains.
+/// </summary>
+public sealed record RoleReading
+{
+    public required string Relation { get; init; }
+    public required string Position { get; init; }
+    public required double Confidence { get; init; }
+
+    /// <summary>True when the reader does not answer; <see cref="Relation"/> and <see cref="Position"/> are then its best guess.</summary>
+    public bool Abstained { get; init; }
+    public IReadOnlyList<TextSpan> Evidence { get; init; } = [];
 }
 
 public sealed record ClaimReading

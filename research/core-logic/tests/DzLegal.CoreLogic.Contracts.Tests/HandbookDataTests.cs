@@ -41,6 +41,19 @@ public sealed class HandbookDataTests
             {
                 Assert.Contains(ask["slot:".Length..], slots);
             }
+            else if (ask.StartsWith("role:", StringComparison.Ordinal))
+            {
+                // The plaintiff's role (guide 3b, since guide 1.2): asked for the item's own claim type; the answer is
+                // "unknown" or a relation/position pair of the app's lists.
+                Assert.Equal(item.GetProperty("claim").GetString(), ask["role:".Length..]);
+                if (expected != "unknown")
+                {
+                    var pair = expected.Split('/');
+                    Assert.Equal(2, pair.Length);
+                    Assert.Contains(pair[0], FactVocabulary.Relations);
+                    Assert.Contains(pair[1], FactVocabulary.Positions);
+                }
+            }
             else
             {
                 Assert.Equal("value", ask);

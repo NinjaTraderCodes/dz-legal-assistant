@@ -36,7 +36,10 @@ PYTHON = r"C:\Users\TheShadow\AppData\Local\Programs\Python\Python312\python.exe
 MARK = "--- PROMPT ---"
 PLACEHOLDER = re.compile(r"\{\{(\w+)\}\}")
 LABOUR_UNITS = {"labour-prelitigation", "abusive-dismissal", "unpaid-wages"}
-SEED_ORIGINS = {"labour-prelitigation", "unpaid-wages"}
+# The slots the seed list took from the hand-made labour examples before any derivation: hidden from the labour units'
+# derivers by id (never by origin: a slot a final module adds has that module as its origin and is shown to everyone).
+SEED_SLOTS = {"wages_due_from", "defendant_resides_abroad", "employer_in_bankruptcy_or_settlement",
+              "worker_is_public_servant", "work_accident_or_occupational_illness"}
 
 # The French texts for derivation B, by module (french/INDEX.md in the working folder lists what exists). A unit not
 # listed here cannot be filled for B until its French chapter is prepared.
@@ -111,7 +114,7 @@ def slots(unit: str, english_only: bool = False) -> str:
         doc = json.load(f)
     lines = []
     for s in doc["slots"]:
-        if unit in LABOUR_UNITS and s.get("origin") in SEED_ORIGINS:
+        if unit in LABOUR_UNITS and s["id"] in SEED_SLOTS:
             continue
         q = s["question"]["en"] if english_only else f"{s['question']['ar']} / {s['question']['en']}"
         line = f"- `{s['id']}` ({s['type']}): {q}"

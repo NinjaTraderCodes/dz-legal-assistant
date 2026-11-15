@@ -223,3 +223,18 @@ def test_a_follow_up_verifier_run_reads_the_last_candidate_and_writes_its_own_re
     _, body = prompts.template("rules-verify")
     assert not set(prompts.PLACEHOLDER.findall(body)) - set(values)
 
+
+def test_seed_slots_are_hidden_by_id_and_a_final_modules_slots_are_shown(tmp_path, monkeypatch):
+    """A slot that labour-prelitigation's final record adds has that module as its origin: the labour derivers see it."""
+    doc = {"slots": [{"id": "wages_due_from", "type": "date", "origin": "unpaid-wages",
+                      "question": {"ar": "س؟", "en": "q?"}},
+                     {"id": "new_from_module", "type": "yesNoUnknown", "origin": "labour-prelitigation",
+                      "question": {"ar": "س؟", "en": "q2?"}}]}
+    cl = tmp_path / "cl"
+    cl.mkdir()
+    (cl / "slots.json").write_text(json.dumps(doc), encoding="utf-8")
+    monkeypatch.setattr(prompts, "CL", str(cl))
+    shown = prompts.slots("unpaid-wages")
+    assert "new_from_module" in shown and "wages_due_from" not in shown
+    assert "wages_due_from" in prompts.slots("loan-repayment")
+

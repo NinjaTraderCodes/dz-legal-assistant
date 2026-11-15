@@ -288,6 +288,14 @@ def _decided(u: Unit, entry_id: str, target: str | None = None) -> bool:
     return False
 
 
+def limits(u: Unit) -> dict[str, dict]:
+    """reports\\<unit>.boundary-limits.json: cases that fail only by a limit of the evaluator (no official holiday) or
+    of the condition language (no comparison of a date slot with the petition date), as a verifier found. They are
+    recorded in the tracking file and the question batch; they are not attacks and not sent to Codex."""
+    path = u.r("boundary-limits.json")
+    return {x["case"]: x for x in load(path)["cases"]} if os.path.isfile(path) else {}
+
+
 def _case_decided(u: Unit, cid: str) -> bool:
     return any(e.get("who") == "boundaryCase" and (e["id"] in (cid, f"bc-{cid}") or e["id"].startswith(f"bc-{cid}-"))
                for e in register_entries(u))
@@ -434,7 +442,7 @@ def followup_entries(u: Unit) -> list[dict]:
     cases = {c["id"]: c for c in load(u.boundary)} if os.path.isfile(u.boundary) else {}
     for res in results:
         cid = res["caseId"]
-        if cid in cases and not res["passed"] and not _case_decided(u, cid):
+        if cid in cases and not res["passed"] and not _case_decided(u, cid) and cid not in limits(u):
             out.append(_case_entry(cases[cid], res, f"bc-{cid}"))
     out += _owner_done_entries(results)
     out += uncertain_entries(u)
@@ -494,7 +502,7 @@ def second_view_due(u: Unit) -> tuple[list[str], list[str]]:
             continue
         cid = e["id"][3:] if e["id"].startswith("bc-") else e["id"]
         cid = cid.split("-")[0]
-        if cid in seen or cid not in failing or cid not in cases:
+        if cid in seen or cid not in failing or cid not in cases or cid in limits(u):
             continue
         actual = failing[cid].get("actual")
         if actual in prompts.OUTCOME_MEANINGS and actual != cases[cid]["expect"]["outcome"]:
@@ -760,8 +768,7 @@ def grade(u: Unit, planted: str | None = None) -> bool:
 
 
 def stage9(u: Unit) -> bool:
-    os.makedirs(u.cases, exist_ok=True)
-    if not checks_on(u, u.candidate, u.candidate_q, "final"):
+    if not checks_fresh(u) and not run_final_checks(u):
         return False
     new = followup_entries(u)
     if new:
@@ -822,7 +829,24 @@ def launch(u: Unit, stage: str, ledger: str = LEDGER) -> str:
             f"THEN    python unit.py done {u.id} {stage} <agent id>")
 
 
+def checks_fresh(u: Unit) -> bool:
+    stamp = os.path.join(u.run, "checks.final.json")
+    return os.path.isfile(stamp) and os.path.isfile(u.candidate) and load(stamp).get("candidate") == file_sha(u.candidate)
+
+
+def run_final_checks(u: Unit) -> bool:
+    os.makedirs(u.cases, exist_ok=True)
+    ok = checks_on(u, u.candidate, u.candidate_q, "final")
+    if ok:
+        save(os.path.join(u.run, "checks.final.json"), {"candidate": file_sha(u.candidate), "at": now()})
+    return ok
+
+
 def next_(u: Unit, ledger: str = LEDGER) -> int:
+    if os.path.isfile(u.candidate) and not checks_fresh(u):
+        print("-- the stage 9 checks on the new final candidate")
+        if not run_final_checks(u):
+            return 1
     for stage, state in status(u):
         if stage in SCRIPT_STAGES and state == "due":
             print(f"-- stage {stage}")
@@ -1123,8 +1147,10 @@ def questions(batch: int, units: list[Unit], out_dir: str | None = None) -> str:
         failing = [r for r in _results(os.path.join(u.cases, "boundaryFinal.json")) if not r["passed"]]
         if failing:
             lines += ["### Boundary cases the final record still fails", ""]
+            lim = limits(u)
             for r in failing:
-                lines.append(f"- **{r['caseId']}** ({r['title']}): " + " | ".join(r["differences"]))
+                note = f" **{lim[r['caseId']]['kind']}:** {lim[r['caseId']]['why']}" if r["caseId"] in lim else ""
+                lines.append(f"- **{r['caseId']}** ({r['title']}): " + " | ".join(r["differences"]) + note)
             lines.append("")
         _, owner = second_view_due(u)
         if owner:
@@ -1156,8 +1182,10 @@ def tracking_row(u: Unit) -> str:
     total = len([c for c in load(u.boundary)]) if os.path.isfile(u.boundary) else 0
     passed = " / ".join(_passed(os.path.join(u.cases, f)) for f in
                         ("boundaryA.json", "boundaryB.json", "boundaryReconciled.json", "boundaryFinal.json"))
-    failing = [f"{r['caseId']}: {r['differences'][0][:90]}" for r in _results(os.path.join(u.cases, "boundaryFinal.json"))
-               if not r["passed"] and r["differences"]]
+    lim = limits(u)
+    failing = [f"{r['caseId']}: " + (f"{lim[r['caseId']]['kind']}: {lim[r['caseId']]['why'][:90]}" if r["caseId"] in lim
+                                     else r["differences"][0][:90])
+               for r in _results(os.path.join(u.cases, "boundaryFinal.json")) if not r["passed"] and r["differences"]]
     o = diff.get("outsideTextsGiven") or {}
     outside = f"{o.get('a', '–')} / {o.get('b', '–')} / {o.get('both', '–')}" if o else "–"
     verdicts = [e.get("verdict") for e in latest(register_entries(u)).values()]

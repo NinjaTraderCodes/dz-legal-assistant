@@ -297,3 +297,18 @@ def test_store_view_keeps_both_words_and_refuses_a_word_not_offered(root):
     view = load(unit.store_view(u, str(answer), {"bc1": "ask"}))
     assert view["cases"] == ["bc1"] and view["writerExpected"] == {"bc1": "stepMissing"}
     assert view["recordActual"] == {"bc1": "ask"} and view["codex"]["cases"][0]["answer"] == "ask"
+
+
+def test_a_case_failing_by_a_known_limit_is_neither_a_follow_up_nor_sent_to_codex(root):
+    u = through_stage_4(root)
+    reports = root / "rules" / "reports"
+    dump(reports / "proof.attacks.json", {"attacks": [{"id": "bc-bc1", "who": "boundaryCase", "target": "p1",
+                                                       "verdict": "refuted", "verifierQuote": "q"}]})
+    dump(Path(u.cases) / "boundaryFinal.json", [{"caseId": "bc1", "title": "t", "passed": False, "actual": "ask",
+                                                 "differences": ["p1: declared ask (p1: asks y -> ask)"]}])
+    assert unit.second_view_due(u) == (["bc1"], [])
+    dump(reports / "proof.boundary-limits.json", {"cases": [{"case": "bc1", "kind": "languageLimit",
+                                                            "why": "no comparison of a date slot with the petition date"}]})
+    assert unit.second_view_due(u) == ([], []) and unit.followup_entries(u) == []
+    assert "languageLimit" in unit.tracking_row(u)
+

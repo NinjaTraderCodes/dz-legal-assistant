@@ -1,0 +1,12 @@
+{
+ "unit": "formal-notice",
+ "comment": "Cases that fail only by a limit of the evaluator or of the condition language, as a verifier found (unit.py limits): recorded in the tracking file and the question batch, not attacks, not sent to Codex.",
+ "cases": [
+  {
+   "case": "bc1",
+   "kind": "languageLimit",
+   "why": "The condition language cannot compare a date slot (notice_date) with the petition date, so p2 asks notice_before_petition_day although the notice of 2026-05-10 precedes the petition of 2026-06-15. The verifier (r-s1-0016, entry bc-bc1, refuted) holds that the text gives 'done' here, as the case writer expected; exV33 shows the answered case. A condition form comparing a date slot with the petition date would remove it.",
+   "foundBy": "r-s1-0016"
+  }
+ ]
+}

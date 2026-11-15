@@ -5,5 +5,8 @@
   <ItemGroup>
     <!-- The code-made value corpus (scripts/value_corpus.py, seed 11): rung 2's own test, needing no note. -->
     <Content Include="value-corpus.jsonl" CopyToOutputDirectory="PreserveNewest" />
+    <!-- The guide's hard cases as test data, and the guide itself for its table 5.1. -->
+    <Content Include="hard-cases.json" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\..\..\..\docs\research\core-logic\notes\LABELLING-GUIDE.md" Link="LABELLING-GUIDE.md" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

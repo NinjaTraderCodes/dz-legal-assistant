@@ -5,4 +5,8 @@
   <ItemGroup>
     <ProjectReference Include="..\DzLegal.CoreLogic.Contracts\DzLegal.CoreLogic.Contracts.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <!-- The cue table: written from the guide's table 5.1 and the element propositions, never from a note. -->
+    <Content Include="cues.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project>

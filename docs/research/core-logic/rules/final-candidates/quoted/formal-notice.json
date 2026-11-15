@@ -11,7 +11,7 @@
   "derivedBy": {
     "role": "verifier",
     "model": "claude-opus-5-5",
-    "date": "2026-11-14"
+    "date": "2026-11-15"
   },
   "appliesTo": [
     "*"
@@ -102,7 +102,7 @@
         "ar": "هل يحدد العقد شكلا أو أجلا أو جهة معينة للإعذار قبل المطالبة أو الفسخ أو حلول الدين؟",
         "en": "Does the contract set a form, a period or an addressee for the notice before a claim, a rescission or the acceleration of the debt?"
       },
-      "why": "Boundary n10 reads it: Civil Code article 120 paragraph 2 says the notice «يحدد حسب العرف عند عدم تحديده من طرف المتعاقدين», and article 106 paragraph 1 makes the contract the law of the parties."
+      "why": "Boundary n10 reads it: Civil Code article 120 paragraph 1 says the notice «يحدد حسب العرف عند عدم تحديده من طرف المتعاقدين», and article 106 paragraph 1 makes the contract the law of the parties."
     },
     {
       "id": "notice_before_petition_day",
@@ -111,7 +111,7 @@
         "ar": "هل بلغ الإعذار إلى المدين قبل يوم رفع الدعوى، لا في يومه ولا بعده؟",
         "en": "Was the notice served on the debtor before the day the petition is filed, not on that day or after it?"
       },
-      "why": "Boundary n12 reads it (verifier, boundary case bc8): Civil Code article 179 paragraph 1 makes compensation due «بعد اعذار المدين» and article 119 paragraph 1 allows the claim «بعد اعذاره المدين», and neither says whether a notice served on the petition's day, or after it, suffices (open point o9). The rule language cannot compare notice_date with the petition date, so the lawyer is asked; the slot can be dropped once the evaluator compares the two dates."
+      "why": "Boundary n12 and the steps p1, p2 and p3 read it (verifier, boundary case bc8): Civil Code article 179 paragraph 1 makes compensation due «بعد اعذار المدين» and article 119 paragraph 1 allows the claim «بعد اعذاره المدين», and neither says whether a notice served on the petition's day, or after it, suffices (open point o9). The rule language cannot compare notice_date with the petition date, so the lawyer is asked; the slot can be dropped once the evaluator compares the two dates. The steps p1 to p3 count the notice as done only when this is yes (owner's decision of 14 November 2026)."
     }
   ],
   "basis": [
@@ -450,8 +450,8 @@
       "quote": [
         {
           "paragraph": 1,
-          "text": "يجوز الاتفاق على أن يعتبر العقد مفسوخا بحكم القانون عند عدم الوفاء بالالتزامات الناشئة عنه بمجرد تحقيق الشروط المتفق عليها وبدون حاجة إلى حكم قضائي.",
-          "sha256": "c1727a653119b770b2fcda2869062a143f867e123960da16f2ce55600d0f230f"
+          "text": "يجوز الاتفاق على أن يعتبر العقد مفسوخا بحكم القانون عند عدم الوفاء بالالتزامات الناشئة عنه بمجرد تحقيق الشروط المتفق عليها وبدون حاجة إلى حكم قضائي. وهذا الشرط لا يعفي من الاعذار، الذي يحدد حسب العرف عند عدم تحديده من طرف المتعاقدين.",
+          "sha256": "627ff34c3251453c3569b4a493994657191bcf7603e61b29c5439323a52255bf"
         }
       ],
       "source": {
@@ -469,7 +469,7 @@
         "code": "civil-code",
         "article": "120",
         "paragraphs": [
-          2
+          1
         ]
       },
       "says": {
@@ -478,9 +478,9 @@
       },
       "quote": [
         {
-          "paragraph": 2,
-          "text": "وهذا الشرط لا يعفي من الاعذار، الذي يحدد حسب العرف عند عدم تحديده من طرف المتعاقدين.",
-          "sha256": "dd5aadaed3c37610d276d67584c9d5e90e41257a0eb98c110ba088b24eeb7034"
+          "paragraph": 1,
+          "text": "يجوز الاتفاق على أن يعتبر العقد مفسوخا بحكم القانون عند عدم الوفاء بالالتزامات الناشئة عنه بمجرد تحقيق الشروط المتفق عليها وبدون حاجة إلى حكم قضائي. وهذا الشرط لا يعفي من الاعذار، الذي يحدد حسب العرف عند عدم تحديده من طرف المتعاقدين.",
+          "sha256": "627ff34c3251453c3569b4a493994657191bcf7603e61b29c5439323a52255bf"
         }
       ],
       "source": {
@@ -1302,6 +1302,8 @@
       "kind": "formalNotice",
       "slots": [
         "notice_served",
+        "notice_means",
+        "notice_before_petition_day",
         "requests",
         "default_on_due_date_agreed",
         "performance_impossible_or_useless_by_debtor",
@@ -1310,307 +1312,34 @@
         "debtor_refused_in_writing"
       ],
       "requiredWhen": {
-        "slot": "requests",
-        "includes": "damages"
-      },
-      "notRequiredWhen": [
-        {
-          "when": {
-            "slot": "default_on_due_date_agreed",
-            "is": "yes"
-          },
-          "basis": [
-            "b5"
-          ],
-          "note": {
-            "ar": "اتفاق على أن المدين معذر بمجرد حلول الأجل.",
-            "en": "Agreement that the debtor is in default on the due date."
-          }
-        },
-        {
-          "when": {
-            "slot": "performance_impossible_or_useless_by_debtor",
-            "is": "yes"
-          },
-          "basis": [
-            "b6",
-            "b7"
-          ],
-          "note": {
-            "ar": "تعذر التنفيذ أو عدم جدواه بفعل المدين.",
-            "en": "Performance impossible or useless through the debtor's act."
-          }
-        },
-        {
-          "when": {
-            "slot": "obligation_is_tort_compensation",
-            "is": "yes"
-          },
-          "basis": [
-            "b6",
-            "b8"
-          ],
-          "note": {
-            "ar": "تعويض عن عمل مضر.",
-            "en": "Compensation for a harmful act."
-          }
-        },
-        {
-          "when": {
-            "slot": "return_of_thing_known_stolen_or_unduly_received",
-            "is": "yes"
-          },
-          "basis": [
-            "b6",
-            "b9"
-          ],
-          "note": {
-            "ar": "رد شيء مسروق أو مقبوض دون حق مع العلم.",
-            "en": "Return of a thing known stolen or knowingly received without right."
-          }
-        },
-        {
-          "when": {
-            "slot": "debtor_refused_in_writing",
-            "is": "yes"
-          },
-          "basis": [
-            "b6",
-            "b10"
-          ],
-          "note": {
-            "ar": "تصريح المدين كتابة بعدم التنفيذ.",
-            "en": "The debtor declared in writing he will not perform."
-          }
-        }
-      ],
-      "acceptedMeans": [
-        {
-          "id": "m1",
-          "label": {
-            "ar": "إنذار بعقد غير قضائي يبلغه محضر قضائي",
-            "en": "A warning by extrajudicial act served by a bailiff"
-          },
-          "basis": [
-            "b5",
-            "b21"
-          ]
-        },
-        {
-          "id": "m2",
-          "label": {
-            "ar": "إنذار يوجه بأمر على عريضة من رئيس الجهة القضائية، ينفذ خلال ثلاثة أشهر من صدور الأمر وإلا سقط (المادة 311 من قانون الإجراءات المدنية والإدارية)",
-            "en": "A warning directed on an order on petition of the court president, executed within three months of the order, failing which the order lapses (Code of Civil and Administrative Procedure article 311)"
-          },
-          "basis": [
-            "b5",
-            "b22",
-            "b35"
-          ]
-        },
-        {
-          "id": "m3",
-          "label": {
-            "ar": "الإعذار عن طريق البريد على الوجه المبين في القانون (لم يعثر على النص الذي يبين هذا الوجه؛ النقطة المفتوحة o2)",
-            "en": "Notice by post in the way the code provides (the text that sets out that way was not found; open point o2)"
-          },
-          "basis": [
-            "b5"
-          ]
-        },
-        {
-          "id": "m4",
-          "label": {
-            "ar": "ما يقوم مقام الإنذار",
-            "en": "An act that stands in the place of a warning"
-          },
-          "basis": [
-            "b5"
-          ]
-        }
-      ],
-      "effectWhenMissing": "warn",
-      "effectWhenUnknown": "ask",
-      "interpretive": true,
-      "interpretiveNote": "Article 179 says compensation is not due before notice and states no sanction on the claim; whether the petition or its service counts as an act that stands in the place of a warning (article 180), whether a notice served after filing suffices, and whether the lack of notice makes the request inadmissible or only unfounded, are readings. A reading never blocks: warn.",
-      "message": {
-        "ar": "المادة 179 من القانون المدني: لا يستحق التعويض إلا بعد إعذار المدين، ما لم يوجد نص مخالف أو حالة من حالات المادة 181. تحقق من الإعذار ووسيلته وتاريخه وأنه سابق على العريضة، أو من حالة الإعفاء.",
-        "en": "Civil Code article 179: compensation is due only after the debtor is put on notice, unless a text provides otherwise or a case of article 181 applies. Check the notice, its means and its date (before the petition), or the exemption."
-      },
-      "basis": [
-        "b1",
-        "b5",
-        "b6",
-        "b7",
-        "b8",
-        "b9",
-        "b10",
-        "b13"
-      ]
-    },
-    {
-      "id": "p2",
-      "kind": "formalNotice",
-      "slots": [
-        "notice_served",
-        "requests",
-        "default_on_due_date_agreed",
-        "performance_impossible_or_useless_by_debtor",
-        "debtor_refused_in_writing",
-        "movable_sale_price_unpaid_at_term"
-      ],
-      "requiredWhen": {
-        "slot": "requests",
-        "includes": "rescission"
-      },
-      "notRequiredWhen": [
-        {
-          "when": {
-            "slot": "default_on_due_date_agreed",
-            "is": "yes"
-          },
-          "basis": [
-            "b5"
-          ],
-          "note": {
-            "ar": "اتفاق على أن المدين معذر بمجرد حلول الأجل (وهو غير شرط الفسخ الاتفاقي).",
-            "en": "Agreement that the debtor is in default on the due date (not the same as an agreed rescission clause)."
-          }
-        },
-        {
-          "when": {
-            "slot": "performance_impossible_or_useless_by_debtor",
-            "is": "yes"
-          },
-          "basis": [
-            "b6",
-            "b7"
-          ],
-          "note": {
-            "ar": "تعذر التنفيذ أو عدم جدواه بفعل المدين.",
-            "en": "Performance impossible or useless through the debtor's act."
-          }
-        },
-        {
-          "when": {
-            "slot": "debtor_refused_in_writing",
-            "is": "yes"
-          },
-          "basis": [
-            "b6",
-            "b10"
-          ],
-          "note": {
-            "ar": "تصريح المدين كتابة بعدم التنفيذ.",
-            "en": "The debtor declared in writing he will not perform."
-          }
-        },
-        {
-          "when": {
-            "slot": "movable_sale_price_unpaid_at_term",
-            "is": "yes"
-          },
-          "basis": [
-            "b16"
-          ],
-          "note": {
-            "ar": "المدعي بائع منقولات بأجل لدفع الثمن وتسلم المبيع حل دون دفع، ولا اتفاق على خلاف ذلك: فسخ لصالح البائع دون سابق إنذار.",
-            "en": "The plaintiff is the seller of movables with a term for price and delivery, passed unpaid, and nothing was agreed to the contrary: rescission in the seller's favour without prior warning."
-          }
-        }
-      ],
-      "acceptedMeans": [
-        {
-          "id": "m1",
-          "label": {
-            "ar": "إنذار بعقد غير قضائي يبلغه محضر قضائي",
-            "en": "A warning by extrajudicial act served by a bailiff"
-          },
-          "basis": [
-            "b5",
-            "b21"
-          ]
-        },
-        {
-          "id": "m2",
-          "label": {
-            "ar": "إنذار يوجه بأمر على عريضة من رئيس الجهة القضائية، ينفذ خلال ثلاثة أشهر من صدور الأمر وإلا سقط (المادة 311 من قانون الإجراءات المدنية والإدارية)",
-            "en": "A warning directed on an order on petition of the court president, executed within three months of the order, failing which the order lapses (Code of Civil and Administrative Procedure article 311)"
-          },
-          "basis": [
-            "b5",
-            "b22",
-            "b35"
-          ]
-        },
-        {
-          "id": "m3",
-          "label": {
-            "ar": "الإعذار عن طريق البريد على الوجه المبين في القانون (لم يعثر على النص الذي يبين هذا الوجه؛ النقطة المفتوحة o2)",
-            "en": "Notice by post in the way the code provides (the text that sets out that way was not found; open point o2)"
-          },
-          "basis": [
-            "b5"
-          ]
-        },
-        {
-          "id": "m4",
-          "label": {
-            "ar": "ما يقوم مقام الإنذار",
-            "en": "An act that stands in the place of a warning"
-          },
-          "basis": [
-            "b5"
-          ]
-        }
-      ],
-      "effectWhenMissing": "warn",
-      "effectWhenUnknown": "ask",
-      "interpretive": true,
-      "interpretiveNote": "Article 119 allows the claim for rescission 'after notice' and states no sanction for its absence. The exemptions of article 181 are worded for any notice to the debtor, and article 119 does not refer to them; applying them here is a reading (open point o3). Warn, never block.",
-      "message": {
-        "ar": "المادة 119 من القانون المدني: في العقد الملزم للجانبين، يطلب الفسخ بعد إعذار المدين، وشرط الفسخ الاتفاقي لا يعفي من الإعذار (المادة 120)، وبيع المنقولات الذي لم يدفع ثمنه عند الأجل يفسخ دون سابق إنذار (المادة 392). تحقق من الإعذار وتاريخه أو من حالة الإعفاء.",
-        "en": "Civil Code article 119: in a bilateral contract, rescission is claimed after putting the debtor on notice; an agreed rescission clause does not dispense with it (article 120), and a sale of movables unpaid at the term is rescinded without prior warning (article 392). Check the notice and its date, or the exemption."
-      },
-      "basis": [
-        "b2",
-        "b12",
-        "b5",
-        "b6",
-        "b7",
-        "b10",
-        "b16"
-      ]
-    },
-    {
-      "id": "p3",
-      "kind": "formalNotice",
-      "slots": [
-        "notice_served",
-        "requests",
-        "default_on_due_date_agreed",
-        "performance_impossible_or_useless_by_debtor",
-        "obligation_is_tort_compensation",
-        "return_of_thing_known_stolen_or_unduly_received",
-        "debtor_refused_in_writing"
-      ],
-      "requiredWhen": {
-        "any": [
+        "all": [
           {
             "slot": "requests",
-            "includes": "payment"
+            "includes": "damages"
           },
           {
-            "slot": "requests",
-            "includes": "delivery"
-          },
-          {
-            "slot": "requests",
-            "includes": "restitution"
-          },
-          {
-            "slot": "requests",
-            "includes": "eviction"
+            "any": [
+              {
+                "slot": "notice_served",
+                "known": false
+              },
+              {
+                "slot": "notice_served",
+                "is": "no"
+              },
+              {
+                "all": [
+                  {
+                    "slot": "notice_means",
+                    "is": "bailiff"
+                  },
+                  {
+                    "slot": "notice_before_petition_day",
+                    "is": "yes"
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -1733,10 +1462,371 @@
       "effectWhenMissing": "warn",
       "effectWhenUnknown": "ask",
       "interpretive": true,
-      "interpretiveNote": "Article 119 puts the claim for performance of a bilateral contract after notice, and article 164 compels performance in kind after notice under articles 180 and 181; neither says whether a claim for a sum of money, for delivery, for the return of a thing or for the return of leased premises (eviction) is such a claim, nor what follows from the lack of notice (open point o6). Warn, never block.",
+      "interpretiveNote": "Article 179 says compensation is not due before notice and states no sanction on the claim; whether the petition or its service counts as an act that stands in the place of a warning (article 180), whether a notice served after filing suffices, and whether the lack of notice makes the request inadmissible or only unfounded, are readings. A reading never blocks: warn. The step counts as done only when the notice was served by a bailiff (means m1, and m2 whose warning a bailiff serves) and before the petition's day (owner's decision of 14 November 2026; article 180 «بانذاره», and «بعد اعذار» in articles 179, 119 and 164). A notice by post (m3, n11) or by another act (m4, n1), or one whose means or date before the petition is unknown (n1, n11, n12), leaves the step open: the rule language has no condition on 'done', so requiredWhen carries it. The step then asks for the unknown fact, or, when the means or the date is known and not of that kind, gives no finding of its own and leaves the warning to n1, n11 or n12.",
       "message": {
-        "ar": "المادتان 119 و164 من القانون المدني: يطالب بتنفيذ العقد ويجبر المدين على التنفيذ العيني بعد إعذاره طبقا للمادتين 180 و181. تحقق من الإعذار وتاريخه أو من حالة الإعفاء.",
-        "en": "Civil Code articles 119 and 164: performance is claimed, and the debtor compelled to perform in kind, after notice under articles 180 and 181. Check the notice and its date, or the exemption."
+        "ar": "المادة 179 من القانون المدني: لا يستحق التعويض إلا بعد إعذار المدين، ما لم يوجد نص مخالف أو حالة من حالات المادة 181. تحقق من الإعذار ووسيلته وتاريخه وأنه سابق على العريضة، أو من حالة الإعفاء.",
+        "en": "Civil Code article 179: compensation is due only after the debtor is put on notice, unless a text provides otherwise or a case of article 181 applies. Check the notice, its means and its date (before the petition), or the exemption."
+      },
+      "basis": [
+        "b1",
+        "b5",
+        "b6",
+        "b7",
+        "b8",
+        "b9",
+        "b10",
+        "b13"
+      ]
+    },
+    {
+      "id": "p2",
+      "kind": "formalNotice",
+      "slots": [
+        "notice_served",
+        "notice_means",
+        "notice_before_petition_day",
+        "requests",
+        "default_on_due_date_agreed",
+        "performance_impossible_or_useless_by_debtor",
+        "debtor_refused_in_writing",
+        "movable_sale_price_unpaid_at_term"
+      ],
+      "requiredWhen": {
+        "all": [
+          {
+            "slot": "requests",
+            "includes": "rescission"
+          },
+          {
+            "any": [
+              {
+                "slot": "notice_served",
+                "known": false
+              },
+              {
+                "slot": "notice_served",
+                "is": "no"
+              },
+              {
+                "all": [
+                  {
+                    "slot": "notice_means",
+                    "is": "bailiff"
+                  },
+                  {
+                    "slot": "notice_before_petition_day",
+                    "is": "yes"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "notRequiredWhen": [
+        {
+          "when": {
+            "slot": "default_on_due_date_agreed",
+            "is": "yes"
+          },
+          "basis": [
+            "b5"
+          ],
+          "note": {
+            "ar": "اتفاق على أن المدين معذر بمجرد حلول الأجل (وهو غير شرط الفسخ الاتفاقي).",
+            "en": "Agreement that the debtor is in default on the due date (not the same as an agreed rescission clause)."
+          }
+        },
+        {
+          "when": {
+            "slot": "performance_impossible_or_useless_by_debtor",
+            "is": "yes"
+          },
+          "basis": [
+            "b6",
+            "b7"
+          ],
+          "note": {
+            "ar": "تعذر التنفيذ أو عدم جدواه بفعل المدين.",
+            "en": "Performance impossible or useless through the debtor's act."
+          }
+        },
+        {
+          "when": {
+            "slot": "debtor_refused_in_writing",
+            "is": "yes"
+          },
+          "basis": [
+            "b6",
+            "b10"
+          ],
+          "note": {
+            "ar": "تصريح المدين كتابة بعدم التنفيذ.",
+            "en": "The debtor declared in writing he will not perform."
+          }
+        },
+        {
+          "when": {
+            "slot": "movable_sale_price_unpaid_at_term",
+            "is": "yes"
+          },
+          "basis": [
+            "b16"
+          ],
+          "note": {
+            "ar": "المدعي بائع منقولات بأجل لدفع الثمن وتسلم المبيع حل دون دفع، ولا اتفاق على خلاف ذلك: فسخ لصالح البائع دون سابق إنذار.",
+            "en": "The plaintiff is the seller of movables with a term for price and delivery, passed unpaid, and nothing was agreed to the contrary: rescission in the seller's favour without prior warning."
+          }
+        }
+      ],
+      "acceptedMeans": [
+        {
+          "id": "m1",
+          "label": {
+            "ar": "إنذار بعقد غير قضائي يبلغه محضر قضائي",
+            "en": "A warning by extrajudicial act served by a bailiff"
+          },
+          "basis": [
+            "b5",
+            "b21"
+          ]
+        },
+        {
+          "id": "m2",
+          "label": {
+            "ar": "إنذار يوجه بأمر على عريضة من رئيس الجهة القضائية، ينفذ خلال ثلاثة أشهر من صدور الأمر وإلا سقط (المادة 311 من قانون الإجراءات المدنية والإدارية)",
+            "en": "A warning directed on an order on petition of the court president, executed within three months of the order, failing which the order lapses (Code of Civil and Administrative Procedure article 311)"
+          },
+          "basis": [
+            "b5",
+            "b22",
+            "b35"
+          ]
+        },
+        {
+          "id": "m3",
+          "label": {
+            "ar": "الإعذار عن طريق البريد على الوجه المبين في القانون (لم يعثر على النص الذي يبين هذا الوجه؛ النقطة المفتوحة o2)",
+            "en": "Notice by post in the way the code provides (the text that sets out that way was not found; open point o2)"
+          },
+          "basis": [
+            "b5"
+          ]
+        },
+        {
+          "id": "m4",
+          "label": {
+            "ar": "ما يقوم مقام الإنذار",
+            "en": "An act that stands in the place of a warning"
+          },
+          "basis": [
+            "b5"
+          ]
+        }
+      ],
+      "effectWhenMissing": "warn",
+      "effectWhenUnknown": "ask",
+      "interpretive": true,
+      "interpretiveNote": "Article 119 allows the claim for rescission 'after notice' and states no sanction for its absence. The exemptions of article 181 are worded for any notice to the debtor, and article 119 does not refer to them; applying them here is a reading (open point o3). Warn, never block. The step counts as done only when the notice was served by a bailiff (means m1, and m2 whose warning a bailiff serves) and before the petition's day (owner's decision of 14 November 2026; article 180 «بانذاره», and «بعد اعذار» in articles 179, 119 and 164). A notice by post (m3, n11) or by another act (m4, n1), or one whose means or date before the petition is unknown (n1, n11, n12), leaves the step open: the rule language has no condition on 'done', so requiredWhen carries it. The step then asks for the unknown fact, or, when the means or the date is known and not of that kind, gives no finding of its own and leaves the warning to n1, n11 or n12.",
+      "message": {
+        "ar": "المادة 119 من القانون المدني: في العقد الملزم للجانبين، يطلب الفسخ بعد إعذار المدين، وشرط الفسخ الاتفاقي لا يعفي من الإعذار (المادة 120)، وبيع المنقولات الذي لم يدفع ثمنه عند الأجل يفسخ دون سابق إنذار (المادة 392). تحقق من الإعذار ووسيلته وتاريخه وأنه سابق على العريضة، أو من حالة الإعفاء.",
+        "en": "Civil Code article 119: in a bilateral contract, rescission is claimed after putting the debtor on notice; an agreed rescission clause does not dispense with it (article 120), and a sale of movables unpaid at the term is rescinded without prior warning (article 392). Check the notice, its means and its date (before the petition), or the exemption."
+      },
+      "basis": [
+        "b2",
+        "b12",
+        "b5",
+        "b6",
+        "b7",
+        "b10",
+        "b16"
+      ]
+    },
+    {
+      "id": "p3",
+      "kind": "formalNotice",
+      "slots": [
+        "notice_served",
+        "notice_means",
+        "notice_before_petition_day",
+        "requests",
+        "default_on_due_date_agreed",
+        "performance_impossible_or_useless_by_debtor",
+        "obligation_is_tort_compensation",
+        "return_of_thing_known_stolen_or_unduly_received",
+        "debtor_refused_in_writing"
+      ],
+      "requiredWhen": {
+        "all": [
+          {
+            "any": [
+              {
+                "slot": "requests",
+                "includes": "payment"
+              },
+              {
+                "slot": "requests",
+                "includes": "delivery"
+              },
+              {
+                "slot": "requests",
+                "includes": "restitution"
+              },
+              {
+                "slot": "requests",
+                "includes": "eviction"
+              }
+            ]
+          },
+          {
+            "any": [
+              {
+                "slot": "notice_served",
+                "known": false
+              },
+              {
+                "slot": "notice_served",
+                "is": "no"
+              },
+              {
+                "all": [
+                  {
+                    "slot": "notice_means",
+                    "is": "bailiff"
+                  },
+                  {
+                    "slot": "notice_before_petition_day",
+                    "is": "yes"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "notRequiredWhen": [
+        {
+          "when": {
+            "slot": "default_on_due_date_agreed",
+            "is": "yes"
+          },
+          "basis": [
+            "b5"
+          ],
+          "note": {
+            "ar": "اتفاق على أن المدين معذر بمجرد حلول الأجل.",
+            "en": "Agreement that the debtor is in default on the due date."
+          }
+        },
+        {
+          "when": {
+            "slot": "performance_impossible_or_useless_by_debtor",
+            "is": "yes"
+          },
+          "basis": [
+            "b6",
+            "b7"
+          ],
+          "note": {
+            "ar": "تعذر التنفيذ أو عدم جدواه بفعل المدين.",
+            "en": "Performance impossible or useless through the debtor's act."
+          }
+        },
+        {
+          "when": {
+            "slot": "obligation_is_tort_compensation",
+            "is": "yes"
+          },
+          "basis": [
+            "b6",
+            "b8"
+          ],
+          "note": {
+            "ar": "تعويض عن عمل مضر.",
+            "en": "Compensation for a harmful act."
+          }
+        },
+        {
+          "when": {
+            "slot": "return_of_thing_known_stolen_or_unduly_received",
+            "is": "yes"
+          },
+          "basis": [
+            "b6",
+            "b9"
+          ],
+          "note": {
+            "ar": "رد شيء مسروق أو مقبوض دون حق مع العلم.",
+            "en": "Return of a thing known stolen or knowingly received without right."
+          }
+        },
+        {
+          "when": {
+            "slot": "debtor_refused_in_writing",
+            "is": "yes"
+          },
+          "basis": [
+            "b6",
+            "b10"
+          ],
+          "note": {
+            "ar": "تصريح المدين كتابة بعدم التنفيذ.",
+            "en": "The debtor declared in writing he will not perform."
+          }
+        }
+      ],
+      "acceptedMeans": [
+        {
+          "id": "m1",
+          "label": {
+            "ar": "إنذار بعقد غير قضائي يبلغه محضر قضائي",
+            "en": "A warning by extrajudicial act served by a bailiff"
+          },
+          "basis": [
+            "b5",
+            "b21"
+          ]
+        },
+        {
+          "id": "m2",
+          "label": {
+            "ar": "إنذار يوجه بأمر على عريضة من رئيس الجهة القضائية، ينفذ خلال ثلاثة أشهر من صدور الأمر وإلا سقط (المادة 311 من قانون الإجراءات المدنية والإدارية)",
+            "en": "A warning directed on an order on petition of the court president, executed within three months of the order, failing which the order lapses (Code of Civil and Administrative Procedure article 311)"
+          },
+          "basis": [
+            "b5",
+            "b22",
+            "b35"
+          ]
+        },
+        {
+          "id": "m3",
+          "label": {
+            "ar": "الإعذار عن طريق البريد على الوجه المبين في القانون (لم يعثر على النص الذي يبين هذا الوجه؛ النقطة المفتوحة o2)",
+            "en": "Notice by post in the way the code provides (the text that sets out that way was not found; open point o2)"
+          },
+          "basis": [
+            "b5"
+          ]
+        },
+        {
+          "id": "m4",
+          "label": {
+            "ar": "ما يقوم مقام الإنذار",
+            "en": "An act that stands in the place of a warning"
+          },
+          "basis": [
+            "b5"
+          ]
+        }
+      ],
+      "effectWhenMissing": "warn",
+      "effectWhenUnknown": "ask",
+      "interpretive": true,
+      "interpretiveNote": "Article 119 puts the claim for performance of a bilateral contract after notice, and article 164 compels performance in kind after notice under articles 180 and 181; neither says whether a claim for a sum of money, for delivery, for the return of a thing or for the return of leased premises (eviction) is such a claim, nor what follows from the lack of notice (open point o6). Warn, never block. The step counts as done only when the notice was served by a bailiff (means m1, and m2 whose warning a bailiff serves) and before the petition's day (owner's decision of 14 November 2026; article 180 «بانذاره», and «بعد اعذار» in articles 179, 119 and 164). A notice by post (m3, n11) or by another act (m4, n1), or one whose means or date before the petition is unknown (n1, n11, n12), leaves the step open: the rule language has no condition on 'done', so requiredWhen carries it. The step then asks for the unknown fact, or, when the means or the date is known and not of that kind, gives no finding of its own and leaves the warning to n1, n11 or n12.",
+      "message": {
+        "ar": "المادتان 119 و164 من القانون المدني: يطالب بتنفيذ العقد ويجبر المدين على التنفيذ العيني بعد إعذاره طبقا للمادتين 180 و181. تحقق من الإعذار ووسيلته وتاريخه وأنه سابق على العريضة، أو من حالة الإعفاء.",
+        "en": "Civil Code articles 119 and 164: performance is claimed, and the debtor compelled to perform in kind, after notice under articles 180 and 181. Check the notice, its means and its date (before the petition), or the exemption."
       },
       "basis": [
         "b2",
@@ -2621,7 +2711,10 @@
       },
       "grade": "C",
       "refs": [
-        "n1"
+        "n1",
+        "p1",
+        "p2",
+        "p3"
       ]
     },
     {
@@ -2631,8 +2724,8 @@
         "en": "Does a notice served on the day of the petition, or after it, suffice?"
       },
       "why": {
-        "ar": "المادة 119 تجعل المطالبة بعد الإعذار، والمادة 179 تجعل استحقاق التعويض بعده دون ذكر رفع الدعوى؛ ولا يقارن التطبيق تاريخ الإعذار بتاريخ العريضة، فيسأل المحامي هل بلغ الإعذار قبل يوم العريضة (n12).",
-        "en": "Article 119 puts the claim after the notice; article 179 puts the entitlement to compensation after it, without mentioning the filing. The app does not compare the notice date with the petition date, so it asks the lawyer whether the notice was served before the petition's day (n12)."
+        "ar": "المادة 119 تجعل المطالبة بعد الإعذار، والمادة 179 تجعل استحقاق التعويض بعده دون ذكر رفع الدعوى؛ ولا يقارن التطبيق تاريخ الإعذار بتاريخ العريضة، فيسأل المحامي هل بلغ الإعذار قبل يوم العريضة (n12)، ولا تعد الخطوات p1 وp2 وp3 الإعذار منجزا إلا إذا كان الجواب نعم.",
+        "en": "Article 119 puts the claim after the notice; article 179 puts the entitlement to compensation after it, without mentioning the filing. The app does not compare the notice date with the petition date, so it asks the lawyer whether the notice was served before the petition's day (n12); the steps p1, p2 and p3 count the notice as done only when the answer is yes."
       },
       "readings": [
         {
@@ -3054,7 +3147,7 @@
         "n2",
         "p2"
       ],
-      "note": "Article 120 paragraph 2: the clause does not dispense with notice, which custom determines when the parties have not. An agreement under article 180 that the debtor is in default on the due date is itself a way of giving notice, so p2 keeps it."
+      "note": "Article 120 paragraph 1: the clause does not dispense with notice, which custom determines when the parties have not. An agreement under article 180 that the debtor is in default on the due date is itself a way of giving notice, so p2 keeps it."
     },
     {
       "id": "k14",
@@ -3315,7 +3408,7 @@
         "n10",
         "o11"
       ],
-      "note": "No general period: 120 paragraph 2 leaves the notice to the parties or to custom (n10); a reasonable delay for works (553); more than a month for the commercial lease (commercial 177, n3); insurance premiums have their own periods outside the store (o11). No deadline item: none is a limitation or forfeiture of this module."
+      "note": "No general period: 120 paragraph 1 leaves the notice to the parties or to custom (n10); a reasonable delay for works (553); more than a month for the commercial lease (commercial 177, n3); insurance premiums have their own periods outside the store (o11). No deadline item: none is a limitation or forfeiture of this module."
     },
     {
       "id": "k34",
@@ -3415,9 +3508,12 @@
         "doc2",
         "e1",
         "o9",
-        "n12"
+        "n12",
+        "p1",
+        "p2",
+        "p3"
       ],
-      "note": "No text fixes how the date is proved; the slot notice_date is kept by the app. The rule language cannot compare it with the petition date, so boundary n12 asks whether the notice was served before the petition's day and warns when it was not, and the messages and doc1 ask the lawyer to check it (o9)."
+      "note": "No text fixes how the date is proved; the slot notice_date is kept by the app. The rule language cannot compare it with the petition date, so boundary n12 asks whether the notice was served before the petition's day and warns when it was not, and the messages and doc1 ask the lawyer to check it (o9); p1 to p3 count the notice as done only when it was served before the petition's day, and otherwise ask or leave the warning to n12."
     },
     {
       "id": "k41",
@@ -3431,10 +3527,14 @@
         "b21",
         "b22",
         "p1",
+        "p2",
+        "p3",
         "n1",
+        "n11",
         "o2",
         "o8"
-      ]
+      ],
+      "note": "p1 to p3 count the notice as done only when a bailiff served it (m1, m2); a notice by post or another means leaves them open and n11 or n1 warns, and an unknown means is asked."
     },
     {
       "id": "k42",
@@ -3450,7 +3550,7 @@
         "n10",
         "o11"
       ],
-      "note": "No general rule on the content of a notice. 120 paragraph 2 leaves the notice to the parties or to custom; special texts fix a reasonable delay (553, works) or one month (commercial 177, commercial lease)."
+      "note": "No general rule on the content of a notice. 120 paragraph 1 leaves the notice to the parties or to custom; special texts fix a reasonable delay (553, works) or one month (commercial 177, commercial lease)."
     },
     {
       "id": "k43",
@@ -4579,7 +4679,7 @@
     {
       "id": "exR6",
       "by": "reconciler",
-      "title": "Notice served, means unknown: n1 asks for the means (boundary case bc12).",
+      "title": "Notice served, means unknown: n1 asks for the means, and p1 asks for it too instead of counting the notice as done (boundary case bc12; owner-done).",
       "petitionDate": "2026-03-10",
       "slots": {
         "requests": [
@@ -4594,7 +4694,7 @@
         "findings": [
           {
             "ref": "p1",
-            "effect": "none"
+            "effect": "ask"
           },
           {
             "ref": "n1",
@@ -5145,7 +5245,7 @@
     {
       "id": "exV20",
       "by": "verifier",
-      "title": "bc8: damages, bailiff notice dated the petition day itself, the lawyer not yet asked: n12 asks whether the notice came before the petition's day (o9); p1 stays silent once a notice was served.",
+      "title": "bc8: damages, bailiff notice dated the petition day itself, the lawyer not yet asked: n12 asks whether the notice came before the petition's day (o9), and p1 asks the same instead of counting the notice as done (owner-done).",
       "petitionDate": "2026-06-15",
       "slots": {
         "requests": [
@@ -5160,7 +5260,7 @@
         "findings": [
           {
             "ref": "p1",
-            "effect": "none"
+            "effect": "ask"
           },
           {
             "ref": "n1",
@@ -5179,7 +5279,7 @@
     {
       "id": "exV21",
       "by": "verifier",
-      "title": "bc8 answered: damages, the notice was served on the petition's day, not before it: n12 warns (articles 179 and 119 do not say whether such a notice suffices, o9).",
+      "title": "bc8 answered: damages, the notice was served on the petition's day, not before it: n12 warns (articles 179 and 119 do not say whether such a notice suffices, o9); p1 does not count such a notice as done and leaves the warning to n12 (owner-done).",
       "petitionDate": "2026-06-15",
       "slots": {
         "requests": [
@@ -5199,6 +5299,232 @@
           },
           {
             "ref": "n12",
+            "effect": "warn"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "exV22",
+      "by": "verifier",
+      "title": "owner-done, done: damages, rescission and payment, bailiff notice served before the petition's day: p1, p2 and p3 count the notice as done and nothing is asked.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": [
+          "damages",
+          "rescission",
+          "payment"
+        ],
+        "notice_served": "yes",
+        "notice_means": "bailiff",
+        "notice_date": "2026-02-01",
+        "notice_before_petition_day": "yes",
+        "contract_sets_notice_terms": "no",
+        "commercial_lease": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          },
+          {
+            "ref": "p2",
+            "effect": "none"
+          },
+          {
+            "ref": "p3",
+            "effect": "none"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          },
+          {
+            "ref": "n11",
+            "effect": "none"
+          },
+          {
+            "ref": "n12",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "exV23",
+      "by": "verifier",
+      "title": "owner-done, open (means unknown): payment, notice served before the petition's day by an unknown means: p3 asks for the means, as n1 and n11 do, and does not say done.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "notice_served": "yes",
+        "notice_date": "2026-02-01",
+        "notice_before_petition_day": "yes",
+        "contract_sets_notice_terms": "no",
+        "commercial_lease": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p3",
+            "effect": "ask"
+          },
+          {
+            "ref": "n1",
+            "effect": "ask"
+          },
+          {
+            "ref": "n11",
+            "effect": "ask"
+          },
+          {
+            "ref": "n12",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "notice_means"
+        ]
+      }
+    },
+    {
+      "id": "exV24",
+      "by": "verifier",
+      "title": "owner-done, open (means not listed): rescission, notice by registered letter before the petition's day: p2 does not count it as done (its condition is false, no finding of its own) and n11 warns.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": [
+          "rescission"
+        ],
+        "notice_served": "yes",
+        "notice_means": "registered_letter",
+        "notice_date": "2026-02-01",
+        "notice_before_petition_day": "yes",
+        "contract_sets_notice_terms": "no",
+        "commercial_lease": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p2",
+            "effect": "none"
+          },
+          {
+            "ref": "n11",
+            "effect": "warn"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          },
+          {
+            "ref": "n12",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "exV25",
+      "by": "verifier",
+      "title": "owner-done, open (date unknown): damages and rescission, bailiff notice, whether it came before the petition's day not known: p1 and p2 ask, as n12 does.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": [
+          "damages",
+          "rescission"
+        ],
+        "notice_served": "yes",
+        "notice_means": "bailiff",
+        "notice_date": "2026-03-10",
+        "contract_sets_notice_terms": "no",
+        "commercial_lease": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "ask"
+          },
+          {
+            "ref": "p2",
+            "effect": "ask"
+          },
+          {
+            "ref": "n12",
+            "effect": "ask"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "notice_before_petition_day"
+        ]
+      }
+    },
+    {
+      "id": "exV26",
+      "by": "verifier",
+      "title": "owner-done, open (not before): payment, bailiff notice served on the petition's day: p3 does not count it as done and n12 warns.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "notice_served": "yes",
+        "notice_means": "bailiff",
+        "notice_date": "2026-03-10",
+        "notice_before_petition_day": "no",
+        "contract_sets_notice_terms": "no",
+        "commercial_lease": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p3",
+            "effect": "none"
+          },
+          {
+            "ref": "n12",
+            "effect": "warn"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "exV27",
+      "by": "verifier",
+      "title": "store-120: rescission under an agreed rescission clause, no notice, no exemption: p2 warns; b12 now cites article 120 paragraph 1, the one paragraph, which says «وهذا الشرط لا يعفي من الاعذار».",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": [
+          "rescission"
+        ],
+        "notice_served": "no",
+        "default_on_due_date_agreed": "no",
+        "performance_impossible_or_useless_by_debtor": "no",
+        "debtor_refused_in_writing": "no",
+        "movable_sale_price_unpaid_at_term": "no",
+        "contract_sets_notice_terms": "no",
+        "commercial_lease": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p2",
             "effect": "warn"
           }
         ],

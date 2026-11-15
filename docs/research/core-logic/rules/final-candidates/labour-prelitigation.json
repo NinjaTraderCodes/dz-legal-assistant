@@ -1,0 +1,4467 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "module",
+  "id": "labour-prelitigation",
+  "label": {
+    "ar": "المصالحة السابقة على الدعوى العمالية",
+    "en": "Conciliation before a labour claim"
+  },
+  "verified": false,
+  "stage": "reconciled",
+  "derivedBy": {
+    "role": "reconciler",
+    "model": "claude-opus-5-5",
+    "date": "2026-11-15"
+  },
+  "appliesTo": [
+    "unpaid-wages"
+  ],
+  "slots": [
+    "nonconciliation_record",
+    "nonconciliation_record_delivered_on",
+    "public_body_party",
+    "defendant_resides_abroad",
+    "employer_in_bankruptcy_or_settlement",
+    "worker_is_public_servant",
+    "work_accident_or_occupational_illness",
+    "forfeiture_lifted_by_order",
+    "forfeiture_force_majeure_invoked",
+    "internal_grievance_exhausted",
+    "conciliation_agreement_reached",
+    "earlier_nonconciliation_record",
+    "earlier_nonconciliation_record_delivered_on"
+  ],
+  "proposedSlots": [
+    {
+      "id": "internal_grievance_exhausted",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل استنفد العامل إجراءات المعالجة الداخلية للنزاع داخل الهيئة المستخدمة (إجراءات الاتفاقية الجماعية، أو عرض الأمر على الرئيس المباشر ثم على الهيئة المسيرة أو المستخدم)؟",
+        "en": "Did the worker first exhaust the internal procedure for handling the dispute inside the employer (the collective agreement's procedure or, failing it, referral to the direct superior and then to management or the employer)?"
+      },
+      "why": "Prior step p2 reads it: articles 2, 3, 4 and 5 of the law on individual labour disputes put the referral to the labour inspector after the internal procedure is exhausted. Derivation A's internal_grievance_exhausted and derivation B's internal_settlement_attempted, merged."
+    },
+    {
+      "id": "conciliation_agreement_reached",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل حرر مكتب المصالحة محضر مصالحة باتفاق الطرفين على كل الخلاف أو جزء منه؟",
+        "en": "Did the conciliation office draw up a record of conciliation, the parties having agreed on all or part of the dispute?"
+      },
+      "why": "Boundary n1 reads it: articles 31, 33 and 34 of the law on individual labour disputes and CPCA articles 508 and 509 send the non-execution of a conciliation agreement to the president of the social section for immediate execution, not to an ordinary claim."
+    },
+    {
+      "id": "earlier_nonconciliation_record",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل سبق أن سلم محضر عدم مصالحة آخر عن نفس النزاع قبل المحضر المذكور؟",
+        "en": "Was an earlier non-conciliation record delivered for the same dispute, before the record entered?"
+      },
+      "why": "Deadline d3 reads it: the Supreme Court (social chamber, file 1488919, 07-10-2021), reading CPCA 504 and 69, runs the six months from the first non-conciliation record and holds that a second record on the same dispute cannot be obtained (verifier, attack adv-1)."
+    },
+    {
+      "id": "earlier_nonconciliation_record_delivered_on",
+      "type": "date",
+      "question": {
+        "ar": "ما تاريخ تسليم محضر عدم المصالحة الأول عن نفس النزاع؟",
+        "en": "On what date was the first non-conciliation record for the same dispute delivered?"
+      },
+      "why": "Deadline d3 runs from it (CPCA 504 as read by the Supreme Court, file 1488919, 07-10-2021; attack adv-1)."
+    }
+  ],
+  "basis": [
+    {
+      "id": "b1",
+      "role": "prerequisite",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "19",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجب أن يكون كل خلاف فردي في العمل موضوع محاولة صلح أمام مكتب المصالحة قبل مباشرة أي دعوى قضائية.",
+        "en": "Every individual labour dispute must go through a conciliation attempt before the conciliation office before any court action is brought."
+      },
+      "required": true
+    },
+    {
+      "id": "b2",
+      "role": "limit",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "19",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "تكون المصالحة اختيارية إذا أقام المدعى عليه خارج التراب الوطني أو في حالة إفلاس صاحب العمل أو تسويته القضائية.",
+        "en": "Conciliation is optional when the defendant resides outside the national territory, or when the employer is bankrupt or under judicial settlement."
+      }
+    },
+    {
+      "id": "b3",
+      "role": "limit",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "19",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "تخرج من اختصاص مكاتب المصالحة الخلافات الفردية التي يكون طرفا فيها الموظفون والأعوان الخاضعون للقانون الأساسي للمؤسسات والإدارات العمومية.",
+        "en": "Individual disputes to which civil servants and agents governed by the statute of public institutions and administrations are party fall outside the conciliation offices."
+      }
+    },
+    {
+      "id": "b4",
+      "role": "basis",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "2",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "النزاع الفردي في العمل هو خلاف بين عامل أجير ومستخدم بشأن تنفيذ علاقة العمل لم يحل في إطار التسوية الداخلية لدى الهيئة المستخدمة.",
+        "en": "An individual labour dispute is a disagreement between a salaried worker and an employer on the performance of their employment relationship that internal settlement within the employer has not resolved."
+      }
+    },
+    {
+      "id": "b5",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "3",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يمكن للاتفاقيات الجماعية أن تحدد إجراءات داخلية لمعالجة النزاعات الفردية داخل الهيئة المستخدمة.",
+        "en": "Collective agreements may set internal procedures for handling individual disputes within the employer."
+      }
+    },
+    {
+      "id": "b6",
+      "role": "prerequisite",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "4",
+        "paragraphs": [
+          1,
+          2,
+          3
+        ]
+      },
+      "says": {
+        "ar": "عند غياب تلك الإجراءات يقدم العامل أمره إلى رئيسه المباشر ثم إلى الهيئة المسيرة أو المستخدم، وعلى كل منهما الرد في أجل محدد.",
+        "en": "Failing such procedures, the worker refers the matter to the direct superior and then to management or the employer, each of whom must reply within a set time."
+      }
+    },
+    {
+      "id": "b7",
+      "role": "prerequisite",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "5",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "بعد استنفاد إجراءات المعالجة الداخلية يمكن العامل إخطار مفتش العمل.",
+        "en": "After the internal procedures are exhausted, the worker may refer the matter to the labour inspector."
+      }
+    },
+    {
+      "id": "b8",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "26",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "تخطر مفتشية العمل بعريضة مكتوبة أو بحضور المدعي شخصيا، وفي الحالة الأخيرة يحرر المفتش محضرا بتصريحاته.",
+        "en": "The labour inspectorate is seised by a written request or by the plaintiff in person, in which case the inspector records the plaintiff's statements."
+      }
+    },
+    {
+      "id": "b9",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "27",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يقدم مفتش العمل الإخطار إلى مكتب المصالحة ويستدعي الأطراف خلال ثلاثة أيام من تبليغه.",
+        "en": "The labour inspector passes the referral to the conciliation office and summons the parties within three days of being notified."
+      }
+    },
+    {
+      "id": "b43",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "27",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "تفصل بين الاستدعاء واليوم المحدد للحضور مدة ثمانية أيام على الأقل.",
+        "en": "At least eight days must run between the summons and the day fixed for the parties to appear."
+      }
+    },
+    {
+      "id": "b10",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "28",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجوز لمكتب المصالحة شطب القضية إذا لم يحضر المدعي أو ممثله المؤهل دون مانع جدي وشرعي.",
+        "en": "The conciliation office may strike the matter out when the plaintiff or the plaintiff's representative fails to attend without a serious and lawful excuse."
+      }
+    },
+    {
+      "id": "b44",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "28",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يبلغ المدعي بقرار الشطب خلال ثمانية أيام من تاريخ اتخاذه.",
+        "en": "The plaintiff is notified of the striking-out decision within eight days of the decision."
+      }
+    },
+    {
+      "id": "b11",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "29",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "إذا لم يحضر المدعى عليه أو ممثله استدعي من جديد لاجتماع مصالحة يعقد في أجل أقصاه ثمانية أيام.",
+        "en": "When the defendant or the defendant's representative fails to attend, a new summons is issued for a conciliation meeting held within eight days at most."
+      }
+    },
+    {
+      "id": "b12",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "30",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "إذا غاب المدعى عليه المستدعى نظاميا عن اجتماعين متتاليين حرر المكتب محضرا بعدم المصالحة لعدم حضوره.",
+        "en": "When the duly summoned defendant misses consecutive conciliation meetings as the text sets out, the office draws up a record of non-conciliation for non-attendance."
+      }
+    },
+    {
+      "id": "b13",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "30",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "تسلم نسخة من ذلك المحضر إلى المدعي أثناء الاجتماع.",
+        "en": "A copy of that record is handed to the plaintiff at the meeting."
+      }
+    },
+    {
+      "id": "b14",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "31",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "إذا اتفق الأطراف على كل الخلاف أو جزء منه حرر المكتب محضرا بالمصالحة.",
+        "en": "When the parties agree on all or part of the dispute, the office draws up a record of conciliation."
+      }
+    },
+    {
+      "id": "b15",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "31",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "إذا لم يتفق الأطراف حرر المكتب محضرا بعدم المصالحة.",
+        "en": "When the parties do not agree, the office draws up a record of non-conciliation."
+      }
+    },
+    {
+      "id": "b16",
+      "role": "proof",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "32",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "محضر المصالحة حجة إثبات ما لم يطعن فيه بالتزوير.",
+        "en": "The record of conciliation is proof unless it is challenged as forged."
+      }
+    },
+    {
+      "id": "b45",
+      "role": "limit",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "32",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "لا يجوز أن يتضمن محضر المصالحة شروطا تتنافى مع النصوص السارية.",
+        "en": "The record of conciliation may not contain terms contrary to the texts in force."
+      }
+    },
+    {
+      "id": "b17",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "33",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ينفذ الأطراف اتفاق المصالحة وفق الشروط والآجال التي يحددونها، وإلا ففي أجل لا يتجاوز ثلاثين يوما من تاريخ الاتفاق.",
+        "en": "The parties carry out the conciliation agreement on the terms and within the time they set, failing which within thirty days of the agreement."
+      }
+    },
+    {
+      "id": "b18",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "34",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "عند عدم تنفيذ اتفاق المصالحة يأمر رئيس المحكمة الفاصلة في المسائل الاجتماعية، الملتمس بعريضة، بالتنفيذ المعجل لمحضر المصالحة مع غرامة تهديدية يومية.",
+        "en": "When a conciliation agreement is not carried out, the president of the court hearing social matters, seised by petition, orders the immediate execution of the conciliation record with a daily penalty payment."
+      }
+    },
+    {
+      "id": "b19",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "36",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "في حالة عدم المصالحة يرفع الطرف الذي له مصلحة دعوى أمام المحكمة الفاصلة في المسائل الاجتماعية.",
+        "en": "When conciliation fails, the party with an interest brings the claim before the court hearing social matters."
+      }
+    },
+    {
+      "id": "b20",
+      "role": "prerequisite",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "37",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ترفق العريضة الموجهة إلى المحكمة بنسخة من محضر عدم المصالحة الصادر عن مكتب المصالحة.",
+        "en": "The petition to the court is accompanied by a copy of the record of non-conciliation issued by the conciliation office."
+      },
+      "required": true
+    },
+    {
+      "id": "b21",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "504",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجب رفع الدعوى أمام القسم الاجتماعي في أجل لا يتجاوز ستة أشهر من تاريخ تسليم محضر عدم الصلح تحت طائلة سقوط الحق في رفع الدعوى.",
+        "en": "The claim must be brought before the social section within six months of the delivery of the non-conciliation record, or the right to bring it is forfeited."
+      },
+      "required": true
+    },
+    {
+      "id": "b22",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "405",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تحسب آجال هذا القانون كاملة، فلا يحسب يوم التبليغ أو التبليغ الرسمي ولا يوم انقضاء الأجل.",
+        "en": "The periods of this Code are counted in full: neither the day of notification or service nor the day the period ends is counted."
+      }
+    },
+    {
+      "id": "b23",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "405",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "تحسب أيام العطل الداخلة ضمن الأجل.",
+        "en": "Non-working days falling inside the period are counted."
+      }
+    },
+    {
+      "id": "b54",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "405",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "أيام العطل في مفهوم هذا القانون هي أيام الأعياد الرسمية وأيام الراحة الأسبوعية طبقا للنصوص الجاري بها العمل.",
+        "en": "Non-working days, in this Code, are the official public holidays and the weekly rest days under the texts in force."
+      }
+    },
+    {
+      "id": "b24",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "405",
+        "paragraphs": [
+          4
+        ]
+      },
+      "says": {
+        "ar": "إذا لم يكن اليوم الأخير من الأجل يوم عمل كليا أو جزئيا مدد الأجل إلى أول يوم عمل موال.",
+        "en": "When the last day of the period is not, wholly or partly, a working day, the period runs to the next working day."
+      }
+    },
+    {
+      "id": "b51",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "322",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يترتب على عدم مراعاة الآجال المقررة في هذا القانون لممارسة حق سقوط الحق، باستثناء حالة القوة القاهرة أو وقوع أحداث تؤثر في السير العادي لمرفق العدالة.",
+        "en": "Failure to respect a period this Code sets for exercising a right forfeits the right, except in case of force majeure or events affecting the normal working of the justice service."
+      }
+    },
+    {
+      "id": "b55",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "322",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يقدم طلب رفع السقوط إلى رئيس الجهة القضائية المعروض أمامها النزاع ويفصل فيه بأمر على عريضة غير قابل لأي طعن.",
+        "en": "The request to lift the forfeiture goes to the president of the court before which the dispute is brought, who rules by an order on petition open to no remedy."
+      }
+    },
+    {
+      "id": "b25",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "67",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "انقضاء الأجل المسقط من أسباب الدفع بعدم القبول دون النظر في موضوع النزاع.",
+        "en": "The expiry of a forfeiture period is a ground for a plea of inadmissibility, without examining the merits."
+      }
+    },
+    {
+      "id": "b26",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "69",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يثير القاضي تلقائيا الدفع بعدم القبول إذا كان من النظام العام.",
+        "en": "The judge raises a plea of inadmissibility of his own motion when it is a matter of public order."
+      }
+    },
+    {
+      "id": "b27",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "500",
+        "paragraphs": [
+          1,
+          2,
+          3
+        ]
+      },
+      "says": {
+        "ar": "يختص القسم الاجتماعي اختصاصا مانعا بإثبات عقود العمل وتنفيذها وتعليقها وإنهائها.",
+        "en": "The social section has exclusive jurisdiction over the proof, performance, suspension and termination of employment contracts."
+      }
+    },
+    {
+      "id": "b57",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "500",
+        "paragraphs": [
+          1,
+          7
+        ]
+      },
+      "says": {
+        "ar": "يختص القسم الاجتماعي اختصاصا مانعا بمنازعات الضمان الاجتماعي والتقاعد، وهي مذكورة بندا مستقلا عن عقود العمل.",
+        "en": "The social section has exclusive jurisdiction over social security and retirement disputes, listed as an item separate from employment contracts."
+      }
+    },
+    {
+      "id": "b28",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "20",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "تنظر المحاكم الفاصلة في المسائل الاجتماعية في الخلافات الفردية الناجمة عن تنفيذ علاقة العمل أو توقيفها أو قطعها.",
+        "en": "The courts hearing social matters decide individual disputes arising from the performance, suspension or termination of an employment relationship."
+      }
+    },
+    {
+      "id": "b50",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "32",
+        "paragraphs": [
+          4,
+          5,
+          6
+        ]
+      },
+      "says": {
+        "ar": "تجدول القضايا أمام الأقسام حسب طبيعة النزاع، وفي المحاكم التي لم تنشأ فيها الأقسام ينظر القسم المدني في كل النزاعات عدا القضايا الاجتماعية، والقضية المجدولة أمام قسم غير مختص يحال ملفها إلى القسم المعني.",
+        "en": "Cases are listed before the sections by the nature of the dispute; in courts without sections the civil section hears every dispute except social cases; a case listed before the wrong section is passed to the proper section."
+      }
+    },
+    {
+      "id": "b29",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "501",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يؤول الاختصاص الإقليمي إلى محكمة مكان إبرام عقد العمل أو تنفيذه أو محكمة موطن المدعى عليه.",
+        "en": "The court for the place where the employment contract was made or performed, or for the defendant's domicile, has territorial jurisdiction."
+      }
+    },
+    {
+      "id": "b30",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "501",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "في حالة إنهاء عقد العمل أو تعليقه بسبب حادث عمل أو مرض مهني يؤول الاختصاص إلى محكمة موطن المدعي.",
+        "en": "When the employment contract ended or was suspended because of a work accident or an occupational disease, the court for the plaintiff's domicile has jurisdiction."
+      }
+    },
+    {
+      "id": "b31",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "24",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ترفع الدعوى أمام محكمة مكان تنفيذ علاقة العمل أو محل إقامة المدعى عليه.",
+        "en": "The claim is brought before the court for the place where the employment relationship is performed or for the defendant's residence."
+      }
+    },
+    {
+      "id": "b32",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "24",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يمكن رفعها أمام محكمة محل إقامة المدعي إذا نجم تعليق علاقة العمل أو انقطاعها عن حادث عمل أو مرض مهني.",
+        "en": "It may be brought before the court for the plaintiff's residence when the suspension or end of the employment relationship results from a work accident or an occupational disease."
+      }
+    },
+    {
+      "id": "b53",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "47",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجب إثارة الدفع بعدم الاختصاص الإقليمي قبل أي دفاع في الموضوع أو دفع بعدم القبول.",
+        "en": "The plea of lack of territorial jurisdiction must be raised before any defence on the merits or plea of inadmissibility."
+      }
+    },
+    {
+      "id": "b52",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "36",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "عدم الاختصاص النوعي من النظام العام وتقضي به الجهة القضائية تلقائيا في أية مرحلة.",
+        "en": "Lack of subject-matter jurisdiction is a matter of public order, which the court raises of its own motion at any stage."
+      }
+    },
+    {
+      "id": "b33",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "502",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يتشكل القسم الاجتماعي تحت طائلة البطلان من قاض رئيسا ومساعدين طبقا لتشريع العمل.",
+        "en": "The social section sits, on pain of nullity, as a presiding judge with assessors as labour legislation provides."
+      }
+    },
+    {
+      "id": "b34",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "503",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ترفع الدعوى أمام القسم الاجتماعي بعريضة افتتاح دعوى.",
+        "en": "A claim before the social section is brought by a statement of claim."
+      }
+    },
+    {
+      "id": "b42",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "505",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تحدد أول جلسة في أجل أقصاه خمسة عشر يوما من تاريخ رفع الدعوى.",
+        "en": "The first hearing is set within fifteen days at most of the date the claim is filed."
+      }
+    },
+    {
+      "id": "b35",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "510",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تقبل الطلبات الإضافية المترتبة على الطلب الأصلي في جميع مراحل الدعوى ولو لم تكن موضوع محاولة صلح.",
+        "en": "Additional requests that follow from the original request are admissible at every stage of the claim, even if they were not put to the conciliation attempt."
+      }
+    },
+    {
+      "id": "b36",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "508",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "يجوز طلب التنفيذ الفوري من رئيس القسم الاجتماعي عند امتناع أحد الأطراف عن تنفيذ اتفاق المصالحة.",
+        "en": "Immediate execution may be sought from the president of the social section when a party refuses to carry out a conciliation agreement."
+      }
+    },
+    {
+      "id": "b37",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "509",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يأمر رئيس القسم الاجتماعي بالتنفيذ الفوري تحت طائلة غرامة تهديدية.",
+        "en": "The president of the social section orders immediate execution under a penalty payment."
+      }
+    },
+    {
+      "id": "b40",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "22",
+        "paragraphs": [
+          1,
+          3,
+          4
+        ]
+      },
+      "says": {
+        "ar": "الأحكام المتعلقة بتطبيق أو تفسير اتفاق مبرم أمام مكتب المصالحة أو بدفع الرواتب والتعويضات عن الأشهر الأخيرة المحددة في النص تنفذ تنفيذا مؤقتا بقوة القانون.",
+        "en": "Judgments on the application or interpretation of an agreement made before the conciliation office, or on the payment of wages and allowances for the most recent months the text names, are provisionally enforceable by law."
+      }
+    },
+    {
+      "id": "b41",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "21",
+        "paragraphs": [
+          1,
+          2,
+          3
+        ]
+      },
+      "says": {
+        "ar": "تبت المحكمة ابتدائيا ونهائيا في إلغاء العقوبات التأديبية المتخذة دون تطبيق الإجراءات وفي تسليم شهادات العمل وكشوف الرواتب.",
+        "en": "The court decides at first and last instance claims to annul disciplinary sanctions taken without the required procedure and claims for work certificates and pay slips."
+      }
+    },
+    {
+      "id": "b46",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "25",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يستفيد بقوة القانون من المساعدة القضائية كل عامل أو متدرب يقل مرتبه عن ضعف الأجر الأدنى المضمون.",
+        "en": "Legal aid is granted as of right to every worker or trainee whose pay is below twice the guaranteed minimum wage."
+      }
+    },
+    {
+      "id": "b49",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "17",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "لا تقيد العريضة إلا بعد دفع الرسوم المحددة قانونا ما لم ينص القانون على خلاف ذلك.",
+        "en": "The petition is registered only once the fees set by law are paid, unless the law provides otherwise."
+      }
+    },
+    {
+      "id": "b47",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "6",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يحدد الاختصاص المحلي لمكاتب المصالحة عن طريق التنظيم.",
+        "en": "The local jurisdiction of the conciliation offices is set by regulation."
+      }
+    },
+    {
+      "id": "b38",
+      "role": "limit",
+      "cite": {
+        "code": "labour-relations",
+        "article": "3",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يخضع الموظفون والأعوان المتعاقدون في الهيئات والإدارات العمومية للدولة والولايات والبلديات ومستخدمو المؤسسات العمومية ذات الطابع الإداري، وفئات أخرى، لأحكام خاصة.",
+        "en": "Civil servants and contract agents of the public bodies and administrations of the State, wilayas and communes, staff of public administrative bodies, and other groups, are governed by special provisions."
+      }
+    },
+    {
+      "id": "b48",
+      "role": "basis",
+      "cite": {
+        "code": "labour-relations",
+        "article": "2",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "العامل الأجير هو من يؤدي عملا يدويا أو فكريا مقابل مرتب في إطار التنظيم ولحساب شخص آخر يدعى المستخدم.",
+        "en": "A salaried worker performs manual or intellectual work for pay, within an organisation and on behalf of another person, the employer."
+      }
+    },
+    {
+      "id": "b39",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "800",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "تختص المحاكم الإدارية في أول درجة بالقضايا التي تكون الدولة أو الولاية أو البلدية أو مؤسسة عمومية ذات صبغة إدارية أو هيئة عمومية وطنية أو منظمة مهنية وطنية طرفا فيها.",
+        "en": "The administrative courts hear at first instance the cases to which the State, a wilaya, a commune, a public administrative body, a national public body or a national professional organisation is a party."
+      }
+    },
+    {
+      "id": "b56",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "800",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "المحاكم الإدارية جهات الولاية العامة في المنازعات الإدارية، باستثناء المنازعات الموكلة إلى جهات قضائية أخرى.",
+        "en": "The administrative courts have general jurisdiction over administrative disputes, except the disputes given to other courts."
+      }
+    },
+    {
+      "id": "b58",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "22",
+        "paragraphs": [
+          5
+        ]
+      },
+      "says": {
+        "ar": "يمكن للمحكمة الفاصلة في المسائل الاجتماعية أن تنطق بالتنفيذ المؤقت دون كفالة فيما بعد ستة أشهر.",
+        "en": "The court hearing social matters may order provisional execution without bond for what goes beyond six months."
+      }
+    }
+  ],
+  "elements": [
+    {
+      "id": "e1",
+      "toProve": {
+        "ar": "أن الخلاف عرض على مكتب المصالحة وأن المكتب حرر محضر عدم المصالحة.",
+        "en": "That the dispute was put to the conciliation office and the office drew up a record of non-conciliation."
+      },
+      "factsToState": [
+        {
+          "ar": "تاريخ إخطار مفتشية العمل أو مكتب المصالحة.",
+          "en": "The date the labour inspectorate or the conciliation office was seised."
+        },
+        {
+          "ar": "تاريخ تسليم محضر عدم المصالحة.",
+          "en": "The date the record of non-conciliation was delivered."
+        }
+      ],
+      "events": [
+        "conciliation_failed"
+      ],
+      "slots": [
+        "nonconciliation_record",
+        "nonconciliation_record_delivered_on"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "record of non-conciliation",
+          "basis": [
+            "b20"
+          ],
+          "note": {
+            "ar": "ترفق نسخة من محضر عدم المصالحة بالعريضة.",
+            "en": "A copy of the record of non-conciliation is attached to the petition."
+          }
+        }
+      ],
+      "basis": [
+        "b12",
+        "b15",
+        "b20"
+      ]
+    },
+    {
+      "id": "e2",
+      "toProve": {
+        "ar": "قيام علاقة عمل بين عامل أجير ومستخدم.",
+        "en": "The existence of an employment relationship between a salaried worker and an employer."
+      },
+      "factsToState": [
+        {
+          "ar": "تاريخ بداية العمل والجهة المستخدمة والمنصب والأجر.",
+          "en": "The start date of the work, the employer, the post and the pay."
+        }
+      ],
+      "events": [
+        "employment_started"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "employment contract, pay slips, work certificate",
+          "basis": [
+            "b27"
+          ],
+          "note": {
+            "ar": "إثبات عقود العمل من الاختصاص المانع للقسم الاجتماعي.",
+            "en": "The proof of employment contracts falls within the social section's exclusive jurisdiction."
+          }
+        }
+      ],
+      "basis": [
+        "b4",
+        "b48",
+        "b27"
+      ]
+    }
+  ],
+  "requests": [
+    {
+      "id": "r1",
+      "kind": "provisional_execution",
+      "accessory": true,
+      "amount": false,
+      "text": {
+        "ar": "شمول الحكم بالنفاذ المعجل بقوة القانون فيما يخص الرواتب والتعويضات المستحقة عن الأشهر الستة الأخيرة (...).",
+        "en": "Provisional enforcement by law of the judgment as to the wages and allowances due for the last six months (...)."
+      },
+      "basis": [
+        "b40"
+      ]
+    },
+    {
+      "id": "r2",
+      "kind": "provisional_execution",
+      "accessory": true,
+      "amount": false,
+      "text": {
+        "ar": "شمول الحكم بالنفاذ المعجل دون كفالة فيما يخص الرواتب والتعويضات المستحقة عما زاد على الأشهر الستة الأخيرة (...).",
+        "en": "Provisional enforcement without bond of the judgment as to the wages and allowances due beyond the last six months (...)."
+      },
+      "basis": [
+        "b58"
+      ]
+    }
+  ],
+  "court": {
+    "section": {
+      "value": "social",
+      "basis": [
+        "b27",
+        "b28",
+        "b50"
+      ],
+      "message": {
+        "ar": "المادة 500 من قانون الإجراءات المدنية والإدارية والمادة 20 من قانون تسوية النزاعات الفردية في العمل: يختص القسم الاجتماعي اختصاصا مانعا بمنازعات إثبات عقود العمل وتنفيذها وتعليقها وإنهائها، وتجدول القضايا حسب طبيعة النزاع (المادة 32). تحقق من القسم المختار.",
+        "en": "CPCA article 500 and article 20 of the law on individual labour disputes: the social section has exclusive jurisdiction over the proof, performance, suspension and termination of employment contracts, and cases are listed by the nature of the dispute (article 32). Check the section chosen."
+      }
+    },
+    "territory": [
+      {
+        "id": "t1",
+        "rule": {
+          "ar": "محكمة مكان إبرام عقد العمل أو تنفيذه، أو محكمة موطن المدعى عليه (المادة 501)؛ والمادة 24 من قانون تسوية النزاعات الفردية في العمل تذكر مكان التنفيذ ومحل إقامة المدعى عليه.",
+          "en": "The court for the place where the employment contract was made or performed, or for the defendant's domicile (CPCA 501); article 24 of the law on individual labour disputes names the place of performance and the defendant's residence."
+        },
+        "basis": [
+          "b29",
+          "b31"
+        ]
+      },
+      {
+        "id": "t2",
+        "rule": {
+          "ar": "إذا انتهى عقد العمل أو علق بسبب حادث عمل أو مرض مهني: محكمة موطن المدعي.",
+          "en": "When the contract ended or was suspended because of a work accident or an occupational disease: the court for the plaintiff's domicile."
+        },
+        "when": {
+          "slot": "work_accident_or_occupational_illness",
+          "is": "yes"
+        },
+        "basis": [
+          "b30",
+          "b32"
+        ]
+      },
+      {
+        "id": "t3",
+        "rule": {
+          "ar": "يثار الدفع بعدم الاختصاص الإقليمي قبل أي دفاع في الموضوع أو دفع بعدم القبول.",
+          "en": "The plea of lack of territorial jurisdiction is raised before any defence on the merits or plea of inadmissibility."
+        },
+        "basis": [
+          "b53"
+        ]
+      }
+    ],
+    "exits": [
+      {
+        "id": "x1",
+        "when": {
+          "slot": "public_body_party",
+          "is": "yes"
+        },
+        "goesTo": "administrativeCourt",
+        "effect": "warn",
+        "message": {
+          "ar": "المادة 800 من قانون الإجراءات المدنية والإدارية تسند إلى المحاكم الإدارية القضايا التي تكون الدولة أو الولاية أو البلدية أو مؤسسة عمومية ذات صبغة إدارية طرفا فيها، باستثناء المنازعات الموكلة إلى جهات أخرى، والمادة 500 تجعل منازعات عقود العمل من الاختصاص المانع للقسم الاجتماعي. تحقق من صفة المستخدم ومن القانون الذي يخضع له العامل قبل اختيار الجهة.",
+          "en": "CPCA article 800 gives the administrative courts the cases to which the State, a wilaya, a commune or a public administrative body is a party, except disputes given to other courts, while article 500 gives the social section exclusive jurisdiction over employment contract disputes. Check who the employer is and which statute governs the worker before choosing the court."
+        },
+        "basis": [
+          "b39",
+          "b56",
+          "b27"
+        ],
+        "interpretive": true,
+        "interpretiveNote": "Article 800 ¶2 sends to the administrative courts every case to which such a body is a party; article 800 ¶1 (the wording in force) excepts the disputes given to other courts, and article 500 gives the social section exclusive jurisdiction over employment contracts. Which prevails for a worker under the labour relations law employed by a public administrative body is a reading; the exit warns and leaves the check to the lawyer."
+      },
+      {
+        "id": "x2",
+        "when": {
+          "slot": "worker_is_public_servant",
+          "is": "yes"
+        },
+        "goesTo": "outsideCatalogue",
+        "effect": "warn",
+        "message": {
+          "ar": "المادة 19 من قانون تسوية النزاعات الفردية في العمل: تخرج من اختصاص مكاتب المصالحة خلافات الموظفين والأعوان الخاضعين للقانون الأساسي للمؤسسات والإدارات العمومية، والمادة 3 من قانون علاقات العمل تخضع هذه الفئات لأحكام خاصة، والمادة 800 من قانون الإجراءات المدنية والإدارية تسند إلى المحاكم الإدارية القضايا التي تكون فيها الإدارات العمومية طرفا. تحقق من الجهة المختصة.",
+          "en": "Article 19 of the law on individual labour disputes: disputes of civil servants and agents under the statute of public institutions and administrations are outside the conciliation offices; article 3 of the labour relations law puts these groups under special provisions, and CPCA article 800 gives the administrative courts the cases to which public administrations are party. Check which court has jurisdiction."
+        },
+        "basis": [
+          "b3",
+          "b38",
+          "b39"
+        ],
+        "interpretive": true,
+        "interpretiveNote": "The texts take these disputes out of the conciliation offices and put the staff under special provisions; they do not name the court for the worker's status as such. Article 800 ¶2 names the administrative courts only through the public body that is a party."
+      }
+    ]
+  },
+  "deadlines": [
+    {
+      "id": "d1",
+      "kind": "forfeiture",
+      "period": {
+        "value": 6,
+        "unit": "month"
+      },
+      "startsFrom": {
+        "slot": "nonconciliation_record_delivered_on",
+        "event": "conciliation_failed",
+        "description": {
+          "ar": "تاريخ تسليم محضر عدم الصلح",
+          "en": "The date the record of non-conciliation was delivered"
+        }
+      },
+      "counting": {
+        "method": "excludeFirstAndLastDay",
+        "extendToWorkingDay": true,
+        "basis": [
+          "b22",
+          "b23",
+          "b54",
+          "b24"
+        ]
+      },
+      "raisedBy": "unclear",
+      "when": {
+        "all": [
+          {
+            "slot": "nonconciliation_record",
+            "is": "yes"
+          },
+          {
+            "any": [
+              {
+                "slot": "forfeiture_lifted_by_order",
+                "known": false
+              },
+              {
+                "slot": "forfeiture_lifted_by_order",
+                "is": "no"
+              }
+            ]
+          },
+          {
+            "any": [
+              {
+                "slot": "forfeiture_force_majeure_invoked",
+                "known": false
+              },
+              {
+                "slot": "forfeiture_force_majeure_invoked",
+                "is": "no"
+              }
+            ]
+          }
+        ]
+      },
+      "effectWhenExpired": "blockCleanExport",
+      "warnBandDays": 15,
+      "message": {
+        "ar": "المادة 504 من قانون الإجراءات المدنية والإدارية: ترفع الدعوى أمام القسم الاجتماعي في أجل لا يتجاوز ستة (6) أشهر من تاريخ تسليم محضر عدم الصلح تحت طائلة سقوط الحق في رفع الدعوى. يحسب الأجل كاملا ويمدد إلى أول يوم عمل (المادة 405)، ويرفع السقوط في حالة القوة القاهرة بأمر من رئيس الجهة القضائية (المادة 322). تحقق من تاريخ تسليم المحضر.",
+        "en": "CPCA, article 504: the claim must be brought before the social section within six (6) months of the delivery of the non-conciliation record, or the right to bring it is forfeited. The period is counted in full and runs to the next working day (article 405); a forfeiture for force majeure is lifted by the president's order (article 322). Check the date the record was delivered."
+      },
+      "basis": [
+        "b21",
+        "b22",
+        "b23",
+        "b54",
+        "b24",
+        "b51",
+        "b55",
+        "b25"
+      ],
+      "extract": {
+        "period": "ستة (6) أشهر",
+        "sanction": "تحت طائلة سقوط الحق في رفع الدعوى"
+      }
+    },
+    {
+      "id": "d2",
+      "kind": "forfeiture",
+      "period": {
+        "value": 6,
+        "unit": "month"
+      },
+      "startsFrom": {
+        "slot": "nonconciliation_record_delivered_on",
+        "event": "conciliation_failed",
+        "description": {
+          "ar": "تاريخ تسليم محضر عدم الصلح",
+          "en": "The date the record of non-conciliation was delivered"
+        }
+      },
+      "counting": {
+        "method": "excludeFirstAndLastDay",
+        "extendToWorkingDay": true,
+        "basis": [
+          "b22",
+          "b23",
+          "b54",
+          "b24"
+        ]
+      },
+      "raisedBy": "unclear",
+      "when": {
+        "all": [
+          {
+            "slot": "nonconciliation_record",
+            "is": "yes"
+          },
+          {
+            "any": [
+              {
+                "slot": "forfeiture_lifted_by_order",
+                "known": false
+              },
+              {
+                "slot": "forfeiture_lifted_by_order",
+                "is": "no"
+              }
+            ]
+          },
+          {
+            "slot": "forfeiture_force_majeure_invoked",
+            "known": true
+          },
+          {
+            "slot": "forfeiture_force_majeure_invoked",
+            "is": "yes"
+          }
+        ]
+      },
+      "effectWhenExpired": "warn",
+      "warnBandDays": 15,
+      "message": {
+        "ar": "المادة 504 من قانون الإجراءات المدنية والإدارية: ترفع الدعوى أمام القسم الاجتماعي في أجل لا يتجاوز ستة (6) أشهر من تاريخ تسليم محضر عدم الصلح تحت طائلة سقوط الحق، ويستثنى من السقوط حالة القوة القاهرة أو الأحداث المؤثرة في السير العادي لمرفق العدالة، ويقدم طلب رفع السقوط إلى رئيس الجهة القضائية المعروض أمامها النزاع ويفصل فيه بأمر على عريضة (المادة 322). تحقق من تاريخ تسليم المحضر ومن إثبات القوة القاهرة ومن تقديم طلب رفع السقوط.",
+        "en": "CPCA, article 504: the claim must be brought before the social section within six (6) months of the delivery of the non-conciliation record, on pain of forfeiture; force majeure and events affecting the normal working of the courts are excepted, and the request to lift the forfeiture goes to the president of the court before which the dispute is brought, who rules by an order on petition (article 322). Check the delivery date, the proof of the force majeure, and that the request to lift the forfeiture is made."
+      },
+      "basis": [
+        "b21",
+        "b22",
+        "b23",
+        "b54",
+        "b24",
+        "b51",
+        "b55",
+        "b25"
+      ],
+      "extract": {
+        "period": "ستة (6) أشهر",
+        "sanction": "تحت طائلة سقوط الحق في رفع الدعوى"
+      }
+    },
+    {
+      "id": "d3",
+      "kind": "forfeiture",
+      "period": {
+        "value": 6,
+        "unit": "month"
+      },
+      "startsFrom": {
+        "slot": "earlier_nonconciliation_record_delivered_on",
+        "event": "conciliation_failed",
+        "description": {
+          "ar": "تاريخ تسليم محضر عدم الصلح الأول عن نفس النزاع",
+          "en": "The date the first non-conciliation record for the same dispute was delivered"
+        }
+      },
+      "counting": {
+        "method": "excludeFirstAndLastDay",
+        "extendToWorkingDay": true,
+        "basis": [
+          "b22",
+          "b23",
+          "b54",
+          "b24"
+        ]
+      },
+      "raisedBy": "courtOfOwnMotion",
+      "when": {
+        "all": [
+          {
+            "slot": "nonconciliation_record",
+            "is": "yes"
+          },
+          {
+            "slot": "earlier_nonconciliation_record",
+            "is": "yes"
+          },
+          {
+            "any": [
+              {
+                "slot": "forfeiture_lifted_by_order",
+                "known": false
+              },
+              {
+                "slot": "forfeiture_lifted_by_order",
+                "is": "no"
+              }
+            ]
+          }
+        ]
+      },
+      "effectWhenExpired": "warn",
+      "warnBandDays": 15,
+      "message": {
+        "ar": "المادة 504 من قانون الإجراءات المدنية والإدارية: ترفع الدعوى أمام القسم الاجتماعي في أجل لا يتجاوز ستة (6) أشهر من تاريخ تسليم محضر عدم الصلح تحت طائلة سقوط الحق في رفع الدعوى. وقضت المحكمة العليا (الغرفة الاجتماعية، الملف 1488919) بأن الحق يسقط إذا أصبح محضر عدم الصلح الأول خارج أجل ستة أشهر، وأنه لا يمكن استصدار محضر ثان بعدم الصلح بخصوص نفس النزاع، وأن عدم القبول في هذه الحالة من النظام العام يثيره القاضي تلقائيا (المادة 69). تحقق من تاريخ تسليم المحضر الأول.",
+        "en": "CPCA, article 504: the claim must be brought before the social section within six (6) months of the delivery of the non-conciliation record, or the right to bring it is forfeited. The Supreme Court (social chamber, file 1488919) held that the right is forfeited once the first non-conciliation record is outside the six months, that a second record cannot be obtained on the same dispute, and that this inadmissibility is of public order, raised by the judge of his own motion (article 69). Check the delivery date of the first record."
+      },
+      "basis": [
+        "b21",
+        "b22",
+        "b23",
+        "b54",
+        "b24",
+        "b26"
+      ],
+      "extract": {
+        "period": "ستة (6) أشهر",
+        "sanction": "تحت طائلة سقوط الحق في رفع الدعوى"
+      },
+      "interpretive": true,
+      "interpretiveNote": "Article 504 ¶1 runs the period from «تسليم محضر عدم الصلح» and says nothing of a second record. Counting from the first record rests on the Supreme Court's social chamber (file 1488919, 07-10-2021, read on coursupreme.dz): «يسقط حق العامل في رفع دعواه أمام القسم الاجتماعي، إذا أصبح محضر عدم الصلح الأول خارج أجل ستة أشهر» and «لا يمكن استصدار محضر ثان بعدم الصلح بخصوص نفس النزاع الذي تضمنه المحضر الأول». Case law, so the deadline is interpretive and warns.",
+      "readings": [
+        {
+          "reading": {
+            "ar": "يحسب الأجل من تسليم المحضر الأول، ولا يفتح المحضر الثاني أجلا جديدا (المحكمة العليا، الملف 1488919).",
+            "en": "The period runs from the delivery of the first record; a second record does not open a new period (Supreme Court, file 1488919)."
+          },
+          "basis": [
+            "b21",
+            "b26"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "يحسب الأجل من تسليم محضر عدم الصلح المرفق بالعريضة، لأن النص لا يميز بين محضر أول وثان.",
+            "en": "The period runs from the delivery of the record attached to the petition, the text not distinguishing a first from a second record."
+          },
+          "basis": [
+            "b21"
+          ]
+        }
+      ]
+    }
+  ],
+  "priorSteps": [
+    {
+      "id": "p1",
+      "kind": "labourConciliation",
+      "slots": [
+        "nonconciliation_record",
+        "nonconciliation_record_delivered_on",
+        "defendant_resides_abroad",
+        "employer_in_bankruptcy_or_settlement",
+        "worker_is_public_servant"
+      ],
+      "requiredWhen": {
+        "any": [
+          {
+            "slot": "nonconciliation_record",
+            "is": "no"
+          },
+          {
+            "slot": "nonconciliation_record",
+            "known": false
+          },
+          {
+            "all": [
+              {
+                "slot": "nonconciliation_record",
+                "is": "yes"
+              },
+              {
+                "slot": "nonconciliation_record_delivered_on",
+                "beforeSlot": "petition_date"
+              }
+            ]
+          }
+        ]
+      },
+      "notRequiredWhen": [
+        {
+          "when": {
+            "slot": "defendant_resides_abroad",
+            "is": "yes"
+          },
+          "basis": [
+            "b2"
+          ],
+          "note": {
+            "ar": "المصالحة اختيارية إذا كان المدعى عليه مقيما خارج التراب الوطني.",
+            "en": "Conciliation is optional when the defendant resides outside the national territory."
+          }
+        },
+        {
+          "when": {
+            "slot": "employer_in_bankruptcy_or_settlement",
+            "is": "yes"
+          },
+          "basis": [
+            "b2"
+          ],
+          "note": {
+            "ar": "المصالحة اختيارية في حالة إفلاس صاحب العمل أو تسويته القضائية.",
+            "en": "Conciliation is optional when the employer is bankrupt or under judicial settlement."
+          }
+        },
+        {
+          "when": {
+            "slot": "worker_is_public_servant",
+            "is": "yes"
+          },
+          "basis": [
+            "b3"
+          ],
+          "note": {
+            "ar": "خلافات الموظفين والأعوان الخاضعين للقانون الأساسي للمؤسسات والإدارات العمومية خارجة عن اختصاص مكاتب المصالحة.",
+            "en": "Disputes of civil servants and agents under the statute of public institutions and administrations are outside the conciliation offices."
+          }
+        }
+      ],
+      "acceptedMeans": [
+        {
+          "id": "m1",
+          "label": {
+            "ar": "محضر عدم المصالحة لعدم اتفاق الأطراف",
+            "en": "Record of non-conciliation because the parties did not agree"
+          },
+          "basis": [
+            "b15",
+            "b20"
+          ]
+        },
+        {
+          "id": "m2",
+          "label": {
+            "ar": "محضر عدم المصالحة لعدم حضور المدعى عليه المستدعى نظاميا",
+            "en": "Record of non-conciliation because the duly summoned defendant did not attend"
+          },
+          "basis": [
+            "b12",
+            "b13",
+            "b20"
+          ]
+        }
+      ],
+      "effectWhenMissing": "warn",
+      "effectWhenUnknown": "ask",
+      "message": {
+        "ar": "المادتان 19 و37 من قانون تسوية النزاعات الفردية في العمل: يجب أن يكون كل خلاف فردي في العمل موضوع محاولة صلح أمام مكتب المصالحة قبل مباشرة أي دعوى قضائية، وترفق العريضة بنسخة من محضر عدم المصالحة. وقضت المحكمة العليا (الغرفة الاجتماعية، الملفان 1158046 و1340230) بأنه لا تقبل الدعوى أمام القسم الاجتماعي في غياب محضر عدم مصالحة، وأثارت ذلك تلقائيا. تحقق من وجود المحضر ومن تاريخ تسليمه السابق لتاريخ العريضة، أو من قيام إحدى حالات الإعفاء.",
+        "en": "Articles 19 and 37 of the law on individual labour disputes: every individual labour dispute must go through a conciliation attempt before the conciliation office before any court action, and the petition is accompanied by a copy of the non-conciliation record. The Supreme Court (social chamber, files 1158046 and 1340230) held that a claim before the social section is not admissible without a non-conciliation record, and raised the point of its own motion. Check that the record exists and was delivered before the petition's date, or that an exemption applies."
+      },
+      "basis": [
+        "b1",
+        "b2",
+        "b3",
+        "b12",
+        "b15",
+        "b20"
+      ],
+      "interpretive": true,
+      "interpretiveNote": "Article 19 states the duty and article 37 requires the copy of the record; neither states the sanction of a petition filed without it. The Supreme Court's social chamber supplies it: «لا تقبل الدعوى أمام القسم الإجتماعي في غياب محضر عدم مصالحة» (file 1158046, 07-09-2017), raised of its own motion as «مخالفة قاعدة جوهرية في الإجراءات», and again in file 1340230 (05-03-2020) on articles 19, 36 and 37. That is case law, so the step stays interpretive: it warns, naming the inadmissibility, and never blocks. The step counts as done only when the record exists and was delivered before the petition's date (19 ¶1: before any court action): with the delivery date unknown the step asks for it, and with a delivery on or after the petition's date the step leaves the answer to boundary n5."
+    },
+    {
+      "id": "p2",
+      "kind": "other",
+      "slots": [
+        "internal_grievance_exhausted"
+      ],
+      "effectWhenMissing": "warn",
+      "effectWhenUnknown": "ask",
+      "message": {
+        "ar": "المواد 2 و4 و5 من قانون تسوية النزاعات الفردية في العمل: النزاع الفردي خلاف لم يحل في إطار التسوية الداخلية، ولا يخطر العامل مفتش العمل إلا بعد استنفاد إجراءات المعالجة الداخلية. تحقق من استنفاد هذه الإجراءات إذا كان المدعي هو العامل.",
+        "en": "Articles 2, 4 and 5 of the law on individual labour disputes: an individual dispute is one not resolved by internal settlement, and the worker refers it to the labour inspector after the internal procedure is exhausted. When the worker is the plaintiff, check that this procedure was followed."
+      },
+      "basis": [
+        "b4",
+        "b5",
+        "b6",
+        "b7"
+      ],
+      "interpretive": true,
+      "interpretiveNote": "The texts put the internal procedure before the referral to the labour inspector; they state no consequence for a court claim filed when it was skipped, and they speak only of the worker. Warn; never block."
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc1",
+      "name": {
+        "ar": "نسخة من محضر عدم المصالحة الصادر عن مكتب المصالحة",
+        "en": "Copy of the record of non-conciliation issued by the conciliation office"
+      },
+      "requiredWhen": {
+        "all": [
+          {
+            "not": {
+              "slot": "worker_is_public_servant",
+              "is": "yes"
+            }
+          },
+          {
+            "not": {
+              "all": [
+                {
+                  "slot": "nonconciliation_record",
+                  "is": "no"
+                },
+                {
+                  "any": [
+                    {
+                      "slot": "defendant_resides_abroad",
+                      "is": "yes"
+                    },
+                    {
+                      "slot": "employer_in_bankruptcy_or_settlement",
+                      "is": "yes"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "why": {
+        "ar": "المادة 37: ترفق العريضة الموجهة إلى المحكمة بنسخة من محضر عدم المصالحة الصادر عن مكتب المصالحة، ومن تاريخ تسليمه يحسب أجل رفع الدعوى (المادة 504). لا يطلب إذا كانت المصالحة اختيارية (المادة 19) ولم تجر.",
+        "en": "Article 37: the petition must be accompanied by a copy of the non-conciliation record issued by the conciliation office, and the time limit to file runs from its delivery (CPCA 504). Not asked for when conciliation was optional (article 19) and was not attempted."
+      },
+      "basis": [
+        "b20",
+        "b21",
+        "b2",
+        "b3"
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "id": "n1",
+      "looksLike": {
+        "ar": "دعوى عمالية بعد المرور على مكتب المصالحة",
+        "en": "A labour claim after going through the conciliation office"
+      },
+      "isActually": "outside:conciliation-agreement-execution",
+      "tellingFacts": [
+        {
+          "ar": "حرر المكتب محضر مصالحة باتفاق الطرفين على كل الخلاف أو جزء منه",
+          "en": "The office recorded an agreement of the parties on all or part of the dispute"
+        },
+        {
+          "ar": "لم ينفذ أحد الطرفين الاتفاق في الأجل",
+          "en": "A party did not carry out the agreement in time"
+        }
+      ],
+      "when": {
+        "slot": "conciliation_agreement_reached",
+        "is": "yes"
+      },
+      "slots": [
+        "conciliation_agreement_reached"
+      ],
+      "message": {
+        "ar": "المادتان 31 و34 من قانون تسوية النزاعات الفردية في العمل والمادتان 508 و509 من قانون الإجراءات المدنية والإدارية: إذا حرر محضر مصالحة ولم ينفذ، يلتمس التنفيذ الفوري من رئيس القسم الاجتماعي بعريضة مع غرامة تهديدية. وقضت المحكمة العليا (الغرفة الاجتماعية، الملف 1340230) بأن اتفاق المصالحة ينفذ بموجب أمر من رئيس المحكمة وأنه لا تقبل الطلبات الجديدة التي لم تكن محل اتفاق المصالحة، ونقضت (الملف 1158046) حكما فصل في الموضوع بناء على محضر مصالحة. تحقق مما شمله الاتفاق وما بقي محل خلاف.",
+        "en": "Articles 31 and 34 of the law on individual labour disputes and articles 508 and 509 of the Code of Civil and Administrative Procedure: when a record of conciliation was drawn up and not carried out, immediate execution under a penalty payment is sought from the president of the social section by petition. The Supreme Court (social chamber, file 1340230) held that the agreement is enforced by the president's order and that new requests not covered by the agreement are not admissible, and (file 1158046) quashed a judgment on the merits founded on a record of conciliation. Check what the agreement covered and what remains in dispute."
+      },
+      "basis": [
+        "b14",
+        "b17",
+        "b18",
+        "b36",
+        "b37"
+      ]
+    },
+    {
+      "id": "n2",
+      "looksLike": {
+        "ar": "منازعة أمام القسم الاجتماعي في الضمان الاجتماعي أو التقاعد",
+        "en": "A dispute before the social section on social security or retirement"
+      },
+      "isActually": "outside:social-security",
+      "tellingFacts": [
+        {
+          "ar": "الخصم هيئة ضمان اجتماعي لا المستخدم",
+          "en": "The opponent is a social security body, not the employer"
+        },
+        {
+          "ar": "النزاع لا يتعلق بتنفيذ علاقة العمل بين عامل ومستخدم",
+          "en": "The dispute is not about the performance of an employment relationship between a worker and an employer"
+        }
+      ],
+      "message": {
+        "ar": "المادة 2 من قانون تسوية النزاعات الفردية في العمل والمادة 500 من قانون الإجراءات المدنية والإدارية: المصالحة أمام مكتب المصالحة تخص النزاع الفردي بين العامل والمستخدم، ومنازعات الضمان الاجتماعي والتقاعد مذكورة في اختصاص القسم الاجتماعي بندا مستقلا عن عقود العمل. تحقق من طبيعة النزاع ومن الخصم.",
+        "en": "Article 2 of the law on individual labour disputes and CPCA article 500: conciliation before the office concerns individual disputes between worker and employer; social security and retirement disputes are listed in the social section's jurisdiction as an item separate from employment contracts. Check the nature of the dispute and who the opponent is."
+      },
+      "basis": [
+        "b4",
+        "b57"
+      ]
+    },
+    {
+      "id": "n3",
+      "looksLike": {
+        "ar": "نزاع عمالي يخص مجموعة من العمال أو اتفاقية جماعية أو إضرابا",
+        "en": "A labour dispute concerning a group of workers, a collective agreement or a strike"
+      },
+      "isActually": "outside:collective-labour-dispute",
+      "tellingFacts": [
+        {
+          "ar": "الطرف ممثلو العمال أو نقابة لا عامل أجير بعينه",
+          "en": "The party is the workers' representatives or a union, not one salaried worker"
+        }
+      ],
+      "message": {
+        "ar": "المادة 2 من قانون تسوية النزاعات الفردية في العمل: يقتصر هذا القانون على الخلاف القائم بين عامل أجير ومستخدم. تحقق من أن النزاع فردي.",
+        "en": "Article 2 of the law on individual labour disputes: this law covers a disagreement between one salaried worker and an employer. Check that the dispute is individual."
+      },
+      "basis": [
+        "b4"
+      ]
+    },
+    {
+      "id": "n4",
+      "looksLike": {
+        "ar": "علاقة تبدو عقد عمل",
+        "en": "A relationship that looks like an employment contract"
+      },
+      "isActually": "outside:civil-contract",
+      "tellingFacts": [
+        {
+          "ar": "لا تبعية ولا أجر ولا تنظيم، كوكالة أو مقاولة مستقلة",
+          "en": "No subordination, pay or organisation, as in an agency or an independent works contract"
+        }
+      ],
+      "message": {
+        "ar": "المادة 2 من قانون علاقات العمل: العامل الأجير يؤدي عملا مقابل مرتب في إطار التنظيم ولحساب غيره؛ تحقق من توافر هذه العناصر.",
+        "en": "Article 2 of the labour relations law: a salaried worker works for pay within an organisation on behalf of another; check that these elements are present."
+      },
+      "basis": [
+        "b48"
+      ]
+    },
+    {
+      "id": "n5",
+      "looksLike": {
+        "ar": "دعوى عمالية بعد محاولة الصلح",
+        "en": "A labour claim after the conciliation attempt"
+      },
+      "isActually": "outside:claim-before-conciliation-ended",
+      "tellingFacts": [
+        {
+          "ar": "تاريخ تسليم محضر عدم المصالحة يوافق تاريخ العريضة أو يليه",
+          "en": "The non-conciliation record was delivered on or after the petition's date"
+        }
+      ],
+      "when": {
+        "all": [
+          {
+            "slot": "nonconciliation_record",
+            "is": "yes"
+          },
+          {
+            "slot": "nonconciliation_record_delivered_on",
+            "known": true
+          },
+          {
+            "slot": "nonconciliation_record_delivered_on",
+            "afterSlot": "petition_date"
+          }
+        ]
+      },
+      "slots": [
+        "nonconciliation_record",
+        "nonconciliation_record_delivered_on"
+      ],
+      "message": {
+        "ar": "المادتان 19 و37 من قانون تسوية النزاعات الفردية في العمل: تكون محاولة الصلح قبل مباشرة أي دعوى قضائية، وترفق العريضة بنسخة من محضر عدم المصالحة. تاريخ التسليم المدخل لا يسبق تاريخ العريضة؛ تحقق من التاريخين.",
+        "en": "Articles 19 and 37 of the law on individual labour disputes: the conciliation attempt comes before any court action, and the petition is accompanied by a copy of the non-conciliation record. The delivery date entered is not before the petition's date; check both dates."
+      },
+      "basis": [
+        "b1",
+        "b20"
+      ]
+    }
+  ],
+  "openPoints": [
+    {
+      "id": "o1",
+      "question": {
+        "ar": "ما جزاء رفع الدعوى دون محضر عدم المصالحة خارج حالات الإعفاء؟",
+        "en": "What is the sanction of a claim filed without a non-conciliation record outside the exemptions?"
+      },
+      "why": {
+        "ar": "المادتان 19 و37 من قانون تسوية النزاعات الفردية في العمل تقرران الواجب دون جزاء صريح. وقضت المحكمة العليا (الغرفة الاجتماعية، الملف 1158046، 07-09-2017، والملف 1340230، 05-03-2020) بأنه لا تقبل الدعوى أمام القسم الاجتماعي في غياب محضر عدم مصالحة، وأثارت ذلك تلقائيا لمخالفة قاعدة جوهرية في الإجراءات؛ وهو اجتهاد قضائي لا نص.",
+        "en": "Articles 19 and 37 of the law on individual labour disputes state the duty and no express sanction. The Supreme Court (social chamber, file 1158046 of 07-09-2017 and file 1340230 of 05-03-2020) held that a claim before the social section is not admissible without a non-conciliation record and raised it of its own motion as a breach of a fundamental procedural rule; this is case law, not the text."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "الدعوى غير مقبولة لتخلف إجراء جوهري سابق، يثيره القاضي تلقائيا (المحكمة العليا، الملفان 1158046 و1340230).",
+            "en": "The claim is inadmissible for want of a mandatory prior step, raised by the court of its own motion (Supreme Court, files 1158046 and 1340230)."
+          },
+          "basis": [
+            "b1",
+            "b20"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "عيب يمكن تداركه أثناء الخصومة بتقديم المحضر.",
+            "en": "A defect that can be cured during the proceedings by producing the record."
+          },
+          "basis": [
+            "b1"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "تحذير المحامي بعدم القبول الذي قضت به المحكمة العليا، دون منع التصدير النظيف لأن الجزاء اجتهاد قضائي.",
+        "en": "Warn the lawyer of the inadmissibility the Supreme Court holds; do not block the clean export, the sanction resting on case law."
+      },
+      "grade": "C",
+      "refs": [
+        "p1"
+      ]
+    },
+    {
+      "id": "o2",
+      "question": {
+        "ar": "هل يثير القاضي سقوط الحق المقرر في المادة 504 من تلقاء نفسه؟",
+        "en": "Does the judge raise the forfeiture of CPCA article 504 of his own motion?"
+      },
+      "why": {
+        "ar": "المادة 67 تعد انقضاء الأجل المسقط دفعا بعدم القبول، والمادة 69 لا توجب إثارته تلقائيا إلا إذا كان من النظام العام، ولم تصفه المادة 504 بذلك. وقضت المحكمة العليا (الغرفة الاجتماعية، الملف 1488919، 07-10-2021) بأن عدم قبول الدعوى في هذه الحالة من النظام العام يثيره القاضي تلقائيا طبقا للمادة 69؛ وهو اجتهاد قضائي لا نص.",
+        "en": "Article 67 makes the expiry of a forfeiture period a plea of inadmissibility; article 69 requires the judge to raise it only when it is of public order, and article 504 does not say so. The Supreme Court (social chamber, file 1488919, 07-10-2021) held that the inadmissibility in this case is of public order and raised by the judge of his own motion under article 69; this is case law, not the text."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "من النظام العام، يثيره القاضي تلقائيا (المحكمة العليا، الملف 1488919).",
+            "en": "Of public order: raised by the judge of his own motion (Supreme Court, file 1488919)."
+          },
+          "basis": [
+            "b25",
+            "b26"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "لا يثار إلا بدفع من الخصم.",
+            "en": "Raised only on the opponent's plea."
+          },
+          "basis": [
+            "b25"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "اعتبار الأجل قائما في كل الأحوال.",
+        "en": "Treat the period as binding in every case."
+      },
+      "grade": "C",
+      "refs": [
+        "d1",
+        "d2"
+      ]
+    },
+    {
+      "id": "o3",
+      "question": {
+        "ar": "أي النصين يحكم الاختصاص الإقليمي: المادة 501 من قانون الإجراءات المدنية والإدارية أم المادة 24 من قانون تسوية النزاعات الفردية في العمل؟",
+        "en": "Which text governs territorial jurisdiction: CPCA article 501 or article 24 of the law on individual labour disputes?"
+      },
+      "why": {
+        "ar": "المادة 501 تضيف مكان إبرام العقد وتتكلم عن الموطن، والمادة 24 تذكر مكان التنفيذ ومحل الإقامة وتجعل محكمة المدعي جوازية في حالة حادث العمل.",
+        "en": "Article 501 adds the place the contract was made and speaks of domicile; article 24 names the place of performance and residence and makes the plaintiff's court optional after a work accident."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "المادة 501 لاحقة وتحكم.",
+            "en": "Article 501 is the later text and governs."
+          },
+          "basis": [
+            "b29",
+            "b30"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "المادة 24 نص خاص يبقى ساريا.",
+            "en": "Article 24 is the special text and still applies."
+          },
+          "basis": [
+            "b31",
+            "b32"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "عرض القاعدتين على المحامي واختيار محكمة تتفق عليها القراءتان.",
+        "en": "Show both rules and prefer a court both readings accept."
+      },
+      "grade": "C",
+      "refs": [
+        "t1",
+        "t2"
+      ]
+    },
+    {
+      "id": "o4",
+      "question": {
+        "ar": "هل يشترط استنفاد إجراءات المعالجة الداخلية لقبول الدعوى أمام القسم الاجتماعي؟",
+        "en": "Is the exhaustion of the internal procedure a condition for the claim before the social section?"
+      },
+      "why": {
+        "ar": "المواد 2 إلى 5 تجعل المعالجة الداخلية سابقة على إخطار مفتش العمل دون جزاء على الدعوى، وتخص العامل وحده.",
+        "en": "Articles 2 to 5 put the internal procedure before the referral to the labour inspector, with no sanction on the claim, and speak of the worker only."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "شرط سابق على إخطار مفتش العمل وبالتالي على الدعوى.",
+            "en": "A step before the referral to the inspector, and so before the claim."
+          },
+          "basis": [
+            "b4",
+            "b7"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "إجراء جوازي لا يؤثر في قبول الدعوى.",
+            "en": "An optional route that does not affect the admissibility of the claim."
+          },
+          "basis": [
+            "b5",
+            "b7"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "التحذير عند عدم الاستنفاد دون المنع.",
+        "en": "Warn when it was not exhausted; never block."
+      },
+      "grade": "C",
+      "refs": [
+        "p2"
+      ]
+    },
+    {
+      "id": "o5",
+      "question": {
+        "ar": "متى يخرج النزاع الذي تكون فيه هيئة عمومية طرفا أو يكون فيه العامل موظفا من مكاتب المصالحة ومن القسم الاجتماعي، وإلى أي جهة؟",
+        "en": "When does a dispute to which a public body is party, or in which the worker is a civil servant, leave the conciliation offices and the social section, and for which court?"
+      },
+      "why": {
+        "ar": "المادة 19 والمادة 3 من قانون علاقات العمل تعتدان بصفة العامل وبالقانون الأساسي الذي يخضع له، والمادة 800 تعتد بصفة الطرف وتستثني المنازعات الموكلة إلى جهات أخرى، والمادة 500 تجعل منازعات عقود العمل من الاختصاص المانع للقسم الاجتماعي. ولا يسمي أي نص في المخزن الجهة المختصة بنزاعات الموظفين بصفتهم.",
+        "en": "Article 19 and article 3 of the labour relations law turn on the worker's status and statute; CPCA article 800 turns on the party and excepts disputes given to other courts; article 500 gives the social section exclusive jurisdiction over employment contracts. No text in the store names the court for civil servants' disputes as such."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "المحكمة الإدارية كلما كانت هيئة من الهيئات المذكورة طرفا.",
+            "en": "The administrative court whenever one of the listed bodies is a party."
+          },
+          "basis": [
+            "b39"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "القسم الاجتماعي لعامل خاضع لقانون علاقات العمل ولو كان المستخدم هيئة عمومية.",
+            "en": "The social section for a worker under the labour relations law, even when the employer is a public body."
+          },
+          "basis": [
+            "b27",
+            "b56"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "الجهة التي يحددها القانون الأساسي الخاص بالموظفين، وهو غير موجود في المخزن.",
+            "en": "The court set by the civil servants' special statute, which is not in the store."
+          },
+          "basis": [
+            "b38"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "التحذير عند وجود هيئة عمومية أو موظف، والسؤال عن صفة العامل، دون الجزم بالجهة.",
+        "en": "Warn when a public body or a civil servant is involved, ask about the worker's status, and do not conclude on the court."
+      },
+      "grade": "C",
+      "refs": [
+        "x1",
+        "x2",
+        "p1"
+      ]
+    },
+    {
+      "id": "o6",
+      "question": {
+        "ar": "هل عدلت مواد القانون 90-04 بعد صدوره (ولا سيما المادة 19)؟",
+        "en": "Were the articles of Law 90-04 (in particular article 19) amended after enactment?"
+      },
+      "why": {
+        "ar": "يذكر المخزن كل المواد بصيغة القانون 90-04 وحده. القانون 91-28 المؤرخ في 21 ديسمبر 1991 (الجريدة الرسمية 1991، العدد 68، ص 2654) لا يعدل إلا الفقرة الثانية من المادة 40 (تمديد الأجل الانتقالي إلى 30 يونيو 1992)، ولا يمس المواد 19 إلى 37. لم يبحث بعد عن تعديل لاحق.",
+        "en": "The store gives every article in the Law 90-04 wording only. Law 91-28 of 21 December 1991 (Official Journal 1991, no. 68, p. 2654) amends only article 40 ¶2 (the transitional period, extended to 30 June 1992) and does not touch articles 19 to 37. No later amending law has been searched for."
+      },
+      "protectiveReading": {
+        "ar": "عدم الاعتماد على صيغة لم يتحقق من سريانها دون تحذير.",
+        "en": "Do not rely on an unchecked wording without a warning."
+      },
+      "grade": "D",
+      "refs": [
+        "b1",
+        "b2",
+        "b3",
+        "p1"
+      ]
+    },
+    {
+      "id": "o7",
+      "question": {
+        "ar": "في المصالحة الجزئية، هل يلزم محضر عدم مصالحة للجزء الباقي، ومن أي تاريخ يحسب الأجل؟",
+        "en": "After a partial conciliation, is a non-conciliation record needed for the rest, and from what date does the period run?"
+      },
+      "why": {
+        "ar": "المادة 31 تنص على محضر مصالحة عن الكل أو الجزء ومحضر عدم مصالحة عند عدم الاتفاق، دون بيان الحالة المختلطة. وقضت المحكمة العليا (الملف 1340230) بأنه لا تقبل الطلبات الجديدة التي لم تكن محل اتفاق المصالحة في طريق التنفيذ، دون أن تبين ما يلزم للجزء الباقي.",
+        "en": "Article 31 provides a conciliation record for all or part and a non-conciliation record when there is no agreement, without settling the mixed case. The Supreme Court (file 1340230) held that new requests not covered by the agreement are not admissible in the execution route, without saying what the remaining part needs."
+      },
+      "protectiveReading": {
+        "ar": "حساب الأجل من تاريخ تسليم المحضر الذي يثبت الجزء غير المتفق عليه، والتحذير.",
+        "en": "Count from the delivery of the record showing the part not agreed, and warn."
+      },
+      "grade": "C",
+      "refs": [
+        "n1",
+        "d1",
+        "p1"
+      ]
+    },
+    {
+      "id": "o8",
+      "question": {
+        "ar": "ما الاختصاص المحلي لمكتب المصالحة المختص؟",
+        "en": "Which conciliation office has local jurisdiction?"
+      },
+      "why": {
+        "ar": "المادة 6 تحيل إلى التنظيم، ولا يتضمن المخزن ذلك التنظيم.",
+        "en": "Article 6 refers to regulation, and the article store does not hold that regulation."
+      },
+      "protectiveReading": {
+        "ar": "يتحقق المحامي من المكتب الذي أخطر.",
+        "en": "The lawyer checks which office was seised."
+      },
+      "grade": "D",
+      "refs": [
+        "p1",
+        "b47"
+      ]
+    },
+    {
+      "id": "o9",
+      "question": {
+        "ar": "هل يقطع إخطار مفتشية العمل أو مكتب المصالحة تقادم حقوق العمال؟",
+        "en": "Does seising the labour inspectorate or the conciliation office interrupt the limitation of workers' claims?"
+      },
+      "why": {
+        "ar": "لم يوجد في المخزن نص يعالج ذلك في قانون تسوية النزاعات الفردية في العمل ولا في المواد 500 إلى 510.",
+        "en": "No text in the store settles it in the law on individual labour disputes or in CPCA articles 500 to 510."
+      },
+      "protectiveReading": {
+        "ar": "لا يفترض أي قطع أو وقف للتقادم بسبب المصالحة.",
+        "en": "Assume no interruption or suspension of limitation from the conciliation."
+      },
+      "grade": "D",
+      "refs": [
+        "d1"
+      ]
+    },
+    {
+      "id": "o10",
+      "question": {
+        "ar": "هل يعد المحضر المسلم في تاريخ رفع الدعوى أو بعده استيفاء للمصالحة السابقة؟",
+        "en": "Does a record delivered on or after the filing date satisfy the prior conciliation?"
+      },
+      "why": {
+        "ar": "المادة 19 تشترط المحاولة قبل مباشرة أي دعوى ولا تتناول تدارك الأمر بعد الرفع؛ وقضت المحكمة العليا (الملف 1158046) بعدم قبول الدعوى في غياب محضر عدم مصالحة.",
+        "en": "Article 19 requires the attempt before any action and does not deal with putting it right after filing; the Supreme Court (file 1158046) holds a claim without a non-conciliation record inadmissible."
+      },
+      "protectiveReading": {
+        "ar": "التحذير متى كان تاريخ التسليم لا يسبق تاريخ العريضة.",
+        "en": "Warn whenever the delivery date is not before the petition's date."
+      },
+      "grade": "C",
+      "refs": [
+        "p1",
+        "n5"
+      ]
+    },
+    {
+      "id": "o11",
+      "question": {
+        "ar": "هل تختلف الصيغة الفرنسية للمادة 504 في بداية الأجل (تاريخ المحضر بدل تاريخ تسليمه)؟",
+        "en": "Does the French wording of CPCA article 504 start the period from a different event (the date of the record rather than its delivery)?"
+      },
+      "why": {
+        "ar": "ذكرت إحدى الاشتقاقات من الذاكرة أن النص الفرنسي لسنة 2008 يذكر تاريخ المحضر؛ والنص الفرنسي غير موجود في المخزن ولم يجر عليه فحص، والنص العربي الرسمي يذكر تاريخ التسليم.",
+        "en": "One derivation stated from memory that the 2008 French text names the date of the record; the French text is not in the store and was not checked, and the official Arabic text names the date of delivery."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "يبدأ الأجل من تاريخ تسليم المحضر (النص العربي في المخزن).",
+            "en": "The period runs from the delivery of the record (the Arabic text in the store)."
+          },
+          "basis": [
+            "b21"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "يبدأ الأجل من تاريخ المحضر (النص الفرنسي، من الذاكرة).",
+            "en": "The period runs from the date of the record (the French text, from memory)."
+          }
+        }
+      ],
+      "protectiveReading": {
+        "ar": "الأخذ بتاريخ التسليم والتنبيه إلى التحقق من تاريخ المحضر إذا كان أسبق.",
+        "en": "Count from the delivery and tell the lawyer to check the date of the record when it is earlier."
+      },
+      "grade": "D",
+      "refs": [
+        "d1",
+        "d2"
+      ]
+    },
+    {
+      "id": "o12",
+      "question": {
+        "ar": "أين ينتهي أجل الأشهر الستة إذا لم يوجد في الشهر الأخير اليوم المقابل ليوم التسليم؟",
+        "en": "Where does the six-month period end when the last month has no day matching the day of delivery?"
+      },
+      "why": {
+        "ar": "لا يحدد أي نص في المخزن نهاية الشهر في هذه الحالة؛ ويحسب البرنامج آخر يوم من ذلك الشهر، وهي قاعدة هندسية لا نص لها.",
+        "en": "No text in the store says where the month ends in that case; the evaluator takes the last day of that month, an engineering rule with no text."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "ينتهي في آخر يوم من الشهر الأخير.",
+            "en": "It ends on the last day of the last month."
+          }
+        },
+        {
+          "reading": {
+            "ar": "تضاف الأيام الناقصة فينتهي في أول الشهر الموالي.",
+            "en": "The missing days run on into the next month."
+          }
+        }
+      ],
+      "protectiveReading": {
+        "ar": "التحذير داخل هامش خمسة عشر يوما حول آخر يوم، وهو يغطي الفرق.",
+        "en": "Warn within the fifteen-day band around the last day, which covers the difference."
+      },
+      "grade": "C",
+      "refs": [
+        "d1",
+        "d2"
+      ]
+    },
+    {
+      "id": "o13",
+      "question": {
+        "ar": "ما أيام الأعياد الرسمية وأيام الراحة الأسبوعية التي يمدد بها الأجل؟",
+        "en": "Which days are official holidays and weekly rest days that extend the period?"
+      },
+      "why": {
+        "ar": "تحيل المادة 405 إلى النصوص الجاري بها العمل، وهي غير موجودة في المخزن.",
+        "en": "Article 405 refers to the texts in force, which are not in the store."
+      },
+      "protectiveReading": {
+        "ar": "عدم الاعتماد على التمديد إلا بعد التحقق، والتنبيه في هامش الأيام الأخيرة.",
+        "en": "Do not rely on an extension without checking; warn within the band around the last day."
+      },
+      "grade": "D",
+      "refs": [
+        "d1",
+        "d2",
+        "b54"
+      ]
+    },
+    {
+      "id": "o14",
+      "question": {
+        "ar": "ما النص الذي يحكم النزاعات الجماعية للعمل بعد إلغاء القانون 90-02؟",
+        "en": "Which text governs collective labour disputes now that Law 90-02 is repealed?"
+      },
+      "why": {
+        "ar": "المادة 90 من القانون 23-08 المؤرخ في 21 يونيو 2023 (الجريدة الرسمية 2023، العدد 42، ص 23) تلغي القانون 90-02؛ والقانون 23-08 غير موجود في المخزن (طُلب). الحد n3 يقوم على المادة 2 من قانون تسوية النزاعات الفردية في العمل وحدها.",
+        "en": "Article 90 of Law 23-08 of 21 June 2023 (Official Journal 2023, no. 42, p. 23) repeals Law 90-02; Law 23-08 is not in the store (requested). Boundary n3 rests on article 2 of the law on individual labour disputes alone."
+      },
+      "protectiveReading": {
+        "ar": "إبقاء التحذير على المادة 2 وعدم الإحالة إلى القانون 90-02.",
+        "en": "Keep the warning on article 2 and do not refer to Law 90-02."
+      },
+      "grade": "D",
+      "refs": [
+        "n3"
+      ]
+    }
+  ],
+  "checklist": [
+    {
+      "id": "k1",
+      "item": "Which text makes conciliation before the conciliation office (مكتب المصالحة) a prerequisite to any individual labour claim (Law 90-04, around art. 19), and is the requirement framed as a condition of admissibility of the claim?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b1",
+        "b20",
+        "p1",
+        "o1"
+      ],
+      "note": "Article 19 ¶1 states the duty and article 37 the copy of the record; no express admissibility sanction, hence p1 is interpretive (o1)."
+    },
+    {
+      "id": "k2",
+      "item": "What counts as an individual labour dispute under Law 90-04 (its first articles: a dispute between one worker and the employer on the performance of the employment relationship), as opposed to a collective dispute governed by Law 90-02?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b4",
+        "n3",
+        "o14"
+      ],
+      "note": "Article 2 ¶1 defines it. Collective disputes were governed by Law 90-02, repealed by article 90 of Law 23-08 of 21 June 2023 (Official Journal 2023 no. 42, p. 23); Law 23-08 is not in the store (requested, o14) and is not needed: n3 rests on article 2."
+    },
+    {
+      "id": "k3",
+      "item": "Which workers and employers fall outside Law 90-04: civil servants and agents of public administrative bodies (governed by their own statute and the administrative judge), and whether some categories have their own conciliation procedure.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b3",
+        "b38",
+        "b39",
+        "b56",
+        "x1",
+        "x2",
+        "p1",
+        "o5"
+      ],
+      "note": "Article 19 ¶3 (worker status) exempts p1 and drives x2; CPCA 800 (party) drives x1; which court hears public servants is open (o5). No special conciliation procedure for other categories found in the store."
+    },
+    {
+      "id": "k4",
+      "item": "Is there a prior internal step inside the employer's organisation (internal procedures for handling grievances, referral to the hierarchical superior with a short reply period) before the referral to the labour inspector?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b4",
+        "b5",
+        "b6",
+        "b7",
+        "p2",
+        "o4"
+      ]
+    },
+    {
+      "id": "k5",
+      "item": "How is the conciliation office seised: referral by the worker to the labour inspector (written request or oral statement recorded), and within what period the inspector convenes the office.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b8",
+        "b9",
+        "b43"
+      ]
+    },
+    {
+      "id": "k6",
+      "item": "When the office meets, the time limits for the conciliation meeting, and the summons of the parties (and second summons after a first absence).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b9",
+        "b43",
+        "b11"
+      ]
+    },
+    {
+      "id": "k7",
+      "item": "What happens when the defendant (employer) fails to appear after summons: is a record of non-conciliation drawn up for absence?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b12",
+        "b13",
+        "p1"
+      ]
+    },
+    {
+      "id": "k8",
+      "item": "What happens when the plaintiff fails to appear: is the request struck out or recorded?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b10",
+        "b44"
+      ],
+      "note": "The office may strike it out; no record of non-conciliation results, so p1 stays not done."
+    },
+    {
+      "id": "k9",
+      "item": "Exceptions to the conciliation requirement: the defendant residing outside the national territory; the employer in judicial liquidation (or bankruptcy / settlement); possibly other exceptions in the CPCA.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b2",
+        "b3",
+        "p1",
+        "b35"
+      ],
+      "note": "Article 19 ¶2 says bankruptcy or judicial settlement (not liquidation) and a defendant residing abroad. CPCA 500 to 510 add no exemption for the claim itself: article 510 admits additional requests following an original request, which presupposes the original claim."
+    },
+    {
+      "id": "k10",
+      "item": "What the record (محضر) must contain: record of conciliation (total or partial) and record of non-conciliation, and that a copy is delivered to the parties; the record of non-conciliation is the document to attach to the petition.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b14",
+        "b15",
+        "b12",
+        "b13",
+        "b20",
+        "doc1"
+      ],
+      "note": "No article lists the record's contents; delivery of a copy at the meeting is stated only for the record for absence (article 30 ¶2)."
+    },
+    {
+      "id": "k11",
+      "item": "Effect of a conciliation agreement: executory force, the period for its execution (around 30 days), and the request to the president of the social section to order execution with a penalty payment if it is not executed.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b16",
+        "b17",
+        "b18",
+        "b36",
+        "b37",
+        "n1"
+      ]
+    },
+    {
+      "id": "k12",
+      "item": "Time limit to bring the claim before the social section after the record of non-conciliation: six months from the delivery of the record (CPCA, around art. 504), and the sanction: forfeiture of the right to bring the claim.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b21",
+        "d1",
+        "d2"
+      ]
+    },
+    {
+      "id": "k13",
+      "item": "Whether that six-month period is a forfeiture (سقوط) or a limitation; whether it can be suspended or interrupted; whether the court raises it of its own motion or only on a plea.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b21",
+        "b25",
+        "b26",
+        "b51",
+        "b55",
+        "d1",
+        "d2",
+        "o2",
+        "d3"
+      ],
+      "note": "Forfeiture by its words (504 ¶1); CPCA 322 ¶1 excepts force majeure and 322 ¶2 lets the president lift the forfeiture (d1/d2); no text on interruption found; own motion: the text is silent, the Supreme Court (file 1488919) holds it of public order under CPCA 69 (o2, and d3 for a second record)."
+    },
+    {
+      "id": "k14",
+      "item": "How the six-month period is counted: from the day of delivery of the record, month to month, and what happens when the last day is a holiday (CPCA rules on counting procedural periods).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b22",
+        "b23",
+        "b54",
+        "b24",
+        "d1",
+        "d2",
+        "o12",
+        "o13"
+      ],
+      "note": "Counted in full (405 ¶1: neither the starting day nor the day of expiry), holidays inside the period counted (¶2), extended to the next working day (¶4), as the periods module counts it."
+    },
+    {
+      "id": "k15",
+      "item": "Missing or unknown date of delivery of the record: what the lawyer must check (the date written on the record or the receipt).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "d1",
+        "d2",
+        "p1",
+        "d3"
+      ],
+      "note": "d1 and p1 ask for the delivery date when it is unknown."
+    },
+    {
+      "id": "k16",
+      "item": "Competent section: the social section (القسم الاجتماعي) of the court has exclusive jurisdiction over individual labour disputes (CPCA, around art. 500).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b27",
+        "b28",
+        "b50"
+      ]
+    },
+    {
+      "id": "k17",
+      "item": "Territorial jurisdiction: the court of the place where the work is performed, or the worker's domicile when the contract is suspended or terminated because of a work accident or occupational disease (CPCA, around art. 501); whether this rule is of public order.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t1",
+        "t2",
+        "t3",
+        "b29",
+        "b30",
+        "b31",
+        "b32",
+        "b53",
+        "o3"
+      ],
+      "note": "CPCA 47 ¶1: the plea of territorial incompetence must be raised before any defence on the merits, so the court does not raise it of its own motion; the conflict between 501 and 24 is open (o3)."
+    },
+    {
+      "id": "k18",
+      "item": "Composition of the social section: a judge with assessors representing workers and employers, and the consequence of its composition for the validity of the judgment.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b33"
+      ]
+    },
+    {
+      "id": "k19",
+      "item": "First hearing to be held within a short period after filing (around 15 days) and the duty to decide quickly; not a filing condition but useful context.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b42"
+      ]
+    },
+    {
+      "id": "k20",
+      "item": "Matters decided in first and last resort by the social section (annulment of disciplinary sanctions decided without the statutory procedure, delivery of a work certificate or pay slips) and matters subject to appeal.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b41"
+      ]
+    },
+    {
+      "id": "k21",
+      "item": "Provisional execution of right of certain labour judgments (wages and allowances for the last months), and the use of urgent relief before the president of the social section.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b40",
+        "b58",
+        "r1",
+        "r2"
+      ],
+      "note": "Urgent relief under CPCA 506 concerns acts obstructing the freedom to work; not a prior step."
+    },
+    {
+      "id": "k22",
+      "item": "Dismissal claims: Law 90-11 art. 73-4 (reinstatement or compensation for a dismissal in breach of the procedure or without cause); the conciliation step still applies before such a claim.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "doesNotApply",
+      "note": "The substance of labour-relations 73-4 belongs to the dismissal claim record; for this module p1 covers every individual dispute under article 19, dismissal included."
+    },
+    {
+      "id": "k23",
+      "item": "Disputes that look like labour disputes and are not: social security disputes (their own prior recourse before the committees, Law 08-08), collective disputes (Law 90-02), civil servants' disputes before the administrative court, commercial disputes between a company and its manager who is not an employee.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n2",
+        "n3",
+        "n4",
+        "x1",
+        "x2",
+        "o14"
+      ],
+      "note": "Law 08-08 and Law 23-08 (which repealed Law 90-02, its article 90) are not in the store; the boundaries rest on labour-disputes 2, CPCA 500 ¶7 and labour-relations 2 (o14). Company managers: no text found in the store."
+    },
+    {
+      "id": "k24",
+      "item": "Claims by the employer against the worker: does conciliation also apply when the employer is the plaintiff?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b19",
+        "b2",
+        "p1"
+      ],
+      "note": "Article 19 covers every individual dispute and article 36 speaks of the party with an interest; article 19 ¶2 speaks of the defendant and of the employer, so p1 applies whoever sues."
+    },
+    {
+      "id": "k25",
+      "item": "Required documents: the record of non-conciliation (or proof of an exception), the employment contract or proof of the employment relationship, pay slips, the dismissal decision.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "doc1",
+        "e2"
+      ],
+      "note": "Only the copy of the record is required by a text read (article 37); evidence of the relationship belongs to the claim records and the proof module."
+    },
+    {
+      "id": "k26",
+      "item": "Whether a petition filed without a record of non-conciliation is inadmissible (عدم قبول) and whether the defect can be cured during the proceedings.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p1",
+        "o1"
+      ],
+      "note": "No text settles it; the Supreme Court's social chamber holds the claim inadmissible (files 1158046 and 1340230): p1 warns and names it, o1."
+    },
+    {
+      "id": "k27",
+      "item": "Whether the court must raise of its own motion the absence of the prior conciliation step (public order) or only on the defendant's plea.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b26",
+        "o1"
+      ],
+      "note": "No text classes the step as public order; the Supreme Court raised it of its own motion as a breach of a fundamental procedural rule (files 1158046 and 1340230). Case law: o1, p1 warns."
+    },
+    {
+      "id": "k28",
+      "item": "Amendments: Law 90-04 amended by Law 91-28; CPCA (Law 08-09) replaced the old Code of Civil Procedure on 25 April 2009 and contains the social section rules; possible later amendments to Law 90-04 (2022) introducing new conciliation rules.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "o6"
+      ],
+      "note": "Law 91-28 (Official Journal 1991 no. 68, p. 2654) amends only labour-disputes 40 ¶2; articles 19 to 37 keep the Law 90-04 wording (o6). The store's labour-disputes 40 ¶2 still has the 1990 wording (requested). No later amending law searched. CPCA 500 to 510 are labelled law-08-09."
+    },
+    {
+      "id": "k29",
+      "item": "Limitation of wage claims themselves (civil code periodic payments) as distinct from the six-month forfeiture after non-conciliation: belongs to the periods module.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "doesNotApply",
+      "note": "Belongs to the periods module and the wage claim records."
+    },
+    {
+      "id": "k30",
+      "item": "Is the dispute an individual labour dispute between a worker and an employer (not a collective dispute)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b4",
+        "n3"
+      ]
+    },
+    {
+      "id": "k31",
+      "item": "Is the relationship really an employment contract (subordination, wage, work), or is it a service, agency or civil contract?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e2",
+        "b48",
+        "n4"
+      ]
+    },
+    {
+      "id": "k32",
+      "item": "Is the employer a private person, a company, or a public body, and does that change the court or the procedure?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "x1",
+        "x2",
+        "b38",
+        "b39",
+        "b56",
+        "o5"
+      ]
+    },
+    {
+      "id": "k33",
+      "item": "Is prior conciliation before the labour conciliation office required for this dispute?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p1",
+        "b1"
+      ]
+    },
+    {
+      "id": "k34",
+      "item": "Does the collective agreement or the enterprise internal rules set its own prior conciliation procedure that must be used first?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p2",
+        "b5",
+        "b6"
+      ]
+    },
+    {
+      "id": "k35",
+      "item": "Which conciliation office has jurisdiction (place of work, place of the employer)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "b47",
+        "o8"
+      ],
+      "note": "Article 6 ¶2 says the offices' local jurisdiction is fixed by regulation; the regulation is not in the store (requested)."
+    },
+    {
+      "id": "k36",
+      "item": "Was the conciliation office actually seised, and on what date?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b8",
+        "e1"
+      ],
+      "note": "Article 26 says how the inspectorate is seised; no text requires proof of the referral to be attached to the petition, so no document is listed for it (derivation B's doc2 is not kept)."
+    },
+    {
+      "id": "k37",
+      "item": "Within what period must the office summon the parties and try to conciliate?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b9",
+        "b43",
+        "b11"
+      ]
+    },
+    {
+      "id": "k38",
+      "item": "What does the record of the office say: full conciliation, partial conciliation, or non-conciliation?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b12",
+        "b14",
+        "b15",
+        "n1",
+        "o7"
+      ]
+    },
+    {
+      "id": "k39",
+      "item": "Was the record of non-conciliation drawn up, signed and delivered to the claimant, and on what date?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "d1",
+        "b13",
+        "b20",
+        "p1",
+        "n5"
+      ]
+    },
+    {
+      "id": "k40",
+      "item": "Does a record of full conciliation have the force of an executory title, and how is it enforced?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b16",
+        "b17",
+        "b18",
+        "b36",
+        "b37"
+      ],
+      "note": "The record of conciliation is proof and its non-performance leads to an immediate-execution order; no text found that calls it an executory title."
+    },
+    {
+      "id": "k41",
+      "item": "In case of partial conciliation, may the claim be filed for the part that was not conciliated?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b14",
+        "o7"
+      ],
+      "note": "Left open: the text does not settle it; the Supreme Court (file 1340230) refuses new requests not covered by the agreement in the execution route (o7, n1)."
+    },
+    {
+      "id": "k42",
+      "item": "What happens if the employer does not appear before the conciliation office, or refuses to conciliate?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b11",
+        "b12"
+      ]
+    },
+    {
+      "id": "k43",
+      "item": "Which disputes are exempt from prior conciliation (for example the claim to have the dismissal procedure cancelled, or disputes where the conciliation is impossible)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p1",
+        "b2",
+        "b3",
+        "b35"
+      ],
+      "note": "Only the exemptions of the texts are used: defendant abroad, bankruptcy or judicial settlement, civil servant status. Article 510 admits additional requests following an original request and does not excuse the original claim; no exemption for a claim to cancel a dismissal was found."
+    },
+    {
+      "id": "k44",
+      "item": "Is there a time limit to file the claim after the record of non-conciliation, and from what date does it run?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "d1",
+        "d2",
+        "b21",
+        "o11"
+      ]
+    },
+    {
+      "id": "k45",
+      "item": "How is the period counted (days, months, first day, last day, holiday)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "d1",
+        "b22",
+        "b23",
+        "b54",
+        "b24",
+        "o12",
+        "o13"
+      ]
+    },
+    {
+      "id": "k46",
+      "item": "What is the sanction of filing after the period: forfeiture or inadmissibility, and may the court raise it of its own motion?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "d1",
+        "d2",
+        "b21",
+        "b51",
+        "b55",
+        "b25",
+        "b26",
+        "o2",
+        "d3"
+      ],
+      "note": "Forfeiture, a plea of inadmissibility (67); the Supreme Court (file 1488919) holds it of public order, raised of the court's own motion (69): o2."
+    },
+    {
+      "id": "k47",
+      "item": "What is the sanction of filing without prior conciliation: inadmissibility, stay, or nothing?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p1",
+        "o1"
+      ],
+      "note": "No sanction stated in the text; the Supreme Court holds the claim inadmissible (files 1158046, 1340230). The step is interpretive and warns."
+    },
+    {
+      "id": "k48",
+      "item": "Can the conciliation be regularised after the claim has been filed?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "o10",
+        "n5"
+      ],
+      "note": "Searched labour-disputes articles 19 to 40 and CPCA articles 500 to 510: only additional requests are admitted without conciliation (article 510); n5 warns when the delivery is not before the petition."
+    },
+    {
+      "id": "k49",
+      "item": "Does the seising of the conciliation office suspend or interrupt any limitation or forfeiture period?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "o9"
+      ],
+      "note": "Searched labour-disputes articles 26 to 40 and CPCA articles 500 to 510: no such rule found."
+    },
+    {
+      "id": "k50",
+      "item": "Which section of the court hears the claim: the social section?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b27",
+        "b28"
+      ]
+    },
+    {
+      "id": "k51",
+      "item": "If the court has no social section, which section hears it, and is a wrong listing fatal?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b50",
+        "b52"
+      ],
+      "note": "Where there are no sections the civil section hears everything except social cases (32 ¶5), and the text does not say who hears those; a wrong listing is passed on to the right section by the registry (32 ¶6)."
+    },
+    {
+      "id": "k52",
+      "item": "Which court has territorial jurisdiction: the place of the work, the place of the contract, or the employer's domicile?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t1",
+        "t2",
+        "o3"
+      ]
+    },
+    {
+      "id": "k53",
+      "item": "Is the territorial rule of public order and may the parties derogate from it?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t3",
+        "b53",
+        "b52"
+      ],
+      "note": "The territorial plea is lost unless raised before the merits (47 ¶1); subject-matter incompetence is of public order (36 ¶1); no text found on derogation by the parties."
+    },
+    {
+      "id": "k54",
+      "item": "Is the judgment of the social section final or subject to appeal, depending on the matter and the amount?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b41"
+      ],
+      "note": "Only the first-and-last-instance cases of article 21 are carried; the general rule belongs to the claim records."
+    },
+    {
+      "id": "k55",
+      "item": "Which documents must be attached: the non-conciliation record, the employment contract, pay slips, dismissal letter, work certificate?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "doc1"
+      ],
+      "note": "Only the copy of the non-conciliation record is required by a text (article 37); proof of the relationship belongs to the claim records (derivation B's doc2 and doc3 are not kept)."
+    },
+    {
+      "id": "k56",
+      "item": "What must the claimant prove (the relationship, the dismissal, the wages due) and with what evidence?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e1",
+        "e2"
+      ],
+      "note": "Only the elements of this module; dismissal and wages belong to the claim records."
+    },
+    {
+      "id": "k57",
+      "item": "Is the dismissal procedure (disciplinary hearing, written notification) relevant to the claim and the time limit?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "It belongs to the dismissal claim record; this module only carries the conciliation, the period and the court."
+    },
+    {
+      "id": "k58",
+      "item": "What may be asked: wages, notice indemnity, compensation for abusive dismissal, reinstatement, end-of-service sums, damages?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "r1",
+        "r2"
+      ],
+      "note": "Only the provisional execution of labour-disputes 22 ¶4 (by law) and ¶5 (at the court's discretion, without bond, beyond six months) is carried; the substantive requests belong to the claim records."
+    },
+    {
+      "id": "k59",
+      "item": "Is provisional execution available in labour matters, by operation of law or on request?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b40",
+        "b58",
+        "r1",
+        "r2"
+      ],
+      "note": "By operation of law for the matters listed in article 22 ¶1 to ¶4; at the court's discretion, without bond, beyond six months (22 ¶5)."
+    },
+    {
+      "id": "k60",
+      "item": "Are there fees or exemptions from fees for the worker in labour disputes?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b46",
+        "b49"
+      ],
+      "note": "Fees are due before registration unless the law provides otherwise (CPCA 17 ¶1); legal aid as of right below twice the guaranteed minimum wage (labour-disputes 25 ¶1)."
+    },
+    {
+      "id": "k61",
+      "item": "Is a formal notice before the claim required in labour matters, or is the conciliation office in its place?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "No text of the labour articles read requires a formal notice; the formal-notice module governs notices."
+    },
+    {
+      "id": "k62",
+      "item": "Does the claim concern social security (a different procedure and body) rather than the labour contract?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n2"
+      ]
+    },
+    {
+      "id": "k63",
+      "item": "Does the claim concern a public-sector worker under the civil service statute, which may belong to the administrative court?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "x1",
+        "x2",
+        "o5"
+      ]
+    },
+    {
+      "id": "k64",
+      "item": "Are the limitation periods for wage claims different from the filing period after conciliation?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "The general limitation of wage claims belongs to the periods module and the wage claim record; the effect of conciliation on it is left open (o9)."
+    },
+    {
+      "id": "k65",
+      "item": "The store notes that the CPCA article 800 wording in force (Law 22-13) has an unsettled start date, the new rules applying from the installation of the new courts: from which date does that wording apply, and does it change exits x1 and x2?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b39",
+        "b56",
+        "x1",
+        "x2",
+        "o5"
+      ],
+      "note": "Law 22-13 art. 13 ¶1 applies the new subject-matter rules of the administrative courts only from the installation of the new courts, so either wording may govern a given case. Both wordings of ¶2 name the State, a wilaya, a commune and a public administrative body; the new ¶1 adds the exception for disputes given to other courts. Both exits warn and are interpretive under either wording."
+    },
+    {
+      "id": "k66",
+      "item": "The store notes that the CPCA article 32 wording in force (Law 22-13) has an unsettled start date: from which date does it apply, and what does that change for this module?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b50"
+      ],
+      "note": "Paragraphs 4 to 6 cited are the same in both wordings; Law 22-13 repealed paragraphs 7 to 10 (specialised poles), which this module does not use. Nothing changes."
+    },
+    {
+      "id": "k67",
+      "item": "Neighbour flag: labour-disputes 34 ¶2 (the penalty payment is enforced only after a payment period of at most fifteen days), next to the cited 34 ¶1.",
+      "from": [
+        "derivationA",
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "refs": [
+        "n1"
+      ],
+      "note": "It governs the enforcement of the president's order on a conciliation record, not the filing of a claim after non-conciliation; boundary n1 sends that case to the execution route."
+    },
+    {
+      "id": "k68",
+      "item": "A second non-conciliation record on the same dispute: does it reopen the six months, and does a claim declared inadmissible in form stop the clock?",
+      "from": [
+        "adversary"
+      ],
+      "answer": "applies",
+      "refs": [
+        "d3",
+        "b21",
+        "b26"
+      ],
+      "note": "CPCA 504 ¶1 is silent on a second record; the Supreme Court (file 1488919, 07-10-2021) counts from the first record and holds that a second cannot be obtained; d3 (interpretive, warn) asks for the first record's delivery date."
+    }
+  ],
+  "examples": [
+    {
+      "id": "aex1",
+      "by": "derivationA",
+      "title": "Clean case: record delivered, claim filed well within six months.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2026-01-13",
+        "public_body_party": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no"
+      },
+      "expect": {
+        "section": "social",
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          },
+          {
+            "ref": "p2",
+            "effect": "none"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "x1",
+            "effect": "none"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "worker_is_public_servant",
+          "earlier_nonconciliation_record"
+        ]
+      }
+    },
+    {
+      "id": "aex2",
+      "by": "derivationA",
+      "title": "Filed far outside the six months: forfeiture.",
+      "petitionDate": "2026-10-01",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2026-01-13",
+        "public_body_party": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "blockCleanExport"
+          },
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "worker_is_public_servant",
+          "earlier_nonconciliation_record"
+        ]
+      }
+    },
+    {
+      "id": "aex3",
+      "by": "derivationA",
+      "title": "Filed six days after the last day: inside the band, a warning.",
+      "petitionDate": "2026-07-20",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2026-01-13",
+        "public_body_party": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          }
+        ],
+        "questions": [
+          "worker_is_public_servant",
+          "earlier_nonconciliation_record"
+        ]
+      }
+    },
+    {
+      "id": "aex4",
+      "by": "derivationA",
+      "title": "Filed six days before the last day: inside the band, a warning.",
+      "petitionDate": "2026-07-08",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2026-01-13",
+        "public_body_party": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          }
+        ],
+        "questions": [
+          "worker_is_public_servant",
+          "earlier_nonconciliation_record"
+        ]
+      }
+    },
+    {
+      "id": "aex5",
+      "by": "derivationA",
+      "title": "No conciliation and no exemption: a warning, not a block.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "no",
+        "defendant_resides_abroad": "no",
+        "employer_in_bankruptcy_or_settlement": "no",
+        "public_body_party": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "ask"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "worker_is_public_servant"
+        ]
+      }
+    },
+    {
+      "id": "aex6",
+      "by": "derivationA",
+      "title": "Whether conciliation took place is unknown: ask.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "unknown",
+        "public_body_party": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "ask"
+          },
+          {
+            "ref": "d1",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "nonconciliation_record",
+          "worker_is_public_servant",
+          "earlier_nonconciliation_record"
+        ]
+      }
+    },
+    {
+      "id": "aex7",
+      "by": "derivationA",
+      "title": "Defendant resides abroad: conciliation optional.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "no",
+        "defendant_resides_abroad": "yes",
+        "public_body_party": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "worker_is_public_servant"
+        ]
+      }
+    },
+    {
+      "id": "aex8",
+      "by": "derivationA",
+      "title": "Employer under judicial settlement: conciliation optional.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "no",
+        "defendant_resides_abroad": "no",
+        "employer_in_bankruptcy_or_settlement": "yes",
+        "public_body_party": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "worker_is_public_servant"
+        ]
+      }
+    },
+    {
+      "id": "aex9",
+      "by": "derivationA",
+      "title": "No conciliation, exemptions not known: ask for them.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "no",
+        "public_body_party": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "defendant_resides_abroad",
+          "employer_in_bankruptcy_or_settlement",
+          "worker_is_public_servant"
+        ]
+      }
+    },
+    {
+      "id": "aex10",
+      "by": "derivationA",
+      "title": "Public administrative employer: exit to the administrative court; no conciliation office.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "no",
+        "public_body_party": "yes",
+        "conciliation_agreement_reached": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x1",
+            "effect": "warn"
+          },
+          {
+            "ref": "p1",
+            "effect": "ask"
+          },
+          {
+            "ref": "p2",
+            "effect": "ask"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "defendant_resides_abroad",
+          "employer_in_bankruptcy_or_settlement",
+          "worker_is_public_servant",
+          "internal_grievance_exhausted"
+        ]
+      }
+    },
+    {
+      "id": "aex11",
+      "by": "derivationA",
+      "title": "Internal procedure skipped: a warning.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2026-01-13",
+        "public_body_party": "no",
+        "internal_grievance_exhausted": "no",
+        "conciliation_agreement_reached": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p2",
+            "effect": "warn"
+          },
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "worker_is_public_servant",
+          "earlier_nonconciliation_record"
+        ]
+      }
+    },
+    {
+      "id": "aex12",
+      "by": "derivationA",
+      "title": "Record exists, its delivery date unknown: ask for it.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "public_body_party": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "ask"
+          },
+          {
+            "ref": "p1",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "nonconciliation_record_delivered_on",
+          "worker_is_public_servant",
+          "earlier_nonconciliation_record"
+        ]
+      }
+    },
+    {
+      "id": "aex13",
+      "by": "derivationA",
+      "title": "A conciliation agreement was recorded: the execution route.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "no",
+        "defendant_resides_abroad": "no",
+        "employer_in_bankruptcy_or_settlement": "no",
+        "public_body_party": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "warn"
+          },
+          {
+            "ref": "p1",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "worker_is_public_servant"
+        ]
+      }
+    },
+    {
+      "id": "aex14",
+      "by": "derivationA",
+      "title": "Nothing known: the rules ask.",
+      "petitionDate": "2026-03-01",
+      "slots": {},
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "ask"
+          },
+          {
+            "ref": "p2",
+            "effect": "ask"
+          },
+          {
+            "ref": "d1",
+            "effect": "ask"
+          },
+          {
+            "ref": "x1",
+            "effect": "ask"
+          },
+          {
+            "ref": "n1",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "conciliation_agreement_reached",
+          "internal_grievance_exhausted",
+          "nonconciliation_record",
+          "public_body_party",
+          "worker_is_public_servant",
+          "earlier_nonconciliation_record"
+        ]
+      }
+    },
+    {
+      "id": "bex1",
+      "by": "derivationB",
+      "title": "Clean case: record delivered long before the end of the six months.",
+      "petitionDate": "2026-05-10",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2026-03-02",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "internal_grievance_exhausted": "yes"
+      },
+      "expect": {
+        "section": "social",
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          },
+          {
+            "ref": "p2",
+            "effect": "none"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "x2",
+            "effect": "none"
+          },
+          {
+            "ref": "x1",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "conciliation_agreement_reached",
+          "earlier_nonconciliation_record"
+        ]
+      }
+    },
+    {
+      "id": "bex2",
+      "by": "derivationB",
+      "title": "Filed well after the six months.",
+      "petitionDate": "2026-12-01",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2026-03-02",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "internal_grievance_exhausted": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "blockCleanExport"
+          },
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "conciliation_agreement_reached",
+          "earlier_nonconciliation_record"
+        ]
+      }
+    },
+    {
+      "id": "bex3",
+      "by": "derivationB",
+      "title": "Filed a few days before the last day: inside the warning band.",
+      "petitionDate": "2026-08-25",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2026-03-02",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "internal_grievance_exhausted": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          }
+        ],
+        "questions": [
+          "conciliation_agreement_reached",
+          "earlier_nonconciliation_record"
+        ]
+      }
+    },
+    {
+      "id": "bex4",
+      "by": "derivationB",
+      "title": "No conciliation at all and no exemption.",
+      "petitionDate": "2026-05-10",
+      "slots": {
+        "nonconciliation_record": "no",
+        "defendant_resides_abroad": "no",
+        "employer_in_bankruptcy_or_settlement": "no",
+        "worker_is_public_servant": "no",
+        "public_body_party": "no",
+        "internal_grievance_exhausted": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "warn"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "x2",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "conciliation_agreement_reached"
+        ]
+      }
+    },
+    {
+      "id": "bex5",
+      "by": "derivationB",
+      "title": "Employer lives abroad: conciliation optional.",
+      "petitionDate": "2026-05-10",
+      "slots": {
+        "nonconciliation_record": "no",
+        "defendant_resides_abroad": "yes",
+        "worker_is_public_servant": "no",
+        "public_body_party": "no",
+        "internal_grievance_exhausted": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "conciliation_agreement_reached"
+        ]
+      }
+    },
+    {
+      "id": "bex6",
+      "by": "derivationB",
+      "title": "Nothing known: the module asks.",
+      "petitionDate": "2026-05-10",
+      "slots": {},
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "ask"
+          },
+          {
+            "ref": "p2",
+            "effect": "ask"
+          },
+          {
+            "ref": "d1",
+            "effect": "ask"
+          },
+          {
+            "ref": "x2",
+            "effect": "ask"
+          },
+          {
+            "ref": "x1",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "conciliation_agreement_reached",
+          "internal_grievance_exhausted",
+          "nonconciliation_record",
+          "public_body_party",
+          "worker_is_public_servant",
+          "earlier_nonconciliation_record"
+        ]
+      }
+    },
+    {
+      "id": "bex7",
+      "by": "derivationB",
+      "title": "Public official under the public statute: exit and exemption.",
+      "petitionDate": "2026-05-10",
+      "slots": {
+        "nonconciliation_record": "no",
+        "worker_is_public_servant": "yes",
+        "public_body_party": "yes",
+        "internal_grievance_exhausted": "yes"
+      },
+      "expect": {
+        "section": "social",
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          },
+          {
+            "ref": "x2",
+            "effect": "warn"
+          },
+          {
+            "ref": "x1",
+            "effect": "warn"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "conciliation_agreement_reached"
+        ]
+      }
+    },
+    {
+      "id": "bex8",
+      "by": "derivationB",
+      "title": "Near miss: a public body is the employer but the worker is under the labour law.",
+      "petitionDate": "2026-05-10",
+      "slots": {
+        "nonconciliation_record": "no",
+        "defendant_resides_abroad": "no",
+        "employer_in_bankruptcy_or_settlement": "no",
+        "worker_is_public_servant": "no",
+        "public_body_party": "yes",
+        "internal_grievance_exhausted": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "warn"
+          },
+          {
+            "ref": "x2",
+            "effect": "none"
+          },
+          {
+            "ref": "x1",
+            "effect": "warn"
+          }
+        ],
+        "questions": [
+          "conciliation_agreement_reached"
+        ]
+      }
+    },
+    {
+      "id": "bex9",
+      "by": "derivationB",
+      "title": "Employer in bankruptcy: conciliation optional.",
+      "petitionDate": "2026-05-10",
+      "slots": {
+        "nonconciliation_record": "no",
+        "employer_in_bankruptcy_or_settlement": "yes",
+        "worker_is_public_servant": "no",
+        "public_body_party": "no",
+        "internal_grievance_exhausted": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "conciliation_agreement_reached"
+        ]
+      }
+    },
+    {
+      "id": "bex11",
+      "by": "derivationB",
+      "title": "Record exists but its delivery date is not known.",
+      "petitionDate": "2026-05-10",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "internal_grievance_exhausted": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "ask"
+          },
+          {
+            "ref": "d1",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "conciliation_agreement_reached",
+          "nonconciliation_record_delivered_on",
+          "earlier_nonconciliation_record"
+        ]
+      }
+    },
+    {
+      "id": "bex12",
+      "by": "derivationB",
+      "title": "Internal procedure not used.",
+      "petitionDate": "2026-05-10",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2026-03-02",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "internal_grievance_exhausted": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p2",
+            "effect": "warn"
+          },
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "conciliation_agreement_reached",
+          "earlier_nonconciliation_record"
+        ]
+      }
+    },
+    {
+      "id": "rex1",
+      "by": "reconciler",
+      "title": "Filed far outside the six months (504 ¶1): the forfeiture declares a block.",
+      "petitionDate": "2026-12-01",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no",
+        "nonconciliation_record_delivered_on": "2026-03-02"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "blockCleanExport"
+          },
+          {
+            "ref": "d2",
+            "effect": "none"
+          },
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "earlier_nonconciliation_record"
+        ]
+      }
+    },
+    {
+      "id": "rex2",
+      "by": "reconciler",
+      "title": "Same late filing, force majeure relied on (322 ¶1): d1 is silent, d2 warns.",
+      "petitionDate": "2026-12-01",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no",
+        "nonconciliation_record_delivered_on": "2026-03-02",
+        "forfeiture_force_majeure_invoked": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "d2",
+            "effect": "warn"
+          }
+        ],
+        "questions": [
+          "earlier_nonconciliation_record"
+        ]
+      }
+    },
+    {
+      "id": "rex3",
+      "by": "reconciler",
+      "title": "Forfeiture lifted by the president's order (322 ¶2): no deadline finding.",
+      "petitionDate": "2026-12-01",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no",
+        "nonconciliation_record_delivered_on": "2026-03-02",
+        "forfeiture_lifted_by_order": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "d2",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "rex4",
+      "by": "reconciler",
+      "title": "Contract worker of a public administrative body, not a civil servant, no record (19 ¶3 turns on the worker's status).",
+      "petitionDate": "2026-05-10",
+      "slots": {
+        "nonconciliation_record": "no",
+        "public_body_party": "yes",
+        "worker_is_public_servant": "no",
+        "defendant_resides_abroad": "no",
+        "employer_in_bankruptcy_or_settlement": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "warn"
+          },
+          {
+            "ref": "x1",
+            "effect": "warn"
+          },
+          {
+            "ref": "x2",
+            "effect": "none"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "rex5",
+      "by": "reconciler",
+      "title": "Civil servant, no record: exempt from conciliation (19 ¶3), the exit warns.",
+      "petitionDate": "2026-05-10",
+      "slots": {
+        "nonconciliation_record": "no",
+        "public_body_party": "yes",
+        "worker_is_public_servant": "yes",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          },
+          {
+            "ref": "x2",
+            "effect": "warn"
+          },
+          {
+            "ref": "x1",
+            "effect": "warn"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "rex6",
+      "by": "reconciler",
+      "title": "No record, the exemptions of 19 ¶2 and ¶3 unknown: the step asks, it does not decide.",
+      "petitionDate": "2026-05-04",
+      "slots": {
+        "nonconciliation_record": "no",
+        "public_body_party": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "defendant_resides_abroad",
+          "employer_in_bankruptcy_or_settlement",
+          "worker_is_public_servant"
+        ]
+      }
+    },
+    {
+      "id": "rex7",
+      "by": "reconciler",
+      "title": "Record delivered after the petition's date (19 ¶1: before any action): p1 leaves the answer to n5, which warns.",
+      "petitionDate": "2026-05-04",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no",
+        "nonconciliation_record_delivered_on": "2026-05-10"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          },
+          {
+            "ref": "n5",
+            "effect": "warn"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "earlier_nonconciliation_record"
+        ]
+      }
+    },
+    {
+      "id": "rex8",
+      "by": "reconciler",
+      "title": "Record exists, delivery date unknown: p1 does not say done, it asks with d1.",
+      "petitionDate": "2026-05-04",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "ask"
+          },
+          {
+            "ref": "d1",
+            "effect": "ask"
+          },
+          {
+            "ref": "n5",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "nonconciliation_record_delivered_on",
+          "earlier_nonconciliation_record"
+        ]
+      }
+    },
+    {
+      "id": "rex9",
+      "by": "reconciler",
+      "title": "Counting (405 ¶1): delivery 10 December, petition on the calendar anniversary plus one day is the last day, a warning.",
+      "petitionDate": "2026-06-11",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no",
+        "nonconciliation_record_delivered_on": "2025-12-10"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          }
+        ],
+        "questions": [
+          "earlier_nonconciliation_record"
+        ]
+      }
+    },
+    {
+      "id": "rex10",
+      "by": "reconciler",
+      "title": "No record, every exemption false, the claim adds requests (510 ¶1 does not excuse the original claim).",
+      "petitionDate": "2026-05-04",
+      "slots": {
+        "nonconciliation_record": "no",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "defendant_resides_abroad": "no",
+        "employer_in_bankruptcy_or_settlement": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "warn"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "rex11",
+      "by": "reconciler",
+      "title": "Defendant abroad (19 ¶2 names the defendant, not only the employer): conciliation optional.",
+      "petitionDate": "2026-05-04",
+      "slots": {
+        "nonconciliation_record": "no",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "defendant_resides_abroad": "yes",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "rex12",
+      "by": "reconciler",
+      "title": "A conciliation agreement was recorded (31 ¶1, 34 ¶1): the execution route warns.",
+      "petitionDate": "2026-05-04",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "yes",
+        "nonconciliation_record_delivered_on": "2026-04-01"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "warn"
+          },
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "earlier_nonconciliation_record"
+        ]
+      }
+    },
+    {
+      "id": "vex1",
+      "by": "verifier",
+      "title": "adv-1: first record delivered 2025-01-10, nothing filed; second record on the same dispute delivered 2026-03-02; petition 2026-05-04 (Supreme Court 1488919): d3 warns, d1 alone would be silent.",
+      "petitionDate": "2026-05-04",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no",
+        "earlier_nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2026-03-02",
+        "earlier_nonconciliation_record_delivered_on": "2025-01-10"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d3",
+            "effect": "warn"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "vex2",
+      "by": "verifier",
+      "title": "adv-1: record exists and was delivered in time, whether an earlier record exists on the same dispute unknown: d3 asks.",
+      "petitionDate": "2026-05-04",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no",
+        "nonconciliation_record_delivered_on": "2026-03-02"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d3",
+            "effect": "ask"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "earlier_nonconciliation_record"
+        ]
+      }
+    },
+    {
+      "id": "vex3",
+      "by": "verifier",
+      "title": "adv-2: filed far outside the six months (504 ¶1), no earlier record: d1 blocks; who raises it is o2 (Supreme Court 1488919: of public order).",
+      "petitionDate": "2026-12-01",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no",
+        "earlier_nonconciliation_record": "no",
+        "nonconciliation_record_delivered_on": "2026-03-02"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "blockCleanExport"
+          },
+          {
+            "ref": "d3",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "vex4",
+      "by": "verifier",
+      "title": "adv-3: no record, every exemption false (19 ¶1, 37 ¶1; Supreme Court 1158046): p1 warns, naming the inadmissibility.",
+      "petitionDate": "2026-05-04",
+      "slots": {
+        "nonconciliation_record": "no",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "defendant_resides_abroad": "no",
+        "employer_in_bankruptcy_or_settlement": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "warn"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "d3",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "vex5",
+      "by": "verifier",
+      "title": "adv-4: agreement recorded on part of the wages, not carried out; one petition asks its execution and other unpaid months, no non-conciliation record (34 ¶1; Supreme Court 1340230): n1 and p1 warn.",
+      "petitionDate": "2026-05-04",
+      "slots": {
+        "nonconciliation_record": "no",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "defendant_resides_abroad": "no",
+        "employer_in_bankruptcy_or_settlement": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "warn"
+          },
+          {
+            "ref": "p1",
+            "effect": "warn"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "vex6",
+      "by": "verifier",
+      "title": "adv-5: defendant resides abroad (19 ¶2), no conciliation attempted: p1 none and the copy of the record is not listed.",
+      "petitionDate": "2026-05-04",
+      "slots": {
+        "nonconciliation_record": "no",
+        "defendant_resides_abroad": "yes",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "vex7",
+      "by": "verifier",
+      "title": "adv-7: wages unpaid for ten months, record delivered in time (22 ¶4 and ¶5): requests r1 and r2 apply; nothing to warn.",
+      "petitionDate": "2026-05-04",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no",
+        "earlier_nonconciliation_record": "no",
+        "nonconciliation_record_delivered_on": "2026-03-02"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "d3",
+            "effect": "none"
+          },
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "vex8",
+      "by": "verifier",
+      "title": "adv-8: the dispute is individual (2 ¶1); Law 90-02 repealed by Law 23-08 (o14): the clean case is unchanged.",
+      "petitionDate": "2026-05-10",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no",
+        "earlier_nonconciliation_record": "no",
+        "nonconciliation_record_delivered_on": "2026-03-02"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "x1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    }
+  ]
+}

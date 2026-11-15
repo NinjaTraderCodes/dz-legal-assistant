@@ -3,11 +3,12 @@
     Central package versions for the research projects: the root list, plus the packages only research needs.
     Add a package HERE, never in a .csproj and never in the root file (the root file belongs to the app).
     Before adding one: check its licence allows commercial redistribution and record it in docs/research/core-logic/HANDBOOK.md.
-    Planned for step 4 (not added yet, so that nothing is downloaded before it is needed):
-      Microsoft.ML.OnnxRuntime 1.31.1 (MIT)
-      Microsoft.ML.Tokenizers 3.0.0 (MIT)
+    Added in phase A for the reader's front end (licences recorded in HANDBOOK.md, section 3: both MIT):
+      Microsoft.ML.OnnxRuntime 1.31.1, Microsoft.ML.Tokenizers 3.0.0
   -->
   <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Packages.props', '$(MSBuildThisFileDirectory)../'))" />
   <ItemGroup>
+    <PackageVersion Include="Microsoft.ML.OnnxRuntime" Version="1.31.1" />
+    <PackageVersion Include="Microsoft.ML.Tokenizers" Version="3.0.0" />
   </ItemGroup>
 </Project>

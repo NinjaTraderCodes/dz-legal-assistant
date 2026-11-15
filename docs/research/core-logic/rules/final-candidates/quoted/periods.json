@@ -1529,6 +1529,17 @@
           "b27"
         ]
       },
+      "otherCountings": [
+        {
+          "method": "excludeFirstDay",
+          "extendToWorkingDay": true,
+          "basis": [
+            "b11",
+            "b34",
+            "b35"
+          ]
+        }
+      ],
       "raisedBy": "unclear",
       "when": {
         "slot": "obligation_is_tort_compensation",
@@ -1537,8 +1548,8 @@
       "effectWhenExpired": "warn",
       "warnBandDays": 19,
       "message": {
-        "ar": "المادة 133 من القانون المدني: تسقط دعوى التعويض بانقضاء خمس عشرة (15) سنة من يوم وقوع الفعل الضار. تحقق من تاريخ الفعل الضار ومن كل سبب قاطع للمدة (المادتان 317 و318) أو موقف لها، ومنه عدم أهلية المضرور ولو كان له نائب قانوني (المادة 316)، مع مراعاة القراءتين المحفوظتين. وطريقة حساب السنوات، وامتداد المدة إذا انتهت في يوم عطلة، وأثر الإعذار أو الرسالة في قطعها، محل قراءات محفوظة (نقاط مفتوحة).",
-        "en": "Civil Code, article 133: the compensation action falls after 15 years from the day of the harmful act. Check the date of the act and any event that interrupted the period (articles 317, 318) or suspended it, including the victim's incapacity even where he has a legal representative (article 316), keeping in mind the two readings recorded. How the years are counted, whether the period runs on when it ends on a holiday, and whether a formal notice or a letter interrupts it are kept with their readings (open points)."
+        "ar": "المادة 133 من القانون المدني: تسقط دعوى التعويض بانقضاء خمس عشرة (15) سنة من يوم وقوع الفعل الضار. تحقق من تاريخ الفعل الضار ومن كل سبب قاطع للمدة (المادتان 317 و318) أو موقف لها، ومنه عدم أهلية المضرور ولو كان له نائب قانوني (المادة 316)، مع مراعاة القراءتين المحفوظتين. وطريقة حساب السنوات، وأثر الإعذار أو الرسالة في قطعها، محل قراءات محفوظة (نقاط مفتوحة). وفي آخر يوم قراءتان: تكمل المدة بانقضاء آخر يوم منها ولو كان يوم عطلة (المادة 314 من القانون المدني، لأن المادة 405 من قانون الإجراءات المدنية والإدارية تخص الآجال المنصوص عليها في ذلك القانون)، وهي القراءة المعتمدة؛ أو تمدد إلى أول يوم عمل موال (المادة 405 الفقرتان 3 و4، نقطة مفتوحة). وانقضاء المدة لا يؤدي إلا إلى تنبيه في القراءتين.",
+        "en": "Civil Code, article 133: the compensation action falls after 15 years from the day of the harmful act. Check the date of the act and any event that interrupted the period (articles 317, 318) or suspended it, including the victim's incapacity even where he has a legal representative (article 316), keeping in mind the two readings recorded. How the years are counted, and whether a formal notice or a letter interrupts it, are kept with their readings (open points). Two readings exist on the last day: the period is complete at the end of its last day even if a holiday (Civil Code article 314, since CPCA article 405 speaks of the periods laid down in that Code), the reading the record holds; or it runs to the next working day (CPCA article 405, paragraphs 3 and 4; open point). Under either reading an expired period only warns."
       },
       "basis": [
         "b28",
@@ -1750,6 +1761,18 @@
           "b35"
         ]
       },
+      "otherCountings": [
+        {
+          "method": "excludeFirstDay",
+          "extendToWorkingDay": true,
+          "basis": [
+            "b37",
+            "b32",
+            "b34",
+            "b35"
+          ]
+        }
+      ],
       "raisedBy": "unclear",
       "when": {
         "all": [
@@ -1786,8 +1809,8 @@
       "effectWhenExpired": "blockCleanExport",
       "warnBandDays": 15,
       "message": {
-        "ar": "المادة 504 من قانون الإجراءات المدنية والإدارية: ترفع الدعوى أمام القسم الاجتماعي في أجل لا يتجاوز ستة (6) أشهر من تاريخ تسليم محضر عدم الصلح تحت طائلة سقوط الحق. يحسب الأجل كاملا ويمدد إلى أول يوم عمل (المادة 405)، ويرفع السقوط في حالة القوة القاهرة بأمر من رئيس الجهة القضائية (المادة 322). تحقق من تاريخ تسليم المحضر.",
-        "en": "CPCA, article 504: the claim before the social section must be filed within 6 months of the delivery of the non-conciliation record, on pain of forfeiture. The period is counted in full and runs to the next working day (article 405); a forfeiture for force majeure is lifted by the president's order (article 322). Check the date the record was delivered."
+        "ar": "المادة 504 من قانون الإجراءات المدنية والإدارية: ترفع الدعوى أمام القسم الاجتماعي في أجل لا يتجاوز ستة (6) أشهر من تاريخ تسليم محضر عدم الصلح تحت طائلة سقوط الحق. وهذا الأجل منصوص عليه في هذا القانون فتسري عليه المادة 405: يمدد إلى أول يوم عمل إذا لم يكن آخره يوم عمل (الفقرتان 3 و4)؛ ولا يقرر القانون 90-04 المتعلق بتسوية النزاعات الفردية في العمل أجلا آخر لرفع الدعوى (المادة 36 منه). وفي حساب اليوم الأول قراءتان: (1) يحسب الأجل كاملا فلا يحسب يوم التسليم ولا يوم انقضاء الأجل، فتقبل الدعوى في اليوم الموالي لتمام الستة أشهر (المادة 405 الفقرة 1)، وهي القراءة المعتمدة؛ (2) يحسب يوم التسليم لأنه ليس يوم تبليغ ولا تبليغ رسمي، فينتهي الأجل قبل ذلك بيوم (المادة 405 الفقرة 1 والمادة 504، نقطة مفتوحة). لا يمنع التصدير إلا بعد انقضاء آخر اليومين وهامشه، وينبه قبل ذلك. ويرفع السقوط في حالة القوة القاهرة بأمر من رئيس الجهة القضائية (المادة 322). تحقق من تاريخ تسليم المحضر.",
+        "en": "CPCA, article 504: the claim before the social section must be filed within 6 months of the delivery of the non-conciliation record, on pain of forfeiture. The period is laid down in this Code, so article 405 governs it: it runs to the next working day when its last day is not one (paragraphs 3 and 4); Law 90-04 on individual labour disputes sets no other period for bringing the claim (its article 36). Two readings exist on the first day: (1) the period is counted in full, neither the day of delivery nor the day it expires counts, so the claim may still be filed on the day after the six months end (article 405, paragraph 1), the reading the record holds; (2) the day of delivery counts, since it is not a day of notification or service, and the period ends one day earlier (article 405, paragraph 1, and article 504; open point). The clean export is blocked only after the later of the two last days and its band have passed; before that the item warns. A forfeiture for force majeure is lifted by the president's order (article 322). Check the date the record was delivered."
       },
       "basis": [
         "b37",
@@ -1828,6 +1851,18 @@
           "b35"
         ]
       },
+      "otherCountings": [
+        {
+          "method": "excludeFirstDay",
+          "extendToWorkingDay": true,
+          "basis": [
+            "b37",
+            "b32",
+            "b34",
+            "b35"
+          ]
+        }
+      ],
       "raisedBy": "unclear",
       "when": {
         "all": [
@@ -1860,8 +1895,8 @@
       "effectWhenExpired": "warn",
       "warnBandDays": 15,
       "message": {
-        "ar": "المادة 504 من قانون الإجراءات المدنية والإدارية: ترفع الدعوى أمام القسم الاجتماعي في أجل لا يتجاوز ستة (6) أشهر من تاريخ تسليم محضر عدم الصلح تحت طائلة سقوط الحق، ويستثنى من السقوط حالة القوة القاهرة أو الأحداث المؤثرة في السير العادي لمرفق العدالة، ويقدم طلب رفع السقوط إلى رئيس الجهة القضائية المعروض أمامها النزاع ويفصل فيه بأمر على عريضة (المادة 322). تحقق من تاريخ تسليم المحضر ومن إثبات القوة القاهرة ومن تقديم طلب رفع السقوط.",
-        "en": "CPCA, article 504: the claim before the social section must be filed within 6 months of the delivery of the non-conciliation record, on pain of forfeiture; force majeure and events affecting the normal working of the courts are excepted, and the request to lift the forfeiture goes to the president of the court before which the dispute is brought, who rules by an order on petition (article 322). Check the date the record was delivered, the proof of the force majeure, and that the request to lift the forfeiture is made."
+        "ar": "المادة 504 من قانون الإجراءات المدنية والإدارية: ترفع الدعوى أمام القسم الاجتماعي في أجل لا يتجاوز ستة (6) أشهر من تاريخ تسليم محضر عدم الصلح تحت طائلة سقوط الحق، ويستثنى من السقوط حالة القوة القاهرة أو الأحداث المؤثرة في السير العادي لمرفق العدالة، ويقدم طلب رفع السقوط إلى رئيس الجهة القضائية المعروض أمامها النزاع ويفصل فيه بأمر على عريضة (المادة 322). ويحسب الأجل وفق المادة 405 لأنه منصوص عليه في هذا القانون، ويمدد إلى أول يوم عمل (الفقرتان 3 و4)، ولا يقرر القانون 90-04 أجلا آخر (المادة 36 منه). وفي حساب اليوم الأول قراءتان: لا يحسب يوم التسليم ولا يوم انقضاء الأجل (المادة 405 الفقرة 1، القراءة المعتمدة)، أو يحسب يوم التسليم لأنه ليس يوم تبليغ فينتهي الأجل قبل ذلك بيوم (المادة 405 الفقرة 1 والمادة 504، نقطة مفتوحة). تحقق من تاريخ تسليم المحضر ومن إثبات القوة القاهرة ومن تقديم طلب رفع السقوط.",
+        "en": "CPCA, article 504: the claim before the social section must be filed within 6 months of the delivery of the non-conciliation record, on pain of forfeiture; force majeure and events affecting the normal working of the courts are excepted, and the request to lift the forfeiture goes to the president of the court before which the dispute is brought, who rules by an order on petition (article 322). The period is laid down in this Code and counted under article 405, running to the next working day (paragraphs 3 and 4); Law 90-04 sets no other period (its article 36). Two readings exist on the first day: neither the day of delivery nor the day the period expires counts (article 405, paragraph 1; the reading the record holds), or the day of delivery counts, since it is not a day of notification, and the period ends one day earlier (article 405, paragraph 1, and article 504; open point). Check the date the record was delivered, the proof of the force majeure, and that the request to lift the forfeiture is made."
       },
       "basis": [
         "b37",
@@ -2343,8 +2378,8 @@
         "en": "Is the day the non-conciliation record is delivered treated like the day of service, and so not counted?"
       },
       "why": {
-        "ar": "قاعدة الحساب تشمل كل آجال القانون وتجعلها كاملة وتستثني يوم التبليغ ويوم الانقضاء، وأجل الدعوى الاجتماعية يبدأ من التسليم لا من التبليغ. الفرق يوم واحد يقع داخل هامش التنبيه.",
-        "en": "The counting rule covers every period of the Code, counts them in full and leaves out the day of service and the last day, while the labour period runs from delivery, not service. The difference is one day and falls inside the warning band."
+        "ar": "قاعدة الحساب تشمل كل آجال القانون وتجعلها كاملة وتستثني يوم التبليغ ويوم الانقضاء، وأجل الدعوى الاجتماعية يبدأ من التسليم لا من التبليغ. الفرق يوم واحد يقع داخل هامش التنبيه. ويحمل الأجلان القراءة الأولى في طريقة الحساب والثانية في الحسابات الأخرى، ولا يمنع التصدير إلا بعد آخر اليومين وهامشه.",
+        "en": "The counting rule covers every period of the Code, counts them in full and leaves out the day of service and the last day, while the labour period runs from delivery, not service. The difference is one day and falls inside the warning band. d5 and d9 hold the first reading as their counting and the second in otherCountings; the export is blocked only after the later last day and its band (the owner's rule of 15 November 2026; verifier, follow-up 2)."
       },
       "readings": [
         {
@@ -2363,7 +2398,8 @@
             "en": "The day of delivery counts, since it is not a day of service."
           },
           "basis": [
-            "b37"
+            "b37",
+            "b32"
           ]
         }
       ],
@@ -2373,7 +2409,8 @@
       },
       "grade": "C",
       "refs": [
-        "d5"
+        "d5",
+        "d9"
       ]
     },
     {
@@ -5244,6 +5281,81 @@
         "questions": [
           "debt_due_date"
         ]
+      }
+    },
+    {
+      "id": "ex55",
+      "by": "verifier",
+      "title": "Non-conciliation record delivered on Monday 10 November 2025, petition on Monday 11 May 2026 (owner-latest-last-day, o4): under cpca 405 ¶1 neither the day of delivery nor the day of expiry counts and the claim is in time on 11 May; on the reading that the day of delivery counts it is one day late. d5 does not block on the earlier reading: it warns.",
+      "petitionDate": "2026-05-11",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2025-11-10",
+        "forfeiture_lifted_by_order": "no",
+        "forfeiture_force_majeure_invoked": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d5",
+            "effect": "warn"
+          },
+          {
+            "ref": "d9",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex56",
+      "by": "verifier",
+      "title": "Same record, petition on 1 June 2026 (owner-latest-last-day): three weeks after the later of the two last days (11 May 2026) and past its band of fifteen days, so the forfeiture holds under both readings and the clean export is blocked.",
+      "petitionDate": "2026-06-01",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2025-11-10",
+        "forfeiture_lifted_by_order": "no",
+        "forfeiture_force_majeure_invoked": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d5",
+            "effect": "blockCleanExport"
+          },
+          {
+            "ref": "d9",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex57",
+      "by": "verifier",
+      "title": "Harmful act on 12 June 2011; the fifteen-year last day, 12 June 2026, is a Friday; petition on Sunday 14 June 2026 (owner-latest-last-day, o16): in time if cpca 405 ¶4 extends the period, two days late under civil-code 314 ¶1; d2 warns under both and never blocks.",
+      "petitionDate": "2026-06-14",
+      "slots": {
+        "obligation_is_tort_compensation": "yes",
+        "harmful_act_date": "2011-06-12",
+        "nonconciliation_record": "no",
+        "requests": [
+          "damages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d2",
+            "effect": "warn"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
       }
     }
   ]

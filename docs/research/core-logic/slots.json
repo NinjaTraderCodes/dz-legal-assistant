@@ -351,6 +351,104 @@
       ],
       "readFromNote": false,
       "origin": "formal-notice"
+    },
+    {
+      "id": "debt_due_date",
+      "type": "date",
+      "question": {
+        "ar": "ما تاريخ استحقاق الدين المطالب به (أقدم مبلغ إن تعددت المبالغ)؟",
+        "en": "On what date did the debt claimed fall due (the oldest sum, if there are several)?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "periods",
+      "why": "Deadlines d1, d6, d7 and d8 run from it: limitation starts on the day the debt becomes due when no special text applies (civil-code 315 ¶1). No existing slot holds it: wages_due_from holds only wages, contract_date is the day of the contract. Same fact as derivation A's obligation_due_date and derivation B's debt_due_date."
+    },
+    {
+      "id": "harmful_act_date",
+      "type": "date",
+      "question": {
+        "ar": "ما تاريخ وقوع الفعل الضار؟",
+        "en": "On what date did the harmful act occur?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "periods",
+      "why": "Deadline d2 runs from it: the compensation action falls after fifteen years from the day of the harmful act (civil-code 133 ¶1). Proposed under the same id by both derivations."
+    },
+    {
+      "id": "forfeiture_lifted_by_order",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل صدر أمر من رئيس الجهة القضائية برفع السقوط بسبب قوة قاهرة أو أحداث أثرت في السير العادي لمرفق العدالة؟",
+        "en": "Has the president of the court lifted the forfeiture by order, for force majeure or events that disturbed the normal working of the courts?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "periods",
+      "why": "Deadline d5 reads it: every period of the CPCA for exercising a right is forfeited when missed, except for force majeure or events affecting the courts, and the forfeiture is lifted by the president's order on petition (cpca 322 ¶1 and ¶2). Unknown, it is not asked and the deadline applies."
+    },
+    {
+      "id": "forfeiture_force_majeure_invoked",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل يتمسك المدعي بقوة قاهرة أو بأحداث أثرت في السير العادي لمرفق العدالة حالت دون رفع الدعوى في أجلها، مع طلب رفع السقوط إلى رئيس الجهة القضائية؟",
+        "en": "Does the plaintiff rely on force majeure, or on events that disturbed the normal working of the courts, that kept him from filing in time, with a request to the president of the court to lift the forfeiture?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "periods",
+      "why": "Deadlines d5 and d9 read it (verifier, attack atk-9): the forfeiture of cpca 322 ¶1 does not fall in case of force majeure or events affecting the courts, and the request to lift it goes to the president of the court before which the dispute is brought (cpca 322 ¶2), so the order cannot exist before the petition is filed. Unknown, it is not asked and d5 applies."
+    },
+    {
+      "id": "claim_is_professional_fees",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل الدين أتعاب أو مصاريف مستحقة عن عمل المهنة لطبيب (ومنه الجراح وجراح الأسنان) أو قابلة أو صيدلي أو محام أو مهندس (ومنه المهندس المعماري) أو خبير أو وكيل تفليسة أو سمسار أو أستاذ أو معلم أو مرب؟",
+        "en": "Is the debt a fee or expense owed for the work of his profession to a doctor (including a surgeon or dental surgeon), midwife, pharmacist, lawyer, engineer (including an architect), expert, bankruptcy agent, broker, professor, teacher or educator?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "periods",
+      "why": "Deadline d6 reads it: these rights are time-barred after two years (civil-code 310 ¶1). The question also names the professions that only the French edition of the same Official Journal issue lists (surgeons, dental surgeons, midwives, architects, educators): the protective reading of open point o11 (verifier, attack adv-6)."
+    },
+    {
+      "id": "claim_is_trader_supply_or_hotel",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل الدين ثمن أشياء ورّدها تاجر أو صانع لشخص لا يتجر فيها، أو أجر إقامة أو ثمن طعام لدى فندق أو مطعم؟",
+        "en": "Is the debt the price of things supplied by a trader or craftsman to a person who does not trade in them, or a hotel's or restaurant's charge for lodging or meals?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "periods",
+      "why": "Deadline d7 reads it: these rights are time-barred after one year (civil-code 312 ¶1 and ¶2)."
+    },
+    {
+      "id": "claim_is_periodic_renewable_right",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل الدين حق دوري متجدد غير الأجور المطالب بها، كأجرة المباني أو الديون المتأخرة أو المعاشات، وليس ريعا مستحقا في ذمة حائز سيء النية أو ريعا واجبا على متصرف المال المشاع للمستحقين؟",
+        "en": "Is the debt a periodic renewable right other than the wages claimed, such as rent of buildings, arrears or pensions, and not revenue owed by a possessor in bad faith or by the manager of jointly owned property to those entitled?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "periods",
+      "why": "Deadline d8 reads it: every periodic renewable right is time-barred after five years even if acknowledged (civil-code 309 ¶1). Wages, also named there, are carried by d4 from wages_due_from, so the question leaves them out. Revenue owed by a bad-faith possessor or by the manager of jointly owned property falls only after fifteen years (civil-code 309 ¶2), so the question leaves it out too and d1 governs it (verifier, attack atk-6)."
     }
   ]
 }

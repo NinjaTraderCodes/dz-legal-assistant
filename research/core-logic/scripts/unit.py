@@ -831,7 +831,11 @@ def stage9(u: Unit) -> bool:
     if new:
         print(f"a follow-up is due ({len(new)} findings): python unit.py verify-input {u.id} --followup")
         return False
-    added = slots(u)
+    try:
+        added = slots(u)
+    except ValueError as e:  # a proposed question that slots.json may not take: said, never swallowed
+        print(f"BLOCKED stage 9: {e}")
+        return False
     if added:
         print(f"slots.json gained {', '.join(added)}: the Arabic check runs per batch of three units")
     return grade(u)

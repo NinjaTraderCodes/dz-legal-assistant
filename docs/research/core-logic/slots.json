@@ -449,6 +449,118 @@
       "readFromNote": false,
       "origin": "periods",
       "why": "Deadline d8 reads it: every periodic renewable right is time-barred after five years even if acknowledged (civil-code 309 ¶1). Wages, also named there, are carried by d4 from wages_due_from, so the question leaves them out. Revenue owed by a bad-faith possessor or by the manager of jointly owned property falls only after fifteen years (civil-code 309 ¶2), so the question leaves it out too and d1 governs it (verifier, attack atk-6)."
+    },
+    {
+      "id": "court_has_section_for_matter",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل أنشئ في المحكمة التي سترفع أمامها الدعوى القسم الذي ينظر في هذا النوع من النزاع (أجب بلا كذلك إذا لم تنشأ في المحكمة أقسام أصلا، أو إذا دمج أمر رئيس المحكمة هذا القسم في قسم آخر)؟",
+        "en": "Has the court where the claim will be filed created the section that hears this kind of dispute? (Answer no also when the court has no sections at all, or when an order of the court president has merged that section into another.)"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "court-sections",
+      "why": "The section rule (its alternative after the social one) and exit x3 read it: cpca 32 ¶5 keeps every dispute except social cases with the civil section in courts where the sections have not been created. Same fact as derivation A's court_has_sections and derivation B's court_has_section_for_matter; the wider wording is kept so that both readings of ¶5 (no sections at all, or not the section concerned) are covered (open point o7). Verifier: the court president may reduce the number of sections by order (Organic Law 22-10 art. 21, not in the store; o6, o7), hence the merged case in the question."
+    },
+    {
+      "id": "dispute_is_social",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل النزاع ناشئ عن علاقة عمل أو عقد تكوين أو تمهين (إثباته أو تنفيذه أو تعليقه أو إنهاؤه)، أو هو من منازعات الضمان الاجتماعي والتقاعد، أو انتخاب مندوبي العمال، أو الحق النقابي، أو الإضراب، أو الاتفاقيات الجماعية للعمل؟",
+        "en": "Does the dispute arise from an employment, training or apprenticeship relationship (its proof, performance, suspension or termination), or is it a social-security or retirement dispute, or one on staff-delegate elections, union rights, strikes or collective labour agreements?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "court-sections",
+      "why": "The social alternative of the section rule, exit x3 and boundary n7 read it: cpca 500 ¶1-¶8 give the social section exclusive jurisdiction over all these matters, not only wages and reinstatement (attack adv-5)."
+    },
+    {
+      "id": "dispute_is_family",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل النزاع من مسائل الأسرة: الخطبة أو الزواج أو انحلاله وتوابعه (ومنها الصداق ومتاع بيت الزوجية)، أو إثبات الزواج أو النسب، أو الكفالة، أو الولاية أو الحجر أو الغياب أو الفقدان أو التقديم؟",
+        "en": "Is the dispute a family matter: engagement, marriage, its dissolution and consequences (dowry and household goods included), proof of marriage or filiation, kafala, guardianship, interdiction, absence, disappearance or curatorship?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "court-sections",
+      "why": "The family alternative of the section rule reads it: cpca 423 ¶1-¶6 give these claims to the family section and cpca 426 ¶7 and ¶9 fix the court for household goods and dowry, matters no request kind of the rule covered (attack adv-7)."
+    },
+    {
+      "id": "partition_of_estate",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل القسمة المطلوبة قسمة تركة؟",
+        "en": "Is the partition asked for the partition of an estate?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "court-sections",
+      "why": "Boundary n8 reads it: cpca 512 ¶10 gives partition to the real-estate section while cpca 498 and 499 place estate claims in the family-section chapter (attack adv-6, open point o12)."
+    },
+    {
+      "id": "national_public_body_party",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل أحد أطراف الدعوى هيئة عمومية وطنية أو منظمة مهنية وطنية؟",
+        "en": "Is one of the parties a national public institution or a national professional organisation?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "court-sections",
+      "why": "Exit x4 reads it: the amended cpca 800 ¶2 also gives the administrative courts the cases in which these bodies are a party, which the existing slot public_body_party does not ask (attack atk-4, open point o9)."
+    },
+    {
+      "id": "dispute_concerns_real_property",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل يتعلق النزاع بعقار أو بحق عيني عقاري (ملكية، حيازة، شيوع، قسمة، إيجار سكن أو محل مهني، حقوق مترتبة على عقد مشهر)؟",
+        "en": "Does the dispute concern real property or a real right in it (ownership, possession, co-ownership, partition, lease of a dwelling or professional premises, rights under a published deed)?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "court-sections",
+      "why": "The section rule reads it to propose the real-estate section: cpca 511 ¶1, 512 and 515 ¶1 give that section the disputes about real property. property_registered only asks whether a property is published. Proposed by derivation A only."
+    },
+    {
+      "id": "dispute_is_commercial",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل النزاع تجاري (بين تجار أو متعلق بعمل تجاري)؟",
+        "en": "Is the dispute commercial (between merchants, or about a commercial act)?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "court-sections",
+      "why": "The section rule reads it to propose the commercial section: cpca 531 ¶1 gives that section the commercial disputes. commercial_lease covers only leases of business premises. Proposed by derivation A only."
+    },
+    {
+      "id": "specialised_commercial_subject",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل النزاع من المنازعات التي تختص بها المحكمة التجارية المتخصصة: الملكية الفكرية، أو الشركات التجارية (الشركاء، الحل، التصفية)، أو التسوية القضائية والإفلاس، أو البنوك والمؤسسات المالية مع التجار، أو البحري والنقل الجوي والتأمينات المتعلقة بالنشاط التجاري، أو التجارة الدولية؟",
+        "en": "Is the dispute one the specialised commercial court hears: intellectual property, commercial companies (partners, dissolution, liquidation), judicial settlement and bankruptcy, banks and financial institutions against traders, maritime, air transport and insurance linked to commercial activity, or international trade?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "court-sections",
+      "why": "Exit x2 reads it: cpca 531 ¶1 excepts from the commercial section the disputes cpca 536 مكرر ¶1-7 gives to the specialised commercial court. Proposed by derivation B only."
     }
   ]
 }

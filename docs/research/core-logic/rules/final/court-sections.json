@@ -1,0 +1,5680 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "module",
+  "id": "court-sections",
+  "label": {
+    "ar": "أقسام المحكمة",
+    "en": "Sections of the court"
+  },
+  "verified": false,
+  "stage": "final",
+  "derivedBy": {
+    "role": "reconciler",
+    "model": "claude-opus-5-5",
+    "date": "2026-11-15"
+  },
+  "appliesTo": [
+    "*"
+  ],
+  "slots": [
+    "requests",
+    "court_has_section_for_matter",
+    "commercial_lease",
+    "dispute_concerns_real_property",
+    "dispute_is_commercial",
+    "public_body_party",
+    "specialised_commercial_subject",
+    "work_accident_or_occupational_illness",
+    "worker_is_public_servant",
+    "dispute_is_social",
+    "dispute_is_family",
+    "partition_of_estate",
+    "national_public_body_party"
+  ],
+  "basis": [
+    {
+      "id": "b1",
+      "role": "procedure",
+      "required": true,
+      "cite": {
+        "code": "cpca",
+        "article": "32",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "المحكمة هي جهة القضاء ذات الاختصاص العام، وتتشكل من أقسام.",
+        "en": "The court is the court of general jurisdiction and is made up of sections."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "المحكمة هي الجهة القضائية ذات الاختصاص العام وتتشكل من أقسام.",
+          "sha256": "c1df5a32bb595c5577218fcade5a8a06090daf9621762cc93ed07b23e2fe1d7c"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "disagreedBeforeReconciliation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b2",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "32",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "تفصل المحكمة في جميع القضايا التي تختص بها إقليميا، ومنها المدنية والتجارية والبحرية والاجتماعية والعقارية وقضايا شؤون الأسرة.",
+        "en": "The court decides every case within its territory, notably civil, commercial, maritime, social, real-property and family cases."
+      },
+      "quote": [
+        {
+          "paragraph": 3,
+          "text": "تفصل المحكمة في جميع القضايا، لاسيما المدنية والتجارية والبحرية والاجتماعية والعقارية وقضايا شؤون الأسرة والتي تختص بها إقليميا.",
+          "sha256": "7740c074bf894b03455ee70f72da463a72827300e32f845e0f1ee24d2ce89a58"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "disagreedBeforeReconciliation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b3",
+      "role": "procedure",
+      "required": true,
+      "cite": {
+        "code": "cpca",
+        "article": "32",
+        "paragraphs": [
+          4
+        ]
+      },
+      "says": {
+        "ar": "تجدول القضايا أمام الأقسام بحسب طبيعة النزاع.",
+        "en": "Cases are listed before the sections according to the nature of the dispute."
+      },
+      "quote": [
+        {
+          "paragraph": 4,
+          "text": "تتم جدولة القضايا أمام الأقسام حسب طبيعة النزاع.",
+          "sha256": "c2545a5033b401b2589b8300e23c82292a800be80cc6b6532241f1cb61b464ee"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b4",
+      "role": "limit",
+      "required": true,
+      "cite": {
+        "code": "cpca",
+        "article": "32",
+        "paragraphs": [
+          5
+        ]
+      },
+      "says": {
+        "ar": "في المحاكم التي لم تنشأ فيها الأقسام، يبقى القسم المدني ناظرا في جميع النزاعات باستثناء القضايا الاجتماعية.",
+        "en": "In courts where the sections have not been created, the civil section hears every dispute except social cases."
+      },
+      "quote": [
+        {
+          "paragraph": 5,
+          "text": "غير أنه في المحاكم التي لم تنشأ فيها الأقسام، يبقى القسم المدني هو الذي ينظر في جميع النزاعات باستثناء القضايا الاجتماعية.",
+          "sha256": "95bb748ec413c4a862a0527db34cc1b2df6df36ba8011bd1a602b29bce9eea6c"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b5",
+      "role": "procedure",
+      "required": true,
+      "cite": {
+        "code": "cpca",
+        "article": "32",
+        "paragraphs": [
+          6
+        ]
+      },
+      "says": {
+        "ar": "إذا جدولت القضية أمام قسم غير مختص بها، يحال الملف إلى القسم المعني عن طريق أمانة الضبط بعد إخبار رئيس المحكمة مسبقا.",
+        "en": "A case listed before the wrong section is sent to the right section through the registry, after the court president has been told."
+      },
+      "quote": [
+        {
+          "paragraph": 6,
+          "text": "في حالة جدولة قضية أمام قسم غير القسم المعني بالنظر فيها، يحال الملف إلى القسم المعني عن طريق أمانة الضبط، بعد إخبار رئيس المحكمة مسبقا.",
+          "sha256": "c11c3a08fb2d762db1a0229d30942d1aeecfb7058ab5dc808822e433c203d100"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b6",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "32",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يمكن أن تتشكل المحكمة أيضا من أقطاب متخصصة.",
+        "en": "The court may also be made up of specialised poles."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "يمكن أيضا أن تتشكل من أقطاب متخصصة.",
+          "sha256": "d2c8e77f26401a8d31b48d117a41ae5fbec510ace971df33ae85549afb5cdd77"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "disagreedBeforeReconciliation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "oneFamily"
+      }
+    },
+    {
+      "id": "b7",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "423",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "ينظر قسم شؤون الأسرة في دعاوى الخطبة والزواج والرجوع إلى بيت الزوجية وانحلال الرابطة الزوجية وتوابعها.",
+        "en": "The family section hears claims on engagement, marriage, return to the marital home, and the dissolution of marriage and its consequences."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "ينظر قسم شؤون الأسرة، على الخصوص في الدعاوى الآتية:",
+          "sha256": "16245d4e488f60c9bec86983991193d3653dbc6e50ec5b96fa06304b9ecee559"
+        },
+        {
+          "paragraph": 2,
+          "text": "1 - الدعاوى المتعلقة بالخطبة والزواج والرجوع إلى بيت الزوجية وانحلال الرابطة الزوجية وتوابعها حسب الحالات والشروط المذكورة في قانون الأسرة،",
+          "sha256": "00861898268a0a5aa057efd243903d282086c20e44e90de34b401e4e2cd142ad"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b8",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "423",
+        "paragraphs": [
+          1,
+          3
+        ]
+      },
+      "says": {
+        "ar": "ينظر قسم شؤون الأسرة في دعاوى النفقة والحضانة وحق الزيارة.",
+        "en": "The family section hears maintenance, custody and visitation claims."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "ينظر قسم شؤون الأسرة، على الخصوص في الدعاوى الآتية:",
+          "sha256": "16245d4e488f60c9bec86983991193d3653dbc6e50ec5b96fa06304b9ecee559"
+        },
+        {
+          "paragraph": 3,
+          "text": "2 - دعاوى النفقة والحضانة وحق الزيارة،",
+          "sha256": "4a89b36cd38ee8d12c50bb1fc2e39ad1ad8b1369db23798d0927e125dc0aeab7"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b9",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "423",
+        "paragraphs": [
+          1,
+          4,
+          5
+        ]
+      },
+      "says": {
+        "ar": "ينظر قسم شؤون الأسرة في دعاوى إثبات الزواج والنسب ودعاوى الكفالة.",
+        "en": "The family section hears claims to prove a marriage or filiation and claims on kafala."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "ينظر قسم شؤون الأسرة، على الخصوص في الدعاوى الآتية:",
+          "sha256": "16245d4e488f60c9bec86983991193d3653dbc6e50ec5b96fa06304b9ecee559"
+        },
+        {
+          "paragraph": 4,
+          "text": "3 - دعاوى إثبات الزواج والنسب،",
+          "sha256": "9a10e0da63d6c90e5bce21610689bc1111d5294ee03a55b22258154824b64e4f"
+        },
+        {
+          "paragraph": 5,
+          "text": "4 - الدعاوى المتعلقة بالكفالة،",
+          "sha256": "1ef0709c3015ae5c6c1b1d4f7e4952ed11813913eb5988da5f9a4a692e9dd23e"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b10",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "423",
+        "paragraphs": [
+          1,
+          6
+        ]
+      },
+      "says": {
+        "ar": "ينظر قسم شؤون الأسرة في دعاوى الولاية وسقوطها والحجر والغياب والفقدان والتقديم.",
+        "en": "The family section hears claims on guardianship and its loss, interdiction, absence, disappearance and the appointment of a curator."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "ينظر قسم شؤون الأسرة، على الخصوص في الدعاوى الآتية:",
+          "sha256": "16245d4e488f60c9bec86983991193d3653dbc6e50ec5b96fa06304b9ecee559"
+        },
+        {
+          "paragraph": 6,
+          "text": "5 - الدعاوى المتعلقة بالولاية وسقوطها والحجر والغياب والفقدان والتقديم.",
+          "sha256": "b1dd9784b58900d64a7f42d36da126f7a472f4da7784bc267403c72f5a25fe43"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b11",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "500",
+        "paragraphs": [
+          1,
+          2,
+          3
+        ]
+      },
+      "says": {
+        "ar": "يختص القسم الاجتماعي اختصاصا مانعا بإثبات عقود العمل والتكوين والتمهين وبتنفيذها وتعليقها وإنهائها.",
+        "en": "The social section alone hears the proof, performance, suspension and termination of employment, training and apprenticeship contracts."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يختص القسم الاجتماعي اختصاصا مانعا في المواد الآتية :",
+          "sha256": "d54fe7b73c1ca959b8d0d504b667b87fc8c356549935a88a7ef4b5c044853348"
+        },
+        {
+          "paragraph": 2,
+          "text": "1 - إثبات عقود العمل والتكوين والتمهين،",
+          "sha256": "bee725a4c7c5a53a2ac9ad8d96f63d29d14eecadf7503aec52449df8d4c883fa"
+        },
+        {
+          "paragraph": 3,
+          "text": "2 - تنفيذ وتعليق وإنهاء عقود العمل والتكوين والتمهين،",
+          "sha256": "91c857d8bcd1019219994ba9fb5c44061535eb92c2c0577c299db80a939d5f40"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b12",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "500",
+        "paragraphs": [
+          1,
+          4,
+          5,
+          6,
+          7,
+          8
+        ]
+      },
+      "says": {
+        "ar": "يختص القسم الاجتماعي اختصاصا مانعا بمنازعات انتخاب مندوبي العمال والحق النقابي والإضراب والضمان الاجتماعي والتقاعد والاتفاقيات الجماعية.",
+        "en": "The social section alone hears disputes on staff-delegate elections, union rights, strikes, social security and retirement, and collective agreements."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يختص القسم الاجتماعي اختصاصا مانعا في المواد الآتية :",
+          "sha256": "d54fe7b73c1ca959b8d0d504b667b87fc8c356549935a88a7ef4b5c044853348"
+        },
+        {
+          "paragraph": 4,
+          "text": "3 - منازعات انتخاب مندوبي العمال،",
+          "sha256": "392626ddc4437cfa25b4256f5521885b3fc6ba67658488c01e056a71018690c3"
+        },
+        {
+          "paragraph": 5,
+          "text": "4 - المنازعات المتعلقة بممارسة الحق النقابي،",
+          "sha256": "b2562c97c38ef9ab448934febc4f68478d9a2f9bd188b0a4707bea2f16318f21"
+        },
+        {
+          "paragraph": 6,
+          "text": "5 - المنازعات المتعلقة بممارسة حق الإضراب،",
+          "sha256": "8c4675a80cb3ba186925ec3a70bdbbee52dd0c91c44170916f4f255d577276bd"
+        },
+        {
+          "paragraph": 7,
+          "text": "6 - منازعات الضمان الاجتماعي والتقاعد،",
+          "sha256": "c88c5d4cc410b7ce7bcef6f4b112378dc0426b406ea4834f304c63b4ff1b6a71"
+        },
+        {
+          "paragraph": 8,
+          "text": "7 - المنازعات المتعلقة بالاتفاقات والاتفاقيات الجماعية للعمل.",
+          "sha256": "3da23de2a5f53f2f73d07f33d7c2067b404f4b730b67efab6e84cbe40760d670"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b13",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "502",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يتشكل القسم الاجتماعي، تحت طائلة البطلان، من قاض رئيس ومساعدين وفق تشريع العمل.",
+        "en": "The social section sits, on pain of nullity, as a presiding judge with assessors under labour legislation."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يتشكل القسم الاجتماعي، تحت طائلة البطلان، من قاض رئيسا ومساعدين طبقا لما ينص عليه تشريع العمل.",
+          "sha256": "1d66a56c4fb8de9163861b8e58c18dc1f535cdae63317a20d5fba9a80ed416a3"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b14",
+      "role": "basis",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "20",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "تنظر المحاكم الفاصلة في المسائل الاجتماعية في الخلافات الفردية للعمل الناجمة عن تنفيذ علاقة العمل أو توقيفها أو قطعها.",
+        "en": "The courts sitting in social matters hear individual labour disputes arising from the performance, suspension or ending of an employment relationship."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "مع مراعاة أحكام المادة 7 من قانون الاجراءات المدنية تنظر المحاكم الفاصلة في المسائل الاجتماعية فيما يلي :",
+          "sha256": "a0b709dba06755c8b8462307bd1176492ac2d0ea69baf1bb3d07c1e854982810"
+        },
+        {
+          "paragraph": 2,
+          "text": "– الخلافات الفردية للعمل والناجمة عن تنفيذ او توقيف او قطع علاقة عمل او عقد تكوين او تمهين.",
+          "sha256": "56fd3689dae1c365aacb8ca1b7d5fdefa78bc7dfe4b3c1ff75c70c083d5d4674"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "delta",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "ledgerNotClean",
+          "triageOpen: labour-disputes",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b15",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "8",
+        "paragraphs": [
+          1,
+          2,
+          3
+        ]
+      },
+      "says": {
+        "ar": "تنعقد المحكمة في المسائل الاجتماعية برئاسة قاض ومساعدين من العمال والمستخدمين، ويعوض الغائبون منهم بمساعدين احتياطيين أو بقضاة.",
+        "en": "The court in social matters sits as a judge with worker and employer assessors; absent assessors are replaced by substitutes or by judges."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تنعقد جلسات المحكمة للنظر في المسائل الاجتماعية برئاسة قاض يعاونه مساعدان من العمال ومساعدان من المستخدمين.",
+          "sha256": "554d8421fca09ca517e4fb054d1dc0a421bc01b495163874f413392a6ef94273"
+        },
+        {
+          "paragraph": 2,
+          "text": "ويجوز للمحكمة ان تنعقد قانونيا بحضور مساعد من العمال ومساعد من المستخدمين على الاقل.",
+          "sha256": "5a6ddad66929ac0e2ba551664ce5c961c14b4dbfc1afbeb1d5cefeacf627ec85"
+        },
+        {
+          "paragraph": 3,
+          "text": "وفي حالة غياب المساعدين من العمال أو المساعدين من المستخدمين أو كافة المساعدين يتم تعويضهم بالمساعدين الاحتياطيين، واذا تعذر ذلك يتم تعويضهم حسب الحالة بقاض أو بقاضيين يعينهما رئيس المحكمة.",
+          "sha256": "287ad32ade26362b3a335c9f4f51c8c4924bfa4aa67049f2930835dd4e96d6fd"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "delta",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "ledgerNotClean",
+          "triageOpen: labour-disputes",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b16",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "511",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ينظر القسم العقاري في المنازعات المتعلقة بالأملاك العقارية.",
+        "en": "The real-estate section hears disputes about real property."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "ينظر القسم العقاري في المنازعات المتعلقة بالأملاك العقارية.",
+          "sha256": "3be6ff39722566f1252504d38dcdadf966bf0d0c1171c24d1631202bd03e7201"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "D",
+        "reasons": [
+          "textNotVerified: cpca 511"
+        ],
+        "toCheck": true,
+        "textProof": "oneFamily",
+        "proof": "oneFamily"
+      }
+    },
+    {
+      "id": "b17",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "512",
+        "paragraphs": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      },
+      "says": {
+        "ar": "ينظر القسم العقاري خصوصا في الملكية والحقوق العينية والحيازة والتقادم والترقية العقارية والملكية المشتركة والشيوع وإثبات الملكية والشفعة والهبات والوصايا العقارية والتنازل عن الملكية.",
+        "en": "The real-estate section hears in particular ownership and real rights, possession and prescription, property development, co-ownership, proof of ownership, pre-emption, gifts and bequests of real property, and transfers of ownership."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "ينظر القسم العقاري على الخصوص في القضايا الآتية :",
+          "sha256": "f9558d257f11342f85e910117dbfc8217d6432306e638cbccb4f83b419bd997e"
+        },
+        {
+          "paragraph": 2,
+          "text": "1 - في حق الملكية والحقوق العينية الأخرى والتأمينات العينية،",
+          "sha256": "08199271855dd205faca89e5c874207792da6f2f604142238d04c532d69da90c"
+        },
+        {
+          "paragraph": 3,
+          "text": "2 - في الحيازة والتقادم وحق الانتفاع وحق الاستعمال وحق الاستغلال وحق السكن،",
+          "sha256": "b51da0727256d65a793164293c2509f29185b9f695075d0a9d510040c2faee5f"
+        },
+        {
+          "paragraph": 4,
+          "text": "3- في نشاط الترقية العقارية،",
+          "sha256": "42779295834b1066fd19adc3c87967ae40bf9adbde021d7cd9a8368d4e920e94"
+        },
+        {
+          "paragraph": 5,
+          "text": "4 - في الملكية المشتركة للعقارات المبنية والملكية على الشيوع،",
+          "sha256": "8aaadb6049f3c52e02a9830e82294b41855f33eb7391ad5b3ea930ae977c573b"
+        },
+        {
+          "paragraph": 6,
+          "text": "5 - في إثبات الملكية العقارية،",
+          "sha256": "74d1024786684cd2f93c8f3cb859e7172a0c99a9277713d4b5e76f74e7fbc7ff"
+        },
+        {
+          "paragraph": 7,
+          "text": "6 - في الشفعة،",
+          "sha256": "db282076752880fdf58dc4f4a43ef23f241b619c04882d4e8d9252f60cb81aac"
+        },
+        {
+          "paragraph": 8,
+          "text": "7 - في الهبات والوصايا المتعلقة بالعقارات،",
+          "sha256": "9d0e45a3a1b492922825af97402eaf8dbdac5c51b02059b10b8c204a8a55f08a"
+        },
+        {
+          "paragraph": 9,
+          "text": "8 - في التنازل عن الملكية وحق الانتفاع،",
+          "sha256": "624e04ebf84f5ef9af86e841dac00c28f172a5306499277872fd9644d7db957f"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b18",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "512",
+        "paragraphs": [
+          1,
+          10
+        ]
+      },
+      "says": {
+        "ar": "ينظر القسم العقاري في القسمة وتحديد المعالم.",
+        "en": "The real-estate section hears partition and boundary-marking."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "ينظر القسم العقاري على الخصوص في القضايا الآتية :",
+          "sha256": "f9558d257f11342f85e910117dbfc8217d6432306e638cbccb4f83b419bd997e"
+        },
+        {
+          "paragraph": 10,
+          "text": "9 - في القسمة وتحديد المعالم،",
+          "sha256": "5f0574e37424acc8aade76015dd2ef73c118aa728956919da1ff9adbae7e123d"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b19",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "512",
+        "paragraphs": [
+          1,
+          11
+        ]
+      },
+      "says": {
+        "ar": "ينظر القسم العقاري في إيجار السكنات والمحلات المهنية.",
+        "en": "The real-estate section hears leases of dwellings and of professional premises."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "ينظر القسم العقاري على الخصوص في القضايا الآتية :",
+          "sha256": "f9558d257f11342f85e910117dbfc8217d6432306e638cbccb4f83b419bd997e"
+        },
+        {
+          "paragraph": 11,
+          "text": "10 - في إيجار السكنات والمحلات المهنية،",
+          "sha256": "150da24a6e10e5af8637bc2f588b20c3e4a80dc19ace5e192b210de7a97bdff0"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b20",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "515",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ينظر القسم العقاري في دعاوى إبطال أو فسخ أو تعديل أو نقض الحقوق المترتبة على عقود تم شهرها.",
+        "en": "The real-estate section hears claims to annul, rescind, amend or undo rights arising from published deeds."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "ينظر القسم العقاري في الدعاوى المتعلقة بإبطال أو فسخ أو تعديل أو نقض الحقوق المترتبة على عقود تم شهرها.",
+          "sha256": "cf50e03fab6dc794e188419ff1b3c7c3d17f7c8916640ddf43897e8d035f5876"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "disagreedBeforeReconciliation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b21",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "531",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يختص القسم التجاري بالمنازعات التجارية، ما عدا المنازعات المسندة إلى المحكمة التجارية المتخصصة.",
+        "en": "The commercial section hears commercial disputes, except those given to the specialised commercial court."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يختص القسم التجاري بالنظر في المنازعات التجارية، باستثناء تلك المذكورة في المادة 536 مكرر من هذا القانون.",
+          "sha256": "b7d9c468e630b13ea0b379eee1b1c38dda00d26a7f4ee8c0fce11538ca3b4d7b"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "oneFamily"
+      }
+    },
+    {
+      "id": "b22",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "531",
+        "paragraphs": [
+          1
+        ],
+        "version": "law-08-09"
+      },
+      "says": {
+        "ar": "في صيغتها السابقة، كانت المادة تسند إلى القسم التجاري المنازعات التجارية، وعند الاقتضاء المنازعات البحرية.",
+        "en": "In its former wording, the article gave the commercial section commercial disputes and, where relevant, maritime disputes."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "ينظر القسم التجاري في المنازعات التجارية، وعند الاقتضاء، في المنازعات البحرية، وفقا لما هو منصوص عليه في القانون التجاري والقانون البحري والنصوص الخاصة، مع مراعاة أحكام المادة 32 من هذا القانون.",
+          "sha256": "169f29b6ae310b59a9a3968fbf113de63356bca40d0b41fe53dd2e7a33260694"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "corpus",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": false
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "ledgerNotClean",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "oneFamily",
+        "proof": "oneFamily"
+      }
+    },
+    {
+      "id": "b23",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "536 مكرر",
+        "paragraphs": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "says": {
+        "ar": "تختص المحكمة التجارية المتخصصة بمنازعات الملكية الفكرية والشركات التجارية والتسوية القضائية والإفلاس والبنوك والمؤسسات المالية مع التجار والمنازعات البحرية والنقل الجوي والتأمينات المتعلقة بالنشاط التجاري والتجارة الدولية.",
+        "en": "The specialised commercial court hears disputes on intellectual property, commercial companies, judicial settlement and bankruptcy, banks and financial institutions with merchants, maritime and air transport, insurance linked to commercial activity, and international trade."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تختص المحكمة التجارية المتخصصة بالنظر في المنازعات المذكورة أدناه :",
+          "sha256": "b5b2fdd45f33caedc5776587315f0936cf1fe0082da3e7eeeb8d7d4267f47a67"
+        },
+        {
+          "paragraph": 2,
+          "text": "– منازعات الملكية الفكرية،",
+          "sha256": "79bf8923c6c6541e232e7dbc84c96fe80125956748d9487b676bffcf264d9013"
+        },
+        {
+          "paragraph": 3,
+          "text": "– منازعات الشركات التجارية، لا سيما منازعات الشركاء وحل وتصفية الشركات،",
+          "sha256": "288c52d056de29af450516464328ce2ceb8c77070d2839f6b055b8cca752cfce"
+        },
+        {
+          "paragraph": 4,
+          "text": "– التسوية القضائية والإفلاس،",
+          "sha256": "74aad28f6ca9db85f143deb55a14ee28e511a7bc594130be9917be7be39db367"
+        },
+        {
+          "paragraph": 5,
+          "text": "– منازعات البنوك والمؤسسات المالية مع التجار،",
+          "sha256": "b21502d6a651dd6718ae6b03af697a24c02383c62e25883aabf9f6e68c5c9ad0"
+        },
+        {
+          "paragraph": 6,
+          "text": "– المنازعات البحرية والنقل الجوي ومنازعات التأمينات المتعلقة بالنشاط التجاري،",
+          "sha256": "d441e0a5ff405e3881eab4bf0903a86d09a88e0a4861cc0385cb7763a50ad58d"
+        },
+        {
+          "paragraph": 7,
+          "text": "– المنازعات المتعلقة بالتجارة الدولية.",
+          "sha256": "577110918dc4d1504ddac3fdaa3f964d9dcddf1322d6cdeb40ddfc133643efee"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "disagreedBeforeReconciliation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b24",
+      "role": "limit",
+      "cite": {
+        "code": "law-22-13",
+        "article": "13",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تسري قواعد الاختصاص الجديدة الخاصة بالمحاكم التجارية المتخصصة ابتداء من تاريخ تنصيبها.",
+        "en": "The new jurisdiction rules for the specialised commercial courts apply from the date those courts are installed."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تسري قواعد الاختصاص النوعي والإقليمي المنصوص عليها في هذا القانون، الخاصة بالجهات القضائية الإدارية والمحاكم التجارية المتخصصة ابتداء من تاريخ تنصيب الجهات القضائية الجديدة.",
+          "sha256": "626596d6c211186c32d3a0ab2806017710c395cb30bf4bc6c2959af5f44c57f2"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "delta",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b25",
+      "role": "limit",
+      "cite": {
+        "code": "law-22-13",
+        "article": "13",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "تبقى الأقسام التجارية مختصة بالدعاوى المرفوعة أمامها قبل تنصيب الجهات القضائية الجديدة.",
+        "en": "The commercial sections keep the cases filed before them before the new courts are installed."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "وتبقى الجهات القضائية الإدارية والأقسام التجارية مختصة بالفصل في الدعاوى المرفوعة أمامها قبل تاريخ تنصيب الجهات القضائية الجديدة.",
+          "sha256": "99079135c3848dab7344e00b22b9500784dfd724ba4fa02b30a46fefb2ae3d88"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "delta",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b26",
+      "role": "limit",
+      "cite": {
+        "code": "law-22-13",
+        "article": "14",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "ألغيت الفقرات الخاصة بالأقطاب المتخصصة من مادة تشكيل المحكمة في قانون الإجراءات المدنية والإدارية.",
+        "en": "The paragraphs on the specialised poles were repealed from the CPCA article on the court's make-up."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تلغى :",
+          "sha256": "9641d961f8bf2d16b962b79a7b062118244055e81a4fd953b61aed591c469585"
+        },
+        {
+          "paragraph": 2,
+          "text": "– الفقرات 7 و 8 و 9 و 10 من المادّة 32 والمواد 826 و835 و836 و912 و913 و914 من القانون رقم 08-09 المؤرخ في 18 صفر عام 1429 الموافق 25 فبراير سنة 2008 والمتضمن قانون الإجراءات المدنية والإدارية،",
+          "sha256": "e234412834b52f18ea747aad8f5febf87c636532d323870216f827765e5cb335"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "delta",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "oneFamily"
+      }
+    },
+    {
+      "id": "b27",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "15",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "يجب أن تتضمن العريضة الجهة القضائية التي ترفع أمامها الدعوى، تحت طائلة عدم قبولها شكلا.",
+        "en": "The petition must name the court before which the claim is brought, on pain of formal inadmissibility."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجب أن تتضمن عريضة افتتاح الدعوى، تحت طائلة عدم قبولها شكلا، البيانات الآتية :",
+          "sha256": "d1a2b858cb132be84beec6efc31e21b100252e635c1bc8f4ad3dadb68cf01eaa"
+        },
+        {
+          "paragraph": 2,
+          "text": "1 - الجهة القضائية التي ترفع أمامها الدعوى،",
+          "sha256": "5250ece05a710e4e7f2f0fff408bd2acfcaab510707616bf4e46dac863b3d6e0"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "oneFamily",
+        "proof": "oneFamily"
+      }
+    },
+    {
+      "id": "b28",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "36",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "عدم الاختصاص النوعي من النظام العام وتقضي به الجهة القضائية تلقائيا في أي مرحلة.",
+        "en": "Lack of subject-matter jurisdiction is a matter of public order that the court raises of its own motion at any stage."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "عدم الاختصاص النوعي من النظام العام، تقضي به الجهة القضائية تلقائيا في أية مرحلة كانت عليها الدعوى.",
+          "sha256": "26cf02fff2cc54b3c6de97f1bd437b0052075f088304005b96bd1d1da03ae23d"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "disagreedBeforeReconciliation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "oneFamily",
+        "proof": "oneFamily"
+      }
+    },
+    {
+      "id": "b29",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "299",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ترفع الدعوى الاستعجالية، وطلب الحراسة القضائية أو أي تدبير تحفظي غير منظم بإجراءات خاصة، بعريضة أمام المحكمة التي يقع في دائرتها الإشكال أو التدبير.",
+        "en": "Urgent matters, and requests for judicial custody or for a protective measure not governed by special procedures, are brought by petition before the court where the problem or measure arises."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "في جميع أحوال الاستعجال، أو إذا اقتضى الأمر الفصل في إجراء يتعلق بالحراسة القضائية أو بأي تدبير تحفظي غير منظم بإجراءات خاصة، يتم عرض القضية بعريضة افتتاحية أمام المحكمة الواقع في دائرة اختصاصها الإشكال أو التدبير المطلوب، وينادى عليها في أقرب جلسة.",
+          "sha256": "ad5ea8fcd614f87510cbf39646a463c84776b398e612164a0a73d45816fbc8b3"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "oneFamily",
+        "proof": "oneFamily"
+      }
+    },
+    {
+      "id": "b30",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "425",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يمارس رئيس قسم شؤون الأسرة صلاحيات قاضي الاستعجال.",
+        "en": "The president of the family section has the powers of the urgent-matters judge."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يمارس رئيس قسم شؤون الأسرة الصلاحيات المخولة لقاضي الاستعجال، ويجوز له بالإضافة للصلاحيات المخولة له في هذا القانون، أن يأمر في إطار التحقيق بتعيين مساعدة اجتماعية أو طبيب خبير أو اللجوء إلى أية مصلحة مختصة في الموضوع بغرض الاستشارة.",
+          "sha256": "2c80f30ea6401ec1562366b687ef8e7ceb5295a2cd6c5ef276f83d554ea3c548"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "oneFamily",
+        "proof": "oneFamily"
+      }
+    },
+    {
+      "id": "b31",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "521",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يمكن لرئيس القسم العقاري أن يتخذ استعجالا التدابير التحفظية اللازمة ولو وجدت منازعة جدية.",
+        "en": "The president of the real-estate section may order urgent protective measures even when there is a serious dispute."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يمكن لرئيس القسم العقاري، وحتى في حالة وجود منازعة جدية، أن يتخذ عن طريق الاستعجال التدابير التحفظية اللازمة.",
+          "sha256": "91f1e56add4a55e9c72f2119d131c029995feb8b34aeafd4a59de375db0af58d"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "oneFamily",
+        "proof": "oneFamily"
+      }
+    },
+    {
+      "id": "b32",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "506",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يمكن لرئيس القسم الاجتماعي أن يأمر استعجاليا بالتدابير المؤقتة أو التحفظية لوقف ما يعرقل حرية العمل.",
+        "en": "The president of the social section may order urgent provisional or protective measures to stop anything that obstructs the freedom to work."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يمكن لرئيس القسم الاجتماعي أن يأمر استعجاليا باتخاذ كل الإجراءات المؤقتة أو التحفظية الرامية إلى وقف كل تصرف من شأنه أن يعرقل حرية العمل.",
+          "sha256": "719c83822acba812ea5541b5229d92612ac8ff1fd568a5f815f7e230229a014e"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b33",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "536",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يمكن لرئيس القسم التجاري أن يتخذ استعجالا الإجراءات المؤقتة أو التحفظية.",
+        "en": "The president of the commercial section may take urgent provisional or protective measures."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يمكن لرئيس القسم التجاري، أن يتخذ عن طريق الاستعجال، الإجراءات المؤقتة أو التحفظية للحفاظ على الحقوق موضوع النزاع وفق الإجراءات المنصوص عليها في هذا القانون والنصوص الخاصة.",
+          "sha256": "42ec22c6de8cf9de9a69942841c91b83fd8b495565661f05ed790ff217e8197b"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "oneFamily",
+        "proof": "oneFamily"
+      }
+    },
+    {
+      "id": "b34",
+      "role": "procedure",
+      "cite": {
+        "code": "family-code",
+        "article": "3 مكرر",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "النيابة العامة طرف أصلي في جميع القضايا الرامية إلى تطبيق قانون الأسرة.",
+        "en": "The public prosecutor is a principal party in every case applying the Family Code."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تعد النيابة العامة طرفا أصليا في جميع القضايا الرامية إلى تطبيق أحكام هذا القانون.",
+          "sha256": "2d611fa45c7820ced2f3c7c34f453e60a684c5721881f22318b527f8496e0c92"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "ledgerNotClean",
+          "triageOpen: family-code",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b35",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "7",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "الجلسات علنية ما لم تمس العلنية بالنظام العام أو الآداب العامة أو حرمة الأسرة.",
+        "en": "Hearings are public unless publicity would harm public order, morals or the privacy of the family."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "الجلسات علنية، ما لم تمس العلنية بالنظام العام أو الآداب العامة أو حرمة الأسرة.",
+          "sha256": "99206f73a73b59da60b4b1de53c7dcd3d060412bb37a343a1165e1f359ebf16b"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "oneFamily",
+        "proof": "oneFamily"
+      }
+    },
+    {
+      "id": "b36",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "512",
+        "paragraphs": [
+          1,
+          12
+        ]
+      },
+      "says": {
+        "ar": "ينظر القسم العقاري في الإيجارات الفلاحية.",
+        "en": "The real-estate section hears agricultural leases."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "ينظر القسم العقاري على الخصوص في القضايا الآتية :",
+          "sha256": "f9558d257f11342f85e910117dbfc8217d6432306e638cbccb4f83b419bd997e"
+        },
+        {
+          "paragraph": 12,
+          "text": "11 - في الإيجارات الفلاحية.",
+          "sha256": "4cb914560e7c7ec5930c59437ede5deb47d3d510be6bf09d16e2717cfaf7c131"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b37",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "513",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ينظر القسم العقاري في منازعات المستغلين الفلاحيين فيما بينهم أو مع الغير بشأن الأراضي الفلاحية التابعة للأملاك الوطنية.",
+        "en": "The real-estate section hears disputes between farmers, or with third parties, on agricultural land of the national domain."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "ينظر القسم العقاري في المنازعات التي تنشأ بين المستغلين الفلاحيين أو مع الغير، بخصوص الأراضي الفلاحية التابعة للأملاك الوطنية وشغلها واستغلالها.",
+          "sha256": "13fb03498f7edce8a3b1e2fa941daca3f7b8c5b8ee5389aa08f6c54f14d30258"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "oneFamily",
+        "proof": "oneFamily"
+      }
+    },
+    {
+      "id": "b38",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "519",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ترفع الدعوى أمام القسم العقاري مع مراعاة الأحكام الخاصة بشهر دعاوى الفسخ أو الإبطال أو التعديل أو النقض في حقوق قائمة على عقود مشهرة.",
+        "en": "The action goes to the real-estate section, subject to the special rules on publishing actions to rescind, annul, modify or set aside rights based on published deeds."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "ترفع الدعوى أمام القسم العقاري وينظر فيها حسب الإجراءات الواردة في هذا القانون، مع مراعاة الأحكام الخاصة بشهر دعاوى الفسخ أو الإبطال أو التعديل أو نقض حقوق قائمة على عقود تم شهرها.",
+          "sha256": "6e5ee08cfc111f525fd6b62e6e8f3ef91f607e497a1b32435bbea767400247ae"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b39",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "518",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "الاختصاص الإقليمي في المادة العقارية لمحكمة موقع العقار ما لم ينص القانون على خلاف ذلك.",
+        "en": "Territorial jurisdiction in real-property matters lies with the court where the property is, unless the law says otherwise."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يؤول الاختصاص الإقليمي إلى المحكمة التي يوجد العقار في دائرة اختصاصها، ما لم ينص القانون على خلاف ذلك.",
+          "sha256": "e9bd42f000298dbd987ce6a85b650a2c1245a691f56d8b8c7b345a9cceb512ff"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "oneFamily",
+        "proof": "oneFamily"
+      }
+    },
+    {
+      "id": "b40",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "501",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "المحكمة المختصة إقليميا في النزاع الاجتماعي هي محكمة إبرام عقد العمل أو تنفيذه أو موطن المدعى عليه.",
+        "en": "In a social dispute the territorial court is that of the place where the employment contract was made or performed, or of the defendant's domicile."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يؤول الاختصاص الإقليمي إلى المحكمة التي تم في دائرة اختصاصها إبرام عقد العمل أو تنفيذه أو التي يوجد بها موطن المدعى عليه.",
+          "sha256": "3d56ff0497da83f0471275721b6d287173806d91f079da2eda44724bd309be27"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "oneFamily"
+      }
+    },
+    {
+      "id": "b41",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "501",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "إذا أنهي عقد العمل أو علق بسبب حادث عمل أو مرض مهني فالاختصاص لمحكمة موطن المدعي.",
+        "en": "Where the contract ended or was suspended because of a work accident or an occupational illness, the court of the plaintiff's domicile has jurisdiction."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "غير أنه في حالة إنهاء أو تعليق عقد العمل بسبب حادث عمل أو مرض مهني، يؤول الاختصاص إلى المحكمة التي يوجد بها موطن المدعي.",
+          "sha256": "530e06a21665a82453cbcdd69e8aab345cbd7af1f41cf8ecddf6c509f9e42c6a"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b42",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "426",
+        "paragraphs": [
+          1,
+          4,
+          5,
+          6
+        ]
+      },
+      "says": {
+        "ar": "في شؤون الأسرة: الطلاق والرجوع لمحكمة المسكن الزوجي، والطلاق بالتراضي لمكان إقامة أحد الزوجين حسب اختيارهما، والحضانة وحق الزيارة لمكان ممارسة الحضانة، والنفقة لموطن الدائن بها.",
+        "en": "In family matters: divorce and return to the marital home go to the court of the marital home, divorce by mutual consent to the place where either spouse lives at their choice, custody and visitation to where custody is exercised, maintenance to the creditor's domicile."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تكون المحكمة مختصة إقليميا :",
+          "sha256": "f6dfdc9e707a44f69bb7ebb39734904ab917e5286f1bd938ae645bdc6411499c"
+        },
+        {
+          "paragraph": 4,
+          "text": "3 - في موضوع الطلاق أو الرجوع بمكان وجود المسكن الزوجي، وفي الطلاق بالتراضي بمكان إقامة أحد الزوجين حسب اختيارهما.",
+          "sha256": "cbee7fc2b3eaf0a35a03281b9d16bd478d4a792124814a5b38c48449678d691e"
+        },
+        {
+          "paragraph": 5,
+          "text": "4 - في موضوع الحضانة وحق الزيارة والرخص الإدارية المسلمة للقاصر المحضون بمكان ممارسة الحضانة،",
+          "sha256": "6dbbe86ce392baec63c81b7e2d595211c9fd04858119cae078b8c33cb30eb17a"
+        },
+        {
+          "paragraph": 6,
+          "text": "5- في موضوع النفقة الغذائية بموطن الدائن بها،",
+          "sha256": "2597e0d707cf7cc79dc0ed5776339559c1fb70b69538fd96e1bd1b590aae2db6"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "oneFamily"
+      }
+    },
+    {
+      "id": "b43",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "532",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تطبق على القسم التجاري قواعد الاختصاص الإقليمي في قانون الإجراءات المدنية والإدارية وفي القانون التجاري والبحري والنصوص الخاصة.",
+        "en": "The territorial rules of the procedure code, the commercial and maritime codes and special texts apply to the commercial section."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تطبق على القسم التجاري، أحكام الاختصاص الإقليمي المنصوص عليها في هذا القانون والقواعد الواردة في القانون التجاري والقانون البحري والنصوص الخاصة.",
+          "sha256": "1da162c2390d29dabc31e460d6362f3d486fb10241a841de0680f61c91a348e1"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "oneFamily",
+        "proof": "oneFamily"
+      }
+    },
+    {
+      "id": "b44",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "536 مكرر 1",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تطبق على المحكمة التجارية المتخصصة قواعد الاختصاص الإقليمي في قانون الإجراءات المدنية والإدارية.",
+        "en": "The territorial rules of the procedure code apply to the specialised commercial court."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تطبق على المحكمة التجارية المتخصصة أحكام الاختصاص الإقليمي المنصوص عليها في هذا القانون.",
+          "sha256": "2b1efc9c1767000e26c316afa67e00b1ac4f40720b1a834c61574365eb3a118d"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b45",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "536 مكرر 6",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يمكن لرئيس قسم بالمحكمة التجارية المتخصصة أن يتخذ استعجالا إجراءات مؤقتة أو تحفظية للحفاظ على الحقوق.",
+        "en": "A section president at the specialised commercial court may take provisional or protective measures in summary proceedings."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "يمكن رئيس قسم بالمحكمة التجارية المتخصصة أن يتخذ، عن طريق الاستعجال، الإجراءات المؤقتة أو التحفظية للحفاظ على الحقوق موضوع النزاع وفق الإجراءات المنصوص عليها في هذا القانون والنصوص الخاصة.",
+          "sha256": "1b8daf2ca58207a4bd3085829cfa594d9dc5e15143976bbc717eb2e5cb103c86"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b46",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "510",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تقبل أمام القسم الاجتماعي الطلبات الإضافية المترتبة على الطلب الأصلي في جميع مراحل الدعوى ولو لم تكن موضوع محاولة صلح.",
+        "en": "Additional requests that follow from the main request are admitted before the social section at every stage, even if they were not put to conciliation."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تقبل الطلبات الإضافية المترتبة على الطلب الأصلي في جميع مراحل الدعوى، حتى ولو لم تكن موضوع محاولة صلح.",
+          "sha256": "8f3347a0e1a5e594cd50b2367c1732945096925980fe177e8dab053465b9fc56"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "oneFamily"
+      }
+    },
+    {
+      "id": "b47",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "800",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "المحاكم الإدارية هي جهة الولاية العامة في المنازعات الإدارية وتختص بالقضايا التي تكون الدولة أو الولاية أو البلدية أو مؤسسة عمومية ذات صبغة إدارية أو هيئة عمومية وطنية أو منظمة مهنية وطنية طرفا فيها.",
+        "en": "The administrative courts are the general courts of administrative disputes and hear cases in which the State, a wilaya, a commune, a public administrative body, a national public institution or a national professional organisation is a party."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "المحاكم الإدارية هي جهات الولاية العامة في المنازعات الإدارية، باستثناء المنازعات الموكلة إلى جهات قضائية أخرى.",
+          "sha256": "eec30e67d354c7ceff66d5052f74993e888232ab36fdee1f9e3defd268f0e52c"
+        },
+        {
+          "paragraph": 2,
+          "text": "تختص المحاكم الإدارية بالفصل في أول درجة بحكم قابل للاستئناف في جميع القضايا التي تكون الدولة أو الولاية أو البلدية أو إحدى المؤسسات العمومية ذات الصبغة الإدارية أو الهيئات العمومية الوطنية والمنظمات المهنية الوطنية طرفا فيها.",
+          "sha256": "40ac0bdb4c0584f45e5c4067956bf884b4901594253db8d58543102b42c62551"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b48",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "40",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "ترفع الدعاوى في المواد العقارية ودعاوى الإيجارات بما فيها التجارية المتعلقة بالعقارات أمام محكمة موقع العقار دون سواها.",
+        "en": "In real-property matters and in actions on leases of immovables, commercial leases included, the action goes only to the court where the property is."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "فضلا عما ورد في المواد 37 و38 و46 من هذا القانون، ترفع الدعاوى أمام الجهات القضائية المبينة أدناه دون سواها :",
+          "sha256": "d1d3cfc6318041605707b19b98dfdc39a081a85d440e9ce268c413b1899e6fc0"
+        },
+        {
+          "paragraph": 2,
+          "text": "1- في المواد العقارية، أو الأشغال المتعلقة بالعقار، أو دعاوى الإيجارات بما فيها التجارية المتعلقة بالعقارات، والدعاوى المتعلقة بالأشغال العمومية، أمام المحكمة التي يقع في دائرة اختصاصها العقار، أو المحكمة التي يقع في دائرة اختصاصها مكان تنفيذ الأشغال.",
+          "sha256": "73a039a69db5e74d545cb5b5640d799df306cb5df8c05ddaf10b30f4ff1a4e70"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b49",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "317",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ينقطع التقادم بالمطالبة القضائية ولو رفعت الدعوى إلى محكمة غير مختصة.",
+        "en": "A court claim interrupts limitation even if filed before a court that has no jurisdiction."
+      },
+      "interpretive": true,
+      "interpretiveNote": "The text speaks of a court without jurisdiction; whether a claim listed before the wrong section of a competent court is covered is a reading (open point o8).",
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "ينقطع التقادم بالمطالبة القضائية ولو رفعت الدعوى الى محكمة غير مختصة بالتنبيه أو بالحجز، وبالطلب الذى يتقدم به الدائن لقبول حقه فى تفليسة المـدين أو فى توزيع أو بأى عمل يقوم به الدائن اثناء مرافعة لاثبات حقه .",
+          "sha256": "1ab5929e59fb95040c338b75e2f283f1e12ec9e695e05ef649030cc3f643d87a"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "delta",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "C",
+        "reasons": [
+          "interpretive",
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b50",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "802",
+        "paragraphs": [
+          1,
+          2,
+          3
+        ]
+      },
+      "says": {
+        "ar": "خلافا لاختصاص المحاكم الإدارية، تختص المحاكم العادية بمخالفات الطرق وبدعاوى المسؤولية عن الأضرار التي تسببها مركبة تابعة للدولة أو الولاية أو البلدية أو مؤسسة عمومية ذات صبغة إدارية.",
+        "en": "By way of exception to the administrative courts, the ordinary courts hear road offences and liability claims for damage caused by a vehicle of the State, a wilaya, a commune or a public administrative body."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "خلافا لأحكام المادتين 800 و801 أعلاه، يكون من اختصاص المحاكم العادية المنازعات الآتية :",
+          "sha256": "d6d4f052226b1d1a98137b35488c0031d2cf7490e21ba9d95c0051c778ab52be"
+        },
+        {
+          "paragraph": 2,
+          "text": "1 - مخالفات الطرق.",
+          "sha256": "e73fd846f273815805a6d23e3eec82ca53c57ba7a3cf6597b2bf904c010092d0"
+        },
+        {
+          "paragraph": 3,
+          "text": "2 - المنازعات المتعلقة بكل دعوى خاصة بالمسؤولية الرامية إلى طلب تعويض الأضرار الناجمة عن مركبة تابعة للدولة، أو لإحدى الولايات أو البلديات أو المؤسسات العمومية ذات الصبغة الإدارية.",
+          "sha256": "a190f7da64e607b8e7486aec69cad0ca5e1dec0e365e6fe4c5257bcbf1c8a1a9"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "D",
+        "reasons": [
+          "textNotVerified: cpca 802"
+        ],
+        "toCheck": true,
+        "textProof": "oneFamily",
+        "proof": "oneFamily"
+      }
+    },
+    {
+      "id": "b51",
+      "role": "prerequisite",
+      "cite": {
+        "code": "cpca",
+        "article": "536 مكرر 4",
+        "paragraphs": [
+          1,
+          3
+        ]
+      },
+      "says": {
+        "ar": "يسبق قيد الدعوى أمام المحكمة التجارية المتخصصة إجراء صلح بطلب من أحد الخصوم، وإذا فشل ترفع الدعوى بعريضة مرفقة بمحضر عدم الصلح تحت طائلة عدم قبولها شكلا.",
+        "en": "Before a case is registered at the specialised commercial court, a conciliation is held at a party's request; if it fails, the petition must be accompanied by the record of non-conciliation, on pain of formal inadmissibility."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يسبق قيد الدعوى إجراء الصلح الذي يتم بطلب من أحد الخصوم ويقدم إلى رئيس المحكمة التجارية المتخصصة الذي يعين خلال مدة خمسة (5) أيام، بموجب أمر على عريضة، أحد القضاة للقيام بإجراء الصلح في أجل لا يتجاوز ثلاثة (3) أشهر، ويبلغ طالب الصلح باقي أطراف النزاع بتاريخ جلسة الصلح.",
+          "sha256": "b9b1c7423fa60f1f0ac17eb182ee12113ff31a2bcddf85bf14a24e224acaab9b"
+        },
+        {
+          "paragraph": 3,
+          "text": "في حالة فشل محاولة الصلح، ترفع الدعوى أمام المحكمة التجارية المتخصصة بعريضة افتتاح الدعوى طبقا للقواعد المنصوص عليها في هذا القانون مرفقة، تحت طائلة عدم قبول الدعوى شكلا، بمحضر عدم الصلح.",
+          "sha256": "c7360c68a0c37716fb876915c034212fc2e5985c79ae7ebe7693daa684b00b49"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "oneFamily"
+      }
+    },
+    {
+      "id": "b52",
+      "role": "limit",
+      "cite": {
+        "code": "labour-relations",
+        "article": "3",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يخضع الموظفون والأعوان المتعاقدون في الهيئات والإدارات العمومية للدولة والولايات والبلديات ومستخدمو المؤسسات العمومية ذات الطابع الإداري لأحكام تشريعية وتنظيمية خاصة، لا لقانون علاقات العمل.",
+        "en": "Civil servants, contract agents of the public bodies and administrations of the State, wilayas and communes, and the staff of public administrative establishments are governed by special legislative and regulatory provisions, not by the labour-relations law."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يخضع المستخدمون المدنيون والعسكريون التابعون للدفاع الوطني والقضاة والموظفون والأعوان المتعاقدون في الهيئات والإدارات العمومية في الدولة والولايات والبلديات ومستخدمو المؤسسات العمومية ذات الطابع الإداري، لأحكام تشريعية وتنظيمية خاصة.",
+          "sha256": "f79899d72decb330f53e09f950c35e4768e0316cc0b0a541a2f0b6f5990d7616"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      },
+      "grading": {
+        "grade": "D",
+        "reasons": [
+          "textNotVerified: labour-relations 3"
+        ],
+        "toCheck": true,
+        "textProof": "unverified",
+        "proof": "oneFamily"
+      }
+    },
+    {
+      "id": "b53",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "498",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يؤول الاختصاص في دعاوى التركة إلى محكمة موطن المتوفى ولو وجدت بعض أملاك التركة خارج دائرتها، ما لم ينص القانون على خلاف ذلك.",
+        "en": "Estate claims go to the court of the deceased's domicile, even if some of the estate lies outside its area, unless the law says otherwise."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يؤول الاختصاص في دعاوى التركة إلى المحكمة التي يقع فيها موطن المتوفى، حتى وإن وجدت بعض أملاك التركة خارج دائرة الاختصاص الإقليمي لهذه المحكمة، ما لم ينص القانون على خلاف ذلك.",
+          "sha256": "919378f9bb3b3b3390d2b854eab4e6a1dd64ff5a31a157d26d5e1d5b45b30f7b"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "oneFamily",
+        "proof": "oneFamily"
+      }
+    },
+    {
+      "id": "b54",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "499",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجوز لقاضي شؤون الأسرة استعجالا اتخاذ التدابير التحفظية على أموال المتوفى إلى غاية تصفية التركة.",
+        "en": "The family judge may, in summary proceedings, take protective measures over the deceased's property until the estate is wound up."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجوز لقاضي شؤون الأسرة، وعن طريق الاستعجال، أن يتخذ جميع التدابير التحفظية، لاسيما الأمر بوضع الأختام، أو تعيين حارس قضائي لإدارة أموال المتوفى إلى غاية تصفية التركة.",
+          "sha256": "802fa560d67ec30263c31fd36b844e9a7d78bee4f15c2a9874882cc8872158b5"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "oneFamily",
+        "proof": "oneFamily"
+      }
+    },
+    {
+      "id": "b55",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "426",
+        "paragraphs": [
+          1,
+          2,
+          3,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      "says": {
+        "ar": "في شؤون الأسرة: العدول عن الخطبة وإثبات الزواج والمنازعة حول الصداق لمحكمة موطن المدعى عليه، ومتاع بيت الزوجية لمكان المسكن الزوجي، والترخيص بالزواج لمكان طالبه، والولاية لمكان ممارستها.",
+        "en": "In family matters: breaking off an engagement, proof of marriage and dowry disputes go to the court of the defendant's domicile; household goods to where the marital home is; leave to marry to where the applicant is; guardianship to where it is exercised."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تكون المحكمة مختصة إقليميا :",
+          "sha256": "f6dfdc9e707a44f69bb7ebb39734904ab917e5286f1bd938ae645bdc6411499c"
+        },
+        {
+          "paragraph": 2,
+          "text": "1 - في موضوع العدول عن الخطبة بمكان وجود موطن المدعى عليه،",
+          "sha256": "f30cd2fcb899a35a08123c281509e674b39547ea217108872947a21efa95683e"
+        },
+        {
+          "paragraph": 3,
+          "text": "2 - في موضوع إثبات الزواج بمكان وجود موطن المدعى عليه،",
+          "sha256": "f3dfc5d8a4142b8acf7171a26aaeb68b65ad19004accbd227a17b6f83be5936f"
+        },
+        {
+          "paragraph": 7,
+          "text": "6 - في موضوع متاع بيت الزوجية بمكان وجود المسكن الزوجي،",
+          "sha256": "04646a53a4b23729ec7c5218b00a802831f3e6cac32648a63e325806cffb07a7"
+        },
+        {
+          "paragraph": 8,
+          "text": "7 - في موضوع الترخيص بالزواج بمكان طالب الترخيص،",
+          "sha256": "194f7225baec3df8f81107e33d68b29bf96d3f770d1d0ff42f3b4239e1a638e9"
+        },
+        {
+          "paragraph": 9,
+          "text": "8 - في موضوع المنازعة حول الصداق بمكان موطن المدعى عليه،",
+          "sha256": "a0c48de857ff322263f8fca302fa228afe10dd60473d22e00dff8a1263c1143b"
+        },
+        {
+          "paragraph": 10,
+          "text": "9 - في موضوع الولاية بمكان ممارسة الولاية.",
+          "sha256": "9847968fce22425662d6b40e9664073c600bf351456b59ed831043e1ede46b1d"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "oneFamily"
+      }
+    },
+    {
+      "id": "b56",
+      "role": "procedure",
+      "cite": {
+        "code": "commercial-code",
+        "article": "195",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "إذا وافق المؤجر على تجديد الإيجار وكان الخلاف على بدل الإيجار أو المدة أو الشروط، يحضر الطرفان أمام رئيس المحكمة التي يقع بدائرتها العقار، الذي يبت حسب إجراءات الاستعجال مهما كان مبلغ الإيجار.",
+        "en": "Where the landlord agrees to renew the lease and the dispute is on the rent, the duration or the terms, the parties appear before the president of the court where the building lies, who rules under the summary procedure whatever the rent."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "اذا وافق المؤجر على تجديد الايجار وكان أمر الخلاف يتعلق ببدل الايجار أو المدة أو الشروط اللاحقة أو بمجموع هذه العناصر، وجب على الطرفين الحضور أمام رئيس المحكمة المختصة، التي يكون موقع العمارة تابعا لها ، وذلك مهما كان مبلغ الايجار والذي يقوم بالبت فيها حسب الاجراء المقرر في قضايا الامور المستعجلة.",
+          "sha256": "b71d7fcc6f0d7d025de3a420bbd34e556f7890f2f6cc4c5c621df5d7adfd7532"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "delta",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "ledgerNotClean",
+          "triageOpen: commercial-code",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "oneFamily"
+      }
+    },
+    {
+      "id": "b57",
+      "role": "limit",
+      "cite": {
+        "code": "commercial-code",
+        "article": "187 مكرر 1",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يبقى تجديد عقود الإيجار المبرمة قبل نشر القانون الذي أدخل المادة السابقة خاضعا للتشريع الساري يوم إبرامها.",
+        "en": "The renewal of leases concluded before the publication of the law that introduced the preceding article stays governed by the legislation in force when they were concluded."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يبقى تجديد عقود الإيجار المبرمة قبل النشر المذكور في المادة 187 مكرر أعلاه، خاضعا للتشريع الساري المفعول بتاريخ إبرام عقد الإيجار.",
+          "sha256": "a29a4e16c537172239167a4085711b460fc131ce2abfff35495a5033d5521c6f"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "corpus",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "ledgerNotClean",
+          "triageOpen: commercial-code",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "oneFamily"
+      }
+    },
+    {
+      "id": "b58",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "72",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "في حالة الطلاق يجب على الأب أن يوفر للحاضنة سكنا ملائما لممارسة الحضانة أو يدفع بدل الإيجار.",
+        "en": "On divorce, the father must provide suitable housing for the custodian to exercise custody, or pay the rent for it."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "في حالة الطلاق، يجب على الأب أن يوفر، لممارسة الحضانة، سكنا ملائما للحاضنة، وإن تعذر ذلك فعليه دفع بدل الإيجار.",
+          "sha256": "cf8bee6a4fa3531107fc036d2c14784013fee7e2eb12dc2e695607723a8f39fa"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "ledgerNotClean",
+          "triageOpen: family-code",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "oneFamily"
+      }
+    }
+  ],
+  "court": {
+    "section": {
+      "value": "civil",
+      "basis": [
+        "b1",
+        "b2",
+        "b3",
+        "b4",
+        "b5"
+      ],
+      "alternatives": [
+        {
+          "when": {
+            "all": [
+              {
+                "any": [
+                  {
+                    "slot": "requests",
+                    "includes": "wages"
+                  },
+                  {
+                    "slot": "requests",
+                    "includes": "reinstatement"
+                  },
+                  {
+                    "slot": "dispute_is_social",
+                    "is": "yes"
+                  }
+                ]
+              },
+              {
+                "slot": "worker_is_public_servant",
+                "is": "yes"
+              }
+            ]
+          },
+          "value": "other",
+          "basis": [
+            "b52",
+            "b47"
+          ]
+        },
+        {
+          "when": {
+            "any": [
+              {
+                "slot": "requests",
+                "includes": "wages"
+              },
+              {
+                "slot": "requests",
+                "includes": "reinstatement"
+              },
+              {
+                "slot": "dispute_is_social",
+                "is": "yes"
+              }
+            ]
+          },
+          "value": "social",
+          "basis": [
+            "b11",
+            "b12",
+            "b14",
+            "b4"
+          ]
+        },
+        {
+          "when": {
+            "slot": "court_has_section_for_matter",
+            "is": "no"
+          },
+          "value": "civil",
+          "basis": [
+            "b4"
+          ]
+        },
+        {
+          "when": {
+            "any": [
+              {
+                "slot": "requests",
+                "includes": "divorce"
+              },
+              {
+                "slot": "requests",
+                "includes": "tatliq"
+              },
+              {
+                "slot": "requests",
+                "includes": "khul"
+              },
+              {
+                "slot": "requests",
+                "includes": "maintenance"
+              },
+              {
+                "slot": "requests",
+                "includes": "custody"
+              },
+              {
+                "slot": "requests",
+                "includes": "custody_transfer"
+              },
+              {
+                "slot": "requests",
+                "includes": "visitation"
+              },
+              {
+                "slot": "requests",
+                "includes": "housing"
+              },
+              {
+                "slot": "requests",
+                "includes": "guardianship"
+              },
+              {
+                "slot": "dispute_is_family",
+                "is": "yes"
+              }
+            ]
+          },
+          "value": "family",
+          "basis": [
+            "b7",
+            "b8",
+            "b9",
+            "b10",
+            "b58"
+          ]
+        },
+        {
+          "when": {
+            "slot": "commercial_lease",
+            "is": "yes"
+          },
+          "value": "commercial",
+          "basis": [
+            "b21",
+            "b19",
+            "b48"
+          ]
+        },
+        {
+          "when": {
+            "any": [
+              {
+                "slot": "dispute_concerns_real_property",
+                "is": "yes"
+              },
+              {
+                "slot": "requests",
+                "includes": "partition"
+              }
+            ]
+          },
+          "value": "realEstate",
+          "basis": [
+            "b16",
+            "b17",
+            "b18",
+            "b19",
+            "b20"
+          ]
+        },
+        {
+          "when": {
+            "slot": "dispute_is_commercial",
+            "is": "yes"
+          },
+          "value": "commercial",
+          "basis": [
+            "b21"
+          ]
+        }
+      ],
+      "message": {
+        "ar": "المادة 32 من قانون الإجراءات المدنية والإدارية: تجدول القضايا أمام الأقسام حسب طبيعة النزاع، وفي المحاكم التي لم تنشأ فيها الأقسام ينظر القسم المدني في كل النزاعات ما عدا الاجتماعية، والقضية المجدولة أمام قسم غير معني يحال ملفها إلى القسم المعني عن طريق أمانة الضبط. القسم المختار يختلف عن القسم المقترح؛ تحقق من طبيعة النزاع ومن أقسام المحكمة.",
+        "en": "CPCA article 32: cases are listed before the sections by the nature of the dispute; in courts without sections the civil section hears every dispute except social ones; a case listed before the wrong section is sent to the right one through the registry. The section chosen differs from the one proposed; check the nature of the dispute and the court's sections."
+      },
+      "interpretive": true,
+      "interpretiveNote": "No text names a residual section in a court that has sections: civil is proposed as the residual by reading the fifth paragraph of article 32 with the list of matters in its third paragraph (open point o5). The commercial-lease alternative rests on a reading (article 512 lists only dwellings and professional premises; open point o2); the mapping of the housing and partition request kinds is a reading of articles 423 and 512 (open point o5); whether the fifth paragraph covers a court that lacks only the section concerned is a reading (open point o7). Verifier: the social alternative also reads dispute_is_social, because article 500 gives the social section the termination of contracts, social security, retirement and collective agreements, not only wages and reinstatement (adv-5); the family alternative also reads dispute_is_family, for proof of marriage and filiation, kafala, dowry and household goods (article 423 items 3 and 4, article 426 items 6 and 8; adv-7); a social dispute of a civil servant or public contract agent is proposed outside the social section ('other'), because labour-relations article 3 puts these workers under special texts and article 800 gives the administrative courts every case in which the State, a wilaya, a commune or a public administrative body is a party (adv-4, open point o10); the housing request rests on family-code article 72 read with article 423 item 1 (atk-3).",
+      "grading": {
+        "grade": "D",
+        "reasons": [
+          "textNotVerified: cpca 511, labour-relations 3"
+        ],
+        "toCheck": true,
+        "textProof": "unverified",
+        "proof": "oneFamily"
+      }
+    },
+    "territory": [
+      {
+        "id": "t1",
+        "rule": {
+          "ar": "القسم الاجتماعي: محكمة إبرام عقد العمل أو تنفيذه أو موطن المدعى عليه.",
+          "en": "Social section: the court of the place the contract was made or performed, or of the defendant's domicile."
+        },
+        "when": {
+          "any": [
+            {
+              "slot": "work_accident_or_occupational_illness",
+              "is": "no"
+            },
+            {
+              "slot": "work_accident_or_occupational_illness",
+              "known": false
+            }
+          ]
+        },
+        "basis": [
+          "b40"
+        ],
+        "grading": {
+          "grade": "B",
+          "reasons": [
+            "addedAfterDerivation",
+            "plantedNotRun"
+          ],
+          "toCheck": false,
+          "textProof": "twoFamilies",
+          "proof": "oneFamily"
+        }
+      },
+      {
+        "id": "t2",
+        "rule": {
+          "ar": "القسم الاجتماعي عند إنهاء عقد العمل أو تعليقه بسبب حادث عمل أو مرض مهني: محكمة موطن المدعي.",
+          "en": "Social section where the contract ended or was suspended because of a work accident or occupational illness: the court of the plaintiff's domicile."
+        },
+        "when": {
+          "any": [
+            {
+              "slot": "work_accident_or_occupational_illness",
+              "is": "yes"
+            },
+            {
+              "slot": "work_accident_or_occupational_illness",
+              "known": false
+            }
+          ]
+        },
+        "basis": [
+          "b41"
+        ],
+        "grading": {
+          "grade": "B",
+          "reasons": [
+            "addedAfterDerivation",
+            "plantedNotRun"
+          ],
+          "toCheck": false,
+          "textProof": "twoFamilies",
+          "proof": "twoFamilies"
+        }
+      },
+      {
+        "id": "t3",
+        "rule": {
+          "ar": "القسم العقاري: محكمة موقع العقار ما لم ينص القانون على خلاف ذلك، ودعاوى الإيجارات المتعلقة بالعقارات ولو تجارية أمام محكمة موقع العقار دون سواها.",
+          "en": "Real-estate section: the court where the property is, unless the law says otherwise; actions on leases of immovables, commercial ones included, go only to the court where the property is."
+        },
+        "basis": [
+          "b39",
+          "b48"
+        ],
+        "grading": {
+          "grade": "B",
+          "reasons": [
+            "addedAfterDerivation",
+            "plantedNotRun"
+          ],
+          "toCheck": false,
+          "textProof": "oneFamily",
+          "proof": "oneFamily"
+        }
+      },
+      {
+        "id": "t4",
+        "rule": {
+          "ar": "قسم شؤون الأسرة: محكمة المسكن الزوجي في الطلاق والرجوع، وفي الطلاق بالتراضي مكان إقامة أحد الزوجين حسب اختيارهما، ومكان ممارسة الحضانة في الحضانة وحق الزيارة، وموطن الدائن في النفقة، وموطن المدعى عليه في العدول عن الخطبة وإثبات الزواج والمنازعة حول الصداق، ومكان المسكن الزوجي في متاع بيت الزوجية، ومكان طالب الترخيص في الترخيص بالزواج، ومكان ممارسة الولاية في الولاية.",
+          "en": "Family section: the court of the marital home for divorce and return, and for divorce by mutual consent the place where either spouse lives, at their choice; where custody is exercised for custody and visitation; the creditor's domicile for maintenance; the defendant's domicile for breaking off an engagement, proof of marriage and dowry disputes; the marital home for household goods; the applicant's place for leave to marry; where guardianship is exercised for guardianship."
+        },
+        "basis": [
+          "b42",
+          "b55"
+        ],
+        "grading": {
+          "grade": "B",
+          "reasons": [
+            "addedAfterDerivation",
+            "plantedNotRun"
+          ],
+          "toCheck": false,
+          "textProof": "twoFamilies",
+          "proof": "oneFamily"
+        }
+      },
+      {
+        "id": "t5",
+        "rule": {
+          "ar": "القسم التجاري والمحكمة التجارية المتخصصة: قواعد الاختصاص الإقليمي العامة والخاصة المنصوص عليها في القانون. وهذه القواعد تعين المكان؛ أما المحكمة التجارية المتخصصة المختصة بذلك المكان فهي التي يدرج ملحق المرسوم التنفيذي المحدد لدوائر اختصاص هذه المحاكم، بصيغته المعدلة، المجلس القضائي الذي يقع فيه المكان، وتمتد دائرة المحاكم المنصبة من قبل إلى دائرة المحكمة الجديدة إلى حين تنصيبها (نص غير موجود في مخزن النصوص، النقطة المفتوحة o4).",
+          "en": "Commercial section and specialised commercial court: the general and special territorial rules of the code. Those rules point to a place; the specialised commercial court for that place is the one whose area, in the annex of the executive decree fixing these courts' areas as amended, lists the judicial council of that place, and a court installed earlier covers the area of a new court until the new court is installed (a text not yet in the article store; open point o4)."
+        },
+        "basis": [
+          "b43",
+          "b44"
+        ],
+        "grading": {
+          "grade": "B",
+          "reasons": [
+            "addedAfterDerivation",
+            "plantedNotRun"
+          ],
+          "toCheck": false,
+          "textProof": "oneFamily",
+          "proof": "oneFamily"
+        }
+      },
+      {
+        "id": "t6",
+        "rule": {
+          "ar": "دعاوى التركة: محكمة موطن المتوفى ولو وجدت بعض أملاك التركة خارج دائرتها، ما لم ينص القانون على خلاف ذلك.",
+          "en": "Estate claims: the court of the deceased's domicile, even if some of the estate lies outside its area, unless the law says otherwise."
+        },
+        "basis": [
+          "b53"
+        ],
+        "grading": {
+          "grade": "B",
+          "reasons": [
+            "addedAfterDerivation",
+            "plantedNotRun"
+          ],
+          "toCheck": false,
+          "textProof": "oneFamily",
+          "proof": "oneFamily"
+        }
+      }
+    ],
+    "exits": [
+      {
+        "id": "x1",
+        "when": {
+          "slot": "public_body_party",
+          "is": "yes"
+        },
+        "goesTo": "administrativeCourt",
+        "effect": "warn",
+        "message": {
+          "ar": "المادة 800: تختص المحاكم الإدارية بالقضايا التي تكون الدولة أو الولاية أو البلدية أو مؤسسة عمومية ذات صبغة إدارية أو هيئة عمومية وطنية أو منظمة مهنية وطنية طرفا فيها، والمادة 802 تبقي للمحاكم العادية مخالفات الطرق ودعاوى المسؤولية عن أضرار مركبة تابعة لهذه الأشخاص؛ تحقق من صفة الأطراف ومن موضوع الدعوى قبل اختيار القسم.",
+          "en": "Article 800: the administrative courts hear cases in which the State, a wilaya, a commune, a public administrative body, a national public institution or a national professional organisation is a party; article 802 keeps road offences and liability for damage caused by a vehicle of these bodies with the ordinary courts. Check the parties and the subject of the claim before choosing a section."
+        },
+        "basis": [
+          "b47",
+          "b50",
+          "b2"
+        ],
+        "grading": {
+          "grade": "D",
+          "reasons": [
+            "textNotVerified: cpca 802"
+          ],
+          "toCheck": true,
+          "textProof": "oneFamily",
+          "proof": "oneFamily"
+        }
+      },
+      {
+        "id": "x2",
+        "when": {
+          "slot": "specialised_commercial_subject",
+          "is": "yes"
+        },
+        "goesTo": "specialisedCommercialCourt",
+        "effect": "warn",
+        "message": {
+          "ar": "المادة 531: يستثنى من القسم التجاري ما أسند إلى المحكمة التجارية المتخصصة (الملكية الفكرية، الشركات التجارية، التسوية القضائية والإفلاس، البنوك والمؤسسات المالية مع التجار، المنازعات البحرية والنقل الجوي والتأمينات المتعلقة بالنشاط التجاري، التجارة الدولية). تسري هذه القواعد من تاريخ تنصيب تلك المحاكم، وتبقى الأقسام التجارية مختصة بالدعاوى المرفوعة أمامها قبله. وترفع الدعوى أمام المحكمة التجارية المتخصصة بعد إجراء صلح، بعريضة مرفقة بمحضر عدم الصلح تحت طائلة عدم قبولها شكلا. تحقق من موضوع النزاع، ومن المحكمة التجارية المتخصصة التي تشمل دائرتها المجلس القضائي المعني، ومن محضر عدم الصلح.",
+          "en": "Article 531: the commercial section does not hear the disputes given to the specialised commercial court (intellectual property, commercial companies, judicial settlement and bankruptcy, banks and financial institutions with traders, maritime and air transport and insurance linked to commercial activity, international trade). These rules apply from the installation of those courts, and the commercial sections keep the cases filed before them earlier. A claim before the specialised commercial court follows a conciliation and its petition must carry the record of non-conciliation, on pain of formal inadmissibility. Check the subject of the dispute, which specialised commercial court covers the judicial council concerned, and the record of non-conciliation."
+        },
+        "basis": [
+          "b21",
+          "b23",
+          "b24",
+          "b25",
+          "b51"
+        ],
+        "interpretive": true,
+        "interpretiveNote": "The amending law defers the new jurisdiction rules to the installation of the new courts and sets no date. Verifier: the Official Journal holds the executive decree that created twelve specialised commercial courts across the whole national territory and fixed their areas by judicial council (JO 2023 no. 2, p. 19), and the decree that raised them to twenty-five, extended the areas of the courts 'installed before' it to the areas of the new courts until those are installed, and kept pending cases where they were (JO 2026 no. 27, p. 10). Read together, a specialised commercial court covers every judicial council for a petition filed now; the installation date of each court is not in an official text found, and neither decree is in the article store yet (open point o4, grade D until step 2 reads them).",
+        "grading": {
+          "grade": "C",
+          "reasons": [
+            "interpretive",
+            "addedAfterDerivation",
+            "plantedNotRun"
+          ],
+          "toCheck": false,
+          "textProof": "twoFamilies",
+          "proof": "oneFamily"
+        }
+      },
+      {
+        "id": "x3",
+        "when": {
+          "all": [
+            {
+              "any": [
+                {
+                  "slot": "requests",
+                  "includes": "wages"
+                },
+                {
+                  "slot": "requests",
+                  "includes": "reinstatement"
+                },
+                {
+                  "slot": "dispute_is_social",
+                  "is": "yes"
+                }
+              ]
+            },
+            {
+              "slot": "court_has_section_for_matter",
+              "is": "no"
+            }
+          ]
+        },
+        "goesTo": "otherSection",
+        "effect": "warn",
+        "message": {
+          "ar": "المادة 32: في المحاكم التي لم تنشأ فيها الأقسام يبقى القسم المدني ناظرا في جميع النزاعات باستثناء القضايا الاجتماعية، ولا يسمي النص قسما آخر لهذه القضايا؛ تحقق من القسم الذي تحدده المحكمة للنزاع الاجتماعي.",
+          "en": "Article 32: in courts where the sections have not been created, the civil section hears every dispute except social cases, and the text names no other section for those cases. Check which section the court assigns to the social dispute."
+        },
+        "basis": [
+          "b4",
+          "b11",
+          "b12"
+        ],
+        "interpretive": true,
+        "interpretiveNote": "The fifth paragraph of article 32 takes social cases out of the civil section in a court without sections and names no section for them; and whether it covers a court that lacks only the section concerned is a reading (open points o7).",
+        "grading": {
+          "grade": "C",
+          "reasons": [
+            "interpretive",
+            "addedAfterDerivation",
+            "attackOpen",
+            "plantedNotRun"
+          ],
+          "toCheck": false,
+          "textProof": "twoFamilies",
+          "proof": "twoFamilies"
+        }
+      },
+      {
+        "id": "x4",
+        "when": {
+          "slot": "national_public_body_party",
+          "is": "yes"
+        },
+        "goesTo": "administrativeCourt",
+        "effect": "warn",
+        "message": {
+          "ar": "المادة 800 في صيغتها المعدلة: تختص المحاكم الإدارية أيضا بالقضايا التي تكون الهيئات العمومية الوطنية أو المنظمات المهنية الوطنية طرفا فيها، باستثناء المنازعات الموكلة إلى جهات قضائية أخرى، وتسري هذه القواعد من تاريخ تنصيب الجهات القضائية الإدارية الجديدة؛ تحقق من صفة الطرف ومن موضوع الدعوى قبل اختيار القسم.",
+          "en": "Article 800 as amended: the administrative courts also hear cases in which a national public institution or a national professional organisation is a party, except disputes given to other courts; these rules apply from the installation of the new administrative courts. Check the party's status and the subject of the claim before choosing a section."
+        },
+        "basis": [
+          "b47",
+          "b24"
+        ],
+        "interpretive": true,
+        "interpretiveNote": "Only the amended wording of article 800 names national public institutions and national professional organisations, and the amending law runs its new administrative-jurisdiction rules from the installation of the new administrative courts, a date the store does not record (open point o9).",
+        "grading": {
+          "grade": "C",
+          "reasons": [
+            "interpretive",
+            "addedAfterDerivation",
+            "plantedNotRun"
+          ],
+          "toCheck": false,
+          "textProof": "twoFamilies",
+          "proof": "twoFamilies"
+        }
+      }
+    ]
+  },
+  "boundaries": [
+    {
+      "id": "n1",
+      "looksLike": {
+        "ar": "قضية مجدولة أمام قسم غير مختص، تبدو كأنها حالة عدم اختصاص نوعي تؤدي إلى رفض الدعوى.",
+        "en": "A case listed before the wrong section, which looks like a lack of subject-matter jurisdiction ending the claim."
+      },
+      "isActually": "outside:internal-referral",
+      "tellingFacts": [
+        {
+          "ar": "المحكمة نفسها مختصة، والخطأ في القسم فقط.",
+          "en": "The court itself has jurisdiction; only the section is wrong."
+        },
+        {
+          "ar": "النص يقرر إحالة الملف عن طريق أمانة الضبط بعد إخبار رئيس المحكمة.",
+          "en": "The text provides for the file to be sent on through the registry after the court president is told."
+        }
+      ],
+      "message": {
+        "ar": "المادة 32 من قانون الإجراءات المدنية والإدارية: الجدولة أمام قسم غير معني تعالج بإحالة الملف إلى القسم المعني عن طريق أمانة الضبط.",
+        "en": "CPCA article 32: a case listed before the wrong section is sent to the right section through the registry."
+      },
+      "basis": [
+        "b5",
+        "b28"
+      ],
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "oneFamily",
+        "proof": "oneFamily"
+      }
+    },
+    {
+      "id": "n2",
+      "looksLike": {
+        "ar": "طلب تدبير مؤقت أو تحفظي يبدو دعوى موضوع أمام القسم.",
+        "en": "A request for a provisional or protective measure that looks like a claim on the merits before a section."
+      },
+      "isActually": "outside:urgent-matters",
+      "tellingFacts": [
+        {
+          "ar": "المطلوب تدبير مؤقت لا يمس أصل الحق.",
+          "en": "What is asked is a provisional measure that does not touch the merits."
+        },
+        {
+          "ar": "يختص به قاضي الاستعجال أو رئيس القسم المعني بصفته قاضيا للاستعجال.",
+          "en": "It belongs to the urgent-matters judge or to the president of the section concerned acting as such."
+        }
+      ],
+      "message": {
+        "ar": "المواد 299 و425 و506 و521 و536 من قانون الإجراءات المدنية والإدارية: التدابير الاستعجالية ترفع بعريضة أمام قاضي الاستعجال أو رئيس القسم المعني.",
+        "en": "CPCA articles 299, 425, 506, 521 and 536: urgent measures are sought by petition from the urgent-matters judge or the president of the section concerned."
+      },
+      "basis": [
+        "b29",
+        "b30",
+        "b31",
+        "b32",
+        "b33",
+        "b45"
+      ],
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "oneFamily",
+        "proof": "oneFamily"
+      }
+    },
+    {
+      "id": "n3",
+      "looksLike": {
+        "ar": "إيجار محل تجاري يعرض على القسم التجاري",
+        "en": "A lease of business premises brought to the commercial section"
+      },
+      "isActually": "outside:section-to-check",
+      "tellingFacts": [
+        {
+          "ar": "الإيجار محله عقار",
+          "en": "The lease is of an immovable"
+        },
+        {
+          "ar": "الإيجار تجاري",
+          "en": "The lease is commercial"
+        }
+      ],
+      "when": {
+        "slot": "commercial_lease",
+        "is": "yes"
+      },
+      "slots": [
+        "commercial_lease"
+      ],
+      "message": {
+        "ar": "المادتان 512 و531: القسم العقاري ينظر في إيجار السكنات والمحلات المهنية والقسم التجاري في المنازعات التجارية، والمادة 40 تحيل دعاوى إيجار العقارات ولو تجارية إلى محكمة موقع العقار؛ النص لا يحسم القسم، فتحقق من القسم الذي تعتمده المحكمة. وإذا وافق المؤجر على التجديد وكان الخلاف على بدل الإيجار أو المدة أو الشروط، فالمادة 195 من القانون التجاري تجعل النزاع أمام رئيس المحكمة حسب إجراءات الاستعجال، والمادة 187 مكرر 1 تبقي تجديد الإيجارات المبرمة قبل تعديل القانون التجاري خاضعا للتشريع الساري يوم إبرامها؛ تحقق من تاريخ العقد ومن موضوع الخلاف.",
+        "en": "Articles 512 and 531: the real-estate section hears leases of dwellings and professional premises and the commercial section hears commercial disputes, and article 40 sends actions on leases of immovables, commercial ones included, to the court where the property is; the texts do not settle the section, so check which section the court uses. Where the landlord agrees to renew and the dispute is on the rent, the duration or the terms, Commercial Code article 195 brings it before the president of the court under the summary procedure, and article 187 bis 1 keeps the renewal of leases concluded before the Commercial Code was amended under the legislation in force when they were made. Check the date of the lease and what the dispute is about."
+      },
+      "basis": [
+        "b19",
+        "b21",
+        "b48",
+        "b56",
+        "b57"
+      ],
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "ledgerNotClean",
+          "triageOpen: commercial-code",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "oneFamily"
+      }
+    },
+    {
+      "id": "n4",
+      "looksLike": {
+        "ar": "دين أجرة يرفع أمام القسم المدني",
+        "en": "A wage debt brought before the civil section"
+      },
+      "isActually": "outside:social-section",
+      "tellingFacts": [
+        {
+          "ar": "الأجرة ناشئة عن عقد عمل",
+          "en": "The wage arises from an employment contract"
+        }
+      ],
+      "message": {
+        "ar": "المادة 500: منازعات تنفيذ عقود العمل من اختصاص القسم الاجتماعي اختصاصا مانعا.",
+        "en": "Article 500: disputes on the performance of employment contracts belong exclusively to the social section."
+      },
+      "basis": [
+        "b11"
+      ],
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "n5",
+      "looksLike": {
+        "ar": "نفقة أو حضانة ترفع أمام القسم المدني",
+        "en": "Maintenance or custody brought before the civil section"
+      },
+      "isActually": "outside:family-section",
+      "tellingFacts": [
+        {
+          "ar": "الدعوى بين أفراد الأسرة في النفقة أو الحضانة أو الزيارة",
+          "en": "The claim is between family members on maintenance, custody or visitation"
+        }
+      ],
+      "message": {
+        "ar": "المادة 423: دعاوى النفقة والحضانة وحق الزيارة من اختصاص قسم شؤون الأسرة.",
+        "en": "Article 423: claims on maintenance, custody and visitation belong to the family section."
+      },
+      "basis": [
+        "b8"
+      ],
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "n6",
+      "looksLike": {
+        "ar": "دعوى إبطال أو فسخ عقد بيع عقار مشهر ترفع أمام القسم المدني",
+        "en": "An action to annul or rescind a published sale of land brought before the civil section"
+      },
+      "isActually": "outside:real-estate-section",
+      "tellingFacts": [
+        {
+          "ar": "الحق المترتب على عقد مشهر",
+          "en": "The right arises from a published deed"
+        }
+      ],
+      "message": {
+        "ar": "المادتان 515 و519: ينظر القسم العقاري في هذه الدعاوى مع مراعاة أحكام الشهر الخاصة بها.",
+        "en": "Articles 515 and 519: the real-estate section hears these actions, subject to the special rules on publication."
+      },
+      "basis": [
+        "b20",
+        "b38"
+      ],
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "n7",
+      "looksLike": {
+        "ar": "دعوى أجر أو إرجاع إلى المنصب يرفعها موظف أمام القسم الاجتماعي",
+        "en": "A wage or reinstatement claim by a civil servant brought to the social section"
+      },
+      "isActually": "outside:administrative",
+      "tellingFacts": [
+        {
+          "ar": "المدعي موظف أو عون خاضع للقانون الأساسي للمؤسسات والإدارات العمومية",
+          "en": "The plaintiff is a civil servant or an agent under the statute of public institutions and administrations"
+        },
+        {
+          "ar": "المستخدم دولة أو ولاية أو بلدية أو مؤسسة عمومية ذات صبغة إدارية",
+          "en": "The employer is the State, a wilaya, a commune or a public administrative body"
+        }
+      ],
+      "when": {
+        "all": [
+          {
+            "any": [
+              {
+                "slot": "requests",
+                "includes": "wages"
+              },
+              {
+                "slot": "requests",
+                "includes": "reinstatement"
+              },
+              {
+                "slot": "dispute_is_social",
+                "is": "yes"
+              }
+            ]
+          },
+          {
+            "slot": "worker_is_public_servant",
+            "is": "yes"
+          }
+        ]
+      },
+      "slots": [
+        "requests",
+        "dispute_is_social",
+        "worker_is_public_servant"
+      ],
+      "message": {
+        "ar": "المادة 3 من قانون علاقات العمل: يخضع الموظفون والأعوان المتعاقدون في الهيئات والإدارات العمومية للدولة والولايات والبلديات ومستخدمو المؤسسات العمومية ذات الطابع الإداري لأحكام تشريعية وتنظيمية خاصة، والمادة 800 تسند إلى المحاكم الإدارية جميع القضايا التي تكون الدولة أو الولاية أو البلدية أو مؤسسة عمومية ذات صبغة إدارية طرفا فيها، بينما تخص المادة 500 القسم الاجتماعي بعقود العمل والتكوين والتمهين؛ تحقق من صفة العامل ومن الهيئة المستخدمة قبل اختيار الجهة.",
+        "en": "Labour-relations article 3: civil servants, contract agents of the public bodies and administrations of the State, wilayas and communes, and staff of public administrative establishments are governed by special legislative and regulatory provisions; article 800 gives the administrative courts every case in which the State, a wilaya, a commune or a public administrative body is a party, while article 500 gives the social section employment, training and apprenticeship contracts. Check the worker's status and the employing body before choosing the court."
+      },
+      "basis": [
+        "b11",
+        "b47",
+        "b52"
+      ],
+      "grading": {
+        "grade": "D",
+        "reasons": [
+          "textNotVerified: labour-relations 3"
+        ],
+        "toCheck": true,
+        "textProof": "unverified",
+        "proof": "oneFamily"
+      }
+    },
+    {
+      "id": "n8",
+      "looksLike": {
+        "ar": "طلب قسمة يعرض على القسم العقاري",
+        "en": "A partition request brought to the real-estate section"
+      },
+      "isActually": "outside:section-to-check",
+      "tellingFacts": [
+        {
+          "ar": "المال المطلوب قسمته تركة",
+          "en": "The property to be divided is an estate"
+        }
+      ],
+      "when": {
+        "all": [
+          {
+            "slot": "requests",
+            "includes": "partition"
+          },
+          {
+            "slot": "partition_of_estate",
+            "is": "yes"
+          }
+        ]
+      },
+      "slots": [
+        "requests",
+        "partition_of_estate"
+      ],
+      "message": {
+        "ar": "المادة 512 تسند القسمة إلى القسم العقاري، والمادتان 498 و499 تردان في الفصل الخاص بقسم شؤون الأسرة تحت عنوان التركة وتجعلان دعاوى التركة لمحكمة موطن المتوفى وتخولان قاضي شؤون الأسرة التدابير التحفظية على أموال التركة؛ النص لا يحسم القسم الذي ينظر في قسمة التركة، فتحقق من القسم الذي تعتمده المحكمة ومن المحكمة المختصة إقليميا.",
+        "en": "Article 512 gives partition to the real-estate section, while articles 498 and 499 sit in the family-section chapter under the heading 'estates', send estate claims to the court of the deceased's domicile and give the family judge protective measures over the estate; the texts do not settle which section hears the partition of an estate, so check which section the court uses and which court has territorial jurisdiction."
+      },
+      "basis": [
+        "b18",
+        "b53",
+        "b54"
+      ],
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "oneFamily",
+        "proof": "oneFamily"
+      }
+    }
+  ],
+  "openPoints": [
+    {
+      "id": "o1",
+      "question": {
+        "ar": "هل يؤدي رفع الدعوى أمام قسم غير مختص إلى عدم القبول أو عدم الاختصاص النوعي، أم يعالج بالإحالة فقط؟",
+        "en": "Does filing before the wrong section lead to inadmissibility or to a lack of subject-matter jurisdiction, or only to a referral?"
+      },
+      "why": {
+        "ar": "المادة 32 تنص على الإحالة الداخلية عن طريق أمانة الضبط ولا تذكر عدم القبول، والمادة 36 تجعل عدم الاختصاص النوعي من النظام العام، ولا نص يقول صراحة إن توزيع القضايا على الأقسام مسألة اختصاص نوعي.",
+        "en": "Article 32 provides an internal referral through the registry and mentions no inadmissibility; article 36 makes lack of subject-matter jurisdiction a public-order matter; no text says expressly whether the split between sections is a question of subject-matter jurisdiction."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "توزيع القضايا على الأقسام تنظيم داخلي، ويعالج الخطأ بالإحالة دون رفض الدعوى.",
+            "en": "The split between sections is internal organisation; an error is cured by referral, not by dismissing the claim."
+          },
+          "basis": [
+            "b5"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "قاعدة اختصاص من النظام العام تثار تلقائيا إذا لم تتم الإحالة.",
+            "en": "A rule of jurisdiction of public order, raised of the court's own motion if no referral is made."
+          },
+          "basis": [
+            "b28"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "اقتراح القسم الملائم والتنبيه عند اختلافه عن اختيار المحامي، دون منع التصدير.",
+        "en": "Propose the fitting section and warn when the lawyer's choice differs; never block the export."
+      },
+      "grade": "C",
+      "refs": [
+        "n1",
+        "b5",
+        "b28"
+      ]
+    },
+    {
+      "id": "o2",
+      "question": {
+        "ar": "أي قسم ينظر في منازعات إيجار المحلات التجارية: القسم التجاري أم القسم العقاري؟",
+        "en": "Which section hears disputes on leases of business premises: the commercial section or the real-estate section?"
+      },
+      "why": {
+        "ar": "المادة 512 تذكر إيجار السكنات والمحلات المهنية دون المحلات التجارية، والمادة 511 تسند للقسم العقاري المنازعات المتعلقة بالأملاك العقارية عموما، والمادة 531 تسند للقسم التجاري المنازعات التجارية دون تعريفها، والمادة 40 تذكر الإيجارات التجارية لتحديد المحكمة إقليميا لا القسم.",
+        "en": "Article 512 lists leases of dwellings and professional premises but not business premises; article 511 gives the real-estate section real-property disputes in general; article 531 gives the commercial section commercial disputes without defining them; article 40 names commercial leases to fix the court by place, not the section."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "القسم التجاري، لأن الإيجار التجاري غير مذكور في المادة 512 التي تذكر المحلات المهنية فقط، بينما تميز المادة 40 الإيجارات التجارية.",
+            "en": "The commercial section, because article 512 names only professional premises, while article 40 treats commercial leases as a distinct kind."
+          },
+          "basis": [
+            "b21",
+            "b19",
+            "b48"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "القسم العقاري، لأن النزاع يتعلق بعقار، وقائمة المادة 512 غير حصرية.",
+            "en": "The real-estate section, because the dispute concerns real property and the list of article 512 is not exhaustive."
+          },
+          "basis": [
+            "b16",
+            "b19"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "اقتراح القسم التجاري، والتنبيه في كل إيجار تجاري إلى القراءتين، والتنبيه دون منع إذا اختار المحامي قسما آخر.",
+        "en": "Propose the commercial section, warn in every commercial lease with both readings, and warn without blocking if the lawyer chooses another section."
+      },
+      "grade": "C",
+      "refs": [
+        "n3",
+        "b19",
+        "b21",
+        "b48"
+      ]
+    },
+    {
+      "id": "o3",
+      "question": {
+        "ar": "أي قسم ينظر في دعوى تجمع طلبات من طبائع مختلفة؟",
+        "en": "Which section hears a claim that joins requests of different natures?"
+      },
+      "why": {
+        "ar": "المادة 32 تربط الجدولة بطبيعة النزاع ولا تبين حكم الطلبات المختلطة، والنص الوحيد على الطلبات الإضافية يخص القسم الاجتماعي.",
+        "en": "Article 32 ties listing to the nature of the dispute and says nothing of mixed requests; the only text on additional requests concerns the social section."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "يحدد الطلب الأصلي القسم، وتتبعه الطلبات التابعة.",
+            "en": "The principal request decides the section; accessory requests follow it."
+          },
+          "basis": [
+            "b3",
+            "b46"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "اقتراح القسم وفق الطلب الأصلي مع التنبيه عند الاختلاف.",
+        "en": "Propose the section of the principal request and warn when the choice differs."
+      },
+      "grade": "C",
+      "refs": [
+        "b3",
+        "b46"
+      ]
+    },
+    {
+      "id": "o4",
+      "question": {
+        "ar": "متى نصبت المحاكم التجارية المتخصصة، وفي أي مقرات ودوائر؟",
+        "en": "When, and with which seats and areas, were the specialised commercial courts installed?"
+      },
+      "why": {
+        "ar": "القانون 22-13 يؤجل سريان قواعد الاختصاص الجديدة إلى تاريخ التنصيب ويبقي للأقسام التجارية الدعاوى المرفوعة قبله. وجد المدقق في الجريدة الرسمية المرسوم التنفيذي 23-53 (العدد 2 لسنة 2023، ص 18-19) الذي حدد اثنتي عشرة محكمة تجارية متخصصة عبر كامل التراب الوطني ودوائر اختصاصها بالمجالس القضائية، والمرسوم التنفيذي 26-133 (العدد 27 لسنة 2026، ص 10-11) الذي رفع عددها إلى خمس وعشرين، ونص على تنصيب الجديدة تدريجيا، ومد اختصاص المحاكم المنصبة قبل صدوره إلى دوائر الجديدة إلى حين تنصيبها، وأبقى الإجراءات القائمة أمام المحاكم المختصة قبله. لم يوجد نص رسمي يحدد تاريخ تنصيب كل محكمة، والمرسومان ليسا بعد في مخزن النصوص.",
+        "en": "Law 22-13 defers the new jurisdiction rules to the installation date and keeps earlier-filed cases with the commercial sections. The verifier found in the Official Journal Executive Decree 23-53 (JO 2023 no. 2, pp. 18-19), which set twelve specialised commercial courts across the whole national territory with their areas by judicial council, and Executive Decree 26-133 (JO 2026 no. 27, pp. 10-11), which raised them to twenty-five, has the new ones installed gradually, extends the courts installed before it to the new courts' areas until those are installed, and keeps pending proceedings where they are. No official text found gives each court's installation date, and neither decree is in the article store yet."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "قبل التنصيب يبقى القسم التجاري مختصا بكل المنازعات التجارية، وبعده تبقى له الدعاوى المرفوعة أمامه قبل التنصيب فقط.",
+            "en": "Before installation the commercial section keeps all commercial disputes; afterwards it keeps only the cases filed before it before installation."
+          },
+          "basis": [
+            "b24",
+            "b25",
+            "b22"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "لعريضة ترفع الآن تخرج منازعات المادة 536 مكرر من القسم التجاري إلى المحكمة التجارية المتخصصة التي تشمل دائرتها المجلس القضائي المعني، لأن المرسومين يغطيان كامل التراب الوطني ويفترضان محاكم منصبة.",
+            "en": "For a petition filed now, the disputes of article 536 bis leave the commercial section for the specialised commercial court whose area covers the judicial council concerned, because the two decrees cover the whole national territory and presuppose installed courts."
+          },
+          "basis": [
+            "b21",
+            "b23",
+            "b44"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "التنبيه في كل نزاع من منازعات المادة 536 مكرر، وطلب التحقق من المحكمة التجارية المتخصصة المختصة بالمجلس القضائي المعني ومن محضر عدم الصلح، دون منع التصدير.",
+        "en": "Warn in every dispute of article 536 bis and ask the lawyer to check which specialised commercial court covers the judicial council concerned, and the record of non-conciliation; never block."
+      },
+      "grade": "D",
+      "refs": [
+        "x2",
+        "t5",
+        "b24",
+        "b25",
+        "b21",
+        "b23",
+        "b44",
+        "b51"
+      ]
+    },
+    {
+      "id": "o5",
+      "question": {
+        "ar": "ما القسم الاحتياطي في محكمة أنشئت فيها الأقسام، وهل يتبع طلب السكن وطلب القسمة القسمين المقترحين؟",
+        "en": "Which section is the residual one in a court that has sections, and do housing and partition requests belong to the sections proposed?"
+      },
+      "why": {
+        "ar": "لا نص يسمي قسما احتياطيا؛ وطلب السكن قد يكون من توابع انحلال الزواج أو نزاعا إيجاريا، والقسمة قد تتعلق بمنقولات أو بتركة.",
+        "en": "No text names a residual section; a housing request may be a consequence of divorce or a lease dispute, and a partition may concern movables or an estate."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "القسم المدني احتياطي، والسكن من توابع انحلال الزواج، والقسمة من صلاحيات القسم العقاري.",
+            "en": "The civil section is residual; housing is a consequence of divorce; partition belongs to the real-estate section."
+          },
+          "basis": [
+            "b4",
+            "b7",
+            "b58",
+            "b18"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "لا يقترح قسم، ويكتفى بتنبيه المحامي إلى التحقق من القسم (قراءة الاشتقاق ب).",
+            "en": "Propose no section and only warn the lawyer to check it (derivation B's reading)."
+          },
+          "basis": [
+            "b3"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "اقتراح القسم مع التنبيه عند اختلاف اختيار المحامي.",
+        "en": "Propose a section and warn when the lawyer's choice differs."
+      },
+      "grade": "C",
+      "refs": [
+        "b4",
+        "b7",
+        "b18"
+      ]
+    },
+    {
+      "id": "o6",
+      "question": {
+        "ar": "ما الأقسام الأخرى للمحكمة (الجنح، المخالفات، الأحداث) وتقسيمها إلى فروع؟",
+        "en": "Which other sections does the court have (misdemeanours, contraventions, minors), and how are sections divided into chambers?"
+      },
+      "why": {
+        "ar": "يرد ذلك في نصوص التنظيم القضائي والإجراءات الجزائية، وهي ليست في مخزن النصوص. وجد المدقق في الجريدة الرسمية (العدد 41 لسنة 2022، ص 8) المادة 21 من القانون العضوي 22-10 المتعلق بالتنظيم القضائي: تشمل المحكمة الأقسام المدني والجنح والمخالفات والاستعجالي وشؤون الأسرة والأحداث والاجتماعي والعقاري والبحري والتجاري، ويمكن رئيس المحكمة، بعد استطلاع رأي وكيل الجمهورية، تقليص عدد الأقسام أو تقسيمها إلى فروع حسب أهمية وحجم النشاط القضائي، ويمكن أن تضم المحكمة أقطابا قضائية متخصصة؛ والمادة 28 تجيز أن يضم المجلس القضائي محاكم متخصصة في المنازعات ذات الطابع التجاري والعقاري والعمالي. النص طلب لإدخاله المخزن.",
+        "en": "These are set by the judicial-organisation and criminal-procedure texts, which are not in the article store. The verifier found in the Official Journal (JO 2022 no. 41, p. 8) article 21 of Organic Law 22-10 on judicial organisation: the court has civil, misdemeanours, contraventions, urgent-matters, family, minors, social, real-estate, maritime and commercial sections; the court president may, after consulting the public prosecutor, reduce the number of sections or divide them into chambers according to the volume of judicial work; the court may also include specialised poles. Article 28 lets a judicial council include specialised courts for commercial, real-estate and labour disputes. The text has been requested for the store."
+      },
+      "protectiveReading": {
+        "ar": "عدم إدراج قاعدة؛ إحالة الدعوى المدنية التابعة لدعوى جزائية إلى وحدة مخارج القضاء العادي.",
+        "en": "State no rule; leave a civil claim joined to a criminal case to the ordinary-court-exits module."
+      },
+      "grade": "D",
+      "refs": []
+    },
+    {
+      "id": "o7",
+      "question": {
+        "ar": "هل تشمل الفقرة الخامسة من المادة 32 المحكمة التي لم ينشأ فيها القسم المعني وحده، وأي جهة تنظر في القضايا الاجتماعية في محكمة لم تنشأ فيها الأقسام؟",
+        "en": "Does the fifth paragraph of article 32 cover a court that lacks only the section concerned, and who hears social cases in a court where the sections have not been created?"
+      },
+      "why": {
+        "ar": "النص يقول «المحاكم التي لم تنشأ فيها الأقسام» دون أن يبين هل المقصود كل الأقسام أو القسم المعني، ويبقي القسم المدني مختصا بكل شيء عدا القضايا الاجتماعية دون أن يسمي الجهة البديلة.",
+        "en": "The text says 'courts where the sections have not been created' without saying whether all sections or the section concerned is meant, and it leaves the civil section with everything except social cases without naming a substitute."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "تطبق الفقرة متى لم ينشأ القسم المعني بالنزاع.",
+            "en": "The paragraph applies whenever the section concerned has not been created."
+          },
+          "basis": [
+            "b4"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "تطبق الفقرة فقط في محكمة لم تنشأ فيها أقسام أصلا.",
+            "en": "The paragraph applies only in a court with no sections at all."
+          },
+          "basis": [
+            "b1",
+            "b4"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "في محكمة قلص رئيسها عدد الأقسام بأمر، القسم المعني هو الذي يسنده إليه الأمر، ولا تحسم المادة 32 ذلك (المادة 21 من القانون العضوي للتنظيم القضائي، نص غير موجود في المخزن، النقطة o6).",
+            "en": "In a court whose president has reduced the number of sections by order, the section concerned is the one the order assigns, which article 32 does not settle (article 21 of the organic law on judicial organisation, a text not in the store; open point o6)."
+          },
+          "basis": [
+            "b3",
+            "b4"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "السؤال عن القسم المعني بالنزاع، واقتراح القسم المدني لغير القضايا الاجتماعية، والتنبيه في القضايا الاجتماعية إلى التحقق من القسم الذي تحدده المحكمة.",
+        "en": "Ask about the section concerned, propose the civil section for non-social cases, and warn in social cases to check which section the court assigns."
+      },
+      "grade": "C",
+      "refs": [
+        "x3",
+        "b4"
+      ]
+    },
+    {
+      "id": "o8",
+      "question": {
+        "ar": "ما أثر رفع الدعوى أمام قسم غير مختص على آجال السقوط والتقادم؟",
+        "en": "What is the effect of filing before the wrong section on forfeiture and limitation periods?"
+      },
+      "why": {
+        "ar": "نص انقطاع التقادم يتناول المحكمة غير المختصة ولا يتناول القسم، ولا نص في المخزن عن أثر ذلك في آجال السقوط.",
+        "en": "The interruption text speaks of a court without jurisdiction, not of a section; no text in the store addresses forfeiture periods in this case."
+      },
+      "protectiveReading": {
+        "ar": "عدم الاعتماد على الدعوى الخاطئة لاحترام الأجل، وتحذير المحامي.",
+        "en": "Do not rely on a wrongly listed case to keep a period; warn the lawyer."
+      },
+      "grade": "C",
+      "refs": [
+        "b49",
+        "b5"
+      ]
+    },
+    {
+      "id": "o9",
+      "question": {
+        "ar": "هل يغطي السؤال عن الجهة العمومية كل الأطراف التي تدخل بها القضية في اختصاص المحاكم الإدارية؟",
+        "en": "Does the slot on a public body cover every party that brings a case into the administrative courts?"
+      },
+      "why": {
+        "ar": "الصيغة المعدلة للمادة 800 تذكر أيضا الهيئات العمومية الوطنية والمنظمات المهنية الوطنية، والسؤال الحالي لا يذكرها، وتسري الصيغة المعدلة من تنصيب الجهات القضائية الإدارية الجديدة.",
+        "en": "The amended wording of article 800 also names national public institutions and national professional organisations, which the slot's question does not; the amended wording applies from the installation of the new administrative courts."
+      },
+      "protectiveReading": {
+        "ar": "سؤال مستقل عن الهيئات العمومية الوطنية والمنظمات المهنية الوطنية، ومخرج يحذر عند الإجابة بنعم ويذكر أن الصيغة المعدلة تسري من التنصيب.",
+        "en": "A separate question on national public institutions and national professional organisations, and an exit that warns when the answer is yes and says the amended wording runs from installation."
+      },
+      "grade": "C",
+      "refs": [
+        "x1",
+        "x4",
+        "b47",
+        "b24"
+      ]
+    },
+    {
+      "id": "o10",
+      "question": {
+        "ar": "هل ينظر القسم الاجتماعي في نزاع موظف أو عون خاضع للقانون الأساسي للمؤسسات والإدارات العمومية؟",
+        "en": "Does the social section hear the dispute of a civil servant or an agent under the statute of public institutions and administrations?"
+      },
+      "why": {
+        "ar": "المادة 500 تتناول عقود العمل والتكوين والتمهين، والمادة 800 تسند للمحاكم الإدارية جميع القضايا التي تكون الدولة أو الولاية أو البلدية أو مؤسسة عمومية ذات صبغة إدارية طرفا فيها، والمادة 3 من قانون علاقات العمل تخرج الموظفين والأعوان المتعاقدين في الهيئات والإدارات العمومية ومستخدمي المؤسسات العمومية الإدارية من ذلك القانون إلى أحكام خاصة؛ فالنصوص ترجح القراءة الأولى، والقانون الأساسي للوظيفة العمومية ليس في المخزن، ولا يتناول النص مستخدمي المؤسسات العمومية ذات الطابع الصناعي والتجاري.",
+        "en": "Article 500 covers employment, training and apprenticeship contracts; article 800 gives the administrative courts every case in which the State, a wilaya, a commune or a public administrative body is a party; labour-relations article 3 takes civil servants, contract agents of public bodies and administrations and staff of public administrative establishments out of that law and puts them under special provisions. The texts favour the first reading; the civil-service statute is not in the store, and article 3 does not name the staff of public industrial and commercial establishments."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "النزاع خارج القسم الاجتماعي ومن اختصاص المحكمة الإدارية متى كان المستخدم من أشخاص المادة 800.",
+            "en": "The dispute leaves the social section and goes to the administrative court when the employer is one of the bodies of article 800."
+          },
+          "basis": [
+            "b47",
+            "b52",
+            "b11"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "يبقى النزاع للقسم الاجتماعي متى تعلق بعلاقة عمل.",
+            "en": "The dispute stays with the social section when it concerns an employment relationship."
+          },
+          "basis": [
+            "b11",
+            "b14"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "عدم اقتراح القسم الاجتماعي لنزاع الموظف أو العون المتعاقد العمومي، والتنبيه دون منع، وطلب التحقق من الجهة المختصة.",
+        "en": "Do not propose the social section for the dispute of a civil servant or public contract agent; warn without blocking and ask the lawyer to check the competent court."
+      },
+      "grade": "C",
+      "refs": [
+        "n7",
+        "x1",
+        "b52"
+      ]
+    },
+    {
+      "id": "o11",
+      "question": {
+        "ar": "أي جهة تنظر في دعوى أجر ضد صاحب عمل في حالة إفلاس أو تسوية قضائية: القسم الاجتماعي أم المحكمة التجارية المتخصصة؟",
+        "en": "Who hears a wage claim against an employer in bankruptcy or judicial settlement: the social section or the specialised commercial court?"
+      },
+      "why": {
+        "ar": "المادة 500 تجعل منازعات تنفيذ عقود العمل للقسم الاجتماعي اختصاصا مانعا، والمادة 536 مكرر تسند التسوية القضائية والإفلاس للمحكمة التجارية المتخصصة، ولا نص يبين أيهما يحكم دعوى الأجر.",
+        "en": "Article 500 gives the social section exclusive jurisdiction over the performance of employment contracts, article 536 bis gives judicial settlement and bankruptcy to the specialised commercial court, and no text says which governs the wage claim."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "القسم الاجتماعي، لأن اختصاصه مانع.",
+            "en": "The social section, because its jurisdiction is exclusive."
+          },
+          "basis": [
+            "b11"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "المحكمة التجارية المتخصصة، بعد تنصيبها، لأن النزاع من منازعات الإفلاس.",
+            "en": "The specialised commercial court, once installed, because the dispute is a bankruptcy dispute."
+          },
+          "basis": [
+            "b23",
+            "b24"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "اقتراح القسم الاجتماعي، والسؤال عن موضوع المحكمة التجارية المتخصصة والتنبيه إذا أجاب المحامي بنعم.",
+        "en": "Propose the social section, ask about the specialised commercial court's subjects, and warn if the lawyer answers yes."
+      },
+      "grade": "C",
+      "refs": [
+        "x2",
+        "b11",
+        "b23"
+      ]
+    },
+    {
+      "id": "o12",
+      "question": {
+        "ar": "أي قسم ينظر في قسمة التركة: القسم العقاري أم قسم شؤون الأسرة؟",
+        "en": "Which section hears the partition of an estate: the real-estate section or the family section?"
+      },
+      "why": {
+        "ar": "المادة 512 تذكر القسمة بين ما ينظر فيه القسم العقاري، والمادتان 498 و499 تردان في الفصل الخاص بقسم شؤون الأسرة تحت عنوان التركة دون أن تسميا القسم الذي ينظر في دعاوى التركة.",
+        "en": "Article 512 lists partition among the real-estate section's matters; articles 498 and 499 sit in the family-section chapter under the heading 'estates' without naming the section that hears estate claims."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "القسم العقاري، لأن المادة 512 تذكر القسمة صراحة.",
+            "en": "The real-estate section, because article 512 names partition expressly."
+          },
+          "basis": [
+            "b18"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "قسم شؤون الأسرة، لأن دعاوى التركة واردة في فصله.",
+            "en": "The family section, because estate claims are placed in its chapter."
+          },
+          "basis": [
+            "b53",
+            "b54"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "اقتراح القسم العقاري، والسؤال عما إذا كانت القسمة قسمة تركة، والتنبيه بالقراءتين إذا كانت كذلك.",
+        "en": "Propose the real-estate section, ask whether the partition is of an estate, and warn with both readings if it is."
+      },
+      "grade": "C",
+      "refs": [
+        "n8",
+        "t6",
+        "b18",
+        "b53",
+        "b54"
+      ]
+    }
+  ],
+  "checklist": [
+    {
+      "id": "k1",
+      "item": "Which text organises the first-instance court (المحكمة) into sections, and which sections it lists (civil, misdemeanours, contraventions, urgent matters, family, minors, social, real property, maritime, commercial).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b1",
+        "b6",
+        "b2",
+        "b3",
+        "o6"
+      ],
+      "note": "Article 32 says the court is made of sections and lists the matters (civil, commercial, maritime, social, real-property, family); the list of sections as such (criminal and minors included) is in the judicial-organisation text, not in the store (o6). Verifier: Organic Law 22-10 art. 21 (JO 2022 no. 41, p. 8) lists the ten sections; requested for the store, open point o6 (grade D)."
+    },
+    {
+      "id": "k2",
+      "item": "Whether the court is the court of general jurisdiction (صاحبة الولاية العامة) for all disputes not given elsewhere by law.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b1",
+        "b2",
+        "b47",
+        "x1"
+      ],
+      "note": "Article 32 ¶1 and ¶3; article 800 makes the administrative courts the general courts of administrative disputes (exit x1)."
+    },
+    {
+      "id": "k3",
+      "item": "Whether a section may be further divided into chambers (فروع) according to workload.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "o6",
+        "o7"
+      ],
+      "note": "Searched CPCA article 32 and the Book II chapters on the sections (423 to 536 bis 7); only the specialised commercial court's sections are set by order of its president (536 bis 3). Verifier: Organic Law 22-10 art. 21 (JO 2022 no. 41, p. 8) lets the court president, after consulting the public prosecutor, reduce the number of sections or divide them into chambers; the text is not in the store yet (requested; open point o6, grade D; reading added to o7)."
+    },
+    {
+      "id": "k4",
+      "item": "What happens in a court where the sections have not been created: the civil section hears all disputes, and whether social (labour) matters are excepted from that rule.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b4",
+        "x3",
+        "o7"
+      ],
+      "note": "Social cases are excepted; the section rule tests social requests before the no-section alternative, and x3 warns that the text names no section for them."
+    },
+    {
+      "id": "k5",
+      "item": "What happens when a case is listed before the wrong section: referral to the competent section through the registry after informing the court president, and whether this is a ground to declare the claim inadmissible or the court incompetent (it should not be).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b5",
+        "n1",
+        "o1"
+      ]
+    },
+    {
+      "id": "k6",
+      "item": "Whether the allocation between sections is a matter of jurisdiction (اختصاص) at all, or only an internal organisation of the court.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b5",
+        "b28",
+        "o1"
+      ],
+      "note": "Not settled by the texts: open point o1."
+    },
+    {
+      "id": "k7",
+      "item": "Which matters the family affairs section hears (engagement, marriage, divorce, maintenance, custody, visitation, guardianship, matrimonial home, etc.).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b7",
+        "b8",
+        "b9",
+        "b10",
+        "n5"
+      ]
+    },
+    {
+      "id": "k8",
+      "item": "Whether the family section sits with a specific judge or composition, and in camera, and whether the public prosecutor is a principal party in family matters.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b34",
+        "b35",
+        "b30"
+      ],
+      "note": "The prosecutor is a principal party; hearings are public unless family privacy requires otherwise; reconciliation in divorce is held in a closed sitting (439, read, belongs to the divorce claims); no CPCA text in the store sets a special composition of the family section."
+    },
+    {
+      "id": "k9",
+      "item": "Which matters the social section hears: individual labour disputes, collective disputes, social security disputes, disputes on the enforcement of collective agreements.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b11",
+        "b12",
+        "b14",
+        "n4",
+        "n7"
+      ]
+    },
+    {
+      "id": "k10",
+      "item": "Composition of the social section: a judge with employee and employer assessors, and what happens if assessors are absent.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b13",
+        "b15"
+      ]
+    },
+    {
+      "id": "k11",
+      "item": "Whether labour claims require a prior conciliation attempt before the social section (import labour-prelitigation, do not restate).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "doesNotApply",
+      "note": "Belongs to the labour-prelitigation module; not restated here."
+    },
+    {
+      "id": "k12",
+      "item": "Which matters the real-property section hears: disputes on property, possession, registered and unregistered land, co-ownership, leases of residential and professional premises, partition, servitudes.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b16",
+        "b17",
+        "b18",
+        "b19",
+        "b36",
+        "b37",
+        "b20",
+        "n6"
+      ],
+      "note": "Articles 514, 516 and 517 add agricultural groups, provisional registration and exchanges with state property; read, not cited, as they fall outside the app's catalogue."
+    },
+    {
+      "id": "k13",
+      "item": "Whether leases of commercial premises go to the real-property section or the commercial section.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b19",
+        "b21",
+        "b48",
+        "n3",
+        "o2"
+      ],
+      "note": "Interpretive: open point o2; boundary n3 warns in every commercial lease."
+    },
+    {
+      "id": "k14",
+      "item": "Which matters the commercial section hears: disputes between merchants, commercial companies, commercial leases, bankruptcy, intellectual property, etc.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b21",
+        "b22",
+        "b23",
+        "x2"
+      ],
+      "note": "The definition of commercial acts (Commercial Code, first articles) is not in the store; dispute_is_commercial is asked of the lawyer."
+    },
+    {
+      "id": "k15",
+      "item": "Which matters the maritime section hears, and in which courts it is created.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b2",
+        "b22",
+        "b23"
+      ],
+      "note": "The current article 32 still lists maritime cases; the former article 531 gave them to the commercial section where relevant; article 536 bis now gives maritime disputes to the specialised commercial court. No maritime-section text is in the store."
+    },
+    {
+      "id": "k16",
+      "item": "Specialised sections (الأقطاب المتخصصة) at courts sitting at the seat of courts of appeal: international trade, bankruptcy and judicial settlement, banking disputes, intellectual property, maritime and air transport, insurance; their territorial reach.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b6",
+        "b26",
+        "b23"
+      ],
+      "note": "The paragraphs listing the poles' matters were repealed by Law 22-13 (the older wording of 32 ¶7 shows they were the poles' list); the same matters now go to the specialised commercial court; article 32 ¶2 (poles) stays in force, and Organic Law 22-10 art. 21 (JO 2022 no. 41, p. 8; not in the store, o6) still lets the court include specialised poles."
+    },
+    {
+      "id": "k17",
+      "item": "The 2022 amendment (Law 22-13) creating specialised commercial courts (المحاكم التجارية المتخصصة): which disputes they hear (art. 536 bis), and that this is an exit from the ordinary court (import ordinary-court-exits).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b23",
+        "b24",
+        "b25",
+        "x2",
+        "o4"
+      ]
+    },
+    {
+      "id": "k18",
+      "item": "Whether the specialised commercial court requires prior conciliation (import conciliation-mediation).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b51",
+        "x2"
+      ],
+      "note": "Article 536 bis 4 ¶1 and ¶3 set a conciliation before the case is registered at the specialised commercial court and require the record of non-conciliation with the petition on pain of formal inadmissibility (b51); article 534 ¶1 sets mediation before the commercial section. Verifier: the text does require the step, so the line applies: exit x2 now cites b51 and its message names the record. The step's own test (record yes or no, its delivery date against the petition date) is left to the conciliation-mediation module, as both derivations did; this record does not say the step was done."
+    },
+    {
+      "id": "k19",
+      "item": "The urgent-matters (استعجالي) section: interim measures, the president of the court as urgent-matters judge, and urgent matters within each section.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b29",
+        "b30",
+        "b31",
+        "b32",
+        "b33",
+        "b45",
+        "n2"
+      ]
+    },
+    {
+      "id": "k20",
+      "item": "Minors section: juvenile matters, not civil claims.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "o6"
+      ],
+      "note": "Searched the CPCA text view for الأحداث; the minors section is set by criminal-procedure and child-protection texts, not in the store."
+    },
+    {
+      "id": "k21",
+      "item": "Misdemeanours and contraventions sections: criminal matters; a civil claim joined to a criminal case goes there (import ordinary-court-exits for the criminal judge).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "o6"
+      ],
+      "note": "The Code of Criminal Procedure is not in the store; the criminal judge is an exit of ordinary-court-exits."
+    },
+    {
+      "id": "k22",
+      "item": "Whether the section heading must appear on the petition (court and section named in the petition), and what the absence or error costs (import petition-formal-elements).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b27",
+        "b5"
+      ],
+      "note": "Article 15 ¶2 requires the court, not the section; an error of section is handled by referral. The formal elements belong to petition-formal-elements."
+    },
+    {
+      "id": "k23",
+      "item": "Whether incompetence by section can be raised by the parties or by the judge of their own motion, and at what stage.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b5",
+        "b28",
+        "o1"
+      ],
+      "note": "Article 32 provides a referral through the registry; whether article 36 applies is open (o1)."
+    },
+    {
+      "id": "k24",
+      "item": "Whether a section's judgment rendered on a matter belonging to another section is void or valid.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b13",
+        "o1"
+      ],
+      "note": "No text in the store says so in general; only the social section's composition is set on pain of nullity."
+    },
+    {
+      "id": "k25",
+      "item": "Mixed claims (e.g. a contract claim involving real property, or a labour claim with a commercial element): which section hears the principal claim and accessory claims.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b3",
+        "b46",
+        "o3",
+        "o11"
+      ],
+      "note": "Not settled by the texts: open points o3 and o11."
+    },
+    {
+      "id": "k26",
+      "item": "Matters that look like court-section questions but are territorial (import territorial-jurisdiction) or administrative-court jurisdiction (import ordinary-court-exits).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t1",
+        "t2",
+        "t3",
+        "t4",
+        "t5",
+        "x1",
+        "n7"
+      ],
+      "note": "The territorial rules written in the sections' own chapters are recorded as territory rules; the general territorial rules (37 to 47) belong to territorial-jurisdiction. The administrative-court exit is kept here as derivation B wrote it."
+    },
+    {
+      "id": "k27",
+      "item": "Whether the court of appeal mirrors the sections as chambers (الغرف) and whether that affects the petition at first instance (it should not).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "doesNotApply",
+      "note": "Appellate organisation does not bear on the first-instance petition."
+    },
+    {
+      "id": "k28",
+      "item": "Amendments to remember: Law 08-09 (2008) original text; Law 22-13 (2022) amending the CPCA, specialised commercial courts and changes to commercial section; possible changes to article 32.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b22",
+        "b24",
+        "b25",
+        "b26"
+      ]
+    },
+    {
+      "id": "k29",
+      "item": "Does the court where I file have sections at all, or is it a court without sections?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b1",
+        "b4",
+        "x3",
+        "o7"
+      ]
+    },
+    {
+      "id": "k30",
+      "item": "Which section hears this matter: civil, family affairs, social, real estate, commercial, maritime, intellectual property, or another?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b2",
+        "b3",
+        "b7",
+        "b8",
+        "b9",
+        "b10",
+        "b11",
+        "b12",
+        "b16",
+        "b17",
+        "b18",
+        "b19",
+        "b36",
+        "b20",
+        "b21",
+        "b23"
+      ]
+    },
+    {
+      "id": "k31",
+      "item": "Is the matter one of those reserved to the family affairs section (marriage, divorce, maintenance, custody, visitation, housing)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b7",
+        "b8",
+        "n5",
+        "o5"
+      ],
+      "note": "Housing is not listed in article 423; the section rule reads it as a consequence of dissolution (o5)."
+    },
+    {
+      "id": "k32",
+      "item": "Is the matter an employment dispute that belongs to the social section?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b11",
+        "b14",
+        "n4",
+        "n7"
+      ]
+    },
+    {
+      "id": "k33",
+      "item": "Is the matter a dispute about real property that belongs to the real estate section?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b16",
+        "b17",
+        "b18",
+        "b19",
+        "b36",
+        "b37",
+        "b20",
+        "n6"
+      ]
+    },
+    {
+      "id": "k34",
+      "item": "Is the matter commercial, and does it go to the commercial section of the ordinary court or to a specialised commercial court?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b21",
+        "b23",
+        "x2",
+        "o4"
+      ]
+    },
+    {
+      "id": "k35",
+      "item": "Which matters does the specialised commercial court take, and from what value or subject?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b23",
+        "x2"
+      ],
+      "note": "By subject; the texts give no value threshold."
+    },
+    {
+      "id": "k36",
+      "item": "What happens if the court has no section for the matter: does the general section hear it?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b4",
+        "x3",
+        "o7"
+      ]
+    },
+    {
+      "id": "k37",
+      "item": "What happens if the case is listed before the wrong section: is it dismissed, or sent to the right section?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b5",
+        "n1"
+      ]
+    },
+    {
+      "id": "k38",
+      "item": "Is the distribution among sections a rule of jurisdiction or only an internal organisation of the court?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b28",
+        "o1"
+      ]
+    },
+    {
+      "id": "k39",
+      "item": "Who decides the redirection to another section: the president of the court, or the judge?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b5"
+      ],
+      "note": "The registry transfers the file after informing the court president beforehand."
+    },
+    {
+      "id": "k40",
+      "item": "Can the parties object to the section, and until what stage of the case?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "note": "Searched articles 32 to 47 and the section chapters 423 to 536 bis 7: no text on an objection to the section; the public-order rule on subject matter is cited as a reading only (o1)."
+    },
+    {
+      "id": "k41",
+      "item": "Is the section question raised by the court of its own motion?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b28",
+        "o1"
+      ]
+    },
+    {
+      "id": "k42",
+      "item": "Does a wrong-section listing stop the time limits or the effects of the filing?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b49",
+        "o8"
+      ],
+      "note": "Only the civil-code rule on interruption by a claim before a court without jurisdiction was found; nothing on forfeiture periods."
+    },
+    {
+      "id": "k43",
+      "item": "Is the section also the one that holds the conciliation steps for this matter?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "Conciliation is the subject of the modules conciliation-mediation and labour-prelitigation, which a claim imports."
+    },
+    {
+      "id": "k44",
+      "item": "Which court by place hears a matter of this section (family: residence of the custodian or the marital home)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t1",
+        "t2",
+        "t3",
+        "t4",
+        "t5",
+        "b40",
+        "b41",
+        "b39",
+        "b42",
+        "b48",
+        "b43",
+        "b44"
+      ]
+    },
+    {
+      "id": "k45",
+      "item": "Does the same section rule apply when the claim joins several requests of different kinds?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b46",
+        "o3"
+      ],
+      "note": "Only the social section has a text on additional requests; none was found for the other sections."
+    },
+    {
+      "id": "k46",
+      "item": "Does a counterclaim or an incidental request go to the same section?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "note": "Searched articles 25, 32 to 47 and 423 to 536 bis 7: article 25 defines additional and counter requests but no text names the section for a counterclaim."
+    },
+    {
+      "id": "k47",
+      "item": "Does an urgent request (summary) follow the section rules?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b29",
+        "b30",
+        "b31",
+        "b32",
+        "b33",
+        "b45",
+        "n2"
+      ]
+    },
+    {
+      "id": "k48",
+      "item": "Is one of the parties a public body, so that the administrative court and not a section is the forum?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "x1",
+        "b47",
+        "b50",
+        "o9"
+      ]
+    },
+    {
+      "id": "k49",
+      "item": "What must the petition say about the section when it is filed?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b27"
+      ],
+      "note": "Article 15 ¶2 requires the court before which the claim is brought, not the section; the rest belongs to petition-formal-elements."
+    },
+    {
+      "id": "k50",
+      "item": "Does the registry or the court president assign the case to a section, and can the lawyer ask for this?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b3",
+        "b5"
+      ],
+      "note": "Cases are listed by the nature of the dispute; no text lets the lawyer choose the section."
+    },
+    {
+      "id": "k51",
+      "item": "The store notes on cpca 32, 531 (both wordings), 532, 536, 536 bis, 536 bis 1 and 536 bis 6 say Law 22-13 sets no calendar commencement and defers the new jurisdiction rules to the installation of the new courts: from which date does the Law 22-13 wording apply, and what does that change for the sections?",
+      "from": [
+        "derivationA",
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b24",
+        "b25",
+        "b22",
+        "x2",
+        "o4"
+      ],
+      "note": "Law 22-13 art. 13 ¶1 makes the new rules on the specialised commercial courts run from their installation and ¶2 keeps earlier-filed cases with the commercial sections; the installation text is not in the store (o4, grade D). For this unit: the commercial section's former reach (b22) governs only the cases filed before installation (b25). Verifier: Executive Decrees 23-53 (JO 2023 no. 2) and 26-133 (JO 2026 no. 27) give every judicial council a specialised commercial court and refer to courts already installed, so for a petition filed now x2 warns for every subject of article 536 bis; both decrees are requested for the store (o4 stays grade D). Article 32 ¶1-6 are the same in both wordings; only ¶7-10 (poles) were repealed."
+    },
+    {
+      "id": "k52",
+      "item": "The store note on cpca 800 (Law 22-13 wording): from which date does the amended wording apply, and what does that change for the administrative-court exit?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "x1",
+        "b47",
+        "b24",
+        "o9"
+      ],
+      "note": "The amended wording adds national public institutions and national professional organisations and the reservation of disputes given to other courts; Law 22-13 art. 13 ¶1 defers the new rules on administrative courts to their installation. The four bodies the slot names (State, wilaya, commune, public administrative body) are in both wordings, so x1 holds either way; the added bodies are named in the message (o9)."
+    },
+    {
+      "id": "k53",
+      "item": "The store note on family-code 3 bis (current snapshot, commencement of Ordinance 05-02 after publication and receipt): from which date does the wording apply, and what does that change for the family section?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b34"
+      ],
+      "note": "The note certifies the current text only and gives no single nationwide commencement date for Ordinance 05-02; for a petition drafted now the prosecutor's role as a principal party applies; nothing here depends on an earlier date."
+    },
+    {
+      "id": "k54",
+      "item": "Which text fixes the seats of the specialised poles and courts and the organic law on court organisation?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "o4",
+        "o6"
+      ],
+      "note": "Not in the store; requested by the reconciler. Verifier: found in the Official Journal and requested for the store: Organic Law 22-10 (JO 2022 no. 41), Executive Decree 23-53 (JO 2023 no. 2) and Executive Decree 26-133 (JO 2026 no. 27), which fix the specialised commercial courts' areas by judicial council (o4, o6, grade D)."
+    },
+    {
+      "id": "k55",
+      "item": "Neighbour flag: labour-disputes 21 ¶1 (after the cited article 20): cases the social courts decide at first and last instance.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "doesNotApply",
+      "note": "Article 21 sets which social judgments are final, not which section hears the case; it does not touch the section rule."
+    },
+    {
+      "id": "k56",
+      "item": "Neighbour flag: cpca 6 ¶1 (before the cited article 7): two levels of jurisdiction unless the law says otherwise.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "doesNotApply",
+      "note": "The two levels of jurisdiction do not bear on the choice of a first-instance section."
+    },
+    {
+      "id": "k57",
+      "item": "Neighbour flag: civil-code 316 ¶1 (before the cited article 317): limitation does not run while a lawful impediment prevents the claim.",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "Suspension of limitation belongs to the periods module; it says nothing of a claim filed before the wrong section."
+    },
+    {
+      "id": "k58",
+      "item": "Neighbour flag: cpca 40 ¶10: a contract ended or suspended by a work accident or occupational illness goes to the court of the plaintiff's domicile.",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "It restates for territory the exception of article 501 ¶2, which this record cites (b41, territory rule t2); the general territorial list of article 40 belongs to territorial-jurisdiction."
+    },
+    {
+      "id": "k59",
+      "item": "Neighbour flag: commercial-code 188 ¶1 (after the cited article 187 bis 1): sub-letting, in whole or in part, is forbidden unless the lease or the landlord allows it.",
+      "from": [
+        "adversary"
+      ],
+      "answer": "doesNotApply",
+      "note": "Article 188 opens a separate chapter of the Commercial Code (chapter four, sub-letting); its exception ('unless the lease stipulates otherwise or the landlord agrees') lifts the ban on sub-letting, not the rule of article 187 bis 1 on the renewal of leases made before Law 05-02, which b57 cites. It is a rule of substance between landlord and tenant and names no court, section or procedure, so it changes neither the section rule nor boundary n3. Its ¶3 lets the owner seek a matching increase of the main rent, fixed under article 195 failing agreement; that is a rent-fixing matter between the parties to a commercial lease, where n3 already warns and names article 195, and it does not move the section either."
+    }
+  ],
+  "examples": [
+    {
+      "id": "ex1",
+      "by": "derivationA",
+      "title": "Clean civil claim for payment and damages in a court with sections.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "requests": [
+          "payment",
+          "damages"
+        ],
+        "court_has_section_for_matter": "yes",
+        "commercial_lease": "no",
+        "dispute_concerns_real_property": "no",
+        "dispute_is_commercial": "no"
+      },
+      "expect": {
+        "section": "civil",
+        "findings": []
+      }
+    },
+    {
+      "id": "ex2",
+      "by": "derivationA",
+      "title": "Wages and reinstatement in a court without sections: social cases stay with the social section.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "requests": [
+          "wages",
+          "reinstatement"
+        ],
+        "court_has_section_for_matter": "no"
+      },
+      "expect": {
+        "section": "social",
+        "findings": [
+          {
+            "ref": "x3",
+            "effect": "warn",
+            "shownEffect": "warn",
+            "toCheck": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex3",
+      "by": "derivationA",
+      "title": "Divorce in a court without sections: the civil section hears it.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "requests": [
+          "divorce",
+          "maintenance"
+        ],
+        "court_has_section_for_matter": "no",
+        "dispute_is_social": "no"
+      },
+      "expect": {
+        "section": "civil",
+        "findings": [
+          {
+            "ref": "x3",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex4",
+      "by": "derivationA",
+      "title": "Custody and maintenance in a court with sections.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "requests": [
+          "custody",
+          "maintenance"
+        ],
+        "court_has_section_for_matter": "yes"
+      },
+      "expect": {
+        "section": "family",
+        "findings": []
+      }
+    },
+    {
+      "id": "ex5",
+      "by": "derivationA",
+      "title": "Eviction from business premises under a commercial lease.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "requests": [
+          "eviction"
+        ],
+        "court_has_section_for_matter": "yes",
+        "commercial_lease": "yes",
+        "dispute_concerns_real_property": "yes"
+      },
+      "expect": {
+        "section": "commercial",
+        "findings": [
+          {
+            "ref": "n3",
+            "effect": "warn",
+            "shownEffect": "warn",
+            "toCheck": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex6",
+      "by": "derivationA",
+      "title": "Eviction of a tenant of a dwelling and unpaid rent.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "requests": [
+          "eviction",
+          "payment"
+        ],
+        "court_has_section_for_matter": "yes",
+        "commercial_lease": "no",
+        "dispute_concerns_real_property": "yes"
+      },
+      "expect": {
+        "section": "realEstate",
+        "findings": [
+          {
+            "ref": "n3",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex7",
+      "by": "derivationA",
+      "title": "Payment of a price between merchants.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "court_has_section_for_matter": "yes",
+        "commercial_lease": "no",
+        "dispute_concerns_real_property": "no",
+        "dispute_is_commercial": "yes"
+      },
+      "expect": {
+        "section": "commercial",
+        "findings": []
+      }
+    },
+    {
+      "id": "ex8",
+      "by": "derivationA",
+      "title": "Partition request, nature of the property not stated.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "requests": [
+          "partition"
+        ],
+        "court_has_section_for_matter": "yes"
+      },
+      "expect": {
+        "section": "realEstate",
+        "findings": []
+      }
+    },
+    {
+      "id": "ex9",
+      "by": "derivationA",
+      "title": "Payment claim, nothing else known: the residual civil section is proposed, and the record asks whether the dispute is social (verifier: article 500 reaches more than wages and reinstatement).",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "section": "civil",
+        "findings": [
+          {
+            "ref": "x3",
+            "effect": "ask",
+            "shownEffect": "ask",
+            "toCheck": false
+          },
+          {
+            "ref": "n7",
+            "effect": "ask",
+            "shownEffect": "ask",
+            "toCheck": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex10",
+      "by": "derivationB",
+      "title": "Ordinary supply debt between two traders, court with all its sections: the commercial section, nothing to flag.",
+      "petitionDate": "2026-11-15",
+      "slots": {
+        "public_body_party": "no",
+        "specialised_commercial_subject": "no",
+        "court_has_section_for_matter": "yes",
+        "commercial_lease": "no",
+        "work_accident_or_occupational_illness": "no",
+        "dispute_concerns_real_property": "no",
+        "dispute_is_commercial": "yes",
+        "dispute_is_social": "no",
+        "dispute_is_family": "no",
+        "national_public_body_party": "no"
+      },
+      "expect": {
+        "section": "commercial",
+        "findings": [
+          {
+            "ref": "x1",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": true
+          },
+          {
+            "ref": "x2",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          },
+          {
+            "ref": "x3",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          },
+          {
+            "ref": "n3",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          },
+          {
+            "ref": "n7",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": true
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex11",
+      "by": "derivationB",
+      "title": "A bank sues a trader on a loan: the specialised commercial court.",
+      "petitionDate": "2026-11-15",
+      "slots": {
+        "public_body_party": "no",
+        "specialised_commercial_subject": "yes",
+        "court_has_section_for_matter": "yes",
+        "commercial_lease": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x2",
+            "effect": "warn",
+            "shownEffect": "warn",
+            "toCheck": false
+          },
+          {
+            "ref": "x1",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex12",
+      "by": "derivationB",
+      "title": "Wage claim in a court without a social section.",
+      "petitionDate": "2026-11-15",
+      "slots": {
+        "requests": [
+          "wages"
+        ],
+        "public_body_party": "no",
+        "specialised_commercial_subject": "no",
+        "court_has_section_for_matter": "no",
+        "commercial_lease": "no",
+        "worker_is_public_servant": "no"
+      },
+      "expect": {
+        "section": "social",
+        "findings": [
+          {
+            "ref": "x3",
+            "effect": "warn",
+            "shownEffect": "warn",
+            "toCheck": false
+          },
+          {
+            "ref": "n7",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex13",
+      "by": "derivationB",
+      "title": "A maintenance claim: the family section is proposed (a listing before the civil section would be referred under article 32).",
+      "petitionDate": "2026-11-15",
+      "slots": {
+        "requests": [
+          "maintenance"
+        ],
+        "public_body_party": "no",
+        "specialised_commercial_subject": "no",
+        "court_has_section_for_matter": "yes",
+        "commercial_lease": "no"
+      },
+      "expect": {
+        "section": "family",
+        "findings": [
+          {
+            "ref": "x3",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          },
+          {
+            "ref": "x1",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex14",
+      "by": "derivationB",
+      "title": "Near miss: a contract dispute with a commune looks commercial but is administrative.",
+      "petitionDate": "2026-11-15",
+      "slots": {
+        "public_body_party": "yes",
+        "specialised_commercial_subject": "no",
+        "court_has_section_for_matter": "yes",
+        "commercial_lease": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x1",
+            "effect": "warn",
+            "shownEffect": "warn",
+            "toCheck": true
+          },
+          {
+            "ref": "x2",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex15",
+      "by": "derivationB",
+      "title": "Commercial lease of a shop: which section is for the court to say.",
+      "petitionDate": "2026-11-15",
+      "slots": {
+        "public_body_party": "no",
+        "specialised_commercial_subject": "no",
+        "court_has_section_for_matter": "yes",
+        "commercial_lease": "yes"
+      },
+      "expect": {
+        "section": "commercial",
+        "findings": [
+          {
+            "ref": "n3",
+            "effect": "warn",
+            "shownEffect": "warn",
+            "toCheck": false
+          },
+          {
+            "ref": "x2",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex16",
+      "by": "derivationB",
+      "title": "Nothing known: the module asks.",
+      "petitionDate": "2026-11-15",
+      "slots": {},
+      "expect": {
+        "section": "civil",
+        "findings": [
+          {
+            "ref": "x1",
+            "effect": "ask",
+            "shownEffect": "ask",
+            "toCheck": true
+          },
+          {
+            "ref": "x2",
+            "effect": "ask",
+            "shownEffect": "ask",
+            "toCheck": false
+          },
+          {
+            "ref": "x3",
+            "effect": "ask",
+            "shownEffect": "ask",
+            "toCheck": false
+          },
+          {
+            "ref": "x4",
+            "effect": "ask",
+            "shownEffect": "ask",
+            "toCheck": false
+          },
+          {
+            "ref": "n3",
+            "effect": "ask",
+            "shownEffect": "ask",
+            "toCheck": false
+          },
+          {
+            "ref": "n7",
+            "effect": "ask",
+            "shownEffect": "ask",
+            "toCheck": true
+          },
+          {
+            "ref": "n8",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          }
+        ],
+        "questions": [
+          "public_body_party",
+          "national_public_body_party",
+          "specialised_commercial_subject",
+          "court_has_section_for_matter",
+          "commercial_lease",
+          "dispute_concerns_real_property",
+          "dispute_is_commercial",
+          "dispute_is_social",
+          "dispute_is_family",
+          "worker_is_public_servant"
+        ]
+      }
+    },
+    {
+      "id": "ex17",
+      "by": "reconciler",
+      "title": "Payment claim in a court that has not created the section: the civil section, and no social warning (article 32 ¶5 excepts only social cases).",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "court_has_section_for_matter": "no",
+        "public_body_party": "no",
+        "specialised_commercial_subject": "no",
+        "commercial_lease": "no",
+        "dispute_is_social": "no"
+      },
+      "expect": {
+        "section": "civil",
+        "findings": [
+          {
+            "ref": "x3",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex18",
+      "by": "reconciler",
+      "title": "Reinstatement claim by a civil servant: the social section is not proposed (verifier: labour-relations article 3 with cpca 800), and the record warns.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "requests": [
+          "reinstatement"
+        ],
+        "worker_is_public_servant": "yes",
+        "court_has_section_for_matter": "yes"
+      },
+      "expect": {
+        "section": "other",
+        "findings": [
+          {
+            "ref": "n7",
+            "effect": "warn",
+            "shownEffect": "warn",
+            "toCheck": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex19",
+      "by": "reconciler",
+      "title": "Wage claim, public-servant status not known: the record asks.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "requests": [
+          "wages"
+        ],
+        "court_has_section_for_matter": "yes"
+      },
+      "expect": {
+        "section": "social",
+        "findings": [
+          {
+            "ref": "n7",
+            "effect": "ask",
+            "shownEffect": "ask",
+            "toCheck": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex20",
+      "by": "reconciler",
+      "title": "Claim against a commune for damage caused by one of its vehicles: the exit still warns, and its message names article 802.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "requests": [
+          "damages"
+        ],
+        "public_body_party": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x1",
+            "effect": "warn",
+            "shownEffect": "warn",
+            "toCheck": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex21",
+      "by": "reconciler",
+      "title": "Partner dispute in a company, specialised subject not answered: the exit asks rather than decides (installation not known).",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "dispute_is_commercial": "yes",
+        "court_has_section_for_matter": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x2",
+            "effect": "ask",
+            "shownEffect": "ask",
+            "toCheck": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex22",
+      "by": "verifier",
+      "title": "adv-1, adv-2, atk-15, sup-28: partners' dispute in a commercial company seated in Médéa, filed in November 2026: x2 warns (the specialised commercial court covering the Médéa judicial council, the one sitting at Blida in the decree's annex; record of non-conciliation).",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "dispute_is_commercial": "yes",
+        "specialised_commercial_subject": "yes",
+        "public_body_party": "no",
+        "national_public_body_party": "no",
+        "court_has_section_for_matter": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x2",
+            "effect": "warn",
+            "shownEffect": "warn",
+            "toCheck": false
+          },
+          {
+            "ref": "x1",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": true
+          },
+          {
+            "ref": "x4",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex23",
+      "by": "verifier",
+      "title": "adv-3: wage claim in a court whose president merged the social section into another by order: the social section is proposed and x3 warns.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "requests": [
+          "wages"
+        ],
+        "court_has_section_for_matter": "no",
+        "worker_is_public_servant": "no"
+      },
+      "expect": {
+        "section": "social",
+        "findings": [
+          {
+            "ref": "x3",
+            "effect": "warn",
+            "shownEffect": "warn",
+            "toCheck": false
+          },
+          {
+            "ref": "n7",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex24",
+      "by": "verifier",
+      "title": "adv-4, atk-14: contract agent of a commune claims unpaid salary: not the social section; n7 warns.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "requests": [
+          "wages"
+        ],
+        "worker_is_public_servant": "yes",
+        "court_has_section_for_matter": "yes"
+      },
+      "expect": {
+        "section": "other",
+        "findings": [
+          {
+            "ref": "n7",
+            "effect": "warn",
+            "shownEffect": "warn",
+            "toCheck": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex25",
+      "by": "verifier",
+      "title": "adv-5: dismissed worker sues only for damages for abusive dismissal: the social section, not the civil one.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "requests": [
+          "damages"
+        ],
+        "dispute_is_social": "yes",
+        "worker_is_public_servant": "no",
+        "court_has_section_for_matter": "yes"
+      },
+      "expect": {
+        "section": "social",
+        "findings": [
+          {
+            "ref": "x3",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          },
+          {
+            "ref": "n7",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex26",
+      "by": "verifier",
+      "title": "adv-5: insured person contests a social-security decision in a court without sections: the social section is proposed and x3 warns.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "dispute_is_social": "yes",
+        "worker_is_public_servant": "no",
+        "court_has_section_for_matter": "no"
+      },
+      "expect": {
+        "section": "social",
+        "findings": [
+          {
+            "ref": "x3",
+            "effect": "warn",
+            "shownEffect": "warn",
+            "toCheck": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex27",
+      "by": "verifier",
+      "title": "adv-6: heirs ask for the partition of an estate holding a flat and savings: the real-estate section is proposed and n8 warns with both readings.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "requests": [
+          "partition"
+        ],
+        "partition_of_estate": "yes",
+        "court_has_section_for_matter": "yes",
+        "dispute_is_social": "no"
+      },
+      "expect": {
+        "section": "realEstate",
+        "findings": [
+          {
+            "ref": "n8",
+            "effect": "warn",
+            "shownEffect": "warn",
+            "toCheck": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex28",
+      "by": "verifier",
+      "title": "adv-7, c-14 to c-20: divorced wife claims her unpaid deferred dowry: the family section (territory: the defendant's domicile).",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "dispute_is_family": "yes",
+        "dispute_is_social": "no",
+        "court_has_section_for_matter": "yes"
+      },
+      "expect": {
+        "section": "family",
+        "findings": [
+          {
+            "ref": "n7",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex29",
+      "by": "verifier",
+      "title": "adv-8: commercial lease concluded in 2001, landlord agrees to renew, dispute on the new rent: n3 warns and names Commercial Code article 195 (court president, summary procedure).",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "commercial_lease": "yes",
+        "dispute_is_social": "no",
+        "court_has_section_for_matter": "yes"
+      },
+      "expect": {
+        "section": "commercial",
+        "findings": [
+          {
+            "ref": "n3",
+            "effect": "warn",
+            "shownEffect": "warn",
+            "toCheck": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex30",
+      "by": "verifier",
+      "title": "atk-3: divorced mother asks for housing to exercise custody: the family section (family-code article 72 with cpca 423).",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "requests": [
+          "housing",
+          "custody"
+        ],
+        "dispute_is_social": "no",
+        "court_has_section_for_matter": "yes"
+      },
+      "expect": {
+        "section": "family",
+        "findings": []
+      }
+    },
+    {
+      "id": "ex31",
+      "by": "verifier",
+      "title": "atk-4: claim against a national professional organisation: x4 warns, x1 stays silent.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "requests": [
+          "damages"
+        ],
+        "public_body_party": "no",
+        "national_public_body_party": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x4",
+            "effect": "warn",
+            "shownEffect": "warn",
+            "toCheck": false
+          },
+          {
+            "ref": "x1",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex32",
+      "by": "verifier",
+      "title": "atk-7, sup-18: divorce by mutual consent: the family section; territory t4 now names either spouse's residence at their choice.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "requests": [
+          "divorce"
+        ],
+        "dispute_is_social": "no",
+        "court_has_section_for_matter": "yes"
+      },
+      "expect": {
+        "section": "family",
+        "findings": []
+      }
+    },
+    {
+      "id": "ex33",
+      "by": "verifier",
+      "title": "atk-8: wage claim, work accident not known: the social section; territory rules t1 and t2 are both shown.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "requests": [
+          "wages"
+        ],
+        "worker_is_public_servant": "no",
+        "court_has_section_for_matter": "yes"
+      },
+      "expect": {
+        "section": "social",
+        "findings": [
+          {
+            "ref": "n7",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex34",
+      "by": "verifier",
+      "title": "atk-12: supply debt between traders, not a specialised subject: the commercial section, on article 531 alone.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "dispute_is_commercial": "yes",
+        "specialised_commercial_subject": "no",
+        "dispute_is_social": "no",
+        "dispute_is_family": "no",
+        "commercial_lease": "no",
+        "dispute_concerns_real_property": "no",
+        "court_has_section_for_matter": "yes"
+      },
+      "expect": {
+        "section": "commercial",
+        "findings": [
+          {
+            "ref": "x2",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex35",
+      "by": "verifier",
+      "title": "sup-44: request to place a disputed sum under judicial custody: the boundary n2 (urgent matters) is a note only; the civil section stays proposed.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "dispute_is_social": "no",
+        "dispute_is_family": "no",
+        "commercial_lease": "no",
+        "dispute_concerns_real_property": "no",
+        "dispute_is_commercial": "no",
+        "court_has_section_for_matter": "yes"
+      },
+      "expect": {
+        "section": "civil",
+        "findings": []
+      }
+    },
+    {
+      "id": "ex36",
+      "by": "verifier",
+      "title": "bc1 to bc6, c-1, c-28, c-29: dissolution of a commercial company, no record of non-conciliation: x2 warns and its message names the record required with the petition on pain of formal inadmissibility.",
+      "petitionDate": "2026-06-15",
+      "slots": {
+        "requests": [
+          "dissolution"
+        ],
+        "specialised_commercial_subject": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x2",
+            "effect": "warn",
+            "shownEffect": "warn",
+            "toCheck": false
+          }
+        ]
+      }
+    }
+  ],
+  "history": {
+    "agreementBeforeReconciliation": "9 of 15 matched items"
+  }
+}

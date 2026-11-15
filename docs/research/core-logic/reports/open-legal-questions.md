@@ -329,3 +329,99 @@ Grades of the items: B 40, C 3, D 12.
 - **bc18** (Wage claim where the due date of the oldest wage is nearly a year back and the worker is in a notice dispute): d1: declared none without a last day, the outcome InTime needs one (d1: when false -> none; grade D -> none, to check) | d1: last day none, the case says 2026-06-16 | d2: declared ask without a last day, the outcome InTime needs one (d2: when unknown, asks obligation_is_tort_compensation -> ask; grade D -> ask, to check) | d2: last day none, the case says 2026-06-16 | d4: last day 2030-06-16, the case says 2026-06-16 | d6: declared none without a last day, the outcome InTime needs one (d6: when false -> none; grade D -> none, to check) | d6: last day none, the case says 2026-06-16 | d7: declared none without a last day, the outcome InTime needs one (d7: when false -> none; grade D -> none, to check) | d7: last day none, the case says 2026-06-16 | d8: declared none without a last day, the outcome InTime needs one (d8: when false -> none; grade D -> none, to check) | d8: last day none, the case says 2026-06-16
 
 Cases that cannot be put to Codex as a choice of words (the same word on both sides, a last day only, or no outcome word): bc18, bc2, bc8.
+
+## `court-sections`
+
+Grades of the items: B 67, C 4, D 6.
+
+<!-- o1 0d24b8d8c539 -->
+### court-sections 1. Does filing before the wrong section lead to inadmissibility or to a lack of subject-matter jurisdiction, or only to a referral? (o1, grade C; items n1, b5, b28)
+
+1. **The question:** Does filing before the wrong section lead to inadmissibility or to a lack of subject-matter jurisdiction, or only to a referral? «هل يؤدي رفع الدعوى أمام قسم غير مختص إلى عدم القبول أو عدم الاختصاص النوعي، أم يعالج بالإحالة فقط؟»
+2. **The readings:**
+   - The split between sections is internal organisation; an error is cured by referral, not by dismissing the claim. (rests on b5)
+   - A rule of jurisdiction of public order, raised of the court's own motion if no referral is made. (rests on b28)
+3. **What the record does (the protective behaviour it keeps):** Propose the fitting section and warn when the lawyer's choice differs; never block the export.
+4. **What would change with each answer:** If the split between sections is internal organisation: n1 keeps proposing the fitting section and warns when the lawyer chose another, since a referral cures the error; nothing more. If it is a rule of jurisdiction of public order: a wrong section could end the claim, so n1 could declare a block when the lawyer's section differs from the proposed one. Today n1 warns and never blocks.
+
+<!-- o2 2f504af4beb2 -->
+### court-sections 2. Which section hears disputes on leases of business premises: the commercial section or the real-estate section? (o2, grade C; items n3, b19, b21, b48)
+
+1. **The question:** Which section hears disputes on leases of business premises: the commercial section or the real-estate section? «أي قسم ينظر في منازعات إيجار المحلات التجارية: القسم التجاري أم القسم العقاري؟»
+2. **The readings:**
+   - The commercial section, because article 512 names only professional premises, while article 40 treats commercial leases as a distinct kind. (rests on b21, b19, b48)
+   - The real-estate section, because the dispute concerns real property and the list of article 512 is not exhaustive. (rests on b16, b19)
+3. **What the record does (the protective behaviour it keeps):** Propose the commercial section, warn in every commercial lease with both readings, and warn without blocking if the lawyer chooses another section.
+4. **What would change with each answer:** If the commercial section hears it: the section rule proposes the commercial section, as today, and n3's warning in every commercial lease could be dropped. If the real-estate section hears it: the rule would propose the real-estate section instead, and a lawyer who chose the commercial section would be warned. Today the record proposes the commercial section and warns in every commercial lease with both readings; under neither reading does an item block.
+
+<!-- o4 3ff334fdfdba -->
+### court-sections 3. When, and with which seats and areas, were the specialised commercial courts installed? (o4, grade D; items x2, t5, b24, b25, b21, b23, b44, b51)
+
+1. **The question:** When, and with which seats and areas, were the specialised commercial courts installed? «متى نصبت المحاكم التجارية المتخصصة، وفي أي مقرات ودوائر؟»
+2. **The readings:**
+   - Before installation the commercial section keeps all commercial disputes; afterwards it keeps only the cases filed before it before installation. (rests on b24, b25, b22)
+   - For a petition filed now, the disputes of article 536 bis leave the commercial section for the specialised commercial court whose area covers the judicial council concerned, because the two decrees cover the whole national territory and presuppose installed courts. (rests on b21, b23, b44)
+3. **What the record does (the protective behaviour it keeps):** Warn in every dispute of article 536 bis and ask the lawyer to check which specialised commercial court covers the judicial council concerned, and the record of non-conciliation; never block.
+4. **What would change with each answer:** If the commercial section keeps all commercial disputes until installation: x2 would warn only for courts not yet installed and stay silent where the commercial section still hears them. If the disputes of article 536 bis now go to the specialised commercial court everywhere: x2 would name that court for the judicial council concerned and could ask for its record of non-conciliation, and t5 would name the court by its decree area. Today x2 warns in every dispute of article 536 bis and asks the lawyer to check; it never blocks.
+
+<!-- o7 c87d88eaf2b0 -->
+### court-sections 4. Does the fifth paragraph of article 32 cover a court that lacks only the section concerned, and who hears social cases in a court where the sections have not been created? (o7, grade C; items x3, b4)
+
+1. **The question:** Does the fifth paragraph of article 32 cover a court that lacks only the section concerned, and who hears social cases in a court where the sections have not been created? «هل تشمل الفقرة الخامسة من المادة 32 المحكمة التي لم ينشأ فيها القسم المعني وحده، وأي جهة تنظر في القضايا الاجتماعية في محكمة لم تنشأ فيها الأقسام؟»
+2. **The readings:**
+   - The paragraph applies whenever the section concerned has not been created. (rests on b4)
+   - The paragraph applies only in a court with no sections at all. (rests on b1, b4)
+   - In a court whose president has reduced the number of sections by order, the section concerned is the one the order assigns, which article 32 does not settle (article 21 of the organic law on judicial organisation, a text not in the store; open point o6). (rests on b3, b4)
+3. **What the record does (the protective behaviour it keeps):** Ask about the section concerned, propose the civil section for non-social cases, and warn in social cases to check which section the court assigns.
+4. **What would change with each answer:** If the paragraph applies whenever the section concerned is missing: the section rule proposes the civil section for a non-social case in such a court, and x3 warns in a social case. If it applies only to a court with no sections at all: in a court missing only one section the rule would not propose the civil section and would ask which section the court assigns. If the president's order decides: the rule would ask for that order's assignment. Today the record asks about the section concerned, proposes the civil section for non-social cases and warns in social cases.
+
+<!-- o9 8025005acecf -->
+### court-sections 5. Does the slot on a public body cover every party that brings a case into the administrative courts? (o9, grade C; items x1, x4, b47, b24)
+
+1. **The question:** Does the slot on a public body cover every party that brings a case into the administrative courts? «هل يغطي السؤال عن الجهة العمومية كل الأطراف التي تدخل بها القضية في اختصاص المحاكم الإدارية؟»
+2. **The readings:**
+   - (no readings recorded) The amended wording of article 800 also names national public institutions and national professional organisations, which the slot's question does not; the amended wording applies from the installation of the new administrative courts.
+3. **What the record does (the protective behaviour it keeps):** A separate question on national public institutions and national professional organisations, and an exit that warns when the answer is yes and says the amended wording runs from installation.
+4. **What would change with each answer:** There are no readings yet. If the slot's question should also cover national public institutions and national professional organisations: x1 would fire on them too, and x4 would become redundant. If not: x4's separate question and warning stand, as today. Under neither does an item block.
+
+<!-- o10 6963e8a4f06c -->
+### court-sections 6. Does the social section hear the dispute of a civil servant or an agent under the statute of public institutions and administrations? (o10, grade C; items n7, x1, b52)
+
+1. **The question:** Does the social section hear the dispute of a civil servant or an agent under the statute of public institutions and administrations? «هل ينظر القسم الاجتماعي في نزاع موظف أو عون خاضع للقانون الأساسي للمؤسسات والإدارات العمومية؟»
+2. **The readings:**
+   - The dispute leaves the social section and goes to the administrative court when the employer is one of the bodies of article 800. (rests on b47, b52, b11)
+   - The dispute stays with the social section when it concerns an employment relationship. (rests on b11, b14)
+3. **What the record does (the protective behaviour it keeps):** Do not propose the social section for the dispute of a civil servant or public contract agent; warn without blocking and ask the lawyer to check the competent court.
+4. **What would change with each answer:** If the dispute goes to the administrative court when the employer is a body of article 800: x1 warns and the section rule proposes no social section, as today. If it stays with the social section: the rule would propose the social section for it, and n7's warning would be dropped. Today the record proposes no social section for a civil servant or public contract agent, warns and asks the lawyer to check; it never blocks.
+
+<!-- o11 ace8ea6ecac1 -->
+### court-sections 7. Who hears a wage claim against an employer in bankruptcy or judicial settlement: the social section or the specialised commercial court? (o11, grade C; items x2, b11, b23)
+
+1. **The question:** Who hears a wage claim against an employer in bankruptcy or judicial settlement: the social section or the specialised commercial court? «أي جهة تنظر في دعوى أجر ضد صاحب عمل في حالة إفلاس أو تسوية قضائية: القسم الاجتماعي أم المحكمة التجارية المتخصصة؟»
+2. **The readings:**
+   - The social section, because its jurisdiction is exclusive. (rests on b11)
+   - The specialised commercial court, once installed, because the dispute is a bankruptcy dispute. (rests on b23, b24)
+3. **What the record does (the protective behaviour it keeps):** Propose the social section, ask about the specialised commercial court's subjects, and warn if the lawyer answers yes.
+4. **What would change with each answer:** If the social section hears it: the rule proposes the social section, as today, and x2's warning on a bankrupt employer would be dropped. If the specialised commercial court hears it: x2 would warn for every wage claim against an employer in bankruptcy or judicial settlement and the rule would not propose the social section. Today the record proposes the social section and warns when the lawyer answers that the subject is one of the specialised court's.
+
+<!-- o12 a24eebb86ac1 -->
+### court-sections 8. Which section hears the partition of an estate: the real-estate section or the family section? (o12, grade C; items n8, t6, b18, b53, b54)
+
+1. **The question:** Which section hears the partition of an estate: the real-estate section or the family section? «أي قسم ينظر في قسمة التركة: القسم العقاري أم قسم شؤون الأسرة؟»
+2. **The readings:**
+   - The real-estate section, because article 512 names partition expressly. (rests on b18)
+   - The family section, because estate claims are placed in its chapter. (rests on b53, b54)
+3. **What the record does (the protective behaviour it keeps):** Propose the real-estate section, ask whether the partition is of an estate, and warn with both readings if it is.
+4. **What would change with each answer:** If the real-estate section hears it: the section rule proposes the real-estate section and n8's warning on an estate could be dropped. If the family section hears it: the rule would propose the family section for an estate's partition, and t6 would follow the family section's territory. Today the record proposes the real-estate section, asks whether the partition is of an estate, and warns with both readings when it is; it never blocks.
+
+### court-sections: boundary cases the final record still fails
+
+- **bc1** (Dissolution of a company: record of non-conciliation delivered before filing): [cpca 536 مكرر 4 ¶3] matches no PriorStep (it matches x2)
+- **bc2** (Dissolution of a company: no record of non-conciliation, no exemption in the texts): [cpca 536 مكرر 4 ¶3] matches no PriorStep (it matches x2)
+- **bc4** (Dissolution of a company: record delivered the day after the petition date): [cpca 536 مكرر 4 ¶3] matches no PriorStep (it matches x2)
+- **bc5** (Dissolution of a company: record delivered on the day of the petition): [cpca 536 مكرر 4 ¶3] matches no PriorStep (it matches x2)
+- **bc7** (Dissolution of a company goes to the specialised commercial court): x2: declared ask, the outcome LeavesOrdinaryCourt needs warn (x2: when unknown, asks specialised_commercial_subject -> ask; grade D -> ask, to check)
+- **bc8** (Divorce: no record of non-conciliation is a prior step of the petition): [cpca 439 ¶1] matches no item: a rule the record may have missed
+- **bc9** (Custody and maintenance: no record of non-conciliation is required): [cpca 423 ¶3] matches no PriorStep (it matches n5)
+
+Cases that cannot be put to Codex as a choice of words (the same word on both sides, a last day only, or no outcome word): bc8, bc9.

@@ -1,0 +1,125 @@
+{
+ "attacks": [
+  {
+   "target": "court",
+   "kind": "wrongEffect",
+   "claim": "The commercial-lease alternative proposes the commercial section as the answer, citing b21, b19 and b48. Rule n3 on the same fact says the texts do not settle the section. Also, b19 gives leases of dwellings and professional premises to the real-estate section, and b48 only fixes the territorial court. A proposal on this fact is stated more firmly than its own texts allow, and it precedes the real-estate alternative.",
+   "evidenceWords": "ينظر القسم العقاري على الخصوص في القضايا الآتية : / 10 - في إيجار السكنات والمحلات المهنية / ترفع الدعاوى أمام الجهات القضائية المبينة أدناه دون سواها",
+   "fromMemory": false,
+   "id": "atk-1"
+  },
+  {
+   "target": "court",
+   "kind": "wrongCondition",
+   "claim": "The alternative 'court_has_section_for_matter is no' gives civil with basis b4 for every matter. b4 excludes social cases from the civil section, so wages or reinstatement in a court without sections would be sent to civil if this alternative wins over the social one. Rule x3 says the opposite, that no section is named. The precedence between the alternatives is not stated.",
+   "evidenceWords": "يبقى القسم المدني هو الذي ينظر في جميع النزاعات باستثناء القضايا الاجتماعية",
+   "fromMemory": false,
+   "id": "atk-2"
+  },
+  {
+   "target": "court",
+   "kind": "misreading",
+   "claim": "The request kind 'housing' is mapped to the family section with basis b7, b8 and b10, and none of these three paragraphs mentions housing. Housing could instead mean a dwelling lease, which b19 gives to the real-estate section. The family alternative precedes the real-estate one, so the lease reading is shadowed.",
+   "evidenceWords": "دعاوى النفقة والحضانة وحق الزيارة، / في إيجار السكنات والمحلات المهنية",
+   "fromMemory": false,
+   "id": "atk-3"
+  },
+  {
+   "target": "x1",
+   "kind": "wrongCondition",
+   "claim": "The slot public_body_party and the rule's condition list the State, a wilaya, a commune and a public administrative body only. Art. 800 also covers national public bodies and national professional organisations, so a case with one of those as a party does not trigger the warning. The warning text itself names them, but the slot question cannot capture them.",
+   "evidenceWords": "أو الهيئات العمومية الوطنية والمنظمات المهنية الوطنية طرفا فيها",
+   "fromMemory": false,
+   "id": "atk-4"
+  },
+  {
+   "target": "x1",
+   "kind": "wrongEffect",
+   "claim": "The rule only warns. Art. 800 attributes these cases to the administrative courts ('تختص'), subject to the exceptions in 800 ¶1 and 802. Subject-matter jurisdiction is public order that the court raises of its own motion (b28), so a warning understates the effect. The basis also cites b2, which does not bear on this.",
+   "evidenceWords": "تختص المحاكم الإدارية بالفصل في أول درجة / عدم الاختصاص النوعي من النظام العام، تقضي به الجهة القضائية تلقائيا",
+   "fromMemory": false,
+   "id": "atk-5"
+  },
+  {
+   "target": "n4",
+   "kind": "wrongCondition",
+   "claim": "n4 says a wage debt before the civil section is actually for the social section, with no condition. n7 says that for a civil servant the texts do not settle the court. n4 fires on a public servant's wage claim and gives a firm answer against n7's open one. n4 also ignores the employer in bankruptcy slot, where b23 points to the specialised commercial court.",
+   "evidenceWords": "يختص القسم الاجتماعي اختصاصا مانعا في المواد الآتية : / التسوية القضائية والإفلاس",
+   "fromMemory": false,
+   "id": "atk-6"
+  },
+  {
+   "target": "t4",
+   "kind": "misreading",
+   "claim": "t4 says the marital-home court hears divorce, but b42 makes the rule different for divorce by mutual consent, where the court is that of either spouse's residence at their choice. This exception is dropped, so the territory shown for a consent divorce is wrong.",
+   "evidenceWords": "وفي الطلاق بالتراضي بمكان إقامة أحد الزوجين حسب اختيارهما",
+   "fromMemory": false,
+   "id": "atk-7"
+  },
+  {
+   "target": "t1",
+   "kind": "missing",
+   "claim": "t1 fires only when work_accident_or_occupational_illness is 'no', and t2 only when it is 'yes'. When the answer is unknown, no territorial rule shows, although the lawyer needs to know that the domicile of the plaintiff may apply (501 ¶2, 40 ¶10).",
+   "evidenceWords": "غير أنه في حالة إنهاء أو تعليق عقد العمل بسبب حادث عمل أو مرض مهني، يؤول الاختصاص إلى المحكمة التي يوجد بها موطن المدعي",
+   "fromMemory": false,
+   "id": "atk-8"
+  },
+  {
+   "target": "t5",
+   "kind": "missing",
+   "claim": "t5 names no concrete territorial court for the commercial section or the specialised commercial court and only refers to the code. The civil section, the default of the module, has no territory entry at all. A claim before the civil section therefore gets no territorial guidance.",
+   "evidenceWords": "تطبق على القسم التجاري، أحكام الاختصاص الإقليمي المنصوص عليها في هذا القانون والقواعد الواردة في القانون التجاري والقانون البحري والنصوص الخاصة",
+   "fromMemory": false,
+   "id": "atk-9"
+  },
+  {
+   "target": "n1",
+   "kind": "misreading",
+   "claim": "n1 says a wrongly listed case is not a lack of subject-matter jurisdiction ending the claim. Art. 32 ¶6 only provides for a referral through the registry after the president is told. It does not say the matter is not a jurisdiction defect, and the item cites b28 (public order, raised of the court's own motion), which cuts against its conclusion.",
+   "evidenceWords": "يحال الملف إلى القسم المعني عن طريق أمانة الضبط، بعد إخبار رئيس المحكمة مسبقا / عدم الاختصاص النوعي من النظام العام",
+   "fromMemory": false,
+   "id": "atk-10"
+  },
+  {
+   "target": "b26",
+   "kind": "misreading",
+   "claim": "The item says the repealed paragraphs concern the specialised poles. The repealing text names only the numbers 7 to 10 of art. 32 (and arts. 826, 835, 836, 912, 913 and 914), and does not say what they are about. The item also leaves out the other articles repealed. b6, which says the court may have poles, still sits next to it without any note of conflict.",
+   "evidenceWords": "الفقرات 7 و 8 و 9 و 10 من المادّة 32 والمواد 826 و835 و836 و912 و913 و914",
+   "fromMemory": false,
+   "id": "atk-11"
+  },
+  {
+   "target": "x2",
+   "kind": "wrongEffect",
+   "claim": "x2 warns that the commercial section's competence depends on the installation of the specialised commercial court, but the section choice dispute_is_commercial gives commercial with no check on this. Basis b25 (pending cases kept by the commercial sections) is cited for a rule it does not support: it concerns cases filed before installation, not the choice of section for a new case.",
+   "evidenceWords": "وتبقى الجهات القضائية الإدارية والأقسام التجارية مختصة بالفصل في الدعاوى المرفوعة أمامها قبل تاريخ تنصيب الجهات القضائية الجديدة",
+   "fromMemory": false,
+   "id": "atk-12"
+  },
+  {
+   "target": "court",
+   "kind": "missing",
+   "claim": "No rule handles a wage or dismissal claim against an employer in bankruptcy or judicial settlement (slot employer_in_bankruptcy_or_settlement exists but is unused here), which b23 gives to the specialised commercial court. The slots requests, dispute_is_commercial, dispute_concerns_real_property, court_has_section_for_matter and specialised_commercial_subject are also not in the declared slot list.",
+   "evidenceWords": "التسوية القضائية والإفلاس",
+   "fromMemory": false,
+   "id": "atk-13"
+  },
+  {
+   "target": "n7",
+   "kind": "specialLawSuspected",
+   "claim": "From memory: disputes of civil servants are governed by the public service statute (Ordonnance 06-03 of 15 July 2006) and by CPCA art. 801. Look for whether these send such disputes to the administrative courts or leave some, for example contractual agents, to the social section.",
+   "evidenceWords": "",
+   "fromMemory": true,
+   "id": "atk-14"
+  },
+  {
+   "target": "b24",
+   "kind": "amendmentSuspected",
+   "claim": "From memory: a decree or order installing the specialised commercial courts (after law 22-13 of 12 July 2022) may fix the date or the list of courts. Look for the installation text, since b24 and x2 leave the date open.",
+   "evidenceWords": "",
+   "fromMemory": true,
+   "id": "atk-15"
+  }
+ ],
+ "nothingFound": false
+}

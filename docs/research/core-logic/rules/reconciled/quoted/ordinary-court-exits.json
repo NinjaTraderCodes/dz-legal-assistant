@@ -1,0 +1,5603 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "module",
+  "id": "ordinary-court-exits",
+  "label": {
+    "ar": "القضايا التي تخرج عن المحاكم العادية: المحاكم الإدارية والمحكمة التجارية المتخصصة والقاضي الجزائي وأمر الأداء",
+    "en": "Cases that leave the ordinary courts: administrative courts, the specialised commercial court, the criminal judge and the order to pay"
+  },
+  "verified": false,
+  "stage": "reconciled",
+  "derivedBy": {
+    "role": "reconciler",
+    "model": "claude-opus-5-5",
+    "date": "2026-11-15"
+  },
+  "appliesTo": [
+    "*"
+  ],
+  "slots": [
+    "public_body_party",
+    "requests",
+    "public_vehicle_damage",
+    "worker_is_public_servant",
+    "claim_challenges_administrative_decision",
+    "administrative_decision_notice_date",
+    "administrative_grievance_filed",
+    "administrative_grievance_rejection_date",
+    "specialised_commercial_matter",
+    "specialised_commercial_courts_installed",
+    "employer_in_bankruptcy_or_settlement",
+    "obligation_is_tort_compensation",
+    "criminal_case_on_same_facts",
+    "damage_caused_by_offence",
+    "debt_written_fixed_due",
+    "defendant_resides_abroad",
+    "payment_order_issued",
+    "payment_order_date",
+    "payment_order_notified_on"
+  ],
+  "proposedSlots": [
+    {
+      "id": "public_vehicle_damage",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل الدعوى دعوى مسؤولية ترمي إلى تعويض أضرار ناجمة عن مركبة تابعة للدولة أو لولاية أو بلدية أو مؤسسة عمومية ذات صبغة إدارية؟",
+        "en": "Is the claim a liability claim for compensation of damage caused by a vehicle belonging to the State, a wilaya, a commune or a public administrative body?"
+      },
+      "why": "Exit x1 and boundary n1 read it: cpca 802 ¶1 and ¶3 keep these claims with the ordinary courts although a public body is a party. Same fact as derivation A's public_vehicle_damage and derivation B's claim_is_vehicle_damage_by_public_body."
+    },
+    {
+      "id": "specialised_commercial_matter",
+      "type": "choice",
+      "question": {
+        "ar": "هل يندرج النزاع ضمن إحدى المواد التي تختص بها المحكمة التجارية المتخصصة؟ وأيها؟",
+        "en": "Does the dispute fall in one of the matters of the specialised commercial court, and which one?"
+      },
+      "choices": [
+        {
+          "id": "intellectual_property",
+          "label": {
+            "ar": "منازعات الملكية الفكرية",
+            "en": "Intellectual property"
+          }
+        },
+        {
+          "id": "commercial_company",
+          "label": {
+            "ar": "منازعات الشركات التجارية، لا سيما منازعات الشركاء وحل وتصفية الشركات",
+            "en": "Commercial companies, in particular disputes between partners and the dissolution and liquidation of companies"
+          }
+        },
+        {
+          "id": "bankruptcy_settlement",
+          "label": {
+            "ar": "التسوية القضائية والإفلاس",
+            "en": "Judicial settlement and bankruptcy"
+          }
+        },
+        {
+          "id": "bank_with_merchant",
+          "label": {
+            "ar": "منازعات البنوك والمؤسسات المالية مع التجار",
+            "en": "Banks and financial institutions with merchants"
+          }
+        },
+        {
+          "id": "maritime_air_insurance",
+          "label": {
+            "ar": "المنازعات البحرية والنقل الجوي ومنازعات التأمينات المتعلقة بالنشاط التجاري",
+            "en": "Maritime, air transport, and insurance disputes linked to commercial activity"
+          }
+        },
+        {
+          "id": "international_trade",
+          "label": {
+            "ar": "المنازعات المتعلقة بالتجارة الدولية",
+            "en": "International trade"
+          }
+        },
+        {
+          "id": "none",
+          "label": {
+            "ar": "لا شيء مما سبق",
+            "en": "None of these"
+          }
+        }
+      ],
+      "why": "Exit x4 and territory rule t2 read it: cpca 536 مكرر ¶1 to ¶7 list the matters of the specialised commercial court, and cpca 531 ¶1 takes them out of the commercial section. Proposed under this id by both derivations; choice ids bankruptcy_settlement = B's insolvency, bank_with_merchant = B's bank_against_trader."
+    },
+    {
+      "id": "specialised_commercial_courts_installed",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل نصبت المحكمة التجارية المتخصصة المختصة بدائرة الدعوى؟",
+        "en": "Has the specialised commercial court for the area of this claim been installed?"
+      },
+      "why": "Exit x4 reads it: law-22-13 13 ¶1 makes the new jurisdiction rules run from the installation of the new courts, and the store gives no date. Derivation B's id."
+    },
+    {
+      "id": "claim_challenges_administrative_decision",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل تهدف الدعوى إلى إلغاء قرار إداري أو تفسيره أو فحص مشروعيته؟",
+        "en": "Does the claim seek to annul, interpret or review the legality of an administrative decision?"
+      },
+      "why": "Exit x3, deadlines d1 and d2, territory rule t4 and document doc2 read it when the petition asks to cancel a decision: cpca 801 ¶2 to ¶6 and 900 مكرر ¶3 turn on a decision of an administrative authority. Derivation B's id."
+    },
+    {
+      "id": "administrative_decision_notice_date",
+      "type": "date",
+      "question": {
+        "ar": "ما تاريخ التبليغ الشخصي بالقرار الإداري الفردي، أو تاريخ نشر القرار الجماعي أو التنظيمي؟",
+        "en": "On what date was the individual administrative decision personally notified, or the collective or regulatory decision published?"
+      },
+      "why": "Deadline d1 starts from it: cpca 829 ¶1. Same fact as derivation A's decision_notified_on and derivation B's administrative_decision_notice_date."
+    },
+    {
+      "id": "administrative_grievance_filed",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل قدم تظلم إلى الجهة الإدارية مصدرة القرار؟",
+        "en": "Was a grievance lodged with the administrative authority that made the decision?"
+      },
+      "why": "Deadlines d1 and d2 and document doc3 read it: cpca 830 ¶1 to ¶4 replace the period of 829 by a new one once a grievance is lodged. Derivation B's id."
+    },
+    {
+      "id": "administrative_grievance_rejection_date",
+      "type": "date",
+      "question": {
+        "ar": "ما تاريخ تبليغ رد الإدارة الرافض للتظلم؟",
+        "en": "On what date was the administration's refusal of the grievance notified?"
+      },
+      "why": "Deadline d2 starts from it: cpca 830 ¶4. Derivation B's id."
+    },
+    {
+      "id": "criminal_case_on_same_facts",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل توجد شكوى أو دعوى عمومية جارية، أو صدر حكم جزائي، بشأن الوقائع التي تقوم عليها الدعوى؟",
+        "en": "Is there a complaint or a public prosecution pending, or has a criminal judgment been given, on the facts the claim rests on?"
+      },
+      "why": "Exit x6 reads it: civil-code 339 ¶1 binds the civil judge to what a criminal judgment necessarily decided. Same fact as derivation A's criminal_case_on_same_facts and derivation B's criminal_proceedings_pending (the question joins both wordings)."
+    },
+    {
+      "id": "damage_caused_by_offence",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل الضرر المطالب بتعويضه ناتج عن جناية أو جنحة أو مخالفة؟",
+        "en": "Is the damage claimed the result of a felony, a misdemeanour or a minor offence?"
+      },
+      "why": "Exit x6 reads it (derivation B's reading, kept as the protective one while the Code of Criminal Procedure is not in the store): cpca 39 ¶3 names damage from an offence apart from other torts."
+    },
+    {
+      "id": "debt_written_fixed_due",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل الدين المطالب به مبلغ من النقود مستحق وحال الأداء ومعين المقدار وثابت بالكتابة (اعتراف بدين أو تعهد بالوفاء أو فاتورة مؤشر عليها من المدين)؟",
+        "en": "Is the debt claimed a sum of money that is due, payable now, of a fixed amount, and proven in writing (an acknowledgement of debt, an undertaking to pay, or an invoice endorsed by the debtor)?"
+      },
+      "why": "Exit x7, territory rule t3 and document doc1 read it: cpca 306 ¶1 opens the order-to-pay route for such a debt. Derivation A's id; it holds the two facts of derivation B's debt_is_fixed_sum_money_due and debt_proved_in_writing together, as the paragraph sets them as one condition."
+    },
+    {
+      "id": "payment_order_issued",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل صدر أمر بالأداء ضد المدين بشأن هذا الدين؟",
+        "en": "Has an order to pay already been issued against the debtor for this debt?"
+      },
+      "why": "Deadlines d3 and d4 read it: cpca 308 ¶3 and 309 ¶1 and ¶2. Derivation B's id."
+    },
+    {
+      "id": "payment_order_date",
+      "type": "date",
+      "question": {
+        "ar": "ما تاريخ صدور أمر الأداء؟",
+        "en": "On what date was the order to pay issued?"
+      },
+      "why": "Deadline d3 starts from it: cpca 309 ¶2. Derivation B's id."
+    },
+    {
+      "id": "payment_order_notified_on",
+      "type": "date",
+      "question": {
+        "ar": "ما تاريخ التبليغ الرسمي لأمر الأداء إلى المدين؟",
+        "en": "On what date was the order to pay formally served on the debtor?"
+      },
+      "why": "Deadline d4 starts from it: cpca 308 ¶3. Derivation B's id."
+    }
+  ],
+  "checklist": [
+    {
+      "id": "k1",
+      "item": "Is one of the parties the State, a wilaya, a commune or a public establishment of administrative character? The organic criterion of CPCA art. 800 sends the case to the administrative court, whatever the nature of the dispute.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "x1",
+        "b1",
+        "b2"
+      ],
+      "note": "The in-force wording also names national public bodies and national professional organisations (o6)."
+    },
+    {
+      "id": "k2",
+      "item": "Which actions belong to the administrative court by their object (annulment, interpretation and review of legality of administrative decisions; full-jurisdiction claims; matters given by special texts) under CPCA art. 801?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "x3",
+        "b3",
+        "b4",
+        "b13",
+        "t4"
+      ],
+      "note": "Annulment, interpretation and review of decisions of local authorities: cpca 801 ¶2 to ¶6; of central authorities and national bodies: 900 مكرر ¶3 (administrative court of appeal of Algiers); full-jurisdiction actions and special texts: 801 ¶7 and ¶8."
+    },
+    {
+      "id": "k3",
+      "item": "Which exceptions bring a case with a public body back to the ordinary courts (CPCA art. 802: road offences; liability claims for damage caused by any vehicle belonging to the State, a wilaya, a commune or a public administrative establishment)?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b5",
+        "b6",
+        "x1",
+        "n1"
+      ],
+      "note": "cpca 802 ¶1 to ¶3: road offences and liability claims for compensation of damage caused by a vehicle of the State, a wilaya, a commune or a public administrative body. x1 does not warn when the petition asks for damages and the vehicle question is answered yes."
+    },
+    {
+      "id": "k4",
+      "item": "Is the public party an establishment of industrial and commercial character (EPIC) or a public economic enterprise? These are not listed in art. 800 and are normally sued before the ordinary courts; check the special text.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n2",
+        "b2",
+        "o7"
+      ],
+      "note": "Only the silence of cpca 800 ¶2 is in the store; the special texts on public enterprises are not (o7)."
+    },
+    {
+      "id": "k5",
+      "item": "Is the incompetence of the administrative or ordinary court ratione materiae of public order, can it be raised at any stage, and must the judge raise it of his own motion (CPCA art. 36 and art. 807)?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b7",
+        "b8",
+        "b9"
+      ],
+      "note": "cpca 36 ¶1 for every court; 807 ¶1 to ¶3 for the administrative courts."
+    },
+    {
+      "id": "k6",
+      "item": "What happens when the ordinary court finds it has no jurisdiction because the matter is administrative: declaration of incompetence, no transfer; the lawyer must refile before the competent administrative court.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b9",
+        "b20"
+      ],
+      "note": "cpca 36 ¶1 makes the court declare it of its own motion; no text in the store transfers a case from an ordinary court to an administrative one (398 to 403 settle conflicts between ordinary courts, 808 to 814 inside the administrative order). cpca 832 ¶1 and ¶2 interrupt the period for the action when it was brought before a court without jurisdiction."
+    },
+    {
+      "id": "k7",
+      "item": "Time limit for an action for annulment before the administrative court: four months from notification of the individual decision or publication of the regulatory decision (CPCA art. 829); optional administrative grievance and its effect (art. 830); forfeiture.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "d1",
+        "d2",
+        "b14",
+        "b15",
+        "b16",
+        "b17",
+        "b19",
+        "b24",
+        "o4"
+      ],
+      "note": "Four months under 829 ¶1; a grievance under 830 ¶1 opens a new period of two months (830 ¶3 and ¶4, d2); the sanction is read from 322 ¶1 and stays interpretive (o4)."
+    },
+    {
+      "id": "k8",
+      "item": "Territorial jurisdiction of the administrative courts (CPCA arts. 803 and 804) and the administrative courts of appeal created in 2022; the Council of State as first and last instance for central authorities (art. 901 as amended).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t1",
+        "t4",
+        "b10",
+        "b11",
+        "b12",
+        "b13"
+      ],
+      "note": "In the in-force wording first-instance actions against central decisions go to the administrative court of appeal of Algiers (900 مكرر ¶3); article 901 was not needed for a rule."
+    },
+    {
+      "id": "k9",
+      "item": "Is the claimant a civil servant or an agent under the general statute of public service? Individual labour disputes of such agents fall outside Law 90-11 and go to the administrative court, not the social section.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "x2",
+        "b25",
+        "b11",
+        "o8"
+      ],
+      "note": "labour-relations 3 ¶1 and cpca 804 ¶5; whether the dispute leaves the ordinary courts when no body of 800 ¶2 is a party is open (o8)."
+    },
+    {
+      "id": "k10",
+      "item": "Conflicts of jurisdiction between the two orders: Tribunal des conflits (Organic Law 98-03); the referral mechanism when both orders declare themselves incompetent.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "note": "Searched the store's code list (cpca, civil-code, commercial-code, family-code, labour-disputes, labour-relations, law-22-13) for the tribunal of conflicts; the organic law is not in the store. Requested by derivation A as context."
+    },
+    {
+      "id": "k11",
+      "item": "Specialised commercial courts (CPCA art. 536 bis and following, added by Law 22-13 of 2022): the list of matters (intellectual property; commercial companies, their dissolution and liquidation; bankruptcy and judicial settlement; banks and financial institutions with merchants; maritime and air transport and insurance; international trade).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "x4",
+        "b26"
+      ]
+    },
+    {
+      "id": "k12",
+      "item": "Is the specialised commercial court competence exclusive and of public order, and what happens to a case filed in the commercial section of an ordinary court that belongs to it?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b27",
+        "b9",
+        "x4",
+        "b33"
+      ],
+      "note": "cpca 531 ¶1 removes these matters from the commercial section; 36 ¶1 makes subject-matter incompetence of public order; law-22-13 13 ¶2 keeps cases filed before installation where they are."
+    },
+    {
+      "id": "k13",
+      "item": "Mandatory conciliation before filing in the specialised commercial court (CPCA art. 536 bis 4 or nearby): who conducts it, its time limit, the record, the sanction of failing to attempt it (inadmissibility?).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b29",
+        "b30",
+        "x4"
+      ],
+      "note": "The prior step itself belongs to the module conciliation-mediation; this module names it in the exit message only (C's prior step is answered there)."
+    },
+    {
+      "id": "k14",
+      "item": "Composition of the specialised commercial court (a judge with assessors) and the seats and territorial competence fixed by executive decree.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "t2",
+        "b28"
+      ],
+      "note": "Composition is in 536 مكرر 2 (a judge with four assessors; not needed for a rule); territorial rules are the general ones (536 مكرر 1). The regulatory text fixing the seats is not in the store."
+    },
+    {
+      "id": "k15",
+      "item": "Is the employer bankrupt or in judicial settlement? Then claims against the estate may need to be declared to the trustee and the bankruptcy court; check Commercial Code arts. 244 and following.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "x5",
+        "o2"
+      ],
+      "note": "The Commercial Code's bankruptcy articles are not in the store (it holds only a few commercial-code articles); requested by the reconciler (o2, grade D). The exit x5 warns meanwhile."
+    },
+    {
+      "id": "k16",
+      "item": "The criminal judge: the civil action for damages arising from an offence may be brought with the public action before the criminal court (CPP arts. 2 and 3) or separately before the civil judge.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "x6",
+        "o3",
+        "b37"
+      ],
+      "note": "The Code of Criminal Procedure is not in the store; searched cpca and civil-code for الدعوى العمومية, الجزائي, جنائي: only cpca 39 ¶3, cpca 165 ¶4 and civil-code 339 ¶1 were found. Requested by the reconciler."
+    },
+    {
+      "id": "k17",
+      "item": "When the civil action is brought before the civil judge while the public action is pending, the civil judge must stay until the criminal judgment (CPP art. 4: the criminal holds the civil in abeyance).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "o3",
+        "b38"
+      ],
+      "note": "Not in the store; only the stay of handwriting comparison (cpca 165 ¶4) mentions the criminal judge, and it is limited to that procedure."
+    },
+    {
+      "id": "k18",
+      "item": "Irrevocable choice of route (CPP art. 5): a party who brought the civil action before the civil court cannot bring it before the criminal court, unless the prosecution was started before the civil court ruled on the merits.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "o3"
+      ],
+      "note": "Not in the store (Code of Criminal Procedure). Requested by the reconciler."
+    },
+    {
+      "id": "k19",
+      "item": "Authority of the criminal judgment over the civil judge on facts necessarily established (Civil Code art. 339 or similar); a prior criminal conviction as proof of the fault.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b36",
+        "x6"
+      ],
+      "note": "civil-code 339 ¶1, in the chapter on presumptions of the title on proof."
+    },
+    {
+      "id": "k20",
+      "item": "Limitation of the civil action joined to a public action follows the civil limitation rules (CPP art. 10); check the module periods.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "note": "Not in the store; limitation belongs to the module periods."
+    },
+    {
+      "id": "k21",
+      "item": "Order to pay (أمر بالأداء, CPCA arts. 306 and following): a sum of money, fixed, liquid and due, established by a written instrument (acknowledgement of debt, commercial paper).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "x7",
+        "b39",
+        "t3"
+      ],
+      "note": "The text names a private writing acknowledging the debt or undertaking to pay, or an invoice endorsed by the debtor; it does not name commercial paper."
+    },
+    {
+      "id": "k22",
+      "item": "Prior step for the order to pay: a demand for payment (تكليف بالوفاء) served by a bailiff, with a period (perhaps 15 days) before the petition can be filed.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "doesNotApply",
+      "refs": [
+        "b39",
+        "b45"
+      ],
+      "note": "No prior demand is required before the request (306 ¶1); the demand to pay is served after the order is made, with the order (308 ¶2)."
+    },
+    {
+      "id": "k23",
+      "item": "Procedure of the order to pay: petition in two copies to the president of the court with the written evidence; decision within a short period (perhaps five days); no appeal against refusal; the creditor then follows the ordinary procedure.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b39",
+        "b40",
+        "b41",
+        "b42",
+        "b43",
+        "b44",
+        "n4"
+      ],
+      "note": "Petition in two copies with the documents (306), order within five days (307 ¶1), no remedy against a refusal and the ordinary claim stays open (307 ¶3)."
+    },
+    {
+      "id": "k24",
+      "item": "Opposition to the order to pay: the debtor may oppose within a period (perhaps fifteen days) from service; the order becomes enforceable failing opposition; the order lapses if not served within a set period.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "d4",
+        "d3",
+        "b46",
+        "b48",
+        "b49"
+      ],
+      "note": "Objection within fifteen days of formal service (308 ¶3); without objection the order acquires the force of res judicata (309 ¶1); the order lapses if the enforcement formula is not requested within one year of its date (309 ¶2), not for failure to serve."
+    },
+    {
+      "id": "k25",
+      "item": "Is the order to pay optional (the creditor may still file an ordinary claim) or compulsory where its conditions are met? I believe it is optional.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b39",
+        "b44",
+        "x7"
+      ],
+      "note": "Article 306 says the creditor may; the exit therefore only warns (C's open point gives the same answer)."
+    },
+    {
+      "id": "k26",
+      "item": "Orders on petition (أوامر على العرائض) and summary proceedings (الاستعجال): procedures inside the ordinary court that replace or precede a claim; they are not exits but must be distinguished.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n5",
+        "b50",
+        "b51",
+        "b52"
+      ]
+    },
+    {
+      "id": "k27",
+      "item": "Arbitration clause or compromise: the ordinary court must not hear a case submitted to arbitration if a party raises it; it is not of public order (CPCA arts. 1006 and following).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n6",
+        "b53",
+        "b54",
+        "b55"
+      ],
+      "note": "1006 and 1007 define arbitrable rights and the clause; 1045 (lack of jurisdiction when a party raises the agreement) sits in the international chapter, so it is interpretive. Arbitration is not one of the exit kinds, so it is a boundary note."
+    },
+    {
+      "id": "k28",
+      "item": "Tax disputes, customs and social security disputes: special commissions or prior administrative recourse before any court; check the special laws.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "b12"
+      ],
+      "note": "cpca 804 ¶2 sends tax disputes to the administrative court of the place of the tax; the customs and social security laws are not in the store."
+    },
+    {
+      "id": "k29",
+      "item": "Expropriation for public utility and administrative contracts (public procurement): administrative court, even if the claim is for money.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b12",
+        "t1",
+        "x1"
+      ],
+      "note": "Administrative contracts of any nature are brought before the administrative court of the place of the contract (804 ¶4) and the public party test of 800 ¶2 applies; the expropriation law is not in the store."
+    },
+    {
+      "id": "k30",
+      "item": "Cases that look like exits and are not: a claim against a public economic enterprise; a claim for damage by a public vehicle; a claim by a worker of a private employer; a commercial claim not in the list of the specialised court (commercial section of the ordinary court).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n1",
+        "n2",
+        "n3"
+      ]
+    },
+    {
+      "id": "k31",
+      "item": "Defendant residing abroad: the Algerian courts still have jurisdiction (CPCA arts. 41 and 42 for Algerian parties); this is international jurisdiction, not an exit to another order.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "doesNotApply",
+      "refs": [
+        "o5",
+        "x7"
+      ],
+      "note": "International jurisdiction belongs to the module territorial-jurisdiction; the only link here is the order to pay, which needs the debtor's real or chosen domicile in Algeria (306 ¶3, o5)."
+    },
+    {
+      "id": "k32",
+      "item": "Amendments to remember: Law 22-13 of 12 July 2022 (specialised commercial courts, administrative courts of appeal); Law 08-09 of 25 February 2008 (CPCA); Organic Law 22-10 on judicial organisation.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b32",
+        "b33",
+        "b34",
+        "o1"
+      ],
+      "note": "Law 22-13 also repealed paragraphs 7 to 10 of article 32 (the specialised poles) and article 826 (14 ¶2). Organic law 22-10 is not in the store."
+    },
+    {
+      "id": "k33",
+      "item": "Is one of the parties the State, a wilaya, a commune or a public administrative body (organic criterion)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "x1",
+        "b2"
+      ]
+    },
+    {
+      "id": "k34",
+      "item": "Does the dispute fall in the administrative courts' jurisdiction by the organic criterion (art. 800 CPCA) and which exceptions send it back to the ordinary court (road accidents, contraventions of public roads)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "x1",
+        "n1",
+        "b1",
+        "b5",
+        "b6"
+      ]
+    },
+    {
+      "id": "k35",
+      "item": "Which matters does art. 801 give to the administrative courts (annulment, interpretation, legality review, full jurisdiction compensation)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "x3",
+        "b3",
+        "b4"
+      ]
+    },
+    {
+      "id": "k36",
+      "item": "Is the administrative court's jurisdiction a matter of public order and may the ordinary court raise it of its own motion?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b7",
+        "b8",
+        "b9"
+      ],
+      "note": "cpca 807 for the administrative courts; 36 ¶1 makes lack of subject-matter jurisdiction of public order for every court."
+    },
+    {
+      "id": "k37",
+      "item": "Is the claim an action against an administrative decision and is the time limit for it (four months from notification or publication) respected?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "d1",
+        "b14",
+        "b19",
+        "doc2"
+      ]
+    },
+    {
+      "id": "k38",
+      "item": "Is a prior administrative appeal required or allowed and how does it affect the time limit?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "d2",
+        "b15",
+        "b16",
+        "b17",
+        "b18",
+        "doc3"
+      ],
+      "note": "cpca 830 ¶1 makes the grievance optional (it says may); the text does not make it a condition of admissibility."
+    },
+    {
+      "id": "k39",
+      "item": "Is the case commercial in nature and does it belong to the specialised commercial court (art. 536 bis and following) or to the commercial section of the ordinary court?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "x4",
+        "b26",
+        "b27"
+      ]
+    },
+    {
+      "id": "k40",
+      "item": "Which matters are listed for the specialised commercial courts (commercial disputes, bankruptcy, intellectual property, maritime, insurance, etc.)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b26"
+      ],
+      "note": "Six kinds, listed in the article; the list is closed in its wording, and only the company item carries «لا سيما»."
+    },
+    {
+      "id": "k41",
+      "item": "Does the specialised commercial court require prior conciliation, and what is the sanction of its absence?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b29",
+        "b30"
+      ],
+      "note": "Stated here only as basis; the rule on the step itself belongs to the module conciliation-mediation."
+    },
+    {
+      "id": "k42",
+      "item": "What is the territorial scope of each specialised commercial court (list of courts, extended jurisdiction)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "b28"
+      ],
+      "note": "Article 536 مكرر 1 only refers to the code's territorial rules; the seats and areas are fixed by regulation, not in the store."
+    },
+    {
+      "id": "k43",
+      "item": "What happens if a claim is filed before the ordinary court while it belongs to the specialised commercial court, and the reverse (declining jurisdiction, referral)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "b9",
+        "b33"
+      ],
+      "note": "Searched cpca 32, 36, 47 to 52, 398 to 402, 807 to 814: found the public-order rule (36 ¶1), the transfer between sections of one court (32 ¶6) and the settlement of conflicts between judges, not a rule of referral from an ordinary court to an administrative or specialised commercial court."
+    },
+    {
+      "id": "k44",
+      "item": "Is the claim civil damages that arise from a criminal offence, and may it be brought before the criminal judge as a civil party?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "x6",
+        "o3"
+      ],
+      "note": "The Code of Criminal Procedure is not in the store; only cpca 39 ¶3 and civil-code 339 ¶1 were found."
+    },
+    {
+      "id": "k45",
+      "item": "If the civil claim is brought before the civil court while a criminal action is pending, is the civil proceeding stayed until the criminal judgment (criminal holds the civil in state)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "b38",
+        "o3"
+      ],
+      "note": "Only a stay for handwriting comparison (cpca 165 ¶4) was found; no general rule in the store."
+    },
+    {
+      "id": "k46",
+      "item": "Does the criminal judgment bind the civil judge on the facts?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b36",
+        "x6"
+      ]
+    },
+    {
+      "id": "k47",
+      "item": "Is the claim for a sum of money that qualifies for the order to pay procedure (arts. 306 and following)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "x7",
+        "b39"
+      ]
+    },
+    {
+      "id": "k48",
+      "item": "What conditions must the debt meet for an order to pay (certain, liquid, due, written proof, sum of money)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b39",
+        "x7"
+      ]
+    },
+    {
+      "id": "k49",
+      "item": "Before which judge is the order to pay requested, and by what form (petition, documents attached)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b39",
+        "b40",
+        "b41",
+        "t3",
+        "doc1"
+      ]
+    },
+    {
+      "id": "k50",
+      "item": "What happens if the judge refuses the order to pay (appeal, or ordinary claim)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b44",
+        "n4"
+      ]
+    },
+    {
+      "id": "k51",
+      "item": "How and within what period must the order be served on the debtor, and what is the debtor's opposition period?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b45",
+        "b46",
+        "b47",
+        "d4"
+      ]
+    },
+    {
+      "id": "k52",
+      "item": "What is the sanction if the order is not served within its period (lapse)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "d3",
+        "b49"
+      ],
+      "note": "The only lapse in the text is for an order whose enforcement formula is not requested within a year (309 ¶2); no sanction for late service was found."
+    },
+    {
+      "id": "k53",
+      "item": "Which cases are excluded from the order to pay procedure?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "note": "Searched cpca 306 to 309: they state conditions of access (306 ¶1 to ¶3) but no list of excluded cases."
+    },
+    {
+      "id": "k54",
+      "item": "What is the effect of the order to pay becoming final (enforcement title)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b48"
+      ]
+    },
+    {
+      "id": "k55",
+      "item": "Are there other procedures replacing a claim, such as urgent applications (référé) or applications on petition (ordonnance sur requête)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n5",
+        "b50",
+        "b51",
+        "b52"
+      ]
+    },
+    {
+      "id": "k56",
+      "item": "Is the dispute one the ordinary court cannot hear at all (arbitration clause, foreign state immunity)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n6",
+        "b53",
+        "b54",
+        "b55"
+      ],
+      "note": "Arbitration is a boundary note; no text on state immunity was found in the store. cpca 1006 ¶3 (public persons may not ask for arbitration except in international economic relations and public procurement) was read and is not needed for a rule."
+    },
+    {
+      "id": "k57",
+      "item": "How should the petition be drafted so the court identified is the correct one, and which section is named?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "x1",
+        "x2",
+        "x3",
+        "x4",
+        "x5",
+        "x6",
+        "x7"
+      ],
+      "note": "This module answers the question of the court; the section is the work of the module court-sections."
+    },
+    {
+      "id": "k58",
+      "item": "What documents show the nature of the public body or the commercial nature?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "doc1",
+        "doc2",
+        "doc3"
+      ],
+      "note": "The documents listed are those the texts name (306 ¶6, 819 ¶1, 830 ¶5); no text lists documents that prove the nature of the body."
+    },
+    {
+      "id": "k59",
+      "item": "Does a dispute against a public enterprise with an industrial or commercial character remain in the ordinary courts?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n2",
+        "o7"
+      ],
+      "note": "Article 800 names bodies of administrative character only; no text in the store speaks of bodies of industrial or commercial character (o7)."
+    },
+    {
+      "id": "k60",
+      "item": "What is the effect of a wrong court choice on limitation periods?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b20"
+      ],
+      "note": "cpca 832 ¶1 and ¶2 interrupt the period for an action before the administrative courts when it was brought before a court without jurisdiction; nothing in the store says so for limitation periods."
+    },
+    {
+      "id": "k61",
+      "item": "The store notes on the law-22-13 wordings of articles 800, 801, 804, 531, 536 مكرر and the others: from what date does the new wording apply, and which wording governs a case?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b32",
+        "b33",
+        "o1",
+        "x4"
+      ],
+      "note": "The store infers no date; law-22-13 13 ¶1 ties the new jurisdiction rules to the installation of the new courts and 13 ¶2 keeps earlier-filed cases with the former courts. For x1 the organic test is the same in both wordings except that the in-force one adds national public bodies and national professional organisations (o6); for x3 the in-force 801 adds regional professional organisations and 900 مكرر ¶3 sends central decisions to the administrative court of appeal of Algiers; x4 asks whether the court is installed."
+    },
+    {
+      "id": "k62",
+      "item": "What does the store's note on the articles of Law 22-13 (arts. 531 to 536 bis 7, 800, 801 and others) raise: from which date do the new rules on the specialised commercial court and the administrative courts apply?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b32",
+        "b33",
+        "x4",
+        "o1"
+      ],
+      "note": "The note says the law gives no calendar date and defers to the installation of the new courts; no date is inferred and x4 asks whether the court is installed."
+    },
+    {
+      "id": "k63",
+      "item": "The store notes on the law-22-13 wordings of cpca 32 and 832: from which date do they apply, and what does that change for this module?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b35",
+        "b20",
+        "b21",
+        "o1"
+      ],
+      "note": "No date is inferred (law-22-13 13). For 832 the in-force wording moves the request for legal aid from the causes of interruption to those of suspension and adds the death or change of capacity of the claimant to interruption (¶3, not needed for a rule); d1 cites the in-force paragraphs. For 32 the in-force wording drops paragraphs 7 to 10 on the specialised poles (law-22-13 14 ¶2), which only matters to the module court-sections."
+    },
+    {
+      "id": "k64",
+      "item": "Neighbour flag f-b13-previous: cpca 828 ¶1, before the time-limit article.",
+      "from": [
+        "derivationA",
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "cpca 828 ¶1 says who represents the State, the wilaya, the commune and the other public persons as parties before the administrative courts; it sets no jurisdiction rule and no period. Its list (national and regional professional organisations) supports open point o6 only."
+    },
+    {
+      "id": "k65",
+      "item": "Neighbour flag f-b31-p5: cpca 32 ¶5, courts without sections.",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "cpca 32 ¶5 says that where no sections exist the civil section hears every dispute except social ones; it concerns the sections of the ordinary court (module court-sections), not a case leaving it."
+    }
+  ],
+  "basis": [
+    {
+      "id": "b1",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "800",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "المحاكم الإدارية هي جهات الولاية العامة في المنازعات الإدارية، إلا ما أسند منها إلى جهات قضائية أخرى.",
+        "en": "The administrative courts have general jurisdiction over administrative disputes, except those given to other courts."
+      },
+      "required": true,
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "المحاكم الإدارية هي جهات الولاية العامة في المنازعات الإدارية، باستثناء المنازعات الموكلة إلى جهات قضائية أخرى.",
+          "sha256": "eec30e67d354c7ceff66d5052f74993e888232ab36fdee1f9e3defd268f0e52c"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b2",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "800",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "تختص المحاكم الإدارية في أول درجة بكل قضية تكون الدولة أو الولاية أو البلدية أو مؤسسة عمومية ذات صبغة إدارية أو هيئة عمومية وطنية أو منظمة مهنية وطنية طرفا فيها.",
+        "en": "The administrative courts hear at first instance every case to which the State, a wilaya, a commune, a public administrative body, a national public body or a national professional organisation is a party."
+      },
+      "required": true,
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "تختص المحاكم الإدارية بالفصل في أول درجة بحكم قابل للاستئناف في جميع القضايا التي تكون الدولة أو الولاية أو البلدية أو إحدى المؤسسات العمومية ذات الصبغة الإدارية أو الهيئات العمومية الوطنية والمنظمات المهنية الوطنية طرفا فيها.",
+          "sha256": "40ac0bdb4c0584f45e5c4067956bf884b4901594253db8d58543102b42c62551"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b3",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "801",
+        "paragraphs": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "says": {
+        "ar": "تختص المحاكم الإدارية بدعاوى إلغاء وتفسير وفحص مشروعية قرارات الولاية والمصالح غير الممركزة للدولة والبلدية والمنظمات المهنية الجهوية والمؤسسات العمومية المحلية ذات الصبغة الإدارية.",
+        "en": "The administrative courts hear actions to annul, interpret or review the legality of decisions of the wilaya, the decentralised State services, the commune, regional professional organisations and local public administrative bodies."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تختص المحاكم الإدارية كذلك بالفصل في :",
+          "sha256": "6899772222c1379bd14356eb9ea005bab2a160cbbb214e4c3e55d4403e050011"
+        },
+        {
+          "paragraph": 2,
+          "text": "1– دعاوى إلغاء وتفسير وفحص مشروعية القرارات الصادرة عن :",
+          "sha256": "11b7c49eaf9f56948f82e95d781b3ad097d84d3d477403f6ef945a77f0f19998"
+        },
+        {
+          "paragraph": 3,
+          "text": "– الولاية والمصالح غير الممركزة للدولة على مستوى الولاية،",
+          "sha256": "b6d8401324f369706877fb242b36d0aa08a9cb4f170ead33383658dac45ca893"
+        },
+        {
+          "paragraph": 4,
+          "text": "– البلدية،",
+          "sha256": "99c46ba8155385e4369915f10a487bc8bec7d612dc12c622d518cc8362826bfd"
+        },
+        {
+          "paragraph": 5,
+          "text": "– المنظمات المهنية الجهوية،",
+          "sha256": "a3fcd13731036af5c68df013eed6ef50bebd8cf19d223be0d1926ab074c8ebbc"
+        },
+        {
+          "paragraph": 6,
+          "text": "– المؤسسات العمومية المحلية ذات الصبغة الإدارية.",
+          "sha256": "994706d02784687fd5a563529ad9eb5050259fe421d6a2b617c29a2c3797f7b4"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b4",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "801",
+        "paragraphs": [
+          1,
+          7,
+          8
+        ]
+      },
+      "says": {
+        "ar": "تختص المحاكم الإدارية كذلك بدعاوى القضاء الكامل وبالقضايا المخولة لها بنصوص خاصة.",
+        "en": "The administrative courts also hear full-jurisdiction actions and the cases given to them by special texts."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تختص المحاكم الإدارية كذلك بالفصل في :",
+          "sha256": "6899772222c1379bd14356eb9ea005bab2a160cbbb214e4c3e55d4403e050011"
+        },
+        {
+          "paragraph": 7,
+          "text": "2 - دعاوى القضاء الكامل،",
+          "sha256": "4b4ced806df4bede9c06856795d2ebb0f58e4569d46f6a2dfb33943d2e7f76ca"
+        },
+        {
+          "paragraph": 8,
+          "text": "3 - القضايا المخولة لها بموجب نصوص خاصة.",
+          "sha256": "8ab36ac6de0ba875ccf269a20589254a02ccbf481ff3eaae34b35c0801ecec68"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b5",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "802",
+        "paragraphs": [
+          1,
+          3
+        ]
+      },
+      "says": {
+        "ar": "خلافا للقواعد السابقة، تختص المحاكم العادية بدعاوى المسؤولية الرامية إلى تعويض الأضرار الناجمة عن مركبة تابعة للدولة أو الولاية أو البلدية أو مؤسسة عمومية ذات صبغة إدارية.",
+        "en": "By exception, the ordinary courts hear liability claims for compensation of damage caused by a vehicle belonging to the State, a wilaya, a commune or a public administrative body."
+      },
+      "required": true,
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "خلافا لأحكام المادتين 800 و801 أعلاه، يكون من اختصاص المحاكم العادية المنازعات الآتية :",
+          "sha256": "d6d4f052226b1d1a98137b35488c0031d2cf7490e21ba9d95c0051c778ab52be"
+        },
+        {
+          "paragraph": 3,
+          "text": "2 - المنازعات المتعلقة بكل دعوى خاصة بالمسؤولية الرامية إلى طلب تعويض الأضرار الناجمة عن مركبة تابعة للدولة، أو لإحدى الولايات أو البلديات أو المؤسسات العمومية ذات الصبغة الإدارية.",
+          "sha256": "a190f7da64e607b8e7486aec69cad0ca5e1dec0e365e6fe4c5257bcbf1c8a1a9"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b6",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "802",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "خلافا للقواعد السابقة، تختص المحاكم العادية بمخالفات الطرق.",
+        "en": "By exception, the ordinary courts hear road offences."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "خلافا لأحكام المادتين 800 و801 أعلاه، يكون من اختصاص المحاكم العادية المنازعات الآتية :",
+          "sha256": "d6d4f052226b1d1a98137b35488c0031d2cf7490e21ba9d95c0051c778ab52be"
+        },
+        {
+          "paragraph": 2,
+          "text": "1 - مخالفات الطرق.",
+          "sha256": "e73fd846f273815805a6d23e3eec82ca53c57ba7a3cf6597b2bf904c010092d0"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b7",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "807",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "الاختصاص النوعي والإقليمي للمحاكم الإدارية من النظام العام.",
+        "en": "The subject-matter and territorial jurisdiction of the administrative courts are of public order."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "الاختصاص النوعي والاختصاص الإقليمي للمحاكم الإدارية من النظام العام.",
+          "sha256": "3d6925a5c335fef16829aea095b002c1f5c0042cc9415d06ba59cd9bb6d188bb"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b8",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "807",
+        "paragraphs": [
+          2,
+          3
+        ]
+      },
+      "says": {
+        "ar": "يجوز لأي خصم الدفع بعدم الاختصاص في أية مرحلة، ويجب على القاضي إثارته تلقائيا.",
+        "en": "Any party may plead lack of jurisdiction at any stage, and the judge must raise it of his own motion."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "يجوز إثارة الدفع بعدم الاختصاص من أحد الخصوم في أية مرحلة كانت عليها الدعوى.",
+          "sha256": "dc872210a842447c397001c69c89e1ac905604731933fee64a83a7be08b98e19"
+        },
+        {
+          "paragraph": 3,
+          "text": "يجب إثارته تلقائيا من طرف القاضي.",
+          "sha256": "989e1fc655534ac9e70cf3338f38e783b8d23bf3c14d1bba9ee80daabc80ecb6"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b9",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "36",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "عدم الاختصاص النوعي من النظام العام وتقضي به الجهة القضائية تلقائيا في أية مرحلة.",
+        "en": "Lack of subject-matter jurisdiction is of public order and the court declares it of its own motion at any stage."
+      },
+      "required": true,
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "عدم الاختصاص النوعي من النظام العام، تقضي به الجهة القضائية تلقائيا في أية مرحلة كانت عليها الدعوى.",
+          "sha256": "26cf02fff2cc54b3c6de97f1bd437b0052075f088304005b96bd1d1da03ae23d"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b10",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "803",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يتحدد الاختصاص الإقليمي للمحاكم الإدارية وفق القواعد العامة لموطن المدعى عليه.",
+        "en": "The territorial jurisdiction of the administrative courts follows the general rules on the defendant's domicile."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يتحدد الاختصاص الإقليمي للمحاكم الإدارية طبقا للمادتين37 و38 من هذا القانون.",
+          "sha256": "765aa76eaf9693061e711dc1f21c572d21022cb075cc434896d7375383cd2712"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b11",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "804",
+        "paragraphs": [
+          1,
+          5
+        ]
+      },
+      "says": {
+        "ar": "ترفع وجوبا منازعات الموظفين وأعوان الدولة والعاملين في المؤسسات العمومية الإدارية أمام المحكمة الإدارية لمكان ممارسة وظيفتهم.",
+        "en": "Disputes of civil servants, State agents and staff of public administrative bodies must be brought before the administrative court of the place where they work."
+      },
+      "interpretive": true,
+      "interpretiveNote": "The article sits in the section on territorial jurisdiction of the administrative courts; it fixes the court of the place of work. Reading it as also saying that such disputes leave the ordinary courts is a reading.",
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "خلافا لأحكام المادة 803 أعلاه، ترفع الدعاوى وجوبا أمام المحاكم الإدارية في المواد المبينة أدناه :",
+          "sha256": "a2c2352f38c48572ffbc96c37efaf4d32bbdd144e512db8e731a6e3c0a02a5b8"
+        },
+        {
+          "paragraph": 5,
+          "text": "4– في مادة المنازعات المتعلقة بالموظفين أو أعوان الدولة أو غيرهم من الأشخاص العاملين في المؤسسات العمومية الإدارية، أمام المحكمة التي يقع في دائرة اختصاصها مكان ممارسة وظيفتهم،",
+          "sha256": "610408b8179b5e250e1c13d963d25f67dbec0283eb6065dbacb4724a4be66bc1"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b12",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "804",
+        "paragraphs": [
+          1,
+          2,
+          3,
+          4,
+          6,
+          7,
+          8
+        ]
+      },
+      "says": {
+        "ar": "ترفع وجوبا أمام محاكم إدارية محددة مكانيا منازعات الضرائب والرسوم والأشغال العمومية والعقود الإدارية والخدمات الطبية والتوريدات وتعويض الضرر الناجم عن فعل ضار.",
+        "en": "Tax, public works, administrative contract, medical service, supply and harmful-act compensation disputes must be brought before administrative courts fixed by place."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "خلافا لأحكام المادة 803 أعلاه، ترفع الدعاوى وجوبا أمام المحاكم الإدارية في المواد المبينة أدناه :",
+          "sha256": "a2c2352f38c48572ffbc96c37efaf4d32bbdd144e512db8e731a6e3c0a02a5b8"
+        },
+        {
+          "paragraph": 2,
+          "text": "1– في مادة الضرائب أو الرسوم، أمام المحكمة التي يقع في دائرة اختصاصها مكان فرض الضريبة أو الرسم،",
+          "sha256": "fa654a1a51abe05897eb10265d9b56f0c72eb0b367d3a4250c4cc18809b9d4a4"
+        },
+        {
+          "paragraph": 3,
+          "text": "2– في مادة الأشغال العمومية، أمام المحكمة التي يقع في دائرة اختصاصها مكان تنفيذ الأشغال،",
+          "sha256": "7dd86281de7d2ddd9d5f8e7d84c66460bfb8147bf1f953128a97ab7f70a0007d"
+        },
+        {
+          "paragraph": 4,
+          "text": "3– في مادة العقود الإدارية، مهما كانت طبيعتها، أمام المحكمة التي يقع في دائرة اختصاصها مكان إبرام العقد أو تنفيذه،",
+          "sha256": "883992230ddfe09738848a67c0d483a5c3d40f97db8c418f9baf598400cfb9f0"
+        },
+        {
+          "paragraph": 6,
+          "text": "5– في مادة الخدمات الطبية، أمام المحكمة التي يقع في دائرة اختصاصها مكان تقديم الخدمات،",
+          "sha256": "ce551ac46936fa9778c808f096ecfd81bd6baedaed0130a14e539f27c53923d7"
+        },
+        {
+          "paragraph": 7,
+          "text": "6– في مادة التوريدات أو الأشغال أو تأجير خدمات فنية أو صناعية، أمام المحكمة التي يقع في دائرة اختصاصها مكان إبرام الاتفاق أو مكان تنفيذه إذا كان أحد الأطراف مقيما به،",
+          "sha256": "cf0320b05deb420dee72ce612d085c4ff52585676dd3ca3f829ad5516ca12aed"
+        },
+        {
+          "paragraph": 8,
+          "text": "7– في مادة تعويض الضرر الناجم عن جناية أو جنحة أو فعل تقصيري، أمام المحكمة التي يقع في دائرة اختصاصها مكان وقوع الفعل الضار،",
+          "sha256": "d7dae90eec0378c2f3e548bb2fc22bae2510e7fa584e02a7365a5ddc9977d554"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b13",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "900 مكرر",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "تختص المحكمة الإدارية للاستئناف للجزائر كدرجة أولى بدعاوى إلغاء وتفسير وتقدير مشروعية قرارات السلطات الإدارية المركزية والهيئات العمومية الوطنية والمنظمات المهنية الوطنية.",
+        "en": "The administrative court of appeal of Algiers hears at first instance actions to annul, interpret or review decisions of central administrative authorities, national public bodies and national professional organisations."
+      },
+      "quote": [
+        {
+          "paragraph": 3,
+          "text": "وتختص المحكمة الإدارية للاستئناف للجزائر بالفصل كدرجة أولى في دعاوى إلغاء وتفسير وتقدير مشروعية القرارات الإدارية الصادرة عن السلطات الإدارية المركزية والهيئات العمومية الوطنية والمنظمات المهنية الوطنية.",
+          "sha256": "05b13bb1270426107303b34dbcd8f5a5b32d151faa270e9b92277ae0d608e816"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b14",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "829",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "أجل الطعن أمام المحكمة الإدارية أربعة أشهر من التبليغ الشخصي بالقرار الفردي أو من نشر القرار الجماعي أو التنظيمي.",
+        "en": "The period for an action before the administrative court is four months from personal notification of an individual decision or publication of a collective or regulatory decision."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يحدد أجل الطعن أمام المحكمة الإدارية بأربعة (4) أشهر، يسري من تاريخ التبليغ الشخصي بنسخة من القرار الإداري الفردي، أو من تاريخ نشر القرار الإداري الجماعي أو التنظيمي.",
+          "sha256": "5e371dced3e52b6b424eea06192ff7dc011987f0c04f1ae335836dc0580ba7e1"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b15",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "830",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجوز تقديم تظلم إلى الجهة الإدارية مصدرة القرار داخل أجل الطعن القضائي نفسه.",
+        "en": "A grievance may be lodged with the authority that made the decision within the period of the court action."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجوز للشخص المعني بالقرار الإداري، تقديم تظلم إلى الجهة الإدارية مصدرة القرار في الأجل المنصوص عليه في المادة 829 أعلاه.",
+          "sha256": "2fead5fac51cd5a2f3e4e74a216bb561b5fb4452eeff9efc393b6cf1d016a6e2"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b16",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "830",
+        "paragraphs": [
+          2,
+          3
+        ]
+      },
+      "says": {
+        "ar": "سكوت الإدارة شهرين عن التظلم رفض، ثم يستفيد المتظلم من أجل شهرين لرفع طعنه القضائي من انتهاء مدة السكوت.",
+        "en": "Two months of silence on the grievance count as a refusal, after which the complainant has two months to bring the court action, from the end of the silence."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "يعد سكوت الجهة الإدارية المتظلم أمامها عن الرد، خلال شهرين (2)، بمثابة قرار بالرفض ويبدأ هذا الأجل من تاريخ تبليغ التظلم.",
+          "sha256": "94a4ed6496cdf11f4fe2388c83459f7f78bbb2570d6495b75196484afb4cb6a7"
+        },
+        {
+          "paragraph": 3,
+          "text": "وفي حالة سكوت الجهة الإدارية، يستفيد المتظلم من أجل شهرين (2)، لتقديم طعنه القضائي، الذي يسري من تاريخ انتهاء أجل الشهرين (2) المشار إليه في الفقرة أعلاه.",
+          "sha256": "fa57bcf64645bd77d391dd478dabf4b48e4e07480ec08e01cabf6349112ce05d"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b17",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "830",
+        "paragraphs": [
+          4
+        ]
+      },
+      "says": {
+        "ar": "إذا ردت الإدارة في أجلها بدأ أجل شهرين من تاريخ تبليغ الرفض.",
+        "en": "If the administration answers in time, a period of two months runs from notification of the refusal."
+      },
+      "quote": [
+        {
+          "paragraph": 4,
+          "text": "في حالة رد الجهة الإدارية خلال الأجل الممنوح لها، يبدأ سريان أجل شهرين (2) من تاريخ تبليغ الرفض.",
+          "sha256": "2dcaa8522ee00303ea2db44c309a0d2632d1b3b80126e83b71bbc9daaf861cc6"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b18",
+      "role": "proof",
+      "cite": {
+        "code": "cpca",
+        "article": "830",
+        "paragraphs": [
+          5
+        ]
+      },
+      "says": {
+        "ar": "يثبت إيداع التظلم بكل وسيلة مكتوبة ويرفق مع العريضة.",
+        "en": "The lodging of the grievance is proved by any written means and attached to the petition."
+      },
+      "quote": [
+        {
+          "paragraph": 5,
+          "text": "يثبت إيداع التظلم أمام الجهة الإدارية بكل الوسائل المكتوبة، ويرفق مع العريضة.",
+          "sha256": "8c9a37d80f9ed7639139dfdfad97f5738be8f09993202cb7a9333a707269097d"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b19",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "831",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "لا يحتج بأجل الطعن إلا إذا أشير إليه في تبليغ القرار المطعون فيه.",
+        "en": "The period may be set against the claimant only if the notification of the decision mentions it."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "لا يحتج بأجل الطعن المنصوص عليه في المادة 829 أعلاه، إلا إذا أشير إليه في تبليغ القرار المطعون فيه.",
+          "sha256": "df850f32e3a86fbc22e1df0770a1da680f1ad84f683d49403bd5ee4440ffc628"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b20",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "832",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "ينقطع أجل الطعن بالطعن أمام جهة قضائية غير مختصة.",
+        "en": "The period is interrupted by an action brought before a court without jurisdiction."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تنقطع آجال الطعن في الحالتين الآتيتين :",
+          "sha256": "6fc8305c44a519a2ae64fc6de6b5960c74b9c1dbd506c97c3609dcb84f028496"
+        },
+        {
+          "paragraph": 2,
+          "text": "1– الطعن أمام جهة قضائية غير مختصة،",
+          "sha256": "67fb9bb57d3c1ababa9b67095eb6be18aaf0e01b640b659af8757e78163189ac"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b21",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "832",
+        "paragraphs": [
+          4,
+          5,
+          6
+        ]
+      },
+      "says": {
+        "ar": "يوقف أجل الطعن طلب المساعدة القضائية والقوة القاهرة أو الحادث الفجائي.",
+        "en": "The period is suspended by a request for legal aid and by force majeure or a sudden event."
+      },
+      "quote": [
+        {
+          "paragraph": 4,
+          "text": "وتوقف آجال الطعن في الحالتين الآتيتين :",
+          "sha256": "24ffe6b08e6d4224e76af9235f00760acf2719ac973eddd06dfd5b2387942995"
+        },
+        {
+          "paragraph": 5,
+          "text": "1– طلب المساعدة القضائية،",
+          "sha256": "f836e113f55328b47bebed374187317f3629b689ace3583ee6b49eaf656df5e3"
+        },
+        {
+          "paragraph": 6,
+          "text": "2– القوة القاهرة أو الحادث الفجائي.",
+          "sha256": "94f219fed8aa094bf0ad8ada319ef6d48f2022513f1184c11ea361f910689c45"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b22",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "405",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تحسب آجال القانون كاملة ولا يحسب يوم التبليغ ولا يوم انقضاء الأجل.",
+        "en": "The periods of the code are counted in full; neither the day of notification nor the day the period ends is counted."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تحسب كل الآجال المنصوص عليها في هذا القانون كاملة، ولا يحسب يوم التبليغ أو التبليغ الرسمي ويوم انقضاء الأجل.",
+          "sha256": "984ad2c57d7899fc351e66cf44c516ce38db8c8f481d3105c8239f3c7edc4a25"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b23",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "405",
+        "paragraphs": [
+          4
+        ]
+      },
+      "says": {
+        "ar": "إذا لم يكن آخر يوم من الأجل يوم عمل يمدد الأجل إلى أول يوم عمل موال.",
+        "en": "If the last day of the period is not a working day, the period runs to the next working day."
+      },
+      "quote": [
+        {
+          "paragraph": 4,
+          "text": "إذا كان اليوم الأخير من الأجل ليس يوم عمل كليا أو جزئيا، يمدد الأجل إلى أول يوم عمل موالي.",
+          "sha256": "0a3c836f720ec1fed37b2b4a51a001d1210d91b6c830291d2bae84f72aaa5f1f"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b24",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "322",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يترتب على عدم مراعاة آجال القانون المقررة لممارسة حق أو للطعن سقوط الحق، إلا في حالة القوة القاهرة أو أحداث تؤثر في السير العادي لمرفق العدالة.",
+        "en": "Failure to respect a period of the code for exercising a right or a remedy forfeits the right, except for force majeure or events affecting the normal working of the courts."
+      },
+      "interpretive": true,
+      "interpretiveNote": "The article sits in the title on means of appeal (general rules); applying it to the period for the action before the administrative court, which the code calls a period of recourse, is a reading.",
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "كل الآجال المقررة في هذا القانون من أجل ممارسة حق، أو من أجل حق الطعن، يترتب على عدم مراعاتها سقوط الحق، أو سقوط ممارسة حق الطعن، باستثناء حالة القوة القاهرة أو وقوع أحداث من شأنها التأثير في السير العادي لمرفق العدالة.",
+          "sha256": "69319a8fb04ff196f10816e813b0cf0d93b6f4225ace93b3232f84c09936cd1d"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b25",
+      "role": "limit",
+      "cite": {
+        "code": "labour-relations",
+        "article": "3",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يخضع الموظفون والأعوان المتعاقدون في الهيئات والإدارات العمومية ومستخدمو المؤسسات العمومية ذات الطابع الإداري لأحكام خاصة لا لقانون علاقات العمل.",
+        "en": "Civil servants, contract agents of public bodies and administrations, and staff of public administrative bodies are governed by special provisions, not by the labour relations law."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يخضع المستخدمون المدنيون والعسكريون التابعون للدفاع الوطني والقضاة والموظفون والأعوان المتعاقدون في الهيئات والإدارات العمومية في الدولة والولايات والبلديات ومستخدمو المؤسسات العمومية ذات الطابع الإداري، لأحكام تشريعية وتنظيمية خاصة.",
+          "sha256": "f79899d72decb330f53e09f950c35e4768e0316cc0b0a541a2f0b6f5990d7616"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b26",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "536 مكرر",
+        "paragraphs": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "says": {
+        "ar": "تختص المحكمة التجارية المتخصصة بمنازعات الملكية الفكرية والشركات التجارية والتسوية القضائية والإفلاس والبنوك والمؤسسات المالية مع التجار والمنازعات البحرية والنقل الجوي والتأمينات المتعلقة بالنشاط التجاري والتجارة الدولية.",
+        "en": "The specialised commercial court hears disputes of intellectual property, commercial companies, judicial settlement and bankruptcy, banks and financial institutions with merchants, maritime, air transport and insurance linked to commercial activity, and international trade."
+      },
+      "required": true,
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تختص المحكمة التجارية المتخصصة بالنظر في المنازعات المذكورة أدناه :",
+          "sha256": "b5b2fdd45f33caedc5776587315f0936cf1fe0082da3e7eeeb8d7d4267f47a67"
+        },
+        {
+          "paragraph": 2,
+          "text": "– منازعات الملكية الفكرية،",
+          "sha256": "79bf8923c6c6541e232e7dbc84c96fe80125956748d9487b676bffcf264d9013"
+        },
+        {
+          "paragraph": 3,
+          "text": "– منازعات الشركات التجارية، لا سيما منازعات الشركاء وحل وتصفية الشركات،",
+          "sha256": "288c52d056de29af450516464328ce2ceb8c77070d2839f6b055b8cca752cfce"
+        },
+        {
+          "paragraph": 4,
+          "text": "– التسوية القضائية والإفلاس،",
+          "sha256": "74aad28f6ca9db85f143deb55a14ee28e511a7bc594130be9917be7be39db367"
+        },
+        {
+          "paragraph": 5,
+          "text": "– منازعات البنوك والمؤسسات المالية مع التجار،",
+          "sha256": "b21502d6a651dd6718ae6b03af697a24c02383c62e25883aabf9f6e68c5c9ad0"
+        },
+        {
+          "paragraph": 6,
+          "text": "– المنازعات البحرية والنقل الجوي ومنازعات التأمينات المتعلقة بالنشاط التجاري،",
+          "sha256": "d441e0a5ff405e3881eab4bf0903a86d09a88e0a4861cc0385cb7763a50ad58d"
+        },
+        {
+          "paragraph": 7,
+          "text": "– المنازعات المتعلقة بالتجارة الدولية.",
+          "sha256": "577110918dc4d1504ddac3fdaa3f964d9dcddf1322d6cdeb40ddfc133643efee"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b27",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "531",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يختص القسم التجاري بالمنازعات التجارية ما عدا تلك المسندة إلى المحكمة التجارية المتخصصة.",
+        "en": "The commercial section hears commercial disputes except those given to the specialised commercial court."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يختص القسم التجاري بالنظر في المنازعات التجارية، باستثناء تلك المذكورة في المادة 536 مكرر من هذا القانون.",
+          "sha256": "b7d9c468e630b13ea0b379eee1b1c38dda00d26a7f4ee8c0fce11538ca3b4d7b"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b28",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "536 مكرر 1",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تطبق على المحكمة التجارية المتخصصة قواعد الاختصاص الإقليمي المنصوص عليها في القانون.",
+        "en": "The territorial rules of the code apply to the specialised commercial court."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تطبق على المحكمة التجارية المتخصصة أحكام الاختصاص الإقليمي المنصوص عليها في هذا القانون.",
+          "sha256": "2b1efc9c1767000e26c316afa67e00b1ac4f40720b1a834c61574365eb3a118d"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b29",
+      "role": "prerequisite",
+      "cite": {
+        "code": "cpca",
+        "article": "536 مكرر 4",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يسبق قيد الدعوى أمام المحكمة التجارية المتخصصة إجراء صلح بطلب من أحد الخصوم أمام قاض يعينه رئيسها.",
+        "en": "Before a case is entered at the specialised commercial court, a conciliation is held at a party's request before a judge its president appoints."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يسبق قيد الدعوى إجراء الصلح الذي يتم بطلب من أحد الخصوم ويقدم إلى رئيس المحكمة التجارية المتخصصة الذي يعين خلال مدة خمسة (5) أيام، بموجب أمر على عريضة، أحد القضاة للقيام بإجراء الصلح في أجل لا يتجاوز ثلاثة (3) أشهر، ويبلغ طالب الصلح باقي أطراف النزاع بتاريخ جلسة الصلح.",
+          "sha256": "b9b1c7423fa60f1f0ac17eb182ee12113ff31a2bcddf85bf14a24e224acaab9b"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b30",
+      "role": "prerequisite",
+      "cite": {
+        "code": "cpca",
+        "article": "536 مكرر 4",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "عند فشل الصلح ترفع الدعوى بعريضة مرفقة بمحضر عدم الصلح تحت طائلة عدم القبول شكلا.",
+        "en": "If conciliation fails, the claim is filed with the record of non-conciliation attached, on pain of inadmissibility in form."
+      },
+      "quote": [
+        {
+          "paragraph": 3,
+          "text": "في حالة فشل محاولة الصلح، ترفع الدعوى أمام المحكمة التجارية المتخصصة بعريضة افتتاح الدعوى طبقا للقواعد المنصوص عليها في هذا القانون مرفقة، تحت طائلة عدم قبول الدعوى شكلا، بمحضر عدم الصلح.",
+          "sha256": "c7360c68a0c37716fb876915c034212fc2e5985c79ae7ebe7693daa684b00b49"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b31",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "536 مكرر 5",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يفصل في الدعوى أمام المحكمة التجارية المتخصصة بحكم قابل للاستئناف أمام المجلس القضائي.",
+        "en": "The specialised commercial court decides by a judgment open to appeal before the judicial council."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يتم الفصل في الدعوى أمام المحكمة التجارية المتخصصة بحكم قابل للاستئناف أمام المجلس القضائي، وفقا للقواعد المنصوص عليها في هذا القانون.",
+          "sha256": "cf20c42973d260794b07e971c57d537a1a2af231c77d9c564644023db43528da"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b32",
+      "role": "limit",
+      "cite": {
+        "code": "law-22-13",
+        "article": "13",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تسري قواعد الاختصاص الجديدة للجهات القضائية الإدارية والمحاكم التجارية المتخصصة من تاريخ تنصيب الجهات القضائية الجديدة.",
+        "en": "The new subject-matter and territorial rules for the administrative courts and the specialised commercial courts apply from the installation of the new courts."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تسري قواعد الاختصاص النوعي والإقليمي المنصوص عليها في هذا القانون، الخاصة بالجهات القضائية الإدارية والمحاكم التجارية المتخصصة ابتداء من تاريخ تنصيب الجهات القضائية الجديدة.",
+          "sha256": "626596d6c211186c32d3a0ab2806017710c395cb30bf4bc6c2959af5f44c57f2"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "delta",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b33",
+      "role": "limit",
+      "cite": {
+        "code": "law-22-13",
+        "article": "13",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "تبقى الجهات القضائية الإدارية والأقسام التجارية مختصة بالدعاوى المرفوعة أمامها قبل تاريخ التنصيب.",
+        "en": "The administrative courts and commercial sections keep the cases filed before them before the installation."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "وتبقى الجهات القضائية الإدارية والأقسام التجارية مختصة بالفصل في الدعاوى المرفوعة أمامها قبل تاريخ تنصيب الجهات القضائية الجديدة.",
+          "sha256": "99079135c3848dab7344e00b22b9500784dfd724ba4fa02b30a46fefb2ae3d88"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "delta",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b34",
+      "role": "procedure",
+      "cite": {
+        "code": "law-22-13",
+        "article": "14",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "ألغيت فقرات المادة المتعلقة بالأقطاب المتخصصة في المحاكم ومواد أخرى من قانون الإجراءات المدنية والإدارية.",
+        "en": "The paragraphs of the code on the specialised poles of the courts, and other articles of the code, were repealed."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تلغى :",
+          "sha256": "9641d961f8bf2d16b962b79a7b062118244055e81a4fd953b61aed591c469585"
+        },
+        {
+          "paragraph": 2,
+          "text": "– الفقرات 7 و 8 و 9 و 10 من المادّة 32 والمواد 826 و835 و836 و912 و913 و914 من القانون رقم 08-09 المؤرخ في 18 صفر عام 1429 الموافق 25 فبراير سنة 2008 والمتضمن قانون الإجراءات المدنية والإدارية،",
+          "sha256": "e234412834b52f18ea747aad8f5febf87c636532d323870216f827765e5cb335"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "delta",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b35",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "32",
+        "paragraphs": [
+          1,
+          3
+        ]
+      },
+      "says": {
+        "ar": "المحكمة جهة الاختصاص العام وتفصل في جميع القضايا لا سيما المدنية والتجارية والبحرية والاجتماعية والعقارية وشؤون الأسرة.",
+        "en": "The tribunal is the court of general jurisdiction and decides all cases, in particular civil, commercial, maritime, social, real-property and family cases."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "المحكمة هي الجهة القضائية ذات الاختصاص العام وتتشكل من أقسام.",
+          "sha256": "c1df5a32bb595c5577218fcade5a8a06090daf9621762cc93ed07b23e2fe1d7c"
+        },
+        {
+          "paragraph": 3,
+          "text": "تفصل المحكمة في جميع القضايا، لاسيما المدنية والتجارية والبحرية والاجتماعية والعقارية وقضايا شؤون الأسرة والتي تختص بها إقليميا.",
+          "sha256": "7740c074bf894b03455ee70f72da463a72827300e32f845e0f1ee24d2ce89a58"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b36",
+      "role": "proof",
+      "cite": {
+        "code": "civil-code",
+        "article": "339",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "لا يرتبط القاضي المدني بالحكم الجنائي إلا في الوقائع التي فصل فيها وكان فصله فيها ضروريا.",
+        "en": "The civil judge is bound by a criminal judgment only on the facts it decided where deciding them was necessary."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "لا يرتبط القاضى المدنى بالحكم الجنائى الا فى الوقائع التى فصل فيها هذا الحكم وكان فصله فيها ضروريا .",
+          "sha256": "05e48f2ea8537e32abbf4d668419b17424f67e3bd99fcd34b303bd43adadfa1d"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "delta",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b37",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "39",
+        "paragraphs": [
+          1,
+          3
+        ]
+      },
+      "says": {
+        "ar": "ترفع دعاوى تعويض الضرر عن جناية أو جنحة أو مخالفة أو فعل تقصيري أمام الجهة القضائية التي وقع في دائرتها الفعل الضار.",
+        "en": "Claims for compensation of damage from a crime, an offence, a petty offence or a tort are brought before the court of the place of the harmful act."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "ترفع الدعاوى المتعلقة بالمواد المبينة أدناه أمام الجهات القضائية الآتية :",
+          "sha256": "72ac67b034c23dcf2735816dd006483c62210397804157446767cc5be5992678"
+        },
+        {
+          "paragraph": 3,
+          "text": "2 - في مواد تعويض الضرر عن جناية، أو جنحة، أو مخالفة، أو فعل تقصيري، ودعاوى الأضرار الحاصلة بفعل الإدارة، أمام الجهة القضائية التي وقع في دائرة اختصاصها الفعل الضار،",
+          "sha256": "510bf3278ac16f0eac2b7f748beba09c45af6781bc505e9fef3682b548203b72"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b38",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "165",
+        "paragraphs": [
+          4
+        ]
+      },
+      "says": {
+        "ar": "إذا عرضت القضية على القاضي الجزائي أرجئ الفصل في دعوى مضاهاة الخطوط إلى حين الفصل في الدعوى الجزائية.",
+        "en": "When the matter is before the criminal judge, a handwriting-comparison claim is deferred until the criminal action is decided."
+      },
+      "interpretive": true,
+      "interpretiveNote": "The paragraph states the stay for one incidental procedure only; extending it to other civil claims is a reading.",
+      "quote": [
+        {
+          "paragraph": 4,
+          "text": "إذا عرضت القضية أمام القاضي الجزائي، يتم إرجاء الفصل في دعوى مضاهاة الخطوط إلى حين الفصل في الدعوى الجزائية.",
+          "sha256": "bb6d1bb7b21be361dccf2c6324ec4f96846d3b0a6077d5e031f358d636247003"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b39",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "306",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجوز لدائن بدين من النقود مستحق وحال الأداء ومعين المقدار وثابت بالكتابة أن يطلب، خلافا لقواعد رفع الدعاوى، أمرا بالأداء بعريضة إلى رئيس محكمة موطن المدين.",
+        "en": "A creditor of a sum of money that is due, payable, fixed and proven in writing may, instead of the rules for filing a claim, petition the president of the court of the debtor's domicile for an order to pay."
+      },
+      "required": true,
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "خلافا للقواعد المقررة في رفع الدعاوى، يجوز للدائن بدين من النقود، مستحق وحال الأداء ومعين المقدار وثابت بالكتابة، لا سيما الكتابة العرفية المتضمنة الاعتراف بدين أو التعهد بالوفاء أو فاتورة مؤشر عليها من المدين، تقديم طلب في شكل عريضة على نسختين، إلى رئيس المحكمة التي يوجد في دائرة اختصاصها موطن المدين، وتحتوي على :",
+          "sha256": "29446e1b6c500602978d1f562768b56f6367ff7b51b720d5f9ac3f2a60b85168"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b40",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "306",
+        "paragraphs": [
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "says": {
+        "ar": "تتضمن العريضة هوية الدائن والمدين وموطنيهما الحقيقي أو المختار في الجزائر وبيانات الشخص المعنوي وعرضا موجزا لسبب الدين ومقداره.",
+        "en": "The petition gives the identity of the creditor and the debtor and their real or chosen domicile in Algeria, the details of any legal person, and a short statement of the cause and amount of the debt."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "1- اسم ولقب الدائن وموطنه الحقيقي أو المختار في الجزائر،",
+          "sha256": "525e6bd39a1cafee1b839f839ecfdef6a03e05407bd317b775ee9f627e593226"
+        },
+        {
+          "paragraph": 3,
+          "text": "2 - اسم ولقب المدين وموطنه الحقيقي أو المختار في الجزائر،",
+          "sha256": "043f76d395bdf30069bad5c1d1d03c86fcc0d216c80c71abbf4ce21a083f468b"
+        },
+        {
+          "paragraph": 4,
+          "text": "3 - ذكر تسمية وطبيعة الشخص المعنوي ومقره الاجتماعي وصفة ممثله القانوني أو الاتفاقي،",
+          "sha256": "187f0683dbaa847730ef57849ca361a8d6cc48b5c5faa358155093ec916c4b73"
+        },
+        {
+          "paragraph": 5,
+          "text": "4 - عرض موجز عن سبب الدين ومقداره،",
+          "sha256": "35e0803d8acd75d244f97fbdcffec9d17b3d5a693f1ab927921c576af6cd5d6d"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b41",
+      "role": "proof",
+      "cite": {
+        "code": "cpca",
+        "article": "306",
+        "paragraphs": [
+          6
+        ]
+      },
+      "says": {
+        "ar": "ترفق بطلب الأمر بالأداء جميع المستندات المثبتة للدين.",
+        "en": "All documents proving the debt are attached to the request for an order to pay."
+      },
+      "quote": [
+        {
+          "paragraph": 6,
+          "text": "ترفق جميع المستندات المثبتة للدين مع العريضة.",
+          "sha256": "61489c86349098d6c4076c2041a320c02a7940e4d5fea3ff9e2c769b420d4c66"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b42",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "307",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يفصل الرئيس في الطلب بأمر في أجل أقصاه خمسة (5) أيام من إيداعه.",
+        "en": "The president rules on the request by order within five (5) days of its filing."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يفصل الرئيس في الطلب بأمر، خلال أجل أقصاه خمسة (5) أيام من تاريخ إيداع الطلب.",
+          "sha256": "890743acf5ab40711a4393049eed840b3164cc24467908edf6af447ad646887f"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b43",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "307",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "إذا تبين أن الدين ثابت أمر المدين بالوفاء بالدين والمصاريف وإلا رفض الطلب.",
+        "en": "If the debt appears established, the debtor is ordered to pay it with the costs; otherwise the request is refused."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "إذا تبين أن الدين ثابت، أمر المدين بالوفاء بمبلغ الدين والمصاريف، وإلا رفض الطلب.",
+          "sha256": "61196aabd34bb6651b0c76b89122bdedd5c8ea45d2911b126cfbf874262c2c99"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b44",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "307",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "أمر الرفض غير قابل لأي طعن، ويبقى للدائن حق رفع الدعوى وفق القواعد المقررة لها.",
+        "en": "An order refusing the request cannot be challenged, and the creditor keeps the right to file a claim under its rules."
+      },
+      "quote": [
+        {
+          "paragraph": 3,
+          "text": "الأمر بالرفض غير قابل لأي طعن، دون المساس بحق الدائن في رفع دعوى وفقا للقواعد المقررة لها.",
+          "sha256": "a72d21be22b9994cc3bbcd3a4e7b2c5e1189c6c878e17084e03b5b01c2a247ad"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b45",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "308",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "تسلم للدائن نسخة رسمية من الأمر، ويبلغ المدين رسميا مع تكليفه بالوفاء في أجل خمسة عشر (15) يوما.",
+        "en": "The creditor receives an official copy of the order, which is formally served on the debtor with a demand to pay within fifteen (15) days."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يسلم رئيس أمناء الضبط إلى الدائن نسخة رسمية من أمرالأداء.",
+          "sha256": "d7979623e97696fcdeb1103120f14cfdb23074af45adc911e4e208e57fbd7fca"
+        },
+        {
+          "paragraph": 2,
+          "text": "يتم التبليغ الرسمي وتكليف المدين بالوفاء بأصل الدين والمصاريف في أجل خمسة عشر (15) يوما.",
+          "sha256": "6cd0aa1b056fc7fc8605b3ff055d3ba3337d6ce3d5de018b341e4dd406333dfb"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b46",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "308",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "يجب أن يشار في التكليف بالوفاء، تحت طائلة البطلان، إلى حق المدين في الاعتراض خلال خمسة عشر (15) يوما من التبليغ الرسمي.",
+        "en": "The demand to pay must state, on pain of nullity, the debtor's right to object within fifteen (15) days of formal service."
+      },
+      "quote": [
+        {
+          "paragraph": 3,
+          "text": "يجب أن يشار في التكليف بالوفاء، تحت طائلة البطلان، بأن للمدين حق الاعتراض على أمر الأداء في أجل خمسة عشر (15) يوما تبدأ من تاريخ التبليغ الرسمي.",
+          "sha256": "4eb540da7640aec21515b72f28772627e468868cd2048a708db3b6f853107829"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b47",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "308",
+        "paragraphs": [
+          4,
+          5
+        ]
+      },
+      "says": {
+        "ar": "يقدم الاعتراض بطريق الاستعجال أمام القاضي الذي أصدر الأمر ويوقف تنفيذه.",
+        "en": "The objection is made as an urgent matter before the judge who made the order, and it suspends its enforcement."
+      },
+      "quote": [
+        {
+          "paragraph": 4,
+          "text": "يقدم الاعتراض على أمر الأداء بطريق الاستعجال أمام القاضي الذي أصدره.",
+          "sha256": "2fd3cebed9a49e7e0196cb02e5319d2804be86aec301ee6f52eab289746089eb"
+        },
+        {
+          "paragraph": 5,
+          "text": "للاعتراض أثر موقف لتنفيذ أمر الأداء.",
+          "sha256": "11d79a520a2567e0ddcf40748a0d06f06959d57f0237f8c332d1c817593a77b3"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b48",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "309",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "إذا لم يرفع الاعتراض في الأجل حاز أمر الأداء قوة الشيء المقضي به ومنحت الصيغة التنفيذية.",
+        "en": "If no objection is made in time, the order acquires the force of res judicata and the enforcement formula is granted."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "إذا لم يرفع الاعتراض في الأجل المحدد، يحوز أمر الأداء قوة الشيء المقضي به، وفي هذه الحالة يقوم رئيس أمناء الضبط بمنح الصيغة التنفيذية لطالب التنفيذ بعد تقديم شهادة عدم الاعتراض.",
+          "sha256": "d244bb069ff02323b75cc91a02e5c52b0a1c7b2026b531544616c5a333d4acbc"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b49",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "309",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يسقط أمر الأداء الذي لم يطلب إمهاره بالصيغة التنفيذية خلال سنة واحدة (1) من تاريخ صدوره ولا يرتب أي أثر.",
+        "en": "An order to pay for which the enforcement formula is not requested within one (1) year of its date lapses and has no effect."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "كل أمر أداء لم يطلب إمهاره بالصيغة التنفيذية خلال سنة واحدة (1) من تاريخ صدوره، يسقط ولا يرتب أي أثر.",
+          "sha256": "8818c4586030ed334edfad17dcca34ac7c8fc24b41473f176444d21ba03fe2dd"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b50",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "299",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يعرض الاستعجال والحراسة القضائية والتدابير التحفظية بعريضة افتتاحية أمام المحكمة المختصة.",
+        "en": "Urgent matters, judicial sequestration and protective measures are brought by petition before the competent court."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "في جميع أحوال الاستعجال، أو إذا اقتضى الأمر الفصل في إجراء يتعلق بالحراسة القضائية أو بأي تدبير تحفظي غير منظم بإجراءات خاصة، يتم عرض القضية بعريضة افتتاحية أمام المحكمة الواقع في دائرة اختصاصها الإشكال أو التدبير المطلوب، وينادى عليها في أقرب جلسة.",
+          "sha256": "ad5ea8fcd614f87510cbf39646a463c84776b398e612164a0a73d45816fbc8b3"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b51",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "303",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "الأمر الاستعجالي لا يمس أصل الحق وهو معجل النفاذ.",
+        "en": "An urgent order does not touch the substance of the right and is provisionally enforceable."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "لا يمس الأمر الاستعجالي أصل الحق، وهو معجل النفاذ بكفالة أو بدونها رغم كل طرق الطعن. كما أنه غير قابل للمعارضة ولا للاعتراض على النفاذ المعجل.",
+          "sha256": "2abf60c431e97ad946c6d18ccaaa20af48b4b99c598c56d8f34054bc1920a076"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b52",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "310",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "الأمر على عريضة أمر مؤقت يصدر دون حضور الخصم ما لم ينص القانون على خلاف ذلك.",
+        "en": "An order on petition is a provisional order made without the other party, unless the law says otherwise."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "الأمر على عريضة أمر مؤقت، يصدر دون حضور الخصم، ما لم ينص القانون على خلاف ذلك.",
+          "sha256": "6237c9deb165bbd2cd4510e7730d0072f4518cfefd2ec19cd7cd06ae06830c85"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b53",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "1006",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "يجوز التحكيم في الحقوق التي للشخص مطلق التصرف فيها، ولا يجوز في مسائل النظام العام وحالة الأشخاص وأهليتهم.",
+        "en": "Arbitration is open for rights the person may freely dispose of, not for matters of public order, status or capacity."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يمكن لكل شخص اللجوء إلى التحكيم في الحقوق التي له مطلق التصرف فيها.",
+          "sha256": "24311bc77322f6ec945c440d6b419ca7663c3650ed0fcdf569332f5a3c620ca9"
+        },
+        {
+          "paragraph": 2,
+          "text": "لا يجوز التحكيم في المسائل المتعلقة بالنظام العام أو حالة الأشخاص وأهليتهم.",
+          "sha256": "36462c3c7190cfb0ad720f8cd647e45ec29df4458ee39cea75b71a05686b5761"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b54",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "1007",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "شرط التحكيم اتفاق في عقد متصل بحقوق متاحة على عرض النزاعات التي قد تثار بشأنه على التحكيم.",
+        "en": "An arbitration clause is an agreement in a contract on freely disposable rights to submit disputes about it to arbitration."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "شرط التحكيم هو الاتفاق الذي يلتزم بموجبه الأطراف في عقد متصل بحقوق متاحة بمفهوم المادة 1006 أعلاه، لعرض النزاعات التي قد تثار بشأن هذا العقد على التحكيم.",
+          "sha256": "a7f2421a2c696b24c8024439341166502e1f5359a9437d001b8ad1e8603f23ab"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b55",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "1045",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يكون القاضي غير مختص بالموضوع إذا كانت الخصومة التحكيمية قائمة أو تبين وجود اتفاقية تحكيم أثارها أحد الأطراف.",
+        "en": "The judge lacks jurisdiction over the merits if arbitral proceedings are pending or an arbitration agreement exists and a party raises it."
+      },
+      "interpretive": true,
+      "interpretiveNote": "The article sits in the chapter on international commercial arbitration; whether it governs a purely domestic arbitration agreement is a reading.",
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يكون القاضي غير مختص بالفصل في موضوع النزاع، إذا كانت الخصومة التحكيمية قائمة، أو إذا تبين له وجود اتفاقية تحكيم على أن تثار من أحد الأطراف.",
+          "sha256": "9a4077e90eaf987bcf3406c1bb309690e8bc1ef398c08fa428911fa6c52cae54"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b57",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "536 مكرر",
+        "paragraphs": [
+          1,
+          4
+        ]
+      },
+      "says": {
+        "ar": "تختص المحكمة التجارية المتخصصة بمنازعات التسوية القضائية والإفلاس.",
+        "en": "The specialised commercial court hears judicial settlement and bankruptcy disputes."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تختص المحكمة التجارية المتخصصة بالنظر في المنازعات المذكورة أدناه :",
+          "sha256": "b5b2fdd45f33caedc5776587315f0936cf1fe0082da3e7eeeb8d7d4267f47a67"
+        },
+        {
+          "paragraph": 4,
+          "text": "– التسوية القضائية والإفلاس،",
+          "sha256": "74aad28f6ca9db85f143deb55a14ee28e511a7bc594130be9917be7be39db367"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b56",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "819",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يرفق بعريضة إلغاء القرار الإداري أو تفسيره أو تقدير مشروعيته القرار المطعون فيه، تحت طائلة عدم القبول، ما لم يوجد مانع مبرر.",
+        "en": "A petition to annul, interpret or review an administrative decision must attach the contested decision, on pain of inadmissibility, unless there is a justified obstacle."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجب أن يرفق مع العريضة الرامية إلى إلغاء أو تفسير أو تقدير مدى مشروعية القرار الإداري، تحت طائلة عدم القبول، القرار الإداري المطعون فيه، ما لم يوجد مانع مبرر.",
+          "sha256": "3efcd3cd8ccf69ddb2cb7a050b9e28d69ca35c5f4e01ed0152097254b6f77d97"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    }
+  ],
+  "court": {
+    "territory": [
+      {
+        "id": "t1",
+        "rule": {
+          "ar": "أمام المحاكم الإدارية يؤول الاختصاص الإقليمي لمحكمة موطن المدعى عليه طبقا للمادة 803، إلا في المواد التي تحدد لها المادة 804 محكمة بعينها وجوبا، ومنها منازعات الموظفين أمام محكمة مكان ممارسة الوظيفة.",
+          "en": "Before the administrative courts, the court of the defendant's domicile is competent under article 803, except in the matters for which article 804 fixes a court by place, among them staff disputes before the court of the place of work."
+        },
+        "when": {
+          "any": [
+            {
+              "slot": "public_body_party",
+              "is": "yes"
+            },
+            {
+              "slot": "worker_is_public_servant",
+              "is": "yes"
+            },
+            {
+              "slot": "requests",
+              "includes": "cancel_decision"
+            },
+            {
+              "slot": "claim_challenges_administrative_decision",
+              "is": "yes"
+            }
+          ]
+        },
+        "basis": [
+          "b10",
+          "b11",
+          "b12"
+        ]
+      },
+      {
+        "id": "t2",
+        "rule": {
+          "ar": "تطبق على المحكمة التجارية المتخصصة قواعد الاختصاص الإقليمي المنصوص عليها في قانون الإجراءات المدنية والإدارية.",
+          "en": "The territorial rules of the Code of Civil and Administrative Procedure apply to the specialised commercial court."
+        },
+        "when": {
+          "slot": "specialised_commercial_matter",
+          "in": [
+            "intellectual_property",
+            "commercial_company",
+            "bankruptcy_settlement",
+            "bank_with_merchant",
+            "maritime_air_insurance",
+            "international_trade"
+          ]
+        },
+        "basis": [
+          "b28"
+        ]
+      },
+      {
+        "id": "t3",
+        "rule": {
+          "ar": "يقدم طلب الأمر بالأداء إلى رئيس المحكمة التي يقع في دائرتها موطن المدين.",
+          "en": "The request for an order to pay goes to the president of the court of the debtor's domicile."
+        },
+        "when": {
+          "slot": "debt_written_fixed_due",
+          "is": "yes"
+        },
+        "basis": [
+          "b39"
+        ]
+      },
+      {
+        "id": "t4",
+        "rule": {
+          "ar": "تنظر المحكمة الإدارية للاستئناف للجزائر كدرجة أولى في دعاوى إلغاء قرارات السلطات الإدارية المركزية والهيئات العمومية الوطنية والمنظمات المهنية الوطنية.",
+          "en": "The administrative court of appeal of Algiers hears at first instance the actions to annul decisions of the central administrative authorities, national public bodies and national professional organisations."
+        },
+        "when": {
+          "all": [
+            {
+              "slot": "requests",
+              "includes": "cancel_decision"
+            },
+            {
+              "any": [
+                {
+                  "slot": "public_body_party",
+                  "is": "yes"
+                },
+                {
+                  "slot": "claim_challenges_administrative_decision",
+                  "is": "yes"
+                }
+              ]
+            }
+          ]
+        },
+        "basis": [
+          "b13"
+        ]
+      }
+    ],
+    "exits": [
+      {
+        "id": "x1",
+        "when": {
+          "all": [
+            {
+              "slot": "public_body_party",
+              "is": "yes"
+            },
+            {
+              "not": {
+                "all": [
+                  {
+                    "slot": "requests",
+                    "includes": "damages"
+                  },
+                  {
+                    "slot": "public_vehicle_damage",
+                    "is": "yes"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "goesTo": "administrativeCourt",
+        "effect": "warn",
+        "message": {
+          "ar": "المادة 800 من قانون الإجراءات المدنية والإدارية: تختص المحاكم الإدارية بالقضايا التي تكون الدولة أو الولاية أو البلدية أو مؤسسة عمومية ذات صبغة إدارية أو هيئة عمومية وطنية أو منظمة مهنية وطنية طرفا فيها، والمادة 802 تبقي للمحاكم العادية مخالفات الطرق ودعاوى تعويض أضرار المركبات التابعة لها. الاختصاص النوعي من النظام العام (المادتان 36 و807). تحقق من صفة الطرف العمومي ومن الجهة المختصة.",
+          "en": "CPCA article 800: the administrative courts hear the cases to which the State, a wilaya, a commune, a public administrative body, a national public body or a national professional organisation is a party; article 802 keeps road offences and damage claims for their vehicles with the ordinary courts. Subject-matter jurisdiction is of public order (articles 36 and 807). Check the public party's status and the competent court."
+        },
+        "basis": [
+          "b1",
+          "b2",
+          "b5",
+          "b6",
+          "b7",
+          "b8",
+          "b9"
+        ]
+      },
+      {
+        "id": "x2",
+        "when": {
+          "slot": "worker_is_public_servant",
+          "is": "yes"
+        },
+        "goesTo": "administrativeCourt",
+        "effect": "warn",
+        "interpretive": true,
+        "interpretiveNote": "Labour-relations 3 ¶1 puts civil servants and staff of public administrative bodies under special provisions, and cpca 804 ¶5 fixes the administrative court of their place of work; 804 sits among the territorial rules, so that such a dispute leaves the ordinary courts when no public body is a party is a reading (open point o8).",
+        "message": {
+          "ar": "المادة 3 من قانون علاقات العمل تخضع الموظفين وأعوان الإدارات العمومية لأحكام خاصة، والمادة 800 تجعل المحاكم الإدارية صاحبة الولاية العامة في المنازعات الإدارية، والمادة 804 ترفع منازعات الموظفين أمام المحكمة الإدارية لمكان ممارسة الوظيفة. تحقق من النظام القانوني للمدعي ومن الجهة المختصة.",
+          "en": "Article 3 of the labour relations law puts civil servants and agents of public administrations under special provisions, article 800 gives the administrative courts general jurisdiction over administrative disputes, and article 804 sends staff disputes to the administrative court of the place of work. Check the plaintiff's legal status and the competent court."
+        },
+        "basis": [
+          "b25",
+          "b1",
+          "b11",
+          "b9"
+        ]
+      },
+      {
+        "id": "x3",
+        "when": {
+          "all": [
+            {
+              "slot": "requests",
+              "includes": "cancel_decision"
+            },
+            {
+              "any": [
+                {
+                  "slot": "public_body_party",
+                  "is": "yes"
+                },
+                {
+                  "slot": "claim_challenges_administrative_decision",
+                  "is": "yes"
+                }
+              ]
+            }
+          ]
+        },
+        "goesTo": "administrativeCourt",
+        "effect": "warn",
+        "interpretive": true,
+        "interpretiveNote": "The request kind cancel_decision does not say who made the decision. When a body named in cpca 800 ¶2 is a party, the decision is read as that body's administrative decision (cpca 801 ¶2 to ¶6); otherwise the lawyer is asked whether the claim challenges an administrative decision.",
+        "message": {
+          "ar": "المادة 801 من قانون الإجراءات المدنية والإدارية: دعاوى إلغاء وتفسير وفحص مشروعية القرارات الإدارية المحلية من اختصاص المحاكم الإدارية، والمادة 900 مكرر تسند قرارات السلطات الإدارية المركزية والهيئات والمنظمات الوطنية إلى المحكمة الإدارية للاستئناف للجزائر. تحقق من مصدر القرار ومن الجهة المختصة.",
+          "en": "CPCA article 801: actions to annul, interpret or review local administrative decisions belong to the administrative courts, and article 900 مكرر gives decisions of central authorities and national bodies and organisations to the administrative court of appeal of Algiers. Check who made the decision and the competent court."
+        },
+        "basis": [
+          "b3",
+          "b4",
+          "b13",
+          "b9"
+        ]
+      },
+      {
+        "id": "x4",
+        "when": {
+          "all": [
+            {
+              "slot": "specialised_commercial_matter",
+              "in": [
+                "intellectual_property",
+                "commercial_company",
+                "bankruptcy_settlement",
+                "bank_with_merchant",
+                "maritime_air_insurance",
+                "international_trade"
+              ]
+            },
+            {
+              "not": {
+                "slot": "specialised_commercial_courts_installed",
+                "is": "no"
+              }
+            }
+          ]
+        },
+        "goesTo": "specialisedCommercialCourt",
+        "effect": "warn",
+        "interpretive": true,
+        "interpretiveNote": "The new jurisdiction applies from the installation of the specialised commercial courts (law-22-13 13 ¶1); the store gives no installation date, so the lawyer is asked whether the court of the area is installed, and the exit warns unless the answer is no.",
+        "message": {
+          "ar": "المادة 536 مكرر من قانون الإجراءات المدنية والإدارية: يختص بهذا النزاع المحكمة التجارية المتخصصة لا القسم التجاري (المادة 531)، ويسبق قيد الدعوى أمامها صلح ويرفق محضر عدم الصلح بالعريضة تحت طائلة عدم القبول (المادة 536 مكرر 4). وتسري هذه القواعد من تاريخ تنصيب المحكمة (المادة 13 من القانون 22-13). تحقق من طبيعة النزاع ومن تنصيب المحكمة المختصة.",
+          "en": "CPCA article 536 مكرر: this dispute belongs to the specialised commercial court, not the commercial section (article 531); a conciliation precedes filing and the non-conciliation record is attached on pain of inadmissibility (article 536 مكرر 4). These rules run from the installation of the court (article 13 of law 22-13). Check the nature of the dispute and that the competent court has been installed."
+        },
+        "basis": [
+          "b26",
+          "b27",
+          "b29",
+          "b30",
+          "b32",
+          "b33",
+          "b9"
+        ]
+      },
+      {
+        "id": "x5",
+        "when": {
+          "slot": "employer_in_bankruptcy_or_settlement",
+          "is": "yes"
+        },
+        "goesTo": "specialisedCommercialCourt",
+        "effect": "warn",
+        "interpretive": true,
+        "interpretiveNote": "cpca 536 مكرر ¶4 gives judicial settlement and bankruptcy disputes to the specialised commercial court; whether a claim against an employer in bankruptcy or settlement is such a dispute, or must first be declared in the collective procedure, rests on Commercial Code texts that are not in the store (open point o2, grade D).",
+        "message": {
+          "ar": "المادة 536 مكرر من قانون الإجراءات المدنية والإدارية تسند منازعات التسوية القضائية والإفلاس إلى المحكمة التجارية المتخصصة. صاحب العمل في حالة إفلاس أو تسوية قضائية: تحقق مما إذا كانت الدعوى من هذه المنازعات ومن الجهة المختصة.",
+          "en": "CPCA article 536 مكرر gives judicial settlement and bankruptcy disputes to the specialised commercial court. The employer is bankrupt or in judicial settlement: check whether the claim is such a dispute, and which court is competent."
+        },
+        "basis": [
+          "b57",
+          "b32"
+        ]
+      },
+      {
+        "id": "x6",
+        "when": {
+          "any": [
+            {
+              "slot": "criminal_case_on_same_facts",
+              "is": "yes"
+            },
+            {
+              "all": [
+                {
+                  "slot": "obligation_is_tort_compensation",
+                  "is": "yes"
+                },
+                {
+                  "slot": "damage_caused_by_offence",
+                  "is": "yes"
+                }
+              ]
+            }
+          ]
+        },
+        "goesTo": "criminalCourt",
+        "effect": "warn",
+        "interpretive": true,
+        "interpretiveNote": "The texts on the civil action before the criminal judge, the choice of route and the stay of the civil judge are in the Code of Criminal Procedure, which is not in the store (open point o3, grade D); only the binding effect of a criminal judgment (civil-code 339 ¶1) and the place of claims for damage from an offence (cpca 39 ¶3) are. The rule warns on either derivation's trigger.",
+        "message": {
+          "ar": "المادة 339 من القانون المدني: يرتبط القاضي المدني بالحكم الجنائي في الوقائع التي فصل فيها وكان فصله فيها ضروريا، والمادة 39 من قانون الإجراءات المدنية والإدارية تذكر دعاوى تعويض الضرر عن جناية أو جنحة أو مخالفة. تحقق من وجود متابعة جزائية بشأن الوقائع ومن حالتها، ومن الطريق المختار لطلب التعويض.",
+          "en": "Civil Code article 339: the civil judge is bound by a criminal judgment on the facts it necessarily decided, and CPCA article 39 names claims for damage from a felony, a misdemeanour or a minor offence. Check whether there is a criminal case on the facts and its stage, and the route chosen for the compensation claim."
+        },
+        "basis": [
+          "b36",
+          "b37"
+        ]
+      },
+      {
+        "id": "x7",
+        "when": {
+          "all": [
+            {
+              "slot": "requests",
+              "includes": "payment"
+            },
+            {
+              "slot": "debt_written_fixed_due",
+              "is": "yes"
+            }
+          ]
+        },
+        "goesTo": "paymentOrder",
+        "effect": "warn",
+        "interpretive": true,
+        "interpretiveNote": "cpca 306 ¶3 requires the debtor's real or chosen domicile in Algeria; a debtor living abroad may still have a chosen domicile in Algeria, so residence abroad does not by itself close the route (open point o5). The exit warns and asks the lawyer to check the domicile.",
+        "message": {
+          "ar": "المادة 306 من قانون الإجراءات المدنية والإدارية: يجوز لدائن بدين نقدي مستحق ومعين المقدار وثابت بالكتابة طلب أمر بالأداء من رئيس محكمة موطن المدين بدل رفع دعوى، بشرط ذكر موطن المدين الحقيقي أو المختار في الجزائر، ويبقى له رفع الدعوى إن رفض الطلب (المادة 307). تحقق من الطريق الأنسب ومن موطن المدين.",
+          "en": "CPCA article 306: a creditor of a money debt that is due, fixed and proven in writing may ask the president of the court of the debtor's domicile for an order to pay instead of filing a claim, provided the debtor's real or chosen domicile in Algeria is given, and keeps the claim if the request is refused (article 307). Check which route fits and the debtor's domicile."
+        },
+        "basis": [
+          "b39",
+          "b40",
+          "b41",
+          "b44"
+        ]
+      }
+    ]
+  },
+  "deadlines": [
+    {
+      "id": "d1",
+      "kind": "forfeiture",
+      "period": {
+        "value": 4,
+        "unit": "month"
+      },
+      "startsFrom": {
+        "slot": "administrative_decision_notice_date",
+        "description": {
+          "ar": "تاريخ التبليغ الشخصي بنسخة من القرار الفردي أو تاريخ نشر القرار الجماعي أو التنظيمي",
+          "en": "The date of personal notification of a copy of the individual decision, or of publication of the collective or regulatory decision"
+        }
+      },
+      "counting": {
+        "method": "excludeFirstAndLastDay",
+        "extendToWorkingDay": true,
+        "basis": [
+          "b22",
+          "b23"
+        ]
+      },
+      "raisedBy": "unclear",
+      "when": {
+        "all": [
+          {
+            "slot": "requests",
+            "includes": "cancel_decision"
+          },
+          {
+            "any": [
+              {
+                "slot": "public_body_party",
+                "is": "yes"
+              },
+              {
+                "slot": "claim_challenges_administrative_decision",
+                "is": "yes"
+              }
+            ]
+          },
+          {
+            "not": {
+              "slot": "administrative_grievance_filed",
+              "is": "yes"
+            }
+          }
+        ]
+      },
+      "effectWhenExpired": "warn",
+      "warnBandDays": 15,
+      "message": {
+        "ar": "المادة 829 من قانون الإجراءات المدنية والإدارية: أجل الطعن أمام المحكمة الإدارية أربعة (4) أشهر من التبليغ الشخصي بالقرار أو من نشره، ولا يحتج به إلا إذا أشير إليه في التبليغ (المادة 831)، وينقطع أو يوقف في الحالات التي تذكرها المادة 832. تحقق من تاريخ التبليغ ومن مضمونه.",
+        "en": "CPCA article 829: the period for an action before the administrative court is four (4) months from personal notification or publication of the decision; it may be set against the claimant only if the notification mentions it (article 831), and it is interrupted or suspended in the cases of article 832. Check the date and what the notification says."
+      },
+      "basis": [
+        "b14",
+        "b19",
+        "b20",
+        "b21",
+        "b24",
+        "b22",
+        "b23"
+      ],
+      "extract": {
+        "period": "أربعة (4) أشهر",
+        "sanction": "سقوط الحق"
+      },
+      "interpretive": true,
+      "interpretiveNote": "Article 829 sets the period and states no sanction; cpca 322 ¶1 forfeits the right for missed periods of the code but sits in the title on means of appeal, and 831 makes the period opposable only if the notification mentions it, which no slot holds. Whether expiry bars the action, and who raises it, stay readings; the rule warns.",
+      "readings": [
+        {
+          "reading": {
+            "ar": "أجل سقوط يترتب على فواته سقوط الحق في الطعن، تطبيقا للمادة 322.",
+            "en": "A forfeiture period whose expiry forfeits the action, under article 322."
+          },
+          "basis": [
+            "b14",
+            "b24"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "أجل لا يحتج به إذا لم يشر إليه في التبليغ، ويقبل الانقطاع والوقف، فلا يكون فواته حاسما وحده.",
+            "en": "A period that cannot be set against the claimant if the notification does not mention it, and that can be interrupted or suspended, so its expiry alone is not decisive."
+          },
+          "basis": [
+            "b19",
+            "b20",
+            "b21"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "d2",
+      "kind": "forfeiture",
+      "period": {
+        "value": 2,
+        "unit": "month"
+      },
+      "startsFrom": {
+        "slot": "administrative_grievance_rejection_date",
+        "description": {
+          "ar": "تاريخ تبليغ رد الإدارة الرافض للتظلم",
+          "en": "The date the administration's refusal of the grievance is notified"
+        }
+      },
+      "counting": {
+        "method": "excludeFirstAndLastDay",
+        "extendToWorkingDay": true,
+        "basis": [
+          "b22",
+          "b23"
+        ]
+      },
+      "raisedBy": "unclear",
+      "when": {
+        "all": [
+          {
+            "slot": "requests",
+            "includes": "cancel_decision"
+          },
+          {
+            "any": [
+              {
+                "slot": "public_body_party",
+                "is": "yes"
+              },
+              {
+                "slot": "claim_challenges_administrative_decision",
+                "is": "yes"
+              }
+            ]
+          },
+          {
+            "slot": "administrative_grievance_filed",
+            "is": "yes"
+          }
+        ]
+      },
+      "effectWhenExpired": "warn",
+      "warnBandDays": 10,
+      "message": {
+        "ar": "المادة 830 من قانون الإجراءات المدنية والإدارية: بعد رد الإدارة الرافض للتظلم يبدأ أجل شهرين (2) من تاريخ تبليغ الرفض، وعند سكوتها شهرين يبدأ أجل شهرين من انتهاء مدة السكوت، ويجب أن يكون التظلم قد قدم في أجل الطعن ويرفق ما يثبت إيداعه بالعريضة. تحقق من التواريخ ومن إثبات إيداع التظلم.",
+        "en": "CPCA article 830: after a refusal of the grievance, a period of two (2) months runs from notification of the refusal, and after two months of silence a period of two months runs from the end of the silence; the grievance must have been lodged within the period for the action, and proof of its lodging is attached to the petition. Check the dates and the proof that the grievance was lodged."
+      },
+      "basis": [
+        "b15",
+        "b16",
+        "b17",
+        "b18",
+        "b24",
+        "b22",
+        "b23"
+      ],
+      "extract": {
+        "period": "أجل شهرين (2)",
+        "sanction": "سقوط الحق"
+      },
+      "interpretive": true,
+      "interpretiveNote": "The article states no sanction of missing the period (cpca 322 ¶1 is read as supplying it, as for d1), and the case of silence (830 ¶3) starts from the end of the silence, a date no slot holds; that case is left to the message (open point o10)."
+    },
+    {
+      "id": "d3",
+      "kind": "procedural",
+      "period": {
+        "value": 1,
+        "unit": "year"
+      },
+      "startsFrom": {
+        "slot": "payment_order_date",
+        "description": {
+          "ar": "تاريخ صدور أمر الأداء",
+          "en": "The date the order to pay was issued"
+        }
+      },
+      "counting": {
+        "method": "excludeFirstAndLastDay",
+        "extendToWorkingDay": true,
+        "basis": [
+          "b22",
+          "b23"
+        ]
+      },
+      "raisedBy": "unclear",
+      "when": {
+        "all": [
+          {
+            "slot": "requests",
+            "includes": "payment"
+          },
+          {
+            "slot": "payment_order_issued",
+            "is": "yes"
+          }
+        ]
+      },
+      "effectWhenExpired": "warn",
+      "warnBandDays": 15,
+      "message": {
+        "ar": "المادة 309 من قانون الإجراءات المدنية والإدارية: يسقط أمر الأداء الذي لم يطلب إمهاره بالصيغة التنفيذية خلال سنة واحدة (1) من تاريخ صدوره ولا يرتب أي أثر. تحقق من تاريخ الأمر ومن طلب الصيغة التنفيذية.",
+        "en": "CPCA article 309: an order to pay for which the enforcement formula is not requested within one (1) year of its date lapses and has no effect. Check the date of the order and the request for the formula."
+      },
+      "basis": [
+        "b48",
+        "b49",
+        "b22",
+        "b23"
+      ],
+      "extract": {
+        "period": "سنة واحدة (1)",
+        "sanction": "يسقط ولا يرتب أي أثر"
+      },
+      "interpretive": true,
+      "interpretiveNote": "The text makes the order lapse, not the creditor's right; whether the lapse matters to the claim being drafted depends on whether the formula was requested, which no slot holds. Treated as a procedural period that warns."
+    },
+    {
+      "id": "d4",
+      "kind": "procedural",
+      "period": {
+        "value": 15,
+        "unit": "day"
+      },
+      "startsFrom": {
+        "slot": "payment_order_notified_on",
+        "description": {
+          "ar": "تاريخ التبليغ الرسمي لأمر الأداء إلى المدين",
+          "en": "The date the order to pay is formally served on the debtor"
+        }
+      },
+      "counting": {
+        "method": "excludeFirstAndLastDay",
+        "extendToWorkingDay": true,
+        "basis": [
+          "b22",
+          "b23"
+        ]
+      },
+      "raisedBy": "unclear",
+      "when": {
+        "all": [
+          {
+            "slot": "requests",
+            "includes": "payment"
+          },
+          {
+            "slot": "payment_order_issued",
+            "is": "yes"
+          }
+        ]
+      },
+      "effectWhenExpired": "warn",
+      "warnBandDays": 3,
+      "message": {
+        "ar": "المادة 308 من قانون الإجراءات المدنية والإدارية: للمدين أن يعترض على أمر الأداء خلال خمسة عشر (15) يوما من التبليغ الرسمي، وإذا لم يرفع الاعتراض في الأجل حاز الأمر قوة الشيء المقضي به (المادة 309). تحقق من تاريخ التبليغ ومن وجود اعتراض.",
+        "en": "CPCA article 308: the debtor may object to the order to pay within fifteen (15) days of formal service, and if no objection is made in time the order acquires the force of res judicata (article 309). Check the date of service and whether an objection was made."
+      },
+      "basis": [
+        "b45",
+        "b46",
+        "b47",
+        "b48",
+        "b22",
+        "b23"
+      ],
+      "extract": {
+        "period": "خمسة عشر (15) يوما",
+        "sanction": "يحوز أمر الأداء قوة الشيء المقضي به"
+      }
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc1",
+      "name": {
+        "ar": "المستندات المثبتة للدين (اعتراف بدين أو تعهد بالوفاء أو فاتورة مؤشر عليها من المدين)",
+        "en": "The documents that prove the debt (an acknowledgement of debt, an undertaking to pay, an invoice endorsed by the debtor)"
+      },
+      "requiredWhen": {
+        "slot": "debt_written_fixed_due",
+        "is": "yes"
+      },
+      "why": {
+        "ar": "المادة 306: ترفق جميع المستندات المثبتة للدين بعريضة أمر الأداء.",
+        "en": "Article 306: all the documents proving the debt are attached to the petition for an order to pay."
+      },
+      "basis": [
+        "b39",
+        "b41"
+      ]
+    },
+    {
+      "id": "doc2",
+      "name": {
+        "ar": "نسخة من القرار الإداري المطعون فيه ومحضر تبليغه أو ما يثبت نشره",
+        "en": "A copy of the contested administrative decision and the record of its notification, or proof of its publication"
+      },
+      "requiredWhen": {
+        "all": [
+          {
+            "slot": "requests",
+            "includes": "cancel_decision"
+          },
+          {
+            "any": [
+              {
+                "slot": "public_body_party",
+                "is": "yes"
+              },
+              {
+                "slot": "claim_challenges_administrative_decision",
+                "is": "yes"
+              }
+            ]
+          }
+        ]
+      },
+      "why": {
+        "ar": "المادة 819: يرفق القرار المطعون فيه بالعريضة تحت طائلة عدم القبول، والمادة 829: يبدأ الأجل من التبليغ الشخصي أو النشر.",
+        "en": "Article 819: the contested decision is attached to the petition on pain of inadmissibility, and article 829: the period runs from personal notification or publication."
+      },
+      "basis": [
+        "b56",
+        "b14"
+      ]
+    },
+    {
+      "id": "doc3",
+      "name": {
+        "ar": "ما يثبت إيداع التظلم الإداري",
+        "en": "Proof that the administrative grievance was lodged"
+      },
+      "requiredWhen": {
+        "slot": "administrative_grievance_filed",
+        "is": "yes"
+      },
+      "why": {
+        "ar": "المادة 830: يثبت إيداع التظلم بكل وسيلة مكتوبة ويرفق مع العريضة.",
+        "en": "Article 830: the lodging of the grievance is proved by written means and attached to the petition."
+      },
+      "basis": [
+        "b18"
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "id": "n1",
+      "looksLike": {
+        "ar": "دعوى ضد جهة عمومية إدارية يظن أنها من اختصاص المحكمة الإدارية.",
+        "en": "A claim against a public administrative body, which seems to belong to the administrative court."
+      },
+      "isActually": "outside:ordinary-court-vehicle-exception",
+      "tellingFacts": [
+        {
+          "ar": "دعوى مسؤولية لتعويض ضرر سببته مركبة تابعة للدولة أو لولاية أو بلدية أو مؤسسة عمومية ذات صبغة إدارية.",
+          "en": "A liability claim for compensation of damage caused by a vehicle belonging to the State, a wilaya, a commune or a public administrative body."
+        }
+      ],
+      "when": {
+        "all": [
+          {
+            "slot": "public_body_party",
+            "is": "yes"
+          },
+          {
+            "slot": "requests",
+            "includes": "damages"
+          },
+          {
+            "slot": "public_vehicle_damage",
+            "is": "yes"
+          }
+        ]
+      },
+      "slots": [
+        "public_body_party",
+        "public_vehicle_damage"
+      ],
+      "message": {
+        "ar": "المادة 802 من قانون الإجراءات المدنية والإدارية: تبقى دعاوى تعويض أضرار المركبات التابعة للجهات العمومية الإدارية من اختصاص المحاكم العادية خلافا للمادتين 800 و801. تحقق من أن الضرر ناجم عن مركبة.",
+        "en": "CPCA article 802: claims for damage caused by vehicles of public administrative bodies stay with the ordinary courts, contrary to articles 800 and 801. Check that the damage was caused by a vehicle."
+      },
+      "basis": [
+        "b5",
+        "b1",
+        "b2"
+      ]
+    },
+    {
+      "id": "n2",
+      "looksLike": {
+        "ar": "دعوى ضد مؤسسة عمومية.",
+        "en": "A claim against a public enterprise."
+      },
+      "isActually": "outside:ordinary-court-public-enterprise",
+      "tellingFacts": [
+        {
+          "ar": "المؤسسة ذات طابع صناعي وتجاري أو مؤسسة عمومية اقتصادية، لا مؤسسة ذات صبغة إدارية.",
+          "en": "The body is of industrial and commercial character or a public economic enterprise, not a public administrative body."
+        }
+      ],
+      "message": {
+        "ar": "المادة 800 من قانون الإجراءات المدنية والإدارية لا تذكر من المؤسسات العمومية إلا ذات الصبغة الإدارية. تحقق من طبيعة المؤسسة.",
+        "en": "CPCA article 800 names only public bodies of administrative character. Check the nature of the body."
+      },
+      "basis": [
+        "b2"
+      ]
+    },
+    {
+      "id": "n3",
+      "looksLike": {
+        "ar": "نزاع تجاري يذهب إلى المحكمة التجارية المتخصصة.",
+        "en": "A commercial dispute that goes to the specialised commercial court."
+      },
+      "isActually": "outside:commercial-section",
+      "tellingFacts": [
+        {
+          "ar": "نزاع تجاري لا يندرج في أي من المواد المعددة للمحكمة التجارية المتخصصة، أو شركة غير تجارية.",
+          "en": "A commercial dispute outside every matter listed for the specialised commercial court, or a company that is not commercial."
+        }
+      ],
+      "message": {
+        "ar": "المادة 531 من قانون الإجراءات المدنية والإدارية: يبقى هذا النزاع للقسم التجاري، والمادة 536 مكرر لا تذكر إلا الشركات التجارية.",
+        "en": "CPCA article 531: this dispute stays with the commercial section, and article 536 مكرر names only commercial companies."
+      },
+      "basis": [
+        "b27",
+        "b26"
+      ]
+    },
+    {
+      "id": "n4",
+      "looksLike": {
+        "ar": "طلب أمر بالأداء رفضه الرئيس.",
+        "en": "An order to pay that the president refused."
+      },
+      "isActually": "outside:payment-order-refused-ordinary-claim",
+      "tellingFacts": [
+        {
+          "ar": "الرفض لا يطعن فيه، ويبقى للدائن رفع دعوى وفق القواعد المقررة لها.",
+          "en": "The refusal cannot be challenged, but the creditor may file a claim under its rules."
+        }
+      ],
+      "message": {
+        "ar": "المادة 307 من قانون الإجراءات المدنية والإدارية: أمر رفض طلب الأداء لا يقبل أي طعن، ويبقى للدائن رفع الدعوى.",
+        "en": "CPCA article 307: a refusal of the request for an order to pay cannot be challenged; the creditor keeps the claim."
+      },
+      "basis": [
+        "b44"
+      ]
+    },
+    {
+      "id": "n5",
+      "looksLike": {
+        "ar": "إجراء يحل محل الدعوى.",
+        "en": "A procedure that replaces the claim."
+      },
+      "isActually": "outside:summary-or-petition-order",
+      "tellingFacts": [
+        {
+          "ar": "طلب تدبير مؤقت أو تحفظي أو استعجالي، أو أمر على عريضة، لا يفصل في أصل الحق.",
+          "en": "A request for a provisional, protective or urgent measure, or an order on petition, which does not decide the right itself."
+        }
+      ],
+      "message": {
+        "ar": "المواد 299 و303 و310 من قانون الإجراءات المدنية والإدارية: الأمر الاستعجالي لا يمس أصل الحق والأمر على عريضة مؤقت، فلا يغنيان عن دعوى الموضوع.",
+        "en": "CPCA articles 299, 303 and 310: an urgent order does not touch the substance of the right and an order on petition is provisional, so neither replaces the claim on the merits."
+      },
+      "basis": [
+        "b50",
+        "b51",
+        "b52"
+      ]
+    },
+    {
+      "id": "n6",
+      "looksLike": {
+        "ar": "نزاع عقدي يرفع أمام المحكمة وفي العقد شرط تحكيم.",
+        "en": "A contract dispute brought to court although the contract has an arbitration clause."
+      },
+      "isActually": "outside:arbitration",
+      "tellingFacts": [
+        {
+          "ar": "عقد يتضمن شرط تحكيم في حقوق متاحة، أو خصومة تحكيمية قائمة.",
+          "en": "A contract with an arbitration clause on freely disposable rights, or pending arbitral proceedings."
+        }
+      ],
+      "message": {
+        "ar": "المادتان 1006 و1007 من قانون الإجراءات المدنية والإدارية: يجوز الاتفاق على عرض النزاعات المتصلة بالحقوق المتاحة على التحكيم، والمادة 1045 تنفي اختصاص القاضي بالموضوع إذا قامت خصومة تحكيمية أو أثار أحد الأطراف اتفاقية التحكيم. تحقق من العقد قبل رفع الدعوى.",
+        "en": "CPCA articles 1006 and 1007: disputes on freely disposable rights may be sent to arbitration by clause, and article 1045 denies the judge jurisdiction over the merits when arbitration is pending or a party raises the agreement. Check the contract before filing."
+      },
+      "basis": [
+        "b53",
+        "b54",
+        "b55"
+      ]
+    },
+    {
+      "id": "n7",
+      "looksLike": {
+        "ar": "دعوى تعويض عن فعل ضار تعرض على القاضي المدني.",
+        "en": "A compensation claim for a harmful act brought before the civil judge."
+      },
+      "isActually": "outside:criminal",
+      "tellingFacts": [
+        {
+          "ar": "الفعل الضار يشكل جناية أو جنحة أو مخالفة وتوجد متابعة جزائية بشأنه.",
+          "en": "The harmful act is an offence and there are criminal proceedings about it."
+        }
+      ],
+      "message": {
+        "ar": "المادة 39 من قانون الإجراءات المدنية والإدارية والمادة 339 من القانون المدني: تعويض الضرر عن جريمة يرفع أمام محكمة مكان الفعل، ولا يرتبط القاضي المدني بالحكم الجنائي إلا في الوقائع التي فصل فيها بالضرورة. تحقق من وجود دعوى جزائية.",
+        "en": "CPCA article 39 and Civil Code article 339: compensation for damage from an offence is claimed before the court of the place of the act, and the civil judge is bound only by what the criminal judgment necessarily decided. Check whether criminal proceedings exist."
+      },
+      "basis": [
+        "b37",
+        "b36"
+      ]
+    }
+  ],
+  "examples": [
+    {
+      "id": "a-ex1",
+      "by": "derivationA",
+      "title": "Clean private claim: nothing leaves the ordinary court.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "specialised_commercial_matter": "none",
+        "employer_in_bankruptcy_or_settlement": "no",
+        "obligation_is_tort_compensation": "no",
+        "debt_written_fixed_due": "no",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x1",
+            "effect": "none"
+          },
+          {
+            "ref": "x2",
+            "effect": "none"
+          },
+          {
+            "ref": "x3",
+            "effect": "none"
+          },
+          {
+            "ref": "x4",
+            "effect": "none"
+          },
+          {
+            "ref": "x5",
+            "effect": "none"
+          },
+          {
+            "ref": "x6",
+            "effect": "ask"
+          },
+          {
+            "ref": "x7",
+            "effect": "none"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "criminal_case_on_same_facts",
+          "payment_order_issued"
+        ]
+      }
+    },
+    {
+      "id": "a-ex2",
+      "by": "derivationA",
+      "title": "Contract claim against a commune: administrative court.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "public_body_party": "yes",
+        "obligation_is_tort_compensation": "no",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x1",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "a-ex3",
+      "by": "derivationA",
+      "title": "Damage by a wilaya's vehicle: the exception keeps it in the ordinary court.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "public_body_party": "yes",
+        "obligation_is_tort_compensation": "yes",
+        "public_vehicle_damage": "yes",
+        "criminal_case_on_same_facts": "no",
+        "requests": [
+          "damages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x1",
+            "effect": "none"
+          },
+          {
+            "ref": "x6",
+            "effect": "ask"
+          }
+        ]
+      }
+    },
+    {
+      "id": "a-ex4",
+      "by": "derivationA",
+      "title": "Tort claim against a public body, vehicle not known: ask.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "public_body_party": "yes",
+        "obligation_is_tort_compensation": "yes",
+        "worker_is_public_servant": "no",
+        "specialised_commercial_matter": "none",
+        "employer_in_bankruptcy_or_settlement": "no",
+        "criminal_case_on_same_facts": "no",
+        "debt_written_fixed_due": "no",
+        "requests": [
+          "damages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x1",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "public_vehicle_damage",
+          "damage_caused_by_offence"
+        ]
+      }
+    },
+    {
+      "id": "a-ex5",
+      "by": "derivationA",
+      "title": "Public party unknown in a contract claim: ask.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "obligation_is_tort_compensation": "no",
+        "worker_is_public_servant": "no",
+        "specialised_commercial_matter": "none",
+        "employer_in_bankruptcy_or_settlement": "no",
+        "debt_written_fixed_due": "no",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x1",
+            "effect": "ask"
+          },
+          {
+            "ref": "x6",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "public_body_party",
+          "criminal_case_on_same_facts",
+          "payment_order_issued"
+        ]
+      }
+    },
+    {
+      "id": "a-ex6",
+      "by": "derivationA",
+      "title": "Civil servant's pay claim: administrative court.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "worker_is_public_servant": "yes",
+        "public_body_party": "yes",
+        "obligation_is_tort_compensation": "no",
+        "requests": [
+          "wages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x2",
+            "effect": "warn"
+          },
+          {
+            "ref": "x1",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "a-ex7",
+      "by": "derivationA",
+      "title": "Dispute between partners of a commercial company: specialised commercial court.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "specialised_commercial_matter": "commercial_company",
+        "public_body_party": "no",
+        "requests": [
+          "dissolution"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x4",
+            "effect": "ask"
+          },
+          {
+            "ref": "x1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "a-ex8",
+      "by": "derivationA",
+      "title": "Specialised matter not known: ask.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "employer_in_bankruptcy_or_settlement": "no",
+        "obligation_is_tort_compensation": "no",
+        "debt_written_fixed_due": "no",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x4",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "specialised_commercial_matter",
+          "specialised_commercial_courts_installed",
+          "criminal_case_on_same_facts",
+          "payment_order_issued"
+        ]
+      }
+    },
+    {
+      "id": "a-ex9",
+      "by": "derivationA",
+      "title": "Wage claim against an employer in judicial settlement: warn.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "employer_in_bankruptcy_or_settlement": "yes",
+        "specialised_commercial_matter": "none",
+        "requests": [
+          "wages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x5",
+            "effect": "warn"
+          },
+          {
+            "ref": "x4",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "a-ex10",
+      "by": "derivationA",
+      "title": "Damages for an assault already prosecuted: criminal route warning.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "obligation_is_tort_compensation": "yes",
+        "criminal_case_on_same_facts": "yes",
+        "public_body_party": "no",
+        "requests": [
+          "damages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x6",
+            "effect": "warn"
+          },
+          {
+            "ref": "x1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "a-ex11",
+      "by": "derivationA",
+      "title": "Tort claim, criminal case not known: ask.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "obligation_is_tort_compensation": "yes",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "specialised_commercial_matter": "none",
+        "employer_in_bankruptcy_or_settlement": "no",
+        "debt_written_fixed_due": "no",
+        "requests": [
+          "damages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x6",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "criminal_case_on_same_facts",
+          "damage_caused_by_offence"
+        ]
+      }
+    },
+    {
+      "id": "a-ex12",
+      "by": "derivationA",
+      "title": "Signed acknowledgement of a fixed debt: order-to-pay route.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "debt_written_fixed_due": "yes",
+        "public_body_party": "no",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x7",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "a-ex13",
+      "by": "derivationA",
+      "title": "Same written debt, but the petition asks for rescission only: no order-to-pay warning.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "debt_written_fixed_due": "yes",
+        "requests": [
+          "rescission"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x7",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "a-ex14",
+      "by": "derivationA",
+      "title": "Annulment of a commune's decision, well inside the period.",
+      "petitionDate": "2026-02-10",
+      "slots": {
+        "administrative_decision_notice_date": "2026-01-05",
+        "public_body_party": "yes",
+        "obligation_is_tort_compensation": "no",
+        "requests": [
+          "cancel_decision"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x3",
+            "effect": "warn"
+          },
+          {
+            "ref": "d1",
+            "effect": "ask"
+          },
+          {
+            "ref": "x1",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "a-ex15",
+      "by": "derivationA",
+      "title": "Annulment requested long after the period: a warning, never a block.",
+      "petitionDate": "2026-02-10",
+      "slots": {
+        "administrative_decision_notice_date": "2025-06-01",
+        "requests": [
+          "cancel_decision"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "ask"
+          },
+          {
+            "ref": "x3",
+            "effect": "ask"
+          }
+        ]
+      }
+    },
+    {
+      "id": "a-ex16",
+      "by": "derivationA",
+      "title": "Annulment requested five days before the last day: warn.",
+      "petitionDate": "2026-05-01",
+      "slots": {
+        "administrative_decision_notice_date": "2026-01-05",
+        "requests": [
+          "cancel_decision"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "ask"
+          }
+        ]
+      }
+    },
+    {
+      "id": "a-ex17",
+      "by": "derivationA",
+      "title": "Annulment requested, notification date unknown: ask.",
+      "petitionDate": "2026-02-10",
+      "slots": {
+        "public_body_party": "yes",
+        "obligation_is_tort_compensation": "no",
+        "worker_is_public_servant": "no",
+        "specialised_commercial_matter": "none",
+        "employer_in_bankruptcy_or_settlement": "no",
+        "debt_written_fixed_due": "no",
+        "requests": [
+          "cancel_decision"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "ask"
+          },
+          {
+            "ref": "x3",
+            "effect": "warn"
+          }
+        ],
+        "questions": [
+          "administrative_grievance_filed",
+          "criminal_case_on_same_facts"
+        ]
+      }
+    },
+    {
+      "id": "b-ex1",
+      "by": "derivationB",
+      "title": "Ordinary payment claim between two private persons: nothing leaves the ordinary courts.",
+      "petitionDate": "2026-06-01",
+      "slots": {
+        "public_body_party": "no",
+        "claim_challenges_administrative_decision": "no",
+        "specialised_commercial_matter": "none",
+        "damage_caused_by_offence": "no",
+        "defendant_resides_abroad": "no",
+        "payment_order_issued": "no",
+        "requests": [
+          "payment"
+        ],
+        "criminal_case_on_same_facts": "no",
+        "debt_written_fixed_due": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x1",
+            "effect": "none"
+          },
+          {
+            "ref": "x3",
+            "effect": "none"
+          },
+          {
+            "ref": "x4",
+            "effect": "none"
+          },
+          {
+            "ref": "x6",
+            "effect": "none"
+          },
+          {
+            "ref": "x7",
+            "effect": "none"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "d3",
+            "effect": "none"
+          },
+          {
+            "ref": "d4",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "worker_is_public_servant",
+          "employer_in_bankruptcy_or_settlement"
+        ]
+      }
+    },
+    {
+      "id": "b-ex2",
+      "by": "derivationB",
+      "title": "Case 1: a supplier sues a commune for the price of goods: administrative court.",
+      "petitionDate": "2026-06-01",
+      "slots": {
+        "public_body_party": "yes",
+        "claim_challenges_administrative_decision": "no",
+        "requests": [
+          "payment"
+        ],
+        "public_vehicle_damage": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x1",
+            "effect": "warn"
+          },
+          {
+            "ref": "x3",
+            "effect": "none"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "b-ex3",
+      "by": "derivationB",
+      "title": "Near miss: damage caused by a municipal vehicle stays with the ordinary court.",
+      "petitionDate": "2026-06-01",
+      "slots": {
+        "public_body_party": "yes",
+        "requests": [
+          "damages"
+        ],
+        "public_vehicle_damage": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x1",
+            "effect": "none"
+          },
+          {
+            "ref": "n1",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "b-ex4",
+      "by": "derivationB",
+      "title": "Case 2: annulment of a commune's decision, notified long ago, no grievance: far inside the four months.",
+      "petitionDate": "2026-04-06",
+      "slots": {
+        "claim_challenges_administrative_decision": "yes",
+        "administrative_decision_notice_date": "2026-03-02",
+        "administrative_grievance_filed": "no",
+        "requests": [
+          "cancel_decision"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x3",
+            "effect": "warn"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "d2",
+            "effect": "none"
+          },
+          {
+            "ref": "doc2",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "b-ex5",
+      "by": "derivationB",
+      "title": "Annulment claim a few days before the end of the four months: a warning.",
+      "petitionDate": "2026-07-01",
+      "slots": {
+        "claim_challenges_administrative_decision": "yes",
+        "administrative_decision_notice_date": "2026-03-02",
+        "administrative_grievance_filed": "no",
+        "requests": [
+          "cancel_decision"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "b-ex6",
+      "by": "derivationB",
+      "title": "Annulment claim long after the four months: a warning, never a block.",
+      "petitionDate": "2026-09-15",
+      "slots": {
+        "claim_challenges_administrative_decision": "yes",
+        "administrative_decision_notice_date": "2026-03-02",
+        "administrative_grievance_filed": "no",
+        "requests": [
+          "cancel_decision"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "b-ex7",
+      "by": "derivationB",
+      "title": "Annulment after a refused grievance: the two-month period runs from the notification of the refusal.",
+      "petitionDate": "2026-06-01",
+      "slots": {
+        "claim_challenges_administrative_decision": "yes",
+        "administrative_grievance_filed": "yes",
+        "administrative_grievance_rejection_date": "2026-05-04",
+        "requests": [
+          "cancel_decision"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "d2",
+            "effect": "none"
+          },
+          {
+            "ref": "doc3",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "b-ex8",
+      "by": "derivationB",
+      "title": "Grievance refused: the two-month period ends within days.",
+      "petitionDate": "2026-07-03",
+      "slots": {
+        "claim_challenges_administrative_decision": "yes",
+        "administrative_grievance_filed": "yes",
+        "administrative_grievance_rejection_date": "2026-05-04",
+        "requests": [
+          "cancel_decision"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d2",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "b-ex9",
+      "by": "derivationB",
+      "title": "Case 3: a company partner sues for the liquidation of a company: specialised commercial court, court installed.",
+      "petitionDate": "2026-06-01",
+      "slots": {
+        "specialised_commercial_matter": "commercial_company",
+        "specialised_commercial_courts_installed": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x4",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "b-ex10",
+      "by": "derivationB",
+      "title": "Same dispute, court not yet installed: no exit.",
+      "petitionDate": "2026-06-01",
+      "slots": {
+        "specialised_commercial_matter": "commercial_company",
+        "specialised_commercial_courts_installed": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x4",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "b-ex11",
+      "by": "derivationB",
+      "title": "Commercial company dispute, installation not known: the module asks.",
+      "petitionDate": "2026-06-01",
+      "slots": {
+        "specialised_commercial_matter": "commercial_company",
+        "public_body_party": "no",
+        "claim_challenges_administrative_decision": "no",
+        "damage_caused_by_offence": "no",
+        "payment_order_issued": "no",
+        "criminal_case_on_same_facts": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x4",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "specialised_commercial_courts_installed",
+          "worker_is_public_servant",
+          "employer_in_bankruptcy_or_settlement"
+        ]
+      }
+    },
+    {
+      "id": "b-ex12",
+      "by": "derivationB",
+      "title": "Damage from an assault with a criminal complaint pending: a warning about the criminal judge.",
+      "petitionDate": "2026-06-01",
+      "slots": {
+        "damage_caused_by_offence": "yes",
+        "criminal_case_on_same_facts": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x6",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "b-ex13",
+      "by": "derivationB",
+      "title": "A written acknowledgement of a fixed money debt: the order to pay is open.",
+      "petitionDate": "2026-06-01",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "defendant_resides_abroad": "no",
+        "debt_written_fixed_due": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x7",
+            "effect": "warn"
+          },
+          {
+            "ref": "doc1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "b-ex14",
+      "by": "derivationB",
+      "title": "Same debt but the debtor lives abroad: the order to pay is not proposed.",
+      "petitionDate": "2026-06-01",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "defendant_resides_abroad": "yes",
+        "debt_written_fixed_due": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x7",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "b-ex15",
+      "by": "derivationB",
+      "title": "Order to pay issued and served, objection period far from its end.",
+      "petitionDate": "2026-05-10",
+      "slots": {
+        "payment_order_issued": "yes",
+        "payment_order_date": "2026-05-01",
+        "payment_order_notified_on": "2026-05-04",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d3",
+            "effect": "none"
+          },
+          {
+            "ref": "d4",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "b-ex16",
+      "by": "derivationB",
+      "title": "Order to pay served: the objection period ends the next day.",
+      "petitionDate": "2026-05-19",
+      "slots": {
+        "payment_order_issued": "yes",
+        "payment_order_date": "2026-05-01",
+        "payment_order_notified_on": "2026-05-04",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d4",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "b-ex17",
+      "by": "derivationB",
+      "title": "Order to pay issued more than a year ago, no writ requested: the lapse warning.",
+      "petitionDate": "2027-06-01",
+      "slots": {
+        "payment_order_issued": "yes",
+        "payment_order_date": "2026-01-10",
+        "payment_order_notified_on": "2026-01-20",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d3",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "b-ex18",
+      "by": "derivationB",
+      "title": "Nothing is known: the module asks for what could change an exit.",
+      "petitionDate": "2026-06-01",
+      "slots": {},
+      "expect": {
+        "findings": [
+          {
+            "ref": "x1",
+            "effect": "ask"
+          },
+          {
+            "ref": "x3",
+            "effect": "none"
+          },
+          {
+            "ref": "x4",
+            "effect": "ask"
+          },
+          {
+            "ref": "x6",
+            "effect": "ask"
+          },
+          {
+            "ref": "d3",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r1",
+      "by": "reconciler",
+      "title": "Payment claim against a commune, vehicle question not answered: the vehicle exception cannot apply, so the exit warns.",
+      "petitionDate": "2026-03-02",
+      "slots": {
+        "public_body_party": "yes",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x1",
+            "effect": "warn"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r2",
+      "by": "reconciler",
+      "title": "Damages for harm caused by a commune vehicle: the exception keeps the claim in the ordinary court.",
+      "petitionDate": "2026-03-02",
+      "slots": {
+        "public_body_party": "yes",
+        "requests": [
+          "damages"
+        ],
+        "public_vehicle_damage": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x1",
+            "effect": "none"
+          },
+          {
+            "ref": "n1",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r3",
+      "by": "reconciler",
+      "title": "Damages against a commune, vehicle not known: ask.",
+      "petitionDate": "2026-03-02",
+      "slots": {
+        "public_body_party": "yes",
+        "requests": [
+          "damages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x1",
+            "effect": "ask"
+          },
+          {
+            "ref": "n1",
+            "effect": "ask"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r4",
+      "by": "reconciler",
+      "title": "Cancellation of an employer decision, no public party and no administrative decision: nothing leaves.",
+      "petitionDate": "2026-03-02",
+      "slots": {
+        "public_body_party": "no",
+        "claim_challenges_administrative_decision": "no",
+        "requests": [
+          "cancel_decision"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x3",
+            "effect": "none"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "d2",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r5",
+      "by": "reconciler",
+      "title": "Cancellation of an administrative decision named by the lawyer, no grievance, well inside the four months.",
+      "petitionDate": "2026-02-10",
+      "slots": {
+        "public_body_party": "no",
+        "claim_challenges_administrative_decision": "yes",
+        "administrative_grievance_filed": "no",
+        "administrative_decision_notice_date": "2026-01-05",
+        "requests": [
+          "cancel_decision"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x3",
+            "effect": "warn"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "d2",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r6",
+      "by": "reconciler",
+      "title": "Grievance refused: the four months from the old notification no longer govern; the two months from the refusal do.",
+      "petitionDate": "2026-06-01",
+      "slots": {
+        "public_body_party": "yes",
+        "administrative_grievance_filed": "yes",
+        "administrative_decision_notice_date": "2025-06-01",
+        "administrative_grievance_rejection_date": "2026-05-04",
+        "requests": [
+          "cancel_decision"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "d2",
+            "effect": "none"
+          },
+          {
+            "ref": "x3",
+            "effect": "warn"
+          },
+          {
+            "ref": "doc3",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r7",
+      "by": "reconciler",
+      "title": "Commercial company dispute, the specialised court not installed for the area: no exit.",
+      "petitionDate": "2026-06-01",
+      "slots": {
+        "specialised_commercial_matter": "commercial_company",
+        "specialised_commercial_courts_installed": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x4",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r8",
+      "by": "reconciler",
+      "title": "Judicial settlement dispute, court installed: specialised commercial court.",
+      "petitionDate": "2026-06-01",
+      "slots": {
+        "specialised_commercial_matter": "bankruptcy_settlement",
+        "specialised_commercial_courts_installed": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x4",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r9",
+      "by": "reconciler",
+      "title": "Damage from an offence, no criminal case yet: warn on the criminal route while the Code of Criminal Procedure is missing.",
+      "petitionDate": "2026-06-01",
+      "slots": {
+        "obligation_is_tort_compensation": "yes",
+        "damage_caused_by_offence": "yes",
+        "criminal_case_on_same_facts": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x6",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r10",
+      "by": "reconciler",
+      "title": "Contract claim with a criminal case pending on the same facts: warn.",
+      "petitionDate": "2026-06-01",
+      "slots": {
+        "obligation_is_tort_compensation": "no",
+        "criminal_case_on_same_facts": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x6",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r11",
+      "by": "reconciler",
+      "title": "Written fixed debt, debtor living abroad: the order to pay is still shown, the lawyer checks a chosen domicile in Algeria.",
+      "petitionDate": "2026-06-01",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "debt_written_fixed_due": "yes",
+        "defendant_resides_abroad": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x7",
+            "effect": "warn"
+          },
+          {
+            "ref": "doc1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r12",
+      "by": "reconciler",
+      "title": "Civil servant against a defendant that is not a public body: warn, the text does not settle it.",
+      "petitionDate": "2026-05-05",
+      "slots": {
+        "worker_is_public_servant": "yes",
+        "public_body_party": "no",
+        "requests": [
+          "wages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x2",
+            "effect": "warn"
+          },
+          {
+            "ref": "x1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r13",
+      "by": "reconciler",
+      "title": "Claim against an employer in bankruptcy: warn.",
+      "petitionDate": "2026-05-05",
+      "slots": {
+        "employer_in_bankruptcy_or_settlement": "yes",
+        "requests": [
+          "wages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x5",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r14",
+      "by": "reconciler",
+      "title": "Grievance refused, the two months passed outside the band: warn, never block.",
+      "petitionDate": "2026-07-20",
+      "slots": {
+        "public_body_party": "yes",
+        "administrative_grievance_filed": "yes",
+        "administrative_grievance_rejection_date": "2026-05-04",
+        "requests": [
+          "cancel_decision"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d2",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r15",
+      "by": "reconciler",
+      "title": "Order to pay issued almost a year ago: the lapse is days away.",
+      "petitionDate": "2027-01-05",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "payment_order_issued": "yes",
+        "payment_order_date": "2026-01-10",
+        "payment_order_notified_on": "2026-01-20"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d3",
+            "effect": "warn"
+          },
+          {
+            "ref": "d4",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r16",
+      "by": "reconciler",
+      "title": "Order to pay served six weeks ago: the objection period has run.",
+      "petitionDate": "2026-06-30",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "payment_order_issued": "yes",
+        "payment_order_date": "2026-05-01",
+        "payment_order_notified_on": "2026-05-04"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d4",
+            "effect": "warn"
+          },
+          {
+            "ref": "d3",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r17",
+      "by": "reconciler",
+      "title": "Cancellation of a commune decision: both exits warn and the grievance is asked.",
+      "petitionDate": "2026-11-10",
+      "slots": {
+        "public_body_party": "yes",
+        "requests": [
+          "cancel_decision"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x1",
+            "effect": "warn"
+          },
+          {
+            "ref": "x3",
+            "effect": "warn"
+          },
+          {
+            "ref": "d1",
+            "effect": "ask"
+          },
+          {
+            "ref": "d2",
+            "effect": "ask"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r18",
+      "by": "reconciler",
+      "title": "Clean private claim, every question answered: nothing is asked or shown.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "specialised_commercial_matter": "none",
+        "employer_in_bankruptcy_or_settlement": "no",
+        "obligation_is_tort_compensation": "no",
+        "criminal_case_on_same_facts": "no",
+        "debt_written_fixed_due": "no",
+        "payment_order_issued": "no",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "x1",
+            "effect": "none"
+          },
+          {
+            "ref": "x2",
+            "effect": "none"
+          },
+          {
+            "ref": "x3",
+            "effect": "none"
+          },
+          {
+            "ref": "x4",
+            "effect": "none"
+          },
+          {
+            "ref": "x5",
+            "effect": "none"
+          },
+          {
+            "ref": "x6",
+            "effect": "none"
+          },
+          {
+            "ref": "x7",
+            "effect": "none"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "d2",
+            "effect": "none"
+          },
+          {
+            "ref": "d3",
+            "effect": "none"
+          },
+          {
+            "ref": "d4",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    }
+  ],
+  "openPoints": [
+    {
+      "id": "o1",
+      "question": {
+        "ar": "متى تسري قواعد الاختصاص الجديدة للمحاكم الإدارية والمحاكم التجارية المتخصصة؟",
+        "en": "From when do the new jurisdiction rules of the administrative and specialised commercial courts apply?"
+      },
+      "why": {
+        "ar": "تربط المادة 13 من القانون 22-13 السريان بتنصيب الجهات الجديدة، ولا يتضمن المخزن تاريخ التنصيب ولا نص التنصيب.",
+        "en": "Article 13 of law 22-13 ties application to the installation of the new courts, and the store holds neither the installation date nor the installing text."
+      },
+      "protectiveReading": {
+        "ar": "التنبيه إلى المحكمة التجارية المتخصصة وسؤال المحامي عن تنصيبها، دون منع.",
+        "en": "Warn about the specialised commercial court and ask the lawyer whether it is installed; never block."
+      },
+      "grade": "C",
+      "refs": [
+        "x4",
+        "x5",
+        "x1",
+        "x3"
+      ],
+      "readings": [
+        {
+          "reading": {
+            "ar": "تسري القواعد في كل دائرة من تاريخ تنصيب محكمتها.",
+            "en": "The rules run in each area from the installation of its court."
+          },
+          "basis": [
+            "b32"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "تبقى الدعاوى المرفوعة قبل التنصيب للجهات السابقة.",
+            "en": "Cases filed before the installation stay with the former courts."
+          },
+          "basis": [
+            "b33"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "o2",
+      "question": {
+        "ar": "هل تعد دعوى ضد صاحب عمل في حالة إفلاس أو تسوية قضائية من منازعات الإفلاس التي تختص بها المحكمة التجارية المتخصصة، وهل يجب التصريح بالدين في الإجراء الجماعي؟",
+        "en": "Is a claim against an employer in bankruptcy or judicial settlement a bankruptcy dispute for the specialised commercial court, and must the debt first be declared in the collective procedure?"
+      },
+      "why": {
+        "ar": "المادة 536 مكرر تذكر التسوية القضائية والإفلاس دون تحديد، ونصوص الإفلاس في القانون التجاري ليست في المخزن؛ ما يعرف عنها من الذاكرة فقط.",
+        "en": "Article 536 مكرر names judicial settlement and bankruptcy without more, and the Commercial Code's bankruptcy texts are not in the store; what is believed about them comes from memory only."
+      },
+      "protectiveReading": {
+        "ar": "التنبيه ودعوة المحامي إلى التحقق، دون منع.",
+        "en": "Warn and ask the lawyer to check; never block."
+      },
+      "grade": "D",
+      "refs": [
+        "x5"
+      ]
+    },
+    {
+      "id": "o3",
+      "question": {
+        "ar": "ما قواعد الادعاء المدني أمام القاضي الجزائي، وحجية اختيار الطريق، وإرجاء الفصل في الدعوى المدنية؟",
+        "en": "What are the rules on the civil action before the criminal judge, the binding choice of route, and the stay of the civil action?"
+      },
+      "why": {
+        "ar": "هذه القواعد في قانون الإجراءات الجزائية، وهو غير موجود في المخزن؛ ولم يرد إلا المادة 339 من القانون المدني وإرجاء مضاهاة الخطوط في المادة 165.",
+        "en": "These rules are in the Code of Criminal Procedure, which is not in the store; only civil-code 339 and the handwriting stay of cpca 165 were found."
+      },
+      "protectiveReading": {
+        "ar": "التنبيه عند وجود متابعة جزائية أو ضرر ناتج عن جريمة، ودعوة المحامي إلى التحقق، دون منع.",
+        "en": "Warn when there is a criminal case or damage from an offence, and ask the lawyer to check; never block."
+      },
+      "grade": "D",
+      "refs": [
+        "x6",
+        "n7"
+      ],
+      "readings": [
+        {
+          "reading": {
+            "ar": "من الذاكرة: للمتضرر رفع دعواه المدنية مع الدعوى العمومية أو منفصلة، ومن اختار الطريق المدني لا يعدل عنه إلا في حالات.",
+            "en": "From memory: the victim may bring the civil action with the public action or separately; one who chose the civil route cannot switch except in some cases."
+          }
+        },
+        {
+          "reading": {
+            "ar": "من الذاكرة: يرجئ القاضي المدني الفصل إلى أن يفصل في الدعوى العمومية.",
+            "en": "From memory: the civil judge stays until the public action is decided."
+          }
+        }
+      ]
+    },
+    {
+      "id": "o4",
+      "question": {
+        "ar": "ما جزاء فوات أجل الطعن أمام المحكمة الإدارية وأجل الشهرين بعد التظلم، ومن يثيره؟",
+        "en": "What sanctions the expiry of the period for the action before the administrative court and of the two-month period after a grievance, and who raises it?"
+      },
+      "why": {
+        "ar": "المادتان 829 و830 لا تذكران جزاء؛ المادة 322 تقرر سقوط الحق لكنها في باب طرق الطعن، والمادة 831 لا تجعل الأجل حجة إلا إذا أشير إليه في التبليغ، والمادة 832 تقطعه وتوقفه.",
+        "en": "Articles 829 and 830 state no sanction; article 322 forfeits the right but sits in the title on means of appeal, article 831 makes the period opposable only if the notification mentions it, and article 832 interrupts and suspends it."
+      },
+      "protectiveReading": {
+        "ar": "التنبيه وحده، دون منع.",
+        "en": "Warn only; never block."
+      },
+      "grade": "C",
+      "refs": [
+        "d1",
+        "d2"
+      ],
+      "readings": [
+        {
+          "reading": {
+            "ar": "أجل سقوط يثيره القاضي.",
+            "en": "A forfeiture period raised by the court."
+          },
+          "basis": [
+            "b24",
+            "b14"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "أجل لا يحتج به دون الإشارة إليه في التبليغ ويقبل الانقطاع والوقف.",
+            "en": "A period not opposable without mention in the notification, open to interruption and suspension."
+          },
+          "basis": [
+            "b19",
+            "b20",
+            "b21"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "o5",
+      "question": {
+        "ar": "هل يتاح الأمر بالأداء ضد مدين يقيم خارج الجزائر؟",
+        "en": "Is the order to pay available against a debtor living outside Algeria?"
+      },
+      "why": {
+        "ar": "تشترط المادة 306 ذكر موطن المدين الحقيقي أو المختار في الجزائر وتسند الطلب إلى رئيس محكمة موطنه؛ المقيم بالخارج قد يكون له موطن مختار في الجزائر، والخانة الموجودة تسأل عن الإقامة لا عن الموطن.",
+        "en": "Article 306 requires the debtor's real or chosen domicile in Algeria and sends the request to the president of the court of his domicile; a debtor living abroad may have a chosen domicile in Algeria, and the existing slot asks about residence, not domicile."
+      },
+      "protectiveReading": {
+        "ar": "عرض طريق الأمر بالأداء كإمكانية مع دعوة المحامي إلى التحقق من موطن المدين.",
+        "en": "Show the order-to-pay route as a possibility and ask the lawyer to check the debtor's domicile."
+      },
+      "grade": "C",
+      "refs": [
+        "x7"
+      ],
+      "readings": [
+        {
+          "reading": {
+            "ar": "الطريق مفتوح ما دام للمدين موطن مختار في الجزائر.",
+            "en": "The route is open as long as the debtor has a chosen domicile in Algeria."
+          },
+          "basis": [
+            "b40"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "الطريق مغلق إذا أقام المدين بالخارج.",
+            "en": "The route is closed when the debtor lives abroad."
+          },
+          "basis": [
+            "b40"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "o6",
+      "question": {
+        "ar": "هل تشمل خانة الطرف العمومي الهيئات العمومية الوطنية والمنظمات المهنية الوطنية التي أضافها التعديل؟",
+        "en": "Does the public-party slot cover the national public bodies and national professional organisations the amendment added?"
+      },
+      "why": {
+        "ar": "صيغة المادة 800 السارية أوسع من سؤال الخانة الموجودة.",
+        "en": "The in-force wording of article 800 is wider than the existing slot's question."
+      },
+      "protectiveReading": {
+        "ar": "ذكر هذه الهيئات في رسالة التنبيه واقتراح توسيع سؤال الخانة.",
+        "en": "Mention these bodies in the warning and propose widening the slot's question."
+      },
+      "grade": "C",
+      "refs": [
+        "x1"
+      ]
+    },
+    {
+      "id": "o7",
+      "question": {
+        "ar": "هل تبقى المنازعات ضد المؤسسات العمومية ذات الطابع الصناعي والتجاري أمام المحاكم العادية؟",
+        "en": "Do disputes against public bodies of industrial and commercial character stay before the ordinary courts?"
+      },
+      "why": {
+        "ar": "المادة 800 لا تذكر إلا المؤسسات العمومية ذات الصبغة الإدارية، ولا نص في المخزن عن غيرها؛ والمادة 800 الفقرة الأولى تتكلم عن المنازعات الإدارية دون تعريفها.",
+        "en": "Article 800 names only bodies of administrative character and no text in the store speaks of the others; its first paragraph speaks of administrative disputes without defining them."
+      },
+      "protectiveReading": {
+        "ar": "الخانة تسأل عن الطابع الإداري، ويبقى الحكم للمحامي، مع ملاحظة الحد.",
+        "en": "The slot asks about administrative character; the lawyer decides, with the boundary note shown."
+      },
+      "grade": "C",
+      "refs": [
+        "x1",
+        "n2"
+      ]
+    },
+    {
+      "id": "o8",
+      "question": {
+        "ar": "هل المادة 804 تحدد النوع أم المكان فقط، وهل يخرج نزاع الموظف عن المحاكم العادية إذا لم يكن الطرف الآخر من أشخاص المادة 800؟",
+        "en": "Does article 804 fix the subject matter or only the place, and does a civil servant's dispute leave the ordinary courts when the other party is not one of the persons of article 800?"
+      },
+      "why": {
+        "ar": "المادة 804 واردة في قسم الاختصاص الإقليمي، لكنها تذكر ما يرفع وجوبا أمام المحاكم الإدارية، والمادة 3 من قانون علاقات العمل تخرج الموظفين من نطاقه.",
+        "en": "Article 804 sits in the section on territorial jurisdiction but says which actions must be brought before the administrative courts, and article 3 of the labour relations law takes civil servants out of its scope."
+      },
+      "protectiveReading": {
+        "ar": "التنبيه عند كون المدعي موظفا، دون منع، وعرض المادة 804 كقاعدة مكانية.",
+        "en": "Warn when the plaintiff is a civil servant, never block, and show article 804 as a venue rule."
+      },
+      "grade": "C",
+      "refs": [
+        "x2",
+        "t1"
+      ],
+      "readings": [
+        {
+          "reading": {
+            "ar": "منازعة الموظف منازعة إدارية تختص بها المحكمة الإدارية ولو لم يكن الطرف الآخر من الأشخاص المذكورين في المادة 800.",
+            "en": "A civil servant's dispute is an administrative dispute for the administrative court even when the other party is not one of the persons named in article 800."
+          },
+          "basis": [
+            "b1",
+            "b11",
+            "b25"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "لا يخرج النزاع عن المحاكم العادية إلا إذا كان أحد الأطراف من الأشخاص المذكورين في المادة 800، والمادة 804 قاعدة إقليمية فقط.",
+            "en": "The dispute leaves the ordinary courts only when one of the persons named in article 800 is a party; article 804 is only a venue rule."
+          },
+          "basis": [
+            "b2",
+            "b10"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "o9",
+      "question": {
+        "ar": "هل طلب إلغاء قرار مع وجود طرف عمومي يعني دائما قرارا إداريا صادرا عن هذا الطرف؟",
+        "en": "Does a request to cancel a decision, with a public party, always mean an administrative decision of that party?"
+      },
+      "why": {
+        "ar": "نوع الطلب لا يذكر مصدر القرار، والمادة 801 تشترط قرارا صادرا عن جهة مذكورة.",
+        "en": "The request kind does not name the decision's author, and article 801 requires a decision of a listed authority."
+      },
+      "protectiveReading": {
+        "ar": "التنبيه في هذه الحالة وسؤال المحامي في غيرها.",
+        "en": "Warn in that case and ask the lawyer otherwise."
+      },
+      "grade": "C",
+      "refs": [
+        "x3",
+        "d1",
+        "d2"
+      ]
+    },
+    {
+      "id": "o10",
+      "question": {
+        "ar": "كيف يحسب أجل الطعن بعد سكوت الإدارة عن التظلم؟",
+        "en": "How is the period for the action counted after the administration's silence on the grievance?"
+      },
+      "why": {
+        "ar": "المادة 830 الفقرة الثالثة تبدأ أجل الشهرين من انتهاء مدة السكوت التي تبدأ من تبليغ التظلم، ولا خانة تحمل تاريخ تبليغ التظلم.",
+        "en": "Article 830 third paragraph starts the two months from the end of the silence, which itself runs from notification of the grievance, and no slot holds the date the grievance was notified."
+      },
+      "protectiveReading": {
+        "ar": "ذكر الحالة في رسالة الأجل وسؤال المحامي عن تاريخ الرفض.",
+        "en": "Name the case in the deadline's message and ask the lawyer for the date of the refusal."
+      },
+      "grade": "C",
+      "refs": [
+        "d2"
+      ]
+    }
+  ]
+}

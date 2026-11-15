@@ -1,0 +1,60 @@
+{
+ "about": "The model files of the reader, by hash: models are never committed (specs/reader.md); they live in C:\\Users\\TheShadow\\dz-core-research\\models and are rebuilt by the commands named here.",
+ "camelbert-mix": {
+  "pretrained": {
+   "folder": "models\\pretrained\\camelbert-mix",
+   "how": "exec\\fetch_camelbert.py (huggingface_hub snapshot_download at the pinned revision)",
+   "model": "CAMeL-Lab/bert-base-arabic-camelbert-mix",
+   "revision": "9be352797bdf28a9ae21e2ae582aaaca7abdb22d",
+   "licence": "Apache-2.0 (https://huggingface.co/CAMeL-Lab/bert-base-arabic-camelbert-mix)",
+   "downloaded": "2026-11-15T19:28:46+00:00",
+   "files": {
+    "config.json": {
+     "bytes": 468,
+     "sha256": "db65595aa025936628d4d4b5aae80ac88fd7607d3ddd28c516373f96c4ae56c2"
+    },
+    "pytorch_model.bin": {
+     "bytes": 438873130,
+     "sha256": "d234e4fe0193e74036b1db72ba9b41a2e4921d8cf0c3c421d1f6a6d8816af729"
+    },
+    "special_tokens_map.json": {
+     "bytes": 112,
+     "sha256": "303df45a03609e4ead04bc3dc1536d0ab19b5358db685b6f3da123d05ec200e3"
+    },
+    "tokenizer_config.json": {
+     "bytes": 86,
+     "sha256": "73f5e97ab29042bac49dc96f7b8a7a790994509bbd2fe3e9cd4f59affc46c2ce"
+    },
+    "vocab.txt": {
+     "bytes": 304561,
+     "sha256": "1df5f8da6ad6c56153c7a974c0b149bb7a0a6e332bcfa795c99deee6c1136ce2"
+    }
+   }
+  },
+  "encoder": {
+   "folder": "models\\encoders\\camelbert-mix",
+   "how": "research/core-logic/train/export_encoder.py --model <pretrained> --out <encoder>, with the Part 7 venv through clean_env",
+   "source": {
+    "model": "CAMeL-Lab/bert-base-arabic-camelbert-mix",
+    "revision": "9be352797bdf28a9ae21e2ae582aaaca7abdb22d",
+    "licence": "Apache-2.0 (https://huggingface.co/CAMeL-Lab/bert-base-arabic-camelbert-mix)"
+   },
+   "opset": 17,
+   "quantisation": "quantize_dynamic, QInt8 weights",
+   "made": "2026-11-15T19:29:25+00:00",
+   "files": {
+    "encoder.fp32.onnx": {
+     "bytes": 434177610,
+     "sha256": "5a18408e74e97c9e4533ac0503f3f695818adeaf97008790faddac3223a3a4a1"
+    },
+    "encoder.int8.onnx": {
+     "bytes": 109251262,
+     "sha256": "87abf8571c2686afefab411fbcac31c57a976fe14e9b1f0c857aaf33dc2c024e"
+    }
+   },
+   "vocab": {
+    "sha256": "1df5f8da6ad6c56153c7a974c0b149bb7a0a6e332bcfa795c99deee6c1136ce2"
+   }
+  }
+ }
+}

@@ -125,6 +125,16 @@ public sealed class ExampleRecordTests
     }
 
     [Fact]
+    public void AGradingCarriesItsProofLabelsAndAnOlderGradingWithoutThemStillLoads()
+    {
+        const string Now = """{ "grade": "B", "reasons": ["plantedNotRun"], "toCheck": false, "textProof": "mechanical", "proof": "oneFamily" }""";
+        var g = System.Text.Json.JsonSerializer.Deserialize<Grading>(Now, ContractJson.Options)!;
+        Assert.Equal(("mechanical", "oneFamily"), (g.TextProof, g.Proof));
+        const string Before = """{ "grade": "A", "reasons": [], "toCheck": false }""";
+        Assert.Null(System.Text.Json.JsonSerializer.Deserialize<Grading>(Before, ContractJson.Options)!.Proof);
+    }
+
+    [Fact]
     public void TheOnlyBlockingEffectIsTheBlockOfTheCleanExport() =>
         Assert.Equal(["BlockCleanExport", "Warn", "Ask", "None"], Enum.GetNames<FindingEffect>());
 

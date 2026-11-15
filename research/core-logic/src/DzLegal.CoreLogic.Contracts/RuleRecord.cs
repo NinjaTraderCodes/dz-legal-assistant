@@ -228,6 +228,18 @@ public sealed record Grading
     /// and the warning carries the mark "to check". It never blocks the clean export and is never silent.
     /// </summary>
     public required bool ToCheck { get; init; }
+
+    /// <summary>
+    /// SCRIPT: the weakest proof label among the texts the item rests on: mechanical, twoFamilies, oneFamily, or
+    /// unverified (GRADES.md, "The proof label"). Absent on records graded before 15 November 2026.
+    /// </summary>
+    public string? TextProof { get; init; }
+
+    /// <summary>
+    /// SCRIPT: twoFamilies when the text proof is mechanical or twoFamilies and Codex's support check said yes to every
+    /// statement of the item as it is now; otherwise oneFamily. Information for a report, not an effect.
+    /// </summary>
+    public string? Proof { get; init; }
 }
 
 /// <summary>One way of reading an unclear text. An open point keeps every reading, not only the one chosen.</summary>

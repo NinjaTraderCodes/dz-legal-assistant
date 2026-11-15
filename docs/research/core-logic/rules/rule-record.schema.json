@@ -374,11 +374,27 @@
           "items": {
             "type": "string"
           },
-          "description": "The conditions of GRADES.md that fail, by their codes: noOfficialText, textNotVerified, valueMismatch, interpretive, disagreedBeforeReconciliation, singleDerivation, addedAfterDerivation, attackOpen, notAttacked, ledgerNotClean, scanNotRun, scanBlind, triageOpen, disputedText."
+          "description": "The conditions of GRADES.md that fail, by their codes: noOfficialText, textNotVerified, valueMismatch, interpretive, disagreedBeforeReconciliation, singleDerivation, addedAfterDerivation, attackOpen, notAttacked, ledgerNotClean, scanNotRun, scanBlind, triageOpen, disputedText, supportCheckPending, plantedNotRun, checkerWeak (followed by the planted kind)."
         },
         "toCheck": {
           "type": "boolean",
           "description": "SCRIPT: true exactly when grade is D. A grade D item still warns, and the warning carries the mark to check; it never blocks the clean export and is never silent."
+        },
+        "textProof": {
+          "enum": [
+            "mechanical",
+            "twoFamilies",
+            "oneFamily",
+            "unverified"
+          ],
+          "description": "SCRIPT: the weakest proof label among the texts the item rests on (GRADES.md, The proof label)."
+        },
+        "proof": {
+          "enum": [
+            "twoFamilies",
+            "oneFamily"
+          ],
+          "description": "SCRIPT: twoFamilies when textProof is mechanical or twoFamilies and Codex's support check said yes to every basis statement as the record has it now; otherwise oneFamily."
         }
       }
     },

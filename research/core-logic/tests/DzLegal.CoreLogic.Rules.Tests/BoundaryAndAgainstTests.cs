@@ -52,6 +52,16 @@ public sealed class BoundaryAndAgainstTests
         Assert.True(result.Passed, string.Join("; ", result.Differences));
     }
 
+    [Theory]
+    [InlineData("late", "2026-03-01", "late")] // the record agrees: actual = expected
+    [InlineData("inTime", "2026-03-01", "late")] // the record says late where the case says in time
+    [InlineData("late", "2025-08-01", "inTime")]
+    public void EachCaseCarriesTheOutcomeTheRecordGivesIt(string expected, string petition, string actual)
+    {
+        var result = Single(Case("[cpca 504 ¶1]", expected, petition, "\"nonconciliation_record\": \"yes\", \"worker_is_public_servant\": \"no\", \"nonconciliation_record_delivered_on\": \"2025-06-01\"", null));
+        Assert.Equal(actual, result.Actual);
+    }
+
     [Fact]
     public void ACountingParagraphMatchesTheDeadlineThroughItsCountingBasis()
     {

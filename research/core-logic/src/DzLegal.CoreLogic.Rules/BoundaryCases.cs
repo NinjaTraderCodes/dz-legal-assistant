@@ -94,7 +94,7 @@ public static class BoundaryCases
             foreach (var boundaryCase in cases)
             {
                 var (differences, signature) = RunOne(evaluator, record, boundaryCase);
-                results.Add(new CaseResult(record.Id, boundaryCase.Id, boundaryCase.Title, differences));
+                results.Add(new CaseResult(record.Id, boundaryCase.Id, boundaryCase.Title, differences) { Actual = Actual(evaluator, record, boundaryCase) });
                 if (!signatures.TryGetValue(boundaryCase.Id, out var list))
                 {
                     signatures[boundaryCase.Id] = list = [];
@@ -117,6 +117,26 @@ public static class BoundaryCases
         }
 
         return results;
+    }
+
+    /// <summary>
+    /// The outcome the record gives a case: the first outcome, in the order of the table of specs/rule-evaluator.md, that the
+    /// matched items meet without a difference (a last day the case states is not part of it); "none" when none does. It is
+    /// what Codex is offered beside the case's own expectation when the verifier sets a case aside (stage 8b).
+    /// </summary>
+    public static string Actual(IRuleEvaluator evaluator, RuleRecord record, BoundaryCase boundaryCase)
+    {
+        ArgumentNullException.ThrowIfNull(boundaryCase);
+        foreach (var outcome in Enum.GetValues<BoundaryOutcome>())
+        {
+            var probe = boundaryCase with { Expect = boundaryCase.Expect with { Outcome = outcome, LastDay = null } };
+            if (RunOne(evaluator, record, probe).Differences.Count == 0)
+            {
+                return JsonNamingPolicy.CamelCase.ConvertName(outcome.ToString());
+            }
+        }
+
+        return "none";
     }
 
     /// <summary>

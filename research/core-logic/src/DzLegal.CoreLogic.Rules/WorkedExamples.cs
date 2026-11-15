@@ -7,6 +7,12 @@ namespace DzLegal.CoreLogic.Rules;
 public sealed record CaseResult(string RecordId, string CaseId, string Title, IReadOnlyList<string> Differences)
 {
     public bool Passed => Differences.Count == 0;
+
+    /// <summary>
+    /// For a boundary case run on one record: the outcome word the record gives the case, the first of the outcomes'
+    /// order whose condition the matched items meet, or "none" (specs/unit-driver.md, stage 8b). Null otherwise.
+    /// </summary>
+    public string? Actual { get; init; }
 }
 
 /// <summary>

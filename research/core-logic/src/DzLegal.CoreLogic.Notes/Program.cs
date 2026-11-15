@@ -10,6 +10,8 @@ using DzLegal.CoreLogic.Notes;
 //   notes cells --write-table <Sonnet's reply> <Opus's reply>
 //   notes export --purpose train|tune|measure --sets <a,b> --out <folder> [--size <n> --subset-seed <n>]
 //                [--exclude-writer <family>] [--pack <slot>] [--allow-pilot] [--mirror-run <n>] [--work <folder>]
+//   notes style-cards --write
+//   notes sample --set <set> --count <n> --seed <n> [--groups <n>] [--writer codex|sonnet] [--work <folder>] [--out <file>]
 // Every command takes --repo <folder> (the worktree); without it the tool finds the repository above it.
 const string Usage = "usage: notes guide-items --prepare|--ingest … | guide-test --prepare|--compare … | cells --prepare|--write-table … [--repo <folder>]";
 
@@ -136,6 +138,18 @@ try
             Console.WriteLine($"{result.Notes.Count} notes for {purpose.ToString().ToLowerInvariant()} -> {output}");
             return 0;
         }
+
+        case ("style-cards", "--write"):
+        {
+            var path = Path.Combine(files.Notes, "sampler", "style-cards.json");
+            NotesJson.Write(path, DzLegal.CoreLogic.Notes.Sampler.StyleCards.ToJson(DzLegal.CoreLogic.Notes.Sampler.StyleCards.Build()));
+            Console.WriteLine(path);
+            return 0;
+        }
+
+        case ("sample", "--set"):
+            return DzLegal.CoreLogic.Notes.Sampler.SampleCommand.Run(files,
+                positional.FirstOrDefault() ?? throw new ArgumentException("--set <name>"), options);
 
         default:
             Console.Error.WriteLine(Usage);

@@ -3,6 +3,9 @@
     <OutputType>Exe</OutputType>
     <AssemblyName>notes</AssemblyName>
     <RootNamespace>DzLegal.CoreLogic.Notes</RootNamespace>
-    <Description>The notes tool (specs/notes-pipeline.md, "The commands of the notes tool"). Phase A, step 1 first: the guide test's new items, the guide test and the cells table that freeze the label scheme.</Description>
+    <Description>The notes tool (specs/notes-pipeline.md, "The commands of the notes tool"): the scheme freeze (phase A, step 1), the loader, and the scenario sampler (specs/scenario-sampler.md), which calls the rule evaluator in process.</Description>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DzLegal.CoreLogic.Rules\DzLegal.CoreLogic.Rules.csproj" />
+  </ItemGroup>
 </Project>

@@ -1,0 +1,347 @@
+{
+  "about": "The drawing tables of the scenario sampler, version 1 (specs/scenario-sampler.md). 'pairs' and 'nearMiss' copy SCHEME.md section 9 (a test checks they match it); the rest are drawing choices in English, never wording and never a statement of the law. Amounts are in dinars. Written 15 November 2026.",
+  "areas": {
+    "civil": [
+      "loan-repayment",
+      "unpaid-sale-price",
+      "contract-rescission",
+      "sale-annulment-fraud",
+      "contract-damages",
+      "tort-damages",
+      "liability-for-things",
+      "unpaid-rent",
+      "eviction-occupier-without-title",
+      "sale-non-delivery"
+    ],
+    "commercial": [
+      "commercial-debt",
+      "commercial-lease-eviction"
+    ],
+    "family": [
+      "divorce-by-husband",
+      "tatliq",
+      "khul",
+      "nafaqa",
+      "custody",
+      "custody-forfeiture",
+      "visitation"
+    ],
+    "labour": [
+      "abusive-dismissal",
+      "unpaid-wages"
+    ]
+  },
+  "pairs": [
+    [
+      "unpaid-wages",
+      "abusive-dismissal"
+    ],
+    [
+      "contract-rescission",
+      "contract-damages"
+    ],
+    [
+      "unpaid-sale-price",
+      "contract-damages"
+    ],
+    [
+      "sale-non-delivery",
+      "contract-damages"
+    ],
+    [
+      "tatliq",
+      "nafaqa"
+    ],
+    [
+      "tatliq",
+      "custody"
+    ],
+    [
+      "divorce-by-husband",
+      "custody"
+    ],
+    [
+      "khul",
+      "custody"
+    ],
+    [
+      "nafaqa",
+      "custody"
+    ],
+    [
+      "custody",
+      "visitation"
+    ],
+    [
+      "unpaid-rent",
+      "contract-damages"
+    ]
+  ],
+  "nearMiss": {
+    "administrative": {
+      "near": "civil+commercial+labour",
+      "facts": [
+        "the other party is a commune, sued over the same facts",
+        "the other party is a ministry's local directorate, sued over the same facts",
+        "the other party is a wilaya, sued over the same facts",
+        "the other party is a public institution of an administrative character, sued over the same facts",
+        "the note asks to annul a decision of an administration"
+      ],
+      "requests": [
+        "cancel_decision",
+        "damages",
+        "payment"
+      ]
+    },
+    "criminal": {
+      "near": [
+        "tort-damages",
+        "sale-annulment-fraud",
+        "loan-repayment",
+        "nafaqa"
+      ],
+      "facts": [
+        "the client wants to file a criminal complaint instead of a civil claim",
+        "the client wants to join the criminal case already opened as a civil party"
+      ],
+      "requests": [
+        "other",
+        "damages"
+      ]
+    },
+    "payment-order": {
+      "near": [
+        "loan-repayment",
+        "unpaid-sale-price",
+        "unpaid-rent",
+        "commercial-debt"
+      ],
+      "facts": [
+        "the client wants an order to pay from the court president on written proof, not a claim",
+        "the note asks for an order to pay (a payment order), not a full claim"
+      ],
+      "requests": [
+        "payment"
+      ]
+    },
+    "urgent": {
+      "near": [
+        "eviction-occupier-without-title",
+        "unpaid-rent",
+        "custody",
+        "visitation",
+        "unpaid-wages"
+      ],
+      "facts": [
+        "the client asks the judge of urgent matters for a provisional measure only",
+        "the note asks for an urgent provisional order pending the main case"
+      ],
+      "requests": [
+        "other",
+        "eviction",
+        "visitation"
+      ]
+    },
+    "enforcement": {
+      "near": [
+        "nafaqa",
+        "custody",
+        "visitation",
+        "loan-repayment",
+        "unpaid-wages"
+      ],
+      "facts": [
+        "a final judgment already exists and the client wants it enforced",
+        "the note asks to have an existing final judgment carried out"
+      ],
+      "requests": [
+        "other"
+      ]
+    },
+    "family-other": {
+      "near": "family",
+      "facts": [
+        "the matter is the share of an inheritance",
+        "the matter is a kafala of a child",
+        "the matter is proof of a marriage that was never registered",
+        "the matter is proof of descent of a child",
+        "the matter is the guardianship of an adult relative"
+      ],
+      "requests": [
+        "partition",
+        "guardianship",
+        "other"
+      ]
+    },
+    "civil-status": {
+      "near": "family",
+      "facts": [
+        "the note asks to correct a name in a birth record",
+        "the note asks to correct a date in a civil-status record"
+      ],
+      "requests": [
+        "correction"
+      ]
+    },
+    "property-other": {
+      "near": [
+        "eviction-occupier-without-title",
+        "unpaid-rent",
+        "sale-non-delivery"
+      ],
+      "facts": [
+        "the matter is the partition of a jointly owned house",
+        "the matter is the boundary between two plots",
+        "the matter is a right of pre-emption on a sold share",
+        "the matter is protecting possession of a plot"
+      ],
+      "requests": [
+        "partition",
+        "other"
+      ]
+    },
+    "company": {
+      "near": [
+        "commercial-debt",
+        "contract-damages",
+        "loan-repayment"
+      ],
+      "facts": [
+        "the dispute is between partners of a company over its management",
+        "the note asks to dissolve the company the parties founded together"
+      ],
+      "requests": [
+        "dissolution",
+        "other"
+      ]
+    },
+    "other": {
+      "near": "any",
+      "facts": [
+        "the matter is a dispute between neighbours over noise, outside every listed kind of claim",
+        "the matter is the return of a deposit paid for a cancelled wedding hall booking, outside every listed kind of claim"
+      ],
+      "requests": [
+        "other"
+      ]
+    }
+  },
+  "amounts": {
+    "loan-repayment": [
+      50000,
+      5000000
+    ],
+    "unpaid-sale-price": [
+      100000,
+      20000000
+    ],
+    "contract-rescission": [
+      100000,
+      20000000
+    ],
+    "sale-annulment-fraud": [
+      500000,
+      30000000
+    ],
+    "contract-damages": [
+      100000,
+      20000000
+    ],
+    "commercial-debt": [
+      50000,
+      50000000
+    ],
+    "unpaid-rent-monthly": [
+      10000,
+      120000
+    ],
+    "commercial-rent-monthly": [
+      20000,
+      300000
+    ],
+    "wage-monthly": [
+      20000,
+      250000
+    ],
+    "damages": [
+      50000,
+      5000000
+    ],
+    "maintenance-monthly": [
+      8000,
+      40000
+    ],
+    "housing-monthly": [
+      10000,
+      40000
+    ],
+    "khul": [
+      50000,
+      1000000
+    ]
+  },
+  "propertyClaims": [
+    "unpaid-rent",
+    "eviction-occupier-without-title",
+    "commercial-lease-eviction",
+    "sale-annulment-fraud",
+    "contract-rescission",
+    "sale-non-delivery"
+  ],
+  "informalDemand": [
+    "the client only asked for payment by word of mouth",
+    "the client reminded the other side by telephone",
+    "the client sent a text message as a reminder",
+    "the client sent an ordinary letter that only reminds and asks, without calling it a notice"
+  ],
+  "noticeForm": {
+    "bailiff": "a formal notice served by a bailiff",
+    "registered_letter": "a formal notice sent by registered letter, which the note itself calls a notice",
+    "other": "a formal notice delivered by hand against a signature, which the note itself calls a notice",
+    "unknown": "a formal notice, without saying how it was sent"
+  },
+  "publicBodies": [
+    "the commune of {place}",
+    "the wilaya of {place}",
+    "a public institution of an administrative character in {place} (say that character)",
+    "the local directorate of a ministry in {place}"
+  ],
+  "publicBodyUnclear": [
+    "a body the note calls only «a public institution», with nothing more",
+    "a body the note calls only «an institution», with nothing more"
+  ],
+  "publicCompany": [
+    "a public economic company (say it is a public company of an economic character)"
+  ],
+  "distractors": {
+    "any": [
+      "the client is tired of waiting and wants the case filed quickly",
+      "the client asks whether the hearing can be held in the afternoon",
+      "the client first went to another lawyer, who did not take the case",
+      "the client's cousin knows the other side from the neighbourhood",
+      "the client keeps all the papers in a blue folder"
+    ],
+    "civil": [
+      "the other side recently changed his telephone number",
+      "a neighbour witnessed some of the exchanges"
+    ],
+    "commercial": [
+      "both firms have done business together for years",
+      "the defendant's manager changed last year"
+    ],
+    "family": [
+      "the children attend the primary school of the district",
+      "the grandmother helps with the children after school"
+    ],
+    "labour": [
+      "the worker had a good record and no warning",
+      "the worker was a member of the works committee"
+    ]
+  },
+  "unrelatedAmounts": [
+    "the fee the client paid for copies of documents",
+    "the value of a car the client owns, mentioned in passing",
+    "the client's monthly rent for his own flat",
+    "the price of the client's new telephone, mentioned in passing"
+  ]
+}

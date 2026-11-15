@@ -1,0 +1,828 @@
+{
+  "about": "The sampler's English seeds per event kind (specs/scenario-sampler.md, version 1): 'concepts' are ways to name the act (the style card's 'terms' line picks one; the Arabic is the writer's); 'denied' and 'disputed' are the 'how' lines of a denied or disputed event (who says so, with what story); 'cause' are contests of the cause of a stated event (the proposition stands; the other side gives its own reason). Seeds, never wording, never a statement of the law. 'byClaim' overrides a list for one claim type. Written by the executor from the element's proposition (claim-elements.json) on 15 November 2026. 'disputedBy' says who disputes a disputed event and who contests a stated one: 'defendant' (the default), 'actor' (the party the event names as acting: the fact is against it), or 'notActor' (the other party: the fact is in the actor's favour); an unknown actor gives 'defendant'.",
+  "kinds": {
+    "money_lent": {
+      "concepts": [
+        "a loan of money",
+        "an advance of cash",
+        "money handed over to be paid back",
+        "a sum lent in confidence",
+        "a friendly cash advance"
+      ],
+      "denied": [
+        "the plaintiff's own account is that he only stood surety for the defendant's debt with a third party"
+      ],
+      "disputed": [
+        "the defendant says the money was a gift, not a loan",
+        "the defendant says he never received any money from the plaintiff",
+        "the defendant says the sum was the price of a car he sold to the plaintiff, not a loan"
+      ]
+    },
+    "debt_acknowledged": {
+      "concepts": [
+        "a signed acknowledgment of the debt",
+        "an IOU in the defendant's hand",
+        "a written admission of owing the sum",
+        "a recognition of the debt before witnesses"
+      ],
+      "denied": [
+        "the defendant never signed any paper recognising the debt",
+        "there is no acknowledgment of any kind, only the plaintiff's word"
+      ],
+      "disputed": [
+        "the defendant says the signature on the acknowledgment is not his",
+        "the defendant says he signed the paper under pressure and it records nothing real"
+      ]
+    },
+    "deadline_passed": {
+      "concepts": [
+        "the agreed date for paying back has come",
+        "the term for repayment has expired",
+        "the due date has passed",
+        "the time given to the debtor is over"
+      ],
+      "denied": [
+        "the agreed term has not come yet: it falls later in the year"
+      ],
+      "disputed": [
+        "the defendant says the parties later agreed to extend the term, so it has not come",
+        "the defendant says no fixed date was ever agreed"
+      ],
+      "byClaim": {
+        "sale-non-delivery": {
+          "concepts": [
+            "the agreed delivery date has come",
+            "the term for handing over the goods has expired",
+            "the promised delivery day has passed",
+            "the time allowed to the seller is over"
+          ],
+          "denied": [
+            "the agreed delivery date has not come yet"
+          ],
+          "disputed": [
+            "the seller says the delivery date was pushed back by a later agreement",
+            "the seller says the contract fixed no delivery date"
+          ]
+        }
+      }
+    },
+    "payment_made": {
+      "concepts": [
+        "a part payment",
+        "an instalment paid",
+        "a sum already settled",
+        "a partial settlement",
+        "a down payment"
+      ],
+      "denied": [
+        "no instalment at all was ever paid",
+        "not a single dinar was paid"
+      ],
+      "disputed": [
+        "the defendant says he paid a part in cash, which the plaintiff denies",
+        "the defendant claims a bank transfer that the plaintiff says never arrived"
+      ],
+      "byClaim": {
+        "contract-rescission": {
+          "concepts": [
+            "the price or an advance paid by the plaintiff",
+            "a deposit handed over",
+            "money paid upfront",
+            "an advance on the price"
+          ],
+          "denied": [
+            "the plaintiff paid nothing yet; the price was due on completion"
+          ],
+          "disputed": [
+            "the defendant says the advance was never received",
+            "the defendant says the money paid was for another job"
+          ]
+        },
+        "sale-annulment-fraud": {
+          "concepts": [
+            "the price paid by the plaintiff",
+            "the purchase money handed over",
+            "the settlement of the price",
+            "the sum paid for the property"
+          ],
+          "denied": [
+            "the plaintiff has not paid the price yet"
+          ],
+          "disputed": [
+            "the defendant says the price was never paid in full",
+            "the defendant says the money received was a loan, not the price"
+          ]
+        },
+        "sale-non-delivery": {
+          "concepts": [
+            "the price or part of it paid by the buyer",
+            "an advance on the price",
+            "a deposit paid to the seller",
+            "money paid for the goods"
+          ],
+          "denied": [
+            "the buyer has paid nothing yet"
+          ],
+          "disputed": [
+            "the seller says he never received the advance",
+            "the seller says the payment was smaller than the buyer claims"
+          ]
+        }
+      },
+      "disputedBy": "notActor"
+    },
+    "debt_unpaid": {
+      "concepts": [
+        "the sum still owed",
+        "the balance not paid back",
+        "the outstanding remainder",
+        "the money not returned",
+        "the unpaid balance of the loan"
+      ],
+      "denied": [
+        "the defendant paid everything back; only damages are at issue"
+      ],
+      "disputed": [
+        "the defendant says he repaid the whole sum",
+        "the defendant says the debt was settled by offsetting another debt"
+      ],
+      "cause": [
+        "the defendant admits he has not paid but blames a business loss",
+        "the defendant admits the balance but says the plaintiff agreed to wait"
+      ]
+    },
+    "notice_served": {
+      "concepts": [
+        "a formal notice",
+        "a warning to perform",
+        "a demand served on the other side",
+        "a summons to pay or perform",
+        "a formal reminder of the obligation"
+      ],
+      "denied": [
+        "no notice of any kind was sent to the defendant",
+        "the client never warned the defendant formally"
+      ],
+      "disputed": [
+        "the defendant says he never received the notice",
+        "the defendant says the notice went to an old address and never reached him"
+      ]
+    },
+    "contract_concluded": {
+      "concepts": [
+        "the agreement between the parties",
+        "the deal signed by both sides",
+        "the contract",
+        "the bargain struck",
+        "the written agreement"
+      ],
+      "denied": [],
+      "disputed": [
+        "the defendant says there were only negotiations and no contract",
+        "the defendant denies ever agreeing to anything"
+      ],
+      "byClaim": {
+        "unpaid-sale-price": {
+          "concepts": [
+            "the sale",
+            "the purchase agreement",
+            "the deal for the goods",
+            "the transfer of the goods for a price"
+          ],
+          "denied": [],
+          "disputed": [
+            "the defendant says the goods were left with him on trust, not sold",
+            "the defendant denies any sale"
+          ]
+        },
+        "unpaid-rent": {
+          "concepts": [
+            "the lease",
+            "the rental agreement",
+            "the tenancy",
+            "the letting of the premises and its monthly rent"
+          ],
+          "denied": [],
+          "disputed": [
+            "the occupant says he lives there free of charge as a relative",
+            "the occupant denies any rental agreement"
+          ]
+        },
+        "commercial-lease-eviction": {
+          "concepts": [
+            "the commercial lease",
+            "the lease of the shop",
+            "the business tenancy",
+            "the letting of the premises for trade"
+          ],
+          "denied": [],
+          "disputed": [
+            "the other side says the premises were lent, not leased",
+            "the other side says the lease covers only part of the shop"
+          ]
+        },
+        "sale-non-delivery": {
+          "concepts": [
+            "the sale",
+            "the purchase",
+            "the order and its acceptance",
+            "the agreement to buy"
+          ],
+          "denied": [],
+          "disputed": [
+            "the seller says no sale was concluded, only a reservation",
+            "the seller denies the sale"
+          ]
+        },
+        "sale-annulment-fraud": {
+          "concepts": [
+            "the sale",
+            "the purchase agreement",
+            "the deed of sale",
+            "the transaction"
+          ],
+          "denied": [],
+          "disputed": [
+            "the other side says the deal was an exchange, not a sale",
+            "the other side denies the transaction"
+          ]
+        }
+      }
+    },
+    "goods_delivered": {
+      "concepts": [
+        "the goods handed over",
+        "the delivery of the merchandise",
+        "the items supplied",
+        "the shipment received",
+        "the handing over of what was sold"
+      ],
+      "denied": [
+        "the goods have not been handed over yet"
+      ],
+      "disputed": [
+        "the defendant says he never received the goods",
+        "the defendant says only part of the shipment arrived"
+      ],
+      "byClaim": {
+        "commercial-debt": {
+          "concepts": [
+            "the supplies delivered",
+            "the goods or services provided on invoice",
+            "the deliveries made to the trader",
+            "the orders fulfilled"
+          ],
+          "denied": [],
+          "disputed": [
+            "the defendant says the delivery notes were not signed by his staff",
+            "the defendant says the goods invoiced were never delivered"
+          ]
+        }
+      }
+    },
+    "price_unpaid": {
+      "concepts": [
+        "the price still owed",
+        "the unpaid invoices",
+        "the balance of the price",
+        "the money due for the goods",
+        "the outstanding bills"
+      ],
+      "denied": [
+        "the seller was paid in full on the day of the deal"
+      ],
+      "disputed": [
+        "the defendant says he paid by bank transfer",
+        "the defendant says the price was settled in cash to a sales agent"
+      ],
+      "cause": [
+        "the defendant admits not paying but says the goods were defective",
+        "the defendant admits the debt but says he is waiting for a credit note"
+      ]
+    },
+    "rent_unpaid": {
+      "concepts": [
+        "the rent arrears",
+        "the months of rent not paid",
+        "the unpaid rentals",
+        "the overdue rent",
+        "the rent the tenant has stopped paying"
+      ],
+      "denied": [
+        "the tenant pays the rent regularly; the dispute is about the end of the lease"
+      ],
+      "disputed": [
+        "the tenant says he paid in cash without receipts",
+        "the tenant says he paid the rent to the owner's son"
+      ],
+      "cause": [
+        "the tenant admits the arrears but says he stopped paying because repairs were not made",
+        "the tenant admits not paying but blames the loss of his job"
+      ],
+      "disputedBy": "actor"
+    },
+    "delivery_missing": {
+      "concepts": [
+        "the failure to hand over",
+        "the goods never delivered",
+        "the thing promised not handed over",
+        "the non-delivery",
+        "the item still withheld"
+      ],
+      "denied": [
+        "the defendant delivered on time"
+      ],
+      "disputed": [
+        "the defendant says he put the goods at the buyer's disposal and the buyer never collected them",
+        "the defendant says delivery took place and shows a signed slip"
+      ]
+    },
+    "work_stopped": {
+      "concepts": [
+        "the works abandoned",
+        "the job left unfinished",
+        "the site left idle",
+        "the poor execution of the works",
+        "the halt of the building works"
+      ],
+      "denied": [
+        "the works are going on and have not stopped"
+      ],
+      "disputed": [
+        "the contractor says the works never stopped and are only slower",
+        "the contractor says the job was finished and handed over"
+      ],
+      "cause": [
+        "the contractor admits the stop but says the client did not let him on the site",
+        "the contractor admits the stop and blames late payments by the client"
+      ]
+    },
+    "delivery_late": {
+      "concepts": [
+        "the late handover",
+        "the delay in performance",
+        "the delivery after the agreed date",
+        "the overdue completion",
+        "the slow performance"
+      ],
+      "denied": [
+        "delivery took place on the agreed date"
+      ],
+      "disputed": [
+        "the defendant says the date was extended by agreement, so there was no delay",
+        "the defendant says he delivered on time"
+      ],
+      "cause": [
+        "the defendant admits the delay but blames a strike at the port",
+        "the defendant admits being late and says the plaintiff changed the order"
+      ]
+    },
+    "other": {
+      "concepts": [
+        "a breach of another contractual duty",
+        "a failure to keep another promise of the contract",
+        "a violation of a clause of the agreement",
+        "a broken undertaking"
+      ],
+      "denied": [
+        "the defendant kept all his other obligations"
+      ],
+      "disputed": [
+        "the defendant denies any breach of the agreement",
+        "the defendant says the clause relied on does not exist"
+      ]
+    },
+    "concealment": {
+      "concepts": [
+        "a hidden defect kept secret",
+        "deceit that led to the contract",
+        "a fact deliberately concealed",
+        "a trick used to obtain consent",
+        "a lie about the property"
+      ],
+      "denied": [],
+      "disputed": [
+        "the other side says he disclosed the problem before the signature",
+        "the other side says the plaintiff knew everything"
+      ]
+    },
+    "harm_by_person": {
+      "concepts": [
+        "an assault",
+        "a harmful act",
+        "damage done on purpose",
+        "a defamatory statement",
+        "negligence that caused harm"
+      ],
+      "denied": [],
+      "disputed": [
+        "the defendant denies being there at all",
+        "the defendant says someone else did it"
+      ],
+      "cause": [
+        "the defendant admits the act but says he acted in self-defence"
+      ]
+    },
+    "criminal_conviction": {
+      "concepts": [
+        "a criminal judgment against the defendant",
+        "a conviction by the criminal court",
+        "a sentence for the offence",
+        "a guilty verdict"
+      ],
+      "denied": [
+        "no criminal judgment exists: the complaint was shelved"
+      ],
+      "disputed": [
+        "the defendant denies that any judgment convicted him",
+        "the defendant says the judgment concerned another person of the same name"
+      ]
+    },
+    "harm_by_thing": {
+      "concepts": [
+        "damage caused by something in the defendant's keeping",
+        "a water leak from the defendant's flat",
+        "an accident with the defendant's machine",
+        "harm done by the defendant's vehicle"
+      ],
+      "denied": [
+        "the thing was not in the defendant's keeping at the time"
+      ],
+      "disputed": [
+        "the defendant says the leak did not come from his flat",
+        "the defendant says the machine belonged to a neighbour"
+      ]
+    },
+    "harm_by_animal": {
+      "concepts": [
+        "a dog bite",
+        "damage done by the defendant's animal",
+        "an attack by a guarded animal",
+        "harm caused by livestock"
+      ],
+      "denied": [
+        "the animal was neither owned nor kept by the defendant"
+      ],
+      "disputed": [
+        "the defendant says it was not his dog",
+        "the defendant says his animal was tied up at home that day"
+      ]
+    },
+    "harm_by_building": {
+      "concepts": [
+        "a wall that collapsed",
+        "the fall of part of a building",
+        "a ruined structure giving way",
+        "a balcony that came down"
+      ],
+      "denied": [
+        "no part of the building fell"
+      ],
+      "disputed": [
+        "the defendant says the collapsed wall is not his",
+        "the defendant says the wall belongs to the commune"
+      ]
+    },
+    "lease_started": {
+      "concepts": [
+        "the start of the occupation",
+        "the handover of the premises",
+        "the move into the flat",
+        "the first day of the tenancy"
+      ],
+      "denied": [
+        "the tenant never received the premises"
+      ],
+      "disputed": [
+        "the defendant denies ever occupying the premises",
+        "the defendant says he moved in much later than the plaintiff says"
+      ]
+    },
+    "occupation_without_title": {
+      "concepts": [
+        "the unlawful occupation",
+        "the squatting of the property",
+        "the occupation without any deed",
+        "the use of the house without right"
+      ],
+      "denied": [],
+      "disputed": [
+        "the occupant says he has an oral lease",
+        "the occupant says the late father of the plaintiff gave him the house"
+      ]
+    },
+    "eviction_notice": {
+      "concepts": [
+        "the notice to quit",
+        "the eviction warning",
+        "the order to leave the premises",
+        "the notice ending the lease"
+      ],
+      "denied": [
+        "the lessor never sent any notice to quit"
+      ],
+      "disputed": [
+        "the party it was addressed to says it never received the notice to quit",
+        "the party it was addressed to says the notice was served at a former address"
+      ],
+      "disputedBy": "notActor"
+    },
+    "lease_renewal_refused": {
+      "concepts": [
+        "the refusal to renew the lease",
+        "the lessor's no to a new term",
+        "the end of the tenancy by refusal",
+        "the rejection of the renewal request"
+      ],
+      "denied": [
+        "the lessor did not refuse renewal; he only asked for a higher rent"
+      ],
+      "disputed": [
+        "the other side says no refusal was ever made or notified",
+        "the other side says renewal was never asked for, so nothing was refused"
+      ]
+    },
+    "marriage": {
+      "concepts": [
+        "the marriage",
+        "the wedding contract",
+        "the union of the spouses",
+        "the marriage certificate"
+      ],
+      "denied": [],
+      "disputed": [
+        "the defendant denies that a marriage exists between them",
+        "the defendant says the marriage was never registered and is not valid"
+      ]
+    },
+    "divorce": {
+      "concepts": [
+        "the divorce",
+        "the dissolution of the marriage",
+        "the divorce judgment",
+        "the separation decreed by the court"
+      ],
+      "denied": [
+        "no divorce has taken place: the couple is still married"
+      ],
+      "disputed": [
+        "the defendant says that divorce judgment was set aside on appeal",
+        "the defendant says no divorce was ever pronounced and the marriage still stands"
+      ]
+    },
+    "abandonment": {
+      "concepts": [
+        "the husband's departure from home",
+        "the desertion of the wife",
+        "the abandonment of the marital home",
+        "the husband's long absence"
+      ],
+      "denied": [
+        "the husband never left the marital home"
+      ],
+      "disputed": [
+        "the husband says it was the wife who left",
+        "the husband says he works abroad and still visits"
+      ],
+      "cause": [
+        "the husband admits leaving and says the wife's family drove him out"
+      ]
+    },
+    "maintenance_unpaid": {
+      "concepts": [
+        "the refusal to provide for the family",
+        "the unpaid maintenance",
+        "the failure to support the wife and children",
+        "the husband's stopped allowance"
+      ],
+      "denied": [
+        "the husband pays maintenance regularly"
+      ],
+      "disputed": [
+        "the husband says he sends money every month",
+        "the husband says he pays the children's school fees directly"
+      ],
+      "cause": [
+        "the husband admits not paying and pleads unemployment"
+      ]
+    },
+    "spouse_harm": {
+      "concepts": [
+        "the beatings",
+        "the ill-treatment of the wife",
+        "the violence in the home",
+        "the insults and abuse"
+      ],
+      "denied": [
+        "no harm is alleged; the claim rests on lack of maintenance alone"
+      ],
+      "disputed": [
+        "the husband denies ever hitting his wife",
+        "the husband says the medical certificate is about a fall"
+      ]
+    },
+    "custody_held": {
+      "concepts": [
+        "where the children live now",
+        "the children's present home",
+        "the parent the children stay with",
+        "the daily care of the children"
+      ],
+      "denied": [
+        "the children live with neither parent but with their grandmother"
+      ],
+      "disputed": [
+        "each parent says the children live with him or her",
+        "the other parent says the children moved to his home last month"
+      ]
+    },
+    "custody_judgment": {
+      "concepts": [
+        "the earlier judgment on custody",
+        "the court decision that gave custody",
+        "the ruling on the children",
+        "the custody order"
+      ],
+      "denied": [
+        "no judgment on custody was ever given"
+      ],
+      "disputed": [
+        "the defendant says that judgment was overturned on appeal",
+        "the defendant says the judgment concerned only one of the children"
+      ],
+      "byClaim": {
+        "visitation": {
+          "concepts": [
+            "the earlier judgment that set visiting rights",
+            "the court decision on visits",
+            "the ruling fixing the visiting days",
+            "the visitation order"
+          ],
+          "denied": [
+            "no judgment on visits was ever given"
+          ],
+          "disputed": [
+            "the defendant says that judgment was overturned on appeal",
+            "the defendant says the judgment set other days"
+          ]
+        }
+      }
+    },
+    "custodian_remarried": {
+      "concepts": [
+        "the custodian's new marriage to a stranger to the child",
+        "the mother's remarriage",
+        "the custodian's new husband",
+        "the new union of the custodian"
+      ],
+      "denied": [
+        "the custodian has not remarried since the divorce"
+      ],
+      "disputed": [
+        "the custodian says she is only engaged",
+        "the custodian says her new husband is the child's uncle"
+      ]
+    },
+    "custody_renounced": {
+      "concepts": [
+        "the waiver of custody",
+        "the custodian giving up the children",
+        "the written renunciation of custody",
+        "the handing back of the children"
+      ],
+      "denied": [
+        "the custodian never gave up custody"
+      ],
+      "disputed": [
+        "the custodian says the waiver was signed under pressure",
+        "the custodian says the paper was only about holidays"
+      ]
+    },
+    "custodian_unfit": {
+      "concepts": [
+        "the neglect of the child",
+        "the custodian's failure to care",
+        "the child's schooling and health left aside",
+        "the custodian's bad conduct"
+      ],
+      "denied": [
+        "the custodian looks after the child very well"
+      ],
+      "disputed": [
+        "the custodian denies any neglect and shows school reports",
+        "the custodian says the child's illness is being treated"
+      ]
+    },
+    "custody_unclaimed": {
+      "concepts": [
+        "more than a year without claiming custody",
+        "the long silence of the person entitled to custody",
+        "the failure to ask for the children",
+        "the delay in claiming custody"
+      ],
+      "denied": [
+        "the person entitled claimed custody as soon as he learned of the change"
+      ],
+      "disputed": [
+        "the father says he did not know the reason for the forfeiture",
+        "the father says he was abroad for medical treatment"
+      ]
+    },
+    "custodian_abroad": {
+      "concepts": [
+        "the move abroad with the child",
+        "settling in a foreign country",
+        "the plan to live outside Algeria",
+        "the departure to another country"
+      ],
+      "denied": [
+        "the custodian has never left the country"
+      ],
+      "disputed": [
+        "the custodian says the trip is temporary, for medical care",
+        "the custodian says she only visits relatives abroad in summer"
+      ]
+    },
+    "visitation_refused": {
+      "concepts": [
+        "the refusal to let the parent see the children",
+        "the blocked visits",
+        "the denial of access",
+        "the children kept away from the parent"
+      ],
+      "denied": [
+        "visits are not blocked; the plaintiff wants more of them"
+      ],
+      "disputed": [
+        "the other parent says the plaintiff simply does not come",
+        "the other parent says the children refuse to go"
+      ],
+      "cause": [
+        "the other parent admits blocking visits and says the plaintiff brought the children back late"
+      ]
+    },
+    "employment_started": {
+      "concepts": [
+        "the hiring",
+        "the start of the job",
+        "the beginning of the work relationship",
+        "the first day at the company",
+        "the recruitment"
+      ],
+      "denied": [],
+      "disputed": [
+        "the employer denies any employment and calls him a contractor",
+        "the employer says he was an intern, never an employee"
+      ]
+    },
+    "dismissal": {
+      "concepts": [
+        "the dismissal",
+        "the firing",
+        "the termination of the job",
+        "the sacking",
+        "the end of the employment by the employer"
+      ],
+      "denied": [],
+      "disputed": [
+        "the employer denies firing him and says he walked out",
+        "the employer says the contract simply came to its end"
+      ],
+      "cause": [
+        "the employer admits the dismissal and says it was for repeated absence"
+      ]
+    },
+    "wages_unpaid": {
+      "concepts": [
+        "the unpaid wages",
+        "the salary arrears",
+        "the months of pay withheld",
+        "the money due for work done",
+        "the back pay"
+      ],
+      "denied": [],
+      "disputed": [
+        "the employer says the wages were transferred to the worker's postal account",
+        "the employer says the worker was paid in cash and signed for it"
+      ],
+      "cause": [
+        "the employer admits the arrears and blames the company's cash problems"
+      ]
+    },
+    "conciliation_failed": {
+      "concepts": [
+        "the record that conciliation failed",
+        "the failed attempt at the conciliation office",
+        "the conciliation report ending without agreement",
+        "the official finding of no settlement"
+      ],
+      "denied": [
+        "the dispute was never put before the conciliation office"
+      ],
+      "disputed": [
+        "the employer says the session ended in agreement",
+        "the employer says the record is a record of settlement, not of failure"
+      ]
+    }
+  }
+}

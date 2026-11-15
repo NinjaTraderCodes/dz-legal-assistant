@@ -1,0 +1,12 @@
+{
+ "unit": "formal-notice",
+ "attacks": [
+  {
+   "id": "owner-date-compare",
+   "target": "p1, p2, p3, n12",
+   "claim": "The owner's decision of 15 November 2026 (point 3): the rule language now compares a date slot with another date: {\"slot\": s, \"beforeSlot\": t} (strictly before) and {\"slot\": s, \"afterSlot\": t} (on or after), where t is another date slot or the reserved petition_date (the petition's date, which the evaluator always knows, never declared in slots, never asked; DERIVER-GUIDE section 4). Today p1, p2, p3 and n12 ask notice_before_petition_day even when the case gives notice_date, because the language could not compare it with the petition's date (case bc1: a bailiff's notice dated 2026-05-10, petition 2026-06-15, rescission: the text gives 'done', as you held in follow-up 3 and as exV33 shows answered; the case fails only by that limit, rules/reports/formal-notice.boundary-limits.json). Use the new form so that a known notice_date decides by itself whether the notice came before the petition's day (notice_date beforeSlot petition_date: before; notice_date afterSlot petition_date: on the day or after), and notice_before_petition_day is asked only when notice_date is unknown. Change only the conditions (and examples whose expected questions change only because the date now answers them); the owner's rule on 'done' and every protective reading stay as they are.",
+   "who": "owner",
+   "kind": "wrongCondition"
+  }
+ ]
+}

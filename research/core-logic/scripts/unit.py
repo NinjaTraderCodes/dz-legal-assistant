@@ -462,11 +462,12 @@ def followup_entries(u: Unit) -> list[dict]:
     return [e for e in out if e["id"] not in given]
 
 
-def verify_input(u: Unit, followup: bool = False) -> str:
+def verify_input(u: Unit, followup: bool = False, owner: list[dict] | None = None) -> str:
+    """With `owner`, the owner's decisions that touch the record join the follow-up as `owner` entries."""
     if not followup:
         save(u.r("attacks.input.json"), first_input(u))
         return u.r("attacks.input.json")
-    entries = followup_entries(u)
+    entries = followup_entries(u) + [dict(o, who="owner", kind=o.get("kind", "wrongCondition")) for o in owner or []]
     if not entries:
         raise RuntimeError("nothing new for a follow-up: every finding is in an earlier input or a register")
     k = u.followups() + 1
@@ -1327,6 +1328,7 @@ def main(argv=None) -> int:
     v = sub.add_parser("verify-input")
     v.add_argument("unit")
     v.add_argument("--followup", action="store_true")
+    v.add_argument("--owner", help="a JSON file: a list of the owner's entries {id, target, claim} for the follow-up")
     q = sub.add_parser("questions", help="the units' sections of reports/open-legal-questions.md")
     q.add_argument("units", nargs="+")
     s = sub.add_parser("slots")
@@ -1354,7 +1356,7 @@ def main(argv=None) -> int:
         elif a.cmd == "store-view":
             print(store_view(Unit(a.unit, a.root), a.answer, json.loads(a.actual)))
         elif a.cmd == "verify-input":
-            path = verify_input(Unit(a.unit, a.root), a.followup)
+            path = verify_input(Unit(a.unit, a.root), a.followup, load(a.owner) if a.owner else None)
             print(path, len(load(path)["attacks"]), "entries")
         elif a.cmd == "questions":
             path = questions([Unit(x, a.root) for x in a.units])

@@ -329,3 +329,11 @@ def test_legal_questions_keep_entry_4_while_the_readings_do_not_change(root, tmp
     dump(u.final, {"priorSteps": [{"id": "p1"}], "openPoints": [point]})
     unit.questions([u], path)
     assert unit.unfilled_questions(path) == 1  # a new reading: the executor writes entry 4 again
+
+
+def test_an_owner_decision_makes_a_follow_up_of_its_own(root):
+    u = through_stage_4(root)
+    path = unit.verify_input(u, followup=True, owner=[{"id": "owner-x", "target": "p1", "claim": "use the new form"}])
+    entry = load(path)["attacks"][0]
+    assert (entry["id"], entry["who"], entry["kind"]) == ("owner-x", "owner", "wrongCondition")
+

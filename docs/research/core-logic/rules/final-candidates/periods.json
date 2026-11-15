@@ -1,0 +1,4214 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "module",
+  "id": "periods",
+  "label": {
+    "ar": "التقادم والآجال المسقطة وحساب الآجال",
+    "en": "Limitation, forfeiture and the counting of periods"
+  },
+  "verified": false,
+  "stage": "reconciled",
+  "derivedBy": {
+    "role": "reconciler",
+    "model": "claude-opus-5-5",
+    "date": "2026-11-15"
+  },
+  "appliesTo": [
+    "*"
+  ],
+  "slots": [
+    "requests",
+    "obligation_is_tort_compensation",
+    "debt_due_date",
+    "harmful_act_date",
+    "wages_due_from",
+    "nonconciliation_record",
+    "nonconciliation_record_delivered_on",
+    "forfeiture_lifted_by_order",
+    "forfeiture_force_majeure_invoked",
+    "claim_is_professional_fees",
+    "claim_is_trader_supply_or_hotel",
+    "claim_is_periodic_renewable_right"
+  ],
+  "proposedSlots": [
+    {
+      "id": "debt_due_date",
+      "type": "date",
+      "question": {
+        "ar": "ما تاريخ استحقاق الدين المطالب به (أقدم مبلغ إن تعددت المبالغ)؟",
+        "en": "On what date did the debt claimed fall due (the oldest sum, if there are several)?"
+      },
+      "why": "Deadlines d1, d6, d7 and d8 run from it: limitation starts on the day the debt becomes due when no special text applies (civil-code 315 ¶1). No existing slot holds it: wages_due_from holds only wages, contract_date is the day of the contract. Same fact as derivation A's obligation_due_date and derivation B's debt_due_date."
+    },
+    {
+      "id": "harmful_act_date",
+      "type": "date",
+      "question": {
+        "ar": "ما تاريخ وقوع الفعل الضار؟",
+        "en": "On what date did the harmful act occur?"
+      },
+      "why": "Deadline d2 runs from it: the compensation action falls after fifteen years from the day of the harmful act (civil-code 133 ¶1). Proposed under the same id by both derivations."
+    },
+    {
+      "id": "forfeiture_lifted_by_order",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل صدر أمر من رئيس الجهة القضائية برفع السقوط بسبب قوة قاهرة أو أحداث أثرت في السير العادي لمرفق العدالة؟",
+        "en": "Has the president of the court lifted the forfeiture by order, for force majeure or events that disturbed the normal working of the courts?"
+      },
+      "why": "Deadline d5 reads it: every period of the CPCA for exercising a right is forfeited when missed, except for force majeure or events affecting the courts, and the forfeiture is lifted by the president's order on petition (cpca 322 ¶1 and ¶2). Unknown, it is not asked and the deadline applies."
+    },
+    {
+      "id": "forfeiture_force_majeure_invoked",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل يتمسك المدعي بقوة قاهرة أو بأحداث أثرت في السير العادي لمرفق العدالة حالت دون رفع الدعوى في أجلها، مع طلب رفع السقوط إلى رئيس الجهة القضائية؟",
+        "en": "Does the plaintiff rely on force majeure, or on events that disturbed the normal working of the courts, that kept him from filing in time, with a request to the president of the court to lift the forfeiture?"
+      },
+      "why": "Deadlines d5 and d9 read it (verifier, attack atk-9): the forfeiture of cpca 322 ¶1 does not fall in case of force majeure or events affecting the courts, and the request to lift it goes to the president of the court before which the dispute is brought (cpca 322 ¶2), so the order cannot exist before the petition is filed. Unknown, it is not asked and d5 applies."
+    },
+    {
+      "id": "claim_is_professional_fees",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل الدين أتعاب أو مصاريف مستحقة عن عمل المهنة لطبيب (ومنه الجراح وجراح الأسنان) أو قابلة أو صيدلي أو محام أو مهندس (ومنه المهندس المعماري) أو خبير أو وكيل تفليسة أو سمسار أو أستاذ أو معلم أو مرب؟",
+        "en": "Is the debt a fee or expense owed for the work of his profession to a doctor (including a surgeon or dental surgeon), midwife, pharmacist, lawyer, engineer (including an architect), expert, bankruptcy agent, broker, professor, teacher or educator?"
+      },
+      "why": "Deadline d6 reads it: these rights are time-barred after two years (civil-code 310 ¶1). The question also names the professions that only the French edition of the same Official Journal issue lists (surgeons, dental surgeons, midwives, architects, educators): the protective reading of open point o11 (verifier, attack adv-6)."
+    },
+    {
+      "id": "claim_is_trader_supply_or_hotel",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل الدين ثمن أشياء ورّدها تاجر أو صانع لشخص لا يتجر فيها، أو أجر إقامة أو ثمن طعام لدى فندق أو مطعم؟",
+        "en": "Is the debt the price of things supplied by a trader or craftsman to a person who does not trade in them, or a hotel's or restaurant's charge for lodging or meals?"
+      },
+      "why": "Deadline d7 reads it: these rights are time-barred after one year (civil-code 312 ¶1 and ¶2)."
+    },
+    {
+      "id": "claim_is_periodic_renewable_right",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل الدين حق دوري متجدد غير الأجور المطالب بها، كأجرة المباني أو الديون المتأخرة أو المعاشات، وليس ريعا مستحقا في ذمة حائز سيء النية أو ريعا واجبا على متصرف المال المشاع للمستحقين؟",
+        "en": "Is the debt a periodic renewable right other than the wages claimed, such as rent of buildings, arrears or pensions, and not revenue owed by a possessor in bad faith or by the manager of jointly owned property to those entitled?"
+      },
+      "why": "Deadline d8 reads it: every periodic renewable right is time-barred after five years even if acknowledged (civil-code 309 ¶1). Wages, also named there, are carried by d4 from wages_due_from, so the question leaves them out. Revenue owed by a bad-faith possessor or by the manager of jointly owned property falls only after fifteen years (civil-code 309 ¶2), so the question leaves it out too and d1 governs it (verifier, attack atk-6)."
+    }
+  ],
+  "basis": [
+    {
+      "id": "b1",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "308",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يتقادم الالتزام بمضي خمس عشرة سنة، ما لم يرد نص خاص أو استثناء من الاستثناءات التي تلي.",
+        "en": "An obligation is time-barred after fifteen years, save where a special text or one of the following exceptions applies."
+      },
+      "required": true
+    },
+    {
+      "id": "b2",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "309",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "كل حق دوري متجدد، كأجرة المباني والديون المتأخرة والمرتبات والأجور والمعاشات، يتقادم بخمس سنوات ولو أقر به المدين.",
+        "en": "Every periodic, renewable right, such as building rent, arrears, salaries, wages and pensions, is time-barred after five years, even if the debtor acknowledged it."
+      }
+    },
+    {
+      "id": "b3",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "309",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يستثنى الريع المستحق على الحائز سيء النية والريع الواجب على متصرف المال المشاع، فلا يسقط إلا بخمس عشرة سنة.",
+        "en": "Exception: revenue owed by a possessor in bad faith, or by the manager of jointly owned property to those entitled, falls only after fifteen years."
+      }
+    },
+    {
+      "id": "b4",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "310",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تتقادم بسنتين حقوق الأطباء والصيادلة والمحامين والمهندسين والخبراء ووكلاء التفليسة والسماسرة والأساتذة والمعلمين عن عمل مهنتهم ومصاريفهم.",
+        "en": "The fees and expenses of doctors, pharmacists, lawyers, engineers, experts, trustees in bankruptcy, brokers, professors and teachers for their professional work are time-barred after two years."
+      }
+    },
+    {
+      "id": "b6",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "312",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "تتقادم بسنة واحدة حقوق التجار والصناع عن أشياء وردوها لغير المتجرين فيها، وحقوق أصحاب الفنادق والمطاعم.",
+        "en": "The claims of merchants and craftsmen for things supplied to persons who do not trade in them, and of hotel and restaurant keepers, are time-barred after one year."
+      }
+    },
+    {
+      "id": "b7",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "312",
+        "paragraphs": [
+          1,
+          3
+        ]
+      },
+      "says": {
+        "ar": "تتقادم بسنة واحدة المبالغ المستحقة للعمال والأجراء الآخرين مقابل عملهم.",
+        "en": "Sums owed to workers and other wage earners for their work are time-barred after one year."
+      }
+    },
+    {
+      "id": "b8",
+      "role": "proof",
+      "cite": {
+        "code": "civil-code",
+        "article": "312",
+        "paragraphs": [
+          4
+        ]
+      },
+      "says": {
+        "ar": "من يتمسك بالتقادم لسنة يجب أن يحلف اليمين على أنه أدى الدين فعلا، ويوجه القاضي اليمين تلقائيا إلى ورثة المدين أو أوصيائهم.",
+        "en": "Whoever relies on this short limitation must swear that he actually paid the debt; the judge puts an oath of his own motion to the debtor's heirs or their guardians."
+      }
+    },
+    {
+      "id": "b9",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "313",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يبدأ التقادم في الحقوق التي تحيل إليها هذه الفقرة من الوقت الذي يتم فيه الدائنون تقديم خدماتهم ولو استمروا في أداء خدمات أخرى.",
+        "en": "For the rights this paragraph refers to, limitation starts when the creditors complete their services, even if they go on providing others."
+      },
+      "interpretive": true,
+      "interpretiveNote": "The paragraph names the article on periodic rights and the article on taxes owed to the State, while its words (creditors completing their services) fit the professionals and the one-year creditors, and the article on taxes sets its own starting days. Which rights it governs is a reading; see open point o2."
+    },
+    {
+      "id": "b10",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "313",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "إذا حرر سند بحق من هذه الحقوق فلا يتقادم إلا بخمس عشرة سنة.",
+        "en": "If a written instrument is drawn up for any of these rights, it is time-barred only after fifteen years."
+      },
+      "interpretive": true,
+      "interpretiveNote": "'These rights' are the rights of the preceding paragraph, which names the article on periodic rights and the article on taxes while its words fit the professionals and the one-year creditors (open point o2). Which short periods a written instrument raises to fifteen years is therefore the same reading (verifier, attack atk-7)."
+    },
+    {
+      "id": "b11",
+      "role": "procedure",
+      "cite": {
+        "code": "civil-code",
+        "article": "314",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تحسب مدة التقادم بالأيام لا بالساعات، ولا يحسب اليوم الأول، وتكمل المدة بانقضاء آخر يوم منها.",
+        "en": "A limitation period is counted in days, not hours; the first day is not counted and the period is complete when its last day ends."
+      },
+      "required": true
+    },
+    {
+      "id": "b12",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "315",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "لا يبدأ التقادم، ما لم يرد نص خاص، إلا من اليوم الذي يصبح فيه الدين مستحق الأداء.",
+        "en": "Unless a special text says otherwise, limitation starts only on the day the debt becomes due."
+      },
+      "required": true
+    },
+    {
+      "id": "b13",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "315",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "في الدين المعلق على شرط واقف يبدأ التقادم من تحقق الشرط، وفي ضمان الاستحقاق من ثبوت الاستحقاق، وفي الدين المؤجل من انقضاء الأجل.",
+        "en": "For a debt under a suspensive condition limitation starts when the condition is met; for the warranty against eviction, when the eviction is established; for a debt with a term, when the term expires."
+      }
+    },
+    {
+      "id": "b14",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "315",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "إذا كان تحديد ميعاد الوفاء متوقفا على إرادة الدائن، سرى التقادم من الوقت الذي يتمكن فيه من إعلان إرادته.",
+        "en": "If fixing the date of payment depends on the creditor's will, limitation runs from the time he is able to declare it."
+      }
+    },
+    {
+      "id": "b15",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "316",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "لا يسري التقادم كلما وجد مانع مبرر شرعا يمنع الدائن من المطالبة بحقه، ولا يسري فيما بين الأصيل والنائب.",
+        "en": "Limitation does not run while a lawfully justified impediment prevents the creditor from claiming, nor between a principal and his representative."
+      }
+    },
+    {
+      "id": "b16",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "316",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "التقادم الذي تقصر مدته عن خمس سنوات لا يسري في حق عديمي الأهلية والغائبين والمحكوم عليهم بعقوبات جنائية إذا لم يكن لهم نائب قانوني.",
+        "en": "A limitation whose period falls short of five years does not run against persons without capacity, absent persons and persons serving criminal sentences who have no legal representative."
+      }
+    },
+    {
+      "id": "b17",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "316",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "التقادم الذي تزيد مدته على خمس سنوات لا يسري في حق الأشخاص أنفسهم طيلة مدة عدم أهليتهم ولو كان لهم نائب قانوني.",
+        "en": "A limitation period of more than five years does not run against the same persons while they lack capacity, even if they have a legal representative."
+      }
+    },
+    {
+      "id": "b18",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "317",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ينقطع التقادم بالمطالبة القضائية ولو أمام محكمة غير مختصة، وبالتنبيه أو الحجز، وبطلب الدائن قبول حقه في تفليسة المدين أو في توزيع، وبكل عمل يقوم به الدائن أثناء المرافعة لإثبات حقه.",
+        "en": "Limitation is interrupted by a judicial claim, even before a court without jurisdiction, by a command to pay or a seizure, by the creditor's request to be admitted in the debtor's bankruptcy or in a distribution, and by any step the creditor takes in proceedings to establish his right."
+      },
+      "required": true
+    },
+    {
+      "id": "b19",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "318",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ينقطع التقادم بإقرار المدين بحق الدائن صراحة أو ضمنا، ويعد إقرارا ضمنيا ترك المدين مالا له مرهونا رهنا حيازيا تحت يد الدائن.",
+        "en": "Limitation is interrupted by the debtor's express or implied acknowledgment of the creditor's right; leaving property pledged in the creditor's hands is an implied acknowledgment."
+      },
+      "required": true
+    },
+    {
+      "id": "b20",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "319",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "إذا انقطع التقادم بدأ تقادم جديد من وقت انتهاء أثر سبب الانقطاع، ومدته مدة التقادم الأول.",
+        "en": "After an interruption a new period starts when the effect of the interrupting event ends, and it is as long as the first."
+      }
+    },
+    {
+      "id": "b21",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "319",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "تكون مدة التقادم الجديد خمس عشرة سنة إذا صدر بالدين حكم حائز لقوة الشيء المقضي به، أو كان الدين يتقادم بسنة وانقطع بإقرار المدين، إلا في الالتزامات الدورية المتجددة التي لا تستحق إلا بعد الحكم.",
+        "en": "The new period is fifteen years when the debt was adjudged by a final judgment, or when a debt of the yearly limitation was interrupted by the debtor's acknowledgment, except for periodic obligations falling due only after the judgment."
+      }
+    },
+    {
+      "id": "b22",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "320",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يترتب على التقادم انقضاء الالتزام مع بقاء التزام طبيعي، وتسقط معه ملحقاته ولو لم تكتمل مدة تقادمها.",
+        "en": "Limitation extinguishes the obligation, leaving a natural obligation, and its accessories fall with it even if their own period has not run."
+      }
+    },
+    {
+      "id": "b23",
+      "role": "procedure",
+      "cite": {
+        "code": "civil-code",
+        "article": "321",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "لا تقضي المحكمة بالتقادم من تلقاء نفسها، بل بطلب من المدين أو أحد دائنيه أو أي ذي مصلحة ولو لم يتمسك به المدين.",
+        "en": "The court may not apply limitation of its own motion; it does so only at the request of the debtor, one of his creditors or any interested person, even if the debtor does not invoke it."
+      },
+      "required": true
+    },
+    {
+      "id": "b24",
+      "role": "procedure",
+      "cite": {
+        "code": "civil-code",
+        "article": "321",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يجوز التمسك بالتقادم في أية حالة كانت عليها الدعوى ولو أمام جهة الاستئناف.",
+        "en": "Limitation may be invoked at any stage of the case, even on appeal."
+      }
+    },
+    {
+      "id": "b25",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "322",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "لا يجوز التنازل عن التقادم قبل ثبوت الحق فيه، ولا الاتفاق على مدة تقادم تخالف المدة القانونية.",
+        "en": "Limitation may not be waived before it has been acquired, and the parties may not agree on a period different from the statutory one."
+      }
+    },
+    {
+      "id": "b26",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "322",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يجوز لمن يملك التصرف في حقوقه التنازل ولو ضمنا عن التقادم بعد ثبوت الحق فيه، ولا ينفذ التنازل في حق الدائنين إذا صدر إضرارا بهم.",
+        "en": "A person able to dispose of his rights may waive acquired limitation, even impliedly; the waiver does not bind his creditors if made to their harm."
+      }
+    },
+    {
+      "id": "b27",
+      "role": "procedure",
+      "cite": {
+        "code": "civil-code",
+        "article": "3",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تحسب الآجال بالتقويم الميلادي ما لم ينص القانون على خلاف ذلك.",
+        "en": "Periods are counted by the Gregorian calendar unless the law provides otherwise."
+      }
+    },
+    {
+      "id": "b28",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "133",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تسقط دعوى التعويض بانقضاء خمس عشرة سنة من يوم وقوع الفعل الضار.",
+        "en": "The action for compensation falls after fifteen years from the day of the harmful act."
+      }
+    },
+    {
+      "id": "b29",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "67",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "الدفع بعدم القبول يرمي إلى عدم قبول الطلب لانعدام الحق في التقاضي، ومن أسبابه التقادم وانقضاء الأجل المسقط، دون النظر في الموضوع.",
+        "en": "A plea of inadmissibility seeks to have a claim declared inadmissible for want of the right to sue, among others for limitation and for expiry of a forfeiture period, without examining the merits."
+      }
+    },
+    {
+      "id": "b30",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "68",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجوز للخصوم تقديم الدفع بعدم القبول في أية مرحلة كانت عليها الدعوى ولو بعد الدفوع في الموضوع.",
+        "en": "The parties may raise a plea of inadmissibility at any stage of the case, even after defences on the merits."
+      }
+    },
+    {
+      "id": "b31",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "69",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يثير القاضي تلقائيا الدفع بعدم القبول إذا كان من النظام العام، لا سيما عند عدم احترام آجال طرق الطعن أو غياب طرق الطعن.",
+        "en": "The judge must raise of his own motion a plea of inadmissibility that is of public order, in particular when the periods for remedies were not respected or no remedy exists."
+      }
+    },
+    {
+      "id": "b32",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "405",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تحسب كل آجال هذا القانون كاملة، ولا يحسب يوم التبليغ أو التبليغ الرسمي ولا يوم انقضاء الأجل.",
+        "en": "Every period of this Code is counted in full: neither the day of notification or service nor the day the period expires is counted."
+      },
+      "required": true
+    },
+    {
+      "id": "b33",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "405",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "تحتسب أيام العطل الواقعة داخل هذه الآجال.",
+        "en": "Holidays falling inside these periods are counted."
+      }
+    },
+    {
+      "id": "b34",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "405",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "أيام العطل بمفهوم هذا القانون هي أيام الأعياد الرسمية وأيام الراحة الأسبوعية وفق النصوص الجاري بها العمل.",
+        "en": "Holidays, in this Code, are the official public holidays and the weekly rest days under the texts in force."
+      }
+    },
+    {
+      "id": "b35",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "405",
+        "paragraphs": [
+          4
+        ]
+      },
+      "says": {
+        "ar": "إذا لم يكن اليوم الأخير من الأجل يوم عمل كليا أو جزئيا، يمدد الأجل إلى أول يوم عمل موال.",
+        "en": "If the last day of the period is not, wholly or partly, a working day, the period runs to the next working day."
+      },
+      "required": true
+    },
+    {
+      "id": "b36",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "404",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تمدد بشهرين آجال المعارضة والاستئناف والتماس إعادة النظر والطعن بالنقض للمقيمين خارج الإقليم الوطني، دون غيرها من الآجال.",
+        "en": "The periods for opposition, appeal, review and cassation are extended by two months for persons living outside the national territory; no other period is named."
+      }
+    },
+    {
+      "id": "b37",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "504",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ترفع الدعوى أمام القسم الاجتماعي في أجل لا يتجاوز ستة أشهر من تاريخ تسليم محضر عدم الصلح، تحت طائلة سقوط الحق في رفع الدعوى.",
+        "en": "The claim before the social section must be filed within six months of the delivery of the record of non-conciliation, on pain of forfeiture of the right to sue."
+      },
+      "required": true
+    },
+    {
+      "id": "b38",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "322",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "كل أجل مقرر في هذا القانون لممارسة حق أو طعن يترتب على عدم مراعاته سقوط الحق، إلا في حالة القوة القاهرة أو أحداث تؤثر في السير العادي لمرفق العدالة.",
+        "en": "Failure to respect any period of this Code for exercising a right or a remedy forfeits the right, except in case of force majeure or events affecting the normal working of the courts."
+      }
+    },
+    {
+      "id": "b39",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "322",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يقدم طلب رفع السقوط إلى رئيس الجهة القضائية المعروض عليها النزاع، ويفصل فيه بأمر على عريضة غير قابل لأي طعن بحضور الخصوم أو بعد صحة تكليفهم بالحضور.",
+        "en": "The request to lift the forfeiture goes to the president of the court seised of the dispute, who rules by an order on petition, open to no remedy, with the parties present or duly summoned."
+      }
+    },
+    {
+      "id": "b40",
+      "role": "prerequisite",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "37",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ترفق العريضة الموجهة إلى المحكمة بنسخة من محضر عدم المصالحة الصادر عن مكتب المصالحة.",
+        "en": "The petition to the court is accompanied by a copy of the non-conciliation record issued by the conciliation office."
+      }
+    },
+    {
+      "id": "b41",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "30",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "في حالة غياب المدعى عليه أو ممثله المؤهل عن اجتماعين متتاليين للمصالحة يعد المكتب محضرا بعدم المصالحة، وتسلم نسخة من المحضر إلى المدعي أثناء الاجتماع.",
+        "en": "Where the defendant or his authorised representative missed two conciliation meetings in a row, the office draws up a non-conciliation record, and a copy of the record is handed to the plaintiff during the meeting."
+      }
+    },
+    {
+      "id": "b42",
+      "role": "proof",
+      "cite": {
+        "code": "civil-code",
+        "article": "323",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "على الدائن إثبات الالتزام وعلى المدين إثبات التخلص منه.",
+        "en": "The creditor proves the obligation; the debtor proves his release from it."
+      }
+    },
+    {
+      "id": "b44",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "226",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "سقوط الخصومة لا يؤدي إلى انقضاء الدعوى بل إلى انقضاء الخصومة وعدم الاحتجاج بأي إجراء من إجراءاتها.",
+        "en": "Lapse of the proceedings does not extinguish the action; it ends the proceedings, and none of their steps may be relied on."
+      },
+      "interpretive": true,
+      "interpretiveNote": "Whether 'no step of the lapsed proceedings may be relied on' also removes the interruption of limitation that the claim produced is a reading; see open point o8."
+    },
+    {
+      "id": "b45",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "311",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تتقادم بأربع سنوات الضرائب والرسوم المستحقة للدولة، مع بدء خاص للرسوم السنوية ورسوم الأوراق القضائية.",
+        "en": "Taxes and dues owed to the State are time-barred after four years, with special starting days for annual dues and for dues on judicial papers."
+      }
+    }
+  ],
+  "deadlines": [
+    {
+      "id": "d1",
+      "kind": "limitation",
+      "period": {
+        "value": 15,
+        "unit": "year"
+      },
+      "startsFrom": {
+        "slot": "debt_due_date",
+        "event": "debt_unpaid",
+        "description": {
+          "ar": "اليوم الذي يصبح فيه الدين مستحق الأداء.",
+          "en": "The day the debt becomes due."
+        }
+      },
+      "counting": {
+        "method": "excludeFirstDay",
+        "extendToWorkingDay": false,
+        "basis": [
+          "b11",
+          "b27"
+        ]
+      },
+      "raisedBy": "pleaOnly",
+      "when": {
+        "all": [
+          {
+            "slot": "obligation_is_tort_compensation",
+            "is": "no"
+          },
+          {
+            "not": {
+              "slot": "requests",
+              "includes": "wages"
+            }
+          },
+          {
+            "any": [
+              {
+                "slot": "claim_is_professional_fees",
+                "known": false
+              },
+              {
+                "slot": "claim_is_professional_fees",
+                "is": "no"
+              }
+            ]
+          },
+          {
+            "any": [
+              {
+                "slot": "claim_is_trader_supply_or_hotel",
+                "known": false
+              },
+              {
+                "slot": "claim_is_trader_supply_or_hotel",
+                "is": "no"
+              }
+            ]
+          },
+          {
+            "any": [
+              {
+                "slot": "claim_is_periodic_renewable_right",
+                "known": false
+              },
+              {
+                "slot": "claim_is_periodic_renewable_right",
+                "is": "no"
+              }
+            ]
+          }
+        ]
+      },
+      "effectWhenExpired": "warn",
+      "warnBandDays": 15,
+      "message": {
+        "ar": "المادة 308 من القانون المدني: يتقادم الالتزام بخمس عشرة (15) سنة من يوم استحقاقه (المادة 315) فيما عدا ما ورد فيه نص خاص، وتحسب المدة وفق المادة 314، ولا تقضي به المحكمة تلقائيا (المادة 321). وتسري هذه المدة أيضا على الريع المستحق على الحائز سيء النية أو على متصرف المال المشاع (المادة 309)، وعلى الحق الذي حرر به سند (المادة 313، محل قراءتين). تحقق من تاريخ الاستحقاق ومن كل انقطاع أو وقف، ومنه عدم أهلية الدائن أو غيابه أو الحكم عليه بعقوبة جنائية ولو كان له نائب قانوني (المواد 316 و317 و318)، ومن وجود نص خاص بمدة أقصر، كدعاوى عقد التأمين والأوراق التجارية والضمان الاجتماعي (نقاط مفتوحة).",
+        "en": "Civil Code, article 308: an obligation is time-barred after 15 years from the day it falls due (article 315), save where a special text applies; counted under article 314; the court does not apply it of its own motion (article 321). The same period governs revenue owed by a possessor in bad faith or by the manager of jointly owned property (article 309), and a right for which a written instrument was drawn up (article 313, two readings kept). Check the due date, any interruption or suspension, including the creditor's incapacity, absence or criminal sentence even where he has a legal representative (articles 316, 317, 318), and whether a special text sets a shorter period, such as actions on an insurance contract, on bills and cheques, or social-security disputes (open points)."
+      },
+      "basis": [
+        "b1",
+        "b3",
+        "b10",
+        "b11",
+        "b12",
+        "b15",
+        "b16",
+        "b17",
+        "b18",
+        "b19",
+        "b23"
+      ],
+      "extract": {
+        "period": "خمسة عشرة سنة",
+        "sanction": "يتقادم الالتزام"
+      }
+    },
+    {
+      "id": "d2",
+      "kind": "limitation",
+      "period": {
+        "value": 15,
+        "unit": "year"
+      },
+      "startsFrom": {
+        "slot": "harmful_act_date",
+        "event": "harm_by_person",
+        "description": {
+          "ar": "يوم وقوع الفعل الضار.",
+          "en": "The day of the harmful act."
+        }
+      },
+      "counting": {
+        "method": "excludeFirstDay",
+        "extendToWorkingDay": false,
+        "basis": [
+          "b11",
+          "b27"
+        ]
+      },
+      "raisedBy": "unclear",
+      "when": {
+        "slot": "obligation_is_tort_compensation",
+        "is": "yes"
+      },
+      "effectWhenExpired": "warn",
+      "warnBandDays": 15,
+      "message": {
+        "ar": "المادة 133 من القانون المدني: تسقط دعوى التعويض بانقضاء خمس عشرة (15) سنة من يوم وقوع الفعل الضار. تحقق من تاريخ الفعل الضار ومن كل سبب قاطع للمدة (المادتان 317 و318) أو موقف لها، ومنه عدم أهلية المضرور ولو كان له نائب قانوني (المادة 316)، مع مراعاة القراءتين المحفوظتين.",
+        "en": "Civil Code, article 133: the compensation action falls after 15 years from the day of the harmful act. Check the date of the act and any event that interrupted the period (articles 317, 318) or suspended it, including the victim's incapacity even where he has a legal representative (article 316), keeping in mind the two readings recorded."
+      },
+      "basis": [
+        "b28",
+        "b11",
+        "b15",
+        "b17",
+        "b18",
+        "b19"
+      ],
+      "extract": {
+        "period": "خمس عشرة (15) سنة",
+        "sanction": "تسقط دعوى التعويض"
+      },
+      "interpretive": true,
+      "interpretiveNote": "The article says the action 'falls' (تسقط) and sits outside the limitation section; whether it is a limitation governed by the rules on suspension, interruption and pleading, or a forfeiture, is a reading, and so is who raises it. Either way an expired period is shown as a warning.",
+      "readings": [
+        {
+          "reading": {
+            "ar": "مدة تقادم تخضع لأحكام الوقف والانقطاع، ولا تقضي بها المحكمة تلقائيا.",
+            "en": "A limitation period, subject to suspension and interruption, which the court does not apply of its own motion."
+          },
+          "basis": [
+            "b28",
+            "b23",
+            "b18"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "أجل مسقط لا يقبل الوقف ولا الانقطاع، وقد يثار تلقائيا إن كان من النظام العام.",
+            "en": "A forfeiture period that is neither suspended nor interrupted, which may be raised of the court's own motion if of public order."
+          },
+          "basis": [
+            "b28",
+            "b29",
+            "b31"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "d3",
+      "kind": "limitation",
+      "period": {
+        "value": 1,
+        "unit": "year"
+      },
+      "startsFrom": {
+        "slot": "wages_due_from",
+        "event": "wages_unpaid",
+        "description": {
+          "ar": "تاريخ استحقاق أقدم أجر مطالب به.",
+          "en": "The date the oldest wage claimed fell due."
+        }
+      },
+      "counting": {
+        "method": "excludeFirstDay",
+        "extendToWorkingDay": false,
+        "basis": [
+          "b11",
+          "b27"
+        ]
+      },
+      "raisedBy": "pleaOnly",
+      "when": {
+        "slot": "requests",
+        "includes": "wages"
+      },
+      "effectWhenExpired": "warn",
+      "warnBandDays": 15,
+      "message": {
+        "ar": "المادة 312 من القانون المدني: تتقادم بسنة واحدة (1) المبالغ المستحقة للعمال مقابل عملهم، ومن يتمسك بهذا التقادم يحلف أنه أدى الدين، ولا تقضي به المحكمة تلقائيا (المادة 321). تحقق من تاريخ استحقاق كل أجر مطالب به ومن كل سبب قاطع للتقادم (المواد 317 و318 و319) أو موقف له، كمانع يمنع الدائن من المطالبة أو عدم أهليته أو غيابه أو الحكم عليه بعقوبة جنائية دون نائب قانوني (المادة 316)، ومن تحرير سند بالحق (المادة 313، محل قراءتين). مدة الأجور محل قراءتين محفوظتين.",
+        "en": "Civil Code, article 312: sums owed to workers for their work are time-barred after 1 year; whoever relies on it must swear that he paid, and the court does not apply it of its own motion (article 321). Check the due date of each wage claimed, any act that interrupted the period (articles 317, 318, 319) and anything that suspended it, such as an impediment that kept the creditor from claiming or his incapacity, absence or criminal sentence without a legal representative (article 316), and whether a written instrument was drawn up for the right (article 313, two readings kept). The period for wages is kept with two readings."
+      },
+      "basis": [
+        "b7",
+        "b8",
+        "b10",
+        "b11",
+        "b12",
+        "b15",
+        "b16",
+        "b18",
+        "b19",
+        "b21",
+        "b23"
+      ],
+      "extract": {
+        "period": "سنة واحدة",
+        "sanction": "تتقادم"
+      },
+      "interpretive": true,
+      "interpretiveNote": "The Civil Code gives two periods that both read on wage arrears: one year for sums owed to workers for their work, and five years for periodic rights including wages. The texts do not say which prevails; the record warns from the shorter one, and d4 warns at five years under both readings.",
+      "readings": [
+        {
+          "reading": {
+            "ar": "يسري على الأجور التقادم بسنة لأنه نص خاص بأجور العمال، وهو قائم على قرينة الوفاء بدليل يمين المدين.",
+            "en": "Wages are subject to the one-year limitation, a specific rule for workers' pay resting on a presumption of payment, as the debtor's oath shows."
+          },
+          "basis": [
+            "b7",
+            "b8"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "يسري على الأجور التقادم بخمس سنوات لأنها حقوق دورية متجددة ذكرت صراحة، ولا يسري التقادم بسنة إلا على غير الأجور الدورية.",
+            "en": "Wages are subject to the five-year limitation, being periodic rights named expressly; the one-year limitation reaches only non-periodic pay."
+          },
+          "basis": [
+            "b2"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "d4",
+      "kind": "limitation",
+      "period": {
+        "value": 5,
+        "unit": "year"
+      },
+      "startsFrom": {
+        "slot": "wages_due_from",
+        "event": "wages_unpaid",
+        "description": {
+          "ar": "تاريخ استحقاق أقدم أجر مطالب به.",
+          "en": "The date the oldest wage claimed fell due."
+        }
+      },
+      "counting": {
+        "method": "excludeFirstDay",
+        "extendToWorkingDay": false,
+        "basis": [
+          "b11",
+          "b27"
+        ]
+      },
+      "raisedBy": "pleaOnly",
+      "when": {
+        "slot": "requests",
+        "includes": "wages"
+      },
+      "effectWhenExpired": "warn",
+      "warnBandDays": 15,
+      "message": {
+        "ar": "المادة 309 من القانون المدني: تتقادم المرتبات والأجور بخمس (5) سنوات ولو أقر بها المدين، ولا تقضي به المحكمة تلقائيا (المادة 321). تحقق من تاريخ استحقاق كل أجر مطالب به؛ وما استحق قبل خمس سنوات من رفع الدعوى معرض للدفع بالتقادم. وتحقق من تحرير سند بالحق (المادة 313، محل قراءتين).",
+        "en": "Civil Code, article 309: salaries and wages are time-barred after 5 years, even if the debtor acknowledged them, and the court does not apply it of its own motion (article 321). Check the due date of each wage claimed; wages that fell due more than five years before filing are exposed to a limitation plea. Check also whether a written instrument was drawn up for the right (article 313, two readings kept)."
+      },
+      "basis": [
+        "b2",
+        "b10",
+        "b11",
+        "b12",
+        "b23"
+      ],
+      "extract": {
+        "period": "خمس سنوات",
+        "sanction": "يتقادم"
+      }
+    },
+    {
+      "id": "d5",
+      "kind": "forfeiture",
+      "period": {
+        "value": 6,
+        "unit": "month"
+      },
+      "startsFrom": {
+        "slot": "nonconciliation_record_delivered_on",
+        "event": "conciliation_failed",
+        "description": {
+          "ar": "تاريخ تسليم محضر عدم الصلح.",
+          "en": "The date the record of non-conciliation was delivered."
+        }
+      },
+      "counting": {
+        "method": "excludeFirstAndLastDay",
+        "extendToWorkingDay": true,
+        "basis": [
+          "b32",
+          "b33",
+          "b34",
+          "b35"
+        ]
+      },
+      "raisedBy": "unclear",
+      "when": {
+        "all": [
+          {
+            "slot": "nonconciliation_record",
+            "is": "yes"
+          },
+          {
+            "any": [
+              {
+                "slot": "forfeiture_lifted_by_order",
+                "known": false
+              },
+              {
+                "slot": "forfeiture_lifted_by_order",
+                "is": "no"
+              }
+            ]
+          },
+          {
+            "any": [
+              {
+                "slot": "forfeiture_force_majeure_invoked",
+                "known": false
+              },
+              {
+                "slot": "forfeiture_force_majeure_invoked",
+                "is": "no"
+              }
+            ]
+          }
+        ]
+      },
+      "effectWhenExpired": "blockCleanExport",
+      "warnBandDays": 15,
+      "message": {
+        "ar": "المادة 504 من قانون الإجراءات المدنية والإدارية: ترفع الدعوى أمام القسم الاجتماعي في أجل لا يتجاوز ستة (6) أشهر من تاريخ تسليم محضر عدم الصلح تحت طائلة سقوط الحق. يحسب الأجل كاملا ويمدد إلى أول يوم عمل (المادة 405)، ويرفع السقوط في حالة القوة القاهرة بأمر من رئيس الجهة القضائية (المادة 322). تحقق من تاريخ تسليم المحضر.",
+        "en": "CPCA, article 504: the claim before the social section must be filed within 6 months of the delivery of the non-conciliation record, on pain of forfeiture. The period is counted in full and runs to the next working day (article 405); a forfeiture for force majeure is lifted by the president's order (article 322). Check the date the record was delivered."
+      },
+      "basis": [
+        "b37",
+        "b32",
+        "b33",
+        "b34",
+        "b35",
+        "b38",
+        "b39"
+      ],
+      "extract": {
+        "period": "ستة (6) أشهر",
+        "sanction": "تحت طائلة سقوط الحق في رفع الدعوى"
+      }
+    },
+    {
+      "id": "d9",
+      "kind": "forfeiture",
+      "period": {
+        "value": 6,
+        "unit": "month"
+      },
+      "startsFrom": {
+        "slot": "nonconciliation_record_delivered_on",
+        "event": "conciliation_failed",
+        "description": {
+          "ar": "تاريخ تسليم محضر عدم الصلح.",
+          "en": "The date the record of non-conciliation was delivered."
+        }
+      },
+      "counting": {
+        "method": "excludeFirstAndLastDay",
+        "extendToWorkingDay": true,
+        "basis": [
+          "b32",
+          "b33",
+          "b34",
+          "b35"
+        ]
+      },
+      "raisedBy": "unclear",
+      "when": {
+        "all": [
+          {
+            "slot": "nonconciliation_record",
+            "is": "yes"
+          },
+          {
+            "any": [
+              {
+                "slot": "forfeiture_lifted_by_order",
+                "known": false
+              },
+              {
+                "slot": "forfeiture_lifted_by_order",
+                "is": "no"
+              }
+            ]
+          },
+          {
+            "slot": "forfeiture_force_majeure_invoked",
+            "known": true
+          },
+          {
+            "slot": "forfeiture_force_majeure_invoked",
+            "is": "yes"
+          }
+        ]
+      },
+      "effectWhenExpired": "warn",
+      "warnBandDays": 15,
+      "message": {
+        "ar": "المادة 504 من قانون الإجراءات المدنية والإدارية: ترفع الدعوى أمام القسم الاجتماعي في أجل لا يتجاوز ستة (6) أشهر من تاريخ تسليم محضر عدم الصلح تحت طائلة سقوط الحق، ويستثنى من السقوط حالة القوة القاهرة أو الأحداث المؤثرة في السير العادي لمرفق العدالة، ويقدم طلب رفع السقوط إلى رئيس الجهة القضائية المعروض أمامها النزاع ويفصل فيه بأمر على عريضة (المادة 322). تحقق من تاريخ تسليم المحضر ومن إثبات القوة القاهرة ومن تقديم طلب رفع السقوط.",
+        "en": "CPCA, article 504: the claim before the social section must be filed within 6 months of the delivery of the non-conciliation record, on pain of forfeiture; force majeure and events affecting the normal working of the courts are excepted, and the request to lift the forfeiture goes to the president of the court before which the dispute is brought, who rules by an order on petition (article 322). Check the date the record was delivered, the proof of the force majeure, and that the request to lift the forfeiture is made."
+      },
+      "basis": [
+        "b37",
+        "b32",
+        "b33",
+        "b34",
+        "b35",
+        "b38",
+        "b39"
+      ],
+      "extract": {
+        "period": "ستة (6) أشهر",
+        "sanction": "تحت طائلة سقوط الحق في رفع الدعوى"
+      }
+    },
+    {
+      "id": "d6",
+      "kind": "limitation",
+      "period": {
+        "value": 2,
+        "unit": "year"
+      },
+      "startsFrom": {
+        "slot": "debt_due_date",
+        "description": {
+          "ar": "تاريخ استحقاق الأتعاب أو المصاريف.",
+          "en": "The date the fee or expense fell due."
+        }
+      },
+      "counting": {
+        "method": "excludeFirstDay",
+        "extendToWorkingDay": false,
+        "basis": [
+          "b11",
+          "b27"
+        ]
+      },
+      "raisedBy": "pleaOnly",
+      "when": {
+        "all": [
+          {
+            "slot": "obligation_is_tort_compensation",
+            "is": "no"
+          },
+          {
+            "not": {
+              "slot": "requests",
+              "includes": "wages"
+            }
+          },
+          {
+            "slot": "claim_is_professional_fees",
+            "is": "yes"
+          }
+        ]
+      },
+      "effectWhenExpired": "warn",
+      "warnBandDays": 15,
+      "message": {
+        "ar": "المادة 310 من القانون المدني: تتقادم بسنتين (2) حقوق الأطباء والصيادلة والمحامين والمهندسين والخبراء ووكلاء التفليسة والسماسرة والأساتذة والمعلمين عن عمل مهنتهم ومصاريفهم، ولا تقضي به المحكمة تلقائيا (المادة 321). والنص الفرنسي للمادة يذكر أيضا الجراحين وجراحي الأسنان والقابلات والمهندسين المعماريين والمربين (قراءتان محفوظتان). تحقق من تاريخ الاستحقاق ومن تاريخ إتمام العمل، إذ قد يبدأ التقادم من إتمام الخدمات (المادة 313، قراءتان محفوظتان)، ومن تحرير سند بالحق، ومن كل سبب قاطع للتقادم أو موقف له (المواد 316 و317 و318).",
+        "en": "Civil Code, article 310: the fees and expenses of the listed professions for their professional work are time-barred after 2 years, and the court does not apply it of its own motion (article 321). The French text of the article also names surgeons, dental surgeons, midwives, architects and educators (two readings kept). Check the due date and the date the work was completed, since limitation may start when the services are completed (article 313, two readings kept), whether a written instrument was drawn up for the right, and any act that interrupted or suspended the period (articles 316, 317, 318)."
+      },
+      "basis": [
+        "b4",
+        "b9",
+        "b10",
+        "b11",
+        "b12",
+        "b15",
+        "b16",
+        "b18",
+        "b19",
+        "b23"
+      ],
+      "extract": {
+        "period": "تتقادم بسنتين",
+        "sanction": "تتقادم"
+      },
+      "interpretive": true,
+      "interpretiveNote": "Two readings rest under this deadline (verifier, attacks atk-8 and adv-6). Its starting day: 315 ¶1 starts limitation on the due date, while 313 ¶1 starts 'the rights named in articles 309 and 311' when the creditors complete their services, words that fit these professionals (open point o2). Its list: the Arabic edition of the Official Journal names doctors, pharmacists, lawyers, engineers, experts, bankruptcy agents, brokers, professors and teachers; the French edition of the same issue (1975 no. 78, p. 832) also names surgeons, dental surgeons, midwives, architects and educators (open point o11). The rule follows the protective reading of each: the question names the longer list, and the message sends the lawyer to the completion of the work.",
+      "readings": [
+        {
+          "reading": {
+            "ar": "يبدأ التقادم من يوم استحقاق الأتعاب، ولا تشمل المادة إلا المهن المذكورة في النص العربي.",
+            "en": "Limitation starts on the day the fee falls due, and the article reaches only the professions the Arabic text names."
+          },
+          "basis": [
+            "b4",
+            "b12"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "يبدأ التقادم من يوم إتمام الخدمات ولو استمر الدائن في أداء خدمات أخرى، وتشمل المادة كذلك الجراحين وجراحي الأسنان والقابلات والمهندسين المعماريين والمربين المذكورين في النص الفرنسي.",
+            "en": "Limitation starts on the day the services are completed even if the creditor goes on providing others, and the article also reaches the surgeons, dental surgeons, midwives, architects and educators the French text names."
+          },
+          "basis": [
+            "b4",
+            "b9"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "d7",
+      "kind": "limitation",
+      "period": {
+        "value": 1,
+        "unit": "year"
+      },
+      "startsFrom": {
+        "slot": "debt_due_date",
+        "description": {
+          "ar": "تاريخ استحقاق الدين.",
+          "en": "The date the debt fell due."
+        }
+      },
+      "counting": {
+        "method": "excludeFirstDay",
+        "extendToWorkingDay": false,
+        "basis": [
+          "b11",
+          "b27"
+        ]
+      },
+      "raisedBy": "pleaOnly",
+      "when": {
+        "all": [
+          {
+            "slot": "obligation_is_tort_compensation",
+            "is": "no"
+          },
+          {
+            "not": {
+              "slot": "requests",
+              "includes": "wages"
+            }
+          },
+          {
+            "slot": "claim_is_trader_supply_or_hotel",
+            "is": "yes"
+          }
+        ]
+      },
+      "effectWhenExpired": "warn",
+      "warnBandDays": 15,
+      "message": {
+        "ar": "المادة 312 من القانون المدني: تتقادم بسنة واحدة (1) حقوق التجار والصناع عن أشياء وردوها لغير المتجرين فيها وحقوق أصحاب الفنادق والمطاعم، ومن يتمسك بهذا التقادم يحلف أنه أدى الدين، ولا تقضي به المحكمة تلقائيا (المادة 321). تحقق من تاريخ الاستحقاق ومن كل سبب قاطع للتقادم أو موقف له (المواد 316 و317 و318 و319)، ومن تحرير سند بالحق (المادة 313، محل قراءتين).",
+        "en": "Civil Code, article 312: the claims of merchants and craftsmen for things supplied to persons who do not trade in them, and of hotel and restaurant keepers, are time-barred after 1 year; whoever relies on it must swear that he paid, and the court does not apply it of its own motion (article 321). Check the due date, any act that interrupted or suspended the period (articles 316, 317, 318, 319), and whether a written instrument was drawn up for the right (article 313, two readings kept)."
+      },
+      "basis": [
+        "b6",
+        "b8",
+        "b10",
+        "b11",
+        "b12",
+        "b15",
+        "b16",
+        "b18",
+        "b19",
+        "b21",
+        "b23"
+      ],
+      "extract": {
+        "period": "تتقادم بسنة واحدة",
+        "sanction": "تتقادم"
+      }
+    },
+    {
+      "id": "d8",
+      "kind": "limitation",
+      "period": {
+        "value": 5,
+        "unit": "year"
+      },
+      "startsFrom": {
+        "slot": "debt_due_date",
+        "description": {
+          "ar": "تاريخ استحقاق أقدم مبلغ مطالب به.",
+          "en": "The date the oldest sum claimed fell due."
+        }
+      },
+      "counting": {
+        "method": "excludeFirstDay",
+        "extendToWorkingDay": false,
+        "basis": [
+          "b11",
+          "b27"
+        ]
+      },
+      "raisedBy": "pleaOnly",
+      "when": {
+        "all": [
+          {
+            "slot": "obligation_is_tort_compensation",
+            "is": "no"
+          },
+          {
+            "not": {
+              "slot": "requests",
+              "includes": "wages"
+            }
+          },
+          {
+            "slot": "claim_is_periodic_renewable_right",
+            "is": "yes"
+          }
+        ]
+      },
+      "effectWhenExpired": "warn",
+      "warnBandDays": 15,
+      "message": {
+        "ar": "المادة 309 من القانون المدني: يتقادم بخمس (5) سنوات كل حق دوري متجدد ولو أقر به المدين، كأجرة المباني والديون المتأخرة والمعاشات، ولا تقضي به المحكمة تلقائيا (المادة 321). تحقق من تاريخ استحقاق أقدم مبلغ مطالب به ومن كل سبب قاطع للتقادم، ومن تحرير سند بالحق (المادة 313، محل قراءتين). ولا يشمل هذا الريع المستحق على الحائز سيء النية أو على متصرف المال المشاع.",
+        "en": "Civil Code, article 309: every periodic renewable right, such as building rent, arrears and pensions, is time-barred after 5 years even if the debtor acknowledged it, and the court does not apply it of its own motion (article 321). Check the due date of the oldest sum claimed, any act that interrupted the period, and whether a written instrument was drawn up for the right (article 313, two readings kept). This does not cover revenue owed by a possessor in bad faith or by the manager of jointly owned property."
+      },
+      "basis": [
+        "b2",
+        "b3",
+        "b10",
+        "b11",
+        "b12",
+        "b23"
+      ],
+      "extract": {
+        "period": "بخمس سنوات",
+        "sanction": "يتقادم"
+      }
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc1",
+      "name": {
+        "ar": "نسخة من محضر عدم المصالحة تبين تاريخ تسليمه",
+        "en": "A copy of the non-conciliation record showing the date it was delivered"
+      },
+      "requiredWhen": {
+        "slot": "nonconciliation_record",
+        "is": "yes"
+      },
+      "why": {
+        "ar": "ترفق بالعريضة، ويبدأ من تاريخ تسليمها أجل الستة أشهر.",
+        "en": "It is attached to the petition, and the six-month period runs from the date of its delivery."
+      },
+      "basis": [
+        "b40",
+        "b41",
+        "b37"
+      ]
+    },
+    {
+      "id": "doc2",
+      "name": {
+        "ar": "ما يثبت انقطاع التقادم: إقرار المدين، أو مطالبة قضائية أو تنبيه أو حجز سابق",
+        "en": "Proof that limitation was interrupted: the debtor's acknowledgment, or an earlier judicial claim, command to pay or seizure"
+      },
+      "why": {
+        "ar": "يرد به الدائن على الدفع بالتقادم إن كانت المدة قد انقضت من يوم الاستحقاق، ويبدأ بعد الانقطاع تقادم جديد.",
+        "en": "The creditor uses it to meet a limitation plea where the period from the due date has run; after an interruption a new period starts."
+      },
+      "basis": [
+        "b18",
+        "b19",
+        "b20"
+      ]
+    },
+    {
+      "id": "doc3",
+      "name": {
+        "ar": "ما يثبت تاريخ بدء المدة (تاريخ الاستحقاق، أو تسليم محضر عدم الصلح، أو وقوع الفعل الضار)",
+        "en": "Proof of the day the period starts (the due date, the delivery of the non-conciliation record, or the harmful act)"
+      },
+      "why": {
+        "ar": "تبدأ المدة من هذا اليوم.",
+        "en": "The period runs from this day."
+      },
+      "basis": [
+        "b12",
+        "b37",
+        "b28"
+      ]
+    }
+  ],
+  "openPoints": [
+    {
+      "id": "o1",
+      "question": {
+        "ar": "هل يسري على متأخرات الأجور التقادم بسنة أم بخمس سنوات؟",
+        "en": "Are wage arrears time-barred after one year or after five years?"
+      },
+      "why": {
+        "ar": "يذكر القانون المدني الأجور ضمن الحقوق الدورية التي تتقادم بخمس سنوات، ويجعل المبالغ المستحقة للعمال مقابل عملهم تتقادم بسنة، دون بيان أيهما يغلب. ولم يوجد في المخزن نص خاص في تشريع العمل.",
+        "en": "The Civil Code lists wages among the periodic rights time-barred after five years, and also makes sums owed to workers for their work time-barred after one year, without saying which prevails. No labour-law text on the point is in the store."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "التقادم بسنة، مع يمين المدين على الوفاء.",
+            "en": "One year, with the debtor's oath that he paid."
+          },
+          "basis": [
+            "b7",
+            "b8"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "التقادم بخمس سنوات للأجور الدورية.",
+            "en": "Five years for periodic wages."
+          },
+          "basis": [
+            "b2"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "التنبيه ابتداء من انقضاء سنة على استحقاق أقدم أجر، ثم من انقضاء خمس سنوات.",
+        "en": "Warn once a year has passed since the oldest wage fell due, and again once five years have passed."
+      },
+      "grade": "C",
+      "refs": [
+        "d3",
+        "d4",
+        "b7",
+        "b2"
+      ]
+    },
+    {
+      "id": "o2",
+      "question": {
+        "ar": "على أي حقوق تنطبق قاعدة بدء التقادم من إتمام الدائنين خدماتهم، وقاعدة التقادم الطويل إذا حرر بالحق سند؟",
+        "en": "To which rights do the rule that limitation starts when the creditors complete their services, and the rule that a written instrument makes the period fifteen years, apply?"
+      },
+      "why": {
+        "ar": "تحيل الفقرة إلى مادتين إحداهما في الحقوق الدورية والأخرى في الضرائب التي لها بدء خاص، بينما يناسب لفظها حقوق المهنيين والحقوق المتقادمة بسنة. والفقرة الثانية تحيل إلى «هذه الحقوق» فتتبع القراءة نفسها. والنصان العربي والفرنسي في الجريدة الرسمية يذكران المادتين نفسيهما.",
+        "en": "The paragraph refers to two articles, one on periodic rights and one on taxes that have their own starting days, while its words fit the professionals' rights and the one-year rights. The second paragraph refers to 'these rights' and follows the same reading. The Arabic and French editions of the Official Journal print the same two article numbers (verifier)."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "تنطبق على المادتين المذكورتين كما وردتا.",
+            "en": "It applies to the two articles as printed."
+          },
+          "basis": [
+            "b9",
+            "b2",
+            "b45"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "تنطبق على حقوق المهنيين والحقوق المتقادمة بسنة.",
+            "en": "It applies to the professionals' rights and the one-year rights."
+          },
+          "basis": [
+            "b9",
+            "b4",
+            "b6",
+            "b7"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "حساب المدة من أسبق التاريخين، تاريخ الاستحقاق أو تاريخ إتمام العمل، مع التنبيه.",
+        "en": "Count from the earlier of the due date and the date the work was completed, and warn."
+      },
+      "grade": "C",
+      "refs": [
+        "b9",
+        "b10",
+        "d3",
+        "d4",
+        "d6",
+        "d7",
+        "d8"
+      ]
+    },
+    {
+      "id": "o3",
+      "question": {
+        "ar": "هل مدة دعوى التعويض عن الفعل الضار تقادم أم أجل مسقط، ومن يثيرها؟",
+        "en": "Is the period of the action for compensation for a harmful act a limitation or a forfeiture, and who raises it?"
+      },
+      "why": {
+        "ar": "تستعمل المادة لفظ السقوط وتقع خارج قسم التقادم، ولا تبين الوقف والانقطاع ولا من يثيرها.",
+        "en": "The article uses the word 'falls' and sits outside the limitation section; it says nothing of suspension, interruption or who raises it."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "تقادم: تسري عليه قواعد الوقف والقطع ولا يثار إلا بطلب.",
+            "en": "A limitation: suspension, interruption and the plea-only rule apply."
+          },
+          "basis": [
+            "b28",
+            "b15",
+            "b18",
+            "b23"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "سقوط: لا وقف ولا قطع، وقد يثار تلقائيا.",
+            "en": "A forfeiture: no suspension or interruption, and it may be raised of the court's own motion."
+          },
+          "basis": [
+            "b28",
+            "b29",
+            "b31"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "التنبيه عند انقضاء المدة أو قربها دون منع التصدير، وعدم الاعتماد على الانقطاع.",
+        "en": "Warn when the period has run or is close, without blocking the export, and do not rely on an interruption."
+      },
+      "grade": "C",
+      "refs": [
+        "d2",
+        "b28"
+      ]
+    },
+    {
+      "id": "o4",
+      "question": {
+        "ar": "هل يعامل يوم تسليم محضر عدم الصلح معاملة يوم التبليغ فلا يحسب؟",
+        "en": "Is the day the non-conciliation record is delivered treated like the day of service, and so not counted?"
+      },
+      "why": {
+        "ar": "قاعدة الحساب تشمل كل آجال القانون وتجعلها كاملة وتستثني يوم التبليغ ويوم الانقضاء، وأجل الدعوى الاجتماعية يبدأ من التسليم لا من التبليغ. الفرق يوم واحد يقع داخل هامش التنبيه.",
+        "en": "The counting rule covers every period of the Code, counts them in full and leaves out the day of service and the last day, while the labour period runs from delivery, not service. The difference is one day and falls inside the warning band."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "يحسب الأجل كاملا، فلا يحسب يوم التسليم ولا يوم الانقضاء.",
+            "en": "The period is counted in full: neither the day of delivery nor the last day counts."
+          },
+          "basis": [
+            "b32",
+            "b37"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "يحسب يوم التسليم لأنه ليس يوم تبليغ.",
+            "en": "The day of delivery counts, since it is not a day of service."
+          },
+          "basis": [
+            "b37"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "التنبيه في الأيام القريبة من آخر الأجل في القراءتين.",
+        "en": "Warn in the days near the last day under either reading."
+      },
+      "grade": "C",
+      "refs": [
+        "d5"
+      ]
+    },
+    {
+      "id": "o5",
+      "question": {
+        "ar": "هل يثير القاضي من تلقاء نفسه سقوط الحق في رفع الدعوى الاجتماعية؟",
+        "en": "Does the judge raise the forfeiture of the labour claim of his own motion?"
+      },
+      "why": {
+        "ar": "يعد انقضاء الأجل المسقط دفعا بعدم القبول، ويثير القاضي تلقائيا الدفع الذي هو من النظام العام، لكن النصوص لا تقول إن هذا الأجل من النظام العام.",
+        "en": "Expiry of a forfeiture period is a plea of inadmissibility, and the judge raises such pleas of his own motion when they are of public order, but no text says this period is of public order."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "من النظام العام فيثيره القاضي تلقائيا.",
+            "en": "Of public order, raised by the judge of his own motion."
+          },
+          "basis": [
+            "b29",
+            "b31"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "لا يثار إلا بدفع من الخصم.",
+            "en": "Raised only on a party's plea."
+          },
+          "basis": [
+            "b29",
+            "b30"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "اعتبار أن القاضي قد يثيره، والتنبيه أو المنع وفق الحساب.",
+        "en": "Assume the judge may raise it, and warn or block as the count says."
+      },
+      "grade": "C",
+      "refs": [
+        "d5"
+      ]
+    },
+    {
+      "id": "o7",
+      "question": {
+        "ar": "ما هي أيام الأعياد الرسمية وأيام الراحة الأسبوعية التي يمدد بها الأجل؟",
+        "en": "Which days are official holidays and weekly rest days that extend a period?"
+      },
+      "why": {
+        "ar": "تحيل قاعدة الحساب إلى النصوص الجاري بها العمل، وهي غير موجودة في المخزن.",
+        "en": "The counting rule refers to the texts in force, which are not in the store."
+      },
+      "protectiveReading": {
+        "ar": "عدم الاعتماد على التمديد إلا بعد التحقق، والتنبيه في هامش الأيام الأخيرة.",
+        "en": "Do not rely on an extension without checking; warn within the band around the last day."
+      },
+      "grade": "D",
+      "refs": [
+        "d5",
+        "b34",
+        "b35"
+      ]
+    },
+    {
+      "id": "o8",
+      "question": {
+        "ar": "هل يزول انقطاع التقادم إذا سقطت الخصومة أو رفضت الدعوى شكلا أو تنازل عنها المدعي، وهل يعد الإعذار تنبيها قاطعا؟",
+        "en": "Does the interruption of limitation survive if the proceedings lapse, the claim is dismissed for form, or the plaintiff withdraws it; and is a formal notice an interrupting command to pay?"
+      },
+      "why": {
+        "ar": "يقطع التقادم بالمطالبة القضائية ولو أمام محكمة غير مختصة، ولا يجوز الاحتجاج بإجراءات الخصومة الساقطة، ولا نص يبين أثر ذلك على الانقطاع. كما لا يبين النص هل يعد الإعذار تنبيها.",
+        "en": "A judicial claim interrupts limitation even before a court without jurisdiction, and no step of lapsed proceedings may be relied on; no text says how this affects the interruption. Nor does the text say whether a formal notice counts as an interrupting command to pay."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "يزول الانقطاع بسقوط الخصومة لأنه لا يحتج بأي إجراء منها.",
+            "en": "The interruption is lost with the lapse, since no step of the proceedings may be relied on."
+          },
+          "basis": [
+            "b44"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "يبقى الانقطاع لأن الدعوى نفسها لا تنقضي بسقوط الخصومة.",
+            "en": "The interruption survives, since the action itself is not extinguished by the lapse."
+          },
+          "basis": [
+            "b44",
+            "b18"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "عدم الاعتماد على مطالبة سابقة ساقطة أو على إعذار لقطع التقادم، وحساب المدة من الاستحقاق.",
+        "en": "Do not rely on a lapsed earlier claim, or on a formal notice, to interrupt limitation; count from the due date."
+      },
+      "grade": "C",
+      "refs": [
+        "b18",
+        "b44",
+        "doc2"
+      ]
+    },
+    {
+      "id": "o9",
+      "question": {
+        "ar": "ما مدة تقادم الالتزامات التجارية؟",
+        "en": "What is the limitation period of commercial obligations?"
+      },
+      "why": {
+        "ar": "يعتقد من الذاكرة أن القانون التجاري يقرر مدة خاصة، ولا نص في المخزن؛ والمخزن لا يحوي من القانون التجاري إلا مواد الإيجار التجاري.",
+        "en": "From memory the Commercial Code sets a special period; no such text is in the store, which holds only the commercial-lease articles of that Code."
+      },
+      "protectiveReading": {
+        "ar": "تطبيق المادة 308 مع تنبيه المحامي إلى احتمال مدة أقصر.",
+        "en": "Apply article 308 and warn the lawyer that a shorter period may apply."
+      },
+      "grade": "D",
+      "refs": [
+        "d1",
+        "o13"
+      ]
+    },
+    {
+      "id": "o10",
+      "question": {
+        "ar": "ما أجل رفع دعوى الضمان الاجتماعي أمام القسم الاجتماعي، وهل يلزم طعن مسبق قبلها؟",
+        "en": "What is the period for bringing a social-security dispute before the social section, and must a prior recourse come first?"
+      },
+      "why": {
+        "ar": "القانون رقم 08-08 المتعلق بالمنازعات في مجال الضمان الاجتماعي (الجريدة الرسمية 2008، العدد 11، ص 8 و9) يوجب رفع الخلافات العامة أمام لجان الطعن المسبق قبل أي طعن قضائي (المادة 4)، ويجعل قرارات اللجنة الوطنية قابلة للطعن أمام المحكمة المختصة في أجل ثلاثين يوما من تسليم تبليغ القرار، أو ستين يوما من استلام اللجنة العريضة إذا لم يتلق المعني ردا (المادة 15). هذا النص ليس في المخزن، ولا يحرر فيه محضر عدم صلح، فلا يجري الأجل المسقط للدعوى العمالية. ولم يتحقق من تعديلاته اللاحقة.",
+        "en": "Law 08-08 on social-security disputes (Official Journal 2008 no. 11, pp. 8 and 9) makes the prior recourse before the prior-recourse committees mandatory before any court action (art. 4), and opens the national committee's decisions to challenge before the competent court within thirty days of delivery of the notification of the decision, or sixty days from the committee's receipt of the petition when no reply came (art. 15). The text is not in the store; no non-conciliation record is drawn up in these disputes, so the labour forfeiture period does not run. Later amendments were not checked (verifier, attack adv-1)."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "تخضع منازعات الضمان الاجتماعي العامة لطعن مسبق إجباري ثم لأجل ثلاثين أو ستين يوما لرفع الدعوى.",
+            "en": "General social-security disputes require a mandatory prior recourse and then a thirty-day or sixty-day period to bring the case."
+          }
+        }
+      ],
+      "protectiveReading": {
+        "ar": "في منازعة ضمان اجتماعي، لا يعتمد على غياب محضر عدم الصلح ولا على مدة التقادم العامة؛ يتحقق المحامي من الطعن المسبق ومن تاريخ تبليغ قرار اللجنة الوطنية أو استلامها العريضة، ويعامل الأجل القصير على أنه قد يكون جاريا.",
+        "en": "In a social-security dispute, do not rely on the absence of a non-conciliation record or on the general limitation period; the lawyer checks the prior recourse and the date the national committee's decision was notified or the committee received the petition, and treats the short period as possibly running."
+      },
+      "grade": "D",
+      "refs": [
+        "d1",
+        "d5"
+      ]
+    },
+    {
+      "id": "o11",
+      "question": {
+        "ar": "هل يشمل التقادم بسنتين الجراحين وجراحي الأسنان والقابلات والمهندسين المعماريين والمربين؟",
+        "en": "Does the two-year limitation reach surgeons, dental surgeons, midwives, architects and educators?"
+      },
+      "why": {
+        "ar": "النص العربي للمادة 310 يذكر الأطباء والصيادلة والمحامين والمهندسين والخبراء ووكلاء التفليسة والسماسرة والأساتذة والمعلمين، والنص الفرنسي في العدد نفسه من الجريدة الرسمية (1975، العدد 78، ص 832) يذكر أيضا الجراحين وجراحي الأسنان والقابلات والمهندسين المعماريين والمربين. والمخزن لا يحوي النص الفرنسي ولا نصا يبين أي النصين يغلب.",
+        "en": "The Arabic text of article 310 names doctors, pharmacists, lawyers, engineers, experts, bankruptcy agents, brokers, professors and teachers; the French text in the same Official Journal issue (1975 no. 78, p. 832) also names surgeons, dental surgeons, midwives, architects and educators. The store holds neither the French text nor a text saying which edition prevails (verifier, attack adv-6)."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "لا تشمل المادة إلا المهن المذكورة في النص العربي، وتخضع حقوق غيرها للتقادم العام.",
+            "en": "The article reaches only the professions the Arabic text names; the others fall under the general period."
+          },
+          "basis": [
+            "b4",
+            "b1"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "تشمل المادة كذلك المهن الزائدة في النص الفرنسي، وجراح الأسنان طبيب والمهندس المعماري مهندس.",
+            "en": "The article also reaches the professions the French text adds; a dental surgeon is a doctor and an architect an engineer."
+          },
+          "basis": [
+            "b4"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "طرح سؤال الأتعاب بالقائمة الأوسع والتنبيه عند انقضاء سنتين.",
+        "en": "Ask the fees question with the longer list, and warn once two years have passed."
+      },
+      "grade": "D",
+      "refs": [
+        "d6",
+        "b4"
+      ]
+    },
+    {
+      "id": "o12",
+      "question": {
+        "ar": "ما مدة تقادم الدعاوى الناشئة عن عقد التأمين؟",
+        "en": "What is the limitation period of actions arising from an insurance contract?"
+      },
+      "why": {
+        "ar": "المادة 624 من القانون المدني (الجريدة الرسمية 1975، العدد 78، ص 1030) تجعل الدعاوى الناشئة عن عقد التأمين تسقط بالتقادم بانقضاء ثلاث سنوات من وقت حدوث الواقعة التي تولدت عنها، ولا تسري المدة في حالة إخفاء بيانات عن الخطر أو تقديم بيانات غير صحيحة إلا من يوم علم المؤمن بذلك، ولا في حالة وقوع الحادث إلا من يوم علم ذوي الشأن بوقوعه. المادة ليست في المخزن، ولم يتحقق من تعديلها ولا من الأمر المتعلق بالتأمينات.",
+        "en": "Civil Code article 624 (Official Journal 1975 no. 78, p. 1030) makes actions arising from an insurance contract time-barred three years after the event that gave rise to them; in case of concealment or false declarations about the risk the period runs only from the day the insurer learned of it, and in case of the insured event only from the day those concerned learned of it. The article is not in the store; neither its amendment nor the insurance ordinance was checked (verifier, attack adv-2)."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "تتقادم الدعاوى الناشئة عن عقد التأمين بثلاث سنوات من وقت الواقعة أو من وقت العلم في الحالتين المذكورتين.",
+            "en": "Actions arising from an insurance contract are time-barred after three years from the event, or from knowledge in the two cases named."
+          }
+        }
+      ],
+      "protectiveReading": {
+        "ar": "في دعوى ناشئة عن عقد تأمين، لا يعتمد على مدة التقادم العامة؛ ينبه المحامي إلى المدة القصيرة ابتداء من وقت الواقعة.",
+        "en": "In an action arising from an insurance contract, do not rely on the general period; warn the lawyer of the short period counted from the event."
+      },
+      "grade": "D",
+      "refs": [
+        "d1"
+      ]
+    },
+    {
+      "id": "o13",
+      "question": {
+        "ar": "ما مدة تقادم الدعاوى الناشئة عن السفتجة والسند لأمر والشيك؟",
+        "en": "What is the limitation period of actions on a bill of exchange, a promissory note and a cheque?"
+      },
+      "why": {
+        "ar": "في نص 1975 من القانون التجاري (الجريدة الرسمية 1975، العدد 101): المادة 461 (ص 1351) تجعل الدعاوى الناشئة عن السفتجة على قابلها تسقط بمضي ثلاثة أعوام من تاريخ الاستحقاق، ودعاوى الحامل ضد المظهرين أو الساحب بمضي عام واحد من تاريخ الاحتجاج أو الاستحقاق، ودعاوى المظهرين بعضهم على بعض بمضي ستة أشهر؛ والمادة 467 تطبق المادة 461 على السند لأمر؛ والمادة 527 (ص 1356) تجعل دعاوى رجوع حامل الشيك تتقادم بمضي ستة أشهر من انقضاء مهلة التقديم، ودعوى الحامل على المسحوب عليه بثلاثة أعوام. هذه المواد ليست في المخزن، ولم يتحقق من تعديلها اللاحق.",
+        "en": "In the 1975 text of the Commercial Code (Official Journal 1975 no. 101): article 461 (p. 1351) bars actions on a bill of exchange against the acceptor after three years from maturity, the holder's actions against endorsers or the drawer after one year from the protest or maturity, and endorsers' actions against each other after six months; article 467 applies article 461 to promissory notes; article 527 (p. 1356) bars the holder's recourse on a cheque six months after the presentment period ends, and his action against the drawee after three years. These articles are not in the store, and later amendments were not checked (verifier, attack adv-4)."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "تخضع الدعاوى الصرفية للمدد القصيرة في القانون التجاري لا للمدة العامة.",
+            "en": "Actions on bills, notes and cheques fall under the short periods of the Commercial Code, not the general period."
+          }
+        }
+      ],
+      "protectiveReading": {
+        "ar": "في دعوى على سفتجة أو سند لأمر أو شيك، لا يعتمد على مدة التقادم العامة؛ ينبه المحامي إلى المدد القصيرة ابتداء من الاستحقاق أو الاحتجاج أو انقضاء مهلة التقديم.",
+        "en": "In an action on a bill, a promissory note or a cheque, do not rely on the general period; warn the lawyer of the short periods counted from maturity, protest or the end of the presentment period."
+      },
+      "grade": "D",
+      "refs": [
+        "d1",
+        "o9"
+      ]
+    },
+    {
+      "id": "o14",
+      "question": {
+        "ar": "هل تبقى مدة دعوى التعويض قائمة إذا رفعت أمام الجهة القضائية الجزائية بعد تقادم الدعوى العمومية؟",
+        "en": "Does the period of the compensation action still hold when the action is brought before the criminal court after the public action is time-barred?"
+      },
+      "why": {
+        "ar": "يذكر المهاجم من الذاكرة أن المادة 10 من قانون الإجراءات الجزائية تجعل الدعوى المدنية تتقادم وفق القانون المدني، ولا تجيز رفعها أمام الجهة الجزائية بعد انقضاء أجل تقادم الدعوى العمومية. لم يعثر على النص في الجريدة الرسمية: القانون 04-14 (الجريدة الرسمية 2004، العدد 71، ص 4 و5) لا يعدل المادة 10. والنص ليس في المخزن.",
+        "en": "The attacker recalls from memory that article 10 of the Code of Criminal Procedure makes the civil action follow the Civil Code's limitation but forbids bringing it before the criminal court once the public action is time-barred. The text was not found in the Official Journal: law 04-14 (Official Journal 2004 no. 71, pp. 4 and 5) does not amend article 10. The text is not in the store (verifier, attack adv-5)."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "مدة المادة 133 تخص الدعوى أمام القاضي المدني، وطريق الادعاء المدني أمام الجهة الجزائية قد ينغلق قبلها.",
+            "en": "The period of article 133 concerns the action before the civil judge; the civil-party route before the criminal court may close earlier."
+          }
+        },
+        {
+          "reading": {
+            "ar": "لا نص يقصر مدة الدعوى المدنية أمام الجهة الجزائية.",
+            "en": "No text shortens the civil action's period before the criminal court."
+          },
+          "basis": [
+            "b28"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "لا يعتمد على مدة خمس عشرة سنة لرفع الدعوى المدنية أمام الجهة الجزائية؛ ويبقى التنبيه في الدعوى أمام القسم المدني كما هو.",
+        "en": "Do not rely on fifteen years for a civil-party claim before the criminal court; the warning for the action before the civil section stays as it is."
+      },
+      "grade": "D",
+      "refs": [
+        "d2",
+        "o3"
+      ]
+    }
+  ],
+  "checklist": [
+    {
+      "id": "k1",
+      "item": "What is the general limitation period for an obligation in the Civil Code (fifteen years), and which text sets it?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b1",
+        "d1"
+      ]
+    },
+    {
+      "id": "k2",
+      "item": "Which shorter limitation periods apply to periodic payments (rent, interest, wages, maintenance arrears, other periodic dues: five years), and are they lost even if the debtor acknowledges them?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b2",
+        "b3",
+        "b10",
+        "d4",
+        "d8"
+      ],
+      "note": "Five years even if acknowledged (309 ¶1); revenue of a bad-faith possessor or a manager of jointly owned property is excepted (309 ¶2); a written instrument raises the period to fifteen years (313 ¶2)."
+    },
+    {
+      "id": "k3",
+      "item": "Which short limitation periods apply to the rights of professionals (doctors, lawyers, engineers, experts, bailiffs, teachers) and from what event do they run?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b4",
+        "d6",
+        "b9",
+        "o2",
+        "o11"
+      ],
+      "note": "Two years; bailiffs are not in the list. Start: the due date (315 ¶1) on the words, since 313 ¶1 names other articles; the reading that 313 ¶1 governs them is kept in o2, and d6 is interpretive. The French edition of the article adds surgeons, dental surgeons, midwives, architects and educators: o11."
+    },
+    {
+      "id": "k4",
+      "item": "Which one-year limitations apply (merchants and manufacturers for goods supplied to non-merchants, hotel and restaurant keepers, workers' and servants' wages and supplies), and is the debtor who invokes them bound to take an oath that he paid?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b6",
+        "b7",
+        "b8",
+        "d3",
+        "d7"
+      ]
+    },
+    {
+      "id": "k5",
+      "item": "How is a limitation period counted: by days, not hours; is the first day excluded; does the period end at the end of its last day?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b11",
+        "b27",
+        "d1",
+        "d2",
+        "d3",
+        "d4",
+        "d6",
+        "d7",
+        "d8"
+      ],
+      "note": "314 ¶1 and civil-code 3 ¶1 (Gregorian calendar). No text extends a civil limitation period ending on a holiday: cpca 405 speaks only of the periods of that Code, so extendToWorkingDay is false."
+    },
+    {
+      "id": "k6",
+      "item": "From what event does limitation start: the day the debt becomes due; for a conditional debt, the day the condition is met; for a debt with a term, the day the term arrives; for a guarantee claim, the day eviction occurs?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b12",
+        "b13",
+        "b9",
+        "o2"
+      ]
+    },
+    {
+      "id": "k7",
+      "item": "When the due date depends on the creditor's will, when does limitation start?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b14"
+      ]
+    },
+    {
+      "id": "k8",
+      "item": "What suspends limitation: a legal or material impediment that prevents the creditor from claiming (force majeure), incapacity without a legal representative, relations between spouses, principal and representative?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b15",
+        "b16",
+        "b17"
+      ],
+      "note": "No text in the store suspends limitation between spouses; only principal and representative are named."
+    },
+    {
+      "id": "k9",
+      "item": "Does suspension apply to the five-year and shorter periods with respect to persons lacking capacity?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b16",
+        "b17"
+      ],
+      "note": "316 ¶2 reads «تنقضى مدته عن خمس سنوات» (falls short of five years) and ¶3 «تزيد مدته على خمس سنوات» (more than five); a period of exactly five years fits neither on the printed words."
+    },
+    {
+      "id": "k10",
+      "item": "What interrupts limitation: a judicial claim, even before a court without jurisdiction; a payment order request; a seizure; the debtor's declaration in bankruptcy; a step taken by the creditor in a pending proceeding?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b18",
+        "b19",
+        "doc2"
+      ],
+      "note": "The text names a judicial claim, a command to pay, a seizure, the creditor's filing in bankruptcy or distribution, and steps in proceedings; it does not name a payment-order request."
+    },
+    {
+      "id": "k11",
+      "item": "Does a claim later dismissed, withdrawn or annulled for a defect of form, or a proceeding that lapses, still interrupt limitation?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b44",
+        "o8"
+      ],
+      "note": "No text settles it; civil-code 317 and cpca 220 to 231 read (221 ¶2: a new claim stays possible; 231 ¶1: withdrawal does not abandon the action)."
+    },
+    {
+      "id": "k12",
+      "item": "Does the debtor's acknowledgment, express or implied, interrupt limitation, and does a pledge left with the creditor count as implied acknowledgment?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b19"
+      ]
+    },
+    {
+      "id": "k13",
+      "item": "After interruption, what new period runs, and from when; when does the new period become fifteen years (judgment, acknowledgment of a short-period debt)?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b20",
+        "b21"
+      ]
+    },
+    {
+      "id": "k14",
+      "item": "Who may raise limitation: the debtor, his creditors, any interested person; may it be raised at any stage of the proceedings, including on appeal?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b23",
+        "b24",
+        "b30"
+      ]
+    },
+    {
+      "id": "k15",
+      "item": "Does the court raise limitation of its own motion? (Expected answer: no, it must be pleaded.)",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b23",
+        "d1",
+        "d3",
+        "d4",
+        "d6",
+        "d7",
+        "d8"
+      ]
+    },
+    {
+      "id": "k16",
+      "item": "May a party waive limitation before it has run; may it waive acquired limitation; may parties agree to a period different from the statutory one?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b25",
+        "b26"
+      ]
+    },
+    {
+      "id": "k17",
+      "item": "Does limitation of the principal right extinguish accessories (interest) even if their own period has not run?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b22"
+      ]
+    },
+    {
+      "id": "k18",
+      "item": "Limitation for the claim for compensation arising from a harmful act (tort): fifteen years from the harmful act, and the text that sets it.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b28",
+        "d2",
+        "o3"
+      ]
+    },
+    {
+      "id": "k19",
+      "item": "Limitation of the action for annulment of a voidable contract and of the action for absolute nullity (fifteen years from the contract).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "doesNotApply",
+      "note": "Claim-specific: civil-code 101 (five years, with its starting events) and 102 ¶2 (fifteen years from the contract) are in the store and belong to the annulment claim record."
+    },
+    {
+      "id": "k20",
+      "item": "Short periods inside specific contracts: latent defects in sale (one year from delivery), lesion in sale of real property, guarantee of contractors and architects (decennial), and whether they are limitation or forfeiture.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "doesNotApply",
+      "note": "Claim-specific: civil-code 383 (one year from delivery, with the fraud exception), 359 (three years for lesion), 366 and 557 (three years from collapse or discovery) are in the store and belong to the sale and construction claims."
+    },
+    {
+      "id": "k21",
+      "item": "Forfeiture (سقوط) versus limitation (تقادم): forfeiture periods are not suspended or interrupted in principle and the court may raise them of its own motion when of public order; how to tell which one a text sets.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b29",
+        "b31",
+        "b38",
+        "d5",
+        "o3",
+        "o5"
+      ],
+      "note": "The texts name both as grounds of inadmissibility; no text says that forfeiture periods escape suspension or interruption."
+    },
+    {
+      "id": "k22",
+      "item": "Counting of procedural periods (CPCA): the day of service and the day of expiry are not counted; full days; a period ending on a public holiday or weekend day is extended to the next working day.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b32",
+        "b33",
+        "b34",
+        "b35",
+        "d5"
+      ]
+    },
+    {
+      "id": "k23",
+      "item": "Are procedural periods extended for a party who lives abroad (distance period), and by how much?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b36"
+      ],
+      "note": "Two months, and only for opposition, appeal, review and cassation (404 ¶1); not for the period to file a labour claim nor for any limitation period of this module, so residence abroad changes no deadline here."
+    },
+    {
+      "id": "k24",
+      "item": "Which procedural periods in CPCA are sanctioned by forfeiture of the right to act (appeal, opposition, cassation periods) and does the court raise the expiry of a period of its own motion?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b38",
+        "b39",
+        "b31",
+        "d5",
+        "o5"
+      ]
+    },
+    {
+      "id": "k25",
+      "item": "Inadmissibility pleas (CPCA): limitation, forfeiture, res judicata, lack of standing or interest are grounds of inadmissibility; may they be raised at any stage; must the court raise those of public order of its own motion?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b29",
+        "b30",
+        "b31"
+      ]
+    },
+    {
+      "id": "k26",
+      "item": "Labour claims: the claim must be filed within six months of the delivery of the non-conciliation record, under penalty of forfeiture (CPCA on social matters); how is that six-month period counted under the procedural counting rule?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b37",
+        "b32",
+        "b35",
+        "d5",
+        "o4"
+      ]
+    },
+    {
+      "id": "k27",
+      "item": "Labour claims: the exemptions from prior conciliation (employer bankrupt or in judicial settlement, employer abroad, public servants) and how they affect the starting event of the six-month period.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "d5"
+      ],
+      "note": "The exemptions (labour-disputes 19 ¶2 and ¶3) belong to labour-prelitigation and are not restated. Where no record was drawn up, the six-month period has no starting event and d5 gives none."
+    },
+    {
+      "id": "k28",
+      "item": "Wages: which limitation period applies to arrears of wages (periodic payment five years under the Civil Code, or a one-year period for workers' wages), and is there a special labour-law text?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "d3",
+        "d4",
+        "o1"
+      ],
+      "note": "The labour-relations entries in the store (articles 1 to 3, 73 to 73-4, 80, 88) carry no limitation rule."
+    },
+    {
+      "id": "k29",
+      "item": "Does a formal notice (إعذار) interrupt limitation? (From memory: no, only a judicial claim or acknowledgment does.)",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b18",
+        "o8"
+      ],
+      "note": "The interrupting events include a command to pay (تنبيه); whether a formal notice is one is not said. Protective reading: do not rely on it."
+    },
+    {
+      "id": "k30",
+      "item": "Does the State or a public body get any special limitation regime, and are actions against the administration subject to different periods before the administrative courts?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "doesNotApply",
+      "refs": [
+        "b45"
+      ],
+      "note": "Only taxes and dues owed to the State (civil-code 311 ¶1), the refund of taxes paid without right (311 ¶2) and the saving of special laws (311 ¶3) are in the store; none is a claim of this app before the ordinary courts. Periods before the administrative courts belong to ordinary-court-exits."
+    },
+    {
+      "id": "k31",
+      "item": "Commercial matters: is there a shorter limitation for commercial obligations or bills of exchange, and is it in the Commercial Code?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "o9",
+        "o13"
+      ],
+      "note": "The commercial-code entries in the store are article 30 and articles 169 to 202 (leases); no limitation of commercial obligations or bills is among them. The verifier read articles 461, 467 and 527 of the 1975 Commercial Code on the Official Journal (1975 no. 101, pp. 1351 and 1356): short periods for bills, promissory notes and cheques; requested, open point o13 (grade D)."
+    },
+    {
+      "id": "k32",
+      "item": "Commercial leases: periods for the renewal claim and the eviction compensation claim (two years) under the Commercial Code — limitation or forfeiture?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "doesNotApply",
+      "note": "Belongs to commercial-lease-regimes."
+    },
+    {
+      "id": "k33",
+      "item": "Family matters: periods relevant to maintenance arrears and to claims after divorce; does the family code set any forfeiture?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "doesNotApply",
+      "note": "Claim-specific: family-code 68 (custody lost if not claimed for over a year) and 80 (maintenance from the claim, up to a year before it on evidence) belong to the custody and maintenance claims."
+    },
+    {
+      "id": "k34",
+      "item": "Real property: acquisitive prescription periods (fifteen years, ten years with good faith and title) are a different institution from extinctive limitation and must not be confused with it.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "doesNotApply",
+      "note": "Acquisitive prescription is not part of this module; this record covers extinctive limitation only."
+    },
+    {
+      "id": "k35",
+      "item": "What the lawyer must state in the petition to anticipate a limitation plea: the due date, any interruption (acknowledgment, prior claim), any suspension.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "doc1",
+        "doc2",
+        "doc3",
+        "b42",
+        "b15"
+      ]
+    },
+    {
+      "id": "k36",
+      "item": "Amendments: CPCA 08-09 replaced the old Code of Civil Procedure in 2009; the Civil Code amendments of 2005 touched formal notice and default but, as far as I remember, not the limitation articles.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b1",
+        "b37",
+        "b28"
+      ],
+      "note": "The store gives civil-code 308 to 322 in the 1975 wording and cpca in the law-08-09 wording; civil-code 133 is in the law-05-10 wording. The transitional rule on limitation periods (civil-code 7 ¶1 to ¶4, law-05-10 wording) was read and not used: it matters only for periods begun before a change of period."
+    },
+    {
+      "id": "k37",
+      "item": "What is the general limitation period for a civil obligation, and from what day does it run?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "d1",
+        "b1",
+        "b12"
+      ]
+    },
+    {
+      "id": "k38",
+      "item": "Which shorter limitation periods apply (rent, wages, professionals' fees, merchants' supplies, damages for a harmful act)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "d2",
+        "d3",
+        "d4",
+        "d6",
+        "d7",
+        "d8",
+        "b2",
+        "b4",
+        "b6",
+        "b7",
+        "b28"
+      ]
+    },
+    {
+      "id": "k39",
+      "item": "What is the period for compensation for a harmful act, running from knowledge of the harm and of the person liable, and what is the outer limit?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "d2",
+        "b28",
+        "o3"
+      ],
+      "note": "The store gives only the fifteen-year period from the day of the act; no period from knowledge of the harm was found in civil-code 124 to 140."
+    },
+    {
+      "id": "k40",
+      "item": "Is the period a limitation (prescription) or a forfeiture (decheance), and how does each differ in effect?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "d5",
+        "d2",
+        "b29",
+        "b22",
+        "o3"
+      ]
+    },
+    {
+      "id": "k41",
+      "item": "How are days, months and years counted: is the starting day included, is the last day included, and what if the last day is a holiday?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b11",
+        "b27",
+        "b32",
+        "b35",
+        "d5",
+        "o7"
+      ]
+    },
+    {
+      "id": "k42",
+      "item": "Is the period counted in full days (dies a quo and dies ad quem excluded) under the procedure code?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b32",
+        "b33",
+        "b34",
+        "d5"
+      ]
+    },
+    {
+      "id": "k43",
+      "item": "What extends a procedural period for a party living abroad?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b36"
+      ],
+      "note": "404 ¶1 names only opposition, appeal, review and cassation; no deadline of this module is extended."
+    },
+    {
+      "id": "k44",
+      "item": "What interrupts the limitation (claim before a court, seizure, acknowledgment by the debtor), and what is the effect of interruption?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b18",
+        "b19",
+        "b20",
+        "b21"
+      ]
+    },
+    {
+      "id": "k45",
+      "item": "What suspends the limitation (impossibility to act, minority, incapacity, spouses), and what is the effect of suspension?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b15",
+        "b16",
+        "b17"
+      ],
+      "note": "The store speaks of an impediment, a representative and persons without capacity, not of spouses."
+    },
+    {
+      "id": "k46",
+      "item": "After interruption, does a new period start, and of what length?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b20",
+        "b21"
+      ]
+    },
+    {
+      "id": "k47",
+      "item": "Who may raise limitation: the debtor, his creditors, any interested person?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b23",
+        "d1"
+      ]
+    },
+    {
+      "id": "k48",
+      "item": "May the court raise limitation of its own motion?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b23",
+        "b31",
+        "o5"
+      ]
+    },
+    {
+      "id": "k49",
+      "item": "At what stage may limitation be raised, and can it be raised on appeal?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b24",
+        "b30"
+      ]
+    },
+    {
+      "id": "k50",
+      "item": "Can a debtor waive limitation in advance, and after it has run?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b25",
+        "b26"
+      ]
+    },
+    {
+      "id": "k51",
+      "item": "Can the parties agree to change the limitation period?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b25"
+      ]
+    },
+    {
+      "id": "k52",
+      "item": "Does a limitation that has run extinguish the right or only the action; can the debtor pay afterwards and recover?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b22"
+      ],
+      "note": "The obligation is extinguished and a natural obligation remains; the text does not speak of recovering a later payment."
+    },
+    {
+      "id": "k53",
+      "item": "What is the time limit for a labour claim after the non-conciliation record, and what is its sanction?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "d5",
+        "b37"
+      ]
+    },
+    {
+      "id": "k54",
+      "item": "From what date does the limit for the labour claim run: the delivery of the record or another event?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "d5",
+        "b37",
+        "b41",
+        "o4"
+      ]
+    },
+    {
+      "id": "k55",
+      "item": "Are the periods of limitation for wages and other labour claims different from the filing limit?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "d3",
+        "d4",
+        "d5",
+        "o1"
+      ]
+    },
+    {
+      "id": "k56",
+      "item": "Do the rules of limitation apply the same way against the State and public bodies?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "refs": [
+        "b45"
+      ],
+      "note": "No text in the store exempts public bodies from the general rules; the only State-specific limitation found is for taxes and dues (civil-code 311), not a claim of this app."
+    },
+    {
+      "id": "k57",
+      "item": "Is a plea of inadmissibility for expiry of a period of public order, and can it be raised at any stage?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b29",
+        "b30",
+        "b31",
+        "o5"
+      ]
+    },
+    {
+      "id": "k58",
+      "item": "What are the periods for appeal and opposition, and how are they counted?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "The remedy periods belong to the procedure of the remedy, not to filing a claim; the counting rule of the Code (b32 to b35) and the extension abroad (b36) are recorded."
+    },
+    {
+      "id": "k59",
+      "item": "Does a notice or acknowledgement of debt by the debtor interrupt the limitation, and in what form?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b18",
+        "b19",
+        "b21",
+        "o8"
+      ],
+      "note": "An acknowledgment interrupts it, expressly or impliedly; a command to pay interrupts it; the texts say nothing of a bare formal notice."
+    },
+    {
+      "id": "k60",
+      "item": "Does a claim filed before an incompetent court interrupt limitation?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b18"
+      ]
+    },
+    {
+      "id": "k61",
+      "item": "Does a limitation period running against a minor or absent person continue?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b16",
+        "b17"
+      ]
+    },
+    {
+      "id": "k62",
+      "item": "What documents prove the starting date of the period and the interrupting act?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "doc1",
+        "doc2",
+        "doc3"
+      ]
+    },
+    {
+      "id": "k63",
+      "item": "Which claims are not subject to limitation (property rights, status)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "The limitation section speaks only of obligations; ownership and status are not within it."
+    },
+    {
+      "id": "k64",
+      "item": "Does the commercial limitation period differ from the civil one?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "o9",
+        "o13"
+      ],
+      "note": "Searched the Commercial Code entries of the store for a general limitation article; found only the lease articles (198 on lease claims), not a general one. Bills, notes and cheques: open point o13 (verifier)."
+    },
+    {
+      "id": "k65",
+      "item": "What does the lawyer tell the client when the period is close to its end: file at once, which act interrupts?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b18",
+        "d5",
+        "doc2"
+      ]
+    },
+    {
+      "id": "k66",
+      "item": "The store notes on civil-code 3 that the Civil inventory and amendment-chain certification remain incomplete: from which date does the wording apply, and does that affect the calendar rule?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b27",
+        "d1",
+        "d2",
+        "d3",
+        "d4",
+        "d6",
+        "d7",
+        "d8"
+      ],
+      "note": "The store holds only the 1975 wording, with no later one; the note concerns certification, not the wording, and the store marks the entry unverified. The rule is used as printed in the counting of every limitation deadline; an item resting on it carries the mark to check until it is verified."
+    },
+    {
+      "id": "k67",
+      "item": "The store notes on civil-code 133 that its text is a snapshot at the 2026-10-26 cut-off without certified historical bounds: from which date does the wording apply, and does that affect the tort period?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b28",
+        "d2"
+      ],
+      "note": "The store holds only the law-05-10 wording and does not say from which date it applies; for a harmful act before that wording took effect the earlier wording, not in the store, and the transitional rule (civil-code 7 ¶2 and ¶3) would govern. The period is used as printed and d2 only warns; the earlier wording is requested."
+    },
+    {
+      "id": "k68",
+      "item": "The texts that fix the official public holidays and weekly rest days, to which the CPCA counting rule refers.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "o7"
+      ],
+      "note": "Searched the store's codes; no text on public holidays or weekly rest is in it."
+    },
+    {
+      "id": "k69",
+      "item": "Neighbour of the calendar rule: civil-code 2 ¶1 (laws apply only to the future and are repealed only by a later law).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "doesNotApply",
+      "note": "civil-code 2 ¶1 states the non-retroactivity and repeal of laws; it sets no period and no counting rule. The transitional rule on limitation is civil-code 7, noted in k36."
+    },
+    {
+      "id": "k70",
+      "item": "Social-security disputes (social section): is there a prior recourse and a short period to bring the case, outside the labour conciliation record?",
+      "from": [
+        "adversary"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "o10"
+      ],
+      "note": "The store holds cpca 500 ¶7 (social-security disputes belong to the social section) but not law 08-08. The verifier read law 08-08 arts. 4 and 15 on the Official Journal (2008 no. 11, pp. 8 and 9): mandatory prior recourse, then thirty or sixty days. Requested; open point o10 (grade D)."
+    },
+    {
+      "id": "k71",
+      "item": "Actions arising from an insurance contract: a special limitation period in the Civil Code?",
+      "from": [
+        "adversary"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "o12"
+      ],
+      "note": "civil-code 624 is not in the store. The verifier read it on the Official Journal (1975 no. 78, p. 1030): three years from the event, with two later starting days. Requested; open point o12 (grade D)."
+    },
+    {
+      "id": "k72",
+      "item": "Civil action joined to a criminal case: does the criminal procedure code shorten the period for a civil-party claim before the criminal court?",
+      "from": [
+        "adversary"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "o14"
+      ],
+      "note": "The criminal procedure code is not in the store; its article 10 was not found in the Official Journal issue read (2004 no. 71). Requested; open point o14 (grade D)."
+    }
+  ],
+  "examples": [
+    {
+      "id": "ex1",
+      "by": "derivationA",
+      "title": "Ordinary debt, due six years ago, no labour record, no special kind of debt: nothing to report.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "debt_due_date": "2020-03-01",
+        "obligation_is_tort_compensation": "no",
+        "nonconciliation_record": "no",
+        "claim_is_professional_fees": "no",
+        "claim_is_trader_supply_or_hotel": "no",
+        "claim_is_periodic_renewable_right": "no",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "d2",
+            "effect": "none"
+          },
+          {
+            "ref": "d3",
+            "effect": "none"
+          },
+          {
+            "ref": "d4",
+            "effect": "none"
+          },
+          {
+            "ref": "d5",
+            "effect": "none"
+          },
+          {
+            "ref": "d6",
+            "effect": "none"
+          },
+          {
+            "ref": "d7",
+            "effect": "none"
+          },
+          {
+            "ref": "d8",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex2",
+      "by": "derivationA",
+      "title": "Ordinary debt due eighteen years ago: limitation has run, a warning only.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "debt_due_date": "2008-05-10",
+        "obligation_is_tort_compensation": "no",
+        "nonconciliation_record": "no",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex3",
+      "by": "derivationA",
+      "title": "Ordinary debt nine days before the fifteenth anniversary of its due date: inside the band.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "debt_due_date": "2011-11-25",
+        "obligation_is_tort_compensation": "no",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex4",
+      "by": "derivationA",
+      "title": "Labour claim filed two and a half months after the record, recent wages: clean.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2026-09-01",
+        "wages_due_from": "2026-06-30",
+        "obligation_is_tort_compensation": "no",
+        "requests": [
+          "wages",
+          "reinstatement"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d5",
+            "effect": "none"
+          },
+          {
+            "ref": "d3",
+            "effect": "none"
+          },
+          {
+            "ref": "d4",
+            "effect": "none"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "d2",
+            "effect": "none"
+          },
+          {
+            "ref": "d6",
+            "effect": "none"
+          },
+          {
+            "ref": "d7",
+            "effect": "none"
+          },
+          {
+            "ref": "d8",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex5",
+      "by": "derivationA",
+      "title": "Labour claim a year after the record: forfeiture, the clean export is blocked; the oldest wage is over a year old.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2025-11-02",
+        "wages_due_from": "2025-09-30",
+        "obligation_is_tort_compensation": "no",
+        "requests": [
+          "wages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d5",
+            "effect": "blockCleanExport"
+          },
+          {
+            "ref": "d3",
+            "effect": "warn"
+          },
+          {
+            "ref": "d4",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex6",
+      "by": "derivationA",
+      "title": "Same late labour claim, but the forfeiture was lifted by the president's order.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2025-11-02",
+        "forfeiture_lifted_by_order": "yes",
+        "wages_due_from": "2026-03-31",
+        "obligation_is_tort_compensation": "no",
+        "requests": [
+          "wages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d5",
+            "effect": "none"
+          },
+          {
+            "ref": "d3",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex7",
+      "by": "derivationA",
+      "title": "Labour claim filed a day after the six months: inside the band, a warning.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2026-05-14",
+        "wages_due_from": "2026-04-30",
+        "obligation_is_tort_compensation": "no",
+        "requests": [
+          "wages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d5",
+            "effect": "warn"
+          },
+          {
+            "ref": "d3",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex8",
+      "by": "derivationA",
+      "title": "Record drawn up but its delivery date and the wage dates are not known: the rules ask.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "obligation_is_tort_compensation": "no",
+        "requests": [
+          "wages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d5",
+            "effect": "ask"
+          },
+          {
+            "ref": "d3",
+            "effect": "ask"
+          },
+          {
+            "ref": "d4",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "nonconciliation_record_delivered_on",
+          "wages_due_from"
+        ]
+      }
+    },
+    {
+      "id": "ex9",
+      "by": "derivationA",
+      "title": "Nothing known on a payment claim: the rules ask what kind of obligation it is and whether there was a record.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "ask"
+          },
+          {
+            "ref": "d2",
+            "effect": "ask"
+          },
+          {
+            "ref": "d3",
+            "effect": "none"
+          },
+          {
+            "ref": "d4",
+            "effect": "none"
+          },
+          {
+            "ref": "d5",
+            "effect": "ask"
+          },
+          {
+            "ref": "d6",
+            "effect": "ask"
+          },
+          {
+            "ref": "d7",
+            "effect": "ask"
+          },
+          {
+            "ref": "d8",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "obligation_is_tort_compensation",
+          "nonconciliation_record",
+          "claim_is_professional_fees",
+          "claim_is_trader_supply_or_hotel",
+          "claim_is_periodic_renewable_right"
+        ]
+      }
+    },
+    {
+      "id": "ex10",
+      "by": "derivationA",
+      "title": "Compensation for a harmful act four days before fifteen years have passed: a warning.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "obligation_is_tort_compensation": "yes",
+        "harmful_act_date": "2011-11-20",
+        "nonconciliation_record": "no",
+        "requests": [
+          "damages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d2",
+            "effect": "warn"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex11",
+      "by": "derivationA",
+      "title": "Compensation for a recent harmful act: nothing to report.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "obligation_is_tort_compensation": "yes",
+        "harmful_act_date": "2024-02-02",
+        "nonconciliation_record": "no",
+        "requests": [
+          "damages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d2",
+            "effect": "none"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex12",
+      "by": "derivationA",
+      "title": "Compensation for a harmful act whose date is not known: the rule asks.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "obligation_is_tort_compensation": "yes",
+        "nonconciliation_record": "no",
+        "requests": [
+          "damages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d2",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "harmful_act_date"
+        ]
+      }
+    },
+    {
+      "id": "ex13",
+      "by": "derivationA",
+      "title": "Ordinary debt whose due date is not known: the rule asks.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "obligation_is_tort_compensation": "no",
+        "nonconciliation_record": "no",
+        "claim_is_professional_fees": "no",
+        "claim_is_trader_supply_or_hotel": "no",
+        "claim_is_periodic_renewable_right": "no",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "debt_due_date"
+        ]
+      }
+    },
+    {
+      "id": "ex14",
+      "by": "derivationA",
+      "title": "Oldest wage fell due a year and six days ago: the one-year reading warns, the five-year one does not.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "wages_due_from": "2025-11-10",
+        "nonconciliation_record": "no",
+        "obligation_is_tort_compensation": "no",
+        "requests": [
+          "wages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d3",
+            "effect": "warn"
+          },
+          {
+            "ref": "d4",
+            "effect": "none"
+          },
+          {
+            "ref": "d5",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex15",
+      "by": "derivationA",
+      "title": "Oldest wage fell due almost eight years ago: both readings warn.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "wages_due_from": "2019-01-31",
+        "nonconciliation_record": "no",
+        "obligation_is_tort_compensation": "no",
+        "requests": [
+          "wages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d3",
+            "effect": "warn"
+          },
+          {
+            "ref": "d4",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex16",
+      "by": "derivationA",
+      "title": "Labour claim with no record (conciliation not held): the six-month period does not run here.",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "nonconciliation_record": "no",
+        "wages_due_from": "2026-08-31",
+        "obligation_is_tort_compensation": "no",
+        "requests": [
+          "wages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d5",
+            "effect": "none"
+          },
+          {
+            "ref": "d3",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex17",
+      "by": "derivationB",
+      "title": "Labour claim filed far inside the six months.",
+      "petitionDate": "2026-04-10",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2026-03-10",
+        "obligation_is_tort_compensation": "no",
+        "debt_due_date": "2026-01-10",
+        "claim_is_professional_fees": "no",
+        "claim_is_trader_supply_or_hotel": "no",
+        "claim_is_periodic_renewable_right": "no",
+        "requests": [
+          "wages"
+        ],
+        "wages_due_from": "2026-01-01"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d5",
+            "effect": "none"
+          },
+          {
+            "ref": "d3",
+            "effect": "none"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "d2",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex18",
+      "by": "derivationB",
+      "title": "Labour claim a year after delivery of the record: forfeited.",
+      "petitionDate": "2026-04-10",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2025-01-10"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d5",
+            "effect": "blockCleanExport"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex19",
+      "by": "derivationB",
+      "title": "Labour claim four days after the last day: inside the band, a warning.",
+      "petitionDate": "2026-04-25",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2025-10-20"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d5",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex20",
+      "by": "derivationB",
+      "title": "Record delivered, date not given: ask for it.",
+      "petitionDate": "2026-04-10",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "obligation_is_tort_compensation": "no",
+        "debt_due_date": "2026-01-10",
+        "claim_is_professional_fees": "no",
+        "claim_is_trader_supply_or_hotel": "no",
+        "claim_is_periodic_renewable_right": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d5",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "nonconciliation_record_delivered_on"
+        ]
+      }
+    },
+    {
+      "id": "ex21",
+      "by": "derivationB",
+      "title": "No record: the six-month rule does not apply.",
+      "petitionDate": "2026-04-10",
+      "slots": {
+        "nonconciliation_record": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d5",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex22",
+      "by": "derivationB",
+      "title": "Wages claimed from more than a year before: a warning.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "requests": [
+          "wages"
+        ],
+        "wages_due_from": "2024-01-15"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d3",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex23",
+      "by": "derivationB",
+      "title": "Wages due three months ago: inside the year.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "requests": [
+          "wages"
+        ],
+        "wages_due_from": "2025-12-01"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d3",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex24",
+      "by": "derivationB",
+      "title": "Wages due a year and five days before: inside the band.",
+      "petitionDate": "2026-03-15",
+      "slots": {
+        "requests": [
+          "wages"
+        ],
+        "wages_due_from": "2025-03-10"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d3",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex25",
+      "by": "derivationB",
+      "title": "Near miss: an old wage date, but the petition asks for payment, not wages.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "wages_due_from": "2020-01-15"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d3",
+            "effect": "none"
+          },
+          {
+            "ref": "d4",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex26",
+      "by": "derivationB",
+      "title": "Compensation for a harmful act sixteen years ago.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "obligation_is_tort_compensation": "yes",
+        "harmful_act_date": "2010-01-01"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d2",
+            "effect": "warn"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex27",
+      "by": "derivationB",
+      "title": "Compensation for a harmful act three years ago.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "obligation_is_tort_compensation": "yes",
+        "harmful_act_date": "2023-01-01"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d2",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex28",
+      "by": "derivationB",
+      "title": "Professional fees due three years before: past two years.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "obligation_is_tort_compensation": "no",
+        "claim_is_professional_fees": "yes",
+        "debt_due_date": "2023-01-01"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d6",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex29",
+      "by": "derivationB",
+      "title": "Rent arrears six years old.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "obligation_is_tort_compensation": "no",
+        "claim_is_periodic_renewable_right": "yes",
+        "debt_due_date": "2020-01-01"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d8",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex30",
+      "by": "derivationB",
+      "title": "Hotel bill unpaid for two years.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "obligation_is_tort_compensation": "no",
+        "claim_is_trader_supply_or_hotel": "yes",
+        "debt_due_date": "2024-01-01"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d7",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex31",
+      "by": "reconciler",
+      "title": "Labour claim a year after the record, the lawyer says no order lifted the forfeiture: blocked (x24).",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2025-11-02",
+        "forfeiture_lifted_by_order": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d5",
+            "effect": "blockCleanExport"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex32",
+      "by": "reconciler",
+      "title": "Wage claim: the general fifteen-year period gives way to the special wage periods, and the debt's due date is not asked (x15).",
+      "petitionDate": "2026-11-16",
+      "slots": {
+        "wages_due_from": "2026-01-31",
+        "obligation_is_tort_compensation": "no",
+        "nonconciliation_record": "no",
+        "requests": [
+          "wages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "d3",
+            "effect": "none"
+          },
+          {
+            "ref": "d4",
+            "effect": "none"
+          },
+          {
+            "ref": "d6",
+            "effect": "none"
+          },
+          {
+            "ref": "d7",
+            "effect": "none"
+          },
+          {
+            "ref": "d8",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex33",
+      "by": "reconciler",
+      "title": "Professional fees due nine months ago: inside the two years (x13).",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "obligation_is_tort_compensation": "no",
+        "nonconciliation_record": "no",
+        "claim_is_professional_fees": "yes",
+        "claim_is_trader_supply_or_hotel": "no",
+        "claim_is_periodic_renewable_right": "no",
+        "debt_due_date": "2025-06-01",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d6",
+            "effect": "none"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex34",
+      "by": "reconciler",
+      "title": "Restaurant bill due eleven months and three weeks ago: inside the band of the one-year period (x14).",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "obligation_is_tort_compensation": "no",
+        "claim_is_trader_supply_or_hotel": "yes",
+        "debt_due_date": "2025-03-10",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d7",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex35",
+      "by": "reconciler",
+      "title": "Rent arrears four years old: inside the five years; the wage deadlines stay silent (x21, x22).",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "obligation_is_tort_compensation": "no",
+        "nonconciliation_record": "no",
+        "claim_is_professional_fees": "no",
+        "claim_is_trader_supply_or_hotel": "no",
+        "claim_is_periodic_renewable_right": "yes",
+        "debt_due_date": "2022-01-01",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d8",
+            "effect": "none"
+          },
+          {
+            "ref": "d4",
+            "effect": "none"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex36",
+      "by": "reconciler",
+      "title": "Wage claim on the fifth anniversary of a due date of 28 February: the calendar year ends on 28 February (x1, x17).",
+      "petitionDate": "2026-02-28",
+      "slots": {
+        "wages_due_from": "2021-02-28",
+        "obligation_is_tort_compensation": "no",
+        "nonconciliation_record": "no",
+        "requests": [
+          "wages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d4",
+            "effect": "warn"
+          },
+          {
+            "ref": "d3",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex37",
+      "by": "verifier",
+      "title": "Social-security dispute brought after the national prior-recourse committee's decision (adv-1): no non-conciliation record, so d5 and d9 give nothing and d1 is far off; the thirty- or sixty-day period of law 08-08 is carried by open point o10 (grade D), named in d1's message.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "no",
+        "obligation_is_tort_compensation": "no",
+        "claim_is_professional_fees": "no",
+        "claim_is_trader_supply_or_hotel": "no",
+        "claim_is_periodic_renewable_right": "no",
+        "debt_due_date": "2025-12-01",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d5",
+            "effect": "none"
+          },
+          {
+            "ref": "d9",
+            "effect": "none"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex38",
+      "by": "verifier",
+      "title": "Insured person's claim against the insurer, event three years and nine months ago (adv-2): d1 stays far from its last day; the three-year period of civil-code 624 is carried by open point o12 (grade D), named in d1's message.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "no",
+        "obligation_is_tort_compensation": "no",
+        "claim_is_professional_fees": "no",
+        "claim_is_trader_supply_or_hotel": "no",
+        "claim_is_periodic_renewable_right": "no",
+        "debt_due_date": "2022-06-01",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex39",
+      "by": "verifier",
+      "title": "Holder's recourse on an unpaid cheque, presentment period ended fourteen months ago (adv-4): d1 is far off; the six-month period of commercial-code 527 is carried by open point o13 (grade D), named in d1's message.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "no",
+        "obligation_is_tort_compensation": "no",
+        "claim_is_professional_fees": "no",
+        "claim_is_trader_supply_or_hotel": "no",
+        "claim_is_periodic_renewable_right": "no",
+        "debt_due_date": "2025-01-10",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex40",
+      "by": "verifier",
+      "title": "Professional fees due fifteen years and a month ago (atk-1): the special two-year period governs (308 ¶1 'فيما عدا الحالات التى ورد فيها نص خاص'), so d1 is silent and d6 warns.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "no",
+        "obligation_is_tort_compensation": "no",
+        "claim_is_professional_fees": "yes",
+        "debt_due_date": "2011-02-01",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "d6",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex41",
+      "by": "verifier",
+      "title": "Rent arrears due sixteen years ago (sup-47): the five-year period of 309 ¶1 governs, so d1 is silent and d8 warns.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "no",
+        "obligation_is_tort_compensation": "no",
+        "claim_is_periodic_renewable_right": "yes",
+        "debt_due_date": "2010-01-01",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "d8",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex42",
+      "by": "verifier",
+      "title": "Debt due fifteen years less four days ago, owed to a creditor under guardianship (atk-3): d1 warns, and its message now names the suspension of 316 for persons lacking capacity even with a legal representative.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "no",
+        "obligation_is_tort_compensation": "no",
+        "claim_is_professional_fees": "no",
+        "claim_is_trader_supply_or_hotel": "no",
+        "claim_is_periodic_renewable_right": "no",
+        "debt_due_date": "2011-03-05",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex43",
+      "by": "verifier",
+      "title": "Wages due thirteen and a half months ago, the worker absent without a legal representative (atk-4): d3 warns, and its message now names the suspension of 316 for short periods.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "no",
+        "obligation_is_tort_compensation": "no",
+        "wages_due_from": "2025-01-15",
+        "requests": [
+          "wages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d3",
+            "effect": "warn"
+          },
+          {
+            "ref": "d4",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex44",
+      "by": "verifier",
+      "title": "Revenue owed by a possessor in bad faith, due seven years ago (atk-6): the periodic-right question now leaves it out (309 ¶2), so d8 is silent and d1's fifteen years govern.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "no",
+        "obligation_is_tort_compensation": "no",
+        "claim_is_professional_fees": "no",
+        "claim_is_trader_supply_or_hotel": "no",
+        "claim_is_periodic_renewable_right": "no",
+        "debt_due_date": "2019-01-01",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d8",
+            "effect": "none"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex45",
+      "by": "verifier",
+      "title": "Hotel bill due two years ago, acknowledged in a written instrument (atk-7): which rights 313 ¶2 raises to fifteen years is the reading of o2, so d7 still warns on the protective reading and its message now names the written instrument; d1 is silent.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "no",
+        "obligation_is_tort_compensation": "no",
+        "claim_is_trader_supply_or_hotel": "yes",
+        "debt_due_date": "2024-01-01",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d7",
+            "effect": "warn"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex46",
+      "by": "verifier",
+      "title": "Engineer's fee due nine days short of two years ago, services completed earlier in a continuing engagement (atk-8): d6 is now interpretive (313 ¶1, o2) and warns; its message sends the lawyer to the completion date.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "no",
+        "obligation_is_tort_compensation": "no",
+        "claim_is_professional_fees": "yes",
+        "debt_due_date": "2024-03-10",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d6",
+            "effect": "warn"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex47",
+      "by": "verifier",
+      "title": "Labour claim a year after the record, the plaintiff invokes force majeure and asks the president to lift the forfeiture (atk-9): the order cannot exist before filing (cpca 322 ¶2), so d5 does not block and d9 warns.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2025-03-02",
+        "forfeiture_force_majeure_invoked": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d5",
+            "effect": "none"
+          },
+          {
+            "ref": "d9",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex48",
+      "by": "verifier",
+      "title": "Defendant absent from two conciliation meetings: the non-conciliation record is drawn up and handed to the plaintiff at the meeting, which starts the six months (atk-10, labour-disputes 30 ¶1 and ¶2); filed two and a half months later, in time.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2025-12-15",
+        "forfeiture_force_majeure_invoked": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d5",
+            "effect": "none"
+          },
+          {
+            "ref": "d9",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex49",
+      "by": "verifier",
+      "title": "Defendant absent from two conciliation meetings, record handed at the meeting fourteen months before filing, no force majeure invoked (sup-59): the six months ran from that meeting; forfeiture, the clean export is blocked.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2025-01-10",
+        "forfeiture_force_majeure_invoked": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d5",
+            "effect": "blockCleanExport"
+          },
+          {
+            "ref": "d9",
+            "effect": "none"
+          }
+        ]
+      }
+    }
+  ]
+}

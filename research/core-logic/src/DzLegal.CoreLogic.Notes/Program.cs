@@ -8,6 +8,8 @@ using DzLegal.CoreLogic.Notes;
 //   notes guide-test --compare <Sonnet's reply> <Opus's reply> [--date yyyy-mm-dd]
 //   notes cells --prepare --out <file>
 //   notes cells --write-table <Sonnet's reply> <Opus's reply>
+//   notes export --purpose train|tune|measure --sets <a,b> --out <folder> [--size <n> --subset-seed <n>]
+//                [--exclude-writer <family>] [--pack <slot>] [--allow-pilot] [--mirror-run <n>] [--work <folder>]
 // Every command takes --repo <folder> (the worktree); without it the tool finds the repository above it.
 const string Usage = "usage: notes guide-items --prepare|--ingest … | guide-test --prepare|--compare … | cells --prepare|--write-table … [--repo <folder>]";
 
@@ -108,10 +110,42 @@ try
             return 0;
         }
 
+        case ("export", "--purpose"):
+        {
+            // The loader's only door for the training code: notes export --purpose <p> --sets a,b --out <folder>
+            var purpose = Enum.Parse<LoadPurpose>(positional.FirstOrDefault() ?? throw new ArgumentException("--purpose <train|tune|measure>"), ignoreCase: true);
+            var work = options.GetValueOrDefault("--work") ?? @"C:\Users\TheShadow\dz-core-research\notes-work";
+            var loader = new NotesLoader(Path.Combine(work, "notes"), Path.Combine(files.Notes, "TEST-IDS.txt"),
+                Path.Combine(files.CoreLogic, "results", "mirror", "RUNS.md"));
+            var result = loader.Load(new LoadRequest
+            {
+                Purpose = purpose,
+                Sets = Need("--sets").Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries),
+                ExcludeWriter = options.GetValueOrDefault("--exclude-writer"),
+                Pack = options.GetValueOrDefault("--pack"),
+                AllowPilot = positional.Contains("--allow-pilot"),
+                MirrorRun = options.TryGetValue("--mirror-run", out var run) ? int.Parse(run, CultureInfo.InvariantCulture) : null,
+                Size = options.TryGetValue("--size", out var size) ? int.Parse(size, CultureInfo.InvariantCulture) : null,
+                SubsetSeed = options.TryGetValue("--subset-seed", out var seed) ? int.Parse(seed, CultureInfo.InvariantCulture) : 7,
+            });
+            var output = Need("--out");
+            NotesLoader.Guard(output);
+            Directory.CreateDirectory(output);
+            NotesJson.Write(Path.Combine(output, "notes.jsonl"), string.Concat(result.Notes.Select(note => note.ToJsonString(NotesJson.Compact) + "\n")));
+            NotesJson.Write(Path.Combine(output, "manifest.json"), result.Manifest().ToJsonString(NotesJson.Options) + "\n");
+            Console.WriteLine($"{result.Notes.Count} notes for {purpose.ToString().ToLowerInvariant()} -> {output}");
+            return 0;
+        }
+
         default:
             Console.Error.WriteLine(Usage);
             return 2;
     }
+}
+catch (LoaderRefusalException refusal)
+{
+    Console.Error.WriteLine($"notes {args[0]}: REFUSED {refusal.Message}");
+    return 4;
 }
 catch (Exception exception) when (exception is IOException or InvalidDataException or ArgumentException or KeyNotFoundException
                                        or UnauthorizedAccessException or System.Text.Json.JsonException or FormatException)

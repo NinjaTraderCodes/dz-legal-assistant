@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>reader</AssemblyName>
+    <RootNamespace>DzLegal.CoreLogic.Reader.Tool</RootNamespace>
+    <Description>The reader tool (specs/reader.md): reader ids (the .NET piece ids training uses) and reader encode (the cache of stored encoder outputs).</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DzLegal.CoreLogic.Reader\DzLegal.CoreLogic.Reader.csproj" />
+  </ItemGroup>
+</Project>

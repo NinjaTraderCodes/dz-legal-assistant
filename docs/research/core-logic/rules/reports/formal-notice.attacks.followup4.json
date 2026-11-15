@@ -1,0 +1,16 @@
+{
+ "unit": "formal-notice",
+ "attacks": [
+  {
+   "id": "owner-date-compare",
+   "who": "owner",
+   "target": "p1, p2, p3, n12",
+   "kind": "wrongCondition",
+   "claim": "Owner's decision of 15 November 2026 (point 3): with the new date comparison ({\"slot\": s, \"beforeSlot\": t} / {\"slot\": s, \"afterSlot\": t}, t may be the reserved petition_date), a known notice_date must decide by itself whether the notice came before the petition's day, and notice_before_petition_day must be asked only when notice_date is unknown (case bc1: bailiff notice 2026-05-10, petition 2026-06-15, rescission: 'done').",
+   "verdict": "fixed",
+   "verifierQuote": "«لا يستحق التعويض إلا بعد اعذار المدين ما لم يوجد نص مخالف لذلك.» (civil-code 179 ¶1); «جاز للمتعاقد الآخر بعد اعذاره المدين أن يطالب بتنفيذ العقد أو فسخه» (civil-code 119 ¶1); «يجبر المدين بعد اعذاره طبقا للمادتين 180 و181 على تنفيذ التزامه تنفيذا عينيا» (civil-code 164 ¶1). The texts make the claim come «بعد» (after) the notice, so the question the record asks is a comparison of two dates; when the notice date is known, the date answers it (strictly earlier day: before; same day or later: not before, the open reading o9 kept as it was).",
+   "quoteRef": "civil-code 179 ¶1; civil-code 119 ¶1; civil-code 164 ¶1 (store text views)",
+   "change": "Conditions only. p1, p2, p3 requiredWhen: the part {notice_before_petition_day is yes} inside the bailiff branch became any[ all[notice_date known, notice_date beforeSlot petition_date], all[notice_date not known, notice_before_petition_day is yes] ]. n12 when: {notice_before_petition_day is no} became any[ all[notice_date known, notice_date afterSlot petition_date], all[notice_date not known, notice_before_petition_day is no] ]. The known/not-known guards make a known date decide alone (a contrary answer to notice_before_petition_day is then ignored) and keep notice_before_petition_day as the only question when the date is unknown (no question about notice_date is added). notice_date added to the slots lists of p1, p2, p3 and n12. Effects, interpretive flags, notes, messages, the owner's rule on 'done' and the o9 reading are unchanged (a notice dated the petition's day still is not counted as done, and n12 still warns). Examples: exV20 and exV25 (notice dated the petition's day, notice_before_petition_day not given) now expect p1/p2 none, n12 warn, no question, because the date answers what they asked; titles updated to say so. Added exV34 (bc1 without the answer: p2 none, n12 none, nothing asked), exV35 (bailiff notice, date unknown: p1, p2 and n12 ask notice_before_petition_day) and exV36 (payment, notice dated after the petition: p3 none, n12 warns). rules check: OK; rules examples: 60 cases, 0 with differences. Not changed, as the owner limited the change to conditions: the 'why' of proposed slot notice_before_petition_day and the checklist note on notice_date still say the rule language cannot compare the two dates; that sentence is now out of date."
+  }
+ ]
+}

@@ -769,6 +769,7 @@
    "slots": [
     "notice_served",
     "notice_means",
+    "notice_date",
     "notice_before_petition_day",
     "requests",
     "default_on_due_date_agreed",
@@ -800,8 +801,32 @@
           "is": "bailiff"
          },
          {
-          "slot": "notice_before_petition_day",
-          "is": "yes"
+          "any": [
+           {
+            "all": [
+             {
+              "slot": "notice_date",
+              "known": true
+             },
+             {
+              "slot": "notice_date",
+              "beforeSlot": "petition_date"
+             }
+            ]
+           },
+           {
+            "all": [
+             {
+              "slot": "notice_date",
+              "known": false
+             },
+             {
+              "slot": "notice_before_petition_day",
+              "is": "yes"
+             }
+            ]
+           }
+          ]
          }
         ]
        }
@@ -950,6 +975,7 @@
    "slots": [
     "notice_served",
     "notice_means",
+    "notice_date",
     "notice_before_petition_day",
     "requests",
     "default_on_due_date_agreed",
@@ -980,8 +1006,32 @@
           "is": "bailiff"
          },
          {
-          "slot": "notice_before_petition_day",
-          "is": "yes"
+          "any": [
+           {
+            "all": [
+             {
+              "slot": "notice_date",
+              "known": true
+             },
+             {
+              "slot": "notice_date",
+              "beforeSlot": "petition_date"
+             }
+            ]
+           },
+           {
+            "all": [
+             {
+              "slot": "notice_date",
+              "known": false
+             },
+             {
+              "slot": "notice_before_petition_day",
+              "is": "yes"
+             }
+            ]
+           }
+          ]
          }
         ]
        }
@@ -1115,6 +1165,7 @@
    "slots": [
     "notice_served",
     "notice_means",
+    "notice_date",
     "notice_before_petition_day",
     "requests",
     "default_on_due_date_agreed",
@@ -1162,8 +1213,32 @@
           "is": "bailiff"
          },
          {
-          "slot": "notice_before_petition_day",
-          "is": "yes"
+          "any": [
+           {
+            "all": [
+             {
+              "slot": "notice_date",
+              "known": true
+             },
+             {
+              "slot": "notice_date",
+              "beforeSlot": "petition_date"
+             }
+            ]
+           },
+           {
+            "all": [
+             {
+              "slot": "notice_date",
+              "known": false
+             },
+             {
+              "slot": "notice_before_petition_day",
+              "is": "yes"
+             }
+            ]
+           }
+          ]
          }
         ]
        }
@@ -1825,14 +1900,39 @@
       "is": "yes"
      },
      {
-      "slot": "notice_before_petition_day",
-      "is": "no"
+      "any": [
+       {
+        "all": [
+         {
+          "slot": "notice_date",
+          "known": true
+         },
+         {
+          "slot": "notice_date",
+          "afterSlot": "petition_date"
+         }
+        ]
+       },
+       {
+        "all": [
+         {
+          "slot": "notice_date",
+          "known": false
+         },
+         {
+          "slot": "notice_before_petition_day",
+          "is": "no"
+         }
+        ]
+       }
+      ]
      }
     ]
    },
    "slots": [
     "requests",
     "notice_served",
+    "notice_date",
     "notice_before_petition_day"
    ],
    "message": {
@@ -4715,7 +4815,7 @@
   {
    "id": "exV20",
    "by": "verifier",
-   "title": "bc8: damages, bailiff notice dated the petition day itself, the lawyer not yet asked: n12 asks whether the notice came before the petition's day (o9), and p1 asks the same instead of counting the notice as done (owner-done).",
+   "title": "bc8: damages, bailiff notice dated the petition day itself, the lawyer not asked whether it came before: the notice date now answers it (owner-date-compare), so n12 warns (o9), p1 does not count the notice as done (owner-done), and nothing is asked.",
    "petitionDate": "2026-06-15",
    "slots": {
     "requests": [
@@ -4730,7 +4830,7 @@
     "findings": [
      {
       "ref": "p1",
-      "effect": "ask"
+      "effect": "none"
      },
      {
       "ref": "n1",
@@ -4738,12 +4838,10 @@
      },
      {
       "ref": "n12",
-      "effect": "ask"
+      "effect": "warn"
      }
     ],
-    "questions": [
-     "notice_before_petition_day"
-    ]
+    "questions": []
    }
   },
   {
@@ -4903,7 +5001,7 @@
   {
    "id": "exV25",
    "by": "verifier",
-   "title": "owner-done, open (date unknown): damages and rescission, bailiff notice, whether it came before the petition's day not known: p1 and p2 ask, as n12 does.",
+   "title": "owner-done, open (on the day): damages and rescission, bailiff notice dated the petition's day, the lawyer not asked whether it came before: the notice date now answers it (owner-date-compare), so p1 and p2 do not count it as done, n12 warns, and nothing is asked.",
    "petitionDate": "2026-03-10",
    "slots": {
     "requests": [
@@ -4920,24 +5018,22 @@
     "findings": [
      {
       "ref": "p1",
-      "effect": "ask"
+      "effect": "none"
      },
      {
       "ref": "p2",
-      "effect": "ask"
+      "effect": "none"
      },
      {
       "ref": "n12",
-      "effect": "ask"
+      "effect": "warn"
      },
      {
       "ref": "n1",
       "effect": "none"
      }
     ],
-    "questions": [
-     "notice_before_petition_day"
-    ]
+    "questions": []
    }
   },
   {
@@ -5178,6 +5274,103 @@
      {
       "ref": "n12",
       "effect": "none"
+     }
+    ],
+    "questions": []
+   }
+  },
+  {
+   "id": "exV34",
+   "by": "verifier",
+   "title": "owner-date-compare, bc1 unanswered: rescission, bailiff notice dated 10 May, petition of 15 June, the lawyer not asked whether it came before the petition's day: the notice date answers it, so p2 counts the notice as done, n12 is silent, and nothing is asked.",
+   "petitionDate": "2026-06-15",
+   "slots": {
+    "requests": [
+     "rescission"
+    ],
+    "notice_served": "yes",
+    "notice_means": "bailiff",
+    "notice_date": "2026-05-10",
+    "contract_sets_notice_terms": "no",
+    "commercial_lease": "no"
+   },
+   "expect": {
+    "findings": [
+     {
+      "ref": "p2",
+      "effect": "none"
+     },
+     {
+      "ref": "n12",
+      "effect": "none"
+     }
+    ],
+    "questions": []
+   }
+  },
+  {
+   "id": "exV35",
+   "by": "verifier",
+   "title": "owner-date-compare, date unknown: damages and rescission, bailiff notice whose date is not given: p1 and p2 ask whether it came before the petition's day, as n12 does, and do not say done (owner-done).",
+   "petitionDate": "2026-03-10",
+   "slots": {
+    "requests": [
+     "damages",
+     "rescission"
+    ],
+    "notice_served": "yes",
+    "notice_means": "bailiff",
+    "contract_sets_notice_terms": "no",
+    "commercial_lease": "no"
+   },
+   "expect": {
+    "findings": [
+     {
+      "ref": "p1",
+      "effect": "ask"
+     },
+     {
+      "ref": "p2",
+      "effect": "ask"
+     },
+     {
+      "ref": "n12",
+      "effect": "ask"
+     },
+     {
+      "ref": "n1",
+      "effect": "none"
+     }
+    ],
+    "questions": [
+     "notice_before_petition_day"
+    ]
+   }
+  },
+  {
+   "id": "exV36",
+   "by": "verifier",
+   "title": "owner-date-compare, after the petition: payment, bailiff notice dated after the petition, the lawyer not asked whether it came before: the notice date answers it, so p3 does not count it as done and n12 warns; nothing is asked.",
+   "petitionDate": "2026-06-15",
+   "slots": {
+    "requests": [
+     "payment"
+    ],
+    "notice_served": "yes",
+    "notice_means": "bailiff",
+    "notice_date": "2026-06-20",
+    "contract_sets_notice_terms": "no",
+    "commercial_lease": "no"
+   },
+   "expect": {
+    "findings": [
+     {
+      "ref": "p3",
+      "effect": "none"
+     },
+     {
+      "ref": "n12",
+      "effect": "warn"
      }
     ],
     "questions": []

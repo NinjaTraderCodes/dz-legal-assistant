@@ -1,0 +1,167 @@
+{
+ "unit": "formal-notice",
+ "record": "docs/research/core-logic/rules/final-candidates/quoted/formal-notice.json",
+ "corrected": "docs/research/core-logic/rules/final-candidates/formal-notice.json",
+ "input": "docs/research/core-logic/rules/reports/formal-notice.attacks.followup3-input.json",
+ "role": "verifier",
+ "model": "claude-opus-5-5",
+ "date": "2026-11-15",
+ "searched": {
+  "store": "Store text views: civil-code 119, 120, 164, 179, 180, 181, 183, 392, 507 مكرر, 507 مكرر 1; commercial-code 177; cpca 306, 307, 308, 310, 311. The earlier registers (formal-notice.attacks.json, .followup.json, .followup2.json) for bc7, bc8, owner-done and sup-48. The reconciler's report, rows x54 and x63 and its notes on bc7 and bc8 (bc1 is not disputed there).",
+  "officialJournal": [],
+  "supremeCourt": "Not searched: no entry rests on a decision.",
+  "notFound": "Nothing: every entry rests on texts the store holds, so nothing was fetched and no request was added."
+ },
+ "counts": {
+  "fixed": 4,
+  "refuted": 4,
+  "open": 3,
+  "total": 11
+ },
+ "attacks": [
+  {
+   "id": "bc-bc1",
+   "who": "boundaryCase",
+   "target": "p2",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc1 (Notice served by a bailiff before a claim for rescission; petition 2026-06-15; slots {\"notice_served\": \"yes\", \"notice_date\": \"2026-05-10\", \"notice_means\": \"bailiff\", \"requests\": [\"rescission\"]}) expects «stepDone» about [civil-code 119 ¶1], because: 119 ¶1: the other party may demand execution or rescission 'بعد اعذاره المدين'. A notice was served before filing, by a bailiff, which is the plain form of 'انذار' (180 ¶1). The runner says: p2: declared ask, the outcome StepDone needs none (p2: requiredWhen unknown, asks notice_before_petition_day -> ask; grade D -> ask, to check)",
+   "verdict": "refuted",
+   "verifierQuote": "«جاز للمتعاقد الآخر بعد اعذاره المدين أن يطالب بتنفيذ العقد أو فسخه» ؛ «يكون اعذار المدين بانذاره، أو بما يقوم مقام الانذار»",
+   "quoteRef": "[civil-code 119 ¶1]; [civil-code 180 ¶1] (store)",
+   "reasoning": "The text gives what the record gives: a warning («بانذاره») served before the claim («بعد اعذاره») completes the step. p2 says exactly that: bailiff and before the petition's day -> the step is done (exV22, and exV33 for this very case). The case's dates (10 May, petition 15 June) answer the question p2 asks, but the rule language cannot compare a slot date with the petition date (DERIVER-GUIDE section 4: «before» takes a fixed date), so the record asks the lawyer instead of reading the dates; once he answers yes, p2 gives the case's outcome. The difference is the evaluator's missing date comparison (reconciler's question 5), not a misreading of 119 ¶1; counting the notice as done without that answer would break the owner's rule of 14 November 2026.",
+   "change": "None to the rule. exV33 records the case answered (notice_before_petition_day = yes -> p2 none). The boundary-case file was not edited."
+  },
+  {
+   "id": "uncertain-bc7",
+   "who": "owner",
+   "target": "p1",
+   "kind": "wrongEffect",
+   "claim": "Boundary case bc7 is uncertain: the verifier set it aside, and Codex, reading the texts blind, gave «stepMissing» (the case writer expected «stepMissing»): Civil-code 179 ¶1 requires notice before damages become due: service on 2026-06-20 followed the petition dated 2026-06-15, contradicting the answer 'yes'. Bailiff service is recognized by cpca 406 ¶1, but does not establish notice before filing; article 179 does not itself prescribe automatic inadmissibility of the petition. Deciding words: «لا يستحق التعويض إلا بعد اعذار المدين ما لم يوجد نص مخالف لذلك. يقصد بالتبليغ الرسمي، التبليغ الذي يتم بموجب محضر يعده المحضر القضائي.». Keep both readings in an open point and make the item warn; do not settle it either way.",
+   "verdict": "open",
+   "verifierQuote": "«لا يستحق التعويض إلا بعد اعذار المدين ما لم يوجد نص مخالف لذلك.» ؛ «جاز للمتعاقد الآخر بعد اعذاره المدين أن يطالب بتنفيذ العقد أو فسخه»",
+   "quoteRef": "[civil-code 179 ¶1]; [civil-code 119 ¶1] (store)",
+   "reasoning": "179 ¶1 ties the entitlement to compensation to a prior notice but does not name the filing; 119 ¶1 puts the claim after the notice but concerns performance or rescission, which a damages-only claim does not ask. No text in the store says whether a notice served after the petition, for damages alone, suffices; both readings stand (o9, grade C), as the owner asks. The protective reading is the rule in effect: p1 is interpretive and does not count such a notice as done (owner-done), and n12, which cites 179 ¶1 and 119 ¶1, warns when the notice was not served before the petition's day and asks when that is not known (the rule language cannot compare the two dates). The item never blocks. Codex's reading (notice must precede the claim even for damages) rested on 179 ¶1, but o9's first reading named only b2.",
+   "change": "o9: the first reading now covers a claim for damages alone and rests on b2 and b1 (179 ¶1); its why says that for damages alone with a notice after the petition neither text settles it, both readings stay and the app warns. exV32 records the case answered (notice_before_petition_day = no -> p1 none, n12 warn). The boundary-case file was not edited."
+  },
+  {
+   "id": "sup-7",
+   "who": "support",
+   "target": "p2",
+   "kind": "partlySupported",
+   "claim": "Before a claim in which the petition asks for rescission and (notice served is unknown or notice served is no or (notice means is bailiff and notice before petition day is yes)), the debtor must first be put on notice (formal notice), except when: Agreement that the debtor is in default on the due date (not the same as an agreed rescission clause); Performance impossible or useless through the debtor's act; The debtor declared in writing he will not perform; The plaintiff is the seller of movables with a term for price and delivery, passed unpaid, and nothing was agreed to the contrary: rescission in the seller's favour without prior warning. | partly: The TEXT does not state the notice-status test involving unknown service, no service, or bailiff service before the petition day. Article 119 states the notice-before-rescission rule for bilateral contracts upon non-performance, rather than every rescission petition.",
+   "verdict": "refuted",
+   "verifierQuote": "«في العقود الملزمة للجانبين، إذا لم يوف أحد المتعاقدين بالتزامه جاز للمتعاقد الآخر بعد اعذاره المدين أن يطالب بتنفيذ العقد أو فسخه» ؛ «وهذا الشرط لا يعفي من الاعذار»",
+   "quoteRef": "[civil-code 119 ¶1]; [civil-code 120 ¶1] (store)",
+   "reasoning": "The notice-status test is not a rule the record draws from 119: it is how the step decides 'done' (a bailiff's warning before the petition's day, 180 ¶1 «بانذاره» and «بعد اعذار»), set by the owner's rule of 14 November 2026 and stated in p2's interpretiveNote; when it is false the step gives no finding. The rescission p2 tests is the rescission for non-performance of 119 ¶1, and p2's message says so («في العقد الملزم للجانبين»); the other rescissions are kept apart by their own items (121 in n7, 480 in n4, 553 in n5, 392 as an exemption), and 120 ¶1 keeps the notice even under an agreed rescission clause. p2 is interpretive and only warns.",
+   "change": "None."
+  },
+  {
+   "id": "sup-18",
+   "who": "support",
+   "target": "b25",
+   "kind": "partlySupported",
+   "claim": "A creditor of a sum of money due, fixed in amount and proved in writing may ask the court president for an order to pay by petition. | partly: The TEXT permits a petition for a qualifying money debt but does not expressly identify the requested relief as an order to pay.",
+   "verdict": "fixed",
+   "verifierQuote": "«خلافا للقواعد المقررة في رفع الدعاوى، يجوز للدائن بدين من النقود، مستحق وحال الأداء ومعين المقدار وثابت بالكتابة، ... تقديم طلب في شكل عريضة على نسختين، إلى رئيس المحكمة التي يوجد في دائرة اختصاصها موطن المدين» ؛ «إذا تبين أن الدين ثابت، أمر المدين بالوفاء بمبلغ الدين والمصاريف، وإلا رفض الطلب.»",
+   "quoteRef": "[cpca 306 ¶1]; [cpca 307 ¶2] (store, law 08-09)",
+   "reasoning": "306 ¶1 allows the petition but does not name the relief; 307 ¶2 does (the president orders the debtor to pay), and 308 ¶1 calls it «أمرالأداء». b25 said more than its paragraph, and left out «حال الأداء», the departure from the rules on filing and the court of the debtor's domicile.",
+   "change": "b25 says rewritten to 306 ¶1's own content. New statement b37 (cpca 307 ¶2, procedure): the president orders the debtor to pay when the debt is proved. n6 basis adds b37 and its message names articles 306 and 307; k31 refs add b37 and its note says where the order to pay comes from.",
+   "examples": [
+    "exV28"
+   ]
+  },
+  {
+   "id": "sup-25-f3",
+   "who": "support",
+   "target": "p3",
+   "kind": "partlySupported",
+   "claim": "Before a claim in which (the petition asks for payment or the petition asks for delivery or the petition asks for restitution or the petition asks for eviction) and (notice served is unknown or notice served is no or (notice means is bailiff and notice before petition day is yes)), the debtor must first be put on notice (formal notice), except when: Agreement that the debtor is in default on the due date; Performance impossible or useless through the debtor's act; Compensation for a harmful act; Return of a thing known stolen or knowingly received without right; The debtor declared in writing he will not perform. | partly: The TEXT does not state the listed petition categories or the notice-status test involving unknown service, no service, or bailiff service before the petition day. It does not establish a universal pre-filing requirement for all payment, delivery, restitution and eviction claims; Articles 119 and 164 concern bilateral contractual non-performance and possible performance in kind, respectively.",
+   "verdict": "open",
+   "verifierQuote": "«جاز للمتعاقد الآخر بعد اعذاره المدين أن يطالب بتنفيذ العقد أو فسخه» ؛ «يجبر المدين بعد اعذاره طبقا للمادتين 180 و181 على تنفيذ التزامه تنفيذا عينيا، متى كان ذلك ممكنا.»",
+   "quoteRef": "[civil-code 119 ¶1]; [civil-code 164 ¶1] (store)",
+   "reasoning": "The check is right that neither text names payment, delivery, restitution or eviction, nor says that every such claim needs a prior notice. Neither text excludes them either: 119 ¶1 covers a claim «بتنفيذ العقد» and 164 ¶1 performance in kind after notice. The texts allow both readings, which the record already keeps: p3 is interpretive, its note says the request kinds are a reading, o6 (grade C) holds the readings (including no notice after a lease's term), and the protective reading is the rule (ask, then warn; never block). The notice-status test is the owner's 'done' rule, as under sup-7.",
+   "change": "None: p3 is already interpretive, with o6 and the protective reading as the rule."
+  },
+  {
+   "id": "sup-27",
+   "who": "support",
+   "target": "b30",
+   "kind": "partlySupported",
+   "claim": "Leases made under the earlier legislation stayed under it for ten (10) years from publication; natural persons aged sixty (60) at publication who had a right to stay under the earlier legislation keep it until their death. | partly: The lifetime right to remain expressly concerns residential premises: «الأمكنة المعدة للسكن». The STATEMENT omits that condition.",
+   "verdict": "fixed",
+   "verifierQuote": "«غير أن الأشخاص الطبيعيين البالغين ستين (60) سنة كاملة عند نشر هذا القانون والذين لهم الحق في البقاء في الأمكنة المعدة للسكن، وفقا للتشريع السابق، يبقون يتمتعون بهذا الحق إلى حين وفاتهم.»",
+   "quoteRef": "[civil-code 507 مكرر ¶2] (law 07-05, store)",
+   "reasoning": "The paragraph limits the lifetime right to premises used as a dwelling, and to persons of a full sixty years; b30 dropped both.",
+   "change": "b30 says now names the right to stay «في الأمكنة المعدة للسكن» and a full sixty (60) years.",
+   "examples": [
+    "exV29"
+   ]
+  },
+  {
+   "id": "sup-29-f3",
+   "who": "support",
+   "target": "b13",
+   "kind": "partlySupported",
+   "claim": "Damages fixed in advance by the parties are subject to the rules on compensation, notice and its exemptions. | partly: The TEXT applies Articles 176–181 but does not provide their contents or identify them as including notice and its exemptions.",
+   "verdict": "refuted",
+   "verifierQuote": "«وتطبق فى هذه الحالة أحكام المواد 176 الى 181.» ؛ «لا يستحق التعويض إلا بعد اعذار المدين» ؛ «يكون اعذار المدين بانذاره» ؛ «لا ضرورة لاعذار المدين فى الحالات الآتية :»",
+   "quoteRef": "[civil-code 183 ¶1]; [civil-code 179 ¶1]; [civil-code 180 ¶1]; [civil-code 181 ¶1] (store)",
+   "reasoning": "183 ¶1 applies articles 176 to 181 to agreed damages, and in the store those articles are the rules on compensation (176), on notice (179, 180) and on its exemptions (181). b13's says names what the referred articles contain without numbers, as the guide requires; the referred texts are cited in the record as b14, b1, b5 and b6 to b10.",
+   "change": "None."
+  },
+  {
+   "id": "sup-34",
+   "who": "support",
+   "target": "b4",
+   "kind": "partlySupported",
+   "claim": "The debtor is compelled to perform in kind, where possible, after being put on notice under the rules on notice and its exemptions. | partly: The TEXT requires notice in accordance with Articles 180 and 181 but does not state any notice exemption or identify the referenced articles as containing exemptions.",
+   "verdict": "refuted",
+   "verifierQuote": "«يجبر المدين بعد اعذاره طبقا للمادتين 180 و181 على تنفيذ التزامه تنفيذا عينيا، متى كان ذلك ممكنا.» ؛ «لا ضرورة لاعذار المدين فى الحالات الآتية :»",
+   "quoteRef": "[civil-code 164 ¶1]; [civil-code 181 ¶1] (store)",
+   "reasoning": "164 ¶1 makes the notice one given «طبقا للمادتين 180 و181», and 181 is the article of the exemptions («لا ضرورة لاعذار المدين فى الحالات الآتية»), while 180 sets the form. 'Under the rules on notice and its exemptions' is what that reference says; b6 to b10 cite 181 itself.",
+   "change": "None."
+  },
+  {
+   "id": "sup-44-f3",
+   "who": "support",
+   "target": "b23",
+   "kind": "partlySupported",
+   "claim": "In refusing to renew a commercial lease without indemnity, a breach consisting of non-performance of an obligation or of ceasing to run the business without serious and legitimate reason can be invoked only if it continued or was repeated for more than a month after the lessor's warning to stop it; the warning must be made by an extrajudicial act stating the reason and reciting the paragraph, failing which it is void. | partly: The TEXT does not state that this concerns refusing renewal of a commercial lease without indemnity. It references Article 172 without providing its contents.",
+   "verdict": "fixed",
+   "verifierQuote": "«يجوز للمؤجر أن يرفض تجديد الايجار دون أن يلزم بسداد أى تعويض، اذا برهن عن سبب خطير ومشروع تجاه المستأجر المخلى المحل .» ؛ «غير أنه اذا كان الامر يتعلق اما بعدم تنفيذ التزام واما بالتوقف عن استغلال المحل التجارى دون سبب جدي ومشروع ...»",
+   "quoteRef": "[commercial-code 177 ¶1]; [commercial-code 177 ¶2] (store)",
+   "reasoning": "¶2 opens with «غير أنه»: it is an exception to ¶1, and the refusal of renewal without indemnity that b23 states comes from ¶1, which b23 did not cite. Citing ¶1 with ¶2 makes the statement rest on its words, as b7 to b10 cite 181 ¶1 with their item. The reference to 172 is not part of what b23 states (who holds the right to renewal belongs to commercial-lease-regimes; k78).",
+   "change": "b23 cite paragraphs [2] -> [1, 2]; says kept.",
+   "examples": [
+    "exV30"
+   ]
+  },
+  {
+   "id": "sup-49",
+   "who": "support",
+   "target": "p2",
+   "kind": "partlySupported",
+   "claim": "This prior step is not required when: Agreement that the debtor is in default on the due date (not the same as an agreed rescission clause). | partly: The TEXT supports default on the due date without further procedure, but does not discuss an agreed rescission clause or state the parenthetical distinction from such a clause.",
+   "verdict": "fixed",
+   "verifierQuote": "«كما يجوز أن يكون مترتبا على اتفاق يقضي بأن يكون المدين معذرا بمجرد حلول الاجل دون حاجة الى أى اجراء آخر» ؛ «يجوز الاتفاق على أن يعتبر العقد مفسوخا بحكم القانون ... وهذا الشرط لا يعفي من الاعذار»",
+   "quoteRef": "[civil-code 180 ¶1]; [civil-code 120 ¶1] (store)",
+   "reasoning": "The exemption itself rests on 180 ¶1 (b5); the parenthetical distinction comes from 120 ¶1 (b12), which the exemption did not cite.",
+   "change": "p2 notRequiredWhen[0] (default_on_due_date_agreed) basis [b5] -> [b5, b12]; the note is kept.",
+   "examples": [
+    "exV31"
+   ]
+  },
+  {
+   "id": "sup-65",
+   "who": "support",
+   "target": "p1",
+   "kind": "partlySupported",
+   "claim": "Before a claim in which the petition asks for damages and (notice served is unknown or notice served is no or (notice means is bailiff and notice before petition day is yes)), the debtor must first be put on notice (formal notice), except when: Agreement that the debtor is in default on the due date; Performance impossible or useless through the debtor's act; Compensation for a harmful act; Return of a thing known stolen or knowingly received without right; The debtor declared in writing he will not perform. | partly: The TEXT makes notice a condition of entitlement to compensation but does not expressly require notice before filing the petition or state the notice-status/bailiff/before-petition-day test. Article 179 also allows exceptions wherever a contrary text exists, beyond the specifically listed cases.",
+   "verdict": "open",
+   "verifierQuote": "«لا يستحق التعويض إلا بعد اعذار المدين ما لم يوجد نص مخالف لذلك.»",
+   "quoteRef": "[civil-code 179 ¶1] (store)",
+   "reasoning": "As sup-48 in the first register: 179 ¶1 ties entitlement, not filing, to the notice, and whether it is a step before filing is the reading kept in o5 and o9 (grade C); p1 is interpretive, warns and never blocks. «ما لم يوجد نص مخالف» cannot be listed in full: p1's message names it, and the contrary texts found are listed (392 as an exemption; 186, 502 and the insurance texts as o4, o10, o12; k1, k50). The notice-status test is the owner's 'done' rule, as under sup-7.",
+   "change": "None: p1 is already interpretive with o5, o9 and the protective reading as the rule."
+  }
+ ]
+}

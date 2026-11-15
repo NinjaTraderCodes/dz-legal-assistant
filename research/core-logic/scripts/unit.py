@@ -927,6 +927,94 @@ def done(u: Unit, stage: str, agent: str, ledger: str = LEDGER, session: str | N
     return 0
 
 
+# --- the Codex stages (7c, 8b): through the background queue -------------------------------------------------------
+def _support_batch(u: Unit) -> str:
+    """A fresh batch name for each support check of a unit: the key of an earlier one is kept."""
+    keys = os.path.join(WORK, "support-keys")
+    batch, n = f"step1-{u.id}", 1
+    while os.path.isfile(os.path.join(keys, f"{batch}.json")):
+        n += 1
+        batch = f"step1-{u.id}-r{n}"
+    return batch
+
+
+def codex(u: Unit, queue=None, ledger: str = LEDGER, start: bool = True) -> list[str]:
+    """Adds the unit's due Codex calls to the background queue, writes their ledger lines, starts `queue run` in the
+    background if it is not running, and returns at once. `status` shows the calls by their outputs."""
+    import codex_run
+    import prompts
+    queue = queue or codex_run.Queue()
+    rows = dict(status(u))
+    added = []
+    commit = _git("rev-parse", "--short", "HEAD")
+    os.makedirs(u.run, exist_ok=True)
+    if rows["7c"].startswith("due"):
+        record = u.candidate_q if os.path.isfile(u.candidate_q) else u.reconciled_q
+        batch = _support_batch(u)
+        pairs = os.path.join(u.run, "support-pairs.txt")
+        code, out = py("stage7.py", "pairs", record, "--batch", batch, "--out", pairs, "--unit", u.id)
+        say("pairs", code, out)
+        if code:
+            raise RuntimeError("stage7.py pairs failed")
+        role = CODEX_STAGES["7c"]
+        prompt = os.path.join(u.run, f"{role}.prompt.md")
+        _, body = prompts.template(role)
+        with open(prompt, "w", encoding="utf-8", newline="\n") as f:
+            f.write(prompts.fill(body, prompts.values_for(role, u.id)))
+        answer = os.path.join(u.run, f"support-answer-{batch}.json")
+        after = [[PY, "-X", "utf8", os.path.join(SCRIPTS, "stage7.py"), "split", answer, "--batch", batch]
+                 + (["--root", u.rules] if u.root else [])]
+        rid = _run_id(ledger)
+        row = {"id": rid, "kind": "codex", "role": role, "unit": u.id, "stage": "7c", "prompt": f"{role}.md@{commit}",
+               "started": now(), "status": "running", "outputs": []}
+        queue.add(role, prompt, os.path.join(SCHEMAS, "support.schema.json"), answer, call_id=rid,
+                  item=f"{u.id}:support", after=after, ledger=row, batch=f"step1-{u.id}")
+        _write_ledger(row, ledger)
+        added.append(f"7c {rid}")
+    send, _ = second_view_due(u) if os.path.isfile(u.register(0)) else ([], [])
+    if send:
+        role = CODEX_STAGES["8b"]
+        results = _results(os.path.join(u.cases, "boundaryFinal.json"))
+        prompt = os.path.join(u.run, f"{role}-{'-'.join(send)}.prompt.md")
+        _, body = prompts.template(role)
+        with open(prompt, "w", encoding="utf-8", newline="\n") as f:
+            f.write(prompts.fill(body, prompts.values_for(role, u.id, cases=send, run=results)))
+        answer = os.path.join(u.run, f"boundary-view-{'-'.join(send)}.json")
+        actual = {r["caseId"]: r.get("actual") for r in results if r["caseId"] in send}
+        after = [[PY, "-X", "utf8", os.path.join(SCRIPTS, "unit.py"), *(["--root", u.root] if u.root else []),
+                  "store-view", u.id, answer, "--actual", json.dumps(actual)]]
+        rid = _run_id(ledger)
+        row = {"id": rid, "kind": "codex", "role": role, "unit": u.id, "stage": "8b", "cases": send,
+               "prompt": f"{role}.md@{commit}", "started": now(), "status": "running", "outputs": []}
+        queue.add(role, prompt, os.path.join(SCHEMAS, "boundary-view.schema.json"), answer, call_id=rid,
+                  item=f"{u.id}:view:{'-'.join(send)}", after=after, ledger=row, batch=f"step1-{u.id}")
+        _write_ledger(row, ledger)
+        added.append(f"8b {rid} ({', '.join(send)})")
+    if added and start:
+        print("queue run:", "started" if queue.start() else "already running")
+    return added
+
+
+def store_view(u: Unit, answer_path: str, actual: dict) -> str:
+    """Stage 8b's answer, merged into reports\\<unit>.boundary-view.json with both words that were in dispute. An answer
+    that is not one of the two words offered for its case is refused: the call is queued again once."""
+    answer = load(answer_path)
+    cases = {c["id"]: c for c in load(u.boundary)}
+    for c in answer["cases"]:
+        offered = {cases[c["id"]]["expect"]["outcome"], actual.get(c["id"])}
+        if c["answer"] not in offered:
+            raise ValueError(f"{c['id']}: «{c['answer']}» is not one of the words offered ({', '.join(sorted(offered))})")
+    path = u.r("boundary-view.json")
+    view = load(path) if os.path.isfile(path) else {"unit": u.id, "cases": [], "writerExpected": {}, "codex": {"cases": []}}
+    for c in answer["cases"]:
+        view["cases"] = [x for x in view["cases"] if x != c["id"]] + [c["id"]]
+        view["writerExpected"][c["id"]] = cases[c["id"]]["expect"]["outcome"]
+        view.setdefault("recordActual", {})[c["id"]] = actual.get(c["id"])
+        view["codex"]["cases"] = [x for x in view["codex"]["cases"] if x["id"] != c["id"]] + [c]
+    save(path, view)
+    return path
+
+
 # --- slots (stage 9) ------------------------------------------------------------------------------------------------
 def slots(u: Unit, slots_path: str | None = None) -> list[str]:
     """Appends the final candidate's proposed slots that slots.json lacks, keeping the file's own format."""
@@ -1157,6 +1245,10 @@ def main(argv=None) -> int:
     sub.add_parser("tool", help="publish the rules tool and make it current")
     for name in ("status", "next", "tracking", "codex"):
         sub.add_parser(name).add_argument("unit")
+    sv = sub.add_parser("store-view", help="stage 8b's after-step (the background queue runs it)")
+    sv.add_argument("unit")
+    sv.add_argument("answer")
+    sv.add_argument("--actual", required=True, help="JSON: case id -> the record's outcome word")
     d = sub.add_parser("done")
     d.add_argument("unit")
     d.add_argument("stage", choices=sorted(AGENTS))
@@ -1189,8 +1281,10 @@ def main(argv=None) -> int:
         elif a.cmd == "done":
             return done(Unit(a.unit, a.root), a.stage, a.agent, session=a.session, changed=a.changed)
         elif a.cmd == "codex":
-            print("unit.py codex arrives with the background queue (retool item 12)", file=sys.stderr)
-            return 2
+            added = codex(Unit(a.unit, a.root))
+            print("queued:", "; ".join(added) if added else "nothing due")
+        elif a.cmd == "store-view":
+            print(store_view(Unit(a.unit, a.root), a.answer, json.loads(a.actual)))
         elif a.cmd == "verify-input":
             path = verify_input(Unit(a.unit, a.root), a.followup)
             print(path, len(load(path)["attacks"]), "entries")

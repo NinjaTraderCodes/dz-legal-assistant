@@ -254,3 +254,46 @@ def test_a_case_codex_reads_as_the_writer_did_becomes_uncertain(root):
         "codex": {"cases": [{"id": "bc3", "answer": "ask", "why": "w", "decidingWords": "d"},
                             {"id": "bc7", "answer": "stepMissing", "why": "w", "decidingWords": "d"}]}})
     assert [(e["id"], e["target"]) for e in unit.uncertain_entries(u)] == [("uncertain-bc7", "p1")]
+
+
+# --- unit.py codex (stages 7c and 8b through the background queue) -----------------------------------------------------
+class FakeQueue:
+    def __init__(self):
+        self.added, self.started = [], 0
+
+    def add(self, role, prompt, schema, out, **kw):
+        self.added.append(dict(kw, role=role, prompt=prompt, schema=schema, out=out))
+        return self.added[-1]
+
+    def start(self):
+        self.started += 1
+        return True
+
+
+def test_codex_queues_the_second_view_with_its_after_step_and_writes_its_ledger_line(tmp_path, monkeypatch):
+    u = unit.Unit("formal-notice")
+    if unit.second_view_due(u)[0] != ["bc7"]:
+        pytest.skip("formal-notice's bc7 is no longer due for a second view")
+    u.run = str(tmp_path / "run")  # the filled prompt goes here, not into the working folder
+    ledger, q = tmp_path / "ledger.jsonl", FakeQueue()
+    added = unit.codex(u, queue=q, ledger=str(ledger))
+    assert added and added[0].startswith("8b ") and q.started == 1
+    call = q.added[0]
+    assert call["role"] == "boundary-second-view-codex" and call["item"] == "formal-notice:view:bc7"
+    assert call["after"][0][-5:-2] == ["store-view", "formal-notice", call["out"]]
+    text = open(call["prompt"], encoding="utf-8").read()
+    assert "**bc7**" in text and "{{" not in text
+    row = unit.ledger_rows(str(ledger))[call["call_id"]]
+    assert row["status"] == "running" and row["stage"] == "8b" and row["cases"] == ["bc7"]
+
+
+def test_store_view_keeps_both_words_and_refuses_a_word_not_offered(root):
+    u = through_stage_4(root)
+    answer = root / "answer.json"
+    dump(answer, {"cases": [{"id": "bc1", "answer": "inTime", "why": "w", "decidingWords": "d"}]})
+    with pytest.raises(ValueError):
+        unit.store_view(u, str(answer), {"bc1": "ask"})
+    dump(answer, {"cases": [{"id": "bc1", "answer": "ask", "why": "w", "decidingWords": "d"}]})
+    view = load(unit.store_view(u, str(answer), {"bc1": "ask"}))
+    assert view["cases"] == ["bc1"] and view["writerExpected"] == {"bc1": "stepMissing"}
+    assert view["recordActual"] == {"bc1": "ask"} and view["codex"]["cases"][0]["answer"] == "ask"

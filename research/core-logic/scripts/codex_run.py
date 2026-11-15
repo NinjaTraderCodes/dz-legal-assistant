@@ -7,6 +7,13 @@ call for tool use. A usage-limit refusal is recognised apart and stops the batch
 
     python codex_run.py probe1        # a one-word answer under a schema: must be accepted
     python codex_run.py probe2        # asked to read a canary file: must be rejected for tool use
+    python codex_run.py queue add <role> --prompt <f> --schema <f> --out <f> [--image <f> ...] [--id <call id>]
+    python codex_run.py queue run     # the background queue (role 2): one call at a time, in order
+    python codex_run.py queue status
+    python codex_run.py pool --queue <calls file> --writers <2..4>   # the writer pool (role 1)
+
+Each call runs in its own empty scratch folder, <work>\\codex-scratch\\<role>\\<call id>, removed afterwards: two calls
+running at once never share one.
 """
 from __future__ import annotations
 
@@ -153,7 +160,7 @@ def call(prompt: str, role: str, batch: str, call_id: str, schema_path: str, ima
          provenance: str | None = None, template: str = "", template_version: str = "", _probe: bool = False) -> dict:
     if not _probe:
         gate_open()
-    scratch = os.path.join(SCRATCH, role)
+    scratch = os.path.join(SCRATCH, role, call_id)
     os.makedirs(scratch, exist_ok=True)
     if os.listdir(scratch):
         raise RuntimeError(f"the scratch folder is not empty: {scratch}")
@@ -189,6 +196,7 @@ def call(prompt: str, role: str, batch: str, call_id: str, schema_path: str, ima
         for name in leftovers:
             path = os.path.join(scratch, name)
             shutil.rmtree(path) if os.path.isdir(path) else os.remove(path)
+    shutil.rmtree(scratch, ignore_errors=True)
     if result["status"] != ACCEPTED and os.path.exists(last_file):
         # Nothing from a discarded call is ever used, not even part of its output: its last message is removed. The
         # event log stays for the record and is read only to classify the call (and, for the probes, to show it).
@@ -222,6 +230,252 @@ class Batch:
         self.failures_in_a_row = 0 if result["status"] == ACCEPTED else self.failures_in_a_row + 1
         if self.failures_in_a_row >= 2:
             self.stopped, self.why = True, f"two failed calls in a row ({result.get('reason')})"
+
+
+# --- the background queue (role 2) and the writer pool (role 1): specs/codex-calls.md -------------------------------
+QUEUE_DIR = os.path.join(WORK, "codex-queue")
+NOTES_PROVENANCE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "docs", "research",
+                                "core-logic", "notes", "provenance", "codex-calls.jsonl")
+POOL_DIR = os.path.join(LOGS, "write")
+PY = r"C:\Users\TheShadow\AppData\Local\Programs\Python\Python312\python.exe"
+
+
+def pid_alive(pid: int) -> bool:
+    """Whether a process lives, without signalling it (os.kill on Windows would terminate it)."""
+    if pid <= 0:
+        return False
+    if os.name == "nt":
+        import ctypes
+        handle = ctypes.windll.kernel32.OpenProcess(0x1000, False, pid)  # PROCESS_QUERY_LIMITED_INFORMATION
+        if not handle:
+            return False
+        code = ctypes.c_ulong()
+        ok = ctypes.windll.kernel32.GetExitCodeProcess(handle, ctypes.byref(code))
+        ctypes.windll.kernel32.CloseHandle(handle)
+        return bool(ok) and code.value == 259  # STILL_ACTIVE
+    try:
+        os.kill(pid, 0)
+        return True
+    except OSError:
+        return False
+
+
+def lock_alive(path: str) -> bool:
+    try:
+        with open(path, encoding="utf-8") as f:
+            return pid_alive(int(f.read().strip() or 0))
+    except (OSError, ValueError):
+        return False
+
+
+def _now() -> str:
+    return dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
+
+
+class Queue:
+    """<work>\\codex-queue\\queue.jsonl: one line per call with its state (waiting, running, accepted, rejected,
+    refused, failed); run.lock holds the process id of `queue run`."""
+
+    def __init__(self, folder: str = QUEUE_DIR):
+        self.folder = folder
+        self.path = os.path.join(folder, "queue.jsonl")
+        self.lock = os.path.join(folder, "run.lock")
+
+    def read(self) -> list[dict]:
+        if not os.path.isfile(self.path):
+            return []
+        with open(self.path, encoding="utf-8") as f:
+            return [json.loads(x) for x in f if x.strip()]
+
+    def write(self, rows: list[dict]) -> None:
+        os.makedirs(self.folder, exist_ok=True)
+        tmp = self.path + ".tmp"
+        with open(tmp, "w", encoding="utf-8", newline="\n") as f:
+            for r in rows:
+                f.write(json.dumps(r, ensure_ascii=False) + "\n")
+        os.replace(tmp, self.path)
+
+    def add(self, role: str, prompt: str, schema: str, out: str, images: list[str] | None = None,
+            call_id: str | None = None, item: str | None = None, after: list[list[str]] | None = None,
+            ledger: dict | None = None, batch: str | None = None) -> dict:
+        """`item` names what the call is about (a unit's support check, a page): a rejected item is queued once more,
+        never a third time (the one rule of a rejected call)."""
+        rows = self.read()
+        if item:
+            mine = [r for r in rows if r.get("item") == item]
+            if any(r["state"] in ("waiting", "running") for r in mine):
+                raise RuntimeError(f"{item} is already in the queue")
+            if sum(r["state"] == "rejected" for r in mine) >= 2:
+                raise RuntimeError(f"{item} was rejected twice: set aside, report it; never a third call")
+        row = {"id": call_id or f"q-{len(rows) + 1:04d}", "role": role, "prompt": prompt, "schema": schema, "out": out,
+               "images": images or [], "item": item, "after": after or [], "ledger": ledger, "batch": batch or role,
+               "state": "waiting", "added": _now()}
+        if any(r["id"] == row["id"] for r in rows):
+            raise RuntimeError(f"call id {row['id']} is already in the queue")
+        self.write(rows + [row])
+        return row
+
+    def set(self, call_id: str, **changes) -> None:
+        rows = self.read()
+        for r in rows:
+            if r["id"] == call_id:
+                r.update(changes)
+        self.write(rows)
+
+    def running(self) -> bool:
+        return lock_alive(self.lock)
+
+    def start(self) -> bool:
+        """Starts `queue run` detached unless it already runs. Returns whether it was started now."""
+        if self.running():
+            return False
+        flags = 0x00000008 | 0x00000200 if os.name == "nt" else 0  # DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP
+        os.makedirs(self.folder, exist_ok=True)
+        log = open(os.path.join(self.folder, "run.log"), "a", encoding="utf-8")
+        subprocess.Popen([PY, "-X", "utf8", os.path.abspath(__file__), "queue", "run"], creationflags=flags,
+                         stdout=log, stderr=log, stdin=subprocess.DEVNULL, close_fds=True, env=clean_env.clean_env())
+        return True
+
+    def run(self, call_fn=None, ledger_path: str | None = None) -> str:
+        """One call at a time, in the order added. Stops on a refusal, on two failed calls in a row, or when the gate
+        refuses (the day changed, the CLI changed): running calls finish, nothing new starts, waiting calls stay."""
+        call_fn = call_fn or call
+        os.makedirs(self.folder, exist_ok=True)
+        if self.running():
+            return "already running"
+        with open(self.lock, "w", encoding="utf-8") as f:
+            f.write(str(os.getpid()))
+        b = Batch()
+        try:
+            while True:
+                waiting = [r for r in self.read() if r["state"] == "waiting"]
+                if not waiting:
+                    return "empty"
+                row = waiting[0]
+                try:
+                    gate_open()
+                except Gate as e:
+                    return f"gate: {e}"
+                self.set(row["id"], state="running", started=_now())
+                with open(row["prompt"], encoding="utf-8") as f:
+                    prompt = f.read()
+                r = call_fn(prompt, row["role"], row["batch"], row["id"], row["schema"], images=row["images"] or None,
+                            provenance=os.path.join(WORK, "runs", "step1", "codex-calls.jsonl"),
+                            template=f"{row['role']}.md")
+                state = {ACCEPTED: "accepted", REJECTED: "rejected", REFUSED: "refused"}.get(r["status"], "failed")
+                if state == "refused":  # the call did not happen: it waits for the next window, as it was
+                    self.set(row["id"], state="waiting", refusedAt=_now(), reason=r.get("reason"))
+                else:
+                    if state == "accepted":
+                        os.makedirs(os.path.dirname(row["out"]), exist_ok=True)
+                        with open(row["out"], "w", encoding="utf-8", newline="\n") as f:
+                            f.write(json.dumps(r["answer"], ensure_ascii=False, indent=1) + "\n")
+                        for argv in row["after"]:
+                            done = clean_env.run(argv, capture_output=True)
+                            if done.returncode:  # an answer the driver refuses (a word not offered): not used
+                                state = "rejected"
+                                r["reason"] = "refusedByDriver: " + done.stdout.decode("utf-8", "replace")[-300:] +                                     done.stderr.decode("utf-8", "replace")[-300:]
+                                os.remove(row["out"])
+                                break
+                    self.set(row["id"], state=state, ended=_now(), reason=r.get("reason"), usage=r.get("usage"))
+                if row.get("ledger"):
+                    line = dict(row["ledger"], ended=_now(), usage=r.get("usage"), reason=r.get("reason"),
+                                status={"accepted": "done", "refused": "refused"}.get(state, state),
+                                outputs=[row["out"]] if state == "accepted" else [])
+                    with open(ledger_path or os.path.join(WORK, "ledger", "runs.jsonl"), "a", encoding="utf-8",
+                              newline="\n") as f:
+                        f.write(json.dumps(line, ensure_ascii=False) + "\n")
+                b.record(r)
+                if b.stopped:
+                    return f"stopped: {b.why}"
+        finally:
+            try:
+                os.remove(self.lock)
+            except OSError:
+                pass
+
+
+def pool(calls_file: str, writers: int, call_fn=None, log_dir: str = POOL_DIR) -> dict:
+    """The writer pool (role 1): `writers` calls at once from a calls file written by `notes write` (one JSON line per
+    call). A call already in the pool's logs is not run again: a rejected call's scenarios go back through the notes
+    tool, as a new call. Two rejections in a row stop one writer; a refusal or a closed gate stops new calls."""
+    import threading
+    if not 2 <= writers <= 4:
+        raise ValueError("the pool runs 2, 3 or 4 writers")
+    call_fn = call_fn or call
+    os.makedirs(log_dir, exist_ok=True)
+    lock_path = os.path.join(log_dir, "pool.lock")
+    if lock_alive(lock_path):
+        raise RuntimeError("a pool is already running")
+    with open(lock_path, "w", encoding="utf-8") as f:
+        f.write(str(os.getpid()))
+    log_path = os.path.join(log_dir, f"pool-{dt.date.today().isoformat()}.jsonl")
+    seen = set()
+    for name in os.listdir(log_dir):
+        if name.startswith("pool-") and name.endswith(".jsonl"):
+            with open(os.path.join(log_dir, name), encoding="utf-8") as f:
+                seen |= {json.loads(x)["call"] for x in f if x.strip()}
+    with open(calls_file, encoding="utf-8") as f:
+        todo = [json.loads(x) for x in f if x.strip()]
+    todo = [c for c in todo if c["call"] not in seen]
+    guard, state = threading.Lock(), {"stop": None, "stopped": []}
+
+    def take():
+        with guard:
+            if state["stop"] or not todo:
+                return None
+            return todo.pop(0)
+
+    def writer(n: int):
+        rejected_in_a_row = 0
+        while True:
+            c = take()
+            if c is None:
+                return
+            try:
+                gate_open()
+            except Gate as e:
+                with guard:
+                    state["stop"] = state["stop"] or f"gate: {e}"
+                    todo.insert(0, c)
+                return
+            started = _now()
+            with open(c["prompt"], encoding="utf-8") as f:
+                prompt = f.read()
+            r = call_fn(prompt, "write", c.get("set", "write"), c["call"], c["schema"],
+                        provenance=NOTES_PROVENANCE, template="notes-write.md")
+            kind = {ACCEPTED: "accepted", REFUSED: "refused"}.get(r["status"]) or \
+                ("rejectedToolUse" if r.get("reason") == "toolUse" else "rejectedOther")
+            if kind == "accepted":
+                os.makedirs(os.path.dirname(c["out"]), exist_ok=True)
+                with open(c["out"], "w", encoding="utf-8", newline="\n") as f:
+                    f.write(json.dumps(r["answer"], ensure_ascii=False, indent=1) + "\n")
+            with guard:
+                if kind != "refused":  # a refused call did not happen: it stays for the next pool run
+                    with open(log_path, "a", encoding="utf-8", newline="\n") as f:
+                        f.write(json.dumps({"call": c["call"], "writer": n, "start": started, "end": _now(),
+                                            "result": kind}) + "\n")
+                else:
+                    state["stop"] = state["stop"] or "usage limit"
+                    return
+            rejected_in_a_row = rejected_in_a_row + 1 if kind.startswith("rejected") else 0
+            if rejected_in_a_row >= 2:
+                with guard:
+                    state["stopped"].append(n)
+                return
+
+    threads = [threading.Thread(target=writer, args=(n,), name=f"writer-{n}") for n in range(1, writers + 1)]
+    try:
+        for th in threads:
+            th.start()
+        for th in threads:
+            th.join()
+    finally:
+        try:
+            os.remove(lock_path)
+        except OSError:
+            pass
+    return {"stop": state["stop"], "writersStopped": state["stopped"], "left": len(todo)}
 
 
 PROBE_SCHEMA = {"type": "object", "additionalProperties": False, "required": ["word"], "properties": {"word": {"type": "string"}}}
@@ -259,4 +513,31 @@ if __name__ == "__main__":
     for key in ("OPENROUTER_API_KEY", "GOOGLE_API_KEY"):
         os.environ.pop(key, None)
     sys.stdout.reconfigure(encoding="utf-8")
-    sys.exit(_probe(1 if sys.argv[1:] == ["probe1"] else 2) if sys.argv[1:] in (["probe1"], ["probe2"]) else 2)
+    if sys.argv[1:] in (["probe1"], ["probe2"]):
+        sys.exit(_probe(1 if sys.argv[1:] == ["probe1"] else 2))
+    import argparse
+    ap = argparse.ArgumentParser(prog="codex_run")
+    sp = ap.add_subparsers(dest="cmd", required=True)
+    qa = sp.add_parser("queue")
+    qa.add_argument("action", choices=["add", "run", "status"])
+    qa.add_argument("role", nargs="?")
+    for name in ("prompt", "schema", "out", "id", "item"):
+        qa.add_argument(f"--{name}")
+    qa.add_argument("--image", action="append", default=[])
+    pa = sp.add_parser("pool")
+    pa.add_argument("--queue", required=True)
+    pa.add_argument("--writers", type=int, required=True)
+    args = ap.parse_args()
+    if args.cmd == "pool":
+        print(json.dumps(pool(args.queue, args.writers)))
+        sys.exit(0)
+    q = Queue()
+    if args.action == "add":
+        print(json.dumps(q.add(args.role, args.prompt, args.schema, args.out, args.image, args.id, args.item)))
+    elif args.action == "run":
+        print(q.run())
+    else:
+        print("queue run:", "running" if q.running() else "not running")
+        for r in q.read():
+            print(f"{r['id']:<12} {r['state']:<9} {r['role']:<28} {r.get('item') or ''} {r.get('reason') or ''}")
+    sys.exit(0)

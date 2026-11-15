@@ -119,6 +119,13 @@ The owner is the product owner and developer. A reviewer (another Claude) writes
 10. **The laptop** writes and filters notes every night on mains, and by day whenever the owner says it is free.
 11. **Process.** Light checks after each commit, the full CI before every push; one driver for a unit's stages; the owner's questions bundled per batch of units.
 
+### 15 November 2026, at the start of phase 0
+
+1. **What a Claude model may write:** "you, a Claude model, may write what the training notes are made from (the sampler, the style cards, the prompts, the labelling guide): that is ordinary software work, and the text the reader trains on is written by Codex or a local model".
+2. **What may change the generation:** "only findings on Codex-written or locally written notes may change the writer prompt, the style cards or the sampler."
+3. **The budget** of section 9 (about 375 Opus, 550 Sonnet, 520 Codex calls, 17 laptop nights) is accepted as the working budget. "More than 8 filter nights still comes to me at the pilot."
+4. **A filled prompt's paths:** "prefer refilling it by the filling script with the correct paths; if it must be a hand edit, record it in the ledger with the exact before and after."
+
 **The owner watches usage.** Before any fan-out of agents or Codex calls, say how many runs it is (section 9 has the budget). Prefer the lean way when two ways serve the purpose equally.
 
 ## 3. Hard rules
@@ -725,7 +732,7 @@ Honest gaps, so that you do not take silence for a decision:
 6. **The module list** is a plan (section 6).
 7. **What v3 can prove** is limited by its size.
 8. **OpenAI's terms were not read** (section 2). The owner decided on the owner's own reading.
-9. **What a Claude model writes that the notes are made from** (the sampler's code, the style cards, the English seed lines, the prompts, the guide, the cells table, the fixed Arabic lines for the local writers). The planner reads the owner's decision as allowing these, since none is a training note; the owner has not ruled on it ([notes/TERMS.md](notes/TERMS.md)).
-10. **What may change the writer prompt, the style cards and the sampler:** only findings on notes written by Codex or a local model. That is the planner's reading of the owner's tuning rule, applied one step back from the reader.
+9. **What a Claude model writes that the notes are made from** (the sampler's code, the style cards, the English seed lines, the prompts, the guide, the cells table, the fixed Arabic lines for the local writers): **settled by the owner on 15 November 2026**, allowed as ordinary software work ([notes/TERMS.md](notes/TERMS.md)).
+10. **What may change the writer prompt, the style cards and the sampler:** only findings on notes written by Codex or a local model (**the owner, 15 November 2026**; [notes/TERMS.md](notes/TERMS.md)).
 11. **Whether a v3 relabeller peeks** cannot be known (section 5b, point 5).
 12. **This revision was checked on the night of 14 November** by cold readers and critics ([reports/handbook-check-2.md](reports/handbook-check-2.md)). Its phases A to E have never been run, and **the fixes made after that check were not read cold again**. The first unit through the driver, and the pilot, are their real test.

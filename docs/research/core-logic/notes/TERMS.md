@@ -52,7 +52,15 @@ No Claude model writes a training note. But the executor is a Claude model, and 
 - the cells table of the scheme (two Claude models decide which combinations are drawn);
 - the fixed Arabic lines that render a scenario for the local writers, and the Arabic of step 5's templates.
 
-None of these is a training note: the reader is trained on Arabic text written by Codex or by a local model, with labels made by code. **This is the planner's reading of the owner's decision, not a point the owner ruled on.** If the owner reads Anthropic's clause more widely, these inputs would have to be written otherwise, and the owner should say so before the pilot.
+None of these is a training note: the reader is trained on Arabic text written by Codex or by a local model, with labels made by code.
+
+**The owner's decisions of 15 November 2026** (they settle the two points the planner had left open):
+
+> (a) "you, a Claude model, may write what the training notes are made from (the sampler, the style cards, the prompts, the labelling guide): that is ordinary software work, and the text the reader trains on is written by Codex or a local model;"
+
+> (b) "only findings on Codex-written or locally written notes may change the writer prompt, the style cards or the sampler."
+
+So a finding on a Sonnet-written note (the Sonnet halves of dev and of the challenge set, the mirror set) is reported and changes none of those three. A defect of the labelling guide is fixed whatever note showed it: the guide defines the labels of every set; it is not one of the three.
 
 ## How the rule is enforced
 

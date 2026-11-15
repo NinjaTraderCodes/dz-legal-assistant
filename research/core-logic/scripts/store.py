@@ -323,6 +323,7 @@ class Builder:
             text_sha = sha256_text("\n".join(e["paragraphs"]))
             readings = self.readings_for(e["code"], e["article"], e["version"], text_sha)
             e["verified"], e["verifiedBy"] = self.verify(e, readings, e["_checker"])
+            e["proof"] = proof_of(e)
             e["readings"] = len(readings)
             e.update(self.ledger_fields(e))
             e["textSha256"] = text_sha
@@ -357,6 +358,20 @@ def build(out: str = DEFAULT_OUT, inputs: Inputs | None = None) -> dict:
     with open(out, "w", encoding="utf-8", newline="\n") as f:
         f.write(data)
     return {"path": out, "sha256": sha256_text(data), "entries": len(entries)}
+
+
+# The proof label of a verified text (specs/article-store.md, "The proof label"; owner, 14 November 2026).
+PROOF = {"libraryProof": "mechanical", "libraryProofAndCorpus": "mechanical", "libraryProofAndReread": "mechanical",
+         "corpusAndReread": "twoFamilies", "corpusAndTwoReadings": "twoFamilies", "ojPageReread": "twoFamilies",
+         "libraryAndCodexReread": "twoFamilies", "twoFamilies": "twoFamilies", "corpusChecked": "oneFamily"}
+
+
+def proof_of(entry: dict | None) -> str | None:
+    """mechanical, twoFamilies or oneFamily for a verified entry; None for an entry that is not verified. An entry may
+    carry its own `proof` (a delta wording settled against the Codex reading is oneFamily: article-store.md)."""
+    if not entry or not entry.get("verified"):
+        return None
+    return entry.get("proof") or PROOF.get(entry.get("verifiedBy"))
 
 
 class Store:

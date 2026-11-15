@@ -176,11 +176,25 @@ def test_compare_c_holds_a_missing_cite_against_c_only_inside_the_texts_it_was_g
     assert rc.compare_c(c, a, b, given={unit})["attacks"] != []
 
 
+ALL_PASSED = {"status": {k: "passed" for k in rc.KIND_SORTS}}
+
+
+def clean_case():
+    clean = FakeStore([entry("503", STORE.get("cpca", "503")["paragraphs"], clean=True, reason=None),
+                       entry("504", STORE.get("cpca", "504")["paragraphs"], clean=True, reason=None)])
+    q, _ = rc.quote_record(record(), clean)
+    idmap = [{"kind": "deadline", "a": "d1", "b": "dd", "reconciled": None},
+             {"kind": "statement", "a": "b1", "b": "s1", "reconciled": None},
+             {"kind": "statement", "a": "b2", "b": "s2", "reconciled": None}]
+    return q, clean, idmap
+
+
 def test_grade_follows_the_table():
     q, _ = rc.quote_record(record(), STORE)
     final, report = rc.grade_record(q, STORE, disputes=[], triaged={"cpca"})
     g = {row["item"]: row for row in report["items"]}
-    assert g["d1"]["grade"] == "B" and g["d1"]["reasons"] == ["singleDerivation", "notAttacked", "scanNotRun"]
+    assert g["d1"]["grade"] == "B" and g["d1"]["reasons"] == ["singleDerivation", "notAttacked", "scanNotRun",
+                                                              "plantedNotRun"]
     assert final["examples"][0]["expect"]["findings"][0]["shownEffect"] == "warn"
     assert final["stage"] == "final"
     # all six conditions hold: A, and the block stays
@@ -190,7 +204,8 @@ def test_grade_follows_the_table():
     idmap = [{"kind": "deadline", "a": "d1", "b": "dd", "reconciled": None},
              {"kind": "statement", "a": "b1", "b": "s1", "reconciled": None},
              {"kind": "statement", "a": "b2", "b": "s2", "reconciled": None}]
-    final, report = rc.grade_record(q, clean, idmap=idmap, differences=[], attacks=[], disputes=[], triaged={"cpca"})
+    final, report = rc.grade_record(q, clean, idmap=idmap, differences=[], attacks=[], disputes=[], triaged={"cpca"},
+                                    planted=ALL_PASSED)
     assert {r["item"]: r["grade"] for r in report["items"]}["d1"] == "A"
     assert final["examples"][0]["expect"]["findings"][0]["shownEffect"] == "blockCleanExport"
     assert final["history"]["agreementBeforeReconciliation"] == "3 of 3 matched items"
@@ -257,7 +272,8 @@ def test_an_untriaged_code_keeps_every_item_below_a():
     q, _ = rc.quote_record(record(), clean)
     idmap = [{"kind": "deadline", "a": "d1", "b": "dd", "reconciled": None},
              {"kind": "statement", "a": "b1", "b": "s1", "reconciled": None}]
-    final, report = rc.grade_record(q, clean, idmap=idmap, differences=[], attacks=[], disputes=[], triaged=set())
+    final, report = rc.grade_record(q, clean, idmap=idmap, differences=[], attacks=[], disputes=[], triaged=set(),
+                                    planted=ALL_PASSED)
     d1 = {r["item"]: r for r in report["items"]}["d1"]
     assert d1["grade"] == "B" and d1["reasons"] == ["triageOpen: cpca"]
     assert final["examples"][0]["expect"]["findings"][0]["shownEffect"] == "warn"
@@ -424,4 +440,66 @@ def test_compare_counts_the_imported_module_blocks_of_a_claim_type():
     assert out["agreement"]["import"] == {"equal": 1, "compared": 3}
     assert sorted((str(d["aId"]), str(d["bId"])) for d in out["differences"] if d["kind"] == "import") == [
         ("None", "formal-notice"), ("proof", "None")]
+
+
+def test_no_item_is_a_before_the_first_planted_error_round():
+    q, clean, idmap = clean_case()
+    _, report = rc.grade_record(q, clean, idmap=idmap, differences=[], attacks=[], disputes=[], triaged={"cpca"})
+    d1 = {r["item"]: r for r in report["items"]}["d1"]
+    assert d1["grade"] == "B" and d1["reasons"] == ["plantedNotRun"]
+
+
+def test_a_weak_planted_kind_keeps_its_sorts_below_a_and_no_other():
+    q, clean, idmap = clean_case()
+    weak = {"status": dict(ALL_PASSED["status"], periodChanged="weak")}
+    _, report = rc.grade_record(q, clean, idmap=idmap, differences=[], attacks=[], disputes=[], triaged={"cpca"},
+                                planted=weak)
+    g = {r["item"]: r for r in report["items"]}
+    assert g["d1"]["grade"] == "B" and g["d1"]["reasons"] == ["checkerWeak: periodChanged"]
+    assert g["b1"]["grade"] == "A"  # a statement: periodChanged speaks for deadlines only
+
+
+def test_a_support_check_not_returned_or_untrusted_keeps_items_below_a():
+    q, clean, idmap = clean_case()
+    for support in (None, {"yesTrusted": False, "pairs": []}):
+        _, report = rc.grade_record(q, clean, idmap=idmap, differences=[], attacks=[], disputes=[], triaged={"cpca"},
+                                    planted=ALL_PASSED, support=support, support_given=True)
+        assert {r["item"]: r for r in report["items"]}["d1"]["reasons"] == ["supportCheckPending"]
+
+
+def test_the_proof_label_needs_the_texts_proof_and_codex_reading_the_statement_as_it_is_now():
+    import stage7
+    q, clean, idmap = clean_case()
+    stmts = rc.statements(q)
+    pair = {"item": "b1", "supports": "yes", "statement": "Six months.",
+            "texts": [stage7._label(x) for x in stage7._texts(stmts, ["b1"])]}
+    support = {"yesTrusted": True, "pairs": [pair]}
+    _, report = rc.grade_record(q, clean, idmap=idmap, differences=[], attacks=[], disputes=[], triaged={"cpca"},
+                                planted=ALL_PASSED, support=support, support_given=True)
+    g = {r["item"]: r for r in report["items"]}
+    assert g["d1"]["textProof"] == "twoFamilies" and g["d1"]["proof"] == "twoFamilies"
+    assert g["b2"]["proof"] == "oneFamily"  # Codex never read b2
+    changed = dict(pair, statement="Six months, as it was before the verifier changed it.")
+    _, report = rc.grade_record(q, clean, idmap=idmap, differences=[], attacks=[], disputes=[], triaged={"cpca"},
+                                planted=ALL_PASSED, support={"yesTrusted": True, "pairs": [changed]}, support_given=True)
+    assert {r["item"]: r for r in report["items"]}["d1"]["proof"] == "oneFamily"
+
+
+def test_the_latest_verdict_of_an_attack_counts():
+    q, clean, idmap = clean_case()
+    first = [{"id": "adv-1", "target": "d1", "verdict": "open"}]
+    later = [{"id": "adv-1", "target": "d1", "verdict": "fixed"}]
+    _, report = rc.grade_record(q, clean, idmap=idmap, differences=[], attacks=first + later, disputes=[],
+                                triaged={"cpca"}, planted=ALL_PASSED)
+    assert {r["item"]: r for r in report["items"]}["d1"]["grade"] == "A"
+
+
+def test_a_final_record_never_proposes_a_slot():
+    q, clean, idmap = clean_case()
+    q["proposedSlots"] = [{"id": "notice_served"}]  # a slot slots.json holds: the key is dropped
+    final, _ = rc.grade_record(q, clean, idmap=idmap, differences=[], attacks=[], disputes=[], triaged={"cpca"})
+    assert "proposedSlots" not in final
+    q["proposedSlots"] = [{"id": "no_such_slot_anywhere"}]
+    with pytest.raises(ValueError):
+        rc.grade_record(q, clean, idmap=idmap, differences=[], attacks=[], disputes=[], triaged={"cpca"})
 

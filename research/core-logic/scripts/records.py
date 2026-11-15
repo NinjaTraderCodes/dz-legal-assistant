@@ -909,13 +909,82 @@ def attack_targets(attack: dict) -> set[str]:
     return {x.strip() for x in str(attack.get("target", "")).split(",") if x.strip()}
 
 
+# The sorts of item each planted kind speaks for (specs/planted-errors.md, the table of the twelve kinds).
+ALL_SORTS = ("statement", "element", "request", "deadline", "priorStep", "document", "boundary", "territory", "exit",
+             "section")
+KIND_SORTS = {"periodChanged": ("deadline",), "paragraphShifted": ALL_SORTS, "exceptionUncited": ALL_SORTS,
+              "limitationForForfeiture": ("deadline",), "startingEventChanged": ("deadline",), "wrongArticle": ALL_SORTS,
+              "repealedCited": ALL_SORTS, "exemptionDropped": ("priorStep",), "raisedByChanged": ("deadline",),
+              "blockForLimitation": ("deadline",), "conditionInverted": ("priorStep", "exit", "section", "boundary"),
+              "doneBesideOpen": ("priorStep",)}
+PROOF_ORDER = {"oneFamily": 0, "twoFamilies": 1, "mechanical": 2}
+
+
+def planted_reasons(kind: str, planted: dict | None) -> list[str]:
+    """Condition 7 (GRADES.md): no file, or a kind not yet run, gives plantedNotRun; a weak kind gives checkerWeak."""
+    if planted is None:
+        return ["plantedNotRun"]
+    status = planted.get("status", {})
+    reasons, not_run = [], False
+    for k, sorts in KIND_SORTS.items():
+        if kind not in sorts:
+            continue
+        s = status.get(k, "notRun")
+        if s == "weak":
+            reasons.append(f"checkerWeak: {k}")
+        elif s != "passed":
+            not_run = True
+    return (["plantedNotRun"] if not_run else []) + reasons
+
+
+def latest_verdicts(attacks: list[dict] | None) -> list[dict] | None:
+    """Several registers (the first run and its follow-ups), in order: the last verdict of an attack id counts."""
+    if attacks is None:
+        return None
+    last, anonymous = {}, []
+    for a in attacks:
+        if a.get("id"):
+            last[a["id"]] = a
+        else:
+            anonymous.append(a)
+    return list(last.values()) + anonymous
+
+
+def text_proof(store: st.Store, basis: list[dict]) -> str:
+    """The weakest proof label among the texts of an item's basis; "unverified" when one is not verified."""
+    labels = [st.proof_of(store.get(s["cite"]["code"], s["cite"]["article"], s["cite"].get("version"))) for s in basis]
+    if not labels or any(x is None for x in labels):
+        return "unverified"
+    return min(labels, key=lambda x: PROOF_ORDER[x])
+
+
+def support_read(support: dict | None, stmts: dict, basis: list[dict]) -> bool:
+    """Codex's support check, with its seeded pairs passed, said "yes" for every statement of the basis as the record
+    has it now: the same English line and the same quoted paragraphs (a statement changed since is not read)."""
+    if not support or not support.get("yesTrusted") or not basis:
+        return False
+    import stage7
+    pairs = {}
+    for pr in support.get("pairs", []):
+        pairs.setdefault(pr["item"], []).append(pr)
+    for s in basis:
+        says = (s.get("says") or {}).get("en", "")
+        labels = [stage7._label(x) for x in stage7._texts(stmts, [s["id"]])]
+        if not any(pr["supports"] == "yes" and pr["statement"] == says and pr["texts"] == labels
+                   for pr in pairs.get(s["id"], [])):
+            return False
+    return True
+
+
 def grade_record(record: dict, store: st.Store, idmap=None, differences=None, attacks=None, disputes=None,
-                 triaged=None) -> tuple:
+                 triaged=None, support=None, planted=None, support_given: bool = False) -> tuple:
     """GRADES.md exactly, with the owner's decisions of 14 Nov 2026: a paragraph kept with two readings
     (law/text-disputes.json) gives grade C, never D, and the mark to check where the owner asked; a code whose triage is
     not complete (law/triage-status.json) keeps every item resting on it below A. Returns (record, grades report)."""
     disputes = text_disputes() if disputes is None else disputes
     triaged = triage_complete() if triaged is None else triaged
+    attacks = latest_verdicts(attacks)
+    support_pending = support_given and (support is None or not support.get("yesTrusted"))
     rec = copy.deepcopy(record)
     stmts = statements(rec)
     values = {p["item"] for p in check_values(rec)["problems"] if p["problem"] in
@@ -976,6 +1045,8 @@ def grade_record(record: dict, store: st.Store, idmap=None, differences=None, at
                 reasons.append("notAttacked")
             elif any(iid in attack_targets(t) and t.get("verdict") not in ("refuted", "fixed") for t in attacks):
                 reasons.append("attackOpen")
+            if support_pending:
+                reasons.append("supportCheckPending")
             if not all(s.get("source", {}).get("ledgerClean") for s in basis):
                 why = {(e or {}).get("ledgerReason") for e in entries}
                 reasons.append("scanBlind" if "scanBlind" in why else "scanNotRun" if "scanNotRun" in why
@@ -983,8 +1054,13 @@ def grade_record(record: dict, store: st.Store, idmap=None, differences=None, at
             open_codes = sorted({s["cite"]["code"] for s in basis} - triaged)
             if open_codes:
                 reasons.append("triageOpen: " + ", ".join(open_codes))
+            reasons += planted_reasons(kind, planted)
             g = {"grade": "C" if interpretive else ("B" if reasons else "A"), "reasons": reasons,
                  "toCheck": any(t.get("toCheck") for _, t in in_dispute)}
+        tp = text_proof(store, basis)
+        g["textProof"] = tp
+        g["proof"] = "twoFamilies" if tp in ("mechanical", "twoFamilies") and support_read(support, stmts, basis) \
+            else "oneFamily"
         x["grading"] = g
         report.append({"item": iid, "kind": kind, **g})
     graded = {item_id(k, x): x["grading"] for k, x in items(rec)}
@@ -1000,6 +1076,14 @@ def grade_record(record: dict, store: st.Store, idmap=None, differences=None, at
         bad = {("a", d["aId"]) for d in differences if d.get("aId")} | {("b", d["bId"]) for d in differences if d.get("bId")}
         same = sum(1 for r in pairs if ("a", r["a"]) not in bad and ("b", r["b"]) not in bad)
         rec.setdefault("history", {})["agreementBeforeReconciliation"] = f"{same} of {len(pairs)} matched items"
+    proposed = rec.get("proposedSlots") or []
+    if proposed:
+        with open(os.path.join(REPO, "docs", "research", "core-logic", "slots.json"), encoding="utf-8") as f:
+            known = {s["id"] for s in json.load(f)["slots"]}
+        missing = [p_["id"] for p_ in proposed if p_["id"] not in known]
+        if missing:
+            raise ValueError("a final record never proposes a slot: move these into slots.json first: " + ", ".join(missing))
+        del rec["proposedSlots"]
     rec["stage"] = "final"
     return rec, {"items": report}
 
@@ -1209,6 +1293,8 @@ def main(argv=None) -> int:
     for name in ("idmap", "differences", "report", "store"):
         g.add_argument(f"--{name}")
     g.add_argument("--attacks", action="append", help="a register; repeat for a follow-up register")
+    g.add_argument("--support", help="reports/<unit>.support.json; a missing file means supportCheckPending")
+    g.add_argument("--planted", help="rules/reports/planted-errors.json; a missing file means plantedNotRun")
     k = sub.add_parser("check-checklist"); k.add_argument("record"); k.add_argument("--checklist", required=True)
     k.add_argument("--flags", action="append", default=[]); k.add_argument("--report", required=True)
     i = sub.add_parser("inventory"); i.add_argument("records", nargs="+"); i.add_argument("--out", required=True)
@@ -1308,9 +1394,17 @@ def main(argv=None) -> int:
         mods = {imp["module"]: load(os.path.join(a.modules, f"{imp['module']}.json")) for imp in claim.get("imports", [])}
         save(a.out, flatten_imports(claim, mods))
     elif a.cmd == "grade":
-        rec, report = grade_record(load(a.record), the_store(a.store), load(a.idmap) if a.idmap else None,
-                                   load(a.differences)["differences"] if a.differences else None,
-                                   [x for path in a.attacks for x in register_attacks(load(path))] if a.attacks else None)
+        try:
+            rec, report = grade_record(
+                load(a.record), the_store(a.store), load(a.idmap) if a.idmap else None,
+                load(a.differences)["differences"] if a.differences else None,
+                [x for path in a.attacks for x in register_attacks(load(path))] if a.attacks else None,
+                support=load(a.support) if a.support and os.path.exists(a.support) else None,
+                planted=load(a.planted) if a.planted and os.path.exists(a.planted) else None,
+                support_given=a.support is not None)
+        except ValueError as e:
+            print("REFUSED", e)
+            return 1
         save(a.out, rec)
         if a.report:
             save(a.report, report)

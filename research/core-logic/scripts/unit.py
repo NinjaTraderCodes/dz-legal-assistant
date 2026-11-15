@@ -354,9 +354,12 @@ def _owner_done_entries(results: list[dict]) -> list[dict]:
 
 def _values_entries(report: dict) -> list[dict]:
     out = []
+    seen: dict[str, int] = {}
     for p in report.get("problems", []):
         item = p.get("item") or p.get("id") or "record"
-        out.append({"id": f"values-{item}", "who": "values", "target": item, "kind": "misreading",
+        seen[item] = seen.get(item, 0) + 1  # one id per problem: a second problem of an item is values-<item>-2
+        out.append({"id": f"values-{item}" + (f"-{seen[item]}" if seen[item] > 1 else ""), "who": "values", "target": item,
+                    "kind": "misreading",
                     "claim": "check-values: " + json.dumps(p, ensure_ascii=False)})
     return out
 

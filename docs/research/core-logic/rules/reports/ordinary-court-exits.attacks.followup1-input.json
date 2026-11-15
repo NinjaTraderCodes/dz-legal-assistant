@@ -1,0 +1,26 @@
+{
+ "unit": "ordinary-court-exits",
+ "attacks": [
+  {
+   "id": "values-d5",
+   "who": "values",
+   "target": "d5",
+   "kind": "misreading",
+   "claim": "check-values: {\"item\": \"d5\", \"problem\": \"noExtract\"}"
+  },
+  {
+   "id": "values-d5-2",
+   "who": "values",
+   "target": "d5",
+   "kind": "misreading",
+   "claim": "check-values: {\"item\": \"d5\", \"problem\": \"messagePeriodDiffers\", \"read\": [{\"value\": 2, \"unit\": \"month\", \"words\": \"شهرين\", \"conflict\": false}, {\"value\": 2, \"unit\": \"month\", \"words\": \"شهرين\", \"conflict\": false}]}"
+  },
+  {
+   "id": "owner-latest-last-day",
+   "target": "d1,d2,d5",
+   "claim": "The owner's rule of 15 November 2026: where the readings differ on a forfeiture's last day, the record must not block on the earlier reading. Block only once the latest defensible last day has passed, warn on the days in between, and state both readings with their sources (including whether CPCA art. 405 applies to the deadline of Law 90-04 and of CPCA 504). Apply it to every forfeiture of this record: keep in `counting` the reading the record holds; list in `otherCountings` every other defensible counting of the same period (the same shape, each citing the statements it rests on: for example 405 ¶1 and ¶4 against a reading that the end day counts or that no extension applies); and make the message name each reading and its source. The rules tool now blocks only after the latest of their last days and its band, and warns before. A forfeiture whose texts allow one counting only needs no change; say so in the register.",
+   "who": "owner",
+   "kind": "wrongCondition"
+  }
+ ]
+}

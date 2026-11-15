@@ -131,6 +131,8 @@ public static class Digits
             {
                 >= '٠' and <= '٩' => (char)('0' + chars[i] - '٠'),
                 >= '۰' and <= '۹' => (char)('0' + chars[i] - '۰'),
+                '٬' => ',',  // the Arabic thousands separator «٬»
+                '٫' => '.',  // the Arabic decimal separator «٫»
                 _ => chars[i],
             };
         }

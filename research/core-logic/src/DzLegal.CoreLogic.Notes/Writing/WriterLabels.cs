@@ -27,7 +27,14 @@ public static class WriterLabels
         var expected = WriteCommand.Refs(scenario).ToDictionary(r => r.Ref, r => r.Optional, StringComparer.Ordinal);
         foreach (var fact in note["facts_of_scenario"]?.AsArray() ?? [])
         {
-            var reference = (string)fact!["ref"]!;
+            // The writer's view marks an optional fact «… (optional)»; a writer that copies the mark into its reference names
+            // the same fact (four pilot notes of calls 4 to 8 did).
+            var reference = ((string)fact!["ref"]!).Trim();
+            if (reference.EndsWith(" (optional)", StringComparison.Ordinal))
+            {
+                reference = reference[..^" (optional)".Length];
+            }
+
             if (!expected.TryGetValue(reference, out var optional))
             {
                 problems.Add($"a reference the scenario does not have: {reference}");

@@ -15,7 +15,7 @@ public static partial class AmountParser
 {
     private static readonly Dictionary<string, long> Small = new(StringComparer.Ordinal)
     {
-        ["واحد"] = 1, ["واحدة"] = 1, ["أحد"] = 1, ["احد"] = 1, ["إحدى"] = 1, ["احدى"] = 1,
+        ["واحد"] = 1, ["واحدا"] = 1, ["واحدة"] = 1, ["أحد"] = 1, ["احد"] = 1, ["إحدى"] = 1, ["احدى"] = 1,
         ["اثنان"] = 2, ["اثنين"] = 2, ["اثنا"] = 2, ["اثني"] = 2, ["إثنان"] = 2, ["إثنين"] = 2,
         ["ثلاث"] = 3, ["ثلاثة"] = 3, ["أربع"] = 4, ["اربع"] = 4, ["أربعة"] = 4, ["اربعة"] = 4,
         ["خمس"] = 5, ["خمسة"] = 5, ["ست"] = 6, ["ستة"] = 6, ["سبع"] = 7, ["سبعة"] = 7,
@@ -190,11 +190,18 @@ public static partial class AmountParser
     /// <summary>The value of the number tokens written before a unit, or null when they make no number.</summary>
     private static decimal? Value(List<string> words)
     {
-        // Digits in brackets after words («خمسمائة ألف (500.000)»): the digits give the value.
-        var bracketed = words.LastOrDefault(w => w.TrimStart().StartsWith('(') && DigitGroup().IsMatch(Bare(w)));
-        if (bracketed is not null)
+        // Digits in brackets after words («خمسمائة ألف (500.000)»): the digits give the value. A bracket may hold groups
+        // split by spaces («(1 050 000)»): the tokens up to the closing bracket are one number.
+        var open = words.FindLastIndex(w => w.TrimStart().StartsWith('(') && DigitGroup().IsMatch(Bare(w)));
+        if (open >= 0)
         {
-            return ParseDigits(Bare(bracketed));
+            var close = open;
+            while (!words[close].TrimEnd().EndsWith(')') && close + 1 < words.Count && DigitGroup().IsMatch(Bare(words[close + 1])))
+            {
+                close++;
+            }
+
+            return ParseDigits(Bare(string.Join(' ', words.Skip(open).Take(close - open + 1))));
         }
 
         decimal total = 0, current = 0;

@@ -34,6 +34,10 @@ public sealed class ValueParserTests
     public void NoDateIsEmittedWhereTheGuideGivesNone(string text) => Assert.Empty(DateParser.Read(text, NoteField.Facts));
 
     [Theory]
+    [InlineData("قيمتها ٤٤٧٬٠٠٠ دينار", "447000", "٤٤٧٬٠٠٠ دينار")]  // the Arabic thousands separator (pilot, 15 November 2026)
+    [InlineData("قدره ١٢٣٫٥٠ دج", "123.50", "١٢٣٫٥٠ دج")]  // the Arabic decimal separator
+    [InlineData("بقيمة واحدا وعشرين مليونا وتسعمائة ألف سنتيم", "219000", "واحدا وعشرين مليونا وتسعمائة ألف سنتيم")]  // «واحدا»
+    [InlineData("تعويض قدره مليون وخمسون ألفا (1 050 000) دينار", "1050000", "مليون وخمسون ألفا (1 050 000) دينار")]  // spaced digits in brackets
     [InlineData("مبلغ 500.000 دج", "500000", "500.000 دج")]
     [InlineData("قدره 1.200.000,00 دج", "1200000", "1.200.000,00 دج")]  // decimals dropped only when zero
     [InlineData("قدره 1250,50 دج", "1250.50", "1250,50 دج")]  // a real fraction keeps two decimals

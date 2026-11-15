@@ -162,7 +162,7 @@ public static class IngestCommand
         var rate = process.Count == 0 ? 0 : 100.0 * invalid.Count / process.Count;
         Console.WriteLine($"{call}{(recheck ? " (recheck)" : "")}: {written.Count} written, {invalid.Count} invalid ({rate:0}%)" +
                           (reasons.Count == 0 ? "" : "; " + string.Join(", ", reasons.Select(kv => $"{kv.Key} {kv.Value}"))));
-        if (rate > 30)
+        if (rate > 30 && !recheck)
         {
             Console.WriteLine("OVER 30 % invalid: read ten failures (notes-pipeline.md, decision table)");
         }

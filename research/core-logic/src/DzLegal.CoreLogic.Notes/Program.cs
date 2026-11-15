@@ -163,6 +163,10 @@ try
             return DzLegal.CoreLogic.Notes.Filtering.FilterCommand.RunSheet(files,
                 positional.FirstOrDefault() ?? throw new ArgumentException("--note <id>"), options);
 
+        case ("filter-trial", "--notes"):
+            options["--notes"] = positional.FirstOrDefault() ?? throw new ArgumentException("--notes <n>");
+            return DzLegal.CoreLogic.Notes.Filtering.FilterTrial.Run(files, options);
+
         case ("filter", "--set"):
             return DzLegal.CoreLogic.Notes.Filtering.FilterCommand.Run(files,
                 positional.FirstOrDefault() ?? throw new ArgumentException("--set <name>"), options);

@@ -80,6 +80,36 @@ public sealed class FilteringTests
     }
 
     [Fact]
+    public void ASentenceEndsAtAMarkButNotAtThePointsOfANumber()
+    {
+        var written = Written();
+        var quote = new JsonObject { ["field"] = "facts", ["start"] = ((string)written["text"]!["facts"]!).IndexOf("1.200.000", StringComparison.Ordinal), ["length"] = 9 };
+        var (_, start, end) = FilterTrial.Sentence(written, quote);
+        var sentence = ((string)written["text"]!["facts"]!)[start..end];
+        Assert.StartsWith("أبرمت شركة سيرتا", sentence, StringComparison.Ordinal);
+        Assert.EndsWith("وسلمته البضاعة كاملة.", sentence, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void APlantDeletesOnlyTheSentencesOfOneFactThatHoldNoOtherFact()
+    {
+        var sheet = Sheet();
+        var plain = new FilteredNote(FilterRule.Apply(sheet, Answer(sheet)), sheet, [], "");
+        var planted = Enumerable.Range(0, 40).Select(s => FilterTrial.Plant(Written(), plain, s)).Where(p => p is not null).Select(p => p!.Value).ToList();
+        Assert.NotEmpty(planted);
+        foreach (var (path, altered) in planted)
+        {
+            var before = (string)Written()["text"]!["facts"]! + (string)Written()["text"]!["requests"]!;
+            var after = (string)altered["text"]!["facts"]! + (string)altered["text"]!["requests"]!;
+            Assert.True(after.Length < before.Length, path);
+        }
+
+        // The goods were delivered in the contract's sentence, which holds other facts: never planted.
+        Assert.DoesNotContain(planted, p => p.Path == "events/unpaid-sale-price/goods_delivered/polarity");
+        Assert.Contains(planted, p => p.Path == "events/contract-damages/other/polarity");
+    }
+
+    [Fact]
     public void TheLettersAreReadPastMarkerLines()
     {
         Assert.Equal(["a", "c"], LocalModel.Letters("<|im_start|>assistant\n{\"answers\": [\"a\", \"c\"]}"));

@@ -42,9 +42,12 @@ def validate(schema: dict, value, path: str = "$") -> list[str]:
     t = schema.get("type")
     kinds = {"object": dict, "array": list, "string": str, "boolean": bool, "integer": int, "number": (int, float)}
     if t:
-        ok = isinstance(value, kinds[t]) and not (t in ("integer", "number") and isinstance(value, bool))
+        types = t if isinstance(t, list) else [t]  # a list of types: a key required but nullable ("null" among them)
+        ok = any((value is None) if x == "null" else
+                 (isinstance(value, kinds[x]) and not (x in ("integer", "number") and isinstance(value, bool)))
+                 for x in types)
         if not ok:
-            return [f"{path}: expected {t}"]
+            return [f"{path}: expected {' or '.join(types)}"]
     if "const" in schema and value != schema["const"]:
         errors.append(f"{path}: must be {schema['const']!r}")
     if "enum" in schema and value not in schema["enum"]:

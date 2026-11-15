@@ -16,6 +16,8 @@ Agents point, scripts quote and check. A file an agent wrote is never rewritten:
     python records.py check-checklist <record.json> --checklist <file> [--flags <file> ...] --report <file>
     python records.py inventory <final records...> --out <file>
     python records.py unit-texts <unit> <code:article>... --out <reports/unit.texts.json>
+    python records.py ingest-reply --agent <id> --prompt <filled prompt> --schema <file> --out <file>
+                      [--ids atk] [--unit <unit>] [--append] [--session <id>]   (exit 3: tools used; 4: no valid answer)
 """
 from __future__ import annotations
 
@@ -1186,12 +1188,28 @@ def main(argv=None) -> int:
     ut = sub.add_parser("unit-texts"); ut.add_argument("unit"); ut.add_argument("starts", nargs="*", help="code:article")
     ut.add_argument("--seed", help="law/seed-inventory.json: take the starting articles from it (seed_starts)")
     ut.add_argument("--out", required=True)
+    ir = sub.add_parser("ingest-reply", help="copy a no-tool agent's answer from its transcript (ingest.py)")
+    for name in ("agent", "prompt", "schema", "out"):
+        ir.add_argument(f"--{name}", required=True)
+    for name in ("ids", "unit", "session"):
+        ir.add_argument(f"--{name}")
+    ir.add_argument("--append", action="store_true")
     a = p.parse_args(argv)
     sys.stdout.reconfigure(encoding="utf-8")
 
     def the_store(path):
         return st.Store(path) if path else st.Store()
 
+    if a.cmd == "ingest-reply":
+        import ingest
+        try:
+            r = ingest.ingest(a.agent, a.prompt, a.schema, a.out, ids=a.ids, unit=a.unit, append=a.append,
+                              session=a.session)
+        except ingest.Refused as e:
+            print("REFUSED", e)
+            return e.code
+        print("ok", r["out"], f"(transcript {r['transcript']}, {r['toolCalls']} tool calls)")
+        return 0
     if a.cmd == "quote":
         out = a.out or quoted_path(a.record)
         old = load(out) if os.path.exists(out) else None

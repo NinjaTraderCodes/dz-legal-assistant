@@ -138,6 +138,7 @@ If the support check has not returned when the verifier is launched, the file sa
 For each case Codex was asked about, compare its answer with the case's own expected outcome:
 
 - **Codex gives the verifier's answer:** the case stays as the verifier decided. If it fails the runner, it is a counted failure with the two-family reason, written into the tracking file. The case file is never edited.
+- **Codex gives a third outcome word** (neither the writer's nor the record's): the case is **uncertain**, as for the writer's answer below (HANDBOOK, decision table). The driver keeps the word; only a reply that is not an outcome word at all is refused and queued again once (aligned on 15 November 2026, after Codex gave a third word for periods twice and for labour-prelitigation once, and each refusal lost the view of every case of the call).
 - **Codex gives the case writer's answer:** the case is **uncertain**. The driver writes one attack (`who: "owner"`, `id: "uncertain-<case id>"`): "keep both readings in an open point and make the item warn". One more verifier run.
 
 ## Stage 9: the slots

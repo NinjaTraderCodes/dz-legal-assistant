@@ -304,16 +304,24 @@ def test_codex_queues_the_second_view_with_its_after_step_and_writes_its_ledger_
     assert row["status"] == "running" and row["stage"] == "8b" and row["cases"] == ["bc7"]
 
 
-def test_store_view_keeps_both_words_and_refuses_a_word_not_offered(root):
+def test_store_view_keeps_both_words_refuses_a_non_word_and_keeps_a_third_word_as_uncertain(root):
     u = through_stage_4(root)
     answer = root / "answer.json"
-    dump(answer, {"cases": [{"id": "bc1", "answer": "inTime", "why": "w", "decidingWords": "d"}]})
-    with pytest.raises(ValueError):
+    dump(answer, {"cases": [{"id": "bc1", "answer": "maybe", "why": "w", "decidingWords": "d"}]})
+    with pytest.raises(ValueError):  # not an outcome word at all: the call is refused
         unit.store_view(u, str(answer), {"bc1": "ask"})
     dump(answer, {"cases": [{"id": "bc1", "answer": "ask", "why": "w", "decidingWords": "d"}]})
     view = load(unit.store_view(u, str(answer), {"bc1": "ask"}))
     assert view["cases"] == ["bc1"] and view["writerExpected"] == {"bc1": "stepMissing"}
     assert view["recordActual"] == {"bc1": "ask"} and view["codex"]["cases"][0]["answer"] == "ask"
+    # A third outcome word (neither the writer's stepMissing nor the record's ask) is kept, and the case is uncertain.
+    reports = root / "rules" / "reports"
+    dump(reports / "proof.attacks.json", {"attacks": [{"id": "bc-bc1", "who": "boundaryCase", "target": "p1",
+                                                       "verdict": "refuted", "verifierQuote": "q"}]})
+    dump(answer, {"cases": [{"id": "bc1", "answer": "inTime", "why": "w", "decidingWords": "d"}]})
+    view = load(unit.store_view(u, str(answer), {"bc1": "ask"}))
+    assert view["codex"]["cases"][0]["answer"] == "inTime"
+    assert [e["id"] for e in unit.uncertain_entries(u, str(root / "no-ledger.jsonl"))] == ["uncertain-bc1"]
 
 
 def test_a_case_failing_by_a_known_limit_is_neither_a_follow_up_nor_sent_to_codex(root):

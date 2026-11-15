@@ -1088,13 +1088,16 @@ def codex(u: Unit, queue=None, ledger: str = LEDGER, start: bool = True) -> list
 
 def store_view(u: Unit, answer_path: str, actual: dict) -> str:
     """Stage 8b's answer, merged into reports\\<unit>.boundary-view.json with both words that were in dispute. An answer
-    that is not one of the two words offered for its case is refused: the call is queued again once."""
+    that is not an outcome word at all is refused (the call is queued again once). An outcome word other than the two
+    offered is kept: it is "a third answer", which makes the case uncertain (HANDBOOK, decision table, the row on a case
+    the verifier sets aside; executor's alignment of 15 November 2026, after Codex gave a third word twice for periods
+    and once for labour-prelitigation)."""
+    import prompts
     answer = load(answer_path)
     cases = {c["id"]: c for c in load(u.boundary)}
     for c in answer["cases"]:
-        offered = {cases[c["id"]]["expect"]["outcome"], actual.get(c["id"])}
-        if c["answer"] not in offered:
-            raise ValueError(f"{c['id']}: «{c['answer']}» is not one of the words offered ({', '.join(sorted(offered))})")
+        if c["answer"] not in prompts.OUTCOME_MEANINGS:
+            raise ValueError(f"{c['id']}: «{c['answer']}» is not an outcome word")
     path = u.r("boundary-view.json")
     view = load(path) if os.path.isfile(path) else {"unit": u.id, "cases": [], "writerExpected": {}, "codex": {"cases": []}}
     for c in answer["cases"]:

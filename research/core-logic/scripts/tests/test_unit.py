@@ -312,3 +312,20 @@ def test_a_case_failing_by_a_known_limit_is_neither_a_follow_up_nor_sent_to_code
     assert unit.second_view_due(u) == ([], []) and unit.followup_entries(u) == []
     assert "languageLimit" in unit.tracking_row(u)
 
+
+def test_legal_questions_keep_entry_4_while_the_readings_do_not_change(root, tmp_path):
+    u = through_stage_4(root)
+    point = {"id": "o1", "grade": "C", "refs": ["p1"], "question": {"en": "Q?", "ar": "س؟"}, "why": {"en": "w"},
+             "readings": [{"reading": {"en": "R1"}, "basis": ["b1"]}], "protectiveReading": {"en": "warn"}}
+    dump(u.final, {"priorSteps": [{"id": "p1"}], "openPoints": [point]})
+    path = str(tmp_path / "open-legal-questions.md")
+    unit.questions([u], path)
+    assert unit.unfilled_questions(path) == 1
+    text = open(path, encoding="utf-8").read().replace(unit.PLACEHOLDER4, "If R1: p1 warns.")
+    open(path, "w", encoding="utf-8").write(text)
+    unit.questions([u], path)
+    assert unit.unfilled_questions(path) == 0 and "If R1: p1 warns." in open(path, encoding="utf-8").read()
+    point["readings"].append({"reading": {"en": "R2"}, "basis": ["b2"]})
+    dump(u.final, {"priorSteps": [{"id": "p1"}], "openPoints": [point]})
+    unit.questions([u], path)
+    assert unit.unfilled_questions(path) == 1  # a new reading: the executor writes entry 4 again

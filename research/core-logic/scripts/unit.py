@@ -5,7 +5,7 @@
     python unit.py done <unit> <stage> <agent id>      checks an agent stage's outputs and records it
     python unit.py codex <unit>                        queues the unit's due Codex calls (the background queue)
     python unit.py verify-input <unit> [--followup]    the one file the verifier receives (stage 8)
-    python unit.py questions --batch <n> <unit>...     the owner's question batch for one to three units
+    python unit.py questions <unit>...                 the units' sections of reports/open-legal-questions.md
     python unit.py tool                                publishes the rules tool (<work>\\tools\\rules\\<commit>\\rules.exe)
     python unit.py slots <unit> [--apply <reply>]      stage 9's slot step; --apply writes the Arabic checker's corrections
     python unit.py regrade --all                       rebuilds the store, re-quotes, regrades every final unit
@@ -1112,41 +1112,75 @@ def _effect_items(record: dict) -> set[str]:
     return ids
 
 
-def questions(batch: int, units: list[Unit], out_dir: str | None = None) -> str:
-    out_dir = out_dir or os.path.join(CL, "reports", "questions")
-    lines = [f"# The owner's questions, batch {batch}: {', '.join(u.id for u in units)}", ""]
-    grades = []
+LEGAL_FILE = os.path.join(CL, "reports", "open-legal-questions.md")
+LEGAL_HEAD = """# Open legal questions
+
+**The owner's standing rule of 15 November 2026.** The owner is not the legal reviewer, and there is none. A question of
+legal reading (which reading of the law is right) is never sent to the owner: the record keeps the protective behaviour
+it has (it warns, keeps both readings, never blocks), the item stays at grade C or D, and the question is kept here with
+its readings and what each would change, for a legal reviewer if the product ever has one. Each unit's section is
+written by `unit.py questions <unit>`; entry 4 of each question is written by the executor from the readings only, and
+kept while the readings do not change.
+
+Every check behind these entries except Codex's support check was made by Claude models (HANDBOOK, section 5b).
+"""
+PLACEHOLDER4 = ("EXECUTOR: from the readings above only, what each item would then do (block, warn, ask, nothing).")
+
+
+def _readings_key(o: dict) -> str:
+    return hashlib.sha256(json.dumps([o["question"], o.get("readings", []), o.get("protectiveReading")],
+                                     ensure_ascii=False, sort_keys=True).encode("utf-8")).hexdigest()[:12]
+
+
+def _sections(text: str) -> dict[str, str]:
+    """The file's unit sections, by unit id («## `<unit>`»)."""
+    out = {}
+    parts = re.split(r"(?m)^## `([^`]+)`\n", text)
+    for i in range(1, len(parts) - 1, 2):
+        out[parts[i]] = parts[i + 1]
+    return out
+
+
+def questions(units: list[Unit], path: str | None = None) -> str:
+    """Writes each unit's section of open-legal-questions.md: one entry per open point of grade C or D that names an
+    item which could block or changes what the lawyer is told; the boundary cases still failing; the limits. An entry 4
+    already written is kept while the open point's question, readings and protective reading are unchanged."""
+    path = path or LEGAL_FILE
+    text = open(path, encoding="utf-8").read() if os.path.isfile(path) else LEGAL_HEAD
+    sections = _sections(text)
     for u in units:
+        old = sections.get(u.id, "")
+        kept4 = {}
+        for m in re.finditer(r"<!-- (o\d+) ([0-9a-f]{12}) -->\n((?:(?!<!-- o).*\n)*)", old):
+            e4 = re.search(r"^4\. \*\*What would change with each answer:\*\* (.*)$", m.group(3), re.M)
+            if e4 and e4.group(1) != PLACEHOLDER4:
+                kept4[(m.group(1), m.group(2))] = e4.group(1)
+        record = load(u.final) if os.path.isfile(u.final) else load(u.candidate_q)
+        effect = _effect_items(record)
         rep = load(u.r("grades.json")) if os.path.isfile(u.r("grades.json")) else {"items": []}
         counts = {}
         for row in rep["items"]:
             counts[row["grade"]] = counts.get(row["grade"], 0) + 1
-        grades.append(f"`{u.id}`: " + (", ".join(f"{g} {n}" for g, n in sorted(counts.items())) or "not graded"))
-    lines += ["Grades of the items: " + "; ".join(grades) + ".", "",
-              "The checks behind these grades were made inside one model family (Claude: derivations, attack, adversary, "
-              "verifier), apart from Codex's support check (HANDBOOK, section 5b). The work goes on meanwhile; an answer "
-              "becomes an attack (`who: \"owner\"`) in the next verifier run.", ""]
-    n = 0
-    for u in units:
-        record = load(u.final) if os.path.isfile(u.final) else load(u.candidate_q)
-        effect = _effect_items(record)
-        lines += [f"## `{u.id}`", ""]
+        lines = ["", "Grades of the items: " + (", ".join(f"{g} {n}" for g, n in sorted(counts.items())) or "not graded")
+                 + ".", ""]
+        n = 0
         for o in record.get("openPoints", []):
             if o.get("grade") not in ("C", "D") or not set(o.get("refs", [])) & effect:
                 continue
             n += 1
-            lines += [f"### {n}. {o['question']['en']} ({o['id']}, grade {o['grade']}; items {', '.join(o['refs'])})", "",
-                      f"1. **The question:** {o['question']['en']} «{o['question']['ar']}»", "2. **The readings:**"]
+            key = _readings_key(o)
+            lines += [f"<!-- {o['id']} {key} -->",
+                      f"### {u.id} {n}. {o['question']['en']} ({o['id']}, grade {o['grade']}; items {', '.join(o['refs'])})",
+                      "", f"1. **The question:** {o['question']['en']} «{o['question']['ar']}»", "2. **The readings:**"]
             for r in o.get("readings", []):
                 lines.append(f"   - {r['reading']['en']} (rests on {', '.join(r.get('basis', [])) or 'no statement'})")
             if not o.get("readings"):
                 lines.append(f"   - (no readings recorded) {o['why']['en']}")
-            lines += [f"3. **What the record does today:** {o['protectiveReading']['en']}",
-                      "4. **What would change with each answer:** EXECUTOR: from the readings above only, what each item "
-                      "would then do (block, warn, ask, nothing).", ""]
+            lines += [f"3. **What the record does (the protective behaviour it keeps):** {o['protectiveReading']['en']}",
+                      f"4. **What would change with each answer:** {kept4.get((o['id'], key), PLACEHOLDER4)}", ""]
         failing = [r for r in _results(os.path.join(u.cases, "boundaryFinal.json")) if not r["passed"]]
         if failing:
-            lines += ["### Boundary cases the final record still fails", ""]
+            lines += [f"### {u.id}: boundary cases the final record still fails", ""]
             lim = limits(u)
             for r in failing:
                 note = f" **{lim[r['caseId']]['kind']}:** {lim[r['caseId']]['why']}" if r["caseId"] in lim else ""
@@ -1156,11 +1190,18 @@ def questions(batch: int, units: list[Unit], out_dir: str | None = None) -> str:
         if owner:
             lines += ["Cases that cannot be put to Codex as a choice of words (the same word on both sides, a last day "
                       f"only, or no outcome word): {', '.join(owner)}.", ""]
-    os.makedirs(out_dir, exist_ok=True)
-    path = os.path.join(out_dir, f"batch-{batch}.md")
+        sections[u.id] = "\n".join(lines).rstrip("\n") + "\n\n"
+    head = re.split(r"(?m)^## `", text, maxsplit=1)[0].rstrip("\n") + "\n\n"
+    body = "".join(f"## `{k}`\n{v}" for k, v in sections.items())
+    os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8", newline="\n") as f:
-        f.write("\n".join(lines).rstrip() + "\n")
+        f.write((head + body).rstrip("\n") + "\n")
     return path
+
+
+def unfilled_questions(path: str | None = None) -> int:
+    path = path or LEGAL_FILE
+    return open(path, encoding="utf-8").read().count(PLACEHOLDER4) if os.path.isfile(path) else 0
 
 
 # --- tracking -------------------------------------------------------------------------------------------------------
@@ -1286,8 +1327,7 @@ def main(argv=None) -> int:
     v = sub.add_parser("verify-input")
     v.add_argument("unit")
     v.add_argument("--followup", action="store_true")
-    q = sub.add_parser("questions")
-    q.add_argument("--batch", type=int, required=True)
+    q = sub.add_parser("questions", help="the units' sections of reports/open-legal-questions.md")
     q.add_argument("units", nargs="+")
     s = sub.add_parser("slots")
     s.add_argument("unit")
@@ -1317,7 +1357,8 @@ def main(argv=None) -> int:
             path = verify_input(Unit(a.unit, a.root), a.followup)
             print(path, len(load(path)["attacks"]), "entries")
         elif a.cmd == "questions":
-            print(questions(a.batch, [Unit(x, a.root) for x in a.units]))
+            path = questions([Unit(x, a.root) for x in a.units])
+            print(path, f"({unfilled_questions(path)} entries still need their entry 4)")
         elif a.cmd == "slots":
             u = Unit(a.unit, a.root)
             if a.apply:

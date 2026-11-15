@@ -162,9 +162,9 @@ A slot a rule record adds starts as a question the app asks the lawyer (`readFro
 
 ## 11. Known gaps of the guide
 
-An item of the guide test that is still answered two ways after one fix of the guide is written here, with both answers, and goes into the owner's question batch. A note that turns on such a sentence is labelled as the guide's protective reading says, and the gap is named in the report of any score it could touch.
+An item of the guide test that is still answered two ways after one fix of the guide is written here, with both answers, and goes into the owner's question batch when the two answers differ on a labelling convention, or into `reports/open-legal-questions.md` when they differ on a reading of the law (the owner's standing rule of 15 November 2026: legal-reading questions are never sent to the owner). A note that turns on such a sentence is labelled as the guide's protective reading says, and the gap is named in the report of any score it could touch.
 
-| Guide-test item | The two answers | Sent to the owner in |
+| Guide-test item | The two answers | Recorded in (the owner's batch, or open-legal-questions.md) |
 |---|---|---|
 | *(none yet)* | | |
 

@@ -61,7 +61,9 @@ The chain of [unit-driver.md](unit-driver.md) on each `p` and `c` copy, with **t
 
 The agents are told only "check this record". No prompt ever says that errors were planted, and the handbook's own prompts say truthfully, as they always do, that some statements may be wrong.
 
-State the runs before launching. Round 1: 10 copies (5 planted, 5 controls): 10 Sonnet attacks, 10 verifier runs, 10 Codex support calls. Round 2: 12 copies: 12, 12 and 12. A kind fixed and replanted (under 80 %) adds its copies' runs again, once.
+**Also in each round, on the real final records** (the owner's decision of 15 November 2026): Codex's support check of every item whose `proof` is `oneFamily` because a verifier changed or added its statement after the unit's last support check (formal-notice: 11 items after follow-up 3), one call per unit through `unit.py codex`, before the round's `regrade --all`, so that no such item can reach grade A unread by Codex. Its "no" and "partly" answers go to the unit's next follow-up like any other.
+
+State the runs before launching. Round 1: 10 copies (5 planted, 5 controls): 10 Sonnet attacks, 10 verifier runs, 10 Codex support calls. Plus one support call per real unit holding such items (round 1: formal-notice). Round 2: 12 copies: 12, 12 and 12. A kind fixed and replanted (under 80 %) adds its copies' runs again, once.
 
 ## The score
 

@@ -40,7 +40,7 @@ The driver starts every child process through `clean_env` (no API key in any chi
 | `python unit.py done <unit> <stage> <agent id>` | For an agent stage: checks that the outputs exist and pass their check; for a no-tool agent copies the reply from the transcript (`records.py ingest-reply`); writes the ledger's completion line. On failure it prints what is wrong and the rule to apply (always "delete, rerun fresh", never "repair"). |
 | `python unit.py codex <unit>` | Runs the unit's due Codex calls through the background queue ([codex-calls.md](codex-calls.md)) and records them. Returns at once; `status` shows them. |
 | `python unit.py verify-input <unit> [--followup]` | Builds the one file the verifier receives (stage 8, below); with `--followup`, the next follow-up file. |
-| `python unit.py questions --batch <n> <unit> [<unit> <unit>]` | Writes `<CL>\reports\questions\batch-<n>.md` for one to three units (below). |
+| `python unit.py questions <unit> [<unit> …]` | Writes the units' sections of `<CL>\reports\open-legal-questions.md` (below). |
 | `python unit.py tool` | Publishes the rules tool (fixed names, above). |
 | `python unit.py slots <unit> [--apply <reply file>]` | Stage 9's slot step; with `--apply`, writes the Arabic checker's corrected questions into `slots.json`. |
 | `python unit.py regrade --all` | Phase D, and after each planted-error round: rebuilds the store, re-quotes every final candidate, runs `check-values`, grades the modules, re-flattens and grades the claim types, rewrites `rules/reports/grades.md`. |
@@ -127,13 +127,13 @@ If the support check has not returned when the verifier is launched, the file sa
 - The prompt is `rules-verify`, filled for a follow-up: its record is `final-candidates\quoted\<unit>.json` (the last candidate, quoted), **not** the reconciled record; its register is `reports\<unit>.attacks.followup<n>.json`; it rewrites `final-candidates\<unit>.json` (git keeps the earlier one).
 - `records.py grade` is given every register of the unit in order (`--attacks` repeated) and takes **the latest verdict per attack id**.
 - An attack on an item a claim record **imports from a module** is not decided in the claim's run: the driver moves it into the module's next follow-up input, runs the module's follow-up, regrades the module, then re-flattens and regrades the claim types that import it.
-- More than two verifier runs on one unit is reported to the owner in the unit's batch.
+- More than two verifier runs on one unit is reported to the owner in the batch report.
 
 **The first module.** `formal-notice` was made before the driver existed: its attack file is `formal-notice.attacks.codex.json` (Codex's, with ids `cdx-…`), its third derivation is Codex's, and its registers are `attacks.json`, `attacks.followup.json`, `attacks.followup2.json`. `unit.py` carries a small legacy map for this one unit (stage 7b done by the `.codex` file; stage 8 done by the chain of registers), with a test, so that `status formal-notice` shows every stage done.
 
 ## Stage 8b: the rule
 
-**What Codex is offered.** The boundary runner prints, for every case, an `actual` outcome word beside the expected one (`<T> examples --boundary … --json`): the first word, in the order of the table of [rule-evaluator.md](rule-evaluator.md), whose condition the matched items meet. The two words offered for a case are its expected word and the record's `actual` word, in alphabetical order. A case that differs **only by its last day** (the same outcome word, another date) cannot be put as a choice of words: it is not sent to Codex; it goes into the owner's question batch with both dates, and counts as a failure meanwhile. A case that fails only because the evaluator knows no official holiday or weekly rest day is **an evaluator limit**: it is recorded as such in the tracking file and is not an attack. `prompts.py` fills the prompt (`subject` from the unit's row, `texts`, `cases`, `choices`).
+**What Codex is offered.** The boundary runner prints, for every case, an `actual` outcome word beside the expected one (`<T> examples --boundary … --json`): the first word, in the order of the table of [rule-evaluator.md](rule-evaluator.md), whose condition the matched items meet. The two words offered for a case are its expected word and the record's `actual` word, in alphabetical order. A case that differs **only by its last day** (the same outcome word, another date) cannot be put as a choice of words: it is not sent to Codex; it goes into `reports\open-legal-questions.md` with both dates, and counts as a failure meanwhile. A case that fails only because the evaluator knows no official holiday or weekly rest day is **an evaluator limit**, and one that fails only because the condition language cannot say what the text says is **a language limit**: the verifier's finding goes into `reports\<unit>.boundary-limits.json` (`{ "cases": [{ "case", "kind": "evaluatorLimit" | "languageLimit", "why", "foundBy" }] }`); `unit.py` lists it in the tracking file and in `open-legal-questions.md`, never sends it to Codex and never makes it a follow-up. `prompts.py` fills the prompt (`subject` from the unit's row, `texts`, `cases`, `choices`).
 
 For each case Codex was asked about, compare its answer with the case's own expected outcome:
 
@@ -150,16 +150,20 @@ For every entry of the final candidate's `proposedSlots` that `slots.json` does 
 
 Whether a new slot becomes something the reader reads from the note is decided in phase D ([scheme-extension.md](scheme-extension.md)), never here.
 
-## The owner's question batch
+## Open legal questions, and the owner's batch
 
-`unit.py questions --batch <n> <units>` reads the three units' final records and registers and writes `<CL>\reports\questions\batch-<n>.md`. One entry per open point whose `grade` is C or D **and** that names an item which could otherwise block or which changes what the lawyer is told (that selection is the driver's; no record field marks a point "for the owner"). Each entry, in plain language:
+**The owner's standing rule of 15 November 2026:** the owner is not the legal reviewer, and there is none. A question of legal reading (which reading of the law is right) is **never sent to the owner**: the record keeps the protective behaviour it has (it warns, keeps both readings, never blocks), the item stays at grade C or D, and the question is recorded in `reports/open-legal-questions.md` with its readings and what each would change (`unit.py questions <unit>`). The owner receives only decisions about the product, the process, the budget, tools, data or the stop points.
+
+`unit.py questions <units>` reads the units' final records and registers and writes each unit's section of `<CL>\reports\open-legal-questions.md` (a unit's section is replaced; the others are kept). One entry per open point whose `grade` is C or D **and** that names an item which could otherwise block or which changes what the lawyer is told (that selection is the driver's; no record field marks a point "for the owner"). Each entry, in plain language:
 
 1. the question in one sentence;
 2. the readings, each with the paragraph it rests on;
 3. **what the record does today** (the protective reading: it warns, or asks);
 4. what would change with each answer.
 
-Entries 1 to 3 are copied from the record. **Entry 4 is written by the executor, from the open point's `readings` only**: for each reading, what the item would then do (block, warn, ask, nothing). The executor adds nothing else of its own except a first paragraph with the units' grades and the sentence that the checks behind them were made inside one model family, apart from Codex's support check (HANDBOOK section 5b). The work goes on; an answer from the owner becomes an attack (`who: "owner"`) in a verifier run.
+Entries 1 to 3 are copied from the record. **Entry 4 is written by the executor, from the open point's `readings` only**: for each reading, what the item would then do (block, warn, ask, nothing). The command keeps an entry 4 already written while the open point's question, readings and protective reading are unchanged (a hash of them sits in a comment before the entry), and prints how many still need one. The section also lists the boundary cases the final record still fails, with the runner's message and any known limit. None of this is sent to the owner.
+
+**The owner's batch** (`<CL>\reports\questions\batch-<n>.md`) is written by the executor, by hand, only when a decision about the product, the process, the budget, tools, data or a stop point is needed. The work goes on; an answer that touches a record becomes an attack (`who: "owner"`) in a verifier run.
 
 ## The tracking rows
 

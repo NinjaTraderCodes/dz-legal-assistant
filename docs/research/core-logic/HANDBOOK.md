@@ -117,7 +117,15 @@ The owner is the product owner and developer. A reviewer (another Claude) writes
 8. **Blocking.** A rule may block the clean export "only when the text was proved mechanically or by two families, the value is matched by script, derivations A and B agreed, no attack is open, and the planted-error round caught that kind of error 90 % of the time; otherwise the rule warns. If Codex passes the speed trial, a Codex check counts as the second family for these conditions." (Of the trial the owner then said: "Today's figures already pass"; so a Codex check counts.)
 9. **Party kinds.** The owner confirmed the plan's reading: the app's relation and plaintiff-position lists and each event's actor, added to the reader's output as an optional part. ([notes/SCHEME.md](notes/SCHEME.md), section 3, says exactly which pairs that covers, and which values of the app's lists it never outputs.)
 10. **The laptop** writes and filters notes every night on mains, and by day whenever the owner says it is free.
-11. **Process.** Light checks after each commit, the full CI before every push; one driver for a unit's stages; the owner's questions bundled per batch of units.
+11. **Process.** Light checks after each commit, the full CI before every push; one driver for a unit's stages; the owner's questions bundled per batch of units (since 15 November: product and process questions only; questions of legal reading go to `reports/open-legal-questions.md`, below).
+
+### 15 November 2026, after question batch 1 (the owner's words, essentials)
+
+1. **The owner's standing rule of 15 November 2026:** the owner is not the legal reviewer, and there is none. A question of legal reading (which reading of the law is right) is **never sent to the owner**: the record keeps the protective behaviour it has (it warns, keeps both readings, never blocks), the item stays at grade C or D, and the question is recorded in `reports/open-legal-questions.md` with its readings and what each would change (`unit.py questions <unit>`). The owner receives only decisions about the product, the process, the budget, tools, data or the stop points.
+2. Batch 1: keep today's behaviour for all 13 questions (o1 to o14) and move them to `open-legal-questions.md`.
+3. bc1: add a condition form that compares a date slot with another date (the petition date and other date slots) to the rule language and the evaluator, with tests, **before the `periods` module starts**; then run bc1 again.
+4. The 11 `oneFamily` items of formal-notice: no third support check now; Codex's support check reads them in the planted-error round, before any of them could reach grade A ([specs/planted-errors.md](specs/planted-errors.md)).
+5. The executor's four unforeseen choices of phase 0 (the known-limits file, bc1 decided with the support answers, Codex's view on bc7 before follow-up 3, the renamed support ids) and its two prompt edits are accepted.
 
 ### 15 November 2026, at the start of phase 0
 
@@ -430,7 +438,7 @@ Expected end: about 15 December 2026 (section 9).
 
 | Situation | Do |
 |---|---|
-| A guide-test item is answered differently by the two testers, or against its key | Fix the guide's wording, bump its version, rerun that item with both. Still two answers: write the item into SCHEME.md's list of known gaps and into the owner's question batch; it then counts as explained. Do not freeze with an unexplained item. (The cell items are outside this rule.) |
+| A guide-test item is answered differently by the two testers, or against its key | Fix the guide's wording, bump its version, rerun that item with both. Still two answers: write the item into SCHEME.md's list of known gaps, and into `reports/open-legal-questions.md` when the two answers differ on a reading of the law, or into the owner's question batch when they differ on a labelling convention (a data decision); it then counts as explained. Do not freeze with an unexplained item. (The cell items are outside this rule.) |
 | The items run returns fewer than 30 items, or lists `problems` | Fewer: a fresh run for the missing number. Each problem is a defect of the guide: fix it, bump the version, before the guide test. |
 | A Codex call is rejected by the event-log check | Its notes are discarded and its scenarios go back to the queue once. Two rejections in a row from one writer: stop that writer, keep the others, tell the owner. |
 | A usage-limit refusal | The pool stops. Record the time and the calls made. Do not retry before the window the refusal names; the remaining calls of that pool size run then. Report the calls of the window: that figure is the calendar's input. With no refusal at all, report the calls and tokens as a lower bound. |
@@ -477,7 +485,7 @@ Expected end: about 15 December 2026 (section 9).
 
 **In parallel:** stages 2, 2c and 2d of one unit; the same stage across up to three units. **One run per unit for every agent stage.** Say the number of runs before each launch: a module has 8 Claude runs and 2 Codex calls; a claim type 7 and 2; one more verifier run for each follow-up.
 
-**The owner's questions, bundled.** `PY unit.py questions --batch <n> <units>` writes `reports/questions/batch-<n>.md` for each batch of three units: each question in one plain sentence, the readings, **the protective reading the record already applies**, and what would change with each answer. The work never waits for a batch; an answer becomes an `owner` entry of a follow-up.
+**Questions of legal reading are never sent to the owner** (the owner's standing rule of 15 November 2026). `PY unit.py questions <units>` writes each unit's section of `reports/open-legal-questions.md`: each question in one plain sentence, the readings, **the protective behaviour the record keeps** (it warns, keeps both readings, never blocks; the item stays C or D), and what would change with each answer (entry 4, written by the executor from the readings only). The owner's batch, `reports/questions/batch-<n>.md`, holds only decisions about the product, the process, the budget, tools, data or the stop points; the work never waits for it, and an answer becomes an `owner` entry of a follow-up where it touches a record.
 
 **Done when, for a unit.** `<T> check --store` passes on the final record; every worked example passes; `check-checklist` is `ok`; no final record has a `proposedSlots` entry; every statement has a quote, a source, a grade and a proof label written by script; `unit.py status` shows stage 5 and stage 8 done (every difference has its line; every finding has a verdict with a quote); the unit's rows of the tracking file are filled.
 
@@ -496,11 +504,13 @@ Expected end: about 15 December 2026 (section 9).
 | The support check accepts more than one seeded false pair in five | Its "yes" answers in that call do not count. Run the call once more with fresh pairs. Again: stop Codex for this role and tell the owner (stop point "Codex fails its bar"). |
 | A unit waits more than 10 minutes for the Codex queue, or Codex refuses for a usage limit | Record it. The unit goes on; its items carry `supportCheckPending` and cannot be A until the call returns and a follow-up has decided its findings. |
 | The verifier sets a boundary case aside | Stage 8b. Codex gives the record's answer: the case stays a counted failure with the two-family reason. Codex gives the case writer's answer, or a third answer: the case becomes **uncertain**, and a follow-up makes the record keep both readings and warn. |
-| A boundary case differs from the record only by its last day | Not sent to Codex. It goes into the question batch with both dates, and counts as a failure meanwhile. |
+| A question turns on which reading of the law is right (an open point, a disputed or uncertain case, a last-day difference) | Never sent to the owner (standing rule of 15 November 2026). Keep the protective behaviour (warn, both readings, never block), leave the item at C or D, and record it with `PY unit.py questions <unit>` in `reports/open-legal-questions.md`; write its entry 4 from the readings. |
+| A boundary case differs from the record only by its last day | Not sent to Codex. It goes into `reports/open-legal-questions.md` with both dates, and counts as a failure meanwhile. |
 | A boundary case fails only because the evaluator knows no holiday or rest day | An evaluator limit: a line of the tracking file, not an attack. |
 | A step says "done" while another item still asks or warns about the same step | The runner reports it; it is an `owner` entry of the verifier's input (rule 7 of 14 November). |
 | An attack names an item that a claim record imports from a module | It goes to the module's next follow-up; then the module is regraded and the claim types that import it are re-flattened and regraded. |
-| After stage 9 a neighbour flag is unanswered, a value does not match, or the store refuses a cite | A follow-up. More than two verifier runs on one unit: say so in the unit's batch. |
+| After stage 9 a neighbour flag is unanswered, a value does not match, or the store refuses a cite | A follow-up. More than two verifier runs on one unit: say so in the batch report to the owner. |
+| A boundary case fails only by a limit of the evaluator or of the condition language, as a verifier found | A line of `rules/reports/<unit>.boundary-limits.json` (case, kind, why, found by): listed in the tracking file and in `open-legal-questions.md`; not an attack, not sent to Codex. |
 | A store correction changes the paragraph numbers of a cited article | A follow-up changes the cites. Never by script. |
 | A unit's item is grade D for an unverified text | Expected before phase D. It warns, marked "to check". List it; do not start a text pass for it. |
 | You "know" a record is wrong | Raise an attack with a source and send it through a follow-up like any other. |
@@ -509,7 +519,7 @@ Expected end: about 15 December 2026 (section 9).
 
 **Planted-error rounds** ([specs/planted-errors.md](specs/planted-errors.md)). Round 1 after the fifth final module; round 2 after the sixth final claim type. After each: `PY unit.py regrade --all`. Until round 2 a kind counts as caught only when every one of its plants was caught and there were at least three. Neither round is a stop point.
 
-**Report to the owner, after each batch of three units:** the commit id; units final; for each: agreement before reconciliation, attacks fixed, refuted and open, grades with how many may block, boundary cases passed; the proof sentence of section 5b; the question batch file; the running totals of runs and calls against section 9; what is next.
+**Report to the owner, after each batch of three units:** the commit id; units final; for each: agreement before reconciliation, attacks fixed, refuted and open, grades with how many may block, boundary cases passed; the proof sentence of section 5b; the entries added to `open-legal-questions.md` (counted, never put to the owner) and the owner's batch file if a product or process decision is needed; the running totals of runs and calls against section 9; what is next.
 
 ### Phase B, reader track. The sets, the volume and the first rungs (about a week)
 
@@ -706,13 +716,13 @@ Keep a line in each report: where the work stands against this table, and why if
 
 Every report to the owner is short and in plain language (the owner is a developer, not a lawyer and not a machine-learning specialist): **what is done** (with the commit id), **what is uncertain**, **what is next**, and, at a stop point, **the one question**. Numbers come with their meaning. Never round a result up. Never present a model's agreement as verification. When a target is missed, say so in the first paragraph. Where a result rests on checks inside one model family, say so in the same sentence (section 5b).
 
-Reports are also committed. Under `docs/research/core-logic/reports/`: `pilot.md`, `learning-curve.md`, `reader.md`, `step-5.md`, `step-1-tracking.md` (kept up to date by the driver), `questions/batch-<n>.md`, `legal-review/`. Under `docs/research/core-logic/rules/reports/`: `planted-errors.md` and `.json`, `grades.md`. Under `docs/research/core-logic/law/`: `REPORT.md`. Under `docs/research/core-logic/results/`: the pre-commitments, `RUNS.md` and the summaries.
+Reports are also committed. Under `docs/research/core-logic/reports/`: `pilot.md`, `learning-curve.md`, `reader.md`, `step-5.md`, `step-1-tracking.md` (kept up to date by the driver), `open-legal-questions.md` (by `unit.py questions`), `questions/batch-<n>.md`, `legal-review/`. Under `docs/research/core-logic/rules/reports/`: `planted-errors.md` and `.json`, `grades.md`. Under `docs/research/core-logic/law/`: `REPORT.md`. Under `docs/research/core-logic/results/`: the pre-commitments, `RUNS.md` and the summaries.
 
 **Which report carries which proof sentence** (the owner: "State it wherever a result appears"). Each of these says, in its first lines, what its figures rest on:
 
 | Report | The sentence it must carry |
 |---|---|
-| the phase 0 report; every batch report of the rules track; `step-1-tracking.md` (header); `questions/batch-<n>.md`; `rules/reports/grades.md` | derivations, attack, adversary and verifier are Claude models; Codex's support check is the one reading by another family; a belief the Claude models share is not caught; the triage behind the amendment ledger is one Sonnet reading per issue |
+| the phase 0 report; every batch report of the rules track; `step-1-tracking.md` (header); `open-legal-questions.md`; `questions/batch-<n>.md`; `rules/reports/grades.md` | derivations, attack, adversary and verifier are Claude models; Codex's support check is the one reading by another family; a belief the Claude models share is not caught; the triage behind the amendment ledger is one Sonnet reading per issue |
 | `notes/GUIDE-TEST-RESULTS.md`; the cells table of `notes/SCHEME.md`; `pilot.md` (its guide-test part) | decided by two Claude models |
 | `learning-curve.md`; `reader.md`; the phase C report | the Codex halves and the clean splits rest on two families; the Sonnet halves on labels two Claude models agreed on, with a code-made scenario |
 | `step-5.md` | faithfulness is a script's; both judges of usability are Claude models |

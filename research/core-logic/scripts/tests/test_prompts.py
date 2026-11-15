@@ -210,3 +210,16 @@ def test_the_adversary_gets_the_triage_leads_recorded_for_its_unit():
     labour = prompts.leads_for("unpaid-wages")
     assert labour.startswith("- Official Journal issue ") and "free zone" in labour
     assert "Official Journal issue" in prompts.leads_for("ordinary-court-exits")
+
+
+def test_a_follow_up_verifier_run_reads_the_last_candidate_and_writes_its_own_register(tmp_path, monkeypatch):
+    """specs/unit-driver.md, "Follow-up verifier runs": never the reconciled record, never the first register."""
+    values = prompts.values_for("rules-verify", "formal-notice", followup=2)
+    assert "final-candidates" in values["record_paths"] and "quoted" in values["record_paths"]
+    assert "reconciled" not in values["record_paths"]
+    assert "formal-notice.attacks.followup2-input.json" in values["attack_paths"]
+    assert "formal-notice.attacks.followup.json" in values["attack_paths"]  # an earlier register, to read only
+    assert values["register_paths"].strip().endswith("formal-notice.attacks.followup2.json`")
+    _, body = prompts.template("rules-verify")
+    assert not set(prompts.PLACEHOLDER.findall(body)) - set(values)
+

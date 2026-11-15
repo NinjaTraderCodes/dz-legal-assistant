@@ -196,7 +196,7 @@ def _run_file(unit: str, name: str) -> str:
         return f.read().strip("\n")
 
 
-def values_for(prompt: str, unit: str) -> dict[str, str]:
+def values_for(prompt: str, unit: str, followup: int = 0) -> dict[str, str]:
     base = {"worktree": st.REPO, "unit_id": unit, "module_id": unit, "unit_kind": "module",
             "store_path": STORE_JSON, "store_text": STORE_TEXT, "rules_tool": RULES_TOOL}
     if prompt in ("rules-derive-a", "rules-derive-b"):
@@ -243,7 +243,33 @@ def values_for(prompt: str, unit: str) -> dict[str, str]:
                 paths.append((os.path.join(reports, f"{u}.c-comparison.json"), "(its `attacks` list only)"))
             return paths
 
+        def register(u, k):  # the register of the first run (k = 0) or of follow-up k; follow-up 1 was named without "1"
+            return os.path.join(reports, f"{u}.attacks.json" if k == 0 else
+                                f"{u}.attacks.followup.json" if k == 1 else f"{u}.attacks.followup{k}.json")
+
         ledger = os.path.join(CL, "law", "amendment-ledger.json")
+        if followup:  # specs/unit-driver.md, "Follow-up verifier runs"
+            if len(units) != 1:
+                raise ValueError("a follow-up is for one unit")
+            u = units[0]
+            earlier = [register(u, k) for k in range(followup) if os.path.isfile(register(u, k))]
+            base.update(units=f"`{u}`",
+                        record_paths=listing(lambda u: [(os.path.join(rules_dir, "final-candidates", "quoted", f"{u}.json"),
+                                                         "(the record as the earlier verification runs left it, with "
+                                                         "its quotes)")]),
+                        attack_paths=listing(lambda u: [(os.path.join(reports, f"{u}.attacks.followup{followup}-input.json"),
+                                                         "(only these entries are to be decided now; the earlier "
+                                                         "registers " + " and ".join(f"`{e}`" for e in earlier) +
+                                                         " may be read for what was already decided, and are not to be "
+                                                         "edited)")]),
+                        reconciliation_paths=listing(lambda u: [os.path.join(reports, f"{u}.reconciliation.md")]),
+                        register_paths=listing(lambda u: [register(u, followup)]),
+                        candidate_paths=listing(lambda u: [(os.path.join(rules_dir, "final-candidates", f"{u}.json"),
+                                                            "(the corrected record replaces it)")]),
+                        requests_path=os.path.join(CL, "law", "requests.jsonl"),
+                        ledger_path=ledger if os.path.isfile(ledger) else "(none yet: the amendment ledger does not exist)",
+                        oj_fetch=oj_fetch_command(u, 'verify'))
+            return base
         base.update(units=", ".join(f"`{u}`" for u in units),
                     record_paths=listing(lambda u: [os.path.join(rules_dir, "reconciled", "quoted", f"{u}.json")]),
                     attack_paths=listing(attacks_of),
@@ -265,13 +291,14 @@ def main(argv=None) -> int:
     f.add_argument("prompt")
     f.add_argument("--unit", required=True)
     f.add_argument("--out", required=True)
+    f.add_argument("--followup", type=int, default=0, help="rules-verify only: the number of the follow-up run")
     a = p.parse_args(argv)
     if a.cmd == "fill":
         if unit.published_tool() is None:
             print("the rules tool is not published: run unit.py tool first", file=sys.stderr)
             return 1
         _, body = template(a.prompt)
-        text = fill(body, values_for(a.prompt, a.unit))
+        text = fill(body, values_for(a.prompt, a.unit, a.followup))
         with open(a.out, "w", encoding="utf-8", newline="\n") as fh:
             fh.write(text)
         print(a.out, len(text), "characters")

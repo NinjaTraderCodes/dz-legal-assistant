@@ -44,6 +44,6 @@ public sealed class PeriodTests
     public void ThePlaceholdersAreTheOnesTheSpecificationNames()
     {
         Assert.Equal([DayOfWeek.Friday, DayOfWeek.Saturday], Periods.UnsourcedRestDays.Order());
-        Assert.Equal(CountingMethod.ExcludeFirstDay, Periods.UnsourcedMethodWithoutCounting);
+        Assert.Equal(CountingMethod.ExcludeFirstDay, Periods.MethodWithoutCounting);
     }
 }

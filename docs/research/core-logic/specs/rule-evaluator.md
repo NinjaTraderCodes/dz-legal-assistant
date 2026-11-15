@@ -119,6 +119,8 @@ A case whose expectation is wrong under the text is never corrected: the reconci
   1. Calendar arithmetic for months and years: the same day number in the last month, or that month's last day when it is shorter.
   2. The non-working days used by `extendToWorkingDay`: a constant list of weekly rest days (Friday and Saturday), unsourced until the `periods` module cites the text that sets them. Official holidays are **not** known to the evaluator, which is one reason for the warning band.
   3. A deadline **without** `counting` (the texts did not settle it; the deadline is interpretive and so warns at most): counted as `excludeFirstDay` without extension, only so that a date can be shown.
+
+  **Since `periods` is final (15 November 2026):** its two methods are sourced (`excludeFirstDay`: its b11, civil-code 314 ¶1; `excludeFirstAndLastDay` with `extendToWorkingDay`: its b32 and b35, cpca 405 ¶1 and ¶4), and item 3 is no longer a placeholder: `excludeFirstDay` is that record's rule for a limitation period and the earlier of its two methods (`Periods.MethodWithoutCounting`). Items 1 and 2 stay unsourced: the record counts by the Gregorian calendar (b27, grade D) but no text says where a month ends when the last month is shorter, and the texts that set the rest days and holidays (b34) are not in the store (its open point o7).
 - The `periods` module is finalised before any unit with a deadline is reconciled (HANDBOOK section 7, "The order of units"); every record writes its own `counting`, citing its own statements.
 
 ## The command-line tool

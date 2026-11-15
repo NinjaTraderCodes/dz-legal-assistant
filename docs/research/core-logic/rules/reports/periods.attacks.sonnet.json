@@ -1,0 +1,117 @@
+{
+ "attacks": [
+  {
+   "target": "d1",
+   "kind": "wrongCondition",
+   "claim": "d1 (15 years) excludes only wage claims. It still fires together with d6, d7 and d8 when claim_is_professional_fees, claim_is_trader_supply_or_hotel or claim_is_periodic_renewable_right is yes. The text of b1 gives way to a special text, and the 2-, 1- and 5-year periods are special texts. The result is a 15-year warning band on a claim whose real period is 1 to 5 years. d1 also stays silent for debts owed to the State (4 years, b45), where public_body_party is yes.",
+   "evidenceWords": "فيما عدا الحالات التى ورد فيها نص خاص فى القانون وفيما عدا الاستثناءات الآتية",
+   "fromMemory": false,
+   "id": "atk-1"
+  },
+  {
+   "target": "d4",
+   "kind": "wrongEffect",
+   "claim": "d3 (1 year) and d4 (5 years) both fire on every wage claim with the same start date and the same warn effect. The two texts conflict. Only d3 is marked interpretive with readings, and d4 carries no flag and no readings. A wage claim 2 to 4 years old therefore gets a firm warning from d3 and nothing from d4, instead of one flagged ambiguity.",
+   "evidenceWords": "يتقادم بخمس سنوات كل حق دورى متجدد ولو أقر به المدين كأجرة المبانى، والديون المتأخرة، والمرتبات والاجور",
+   "fromMemory": false,
+   "id": "atk-2"
+  },
+  {
+   "target": "d1",
+   "kind": "exception",
+   "claim": "The not-cited 316 para 3 says a period longer than five years does not run against persons lacking capacity, even if they have a legal representative. d1 and d2 (15 years) ignore it. No slot records the plaintiff's incapacity, absence or criminal sentence. A 15-year warning can fire when the period has not in fact run.",
+   "evidenceWords": "ولا يسرى التقادم الذى تزيد مدته على خمس سنوات فى حق الاشخاص المذكورين فى الفقرة السابقة ولو كان لهم نائب قانونىّ طيلة مدة عدم أهليتهم",
+   "fromMemory": false,
+   "id": "atk-3"
+  },
+  {
+   "target": "d3",
+   "kind": "exception",
+   "claim": "The not-cited 316 para 2 says a period of less than five years does not run against persons without capacity, absent persons or persons serving criminal sentences who have no legal representative. It applies to the 1-year wage period of d3, and equally to d6 and d7. d3 has no condition for it. The not-cited 316 para 1 (a lawful impediment, or principal and representative) is also ignored.",
+   "evidenceWords": "ولا يسرى التقادم الذى تنقضى مدته عن خمس سنوات فى حق عديمى الاهلية والغائبين والمحكوم عليهم بعقوبات جنائية اذا لم يكن لهم نائب قانونى",
+   "fromMemory": false,
+   "id": "atk-4"
+  },
+  {
+   "target": "d3",
+   "kind": "exception",
+   "claim": "d3 lists b21 among its bases, but the not-cited 319 para 2 is not applied. When a one-year debt was interrupted by the debtor's acknowledgment, the new period is fifteen years, not one. d3 has no slot or branch for an acknowledgment, so it can warn about a period that has become 15 years.",
+   "evidenceWords": "أو اذا كان الدين يتقادم بسنة وانقطع تقادمه باقرار المدين، كانت مدة التقادم الجديد خمسة عشرة سنة",
+   "fromMemory": false,
+   "id": "atk-5"
+  },
+  {
+   "target": "d8",
+   "kind": "exception",
+   "claim": "The not-cited 309 para 2 sets a 15-year period for revenue owed by a bad-faith possessor or by the manager of jointly owned property. d8 treats every periodic renewable right as 5 years. A claim for revenue (ريع) owed by a bad-faith possessor, with claim_is_periodic_renewable_right yes, gets a 5-year warning that the text contradicts.",
+   "evidenceWords": "غير أنه لا يسقط الريع المستحق في ذمة الحائز سىء النية، ولا الريع الواجب آداؤه على متصرف المال المشاع للمستحقين الا بانقضاء خمس عشرة سنة",
+   "fromMemory": false,
+   "id": "atk-6"
+  },
+  {
+   "target": "d7",
+   "kind": "wrongCondition",
+   "claim": "b10 says that if a written instrument is drawn up for a right of this kind, the period is fifteen years. d7 fires a 1-year warning (and d4, d6 and d8 their own periods) with no slot or exclusion for such an instrument. A claim backed by a written instrument gets a wrong short-period warning.",
+   "evidenceWords": "واذا حرر سند بحق من هذه الحقوق فلا يتقادم الحق الا بانقضاء خمسة عشرة سنة",
+   "fromMemory": false,
+   "id": "atk-7"
+  },
+  {
+   "target": "d6",
+   "kind": "wrongCondition",
+   "claim": "d6 starts the period at the date the fee or expense fell due (b12). The adjacent cited rule b9 (313 para 1) starts the period when the creditors complete their services, even if they go on with others. b9 is not among d6's bases, so a continuing professional engagement gets the wrong start date. The literal text of 313 para 1 names articles 309 and 311, not 310 or 312. That mismatch should be flagged, not silently resolved.",
+   "evidenceWords": "يبدأ سريان التقادم فى الحقوق المذكورة فى المادتين 309 و 311 من الوقت الذى يتم فيه الدائنون تقديـم خدماتهم ولو استمروا فى أداء خدمات أخرى",
+   "fromMemory": false,
+   "id": "atk-8"
+  },
+  {
+   "target": "d5",
+   "kind": "wrongEffect",
+   "claim": "d5 blocks a clean export outright. Its own text has a force majeure exception and a procedure for lifting the forfeiture (b38, b39), and raisedBy is only 'unclear'. The slot forfeiture_lifted_by_order is not in the slot list. No slot records force majeure or court-disruption events, so a lawful late claim is blocked and the lawyer cannot record the exception. A warning would fit better. With nonconciliation_record yes and the delivery date missing, the period cannot be computed, yet d5 still decides.",
+   "evidenceWords": "باستثناء حالة القوة القاهرة أو وقوع أحداث من شأنها التأثير في السير العادي لمرفق العدالة",
+   "fromMemory": false,
+   "id": "atk-9"
+  },
+  {
+   "target": "b41",
+   "kind": "misreading",
+   "claim": "b41 adds a condition ('the defendant missed two meetings in a row') that is not in the quoted paragraph 30 para 2. The quoted text only says a copy is handed to the plaintiff during the meeting. The condition comes from an uncited neighbouring paragraph. Since the delivery date drives d5's start, this changes when the 6 months begin.",
+   "evidenceWords": "تسلم نسخة من المحضر الى المدعي اثناء الاجتماع",
+   "fromMemory": false,
+   "id": "atk-10"
+  },
+  {
+   "target": "d1",
+   "kind": "missing",
+   "claim": "None of the period rules handles interruption or suspension. All of them count from the due date or the act date. A debtor's acknowledgment, a command to pay, a seizure, a bankruptcy request or a judicial claim (even before a court without jurisdiction) restarts the period. There are no slots for any of these, so a debt that looks time-barred may be live, and the reverse. An acknowledgment of a 5-year debt does not extend it, but one of a 1-year debt makes it 15 years.",
+   "evidenceWords": "ينقطع التقادم بالمطالبة القضائية ولو رفعت الدعوى الى محكمة غير مختصة بالتنبيه أو بالحجز",
+   "fromMemory": false,
+   "id": "atk-11"
+  },
+  {
+   "target": "b45",
+   "kind": "missing",
+   "claim": "b45 (4 years for taxes and dues owed to the State, with special start days) has no deadline item. The slot public_body_party exists but no rule uses it. A claim by the State for taxes or dues gets d1's 15-year warning instead of 4 years. Its starting days (end of the year for annual dues, end of the pleadings for judicial paper dues) are not modelled.",
+   "evidenceWords": "تتقادم بأربع سنوات الضرائب، والرسوم المستحقة للدولة",
+   "fromMemory": false,
+   "id": "atk-12"
+  },
+  {
+   "target": "b17",
+   "kind": "misreading",
+   "claim": "b17 says the long period does not run against 'the same persons while they lack capacity'. The text refers to all the persons named in the previous paragraph: persons without capacity, absent persons and persons serving criminal sentences. It also says the rule holds for the whole period of incapacity (طيلة مدة عدم أهليتهم). b17 narrows it to incapacity alone and drops absent persons and convicts.",
+   "evidenceWords": "فى حق الاشخاص المذكورين فى الفقرة السابقة ولو كان لهم نائب قانونىّ طيلة مدة عدم أهليتهم",
+   "fromMemory": false,
+   "id": "atk-13"
+  },
+  {
+   "target": "d3",
+   "kind": "missing",
+   "claim": "Several slots exist that no period rule uses: employer_in_bankruptcy_or_settlement, worker_is_public_servant, work_accident_or_occupational_illness and defendant_resides_abroad. A wage or social claim by a public servant, or one tied to a work accident, may fall under a different regime. The rules neither route these cases nor warn that they are not covered.",
+   "evidenceWords": "",
+   "fromMemory": false,
+   "id": "atk-14"
+  }
+ ],
+ "nothingFound": false
+}

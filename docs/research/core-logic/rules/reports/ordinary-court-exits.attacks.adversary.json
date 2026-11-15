@@ -1,0 +1,128 @@
+[
+  {
+    "id": "adv-1",
+    "target": "d2, r6, b-ex7, b-ex8, r14, b17",
+    "kind": "misreading",
+    "claim": "d2 starts the two-month period from the notification of any refusal of the grievance, but cpca 830 ¶4 starts it from the refusal only when the administration answered within the two months it is given (خلال الأجل الممنوح لها). When the administration stayed silent for two months, ¶2 and ¶3 make the silence a refusal and the two months run from the end of the silence; a late explicit refusal does not restart them. Example r6 shows the error: decision notified 2025-06-01, so the grievance was lodged by early October 2025 at the latest, the silence ended by early December 2025 and the period closed by early February 2026, yet a refusal notified 2026-05-04 makes d2 report 'none' for a petition of 2026-06-01, which is out of time.",
+    "source": {
+      "tier": 1,
+      "url": "https://www.joradp.dz/FTP/JO-ARABE/2008/A2008021.pdf",
+      "what": "Law 08-09 of 25 February 2008 (Code of Civil and Administrative Procedure), art. 830 ¶2 to ¶4, Official Journal 2008 issue 21 (23 April 2008), page 78; not touched by law 22-13 according to the ledger. Same words as the record's own quotes b16 and b17.",
+      "retrievedOn": "2026-11-15"
+    },
+    "quoteArabic": "يعد سكوت الجهة الإدارية المتظلم أمامها عن الرد، خلال شهرين (2)، بمثابة قرار بالرفض ويبدأ هذا الأجل من تاريخ تبليغ التظلم. وفي حالة سكوت الجهة الإدارية، يستفيد المتظلم من أجل شهرين (2)، لتقديم طعنه القضائي، الذي يسري من تاريخ انتهاء أجل الشهرين (2) المشار إليه في الفقرة أعلاه. في حالة رد الجهة الإدارية خلال الأجل الممنوح لها، يبدأ سريان أجل شهرين (2) من تاريخ تبليغ الرفض.",
+    "consequence": "d2 may count from administrative_grievance_rejection_date only when the refusal was notified within two months of the notification of the grievance; otherwise the period runs from the end of the two-month silence, which needs the date the grievance was notified (open point o10 is therefore not only about the silence case: it decides every case where the refusal came late). Example r6 should expect a warning, not 'none'. d1 should also not be switched off merely because administrative_grievance_filed is yes: a grievance lodged after the 829 period does not open d2 at all (830 ¶1)."
+  },
+  {
+    "id": "adv-2",
+    "target": "x4, specialised_commercial_courts_installed, b-ex10, r7, o1, b32, b33",
+    "kind": "specialLaw",
+    "claim": "The record treats a specialised commercial court that is 'not installed' for the area as sending the dispute back to the commercial section (x4 gives no exit when the slot is no). Executive decree 26-133 of 30 March 2026, amending decree 23-53, raises the specialised commercial courts to 25, installs the new ones progressively, and extends the territorial jurisdiction of the courts installed before it over the area of each new court until that court is installed. Since the 12 courts of decree 23-53 cover the whole territory, there is no area left to the commercial section for the matters of 536 مكرر: the answer 'not installed' sends the lawyer to a section that lacks subject-matter jurisdiction (531 ¶1, 36 ¶1).",
+    "source": {
+      "tier": 1,
+      "url": "https://www.joradp.dz/FTP/JO-ARABE/2026/A2026027.pdf",
+      "what": "Executive decree 26-133 of 30 March 2026 amending and completing executive decree 23-53 of 14 January 2023 fixing the territorial areas of the specialised commercial courts, arts. 2, 2 مكرر, 2 مكرر 1, 2 مكرر 2 and annex, Official Journal 2026 issue 27 (12 April 2026), pages 10 and 11. Decree 23-53 itself: Official Journal 2023 issue 02 (15 January 2023), pages 18 and 19 (12 courts covering every judicial council). Lead only (tier 3, Radio Algérie news page): installation of the 12 courts began on 23 January 2023.",
+      "retrievedOn": "2026-11-15"
+    },
+    "quoteArabic": "المادة 2 مكرر: تنصب المحاكم التجارية المتخصصة الجديدة تدريجيا، عند توفر جميع الشروط الضرورية لسيرها. المادة 2 مكرر 1: يمتد الاختصاص الإقليمي للمحاكم التجارية المتخصصة المنصبة قبل صدور هذا المرسوم، إلى دائرة الاختصاص الإقليمي للمحاكم التجارية المتخصصة الجديدة إلى حين تنصيب هذه الأخيرة. المادة 2 مكرر 2: تبقى الإجراءات القائمة أمام المحاكم التجارية المتخصصة المختصة قبل صدور هذا المرسوم، من اختصاص نفس هذه الجهة القضائية دون تحويلها إلى المحكمة التجارية المتخصصة الجديدة، المختصة إقليميا.",
+    "consequence": "x4 should not fall silent when the court of the area is said to be not installed: the matter still leaves the commercial section for the specialised commercial court whose jurisdiction extends over the area. The installed slot (and examples b-ex10 and r7) loses its role as an exit switch; law-22-13 13 ¶2 matters only for cases filed before January 2023. o1 is answerable from the Official Journal rather than left to the lawyer."
+  },
+  {
+    "id": "adv-3",
+    "target": "t2, k14, k42, x4, b28",
+    "kind": "specialLaw",
+    "claim": "t2 says only that the code's territorial rules apply to the specialised commercial court, and k14/k42 record the seats and areas as not found. The areas are fixed by executive decree 23-53, now replaced in its annex by decree 26-133: each of the 25 courts covers named judicial councils (for example Sétif covers Sétif, M'sila and Bordj Bou Arreridj; Boumerdès covers Boumerdès, Bouira and Tizi Ouzou). The code's rule (defendant's domicile, art. 37) only picks the council; the court is the specialised commercial court whose annex area contains that council, which is usually not in the same wilaya.",
+    "source": {
+      "tier": 1,
+      "url": "https://www.joradp.dz/FTP/JO-ARABE/2026/A2026027.pdf",
+      "what": "Executive decree 26-133 of 30 March 2026, art. 2 (replacing art. 2 of decree 23-53) and annex «دوائر الاختصاص الإقليمي للمحاكم التجارية المتخصصة», Official Journal 2026 issue 27, pages 10 and 11; original decree 23-53, Official Journal 2023 issue 02, pages 18 and 19 (https://www.joradp.dz/FTP/JO-ARABE/2023/A2023002.pdf).",
+      "retrievedOn": "2026-11-15"
+    },
+    "quoteArabic": "يحدد عدد المحاكم التجارية المتخصصة بخمس وعشرين (25) محكمة عبر كامل التراب الوطني، تحدد دوائر اختصاصها الإقليمي طبقا للملحق المرفق بهذا المرسوم.",
+    "consequence": "t2 should name the decree and direct the lawyer to the specialised commercial court whose annex area contains the council of the competent place, not merely to the code's general rules; k14 and k42 are no longer searchedNotFound."
+  },
+  {
+    "id": "adv-4",
+    "target": "k16, k17, k18, k20, o3, x6, n7",
+    "kind": "amendment",
+    "claim": "The record cites the Code of Criminal Procedure by the articles of Ordinance 66-155 (arts. 2, 3, 4, 5, 10) and grades o3 'D, from memory' because the code is not in the store. Ordinance 66-155 was repealed by law 25-14 of 3 August 2025, the new Code of Criminal Procedure, published in the Official Journal of 13 August 2025. The civil-action rules are now arts. 3 to 7 of law 25-14 and the limitation of the civil action is art. 17 (civil code rules, but no filing before the criminal court once the public action is time-barred).",
+    "source": {
+      "tier": 1,
+      "url": "https://www.joradp.dz/FTP/JO-ARABE/2025/A2025054.pdf",
+      "what": "Law 25-14 of 3 August 2025 on the Code of Criminal Procedure, arts. 4, 5, 6, 7 (page 8), art. 17 (page 9) and art. 889 (page 108), Official Journal 2025 issue 54 (13 August 2025).",
+      "retrievedOn": "2026-11-15"
+    },
+    "quoteArabic": "المادة 889: يلغى الأمر رقم 66-155 المؤرخ في 18 صفر عام 1386 الموافق 8 يونيو سنة 1966 والمتضمن قانون الإجراءات الجزائية، المعدل والمتمم. المادة 4: يجوز مباشرة الدعوى المدنية مع الدعوى العمومية في وقت واحد أمام الجهة القضائية الجزائية. المادة 6: لا يسوغ للخصم الذي يباشر دعواه أمام الجهة القضائية المدنية المختصة أن يرفعها أمام الجهة القضائية الجزائية. المادة 17: ... تتقادم الدعوى المدنية وفق أحكام القانون المدني. غير أنه لا يجوز رفع هذه الدعوى أمام الجهة القضائية الجزائية بعد انقضاء أجل تقادم الدعوى العمومية.",
+    "consequence": "Checklist lines k16 to k20 should cite law 25-14 (arts. 4, 5, 6, 17), not Ordinance 66-155; o3's readings can be replaced by quoted text and its grade raised; the store needs the new code."
+  },
+  {
+    "id": "adv-5",
+    "target": "x6, n7, k17, k45, b38, r10, a-ex10, b-ex12",
+    "kind": "procedure",
+    "claim": "The record says no general rule stays the civil claim while a criminal case runs (k45: only the handwriting stay of cpca 165 ¶4 was found) and x6 only warns about civil-code 339. Law 25-14 art. 5 ¶2 obliges the civil court to defer judgment on a civil action for damage from an offence until the public action, once set in motion, is finally decided. Art. 6 makes the choice of the civil route binding, unless the prosecution starts before the civil court rules on the merits, in which case the victim must withdraw the civil claim. Art. 7 keeps the urgent-matters judge competent for provisional measures.",
+    "source": {
+      "tier": 1,
+      "url": "https://www.joradp.dz/FTP/JO-ARABE/2025/A2025054.pdf",
+      "what": "Law 25-14 of 3 August 2025 (Code of Criminal Procedure), arts. 5 ¶2, 6 and 7, Official Journal 2025 issue 54, page 8.",
+      "retrievedOn": "2026-11-15"
+    },
+    "quoteArabic": "المادة 5: يجوز أيضا مباشرة الدعوى المدنية منفصلة عن الدعوى العمومية. غير أنه يتعيّن أن ترجئ الجهة القضائية المدنية الحكم في الدعوى المرفوعة أمامها لحين الفصل نهائيا في الدعوى العمومية إذا كانت قد حركت. المادة 6: ... إلا أنه يجوز ذلك إذا كانت النيابة العامة قد باشرت الدعوى العمومية قبل أن يصدر من الجهة القضائية المدنية حكم في الموضوع، ويتعيّن على المدعي المدني، في هذه الحالة، التنازل عن دعواه المدنية المرفوعة أمام الجهة القضائية المدنية.",
+    "consequence": "When criminal_case_on_same_facts is yes and the claim rests on damage from the offence, x6 should state that the civil court must defer judgment until the criminal case is final (law 25-14 art. 5 ¶2), and that a civil claim already filed must be withdrawn if the victim then joins the prosecution (art. 6), so the lawyer can weigh the route before filing. k17 and k45 change from searchedNotFound to applies, and b38 is no longer the only stay text."
+  },
+  {
+    "id": "adv-6",
+    "target": "t3, x7, k49, n5",
+    "kind": "exception",
+    "claim": "t3 always sends the request for an order to pay to the president of the court of the debtor's domicile. For a debt in one of the matters of the specialised commercial court (for example a bank's claim against a merchant), art. 536 مكرر 6 ¶1 gives the president of the specialised commercial court every power of the president of the ordinary court in commercial disputes, which includes the order to pay of art. 306. Its ¶2 also gives urgent and protective measures in these matters to a section president of the specialised court, which n5 does not mention.",
+    "source": {
+      "tier": 1,
+      "url": "https://www.joradp.dz/FTP/JO-ARABE/2022/A2022048.pdf",
+      "what": "Law 22-13 of 12 July 2022 amending law 08-09, inserting art. 536 مكرر 6, Official Journal 2022 issue 48 (17 July 2022), page 4. That the payment-order power passes to the specialised court's president is a reading of the words «كل الصلاحيات».",
+      "retrievedOn": "2026-11-15"
+    },
+    "quoteArabic": "المادة 536 مكرر 6: يمارس رئيس المحكمة التجارية المتخصصة كل الصلاحيات الموكلة لرئيس المحكمة العادية في المنازعات التجارية. يمكن رئيس قسم بالمحكمة التجارية المتخصصة أن يتخذ، عن طريق الاستعجال، الإجراءات المؤقتة أو التحفظية للحفاظ على الحقوق موضوع النزاع وفق الإجراءات المنصوص عليها في هذا القانون والنصوص الخاصة.",
+    "consequence": "When debt_written_fixed_due is yes and specialised_commercial_matter is not none, t3 and the x7 message should warn that the request may belong to the president of the specialised commercial court of the area (decree 23-53 as amended), not to the president of the ordinary court of the debtor's domicile; n5 should name 536 مكرر 6 ¶2 for urgent measures in these matters."
+  },
+  {
+    "id": "adv-7",
+    "target": "x1, k1, k28, b1",
+    "kind": "specialLaw",
+    "claim": "x1 warns 'administrative court' whenever a public body is a party. Law 08-08 on social security disputes keeps the general disputes between a social security body and an insured person or employer before the ordinary court of the code of civil procedure (art. 15), after a compulsory prior recourse before the recourse commissions (art. 4), and sends to the administrative courts only the disputes between public institutions and administrations as employers and the social security bodies (art. 16). This is one of the disputes 'given to other courts' that cpca 800 ¶1 reserves. A lawyer suing CNAS or CASNOS who answers public_body_party = yes is pointed to the wrong order and is not told of the prior recourse.",
+    "source": {
+      "tier": 1,
+      "url": "https://www.joradp.dz/FTP/JO-ARABE/2008/A2008011.pdf",
+      "what": "Law 08-08 of 23 February 2008 on social security disputes, arts. 3 and 4 (page 8), arts. 15 and 16 (page 9), Official Journal 2008 issue 11 (2 March 2008). Later amendments to law 08-08 were not searched. The legal character of CNAS and CASNOS is not on these pages.",
+      "retrievedOn": "2026-11-15"
+    },
+    "quoteArabic": "المادة 4: ترفع الخلافات المتعلقة بالمنازعات العامة إجباريا أمام لجان الطعن المسبق، قبل أي طعن أمام الجهات القضائية. المادة 15: تكون القرارات الصادرة عن اللجنة الوطنية المؤهلة للطعن المسبق قابلة للطعن فيها أمام المحكمة المختصة طبقا لأحكام قانون الإجراءات المدنية. المادة 16: تختص الجهات القضائية الإدارية بالبت في الخلافات التي تنشأ بين المؤسسات والإدارات العمومية بصفتها هيئات مستخدمة وبين هيئات الضمان الاجتماعي.",
+    "consequence": "x1 needs an exception (or a boundary like n1) for social security disputes. These stay with the ordinary court, social section, unless the plaintiff is a public institution or administration acting as employer (art. 16), and the prior recourse of art. 4 must come first. k28 is answerable from the Official Journal."
+  },
+  {
+    "id": "adv-8",
+    "target": "x1, k28",
+    "kind": "specialLaw",
+    "claim": "Customs Code art. 273 (law 79-07, as amended, in particular by law 17-04) is said to give the courts that hear civil cases jurisdiction over objections to the payment or refund of customs duties and similar disputes with the customs administration, although that administration is the State. If so, x1 points a lawyer suing the customs administration to the administrative court when the ordinary court is competent. Not checked on joradp.dz: I did not locate the issue and page.",
+    "source": {
+      "tier": 3,
+      "url": "",
+      "what": "Own memory of the Customs Code (law 79-07 of 21 July 1979, art. 273, as amended by law 17-04 of 16 February 2017); a web search found no official text. Lead only.",
+      "retrievedOn": "2026-11-15"
+    },
+    "quoteArabic": "",
+    "consequence": "Check art. 273 of the Customs Code in the Official Journal. If it reads as described, x1 needs an exception for customs disputes, as cpca 800 ¶1 reserves disputes given to other courts."
+  },
+  {
+    "id": "adv-9",
+    "target": "x1, t1, k28, b12",
+    "kind": "procedure",
+    "claim": "For tax disputes, which x1 and t1 send to the administrative court of the place of the tax (cpca 804 ¶2), the Code of Tax Procedures is said to require a prior complaint (شكوى مسبقة) to the tax administration within set periods before any court action, on pain of inadmissibility, with the court period running from the administration's decision. The record names no prior step and no special period for this case, and d1 would apply the four months of art. 829 instead. Not checked on joradp.dz.",
+    "source": {
+      "tier": 3,
+      "url": "",
+      "what": "Own memory of the Code of Tax Procedures (created by art. 40 of the finance law for 2002, law 01-21, and amended by later finance laws), arts. 70 to 82 on the prior complaint and the action before the administrative court. Lead only; finance laws amend it often without naming it in their title.",
+      "retrievedOn": "2026-11-15"
+    },
+    "quoteArabic": "",
+    "consequence": "Check the current wording of the Code of Tax Procedures. If the prior complaint is compulsory, x1 and t1 should warn of it for tax matters, and d1 should not apply art. 829 to a tax decision when a special period governs."
+  }
+]

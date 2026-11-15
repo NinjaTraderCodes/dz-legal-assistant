@@ -849,11 +849,15 @@ def next_(u: Unit, ledger: str = LEDGER) -> int:
         print("-- the stage 9 checks on the new final candidate")
         if not run_final_checks(u):
             return 1
-    for stage, state in status(u):
-        if stage in SCRIPT_STAGES and state == "due":
-            print(f"-- stage {stage}")
-            if not SCRIPT_STAGES[stage](u):
-                return 1
+    ran = set()
+    while True:  # the stages again after each script stage: stage 3 makes stage 4 due in the same call
+        due = [s for s, state in status(u) if s in SCRIPT_STAGES and state == "due" and s not in ran]
+        if not due:
+            break
+        print(f"-- stage {due[0]}")
+        ran.add(due[0])
+        if not SCRIPT_STAGES[due[0]](u):
+            return 1
     rows = dict(status(u))
     for stage, state in rows.items():
         if stage in AGENTS and state.startswith("due"):

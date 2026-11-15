@@ -30,4 +30,5 @@ def test_the_committed_corpus_is_the_seed_11_corpus(tmp_path):
     out = tmp_path / "c.jsonl"
     vc.main(["--out", str(out)])
     committed = os.path.join(os.path.dirname(__file__), "..", "..", "tests", "DzLegal.CoreLogic.Reader.Tests", "value-corpus.jsonl")
-    assert out.read_bytes() == open(committed, "rb").read()
+    # compared as text: a checkout may give the committed file CRLF line endings
+    assert out.read_text(encoding="utf-8").splitlines() == open(committed, encoding="utf-8").read().splitlines()

@@ -1078,6 +1078,13 @@ def _norm_path(path) -> tuple:
     return tuple(re.sub(r"[\s\-–]", "", h).translate(_HEAD_NORM) for h in (path or []))
 
 
+def own_starts(unit: str, seed_items: list[dict]) -> list[tuple[str, str]]:
+    """The unit's own seed articles: a module's pointers (`pointer:<unit>`), a claim type's catalogue articles
+    (`claims:<unit>`)."""
+    tags = {f"pointer:{unit}", f"claims:{unit}"}
+    return [(i["code"], i["article"]) for i in seed_items if tags & set(i.get("sources", []))]
+
+
 def seed_starts(unit: str, seed_items: list[dict], store: st.Store, edition_paths: dict | None = None) -> list:
     """The owner's rule of 14 November 2026 for the texts given to derivation C and the boundary writer: every chapter
     the module's seed inventory touches, never anything from A's or B's records. The module's seed articles are those
@@ -1094,7 +1101,7 @@ def seed_starts(unit: str, seed_items: list[dict], store: st.Store, edition_path
             edition_paths[code] = consolidated_chapters(code) if code in ("civil-code", "commercial-code") else {}
         return edition_paths[code].get(article)
 
-    pointers = [(i["code"], i["article"]) for i in seed_items if f"pointer:{unit}" in i.get("sources", [])]
+    pointers = own_starts(unit, seed_items)
     starts = set(pointers)
     for code, article in pointers:
         path = path_of(code, article)
@@ -1110,6 +1117,11 @@ def seed_starts(unit: str, seed_items: list[dict], store: st.Store, edition_path
     return sorted(starts, key=lambda s: (s[0], st._num_key(s[1])))
 
 
+# The two labour laws: the store holds no chapter path for them and the consolidated editions do not cover them, so
+# the chapter rule takes the whole law (a known limit, written in the tracking file: specs/unit-driver.md, stage 0).
+WHOLE_LAW_CODES = {"labour-relations", "labour-disputes"}
+
+
 def unit_texts(unit: str, starts: list[tuple[str, str]], store: st.Store, edition_paths: dict | None = None) -> dict:
     """Every article of each chapter that holds a starting article, whole, each paragraph numbered «[code article ¶n]».
     A chapter is the store's path when it has one; otherwise the deepest heading of the official consolidated edition."""
@@ -1123,13 +1135,16 @@ def unit_texts(unit: str, starts: list[tuple[str, str]], store: st.Store, editio
         if e.get("path"):
             path, source = e["path"], "store"
             members = [x["article"] for x in store.chapter(code, path)]
+        elif code in WHOLE_LAW_CODES:  # no chapter data for the labour laws: every article of the law the store holds
+            path, source = None, "wholeLaw"
+            members = [x["article"] for x in store.in_force.values() if x["code"] == code]
         else:
             paths = (edition_paths or {}).get(code) or consolidated_chapters(code)
             path = paths.get(article)
             source = "consolidatedEdition" if path else "noHeadingFound"
             members = [a for a, pth in paths.items() if pth == path and store.get(code, a)] if path else [article]
             missing = [a for a, pth in paths.items() if path and pth == path and not store.get(code, a)]
-        key = (code, tuple(path or [article]))
+        key = (code, tuple(path or ([] if source == "wholeLaw" else [article])))
         if key in seen:
             continue
         seen.add(key)
@@ -1138,7 +1153,8 @@ def unit_texts(unit: str, starts: list[tuple[str, str]], store: st.Store, editio
                          "missingFromStore": sorted(missing, key=st._num_key)})  # fetch these before committing
     lines = []
     for ch in chapters:
-        lines.append(f"## {ch['code']}: {' / '.join(ch['path'] or [ch['start']])}")
+        title = "the whole law" if ch["from"] == "wholeLaw" else " / ".join(ch["path"] or [ch["start"]])
+        lines.append(f"## {ch['code']}: {title}")
         for a in ch["articles"]:
             e = store.get(ch["code"], a)
             for n, p in enumerate(e["paragraphs"], 1):
@@ -1300,18 +1316,35 @@ def main(argv=None) -> int:
         return 0 if r["ok"] else 1
     elif a.cmd == "unit-texts":
         store_ = the_store(None)
+        own = []
         if a.seed:
-            starts = seed_starts(a.unit, load(a.seed)["items"], store_)
+            items_ = load(a.seed)["items"]
+            own = own_starts(a.unit, items_)
+            starts = seed_starts(a.unit, items_, store_)
             print("starting articles from the seed inventory:", ", ".join(f"{c}:{x}" for c, x in starts))
         else:
             starts = [tuple(x.split(":", 1)) for x in a.starts]
+        if not starts:
+            print(f"no starting article for {a.unit}: the seed inventory has no pointer:{a.unit} or claims:{a.unit}; "
+                  "refusing to write an empty file")
+            return 2
         doc = unit_texts(a.unit, starts, store_)
         doc["rule"] += ("; the starting articles are the module's seed articles and every seed article one heading above "
                         "their chapters (seed_starts, the owner's rule of 14 November 2026)") if a.seed else ""
         save(a.out, doc)
-        missing = [m for ch in doc["chapters"] for m in ch["missingFromStore"]]
-        print(f"{len(doc['chapters'])} chapter(s); missing from the store: {missing or 'none'}")
-        return 1 if missing else 0
+        # The handbook's rule (phase A, rules track): fetch now only the members of a chapter that holds one of the
+        # unit's own starting articles; the others stay listed and wait for phase D.
+        own_set = set(own) or set(starts)
+        fetch_now, later = [], []
+        for ch in doc["chapters"]:
+            holds_own = (ch["code"], ch["start"]) in own_set or any((ch["code"], x) in own_set for x in ch["articles"])
+            for m in ch.get("missingFromStore", []):
+                (fetch_now if holds_own else later).append(f"{ch['code']}:{m}")
+            if ch["from"] == "notInStore":
+                (fetch_now if (ch["code"], ch["start"]) in own_set else later).append(f"{ch['code']}:{ch['start']}")
+        print(f"{len(doc['chapters'])} chapter(s); to fetch before committing: {fetch_now or 'none'}; "
+              f"listed for phase D: {later or 'none'}")
+        return 1 if fetch_now else 0
     elif a.cmd == "inventory":
         inv = inventory_cited([load(x) for x in a.records])
         save(a.out, inv)

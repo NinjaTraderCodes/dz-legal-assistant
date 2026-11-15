@@ -1,5 +1,6 @@
 """The planted fixtures of record-checks.md: a changed digit, a repealed article, an uncited «غير أنه» paragraph, a
 period that the text does not say, a limitation without its word; and the shape of each script's output."""
+import json
 import os
 import sys
 
@@ -387,3 +388,31 @@ def test_the_register_may_be_a_list_or_an_object_and_a_target_may_name_several_i
     q, _ = rc.quote_record(record(), STORE)
     _, report = rc.grade_record(q, STORE, attacks=[{"target": "b9, d1", "verdict": "open"}], disputes=[], triaged={"cpca"})
     assert "attackOpen" in {r["item"]: r for r in report["items"]}["d1"]["reasons"]
+
+
+def test_a_claim_type_starts_from_its_catalogue_articles():
+    seed = [{"code": "civil-code", "article": "350", "sources": ["claims:loan-repayment"]},
+            {"code": "civil-code", "article": "179", "sources": ["pointer:formal-notice"]}]
+    assert rc.own_starts("loan-repayment", seed) == [("civil-code", "350")]
+    assert rc.own_starts("formal-notice", seed) == [("civil-code", "179")]
+    assert rc.own_starts("nafaqa", seed) == []
+
+
+def test_a_labour_law_is_taken_whole_and_a_start_missing_from_the_store_is_listed():
+    a = entry("19", ["أول"])
+    a.update(code="labour-disputes", path=None, inForce=True)
+    b = entry("20", ["ثان"])
+    b.update(code="labour-disputes", path=None, inForce=True)
+    store = FakeStore([a, b])
+    store.in_force = {("labour-disputes", "19"): a, ("labour-disputes", "20"): b}
+    doc = rc.unit_texts("u", [("labour-disputes", "19"), ("labour-disputes", "20"), ("cpca", "999")], store, {})
+    assert [(ch["from"], ch["articles"]) for ch in doc["chapters"]] == [("wholeLaw", ["19", "20"]), ("notInStore", [])]
+    assert "## labour-disputes: the whole law" in doc["rendered"]
+
+
+def test_unit_texts_refuses_an_empty_start_list(tmp_path):
+    seed = tmp_path / "seed.json"
+    seed.write_text(json.dumps({"items": [{"code": "cpca", "article": "1", "sources": ["claims:x"]}]}), encoding="utf-8")
+    assert rc.main(["unit-texts", "nobody", "--seed", str(seed), "--out", str(tmp_path / "t.json")]) == 2
+    assert not (tmp_path / "t.json").exists()
+

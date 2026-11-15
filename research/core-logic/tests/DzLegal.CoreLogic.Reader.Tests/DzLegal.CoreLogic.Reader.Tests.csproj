@@ -8,5 +8,7 @@
     <!-- The guide's hard cases as test data, and the guide itself for its table 5.1. -->
     <Content Include="hard-cases.json" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="..\..\..\..\docs\research\core-logic\notes\LABELLING-GUIDE.md" Link="LABELLING-GUIDE.md" CopyToOutputDirectory="PreserveNewest" />
+    <!-- A tiny WordPiece vocabulary for the plumbing: no model file is needed by a test. -->
+    <Content Include="tiny-vocab.txt" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

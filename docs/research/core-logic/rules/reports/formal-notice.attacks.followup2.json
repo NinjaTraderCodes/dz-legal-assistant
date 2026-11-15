@@ -1,0 +1,57 @@
+{
+ "unit": "formal-notice",
+ "record": "docs/research/core-logic/rules/final-candidates/quoted/formal-notice.json",
+ "corrected": "docs/research/core-logic/rules/final-candidates/formal-notice.json",
+ "input": "docs/research/core-logic/rules/reports/formal-notice.attacks.followup2-input.json",
+ "role": "verifier",
+ "model": "claude-opus-5-5",
+ "date": "2026-11-15",
+ "searched": {
+  "store": "Store text view civil-code.txt: civil-code 119, 120, 164, 179, 180. The earlier registers (formal-notice.attacks.json, formal-notice.attacks.followup.json) for what was decided: the boundary cases the reconciler disputes (bc3, bc4, bc7, bc9) and bc6, bc8, bc12 were decided there and are not decided again.",
+  "officialJournal": [],
+  "supremeCourt": "Not searched: neither entry rests on a decision.",
+  "notFound": "Nothing: both entries rest on texts the store holds, so nothing was fetched and no request was added."
+ },
+ "counts": {
+  "fixed": 2,
+  "refuted": 0,
+  "open": 0,
+  "total": 2
+ },
+ "attacks": [
+  {
+   "id": "owner-done",
+   "who": "owner",
+   "target": "p1, p2, p3",
+   "kind": "wrongEffect",
+   "claim": "Owner's decision of 14 November 2026: a notice step may say \"done\" only when the means is a listed one and the notice came before the petition day; otherwise it stays open and leaves the answer to n1, n11 and n12. Today each step declares none (\"the step was done\") as soon as notice_served is yes, while n1, n11 and n12 ask or warn about notice_means and notice_before_petition_day (bc6, bc8, bc12).",
+   "verdict": "fixed",
+   "verifierQuote": "«يكون اعذار المدين بانذاره، أو بما يقوم مقام الانذار، ويجوز أن يتم الاعذار عن طريق البريد على الوجه المبين في هذا القانون» ؛ «لا يستحق التعويض إلا بعد اعذار المدين ما لم يوجد نص مخالف لذلك.» ؛ «جاز للمتعاقد الآخر بعد اعذاره المدين أن يطالب بتنفيذ العقد أو فسخه» ؛ «يجبر المدين بعد اعذاره طبقا للمادتين 180 و181 على تنفيذ التزامه تنفيذا عينيا»",
+   "quoteRef": "[civil-code 180 ¶1]; [civil-code 179 ¶1]; [civil-code 119 ¶1]; [civil-code 164 ¶1] (store)",
+   "reasoning": "The texts make the means (180 ¶1: a warning, an act standing in its place, or the post 'as the code sets out') and the order in time («بعد اعذار») part of the step itself, so a step that says done on a served notice alone while n1, n11 or n12 still asks or warns about that notice's means or date gives the lawyer two answers on one step. The owner's rule is applied as given. The evaluator ignores acceptedMeans and treats the step's first slot (notice_served) = yes as done, and requiredWhen is evaluated before that slot, so the test is carried by requiredWhen. 'Listed' is read as a means no boundary flags: a bailiff (m1; m2's warning is also served by a bailiff). The post (m3) is flagged by n11 and another act (m4) by n1, so the owner's 'leaves the answer to n1, n11' keeps them open. Every exemption and the not-served and unknown paths are unchanged (a notice not served or unknown keeps requiredWhen true).",
+   "change": "p1, p2, p3: requiredWhen is now all[<the step's own request trigger, unchanged>, any[notice_served unknown, notice_served = no, all[notice_means = bailiff, notice_before_petition_day = yes]]]; notice_means and notice_before_petition_day added to each step's slots; interpretiveNote extended with the owner's rule and how it is carried; p2 and p3 messages now say to check the means and that the notice precedes the petition (as p1's did). Outcomes: bailiff and before the petition's day -> 'the step was done' (none); means or date unknown -> the step asks for it (ask), as n1, n11 or n12 do; means post or other, or the notice not before the petition's day -> requiredWhen false, the step gives no finding of its own and n11, n1 or n12 warns. The proposed slot notice_before_petition_day's why, o8 refs (adds p1, p2, p3), o9 why, k40 and k41 (refs and notes) updated. exR6 and exV20 now expect p1 = ask (the bc12 and bc8 cases: means unknown, date unknown) and their titles say why; exV21's title notes that p1 no longer counts such a notice as done. The boundary-case file was not edited.",
+   "examples": [
+    "exV22",
+    "exV23",
+    "exV24",
+    "exV25",
+    "exV26"
+   ]
+  },
+  {
+   "id": "store-120",
+   "who": "store",
+   "target": "b12",
+   "kind": "misreading",
+   "claim": "The store now holds Civil Code 120 as one paragraph, as the Official Journal prints it. Every cite of «civil-code 120 ¶2» must become «civil-code 120 ¶1»; keep each statement's own says.",
+   "verdict": "fixed",
+   "verifierQuote": "«يجوز الاتفاق على أن يعتبر العقد مفسوخا بحكم القانون عند عدم الوفاء بالالتزامات الناشئة عنه بمجرد تحقيق الشروط المتفق عليها وبدون حاجة إلى حكم قضائي. وهذا الشرط لا يعفي من الاعذار، الذي يحدد حسب العرف عند عدم تحديده من طرف المتعاقدين.»",
+   "quoteRef": "[civil-code 120 ¶1] (store; the article has one paragraph)",
+   "reasoning": "The store's article 120 has one paragraph, and the words b12 states («وهذا الشرط لا يعفي من الاعذار، الذي يحدد حسب العرف») are in it; rules check refused ¶2 («paragraph 2 does not exist (the article has 1)»). b12 was the only cite of 120 ¶2 (b11 already cites ¶1).",
+   "change": "b12.cite.paragraphs [2] -> [1]; its says is kept. Prose pointers to «article 120 paragraph 2» changed to paragraph 1 in the proposed slot contract_sets_notice_terms's why and in the notes of checklist lines k13, k33 and k42. rules check now passes.",
+   "examples": [
+    "exV27"
+   ]
+  }
+ ]
+}

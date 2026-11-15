@@ -561,6 +561,297 @@
       "readFromNote": false,
       "origin": "court-sections",
       "why": "Exit x2 reads it: cpca 531 ¶1 excepts from the commercial section the disputes cpca 536 مكرر ¶1-7 gives to the specialised commercial court. Proposed by derivation B only."
+    },
+    {
+      "id": "public_vehicle_damage",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل الدعوى دعوى مسؤولية ترمي إلى تعويض أضرار ناجمة عن مركبة تابعة للدولة أو لولاية أو بلدية أو مؤسسة عمومية ذات صبغة إدارية؟",
+        "en": "Is the claim a liability claim for compensation of damage caused by a vehicle belonging to the State, a wilaya, a commune or a public administrative body?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "ordinary-court-exits",
+      "why": "Exit x1 and boundary n1 read it: cpca 802 ¶1 and ¶3 keep these claims with the ordinary courts although a public body is a party. Same fact as derivation A's public_vehicle_damage and derivation B's claim_is_vehicle_damage_by_public_body."
+    },
+    {
+      "id": "specialised_commercial_matter",
+      "type": "choice",
+      "question": {
+        "ar": "هل يندرج النزاع ضمن إحدى المواد التي تختص بها المحكمة التجارية المتخصصة؟ وأيها؟",
+        "en": "Does the dispute fall in one of the matters of the specialised commercial court, and which one?"
+      },
+      "choices": [
+        {
+          "id": "intellectual_property",
+          "label": {
+            "ar": "منازعات الملكية الفكرية",
+            "en": "Intellectual property"
+          }
+        },
+        {
+          "id": "commercial_company",
+          "label": {
+            "ar": "منازعات الشركات التجارية، لا سيما منازعات الشركاء وحل وتصفية الشركات",
+            "en": "Commercial companies, in particular disputes between partners and the dissolution and liquidation of companies"
+          }
+        },
+        {
+          "id": "bankruptcy_settlement",
+          "label": {
+            "ar": "التسوية القضائية والإفلاس",
+            "en": "Judicial settlement and bankruptcy"
+          }
+        },
+        {
+          "id": "bank_with_merchant",
+          "label": {
+            "ar": "منازعات البنوك والمؤسسات المالية مع التجار",
+            "en": "Banks and financial institutions with merchants"
+          }
+        },
+        {
+          "id": "maritime_air_insurance",
+          "label": {
+            "ar": "المنازعات البحرية والنقل الجوي ومنازعات التأمينات المتعلقة بالنشاط التجاري",
+            "en": "Maritime, air transport, and insurance disputes linked to commercial activity"
+          }
+        },
+        {
+          "id": "international_trade",
+          "label": {
+            "ar": "المنازعات المتعلقة بالتجارة الدولية",
+            "en": "International trade"
+          }
+        },
+        {
+          "id": "none",
+          "label": {
+            "ar": "لا شيء مما سبق",
+            "en": "None of these"
+          }
+        }
+      ],
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "ordinary-court-exits",
+      "why": "Exit x4 and territory rule t2 read it: cpca 536 مكرر ¶1 to ¶7 list the matters of the specialised commercial court, and cpca 531 ¶1 takes them out of the commercial section. Proposed under this id by both derivations; choice ids bankruptcy_settlement = B's insolvency, bank_with_merchant = B's bank_against_trader."
+    },
+    {
+      "id": "claim_challenges_administrative_decision",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل تهدف الدعوى إلى إلغاء قرار إداري أو تفسيره أو فحص مشروعيته؟",
+        "en": "Does the claim seek to annul, interpret or review the legality of an administrative decision?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "ordinary-court-exits",
+      "why": "Exit x3, deadlines d1 and d2, territory rule t4 and document doc2 read it when the petition asks to cancel a decision: cpca 801 ¶2 to ¶6 and 900 مكرر ¶3 turn on a decision of an administrative authority. Derivation B's id."
+    },
+    {
+      "id": "administrative_decision_notice_date",
+      "type": "date",
+      "question": {
+        "ar": "ما تاريخ التبليغ الشخصي بالقرار الإداري الفردي، أو تاريخ نشر القرار الجماعي أو التنظيمي؟",
+        "en": "On what date was the individual administrative decision personally notified, or the collective or regulatory decision published?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "ordinary-court-exits",
+      "why": "Deadline d1 starts from it: cpca 829 ¶1. Same fact as derivation A's decision_notified_on and derivation B's administrative_decision_notice_date."
+    },
+    {
+      "id": "administrative_grievance_filed",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل قدم تظلم إلى الجهة الإدارية مصدرة القرار؟",
+        "en": "Was a grievance lodged with the administrative authority that made the decision?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "ordinary-court-exits",
+      "why": "Deadlines d1 and d2 and document doc3 read it: cpca 830 ¶1 to ¶4 replace the period of 829 by a new one once a grievance is lodged. Derivation B's id."
+    },
+    {
+      "id": "administrative_grievance_rejection_date",
+      "type": "date",
+      "question": {
+        "ar": "ما تاريخ تبليغ رد الإدارة الرافض للتظلم؟",
+        "en": "On what date was the administration's refusal of the grievance notified?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "ordinary-court-exits",
+      "why": "Deadline d2 starts from it: cpca 830 ¶4. Derivation B's id."
+    },
+    {
+      "id": "criminal_case_on_same_facts",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل توجد شكوى أو دعوى عمومية جارية، أو صدر حكم جزائي، بشأن الوقائع التي تقوم عليها الدعوى؟",
+        "en": "Is there a complaint or a public prosecution pending, or has a criminal judgment been given, on the facts the claim rests on?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "ordinary-court-exits",
+      "why": "Exit x6 reads it: civil-code 339 ¶1 binds the civil judge to what a criminal judgment necessarily decided. Same fact as derivation A's criminal_case_on_same_facts and derivation B's criminal_proceedings_pending (the question joins both wordings)."
+    },
+    {
+      "id": "damage_caused_by_offence",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل الضرر المطالب بتعويضه ناتج عن جناية أو جنحة أو مخالفة؟",
+        "en": "Is the damage claimed the result of a felony, a misdemeanour or a minor offence?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "ordinary-court-exits",
+      "why": "Exit x6 reads it (derivation B's reading, kept as the protective one while the Code of Criminal Procedure is not in the store): cpca 39 ¶3 names damage from an offence apart from other torts."
+    },
+    {
+      "id": "debt_written_fixed_due",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل الدين المطالب به مبلغ من النقود مستحق وحال الأداء ومعين المقدار وثابت بالكتابة (اعتراف بدين أو تعهد بالوفاء أو فاتورة مؤشر عليها من المدين)؟",
+        "en": "Is the debt claimed a sum of money that is due, payable now, of a fixed amount, and proven in writing (an acknowledgement of debt, an undertaking to pay, or an invoice endorsed by the debtor)?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "ordinary-court-exits",
+      "why": "Exit x7, territory rule t3 and document doc1 read it: cpca 306 ¶1 opens the order-to-pay route for such a debt. Derivation A's id; it holds the two facts of derivation B's debt_is_fixed_sum_money_due and debt_proved_in_writing together, as the paragraph sets them as one condition."
+    },
+    {
+      "id": "payment_order_issued",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل صدر أمر بالأداء ضد المدين بشأن هذا الدين؟",
+        "en": "Has an order to pay already been issued against the debtor for this debt?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "ordinary-court-exits",
+      "why": "Deadlines d3 and d4 read it: cpca 308 ¶3 and 309 ¶1 and ¶2. Derivation B's id."
+    },
+    {
+      "id": "payment_order_date",
+      "type": "date",
+      "question": {
+        "ar": "ما تاريخ صدور أمر الأداء؟",
+        "en": "On what date was the order to pay issued?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "ordinary-court-exits",
+      "why": "Deadline d3 starts from it: cpca 309 ¶2. Derivation B's id."
+    },
+    {
+      "id": "payment_order_notified_on",
+      "type": "date",
+      "question": {
+        "ar": "ما تاريخ التبليغ الرسمي لأمر الأداء إلى المدين؟",
+        "en": "On what date was the order to pay formally served on the debtor?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "ordinary-court-exits",
+      "why": "Deadline d4 starts from it: cpca 308 ¶3. Derivation B's id."
+    },
+    {
+      "id": "administrative_grievance_in_time",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل قدم التظلم إلى الجهة الإدارية خلال أجل الأربعة أشهر من التبليغ الشخصي بالقرار أو من نشره؟",
+        "en": "Was the grievance lodged with the administration within four months of the personal notification or the publication of the decision?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "ordinary-court-exits",
+      "why": "Deadlines d1, d2 and d5 read it: cpca 830 ¶1 allows the grievance only «في الأجل المنصوص عليه في المادة 829»; a late grievance opens no new period, so d1 keeps running (verifier, attacks adv-1 and atk-5)."
+    },
+    {
+      "id": "administrative_grievance_date",
+      "type": "date",
+      "question": {
+        "ar": "ما تاريخ تبليغ التظلم إلى الجهة الإدارية (تاريخ استلامها له)؟",
+        "en": "On what date was the grievance notified to (received by) the administration?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "ordinary-court-exits",
+      "why": "Deadline d5 starts from it: cpca 830 ¶2 «ويبدأ هذا الأجل من تاريخ تبليغ التظلم» and ¶3 (verifier, attacks adv-1 and atk-4)."
+    },
+    {
+      "id": "administrative_grievance_answered_in_time",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل بلغت الإدارة رفضها للتظلم خلال شهرين من تاريخ تبليغ التظلم إليها؟",
+        "en": "Did the administration notify its refusal of the grievance within two months of the grievance being notified to it?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "ordinary-court-exits",
+      "why": "Deadlines d2 and d5 read it: cpca 830 ¶4 starts the period from the notified refusal only «في حالة رد الجهة الإدارية خلال الأجل الممنوح لها»; otherwise ¶2 and ¶3 (silence) govern (verifier, attack adv-1)."
+    },
+    {
+      "id": "administrative_decision_author",
+      "type": "choice",
+      "question": {
+        "ar": "ما الجهة التي أصدرت القرار الإداري المطعون فيه؟",
+        "en": "Which authority made the contested administrative decision?"
+      },
+      "choices": [
+        {
+          "id": "local",
+          "label": {
+            "ar": "جهة محلية أو جهوية: الولاية أو المصالح غير الممركزة للدولة على مستوى الولاية أو البلدية أو منظمة مهنية جهوية أو مؤسسة عمومية محلية ذات صبغة إدارية",
+            "en": "A local or regional authority: the wilaya, the decentralised State services at wilaya level, the commune, a regional professional organisation or a local public administrative body"
+          }
+        },
+        {
+          "id": "central_national",
+          "label": {
+            "ar": "سلطة إدارية مركزية أو هيئة عمومية وطنية أو منظمة مهنية وطنية",
+            "en": "A central administrative authority, a national public body or a national professional organisation"
+          }
+        }
+      ],
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "ordinary-court-exits",
+      "why": "Territory rule t4 reads it: cpca 900 مكرر ¶3 gives the administrative court of appeal of Algiers only the decisions of central authorities, national public bodies and national professional organisations; cpca 801 ¶2 to ¶6 leave local decisions to the administrative courts (verifier, attack atk-2)."
     }
   ]
 }

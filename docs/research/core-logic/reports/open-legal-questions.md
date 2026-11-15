@@ -425,3 +425,157 @@ Grades of the items: B 67, C 4, D 6.
 - **bc9** (Custody and maintenance: no record of non-conciliation is required): [cpca 423 ¶3] matches no PriorStep (it matches n5)
 
 Cases that cannot be put to Codex as a choice of words (the same word on both sides, a last day only, or no outcome word): bc8, bc9.
+
+## `ordinary-court-exits`
+
+Grades of the items: B 55, C 8, D 24.
+
+<!-- o1 3abad37d0e3f -->
+### ordinary-court-exits 1. From when do the new jurisdiction rules of the administrative and specialised commercial courts apply? (o1, grade C; items x4, x5, x1, x3)
+
+1. **The question:** From when do the new jurisdiction rules of the administrative and specialised commercial courts apply? «متى تسري قواعد الاختصاص الجديدة للمحاكم الإدارية والمحاكم التجارية المتخصصة؟»
+2. **The readings:**
+   - The rules run in each area from the installation of its court. (rests on b32)
+   - Cases filed before the installation stay with the former courts. (rests on b33)
+3. **What the record does (the protective behaviour it keeps):** Warn about the specialised commercial court and ask the lawyer whether it is installed; never block.
+4. **What would change with each answer:** If the new rules run in each area from its court's installation: x4 and x5 would warn only where the court is installed, and stay silent elsewhere. If cases filed before installation stay with the former courts: the exits would also ask the filing date against the installation date. Today x4 warns about the specialised commercial court and asks whether it is installed; no reading makes an item block.
+
+<!-- o2 587a7a4b2a53 -->
+### ordinary-court-exits 2. Is a claim against an employer in bankruptcy or judicial settlement a bankruptcy dispute for the specialised commercial court, and must the debt first be declared in the collective procedure? (o2, grade D; items x5)
+
+1. **The question:** Is a claim against an employer in bankruptcy or judicial settlement a bankruptcy dispute for the specialised commercial court, and must the debt first be declared in the collective procedure? «هل تعد دعوى ضد صاحب عمل في حالة إفلاس أو تسوية قضائية من منازعات الإفلاس التي تختص بها المحكمة التجارية المتخصصة، وهل يجب التصريح بالدين في الإجراء الجماعي؟»
+2. **The readings:**
+   - (no readings recorded) Article 536 مكرر names judicial settlement and bankruptcy without more, and the Commercial Code's bankruptcy texts are not in the store; what is believed about them comes from memory only.
+3. **What the record does (the protective behaviour it keeps):** Warn and ask the lawyer to check; never block.
+4. **What would change with each answer:** There are no readings yet. If such a claim is a bankruptcy dispute: x5 would name the specialised commercial court and could ask whether the debt was declared in the collective procedure. If it is not: x5's warning would be dropped and the claim stays with the social section. Today x5 warns and asks the lawyer to check; it never blocks.
+
+<!-- o3 e435a8de1d20 -->
+### ordinary-court-exits 3. What are the rules on the civil action before the criminal judge, the binding choice of route, and the stay of the civil action? (o3, grade D; items x6, n7)
+
+1. **The question:** What are the rules on the civil action before the criminal judge, the binding choice of route, and the stay of the civil action? «ما قواعد الادعاء المدني أمام القاضي الجزائي، وحجية اختيار الطريق، وإرجاء الفصل في الدعوى المدنية؟»
+2. **The readings:**
+   - From the Official Journal, not yet read in the store: the civil action may be brought with the public action before the criminal court or separately; one who brought it before the civil court cannot take it to the criminal court unless the prosecution started before a judgment on the merits, and must then withdraw the civil claim (arts. 4, 5 and 6). (rests on no statement)
+   - From the Official Journal, not yet read in the store: the civil court defers judgment until the public action, if set in motion, is finally decided (art. 5); the civil action is time-barred under the civil code and cannot be brought before the criminal court once the public action is time-barred (art. 17). (rests on no statement)
+3. **What the record does (the protective behaviour it keeps):** Warn when there is a criminal case or damage from an offence, and ask the lawyer to check; never block.
+4. **What would change with each answer:** If the civil action may go before the criminal court and the choice of route binds: x6 would ask which route was taken first and warn when the civil route was chosen after a prosecution began. If the civil court must defer judgment while the public action runs: x6 would warn of the stay whenever a criminal case on the same facts exists. Today x6 warns when there is a criminal case or damage from an offence and asks the lawyer to check; it never blocks.
+
+<!-- o4 be9c9e05e476 -->
+### ordinary-court-exits 4. What sanctions the expiry of the period for the action before the administrative court and of the two-month period after a grievance, and who raises it? (o4, grade C; items d1, d2)
+
+1. **The question:** What sanctions the expiry of the period for the action before the administrative court and of the two-month period after a grievance, and who raises it? «ما جزاء فوات أجل الطعن أمام المحكمة الإدارية وأجل الشهرين بعد التظلم، ومن يثيره؟»
+2. **The readings:**
+   - A forfeiture period raised by the court. (rests on b24, b14)
+   - A period not opposable without mention in the notification, open to interruption and suspension. (rests on b19, b20, b21)
+3. **What the record does (the protective behaviour it keeps):** Warn only; never block.
+4. **What would change with each answer:** If the periods are forfeitures raised by the court: d1 and d2 could declare a block once the latest last day and its band have passed. If they are not opposable without mention in the notification, and can be interrupted or suspended: d1 and d2 would ask whether the notification mentioned the period and whether it was interrupted, and warn only. Today both only warn.
+
+<!-- o5 5ff4b3c9daff -->
+### ordinary-court-exits 5. Is the order to pay available against a debtor living outside Algeria? (o5, grade C; items x7)
+
+1. **The question:** Is the order to pay available against a debtor living outside Algeria? «هل يتاح الأمر بالأداء ضد مدين يقيم خارج الجزائر؟»
+2. **The readings:**
+   - The route is open as long as the debtor has a chosen domicile in Algeria. (rests on b40)
+   - The route is closed when the debtor lives abroad. (rests on b40)
+3. **What the record does (the protective behaviour it keeps):** Show the order-to-pay route as a possibility and ask the lawyer to check the debtor's domicile.
+4. **What would change with each answer:** If the route is open while the debtor has a chosen domicile in Algeria: x7 shows the order to pay and asks about that domicile. If it is closed for a debtor living abroad: x7 would stay silent for such a debtor. Today x7 shows the route as a possibility and asks the lawyer to check the domicile; it never blocks.
+
+<!-- o6 391809191ddc -->
+### ordinary-court-exits 6. Does the public-party slot cover the national public bodies and national professional organisations the amendment added? (o6, grade C; items x1)
+
+1. **The question:** Does the public-party slot cover the national public bodies and national professional organisations the amendment added? «هل تشمل خانة الطرف العمومي الهيئات العمومية الوطنية والمنظمات المهنية الوطنية التي أضافها التعديل؟»
+2. **The readings:**
+   - (no readings recorded) The in-force wording of article 800 is wider than the existing slot's question.
+3. **What the record does (the protective behaviour it keeps):** Mention these bodies in the warning and propose widening the slot's question.
+4. **What would change with each answer:** There are no readings yet. If the slot's question should cover national public bodies and national professional organisations: x1 would fire for them too. If not: they stay named only in x1's warning. Under neither does an item block.
+
+<!-- o7 a7ed5600d001 -->
+### ordinary-court-exits 7. Do disputes against public bodies of industrial and commercial character stay before the ordinary courts? (o7, grade C; items x1, n2)
+
+1. **The question:** Do disputes against public bodies of industrial and commercial character stay before the ordinary courts? «هل تبقى المنازعات ضد المؤسسات العمومية ذات الطابع الصناعي والتجاري أمام المحاكم العادية؟»
+2. **The readings:**
+   - (no readings recorded) Article 800 names only bodies of administrative character and no text in the store speaks of the others; its first paragraph speaks of administrative disputes without defining them.
+3. **What the record does (the protective behaviour it keeps):** The slot asks about administrative character; the lawyer decides, with the boundary note shown.
+4. **What would change with each answer:** There are no readings yet. If disputes against public bodies of industrial and commercial character stay with the ordinary courts: x1 stays silent for them, as the slot's question now asks about administrative character. If they leave: x1 would warn for them too. Today the lawyer decides with the boundary note shown; nothing blocks.
+
+<!-- o8 687a5c273fb1 -->
+### ordinary-court-exits 8. Does article 804 fix the subject matter or only the place, and does a civil servant's dispute leave the ordinary courts when the other party is not one of the persons of article 800? (o8, grade C; items x2, t1)
+
+1. **The question:** Does article 804 fix the subject matter or only the place, and does a civil servant's dispute leave the ordinary courts when the other party is not one of the persons of article 800? «هل المادة 804 تحدد النوع أم المكان فقط، وهل يخرج نزاع الموظف عن المحاكم العادية إذا لم يكن الطرف الآخر من أشخاص المادة 800؟»
+2. **The readings:**
+   - A civil servant's dispute is an administrative dispute for the administrative court even when the other party is not one of the persons named in article 800. (rests on b1, b11, b25)
+   - The dispute leaves the ordinary courts only when one of the persons named in article 800 is a party; article 804 is only a venue rule. (rests on b2, b10)
+3. **What the record does (the protective behaviour it keeps):** Warn when the plaintiff is a civil servant, never block, and show article 804 as a venue rule.
+4. **What would change with each answer:** If a civil servant's dispute is administrative whatever the other party: x2 would warn for every civil servant's dispute. If it leaves the ordinary courts only when a person of article 800 is a party: x2 would warn only then, and t1 shows article 804 as a venue rule. Today x2 warns when the plaintiff is a civil servant; it never blocks.
+
+<!-- o9 4f83653f86c6 -->
+### ordinary-court-exits 9. Does a request to cancel a decision, with a public party, always mean an administrative decision of that party? (o9, grade C; items x3, d1, d2)
+
+1. **The question:** Does a request to cancel a decision, with a public party, always mean an administrative decision of that party? «هل طلب إلغاء قرار مع وجود طرف عمومي يعني دائما قرارا إداريا صادرا عن هذا الطرف؟»
+2. **The readings:**
+   - (no readings recorded) The request kind does not name the decision's author, and article 801 requires a decision of a listed authority.
+3. **What the record does (the protective behaviour it keeps):** Warn in that case and ask the lawyer otherwise.
+4. **What would change with each answer:** There are no readings yet. If a request to cancel a decision with a public party always means that party's administrative decision: x3, d1 and d2 apply without asking. If not: they would ask whether the decision is an administrative decision of a listed authority. Today they warn in that case and ask otherwise.
+
+<!-- o10 53c5985a3d90 -->
+### ordinary-court-exits 10. How is the period for the action counted after the administration's silence on the grievance, or its late answer? (o10, grade C; items d2, d5)
+
+1. **The question:** How is the period for the action counted after the administration's silence on the grievance, or its late answer? «كيف يحسب أجل الطعن بعد سكوت الإدارة عن التظلم أو ردها المتأخر؟»
+2. **The readings:**
+   - After two months of silence the two-month period runs, and a late answer opens no new period. (rests on b16, b17)
+   - A late explicit refusal opens a new two-month period from its notification. (rests on b17)
+3. **What the record does (the protective behaviour it keeps):** Count the period from the notification of the grievance (four months) after silence or a late answer, and warn without blocking.
+4. **What would change with each answer:** If a late answer opens no new period: d5 counts four months from the notification of the grievance after silence or a late answer, as the record does. If a late explicit refusal opens a new two-month period: d2 would also count from that refusal and give a later last day. Today the record counts from the grievance and warns; nothing blocks.
+
+<!-- o11 d9e5c2f2f81b -->
+### ordinary-court-exits 11. What are the areas of the specialised commercial courts, and what governs an area whose own court is not yet installed? (o11, grade D; items x4, t2, x5)
+
+1. **The question:** What are the areas of the specialised commercial courts, and what governs an area whose own court is not yet installed? «ما دوائر الاختصاص الإقليمي للمحاكم التجارية المتخصصة، وما حكم دائرة لم تنصب محكمتها بعد؟»
+2. **The readings:**
+   - The jurisdiction of the installed specialised commercial court extends over the new court's area until it is installed, so the dispute does not return to the commercial section. (rests on b26, b27, b32)
+   - The new jurisdiction rules run in an area only from the installation of its own court. (rests on b32)
+3. **What the record does (the protective behaviour it keeps):** Warn about the specialised commercial court whenever the dispute is one of its matters, and ask the lawyer to check the court competent for the area.
+4. **What would change with each answer:** If the installed court covers a new court's area until that court is installed: x4 warns about the specialised commercial court for every matter of its list, as today, and t2 names the installed court. If the new rules run in an area only from its own court's installation: x4 would stay silent where that court is not installed and the dispute stays with the commercial section. Under neither does an item block.
+
+<!-- o12 2e2f5316edc1 -->
+### ordinary-court-exits 12. Do general social security disputes with a social security body leave the administrative courts, and must a prior recourse come first? (o12, grade D; items x1)
+
+1. **The question:** Do general social security disputes with a social security body leave the administrative courts, and must a prior recourse come first? «هل تخرج المنازعات العامة للضمان الاجتماعي مع هيئة الضمان الاجتماعي عن المحاكم الإدارية، وهل يشترط فيها طعن مسبق؟»
+2. **The readings:**
+   - A general social security dispute stays with the ordinary court after the prior recourse, unless the plaintiff is a public institution or administration acting as employer. (rests on b1)
+   - The social security body is a public party, so the test of article 800 applies. (rests on b2)
+3. **What the record does (the protective behaviour it keeps):** Warn, naming the exception and the prior recourse, and ask the lawyer to check; never block.
+4. **What would change with each answer:** If a general social security dispute stays with the ordinary court after the prior recourse: x1's warning would be dropped for it, and a prior step asking for the recourse could be added. If the test of article 800 applies: x1 warns, as today. Under neither does an item block.
+
+<!-- o13 86c25efb6337 -->
+### ordinary-court-exits 13. Do civil customs disputes with the customs administration leave the administrative courts? (o13, grade D; items x1)
+
+1. **The question:** Do civil customs disputes with the customs administration leave the administrative courts? «هل تخرج المنازعات الجمركية المدنية مع إدارة الجمارك عن المحاكم الإدارية؟»
+2. **The readings:**
+   - These disputes belong to the ordinary courts although the administration is a party. (rests on b1)
+   - The test of article 800 applies because the State is a party. (rests on b2)
+3. **What the record does (the protective behaviour it keeps):** Warn, naming the exception, and ask the lawyer to check; never block.
+4. **What would change with each answer:** If civil customs disputes belong to the ordinary courts: x1's warning would be dropped for them. If the test of article 800 applies: x1 warns, as today. Under neither does an item block.
+
+<!-- o14 6163049b539b -->
+### ordinary-court-exits 14. Must a tax dispute go through a prior complaint to the tax administration, with special periods, before the action at the administrative court? (o14, grade D; items n8, x1, d1)
+
+1. **The question:** Must a tax dispute go through a prior complaint to the tax administration, with special periods, before the action at the administrative court? «هل يشترط في منازعات الضرائب شكوى مسبقة أمام الإدارة الجبائية وآجال خاصة قبل الدعوى أمام المحكمة الإدارية؟»
+2. **The readings:**
+   - From memory: a prior complaint is a condition of admissibility of the tax action, and the period runs from the administration's decision. (rests on no statement)
+   - The rules of articles 829 and 830 apply without a special condition. (rests on b14, b15)
+3. **What the record does (the protective behaviour it keeps):** A boundary note asking the lawyer to check the tax text; never block.
+4. **What would change with each answer:** If a prior complaint to the tax administration is a condition of the tax action: a prior step would ask for it, and its own period would replace d1's for a tax dispute. If articles 829 and 830 apply alone: d1 stays as it is. Today a boundary note asks the lawyer to check the tax text; nothing blocks.
+
+<!-- o15 10ecaabf019d -->
+### ordinary-court-exits 15. Is the day the order to pay was made counted in the one-year period, and is its last day left out? (o15, grade C; items d3)
+
+1. **The question:** Is the day the order to pay was made counted in the one-year period, and is its last day left out? «هل يحسب يوم صدور أمر الأداء في أجل السنة، وهل يستبعد آخر يوم منه؟»
+2. **The readings:**
+   - The period is counted in full without the day the order was made, and ends with its last day. (rests on b49, b22)
+   - Article 405 applies in full: neither the day the order was made nor the day the period ends is counted. (rests on b49, b22)
+3. **What the record does (the protective behaviour it keeps):** Keep the earlier last day as the counting and list the other reading, and warn without blocking until the later last day has passed.
+4. **What would change with each answer:** If the period is counted without the day the order was made and ends with its last day: d3's last day is the earlier one, as its counting holds. If article 405 applies in full: the last day is one day later. Under the owner's rule of 15 November 2026 the record holds both: d3 warns until the later last day and its band have passed; it is procedural and never blocks.
+
+### ordinary-court-exits: boundary cases the final record still fails
+
+- **bc9** (Dissolution (of a commercial company) asked, no public body): x4: declared ask, the outcome LeavesOrdinaryCourt needs warn (x4: when unknown, asks specialised_commercial_matter -> ask; grade D -> ask, to check)

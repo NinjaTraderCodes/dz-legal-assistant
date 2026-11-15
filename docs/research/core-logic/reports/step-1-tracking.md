@@ -31,3 +31,11 @@ This file is filled in as each module passes stage 4 and stage 9. The step 1 rep
 | Module | A's examples on B | B's examples on A | Boundary cases on A | on B | decided differently by A and B |
 |---|---|---|---|---|---|
 | `formal-notice` | 12 | 8 | 9 | 8 | 8 |
+
+## Rows written by the driver (unit.py tracking)
+
+Every check behind these rows except Codex's support check was made by Claude models (HANDBOOK, section 5b). The proof label `mechanical` counts the items whose texts were proved mechanically; the other two count the items' own `proof`.
+
+| Unit | A-B agreement before reconciliation | Boundary cases passed: A / B / reconciled / final | Still failing (first reason) | Cited outside the texts given (A / B / both) | Attacks: fixed / refuted / open | Grades | Proof labels (twoFamilies / mechanical / oneFamily) |
+|---|---|---|---|---|---|---|---|
+| `formal-notice` | 38 of 68 | 3 / 4 / 3 / 7 of 12 | bc1: languageLimit: The condition language cannot compare a date slot (notice_date) with the petition date, so; bc3: p1: declared ask, the outcome StepMissing needs warn (p1: notice_served no, exemptions unk; bc4: p2: declared ask, the outcome StepMissing needs warn (p2: notice_served no, exemptions unk; bc7: p2: declared none, the outcome StepMissing needs warn (p2: requiredWhen false -> none; gra; bc9: [civil-code 120 ¶2] matches no item: a rule the record may have missed | – | 31 / 24 / 11 | B 49, C 7 | 45 / 12 / 11 |

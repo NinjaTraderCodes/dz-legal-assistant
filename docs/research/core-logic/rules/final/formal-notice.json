@@ -11,7 +11,7 @@
   "derivedBy": {
     "role": "verifier",
     "model": "claude-opus-5-5",
-    "date": "2026-11-14"
+    "date": "2026-11-15"
   },
   "appliesTo": [
     "*"
@@ -30,89 +30,6 @@
     "commercial_lease",
     "contract_sets_notice_terms",
     "notice_before_petition_day"
-  ],
-  "proposedSlots": [
-    {
-      "id": "default_on_due_date_agreed",
-      "type": "yesNoUnknown",
-      "question": {
-        "ar": "هل ينص العقد على أن المدين يعتبر معذرا بمجرد حلول الأجل دون حاجة إلى أي إجراء آخر؟",
-        "en": "Does the contract say that the debtor is in default by the mere arrival of the due date, without any further step?"
-      },
-      "why": "Prior steps p1, p2 and p3 read it as a way the notice is given without an act, and document doc3 lists the clause; Civil Code article 180 paragraph 1 lets the parties agree that the debtor is in default on the due date. Derivation B named it default_by_term_agreement."
-    },
-    {
-      "id": "performance_impossible_or_useless_by_debtor",
-      "type": "yesNoUnknown",
-      "question": {
-        "ar": "هل أصبح تنفيذ الالتزام متعذرا أو غير مجد بفعل المدين؟",
-        "en": "Has performance of the obligation become impossible or useless through the debtor's own act?"
-      },
-      "why": "Prior steps p1, p2 and p3 read it as an exemption; Civil Code article 181 paragraph 2. Derivation B named it performance_impossible_by_debtor."
-    },
-    {
-      "id": "obligation_is_tort_compensation",
-      "type": "yesNoUnknown",
-      "question": {
-        "ar": "هل محل الالتزام المطالب به تعويض ترتب عن عمل مضر؟",
-        "en": "Is the obligation claimed compensation arising from a harmful act?"
-      },
-      "why": "Prior steps p1 and p3 read it as an exemption; Civil Code article 181 paragraph 3. Derivation B named it debt_is_tort_compensation."
-    },
-    {
-      "id": "return_of_thing_known_stolen_or_unduly_received",
-      "type": "yesNoUnknown",
-      "question": {
-        "ar": "هل محل الالتزام رد شيء يعلم المدين أنه مسروق، أو شيء تسلمه دون حق وهو عالم بذلك؟",
-        "en": "Is the obligation to return a thing the debtor knows was stolen, or a thing he received without right knowing it?"
-      },
-      "why": "Prior steps p1 and p3 read it as an exemption; Civil Code article 181 paragraph 4. Derivation B named it debtor_knew_thing_stolen_or_wrongly_received."
-    },
-    {
-      "id": "debtor_refused_in_writing",
-      "type": "yesNoUnknown",
-      "question": {
-        "ar": "هل صرح المدين كتابة بأنه لا ينوي تنفيذ التزامه؟",
-        "en": "Has the debtor declared in writing that he does not intend to perform?"
-      },
-      "why": "Prior steps p1, p2 and p3 read it as an exemption, and document doc4 lists the writing; Civil Code article 181 paragraph 5. Derivation B named it debtor_declared_in_writing_refusal."
-    },
-    {
-      "id": "movable_sale_price_unpaid_at_term",
-      "type": "yesNoUnknown",
-      "question": {
-        "ar": "هل المدعي هو البائع في بيع عروض أو منقولات عين فيه أجل لدفع الثمن وتسلم المبيع، وحل الأجل دون دفع الثمن، دون اتفاق على خلاف ذلك؟",
-        "en": "Is the plaintiff the seller in a sale of goods or other movables with a fixed term for paying the price and taking delivery, which passed with the price unpaid, and no agreement to the contrary?"
-      },
-      "why": "Prior step p2 reads it as an exemption to the notice before rescission; Civil Code article 392 paragraph 1 makes such a sale rescinded in the seller's favour without prior warning. Same id in both derivations. The verifier added 'the plaintiff is the seller': article 392 paragraph 1 rescinds «في صالح البائع»."
-    },
-    {
-      "id": "commercial_lease",
-      "type": "yesNoUnknown",
-      "question": {
-        "ar": "هل الإيجار إيجار محل تجاري يخضع لأحكام الإيجار في القانون التجاري؟",
-        "en": "Is the lease a lease of business premises governed by the lease provisions of the Commercial Code?"
-      },
-      "why": "Boundary n3 reads it: Commercial Code articles 173 paragraphs 1 and 5, 177 paragraph 2, 187 مكرر paragraph 2 and 187 مكرر 1 set a regime of notice to quit and warning for these leases that differs from the civil formal notice."
-    },
-    {
-      "id": "contract_sets_notice_terms",
-      "type": "yesNoUnknown",
-      "question": {
-        "ar": "هل يحدد العقد شكلا أو أجلا أو جهة معينة للإعذار قبل المطالبة أو الفسخ أو حلول الدين؟",
-        "en": "Does the contract set a form, a period or an addressee for the notice before a claim, a rescission or the acceleration of the debt?"
-      },
-      "why": "Boundary n10 reads it: Civil Code article 120 paragraph 2 says the notice «يحدد حسب العرف عند عدم تحديده من طرف المتعاقدين», and article 106 paragraph 1 makes the contract the law of the parties."
-    },
-    {
-      "id": "notice_before_petition_day",
-      "type": "yesNoUnknown",
-      "question": {
-        "ar": "هل بلغ الإعذار إلى المدين قبل يوم رفع الدعوى، لا في يومه ولا بعده؟",
-        "en": "Was the notice served on the debtor before the day the petition is filed, not on that day or after it?"
-      },
-      "why": "Boundary n12 reads it (verifier, boundary case bc8): Civil Code article 179 paragraph 1 makes compensation due «بعد اعذار المدين» and article 119 paragraph 1 allows the claim «بعد اعذاره المدين», and neither says whether a notice served on the petition's day, or after it, suffices (open point o9). The rule language cannot compare notice_date with the petition date, so the lawyer is asked; the slot can be dropped once the evaluator compares the two dates."
-    }
   ],
   "basis": [
     {
@@ -145,9 +62,13 @@
         "ledgerClean": true
       },
       "grading": {
-        "grade": "A",
-        "reasons": [],
-        "toCheck": false
+        "grade": "B",
+        "reasons": [
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "mechanical",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -180,9 +101,13 @@
         "ledgerClean": true
       },
       "grading": {
-        "grade": "A",
-        "reasons": [],
-        "toCheck": false
+        "grade": "B",
+        "reasons": [
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "mechanical",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -216,9 +141,12 @@
       "grading": {
         "grade": "B",
         "reasons": [
-          "disagreedBeforeReconciliation"
+          "disagreedBeforeReconciliation",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "mechanical",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -250,9 +178,13 @@
         "ledgerClean": true
       },
       "grading": {
-        "grade": "A",
-        "reasons": [],
-        "toCheck": false
+        "grade": "B",
+        "reasons": [
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "mechanical",
+        "proof": "oneFamily"
       }
     },
     {
@@ -285,9 +217,13 @@
         "ledgerClean": true
       },
       "grading": {
-        "grade": "A",
-        "reasons": [],
-        "toCheck": false
+        "grade": "B",
+        "reasons": [
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -322,9 +258,12 @@
       "grading": {
         "grade": "B",
         "reasons": [
-          "addedAfterDerivation"
+          "addedAfterDerivation",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -362,9 +301,13 @@
         "ledgerClean": true
       },
       "grading": {
-        "grade": "A",
-        "reasons": [],
-        "toCheck": false
+        "grade": "B",
+        "reasons": [
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -402,9 +345,13 @@
         "ledgerClean": true
       },
       "grading": {
-        "grade": "A",
-        "reasons": [],
-        "toCheck": false
+        "grade": "B",
+        "reasons": [
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -442,9 +389,13 @@
         "ledgerClean": true
       },
       "grading": {
-        "grade": "A",
-        "reasons": [],
-        "toCheck": false
+        "grade": "B",
+        "reasons": [
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -484,9 +435,12 @@
       "grading": {
         "grade": "B",
         "reasons": [
-          "attackOpen"
+          "attackOpen",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -506,8 +460,8 @@
       "quote": [
         {
           "paragraph": 1,
-          "text": "يجوز الاتفاق على أن يعتبر العقد مفسوخا بحكم القانون عند عدم الوفاء بالالتزامات الناشئة عنه بمجرد تحقيق الشروط المتفق عليها وبدون حاجة إلى حكم قضائي.",
-          "sha256": "c1727a653119b770b2fcda2869062a143f867e123960da16f2ce55600d0f230f"
+          "text": "يجوز الاتفاق على أن يعتبر العقد مفسوخا بحكم القانون عند عدم الوفاء بالالتزامات الناشئة عنه بمجرد تحقيق الشروط المتفق عليها وبدون حاجة إلى حكم قضائي. وهذا الشرط لا يعفي من الاعذار، الذي يحدد حسب العرف عند عدم تحديده من طرف المتعاقدين.",
+          "sha256": "627ff34c3251453c3569b4a493994657191bcf7603e61b29c5439323a52255bf"
         }
       ],
       "source": {
@@ -518,11 +472,14 @@
         "ledgerClean": true
       },
       "grading": {
-        "grade": "D",
+        "grade": "B",
         "reasons": [
-          "textNotVerified: civil-code 120"
+          "addedAfterDerivation",
+          "plantedNotRun"
         ],
-        "toCheck": true
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -532,7 +489,7 @@
         "code": "civil-code",
         "article": "120",
         "paragraphs": [
-          2
+          1
         ]
       },
       "says": {
@@ -541,9 +498,9 @@
       },
       "quote": [
         {
-          "paragraph": 2,
-          "text": "وهذا الشرط لا يعفي من الاعذار، الذي يحدد حسب العرف عند عدم تحديده من طرف المتعاقدين.",
-          "sha256": "dd5aadaed3c37610d276d67584c9d5e90e41257a0eb98c110ba088b24eeb7034"
+          "paragraph": 1,
+          "text": "يجوز الاتفاق على أن يعتبر العقد مفسوخا بحكم القانون عند عدم الوفاء بالالتزامات الناشئة عنه بمجرد تحقيق الشروط المتفق عليها وبدون حاجة إلى حكم قضائي. وهذا الشرط لا يعفي من الاعذار، الذي يحدد حسب العرف عند عدم تحديده من طرف المتعاقدين.",
+          "sha256": "627ff34c3251453c3569b4a493994657191bcf7603e61b29c5439323a52255bf"
         }
       ],
       "source": {
@@ -554,11 +511,14 @@
         "ledgerClean": true
       },
       "grading": {
-        "grade": "D",
+        "grade": "B",
         "reasons": [
-          "textNotVerified: civil-code 120"
+          "disagreedBeforeReconciliation",
+          "plantedNotRun"
         ],
-        "toCheck": true
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -590,9 +550,13 @@
         "ledgerClean": true
       },
       "grading": {
-        "grade": "A",
-        "reasons": [],
-        "toCheck": false
+        "grade": "B",
+        "reasons": [
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "oneFamily"
       }
     },
     {
@@ -624,9 +588,13 @@
         "ledgerClean": true
       },
       "grading": {
-        "grade": "A",
-        "reasons": [],
-        "toCheck": false
+        "grade": "B",
+        "reasons": [
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "mechanical",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -658,9 +626,13 @@
         "ledgerClean": true
       },
       "grading": {
-        "grade": "A",
-        "reasons": [],
-        "toCheck": false
+        "grade": "B",
+        "reasons": [
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "mechanical",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -692,9 +664,13 @@
         "ledgerClean": true
       },
       "grading": {
-        "grade": "A",
-        "reasons": [],
-        "toCheck": false
+        "grade": "B",
+        "reasons": [
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -728,9 +704,13 @@
         "ledgerClean": true
       },
       "grading": {
-        "grade": "A",
-        "reasons": [],
-        "toCheck": false
+        "grade": "B",
+        "reasons": [
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -766,9 +746,12 @@
       "grading": {
         "grade": "B",
         "reasons": [
-          "addedAfterDerivation"
+          "addedAfterDerivation",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -804,9 +787,12 @@
       "grading": {
         "grade": "B",
         "reasons": [
-          "addedAfterDerivation"
+          "addedAfterDerivation",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -842,9 +828,12 @@
       "grading": {
         "grade": "B",
         "reasons": [
-          "disagreedBeforeReconciliation"
+          "disagreedBeforeReconciliation",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -884,9 +873,12 @@
       "grading": {
         "grade": "B",
         "reasons": [
-          "addedAfterDerivation"
+          "addedAfterDerivation",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -920,9 +912,12 @@
       "grading": {
         "grade": "B",
         "reasons": [
-          "disagreedBeforeReconciliation"
+          "disagreedBeforeReconciliation",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -932,6 +927,7 @@
         "code": "commercial-code",
         "article": "177",
         "paragraphs": [
+          1,
           2
         ]
       },
@@ -940,6 +936,11 @@
         "en": "In refusing to renew a commercial lease without indemnity, a breach consisting of non-performance of an obligation or of ceasing to run the business without serious and legitimate reason can be invoked only if it continued or was repeated for more than a month after the lessor's warning to stop it; the warning must be made by an extrajudicial act stating the reason and reciting the paragraph, failing which it is void."
       },
       "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجوز للمؤجر أن يرفض تجديد الايجار دون أن يلزم بسداد أى تعويض، اذا برهن عن سبب خطير ومشروع تجاه المستأجر المخلى المحل .",
+          "sha256": "be74174ce82298726f3f552db7ace503c12861a3295390e250f091384511a393"
+        },
         {
           "paragraph": 2,
           "text": "غير أنه اذا كان الامر يتعلق اما بعدم تنفيذ التزام واما بالتوقف عن استغلال المحل التجارى دون سبب جدي ومشروع فانه لا يجوز الادعاء بالمخالفة المقترفة من قبل المستأجر نظرا لاحكام المادة 172، الا اذا تواصل ارتكابها أو تجديدها لاكثر من شهر بعد انذار المؤجر بتوقفها. ويجب أن يتم هذا الانذار والا كان باطلا بعقد غير قضائى مع ايضاح السبب المستند اليه وذكر مضمون هذه الفقرة :",
@@ -957,9 +958,12 @@
         "grade": "B",
         "reasons": [
           "ledgerNotClean",
-          "triageOpen: commercial-code"
+          "triageOpen: commercial-code",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "oneFamily"
       }
     },
     {
@@ -996,9 +1000,12 @@
         "grade": "C",
         "reasons": [
           "interpretive",
-          "addedAfterDerivation"
+          "addedAfterDerivation",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "mechanical",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -1014,8 +1021,8 @@
         ]
       },
       "says": {
-        "ar": "يجوز للدائن بدين نقدي مستحق معين المقدار ثابت بالكتابة أن يطلب أمرا بالأداء بعريضة إلى رئيس المحكمة.",
-        "en": "A creditor of a sum of money due, fixed in amount and proved in writing may ask the court president for an order to pay by petition."
+        "ar": "خلافا لقواعد رفع الدعاوى، يجوز للدائن بدين من النقود مستحق وحال الأداء ومعين المقدار وثابت بالكتابة أن يقدم طلبا في شكل عريضة إلى رئيس المحكمة التي يوجد في دائرة اختصاصها موطن المدين.",
+        "en": "Departing from the rules for filing claims, a creditor of a sum of money that is due and payable, fixed in amount and proved in writing may submit a request by petition to the president of the court of the debtor's domicile."
       },
       "quote": [
         {
@@ -1035,9 +1042,12 @@
         "grade": "C",
         "reasons": [
           "interpretive",
-          "addedAfterDerivation"
+          "addedAfterDerivation",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "oneFamily"
       }
     },
     {
@@ -1073,9 +1083,12 @@
       "grading": {
         "grade": "B",
         "reasons": [
-          "addedAfterDerivation"
+          "addedAfterDerivation",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -1111,9 +1124,12 @@
       "grading": {
         "grade": "B",
         "reasons": [
-          "addedAfterDerivation"
+          "addedAfterDerivation",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -1147,9 +1163,12 @@
       "grading": {
         "grade": "B",
         "reasons": [
-          "addedAfterDerivation"
+          "addedAfterDerivation",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -1185,9 +1204,12 @@
       "grading": {
         "grade": "B",
         "reasons": [
-          "addedAfterDerivation"
+          "addedAfterDerivation",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -1202,8 +1224,8 @@
         ]
       },
       "says": {
-        "ar": "بقيت الإيجارات المبرمة في ظل التشريع السابق خاضعة له مدة عشر (10) سنوات من النشر، ويبقى الأشخاص الطبيعيون البالغون ستين (60) سنة عند النشر متمتعين بحق البقاء وفق التشريع السابق إلى وفاتهم.",
-        "en": "Leases made under the earlier legislation stayed under it for ten (10) years from publication; natural persons aged sixty (60) at publication who had a right to stay under the earlier legislation keep it until their death."
+        "ar": "بقيت الإيجارات المبرمة في ظل التشريع السابق خاضعة له مدة عشر (10) سنوات من النشر، ويبقى الأشخاص الطبيعيون البالغون ستين (60) سنة كاملة عند النشر، الذين لهم حق البقاء في الأمكنة المعدة للسكن وفق التشريع السابق، متمتعين بهذا الحق إلى وفاتهم.",
+        "en": "Leases made under the earlier legislation stayed under it for ten (10) years from publication; natural persons aged a full sixty (60) years at publication who had, under the earlier legislation, a right to stay in premises used as a dwelling keep that right until their death."
       },
       "quote": [
         {
@@ -1229,9 +1251,12 @@
       "grading": {
         "grade": "B",
         "reasons": [
-          "addedAfterDerivation"
+          "addedAfterDerivation",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "oneFamily"
       }
     },
     {
@@ -1267,9 +1292,12 @@
         "reasons": [
           "addedAfterDerivation",
           "ledgerNotClean",
-          "triageOpen: commercial-code"
+          "triageOpen: commercial-code",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "mechanical",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -1305,9 +1333,12 @@
         "reasons": [
           "addedAfterDerivation",
           "ledgerNotClean",
-          "triageOpen: commercial-code"
+          "triageOpen: commercial-code",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "mechanical",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -1343,9 +1374,12 @@
         "reasons": [
           "addedAfterDerivation",
           "ledgerNotClean",
-          "triageOpen: commercial-code"
+          "triageOpen: commercial-code",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "mechanical",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -1381,9 +1415,12 @@
         "reasons": [
           "addedAfterDerivation",
           "ledgerNotClean",
-          "triageOpen: commercial-code"
+          "triageOpen: commercial-code",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -1417,9 +1454,12 @@
       "grading": {
         "grade": "B",
         "reasons": [
-          "addedAfterDerivation"
+          "addedAfterDerivation",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -1453,9 +1493,51 @@
       "grading": {
         "grade": "B",
         "reasons": [
-          "addedAfterDerivation"
+          "addedAfterDerivation",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "mechanical",
+        "proof": "twoFamilies"
+      }
+    },
+    {
+      "id": "b37",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "307",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "إذا تبين أن الدين ثابت أمر رئيس المحكمة المدين بالوفاء بمبلغ الدين والمصاريف، وإلا رفض الطلب.",
+        "en": "If the debt is shown to be proved, the court president orders the debtor to pay the debt and the costs; otherwise he rejects the request."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "إذا تبين أن الدين ثابت، أمر المدين بالوفاء بمبلغ الدين والمصاريف، وإلا رفض الطلب.",
+          "sha256": "61196aabd34bb6651b0c76b89122bdedd5c8ea45d2911b126cfbf874262c2c99"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      },
+      "grading": {
+        "grade": "B",
+        "reasons": [
+          "addedAfterDerivation",
+          "plantedNotRun"
+        ],
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "oneFamily"
       }
     }
   ],
@@ -1537,9 +1619,12 @@
         "grade": "C",
         "reasons": [
           "interpretive",
-          "addedAfterDerivation"
+          "addedAfterDerivation",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     }
   ],
@@ -1549,6 +1634,8 @@
       "kind": "formalNotice",
       "slots": [
         "notice_served",
+        "notice_means",
+        "notice_before_petition_day",
         "requests",
         "default_on_due_date_agreed",
         "performance_impossible_or_useless_by_debtor",
@@ -1557,8 +1644,36 @@
         "debtor_refused_in_writing"
       ],
       "requiredWhen": {
-        "slot": "requests",
-        "includes": "damages"
+        "all": [
+          {
+            "slot": "requests",
+            "includes": "damages"
+          },
+          {
+            "any": [
+              {
+                "slot": "notice_served",
+                "known": false
+              },
+              {
+                "slot": "notice_served",
+                "is": "no"
+              },
+              {
+                "all": [
+                  {
+                    "slot": "notice_means",
+                    "is": "bailiff"
+                  },
+                  {
+                    "slot": "notice_before_petition_day",
+                    "is": "yes"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       },
       "notRequiredWhen": [
         {
@@ -1679,7 +1794,7 @@
       "effectWhenMissing": "warn",
       "effectWhenUnknown": "ask",
       "interpretive": true,
-      "interpretiveNote": "Article 179 says compensation is not due before notice and states no sanction on the claim; whether the petition or its service counts as an act that stands in the place of a warning (article 180), whether a notice served after filing suffices, and whether the lack of notice makes the request inadmissible or only unfounded, are readings. A reading never blocks: warn.",
+      "interpretiveNote": "Article 179 says compensation is not due before notice and states no sanction on the claim; whether the petition or its service counts as an act that stands in the place of a warning (article 180), whether a notice served after filing suffices, and whether the lack of notice makes the request inadmissible or only unfounded, are readings. A reading never blocks: warn. The step counts as done only when the notice was served by a bailiff (means m1, and m2 whose warning a bailiff serves) and before the petition's day (owner's decision of 14 November 2026; article 180 «بانذاره», and «بعد اعذار» in articles 179, 119 and 164). A notice by post (m3, n11) or by another act (m4, n1), or one whose means or date before the petition is unknown (n1, n11, n12), leaves the step open: the rule language has no condition on 'done', so requiredWhen carries it. The step then asks for the unknown fact, or, when the means or the date is known and not of that kind, gives no finding of its own and leaves the warning to n1, n11 or n12.",
       "message": {
         "ar": "المادة 179 من القانون المدني: لا يستحق التعويض إلا بعد إعذار المدين، ما لم يوجد نص مخالف أو حالة من حالات المادة 181. تحقق من الإعذار ووسيلته وتاريخه وأنه سابق على العريضة، أو من حالة الإعفاء.",
         "en": "Civil Code article 179: compensation is due only after the debtor is put on notice, unless a text provides otherwise or a case of article 181 applies. Check the notice, its means and its date (before the petition), or the exemption."
@@ -1699,9 +1814,12 @@
         "reasons": [
           "interpretive",
           "disagreedBeforeReconciliation",
-          "attackOpen"
+          "attackOpen",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "oneFamily"
       }
     },
     {
@@ -1709,6 +1827,8 @@
       "kind": "formalNotice",
       "slots": [
         "notice_served",
+        "notice_means",
+        "notice_before_petition_day",
         "requests",
         "default_on_due_date_agreed",
         "performance_impossible_or_useless_by_debtor",
@@ -1716,8 +1836,36 @@
         "movable_sale_price_unpaid_at_term"
       ],
       "requiredWhen": {
-        "slot": "requests",
-        "includes": "rescission"
+        "all": [
+          {
+            "slot": "requests",
+            "includes": "rescission"
+          },
+          {
+            "any": [
+              {
+                "slot": "notice_served",
+                "known": false
+              },
+              {
+                "slot": "notice_served",
+                "is": "no"
+              },
+              {
+                "all": [
+                  {
+                    "slot": "notice_means",
+                    "is": "bailiff"
+                  },
+                  {
+                    "slot": "notice_before_petition_day",
+                    "is": "yes"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       },
       "notRequiredWhen": [
         {
@@ -1726,7 +1874,8 @@
             "is": "yes"
           },
           "basis": [
-            "b5"
+            "b5",
+            "b12"
           ],
           "note": {
             "ar": "اتفاق على أن المدين معذر بمجرد حلول الأجل (وهو غير شرط الفسخ الاتفاقي).",
@@ -1823,10 +1972,10 @@
       "effectWhenMissing": "warn",
       "effectWhenUnknown": "ask",
       "interpretive": true,
-      "interpretiveNote": "Article 119 allows the claim for rescission 'after notice' and states no sanction for its absence. The exemptions of article 181 are worded for any notice to the debtor, and article 119 does not refer to them; applying them here is a reading (open point o3). Warn, never block.",
+      "interpretiveNote": "Article 119 allows the claim for rescission 'after notice' and states no sanction for its absence. The exemptions of article 181 are worded for any notice to the debtor, and article 119 does not refer to them; applying them here is a reading (open point o3). Warn, never block. The step counts as done only when the notice was served by a bailiff (means m1, and m2 whose warning a bailiff serves) and before the petition's day (owner's decision of 14 November 2026; article 180 «بانذاره», and «بعد اعذار» in articles 179, 119 and 164). A notice by post (m3, n11) or by another act (m4, n1), or one whose means or date before the petition is unknown (n1, n11, n12), leaves the step open: the rule language has no condition on 'done', so requiredWhen carries it. The step then asks for the unknown fact, or, when the means or the date is known and not of that kind, gives no finding of its own and leaves the warning to n1, n11 or n12.",
       "message": {
-        "ar": "المادة 119 من القانون المدني: في العقد الملزم للجانبين، يطلب الفسخ بعد إعذار المدين، وشرط الفسخ الاتفاقي لا يعفي من الإعذار (المادة 120)، وبيع المنقولات الذي لم يدفع ثمنه عند الأجل يفسخ دون سابق إنذار (المادة 392). تحقق من الإعذار وتاريخه أو من حالة الإعفاء.",
-        "en": "Civil Code article 119: in a bilateral contract, rescission is claimed after putting the debtor on notice; an agreed rescission clause does not dispense with it (article 120), and a sale of movables unpaid at the term is rescinded without prior warning (article 392). Check the notice and its date, or the exemption."
+        "ar": "المادة 119 من القانون المدني: في العقد الملزم للجانبين، يطلب الفسخ بعد إعذار المدين، وشرط الفسخ الاتفاقي لا يعفي من الإعذار (المادة 120)، وبيع المنقولات الذي لم يدفع ثمنه عند الأجل يفسخ دون سابق إنذار (المادة 392). تحقق من الإعذار ووسيلته وتاريخه وأنه سابق على العريضة، أو من حالة الإعفاء.",
+        "en": "Civil Code article 119: in a bilateral contract, rescission is claimed after putting the debtor on notice; an agreed rescission clause does not dispense with it (article 120), and a sale of movables unpaid at the term is rescinded without prior warning (article 392). Check the notice, its means and its date (before the petition), or the exemption."
       },
       "basis": [
         "b2",
@@ -1838,11 +1987,15 @@
         "b16"
       ],
       "grading": {
-        "grade": "D",
+        "grade": "C",
         "reasons": [
-          "textNotVerified: civil-code 120"
+          "interpretive",
+          "addedAfterDerivation",
+          "plantedNotRun"
         ],
-        "toCheck": true
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -1850,6 +2003,8 @@
       "kind": "formalNotice",
       "slots": [
         "notice_served",
+        "notice_means",
+        "notice_before_petition_day",
         "requests",
         "default_on_due_date_agreed",
         "performance_impossible_or_useless_by_debtor",
@@ -1858,22 +2013,50 @@
         "debtor_refused_in_writing"
       ],
       "requiredWhen": {
-        "any": [
+        "all": [
           {
-            "slot": "requests",
-            "includes": "payment"
+            "any": [
+              {
+                "slot": "requests",
+                "includes": "payment"
+              },
+              {
+                "slot": "requests",
+                "includes": "delivery"
+              },
+              {
+                "slot": "requests",
+                "includes": "restitution"
+              },
+              {
+                "slot": "requests",
+                "includes": "eviction"
+              }
+            ]
           },
           {
-            "slot": "requests",
-            "includes": "delivery"
-          },
-          {
-            "slot": "requests",
-            "includes": "restitution"
-          },
-          {
-            "slot": "requests",
-            "includes": "eviction"
+            "any": [
+              {
+                "slot": "notice_served",
+                "known": false
+              },
+              {
+                "slot": "notice_served",
+                "is": "no"
+              },
+              {
+                "all": [
+                  {
+                    "slot": "notice_means",
+                    "is": "bailiff"
+                  },
+                  {
+                    "slot": "notice_before_petition_day",
+                    "is": "yes"
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -1996,10 +2179,10 @@
       "effectWhenMissing": "warn",
       "effectWhenUnknown": "ask",
       "interpretive": true,
-      "interpretiveNote": "Article 119 puts the claim for performance of a bilateral contract after notice, and article 164 compels performance in kind after notice under articles 180 and 181; neither says whether a claim for a sum of money, for delivery, for the return of a thing or for the return of leased premises (eviction) is such a claim, nor what follows from the lack of notice (open point o6). Warn, never block.",
+      "interpretiveNote": "Article 119 puts the claim for performance of a bilateral contract after notice, and article 164 compels performance in kind after notice under articles 180 and 181; neither says whether a claim for a sum of money, for delivery, for the return of a thing or for the return of leased premises (eviction) is such a claim, nor what follows from the lack of notice (open point o6). Warn, never block. The step counts as done only when the notice was served by a bailiff (means m1, and m2 whose warning a bailiff serves) and before the petition's day (owner's decision of 14 November 2026; article 180 «بانذاره», and «بعد اعذار» in articles 179, 119 and 164). A notice by post (m3, n11) or by another act (m4, n1), or one whose means or date before the petition is unknown (n1, n11, n12), leaves the step open: the rule language has no condition on 'done', so requiredWhen carries it. The step then asks for the unknown fact, or, when the means or the date is known and not of that kind, gives no finding of its own and leaves the warning to n1, n11 or n12.",
       "message": {
-        "ar": "المادتان 119 و164 من القانون المدني: يطالب بتنفيذ العقد ويجبر المدين على التنفيذ العيني بعد إعذاره طبقا للمادتين 180 و181. تحقق من الإعذار وتاريخه أو من حالة الإعفاء.",
-        "en": "Civil Code articles 119 and 164: performance is claimed, and the debtor compelled to perform in kind, after notice under articles 180 and 181. Check the notice and its date, or the exemption."
+        "ar": "المادتان 119 و164 من القانون المدني: يطالب بتنفيذ العقد ويجبر المدين على التنفيذ العيني بعد إعذاره طبقا للمادتين 180 و181. تحقق من الإعذار ووسيلته وتاريخه وأنه سابق على العريضة، أو من حالة الإعفاء.",
+        "en": "Civil Code articles 119 and 164: performance is claimed, and the debtor compelled to perform in kind, after notice under articles 180 and 181. Check the notice, its means and its date (before the petition), or the exemption."
       },
       "basis": [
         "b2",
@@ -2016,9 +2199,12 @@
         "reasons": [
           "interpretive",
           "addedAfterDerivation",
-          "attackOpen"
+          "attackOpen",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "oneFamily"
       }
     }
   ],
@@ -2043,9 +2229,12 @@
       "grading": {
         "grade": "B",
         "reasons": [
-          "addedAfterDerivation"
+          "addedAfterDerivation",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -2069,9 +2258,12 @@
       "grading": {
         "grade": "B",
         "reasons": [
-          "addedAfterDerivation"
+          "addedAfterDerivation",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -2094,9 +2286,12 @@
       "grading": {
         "grade": "B",
         "reasons": [
-          "addedAfterDerivation"
+          "addedAfterDerivation",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -2120,9 +2315,12 @@
         "grade": "B",
         "reasons": [
           "addedAfterDerivation",
-          "attackOpen"
+          "attackOpen",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     }
   ],
@@ -2197,9 +2395,12 @@
         "grade": "B",
         "reasons": [
           "addedAfterDerivation",
-          "attackOpen"
+          "attackOpen",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -2224,11 +2425,14 @@
         "b12"
       ],
       "grading": {
-        "grade": "D",
+        "grade": "B",
         "reasons": [
-          "textNotVerified: civil-code 120"
+          "addedAfterDerivation",
+          "plantedNotRun"
         ],
-        "toCheck": true
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -2280,9 +2484,12 @@
         "reasons": [
           "addedAfterDerivation",
           "ledgerNotClean",
-          "triageOpen: commercial-code"
+          "triageOpen: commercial-code",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "oneFamily"
       }
     },
     {
@@ -2308,9 +2515,12 @@
       "grading": {
         "grade": "B",
         "reasons": [
-          "addedAfterDerivation"
+          "addedAfterDerivation",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -2338,9 +2548,12 @@
       "grading": {
         "grade": "B",
         "reasons": [
-          "addedAfterDerivation"
+          "addedAfterDerivation",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -2357,19 +2570,23 @@
         }
       ],
       "message": {
-        "ar": "المادة 306 من قانون الإجراءات المدنية والإدارية: طريق الأمر بالأداء متاح لهذا الدين، وشروطه لا تذكر الإعذار. انظر وحدة الخروج من الدعوى العادية.",
-        "en": "Code of Civil and Administrative Procedure article 306: the order-to-pay route is open for such a debt, and its conditions do not mention notice. See the ordinary-court-exits module."
+        "ar": "المادتان 306 و307 من قانون الإجراءات المدنية والإدارية: لهذا الدين أن يطلب بعريضة إلى رئيس المحكمة الذي يأمر المدين بالوفاء إذا تبين أن الدين ثابت (أمر الأداء)، وشروط المادة 306 لا تذكر الإعذار. انظر وحدة الخروج من الدعوى العادية.",
+        "en": "Code of Civil and Administrative Procedure articles 306 and 307: such a debt may be claimed by petition to the court president, who orders the debtor to pay when the debt is shown to be proved (order to pay); the conditions of article 306 do not mention notice. See the ordinary-court-exits module."
       },
       "basis": [
-        "b25"
+        "b25",
+        "b37"
       ],
       "grading": {
         "grade": "C",
         "reasons": [
           "interpretive",
-          "addedAfterDerivation"
+          "addedAfterDerivation",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "oneFamily"
       }
     },
     {
@@ -2395,9 +2612,12 @@
       "grading": {
         "grade": "B",
         "reasons": [
-          "addedAfterDerivation"
+          "addedAfterDerivation",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -2442,9 +2662,12 @@
       "grading": {
         "grade": "B",
         "reasons": [
-          "addedAfterDerivation"
+          "addedAfterDerivation",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "oneFamily"
       }
     },
     {
@@ -2514,11 +2737,14 @@
         "b12"
       ],
       "grading": {
-        "grade": "D",
+        "grade": "B",
         "reasons": [
-          "textNotVerified: civil-code 120"
+          "addedAfterDerivation",
+          "plantedNotRun"
         ],
-        "toCheck": true
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -2589,9 +2815,12 @@
       "grading": {
         "grade": "B",
         "reasons": [
-          "addedAfterDerivation"
+          "addedAfterDerivation",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "twoFamilies",
+        "proof": "twoFamilies"
       }
     },
     {
@@ -2663,9 +2892,12 @@
       "grading": {
         "grade": "B",
         "reasons": [
-          "addedAfterDerivation"
+          "addedAfterDerivation",
+          "plantedNotRun"
         ],
-        "toCheck": false
+        "toCheck": false,
+        "textProof": "mechanical",
+        "proof": "twoFamilies"
       }
     }
   ],
@@ -3003,7 +3235,10 @@
       },
       "grade": "C",
       "refs": [
-        "n1"
+        "n1",
+        "p1",
+        "p2",
+        "p3"
       ]
     },
     {
@@ -3013,17 +3248,18 @@
         "en": "Does a notice served on the day of the petition, or after it, suffice?"
       },
       "why": {
-        "ar": "المادة 119 تجعل المطالبة بعد الإعذار، والمادة 179 تجعل استحقاق التعويض بعده دون ذكر رفع الدعوى؛ ولا يقارن التطبيق تاريخ الإعذار بتاريخ العريضة، فيسأل المحامي هل بلغ الإعذار قبل يوم العريضة (n12).",
-        "en": "Article 119 puts the claim after the notice; article 179 puts the entitlement to compensation after it, without mentioning the filing. The app does not compare the notice date with the petition date, so it asks the lawyer whether the notice was served before the petition's day (n12)."
+        "ar": "المادة 119 تجعل المطالبة بعد الإعذار، والمادة 179 تجعل استحقاق التعويض بعده دون ذكر رفع الدعوى؛ ولا يقارن التطبيق تاريخ الإعذار بتاريخ العريضة، فيسأل المحامي هل بلغ الإعذار قبل يوم العريضة (n12)، ولا تعد الخطوات p1 وp2 وp3 الإعذار منجزا إلا إذا كان الجواب نعم. وفي دعوى التعويض وحدها مع إعذار بلغ بعد العريضة، لا يحسم أي من النصين المسألة، فتبقى القراءتان وينبه التطبيق دون أن يمنع.",
+        "en": "Article 119 puts the claim after the notice; article 179 puts the entitlement to compensation after it, without mentioning the filing. The app does not compare the notice date with the petition date, so it asks the lawyer whether the notice was served before the petition's day (n12); the steps p1, p2 and p3 count the notice as done only when the answer is yes. For a claim for damages alone with a notice served after the petition, neither text settles it, so both readings stay and the app warns, never blocks."
       },
       "readings": [
         {
           "reading": {
-            "ar": "يجب أن يسبق الإعذار رفع الدعوى.",
-            "en": "The notice must precede the filing."
+            "ar": "يجب أن يسبق الإعذار رفع الدعوى، ولو اقتصرت على طلب التعويض، لأن التعويض لا يستحق إلا بعد الإعذار.",
+            "en": "The notice must precede the filing, even for a claim for damages alone, since compensation is due only after notice."
           },
           "basis": [
-            "b2"
+            "b2",
+            "b1"
           ]
         },
         {
@@ -3436,7 +3672,7 @@
         "n2",
         "p2"
       ],
-      "note": "Article 120 paragraph 2: the clause does not dispense with notice, which custom determines when the parties have not. An agreement under article 180 that the debtor is in default on the due date is itself a way of giving notice, so p2 keeps it."
+      "note": "Article 120 paragraph 1: the clause does not dispense with notice, which custom determines when the parties have not. An agreement under article 180 that the debtor is in default on the due date is itself a way of giving notice, so p2 keeps it."
     },
     {
       "id": "k14",
@@ -3665,9 +3901,10 @@
       "answer": "applies",
       "refs": [
         "b25",
+        "b37",
         "n6"
       ],
-      "note": "CPCA 306 lists no prior notice; the route itself belongs to ordinary-court-exits."
+      "note": "CPCA 306 lists no prior notice; 307 paragraph 2 makes the relief an order to the debtor to pay. The route itself belongs to ordinary-court-exits."
     },
     {
       "id": "k32",
@@ -3697,7 +3934,7 @@
         "n10",
         "o11"
       ],
-      "note": "No general period: 120 paragraph 2 leaves the notice to the parties or to custom (n10); a reasonable delay for works (553); more than a month for the commercial lease (commercial 177, n3); insurance premiums have their own periods outside the store (o11). No deadline item: none is a limitation or forfeiture of this module."
+      "note": "No general period: 120 paragraph 1 leaves the notice to the parties or to custom (n10); a reasonable delay for works (553); more than a month for the commercial lease (commercial 177, n3); insurance premiums have their own periods outside the store (o11). No deadline item: none is a limitation or forfeiture of this module."
     },
     {
       "id": "k34",
@@ -3797,9 +4034,12 @@
         "doc2",
         "e1",
         "o9",
-        "n12"
+        "n12",
+        "p1",
+        "p2",
+        "p3"
       ],
-      "note": "No text fixes how the date is proved; the slot notice_date is kept by the app. The rule language cannot compare it with the petition date, so boundary n12 asks whether the notice was served before the petition's day and warns when it was not, and the messages and doc1 ask the lawyer to check it (o9)."
+      "note": "No text fixes how the date is proved; the slot notice_date is kept by the app. The rule language cannot compare it with the petition date, so boundary n12 asks whether the notice was served before the petition's day and warns when it was not, and the messages and doc1 ask the lawyer to check it (o9); p1 to p3 count the notice as done only when it was served before the petition's day, and otherwise ask or leave the warning to n12."
     },
     {
       "id": "k41",
@@ -3813,10 +4053,14 @@
         "b21",
         "b22",
         "p1",
+        "p2",
+        "p3",
         "n1",
+        "n11",
         "o2",
         "o8"
-      ]
+      ],
+      "note": "p1 to p3 count the notice as done only when a bailiff served it (m1, m2); a notice by post or another means leaves them open and n11 or n1 warns, and an unknown means is asked."
     },
     {
       "id": "k42",
@@ -3832,7 +4076,7 @@
         "n10",
         "o11"
       ],
-      "note": "No general rule on the content of a notice. 120 paragraph 2 leaves the notice to the parties or to custom; special texts fix a reasonable delay (553, works) or one month (commercial 177, commercial lease)."
+      "note": "No general rule on the content of a notice. 120 paragraph 1 leaves the notice to the parties or to custom; special texts fix a reasonable delay (553, works) or one month (commercial 177, commercial lease)."
     },
     {
       "id": "k43",
@@ -4321,7 +4565,7 @@
             "ref": "p2",
             "effect": "none",
             "shownEffect": "none",
-            "toCheck": true
+            "toCheck": false
           },
           {
             "ref": "p3",
@@ -4369,7 +4613,7 @@
             "ref": "p2",
             "effect": "warn",
             "shownEffect": "warn",
-            "toCheck": true
+            "toCheck": false
           },
           {
             "ref": "p3",
@@ -4404,7 +4648,7 @@
             "ref": "p2",
             "effect": "none",
             "shownEffect": "none",
-            "toCheck": true
+            "toCheck": false
           },
           {
             "ref": "p3",
@@ -4481,7 +4725,7 @@
             "ref": "p2",
             "effect": "none",
             "shownEffect": "none",
-            "toCheck": true
+            "toCheck": false
           }
         ],
         "questions": []
@@ -4505,7 +4749,7 @@
             "ref": "p2",
             "effect": "none",
             "shownEffect": "none",
-            "toCheck": true
+            "toCheck": false
           }
         ],
         "questions": []
@@ -4655,7 +4899,7 @@
             "ref": "p2",
             "effect": "none",
             "shownEffect": "none",
-            "toCheck": true
+            "toCheck": false
           },
           {
             "ref": "p3",
@@ -4777,7 +5021,7 @@
             "ref": "p2",
             "effect": "ask",
             "shownEffect": "ask",
-            "toCheck": true
+            "toCheck": false
           }
         ],
         "questions": [
@@ -4843,7 +5087,7 @@
             "ref": "p2",
             "effect": "none",
             "shownEffect": "none",
-            "toCheck": true
+            "toCheck": false
           }
         ]
       }
@@ -4905,7 +5149,7 @@
             "ref": "p2",
             "effect": "none",
             "shownEffect": "none",
-            "toCheck": true
+            "toCheck": false
           },
           {
             "ref": "p3",
@@ -4973,7 +5217,7 @@
             "ref": "p2",
             "effect": "none",
             "shownEffect": "none",
-            "toCheck": true
+            "toCheck": false
           },
           {
             "ref": "n1",
@@ -5012,7 +5256,7 @@
             "ref": "p2",
             "effect": "warn",
             "shownEffect": "warn",
-            "toCheck": true
+            "toCheck": false
           },
           {
             "ref": "p3",
@@ -5061,7 +5305,7 @@
     {
       "id": "exR6",
       "by": "reconciler",
-      "title": "Notice served, means unknown: n1 asks for the means (boundary case bc12).",
+      "title": "Notice served, means unknown: n1 asks for the means, and p1 asks for it too instead of counting the notice as done (boundary case bc12; owner-done).",
       "petitionDate": "2026-03-10",
       "slots": {
         "requests": [
@@ -5076,8 +5320,8 @@
         "findings": [
           {
             "ref": "p1",
-            "effect": "none",
-            "shownEffect": "none",
+            "effect": "ask",
+            "shownEffect": "ask",
             "toCheck": false
           },
           {
@@ -5196,7 +5440,7 @@
             "ref": "p2",
             "effect": "none",
             "shownEffect": "none",
-            "toCheck": true
+            "toCheck": false
           },
           {
             "ref": "p3",
@@ -5214,7 +5458,7 @@
             "ref": "n10",
             "effect": "none",
             "shownEffect": "none",
-            "toCheck": true
+            "toCheck": false
           }
         ],
         "questions": []
@@ -5247,7 +5491,7 @@
             "ref": "n10",
             "effect": "warn",
             "shownEffect": "warn",
-            "toCheck": true
+            "toCheck": false
           },
           {
             "ref": "n1",
@@ -5284,7 +5528,7 @@
             "ref": "p2",
             "effect": "warn",
             "shownEffect": "warn",
-            "toCheck": true
+            "toCheck": false
           },
           {
             "ref": "p3",
@@ -5426,7 +5670,7 @@
             "ref": "p2",
             "effect": "warn",
             "shownEffect": "warn",
-            "toCheck": true
+            "toCheck": false
           }
         ],
         "questions": []
@@ -5453,7 +5697,7 @@
             "ref": "p2",
             "effect": "warn",
             "shownEffect": "warn",
-            "toCheck": true
+            "toCheck": false
           }
         ],
         "questions": []
@@ -5665,7 +5909,7 @@
             "ref": "p2",
             "effect": "none",
             "shownEffect": "none",
-            "toCheck": true
+            "toCheck": false
           }
         ],
         "questions": []
@@ -5692,7 +5936,7 @@
             "ref": "p2",
             "effect": "none",
             "shownEffect": "none",
-            "toCheck": true
+            "toCheck": false
           }
         ],
         "questions": []
@@ -5701,7 +5945,7 @@
     {
       "id": "exV20",
       "by": "verifier",
-      "title": "bc8: damages, bailiff notice dated the petition day itself, the lawyer not yet asked: n12 asks whether the notice came before the petition's day (o9); p1 stays silent once a notice was served.",
+      "title": "bc8: damages, bailiff notice dated the petition day itself, the lawyer not yet asked: n12 asks whether the notice came before the petition's day (o9), and p1 asks the same instead of counting the notice as done (owner-done).",
       "petitionDate": "2026-06-15",
       "slots": {
         "requests": [
@@ -5716,8 +5960,8 @@
         "findings": [
           {
             "ref": "p1",
-            "effect": "none",
-            "shownEffect": "none",
+            "effect": "ask",
+            "shownEffect": "ask",
             "toCheck": false
           },
           {
@@ -5741,7 +5985,7 @@
     {
       "id": "exV21",
       "by": "verifier",
-      "title": "bc8 answered: damages, the notice was served on the petition's day, not before it: n12 warns (articles 179 and 119 do not say whether such a notice suffices, o9).",
+      "title": "bc8 answered: damages, the notice was served on the petition's day, not before it: n12 warns (articles 179 and 119 do not say whether such a notice suffices, o9); p1 does not count such a notice as done and leaves the warning to n12 (owner-done).",
       "petitionDate": "2026-06-15",
       "slots": {
         "requests": [
@@ -5765,6 +6009,482 @@
             "ref": "n12",
             "effect": "warn",
             "shownEffect": "warn",
+            "toCheck": false
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "exV22",
+      "by": "verifier",
+      "title": "owner-done, done: damages, rescission and payment, bailiff notice served before the petition's day: p1, p2 and p3 count the notice as done and nothing is asked.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": [
+          "damages",
+          "rescission",
+          "payment"
+        ],
+        "notice_served": "yes",
+        "notice_means": "bailiff",
+        "notice_date": "2026-02-01",
+        "notice_before_petition_day": "yes",
+        "contract_sets_notice_terms": "no",
+        "commercial_lease": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          },
+          {
+            "ref": "p2",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          },
+          {
+            "ref": "p3",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          },
+          {
+            "ref": "n1",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          },
+          {
+            "ref": "n11",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          },
+          {
+            "ref": "n12",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "exV23",
+      "by": "verifier",
+      "title": "owner-done, open (means unknown): payment, notice served before the petition's day by an unknown means: p3 asks for the means, as n1 and n11 do, and does not say done.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "notice_served": "yes",
+        "notice_date": "2026-02-01",
+        "notice_before_petition_day": "yes",
+        "contract_sets_notice_terms": "no",
+        "commercial_lease": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p3",
+            "effect": "ask",
+            "shownEffect": "ask",
+            "toCheck": false
+          },
+          {
+            "ref": "n1",
+            "effect": "ask",
+            "shownEffect": "ask",
+            "toCheck": false
+          },
+          {
+            "ref": "n11",
+            "effect": "ask",
+            "shownEffect": "ask",
+            "toCheck": false
+          },
+          {
+            "ref": "n12",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          }
+        ],
+        "questions": [
+          "notice_means"
+        ]
+      }
+    },
+    {
+      "id": "exV24",
+      "by": "verifier",
+      "title": "owner-done, open (means not listed): rescission, notice by registered letter before the petition's day: p2 does not count it as done (its condition is false, no finding of its own) and n11 warns.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": [
+          "rescission"
+        ],
+        "notice_served": "yes",
+        "notice_means": "registered_letter",
+        "notice_date": "2026-02-01",
+        "notice_before_petition_day": "yes",
+        "contract_sets_notice_terms": "no",
+        "commercial_lease": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p2",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          },
+          {
+            "ref": "n11",
+            "effect": "warn",
+            "shownEffect": "warn",
+            "toCheck": false
+          },
+          {
+            "ref": "n1",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          },
+          {
+            "ref": "n12",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "exV25",
+      "by": "verifier",
+      "title": "owner-done, open (date unknown): damages and rescission, bailiff notice, whether it came before the petition's day not known: p1 and p2 ask, as n12 does.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": [
+          "damages",
+          "rescission"
+        ],
+        "notice_served": "yes",
+        "notice_means": "bailiff",
+        "notice_date": "2026-03-10",
+        "contract_sets_notice_terms": "no",
+        "commercial_lease": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "ask",
+            "shownEffect": "ask",
+            "toCheck": false
+          },
+          {
+            "ref": "p2",
+            "effect": "ask",
+            "shownEffect": "ask",
+            "toCheck": false
+          },
+          {
+            "ref": "n12",
+            "effect": "ask",
+            "shownEffect": "ask",
+            "toCheck": false
+          },
+          {
+            "ref": "n1",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          }
+        ],
+        "questions": [
+          "notice_before_petition_day"
+        ]
+      }
+    },
+    {
+      "id": "exV26",
+      "by": "verifier",
+      "title": "owner-done, open (not before): payment, bailiff notice served on the petition's day: p3 does not count it as done and n12 warns.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "notice_served": "yes",
+        "notice_means": "bailiff",
+        "notice_date": "2026-03-10",
+        "notice_before_petition_day": "no",
+        "contract_sets_notice_terms": "no",
+        "commercial_lease": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p3",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          },
+          {
+            "ref": "n12",
+            "effect": "warn",
+            "shownEffect": "warn",
+            "toCheck": false
+          },
+          {
+            "ref": "n1",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "exV27",
+      "by": "verifier",
+      "title": "store-120: rescission under an agreed rescission clause, no notice, no exemption: p2 warns; b12 now cites article 120 paragraph 1, the one paragraph, which says «وهذا الشرط لا يعفي من الاعذار».",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": [
+          "rescission"
+        ],
+        "notice_served": "no",
+        "default_on_due_date_agreed": "no",
+        "performance_impossible_or_useless_by_debtor": "no",
+        "debtor_refused_in_writing": "no",
+        "movable_sale_price_unpaid_at_term": "no",
+        "contract_sets_notice_terms": "no",
+        "commercial_lease": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p2",
+            "effect": "warn",
+            "shownEffect": "warn",
+            "toCheck": false
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "exV28",
+      "by": "verifier",
+      "title": "sup-18: a creditor of a sum of money due, fixed and proved by a signed acknowledgement claims payment by an ordinary petition, no notice, no exemption: p3 warns; n6 is a note without a finding, and b25 now states only what article 306 paragraph 1 says while b37 (article 307 paragraph 2) carries the order to pay.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "notice_served": "no",
+        "default_on_due_date_agreed": "no",
+        "performance_impossible_or_useless_by_debtor": "no",
+        "obligation_is_tort_compensation": "no",
+        "return_of_thing_known_stolen_or_unduly_received": "no",
+        "debtor_refused_in_writing": "no",
+        "contract_sets_notice_terms": "no",
+        "commercial_lease": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p3",
+            "effect": "warn",
+            "shownEffect": "warn",
+            "toCheck": false
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "exV29",
+      "by": "verifier",
+      "title": "sup-27: eviction of a tenant of a dwelling let under the earlier legislation, no notice, no exemption: n8 warns and names 507 مكرر, whose b30 now says the lifetime right to stay concerns premises used as a dwelling; p3 warns (o6).",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": [
+          "eviction"
+        ],
+        "notice_served": "no",
+        "default_on_due_date_agreed": "no",
+        "performance_impossible_or_useless_by_debtor": "no",
+        "obligation_is_tort_compensation": "no",
+        "return_of_thing_known_stolen_or_unduly_received": "no",
+        "debtor_refused_in_writing": "no",
+        "contract_sets_notice_terms": "no",
+        "commercial_lease": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n8",
+            "effect": "warn",
+            "shownEffect": "warn",
+            "toCheck": false
+          },
+          {
+            "ref": "p3",
+            "effect": "warn",
+            "shownEffect": "warn",
+            "toCheck": false
+          },
+          {
+            "ref": "n3",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "exV30",
+      "by": "verifier",
+      "title": "sup-44-f3: the lessor of business premises refuses renewal without indemnity for the tenant's breach and claims eviction after a bailiff's warning: n3 warns; b23 now cites article 177 paragraphs 1 and 2, the refusal without indemnity and its exception.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": [
+          "eviction"
+        ],
+        "notice_served": "yes",
+        "notice_means": "bailiff",
+        "notice_date": "2026-01-15",
+        "notice_before_petition_day": "yes",
+        "contract_sets_notice_terms": "no",
+        "commercial_lease": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n3",
+            "effect": "warn",
+            "shownEffect": "warn",
+            "toCheck": false
+          },
+          {
+            "ref": "p3",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          },
+          {
+            "ref": "n12",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "exV31",
+      "by": "verifier",
+      "title": "sup-49: rescission, no notice, the contract says the debtor is in default on the due date: exempt (p2 none); the exemption's basis now adds b12 (article 120), which keeps it apart from an agreed rescission clause.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": [
+          "rescission"
+        ],
+        "notice_served": "no",
+        "default_on_due_date_agreed": "yes",
+        "contract_sets_notice_terms": "no",
+        "commercial_lease": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p2",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "exV32",
+      "by": "verifier",
+      "title": "uncertain-bc7 answered: damages only, bailiff notice served after the petition: p1 does not count it as done, n12 warns and o9 keeps both readings (articles 179 and 119 do not settle it).",
+      "petitionDate": "2026-06-15",
+      "slots": {
+        "requests": [
+          "damages"
+        ],
+        "notice_served": "yes",
+        "notice_means": "bailiff",
+        "notice_date": "2026-06-20",
+        "notice_before_petition_day": "no",
+        "contract_sets_notice_terms": "no",
+        "commercial_lease": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          },
+          {
+            "ref": "n12",
+            "effect": "warn",
+            "shownEffect": "warn",
+            "toCheck": false
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "exV33",
+      "by": "verifier",
+      "title": "bc-bc1 answered: rescission, bailiff notice served on 10 May, before the petition of 15 June: p2 counts the notice as done once the lawyer says it came before the petition's day.",
+      "petitionDate": "2026-06-15",
+      "slots": {
+        "requests": [
+          "rescission"
+        ],
+        "notice_served": "yes",
+        "notice_means": "bailiff",
+        "notice_date": "2026-05-10",
+        "notice_before_petition_day": "yes",
+        "contract_sets_notice_terms": "no",
+        "commercial_lease": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p2",
+            "effect": "none",
+            "shownEffect": "none",
+            "toCheck": false
+          },
+          {
+            "ref": "n12",
+            "effect": "none",
+            "shownEffect": "none",
             "toCheck": false
           }
         ],

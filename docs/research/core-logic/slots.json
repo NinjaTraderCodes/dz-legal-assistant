@@ -852,6 +852,62 @@
       "readFromNote": false,
       "origin": "ordinary-court-exits",
       "why": "Territory rule t4 reads it: cpca 900 مكرر ¶3 gives the administrative court of appeal of Algiers only the decisions of central authorities, national public bodies and national professional organisations; cpca 801 ¶2 to ¶6 leave local decisions to the administrative courts (verifier, attack atk-2)."
+    },
+    {
+      "id": "internal_grievance_exhausted",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل استنفد العامل إجراءات المعالجة الداخلية للنزاع داخل الهيئة المستخدمة (إجراءات الاتفاقية الجماعية، أو عرض الأمر على الرئيس المباشر ثم على الهيئة المسيرة أو المستخدم)؟",
+        "en": "Did the worker first exhaust the internal procedure for handling the dispute inside the employer (the collective agreement's procedure or, failing it, referral to the direct superior and then to management or the employer)?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "labour-prelitigation",
+      "why": "Prior step p2 reads it: articles 2, 3, 4 and 5 of the law on individual labour disputes put the referral to the labour inspector after the internal procedure is exhausted. Derivation A's internal_grievance_exhausted and derivation B's internal_settlement_attempted, merged."
+    },
+    {
+      "id": "conciliation_agreement_reached",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل حرر مكتب المصالحة محضر مصالحة باتفاق الطرفين على كل الخلاف أو جزء منه؟",
+        "en": "Did the conciliation office draw up a record of conciliation, the parties having agreed on all or part of the dispute?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "labour-prelitigation",
+      "why": "Boundary n1 reads it: articles 31, 33 and 34 of the law on individual labour disputes and CPCA articles 508 and 509 send the non-execution of a conciliation agreement to the president of the social section for immediate execution, not to an ordinary claim."
+    },
+    {
+      "id": "earlier_nonconciliation_record",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل سبق أن سلم محضر عدم مصالحة آخر عن نفس النزاع قبل المحضر المذكور؟",
+        "en": "Was an earlier non-conciliation record delivered for the same dispute, before the record entered?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "labour-prelitigation",
+      "why": "Deadline d3 reads it: the Supreme Court (social chamber, file 1488919, 07-10-2021), reading CPCA 504 and 69, runs the six months from the first non-conciliation record and holds that a second record on the same dispute cannot be obtained (verifier, attack adv-1)."
+    },
+    {
+      "id": "earlier_nonconciliation_record_delivered_on",
+      "type": "date",
+      "question": {
+        "ar": "ما تاريخ تسليم محضر عدم المصالحة الأول عن نفس النزاع؟",
+        "en": "On what date was the first non-conciliation record for the same dispute delivered?"
+      },
+      "askedFor": [
+        "*"
+      ],
+      "readFromNote": false,
+      "origin": "labour-prelitigation",
+      "why": "Deadline d3 runs from it (CPCA 504 as read by the Supreme Court, file 1488919, 07-10-2021; attack adv-1)."
     }
   ]
 }

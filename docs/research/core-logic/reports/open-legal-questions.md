@@ -579,3 +579,172 @@ Grades of the items: B 55, C 8, D 24.
 ### ordinary-court-exits: boundary cases the final record still fails
 
 - **bc9** (Dissolution (of a commercial company) asked, no public body): x4: declared ask, the outcome LeavesOrdinaryCourt needs warn (x4: when unknown, asks specialised_commercial_matter -> ask; grade D -> ask, to check)
+
+## `labour-prelitigation`
+
+Grades of the items: B 61, C 4, D 14.
+
+<!-- o1 f53a3b390bcb -->
+### labour-prelitigation 1. What is the sanction of a claim filed without a non-conciliation record outside the exemptions? (o1, grade C; items p1)
+
+1. **The question:** What is the sanction of a claim filed without a non-conciliation record outside the exemptions? «ما جزاء رفع الدعوى دون محضر عدم المصالحة خارج حالات الإعفاء؟»
+2. **The readings:**
+   - The claim is inadmissible for want of a mandatory prior step, raised by the court of its own motion (Supreme Court, files 1158046 and 1340230). (rests on b1, b20)
+   - A defect that can be cured during the proceedings by producing the record. (rests on b1)
+3. **What the record does (the protective behaviour it keeps):** Warn the lawyer of the inadmissibility the Supreme Court holds; do not block the clean export, the sanction resting on case law.
+4. **What would change with each answer:** If the claim is inadmissible and the court raises it: p1 could declare a block when no record is attached outside the exemptions. If the defect can be cured during the proceedings: p1 would warn only, as today. Today p1 warns of the inadmissibility the Supreme Court holds and does not block.
+
+<!-- o2 5e75a881d835 -->
+### labour-prelitigation 2. Does the judge raise the forfeiture of CPCA article 504 of his own motion? (o2, grade C; items d1, d2)
+
+1. **The question:** Does the judge raise the forfeiture of CPCA article 504 of his own motion? «هل يثير القاضي سقوط الحق المقرر في المادة 504 من تلقاء نفسه؟»
+2. **The readings:**
+   - Of public order: raised by the judge of his own motion (Supreme Court, file 1488919). (rests on b25, b26)
+   - Raised only on the opponent's plea. (rests on b25)
+3. **What the record does (the protective behaviour it keeps):** Treat the period as binding in every case.
+4. **What would change with each answer:** If the judge raises the forfeiture of his own motion: d1 keeps blocking once the latest last day and its band have passed, as today. If only the opponent's plea raises it: d1 could warn instead of blocking after the last day. Before the last day nothing changes.
+
+<!-- o3 99ae140af930 -->
+### labour-prelitigation 3. Which text governs territorial jurisdiction: CPCA article 501 or article 24 of the law on individual labour disputes? (o3, grade C; items t1, t2)
+
+1. **The question:** Which text governs territorial jurisdiction: CPCA article 501 or article 24 of the law on individual labour disputes? «أي النصين يحكم الاختصاص الإقليمي: المادة 501 من قانون الإجراءات المدنية والإدارية أم المادة 24 من قانون تسوية النزاعات الفردية في العمل؟»
+2. **The readings:**
+   - Article 501 is the later text and governs. (rests on b29, b30)
+   - Article 24 is the special text and still applies. (rests on b31, b32)
+3. **What the record does (the protective behaviour it keeps):** Show both rules and prefer a court both readings accept.
+4. **What would change with each answer:** If article 501 governs: t1 alone shows the territorial court. If article 24 governs: t2 alone shows it. Today both rules are shown and the record prefers a court both accept; no reading makes an item block.
+
+<!-- o4 b633f9a1c7db -->
+### labour-prelitigation 4. Is the exhaustion of the internal procedure a condition for the claim before the social section? (o4, grade C; items p2)
+
+1. **The question:** Is the exhaustion of the internal procedure a condition for the claim before the social section? «هل يشترط استنفاد إجراءات المعالجة الداخلية لقبول الدعوى أمام القسم الاجتماعي؟»
+2. **The readings:**
+   - A step before the referral to the inspector, and so before the claim. (rests on b4, b7)
+   - An optional route that does not affect the admissibility of the claim. (rests on b5, b7)
+3. **What the record does (the protective behaviour it keeps):** Warn when it was not exhausted; never block.
+4. **What would change with each answer:** If exhausting the internal procedure is a step before the claim: p2 would ask whether it was exhausted and warn when it was not, as today; it could block only if a text sanctioned it. If it is optional: p2's warning would be dropped. Today p2 warns and never blocks.
+
+<!-- o5 2102cd1d6ce1 -->
+### labour-prelitigation 5. When does a dispute to which a public body is party, or in which the worker is a civil servant, leave the conciliation offices and the social section, and for which court? (o5, grade C; items x1, x2, p1)
+
+1. **The question:** When does a dispute to which a public body is party, or in which the worker is a civil servant, leave the conciliation offices and the social section, and for which court? «متى يخرج النزاع الذي تكون فيه هيئة عمومية طرفا أو يكون فيه العامل موظفا من مكاتب المصالحة ومن القسم الاجتماعي، وإلى أي جهة؟»
+2. **The readings:**
+   - The administrative court whenever one of the listed bodies is a party. (rests on b39)
+   - The social section for a worker under the labour relations law, even when the employer is a public body. (rests on b27, b56)
+   - The court set by the civil servants' special statute, which is not in the store. (rests on b38)
+3. **What the record does (the protective behaviour it keeps):** Warn when a public body or a civil servant is involved, ask about the worker's status, and do not conclude on the court.
+4. **What would change with each answer:** If the administrative court hears it whenever a listed body is a party: x1 warns for every such party. If the social section keeps a worker under the labour relations law: x1 would warn only for a civil servant (x2). If the civil servants' statute decides: x2 would name its court once the text is read. Today the record warns, asks about the worker's status and does not conclude; nothing blocks.
+
+<!-- o6 ddecabe6446a -->
+### labour-prelitigation 6. Were the articles of Law 90-04 (in particular article 19) amended after enactment? (o6, grade D; items b1, b2, b3, p1)
+
+1. **The question:** Were the articles of Law 90-04 (in particular article 19) amended after enactment? «هل عدلت مواد القانون 90-04 بعد صدوره (ولا سيما المادة 19)؟»
+2. **The readings:**
+   - (no readings recorded) The store gives every article in the Law 90-04 wording only. Law 91-28 of 21 December 1991 (Official Journal 1991, no. 68, p. 2654) amends only article 40 ¶2 (the transitional period, extended to 30 June 1992) and does not touch articles 19 to 37. No later amending law has been searched for.
+3. **What the record does (the protective behaviour it keeps):** Do not rely on an unchecked wording without a warning.
+4. **What would change with each answer:** There are no readings yet. If a later law amended the articles the record cites: their items would follow the new wording. If none did: nothing changes. Today the record warns where it relies on the 1990 wording.
+
+<!-- o7 f2aa8c1d2776 -->
+### labour-prelitigation 7. After a partial conciliation, is a non-conciliation record needed for the rest, and from what date does the period run? (o7, grade C; items n1, d1, p1)
+
+1. **The question:** After a partial conciliation, is a non-conciliation record needed for the rest, and from what date does the period run? «في المصالحة الجزئية، هل يلزم محضر عدم مصالحة للجزء الباقي، ومن أي تاريخ يحسب الأجل؟»
+2. **The readings:**
+   - (no readings recorded) Article 31 provides a conciliation record for all or part and a non-conciliation record when there is no agreement, without settling the mixed case. The Supreme Court (file 1340230) held that new requests not covered by the agreement are not admissible in the execution route, without saying what the remaining part needs.
+3. **What the record does (the protective behaviour it keeps):** Count from the delivery of the record showing the part not agreed, and warn.
+4. **What would change with each answer:** There are no readings yet. If a non-conciliation record is needed for the part not agreed: p1 and d1 count from its delivery, as today. If the period runs from another date: d1's start would change and it would ask for that date. Today d1 counts from the record showing the part not agreed and warns.
+
+<!-- o8 60f1d4d5d680 -->
+### labour-prelitigation 8. Which conciliation office has local jurisdiction? (o8, grade D; items p1, b47)
+
+1. **The question:** Which conciliation office has local jurisdiction? «ما الاختصاص المحلي لمكتب المصالحة المختص؟»
+2. **The readings:**
+   - (no readings recorded) Article 6 refers to regulation, and the article store does not hold that regulation.
+3. **What the record does (the protective behaviour it keeps):** The lawyer checks which office was seised.
+4. **What would change with each answer:** There are no readings yet. If the regulation fixes the office by the place of work: p1 could ask whether the office seised was that one. Until it is read, the lawyer checks the office; nothing blocks.
+
+<!-- o9 e1119342f917 -->
+### labour-prelitigation 9. Does seising the labour inspectorate or the conciliation office interrupt the limitation of workers' claims? (o9, grade D; items d1)
+
+1. **The question:** Does seising the labour inspectorate or the conciliation office interrupt the limitation of workers' claims? «هل يقطع إخطار مفتشية العمل أو مكتب المصالحة تقادم حقوق العمال؟»
+2. **The readings:**
+   - (no readings recorded) No text in the store settles it in the law on individual labour disputes or in CPCA articles 500 to 510.
+3. **What the record does (the protective behaviour it keeps):** Assume no interruption or suspension of limitation from the conciliation.
+4. **What would change with each answer:** There are no readings yet. If seising the inspectorate or the office interrupts limitation: d1 and the wage limitation would count a new period from that act and warn later. If not: the count stays as it is. Today the record assumes no interruption.
+
+<!-- o10 0c022e98b132 -->
+### labour-prelitigation 10. Does a record delivered on or after the filing date satisfy the prior conciliation? (o10, grade C; items p1, n5)
+
+1. **The question:** Does a record delivered on or after the filing date satisfy the prior conciliation? «هل يعد المحضر المسلم في تاريخ رفع الدعوى أو بعده استيفاء للمصالحة السابقة؟»
+2. **The readings:**
+   - (no readings recorded) Article 19 requires the attempt before any action and does not deal with putting it right after filing; the Supreme Court (file 1158046) holds a claim without a non-conciliation record inadmissible.
+3. **What the record does (the protective behaviour it keeps):** Warn whenever the delivery date is not before the petition's date.
+4. **What would change with each answer:** There are no readings yet. If a record delivered on or after the filing date does not satisfy the step: p1 treats the step as missing and n5 warns, as today. If it does: n5's warning would be dropped. Today the record warns whenever the delivery date is not before the petition's date.
+
+<!-- o11 a8e663763f31 -->
+### labour-prelitigation 11. Does the French wording of CPCA article 504 start the period from a different event (the date of the record rather than its delivery)? (o11, grade D; items d1, d2)
+
+1. **The question:** Does the French wording of CPCA article 504 start the period from a different event (the date of the record rather than its delivery)? «هل تختلف الصيغة الفرنسية للمادة 504 في بداية الأجل (تاريخ المحضر بدل تاريخ تسليمه)؟»
+2. **The readings:**
+   - The period runs from the delivery of the record (the Arabic text in the store). (rests on b21)
+   - The period runs from the date of the record (the French text, from memory). (rests on no statement)
+3. **What the record does (the protective behaviour it keeps):** Count from the delivery and tell the lawyer to check the date of the record when it is earlier.
+4. **What would change with each answer:** If the period runs from the record's delivery: d1 and d2 count from delivery, as today. If it runs from the record's date: their start would move earlier, so their last day too, and they would ask for the record's date. Today they count from delivery and tell the lawyer to check the record's date when it is earlier.
+
+<!-- o12 900620cccc03 -->
+### labour-prelitigation 12. Where does the six-month period end when the last month has no day matching the day of delivery? (o12, grade C; items d1, d2)
+
+1. **The question:** Where does the six-month period end when the last month has no day matching the day of delivery? «أين ينتهي أجل الأشهر الستة إذا لم يوجد في الشهر الأخير اليوم المقابل ليوم التسليم؟»
+2. **The readings:**
+   - It ends on the last day of the last month. (rests on no statement)
+   - The missing days run on into the next month. (rests on no statement)
+3. **What the record does (the protective behaviour it keeps):** Warn within the fifteen-day band around the last day, which covers the difference.
+4. **What would change with each answer:** If the period ends on the last day of the last month: d1's last day is the record's. If the missing days run into the next month: the last day is up to three days later. The fifteen-day band covers the difference, so d1 never blocks before the latest of these days.
+
+<!-- o13 59a8613d6d1d -->
+### labour-prelitigation 13. Which days are official holidays and weekly rest days that extend the period? (o13, grade D; items d1, d2, b54)
+
+1. **The question:** Which days are official holidays and weekly rest days that extend the period? «ما أيام الأعياد الرسمية وأيام الراحة الأسبوعية التي يمدد بها الأجل؟»
+2. **The readings:**
+   - (no readings recorded) Article 405 refers to the texts in force, which are not in the store.
+3. **What the record does (the protective behaviour it keeps):** Do not rely on an extension without checking; warn within the band around the last day.
+4. **What would change with each answer:** There are no readings yet. When the list of holidays and rest days is read, d1 and d2 could move their last day past a holiday and stop warning on the days that adds. Until then they add no holiday and warn within the band; d1 never blocks inside it.
+
+<!-- o14 27a43743631b -->
+### labour-prelitigation 14. Which text governs collective labour disputes now that Law 90-02 is repealed? (o14, grade D; items n3)
+
+1. **The question:** Which text governs collective labour disputes now that Law 90-02 is repealed? «ما النص الذي يحكم النزاعات الجماعية للعمل بعد إلغاء القانون 90-02؟»
+2. **The readings:**
+   - (no readings recorded) Article 90 of Law 23-08 of 21 June 2023 (Official Journal 2023, no. 42, p. 23) repeals Law 90-02; Law 23-08 is not in the store (requested). Boundary n3 rests on article 2 of the law on individual labour disputes alone.
+3. **What the record does (the protective behaviour it keeps):** Keep the warning on article 2 and do not refer to Law 90-02.
+4. **What would change with each answer:** There are no readings yet. Once Law 23-08 is read, n3 could cite it for collective disputes. Until then n3 warns on article 2 alone; nothing blocks.
+
+<!-- o15 bd5efe28626a -->
+### labour-prelitigation 15. Does the day the non-conciliation record is delivered count in the six months, so that the period ends on the day matching the day of delivery, or does it end on the day after? (o15, grade C; items d1, d2, d3, b22)
+
+1. **The question:** Does the day the non-conciliation record is delivered count in the six months, so that the period ends on the day matching the day of delivery, or does it end on the day after? «هل يحسب يوم تسليم محضر عدم الصلح في أجل الأشهر الستة، فينتهي الأجل في اليوم المقابل ليوم التسليم، أم ينتهي في اليوم الموالي له؟»
+2. **The readings:**
+   - Neither the day of delivery nor the day of expiry counts, so the claim may be filed on the day after the day matching the day of delivery. (rests on b22, b21)
+   - The day of delivery counts, not being a day of notification, so the period ends on the day matching the day of delivery. (rests on b21, b22)
+3. **What the record does (the protective behaviour it keeps):** Advise filing before the earlier last day; warn until the later last day and its band have passed, and do not block before then.
+4. **What would change with each answer:** If neither the day of delivery nor the day of expiry counts: d1's last day is the later one, as its counting holds. If the day of delivery counts: the last day is one day earlier. Under the owner's rule of 15 November 2026 the record holds both: d1, d2 and d3 warn from the band before the earlier last day through the band after the later one, and d1 may block only after that.
+
+### labour-prelitigation: boundary cases the final record still fails
+
+- **bc1** (Two days before the last day of the six months): d2: declared none without a last day, the outcome InTime needs one (d2: when false -> none; grade D -> none, to check) | d2: last day none, the case says 2026-06-10 | d3: declared ask without a last day, the outcome InTime needs one (d3: when unknown, asks earlier_nonconciliation_record -> ask; grade D -> ask, to check) | d3: last day none, the case says 2026-06-10
+- **bc2** (The day before the last day of the six months): d2: declared none without a last day, the outcome InTime needs one (d2: when false -> none; grade D -> none, to check) | d2: last day none, the case says 2026-06-10 | d3: declared ask without a last day, the outcome InTime needs one (d3: when unknown, asks earlier_nonconciliation_record -> ask; grade D -> ask, to check) | d3: last day none, the case says 2026-06-10
+- **bc3** (Filed on the day the six months expire by the calendar): d2: last day none, the case says 2026-06-10 | d3: last day none, the case says 2026-06-10
+- **bc4** (Filed the day after the calendar anniversary of the delivery): d2: last day none, the case says 2026-06-10 | d3: last day none, the case says 2026-06-10
+- **bc5** (Five days after the last day of the six months): d2: declared none without a last day, the outcome Late needs one (d2: when false -> none; grade D -> none, to check) | d2: last day none, the case says 2026-06-10 | d3: declared ask without a last day, the outcome Late needs one (d3: when unknown, asks earlier_nonconciliation_record -> ask; grade D -> ask, to check) | d3: last day none, the case says 2026-06-10
+- **bc6** (Six months end on a Friday; petition on the Sunday after): d1: last day 2026-06-14, the case says 2026-06-12 | d2: last day none, the case says 2026-06-12 | d3: last day none, the case says 2026-06-12
+- **bc7** (Six months end on 5 July, an official holiday and a Sunday): d2: last day none, the case says 2026-07-05 | d3: last day none, the case says 2026-07-05
+- **bc8** (Delivery on 31 August: the sixth month, February, has no 31st): d1: last day 2026-03-01, the case says 2026-02-28 | d2: last day none, the case says 2026-02-28 | d3: last day none, the case says 2026-02-28
+- **bc9** (Delivery on 31 December: June has no 31st; petition on 1 July): d2: last day none, the case says 2026-06-30 | d3: last day none, the case says 2026-06-30
+- **bc10** (Delivery on 29 August: February 28 is the exact sixth-month day, petition well before): d1: last day 2026-03-01, the case says 2026-02-28 | d2: declared none without a last day, the outcome InTime needs one (d2: when false -> none; grade D -> none, to check) | d2: last day none, the case says 2026-02-28 | d3: declared ask without a last day, the outcome InTime needs one (d3: when unknown, asks earlier_nonconciliation_record -> ask; grade D -> ask, to check) | d3: last day none, the case says 2026-02-28
+- **bc11** (Petition long before the limit): d2: declared none without a last day, the outcome InTime needs one (d2: when false -> none; grade D -> none, to check) | d2: last day none, the case says 2026-08-02 | d3: declared ask without a last day, the outcome InTime needs one (d3: when unknown, asks earlier_nonconciliation_record -> ask; grade D -> ask, to check) | d3: last day none, the case says 2026-08-02
+- **bc12** (Petition filed more than a year after the record): d2: declared none without a last day, the outcome Late needs one (d2: when false -> none; grade D -> none, to check) | d2: last day none, the case says 2026-03-15 | d3: declared ask without a last day, the outcome Late needs one (d3: when unknown, asks earlier_nonconciliation_record -> ask; grade D -> ask, to check) | d3: last day none, the case says 2026-03-15
+- **bc13** (Starting event: record drawn 10 December but delivered on 18 December): d2: declared none without a last day, the outcome InTime needs one (d2: when false -> none; grade D -> none, to check) | d2: last day none, the case says 2026-06-18 | d3: declared ask without a last day, the outcome InTime needs one (d3: when unknown, asks earlier_nonconciliation_record -> ask; grade D -> ask, to check) | d3: last day none, the case says 2026-06-18
+- **bc14** (Petition filed on the very day the record is delivered): d2: declared none without a last day, the outcome InTime needs one (d2: when false -> none; grade D -> none, to check) | d2: last day none, the case says 2026-09-02 | d3: declared ask without a last day, the outcome InTime needs one (d3: when unknown, asks earlier_nonconciliation_record -> ask; grade D -> ask, to check) | d3: last day none, the case says 2026-09-02
+- **bc18** (Conciliation step not taken, no exemption known to apply): p1: declared ask, the outcome StepMissing needs warn (p1: nonconciliation_record no, exemptions unknown, asks defendant_resides_abroad, employer_in_bankruptcy_or_settlement, worker_is_public_servant -> ask; grade D -> ask, to check)
+- **bc20** (Just inside the ordinary courts: the employer is a public company): p1: declared ask, the outcome StepMissing needs warn (p1: nonconciliation_record no, exemptions unknown, asks defendant_resides_abroad, employer_in_bankruptcy_or_settlement, worker_is_public_servant -> ask; grade D -> ask, to check)
+
+Cases that cannot be put to Codex as a choice of words (the same word on both sides, a last day only, or no outcome word): bc11, bc12, bc14.

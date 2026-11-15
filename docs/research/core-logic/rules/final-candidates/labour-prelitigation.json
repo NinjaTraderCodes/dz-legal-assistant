@@ -1184,6 +1184,18 @@
           "b24"
         ]
       },
+      "otherCountings": [
+        {
+          "method": "excludeFirstDay",
+          "extendToWorkingDay": true,
+          "basis": [
+            "b21",
+            "b22",
+            "b54",
+            "b24"
+          ]
+        }
+      ],
       "raisedBy": "unclear",
       "when": {
         "all": [
@@ -1220,8 +1232,8 @@
       "effectWhenExpired": "blockCleanExport",
       "warnBandDays": 15,
       "message": {
-        "ar": "المادة 504 من قانون الإجراءات المدنية والإدارية: ترفع الدعوى أمام القسم الاجتماعي في أجل لا يتجاوز ستة (6) أشهر من تاريخ تسليم محضر عدم الصلح تحت طائلة سقوط الحق في رفع الدعوى. يحسب الأجل كاملا ويمدد إلى أول يوم عمل (المادة 405)، ويرفع السقوط في حالة القوة القاهرة بأمر من رئيس الجهة القضائية (المادة 322). تحقق من تاريخ تسليم المحضر.",
-        "en": "CPCA, article 504: the claim must be brought before the social section within six (6) months of the delivery of the non-conciliation record, or the right to bring it is forfeited. The period is counted in full and runs to the next working day (article 405); a forfeiture for force majeure is lifted by the president's order (article 322). Check the date the record was delivered."
+        "ar": "المادة 504 من قانون الإجراءات المدنية والإدارية: ترفع الدعوى أمام القسم الاجتماعي في أجل لا يتجاوز ستة (6) أشهر من تاريخ تسليم محضر عدم الصلح تحت طائلة سقوط الحق في رفع الدعوى. وهذا الأجل منصوص عليه في هذا القانون فتسري عليه المادة 405: يمدد إلى أول يوم عمل إذا لم يكن آخره يوم عمل (الفقرتان 3 و4)؛ ولا يقرر القانون 90-04 المتعلق بتسوية النزاعات الفردية في العمل أجلا آخر لرفع الدعوى (المادة 36 منه). وفي آخر يوم قراءتان: (1) يحسب الأجل كاملا فلا يحسب يوم التسليم ولا يوم انقضاء الأجل، فتقبل الدعوى في اليوم الموالي لتمام الستة أشهر (المادة 405 الفقرة 1)، وهي القراءة المعتمدة؛ (2) يحسب يوم التسليم لأنه ليس يوم تبليغ ولا تبليغ رسمي، فينتهي الأجل في اليوم المقابل ليوم التسليم، أي قبل ذلك بيوم (المادة 504 والمادة 405 الفقرة 1، نقطة مفتوحة). الأحوط رفع الدعوى قبل انقضاء الأجل في القراءة الثانية. لا يمنع التصدير النظيف إلا بعد انقضاء الأجل في القراءة التي تنتهي متأخرة وانقضاء هامشه، وينبه قبل ذلك. وإذا لم يوجد في الشهر الأخير اليوم المقابل ليوم التسليم فنهاية الأجل محل قراءتين (نقطة مفتوحة). ويرفع السقوط في حالة القوة القاهرة بأمر من رئيس الجهة القضائية (المادة 322). تحقق من تاريخ تسليم المحضر.",
+        "en": "CPCA, article 504: the claim must be brought before the social section within six (6) months of the delivery of the non-conciliation record, or the right to bring it is forfeited. The period is laid down in this Code, so article 405 governs it: it runs to the next working day when its last day is not one (paragraphs 3 and 4); Law 90-04 on individual labour disputes sets no other period for bringing the claim (its article 36). Two readings exist on the last day: (1) the period is counted in full, neither the day of delivery nor the day it expires counts, so the claim may still be filed on the day after the six months end (article 405, paragraph 1), the reading the record holds; (2) the day of delivery counts, since it is not a day of notification or service, and the period ends on the day matching the day of delivery, one day earlier (article 504 and article 405, paragraph 1; open point). The safe course is to file before the period ends under the second reading. The clean export is blocked only after the later of the two last days and its band have passed; before that the item warns. Where the last month has no day matching the day of delivery, where the period ends is kept with two readings (open point). A forfeiture for force majeure is lifted by the president's order (article 322). Check the date the record was delivered."
       },
       "basis": [
         "b21",
@@ -1231,7 +1243,8 @@
         "b24",
         "b51",
         "b55",
-        "b25"
+        "b25",
+        "b19"
       ],
       "extract": {
         "period": "ستة (6) أشهر",
@@ -1263,6 +1276,18 @@
           "b24"
         ]
       },
+      "otherCountings": [
+        {
+          "method": "excludeFirstDay",
+          "extendToWorkingDay": true,
+          "basis": [
+            "b21",
+            "b22",
+            "b54",
+            "b24"
+          ]
+        }
+      ],
       "raisedBy": "unclear",
       "when": {
         "all": [
@@ -1295,8 +1320,8 @@
       "effectWhenExpired": "warn",
       "warnBandDays": 15,
       "message": {
-        "ar": "المادة 504 من قانون الإجراءات المدنية والإدارية: ترفع الدعوى أمام القسم الاجتماعي في أجل لا يتجاوز ستة (6) أشهر من تاريخ تسليم محضر عدم الصلح تحت طائلة سقوط الحق، ويستثنى من السقوط حالة القوة القاهرة أو الأحداث المؤثرة في السير العادي لمرفق العدالة، ويقدم طلب رفع السقوط إلى رئيس الجهة القضائية المعروض أمامها النزاع ويفصل فيه بأمر على عريضة (المادة 322). تحقق من تاريخ تسليم المحضر ومن إثبات القوة القاهرة ومن تقديم طلب رفع السقوط.",
-        "en": "CPCA, article 504: the claim must be brought before the social section within six (6) months of the delivery of the non-conciliation record, on pain of forfeiture; force majeure and events affecting the normal working of the courts are excepted, and the request to lift the forfeiture goes to the president of the court before which the dispute is brought, who rules by an order on petition (article 322). Check the delivery date, the proof of the force majeure, and that the request to lift the forfeiture is made."
+        "ar": "المادة 504 من قانون الإجراءات المدنية والإدارية: ترفع الدعوى أمام القسم الاجتماعي في أجل لا يتجاوز ستة (6) أشهر من تاريخ تسليم محضر عدم الصلح تحت طائلة سقوط الحق، ويستثنى من السقوط حالة القوة القاهرة أو الأحداث المؤثرة في السير العادي لمرفق العدالة، ويقدم طلب رفع السقوط إلى رئيس الجهة القضائية المعروض أمامها النزاع ويفصل فيه بأمر على عريضة (المادة 322). ويحسب الأجل وفق المادة 405 لأنه منصوص عليه في هذا القانون، ويمدد إلى أول يوم عمل (الفقرتان 3 و4)، ولا يقرر القانون 90-04 أجلا آخر (المادة 36 منه). وفي آخر يوم قراءتان: لا يحسب يوم التسليم ولا يوم انقضاء الأجل (المادة 405 الفقرة 1، القراءة المعتمدة)، أو يحسب يوم التسليم لأنه ليس يوم تبليغ فينتهي الأجل قبل ذلك بيوم (المادة 504 والمادة 405 الفقرة 1، نقطة مفتوحة). تحقق من تاريخ تسليم المحضر ومن إثبات القوة القاهرة ومن تقديم طلب رفع السقوط.",
+        "en": "CPCA, article 504: the claim must be brought before the social section within six (6) months of the delivery of the non-conciliation record, on pain of forfeiture; force majeure and events affecting the normal working of the courts are excepted, and the request to lift the forfeiture goes to the president of the court before which the dispute is brought, who rules by an order on petition (article 322). The period is laid down in this Code and counted under article 405, running to the next working day (paragraphs 3 and 4); Law 90-04 sets no other period (its article 36). Two readings exist on the last day: neither the day of delivery nor the day the period expires counts (article 405, paragraph 1; the reading the record holds), or the day of delivery counts, since it is not a day of notification, and the period ends one day earlier (article 504 and article 405, paragraph 1; open point). Check the delivery date, the proof of the force majeure, and that the request to lift the forfeiture is made."
       },
       "basis": [
         "b21",
@@ -1306,7 +1331,8 @@
         "b24",
         "b51",
         "b55",
-        "b25"
+        "b25",
+        "b19"
       ],
       "extract": {
         "period": "ستة (6) أشهر",
@@ -1338,6 +1364,18 @@
           "b24"
         ]
       },
+      "otherCountings": [
+        {
+          "method": "excludeFirstDay",
+          "extendToWorkingDay": true,
+          "basis": [
+            "b21",
+            "b22",
+            "b54",
+            "b24"
+          ]
+        }
+      ],
       "raisedBy": "courtOfOwnMotion",
       "when": {
         "all": [
@@ -1366,8 +1404,8 @@
       "effectWhenExpired": "warn",
       "warnBandDays": 15,
       "message": {
-        "ar": "المادة 504 من قانون الإجراءات المدنية والإدارية: ترفع الدعوى أمام القسم الاجتماعي في أجل لا يتجاوز ستة (6) أشهر من تاريخ تسليم محضر عدم الصلح تحت طائلة سقوط الحق في رفع الدعوى. وقضت المحكمة العليا (الغرفة الاجتماعية، الملف 1488919) بأن الحق يسقط إذا أصبح محضر عدم الصلح الأول خارج أجل ستة أشهر، وأنه لا يمكن استصدار محضر ثان بعدم الصلح بخصوص نفس النزاع، وأن عدم القبول في هذه الحالة من النظام العام يثيره القاضي تلقائيا (المادة 69). تحقق من تاريخ تسليم المحضر الأول.",
-        "en": "CPCA, article 504: the claim must be brought before the social section within six (6) months of the delivery of the non-conciliation record, or the right to bring it is forfeited. The Supreme Court (social chamber, file 1488919) held that the right is forfeited once the first non-conciliation record is outside the six months, that a second record cannot be obtained on the same dispute, and that this inadmissibility is of public order, raised by the judge of his own motion (article 69). Check the delivery date of the first record."
+        "ar": "المادة 504 من قانون الإجراءات المدنية والإدارية: ترفع الدعوى أمام القسم الاجتماعي في أجل لا يتجاوز ستة (6) أشهر من تاريخ تسليم محضر عدم الصلح تحت طائلة سقوط الحق في رفع الدعوى. وقضت المحكمة العليا (الغرفة الاجتماعية، الملف 1488919) بأن الحق يسقط إذا أصبح محضر عدم الصلح الأول خارج أجل ستة أشهر، وأنه لا يمكن استصدار محضر ثان بعدم الصلح بخصوص نفس النزاع، وأن عدم القبول في هذه الحالة من النظام العام يثيره القاضي تلقائيا (المادة 69). ويحسب الأجل وفق المادة 405 ويمدد إلى أول يوم عمل (الفقرتان 3 و4)؛ وفي آخر يوم قراءتان: لا يحسب يوم التسليم ولا يوم انقضاء الأجل (المادة 405 الفقرة 1، القراءة المعتمدة)، أو يحسب يوم التسليم لأنه ليس يوم تبليغ فينتهي الأجل قبل ذلك بيوم (المادة 504 والمادة 405 الفقرة 1، نقطة مفتوحة). تحقق من تاريخ تسليم المحضر الأول.",
+        "en": "CPCA, article 504: the claim must be brought before the social section within six (6) months of the delivery of the non-conciliation record, or the right to bring it is forfeited. The Supreme Court (social chamber, file 1488919) held that the right is forfeited once the first non-conciliation record is outside the six months, that a second record cannot be obtained on the same dispute, and that this inadmissibility is of public order, raised by the judge of his own motion (article 69). The period is counted under article 405 and runs to the next working day (paragraphs 3 and 4); two readings exist on the last day: neither the day of delivery nor the day the period expires counts (article 405, paragraph 1; the reading the record holds), or the day of delivery counts, since it is not a day of notification, and the period ends one day earlier (article 504 and article 405, paragraph 1; open point). Check the delivery date of the first record."
       },
       "basis": [
         "b21",
@@ -1382,7 +1420,7 @@
         "sanction": "تحت طائلة سقوط الحق في رفع الدعوى"
       },
       "interpretive": true,
-      "interpretiveNote": "Article 504 ¶1 runs the period from «تسليم محضر عدم الصلح» and says nothing of a second record. Counting from the first record rests on the Supreme Court's social chamber (file 1488919, 07-10-2021, read on coursupreme.dz): «يسقط حق العامل في رفع دعواه أمام القسم الاجتماعي، إذا أصبح محضر عدم الصلح الأول خارج أجل ستة أشهر» and «لا يمكن استصدار محضر ثان بعدم الصلح بخصوص نفس النزاع الذي تضمنه المحضر الأول». Case law, so the deadline is interpretive and warns.",
+      "interpretiveNote": "Article 504 ¶1 runs the period from «تسليم محضر عدم الصلح» and says nothing of a second record. Counting from the first record rests on the Supreme Court's social chamber (file 1488919, 07-10-2021, read on coursupreme.dz): «يسقط حق العامل في رفع دعواه أمام القسم الاجتماعي، إذا أصبح محضر عدم الصلح الأول خارج أجل ستة أشهر» and «لا يمكن استصدار محضر ثان بعدم الصلح بخصوص نفس النزاع الذي تضمنه المحضر الأول». Case law, so the deadline is interpretive and warns. The last day carries the same two countings as d1 (open point o15).",
       "readings": [
         {
           "reading": {
@@ -2173,6 +2211,50 @@
       "refs": [
         "n3"
       ]
+    },
+    {
+      "id": "o15",
+      "question": {
+        "ar": "هل يحسب يوم تسليم محضر عدم الصلح في أجل الأشهر الستة، فينتهي الأجل في اليوم المقابل ليوم التسليم، أم ينتهي في اليوم الموالي له؟",
+        "en": "Does the day the non-conciliation record is delivered count in the six months, so that the period ends on the day matching the day of delivery, or does it end on the day after?"
+      },
+      "why": {
+        "ar": "المادة 405 الفقرة 1 تحسب كل آجال هذا القانون كاملة ولا تحسب «يوم التبليغ أو التبليغ الرسمي ويوم انقضاء الأجل»، والمادة 504 تجعل الأجل يسري «من تاريخ تسليم محضر عدم الصلح»، والتسليم ليس تبليغا ولا تبليغا رسميا بلفظ النص. ولم يوجد نص رسمي يحسم المسألة. أما امتداد الأجل إلى أول يوم عمل فتقرره المادة 405 الفقرة 4 لكل آجال هذا القانون، ولا يقرر القانون 90-04 أجلا لرفع الدعوى (المادة 36 منه).",
+        "en": "Article 405 ¶1 counts every period of this Code in full and does not count «يوم التبليغ أو التبليغ الرسمي ويوم انقضاء الأجل»; article 504 runs the period «من تاريخ تسليم محضر عدم الصلح», and delivery is, in the text's words, neither notification nor service. No official text found settles it. The extension to the next working day is set by article 405 ¶4 for every period of this Code, and Law 90-04 sets no period for bringing the claim (its article 36)."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "لا يحسب يوم التسليم ولا يوم انقضاء الأجل، فتقبل الدعوى في اليوم الموالي لليوم المقابل ليوم التسليم.",
+            "en": "Neither the day of delivery nor the day of expiry counts, so the claim may be filed on the day after the day matching the day of delivery."
+          },
+          "basis": [
+            "b22",
+            "b21"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "يحسب يوم التسليم لأنه ليس يوم تبليغ، فينتهي الأجل في اليوم المقابل ليوم التسليم.",
+            "en": "The day of delivery counts, not being a day of notification, so the period ends on the day matching the day of delivery."
+          },
+          "basis": [
+            "b21",
+            "b22"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "ينصح برفع الدعوى قبل انقضاء الأجل في القراءة التي تنتهي أولا، وينبه حتى انقضاء الأجل في القراءة التي تنتهي متأخرة وهامشه، ولا يمنع التصدير قبل ذلك.",
+        "en": "Advise filing before the earlier last day; warn until the later last day and its band have passed, and do not block before then."
+      },
+      "grade": "C",
+      "refs": [
+        "d1",
+        "d2",
+        "d3",
+        "b22"
+      ]
     }
   ],
   "checklist": [
@@ -2388,9 +2470,10 @@
         "d1",
         "d2",
         "o12",
-        "o13"
+        "o13",
+        "o15"
       ],
-      "note": "Counted in full (405 ¶1: neither the starting day nor the day of expiry), holidays inside the period counted (¶2), extended to the next working day (¶4), as the periods module counts it."
+      "note": "Counted in full (405 ¶1: neither the starting day nor the day of expiry), holidays inside the period counted (¶2), extended to the next working day (¶4), as the periods module counts it. Whether the day of delivery counts, 405 ¶1 naming only the day of notification or service, is kept as a second counting in otherCountings and open point o15; the deadlines block only after the later last day and its band."
     },
     {
       "id": "k15",
@@ -2807,7 +2890,8 @@
         "b54",
         "b24",
         "o12",
-        "o13"
+        "o13",
+        "o15"
       ]
     },
     {
@@ -4457,6 +4541,362 @@
           },
           {
             "ref": "x1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "vex9",
+      "by": "verifier",
+      "title": "uncertain-bc1: delivery 2025-12-10, petition 2026-06-08; last day 2026-06-11 (405 ¶1) or 2026-06-10 (delivery day counted, o15): in time under both, inside the band, d1 warns.",
+      "petitionDate": "2026-06-08",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no",
+        "earlier_nonconciliation_record": "no",
+        "nonconciliation_record_delivered_on": "2025-12-10"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          },
+          {
+            "ref": "d2",
+            "effect": "none"
+          },
+          {
+            "ref": "d3",
+            "effect": "none"
+          },
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "vex10",
+      "by": "verifier",
+      "title": "uncertain-bc2: delivery 2025-12-10, petition 2026-06-09; in time under both countings (o15), inside the band, d1 warns.",
+      "petitionDate": "2026-06-09",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no",
+        "earlier_nonconciliation_record": "no",
+        "nonconciliation_record_delivered_on": "2025-12-10"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          },
+          {
+            "ref": "d2",
+            "effect": "none"
+          },
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "vex11",
+      "by": "verifier",
+      "title": "uncertain-bc3: delivery 2025-12-10, petition on the calendar anniversary 2026-06-10, the last day under the second counting (o15) and the day before the last day under 405 ¶1: d1 warns, unsettled.",
+      "petitionDate": "2026-06-10",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no",
+        "earlier_nonconciliation_record": "no",
+        "nonconciliation_record_delivered_on": "2025-12-10"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          },
+          {
+            "ref": "d2",
+            "effect": "none"
+          },
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "vex12",
+      "by": "verifier",
+      "title": "uncertain-bc4: delivery 2025-12-10, petition 2026-06-11: the last day under 405 ¶1, one day late under the second counting (o15); the later last day governs, d1 warns and does not block.",
+      "petitionDate": "2026-06-11",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no",
+        "earlier_nonconciliation_record": "no",
+        "nonconciliation_record_delivered_on": "2025-12-10"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          },
+          {
+            "ref": "d2",
+            "effect": "none"
+          },
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "vex13",
+      "by": "verifier",
+      "title": "uncertain-bc7: delivery 2026-01-05, petition 2026-07-06 after the 5 July anniversary (a public holiday); 405 ¶1 gives 6 July, the second counting gives 5 July carried to 6 July by 405 ¶4: d1 warns.",
+      "petitionDate": "2026-07-06",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no",
+        "earlier_nonconciliation_record": "no",
+        "nonconciliation_record_delivered_on": "2026-01-05"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          },
+          {
+            "ref": "d2",
+            "effect": "none"
+          },
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "vex14",
+      "by": "verifier",
+      "title": "uncertain-bc8: delivery 2025-08-31, petition 2026-03-01; February has no 31st (o12) and the delivery day may count (o15): every reading puts the last day between 28 February and early March, d1 warns, unsettled.",
+      "petitionDate": "2026-03-01",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no",
+        "earlier_nonconciliation_record": "no",
+        "nonconciliation_record_delivered_on": "2025-08-31"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          },
+          {
+            "ref": "d2",
+            "effect": "none"
+          },
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "vex15",
+      "by": "verifier",
+      "title": "uncertain-bc9: delivery 2025-12-31, petition 2026-07-01; June has no 31st (o12) and the delivery day may count (o15): d1 warns, unsettled.",
+      "petitionDate": "2026-07-01",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no",
+        "earlier_nonconciliation_record": "no",
+        "nonconciliation_record_delivered_on": "2025-12-31"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          },
+          {
+            "ref": "d2",
+            "effect": "none"
+          },
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "vex16",
+      "by": "verifier",
+      "title": "uncertain-bc10: delivery 2025-08-29, petition 2026-02-20; in time under every reading of o12 and o15, inside the band, d1 warns.",
+      "petitionDate": "2026-02-20",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no",
+        "earlier_nonconciliation_record": "no",
+        "nonconciliation_record_delivered_on": "2025-08-29"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          },
+          {
+            "ref": "d2",
+            "effect": "none"
+          },
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "vex17",
+      "by": "verifier",
+      "title": "uncertain-bc13: record drawn up 2025-12-10, delivered 2025-12-18 (504 ¶1 runs from delivery; o11), petition 2026-06-15; in time under both countings (o15), inside the band, d1 warns.",
+      "petitionDate": "2026-06-15",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no",
+        "earlier_nonconciliation_record": "no",
+        "nonconciliation_record_delivered_on": "2025-12-18"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          },
+          {
+            "ref": "d2",
+            "effect": "none"
+          },
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "vex18",
+      "by": "verifier",
+      "title": "owner-latest-last-day: delivery 2025-12-10, petition 2026-06-26, sixteen days after the earlier last day (06-10) and fifteen after the later one (06-11, 405 ¶1): still inside the later band, d1 warns.",
+      "petitionDate": "2026-06-26",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no",
+        "earlier_nonconciliation_record": "no",
+        "nonconciliation_record_delivered_on": "2025-12-10"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          },
+          {
+            "ref": "d2",
+            "effect": "none"
+          },
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "vex19",
+      "by": "verifier",
+      "title": "owner-latest-last-day: delivery 2025-12-10, petition 2026-06-27, past the later last day (06-11) and its band: d1 blocks.",
+      "petitionDate": "2026-06-27",
+      "slots": {
+        "nonconciliation_record": "yes",
+        "public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "internal_grievance_exhausted": "yes",
+        "conciliation_agreement_reached": "no",
+        "earlier_nonconciliation_record": "no",
+        "nonconciliation_record_delivered_on": "2025-12-10"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "blockCleanExport"
+          },
+          {
+            "ref": "d2",
+            "effect": "none"
+          },
+          {
+            "ref": "p1",
             "effect": "none"
           }
         ],

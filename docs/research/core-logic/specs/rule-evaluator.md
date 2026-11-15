@@ -25,6 +25,8 @@ A condition is **true**, **false** or **unknown**.
 | `{slot: "requests", includes}` | the list holds the kind | never (an empty list is known) |
 | `{slot, before}` | the slot's date is strictly before the date | the slot is unknown |
 | `{slot, after}` | the slot's date is on or after the date | the slot is unknown |
+| `{slot, beforeSlot}` | the slot's date is strictly before the other date: another date slot, or the reserved `petition_date` (the evaluator's petition date; a case never answers it) | either date is unknown; each unknown slot is asked, `petition_date` never (owner, 15 November 2026) |
+| `{slot, afterSlot}` | the slot's date is on or after the other date | as above |
 | `{slot, known}` | `known: true` and the slot has a value other than `unknown` (or `known: false` and it has not) | never |
 | `{all: [...]}` | every part is true | no part is false and at least one is unknown |
 | `{any: [...]}` | at least one part is true | no part is true and at least one is unknown |

@@ -22,8 +22,8 @@ public sealed record ConditionResult(Truth Value, IReadOnlyList<string> Ask)
 /// <summary>The three-valued conditions of specs/rule-evaluator.md ("Conditions: three values").</summary>
 public static class Conditions
 {
-    public static ConditionResult Evaluate(SlotCondition condition, CaseSlots slots) =>
-        Evaluate(condition, new CaseSlotReader(slots), []);
+    public static ConditionResult Evaluate(SlotCondition condition, CaseSlots slots, DateOnly? petitionDate = null) =>
+        Evaluate(condition, new CaseSlotReader(slots, petitionDate), []);
 
     /// <param name="used">Receives every slot the condition reads, in the order read (the finding's SlotsUsed).</param>
     public static ConditionResult Evaluate(SlotCondition condition, CaseSlotReader slots, ICollection<string> used)
@@ -123,6 +123,37 @@ public static class Conditions
             return ConditionResult.Of(slots.IsKnown(slot) == wanted);
         }
 
+        if ((condition.BeforeSlot ?? condition.AfterSlot) is { } other)
+        {
+            if (other != CaseSlotReader.PetitionDateSlot && !used.Contains(other))
+            {
+                used.Add(other);
+            }
+
+            var mine = slots.Value(slot);
+            var theirs = slots.Value(other);
+            if (mine is null || theirs is null)
+            {
+                // Either date unknown: unknown, asking each unknown slot (the petition's date is never asked).
+                var ask = new List<string>();
+                if (mine is null)
+                {
+                    ask.Add(slot);
+                }
+
+                if (theirs is null && other != CaseSlotReader.PetitionDateSlot)
+                {
+                    ask.Add(other);
+                }
+
+                return new ConditionResult(Truth.Unknown, ask);
+            }
+
+            var first = slots.Date(slot);
+            var second = Dates.Parse(theirs, $"the value of {other}");
+            return ConditionResult.Of(condition.BeforeSlot is not null ? first < second : first >= second);
+        }
+
         var value = slots.Value(slot);
         if (value is null)
         {
@@ -160,14 +191,15 @@ public static class Conditions
         var operators = new[]
         {
             condition.Is is not null, condition.In is not null, condition.Includes is not null,
-            condition.Before is not null, condition.After is not null, condition.Known is not null,
+            condition.Before is not null, condition.After is not null, condition.BeforeSlot is not null,
+            condition.AfterSlot is not null, condition.Known is not null,
         }.Count(set => set);
 
         if (condition.Slot is { } slot)
         {
             if (operators != 1)
             {
-                problems.Add($"{path}: a slot condition sets exactly one of is, in, includes, before, after, known; this one sets {operators}");
+                problems.Add($"{path}: a slot condition sets exactly one of is, in, includes, before, after, beforeSlot, afterSlot, known; this one sets {operators}");
             }
             else if (slot == CaseSlotReader.RequestsSlot && condition.Includes is null)
             {
@@ -176,6 +208,17 @@ public static class Conditions
             else if (slot != CaseSlotReader.RequestsSlot && condition.Includes is not null)
             {
                 problems.Add($"{path}: includes tests the reserved slot requests only, not {slot}");
+            }
+
+            if (slot == CaseSlotReader.PetitionDateSlot)
+            {
+                problems.Add($"{path}: {slot} is reserved; compare another date slot with it (beforeSlot, afterSlot)");
+            }
+
+            if ((condition.BeforeSlot ?? condition.AfterSlot) is { } other
+                && (other == slot || other == CaseSlotReader.RequestsSlot || other.Length == 0))
+            {
+                problems.Add($"{path}: beforeSlot and afterSlot name another date slot, or {CaseSlotReader.PetitionDateSlot}");
             }
 
             foreach (var (name, date) in new[] { ("before", condition.Before), ("after", condition.After) })
@@ -191,7 +234,7 @@ public static class Conditions
 
         if (operators != 0)
         {
-            problems.Add($"{path}: is, in, includes, before, after and known belong to a slot condition");
+            problems.Add($"{path}: is, in, includes, before, after, beforeSlot, afterSlot and known belong to a slot condition");
         }
 
         if (condition.Not is { } inner)
@@ -217,6 +260,12 @@ public static class Conditions
         if (condition.Slot is { } slot && !slots.Contains(slot))
         {
             slots.Add(slot);
+        }
+
+        if ((condition.BeforeSlot ?? condition.AfterSlot) is { } other && other != CaseSlotReader.PetitionDateSlot
+            && !slots.Contains(other))
+        {
+            slots.Add(other);
         }
 
         foreach (var part in (condition.All ?? []).Concat(condition.Any ?? []))

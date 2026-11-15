@@ -98,3 +98,8 @@ def test_a_planted_copy_is_paired_under_the_unit_id_given_and_split_under_its_ro
     assert stage7.main(["split", str(tmp_path / "a.json"), "--batch", "b", "--root", str(tmp_path / "root")]) == 0
     assert (tmp_path / "root" / "reports" / "p1-01.support.json").exists()
 
+
+def test_a_date_compared_with_another_date_reads_as_a_sentence():
+    assert stage7.cond_en({"slot": "notice_date", "beforeSlot": "petition_date"}) ==         "notice date is before the petition's date"
+    assert stage7.cond_en({"slot": "notice_date", "afterSlot": "contract_date"}).endswith("is on or after contract date")
+

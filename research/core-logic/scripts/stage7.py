@@ -63,6 +63,10 @@ def cond_en(c) -> str:
         return f"{slot_words(s)} is one of {', '.join(map(str, c['in']))}"
     if "known" in c:
         return f"{slot_words(s)} is {'known' if c['known'] else 'unknown'}"
+    if "beforeSlot" in c or "afterSlot" in c:  # one date against another date slot, or the petition's date
+        other = c.get("beforeSlot") or c.get("afterSlot")
+        words = "the petition's date" if other == "petition_date" else slot_words(other)
+        return f"{slot_words(s)} is {'before' if 'beforeSlot' in c else 'on or after'} {words}"
     if "before" in c or "after" in c:
         return f"{slot_words(s)} is {'before' if 'before' in c else 'after'} {c.get('before') or c.get('after')}"
     return json.dumps(c, ensure_ascii=False)

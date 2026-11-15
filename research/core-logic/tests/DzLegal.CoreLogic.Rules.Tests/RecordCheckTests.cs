@@ -81,6 +81,8 @@ public sealed class RecordCheckTests
             root["slots"]!.AsArray().Add("made_up_slot");
             root.Item("deadlines", "d1")["startsFrom"]!["slot"] = "nonconciliation_record";
             root["examples"]![0]!["slots"]!["nonconciliation_record"] = "maybe";
+            root.Item("deadlines", "d1")["when"] = System.Text.Json.Nodes.JsonNode.Parse(
+                """{ "all": [ { "slot": "worker_is_public_servant", "beforeSlot": "petition_date" }, { "slot": "nonconciliation_record", "afterSlot": "worker_is_public_servant" } ] }""");
         }));
 
         var problems = result.Of(RecordCheck.Slots).Select(problem => problem.Message).ToList();
@@ -88,6 +90,9 @@ public sealed class RecordCheckTests
         Assert.Contains(problems, message => message.Contains("made_up_slot is neither in slots.json nor in the record's proposedSlots", StringComparison.Ordinal));
         Assert.Contains(problems, message => message.Contains("deadlines[0].startsFrom: the slot nonconciliation_record is a YesNoUnknown slot; this use needs a Date slot", StringComparison.Ordinal));
         Assert.Contains(problems, message => message.Contains("\"maybe\" is not a value", StringComparison.Ordinal));
+        Assert.Contains(problems, message => message.Contains("deadlines[0].when.all[0]: the slot worker_is_public_servant is a YesNoUnknown slot; this use needs a Date slot", StringComparison.Ordinal));
+        Assert.Contains(problems, message => message.Contains("deadlines[0].when.all[1]: the slot worker_is_public_servant is a YesNoUnknown slot", StringComparison.Ordinal));
+        Assert.DoesNotContain(problems, message => message.Contains("petition_date", StringComparison.Ordinal)); // reserved: never declared
     }
 
     [Fact]

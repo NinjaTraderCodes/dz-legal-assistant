@@ -31,6 +31,14 @@ public sealed class ConditionTests
     [InlineData("""{ "slot": "d", "after": "2026-01-10" }""", "d=2026-01-10", Truth.True, "")]
     [InlineData("""{ "slot": "d", "after": "2026-01-10" }""", "d=2026-01-09", Truth.False, "")]
     [InlineData("""{ "slot": "d", "after": "2026-01-10" }""", "d=unknown", Truth.Unknown, "d")]
+    // beforeSlot, afterSlot: one date slot against another; either unknown asks it
+    [InlineData("""{ "slot": "d", "beforeSlot": "e" }""", "d=2026-01-09;e=2026-01-10", Truth.True, "")]
+    [InlineData("""{ "slot": "d", "beforeSlot": "e" }""", "d=2026-01-10;e=2026-01-10", Truth.False, "")]
+    [InlineData("""{ "slot": "d", "afterSlot": "e" }""", "d=2026-01-10;e=2026-01-10", Truth.True, "")]
+    [InlineData("""{ "slot": "d", "afterSlot": "e" }""", "d=2026-01-09;e=2026-01-10", Truth.False, "")]
+    [InlineData("""{ "slot": "d", "beforeSlot": "e" }""", "e=2026-01-10", Truth.Unknown, "d")]
+    [InlineData("""{ "slot": "d", "beforeSlot": "e" }""", "d=2026-01-09;e=unknown", Truth.Unknown, "e")]
+    [InlineData("""{ "slot": "d", "afterSlot": "e" }""", "", Truth.Unknown, "d,e")]
     // known: never unknown
     [InlineData("""{ "slot": "a", "known": true }""", "a=no", Truth.True, "")]
     [InlineData("""{ "slot": "a", "known": true }""", "", Truth.False, "")]
@@ -74,6 +82,10 @@ public sealed class ConditionTests
     [InlineData("""{ "all": [] }""", "an empty list")]
     [InlineData("""{ "any": [ { "slot": "a", "is": "yes" } ], "is": "yes" }""", "belong to a slot condition")]
     [InlineData("""{ "not": { "slot": "d", "before": "10/01/2026" } }""", "is not a date written yyyy-mm-dd")]
+    [InlineData("""{ "slot": "d", "beforeSlot": "e", "before": "2026-01-01" }""", "exactly one of is, in, includes")]
+    [InlineData("""{ "slot": "d", "afterSlot": "d" }""", "name another date slot")]
+    [InlineData("""{ "slot": "petition_date", "afterSlot": "d" }""", "petition_date is reserved")]
+    [InlineData("""{ "all": [ { "slot": "d", "is": "x" } ], "beforeSlot": "e" }""", "belong to a slot condition")]
     public void AMalformedConditionIsRefusedByTheCheckAndByTheEvaluator(string condition, string problem)
     {
         var parsed = Build.Condition(condition);
@@ -88,6 +100,26 @@ public sealed class ConditionTests
         Conditions.Evaluate(Build.Condition(AnyAB), new CaseSlotReader(Build.Case("a=yes;b=no")), used);
         Assert.Equal(["a", "b"], used);
     }
+
+    [Theory]
+    // the petition's date, from the evaluator: never asked, never answered by the case
+    [InlineData("""{ "slot": "notice_date", "beforeSlot": "petition_date" }""", "notice_date=2026-05-10", Truth.True, "")]
+    [InlineData("""{ "slot": "notice_date", "beforeSlot": "petition_date" }""", "notice_date=2026-06-15", Truth.False, "")]
+    [InlineData("""{ "slot": "notice_date", "afterSlot": "petition_date" }""", "notice_date=2026-06-20", Truth.True, "")]
+    [InlineData("""{ "slot": "notice_date", "beforeSlot": "petition_date" }""", "", Truth.Unknown, "notice_date")]
+    public void ADateSlotComparesWithThePetitionDate(string condition, string slots, Truth expected, string ask)
+    {
+        var used = new List<string>();
+        var result = Conditions.Evaluate(Build.Condition(condition), new CaseSlotReader(Build.Case(slots), new DateOnly(2026, 6, 15)), used);
+        Assert.Equal(expected, result.Value);
+        Assert.Equal(ask.Split(',', StringSplitOptions.RemoveEmptyEntries), result.Ask);
+        Assert.Equal(["notice_date"], used);
+        Assert.Equal(["notice_date"], Conditions.SlotsOf(Build.Condition(condition)));
+    }
+
+    [Fact]
+    public void ACaseNeverAnswersThePetitionDate() =>
+        Assert.Throws<ArgumentException>(() => new CaseSlotReader(Build.Case("petition_date=2026-06-15")));
 
     [Fact]
     public void ASlotAnsweredTwiceIsRefused() =>

@@ -518,6 +518,14 @@
           "type": "string",
           "description": "yyyy-mm-dd: the slot's date is on or after it."
         },
+        "beforeSlot": {
+          "type": "string",
+          "description": "Another date: a date slot of the case, or petition_date (reserved: the petition's date). The slot's date is strictly before it."
+        },
+        "afterSlot": {
+          "type": "string",
+          "description": "As beforeSlot: the slot's date is on or after the other date."
+        },
         "known": {
           "type": "boolean"
         }

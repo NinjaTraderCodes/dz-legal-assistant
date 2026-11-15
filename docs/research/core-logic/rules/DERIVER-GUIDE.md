@@ -68,6 +68,8 @@ Rules fire on **slots**: the facts of the case the app knows or asks for (sectio
 | `{ "slot": "requests", "includes": k }` | the petition asks for request kind `k` | never (an empty list is known) |
 | `{ "slot": s, "before": "yyyy-mm-dd" }` | the slot's date is strictly before that date | the slot is unknown |
 | `{ "slot": s, "after": "yyyy-mm-dd" }` | the slot's date is on or after that date | the slot is unknown |
+| `{ "slot": s, "beforeSlot": t }` | the slot's date is strictly before the date of `t`: another date slot, or `petition_date` (the petition's date, reserved: never declared in `slots`, never asked) | `s` or `t` is unknown (each unknown one is asked) |
+| `{ "slot": s, "afterSlot": t }` | the slot's date is on or after the date of `t` (as above) | as above |
 | `{ "slot": s, "known": true }` | the slot has a value other than `unknown` (`known: false`: the reverse) | never |
 | `{ "all": [c1, c2] }` | every part is true | no part is false and at least one is unknown |
 | `{ "any": [c1, c2] }` | at least one part is true | no part is true and at least one is unknown |

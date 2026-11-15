@@ -14,14 +14,27 @@ public sealed class CaseSlotReader
 
     public const string UnknownValue = "unknown";
 
+    /// <summary>
+    /// The reserved date name of the petition: a condition compares a date slot with it (<c>beforeSlot</c>,
+    /// <c>afterSlot</c>). The evaluator supplies it; a case never answers it.
+    /// </summary>
+    public const string PetitionDateSlot = "petition_date";
+
     private readonly Dictionary<string, SlotValue> values = new(StringComparer.Ordinal);
     private readonly HashSet<string> requests;
+    private readonly string? petitionDate;
 
-    public CaseSlotReader(CaseSlots slots)
+    public CaseSlotReader(CaseSlots slots, DateOnly? petitionDate = null)
     {
         ArgumentNullException.ThrowIfNull(slots);
+        this.petitionDate = petitionDate is { } date ? Dates.Write(date) : null;
         foreach (var value in slots.Values)
         {
+            if (value.Slot == PetitionDateSlot)
+            {
+                throw new ArgumentException($"{PetitionDateSlot} is reserved: it is the petition's date, never an answer.", nameof(slots));
+            }
+
             // Two answers to one question cannot both be right; refusing is safer than picking one.
             if (!values.TryAdd(value.Slot, value))
             {
@@ -36,7 +49,8 @@ public sealed class CaseSlotReader
 
     /// <summary>The slot's value, or null when it is unknown.</summary>
     public string? Value(string slot) =>
-        values.TryGetValue(slot, out var value) && value.Value != UnknownValue ? value.Value : null;
+        slot == PetitionDateSlot ? petitionDate
+        : values.TryGetValue(slot, out var value) && value.Value != UnknownValue ? value.Value : null;
 
     public bool IsProposed(string slot) => values.TryGetValue(slot, out var value) && value.Origin == SlotOrigin.Proposed;
 

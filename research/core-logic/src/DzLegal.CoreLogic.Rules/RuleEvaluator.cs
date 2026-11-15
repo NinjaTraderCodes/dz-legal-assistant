@@ -22,7 +22,7 @@ public sealed class RuleEvaluator : IRuleEvaluator
         ArgumentNullException.ThrowIfNull(records);
         ArgumentNullException.ThrowIfNull(slots);
 
-        var reader = new CaseSlotReader(slots);
+        var reader = new CaseSlotReader(slots, petitionDate);
         var findings = new List<RuleFinding>();
         var questions = new QuestionList();
         SectionProposal? section = null;

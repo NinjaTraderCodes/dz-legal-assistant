@@ -318,7 +318,12 @@ public static class RecordChecks
             Leaves(condition.Value, condition.Path, (path, leaf) =>
             {
                 var slot = leaf.Slot!;
-                Used(path, slot, leaf.Before is not null || leaf.After is not null ? SlotType.Date : null);
+                var compares = leaf.BeforeSlot ?? leaf.AfterSlot;
+                Used(path, slot, leaf.Before is not null || leaf.After is not null || compares is not null ? SlotType.Date : null);
+                if (compares is not null && compares != CaseSlotReader.PetitionDateSlot)
+                {
+                    Used(path, compares, SlotType.Date);
+                }
                 if (leaf.Is is { } value)
                 {
                     Value(path, slot, value);

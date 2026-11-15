@@ -280,6 +280,16 @@ public sealed record SlotCondition
     public string? Includes { get; init; }
     public string? Before { get; init; }
     public string? After { get; init; }
+
+    /// <summary>
+    /// Another date to compare with: a date slot of the case, or the reserved name <c>petition_date</c> (the petition's
+    /// date, which the evaluator always knows). True when the slot's date is strictly before it.
+    /// </summary>
+    public string? BeforeSlot { get; init; }
+
+    /// <summary>As <see cref="BeforeSlot"/>; true when the slot's date is on or after the other date.</summary>
+    public string? AfterSlot { get; init; }
+
     public bool? Known { get; init; }
 }
 

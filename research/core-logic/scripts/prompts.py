@@ -450,9 +450,11 @@ def values_for(prompt: str, unit: str, followup: int = 0, cases: list[str] | Non
                 paths.append((os.path.join(reports, f"{u}.c-comparison.json"), "(its `attacks` list only)"))
             return paths
 
-        def register(u, k):  # the register of the first run (k = 0) or of follow-up k; follow-up 1 was named without "1"
-            return os.path.join(reports, f"{u}.attacks.json" if k == 0 else
-                                f"{u}.attacks.followup.json" if k == 1 else f"{u}.attacks.followup{k}.json")
+        def register(u, k):  # the first run (k = 0) or follow-up k, named as unit.py names them (Unit.register)
+            legacy = os.path.join(reports, f"{u}.attacks.followup.json")  # formal-notice's follow-up 1 had no number
+            if k == 1 and os.path.isfile(legacy):
+                return legacy
+            return os.path.join(reports, f"{u}.attacks.json" if k == 0 else f"{u}.attacks.followup{k}.json")
 
         ledger = os.path.join(CL, "law", "amendment-ledger.json")
         if followup:  # specs/unit-driver.md, "Follow-up verifier runs"

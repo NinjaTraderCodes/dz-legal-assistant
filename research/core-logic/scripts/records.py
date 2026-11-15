@@ -550,6 +550,17 @@ def compare_derivations(a: dict, b: dict) -> dict:
         field("request", "accessory", x, y, x["id"], y["id"], m)
     side = {"documents": {"a": a.get("documents", []), "b": b.get("documents", [])},
             "boundaries": {"a": a.get("boundaries", []), "b": b.get("boundaries", [])}}
+    # A claim type imports blocks of modules: which module and which blocks is part of what A and B agree on.
+    imp_a = {i["module"]: sorted(i.get("blocks", [])) for i in a.get("imports", [])}
+    imp_b = {i["module"]: sorted(i.get("blocks", [])) for i in b.get("imports", [])}
+    for mod in sorted(set(imp_a) | set(imp_b)):
+        va, vb = imp_a.get(mod), imp_b.get(mod)
+        equal = va == vb
+        tally("import", equal)
+        if not equal:
+            diff("import", "blocks", va, vb, mod if va is not None else None, mod if vb is not None else None, "module")
+        idmap.append({"kind": "import", "a": mod if va is not None else None, "b": mod if vb is not None else None,
+                      "reconciled": None})
     slots_a, slots_b = set(a.get("slots", [])), set(b.get("slots", []))
     for s_ in sorted(slots_a ^ slots_b):
         diff("slot", "used", s_ if s_ in slots_a else None, s_ if s_ in slots_b else None, None, None, "slotId")

@@ -416,3 +416,12 @@ def test_unit_texts_refuses_an_empty_start_list(tmp_path):
     assert rc.main(["unit-texts", "nobody", "--seed", str(seed), "--out", str(tmp_path / "t.json")]) == 2
     assert not (tmp_path / "t.json").exists()
 
+
+def test_compare_counts_the_imported_module_blocks_of_a_claim_type():
+    a = {"basis": [], "imports": [{"module": "periods", "blocks": ["d1", "d2"]}, {"module": "proof", "blocks": ["b1"]}]}
+    b = {"basis": [], "imports": [{"module": "periods", "blocks": ["d2", "d1"]}, {"module": "formal-notice", "blocks": ["p1"]}]}
+    out = rc.compare_derivations(a, b)
+    assert out["agreement"]["import"] == {"equal": 1, "compared": 3}
+    assert sorted((str(d["aId"]), str(d["bId"])) for d in out["differences"] if d["kind"] == "import") == [
+        ("None", "formal-notice"), ("proof", "None")]
+

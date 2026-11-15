@@ -19,7 +19,8 @@ internal sealed class Worktree
 
     public string FinalRecords => Path.Combine(CoreLogic, "rules", "final");
 
-    /// <summary>The worktree given with --root, or else the one the tool was built in (found above the tool's own folder).</summary>
+    /// <summary>The worktree given with --root; else the one named by worktree.txt beside a published copy; else the one the
+    /// tool was built in (found above the tool's own folder).</summary>
     public static Worktree Find(string? root)
     {
         if (root is not null)
@@ -27,6 +28,17 @@ internal sealed class Worktree
             return File.Exists(Path.Combine(root, "docs", "research", "core-logic", "slots.json"))
                 ? new Worktree(Path.GetFullPath(root))
                 : throw new DirectoryNotFoundException($"{root} holds no docs/research/core-logic/slots.json.");
+        }
+
+        // A published copy lives outside the worktree (so that a build never replaces the tool under a running agent):
+        // the publishing script writes the worktree's path beside it.
+        var pointer = Path.Combine(AppContext.BaseDirectory, "worktree.txt");
+        if (File.Exists(pointer))
+        {
+            var named = File.ReadAllText(pointer).Trim();
+            return File.Exists(Path.Combine(named, "docs", "research", "core-logic", "slots.json"))
+                ? new Worktree(Path.GetFullPath(named))
+                : throw new DirectoryNotFoundException($"{pointer} names {named}, which holds no docs/research/core-logic/slots.json.");
         }
 
         for (var folder = new DirectoryInfo(AppContext.BaseDirectory); folder is not null; folder = folder.Parent)

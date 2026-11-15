@@ -26,8 +26,11 @@ PROMPTS = os.path.join(CL, "prompts")
 WORK = r"C:\Users\TheShadow\dz-core-research"
 STORE_JSON = os.path.join(WORK, "store", "articles.json")
 STORE_TEXT = os.path.join(WORK, "store", "text")
-RULES_TOOL = os.path.join(st.REPO, "research", "core-logic", "src", "DzLegal.CoreLogic.Rules.Tool", "bin", "Release",
-                          "net10.0", "rules.exe")
+import unit  # noqa: E402
+
+# Agents run the published copy of the rules tool (unit.py tool), never bin\Release: a build replaces that one while
+# agents run it. The fallback only keeps the filler importable in a clone without the working folder; `fill` refuses it.
+RULES_TOOL = unit.published_tool() or "<the rules tool is not published: run unit.py tool>"
 RUNS = os.path.join(WORK, "runs", "step1")
 PYTHON = r"C:\Users\TheShadow\AppData\Local\Programs\Python\Python312\python.exe"
 MARK = "--- PROMPT ---"
@@ -264,6 +267,9 @@ def main(argv=None) -> int:
     f.add_argument("--out", required=True)
     a = p.parse_args(argv)
     if a.cmd == "fill":
+        if unit.published_tool() is None:
+            print("the rules tool is not published: run unit.py tool first", file=sys.stderr)
+            return 1
         _, body = template(a.prompt)
         text = fill(body, values_for(a.prompt, a.unit))
         with open(a.out, "w", encoding="utf-8", newline="\n") as fh:

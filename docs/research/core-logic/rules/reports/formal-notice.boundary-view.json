@@ -3,12 +3,14 @@
  "cases": [
   "bc3",
   "bc4",
-  "bc9"
+  "bc9",
+  "bc7"
  ],
  "writerExpected": {
   "bc3": "stepMissing",
   "bc4": "stepMissing",
-  "bc9": "stepMissing"
+  "bc9": "stepMissing",
+  "bc7": "stepMissing"
  },
  "codex": {
   "cases": [
@@ -29,7 +31,16 @@
     "answer": "ask",
     "why": "civil-code 120 ¶2 expressly says that the rescission clause does not itself dispense with notice. However, 392 ¶1 dispenses with prior notice for its specified sale of movables. Ask whether this is the seller's claim concerning such a sale, with a fixed deadline for payment and receipt, nonpayment at that deadline, and no contrary agreement.",
     "decidingWords": "وهذا الشرط لا يعفي من الاعذار، الذي يحدد حسب العرف عند عدم تحديده من طرف المتعاقدين.\nفي بيع العروض وغيرها من المنقولات إذا عين أجل لدفع الثمن وتسلم المبيع يكون البيع مفسوخا وجوبا في صالح البائع ودون سابق انذار إذا لم يدفع الثمن عند حلول الأجل وهذا ما لم يوجد اتفاق على خلاف ذلك."
+   },
+   {
+    "id": "bc7",
+    "answer": "stepMissing",
+    "why": "Civil-code 179 ¶1 requires notice before damages become due: service on 2026-06-20 followed the petition dated 2026-06-15, contradicting the answer ‘yes’. Bailiff service is recognized by cpca 406 ¶1, but does not establish notice before filing; article 179 does not itself prescribe automatic inadmissibility of the petition.",
+    "decidingWords": "لا يستحق التعويض إلا بعد اعذار المدين ما لم يوجد نص مخالف لذلك. يقصد بالتبليغ الرسمي، التبليغ الذي يتم بموجب محضر يعده المحضر القضائي."
    }
   ]
+ },
+ "recordActual": {
+  "bc7": "stepDone"
  }
 }

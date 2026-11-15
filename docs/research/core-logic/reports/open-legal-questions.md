@@ -155,7 +155,7 @@ Grades of the items: B 49, C 7.
 
 ## `periods`
 
-Grades of the items: B 40, C 3, D 12.
+Grades of the items: B 41, C 3, D 12.
 
 <!-- o1 d842c22f917c -->
 ### periods 1. Are wage arrears time-barred after one year or after five years? (o1, grade C; items d3, d4, d8, b7, b2)
@@ -187,15 +187,15 @@ Grades of the items: B 40, C 3, D 12.
 3. **What the record does (the protective behaviour it keeps):** Warn when the period has run or is close, without blocking the export, and do not rely on an interruption.
 4. **What would change with each answer:** If the period is a limitation: d2 warns near its last day, and a suspension or interruption the lawyer reports could move that day later. If it is a forfeiture: no suspension or interruption is counted, and since the court may raise it, d2 could declare a block once the period has run. Today d2 counts no interruption and warns: the forfeiture's count without its block.
 
-<!-- o4 c4bd789cc031 -->
-### periods 4. Is the day the non-conciliation record is delivered treated like the day of service, and so not counted? (o4, grade C; items d5)
+<!-- o4 48d5e98d4046 -->
+### periods 4. Is the day the non-conciliation record is delivered treated like the day of service, and so not counted? (o4, grade C; items d5, d9)
 
 1. **The question:** Is the day the non-conciliation record is delivered treated like the day of service, and so not counted? «هل يعامل يوم تسليم محضر عدم الصلح معاملة يوم التبليغ فلا يحسب؟»
 2. **The readings:**
    - The period is counted in full: neither the day of delivery nor the last day counts. (rests on b32, b37)
-   - The day of delivery counts, since it is not a day of service. (rests on b37)
+   - The day of delivery counts, since it is not a day of service. (rests on b37, b32)
 3. **What the record does (the protective behaviour it keeps):** Warn in the days near the last day under either reading.
-4. **What would change with each answer:** If neither the day of delivery nor the last day counts: d5's last day is one day later than under the other reading. If the day of delivery counts: the last day is one day earlier. The choice moves d5's last day by one day; the warning band around it covers both days, so the effect changes only on that one day.
+4. **What would change with each answer:** If neither the day of delivery nor the last day counts: d5's and d9's last day is the later one, as the record counts. If the day of delivery counts: their last day comes one day earlier. Under the owner's rule of 15 November 2026 the record holds both countings: d5 and d9 warn from the band before the earlier last day through the band after the later one, and d5 may block only once the later last day and its band have passed; the choice changes nothing else.
 
 <!-- o5 01aeb6ef44f0 -->
 ### periods 5. Does the judge raise the forfeiture of the labour claim of his own motion? (o5, grade C; items d5)

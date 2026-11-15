@@ -10,5 +10,7 @@
     <Content Include="..\..\..\..\docs\research\core-logic\notes\LABELLING-GUIDE.md" Link="LABELLING-GUIDE.md" CopyToOutputDirectory="PreserveNewest" />
     <!-- A tiny WordPiece vocabulary for the plumbing: no model file is needed by a test. -->
     <Content Include="tiny-vocab.txt" CopyToOutputDirectory="PreserveNewest" />
+    <!-- The tiny fixture encoder: random weights, made by train/make_fixture_encoder.py (the named exception). -->
+    <Content Include="tiny-encoder.onnx" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

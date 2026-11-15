@@ -12,6 +12,8 @@ using DzLegal.CoreLogic.Notes;
 //                [--exclude-writer <family>] [--pack <slot>] [--allow-pilot] [--mirror-run <n>] [--work <folder>]
 //   notes style-cards --write
 //   notes sample --set <set> --count <n> --seed <n> [--groups <n>] [--writer codex|sonnet] [--work <folder>] [--out <file>]
+//   notes write --set <set> --calls <n> --writer codex|sonnet [--work <folder>]
+//   notes ingest --call <id> [--reply <file>] [--rejected] [--work <folder>]
 // Every command takes --repo <folder> (the worktree); without it the tool finds the repository above it.
 const string Usage = "usage: notes guide-items --prepare|--ingest … | guide-test --prepare|--compare … | cells --prepare|--write-table … [--repo <folder>]";
 
@@ -146,6 +148,15 @@ try
             Console.WriteLine(path);
             return 0;
         }
+
+        case ("write", "--set"):
+            return DzLegal.CoreLogic.Notes.Writing.WriteCommand.Run(files,
+                positional.FirstOrDefault() ?? throw new ArgumentException("--set <name>"), options);
+
+        case ("ingest", "--call"):
+            return DzLegal.CoreLogic.Notes.Writing.IngestCommand.Run(files,
+                positional.FirstOrDefault(p => !p.StartsWith("--", StringComparison.Ordinal)) ?? throw new ArgumentException("--call <id>"),
+                options, positional.Where(p => p.StartsWith("--", StringComparison.Ordinal)).ToHashSet(StringComparer.Ordinal));
 
         case ("sample", "--set"):
             return DzLegal.CoreLogic.Notes.Sampler.SampleCommand.Run(files,

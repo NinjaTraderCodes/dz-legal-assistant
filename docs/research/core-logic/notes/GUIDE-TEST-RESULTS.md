@@ -54,3 +54,30 @@ Also made precise: `contract_date` (only the contract of the claim type's `contr
 ## What remains
 
 **The test must be run again on the changed guide before the scheme is frozen** ([../specs/notes-pipeline.md](../specs/notes-pipeline.md), section 1): the 45 items again, each of which must still give its expected answer, and new items on the changed sections, written by an agent that has not seen `guide-test.json`. A rerun on the same 45 items alone would pass by construction and prove nothing about the new rules.
+
+## The guide test: 2026-11-15, 75 items (script `notes guide-test --compare`)
+
+Both testers are Claude models (Sonnet 5.5 and Opus 5.5): what they share is not tested here.
+
+| | Sonnet 5.5 | Opus 5.5 |
+|---|---:|---:|
+| Expected answer given | 75 of 75 | 75 of 75 |
+| Marked "unsure" | 4 (items 8, 35, 71, 73) | 1 (items 47) |
+
+The two testers agreed with each other on 75 of 75 items.
+
+### Items where the three answers are not equal (0)
+
+None.
+
+### Items answered as expected but marked unsure (5)
+
+| Item | Claim, ask | Expected (tests) | Sonnet (rule) | Opus (rule) |
+|---|---|---|---|---|
+| 8 | `unpaid-rent`, `event:notice_served` | stated (case 6: the element includes a demand to pay) | stated (unsure): case 6 (unpaid-rent element includes مطالبة; phone demand) | stated: case 6 (element includes مطالبة), case 28 |
+| 35 | `custody-forfeiture`, `event:custodian_remarried` | denied (table 5.2: a marriage to a close relative of the child) | denied (unsure): table 5.2 custodian_remarried (marriage to close relative: denied) | denied: 5.2 custodian_remarried row (marriage to a close relative) |
+| 47 | `custody`, `role:custody` | marriage/mother (3b: role from what the note says of the client) | marriage/mother: section 3b | marriage/mother (unsure): section 3b (female client, after the divorce, children in her care) |
+| 71 | `unpaid-sale-price`, `slot:property_registered` | unknown (section 6: nothing says it is published or not; a notarial deed is not a publication) | unknown (unsure): section 6 property_registered (nothing on publication) | unknown: section 6 property_registered row (nothing on publication) |
+| 73 | `loan-repayment`, `slot:notice_means` | other (section 6: notice_means other when a means is named that is neither bailiff nor registered letter) | other (unsure): section 6 notice_means (any other means named) | other: section 6 notice_served and notice_means rows (formal إنذار; email is another means) |
+
+**Read by the executor (15 November 2026).** No item to explain: both testers gave every expected answer, on the 45 old items and on the 30 new ones written by a fresh Sonnet run from guide 1.2's changed parts (r-s3-0001; its seven problems were fixed in guide 1.2 before this test, and item 55's key changed with case 32). The five unsure marks fall on rules the guide states (case 6 for item 8; the row of `custodian_remarried` for item 35; section 3b for item 47; the row of `property_registered` for item 71; the row of `notice_means` for item 73); each tester was unsure where the other was not, and both answered as the key. Two earlier runs of this test were lost and are not counted: the Read tool cut the 29,000-token prompt at 25,000 tokens (the Opus tester saw no item and said so; the Sonnet tester read the file a second time and was discarded unread). The guide test is decided by two Claude models: a belief they share is not tested.

@@ -10,10 +10,10 @@ The frozen inputs, with the hash the executor records here at the freeze:
 
 | File | What the scheme takes from it | SHA-256 at the freeze |
 |---|---|---|
-| `data/law/claim-elements.json` | the 21 claim types, each one's roles, its elements (event kind, usual actor, Arabic proposition, whether it takes a date and an amount), its requests | *(filled at the freeze)* |
-| `src/DzLegal.Drafting/CaseFacts.cs`, `FactVocabulary` | the relations, the positions, the request kinds, the actors | *(filled at the freeze)* |
+| `data/law/claim-elements.json` | the 21 claim types, each one's roles, its elements (event kind, usual actor, Arabic proposition, whether it takes a date and an amount), its requests | `aa40f534266d6a5cb9f76b2de463b757005e8a861a4271b577964359ae1cfe33` |
+| `src/DzLegal.Drafting/CaseFacts.cs`, `FactVocabulary` | the relations, the positions, the request kinds, the actors | `fbef2f084c01cbd7279e51a0a14160bc9b097c29d8096d6b9ad326740a3cf21b` (the whole file) |
 | `docs/research/core-logic/slots.json` | the eight slots of section 5, by their ids, types and choices as that section lists them (the file itself grows with every rule record, so its hash is not recorded) | – |
-| `notes/LABELLING-GUIDE.md` | the rules, the 36 hard cases, the tables of section 5 | *(filled at the freeze; a later version of the guide is recorded with its hash in section 12)* |
+| `notes/LABELLING-GUIDE.md` | the rules, the 37 hard cases, the tables of section 5 | `9202a71ce194718c5774c087fc1f126b203ea4ec4ed0611e02c46c45a8c5af71` (guide version 1.2; a later version of the guide is recorded with its hash in section 12) |
 
 Both files outside `docs/research/core-logic/` are read, never changed. If one of them changes on the default branch after the freeze, the scheme keeps the frozen copy's content, and the difference is reported to the owner.
 
@@ -246,7 +246,7 @@ An item of the guide test that is still answered two ways after one fix of the g
 
 | Version | Date | What it added | Commit |
 |---|---|---|---|
-| 1.0 | 14 November 2026 (written); frozen in phase A | everything above; guide version 1.1 | *(the freeze commit; the guide's hash)* |
+| 1.0 | 14 November 2026 (written); frozen 15 November 2026 | everything above; guide version 1.2 (`9202a71ce194718c…`); the cells table written by `notes cells --write-table` (r-s3-0002 Sonnet, r-s3-0003 Opus); guide test 75 of 75 for both testers (r-s3-0006 Sonnet, r-s3-0007 Opus) | *(the freeze commit)* |
 
 **A minor version (1.1, 1.2 …) adds** an output: a slot, an element, a request kind, a value role, a boundary row. It never changes what an existing label means, never removes one, never renames one. Every note records the version it was labelled under (`provenance.schemeVersion`); for an output added later, an older note is *unlabelled*, which is not `unknown` and not `notMentioned`.
 

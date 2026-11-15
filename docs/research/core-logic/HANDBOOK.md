@@ -432,7 +432,7 @@ Expected end: about 15 December 2026 (section 9).
 **Done when.**
 - `notes\SCHEME.md` is frozen and stamped, its hashes and cells table filled; the guide-test results show both testers on all 75 items; no item is unexplained.
 - The scorer's tests pass (the role line and the tuning score among them); its hash is in the state file.
-- The parsers read 98 % of the code-made value corpus exactly; the cue table gives no wrong vote on the guide's 36 hard cases; the .NET piece ids equal the Python tokenizer's on the 500 pilot notes, every difference explained.
+- The parsers read 98 % of the code-made value corpus exactly; the cue table gives no wrong vote on the guide's 37 hard cases; the .NET piece ids equal the Python tokenizer's on the 500 pilot notes, every difference explained.
 - The loader's refusal tests pass (a test-set note in training; a Sonnet-written note for tuning; a note without provenance; more than a quarter composed).
 - The pilot report holds every item of its list, the feasibility paragraph and the calendar to 4,000 notes.
 

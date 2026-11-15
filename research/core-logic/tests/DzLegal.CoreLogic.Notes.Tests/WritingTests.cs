@@ -98,7 +98,8 @@ public sealed class WritingTests : IDisposable
         };
     }
 
-    private static CodeChecks Checks() => new(Data, [File.ReadAllText(Data.Files.Guide)]);
+    /// <summary>The checks, with the people of two other scenarios of the set (and this one's own defendant).</summary>
+    private static CodeChecks Checks() => new(Data, [File.ReadAllText(Data.Files.Guide)], ["سعاد حمداني", "علي مهدي", "كريم بلعيد"]);
 
     [Fact]
     public void QuotesAreFoundOnWordEdgesAndEveryFactIsPointedAt()
@@ -151,13 +152,23 @@ public sealed class WritingTests : IDisposable
     [InlineData("وقدره 1.000.000 دج", "وقدره 1.000.000 دج وقيمة السيارة 450.000 دج", "values: an amount the scenario does not hold")]
     [InlineData("ولم يستجب", "ولم يستجب، راه يماطل", "arabic: Darija")]
     [InlineData("ولم يستجب", "ولم يستجب (SMS)", "arabic: a Latin letter")]
-    [InlineData("ولم يستجب", "ولم يستجب، وقد شهد عمر بلعيد بذلك", "names: a cast name not of this scenario")]
+    [InlineData("ولم يستجب", "ولم يستجب، وقد شهدت سعاد حمداني بذلك", "names: a person of another scenario")]
     [InlineData("ولم يستجب", "ولم يستجب في 12/07/2025", "values: a date the scenario does not hold")]
     public void EachCheckFindsWhatItLooksFor(string from, string to, string reason)
     {
         var note = Note(facts: Facts.Replace(from, to, StringComparison.Ordinal));
         var reasons = Checks().Run(Scenario(), note, WriterLabels.Point(Scenario(), note), ShortCard);
         Assert.Contains(reasons, r => r.StartsWith(reason, StringComparison.Ordinal));
+    }
+
+    [Theory]
+    [InlineData("ولم يستجب، وعوّل على مهدي البضاعة")]  // «على» reads «علي» at level 2: not a person
+    [InlineData("ولم يستجب، وحضر عمر بلعيد أخ المشتري")]  // this scenario's own family name
+    public void WordsThatOnlyLookLikeAnotherScenariosPersonAreNotFlagged(string to)
+    {
+        var note = Note(facts: Facts.Replace("ولم يستجب", to, StringComparison.Ordinal));
+        Assert.DoesNotContain(Checks().Run(Scenario(), note, WriterLabels.Point(Scenario(), note), ShortCard),
+            r => r.StartsWith("names:", StringComparison.Ordinal));
     }
 
     [Fact]

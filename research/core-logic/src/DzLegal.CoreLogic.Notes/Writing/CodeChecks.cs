@@ -11,7 +11,9 @@ namespace DzLegal.CoreLogic.Notes.Writing;
 /// The code checks on every written note, before any model reads it (specs/notes-pipeline.md, section 3): quotes found
 /// and every fact quoted (1); every value parses to the scenario's form, and the note holds no other value (2); formal
 /// Arabic only (3); length within the style card's range (4); no 6-word window copied from the guide or the prompt (5);
-/// no name of the cast lists but the scenario's own (6). Each failure is a reason; a note with one is invalid.
+/// no person's name drawn for another scenario of the set (6). Each failure is a reason; a note with one is invalid.
+/// Check 6 compares full names drawn by the sampler, not the cast lists' words: a given name alone is an ordinary word
+/// often enough (and level 2 makes «على» read «علي»), so the lists themselves would raise false alarms.
 /// </summary>
 public sealed partial class CodeChecks
 {
@@ -23,14 +25,16 @@ public sealed partial class CodeChecks
     };
 
     /// <summary>The list after the same normalisation as the note's words (ة → ه), so that «كاينة» is found.</summary>
-    private static readonly HashSet<string> DarijaNormal = [.. Darija.Select(Normal)];
+    private static readonly HashSet<string> DarijaNormal = [.. Darija.Select(w => Normal(w))];
 
     private static readonly string[] Fields = ["subject", "facts", "requests", "documents"];
     private readonly HashSet<string> windows = new(StringComparer.Ordinal);
-    private readonly HashSet<string> given;
-    private readonly HashSet<string> family;
+    private readonly HashSet<string> castNames;
 
-    public CodeChecks(SamplerData data, IEnumerable<string> copiedFrom)
+    /// <param name="data">The sampler's data.</param>
+    /// <param name="copiedFrom">The texts no 6-word window may be copied from (the guide, the prompt).</param>
+    /// <param name="castNames">The full names of the people drawn for the set's scenarios (check 6).</param>
+    public CodeChecks(SamplerData data, IEnumerable<string> copiedFrom, IEnumerable<string>? castNames = null)
     {
         ArgumentNullException.ThrowIfNull(data);
         ArgumentNullException.ThrowIfNull(copiedFrom);
@@ -43,8 +47,7 @@ public sealed partial class CodeChecks
             }
         }
 
-        given = [.. SamplerData.Strings(data.Cast["maleGiven"]).Concat(SamplerData.Strings(data.Cast["femaleGiven"])).Select(Normal)];
-        family = [.. SamplerData.Strings(data.Cast["family"]).Concat(SamplerData.Strings(data.Cast["maleGiven"]).Select(n => "بن " + n)).Select(Normal)];
+        this.castNames = [.. (castNames ?? []).Select(n => string.Join(' ', NameWords(n))).Where(n => n.Contains(' ', StringComparison.Ordinal))];
     }
 
     public IReadOnlyList<string> Run(JsonObject scenario, JsonObject note, WriterLabels.Pointed pointed, StyleCard card)
@@ -89,11 +92,10 @@ public sealed partial class CodeChecks
             }
         }
 
-        var own = OwnNames(scenario);
-        var foreign = Names(all).Where(n => !own.Contains(n)).Distinct(StringComparer.Ordinal).ToList();
+        var foreign = Foreign(scenario, all);
         if (foreign.Count > 0)
         {
-            reasons.Add("names: a cast name not of this scenario: " + string.Join("، ", foreign));
+            reasons.Add("names: a person of another scenario: " + string.Join("، ", foreign));
         }
 
         return reasons;
@@ -178,54 +180,44 @@ public sealed partial class CodeChecks
         return found;
     }
 
-    private static HashSet<string> OwnNames(JsonObject scenario)
+    /// <summary>
+    /// The full names of the set's other scenarios found in the note as whole words, except a name whose family name is
+    /// one of this scenario's people's (a child named with a parent's family name is this scenario's own).
+    /// </summary>
+    private List<string> Foreign(JsonObject scenario, string text)
     {
         var own = new HashSet<string>(StringComparer.Ordinal);
+        var families = new HashSet<string>(StringComparer.Ordinal);
         foreach (var party in new[] { "plaintiff", "defendant" })
         {
             if ((string?)scenario["cast"]?[party]?["name"] is string name)
             {
-                own.Add(Normal(name));
-            }
-        }
-
-        return own;
-    }
-
-    /// <summary>Full names of the cast lists in the text: a given name (one to three words) then a family name (one or two).</summary>
-    private List<string> Names(string text)
-    {
-        var words = Words(text);
-        var found = new List<string>();
-        for (var i = 0; i < words.Count; i++)
-        {
-            for (var g = 1; g <= 3 && i + g < words.Count; g++)
-            {
-                if (!given.Contains(string.Join(' ', words.Skip(i).Take(g))))
+                var words = NameWords(name);
+                own.Add(string.Join(' ', words));
+                families.Add(words[^1]);
+                if (words.Count > 2)
                 {
-                    continue;
-                }
-
-                for (var f = 1; f <= 2 && i + g + f <= words.Count; f++)
-                {
-                    var last = string.Join(' ', words.Skip(i + g).Take(f));
-                    if (family.Contains(last))
-                    {
-                        found.Add(string.Join(' ', words.Skip(i).Take(g)) + " " + last);
-                    }
+                    families.Add(string.Join(' ', words.TakeLast(2)));
                 }
             }
         }
 
-        return found;
+        var padded = " " + string.Join(' ', NameWords(text)) + " ";
+        return [.. castNames.Where(n => !own.Contains(n) && padded.Contains(" " + n + " ", StringComparison.Ordinal) &&
+                                        !families.Any(f => n.EndsWith(" " + f, StringComparison.Ordinal)))
+            .Order(StringComparer.Ordinal)];
     }
 
     /// <summary>The words of a text after the level-2 normalisation of specs/article-store.md (letters only, no punctuation).</summary>
     public static List<string> Words(string text) =>
         [.. NotWord().Split(Normal(text)).Where(w => w.Length > 0)];
 
+    /// <summary>The words for comparing names: level 2 but for alef maqsura, so that the preposition «على» is not «علي».</summary>
+    private static List<string> NameWords(string text) =>
+        [.. NotWord().Split(Normal(text, keepAlefMaqsura: true)).Where(w => w.Length > 0)];
+
     /// <summary>Level 2 of the text comparison: NFC, no tatweel or diacritics, one alef, ya for alef maqsura, ha for ta marbuta, Western digits.</summary>
-    public static string Normal(string text)
+    public static string Normal(string text, bool keepAlefMaqsura = false)
     {
         ArgumentNullException.ThrowIfNull(text);
         var s = new StringBuilder(text.Normalize(NormalizationForm.FormC).Length);
@@ -239,7 +231,7 @@ public sealed partial class CodeChecks
             s.Append(ch switch
             {
                 'أ' or 'إ' or 'آ' or 'ٱ' => 'ا',
-                'ى' => 'ي',
+                'ى' when !keepAlefMaqsura => 'ي',
                 'ة' => 'ه',
                 >= '٠' and <= '٩' => (char)('0' + (ch - '٠')),
                 _ => ch,

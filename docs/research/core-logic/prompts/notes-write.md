@@ -8,6 +8,7 @@
 - **Why "write first, then point":** asked for labels and text together, a model writes the label's words into the note. Asked to write a lawyer's note and afterwards to point at the words that carry each fact, it notices when its note does not say what the scenario says.
 - **Why the scenario's facts are in English:** so that no Arabic phrasing comes from the sampler. Every Arabic word of a note is the writer's.
 - **The shape is repeated in the body** (agents see only the body; fault of 14 November 2026).
+- **Version 2 (15 November 2026), the pilot's first fix** (notes-pipeline.md, decision table: over 30 % of a call's notes failed, one cause for more than half): in pilot call w-pilot-0001, 7 of its 10 invalid notes were too long for a "very short" card (62 to 93 words for 15 to 60). The body now says that the length is counted by code and how a very short note still holds every fact. Calls w-pilot-0001 to w-pilot-0008 were written with version 1; the call record holds the template's hash.
 - **What the writer is not given:** the scenario's `petitionDate` and `outcome` are removed before the scenario is rendered (a date the note must not carry; a result the writer must not know). `contest-amount` gives the other side's figure its own `values` entry, with the event kind as its role and `amountDisputed: true`. Codex's `writer.model` is recorded as "codex-cli 0.167.0 (default model)".
 
 --- PROMPT ---
@@ -35,6 +36,8 @@ These notes will be read by a program that must find the facts in them. So each 
 ==== WHAT TO DO, FOR EACH SCENARIO ====
 
 **1. Write the note.** Four fields: "subject", "facts", "requests", "documents". Follow the scenario's style card for length, order, tidiness, which fields are used, how dates and amounts are written, how negation and dispute are worded, and which name to use for each act. Then:
+
+- **The length is counted by a program:** the words of the four fields together must fall inside the range the style card states (a very short note: 15 to 60 words; short: 60 to 150; medium: 150 to 300; long: 300 to 500). A note outside its range is rejected. A very short note still holds every fact of its scenario: write each in a few words, as a busy lawyer jots it, without connecting sentences. Count before you answer.
 
 - Every event marked `stated`, `denied` or `disputed` must be expressed with that polarity, in the sense of the guide's rules 1 to 3 and its hard cases. For `denied`, the note itself says the thing did not happen. For `disputed`, the note reports who contests it and how (use the scenario's "how" as the idea, in your own Arabic).
 - An event with a "contest" stays `stated`: the other side admits it and contests only its amount (write both figures) or its cause (the other side gives its own reason for it).
@@ -64,7 +67,7 @@ For each, give one to three "quotes": the field and the **exact words of your no
 
 If you cannot quote words for a fact, your note does not say it: **go back and fix the note.** Use `"expressed": false`, with no quote, only for an extra value marked `optional` that you left out.
 
-**3. Check each note once more** against its scenario before answering: polarity of every event; nothing extra that would state a `notMentioned` event; no date or amount that the scenario does not hold; values exact.
+**3. Check each note once more** against its scenario before answering: polarity of every event; nothing extra that would state a `notMentioned` event; no date or amount that the scenario does not hold; values exact; the number of words inside the card's range.
 
 Return the notes in the order of the scenarios, each with its number "n".
 

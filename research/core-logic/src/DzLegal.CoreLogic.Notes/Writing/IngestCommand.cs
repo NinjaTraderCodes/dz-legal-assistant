@@ -11,6 +11,8 @@ namespace DzLegal.CoreLogic.Notes.Writing;
 /// (kept with its reasons in <c>&lt;work&gt;\invalid\&lt;set&gt;.jsonl</c>) and its scenario goes back to the queue once. With
 /// <c>--rejected</c> (the pool rejected the call) the answer is never read: its scenarios go back to the queue once. A
 /// scenario has one retry in all; on a second failure it is dropped (a failed note) or set aside (a rejected call).
+/// With <c>--recheck</c> the call's notes that failed a code check and are still waiting in the queue, unsent, are checked
+/// again from the same answer (after a fault of a check was fixed); a note that now passes is written, without a retry used.
 /// </summary>
 public static class IngestCommand
 {
@@ -30,7 +32,10 @@ public static class IngestCommand
         var ids = record["scenarios"]!.AsArray().Select(x => (string)x!).ToList();
         var queue = QueueFile.Load(work);
         var lines = ids.Select(queue.Line).ToList();
-        if (lines.Any(l => (string?)l["writeCall"] != call))
+        var recheck = flags.Contains("--recheck");
+        var process = Enumerable.Range(0, ids.Count).Where(i => !recheck ||
+            ((string?)lines[i]["state"] == "drawn" && lines[i]["writeCall"] is null && (string?)lines[i]["lastFailure"] == "codeCheck")).ToHashSet();
+        if (!recheck && lines.Any(l => (string?)l["writeCall"] != call))
         {
             throw new InvalidOperationException($"{call}: its scenarios are no longer waiting for it (ingested already?)");
         }
@@ -60,8 +65,10 @@ public static class IngestCommand
         var data = SamplerData.Load(files);
         var cards = data.Cards.ToDictionary(c => c.Id, StringComparer.Ordinal);
         var scenarios = WriteCommand.Scenarios(work, set);
+        var people = scenarios.Values.SelectMany(s => new[] { s["cast"]?["plaintiff"], s["cast"]?["defendant"] })
+            .Where(p => (string?)p?["kind"] == "person").Select(p => (string)p!["name"]!);
         var checks = new CodeChecks(data, [File.ReadAllText(files.Guide), File.ReadAllText(Path.Combine(files.Prompts, "notes-write.md")),
-            .. data.Claims.SelectMany(c => c.Elements.Select(e => e.Label))]);
+            .. data.Claims.SelectMany(c => c.Elements.Select(e => e.Label))], people);
         var manifest = Path.Combine(work, "sets", set + ".sample.json");
         var sampled = File.Exists(manifest) ? NotesJson.Load(manifest) : null;
         var written = new List<string>();
@@ -69,6 +76,11 @@ public static class IngestCommand
         var reasons = new Dictionary<string, int>(StringComparer.Ordinal);
         for (var i = 0; i < ids.Count; i++)
         {
+            if (!process.Contains(i))
+            {
+                continue;
+            }
+
             var scenario = scenarios[ids[i]];
             var line = lines[i];
             var noteId = "n-" + ids[i][2..];
@@ -90,7 +102,11 @@ public static class IngestCommand
                 }
 
                 invalid.Add(Invalid(noteId, set, scenario, note, problems));
-                Retry(line, "codeCheck", setAside: false);
+                if (!recheck)
+                {
+                    Retry(line, "codeCheck", setAside: false);
+                }
+
                 continue;
             }
 
@@ -137,13 +153,14 @@ public static class IngestCommand
             written.Add(new JsonObject { ["id"] = noteId, ["set"] = set, ["text"] = text, ["provenance"] = provenance }.ToJsonString(NotesJson.Compact));
             line["state"] = "written";
             line["note"] = noteId;
+            line.Remove("lastFailure");
         }
 
         Append(Path.Combine(work, "written", set + ".jsonl"), written);
         Append(Path.Combine(work, "invalid", set + ".jsonl"), invalid);
         queue.Save();
-        var rate = ids.Count == 0 ? 0 : 100.0 * invalid.Count / ids.Count;
-        Console.WriteLine($"{call}: {written.Count} written, {invalid.Count} invalid ({rate:0}%)" +
+        var rate = process.Count == 0 ? 0 : 100.0 * invalid.Count / process.Count;
+        Console.WriteLine($"{call}{(recheck ? " (recheck)" : "")}: {written.Count} written, {invalid.Count} invalid ({rate:0}%)" +
                           (reasons.Count == 0 ? "" : "; " + string.Join(", ", reasons.Select(kv => $"{kv.Key} {kv.Value}"))));
         if (rate > 30)
         {

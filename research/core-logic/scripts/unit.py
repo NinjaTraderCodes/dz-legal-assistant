@@ -417,14 +417,28 @@ def first_input(u: Unit) -> dict:
     return doc
 
 
-def uncertain_entries(u: Unit) -> list[dict]:
+def uncertain_entries(u: Unit, ledger: str = LEDGER) -> list[dict]:
     """Stage 8b: Codex gave the case writer's outcome, or neither side's: the case is uncertain. One owner entry: keep
-    both readings in an open point and make the item warn (never settled by one family alone)."""
+    both readings in an open point and make the item warn (never settled by one family alone). A case whose Codex call
+    was rejected twice has no second view at all: it is uncertain too, on the protective side (15 November 2026)."""
+    out = []
+    failing = {r["caseId"] for r in _results(os.path.join(u.cases, "boundaryFinal.json")) if not r["passed"]}
+    for cid in views_set_aside(u, ledger):
+        entry = next((e for e in latest(register_entries(u)).values() if e.get("who") == "boundaryCase" and
+                      e.get("verdict") in ("refuted", "open") and
+                      (e["id"] in (cid, f"bc-{cid}") or e["id"].startswith(f"bc-{cid}-"))), None)
+        if entry is None or cid not in failing:
+            continue
+        out.append({"id": f"uncertain-{cid}", "who": "owner", "target": entry.get("target", "record"),
+                    "kind": "wrongEffect",
+                    "claim": f"Boundary case {cid} is uncertain: the verifier set it aside, and the second family's blind "
+                             "view is missing (its Codex call was rejected twice and is never sent a third time). One "
+                             "family alone may not settle it. Keep both readings (the case writer's and the record's) in "
+                             "an open point and make the item warn; do not settle it either way."})
     if not os.path.isfile(u.r("boundary-view.json")):
-        return []
+        return out
     view = load(u.r("boundary-view.json"))
     expected = view.get("writerExpected", {})
-    out = []
     for c in view.get("codex", {}).get("cases", []):
         actual = view.get("recordActual", {}).get(c["id"])
         if actual is not None and c["answer"] == actual:
@@ -502,11 +516,24 @@ def undecided_input(u: Unit) -> list[str]:
     return out
 
 
-def second_view_due(u: Unit) -> tuple[list[str], list[str]]:
+def views_set_aside(u: Unit, ledger: str = LEDGER) -> list[str]:
+    """Stage 8b: the cases whose Codex call was rejected twice (codex-calls.md, "A rejected call": an item whose second
+    call is rejected too is set aside and reported, never queued a third time)."""
+    rejected: dict[str, set[str]] = {}
+    for row in ledger_rows(ledger).values():
+        if row.get("unit") == u.id and row.get("stage") == "8b" and row.get("status") == "rejected":
+            for case in row.get("cases", []):
+                rejected.setdefault(case, set()).add(row["id"])
+    return sorted(case for case, runs in rejected.items() if len(runs) >= 2)
+
+
+def second_view_due(u: Unit, ledger: str = LEDGER) -> tuple[list[str], list[str]]:
     """Stage 8b: cases a register set aside (refuted or open) that the final record still fails and Codex has not seen.
-    Returns (cases to send, cases that cannot be a choice of words: the same word, or no outcome word)."""
+    Returns (cases to send, cases that cannot be a choice of words: the same word, or no outcome word). A case whose
+    call was rejected twice is in neither list: `uncertain_entries` takes it."""
     import prompts
     seen = set(load(u.r("boundary-view.json")).get("cases", [])) if os.path.isfile(u.r("boundary-view.json")) else set()
+    seen |= set(views_set_aside(u, ledger))
     failing = {r["caseId"]: r for r in _results(os.path.join(u.cases, "boundaryFinal.json")) if not r["passed"]}
     cases = {c["id"]: c for c in load(u.boundary)} if os.path.isfile(u.boundary) else {}
     send, owner = [], []
@@ -647,7 +674,9 @@ def status(u: Unit) -> list[tuple[str, str]]:
         s["8b"] = "waiting for 8"
     else:
         send, _ = second_view_due(u)
-        s["8b"] = f"due (unit.py codex): {', '.join(send)}" if send else "done"
+        aside = views_set_aside(u)
+        s["8b"] = f"due (unit.py codex): {', '.join(send)}" if send else \
+            "done" + (f" (no second view, Codex rejected twice: {', '.join(aside)}: uncertain)" if aside else "")
     if s["8"] != "done" or s["8b"] != "done":
         s["9"] = "waiting for 8" + ("" if s["8"] != "done" else "b")
     else:

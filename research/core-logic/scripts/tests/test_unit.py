@@ -256,6 +256,23 @@ def test_a_case_codex_reads_as_the_writer_did_becomes_uncertain(root):
     assert [(e["id"], e["target"]) for e in unit.uncertain_entries(u)] == [("uncertain-bc7", "p1")]
 
 
+def test_a_view_rejected_twice_is_never_sent_again_and_its_cases_become_uncertain(root, tmp_path):
+    u = through_stage_4(root)
+    reports = root / "rules" / "reports"
+    dump(reports / "proof.attacks.json", {"attacks": [{"id": "bc-bc1", "who": "boundaryCase", "target": "p1",
+                                                       "verdict": "refuted", "verifierQuote": "q"}]})
+    dump(Path(u.cases) / "boundaryFinal.json", [{"caseId": "bc1", "title": "t", "passed": False, "actual": "ask",
+                                                 "differences": ["p1: declared ask"]}])
+    ledger = tmp_path / "runs.jsonl"
+    row = {"kind": "codex", "unit": "proof", "stage": "8b", "cases": ["bc1"], "status": "rejected"}
+    write_ledger(ledger, [dict(row, id="r-1")])
+    assert unit.second_view_due(u, str(ledger)) == (["bc1"], []) and unit.uncertain_entries(u, str(ledger)) == []
+    write_ledger(ledger, [dict(row, id="r-1"), dict(row, id="r-2")])
+    assert unit.views_set_aside(u, str(ledger)) == ["bc1"]
+    assert unit.second_view_due(u, str(ledger)) == ([], [])
+    assert [(e["id"], e["target"]) for e in unit.uncertain_entries(u, str(ledger))] == [("uncertain-bc1", "p1")]
+
+
 # --- unit.py codex (stages 7c and 8b through the background queue) -----------------------------------------------------
 class FakeQueue:
     def __init__(self):

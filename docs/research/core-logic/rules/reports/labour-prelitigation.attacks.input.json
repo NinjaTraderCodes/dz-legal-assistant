@@ -1,0 +1,455 @@
+{
+ "unit": "labour-prelitigation",
+ "attacks": [
+  {
+   "id": "adv-1",
+   "target": "d1, d2, p1, nonconciliation_record_delivered_on",
+   "kind": "missing",
+   "claim": "The record has no answer for a second non-conciliation record on the same dispute. The Supreme Court's social chamber holds that the six months of CPCA 504 run from the FIRST record, that a second record on the same dispute cannot be obtained and does not revive the right, and that the resulting inadmissibility is of public order. In the decided case the worker's first claim was declared inadmissible in form, a second claim was forfeited, and a third claim on a second record was quashed without remand.",
+   "source": {
+    "tier": 2,
+    "url": "https://coursupreme.dz/decision/%d9%85%d9%84%d9%81-%d8%b1%d9%82%d9%85-1488919-%d9%82%d8%b1%d8%a7%d8%b1-%d8%a8%d8%aa%d8%a7%d8%b1%d9%8a%d8%ae-07-10-2021/",
+    "what": "Supreme Court, social chamber, file 1488919, decision of 07-10-2021, subject «صلح», legal reference CPCA art. 504 (reasoning also cites art. 69). Facts as published: first record 09-10-2017, first claim 25-03-2018 inadmissible in form (12-07-2018), second claim 31-07-2018 declared forfeited (04-10-2018), second record 30-04-2019 used for the claim under review. Quashed without remand.",
+    "retrievedOn": "2026-11-15"
+   },
+   "quoteArabic": "يسقط حق العامل في رفع دعواه أمام القسم الاجتماعي، إذا أصبح محضر عدم الصلح الأول خارج أجل ستة أشهر. لا يمكن استصدار محضر ثان بعدم الصلح بخصوص نفس النزاع الذي تضمنه المحضر الأول.",
+   "consequence": "Build the case: first record delivered 2025-01-10, nothing filed; the worker goes back to the inspectorate and gets a second record delivered 2026-03-02; petition 2026-05-04. The lawyer enters 2026-03-02 as nonconciliation_record_delivered_on, so d1 finds nothing, p1 is done, and the export is clean, although by this decision the claim is forfeited and the judge must raise it. The record should ask whether an earlier non-conciliation record exists for the same dispute, count d1 from the earliest one, and treat a later record as not reopening the period. A claim declared inadmissible in form does not stop the clock either (same facts).",
+   "who": "adversary"
+  },
+  {
+   "id": "adv-2",
+   "target": "d1, d2, o2, k13, k46",
+   "kind": "caseLaw",
+   "claim": "The record leaves open whether the judge raises the CPCA 504 forfeiture of his own motion (d1/d2 raisedBy \"unclear\", o2 grade C). The Supreme Court's social chamber answers it: the inadmissibility for a claim outside the six months is of public order and the judge raises it of his own motion under CPCA 69.",
+   "source": {
+    "tier": 2,
+    "url": "https://coursupreme.dz/decision/%d9%85%d9%84%d9%81-%d8%b1%d9%82%d9%85-1488919-%d9%82%d8%b1%d8%a7%d8%b1-%d8%a8%d8%aa%d8%a7%d8%b1%d9%8a%d8%ae-07-10-2021/",
+    "what": "Supreme Court, social chamber, file 1488919, decision of 07-10-2021 (CPCA arts. 504 and 69). The reasoning also states that art. 504 carries the sanction of forfeiture and inadmissibility.",
+    "retrievedOn": "2026-11-15"
+   },
+   "quoteArabic": "ويعد عدم قبول الدعوى في هذه الحالة من النظام العام يثيره القاضي تلقائيا طبقا للمادة 69 من ق إ م إ.",
+   "consequence": "o2 is not open at the level of the Supreme Court's published case law: d1 and d2 should say the court raises the forfeiture of its own motion (raisedBy: court), and d2's force-majeure path should not suggest the period is only enforced on the opponent's plea. The protective reading already treats the period as binding, so blockCleanExport is consistent; what is wrong is the open point and the 'unclear' label shown to the lawyer.",
+   "who": "adversary"
+  },
+  {
+   "id": "adv-3",
+   "target": "p1, o1, k1, k26, k27, k47",
+   "kind": "caseLaw",
+   "claim": "The record says no text states the sanction of a claim filed without a non-conciliation record, keeps a 'curable defect' reading open (o1), and only warns. The Supreme Court's social chamber states as a principle that the claim is not admissible before the social section without a non-conciliation record, and it raised the point of its own motion as a breach of a fundamental procedural rule, quashing without remand; a second decision (file 1340230) again raised arts. 19, 36 and 37 of Law 90-04 of its own motion and quashed without remand.",
+   "source": {
+    "tier": 2,
+    "url": "https://coursupreme.dz/decision/%d8%a7%d9%84%d9%82%d8%b1%d8%a7%d8%b1-%d8%b1%d9%82%d9%85-1158046-%d8%a7%d9%84%d9%85%d8%a4%d8%b1%d8%ae-%d9%81%d9%8a-07-09-2017/",
+    "what": "Supreme Court, social chamber, file 1158046, decision of 07-09-2017 (Law 90-04 arts. 33-34, CPCA art. 504), quashed without remand, quashing extended to the judgments of 17-06-2012 and 27-05-2015. See also file 1340230, decision of 05-03-2020, social chamber: https://coursupreme.dz/decision/%d9%85%d9%84%d9%81-%d8%b1%d9%82%d9%85-1340230-%d9%82%d8%b1%d8%a7%d8%b1-%d8%a8%d8%aa%d8%a7%d8%b1%d9%8a%d8%ae-2020-03-05/ (ground raised of the Court's own motion under CPCA 358, relying on Law 90-04 arts. 19, 36, 37; quashed without remand under CPCA 365).",
+    "retrievedOn": "2026-11-15"
+   },
+   "quoteArabic": "لا تقبل الدعوى أمام القسم الإجتماعي في غياب محضر عدم مصالحة. … عن الوجه التلقائي : المأخوذ من مخالفة قاعدة جوهرية في الإجراءات.",
+   "consequence": "o1's second reading (a defect cured by producing the record later) and k27's 'no text classes the step as public order; open' are contradicted by the court's published principle. Outside the exemptions, a missing non-conciliation record makes the claim inadmissible, raised by the court itself. p1's warning should say so in terms (inadmissibility, raised of the court's own motion, quashing without remand), and whether p1 'warn' is still the right effect next to d1's block needs a decision; n5 and o10 (record delivered on or after filing) follow the same principle.",
+   "who": "adversary"
+  },
+  {
+   "id": "adv-4",
+   "target": "n1, o7, k41, b35, rex12",
+   "kind": "caseLaw",
+   "claim": "Where a conciliation agreement was recorded, the Supreme Court treats an ordinary claim before the social section on that agreement as contrary to CPCA 504 and quashes without remand, and holds that requests not covered by the agreement are not admissible in the enforcement route. The record's n1 only says the case is 'outside' and that the lawyer should check what the agreement covered; it does not handle the common mixed petition (enforce the agreement and add other wage heads).",
+   "source": {
+    "tier": 2,
+    "url": "https://coursupreme.dz/decision/%d9%85%d9%84%d9%81-%d8%b1%d9%82%d9%85-1340230-%d9%82%d8%b1%d8%a7%d8%b1-%d8%a8%d8%aa%d8%a7%d8%b1%d9%8a%d8%ae-2020-03-05/",
+    "what": "Supreme Court, social chamber, file 1340230, decision of 05-03-2020 (Law 90-04 art. 34): the worker sued on a conciliation record of 11-04-2017 and added bonuses, productivity pay, wages and documents not covered by it; the first-instance judge ruled on the merits; quashed without remand. Also file 1158046 of 07-09-2017 (claim founded on a conciliation record held contrary to CPCA 504).",
+    "retrievedOn": "2026-11-15"
+   },
+   "quoteArabic": "ينفذ اتفاق المصالحة بموجب أمر من رئيس المحكمة عن طريق الالتماس بعريضة من أجل التنفيذ في أول جلسة. لا تقبل الطلبات الجديدة التي لم تكن محل اتفاق المصالحة.",
+   "consequence": "Build the case: agreement recorded on part of the wages, the employer pays nothing, the worker files one statement of claim asking for execution of the agreement plus the other unpaid months. The record (n1 warns, p1 none when a record also exists as in rex12) lets it through as a claim. It should say that a merits claim on a conciliation agreement is inadmissible, that the agreement goes to the president by petition, and that heads not covered by the agreement need their own non-conciliation record (this answers o7 and k41 in part). CPCA 510 (b35) admits additional requests only in a claim properly brought on a non-conciliation record; it does not rescue new heads in the enforcement route.",
+   "who": "adversary"
+  },
+  {
+   "id": "adv-5",
+   "target": "doc1, p1, aex7, aex8, bex5, bex9, rex11",
+   "kind": "misreading",
+   "claim": "doc1 makes the copy of the non-conciliation record required whenever the worker is not a civil servant, including when 19 ¶2 made conciliation optional (defendant abroad, bankruptcy or judicial settlement) and no conciliation took place. Article 37 requires the copy only of a record 'issued by the conciliation office as set out in articles 26 to 32'; when the optional step was skipped no such record exists.",
+   "source": {
+    "tier": 1,
+    "url": "https://www.joradp.dz/FTP/jo-arabe/1990/A1990006.pdf",
+    "what": "Law 90-04 of 6 February 1990, art. 19 ¶2 (Official Journal 1990, issue 6, 7 February 1990, p. 242) and art. 37 (same law; store text labelled law-90-04).",
+    "retrievedOn": "2026-11-15"
+   },
+   "quoteArabic": "يعتبر اجراء المصالحة المنصوص عليه في الفقرة السابقة اختياريا … ترفق العريضة الموجهة إلى المحكمة بنسخة من محضر عدم المصالحة الصادر عن مكتب المصالحة كما هو مبين في المواد من 26 إلى 32 من هذا القانون.",
+   "consequence": "In aex7/bex5/rex11 (defendant abroad, no record) p1 correctly says nothing, yet doc1 still lists a document that cannot exist as required. doc1.requiredWhen should also exclude the 19 ¶2 cases when no conciliation was attempted (and ask the lawyer to show the exemption instead).",
+   "who": "adversary"
+  },
+  {
+   "id": "adv-6",
+   "target": "b2",
+   "kind": "misreading",
+   "claim": "The record's quote of art. 19 ¶2 reads «عندما يقيم المدعى عليه خارج التراب الوطني», sourced tier 1. The Arabic Official Journal page prints «عندما يقدم المدعي عليه خارج التراب الوطني». The quoted wording, and its hash, are therefore not the published Arabic text; the meaning 'resides' is very likely right but rests on a correction (or on the French text) that the record does not state.",
+   "source": {
+    "tier": 1,
+    "url": "https://www.joradp.dz/FTP/jo-arabe/1990/A1990006.pdf",
+    "what": "Law 90-04 of 6 February 1990, art. 19 ¶2, Official Journal 1990, issue 6 (7 February 1990), p. 242, left column. The French text of the same issue was not fetched.",
+    "retrievedOn": "2026-11-15"
+   },
+   "quoteArabic": "يعتبر اجراء المصالحة المنصوص عليه في الفقرة السابقة اختياريا عندما يقدم المدعي عليه خارج التراب الوطني أو حالة الافلاس أو تسوية قضائية من قبل صاحب العمل.",
+   "consequence": "Record that the published Arabic text prints «يقدم», and confirm «يقيم / réside» against the French Official Journal before treating the 'defendant resides abroad' exemption as text-verified. The same page also prints «يقبل مرتبه» in art. 25 (b46) where «يقل» is meant; the store copies that misprint.",
+   "who": "adversary"
+  },
+  {
+   "id": "adv-7",
+   "target": "r1, b40, k58, k59",
+   "kind": "exception",
+   "claim": "r1 and b40 carry only the provisional execution by law for wages of the last six months (art. 22 ¶4). The next paragraph of the same article lets the court order provisional execution without bond for the period beyond six months, which is the usual request in an unpaid-wages claim covering more than six months.",
+   "source": {
+    "tier": 1,
+    "url": "https://www.joradp.dz/FTP/jo-arabe/1990/A1990006.pdf",
+    "what": "Law 90-04 of 6 February 1990, art. 22 last paragraph (store: labour-disputes 22 ¶5), Official Journal 1990, issue 6, p. 243, right column.",
+    "retrievedOn": "2026-11-15"
+   },
+   "quoteArabic": "كما يمكن المحكمة عند النظر في المسائل الاجتماعية ان تنطق بالتنفيذ المؤقت دون كفالة فيما بعد ستة اشهر.",
+   "consequence": "For appliesTo unpaid-wages, add the optional request (provisional execution without bond for wages beyond the last six months, at the court's discretion), distinct from r1's execution by law; k59's note 'by operation of law for the matters listed in article 22' misses this discretionary limb.",
+   "who": "adversary"
+  },
+  {
+   "id": "adv-8",
+   "target": "k2, k23",
+   "kind": "amendment",
+   "claim": "The checklist notes oppose individual disputes to collective disputes 'governed by Law 90-02'. Law 90-02 is said to have been repealed and replaced by Law 23-08 of 2023 on the prevention and settlement of collective labour disputes and the exercise of the right to strike. Not checked on joradp.dz in this run.",
+   "source": {
+    "tier": 3,
+    "url": "",
+    "what": "Own memory: Law 23-08 (June 2023) on collective labour disputes and the right to strike, said to repeal Law 90-02 of 6 February 1990. Lead only.",
+    "retrievedOn": "2026-11-15"
+   },
+   "quoteArabic": "",
+   "consequence": "Boundary n3 rests on Law 90-04 art. 2 and stays right; only the notes naming Law 90-02 as the governing text should be checked and, if the lead is confirmed, name Law 23-08.",
+   "who": "adversary"
+  },
+  {
+   "target": "p1",
+   "kind": "wrongEffect",
+   "claim": "The requiredWhen branch (record is yes and delivered before the petition date) makes the conciliation step 'required' and 'missing' in exactly the case where the record exists and was delivered before filing, which is the case where the step is done. It also fires the warning and the m1/m2 accepted means in the same case, so the step is marked required and satisfied together. n5 treats the same dates as the normal, valid case.",
+   "evidenceWords": "ترفق العريضة الموجهة إلى المحكمة بنسخة من محضر عدم المصالحة الصادر عن مكتب المصالحة",
+   "fromMemory": false,
+   "id": "atk-1",
+   "who": "attack"
+  },
+  {
+   "target": "p2",
+   "kind": "wrongEffect",
+   "claim": "p2 treats exhausting internal procedures as a prerequisite that warns for every claim ('always'). Its basis b7 says only that the worker 'may' refer the matter to the inspector. b5 likewise says collective agreements 'may' set internal procedures. b4 uses non-resolution only in the definition of the dispute. No quoted paragraph makes the internal grievance a condition of filing. Its slot internal_grievance_exhausted is also not among the declared slots.",
+   "evidenceWords": "يمكن العامل اخطار مفتش العمل ; يمكن للمعاهدات والاتفاقيات الجماعية للعمل ان تحدد الاجراءات الداخلية",
+   "fromMemory": false,
+   "id": "atk-2",
+   "who": "attack"
+  },
+  {
+   "target": "d2",
+   "kind": "wrongEffect",
+   "claim": "d2 downgrades an expired forfeiture from blockCleanExport to warn as soon as the plaintiff merely invokes force majeure. b55 says the forfeiture is lifted only by an order of the court president, and d1 covers only the case where no order lifted it. With the invocation 'yes' and the order 'no' or unknown, the forfeiture still stands, so a mere invocation should not remove the block.",
+   "evidenceWords": "يتم تقديم طلب رفع السقوط إلى رئيس الجهة القضائية المعروض أمامها النزاع، يفصل فيه بموجب أمر على عريضة",
+   "fromMemory": false,
+   "id": "atk-3",
+   "who": "attack"
+  },
+  {
+   "target": "n5",
+   "kind": "wrongCondition",
+   "claim": "The boundary says the record was delivered 'on or after' the petition date, but the condition uses only afterSlot, which is strictly after. A record delivered on the petition day fires neither n5 nor the p1 'before the petition date' branch. The message also says the delivery date is 'not before' the petition date, which contradicts the condition.",
+   "evidenceWords": "تاريخ تسليم محضر عدم المصالحة يوافق تاريخ العريضة أو يليه",
+   "fromMemory": false,
+   "id": "atk-4",
+   "who": "attack"
+  },
+  {
+   "target": "b18",
+   "kind": "exception",
+   "claim": "b18 states the immediate execution and the daily penalty but drops ¶2, which limits the penalty. The penalty is not enforced until a grace period of no more than 15 days has expired.",
+   "evidenceWords": "غير أن هذه الغرامة التهديدية لاتنفذ الا عندما تنقضي مهلة الوفاء التي لاتتجاوز (15) يوما",
+   "fromMemory": false,
+   "id": "atk-5",
+   "who": "attack"
+  },
+  {
+   "target": "b28",
+   "kind": "exception",
+   "claim": "b28 drops the opening proviso of art. 20 ¶1, which subordinates the jurisdiction of the social courts to art. 7 of the code of civil procedure. The court rule built on b28 therefore cites an unconditional jurisdiction.",
+   "evidenceWords": "مع مراعاة أحكام المادة 7 من قانون الاجراءات المدنية تنظر المحاكم الفاصلة في المسائل الاجتماعية فيما يلي",
+   "fromMemory": false,
+   "id": "atk-6",
+   "who": "attack"
+  },
+  {
+   "target": "n1",
+   "kind": "wrongCondition",
+   "claim": "n1 fires on conciliation_agreement_reached = yes and calls the case 'outside' the claim catalogue. b14 covers an agreement on only part of the dispute, so a claim on the unresolved remainder remains an ordinary labour claim. The boundary should not treat a partial agreement as leaving the catalogue.",
+   "evidenceWords": "في حالة اتفاق الأطراف على كل أو جزء من الخلاف يعد المكتب محضرا بالمصالحة على ذلك",
+   "fromMemory": false,
+   "id": "atk-7",
+   "who": "attack"
+  },
+  {
+   "target": "p1",
+   "kind": "missing",
+   "claim": "Only two accepted means are listed (m1 disagreement, m2 defendant's non-attendance). There is nothing for a case where the office struck the matter out for the plaintiff's absence. That produces no non-conciliation record, so the plaintiff has no record to attach under b20. The rules give no warning or advice for this common situation.",
+   "evidenceWords": "يجوز لمكتب المصالحة ان يقرر شطب القضية في حالة عدم حضور المدعي او ممثله المؤهل",
+   "fromMemory": false,
+   "id": "atk-8",
+   "who": "attack"
+  },
+  {
+   "target": "b36",
+   "kind": "misreading",
+   "claim": "The cited art. 508 opens with 'in the two cases', but b36 quotes and states only the first case, the refusal to carry out a conciliation agreement. The second case is omitted without any marker.",
+   "evidenceWords": "يجوز تقديم طلب التنفيذ الفوري إلى رئيس القسم الاجتماعي في الحالتين الآتيتين",
+   "fromMemory": false,
+   "id": "atk-9",
+   "who": "attack"
+  },
+  {
+   "target": "x1",
+   "kind": "amendmentSuspected",
+   "claim": "From memory: art. 800 of the CPCA was amended by Law 22-13 of 12 July 2022 (arts 800 and 801 on administrative court jurisdiction). The ¶1/¶2 wording quoted and the x1 exit may be out of date. Check the current text of art. 800 and the replacing provisions.",
+   "evidenceWords": "",
+   "fromMemory": true,
+   "id": "atk-10",
+   "who": "attack"
+  },
+  {
+   "target": "d1",
+   "kind": "specialLawSuspected",
+   "claim": "From memory: Law 90-04 on individual labour disputes was amended by Law 91-28 of 21 December 1991, and the text of arts 19 and 24-36 may differ in the current version. Check whether a later amendment changed the conciliation time limits or the optional-conciliation cases that d1 and p1 rely on.",
+   "evidenceWords": "",
+   "fromMemory": true,
+   "id": "atk-11",
+   "who": "attack"
+  },
+  {
+   "id": "sup-3",
+   "who": "support",
+   "target": "section",
+   "kind": "partlySupported",
+   "claim": "The social section of the court hears this claim. | partly: The TEXT establishes jurisdiction over specified employment, training and apprenticeship disputes, but does not identify this claim as one of them."
+  },
+  {
+   "id": "sup-4",
+   "who": "support",
+   "target": "p2",
+   "kind": "partlySupported",
+   "claim": "Before a claim in which always, a prior step must have been taken. | partly: The TEXT describes internal dispute procedures and permits notifying the labour inspector after their exhaustion. It does not establish an unconditional prerequisite before every court claim."
+  },
+  {
+   "id": "sup-10",
+   "who": "support",
+   "target": "b44",
+   "kind": "partlySupported",
+   "claim": "The plaintiff is notified of the striking-out decision within eight days of the decision. | partly: The supplied paragraph does not identify the decision as a striking-out decision."
+  },
+  {
+   "id": "sup-12",
+   "who": "support",
+   "target": "x2",
+   "kind": "partlySupported",
+   "claim": "When worker is public servant is yes, the case leaves the ordinary courts (outsideCatalogue). | partly: The TEXT excludes specified public-service disputes from conciliation offices and assigns administrative jurisdiction according to the public parties involved. It does not establish that civil-servant status alone removes a case from the ordinary courts or places it outsideCatalogue."
+  },
+  {
+   "id": "sup-16",
+   "who": "support",
+   "target": "p1",
+   "kind": "partlySupported",
+   "claim": "Before a claim in which nonconciliation record is no or nonconciliation record is unknown or (nonconciliation record is yes and nonconciliation record delivered on is before the petition's date), a conciliation attempt before the labour conciliation office must have taken place, except when: Conciliation is optional when the defendant resides outside the national territory; Conciliation is optional when the employer is bankrupt or under judicial settlement; Disputes of civil servants and agents under the statute of public institutions and administrations are outside the conciliation offices. | partly: The TEXT does not use the record's absence, unknown status, or delivery strictly before the petition date as conditions for requiring prior conciliation. It states a general requirement for individual labour disputes, with the stated exceptions."
+  },
+  {
+   "id": "sup-23",
+   "who": "support",
+   "target": "x1",
+   "kind": "partlySupported",
+   "claim": "When public body party is yes, the case leaves the ordinary courts (administrativeCourt). | partly: The TEXT identifies particular public entities and excepts disputes assigned to other jurisdictions. It does not establish that participation by any unspecified public body automatically removes a case from the ordinary courts."
+  },
+  {
+   "id": "sup-24",
+   "who": "support",
+   "target": "d1",
+   "kind": "partlySupported",
+   "claim": "The time limit is 6 months, running from the date of nonconciliation record delivered on; it is a forfeiture period, counted by the method excludeFirstAndLastDay; it applies when nonconciliation record is yes and (forfeiture lifted by order is unknown or forfeiture lifted by order is no) and (forfeiture force majeure invoked is unknown or forfeiture force majeure invoked is no). | partly: The TEXT does not state the yes/no/unknown conditions concerning a lifting order or invocation of force majeure. It does not equate absence of an invocation with absence of force majeure; its exception concerns actual force majeure or disruption of the justice service."
+  },
+  {
+   "id": "sup-47",
+   "who": "support",
+   "target": "d2",
+   "kind": "partlySupported",
+   "claim": "The time limit is 6 months, running from the date of nonconciliation record delivered on; it is a forfeiture period, counted by the method excludeFirstAndLastDay; it applies when nonconciliation record is yes and (forfeiture lifted by order is unknown or forfeiture lifted by order is no) and forfeiture force majeure invoked is known and forfeiture force majeure invoked is yes. | partly: The TEXT does not specify application based on a mere invocation of force majeure or yes/no/unknown information about a lifting order. It expressly excepts actual force majeure or events affecting the justice service; invocation alone is not identified with that exception."
+  },
+  {
+   "id": "sup-66",
+   "who": "support",
+   "target": "b57",
+   "kind": "partlySupported",
+   "claim": "The social section has exclusive jurisdiction over social security and retirement disputes, listed as an item separate from employment contracts. | partly: The TEXT establishes exclusive jurisdiction over social security and retirement disputes as item 6, but does not show an employment-contract item against which the asserted separation can be checked."
+  },
+  {
+   "who": "derivationC",
+   "target": "cite [cpca 508 ¶1]",
+   "kind": "mechanicalDifference",
+   "claim": "A and B both cite [cpca 508 ¶1]; C does not",
+   "id": "c-1"
+  },
+  {
+   "who": "derivationC",
+   "target": "cite [cpca 508 ¶2]",
+   "kind": "mechanicalDifference",
+   "claim": "A and B both cite [cpca 508 ¶2]; C does not",
+   "id": "c-2"
+  },
+  {
+   "who": "derivationC",
+   "target": "cite [labour-disputes 21 ¶1]",
+   "kind": "mechanicalDifference",
+   "claim": "A and B both cite [labour-disputes 21 ¶1]; C does not",
+   "id": "c-3"
+  },
+  {
+   "who": "derivationC",
+   "target": "cite [labour-disputes 21 ¶2]",
+   "kind": "mechanicalDifference",
+   "claim": "A and B both cite [labour-disputes 21 ¶2]; C does not",
+   "id": "c-4"
+  },
+  {
+   "who": "derivationC",
+   "target": "cite [labour-disputes 21 ¶3]",
+   "kind": "mechanicalDifference",
+   "claim": "A and B both cite [labour-disputes 21 ¶3]; C does not",
+   "id": "c-5"
+  },
+  {
+   "who": "derivationC",
+   "target": "cite [labour-disputes 33 ¶1]",
+   "kind": "mechanicalDifference",
+   "claim": "A and B both cite [labour-disputes 33 ¶1]; C does not",
+   "id": "c-6"
+  },
+  {
+   "who": "derivationC",
+   "target": "cite [labour-disputes 34 ¶1]",
+   "kind": "mechanicalDifference",
+   "claim": "A and B both cite [labour-disputes 34 ¶1]; C does not",
+   "id": "c-7"
+  },
+  {
+   "who": "derivationC",
+   "target": "cite [labour-disputes 38 ¶1]",
+   "kind": "mechanicalDifference",
+   "claim": "C cites [labour-disputes 38 ¶1], which neither A nor B cites",
+   "id": "c-8"
+  },
+  {
+   "id": "bc-bc1",
+   "who": "boundaryCase",
+   "target": "d1, d2",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc1 (Two days before the last day of the six months; petition 2026-06-08; slots {\"nonconciliation_record\": \"yes\", \"nonconciliation_record_delivered_on\": \"2025-12-10\", \"public_body_party\": \"no\"}) expects «inTime» about [cpca 504 ¶1], because: «في أجل لا يتجاوز ستة (6) أشهر من تاريخ تسليم محضر عدم الصلح»: delivery 2025-12-10 plus six months gives 2026-06-10 (a Wednesday). 2026-06-08 is before the last day under every reading of how the days are counted (last day 2026-06-09, 06-10 or 06-11), so it is in time. The runner says: d1: last day 2026-06-11, the case says 2026-06-10 | d2: declared none without a last day, the outcome InTime needs one (d2: when false -> none; grade D -> none, to check) | d2: last day none, the case says 2026-06-10"
+  },
+  {
+   "id": "bc-bc2",
+   "who": "boundaryCase",
+   "target": "d1, d2",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc2 (The day before the last day of the six months; petition 2026-06-09; slots {\"nonconciliation_record\": \"yes\", \"nonconciliation_record_delivered_on\": \"2025-12-10\", \"public_body_party\": \"no\"}) expects «inTime» about [cpca 504 ¶1], because: «ستة (6) أشهر من تاريخ تسليم محضر عدم الصلح»: six months from 2025-12-10 end on 2026-06-10. 2026-06-09 is one day before. Even if the starting day were counted (last day 2026-06-09) the petition is still in time, so every reading agrees. The runner says: d1: last day 2026-06-11, the case says 2026-06-10 | d2: declared none without a last day, the outcome InTime needs one (d2: when false -> none; grade D -> none, to check) | d2: last day none, the case says 2026-06-10"
+  },
+  {
+   "id": "bc-bc3",
+   "who": "boundaryCase",
+   "target": "d1, d2",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc3 (Filed on the day the six months expire by the calendar; petition 2026-06-10; slots {\"nonconciliation_record\": \"yes\", \"nonconciliation_record_delivered_on\": \"2025-12-10\", \"public_body_party\": \"no\"}) expects «unsettled» about [cpca 504 ¶1], because: The text does not settle this: «ستة (6) أشهر من تاريخ تسليم محضر عدم الصلح» does not say whether the day of delivery counts, nor whether the last day is included. Reading 1 (starting day excluded, period complete at the end of its last day): last day 2026-06-10, so the petition is on the last day. Reading 2 (starting day counted): last day 2026-06-09, so it is late. Reading 3 (neither first nor last day counted): last day 2026-06-11. The more likely reading is the first, last day 2026-06-10. A rule must warn, not decide. The runner says: d1: last day 2026-06-11, the case says 2026-06-10 | d2: last day none, the case says 2026-06-10"
+  },
+  {
+   "id": "bc-bc4",
+   "who": "boundaryCase",
+   "target": "d1, d2",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc4 (Filed the day after the calendar anniversary of the delivery; petition 2026-06-11; slots {\"nonconciliation_record\": \"yes\", \"nonconciliation_record_delivered_on\": \"2025-12-10\", \"public_body_party\": \"no\"}) expects «unsettled» about [cpca 504 ¶1], because: The text does not settle this: the texts given contain no rule of counting days or months. Last day 2026-06-10 (starting day excluded): the petition is one day late and the right is forfeited («تحت طائلة سقوط الحق في رفع الدعوى»). Last day 2026-06-11 (neither first nor last day counted): it is on the last day and in time. Both last days are plausible, so a rule must warn, not decide. The runner says: d1: last day 2026-06-11, the case says 2026-06-10 | d2: last day none, the case says 2026-06-10"
+  },
+  {
+   "id": "bc-bc5",
+   "who": "boundaryCase",
+   "target": "d1, d2",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc5 (Five days after the last day of the six months; petition 2026-06-15; slots {\"nonconciliation_record\": \"yes\", \"nonconciliation_record_delivered_on\": \"2025-12-10\", \"public_body_party\": \"no\"}) expects «late» about [cpca 504 ¶1], because: «أجل لا يتجاوز ستة (6) أشهر من تاريخ تسليم محضر عدم الصلح ... تحت طائلة سقوط الحق»: last day 2026-06-10; the longest plausible last day is 2026-06-11 and none of 06-10, 06-11 falls on a rest day (a Wednesday, a Thursday), so 2026-06-15 is late under every reading. Outside any warning band of a few days. The runner says: d1: last day 2026-06-11, the case says 2026-06-10 | d2: declared none without a last day, the outcome Late needs one (d2: when false -> none; grade D -> none, to check) | d2: last day none, the case says 2026-06-10"
+  },
+  {
+   "id": "bc-bc6",
+   "who": "boundaryCase",
+   "target": "d1, d2",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc6 (Six months end on a Friday; petition on the Sunday after; petition 2026-06-14; slots {\"nonconciliation_record\": \"yes\", \"nonconciliation_record_delivered_on\": \"2025-12-12\", \"public_body_party\": \"no\"}) expects «unsettled» about [cpca 504 ¶1], because: Delivery 2025-12-12 plus six months ends on 2026-06-12, a Friday. The texts given do not say which days are days of weekly rest, and contain no rule that a period ending on a rest day runs to the next working day, so the text does not settle this. Reading 1: last day 2026-06-12, the petition of Sunday 2026-06-14 is late. Reading 2 (a rest day extends the period): the last day moves to the next working day, which is Sunday 2026-06-14 if Friday and Saturday are rest days, and the petition is on the last day. I give 2026-06-12 as last day because the texts given contain no extension rule. A rule must warn, not decide. The runner says: d1: last day 2026-06-14, the case says 2026-06-12 | d2: last day none, the case says 2026-06-12"
+  },
+  {
+   "id": "bc-bc7",
+   "who": "boundaryCase",
+   "target": "d1, d2",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc7 (Six months end on 5 July, an official holiday and a Sunday; petition 2026-07-06; slots {\"nonconciliation_record\": \"yes\", \"nonconciliation_record_delivered_on\": \"2026-01-05\", \"public_body_party\": \"no\"}) expects «unsettled» about [cpca 504 ¶1], because: Delivery 2026-01-05 plus six months ends on 2026-07-05 (a Sunday). The texts given list no official holidays and no weekly rest days, and no article of them extends a period that ends on such a day, so the text does not settle this. Last day 2026-07-05: the petition of 2026-07-06 is one day late. If the period runs to the next working day, or the last day is not counted, the last day is 2026-07-06 and the petition is in time. A rule must warn, not decide. The runner says: d1: last day 2026-07-06, the case says 2026-07-05 | d2: last day none, the case says 2026-07-05"
+  },
+  {
+   "id": "bc-bc8",
+   "who": "boundaryCase",
+   "target": "d1, d2",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc8 (Delivery on 31 August: the sixth month, February, has no 31st; petition 2026-03-01; slots {\"nonconciliation_record\": \"yes\", \"nonconciliation_record_delivered_on\": \"2025-08-31\", \"public_body_party\": \"no\"}) expects «unsettled» about [cpca 504 ¶1], because: «ستة (6) أشهر من تاريخ تسليم محضر عدم الصلح»: six months from 31 August 2025 lands in February 2026, which has 28 days (2026 is not a leap year). The text does not settle this: it does not say what a month period does when the day number is missing. Reading 1: the period ends on the last day of the month, 2026-02-28 (a Saturday), so a petition of Sunday 2026-03-01 is late. Reading 2: the missing days overflow, giving 2026-03-03, so it is in time. A rule must warn, not decide. The runner says: d1: last day 2026-03-01, the case says 2026-02-28 | d2: last day none, the case says 2026-02-28"
+  },
+  {
+   "id": "bc-bc9",
+   "who": "boundaryCase",
+   "target": "d1, d2",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc9 (Delivery on 31 December: June has no 31st; petition on 1 July; petition 2026-07-01; slots {\"nonconciliation_record\": \"yes\", \"nonconciliation_record_delivered_on\": \"2025-12-31\", \"public_body_party\": \"no\"}) expects «unsettled» about [cpca 504 ¶1], because: «ستة (6) أشهر من تاريخ تسليم محضر عدم الصلح»: six months from 31 December 2025 lands in June 2026, which has 30 days. The text does not settle how a month period ending in a shorter month is counted. Reading 1: it ends on 2026-06-30 (a Tuesday), so the petition of 2026-07-01 is late. Reading 2: 31 June is read as 1 July, so the petition is on the last day. A rule must warn, not decide. The runner says: d1: last day 2026-07-01, the case says 2026-06-30 | d2: last day none, the case says 2026-06-30"
+  },
+  {
+   "id": "bc-bc10",
+   "who": "boundaryCase",
+   "target": "d1, d2",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc10 (Delivery on 29 August: February 28 is the exact sixth-month day, petition well before; petition 2026-02-20; slots {\"nonconciliation_record\": \"yes\", \"nonconciliation_record_delivered_on\": \"2025-08-29\", \"public_body_party\": \"no\"}) expects «inTime» about [cpca 504 ¶1], because: «ستة (6) أشهر من تاريخ تسليم محضر عدم الصلح»: 2025-08-29 plus six months is 2026-02-28 (February 2026 has 28 days, not a leap year; the 29th would not exist, so a rule that adds six months to day 29 of a month and lands in February must not mistake it). 2026-02-20 is eight days before, in time under every reading. The runner says: d1: last day 2026-03-01, the case says 2026-02-28 | d2: declared none without a last day, the outcome InTime needs one (d2: when false -> none; grade D -> none, to check) | d2: last day none, the case says 2026-02-28"
+  },
+  {
+   "id": "bc-bc11",
+   "who": "boundaryCase",
+   "target": "d1, d2",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc11 (Petition long before the limit; petition 2026-02-23; slots {\"nonconciliation_record\": \"yes\", \"nonconciliation_record_delivered_on\": \"2026-02-02\", \"public_body_party\": \"no\"}) expects «inTime» about [cpca 504 ¶1], because: «ستة (6) أشهر من تاريخ تسليم محضر عدم الصلح»: 2026-02-02 plus six months is 2026-08-02; the petition is five months and more before it, far outside any warning band. The runner says: d1: last day 2026-08-03, the case says 2026-08-02 | d2: declared none without a last day, the outcome InTime needs one (d2: when false -> none; grade D -> none, to check) | d2: last day none, the case says 2026-08-02"
+  },
+  {
+   "id": "bc-bc12",
+   "who": "boundaryCase",
+   "target": "d1, d2",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc12 (Petition filed more than a year after the record; petition 2026-09-14; slots {\"nonconciliation_record\": \"yes\", \"nonconciliation_record_delivered_on\": \"2025-09-15\", \"public_body_party\": \"no\"}) expects «late» about [cpca 504 ¶1], because: «في أجل لا يتجاوز ستة (6) أشهر ... تحت طائلة سقوط الحق في رفع الدعوى»: 2025-09-15 plus six months is 2026-03-15; the petition is six months after that, far late under any reading. The runner says: d1: last day 2026-03-16, the case says 2026-03-15 | d2: declared none without a last day, the outcome Late needs one (d2: when false -> none; grade D -> none, to check) | d2: last day none, the case says 2026-03-15"
+  },
+  {
+   "id": "bc-bc13",
+   "who": "boundaryCase",
+   "target": "d1, d2",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc13 (Starting event: record drawn 10 December but delivered on 18 December; petition 2026-06-15; slots {\"nonconciliation_record\": \"yes\", \"nonconciliation_record_delivered_on\": \"2025-12-18\", \"public_body_party\": \"no\"}) expects «inTime» about [cpca 504 ¶1], because: The time runs «من تاريخ تسليم محضر عدم الصلح», the delivery of the record, not its drawing. The record was drawn on 2025-12-10 (a date no slot holds) and delivered on 2025-12-18. From the delivery the last day is 2026-06-18 and 2026-06-15 is in time under every reading. A rule that started the count at the date of the record (last day 2026-06-10) would call it late. The runner says: d1: last day 2026-06-21, the case says 2026-06-18 | d2: declared none without a last day, the outcome InTime needs one (d2: when false -> none; grade D -> none, to check) | d2: last day none, the case says 2026-06-18"
+  },
+  {
+   "id": "bc-bc14",
+   "who": "boundaryCase",
+   "target": "d1, d2",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc14 (Petition filed on the very day the record is delivered; petition 2026-03-02; slots {\"nonconciliation_record\": \"yes\", \"nonconciliation_record_delivered_on\": \"2026-03-02\", \"public_body_party\": \"no\"}) expects «inTime» about [cpca 504 ¶1], because: «أجل لا يتجاوز ستة (6) أشهر من تاريخ تسليم محضر عدم الصلح»: delivery 2026-03-02, last day 2026-09-02. A petition on the day of delivery is six months before the last day, in time. [labour-disputes 30 ¶2] «تسلم نسخة من المحضر الى المدعي اثناء الاجتماع» shows delivery can be the meeting day itself. The runner says: d1: last day 2026-09-03, the case says 2026-09-02 | d2: declared none without a last day, the outcome InTime needs one (d2: when false -> none; grade D -> none, to check) | d2: last day none, the case says 2026-09-02"
+  },
+  {
+   "id": "bc-bc18",
+   "who": "boundaryCase",
+   "target": "p1",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc18 (Conciliation step not taken, no exemption known to apply; petition 2026-05-04; slots {\"nonconciliation_record\": \"no\", \"public_body_party\": \"no\"}) expects «stepMissing» about [labour-disputes 19 ¶1], because: «يجب أن يكون كل خلاف فردي خاص بالعمل موضوع محاولة للصلح أمام مكتب المصالحة قبل مباشرة أي دعوى قضائية»: no record, and the party is not a public body. The other exemptions of [labour-disputes 19 ¶2] (defendant abroad, employer bankrupt or in judicial settlement) and the civil-servant exclusion of ¶3 have no slot; this case assumes none applies. The text gives no sanction for skipping the step, but the lawyer must be shown it is missing; [labour-disputes 37 ¶1] requires the record to be attached. The runner says: p1: declared ask, the outcome StepMissing needs warn (p1: nonconciliation_record no, exemptions unknown, asks defendant_resides_abroad, employer_in_bankruptcy_or_settlement, worker_is_public_servant -> ask; grade D -> ask, to check)"
+  },
+  {
+   "id": "bc-bc20",
+   "who": "boundaryCase",
+   "target": "p1",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc20 (Just inside the ordinary courts: the employer is a public company; petition 2026-05-04; slots {\"nonconciliation_record\": \"no\", \"public_body_party\": \"no\", \"requests\": [\"wages\"]}) expects «stepMissing» about [labour-disputes 19 ¶3], because: A public company is not «الدولة أو ولاية أو بلدية أو مؤسسة عمومية ذات طابع إداري», so public_body_party is no. [labour-disputes 20 ¶2] sends individual labour disputes to the social section, and the exclusion of ¶3 reaches only civil servants and agents under the public-service statute. The case stays in the ordinary courts, conciliation is required and was not done (other exemptions have no slot and are assumed absent). The runner says: p1: declared ask, the outcome StepMissing needs warn (p1: nonconciliation_record no, exemptions unknown, asks defendant_resides_abroad, employer_in_bankruptcy_or_settlement, worker_is_public_servant -> ask; grade D -> ask, to check)"
+  }
+ ]
+}

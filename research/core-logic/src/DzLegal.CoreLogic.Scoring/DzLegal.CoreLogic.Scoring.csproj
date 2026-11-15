@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>score</AssemblyName>
+    <RootNamespace>DzLegal.CoreLogic.Scoring</RootNamespace>
+    <Description>The scorer (specs/scorer.md): written and hashed before any model exists. Reads a gold file and the reader's answers, writes summary.md and summary.json, calls no model.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DzLegal.CoreLogic.Contracts\DzLegal.CoreLogic.Contracts.csproj" />
+  </ItemGroup>
+</Project>

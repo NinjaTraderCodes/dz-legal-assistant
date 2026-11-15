@@ -4,7 +4,9 @@
 
 **The scorer's hash** is the SHA-256 of a list: the path and SHA-256 of each source file of the `DzLegal.CoreLogic.Scoring` project and of this specification, as committed (`git show <commit>:<path>`), sorted by path. A built program is not hashed: a build in another folder or with another SDK does not give the same bytes, and the step 6 rebuild must be able to check the hash.
 
-**What it is.** Project `DzLegal.CoreLogic.Scoring` and the command `score --gold <notes.jsonl> --answers <readings.jsonl> --out <folder>`. It writes `summary.md` and `summary.json`. It reads nothing else and calls no model.
+**What it is.** Project `DzLegal.CoreLogic.Scoring` and the command `score --gold <notes.jsonl> --answers <readings.jsonl> --given <readings.jsonl> --out <folder>`: `--answers` holds the readings made end to end (the note only), `--given` the readings made with the gold claim types given (the two settings below need two runs of the reader). Options: `--purpose tune|measure` (below), `--tuning`, `--scorer-hash <hash>` (printed in the header; computed by `scripts/scorer_hash.py`), `--no-by-writer`, `--run <n> --runs <RUNS.md>` (a hidden set), `--first-line <text>`. It writes `summary.md` and `summary.json`. It reads nothing else and calls no model.
+
+- **Slots are scored where the gold holds them.** The scorer reads no other file, so it cannot read `slots.json`: the notes tool writes a gold slot only for the claim types the slot is asked for, and the scorer scores every gold slot it finds.
 
 - **Gold:** one note per line, in the format of `notes/note.schema.json`, with the quotes' `start` and `length` written by script.
 - **Answers:** one JSON object per line, `{ "id": "<note id>", "reading": <NoteReading> }`. The reading is the contract's `NoteReading` ([NoteReading.cs](../../../../research/core-logic/src/DzLegal.CoreLogic.Contracts/NoteReading.cs)), read with the contract's strict JSON options (`ContractJson.Options`: an unknown member, a wrongly cased name or an enum written as a number is an error). The line's wrapper is defined in the scorer's project.
@@ -120,7 +122,7 @@ A scorer test computes it by hand on six made-up readings. It is part of the sco
 
 ### What the scorer's hash covers
 
-The sources of `DzLegal.CoreLogic.Scoring`, of `DzLegal.CoreLogic.Contracts` (it parses readings with them) and of the loader in `DzLegal.CoreLogic.Notes`. So the contract's `RoleReading`, the role line, the tuning score and the loader are written **before** the hash is recorded (phase A: contract, loader, scorer, in that order).
+The sources of `DzLegal.CoreLogic.Scoring`, of `DzLegal.CoreLogic.Contracts` (it parses readings with them) and of the loader in `DzLegal.CoreLogic.Notes`. So the contract's `RoleReading`, the role line, the tuning score and the loader are written **before** the hash is recorded (phase A: contract, loader, scorer, in that order). **Exactly:** every tracked file under `src/DzLegal.CoreLogic.Scoring/` and `src/DzLegal.CoreLogic.Contracts/`, `src/DzLegal.CoreLogic.Notes/NotesLoader.cs`, and this specification; `PY scripts/scorer_hash.py <commit>` prints the hash and its list (the union of this section and the first paragraph, which named fewer files).
 
 ### Per-writer rows (owner, 14 November 2026)
 

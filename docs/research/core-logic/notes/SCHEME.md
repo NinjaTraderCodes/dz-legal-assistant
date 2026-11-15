@@ -1,6 +1,6 @@
 # The label scheme of lawyer notes
 
-**Version: 1.0. Status: written on 14 November 2026, not yet frozen.** The executor freezes it in phase A, step 1 of the handbook, when the guide test has no unexplained item and the cells table of section 8 is filled: **the freeze commit** holds everything; **a second, stamp commit** then changes only this line to `frozen at <the freeze commit's id>` and fills section 12. A note's `schemeVersion` is `1.0@<the freeze commit's id>`. From that commit on, the rules of [../specs/scheme-extension.md](../specs/scheme-extension.md) apply: **the scheme only grows**.
+**Version: 1.0. Status: frozen at ff4e46b (15 November 2026); a note's `schemeVersion` is `1.0@ff4e46b`.** The executor freezes it in phase A, step 1 of the handbook, when the guide test has no unexplained item and the cells table of section 8 is filled: **the freeze commit** holds everything; **a second, stamp commit** then changes only this line to `frozen at <the freeze commit's id>` and fills section 12. A note's `schemeVersion` is `1.0@<the freeze commit's id>`. From that commit on, the rules of [../specs/scheme-extension.md](../specs/scheme-extension.md) apply: **the scheme only grows**.
 
 **What this file is.** The complete list of what a note is labelled with, and therefore of what the reader outputs. The owner decided on 14 November 2026 that the reader comes first, so the scheme is frozen **from what exists today** (the app's claim catalogue, its 75 elements, its vocabulary, the 8 slots already read from the note), not from final rule records. The rules add slots later; section 10 says where they go.
 
@@ -246,7 +246,7 @@ An item of the guide test that is still answered two ways after one fix of the g
 
 | Version | Date | What it added | Commit |
 |---|---|---|---|
-| 1.0 | 14 November 2026 (written); frozen 15 November 2026 | everything above; guide version 1.2 (`9202a71ce194718c…`); the cells table written by `notes cells --write-table` (r-s3-0002 Sonnet, r-s3-0003 Opus); guide test 75 of 75 for both testers (r-s3-0006 Sonnet, r-s3-0007 Opus) | *(the freeze commit)* |
+| 1.0 | 14 November 2026 (written); frozen 15 November 2026 | everything above; guide version 1.2 (`9202a71ce194718c…`); the cells table written by `notes cells --write-table` (r-s3-0002 Sonnet, r-s3-0003 Opus); guide test 75 of 75 for both testers (r-s3-0006 Sonnet, r-s3-0007 Opus) | `ff4e46b` |
 
 **A minor version (1.1, 1.2 …) adds** an output: a slot, an element, a request kind, a value role, a boundary row. It never changes what an existing label means, never removes one, never renames one. Every note records the version it was labelled under (`provenance.schemeVersion`); for an output added later, an older note is *unlabelled*, which is not `unknown` and not `notMentioned`.
 

@@ -368,11 +368,16 @@ def _results(path: str) -> list[dict]:
     return json.loads(text) if text.startswith("[") else []
 
 
+def attack_list(doc) -> list[dict]:
+    """An attack file's entries: the adversary's prompt asks for an array; the first module's file was an object."""
+    return doc if isinstance(doc, list) else doc["attacks"]
+
+
 def first_input(u: Unit) -> dict:
     """Stage 8: everything the verifier must decide, gathered from the seven sources at once."""
     attacks = []
     if os.path.isfile(u.r("attacks.adversary.json")):
-        attacks += [dict(a, who="adversary") for a in load(u.r("attacks.adversary.json"))["attacks"]]
+        attacks += [dict(a, who="adversary") for a in attack_list(load(u.r("attacks.adversary.json")))]
     sonnet = u.r("attacks.sonnet.json")
     if u.id in LEGACY and not os.path.isfile(sonnet):
         sonnet = u.r("attacks.codex.json")
@@ -949,8 +954,9 @@ def done(u: Unit, stage: str, agent: str, ledger: str = LEDGER, session: str | N
         outputs += [u.reconciled, u.r("reconciliation.md")]
     elif stage == "7a":
         try:
-            load(u.r("attacks.adversary.json"))["attacks"]
-        except (OSError, KeyError, ValueError) as e:
+            if not all(a.get("id") and a.get("target") for a in attack_list(load(u.r("attacks.adversary.json")))):
+                problems.append("attacks.adversary.json: an attack without its id or its target")
+        except (OSError, KeyError, ValueError, TypeError, AttributeError) as e:
             problems.append(f"attacks.adversary.json: {e}")
         outputs.append(u.r("attacks.adversary.json"))
     elif stage == "8":

@@ -337,3 +337,8 @@ def test_an_owner_decision_makes_a_follow_up_of_its_own(root):
     entry = load(path)["attacks"][0]
     assert (entry["id"], entry["who"], entry["kind"]) == ("owner-x", "owner", "wrongCondition")
 
+
+def test_the_adversary_file_is_read_as_its_prompt_writes_it_an_array_or_the_first_modules_object():
+    assert unit.attack_list([{"id": "adv-1"}]) == [{"id": "adv-1"}]
+    assert unit.attack_list({"attacks": [{"id": "adv-1"}]}) == [{"id": "adv-1"}]
+

@@ -1,0 +1,125 @@
+{
+ "attacks": [
+  {
+   "target": "x6",
+   "kind": "wrongEffect",
+   "claim": "x6 sends the case to a criminal court ('goesTo: criminalCourt') whenever criminal_case_on_same_facts is yes. Its two texts say only that the civil judge is bound by the facts a criminal judgment necessarily decided, and where a damages claim is brought. Neither text sends a civil damages claim to the criminal court. b38, the only text on a pending criminal case, concerns a handwriting-comparison claim and is not used.",
+   "evidenceWords": "لا يرتبط القاضى المدنى بالحكم الجنائى الا فى الوقائع التى فصل فيها هذا الحكم وكان فصله فيها ضروريا",
+   "fromMemory": false,
+   "id": "atk-1"
+  },
+  {
+   "target": "t4",
+   "kind": "wrongCondition",
+   "claim": "t4 fires on public_body_party=yes plus cancel_decision, but the Algiers administrative court of appeal hears only decisions of central authorities, national bodies and national professional organisations. For a decision of a commune or wilaya, article 801 gives the local administrative court. The slots cannot tell the two apart, so t4 fires together with t1 and x3 on a case that is plainly local, such as a commune.",
+   "evidenceWords": "الصادرة عن السلطات الإدارية المركزية والهيئات العمومية الوطنية والمنظمات المهنية الوطنية",
+   "fromMemory": false,
+   "id": "atk-2"
+  },
+  {
+   "target": "d2",
+   "kind": "exception",
+   "claim": "d1 carries the readings from articles 831 and 832: the period cannot be set against the claimant unless the notification mentions it, and it can be interrupted or suspended. d2 is also marked interpretive and rests on b24, but it leaves these readings out. The same exceptions apply to the two-month court period after a grievance.",
+   "evidenceWords": "لا يحتج بأجل الطعن المنصوص عليه في المادة 829 أعلاه، إلا إذا أشير إليه في تبليغ القرار المطعون فيه",
+   "fromMemory": false,
+   "id": "atk-3"
+  },
+  {
+   "target": "d2",
+   "kind": "wrongCondition",
+   "claim": "d2 starts the two months only from the slot administrative_grievance_rejection_date, which is the notified refusal under b17. Article 830 ¶3 also covers silence: the two months run from the end of the administration's two-month silence, counted from notification of the grievance. No slot or rule handles the silence case. d2 fires with grievance filed=yes but has no start date when the administration said nothing.",
+   "evidenceWords": "ويبدأ هذا الأجل من تاريخ تبليغ التظلم",
+   "fromMemory": false,
+   "id": "atk-4"
+  },
+  {
+   "target": "d1",
+   "kind": "wrongCondition",
+   "claim": "d1 is switched off whenever administrative_grievance_filed is yes. Article 830 ¶1 allows the grievance only within the 829 period, so a grievance filed after the four months does not save the claim. With a late grievance, no deadline rule warns of the expired four months. d1 also applies only to cancel_decision, while 829 sets the four months for the appeal before the administrative court generally.",
+   "evidenceWords": "تقديم تظلم إلى الجهة الإدارية مصدرة القرار في الأجل المنصوص عليه في المادة 829 أعلاه",
+   "fromMemory": false,
+   "id": "atk-5"
+  },
+  {
+   "target": "b37",
+   "kind": "exception",
+   "claim": "b37 drops the end of article 39 ¶3: claims for damage caused by the act of the administration are also brought before the court of the place of the harmful act. This matters for the public-body exits (x1, b5, b12).",
+   "evidenceWords": "ودعاوى الأضرار الحاصلة بفعل الإدارة",
+   "fromMemory": false,
+   "id": "atk-6"
+  },
+  {
+   "target": "x1",
+   "kind": "wrongCondition",
+   "claim": "x1 warns of the administrative court for every case with public_body_party=yes, except damages caused by a public vehicle. But article 800 ¶1 itself excepts disputes given to other courts, and the slot public_body_party names only the State, wilaya, commune or public administrative body. It leaves out the national public bodies and national professional organisations of 800 ¶2. x1 also sends all of these cases to the 'administrativeCourt' without separating the Algiers court of appeal under 900 مكرر.",
+   "evidenceWords": "باستثناء المنازعات الموكلة إلى جهات قضائية أخرى",
+   "fromMemory": false,
+   "id": "atk-7"
+  },
+  {
+   "target": "b34",
+   "kind": "misreading",
+   "claim": "b34 says the repealed paragraphs concern 'the specialised poles of the courts'. The quoted text lists only article numbers (32 ¶7 to ¶10, 826, 835, 836, 912 to 914) and says nothing about specialised poles. The characterisation has no support in the cited words.",
+   "evidenceWords": "الفقرات 7 و 8 و 9 و 10 من المادّة 32 والمواد 826 و835 و836 و912 و913 و914",
+   "fromMemory": false,
+   "id": "atk-8"
+  },
+  {
+   "target": "b35",
+   "kind": "exception",
+   "claim": "b35 says the tribunal decides every kind of case. It leaves out article 32 ¶5: where sections have not been created, the civil section hears everything except social cases. In those courts a commercial dispute has no commercial section.",
+   "evidenceWords": "غير أنه في المحاكم التي لم تنشأ فيها الأقسام، يبقى القسم المدني هو الذي ينظر في جميع النزاعات باستثناء القضايا الاجتماعية",
+   "fromMemory": false,
+   "id": "atk-9"
+  },
+  {
+   "target": "x4",
+   "kind": "wrongEffect",
+   "claim": "b30 makes the record of non-conciliation a condition on pain of inadmissibility. The slots nonconciliation_record and nonconciliation_record_delivered_on exist. But x4 only warns, and neither it nor any other rule checks them. The warning treats the conciliation step as something to 'check', while a missing record is a defect that bars the claim.",
+   "evidenceWords": "مرفقة، تحت طائلة عدم قبول الدعوى شكلا، بمحضر عدم الصلح",
+   "fromMemory": false,
+   "id": "atk-10"
+  },
+  {
+   "target": "x5",
+   "kind": "wrongCondition",
+   "claim": "x5 fires on employer_in_bankruptcy_or_settlement=yes alone and sends the case to the specialised commercial court. The texts do not say that a worker's wage claim against a bankrupt employer is a 'judicial settlement and bankruptcy dispute'. Article 32 ¶3 names social cases among those the tribunal hears, and no rule separates the worker's claim from the collective procedure.",
+   "evidenceWords": "التسوية القضائية والإفلاس",
+   "fromMemory": false,
+   "id": "atk-11"
+  },
+  {
+   "target": "x7",
+   "kind": "wrongCondition",
+   "claim": "x7 fires on requests=payment and debt_written_fixed_due=yes. It ignores defendant_resides_abroad, which exists as a slot and bears on the domicile 'in Algeria' that article 306 requires for the debtor. It also ignores the requirement that the debt be a sum of money, so a written, fixed and due claim for something other than money would still trigger it.",
+   "evidenceWords": "اسم ولقب المدين وموطنه الحقيقي أو المختار في الجزائر",
+   "fromMemory": false,
+   "id": "atk-12"
+  },
+  {
+   "target": "x2",
+   "kind": "wrongEffect",
+   "claim": "x2 sends the case to the administrative court on worker_is_public_servant=yes alone. The only text on place is article 804 ¶5, which is a territorial exception to 803. The slot also reaches contract agents, while b25 and labour-relations 3 only say such staff fall under special provisions. The rule shows no cited text that gives the administrative court subject-matter jurisdiction, and its basis includes b9, which is only about public order.",
+   "evidenceWords": "في مادة المنازعات المتعلقة بالموظفين أو أعوان الدولة أو غيرهم من الأشخاص العاملين في المؤسسات العمومية الإدارية",
+   "fromMemory": false,
+   "id": "atk-13"
+  },
+  {
+   "target": "b26",
+   "kind": "amendmentSuspected",
+   "claim": "From memory: law 22-13 of 12 July 2022 amended the CPCA, and the list of matters for the specialised commercial court and the conciliation article 536 مكرر 4 (period, appointment) may have been amended again or fixed by implementing texts and installation orders. Check the current wording of articles 536 مكرر to 536 مكرر 5 and any decree or order fixing the installed courts and their areas.",
+   "evidenceWords": "",
+   "fromMemory": true,
+   "id": "atk-14"
+  },
+  {
+   "target": "x2",
+   "kind": "specialLawSuspected",
+   "claim": "From memory: law 90-04 of 1990 on the settlement of individual labour disputes (conciliation office, then the social section) and the general civil service statute (ordinance 06-03) govern the jurisdiction and prior steps for wage and labour claims. Check whether they change the jurisdiction of the administrative or social section for public-sector workers.",
+   "evidenceWords": "",
+   "fromMemory": true,
+   "id": "atk-15"
+  }
+ ],
+ "nothingFound": false
+}

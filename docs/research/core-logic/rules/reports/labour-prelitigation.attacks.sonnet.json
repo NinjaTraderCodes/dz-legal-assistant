@@ -1,0 +1,93 @@
+{
+ "attacks": [
+  {
+   "target": "p1",
+   "kind": "wrongEffect",
+   "claim": "The requiredWhen branch (record is yes and delivered before the petition date) makes the conciliation step 'required' and 'missing' in exactly the case where the record exists and was delivered before filing, which is the case where the step is done. It also fires the warning and the m1/m2 accepted means in the same case, so the step is marked required and satisfied together. n5 treats the same dates as the normal, valid case.",
+   "evidenceWords": "ترفق العريضة الموجهة إلى المحكمة بنسخة من محضر عدم المصالحة الصادر عن مكتب المصالحة",
+   "fromMemory": false,
+   "id": "atk-1"
+  },
+  {
+   "target": "p2",
+   "kind": "wrongEffect",
+   "claim": "p2 treats exhausting internal procedures as a prerequisite that warns for every claim ('always'). Its basis b7 says only that the worker 'may' refer the matter to the inspector. b5 likewise says collective agreements 'may' set internal procedures. b4 uses non-resolution only in the definition of the dispute. No quoted paragraph makes the internal grievance a condition of filing. Its slot internal_grievance_exhausted is also not among the declared slots.",
+   "evidenceWords": "يمكن العامل اخطار مفتش العمل ; يمكن للمعاهدات والاتفاقيات الجماعية للعمل ان تحدد الاجراءات الداخلية",
+   "fromMemory": false,
+   "id": "atk-2"
+  },
+  {
+   "target": "d2",
+   "kind": "wrongEffect",
+   "claim": "d2 downgrades an expired forfeiture from blockCleanExport to warn as soon as the plaintiff merely invokes force majeure. b55 says the forfeiture is lifted only by an order of the court president, and d1 covers only the case where no order lifted it. With the invocation 'yes' and the order 'no' or unknown, the forfeiture still stands, so a mere invocation should not remove the block.",
+   "evidenceWords": "يتم تقديم طلب رفع السقوط إلى رئيس الجهة القضائية المعروض أمامها النزاع، يفصل فيه بموجب أمر على عريضة",
+   "fromMemory": false,
+   "id": "atk-3"
+  },
+  {
+   "target": "n5",
+   "kind": "wrongCondition",
+   "claim": "The boundary says the record was delivered 'on or after' the petition date, but the condition uses only afterSlot, which is strictly after. A record delivered on the petition day fires neither n5 nor the p1 'before the petition date' branch. The message also says the delivery date is 'not before' the petition date, which contradicts the condition.",
+   "evidenceWords": "تاريخ تسليم محضر عدم المصالحة يوافق تاريخ العريضة أو يليه",
+   "fromMemory": false,
+   "id": "atk-4"
+  },
+  {
+   "target": "b18",
+   "kind": "exception",
+   "claim": "b18 states the immediate execution and the daily penalty but drops ¶2, which limits the penalty. The penalty is not enforced until a grace period of no more than 15 days has expired.",
+   "evidenceWords": "غير أن هذه الغرامة التهديدية لاتنفذ الا عندما تنقضي مهلة الوفاء التي لاتتجاوز (15) يوما",
+   "fromMemory": false,
+   "id": "atk-5"
+  },
+  {
+   "target": "b28",
+   "kind": "exception",
+   "claim": "b28 drops the opening proviso of art. 20 ¶1, which subordinates the jurisdiction of the social courts to art. 7 of the code of civil procedure. The court rule built on b28 therefore cites an unconditional jurisdiction.",
+   "evidenceWords": "مع مراعاة أحكام المادة 7 من قانون الاجراءات المدنية تنظر المحاكم الفاصلة في المسائل الاجتماعية فيما يلي",
+   "fromMemory": false,
+   "id": "atk-6"
+  },
+  {
+   "target": "n1",
+   "kind": "wrongCondition",
+   "claim": "n1 fires on conciliation_agreement_reached = yes and calls the case 'outside' the claim catalogue. b14 covers an agreement on only part of the dispute, so a claim on the unresolved remainder remains an ordinary labour claim. The boundary should not treat a partial agreement as leaving the catalogue.",
+   "evidenceWords": "في حالة اتفاق الأطراف على كل أو جزء من الخلاف يعد المكتب محضرا بالمصالحة على ذلك",
+   "fromMemory": false,
+   "id": "atk-7"
+  },
+  {
+   "target": "p1",
+   "kind": "missing",
+   "claim": "Only two accepted means are listed (m1 disagreement, m2 defendant's non-attendance). There is nothing for a case where the office struck the matter out for the plaintiff's absence. That produces no non-conciliation record, so the plaintiff has no record to attach under b20. The rules give no warning or advice for this common situation.",
+   "evidenceWords": "يجوز لمكتب المصالحة ان يقرر شطب القضية في حالة عدم حضور المدعي او ممثله المؤهل",
+   "fromMemory": false,
+   "id": "atk-8"
+  },
+  {
+   "target": "b36",
+   "kind": "misreading",
+   "claim": "The cited art. 508 opens with 'in the two cases', but b36 quotes and states only the first case, the refusal to carry out a conciliation agreement. The second case is omitted without any marker.",
+   "evidenceWords": "يجوز تقديم طلب التنفيذ الفوري إلى رئيس القسم الاجتماعي في الحالتين الآتيتين",
+   "fromMemory": false,
+   "id": "atk-9"
+  },
+  {
+   "target": "x1",
+   "kind": "amendmentSuspected",
+   "claim": "From memory: art. 800 of the CPCA was amended by Law 22-13 of 12 July 2022 (arts 800 and 801 on administrative court jurisdiction). The ¶1/¶2 wording quoted and the x1 exit may be out of date. Check the current text of art. 800 and the replacing provisions.",
+   "evidenceWords": "",
+   "fromMemory": true,
+   "id": "atk-10"
+  },
+  {
+   "target": "d1",
+   "kind": "specialLawSuspected",
+   "claim": "From memory: Law 90-04 on individual labour disputes was amended by Law 91-28 of 21 December 1991, and the text of arts 19 and 24-36 may differ in the current version. Check whether a later amendment changed the conciliation time limits or the optional-conciliation cases that d1 and p1 rely on.",
+   "evidenceWords": "",
+   "fromMemory": true,
+   "id": "atk-11"
+  }
+ ],
+ "nothingFound": false
+}

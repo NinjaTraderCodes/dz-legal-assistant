@@ -3,6 +3,11 @@
 X is the stitched sequence (T pieces x 768). Shared: Z = dropout(GELU(Linear 768->256 (X + field embedding))) and
 c = GELU(Linear 768->256 (note vector)). For a query q: u = Z (W q) / 16 with one shared 256 x 256 matrix W; the evidence
 scores are sigmoid(u); the pooled vector is v = softmax(u) Z.
+
+The claim type and the requests are scored by each class's own weights over [v; c] (16 November 2026). The spec's one
+shared Linear on [v; q; c] could not fit even the training notes: c is the same for every class and q adds only a bias,
+so whether a class is present had to come through one shared direction of the pooled vector (on the 493 pilot notes it
+stayed at 12 to 20 % top-1 on its own training notes, where per-class weights reached 88 %).
 """
 from __future__ import annotations
 
@@ -25,13 +30,15 @@ class Heads(nn.Module):
         self.drop = nn.Dropout(dropout)
         self.w = nn.Linear(D, D, bias=False)
         self.claim_q = nn.Parameter(torch.randn(len(space.claims), D) * 0.02)
-        self.claim_out = nn.Linear(3 * D, 1)
+        self.claim_w = nn.Parameter(torch.zeros(len(space.claims), 2 * D))
+        self.claim_b = nn.Parameter(torch.zeros(len(space.claims)))
         self.element_q = nn.Parameter(torch.randn(len(space.elements), D) * 0.02)
         self.polarity = nn.Linear(2 * D, len(POLARITIES))
         self.actor = nn.Linear(2 * D, len(ACTORS))
         self.disputer = nn.Linear(2 * D, len(DISPUTERS))
         self.request_q = nn.Parameter(torch.randn(len(space.requests), D) * 0.02)
-        self.request_out = nn.Linear(2 * D, 1)
+        self.request_w = nn.Parameter(torch.zeros(len(space.requests), 2 * D))
+        self.request_b = nn.Parameter(torch.zeros(len(space.requests)))
         self.slot_q = nn.Parameter(torch.randn(len(space.class_slots), D) * 0.02)
         self.slot_out = nn.ModuleList([nn.Linear(2 * D, len(space.slot_classes(s))) for s in space.class_slots])
         self.party_q = nn.Parameter(torch.randn(len(space.party_claims), D) * 0.02)
@@ -56,12 +63,12 @@ class Heads(nn.Module):
         out = {}
         u, v = self.attend(z, self.claim_q)
         out["claim_u"] = u
-        out["claim"] = self.claim_out(torch.cat([v, self.claim_q, c.expand(len(self.claim_q), -1)], dim=-1)).squeeze(-1)
+        out["claim"] = (torch.cat([v, c.expand(len(v), -1)], dim=-1) * self.claim_w).sum(-1) + self.claim_b
         u, v = self.attend(z, self.element_q)
         x = torch.cat([v, self.element_q], dim=-1)
         out["element_u"], out["polarity"], out["actor"], out["disputer"] = u, self.polarity(x), self.actor(x), self.disputer(x)
         u, v = self.attend(z, self.request_q)
-        out["request_u"], out["request"] = u, self.request_out(torch.cat([v, self.request_q], dim=-1)).squeeze(-1)
+        out["request_u"], out["request"] = u, (torch.cat([v, c.expand(len(v), -1)], dim=-1) * self.request_w).sum(-1) + self.request_b
         u, v = self.attend(z, self.slot_q)
         x = torch.cat([v, self.slot_q], dim=-1)
         out["slot_u"], out["slot"] = u, [head(x[i]) for i, head in enumerate(self.slot_out)]

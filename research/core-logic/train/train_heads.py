@@ -10,7 +10,7 @@ manifest's purpose is `measure` is refused, and the tune folder must be `tune` (
 --measure folder is only read after training, to write readings for the report: nothing is chosen on it.
 
 Settings (the spec's table): AdamW 1e-3, weight decay 0.01, 5 % linear warm-up then cosine, gradient norm 1.0; batch 32
-notes; at most 20 epochs, patience 3 on the tuning score; dropout 0.1; loss weights claim 1, polarity 2, evidence 1,
+notes (--batch; fewer on a small set); at most 20 epochs, patience 3 on the tuning score; dropout 0.1; loss weights claim 1, polarity 2, evidence 1,
 actor and disputedBy 0.5, value roles 1, requests 1, slots 1, parties 0.5; focal loss (gamma 2) on polarity, or plain
 cross-entropy with inverse-frequency class weights (`--loss weighted`); 4 threads.
 """
@@ -140,6 +140,8 @@ def main(argv=None) -> int:
     p.add_argument("--loss", choices=["focal", "weighted"], default="focal")
     p.add_argument("--epochs", type=int, default=20)
     p.add_argument("--patience", type=int, default=3)
+    p.add_argument("--batch", type=int, default=32, help="notes per step (the spec's 32; fewer on a small training set)")
+    p.add_argument("--lr", type=float, default=1e-3)
     p.add_argument("--out", required=True)
     a = p.parse_args(argv)
     if purpose_of(a.train) != "train" or purpose_of(a.tune) != "tune":
@@ -158,12 +160,12 @@ def main(argv=None) -> int:
             counts[e[1]] += 1
     pol_weights = torch.tensor(counts.sum() / (len(counts) * counts), dtype=torch.float32)
     model = Heads(space)
-    opt = torch.optim.AdamW(model.parameters(), lr=1e-3, weight_decay=0.01)
-    batch = 32
+    opt = torch.optim.AdamW(model.parameters(), lr=a.lr, weight_decay=0.01)
+    batch = a.batch
     steps = a.epochs * math.ceil(len(train) / batch)
     warm = max(1, int(0.05 * steps))
     sched = torch.optim.lr_scheduler.LambdaLR(opt, lambda s: (s + 1) / warm if s < warm else 0.5 * (1 + math.cos(math.pi * (s - warm) / max(1, steps - warm))))
-    info = {"name": "dz-reader-heads", "version": f"rung4-seed{a.seed}-{a.loss}", "files": {}}
+    info = {"name": "dz-reader-heads", "version": f"rung4-seed{a.seed}-{a.loss}-b{a.batch}-lr{a.lr:g}", "files": {}}
     rng = np.random.default_rng(a.seed)
     best, best_epoch, history, waited = -1.0, -1, [], 0
     for epoch in range(a.epochs):
@@ -204,7 +206,7 @@ def main(argv=None) -> int:
         score(a.scorer, os.path.join(folder, "notes.jsonl"), os.path.join(out, "answers.jsonl"), os.path.join(out, "given.jsonl"), out, "measure", False)
     packages = subprocess.run([sys.executable, "-m", "pip", "freeze"], capture_output=True, text=True).stdout.split()
     with open(os.path.join(a.out, "run.json"), "w", encoding="utf-8", newline="\n") as f:
-        json.dump({"seed": a.seed, "loss": a.loss, "train": a.train, "tune": a.tune, "measure": a.measure, "cache": a.cache,
+        json.dump({"seed": a.seed, "loss": a.loss, "batch": a.batch, "lr": a.lr, "train": a.train, "tune": a.tune, "measure": a.measure, "cache": a.cache,
                    "trainNotes": len(train), "tuneNotes": len(tune), "bestEpoch": best_epoch, "bestTuning": best,
                    "history": history, "packages": packages}, f, indent=1)
     print(f"best epoch {best_epoch}: tuning {best} -> {a.out}")

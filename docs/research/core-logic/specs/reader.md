@@ -140,11 +140,11 @@ Two facts to carry into your own measurements of the .NET reader, which go in `d
 
 | Head | Parameters | Output | Loss |
 |---|---|---|---|
-| **Claim type** | one query per class (22: the 21 claim types and `outside`); shared `Linear 768→1` on `[v; q; c]` | one sigmoid per class, with its evidence from the query's own logits (trained on the gold `claimEvidence`). Answers by the decoding rule below. `outsideKind` is a label of the notes only: the reader does not output it | binary cross-entropy |
+| **Claim type** | one query per class (22: the 21 claim types and `outside`); **each class's own weights (512 numbers and a bias) on `[v; c]`** (16 November 2026: the first design, a shared `Linear 768→1` on `[v; q; c]`, could not fit its own training notes, because `c` is the same for every class and `q` adds only a bias) | one sigmoid per class, with its evidence from the query's own logits (trained on the gold `claimEvidence`). Answers by the decoding rule below. `outsideKind` is a label of the notes only: the reader does not output it | binary cross-entropy |
 | **Elements** | one query per element (75); shared `Linear 512→4` (polarity), `Linear 512→4` (actor), `Linear 512→3` (disputedBy), each on `[v; q]` | polarity `stated`, `denied`, `disputed`, `notMentioned`; the actor; who disputes | focal loss (γ = 2) on polarity; cross-entropy on actor and disputedBy where the gold gives them |
 | **Evidence** | none of its own: the token logits `u` of each query | the best contiguous stretch of pieces (the stretch that maximises the sum of `sigmoid(u) − 0.5`), mapped back to a `TextSpan` | binary cross-entropy against the gold quotes' pieces, for every label that carries a quote |
 | **Values to roles** | a table of 256-number role vectors (one per event kind, request kind and date slot); `Linear 768→256`, GELU, `Linear 256→1` on `[z; ctx; r]`, where `z` is the mean of `Z` over the value's pieces, `ctx` the mean over 16 pieces each side, `r` the role vector | for each date and amount that rung 2 found and each candidate role: belongs or not. Candidates: the event kinds of the answered claim types that take that kind of value, the request kinds (amounts), the date slots | binary cross-entropy |
-| **Requests** | one query per request kind (24); shared `Linear 512→1` | asked or not, with evidence; the amount comes from the roles head | binary cross-entropy |
+| **Requests** | one query per request kind (24); **each kind's own weights on `[v; c]`** (the same correction: the shared `Linear 512→1` on `[v; q]` predicted no request on the pilot) | asked or not, with evidence; the amount comes from the roles head | binary cross-entropy |
 | **Slots** | one query per yes/no or choice slot (5 in scheme 1.0); its own `Linear 512→k` (k = 3, or the choices and `unknown`) | the value, with evidence. The three date slots are value roles: **the reader still emits a `SlotReading` for each of them**, its value the date whose role score for that slot is highest and at least the threshold, `unknown` otherwise | cross-entropy |
 | **Parties** (output 2 of the scheme) | one query per claim type that offers a choice of role (7); its own `Linear 512→roles` | the plaintiff's role. There is no `unknown` class (every generated note expresses its role): under its threshold the reader abstains | cross-entropy |
 
@@ -171,7 +171,7 @@ All heads together are under one million numbers: a few megabytes.
 | Setting | Value |
 |---|---|
 | Optimiser | AdamW, learning rate 1e-3, weight decay 0.01, 5 % linear warm-up then cosine decay, gradient norm clipped at 1.0 |
-| Batch | 32 notes |
+| Batch | 32 notes; on a small training set (the 493 pilot notes: 16 steps an epoch) a smaller batch and a higher rate may be chosen on the tune notes (`--batch`, `--lr`; three seeds each, the means compared, reported) |
 | Epochs | at most 20; **early stopping on the tuning score** (purpose `tune`), patience 3 |
 | Dropout | 0.1 on `Z` |
 | Loss weights | claim 1; polarity 2; evidence 1; actor and disputedBy 0.5; value roles 1; requests 1; slots 1; parties 0.5 |

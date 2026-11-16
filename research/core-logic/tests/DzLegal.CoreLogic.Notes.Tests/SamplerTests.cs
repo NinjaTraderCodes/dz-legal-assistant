@@ -104,6 +104,14 @@ public sealed partial class SamplerTests
                 continue;
             }
 
+            var sexes = (s["roles"]?.AsObject() ?? []).Select(kv => ScenarioSampler.SexOf(kv.Key, (string)kv.Value!["position"]!))
+                .Where(x => x is not null).Distinct().ToList();
+            Assert.True(sexes.Count <= 1, $"{s["id"]}: the roles give the plaintiff two sexes");
+            if (sexes.Count == 1 && (string?)s["cast"]!["plaintiff"]!["gender"] is { } gender)
+            {
+                Assert.Equal(sexes[0], gender);
+            }
+
             foreach (var claim in claims)
             {
                 var kinds = Events(s).Where(e => (string)e["claim"]! == claim).Select(e => (string)e["kind"]!).ToList();

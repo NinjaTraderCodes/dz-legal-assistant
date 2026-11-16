@@ -16,7 +16,7 @@ public sealed record SampleRequest(string Set, int Count, int Seed, int Groups =
 /// </summary>
 public sealed class ScenarioSampler
 {
-    public const string Version = "1";
+    public const string Version = "1.1";  // 1.1 (16 November 2026): a later claim's role keeps the plaintiff's sex
 
     private static readonly string[] Polarities = ["stated", "denied", "disputed", "notMentioned"];
     private readonly SamplerData data;
@@ -177,15 +177,39 @@ public sealed class ScenarioSampler
         return (draft, Check(draft));
     }
 
+    /// <summary>
+    /// The sex a family claim's position fixes for the plaintiff ("other" in the custody claims is the maternal
+    /// grandmother); null for any other claim or position.
+    /// </summary>
+    public static string? SexOf(string claim, string position) =>
+        claim is not ("divorce-by-husband" or "tatliq" or "khul" or "nafaqa" or "custody" or "custody-forfeiture" or "visitation")
+            ? null
+            : position switch
+            {
+                "wife" or "mother" or "other" => "f",
+                "husband" or "father" => "m",
+                _ => null,
+            };
+
     private JsonObject DrawClaims(int s, IReadOnlyList<string> claims, StyleCard card, DateOnly petition, Force? force)
     {
         var shape = new Rng(Rng.Derive(s, 1));
         var roles = new JsonObject();
         var chosen = new Dictionary<string, RoleDef>(StringComparer.Ordinal);
+        string? sex = null;
         foreach (var claim in claims)
         {
             var def = data.ClaimById[claim];
-            var role = def.Roles[shape.Between(0, def.Roles.Count - 1)];
+            // A later claim keeps the plaintiff's sex that the first one fixed (a wife asking for khul and custody is the
+            // mother, not the father: version 1, 16 November 2026, 6 of the pilot's 500 scenarios).
+            var offered = sex is null ? def.Roles : [.. def.Roles.Where(r => SexOf(claim, r.Position) is null || SexOf(claim, r.Position) == sex)];
+            if (offered.Count == 0)
+            {
+                offered = def.Roles;
+            }
+
+            var role = offered[shape.Between(0, offered.Count - 1)];
+            sex ??= SexOf(claim, role.Position);
             chosen[claim] = role;
             if (def.Roles.Count > 1)
             {

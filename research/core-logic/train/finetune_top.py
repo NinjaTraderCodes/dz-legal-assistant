@@ -202,6 +202,11 @@ def main(argv=None) -> int:
     for f in ("vocab.txt", "tokenizer_config.json", "special_tokens_map.json"):
         if os.path.exists(os.path.join(a.model, f)):
             shutil.copy(os.path.join(a.model, f), enc)
+    # The source record export_encoder.py reads, marked as fine-tuned here (the weights are no longer the download's).
+    manifest = json.load(open(os.path.join(a.model, "MANIFEST.json"), encoding="utf-8"))
+    manifest["fineTuned"] = {"script": "train/finetune_top.py", "top": a.top, "seed": a.seed, "train": a.train, "bestEpoch": best_epoch}
+    with open(os.path.join(enc, "MANIFEST.json"), "w", encoding="utf-8", newline="\n") as f:
+        json.dump(manifest, f, indent=1)
     packages = subprocess.run([sys.executable, "-m", "pip", "freeze"], capture_output=True, text=True).stdout.split()
     with open(os.path.join(a.out, "run.json"), "w", encoding="utf-8", newline="\n") as f:
         json.dump({"seed": a.seed, "top": a.top, "batch": a.batch, "lrEncoder": a.lr_encoder, "lrHeads": a.lr_heads, "epochs": a.epochs,

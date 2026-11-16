@@ -128,6 +128,18 @@ public static class FilterTrial
                 .ToDictionary(r => (string)r["note"]!, StringComparer.Ordinal)
             : new Dictionary<string, JsonObject>(StringComparer.Ordinal);
 
+    private static FileStream? TryLock(string path)
+    {
+        try
+        {
+            return new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None, 1, FileOptions.DeleteOnClose);
+        }
+        catch (IOException)
+        {
+            return null;
+        }
+    }
+
     private static JsonObject PowerNode(Power p) => new() { ["onBattery"] = p.OnBattery, ["percent"] = p.Percent };
 
     public static (JsonObject Report, bool Stopped) Measure(NotesFiles files, SheetLabels labels, ISheetAnswerer model, string work,
@@ -142,6 +154,11 @@ public static class FilterTrial
         var plainPath = stem + ".plain.jsonl";
         var plantedPath = stem + ".planted.jsonl";
         Directory.CreateDirectory(Folder(work));
+
+        // One trial per model at a time: two processes appending to the same files recorded notes twice (16 November
+        // 2026). The lock is released when the process ends, however it ends.
+        using var trialLock = TryLock(stem + ".lock")
+            ?? throw new InvalidOperationException($"another trial of {model.Model} is running (lock {stem}.lock)");
 
         bool LowBattery()
         {

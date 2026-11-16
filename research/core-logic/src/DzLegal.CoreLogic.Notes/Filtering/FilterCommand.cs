@@ -110,8 +110,8 @@ public static class FilterCommand
                 ["prompt"] = Prompt(files, written, sheet),
                 ["questions"] = new JsonArray([.. sheet.Questions.Select(q => (JsonNode)new JsonObject
                 {
-                    ["kind"] = q.Kind, ["path"] = q.Path,
-                    ["options"] = new JsonArray([.. q.Options.Select(o => (JsonNode)new JsonObject { ["letter"] = o.Letter, ["value"] = o.Value })]),
+                    ["kind"] = q.Kind, ["path"] = q.Path, ["text"] = q.Text,
+                    ["options"] = new JsonArray([.. q.Options.Select(o => (JsonNode)new JsonObject { ["letter"] = o.Letter, ["value"] = o.Value, ["text"] = o.Text })]),
                     ["expected"] = new JsonArray([.. q.Expected.Select(e => (JsonNode)e)]),
                 })]),
             }.ToJsonString(NotesJson.Compact));

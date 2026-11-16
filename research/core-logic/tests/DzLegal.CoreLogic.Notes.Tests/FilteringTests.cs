@@ -244,6 +244,14 @@ public sealed class FilteringTests
             Assert.Equal(1, (int)report["table"]!["countedPlants"]!);
             var calls = model.Calls;
 
+            // A second trial of the same model cannot run while one holds the lock.
+            var stem = Path.Combine(work, "filter-trial", "stand-in-seed5");
+            using (new FileStream(stem + ".lock", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None))
+            {
+                Assert.Throws<InvalidOperationException>(() =>
+                    FilterTrial.Measure(files, Labels, new Counting(_ => Sheet()), work, 1, 5, new FixedPower(false, 100), 20));
+            }
+
             // Resumed: the notes already done are not asked again.
             var again = new Counting(_ => Sheet());
             FilterTrial.Measure(files, Labels, again, work, 1, 5, new FixedPower(false, 100), 20);

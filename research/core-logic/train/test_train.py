@@ -8,8 +8,13 @@ import os
 import sys
 import tempfile
 
-import numpy as np
-import torch
+try:
+    import numpy as np
+    import torch
+except ImportError:  # the pytest Python has neither: this file runs under Part 7's environment (reader.md, rung 4)
+    import pytest
+
+    pytest.skip("needs Part 7's environment (numpy, torch): run it there as a script", allow_module_level=True)
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from decode import best_stretch, reading, value_index_lists  # noqa: E402

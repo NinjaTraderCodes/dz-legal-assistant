@@ -32,6 +32,21 @@ public sealed partial class SamplerTests
     }
 
     [Fact]
+    public void TheRoleSexDefectIsFoundFromTheScenarioAlone()
+    {
+        JsonObject S(string gender, params (string Claim, string Position)[] roles) => new()
+        {
+            ["roles"] = new JsonObject(roles.Select(r => new KeyValuePair<string, JsonNode?>(r.Claim, new JsonObject { ["relation"] = "marriage", ["position"] = r.Position }))),
+            ["cast"] = new JsonObject { ["plaintiff"] = new JsonObject { ["gender"] = gender } },
+        };
+        Assert.True(RefillCommand.RoleSexDefect(S("f", ("custody", "father"))));
+        Assert.True(RefillCommand.RoleSexDefect(S("m", ("tatliq", "wife"), ("custody", "father"))));
+        Assert.False(RefillCommand.RoleSexDefect(S("f", ("custody", "mother"))));
+        Assert.False(RefillCommand.RoleSexDefect(S("f", ("custody", "other"))));
+        Assert.False(RefillCommand.RoleSexDefect(S("m", ("contract-rescission", "other"))));
+    }
+
+    [Fact]
     public void TheTwoHalvesAlternateByFamilyAndNeverSplitAGroup()
     {
         var files = NotesFiles.Find(null);

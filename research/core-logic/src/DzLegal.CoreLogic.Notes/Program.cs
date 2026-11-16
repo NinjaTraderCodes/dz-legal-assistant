@@ -16,6 +16,7 @@ using DzLegal.CoreLogic.Notes;
 //   notes ingest --call <id> [--reply <file>] [--rejected] [--work <folder>]
 //   notes filter-sheet --note <id> --set <set>; notes filter --set <set> --model <ollama tag> [--limit <n>]
 //   notes sample --set <set> --count <n> --seed <n> --half codex,sonnet   (dev and challenge: the two writers' halves)
+//   notes refill --set <set> --defect role-sex [--dry-run]   (a sampler defect: drop by script, draw again, queue)
 //   notes accept --set pilot|train   (the owner's route of 16 November: kept on the code checks)
 //   notes relabel --set <set> --prepare; notes relabel --run <id> --ingest <reply>; notes compare --set <set>
 // Every command takes --repo <folder> (the worktree); without it the tool finds the repository above it.
@@ -208,6 +209,11 @@ try
             Console.WriteLine(spaceOut);
             return 0;
         }
+
+        case ("refill", "--set"):
+            return DzLegal.CoreLogic.Notes.Sampler.RefillCommand.Run(files,
+                positional.FirstOrDefault(p => !p.StartsWith("--", StringComparison.Ordinal)) ?? throw new ArgumentException("--set <name>"),
+                options, positional.Where(p => p.StartsWith("--", StringComparison.Ordinal)).ToHashSet(StringComparer.Ordinal));
 
         case ("accept", "--set"):
             return DzLegal.CoreLogic.Notes.Filtering.AcceptCommand.Run(files,

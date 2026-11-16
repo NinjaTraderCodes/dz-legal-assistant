@@ -91,6 +91,22 @@ public sealed class JudgingTests
     }
 
     [Fact]
+    public void TheNoiseMeasurementComparesWhatEitherSideGives()
+    {
+        var compared = CompareCommand.Compared(Data.Value, Labels(), Labels());
+        Assert.Contains("claims", compared);
+        Assert.Contains("events/maintenance/marriage/polarity", compared);
+        Assert.Contains("events/maintenance/marriage/date", compared);
+        Assert.Contains("requests/maintenance/amount", compared);
+        Assert.Contains("values/facts:29", compared);
+        var other = Labels();
+        other["claims"] = new JsonArray("custody");
+        Assert.Equal(["claims"], CompareCommand.Compared(Data.Value, Labels(), other));
+        Assert.Throws<ArgumentException>(() => NoiseCommand.Run(NotesFiles.Find(null),
+            new Dictionary<string, string> { ["--from"] = "dev", ["--seed"] = "1", ["--work"] = Path.GetTempPath() }, new HashSet<string> { "--prepare" }));
+    }
+
+    [Fact]
     public void AValueWithoutANormalFormIsNotCompared()
     {
         var other = Labels();

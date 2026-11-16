@@ -100,7 +100,7 @@ public static class RelabelCommand
         Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(File.ReadAllBytes(Path.Combine(files.Prompts, "notes-judge.md"))))[..12]
             .ToLowerInvariant();
 
-    public static string Prompt(NotesFiles files, SamplerData data, IReadOnlyList<JsonObject> notes)
+    public static string Prompt(NotesFiles files, SamplerData data, IReadOnlyList<JsonObject> notes, string template = "notes-judge")
     {
         ArgumentNullException.ThrowIfNull(files);
         ArgumentNullException.ThrowIfNull(data);
@@ -113,7 +113,7 @@ public static class RelabelCommand
                 .Append(CultureInfo.InvariantCulture, $"- requests: {Field("requests")}\n- documents: {Field("documents")}\n\n");
         }
 
-        return PromptTemplate.Fill(PromptTemplate.Body(files.Prompts, "notes-judge"), new Dictionary<string, string>
+        return PromptTemplate.Fill(PromptTemplate.Body(files.Prompts, template), new Dictionary<string, string>
         {
             ["guide"] = File.ReadAllText(files.Guide).ReplaceLineEndings("\n").Trim(),
             ["elements"] = Elements(files, data),

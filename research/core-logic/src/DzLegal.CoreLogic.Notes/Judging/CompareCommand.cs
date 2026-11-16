@@ -215,6 +215,87 @@ public static class CompareCommand
         return v["normalized"] is not null && (bool?)v["relative"] != true && (string?)v["calendar"] != "hijri" && v["currency"] is null;
     }
 
+    /// <summary>
+    /// The compared fields of the noise measurement (specs/notes-pipeline.md, "The label noise"): the claim-type set; and,
+    /// when the sets agree, every field either side gives something other than notMentioned or unknown: the role of a
+    /// claim type with a choice; each element's polarity, and its actor, who disputes, date and amount when either side
+    /// gives one; each slot asked; each request kind and its amount; each value with a normal form (a matched pair once).
+    /// </summary>
+    public static List<string> Compared(SamplerData data, JsonObject writer, JsonObject relabel)
+    {
+        ArgumentNullException.ThrowIfNull(data);
+        ArgumentNullException.ThrowIfNull(writer);
+        ArgumentNullException.ThrowIfNull(relabel);
+        var fields = new List<string> { "claims" };
+        var claimsW = Strings(writer["claims"]);
+        if (!claimsW.SetEquals(Strings(relabel["claims"])))
+        {
+            return fields;
+        }
+
+        foreach (var claim in claimsW.Where(c => data.ClaimById.TryGetValue(c, out var def) && def.Roles.Count > 1).Order(StringComparer.Ordinal))
+        {
+            if (Find(writer["roles"], "claim", claim) is not null || Find(relabel["roles"], "claim", claim) is { } r && (string?)r["relation"] != "unknown")
+            {
+                fields.Add($"roles/{claim}");
+            }
+        }
+
+        var eventsW = Items(writer["events"]).GroupBy(e => $"{e["claim"]}/{e["kind"]}", StringComparer.Ordinal).ToDictionary(g => g.Key, g => g.First(), StringComparer.Ordinal);
+        var eventsR = Items(relabel["events"]).GroupBy(e => $"{e["claim"]}/{e["kind"]}", StringComparer.Ordinal).ToDictionary(g => g.Key, g => g.First(), StringComparer.Ordinal);
+        foreach (var key in eventsW.Keys.Union(eventsR.Keys).Order(StringComparer.Ordinal))
+        {
+            var w = eventsW.GetValueOrDefault(key);
+            var r = eventsR.GetValueOrDefault(key);
+            if (((string?)w?["polarity"] ?? "notMentioned") == "notMentioned" && ((string?)r?["polarity"] ?? "notMentioned") == "notMentioned")
+            {
+                continue;
+            }
+
+            fields.Add($"events/{key}/polarity");
+            if ((string?)w?["actor"] is { } aw && aw != "unknown" || (string?)r?["actor"] is { } ar && ar != "unknown")
+            {
+                fields.Add($"events/{key}/actor");
+            }
+
+            foreach (var part in new[] { "disputedBy", "date", "amount" })
+            {
+                if (w?[part] is not null || r?[part] is not null)
+                {
+                    fields.Add($"events/{key}/{part}");
+                }
+            }
+        }
+
+        var asked = data.Slots.Where(s => claimsW.Any(s.AskedForClaim)).Select(s => s.Id)
+            .Union(Items(writer["slots"]).Select(s => (string)s["slot"]!), StringComparer.Ordinal).Order(StringComparer.Ordinal);
+        foreach (var slot in asked)
+        {
+            if (((string?)Find(writer["slots"], "slot", slot)?["value"] ?? "unknown") != "unknown" ||
+                ((string?)Find(relabel["slots"], "slot", slot)?["value"] ?? "unknown") != "unknown")
+            {
+                fields.Add($"slots/{slot}");
+            }
+        }
+
+        var reqW = Items(writer["requests"]).GroupBy(q => (string)q["kind"]!, StringComparer.Ordinal).ToDictionary(g => g.Key, g => g.First(), StringComparer.Ordinal);
+        var reqR = Items(relabel["requests"]).GroupBy(q => (string)q["kind"]!, StringComparer.Ordinal).ToDictionary(g => g.Key, g => g.First(), StringComparer.Ordinal);
+        foreach (var kind in reqW.Keys.Union(reqR.Keys).Order(StringComparer.Ordinal))
+        {
+            fields.Add($"requests/{kind}");
+            if (reqW.GetValueOrDefault(kind)?["amount"] is not null || reqR.GetValueOrDefault(kind)?["amount"] is not null)
+            {
+                fields.Add($"requests/{kind}/amount");
+            }
+        }
+
+        var valuesW = Items(writer["values"]).Where(HasNormalForm).ToList();
+        var valuesR = Items(relabel["values"]).Where(HasNormalForm).ToList();
+        fields.AddRange(valuesW.Select(v => $"values/{At(v)}"));
+        fields.AddRange(valuesR.Where(v => !Matched(v, valuesW)).Select(v => $"values/{At(v)}").Where(f => !fields.Contains(f)));
+        return fields;
+    }
+
     private static bool Matched(JsonObject v, List<JsonObject> others)
     {
         var at = v["at"]?.AsObject();

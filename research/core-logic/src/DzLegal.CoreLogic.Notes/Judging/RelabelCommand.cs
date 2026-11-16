@@ -172,6 +172,7 @@ public static class RelabelCommand
             labels.Remove("n");
             var remarks = (string?)labels["remarks"] ?? "";
             labels.Remove("remarks");
+            Normalise(labels);
             badQuotes += Locate((JsonObject)written[ids[i]]["text"]!, labels);
             lines.Append(new JsonObject
             {
@@ -189,6 +190,29 @@ public static class RelabelCommand
         queue.Save();
         Console.WriteLine($"{run}: {ids.Count - back.Count} relabelled, {back.Count} left out (back to the queue), {badQuotes} quotes not found");
         return 0;
+    }
+
+    /// <summary>
+    /// A date or an amount given as a bare normal form ("2022-11-23") becomes a value with that normal form and no quote
+    /// (the comparison reads only the normal form of an event's or a request's value). The schema accepts the bare form
+    /// since 16 November 2026: a Sonnet relabeller wrote it so, and the prompt's other omissions it made were allowed.
+    /// </summary>
+    public static void Normalise(JsonObject labels)
+    {
+        ArgumentNullException.ThrowIfNull(labels);
+        foreach (var part in new[] { "events", "requests" })
+        {
+            foreach (var item in labels[part]?.AsArray() ?? [])
+            {
+                foreach (var (key, kind) in new[] { ("date", "date"), ("amount", "amount") })
+                {
+                    if (item![key] is JsonValue bare && bare.TryGetValue<string>(out var normal))
+                    {
+                        item[key] = new JsonObject { ["kind"] = kind, ["normalized"] = normal };
+                    }
+                }
+            }
+        }
     }
 
     /// <summary>Adds start and length to every quote of the labels; returns how many were not found (left without them).</summary>

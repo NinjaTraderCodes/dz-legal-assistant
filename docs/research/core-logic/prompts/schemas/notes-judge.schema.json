@@ -41,8 +41,7 @@
        "additionalProperties": false,
        "required": [
         "field",
-        "quote",
-        "occurrence"
+        "quote"
        ],
        "properties": {
         "field": {
@@ -72,8 +71,7 @@
         "claim",
         "kind",
         "polarity",
-        "actor",
-        "evidence"
+        "actor"
        ],
        "properties": {
         "claim": {
@@ -116,8 +114,7 @@
           "additionalProperties": false,
           "required": [
            "field",
-           "quote",
-           "occurrence"
+           "quote"
           ],
           "properties": {
            "field": {
@@ -139,144 +136,156 @@
          }
         },
         "date": {
-         "type": "object",
-         "additionalProperties": false,
-         "required": [
-          "kind",
-          "at",
-          "normalized",
-          "roles"
-         ],
-         "properties": {
-          "kind": {
-           "type": "string",
-           "enum": [
-            "date",
-            "amount"
-           ]
-          },
-          "at": {
+         "anyOf": [
+          {
            "type": "object",
            "additionalProperties": false,
            "required": [
-            "field",
-            "quote",
-            "occurrence"
+            "kind",
+            "at",
+            "normalized",
+            "roles"
            ],
            "properties": {
-            "field": {
+            "kind": {
              "type": "string",
              "enum": [
-              "subject",
-              "facts",
-              "requests",
-              "documents"
+              "date",
+              "amount"
              ]
             },
-            "quote": {
+            "at": {
+             "type": "object",
+             "additionalProperties": false,
+             "required": [
+              "field",
+              "quote"
+             ],
+             "properties": {
+              "field": {
+               "type": "string",
+               "enum": [
+                "subject",
+                "facts",
+                "requests",
+                "documents"
+               ]
+              },
+              "quote": {
+               "type": "string"
+              },
+              "occurrence": {
+               "type": "integer"
+              }
+             }
+            },
+            "normalized": {
              "type": "string"
             },
-            "occurrence": {
-             "type": "integer"
+            "roles": {
+             "type": "array",
+             "items": {
+              "type": "string"
+             }
+            },
+            "relative": {
+             "type": "boolean"
+            },
+            "calendar": {
+             "type": "string",
+             "enum": [
+              "gregorian",
+              "hijri"
+             ]
+            },
+            "currency": {
+             "type": "string"
+            },
+            "amountDisputed": {
+             "type": "boolean"
             }
            }
           },
-          "normalized": {
+          {
            "type": "string"
-          },
-          "roles": {
-           "type": "array",
-           "items": {
-            "type": "string"
-           }
-          },
-          "relative": {
-           "type": "boolean"
-          },
-          "calendar": {
-           "type": "string",
-           "enum": [
-            "gregorian",
-            "hijri"
-           ]
-          },
-          "currency": {
-           "type": "string"
-          },
-          "amountDisputed": {
-           "type": "boolean"
           }
-         }
+         ]
         },
         "amount": {
-         "type": "object",
-         "additionalProperties": false,
-         "required": [
-          "kind",
-          "at",
-          "normalized",
-          "roles"
-         ],
-         "properties": {
-          "kind": {
-           "type": "string",
-           "enum": [
-            "date",
-            "amount"
-           ]
-          },
-          "at": {
+         "anyOf": [
+          {
            "type": "object",
            "additionalProperties": false,
            "required": [
-            "field",
-            "quote",
-            "occurrence"
+            "kind",
+            "at",
+            "normalized",
+            "roles"
            ],
            "properties": {
-            "field": {
+            "kind": {
              "type": "string",
              "enum": [
-              "subject",
-              "facts",
-              "requests",
-              "documents"
+              "date",
+              "amount"
              ]
             },
-            "quote": {
+            "at": {
+             "type": "object",
+             "additionalProperties": false,
+             "required": [
+              "field",
+              "quote"
+             ],
+             "properties": {
+              "field": {
+               "type": "string",
+               "enum": [
+                "subject",
+                "facts",
+                "requests",
+                "documents"
+               ]
+              },
+              "quote": {
+               "type": "string"
+              },
+              "occurrence": {
+               "type": "integer"
+              }
+             }
+            },
+            "normalized": {
              "type": "string"
             },
-            "occurrence": {
-             "type": "integer"
+            "roles": {
+             "type": "array",
+             "items": {
+              "type": "string"
+             }
+            },
+            "relative": {
+             "type": "boolean"
+            },
+            "calendar": {
+             "type": "string",
+             "enum": [
+              "gregorian",
+              "hijri"
+             ]
+            },
+            "currency": {
+             "type": "string"
+            },
+            "amountDisputed": {
+             "type": "boolean"
             }
            }
           },
-          "normalized": {
+          {
            "type": "string"
-          },
-          "roles": {
-           "type": "array",
-           "items": {
-            "type": "string"
-           }
-          },
-          "relative": {
-           "type": "boolean"
-          },
-          "calendar": {
-           "type": "string",
-           "enum": [
-            "gregorian",
-            "hijri"
-           ]
-          },
-          "currency": {
-           "type": "string"
-          },
-          "amountDisputed": {
-           "type": "boolean"
           }
-         }
+         ]
         }
        }
       }
@@ -288,8 +297,7 @@
        "additionalProperties": false,
        "required": [
         "slot",
-        "value",
-        "evidence"
+        "value"
        ],
        "properties": {
         "slot": {
@@ -305,8 +313,7 @@
           "additionalProperties": false,
           "required": [
            "field",
-           "quote",
-           "occurrence"
+           "quote"
           ],
           "properties": {
            "field": {
@@ -336,8 +343,7 @@
        "type": "object",
        "additionalProperties": false,
        "required": [
-        "kind",
-        "evidence"
+        "kind"
        ],
        "properties": {
         "kind": {
@@ -350,8 +356,7 @@
           "additionalProperties": false,
           "required": [
            "field",
-           "quote",
-           "occurrence"
+           "quote"
           ],
           "properties": {
            "field": {
@@ -373,74 +378,80 @@
          }
         },
         "amount": {
-         "type": "object",
-         "additionalProperties": false,
-         "required": [
-          "kind",
-          "at",
-          "normalized",
-          "roles"
-         ],
-         "properties": {
-          "kind": {
-           "type": "string",
-           "enum": [
-            "date",
-            "amount"
-           ]
-          },
-          "at": {
+         "anyOf": [
+          {
            "type": "object",
            "additionalProperties": false,
            "required": [
-            "field",
-            "quote",
-            "occurrence"
+            "kind",
+            "at",
+            "normalized",
+            "roles"
            ],
            "properties": {
-            "field": {
+            "kind": {
              "type": "string",
              "enum": [
-              "subject",
-              "facts",
-              "requests",
-              "documents"
+              "date",
+              "amount"
              ]
             },
-            "quote": {
+            "at": {
+             "type": "object",
+             "additionalProperties": false,
+             "required": [
+              "field",
+              "quote"
+             ],
+             "properties": {
+              "field": {
+               "type": "string",
+               "enum": [
+                "subject",
+                "facts",
+                "requests",
+                "documents"
+               ]
+              },
+              "quote": {
+               "type": "string"
+              },
+              "occurrence": {
+               "type": "integer"
+              }
+             }
+            },
+            "normalized": {
              "type": "string"
             },
-            "occurrence": {
-             "type": "integer"
+            "roles": {
+             "type": "array",
+             "items": {
+              "type": "string"
+             }
+            },
+            "relative": {
+             "type": "boolean"
+            },
+            "calendar": {
+             "type": "string",
+             "enum": [
+              "gregorian",
+              "hijri"
+             ]
+            },
+            "currency": {
+             "type": "string"
+            },
+            "amountDisputed": {
+             "type": "boolean"
             }
            }
           },
-          "normalized": {
+          {
            "type": "string"
-          },
-          "roles": {
-           "type": "array",
-           "items": {
-            "type": "string"
-           }
-          },
-          "relative": {
-           "type": "boolean"
-          },
-          "calendar": {
-           "type": "string",
-           "enum": [
-            "gregorian",
-            "hijri"
-           ]
-          },
-          "currency": {
-           "type": "string"
-          },
-          "amountDisputed": {
-           "type": "boolean"
           }
-         }
+         ]
         }
        }
       }
@@ -469,8 +480,7 @@
          "additionalProperties": false,
          "required": [
           "field",
-          "quote",
-          "occurrence"
+          "quote"
          ],
          "properties": {
           "field": {
@@ -529,8 +539,7 @@
        "required": [
         "claim",
         "relation",
-        "position",
-        "evidence"
+        "position"
        ],
        "properties": {
         "claim": {
@@ -549,8 +558,7 @@
           "additionalProperties": false,
           "required": [
            "field",
-           "quote",
-           "occurrence"
+           "quote"
           ],
           "properties": {
            "field": {
@@ -577,5 +585,6 @@
     }
    }
   }
- }
+ },
+ "description": "16 November 2026: \"occurrence\" (1 when left out) and \"evidence\" (none for notMentioned or unknown, as the prompt says) are optional; a date or amount given as a bare normal form is accepted and normalised by `notes relabel --ingest`."
 }

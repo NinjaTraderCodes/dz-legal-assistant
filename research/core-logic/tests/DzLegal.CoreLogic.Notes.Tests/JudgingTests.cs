@@ -75,6 +75,19 @@ public sealed class JudgingTests
     }
 
     [Fact]
+    public void ABareDateOrAmountIsReadByItsNormalForm()
+    {
+        var other = Labels();
+        other["events"]![0]!["date"] = "2019-04-03";
+        other["requests"]![0]!["amount"] = "20000";
+        RelabelCommand.Normalise(other);
+        Assert.Empty(CompareCommand.Differences(Data.Value, Text(), Labels(), other));
+        other["events"]![0]!["date"] = "2019-04-04";
+        RelabelCommand.Normalise(other);
+        Assert.Contains("events/maintenance/marriage/date", CompareCommand.Differences(Data.Value, Text(), Labels(), other));
+    }
+
+    [Fact]
     public void QuotesForOneFieldMustOverlapOrShareASentence()
     {
         var other = Labels();

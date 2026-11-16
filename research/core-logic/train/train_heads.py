@@ -176,7 +176,7 @@ def main(argv=None) -> int:
             nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             opt.step()
             sched.step()
-            total += float(loss) * len(order[start:start + batch])
+            total += float(loss.detach()) * len(order[start:start + batch])
         folder = os.path.join(a.out, f"epoch-{epoch + 1:02d}")
         os.makedirs(folder, exist_ok=True)
         write_readings(model, space, tune, os.path.join(folder, "answers.jsonl"), os.path.join(folder, "given.jsonl"), info)

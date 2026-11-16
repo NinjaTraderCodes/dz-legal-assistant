@@ -26,9 +26,14 @@ public static class SampleCommand
             throw new ArgumentException("notes sample needs --count <n> and --seed <n>");
         }
 
-        if (options.ContainsKey("--difficulty") || options.ContainsKey("--half") || options.ContainsKey("--pack"))
+        if (options.ContainsKey("--difficulty") || options.ContainsKey("--pack"))
         {
-            throw new ArgumentException("--difficulty, --half and --pack are not in sampler version 1 yet (phase B)");
+            throw new ArgumentException("--difficulty and --pack are not in sampler version 1 yet (phase B)");
+        }
+
+        if (options.ContainsKey("--half") && options.ContainsKey("--writer"))
+        {
+            throw new ArgumentException("--half <a,b> and --writer exclude each other");
         }
 
         var data = SamplerData.Load(files);
@@ -62,15 +67,17 @@ public static class SampleCommand
         Directory.CreateDirectory(Path.GetDirectoryName(path)!);
         Directory.CreateDirectory(Path.GetDirectoryName(manifest)!);
         NotesJson.Write(path, lines);
-        var writer = options.GetValueOrDefault("--writer") ?? "codex";
+        var writerOf = WriterOf(scenarios, options);
         File.AppendAllText(Path.Combine(work, "queue.jsonl"), string.Concat(scenarios.Select(s => new JsonObject
         {
-            ["scenario"] = (string)s["id"]!, ["set"] = set, ["family"] = (string)s["family"]!, ["writer"] = writer,
+            ["scenario"] = (string)s["id"]!, ["set"] = set, ["family"] = (string)s["family"]!, ["writer"] = writerOf[(string)s["family"]!],
             ["state"] = "drawn", ["attempts"] = 0,
         }.ToJsonString(NotesJson.Compact) + "\n")));
         var record = new JsonObject
         {
             ["set"] = set, ["count"] = scenarios.Count, ["seed"] = request.Seed, ["groups"] = request.Groups,
+            ["writers"] = new JsonObject([.. writerOf.Values.GroupBy(w => w, StringComparer.Ordinal).OrderBy(g => g.Key, StringComparer.Ordinal)
+                .Select(g => new KeyValuePair<string, JsonNode?>(g.Key, scenarios.Count(s => writerOf[(string)s["family"]!] == g.Key)))]),
             ["sampler"] = new JsonObject { ["version"] = ScenarioSampler.Version, ["commit"] = commit },
             ["inputs"] = data.Hashes(),
             ["finalRecords"] = new JsonArray([.. Directory.GetFiles(FinalFolder(files), "*.json").Order(StringComparer.Ordinal)
@@ -82,6 +89,31 @@ public static class SampleCommand
         NotesJson.Write(manifest, record.ToJsonString(NotesJson.Options) + "\n");
         Console.WriteLine($"{scenarios.Count} scenarios of set {set} -> {path}; queue +{scenarios.Count} (drawn); rejected draws: {Rejected(sampler)}");
         return 0;
+    }
+
+    /// <summary>
+    /// The writer of each family. <c>--half codex,sonnet</c> (dev and challenge: specs/notes-pipeline.md, section 6)
+    /// gives the families to the two writers in turn, in draw order, so both halves come from one seed stream and a
+    /// polarity group, which is one family, is never split; otherwise every family goes to <c>--writer</c> (codex).
+    /// </summary>
+    public static Dictionary<string, string> WriterOf(IReadOnlyList<JsonObject> scenarios, IReadOnlyDictionary<string, string> options)
+    {
+        ArgumentNullException.ThrowIfNull(scenarios);
+        ArgumentNullException.ThrowIfNull(options);
+        var families = scenarios.Select(s => (string)s["family"]!).Distinct(StringComparer.Ordinal).ToList();
+        if (options.TryGetValue("--half", out var half))
+        {
+            var pair = half.Split(',', StringSplitOptions.TrimEntries);
+            if (pair.Length != 2 || pair.Any(w => w is not ("codex" or "sonnet")) || pair[0] == pair[1])
+            {
+                throw new ArgumentException("--half codex,sonnet");
+            }
+
+            return families.Select((f, i) => (f, i)).ToDictionary(x => x.f, x => pair[x.i % 2], StringComparer.Ordinal);
+        }
+
+        var writer = options.GetValueOrDefault("--writer") ?? "codex";
+        return families.ToDictionary(f => f, _ => writer, StringComparer.Ordinal);
     }
 
     private static string Rejected(ScenarioSampler sampler) =>

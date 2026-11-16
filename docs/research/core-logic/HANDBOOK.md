@@ -128,6 +128,20 @@ The owner is the product owner and developer. A reviewer (another Claude) writes
 5. The executor's four unforeseen choices of phase 0 (the known-limits file, bc1 decided with the support answers, Codex's view on bc7 before follow-up 3, the renamed support ids) and its two prompt edits are accepted.
 6. **15 November 2026, evening (two decisions):** (a) "stripping the 100 identical quote and source fields by script, after checking them against the store, was the right choice; record it in the report" (court-sections' verifier had carried them over unchanged from the quoted copy). (b) **Forfeitures whose readings differ on the last day:** "where the readings differ on the last day, the record must not block on the earlier reading. Block only once the latest defensible last day has passed, warn on the days in between, and state both readings with their sources (including whether CPCA art. 405 applies to the Law 90-04 deadline). Apply the same rule to every forfeiture in the other modules." The evaluator does it through a deadline's `otherCountings` ([specs/rule-evaluator.md](specs/rule-evaluator.md), "Deadlines"); every module with a forfeiture gets an `owner` entry in a follow-up.
 
+### 16 November 2026, after the filter trial (the owner's words)
+
+Gemma 4 E4B took about 38 seconds a note on mains (the plan had assumed 10 to 15), so filtering every training note would take about 40 hours.
+
+1. "Gemma will not check every training note. No 40-hour filtering."
+2. "Finish tonight's trial, the 20-note Opus check and the Jais sample, as planned; they are short."
+3. "Filtering from now on: the code checks on every note (seconds), then the reader flags the suspicious notes itself (train with cross-validation; flag the notes where it confidently disagrees with the writer's label), and only the flagged notes go to Opus, or to Gemma if the 20-note check shows it reliable on those fields."
+4. "Do not filter the 499 pilot notes with Gemma. Use them, as they passed the code checks, to train a first rough reader now, and score it on development notes it never saw (never the hidden sets). The first score comes before the 4,000 notes are written."
+5. "The pilot report's calendar uses this route."
+
+6. **The same evening, on the flagged notes and the first score:** "Approved: the 100 development notes as you describe them, and the training script." (50 written by Codex and relabelled blind by Sonnet, 50 written by Sonnet and relabelled blind by Opus, a note dropped on any disagreement, scores shown per writer.) "Flagged notes: option (a). A flagged note is dropped, never judged or corrected by a Claude model; if many are dropped, Codex writes replacements for their scenarios. Opus only checks a sample of the flags to measure how many were right. My 14 November rule stands unchanged."
+
+This replaces the local filter on every note (section 2's decision 4 of 14 November, and [specs/notes-pipeline.md](specs/notes-pipeline.md), section 4a) as the route for training notes. The filter trial's result is still reported.
+
 ### 15 November 2026, at the start of phase 0
 
 1. **What a Claude model may write:** "you, a Claude model, may write what the training notes are made from (the sampler, the style cards, the prompts, the labelling guide): that is ordinary software work, and the text the reader trains on is written by Codex or a local model".

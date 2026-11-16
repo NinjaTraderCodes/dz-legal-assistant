@@ -32,6 +32,21 @@ public sealed partial class SamplerTests
     }
 
     [Fact]
+    public void TheTwoHalvesAlternateByFamilyAndNeverSplitAGroup()
+    {
+        var files = NotesFiles.Find(null);
+        var draws = new ScenarioSampler(SamplerData.Load(files), SampleCommand.FinalRecords(files))
+            .Draw(new SampleRequest("halves", 120, 91, Groups: 4));
+        var writerOf = SampleCommand.WriterOf(draws, new Dictionary<string, string> { ["--half"] = "codex,sonnet" });
+        var families = draws.Select(s => (string)s["family"]!).Distinct().ToList();
+        Assert.All(families.Select((f, i) => (f, i)), x => Assert.Equal(x.i % 2 == 0 ? "codex" : "sonnet", writerOf[x.f]));
+        Assert.All(draws.Where(s => s["group"] is not null).GroupBy(s => (string)s["group"]!),
+            g => Assert.Single(g.Select(s => writerOf[(string)s["family"]!]).Distinct()));
+        Assert.Throws<ArgumentException>(() => SampleCommand.WriterOf(draws, new Dictionary<string, string> { ["--half"] = "codex,codex" }));
+        Assert.All(SampleCommand.WriterOf(draws, new Dictionary<string, string>()).Values, w => Assert.Equal("codex", w));
+    }
+
+    [Fact]
     public void EveryDrawnCellIsFilledAndNoOtherCell()
     {
         var seen = Draws.SelectMany(Events).Select(e => $"{e["claim"]}/{e["kind"]}/{e["polarity"]}").ToHashSet();

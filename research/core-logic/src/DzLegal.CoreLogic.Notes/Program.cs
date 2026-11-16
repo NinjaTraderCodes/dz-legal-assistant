@@ -15,6 +15,8 @@ using DzLegal.CoreLogic.Notes;
 //   notes write --set <set> --calls <n> --writer codex|sonnet [--work <folder>]
 //   notes ingest --call <id> [--reply <file>] [--rejected] [--work <folder>]
 //   notes filter-sheet --note <id> --set <set>; notes filter --set <set> --model <ollama tag> [--limit <n>]
+//   notes sample --set <set> --count <n> --seed <n> --half codex,sonnet   (dev and challenge: the two writers' halves)
+//   notes relabel --set <set> --prepare; notes relabel --run <id> --ingest <reply>; notes compare --set <set>
 // Every command takes --repo <folder> (the worktree); without it the tool finds the repository above it.
 const string Usage = "usage: notes guide-items --prepare|--ingest … | guide-test --prepare|--compare … | cells --prepare|--write-table … [--repo <folder>]";
 
@@ -169,6 +171,18 @@ try
 
         case ("filter", "--set"):
             return DzLegal.CoreLogic.Notes.Filtering.FilterCommand.Run(files,
+                positional.FirstOrDefault() ?? throw new ArgumentException("--set <name>"), options);
+
+        case ("relabel", "--set") when positional.Contains("--prepare"):
+            return DzLegal.CoreLogic.Notes.Judging.RelabelCommand.Prepare(files,
+                positional.FirstOrDefault(p => !p.StartsWith("--", StringComparison.Ordinal)) ?? throw new ArgumentException("--set <name>"), options);
+
+        case ("relabel", "--run"):
+            return DzLegal.CoreLogic.Notes.Judging.RelabelCommand.Ingest(files,
+                positional.FirstOrDefault() ?? throw new ArgumentException("--run <id>"), Need("--ingest"), options);
+
+        case ("compare", "--set"):
+            return DzLegal.CoreLogic.Notes.Judging.CompareCommand.Run(files,
                 positional.FirstOrDefault() ?? throw new ArgumentException("--set <name>"), options);
 
         case ("sample", "--set"):

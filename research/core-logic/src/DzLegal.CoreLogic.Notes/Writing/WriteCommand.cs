@@ -162,7 +162,7 @@ public static class WriteCommand
         {
             ["guide"] = File.ReadAllText(files.Guide).ReplaceLineEndings("\n").Trim(),
             ["elements"] = Elements(data, claims),
-            ["requestKinds"] = Requests(data),
+            ["requestKinds"] = RequestList(data),
             ["scenarios"] = views.ToJsonString(NotesJson.Options).ReplaceLineEndings("\n"),
         });
     }
@@ -270,8 +270,9 @@ public static class WriteCommand
         return text.Length == 0 ? "(none: every scenario of this batch is outside the catalogue)" : text.ToString().TrimEnd('\n');
     }
 
-    private static string Requests(SamplerData data)
+    public static string RequestList(SamplerData data)
     {
+        ArgumentNullException.ThrowIfNull(data);
         var labels = new Dictionary<string, string>(StringComparer.Ordinal);
         foreach (var c in NotesJson.Load(data.Files.ClaimElements)["claims"]!.AsArray())
         {

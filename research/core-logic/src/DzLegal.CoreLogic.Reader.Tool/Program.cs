@@ -6,12 +6,13 @@ using DzLegal.CoreLogic.Reader.Front;
 
 // reader ids    --notes <notes.jsonl> --vocab <vocab.txt> --out <ids.jsonl>
 // reader encode --notes <notes.jsonl> --vocab <vocab.txt> --model <encoder.int8.onnx> --cache <folder>
+// reader values --notes <notes.jsonl> --out <values.jsonl>   (rung 2's dates and amounts, with their spans: the roles head's candidates)
 // The notes file is the one `notes export` writes (the loader's only door): one note per line with its id and its text
 // fields. ids writes, per note, the .NET pieces (the reference: training uses these ids, never Python's own).
 Console.OutputEncoding = System.Text.Encoding.UTF8;
-if (args.Length < 1 || args[0] is not ("ids" or "encode"))
+if (args.Length < 1 || args[0] is not ("ids" or "encode" or "values"))
 {
-    Console.Error.WriteLine("usage: reader ids|encode --notes <file> --vocab <file> [--out <file>] [--model <file> --cache <folder>]");
+    Console.Error.WriteLine("usage: reader ids|encode|values --notes <file> [--vocab <file>] [--out <file>] [--model <file> --cache <folder>]");
     return 2;
 }
 
@@ -32,8 +33,36 @@ static NoteInput Input(JsonNode note)
 
 try
 {
-    var sequence = NoteSequence.FromVocabulary(Need("--vocab"));
     var notes = File.ReadLines(Need("--notes")).Where(line => !string.IsNullOrWhiteSpace(line)).Select(line => JsonNode.Parse(line)!).ToList();
+    if (args[0] == "values")
+    {
+        using var writer = new StreamWriter(Need("--out"), append: false, new System.Text.UTF8Encoding(false)) { NewLine = "\n" };
+        foreach (var note in notes)
+        {
+            var input = Input(note);
+            var found = new List<ValueReading>();
+            foreach (var (field, text) in new[] { (NoteField.Subject, input.Subject), (NoteField.Facts, input.Facts), (NoteField.Requests, input.Requests), (NoteField.Documents, input.Documents) })
+            {
+                found.AddRange(DzLegal.CoreLogic.Reader.Values.DateParser.Read(text, field));
+                found.AddRange(DzLegal.CoreLogic.Reader.Values.AmountParser.Read(text, field));
+            }
+
+            writer.WriteLine(JsonSerializer.Serialize(new
+            {
+                id = note["id"]!.GetValue<string>(),
+                values = found.Select(v => new
+                {
+                    kind = v.Kind.ToString().ToLowerInvariant(), normalized = v.Normalized,
+                    field = v.Span.Field.ToString().ToLowerInvariant(), start = v.Span.Start, length = v.Span.Length,
+                }),
+            }));
+        }
+
+        Console.WriteLine($"{notes.Count.ToString(CultureInfo.InvariantCulture)} notes -> {Need("--out")}");
+        return 0;
+    }
+
+    var sequence = NoteSequence.FromVocabulary(Need("--vocab"));
     if (args[0] == "ids")
     {
         using var writer = new StreamWriter(Need("--out"), append: false, new System.Text.UTF8Encoding(false)) { NewLine = "\n" };

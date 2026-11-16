@@ -16,6 +16,7 @@ using DzLegal.CoreLogic.Notes;
 //   notes ingest --call <id> [--reply <file>] [--rejected] [--work <folder>]
 //   notes filter-sheet --note <id> --set <set>; notes filter --set <set> --model <ollama tag> [--limit <n>]
 //   notes sample --set <set> --count <n> --seed <n> --half codex,sonnet   (dev and challenge: the two writers' halves)
+//   notes accept --set pilot|train   (the owner's route of 16 November: kept on the code checks)
 //   notes relabel --set <set> --prepare; notes relabel --run <id> --ingest <reply>; notes compare --set <set>
 // Every command takes --repo <folder> (the worktree); without it the tool finds the repository above it.
 const string Usage = "usage: notes guide-items --prepare|--ingest … | guide-test --prepare|--compare … | cells --prepare|--write-table … [--repo <folder>]";
@@ -180,6 +181,37 @@ try
         case ("relabel", "--run"):
             return DzLegal.CoreLogic.Notes.Judging.RelabelCommand.Ingest(files,
                 positional.FirstOrDefault() ?? throw new ArgumentException("--run <id>"), Need("--ingest"), options);
+
+        case ("label-space", "--out"):
+        {
+            // The reader's label lists, from the same sources as the sampler and the writer (train/train_heads.py reads it).
+            var data = DzLegal.CoreLogic.Notes.Sampler.SamplerData.Load(files);
+            var space = new System.Text.Json.Nodes.JsonObject
+            {
+                ["scheme"] = "1.0",
+                ["claims"] = new System.Text.Json.Nodes.JsonArray([.. data.Claims.Select(c => (System.Text.Json.Nodes.JsonNode)new System.Text.Json.Nodes.JsonObject
+                {
+                    ["id"] = c.Id,
+                    ["roles"] = new System.Text.Json.Nodes.JsonArray([.. c.Roles.Select(r => (System.Text.Json.Nodes.JsonNode)new System.Text.Json.Nodes.JsonObject { ["relation"] = r.Relation, ["position"] = r.Position })]),
+                    ["elements"] = new System.Text.Json.Nodes.JsonArray([.. c.Elements.Select(e => (System.Text.Json.Nodes.JsonNode)new System.Text.Json.Nodes.JsonObject { ["kind"] = e.Kind, ["date"] = e.HasDate, ["amount"] = e.HasAmount })]),
+                })]),
+                ["requests"] = new System.Text.Json.Nodes.JsonArray([.. DzLegal.CoreLogic.Notes.Writing.WriteCommand.RequestKinds.Select(k => (System.Text.Json.Nodes.JsonNode)k.Kind)]),
+                ["slots"] = new System.Text.Json.Nodes.JsonArray([.. data.Slots.Select(s => (System.Text.Json.Nodes.JsonNode)new System.Text.Json.Nodes.JsonObject
+                {
+                    ["id"] = s.Id, ["type"] = s.Type,
+                    ["choices"] = new System.Text.Json.Nodes.JsonArray([.. s.Choices.Select(x => (System.Text.Json.Nodes.JsonNode)x)]),
+                    ["askedFor"] = new System.Text.Json.Nodes.JsonArray([.. s.AskedFor.Select(x => (System.Text.Json.Nodes.JsonNode)x)]),
+                })]),
+            };
+            var spaceOut = positional.FirstOrDefault() ?? throw new ArgumentException("--out <file>");
+            NotesJson.Write(spaceOut, space.ToJsonString(NotesJson.Options) + "\n");
+            Console.WriteLine(spaceOut);
+            return 0;
+        }
+
+        case ("accept", "--set"):
+            return DzLegal.CoreLogic.Notes.Filtering.AcceptCommand.Run(files,
+                positional.FirstOrDefault() ?? throw new ArgumentException("--set <name>"), options);
 
         case ("compare", "--set"):
             return DzLegal.CoreLogic.Notes.Judging.CompareCommand.Run(files,

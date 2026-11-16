@@ -13,6 +13,7 @@ namespace DzLegal.CoreLogic.Notes.Writing;
 /// scenario has one retry in all; on a second failure it is dropped (a failed note) or set aside (a rejected call).
 /// With <c>--recheck</c> the call's notes that failed a code check and are still waiting in the queue, unsent, are checked
 /// again from the same answer (after a fault of a check was fixed); a note that now passes is written, without a retry used.
+/// A scenario dropped for a code check is rechecked too, from the answer of the call that dropped it.
 /// </summary>
 public static class IngestCommand
 {
@@ -33,8 +34,14 @@ public static class IngestCommand
         var queue = QueueFile.Load(work);
         var lines = ids.Select(queue.Line).ToList();
         var recheck = flags.Contains("--recheck");
+        // A scenario dropped for a code check is rechecked from the answer of its last call only (the call that dropped it).
+        bool LastCall(string scenario) => Directory.GetFiles(Path.Combine(work, "calls"), "w-*.json")
+            .Select(f => NotesJson.Load(f))
+            .Where(r => r["scenarios"]!.AsArray().Any(x => (string?)x == scenario))
+            .Select(r => (string)r["call"]!).Order(StringComparer.Ordinal).LastOrDefault() == call;
         var process = Enumerable.Range(0, ids.Count).Where(i => !recheck ||
-            ((string?)lines[i]["state"] == "drawn" && lines[i]["writeCall"] is null && (string?)lines[i]["lastFailure"] == "codeCheck")).ToHashSet();
+            ((string?)lines[i]["state"] == "drawn" && lines[i]["writeCall"] is null && (string?)lines[i]["lastFailure"] == "codeCheck") ||
+            ((string?)lines[i]["state"] == "dropped" && (string?)lines[i]["reason"] == "codeCheck" && LastCall(ids[i]))).ToHashSet();
         if (!recheck && lines.Any(l => (string?)l["writeCall"] != call))
         {
             throw new InvalidOperationException($"{call}: its scenarios are no longer waiting for it (ingested already?)");
@@ -154,6 +161,7 @@ public static class IngestCommand
             line["state"] = "written";
             line["note"] = noteId;
             line.Remove("lastFailure");
+            line.Remove("reason");
         }
 
         Append(Path.Combine(work, "written", set + ".jsonl"), written);

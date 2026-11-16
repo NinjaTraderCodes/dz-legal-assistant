@@ -140,6 +140,14 @@ public static class WriterLabels
         JsonObject? First(string reference) => quotes.GetValueOrDefault(reference)?.FirstOrDefault();
 
         var claims = scenario["claims"]!.AsArray().Select(c => (string)c!).ToList();
+        var values = Values(scenario, quotes);
+
+        // An event dated «في اليوم نفسه» takes the date as it is written elsewhere in the note (guide, section 8).
+        JsonObject DateAt(JsonObject quote, string normal) =>
+            CodeChecks.IsSameDayReference((string)quote["quote"]!) &&
+            values.FirstOrDefault(v => (string)v!["kind"]! == "date" && (string?)v["normalized"] == normal)?["at"] is JsonObject written
+                ? written
+                : quote;
         var labels = new JsonObject { ["claims"] = new JsonArray([.. claims.Select(c => (JsonNode)c)]) };
         if ((string?)scenario["outsideKind"] is string kind)
         {
@@ -179,7 +187,7 @@ public static class WriterLabels
             ev["evidence"] = polarity == "notMentioned" ? new JsonArray() : Q($"event:{key}");
             if (e["date"] is not null && First($"event-date:{key}") is JsonObject dq)
             {
-                ev["date"] = Value("date", dq, (string)e["date"]!, false);
+                ev["date"] = Value("date", DateAt(dq, (string)e["date"]!), (string)e["date"]!, false);
             }
 
             if (e["amount"] is not null && First($"event-amount:{key}") is JsonObject aq)
@@ -215,7 +223,7 @@ public static class WriterLabels
         }
 
         labels["requests"] = requests;
-        labels["values"] = Values(scenario, quotes);
+        labels["values"] = values;
         return labels;
     }
 
@@ -226,10 +234,18 @@ public static class WriterLabels
     private static JsonArray Values(JsonObject scenario, IReadOnlyDictionary<string, List<JsonObject>> quotes)
     {
         var entries = new List<(JsonObject At, string Kind, string Normal, SortedSet<string> Roles, bool Disputed)>();
+        var sameDay = new List<(string Normal, string? Role)>();
         void Add(string reference, string kind, string normal, string? role, bool disputed)
         {
             foreach (var q in quotes.GetValueOrDefault(reference) ?? [])
             {
+                // «في اليوم نفسه»: nothing new is added to the values; the date written once carries the role (guide, section 8).
+                if (kind == "date" && CodeChecks.IsSameDayReference((string)q["quote"]!))
+                {
+                    sameDay.Add((normal, role));
+                    continue;
+                }
+
                 var same = entries.FindIndex(x => (string)x.At["field"]! == (string)q["field"]! && (int)x.At["start"]! == (int)q["start"]! &&
                                                   (int)x.At["length"]! == (int)q["length"]!);
                 if (same >= 0)
@@ -293,6 +309,14 @@ public static class WriterLabels
         {
             var kind = (string)x!["kind"]!;
             Add($"value:{x["what"]}", kind, kind == "date" ? (string)x["value"]! : Digits(x["value"]!), null, false);
+        }
+
+        foreach (var (normal, role) in sameDay.Where(x => x.Role is not null))
+        {
+            foreach (var entry in entries.Where(x => x.Kind == "date" && x.Normal == normal))
+            {
+                entry.Roles.Add(role!);
+            }
         }
 
         return new JsonArray([.. entries.Select(x =>

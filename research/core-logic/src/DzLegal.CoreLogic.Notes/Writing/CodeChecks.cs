@@ -114,7 +114,8 @@ public sealed partial class CodeChecks
             {
                 var field = Enum.Parse<NoteField>((string)q["field"]!, ignoreCase: true);
                 var read = kind == "date" ? DateParser.Read((string)q["quote"]!, field) : AmountParser.Read((string)q["quote"]!, field);
-                if (!read.Any(r => r.Normalized == normal))
+                if (!read.Any(r => r.Normalized == normal) &&
+                    !(kind == "date" && IsSameDayReference((string)q["quote"]!) && NoteWritesDate(note, normal)))
                 {
                     found.Add($"values: {reference}: «{q["quote"]}» does not read as {normal}");
                 }
@@ -207,6 +208,27 @@ public sealed partial class CodeChecks
                                         !families.Any(f => n.EndsWith(" " + f, StringComparison.Ordinal)))
             .Order(StringComparer.Ordinal)];
     }
+
+    /// <summary>
+    /// A date given as the same day as another date of the note (the labelling guide, section 8): «في اليوم نفسه»، «في نفس
+    /// اليوم»، «في التاريخ ذاته»، «يوم تحريره»، «يوم صدوره», and the same words with «ذات» or a preposition attached. Only
+    /// when the words hold no date of their own.
+    /// </summary>
+    public static bool IsSameDayReference(string quote)
+    {
+        ArgumentNullException.ThrowIfNull(quote);
+        return SameDay().IsMatch(Normal(quote)) && DateParser.Read(quote, NoteField.Facts).Count == 0;
+    }
+
+    /// <summary>True when one of the note's fields writes this date.</summary>
+    public static bool NoteWritesDate(JsonObject note, string normal)
+    {
+        ArgumentNullException.ThrowIfNull(note);
+        return Fields.Any(f => DateParser.Read((string?)note[f] ?? "", Enum.Parse<NoteField>(f, ignoreCase: true)).Any(r => r.Normalized == normal));
+    }
+
+    [GeneratedRegex(@"(?:اليوم|التاريخ)\s+(?:نفسه|ذاته)|(?:نفس|ذات)\s+(?:اليوم|التاريخ)|يوم\s+(?:تحريره|صدوره)")]
+    private static partial Regex SameDay();
 
     /// <summary>The words of a text after the level-2 normalisation of specs/article-store.md (letters only, no punctuation).</summary>
     public static List<string> Words(string text) =>

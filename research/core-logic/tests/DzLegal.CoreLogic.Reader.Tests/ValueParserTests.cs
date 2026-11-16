@@ -34,6 +34,8 @@ public sealed class ValueParserTests
     public void NoDateIsEmittedWhereTheGuideGivesNone(string text) => Assert.Empty(DateParser.Read(text, NoteField.Facts));
 
     [Theory]
+    [InlineData("يطلب الخلع بعشرة ملايين سنتيم", "100000", "عشرة ملايين سنتيم")]  // «بـ» attached to the number (pilot)
+    [InlineData("قدر الدين ب500.000 دج", "500000", "500.000 دج")]  // «بـ» attached to the digits
     [InlineData("قيمتها ٤٤٧٬٠٠٠ دينار", "447000", "٤٤٧٬٠٠٠ دينار")]  // the Arabic thousands separator (pilot, 15 November 2026)
     [InlineData("قدره ١٢٣٫٥٠ دج", "123.50", "١٢٣٫٥٠ دج")]  // the Arabic decimal separator
     [InlineData("بقيمة واحدا وعشرين مليونا وتسعمائة ألف سنتيم", "219000", "واحدا وعشرين مليونا وتسعمائة ألف سنتيم")]  // «واحدا»

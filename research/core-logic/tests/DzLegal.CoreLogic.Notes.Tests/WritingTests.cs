@@ -141,6 +141,45 @@ public sealed class WritingTests : IDisposable
         Assert.True((bool)values.Single(v => (string)v["at"]!["quote"]! == "100.000 دج")["amountDisputed"]!);
     }
 
+    /// <summary>
+    /// The guide, section 8: a date given as the same day as another date of the note («في اليوم نفسه») takes that date;
+    /// nothing new is added to the values, and the date written once carries the role (pilot, 16 November 2026).
+    /// </summary>
+    [Fact]
+    public void ADateGivenAsTheSameDayTakesTheDateWrittenElsewhere()
+    {
+        var scenario = Scenario();
+        foreach (var e in scenario["events"]!.AsArray().Where(e => (string)e!["kind"]! == "notice_served"))
+        {
+            e!["date"] = "2024-03-10";
+        }
+
+        scenario["slots"]!["notice_date"] = "2024-03-10";
+        var note = Note(facts: Facts.Replace("بتاريخ 05/01/2025", "في اليوم نفسه", StringComparison.Ordinal));
+        foreach (var fact in note["facts_of_scenario"]!.AsArray())
+        {
+            if ((string)fact!["ref"]! is "event-date:unpaid-sale-price/notice_served" or "event-date:contract-damages/notice_served" or "slot:notice_date")
+            {
+                fact["quotes"]![0]!["quote"] = "في اليوم نفسه";
+            }
+        }
+
+        var pointed = WriterLabels.Point(scenario, note);
+        Assert.Empty(Checks().Run(scenario, note, pointed, ShortCard));
+        var labels = WriterLabels.Labels(Data, scenario, pointed.Quotes);
+        var values = labels["values"]!.AsArray();
+        Assert.Equal(8, values.Count);  // no entry for «في اليوم نفسه»
+        var date = values.Single(v => (string)v!["at"]!["quote"]! == "10/03/2024")!;
+        Assert.Equal(["contract_concluded", "contract_date", "notice_date", "notice_served"], date["roles"]!.AsArray().Select(r => (string)r!));
+        var notice = labels["events"]!.AsArray().First(e => (string)e!["kind"]! == "notice_served")!;
+        Assert.Equal("10/03/2024", (string)notice["date"]!["at"]!["quote"]!);
+
+        // Without the date written anywhere in the note, the reference is refused.
+        var alone = Note(facts: Facts.Replace("بتاريخ 05/01/2025", "في اليوم نفسه", StringComparison.Ordinal)
+            .Replace("بتاريخ 10/03/2024", "", StringComparison.Ordinal));
+        Assert.False(CodeChecks.NoteWritesDate(alone, "2024-03-10"));
+    }
+
     [Fact]
     public void AGoodNotePassesTheCodeChecks()
     {

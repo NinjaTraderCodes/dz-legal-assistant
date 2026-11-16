@@ -88,7 +88,11 @@ public static partial class AmountParser
                 value /= 100;
             }
 
-            var start = tokens[first == i && glued is not null ? i : first].Start;
+            var startToken = tokens[first == i && glued is not null ? i : first];
+            var startBare = Bare(startToken.Word);
+            var start = startToken.Start + (Unprefixed(startBare).Length < startBare.Length
+                ? startToken.Word.IndexOf(startBare, StringComparison.Ordinal) + 1  // the span starts after «بـ»
+                : 0);
             found.Add(new ValueReading
             {
                 Kind = ValueKind.Amount,
@@ -169,9 +173,25 @@ public static partial class AmountParser
         return m.Success ? m.Groups["number"].Value : null;
     }
 
+    /// <summary>
+    /// A number word or digits with the preposition «بـ» attached («بعشرة ملايين», «ب500.000»): the number without it.
+    /// Any other word is returned as it is.
+    /// </summary>
+    private static string Unprefixed(string bare)
+    {
+        if (bare.Length < 2 || bare[0] != 'ب')
+        {
+            return bare;
+        }
+
+        var rest = bare[1..];
+        var word = rest.StartsWith('و') && rest.Length > 1 ? rest[1..] : rest;
+        return char.IsAsciiDigit(rest[0]) || Small.ContainsKey(word) || Scales.ContainsKey(word) ? rest : bare;
+    }
+
     private static bool IsNumberToken(string word)
     {
-        var bare = Bare(word);
+        var bare = Unprefixed(Bare(word));
         if (bare.Length == 0)
         {
             return false;
@@ -209,7 +229,7 @@ public static partial class AmountParser
         var any = false;
         for (var k = 0; k < words.Count; k++)
         {
-            var bare = Bare(words[k]);
+            var bare = Unprefixed(Bare(words[k]));
             if (bare == "و")
             {
                 continue;

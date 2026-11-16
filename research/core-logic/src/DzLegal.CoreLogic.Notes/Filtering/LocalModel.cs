@@ -14,24 +14,24 @@ public interface ISheetAnswerer
 
     string Digest { get; }
 
-    ModelAnswer Answer(string prompt, int questions);
+    /// <param name="prompt">The filled prompt.</param>
+    /// <param name="options">For each question in order, the letters of its options.</param>
+    ModelAnswer Answer(string prompt, IReadOnlyList<IReadOnlyList<string>> options);
 }
 
 /// <summary>
 /// The local filter model through Ollama, on loopback only (prompts/notes-filter-local.md): one note per call, temperature
-/// 0, a fixed seed, an output budget that grows with the sheet (<see cref="TokenBudget"/>), the answer constrained to
-/// schemas/filter-sheet.schema.json, thinking off.
+/// 0, a fixed seed, an output budget that grows with the sheet (<see cref="TokenBudget"/>), thinking off, and the answer
+/// constrained to the shape of schemas/filter-sheet.schema.json made exact for the sheet (<see cref="SheetSchema"/>).
 /// </summary>
 public sealed class LocalModel : ISheetAnswerer, IDisposable
 {
     public const string Endpoint = "http://127.0.0.1:11434";
     private readonly HttpClient http = new() { BaseAddress = new Uri(Endpoint), Timeout = TimeSpan.FromMinutes(5) };
-    private readonly JsonNode schema;
 
-    public LocalModel(string model, string schemaPath)
+    public LocalModel(string model)
     {
         Model = model;
-        schema = NotesJson.Load(schemaPath);
         var tags = JsonNode.Parse(http.GetStringAsync(new Uri("/api/tags", UriKind.Relative)).GetAwaiter().GetResult())!;
         Digest = (string?)tags["models"]!.AsArray().FirstOrDefault(m => (string)m!["name"]! == model || (string)m!["name"]! == model + ":latest")?["digest"]
                  ?? throw new InvalidOperationException($"Ollama has no model {model}");
@@ -42,20 +42,21 @@ public sealed class LocalModel : ISheetAnswerer, IDisposable
     public string Digest { get; }
 
     /// <summary>
-    /// False once Ollama refused to constrain this model's answer to the schema («Failed to initialize samplers»: Jais-3-3.7B
-    /// on 16 November 2026). The prompt is then sent without the constraint and the letters are read from the reply; the
-    /// trial's report says so.
+    /// False once Ollama refused to constrain this model's answer («Failed to initialize samplers»: Jais-3-3.7B on 16
+    /// November 2026). The prompt is then sent without the constraint and the letters are read from the reply; the trial's
+    /// report says so.
     /// </summary>
     public bool Constrained { get; private set; } = true;
 
-    public ModelAnswer Answer(string prompt, int questions)
+    public ModelAnswer Answer(string prompt, IReadOnlyList<IReadOnlyList<string>> options)
     {
+        ArgumentNullException.ThrowIfNull(options);
         var clock = Stopwatch.StartNew();
-        var (ok, text) = Send(prompt, questions);
+        var (ok, text) = Send(prompt, options);
         if (!ok && Constrained && text.Contains("Failed to initialize samplers", StringComparison.Ordinal))
         {
             Constrained = false;
-            (ok, text) = Send(prompt, questions);
+            (ok, text) = Send(prompt, options);
         }
 
         clock.Stop();
@@ -75,7 +76,37 @@ public sealed class LocalModel : ISheetAnswerer, IDisposable
     /// </summary>
     public static int TokenBudget(int questions) => Math.Max(120, questions * 6 + 20);
 
-    private (bool Ok, string Text) Send(string prompt, int questions)
+    /// <summary>
+    /// The schema of one sheet's answer: <c>{"answers": [...]}</c> with exactly one letter per question, each position
+    /// allowing only its own question's letters. With one list of a to l for every position, Gemma answered «d» ("not
+    /// mentioned" on a four-option question) to three-option questions, and 12 of its first 17 trial notes were invalid
+    /// (16 November 2026). (Ollama refuses <c>"items": false</c> and <c>additionalProperties</c> here.)
+    /// </summary>
+    public static JsonObject SheetSchema(IReadOnlyList<IReadOnlyList<string>> options)
+    {
+        ArgumentNullException.ThrowIfNull(options);
+        return new JsonObject
+        {
+            ["type"] = "object",
+            ["required"] = new JsonArray("answers"),
+            ["properties"] = new JsonObject
+            {
+                ["answers"] = new JsonObject
+                {
+                    ["type"] = "array",
+                    ["prefixItems"] = new JsonArray([.. options.Select(o => (JsonNode)new JsonObject
+                    {
+                        ["type"] = "string",
+                        ["enum"] = new JsonArray([.. o.Select(l => (JsonNode)l)]),
+                    })]),
+                    ["minItems"] = options.Count,
+                    ["maxItems"] = options.Count,
+                },
+            },
+        };
+    }
+
+    private (bool Ok, string Text) Send(string prompt, IReadOnlyList<IReadOnlyList<string>> options)
     {
         var body = new JsonObject
         {
@@ -83,11 +114,11 @@ public sealed class LocalModel : ISheetAnswerer, IDisposable
             ["messages"] = new JsonArray(new JsonObject { ["role"] = "user", ["content"] = prompt }),
             ["stream"] = false,
             ["think"] = false,
-            ["options"] = new JsonObject { ["temperature"] = 0, ["seed"] = 7, ["num_predict"] = TokenBudget(questions) },
+            ["options"] = new JsonObject { ["temperature"] = 0, ["seed"] = 7, ["num_predict"] = TokenBudget(options.Count) },
         };
         if (Constrained)
         {
-            body["format"] = schema.DeepClone();
+            body["format"] = SheetSchema(options);
         }
 
         using var content = new StringContent(body.ToJsonString(), Encoding.UTF8, "application/json");

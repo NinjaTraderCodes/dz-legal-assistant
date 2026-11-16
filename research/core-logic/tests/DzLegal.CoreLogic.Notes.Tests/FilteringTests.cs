@@ -117,6 +117,21 @@ public sealed class FilteringTests
         Assert.Equal(budget, LocalModel.TokenBudget(questions));
 
     [Fact]
+    public void EachAnswerIsConstrainedToItsOwnQuestionsLetters()
+    {
+        var sheet = Sheet();
+        var options = sheet.Questions.Select(q => (IReadOnlyList<string>)[.. q.Options.Select(o => o.Letter)]).ToList();
+        var schema = LocalModel.SheetSchema(options)["properties"]!["answers"]!;
+        Assert.Equal(sheet.Questions.Count, (int)schema["minItems"]!);
+        Assert.Equal(sheet.Questions.Count, (int)schema["maxItems"]!);
+        var positions = schema["prefixItems"]!.AsArray();
+        for (var i = 0; i < sheet.Questions.Count; i++)
+        {
+            Assert.Equal(sheet.Questions[i].Options.Select(o => o.Letter), positions[i]!["enum"]!.AsArray().Select(l => (string)l!));
+        }
+    }
+
+    [Fact]
     public void TheLettersAreReadPastMarkerLines()
     {
         Assert.Equal(["a", "c"], LocalModel.Letters("<|im_start|>assistant\n{\"answers\": [\"a\", \"c\"]}"));
@@ -132,7 +147,7 @@ public sealed class FilteringTests
 
         public string Digest => "0000000000000000";
 
-        public ModelAnswer Answer(string prompt, int questions)
+        public ModelAnswer Answer(string prompt, IReadOnlyList<IReadOnlyList<string>> options)
         {
             var n = calls++;
             var attempt = Math.Min(n, 1);  // the first call answers the first sheet, the next the rebuilt one
@@ -165,7 +180,7 @@ public sealed class FilteringTests
 
         public string Digest => "0000000000000000";
 
-        public ModelAnswer Answer(string prompt, int questions) => new(FilteringTests.Answer(sheetOf(Calls++)), "", 1.0);
+        public ModelAnswer Answer(string prompt, IReadOnlyList<IReadOnlyList<string>> options) => new(FilteringTests.Answer(sheetOf(Calls++)), "", 1.0);
     }
 
     private sealed class FixedPower(bool onBattery, int percent) : IPowerSource

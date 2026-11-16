@@ -78,7 +78,7 @@ public static class FilterTrial
         var seed = int.Parse(options.GetValueOrDefault("--seed") ?? throw new ArgumentException("--seed <n>"), CultureInfo.InvariantCulture);
         var minBattery = int.Parse(options.GetValueOrDefault("--min-battery") ?? "20", CultureInfo.InvariantCulture);
         var labels = new SheetLabels(SamplerData.Load(files));
-        using var model = new LocalModel(tag, Path.Combine(files.Prompts, "schemas", "filter-sheet.schema.json"));
+        using var model = new LocalModel(tag);
         var (report, stopped) = Measure(files, labels, model, work, count, seed, new SystemPower(), minBattery, Console.WriteLine);
         Console.WriteLine(report["table"]!.ToJsonString(NotesJson.Options));
         Console.WriteLine(ReportPath(work, tag, seed));

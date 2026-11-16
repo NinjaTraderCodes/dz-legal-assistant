@@ -21,7 +21,7 @@ public sealed record SheetQuestion(string Kind, string Path, string Text, IReadO
 /// </summary>
 public sealed class FilterSheet
 {
-    public const string Version = "filter-sheet-1";
+    public const string Version = "filter-sheet-1.1";  // 1.1: the same wording; each answer constrained to its own question's letters
     public const string NotMentioned = "notMentioned";
     public const string NoneOfThese = "none";
     private const string Letters = "abcdefghijkl";

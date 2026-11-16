@@ -55,12 +55,12 @@ public static class FilterCommand
         {
             sheet = FilterSheet.Build(labels, scenario, written, SheetSeed((string)written["id"]!, attempt));
             var prompt = Prompt(files, written, sheet);
-            var answer = model.Answer(prompt, sheet.Questions.Count);
+            var answer = model.Answer(prompt, sheet.Questions.Select(q => (IReadOnlyList<string>)[.. q.Options.Select(o => o.Letter)]).ToList());
             asked.Add(answer);
             result = FilterRule.Apply(sheet, answer.Letters);
             if (result.Verdict == FilterVerdict.Invalid)
             {
-                answer = model.Answer(prompt, sheet.Questions.Count);
+                answer = model.Answer(prompt, sheet.Questions.Select(q => (IReadOnlyList<string>)[.. q.Options.Select(o => o.Letter)]).ToList());
                 asked.Add(answer);
                 result = FilterRule.Apply(sheet, answer.Letters);
                 if (result.Verdict == FilterVerdict.Invalid)
@@ -105,7 +105,7 @@ public static class FilterCommand
         var tag = options.GetValueOrDefault("--model") ?? throw new ArgumentException("--model <ollama tag>");
         var limit = options.TryGetValue("--limit", out var l) ? int.Parse(l, CultureInfo.InvariantCulture) : int.MaxValue;
         var labels = new SheetLabels(SamplerData.Load(files));
-        using var model = new LocalModel(tag, Path.Combine(files.Prompts, "schemas", "filter-sheet.schema.json"));
+        using var model = new LocalModel(tag);
         var scenarios = WriteCommand.Scenarios(work, set);
         var notes = Written(work, set).ToDictionary(n => (string)n["id"]!, StringComparer.Ordinal);
         var queue = QueueFile.Load(work);

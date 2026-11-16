@@ -70,8 +70,7 @@
        "required": [
         "claim",
         "kind",
-        "polarity",
-        "actor"
+        "polarity"
        ],
        "properties": {
         "claim": {
@@ -582,5 +581,5 @@
    }
   }
  },
- "description": "16 November 2026: \"occurrence\" (1 when left out) and \"evidence\" (none for notMentioned or unknown, as the prompt says) are optional; a date or amount given as a bare normal form is accepted and normalised by `notes relabel --ingest`. \"normalized\" is optional: the guide (section 8) leaves it out for a relative date, a Hijri date and a foreign currency."
+ "description": "16 November 2026: \"occurrence\" (1 when left out) and \"evidence\" (none for notMentioned or unknown, as the prompt says) are optional; a date or amount given as a bare normal form is accepted and normalised by `notes relabel --ingest`. \"normalized\" is optional: the guide (section 8) leaves it out for a relative date, a Hijri date and a foreign currency. \"actor\" is optional and read as unknown when left out (an Opus relabeller left it out on notMentioned elements, 17 November)."
 }

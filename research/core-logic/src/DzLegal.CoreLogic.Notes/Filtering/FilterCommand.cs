@@ -6,7 +6,13 @@ using DzLegal.CoreLogic.Notes.Writing;
 namespace DzLegal.CoreLogic.Notes.Filtering;
 
 /// <summary>What filtering one note gave: its result, the sheet that decided, the answers asked, and the seconds spent.</summary>
-public sealed record FilteredNote(FilterResult Result, FilterSheet Sheet, IReadOnlyList<ModelAnswer> Asked, string Reason);
+/// <param name="Result">The rule's result on the last sheet asked.</param>
+/// <param name="Sheet">The last sheet asked (a decoy failure rebuilds it once).</param>
+/// <param name="Asked">Every answer, in order; the first answers <paramref name="FirstSheet"/>.</param>
+/// <param name="Reason">Why the note was dropped, or empty.</param>
+/// <param name="FirstSheet">The first sheet asked; null means the same as <paramref name="Sheet"/>.</param>
+public sealed record FilteredNote(FilterResult Result, FilterSheet Sheet, IReadOnlyList<ModelAnswer> Asked, string Reason,
+    FilterSheet? FirstSheet = null);
 
 /// <summary>
 /// <c>notes filter-sheet --note &lt;id&gt; --set &lt;set&gt;</c> and <c>notes filter --set &lt;set&gt; --model &lt;tag&gt;</c>
@@ -51,9 +57,11 @@ public static class FilterCommand
         var asked = new List<ModelAnswer>();
         FilterSheet sheet = null!;
         FilterResult result = null!;
+        FilterSheet? first = null;
         for (var attempt = 0; attempt < 2; attempt++)
         {
             sheet = FilterSheet.Build(labels, scenario, written, SheetSeed((string)written["id"]!, attempt));
+            first ??= sheet;
             var prompt = Prompt(files, written, sheet);
             var answer = model.Answer(prompt, sheet.Questions.Select(q => (IReadOnlyList<string>)[.. q.Options.Select(o => o.Letter)]).ToList());
             asked.Add(answer);
@@ -65,7 +73,7 @@ public static class FilterCommand
                 result = FilterRule.Apply(sheet, answer.Letters);
                 if (result.Verdict == FilterVerdict.Invalid)
                 {
-                    return new FilteredNote(result, sheet, asked, "filterInvalid");
+                    return new FilteredNote(result, sheet, asked, "filterInvalid", first);
                 }
             }
 
@@ -82,7 +90,7 @@ public static class FilterCommand
             FilterVerdict.TooManyBlanks => "tooManyBlanks",
             _ => "",
         };
-        return new FilteredNote(result, sheet, asked, reason);
+        return new FilteredNote(result, sheet, asked, reason, first);
     }
 
     public static int RunSheet(NotesFiles files, string noteId, IReadOnlyDictionary<string, string> options)
@@ -92,7 +100,24 @@ public static class FilterCommand
         var set = options.GetValueOrDefault("--set") ?? throw new ArgumentException("--set <set>");
         var written = Written(work, set).Single(n => (string)n["id"]! == noteId);
         var scenario = WriteCommand.Scenarios(work, set)[(string)written["provenance"]!["scenario"]!];
-        var sheet = FilterSheet.Build(new SheetLabels(SamplerData.Load(files)), scenario, written, SheetSeed(noteId, 0));
+        var attempt = int.Parse(options.GetValueOrDefault("--attempt") ?? "0", CultureInfo.InvariantCulture);
+        var sheet = FilterSheet.Build(new SheetLabels(SamplerData.Load(files)), scenario, written, SheetSeed(noteId, attempt));
+        if (options.ContainsKey("--json"))
+        {
+            // The sheet itself, for inspection: each question's kind, path, options and the values the label accepts.
+            Console.WriteLine(new JsonObject
+            {
+                ["prompt"] = Prompt(files, written, sheet),
+                ["questions"] = new JsonArray([.. sheet.Questions.Select(q => (JsonNode)new JsonObject
+                {
+                    ["kind"] = q.Kind, ["path"] = q.Path,
+                    ["options"] = new JsonArray([.. q.Options.Select(o => (JsonNode)new JsonObject { ["letter"] = o.Letter, ["value"] = o.Value })]),
+                    ["expected"] = new JsonArray([.. q.Expected.Select(e => (JsonNode)e)]),
+                })]),
+            }.ToJsonString(NotesJson.Compact));
+            return 0;
+        }
+
         Console.WriteLine(Prompt(files, written, sheet));
         return 0;
     }

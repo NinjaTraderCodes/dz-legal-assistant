@@ -168,7 +168,8 @@ public static class FilterTrial
             var scenario = scenarios[(string)note["provenance"]!["scenario"]!];
             var p = power.Read();
             var done = FilterCommand.Filter(files, labels, model, scenario, note);
-            var (asked, right) = Decoys(done.Sheet, done.Asked[0].Letters);
+            // The decoys are scored on the sheet the first answer answered (a decoy failure rebuilds the sheet with others).
+            var (asked, right) = Decoys(done.FirstSheet ?? done.Sheet, done.Asked[0].Letters);
             var record = new JsonObject
             {
                 ["note"] = id, ["verdict"] = done.Result.Verdict.ToString(), ["reason"] = done.Reason,
@@ -177,6 +178,7 @@ public static class FilterTrial
                     .Select(q => (JsonNode)q.Path)]),
                 ["blanked"] = new JsonArray([.. done.Result.Blanked.Select(b => (JsonNode)b)]),
                 ["decoysAsked"] = asked, ["decoysRight"] = right,
+                ["letters"] = new JsonArray([.. done.Asked.Select(a => (JsonNode)new JsonArray([.. (a.Letters ?? []).Select(l => (JsonNode)l)]))]),
                 ["seconds"] = Math.Round(done.Asked.Sum(a => a.Seconds) / Math.Max(1, done.Asked.Count), 2),
                 ["calls"] = done.Asked.Count, ["power"] = PowerNode(p),
             };

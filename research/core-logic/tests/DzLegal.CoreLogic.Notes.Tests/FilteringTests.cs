@@ -165,6 +165,9 @@ public sealed class FilteringTests
         var done = FilterCommand.Filter(files, Labels, model, WritingTests.Scenario(), Written());
         Assert.Equal(FilterVerdict.Kept, done.Result.Verdict);
         Assert.Equal(2, done.Asked.Count);
+        // The first answer answered the first sheet: its decoys are scored there, not on the rebuilt sheet's.
+        Assert.Equal(Sheet(0).Text(), done.FirstSheet!.Text());
+        Assert.Equal(Sheet(1).Text(), done.Sheet.Text());
 
         // Twice unreadable: dropped as filterInvalid.
         var broken = new StandIn((_, _) => ["z"]);

@@ -109,6 +109,13 @@ public sealed class FilteringTests
         Assert.Contains(planted, p => p.Path == "events/contract-damages/other/polarity");
     }
 
+    [Theory]
+    [InlineData(18, 128)]
+    [InlineData(10, 120)]  // never under the prompt's figure
+    [InlineData(37, 242)]  // a two-claim note's sheet: 120 tokens cut its letters off
+    public void TheAnswersTokenBudgetGrowsWithTheSheet(int questions, int budget) =>
+        Assert.Equal(budget, LocalModel.TokenBudget(questions));
+
     [Fact]
     public void TheLettersAreReadPastMarkerLines()
     {

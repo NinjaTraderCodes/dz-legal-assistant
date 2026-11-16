@@ -19,7 +19,8 @@ public interface ISheetAnswerer
 
 /// <summary>
 /// The local filter model through Ollama, on loopback only (prompts/notes-filter-local.md): one note per call, temperature
-/// 0, a fixed seed, at most 120 output tokens, the answer constrained to schemas/filter-sheet.schema.json, thinking off.
+/// 0, a fixed seed, an output budget that grows with the sheet (<see cref="TokenBudget"/>), the answer constrained to
+/// schemas/filter-sheet.schema.json, thinking off.
 /// </summary>
 public sealed class LocalModel : ISheetAnswerer, IDisposable
 {
@@ -50,11 +51,11 @@ public sealed class LocalModel : ISheetAnswerer, IDisposable
     public ModelAnswer Answer(string prompt, int questions)
     {
         var clock = Stopwatch.StartNew();
-        var (ok, text) = Send(prompt);
+        var (ok, text) = Send(prompt, questions);
         if (!ok && Constrained && text.Contains("Failed to initialize samplers", StringComparison.Ordinal))
         {
             Constrained = false;
-            (ok, text) = Send(prompt);
+            (ok, text) = Send(prompt, questions);
         }
 
         clock.Stop();
@@ -67,7 +68,14 @@ public sealed class LocalModel : ISheetAnswerer, IDisposable
         return new ModelAnswer(Letters(raw), raw, clock.Elapsed.TotalSeconds);
     }
 
-    private (bool Ok, string Text) Send(string prompt)
+    /// <summary>
+    /// The answer's token budget grows with the sheet: 120 tokens (the prompt's figure, written for sheets of 18 to 25
+    /// questions) cut off the letters of a two-claim note's sheet of 33 to 37 questions (16 November 2026). Six tokens a
+    /// question and twenty for the braces, never under 120.
+    /// </summary>
+    public static int TokenBudget(int questions) => Math.Max(120, questions * 6 + 20);
+
+    private (bool Ok, string Text) Send(string prompt, int questions)
     {
         var body = new JsonObject
         {
@@ -75,7 +83,7 @@ public sealed class LocalModel : ISheetAnswerer, IDisposable
             ["messages"] = new JsonArray(new JsonObject { ["role"] = "user", ["content"] = prompt }),
             ["stream"] = false,
             ["think"] = false,
-            ["options"] = new JsonObject { ["temperature"] = 0, ["seed"] = 7, ["num_predict"] = 120 },
+            ["options"] = new JsonObject { ["temperature"] = 0, ["seed"] = 7, ["num_predict"] = TokenBudget(questions) },
         };
         if (Constrained)
         {

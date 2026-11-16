@@ -96,6 +96,17 @@ public sealed partial class CueTableTests(ITestOutputHelper output)
         Assert.Null(Engine.Vote(Text, "notice_served"));  // an informal demand nearby: the kind asks for no vote
     }
 
+    [Fact]
+    public void TriggersAreListedWhereTheyStandInTheOriginalText()
+    {
+        const string Text = "أعذَره بتاريخ 12 مارس 2025، ثم دفع 200.000 دج";
+        var found = Engine.Triggers(Text, NoteField.Facts);
+        var notice = Assert.Single(found, f => f.Kind == "notice_served");
+        Assert.Equal("أعذَر", Text.Substring(notice.Span.Start, notice.Span.Length));
+        Assert.Contains(found, f => f.Kind == "payment_made" && Text.Substring(f.Span.Start, f.Span.Length) == "دفع");
+        Assert.Equal(found.OrderBy(f => f.Span.Start).Select(f => f.Span.Start), found.Select(f => f.Span.Start));
+    }
+
     [GeneratedRegex("«([^»]+)»")]
     private static partial Regex Quoted();
 }

@@ -42,8 +42,9 @@ def focal(logits: torch.Tensor, target: torch.Tensor, gamma: float = 2.0) -> tor
     return (-(1 - lp.exp()) ** gamma * lp).mean()
 
 
-def note_loss(model: Heads, space: Space, note, t, loss_kind: str, pol_weights: torch.Tensor | None) -> torch.Tensor:
-    out = model(torch.from_numpy(note.tokens), torch.from_numpy(note.fields), torch.from_numpy(note.vector), value_index_lists(note))
+def note_loss(model: Heads, space: Space, note, t, loss_kind: str, pol_weights: torch.Tensor | None, out: dict | None = None) -> torch.Tensor:
+    if out is None:
+        out = model(torch.from_numpy(note.tokens), torch.from_numpy(note.fields), torch.from_numpy(note.vector), value_index_lists(note))
     bce = nn.functional.binary_cross_entropy_with_logits
     total = WEIGHTS["claim"] * bce(out["claim"], torch.from_numpy(t.claims))
     evidence = []
@@ -142,6 +143,7 @@ def main(argv=None) -> int:
     p.add_argument("--patience", type=int, default=3)
     p.add_argument("--batch", type=int, default=32, help="notes per step (the spec's 32; fewer on a small training set)")
     p.add_argument("--lr", type=float, default=1e-3)
+    p.add_argument("--init", help="heads.pt to start from (rung 5: refit the heads of a fine-tuned encoder on its 8-bit cache)")
     p.add_argument("--out", required=True)
     a = p.parse_args(argv)
     if purpose_of(a.train) != "train" or purpose_of(a.tune) != "tune":
@@ -160,6 +162,8 @@ def main(argv=None) -> int:
             counts[e[1]] += 1
     pol_weights = torch.tensor(counts.sum() / (len(counts) * counts), dtype=torch.float32)
     model = Heads(space)
+    if a.init:
+        model.load_state_dict(torch.load(a.init))
     opt = torch.optim.AdamW(model.parameters(), lr=a.lr, weight_decay=0.01)
     batch = a.batch
     steps = a.epochs * math.ceil(len(train) / batch)
@@ -206,7 +210,7 @@ def main(argv=None) -> int:
         score(a.scorer, os.path.join(folder, "notes.jsonl"), os.path.join(out, "answers.jsonl"), os.path.join(out, "given.jsonl"), out, "measure", False)
     packages = subprocess.run([sys.executable, "-m", "pip", "freeze"], capture_output=True, text=True).stdout.split()
     with open(os.path.join(a.out, "run.json"), "w", encoding="utf-8", newline="\n") as f:
-        json.dump({"seed": a.seed, "loss": a.loss, "batch": a.batch, "lr": a.lr, "train": a.train, "tune": a.tune, "measure": a.measure, "cache": a.cache,
+        json.dump({"seed": a.seed, "loss": a.loss, "batch": a.batch, "lr": a.lr, "init": a.init, "train": a.train, "tune": a.tune, "measure": a.measure, "cache": a.cache,
                    "trainNotes": len(train), "tuneNotes": len(tune), "bestEpoch": best_epoch, "bestTuning": best,
                    "history": history, "packages": packages}, f, indent=1)
     print(f"best epoch {best_epoch}: tuning {best} -> {a.out}")

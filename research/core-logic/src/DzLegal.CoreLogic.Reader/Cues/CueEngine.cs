@@ -61,6 +61,31 @@ public sealed class CueEngine
 
     public IReadOnlyCollection<string> Kinds => [.. kinds.Keys];
 
+    /// <summary>
+    /// Every place a kind's trigger words occur in a text, as spans of the original text (for linking a date or an amount to
+    /// the event whose trigger is nearest in its sentence: the route experiment of 17 November 2026). No polarity is read.
+    /// </summary>
+    public IReadOnlyList<(string Kind, TextSpan Span)> Triggers(string text, NoteField field)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+        var (normal, original) = Map(text);
+        var found = new List<(string Kind, TextSpan Span)>();
+        foreach (var (kind, cues) in kinds)
+        {
+            foreach (var trigger in cues.Triggers.Where(t => t.Length > 0))
+            {
+                for (var i = normal.IndexOf(trigger, StringComparison.Ordinal); i >= 0; i = normal.IndexOf(trigger, i + 1, StringComparison.Ordinal))
+                {
+                    var first = original[i];
+                    var last = original[i + trigger.Length - 1];
+                    found.Add((kind, new TextSpan(field, first, last - first + 1)));
+                }
+            }
+        }
+
+        return [.. found.OrderBy(f => f.Span.Start).ThenBy(f => f.Kind, StringComparer.Ordinal)];
+    }
+
     /// <summary>The vote on one event kind in one field of a note, or null when the cues are not plain.</summary>
     public CueVote? Vote(string text, string kind, NoteField field = NoteField.Facts)
     {

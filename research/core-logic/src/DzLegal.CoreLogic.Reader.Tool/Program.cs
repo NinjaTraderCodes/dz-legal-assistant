@@ -6,13 +6,14 @@ using DzLegal.CoreLogic.Reader.Front;
 
 // reader ids    --notes <notes.jsonl> --vocab <vocab.txt> --out <ids.jsonl>
 // reader encode --notes <notes.jsonl> --vocab <vocab.txt> --model <encoder.int8.onnx> --cache <folder>
+// reader triggers --notes <notes.jsonl> --cues <cues.json> --out <triggers.jsonl>   (where each kind's trigger words occur)
 // reader values --notes <notes.jsonl> --out <values.jsonl>   (rung 2's dates and amounts, with their spans: the roles head's candidates)
 // The notes file is the one `notes export` writes (the loader's only door): one note per line with its id and its text
 // fields. ids writes, per note, the .NET pieces (the reference: training uses these ids, never Python's own).
 Console.OutputEncoding = System.Text.Encoding.UTF8;
-if (args.Length < 1 || args[0] is not ("ids" or "encode" or "values"))
+if (args.Length < 1 || args[0] is not ("ids" or "encode" or "values" or "triggers"))
 {
-    Console.Error.WriteLine("usage: reader ids|encode|values --notes <file> [--vocab <file>] [--out <file>] [--model <file> --cache <folder>]");
+    Console.Error.WriteLine("usage: reader ids|encode|values|triggers --notes <file> [--vocab <file>] [--out <file>] [--model <file> --cache <folder>]");
     return 2;
 }
 
@@ -34,6 +35,29 @@ static NoteInput Input(JsonNode note)
 try
 {
     var notes = File.ReadLines(Need("--notes")).Where(line => !string.IsNullOrWhiteSpace(line)).Select(line => JsonNode.Parse(line)!).ToList();
+    if (args[0] == "triggers")
+    {
+        var cues = DzLegal.CoreLogic.Reader.Cues.CueEngine.Load(Need("--cues"));
+        using var writer = new StreamWriter(Need("--out"), append: false, new System.Text.UTF8Encoding(false)) { NewLine = "\n" };
+        foreach (var note in notes)
+        {
+            var input = Input(note);
+            var found = new List<object>();
+            foreach (var (field, text) in new[] { (NoteField.Subject, input.Subject), (NoteField.Facts, input.Facts), (NoteField.Requests, input.Requests), (NoteField.Documents, input.Documents) })
+            {
+                found.AddRange(cues.Triggers(text, field).Select(t => (object)new
+                {
+                    kind = t.Kind, field = t.Span.Field.ToString().ToLowerInvariant(), start = t.Span.Start, length = t.Span.Length,
+                }));
+            }
+
+            writer.WriteLine(JsonSerializer.Serialize(new { id = note["id"]!.GetValue<string>(), triggers = found }));
+        }
+
+        Console.WriteLine($"{notes.Count.ToString(CultureInfo.InvariantCulture)} notes -> {Need("--out")}");
+        return 0;
+    }
+
     if (args[0] == "values")
     {
         using var writer = new StreamWriter(Need("--out"), append: false, new System.Text.UTF8Encoding(false)) { NewLine = "\n" };

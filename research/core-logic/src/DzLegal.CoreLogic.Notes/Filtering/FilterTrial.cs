@@ -92,13 +92,17 @@ public static class FilterTrial
 
     public static string ReportPath(string work, string tag, int seed) => Stem(work, tag, seed) + ".json";
 
-    /// <summary>The trial's notes, chosen once by the seed among the written pilot notes and kept for every model and resume.</summary>
+    /// <summary>
+    /// The trial's notes, chosen once by the seed among the written pilot notes and kept for every model and resume; a
+    /// trial of fewer notes takes the first of that list, so that every model is measured on the same notes.
+    /// </summary>
     public static List<string> Chosen(string work, int count, int seed)
     {
         var path = Path.Combine(Folder(work), $"trial-seed{seed}.chosen.json");
         if (File.Exists(path))
         {
-            return [.. NotesJson.Load(path)["notes"]!.AsArray().Select(n => (string)n!)];
+            // A smaller trial takes the first notes of the same list (the owner's decision of 16 November 2026: Jais on 10).
+            return [.. NotesJson.Load(path)["notes"]!.AsArray().Select(n => (string)n!).Take(count)];
         }
 
         var written = FilterCommand.Written(work, "pilot")

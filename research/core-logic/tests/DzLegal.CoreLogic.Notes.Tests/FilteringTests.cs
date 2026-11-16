@@ -166,6 +166,26 @@ public sealed class FilteringTests
         public Power Read() => new(onBattery, percent);
     }
 
+    /// <summary>The owner's decision of 16 November 2026 (Jais on 10 notes): a smaller trial takes the first notes of the list
+    /// chosen for the first model, so both models are measured on the same notes.</summary>
+    [Fact]
+    public void ASmallerTrialTakesTheFirstNotesOfTheSameList()
+    {
+        var work = Path.Combine(Path.GetTempPath(), "chosen-" + Guid.NewGuid().ToString("N"));
+        try
+        {
+            Directory.CreateDirectory(Path.Combine(work, "filter-trial"));
+            NotesJson.Write(Path.Combine(work, "filter-trial", "trial-seed9.chosen.json"),
+                """{ "seed": 9, "notes": ["n-a", "n-b", "n-c"] }""" + "\n");
+            Assert.Equal(["n-a", "n-b"], FilterTrial.Chosen(work, 2, 9));
+            Assert.Equal(["n-a", "n-b", "n-c"], FilterTrial.Chosen(work, 100, 9));
+        }
+        finally
+        {
+            Directory.Delete(work, recursive: true);
+        }
+    }
+
     /// <summary>The owner's conditions of 16 November 2026: each note saved as it is done, a resumed trial asks nothing for the
     /// notes already done, and the battery floor stops the trial before a note, with nothing lost.</summary>
     [Fact]

@@ -75,6 +75,17 @@ public sealed class JudgingTests
     }
 
     [Fact]
+    public void AValueWithoutANormalFormIsNotCompared()
+    {
+        var other = Labels();
+        other["values"]!.AsArray().Add(new JsonObject
+        {
+            ["kind"] = "date", ["at"] = Q("facts", "ذلك اليوم", 0), ["relative"] = true, ["roles"] = new JsonArray(),
+        });
+        Assert.Empty(CompareCommand.Differences(Data.Value, Text(), Labels(), other));
+    }
+
+    [Fact]
     public void ABareDateOrAmountIsReadByItsNormalForm()
     {
         var other = Labels();

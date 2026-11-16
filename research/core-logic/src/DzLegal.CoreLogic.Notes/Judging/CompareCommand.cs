@@ -187,8 +187,10 @@ public static class CompareCommand
         }
 
         // Every written value, matched by overlapping quotes, in both directions.
-        var valuesW = Items(writer["values"]).ToList();
-        var valuesR = Items(relabel["values"]).ToList();
+        // A value with no normal form (a relative or Hijri date, a foreign currency: guide, section 8) is not compared: the
+        // reader does not emit one and the scorer counts it apart.
+        var valuesW = Items(writer["values"]).Where(HasNormalForm).ToList();
+        var valuesR = Items(relabel["values"]).Where(HasNormalForm).ToList();
         foreach (var v in valuesW.Where(v => !Matched(v, valuesR)))
         {
             diff.Add($"values/{At(v)}");
@@ -204,6 +206,12 @@ public static class CompareCommand
         }
 
         return diff;
+    }
+
+    public static bool HasNormalForm(JsonObject v)
+    {
+        ArgumentNullException.ThrowIfNull(v);
+        return v["normalized"] is not null && (bool?)v["relative"] != true && (string?)v["calendar"] != "hijri" && v["currency"] is null;
     }
 
     private static bool Matched(JsonObject v, List<JsonObject> others)

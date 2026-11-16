@@ -95,8 +95,9 @@ public static class CompareCommand
             diff.Add("claims/evidence");
         }
 
-        // The plaintiff's role, per claim.
-        foreach (var claim in claimsW.Where(c => c != "outside").Order(StringComparer.Ordinal))
+        // The plaintiff's role, per claim type that offers a choice (the relabeller is asked for no other: a claim type with
+        // one role has it from the catalogue, and the writer's labels carry it).
+        foreach (var claim in claimsW.Where(c => data.ClaimById.TryGetValue(c, out var def) && def.Roles.Count > 1).Order(StringComparer.Ordinal))
         {
             var w = Find(writer["roles"], "claim", claim);
             var r = Find(relabel["roles"], "claim", claim);

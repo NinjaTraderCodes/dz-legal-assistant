@@ -75,6 +75,22 @@ public sealed class JudgingTests
     }
 
     [Fact]
+    public void ARoleIsComparedOnlyWhereTheClaimTypeOffersAChoice()
+    {
+        var writer = Labels();
+        writer["claims"] = new JsonArray("nafaqa");
+        writer["roles"] = new JsonArray(new JsonObject { ["claim"] = "nafaqa", ["relation"] = "marriage", ["position"] = "wife", ["evidence"] = new JsonArray() });
+        var other = writer.DeepClone().AsObject();
+        other["roles"] = new JsonArray();
+        Assert.DoesNotContain(CompareCommand.Differences(Data.Value, Text(), writer, other), d => d.StartsWith("roles/", StringComparison.Ordinal));
+        writer["claims"] = new JsonArray("custody");
+        writer["roles"]![0]!["claim"] = "custody";
+        writer["roles"]![0]!["position"] = "mother";
+        other["claims"] = new JsonArray("custody");
+        Assert.Contains("roles/custody", CompareCommand.Differences(Data.Value, Text(), writer, other));
+    }
+
+    [Fact]
     public void AValueWithoutANormalFormIsNotCompared()
     {
         var other = Labels();

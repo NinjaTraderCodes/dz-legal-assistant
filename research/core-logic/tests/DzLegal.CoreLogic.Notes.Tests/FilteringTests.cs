@@ -148,4 +148,66 @@ public sealed class FilteringTests
         var broken = new StandIn((_, _) => ["z"]);
         Assert.Equal("filterInvalid", FilterCommand.Filter(files, Labels, broken, WritingTests.Scenario(), Written()).Reason);
     }
+
+    /// <summary>Answers the letter of the right option for every question of whichever sheet it is given; counts its calls.</summary>
+    private sealed class Counting(Func<int, FilterSheet> sheetOf) : ISheetAnswerer
+    {
+        public int Calls { get; private set; }
+
+        public string Model => "stand-in";
+
+        public string Digest => "0000000000000000";
+
+        public ModelAnswer Answer(string prompt, int questions) => new(FilteringTests.Answer(sheetOf(Calls++)), "", 1.0);
+    }
+
+    private sealed class FixedPower(bool onBattery, int percent) : IPowerSource
+    {
+        public Power Read() => new(onBattery, percent);
+    }
+
+    /// <summary>The owner's conditions of 16 November 2026: each note saved as it is done, a resumed trial asks nothing for the
+    /// notes already done, and the battery floor stops the trial before a note, with nothing lost.</summary>
+    [Fact]
+    public void TheTrialSavesEachNoteResumesWithoutRepeatingAndStopsAtTheBatteryFloor()
+    {
+        var files = NotesFiles.Find(null);
+        var work = Path.Combine(Path.GetTempPath(), "trial-" + Guid.NewGuid().ToString("N"));
+        try
+        {
+            Directory.CreateDirectory(Path.Combine(work, "scenarios"));
+            Directory.CreateDirectory(Path.Combine(work, "written"));
+            NotesJson.Write(Path.Combine(work, "scenarios", "pilot.jsonl"), WritingTests.Scenario().ToJsonString(NotesJson.Compact) + "\n");
+            var note = Written();
+            note["set"] = "pilot";
+            note["provenance"]!["scenario"] = "s-fx-00001";
+            note["provenance"]!["writer"] = new JsonObject { ["family"] = "openai" };
+            NotesJson.Write(Path.Combine(work, "written", "pilot.jsonl"), note.ToJsonString(NotesJson.Compact) + "\n");
+
+            // The battery at the floor: nothing is asked, nothing written, the trial says it stopped.
+            var low = new Counting(_ => Sheet());
+            var (_, stopped) = FilterTrial.Measure(files, Labels, low, work, 1, 5, new FixedPower(true, 20), 20);
+            Assert.True(stopped);
+            Assert.Equal(0, low.Calls);
+
+            // On mains: both passes are done and saved; the plain run answers right, so the plant is counted.
+            var model = new Counting(_ => Sheet());
+            var (report, done) = FilterTrial.Measure(files, Labels, model, work, 1, 5, new FixedPower(false, 100), 20);
+            Assert.False(done);
+            Assert.True((bool)report["complete"]!);
+            Assert.Equal("0 of 2", (string)report["table"]!["notesTimedOnBattery"]!);  // the plain run and the counted plant
+            Assert.Equal(1, (int)report["table"]!["countedPlants"]!);
+            var calls = model.Calls;
+
+            // Resumed: the notes already done are not asked again.
+            var again = new Counting(_ => Sheet());
+            FilterTrial.Measure(files, Labels, again, work, 1, 5, new FixedPower(false, 100), 20);
+            Assert.Equal(0, again.Calls);
+            Assert.True(calls >= 1);
+        }
+        finally
+        {
+            Directory.Delete(work, recursive: true);
+        }
+    }
 }

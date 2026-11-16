@@ -40,29 +40,52 @@ public sealed class LocalModel : ISheetAnswerer, IDisposable
 
     public string Digest { get; }
 
+    /// <summary>
+    /// False once Ollama refused to constrain this model's answer to the schema («Failed to initialize samplers»: Jais-3-3.7B
+    /// on 16 November 2026). The prompt is then sent without the constraint and the letters are read from the reply; the
+    /// trial's report says so.
+    /// </summary>
+    public bool Constrained { get; private set; } = true;
+
     public ModelAnswer Answer(string prompt, int questions)
+    {
+        var clock = Stopwatch.StartNew();
+        var (ok, text) = Send(prompt);
+        if (!ok && Constrained && text.Contains("Failed to initialize samplers", StringComparison.Ordinal))
+        {
+            Constrained = false;
+            (ok, text) = Send(prompt);
+        }
+
+        clock.Stop();
+        if (!ok)
+        {
+            throw new InvalidOperationException($"Ollama: {text}");
+        }
+
+        var raw = (string?)JsonNode.Parse(text)?["message"]?["content"] ?? "";
+        return new ModelAnswer(Letters(raw), raw, clock.Elapsed.TotalSeconds);
+    }
+
+    private (bool Ok, string Text) Send(string prompt)
     {
         var body = new JsonObject
         {
             ["model"] = Model,
             ["messages"] = new JsonArray(new JsonObject { ["role"] = "user", ["content"] = prompt }),
-            ["format"] = schema.DeepClone(),
             ["stream"] = false,
             ["think"] = false,
             ["options"] = new JsonObject { ["temperature"] = 0, ["seed"] = 7, ["num_predict"] = 120 },
         };
-        var clock = Stopwatch.StartNew();
+        if (Constrained)
+        {
+            body["format"] = schema.DeepClone();
+        }
+
         using var content = new StringContent(body.ToJsonString(), Encoding.UTF8, "application/json");
         using var response = http.PostAsync(new Uri("/api/chat", UriKind.Relative), content).GetAwaiter().GetResult();
         var text = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-        clock.Stop();
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new InvalidOperationException($"Ollama: {(int)response.StatusCode} {text}");
-        }
-
-        var raw = (string?)JsonNode.Parse(text)?["message"]?["content"] ?? "";
-        return new ModelAnswer(Letters(raw), raw, clock.Elapsed.TotalSeconds);
+        return (response.IsSuccessStatusCode, response.IsSuccessStatusCode ? text : $"{(int)response.StatusCode} {text}");
     }
 
     /// <summary>

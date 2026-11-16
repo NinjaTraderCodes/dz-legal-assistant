@@ -1,19 +1,71 @@
 using System.Globalization;
+using System.Runtime.InteropServices;
 using System.Text.Json.Nodes;
 using DzLegal.CoreLogic.Notes.Sampler;
 using DzLegal.CoreLogic.Notes.Writing;
 
 namespace DzLegal.CoreLogic.Notes.Filtering;
 
+/// <summary>The laptop's power: on battery or on mains, and the charge left.</summary>
+public sealed record Power(bool OnBattery, int Percent);
+
+/// <summary>Reads the power status (kernel32 GetSystemPowerStatus); a stand-in for tests.</summary>
+public interface IPowerSource
+{
+    Power Read();
+}
+
+public sealed class SystemPower : IPowerSource
+{
+    public Power Read()
+    {
+        if (!NativeMethods.GetSystemPowerStatus(out var status))
+        {
+            return new Power(false, 100);
+        }
+
+        return new Power(status.AcLineStatus == 0, status.BatteryLifePercent == 255 ? 100 : status.BatteryLifePercent);
+    }
+}
+
+internal static class NativeMethods
+{
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct SystemPowerStatus
+    {
+        public byte AcLineStatus;
+        public byte BatteryFlag;
+        public byte BatteryLifePercent;
+        public byte SystemStatusFlag;
+        public int BatteryLifeTime;
+        public int BatteryFullLifeTime;
+    }
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    internal static extern bool GetSystemPowerStatus(out SystemPowerStatus status);
+}
+
 /// <summary>
-/// <c>notes filter-trial --notes 100 --seed &lt;n&gt; --model &lt;tag&gt;</c> (specs/notes-pipeline.md, "The filter trial"): the
-/// filter on written pilot notes as they are, then on copies with one planted contradiction each (every sentence that holds
-/// a quote of one fact deleted, when none of those sentences holds a quote of another fact). A plant counts only where the
-/// unaltered copy's answer for that field was the label; it is caught when the planted copy's answer is not, or when rules
-/// 1 to 3 drop the copy. Nothing is written to the queue or to a set: the planted copies are never trained on.
+/// <c>notes filter-trial --notes 100 --seed &lt;n&gt; --model &lt;tag&gt; [--min-battery 20]</c> (specs/notes-pipeline.md, "The
+/// filter trial"): the filter on written pilot notes as they are, then on copies with one planted contradiction each (every
+/// sentence that holds a quote of one fact deleted, when none of those sentences holds a quote of another fact). A plant
+/// counts only where the unaltered copy's answer for that field was the label; it is caught when the planted copy's answer
+/// is not, or when rules 1 to 3 drop the copy. Nothing is written to the queue or to a set: the planted copies are never
+/// trained on.
+/// <para>
+/// The owner's conditions of 16 November 2026 (the trial ran on battery): the notes are chosen once and kept in
+/// <c>trial-seed&lt;n&gt;.chosen.json</c> for every model; each model runs two passes, the notes as written and then the
+/// planted copies; each note's result is appended to its pass's file as soon as it is done, and a resumed trial skips the
+/// notes already done; before each note the battery is read, and at or under <c>--min-battery</c> percent on battery the
+/// trial stops (exit 3) with everything saved. Each record keeps the power state, so the seconds are read as battery or
+/// mains figures.
+/// </para>
 /// </summary>
 public static class FilterTrial
 {
+    public const int BatteryStop = 3;
     private static readonly string[] Fields = ["subject", "facts", "requests", "documents"];
 
     public static int Run(NotesFiles files, IReadOnlyDictionary<string, string> options)
@@ -24,25 +76,35 @@ public static class FilterTrial
         var tag = options.GetValueOrDefault("--model") ?? throw new ArgumentException("--model <ollama tag>");
         var count = int.Parse(options.GetValueOrDefault("--notes") ?? "100", CultureInfo.InvariantCulture);
         var seed = int.Parse(options.GetValueOrDefault("--seed") ?? throw new ArgumentException("--seed <n>"), CultureInfo.InvariantCulture);
+        var minBattery = int.Parse(options.GetValueOrDefault("--min-battery") ?? "20", CultureInfo.InvariantCulture);
         var labels = new SheetLabels(SamplerData.Load(files));
         using var model = new LocalModel(tag, Path.Combine(files.Prompts, "schemas", "filter-sheet.schema.json"));
-        var report = Measure(files, labels, model, work, count, seed, Console.WriteLine);
-        var folder = Path.Combine(work, "filter-trial");
-        Directory.CreateDirectory(folder);
-        var path = Path.Combine(folder, $"{tag.Replace(':', '_').Replace('/', '_')}-seed{seed}.json");
-        NotesJson.Write(path, report.ToJsonString(NotesJson.Options) + "\n");
+        var (report, stopped) = Measure(files, labels, model, work, count, seed, new SystemPower(), minBattery, Console.WriteLine);
         Console.WriteLine(report["table"]!.ToJsonString(NotesJson.Options));
-        Console.WriteLine(path);
-        return 0;
+        Console.WriteLine(ReportPath(work, tag, seed));
+        return stopped ? BatteryStop : 0;
     }
 
-    public static JsonObject Measure(NotesFiles files, SheetLabels labels, ISheetAnswerer model, string work, int count, int seed, Action<string>? log = null)
+    private static string Folder(string work) => Path.Combine(work, "filter-trial");
+
+    private static string Stem(string work, string tag, int seed) =>
+        Path.Combine(Folder(work), $"{tag.Replace(':', '_').Replace('/', '_')}-seed{seed}");
+
+    public static string ReportPath(string work, string tag, int seed) => Stem(work, tag, seed) + ".json";
+
+    /// <summary>The trial's notes, chosen once by the seed among the written pilot notes and kept for every model and resume.</summary>
+    public static List<string> Chosen(string work, int count, int seed)
     {
-        ArgumentNullException.ThrowIfNull(model);
+        var path = Path.Combine(Folder(work), $"trial-seed{seed}.chosen.json");
+        if (File.Exists(path))
+        {
+            return [.. NotesJson.Load(path)["notes"]!.AsArray().Select(n => (string)n!)];
+        }
+
         var written = FilterCommand.Written(work, "pilot")
-            .Where(n => (string?)n["provenance"]?["writer"]?["family"] == "openai").ToList();
+            .Where(n => (string?)n["provenance"]?["writer"]?["family"] == "openai").Select(n => (string)n["id"]!).ToList();
         var rng = new Rng(seed);
-        var chosen = new List<JsonObject>();
+        var chosen = new List<string>();
         while (chosen.Count < count && written.Count > 0)
         {
             var i = rng.Between(0, written.Count - 1);
@@ -50,62 +112,151 @@ public static class FilterTrial
             written.RemoveAt(i);
         }
 
+        Directory.CreateDirectory(Folder(work));
+        NotesJson.Write(path, new JsonObject { ["seed"] = seed, ["notes"] = new JsonArray([.. chosen.Select(c => (JsonNode)c)]) }
+            .ToJsonString(NotesJson.Options) + "\n");
+        return chosen;
+    }
+
+    private static Dictionary<string, JsonObject> Done(string path) =>
+        File.Exists(path)
+            ? File.ReadLines(path).Where(l => l.Trim().Length > 0).Select(l => JsonNode.Parse(l)!.AsObject())
+                .ToDictionary(r => (string)r["note"]!, StringComparer.Ordinal)
+            : new Dictionary<string, JsonObject>(StringComparer.Ordinal);
+
+    private static JsonObject PowerNode(Power p) => new() { ["onBattery"] = p.OnBattery, ["percent"] = p.Percent };
+
+    public static (JsonObject Report, bool Stopped) Measure(NotesFiles files, SheetLabels labels, ISheetAnswerer model, string work,
+        int count, int seed, IPowerSource power, int minBattery, Action<string>? log = null)
+    {
+        ArgumentNullException.ThrowIfNull(model);
+        ArgumentNullException.ThrowIfNull(power);
+        var chosen = Chosen(work, count, seed);
+        var notes = FilterCommand.Written(work, "pilot").ToDictionary(n => (string)n["id"]!, StringComparer.Ordinal);
         var scenarios = WriteCommand.Scenarios(work, "pilot");
-        var notes = new JsonArray();
-        int dropped = 0, plants = 0, caught = 0, decoys = 0, decoysRight = 0;
-        var seconds = new List<double>();
-        foreach (var note in chosen)
+        var stem = Stem(work, model.Model, seed);
+        var plainPath = stem + ".plain.jsonl";
+        var plantedPath = stem + ".planted.jsonl";
+        Directory.CreateDirectory(Folder(work));
+
+        bool LowBattery()
         {
-            var scenario = scenarios[(string)note["provenance"]!["scenario"]!];
-            var plain = FilterCommand.Filter(files, labels, model, scenario, note);
-            seconds.Add(plain.Asked.Sum(a => a.Seconds) / Math.Max(1, plain.Asked.Count));
-            var (asked, right) = Decoys(plain.Sheet, plain.Asked[0].Letters);
-            decoys += asked;
-            decoysRight += right;
-            var plainDropped = plain.Result.Verdict is not (FilterVerdict.Kept or FilterVerdict.KeptWithBlanks);
-            dropped += plainDropped ? 1 : 0;
-            var record = new JsonObject { ["note"] = (string)note["id"]!, ["plain"] = plain.Result.Verdict.ToString(), ["reason"] = plain.Reason };
-            var plant = Plant(note, plain, Rng.Derive(seed, chosen.IndexOf(note)));
-            if (plant is not null)
+            var p = power.Read();
+            if (p.OnBattery && p.Percent <= minBattery)
             {
-                var (path, altered) = plant.Value;
-                record["plantedField"] = path;
-                var labelHeld = plain.Result.Answers.TryGetValue(path, out var before) &&
-                                plain.Sheet.Questions.First(q => q.Path == path).Expected.Contains(before);
-                record["counted"] = labelHeld;
-                if (labelHeld)
+                log?.Invoke($"STOP: battery at {p.Percent} % (floor {minBattery} %); everything done so far is saved");
+                return true;
+            }
+
+            return false;
+        }
+
+        // Pass 1: every chosen note as written.
+        var plain = Done(plainPath);
+        foreach (var id in chosen.Where(id => !plain.ContainsKey(id)))
+        {
+            if (LowBattery())
+            {
+                return (Report(model, seed, chosen, Done(plainPath), Done(plantedPath)), true);
+            }
+
+            var note = notes[id];
+            var scenario = scenarios[(string)note["provenance"]!["scenario"]!];
+            var p = power.Read();
+            var done = FilterCommand.Filter(files, labels, model, scenario, note);
+            var (asked, right) = Decoys(done.Sheet, done.Asked[0].Letters);
+            var record = new JsonObject
+            {
+                ["note"] = id, ["verdict"] = done.Result.Verdict.ToString(), ["reason"] = done.Reason,
+                ["rightPaths"] = new JsonArray([.. done.Sheet.Questions
+                    .Where(q => done.Result.Answers.TryGetValue(q.Path, out var a) && q.Expected.Contains(a))
+                    .Select(q => (JsonNode)q.Path)]),
+                ["blanked"] = new JsonArray([.. done.Result.Blanked.Select(b => (JsonNode)b)]),
+                ["decoysAsked"] = asked, ["decoysRight"] = right,
+                ["seconds"] = Math.Round(done.Asked.Sum(a => a.Seconds) / Math.Max(1, done.Asked.Count), 2),
+                ["calls"] = done.Asked.Count, ["power"] = PowerNode(p),
+            };
+            File.AppendAllText(plainPath, record.ToJsonString(NotesJson.Compact) + "\n");
+            plain[id] = record;
+            log?.Invoke($"plain {id}: {record["verdict"]} ({record["seconds"]} s, {(p.OnBattery ? "battery" : "mains")} {p.Percent} %)");
+        }
+
+        // Pass 2: the planted copies; a plant counts where the plain run answered its field as the label.
+        var planted = Done(plantedPath);
+        foreach (var id in chosen.Where(id => !planted.ContainsKey(id)))
+        {
+            if (LowBattery())
+            {
+                return (Report(model, seed, chosen, plain, Done(plantedPath)), true);
+            }
+
+            var note = notes[id];
+            var scenario = scenarios[(string)note["provenance"]!["scenario"]!];
+            var sheet = FilterSheet.Build(labels, scenario, note, FilterCommand.SheetSeed(id, 0));
+            var stub = new FilteredNote(new FilterResult(FilterVerdict.Kept, [], 0, new Dictionary<string, string>()), sheet, [], "");
+            var plant = Plant(note, stub, Rng.Derive(seed, chosen.IndexOf(id)));
+            var record = new JsonObject { ["note"] = id };
+            if (plant is { } pl)
+            {
+                var counted = plain[id]["rightPaths"]!.AsArray().Any(x => (string?)x == pl.Path);
+                record["plantedField"] = pl.Path;
+                record["counted"] = counted;
+                if (counted)
                 {
-                    var planted = FilterCommand.Filter(files, labels, model, scenario, altered);
-                    var dropByRule = planted.Result.Verdict is FilterVerdict.Invalid or FilterVerdict.Unsure or FilterVerdict.ClaimDisagreement;
-                    var wrong = planted.Result.Answers.TryGetValue(path, out var after) &&
-                                !planted.Sheet.Questions.First(q => q.Path == path).Expected.Contains(after);
-                    plants++;
-                    caught += dropByRule || wrong ? 1 : 0;
+                    var p = power.Read();
+                    var run = FilterCommand.Filter(files, labels, model, scenario, pl.Altered);
+                    var dropByRule = run.Result.Verdict is FilterVerdict.Invalid or FilterVerdict.Unsure or FilterVerdict.ClaimDisagreement;
+                    var wrong = run.Result.Answers.TryGetValue(pl.Path, out var after) &&
+                                !run.Sheet.Questions.First(q => q.Path == pl.Path).Expected.Contains(after);
                     record["caught"] = dropByRule || wrong;
-                    record["planted"] = planted.Result.Verdict.ToString();
+                    record["verdict"] = run.Result.Verdict.ToString();
+                    record["seconds"] = Math.Round(run.Asked.Sum(a => a.Seconds) / Math.Max(1, run.Asked.Count), 2);
+                    record["power"] = PowerNode(p);
                 }
             }
 
-            notes.Add(record);
-            log?.Invoke($"{record["note"]}: {record["plain"]}{(record["plantedField"] is null ? "" : $"; plant {record["plantedField"]} counted={record["counted"]} caught={record["caught"]}")}");
+            File.AppendAllText(plantedPath, record.ToJsonString(NotesJson.Compact) + "\n");
+            planted[id] = record;
+            log?.Invoke($"planted {id}: " + (record["plantedField"] is null
+                ? "no plant possible"
+                : $"{record["plantedField"]} counted={record["counted"]} caught={record["caught"]}"));
         }
 
-        seconds.Sort();
+        var report = Report(model, seed, chosen, plain, planted);
+        NotesJson.Write(ReportPath(work, model.Model, seed), report.ToJsonString(NotesJson.Options) + "\n");
+        return (report, false);
+    }
+
+    /// <summary>The trial's table from the per-note records (complete or not).</summary>
+    private static JsonObject Report(ISheetAnswerer model, int seed, List<string> chosen, Dictionary<string, JsonObject> plain,
+        Dictionary<string, JsonObject> planted)
+    {
+        var counted = planted.Values.Where(r => (bool?)r["counted"] == true).ToList();
+        var caught = counted.Count(r => (bool?)r["caught"] == true);
+        var dropped = plain.Values.Count(r => (string?)r["verdict"] is not ("Kept" or "KeptWithBlanks"));
+        var decoys = plain.Values.Sum(r => (int?)r["decoysAsked"] ?? 0);
+        var decoysRight = plain.Values.Sum(r => (int?)r["decoysRight"] ?? 0);
+        var seconds = plain.Values.Select(r => (double?)r["seconds"] ?? 0).Order().ToList();
+        var onBattery = plain.Values.Concat(planted.Values).Count(r => (bool?)r["power"]?["onBattery"] == true);
+        var timed = plain.Values.Concat(planted.Values).Count(r => r["power"] is not null);
         return new JsonObject
         {
-            ["model"] = model.Model, ["digest"] = model.Digest, ["sheet"] = FilterSheet.Version, ["seed"] = seed, ["notes"] = chosen.Count,
+            ["model"] = model.Model, ["digest"] = model.Digest, ["sheet"] = FilterSheet.Version, ["seed"] = seed,
+            ["constrainedOutput"] = model is not LocalModel local || local.Constrained,
+            ["complete"] = plain.Count == chosen.Count && planted.Count == chosen.Count,
+            ["notes"] = chosen.Count, ["plainDone"] = plain.Count, ["plantedDone"] = planted.Count,
             ["table"] = new JsonObject
             {
-                ["countedPlants"] = plants,
+                ["countedPlants"] = counted.Count,
                 ["caught"] = caught,
-                ["caughtShare"] = plants == 0 ? 0 : Math.Round((double)caught / plants, 3),
+                ["caughtShare"] = counted.Count == 0 ? 0 : Math.Round((double)caught / counted.Count, 3),
                 ["unalteredDropped"] = dropped,
                 ["decoysRightShare"] = decoys == 0 ? 0 : Math.Round((double)decoysRight / decoys, 3),
                 ["secondsPerNoteMedian"] = seconds.Count == 0 ? 0 : Math.Round(seconds[seconds.Count / 2], 2),
-                ["passes"] = plants >= 60 && caught >= 0.8 * plants && dropped <= 15 * chosen.Count / 100.0,
-                ["enoughPlants"] = plants >= 60,
+                ["notesTimedOnBattery"] = $"{onBattery} of {timed}",
+                ["passes"] = counted.Count >= 60 && caught >= 0.8 * counted.Count && dropped <= 15 * chosen.Count / 100.0,
+                ["enoughPlants"] = counted.Count >= 60,
             },
-            ["perNote"] = notes,
         };
     }
 

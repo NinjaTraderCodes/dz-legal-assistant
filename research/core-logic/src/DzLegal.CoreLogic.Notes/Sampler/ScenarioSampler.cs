@@ -16,7 +16,7 @@ public sealed record SampleRequest(string Set, int Count, int Seed, int Groups =
 /// </summary>
 public sealed class ScenarioSampler
 {
-    public const string Version = "1.2";  // 1.1 (16 November 2026): a later claim's role keeps the plaintiff's sex; 1.2 (17 November): style cards version 2
+    public const string Version = "1.3";  // 1.1 (16 November 2026): a later claim's role keeps the plaintiff's sex; 1.2 (17 November): style cards version 2; 1.3 (17 November): no dissolution beside an earlier divorce
 
     private static readonly string[] Polarities = ["stated", "denied", "disputed", "notMentioned"];
     private readonly SamplerData data;
@@ -174,6 +174,13 @@ public sealed class ScenarioSampler
         }
 
         var draft = DrawClaims(s, claims, card, petition, force);
+        // Sampler 1.3: a pair of a dissolution with custody keeps its claims and draws its facts again, so the coherence
+        // rule does not thin out the recipe's share of two-claim notes.
+        for (var again = 1; force is null && again <= 50 && DissolutionBesideEarlierDivorce(draft); again++)
+        {
+            draft = DrawClaims(Rng.Derive(s, 2_000_000 + again), claims, card, petition, force);
+        }
+
         return (draft, Check(draft));
     }
 
@@ -878,6 +885,21 @@ public sealed class ScenarioSampler
     // --- coherence and outcome ---------------------------------------------------------------------------------------
 
     /// <summary>The scenario's own consistency (the guide's slot table in reverse, dates before the petition); null when coherent.</summary>
+    /// <summary>
+    /// The owner's coherence rule (17 November 2026, after two dev notes asked for a khul or a tatliq of a marriage they said
+    /// was already dissolved): a dissolution claim (khul, tatliq, and the husband's divorce, which is the same contradiction)
+    /// never stands beside another claim whose <c>divorce</c> event is stated or disputed, since that event says the
+    /// marriage was dissolved earlier. A denied or unmentioned divorce is coherent.
+    /// </summary>
+    public static bool DissolutionBesideEarlierDivorce(JsonObject scenario)
+    {
+        ArgumentNullException.ThrowIfNull(scenario);
+        var claims = scenario["claims"]!.AsArray().Select(c => (string)c!).ToList();
+        return claims.Any(c => c is "khul" or "tatliq" or "divorce-by-husband") &&
+               scenario["events"]!.AsArray().Any(e => (string)e!["kind"]! == "divorce" &&
+                                                     (string)e["polarity"]! is "stated" or "disputed");
+    }
+
     private static string? Check(JsonObject o)
     {
         var slots = o["slots"]!.AsObject();
@@ -899,6 +921,11 @@ public sealed class ScenarioSampler
             string.CompareOrdinal(delivered, (string)record!) < 0)
         {
             return "record delivered before it was drawn up";
+        }
+
+        if (DissolutionBesideEarlierDivorce(o))
+        {
+            return "a dissolution asked beside an earlier divorce";
         }
 
         foreach (var e in o["events"]!.AsArray())

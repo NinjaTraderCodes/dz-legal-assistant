@@ -150,7 +150,30 @@ public sealed partial class SamplerTests
             Assert.True(Slot("contract_date") == "unknown" ||
                         claims.Any(c => Data.ClaimById[c].Elements.Any(e => e.Kind == "contract_concluded")));
             Assert.All(claims, c => Assert.Contains(s["requests"]!.AsArray(), r => (string)r!["kind"]! == Data.ClaimById[c].Requests[0].Kind));
+
+            // Sampler 1.3 (the owner, 17 November 2026): no khul, tatliq or husband's divorce beside an earlier divorce.
+            Assert.False(ScenarioSampler.DissolutionBesideEarlierDivorce(s), $"{s["id"]}: a dissolution beside an earlier divorce");
         }
+    }
+
+    [Fact]
+    public void ADissolutionBesideAnEarlierDivorceIsFoundAndTheRulesPairsStillOccur()
+    {
+        JsonObject S(string polarity, params string[] claims) => new()
+        {
+            ["claims"] = new JsonArray([.. claims.Select(c => (JsonNode)c)]),
+            ["events"] = new JsonArray(new JsonObject { ["claim"] = "custody", ["kind"] = "divorce", ["polarity"] = polarity }),
+        };
+        Assert.True(ScenarioSampler.DissolutionBesideEarlierDivorce(S("stated", "khul", "custody")));
+        Assert.True(ScenarioSampler.DissolutionBesideEarlierDivorce(S("disputed", "tatliq", "custody")));
+        Assert.True(ScenarioSampler.DissolutionBesideEarlierDivorce(S("stated", "divorce-by-husband", "custody")));
+        Assert.False(ScenarioSampler.DissolutionBesideEarlierDivorce(S("notMentioned", "khul", "custody")));
+        Assert.False(ScenarioSampler.DissolutionBesideEarlierDivorce(S("denied", "tatliq", "custody")));
+        Assert.False(ScenarioSampler.DissolutionBesideEarlierDivorce(S("stated", "nafaqa", "custody")));
+
+        // The pairs of a dissolution with custody are still drawn: only their earlier divorce is excluded.
+        Assert.Contains(Draws, s => s["claims"]!.AsArray().Select(c => (string)c!).Order().SequenceEqual(new[] { "custody", "khul" }));
+        Assert.Contains(Draws, s => s["claims"]!.AsArray().Select(c => (string)c!).Order().SequenceEqual(new[] { "custody", "tatliq" }));
     }
 
     [Fact]

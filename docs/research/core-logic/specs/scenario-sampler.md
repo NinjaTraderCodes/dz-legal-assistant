@@ -71,6 +71,8 @@ When more records are final (phase B onwards), new sets are drawn with their out
 
 A style card says **how** the note is written, never what it says. About 40 cards, each a short English paragraph plus parameters. The writer gets one card per note.
 
+**Version 2 of the cards (sampler 1.2, 17 November 2026; the owner: "in the 4,000 training notes, widen the style variety: more style cards, several Codex prompt variants, shorter and messier notes").** 80 more cards (`s2-01` to `s2-80`) beside the first 40, which keep their text. On them the lengths lean short: very short or short on 50 of the 80 cards, medium on 20, long on 10. Two parameters are added: `mess` (clean, typing slips never in a name, date or sum, bare fragments, run-on sentences, shorthand) and `setPhrases` (free, or no set formula for the parties: the writer-identity probe found Codex's «شخصان طبيعيان»). The first 40 cards take the neutral values (`clean`, `free`). Every set drawn from sampler 1.2 draws from all 120. The writer prompt's version 3 turns four framings by call (`WriteCommand.Framings`: at the desk, during the visit, a handover to a colleague, an end-of-day reminder).
+
 | Parameter | Values |
 |---|---|
 | Length | very short (2 to 4 lines), short, medium, long (a page) |

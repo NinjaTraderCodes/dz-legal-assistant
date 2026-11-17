@@ -1,0 +1,3745 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "module",
+  "id": "territorial-jurisdiction",
+  "label": {
+    "ar": "الاختصاص الإقليمي",
+    "en": "Territorial jurisdiction"
+  },
+  "verified": false,
+  "stage": "derivationA",
+  "derivedBy": {
+    "role": "derivationA",
+    "model": "claude-opus-5-5",
+    "date": "2026-11-17"
+  },
+  "appliesTo": [
+    "*"
+  ],
+  "slots": [
+    "dispute_concerns_real_property",
+    "commercial_lease",
+    "partition_of_estate",
+    "dispute_is_family",
+    "dispute_is_social",
+    "work_accident_or_occupational_illness",
+    "dispute_is_commercial",
+    "specialised_commercial_subject",
+    "specialised_commercial_matter",
+    "obligation_is_tort_compensation",
+    "damage_caused_by_offence",
+    "public_vehicle_damage",
+    "public_body_party",
+    "national_public_body_party",
+    "defendant_resides_abroad",
+    "requests",
+    "special_venue_matter",
+    "jurisdiction_clause_relied_on",
+    "clause_parties_all_merchants",
+    "party_is_judge"
+  ],
+  "proposedSlots": [
+    {
+      "id": "special_venue_matter",
+      "type": "choice",
+      "question": {
+        "ar": "هل يندرج النزاع ضمن إحدى المواد التي خصها القانون بمحكمة معينة إقليميا، غير العقار والأسرة والعمل والتجارة والتعويض عن الفعل الضار؟ وأيها؟",
+        "en": "Does the dispute fall in one of the matters for which the law names a particular court by place, other than real property, family, labour, commerce and compensation for a harmful act? Which one?"
+      },
+      "choices": [
+        {
+          "id": "mixed_action",
+          "label": {
+            "ar": "دعوى مختلطة",
+            "en": "A mixed action (personal and real)"
+          }
+        },
+        {
+          "id": "supplies_works_services",
+          "label": {
+            "ar": "التوريدات أو الأشغال أو تأجير الخدمات الفنية أو الصناعية",
+            "en": "Supplies, works, or the hire of technical or industrial services"
+          }
+        },
+        {
+          "id": "postal_items",
+          "label": {
+            "ar": "المراسلات والأشياء الموصى عليها والإرسال ذو القيمة المصرح بها وطرود البريد",
+            "en": "Correspondence, registered items, declared-value consignments and postal parcels"
+          }
+        },
+        {
+          "id": "medical_services",
+          "label": {
+            "ar": "الخدمات الطبية",
+            "en": "Medical services"
+          }
+        },
+        {
+          "id": "seizure",
+          "label": {
+            "ar": "الحجز (الإذن به أو الإجراءات التالية له)",
+            "en": "Attachment (leave to attach, or the steps that follow it)"
+          }
+        },
+        {
+          "id": "costs_or_court_assistant_fees",
+          "label": {
+            "ar": "مصاريف الدعوى أو أجور المساعدين القضائيين",
+            "en": "Costs of proceedings or fees of court assistants"
+          }
+        },
+        {
+          "id": "guarantee_claim",
+          "label": {
+            "ar": "دعوى ضمان",
+            "en": "A claim against a guarantor (third-party guarantee claim)"
+          }
+        },
+        {
+          "id": "urgent_measure",
+          "label": {
+            "ar": "مادة استعجالية أو إشكال في التنفيذ أو تدبير تحفظي",
+            "en": "An urgent matter, a difficulty of execution, or a protective measure"
+          }
+        },
+        {
+          "id": "none",
+          "label": {
+            "ar": "لا شيء مما سبق",
+            "en": "None of these"
+          }
+        }
+      ],
+      "why": "Territory rules t5, t7, t21 to t25 read it: cpca 39 items 1, 3 and 5, cpca 40 items 5, 6, 7 and 9, and cpca 299 each name a court by place for one of these matters; no existing slot holds them."
+    },
+    {
+      "id": "jurisdiction_clause_relied_on",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل اختيرت المحكمة التي سترفع أمامها الدعوى بناء على شرط في العقد يمنحها الاختصاص الإقليمي؟",
+        "en": "Was the court where the claim will be filed chosen because a clause of the contract gives it territorial jurisdiction?"
+      },
+      "why": "Boundaries n1 and n4 read it: cpca 45 makes a clause conferring territorial jurisdiction void unless made between traders, and cpca 40 names some courts to the exclusion of others."
+    },
+    {
+      "id": "clause_parties_all_merchants",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل أبرم شرط الاختصاص بين تجار (كل أطرافه تجار)؟",
+        "en": "Was the jurisdiction clause made between traders (all of its parties traders)?"
+      },
+      "why": "Boundary n1 reads it: cpca 45 saves a jurisdiction clause only when it was made between traders. The existing slot dispute_is_commercial also covers a dispute about a commercial act between non-traders, so it does not hold this fact."
+    },
+    {
+      "id": "party_is_judge",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل أحد طرفي الدعوى قاض يمارس مهامه في دائرة اختصاص المجلس القضائي الذي تتبعه المحكمة المختصة؟",
+        "en": "Is one of the parties a judge serving within the district of the judicial council to which the competent court belongs?"
+      },
+      "why": "Territory rule t27 reads it: cpca 43 and 44 move the claim to a court of the nearest neighbouring judicial council when a judge is plaintiff (must) or defendant (may)."
+    }
+  ],
+  "basis": [
+    {
+      "id": "b1",
+      "role": "basis",
+      "required": true,
+      "cite": {
+        "code": "cpca",
+        "article": "37",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "الاختصاص الإقليمي لمحكمة موطن المدعى عليه، فإن لم يكن له موطن معروف فلمحكمة آخر موطن له، وفي حالة اختيار موطن فلمحكمة الموطن المختار، ما لم ينص القانون على خلاف ذلك.",
+        "en": "The court of the defendant's domicile has territorial jurisdiction; if he has no known domicile, the court of his last domicile; if a domicile was elected, the court of the elected domicile; unless the law provides otherwise."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يؤول الاختصاص الإقليمي للجهة القضائية التي يقع في دائرة اختصاصها موطن المدعى عليه، وإن لم يكن له موطن معروف، فيعود الاختصاص للجهة القضائية التي يقع فيها آخر موطن له، وفي حالة اختيار موطن، يؤول الاختصاص الإقليمي للجهة القضائية التي يقع فيها الموطن المختار، ما لم ينص القانون على خلاف ذلك.",
+          "sha256": "45919898f0499a94d34d6176035015468ee5467365f4762f05512d721ba25daa"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b2",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "38",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "عند تعدد المدعى عليهم يختص إقليميا محكمة موطن أحدهم.",
+        "en": "With several defendants, the court of the domicile of any one of them has territorial jurisdiction."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "في حالة تعدد المدعى عليهم، يؤول الاختصاص الإقليمي للجهة القضائية التي يقع في دائرة اختصاصها موطن أحدهم.",
+          "sha256": "2358b0def7194a85f5c0cba86e5b8618c5715c44cd2141cad44d0cb9cf8ed6a1"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b3",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "39",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ترفع الدعاوى في المواد المعددة بعده أمام المحاكم المسماة فيها، دون عبارة الحصر الواردة في المادة الموالية.",
+        "en": "Claims in the matters listed after it are brought before the courts named there; the paragraph does not use the words of exclusivity used in the next article."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "ترفع الدعاوى المتعلقة بالمواد المبينة أدناه أمام الجهات القضائية الآتية :",
+          "sha256": "72ac67b034c23dcf2735816dd006483c62210397804157446767cc5be5992678"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b4",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "39",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "في الدعاوى المختلطة تختص المحكمة التي يقع في دائرتها مقر الأموال.",
+        "en": "In mixed actions, the court where the property is situated has jurisdiction."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "1 - في مواد الدعاوى المختلطة، أمام الجهة القضائية التي يقع في دائرة اختصاصها مقر الأموال،",
+          "sha256": "b3916328fe2e6f056bfc9318e1ae3def32199779bc8e7375b7fc295f248ad9e1"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b5",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "39",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "في تعويض الضرر الناتج عن جناية أو جنحة أو مخالفة أو فعل تقصيري، وفي دعاوى الأضرار الحاصلة بفعل الإدارة، تختص المحكمة التي وقع في دائرتها الفعل الضار.",
+        "en": "For compensation of damage from a felony, misdemeanour, minor offence or tort, and for claims for damage caused by the administration, the court where the harmful act occurred has jurisdiction."
+      },
+      "quote": [
+        {
+          "paragraph": 3,
+          "text": "2 - في مواد تعويض الضرر عن جناية، أو جنحة، أو مخالفة، أو فعل تقصيري، ودعاوى الأضرار الحاصلة بفعل الإدارة، أمام الجهة القضائية التي وقع في دائرة اختصاصها الفعل الضار،",
+          "sha256": "510bf3278ac16f0eac2b7f748beba09c45af6781bc505e9fef3682b548203b72"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b6",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "39",
+        "paragraphs": [
+          4
+        ]
+      },
+      "says": {
+        "ar": "في منازعات التوريدات والأشغال وتأجير الخدمات الفنية أو الصناعية تختص محكمة مكان إبرام الاتفاق أو تنفيذه، ولو كان أحد الأطراف غير مقيم فيه.",
+        "en": "In disputes on supplies, works and hire of technical or industrial services, the court of the place where the agreement was made or performed has jurisdiction, even if a party does not reside there."
+      },
+      "quote": [
+        {
+          "paragraph": 4,
+          "text": "3 - في مواد المنازعات المتعلقة بالتوريدات والأشغال وتأجير الخدمات الفنية أو الصناعية، يؤول الاختصاص للجهة القضائية التي يقع في دائرة اختصاصها مكان إبرام الاتفاق أو تنفيذه، حتى ولو كان أحد الأطراف غير مقيم في ذلك المكان،",
+          "sha256": "4d55b80eea86531a92122a7a2afff5602641ab89773ae91bbdb4732d3c8ad075"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b7",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "39",
+        "paragraphs": [
+          5
+        ]
+      },
+      "says": {
+        "ar": "في المواد التجارية غير الإفلاس والتسوية القضائية تختص محكمة مكان الوعد أو تسليم البضاعة أو مكان وجوب الوفاء، وفي الدعاوى ضد شركة محكمة مكان أحد فروعها.",
+        "en": "In commercial matters other than bankruptcy and judicial settlement, the court of the place of the promise, of delivery of the goods, or where payment is due has jurisdiction; in claims against a company, the court where one of its branches is."
+      },
+      "quote": [
+        {
+          "paragraph": 5,
+          "text": "4 - في المواد التجارية، غير الإفلاس والتسوية القضائية، أمام الجهة القضائية التي وقع في دائرة اختصاصها الوعد، أو تسليم البضاعة، أو أمام الجهة القضائية التي يجب أن يتم الوفاء في دائرة اختصاصها، وفي الدعاوى المرفوعة ضد شركة، أمام الجهة القضائية التي يقع في دائرة اختصاصها أحد فروعها،",
+          "sha256": "9fb79c930128d297f86764653879d5bffa72c82a3ecaeb41fa57c81a524a5ec7"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b8",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "39",
+        "paragraphs": [
+          6
+        ]
+      },
+      "says": {
+        "ar": "في منازعات المراسلات والأشياء الموصى عليها والإرسال ذي القيمة المصرح بها وطرود البريد تختص محكمة موطن المرسل أو موطن المرسل إليه.",
+        "en": "In disputes on correspondence, registered items, declared-value consignments and postal parcels, the court of the sender's or the addressee's domicile has jurisdiction."
+      },
+      "quote": [
+        {
+          "paragraph": 6,
+          "text": "5 - في المواد المتعلقة بالمنازعات الخاصة بالمراسلات والأشياء الموصى عليها، والإرسال ذي القيمة المصرح بها، وطرود البريد، أمام الجهة القضائية التي يقع في دائرة اختصاصها موطن المرسل، أو موطن المرسل إليه.",
+          "sha256": "3519c38320ff4adc5ffd144f44f7d4bc4b1d11d21fa48ebacb3f2f9292f5006b"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b9",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "40",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "فضلا عن أحكام موطن المدعى عليه وتعدد المدعى عليهم والحضور الاختياري، ترفع الدعاوى في المواد المعددة بعده أمام المحاكم المسماة فيها دون سواها.",
+        "en": "Besides the rules on the defendant's domicile, several defendants and voluntary appearance, claims in the matters listed after it are brought before the courts named there and no other."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "فضلا عما ورد في المواد 37 و38 و46 من هذا القانون، ترفع الدعاوى أمام الجهات القضائية المبينة أدناه دون سواها :",
+          "sha256": "d1d3cfc6318041605707b19b98dfdc39a081a85d440e9ce268c413b1899e6fc0"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b10",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "40",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "في المواد العقارية والأشغال المتعلقة بالعقار ودعاوى الإيجارات المتعلقة بالعقارات بما فيها التجارية والأشغال العمومية، تختص محكمة موقع العقار أو مكان تنفيذ الأشغال.",
+        "en": "In real-property matters, works on real property, lease claims on buildings including commercial leases, and public works, the court where the property lies or where the works are carried out has jurisdiction."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "1- في المواد العقارية، أو الأشغال المتعلقة بالعقار، أو دعاوى الإيجارات بما فيها التجارية المتعلقة بالعقارات، والدعاوى المتعلقة بالأشغال العمومية، أمام المحكمة التي يقع في دائرة اختصاصها العقار، أو المحكمة التي يقع في دائرة اختصاصها مكان تنفيذ الأشغال.",
+          "sha256": "73a039a69db5e74d545cb5b5640d799df306cb5df8c05ddaf10b30f4ff1a4e70"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b11",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "40",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "في الميراث والطلاق أو الرجوع والحضانة والنفقة الغذائية والسكن تختص على التوالي محكمة موطن المتوفى ومسكن الزوجية ومكان ممارسة الحضانة وموطن الدائن بالنفقة ومكان وجود السكن.",
+        "en": "In inheritance, divorce or return, custody, maintenance and housing, the courts of, respectively, the deceased's domicile, the marital home, the place where custody is exercised, the maintenance creditor's domicile and the place of the dwelling have jurisdiction."
+      },
+      "quote": [
+        {
+          "paragraph": 3,
+          "text": "2 - في مواد الميراث، دعاوى الطلاق أو الرجوع، الحضانة، النفقة الغذائية والسكن، على التوالي، أمام المحكمة التي يقع في دائرة اختصاصها موطن المتوفى، مسكن الزوجية، مكان ممارسة الحضانة، موطن الدائن بالنفقة، مكان وجود السكن.",
+          "sha256": "8ef7dd9a44053fce927e9f0916d2518605f7ff6be761cd398a526a0bf9f71e1c"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b12",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "40",
+        "paragraphs": [
+          4
+        ]
+      },
+      "says": {
+        "ar": "في إفلاس الشركات أو تسويتها القضائية ومنازعات الشركاء تختص محكمة مكان افتتاح الإفلاس أو التسوية أو مكان المقر الاجتماعي للشركة.",
+        "en": "In bankruptcy or judicial settlement of companies and disputes between partners, the court of the place where the proceedings were opened or of the company's registered office has jurisdiction."
+      },
+      "quote": [
+        {
+          "paragraph": 4,
+          "text": "3 - في مواد الإفلاس أو التسوية القضائية للشركات وكذا الدعاوى المتعلقة بمنازعات الشركاء، أمام المحكمة التي يقع في دائرة اختصاصها مكان افتتاح الإفلاس أو التسوية القضائية أو مكان المقر الاجتماعي للشركة.",
+          "sha256": "64b3e34aac3de79589f6b667de4d8d0f97fc62745667aaab11eca485eae1a048"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b13",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "40",
+        "paragraphs": [
+          5
+        ]
+      },
+      "says": {
+        "ar": "في الملكية الفكرية تختص المحكمة المنعقدة في مقر المجلس القضائي الذي يقع في دائرته موطن المدعى عليه.",
+        "en": "In intellectual property, the court sitting at the seat of the judicial council in whose district the defendant's domicile lies has jurisdiction."
+      },
+      "quote": [
+        {
+          "paragraph": 5,
+          "text": "4 - في مواد الملكية الفكرية، أمام المحكمة المنعقدة في مقر المجلس القضائي الموجود في دائرة اختصاصه موطن المدعى عليه.",
+          "sha256": "1e97449cf89ec4992551f39e9ec208851a1a1c2e4fb5cb8c9509b02b573c5f24"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b14",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "40",
+        "paragraphs": [
+          6
+        ]
+      },
+      "says": {
+        "ar": "في الخدمات الطبية تختص محكمة مكان تقديم العلاج.",
+        "en": "In medical services, the court of the place where treatment was given has jurisdiction."
+      },
+      "quote": [
+        {
+          "paragraph": 6,
+          "text": "5 - في المواد المتعلقة بالخدمات الطبية، أمام المحكمة التي تم في دائرة اختصاصها تقديم العلاج.",
+          "sha256": "c6e38f111e67aa57bf861d92deb17016bcc97e98b1244c789c39b97910d34334"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b15",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "40",
+        "paragraphs": [
+          7
+        ]
+      },
+      "says": {
+        "ar": "في مصاريف الدعاوى وأجور المساعدين القضائيين تختص المحكمة التي فصلت في الدعوى الأصلية، وفي دعاوى الضمان المحكمة التي قدم إليها الطلب الأصلي.",
+        "en": "For costs of proceedings and court assistants' fees, the court that decided the original claim has jurisdiction; for guarantee claims, the court seised of the original claim."
+      },
+      "quote": [
+        {
+          "paragraph": 7,
+          "text": "6 - في مواد مصاريف الدعاوى وأجور المساعدين القضائيين، أمام المحكمة التي فصلت في الدعوى الأصلية، وفي دعاوى الضمان أمام المحكمة التي قدم إليها الطلب الأصلي.",
+          "sha256": "4dd79a9efda485fa829ae4dd1b5568c11c91c258d35fed8900623b5cabfabd03"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b16",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "40",
+        "paragraphs": [
+          8
+        ]
+      },
+      "says": {
+        "ar": "في الحجز، إذنا أو إجراءات لاحقة، تختص محكمة مكان الحجز.",
+        "en": "In attachment, whether leave to attach or later steps, the court of the place of attachment has jurisdiction."
+      },
+      "quote": [
+        {
+          "paragraph": 8,
+          "text": "7 - في مواد الحجز، سواء كان بالنسبة للإذن بالحجز، أو للإجراءات التالية له، أمام المحكمة التي وقع في دائرة اختصاصها الحجز.",
+          "sha256": "8de40a09bf2af4b48866b584fe94779c846fe93b560942b9ac9ee9e385ebadc7"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b17",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "40",
+        "paragraphs": [
+          9
+        ]
+      },
+      "says": {
+        "ar": "في المنازعات بين صاحب العمل والأجير تختص محكمة مكان إبرام عقد العمل أو تنفيذه أو محكمة موطن المدعى عليه.",
+        "en": "In disputes between employer and employee, the court of the place where the employment contract was made or performed, or of the defendant's domicile, has jurisdiction."
+      },
+      "quote": [
+        {
+          "paragraph": 9,
+          "text": "8 - في المنازعات التي تقوم بين صاحب العمل والأجير، يؤول الاختصاص الإقليمي للمحكمة التي تم في دائرة اختصاصها إبرام عقد العمل أو تنفيذه أو التي يوجد بها موطن المدعى عليه.",
+          "sha256": "d85d5adcd3146284bcbcbe39b8b990a982f53764c42de06513d0a64972c4b2f8"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b18",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "40",
+        "paragraphs": [
+          10
+        ]
+      },
+      "says": {
+        "ar": "إذا أنهي عقد العمل أو علق بسبب حادث عمل أو مرض مهني تختص محكمة موطن المدعي.",
+        "en": "When the employment contract was ended or suspended because of a work accident or occupational illness, the court of the plaintiff's domicile has jurisdiction."
+      },
+      "quote": [
+        {
+          "paragraph": 10,
+          "text": "غير أنه في حالة إنهاء أو تعليق عقد العمل بسبب حادث عمل أو مرض مهني يؤول الاختصاص للمحكمة التي يوجد بها موطن المدعي.",
+          "sha256": "57e4f188a685624b29fa2cd7f9d700709fb38beceaa15469c40905f16ab38c18"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b19",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "40",
+        "paragraphs": [
+          11
+        ]
+      },
+      "says": {
+        "ar": "في المواد المستعجلة تختص محكمة مكان وقوع الإشكال في التنفيذ أو التدابير المطلوبة.",
+        "en": "In urgent matters, the court of the place of the difficulty of execution or of the measures sought has jurisdiction."
+      },
+      "quote": [
+        {
+          "paragraph": 11,
+          "text": "9 - في المواد المستعجلة، أمام المحكمة الواقع في دائرة اختصاصها مكان وقوع الإشكال في التنفيذ، أو التدابير المطلوبة.",
+          "sha256": "fcd69fe05bb6e73f369eda5ffa647c262d834ee1e8a3664e54ba03b26b741062"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b20",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "41",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجوز تكليف الأجنبي ولو لم يكن مقيما في الجزائر أمام الجهات القضائية الجزائرية لتنفيذ التزامات تعاقد عليها في الجزائر مع جزائري.",
+        "en": "A foreigner, even not resident in Algeria, may be summoned before the Algerian courts to perform obligations he contracted in Algeria with an Algerian."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجوز أن يكلف بالحضور كل أجنبي، حتى ولو لم يكن مقيما في الجزائر، أمام الجهات القضائية الجزائرية، لتنفيذ الالتزامات التي تعاقد عليها في الجزائر مع جزائري.",
+          "sha256": "edf768aab6d513c7e91758744f9bfd13881e7cdf1a7674fd4cf7a08018e48ebe"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b21",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "41",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "ويجوز تكليفه كذلك بشأن التزامات تعاقد عليها في بلد أجنبي مع جزائريين.",
+        "en": "He may also be summoned for obligations he contracted abroad with Algerians."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "كما يجوز أيضا تكليفه بالحضور أمام الجهات القضائية الجزائرية بشأن التزامات تعاقد عليها في بلد أجنبي مع جزائريين.",
+          "sha256": "ff7a303a3f83329ebf5131cdaaee7610d38ccf5cd6daa0f255dcc6dcdfe1762e"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b22",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "42",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجوز تكليف الجزائري أمام الجهات القضائية الجزائرية بشأن التزامات تعاقد عليها في بلد أجنبي ولو مع أجنبي.",
+        "en": "An Algerian may be summoned before the Algerian courts for obligations he contracted abroad, even with a foreigner."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجوز أن يكلف بالحضور كل جزائري أمام الجهات القضائية الجزائرية بشأن التزامات تعاقد عليها في بلد أجنبي، حتى ولو كان مع أجنبي.",
+          "sha256": "c5318b57543b614d8f8e2d3d58e27c054d34ef07a99c00fc59a2e868f77b18a3"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b23",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "43",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "القاضي المدعي في دعوى تختص بها جهة تابعة للمجلس الذي يعمل فيه يجب أن يرفعها أمام جهة تابعة لأقرب مجلس محاذ.",
+        "en": "A judge who is plaintiff in a claim belonging to a court of the council where he serves must file it before a court of the nearest neighbouring council."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "عندما يكون القاضي مدع في دعوى يؤول فيها الاختصاص لجهة قضائية تابعة لدائرة اختصاص المجلس القضائي الذي يمارس فيه وظائفه، وجب عليه رفع الدعوى أمام جهة قضائية تابعة لأقرب مجلس قضائي محاذ للمجلس الذي يمارس فيه مهامه.",
+          "sha256": "bdd1f54d2c798a1d90a80e75933f6731099c57c4022b7ced127677b9771a7753"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b24",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "44",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "إذا كان القاضي مدعى عليه جاز لخصمه رفع الدعوى أمام جهة تابعة لأقرب مجلس محاذ.",
+        "en": "When a judge is defendant, his opponent may file before a court of the nearest neighbouring council."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "عندما يكون القاضي مدعى عليه، جاز للخصم أن يرفع دعواه أمام جهة قضائية تابعة لدائرة اختصاص أقرب مجلس قضائي محاذ لتلك التي يمارس في دائرة اختصاصها القاضي وظائفه.",
+          "sha256": "2adbc7701ce3daa201f46e0c0ce8547c17fc049eb14cd3f6abdbb3385e3b20e4"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b25",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "45",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "كل شرط يمنح الاختصاص الإقليمي لجهة غير مختصة لاغ وعديم الأثر، إلا إذا تم بين التجار.",
+        "en": "Any clause giving territorial jurisdiction to a court that is not competent is void and without effect, unless it was made between traders."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يعتبر لاغيا وعديم الأثر كل شرط يمنح الاختصاص الإقليمي لجهة قضائية غير مختصة، إلا إذا تم بين التجار.",
+          "sha256": "a5d04199529db09922d9b125332a1bac2abd76c38f1e6dc569cb296743cd5a22"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b26",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "46",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجوز للخصوم الحضور باختيارهم أمام قاض غير مختص إقليميا.",
+        "en": "The parties may appear of their own choice before a judge who is not territorially competent."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجوز للخصوم الحضور باختيارهم أمام القاضي، حتى ولو لم يكن مختصا إقليميا.",
+          "sha256": "b5beca3e0c61b8ee0317300150e7b570bf81d82862cf0dedd503bb9cfd805d31"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b27",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "46",
+        "paragraphs": [
+          2,
+          3
+        ]
+      },
+      "says": {
+        "ar": "يوقع الخصوم تصريحا بطلب التقاضي، ويصير القاضي مختصا طيلة الخصومة ويمتد اختصاصه في الاستئناف إلى المجلس التابع له.",
+        "en": "The parties sign a declaration asking to litigate there; the judge is then competent for the whole proceedings, and on appeal the competence extends to his judicial council."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "يوقع الخصوم على تصريح بطلب التقاضي، وإذا تعذر التوقيع يشار إلى ذلك.",
+          "sha256": "d8d1e7349c602f435a1e3bd0e25f697f5f0485fac77a6ec425c0e0488527db6a"
+        },
+        {
+          "paragraph": 3,
+          "text": "يكون القاضي مختصا طيلة الخصومة، ويمتد الاختصاص في حالة الاستئناف إلى المجلس القضائي التابع له.",
+          "sha256": "c0d457f7d0bf0a29628ebe58e4a6682420a32ca41eb19796172b312ee430aa9d"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b28",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "47",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجب إثارة الدفع بعدم الاختصاص الإقليمي قبل أي دفاع في الموضوع أو دفع بعدم القبول.",
+        "en": "The plea of territorial incompetence must be raised before any defence on the merits or plea of inadmissibility."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجب إثارة الدفع بعدم الاختصاص الإقليمي، قبل أي دفاع في الموضوع أو دفع بعدم القبول",
+          "sha256": "1a85b9edfdac12029100bfa042088db5e7bb10e5f7f85b7f8a330ad6d371a1ab"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b29",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "36",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "عدم الاختصاص النوعي من النظام العام وتقضي به الجهة القضائية تلقائيا في أية مرحلة.",
+        "en": "Lack of subject-matter jurisdiction is of public order, and the court declares it of its own motion at any stage."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "عدم الاختصاص النوعي من النظام العام، تقضي به الجهة القضائية تلقائيا في أية مرحلة كانت عليها الدعوى.",
+          "sha256": "26cf02fff2cc54b3c6de97f1bd437b0052075f088304005b96bd1d1da03ae23d"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b30",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "50",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تثار الدفوع الشكلية في آن واحد قبل أي دفاع في الموضوع أو دفع بعدم القبول، تحت طائلة عدم القبول.",
+        "en": "Procedural pleas are raised together before any defence on the merits or plea of inadmissibility, failing which they are inadmissible."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجب إثارة الدفوع الشكلية في آن واحد قبل إبداء أي دفاع في الموضوع، أو دفع بعدم القبول، وذلك تحت طائلة عدم القبول.",
+          "sha256": "70be3a932dfb7f3c5cdef1ce45d648a026680ea0fa5fc9a56a5c2867be5598ac"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b31",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "51",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "على الخصم الدافع بعدم الاختصاص الإقليمي أن يسبب دفعه ويعين الجهة التي يجب رفع الدعوى أمامها.",
+        "en": "The party pleading territorial incompetence must give reasons and name the court before which the claim should be brought."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجب على الخصم الذي يدفع بعدم الاختصاص الإقليمي للجهة القضائية، أن يسبب طلبه، ويعين الجهة القضائية التي يستوجب رفع الدعوى أمامها.",
+          "sha256": "01de8b63745ec7ea2a4899e8f22f255df8f1e1b27b93e21a19310365c0254b9b"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b32",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "51",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "لا يجوز للمدعي إثارة الدفع بعدم الاختصاص الإقليمي.",
+        "en": "The plaintiff may not raise the plea of territorial incompetence."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "لا يجوز للمدعي إثارة هذا الدفع.",
+          "sha256": "0abcf1f398adc850c9bf25d4d70379f1a716cc7c8098e1b5c3115d3014e1444a"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b33",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "52",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يفصل القاضي في الدفع بحكم، وله أن يفصل فيه مع الموضوع بحكم واحد بعد إعذار الخصوم شفاهة.",
+        "en": "The judge decides the plea by a judgment, and may decide it together with the merits in one judgment after telling the parties orally to present their claims on the merits."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يفصل القاضي بحكم في الدفع بعدم الاختصاص الإقليمي، ويمكنه، عند الاقتضاء، أن يفصل فيه بنفس الحكم مع موضوع النزاع بعد إعذار الخصوم مسبقا شفاهة، لتقديم طلباتهم في الموضوع",
+          "sha256": "11ddf38d7824480ce95d0e7f79f69823274b99248e4d49b29288f75b21757e43"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b34",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "202",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "لا يجوز للغير المدخل في الخصام إثارة الدفع بعدم الاختصاص الإقليمي ولو استند إلى شرط محدد للاختصاص.",
+        "en": "A third party brought into the proceedings may not raise territorial incompetence, even relying on a jurisdiction clause."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "لا يجوز للغير المدخل في الخصام أن يثير الدفع بعدم الاختصاص الإقليمي للجهة القضائية المكلف بالحضور أمامها، حتى ولو استند على شرط محدد للاختصاص.",
+          "sha256": "493cb5e50d5cb238c2222d15c7e88b066cf32f47875e8c90cac4827132b24524"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b35",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "426",
+        "paragraphs": [
+          4
+        ]
+      },
+      "says": {
+        "ar": "في الطلاق أو الرجوع تختص محكمة مكان المسكن الزوجي، وفي الطلاق بالتراضي محكمة مكان إقامة أحد الزوجين حسب اختيارهما.",
+        "en": "In divorce or return to the marital home, the court of the place of the marital home has jurisdiction; in divorce by mutual consent, the court of the residence of either spouse, as they choose."
+      },
+      "quote": [
+        {
+          "paragraph": 4,
+          "text": "3 - في موضوع الطلاق أو الرجوع بمكان وجود المسكن الزوجي، وفي الطلاق بالتراضي بمكان إقامة أحد الزوجين حسب اختيارهما.",
+          "sha256": "cbee7fc2b3eaf0a35a03281b9d16bd478d4a792124814a5b38c48449678d691e"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b36",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "426",
+        "paragraphs": [
+          5
+        ]
+      },
+      "says": {
+        "ar": "في الحضانة وحق الزيارة والرخص الإدارية للمحضون تختص محكمة مكان ممارسة الحضانة.",
+        "en": "In custody, visitation rights and administrative permits for the child in custody, the court of the place where custody is exercised has jurisdiction."
+      },
+      "quote": [
+        {
+          "paragraph": 5,
+          "text": "4 - في موضوع الحضانة وحق الزيارة والرخص الإدارية المسلمة للقاصر المحضون بمكان ممارسة الحضانة،",
+          "sha256": "6dbbe86ce392baec63c81b7e2d595211c9fd04858119cae078b8c33cb30eb17a"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b37",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "426",
+        "paragraphs": [
+          6
+        ]
+      },
+      "says": {
+        "ar": "في النفقة الغذائية تختص محكمة موطن الدائن بها.",
+        "en": "In maintenance, the court of the maintenance creditor's domicile has jurisdiction."
+      },
+      "quote": [
+        {
+          "paragraph": 6,
+          "text": "5- في موضوع النفقة الغذائية بموطن الدائن بها،",
+          "sha256": "2597e0d707cf7cc79dc0ed5776339559c1fb70b69538fd96e1bd1b590aae2db6"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b38",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "426",
+        "paragraphs": [
+          2,
+          3,
+          7,
+          8,
+          9
+        ]
+      },
+      "says": {
+        "ar": "العدول عن الخطبة وإثبات الزواج والمنازعة في الصداق لمحكمة موطن المدعى عليه، ومتاع بيت الزوجية لمحكمة مكان المسكن الزوجي، والترخيص بالزواج لمحكمة مكان طالبه.",
+        "en": "Breaking off an engagement, proof of marriage and dowry disputes go to the court of the defendant's domicile; household goods to the court of the marital home; authorisation to marry to the court of the applicant's place."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "1 - في موضوع العدول عن الخطبة بمكان وجود موطن المدعى عليه،",
+          "sha256": "f30cd2fcb899a35a08123c281509e674b39547ea217108872947a21efa95683e"
+        },
+        {
+          "paragraph": 3,
+          "text": "2 - في موضوع إثبات الزواج بمكان وجود موطن المدعى عليه،",
+          "sha256": "f3dfc5d8a4142b8acf7171a26aaeb68b65ad19004accbd227a17b6f83be5936f"
+        },
+        {
+          "paragraph": 7,
+          "text": "6 - في موضوع متاع بيت الزوجية بمكان وجود المسكن الزوجي،",
+          "sha256": "04646a53a4b23729ec7c5218b00a802831f3e6cac32648a63e325806cffb07a7"
+        },
+        {
+          "paragraph": 8,
+          "text": "7 - في موضوع الترخيص بالزواج بمكان طالب الترخيص،",
+          "sha256": "194f7225baec3df8f81107e33d68b29bf96d3f770d1d0ff42f3b4239e1a638e9"
+        },
+        {
+          "paragraph": 9,
+          "text": "8 - في موضوع المنازعة حول الصداق بمكان موطن المدعى عليه،",
+          "sha256": "a0c48de857ff322263f8fca302fa228afe10dd60473d22e00dff8a1263c1143b"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b39",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "426",
+        "paragraphs": [
+          10
+        ]
+      },
+      "says": {
+        "ar": "في الولاية تختص محكمة مكان ممارسة الولاية.",
+        "en": "In guardianship, the court of the place where guardianship is exercised has jurisdiction."
+      },
+      "quote": [
+        {
+          "paragraph": 10,
+          "text": "9 - في موضوع الولاية بمكان ممارسة الولاية.",
+          "sha256": "9847968fce22425662d6b40e9664073c600bf351456b59ed831043e1ede46b1d"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b40",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "464",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "في الولاية على أموال القاصر تختص محكمة مكان ممارسة الولاية.",
+        "en": "For guardianship over a minor's property, the court of the place where guardianship is exercised has jurisdiction."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يؤول الاختصاص الإقليمي إلى المحكمة التي يوجد في دائرة اختصاصها مكان ممارسة الولاية على أموال القاصر.",
+          "sha256": "c0c81c7887c644da1af3a09b7b652630ca694ae2580b2615696212660635a76d"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b41",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "490",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "دعاوى الاعتراف بالنسب أو إنكار الأبوة ترفع أمام محكمة موطن المدعى عليه.",
+        "en": "Claims to recognise filiation or to deny paternity are brought before the court of the defendant's domicile."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "ترفع دعوى الاعتراف بالنسب، بالبنوة أو بالأبوة أو بالأمومة لشخص مجهول النسب أو إنكار الأبوة، أمام محكمة موطن المدعى عليه.",
+          "sha256": "1384b043a3fc759da888c1e3c19b788ecf771e0da04620a6e3f8fef0ad7ac00b"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b42",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "492",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يقدم طلب الكفالة أمام قاضي شؤون الأسرة لمحكمة موطن طالب الكفالة.",
+        "en": "A kafala application is made to the family judge of the court of the applicant's domicile."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يقدم طلب الكفالة بعريضة من طالب الكفالة أمام قاضي شؤون الأسرة لمحكمة مقر موطن طالب الكفالة.",
+          "sha256": "3c9e164880f7c700b857929e819a258ecc28323b9e3f4539b41f3732d19adfbd"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b43",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "498",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "دعاوى التركة لمحكمة موطن المتوفى ولو وجدت بعض أملاكها خارج دائرتها، ما لم ينص القانون على خلاف ذلك.",
+        "en": "Estate claims go to the court of the deceased's domicile, even if some estate property lies outside its district, unless the law provides otherwise."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يؤول الاختصاص في دعاوى التركة إلى المحكمة التي يقع فيها موطن المتوفى، حتى وإن وجدت بعض أملاك التركة خارج دائرة الاختصاص الإقليمي لهذه المحكمة، ما لم ينص القانون على خلاف ذلك.",
+          "sha256": "919378f9bb3b3b3390d2b854eab4e6a1dd64ff5a31a157d26d5e1d5b45b30f7b"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b44",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "501",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "في القسم الاجتماعي تختص محكمة مكان إبرام عقد العمل أو تنفيذه أو محكمة موطن المدعى عليه.",
+        "en": "For the social section, the court of the place where the employment contract was made or performed, or of the defendant's domicile, has jurisdiction."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يؤول الاختصاص الإقليمي إلى المحكمة التي تم في دائرة اختصاصها إبرام عقد العمل أو تنفيذه أو التي يوجد بها موطن المدعى عليه.",
+          "sha256": "3d56ff0497da83f0471275721b6d287173806d91f079da2eda44724bd309be27"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b45",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "501",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "إذا أنهي عقد العمل أو علق بسبب حادث عمل أو مرض مهني تختص محكمة موطن المدعي.",
+        "en": "When the employment contract was ended or suspended because of a work accident or occupational illness, the court of the plaintiff's domicile has jurisdiction."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "غير أنه في حالة إنهاء أو تعليق عقد العمل بسبب حادث عمل أو مرض مهني، يؤول الاختصاص إلى المحكمة التي يوجد بها موطن المدعي.",
+          "sha256": "530e06a21665a82453cbcdd69e8aab345cbd7af1f41cf8ecddf6c509f9e42c6a"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b46",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "518",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "في القسم العقاري تختص محكمة موقع العقار، ما لم ينص القانون على خلاف ذلك.",
+        "en": "For the real-property section, the court where the property lies has jurisdiction, unless the law provides otherwise."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يؤول الاختصاص الإقليمي إلى المحكمة التي يوجد العقار في دائرة اختصاصها، ما لم ينص القانون على خلاف ذلك.",
+          "sha256": "e9bd42f000298dbd987ce6a85b650a2c1245a691f56d8b8c7b345a9cceb512ff"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b47",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "532",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يطبق على القسم التجاري الاختصاص الإقليمي المقرر في هذا القانون وقواعد القانون التجاري والبحري والنصوص الخاصة.",
+        "en": "The commercial section applies this code's territorial rules and those of the Commercial Code, the Maritime Code and special texts."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تطبق على القسم التجاري، أحكام الاختصاص الإقليمي المنصوص عليها في هذا القانون والقواعد الواردة في القانون التجاري والقانون البحري والنصوص الخاصة.",
+          "sha256": "1da162c2390d29dabc31e460d6362f3d486fb10241a841de0680f61c91a348e1"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b48",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "536 مكرر 1",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يطبق على المحكمة التجارية المتخصصة الاختصاص الإقليمي المقرر في هذا القانون.",
+        "en": "The specialised commercial court applies this code's territorial rules."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تطبق على المحكمة التجارية المتخصصة أحكام الاختصاص الإقليمي المنصوص عليها في هذا القانون.",
+          "sha256": "2b1efc9c1767000e26c316afa67e00b1ac4f40720b1a834c61574365eb3a118d"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b49",
+      "role": "limit",
+      "cite": {
+        "code": "law-22-13",
+        "article": "13",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "قواعد الاختصاص النوعي والإقليمي الجديدة الخاصة بالجهات الإدارية والمحاكم التجارية المتخصصة تسري من تاريخ تنصيب الجهات الجديدة.",
+        "en": "The new subject-matter and territorial rules for the administrative courts and specialised commercial courts apply from the date the new courts are installed."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تسري قواعد الاختصاص النوعي والإقليمي المنصوص عليها في هذا القانون، الخاصة بالجهات القضائية الإدارية والمحاكم التجارية المتخصصة ابتداء من تاريخ تنصيب الجهات القضائية الجديدة.",
+          "sha256": "626596d6c211186c32d3a0ab2806017710c395cb30bf4bc6c2959af5f44c57f2"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "delta",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b50",
+      "role": "limit",
+      "cite": {
+        "code": "law-22-13",
+        "article": "13",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "تبقى الجهات الإدارية والأقسام التجارية مختصة بالدعاوى المرفوعة أمامها قبل التنصيب.",
+        "en": "The administrative courts and commercial sections keep the claims filed before them before the installation."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "وتبقى الجهات القضائية الإدارية والأقسام التجارية مختصة بالفصل في الدعاوى المرفوعة أمامها قبل تاريخ تنصيب الجهات القضائية الجديدة.",
+          "sha256": "99079135c3848dab7344e00b22b9500784dfd724ba4fa02b30a46fefb2ae3d88"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "delta",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b51",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "299",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "في أحوال الاستعجال والحراسة القضائية والتدابير التحفظية غير المنظمة بإجراءات خاصة تعرض القضية أمام المحكمة الواقع في دائرتها الإشكال أو التدبير المطلوب.",
+        "en": "In urgent cases, judicial custody and protective measures not governed by special procedures, the case is brought before the court in whose district the difficulty or the measure sought lies."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "في جميع أحوال الاستعجال، أو إذا اقتضى الأمر الفصل في إجراء يتعلق بالحراسة القضائية أو بأي تدبير تحفظي غير منظم بإجراءات خاصة، يتم عرض القضية بعريضة افتتاحية أمام المحكمة الواقع في دائرة اختصاصها الإشكال أو التدبير المطلوب، وينادى عليها في أقرب جلسة.",
+          "sha256": "ad5ea8fcd614f87510cbf39646a463c84776b398e612164a0a73d45816fbc8b3"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b52",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "802",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "دعاوى المسؤولية عن الأضرار الناجمة عن مركبة تابعة للدولة أو الولاية أو البلدية أو مؤسسة عمومية إدارية من اختصاص المحاكم العادية.",
+        "en": "Liability claims for damage caused by a vehicle of the State, a wilaya, a commune or a public administrative body belong to the ordinary courts."
+      },
+      "quote": [
+        {
+          "paragraph": 3,
+          "text": "2 - المنازعات المتعلقة بكل دعوى خاصة بالمسؤولية الرامية إلى طلب تعويض الأضرار الناجمة عن مركبة تابعة للدولة، أو لإحدى الولايات أو البلديات أو المؤسسات العمومية ذات الصبغة الإدارية.",
+          "sha256": "a190f7da64e607b8e7486aec69cad0ca5e1dec0e365e6fe4c5257bcbf1c8a1a9"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b53",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "803",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "الاختصاص الإقليمي للمحاكم الإدارية يتحدد وفق قاعدتي موطن المدعى عليه وتعدد المدعى عليهم.",
+        "en": "Territorial jurisdiction of the administrative courts follows the rules on the defendant's domicile and on several defendants."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يتحدد الاختصاص الإقليمي للمحاكم الإدارية طبقا للمادتين37 و38 من هذا القانون.",
+          "sha256": "765aa76eaf9693061e711dc1f21c572d21022cb075cc434896d7375383cd2712"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b54",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "804",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "خلافا لذلك ترفع الدعاوى وجوبا أمام المحاكم الإدارية المحددة في المواد المعددة بعده.",
+        "en": "By way of exception, claims in the matters listed after it must be brought before the administrative courts named there."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "خلافا لأحكام المادة 803 أعلاه، ترفع الدعاوى وجوبا أمام المحاكم الإدارية في المواد المبينة أدناه :",
+          "sha256": "a2c2352f38c48572ffbc96c37efaf4d32bbdd144e512db8e731a6e3c0a02a5b8"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "cpca/law-22-13"
+        ],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b55",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "807",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "الاختصاص النوعي والإقليمي للمحاكم الإدارية من النظام العام.",
+        "en": "Subject-matter and territorial jurisdiction of the administrative courts are of public order."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "الاختصاص النوعي والاختصاص الإقليمي للمحاكم الإدارية من النظام العام.",
+          "sha256": "3d6925a5c335fef16829aea095b002c1f5c0042cc9415d06ba59cd9bb6d188bb"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b56",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "807",
+        "paragraphs": [
+          2,
+          3
+        ]
+      },
+      "says": {
+        "ar": "يجوز لأي خصم إثارة الدفع بعدم الاختصاص في أية مرحلة، ويجب على القاضي إثارته تلقائيا.",
+        "en": "Any party may plead lack of jurisdiction at any stage, and the judge must raise it of his own motion."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "يجوز إثارة الدفع بعدم الاختصاص من أحد الخصوم في أية مرحلة كانت عليها الدعوى.",
+          "sha256": "dc872210a842447c397001c69c89e1ac905604731933fee64a83a7be08b98e19"
+        },
+        {
+          "paragraph": 3,
+          "text": "يجب إثارته تلقائيا من طرف القاضي.",
+          "sha256": "989e1fc655534ac9e70cf3338f38e783b8d23bf3c14d1bba9ee80daabc80ecb6"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b57",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "15",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "يجب أن تتضمن العريضة تحت طائلة عدم قبولها شكلا الجهة القضائية التي ترفع أمامها الدعوى.",
+        "en": "The petition must name the court before which the claim is brought, failing which it is inadmissible in form."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجب أن تتضمن عريضة افتتاح الدعوى، تحت طائلة عدم قبولها شكلا، البيانات الآتية :",
+          "sha256": "d1a2b858cb132be84beec6efc31e21b100252e635c1bc8f4ad3dadb68cf01eaa"
+        },
+        {
+          "paragraph": 2,
+          "text": "1 - الجهة القضائية التي ترفع أمامها الدعوى،",
+          "sha256": "5250ece05a710e4e7f2f0fff408bd2acfcaab510707616bf4e46dac863b3d6e0"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b58",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "317",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ينقطع التقادم بالمطالبة القضائية ولو رفعت الدعوى إلى محكمة غير مختصة.",
+        "en": "Limitation is interrupted by a judicial claim, even one brought before a court that lacks jurisdiction."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "ينقطع التقادم بالمطالبة القضائية ولو رفعت الدعوى الى محكمة غير مختصة بالتنبيه أو بالحجز، وبالطلب الذى يتقدم به الدائن لقبول حقه فى تفليسة المـدين أو فى توزيع أو بأى عمل يقوم به الدائن اثناء مرافعة لاثبات حقه .",
+          "sha256": "1ab5929e59fb95040c338b75e2f283f1e12ec9e695e05ef649030cc3f643d87a"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "delta",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b59",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "25",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يمكن تعديل موضوع النزاع بطلبات عارضة مرتبطة بالادعاءات الأصلية.",
+        "en": "The subject of the dispute may be changed by incidental requests connected with the original claims."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "غير أنه يمكن تعديله بناء على تقديم طلبات عارضة، إذا كانت هذه الطلبات مرتبطة بالادعاءات الأصلية.",
+          "sha256": "9c12b25e59b7435c59925ac5f6e72c0bc3ff08abead5bf196ce7895da459939f"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b60",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "55",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يقوم الارتباط عند وجود علاقة بين قضايا مرفوعة أمام جهات أو تشكيلات مختلفة تستلزم نظرها معا.",
+        "en": "Connection exists when cases before different courts or benches are so related that justice requires them to be heard together."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تقوم حالة الارتباط عند وجود علاقة بين قضايا مرفوعة أمام تشكيلات مختلفة لنفس الجهة القضائية، أو أمام جهات قضائية مختلفة، والتي تستلزم لحسن سير العدالة أن ينظر ويفصل فيها معا.",
+          "sha256": "27eea59aeb6395c6db161c7bbafb038798ae3f51aefd46d47939d6234017e596"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b61",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "436",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "دعوى الطلاق من أحد الزوجين ترفع أمام قسم شؤون الأسرة بعريضة.",
+        "en": "A divorce claim by either spouse is brought before the family section by petition."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "ترفع دعوى الطلاق من أحد الزوجين أمام قسم شؤون الأسرة، بتقديم عريضة وفقا للأشكال المقررة لرفع الدعوى.",
+          "sha256": "0e6703e627e911662482837aad4cb4afacb47e1da5da5cdec49bc86528c2ce16"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    }
+  ],
+  "court": {
+    "territory": [
+      {
+        "id": "t1",
+        "basis": [
+          "b1"
+        ],
+        "rule": {
+          "ar": "القاعدة العامة: محكمة موطن المدعى عليه؛ فإن لم يكن له موطن معروف فمحكمة آخر موطن له؛ وإن اختار موطنا فمحكمة الموطن المختار؛ ما لم ينص القانون على خلاف ذلك (المادة 37).",
+          "en": "General rule: the court of the defendant's domicile; with no known domicile, the court of his last domicile; with an elected domicile, the court of that domicile; unless the law provides otherwise (article 37)."
+        }
+      },
+      {
+        "id": "t2",
+        "basis": [
+          "b2"
+        ],
+        "rule": {
+          "ar": "عند تعدد المدعى عليهم: محكمة موطن أي واحد منهم (المادة 38).",
+          "en": "Several defendants: the court of the domicile of any one of them (article 38)."
+        }
+      },
+      {
+        "id": "t3",
+        "basis": [
+          "b25",
+          "b26",
+          "b27"
+        ],
+        "rule": {
+          "ar": "شرط منح الاختصاص الإقليمي لمحكمة غير مختصة باطل إلا بين التجار (المادة 45)؛ ويجوز للخصوم الحضور باختيارهم أمام قاض غير مختص إقليميا بتصريح موقع، فيصير مختصا طيلة الخصومة (المادة 46).",
+          "en": "A clause giving territorial jurisdiction to a court that is not competent is void except between traders (article 45); the parties may appear by choice before a judge not territorially competent, by a signed declaration, and he is then competent for the whole proceedings (article 46)."
+        }
+      },
+      {
+        "id": "t4",
+        "basis": [
+          "b10",
+          "b46"
+        ],
+        "when": {
+          "any": [
+            {
+              "slot": "dispute_concerns_real_property",
+              "is": "yes"
+            },
+            {
+              "slot": "commercial_lease",
+              "is": "yes"
+            }
+          ]
+        },
+        "rule": {
+          "ar": "العقار والأشغال المتعلقة به والإيجارات المتعلقة بالعقارات بما فيها التجارية والأشغال العمومية: محكمة موقع العقار أو مكان تنفيذ الأشغال، دون سواها (المادتان 40 و518).",
+          "en": "Real property, works on it, leases of buildings including commercial leases, and public works: the court where the property lies or where the works are carried out, and no other (articles 40 and 518)."
+        }
+      },
+      {
+        "id": "t5",
+        "basis": [
+          "b4"
+        ],
+        "when": {
+          "slot": "special_venue_matter",
+          "is": "mixed_action"
+        },
+        "rule": {
+          "ar": "الدعاوى المختلطة: المحكمة التي يقع في دائرتها مقر الأموال (المادة 39).",
+          "en": "Mixed actions: the court where the property is situated (article 39)."
+        }
+      },
+      {
+        "id": "t6",
+        "basis": [
+          "b5",
+          "b52"
+        ],
+        "when": {
+          "any": [
+            {
+              "slot": "obligation_is_tort_compensation",
+              "is": "yes"
+            },
+            {
+              "slot": "damage_caused_by_offence",
+              "is": "yes"
+            },
+            {
+              "slot": "public_vehicle_damage",
+              "is": "yes"
+            }
+          ]
+        },
+        "rule": {
+          "ar": "تعويض الضرر الناتج عن جناية أو جنحة أو مخالفة أو فعل تقصيري، والأضرار الحاصلة بفعل الإدارة (ومنها أضرار مركبات الإدارة التي تبقى للمحاكم العادية): محكمة مكان وقوع الفعل الضار (المادتان 39 و802).",
+          "en": "Compensation for damage from a felony, misdemeanour, minor offence or tort, and damage caused by the administration (including damage by public vehicles, which stays with the ordinary courts): the court where the harmful act occurred (articles 39 and 802)."
+        }
+      },
+      {
+        "id": "t7",
+        "basis": [
+          "b6"
+        ],
+        "when": {
+          "slot": "special_venue_matter",
+          "is": "supplies_works_services"
+        },
+        "rule": {
+          "ar": "التوريدات والأشغال وتأجير الخدمات الفنية أو الصناعية: محكمة مكان إبرام الاتفاق أو تنفيذه، ولو كان أحد الأطراف غير مقيم فيه (المادة 39).",
+          "en": "Supplies, works and hire of technical or industrial services: the court where the agreement was made or performed, even if a party does not reside there (article 39)."
+        }
+      },
+      {
+        "id": "t8",
+        "basis": [
+          "b7",
+          "b47"
+        ],
+        "when": {
+          "slot": "dispute_is_commercial",
+          "is": "yes"
+        },
+        "rule": {
+          "ar": "المواد التجارية غير الإفلاس والتسوية القضائية: محكمة مكان الوعد أو تسليم البضاعة أو مكان وجوب الوفاء، وفي الدعوى ضد شركة محكمة أحد فروعها؛ مع قواعد القانون التجاري والبحري والنصوص الخاصة (المادتان 39 و532).",
+          "en": "Commercial matters other than bankruptcy and judicial settlement: the court of the place of the promise, of delivery of the goods, or where payment is due; against a company, the court of one of its branches; plus the rules of the Commercial and Maritime Codes and special texts (articles 39 and 532)."
+        }
+      },
+      {
+        "id": "t9",
+        "basis": [
+          "b12"
+        ],
+        "when": {
+          "slot": "specialised_commercial_matter",
+          "in": [
+            "bankruptcy_settlement",
+            "commercial_company"
+          ]
+        },
+        "rule": {
+          "ar": "إفلاس الشركات أو تسويتها القضائية ومنازعات الشركاء: محكمة مكان افتتاح الإفلاس أو التسوية أو مكان المقر الاجتماعي للشركة، دون سواها (المادة 40).",
+          "en": "Bankruptcy or judicial settlement of companies and disputes between partners: the court where the proceedings were opened or of the company's registered office, and no other (article 40)."
+        }
+      },
+      {
+        "id": "t10",
+        "basis": [
+          "b13"
+        ],
+        "when": {
+          "slot": "specialised_commercial_matter",
+          "is": "intellectual_property"
+        },
+        "rule": {
+          "ar": "الملكية الفكرية: المحكمة المنعقدة في مقر المجلس القضائي الذي يقع في دائرته موطن المدعى عليه، دون سواها (المادة 40).",
+          "en": "Intellectual property: the court sitting at the seat of the judicial council in whose district the defendant's domicile lies, and no other (article 40)."
+        }
+      },
+      {
+        "id": "t11",
+        "basis": [
+          "b48",
+          "b49",
+          "b50"
+        ],
+        "when": {
+          "slot": "specialised_commercial_subject",
+          "is": "yes"
+        },
+        "rule": {
+          "ar": "المحكمة التجارية المتخصصة تطبق قواعد الاختصاص الإقليمي لهذا القانون (المادة 536 مكرر 1)؛ وتسري قواعد الاختصاص الجديدة من تاريخ تنصيبها، وتبقى الدعاوى المرفوعة قبله أمام الأقسام التجارية (القانون 22-13، المادة 13). يجب التحقق من مقر المحكمة المتخصصة التي تتبعها المحكمة المختصة إقليميا.",
+          "en": "The specialised commercial court applies this code's territorial rules (article 536 bis 1); the new jurisdiction rules apply from its installation, and claims filed before it stay with the commercial sections (law 22-13, article 13). Check which specialised court covers the territorially competent court."
+        }
+      },
+      {
+        "id": "t12",
+        "basis": [
+          "b11",
+          "b43"
+        ],
+        "when": {
+          "slot": "partition_of_estate",
+          "is": "yes"
+        },
+        "rule": {
+          "ar": "الميراث ودعاوى التركة: محكمة موطن المتوفى، ولو وجدت بعض أملاك التركة خارج دائرتها، ما لم ينص القانون على خلاف ذلك (المادتان 40 و498).",
+          "en": "Inheritance and estate claims: the court of the deceased's domicile, even if some estate property lies outside its district, unless the law provides otherwise (articles 40 and 498)."
+        }
+      },
+      {
+        "id": "t13",
+        "basis": [
+          "b11",
+          "b35",
+          "b61"
+        ],
+        "when": {
+          "any": [
+            {
+              "slot": "requests",
+              "includes": "divorce"
+            },
+            {
+              "slot": "requests",
+              "includes": "tatliq"
+            },
+            {
+              "slot": "requests",
+              "includes": "khul"
+            }
+          ]
+        },
+        "rule": {
+          "ar": "الطلاق أو الرجوع: محكمة مكان المسكن الزوجي؛ والطلاق بالتراضي: محكمة مكان إقامة أحد الزوجين حسب اختيارهما (المادتان 40 و426).",
+          "en": "Divorce or return to the marital home: the court of the place of the marital home; divorce by mutual consent: the court of the residence of either spouse, as they choose (articles 40 and 426)."
+        }
+      },
+      {
+        "id": "t14",
+        "basis": [
+          "b11",
+          "b36"
+        ],
+        "when": {
+          "any": [
+            {
+              "slot": "requests",
+              "includes": "custody"
+            },
+            {
+              "slot": "requests",
+              "includes": "custody_transfer"
+            },
+            {
+              "slot": "requests",
+              "includes": "visitation"
+            }
+          ]
+        },
+        "rule": {
+          "ar": "الحضانة وحق الزيارة: محكمة مكان ممارسة الحضانة (المادتان 40 و426).",
+          "en": "Custody and visitation: the court of the place where custody is exercised (articles 40 and 426)."
+        }
+      },
+      {
+        "id": "t15",
+        "basis": [
+          "b11",
+          "b37"
+        ],
+        "when": {
+          "slot": "requests",
+          "includes": "maintenance"
+        },
+        "rule": {
+          "ar": "النفقة الغذائية: محكمة موطن الدائن بالنفقة (المادتان 40 و426).",
+          "en": "Maintenance: the court of the maintenance creditor's domicile (articles 40 and 426)."
+        }
+      },
+      {
+        "id": "t16",
+        "basis": [
+          "b11"
+        ],
+        "when": {
+          "slot": "requests",
+          "includes": "housing"
+        },
+        "rule": {
+          "ar": "السكن: محكمة مكان وجود السكن (المادة 40).",
+          "en": "Housing: the court of the place where the dwelling is (article 40)."
+        }
+      },
+      {
+        "id": "t17",
+        "basis": [
+          "b38",
+          "b41",
+          "b42"
+        ],
+        "when": {
+          "slot": "dispute_is_family",
+          "is": "yes"
+        },
+        "rule": {
+          "ar": "مسائل الأسرة الأخرى: العدول عن الخطبة وإثبات الزواج والصداق ودعاوى النسب لمحكمة موطن المدعى عليه؛ متاع بيت الزوجية لمحكمة المسكن الزوجي؛ الترخيص بالزواج لمحكمة مكان طالبه؛ الكفالة لمحكمة موطن طالبها (المواد 426 و490 و492).",
+          "en": "Other family matters: breaking off an engagement, proof of marriage, dowry and filiation claims go to the court of the defendant's domicile; household goods to the court of the marital home; authorisation to marry to the court of the applicant's place; kafala to the court of the applicant's domicile (articles 426, 490 and 492)."
+        }
+      },
+      {
+        "id": "t18",
+        "basis": [
+          "b39",
+          "b40"
+        ],
+        "when": {
+          "slot": "requests",
+          "includes": "guardianship"
+        },
+        "rule": {
+          "ar": "الولاية، ومنها الولاية على أموال القاصر: محكمة مكان ممارسة الولاية (المادتان 426 و464).",
+          "en": "Guardianship, including guardianship over a minor's property: the court of the place where guardianship is exercised (articles 426 and 464)."
+        }
+      },
+      {
+        "id": "t19",
+        "basis": [
+          "b17",
+          "b44"
+        ],
+        "when": {
+          "slot": "dispute_is_social",
+          "is": "yes"
+        },
+        "rule": {
+          "ar": "منازعات العمل: محكمة مكان إبرام عقد العمل أو تنفيذه أو محكمة موطن المدعى عليه (المادتان 40 و501).",
+          "en": "Labour disputes: the court where the employment contract was made or performed, or of the defendant's domicile (articles 40 and 501)."
+        }
+      },
+      {
+        "id": "t20",
+        "basis": [
+          "b18",
+          "b45"
+        ],
+        "when": {
+          "all": [
+            {
+              "slot": "dispute_is_social",
+              "is": "yes"
+            },
+            {
+              "slot": "work_accident_or_occupational_illness",
+              "is": "yes"
+            }
+          ]
+        },
+        "rule": {
+          "ar": "إذا أنهي عقد العمل أو علق بسبب حادث عمل أو مرض مهني: محكمة موطن المدعي (المادتان 40 و501).",
+          "en": "When the employment contract was ended or suspended because of a work accident or occupational illness: the court of the plaintiff's domicile (articles 40 and 501)."
+        }
+      },
+      {
+        "id": "t21",
+        "basis": [
+          "b14"
+        ],
+        "when": {
+          "slot": "special_venue_matter",
+          "is": "medical_services"
+        },
+        "rule": {
+          "ar": "الخدمات الطبية: محكمة مكان تقديم العلاج، دون سواها (المادة 40).",
+          "en": "Medical services: the court of the place where treatment was given, and no other (article 40)."
+        }
+      },
+      {
+        "id": "t22",
+        "basis": [
+          "b8"
+        ],
+        "when": {
+          "slot": "special_venue_matter",
+          "is": "postal_items"
+        },
+        "rule": {
+          "ar": "المراسلات والأشياء الموصى عليها والإرسال ذو القيمة المصرح بها وطرود البريد: محكمة موطن المرسل أو المرسل إليه (المادة 39).",
+          "en": "Correspondence, registered items, declared-value consignments and postal parcels: the court of the sender's or the addressee's domicile (article 39)."
+        }
+      },
+      {
+        "id": "t23",
+        "basis": [
+          "b16"
+        ],
+        "when": {
+          "slot": "special_venue_matter",
+          "is": "seizure"
+        },
+        "rule": {
+          "ar": "الحجز، إذنا أو إجراءات لاحقة: محكمة مكان الحجز، دون سواها (المادة 40).",
+          "en": "Attachment, leave or later steps: the court of the place of attachment, and no other (article 40)."
+        }
+      },
+      {
+        "id": "t24",
+        "basis": [
+          "b15"
+        ],
+        "when": {
+          "slot": "special_venue_matter",
+          "in": [
+            "costs_or_court_assistant_fees",
+            "guarantee_claim"
+          ]
+        },
+        "rule": {
+          "ar": "مصاريف الدعوى وأجور المساعدين القضائيين: المحكمة التي فصلت في الدعوى الأصلية؛ دعوى الضمان: المحكمة التي قدم إليها الطلب الأصلي (المادة 40).",
+          "en": "Costs and court assistants' fees: the court that decided the original claim; guarantee claims: the court seised of the original claim (article 40)."
+        }
+      },
+      {
+        "id": "t25",
+        "basis": [
+          "b19",
+          "b51"
+        ],
+        "when": {
+          "slot": "special_venue_matter",
+          "is": "urgent_measure"
+        },
+        "rule": {
+          "ar": "المواد المستعجلة وإشكالات التنفيذ والتدابير التحفظية: محكمة مكان وقوع الإشكال أو التدبير المطلوب (المادتان 40 و299).",
+          "en": "Urgent matters, difficulties of execution and protective measures: the court of the place of the difficulty or of the measure sought (articles 40 and 299)."
+        }
+      },
+      {
+        "id": "t26",
+        "basis": [
+          "b20",
+          "b21",
+          "b22"
+        ],
+        "when": {
+          "slot": "defendant_resides_abroad",
+          "is": "yes"
+        },
+        "rule": {
+          "ar": "المدعى عليه المقيم في الخارج: يجوز تكليف الأجنبي أمام القضاء الجزائري عن التزامات تعاقد عليها في الجزائر مع جزائري أو في الخارج مع جزائريين، ويجوز تكليف الجزائري عن التزامات تعاقد عليها في الخارج (المادتان 41 و42). لا تعين المادتان المحكمة إقليميا.",
+          "en": "Defendant living abroad: a foreigner may be summoned before the Algerian courts for obligations contracted in Algeria with an Algerian, or abroad with Algerians; an Algerian for obligations contracted abroad (articles 41 and 42). These articles do not name the court by place."
+        }
+      },
+      {
+        "id": "t27",
+        "basis": [
+          "b23",
+          "b24"
+        ],
+        "when": {
+          "slot": "party_is_judge",
+          "is": "yes"
+        },
+        "rule": {
+          "ar": "إذا كان القاضي مدعيا وجب رفع الدعوى أمام جهة تابعة لأقرب مجلس محاذ؛ وإذا كان مدعى عليه جاز ذلك لخصمه (المادتان 43 و44).",
+          "en": "A judge who is plaintiff must file before a court of the nearest neighbouring council; when a judge is defendant, his opponent may do so (articles 43 and 44)."
+        }
+      },
+      {
+        "id": "t28",
+        "basis": [
+          "b28",
+          "b30",
+          "b31",
+          "b32",
+          "b33",
+          "b34",
+          "b29"
+        ],
+        "rule": {
+          "ar": "الدفع بعدم الاختصاص الإقليمي أمام المحاكم العادية يثيره المدعى عليه قبل أي دفاع في الموضوع أو دفع بعدم القبول، مسببا ومعينا للمحكمة المختصة؛ ولا يثيره المدعي ولا الغير المدخل؛ ولا تنص هذه المواد على إثارته تلقائيا، خلافا لعدم الاختصاص النوعي (المواد 36 و47 و50 و51 و52 و202).",
+          "en": "Before the ordinary courts, the plea of territorial incompetence is raised by the defendant before any defence on the merits or plea of inadmissibility, with reasons and naming the competent court; neither the plaintiff nor a third party brought in may raise it; these articles do not say the court raises it of its own motion, unlike lack of subject-matter jurisdiction (articles 36, 47, 50, 51, 52 and 202)."
+        }
+      }
+    ]
+  },
+  "boundaries": [
+    {
+      "id": "n1",
+      "looksLike": {
+        "ar": "محكمة مختصة إقليميا بموجب شرط في العقد",
+        "en": "A court made territorially competent by a contract clause"
+      },
+      "isActually": "outside:void-jurisdiction-clause",
+      "tellingFacts": [
+        {
+          "ar": "المحكمة اختيرت بناء على شرط في العقد فقط",
+          "en": "The court was chosen only because of a contract clause"
+        },
+        {
+          "ar": "أطراف الشرط ليسوا كلهم تجارا",
+          "en": "Not all parties to the clause are traders"
+        }
+      ],
+      "when": {
+        "all": [
+          {
+            "slot": "jurisdiction_clause_relied_on",
+            "is": "yes"
+          },
+          {
+            "slot": "clause_parties_all_merchants",
+            "is": "no"
+          }
+        ]
+      },
+      "slots": [
+        "jurisdiction_clause_relied_on",
+        "clause_parties_all_merchants"
+      ],
+      "message": {
+        "ar": "المادة 45 من ق.إ.م.إ: كل شرط يمنح الاختصاص الإقليمي لجهة غير مختصة لاغ وعديم الأثر إلا إذا تم بين التجار. تحقق من صفة أطراف الشرط ومن المحكمة المختصة وفق القواعد القانونية.",
+        "en": "CPCA article 45: a clause giving territorial jurisdiction to a court that is not competent is void unless made between traders. Check who the parties to the clause are and which court the legal rules designate."
+      },
+      "basis": [
+        "b25"
+      ]
+    },
+    {
+      "id": "n2",
+      "looksLike": {
+        "ar": "دعوى ترفع أمام محكمة موطن المدعى عليه",
+        "en": "A claim filed at the court of the defendant's domicile"
+      },
+      "isActually": "outside:defendant-abroad",
+      "tellingFacts": [
+        {
+          "ar": "المدعى عليه يقيم خارج التراب الوطني",
+          "en": "The defendant lives outside the national territory"
+        }
+      ],
+      "when": {
+        "slot": "defendant_resides_abroad",
+        "is": "yes"
+      },
+      "slots": [
+        "defendant_resides_abroad"
+      ],
+      "message": {
+        "ar": "المادتان 41 و42 من ق.إ.م.إ: يجوز تكليف المدعى عليه المقيم في الخارج أمام القضاء الجزائري في الحالات المذكورة فيهما، ولا تعينان المحكمة إقليميا. تحقق من أساس اختصاص القضاء الجزائري ومن المحكمة التي ترفع أمامها الدعوى، وراجع المادة 37 بشأن آخر موطن معروف أو الموطن المختار.",
+        "en": "CPCA articles 41 and 42: a defendant living abroad may be summoned before the Algerian courts in the cases they state; they do not name the court by place. Check the ground for Algerian jurisdiction and the court chosen, and see article 37 on the last known or elected domicile."
+      },
+      "basis": [
+        "b20",
+        "b21",
+        "b22",
+        "b1"
+      ]
+    },
+    {
+      "id": "n3",
+      "looksLike": {
+        "ar": "دعوى تخضع لقواعد الاختصاص الإقليمي للمحاكم العادية",
+        "en": "A claim governed by the ordinary courts' territorial rules"
+      },
+      "isActually": "outside:administrative",
+      "tellingFacts": [
+        {
+          "ar": "أحد الأطراف الدولة أو ولاية أو بلدية أو مؤسسة عمومية إدارية أو هيئة عمومية وطنية أو منظمة مهنية وطنية",
+          "en": "A party is the State, a wilaya, a commune, a public administrative body, a national public institution or a national professional organisation"
+        },
+        {
+          "ar": "الدعوى ليست دعوى تعويض عن أضرار مركبة تابعة للإدارة",
+          "en": "The claim is not one for damage caused by a public vehicle"
+        }
+      ],
+      "when": {
+        "all": [
+          {
+            "any": [
+              {
+                "slot": "public_body_party",
+                "is": "yes"
+              },
+              {
+                "slot": "national_public_body_party",
+                "is": "yes"
+              }
+            ]
+          },
+          {
+            "not": {
+              "slot": "public_vehicle_damage",
+              "is": "yes"
+            }
+          }
+        ]
+      },
+      "slots": [
+        "public_body_party",
+        "national_public_body_party",
+        "public_vehicle_damage"
+      ],
+      "message": {
+        "ar": "المواد 803 و804 و807 من ق.إ.م.إ: إذا كانت الدعوى من اختصاص المحكمة الإدارية، يتحدد اختصاصها الإقليمي وفق المادتين 803 و804، وهو من النظام العام يثيره القاضي تلقائيا. تحقق من جهة الاختصاص ومن المحكمة الإدارية المختصة إقليميا.",
+        "en": "CPCA articles 803, 804 and 807: if the claim belongs to an administrative court, its territorial jurisdiction follows articles 803 and 804 and is of public order, raised by the judge of his own motion. Check which order of courts is competent and which administrative court by place."
+      },
+      "basis": [
+        "b53",
+        "b54",
+        "b55",
+        "b56",
+        "b52"
+      ]
+    },
+    {
+      "id": "n4",
+      "looksLike": {
+        "ar": "شرط اختصاص صحيح في مادة خصها القانون بمحكمة دون سواها",
+        "en": "A valid jurisdiction clause in a matter the law reserves to one court"
+      },
+      "isActually": "outside:exclusive-venue",
+      "tellingFacts": [
+        {
+          "ar": "المحكمة اختيرت بناء على شرط في العقد",
+          "en": "The court was chosen because of a contract clause"
+        },
+        {
+          "ar": "النزاع عقاري أو إيجار تجاري أو أسري أو عمالي",
+          "en": "The dispute concerns real property, a commercial lease, family or labour"
+        }
+      ],
+      "when": {
+        "all": [
+          {
+            "slot": "jurisdiction_clause_relied_on",
+            "is": "yes"
+          },
+          {
+            "any": [
+              {
+                "slot": "dispute_concerns_real_property",
+                "is": "yes"
+              },
+              {
+                "slot": "commercial_lease",
+                "is": "yes"
+              },
+              {
+                "slot": "dispute_is_family",
+                "is": "yes"
+              },
+              {
+                "slot": "dispute_is_social",
+                "is": "yes"
+              }
+            ]
+          }
+        ]
+      },
+      "slots": [
+        "jurisdiction_clause_relied_on",
+        "dispute_concerns_real_property",
+        "commercial_lease",
+        "dispute_is_family",
+        "dispute_is_social"
+      ],
+      "message": {
+        "ar": "المادة 40 من ق.إ.م.إ: ترفع الدعاوى في المواد العقارية والإيجارات بما فيها التجارية ومسائل الأسرة المذكورة ومنازعات العمل أمام المحاكم المعينة فيها دون سواها، والمادة 45 لا تجيز شرط الاختصاص إلا بين التجار. تحقق من أن المحكمة المختارة هي المحكمة التي تعينها المادة 40.",
+        "en": "CPCA article 40: claims on real property, leases including commercial ones, the family matters it lists and labour disputes go to the courts it names and no other; article 45 allows a jurisdiction clause only between traders. Check that the court chosen is the one article 40 names."
+      },
+      "basis": [
+        "b9",
+        "b10",
+        "b11",
+        "b17",
+        "b25"
+      ]
+    }
+  ],
+  "openPoints": [
+    {
+      "id": "o1",
+      "grade": "C",
+      "refs": [
+        "t28",
+        "n4",
+        "b9",
+        "b28"
+      ],
+      "question": {
+        "ar": "هل قواعد الاختصاص الإقليمي أمام المحاكم العادية من النظام العام، ولا سيما المواد التي تقول المادة 40 إنها ترفع أمام محاكمها «دون سواها»؟",
+        "en": "Are the territorial rules before the ordinary courts of public order, in particular for the matters article 40 sends to its courts «and no other»?"
+      },
+      "why": {
+        "ar": "المواد 45 و46 و47 و51 و202 تجعل الدفع بيد المدعى عليه وتقيده بوقت، ولا نص يأمر القاضي بإثارته تلقائيا، خلافا للمادتين 36 و807. لكن المادة 40 تقول «دون سواها» وتبدأ بعبارة «فضلا عما ورد في المواد 37 و38 و46»، فلا يحسم النص هل يصح الحضور الاختياري أو شرط الاختصاص فيها، ولا هل يثير القاضي عدم الاختصاص تلقائيا.",
+        "en": "Articles 45, 46, 47, 51 and 202 leave the plea to the defendant and limit it in time, and no text tells the judge to raise it himself, unlike articles 36 and 807. But article 40 says «and no other» and opens with «besides what articles 37, 38 and 46 provide», so the text does not settle whether voluntary appearance or a clause works in its matters, nor whether the judge raises incompetence himself."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "ليس من النظام العام: الدفع للمدعى عليه وحده وقبل الموضوع، حتى في مواد المادة 40.",
+            "en": "Not of public order: the plea belongs to the defendant alone, before the merits, even in article 40 matters."
+          },
+          "basis": [
+            "b28",
+            "b30",
+            "b32",
+            "b34",
+            "b26"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "قواعد المادة 40 حصرية، فلا يصح فيها شرط الاختصاص وقد يثير القاضي عدم الاختصاص تلقائيا.",
+            "en": "Article 40 rules are exclusive: a clause cannot depart from them and the judge may raise incompetence himself."
+          },
+          "basis": [
+            "b9"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "عبارة «فضلا عما ورد في المواد 37 و38 و46» تجعل محاكم المادة 40 خيارا إضافيا إلى جانب محكمة موطن المدعى عليه.",
+            "en": "The words «besides what articles 37, 38 and 46 provide» make the article 40 courts an extra option beside the defendant's domicile."
+          },
+          "basis": [
+            "b9",
+            "b1"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "اقتراح المحكمة التي تعينها القاعدة الخاصة لأنها مختصة في كل القراءات، والتنبيه عند الاعتماد على شرط اختصاص في مادة من مواد المادة 40.",
+        "en": "Propose the court the special rule names, since it is competent on every reading, and warn when a jurisdiction clause is relied on in an article 40 matter."
+      }
+    },
+    {
+      "id": "o2",
+      "grade": "C",
+      "refs": [
+        "t5",
+        "t6",
+        "t7",
+        "t8",
+        "t22",
+        "b3"
+      ],
+      "question": {
+        "ar": "هل المحاكم المذكورة في المادة 39 بديلة عن محكمة موطن المدعى عليه أم إلزامية؟",
+        "en": "Are the courts named in article 39 alternatives to the defendant's domicile, or mandatory?"
+      },
+      "why": {
+        "ar": "المادة 39 لا تستعمل عبارة «دون سواها» التي تستعملها المادة 40، ولا تقول صراحة إنها خيار.",
+        "en": "Article 39 does not use the words «and no other» that article 40 uses, nor does it say it offers a choice."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "خيار للمدعي بينها وبين محكمة موطن المدعى عليه.",
+            "en": "A choice for the plaintiff between them and the defendant's domicile."
+          },
+          "basis": [
+            "b3",
+            "b1"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "قاعدة خاصة تستبعد القاعدة العامة بحكم عبارة «ما لم ينص القانون على خلاف ذلك».",
+            "en": "A special rule that displaces the general one, by the words «unless the law provides otherwise»."
+          },
+          "basis": [
+            "b3",
+            "b1"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "اقتراح محكمة المادة 39 لأنها مختصة في القراءتين، مع ذكر محكمة موطن المدعى عليه.",
+        "en": "Propose the article 39 court, competent on both readings, and mention the defendant's domicile."
+      }
+    },
+    {
+      "id": "o3",
+      "grade": "C",
+      "refs": [
+        "t26",
+        "n2"
+      ],
+      "question": {
+        "ar": "أي محكمة جزائرية تختص إقليميا إذا كان المدعى عليه مقيما في الخارج ولا موطن له في الجزائر؟",
+        "en": "Which Algerian court has territorial jurisdiction when the defendant lives abroad and has no domicile in Algeria?"
+      },
+      "why": {
+        "ar": "المادتان 41 و42 تجيزان التكليف أمام القضاء الجزائري ولا تعينان المحكمة؛ والمادة 37 تحيل إلى آخر موطن أو الموطن المختار دون حالة من لم يكن له موطن في الجزائر قط.",
+        "en": "Articles 41 and 42 allow summoning before the Algerian courts without naming the court; article 37 refers to the last or elected domicile, not to someone who never had one in Algeria."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "محكمة آخر موطن معروف أو الموطن المختار في الجزائر.",
+            "en": "The court of the last known or elected domicile in Algeria."
+          },
+          "basis": [
+            "b1"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "محكمة القاعدة الخاصة بالمادة إن وجدت (مكان التنفيذ أو الفعل الضار أو العقار).",
+            "en": "The court of the special rule for the matter, if any (place of performance, of the harmful act, of the property)."
+          },
+          "basis": [
+            "b6",
+            "b5",
+            "b10"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "التنبيه وترك اختيار المحكمة للمحامي مع ذكر المواد.",
+        "en": "Warn and leave the choice of court to the lawyer, citing the articles."
+      }
+    },
+    {
+      "id": "o4",
+      "grade": "C",
+      "refs": [
+        "t4",
+        "t12"
+      ],
+      "question": {
+        "ar": "قسمة تركة تشمل عقارا: محكمة موطن المتوفى أم محكمة موقع العقار؟",
+        "en": "Partition of an estate that includes real property: the court of the deceased's domicile or of the property's location?"
+      },
+      "why": {
+        "ar": "المادة 40 تعين محكمة موقع العقار في المواد العقارية ومحكمة موطن المتوفى في الميراث؛ والمادة 498 تعطي دعاوى التركة لمحكمة موطن المتوفى ولو وجدت أملاك خارج دائرتها، والمادة 518 تحفظ ما ينص عليه القانون خلافا.",
+        "en": "Article 40 names the property's court for real property and the deceased's court for inheritance; article 498 gives estate claims to the deceased's court even with property outside its district, and article 518 yields to contrary provisions."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "محكمة موطن المتوفى بحكم المادة 498 الخاصة.",
+            "en": "The deceased's court, under the special article 498."
+          },
+          "basis": [
+            "b43",
+            "b46"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "محكمة موقع العقار بحكم المادة 40 في المواد العقارية.",
+            "en": "The property's court, under article 40 for real property."
+          },
+          "basis": [
+            "b10"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "عرض القاعدتين والتنبيه على المادة 498.",
+        "en": "Show both rules and point to article 498."
+      }
+    },
+    {
+      "id": "o5",
+      "grade": "D",
+      "refs": [
+        "t11",
+        "t8",
+        "t9"
+      ],
+      "question": {
+        "ar": "ما مقرات المحاكم التجارية المتخصصة ودوائر اختصاصها، ومتى نصبت؟",
+        "en": "Where do the specialised commercial courts sit, which districts do they cover, and when were they installed?"
+      },
+      "why": {
+        "ar": "المادة 536 مكرر 1 تطبق قواعد القانون، والمادة 13 من القانون 22-13 تربط السريان بالتنصيب؛ نص التنظيم وتاريخ التنصيب غير موجودين في المخزن، وكذا مواد القانون التجاري في الإفلاس.",
+        "en": "Article 536 bis 1 applies the code's rules and law 22-13 article 13 ties them to installation; the regulation and the installation date are not in the store, nor are the Commercial Code's bankruptcy articles."
+      },
+      "protectiveReading": {
+        "ar": "التنبيه بضرورة التحقق من المحكمة المتخصصة المختصة وتاريخ تنصيبها.",
+        "en": "Tell the lawyer to check the competent specialised court and its installation date."
+      }
+    },
+    {
+      "id": "o6",
+      "grade": "D",
+      "refs": [
+        "t19"
+      ],
+      "question": {
+        "ar": "ما المحكمة المختصة إقليميا في منازعات الضمان الاجتماعي والتقاعد؟",
+        "en": "Which court has territorial jurisdiction in social-security and retirement disputes?"
+      },
+      "why": {
+        "ar": "المادة 501 تتكلم عن عقد العمل؛ القانون الخاص بمنازعات الضمان الاجتماعي (من الذاكرة) غير موجود في المخزن.",
+        "en": "Article 501 speaks of the employment contract; the special law on social-security disputes (from memory) is not in the store."
+      },
+      "protectiveReading": {
+        "ar": "عدم اقتراح قاعدة والتنبيه بالتحقق من النص الخاص.",
+        "en": "Propose no rule and tell the lawyer to check the special law."
+      }
+    },
+    {
+      "id": "o7",
+      "grade": "C",
+      "refs": [
+        "t13"
+      ],
+      "question": {
+        "ar": "هل يشمل «الطلاق» في المادة 426 التطليق والخلع؟",
+        "en": "Does «divorce» in article 426 cover judicial divorce at the wife's request (tatliq) and khul?"
+      },
+      "why": {
+        "ar": "المادة 426 تذكر الطلاق والرجوع والطلاق بالتراضي، والمادة 436 تنظم دعوى الطلاق من أحد الزوجين دون تسمية التطليق والخلع.",
+        "en": "Article 426 names divorce, return and divorce by mutual consent; article 436 governs a divorce claim by either spouse without naming tatliq or khul."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "نعم، فهما من دعاوى الطلاق من أحد الزوجين.",
+            "en": "Yes: they are divorce claims by one spouse."
+          },
+          "basis": [
+            "b35",
+            "b61"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "لا، فتطبق القاعدة العامة لموطن المدعى عليه.",
+            "en": "No: the general rule of the defendant's domicile applies."
+          },
+          "basis": [
+            "b1"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "اقتراح محكمة المسكن الزوجي مع ذكر القراءتين.",
+        "en": "Propose the marital-home court and mention both readings."
+      }
+    }
+  ],
+  "checklist": [
+    {
+      "id": "k1",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t1",
+        "b1"
+      ],
+      "item": "General rule: which court is territorially competent by default (the defendant's domicile), and what applies when the defendant has no known domicile (last known domicile) or has elected a domicile."
+    },
+    {
+      "id": "k2",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t2",
+        "b2"
+      ],
+      "item": "Several defendants: may the plaintiff choose the court of any one of their domiciles?"
+    },
+    {
+      "id": "k3",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t4",
+        "b10",
+        "b46"
+      ],
+      "item": "Real property claims (ownership, possession, real rights, partition of real property, leases of buildings): is the court where the property lies exclusively competent?"
+    },
+    {
+      "id": "k4",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t5",
+        "b4"
+      ],
+      "item": "Mixed claims (personal and real): court where the property lies."
+    },
+    {
+      "id": "k5",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t6",
+        "b5",
+        "o2"
+      ],
+      "item": "Torts: is the court where the harmful act occurred competent (offence, quasi-offence, damage caused by the administration), alongside or instead of the defendant's domicile?",
+      "note": "Article 39 names the place of the harmful act; whether that is an alternative or mandatory is open point o2."
+    },
+    {
+      "id": "k6",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t7",
+        "b6"
+      ],
+      "item": "Contracts for supplies, works and technical or industrial services: court where the contract was concluded or performed, even if a party does not reside there."
+    },
+    {
+      "id": "k7",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t8",
+        "b7",
+        "b47"
+      ],
+      "item": "Commercial matters (other than bankruptcy and judicial settlement): court where the promise was made or the goods delivered, or where payment must be made.",
+      "note": "The text adds: against a company, the court of one of its branches."
+    },
+    {
+      "id": "k8",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t9",
+        "b12"
+      ],
+      "item": "Bankruptcy, judicial settlement and disputes between partners: court where the proceedings were opened or where the company has its registered office."
+    },
+    {
+      "id": "k9",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t12",
+        "b11",
+        "b43",
+        "o4"
+      ],
+      "item": "Succession and estate partition: court of the deceased's last domicile.",
+      "note": "The texts say the deceased's domicile (not «last»); conflict with the real-property rule is open point o4."
+    },
+    {
+      "id": "k10",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t13",
+        "b11",
+        "b35",
+        "o7"
+      ],
+      "item": "Divorce, return to the marital home: court of the marital home."
+    },
+    {
+      "id": "k11",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t14",
+        "b11",
+        "b36"
+      ],
+      "item": "Custody, visitation: court of the custodian's residence.",
+      "note": "The texts say the place where custody is exercised."
+    },
+    {
+      "id": "k12",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t15",
+        "b11",
+        "b37"
+      ],
+      "item": "Maintenance (nafaqa): court of the domicile of the maintenance creditor."
+    },
+    {
+      "id": "k13",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t17",
+        "t18",
+        "b38",
+        "b39",
+        "b40",
+        "b41",
+        "b42"
+      ],
+      "item": "Dowry and household goods disputes, marriage authorisation, kafala, guardianship, absence and disappearance: which court by place (CPCA family chapter).",
+      "note": "Found for dowry, household goods, authorisation, engagement, proof of marriage, filiation, kafala and guardianship. No court by place found for interdiction, absence or disappearance in the family chapter (articles 481 to 489 read); the general rule then applies."
+    },
+    {
+      "id": "k14",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t19",
+        "t20",
+        "b17",
+        "b18",
+        "b44",
+        "b45"
+      ],
+      "item": "Labour disputes: court where the employment contract was concluded or performed, or the defendant's domicile; exception: court of the plaintiff's (worker's) residence when the contract ended or was suspended by a work accident or occupational illness.",
+      "note": "The text says the plaintiff's domicile."
+    },
+    {
+      "id": "k15",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "o6"
+      ],
+      "item": "Social-security disputes: which court by place (special law, from memory: the insured's domicile?).",
+      "note": "Searched the CPCA social chapter (500, 501), the labour-disputes and labour-relations text views: no court by place for social-security disputes. Requested the special law."
+    },
+    {
+      "id": "k16",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t21",
+        "b14"
+      ],
+      "item": "Medical services: court where the care was given."
+    },
+    {
+      "id": "k17",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t22",
+        "b8"
+      ],
+      "item": "Postal items and declared-value consignments: court of the sender's or addressee's domicile."
+    },
+    {
+      "id": "k18",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "item": "Insurance claims: court of the insured's domicile or where the insured event occurred (from memory, check).",
+      "note": "Searched the CPCA territorial chapter (37 to 47) and the commercial and specialised-court chapters: no court by place for insurance claims. Insurance disputes linked to commercial activity go to the specialised commercial court, which applies the code's rules (t11). Requested the insurance law as context."
+    },
+    {
+      "id": "k19",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t25",
+        "b19",
+        "b51"
+      ],
+      "item": "Urgent matters (référé): court of the place of the incident or where the measure is to be carried out."
+    },
+    {
+      "id": "k20",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t23",
+        "t25",
+        "b16",
+        "b19"
+      ],
+      "item": "Execution difficulties and attachment: court of the place of execution."
+    },
+    {
+      "id": "k21",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t6",
+        "b5",
+        "b52",
+        "n3"
+      ],
+      "item": "Disputes involving public bodies before the ordinary courts (e.g. public vehicles): court of the place of the damage."
+    },
+    {
+      "id": "k22",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t26",
+        "n2",
+        "o3",
+        "b20",
+        "b21",
+        "b22"
+      ],
+      "item": "Defendant residing abroad: may an Algerian or foreign defendant be sued before Algerian courts for obligations contracted in Algeria or abroad; which court by place then (plaintiff's domicile?).",
+      "note": "No text names the court by place: open point o3."
+    },
+    {
+      "id": "k23",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t3",
+        "n1",
+        "b25"
+      ],
+      "item": "Clauses conferring jurisdiction on a court not otherwise competent: void and deemed unwritten, except between merchants (and in writing?).",
+      "note": "No writing requirement in article 45."
+    },
+    {
+      "id": "k24",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t3",
+        "b26",
+        "b27"
+      ],
+      "item": "Voluntary appearance: may the parties agree to appear before a judge not territorially competent, by signed declaration?"
+    },
+    {
+      "id": "k25",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t28",
+        "b28",
+        "b30",
+        "b32",
+        "b34",
+        "o1"
+      ],
+      "item": "Is territorial jurisdiction a rule of public order? General rule: no; the plea of territorial incompetence must be raised before any defence on the merits or plea of inadmissibility."
+    },
+    {
+      "id": "k26",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b9",
+        "n4",
+        "o1"
+      ],
+      "item": "Are the 'exclusive' special rules (real property, family, labour, etc.) of public order, so that the judge raises them of his own motion and a clause cannot derogate from them? Check the texts; likely interpretive."
+    },
+    {
+      "id": "k27",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b29",
+        "b55",
+        "b56",
+        "t28"
+      ],
+      "item": "Material incompetence (by subject) is of public order and raised by the judge of his own motion: distinguish it from territorial incompetence."
+    },
+    {
+      "id": "k28",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b31",
+        "b33"
+      ],
+      "item": "What the judge does when he declares himself territorially incompetent: does he name the competent court; is the case referred or must the plaintiff refile?",
+      "note": "The pleading party must name the competent court and the judge rules by judgment; no article of the chapters read (36 to 59) orders a referral to the competent court."
+    },
+    {
+      "id": "k29",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b58"
+      ],
+      "item": "Effect of filing before a territorially incompetent court on the limitation period (interruption even before an incompetent court, Civil Code)."
+    },
+    {
+      "id": "k30",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t11",
+        "b48",
+        "b49",
+        "b50",
+        "o5"
+      ],
+      "item": "Specialised commercial courts (2022 reform): their territorial reach is set by regulation; this belongs to the ordinary-court-exits module.",
+      "note": "The exit itself belongs to ordinary-court-exits; the territorial rule (the code's rules apply) is t11. The regulation is not in the store."
+    },
+    {
+      "id": "k31",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n3",
+        "b53",
+        "b54",
+        "b55",
+        "b56"
+      ],
+      "item": "Administrative courts: territorial jurisdiction follows the general rule with special cases (taxes, public works, public contracts, staff disputes, damage by public works); belongs to the ordinary-court-exits module but the boundary must be named."
+    },
+    {
+      "id": "k32",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "doesNotApply",
+      "item": "Court sections (civil, real property, family, social, commercial, maritime, urgent) are a question of organisation, not of territory: belongs to the court-sections module.",
+      "note": "Left to the court-sections module."
+    },
+    {
+      "id": "k33",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b59",
+        "b60",
+        "t24"
+      ],
+      "item": "Counter-claims and related claims: may they be brought before the court seised of the main claim?",
+      "note": "Incidental requests connected with the original claims are allowed and connected cases may be joined; no territorial article for counter-claims before the ordinary courts (article 805 covers only administrative courts)."
+    },
+    {
+      "id": "k34",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t24",
+        "b15"
+      ],
+      "item": "Guarantee claims (appel en garantie): court seised of the original claim."
+    },
+    {
+      "id": "k35",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b57",
+        "b28",
+        "b31"
+      ],
+      "item": "The petition must name the court; an error of territorial court leads to a judgment of incompetence (not inadmissibility).",
+      "note": "Naming a court is a formal element under article 15; a wrong court by place is met by the defendant's plea of incompetence (47, 51, 52)."
+    },
+    {
+      "id": "k36",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t4",
+        "b10"
+      ],
+      "item": "Leases of dwellings and professional premises: real-property court where the premises lie; commercial leases: check whether the commercial rule or the real-property rule applies.",
+      "note": "Article 40 names the property's court for lease claims on buildings, commercial leases included."
+    },
+    {
+      "id": "k37",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b49",
+        "b50",
+        "t11"
+      ],
+      "item": "Amendments to remember: CPCA (Law 08-09 of 25 February 2008) amended by Law 22-13 of 12 July 2022 (specialised commercial courts, administrative appeal courts).",
+      "note": "In the store, articles 37 to 47, 426, 498, 501 and 518 are in their law 08-09 wording; 532, 536 bis 1, 804 and 805 carry the law 22-13 wording."
+    },
+    {
+      "id": "k38",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b49",
+        "b50",
+        "o5",
+        "t11"
+      ],
+      "item": "The store notes on articles 532, 536 bis 1 and 804 say that the commencement of law 22-13 is unsettled and tied to the installation of the new courts: from when do the new territorial rules for the specialised commercial and administrative courts apply, and to which claims?",
+      "note": "Law 22-13 article 13: from installation of the new courts; claims filed earlier stay where they are. The installation date is not in the store (o5)."
+    }
+  ],
+  "examples": [
+    {
+      "id": "ex1",
+      "by": "derivationA",
+      "title": "Clean case: tort claim between private parties in Algeria, no clause.",
+      "petitionDate": "2026-11-17",
+      "slots": {
+        "obligation_is_tort_compensation": "yes",
+        "jurisdiction_clause_relied_on": "no",
+        "defendant_resides_abroad": "no",
+        "public_body_party": "no",
+        "national_public_body_party": "no",
+        "public_vehicle_damage": "no",
+        "dispute_concerns_real_property": "no",
+        "commercial_lease": "no",
+        "dispute_is_family": "no",
+        "dispute_is_social": "no",
+        "requests": [
+          "damages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "none"
+          },
+          {
+            "ref": "n2",
+            "effect": "none"
+          },
+          {
+            "ref": "n3",
+            "effect": "none"
+          },
+          {
+            "ref": "n4",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex2",
+      "by": "derivationA",
+      "title": "Jurisdiction clause between non-traders in a sale of goods: the clause is void.",
+      "petitionDate": "2026-11-17",
+      "slots": {
+        "jurisdiction_clause_relied_on": "yes",
+        "clause_parties_all_merchants": "no",
+        "defendant_resides_abroad": "no",
+        "public_body_party": "no",
+        "national_public_body_party": "no",
+        "dispute_concerns_real_property": "no",
+        "commercial_lease": "no",
+        "dispute_is_family": "no",
+        "dispute_is_social": "no",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "warn"
+          },
+          {
+            "ref": "n4",
+            "effect": "none"
+          },
+          {
+            "ref": "n3",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex3",
+      "by": "derivationA",
+      "title": "Clause between traders in a commercial lease: valid under article 45, but the lease is an article 40 matter.",
+      "petitionDate": "2026-11-17",
+      "slots": {
+        "jurisdiction_clause_relied_on": "yes",
+        "clause_parties_all_merchants": "yes",
+        "commercial_lease": "yes",
+        "dispute_concerns_real_property": "unknown",
+        "defendant_resides_abroad": "no",
+        "public_body_party": "no",
+        "national_public_body_party": "no",
+        "requests": [
+          "eviction"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "none"
+          },
+          {
+            "ref": "n4",
+            "effect": "warn"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex4",
+      "by": "derivationA",
+      "title": "Whether a clause was relied on is unknown: ask, and nothing else.",
+      "petitionDate": "2026-11-17",
+      "slots": {
+        "defendant_resides_abroad": "no",
+        "public_body_party": "no",
+        "national_public_body_party": "no",
+        "dispute_concerns_real_property": "no",
+        "commercial_lease": "no",
+        "dispute_is_family": "no",
+        "dispute_is_social": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "ask"
+          },
+          {
+            "ref": "n4",
+            "effect": "none"
+          },
+          {
+            "ref": "n2",
+            "effect": "none"
+          },
+          {
+            "ref": "n3",
+            "effect": "none"
+          }
+        ],
+        "questions": [
+          "jurisdiction_clause_relied_on",
+          "clause_parties_all_merchants"
+        ]
+      }
+    },
+    {
+      "id": "ex5",
+      "by": "derivationA",
+      "title": "Defendant lives abroad: the courts by place are not named, a warning.",
+      "petitionDate": "2026-11-17",
+      "slots": {
+        "defendant_resides_abroad": "yes",
+        "jurisdiction_clause_relied_on": "no",
+        "public_body_party": "no",
+        "national_public_body_party": "no",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n2",
+            "effect": "warn"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          },
+          {
+            "ref": "n3",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex6",
+      "by": "derivationA",
+      "title": "A commune is the defendant in a contract claim: administrative territorial rules, a warning.",
+      "petitionDate": "2026-11-17",
+      "slots": {
+        "public_body_party": "yes",
+        "public_vehicle_damage": "no",
+        "defendant_resides_abroad": "no",
+        "jurisdiction_clause_relied_on": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n3",
+            "effect": "warn"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex7",
+      "by": "derivationA",
+      "title": "Damage by a commune's vehicle: stays with the ordinary courts, court of the harmful act.",
+      "petitionDate": "2026-11-17",
+      "slots": {
+        "public_body_party": "yes",
+        "public_vehicle_damage": "yes",
+        "defendant_resides_abroad": "no",
+        "jurisdiction_clause_relied_on": "no",
+        "requests": [
+          "damages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n3",
+            "effect": "none"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          },
+          {
+            "ref": "n2",
+            "effect": "none"
+          },
+          {
+            "ref": "n4",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex8",
+      "by": "derivationA",
+      "title": "Nothing known: every boundary asks.",
+      "petitionDate": "2026-11-17",
+      "slots": {},
+      "expect": {
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "ask"
+          },
+          {
+            "ref": "n2",
+            "effect": "ask"
+          },
+          {
+            "ref": "n3",
+            "effect": "ask"
+          },
+          {
+            "ref": "n4",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "jurisdiction_clause_relied_on",
+          "clause_parties_all_merchants",
+          "defendant_resides_abroad",
+          "public_body_party",
+          "national_public_body_party",
+          "public_vehicle_damage",
+          "dispute_concerns_real_property",
+          "commercial_lease",
+          "dispute_is_family",
+          "dispute_is_social"
+        ]
+      }
+    },
+    {
+      "id": "ex9",
+      "by": "derivationA",
+      "title": "National professional organisation is a party, vehicle damage unknown: ask about the vehicle.",
+      "petitionDate": "2026-11-17",
+      "slots": {
+        "national_public_body_party": "yes",
+        "public_body_party": "no",
+        "defendant_resides_abroad": "no",
+        "jurisdiction_clause_relied_on": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n3",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "public_vehicle_damage"
+        ]
+      }
+    },
+    {
+      "id": "ex10",
+      "by": "derivationA",
+      "title": "Labour dismissal after a work accident, clause in the contract between non-traders.",
+      "petitionDate": "2026-11-17",
+      "slots": {
+        "dispute_is_social": "yes",
+        "work_accident_or_occupational_illness": "yes",
+        "jurisdiction_clause_relied_on": "yes",
+        "clause_parties_all_merchants": "no",
+        "defendant_resides_abroad": "no",
+        "public_body_party": "no",
+        "national_public_body_party": "no",
+        "requests": [
+          "reinstatement",
+          "damages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "warn"
+          },
+          {
+            "ref": "n4",
+            "effect": "warn"
+          },
+          {
+            "ref": "n2",
+            "effect": "none"
+          },
+          {
+            "ref": "n3",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    }
+  ]
+}

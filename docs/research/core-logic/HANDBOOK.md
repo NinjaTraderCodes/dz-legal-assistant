@@ -152,6 +152,7 @@ Gemma 4 E4B took about 38 seconds a note on mains (the plan had assumed 10 to 15
    2. "No extra seeds now. Decide the route at the 1,000-note point of the learning curve instead: train the n-gram classifier, the fine-tuned encoder (small setting only, three seeds, one evening on mains), and a combination where the n-grams decide claim type and outside and the fine-tuned model the rest. Report every line per writer."
    3. "Scorer: fix the evidence check so a fact written twice may be quoted at either place, as guide 1.3 allows. Version it (scorer 1.1) and report the pilot's evidence figure under both versions. No answer's right or wrong changes."
    4. "Run the guide test once more with Codex as the tester (one call), so a belief the two Claude testers share is checked by another family."
+10. **17 November 2026, evening (the owner's words):** "Run the training alongside the noise check; they use different resources. If the noise check comes back over 10%, the training results of that night are set aside and the stop point applies as usual."
 
 This replaces the local filter on every note (section 2's decision 4 of 14 November, and [specs/notes-pipeline.md](specs/notes-pipeline.md), section 4a) as the route for training notes. The filter trial's result is still reported.
 

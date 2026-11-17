@@ -1,0 +1,1125 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "module",
+  "id": "land-registry-publication",
+  "verified": false,
+  "stage": "derivationB",
+  "label": {
+    "ar": "إشهار العريضة بالمحافظة العقارية",
+    "en": "Publication of the petition at the land registry"
+  },
+  "derivedBy": {
+    "role": "derivationB",
+    "model": "claude-sonnet-5-5",
+    "date": "2026-11-17"
+  },
+  "appliesTo": [
+    "*"
+  ],
+  "checklist": [
+    {
+      "id": "k1",
+      "item": "Does the dispute concern real property or a real right in real property (ownership, possession, co-ownership, partition, easement, mortgage)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p1",
+        "b1",
+        "b4",
+        "b5"
+      ]
+    },
+    {
+      "id": "k2",
+      "item": "Is the property itself published at the land registry (محافظة عقارية), or is it unsurveyed/unpublished land held by customary or undated title?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p1",
+        "n1",
+        "o1"
+      ],
+      "note": "Arabic text covers published property or right."
+    },
+    {
+      "id": "k3",
+      "item": "Does the claim seek to cancel, rescind, annul, revoke or amend a right or a deed that was itself published at the land registry?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b3",
+        "b2"
+      ]
+    },
+    {
+      "id": "k4",
+      "item": "Does the claim concern a right published on the real-property register, so that the petition must be published?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p1",
+        "b1"
+      ]
+    },
+    {
+      "id": "k5",
+      "item": "Is the petition one of those listed for compulsory publication (annulment, rescission, revocation, resolution of a published deed)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "note": "Art. 17 is general; the special provisions on publicity of annulment, rescission, amendment and setting-aside actions cited by art. 519 are not in the store."
+    },
+    {
+      "id": "k6",
+      "item": "Who must carry out the publication: the plaintiff, his lawyer, or the court clerk?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "note": "Searched art. 17 and 519 and the store text for land-registry articles: the text says the petition is published but not who deposits it."
+    },
+    {
+      "id": "k7",
+      "item": "At which land registry office must the petition be published: the one where the property lies?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "note": "Searched art. 17 and 519: only the land registry is named; the office by place is not stated."
+    },
+    {
+      "id": "k8",
+      "item": "How is publication done: a certified copy of the petition lodged with the registry, with a fee, and a registry receipt/certificate?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "note": "Searched the store for land-registry publication procedure (copies, fee, receipt): no text; the registration decrees are not in the store."
+    },
+    {
+      "id": "k9",
+      "item": "Is a certificate from the land registry attached to the petition or filed with the case, to prove publication?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "doc1",
+        "p1"
+      ]
+    },
+    {
+      "id": "k10",
+      "item": "By when must the publication be done: before filing the petition, at filing, or within a period after filing?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b1",
+        "p1",
+        "o3"
+      ],
+      "note": "Presentation at the first hearing at which the case is called."
+    },
+    {
+      "id": "k11",
+      "item": "What is the sanction of failing to publish: inadmissibility of the petition (عدم القبول)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b1",
+        "p1"
+      ]
+    },
+    {
+      "id": "k12",
+      "item": "Is the inadmissibility raised by the court of its own motion, or only by the opposing party?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "o2",
+        "p1"
+      ],
+      "note": "The text is silent; see the open point."
+    },
+    {
+      "id": "k13",
+      "item": "Can the defect be cured later by publishing during the proceedings, and until when?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b1",
+        "o3"
+      ],
+      "note": "Proof of deposit for publication is the text's only relief."
+    },
+    {
+      "id": "k14",
+      "item": "Does the sanction apply at first instance only, or also on appeal and cassation?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "note": "Searched art. 17, 515, 519 and the appeal articles for a rule on appeal or cassation: none."
+    },
+    {
+      "id": "k15",
+      "item": "Is the publication required when the property is not published but a survey (cadastre) exists?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "note": "No cadastre or survey text in the store; the Arabic text of art. 17 speaks only of published property or right."
+    },
+    {
+      "id": "k16",
+      "item": "Is the plaintiff required to attach the title or deed of ownership and the cadastral extract?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "doc2",
+        "b8"
+      ]
+    },
+    {
+      "id": "k17",
+      "item": "Which section of the court hears real-property matters (land section) and what is its territorial court (court of the place of the property)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b4",
+        "b5"
+      ]
+    },
+    {
+      "id": "k18",
+      "item": "Does the publication duty depend on whether a public body (State, wilaya, commune) is a party?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "Public-body parties and administrative jurisdiction belong to the shared module ordinary-court-exits."
+    },
+    {
+      "id": "k19",
+      "item": "Does the claim fall under another procedure, such as an administrative court dispute over State property?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "Administrative and commercial exits belong to the shared module ordinary-court-exits."
+    },
+    {
+      "id": "k20",
+      "item": "Are fees for publication a condition of registration of the petition?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "Fees for registering the petition belong to the shared module petition-formal-elements."
+    },
+    {
+      "id": "k21",
+      "item": "Does the duty cover only the opening petition, or also appeals, cross-claims and interventions concerning the property?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "note": "Searched art. 17 and 519: the text speaks of the petition that raises the action; nothing on appeals, cross-claims or interventions."
+    },
+    {
+      "id": "k22",
+      "item": "Is a judgment on a published real right itself to be published at the registry afterwards?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "note": "Searched the store for publication of a judgment on a published real right: only auction judgments and seizures (art. 652, 762) are covered, which are different procedures."
+    },
+    {
+      "id": "k23",
+      "item": "Does the rule apply to a lease of real property, an eviction claim or a claim for possession protection?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b5",
+        "o5"
+      ]
+    },
+    {
+      "id": "k24",
+      "item": "What documents must the lawyer attach to the petition regarding the property (title, registry statement, plan)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "doc1",
+        "doc2"
+      ]
+    },
+    {
+      "id": "k25",
+      "item": "What happens if the defendant lives abroad or the owner is unknown?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "The extension of the summons period for a defendant abroad belongs to the shared module periods."
+    },
+    {
+      "id": "k26",
+      "item": "Is there a time limit or limitation period attached to the claim over the real property that interacts with publication?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "Limitation and forfeiture belong to the shared module periods; art. 17 fixes no period."
+    },
+    {
+      "id": "k27",
+      "item": "Which exits from the ordinary courts apply (administrative court, specialised commercial court) when real property is involved?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "Exits from the ordinary courts belong to the shared module ordinary-court-exits."
+    }
+  ],
+  "basis": [
+    {
+      "id": "b1",
+      "role": "prerequisite",
+      "required": true,
+      "cite": {
+        "code": "cpca",
+        "article": "17",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "يجب إشهار عريضة الدعوى لدى المحافظة العقارية إذا تعلقت بعقار أو بحق عيني عقاري مشهر، وتقديمها في أول جلسة ينادى فيها على القضية، وإلا كانت غير مقبولة شكلا ما لم يثبت إيداعها للإشهار.",
+        "en": "A petition about real property or a real right in it that is published must be published at the land registry and presented at the first hearing at which the case is called; otherwise it is inadmissible in form, unless its deposit for publication is proved."
+      },
+      "interpretive": true,
+      "interpretiveNote": "The Arabic limits the duty to real property or a real right that is published (مشهر); the French edition of 2008 says only real property and real rights in real property, with no word for published. The Arabic is official and is followed, but it can be read as qualifying only the real right, or both the property and the right. The protective reading asks about the property's registration and warns when it is unknown or denied.",
+      "quote": [
+        {
+          "paragraph": 3,
+          "text": "يجب إشهار عريضة رفع الدعوى لدى المحافظة العقارية، إذا تعلقت بعقار و/أو حق عيني عقاري مشهر طبقا للقانون، وتقديمها في أول جلسة ينادى فيها على القضية، تحت طائلة عدم قبولها شكلا، ما لم يثبت إيداعها للإشهار.",
+          "sha256": "364cf09683bd00a501474a89c6751cdb1be30a44f40cbfc558c32c13a3087866"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b2",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "519",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ترفع الدعوى أمام القسم العقاري وفق إجراءات هذا القانون، مع مراعاة الأحكام الخاصة بشهر دعاوى الفسخ أو الإبطال أو التعديل أو نقض الحقوق القائمة على عقود مشهرة.",
+        "en": "The case goes to the land section under the code's ordinary procedure, subject to the special provisions on publicity of actions to rescind, annul, amend or set aside rights founded on published deeds."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "ترفع الدعوى أمام القسم العقاري وينظر فيها حسب الإجراءات الواردة في هذا القانون، مع مراعاة الأحكام الخاصة بشهر دعاوى الفسخ أو الإبطال أو التعديل أو نقض حقوق قائمة على عقود تم شهرها.",
+          "sha256": "6e5ee08cfc111f525fd6b62e6e8f3ef91f607e497a1b32435bbea767400247ae"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b3",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "515",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ينظر القسم العقاري في الدعاوى الرامية إلى إبطال أو فسخ أو تعديل أو نقض الحقوق المترتبة على عقود مشهرة.",
+        "en": "The land section hears actions to annul, rescind, amend or set aside rights arising from published deeds."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "ينظر القسم العقاري في الدعاوى المتعلقة بإبطال أو فسخ أو تعديل أو نقض الحقوق المترتبة على عقود تم شهرها.",
+          "sha256": "cf50e03fab6dc794e188419ff1b3c7c3d17f7c8916640ddf43897e8d035f5876"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b4",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "511",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ينظر القسم العقاري في المنازعات المتعلقة بالأملاك العقارية.",
+        "en": "The land section hears disputes about immovable property."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "ينظر القسم العقاري في المنازعات المتعلقة بالأملاك العقارية.",
+          "sha256": "3be6ff39722566f1252504d38dcdadf966bf0d0c1171c24d1631202bd03e7201"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b5",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "512",
+        "paragraphs": [
+          2,
+          3,
+          5,
+          10,
+          11
+        ]
+      },
+      "says": {
+        "ar": "من القضايا التي ينظرها القسم العقاري: الملكية والحقوق العينية، والحيازة، وإثبات الملكية العقارية، والقسمة، وإيجار السكنات والمحلات المهنية.",
+        "en": "Matters the land section hears include ownership and real rights, possession, proof of real-property ownership, partition, and leases of dwellings and professional premises."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "1 - في حق الملكية والحقوق العينية الأخرى والتأمينات العينية،",
+          "sha256": "08199271855dd205faca89e5c874207792da6f2f604142238d04c532d69da90c"
+        },
+        {
+          "paragraph": 3,
+          "text": "2 - في الحيازة والتقادم وحق الانتفاع وحق الاستعمال وحق الاستغلال وحق السكن،",
+          "sha256": "b51da0727256d65a793164293c2509f29185b9f695075d0a9d510040c2faee5f"
+        },
+        {
+          "paragraph": 5,
+          "text": "4 - في الملكية المشتركة للعقارات المبنية والملكية على الشيوع،",
+          "sha256": "8aaadb6049f3c52e02a9830e82294b41855f33eb7391ad5b3ea930ae977c573b"
+        },
+        {
+          "paragraph": 10,
+          "text": "9 - في القسمة وتحديد المعالم،",
+          "sha256": "5f0574e37424acc8aade76015dd2ef73c118aa728956919da1ff9adbae7e123d"
+        },
+        {
+          "paragraph": 11,
+          "text": "10 - في إيجار السكنات والمحلات المهنية،",
+          "sha256": "150da24a6e10e5af8637bc2f588b20c3e4a80dc19ace5e192b210de7a97bdff0"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b6",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "518",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "الاختصاص الإقليمي للمحكمة التي يوجد العقار في دائرة اختصاصها، ما لم ينص القانون على خلاف ذلك.",
+        "en": "Territorial jurisdiction belongs to the court in whose area the property lies, unless the law says otherwise."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يؤول الاختصاص الإقليمي إلى المحكمة التي يوجد العقار في دائرة اختصاصها، ما لم ينص القانون على خلاف ذلك.",
+          "sha256": "e9bd42f000298dbd987ce6a85b650a2c1245a691f56d8b8c7b345a9cceb512ff"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b7",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "40",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "في المواد العقارية ترفع الدعوى أمام المحكمة التي يقع العقار في دائرة اختصاصها دون سواها، أو مكان تنفيذ الأشغال إن تعلق الأمر بأشغال.",
+        "en": "In real-property matters the action goes only to the court of the place of the property, or of the place where works are carried out when the claim concerns works."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "1- في المواد العقارية، أو الأشغال المتعلقة بالعقار، أو دعاوى الإيجارات بما فيها التجارية المتعلقة بالعقارات، والدعاوى المتعلقة بالأشغال العمومية، أمام المحكمة التي يقع في دائرة اختصاصها العقار، أو المحكمة التي يقع في دائرة اختصاصها مكان تنفيذ الأشغال.",
+          "sha256": "73a039a69db5e74d545cb5b5640d799df306cb5df8c05ddaf10b30f4ff1a4e70"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b8",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "15",
+        "paragraphs": [
+          7
+        ]
+      },
+      "says": {
+        "ar": "تتضمن العريضة الإشارة، عند الاقتضاء، إلى المستندات والوثائق المؤيدة للدعوى.",
+        "en": "The petition mentions, where appropriate, the documents supporting the claim."
+      },
+      "quote": [
+        {
+          "paragraph": 7,
+          "text": "6- الإشارة، عند الاقتضاء، إلى المستندات والوثائق المؤيدة للدعوى.",
+          "sha256": "711248183d4321f84cf8ebc68ed391d402232ec8438f0722d17c7fd90ea15424"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b9",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "652",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "أمر الحجز التحفظي على العقارات يقيد بالمحافظة العقارية التي يوجد العقار في دائرتها، وهذا إجراء خاص بالحجز.",
+        "en": "An order of conservatory seizure on immovables is entered at the land registry of the property's area; that is a rule of the seizure, not of the petition."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "يقيد أمر الحجز التحفظي على العقارات بالمحافظة العقارية التي يوجد بدائرة اختصاصها العقار خلال أجل خمسة عشر (15) يوما من تاريخ صدوره وإلا كان الحجز باطلا.",
+          "sha256": "c2ad222efbb5fe903990fde605292be74c6fd1d62e073abe2d295785b8c2a4d5"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    }
+  ],
+  "court": {
+    "section": {
+      "value": "realEstate",
+      "basis": [
+        "b4",
+        "b3",
+        "b5"
+      ],
+      "message": {
+        "ar": "المادة 511: ينظر القسم العقاري في المنازعات المتعلقة بالأملاك العقارية. تحقق من جدولة القضية أمامه.",
+        "en": "Article 511: the land section hears disputes about immovable property. Check that the case is listed before it."
+      }
+    },
+    "territory": [
+      {
+        "id": "t1",
+        "rule": {
+          "ar": "المحكمة التي يقع العقار في دائرة اختصاصها.",
+          "en": "The court in whose area the property lies."
+        },
+        "when": {
+          "slot": "dispute_concerns_real_property",
+          "is": "yes"
+        },
+        "basis": [
+          "b6",
+          "b7"
+        ]
+      }
+    ]
+  },
+  "priorSteps": [
+    {
+      "id": "p1",
+      "kind": "landRegistryPublication",
+      "slots": [
+        "petition_deposited_for_publication",
+        "dispute_concerns_real_property",
+        "property_registered"
+      ],
+      "requiredWhen": {
+        "all": [
+          {
+            "slot": "dispute_concerns_real_property",
+            "is": "yes"
+          },
+          {
+            "not": {
+              "slot": "property_registered",
+              "is": "no"
+            }
+          }
+        ]
+      },
+      "acceptedMeans": [
+        {
+          "id": "m1",
+          "label": {
+            "ar": "إيداع العريضة بالمحافظة العقارية بغرض الإشهار مع وصل أو شهادة تثبت الإيداع",
+            "en": "Deposit of the petition at the land registry for publication, with a receipt or certificate proving the deposit"
+          },
+          "basis": [
+            "b1"
+          ]
+        }
+      ],
+      "effectWhenMissing": "warn",
+      "effectWhenUnknown": "ask",
+      "message": {
+        "ar": "المادة 17: إذا تعلقت العريضة بعقار أو بحق عيني عقاري مشهر وجب إشهارها لدى المحافظة العقارية وتقديمها في أول جلسة ينادى فيها على القضية، تحت طائلة عدم قبولها شكلا ما لم يثبت إيداعها للإشهار. تحقق من إيداع العريضة للإشهار ومن حيازة ما يثبت ذلك.",
+        "en": "Article 17: a petition concerning published real property or a published real right must be published at the land registry and presented at the first hearing at which the case is called, on pain of inadmissibility in form, unless its deposit for publication is proved. Check that the petition has been deposited for publication and that you hold proof of it."
+      },
+      "basis": [
+        "b1",
+        "b2"
+      ],
+      "interpretive": true,
+      "interpretiveNote": "The text fixes the sanction (inadmissibility in form) but presents the proof at the first hearing, not before filing; whether publication must precede filing, whether it can be cured after the first hearing and who raises the defect are not stated. The step therefore warns and never blocks. See also the Arabic and French difference noted on the statement."
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc1",
+      "name": {
+        "ar": "وصل أو شهادة إيداع العريضة بالمحافظة العقارية بغرض الإشهار",
+        "en": "Receipt or certificate of deposit of the petition at the land registry for publication"
+      },
+      "requiredWhen": {
+        "all": [
+          {
+            "slot": "dispute_concerns_real_property",
+            "is": "yes"
+          },
+          {
+            "not": {
+              "slot": "property_registered",
+              "is": "no"
+            }
+          }
+        ]
+      },
+      "why": {
+        "ar": "المادة 17: لا تقبل العريضة شكلا إن لم يثبت إيداعها للإشهار.",
+        "en": "Article 17: the petition is inadmissible in form unless its deposit for publication is proved."
+      },
+      "basis": [
+        "b1",
+        "b8"
+      ]
+    },
+    {
+      "id": "doc2",
+      "name": {
+        "ar": "ما يثبت أن العقار أو الحق العيني العقاري مشهر (عقد مشهر أو مستخرج من المحافظة العقارية)",
+        "en": "Proof that the property or the real right is published (a published deed or a land-registry extract)"
+      },
+      "requiredWhen": {
+        "slot": "dispute_concerns_real_property",
+        "is": "yes"
+      },
+      "why": {
+        "ar": "المادة 17: يتوقف واجب الإشهار على أن يكون العقار أو الحق مشهرا.",
+        "en": "Article 17: the duty to publish depends on the property or right being published."
+      },
+      "basis": [
+        "b1",
+        "b8"
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "id": "n1",
+      "looksLike": {
+        "ar": "دعوى عقارية عادية",
+        "en": "An ordinary real-property claim"
+      },
+      "isActually": "outside:unregistered-property",
+      "tellingFacts": [
+        {
+          "ar": "العقار غير مشهر بالمحافظة العقارية ولا يستند الحق إلى عقد مشهر.",
+          "en": "The property is not published at the land registry and the right does not rest on a published deed."
+        }
+      ],
+      "when": {
+        "all": [
+          {
+            "slot": "dispute_concerns_real_property",
+            "is": "yes"
+          },
+          {
+            "slot": "property_registered",
+            "is": "no"
+          }
+        ]
+      },
+      "slots": [
+        "dispute_concerns_real_property",
+        "property_registered"
+      ],
+      "message": {
+        "ar": "المادة 17: النص العربي يتعلق بعقار أو بحق عيني عقاري مشهر. تحقق من أن العقار والحق غير مشهرين فعلا قبل الاستغناء عن إشهار العريضة.",
+        "en": "Article 17: the Arabic text concerns published real property or a published real right. Check that neither the property nor the right is in fact published before treating the petition as exempt from publication."
+      },
+      "basis": [
+        "b1"
+      ]
+    },
+    {
+      "id": "n2",
+      "looksLike": {
+        "ar": "إشهار عريضة الدعوى",
+        "en": "Publication of the petition"
+      },
+      "isActually": "outside:execution",
+      "tellingFacts": [
+        {
+          "ar": "الأمر قيد حجز تحفظي على عقار تم بأمر قضائي، وليس عريضة افتتاح دعوى.",
+          "en": "It is the entry of a conservatory seizure of an immovable under a court order, not an opening petition."
+        }
+      ],
+      "message": {
+        "ar": "المادة 652: قيد أمر الحجز التحفظي على العقار إجراء خاص بالحجز، ولا يغني عن إشهار عريضة الدعوى.",
+        "en": "Article 652: the entry of a seizure order on an immovable is the seizure's own step; it does not replace publication of a petition."
+      },
+      "basis": [
+        "b9"
+      ]
+    }
+  ],
+  "slots": [
+    "dispute_concerns_real_property",
+    "property_registered",
+    "petition_deposited_for_publication"
+  ],
+  "proposedSlots": [
+    {
+      "id": "petition_deposited_for_publication",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل أودعت عريضة الدعوى بالمحافظة العقارية بغرض إشهارها، وهل بيد المحامي ما يثبت الإيداع؟",
+        "en": "Has the petition been deposited at the land registry for publication, and does the lawyer hold proof of the deposit?"
+      },
+      "why": "Prior step p1: article 17 makes the petition inadmissible in form unless its deposit for publication is proved at the first hearing."
+    }
+  ],
+  "examples": [
+    {
+      "id": "ex1",
+      "by": "derivationB",
+      "title": "Annulment of a published sale deed: petition deposited for publication, proof held.",
+      "petitionDate": "2026-11-17",
+      "slots": {
+        "dispute_concerns_real_property": "yes",
+        "property_registered": "yes",
+        "petition_deposited_for_publication": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          }
+        ],
+        "questions": [],
+        "section": "realEstate"
+      }
+    },
+    {
+      "id": "ex2",
+      "by": "derivationB",
+      "title": "Claim to recover registered land: the petition has not been deposited for publication.",
+      "petitionDate": "2026-11-17",
+      "slots": {
+        "dispute_concerns_real_property": "yes",
+        "property_registered": "yes",
+        "petition_deposited_for_publication": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "warn"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex3",
+      "by": "derivationB",
+      "title": "Partition of a registered plot: deposit status not known.",
+      "petitionDate": "2026-11-17",
+      "slots": {
+        "dispute_concerns_real_property": "yes",
+        "property_registered": "yes",
+        "petition_deposited_for_publication": "unknown"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "petition_deposited_for_publication"
+        ]
+      }
+    },
+    {
+      "id": "ex4",
+      "by": "derivationB",
+      "title": "Near miss: a maintenance claim; no real property.",
+      "petitionDate": "2026-11-17",
+      "slots": {
+        "dispute_concerns_real_property": "no",
+        "property_registered": "unknown",
+        "petition_deposited_for_publication": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex5",
+      "by": "derivationB",
+      "title": "Near miss: land held by customary title, not published.",
+      "petitionDate": "2026-11-17",
+      "slots": {
+        "dispute_concerns_real_property": "yes",
+        "property_registered": "no",
+        "petition_deposited_for_publication": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          },
+          {
+            "ref": "n1",
+            "effect": "warn"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex6",
+      "by": "derivationB",
+      "title": "Nothing known.",
+      "petitionDate": "2026-11-17",
+      "slots": {},
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "ask"
+          },
+          {
+            "ref": "n1",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "dispute_concerns_real_property",
+          "property_registered"
+        ]
+      }
+    },
+    {
+      "id": "ex7",
+      "by": "derivationB",
+      "title": "Real-property claim whose registration is not known.",
+      "petitionDate": "2026-11-17",
+      "slots": {
+        "dispute_concerns_real_property": "yes",
+        "property_registered": "unknown",
+        "petition_deposited_for_publication": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "ask"
+          },
+          {
+            "ref": "n1",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "property_registered"
+        ]
+      }
+    }
+  ],
+  "openPoints": [
+    {
+      "id": "o1",
+      "question": {
+        "ar": "هل يقتضي إشهار العريضة أن يكون العقار والحق معا مشهرين، أم الحق وحده، أم كل عقار؟",
+        "en": "Does the duty to publish need both the property and the right to be published, the right alone, or does it cover any real property?"
+      },
+      "why": {
+        "ar": "النص العربي يضيف وصف «مشهر» ولا يرد في النص الفرنسي، ولا يتبين ما يتعلق به الوصف.",
+        "en": "The Arabic adds the word published, which the French lacks, and it is unclear what the word qualifies."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "الإشهار واجب فقط إذا كان العقار أو الحق مشهرا.",
+            "en": "Publication is due only if the property or right is published."
+          },
+          "basis": [
+            "b1"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "الإشهار واجب في كل دعوى عقارية.",
+            "en": "Publication is due in every real-property claim."
+          },
+          "basis": [
+            "b1"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "يسأل المحامي عن إشهار العقار، وينبه إن كان الجواب لا أو مجهولا.",
+        "en": "Ask whether the property is published and warn if the answer is no or unknown."
+      },
+      "grade": "C",
+      "refs": [
+        "p1",
+        "n1",
+        "b1"
+      ]
+    },
+    {
+      "id": "o2",
+      "question": {
+        "ar": "هل تثير المحكمة عدم القبول تلقائيا أم يلزم دفع به من الخصم؟",
+        "en": "Does the court raise the inadmissibility of its own motion, or only on a plea?"
+      },
+      "why": {
+        "ar": "النص يرتب عدم القبول شكلا ولا يبين من يثيره، والمادة المتعلقة بالإثارة التلقائية تخص الصفة والإذن.",
+        "en": "The text states the sanction and not who raises it; the article on raising matters of its own motion concerns standing and authorisation."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "يثيره القاضي تلقائيا.",
+            "en": "The judge raises it of his own motion."
+          }
+        },
+        {
+          "reading": {
+            "ar": "لا يثار إلا بدفع من الخصم.",
+            "en": "It is raised only on a plea."
+          }
+        }
+      ],
+      "protectiveReading": {
+        "ar": "يعامل كأنه قد يثار تلقائيا وتنبه المحامي.",
+        "en": "Treat it as possibly raised of the court's own motion and warn the lawyer."
+      },
+      "grade": "C",
+      "refs": [
+        "p1"
+      ]
+    },
+    {
+      "id": "o3",
+      "question": {
+        "ar": "هل يجب الإشهار قبل رفع الدعوى، وهل يمكن تدارك العيب بعد أول جلسة؟",
+        "en": "Must publication precede filing, and can the defect be cured after the first hearing?"
+      },
+      "why": {
+        "ar": "النص يتطلب تقديم العريضة في أول جلسة إلا إذا ثبت إيداعها للإشهار، ولا يذكر ما يقع بعد ذلك.",
+        "en": "The text requires presentation at the first hearing unless deposit for publication is proved, and says nothing on what follows."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "يكفي إثبات الإيداع في أول جلسة.",
+            "en": "Proof of deposit at the first hearing suffices."
+          }
+        },
+        {
+          "reading": {
+            "ar": "لا تدارك بعد أول جلسة.",
+            "en": "No cure after the first hearing."
+          }
+        }
+      ],
+      "protectiveReading": {
+        "ar": "يودع الإشهار قبل أول جلسة ويثبت ذلك.",
+        "en": "Deposit for publication before the first hearing and prove it."
+      },
+      "grade": "C",
+      "refs": [
+        "p1"
+      ]
+    },
+    {
+      "id": "o4",
+      "question": {
+        "ar": "ما الإجراءات الدقيقة للإشهار (المكتب، المستندات، الرسوم)؟",
+        "en": "What are the exact procedures of publication (office, documents, fee)?"
+      },
+      "why": {
+        "ar": "المادة 17 تحيل إلى القانون والنصوص المنظمة للشهر العقاري غير موجودة في المخزن؛ ما يعتقد من الذاكرة لا يدرج في قاعدة.",
+        "en": "Article 17 refers to the law and the land-registration texts are not in the store; what is believed from memory is not put in a rule."
+      },
+      "protectiveReading": {
+        "ar": "يطلب من المحامي التحقق من المحافظة العقارية المختصة.",
+        "en": "Ask the lawyer to check with the competent land registry."
+      },
+      "grade": "D",
+      "refs": [
+        "p1"
+      ]
+    },
+    {
+      "id": "o5",
+      "question": {
+        "ar": "هل تسري المادة 17 على دعاوى الحيازة والإيجار؟",
+        "en": "Does article 17 apply to possessory and lease claims?"
+      },
+      "why": {
+        "ar": "القسم العقاري ينظر في الحيازة والإيجار، لكن واجب الإشهار مرتبط بعقار أو حق مشهر.",
+        "en": "The land section hears possession and leases, but the duty depends on published property or a published right."
+      },
+      "protectiveReading": {
+        "ar": "يسأل المحامي عن إشهار العقار أو الحق في كل دعوى عقارية.",
+        "en": "Ask whether the property or right is published in every real-property claim."
+      },
+      "grade": "C",
+      "refs": [
+        "p1",
+        "n1"
+      ]
+    }
+  ]
+}

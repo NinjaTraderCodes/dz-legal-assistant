@@ -1,0 +1,173 @@
+{
+ "statements": [
+  {
+   "code": "cpca",
+   "article": "17",
+   "paragraphs": [
+    3
+   ],
+   "says": "A petition concerning real property and/or a published real right in it must be published at the land registry and presented at the first hearing at which the case is called, on pain of inadmissibility in form, unless proof is given that it was deposited for publication.",
+   "role": "prerequisite",
+   "interpretive": false
+  },
+  {
+   "code": "cpca",
+   "article": "519",
+   "paragraphs": [
+    1
+   ],
+   "says": "The action is brought before the real-estate section under the ordinary procedure of the code, subject to the special provisions on publication of actions for rescission, annulment, modification or revocation of rights based on published deeds.",
+   "role": "procedure",
+   "interpretive": false
+  },
+  {
+   "code": "cpca",
+   "article": "515",
+   "paragraphs": [
+    1
+   ],
+   "says": "The real-estate section hears actions to annul, rescind, modify or revoke rights arising from deeds that have been published.",
+   "role": "basis",
+   "interpretive": false
+  },
+  {
+   "code": "cpca",
+   "article": "511",
+   "paragraphs": [
+    1
+   ],
+   "says": "The real-estate section hears disputes concerning real property.",
+   "role": "basis",
+   "interpretive": false
+  },
+  {
+   "code": "cpca",
+   "article": "512",
+   "paragraphs": [
+    2,
+    5,
+    10,
+    11
+   ],
+   "says": "The real-estate section hears in particular ownership and other real rights, co-ownership and ownership in undivided shares, partition and boundary-marking, and lease of dwellings and professional premises.",
+   "role": "basis",
+   "interpretive": false
+  }
+ ],
+ "deadlines": [],
+ "priorSteps": [
+  {
+   "kind": "landRegistryPublication",
+   "requiredWhen": "The petition relates to real property and/or a real right in real property that is published (registered) in accordance with the law (slots: dispute_concerns_real_property, property_registered).",
+   "notRequiredWhen": [
+    "No exemption stated in the texts given; the only relief is at the first hearing, where proof that the petition was deposited for publication is enough instead of completed publication."
+   ],
+   "sanctionIfMissing": "Inadmissible in form (عدم قبولها شكلا), unless deposit of the petition for publication is proven; the petition must be presented at the first hearing at which the case is called.",
+   "basis": [
+    {
+     "code": "cpca",
+     "article": "17",
+     "paragraphs": [
+      3
+     ]
+    }
+   ],
+   "interpretive": false
+  }
+ ],
+ "sections": [
+  {
+   "matter": "Disputes concerning real property and real rights (ownership, possession, co-ownership, partition, lease of dwellings and professional premises, rights under published deeds)",
+   "section": "realEstate",
+   "basis": [
+    {
+     "code": "cpca",
+     "article": "511",
+     "paragraphs": [
+      1
+     ]
+    },
+    {
+     "code": "cpca",
+     "article": "512",
+     "paragraphs": [
+      2,
+      3,
+      5,
+      10,
+      11
+     ]
+    },
+    {
+     "code": "cpca",
+     "article": "515",
+     "paragraphs": [
+      1
+     ]
+    },
+    {
+     "code": "cpca",
+     "article": "519",
+     "paragraphs": [
+      1
+     ]
+    }
+   ]
+  }
+ ],
+ "territory": [],
+ "exits": [],
+ "openPoints": [
+  {
+   "question": "Is the first-hearing presentation a time limit with a period?",
+   "readings": [
+    "No numeric period is stated: it is a procedural requirement tied to the event of the first hearing at which the case is called, so no deadline is listed.",
+    "It could be modelled as a procedural deadline with no counting words; the texts give no number or counting rule."
+   ]
+  },
+  {
+   "question": "Does the duty cover only property already registered, or also property not yet published?",
+   "readings": [
+    "Only real property and/or real rights that are published (مشهر) in accordance with the law, so property_registered must be yes for the duty to apply.",
+    "The words 'مشهر طبقا للقانون' might qualify only the real right and not the real property, so any real property would be covered; the text does not settle this."
+   ]
+  },
+  {
+   "question": "What does 'unless proof of deposit for publication is shown' require?",
+   "readings": [
+    "Proof of deposit at the land registry (receipt) before or at the first hearing suffices instead of completed publication.",
+    "Proof may be given later in the proceedings; the text does not say until when."
+   ]
+  },
+  {
+   "question": "Is the court able to raise the inadmissibility of its own motion?",
+   "readings": [
+    "Unclear: the texts given do not say who may raise it, so it is not stated as court-raised or plea-only."
+   ]
+  },
+  {
+   "question": "How do the special provisions on publication of rescission, annulment, modification or revocation actions in article 519 interact with article 17 paragraph 3?",
+   "readings": [
+    "They add or replace the rules of article 17 paragraph 3 for actions on rights founded on published deeds.",
+    "They only confirm the same duty; the texts they refer to are not given."
+   ]
+  }
+ ],
+ "missingTexts": [
+  {
+   "code": "cpca",
+   "article": "special provisions on publication of rescission/annulment actions",
+   "why": "Article 519 paragraph 1 refers to special provisions on publishing actions for rescission, annulment, modification or revocation of rights based on published deeds; they are not given and may change the rule or sanction."
+  },
+  {
+   "code": "land-registry-law",
+   "article": "publication regime (which property and rights are published, and the manner and effect of publication)",
+   "why": "Article 17 paragraph 3 relies on 'published in accordance with the law'; the law that says what is published and how the deposit for publication is made is not given."
+  },
+  {
+   "code": "cpca",
+   "article": "16",
+   "why": "Paragraphs on the first hearing are given, but nothing states when the first hearing is set relative to the deposit for publication; no further text is required beyond what is given, listed for completeness of the timing between filing and first call."
+  }
+ ]
+}

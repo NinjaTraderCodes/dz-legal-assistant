@@ -1,0 +1,1054 @@
+{
+  "differences": [
+    {
+      "id": "x1",
+      "kind": "statement",
+      "field": "cite",
+      "a": {
+        "code": "cpca",
+        "article": "1",
+        "paragraphs": [
+          1
+        ]
+      },
+      "b": null,
+      "aId": "b8",
+      "bId": null,
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x2",
+      "kind": "statement",
+      "field": "cite",
+      "a": null,
+      "b": {
+        "code": "cpca",
+        "article": "15",
+        "paragraphs": [
+          7
+        ]
+      },
+      "aId": null,
+      "bId": "b8",
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x3",
+      "kind": "statement",
+      "field": "cite",
+      "a": {
+        "code": "cpca",
+        "article": "16",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "b": null,
+      "aId": "b4",
+      "bId": null,
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x4",
+      "kind": "statement",
+      "field": "interpretive",
+      "a": false,
+      "b": true,
+      "aId": "b1",
+      "bId": "b1",
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x5",
+      "kind": "statement",
+      "field": "cite",
+      "a": null,
+      "b": {
+        "code": "cpca",
+        "article": "40",
+        "paragraphs": [
+          2
+        ]
+      },
+      "aId": null,
+      "bId": "b7",
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x6",
+      "kind": "statement",
+      "field": "cite",
+      "a": {
+        "code": "cpca",
+        "article": "50",
+        "paragraphs": [
+          1
+        ]
+      },
+      "b": null,
+      "aId": "b5",
+      "bId": null,
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x7",
+      "kind": "statement",
+      "field": "cite",
+      "a": null,
+      "b": {
+        "code": "cpca",
+        "article": "511",
+        "paragraphs": [
+          1
+        ]
+      },
+      "aId": null,
+      "bId": "b4",
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x8",
+      "kind": "statement",
+      "field": "cite",
+      "a": null,
+      "b": {
+        "code": "cpca",
+        "article": "512",
+        "paragraphs": [
+          2,
+          3,
+          5,
+          10,
+          11
+        ]
+      },
+      "aId": null,
+      "bId": "b5",
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x9",
+      "kind": "statement",
+      "field": "cite",
+      "a": null,
+      "b": {
+        "code": "cpca",
+        "article": "515",
+        "paragraphs": [
+          1
+        ]
+      },
+      "aId": null,
+      "bId": "b3",
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x10",
+      "kind": "statement",
+      "field": "cite",
+      "a": null,
+      "b": {
+        "code": "cpca",
+        "article": "518",
+        "paragraphs": [
+          1
+        ]
+      },
+      "aId": null,
+      "bId": "b6",
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x11",
+      "kind": "statement",
+      "field": "cite",
+      "a": {
+        "code": "cpca",
+        "article": "539",
+        "paragraphs": [
+          3
+        ]
+      },
+      "b": null,
+      "aId": "b3",
+      "bId": null,
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x12",
+      "kind": "statement",
+      "field": "cite",
+      "a": {
+        "code": "cpca",
+        "article": "68",
+        "paragraphs": [
+          1
+        ]
+      },
+      "b": null,
+      "aId": "b6",
+      "bId": null,
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x13",
+      "kind": "statement",
+      "field": "cite",
+      "a": {
+        "code": "cpca",
+        "article": "69",
+        "paragraphs": [
+          1
+        ]
+      },
+      "b": null,
+      "aId": "b7",
+      "bId": null,
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x14",
+      "kind": "statement",
+      "field": "cite",
+      "a": {
+        "code": "cpca",
+        "article": "762",
+        "paragraphs": [
+          2
+        ]
+      },
+      "b": null,
+      "aId": "b10",
+      "bId": null,
+      "matchedOn": "cite"
+    },
+    {
+      "id": "x15",
+      "kind": "priorStep",
+      "field": "requiredWhen",
+      "a": {
+        "all": [
+          {
+            "slot": "dispute_concerns_real_property",
+            "is": "yes"
+          },
+          {
+            "slot": "property_registered",
+            "is": "yes"
+          }
+        ]
+      },
+      "b": {
+        "all": [
+          {
+            "slot": "dispute_concerns_real_property",
+            "is": "yes"
+          },
+          {
+            "not": {
+              "slot": "property_registered",
+              "is": "no"
+            }
+          }
+        ]
+      },
+      "aId": "p1",
+      "bId": "p1",
+      "matchedOn": "kind"
+    },
+    {
+      "id": "x16",
+      "kind": "section",
+      "field": "value",
+      "a": null,
+      "b": "realEstate",
+      "aId": "section",
+      "bId": "section",
+      "matchedOn": "section"
+    },
+    {
+      "id": "x17",
+      "kind": "territory",
+      "field": "present",
+      "a": null,
+      "b": "t1",
+      "aId": null,
+      "bId": "t1",
+      "matchedOn": "none"
+    },
+    {
+      "id": "x18",
+      "kind": "slot",
+      "field": "used",
+      "a": null,
+      "b": "petition_deposited_for_publication",
+      "aId": null,
+      "bId": null,
+      "matchedOn": "slotId"
+    },
+    {
+      "id": "x19",
+      "kind": "slot",
+      "field": "used",
+      "a": "petition_published_at_land_registry",
+      "b": null,
+      "aId": null,
+      "bId": null,
+      "matchedOn": "slotId"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex1",
+      "case": "ex1",
+      "run": "aOnB",
+      "title": "Clean case: claim on a published property, petition published.",
+      "detail": [
+        "p1: declared ask, expected none (p1: petition_deposited_for_publication unknown, asks petition_deposited_for_publication -> ask; grade D -> ask, to check)",
+        "questions: asked {petition_deposited_for_publication}, expected {}",
+        "p1 -> p1: declared none against ask",
+        "section: none against RealEstate",
+        "questions: {} against {petition_deposited_for_publication}"
+      ],
+      "matchedOn": "case",
+      "id": "x20"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex2",
+      "case": "ex2",
+      "run": "aOnB",
+      "title": "Published property, petition neither published nor deposited: a warning, never a block.",
+      "detail": [
+        "p1: declared ask, expected warn (p1: petition_deposited_for_publication unknown, asks petition_deposited_for_publication -> ask; grade D -> ask, to check)",
+        "questions: asked {petition_deposited_for_publication}, expected {}",
+        "p1 -> p1: declared warn against ask",
+        "section: none against RealEstate",
+        "questions: {} against {petition_deposited_for_publication}"
+      ],
+      "matchedOn": "case",
+      "id": "x21"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex3",
+      "case": "ex3",
+      "run": "aOnB",
+      "title": "Published property, publication not yet known: the step asks.",
+      "detail": [
+        "questions: asked {petition_deposited_for_publication}, expected {petition_published_at_land_registry}",
+        "section: none against RealEstate",
+        "questions: {petition_published_at_land_registry} against {petition_deposited_for_publication}"
+      ],
+      "matchedOn": "case",
+      "id": "x22"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex4",
+      "case": "ex4",
+      "run": "aOnB",
+      "title": "Property not published (customary deed): no duty to publish the petition.",
+      "detail": [
+        "section: none against RealEstate"
+      ],
+      "matchedOn": "case",
+      "id": "x23"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex5",
+      "case": "ex5",
+      "run": "aOnB",
+      "title": "Dispute not about real property: the module is silent.",
+      "detail": [
+        "section: none against RealEstate"
+      ],
+      "matchedOn": "case",
+      "id": "x24"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex6",
+      "case": "ex6",
+      "run": "aOnB",
+      "title": "Real-property dispute, registration of the property unknown: ask whether it is published.",
+      "detail": [
+        "section: none against RealEstate"
+      ],
+      "matchedOn": "case",
+      "id": "x25"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex7",
+      "case": "ex7",
+      "run": "aOnB",
+      "title": "Nothing known: ask the two scope facts.",
+      "detail": [
+        "section: none against RealEstate"
+      ],
+      "matchedOn": "case",
+      "id": "x26"
+    },
+    {
+      "kind": "case",
+      "field": "aOnB ex8",
+      "case": "ex8",
+      "run": "aOnB",
+      "title": "Deposit for publication proven, publication not yet entered: the step is done.",
+      "detail": [
+        "p1: declared ask, expected none (p1: petition_deposited_for_publication unknown, asks petition_deposited_for_publication -> ask; grade D -> ask, to check)",
+        "questions: asked {petition_deposited_for_publication}, expected {}",
+        "p1 -> p1: declared none against ask",
+        "section: none against RealEstate",
+        "questions: {} against {petition_deposited_for_publication}"
+      ],
+      "matchedOn": "case",
+      "id": "x27"
+    },
+    {
+      "kind": "case",
+      "field": "bOnA ex1",
+      "case": "ex1",
+      "run": "bOnA",
+      "title": "Annulment of a published sale deed: petition deposited for publication, proof held.",
+      "detail": [
+        "p1: declared ask, expected none (p1: petition_published_at_land_registry unknown, asks petition_published_at_land_registry -> ask; grade D -> ask, to check)",
+        "n1: no counterpart in the id map",
+        "questions: asked {petition_published_at_land_registry}, expected {}",
+        "section: proposed none, expected RealEstate",
+        "p1 -> p1: declared none against ask",
+        "section: RealEstate against none",
+        "questions: {} against {petition_published_at_land_registry}"
+      ],
+      "matchedOn": "case",
+      "id": "x28"
+    },
+    {
+      "kind": "case",
+      "field": "bOnA ex2",
+      "case": "ex2",
+      "run": "bOnA",
+      "title": "Claim to recover registered land: the petition has not been deposited for publication.",
+      "detail": [
+        "p1: declared ask, expected warn (p1: petition_published_at_land_registry unknown, asks petition_published_at_land_registry -> ask; grade D -> ask, to check)",
+        "n1: no counterpart in the id map",
+        "questions: asked {petition_published_at_land_registry}, expected {}",
+        "p1 -> p1: declared warn against ask",
+        "section: RealEstate against none",
+        "questions: {} against {petition_published_at_land_registry}"
+      ],
+      "matchedOn": "case",
+      "id": "x29"
+    },
+    {
+      "kind": "case",
+      "field": "bOnA ex3",
+      "case": "ex3",
+      "run": "bOnA",
+      "title": "Partition of a registered plot: deposit status not known.",
+      "detail": [
+        "questions: asked {petition_published_at_land_registry}, expected {petition_deposited_for_publication}",
+        "section: RealEstate against none",
+        "questions: {petition_deposited_for_publication} against {petition_published_at_land_registry}"
+      ],
+      "matchedOn": "case",
+      "id": "x30"
+    },
+    {
+      "kind": "case",
+      "field": "bOnA ex4",
+      "case": "ex4",
+      "run": "bOnA",
+      "title": "Near miss: a maintenance claim; no real property.",
+      "detail": [
+        "n1: no counterpart in the id map",
+        "section: RealEstate against none"
+      ],
+      "matchedOn": "case",
+      "id": "x31"
+    },
+    {
+      "kind": "case",
+      "field": "bOnA ex5",
+      "case": "ex5",
+      "run": "bOnA",
+      "title": "Near miss: land held by customary title, not published.",
+      "detail": [
+        "n1: no counterpart in the id map",
+        "section: RealEstate against none"
+      ],
+      "matchedOn": "case",
+      "id": "x32"
+    },
+    {
+      "kind": "case",
+      "field": "bOnA ex6",
+      "case": "ex6",
+      "run": "bOnA",
+      "title": "Nothing known.",
+      "detail": [
+        "n1: no counterpart in the id map",
+        "section: RealEstate against none"
+      ],
+      "matchedOn": "case",
+      "id": "x33"
+    },
+    {
+      "kind": "case",
+      "field": "bOnA ex7",
+      "case": "ex7",
+      "run": "bOnA",
+      "title": "Real-property claim whose registration is not known.",
+      "detail": [
+        "n1: no counterpart in the id map",
+        "section: RealEstate against none"
+      ],
+      "matchedOn": "case",
+      "id": "x34"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryA bc6",
+      "case": "bc6",
+      "run": "boundaryA",
+      "title": "Rescission of rights under a published deed",
+      "detail": [
+        "[cpca 519 ¶1] matches no item: a rule the record may have missed"
+      ],
+      "matchedOn": "case",
+      "id": "x35"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryA bc7",
+      "case": "bc7",
+      "run": "boundaryA",
+      "title": "Annulment of rights under a published deed",
+      "detail": [
+        "[cpca 515 ¶1] matches no item: a rule the record may have missed"
+      ],
+      "matchedOn": "case",
+      "id": "x36"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryA bc8",
+      "case": "bc8",
+      "run": "boundaryA",
+      "title": "Amendment (correction) of rights under a published deed",
+      "detail": [
+        "[cpca 519 ¶1] matches no item: a rule the record may have missed"
+      ],
+      "matchedOn": "case",
+      "id": "x37"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryA bc9",
+      "case": "bc9",
+      "run": "boundaryA",
+      "title": "Pre-emption (shufa) of a published property, deposit not stated",
+      "detail": [
+        "[cpca 512 ¶7] matches no item: a rule the record may have missed"
+      ],
+      "matchedOn": "case",
+      "id": "x38"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryA bc10",
+      "case": "bc10",
+      "run": "boundaryA",
+      "title": "Lease of a dwelling, property not published",
+      "detail": [
+        "[cpca 512 ¶11] matches no item: a rule the record may have missed"
+      ],
+      "matchedOn": "case",
+      "id": "x39"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryA bc11",
+      "case": "bc11",
+      "run": "boundaryA",
+      "title": "Lease of a dwelling, publication status unknown",
+      "detail": [
+        "[cpca 512 ¶11] matches no item: a rule the record may have missed"
+      ],
+      "matchedOn": "case",
+      "id": "x40"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryA bc12",
+      "case": "bc12",
+      "run": "boundaryA",
+      "title": "Partition of a published property, petition on the first day of a leap-year-free calendar edge",
+      "detail": [
+        "[cpca 512 ¶10] matches no item: a rule the record may have missed"
+      ],
+      "matchedOn": "case",
+      "id": "x41"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryA bc13",
+      "case": "bc13",
+      "run": "boundaryA",
+      "title": "Co-ownership (shuyu) of a published property, all facts known except the deposit",
+      "detail": [
+        "[cpca 512 ¶5] matches no item: a rule the record may have missed"
+      ],
+      "matchedOn": "case",
+      "id": "x42"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryB bc7",
+      "case": "bc7",
+      "run": "boundaryB",
+      "title": "Annulment of rights under a published deed",
+      "detail": [
+        "[cpca 515 ¶1] matches no item: a rule the record may have missed"
+      ],
+      "matchedOn": "case",
+      "id": "x43"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryB bc9",
+      "case": "bc9",
+      "run": "boundaryB",
+      "title": "Pre-emption (shufa) of a published property, deposit not stated",
+      "detail": [
+        "[cpca 512 ¶7] matches no item: a rule the record may have missed"
+      ],
+      "matchedOn": "case",
+      "id": "x44"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryB bc10",
+      "case": "bc10",
+      "run": "boundaryB",
+      "title": "Lease of a dwelling, property not published",
+      "detail": [
+        "[cpca 512 ¶11] matches no item: a rule the record may have missed"
+      ],
+      "matchedOn": "case",
+      "id": "x45"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryB bc11",
+      "case": "bc11",
+      "run": "boundaryB",
+      "title": "Lease of a dwelling, publication status unknown",
+      "detail": [
+        "[cpca 512 ¶11] matches no item: a rule the record may have missed"
+      ],
+      "matchedOn": "case",
+      "id": "x46"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryB bc12",
+      "case": "bc12",
+      "run": "boundaryB",
+      "title": "Partition of a published property, petition on the first day of a leap-year-free calendar edge",
+      "detail": [
+        "[cpca 512 ¶10] matches no item: a rule the record may have missed"
+      ],
+      "matchedOn": "case",
+      "id": "x47"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryB bc13",
+      "case": "bc13",
+      "run": "boundaryB",
+      "title": "Co-ownership (shuyu) of a published property, all facts known except the deposit",
+      "detail": [
+        "[cpca 512 ¶5] matches no item: a rule the record may have missed"
+      ],
+      "matchedOn": "case",
+      "id": "x48"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc1",
+      "case": "bc1",
+      "run": "boundaryAB",
+      "title": "Real property, property published, deposit for publication not stated",
+      "detail": [
+        "land-registry-publication (DerivationA): [PriorStep ask last day none days left none] questions {petition_published_at_land_registry}",
+        "land-registry-publication (DerivationB): [Boundary none last day none days left none; PriorStep ask last day none days left none] questions {petition_deposited_for_publication}"
+      ],
+      "matchedOn": "case",
+      "id": "x49"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc2",
+      "case": "bc2",
+      "run": "boundaryAB",
+      "title": "Real property, property published, status of the property unknown",
+      "detail": [
+        "land-registry-publication (DerivationA): [PriorStep ask last day none days left none] questions {property_registered}",
+        "land-registry-publication (DerivationB): [Boundary ask last day none days left none; PriorStep ask last day none days left none] questions {property_registered}"
+      ],
+      "matchedOn": "case",
+      "id": "x50"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc3",
+      "case": "bc3",
+      "run": "boundaryAB",
+      "title": "Property published, nature of the dispute unknown",
+      "detail": [
+        "land-registry-publication (DerivationA): [PriorStep ask last day none days left none] questions {dispute_concerns_real_property}",
+        "land-registry-publication (DerivationB): [Boundary none last day none days left none; PriorStep ask last day none days left none] questions {dispute_concerns_real_property}"
+      ],
+      "matchedOn": "case",
+      "id": "x51"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc6",
+      "case": "bc6",
+      "run": "boundaryAB",
+      "title": "Rescission of rights under a published deed",
+      "detail": [
+        "land-registry-publication (DerivationA): [] questions {petition_published_at_land_registry}",
+        "land-registry-publication (DerivationB): [PriorStep ask last day none days left none] questions {petition_deposited_for_publication}"
+      ],
+      "matchedOn": "case",
+      "id": "x52"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc7",
+      "case": "bc7",
+      "run": "boundaryAB",
+      "title": "Annulment of rights under a published deed",
+      "detail": [
+        "land-registry-publication (DerivationA): [] questions {petition_published_at_land_registry}",
+        "land-registry-publication (DerivationB): [] questions {petition_deposited_for_publication}"
+      ],
+      "matchedOn": "case",
+      "id": "x53"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc8",
+      "case": "bc8",
+      "run": "boundaryAB",
+      "title": "Amendment (correction) of rights under a published deed",
+      "detail": [
+        "land-registry-publication (DerivationA): [] questions {petition_published_at_land_registry}",
+        "land-registry-publication (DerivationB): [PriorStep ask last day none days left none] questions {petition_deposited_for_publication}"
+      ],
+      "matchedOn": "case",
+      "id": "x54"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc9",
+      "case": "bc9",
+      "run": "boundaryAB",
+      "title": "Pre-emption (shufa) of a published property, deposit not stated",
+      "detail": [
+        "land-registry-publication (DerivationA): [] questions {petition_published_at_land_registry}",
+        "land-registry-publication (DerivationB): [] questions {petition_deposited_for_publication}"
+      ],
+      "matchedOn": "case",
+      "id": "x55"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc12",
+      "case": "bc12",
+      "run": "boundaryAB",
+      "title": "Partition of a published property, petition on the first day of a leap-year-free calendar edge",
+      "detail": [
+        "land-registry-publication (DerivationA): [] questions {petition_published_at_land_registry}",
+        "land-registry-publication (DerivationB): [] questions {petition_deposited_for_publication}"
+      ],
+      "matchedOn": "case",
+      "id": "x56"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc13",
+      "case": "bc13",
+      "run": "boundaryAB",
+      "title": "Co-ownership (shuyu) of a published property, all facts known except the deposit",
+      "detail": [
+        "land-registry-publication (DerivationA): [] questions {petition_published_at_land_registry}",
+        "land-registry-publication (DerivationB): [] questions {petition_deposited_for_publication}"
+      ],
+      "matchedOn": "case",
+      "id": "x57"
+    },
+    {
+      "kind": "case",
+      "field": "boundaryAB bc14",
+      "case": "bc14",
+      "run": "boundaryAB",
+      "title": "Claim to ownership of a published property by a public administrative body defendant",
+      "detail": [
+        "land-registry-publication (DerivationA): [PriorStep ask last day none days left none] questions {petition_published_at_land_registry}",
+        "land-registry-publication (DerivationB): [Boundary none last day none days left none; PriorStep ask last day none days left none] questions {petition_deposited_for_publication}"
+      ],
+      "matchedOn": "case",
+      "id": "x58"
+    }
+  ],
+  "sideBySide": {
+    "documents": {
+      "a": [
+        {
+          "id": "doc1",
+          "name": {
+            "ar": "نسخة من العريضة تحمل تأشير المحافظة العقارية بالإشهار، أو وصل إيداعها للإشهار",
+            "en": "A copy of the petition bearing the land registry's publication mention, or the receipt of its deposit for publication"
+          },
+          "requiredWhen": {
+            "all": [
+              {
+                "slot": "dispute_concerns_real_property",
+                "is": "yes"
+              },
+              {
+                "slot": "property_registered",
+                "is": "yes"
+              }
+            ]
+          },
+          "why": {
+            "ar": "تقدم في أول جلسة لتفادي عدم قبول العريضة شكلا.",
+            "en": "Produced at the first hearing to avoid the petition being held inadmissible in form."
+          },
+          "basis": [
+            "b1"
+          ]
+        },
+        {
+          "id": "doc2",
+          "name": {
+            "ar": "سند الملكية المشهر أو مستخرج من مصلحة الشهر العقاري يبين وضعية العقار",
+            "en": "The published title deed, or an extract from the land registry showing the property's position"
+          },
+          "requiredWhen": {
+            "slot": "dispute_concerns_real_property",
+            "is": "yes"
+          },
+          "why": {
+            "ar": "يبين ما إذا كان العقار أو الحق العيني مشهرا، وهو ما يحدد وجوب إشهار العريضة.",
+            "en": "Shows whether the property or real right is published, which decides whether the petition must be published."
+          },
+          "basis": [
+            "b1"
+          ]
+        }
+      ],
+      "b": [
+        {
+          "id": "doc1",
+          "name": {
+            "ar": "وصل أو شهادة إيداع العريضة بالمحافظة العقارية بغرض الإشهار",
+            "en": "Receipt or certificate of deposit of the petition at the land registry for publication"
+          },
+          "requiredWhen": {
+            "all": [
+              {
+                "slot": "dispute_concerns_real_property",
+                "is": "yes"
+              },
+              {
+                "not": {
+                  "slot": "property_registered",
+                  "is": "no"
+                }
+              }
+            ]
+          },
+          "why": {
+            "ar": "المادة 17: لا تقبل العريضة شكلا إن لم يثبت إيداعها للإشهار.",
+            "en": "Article 17: the petition is inadmissible in form unless its deposit for publication is proved."
+          },
+          "basis": [
+            "b1",
+            "b8"
+          ]
+        },
+        {
+          "id": "doc2",
+          "name": {
+            "ar": "ما يثبت أن العقار أو الحق العيني العقاري مشهر (عقد مشهر أو مستخرج من المحافظة العقارية)",
+            "en": "Proof that the property or the real right is published (a published deed or a land-registry extract)"
+          },
+          "requiredWhen": {
+            "slot": "dispute_concerns_real_property",
+            "is": "yes"
+          },
+          "why": {
+            "ar": "المادة 17: يتوقف واجب الإشهار على أن يكون العقار أو الحق مشهرا.",
+            "en": "Article 17: the duty to publish depends on the property or right being published."
+          },
+          "basis": [
+            "b1",
+            "b8"
+          ]
+        }
+      ]
+    },
+    "boundaries": {
+      "a": [
+        {
+          "id": "n1",
+          "looksLike": {
+            "ar": "قيد أمر الحجز على العقار أو حكم رسو المزاد بالمحافظة العقارية",
+            "en": "Entry of a seizure order on real property, or of a judgment of adjudication, at the land registry"
+          },
+          "isActually": "outside:enforcement",
+          "tellingFacts": [
+            {
+              "ar": "الإجراء قيد سند تنفيذي أو أمر حجز في مرحلة التنفيذ، لا إشهار عريضة افتتاح دعوى.",
+              "en": "The act is the entry of an enforcement order or seizure order at the enforcement stage, not the publication of a petition opening a claim."
+            }
+          ],
+          "message": {
+            "ar": "المادتان 652 و762 من قانون الإجراءات المدنية والإدارية تنظمان قيد أمر الحجز وحكم رسو المزاد بآجالهما الخاصة؛ وهما خارج إشهار عريضة الدعوى.",
+            "en": "CPCA articles 652 and 762 govern the entry of a seizure order and of a judgment of adjudication, with their own periods; they are not the publication of a petition."
+          },
+          "basis": [
+            "b9",
+            "b10"
+          ]
+        }
+      ],
+      "b": [
+        {
+          "id": "n1",
+          "looksLike": {
+            "ar": "دعوى عقارية عادية",
+            "en": "An ordinary real-property claim"
+          },
+          "isActually": "outside:unregistered-property",
+          "tellingFacts": [
+            {
+              "ar": "العقار غير مشهر بالمحافظة العقارية ولا يستند الحق إلى عقد مشهر.",
+              "en": "The property is not published at the land registry and the right does not rest on a published deed."
+            }
+          ],
+          "when": {
+            "all": [
+              {
+                "slot": "dispute_concerns_real_property",
+                "is": "yes"
+              },
+              {
+                "slot": "property_registered",
+                "is": "no"
+              }
+            ]
+          },
+          "slots": [
+            "dispute_concerns_real_property",
+            "property_registered"
+          ],
+          "message": {
+            "ar": "المادة 17: النص العربي يتعلق بعقار أو بحق عيني عقاري مشهر. تحقق من أن العقار والحق غير مشهرين فعلا قبل الاستغناء عن إشهار العريضة.",
+            "en": "Article 17: the Arabic text concerns published real property or a published real right. Check that neither the property nor the right is in fact published before treating the petition as exempt from publication."
+          },
+          "basis": [
+            "b1"
+          ]
+        },
+        {
+          "id": "n2",
+          "looksLike": {
+            "ar": "إشهار عريضة الدعوى",
+            "en": "Publication of the petition"
+          },
+          "isActually": "outside:execution",
+          "tellingFacts": [
+            {
+              "ar": "الأمر قيد حجز تحفظي على عقار تم بأمر قضائي، وليس عريضة افتتاح دعوى.",
+              "en": "It is the entry of a conservatory seizure of an immovable under a court order, not an opening petition."
+            }
+          ],
+          "message": {
+            "ar": "المادة 652: قيد أمر الحجز التحفظي على العقار إجراء خاص بالحجز، ولا يغني عن إشهار عريضة الدعوى.",
+            "en": "Article 652: the entry of a seizure order on an immovable is the seizure's own step; it does not replace publication of a petition."
+          },
+          "basis": [
+            "b9"
+          ]
+        }
+      ]
+    }
+  },
+  "proposedSlots": {
+    "a": [
+      {
+        "id": "petition_published_at_land_registry",
+        "type": "yesNoUnknown",
+        "question": {
+          "ar": "هل أُشهرت عريضة افتتاح الدعوى لدى المحافظة العقارية، أو أودعت لديها للإشهار مع ما يثبت هذا الإيداع؟",
+          "en": "Has the petition opening the claim been published at the land registry, or deposited there for publication with proof of that deposit?"
+        },
+        "why": "Prior step p1 reads it as its own slot (was the step done?). Article 17 of the CPCA requires the petition about a published property or real right to be published at the land registry and produced at the first hearing, on pain of inadmissibility in form, unless its deposit for publication is proven; the question covers both accepted means (m1 publication, m2 proven deposit)."
+      }
+    ],
+    "b": [
+      {
+        "id": "petition_deposited_for_publication",
+        "type": "yesNoUnknown",
+        "question": {
+          "ar": "هل أودعت عريضة الدعوى بالمحافظة العقارية بغرض إشهارها، وهل بيد المحامي ما يثبت الإيداع؟",
+          "en": "Has the petition been deposited at the land registry for publication, and does the lawyer hold proof of the deposit?"
+        },
+        "why": "Prior step p1: article 17 makes the petition inadmissible in form unless its deposit for publication is proved at the first hearing."
+      }
+    ]
+  },
+  "agreement": {
+    "priorStep": {
+      "equal": 3,
+      "compared": 4
+    },
+    "section": {
+      "equal": 1,
+      "compared": 2
+    },
+    "slot": {
+      "equal": 2,
+      "compared": 4
+    },
+    "statement": {
+      "equal": 5,
+      "compared": 19
+    },
+    "territory": {
+      "equal": 0,
+      "compared": 1
+    }
+  },
+  "agreementTotal": {
+    "equal": 11,
+    "compared": 30
+  },
+  "caseRuns": [
+    "aOnB",
+    "bOnA",
+    "boundaryA",
+    "boundaryAB",
+    "boundaryB"
+  ],
+  "caseDifferences": 39
+}

@@ -1,0 +1,455 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "module",
+  "id": "conciliation-mediation",
+  "label": { "ar": "الصلح والوساطة", "en": "Conciliation and mediation" },
+  "verified": false,
+  "stage": "derivationA",
+  "derivedBy": { "role": "derivationA", "model": "claude-opus-5-5", "date": "2026-11-17" },
+  "appliesTo": ["*"],
+  "slots": [
+    "specialised_commercial_matter",
+    "commercial_nonconciliation_record",
+    "specialised_commercial_court_installed",
+    "commercial_conciliation_agreement"
+  ],
+  "proposedSlots": [
+    {
+      "id": "commercial_nonconciliation_record",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل انتهت محاولة الصلح التي أجراها القاضي المعين من رئيس المحكمة التجارية المتخصصة بمحضر عدم صلح موقع، حرر قبل قيد الدعوى ليرفق بالعريضة؟",
+        "en": "Did the conciliation attempt held by the judge designated by the president of the specialised commercial court end in a signed record of non-conciliation, drawn up before the claim is entered, to be attached to the petition?"
+      },
+      "why": "Prior step p1 and document doc1 read it: the conciliation precedes the entry of the claim, and the petition before the specialised commercial court must be accompanied by the record of non-conciliation on pain of inadmissibility (cpca 536 مكرر 4 ¶1 and ¶3). The existing slot nonconciliation_record concerns the labour conciliation office, a different body."
+    },
+    {
+      "id": "specialised_commercial_court_installed",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل نصبت المحكمة التجارية المتخصصة التي يدخل النزاع في دائرة اختصاصها؟",
+        "en": "Has the specialised commercial court whose area covers the dispute been installed?"
+      },
+      "why": "The exemption of prior step p1 and the condition of document doc1 read it: Law 22-13 makes the jurisdiction rules of the specialised commercial courts apply only from the installation of the new courts and keeps the commercial sections competent until then (law-22-13 13 ¶1 and ¶2)."
+    },
+    {
+      "id": "commercial_conciliation_agreement",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل انتهت محاولة الصلح أمام المحكمة التجارية المتخصصة بمحضر صلح على كل النزاع أو على جزء منه؟",
+        "en": "Did the conciliation attempt before the specialised commercial court end in a record of conciliation on all or part of the dispute?"
+      },
+      "why": "Boundary n6 reads it: the conciliation ends in a record signed by the judge, the parties and the clerk and is governed by the code's rules (cpca 536 مكرر 4 ¶2); a deposited record of conciliation is an executory title (cpca 993, cpca 600 ¶10). The existing slot conciliation_agreement_reached concerns the labour conciliation office."
+    }
+  ],
+  "basis": [
+    { "id": "b1", "role": "procedure", "cite": { "code": "cpca", "article": "4", "paragraphs": [1] },
+      "says": { "ar": "للقاضي أن يجري الصلح بين الأطراف أثناء سير الخصومة في أي مادة.", "en": "The judge may conciliate the parties during the proceedings, in any matter." } },
+    { "id": "b2", "role": "procedure", "cite": { "code": "cpca", "article": "990", "paragraphs": [1] },
+      "says": { "ar": "للخصوم أن يتصالحوا من تلقاء أنفسهم أو بسعي من القاضي في جميع مراحل الخصومة.", "en": "The parties may settle on their own or at the judge's initiative, at every stage of the proceedings." } },
+    { "id": "b3", "role": "procedure", "cite": { "code": "cpca", "article": "991", "paragraphs": [1] },
+      "says": { "ar": "تجرى محاولة الصلح في المكان والوقت اللذين يراهما القاضي، ما لم يقرر نص خاص غير ذلك.", "en": "The conciliation attempt is held where and when the judge thinks fit, unless a special text provides otherwise." } },
+    { "id": "b4", "role": "procedure", "cite": { "code": "cpca", "article": "992", "paragraphs": [1] },
+      "says": { "ar": "يثبت الصلح في محضر يوقعه الخصوم والقاضي وأمين الضبط ويودع بأمانة الضبط.", "en": "A settlement is recorded in a record signed by the parties, the judge and the clerk, and filed at the registry." } },
+    { "id": "b5", "role": "procedure", "cite": { "code": "cpca", "article": "993", "paragraphs": [1] },
+      "says": { "ar": "محضر الصلح سند تنفيذي بمجرد إيداعه بأمانة الضبط.", "en": "The conciliation record is an executory title as soon as it is filed at the registry." } },
+    { "id": "b6", "role": "procedure", "cite": { "code": "cpca", "article": "994", "paragraphs": [1] },
+      "says": { "ar": "على القاضي أن يعرض الوساطة على الخصوم في جميع المواد، عدا قضايا شؤون الأسرة والقضايا العمالية وما يمس النظام العام.", "en": "The judge must offer mediation to the parties in every matter except family cases, labour cases and anything that may affect public order." } },
+    { "id": "b7", "role": "procedure", "cite": { "code": "cpca", "article": "994", "paragraphs": [2] },
+      "says": { "ar": "إذا قبل الخصوم الوساطة عين القاضي وسيطا يتلقى وجهات نظرهم ويحاول التوفيق بينهم.", "en": "If the parties accept, the judge appoints a mediator to hear each side and try to bring them to a solution." } },
+    { "id": "b8", "role": "procedure", "cite": { "code": "cpca", "article": "995", "paragraphs": [1] },
+      "says": { "ar": "تشمل الوساطة النزاع كله أو جزءا منه.", "en": "Mediation covers the whole dispute or part of it." } },
+    { "id": "b9", "role": "procedure", "cite": { "code": "cpca", "article": "995", "paragraphs": [2] },
+      "says": { "ar": "لا يتخلى القاضي عن القضية أثناء الوساطة، وله أن يتخذ أي تدبير يراه ضروريا.", "en": "The judge stays seized during mediation and may take any measure he deems necessary at any time." } },
+    { "id": "b10", "role": "limit", "cite": { "code": "cpca", "article": "996", "paragraphs": [1] },
+      "says": { "ar": "لا تتجاوز مدة الوساطة ثلاثة (3) أشهر.", "en": "Mediation may not last more than three (3) months." } },
+    { "id": "b11", "role": "limit", "cite": { "code": "cpca", "article": "996", "paragraphs": [2] },
+      "says": { "ar": "يجوز تجديد الوساطة مرة واحدة لنفس المدة بطلب من الوسيط وبعد موافقة الخصوم.", "en": "Mediation may be renewed once for the same period, at the mediator's request and with the parties' agreement." } },
+    { "id": "b12", "role": "procedure", "cite": { "code": "cpca", "article": "997", "paragraphs": [1, 2] },
+      "says": { "ar": "تسند الوساطة إلى شخص طبيعي أو جمعية، وتعين الجمعية أحد أعضائها لتنفيذها.", "en": "Mediation is entrusted to a natural person or an association, which names one of its members to carry it out." } },
+    { "id": "b13", "role": "procedure", "cite": { "code": "cpca", "article": "998", "paragraphs": [1, 2, 3, 4] },
+      "says": { "ar": "يشترط في الوسيط حسن السلوك والاستقامة وعدم الإدانة بجريمة مخلة بالشرف والتأهيل والحياد والاستقلال.", "en": "The mediator must be of good conduct and integrity, free of any conviction for a crime against honour, qualified, neutral and independent." } },
+    { "id": "b14", "role": "procedure", "cite": { "code": "cpca", "article": "999", "paragraphs": [1, 2, 3] },
+      "says": { "ar": "يتضمن أمر تعيين الوسيط موافقة الخصوم والآجال الأولى الممنوحة للوسيط وتاريخ رجوع القضية إلى الجلسة.", "en": "The order appointing the mediator states the parties' consent, the mediator's initial period and the date the case returns to the hearing." } },
+    { "id": "b15", "role": "procedure", "cite": { "code": "cpca", "article": "1000", "paragraphs": [1, 2] },
+      "says": { "ar": "يبلغ أمين الضبط أمر التعيين للخصوم والوسيط، ويخطر الوسيط القاضي بقبوله ويدعو الخصوم إلى أول لقاء.", "en": "The clerk serves the appointment order on the parties and the mediator; the mediator tells the judge he accepts and invites the parties to a first meeting." } },
+    { "id": "b16", "role": "procedure", "cite": { "code": "cpca", "article": "1002", "paragraphs": [1, 2, 3] },
+      "says": { "ar": "للقاضي إنهاء الوساطة في أي وقت بطلب من الوسيط أو الخصوم أو تلقائيا عند استحالة سيرها الحسن، وترجع القضية إلى الجلسة.", "en": "The judge may end the mediation at any time at the request of the mediator or the parties, or of his own motion when it cannot proceed properly; the case then returns to the hearing." } },
+    { "id": "b17", "role": "procedure", "cite": { "code": "cpca", "article": "1003", "paragraphs": [1, 2, 3] },
+      "says": { "ar": "يخبر الوسيط القاضي كتابيا بنتيجة الوساطة، ويحرر عند الاتفاق محضرا يوقعه مع الخصوم، وترجع القضية في تاريخها المحدد.", "en": "The mediator reports the outcome to the judge in writing and, if there is agreement, draws up a record he signs with the parties; the case returns on its set date." } },
+    { "id": "b18", "role": "procedure", "cite": { "code": "cpca", "article": "1004", "paragraphs": [1] },
+      "says": { "ar": "يصادق القاضي على محضر الاتفاق بأمر غير قابل لأي طعن، ويكون المحضر سندا تنفيذيا.", "en": "The judge approves the agreement record by an order open to no appeal, and the record is an executory title." } },
+    { "id": "b19", "role": "procedure", "cite": { "code": "cpca", "article": "1005", "paragraphs": [1] },
+      "says": { "ar": "يلتزم الوسيط بحفظ السر إزاء الغير.", "en": "The mediator is bound to secrecy toward third parties." } },
+    { "id": "b20", "role": "procedure", "cite": { "code": "cpca", "article": "534", "paragraphs": [1] },
+      "says": { "ar": "على رئيس القسم التجاري أن يعرض النزاع مسبقا على الوساطة.", "en": "The president of the commercial section must first refer the dispute to mediation." } },
+    { "id": "b21", "role": "procedure", "cite": { "code": "cpca", "article": "534", "paragraphs": [2] },
+      "says": { "ar": "لا تتوقف الوساطة أمام القسم التجاري على قبول الأطراف، خلافا للقاعدة العامة.", "en": "Mediation before the commercial section does not depend on the parties' acceptance, unlike the general rule." } },
+    { "id": "b22", "role": "procedure", "cite": { "code": "cpca", "article": "534", "paragraphs": [3] },
+      "says": { "ar": "تطبق على الوساطة أمام القسم التجاري أحكام الوساطة العامة في القانون.", "en": "The code's general mediation rules apply to mediation before the commercial section." } },
+    { "id": "b23", "role": "limit", "cite": { "code": "cpca", "article": "531", "paragraphs": [1] },
+      "says": { "ar": "يختص القسم التجاري بالمنازعات التجارية عدا ما تختص به المحكمة التجارية المتخصصة.", "en": "The commercial section hears commercial disputes, except those reserved to the specialised commercial court." } },
+    { "id": "b24", "role": "limit", "cite": { "code": "cpca", "article": "536 مكرر", "paragraphs": [1, 2, 3, 4, 5, 6, 7] },
+      "says": { "ar": "تختص المحكمة التجارية المتخصصة بمنازعات الملكية الفكرية والشركات التجارية والتسوية القضائية والإفلاس والبنوك والمؤسسات المالية مع التجار والمنازعات البحرية والنقل الجوي والتأمينات المتعلقة بالنشاط التجاري والتجارة الدولية.", "en": "The specialised commercial court hears intellectual property, commercial company, judicial settlement and bankruptcy, bank and financial institution disputes with traders, maritime, air transport and commercial insurance, and international trade disputes." } },
+    { "id": "b25", "role": "prerequisite", "cite": { "code": "cpca", "article": "536 مكرر 4", "paragraphs": [1] },
+      "says": { "ar": "يسبق قيد الدعوى أمام المحكمة التجارية المتخصصة صلح يطلبه أحد الخصوم من رئيسها، فيعين قاضيا لإجرائه، ويبلغ طالب الصلح باقي الأطراف بتاريخ جلسته.", "en": "Before a claim is entered at the specialised commercial court, a conciliation requested by a party from its president must take place before a judge he designates; the requesting party notifies the others of the conciliation hearing date." } },
+    { "id": "b26", "role": "prerequisite", "cite": { "code": "cpca", "article": "536 مكرر 4", "paragraphs": [2] },
+      "says": { "ar": "ينتهي الصلح بمحضر يوقعه القاضي وأطراف النزاع وأمين الضبط، ويخضع لقواعد القانون.", "en": "The conciliation ends with a record signed by the judge, the parties and the clerk, governed by the code's rules." } },
+    { "id": "b27", "role": "prerequisite", "cite": { "code": "cpca", "article": "536 مكرر 4", "paragraphs": [3] },
+      "says": { "ar": "عند فشل الصلح ترفع الدعوى بعريضة مرفقة بمحضر عدم الصلح تحت طائلة عدم القبول شكلا.", "en": "When conciliation fails, the claim is filed by petition with the record of non-conciliation attached, on pain of inadmissibility in form." }, "required": true },
+    { "id": "b28", "role": "limit", "cite": { "code": "law-22-13", "article": "13", "paragraphs": [1] },
+      "says": { "ar": "تسري قواعد الاختصاص الخاصة بالمحاكم التجارية المتخصصة ابتداء من تاريخ تنصيبها.", "en": "The jurisdiction rules of the specialised commercial courts apply from the date the new courts are installed." } },
+    { "id": "b29", "role": "limit", "cite": { "code": "law-22-13", "article": "13", "paragraphs": [2] },
+      "says": { "ar": "تبقى الأقسام التجارية مختصة بالدعاوى المرفوعة أمامها قبل تنصيب الجهات الجديدة.", "en": "The commercial sections remain competent for claims filed with them before the new courts are installed." } },
+    { "id": "b30", "role": "procedure", "cite": { "code": "cpca", "article": "600", "paragraphs": [10] },
+      "says": { "ar": "محاضر الصلح أو الاتفاق المؤشر عليها من القضاة والمودعة بأمانة الضبط سندات تنفيذية.", "en": "Records of conciliation or agreement endorsed by the judges and filed at the registry are executory titles." } },
+    { "id": "b31", "role": "procedure", "cite": { "code": "cpca", "article": "220", "paragraphs": [1] },
+      "says": { "ar": "تنقضي الخصومة بانقضاء الدعوى، ومن ذلك الصلح.", "en": "The proceedings end with the end of the action, including by settlement." } },
+    { "id": "b32", "role": "procedure", "cite": { "code": "family-code", "article": "48", "paragraphs": [1] },
+      "says": { "ar": "مع مراعاة قاعدة محاولات الصلح، يحل الزواج بالطلاق بإرادة الزوج أو بتراضي الزوجين أو بطلب الزوجة.", "en": "Subject to the conciliation rule, marriage is dissolved by divorce at the husband's will, by mutual consent, or at the wife's request." } },
+    { "id": "b33", "role": "procedure", "cite": { "code": "family-code", "article": "49", "paragraphs": [1] },
+      "says": { "ar": "لا يثبت الطلاق إلا بحكم بعد عدة محاولات صلح يجريها القاضي في مدة لا تتجاوز ثلاثة (3) أشهر من تاريخ رفع الدعوى.", "en": "Divorce is established only by a judgment after several conciliation attempts by the judge, within no more than three (3) months from the filing of the claim." }, "required": true },
+    { "id": "b34", "role": "procedure", "cite": { "code": "family-code", "article": "49", "paragraphs": [2] },
+      "says": { "ar": "يحرر القاضي محضرا بمساعي محاولات الصلح ونتائجها يوقعه مع كاتب الضبط والطرفين.", "en": "The judge draws up a record of the conciliation efforts and their results, signed by him, the clerk and both parties." } },
+    { "id": "b35", "role": "procedure", "cite": { "code": "family-code", "article": "50", "paragraphs": [1] },
+      "says": { "ar": "من راجع زوجته أثناء محاولة الصلح لا يحتاج إلى عقد جديد.", "en": "A husband who takes his wife back during the conciliation attempt needs no new contract." } },
+    { "id": "b36", "role": "procedure", "cite": { "code": "family-code", "article": "56", "paragraphs": [1] },
+      "says": { "ar": "إذا اشتد الخصام ولم يثبت الضرر وجب تعيين حكمين من أهل الزوجين يقدمان تقريرا في أجل شهرين.", "en": "When the dispute worsens and harm is not proven, two arbiters, one from each family, must be appointed and report within two months." } },
+    { "id": "b37", "role": "procedure", "cite": { "code": "cpca", "article": "439", "paragraphs": [1] },
+      "says": { "ar": "محاولات الصلح في دعوى الطلاق وجوبية وتتم في جلسة سرية.", "en": "Conciliation attempts in a divorce claim are mandatory and held in closed session." }, "required": true },
+    { "id": "b38", "role": "procedure", "cite": { "code": "cpca", "article": "440", "paragraphs": [1] },
+      "says": { "ar": "يستمع القاضي إلى كل زوج على انفراد ثم معا.", "en": "The judge hears each spouse separately, then together." } },
+    { "id": "b39", "role": "procedure", "cite": { "code": "cpca", "article": "440", "paragraphs": [2] },
+      "says": { "ar": "يجوز بطلب الزوجين حضور أحد أفراد العائلة ومشاركته في محاولة الصلح.", "en": "At the spouses' request, a family member may attend and take part in the attempt." } },
+    { "id": "b40", "role": "procedure", "cite": { "code": "cpca", "article": "441", "paragraphs": [1] },
+      "says": { "ar": "إذا تعذر على أحد الزوجين الحضور جاز للقاضي تأجيل الجلسة أو ندب قاض آخر بإنابة قضائية.", "en": "If a spouse cannot attend, the judge may set a later date or delegate another judge by rogatory commission." } },
+    { "id": "b41", "role": "procedure", "cite": { "code": "cpca", "article": "441", "paragraphs": [2] },
+      "says": { "ar": "إذا تخلف أحد الزوجين دون عذر رغم تبليغه شخصيا حرر القاضي محضرا بذلك.", "en": "If a spouse personally summoned fails to attend without excuse, the judge records it." } },
+    { "id": "b42", "role": "procedure", "cite": { "code": "cpca", "article": "442", "paragraphs": [1] },
+      "says": { "ar": "للقاضي منح الزوجين مهلة تفكير لمحاولة جديدة واتخاذ تدابير مؤقتة بأمر غير قابل لأي طعن.", "en": "The judge may give the spouses time to reflect before a new attempt and order provisional measures by an order open to no appeal." } },
+    { "id": "b43", "role": "limit", "cite": { "code": "cpca", "article": "442", "paragraphs": [2] },
+      "says": { "ar": "لا تتجاوز محاولات الصلح ثلاثة (3) أشهر من تاريخ رفع دعوى الطلاق.", "en": "The conciliation attempts may not exceed three (3) months from the filing of the divorce claim." } },
+    { "id": "b44", "role": "procedure", "cite": { "code": "cpca", "article": "443", "paragraphs": [1, 2, 3] },
+      "says": { "ar": "يثبت صلح الزوجين في محضر يوقعه القاضي وأمين الضبط والزوجان ويودع، ويعد سندا تنفيذيا.", "en": "The spouses' reconciliation is recorded in a record signed by the judge, the clerk and the spouses and filed; it is an executory title." } },
+    { "id": "b45", "role": "procedure", "cite": { "code": "cpca", "article": "443", "paragraphs": [4] },
+      "says": { "ar": "عند عدم الصلح أو تخلف أحد الزوجين رغم مهلة التفكير يشرع في مناقشة الموضوع.", "en": "If there is no reconciliation, or a spouse stays away despite the reflection period, the merits are taken up." } },
+    { "id": "b46", "role": "procedure", "cite": { "code": "cpca", "article": "446", "paragraphs": [1] },
+      "says": { "ar": "إذا لم يثبت ضرر أثناء الخصومة جاز للقاضي تعيين حكمين لمحاولة الصلح وفق قانون الأسرة.", "en": "If no harm is proven during the proceedings, the judge may appoint two arbiters to attempt reconciliation under the Family Code." } },
+    { "id": "b47", "role": "procedure", "cite": { "code": "cpca", "article": "448", "paragraphs": [1] },
+      "says": { "ar": "يثبت صلح الحكمين في محضر يصادق عليه القاضي بأمر غير قابل لأي طعن.", "en": "A reconciliation reached by the arbiters is recorded and approved by the judge by an order open to no appeal." } },
+    { "id": "b48", "role": "procedure", "cite": { "code": "cpca", "article": "449", "paragraphs": [1] },
+      "says": { "ar": "للقاضي إنهاء مهمة الحكمين تلقائيا عند صعوبة تنفيذها، فتستمر الخصومة.", "en": "The judge may end the arbiters' mission of his own motion when it proves difficult; the proceedings then continue." } },
+    { "id": "b49", "role": "procedure", "cite": { "code": "cpca", "article": "431", "paragraphs": [1] },
+      "says": { "ar": "في الطلاق بالتراضي يستمع القاضي إلى الزوجين ويتأكد من رضائهما ويحاول الصلح بينهما إن أمكن.", "en": "In divorce by mutual consent the judge hears the spouses, checks their consent and attempts reconciliation where possible." } },
+    { "id": "b50", "role": "limit", "cite": { "code": "cpca", "article": "970", "paragraphs": [1] },
+      "says": { "ar": "للجهات القضائية الإدارية إجراء الصلح في مادة القضاء الكامل.", "en": "The administrative courts may conciliate in full-jurisdiction cases." } },
+    { "id": "b51", "role": "limit", "cite": { "code": "cpca", "article": "972", "paragraphs": [1] },
+      "says": { "ar": "يتم الصلح الإداري بسعي من الخصوم أو بمبادرة رئيس تشكيلة الحكم بعد موافقتهم.", "en": "Administrative conciliation is sought by the parties or proposed by the presiding judge with their consent." } },
+    { "id": "b52", "role": "limit", "cite": { "code": "cpca", "article": "1006", "paragraphs": [1, 2] },
+      "says": { "ar": "يجوز التحكيم في الحقوق التي يملك الشخص التصرف فيها، ولا يجوز في مسائل النظام العام أو حالة الأشخاص وأهليتهم.", "en": "Arbitration is open for rights a person may freely dispose of, never for public-order matters or personal status and capacity." } },
+    { "id": "b53", "role": "procedure", "cite": { "code": "cpca", "article": "67", "paragraphs": [1] },
+      "says": { "ar": "الدفع بعدم القبول يرمي إلى رد طلب الخصم لانعدام الحق في التقاضي دون النظر في الموضوع.", "en": "A plea of inadmissibility seeks dismissal of the claim for lack of the right to sue, without examining the merits." } },
+    { "id": "b54", "role": "procedure", "cite": { "code": "cpca", "article": "69", "paragraphs": [1] },
+      "says": { "ar": "يثير القاضي تلقائيا الدفع بعدم القبول إذا كان من النظام العام.", "en": "The judge must raise a plea of inadmissibility of his own motion when it is of public order." } },
+    { "id": "b55", "role": "procedure", "cite": { "code": "cpca", "article": "425", "paragraphs": [4] },
+      "says": { "ar": "يجوز اللجوء إلى الاستشارة في أي وقت حتى أثناء إجراءات الصلح.", "en": "Expert consultation may be used at any time, even during the conciliation procedure." } }
+  ],
+  "priorSteps": [
+    {
+      "id": "p1",
+      "kind": "commercialConciliation",
+      "slots": ["commercial_nonconciliation_record", "specialised_commercial_matter", "specialised_commercial_court_installed"],
+      "requiredWhen": { "slot": "specialised_commercial_matter", "in": ["intellectual_property", "commercial_company", "bankruptcy_settlement", "bank_with_merchant", "maritime_air_insurance", "international_trade"] },
+      "notRequiredWhen": [
+        {
+          "when": { "slot": "specialised_commercial_court_installed", "is": "no" },
+          "basis": ["b28", "b29", "b23"],
+          "note": {
+            "ar": "لا تسري قواعد اختصاص المحكمة التجارية المتخصصة إلا من تاريخ تنصيبها، ويبقى القسم التجاري مختصا قبل ذلك؛ والصلح المسبق إجراء أمام هذه المحكمة. هذه قراءة: تحقق من تاريخ التنصيب.",
+            "en": "The specialised commercial court's jurisdiction rules apply only from its installation, and the commercial section stays competent until then; the prior conciliation is a step before that court. This is a reading: check the installation date."
+          }
+        }
+      ],
+      "acceptedMeans": [
+        {
+          "id": "m1",
+          "label": {
+            "ar": "محضر عدم صلح يحرره القاضي الذي عينه رئيس المحكمة التجارية المتخصصة بأمر على عريضة، بطلب من أحد الخصوم، ويوقعه القاضي والأطراف وأمين الضبط، قبل قيد الدعوى",
+            "en": "A record of non-conciliation drawn up, before the claim is entered, by the judge the president of the specialised commercial court designated by order on petition at a party's request, signed by that judge, the parties and the clerk"
+          },
+          "basis": ["b25", "b26", "b27"]
+        }
+      ],
+      "effectWhenMissing": "blockCleanExport",
+      "effectWhenUnknown": "ask",
+      "message": {
+        "ar": "المادة 536 مكرر 4 من ق.إ.م.إ: يسبق قيد الدعوى أمام المحكمة التجارية المتخصصة إجراء صلح أمام قاض يعينه رئيسها، وترفق العريضة بمحضر عدم الصلح تحت طائلة عدم قبول الدعوى شكلا. تحقق من وجود المحضر وتاريخه.",
+        "en": "CPCA article 536 مكرر 4: before a claim is entered at the specialised commercial court, a conciliation must be held before a judge its president designates, and the petition must have the record of non-conciliation attached, on pain of inadmissibility in form. Check that the record exists and its date."
+      },
+      "basis": ["b24", "b25", "b26", "b27", "b28", "b29"]
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc1",
+      "name": { "ar": "محضر عدم الصلح المحرر أمام المحكمة التجارية المتخصصة", "en": "Record of non-conciliation drawn up before the specialised commercial court" },
+      "requiredWhen": {
+        "all": [
+          { "slot": "specialised_commercial_matter", "in": ["intellectual_property", "commercial_company", "bankruptcy_settlement", "bank_with_merchant", "maritime_air_insurance", "international_trade"] },
+          { "not": { "slot": "specialised_commercial_court_installed", "is": "no" } }
+        ]
+      },
+      "why": { "ar": "ترفق به عريضة افتتاح الدعوى أمام المحكمة التجارية المتخصصة تحت طائلة عدم القبول شكلا.", "en": "The petition before the specialised commercial court must have it attached, on pain of inadmissibility in form." },
+      "basis": ["b26", "b27"]
+    }
+  ],
+  "boundaries": [
+    {
+      "id": "n1",
+      "looksLike": { "ar": "عرض الوساطة القضائية في نزاع أسري أو عمالي", "en": "A court offer of mediation in a family or labour dispute" },
+      "isActually": "outside:mediation-excluded",
+      "tellingFacts": [
+        { "ar": "النزاع من قضايا شؤون الأسرة أو من القضايا العمالية أو يمس النظام العام.", "en": "The dispute is a family case, a labour case, or touches public order." }
+      ],
+      "message": {
+        "ar": "المادة 994 من ق.إ.م.إ: يستثنى من عرض الوساطة قضايا شؤون الأسرة والقضايا العمالية وكل ما يمس النظام العام؛ وفي الأسرة تجرى محاولات الصلح، وفي العمل تراجع المصالحة المسبقة أمام مكتب المصالحة.",
+        "en": "CPCA article 994: family cases, labour cases and anything affecting public order are excluded from the mediation offer; family cases go through the conciliation attempts, and labour cases through the prior conciliation before the conciliation office."
+      },
+      "basis": ["b6"]
+    },
+    {
+      "id": "n2",
+      "looksLike": { "ar": "صلح مسبق قبل رفع دعوى تجارية أمام القسم التجاري", "en": "A prior conciliation before filing a commercial claim at the commercial section" },
+      "isActually": "outside:commercial-section-mediation",
+      "tellingFacts": [
+        { "ar": "النزاع تجاري لكنه لا يدخل في المواد المخصصة للمحكمة التجارية المتخصصة.", "en": "The dispute is commercial but outside the matters reserved to the specialised commercial court." },
+        { "ar": "يعرض رئيس القسم التجاري النزاع على الوساطة بعد رفع الدعوى دون اشتراط قبول الأطراف.", "en": "After filing, the president of the commercial section refers the dispute to mediation without needing the parties' acceptance." }
+      ],
+      "message": {
+        "ar": "المادتان 531 و534 من ق.إ.م.إ: لا يشترط نص القسم التجاري صلحا قبل رفع الدعوى، وإنما يعرض رئيس القسم النزاع على الوساطة مسبقا دون حاجة إلى قبول الأطراف.",
+        "en": "CPCA articles 531 and 534: the commercial section's texts require no conciliation before filing; the section president refers the dispute to mediation first, without the parties' acceptance."
+      },
+      "basis": ["b23", "b20", "b21", "b22"]
+    },
+    {
+      "id": "n3",
+      "looksLike": { "ar": "محاولة الصلح في دعوى الطلاق كإجراء مسبق على رفع الدعوى", "en": "The conciliation attempt in a divorce claim as a step before filing" },
+      "isActually": "outside:in-court-family-conciliation",
+      "tellingFacts": [
+        { "ar": "يجري القاضي محاولات الصلح بعد رفع الدعوى، في جلسة سرية، ولا يثبت الطلاق إلا بحكم بعدها.", "en": "The judge holds the attempts after the claim is filed, in closed session, and divorce is established only by a judgment after them." },
+        { "ar": "إذا اشتد الخصام ولم يثبت الضرر يعين القاضي حكمين.", "en": "If the dispute worsens and harm is not proven, the judge appoints two arbiters." }
+      ],
+      "message": {
+        "ar": "المادة 49 من قانون الأسرة والمادتان 439 و442 من ق.إ.م.إ: محاولات الصلح وجوبية يجريها القاضي بعد رفع الدعوى، فلا يطلب من المدعي إثبات صلح قبل رفعها.",
+        "en": "Family Code article 49 and CPCA articles 439 and 442: the conciliation attempts are mandatory and held by the judge after the claim is filed; the plaintiff is not asked to show a conciliation before filing."
+      },
+      "basis": ["b33", "b37", "b43", "b36", "b46"]
+    },
+    {
+      "id": "n4",
+      "looksLike": { "ar": "صلح أمام جهة قضائية إدارية", "en": "Conciliation before an administrative court" },
+      "isActually": "outside:administrative",
+      "tellingFacts": [
+        { "ar": "النزاع من القضاء الكامل أمام جهة قضائية إدارية.", "en": "The dispute is a full-jurisdiction case before an administrative court." }
+      ],
+      "message": {
+        "ar": "المادتان 970 و972 من ق.إ.م.إ: للصلح أمام الجهات القضائية الإدارية قواعده الخاصة، ولا يدخل في هذه الوحدة.",
+        "en": "CPCA articles 970 and 972: conciliation before the administrative courts has its own rules and is not part of this module."
+      },
+      "basis": ["b50", "b51"]
+    },
+    {
+      "id": "n5",
+      "looksLike": { "ar": "التحكيم كبديل عن الصلح أو الوساطة", "en": "Arbitration as an alternative to conciliation or mediation" },
+      "isActually": "outside:arbitration",
+      "tellingFacts": [
+        { "ar": "يوجد اتفاق تحكيم في حق يملك الطرف التصرف فيه.", "en": "There is an arbitration agreement over a right the party may freely dispose of." }
+      ],
+      "message": {
+        "ar": "المادة 1006 من ق.إ.م.إ: التحكيم طريق مستقل، ولا يجوز في مسائل النظام العام أو حالة الأشخاص وأهليتهم.",
+        "en": "CPCA article 1006: arbitration is a separate route and is not allowed in public-order matters or personal status and capacity."
+      },
+      "basis": ["b52"]
+    },
+    {
+      "id": "n6",
+      "looksLike": { "ar": "دعوى أمام المحكمة التجارية المتخصصة بعد محاولة صلح", "en": "A claim before the specialised commercial court after a conciliation attempt" },
+      "isActually": "outside:enforcement-of-conciliation-record",
+      "tellingFacts": [
+        { "ar": "انتهت محاولة الصلح بمحضر صلح على كل النزاع أو جزء منه.", "en": "The conciliation attempt ended in a record of conciliation on all or part of the dispute." }
+      ],
+      "when": {
+        "all": [
+          { "slot": "specialised_commercial_matter", "in": ["intellectual_property", "commercial_company", "bankruptcy_settlement", "bank_with_merchant", "maritime_air_insurance", "international_trade"] },
+          { "slot": "commercial_conciliation_agreement", "is": "yes" }
+        ]
+      },
+      "slots": ["specialised_commercial_matter", "commercial_conciliation_agreement"],
+      "message": {
+        "ar": "المادتان 536 مكرر 4 و993 من ق.إ.م.إ: ينتهي الصلح بمحضر يخضع لقواعد القانون، ومحضر الصلح المودع سند تنفيذي. تحقق مما شمله الصلح قبل المطالبة به.",
+        "en": "CPCA articles 536 مكرر 4 and 993: the conciliation ends in a record governed by the code's rules, and a filed conciliation record is an executory title. Check what the settlement covered before claiming it."
+      },
+      "basis": ["b26", "b5", "b30"]
+    }
+  ],
+  "openPoints": [
+    {
+      "id": "o1",
+      "question": { "ar": "هل يسري الصلح المسبق أمام المحكمة التجارية المتخصصة قبل تنصيبها، ومتى نصبت المحاكم التجارية المتخصصة؟", "en": "Does the prior conciliation before the specialised commercial court apply before that court is installed, and when were the specialised commercial courts installed?" },
+      "why": { "ar": "يؤجل القانون 22-13 سريان قواعد الاختصاص الجديدة إلى تاريخ التنصيب دون أن يذكر تاريخا، ولا يوجد في المخزن نص التنصيب.", "en": "Law 22-13 defers the new jurisdiction rules to the installation of the new courts without naming a date, and no installation text is in the store." },
+      "readings": [
+        { "reading": { "ar": "الصلح المسبق إجراء أمام المحكمة التجارية المتخصصة فلا يلزم قبل تنصيبها.", "en": "The prior conciliation is a step before the specialised court, so it is not required before that court is installed." }, "basis": ["b25", "b28", "b29"] },
+        { "reading": { "ar": "يسري الإجراء من تاريخ نشر القانون لأنه قاعدة إجرائية لا قاعدة اختصاص.", "en": "The step applies from the law's publication because it is a procedural rule, not a jurisdiction rule." }, "basis": ["b27"] }
+      ],
+      "protectiveReading": { "ar": "اسأل عن التنصيب عند غياب المحضر، ولا تعف من الإجراء إلا إذا أجاب المحامي بأن المحكمة لم تنصب.", "en": "Ask about the installation when the record is missing, and exempt the step only when the lawyer answers that the court was not installed." },
+      "grade": "C",
+      "refs": ["p1", "doc1"]
+    },
+    {
+      "id": "o2",
+      "question": { "ar": "هل يثير القاضي تلقائيا عدم قبول الدعوى لغياب محضر عدم الصلح؟", "en": "Does the judge raise the inadmissibility for a missing record of non-conciliation of his own motion?" },
+      "why": { "ar": "ينص النص على الجزاء دون أن يحدد من يثيره، ويثير القاضي تلقائيا الدفع بعدم القبول إذا كان من النظام العام.", "en": "The text states the sanction without saying who raises it; the judge raises an inadmissibility plea of his own motion when it is of public order." },
+      "readings": [
+        { "reading": { "ar": "الدفع من النظام العام فيثيره القاضي تلقائيا.", "en": "The plea is of public order, so the judge raises it himself." }, "basis": ["b27", "b54"] },
+        { "reading": { "ar": "يثيره الخصم في أي مرحلة.", "en": "The opposing party raises it at any stage." }, "basis": ["b27", "b53"] }
+      ],
+      "protectiveReading": { "ar": "اعتبر غياب المحضر مانعا من التصدير النظيف في الحالتين.", "en": "Treat a missing record as blocking the clean export in either reading." },
+      "grade": "C",
+      "refs": ["p1"]
+    },
+    {
+      "id": "o3",
+      "question": { "ar": "ماذا لو لم يعين الرئيس قاضيا في الأيام الخمسة أو انقضت مدة الأشهر الثلاثة دون محضر؟", "en": "What if the president designates no judge within the five days, or the three months pass without any record?" },
+      "why": { "ar": "يحدد النص مدة تعيين القاضي ومدة الصلح ولا يرتب أثرا على تجاوزهما، ولا يجيز صراحة رفع الدعوى دون المحضر.", "en": "The text sets the periods for designating the judge and for the conciliation but no consequence for exceeding them, and it does not expressly allow filing without the record." },
+      "readings": [
+        { "reading": { "ar": "يبقى المحضر شرطا لقبول الدعوى.", "en": "The record remains a condition of admissibility." }, "basis": ["b27"] },
+        { "reading": { "ar": "يجوز رفع الدعوى بعد انقضاء المدة مع إثبات طلب الصلح.", "en": "The claim may be filed once the period has run, with proof of the conciliation request." }, "basis": ["b25"] }
+      ],
+      "protectiveReading": { "ar": "أبق الإجراء ناقصا ما لم يوجد المحضر، ونبه المحامي إلى النص.", "en": "Keep the step as not done until a record exists, and point the lawyer to the text." },
+      "grade": "C",
+      "refs": ["p1"]
+    },
+    {
+      "id": "o4",
+      "question": { "ar": "هل يشمل الصلح المسبق الطلبات الاستعجالية أمام رئيس قسم بالمحكمة التجارية المتخصصة؟", "en": "Does the prior conciliation also cover urgent applications to a section president of the specialised commercial court?" },
+      "why": { "ar": "يتكلم النص عن قيد الدعوى ورفعها بعريضة افتتاح دعوى، ولا يذكر الاستعجال.", "en": "The text speaks of entering a claim filed by an originating petition and says nothing about urgent applications." },
+      "protectiveReading": { "ar": "طبق الإجراء على عريضة افتتاح الدعوى في الموضوع، وهي ما يحرره التطبيق.", "en": "Apply the step to an originating petition on the merits, which is what the app drafts." },
+      "grade": "C",
+      "refs": ["p1"]
+    },
+    {
+      "id": "o5",
+      "question": { "ar": "متى تسري الصيغة الجديدة للمادة 534 التي تفرض الوساطة أمام القسم التجاري دون قبول الأطراف؟", "en": "From when does the new wording of article 534, imposing mediation before the commercial section without the parties' acceptance, apply?" },
+      "why": { "ar": "يحمل المخزن ملاحظة بأن الحد الزمني لنصوص القانون 22-13 غير محسوم؛ والمادة 13 منه لا تؤجل صراحة إلا قواعد الاختصاص.", "en": "The store notes that the temporal boundary of Law 22-13's texts is unsettled; its article 13 expressly defers only the jurisdiction rules." },
+      "protectiveReading": { "ar": "إجراء يتخذه القاضي بعد رفع الدعوى، فلا يرتب أثرا على العريضة؛ اعرضه للعلم فقط.", "en": "It is a step the judge takes after filing, with no effect on the petition; show it for information only." },
+      "grade": "C",
+      "refs": ["n2"]
+    },
+    {
+      "id": "o6",
+      "question": { "ar": "ما أحكام عقد الصلح في القانون المدني وأثره على الدعوى؟", "en": "What do the Civil Code's provisions on the contract of compromise say, and how do they affect the claim?" },
+      "why": { "ar": "لم توجد مواد عقد الصلح في المخزن (يقفز المخزن من المادة 458 إلى 467). ومن الذاكرة: الصلح عقد ينهي به الطرفان نزاعا قائما بتنازل متبادل.", "en": "The Civil Code's compromise articles are not in the store (it jumps from article 458 to 467). From memory: compromise is a contract by which the parties end a dispute by mutual concessions." },
+      "protectiveReading": { "ar": "لا قاعدة؛ ملاحظة فقط إلى أن يضاف النص.", "en": "No rule; a note only until the text is added." },
+      "grade": "D",
+      "refs": ["n6"]
+    }
+  ],
+  "checklist": [
+    { "id": "k1", "item": "Which text gives the judge a general power to attempt conciliation between the parties at any stage of the proceedings (CPCA general provisions, and the chapter on conciliation, about articles 990 and following)?", "from": ["derivationA"], "answer": "applies", "refs": ["b1", "b2"] },
+    { "id": "k2", "item": "May the parties reconcile on their own initiative, and may the judge propose it at any stage, in any matter not touching public order?", "from": ["derivationA"], "answer": "applies", "refs": ["b1", "b2", "b31"], "note": "The general conciliation texts say any matter; the public-order exclusion is stated for mediation, not for conciliation." },
+    { "id": "k3", "item": "Where and when is the conciliation attempt held (the place and time fixed by the judge), and is it attempted by the judge himself?", "from": ["derivationA"], "answer": "applies", "refs": ["b3"] },
+    { "id": "k4", "item": "What form does a conciliation record take (signed by the parties, the judge and the clerk, filed at the registry) and what force does it have (an executory title)?", "from": ["derivationA"], "answer": "applies", "refs": ["b4", "b5", "b30"] },
+    { "id": "k5", "item": "Is the judge obliged to propose mediation to the parties, and in which matters (all matters except family matters, labour matters and anything that may touch public order)?", "from": ["derivationA"], "answer": "applies", "refs": ["b6", "n1"] },
+    { "id": "k6", "item": "When is mediation proposed (at the first hearing) and must the parties accept it (it needs their agreement)?", "from": ["derivationA"], "answer": "applies", "refs": ["b6", "b7", "b14", "b21"], "note": "No text in the store fixes the first hearing; consent is required in general, but not before the commercial section under the new wording of article 534." },
+    { "id": "k7", "item": "Who may be appointed as mediator (a natural person or an association), and what conditions must the mediator meet?", "from": ["derivationA"], "answer": "applies", "refs": ["b12", "b13"] },
+    { "id": "k8", "item": "Does mediation cover the whole dispute or may it cover part of it; does the judge stay seized and may he take any measure he thinks necessary during it?", "from": ["derivationA"], "answer": "applies", "refs": ["b8", "b9"] },
+    { "id": "k9", "item": "How long may mediation last (three months at most) and may it be extended (once, for the same period, at the mediator's request and with the parties' agreement)?", "from": ["derivationA"], "answer": "applies", "refs": ["b10", "b11"], "note": "A period of the court's procedure after filing, not a deadline on the petition; no deadline item." },
+    { "id": "k10", "item": "Is the order appointing the mediator open to appeal (it is not), and what must it contain (the parties' consent, the mediator's mission, the period, the date the case returns)?", "from": ["derivationA"], "answer": "applies", "refs": ["b14", "b15"], "note": "Its content is in the store; no text in the mediation chapter says the appointment order is closed to appeal (only the approval order of the agreement is)." },
+    { "id": "k11", "item": "May the judge end the mediation at any time, of his own motion or at the request of the mediator or a party, when it appears impossible to proceed properly?", "from": ["derivationA"], "answer": "applies", "refs": ["b16"] },
+    { "id": "k12", "item": "Is the mediator bound to confidentiality toward third parties, and can what was said in mediation be used later?", "from": ["derivationA"], "answer": "applies", "refs": ["b19"], "note": "Secrecy toward third parties is in the text; no text on later use of statements was found in the mediation chapter." },
+    { "id": "k13", "item": "What happens at the end of mediation: written report by the mediator, an agreement signed by the parties and the mediator, its approval by an order of the judge not open to any appeal, and its force as an executory title?", "from": ["derivationA"], "answer": "applies", "refs": ["b17", "b18", "b30"] },
+    { "id": "k14", "item": "What happens when mediation fails: the case returns to the roll and proceeds?", "from": ["derivationA"], "answer": "applies", "refs": ["b16", "b17"] },
+    { "id": "k15", "item": "Family matters: are the conciliation attempts mandatory before a judgment of divorce (Family Code 49, as amended in 2005, and the CPCA chapter on divorce, about articles 439 and following)?", "from": ["derivationA"], "answer": "applies", "refs": ["b33", "b34", "b37", "n3"] },
+    { "id": "k16", "item": "Family matters: within what period must the attempts be made (several attempts within at most three months from the filing of the claim)?", "from": ["derivationA"], "answer": "applies", "refs": ["b33", "b43"], "note": "A limit on the judge's attempts after filing, not a deadline on the petition; no deadline item." },
+    { "id": "k17", "item": "Family matters: are the attempts held in chambers, with the spouses heard separately and then together, and may a family member attend at the spouses' request?", "from": ["derivationA"], "answer": "applies", "refs": ["b37", "b38", "b39"] },
+    { "id": "k18", "item": "Family matters: what if a spouse fails to attend: a legitimate excuse lets the judge set another date or delegate a judge; an unexcused absence of the plaintiff, or of the defendant summoned in person, leads to a record and the case proceeds?", "from": ["derivationA"], "answer": "applies", "refs": ["b40", "b41", "b45"] },
+    { "id": "k19", "item": "Family matters: may the judge grant the spouses a period of reflection, and how long (up to three months)?", "from": ["derivationA"], "answer": "applies", "refs": ["b42", "b43"], "note": "The text sets no separate length for the reflection period; all attempts must fit within the overall limit." },
+    { "id": "k20", "item": "Family matters: when the spouses reconcile, is a record drawn up and does it have executory force?", "from": ["derivationA"], "answer": "applies", "refs": ["b44", "b34", "b35"] },
+    { "id": "k21", "item": "Family matters: do the attempts apply to every form of dissolution (divorce at the husband's will, by mutual consent, tatliq at the wife's request, khul)?", "from": ["derivationA"], "answer": "applies", "refs": ["b32", "b33", "b49"] },
+    { "id": "k22", "item": "Family matters: when the dispute between the spouses worsens and the harm is not proven, must the judge appoint two arbiters, one from each family, who report within two months (Family Code 56; CPCA articles on arbiters, about 446 and 447)?", "from": ["derivationA"], "answer": "applies", "refs": ["b36", "b46", "b47", "b48"] },
+    { "id": "k23", "item": "Family matters: is mediation excluded for family matters, and conciliation the only route?", "from": ["derivationA"], "answer": "applies", "refs": ["b6", "n1", "b55"] },
+    { "id": "k24", "item": "Specialised commercial court: must the claim be preceded by a conciliation attempt under penalty of inadmissibility (CPCA 536 bis 4 and following, added by Law 22-13 of 2022)?", "from": ["derivationA"], "answer": "applies", "refs": ["p1", "b25", "b27"] },
+    { "id": "k25", "item": "Specialised commercial court: before whom is the conciliation held (the president of the court or a judge he designates), how is it requested, and how long does it last (about three months)?", "from": ["derivationA"], "answer": "applies", "refs": ["b25", "b26", "p1", "o3"] },
+    { "id": "k26", "item": "Specialised commercial court: what document proves the failed attempt (a record of non-conciliation) and must it be attached to the petition?", "from": ["derivationA"], "answer": "applies", "refs": ["doc1", "b27", "p1"] },
+    { "id": "k27", "item": "Specialised commercial court: is the inadmissibility raised by the court of its own motion, and is it of public order?", "from": ["derivationA"], "answer": "applies", "refs": ["o2", "b53", "b54"], "note": "Not settled by the text; open point." },
+    { "id": "k28", "item": "Specialised commercial court: does a conciliation agreement reached there have executory force once approved?", "from": ["derivationA"], "answer": "applies", "refs": ["b26", "b5", "b30", "n6"] },
+    { "id": "k29", "item": "Which matters fall under the specialised commercial court (to know when the prior conciliation applies): intellectual property, commercial companies, judicial settlement and bankruptcy, banks with traders, maritime and air transport and insurance, international trade (import ordinary-court-exits)?", "from": ["derivationA"], "answer": "applies", "refs": ["b24", "p1"], "note": "The list is cited only to condition the prior step; the exit itself belongs to ordinary-court-exits. A module imports nothing." },
+    { "id": "k30", "item": "Ordinary commercial disputes before the commercial section of an ordinary court: is there any mandatory prior conciliation (no), only the general optional one and mandatory proposal of mediation?", "from": ["derivationA"], "answer": "applies", "refs": ["n2", "b20", "b21", "b22", "b23", "o5"] },
+    { "id": "k31", "item": "Labour disputes: the prior conciliation before the labour inspection's conciliation office is a different procedure (Law 90-04) and belongs to labour-prelitigation; mediation is excluded in labour matters.", "from": ["derivationA"], "answer": "applies", "refs": ["b6", "n1"], "note": "Labour prior conciliation is left to labour-prelitigation." },
+    { "id": "k32", "item": "Administrative courts: conciliation in full-jurisdiction administrative cases is a separate procedure (CPCA articles about 970 to 974) and is not this module.", "from": ["derivationA"], "answer": "applies", "refs": ["n4", "b50", "b51"] },
+    { "id": "k33", "item": "Arbitration (CPCA articles from about 1006) looks like an alternative route but is a separate procedure.", "from": ["derivationA"], "answer": "applies", "refs": ["n5", "b52"] },
+    { "id": "k34", "item": "Does a pending mediation or conciliation suspend or interrupt any limitation or forfeiture period (look for a text; otherwise import periods and warn)?", "from": ["derivationA"], "answer": "searchedNotFound", "note": "Searched the CPCA conciliation and mediation chapters (990 to 1005), the commercial court chapter (531 to 536 مكرر 7), the divorce chapter (436 to 452) and every store text for الوساطة/الصلح: no text makes conciliation or mediation suspend or interrupt a period. Interruption and suspension belong to the periods module." },
+    { "id": "k35", "item": "Does the petition itself need to mention the conciliation or mediation (only the record of non-conciliation before the specialised commercial court)?", "from": ["derivationA"], "answer": "applies", "refs": ["doc1", "p1"] },
+    { "id": "k36", "item": "Amendments to remember: Ordinance 05-02 amending Family Code 49; Law 22-13 adding the specialised commercial court and its prior conciliation; any later amendment of the CPCA.", "from": ["derivationA"], "answer": "applies", "refs": ["b33", "b25", "b20", "b28"], "note": "Family Code 49 is in the store in the Ordinance 05-02 version; 534 and 536 مكرر 4 in the Law 22-13 version." },
+    { "id": "k37", "item": "The store notes on cpca 534, 536 مكرر, 536 مكرر 4, 531 and 600 that the temporal boundary of Law 22-13 is unsettled: from when do the prior conciliation and the commercial section's mandatory mediation apply?", "from": ["derivationA"], "answer": "applies", "refs": ["o1", "o5", "p1"] },
+    { "id": "k38", "item": "The store notes on the Family Code articles that the text is a current snapshot not certified for an earlier case: does an older wording of articles 48 and 49 matter for a pending case?", "from": ["derivationA"], "answer": "doesNotApply", "note": "The app drafts new petitions, to which the current wording applies; and article 49 binds the judge after filing, not the petition." },
+    { "id": "k39", "item": "Civil Code contract of compromise (الصلح) as a substantive basis.", "from": ["derivationA"], "answer": "searchedNotFound", "refs": ["o6"], "note": "Searched civil-code text for صلح: the store holds articles up to 458 then 467; the compromise articles are missing. Requested as context." },
+    { "id": "k40", "item": "The text fixing the installation date and seats of the specialised commercial courts.", "from": ["derivationA"], "answer": "searchedNotFound", "refs": ["o1"], "note": "Searched law-22-13 and cpca texts: only article 13 of Law 22-13, which defers to installation without a date. Requested as basis." }
+  ],
+  "examples": [
+    {
+      "id": "ex1", "by": "derivationA", "title": "Bank against trader, court installed, record of non-conciliation in hand: clean.",
+      "petitionDate": "2026-11-17",
+      "slots": { "specialised_commercial_matter": "bank_with_merchant", "specialised_commercial_court_installed": "yes", "commercial_nonconciliation_record": "yes", "commercial_conciliation_agreement": "no" },
+      "expect": { "findings": [ { "ref": "p1", "effect": "none" }, { "ref": "n6", "effect": "none" } ], "questions": [] }
+    },
+    {
+      "id": "ex2", "by": "derivationA", "title": "Company dispute, court installed, no record of non-conciliation: blocked.",
+      "petitionDate": "2026-11-17",
+      "slots": { "specialised_commercial_matter": "commercial_company", "specialised_commercial_court_installed": "yes", "commercial_nonconciliation_record": "no", "commercial_conciliation_agreement": "no" },
+      "expect": { "findings": [ { "ref": "p1", "effect": "blockCleanExport" }, { "ref": "n6", "effect": "none" } ], "questions": [] }
+    },
+    {
+      "id": "ex3", "by": "derivationA", "title": "Intellectual property dispute, record not known: ask for it.",
+      "petitionDate": "2026-11-17",
+      "slots": { "specialised_commercial_matter": "intellectual_property", "specialised_commercial_court_installed": "yes", "commercial_conciliation_agreement": "no" },
+      "expect": { "findings": [ { "ref": "p1", "effect": "ask" } ], "questions": ["commercial_nonconciliation_record"] }
+    },
+    {
+      "id": "ex4", "by": "derivationA", "title": "Maritime insurance dispute, court not yet installed, no record: exempt.",
+      "petitionDate": "2026-11-17",
+      "slots": { "specialised_commercial_matter": "maritime_air_insurance", "specialised_commercial_court_installed": "no", "commercial_nonconciliation_record": "no", "commercial_conciliation_agreement": "no" },
+      "expect": { "findings": [ { "ref": "p1", "effect": "none" } ], "questions": [] }
+    },
+    {
+      "id": "ex5", "by": "derivationA", "title": "International trade dispute, no record, installation unknown: ask about the installation.",
+      "petitionDate": "2026-11-17",
+      "slots": { "specialised_commercial_matter": "international_trade", "commercial_nonconciliation_record": "no", "commercial_conciliation_agreement": "no" },
+      "expect": { "findings": [ { "ref": "p1", "effect": "ask" } ], "questions": ["specialised_commercial_court_installed"] }
+    },
+    {
+      "id": "ex6", "by": "derivationA", "title": "Ordinary commercial sale before the commercial section: no prior conciliation.",
+      "petitionDate": "2026-11-17",
+      "slots": { "specialised_commercial_matter": "none" },
+      "expect": { "findings": [ { "ref": "p1", "effect": "none" }, { "ref": "n6", "effect": "none" } ], "questions": [] }
+    },
+    {
+      "id": "ex7", "by": "derivationA", "title": "Nothing known: ask which matter it is.",
+      "petitionDate": "2026-11-17",
+      "slots": {},
+      "expect": { "findings": [ { "ref": "p1", "effect": "ask" }, { "ref": "n6", "effect": "ask" } ], "questions": ["specialised_commercial_matter", "commercial_conciliation_agreement"] }
+    },
+    {
+      "id": "ex8", "by": "derivationA", "title": "Bankruptcy matter where the conciliation ended in a partial settlement: warn about the executory record.",
+      "petitionDate": "2026-11-17",
+      "slots": { "specialised_commercial_matter": "bankruptcy_settlement", "specialised_commercial_court_installed": "yes", "commercial_nonconciliation_record": "yes", "commercial_conciliation_agreement": "yes" },
+      "expect": { "findings": [ { "ref": "p1", "effect": "none" }, { "ref": "n6", "effect": "warn" } ], "questions": [] }
+    },
+    {
+      "id": "ex9", "by": "derivationA", "title": "Divorce claim: the reconciliation attempts come after filing, nothing to check before.",
+      "petitionDate": "2026-11-17",
+      "slots": { "specialised_commercial_matter": "none" },
+      "expect": { "findings": [ { "ref": "p1", "effect": "none" }, { "ref": "n6", "effect": "none" } ], "questions": [] }
+    }
+  ]
+}

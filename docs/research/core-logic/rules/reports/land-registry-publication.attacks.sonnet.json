@@ -1,0 +1,109 @@
+{
+ "attacks": [
+  {
+   "target": "p1",
+   "kind": "wrongCondition",
+   "claim": "p1 fires only when property_registered is yes, but art. 17 covers a property and/or a real right published under the law. A claim on an unpublished property but resting on a published right or deed (e.g. annulment of a published deed, art. 519/515) is not required to publish, and the slot property_registered does not capture the right being published.",
+   "evidenceWords": "إذا تعلقت بعقار و/أو حق عيني عقاري مشهر طبقا للقانون",
+   "fromMemory": false,
+   "id": "atk-1"
+  },
+  {
+   "target": "p1",
+   "kind": "wrongEffect",
+   "claim": "The text attaches a sanction of inadmissibility in form (not a mere warning) when the petition is not published and produced at the first hearing and its deposit is not proven. effectWhenMissing is 'warn', understating the sanction; the rule is also marked interpretive though the sanction is express.",
+   "evidenceWords": "تحت طائلة عدم قبولها شكلا، ما لم يثبت إيداعها للإشهار",
+   "fromMemory": false,
+   "id": "atk-2"
+  },
+  {
+   "target": "p1",
+   "kind": "wrongCondition",
+   "claim": "The rule asks for the slot petition_deposited_for_publication, which is absent from the declared slot list. It is not one of the listed facts, so the step cannot be marked done or asked about. The first-hearing production requirement of m1 has no slot or date to test either.",
+   "evidenceWords": "وتقديمها في أول جلسة ينادى فيها على القضية",
+   "fromMemory": false,
+   "id": "atk-3"
+  },
+  {
+   "target": "p1",
+   "kind": "misreading",
+   "claim": "The prerequisite text says the petition is published before and produced at the first hearing, but the rule's label says 'before a claim' (before filing). The text only requires deposit/proof by the first hearing, so publication need not precede filing. The wording 'before a claim' overstates the timing.",
+   "evidenceWords": "وتقديمها في أول جلسة ينادى فيها على القضية",
+   "fromMemory": false,
+   "id": "atk-4"
+  },
+  {
+   "target": "p1",
+   "kind": "wrongCondition",
+   "claim": "p1 is silent when dispute_concerns_real_property is yes and property_registered is unknown or the property is unpublished; n1 then wrongly says the claim is outside the regime for an unpublished property (isActually outside:unregistered-property), contradicting its own message that a published right may still trigger art. 17. The n1 verdict and its message conflict.",
+   "evidenceWords": "فكون العقار غير مشهر لا ينفي وحده أن يكون الحق المتنازع فيه مشهرا",
+   "fromMemory": false,
+   "id": "atk-5"
+  },
+  {
+   "target": "p1",
+   "kind": "wrongCondition",
+   "claim": "dispute_concerns_real_property is defined to include lease of dwellings and professional premises, partition and possession. Art. 17 applies only to petitions about a property or real right already published; a simple dwelling lease or possession claim does not involve a published real right, so p1 over-fires on such leases when property_registered is yes.",
+   "evidenceWords": "في إيجار السكنات والمحلات المهنية",
+   "fromMemory": false,
+   "id": "atk-6"
+  },
+  {
+   "target": "b3",
+   "kind": "misreading",
+   "claim": "b3 summarises art. 539 para 3 as the appeal petition being entered 'subject to the article on fees and on the publication'. The text only references art. 17 (publication) and concerns entry in a special register kept by the president of the judicial council; 'fees' is not in the text. The paragraph is also about appeals, not first-instance petitions, so it should not support the land-registry rule.",
+   "evidenceWords": "مع مراعاة أحكام المادة 17 من هذا القانون، تقيد عريضة الاستئناف حالا في سجل خاص",
+   "fromMemory": false,
+   "id": "atk-7"
+  },
+  {
+   "target": "b7",
+   "kind": "misreading",
+   "claim": "b7 omits the examples that the text gives (appeal periods, absence of appeal) and says nothing on whether lack of land-registry publication is a public-order matter the judge raises of his own motion. The rules do not say whether non-publication under art. 17 is raised by the judge or only by the defendant.",
+   "evidenceWords": "إذا كان من النظام العام، لاسيما عند عدم احترام آجال طرق الطعن",
+   "fromMemory": false,
+   "id": "atk-8"
+  },
+  {
+   "target": "b5",
+   "kind": "wrongEffect",
+   "claim": "b5 and b6 are in tension for non-publication: a plea of form must be raised before any defence on the merits, while a plea of inadmissibility can come at any stage. Art. 17 says inadmissibility 'in form' (شكلا); the rules do not say which regime governs, so the timing consequence for the defendant is unresolved.",
+   "evidenceWords": "تحت طائلة عدم قبولها شكلا",
+   "fromMemory": false,
+   "id": "atk-9"
+  },
+  {
+   "target": "b2",
+   "kind": "misreading",
+   "claim": "b2 says claims before the real-property section follow the code's procedure, but the item is cited as a basis for publication; its text on publication of rescission/annulment claims only refers to special provisions without giving the rule. The requirement to publish such claims (art. 519 refers to the property-law provisions) is not stated in the cited text.",
+   "evidenceWords": "مع مراعاة الأحكام الخاصة بشهر دعاوى الفسخ أو الإبطال أو التعديل أو نقض حقوق قائمة على عقود تم شهرها",
+   "fromMemory": false,
+   "id": "atk-10"
+  },
+  {
+   "target": "court",
+   "kind": "exception",
+   "claim": "The territorial rule gives only the place of the property. It drops the exception that, where an employment contract ended or was suspended because of a work accident or occupational illness, jurisdiction goes to the court of the plaintiff's domicile; the slot work_accident_or_occupational_illness exists but the rule does not use it. This is marginal for real property, but the unit's court rule is silent on it.",
+   "evidenceWords": "يؤول الاختصاص للمحكمة التي يوجد بها موطن المدعي",
+   "fromMemory": false,
+   "id": "atk-11"
+  },
+  {
+   "target": "p1",
+   "kind": "missing",
+   "claim": "No rule handles the common case of a petition that must be published where the plaintiff already holds only a deposit receipt, or where the first hearing has already been held without production. It also gives no way to cure a missing publication after the first hearing, nor does it handle the party being the State or a public body (public_body_party slot exists but is unused).",
+   "evidenceWords": "ما لم يثبت إيداعها للإشهار",
+   "fromMemory": false,
+   "id": "atk-12"
+  },
+  {
+   "target": "p1",
+   "kind": "amendmentSuspected",
+   "claim": "From memory: the land-registry publication regime rests on the land registry ordinance (Ordonnance 75-74 of 12 November 1975 on the general cadastre and land register) and its decree 76-63 of 25 March 1976 on publication of real-property rights, which set what claims must be published (annulment, rescission). Check whether these and later finance-law changes alter art. 17 CPCA and which claims require publication.",
+   "evidenceWords": "",
+   "fromMemory": true,
+   "id": "atk-13"
+  }
+ ],
+ "nothingFound": false
+}

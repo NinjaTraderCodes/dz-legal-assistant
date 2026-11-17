@@ -1,0 +1,85 @@
+{
+ "attacks": [
+  {
+   "target": "b63",
+   "kind": "exception",
+   "claim": "b63 says every individual labour dispute goes first to the conciliation office. The uncited paragraph 19 ¶3 removes civil servants and agents under the public-service statute from the offices' competence. The rule, and n8 which relies on it, ignore the slot worker_is_public_servant, so a public-servant plaintiff would be wrongly told the conciliation step is required.",
+   "evidenceWords": "ويستثنى من مجال اختصاص مكاتب المصالحة الخلافات الفردية للعمل التي يكون طرفا فيها الموظفون والأعوان الخاضعون للقانون الأساسي للمؤسسات والإدارات العمومية",
+   "fromMemory": false,
+   "id": "atk-1"
+  },
+  {
+   "target": "p1",
+   "kind": "wrongCondition",
+   "claim": "The notRequiredWhen branch for commercial_conciliation_agreement=yes drops the requirement completely. n6 and b8 treat a settlement as possibly covering only part of the dispute. For a partial settlement the remaining claim still needs a record of non-conciliation, because the text requires that record whenever the attempt fails. The text gives no basis for treating a conciliation record as a substitute for the whole prerequisite.",
+   "evidenceWords": "في حالة فشل محاولة الصلح، ترفع الدعوى أمام المحكمة التجارية المتخصصة بعريضة افتتاح الدعوى طبقا للقواعد المنصوص عليها في هذا القانون مرفقة، تحت طائلة عدم قبول الدعوى شكلا، بمحضر عدم الصلح",
+   "fromMemory": false,
+   "id": "atk-2"
+  },
+  {
+   "target": "p1",
+   "kind": "wrongEffect",
+   "claim": "When specialised_commercial_court_installed=no, p1 waives the prior conciliation as a settled exception. Its own note and n7 say the text does not settle whether the step applies before installation. The rule is therefore marked done (not required) beside an open question, instead of asking or blocking. Article 13 ¶1 speaks only of the jurisdiction rules, and ¶2 only of claims already filed before installation.",
+   "evidenceWords": "وتبقى الجهات القضائية الإدارية والأقسام التجارية مختصة بالفصل في الدعاوى المرفوعة أمامها قبل تاريخ تنصيب الجهات القضائية الجديدة",
+   "fromMemory": false,
+   "id": "atk-3"
+  },
+  {
+   "target": "p1",
+   "kind": "wrongCondition",
+   "claim": "p1 and n6 and n7 use slots that are not in the declared slot list: commercial_nonconciliation_record, specialised_commercial_court_installed and commercial_conciliation_agreement. The list has only nonconciliation_record, conciliation_agreement_reached and specialised_commercial_matter. If the slots are not defined, the exceptions and boundaries can never be answered, so p1 stays on ask or n7 never fires.",
+   "evidenceWords": "",
+   "fromMemory": false,
+   "id": "atk-4"
+  },
+  {
+   "target": "p1",
+   "kind": "missing",
+   "claim": "Nothing handles a conciliation requested under 536 مكرر 4 that produces no record. For example, the president has not designated a judge within 5 days, the 3-month period has run, or the other party never attended. The case is common. The rules say only that a record is required or an exception applies, and they never say how a plaintiff whose request got no outcome shows that the step was done. The 5-day and 3-month limits in the text are not used anywhere.",
+   "evidenceWords": "يعين خلال مدة خمسة (5) أيام، بموجب أمر على عريضة، أحد القضاة للقيام بإجراء الصلح في أجل لا يتجاوز ثلاثة (3) أشهر",
+   "fromMemory": false,
+   "id": "atk-5"
+  },
+  {
+   "target": "b32",
+   "kind": "misreading",
+   "claim": "b32 says divorce may be at the wife's request. The text limits that to the cases of articles 53 and 54 (tatliq and khul). The summary drops the limit, and n3 then says all wife's-request divorces are covered without it.",
+   "evidenceWords": "أو بطلب من الزوجة في حدود ما ورد في المادتين 53 و54 من هذا القانون",
+   "fromMemory": false,
+   "id": "atk-6"
+  },
+  {
+   "target": "b13",
+   "kind": "misreading",
+   "claim": "b13 says only that the mediator is free of a conviction for a crime against honour. Paragraph 2 also requires that he not be barred from his civil rights, and it speaks of a penalty (عقوبة), not of any conviction. The summary drops the civil-rights condition.",
+   "evidenceWords": "ألا يكون قد تعرض إلى عقوبة عن جريمة مخلة بالشرف، وألا يكون ممنوعا من حقوقه المدنية",
+   "fromMemory": false,
+   "id": "atk-7"
+  },
+  {
+   "target": "b55",
+   "kind": "misreading",
+   "claim": "b55 states a general rule that expert consultation may be used at any time. Article 425 ¶4 sits in the family-section article, and the uncited ¶1 gives these powers to the president of the family section. The summary presents it as a general power.",
+   "evidenceWords": "يمارس رئيس قسم شؤون الأسرة الصلاحيات المخولة لقاضي الاستعجال",
+   "fromMemory": false,
+   "id": "atk-8"
+  },
+  {
+   "target": "b35",
+   "kind": "misreading",
+   "claim": "b35 keeps only the first half of the sentence. Article 50 also says that a husband who takes his wife back after the divorce judgment needs a new contract. Without it, the rule could be read as meaning no contract is ever needed.",
+   "evidenceWords": "ومن راجعها بعد صدور الحكم بالطلاق يحتاج إلى عقد جديد",
+   "fromMemory": false,
+   "id": "atk-9"
+  },
+  {
+   "target": "b64",
+   "kind": "specialLawSuspected",
+   "claim": "Article 998 ¶5 leaves the mediator's conditions to regulation. From memory, Executive Decree 09-100 of 10 March 2009 sets the modalities of designating the judicial mediator. Check it, and check whether a later decree replaced it, before saying nothing more is required of the mediator.",
+   "evidenceWords": "",
+   "fromMemory": true,
+   "id": "atk-10"
+  }
+ ],
+ "nothingFound": false
+}

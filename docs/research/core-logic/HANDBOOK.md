@@ -147,6 +147,11 @@ Gemma 4 E4B took about 38 seconds a note on mains (the plan had assumed 10 to 15
    1. "Run the fine-tuning with one seed per setting (2 runs), and say so in the report. If the result is within the spread of the n-gram classifier's 0.663, say so and propose the remaining 4 seeds for a later night."
    2. "In parallel, since they use no local CPU: apply your nine proposed guide rules (approved), run the guide test on the touched items, and send the queued retries and refills."
    3. "Then complete the pilot report and stop. If anything would run past 4 hours, stop it cleanly as in a safe pause, push, and tell me."
+9. **17 November 2026, at the pilot's stop point (the owner's words):** "Yes, with these details:"
+   1. "Go on to the 4,000 training notes with the wider style and guide 1.3. Add the sampler's coherence rule, with its test, before the first call (no khul or tatliq beside a custody claim whose earlier divorce is stated)."
+   2. "No extra seeds now. Decide the route at the 1,000-note point of the learning curve instead: train the n-gram classifier, the fine-tuned encoder (small setting only, three seeds, one evening on mains), and a combination where the n-grams decide claim type and outside and the fine-tuned model the rest. Report every line per writer."
+   3. "Scorer: fix the evidence check so a fact written twice may be quoted at either place, as guide 1.3 allows. Version it (scorer 1.1) and report the pilot's evidence figure under both versions. No answer's right or wrong changes."
+   4. "Run the guide test once more with Codex as the tester (one call), so a belief the two Claude testers share is checked by another family."
 
 This replaces the local filter on every note (section 2's decision 4 of 14 November, and [specs/notes-pipeline.md](specs/notes-pipeline.md), section 4a) as the route for training notes. The filter trial's result is still reported.
 

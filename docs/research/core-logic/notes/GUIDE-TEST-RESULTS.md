@@ -81,3 +81,29 @@ None.
 | 73 | `loan-repayment`, `slot:notice_means` | other (section 6: notice_means other when a means is named that is neither bailiff nor registered letter) | other (unsure): section 6 notice_means (any other means named) | other: section 6 notice_served and notice_means rows (formal إنذار; email is another means) |
 
 **Read by the executor (15 November 2026).** No item to explain: both testers gave every expected answer, on the 45 old items and on the 30 new ones written by a fresh Sonnet run from guide 1.2's changed parts (r-s3-0001; its seven problems were fixed in guide 1.2 before this test, and item 55's key changed with case 32). The five unsure marks fall on rules the guide states (case 6 for item 8; the row of `custodian_remarried` for item 35; section 3b for item 47; the row of `property_registered` for item 71; the row of `notice_means` for item 73); each tester was unsure where the other was not, and both answered as the key. Two earlier runs of this test were lost and are not counted: the Read tool cut the 29,000-token prompt at 25,000 tokens (the Opus tester saw no item and said so; the Sonnet tester read the file a second time and was discarded unread). The guide test is decided by two Claude models: a belief they share is not tested.
+
+## The guide test: 2026-11-17, 95 items (script `notes guide-test --compare`)
+
+Both testers are Claude models (Sonnet 5.5 and Opus 5.5): what they share is not tested here.
+
+| | Sonnet 5.5 | Opus 5.5 |
+|---|---:|---:|
+| Expected answer given | 95 of 95 | 95 of 95 |
+| Marked "unsure" | 3 (items 17, 50, 73) | 1 (items 47) |
+
+The two testers agreed with each other on 95 of 95 items.
+
+### Items where the three answers are not equal (0)
+
+None.
+
+### Items answered as expected but marked unsure (4)
+
+| Item | Claim, ask | Expected (tests) | Sonnet (rule) | Opus (rule) |
+|---|---|---|---|---|
+| 17 | `abusive-dismissal`, `event:dismissal` | disputed (rule 2: contest of the act) | disputed (unsure): rule 2, case 37 (employer's account excludes the act; plaintiff's assertion implicit in the claim) | disputed: case 37, rule 2, employer contests the act |
+| 47 | `custody`, `role:custody` | marriage/mother (3b: role from what the note says of the client) | marriage/mother: section 3b | marriage/mother (unsure): 3b, female client after the divorce holding children; custody pairs are mother/father only |
+| 50 | `sale-non-delivery`, `event:notice_served` | notMentioned (case 27 and 28: no «مطالبة» in this type; an informal demand says nothing of the formal notice) | notMentioned (unsure): cases 27, 28 (sale-non-delivery has no مطالبة) | notMentioned: case 27, informal demand in sale-non-delivery |
+| 73 | `loan-repayment`, `slot:notice_means` | other (section 6: notice_means other when a means is named that is neither bailiff nor registered letter) | other (unsure): section 6 notice_means other means | other: section 6, note calls it إنذار رسمي; means is e-mail |
+
+**Read by the executor (17 November 2026).** No item to explain. Guide 1.3 applies the pilot's nine gaps (the owner's approval of 17 November). Items 76 to 95 were written by a fresh Sonnet run (r-s3-0008) from the changed parts only, with three new forms of question (`claims`, `requests`, `amount:<kind>`). Its three reported problems were fixed in guide 1.3 before this test: side requests of a dissolution whatever section 7's table lists; case 3's remainder written only in a request; case 39 against «ما تبقى». Both testers (r-s3-0009 Sonnet, r-s3-0010 Opus) gave every expected answer, on the 75 old items and the 20 new ones. The four unsure marks fall on rules the guide states, and each time the other tester was sure. Rule 3 of the gaps (a fact written twice may be quoted at either place) is a rule of the comparison, not of a label, so no item tests it; `JudgingTests` does. The guide test is decided by two Claude models: a belief they share is not tested.

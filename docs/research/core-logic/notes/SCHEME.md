@@ -247,6 +247,7 @@ An item of the guide test that is still answered two ways after one fix of the g
 | Version | Date | What it added | Commit |
 |---|---|---|---|
 | 1.0 | 14 November 2026 (written); frozen 15 November 2026 | everything above; guide version 1.2 (`9202a71ce194718c…`); the cells table written by `notes cells --write-table` (r-s3-0002 Sonnet, r-s3-0003 Opus); guide test 75 of 75 for both testers (r-s3-0006 Sonnet, r-s3-0007 Opus) | `ff4e46b` |
+| 1.0, guide 1.3 | 17 November 2026 | no label added, removed or changed in meaning: guide 1.3 decides nine places where two careful readers of guide 1.2 differed (the pilot's gaps, the owner's approval of 17 November); guide 1.3 `629149ca47cc45f1…`; guide test 95 of 95 for both testers (r-s3-0009 Sonnet, r-s3-0010 Opus); notes ingested from now record `guideVersion` 1.3 | `1eebb39` |
 
 **A minor version (1.1, 1.2 …) adds** an output: a slot, an element, a request kind, a value role, a boundary row. It never changes what an existing label means, never removes one, never renames one. Every note records the version it was labelled under (`provenance.schemeVersion`); for an output added later, an older note is *unlabelled*, which is not `unknown` and not `notMentioned`.
 

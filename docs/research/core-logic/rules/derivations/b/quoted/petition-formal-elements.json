@@ -1,0 +1,3758 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "module",
+  "id": "petition-formal-elements",
+  "label": {
+    "ar": "البيانات الشكلية لعريضة افتتاح الدعوى",
+    "en": "Formal elements of the petition"
+  },
+  "verified": false,
+  "stage": "derivationB",
+  "derivedBy": {
+    "role": "derivationB",
+    "model": "claude-sonnet-5-5",
+    "date": "2026-11-17"
+  },
+  "appliesTo": [
+    "*"
+  ],
+  "slots": [
+    "requests",
+    "dispute_is_family",
+    "petition_names_court",
+    "petition_gives_plaintiff_identity",
+    "petition_gives_defendant_identity",
+    "party_is_legal_person",
+    "petition_gives_legal_person_details",
+    "petition_states_facts_claims_grounds",
+    "petition_lists_documents",
+    "petition_signed_dated",
+    "petition_copies_for_each_party",
+    "court_fees_paid",
+    "fee_exemption_applies",
+    "plaintiff_has_capacity",
+    "plaintiff_acts_through_representative",
+    "representative_has_authority",
+    "plaintiff_has_standing",
+    "plaintiff_has_interest",
+    "authorisation_required_by_law",
+    "authorisation_obtained",
+    "document_not_in_arabic",
+    "official_translation_attached",
+    "divorce_copy_served_on_defendant_and_prosecutor",
+    "divorce_by_mutual_consent",
+    "spouse_under_curatorship_or_impaired"
+  ],
+  "proposedSlots": [
+    {
+      "id": "petition_names_court",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل تبين العريضة الجهة القضائية التي ترفع أمامها الدعوى؟",
+        "en": "Does the petition name the court before which the claim is brought?"
+      },
+      "why": "Prior step p1 reads it; the article on the petition's contents lists the court among the mandatory mentions."
+    },
+    {
+      "id": "petition_gives_plaintiff_identity",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل تتضمن العريضة اسم المدعي ولقبه وموطنه؟",
+        "en": "Does the petition give the plaintiff's surname, first name and domicile?"
+      },
+      "why": "Prior step p2; the article on the petition's contents lists the plaintiff's identity."
+    },
+    {
+      "id": "petition_gives_defendant_identity",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل تتضمن العريضة اسم المدعى عليه ولقبه وموطنه، أو آخر موطن معلوم له إن لم يكن له موطن معلوم؟",
+        "en": "Does the petition give the defendant's surname, first name and domicile, or his last domicile when none is known?"
+      },
+      "why": "Prior step p3; the article on the petition's contents lists the defendant's identity and the last-domicile fallback."
+    },
+    {
+      "id": "party_is_legal_person",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل أحد طرفي الدعوى شخص معنوي؟",
+        "en": "Is one of the parties a legal person?"
+      },
+      "why": "Prior step p4 applies only then; the article on the petition's contents asks for the legal person's name, nature, seat and representative."
+    },
+    {
+      "id": "petition_gives_legal_person_details",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل تبين العريضة تسمية الشخص المعنوي وطبيعته ومقره الاجتماعي وصفة ممثله القانوني أو الاتفاقي؟",
+        "en": "Does the petition give the legal person's name, nature, registered seat and the capacity of its legal or conventional representative?"
+      },
+      "why": "Prior step p4."
+    },
+    {
+      "id": "petition_states_facts_claims_grounds",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل تتضمن العريضة عرضا موجزا للوقائع والطلبات والوسائل التي تؤسس عليها الدعوى؟",
+        "en": "Does the petition contain a brief statement of the facts, the claims and the grounds on which the claim rests?"
+      },
+      "why": "Prior step p5; the article on the petition's contents requires this mention."
+    },
+    {
+      "id": "petition_lists_documents",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل تشير العريضة إلى المستندات والوثائق المؤيدة للدعوى؟",
+        "en": "Does the petition refer to the documents that support the claim?"
+      },
+      "why": "Prior step p6; the article on the petition's contents asks for this mention where appropriate."
+    },
+    {
+      "id": "petition_signed_dated",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل العريضة مكتوبة وموقعة ومؤرخة؟",
+        "en": "Is the petition in writing, signed and dated?"
+      },
+      "why": "Prior step p7; the article on the filing of the petition."
+    },
+    {
+      "id": "petition_copies_for_each_party",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل أعدت نسخ من العريضة بعدد الأطراف؟",
+        "en": "Are there copies of the petition for each party?"
+      },
+      "why": "Prior step p8; the article on the filing of the petition asks for as many copies as parties."
+    },
+    {
+      "id": "court_fees_paid",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل دفعت الرسوم القضائية المحددة قانونا عند إيداع العريضة؟",
+        "en": "Have the judicial fees set by law been paid at the filing of the petition?"
+      },
+      "why": "Prior step p9; the article on registration says a petition is registered only after the fees are paid."
+    },
+    {
+      "id": "fee_exemption_applies",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل ينص القانون على إعفاء المدعي من الرسوم أو على تأجيلها في هذه القضية (كالمساعدة القضائية)؟",
+        "en": "Does the law exempt the plaintiff from the fees, or defer them, in this case (for example legal aid)?"
+      },
+      "why": "Exemption of prior step p9: the article on registration reserves the cases where the law provides otherwise."
+    },
+    {
+      "id": "plaintiff_has_capacity",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل للمدعي أهلية التقاضي (أو يمثله من له أهلية تمثيله)؟",
+        "en": "Does the plaintiff have capacity to sue (or is he represented by someone with capacity to represent him)?"
+      },
+      "why": "Prior step p10; the articles on nullity list lack of capacity of the parties."
+    },
+    {
+      "id": "plaintiff_acts_through_representative",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل يتقدم المدعي بالدعوى بواسطة ممثل (وكيل أو ممثل قانوني أو اتفاقي لشخص معنوي)؟",
+        "en": "Does the plaintiff act through a representative (an agent, or the legal or conventional representative of a legal person)?"
+      },
+      "why": "Prior step p11 applies only then."
+    },
+    {
+      "id": "representative_has_authority",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل للممثل أهلية أو تفويض (توكيل) صحيح لتمثيل المدعي؟",
+        "en": "Does the representative have capacity and a valid authority to act for the plaintiff?"
+      },
+      "why": "Prior step p11; the articles on nullity list lack of capacity or authority of a representative."
+    },
+    {
+      "id": "plaintiff_has_standing",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل للمدعي صفة في رفع هذه الدعوى ضد هذا المدعى عليه؟",
+        "en": "Does the plaintiff have standing to bring this claim against this defendant?"
+      },
+      "why": "Prior step p12; the first article of the chapter on admissibility."
+    },
+    {
+      "id": "plaintiff_has_interest",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل للمدعي مصلحة قائمة أو محتملة يقرها القانون؟",
+        "en": "Does the plaintiff have an existing or potential interest recognised by law?"
+      },
+      "why": "Prior step p13; the first article of the chapter on admissibility."
+    },
+    {
+      "id": "authorisation_required_by_law",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل يشترط القانون إذنا قبل رفع هذه الدعوى (كإذن الجهة المختصة لممثل ناقص الأهلية أو لهيئة ما)؟",
+        "en": "Does the law require an authorisation before this claim is brought?"
+      },
+      "why": "Prior step p14 applies only then; the article on standing says the court raises the missing authorisation of its own motion."
+    },
+    {
+      "id": "authorisation_obtained",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل تم الحصول على الإذن المشترط؟",
+        "en": "Has the required authorisation been obtained?"
+      },
+      "why": "Prior step p14."
+    },
+    {
+      "id": "document_not_in_arabic",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل بين المستندات المقدمة وثيقة محررة بلغة غير العربية؟",
+        "en": "Is any supporting document written in a language other than Arabic?"
+      },
+      "why": "Prior step p15 and document doc3; the article on the language of procedure."
+    },
+    {
+      "id": "official_translation_attached",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل أرفقت بالوثيقة ترجمة رسمية إلى العربية؟",
+        "en": "Is an official translation into Arabic attached to it?"
+      },
+      "why": "Prior step p15."
+    },
+    {
+      "id": "divorce_copy_served_on_defendant_and_prosecutor",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل بلغت نسخة من عريضة الطلاق رسميا إلى المدعى عليه وإلى النيابة العامة؟",
+        "en": "Has a copy of the divorce petition been formally served on the defendant and on the public prosecutor?"
+      },
+      "why": "Prior step p16; the article on divorce by one spouse."
+    },
+    {
+      "id": "divorce_by_mutual_consent",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل الطلاق المطلوب طلاق بالتراضي؟",
+        "en": "Is the divorce asked for a divorce by mutual consent?"
+      },
+      "why": "Documents doc5 and boundary n1; the joint petition of divorce by consent has its own contents."
+    },
+    {
+      "id": "spouse_under_curatorship_or_impaired",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل أحد الزوجين تحت التقديم أو ظهر عليه اختلال في قدراته الذهنية يمنعه من التعبير عن إرادته؟",
+        "en": "Is one spouse under curatorship, or does he show a mental impairment that prevents him from expressing his will?"
+      },
+      "why": "Boundary n1; the article that bars a petition for divorce by consent in that case."
+    }
+  ],
+  "basis": [
+    {
+      "id": "b1",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "13",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "لا يتقاضى إلا من له صفة ومصلحة قائمة أو محتملة يقرها القانون.",
+        "en": "Only a person with standing and an existing or potential interest recognised by law may sue."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "لا يجوز لأي شخص، التقاضي ما لم تكن له صفة، وله مصلحة قائمة أو محتملة يقرها القانون.",
+          "sha256": "148841fd4470b70c28d22c15878737d32db8e0dadb189ee821fdcdcfaa48d116"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b2",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "13",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يثير القاضي من تلقاء نفسه انعدام الصفة في المدعي أو في المدعى عليه.",
+        "en": "The judge raises of his own motion the lack of standing of the plaintiff or of the defendant."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "يثير القاضي تلقائيا انعدام الصفة في المدعي أو في المدعى عليه.",
+          "sha256": "bff4e6547bea11ae26db82b6eaf6b1ee7f1d369cd271c7de4d3adac0c5879f6e"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b3",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "13",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "يثير القاضي من تلقاء نفسه انعدام الإذن حين يشترطه القانون.",
+        "en": "The judge also raises of his own motion a missing authorisation where the law requires one."
+      },
+      "quote": [
+        {
+          "paragraph": 3,
+          "text": "كما يثير تلقائيا انعدام الإذن إذا ما اشترطه القانون.",
+          "sha256": "19aaf2c6024f90e2a8546ef79adf3f7400676cbf767c1ad06f8e1c548c4c57f5"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b4",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "14",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ترفع الدعوى بعريضة مكتوبة موقعة ومؤرخة تودع بأمانة الضبط من المدعي أو وكيله أو محاميه، بنسخ بعدد الأطراف.",
+        "en": "The claim is brought by a written, signed and dated petition lodged at the registry by the plaintiff, his agent or his lawyer, in as many copies as there are parties."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "ترفع الدعوى أمام المحكمة بعريضة مكتوبة، موقعة ومؤرخة، تودع بأمانة الضبط من قبل المدعي أو وكيله أو محاميه، بعدد من النسخ يساوي عدد الأطراف.",
+          "sha256": "798e4024a7ca38af686b0ab31cb84359012fd52d2aa075e21ab7259d54b62302"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b5",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "15",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجب أن تتضمن العريضة البيانات المقررة تحت طائلة عدم قبولها شكلا.",
+        "en": "The petition must contain the listed mentions, on pain of inadmissibility in form."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجب أن تتضمن عريضة افتتاح الدعوى، تحت طائلة عدم قبولها شكلا، البيانات الآتية :",
+          "sha256": "d1a2b858cb132be84beec6efc31e21b100252e635c1bc8f4ad3dadb68cf01eaa"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b6",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "15",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "من البيانات الواجبة الجهة القضائية التي ترفع أمامها الدعوى.",
+        "en": "One mention is the court before which the claim is brought."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "1 - الجهة القضائية التي ترفع أمامها الدعوى،",
+          "sha256": "5250ece05a710e4e7f2f0fff408bd2acfcaab510707616bf4e46dac863b3d6e0"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b7",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "15",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "من البيانات الواجبة اسم المدعي ولقبه وموطنه.",
+        "en": "One mention is the plaintiff's surname, first name and domicile."
+      },
+      "quote": [
+        {
+          "paragraph": 3,
+          "text": "2- اسم ولقب المدعي وموطنه،",
+          "sha256": "b77d9872b866dcb49b5b2424df274397a53e34200f71ccad22b6b39cc0ad3512"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b8",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "15",
+        "paragraphs": [
+          4
+        ]
+      },
+      "says": {
+        "ar": "من البيانات الواجبة اسم المدعى عليه ولقبه وموطنه، وآخر موطن له إن لم يعلم موطنه.",
+        "en": "One mention is the defendant's surname, first name and domicile, or his last domicile if none is known."
+      },
+      "quote": [
+        {
+          "paragraph": 4,
+          "text": "3- اسم ولقب وموطن المدعى عليه، فإن لم يكن له موطن معلوم، فآخر موطن له،",
+          "sha256": "65d50737987cee562c11814cfafa79e3519cb5f5b67f76cde4b2b45083f183a1"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b9",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "15",
+        "paragraphs": [
+          5
+        ]
+      },
+      "says": {
+        "ar": "من البيانات الواجبة تسمية الشخص المعنوي وطبيعته ومقره الاجتماعي وصفة ممثله القانوني أو الاتفاقي.",
+        "en": "One mention is the legal person's name, nature and registered seat and the capacity of its legal or conventional representative."
+      },
+      "quote": [
+        {
+          "paragraph": 5,
+          "text": "4- الإشارة إلى تسمية وطبيعة الشخص المعنوي، ومقره الاجتماعي وصفة ممثله القانوني أو الاتفاقي،",
+          "sha256": "efdd0a68a2eacf6ec72d0748ab161b50e50bed501da3b7bef48dc1317e694def"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b10",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "15",
+        "paragraphs": [
+          6
+        ]
+      },
+      "says": {
+        "ar": "من البيانات الواجبة عرض موجز للوقائع والطلبات والوسائل التي تؤسس عليها الدعوى.",
+        "en": "One mention is a brief statement of the facts, the claims and the grounds on which the claim rests."
+      },
+      "quote": [
+        {
+          "paragraph": 6,
+          "text": "5- عرضا موجزا للوقائع والطلبات والوسائل التي تؤسس عليها الدعوى،",
+          "sha256": "5dccd81899d58fc8e4338ce07d36721ede10bca1069d30af3b74904cabe104f2"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b11",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "15",
+        "paragraphs": [
+          7
+        ]
+      },
+      "says": {
+        "ar": "من البيانات الإشارة عند الاقتضاء إلى المستندات والوثائق المؤيدة للدعوى.",
+        "en": "One mention is, where appropriate, a reference to the supporting documents."
+      },
+      "quote": [
+        {
+          "paragraph": 7,
+          "text": "6- الإشارة، عند الاقتضاء، إلى المستندات والوثائق المؤيدة للدعوى.",
+          "sha256": "711248183d4321f84cf8ebc68ed391d402232ec8438f0722d17c7fd90ea15424"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b12",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "16",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "تقيد العريضة حالا في سجل خاص، ويسجل أمين الضبط رقم القضية وتاريخ أول جلسة على النسخ التي تسلم للمدعي ليبلغها رسميا للخصوم.",
+        "en": "The petition is entered at once in a register; the registrar writes the case number and the first hearing date on the copies handed to the plaintiff to be served on the parties."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تقيد العريضة حالا في سجل خاص تبعا لترتيب ورودها، مع بيان أسماء وألقاب الخصوم ورقم القضية وتاريخ أول جلسة.",
+          "sha256": "8c26126110157d046d015f5bf123a3591eef7bf88a86a7f0b4825174e755b37c"
+        },
+        {
+          "paragraph": 2,
+          "text": "يسجل أمين الضبط رقم القضية وتاريخ أول جلسة على نسخ العريضة الافتتاحية، ويسلمها للمدعي بغرض تبليغها رسميا للخصوم.",
+          "sha256": "2ac085dcef0adf05b1566dfe123e74af308d8154b1ea2523bbaacb8b1cd6c34b"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b13",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "16",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "يجب أن يفصل بين تسليم التكليف بالحضور وأول جلسة عشرون يوما على الأقل ما لم ينص القانون على خلاف ذلك.",
+        "en": "At least twenty days must separate the delivery of the summons from the first hearing, unless the law provides otherwise."
+      },
+      "quote": [
+        {
+          "paragraph": 3,
+          "text": "يجب احترام أجل عشرين (20) يوما على الأقل بين تاريخ تسليم التكليف بالحضور، والتاريخ المحدد لأول جلسة، ما لم ينص القانون على خلاف ذلك.",
+          "sha256": "c401d1824fcfcdf06007018abc5809f25efd7c2c032dd57de1d09c80edbbb4c8"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b14",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "16",
+        "paragraphs": [
+          4
+        ]
+      },
+      "says": {
+        "ar": "يمدد هذا الأجل أمام جميع الجهات القضائية إلى ثلاثة أشهر إذا كان المكلف بالحضور مقيما في الخارج.",
+        "en": "That period is extended before all courts to three months when the person summoned lives abroad."
+      },
+      "interpretive": true,
+      "interpretiveNote": "The Arabic says the period is extended to three months; the French edition says it is increased by three months. The Arabic is followed.",
+      "quote": [
+        {
+          "paragraph": 4,
+          "text": "يمدد هذا الأجل أمام جميع الجهات القضائية إلى ثلاثة (3) أشهر، إذا كان الشخص المكلف بالحضور مقيما في الخارج.",
+          "sha256": "d4122b8e16a380bd0baca215bb635fb4d384c9db38588d1f16efbbbd4fc30947"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b15",
+      "role": "prerequisite",
+      "cite": {
+        "code": "cpca",
+        "article": "17",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "لا تقيد العريضة إلا بعد دفع الرسوم المحددة قانونا ما لم ينص القانون على خلاف ذلك.",
+        "en": "A petition is registered only after the fees set by law are paid, unless the law provides otherwise."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "لا تقيد العريضة إلا بعد دفع الرسوم المحددة قانونا، ما لم ينص القانون على خلاف ذلك.",
+          "sha256": "f5b997263d855220b0cf56a71f5e5ab12b00c3de926df7e0c0e88e5a13069fd4"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b16",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "17",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يفصل رئيس الجهة القضائية في النزاع حول دفع الرسوم بأمر غير قابل لأي طعن.",
+        "en": "The president of the court decides any dispute on the payment of fees by an order open to no appeal."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "يفصل رئيس الجهة القضائية في كل نزاع يعرض عليه حول دفع الرسوم، بأمر غير قابل لأي طعن.",
+          "sha256": "32e928e79b761ea795e59518780634367b55ac09ed129cafa7b598443fa23ed1"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b17",
+      "role": "prerequisite",
+      "cite": {
+        "code": "cpca",
+        "article": "17",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "عريضة الدعوى المتعلقة بعقار أو حق عيني عقاري مشهر تشهر لدى المحافظة العقارية وتقدم في أول جلسة تحت طائلة عدم القبول شكلا (تعالجه وحدة الإشهار العقاري).",
+        "en": "A petition on a published real property or real right is to be published at the land registry and presented at the first hearing, on pain of inadmissibility in form (pointer: carried by the land-registry-publication module)."
+      },
+      "interpretive": true,
+      "interpretiveNote": "The Arabic limits the duty to property or rights already published (مشهر); the French edition speaks of real property and real rights without that word. The Arabic is followed.",
+      "quote": [
+        {
+          "paragraph": 3,
+          "text": "يجب إشهار عريضة رفع الدعوى لدى المحافظة العقارية، إذا تعلقت بعقار و/أو حق عيني عقاري مشهر طبقا للقانون، وتقديمها في أول جلسة ينادى فيها على القضية، تحت طائلة عدم قبولها شكلا، ما لم يثبت إيداعها للإشهار.",
+          "sha256": "364cf09683bd00a501474a89c6751cdb1be30a44f40cbfc558c32c13a3087866"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b18",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "8",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تحرر العرائض والمذكرات باللغة العربية تحت طائلة عدم القبول.",
+        "en": "Petitions and memoranda are written in Arabic, on pain of inadmissibility."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجب أن تتم الإجراءات والعقود القضائية من عرائض ومذكرات باللغة العربية، تحت طائلة عدم القبول.",
+          "sha256": "06213579e959fd90e1194da14d7b141e0df4765c52dd27105555b1dbbba76ea0"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b19",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "8",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "تقدم الوثائق والمستندات بالعربية أو مصحوبة بترجمة رسمية إليها تحت طائلة عدم القبول.",
+        "en": "Documents are filed in Arabic or with an official translation, on pain of inadmissibility."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "يجب أن تقدم الوثائق والمستندات باللغة العربية أو مصحوبة بترجمة رسمية إلى هذه اللغة، تحت طائلة عدم القبول.",
+          "sha256": "4feba9191728f908b1861ccad64933cdcff022dc5ab3361894477f5750f8c950"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b20",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "10",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "التمثيل بمحام وجوبي أمام جهات الاستئناف والنقض ما لم ينص القانون على خلاف ذلك، ولا يشترط في هذا النص أمام المحكمة.",
+        "en": "Representation by a lawyer is compulsory before the appeal and cassation courts unless the law says otherwise; this text does not require it before the first-instance court."
+      },
+      "interpretive": true,
+      "interpretiveNote": "The article names only the appeal and cassation courts; that first-instance representation is not compulsory by this text is a reading by omission. Other laws may require a lawyer for some matters and are not in the store.",
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "تمثيل الخصوم بمحام وجوبي أمام جهات الاستئناف والنقض، ما لم ينص القانون على خلاف ذلك.",
+          "sha256": "fbed3af54a6498ec3fe01f4403c68f1d26895a216e5eb7a40b2a9e996facff0f"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b21",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "21",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تودع المستندات المؤيدة بأمانة الضبط بأصولها أو نسخ رسمية منها أو نسخ مطابقة للأصل وتبلغ للخصم.",
+        "en": "The supporting documents are deposited at the registry as originals, official copies or certified true copies, and are served on the opponent."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجب إيداع الأوراق والسندات والوثائق التي يستند إليها الخصوم، دعما لادعاءاتهم، بأمانة ضبط الجهة القضائية، بأصولها أو نسخ رسمية منها أو نسخ مطابقة للأصل، وتبلغ للخصم.",
+          "sha256": "6a843b5c438b75acfa14d39e21f6af8049c6f9d0d1894b14d88d4f9302482c92"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b22",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "22",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "تقدم المستندات إلى أمين الضبط لجردها والتأشير عليها قبل إيداعها بالملف تحت طائلة الرفض، مقابل وصل استلام.",
+        "en": "The documents are given to the registrar to be inventoried and marked before they enter the file, on pain of refusal, against a receipt."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يقدم الخصوم المستندات المشار إليها في المادة 21 أعلاه، إلى أمين الضبط، لجردها والتأشير عليها، قبل إيداعها بملف القضية، تحت طائلة الرفض.",
+          "sha256": "cd73f130bf2f630e09255a4f61486308f04101778ffd64de560b0b46ca56a5e7"
+        },
+        {
+          "paragraph": 2,
+          "text": "يتم إيداع هذه المستندات بأمانة الضبط مقابل وصل استلام.",
+          "sha256": "8aca116553902c47046955c0821c4b9668790ef345df1c080bfeb9b39e6785df"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b23",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "64",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "انعدام الأهلية للخصوم من حالات بطلان الإجراءات من حيث موضوعها.",
+        "en": "Lack of capacity of the parties is a ground of nullity of the proceedings on the substance."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "1 - انعدام الأهلية للخصوم،",
+          "sha256": "61a80e8fa9b174d584b8c8cbfa889dfbf19a1a9c1442891eef9213a283dd48c6"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b24",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "64",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "انعدام الأهلية أو التفويض لممثل الشخص الطبيعي أو المعنوي من حالات البطلان من حيث الموضوع.",
+        "en": "Lack of capacity or authority of the representative of a natural or legal person is a ground of nullity on the substance."
+      },
+      "quote": [
+        {
+          "paragraph": 3,
+          "text": "2 - انعدام الأهلية أو التفويض لممثل الشخص الطبيعي أو المعنوي.",
+          "sha256": "28ad34bf9dd16edd717810f17648ac7115ba9a19cfb35277cf344efbeb6a8fff"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b25",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "65",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يثير القاضي تلقائيا انعدام الأهلية، وله أن يثير تلقائيا انعدام التفويض.",
+        "en": "The judge raises lack of capacity of his own motion and may raise lack of authority of his own motion."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يثير القاضي تلقائيا انعدام الأهلية، ويجوز له أن يثير تلقائيا انعدام التفويض لممثل الشخص الطبيعي أو المعنوي.",
+          "sha256": "abae7adfc9fb20ffa6745abe1dba6fa9645a9bf501648ae93f1b36960dc99113"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b26",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "62",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "للقاضي أن يمنح أجلا لتصحيح الإجراء الباطل إذا لم يبق ضرر، ويسري أثر التصحيح من تاريخ الإجراء المعيب.",
+        "en": "The judge may give time to correct a void act if no harm remains, and the correction takes effect from the date of the defective act."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجوز للقاضي أن يمنح أجلا للخصوم لتصحيح الإجراء المشوب بالبطلان، بشرط عدم بقاء أي ضرر قائم بعد التصحيح.",
+          "sha256": "1c88614e2a6d8643a1c193dac7ee53c23f6e6b0c156ccd8aade5bf0f4577ee6c"
+        },
+        {
+          "paragraph": 2,
+          "text": "يسري أثر هذا التصحيح من تاريخ الإجراء المشوب بالبطلان.",
+          "sha256": "aa3706d962602384dfe5fc9bbcc3cc773b321b2b1ebb1fe394a976ec938b6aa8"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b27",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "66",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "لا يقضى بالبطلان في إجراء قابل للتصحيح إذا زال سببه بإجراء لاحق أثناء الخصومة.",
+        "en": "Nullity is not pronounced for a correctable act if its cause is removed by a later act during the proceedings."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "لا يقضى ببطلان إجراء من الإجراءات القابلة للتصحيح، إذا زال سبب ذلك البطلان بإجراء لاحق أثناء سير الخصومة.",
+          "sha256": "1c6d301b93e33754d149dbfdfc95de36e0b656e0d3724abf022ecd18bce1e7f4"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b28",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "67",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "الدفع بعدم القبول يرمي إلى عدم قبول الطلب لانعدام الحق في التقاضي كانعدام الصفة والمصلحة، دون النظر في الموضوع.",
+        "en": "The plea of inadmissibility aims at refusing the claim for want of a right to sue, such as lack of standing or interest, without examining the merits."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "الدفع بعدم القبول، هو الدفع الذي يرمي إلى التصريح بعدم قبول طلب الخصم لانعدام الحق في التقاضي، كانعدام الصفة وانعدام المصلحة والتقادم وانقضاء الأجل المسقط وحجية الشيء المقضي فيه، وذلك دون النظر في موضوع النزاع.",
+          "sha256": "fba9f904e04f3a56db762ad140dad2695ba18a6e53d916c5e40c0bca28d0b892"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b29",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "68",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يقدم الدفع بعدم القبول في أية مرحلة ولو بعد الدفوع في الموضوع.",
+        "en": "The plea of inadmissibility may be made at any stage, even after defences on the merits."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يمكن للخصوم تقديم الدفع بعدم القبول في أية مرحلة كانت عليها الدعوى ولو بعد تقديم دفوع في الموضوع.",
+          "sha256": "3b2d7fc793db75bdcbc332afc84334d95d36c819131368b5103771436ca5ed6b"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b30",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "69",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يثير القاضي تلقائيا الدفع بعدم القبول إذا كان من النظام العام.",
+        "en": "The judge raises the plea of inadmissibility of his own motion when it is of public order."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجب على القاضي أن يثير تلقائيا، الدفع بعدم القبول إذا كان من النظام العام، لاسيما عند عدم احترام آجال طرق الطعن أو عند غياب طرق الطعن.",
+          "sha256": "42f484aedff31580c54f7e153085f7a87360690ce4f44dfa6ae543765d29a81a"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b31",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "194",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "لا يقبل التدخل إلا ممن له صفة ومصلحة.",
+        "en": "Intervention is admitted only from a person who has standing and interest."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "لا يقبل التدخل إلا ممن توفرت فيه الصفة والمصلحة.",
+          "sha256": "99f637f31e16d9d76288cb2232caef3c7aa3151c4da0d9dc76f9304cf36926b5"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b32",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "194",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "يتم التدخل وفق الإجراءات المقررة لرفع الدعوى.",
+        "en": "Intervention follows the procedure set for bringing a claim."
+      },
+      "quote": [
+        {
+          "paragraph": 3,
+          "text": "يتم التدخل تبعا للإجراءات المقررة لرفع الدعوى.",
+          "sha256": "5b87d1ff377052f3c3a7344963f0a62f5b36a5d65e4b5a7a99ca440724db7b65"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b33",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "60",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "لا يقرر بطلان الأعمال الإجرائية شكلا إلا إذا نص القانون صراحة، ويثبت المتمسك به الضرر.",
+        "en": "Nullity of procedural acts in form is declared only where the law says so expressly, and the party relying on it must prove the harm."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "لا يقرر بطلان الأعمال الإجرائية شكلا، إلا إذا نص القانون صراحة على ذلك، وعلى من يتمسك به أن يثبت الضرر الذي لحقه.",
+          "sha256": "4151beda6898c1460ec17f065da3008c9537b7704e5fc1719d6f95cfdeac18c6"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b34",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "25",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "يتحدد موضوع النزاع بالادعاءات الواردة في العريضة والمذكرات، ويعدل بطلبات عارضة مرتبطة بالادعاءات الأصلية.",
+        "en": "The subject of the dispute is fixed by the claims in the petition and the replies, and is changed only by incidental claims linked to the original claims."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يتحدد موضوع النزاع بالادعاءات التي يقدمها الخصوم في عريضة افتتاح الدعوى ومذكرات الرد.",
+          "sha256": "bbfd39fd80b66793adfcf7ad416c9221e10ed8f250e4a7705cb0c64a730313dd"
+        },
+        {
+          "paragraph": 2,
+          "text": "غير أنه يمكن تعديله بناء على تقديم طلبات عارضة، إذا كانت هذه الطلبات مرتبطة بالادعاءات الأصلية.",
+          "sha256": "9c12b25e59b7435c59925ac5f6e72c0bc3ff08abead5bf196ce7895da459939f"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b35",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "423"
+      },
+      "says": {
+        "ar": "ينظر قسم شؤون الأسرة في دعاوى الخطبة والزواج وانحلاله والنفقة والحضانة والزيارة وإثبات الزواج والنسب والكفالة والولاية والحجر والغياب والفقدان والتقديم.",
+        "en": "The family-matters section hears the claims on engagement, marriage and its dissolution, maintenance, custody, visitation, proof of marriage and filiation, kafala, guardianship, interdiction, absence, disappearance and curatorship."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "ينظر قسم شؤون الأسرة، على الخصوص في الدعاوى الآتية:",
+          "sha256": "16245d4e488f60c9bec86983991193d3653dbc6e50ec5b96fa06304b9ecee559"
+        },
+        {
+          "paragraph": 2,
+          "text": "1 - الدعاوى المتعلقة بالخطبة والزواج والرجوع إلى بيت الزوجية وانحلال الرابطة الزوجية وتوابعها حسب الحالات والشروط المذكورة في قانون الأسرة،",
+          "sha256": "00861898268a0a5aa057efd243903d282086c20e44e90de34b401e4e2cd142ad"
+        },
+        {
+          "paragraph": 3,
+          "text": "2 - دعاوى النفقة والحضانة وحق الزيارة،",
+          "sha256": "4a89b36cd38ee8d12c50bb1fc2e39ad1ad8b1369db23798d0927e125dc0aeab7"
+        },
+        {
+          "paragraph": 4,
+          "text": "3 - دعاوى إثبات الزواج والنسب،",
+          "sha256": "9a10e0da63d6c90e5bce21610689bc1111d5294ee03a55b22258154824b64e4f"
+        },
+        {
+          "paragraph": 5,
+          "text": "4 - الدعاوى المتعلقة بالكفالة،",
+          "sha256": "1ef0709c3015ae5c6c1b1d4f7e4952ed11813913eb5988da5f9a4a692e9dd23e"
+        },
+        {
+          "paragraph": 6,
+          "text": "5 - الدعاوى المتعلقة بالولاية وسقوطها والحجر والغياب والفقدان والتقديم.",
+          "sha256": "b1dd9784b58900d64a7f42d36da126f7a472f4da7784bc267403c72f5a25fe43"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b36",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "426",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "العدول عن الخطبة يرفع أمام محكمة موطن المدعى عليه.",
+        "en": "Renunciation of an engagement is brought where the defendant has his domicile."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "1 - في موضوع العدول عن الخطبة بمكان وجود موطن المدعى عليه،",
+          "sha256": "f30cd2fcb899a35a08123c281509e674b39547ea217108872947a21efa95683e"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b37",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "426",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "إثبات الزواج يرفع أمام محكمة موطن المدعى عليه.",
+        "en": "Proof of marriage is brought where the defendant has his domicile."
+      },
+      "quote": [
+        {
+          "paragraph": 3,
+          "text": "2 - في موضوع إثبات الزواج بمكان وجود موطن المدعى عليه،",
+          "sha256": "f3dfc5d8a4142b8acf7171a26aaeb68b65ad19004accbd227a17b6f83be5936f"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b38",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "426",
+        "paragraphs": [
+          4
+        ]
+      },
+      "says": {
+        "ar": "الطلاق أو الرجوع يرفع أمام محكمة المسكن الزوجي، والطلاق بالتراضي أمام محكمة إقامة أحد الزوجين باختيارهما.",
+        "en": "Divorce or return is brought where the conjugal home is, and divorce by mutual consent where either spouse lives, at their choice."
+      },
+      "quote": [
+        {
+          "paragraph": 4,
+          "text": "3 - في موضوع الطلاق أو الرجوع بمكان وجود المسكن الزوجي، وفي الطلاق بالتراضي بمكان إقامة أحد الزوجين حسب اختيارهما.",
+          "sha256": "cbee7fc2b3eaf0a35a03281b9d16bd478d4a792124814a5b38c48449678d691e"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b39",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "426",
+        "paragraphs": [
+          5
+        ]
+      },
+      "says": {
+        "ar": "الحضانة وحق الزيارة والرخص الإدارية للقاصر المحضون ترفع أمام محكمة مكان ممارسة الحضانة.",
+        "en": "Custody, visitation and administrative permissions for the child in custody are brought where custody is exercised."
+      },
+      "quote": [
+        {
+          "paragraph": 5,
+          "text": "4 - في موضوع الحضانة وحق الزيارة والرخص الإدارية المسلمة للقاصر المحضون بمكان ممارسة الحضانة،",
+          "sha256": "6dbbe86ce392baec63c81b7e2d595211c9fd04858119cae078b8c33cb30eb17a"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b40",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "426",
+        "paragraphs": [
+          6
+        ]
+      },
+      "says": {
+        "ar": "النفقة الغذائية ترفع أمام محكمة موطن الدائن بها.",
+        "en": "Maintenance is brought where the creditor of it has his domicile."
+      },
+      "quote": [
+        {
+          "paragraph": 6,
+          "text": "5- في موضوع النفقة الغذائية بموطن الدائن بها،",
+          "sha256": "2597e0d707cf7cc79dc0ed5776339559c1fb70b69538fd96e1bd1b590aae2db6"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b41",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "426",
+        "paragraphs": [
+          7
+        ]
+      },
+      "says": {
+        "ar": "متاع بيت الزوجية يرفع أمام محكمة المسكن الزوجي.",
+        "en": "Household goods are brought where the conjugal home is."
+      },
+      "interpretive": true,
+      "interpretiveNote": "The Arabic names the household goods (متاع بيت الزوجية); the French edition says disputes on the effects of the conjugal home. The Arabic is followed.",
+      "quote": [
+        {
+          "paragraph": 7,
+          "text": "6 - في موضوع متاع بيت الزوجية بمكان وجود المسكن الزوجي،",
+          "sha256": "04646a53a4b23729ec7c5218b00a802831f3e6cac32648a63e325806cffb07a7"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b42",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "426",
+        "paragraphs": [
+          8
+        ]
+      },
+      "says": {
+        "ar": "الترخيص بالزواج يرفع أمام محكمة مكان طالب الترخيص.",
+        "en": "Authorisation to marry is brought where the applicant is."
+      },
+      "quote": [
+        {
+          "paragraph": 8,
+          "text": "7 - في موضوع الترخيص بالزواج بمكان طالب الترخيص،",
+          "sha256": "194f7225baec3df8f81107e33d68b29bf96d3f770d1d0ff42f3b4239e1a638e9"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b43",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "426",
+        "paragraphs": [
+          9
+        ]
+      },
+      "says": {
+        "ar": "المنازعة في الصداق ترفع أمام محكمة موطن المدعى عليه.",
+        "en": "A dispute on the dowry is brought where the defendant has his domicile."
+      },
+      "quote": [
+        {
+          "paragraph": 9,
+          "text": "8 - في موضوع المنازعة حول الصداق بمكان موطن المدعى عليه،",
+          "sha256": "a0c48de857ff322263f8fca302fa228afe10dd60473d22e00dff8a1263c1143b"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b44",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "426",
+        "paragraphs": [
+          10
+        ]
+      },
+      "says": {
+        "ar": "الولاية ترفع أمام محكمة مكان ممارستها.",
+        "en": "Guardianship is brought where it is exercised."
+      },
+      "quote": [
+        {
+          "paragraph": 10,
+          "text": "9 - في موضوع الولاية بمكان ممارسة الولاية.",
+          "sha256": "9847968fce22425662d6b40e9664073c600bf351456b59ed831043e1ede46b1d"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b45",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "436",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ترفع دعوى الطلاق من أحد الزوجين أمام قسم شؤون الأسرة بعريضة وفق الأشكال المقررة لرفع الدعوى.",
+        "en": "A divorce claim by one spouse is brought before the family section by a petition in the forms set for bringing a claim."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "ترفع دعوى الطلاق من أحد الزوجين أمام قسم شؤون الأسرة، بتقديم عريضة وفقا للأشكال المقررة لرفع الدعوى.",
+          "sha256": "0e6703e627e911662482837aad4cb4afacb47e1da5da5cdec49bc86528c2ce16"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b46",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "437",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "إذا كان الزوج ناقص الأهلية قدم الطلب باسمه وليه أو مقدمه.",
+        "en": "Where a spouse lacks full capacity, the claim is made in his name by his guardian or curator."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "عندما يكون الزوج ناقص الأهلية، يقدم الطلب باسمه، من قبل وليه أو مقدمه، حسب الحالة.",
+          "sha256": "6572c8ce4cfdcb15aa425f9903e97ad2b22e44aefe54b9111ccb3294bf04cf93"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b47",
+      "role": "prerequisite",
+      "cite": {
+        "code": "cpca",
+        "article": "438",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "على المدعي في دعوى الطلاق أن يبلغ رسميا المدعى عليه والنيابة العامة بنسخة من العريضة.",
+        "en": "The plaintiff in a divorce claim must formally serve a copy of the petition on the defendant and on the public prosecutor."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجب على المدعي في دعوى الطلاق، أن يبلغ رسميا المدعى عليه والنيابة العامة بنسخة من العريضة المشار إليها في المادة 436 أعلاه.",
+          "sha256": "827146af3cb758f70b071fd845f8b82850d9e5e7ad4dfcc6faa94c5c35e99a76"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b48",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "428",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "في الطلاق بالتراضي يقدم طلب مشترك بعريضة وحيدة موقعة من الزوجين.",
+        "en": "In divorce by mutual consent a joint request is made by a single petition signed by both spouses."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "في حالة الطلاق بالتراضي يقدم طلب مشترك في شكل عريضة وحيدة موقعة من الزوجين تودع بأمانة الضبط.",
+          "sha256": "689872ad6e7cc03c6bf206e59f0ba94a140b13547230727182f1737c88e500ea"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b49",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "429",
+        "paragraphs": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "says": {
+        "ar": "تتضمن العريضة الوحيدة الجهة القضائية وبيانات الزوجين وتاريخ ومكان الزواج وعدد الأولاد القصر وعرضا موجزا لاتفاقهما على توابع الطلاق.",
+        "en": "The single petition gives the court, the spouses' particulars, the date and place of the marriage, the number of minor children and a brief statement of their agreement on the consequences of divorce."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجب أن تتضمن العريضة الوحيدة ما يأتي :",
+          "sha256": "a42c8a39b6f16350e38b34f5111a301403904a309ac06f1cfa9ac31b9555fa2f"
+        },
+        {
+          "paragraph": 2,
+          "text": "1 - بيان الجهة القضائية المرفوع أمامها الطلب،",
+          "sha256": "aca38f3756eb486ea2a1d286207393ed1957fe564637d838ff1a7f4cec0490e7"
+        },
+        {
+          "paragraph": 3,
+          "text": "2 - اسم ولقب وجنسية كلا الزوجين وموطن وتاريخ ومكان ميلادهما،",
+          "sha256": "80e30569c4a4f79000e28252a2ce312e0833cb13da708d62b2327f38525485df"
+        },
+        {
+          "paragraph": 4,
+          "text": "3 - تاريخ ومكان زواجهما، وعند الاقتضاء، عدد الأولاد القصر،",
+          "sha256": "c4ca6dd4b1591ffc58920f1f72c1d2af721924f11123bf7b27a410d068e77227"
+        },
+        {
+          "paragraph": 5,
+          "text": "4 - عرض موجز يتضمن جميع شروط الاتفاق الحاصل بينهما حول توابع الطلاق.",
+          "sha256": "1a9b8ec645d34bc12bfa60d565dcdc5ecac8c2c58661777a63fcec471ede5bfe"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b50",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "429",
+        "paragraphs": [
+          6
+        ]
+      },
+      "says": {
+        "ar": "يرفق بالعريضة شهادة عائلية ومستخرج من عقد الزواج.",
+        "en": "A family certificate and an extract of the marriage deed are attached to the petition."
+      },
+      "quote": [
+        {
+          "paragraph": 6,
+          "text": "يجب أن يرفق مع العريضة، شهادة عائلية ومستخرج من عقد زواج المعنيين.",
+          "sha256": "cad36f6e1ada73b3a70e52379ba3a9cf0edf3ae9b50abc4bdbf9be3f37cadcdc"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b51",
+      "role": "limit",
+      "cite": {
+        "code": "cpca",
+        "article": "432",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "لا يقدم طلب الطلاق بالتراضي إذا كان أحد الزوجين تحت التقديم أو ظهر عليه اختلال في قدراته الذهنية، ويثبته طبيب مختص.",
+        "en": "A request for divorce by mutual consent is not made where a spouse is under curatorship or shows a mental impairment, which a specialist doctor must establish."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "لا يجوز تقديم طلب الطلاق بالتراضي، إذا كان أحد الزوجين تحت وضع التقديم أو إذا ظهر عليه اختلال في قدراته الذهنية تمنعه من التعبير عن إرادته.",
+          "sha256": "1f5f1c08217b150fa3a4e8e9018715f78a48e298df8668371002188a83976427"
+        },
+        {
+          "paragraph": 2,
+          "text": "يجب إثبات اختلال القدرات الذهنية من قبل طبيب مختص.",
+          "sha256": "77d0da13b55488e99342579cd414ef91df68e10e8e32dd9fe63b8912d14c65a0"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    }
+  ],
+  "priorSteps": [
+    {
+      "id": "p1",
+      "kind": "other",
+      "slots": [
+        "petition_names_court"
+      ],
+      "effectWhenMissing": "blockCleanExport",
+      "effectWhenUnknown": "ask",
+      "message": {
+        "ar": "المادة 15: يجب أن تبين العريضة الجهة القضائية التي ترفع أمامها الدعوى تحت طائلة عدم قبولها شكلا. تحقق من ذكرها.",
+        "en": "Article 15: the petition must name the court before which the claim is brought, on pain of inadmissibility in form. Check that it is named."
+      },
+      "basis": [
+        "b5",
+        "b6"
+      ]
+    },
+    {
+      "id": "p2",
+      "kind": "other",
+      "slots": [
+        "petition_gives_plaintiff_identity"
+      ],
+      "effectWhenMissing": "blockCleanExport",
+      "effectWhenUnknown": "ask",
+      "message": {
+        "ar": "المادة 15: يجب أن تتضمن العريضة اسم المدعي ولقبه وموطنه تحت طائلة عدم قبولها شكلا. تحقق من ذلك.",
+        "en": "Article 15: the petition must give the plaintiff's surname, first name and domicile, on pain of inadmissibility in form. Check them."
+      },
+      "basis": [
+        "b5",
+        "b7"
+      ]
+    },
+    {
+      "id": "p3",
+      "kind": "other",
+      "slots": [
+        "petition_gives_defendant_identity"
+      ],
+      "effectWhenMissing": "blockCleanExport",
+      "effectWhenUnknown": "ask",
+      "message": {
+        "ar": "المادة 15: يجب أن تتضمن العريضة اسم المدعى عليه ولقبه وموطنه، فإن لم يكن له موطن معلوم فآخر موطن له، تحت طائلة عدم قبولها شكلا. تحقق من ذلك.",
+        "en": "Article 15: the petition must give the defendant's surname, first name and domicile, or his last domicile if none is known, on pain of inadmissibility in form. Check them."
+      },
+      "basis": [
+        "b5",
+        "b8"
+      ]
+    },
+    {
+      "id": "p4",
+      "kind": "other",
+      "slots": [
+        "petition_gives_legal_person_details",
+        "party_is_legal_person"
+      ],
+      "requiredWhen": {
+        "slot": "party_is_legal_person",
+        "is": "yes"
+      },
+      "effectWhenMissing": "blockCleanExport",
+      "effectWhenUnknown": "ask",
+      "message": {
+        "ar": "المادة 15: إذا كان أحد الطرفين شخصا معنويا وجب بيان تسميته وطبيعته ومقره الاجتماعي وصفة ممثله القانوني أو الاتفاقي تحت طائلة عدم القبول شكلا. تحقق من ذلك.",
+        "en": "Article 15: where a party is a legal person, the petition must give its name, nature, registered seat and its representative's capacity, on pain of inadmissibility in form. Check them."
+      },
+      "basis": [
+        "b5",
+        "b9"
+      ]
+    },
+    {
+      "id": "p5",
+      "kind": "other",
+      "slots": [
+        "petition_states_facts_claims_grounds"
+      ],
+      "effectWhenMissing": "blockCleanExport",
+      "effectWhenUnknown": "ask",
+      "message": {
+        "ar": "المادة 15: يجب أن تتضمن العريضة عرضا موجزا للوقائع والطلبات والوسائل تحت طائلة عدم قبولها شكلا. تحقق من ذلك.",
+        "en": "Article 15: the petition must contain a brief statement of the facts, the claims and the grounds, on pain of inadmissibility in form. Check it."
+      },
+      "basis": [
+        "b5",
+        "b10"
+      ]
+    },
+    {
+      "id": "p6",
+      "kind": "other",
+      "slots": [
+        "petition_lists_documents"
+      ],
+      "effectWhenMissing": "warn",
+      "effectWhenUnknown": "ask",
+      "interpretive": true,
+      "interpretiveNote": "The text asks for the reference to supporting documents only where appropriate, so a missing one is not always a defect; the sanction in the first paragraph covers the whole list, and the protective reading is to warn rather than to block.",
+      "message": {
+        "ar": "المادة 15: تشير العريضة عند الاقتضاء إلى المستندات والوثائق المؤيدة للدعوى. تحقق من الإشارة إليها.",
+        "en": "Article 15: the petition refers, where appropriate, to the supporting documents. Check that they are referred to."
+      },
+      "basis": [
+        "b5",
+        "b11"
+      ]
+    },
+    {
+      "id": "p7",
+      "kind": "other",
+      "slots": [
+        "petition_signed_dated"
+      ],
+      "effectWhenMissing": "warn",
+      "effectWhenUnknown": "ask",
+      "interpretive": true,
+      "interpretiveNote": "The article states the form (written, signed, dated) and gives no sanction; nullity of a form needs an express text, so the duty is graded as a warning.",
+      "message": {
+        "ar": "المادة 14: ترفع الدعوى بعريضة مكتوبة موقعة ومؤرخة. تحقق من التوقيع والتاريخ.",
+        "en": "Article 14: the claim is brought by a written, signed and dated petition. Check the signature and the date."
+      },
+      "basis": [
+        "b4",
+        "b33"
+      ]
+    },
+    {
+      "id": "p8",
+      "kind": "other",
+      "slots": [
+        "petition_copies_for_each_party"
+      ],
+      "effectWhenMissing": "warn",
+      "effectWhenUnknown": "ask",
+      "interpretive": true,
+      "interpretiveNote": "The article asks for as many copies as there are parties and gives no sanction.",
+      "message": {
+        "ar": "المادة 14: تودع العريضة بنسخ بعدد الأطراف. تحقق من عدد النسخ.",
+        "en": "Article 14: the petition is lodged in as many copies as there are parties. Check the number of copies."
+      },
+      "basis": [
+        "b4",
+        "b33"
+      ]
+    },
+    {
+      "id": "p9",
+      "kind": "other",
+      "slots": [
+        "court_fees_paid",
+        "fee_exemption_applies"
+      ],
+      "notRequiredWhen": [
+        {
+          "when": {
+            "slot": "fee_exemption_applies",
+            "is": "yes"
+          },
+          "basis": [
+            "b15"
+          ],
+          "note": {
+            "ar": "يحتفظ النص بالحالات التي ينص فيها القانون على خلاف ذلك.",
+            "en": "The text reserves the cases where the law provides otherwise."
+          }
+        }
+      ],
+      "effectWhenMissing": "warn",
+      "effectWhenUnknown": "ask",
+      "interpretive": true,
+      "interpretiveNote": "The stated consequence is that the petition is not registered; it is not stated as inadmissibility. The fees are paid at the filing, after the draft is written, so the protective reading is a warning and not a block. Fee amounts and exemptions are not in the store.",
+      "message": {
+        "ar": "المادة 17: لا تقيد العريضة إلا بعد دفع الرسوم المحددة قانونا ما لم ينص القانون على خلاف ذلك. تحقق من الدفع أو من سبب الإعفاء.",
+        "en": "Article 17: the petition is registered only after the fees set by law are paid, unless the law provides otherwise. Check the payment or the ground of exemption."
+      },
+      "basis": [
+        "b15",
+        "b16"
+      ]
+    },
+    {
+      "id": "p10",
+      "kind": "other",
+      "slots": [
+        "plaintiff_has_capacity"
+      ],
+      "effectWhenMissing": "warn",
+      "effectWhenUnknown": "ask",
+      "interpretive": true,
+      "interpretiveNote": "Lack of capacity is a ground of nullity that the judge raises of his own motion; but nullity of a correctable act is not pronounced if the cause is removed during the proceedings, so a block would rest on a reading.",
+      "message": {
+        "ar": "المادتان 64 و65: انعدام أهلية الخصوم من أسباب البطلان ويثيره القاضي تلقائيا. تحقق من أهلية المدعي أو من تمثيله.",
+        "en": "Articles 64 and 65: lack of capacity of the parties is a ground of nullity that the judge raises of his own motion. Check the plaintiff's capacity or his representation."
+      },
+      "basis": [
+        "b23",
+        "b25",
+        "b26",
+        "b27"
+      ]
+    },
+    {
+      "id": "p11",
+      "kind": "other",
+      "slots": [
+        "representative_has_authority",
+        "plaintiff_acts_through_representative"
+      ],
+      "requiredWhen": {
+        "slot": "plaintiff_acts_through_representative",
+        "is": "yes"
+      },
+      "effectWhenMissing": "warn",
+      "effectWhenUnknown": "ask",
+      "interpretive": true,
+      "interpretiveNote": "Lack of authority of the representative is a ground of nullity that the judge may raise of his own motion, and it can be corrected during the proceedings; the protective reading is a warning.",
+      "message": {
+        "ar": "المادتان 64 و65: انعدام أهلية الممثل أو تفويضه من أسباب البطلان. تحقق من التوكيل أو من صفة الممثل.",
+        "en": "Articles 64 and 65: lack of capacity or authority of the representative is a ground of nullity. Check the power of attorney or the representative's capacity."
+      },
+      "basis": [
+        "b24",
+        "b25",
+        "b26",
+        "b27"
+      ]
+    },
+    {
+      "id": "p12",
+      "kind": "other",
+      "slots": [
+        "plaintiff_has_standing"
+      ],
+      "effectWhenMissing": "warn",
+      "effectWhenUnknown": "ask",
+      "interpretive": true,
+      "interpretiveNote": "Standing is a question of law and fact that the judge raises of his own motion; the texts do not say what the petition must show, so the rule warns and does not block.",
+      "message": {
+        "ar": "المادة 13: لا يجوز التقاضي ما لم تكن للمدعي صفة، ويثير القاضي انعدامها تلقائيا. تحقق من صفة المدعي تجاه المدعى عليه.",
+        "en": "Article 13: a person may sue only with standing, and the judge raises its absence of his own motion. Check the plaintiff's standing against this defendant."
+      },
+      "basis": [
+        "b1",
+        "b2",
+        "b28"
+      ]
+    },
+    {
+      "id": "p13",
+      "kind": "other",
+      "slots": [
+        "plaintiff_has_interest"
+      ],
+      "effectWhenMissing": "warn",
+      "effectWhenUnknown": "ask",
+      "interpretive": true,
+      "interpretiveNote": "The text asks for an interest existing or potential recognised by law; whether it is met is a legal judgment, so the rule warns and does not block.",
+      "message": {
+        "ar": "المادة 13: يشترط في المدعي مصلحة قائمة أو محتملة يقرها القانون. تحقق من المصلحة.",
+        "en": "Article 13: the plaintiff must have an existing or potential interest recognised by law. Check the interest."
+      },
+      "basis": [
+        "b1",
+        "b28"
+      ]
+    },
+    {
+      "id": "p14",
+      "kind": "other",
+      "slots": [
+        "authorisation_obtained",
+        "authorisation_required_by_law"
+      ],
+      "requiredWhen": {
+        "slot": "authorisation_required_by_law",
+        "is": "yes"
+      },
+      "effectWhenMissing": "warn",
+      "effectWhenUnknown": "ask",
+      "interpretive": true,
+      "interpretiveNote": "The text says the judge raises a missing authorisation of his own motion where the law requires one, without stating the sanction; which laws require an authorisation is not in the store.",
+      "message": {
+        "ar": "المادة 13: يثير القاضي تلقائيا انعدام الإذن إذا اشترطه القانون. تحقق من الحصول على الإذن.",
+        "en": "Article 13: the judge raises of his own motion a missing authorisation where the law requires one. Check that the authorisation was obtained."
+      },
+      "basis": [
+        "b3"
+      ]
+    },
+    {
+      "id": "p15",
+      "kind": "other",
+      "slots": [
+        "official_translation_attached",
+        "document_not_in_arabic"
+      ],
+      "requiredWhen": {
+        "slot": "document_not_in_arabic",
+        "is": "yes"
+      },
+      "effectWhenMissing": "warn",
+      "effectWhenUnknown": "ask",
+      "interpretive": true,
+      "interpretiveNote": "The sanction of inadmissibility is stated for the documents that lack a translation, not for the petition itself, so the petition's clean export is not blocked.",
+      "message": {
+        "ar": "المادة 8: تقدم الوثائق بالعربية أو مصحوبة بترجمة رسمية تحت طائلة عدم القبول. تحقق من ترجمة كل وثيقة بلغة أخرى.",
+        "en": "Article 8: documents are filed in Arabic or with an official translation, on pain of inadmissibility. Check the translation of each document in another language."
+      },
+      "basis": [
+        "b18",
+        "b19"
+      ]
+    },
+    {
+      "id": "p16",
+      "kind": "other",
+      "slots": [
+        "divorce_copy_served_on_defendant_and_prosecutor"
+      ],
+      "requiredWhen": {
+        "any": [
+          {
+            "slot": "requests",
+            "includes": "divorce"
+          },
+          {
+            "slot": "requests",
+            "includes": "tatliq"
+          }
+        ]
+      },
+      "effectWhenMissing": "warn",
+      "effectWhenUnknown": "ask",
+      "interpretive": true,
+      "interpretiveNote": "The article states the duty and no sanction. It speaks of the divorce claim; whether it also reaches the wife's request for release against compensation is not settled.",
+      "message": {
+        "ar": "المادة 438: على المدعي في دعوى الطلاق أن يبلغ رسميا المدعى عليه والنيابة العامة بنسخة من العريضة. تحقق من التبليغ.",
+        "en": "Article 438: in a divorce claim the plaintiff must formally serve a copy of the petition on the defendant and the public prosecutor. Check the service."
+      },
+      "basis": [
+        "b47"
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc1",
+      "name": {
+        "ar": "نسخ من العريضة بعدد الأطراف",
+        "en": "Copies of the petition, one for each party"
+      },
+      "why": {
+        "ar": "تودع العريضة بنسخ بعدد الأطراف ويسلم أمين الضبط النسخ المؤشر عليها للمدعي ليبلغها.",
+        "en": "The petition is lodged in as many copies as parties, and the registrar hands the marked copies back for service."
+      },
+      "basis": [
+        "b4",
+        "b12"
+      ]
+    },
+    {
+      "id": "doc2",
+      "name": {
+        "ar": "المستندات المؤيدة بأصولها أو نسخ رسمية أو مطابقة للأصل",
+        "en": "Supporting documents as originals, official copies or certified true copies"
+      },
+      "why": {
+        "ar": "تودع بأمانة الضبط ويجرد أمين الضبط الوثائق ويؤشر عليها، وتبلغ للخصم.",
+        "en": "They are deposited at the registry, inventoried and marked by the registrar, and served on the opponent."
+      },
+      "basis": [
+        "b21",
+        "b22",
+        "b11"
+      ]
+    },
+    {
+      "id": "doc3",
+      "name": {
+        "ar": "ترجمة رسمية إلى العربية للوثائق المحررة بلغة أخرى",
+        "en": "Official Arabic translation of any document in another language"
+      },
+      "requiredWhen": {
+        "slot": "document_not_in_arabic",
+        "is": "yes"
+      },
+      "why": {
+        "ar": "تقدم الوثائق بالعربية أو مصحوبة بترجمة رسمية.",
+        "en": "Documents are filed in Arabic or with an official translation."
+      },
+      "basis": [
+        "b19"
+      ]
+    },
+    {
+      "id": "doc4",
+      "name": {
+        "ar": "ما يثبت دفع الرسوم القضائية أو سبب الإعفاء منها",
+        "en": "Proof of payment of the judicial fees, or of the ground of exemption"
+      },
+      "why": {
+        "ar": "لا تقيد العريضة إلا بعد دفع الرسوم ما لم ينص القانون على خلاف ذلك.",
+        "en": "The petition is registered only after the fees are paid, unless the law provides otherwise."
+      },
+      "basis": [
+        "b15"
+      ]
+    },
+    {
+      "id": "doc5",
+      "name": {
+        "ar": "شهادة عائلية ومستخرج من عقد زواج الزوجين",
+        "en": "Family certificate and extract of the spouses' marriage deed"
+      },
+      "requiredWhen": {
+        "slot": "divorce_by_mutual_consent",
+        "is": "yes"
+      },
+      "why": {
+        "ar": "يرفقان بالعريضة الوحيدة في الطلاق بالتراضي.",
+        "en": "They are attached to the single petition for divorce by mutual consent."
+      },
+      "basis": [
+        "b50"
+      ]
+    },
+    {
+      "id": "doc6",
+      "name": {
+        "ar": "الإذن المشترط قانونا لرفع الدعوى",
+        "en": "The authorisation the law requires before the claim"
+      },
+      "requiredWhen": {
+        "slot": "authorisation_required_by_law",
+        "is": "yes"
+      },
+      "why": {
+        "ar": "يثير القاضي تلقائيا انعدام الإذن إذا اشترطه القانون.",
+        "en": "The judge raises a missing authorisation of his own motion where the law requires one."
+      },
+      "basis": [
+        "b3"
+      ]
+    },
+    {
+      "id": "doc7",
+      "name": {
+        "ar": "وكالة أو سند صفة الممثل",
+        "en": "Power of attorney or proof of the representative's capacity"
+      },
+      "requiredWhen": {
+        "slot": "plaintiff_acts_through_representative",
+        "is": "yes"
+      },
+      "why": {
+        "ar": "يودع العريضة المدعي أو وكيله أو محاميه، وانعدام تفويض الممثل من أسباب البطلان.",
+        "en": "The petition is lodged by the plaintiff, his agent or his lawyer, and lack of authority of the representative is a ground of nullity."
+      },
+      "basis": [
+        "b4",
+        "b24"
+      ]
+    }
+  ],
+  "court": {
+    "territory": [
+      {
+        "id": "t1",
+        "rule": {
+          "ar": "العدول عن الخطبة: محكمة موطن المدعى عليه.",
+          "en": "Renunciation of an engagement: the court where the defendant has his domicile."
+        },
+        "when": {
+          "slot": "dispute_is_family",
+          "is": "yes"
+        },
+        "basis": [
+          "b35",
+          "b36"
+        ]
+      },
+      {
+        "id": "t2",
+        "rule": {
+          "ar": "إثبات الزواج: محكمة موطن المدعى عليه.",
+          "en": "Proof of marriage: the court where the defendant has his domicile."
+        },
+        "when": {
+          "slot": "dispute_is_family",
+          "is": "yes"
+        },
+        "basis": [
+          "b35",
+          "b37"
+        ]
+      },
+      {
+        "id": "t3",
+        "rule": {
+          "ar": "الطلاق أو الرجوع: محكمة المسكن الزوجي؛ والطلاق بالتراضي: محكمة إقامة أحد الزوجين باختيارهما.",
+          "en": "Divorce or return: the court of the conjugal home; divorce by mutual consent: the court where either spouse lives, at their choice."
+        },
+        "when": {
+          "any": [
+            {
+              "slot": "requests",
+              "includes": "divorce"
+            },
+            {
+              "slot": "requests",
+              "includes": "tatliq"
+            },
+            {
+              "slot": "requests",
+              "includes": "khul"
+            }
+          ]
+        },
+        "basis": [
+          "b35",
+          "b38",
+          "b45"
+        ]
+      },
+      {
+        "id": "t4",
+        "rule": {
+          "ar": "الحضانة وحق الزيارة والرخص الإدارية للقاصر المحضون: محكمة مكان ممارسة الحضانة.",
+          "en": "Custody, visitation and administrative permissions for the child in custody: the court where custody is exercised."
+        },
+        "when": {
+          "any": [
+            {
+              "slot": "requests",
+              "includes": "custody"
+            },
+            {
+              "slot": "requests",
+              "includes": "custody_transfer"
+            },
+            {
+              "slot": "requests",
+              "includes": "visitation"
+            }
+          ]
+        },
+        "basis": [
+          "b35",
+          "b39"
+        ]
+      },
+      {
+        "id": "t5",
+        "rule": {
+          "ar": "النفقة الغذائية: محكمة موطن الدائن بها.",
+          "en": "Maintenance: the court where the creditor of it has his domicile."
+        },
+        "when": {
+          "slot": "requests",
+          "includes": "maintenance"
+        },
+        "basis": [
+          "b35",
+          "b40"
+        ]
+      },
+      {
+        "id": "t6",
+        "rule": {
+          "ar": "متاع بيت الزوجية: محكمة المسكن الزوجي.",
+          "en": "Household goods: the court of the conjugal home."
+        },
+        "when": {
+          "slot": "dispute_is_family",
+          "is": "yes"
+        },
+        "basis": [
+          "b35",
+          "b41"
+        ]
+      },
+      {
+        "id": "t7",
+        "rule": {
+          "ar": "الترخيص بالزواج: محكمة مكان طالب الترخيص.",
+          "en": "Authorisation to marry: the court where the applicant is."
+        },
+        "when": {
+          "slot": "dispute_is_family",
+          "is": "yes"
+        },
+        "basis": [
+          "b35",
+          "b42"
+        ]
+      },
+      {
+        "id": "t8",
+        "rule": {
+          "ar": "المنازعة في الصداق: محكمة موطن المدعى عليه.",
+          "en": "A dispute on the dowry: the court where the defendant has his domicile."
+        },
+        "when": {
+          "slot": "dispute_is_family",
+          "is": "yes"
+        },
+        "basis": [
+          "b35",
+          "b43"
+        ]
+      },
+      {
+        "id": "t9",
+        "rule": {
+          "ar": "الولاية: محكمة مكان ممارستها.",
+          "en": "Guardianship: the court where it is exercised."
+        },
+        "when": {
+          "slot": "requests",
+          "includes": "guardianship"
+        },
+        "basis": [
+          "b35",
+          "b44"
+        ]
+      }
+    ]
+  },
+  "boundaries": [
+    {
+      "id": "n1",
+      "looksLike": {
+        "ar": "عريضة مشتركة للطلاق بالتراضي",
+        "en": "A joint petition for divorce by mutual consent"
+      },
+      "isActually": "outside:divorce-by-consent-barred",
+      "tellingFacts": [
+        {
+          "ar": "أحد الزوجين تحت التقديم",
+          "en": "One spouse is under curatorship"
+        },
+        {
+          "ar": "اختلال في القدرات الذهنية يمنعه من التعبير عن إرادته، يثبته طبيب مختص",
+          "en": "A mental impairment prevents him from expressing his will, established by a specialist doctor"
+        }
+      ],
+      "when": {
+        "all": [
+          {
+            "slot": "divorce_by_mutual_consent",
+            "is": "yes"
+          },
+          {
+            "slot": "spouse_under_curatorship_or_impaired",
+            "is": "yes"
+          }
+        ]
+      },
+      "slots": [
+        "divorce_by_mutual_consent",
+        "spouse_under_curatorship_or_impaired"
+      ],
+      "message": {
+        "ar": "المادة 432: لا يقدم طلب الطلاق بالتراضي إذا كان أحد الزوجين تحت التقديم أو ظهر عليه اختلال في قدراته الذهنية. تحقق من حالة الزوجين.",
+        "en": "Article 432: a request for divorce by mutual consent is not made where a spouse is under curatorship or shows a mental impairment. Check the spouses' situation."
+      },
+      "basis": [
+        "b51"
+      ]
+    }
+  ],
+  "openPoints": [
+    {
+      "id": "o1",
+      "question": {
+        "ar": "هل يمكن تدارك بيان ناقص من بيانات المادة 15 بعد إيداع العريضة؟",
+        "en": "Can a missing mention of the petition be made good after the filing?"
+      },
+      "why": {
+        "ar": "المواد المتعلقة بالتصحيح تتحدث عن البطلان، ونص بيانات العريضة يتحدث عن عدم القبول شكلا.",
+        "en": "The articles on correction speak of nullity, while the text on the petition's mentions speaks of inadmissibility in form."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "يمكن التدارك قياسا على تصحيح الإجراء الباطل.",
+            "en": "It can be made good by analogy with the correction of a void act."
+          },
+          "basis": [
+            "b26",
+            "b27"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "لا تدارك لأن النص يرتب عدم القبول لا البطلان.",
+            "en": "It cannot, because the text attaches inadmissibility and not nullity."
+          },
+          "basis": [
+            "b5"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "يمنع التصدير النظيف حتى تستكمل البيانات قبل الإيداع.",
+        "en": "Block the clean export until the mentions are complete before the filing."
+      },
+      "grade": "C",
+      "refs": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5"
+      ]
+    },
+    {
+      "id": "o2",
+      "question": {
+        "ar": "هل يمدد أجل التكليف بالحضور إلى ثلاثة أشهر في المجموع أم يزاد عليه ثلاثة أشهر؟",
+        "en": "Is the summons period extended to three months in all, or increased by three months?"
+      },
+      "why": {
+        "ar": "النص العربي يقول يمدد إلى ثلاثة أشهر، والنص الفرنسي يقول يزاد بثلاثة أشهر.",
+        "en": "The Arabic says the period is extended to three months; the French says it is increased by three months."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "الأجل ثلاثة أشهر في المجموع (النص العربي).",
+            "en": "Three months in all (the Arabic)."
+          },
+          "basis": [
+            "b14"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "عشرون يوما وثلاثة أشهر (النص الفرنسي).",
+            "en": "Twenty days plus three months (the French)."
+          },
+          "basis": [
+            "b13"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "اتباع النص العربي، مع تنبيه المحامي إلى الاختلاف.",
+        "en": "Follow the Arabic and tell the lawyer of the difference."
+      },
+      "grade": "C",
+      "refs": [
+        "b14"
+      ]
+    },
+    {
+      "id": "o3",
+      "question": {
+        "ar": "ما أثر عدم دفع الرسوم عند الإيداع؟",
+        "en": "What is the effect of non-payment of the fees at the filing?"
+      },
+      "why": {
+        "ar": "النص يمنع القيد دون الرسوم ولا يقول إن العريضة غير مقبولة.",
+        "en": "The text bars registration without the fees and does not say the petition is inadmissible."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "لا تقيد العريضة ويمكن دفع الرسوم ثم قيدها.",
+            "en": "The petition is not registered and can be registered once the fees are paid."
+          },
+          "basis": [
+            "b15"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "تنبيه فقط دون منع التصدير.",
+        "en": "Warn only, without blocking the export."
+      },
+      "grade": "C",
+      "refs": [
+        "p9"
+      ]
+    },
+    {
+      "id": "o4",
+      "question": {
+        "ar": "ما مبلغ الرسوم القضائية ومن يعفى منها؟",
+        "en": "What is the amount of the judicial fees and who is exempt?"
+      },
+      "why": {
+        "ar": "نص الرسوم وتعريفتها وقانون المساعدة القضائية ليست في المخزن، وما أعتقده من الذاكرة أن الإعفاء ينظمه قانون المساعدة القضائية.",
+        "en": "The fee tariff and the legal-aid law are not in the store; from memory the exemption is governed by the legal-aid law."
+      },
+      "protectiveReading": {
+        "ar": "السؤال عن الإعفاء دون افتراضه.",
+        "en": "Ask about the exemption and never assume it."
+      },
+      "grade": "D",
+      "refs": [
+        "p9",
+        "doc4"
+      ]
+    },
+    {
+      "id": "o5",
+      "question": {
+        "ar": "هل لشروط الشكل في المادة 14 جزاء؟",
+        "en": "Do the formalities of the filing have a sanction?"
+      },
+      "why": {
+        "ar": "المادة تذكر الكتابة والتوقيع والتاريخ والنسخ ولا تذكر جزاء، والبطلان الشكلي يحتاج نصا صريحا.",
+        "en": "The article lists writing, signature, date and copies without a sanction, and nullity in form needs an express text."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "لا جزاء دون نص صريح.",
+            "en": "No sanction without an express text."
+          },
+          "basis": [
+            "b33"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "يعتبر غياب التوقيع انعداما للعريضة.",
+            "en": "A missing signature leaves no petition at all."
+          },
+          "basis": [
+            "b4"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "تنبيه إلى الشروط دون منع.",
+        "en": "Warn about the formalities without blocking."
+      },
+      "grade": "C",
+      "refs": [
+        "p7",
+        "p8"
+      ]
+    },
+    {
+      "id": "o6",
+      "question": {
+        "ar": "هل يقتصر الإشهار العقاري على العقار المشهر؟",
+        "en": "Is publication limited to property already published?"
+      },
+      "why": {
+        "ar": "النص العربي يقول عقار أو حق عيني عقاري مشهر، والنص الفرنسي لا يذكر الشهر.",
+        "en": "The Arabic says published real property or real right; the French does not mention publication."
+      },
+      "protectiveReading": {
+        "ar": "تتولى وحدة الإشهار العقاري هذه المسألة؛ هنا إشارة فقط.",
+        "en": "The land-registry-publication module carries the question; this record is only a pointer."
+      },
+      "grade": "C",
+      "refs": [
+        "b17"
+      ]
+    },
+    {
+      "id": "o7",
+      "question": {
+        "ar": "هل المادة 426 تخص متاع بيت الزوجية أم آثار المسكن الزوجي؟",
+        "en": "Does the article on territory concern the household goods or the effects of the conjugal home?"
+      },
+      "why": {
+        "ar": "النص العربي يذكر متاع بيت الزوجية والفرنسي آثار المسكن الزوجي.",
+        "en": "The Arabic names the household goods; the French the effects of the conjugal home."
+      },
+      "protectiveReading": {
+        "ar": "اتباع النص العربي.",
+        "en": "Follow the Arabic."
+      },
+      "grade": "C",
+      "refs": [
+        "t6",
+        "b41"
+      ]
+    },
+    {
+      "id": "o8",
+      "question": {
+        "ar": "كيف يمثل أجل العشرين يوما بين التكليف بالحضور وأول جلسة؟",
+        "en": "How is the twenty-day gap between the summons and the first hearing to be represented?"
+      },
+      "why": {
+        "ar": "هذا الأجل يحسب إلى تاريخ الجلسة لا إلى تاريخ العريضة، فلا يصلح معه نموذج الآجال المتاح.",
+        "en": "The gap runs to the hearing date and not to the petition date, so the deadline model cannot carry it."
+      },
+      "protectiveReading": {
+        "ar": "يبقى بيانا إجرائيا دون أثر على التصدير.",
+        "en": "It stays a procedural statement without effect on the export."
+      },
+      "grade": "C",
+      "refs": [
+        "b13",
+        "b14"
+      ]
+    },
+    {
+      "id": "o9",
+      "question": {
+        "ar": "ما سن الأهلية الكاملة وما قواعد تمثيل ناقص الأهلية؟",
+        "en": "What is the age of full capacity, and how is a person of limited capacity represented?"
+      },
+      "why": {
+        "ar": "مواد القانون المدني عن الأهلية ليست في المخزن، وما أعتقده من الذاكرة أن سن الرشد تسع عشرة سنة.",
+        "en": "The civil-code articles on capacity are not in the store; from memory the age of majority is nineteen."
+      },
+      "protectiveReading": {
+        "ar": "السؤال عن الأهلية دون افتراضها.",
+        "en": "Ask about capacity and never assume it."
+      },
+      "grade": "D",
+      "refs": [
+        "p10",
+        "p11"
+      ]
+    }
+  ],
+  "checklist": [
+    {
+      "id": "k1",
+      "item": "Does the plaintiff have capacity to sue (full civil capacity, or a legal representative)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p10",
+        "p11",
+        "b23",
+        "b24",
+        "b25"
+      ],
+      "note": "The age of capacity is not in the store (see k31)."
+    },
+    {
+      "id": "k2",
+      "item": "Does the plaintiff have standing (a personal right or legal position at stake)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p12",
+        "b1",
+        "b28"
+      ]
+    },
+    {
+      "id": "k3",
+      "item": "Does the plaintiff have a legitimate interest, existing or at least potential?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p13",
+        "b1",
+        "b28"
+      ]
+    },
+    {
+      "id": "k4",
+      "item": "Does the court raise lack of standing or of interest of its own motion, or only on a party's objection?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b2",
+        "b3",
+        "b25",
+        "b29",
+        "b30"
+      ],
+      "note": "Standing and authorisation are raised of the judge's own motion; the plea of inadmissibility may be made at any stage; the judge raises it of his own motion when of public order."
+    },
+    {
+      "id": "k5",
+      "item": "Is the petition in writing, in Arabic, signed by the plaintiff or his lawyer, and dated?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p7",
+        "p15",
+        "b4",
+        "b18"
+      ]
+    },
+    {
+      "id": "k6",
+      "item": "Is the petition filed at the court registry with enough copies for the defendants?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p8",
+        "doc1",
+        "b4",
+        "b12"
+      ]
+    },
+    {
+      "id": "k7",
+      "item": "Does the petition name the court that will hear it?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p1",
+        "b6"
+      ]
+    },
+    {
+      "id": "k8",
+      "item": "Does the petition give the plaintiff's surname, first name and domicile?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p2",
+        "b7"
+      ]
+    },
+    {
+      "id": "k9",
+      "item": "Does the petition give the defendant's surname, first name and domicile, or his last known domicile?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p3",
+        "b8"
+      ]
+    },
+    {
+      "id": "k10",
+      "item": "For a legal person, does the petition give its nature, name, registered seat and its representative?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p4",
+        "b9"
+      ]
+    },
+    {
+      "id": "k11",
+      "item": "Does the petition give a brief statement of the facts?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p5",
+        "b10"
+      ]
+    },
+    {
+      "id": "k12",
+      "item": "Does the petition state the claims (what is asked of the court) and the grounds relied on?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p5",
+        "b10",
+        "b34"
+      ]
+    },
+    {
+      "id": "k13",
+      "item": "Does the petition list the documents and evidence attached to it?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p6",
+        "b11"
+      ]
+    },
+    {
+      "id": "k14",
+      "item": "Are the supporting documents attached in the right number of copies?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "doc2",
+        "doc3",
+        "b21",
+        "b22"
+      ],
+      "note": "The text asks for originals, official copies or certified true copies, not a number of copies; the copies of the petition itself are doc1."
+    },
+    {
+      "id": "k15",
+      "item": "What is the consequence if a mandatory element is missing: inadmissibility, a request to regularise, or nothing?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5",
+        "p6",
+        "b5",
+        "o1"
+      ]
+    },
+    {
+      "id": "k16",
+      "item": "Can the defect be cured later, and until when?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "o1",
+        "b26",
+        "b27"
+      ],
+      "note": "The correction articles speak of nullity; whether they reach a missing mention is an open point."
+    },
+    {
+      "id": "k17",
+      "item": "Is the petition registered by the registry only after the judicial fees are paid?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p9",
+        "b15",
+        "b12"
+      ]
+    },
+    {
+      "id": "k18",
+      "item": "What fee is due at filing, and who is exempt (legal aid, the State, certain matters)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "o4"
+      ],
+      "note": "Searched the store's cpca articles 13 to 17 and the words fee and legal aid in all codes: no tariff and no exemption text; only the reservation unless the law provides otherwise."
+    },
+    {
+      "id": "k19",
+      "item": "What happens if the fee is not paid: refusal to register, a time to pay, or inadmissibility?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p9",
+        "b15",
+        "b16",
+        "o3"
+      ]
+    },
+    {
+      "id": "k20",
+      "item": "Does the petition have to state the date of the first hearing and the summons period?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b12",
+        "b13",
+        "b14",
+        "o2",
+        "o8"
+      ],
+      "note": "The registrar writes the case number and the hearing date; the petition itself does not have to state them."
+    },
+    {
+      "id": "k21",
+      "item": "Is a lawyer mandatory before this court or this kind of claim?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b20"
+      ]
+    },
+    {
+      "id": "k22",
+      "item": "Must the petition cite the legal text relied on?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "The list of mentions asks for the facts, the claims and the grounds; no paragraph asks for the legal text to be cited."
+    },
+    {
+      "id": "k23",
+      "item": "Must the petition state the amount claimed when it is a money claim?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "No paragraph of the list of mentions asks for an amount; the value of the dispute is fixed by the claims. Amounts are handled by the accessory-requests and proof modules."
+    },
+    {
+      "id": "k24",
+      "item": "Does a joinder of several claims or several defendants change the petition's form?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "The petition has as many copies as there are parties; no other change of form is stated (see b4)."
+    },
+    {
+      "id": "k25",
+      "item": "Does the family-matters section require anything more in the petition (the conciliation, the public prosecutor)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p16",
+        "doc5",
+        "n1",
+        "b45",
+        "b46",
+        "b47",
+        "b48",
+        "b49",
+        "b50",
+        "b51",
+        "t1",
+        "t3"
+      ],
+      "note": "Conciliation itself belongs to the conciliation-mediation module."
+    },
+    {
+      "id": "k26",
+      "item": "Is a petition lodged by a person without standing void or only inadmissible?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b28",
+        "p12"
+      ],
+      "note": "The plea of inadmissibility covers lack of standing; the nullity article lists capacity, not standing."
+    },
+    {
+      "id": "k27",
+      "item": "Does the interest have to exist at filing, or may it arise later?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b1",
+        "p13"
+      ],
+      "note": "The text accepts an interest existing or potential; it says nothing of one arising later."
+    },
+    {
+      "id": "k28",
+      "item": "Can a third party intervene or be called in, and how must that request be made?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b31",
+        "b32"
+      ]
+    },
+    {
+      "id": "k29",
+      "item": "Which prior steps must be shown with the petition (notice, conciliation record, publication)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "refs": [
+        "b17"
+      ],
+      "note": "Carried by the formal-notice, labour-prelitigation, conciliation-mediation and land-registry-publication modules; only a pointer to the publication article is kept (b17)."
+    },
+    {
+      "id": "k30",
+      "item": "Does the petition interrupt a limitation period by being filed, and from what date?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "Carried by the periods module; no article of this unit speaks of it."
+    },
+    {
+      "id": "k31",
+      "item": "What is the age of full civil capacity and how is a person of limited capacity represented?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "o9"
+      ],
+      "note": "Searched the civil-code text view for articles 40 to 51: none in the store."
+    },
+    {
+      "id": "k32",
+      "item": "Does the store carry a note on a cited article of the petition chapter (a date from which a wording applies)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "The cited articles of the code of civil and administrative procedure carry no note; the only note in that code concerns the sections of the court and is not cited here."
+    }
+  ],
+  "examples": [
+    {
+      "id": "ex1",
+      "by": "derivationB",
+      "title": "A clean petition for a debt, filed by an individual.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "petition_names_court": "yes",
+        "petition_gives_plaintiff_identity": "yes",
+        "petition_gives_defendant_identity": "yes",
+        "party_is_legal_person": "no",
+        "petition_states_facts_claims_grounds": "yes",
+        "petition_lists_documents": "yes",
+        "petition_signed_dated": "yes",
+        "petition_copies_for_each_party": "yes",
+        "court_fees_paid": "yes",
+        "plaintiff_has_capacity": "yes",
+        "plaintiff_acts_through_representative": "no",
+        "plaintiff_has_standing": "yes",
+        "plaintiff_has_interest": "yes",
+        "authorisation_required_by_law": "no",
+        "document_not_in_arabic": "no",
+        "divorce_by_mutual_consent": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          },
+          {
+            "ref": "p2",
+            "effect": "none"
+          },
+          {
+            "ref": "p3",
+            "effect": "none"
+          },
+          {
+            "ref": "p4",
+            "effect": "none"
+          },
+          {
+            "ref": "p5",
+            "effect": "none"
+          },
+          {
+            "ref": "p6",
+            "effect": "none"
+          },
+          {
+            "ref": "p7",
+            "effect": "none"
+          },
+          {
+            "ref": "p8",
+            "effect": "none"
+          },
+          {
+            "ref": "p9",
+            "effect": "none"
+          },
+          {
+            "ref": "p10",
+            "effect": "none"
+          },
+          {
+            "ref": "p11",
+            "effect": "none"
+          },
+          {
+            "ref": "p12",
+            "effect": "none"
+          },
+          {
+            "ref": "p13",
+            "effect": "none"
+          },
+          {
+            "ref": "p14",
+            "effect": "none"
+          },
+          {
+            "ref": "p15",
+            "effect": "none"
+          },
+          {
+            "ref": "p16",
+            "effect": "none"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex2",
+      "by": "derivationB",
+      "title": "A company sues for unpaid invoices and the petition omits its registered seat and its representative's capacity.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "petition_names_court": "yes",
+        "petition_gives_plaintiff_identity": "yes",
+        "petition_gives_defendant_identity": "yes",
+        "party_is_legal_person": "yes",
+        "petition_gives_legal_person_details": "no",
+        "petition_states_facts_claims_grounds": "yes",
+        "petition_lists_documents": "yes",
+        "petition_signed_dated": "yes",
+        "petition_copies_for_each_party": "yes",
+        "court_fees_paid": "yes",
+        "plaintiff_has_capacity": "yes",
+        "plaintiff_acts_through_representative": "yes",
+        "representative_has_authority": "yes",
+        "plaintiff_has_standing": "yes",
+        "plaintiff_has_interest": "yes",
+        "authorisation_required_by_law": "no",
+        "document_not_in_arabic": "no",
+        "divorce_by_mutual_consent": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p4",
+            "effect": "blockCleanExport"
+          },
+          {
+            "ref": "p11",
+            "effect": "none"
+          },
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex3",
+      "by": "derivationB",
+      "title": "Near miss: an individual plaintiff, so the legal-person mention is not asked even though the answer is no.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "petition_names_court": "yes",
+        "petition_gives_plaintiff_identity": "yes",
+        "petition_gives_defendant_identity": "yes",
+        "party_is_legal_person": "no",
+        "petition_gives_legal_person_details": "no",
+        "petition_states_facts_claims_grounds": "yes",
+        "petition_lists_documents": "yes",
+        "petition_signed_dated": "yes",
+        "petition_copies_for_each_party": "yes",
+        "court_fees_paid": "yes",
+        "plaintiff_has_capacity": "yes",
+        "plaintiff_acts_through_representative": "no",
+        "plaintiff_has_standing": "yes",
+        "plaintiff_has_interest": "yes",
+        "authorisation_required_by_law": "no",
+        "document_not_in_arabic": "no",
+        "divorce_by_mutual_consent": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p4",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex4",
+      "by": "derivationB",
+      "title": "The defendant's domicile is left out of the draft.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "petition_names_court": "yes",
+        "petition_gives_plaintiff_identity": "yes",
+        "petition_gives_defendant_identity": "no",
+        "party_is_legal_person": "no",
+        "petition_states_facts_claims_grounds": "yes",
+        "petition_lists_documents": "yes",
+        "petition_signed_dated": "yes",
+        "petition_copies_for_each_party": "yes",
+        "court_fees_paid": "yes",
+        "plaintiff_has_capacity": "yes",
+        "plaintiff_acts_through_representative": "no",
+        "plaintiff_has_standing": "yes",
+        "plaintiff_has_interest": "yes",
+        "authorisation_required_by_law": "no",
+        "document_not_in_arabic": "no",
+        "divorce_by_mutual_consent": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p3",
+            "effect": "blockCleanExport"
+          },
+          {
+            "ref": "p2",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex5",
+      "by": "derivationB",
+      "title": "Fees not paid and no exemption: a warning.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "petition_names_court": "yes",
+        "petition_gives_plaintiff_identity": "yes",
+        "petition_gives_defendant_identity": "yes",
+        "party_is_legal_person": "no",
+        "petition_states_facts_claims_grounds": "yes",
+        "petition_lists_documents": "yes",
+        "petition_signed_dated": "yes",
+        "petition_copies_for_each_party": "yes",
+        "court_fees_paid": "no",
+        "fee_exemption_applies": "no",
+        "plaintiff_has_capacity": "yes",
+        "plaintiff_acts_through_representative": "no",
+        "plaintiff_has_standing": "yes",
+        "plaintiff_has_interest": "yes",
+        "authorisation_required_by_law": "no",
+        "document_not_in_arabic": "no",
+        "divorce_by_mutual_consent": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p9",
+            "effect": "warn"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex6",
+      "by": "derivationB",
+      "title": "Fees not paid but the plaintiff has legal aid: the exemption applies.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "court_fees_paid": "no",
+        "fee_exemption_applies": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p9",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex7",
+      "by": "derivationB",
+      "title": "Fees not paid and the exemption is not known: the rule asks.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "petition_names_court": "yes",
+        "petition_gives_plaintiff_identity": "yes",
+        "petition_gives_defendant_identity": "yes",
+        "party_is_legal_person": "no",
+        "petition_states_facts_claims_grounds": "yes",
+        "petition_lists_documents": "yes",
+        "petition_signed_dated": "yes",
+        "petition_copies_for_each_party": "yes",
+        "court_fees_paid": "no",
+        "plaintiff_has_capacity": "yes",
+        "plaintiff_acts_through_representative": "no",
+        "plaintiff_has_standing": "yes",
+        "plaintiff_has_interest": "yes",
+        "authorisation_required_by_law": "no",
+        "document_not_in_arabic": "no",
+        "divorce_by_mutual_consent": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p9",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "fee_exemption_applies"
+        ]
+      }
+    },
+    {
+      "id": "ex8",
+      "by": "derivationB",
+      "title": "Nothing is known about a new draft: every rule asks.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": []
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "ask"
+          },
+          {
+            "ref": "p2",
+            "effect": "ask"
+          },
+          {
+            "ref": "p3",
+            "effect": "ask"
+          },
+          {
+            "ref": "p4",
+            "effect": "ask"
+          },
+          {
+            "ref": "p5",
+            "effect": "ask"
+          },
+          {
+            "ref": "p6",
+            "effect": "ask"
+          },
+          {
+            "ref": "p7",
+            "effect": "ask"
+          },
+          {
+            "ref": "p8",
+            "effect": "ask"
+          },
+          {
+            "ref": "p9",
+            "effect": "ask"
+          },
+          {
+            "ref": "p10",
+            "effect": "ask"
+          },
+          {
+            "ref": "p11",
+            "effect": "ask"
+          },
+          {
+            "ref": "p12",
+            "effect": "ask"
+          },
+          {
+            "ref": "p13",
+            "effect": "ask"
+          },
+          {
+            "ref": "p14",
+            "effect": "ask"
+          },
+          {
+            "ref": "p15",
+            "effect": "ask"
+          },
+          {
+            "ref": "p16",
+            "effect": "none"
+          },
+          {
+            "ref": "n1",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "petition_names_court",
+          "petition_gives_plaintiff_identity",
+          "petition_gives_defendant_identity",
+          "party_is_legal_person",
+          "petition_states_facts_claims_grounds",
+          "petition_lists_documents",
+          "petition_signed_dated",
+          "petition_copies_for_each_party",
+          "court_fees_paid",
+          "plaintiff_has_capacity",
+          "plaintiff_acts_through_representative",
+          "plaintiff_has_standing",
+          "plaintiff_has_interest",
+          "authorisation_required_by_law",
+          "document_not_in_arabic",
+          "divorce_by_mutual_consent",
+          "spouse_under_curatorship_or_impaired"
+        ]
+      }
+    },
+    {
+      "id": "ex9",
+      "by": "derivationB",
+      "title": "The plaintiff has no standing against this defendant and no interest.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "plaintiff_has_standing": "no",
+        "plaintiff_has_interest": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p12",
+            "effect": "warn"
+          },
+          {
+            "ref": "p13",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex10",
+      "by": "derivationB",
+      "title": "A minor sues without a valid representative.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "plaintiff_has_capacity": "no",
+        "plaintiff_acts_through_representative": "yes",
+        "representative_has_authority": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p10",
+            "effect": "warn"
+          },
+          {
+            "ref": "p11",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex11",
+      "by": "derivationB",
+      "title": "A claim that needs an authorisation which has not been obtained.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "authorisation_required_by_law": "yes",
+        "authorisation_obtained": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p14",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex12",
+      "by": "derivationB",
+      "title": "A foreign-language contract is attached without an official translation.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "document_not_in_arabic": "yes",
+        "official_translation_attached": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p15",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex13",
+      "by": "derivationB",
+      "title": "A divorce petition not yet served on the defendant and the public prosecutor.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": [
+          "divorce"
+        ],
+        "divorce_copy_served_on_defendant_and_prosecutor": "no",
+        "divorce_by_mutual_consent": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p16",
+            "effect": "warn"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex14",
+      "by": "derivationB",
+      "title": "A joint petition for divorce by consent while one spouse is under curatorship.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": [
+          "divorce"
+        ],
+        "divorce_by_mutual_consent": "yes",
+        "spouse_under_curatorship_or_impaired": "yes",
+        "divorce_copy_served_on_defendant_and_prosecutor": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "warn"
+          },
+          {
+            "ref": "p16",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex15",
+      "by": "derivationB",
+      "title": "A petition not signed and no copies for the parties.",
+      "petitionDate": "2026-03-10",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "petition_signed_dated": "no",
+        "petition_copies_for_each_party": "no",
+        "petition_lists_documents": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p7",
+            "effect": "warn"
+          },
+          {
+            "ref": "p8",
+            "effect": "warn"
+          },
+          {
+            "ref": "p6",
+            "effect": "warn"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -9,6 +9,7 @@ Never run on the transcript of an agent that saw a hidden set or the mirror set.
 from __future__ import annotations
 
 import json
+import glob
 import os
 import re
 import sys
@@ -36,6 +37,9 @@ def transcript_path(agent: str, session: str | None = None, projects: str = PROJ
         path = os.path.join(projects, s, "subagents", f"agent-{agent}.jsonl")
         if os.path.isfile(path):
             return path
+        # An agent of a workflow keeps its transcript in the workflow run's folder.
+        for run in glob.glob(os.path.join(projects, s, "subagents", "workflows", "*", f"agent-{agent}.jsonl")):
+            return run
     raise Refused(2, f"no transcript for agent {agent} under {projects}")
 
 

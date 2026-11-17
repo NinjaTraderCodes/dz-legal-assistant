@@ -157,6 +157,19 @@ public sealed partial class SamplerTests
     }
 
     [Fact]
+    public void ALaterBatchOfASetHasItsOwnIdsAndKeepsTheSetsName()
+    {
+        // `notes sample --set dev --batch 2` (17 November 2026): the ids carry «dev-b2», so they never meet the first
+        // draw's «s-dev-00001» …; the scenarios still belong to set dev, so the test-set rules apply to them.
+        var files = NotesFiles.Find(null);
+        var draws = new ScenarioSampler(SamplerData.Load(files), SampleCommand.FinalRecords(files))
+            .Draw(new SampleRequest("dev", 30, 1612, Tag: "dev-b2"));
+        Assert.All(draws, s => Assert.StartsWith("s-dev-b2-", (string)s["id"]!, StringComparison.Ordinal));
+        Assert.All(draws, s => Assert.StartsWith("f-dev-b2-", (string)s["family"]!, StringComparison.Ordinal));
+        Assert.All(draws, s => Assert.Equal("dev", (string)s["set"]!));
+    }
+
+    [Fact]
     public void ADissolutionBesideAnEarlierDivorceIsFoundAndTheRulesPairsStillOccur()
     {
         JsonObject S(string polarity, params string[] claims) => new()

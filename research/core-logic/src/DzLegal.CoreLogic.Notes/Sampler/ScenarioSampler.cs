@@ -7,7 +7,8 @@ using DzLegal.CoreLogic.Rules;
 namespace DzLegal.CoreLogic.Notes.Sampler;
 
 /// <summary>What one <c>notes sample</c> draws: <paramref name="Groups"/> polarity groups of 3 to 4 count inside <paramref name="Count"/>.</summary>
-public sealed record SampleRequest(string Set, int Count, int Seed, int Groups = 0);
+/// <param name="Tag">The ids' tag: the set's name, or «dev-b2» for a later batch of a set (ids never collide).</param>
+public sealed record SampleRequest(string Set, int Count, int Seed, int Groups = 0, string? Tag = null);
 
 /// <summary>
 /// The scenario sampler, version 1 (specs/scenario-sampler.md): code decides the case, the writer only words it. Every draw
@@ -45,7 +46,7 @@ public sealed class ScenarioSampler
         var output = new List<JsonObject>();
         var groupsMade = 0;
         var draw = 0;
-        var tag = request.Set.ToLowerInvariant();
+        var tag = (request.Tag ?? request.Set).ToLowerInvariant();
         while (output.Count < request.Count)
         {
             var family = $"f-{tag}-{output.Count + 1:00000}";

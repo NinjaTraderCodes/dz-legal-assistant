@@ -20,7 +20,15 @@ public static class SampleCommand
         ArgumentNullException.ThrowIfNull(options);
         int Int(string name, int fallback) =>
             options.TryGetValue(name, out var v) ? int.Parse(v, CultureInfo.InvariantCulture) : fallback;
-        var request = new SampleRequest(set, Int("--count", 0), Int("--seed", -1), Int("--groups", 0));
+        // --batch <k> (k >= 2) draws a later batch into a set already drawn (the owner, 17 November 2026: dev and challenge
+        // grow batch by batch): its ids carry «<set>-b<k>», its record is sets\<set>.sample-b<k>.json, nothing drawn is redrawn.
+        var batch = Int("--batch", 1);
+        if (batch < 1)
+        {
+            throw new ArgumentException("--batch is 2 or more (1 is the set's first draw)");
+        }
+
+        var request = new SampleRequest(set, Int("--count", 0), Int("--seed", -1), Int("--groups", 0), batch > 1 ? $"{set}-b{batch}" : null);
         if (request.Count <= 0 || request.Seed < 0)
         {
             throw new ArgumentException("notes sample needs --count <n> and --seed <n>");
@@ -58,15 +66,27 @@ public static class SampleCommand
         var work = options.GetValueOrDefault("--work") ?? @"C:\Users\TheShadow\dz-core-research\notes-work";
         NotesLoader.Guard(work);
         var path = Path.Combine(work, "scenarios", set + ".jsonl");
-        var manifest = Path.Combine(work, "sets", set + ".sample.json");
-        if (File.Exists(path) || File.Exists(manifest))
+        var manifest = Path.Combine(work, "sets", set + (batch > 1 ? $".sample-b{batch}.json" : ".sample.json"));
+        if (batch == 1 && (File.Exists(path) || File.Exists(manifest)))
         {
-            throw new InvalidOperationException($"set {set} is already drawn ({path}): sets are never redrawn");
+            throw new InvalidOperationException($"set {set} is already drawn ({path}): sets are never redrawn (a later batch: --batch <k>)");
+        }
+
+        if (batch > 1 && (!File.Exists(path) || File.Exists(manifest)))
+        {
+            throw new InvalidOperationException($"batch {batch} of set {set}: the set must exist and the batch must be new ({manifest})");
         }
 
         Directory.CreateDirectory(Path.GetDirectoryName(path)!);
         Directory.CreateDirectory(Path.GetDirectoryName(manifest)!);
-        NotesJson.Write(path, lines);
+        if (batch > 1)
+        {
+            File.AppendAllText(path, lines);
+        }
+        else
+        {
+            NotesJson.Write(path, lines);
+        }
         var writerOf = WriterOf(scenarios, options);
         File.AppendAllText(Path.Combine(work, "queue.jsonl"), string.Concat(scenarios.Select(s => new JsonObject
         {
@@ -75,7 +95,7 @@ public static class SampleCommand
         }.ToJsonString(NotesJson.Compact) + "\n")));
         var record = new JsonObject
         {
-            ["set"] = set, ["count"] = scenarios.Count, ["seed"] = request.Seed, ["groups"] = request.Groups,
+            ["set"] = set, ["batch"] = batch, ["count"] = scenarios.Count, ["seed"] = request.Seed, ["groups"] = request.Groups,
             ["writers"] = new JsonObject([.. writerOf.Values.GroupBy(w => w, StringComparer.Ordinal).OrderBy(g => g.Key, StringComparer.Ordinal)
                 .Select(g => new KeyValuePair<string, JsonNode?>(g.Key, scenarios.Count(s => writerOf[(string)s["family"]!] == g.Key)))]),
             ["sampler"] = new JsonObject { ["version"] = ScenarioSampler.Version, ["commit"] = commit },

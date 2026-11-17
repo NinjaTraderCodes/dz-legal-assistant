@@ -115,7 +115,8 @@ public sealed partial class CodeChecks
                 var field = Enum.Parse<NoteField>((string)q["field"]!, ignoreCase: true);
                 var read = kind == "date" ? DateParser.Read((string)q["quote"]!, field) : AmountParser.Read((string)q["quote"]!, field);
                 if (!read.Any(r => r.Normalized == normal) &&
-                    !(kind == "date" && IsSameDayReference((string)q["quote"]!) && NoteWritesDate(note, normal)))
+                    !(kind == "date" && IsSameDayReference((string)q["quote"]!) && NoteWritesDate(note, normal)) &&
+                    !(kind == "amount" && IsAmountReference((string)q["quote"]!) && NoteWritesAmount(note, normal)))
                 {
                     found.Add($"values: {reference}: «{q["quote"]}» does not read as {normal}");
                 }
@@ -219,6 +220,36 @@ public sealed partial class CodeChecks
         ArgumentNullException.ThrowIfNull(quote);
         return SameDay().IsMatch(Normal(quote)) && DateParser.Read(quote, NoteField.Facts).Count == 0;
     }
+
+    /// <summary>
+    /// An amount given by reference to an amount written in the note (the labelling guide 1.3, section 8): words that point
+    /// back («المبلغ نفسه»، «بالمبلغ ذاته»، «المذكور»، «المبين أعلاه»، «الوارد أعلاه»، «المتقدم») or words that take a sum
+    /// whole («القرض كله»، «كامل المتأخر»، «المبلغ بأكمله»). Only when the words hold no amount of their own; the caller also
+    /// checks that the note writes the figure.
+    /// </summary>
+    public static bool IsAmountReference(string quote)
+    {
+        ArgumentNullException.ThrowIfNull(quote);
+        return AmountParser.Read(quote, NoteField.Facts).Count == 0 &&
+               (AmountPointer().IsMatch(Normal(quote)) || (AmountNoun().IsMatch(Normal(quote)) && AmountWhole().IsMatch(Normal(quote))));
+    }
+
+    /// <summary>True when one of the note's fields writes this amount.</summary>
+    public static bool NoteWritesAmount(JsonObject note, string normal)
+    {
+        ArgumentNullException.ThrowIfNull(note);
+        return Fields.Any(f => AmountParser.Read((string?)note[f] ?? "", Enum.Parse<NoteField>(f, ignoreCase: true)).Any(r => r.Normalized == normal));
+    }
+
+    // After Normal (level 2): hamza forms are bare alef, so «أعلاه» is «اعلاه».
+    [GeneratedRegex(@"نفسه|نفسها|ذاته|ذاتها|المذكور|المبين|الوارد|المقدر|المتقدم|المحدد\s+اعلاه|اعلاه")]
+    private static partial Regex AmountPointer();
+
+    [GeneratedRegex(@"المبلغ|القرض|الدين|الثمن|المتاخر|المتاخرات|المستحقات|القيمه|الاجور|البدلات")]
+    private static partial Regex AmountNoun();
+
+    [GeneratedRegex(@"كله|كلها|كامل|كاملا|كاملة|كامله|باكمله|باكملها|جميع")]
+    private static partial Regex AmountWhole();
 
     /// <summary>True when one of the note's fields writes this date.</summary>
     public static bool NoteWritesDate(JsonObject note, string normal)

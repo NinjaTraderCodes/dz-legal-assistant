@@ -148,6 +148,12 @@ public static class WriterLabels
             values.FirstOrDefault(v => (string)v!["kind"]! == "date" && (string?)v["normalized"] == normal)?["at"] is JsonObject written
                 ? written
                 : quote;
+        // An amount given by reference takes the amount as it is written elsewhere in the note (guide 1.3, section 8).
+        JsonObject AmountAt(JsonObject quote, string normal) =>
+            CodeChecks.IsAmountReference((string)quote["quote"]!) &&
+            values.FirstOrDefault(v => (string)v!["kind"]! == "amount" && (string?)v["normalized"] == normal)?["at"] is JsonObject written
+                ? written
+                : quote;
         var labels = new JsonObject { ["claims"] = new JsonArray([.. claims.Select(c => (JsonNode)c)]) };
         if ((string?)scenario["outsideKind"] is string kind)
         {
@@ -192,7 +198,7 @@ public static class WriterLabels
 
             if (e["amount"] is not null && First($"event-amount:{key}") is JsonObject aq)
             {
-                ev["amount"] = Value("amount", aq, Digits(e["amount"]!), e["contest"]?["amount"] is not null);
+                ev["amount"] = Value("amount", AmountAt(aq, Digits(e["amount"]!)), Digits(e["amount"]!), e["contest"]?["amount"] is not null);
             }
 
             events.Add(ev);
@@ -216,7 +222,7 @@ public static class WriterLabels
             var o = new JsonObject { ["kind"] = kind2, ["evidence"] = Q($"request:{kind2}") };
             if (r["amount"] is not null && First($"request-amount:{kind2}") is JsonObject rq)
             {
-                o["amount"] = Value("amount", rq, Digits(r["amount"]!), false);
+                o["amount"] = Value("amount", AmountAt(rq, Digits(r["amount"]!)), Digits(r["amount"]!), false);
             }
 
             requests.Add(o);
@@ -235,6 +241,7 @@ public static class WriterLabels
     {
         var entries = new List<(JsonObject At, string Kind, string Normal, SortedSet<string> Roles, bool Disputed)>();
         var sameDay = new List<(string Normal, string? Role)>();
+        var byReference = new List<(string Normal, string? Role)>();
         void Add(string reference, string kind, string normal, string? role, bool disputed)
         {
             foreach (var q in quotes.GetValueOrDefault(reference) ?? [])
@@ -243,6 +250,13 @@ public static class WriterLabels
                 if (kind == "date" && CodeChecks.IsSameDayReference((string)q["quote"]!))
                 {
                     sameDay.Add((normal, role));
+                    continue;
+                }
+
+                // An amount by reference (guide 1.3): likewise, the amount written once carries the role.
+                if (kind == "amount" && CodeChecks.IsAmountReference((string)q["quote"]!))
+                {
+                    byReference.Add((normal, role));
                     continue;
                 }
 
@@ -314,6 +328,14 @@ public static class WriterLabels
         foreach (var (normal, role) in sameDay.Where(x => x.Role is not null))
         {
             foreach (var entry in entries.Where(x => x.Kind == "date" && x.Normal == normal))
+            {
+                entry.Roles.Add(role!);
+            }
+        }
+
+        foreach (var (normal, role) in byReference.Where(x => x.Role is not null))
+        {
+            foreach (var entry in entries.Where(x => x.Kind == "amount" && x.Normal == normal))
             {
                 entry.Roles.Add(role!);
             }

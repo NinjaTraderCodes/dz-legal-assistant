@@ -194,6 +194,43 @@ public sealed class WritingTests : IDisposable
         Assert.False(CodeChecks.NoteWritesDate(alone, "2024-03-10"));
     }
 
+    /// <summary>
+    /// Guide 1.3, section 8: an amount given by reference («بالمبلغ نفسه») takes the amount written elsewhere in the note;
+    /// nothing new is added to the values, and the amount written once carries the role (the first training batch,
+    /// 17 November 2026: 14 of its 15 refused notes were this).
+    /// </summary>
+    [Fact]
+    public void AnAmountGivenByReferenceTakesTheAmountWrittenElsewhere()
+    {
+        var scenario = Scenario();
+        var note = Note(requests: "إلزام المشتري بدفع المبلغ نفسه وتعويض قدره 150.000 دج.");
+        foreach (var fact in note["facts_of_scenario"]!.AsArray().Where(f => (string)f!["ref"]! == "request-amount:payment"))
+        {
+            fact!["quotes"]![0]!["quote"] = "المبلغ نفسه";
+        }
+
+        foreach (var fact in note["facts_of_scenario"]!.AsArray().Where(f => (string)f!["ref"]! == "request:payment"))
+        {
+            fact!["quotes"]![0]!["quote"] = "إلزام المشتري بدفع المبلغ نفسه";
+        }
+
+        var pointed = WriterLabels.Point(scenario, note);
+        Assert.Empty(Checks().Run(scenario, note, pointed, ShortCard));
+        var labels = WriterLabels.Labels(Data, scenario, pointed.Quotes);
+        var written = labels["values"]!.AsArray().Where(v => (string)v!["normalized"]! == "1000000").ToList();
+        Assert.Single(written);  // only the place in the facts: no entry for «المبلغ نفسه»
+        Assert.Contains("payment", written[0]!["roles"]!.AsArray().Select(r => (string)r!));
+        var payment = labels["requests"]!.AsArray().Single(r => (string)r!["kind"]! == "payment")!;
+        Assert.Equal("facts", (string)payment["amount"]!["at"]!["field"]!);
+
+        Assert.True(CodeChecks.IsAmountReference("بالمبلغ ذاته"));
+        Assert.True(CodeChecks.IsAmountReference("المبلغ الوارد أعلاه"));
+        Assert.True(CodeChecks.IsAmountReference("القرض كله باق بذمته"));
+        Assert.False(CodeChecks.IsAmountReference("مبلغ 300.000 دج نفسه"));  // holds a figure of its own
+        Assert.False(CodeChecks.IsAmountReference("سلمته البضاعة كاملة"));  // whole, but of no sum
+        Assert.False(CodeChecks.NoteWritesAmount(Note(), "777"));
+    }
+
     [Fact]
     public void AGoodNotePassesTheCodeChecks()
     {

@@ -254,6 +254,12 @@ def message_articles(text: str) -> set[str]:
     return out
 
 
+def _two_last_days(words: str) -> bool:
+    """True for the definite dual «اليومين» alone (with a one-letter prefix or none): the two days a message compares."""
+    w = words.split()
+    return len(w) == 1 and (w[0] == "اليومين" or (w[0][:1] in PREFIXES and w[0][1:] == "اليومين"))
+
+
 def check_values(record: dict) -> dict:
     """The numbers are read from the text (record-checks.md, `check-values`). Returns {problems, notes}."""
     stmts = statements(record)
@@ -312,7 +318,9 @@ def check_values(record: dict) -> dict:
                 problems.append({"item": item_id(kind, x), "problem": "messageArticleNotInBasis", "lang": lang,
                                  "articles": stray})
             if kind == "deadline":
-                periods = read_periods(msg, bare=False) if lang == "ar" else []
+                # «اليومين» in a message names the two last days it compares (the owner's rule of 15 November: the
+                # earlier and the latest defensible last day), not a period of two days (the owner, 17 November 2026).
+                periods = [p for p in read_periods(msg, bare=False) if not _two_last_days(p["words"])] if lang == "ar" else []
                 wrong = [p for p in periods if (p["value"], p["unit"]) != (x["period"]["value"], x["period"]["unit"])]
                 if wrong:
                     problems.append({"item": x["id"], "problem": "messagePeriodDiffers", "read": wrong})

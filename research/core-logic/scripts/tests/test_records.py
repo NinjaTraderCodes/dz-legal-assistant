@@ -117,6 +117,17 @@ def test_check_values_checks_the_articles_a_message_names():
     assert "messageArticleNotInBasis" in {p["problem"] for p in rc.check_values(q)["problems"]}
 
 
+def test_a_message_comparing_the_two_last_days_is_no_two_day_period():
+    planted = record()
+    msg = planted["deadlines"][0]["message"]
+    msg["ar"] = "أجل ستة أشهر؛ وبين اليومين الأخيرين المحتملين ينبه التطبيق ولا يمنع."
+    q, _ = rc.quote_record(planted, STORE)
+    assert "messagePeriodDiffers" not in {p["problem"] for p in rc.check_values(q)["problems"]}
+    msg["ar"] = "أجل يومين فقط."  # a real period of two days that differs from the deadline's is still caught
+    q, _ = rc.quote_record(planted, STORE)
+    assert "messagePeriodDiffers" in {p["problem"] for p in rc.check_values(q)["problems"]}
+
+
 def test_flag_neighbours_finds_the_uncited_exception_and_the_next_article():
     flags = rc.flag_neighbours(record(), STORE)
     kinds = {(f["article"], f["paragraph"], f["kind"]) for f in flags}

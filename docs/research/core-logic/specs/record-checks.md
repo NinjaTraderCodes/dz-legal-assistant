@@ -50,7 +50,7 @@ For every deadline with `counting`: each statement of `counting.basis` exists an
 
 For every statement: each number the English or Arabic `says` contains (a period, an amount) must be in the quote, in words or digits. The cited article's own number and its paragraph numbers are exempt (derivers are told not to write them in `says`). This catches "ten days" written beside a text that says fifteen.
 
-For every message shown to the lawyer (`message` of deadlines, prior steps, exits, section rules): each article number it names must be the article of a statement in the item's `basis`, and each period it names must equal `period`.
+For every message shown to the lawyer (`message` of deadlines, prior steps, exits, section rules): each article number it names must be the article of a statement in the item's `basis`, and each period it names must equal `period`. **The definite dual «اليومين» alone is no period** (the owner, 17 November 2026): in a message it names the two last days the owner's rule of 15 November compares (the earlier reading's and the latest defensible one), so it is not read as two days; «يومين», «خلال يومين» are still read.
 
 ## `flag-neighbours`: the exception next door
 

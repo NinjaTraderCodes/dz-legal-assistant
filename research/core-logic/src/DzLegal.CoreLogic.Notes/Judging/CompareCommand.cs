@@ -326,8 +326,9 @@ public static class CompareCommand
         ((bool?)a["amountDisputed"] ?? false) == ((bool?)b["amountDisputed"] ?? false) && b["at"]?["notFound"] is null;
 
     /// <summary>
-    /// The guide's rule for quotes (section 9): each must be found in the note, and the two sides' quotes for one field
-    /// must overlap or lie in the same sentence (some pair of them).
+    /// The guide's rule for quotes (section 9, guide 1.3): each must be found in the note; the two sides' quotes for one
+    /// field need not be at the same place, since a fact the note writes twice may be quoted at either place (the owner's
+    /// approval of 17 November 2026; until then they had to overlap or lie in the same sentence).
     /// </summary>
     public static bool SameEvidence(JsonObject text, JsonObject? writer, JsonObject? relabel)
     {
@@ -339,14 +340,7 @@ public static class CompareCommand
             return false;
         }
 
-        if (w.Count == 0 || r.Count == 0)
-        {
-            return w.Count == r.Count;
-        }
-
-        return w.Any(a => r.Any(b => Overlap(a, b) || (string?)a["field"] == (string?)b["field"] &&
-            Sentence((string?)text[(string)a["field"]!] ?? "", (int)a["start"]!) ==
-            Sentence((string?)text[(string)a["field"]!] ?? "", (int)b["start"]!)));
+        return (w.Count == 0) == (r.Count == 0);
     }
 
     /// <summary>The index of the sentence a position lies in: sentences end at «.» (not between digits), «؟», «?», «!», «؛» and a line break.</summary>

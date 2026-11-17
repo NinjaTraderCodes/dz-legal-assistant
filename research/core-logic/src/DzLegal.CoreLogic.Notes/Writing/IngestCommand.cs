@@ -137,7 +137,7 @@ public static class IngestCommand
                 ["styleCard"] = (string)scenario["style"]!,
                 ["trainingAllowed"] = writer == "codex" && set is "train" or "pilot",
                 ["composedByCode"] = false,
-                ["guideVersion"] = "1.2",
+                ["guideVersion"] = "1.3",
                 ["writerLabels"] = WriterLabels.Labels(data, scenario, pointed.Quotes),
                 ["schemeVersion"] = SchemeVersion,
             };

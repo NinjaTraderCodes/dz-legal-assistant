@@ -176,7 +176,7 @@ The relabeller returns the full labels of `note.schema.json` with quotes, and ma
 | each slot | the same value |
 | each value | matched by overlapping quotes: the same normalised value, the same `amountDisputed`, and at least one common role; a value one side missed is a disagreement on that value |
 | requests | the same set of kinds; for each, the same amount |
-| quotes | not compared for equality; each must be valid, and the two for one field must overlap or lie in the same sentence |
+| quotes | not compared for equality; each must be valid (found in the field it names). Since guide 1.3 (17 November 2026) the two for one field need not be at the same place: a fact written twice may be quoted at either (until then they had to overlap or lie in the same sentence) |
 
 ## 5. The disagreement rule (owner's decision, 12 November 2026)
 

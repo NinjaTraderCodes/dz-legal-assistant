@@ -131,12 +131,20 @@ public sealed class JudgingTests
     }
 
     [Fact]
-    public void QuotesForOneFieldMustOverlapOrShareASentence()
+    public void AQuoteFromAnyPlaceOfTheNoteIsValidButItMustBeFound()
     {
+        // Guide 1.3 (the owner, 17 November 2026): a fact the note writes twice may be quoted at either place, so the two
+        // sides' quotes need not overlap or share a sentence; each must still be found, and a label with words against one
+        // without stays a difference.
         var other = Labels();
         other["events"]![0]!["evidence"] = new JsonArray(Q("facts", "3 أفريل 2019", 29));
         Assert.Empty(CompareCommand.Differences(Data.Value, Text(), Labels(), other));
         other["events"]![0]!["evidence"] = new JsonArray(Q("facts", "ترك الزوج بيت الزوجية", 43));
+        Assert.Empty(CompareCommand.Differences(Data.Value, Text(), Labels(), other));
+        var lost = new JsonObject { ["field"] = "facts", ["quote"] = "لم يرد في المذكرة", ["notFound"] = true };
+        other["events"]![0]!["evidence"] = new JsonArray(lost);
+        Assert.Contains("events/maintenance/marriage/evidence", CompareCommand.Differences(Data.Value, Text(), Labels(), other));
+        other["events"]![0]!["evidence"] = new JsonArray();
         Assert.Contains("events/maintenance/marriage/evidence", CompareCommand.Differences(Data.Value, Text(), Labels(), other));
         Assert.Equal(0, CompareCommand.Sentence("مبلغ 1.200.000 دج. ثم", 10));
         Assert.Equal(1, CompareCommand.Sentence("مبلغ 1.200.000 دج. ثم", 19));

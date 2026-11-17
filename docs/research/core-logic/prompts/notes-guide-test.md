@@ -34,6 +34,8 @@ Use no tool. Everything you need is in this prompt, and your answer is your repl
 
 **Two more forms of question.** An item whose ask is `role:<claim>` asks which side the plaintiff is on for that claim type (the guide's section 3b): answer `<relation>/<position>`, or `unknown`. An item whose ask is a slot with choices is answered by the choice's id (for example `bailiff`, `registered_letter`, `other`), or `unknown`.
 
+**Three more forms of question (guide 1.3).** An item whose ask is `claims` asks which claim types the note carries (the guide's section 3): answer their ids joined by `+` (for example `khul` or `unpaid-wages+abusive-dismissal`), or `outside`. An item whose ask is `requests` asks which request kinds the extract asks the court for (section 7): answer the kinds joined by `+`, or `none`. An item whose ask is `amount:<kind>` asks which amount the event of that kind takes (sections 4.1 and 8): answer its normalised form, or `none` when the event takes no amount from the extract.
+
 ## Your answer
 
 Return only one JSON object, with no text before or after it:

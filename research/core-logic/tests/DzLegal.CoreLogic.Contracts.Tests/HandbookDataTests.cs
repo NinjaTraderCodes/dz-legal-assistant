@@ -54,6 +54,22 @@ public sealed class HandbookDataTests
                     Assert.Contains(pair[1], FactVocabulary.Positions);
                 }
             }
+            else if (ask is "claims")
+            {
+                // Guide 1.3: the note's claim types joined by «+», or outside.
+                Assert.All(expected.Split('+'), id => Assert.True(id == "outside" || claims.Contains(id), id));
+            }
+            else if (ask is "requests")
+            {
+                // Guide 1.3: the request kinds joined by «+», or none.
+                Assert.All(expected.Split('+'), kind => Assert.True(kind == "none" || FactVocabulary.Requests.Contains(kind), kind));
+            }
+            else if (ask.StartsWith("amount:", StringComparison.Ordinal))
+            {
+                // Guide 1.3: the amount an event takes (digits), or none.
+                Assert.Contains(ask["amount:".Length..], FactVocabulary.Events);
+                Assert.True(expected == "none" || expected.All(c => char.IsAsciiDigit(c) || c == '.'), expected);
+            }
             else
             {
                 Assert.Equal("value", ask);

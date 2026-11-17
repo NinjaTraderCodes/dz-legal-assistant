@@ -1,6 +1,6 @@
 # Labelling guide for lawyer notes
 
-*Guide version 1.2, 15 November 2026: the seven problems of the guide-items run of 15 November fixed (3b: the pairs, in full; case 32: «the rest», «the last instalment»; section 8: the same-day test; section 6: what makes a letter a formal notice, and a body named only by its own name; case 37: the employer's account that the worker left; note f: an excuse the lawyer states). Version 1.1, 14 November 2026: section 3b added; the public-body list fixed with scheme 1.0; section 9 rewritten for the roles of 14 November.*
+*Guide version 1.3, 17 November 2026: the nine gaps of the pilot (the owner's approval of 17 November): section 3, a request that belongs to a labelled claim adds no claim type (the side requests of a dissolution; a remedy the catalogue lists); section 2, the same fact written twice (any place is a valid quote), and section 9 to match; section 8, an amount given by reference, and an amount written only in a request; cases 38 to 40 (a request that presupposes the unpaid event; «the price is still owed»; a party who admits part of an event); section 7, one line for each request kind and the table of each claim type's own requests; then the three problems of the items run r-s3-0008 (the side requests whatever the table lists; case 3's remainder in a request; case 39 against «ما تبقى»). Version 1.2, 15 November 2026: the seven problems of the guide-items run of 15 November fixed (3b: the pairs, in full; case 32: «the rest», «the last instalment»; section 8: the same-day test; section 6: what makes a letter a formal notice, and a body named only by its own name; case 37: the employer's account that the worker left; note f: an excuse the lawyer states). Version 1.1, 14 November 2026: section 3b added; the public-body list fixed with scheme 1.0; section 9 rewritten for the roles of 14 November.*
 
 **Who reads this.** Every agent that writes a note, labels a note or scores an answer: the writers (Codex; Sonnet 5.5 for half of the test sets), the blind relabellers (Sonnet 5.5, Opus 5.5), the isolated writers and relabellers of the mirror set and of hidden set v3, and the author of the scorer and of the filter's question sheet. Each of them gets this file whole, and nothing else about labelling. If two careful readers of this guide label one note differently, **the guide is wrong**, not the readers: report the sentence (step 3 keeps a list) and the guide is fixed, its version bumped, and the guide test rerun.
 
@@ -32,12 +32,15 @@ A note has the four fields the app gives the reader (`CaseText.From`), in this o
 | Requests | the request kinds of `FactVocabulary.Requests` the note asks | 7 |
 | Dates and amounts | every one in the note, normalised, with what it is for | 8 |
 
-The file format is [`note.schema.json`](note.schema.json). Writers and judges give **quotes** (exact words copied from the note); a script turns each quote into a position (`field`, `start`, `length`, counted in UTF-16 units of the field as written). A quote that is not found letter for letter in the field it names makes the label invalid. Quote the shortest stretch that carries the fact by itself, normally 2 to 12 words; never a whole paragraph. When the same words occur twice in a field, add `occurrence` (1 for the first).
+The file format is [`note.schema.json`](note.schema.json). Writers and judges give **quotes** (exact words copied from the note); a script turns each quote into a position (`field`, `start`, `length`, counted in UTF-16 units of the field as written). A quote that is not found letter for letter in the field it names makes the label invalid. Quote the shortest stretch that carries the fact by itself, normally 2 to 12 words; never a whole paragraph. When the same words occur twice in a field, add `occurrence` (1 for the first). **When the note writes the same fact in more than one place** (in `facts` and again in `requests`, or twice in `facts`), a quote from any of those places is valid: there is no right place to choose, and two readers who quote different places agree.
 
 ## 3. The claim type
 
 - Label the claim the lawyer wants to bring, as the note shows it, by the **facts and the requests together**. The same facts can carry different claims: an unpaid price with a request to pay is `unpaid-sale-price`; with a request to undo the sale it is `contract-rescission`.
 - **Several claims in one note:** label each one that has its own request (a worker who asks for his unpaid wages and for reinstatement after dismissal: `unpaid-wages` and `abusive-dismissal`). At most three. A fact mentioned in passing, with no request, is not a claim.
+- **A request that belongs to a labelled claim adds no claim type.** Two kinds:
+  - **The side requests of a dissolution.** Custody, maintenance, housing or visitation asked in a `divorce-by-husband`, `khul` or `tatliq` note belongs to that dissolution: label the dissolution only. Such a request adds its own claim type (`custody`, `nafaqa`, `visitation`) only when the note gives it facts of its own, beyond the marriage and the children: who holds the children now and since when, a refusal of visits, an earlier judgment that pronounced the divorce or set the custody.
+  - **A remedy the catalogue lists.** A request that section 7's table lists among a labelled claim type's own requests is part of that claim (rescission asked in a `sale-non-delivery` note: `sale-non-delivery` only; eviction asked in an `unpaid-rent` note: `unpaid-rent` only). This does not change the first bullet's example: `unpaid-sale-price` does not list rescission, so an unpaid price with a request to undo the sale is `contract-rescission`.
 - **`outside`:** the matter is not one of the 21 types. Give `outsideKind`, one of: `administrative` (a claim **against** the State, a ministry, a wilaya, a commune or a public institution of an administrative character; annulment of an administrative decision. A public body that is the plaintiff does not by itself put a note outside), `criminal` (a complaint, a civil party before the criminal judge), `family-other` (inheritance, kafala, proof of marriage or of descent, guardianship of an adult), `civil-status` (correction of a civil-status record), `property-other` (partition, boundary, pre-emption, possession), `payment-order` (a request for an order to pay), `urgent` (a request to the judge of urgent matters), `enforcement`, `company`, `other`. `outside` is never combined with a claim id.
 - **Near the border:** the frozen label scheme carries a table "looks like / is / what tells them apart" ([SCHEME.md](SCHEME.md), section 9; the rule records' `boundaries` add rows to it later). Use it; do not decide a border from your own knowledge of the law.
 
@@ -110,7 +113,7 @@ Label each event at the granularity it describes. **A named document does not ov
 - **`evidence`:** the quotes that carry the polarity. For `disputed`, quote the contest (and the assertion too when it is written).
 - **`actor`:** who did it, as the note says: `plaintiff`, `defendant`, `other`, `unknown`.
 - **`disputedBy`:** for `disputed`, who contests: `plaintiff`, `defendant` or `other`.
-- **`date`, `amount`:** when the element takes one (columns D and A in section 5) and the note gives it **for this event**. Section 8 says how to normalise. A date or an amount is labelled also when the polarity is `disputed` («ينكر استلام مبلغ 500.000 دج»: the amount belongs to the disputed event). A `denied` event has no date and no amount.
+- **`date`, `amount`:** when the element takes one (columns D and A in section 5) and the note gives it **for this event**, in the words that state the event. An amount written only in a request is the request's, not the event's (section 8). Section 8 says how to normalise. A date or an amount is labelled also when the polarity is `disputed` («ينكر استلام مبلغ 500.000 دج»: the amount belongs to the disputed event). A `denied` event has no date and no amount.
 
 ### 4.2 The hard cases, decided
 
@@ -120,7 +123,7 @@ Learn these; most disagreements between judges come from them. Their sentences i
 |---|---|---|---|
 | 1 | «لم يدفع المدعى عليه أي مبلغ» | `payment_made` denied; `debt_unpaid` (or `price_unpaid`, `rent_unpaid`) stated | Rule 3, the whole element. |
 | 2 | «دفع 200.000 دج وبقي في ذمته 300.000 دج» | `payment_made` stated, amount 200000; `debt_unpaid` stated, amount 300000 | A partial payment states both. Each amount goes to its own event. |
-| 3 | «لم يدفع إلا 200.000 دج» ، «لم يسدد سوى قسطين» | `payment_made` stated (amount 200000 in the first); `debt_unpaid` stated, with an amount only if the note gives the remainder | «لم … إلا» and «لم … سوى» are a **restriction, not a negation**: the thing after إلا happened. |
+| 3 | «لم يدفع إلا 200.000 دج» ، «لم يسدد سوى قسطين» | `payment_made` stated (amount 200000 in the first); `debt_unpaid` stated, with an amount only if the note gives the remainder in the words that state the event («وبقي في ذمته 300.000 دج»); a remainder written only in a request is the request's (section 8) | «لم … إلا» and «لم … سوى» are a **restriction, not a negation**: the thing after إلا happened. |
 | 4 | «يدعي المدعى عليه أنه سدد كامل المبلغ» (the plaintiff claims the debt) | `payment_made` disputed, `disputedBy: plaintiff`; `debt_unpaid` disputed, `disputedBy: defendant` | Each proposition is claimed by one side and contested by the other. |
 | 5 | «ينازع المدعى عليه في مقدار الدين دون أصله» | `debt_unpaid` stated; the amount is labelled with `amountDisputed: true` | The contest is on the amount, not on the proposition. |
 | 6 | «لم يوجه أي إعذار كتابي واكتفى المدعي بمطالبته شفويا» | `notice_served` **stated** (the element includes «مطالبة»), evidence «بمطالبته شفويا»; slot `notice_served` = **no** | The event's proposition is wider than the slot (section 6). |
@@ -155,6 +158,9 @@ Learn these; most disagreements between judges come from them. Their sentences i
 | 35 | `facts`: «ينفي المشتري أن يكون قد وقع عقد البيع المحتج به»; `documents`: «عقد البيع» (`unpaid-sale-price`) | `contract_concluded` disputed, `disputedBy: defendant` | To deny one's signature on the contract is to contest that one concluded it. The named document does not override the contest (section 4). |
 | 36 | «تعتبر المستخدمة أن تسريح العامل كان جزاء لتأخره المتكرر» | `dismissal` stated | An employer who gives a reason for ending the work relation admits the act (rule 2). Every name of the act is the act: فصل، تسريح، عزل، إنهاء علاقة العمل. |
 | 37 | The note states the dismissal and reports the employer's account that the worker left: «تزعم المستخدمة أن العامل تخلى عن منصبه» , «تدعي أنه استقال من تلقاء نفسه» (`abusive-dismissal`) | `dismissal` **disputed**, `disputedBy: defendant` | The employer's account excludes the act it contests (rule 2). When the note's **own** account is that the worker resigned or left, with no dismissal stated, case 22 applies (`notMentioned`). |
+| 38 | `requests`: «إلزام المشتري بأداء ثمن الجرار المتفق عليه»; `facts` tell the sale and the delivery and say nothing of payment (`unpaid-sale-price`) | `price_unpaid` notMentioned; `payment_made` notMentioned; the request is `payment` | A request asks; it states no event (section 10: what is likely but not written). It states the unpaid event only when its own words say the sum is due and unpaid: «باقي الثمن»، «الأقساط المتأخرة»، «ما تخلف في ذمته» state `price_unpaid` (and «الباقي» states `payment_made` too, case 32). |
+| 39 | «ما زال ثمن الشقة في ذمة المشتري» (`unpaid-sale-price`) | `price_unpaid` stated; `payment_made` notMentioned | The price still owed may be all of it or what remains (case 32). `payment_made` is **denied** only when the note says the whole sum remains or nothing was paid («ما زال الثمن كاملا في ذمته»، «لم يدفع منه شيئا»; case 1). Words that call what is owed the rest («ما تبقى من الثمن»، «باقي الثمن») say the parts before it were paid: `payment_made` **stated** (case 32). Only the bare «the price is owed» leaves it notMentioned. |
+| 40 | «يقر الزبون بأنه استلم ثلثي الشحنة فقط، وينكر استلام الباقي» (`commercial-debt`) | `goods_delivered` stated | A party who admits part of an event (part of the goods, part of the premises, part of the work) admits the proposition and contests its extent. The contest is like a contest of the amount (case 5): the polarity stays `stated`; when the note gives figures for the two sides' accounts, they follow case 31. |
 
 **The actor of an element.** `claim-elements.json` gives each element its usual actor: `plaintiff`, `defendant`, or a position (`lessor`, `lessee` …), which means the plaintiff when it is the plaintiff's position and the defendant otherwise. Where it gives none (a contract concluded, a marriage), the actor is `unknown` unless the note says who acted.
 
@@ -326,6 +332,58 @@ Slots with `readFromNote: false` are not labelled; the app asks the lawyer. Sche
 
 Label each request kind of `FactVocabulary.Requests` that the note **asks the court for**, in `requests` or in `facts` («يلتمس المدعي …», «نطلب …», «المطلوب: …»). Quote the words. An amount asked goes with the request. Do not label what the lawyer could ask and did not. `provisional_execution` only when asked in words. A request that fits no kind: `other`.
 
+**The kinds.** The Arabic name is the one the app uses. A request takes the kind that names what it asks the court to order; when two seem to fit, the more specific one below wins over `payment`, and every kind wins over `other`.
+
+| Kind | The app's name | What the request asks |
+|---|---|---|
+| `payment` | دفع مبلغ | that the defendant pay a sum owed under the facts: a debt, a price, rent, a commercial invoice. Not wages (`wages`), maintenance (`maintenance`), compensation (`damages`) or a sum to give back (`restitution`). |
+| `eviction` | طرد أو إخلاء | that the defendant leave premises or land and hand them back. |
+| `rescission` | فسخ عقد | that a contract be dissolved for the other side's failure to perform. |
+| `damages` | تعويض | compensation for a harm or a loss, whatever its cause. |
+| `annulment` | إبطال عقد | that a contract be annulled for a defect of consent or of form (fraud, mistake, nullity). |
+| `restitution` | استرجاع مبلغ أو شيء | that the defendant give back what the plaintiff gave: the price or a deposit paid, an advance, a thing handed over, the trousseau or personal belongings. |
+| `delivery` | تسليم | that the defendant hand over the thing sold or due. |
+| `divorce` | طلاق | that the court pronounce the divorce the husband asks for. |
+| `tatliq` | تطليق | that the court pronounce the divorce the wife asks for on a ground of the law. |
+| `khul` | خلع | that the court pronounce the separation the wife buys back. |
+| `maintenance` | نفقة | maintenance (نفقة) for a wife, a former wife or the children, past or to come. |
+| `custody` | حضانة | that the custody of the children be given to the plaintiff. |
+| `custody_transfer` | إسقاط الحضانة ونقلها | that the custody be taken from its holder and given to the plaintiff. |
+| `visitation` | حق الزيارة | that a right to see the children be granted or enforced. |
+| `housing` | سكن أو بدل إيجار للمحضون | a dwelling for the custodian and the children, or rent in its place. |
+| `reinstatement` | إعادة الإدماج | that the worker be taken back in the post. |
+| `wages` | أجور ومستحقات | wages and the sums due under the work relation (bonuses, leave, notice pay). |
+| `partition` | قسمة | the partition of a property held in common. |
+| `cancel_decision` | إلغاء قرار | the annulment of an administrative decision. |
+| `correction` | تصحيح | the correction of a record (civil status, land register). |
+| `dissolution` | حل شركة | the dissolution of a company. |
+| `guardianship` | منح الولاية على الأبناء | the guardianship (الولاية) over the children. |
+| `provisional_execution` | النفاذ المعجل | that the judgment be enforceable at once (only when asked in words). |
+| `other` | طلب آخر | any request none of the kinds above names (an expert, a deadline, a document to be produced, costs). |
+
+**Each claim type's own requests** (`claim-elements.json`, `requests`). A request of this list, asked in a note that carries the claim type, belongs to it and adds no claim type (section 3). So do the side requests of a dissolution: custody, maintenance, housing and visitation in a `divorce-by-husband`, `khul` or `tatliq` note, **whether or not this table lists them for that claim type** (section 3 decides; the table lists what the catalogue drafts, not every side request).
+
+| Claim type | Its own requests |
+|---|---|
+| `loan-repayment`, `unpaid-sale-price`, `commercial-debt` | `payment`, `damages` |
+| `contract-rescission` | `rescission`, `restitution`, `damages` |
+| `sale-annulment-fraud` | `annulment`, `restitution`, `damages` |
+| `contract-damages` | `damages`, `other` |
+| `tort-damages`, `liability-for-things` | `damages` |
+| `unpaid-rent` | `payment`, `eviction`, `rescission` |
+| `eviction-occupier-without-title` | `eviction`, `damages` |
+| `commercial-lease-eviction` | `eviction`, `damages`, `payment` |
+| `sale-non-delivery` | `delivery`, `rescission`, `restitution` |
+| `divorce-by-husband` | `divorce`, `visitation` |
+| `tatliq` | `tatliq`, `damages`, `maintenance`, `custody`, `housing`, `restitution` |
+| `khul` | `khul`, `maintenance`, `custody`, `housing`, `restitution` |
+| `nafaqa` | `maintenance`, `housing`, `provisional_execution` |
+| `custody` | `custody`, `guardianship`, `housing`, `provisional_execution` |
+| `custody-forfeiture` | `custody_transfer`, `guardianship` |
+| `visitation` | `visitation` |
+| `abusive-dismissal` | `reinstatement`, `damages` |
+| `unpaid-wages` | `wages`, `damages` |
+
 ## 8. Dates and amounts
 
 Label **every** date and amount in the note, also those that belong to no element (a date of birth, a salary mentioned in passing): the reader must find them all and link the ones that matter.
@@ -333,8 +391,9 @@ Label **every** date and amount in the note, also those that belong to no elemen
 - **`quote`:** the value as written, with its unit and nothing else («12 مارس 2025», «٥٠٠ ألف دج», «1.200.000,00 دج»).
 - **`normalized`, dates:** `yyyy-mm-dd`; `yyyy-mm` when the day is missing; `yyyy` for a lone year. Day before month, always («03/04/2025» is 3 April). Arabic-Indic and Western digits alike. Two-digit years: do not guess; a writer must not write them, a judge marks `unclear`. Hijri dates: not normalised (leave `normalized` out; `calendar: "hijri"`). Relative dates («منذ ثلاثة أشهر», «الشهر الماضي», «في اليوم الموالي»): leave `normalized` out; `relative: true`. «منذ» with a length of time points to a moment, so it is a relative date and is labelled; a length of time alone is a period (below) and is not. Where the guide test asks for the value of either, the answer is `none`.
 - **A date given as the same day as another date of the note** takes that date. **The test:** the words refer to the day of a date written in the note, with no interval («في اليوم نفسه»، «في نفس اليوم»، «في التاريخ ذاته»، «يوم تحريره»، «يوم صدوره»). Nothing new is added to `values`: the date written once carries both roles, and the evidence of the event or slot quotes both the date and the words that refer to it («حرر المحضر في 10 فيفري 2026 وسلمت نسخة منه للعامل في اليوم نفسه»: the delivery slot is `2026-02-10`). Any other reference («في اليوم الموالي», «بعد أسبوع») is a relative date.
+- **An amount given by reference** to an amount written in the note («المبلغ نفسه»، «بالمقدار المبين أعلاه»، «القيمة ذاتها») takes that amount, as a same-day date takes its date: nothing new is added to `values`; the amount written once carries both roles, and the evidence of the event or request quotes both the amount and the words that refer to it. Where the guide test asks for the value of such words, the answer is the amount they refer to.
 - **`normalized`, amounts:** digits only, in **dinars**, no separators. «500.000 دج» → `500000`; «مليون ونصف دينار» → `1500000`; «ونصف» after a unit word (ألف، مليون، مليار) is half of that unit, whether or not the unit is repeated («مليون ونصف مليون دينار» → `1500000`; «ألف ونصف دينار» → `1500`); «50 مليون سنتيم» → `500000` (100 centimes = 1 dinar: divide by 100); «3 ملايير سنتيم» → `30000000`. Decimals are dropped only when zero («1.200.000,00» → `1200000`); a real fraction keeps two decimals, written with a point (`1250.50`). An amount in words and digits («خمسمائة ألف (500.000) دينار») is one amount, quoted whole. A foreign currency: leave `normalized` out; `currency` as written. When a party contests the amount and gives its own figure, both figures are labelled with the event's role and `amountDisputed: true` (case 31).
-- **`roles`:** the event kinds or request kinds the value belongs to (`payment_made`, `damages` ...), and the slot ids it answers (`notice_date`, `nonconciliation_record_delivered_on`, `contract_date`); an empty list when it belongs to none. One written value may carry several roles (the contract's date is `contract_concluded` and `contract_date`).
+- **`roles`:** the event kinds or request kinds the value belongs to (`payment_made`, `damages` ...), and the slot ids it answers (`notice_date`, `nonconciliation_record_delivered_on`, `contract_date`); an empty list when it belongs to none. One written value may carry several roles (the contract's date is `contract_concluded` and `contract_date`). **An event takes an amount only from the words that state the event.** An amount written only in a request («إلزامه بدفع 300.000 دج») has the request's role (`payment`) and not the unpaid event's: the event then has no amount, unless the note also states the event with a figure («بقي في ذمته 300.000 دج»), and that figure carries the event's role.
 - **One entry per place a value is written.** A value the note writes twice (the sum owed in `facts`, again in `requests`) is labelled twice, each entry with its own quote and the roles of that place.
 - A period («مدة ستة أشهر», «ثلاث سنوات») is not a date and is not labelled.
 - A number that is not money (an invoice number, an area, an article number, a count of children) is not an amount.
@@ -345,7 +404,7 @@ Label **every** date and amount in the note, also those that belong to no elemen
 - **Blind relabeller (test notes only).** You receive the note only. Label it from the text, quote the words, and mark `unclear` where two rules seem to fit. You do not see the writer's labels or the scenario. Sonnet 5.5 relabels notes written by Codex or by a local model; Opus 5.5 relabels notes written by Sonnet.
 - **The local filter (training notes only).** A local model answers a sheet of closed questions built by code from the scheme ([../prompts/notes-filter-local.md](../prompts/notes-filter-local.md)). It is not given this guide: the guide reaches it through the questions' wording. It writes no label; where its answer differs from the scenario's label, that field is blanked or the note dropped.
 - **No Claude model writes, labels or filters a training note** ([TERMS.md](TERMS.md)). Opus measures the label noise on a sample, by relabelling it blind; what it finds changes no note.
-- **The script** compares the two sides field by field (claim types as sets; the plaintiff's role; polarity per element; slot values; normalised values and their roles; request kinds as sets). Quotes need not be equal, but each must be found in the note, and two quotes for the same field must overlap or lie in the same sentence.
+- **The script** compares the two sides field by field (claim types as sets; the plaintiff's role; polarity per element; slot values; normalised values and their roles; request kinds as sets). Quotes need not be equal and need not be at the same place (section 2: the same fact written twice): each must be found in the note, letter for letter, in the field it names. Values are matched by place, since each written place has its own entry (section 8).
 - **Disagreement** (owner's decision, 12 November 2026). In **training notes only**: the disputed field is blanked and the note kept, unless the two sides differ on the claim type or on more than about a fifth of the note's fields (counted over the fields labelled with something other than `notMentioned` or `unknown`), in which case the note is dropped. A blanked field carries no label: it is never read as `notMentioned` or `unknown`. In **every test set** (development, challenge, the clean dev and test splits, mirror, hidden v3): any disagreement drops the whole note. Blanked fields are counted per slot and per polarity, and targeted notes refill every cell that blanking and dropping emptied ([../specs/notes-pipeline.md](../specs/notes-pipeline.md), section 5).
 
 ## 10. What is never labelled

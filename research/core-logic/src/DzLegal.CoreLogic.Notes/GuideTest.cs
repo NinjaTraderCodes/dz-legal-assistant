@@ -46,7 +46,7 @@ public static partial class GuideTest
                 Str(node!, "tests"));
             if (!AskForm().IsMatch(item.Ask))
             {
-                throw new InvalidDataException($"a new item's ask is not event:<kind>, slot:<id>, value or role:<claim>: {item.Ask}");
+                throw new InvalidDataException($"a new item's ask is not event:<kind>, slot:<id>, value, role:<claim>, claims, requests or amount:<kind>: {item.Ask}");
             }
 
             added.Add(item);
@@ -97,8 +97,13 @@ public static partial class GuideTest
             node!["id"]!.GetValue<int>(), Str(node, "answer"), Str(node, "rule"), node["unsure"]!.GetValue<bool>()))
         .ToDictionary(answer => answer.Id);
 
-    /// <summary>Two answers are the same when they differ only by case, spaces, underscores or hyphens.</summary>
-    public static bool Same(string? a, string? b) => a is not null && b is not null && Norm(a) == Norm(b);
+    /// <summary>
+    /// Two answers are the same when they differ only by case, spaces, underscores or hyphens; a list answer (the asks
+    /// <c>claims</c> and <c>requests</c> of guide 1.3: ids joined by «+») is compared as a set.
+    /// </summary>
+    public static bool Same(string? a, string? b) => a is not null && b is not null && Set(a) == Set(b);
+
+    private static string Set(string text) => string.Join("+", text.Split('+').Select(Norm).Order(StringComparer.Ordinal));
 
     /// <summary>
     /// The comparison: for each item the key and both testers' answers; every item where the three are not equal is listed,
@@ -183,6 +188,6 @@ public static partial class GuideTest
     private static string Str(JsonNode node, string name) =>
         node[name]?.GetValue<string>() ?? throw new InvalidDataException($"an item without \"{name}\"");
 
-    [GeneratedRegex(@"^(event:[a-z_]+|slot:[a-z_]+|value|role:[a-z-]+)$")]
+    [GeneratedRegex(@"^(event:[a-z_]+|slot:[a-z_]+|value|role:[a-z-]+|claims|requests|amount:[a-z_]+)$")]
     private static partial Regex AskForm();
 }

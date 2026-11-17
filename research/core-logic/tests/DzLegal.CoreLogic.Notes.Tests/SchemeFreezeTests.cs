@@ -46,6 +46,24 @@ public sealed class SchemeFreezeTests : IDisposable
     }
 
     [Fact]
+    public void TheAsksOfGuide13AreTakenAndAListAnswerIsASet()
+    {
+        var path = Write("guide-test.json", File.ReadAllText(Repo.GuideTest));
+        var reply = Write("reply.json", """
+            { "items": [
+                { "claim": "khul", "ask": "claims", "text": "t", "expected": "khul", "tests": "section 3" },
+                { "claim": "khul", "ask": "requests", "text": "t", "expected": "khul+custody", "tests": "section 7" },
+                { "claim": "unpaid-sale-price", "ask": "amount:price_unpaid", "text": "t", "expected": "none", "tests": "section 8" } ],
+              "problems": [] }
+            """);
+        Assert.Equal(3, GuideTest.Ingest(path, reply).Added.Count);
+        Assert.True(GuideTest.Same("khul+custody", "Custody + khul"));
+        Assert.True(GuideTest.Same("unpaid-wages+abusive-dismissal", "abusive_dismissal+unpaid_wages"));
+        Assert.False(GuideTest.Same("khul+custody", "khul"));
+        Assert.True(GuideTest.Same("stated", " Stated "));
+    }
+
+    [Fact]
     public void AnItemWhoseAskHasNoKnownFormIsRefused()
     {
         var path = Write("guide-test.json", File.ReadAllText(Repo.GuideTest));

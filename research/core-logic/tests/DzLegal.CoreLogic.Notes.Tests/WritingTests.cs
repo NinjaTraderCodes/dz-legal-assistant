@@ -102,6 +102,20 @@ public sealed class WritingTests : IDisposable
     private static CodeChecks Checks() => new(Data, [File.ReadAllText(Data.Files.Guide)], ["سعاد حمداني", "علي مهدي", "كريم بلعيد"]);
 
     [Fact]
+    public void TheWriterPromptTakesTheFramingOfItsCallAndNothingIsLeftUnfilled()
+    {
+        Assert.Equal("desk", WriteCommand.FramingOf(1).Id);
+        Assert.Equal("visit", WriteCommand.FramingOf(2).Id);
+        Assert.Equal("desk", WriteCommand.FramingOf(5).Id);
+        Assert.Equal(4, WriteCommand.Framings.Select(f => f.Id).Distinct().Count());
+        var files = NotesFiles.Find(null);
+        var scenarios = new ScenarioSampler(Data, SampleCommand.FinalRecords(files)).Draw(new SampleRequest("framing", 3, 31, Groups: 0));
+        var prompt = WriteCommand.Prompt(files, Data, scenarios, WriteCommand.FramingOf(3).Text);
+        Assert.Contains(WriteCommand.FramingOf(3).Text, prompt, StringComparison.Ordinal);
+        Assert.DoesNotContain("{{", prompt, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void QuotesAreFoundOnWordEdgesAndEveryFactIsPointedAt()
     {
         var pointed = WriterLabels.Point(Scenario(), Note());

@@ -36,6 +36,20 @@ public static class WriteCommand
         ("provisional_execution", "provisional execution of the judgment"), ("other", "any other request"),
     ];
 
+    /// <summary>
+    /// The four framings of version 3 of the writer prompt (the owner, 17 November 2026: "several Codex prompt variants"):
+    /// who writes the note and when. A call takes the framing of its number (call 1 the first, call 5 the first again).
+    /// </summary>
+    public static readonly IReadOnlyList<(string Id, string Text)> Framings =
+    [
+        ("desk", "Write each note as the lawyer writes it at the desk after reading the client's file, before drafting."),
+        ("visit", "Write each note as the lawyer takes it down during the client's visit: in the order the client tells it, with the jumps and the repetitions of a conversation, but exact on every fact."),
+        ("handover", "Write each note as a lawyer's quick handover to a colleague who will draft the claim: only what the colleague needs, in the fewest words."),
+        ("endOfDay", "Write each note as a lawyer's own reminder written in a hurry at the end of the day: uneven and unpolished, but exact on every fact."),
+    ];
+
+    public static (string Id, string Text) FramingOf(int callNumber) => Framings[(callNumber - 1 + Framings.Count) % Framings.Count];
+
     public static int Run(NotesFiles files, string set, IReadOnlyDictionary<string, string> options)
     {
         ArgumentNullException.ThrowIfNull(files);
@@ -68,14 +82,15 @@ public static class WriteCommand
 
             var call = $"w-{set}-{++number:0000}";
             var chosen = batch.Select(l => scenarios[(string)l["scenario"]!]).ToList();
-            var prompt = Prompt(files, data, chosen);
+            var framing = FramingOf(number);
+            var prompt = Prompt(files, data, chosen, framing.Text);
             var promptPath = Path.Combine(callsFolder, call + ".prompt.md");
             NotesJson.Write(promptPath, prompt);
             NotesJson.Write(Path.Combine(callsFolder, call + ".json"), new JsonObject
             {
                 ["call"] = call, ["set"] = set, ["writer"] = writer,
                 ["created"] = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture),
-                ["prompt"] = "notes-write.md@" + TemplateHash(files),
+                ["prompt"] = "notes-write.md@" + TemplateHash(files), ["framing"] = framing.Id,
                 ["scenarios"] = new JsonArray([.. chosen.Select(s => (JsonNode)(string)s["id"]!)]),
             }.ToJsonString(NotesJson.Options) + "\n");
             if (writer == "codex")
@@ -149,7 +164,7 @@ public static class WriteCommand
     public static string TemplateHash(NotesFiles files) =>
         Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(Path.Combine(files.Prompts, "notes-write.md"))))[..12].ToLowerInvariant();
 
-    public static string Prompt(NotesFiles files, SamplerData data, IReadOnlyList<JsonObject> scenarios)
+    public static string Prompt(NotesFiles files, SamplerData data, IReadOnlyList<JsonObject> scenarios, string? framing = null)
     {
         ArgumentNullException.ThrowIfNull(files);
         ArgumentNullException.ThrowIfNull(data);
@@ -160,6 +175,7 @@ public static class WriteCommand
             .Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal);
         return PromptTemplate.Fill(PromptTemplate.Body(files.Prompts, "notes-write"), new Dictionary<string, string>
         {
+            ["framing"] = framing ?? Framings[0].Text,
             ["guide"] = File.ReadAllText(files.Guide).ReplaceLineEndings("\n").Trim(),
             ["elements"] = Elements(data, claims),
             ["requestKinds"] = RequestList(data),

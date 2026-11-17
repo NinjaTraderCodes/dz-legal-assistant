@@ -7,13 +7,19 @@ namespace DzLegal.CoreLogic.Notes.Sampler;
 public sealed record StyleCard(string Id, IReadOnlyDictionary<string, string> Parameters, string Text);
 
 /// <summary>
-/// The 40 style cards. Each parameter's values are spread evenly over the cards (each value on 40 / n cards) and shuffled
-/// by a fixed seed, so that no two parameters move together; the English paragraph is the parameters' sentences. Written
-/// once by <c>notes style-cards --write</c> into notes/sampler/style-cards.json; the sampler reads that file.
+/// The style cards, in two generations. **Version 1** (c-01 to c-40, 15 November 2026): each parameter's values spread
+/// evenly over the 40 cards and shuffled by a fixed seed, so that no two parameters move together; the English paragraph is
+/// the parameters' sentences. **Version 2** (s2-01 to s2-80, 17 November 2026, the owner: "widen the style variety ...
+/// shorter and messier notes"): the same parameters with the lengths weighted towards short, and two more: how messy the
+/// note is, and no set formula for the parties (the writer-identity probe found Codex's «شخصان طبيعيان»). A version-1 card
+/// keeps its text; it takes the new parameters' neutral values. Written by <c>notes style-cards --write</c> into
+/// notes/sampler/style-cards.json; the sampler draws from every card.
 /// </summary>
 public static class StyleCards
 {
-    public const int Count = 40;
+    public const int CountV1 = 40;
+    public const int CountV2 = 80;
+    public const int Count = CountV1 + CountV2;
 
     /// <summary>The words-over-four-fields range of each length (notes-pipeline.md, code check 4).</summary>
     public static readonly IReadOnlyDictionary<string, (int Min, int Max)> LengthWords = new Dictionary<string, (int, int)>
@@ -99,13 +105,58 @@ public static class StyleCards
         ]),
     ];
 
-    /// <summary>The 40 cards, built from the parameters by the fixed seed.</summary>
+    /// <summary>The parameters version 2 adds, with the neutral value a version-1 card takes.</summary>
+    public static readonly IReadOnlyList<(string Name, string Neutral, IReadOnlyList<(string Value, string Sentence)> Values)> Added =
+    [
+        ("mess", "clean", [
+            ("clean", "Keep the note tidy."),
+            ("slips", "Leave two or three small typing slips a hurried lawyer makes (a missing hamza, ة written as ه, a doubled letter), never in a name, a date or a sum."),
+            ("fragments", "Leave some points as bare fragments, without a verb, as hurried notes are."),
+            ("runOn", "Run several facts together in long sentences joined by و and ثم, with little punctuation."),
+            ("shorthand", "Write in shorthand: drop linking words and articles wherever the meaning stays clear."),
+        ]),
+        ("setPhrases", "free", [
+            ("free", "Describe the parties as you like."),
+            ("noFormula", "Never describe the parties with a set formula (such as «شخصان طبيعيان» or «فردان»); let their names, trades or roles show who they are."),
+        ]),
+    ];
+
+    /// <summary>Version 2's lengths: very short and short on five cards in eight, medium on two, long on one.</summary>
+    public static readonly IReadOnlyList<string> LengthsV2 = ["veryShort", "veryShort", "short", "short", "short", "medium", "medium", "long"];
+
+    /// <summary>Every parameter name a card carries.</summary>
+    public static IReadOnlyList<string> Names => [.. Parameters.Select(p => p.Name), .. Added.Select(a => a.Name)];
+
+    /// <summary>The 120 cards: version 1 (as built on 15 November) and version 2, by the fixed seed.</summary>
     public static IReadOnlyList<StyleCard> Build(int seed = 20261115)
     {
-        var columns = Parameters.Select((p, i) =>
+        var v1 = Generation(seed, Parameters, CountV1, "c-", 0);
+        var cards = v1.Select(c =>
         {
-            var values = Enumerable.Range(0, Count).Select(k => p.Values[k % p.Values.Count]).ToList();
-            var rng = new Rng(Rng.Derive(seed, i));
+            var parameters = new Dictionary<string, string>(c.Parameters, StringComparer.Ordinal);
+            foreach (var (name, neutral, _) in Added)
+            {
+                parameters[name] = neutral;
+            }
+
+            return c with { Parameters = parameters };
+        }).ToList();
+        var lengths = Parameters.First(p => p.Name == "length").Values.ToDictionary(v => v.Value, v => v.Sentence, StringComparer.Ordinal);
+        var v2 = Parameters.Select(p => p.Name == "length"
+                ? (p.Name, (IReadOnlyList<(string Value, string Sentence)>)[.. LengthsV2.Select(l => (l, lengths[l]))])
+                : p)
+            .Concat(Added.Select(a => (a.Name, a.Values))).ToList();
+        cards.AddRange(Generation(seed, v2, CountV2, "s2-", 100));
+        return cards;
+    }
+
+    private static List<StyleCard> Generation(int seed, IReadOnlyList<(string Name, IReadOnlyList<(string Value, string Sentence)> Values)> parameters,
+        int count, string prefix, int salt)
+    {
+        var columns = parameters.Select((p, i) =>
+        {
+            var values = Enumerable.Range(0, count).Select(k => p.Values[k % p.Values.Count]).ToList();
+            var rng = new Rng(Rng.Derive(seed, i + salt));
             for (var k = values.Count - 1; k > 0; k--)
             {
                 var j = rng.Between(0, k);
@@ -114,18 +165,18 @@ public static class StyleCards
 
             return values;
         }).ToList();
-        return [.. Enumerable.Range(0, Count).Select(k =>
+        return [.. Enumerable.Range(0, count).Select(k =>
         {
-            var parameters = new Dictionary<string, string>(StringComparer.Ordinal);
+            var values = new Dictionary<string, string>(StringComparer.Ordinal);
             var sentences = new List<string>();
-            for (var i = 0; i < Parameters.Count; i++)
+            for (var i = 0; i < parameters.Count; i++)
             {
-                parameters[Parameters[i].Name] = columns[i][k].Value;
+                values[parameters[i].Name] = columns[i][k].Value;
                 sentences.Add(columns[i][k].Sentence);
             }
 
             sentences.Add("Write every year in full, with four digits.");
-            return new StyleCard("c-" + (k + 1).ToString("00", CultureInfo.InvariantCulture), parameters, string.Join(" ", sentences));
+            return new StyleCard(prefix + (k + 1).ToString("00", CultureInfo.InvariantCulture), values, string.Join(" ", sentences));
         })];
     }
 
@@ -146,7 +197,7 @@ public static class StyleCards
 
         return new JsonObject
         {
-            ["about"] = "The 40 style cards of the scenario sampler (specs/scenario-sampler.md), written by `notes style-cards --write`. A card says how a note is written, never what it says; it names no claim type, element or polarity.",
+            ["about"] = "The style cards of the scenario sampler (specs/scenario-sampler.md), written by `notes style-cards --write`: version 1 (c-01 to c-40, 15 November 2026) and version 2 (s2-01 to s2-80, 17 November 2026: shorter and messier, no set formula for the parties). A card says how a note is written, never what it says; it names no claim type, element or polarity.",
             ["cards"] = array,
         }.ToJsonString(NotesJson.Options) + "\n";
     }

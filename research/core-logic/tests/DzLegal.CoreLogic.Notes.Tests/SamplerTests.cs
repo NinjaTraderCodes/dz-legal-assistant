@@ -184,7 +184,7 @@ public sealed partial class SamplerTests
     {
         var cards = Data.Cards.ToDictionary(c => c.Id);
         var largest = 0.0;
-        foreach (var parameter in StyleCards.Parameters.Select(p => p.Name))
+        foreach (var parameter in StyleCards.Names)
         {
             string P(JsonObject s) => cards[(string)s["style"]!].Parameters[parameter];
             var pairs = new List<(string, string)>();
@@ -266,12 +266,34 @@ public sealed partial class SamplerTests
         var built = StyleCards.Build();
         Assert.Equal(StyleCards.ToJson(built).ReplaceLineEndings("\n"), File.ReadAllText(Path.Combine(Data.Folder, "style-cards.json")).ReplaceLineEndings("\n"));
         Assert.Equal(StyleCards.Count, built.Count);
+        var v1 = built.Where(c => c.Id.StartsWith("c-", StringComparison.Ordinal)).ToList();
+        var v2 = built.Where(c => c.Id.StartsWith("s2-", StringComparison.Ordinal)).ToList();
+        Assert.Equal(StyleCards.CountV1, v1.Count);
+        Assert.Equal(StyleCards.CountV2, v2.Count);
         foreach (var (name, values) in StyleCards.Parameters)
         {
-            var counts = built.GroupBy(c => c.Parameters[name]).Select(g => g.Count()).ToList();
+            var counts = v1.GroupBy(c => c.Parameters[name]).Select(g => g.Count()).ToList();
             Assert.Equal(values.Count, counts.Count);
             Assert.True(counts.Max() - counts.Min() <= 1, $"{name} is not spread evenly");
+            if (name != "length")
+            {
+                var counts2 = v2.GroupBy(c => c.Parameters[name]).Select(g => g.Count()).ToList();
+                Assert.True(counts2.Max() - counts2.Min() <= 1, $"{name} is not spread evenly in version 2");
+            }
         }
+
+        // Version 2: shorter (five cards in eight very short or short), and the two added parameters spread evenly; a
+        // version-1 card keeps its text and takes their neutral values.
+        Assert.Equal(50, v2.Count(c => c.Parameters["length"] is "veryShort" or "short"));
+        foreach (var (name, neutral, values) in StyleCards.Added)
+        {
+            Assert.All(v1, c => Assert.Equal(neutral, c.Parameters[name]));
+            var counts = v2.GroupBy(c => c.Parameters[name]).Select(g => g.Count()).ToList();
+            Assert.Equal(values.Count, counts.Count);
+            Assert.True(counts.Max() - counts.Min() <= 1, $"{name} is not spread evenly in version 2");
+        }
+
+        Assert.DoesNotContain(v1, c => c.Text.Contains("formula", StringComparison.Ordinal) || c.Text.Contains("tidy", StringComparison.Ordinal));
 
         foreach (var card in built)
         {

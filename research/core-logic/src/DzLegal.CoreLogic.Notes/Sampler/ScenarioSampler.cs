@@ -16,7 +16,7 @@ public sealed record SampleRequest(string Set, int Count, int Seed, int Groups =
 /// </summary>
 public sealed class ScenarioSampler
 {
-    public const string Version = "1.1";  // 1.1 (16 November 2026): a later claim's role keeps the plaintiff's sex
+    public const string Version = "1.2";  // 1.1 (16 November 2026): a later claim's role keeps the plaintiff's sex; 1.2 (17 November): style cards version 2
 
     private static readonly string[] Polarities = ["stated", "denied", "disputed", "notMentioned"];
     private readonly SamplerData data;

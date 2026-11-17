@@ -47,6 +47,12 @@ public sealed class ScoreReport
 /// <summary>The measures of specs/scorer.md, in both settings, on one gold file.</summary>
 public static class Scorer
 {
+    /// <summary>
+    /// 1.0: the scorer whose hash was fixed before any model. 1.1 (the owner, 17 November 2026): the evidence line accepts
+    /// every place where the note writes the same fact, as guide 1.3 allows; no other line changes.
+    /// </summary>
+    public const string Version = "1.1";
+
     public const string TypeGiven = "type given";
     public const string EndToEnd = "end to end";
 
@@ -62,8 +68,13 @@ public static class Scorer
     private static readonly string[] Mentioned = ["stated", "denied", "disputed"];
 
     public static ScoreReport Score(IReadOnlyList<GoldNote> gold, IReadOnlyDictionary<string, NoteReading> endToEnd,
-        IReadOnlyDictionary<string, NoteReading> given, bool tuning = false)
+        IReadOnlyDictionary<string, NoteReading> given, bool tuning = false, string evidenceRule = Version)
     {
+        if (evidenceRule is not ("1.0" or "1.1"))
+        {
+            throw new ScoreException("U03", "the evidence rule is 1.0 or 1.1");
+        }
+
         var lines = new List<ScoreLine>();
         var counts = new SortedDictionary<string, int>(StringComparer.Ordinal);
         var missing = gold.Count(note => !endToEnd.ContainsKey(note.Id) || !given.ContainsKey(note.Id));
@@ -128,7 +139,7 @@ public static class Scorer
         }
 
         Role(gold, given, lines);
-        Evidence(gold, endToEnd, given, lines);
+        Evidence(gold, endToEnd, given, lines, evidenceRule == "1.1");
 
         return new ScoreReport
         {
@@ -442,16 +453,19 @@ public static class Scorer
 
     /// <summary>
     /// Evidence: every right answer that carries words: a predicted span overlapping a gold span of the same field, or in the
-    /// same sentence. A claim answer without evidence counts only here, as unsupported.
+    /// same sentence. A claim answer without evidence counts only here, as unsupported. Since scorer 1.1 (guide 1.3: a fact
+    /// written twice may be quoted at either place) the gold spans are joined by the other places of the same fact
+    /// (<see cref="Places"/>).
     /// </summary>
     private static void Evidence(IReadOnlyList<GoldNote> gold, IReadOnlyDictionary<string, NoteReading> endToEnd,
-        IReadOnlyDictionary<string, NoteReading> given, List<ScoreLine> lines)
+        IReadOnlyDictionary<string, NoteReading> given, List<ScoreLine> lines, bool everyPlace)
     {
         int total = 0, supported = 0;
         void Check(GoldNote note, IReadOnlyList<GoldSpan> goldSpans, IReadOnlyList<TextSpan> spans)
         {
             total++;
-            supported += spans.Any(span => goldSpans.Any(g => Overlaps(g, span) || SameSentence(note, g, span))) ? 1 : 0;
+            var places = everyPlace ? Places(note, goldSpans) : goldSpans;
+            supported += spans.Any(span => places.Any(g => Overlaps(g, span) || SameSentence(note, g, span))) ? 1 : 0;
         }
 
         foreach (var note in gold)
@@ -501,6 +515,47 @@ public static class Scorer
 
         lines.Add(new ScoreLine("evidence", "right answers with words", TypeGiven, total, total, supported, HasCoverage: false));
     }
+
+    /// <summary>
+    /// The places where the note writes the fact a list of gold spans quotes (scorer 1.1): the spans themselves; every other
+    /// place, in any field, where the same words are written letter for letter (at least three letters); and, for a gold
+    /// span on a date or an amount, every other place the note writes that value with a role in common (the gold has one
+    /// value entry for each place, guide section 8).
+    /// </summary>
+    public static IReadOnlyList<GoldSpan> Places(GoldNote note, IReadOnlyList<GoldSpan> goldSpans)
+    {
+        ArgumentNullException.ThrowIfNull(note);
+        ArgumentNullException.ThrowIfNull(goldSpans);
+        var places = new List<GoldSpan>(goldSpans);
+        foreach (var g in goldSpans)
+        {
+            if (note.Text.TryGetValue(g.Field, out var own) && g.Start >= 0 && g.Start + g.Length <= own.Length)
+            {
+                var words = own.Substring(g.Start, g.Length).Trim();
+                if (words.Length >= 3)
+                {
+                    foreach (var (field, text) in note.Text)
+                    {
+                        for (var at = text.IndexOf(words, StringComparison.Ordinal); at >= 0; at = text.IndexOf(words, at + 1, StringComparison.Ordinal))
+                        {
+                            places.Add(new GoldSpan(field, at, words.Length));
+                        }
+                    }
+                }
+            }
+
+            foreach (var value in note.Values.Where(v => v.At is not null && v.Normalized is not null && SpansOverlap(v.At!, g)))
+            {
+                places.AddRange(note.Values.Where(o => o.At is not null && o.Normalized == value.Normalized && o.Roles.Intersect(value.Roles).Any())
+                    .Select(o => o.At!));
+            }
+        }
+
+        return [.. places.Distinct()];
+    }
+
+    private static bool SpansOverlap(GoldSpan a, GoldSpan b) =>
+        a.Field == b.Field && a.Start < b.Start + b.Length && b.Start < a.Start + a.Length;
 
     private static bool SameSentence(GoldNote note, GoldSpan gold, TextSpan span)
     {

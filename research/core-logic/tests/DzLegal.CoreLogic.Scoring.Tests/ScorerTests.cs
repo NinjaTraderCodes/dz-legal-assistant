@@ -191,6 +191,57 @@ public sealed class ScorerTests
     }
 
     [Fact]
+    public void AFactWrittenTwiceMayBeQuotedAtEitherPlaceSinceScorer11()
+    {
+        // Guide 1.3: the reader quotes the second place of the same words, and of the same amount written twice.
+        const string facts = "لم يرد المبلغ وقدره 500 دج. أقرض المدعي المدعى عليه مبلغا. لم يرد المبلغ وقدره 500 دج.";
+        var first = facts.IndexOf("لم يرد المبلغ", StringComparison.Ordinal);
+        var second = facts.LastIndexOf("لم يرد المبلغ", StringComparison.Ordinal);
+        var amount1 = facts.IndexOf("500 دج", StringComparison.Ordinal);
+        var amount2 = facts.LastIndexOf("500 دج", StringComparison.Ordinal);
+        JsonObject Q(int start, int length) => new() { ["field"] = "facts", ["quote"] = facts.Substring(start, length), ["start"] = start, ["length"] = length };
+        var note = GoldNote.Parse(new JsonObject
+        {
+            ["id"] = "t1", ["set"] = "dev", ["text"] = new JsonObject { ["facts"] = facts },
+            ["provenance"] = new JsonObject { ["writer"] = new JsonObject { ["family"] = "openai", ["model"] = "m", ["date"] = "d" } },
+            ["status"] = "kept",
+            ["gold"] = new JsonObject
+            {
+                ["claims"] = new JsonArray("loan-repayment"), ["claimEvidence"] = new JsonArray(Q(first, 13)), ["roles"] = new JsonArray(),
+                ["events"] = new JsonArray(new JsonObject
+                {
+                    ["claim"] = "loan-repayment", ["kind"] = "debt_unpaid", ["polarity"] = "stated", ["actor"] = "defendant",
+                    ["evidence"] = new JsonArray(Q(first, 13)),
+                }),
+                ["slots"] = new JsonArray(),
+                ["requests"] = new JsonArray(new JsonObject { ["kind"] = "payment", ["evidence"] = new JsonArray(Q(amount1, 6)) }),
+                ["values"] = new JsonArray(
+                    new JsonObject { ["kind"] = "amount", ["at"] = Q(amount1, 6), ["normalized"] = "500", ["roles"] = new JsonArray("debt_unpaid", "payment") },
+                    new JsonObject { ["kind"] = "amount", ["at"] = Q(amount2, 6), ["normalized"] = "500", ["roles"] = new JsonArray("payment") }),
+            },
+        }.ToJsonString());
+        List<GoldNote> gold = [note];
+        NoteReading Second(GoldNote n)
+        {
+            var r = Perfect(n);
+            return r with
+            {
+                Events = [.. r.Events.Select(e => e with { Evidence = [new TextSpan(NoteField.Facts, second, 13)] })],
+                Requests = [.. r.Requests.Select(q => q with { Evidence = [new TextSpan(NoteField.Facts, amount2, 6)] })],
+            };
+        }
+
+        var readings = Readings(gold, Second);
+        var old = Scorer.Score(gold, readings, readings, evidenceRule: "1.0");
+        var now = Scorer.Score(gold, readings, readings);
+        // The two second places lie in another sentence: scorer 1.0 counts both unsupported, 1.1 both supported.
+        Assert.Equal(1, Line(old, "evidence", "right answers with words").Right);  // only the claim, quoted at its own place
+        Assert.Equal(Line(now, "evidence", "right answers with words").Answered, Line(now, "evidence", "right answers with words").Right);
+        Assert.Equal(Primary(old), Primary(now));
+        Assert.Throws<ScoreException>(() => Scorer.Score(gold, readings, readings, evidenceRule: "2.0"));
+    }
+
+    [Fact]
     public void ARightAnswerWithItsSpanElsewhereMovesOnlyTheEvidenceLine()
     {
         var gold = Gold();

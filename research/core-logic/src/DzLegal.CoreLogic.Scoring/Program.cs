@@ -56,11 +56,13 @@ try
 
     var endToEnd = Answers.Load(Need("--answers"), ids);
     var given = Answers.Load(Need("--given"), ids);
-    var report = Scorer.Score(gold, endToEnd, given, flags.Contains("--tuning"));
+    // --evidence-rule 1.0 reproduces scorer 1.0's evidence line, to report a figure under both versions.
+    var evidenceRule = options.GetValueOrDefault("--evidence-rule") ?? Scorer.Version;
+    var report = Scorer.Score(gold, endToEnd, given, flags.Contains("--tuning"), evidenceRule);
     var output = Need("--out");
     Directory.CreateDirectory(output);
     var set = options.GetValueOrDefault("--set") ?? string.Join(", ", gold.Select(note => note.Set).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal));
-    var hash = options.GetValueOrDefault("--scorer-hash") ?? "(hash not given)";
+    var hash = (options.GetValueOrDefault("--scorer-hash") ?? "(hash not given)") + $" (scorer {Scorer.Version}, evidence rule {evidenceRule})";
     var markdown = Summary.Markdown(report, set, hash, options.GetValueOrDefault("--first-line")) + "\nPurpose: " + purpose + ".\n";
 
     // By writer, on by default when the gold holds a Codex half and a Sonnet half (dev, challenge).

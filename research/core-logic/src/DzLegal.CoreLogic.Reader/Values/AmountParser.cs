@@ -23,7 +23,7 @@ public static partial class AmountParser
         ["عشرون"] = 20, ["عشرين"] = 20, ["ثلاثون"] = 30, ["ثلاثين"] = 30, ["أربعون"] = 40, ["اربعون"] = 40, ["أربعين"] = 40,
         ["اربعين"] = 40, ["خمسون"] = 50, ["خمسين"] = 50, ["ستون"] = 60, ["ستين"] = 60, ["سبعون"] = 70, ["سبعين"] = 70,
         ["ثمانون"] = 80, ["ثمانين"] = 80, ["تسعون"] = 90, ["تسعين"] = 90,
-        ["مائة"] = 100, ["مئة"] = 100, ["مائتان"] = 200, ["مائتين"] = 200, ["مئتان"] = 200, ["مئتين"] = 200, ["مائتا"] = 200,
+        ["مائة"] = 100, ["مئة"] = 100, ["مائتان"] = 200, ["مائتين"] = 200, ["مئتان"] = 200, ["مئتين"] = 200, ["مائتا"] = 200, ["مائتي"] = 200, ["مئتي"] = 200,
         ["مئتا"] = 200, ["ثلاثمائة"] = 300, ["ثلاثمئة"] = 300, ["أربعمائة"] = 400, ["اربعمائة"] = 400, ["أربعمئة"] = 400,
         ["خمسمائة"] = 500, ["خمسمئة"] = 500, ["ستمائة"] = 600, ["ستمئة"] = 600, ["سبعمائة"] = 700, ["سبعمئة"] = 700,
         ["ثمانمائة"] = 800, ["ثمانمئة"] = 800, ["تسعمائة"] = 900, ["تسعمئة"] = 900,
@@ -74,7 +74,9 @@ public static partial class AmountParser
             var glued = GluedNumber(tokens[i].Word);
             if (glued is not null)
             {
-                numberTokens.Add(glued);
+                // «(9200000)دينار» (the training notes, 17 November 2026): digits in brackets glued to the unit repeat the
+                // words before them, as in the spaced form «… ألف (500.000) دينار», so they keep their brackets.
+                numberTokens.Add(tokens[i].Word.TrimStart().StartsWith('(') ? $"({glued})" : glued);
             }
 
             if (numberTokens.Count == 0 || Value(numberTokens) is not { } value)
@@ -317,6 +319,6 @@ public static partial class AmountParser
     [GeneratedRegex(@"(?<=\d)[.,](?<f>\d{1,2})$")]
     private static partial Regex DecimalTail();
 
-    [GeneratedRegex(@"^(?<number>\d[\d.,]*)(?<unit>دج|د\.ج|دينار|سنتيم)$")]
+    [GeneratedRegex(@"^(?<number>\d[\d.,]*)\)?(?<unit>دج|د\.ج|دينار|سنتيم)$")]
     private static partial Regex Glued();
 }

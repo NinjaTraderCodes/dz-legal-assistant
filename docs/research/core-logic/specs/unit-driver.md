@@ -101,6 +101,15 @@ Each row gives the stage, who does it, what must exist before it, and what the d
 
 **Fixed lines the reconciler writes** in `reports\<unit>.reconciliation.md`, so that a script can check them: one line `difference <id>: <outcome>` for every entry of `reports\<unit>.differences.json`, and one line `disputed <case id>: <reason>` for every boundary case whose expectation it holds wrong. `unit.py status` shows stage 5 as done only when every difference id has its line; and stage 8 only when every id of `attacks.input.json` is in the register with a verdict, and every `fixed` or `refuted` verdict has a `verifierQuote`.
 
+## The light route for claim types (the owner, 17 November 2026)
+
+The owner's words: "For the 21 claim types, full checking only where a rule can block. A field that can only warn (grades B, C, D) gets one derivation pair, the reconciliation and one attack. No third derivation, no Codex blind view, no follow-up run. Whatever stays uncertain is written as "open, warn" and the work moves on. At most one follow-up run per unit."
+
+- **Where a rule can block** is read by script: an item of the claim type's own (never an imported module block) that declares `blockCleanExport` in `effect`, `effectWhenExpired`, `effectWhenMissing` or `effectWhenUnknown`. Before reconciliation, the two derivations are read, and either one's is enough. After it, the reconciled record is read. Until both derivations exist, stage 2d waits.
+- **No such item (the light route):** stages 2d (boundary cases), 7b (the Sonnet attack: the adversary, 7a, is the attack kept, for its search of official sources), 7c (Codex's support check) and 8b (Codex's blind view) show `skipped: light route`. Stages 4, 6 and 9 run without boundary cases. **No follow-up:** what one would decide is written to `attacks.open.json` (verdict `open`, note "open, warn") at stage 9. The grader reads it as a register, so those items carry `attackOpen` and warn. Without a support check, every item also carries `supportCheckPending`; neither can reach A.
+- **A blocking item (the full route):** every stage as before, with **at most one follow-up**. A second follow-up's findings are recorded open in the same way.
+- The modules keep their route unchanged.
+
 ## Stage 8: the verifier receives everything at once
 
 `unit.py verify-input <unit>` writes `<CL>\rules\reports\<unit>.attacks.input.json`: `{ "unit": "<unit>", "attacks": [ … ] }`, each entry `{ "id", "who", "target", "kind", "claim" }`, gathered from the sources below. (`stage7.py split` writes `"who": "supportCheck"` in `support.json`; `verify-input` renames it `support`, the one value the register uses.)

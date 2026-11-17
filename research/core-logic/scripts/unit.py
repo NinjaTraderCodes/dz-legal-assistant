@@ -54,6 +54,16 @@ AGENTS = {"2a": ("rules-derive-a", "opus", False), "2b": ("rules-derive-b", "son
           "5": ("rules-reconcile", "opus", False), "7a": ("rules-adversary", "opus", False),
           "7b": ("rules-attack", "sonnet", True), "8": ("rules-verify", "opus", False)}
 CODEX_STAGES = {"7c": "rules-support-check-codex", "8b": "boundary-second-view-codex"}
+# The owner's light route for the 21 claim types (17 November 2026): "full checking only where a rule can block. A field
+# that can only warn (grades B, C, D) gets one derivation pair, the reconciliation and one attack. No third derivation, no
+# Codex blind view, no follow-up run. Whatever stays uncertain is written as "open, warn" and the work moves on. At most
+# one follow-up run per unit." A claim type none of whose own items declares blockCleanExport skips the boundary cases,
+# the second attack (the Sonnet one: the adversary, with its search of official sources, is the one kept), Codex's support
+# check and its blind view, and every follow-up: what a follow-up would decide is recorded as "open" (attacks.open.json),
+# so the grader marks those items attackOpen and they warn. A claim type with a blocking item keeps the full route, with
+# at most one follow-up.
+EFFECT_KEYS = ("effect", "effectWhenExpired", "effectWhenMissing", "effectWhenUnknown")
+LIGHT = "skipped: light route (no item of the claim type declares blockCleanExport; the owner, 17 November 2026)"
 # The first module was made before the driver: its attack is Codex's and its follow-up 1 files carry no number.
 LEGACY = {"formal-notice"}
 # Reports written before the reconcile prompt named the fixed lines (16 November 2026): their differences are bold
@@ -203,7 +213,59 @@ class Unit:
 
     def registers(self) -> list[str]:
         out = [self.register(0)] if os.path.isfile(self.register(0)) else []
-        return out + [self.register(k) for k in range(1, self.followups() + 1) if os.path.isfile(self.register(k))]
+        out += [self.register(k) for k in range(1, self.followups() + 1) if os.path.isfile(self.register(k))]
+        return out + ([self.r("attacks.open.json")] if os.path.isfile(self.r("attacks.open.json")) else [])
+
+
+def blocking_items(u: Unit) -> list[str] | None:
+    """The claim type's own items that declare blockCleanExport: from the reconciled record once it exists, before that
+    from both derivations (either one's is enough); None while a derivation is missing."""
+    if os.path.isfile(u.reconciled):
+        paths = [u.reconciled]
+    else:
+        paths = [u.deriv(side) for side in ("a", "b")]
+        if not all(os.path.isfile(x) for x in paths):
+            return None
+    found = set()
+
+    def walk(x, owner):
+        if isinstance(x, dict):
+            me = x.get("id", owner)
+            if any(x.get(k) == "blockCleanExport" for k in EFFECT_KEYS):
+                found.add(str(me))
+            for v in x.values():
+                walk(v, me)
+        elif isinstance(x, list):
+            for v in x:
+                walk(v, owner)
+
+    for path in paths:
+        walk(load(path), None)
+    return sorted(found)
+
+
+def light(u: Unit) -> bool | None:
+    """The owner's light route: a claim type with no blocking item; None while that cannot be read yet."""
+    if u.kind != "claim":
+        return False
+    found = blocking_items(u)
+    return None if found is None else not found
+
+
+def followup_allowed(u: Unit) -> bool:
+    """A module: as before. A claim type: none on the light route, at most one otherwise (the owner, 17 November)."""
+    if u.kind != "claim":
+        return True
+    return not light(u) and u.followups() < 1
+
+
+def write_open(u: Unit, entries: list[dict]) -> str:
+    """What a follow-up would have decided, recorded as open: the grader marks the items attackOpen, and they warn."""
+    path = u.r("attacks.open.json")
+    old = load(path)["attacks"] if os.path.isfile(path) else []
+    note = "open, warn: no follow-up on this route (the owner, 17 November 2026)"
+    save(path, {"unit": u.id, "attacks": old + [dict(e, verdict="open", note=note) for e in entries]})
+    return path
 
 
 def register_entries(u: Unit) -> list[dict]:
@@ -603,7 +665,7 @@ def status(u: Unit) -> list[tuple[str, str]]:
     s: dict[str, str] = {}
 
     def need(*stages):
-        missing = [x for x in stages if s.get(x) not in ("done", "not for a claim type")]
+        missing = [x for x in stages if s.get(x) not in ("done", "not for a claim type") and not str(s.get(x, "")).startswith("skipped")]
         return f"waiting for {', '.join(missing)}" if missing else None
 
     s["0"] = "done" if os.path.isfile(u.r("texts.json")) else "due"
@@ -621,7 +683,12 @@ def status(u: Unit) -> list[tuple[str, str]]:
         s["2c"] = "not for a claim type"
     else:
         s["2c"] = "done" if os.path.isfile(u.deriv("c")) else need("0") or "due"
-    if os.path.isfile(u.boundary):
+    route = light(u)
+    if u.kind == "claim" and route is None and not os.path.isfile(u.boundary):
+        s["2d"] = need("2a", "2b") or "waiting for 2a and 2b (whether the claim type has a blocking item)"
+    elif route and not os.path.isfile(u.boundary):
+        s["2d"] = LIGHT
+    elif os.path.isfile(u.boundary):
         problems = boundary_problems(load(u.boundary))
         s["2d"] = "done" if not problems else "blocked: the file has the wrong shape (set it aside, rerun fresh): " + \
             "; ".join(problems[:3])
@@ -655,8 +722,8 @@ def status(u: Unit) -> list[tuple[str, str]]:
     s["6"] = need("5") or ("done" if all(map(os.path.isfile, stage6)) else "due")
     s["7a"] = "done" if os.path.isfile(u.r("attacks.adversary.json")) else need("6") or "due"
     attack = os.path.isfile(u.r("attacks.sonnet.json")) or (u.id in LEGACY and os.path.isfile(u.r("attacks.codex.json")))
-    s["7b"] = "done" if attack else need("6") or "due"
-    s["7c"] = "done" if os.path.isfile(u.r("support.json")) else need("6") or "due (unit.py codex)"
+    s["7b"] = "done" if attack else LIGHT if route else need("6") or "due"
+    s["7c"] = "done" if os.path.isfile(u.r("support.json")) else LIGHT if route else need("6") or "due (unit.py codex)"
     if need("7a", "7b"):
         s["8"] = need("7a", "7b")
     elif not os.path.isfile(u.register(0)) or not os.path.isfile(u.candidate):
@@ -669,24 +736,30 @@ def status(u: Unit) -> list[tuple[str, str]]:
             s["8"] = f"due: follow-up {open_runs[0]} (its input is written)"
         elif undecided:
             s["8"] = f"blocked: given to the verifier without a verdict: {', '.join(undecided[:8])}"
+        elif new and not followup_allowed(u):
+            s["8"] = f"done (open, warn: {len(new)} findings are recorded open at stage 9, no follow-up on this route)"
         elif new:
             s["8"] = f"due: a follow-up for {len(new)} new findings (unit.py verify-input {u.id} --followup)"
         else:
             s["8"] = "done"
-    if not os.path.isfile(u.register(0)):
+    if route:
+        s["8b"] = LIGHT
+    elif not os.path.isfile(u.register(0)):
         s["8b"] = "waiting for 8"
     else:
         send, _ = second_view_due(u)
         aside = views_set_aside(u)
         s["8b"] = f"due (unit.py codex): {', '.join(send)}" if send else \
             "done" + (f" (no second view, Codex rejected twice: {', '.join(aside)}: uncertain)" if aside else "")
-    if s["8"] != "done" or not s["8b"].startswith("done"):
-        s["9"] = "waiting for 8" + ("" if s["8"] != "done" else "b")
+    if not s["8"].startswith("done") or not (s["8b"].startswith("done") or s["8b"].startswith("skipped")):
+        s["9"] = "waiting for 8" + ("" if not s["8"].startswith("done") else "b")
     else:
         grades = u.r("grades.json")
         fresh = os.path.isfile(grades) and os.path.isfile(u.candidate_q) and \
             load(grades).get("input") == file_sha(u.candidate_q)
         ok = os.path.isfile(u.r("checklist-check.json")) and load(u.r("checklist-check.json")).get("ok")
+        # On a route with no follow-up, what the checklist leaves unanswered is recorded open instead (and warns).
+        ok = ok or (not followup_allowed(u) and os.path.isfile(u.r("attacks.open.json")) and not followup_entries(u))
         s["9"] = "done" if os.path.isfile(u.final) and fresh and ok else "due"
     return [(x, s[x]) for x in STAGES]
 
@@ -756,9 +829,10 @@ def stage4(u: Unit) -> bool:
                               "--out", u.r("c-comparison.json"), "--texts", u.r("texts.json")))
     a, b = _flat(u, u.deriv("a"), "a"), _flat(u, u.deriv("b"), "b")
     runs = {"aOnB": [a, "--against", b, "--idmap", u.r("idmap.json")],
-            "bOnA": [b, "--against", a, "--idmap", u.r("idmap.json")],
-            "boundaryA": [a, "--boundary", u.boundary], "boundaryB": [b, "--boundary", u.boundary],
-            "boundaryAB": [a, b, "--boundary", u.boundary]}
+            "bOnA": [b, "--against", a, "--idmap", u.r("idmap.json")]}
+    if os.path.isfile(u.boundary):  # none on the light route
+        runs |= {"boundaryA": [a, "--boundary", u.boundary], "boundaryB": [b, "--boundary", u.boundary],
+                 "boundaryAB": [a, b, "--boundary", u.boundary]}
     for label, args in runs.items():
         code, _ = run([t, "examples", *args, "--json"], keep=os.path.join(u.cases, f"{label}.json"))
         print(f"== examples {label}: exit {code}")
@@ -788,8 +862,12 @@ def checks_on(u: Unit, record: str, quoted: str, tag: str) -> bool:
     flat = _flat(u, record, tag)
     say(f"examples {tag}", *run([t, "examples", flat]))
     name = "boundaryReconciled.json" if tag == "reconciled" else "boundaryFinal.json"
-    code, _ = run([t, "examples", flat, "--boundary", u.boundary, "--json"], keep=os.path.join(u.cases, name))
-    print(f"== boundary cases on the {tag} record: exit {code} (kept in {name})")
+    if os.path.isfile(u.boundary):
+        code, _ = run([t, "examples", flat, "--boundary", u.boundary, "--json"], keep=os.path.join(u.cases, name))
+        print(f"== boundary cases on the {tag} record: exit {code} (kept in {name})")
+    else:
+        save(os.path.join(u.cases, name), [])  # the light route: no boundary cases
+        print("== no boundary cases (light route)")
     report = u.r("checklist-check.reconciled.json" if tag == "reconciled" else "checklist-check.json")
     say("check-checklist", *py("records.py", "check-checklist", quoted, "--checklist", u.r("checklist.json"),
                                 "--flags", u.r(f"flags.{tag}.json"), "--report", report))
@@ -831,7 +909,9 @@ def stage9(u: Unit) -> bool:
     if not checks_fresh(u) and not run_final_checks(u):
         return False
     new = followup_entries(u)
-    if new:
+    if new and not followup_allowed(u):
+        print(f"{len(new)} findings recorded open, warn (no follow-up on this route): {write_open(u, new)}")
+    elif new:
         print(f"a follow-up is due ({len(new)} findings): python unit.py verify-input {u.id} --followup")
         return False
     try:

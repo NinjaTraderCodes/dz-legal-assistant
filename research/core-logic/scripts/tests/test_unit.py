@@ -367,3 +367,49 @@ def test_the_adversary_file_is_read_as_its_prompt_writes_it_an_array_or_the_firs
     assert unit.attack_list([{"id": "adv-1"}]) == [{"id": "adv-1"}]
     assert unit.attack_list({"attacks": [{"id": "adv-1"}]}) == [{"id": "adv-1"}]
 
+
+
+def claim_through_stage_2(root, name="loan-repayment", blocking=False):
+    u = unit.Unit(name, str(root))
+    r = root / "rules"
+    dump(r / "reports" / f"{name}.texts.json", {"rendered": ""})
+    deadline = {"id": "d1", "effectWhenExpired": "blockCleanExport" if blocking else "warn"}
+    for side in ("a", "b"):
+        dump(r / "derivations" / side / f"{name}.json", {"deadlines": [deadline] if side == "a" else []})
+        dump(r / "derivations" / side / f"{name}.checklist.json", {})
+    return u
+
+
+def test_a_claim_type_with_no_blocking_item_takes_the_light_route(root):
+    u = claim_through_stage_2(root)
+    assert u.kind == "claim" and unit.blocking_items(u) == [] and unit.light(u)
+    s = dict(unit.status(u))
+    assert s["2c"] == "not for a claim type" and s["2d"] == unit.LIGHT
+    assert s["7b"] == unit.LIGHT and s["7c"] == unit.LIGHT and s["8b"] == unit.LIGHT
+    assert not unit.followup_allowed(u)
+    # Before both derivations exist the route cannot be read, and the boundary cases wait for it.
+    fresh = unit.Unit("unpaid-rent", str(root))
+    assert unit.light(fresh) is None and dict(unit.status(fresh))["2d"].startswith("waiting for")
+
+
+def test_a_claim_type_with_a_blocking_item_keeps_the_full_route_with_one_follow_up(root):
+    u = claim_through_stage_2(root, blocking=True)
+    assert unit.blocking_items(u) == ["d1"] and unit.light(u) is False
+    s = dict(unit.status(u))
+    assert s["2d"] == "due" and s["7b"] != unit.LIGHT and s["8b"] != unit.LIGHT
+    assert unit.followup_allowed(u)
+    dump(u.followup_input(1), {"attacks": []})
+    assert not unit.followup_allowed(u)  # at most one follow-up run per unit
+
+
+def test_findings_left_without_a_follow_up_are_recorded_open_and_count_as_decided(root):
+    u = claim_through_stage_2(root)
+    entry = {"id": "values-d1-1", "who": "values", "target": "d1", "kind": "wrongValue"}
+    path = unit.write_open(u, [entry])
+    assert path in u.registers()
+    assert unit._decided(u, "values-d1-1")
+    opened = [e for e in unit.register_entries(u) if e["id"] == "values-d1-1"][0]
+    assert opened["verdict"] == "open" and "open, warn" in opened["note"]
+    # The grader reads it as an open attack on d1.
+    import records as rc
+    assert "d1" in rc.attack_targets(opened) and opened["verdict"] not in ("refuted", "fixed")

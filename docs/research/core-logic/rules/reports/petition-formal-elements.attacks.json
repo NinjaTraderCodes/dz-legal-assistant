@@ -1,0 +1,214 @@
+{
+  "unit": "petition-formal-elements",
+  "attacks": [
+    {
+      "id": "adv-1",
+      "who": "adversary",
+      "target": "k63, k33, p1, ex9, slots",
+      "kind": "procedure",
+      "claim": "Law 22-13 inserted CPCA article 536 bis 4: before the specialised commercial court the opening petition must be accompanied by the record of non-conciliation on pain of inadmissibility in form; the record has no slot, step, document or boundary for it.",
+      "verdict": "fixed",
+      "verifierQuote": "«يسبق قيد الدعوى إجراء الصلح الذي يتم بطلب من أحد الخصوم ويقدم إلى رئيس المحكمة التجارية المتخصصة ...» (¶1); «في حالة فشل محاولة الصلح، ترفع الدعوى أمام المحكمة التجارية المتخصصة بعريضة افتتاح الدعوى طبقا للقواعد المنصوص عليها في هذا القانون مرفقة، تحت طائلة عدم قبول الدعوى شكلا، بمحضر عدم الصلح.» (¶3)",
+      "quoteRef": "cpca 536 مكرر 4 ¶1 and ¶3 (store, version law-22-13); checked on the Official Journal no. 48 of 17 July 2022, page 4 (A2022048.pdf, sha256 5d67c35848ee723dd997bbff0a63bc70e6094294724ce11bfde2f16ba4dbb8f6, same as the ledger). Jurisdiction from installation: law-22-13 13 ¶1.",
+      "change": "Added statements b59 (536 مكرر 4 ¶3), b60 (¶1), b61 (536 مكرر ¶1-7, the list of disputes), b62 (law-22-13 13 ¶1); prior step p18 (commercialConciliation, requiredWhen claim_before_specialised_commercial_court yes, accepted means the record of non-conciliation, blockCleanExport on the express sanction, ask when unknown); document doc9; proposed slots claim_before_specialised_commercial_court and non_conciliation_record_attached; checklist k63, k33, k32 notes and refs, new k77 on the store's Law 22-13 note; examples ex29 (block), ex30 (done), and the new slot added to every full example."
+    },
+    {
+      "id": "adv-2",
+      "who": "adversary",
+      "target": "k23, k22, k32",
+      "kind": "amendment",
+      "claim": "k23 and k22 answer «applies» to a lawyer's signature (815) and a compulsory lawyer (826) before the administrative court, but Law 22-13 rewrote 815 and repealed 826; k32 says no article changed by Law 22-13 is relied on.",
+      "verdict": "fixed",
+      "verifierQuote": "«ترفع الدعوى أمام المحكمة الإدارية بعريضة ورقية أو بالطريق الإلكتروني.» (cpca 815 ¶1, in force); «تلغى : – الفقرات 7 و 8 و 9 و 10 من المادّة 32 والمواد 826 و835 و836 و912 و913 و914 من القانون رقم 08-09 ...»",
+      "quoteRef": "cpca 815 ¶1 (store, version law-22-13; the law-08-09 wording «بعريضة موقعة من محام» is marked not in force); law-22-13 14 ¶2 (store); Official Journal no. 48 of 17 July 2022.",
+      "change": "k22 note: only the ordinary-court half applies; 826 repealed and 815 rewritten without a lawyer. k23 note: the lawyer's signature came from the old 815; only 816 and 819 remain, which n1 already cites. k28 note: 828 rewritten by Law 22-13. k32 note rewritten (articles 8, 13-25 untouched; 815, 826, 828 changed and touch k22, k23, k28; 536 مكرر 4 now cited). Example ex36."
+    },
+    {
+      "id": "adv-3",
+      "who": "adversary",
+      "target": "p9, k29, k52, k66, o5, doc4, ex12, ex14",
+      "kind": "specialLaw",
+      "claim": "Ordinance 71-57 article 28, as rewritten by Law 09-02, grants legal aid as of right to minors who are parties, the plaintiff in maintenance, the mother in custody, workers in work-accident claims, disabled persons and others; with CPCA 417 they are exempt from costs. The record says no exemption beyond legal aid is known and the ordinance is absent.",
+      "verdict": "fixed",
+      "verifierQuote": "«المادة 28 : تمنح المساعدة القضائية بقوة القانون إلى : 1 – أرامل وبنات الشهداء غير المتزوجات، 2 – معطوبي الحرب، 3 – القصر الأطراف في الخصومة، 4 – المدعي في مادة النفقة، 5 – الأم في مادة الحضانة، 6 – العمال في مادة حوادث العمل أو الأمراض المهنية وإلى ذوي حقوقهم، 7 – ضحايا الاتجار بالأشخاص أو بالأعضاء، 8 – ضحايا تهريب المهاجرين، 9 – ضحايا الإرهاب، 10 – المعوقين.»; with «يعفى المستفيد من المساعدة القضائية من دفع المصاريف القضائية.» (cpca 417 ¶2)",
+      "quoteRef": "Law 09-02 of 25 February 2009 amending Ordinance 71-57 (its article 4 amends article 28), Official Journal no. 15 of 8 March 2009, page 11 (read from the page image; A2009015.pdf, sha256 fe1439da73d31e85a472b0688c82809967fb8f46334fae4394397f74ea1ed4b4); cpca 417 ¶2 (store). Not in the store; no later amendment of article 28 searched.",
+      "change": "Request appended to requests.jsonl (legal-aid-ordinance 28, askedBy verifier). New open point o14 (grade D) with the ten categories and both readings; o5 why updated. fee_exemption_applies question now names legal aid as of right and the main categories; p9 exemption note and interpretiveNote, doc4 name, b32 interpretiveNote, k29, k52, k66, k68 notes updated (k52, k66 stay searchedNotFound: the text is not in the store). No exemption is inferred from the requests (the text is not in the store), so the rule still asks. Examples ex34 (maintenance, exemption unknown: ask) and ex35 (exemption yes: none)."
+    },
+    {
+      "id": "atk-1",
+      "who": "attack",
+      "target": "p17",
+      "kind": "wrongCondition",
+      "claim": "Publication is required only for real property or a real right already published; p17 fires on dispute_concerns_real_property, not property_registered, so a lease of an unpublished dwelling triggers it.",
+      "verdict": "open",
+      "verifierQuote": "«يجب إشهار عريضة رفع الدعوى لدى المحافظة العقارية، إذا تعلقت بعقار و/أو حق عيني عقاري مشهر طبقا للقانون»",
+      "quoteRef": "cpca 17 ¶3 (store, version law-08-09; not touched by Law 22-13)",
+      "change": "None needed: the Arabic «بعقار و/أو حق عيني عقاري مشهر» lets «مشهر» qualify the right alone or both; p17 is already interpretive, warns and never blocks, keeps both readings in open point o9 with the protective reading (every claim on real property) as the rule. No French text in the store to settle it."
+    },
+    {
+      "id": "atk-2",
+      "who": "attack",
+      "target": "p17",
+      "kind": "wrongEffect",
+      "claim": "b17 attaches inadmissibility in form to non-publication but p17 only warns; and the slot does not cover a petition deposited for publication.",
+      "verdict": "refuted",
+      "verifierQuote": "«... وتقديمها في أول جلسة ينادى فيها على القضية، تحت طائلة عدم قبولها شكلا، ما لم يثبت إيداعها للإشهار.»",
+      "quoteRef": "cpca 17 ¶3 (store)",
+      "change": ""
+    },
+    {
+      "id": "atk-3",
+      "who": "attack",
+      "target": "n2",
+      "kind": "wrongCondition",
+      "claim": "n2 has no condition and no slots, so it never fires, even when divorce_by_mutual_consent is yes.",
+      "verdict": "fixed",
+      "verifierQuote": "«في حالة الطلاق بالتراضي يقدم طلب مشترك في شكل عريضة وحيدة موقعة من الزوجين تودع بأمانة الضبط.»",
+      "quoteRef": "cpca 428 ¶1 (store)",
+      "change": "n2 gains when {all: requests includes divorce, divorce_by_mutual_consent yes} and slots [divorce_by_mutual_consent]; its message now asks to check that the petition is joint and signed by both spouses. Example ex31 (warn); ex1 and ex8 check n2 none."
+    },
+    {
+      "id": "atk-4",
+      "who": "attack",
+      "target": "p10",
+      "kind": "wrongEffect",
+      "claim": "p10 blocks, but articles 62 and 66 allow a later cure, so a warning would fit.",
+      "verdict": "refuted",
+      "verifierQuote": "«حالات بطلان العقود غير القضائية والإجراءات من حيث موضوعها محددة على سبيل الحصر فيما يأتي : 1 - انعدام الأهلية للخصوم،» and «يثير القاضي تلقائيا انعدام الأهلية»",
+      "quoteRef": "cpca 64 ¶1-2 and 65 ¶1 (store)",
+      "change": "Article 64 makes lack of capacity a ground of substantive nullity and article 65 obliges the judge to raise it; article 66 spares a procedure only «إذا زال سبب ذلك البطلان بإجراء لاحق», which is exactly what naming the representative in the draft does. The defect exists at drafting; the block (clean export only) stays."
+    },
+    {
+      "id": "atk-5",
+      "who": "attack",
+      "target": "p6",
+      "kind": "wrongEffect",
+      "claim": "p6 warns while p1-p5 block on the same article 15 sanction; either a condition 'documents exist' is needed or the effect is inconsistent.",
+      "verdict": "open",
+      "verifierQuote": "«يجب أن تتضمن عريضة افتتاح الدعوى، تحت طائلة عدم قبولها شكلا، البيانات الآتية : ... 6- الإشارة، عند الاقتضاء، إلى المستندات والوثائق المؤيدة للدعوى.»",
+      "quoteRef": "cpca 15 ¶1 and ¶7 (store)",
+      "change": "None needed: «عند الاقتضاء» leaves it to the case when the reference is due, so the texts allow both readings; p6 is already interpretive with both readings in open point o13 and the protective reading (warn) as the rule. No slot for 'the claim relies on documents' would remove the reading."
+    },
+    {
+      "id": "atk-6",
+      "who": "attack",
+      "target": "p9",
+      "kind": "specialLawSuspected",
+      "claim": "From memory: Law 90-04 may exempt individual labour disputes from fees apart from legal aid; check it and finance-law exemptions.",
+      "verdict": "refuted",
+      "verifierQuote": "«فضلا عن الاحكام المنصوص عليها بموجب الامر رقم 71 – 57 ... المتعلق بالمساعدة القضائية، تمنح الاستفادة منها بكامل الحقوق لكل عامل ومتدرب يقبل مرتبه عن ضعف الاجر الادنى المضمون.»",
+      "quoteRef": "labour-disputes 25 ¶1 (store; the store holds Law 90-04 articles 1 to 40, and no other article speaks of fees or of free proceedings)",
+      "change": "Law 90-04's only exemption is legal aid as of right for low-paid workers, already b32. The finance-law part names no text; the record already asks fee_exemption_applies for any statutory exemption."
+    },
+    {
+      "id": "atk-7",
+      "who": "attack",
+      "target": "b51",
+      "kind": "missing",
+      "claim": "No rule for informing the prosecution ten days before the hearing (State, public bodies, protection of persons lacking capacity), nor for serving the divorce petition on the prosecution.",
+      "verdict": "refuted",
+      "verifierQuote": "«يجب إبلاغ النيابة العامة عشرة (10) أيام على الأقل قبل تاريخ الجلسة بالقضايا الآتية:» (260 ¶1); «يسجل أمين الضبط رقم القضية وتاريخ أول جلسة على نسخ العريضة الافتتاحية، ويسلمها للمدعي بغرض تبليغها رسميا للخصوم.» (16 ¶2); «... بنسخة من العريضة المشار إليها في المادة 436 أعلاه.» (438 ¶1)",
+      "quoteRef": "cpca 260 ¶1, 16 ¶2, 438 ¶1 (store)",
+      "change": "Both acts follow registration (the hearing date and the endorsed copies exist only then), so neither is a particular nor a step before the petition; the divorce copy is listed as doc8. k27 note records the reason."
+    },
+    {
+      "id": "atk-8",
+      "who": "attack",
+      "target": "b18",
+      "kind": "missing",
+      "claim": "No rule checks that the petition itself is in Arabic, on pain of inadmissibility; only documents are checked (p15).",
+      "verdict": "fixed",
+      "verifierQuote": "«يجب أن تتم الإجراءات والعقود القضائية من عرائض ومذكرات باللغة العربية، تحت طائلة عدم القبول.»",
+      "quoteRef": "cpca 8 ¶1 (store; Law 22-13 did not touch it)",
+      "change": "New prior step p19 (slot petition_in_arabic, blockCleanExport on the express sanction, ask when unknown, basis b18); proposed slot petition_in_arabic; k16, k34, k39 refs and notes; ex4 asks it; the slot is set in every full example; example ex32 (French petition: block)."
+    },
+    {
+      "id": "atk-9",
+      "who": "attack",
+      "target": "n3",
+      "kind": "misreading",
+      "claim": "n3 merges curatorship and mental impairment in one slot and loses the specialist doctor's proof that only the impairment needs.",
+      "verdict": "fixed",
+      "verifierQuote": "«لا يجوز تقديم طلب الطلاق بالتراضي، إذا كان أحد الزوجين تحت وضع التقديم أو إذا ظهر عليه اختلال في قدراته الذهنية تمنعه من التعبير عن إرادته.» (¶1); «يجب إثبات اختلال القدرات الذهنية من قبل طبيب مختص.» (¶2)",
+      "quoteRef": "cpca 432 ¶1-2 (store)",
+      "change": "Both grounds have the same consequence (¶1), so one slot is kept; but the boundary's message and the slot's question omitted ¶2: the message now states that the impairment must be established by a specialist doctor and asks to check the medical certificate, and the question says so. Example ex33."
+    },
+    {
+      "id": "atk-10",
+      "who": "attack",
+      "target": "b17",
+      "kind": "amendmentSuspected",
+      "claim": "From memory: Law 22-13 may have amended articles 15 and 17 (land-registry publication, «قسم» versus «محكمة»).",
+      "verdict": "refuted",
+      "verifierQuote": "«المادة الأولى : يهدف هذا القانون إلى تعديل وتتميم القانون رقم 08–09 ...» «المادة 2 : تعدل المادة 33 من القانون رقم 08–09 ... وتحرر كما يأتي» «المادة 3 : يعدل ويتمم الفصل الرابع من الباب الأول من الكتاب الثاني ...»",
+      "quoteRef": "Official Journal no. 48 of 17 July 2022, page 3 (A2022048.pdf, sha256 5d67c35848ee723dd997bbff0a63bc70e6094294724ce11bfde2f16ba4dbb8f6): its articles 2 to 6 amend 33, the chapter from 531, 600 onwards, 815 onwards; article 14 repeals 32 ¶7-10, 826, 835, 836, 912-914. The amendment ledger lists no change to cpca 8 or 13 to 25, and the store gives 15 and 17 in their law-08-09 wording.",
+      "change": ""
+    },
+    {
+      "id": "c-1",
+      "who": "derivationC",
+      "target": "priorSteps",
+      "kind": "mechanicalDifference",
+      "claim": "C gives ['landRegistryPublication', 'other', 'reconciliationAttempt'] where A and B agree on ['other'].",
+      "verdict": "refuted",
+      "verifierQuote": "«في جميع الحالات، يجب ألا تتجاوز محاولات الصلح ثلاثة (3) أشهر من تاريخ رفع دعوى الطلاق.»",
+      "quoteRef": "cpca 442 ¶2 (store); cpca 17 ¶3 for the land-registry step",
+      "change": "The land-registry step is already in the record (p17). The divorce conciliation attempts run from the filing of the divorce claim, so they are no step before the petition (the record also now has commercialConciliation p18, from adv-1)."
+    },
+    {
+      "id": "c-2",
+      "who": "derivationC",
+      "target": "sections",
+      "kind": "mechanicalDifference",
+      "claim": "C gives ['family'] where A and B agree on [].",
+      "verdict": "refuted",
+      "verifierQuote": "«ينظر قسم شؤون الأسرة، على الخصوص في الدعاوى الآتية:» against «يجب أن تتضمن عريضة افتتاح الدعوى، تحت طائلة عدم قبولها شكلا، البيانات الآتية :»",
+      "quoteRef": "cpca 423 ¶1 and cpca 15 ¶1 (store)",
+      "change": "Article 423 allocates matters to a section (the court-sections unit); article 15 binds every opening petition, so this module (appliesTo *) proposes no section."
+    },
+    {
+      "id": "c-3",
+      "who": "derivationC",
+      "target": "cite [cpca 439 ¶1]",
+      "kind": "mechanicalDifference",
+      "claim": "C cites [cpca 439 ¶1], which neither A nor B cites.",
+      "verdict": "refuted",
+      "verifierQuote": "«محاولات الصلح وجوبية، وتتم في جلسة سرية.» with «في التاريخ المحدد لإجراء محاولة الصلح، يستمع القاضي إلى كل زوج على انفراد ثم معا.»",
+      "quoteRef": "cpca 439 ¶1 and 440 ¶1 (store)",
+      "change": "The attempt is held by the judge at a hearing after filing; nothing in it is a particular or prior step of the petition (k59)."
+    },
+    {
+      "id": "c-4",
+      "who": "derivationC",
+      "target": "cite [cpca 442 ¶2]",
+      "kind": "mechanicalDifference",
+      "claim": "C cites [cpca 442 ¶2], which neither A nor B cites.",
+      "verdict": "refuted",
+      "verifierQuote": "«في جميع الحالات، يجب ألا تتجاوز محاولات الصلح ثلاثة (3) أشهر من تاريخ رفع دعوى الطلاق.»",
+      "quoteRef": "cpca 442 ¶2 (store)",
+      "change": "The period runs from the filing and binds the judge's conciliation, not the drafting; it belongs to the conciliation-mediation unit."
+    },
+    {
+      "id": "bc-bc6",
+      "who": "boundaryCase",
+      "target": "record",
+      "kind": "wrongEffect",
+      "claim": "Family maintenance claim where the court has no family section: the case expects «unsettled» on cpca 423 ¶3 and finds no item.",
+      "verdict": "refuted",
+      "verifierQuote": "«غير أنه في المحاكم التي لم تنشأ فيها الأقسام، يبقى القسم المدني هو الذي ينظر في جميع النزاعات باستثناء القضايا الاجتماعية.» and «في حالة جدولة قضية أمام قسم غير القسم المعني بالنظر فيها، يحال الملف إلى القسم المعني عن طريق أمانة الضبط ...»",
+      "quoteRef": "cpca 32 ¶5 and ¶6 (store, version law-22-13; same words in the law-08-09 wording)",
+      "change": "The text is not silent, and the rule is one of court sections (423, 32), not of the petition's formal elements; this record rightly carries no item for it."
+    },
+    {
+      "id": "bc-bc8",
+      "who": "boundaryCase",
+      "target": "record",
+      "kind": "wrongEffect",
+      "claim": "Defendant possibly resident abroad: the case expects the record to ask defendant_resides_abroad on cpca 16 ¶4.",
+      "verdict": "refuted",
+      "verifierQuote": "«يسجل أمين الضبط رقم القضية وتاريخ أول جلسة على نسخ العريضة الافتتاحية، ويسلمها للمدعي بغرض تبليغها رسميا للخصوم.» (¶2); «يجب احترام أجل عشرين (20) يوما على الأقل بين تاريخ تسليم التكليف بالحضور، والتاريخ المحدد لأول جلسة» (¶3)",
+      "quoteRef": "cpca 16 ¶2-4 (store)",
+      "change": "The interval lies between the summons and the first hearing, both fixed after registration; no particular of the petition (article 15) depends on the defendant's residence, so there is nothing to ask at drafting. Kept as statements b13, b14 and open point o10."
+    }
+  ]
+}

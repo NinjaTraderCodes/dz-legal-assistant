@@ -1,0 +1,85 @@
+{
+ "attacks": [
+  {
+   "target": "p17",
+   "kind": "wrongCondition",
+   "claim": "The text requires publication only where the dispute concerns real property or a real right that is already published under the law (and not where deposit for publication is proved). p17 fires on the slot dispute_concerns_real_property, which also covers possession, co-ownership and the lease of a dwelling or professional premises, whether or not published. The slot property_registered (published at the land registry) exists but p17 does not use it. A lease of a dwelling with property_registered=no would wrongly trigger the rule.",
+   "evidenceWords": "إذا تعلقت بعقار و/أو حق عيني عقاري مشهر طبقا للقانون",
+   "fromMemory": false,
+   "id": "atk-1"
+  },
+  {
+   "target": "p17",
+   "kind": "wrongEffect",
+   "claim": "b17 attaches inadmissibility in form to non-publication, but p17 only warns. The rule also lacks the exception that applies when the petition's deposit for publication is proved: its slot petition_published_land_registry does not cover 'deposited for publication'.",
+   "evidenceWords": "تحت طائلة عدم قبولها شكلا، ما لم يثبت إيداعها للإشهار",
+   "fromMemory": false,
+   "id": "atk-2"
+  },
+  {
+   "target": "n2",
+   "kind": "wrongCondition",
+   "claim": "n2 has no 'when' condition and no slots. It cannot fire on any fact, such as divorce_by_mutual_consent=yes, or it fires on every petition. It also looks like a petition by a single spouse, yet b45 to b47 describe a different filing, so the boundary is never tested.",
+   "evidenceWords": "في حالة الطلاق بالتراضي يقدم طلب مشترك في شكل عريضة وحيدة موقعة من الزوجين تودع بأمانة الضبط.",
+   "fromMemory": false,
+   "id": "atk-3"
+  },
+  {
+   "target": "p10",
+   "kind": "wrongEffect",
+   "claim": "p10 blocks clean export when an incapable party is not represented. But b24 and b25 (cited by p11 and absent from p10) say a correctable procedure is not annulled once its cause is removed, and the judge may grant time to correct it. Lack of capacity is raised by the judge and can be cured by a later step, so a block is stronger than the texts support. A warning with a cure note would fit.",
+   "evidenceWords": "لا يقضى ببطلان إجراء من الإجراءات القابلة للتصحيح، إذا زال سبب ذلك البطلان بإجراء لاحق أثناء سير الخصومة",
+   "fromMemory": false,
+   "id": "atk-4"
+  },
+  {
+   "target": "p6",
+   "kind": "wrongEffect",
+   "claim": "p6 (documents supporting the claim) only warns, while p1 to p5 block on the same article 15 sanction. Article 15 puts item 6 among the particulars required on pain of inadmissibility in form. The only softening is the words 'where needed' (عند الاقتضاء). Either the rule needs a condition 'documents exist', or the effect is inconsistent with b5/b11.",
+   "evidenceWords": "الإشارة، عند الاقتضاء، إلى المستندات والوثائق المؤيدة للدعوى",
+   "fromMemory": false,
+   "id": "atk-5"
+  },
+  {
+   "target": "p9",
+   "kind": "specialLawSuspected",
+   "claim": "From memory: the labour-disputes law (Law 90-04 of 6 February 1990) may exempt individual labour disputes from judicial fees or stamps, apart from legal aid. If so, fee_exemption_applies would also have to cover social disputes. Check the article of Law 90-04 on the free or exempt nature of labour-dispute proceedings, and any finance-law fee exemptions.",
+   "evidenceWords": "",
+   "fromMemory": true,
+   "id": "atk-6"
+  },
+  {
+   "target": "b51",
+   "kind": "missing",
+   "claim": "There is no rule for informing the public prosecution at least ten days before the hearing when the State, a wilaya, a commune or a public administrative body is a party, or in cases protecting persons lacking capacity. The slot public_body_party exists. Likewise, no rule covers the divorce plaintiff's duty to serve the petition on the prosecution (b39, b41).",
+   "evidenceWords": "يجب إبلاغ النيابة العامة عشرة (10) أيام على الأقل قبل تاريخ الجلسة",
+   "fromMemory": false,
+   "id": "atk-7"
+  },
+  {
+   "target": "b18",
+   "kind": "missing",
+   "claim": "No rule covers the language of the petition: it must be in Arabic on pain of inadmissibility. Nothing checks it, although a petition drafted or pasted in another language is an obvious failure. b19 is handled only for documents (p15).",
+   "evidenceWords": "يجب أن تتم الإجراءات والعقود القضائية من عرائض ومذكرات باللغة العربية، تحت طائلة عدم القبول",
+   "fromMemory": false,
+   "id": "atk-8"
+  },
+  {
+   "target": "n3",
+   "kind": "misreading",
+   "claim": "n3 merges two grounds of b48 into one slot, spouse_under_curatorship_or_impaired. The text requires a specialist doctor's proof only for the mental impairment, not for curatorship. A single yes/no slot loses that proof requirement and the distinction between the two grounds.",
+   "evidenceWords": "يجب إثبات اختلال القدرات الذهنية من قبل طبيب مختص",
+   "fromMemory": false,
+   "id": "atk-9"
+  },
+  {
+   "target": "b17",
+   "kind": "amendmentSuspected",
+   "claim": "From memory: Law 22-13 of 12 July 2022 amended the Code of Civil and Administrative Procedure, including provisions on petitions and publication. Check whether articles 15 and 17 (and the wording on land-registry publication, and 'قسم' versus 'محكمة' for specialised courts) were modified in that amendment.",
+   "evidenceWords": "",
+   "fromMemory": true,
+   "id": "atk-10"
+  }
+ ],
+ "nothingFound": false
+}

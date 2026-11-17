@@ -1,0 +1,117 @@
+{
+ "attacks": [
+  {
+   "target": "t20",
+   "kind": "wrongCondition",
+   "claim": "t20 fires on every dispute_is_social = yes case. That includes cases with work_accident_or_occupational_illness = yes, where the text says the plaintiff's domicile court applies 'غير أنه', as an exception. t20 offers the contract-place and defendant-domicile courts in that case, so it contradicts t21 and b18/b50. t20 needs a condition excluding the accident case.",
+   "evidenceWords": "غير أنه في حالة إنهاء أو تعليق عقد العمل بسبب حادث عمل أو مرض مهني يؤول الاختصاص للمحكمة التي يوجد بها موطن المدعي",
+   "fromMemory": false,
+   "id": "atk-1"
+  },
+  {
+   "target": "t30",
+   "kind": "wrongEffect",
+   "claim": "t30 states the administrative-court rule as applying whenever public_body_party or national_public_body_party is yes. Nothing in it excludes public_vehicle_damage = yes, which b57 (art 802 ¶3) leaves with the ordinary courts, and for which t6 gives the ordinary harmful-act court. n3 does exclude it. For that case t6 and t30 contradict each other.",
+   "evidenceWords": "المنازعات المتعلقة بكل دعوى خاصة بالمسؤولية الرامية إلى طلب تعويض الأضرار الناجمة عن مركبة تابعة للدولة، أو لإحدى الولايات أو البلديات أو المؤسسات العمومية ذات الصبغة الإدارية",
+   "fromMemory": false,
+   "id": "atk-2"
+  },
+  {
+   "target": "t30",
+   "kind": "wrongCondition",
+   "claim": "Art 804 makes the administrative court mandatory only for the listed matters: taxes, public works, administrative contracts, staff disputes and harmful-act compensation. Otherwise art 803 applies, which is the domicile and several-defendants rules. t30 fires as a firm rule on the mere presence of a public body as a party, for example a commercial or lease claim against a commune. That is not a listed matter.",
+   "evidenceWords": "خلافا لأحكام المادة 803 أعلاه، ترفع الدعاوى وجوبا أمام المحاكم الإدارية في المواد المبينة أدناه",
+   "fromMemory": false,
+   "id": "atk-3"
+  },
+  {
+   "target": "t30",
+   "kind": "misreading",
+   "claim": "t30 says 'compensation for harmful acts' goes to the administrative court under 804. The cited item 7 lists only a felony, a misdemeanour or a tort, and omits the minor offence (مخالفة) that art 39 and t6 include. The cited paragraph numbers also skip ¶6 and ¶7 of art 804 (items 5 and 6). Those items are not shown, so the rule may be incomplete for other mandatory administrative matters.",
+   "evidenceWords": "7– في مادة تعويض الضرر الناجم عن جناية أو جنحة أو فعل تقصيري، أمام المحكمة التي يقع في دائرة اختصاصها مكان وقوع الفعل الضار",
+   "fromMemory": false,
+   "id": "atk-4"
+  },
+  {
+   "target": "t14",
+   "kind": "wrongCondition",
+   "claim": "t14, t15, t16, t17, t18 and t19 all fire on the single condition dispute_is_family = yes. A maintenance, custody or dowry claim therefore also receives the marital-home rule for divorce, and the reverse. The text gives each matter its own place. The conditions must be split by matter, because no slot or condition separates the matters.",
+   "evidenceWords": "في موضوع الطلاق أو الرجوع بمكان وجود المسكن الزوجي، وفي الطلاق بالتراضي بمكان إقامة أحد الزوجين حسب اختيارهما",
+   "fromMemory": false,
+   "id": "atk-5"
+  },
+  {
+   "target": "t13",
+   "kind": "wrongCondition",
+   "claim": "The text covers all estate claims, 'دعاوى التركة', and the rule says 'inheritance and estate claims'. t13 fires only when partition_of_estate = yes. An estate claim that is not a partition, such as a heir's claim, recovery of estate assets or a dispute over a will, gets no territorial rule at all.",
+   "evidenceWords": "يؤول الاختصاص في دعاوى التركة إلى المحكمة التي يقع فيها موطن المتوفى",
+   "fromMemory": false,
+   "id": "atk-6"
+  },
+  {
+   "target": "t10",
+   "kind": "wrongCondition",
+   "claim": "The text covers only bankruptcy or judicial settlement 'of companies' and disputes between partners. The choice bankruptcy_settlement does not say 'of a company', so an individual trader's bankruptcy fires t10 and n12 although art 40(3) does not mention it. t8 excludes bankruptcy from the commercial venue rule, so such a case may then get no correct rule. The choice commercial_company also includes dissolution and liquidation, which the cited text does not name.",
+   "evidenceWords": "في مواد الإفلاس أو التسوية القضائية للشركات وكذا الدعاوى المتعلقة بمنازعات الشركاء",
+   "fromMemory": false,
+   "id": "atk-7"
+  },
+  {
+   "target": "t10",
+   "kind": "wrongEffect",
+   "claim": "t10 and t11 state art 40(3,4) as the rule, with art 1063 saying it stays 'until the specialised poles are installed'. They carry no condition on installation, and no slot for it exists. For the same case (specialised_commercial_matter set) t12 fires with the opposite temporal rule, 'apply from installation'. The rules give two venues for one case and do not say which one applies.",
+   "evidenceWords": "تبقى قواعد الاختصاص النوعي والإقليمي المنصوص عليها في المادة 40 (3 و4) من هذا القانون، سارية المفعول إلى حين تنصيب الأقطاب المتخصصة",
+   "fromMemory": false,
+   "id": "atk-8"
+  },
+  {
+   "target": "t27",
+   "kind": "wrongCondition",
+   "claim": "t27 and n5 depend on the slot party_is_serving_judge, which is not in the list of slots. n1 and n4 use jurisdiction_clause_relied_on and clause_parties_all_merchants, and n11 uses defendant_domicile_known. None of these slots is declared. These conditions cannot be answered, so the rules never fire or fail on an unknown slot.",
+   "evidenceWords": "عندما يكون القاضي مدع في دعوى يؤول فيها الاختصاص لجهة قضائية تابعة لدائرة اختصاص المجلس القضائي الذي يمارس فيه وظائفه",
+   "fromMemory": false,
+   "id": "atk-9"
+  },
+  {
+   "target": "n1",
+   "kind": "wrongCondition",
+   "claim": "n1 fires only when clause_parties_all_merchants = no. It stays silent when the answer is unknown, and its slots are undeclared. It also treats art 45 as a bar only against non-traders, although a clause between traders is valid only for a court 'غير مختصة'. n4 says the texts leave open whether art 40 yields, but n1 gives no such caution.",
+   "evidenceWords": "يعتبر لاغيا وعديم الأثر كل شرط يمنح الاختصاص الإقليمي لجهة قضائية غير مختصة، إلا إذا تم بين التجار",
+   "fromMemory": false,
+   "id": "atk-10"
+  },
+  {
+   "target": "n6",
+   "kind": "misreading",
+   "claim": "n6 cites b83 (art 500 item 2, the social section's exclusive subject-matter jurisdiction). That paragraph says nothing about territorial venue, and the plaintiff-domicile exception rests only on arts 40 ¶10 and 501 ¶2 (b18, b50). The cited basis does not support the warning.",
+   "evidenceWords": "يختص القسم الاجتماعي اختصاصا مانعا في المواد الآتية",
+   "fromMemory": false,
+   "id": "atk-11"
+  },
+  {
+   "target": "t19",
+   "kind": "missing",
+   "claim": "b82 lists interdiction, absence, disappearance and curatorship among family-section claims. art 426's nine items name no place for them, and t14 to t19 give them none. With dispute_is_family = yes, the lawyer gets venue rules for other matters and no warning that the cited texts name no court for these claims.",
+   "evidenceWords": "5 - الدعاوى المتعلقة بالولاية وسقوطها والحجر والغياب والفقدان والتقديم",
+   "fromMemory": false,
+   "id": "atk-12"
+  },
+  {
+   "target": "t5",
+   "kind": "wrongCondition",
+   "claim": "t5 has no condition and fires on every case. The text concerns only 'mixed actions' (الدعاوى المختلطة), and there is no slot for a mixed action. t7, t9, t22, t23 and t24 have no condition either, so they also fire on every case and give conflicting venues together with t1. Each needs its own slot.",
+   "evidenceWords": "في مواد الدعاوى المختلطة، أمام الجهة القضائية التي يقع في دائرة اختصاصها مقر الأموال",
+   "fromMemory": false,
+   "id": "atk-13"
+  },
+  {
+   "target": "t6",
+   "kind": "specialLawSuspected",
+   "claim": "From memory: the Code of Criminal Procedure (Ordonnance 66-155, art 3 and the following articles) lets the victim bring the civil claim for an offence before the criminal court seised of the prosecution. The slot criminal_case_on_same_facts exists, but no rule uses it. t6 gives only the harmful-act civil court. Check the Code of Criminal Procedure, art 3 and the following articles.",
+   "evidenceWords": "",
+   "fromMemory": true,
+   "id": "atk-14"
+  }
+ ],
+ "nothingFound": false
+}

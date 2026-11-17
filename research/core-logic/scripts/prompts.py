@@ -94,7 +94,35 @@ def handbook_modules() -> list[dict]:
     return rows
 
 
+def source_of(unit: str) -> str:
+    """A planted-error copy (`p1-01`, `c1-02` …, specs/planted-errors.md) stands for the unit it was copied from, which its
+    round's key names; any other id is itself. The copy's prompts therefore describe the real unit, as the record's own
+    `id` field (unchanged by the copy) does."""
+    m = re.fullmatch(r"[pcs](\d+)-\d+", unit)
+    if not m:
+        return unit
+    with open(os.path.join(WORK, "planted", f"round-{m.group(1)}", "key", "key.json"), encoding="utf-8") as f:
+        return next(c["unit"] for c in json.load(f)["copies"] if c["copy"] == unit)
+
+
+def _copy_round(unit: str) -> str | None:
+    m = re.fullmatch(r"[pcs](\d+)-\d+", unit)
+    return os.path.join(WORK, "planted", f"round-{m.group(1)}") if m else None
+
+
+def rules_root(unit: str) -> str:
+    """Where a unit's records and reports live: the repository's rules folder, or a planted round's (planted.py)."""
+    r = _copy_round(unit)
+    return os.path.join(r, "rules") if r else os.path.join(CL, "rules")
+
+
+def runs_root(unit: str) -> str:
+    r = _copy_round(unit)
+    return os.path.join(r, "runs") if r else RUNS
+
+
 def module_row(unit: str) -> dict:
+    unit = source_of(unit)
     row = next((r for r in handbook_modules() if r["id"] == unit), None)
     if row is None:
         raise KeyError(f"{unit} is not a module of the handbook's table")
@@ -128,6 +156,7 @@ def claim_elements(unit: str) -> dict:
 
 def unit_kind(unit: str) -> str:
     """"module" or "claim", the record's own `kind` (rule-record.schema.json)."""
+    unit = source_of(unit)
     if any(r["id"] == unit for r in handbook_modules()):
         return "module"
     if unit in claims():
@@ -189,7 +218,7 @@ def _records_of(unit: str) -> list[dict]:
     """The records of a unit written so far (A, B, reconciled, final candidate), to see whether it has a deadline."""
     out = []
     for sub_ in (("derivations", "a"), ("derivations", "b"), ("reconciled",), ("final-candidates",)):
-        path = os.path.join(CL, "rules", *sub_, f"{unit}.json")
+        path = os.path.join(rules_root(unit), *sub_, f"{unit}.json")
         if os.path.isfile(path):
             with open(path, encoding="utf-8") as f:
                 out.append(json.load(f))
@@ -273,7 +302,7 @@ def request_kinds() -> str:
 
 
 def unit_texts(unit: str) -> dict:
-    with open(os.path.join(CL, "rules", "reports", f"{unit}.texts.json"), encoding="utf-8") as f:
+    with open(os.path.join(rules_root(unit), "reports", f"{unit}.texts.json"), encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -342,12 +371,12 @@ def second_view(unit: str, case_ids: list[str], run: list[dict]) -> dict[str, st
     """The placeholders of boundary-second-view-codex (stage 8b): the cases without their `why` or expected outcome,
     the two words in dispute for each (expected and actual, alphabetical), and the texts with every paragraph that an
     item matched by a case cites and the unit's texts lack."""
-    with open(os.path.join(CL, "rules", "boundary-cases", f"{unit}.json"), encoding="utf-8") as f:
+    with open(os.path.join(rules_root(unit), "boundary-cases", f"{unit}.json"), encoding="utf-8") as f:
         cases = {c["id"]: c for c in json.load(f)}
     actual = {r["caseId"]: r.get("actual") for r in run}
     with open(os.path.join(CL, "slots.json"), encoding="utf-8") as f:
         slots_by_id = {s["id"]: s for s in json.load(f)["slots"]}
-    with open(os.path.join(CL, "rules", "final-candidates", "quoted", f"{unit}.json"), encoding="utf-8") as f:
+    with open(os.path.join(rules_root(unit), "final-candidates", "quoted", f"{unit}.json"), encoding="utf-8") as f:
         record = json.load(f)
     import records as rc
     import stage7
@@ -385,7 +414,7 @@ def second_view(unit: str, case_ids: list[str], run: list[dict]) -> dict[str, st
 
 def _run_file(unit: str, name: str) -> str:
     """A text the stage-7 script wrote for this unit (stage7.py render / pairs), in the working folder."""
-    path = os.path.join(RUNS, unit, name)
+    path = os.path.join(runs_root(unit), unit, name)
     if not os.path.isfile(path):
         raise FileNotFoundError(f"{path}: write it with stage7.py first")
     with open(path, encoding="utf-8") as f:
@@ -415,7 +444,7 @@ def values_for(prompt: str, unit: str, followup: int = 0, cases: list[str] | Non
         base["module_finals"] = module_finals([unit], strict=True)
     elif prompt == "rules-adversary":
         ledger = os.path.join(CL, "law", "amendment-ledger.json")
-        base.update(record_path=os.path.join(CL, "rules", "reconciled", "quoted", f"{unit}.json"),
+        base.update(record_path=os.path.join(rules_root(unit), "reconciled", "quoted", f"{unit}.json"),
                     ledger_path=ledger if os.path.isfile(ledger) else "(none yet: the amendment ledger does not exist)",
                     oj_fetch=oj_fetch_command(unit, 'adversary'), leads=leads_for(unit))
     elif prompt == "rules-attack":
@@ -430,7 +459,7 @@ def values_for(prompt: str, unit: str, followup: int = 0, cases: list[str] | Non
     elif prompt == "rules-verify":
         # one unit, or two joined by "+" (the verifier takes units two by two, modules first)
         units = unit.split("+")
-        rules_dir, reports = os.path.join(CL, "rules"), os.path.join(CL, "rules", "reports")
+        rules_dir, reports = os.path.join(rules_root(unit)), os.path.join(rules_root(unit), "reports")
 
         def listing(paths_of):
             def one(p):  # a path, or (path, note): the note stays outside the backticks

@@ -717,10 +717,17 @@ def status(u: Unit) -> list[tuple[str, str]]:
                     s["5"] = "due"
                 except ValueError as e:
                     s["5"] = f"waiting for {e}"
+    if prompts.source_of(u.id) != u.id:
+        # A planted-error copy (specs/planted-errors.md) is made from a final record set back to `reconciled`: its chain
+        # starts at stage 6, with the real unit's checklist, texts, id map and boundary cases copied beside it.
+        for k in ("0", "0b", "2a", "2b", "2c", "2d", "3", "4", "5"):
+            s[k] = "done"
     stage6 = [u.r("values.reconciled.json"), u.r("flags.reconciled.json"), u.reconciled_q,
               os.path.join(u.cases, "boundaryReconciled.json")]
     s["6"] = need("5") or ("done" if all(map(os.path.isfile, stage6)) else "due")
-    s["7a"] = "done" if os.path.isfile(u.r("attacks.adversary.json")) else need("6") or "due"
+    planted = prompts.source_of(u.id) != u.id
+    PLANTED = "skipped: planted round (specs/planted-errors.md: stages 6, 7b, 7c and 8 only)"
+    s["7a"] = "done" if os.path.isfile(u.r("attacks.adversary.json")) else PLANTED if planted else need("6") or "due"
     attack = os.path.isfile(u.r("attacks.sonnet.json")) or (u.id in LEGACY and os.path.isfile(u.r("attacks.codex.json")))
     s["7b"] = "done" if attack else LIGHT if route else need("6") or "due"
     s["7c"] = "done" if os.path.isfile(u.r("support.json")) else LIGHT if route else need("6") or "due (unit.py codex)"
@@ -742,7 +749,9 @@ def status(u: Unit) -> list[tuple[str, str]]:
             s["8"] = f"due: a follow-up for {len(new)} new findings (unit.py verify-input {u.id} --followup)"
         else:
             s["8"] = "done"
-    if route:
+    if planted:
+        s["8b"] = PLANTED
+    elif route:
         s["8b"] = LIGHT
     elif not os.path.isfile(u.register(0)):
         s["8b"] = "waiting for 8"
@@ -856,7 +865,8 @@ def checks_on(u: Unit, record: str, quoted: str, tag: str) -> bool:
     say(f"quote {tag}", *py("records.py", "quote", record))
     say("check-values", *py("records.py", "check-values", quoted, "--report", u.r(f"values.{tag}.json")))
     say("flag-neighbours", *py("records.py", "flag-neighbours", quoted, "--report", u.r(f"flags.{tag}.json")))
-    if tag == "reconciled":
+    import prompts
+    if tag == "reconciled" and prompts.source_of(u.id) == u.id:  # a planted copy's id map is already complete
         say("complete-idmap", *py("records.py", "complete-idmap", u.r("idmap.json"), u.deriv("a", True),
                                    u.deriv("b", True), quoted))
     flat = _flat(u, record, tag)
@@ -1466,7 +1476,10 @@ def main(argv=None) -> int:
     sub = p.add_subparsers(dest="cmd", required=True)
     sub.add_parser("tool", help="publish the rules tool and make it current")
     for name in ("status", "next", "tracking", "codex"):
-        sub.add_parser(name).add_argument("unit")
+        sp_ = sub.add_parser(name)
+        sp_.add_argument("unit")
+        if name == "codex":  # the owner, 17 November 2026: Codex's windows serve the training notes first
+            sp_.add_argument("--queue-only", action="store_true", help="add the calls to the queue without starting it")
     sv = sub.add_parser("store-view", help="stage 8b's after-step (the background queue runs it)")
     sv.add_argument("unit")
     sv.add_argument("answer")
@@ -1503,7 +1516,7 @@ def main(argv=None) -> int:
         elif a.cmd == "done":
             return done(Unit(a.unit, a.root), a.stage, a.agent, session=a.session, changed=a.changed)
         elif a.cmd == "codex":
-            added = codex(Unit(a.unit, a.root))
+            added = codex(Unit(a.unit, a.root), start=not a.queue_only)
             print("queued:", "; ".join(added) if added else "nothing due")
         elif a.cmd == "store-view":
             print(store_view(Unit(a.unit, a.root), a.answer, json.loads(a.actual)))

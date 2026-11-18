@@ -1,0 +1,75 @@
+{
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "items"
+ ],
+ "properties": {
+  "items": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "item",
+     "textsRequire",
+     "periodValue",
+     "periodUnit",
+     "consequence",
+     "basis",
+     "decidingWords",
+     "why"
+    ],
+    "properties": {
+     "item": {
+      "type": "string"
+     },
+     "textsRequire": {
+      "type": "string",
+      "enum": [
+       "yes",
+       "no",
+       "textsSilent"
+      ]
+     },
+     "periodValue": {
+      "type": [
+       "integer",
+       "null"
+      ]
+     },
+     "periodUnit": {
+      "type": "string",
+      "enum": [
+       "day",
+       "month",
+       "year",
+       "none"
+      ]
+     },
+     "consequence": {
+      "type": "string",
+      "enum": [
+       "inadmissibleOrForfeited",
+       "onlyIfRaised",
+       "noSanction",
+       "textsSilent"
+      ]
+     },
+     "basis": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "decidingWords": {
+      "type": "string"
+     },
+     "why": {
+      "type": "string"
+     }
+    }
+   }
+  }
+ }
+}

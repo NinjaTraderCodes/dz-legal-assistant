@@ -110,6 +110,46 @@ The owner's words: "For the 21 claim types, full checking only where a rule can 
 - **A blocking item (the full route):** every stage as before, with **at most one follow-up**. A second follow-up's findings are recorded open in the same way.
 - The modules keep their route unchanged.
 
+## The catalogue route for claim types (the owner, 18 November 2026)
+
+The owner's words: "Claim types, since Claude's limit is now the bottleneck: no full derivation for the remaining 17. For each, compare the app's current catalogue (data/law/claims) with the official text and the final modules by script, and derive only what is missing or wrong, on the light route." On blocking: "the few items that would block get a second, independent derivation (only those items), so they can still block."
+
+**What.** One Opus derivation that starts from the app's catalogue entry instead of a blank page, a script that checks the catalogue first, a blind Sonnet reading of the would-be blocking items only, and the light route after that. **Which units:** `CATALOGUE_ROUTE` in `unit.py`, a fixed list (the owner's choice, not read from files): `loan-repayment`, `unpaid-sale-price`, `sale-annulment-fraud`, `contract-damages`, `tort-damages`, `liability-for-things`, `eviction-occupier-without-title`, `commercial-debt`, `commercial-lease-eviction`, `sale-non-delivery`. Every other unit keeps its route; `contract-rescission`, whose two derivations were done, finishes on the full route.
+
+**Why.** A full claim type costs 7 Claude runs; this route costs 3, or 4 when an item would block. The catalogue already names the articles, requests, documents and facts; what it never had is a check against the official text, the deadlines, the prior steps and the boundaries. The script does the checkable part (`catalogue_check.py`); the deriver keeps, corrects or adds, and says which for every part of the catalogue entry.
+
+| # | On the catalogue route | Output |
+|---|---|---|
+| 0 | as on every route | `reports\<claim>.texts.json` |
+| 0b | `skipped: catalogue route`: the French sources serve derivation B only (`done` if they were already prepared) | |
+| 2a | `next` first runs `catalogue_check.py <claim> --final rules\final --texts reports\<claim>.texts.json --out reports\<claim>.catalogue-check.json`, then prints the launch of **`rules-derive-catalogue`** (Opus 5.5), given the catalogue entry in full, the check, the unit's texts (as `texts.txt` in the run folder), the final modules' paths, the slots and the claim's elements. `done` checks what it checks for A, and the side file of changes: its schema (`schemas\catalogue-changes.schema.json`); one change naming each catalogue article (`<code> <number>`), request, document, fact and prerequisite; `wouldBlock` naming exactly the record's own items that declare `blockCleanExport`; no digit and none of the item's `extract` words in a question | `derivations\a\<claim>.json` (stage `derivationA`), `.checklist.json`, `.requests.jsonl`, `.catalogue-changes.json` |
+| 2b, 2d | `skipped: catalogue route` | |
+| 2c | not for a claim type | |
+| 2e | **The blocker view**, only when `wouldBlock` is not empty (otherwise `skipped`): `rules-blocker-view`, Sonnet 5.5, no tool; `done <claim> 2e <agent id>` ingests the reply, and sets aside an answer that skips an item, adds one or answers one twice | `reports\<claim>.blocker-view.json` |
+| 3 | A's requests only | `law\requests.jsonl` |
+| 4 | A's checks only (`check --store`, `quote`, `check-values`, `flag-neighbours`, `examples`) and the merged checklist from A's phase-1 list. No comparison: there is no B. No commit gate before stage 5 (the next stage is a script) | `reports\<claim>.values.a.json`, `.flags.a.json`, `.checklist.json` |
+| 5 | **No reconciler.** Once 2e is done or skipped, 4 is done and every imported module is final, `next` runs the promotion (`promote` in `unit.py`): A becomes the reconciled record, stage `reconciled`, `verified: false`, no `quote`, `source` or `grading`, `derivedBy.role` saying it was promoted, `history.reconciliation` giving the blocker lines. `status` then shows `skipped: catalogue route (no reconciler …)` | `reconciled\<claim>.json`, `reports\<claim>.idmap.json`, `.differences.json` (no differences; `agreementTotal` is the blind reader's agreement), `.blocker-check.json`, `.reconciliation.md` (written by script, one `blocker <id>:` line per would-be blocking item) |
+| 6 | as on the light route (no boundary cases); `complete-idmap` is not run, the id map is complete from stage 5 | |
+| 7a | the adversary, Opus 5.5, as on the light route | |
+| 7b, 8b | `skipped: catalogue route` | |
+| 7c | Codex's support check (`unit.py codex`), **only when `blocker-check.json` keeps at least one item** the blind reader agreed with (blocking needs it, GRADES.md condition 5); otherwise `skipped: catalogue route`. The verifier does not wait for it, as on the full route | `reports\<claim>.support.json` |
+| 8 | the verifier, once; **no follow-up**: what one would decide is recorded `open, warn` at stage 9 (`attacks.open.json`), as on the light route | |
+| 9 | as on the light route | `final\<claim>.json` |
+
+**Running it.** `PY unit.py next <claim>` (stage 0 if its texts are missing, then the catalogue check and the launch of 2a); `done <claim> 2a <agent id>`; `next` (stages 3 and 4, then the launch of 2e if an item would block; if none would, stages 5 and 6 and the launch of 7a in the same call); `done <claim> 2e <agent id>`; `next` (stage 5, the promotion, then stage 6, then the launch of 7a); `done <claim> 7a <agent id>`; `next` (the verifier's input, then its launch); `done <claim> 8 <agent id>`; `next` (stage 9). Runs per unit, to state before launching: 3 Claude runs (derivation, adversary, verifier), 4 when an item would block (the blocker view); one Codex call (the support check) when a block survives the blind reading, none otherwise.
+
+**The blocker view (stage 2e).** The deriver writes, for each item it would make block, the question the item answers, without the answer (`wouldBlock` in the side file). The reader is given only the unit's texts, every article those items cite that the texts lack (whole, from the store, under a line of its own: a reader cannot find an answer in a text it was not given), and the questions. It never sees the record, the item's period, sanction, cites or message. For each item it answers whether the texts require it (`textsRequire`), the period for a time limit, what follows when it is missing (`consequence`), the paragraphs it rests on, and the deciding words. At stage 5 the script compares:
+
+- **Agreed** only when all four hold: `textsRequire` is "yes"; `consequence` is "inadmissibleOrForfeited"; for a deadline, the same period (value and unit) as the record; and at least one article in common with the paragraphs the item rests on (the same conclusion from other texts is not the same derivation). An agreed item keeps `blockCleanExport`, and its row of the id map has a B side (`"b": "blocker-view"`): for `records.py grade` it counts as "derivations A and B agreed".
+- **Any other answer** (and an item the deriver failed to list, which `done` refuses anyway): the script sets the item's declared effect, and every example's expectation of it, to `warn` in the promoted record, before stage 6, and writes the reason into `history.reconciliation`, `reconciliation.md` and `blocker-check.json`. Derivation A's own file is never rewritten.
+
+**What the grade can and cannot reach.**
+
+- Every item except an agreed blocker has a single derivation: condition 4 of [../rules/GRADES.md](../rules/GRADES.md) fails with `singleDerivation` (the id map's rows carry `"single": true`, which `grade` reads), so it is **B at most and warns**. An item the verifier adds is `addedAfterDerivation`, as on every route.
+- An agreed blocker passes condition 4, and stage 7c runs for its unit (the coordinator's decision of 18 November 2026, from the owner's rules: blocking needs Codex's support check), so condition 5 can hold once `support.json` is in and the unit is graded or regraded (`unit.py regrade --all`); until then it carries `supportCheckPending` and warns. It still needs every other condition, including no attack left open (there is no follow-up on this route), the critical use rule (a fresh page reading of every article it rests on), a clean Journal scan with a finished triage of its code, and planted-error round 2. A unit with no agreed blocker skips 7c: every item carries `supportCheckPending` and warns, which changes nothing, since none could block.
+- The blind reader is a Claude model, as derivation B is: the proof label is unchanged (`oneFamily` unless Codex's support check reads the statement).
+- The tracking file's "A-B agreement before reconciliation" holds, for these units, the blind reader's agreement on the would-be blocking items (`differences.json`, `agreementTotal`, with `"route": "catalogue"`).
+
 ## Stage 8: the verifier receives everything at once
 
 `unit.py verify-input <unit>` writes `<CL>\rules\reports\<unit>.attacks.input.json`: `{ "unit": "<unit>", "attacks": [ … ] }`, each entry `{ "id", "who", "target", "kind", "claim" }`, gathered from the sources below. (`stage7.py split` writes `"who": "supportCheck"` in `support.json`; `verify-input` renames it `support`, the one value the register uses.)

@@ -22,6 +22,8 @@ One file per agent role and per Codex call. A script or the executor takes **eve
 |---|---|---|---|
 | `rules-derive-a.md` | Derivation A | Opus 5.5 | 1 |
 | `rules-derive-b.md` | Derivation B | Sonnet 5.5 | 1 |
+| `rules-derive-catalogue.md` | Derivation from the catalogue (the catalogue route's stage 2a, in place of A) | Opus 5.5 | 1 |
+| `rules-blocker-view.md` | Blind second reading of the would-be blocking items only (the catalogue route's stage 2e) | Sonnet 5.5, no tool | 1 |
 | `rules-derive-c.md` | Third derivation of a module, by the flat route | Sonnet 5.5, no tool | 1 |
 | `rules-boundary-cases.md` | Boundary-case writer | Sonnet 5.5 | 1 |
 | `rules-reconcile.md` | Reconciler | Opus 5.5 | 1 |

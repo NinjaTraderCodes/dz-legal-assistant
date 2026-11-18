@@ -1046,7 +1046,11 @@ def grade_record(record: dict, store: st.Store, idmap=None, differences=None, at
                 reasons.append("singleDerivation")
             else:
                 row = traced.get(iid)
-                if not row or not row.get("a") or not row.get("b"):
+                if row and row.get("a") and not row.get("b") and row.get("single"):
+                    # the catalogue route (unit.py promote): one derivation; only an item the blocker view agreed
+                    # with has a second side
+                    reasons.append("singleDerivation")
+                elif not row or not row.get("a") or not row.get("b"):
                     reasons.append("addedAfterDerivation")
                 elif ("a", row["a"]) in disagreed or ("b", row["b"]) in disagreed:
                     reasons.append("disagreedBeforeReconciliation")

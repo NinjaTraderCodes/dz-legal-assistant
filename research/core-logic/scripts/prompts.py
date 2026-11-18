@@ -412,6 +412,68 @@ def second_view(unit: str, case_ids: list[str], run: list[dict]) -> dict[str, st
     return {"subject": subject(unit), "texts": texts, "cases": "\n".join(case_lines), "choices": choices}
 
 
+def _report_text(unit: str, name: str) -> str:
+    """A report of the unit that a script wrote (rules/reports/<unit>.<name>), pasted whole into a prompt."""
+    path = os.path.join(rules_root(unit), "reports", f"{unit}.{name}")
+    if not os.path.isfile(path):
+        raise FileNotFoundError(f"{path}: write it first (unit.py next runs catalogue_check.py before stage 2a)")
+    with open(path, encoding="utf-8") as f:
+        return f.read().strip("\n")
+
+
+def texts_file(unit: str) -> str:
+    """The unit's texts as plain text in its run folder: the catalogue deriver may not open the reports folder, and the
+    rendered field of a JSON file is hard to read with its escaped line breaks. Rewritten at each fill, from the
+    committed texts file, so it is never stale."""
+    path = os.path.join(runs_root(unit), unit, "texts.txt")
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
+        f.write(unit_texts(unit)["rendered"].rstrip("\n") + "\n")
+    return path
+
+
+def blocker_store():
+    return st.Store(STORE_JSON)
+
+
+BLOCKER_KINDS = {"deadline": "a time limit", "priorStep": "a step before filing"}
+
+
+def blocker_view(unit: str, store=None) -> dict[str, str]:
+    """The placeholders of rules-blocker-view (stage 2e of the catalogue route): the questions the deriver wrote for its
+    would-be blocking items, never the items themselves; the unit's texts, and after them every article those items cite
+    that the texts lack (a reader cannot find an answer in a text it was not given)."""
+    import records as rc
+    folder = os.path.join(rules_root(unit), "derivations", "a")
+    with open(os.path.join(folder, f"{unit}.json"), encoding="utf-8") as f:
+        record = json.load(f)
+    with open(os.path.join(folder, f"{unit}.catalogue-changes.json"), encoding="utf-8") as f:
+        questions = json.load(f).get("wouldBlock") or []
+    if not questions:
+        raise ValueError(f"{unit}: no item would block; stage 2e is skipped")
+    own = {rc.item_id(k, x): (k, x) for k, x in rc.items(record)}
+    stmts = rc.statements(record)
+    lines, cited = [], []
+    for q in questions:
+        if q["item"] not in own:
+            raise ValueError(f"{unit}: {q['item']} is not an item of the derivation")
+        kind, x = own[q["item"]]
+        lines.append(f"- **{q['item']}** ({BLOCKER_KINDS.get(kind, 'an item about filing')}): {q['question']['en']} "
+                     f"«{q['question']['ar']}»")
+        cited += [(stmts[b]["cite"]["code"], stmts[b]["cite"]["article"]) for b in rc.basis_ids(x) if b in stmts]
+    rendered = unit_texts(unit)["rendered"]
+    further = []
+    for code, article in dict.fromkeys(cited):
+        if f"[{code} {article} ¶1]" in rendered:
+            continue
+        store = store or blocker_store()  # loaded only when a cited article is outside the texts
+        e = store.get(code, article)
+        if e:
+            further += [f"[{code} {article} ¶{n}] {p}" for n, p in enumerate(e["paragraphs"], 1)]
+    texts = rendered + ("\n\n(Further articles of the same codes:)\n" + "\n".join(further) if further else "")
+    return {"unit_label": unit_label(unit), "texts": texts, "questions": "\n".join(lines)}
+
+
 def _run_file(unit: str, name: str) -> str:
     """A text the stage-7 script wrote for this unit (stage7.py render / pairs), in the working folder."""
     path = os.path.join(runs_root(unit), unit, name)
@@ -431,6 +493,16 @@ def values_for(prompt: str, unit: str, followup: int = 0, cases: list[str] | Non
                     vocabulary=vocabulary())
         if prompt == "rules-derive-b":
             base["french_sources"] = french_sources(unit)
+    elif prompt == "rules-derive-catalogue":
+        if kind != "claim":
+            raise ValueError("the catalogue route is for claim types only (specs/unit-driver.md)")
+        _, entry = claims()[unit]
+        base.update(unit_brief=unit_brief(unit), catalogue_entry=json.dumps(entry, ensure_ascii=False, indent=1),
+                    catalogue_check=_report_text(unit, "catalogue-check.json"), texts_path=texts_file(unit),
+                    module_finals=module_finals([unit]), modules_table=modules_table(), slots=slots(unit),
+                    vocabulary=vocabulary())
+    elif prompt == "rules-blocker-view":
+        base.update(blocker_view(unit))
     elif prompt == "rules-derive-c":
         if kind != "module":
             raise ValueError("derivation C is for modules only (HANDBOOK, stage 2c)")

@@ -369,7 +369,9 @@ def test_the_adversary_file_is_read_as_its_prompt_writes_it_an_array_or_the_firs
 
 
 
-def claim_through_stage_2(root, name="loan-repayment", blocking=False):
+# contract-rescission: a claim type that stays on the light or full route (loan-repayment, the first fixture here, has
+# been on the catalogue route since 18 November 2026; the route tests below are unchanged).
+def claim_through_stage_2(root, name="contract-rescission", blocking=False):
     u = unit.Unit(name, str(root))
     r = root / "rules"
     dump(r / "reports" / f"{name}.texts.json", {"rendered": ""})
@@ -413,3 +415,237 @@ def test_findings_left_without_a_follow_up_are_recorded_open_and_count_as_decide
     # The grader reads it as an open attack on d1.
     import records as rc
     assert "d1" in rc.attack_targets(opened) and opened["verdict"] not in ("refuted", "fixed")
+
+
+# --- the catalogue route (the owner, 18 November 2026) ----------------------------------------------------------------
+CAT_RECORD = {
+    "id": "loan-repayment", "kind": "claim", "stage": "derivationA", "verified": False,
+    "derivedBy": {"role": "derivationA", "model": "claude-opus-5-5", "date": "2026-11-18"},
+    "basis": [{"id": "b1", "role": "limit", "cite": {"code": "civil-code", "article": "308", "paragraphs": [1]},
+               "says": {"ar": "أجل", "en": "a period"}},
+              {"id": "b2", "role": "prerequisite", "cite": {"code": "civil-code", "article": "179"},
+               "says": {"ar": "إعذار", "en": "a notice"}}],
+    "deadlines": [{"id": "d1", "kind": "forfeiture", "period": {"value": 15, "unit": "year"}, "basis": ["b1"],
+                   "effectWhenExpired": "blockCleanExport",
+                   "extract": {"period": "خمس عشرة سنة", "sanction": "يسقط"}}],
+    "priorSteps": [{"id": "p1", "kind": "formalNotice", "basis": ["b2"], "effectWhenMissing": "blockCleanExport",
+                    "effectWhenUnknown": "ask"}],
+    "examples": [{"id": "ex1", "expect": {"findings": [{"ref": "d1", "effect": "blockCleanExport"},
+                                                       {"ref": "p1", "effect": "blockCleanExport"}]}}]}
+QUESTIONS = [{"item": "d1", "question": {"ar": "في أي أجل ترفع الدعوى؟", "en": "Within what time must it be filed?"}},
+             {"item": "p1", "question": {"ar": "هل يجب إعذار المدين قبل رفع الدعوى؟",
+                                         "en": "Must the debtor be given notice before filing?"}}]
+
+
+def view_answer(item, require="yes", value=None, unit_="none", consequence="inadmissibleOrForfeited", basis=()):
+    return {"item": item, "textsRequire": require, "periodValue": value, "periodUnit": unit_,
+            "consequence": consequence, "basis": list(basis), "decidingWords": "نص", "why": "w"}
+
+
+@pytest.fixture
+def cat(root, monkeypatch):
+    monkeypatch.setattr(prompts, "module_finals", lambda units, strict=False: "none")
+    return root
+
+
+def catalogue_through_stage_2a(root, blocking=True):
+    u = unit.Unit("loan-repayment", str(root))
+    r = root / "rules"
+    dump(r / "reports" / "loan-repayment.texts.json", {"rendered": ""})
+    record = json.loads(json.dumps(CAT_RECORD))
+    if not blocking:
+        record["deadlines"][0]["effectWhenExpired"] = "warn"
+        record["priorSteps"][0]["effectWhenMissing"] = "warn"
+    dump(u.deriv("a"), record)
+    dump(u.deriv("a").replace(".json", ".checklist.json"), [])
+    dump(unit.changes_path(u), {"unit": "loan-repayment", "changes": [], "wouldBlock": QUESTIONS if blocking else []})
+    return u
+
+
+def test_the_catalogue_route_holds_the_ten_claim_types_and_its_own_agents_and_scripts(root):
+    assert len(unit.CATALOGUE_ROUTE) == 10 and all(prompts.unit_kind(c) == "claim" for c in unit.CATALOGUE_ROUTE)
+    u = unit.Unit("loan-repayment", str(root))
+    assert unit.catalogue_route(u) and unit.agents_of(u)["2a"] == ("rules-derive-catalogue", "opus", False)
+    assert unit.agents_of(u)["2e"] == ("rules-blocker-view", "sonnet", True)
+    assert set(unit.agents_of(u)) == {"2a", "2e", "7a", "8"}  # no B, no boundary writer, no reconciler, no attack
+    assert unit.script_stages(u)["5"] is unit.stage5_catalogue and unit.script_stages(u)["4"] is unit.stage4_catalogue
+    # every other unit keeps its route, and its status has no stage 2e
+    for other in ("contract-rescission", "proof"):
+        o = unit.Unit(other, str(root))
+        assert not unit.catalogue_route(o) and unit.agents_of(o) is unit.AGENTS
+        assert unit.script_stages(o) is unit.SCRIPT_STAGES and "2e" not in dict(unit.status(o))
+
+
+def test_catalogue_route_status_skips_b_boundary_cases_reconciler_attack_and_codex(cat):
+    u = unit.Unit("loan-repayment", str(cat))
+    s = dict(unit.status(u))
+    assert s["0"] == "due" and s["2a"] == "waiting for 0" and s["0b"].startswith("skipped: catalogue route")
+    u = catalogue_through_stage_2a(cat, blocking=False)
+    os.remove(unit.changes_path(u))
+    assert dict(unit.status(u))["2a"] == "due"  # the record without its side file of changes is not done
+    u = catalogue_through_stage_2a(cat, blocking=False)
+    s = dict(unit.status(u))
+    assert s["2a"] == "done" and s["2b"] == unit.CATALOGUE and s["2c"] == "not for a claim type"
+    assert s["2d"] == unit.CATALOGUE and s["2e"].startswith("skipped: catalogue route (no item")
+    assert s["3"] == "done" and s["4"] == "due" and s["5"] == "waiting for 4"
+    for path in unit.catalogue_stage4_reports(u):
+        dump(path, {})
+    s = dict(unit.status(u))
+    assert s["4"] == "done" and s["5"] == "due" and s["6"] == "waiting for 5"
+    assert s["7b"] == s["7c"] == s["8b"] == unit.CATALOGUE
+    assert not unit.followup_allowed(u)  # as on the light route: open findings are recorded open, warn
+
+
+def test_catalogue_route_stage_5_waits_for_the_imported_modules(cat, monkeypatch):
+    u = catalogue_through_stage_2a(cat, blocking=False)
+    for path in unit.catalogue_stage4_reports(u):
+        dump(path, {})
+
+    def not_final(units, strict=False):
+        raise ValueError("loan-repayment imports modules that are not final: proof")
+    monkeypatch.setattr(prompts, "module_finals", not_final)
+    assert dict(unit.status(u))["5"].startswith("waiting for loan-repayment imports modules that are not final")
+
+
+def test_the_blocker_view_is_due_only_with_a_would_be_blocking_item_and_promotion_waits_for_it(cat):
+    u = catalogue_through_stage_2a(cat, blocking=True)
+    for path in unit.catalogue_stage4_reports(u):
+        dump(path, {})
+    s = dict(unit.status(u))
+    assert s["2e"] == "due" and s["5"] == "waiting for 2e"
+    dump(u.r("blocker-view.json"), {"unit": u.id, "items": []})
+    s = dict(unit.status(u))
+    assert s["2e"] == "done" and s["5"] == "due"
+
+
+def test_promotion_keeps_the_blocks_the_blind_reader_agrees_with_and_sets_the_others_to_warn(cat):
+    u = catalogue_through_stage_2a(cat, blocking=True)
+    for path in unit.catalogue_stage4_reports(u):
+        dump(path, {})
+    dump(u.r("blocker-view.json"), {"unit": u.id, "items": [
+        view_answer("d1", value=15, unit_="year", basis=["[civil-code 308 ¶1]"]),
+        view_answer("p1", consequence="onlyIfRaised", basis=["[civil-code 179 ¶1]"])]})
+    assert unit.stage5_catalogue(u)
+    rec = load(u.reconciled)
+    assert rec["stage"] == "reconciled" and rec["verified"] is False and "catalogue route" in rec["derivedBy"]["role"]
+    assert rec["deadlines"][0]["effectWhenExpired"] == "blockCleanExport"
+    assert rec["priorSteps"][0]["effectWhenMissing"] == "warn" and rec["priorSteps"][0]["effectWhenUnknown"] == "ask"
+    assert rec["examples"][0]["expect"]["findings"] == [{"ref": "d1", "effect": "blockCleanExport"},
+                                                       {"ref": "p1", "effect": "warn"}]
+    assert "onlyIfRaised" in rec["history"]["reconciliation"]
+    assert load(u.deriv("a"))["priorSteps"][0]["effectWhenMissing"] == "blockCleanExport"  # A itself is untouched
+    rows = {r["reconciled"]: r for r in load(u.r("idmap.json"))}
+    assert rows["d1"]["b"] == "blocker-view" and not rows["d1"]["single"]
+    assert rows["p1"]["b"] is None and rows["p1"]["single"] and rows["b1"]["single"]
+    assert load(u.r("differences.json"))["agreementTotal"] == {"equal": 1, "compared": 2}
+    check = load(u.r("blocker-check.json"))
+    assert check["kept"] == ["d1"] and check["setToWarn"] == ["p1"]
+    report = open(u.r("reconciliation.md"), encoding="utf-8").read()
+    assert "blocker d1: keeps blockCleanExport" in report and "blocker p1: set to warn" in report
+    s = dict(unit.status(u))
+    assert s["5"] == unit.PROMOTED and s["6"] == "due"
+    found = unit.blocking_items(u)  # read from the promoted record now
+    assert "d1" in found and "p1" not in found
+
+
+def through_stage_6(u):
+    for path in (u.r("values.reconciled.json"), u.r("flags.reconciled.json"), u.reconciled_q,
+                 os.path.join(u.cases, "boundaryReconciled.json")):
+        dump(path, [])
+
+
+def test_the_support_check_runs_when_a_block_survived_the_blind_reading(cat):
+    u = catalogue_through_stage_2a(cat, blocking=True)
+    dump(u.r("blocker-view.json"), {"unit": u.id, "items": [
+        view_answer("d1", value=15, unit_="year", basis=["[civil-code 308 ¶1]"]),
+        view_answer("p1", require="textsSilent", consequence="textsSilent")]})
+    unit.promote(u)
+    assert load(u.r("blocker-check.json"))["kept"] == ["d1"]
+    assert dict(unit.status(u))["7c"] == "waiting for 6"
+    through_stage_6(u)
+    s = dict(unit.status(u))
+    assert s["7c"] == "due (unit.py codex)" and s["7b"] == s["8b"] == unit.CATALOGUE
+    dump(u.r("support.json"), {"attacks": []})
+    assert dict(unit.status(u))["7c"] == "done"
+
+
+def test_the_support_check_stays_skipped_when_no_block_survived(cat):
+    u = catalogue_through_stage_2a(cat, blocking=True)
+    dump(u.r("blocker-view.json"), {"unit": u.id, "items": [view_answer("d1", consequence="onlyIfRaised"),
+                                                            view_answer("p1", consequence="noSanction")]})
+    unit.promote(u)
+    assert load(u.r("blocker-check.json"))["kept"] == []
+    through_stage_6(u)
+    assert dict(unit.status(u))["7c"] == unit.CATALOGUE
+
+
+def test_promotion_without_a_would_be_blocking_item_needs_no_blind_reading(cat):
+    u = catalogue_through_stage_2a(cat, blocking=False)
+    unit.promote(u)
+    rec = load(u.reconciled)
+    assert rec["stage"] == "reconciled" and not unit.own_blocking(rec)
+    assert all(r["single"] and r["b"] is None for r in load(u.r("idmap.json")))
+    assert "No item of the derivation would block" in open(u.r("reconciliation.md"), encoding="utf-8").read()
+
+
+def test_the_blocker_comparison_needs_requirement_inadmissibility_the_period_and_a_common_article():
+    def compare(answer):
+        return unit.blocker_compare(CAT_RECORD, QUESTIONS[:1], {"items": [answer]})[0]
+    good = view_answer("d1", value=15, unit_="year", basis=["[civil-code 308 ¶1]", "[civil-code 309 ¶2]"])
+    assert compare(good)["agreed"] and compare(good)["reasons"] == []
+    assert "do not require" in compare(dict(good, textsRequire="textsSilent"))["reasons"][0]
+    assert "«noSanction»" in compare(dict(good, consequence="noSanction"))["reasons"][0]
+    assert "a period of 10 year, the record 15 year" in compare(dict(good, periodValue=10))["reasons"][0]
+    assert "none of the articles the item rests on (civil-code 308)" in \
+        compare(dict(good, basis=["[civil-code 310 ¶1]"]))["reasons"][0]
+    missing = unit.blocker_compare(CAT_RECORD, QUESTIONS, {"items": [good]})[1]
+    assert missing["item"] == "p1" and not missing["agreed"] and "no answer" in missing["reasons"][0]
+    # a prior step has no period to compare; an article written with words after its number still matches
+    rec = json.loads(json.dumps(CAT_RECORD))
+    rec["basis"][1]["cite"]["article"] = "324 مكرر 5"
+    step = unit.blocker_compare(rec, QUESTIONS[1:], {"items": [view_answer("p1", basis=["[civil-code 324 مكرر 5 ¶1]"])]})
+    assert step[0]["agreed"]
+
+
+def test_the_side_file_of_changes_must_name_every_catalogue_part_and_keep_its_questions_blind():
+    entry = {"articles": [{"code": "civil-code", "number": "450"}], "suggestedRequests": ["إلزام المدعى عليه"],
+             "requiredDocuments": ["سند القرض"], "factsToState": ["تاريخ القرض"]}
+    changes = [{"part": "article", "catalogueSays": "civil-code 450: the loan", "what": "kept", "items": ["b1"],
+                "reason": "[civil-code 450 ¶1]"},
+               {"part": "request", "catalogueSays": "إلزام المدعى عليه", "what": "kept", "items": ["r1"], "reason": "r"},
+               {"part": "document", "catalogueSays": "سند القرض", "what": "kept", "items": ["doc1"], "reason": "r"},
+               {"part": "fact", "catalogueSays": "تاريخ القرض", "what": "corrected", "items": ["e1"], "reason": "r"},
+               {"part": "deadline", "catalogueSays": "", "what": "added", "items": ["d1"], "reason": "r"}]
+    doc = {"unit": "loan-repayment", "changes": changes, "wouldBlock": QUESTIONS}
+    assert unit.catalogue_changes_problems(doc, CAT_RECORD, entry) == []
+    assert unit.catalogue_changes_problems(dict(doc, changes=changes[1:]), CAT_RECORD, entry) == [
+        "no change names the catalogue's «civil-code 450»"]
+    assert unit.catalogue_changes_problems(dict(doc, wouldBlock=QUESTIONS[:1]), CAT_RECORD, entry) == [
+        "wouldBlock lists ['d1'], the record's own blocking items are ['d1', 'p1']"]
+    leaky = [{"item": "d1", "question": {"ar": "هل ترفع خلال خمس عشرة سنة؟", "en": "Within 15 years?"}}, QUESTIONS[1]]
+    assert unit.catalogue_changes_problems(dict(doc, wouldBlock=leaky), CAT_RECORD, entry) == [
+        "wouldBlock d1: the ar question holds the extract «خمس عشرة سنة»", "wouldBlock d1: the en question holds a digit"]
+    assert unit.catalogue_changes_problems({"unit": "x", "changes": [{"part": "nonsense"}]}, CAT_RECORD, entry)
+
+
+def test_done_sets_aside_a_blocker_view_that_skips_an_item(cat, tmp_path, monkeypatch):
+    u = catalogue_through_stage_2a(cat, blocking=True)
+    ledger = tmp_path / "ledger.jsonl"
+    write_ledger(ledger, [{"id": "r-s1-0003", "kind": "agent", "unit": u.id, "stage": "2e", "status": "running",
+                           "role": "rules-blocker-view"}])
+    monkeypatch.setattr(unit, "tool", lambda: "rules.exe")
+    calls = []
+
+    def ingest(*args, **kw):  # the reply passes its schema but answers d1 only
+        calls.append(args)
+        dump(args[args.index("--out") + 1], {"unit": u.id, "items": [view_answer("d1")]})
+        return 0, "ok"
+    monkeypatch.setattr(unit, "py", ingest)
+    assert unit.done(u, "2e", "agent-3", ledger=str(ledger)) == 1
+    assert calls[0][:2] == ("records.py", "ingest-reply") and calls[0][calls[0].index("--schema") + 1].endswith(
+        "blocker-view.schema.json")
+    assert not os.path.isfile(u.r("blocker-view.json"))
+    assert os.path.isfile(os.path.join(u.run, "discarded", "blocker-view-r-s1-0003.json"))
+    row = unit.ledger_rows(str(ledger))["r-s1-0003"]
+    assert row["status"] == "failed" and "no answer for p1" in row["reason"]
+    assert dict(unit.status(u))["2e"] == "due"  # run again, fresh

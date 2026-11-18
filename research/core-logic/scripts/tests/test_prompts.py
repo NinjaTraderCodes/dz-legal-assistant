@@ -161,7 +161,9 @@ BODY_SCHEMAS = [("rules-derive-c", "module-derivation-c.schema.json"), ("rules-a
                 ("notes-clean-rank", "clean-rank.schema.json"), ("gen-judge", "gen-judge.schema.json"),
                 ("notes-cells", "cells.schema.json"), ("arabic-check", "arabic-check.schema.json"),
                 ("notes-guide-items", "guide-items.schema.json"), ("notes-sort-dropped", "sort-dropped.schema.json"),
-                ("law-settle-difference", "settle-difference.schema.json")]
+                ("law-settle-difference", "settle-difference.schema.json"),
+                ("rules-derive-catalogue", "catalogue-changes.schema.json"),
+                ("rules-blocker-view", "blocker-view.schema.json")]
 
 
 @pytest.mark.parametrize("prompt,schema_file", BODY_SCHEMAS)
@@ -337,3 +339,62 @@ def test_the_second_view_is_blind_to_the_expectation_and_offers_the_two_words_in
     with pytest.raises(ValueError):  # the same word on both sides is not a choice
         prompts.values_for("boundary-second-view-codex", "formal-notice", cases=["bc3"],
                            run=[{"caseId": "bc3", "actual": "stepMissing"}])
+
+
+# --- the catalogue route (specs/unit-driver.md, "The catalogue route for claim types") -------------------------------
+def test_the_catalogue_deriver_gets_the_whole_catalogue_entry_its_check_and_the_texts(tmp_cl, tmp_path, monkeypatch):
+    monkeypatch.setattr(prompts, "RUNS", str(tmp_path / "runs"))
+    monkeypatch.setattr(prompts, "unit_texts", lambda u: {"rendered": "[civil-code 450 ¶1] نص"})
+    with pytest.raises(FileNotFoundError):  # unit.py next writes the catalogue check before it fills this prompt
+        prompts.values_for("rules-derive-catalogue", "loan-repayment")
+    (tmp_cl / "rules" / "reports" / "loan-repayment.catalogue-check.json").write_text(
+        '{"unit": "loan-repayment", "summary": {}}\n', encoding="utf-8")
+    values = prompts.values_for("rules-derive-catalogue", "loan-repayment")
+    _, body = prompts.template("rules-derive-catalogue")
+    assert not set(prompts.PLACEHOLDER.findall(body)) - set(values)
+    filled = prompts.fill(body, values)
+    _, entry = prompts.claims()["loan-repayment"]
+    for line in [a["why"]["ar"] for a in entry["articles"]] + entry["suggestedRequests"] + entry["requiredDocuments"] \
+            + entry["factsToState"]:
+        assert line in filled  # unlike derivation A, the catalogue is given in full
+    assert '{"unit": "loan-repayment", "summary": {}}' in filled
+    with open(values["texts_path"], encoding="utf-8") as f:
+        assert f.read() == "[civil-code 450 ¶1] نص\n"
+    with pytest.raises(ValueError):
+        prompts.values_for("rules-derive-catalogue", "formal-notice")
+
+
+def test_the_blocker_view_gets_the_questions_and_the_texts_never_the_items(tmp_cl, monkeypatch):
+    a = tmp_cl / "rules" / "derivations" / "a"
+    record = {"basis": [{"id": "b1", "cite": {"code": "civil-code", "article": "308"}},
+                        {"id": "b2", "cite": {"code": "civil-code", "article": "179"}}],
+              "deadlines": [{"id": "d1", "period": {"value": 15, "unit": "year"}, "basis": ["b1"],
+                             "effectWhenExpired": "blockCleanExport", "extract": {"period": "خمس عشرة سنة"},
+                             "message": {"ar": "رسالة الأجل", "en": "the deadline's message"}}],
+              "priorSteps": [{"id": "p1", "basis": ["b2"], "effectWhenMissing": "blockCleanExport",
+                              "message": {"ar": "رسالة الإجراء", "en": "the step's message"}}]}
+    questions = [{"item": "d1", "question": {"ar": "في أي أجل؟", "en": "Within what time must it be filed?"}},
+                 {"item": "p1", "question": {"ar": "هل يجب الإعذار؟", "en": "Must notice be given first?"}}]
+    (a / "loan-repayment.json").write_text(json.dumps(record), encoding="utf-8")
+    (a / "loan-repayment.catalogue-changes.json").write_text(json.dumps({"wouldBlock": questions}), encoding="utf-8")
+    monkeypatch.setattr(prompts, "unit_texts", lambda u: {"rendered": "[civil-code 179 ¶1] لا يستحق التعويض"})
+
+    class Store:
+        def get(self, code, article, version=None):
+            return {"paragraphs": ["يتقادم الالتزام", "غير أنه"]} if (code, article) == ("civil-code", "308") else None
+    monkeypatch.setattr(prompts, "blocker_store", Store)
+    values = prompts.values_for("rules-blocker-view", "loan-repayment")
+    _, body = prompts.template("rules-blocker-view")
+    assert not set(prompts.PLACEHOLDER.findall(body)) - set(values)
+    assert values["questions"].splitlines() == [
+        "- **d1** (a time limit): Within what time must it be filed? «في أي أجل؟»",
+        "- **p1** (a step before filing): Must notice be given first? «هل يجب الإعذار؟»"]
+    # the cited article outside the unit's texts is added whole; 179 is already there
+    assert values["texts"].endswith("(Further articles of the same codes:)\n[civil-code 308 ¶1] يتقادم الالتزام\n"
+                                    "[civil-code 308 ¶2] غير أنه")
+    filled = prompts.fill(body, values)
+    for hidden in ("خمس عشرة سنة", "the deadline's message", "رسالة الإجراء", "blockCleanExport", "15"):
+        assert hidden not in filled
+    (a / "loan-repayment.catalogue-changes.json").write_text(json.dumps({"wouldBlock": []}), encoding="utf-8")
+    with pytest.raises(ValueError):  # nothing would block: stage 2e is skipped, never launched
+        prompts.values_for("rules-blocker-view", "loan-repayment")

@@ -222,6 +222,26 @@ def test_grade_follows_the_table():
     assert final["history"]["agreementBeforeReconciliation"] == "3 of 3 matched items"
 
 
+def test_grade_on_the_catalogue_route_one_derivation_and_a_blind_reader_on_the_blocks():
+    """unit.py promote: an item the blind reader agreed with has a B side and may reach A; every other item is a single
+    derivation (singleDerivation, not addedAfterDerivation); without a support check the agreed block still warns."""
+    clean = FakeStore([entry("503", STORE.get("cpca", "503")["paragraphs"], clean=True, reason=None),
+                       entry("504", STORE.get("cpca", "504")["paragraphs"], clean=True, reason=None)])
+    q, _ = rc.quote_record(record(), clean)
+    idmap = [{"kind": "deadline", "a": "d1", "b": "blocker-view", "reconciled": "d1", "single": False},
+             {"kind": "statement", "a": "b1", "b": None, "reconciled": "b1", "single": True},
+             {"kind": "statement", "a": "b2", "b": None, "reconciled": "b2", "single": True}]
+    final, report = rc.grade_record(q, clean, idmap=idmap, differences=[], attacks=[], disputes=[], triaged={"cpca"},
+                                    planted=ALL_PASSED)
+    g = {r["item"]: r for r in report["items"]}
+    assert g["d1"]["grade"] == "A" and g["b1"]["reasons"] == ["singleDerivation"] and g["b1"]["grade"] == "B"
+    assert final["examples"][0]["expect"]["findings"][0]["shownEffect"] == "blockCleanExport"
+    _, report = rc.grade_record(q, clean, idmap=idmap, differences=[], attacks=[], disputes=[], triaged={"cpca"},
+                                planted=ALL_PASSED, support_given=True)
+    g = {r["item"]: r for r in report["items"]}
+    assert g["d1"]["grade"] == "B" and g["d1"]["reasons"] == ["supportCheckPending"]
+
+
 def test_grade_d_for_an_unverified_text_and_corpus_checked_in_critical_use():
     r = record()
     r["basis"].append({"id": "b3", "role": "procedure", "cite": {"code": "cpca", "article": "19"},

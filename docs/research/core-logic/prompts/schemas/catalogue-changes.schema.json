@@ -1,0 +1,99 @@
+{
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "unit",
+  "changes",
+  "wouldBlock"
+ ],
+ "properties": {
+  "unit": {
+   "type": "string"
+  },
+  "changes": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "part",
+     "catalogueSays",
+     "what",
+     "items",
+     "reason"
+    ],
+    "properties": {
+     "part": {
+      "type": "string",
+      "enum": [
+       "article",
+       "request",
+       "document",
+       "fact",
+       "prerequisite",
+       "element",
+       "deadline",
+       "priorStep",
+       "court",
+       "boundary",
+       "import",
+       "other"
+      ]
+     },
+     "catalogueSays": {
+      "type": "string"
+     },
+     "what": {
+      "type": "string",
+      "enum": [
+       "kept",
+       "corrected",
+       "added"
+      ]
+     },
+     "items": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "reason": {
+      "type": "string"
+     }
+    }
+   }
+  },
+  "wouldBlock": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "item",
+     "question"
+    ],
+    "properties": {
+     "item": {
+      "type": "string"
+     },
+     "question": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+       "ar",
+       "en"
+      ],
+      "properties": {
+       "ar": {
+        "type": "string"
+       },
+       "en": {
+        "type": "string"
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

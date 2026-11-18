@@ -47,7 +47,7 @@ TOOL_SOURCES = ("research/core-logic/src", "research/core-logic/Directory.Build.
                 "research/core-logic/Directory.Packages.props")
 SCHEMAS = os.path.join(CL, "prompts", "schemas")
 
-STAGES = ("0", "0b", "2a", "2b", "2c", "2d", "3", "4", "5", "6", "7a", "7b", "7c", "8", "8b", "9")
+STAGES = ("0", "0b", "2a", "2b", "2c", "2d", "2e", "3", "4", "5", "6", "7a", "7b", "7c", "8", "8b", "9")
 # Agent stages: the prompt, the model, and whether the agent has no tool (its reply is copied by ingest-reply).
 AGENTS = {"2a": ("rules-derive-a", "opus", False), "2b": ("rules-derive-b", "sonnet", False),
           "2c": ("rules-derive-c", "sonnet", True), "2d": ("rules-boundary-cases", "sonnet", False),
@@ -64,6 +64,20 @@ CODEX_STAGES = {"7c": "rules-support-check-codex", "8b": "boundary-second-view-c
 # at most one follow-up.
 EFFECT_KEYS = ("effect", "effectWhenExpired", "effectWhenMissing", "effectWhenUnknown")
 LIGHT = "skipped: light route (no item of the claim type declares blockCleanExport; the owner, 17 November 2026)"
+# The owner's catalogue route (18 November 2026): "Claim types, since Claude's limit is now the bottleneck: no full
+# derivation for the remaining 17. For each, compare the app's current catalogue (data/law/claims) with the official text
+# and the final modules by script, and derive only what is missing or wrong, on the light route." And: "the few items that
+# would block get a second, independent derivation (only those items), so they can still block." One Opus derivation that
+# starts from the catalogue (2a), a blind Sonnet reading of its would-be blocking items only (2e), derivation A promoted
+# to the reconciled record by script (5), then the light route's adversary and verifier. The list is the owner's choice of
+# units, not something read from files: a unit already derived on another route stays on it.
+CATALOGUE_ROUTE = {"loan-repayment", "unpaid-sale-price", "sale-annulment-fraud", "contract-damages", "tort-damages",
+                   "liability-for-things", "eviction-occupier-without-title", "commercial-debt",
+                   "commercial-lease-eviction", "sale-non-delivery"}
+CATALOGUE_AGENTS = {"2a": ("rules-derive-catalogue", "opus", False), "2e": ("rules-blocker-view", "sonnet", True),
+                    "7a": AGENTS["7a"], "8": AGENTS["8"]}
+CATALOGUE = "skipped: catalogue route (the owner, 18 November 2026: one derivation from the catalogue, no B, no reconciler)"
+PROMOTED = "skipped: catalogue route (no reconciler: derivation A promoted to the reconciled record by script)"
 # The first module was made before the driver: its attack is Codex's and its follow-up 1 files carry no number.
 LEGACY = {"formal-notice"}
 # Reports written before the reconcile prompt named the fixed lines (16 November 2026): their differences are bold
@@ -256,7 +270,190 @@ def followup_allowed(u: Unit) -> bool:
     """A module: as before. A claim type: none on the light route, at most one otherwise (the owner, 17 November)."""
     if u.kind != "claim":
         return True
+    if catalogue_route(u):  # as on the light route: what a follow-up would decide is recorded open, and warns
+        return False
     return not light(u) and u.followups() < 1
+
+
+# --- the catalogue route (the owner, 18 November 2026) ---------------------------------------------------------------
+def catalogue_route(u: Unit) -> bool:
+    return u.kind == "claim" and u.id in CATALOGUE_ROUTE
+
+
+def agents_of(u: Unit) -> dict:
+    return CATALOGUE_AGENTS if catalogue_route(u) else AGENTS
+
+
+def changes_path(u: Unit) -> str:
+    return os.path.join(u.rules, "derivations", "a", f"{u.id}.catalogue-changes.json")
+
+
+def own_blocking(record: dict) -> list[str]:
+    """The record's own items that declare blockCleanExport (never an example's expected finding)."""
+    import records as rc
+    return sorted({rc.item_id(k, x) for k, x in rc.items(record) if any(x.get(e) == "blockCleanExport"
+                                                                        for e in EFFECT_KEYS)})
+
+
+def would_block(u: Unit) -> list[dict] | None:
+    """The deriver's would-be blocking items with their questions; None until its side file exists."""
+    if not os.path.isfile(changes_path(u)):
+        return None
+    return load(changes_path(u)).get("wouldBlock") or []
+
+
+def catalogue_keys(entry: dict) -> list[str]:
+    """What every catalogue entry must have one change about: each article as «<code> <number>», and each request,
+    document, fact and prerequisite as its Arabic text (rules-derive-catalogue.md, Phase 3)."""
+    return ([f"{a['code']} {a['number']}" for a in entry.get("articles", [])] + list(entry.get("suggestedRequests", []))
+            + list(entry.get("requiredDocuments", [])) + list(entry.get("factsToState", []))
+            + [p["ar"] for p in entry.get("prerequisites", []) if p.get("ar")])
+
+
+DIGITS = re.compile(r"[0-9٠-٩۰-۹]")
+
+
+def catalogue_changes_problems(doc, record: dict, entry: dict) -> list[str]:
+    """Stage 2a's side file on the catalogue route: its schema; one change about every part of the catalogue entry;
+    `wouldBlock` naming exactly the record's own blocking items; and questions that do not hand the blind reader the
+    answer (no digit, none of the item's extract words)."""
+    import codex_run
+    import records as rc
+    with open(os.path.join(SCHEMAS, "catalogue-changes.schema.json"), encoding="utf-8") as f:
+        out = codex_run.validate(json.load(f), doc)
+    if out:
+        return out[:8]
+    said = " ".join(c["catalogueSays"] for c in doc["changes"])
+    out += [f"no change names the catalogue's «{k}»" for k in catalogue_keys(entry) if k not in said]
+    listed = [q["item"] for q in doc["wouldBlock"]]
+    own = own_blocking(record)
+    if sorted(set(listed)) != own or len(listed) != len(set(listed)):
+        out.append(f"wouldBlock lists {sorted(listed)}, the record's own blocking items are {own}")
+    items = {rc.item_id(k, x): x for k, x in rc.items(record)}
+    for q in doc["wouldBlock"]:
+        x = items.get(q["item"], {})
+        words = [w for w in (x.get("extract") or {}).values() if isinstance(w, str) and w.strip()]
+        for lang in ("ar", "en"):
+            text = q["question"][lang]
+            if DIGITS.search(text):
+                out.append(f"wouldBlock {q['item']}: the {lang} question holds a digit")
+            out += [f"wouldBlock {q['item']}: the {lang} question holds the extract «{w}»" for w in words if w in text]
+    return out
+
+
+def blocker_view_problems(u: Unit) -> list[str]:
+    """Stage 2e's answer: exactly one entry per would-be blocking item."""
+    asked = [q["item"] for q in would_block(u) or []]
+    given = [a["item"] for a in load(u.r("blocker-view.json")).get("items", [])]
+    out = [f"no answer for {i}" for i in asked if i not in given]
+    out += [f"an answer for {i}, which was not asked" for i in given if i not in asked]
+    out += [f"{i} answered more than once" for i in sorted(set(given)) if given.count(i) > 1]
+    return out
+
+
+LABEL = re.compile(r"\[(\S+) (.+?)(?: ¶\d+)?\]")
+
+
+def blocker_compare(record: dict, questions: list[dict], view: dict) -> list[dict]:
+    """The blind reader's answer against each would-be blocking item. Agreement needs all four: the texts require it,
+    a missing step or a late filing makes the claim inadmissible (or the right lost), the same period for a deadline, and
+    at least one article in common (the same conclusion from other texts is not the same derivation)."""
+    import records as rc
+    stmts = rc.statements(record)
+    own = {rc.item_id(k, x): (k, x) for k, x in rc.items(record)}
+    answers = {a["item"]: a for a in view.get("items", [])}
+    out = []
+    for q in questions:
+        iid = q["item"]
+        kind, x = own.get(iid, (None, None))
+        a = answers.get(iid)
+        why = []
+        if x is None:
+            why.append("the record has no such item")
+        elif a is None:
+            why.append("the blind reader gave no answer for it")
+        else:
+            if a["textsRequire"] != "yes":
+                why.append(f"the blind reader finds that the texts do not require it («{a['textsRequire']}»)")
+            if a["consequence"] != "inadmissibleOrForfeited":
+                why.append(f"the blind reader reads the consequence «{a['consequence']}», not inadmissibility or "
+                           "forfeiture")
+            if kind == "deadline":
+                p = x.get("period") or {}
+                if (a.get("periodValue"), a.get("periodUnit")) != (p.get("value"), p.get("unit")):
+                    why.append(f"the blind reader reads a period of {a.get('periodValue')} {a.get('periodUnit')}, the "
+                               f"record {p.get('value')} {p.get('unit')}")
+            mine = {(stmts[b]["cite"]["code"], stmts[b]["cite"]["article"]) for b in rc.basis_ids(x) if b in stmts}
+            theirs = {(m.group(1), m.group(2)) for lab in a.get("basis", []) for m in [LABEL.fullmatch(lab.strip())] if m}
+            if not mine & theirs:
+                why.append(f"the blind reader rests its answer on {', '.join(sorted(a.get('basis', []))) or 'nothing'}, "
+                           f"none of the articles the item rests on ({', '.join(f'{c} {n}' for c, n in sorted(mine))})")
+        out.append({"item": iid, "kind": kind, "agreed": not why, "reasons": why, "answer": a})
+    return out
+
+
+def _set_to_warn(record: dict, iid: str) -> None:
+    """An item that may not block: its declared effect, and its examples' expectations of it, become warn."""
+    import records as rc
+    for k, x in rc.items(record):
+        if rc.item_id(k, x) == iid:
+            for e in EFFECT_KEYS:
+                if x.get(e) == "blockCleanExport":
+                    x[e] = "warn"
+    for ex in record.get("examples", []):
+        for f in ex.get("expect", {}).get("findings", []):
+            if f.get("ref") == iid and f.get("effect") == "blockCleanExport":
+                f["effect"] = "warn"
+
+
+def promote(u: Unit) -> str:
+    """Stage 5 of the catalogue route: derivation A becomes the reconciled record by script, as the reconciler would
+    write it (stage reconciled, verified false, no quote, source or grading). Each would-be blocking item the blind reader
+    agrees with keeps blockCleanExport and gets a B side in the id map ("derivations A and B agreed", GRADES.md condition
+    4); every other one is set to warn, with the reason, before stage 6. Every other item is a single derivation."""
+    import records as rc
+    a = load(u.deriv("a"))
+    questions = would_block(u) or []
+    view = load(u.r("blocker-view.json")) if questions else {"items": []}
+    results = blocker_compare(a, questions, view)
+    listed = {q["item"] for q in questions}
+    results += [{"item": i, "kind": None, "agreed": False, "answer": None,
+                 "reasons": ["not in wouldBlock: no blind reader saw it"]} for i in own_blocking(a) if i not in listed]
+    rec = json.loads(json.dumps(a))
+    for r in results:
+        if not r["agreed"]:
+            _set_to_warn(rec, r["item"])
+    for _, x in rc.items(rec):
+        for k in ("quote", "source", "grading"):
+            x.pop(k, None)
+    rec.update(stage="reconciled", verified=False)
+    rec["derivedBy"] = dict(a.get("derivedBy") or {}, role="catalogue route: derivation A promoted by unit.py "
+                                                           "(no reconciler run)")
+    agreed = sorted(r["item"] for r in results if r["agreed"])
+    lines = [f"blocker {r['item']}: " + ("keeps blockCleanExport: the blind reader agrees" if r["agreed"] else
+                                         "set to warn: " + "; ".join(r["reasons"])) for r in results]
+    rec.setdefault("history", {})["reconciliation"] = (
+        "Catalogue route (the owner, 18 November 2026): derivation A promoted by script, no derivation B, no reconciler. "
+        + (" ".join(line + "." for line in lines) if lines else "No item would block: no blind reading."))
+    save(u.reconciled, rec)
+    save(u.r("idmap.json"), [{"kind": k, "a": rc.item_id(k, x), "b": "blocker-view" if rc.item_id(k, x) in agreed
+                              else None, "reconciled": rc.item_id(k, x), "single": rc.item_id(k, x) not in agreed}
+                             for k, x in rc.items(rec)])
+    save(u.r("differences.json"), {"route": "catalogue", "differences": [], "sideBySide": [], "proposedSlots": [],
+                                   "agreement": {}, "agreementTotal": {"equal": len(agreed), "compared": len(results)},
+                                   "note": "no derivation B: the agreement counted is the blind reader's on the "
+                                           "would-be blocking items"})
+    save(u.r("blocker-check.json"), {"unit": u.id, "items": results, "kept": agreed,
+                                     "setToWarn": sorted(r["item"] for r in results if not r["agreed"])})
+    with open(u.r("reconciliation.md"), "w", encoding="utf-8", newline="\n") as f:
+        f.write(f"# `{u.id}`: the catalogue route, no reconciler\n\n"
+                "Written by `unit.py` (stage 5 of the catalogue route, the owner's decision of 18 November 2026). "
+                f"Derivation A (`rules-derive-catalogue`) is the reconciled record, promoted by script; its changes to "
+                f"the catalogue are in `derivations/a/{u.id}.catalogue-changes.json`. There was no derivation B, so "
+                "no item but those below has a second derivation.\n\n"
+                + ("\n".join(lines) if lines else "No item of the derivation would block: no blind reading (stage 2e "
+                                                  "skipped).") + "\n")
+    return u.reconciled
 
 
 def write_open(u: Unit, entries: list[dict]) -> str:
@@ -660,6 +857,11 @@ def stage4_reports(u: Unit) -> list[str]:
     return [u.r(n) for n in names]
 
 
+def catalogue_stage4_reports(u: Unit) -> list[str]:
+    """Stage 4 of the catalogue route: derivation A's checks and its checklist; nothing to compare it with."""
+    return [u.r(n) for n in ("values.a.json", "flags.a.json", "checklist.json")]
+
+
 def status(u: Unit) -> list[tuple[str, str]]:
     import prompts
     s: dict[str, str] = {}
@@ -679,12 +881,28 @@ def status(u: Unit) -> list[tuple[str, str]]:
     for st_, side in (("2a", "a"), ("2b", "b")):
         done = os.path.isfile(u.deriv(side)) and os.path.isfile(u.deriv(side).replace(".json", ".checklist.json"))
         s[st_] = "done" if done else (need("0", "0b") if side == "b" else need("0")) or "due"
+    cat = catalogue_route(u)
+    if cat:  # one derivation, from the catalogue; its side file of changes is part of it
+        if s["0b"] != "done":
+            s["0b"] = CATALOGUE + "; the French sources serve derivation B only"
+        if s["2a"] == "done" and not os.path.isfile(changes_path(u)):
+            s["2a"] = "due"
+        s["2b"] = CATALOGUE
     if u.kind == "claim":
         s["2c"] = "not for a claim type"
     else:
         s["2c"] = "done" if os.path.isfile(u.deriv("c")) else need("0") or "due"
     route = light(u)
-    if u.kind == "claim" and route is None and not os.path.isfile(u.boundary):
+    if cat:
+        s["2d"] = CATALOGUE
+        blockers = would_block(u)
+        if s["2a"] != "done":
+            s["2e"] = need("2a")
+        elif not blockers:
+            s["2e"] = "skipped: catalogue route (no item of the derivation would block)"
+        else:
+            s["2e"] = "done" if os.path.isfile(u.r("blocker-view.json")) else "due"
+    elif u.kind == "claim" and route is None and not os.path.isfile(u.boundary):
         s["2d"] = need("2a", "2b") or "waiting for 2a and 2b (whether the claim type has a blocking item)"
     elif route and not os.path.isfile(u.boundary):
         s["2d"] = LIGHT
@@ -695,8 +913,20 @@ def status(u: Unit) -> list[tuple[str, str]]:
     else:
         s["2d"] = need("0") or "due"
     s["3"] = need("2a", "2b") or ("done" if _requests_appended(u) else "due")
-    s["4"] = need("2a", "2b", "2c", "2d", "3") or ("done" if all(map(os.path.isfile, stage4_reports(u))) else "due")
-    if os.path.isfile(u.reconciled) and os.path.isfile(u.r("reconciliation.md")):
+    reports4 = catalogue_stage4_reports(u) if cat else stage4_reports(u)
+    s["4"] = need("2a", "2b", "2c", "2d", "3") or ("done" if all(map(os.path.isfile, reports4)) else "due")
+    if cat:  # no reconciler: a script promotes derivation A once the blind reading of its blocking items is in
+        if os.path.isfile(u.reconciled):
+            s["5"] = PROMOTED
+        else:
+            s["5"] = need("2e", "4")
+            if s["5"] is None:
+                try:
+                    prompts.module_finals([u.id], strict=True)  # stage 6 flattens the record against them
+                    s["5"] = "due"
+                except ValueError as e:
+                    s["5"] = f"waiting for {e}"
+    elif os.path.isfile(u.reconciled) and os.path.isfile(u.r("reconciliation.md")):
         text = open(u.r("reconciliation.md"), encoding="utf-8").read()
         ids = [d["id"] for d in load(u.r("differences.json"))["differences"]] if os.path.isfile(
             u.r("differences.json")) else []
@@ -729,8 +959,13 @@ def status(u: Unit) -> list[tuple[str, str]]:
     PLANTED = "skipped: planted round (specs/planted-errors.md: stages 6, 7b, 7c and 8 only)"
     s["7a"] = "done" if os.path.isfile(u.r("attacks.adversary.json")) else PLANTED if planted else need("6") or "due"
     attack = os.path.isfile(u.r("attacks.sonnet.json")) or (u.id in LEGACY and os.path.isfile(u.r("attacks.codex.json")))
-    s["7b"] = "done" if attack else LIGHT if route else need("6") or "due"
-    s["7c"] = "done" if os.path.isfile(u.r("support.json")) else LIGHT if route else need("6") or "due (unit.py codex)"
+    s["7b"] = "done" if attack else CATALOGUE if cat else LIGHT if route else need("6") or "due"
+    # The catalogue route runs Codex's support check only when a block survived the blind reading: blocking needs it
+    # (GRADES.md condition 5), and a unit whose items can only warn does not spend Codex calls on it.
+    kept = cat and os.path.isfile(u.r("blocker-check.json")) and bool(load(u.r("blocker-check.json")).get("kept"))
+    s["7c"] = "done" if os.path.isfile(u.r("support.json")) else CATALOGUE if cat and not kept else \
+        LIGHT if route and not cat else \
+        need("6") or "due (unit.py codex)"
     if need("7a", "7b"):
         s["8"] = need("7a", "7b")
     elif not os.path.isfile(u.register(0)) or not os.path.isfile(u.candidate):
@@ -751,6 +986,8 @@ def status(u: Unit) -> list[tuple[str, str]]:
             s["8"] = "done"
     if planted:
         s["8b"] = PLANTED
+    elif cat:
+        s["8b"] = CATALOGUE
     elif route:
         s["8b"] = LIGHT
     elif not os.path.isfile(u.register(0)):
@@ -770,7 +1007,7 @@ def status(u: Unit) -> list[tuple[str, str]]:
         # On a route with no follow-up, what the checklist leaves unanswered is recorded open instead (and warns).
         ok = ok or (not followup_allowed(u) and os.path.isfile(u.r("attacks.open.json")) and not followup_entries(u))
         s["9"] = "done" if os.path.isfile(u.final) and fresh and ok else "due"
-    return [(x, s[x]) for x in STAGES]
+    return [(x, s[x]) for x in STAGES if x in s]  # 2e exists on the catalogue route only
 
 
 # --- the script stages ----------------------------------------------------------------------------------------------
@@ -851,6 +1088,33 @@ def stage4(u: Unit) -> bool:
     return True
 
 
+def stage4_catalogue(u: Unit) -> bool:
+    """Stage 4 of the catalogue route: stage 4's checks on derivation A alone, and its checklist as the merged one.
+    There is no B to compare it with: the catalogue's own items are answered in the side file of changes instead."""
+    t = tool()
+    code, out = run([t, "check", "--store", STORE, u.deriv("a")])
+    say("rules check a", code, out)
+    if code:
+        print("STOP: the tool refuses a record an agent just wrote: delete it, its checklist and its catalogue changes, "
+              "and rerun stage 2a fresh (HANDBOOK, decision table)")
+        return False
+    for args, what in ((("quote", u.deriv("a")), "quote"),
+                       (("check-values", u.deriv("a", True), "--report", u.r("values.a.json")), "check-values"),
+                       (("flag-neighbours", u.deriv("a", True), "--report", u.r("flags.a.json")), "flag-neighbours")):
+        say(f"{what} a", *py("records.py", *args))
+    say("examples a", *run([t, "examples", u.deriv("a")]))
+    say("merge-checklists", *py("records.py", "merge-checklists", u.id, "--a",
+                                 u.deriv("a").replace(".json", ".checklist.json"), "--out", u.r("checklist.json")))
+    print("no derivation B to compare (catalogue route)")
+    return True
+
+
+def stage5_catalogue(u: Unit) -> bool:
+    path = promote(u)
+    print(f"promoted derivation A to {path}; {u.r('blocker-check.json')}")
+    return True
+
+
 def checks_on(u: Unit, record: str, quoted: str, tag: str) -> bool:
     """The checks of stages 6 and 9 on one record (tag: reconciled or final)."""
     t = tool()
@@ -860,13 +1124,16 @@ def checks_on(u: Unit, record: str, quoted: str, tag: str) -> bool:
         f.write(out + "\n")
     say(f"rules check {tag}", code, out)
     if code and tag == "reconciled":
-        print("STOP: the tool refuses the reconciled record: delete it and rerun stage 5 fresh (HANDBOOK, decision table)")
+        print("STOP: the tool refuses the reconciled record: " + (
+            "it is derivation A promoted by script: delete both, with A's checklist and catalogue changes, and rerun "
+            "stage 2a fresh" if catalogue_route(u) else "delete it and rerun stage 5 fresh") + " (HANDBOOK, decision table)")
         return False
     say(f"quote {tag}", *py("records.py", "quote", record))
     say("check-values", *py("records.py", "check-values", quoted, "--report", u.r(f"values.{tag}.json")))
     say("flag-neighbours", *py("records.py", "flag-neighbours", quoted, "--report", u.r(f"flags.{tag}.json")))
     import prompts
-    if tag == "reconciled" and prompts.source_of(u.id) == u.id:  # a planted copy's id map is already complete
+    # A planted copy's id map is already complete; so is the catalogue route's, written when A was promoted (no B).
+    if tag == "reconciled" and prompts.source_of(u.id) == u.id and not catalogue_route(u):
         say("complete-idmap", *py("records.py", "complete-idmap", u.r("idmap.json"), u.deriv("a", True),
                                    u.deriv("b", True), quoted))
     flat = _flat(u, record, tag)
@@ -935,6 +1202,11 @@ def stage9(u: Unit) -> bool:
 
 
 SCRIPT_STAGES = {"0": stage0, "3": stage3, "4": stage4, "6": stage6, "9": stage9}
+CATALOGUE_SCRIPT_STAGES = dict(SCRIPT_STAGES, **{"4": stage4_catalogue, "5": stage5_catalogue})
+
+
+def script_stages(u: Unit) -> dict:
+    return CATALOGUE_SCRIPT_STAGES if catalogue_route(u) else SCRIPT_STAGES
 
 
 # --- the agent stages -----------------------------------------------------------------------------------------------
@@ -957,7 +1229,7 @@ def _running(u: Unit, stage: str, ledger: str = LEDGER) -> dict | None:
 def launch(u: Unit, stage: str, ledger: str = LEDGER) -> str:
     """Fills the stage's prompt into the run folder, writes the ledger's launch line, returns the launch text."""
     import prompts
-    prompt, model, _ = AGENTS[stage]
+    prompt, model, _ = agents_of(u)[stage]
     already = _running(u, stage, ledger)
     if already:
         return f"RUNNING stage {stage} {prompt} ({already['id']}): when it returns, python unit.py done {u.id} {stage} <agent id>"
@@ -966,6 +1238,12 @@ def launch(u: Unit, stage: str, ledger: str = LEDGER) -> str:
     path = os.path.join(u.run, name)
     if stage == "7b":
         say("render", *py("stage7.py", "render", u.reconciled_q, "--out", os.path.join(u.run, "record_text.txt")))
+    if prompt == "rules-derive-catalogue":  # the script half of the owner's comparison, pasted into the prompt
+        code, out = py("catalogue_check.py", u.id, "--final", os.path.join(u.rules, "final"), "--texts",
+                       u.r("texts.json"), "--out", u.r("catalogue-check.json"))
+        say("catalogue check", code, out)
+        if code:
+            raise RuntimeError("catalogue_check.py failed: no launch")
     os.makedirs(u.run, exist_ok=True)
     _, body = prompts.template(prompt)
     with open(path, "w", encoding="utf-8", newline="\n") as f:
@@ -1004,16 +1282,18 @@ def next_(u: Unit, ledger: str = LEDGER) -> int:
             return 1
     ran = set()
     while True:  # the stages again after each script stage: stage 3 makes stage 4 due in the same call
-        due = [s for s, state in status(u) if s in SCRIPT_STAGES and state == "due" and s not in ran]
+        scripts = script_stages(u)
+        due = [s for s, state in status(u) if s in scripts and state == "due" and s not in ran]
         if not due:
             break
         print(f"-- stage {due[0]}")
         ran.add(due[0])
-        if not SCRIPT_STAGES[due[0]](u):
+        if not scripts[due[0]](u):
             return 1
     rows = dict(status(u))
+    agents = agents_of(u)
     for stage, state in rows.items():
-        if stage in AGENTS and state.startswith("due"):
+        if stage in agents and state.startswith("due"):
             if stage == "8" and "new findings" in state:
                 print("verify-input:", verify_input(u, followup=True))
             elif stage == "8" and not os.path.isfile(u.register(0)):
@@ -1032,21 +1312,35 @@ def done(u: Unit, stage: str, agent: str, ledger: str = LEDGER, session: str | N
     if row is None:
         print(f"no running ledger line for {u.id} stage {stage}")
         return 1
-    prompt, _, no_tool = AGENTS[stage]
+    agents = agents_of(u)
+    if stage not in agents:
+        print(f"stage {stage} is not an agent stage on this unit's route")
+        return 1
+    prompt, _, no_tool = agents[stage]
     problems, outputs = [], []
     t = tool()
     prompt_file = os.path.join(u.run, row.get("role", prompt).split(" ")[0] + (
         f"-followup{u.followups()}" if "follow-up" in row.get("role", "") else "") + ".prompt.md")
     if no_tool:
-        out, schema, extra = ((u.deriv("c"), "module-derivation-c.schema.json", []) if stage == "2c" else
-                              (u.r("attacks.sonnet.json"), "attacks.schema.json",
-                               ["--ids", "atk"] + (["--append"] if os.path.isfile(u.r("attacks.sonnet.json")) else [])))
+        if stage == "2c":
+            out, schema, extra = u.deriv("c"), "module-derivation-c.schema.json", []
+        elif stage == "2e":
+            out, schema, extra = u.r("blocker-view.json"), "blocker-view.schema.json", ["--unit", u.id]
+        else:
+            out, schema, extra = (u.r("attacks.sonnet.json"), "attacks.schema.json",
+                                  ["--ids", "atk"] + (["--append"] if os.path.isfile(u.r("attacks.sonnet.json")) else []))
         code, text = py("records.py", "ingest-reply", "--agent", agent, "--prompt", prompt_file, "--schema",
                         os.path.join(SCHEMAS, schema), "--out", out, *extra, *(["--session", session] if session else []))
         say("ingest-reply", code, text)
         if code:
             problems.append({3: "a tool other than its own prompt's read was used",
                              4: "the answer is not one JSON value passing its schema"}.get(code, text[-300:]))
+        elif stage == "2e":
+            bad = blocker_view_problems(u)
+            if bad:  # an answer that skips an item or adds one is not used, not even in part
+                os.makedirs(os.path.join(u.run, "discarded"), exist_ok=True)
+                shutil.move(out, os.path.join(u.run, "discarded", f"blocker-view-{row['id']}.json"))
+                problems.append("set aside in the run folder: " + "; ".join(bad[:4]))
         outputs.append(out)
     elif stage in ("2a", "2b"):
         rec = u.deriv(stage[1])
@@ -1059,6 +1353,17 @@ def done(u: Unit, stage: str, agent: str, ledger: str = LEDGER, session: str | N
                 if code:
                     problems.append(f"rules {args[0]}: " + text[-600:])
         outputs += [rec, rec.replace(".json", ".checklist.json")]
+        if prompt == "rules-derive-catalogue":
+            import prompts
+            if not os.path.isfile(changes_path(u)):
+                problems.append(f"missing {changes_path(u)}")
+            elif not problems:
+                try:
+                    problems += catalogue_changes_problems(load(changes_path(u)), load(rec),
+                                                           prompts.claims()[u.id][1])
+                except ValueError as e:  # not JSON
+                    problems.append(f"{changes_path(u)}: {e}")
+            outputs.append(changes_path(u))
     elif stage == "2d":
         if not os.path.isfile(u.boundary):
             problems.append(f"missing {u.boundary}")
@@ -1486,7 +1791,7 @@ def main(argv=None) -> int:
     sv.add_argument("--actual", required=True, help="JSON: case id -> the record's outcome word")
     d = sub.add_parser("done")
     d.add_argument("unit")
-    d.add_argument("stage", choices=sorted(AGENTS))
+    d.add_argument("stage", choices=sorted(set(AGENTS) | set(CATALOGUE_AGENTS)))
     d.add_argument("agent")
     d.add_argument("--session")
     d.add_argument("--changed", help="the expectations the deriver says it changed, as its reply lists them")

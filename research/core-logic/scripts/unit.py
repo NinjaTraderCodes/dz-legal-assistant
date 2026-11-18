@@ -1189,6 +1189,15 @@ def grade(u: Unit, planted: str | None = None) -> bool:
     code, out = py("records.py", "check-checklist", u.final, "--checklist", u.r("checklist.json"),
                    "--flags", u.r("flags.final.json"), "--report", u.r("checklist-check.json"))
     say("check-checklist final", code, out)
+    if code and not followup_allowed(u):
+        # A unit with no follow-up (light or catalogue route): an unanswered flag recorded open (attacks.open.json)
+        # has been decided as "open, warn"; anything else unanswered still fails.
+        rep = load(u.r("checklist-check.json"))
+        recorded = {e.get("id") for e in register_entries(u) if e.get("verdict") == "open"}
+        rest = [f for f in rep.get("unansweredFlags", []) if f"flag-{f}" not in recorded]
+        if not rep.get("unansweredLines") and not rep.get("refsNotInRecord") and not rest:
+            print(f"unanswered flags recorded open, warn: {rep.get('unansweredFlags')}")
+            return True
     return code == 0
 
 
@@ -1768,6 +1777,10 @@ def regrade_all(root: str | None = None, rebuild: bool = True) -> int:
         print(f"-- {u.id}")
         os.makedirs(u.cases, exist_ok=True)
         checks_on(u, u.candidate, u.candidate_q, "final")
+        if not followup_allowed(u):  # what the new checks find is recorded open, as at stage 9 on these routes
+            new = followup_entries(u)
+            if new:
+                print(f"{len(new)} new findings recorded open, warn: {write_open(u, new)}")
         if not grade(u):
             failed.append(u.id)
         rep = load(u.r("grades.json")) if os.path.isfile(u.r("grades.json")) else {"items": []}

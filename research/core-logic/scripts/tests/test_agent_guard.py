@@ -3,7 +3,8 @@ import subprocess
 import sys
 import os
 
-import agent_guard as g
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+import agent_guard as g  # noqa: E402
 
 RULES = r"C:\Users\TheShadow\dz-core-research\tools\rules\6b439d4\rules.exe"
 PY = r"C:\Users\TheShadow\AppData\Local\Programs\Python\Python312\python.exe"

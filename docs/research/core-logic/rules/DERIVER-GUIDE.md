@@ -186,6 +186,8 @@ Your prompt gives the slot list (`{{slots}}`): each slot's id, type and question
   "why": "<which item reads it, and which text makes the fact matter>" }
 ```
 
+**The question is one sentence that ends with its question mark:** «؟» in Arabic, "?" in English. A clarification in brackets goes *before* the mark, never after it: «… هذه العريضة (أجب بلا إذا كان الصلح جزئيا)؟», not «… العريضة؟ (أجب بلا …)». Stage 9 refuses a question that does not end with «؟» (four records were stopped on this on 17 and 18 November 2026).
+
 Do not propose a slot for a fact an existing slot already holds. Another deriver will name its own slots differently; a person after you maps them, so choose a plain, descriptive id and say clearly what it holds.
 
 ## 8. The checklist

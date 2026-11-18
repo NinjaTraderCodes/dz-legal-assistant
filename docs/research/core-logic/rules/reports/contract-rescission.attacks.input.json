@@ -1,0 +1,374 @@
+{
+ "unit": "contract-rescission",
+ "attacks": [
+  {
+   "id": "adv-1",
+   "target": "n2, p1, court.section, imports.formal-notice (p2, b5), e5",
+   "kind": "specialLaw",
+   "claim": "For a sale on plans (البيع على التصاميم) under the real-estate promotion law, a subscriber's failure to pay two successive instalments rescinds the contract by law, but only after two notices of fifteen days each, served by a bailiff, that went unanswered. The record has no boundary for this contract: a promoter suing to rescind would get the general article 119 route, with the imported single notice rule (which accepts post or an agreed default), and nothing would check the two bailiff notices or the 15-day periods.",
+   "source": {
+    "tier": 1,
+    "url": "https://www.joradp.dz/FTP/jo-arabe/2011/A2011014.pdf",
+    "what": "Law 11-04 of 17 February 2011 setting the rules of real-estate promotion, art. 53 ¶1-2; Official Journal no. 14 of 6 March 2011, page 10 (law heading on page 4). No later amendment of art. 53 found (web search only: a 2024 ministerial announcement of a draft amendment, no published amending law found).",
+    "retrievedOn": "2026-11-18"
+   },
+   "quoteArabic": "يتعين على المكتتب في عقد البيع على التصاميم دفع التسديدات التي تقع على عاتقه في الآجال المنصوص عليها، وفي حالة عدم التسديد، يحتفظ المرقي العقاري بحق توقيع عقوبة على المبلغ المستحق. يترتب على عدم تسديد دفعتين متتاليتين فسخ العقد بحكم القانون بعد إعذارين، مدة كل واحد منهما خمسة عشر (15) يوما، يبلغان عن طريق محضر قضائي، ولم يتم الرد عليهما.",
+   "consequence": "Add a boundary (or a prior step) for a sale on plans: when a promoter seeks rescission for unpaid instalments, check two successive unpaid instalments and two bailiff-served notices of 15 days each that went unanswered, and treat the rescission as one by law (like n2), not one the judge decides under article 119. Note also CPCA 512 ¶4 (store text: «ينظر القسم العقاري على الخصوص ... 3- في نشاط الترقية العقارية»): disputes over real-estate promotion go to the real-estate section, which the section rule reaches only if the lawyer answers dispute_concerns_real_property = yes.",
+   "who": "adversary"
+  },
+  {
+   "id": "adv-2",
+   "target": "n3, e3, d1, b16, imports.formal-notice",
+   "kind": "specialLaw",
+   "claim": "For an online (e-commerce) sale to a consumer, the e-commerce law gives the buyer its own remedy for late delivery and for goods that do not match the order or are defective: he sends the goods back within four working days from actual delivery, and the supplier must refund within fifteen days. It also makes the supplier liable by force of law, cleared only by the consumer's act or force majeure. The record treats non-delivery or late delivery only under Civil Code 119 and defective delivery only under the warranty of 379/383 (one year, boundary n3). It has no question about an online sale, and no warning about the four-working-day window that runs from actual delivery.",
+   "source": {
+    "tier": 1,
+    "url": "https://www.joradp.dz/FTP/jo-arabe/2018/A2018028.pdf",
+    "what": "Law 18-05 on e-commerce (dated 10 May 2018 from memory; issue dated 16 May 2018), arts. 22 and 23 (page 8) and art. 18 (page 7), Official Journal no. 28 of 2018.",
+    "retrievedOn": "2026-11-18"
+   },
+   "quoteArabic": "المادة 22: في حالة عدم احترام المورد الإلكتروني لآجال التسليم، يمكن المستهلك الإلكتروني إعادة إرسال المنتوج على حالته في أجل أقصاه أربعة (4) أيام عمل ابتداء من تاريخ التسليم الفعلي للمنتوج، دون المساس بحقه في المطالبة بالتعويض عن الضرر. وفي هذه الحالة، يجب على المورد الإلكتروني أن يرجع إلى المستهلك الإلكتروني المبلغ المدفوع والنفقات المتعلقة بإعادة إرسال المنتوج، خلال أجل خمسة عشر (15) يوما ابتداء من تاريخ استلامه المنتوج. المادة 23: يجب على المورد الإلكتروني استعادة سلعته في حالة تسليم غرض غير مطابق للطلبية أو في حالة ما إذا كان المنتوج معيبا. يجب على المستهلك الإلكتروني إعادة إرسال السلعة في غلافها الأصلي، خلال مدة أقصاها أربعة (4) أيام عمل ابتداء من تاريخ التسليم الفعلي للمنتوج ... المادة 18 (¶2): غير أنه، يمكن المورد الإلكتروني أن يتحلل من كامل مسؤوليته أو جزء منها إذا أثبت أن عدم التنفيذ أو سوءه يعود إلى المستهلك الإلكتروني أو إلى قوة قاهرة.",
+   "consequence": "Add a question (was this an online sale by an e-supplier to a consumer?) and a boundary. For late delivery or non-conforming or defective goods, point to Law 18-05 arts. 22 and 23: return within 4 working days of actual delivery, refund within 15 days of the supplier receiving the goods, damages kept. Tell the lawyer to check whether the return was made within the window before drafting a judicial rescission. The n3 message (one-year warranty) is not the whole answer for such a sale.",
+   "who": "adversary"
+  },
+  {
+   "id": "adv-3",
+   "target": "doc1, doc2, doc3, doc4",
+   "kind": "procedure",
+   "claim": "The record lists the contract, invoices, receipts, correspondence and bailiff or expert reports as documents to attach, but does not say that every document produced must be in Arabic or come with an official translation into Arabic, on pain of inadmissibility. In this claim, contracts, invoices and commercial correspondence are often in French.",
+   "source": {
+    "tier": 1,
+    "url": "https://www.joradp.dz/FTP/jo-arabe/2008/A2008021.pdf",
+    "what": "Law 08-09 of 25 February 2008 (Code of Civil and Administrative Procedure), art. 8 ¶2; Official Journal no. 21 of 23 April 2008, page 4. Not touched by Law 22-13 according to the amendment ledger.",
+    "retrievedOn": "2026-11-18"
+   },
+   "quoteArabic": "يجب أن تقدم الوثائق والمستندات باللغة العربية أو مصحوبة بترجمة رسمية إلى هذه اللغة، تحت طائلة عدم القبول.",
+   "consequence": "The document list (doc1 to doc4, and the imported formal-notice documents) should state that documents not in Arabic need an official translation, on pain of inadmissibility (CPCA 8 ¶2), and ask or warn when the contract or invoices are in another language.",
+   "who": "adversary"
+  },
+  {
+   "id": "adv-4",
+   "target": "e5, b25, b53, b54, r1",
+   "kind": "missing",
+   "claim": "Common case: the seller of real property (or of a business) sells by notarial deed and later sues to rescind for unpaid price. Since 324 bis 1, the price must be paid before the notary, and the notarial deed that records the payment is proof until shown to be forged. The record's e5 says only that the debtor proves payment. Nothing warns that an unpaid-price claim contradicting a notarial deed fails unless the deed is challenged for forgery, or that witnesses cannot be used against it. The record would draft the claim silently.",
+   "source": {
+    "tier": 2,
+    "url": "https://www.joradp.dz/FTP/jo-arabe/1988/A1988018.pdf",
+    "what": "Civil Code art. 324 bis 1 ¶1 and art. 324 bis 5 ¶1 (inserted by Law 88-14, Official Journal no. 18 of 4 May 1988, pp. 749-751 according to the ledger), read in the article store text view (civil-code.txt); art. 334 ¶1-2 (Law 05-10 wording). The Official Journal page itself was not fetched for this attack.",
+    "retrievedOn": "2026-11-18"
+   },
+   "quoteArabic": "ويجب دفع الثمن لدى الضابط العمومي الذي حرر العقد. ... يعتبر ما ورد في العقد الرسمي حجة حتى يثبت تزويره. ... لا يجوز الإثبات بالشهود ولو لم تزد القيمة على 100.000 دينار جزائري: – فيما يخالف أو يجاوز ما اشتمل عليه مضمون عقد رسمي،",
+   "consequence": "When the plaintiff is the seller under an official deed and the ground is the unpaid price, ask whether the deed records payment before the notary. If it does, warn that the claim needs a forgery challenge (طعن بالتزوير) against that statement, and that witnesses are not admitted against the deed.",
+   "who": "adversary"
+  },
+  {
+   "id": "adv-5",
+   "target": "n8, doc1, e1",
+   "kind": "missing",
+   "claim": "Boundary n8 (nullity for want of official form) fires only when dispute_concerns_real_property = yes. Article 324 bis 1 also requires official form, on pain of nullity, for transfers of a business (محل تجاري أو صناعي, or any element of it), for transfers of company shares or parts, and for commercial and agricultural leases and management leases. The common case of rescinding an informal (private-deed) sale of a business or of company shares gets no form warning.",
+   "source": {
+    "tier": 2,
+    "url": "https://www.joradp.dz/FTP/jo-arabe/1988/A1988018.pdf",
+    "what": "Civil Code art. 324 bis 1 ¶1 (Law 88-14), as quoted in the record's own b25 and in the store text view; Official Journal page not fetched.",
+    "retrievedOn": "2026-11-18"
+   },
+   "quoteArabic": "يجب، تحت طائلة البطلان، تحرير العقود التي تتضمن نقل ملكية عقار أو حقوق عقارية أو محلات تجارية أو صناعية أو كل عنصر من عناصرها، أو التنازل عن أسهم من شركة أو حصص فيها، أو عقود إيجار زراعية أو تجارية أو عقود تسيير محلات تجارية أو مؤسسات صناعية في شكل رسمي",
+   "consequence": "n8 (and its slot) should also fire for a sale of a business or of an element of it, and for a transfer of company shares or parts, not only for real property.",
+   "who": "adversary"
+  },
+  {
+   "id": "adv-6",
+   "target": "n8, e5, court.section",
+   "kind": "specialLaw",
+   "claim": "Lead only. The Commercial Code's chapter on the sale of a business is recalled to set extra conditions on the seller's action to rescind for unpaid price. As recalled, the action must be expressly mentioned and reserved in the registration of the seller's privilege, and the seller must notify the creditors registered on the business before the rescission is pronounced. The record does not cover this. The store holds the Commercial Code only from article 30 and articles 169 to 202, and the amendment ledger does not cover the Commercial Code at all.",
+   "source": {
+    "tier": 3,
+    "url": "",
+    "what": "Memory of the Algerian Commercial Code (ordinance 75-59), chapter on the sale of the business, around articles 96 to 117 (the rules modelled on the French law of 17 March 1909); article numbers and wording not verified on joradp.dz.",
+    "retrievedOn": "2026-11-18"
+   },
+   "quoteArabic": "",
+   "consequence": "Fetch the Commercial Code articles on the sale of a business (Official Journal no. 101 of 1975 and later amendments) and check whether the seller's rescission action must be reserved in the registration and notified to registered creditors. If so, add a boundary or prior step for that case.",
+   "who": "adversary"
+  },
+  {
+   "id": "adv-7",
+   "target": "k15",
+   "kind": "misreading",
+   "claim": "Checklist line k15 says that, against a contractor who delays or works defectively, the court may set a period and then rescind or have the work completed by another, and it is marked 'applies' with no correcting note. Article 553 ¶1, as the record itself quotes it in b12, has the client (رب العمل) fix the reasonable period in his warning. The court does not set it. Completion by another contractor goes through article 170, which needs the judge's authorisation.",
+   "source": {
+    "tier": 2,
+    "url": "",
+    "what": "Civil Code art. 553 ¶1 (Law 05-10 wording) and art. 170 ¶1, article store text view civil-code.txt.",
+    "retrievedOn": "2026-11-18"
+   },
+   "quoteArabic": "جاز لرب العمل أن ينذره بأن يصحح من طريقة التنفيذ خلال أجل معقول يعينه له ... في الالتزام بعمل، اذا لم يقم المدين بتنفيذ التزامه جاز للدائن أن يطلب ترخيصا من القاضى في تنفيذ الالتزام على نفقة المدين اذا كان هذا التنفيذ ممكنا.",
+   "consequence": "k15 should note that the client, not the court, fixes the period (b12, p2), and that completion at the contractor's cost needs the judge's authorisation under article 170, which the store now holds (o6 and k68 say article 170 is missing from the store; it is at civil-code 170 ¶1).",
+   "who": "adversary"
+  },
+  {
+   "target": "b1",
+   "kind": "missing",
+   "claim": "Article 119 makes formal notice (الإعذار) a condition of claiming rescission, but no prior-step rule requires it. Only the works contract (p2) has a prior step. The slots notice_served, notice_date, notice_means, notice_before_petition_day, default_on_due_date_agreed, debtor_refused_in_writing and performance_impossible_or_useless_by_debtor exist and no rule uses them. A claim with notice_served=no or unknown therefore raises no warning. The exceptions to notice are not handled either.",
+   "evidenceWords": "جاز للمتعاقد الآخر بعد اعذاره المدين أن يطالب بتنفيذ العقد أو فسخه",
+   "fromMemory": false,
+   "id": "atk-1",
+   "who": "attack"
+  },
+  {
+   "target": "n1",
+   "kind": "misreading",
+   "claim": "The boundary message says the sale falls and the buyer recovers the price. It drops the exception in article 369 itself: if the thing perished after the buyer was put on notice to take delivery, the sale does not fall. The boundary has no condition on that fact, so it can mislead a seller whose buyer was put on notice.",
+   "evidenceWords": "الا إذا وقع الهلاك بعد اعدار المشتري بتسليم المبيع",
+   "fromMemory": false,
+   "id": "atk-2",
+   "who": "attack"
+  },
+  {
+   "target": "n3",
+   "kind": "exception",
+   "claim": "The message gives the defect-guarantee action as time-barred after one year without exception. The uncited paragraph 383 ¶2 bars the seller from invoking the limitation if he fraudulently hid the defect. The uncited 379 ¶2 also takes away the guarantee for defects the buyer knew of or could have found.",
+   "evidenceWords": "غير أنه لا يجوز للبائع أن يتمسك بسنة التقادم متى تبين انه أخفي العيب غشا منه",
+   "fromMemory": false,
+   "id": "atk-3",
+   "who": "attack"
+  },
+  {
+   "target": "d3",
+   "kind": "misreading",
+   "claim": "d3 fires on any annulment request and sets 10 years from contract date. Article 101 ¶2 applies the ten-year bar only to mistake, fraud and duress, not to incapacity. The main period is the five-year one in article 101 ¶1, which runs from the end of the incapacity, the discovery of the mistake or fraud, or the end of the duress. d3 does not use those start dates and has no five-year deadline item. b37 is listed in 'rests on' but its period is never applied.",
+   "evidenceWords": "غير أنه لا يجوز التمسك بحق الإبطال لغلط أو تدليس أو إكراه إذا انقضت عشر (10) سنوات من وقت تمام العقد",
+   "fromMemory": false,
+   "id": "atk-4",
+   "who": "attack"
+  },
+  {
+   "target": "d2",
+   "kind": "wrongCondition",
+   "claim": "d2 fires on any request for 'annulment'. Article 102 ¶2 (15 years from making the contract) belongs to the action for absolute nullity (البطلان المطلق). A relative-nullity annulment claim for mistake, fraud or duress is governed by article 101, so d2 and d3 give contradictory deadlines for the same request.",
+   "evidenceWords": "إذا كان العقد باطلا بطلانا مطلقا جاز لكل ذي مصلحة أن يتمسك بهذا البطلان",
+   "fromMemory": false,
+   "id": "atk-5",
+   "who": "attack"
+  },
+  {
+   "target": "n8",
+   "kind": "wrongCondition",
+   "claim": "Article 324 bis 1 requires official form for transfers of real property, real rights, businesses and shares, and for agricultural or commercial leases. n8 fires only when dispute_concerns_real_property=yes. A rescission of the sale of a business (محل تجاري) in a private deed, with the real-property slot at no, gets no warning.",
+   "evidenceWords": "أو محلات تجارية أو صناعية أو كل عنصر من عناصرها، أو التنازل عن أسهم من شركة أو حصص فيها، أو عقود إيجار زراعية أو تجارية",
+   "fromMemory": false,
+   "id": "atk-6",
+   "who": "attack"
+  },
+  {
+   "target": "p2",
+   "kind": "wrongCondition",
+   "claim": "Article 553 ¶1 applies while the work is in progress. p2 fires whenever works_performed_defectively=yes with a rescission request, including finished and taken-over work, where the notice-to-correct step no longer applies. Defects found after taking over belong to article 554 (see n7).",
+   "evidenceWords": "إذا ثبت أثناء سير العمل أن المقاول يقوم به على وجه معيب",
+   "fromMemory": false,
+   "id": "atk-7",
+   "who": "attack"
+  },
+  {
+   "target": "court",
+   "kind": "missing",
+   "claim": "The section alternatives ignore the specialised commercial court (slots specialised_commercial_subject and specialised_commercial_matter exist). A commercial dispute such as bank against trader, or an insurance or maritime dispute, is proposed as the 'commercial' section. When real_property=yes and commercial=yes are both true, the result depends on the order of the alternatives. Commercial sections also require prior mediation (b48), which is not handled.",
+   "evidenceWords": "يجب على رئيس القسم التجاري عرض النزاع مسبقا على الوساطة",
+   "fromMemory": false,
+   "id": "atk-8",
+   "who": "attack"
+  },
+  {
+   "target": "t5",
+   "kind": "wrongCondition",
+   "claim": "Article 40 sends real-property matters 'only' to the court where the property lies, but t1, t3 and t4 are listed with no precedence over t5. For a real-property or commercial case, several courts are offered as competent. The t5 summary also leaves out leases and public works, which are in the article's own text.",
+   "evidenceWords": "ترفع الدعاوى أمام الجهات القضائية المبينة أدناه دون سواها",
+   "fromMemory": false,
+   "id": "atk-9",
+   "who": "attack"
+  },
+  {
+   "target": "d1",
+   "kind": "wrongCondition",
+   "claim": "d1 depends on the slots goods_delivery_date and quantity_shortfall_claimed. They are not in the slot list, so the engine can never ask for or answer them and the deadline cannot fire correctly. Article 366 covers a shortfall or excess, and a price reduction or rescission, which the single trigger slot does not separate.",
+   "evidenceWords": "إذا وجد في قدر المبيع نقص أو زيادة فإن حق المشتري في طلب انقاص الثمن، أو فسخ العقد",
+   "fromMemory": false,
+   "id": "atk-10",
+   "who": "attack"
+  },
+  {
+   "target": "p1",
+   "kind": "wrongEffect",
+   "claim": "p1 reads petition_lodged_for_publication and blocks export if missing. The slot list has a second slot, petition_deposited_for_publication, for the same step. The article excuses the missing publication if the deposit is proved. The two slots can disagree, and one can be marked done while the other is open or unknown.",
+   "evidenceWords": "ما لم يثبت إيداعها للإشهار",
+   "fromMemory": false,
+   "id": "atk-11",
+   "who": "attack"
+  },
+  {
+   "target": "n14",
+   "kind": "wrongCondition",
+   "claim": "n14 fires only when plaintiff_performed_or_offered=no, a slot not in the slot list, and it stays silent when the answer is unknown. Article 123 applies only to obligations due on both sides (مستحقة الوفاء); the message mentions this but the condition does not test whether the plaintiff's own obligation is due.",
+   "evidenceWords": "إذا كانت الالتزامات المتقابلة مستحقة الوفاء",
+   "fromMemory": false,
+   "id": "atk-12",
+   "who": "attack"
+  },
+  {
+   "target": "b3",
+   "kind": "missing",
+   "claim": "The rules have no deadline for the rescission action itself, only for sale warranties and nullity. They also do not cover automatic rescission under an express clause in the contract, which is a common case in practice and which article 106 on the contract as the parties' law would allow. Please check the general limitation period and the article on rescission by clause, which I recall as articles 308 and 120 of the Civil Code.",
+   "evidenceWords": "العقد شريعة المتعاقدين، فلا يجوز نقضه، ولا تعديله الا باتفاق الطرفين",
+   "fromMemory": false,
+   "id": "atk-13",
+   "who": "attack"
+  },
+  {
+   "id": "sup-4",
+   "who": "support",
+   "target": "p1",
+   "kind": "partlySupported",
+   "claim": "Before a claim in which dispute concerns real property is yes and property registered is yes, the petition must be published at the land registry. | partly: The TEXT does not require publication before filing the claim. It requires presentation at the first hearing and allows proof of lodging for publication."
+  },
+  {
+   "id": "sup-38",
+   "who": "support",
+   "target": "d3",
+   "kind": "notSupported",
+   "claim": "The time limit is 10 years, running from the date of contract date; it is a forfeiture period, counted by the method excludeFirstDay; it applies when the petition asks for annulment. | no: «خلال خمس (5) سنوات». The five-year period starts from the specified events, while ten years from contract completion is an outer limit only for mistake, fraud or duress: «لغلط أو تدليس أو إكراه». The TEXT gives no excludeFirstDay counting rule."
+  },
+  {
+   "id": "sup-68",
+   "who": "support",
+   "target": "d2",
+   "kind": "partlySupported",
+   "claim": "The time limit is 15 years, running from the date of contract date; it is a limitation period, counted by the method excludeFirstDay; it applies when the petition asks for annulment. | partly: The fifteen-year rule concerns «دعوى البطلان» in the absolute-nullity context («باطلا بطلانا مطلقا»). The TEXT does not state excludeFirstDay counting, expressly classify the period as a limitation period, or give this rule for annulment generally."
+  },
+  {
+   "id": "sup-69",
+   "who": "support",
+   "target": "b27",
+   "kind": "partlySupported",
+   "claim": "Territorial jurisdiction lies with the court of the defendant's domicile, or his last domicile, or the chosen domicile, unless the law provides otherwise. | partly: The TEXT does not make the last domicile an unconditional alternative: it applies «وإن لم يكن له موطن معروف»."
+  },
+  {
+   "id": "sup-75",
+   "who": "support",
+   "target": "d1",
+   "kind": "partlySupported",
+   "claim": "The time limit is 1 year, running from the date of goods delivery date; it is a limitation period, counted by the method excludeFirstDay; it applies when the petition asks for rescission and quantity shortfall claimed is yes. | partly: The TEXT does not state excludeFirstDay counting. Its starting event is specifically actual delivery: «تسليم المبيع تسليما فعليا»."
+  },
+  {
+   "id": "sup-76",
+   "who": "support",
+   "target": "b44",
+   "kind": "partlySupported",
+   "claim": "Provisional execution is ordered on request where the judgment rests on an official deed, an acknowledged promise or a final judgment, and in maintenance and custodial-housing matters. | partly: The TEXT excludes judgments already enforceable by operation of law from this on-request rule: «باستثناء الأحكام الواجبة التنفيذ بقوة القانون»."
+  },
+  {
+   "id": "sup-80",
+   "who": "support",
+   "target": "b19",
+   "kind": "partlySupported",
+   "claim": "The parties may fix the damages in advance in the contract or a later agreement, subject to the rules on damages and notice. | partly: The TEXT says that articles 176–181 apply, but does not give their contents or identify any notice rule."
+  },
+  {
+   "id": "bc-bc13",
+   "who": "boundaryCase",
+   "target": "formal-notice.p2",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc13 (No notice, no exemption; petition 2026-06-15; slots {\"notice_served\": \"no\", \"default_on_due_date_agreed\": \"no\", \"performance_impossible_or_useless_by_debtor\": \"no\", \"debtor_refused_in_writing\": \"no\", \"obligation_is_tort_compensation\": \"no\", \"return_of_thing_known_stolen_or_unduly_received\": \"no\", \"requests\": [\"rescission\"]}) expects «stepMissing» about [civil-code 119 ¶1], because: «بعد اعذاره المدين»; [179 ¶1] and [181] list the only exemptions («لا ضرورة لاعذار المدين فى الحالات الآتية»). Notice not given and every listed exemption is no: step missing. The runner says: formal-notice.p2: declared ask, the outcome StepMissing needs warn (formal-notice.p2: notice_served no, exemptions unknown, asks movable_sale_price_unpaid_at_term -> ask; grade C -> ask)"
+  },
+  {
+   "id": "bc-bc18",
+   "who": "boundaryCase",
+   "target": "no matched item warns or asks",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc18 (No notice, the obligation claimed is compensation for a harmful act; petition 2026-06-15; slots {\"notice_served\": \"no\", \"default_on_due_date_agreed\": \"no\", \"performance_impossible_or_useless_by_debtor\": \"no\", \"debtor_refused_in_writing\": \"no\", \"obligation_is_tort_compensation\": \"yes\", \"requests\": [\"rescission\"]}) expects «unsettled» about [civil-code 181 ¶3], because: «اذا كان محل الالتزام تعويضا ترتب عن عمل مضر»: read literally it exempts, but rescission rests on a contract term not performed [119 ¶1], and the text does not say whether this exemption reaches a rescission claim. The text does not settle this. The runner says: no matched item warns or asks: the outcome Unsettled needs one that does"
+  },
+  {
+   "id": "bc-bc20",
+   "who": "boundaryCase",
+   "target": "formal-notice.p2",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc20 (Notice dated after the petition; petition 2026-06-15; slots {\"notice_served\": \"yes\", \"notice_date\": \"2026-06-20\", \"notice_means\": \"bailiff\", \"notice_before_petition_day\": \"no\", \"contract_sets_notice_terms\": \"no\", \"requests\": [\"rescission\"]}) expects «stepMissing» about [civil-code 119 ¶1], because: «بعد اعذاره المدين أن يطالب...»: the creditor may claim only after the notice. A notice of 2026-06-20 cannot come before a petition of 2026-06-15, so for this filing the step was not taken. The runner says: formal-notice.p2: declared none, the outcome StepMissing needs warn (formal-notice.p2: requiredWhen false -> none; grade C -> none)"
+  },
+  {
+   "id": "bc-bc22",
+   "who": "boundaryCase",
+   "target": "formal-notice.p2",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc22 (Notice served, but whether the contract sets its own notice terms is unknown; petition 2026-06-15; slots {\"notice_served\": \"yes\", \"notice_date\": \"2026-06-02\", \"notice_means\": \"bailiff\", \"notice_before_petition_day\": \"yes\", \"requests\": [\"rescission\"]}) expects «ask» about [civil-code 120 ¶1], because: [120 ¶1] says the notice is «يحدد حسب العرف عند عدم تحديده من طرف المتعاقدين», so the contract may fix its form. Whether it does is unknown, so the step cannot be called done: ask. The runner says: formal-notice.p2: declared none although it applies, which settles what the outcome Ask leaves open (formal-notice.p2: notice_served yes, the step was done -> none; grade C -> none)"
+  },
+  {
+   "id": "bc-bc23",
+   "who": "boundaryCase",
+   "target": "formal-notice.p2, no matched item warns or asks",
+   "kind": "wrongEffect",
+   "claim": "Blind boundary case bc23 (A party is a public administrative body; petition 2026-06-15; slots {\"notice_served\": \"yes\", \"notice_date\": \"2026-06-02\", \"notice_means\": \"bailiff\", \"notice_before_petition_day\": \"yes\", \"public_body_party\": \"yes\", \"requests\": [\"rescission\"]}) expects «unsettled» about [civil-code 119 ¶1], because: The texts given are all from the civil code and contain no rule on which court hears a claim against a public administrative body, so they do not say whether the case leaves the ordinary courts. The text does not settle this; the rule must warn, not decide. (No case 'just inside', e.g. a public company, is written: no outcome of the list says 'stays in the ordinary courts'.) The runner says: no matched item warns or asks: the outcome Unsettled needs one that does | formal-notice.p2: declared none although it applies, which settles what the outcome Unsettled leaves open (formal-notice.p2: notice_served yes, the step was done -> none; grade C -> none)"
+  },
+  {
+   "id": "values-d1",
+   "who": "values",
+   "target": "d1",
+   "kind": "misreading",
+   "claim": "check-values: {\"item\": \"d1\", \"problem\": \"countingBasisNotQuoted\", \"statement\": \"periods.b11\"}"
+  },
+  {
+   "id": "values-d1-2",
+   "who": "values",
+   "target": "d1",
+   "kind": "misreading",
+   "claim": "check-values: {\"item\": \"d1\", \"problem\": \"countingBasisNotQuoted\", \"statement\": \"periods.b27\"}"
+  },
+  {
+   "id": "values-d2",
+   "who": "values",
+   "target": "d2",
+   "kind": "misreading",
+   "claim": "check-values: {\"item\": \"d2\", \"problem\": \"kindNotInText\", \"kind\": \"limitation\"}"
+  },
+  {
+   "id": "values-d2-2",
+   "who": "values",
+   "target": "d2",
+   "kind": "misreading",
+   "claim": "check-values: {\"item\": \"d2\", \"problem\": \"countingBasisNotQuoted\", \"statement\": \"periods.b11\"}"
+  },
+  {
+   "id": "values-d2-3",
+   "who": "values",
+   "target": "d2",
+   "kind": "misreading",
+   "claim": "check-values: {\"item\": \"d2\", \"problem\": \"countingBasisNotQuoted\", \"statement\": \"periods.b27\"}"
+  },
+  {
+   "id": "values-d3",
+   "who": "values",
+   "target": "d3",
+   "kind": "misreading",
+   "claim": "check-values: {\"item\": \"d3\", \"problem\": \"countingBasisNotQuoted\", \"statement\": \"periods.b11\"}"
+  },
+  {
+   "id": "values-d3-2",
+   "who": "values",
+   "target": "d3",
+   "kind": "misreading",
+   "claim": "check-values: {\"item\": \"d3\", \"problem\": \"countingBasisNotQuoted\", \"statement\": \"periods.b27\"}"
+  },
+  {
+   "id": "values-section",
+   "who": "values",
+   "target": "section",
+   "kind": "misreading",
+   "claim": "check-values: {\"item\": \"section\", \"problem\": \"messageArticleNotInBasis\", \"lang\": \"ar\", \"articles\": [\"32\", \"511\", \"515\", \"531\"]}"
+  },
+  {
+   "id": "values-section-2",
+   "who": "values",
+   "target": "section",
+   "kind": "misreading",
+   "claim": "check-values: {\"item\": \"section\", \"problem\": \"messageArticleNotInBasis\", \"lang\": \"en\", \"articles\": [\"32\", \"511\", \"515\", \"531\"]}"
+  }
+ ]
+}

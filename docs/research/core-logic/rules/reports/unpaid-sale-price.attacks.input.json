@@ -1,0 +1,199 @@
+{
+ "unit": "unpaid-sale-price",
+ "attacks": [
+  {
+   "id": "adv-1",
+   "target": "d1, o4",
+   "kind": "exception",
+   "claim": "The record says the texts leave open whether the one-year period of civil-code 366 is a calendar year or a fixed number of days, and it keeps a 'fixed number of days' reading. Civil Code article 3, in the general provisions, settles this: periods are counted by the Gregorian calendar unless the law says otherwise, and neither 314 nor 366 says otherwise.",
+   "source": {
+    "tier": 1,
+    "url": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+    "what": "Ordinance 75-58 of 26 September 1975 (Civil Code), article 3, Official Journal (Arabic) 1975 issue 78, page 990 (PDF page 2). The store holds the same wording (civil-code 3 ¶1, version ordinance-75-58); the ledger records no amendment to article 3.",
+    "retrievedOn": "2026-11-18"
+   },
+   "quoteArabic": "المادة 3 : تحسب الآجال بالتقويم الميلادي ما لم ينص القانون على خلاف ذلك.",
+   "consequence": "d1's interpretiveNote and o4 should cite civil-code 3 ¶1. The year is a Gregorian calendar year, so the second reading (a fixed number of days) has no textual basis. The only question still open is whether a period that ends on a holiday runs on to the next working day.",
+   "who": "adversary"
+  },
+  {
+   "id": "adv-2",
+   "target": "d1, b15, price_supplement_for_excess_quantity",
+   "kind": "exception",
+   "claim": "The seller's claim to a price supplement for excess quantity exists only under the conditions of civil-code 365 ¶2, which the record does not cite. The price must be set per unit, the buyer pays more only if the thing is indivisible, a gross excess lets the buyer ask for rescission instead, and a contrary agreement excludes the rule. The record treats every 'excess quantity' supplement as a valid claim that is subject only to 366's one-year limitation.",
+   "source": {
+    "tier": 1,
+    "url": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+    "what": "Civil Code (Ordinance 75-58), article 365 ¶2, Official Journal (Arabic) 1975 issue 78, page 1011 (PDF page 23); store civil-code 365 ¶2 has the same words.",
+    "retrievedOn": "2026-11-18"
+   },
+   "quoteArabic": "وبالعكس إذا تبين أن قدر الشيء المبيع يزيد على ما ذكر بالعقد، وكان الثمن مقدرا بحسب الوحدة وجب على المشتري إذا كان المبيع غير قابل للتقسيم أن يدفع ثمنا زائدا الا إذا كانت الزيادة فاحشة ففي هذه الحالة يجوز له أن يطلب فسخ العقد كل هذا ما لم يوجد اتفاق يخالفه.",
+   "consequence": "When price_supplement_for_excess_quantity is yes, the record should state 365 ¶2's conditions as part of what the plaintiff must plead: a price per unit, an indivisible thing, and no contrary clause. It should also warn that a gross excess opens rescission to the buyer. As written, a lump-sum sale or a divisible thing would pass with no warning other than the limitation.",
+   "who": "adversary"
+  },
+  {
+   "id": "adv-3",
+   "target": "b33, n5",
+   "kind": "misreading",
+   "claim": "b33's 'says' and n5's message leave out the last sentence of the paragraph they quote. That sentence says the seller may nevertheless claim payment of the price. The item presents only the buyer's right to withhold, and its quoted words carry a counter-rule in the seller's favour. Read against the model text, the Arabic sentence also seems to have lost a condition (the Egyptian model has the seller give security, and treats a defect discovered by the buyer separately). That second point is a tier-3 lead only.",
+   "source": {
+    "tier": 1,
+    "url": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+    "what": "Civil Code (Ordinance 75-58), article 388 ¶2, Official Journal (Arabic) 1975 issue 78, page 1013 (PDF page 25); identical to the record's own quote of b33.",
+    "retrievedOn": "2026-11-18"
+   },
+   "quoteArabic": "ومع ذلك يجوز للبائع أن يطالب باستيفاء الثمن إذا ظهر للمشتري عيب في الشيء المبيع.",
+   "consequence": "b33's 'says' and n5 should keep the paragraph's counter-rule, or flag that the sentence is unclear (and compare it with the French text of 1975), instead of presenting the withholding right as unqualified. The plaintiff seller is the record's user, and this is the part of the paragraph that serves him.",
+   "who": "adversary"
+  },
+  {
+   "id": "adv-4",
+   "target": "court.section (alternative dispute_is_commercial), n2, k17, ex10",
+   "kind": "procedure",
+   "claim": "When the sale is commercial, the record proposes the commercial section. It mentions mandatory prior conciliation only for the specialised commercial court (k17). Since Law 22-13, CPCA article 534 requires the president of the commercial section to send the dispute to mediation first, and the parties' consent is not needed. No item of the record says so.",
+   "source": {
+    "tier": 1,
+    "url": "https://www.joradp.dz/FTP/jo-arabe/2022/A2022048.pdf",
+    "what": "Law 22-13 of 12 July 2022 amending Law 08-09 (CPCA), article 3, which replaces CPCA articles 531 to 535; Official Journal (Arabic) 2022 issue 48, page 3. Store cpca 534 ¶1-3 (version law-22-13) matches. The ledger lists 534 as replaced, but the record does not cite it.",
+    "retrievedOn": "2026-11-18"
+   },
+   "quoteArabic": "المادة 534 : يجب على رئيس القسم التجاري عرض النزاع مسبقا على الوساطة. لا تخضع الوساطة أمام القسم التجاري إلى قبول الأطراف، خلافا لأحكام المادة 994 من هذا القانون.",
+   "consequence": "When dispute_is_commercial is yes and the commercial section is proposed, the record should cite cpca 534 and tell the lawyer that the case will go first to compulsory mediation. This is not a filing condition or an inadmissibility, but it changes the course and timing of the case. k17 should not suggest that mandatory prior steps exist only before the specialised court.",
+   "who": "adversary"
+  },
+  {
+   "id": "adv-5",
+   "target": "n1, court.section, t1, ex12",
+   "kind": "procedure",
+   "claim": "When dispute_concerns_real_property is yes, the record still proposes the civil section and the defendant's-domicile court (t1). Its n1 message speaks only of the official form, payment before the notary, lesion and publication. Under the CPCA, the real-estate section hears disputes over real property, including transfers of ownership. In real-property matters, article 40 and article 518 also send the claim to the court where the property lies («دون سواها»). Whether a claim for the unpaid price of real property is a 'real-property matter' is a reading, but the record never raises the question.",
+   "source": {
+    "tier": 1,
+    "url": "https://www.joradp.dz/FTP/jo-arabe/2008/A2008021.pdf",
+    "what": "Law 08-09 of 25 February 2008 (CPCA): article 40 ¶1-2 on page 7, and articles 511, 512 (item 8, 'التنازل عن الملكية') and 518 on page 42, Official Journal (Arabic) 2008 issue 21. The store has the same wording (law-08-09 version), and the Law 22-13 ledger entry does not touch these articles.",
+    "retrievedOn": "2026-11-18"
+   },
+   "quoteArabic": "فضلا عما ورد في المواد 37 و38 و46 من هذا القانون، ترفع الدعاوى أمام الجهات القضائية المبينة أدناه دون سواها : 1- في المواد العقارية ... أمام المحكمة التي يقع في دائرة اختصاصها العقار — ينظر القسم العقاري في المنازعات المتعلقة بالأملاك العقارية — يؤول الاختصاص الإقليمي إلى المحكمة التي يوجد العقار في دائرة اختصاصها، ما لم ينص القانون على خلاف ذلك.",
+   "consequence": "n1 (and ex12's expectations) should warn that the real-estate section and the court where the property lies may be competent, citing cpca 40 ¶2, 511, 512 and 518, and should record the question as an open point. As written, a lawyer who goes ahead with a land-price claim is shown 'civil section, defendant's domicile' with nothing to say this may be wrong.",
+   "who": "adversary"
+  },
+  {
+   "id": "adv-6",
+   "target": "e3, debt_due_date (periods import), k12",
+   "kind": "missing",
+   "claim": "A common case is a price payable in instalments (civil-code 363 ¶2 contemplates it), where the seller sues for several missed instalments. The record has one debt_due_date slot, and the imported limitation runs from it. Each instalment, however, falls due and starts its own limitation on its own date. With the one-year limitation for a trader's supplies to a non-trader (civil-code 312 ¶2, imported as periods.d7), entering the last or a recent instalment date would show the whole claim as in time while the early instalments are already past the year. Instalments that are not yet due (no acceleration clause, no forfeiture of the term under the article 390 ¶2 refers to) are not covered either.",
+   "source": {
+    "tier": 1,
+    "url": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+    "what": "Civil Code (Ordinance 75-58), article 363 ¶2 (instalments), Official Journal (Arabic) 1975 issue 78, page 1011, and article 390 ¶2 (forfeiture of the term), page 1013; article 312 ¶2 from the store (civil-code 312, version ordinance-75-58).",
+    "retrievedOn": "2026-11-18"
+   },
+   "quoteArabic": "فإذا كان الثمن يدفع أقساطا ... — تتقادم بسنة واحدة الحقوق الآتية : ـ حقوق التجار، والصناع عن اشياء وردوها لاشخـاص لا يتجرون فيها",
+   "consequence": "The record should ask whether the price is payable in instalments. If it is, the limitation should be checked from the earliest unpaid instalment, or per instalment. The lawyer should also be warned that instalments not yet due can be claimed only under an acceleration clause or a forfeiture of the term. Example: a trader sells furniture to a private buyer on 18 monthly instalments, and the first unpaid one fell due 14 months before the petition. The record, given only the last due date, shows nothing.",
+   "who": "adversary"
+  },
+  {
+   "id": "adv-7",
+   "target": "n1, b20",
+   "kind": "exception",
+   "claim": "n1 and b20 say the lesion-supplement action is time-barred after the period counted 'from the day the sale was made'. The same article starts the period, for a seller without capacity, only on the day the incapacity ends (359 ¶2). The next article bars any lesion challenge to a sale made by public auction under the law (360).",
+   "source": {
+    "tier": 1,
+    "url": "https://www.joradp.dz/FTP/jo-arabe/1975/A1975078.pdf",
+    "what": "Civil Code (Ordinance 75-58), articles 359 ¶2 and 360, Official Journal (Arabic) 1975 issue 78, page 1011 (PDF page 23); the store has the same wording.",
+    "retrievedOn": "2026-11-18"
+   },
+   "quoteArabic": "وبالنسبة لعديمي الأهلية فمن يوم انقطاع سبب العجز. — لا يجوز الطعن بالغبن في بيع تم بطريق المزاد العلني بمقتضى القانون.",
+   "consequence": "n1's message should not state the start of the period as fixed. It should mention the later start for a seller without capacity and say that no lesion claim lies for a sale by public auction under the law. The impact is low, since n1 only points away from this claim.",
+   "who": "adversary"
+  },
+  {
+   "id": "adv-8",
+   "target": "e4, doc3",
+   "kind": "specialLaw",
+   "claim": "Executive Decree 15-153 requires payment through bank channels (cheque, transfer, card and so on) for purchases of real property of 5,000,000 DA or more, and for purchases of 1,000,000 DA or more of new vehicles and motorcycles, new mobile or industrial equipment, valuables from dealers in precious metals and stones, antiques and art, and movables bought at public auction. The rule also covers partial payments of one debt split by choice. The record's e4 and doc3 accept 'receipts' for the debtor's payment with no warning that, for these sales, a claimed cash payment above the threshold breaches the decree. The decree's sanction is the one in Law 05-01 article 31, not civil nullity, so how this affects proof of payment is a reading.",
+   "source": {
+    "tier": 1,
+    "url": "https://www.joradp.dz/FTP/jo-arabe/2015/A2015033.pdf",
+    "what": "Executive Decree 15-153 of 16 June 2015, articles 2, 4, 5 and 7, Official Journal (Arabic) 2015 issue 33, pages 5-6; in force from 1 July 2015 (art. 10). Not checked whether a later decree replaced it after Law 05-01 was amended.",
+    "retrievedOn": "2026-11-18"
+   },
+   "quoteArabic": "يتم دفع كل المبادلات التي تساوي أو تفوق المبالغ المحددة أسفله، بوسائل الدفع الكتابية عن طريق القنوات البنكية والمالية : خمسة ملايين دينار (5.000.000 دج) لشراء أملاك عقارية، واحد مليون دينار (1.000.000 دج) لشراء : ... سيارات جديدة ... — تسري أحكام هذا المرسوم أيضا على عمليات الدفع الجزئية للدين نفسه المجزأ إراديا",
+   "consequence": "e4 and doc3 should note that, for sales covered by the decree above its thresholds, payment is expected through a bank channel, so bank records are the evidence to look for and a cash receipt may be contested. The civil effect should be recorded as an open point, not stated as settled.",
+   "who": "adversary"
+  },
+  {
+   "id": "adv-9",
+   "target": "n2, b32, b8",
+   "kind": "misreading",
+   "claim": "n2 tells the lawyer that a commercial contract may be proved by any means (commercial-code 30) once the sale is commercial. For a mixed sale (a trader selling to a non-trader for private use), Algerian doctrine holds that free proof applies only against the party for whom the act is commercial. Against the non-trader buyer, the civil rules of civil-code 333 still apply. The record's single dispute_is_commercial slot cannot tell the two cases apart.",
+   "source": {
+    "tier": 3,
+    "url": "",
+    "what": "Lead only: general doctrine on mixed acts (actes mixtes) in Algerian and French-model commercial law, from memory. No Supreme Court decision was found on the Court's own site in this search.",
+    "retrievedOn": "2026-11-18"
+   },
+   "quoteArabic": "في غير المواد التجارية إذا كان التصرف القانوني تزيد قيمته على 100.000 دينار جزائري أو كان غير محدد القيمة فلا يجوز الإثبات بالشهود في وجوده أو انقضائه",
+   "consequence": "When the seller is a trader and the buyer is not, n2 should not tell the lawyer that proof is free. Against a non-trader buyer, writing above 100,000 DA should still be required (b8). The point should be recorded as an open point until a tier-1 or tier-2 source is found.",
+   "who": "adversary"
+  },
+  {
+   "id": "flag-f-b7-p3",
+   "who": "neighbourFlag",
+   "target": "b7",
+   "kind": "exception",
+   "claim": "[civil-code 107 ¶3] is next to what b7 cites, opens with «غير أنه», and the record neither cites it nor says why it does not apply: «غير أنه إذا طرأت حوادث استثنائية عامة لم يكن في الوسع توقعها وترتب على حدوثها أن تنفيذ الالتزام التعاقدي، وإن لم يصبح مستحيلا، صار مرهقا للمدين بحيث يهدده بخسارة فادحة جاز للقاضي تبعا للظروف وبعد مراعاة لمصلحة الطرفين أن يرد الالتزام المرهق إلى الحد المعقول، ويقع باطلا كل اتفاق على خلاف ذلك.»"
+  },
+  {
+   "id": "flag-f-b7-next",
+   "who": "neighbourFlag",
+   "target": "b7",
+   "kind": "exception",
+   "claim": "[civil-code 108 ¶1] is next to what b7 cites, opens with «ما لم», and the record neither cites it nor says why it does not apply: «ينصرف العقد إلى المتعاقدين والخلف العام، ما لم يتبين من طبيعة التعامل، أو من نص القانون، أن هذا الأثر لا ينصرف إلى الخلف العام كل ذلك مع مراعاة القواعد المتعلقة بالميراث.»"
+  },
+  {
+   "id": "flag-f-b8-p2",
+   "who": "neighbourFlag",
+   "target": "b8",
+   "kind": "exception",
+   "claim": "[civil-code 333 ¶2] is next to what b8 cites, opens with «ويجوز», and the record neither cites it nor says why it does not apply: «ويقدر الالتزام باعتبار قيمته وقت صدور التصرف القانوني ويجوز الإثبات بالشهود إذا كانت زيادة الإلتزام على 100.000 دينار جزائري لم تأت إلا من ضم الملحقات إلى الأصل.»"
+  },
+  {
+   "id": "flag-f-b17-p2",
+   "who": "neighbourFlag",
+   "target": "b17",
+   "kind": "exception",
+   "claim": "[civil-code 321 ¶2] is next to what b17 cites, opens with «ويجوز», and the record neither cites it nor says why it does not apply: «ويجوز التمسك بالتقادم فى أية حالة من حالات الدعوى ولو أمام المحكمة الاستئنافية .»"
+  },
+  {
+   "id": "flag-f-b18-p2",
+   "who": "neighbourFlag",
+   "target": "b18",
+   "kind": "exception",
+   "claim": "[civil-code 182 ¶2] is next to what b18 cites, opens with «غير أنه», and the record neither cites it nor says why it does not apply: «غير أنه إذا كان الالتزام مصدره العقد، فلا يلتزم المدين الذي لم يرتكب غشا أو خطأ جسيما إلا بتعويض الضرر الذي كان يمكن توقعه عادة وقت التعاقد.»"
+  },
+  {
+   "id": "values-b19",
+   "who": "values",
+   "target": "b19",
+   "kind": "misreading",
+   "claim": "check-values: {\"item\": \"b19\", \"problem\": \"numberNotInQuote\", \"lang\": \"en\", \"numbers\": [4]}"
+  },
+  {
+   "id": "values-section",
+   "who": "values",
+   "target": "section",
+   "kind": "misreading",
+   "claim": "check-values: {\"item\": \"section\", \"problem\": \"messageArticleNotInBasis\", \"lang\": \"ar\", \"articles\": [\"32\", \"531\"]}"
+  },
+  {
+   "id": "values-section-2",
+   "who": "values",
+   "target": "section",
+   "kind": "misreading",
+   "claim": "check-values: {\"item\": \"section\", \"problem\": \"messageArticleNotInBasis\", \"lang\": \"en\", \"articles\": [\"32\", \"531\"]}"
+  }
+ ],
+ "pending": [
+  "supportCheck"
+ ]
+}

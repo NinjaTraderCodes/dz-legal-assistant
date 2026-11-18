@@ -1,0 +1,109 @@
+{
+ "attacks": [
+  {
+   "target": "b1",
+   "kind": "missing",
+   "claim": "Article 119 makes formal notice (الإعذار) a condition of claiming rescission, but no prior-step rule requires it. Only the works contract (p2) has a prior step. The slots notice_served, notice_date, notice_means, notice_before_petition_day, default_on_due_date_agreed, debtor_refused_in_writing and performance_impossible_or_useless_by_debtor exist and no rule uses them. A claim with notice_served=no or unknown therefore raises no warning. The exceptions to notice are not handled either.",
+   "evidenceWords": "جاز للمتعاقد الآخر بعد اعذاره المدين أن يطالب بتنفيذ العقد أو فسخه",
+   "fromMemory": false,
+   "id": "atk-1"
+  },
+  {
+   "target": "n1",
+   "kind": "misreading",
+   "claim": "The boundary message says the sale falls and the buyer recovers the price. It drops the exception in article 369 itself: if the thing perished after the buyer was put on notice to take delivery, the sale does not fall. The boundary has no condition on that fact, so it can mislead a seller whose buyer was put on notice.",
+   "evidenceWords": "الا إذا وقع الهلاك بعد اعدار المشتري بتسليم المبيع",
+   "fromMemory": false,
+   "id": "atk-2"
+  },
+  {
+   "target": "n3",
+   "kind": "exception",
+   "claim": "The message gives the defect-guarantee action as time-barred after one year without exception. The uncited paragraph 383 ¶2 bars the seller from invoking the limitation if he fraudulently hid the defect. The uncited 379 ¶2 also takes away the guarantee for defects the buyer knew of or could have found.",
+   "evidenceWords": "غير أنه لا يجوز للبائع أن يتمسك بسنة التقادم متى تبين انه أخفي العيب غشا منه",
+   "fromMemory": false,
+   "id": "atk-3"
+  },
+  {
+   "target": "d3",
+   "kind": "misreading",
+   "claim": "d3 fires on any annulment request and sets 10 years from contract date. Article 101 ¶2 applies the ten-year bar only to mistake, fraud and duress, not to incapacity. The main period is the five-year one in article 101 ¶1, which runs from the end of the incapacity, the discovery of the mistake or fraud, or the end of the duress. d3 does not use those start dates and has no five-year deadline item. b37 is listed in 'rests on' but its period is never applied.",
+   "evidenceWords": "غير أنه لا يجوز التمسك بحق الإبطال لغلط أو تدليس أو إكراه إذا انقضت عشر (10) سنوات من وقت تمام العقد",
+   "fromMemory": false,
+   "id": "atk-4"
+  },
+  {
+   "target": "d2",
+   "kind": "wrongCondition",
+   "claim": "d2 fires on any request for 'annulment'. Article 102 ¶2 (15 years from making the contract) belongs to the action for absolute nullity (البطلان المطلق). A relative-nullity annulment claim for mistake, fraud or duress is governed by article 101, so d2 and d3 give contradictory deadlines for the same request.",
+   "evidenceWords": "إذا كان العقد باطلا بطلانا مطلقا جاز لكل ذي مصلحة أن يتمسك بهذا البطلان",
+   "fromMemory": false,
+   "id": "atk-5"
+  },
+  {
+   "target": "n8",
+   "kind": "wrongCondition",
+   "claim": "Article 324 bis 1 requires official form for transfers of real property, real rights, businesses and shares, and for agricultural or commercial leases. n8 fires only when dispute_concerns_real_property=yes. A rescission of the sale of a business (محل تجاري) in a private deed, with the real-property slot at no, gets no warning.",
+   "evidenceWords": "أو محلات تجارية أو صناعية أو كل عنصر من عناصرها، أو التنازل عن أسهم من شركة أو حصص فيها، أو عقود إيجار زراعية أو تجارية",
+   "fromMemory": false,
+   "id": "atk-6"
+  },
+  {
+   "target": "p2",
+   "kind": "wrongCondition",
+   "claim": "Article 553 ¶1 applies while the work is in progress. p2 fires whenever works_performed_defectively=yes with a rescission request, including finished and taken-over work, where the notice-to-correct step no longer applies. Defects found after taking over belong to article 554 (see n7).",
+   "evidenceWords": "إذا ثبت أثناء سير العمل أن المقاول يقوم به على وجه معيب",
+   "fromMemory": false,
+   "id": "atk-7"
+  },
+  {
+   "target": "court",
+   "kind": "missing",
+   "claim": "The section alternatives ignore the specialised commercial court (slots specialised_commercial_subject and specialised_commercial_matter exist). A commercial dispute such as bank against trader, or an insurance or maritime dispute, is proposed as the 'commercial' section. When real_property=yes and commercial=yes are both true, the result depends on the order of the alternatives. Commercial sections also require prior mediation (b48), which is not handled.",
+   "evidenceWords": "يجب على رئيس القسم التجاري عرض النزاع مسبقا على الوساطة",
+   "fromMemory": false,
+   "id": "atk-8"
+  },
+  {
+   "target": "t5",
+   "kind": "wrongCondition",
+   "claim": "Article 40 sends real-property matters 'only' to the court where the property lies, but t1, t3 and t4 are listed with no precedence over t5. For a real-property or commercial case, several courts are offered as competent. The t5 summary also leaves out leases and public works, which are in the article's own text.",
+   "evidenceWords": "ترفع الدعاوى أمام الجهات القضائية المبينة أدناه دون سواها",
+   "fromMemory": false,
+   "id": "atk-9"
+  },
+  {
+   "target": "d1",
+   "kind": "wrongCondition",
+   "claim": "d1 depends on the slots goods_delivery_date and quantity_shortfall_claimed. They are not in the slot list, so the engine can never ask for or answer them and the deadline cannot fire correctly. Article 366 covers a shortfall or excess, and a price reduction or rescission, which the single trigger slot does not separate.",
+   "evidenceWords": "إذا وجد في قدر المبيع نقص أو زيادة فإن حق المشتري في طلب انقاص الثمن، أو فسخ العقد",
+   "fromMemory": false,
+   "id": "atk-10"
+  },
+  {
+   "target": "p1",
+   "kind": "wrongEffect",
+   "claim": "p1 reads petition_lodged_for_publication and blocks export if missing. The slot list has a second slot, petition_deposited_for_publication, for the same step. The article excuses the missing publication if the deposit is proved. The two slots can disagree, and one can be marked done while the other is open or unknown.",
+   "evidenceWords": "ما لم يثبت إيداعها للإشهار",
+   "fromMemory": false,
+   "id": "atk-11"
+  },
+  {
+   "target": "n14",
+   "kind": "wrongCondition",
+   "claim": "n14 fires only when plaintiff_performed_or_offered=no, a slot not in the slot list, and it stays silent when the answer is unknown. Article 123 applies only to obligations due on both sides (مستحقة الوفاء); the message mentions this but the condition does not test whether the plaintiff's own obligation is due.",
+   "evidenceWords": "إذا كانت الالتزامات المتقابلة مستحقة الوفاء",
+   "fromMemory": false,
+   "id": "atk-12"
+  },
+  {
+   "target": "b3",
+   "kind": "missing",
+   "claim": "The rules have no deadline for the rescission action itself, only for sale warranties and nullity. They also do not cover automatic rescission under an express clause in the contract, which is a common case in practice and which article 106 on the contract as the parties' law would allow. Please check the general limitation period and the article on rescission by clause, which I recall as articles 308 and 120 of the Civil Code.",
+   "evidenceWords": "العقد شريعة المتعاقدين، فلا يجوز نقضه، ولا تعديله الا باتفاق الطرفين",
+   "fromMemory": false,
+   "id": "atk-13"
+  }
+ ],
+ "nothingFound": false
+}

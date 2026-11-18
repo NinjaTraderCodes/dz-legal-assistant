@@ -1,0 +1,2955 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "claim",
+  "id": "unpaid-sale-price",
+  "label": {
+    "ar": "المطالبة بثمن مبيع غير مدفوع",
+    "en": "Unpaid sale price"
+  },
+  "verified": false,
+  "stage": "reconciled",
+  "derivedBy": {
+    "role": "catalogue route: derivation A promoted by unit.py (no reconciler run); corrected by the verifier",
+    "model": "claude-opus-5-5",
+    "date": "2026-11-18"
+  },
+  "area": "civil",
+  "imports": [
+    {
+      "module": "formal-notice",
+      "blocks": [
+        "b1",
+        "b2",
+        "b4",
+        "b5",
+        "b6",
+        "b7",
+        "b8",
+        "b9",
+        "b10",
+        "b14",
+        "b15",
+        "b16",
+        "b36",
+        "p1",
+        "p3",
+        "doc1",
+        "doc2",
+        "doc3",
+        "doc4",
+        "n1",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "how": {
+        "ar": "طلب التعويض عن التأخر في دفع الثمن لا يستحق إلا بعد إعذار المدين، والمطالبة بتنفيذ عقد البيع (دفع الثمن) تكون بعد الإعذار؛ تستورد الوحدة قواعد الإعذار ووسائله وحالات الإعفاء منه ووثائقه، والنصوص التي تقوم عليها قوة العقد والتعويض عن التأخر في دفع مبلغ من النقود وفسخ بيع المنقولات عند حلول الأجل.",
+        "en": "Damages for late payment of the price are due only after notice, and performance of the sale (payment) is claimed after notice; the claim takes the module's rules on notice, its means, its exemptions and its documents, and the statements on the binding force of the contract, damages for late payment of a sum of money, and the rescission of a sale of movables at the term."
+      }
+    },
+    {
+      "module": "periods",
+      "blocks": [
+        "b42",
+        "d1",
+        "d7",
+        "doc2"
+      ],
+      "how": {
+        "ar": "دين الثمن يخضع للتقادم العام من يوم استحقاقه، إلا إذا كان ثمن أشياء وردها تاجر أو صانع لمن لا يتجر فيها فيخضع للتقادم القصير؛ وعبء الإثبات على الدائن في الالتزام وعلى المدين في التخلص منه.",
+        "en": "The price debt falls under the general limitation from its due date, unless it is the price of things a trader or craftsman supplied to a non-trader, which falls under the short limitation; the creditor proves the obligation and the debtor proves his release."
+      }
+    },
+    {
+      "module": "ordinary-court-exits",
+      "blocks": [
+        "x1",
+        "x4",
+        "x6",
+        "x7",
+        "d3",
+        "d4",
+        "doc1",
+        "t3",
+        "n3",
+        "n4"
+      ],
+      "how": {
+        "ar": "تنبه الوحدة إلى الحالات التي يخرج فيها النزاع من القسم المدني: طرف عمومي إداري، أو مادة من مواد المحكمة التجارية المتخصصة، أو متابعة جزائية على الوقائع نفسها، أو دين ثابت بالكتابة يصلح لأمر الأداء، وآجال أمر الأداء إن صدر.",
+        "en": "The module warns where the dispute leaves the civil section: a public administrative party, a matter of the specialised commercial court, criminal proceedings on the same facts, or a debt proven in writing that fits an order to pay, with the periods of an order to pay already issued."
+      }
+    },
+    {
+      "module": "court-sections",
+      "blocks": [
+        "b1",
+        "b3",
+        "b4",
+        "b21",
+        "x4",
+        "n1"
+      ],
+      "how": {
+        "ar": "تستورد نصوص تنظيم المحكمة في أقسام ونظر القسم التجاري في النزاعات التجارية، ليقوم عليها القسم المقترح لهذه الدعوى، ومخرج الهيئة العمومية الوطنية، وحكم القضية المجدولة أمام قسم غير معني.",
+        "en": "The statements on the court's sections and on the commercial section's disputes, on which the claim's own section rule rests, the exit for a national public body, and the rule on a case listed before the wrong section."
+      }
+    }
+  ],
+  "slots": [
+    "requests",
+    "contract_date",
+    "debt_due_date",
+    "notice_served",
+    "notice_date",
+    "notice_means",
+    "notice_before_petition_day",
+    "default_on_due_date_agreed",
+    "performance_impossible_or_useless_by_debtor",
+    "obligation_is_tort_compensation",
+    "return_of_thing_known_stolen_or_unduly_received",
+    "debtor_refused_in_writing",
+    "contract_sets_notice_terms",
+    "movable_sale_price_unpaid_at_term",
+    "claim_is_professional_fees",
+    "claim_is_trader_supply_or_hotel",
+    "claim_is_periodic_renewable_right",
+    "public_body_party",
+    "national_public_body_party",
+    "public_vehicle_damage",
+    "specialised_commercial_matter",
+    "criminal_case_on_same_facts",
+    "damage_caused_by_offence",
+    "debt_written_fixed_due",
+    "payment_order_issued",
+    "payment_order_date",
+    "payment_order_notified_on",
+    "dispute_is_commercial",
+    "dispute_concerns_real_property",
+    "court_has_section_for_matter",
+    "price_supplement_for_excess_quantity",
+    "goods_actually_delivered_on",
+    "price_payable_in_instalments"
+  ],
+  "proposedSlots": [
+    {
+      "id": "price_supplement_for_excess_quantity",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل يطالب المدعي بتكملة الثمن لأن قدر المبيع الذي سلمه زاد على القدر المذكور في العقد؟",
+        "en": "Does the plaintiff claim a supplement of the price because the quantity he delivered exceeded the quantity stated in the contract?"
+      },
+      "why": "Deadline d1 and boundary n6 read it: civil-code 366 ¶1 sets a short limitation, from actual delivery, for the seller's claim to a price supplement for an excess in quantity, and civil-code 365 ¶2 sets the conditions of that claim; no existing slot says whether the price claimed is such a supplement."
+    },
+    {
+      "id": "goods_actually_delivered_on",
+      "type": "date",
+      "question": {
+        "ar": "ما تاريخ تسليم المبيع إلى المشتري تسليما فعليا؟",
+        "en": "On what date was the thing sold actually delivered to the buyer?"
+      },
+      "why": "Deadline d1 starts from it: civil-code 366 ¶1 runs the period from actual delivery of the thing sold; debt_due_date is not the same event, since the price may fall due on an agreed term (civil-code 388 ¶1)."
+    },
+    {
+      "id": "price_payable_in_instalments",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل اتفق على دفع الثمن أقساطا؟",
+        "en": "Was the price agreed to be paid in instalments?"
+      },
+      "why": "Boundary n7 reads it (verifier, attack adv-6): civil-code 315 ¶2 runs limitation on a deferred debt only from the end of its term, so each instalment has its own due date, while the imported limitations read a single debt_due_date; civil-code 390 ¶2 shows the term can be forfeited."
+    }
+  ],
+  "basis": [
+    {
+      "id": "b1",
+      "role": "basis",
+      "required": true,
+      "cite": {
+        "code": "civil-code",
+        "article": "351",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "البيع عقد يلتزم به البائع بنقل ملكية شيء أو حق مالي إلى المشتري مقابل ثمن نقدي.",
+        "en": "A sale is a contract by which the seller undertakes to transfer to the buyer the ownership of a thing or another property right in return for a price in money."
+      }
+    },
+    {
+      "id": "b2",
+      "role": "basis",
+      "cite": {
+        "code": "civil-code",
+        "article": "59",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يتم العقد بمجرد تبادل الطرفين التعبير عن إرادتين متطابقتين، دون إخلال بالنصوص القانونية.",
+        "en": "A contract is made as soon as the parties exchange matching expressions of will, subject to the legal provisions."
+      }
+    },
+    {
+      "id": "b3",
+      "role": "basis",
+      "required": true,
+      "cite": {
+        "code": "civil-code",
+        "article": "388",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يستحق ثمن المبيع وقت تسليم المبيع ما لم يوجد اتفاق أو عرف يقضي بخلاف ذلك.",
+        "en": "The price falls due when the thing sold is delivered, unless an agreement or custom provides otherwise."
+      }
+    },
+    {
+      "id": "b4",
+      "role": "basis",
+      "cite": {
+        "code": "civil-code",
+        "article": "387",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "يدفع الثمن في مكان تسليم المبيع ما لم يتفق أو يجر العرف بغيره، فإن لم يكن مستحقا وقت التسلم دفع في موطن المشتري وقت استحقاقه.",
+        "en": "The price is paid where the thing is delivered unless agreement or custom says otherwise; if it is not due on delivery, it is paid at the buyer's domicile when it falls due."
+      }
+    },
+    {
+      "id": "b5",
+      "role": "basis",
+      "cite": {
+        "code": "civil-code",
+        "article": "364",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يلتزم البائع بتسليم المبيع إلى المشتري بالحالة التي كان عليها وقت البيع.",
+        "en": "The seller must deliver the thing sold to the buyer in the state it was in at the time of the sale."
+      }
+    },
+    {
+      "id": "b6",
+      "role": "proof",
+      "cite": {
+        "code": "civil-code",
+        "article": "367",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يتم التسليم بوضع المبيع تحت تصرف المشتري بحيث يتمكن من حيازته والانتفاع به ولو لم يتسلمه ماديا، متى أخبره البائع باستعداده للتسليم.",
+        "en": "Delivery is made by putting the thing at the buyer's disposal so that he can take possession and use it, even without physical handover, once the seller has told him he is ready to deliver."
+      }
+    },
+    {
+      "id": "b7",
+      "role": "basis",
+      "cite": {
+        "code": "civil-code",
+        "article": "107",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجب تنفيذ العقد طبقا لما اشتمل عليه وبحسن نية.",
+        "en": "A contract must be performed as it provides and in good faith."
+      }
+    },
+    {
+      "id": "b8",
+      "role": "proof",
+      "cite": {
+        "code": "civil-code",
+        "article": "333",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "في غير المواد التجارية لا يجوز الإثبات بالشهود في وجود التصرف القانوني أو انقضائه إذا زادت قيمته على المبلغ الذي تحدده المادة أو كان غير محدد القيمة، ما لم يوجد نص يقضي بغير ذلك.",
+        "en": "Outside commercial matters, witnesses may not prove the existence or the extinction of a juristic act whose value exceeds the sum the article sets, or whose value is not fixed, unless a text provides otherwise."
+      }
+    },
+    {
+      "id": "b9",
+      "role": "proof",
+      "cite": {
+        "code": "civil-code",
+        "article": "334",
+        "paragraphs": [
+          1,
+          3
+        ]
+      },
+      "says": {
+        "ar": "لا يجوز الإثبات بالشهود ولو لم تزد القيمة على المبلغ المحدد إذا كان المطلوب هو الباقي أو جزءا من حق لا يجوز إثباته إلا بالكتابة.",
+        "en": "Witnesses may not be used, even below the set sum, when what is claimed is the remainder, or a part, of a right that may be proved only in writing."
+      }
+    },
+    {
+      "id": "b10",
+      "role": "proof",
+      "cite": {
+        "code": "civil-code",
+        "article": "335",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "يجوز الإثبات بالشهود فيما يجب إثباته بالكتابة إذا وجد مبدأ ثبوت بالكتابة، وهو كل كتابة تصدر من الخصم تجعل وجود التصرف قريب الاحتمال.",
+        "en": "Witnesses may prove what must be proved in writing when there is a beginning of proof in writing, that is any writing from the opponent that makes the alleged act likely."
+      }
+    },
+    {
+      "id": "b11",
+      "role": "proof",
+      "cite": {
+        "code": "civil-code",
+        "article": "336",
+        "paragraphs": [
+          1,
+          2,
+          3
+        ]
+      },
+      "says": {
+        "ar": "يجوز الإثبات بالشهود فيما يجب إثباته بالكتابة إذا وجد مانع مادي أو أدبي يحول دون الحصول على دليل كتابي، أو إذا فقد الدائن سنده لسبب أجنبي.",
+        "en": "Witnesses may prove what must be proved in writing when a material or moral impediment prevented obtaining written proof, or when the creditor lost his writing through an outside cause."
+      }
+    },
+    {
+      "id": "b12",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "324 مكرر 1",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجب تحت طائلة البطلان تحرير العقود الناقلة لملكية عقار أو حقوق عقارية أو محلات تجارية أو صناعية في شكل رسمي، ويجب دفع الثمن لدى الضابط العمومي الذي حرر العقد.",
+        "en": "Contracts transferring ownership of real property, real rights, or business or industrial premises must, on pain of nullity, be drawn up in official form, and the price must be paid before the public officer who drew up the deed."
+      }
+    },
+    {
+      "id": "b15",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "366",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "إذا وجد في قدر المبيع نقص أو زيادة سقط بالتقادم حق البائع في طلب تكملة الثمن بعد مضي سنة من التسليم الفعلي للمبيع.",
+        "en": "Where the quantity sold proves short or in excess, the seller's right to claim a supplement of the price is time-barred one year after actual delivery of the thing sold."
+      }
+    },
+    {
+      "id": "b16",
+      "role": "procedure",
+      "cite": {
+        "code": "civil-code",
+        "article": "314",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تحسب مدة التقادم بالأيام لا بالساعات، ولا يحسب اليوم الأول، وتكمل المدة بانقضاء آخر يوم منها.",
+        "en": "A limitation period is counted in days, not hours; the first day is not counted, and the period is complete when its last day ends."
+      }
+    },
+    {
+      "id": "b17",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "321",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "لا تقضي المحكمة بالتقادم من تلقاء نفسها، بل بناء على طلب المدين أو أحد دائنيه أو كل ذي مصلحة.",
+        "en": "The court does not apply limitation of its own motion; it does so at the request of the debtor, one of his creditors or any interested person."
+      }
+    },
+    {
+      "id": "b18",
+      "role": "damages",
+      "cite": {
+        "code": "civil-code",
+        "article": "182",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "إذا لم يقدر التعويض في العقد أو في القانون قدره القاضي، ويشمل ما لحق الدائن من خسارة وما فاته من كسب متى كان نتيجة طبيعية لعدم الوفاء أو للتأخر فيه.",
+        "en": "Where neither the contract nor the law fixes the damages, the judge assesses them, covering the creditor's loss and lost gain where they are the natural result of non-performance or late performance."
+      }
+    },
+    {
+      "id": "b19",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "358",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "إذا بيع عقار بغبن يزيد عن الخمس فللبائع طلب تكملة الثمن إلى أربعة أخماس ثمن المثل.",
+        "en": "Where real property is sold with a lesion of more than one fifth, the seller may claim a supplement bringing the price up to four fifths of its fair value."
+      }
+    },
+    {
+      "id": "b20",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "359",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تسقط بالتقادم دعوى تكملة الثمن بسبب الغبن بانقضاء المدة التي تحددها المادة من يوم انعقاد البيع.",
+        "en": "The action for a price supplement for lesion is time-barred when the period the article sets has run from the day the sale was made."
+      }
+    },
+    {
+      "id": "b21",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "17",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "يجب إشهار عريضة الدعوى المتعلقة بعقار أو حق عيني عقاري مشهر لدى المحافظة العقارية وتقديمها في أول جلسة، تحت طائلة عدم قبولها شكلا ما لم يثبت إيداعها للإشهار.",
+        "en": "A petition concerning published real property or a published real right must be published at the land registry and produced at the first hearing, on pain of formal inadmissibility unless its lodging for publication is shown."
+      }
+    },
+    {
+      "id": "b22",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "37",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يؤول الاختصاص الإقليمي لمحكمة موطن المدعى عليه، أو آخر موطن له إن لم يكن له موطن معروف، أو الموطن المختار، ما لم ينص القانون على خلاف ذلك.",
+        "en": "Territorial jurisdiction lies with the court of the defendant's domicile, or of his last domicile if none is known, or of his chosen domicile, unless the law provides otherwise."
+      }
+    },
+    {
+      "id": "b23",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "38",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "عند تعدد المدعى عليهم يؤول الاختصاص لمحكمة موطن أحدهم.",
+        "en": "Where there are several defendants, the court of the domicile of any one of them has jurisdiction."
+      }
+    },
+    {
+      "id": "b24",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "39",
+        "paragraphs": [
+          1,
+          5
+        ]
+      },
+      "says": {
+        "ar": "في المواد التجارية، غير الإفلاس والتسوية القضائية، ترفع الدعوى أمام محكمة مكان الوعد أو تسليم البضاعة أو مكان الوفاء.",
+        "en": "In commercial matters other than bankruptcy and judicial settlement, the claim may be brought before the court of the place of the promise, of delivery of the goods, or of payment."
+      }
+    },
+    {
+      "id": "b25",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "45",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يعد لاغيا كل شرط يمنح الاختصاص الإقليمي لجهة غير مختصة إلا إذا تم بين التجار.",
+        "en": "A clause giving territorial jurisdiction to a court that does not have it is void, unless it was made between traders."
+      }
+    },
+    {
+      "id": "b26",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "46",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجوز للخصوم الحضور باختيارهم أمام القاضي ولو لم يكن مختصا إقليميا.",
+        "en": "The parties may appear by choice before a judge even if he lacks territorial jurisdiction."
+      }
+    },
+    {
+      "id": "b27",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "47",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجب إثارة الدفع بعدم الاختصاص الإقليمي قبل أي دفاع في الموضوع أو دفع بعدم القبول.",
+        "en": "The plea of lack of territorial jurisdiction must be raised before any defence on the merits or plea of inadmissibility."
+      }
+    },
+    {
+      "id": "b28",
+      "role": "procedure",
+      "interpretive": true,
+      "interpretiveNote": "The paragraph names supplies, works and the hire of technical or industrial services; whether a sale of goods between private persons is a 'supply' (توريد) is a reading.",
+      "cite": {
+        "code": "cpca",
+        "article": "39",
+        "paragraphs": [
+          1,
+          4
+        ]
+      },
+      "says": {
+        "ar": "في منازعات التوريدات والأشغال وتأجير الخدمات الفنية أو الصناعية ترفع الدعوى أمام محكمة مكان إبرام الاتفاق أو تنفيذه ولو كان أحد الأطراف غير مقيم فيه.",
+        "en": "In disputes on supplies, works and the hire of technical or industrial services, the claim may be brought before the court of the place where the agreement was made or performed, even if a party does not live there."
+      }
+    },
+    {
+      "id": "b29",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "419",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يتحمل الخصم الذي خسر الدعوى مصاريفها ما لم يقرر القاضي مسببا تحميلها كليا أو جزئيا لخصم آخر.",
+        "en": "The party who loses the case bears its costs, unless the judge, giving reasons, puts all or part of them on another party."
+      }
+    },
+    {
+      "id": "b30",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "323",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يؤمر بالنفاذ المعجل عند طلبه إذا كان الحكم مبنيا على عقد رسمي أو وعد معترف به أو حكم سابق حائز لقوة الشيء المقضي به، وفي حالات أخرى يعددها النص.",
+        "en": "Provisional execution is ordered, when asked for, where the judgment rests on an official deed, an acknowledged promise or an earlier final judgment, and in other cases the paragraph lists."
+      }
+    },
+    {
+      "id": "b31",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "323",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "يجوز للقاضي في سائر الأحوال أن يأمر بالنفاذ المعجل في حالة الاستعجال بكفالة أو بدونها.",
+        "en": "In every other case the judge may order provisional execution in case of urgency, with or without security."
+      }
+    },
+    {
+      "id": "b32",
+      "role": "proof",
+      "cite": {
+        "code": "commercial-code",
+        "article": "30",
+        "paragraphs": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "says": {
+        "ar": "يثبت العقد التجاري بالسندات الرسمية أو العرفية أو الفاتورة المقبولة أو الرسائل أو دفاتر الطرفين أو بالبينة أو بأي وسيلة أخرى تقبلها المحكمة.",
+        "en": "A commercial contract is proved by official or private deeds, an accepted invoice, letters, the parties' books, witnesses, or any other means the court accepts."
+      }
+    },
+    {
+      "id": "b33",
+      "role": "limit",
+      "interpretive": true,
+      "interpretiveNote": "The paragraph ends with a sentence in the seller's favour: «ومع ذلك يجوز للبائع أن يطالب باستيفاء الثمن إذا ظهر للمشتري عيب في الشيء المبيع». The French edition of the same issue (OJ 1975 no. 78, p. 836) reads the same ('Le vendeur peut, dans ce cas, obtenir le paiement au cas où l'acheteur a découvert un défaut dans l'objet vendu'). Whether the sentence keeps the seller's claim where the buyer relies on a defect rather than a disturbance, or lets the seller defeat the withholding itself, is a reading (verifier, attack adv-3; open point o6).",
+      "cite": {
+        "code": "civil-code",
+        "article": "388",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "للمشتري، ما لم يمنعه شرط في العقد، أن يمسك الثمن إذا تعرض له أحد بحق سابق أو آل من البائع أو خيف نزع المبيع من يده، إلى أن ينقطع التعرض أو يزول الخطر؛ ومع ذلك يجوز للبائع أن يطالب باستيفاء الثمن إذا ظهر للمشتري عيب في المبيع.",
+        "en": "Unless a clause forbids it, the buyer may withhold the price while a third party disturbs him on a right prior to the sale or derived from the seller, or while there is a risk of eviction, until the disturbance or risk ends; the seller may nevertheless claim payment of the price where the buyer has found a defect in the thing sold."
+      }
+    },
+    {
+      "id": "b34",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "123",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "في العقد الملزم للجانبين إذا كانت الالتزامات المتقابلة مستحقة جاز لكل متعاقد أن يمتنع عن التنفيذ إذا لم ينفذ الآخر التزامه.",
+        "en": "In a bilateral contract with counter-obligations due, each party may refuse to perform while the other has not performed."
+      }
+    },
+    {
+      "id": "b35",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "390",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "إذا كان الثمن أو بعضه مستحق الدفع في الحال جاز للبائع أن يمسك المبيع حتى يقبضه، ما لم يمنح المشتري أجلا بعد البيع.",
+        "en": "Where all or part of the price is payable at once, the seller may keep the thing until he is paid, unless he granted the buyer time after the sale."
+      }
+    },
+    {
+      "id": "b36",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "450",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "قرض الاستهلاك عقد ينقل به المقرض إلى المقترض ملكية مبلغ من النقود أو شيء مثلي على أن يرد نظيره عند نهاية القرض.",
+        "en": "A loan for consumption transfers to the borrower the ownership of a sum of money or a fungible thing, to be returned in kind at the end of the loan."
+      }
+    },
+    {
+      "id": "b37",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "15",
+        "paragraphs": [
+          1,
+          6
+        ]
+      },
+      "says": {
+        "ar": "يجب أن تتضمن عريضة افتتاح الدعوى، تحت طائلة عدم قبولها شكلا، عرضا موجزا للوقائع والطلبات والوسائل التي تؤسس عليها.",
+        "en": "The petition must, on pain of formal inadmissibility, contain a short statement of the facts, the requests and the grounds of the claim."
+      }
+    },
+    {
+      "id": "b38",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "13",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "لا يجوز التقاضي ما لم تكن للشخص صفة ومصلحة قائمة أو محتملة يقرها القانون.",
+        "en": "No one may sue without standing and an existing or potential interest the law recognises."
+      }
+    },
+    {
+      "id": "b39",
+      "role": "procedure",
+      "cite": {
+        "code": "civil-code",
+        "article": "3",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تحسب الآجال بالتقويم الميلادي ما لم ينص القانون على خلاف ذلك.",
+        "en": "Periods are counted by the Gregorian calendar unless the law provides otherwise."
+      }
+    },
+    {
+      "id": "b40",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "365",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "إذا زاد قدر المبيع على ما ذكر في العقد وكان الثمن مقدرا بحسب الوحدة، وجب على المشتري إن كان المبيع غير قابل للتقسيم أن يدفع ثمنا زائدا، إلا إذا كانت الزيادة فاحشة فله أن يطلب الفسخ، ما لم يوجد اتفاق يخالف ذلك.",
+        "en": "Where the quantity sold exceeds what the contract states and the price was set per unit, the buyer of an indivisible thing must pay an increased price, unless the excess is gross, in which case he may ask for rescission; all this unless an agreement provides otherwise."
+      }
+    },
+    {
+      "id": "b41",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "359",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "بالنسبة لعديمي الأهلية تسري مدة تقادم دعوى تكملة الثمن بسبب الغبن من يوم انقطاع سبب العجز.",
+        "en": "For persons without capacity, the period of the action for a price supplement for lesion runs from the day the cause of incapacity ends."
+      }
+    },
+    {
+      "id": "b42",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "360",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "لا يجوز الطعن بالغبن في بيع تم بطريق المزاد العلني بمقتضى القانون.",
+        "en": "A sale made by public auction under the law cannot be challenged for lesion."
+      }
+    },
+    {
+      "id": "b43",
+      "role": "proof",
+      "cite": {
+        "code": "civil-code",
+        "article": "333",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "تقدر قيمة الالتزام وقت صدور التصرف، ويجوز الإثبات بالشهود إذا لم تأت زيادته على المبلغ المحدد إلا من ضم الملحقات إلى الأصل.",
+        "en": "The obligation is valued at the time of the juristic act, and witnesses are admitted where it exceeds the set sum only because accessories were added to the principal."
+      }
+    },
+    {
+      "id": "b44",
+      "role": "procedure",
+      "cite": {
+        "code": "civil-code",
+        "article": "321",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يجوز التمسك بالتقادم في أية حالة كانت عليها الدعوى ولو أمام جهة الاستئناف.",
+        "en": "Limitation may be pleaded at any stage of the proceedings, even on appeal."
+      }
+    },
+    {
+      "id": "b45",
+      "role": "damages",
+      "cite": {
+        "code": "civil-code",
+        "article": "182",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "إذا كان مصدر الالتزام العقد فلا يلتزم المدين الذي لم يرتكب غشا أو خطأ جسيما إلا بتعويض الضرر الذي كان يمكن توقعه عادة وقت التعاقد.",
+        "en": "Where the obligation arises from a contract, a debtor who committed no fraud or gross fault owes only the damage that could normally be foreseen when the contract was made."
+      }
+    },
+    {
+      "id": "b46",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "315",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "لا يسري التقادم بالنسبة إلى الدين المؤجل إلا من الوقت الذي ينقضي فيه الأجل.",
+        "en": "For a debt with a term, limitation runs only from the time the term expires."
+      }
+    },
+    {
+      "id": "b47",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "390",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يجوز للبائع أن يمسك المبيع ولو لم يحل الأجل المتفق عليه لدفع الثمن إذا سقط حق المشتري في الأجل وفق ما يقتضيه القانون.",
+        "en": "The seller may also keep the thing before the agreed term for payment falls due, if the buyer has lost the benefit of the term as the law provides."
+      }
+    },
+    {
+      "id": "b48",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "40",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "ترفع الدعاوى في المواد العقارية أمام المحكمة التي يقع في دائرة اختصاصها العقار دون سواها.",
+        "en": "In real-property matters the action goes to the court in whose district the property lies, and to no other."
+      }
+    },
+    {
+      "id": "b49",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "518",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يؤول الاختصاص الإقليمي في المنازعات العقارية إلى المحكمة التي يوجد العقار في دائرة اختصاصها، ما لم ينص القانون على خلاف ذلك.",
+        "en": "Territorial jurisdiction in real-property disputes lies with the court where the property is, unless the law provides otherwise."
+      }
+    },
+    {
+      "id": "b50",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "511",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ينظر القسم العقاري في المنازعات المتعلقة بالأملاك العقارية.",
+        "en": "The real-estate section hears disputes about real property."
+      }
+    },
+    {
+      "id": "b51",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "512",
+        "paragraphs": [
+          1,
+          9
+        ]
+      },
+      "says": {
+        "ar": "ينظر القسم العقاري على الخصوص في التنازل عن الملكية وحق الانتفاع.",
+        "en": "The real-estate section hears in particular transfers of ownership and of usufruct."
+      }
+    },
+    {
+      "id": "b52",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "534",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "يجب على رئيس القسم التجاري عرض النزاع مسبقا على الوساطة، ولا تخضع هذه الوساطة إلى قبول الأطراف.",
+        "en": "The president of the commercial section must first refer the dispute to mediation, and this mediation does not depend on the parties' acceptance."
+      }
+    }
+  ],
+  "elements": [
+    {
+      "id": "e1",
+      "toProve": {
+        "ar": "انعقاد البيع بين المدعي بائعا والمدعى عليه مشتريا على مبيع معين وثمن نقدي.",
+        "en": "That a sale was made between the plaintiff as seller and the defendant as buyer, of a specified thing for a price in money."
+      },
+      "factsToState": [
+        {
+          "ar": "تاريخ البيع ومكانه.",
+          "en": "The date and place of the sale."
+        },
+        {
+          "ar": "المبيع وأوصافه الأساسية.",
+          "en": "The thing sold and its main features."
+        },
+        {
+          "ar": "الثمن المتفق عليه وطريقة دفعه وأجله إن وجد.",
+          "en": "The agreed price, how it was to be paid, and any term for payment."
+        },
+        {
+          "ar": "شكل العقد (رسمي، عرفي، شفوي) وما يثبته.",
+          "en": "The form of the contract (official, private, oral) and what proves it."
+        }
+      ],
+      "events": [
+        "contract_concluded"
+      ],
+      "slots": [
+        "contract_date"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "writing (official or private deed) when the value exceeds the sum set for proof by witnesses",
+          "basis": [
+            "b8",
+            "b43"
+          ],
+          "note": {
+            "ar": "في غير المواد التجارية لا يثبت التصرف بالشهود فوق المبلغ الذي تحدده المادة 333؛ وتقدر قيمته وقت إبرامه، ولا يحتسب ما زاد عليه بضم الملحقات إلى الأصل.",
+            "en": "Outside commercial matters the act cannot be proved by witnesses above the sum article 333 sets; its value is taken when it was made, and an excess that comes only from adding accessories to the principal does not count."
+          }
+        },
+        {
+          "means": "beginning of proof in writing completed by witnesses, or witnesses where an impediment or loss of the writing is shown",
+          "basis": [
+            "b10",
+            "b11"
+          ]
+        },
+        {
+          "means": "official deed, for a sale of real property or of business premises",
+          "basis": [
+            "b12"
+          ]
+        }
+      ],
+      "basis": [
+        "b1",
+        "b2",
+        "periods.b42"
+      ]
+    },
+    {
+      "id": "e2",
+      "toProve": {
+        "ar": "أن المدعي سلم المبيع إلى المدعى عليه أو وضعه تحت تصرفه، وتاريخ ذلك.",
+        "en": "That the plaintiff delivered the thing to the defendant, or put it at his disposal, and when."
+      },
+      "factsToState": [
+        {
+          "ar": "تاريخ التسليم ومكانه وطريقته.",
+          "en": "The date, place and manner of delivery."
+        },
+        {
+          "ar": "إن لم يقع تسليم مادي: إخبار المشتري بالاستعداد للتسليم.",
+          "en": "If there was no physical handover: that the buyer was told the seller was ready to deliver."
+        }
+      ],
+      "events": [
+        "goods_delivered"
+      ],
+      "slots": [
+        "goods_actually_delivered_on"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "delivery note, receipt signed by the buyer, or any proof that the thing was put at his disposal",
+          "basis": [
+            "b6"
+          ]
+        }
+      ],
+      "basis": [
+        "b5",
+        "b6",
+        "b3"
+      ]
+    },
+    {
+      "id": "e3",
+      "toProve": {
+        "ar": "أن الثمن أو باقيه حل أجله ولم يدفع، ومقداره وقت رفع الدعوى.",
+        "en": "That the price, or its balance, has fallen due and is unpaid, and its amount when the claim is filed."
+      },
+      "factsToState": [
+        {
+          "ar": "تاريخ استحقاق الثمن: وقت التسليم أو الأجل المتفق عليه.",
+          "en": "When the price fell due: on delivery, or on the agreed term."
+        },
+        {
+          "ar": "المبلغ الباقي المطالب به محددا بالدينار.",
+          "en": "The balance claimed, stated in dinars."
+        },
+        {
+          "ar": "إن كان الثمن يدفع أقساطا: تاريخ استحقاق كل قسط غير مدفوع ومبلغه، والأقساط التي لم يحل أجلها بعد.",
+          "en": "If the price is paid in instalments: the due date and amount of each unpaid instalment, and the instalments not yet due."
+        }
+      ],
+      "events": [
+        "price_unpaid"
+      ],
+      "slots": [
+        "debt_due_date",
+        "price_payable_in_instalments"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "the writing that proves the sale and its price; witnesses are not admitted for a remainder of a right that needs writing",
+          "basis": [
+            "b9",
+            "periods.b42"
+          ]
+        }
+      ],
+      "basis": [
+        "b3",
+        "b4",
+        "b46",
+        "periods.b42",
+        "formal-notice.b15"
+      ]
+    },
+    {
+      "id": "e4",
+      "toProve": {
+        "ar": "ما دفعه المدعى عليه من الثمن، وعلى المدين إثبات الوفاء الذي يدعيه.",
+        "en": "What the defendant has paid of the price; the debtor proves any payment he relies on."
+      },
+      "factsToState": [
+        {
+          "ar": "المبالغ المدفوعة وتواريخها، والفرق بينها وبين الثمن.",
+          "en": "The sums paid and their dates, and the difference from the price."
+        }
+      ],
+      "events": [
+        "payment_made"
+      ],
+      "burden": "defendant",
+      "proof": [
+        {
+          "means": "receipts or transfers produced by the debtor",
+          "basis": [
+            "periods.b42"
+          ],
+          "note": {
+            "ar": "لبعض البيوع فوق مبالغ محددة (عقار، سيارات جديدة، تجهيزات، أشياء ثمينة) يفرض نص تنظيمي ليس في مخزن النصوص الدفع عبر القنوات البنكية والمالية؛ وأثر ذلك على إثبات وفاء نقدي غير محسوم (النقطة المفتوحة o9).",
+            "en": "For some sales above set sums (real property, new vehicles, equipment, valuables) a regulation that is not in the article store requires payment through bank and financial channels; its effect on proving a cash payment is not settled (open point o9)."
+          }
+        }
+      ],
+      "basis": [
+        "periods.b42"
+      ]
+    },
+    {
+      "id": "e5",
+      "toProve": {
+        "ar": "أن المدعى عليه أعذر بالدفع قبل رفع الدعوى، أو أن الإعذار غير لازم.",
+        "en": "That the defendant was put on notice to pay before the claim, or that notice was not needed."
+      },
+      "factsToState": [
+        {
+          "ar": "تاريخ الإعذار ووسيلته واستمرار الامتناع بعده، أو حالة الإعفاء.",
+          "en": "The date and means of the notice and the continued failure after it, or the exemption."
+        }
+      ],
+      "events": [
+        "notice_served"
+      ],
+      "slots": [
+        "notice_served",
+        "notice_date",
+        "notice_means"
+      ],
+      "burden": "plaintiff",
+      "basis": [
+        "formal-notice.b1",
+        "formal-notice.b5",
+        "formal-notice.b4"
+      ]
+    }
+  ],
+  "requests": [
+    {
+      "id": "r1",
+      "kind": "payment",
+      "accessory": false,
+      "text": {
+        "ar": "إلزام المدعى عليه بأن يؤدي للمدعي ثمن المبيع أو باقيه المقدر بـ (...) دج",
+        "en": "Order the defendant to pay the plaintiff the price, or its balance, of (...) DZD"
+      },
+      "amount": true,
+      "basis": [
+        "b1",
+        "b3",
+        "formal-notice.b36"
+      ]
+    },
+    {
+      "id": "r2",
+      "kind": "damages",
+      "accessory": true,
+      "text": {
+        "ar": "إلزام المدعى عليه بأن يؤدي للمدعي تعويضا قدره (...) دج عن الضرر اللاحق من التأخر في الدفع",
+        "en": "Order the defendant to pay the plaintiff (...) DZD as damages for the harm caused by the late payment"
+      },
+      "amount": true,
+      "basis": [
+        "formal-notice.b15",
+        "formal-notice.b1",
+        "formal-notice.b14",
+        "b18",
+        "b45"
+      ]
+    },
+    {
+      "id": "r3",
+      "kind": "other",
+      "accessory": true,
+      "text": {
+        "ar": "تحميل المدعى عليه المصاريف القضائية",
+        "en": "Order the defendant to bear the costs of the proceedings"
+      },
+      "amount": false,
+      "basis": [
+        "b29"
+      ]
+    },
+    {
+      "id": "r4",
+      "kind": "provisional_execution",
+      "accessory": true,
+      "text": {
+        "ar": "شمول الحكم بالنفاذ المعجل",
+        "en": "Order provisional execution of the judgment"
+      },
+      "amount": false,
+      "basis": [
+        "b30",
+        "b31"
+      ]
+    }
+  ],
+  "court": {
+    "section": {
+      "value": "civil",
+      "basis": [
+        "court-sections.b1",
+        "court-sections.b3",
+        "court-sections.b4",
+        "court-sections.b21",
+        "b50",
+        "b51"
+      ],
+      "alternatives": [
+        {
+          "when": {
+            "slot": "court_has_section_for_matter",
+            "is": "no"
+          },
+          "value": "civil",
+          "basis": [
+            "court-sections.b4"
+          ]
+        },
+        {
+          "when": {
+            "slot": "dispute_is_commercial",
+            "is": "yes"
+          },
+          "value": "commercial",
+          "basis": [
+            "court-sections.b21"
+          ]
+        }
+      ],
+      "message": {
+        "ar": "المادة 32 من قانون الإجراءات المدنية والإدارية: تجدول القضايا أمام الأقسام حسب طبيعة النزاع، وفي المحاكم التي لم تنشأ فيها الأقسام ينظر القسم المدني في كل النزاعات عدا الاجتماعية؛ والمادة 531 تسند النزاعات التجارية إلى القسم التجاري؛ والمادتان 511 و512 تسندان إلى القسم العقاري المنازعات المتعلقة بالأملاك العقارية ومنها التنازل عن الملكية (بيع العقار محل قراءتين، النقطة المفتوحة o7). تحقق من طبيعة البيع (مدني أو تجاري أو عقاري) ومن أقسام المحكمة.",
+        "en": "CPCA article 32: cases are listed before the sections by the nature of the dispute, and in courts without sections the civil section hears every dispute except social ones; article 531 gives commercial disputes to the commercial section; articles 511 and 512 give the real-estate section disputes about real property, transfers of ownership included (a sale of real property has two readings, open point o7). Check whether the sale is civil, commercial or of real property, and the court's sections."
+      },
+      "interpretive": true,
+      "interpretiveNote": "No text names the section for a civil sale in a court that has sections; civil is proposed as the residual by reading article 32 (as the court-sections module does). Whether the sale is commercial turns on the Commercial Code's definition of commercial acts, which is not in the store (open point o3). Whether a claim for the price of real property is a real-property dispute for the real-estate section (cpca 511 ¶1, 512 ¶9) is a reading (open point o7); the proposal stays civil and boundary n1 warns."
+    },
+    "territory": [
+      {
+        "id": "t1",
+        "rule": {
+          "ar": "محكمة موطن المدعى عليه، أو آخر موطن له إن لم يعرف له موطن، أو موطنه المختار.",
+          "en": "The court of the defendant's domicile, or of his last domicile if none is known, or of his chosen domicile."
+        },
+        "basis": [
+          "b22"
+        ]
+      },
+      {
+        "id": "t2",
+        "rule": {
+          "ar": "إذا تعدد المدعى عليهم: محكمة موطن أحدهم.",
+          "en": "Several defendants: the court of the domicile of any one of them."
+        },
+        "basis": [
+          "b23"
+        ]
+      },
+      {
+        "id": "t3",
+        "rule": {
+          "ar": "إذا كان البيع تجاريا: يجوز أيضا رفع الدعوى أمام محكمة مكان الوعد أو تسليم البضاعة أو مكان الوفاء.",
+          "en": "If the sale is commercial: the claim may also go to the court of the place of the promise, of delivery of the goods, or of payment."
+        },
+        "when": {
+          "slot": "dispute_is_commercial",
+          "is": "yes"
+        },
+        "basis": [
+          "b24"
+        ]
+      },
+      {
+        "id": "t4",
+        "rule": {
+          "ar": "منازعات التوريدات: محكمة مكان إبرام الاتفاق أو تنفيذه؛ وكون بيع منقولات بين غير التجار توريدا مسألة قراءة (النقطة المفتوحة o2).",
+          "en": "Supply disputes: the court of the place where the agreement was made or performed; whether a sale of goods between non-traders is a supply is a reading (open point o2)."
+        },
+        "basis": [
+          "b28"
+        ]
+      },
+      {
+        "id": "t5",
+        "rule": {
+          "ar": "شرط إسناد الاختصاص الإقليمي لمحكمة غير مختصة لاغ إلا بين التجار، ويجوز للخصوم الحضور باختيارهم أمام قاض غير مختص إقليميا، ويثار الدفع بعدم الاختصاص الإقليمي قبل أي دفاع في الموضوع.",
+          "en": "A clause giving territorial jurisdiction to another court is void except between traders; the parties may appear by choice before a judge lacking territorial jurisdiction; the plea of lack of territorial jurisdiction is raised before any defence on the merits."
+        },
+        "basis": [
+          "b25",
+          "b26",
+          "b27"
+        ]
+      },
+      {
+        "id": "t6",
+        "rule": {
+          "ar": "إذا كان المبيع عقارا وعدت المطالبة بثمنه مادة عقارية: محكمة موقع العقار دون سواها؛ وذلك محل قراءتين (النقطة المفتوحة o7).",
+          "en": "If the thing sold is real property and the claim to its price counts as a real-property matter: the court where the property lies, and no other; this has two readings (open point o7)."
+        },
+        "when": {
+          "slot": "dispute_concerns_real_property",
+          "is": "yes"
+        },
+        "basis": [
+          "b48",
+          "b49"
+        ]
+      }
+    ]
+  },
+  "deadlines": [
+    {
+      "id": "d1",
+      "kind": "limitation",
+      "period": {
+        "value": 1,
+        "unit": "year"
+      },
+      "startsFrom": {
+        "slot": "goods_actually_delivered_on",
+        "event": "goods_delivered",
+        "description": {
+          "ar": "يوم تسليم المبيع تسليما فعليا.",
+          "en": "The day the thing sold was actually delivered."
+        }
+      },
+      "counting": {
+        "method": "excludeFirstDay",
+        "extendToWorkingDay": false,
+        "basis": [
+          "b16",
+          "b39"
+        ]
+      },
+      "raisedBy": "pleaOnly",
+      "when": {
+        "slot": "price_supplement_for_excess_quantity",
+        "is": "yes"
+      },
+      "effectWhenExpired": "warn",
+      "warnBandDays": 16,
+      "message": {
+        "ar": "المادة 366 من القانون المدني: يسقط بالتقادم حق البائع في طلب تكملة الثمن لزيادة في قدر المبيع بعد مضي سنة واحدة (1) من التسليم الفعلي؛ وتحسب المدة وفق المادة 314 وبالتقويم الميلادي وفق المادة 3، ولا تقضي بها المحكمة تلقائيا ويجوز التمسك بها في أية حالة كانت عليها الدعوى ولو أمام جهة الاستئناف (المادة 321). وحساب السنة بعدد ثابت من الأيام، وامتدادها إذا انتهت في يوم عطلة، محل قراءات محفوظة (النقطة المفتوحة o4). تحقق من تاريخ التسليم الفعلي ومن طبيعة المبلغ المطالب به.",
+        "en": "Civil Code article 366: the seller's right to a price supplement for an excess in quantity is time-barred 1 year after actual delivery; counted under article 314 and by the Gregorian calendar under article 3; the court does not apply it of its own motion, and it may be pleaded at any stage, even on appeal (article 321). Counting the year as a fixed number of days, and running on when it ends on a holiday, are kept as readings (open point o4). Check the date of actual delivery and what the sum claimed is."
+      },
+      "basis": [
+        "b15",
+        "b16",
+        "b17",
+        "b39",
+        "b44"
+      ],
+      "extract": {
+        "period": "سنة",
+        "sanction": "يسقطان بالتقادم"
+      },
+      "interpretive": true,
+      "interpretiveNote": "Article 3 ¶1 counts periods by the Gregorian calendar unless the law provides otherwise, and article 314 counts limitation periods in days, not hours, with the first day left out. Whether 314's 'بالايام لا بالساعات' is such a contrary provision, so that a year would be a fixed number of days, is a reading the periods module keeps open on the owner's instruction (its open point o15); whether a last day that is not a working day carries the period over is also left open by these texts. The rule follows the calendar (article 3) without extension, and the band is widened by one leap day so that a fixed count of days also warns (verifier, attack adv-1). A limitation only warns.",
+      "readings": [
+        {
+          "reading": {
+            "ar": "تحسب السنة بالتقويم الميلادي دون اليوم الأول، وتكمل بانقضاء آخر يوم منها ولو كان يوم عطلة.",
+            "en": "The year is a calendar year without the first day, complete at the end of its last day even on a holiday."
+          },
+          "basis": [
+            "b16",
+            "b39"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "تحسب السنة بعدد ثابت من الأيام، وتمدد إلى أول يوم عمل إذا انتهت في يوم عطلة.",
+            "en": "The year is a fixed number of days, and runs to the next working day if it ends on a holiday."
+          },
+          "basis": [
+            "b16"
+          ]
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc1",
+      "name": {
+        "ar": "عقد البيع أو أي محرر يثبت البيع والثمن (عقد رسمي أو عرفي، فاتورة، اعتراف بالدين، مراسلات)",
+        "en": "The sale contract or any writing that proves the sale and the price (official or private deed, invoice, acknowledgement of debt, letters)"
+      },
+      "why": {
+        "ar": "يثبت الالتزام الذي يقع إثباته على الدائن، والكتابة لازمة فوق المبلغ الذي تحدده المادة 333 من القانون المدني.",
+        "en": "Proves the obligation the creditor must prove; writing is needed above the sum Civil Code article 333 sets."
+      },
+      "basis": [
+        "b8",
+        "b9",
+        "periods.b42"
+      ]
+    },
+    {
+      "id": "doc2",
+      "name": {
+        "ar": "ما يثبت تسليم المبيع (وصل تسليم، محضر، إقرار المشتري)",
+        "en": "Proof of delivery of the thing sold (delivery note, record, buyer's acknowledgement)"
+      },
+      "why": {
+        "ar": "يستحق الثمن وقت التسليم ما لم يتفق على غيره، ويتم التسليم بوضع المبيع تحت تصرف المشتري (المادتان 388 و367 من القانون المدني).",
+        "en": "The price falls due on delivery unless agreed otherwise, and delivery is made by putting the thing at the buyer's disposal (Civil Code articles 388 and 367)."
+      },
+      "basis": [
+        "b3",
+        "b6"
+      ]
+    },
+    {
+      "id": "doc3",
+      "name": {
+        "ar": "وصولات الدفعات الجزئية أو كشف بما دفع وما بقي",
+        "en": "Receipts for part payments, or a statement of what was paid and what remains"
+      },
+      "why": {
+        "ar": "تبين الباقي المطالب به؛ ويقع على المدين إثبات ما يدعيه من وفاء.",
+        "en": "Shows the balance claimed; the debtor must prove any payment he relies on."
+      },
+      "basis": [
+        "periods.b42"
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "id": "n1",
+      "looksLike": {
+        "ar": "مطالبة بثمن عقار أو محل تجاري مبيع",
+        "en": "A claim for the price of real property or business premises sold"
+      },
+      "isActually": "outside:real-property-sale",
+      "tellingFacts": [
+        {
+          "ar": "المبيع عقار أو حق عيني عقاري أو محل تجاري.",
+          "en": "The thing sold is real property, a real right, or business premises."
+        },
+        {
+          "ar": "طلب تكملة الثمن لغبن في بيع عقار.",
+          "en": "A claim for a price supplement for lesion in a sale of real property."
+        }
+      ],
+      "when": {
+        "slot": "dispute_concerns_real_property",
+        "is": "yes"
+      },
+      "slots": [
+        "dispute_concerns_real_property"
+      ],
+      "message": {
+        "ar": "المادة 324 مكرر 1 من القانون المدني: يحرر بيع العقار والمحل التجاري في شكل رسمي تحت طائلة البطلان ويدفع الثمن لدى الضابط العمومي؛ والمواد 358 و359 و360: لتكملة الثمن بسبب الغبن في بيع العقار دعوى خاصة تتقادم بمدة محددة تسري من يوم البيع، أو من يوم انقطاع سبب العجز بالنسبة لعديمي الأهلية، ولا طعن بالغبن في بيع تم بطريق المزاد العلني بمقتضى القانون؛ والمادة 17 من قانون الإجراءات المدنية والإدارية: تشهر العريضة المتعلقة بعقار مشهر؛ والمادتان 511 و512: ينظر القسم العقاري في المنازعات المتعلقة بالأملاك العقارية ومنها التنازل عن الملكية؛ والمادتان 40 و518: ترفع الدعاوى في المواد العقارية أمام محكمة موقع العقار دون سواها. وكون المطالبة بثمن عقار مادة عقارية محل قراءتين (النقطة المفتوحة o7). تحقق من شكل البيع ومن موضوع الطلب ومن القسم والمحكمة المختصين.",
+        "en": "Civil Code article 324 مكرر 1: a sale of real property or business premises is made in official form on pain of nullity, and the price is paid before the public officer; articles 358, 359 and 360: a price supplement for lesion in a sale of real property has its own action, time-barred after a set period running from the sale, or for a person without capacity from the day the incapacity ends, and no lesion challenge lies against a sale by public auction under the law; CPCA article 17: a petition concerning published real property is published; articles 511 and 512: the real-estate section hears disputes about real property, transfers of ownership included; articles 40 and 518: real-property actions go to the court where the property lies, and no other. Whether a claim to the price of real property is a real-property matter has two readings (open point o7). Check the form of the sale, what is asked, and the competent section and court."
+      },
+      "basis": [
+        "b12",
+        "b19",
+        "b20",
+        "b41",
+        "b42",
+        "b21",
+        "b50",
+        "b51",
+        "b48",
+        "b49"
+      ]
+    },
+    {
+      "id": "n2",
+      "looksLike": {
+        "ar": "بيع بين أشخاص يبدو مدنيا وهو تجاري",
+        "en": "A sale that looks civil but is commercial"
+      },
+      "isActually": "outside:commercial-sale",
+      "tellingFacts": [
+        {
+          "ar": "البائع أو المشتري تاجر والبيع متصل بتجارته، أو الشراء بقصد إعادة البيع.",
+          "en": "The seller or buyer is a trader and the sale is part of his trade, or the goods were bought for resale."
+        }
+      ],
+      "when": {
+        "slot": "dispute_is_commercial",
+        "is": "yes"
+      },
+      "slots": [
+        "dispute_is_commercial"
+      ],
+      "message": {
+        "ar": "المادة 531 من قانون الإجراءات المدنية والإدارية: ينظر القسم التجاري في النزاعات التجارية، والمادة 534: يعرض رئيس القسم التجاري النزاع مسبقا على الوساطة دون حاجة إلى قبول الأطراف؛ والمادة 30 من القانون التجاري: يثبت العقد التجاري بكل وسيلة، والمادة 333 من القانون المدني لا تقيد الإثبات بالشهود إلا في غير المواد التجارية، وإذا كان البيع تجاريا بالنسبة إلى أحد طرفيه دون الآخر فحرية الإثبات في مواجهة غير التاجر غير محسومة (النقطة المفتوحة o10). تحقق من صفة الطرفين ومن طبيعة البيع.",
+        "en": "CPCA article 531: the commercial section hears commercial disputes, and article 534: the president of the commercial section first refers the dispute to mediation, without the parties' acceptance; Commercial Code article 30: a commercial contract may be proved by any means, and Civil Code article 333 limits proof by witnesses only outside commercial matters; where the sale is commercial for one party only, whether proof is free against the non-trader is not settled (open point o10). Check the parties' status and the nature of the sale."
+      },
+      "basis": [
+        "court-sections.b21",
+        "b52",
+        "b32",
+        "b8"
+      ]
+    },
+    {
+      "id": "n3",
+      "looksLike": {
+        "ar": "مطالبة بثمن منقولات بيعت بأجل لدفع الثمن وتسلم المبيع حل دون دفع",
+        "en": "A claim for the price of movables sold with a term for payment and taking delivery that passed unpaid"
+      },
+      "isActually": "outside:sale-rescinded-by-law",
+      "tellingFacts": [
+        {
+          "ar": "بيع عروض أو منقولات، وأجل محدد لدفع الثمن وتسلم المبيع، ولا اتفاق على خلاف ذلك.",
+          "en": "A sale of goods or movables, a fixed term for payment and for taking delivery, and no agreement to the contrary."
+        }
+      ],
+      "when": {
+        "slot": "movable_sale_price_unpaid_at_term",
+        "is": "yes"
+      },
+      "slots": [
+        "movable_sale_price_unpaid_at_term"
+      ],
+      "message": {
+        "ar": "المادة 392 من القانون المدني: في بيع المنقولات المعين فيه أجل لدفع الثمن وتسلم المبيع يكون البيع مفسوخا وجوبا لصالح البائع دون سابق إنذار إذا لم يدفع الثمن عند حلول الأجل، ما لم يتفق على خلاف ذلك؛ والمادة 119: للمتعاقد أن يطالب بالتنفيذ أو بالفسخ. تحقق من الطلب المناسب (الثمن أو الفسخ والاسترداد).",
+        "en": "Civil Code article 392: in a sale of movables with a term for payment and taking delivery, the sale is rescinded by law in the seller's favour without prior warning if the price is unpaid at the term, unless agreed otherwise; article 119: a party may claim performance or rescission. Check which request fits (the price, or rescission and return)."
+      },
+      "basis": [
+        "formal-notice.b16",
+        "formal-notice.b2"
+      ]
+    },
+    {
+      "id": "n4",
+      "looksLike": {
+        "ar": "مطالبة بمبلغ مستحق يسمى ثمنا وهو قرض أو دين معترف به",
+        "en": "A claim for a sum called a price that is in fact a loan or an acknowledged debt"
+      },
+      "isActually": "outside:loan-or-acknowledged-debt",
+      "tellingFacts": [
+        {
+          "ar": "لم يقع نقل ملكية شيء مقابل ثمن، بل سلم مبلغ نقدي على أن يرد.",
+          "en": "No thing was transferred for a price; a sum of money was handed over to be returned."
+        }
+      ],
+      "message": {
+        "ar": "المادة 351 من القانون المدني تعرف البيع بنقل الملكية مقابل ثمن نقدي، والمادة 450 تعرف قرض الاستهلاك برد النظير. تحقق من تكييف العلاقة.",
+        "en": "Civil Code article 351 defines sale as a transfer of ownership for a price in money, and article 450 defines a loan for consumption by the return of the like. Check how the relationship is characterised."
+      },
+      "basis": [
+        "b1",
+        "b36"
+      ]
+    },
+    {
+      "id": "n5",
+      "looksLike": {
+        "ar": "امتناع المشتري عن دفع الثمن يبدو مجرد مماطلة",
+        "en": "The buyer's refusal to pay that looks like mere delay"
+      },
+      "isActually": "outside:buyer-defence",
+      "tellingFacts": [
+        {
+          "ar": "لم يسلم المبيع بعد، أو تعرض للمشتري غير يدعي حقا على المبيع، أو يخشى نزعه من يده، أو يحتج بعيب في المبيع.",
+          "en": "The thing has not been delivered yet, or a third party claims a right in it, or the buyer fears eviction, or he relies on a defect in the thing."
+        }
+      ],
+      "message": {
+        "ar": "المادة 388 من القانون المدني: للمشتري أن يمسك الثمن ما دام التعرض أو خطر نزع المبيع قائما ما لم يمنعه شرط في العقد، ومع ذلك يجوز للبائع أن يطالب باستيفاء الثمن إذا ظهر للمشتري عيب في الشيء المبيع، ومدى هذه الجملة محل قراءتين (النقطة المفتوحة o6)؛ والمادة 123: لكل متعاقد أن يمتنع عن التنفيذ ما لم ينفذ الآخر؛ والمادة 390: للبائع أن يمسك المبيع حتى يقبض الثمن المستحق. تحقق من التسليم ومن وجود تعرض أو عيب.",
+        "en": "Civil Code article 388: unless a clause forbids it, the buyer may withhold the price while a disturbance or risk of eviction lasts; the seller may nevertheless claim payment of the price where the buyer has found a defect in the thing sold, a sentence with two readings (open point o6); article 123: each party may refuse to perform until the other performs; article 390: the seller may keep the thing until he is paid what is due. Check delivery and any disturbance or defect."
+      },
+      "basis": [
+        "b33",
+        "b34",
+        "b35"
+      ]
+    },
+    {
+      "id": "n6",
+      "looksLike": {
+        "ar": "مطالبة بتكملة الثمن لزيادة في قدر المبيع على ما ذكر في العقد",
+        "en": "A claim for a supplement of the price because the quantity delivered exceeded the contract"
+      },
+      "isActually": "outside:price-supplement-excess-quantity",
+      "tellingFacts": [
+        {
+          "ar": "سلم البائع قدرا يزيد على المذكور في العقد ويطالب بثمن الزيادة.",
+          "en": "The seller delivered more than the contract states and claims the price of the excess."
+        }
+      ],
+      "when": {
+        "slot": "price_supplement_for_excess_quantity",
+        "is": "yes"
+      },
+      "slots": [
+        "price_supplement_for_excess_quantity"
+      ],
+      "message": {
+        "ar": "المادة 365 من القانون المدني: إذا زاد قدر المبيع على ما ذكر في العقد وكان الثمن مقدرا بحسب الوحدة، وجب على المشتري إن كان المبيع غير قابل للتقسيم أن يدفع ثمنا زائدا، إلا إذا كانت الزيادة فاحشة فيجوز له أن يطلب فسخ العقد، كل ذلك ما لم يوجد اتفاق يخالفه؛ والمادة 366: يسقط حق البائع في طلب تكملة الثمن بالتقادم من وقت التسليم الفعلي. تحقق من طريقة تقدير الثمن ومن قابلية المبيع للتقسيم ومن بنود العقد ومن تاريخ التسليم الفعلي.",
+        "en": "Civil Code article 365: where the quantity sold exceeds what the contract states and the price was set per unit, the buyer of an indivisible thing must pay an increased price, unless the excess is gross, in which case he may ask for rescission; all this unless an agreement provides otherwise; article 366: the seller's right to a price supplement is time-barred counting from actual delivery. Check how the price was set, whether the thing is divisible, the contract's terms, and the date of actual delivery."
+      },
+      "basis": [
+        "b40",
+        "b15"
+      ]
+    },
+    {
+      "id": "n7",
+      "looksLike": {
+        "ar": "مطالبة بثمن واحد له تاريخ استحقاق واحد",
+        "en": "A claim for one price with one due date"
+      },
+      "isActually": "outside:instalment-price",
+      "tellingFacts": [
+        {
+          "ar": "اتفق على دفع الثمن أقساطا لكل منها أجله.",
+          "en": "The price was agreed to be paid in instalments, each with its own term."
+        }
+      ],
+      "when": {
+        "slot": "price_payable_in_instalments",
+        "is": "yes"
+      },
+      "slots": [
+        "price_payable_in_instalments"
+      ],
+      "message": {
+        "ar": "المادة 315 من القانون المدني: لا يسري التقادم بالنسبة إلى الدين المؤجل إلا من الوقت الذي ينقضي فيه الأجل، فلكل قسط تاريخ استحقاق يبدأ منه تقادمه؛ أدخل تاريخ استحقاق أقدم قسط غير مدفوع تاريخا لاستحقاق الدين. والمادة 390: قد يسقط حق المشتري في الأجل وفق ما يقتضيه القانون؛ والمطالبة بالأقساط التي لم يحل أجلها محل نقطة مفتوحة (o8). تحقق من تاريخ استحقاق كل قسط مطالب به.",
+        "en": "Civil Code article 315: for a debt with a term, limitation runs only from the time the term expires, so each instalment's limitation runs from its own due date; enter the due date of the oldest unpaid instalment as the debt's due date. Article 390: the buyer may lose the benefit of the term as the law provides; claiming instalments not yet due is an open point (o8). Check the due date of each instalment claimed."
+      },
+      "basis": [
+        "b46",
+        "b47"
+      ]
+    }
+  ],
+  "examples": [
+    {
+      "id": "ex1",
+      "by": "derivationA",
+      "title": "Clean civil sale: notice by bailiff before the petition, price due well inside the general limitation, nothing leaves the civil section.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "requests": [
+          "payment",
+          "damages"
+        ],
+        "contract_date": "2025-03-01",
+        "debt_due_date": "2025-03-10",
+        "notice_served": "yes",
+        "notice_means": "bailiff",
+        "notice_date": "2026-10-01",
+        "notice_before_petition_day": "yes",
+        "default_on_due_date_agreed": "no",
+        "debtor_refused_in_writing": "no",
+        "contract_sets_notice_terms": "no",
+        "obligation_is_tort_compensation": "no",
+        "claim_is_trader_supply_or_hotel": "no",
+        "claim_is_professional_fees": "no",
+        "claim_is_periodic_renewable_right": "no",
+        "public_body_party": "no",
+        "national_public_body_party": "no",
+        "specialised_commercial_matter": "none",
+        "criminal_case_on_same_facts": "no",
+        "damage_caused_by_offence": "no",
+        "debt_written_fixed_due": "no",
+        "payment_order_issued": "no",
+        "dispute_is_commercial": "no",
+        "dispute_concerns_real_property": "no",
+        "movable_sale_price_unpaid_at_term": "no",
+        "price_supplement_for_excess_quantity": "no",
+        "price_payable_in_instalments": "no",
+        "court_has_section_for_matter": "yes"
+      },
+      "expect": {
+        "section": "civil",
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          },
+          {
+            "ref": "n2",
+            "effect": "none"
+          },
+          {
+            "ref": "n3",
+            "effect": "none"
+          },
+          {
+            "ref": "n6",
+            "effect": "none"
+          },
+          {
+            "ref": "n7",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex4",
+      "by": "derivationA",
+      "title": "Price supplement for excess quantity, delivered ten months before the petition: far inside the year.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "price_supplement_for_excess_quantity": "yes",
+        "goods_actually_delivered_on": "2026-01-10"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex5",
+      "by": "derivationA",
+      "title": "Price supplement for excess quantity, delivered two and a half years before: far outside the year, a warning.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "price_supplement_for_excess_quantity": "yes",
+        "goods_actually_delivered_on": "2024-06-01"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex6",
+      "by": "derivationA",
+      "title": "Price supplement for excess quantity, the year ends five days after the petition: a warning.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "price_supplement_for_excess_quantity": "yes",
+        "goods_actually_delivered_on": "2025-11-25"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex10",
+      "by": "derivationA",
+      "title": "Commercial sale in a court with sections, with other exit facts set (the imported exits are checked in their modules): commercial section proposed, the commercial boundary warns.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "public_body_party": "yes",
+        "national_public_body_party": "yes",
+        "specialised_commercial_matter": "international_trade",
+        "criminal_case_on_same_facts": "yes",
+        "debt_written_fixed_due": "yes",
+        "dispute_is_commercial": "yes",
+        "court_has_section_for_matter": "yes"
+      },
+      "expect": {
+        "section": "commercial",
+        "findings": [
+          {
+            "ref": "n2",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex11",
+      "by": "derivationA",
+      "title": "Movables sold with a term for price and delivery that passed unpaid: the rescission boundary warns.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "movable_sale_price_unpaid_at_term": "yes",
+        "dispute_concerns_real_property": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n3",
+            "effect": "warn"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex12",
+      "by": "derivationA",
+      "title": "Real property sold: the real-property boundary warns.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "dispute_concerns_real_property": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex15",
+      "by": "derivationA",
+      "title": "Nothing known beyond the requests: the record's own items ask for the facts that decide them.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "requests": [
+          "payment",
+          "damages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "ask"
+          },
+          {
+            "ref": "n1",
+            "effect": "ask"
+          },
+          {
+            "ref": "n2",
+            "effect": "ask"
+          },
+          {
+            "ref": "n3",
+            "effect": "ask"
+          },
+          {
+            "ref": "n6",
+            "effect": "ask"
+          },
+          {
+            "ref": "n7",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "price_supplement_for_excess_quantity",
+          "dispute_concerns_real_property",
+          "dispute_is_commercial",
+          "movable_sale_price_unpaid_at_term",
+          "court_has_section_for_matter",
+          "price_payable_in_instalments"
+        ]
+      }
+    },
+    {
+      "id": "ex14",
+      "by": "derivationA",
+      "title": "Court without sections, commercial sale: civil section proposed.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "court_has_section_for_matter": "no",
+        "dispute_is_commercial": "yes"
+      },
+      "expect": {
+        "section": "civil",
+        "findings": [
+          {
+            "ref": "n2",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "exv1",
+      "by": "verifier",
+      "title": "Attacks adv-1 and flag-f-b17-p2: supplement for excess quantity, delivered on 20 November 2025, petition on 20 November 2026: the calendar year of article 3 ends on the petition day (article 314 leaves the first day out), a warning; the defendant may plead it at any stage.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "price_supplement_for_excess_quantity": "yes",
+        "goods_actually_delivered_on": "2025-11-20"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "exv2",
+      "by": "verifier",
+      "title": "Attack adv-2: supplement for excess quantity delivered five months before the petition: the year has not run, but the conditions of article 365 (price per unit, indivisible thing, no contrary clause, gross excess) are flagged.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "price_supplement_for_excess_quantity": "yes",
+        "goods_actually_delivered_on": "2026-06-01"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "n6",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "exv4",
+      "by": "verifier",
+      "title": "Attack adv-4 and values-section: commercial sale in a court with sections: commercial section proposed (article 531 now in the section's basis), and the commercial boundary warns, naming the compulsory mediation of article 534.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "dispute_is_commercial": "yes",
+        "court_has_section_for_matter": "yes",
+        "dispute_concerns_real_property": "no"
+      },
+      "expect": {
+        "section": "commercial",
+        "findings": [
+          {
+            "ref": "n2",
+            "effect": "warn"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "exv5",
+      "by": "verifier",
+      "title": "Attacks adv-5 and adv-7: a plot of land sold by private agreement, price unpaid, court with sections: civil still proposed, and the real-property boundary warns of the real-estate section, the exclusive court where the land lies, and the lesion rules (articles 359 ¶2 and 360).",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "dispute_concerns_real_property": "yes",
+        "dispute_is_commercial": "no",
+        "court_has_section_for_matter": "yes"
+      },
+      "expect": {
+        "section": "civil",
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "warn"
+          },
+          {
+            "ref": "n2",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "exv6",
+      "by": "verifier",
+      "title": "Attack adv-6: a trader sells furniture to a private buyer on 18 monthly instalments, the first unpaid one fell due 14 months before the petition: the instalment boundary warns that each instalment runs from its own due date.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "price_payable_in_instalments": "yes",
+        "debt_due_date": "2025-09-20",
+        "claim_is_trader_supply_or_hotel": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n7",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "exv7",
+      "by": "verifier",
+      "title": "Attacks adv-3, flag-f-b8-p2 and flag-f-b18-p2: a civil sale of goods, price and delay damages claimed, single price, no supplement: no boundary fires; the proof note on article 333 ¶2, the foreseeable-damage limit of article 182 ¶2 and the seller's sentence of article 388 ¶2 change what is shown in elements and requests, not the findings.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "requests": [
+          "payment",
+          "damages"
+        ],
+        "dispute_is_commercial": "no",
+        "dispute_concerns_real_property": "no",
+        "movable_sale_price_unpaid_at_term": "no",
+        "price_supplement_for_excess_quantity": "no",
+        "price_payable_in_instalments": "no",
+        "court_has_section_for_matter": "yes"
+      },
+      "expect": {
+        "section": "civil",
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "none"
+          },
+          {
+            "ref": "n2",
+            "effect": "none"
+          },
+          {
+            "ref": "n6",
+            "effect": "none"
+          },
+          {
+            "ref": "n7",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "exv8",
+      "by": "verifier",
+      "title": "Attack adv-8: a new car sold for 2,500,000 DA, the buyer says he paid in cash: the receipts document is listed and element e4 carries the bank-channel note of open point o9 (grade D); no finding warns or blocks.",
+      "petitionDate": "2026-11-20",
+      "slots": {
+        "requests": [
+          "payment"
+        ],
+        "dispute_is_commercial": "no",
+        "dispute_concerns_real_property": "no",
+        "price_payable_in_instalments": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "doc3",
+            "effect": "none"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          }
+        ]
+      }
+    }
+  ],
+  "openPoints": [
+    {
+      "id": "o1",
+      "question": {
+        "ar": "هل يمنع الفسخ الوجوبي لبيع المنقولات عند حلول الأجل البائع من المطالبة بالثمن، أم أنه مقرر لمصلحته فيبقى له الخيار؟",
+        "en": "Does the automatic rescission of a sale of movables at the term bar the seller from claiming the price, or, being in his favour, does he keep the choice?"
+      },
+      "why": {
+        "ar": "المادة 392 تجعل البيع مفسوخا وجوبا لصالح البائع ولا تقول هل يجوز له التمسك بالعقد والمطالبة بالثمن.",
+        "en": "Article 392 makes the sale rescinded by law in the seller's favour and does not say whether he may still hold to the contract and claim the price."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "الفسخ يقع بقوة القانون فلا يبقى إلا طلب الاسترداد والتعويض.",
+            "en": "Rescission takes effect by law, leaving only return and damages."
+          },
+          "basis": [
+            "formal-notice.b16"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "الفسخ مقرر لمصلحة البائع فله أن يتنازل عنه ويطالب بالثمن.",
+            "en": "Rescission is in the seller's favour, so he may waive it and claim the price."
+          },
+          "basis": [
+            "formal-notice.b16",
+            "formal-notice.b2"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "التنبيه إلى المسألة دون منع، وترك اختيار الطلب للمحامي.",
+        "en": "Warn of the question without blocking, and leave the choice of request to the lawyer."
+      },
+      "grade": "C",
+      "refs": [
+        "n3"
+      ]
+    },
+    {
+      "id": "o2",
+      "question": {
+        "ar": "هل يعد بيع المنقولات بين غير التجار من «التوريدات» التي تجيز رفع الدعوى أمام محكمة مكان إبرام الاتفاق أو تنفيذه؟",
+        "en": "Is a sale of goods between non-traders a 'supply' that allows the claim before the court of the place where the agreement was made or performed?"
+      },
+      "why": {
+        "ar": "المادة 39 من قانون الإجراءات المدنية والإدارية تذكر التوريدات ولا تعرفها.",
+        "en": "CPCA article 39 names supplies without defining them."
+      },
+      "protectiveReading": {
+        "ar": "اقتراح محكمة موطن المدعى عليه، وعرض الخيار الآخر قراءة.",
+        "en": "Propose the court of the defendant's domicile and show the other option as a reading."
+      },
+      "grade": "C",
+      "refs": [
+        "t4",
+        "b28"
+      ]
+    },
+    {
+      "id": "o3",
+      "question": {
+        "ar": "متى يكون البيع عملا تجاريا يخرج النزاع إلى القسم التجاري ويحرر الإثبات؟",
+        "en": "When is a sale a commercial act, so that the dispute goes to the commercial section and proof is free?"
+      },
+      "why": {
+        "ar": "مواد القانون التجاري التي تعرف التاجر والأعمال التجارية ليست في مخزن النصوص (طلبت).",
+        "en": "The Commercial Code articles defining traders and commercial acts are not in the article store (requested)."
+      },
+      "protectiveReading": {
+        "ar": "سؤال المحامي عن الطابع التجاري للنزاع والتنبيه عند الإيجاب.",
+        "en": "Ask the lawyer whether the dispute is commercial and warn when it is."
+      },
+      "grade": "D",
+      "refs": [
+        "n2",
+        "t3"
+      ]
+    },
+    {
+      "id": "o4",
+      "question": {
+        "ar": "كيف تحسب سنة المادة 366: بالتقويم الميلادي وفق المادة 3 أم بعدد ثابت من الأيام، وهل تمدد إذا انتهت في يوم عطلة؟",
+        "en": "How is the year of article 366 counted: by the Gregorian calendar under article 3, or as a fixed number of days, and does it run on when it ends on a holiday?"
+      },
+      "why": {
+        "ar": "المادة 3 تحسب الآجال بالتقويم الميلادي ما لم ينص القانون على خلاف ذلك، والمادة 314 تحسب مدة التقادم بالأيام لا بالساعات دون اليوم الأول؛ وكون عبارة المادة 314 نصا مخالفا محل قراءة يبقيها وحدة الآجال مفتوحة، ولا تبين النصوص حكم يوم العطلة.",
+        "en": "Article 3 counts periods by the Gregorian calendar unless the law provides otherwise, and article 314 counts limitation in days, not hours, without the first day; whether 314's words are such a contrary provision is a reading the periods module keeps open, and the texts say nothing of holidays."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "السنة سنة ميلادية (المادة 3)، ولا تمدد.",
+            "en": "The year is a calendar year (article 3), with no extension."
+          },
+          "basis": [
+            "b39",
+            "b16"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "السنة عدد ثابت من الأيام (المادة 314)، وتمدد إلى أول يوم عمل.",
+            "en": "The year is a fixed number of days (article 314), extended to the next working day."
+          },
+          "basis": [
+            "b16"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "اعتماد التقويم دون تمديد مع توسيع هامش التنبيه؛ والتقادم لا يؤدي إلا إلى تنبيه.",
+        "en": "Use the calendar without extension, with a wider warning band; limitation only warns."
+      },
+      "grade": "C",
+      "refs": [
+        "d1"
+      ]
+    },
+    {
+      "id": "o5",
+      "question": {
+        "ar": "إذا كان المبيع عقارا أو محلا تجاريا وجب دفع الثمن لدى الضابط العمومي: هل تبقى دعوى بباقي الثمن، وأمام أي قسم؟",
+        "en": "Where the thing sold is real property or business premises, the price must be paid before the public officer: is there still a claim for the balance, and before which section?"
+      },
+      "why": {
+        "ar": "المادة 324 مكرر 1 توجب دفع الثمن لدى الضابط العمومي ولا تبين أثر الإخلال بذلك على المطالبة بالباقي.",
+        "en": "Article 324 مكرر 1 requires the price to be paid before the public officer and does not say what follows for a claim to the balance."
+      },
+      "protectiveReading": {
+        "ar": "التنبيه عند تعلق البيع بعقار أو محل تجاري، دون منع.",
+        "en": "Warn when the sale concerns real property or business premises, without blocking."
+      },
+      "grade": "C",
+      "refs": [
+        "n1",
+        "o7"
+      ]
+    },
+    {
+      "id": "o6",
+      "question": {
+        "ar": "ما مدى الجملة الأخيرة من الفقرة الثانية من المادة 388: «ومع ذلك يجوز للبائع أن يطالب باستيفاء الثمن إذا ظهر للمشتري عيب في الشيء المبيع»؟",
+        "en": "What is the reach of the last sentence of article 388 ¶2: 'the seller may nevertheless claim payment of the price where the buyer has found a defect in the thing sold'?"
+      },
+      "why": {
+        "ar": "الجملة تلي حق المشتري في حبس الثمن عند التعرض أو خطر النزع، ولا تبين علاقتها به؛ والنص الفرنسي في العدد نفسه (ص 836) يقرأ مثلها.",
+        "en": "The sentence follows the buyer's right to withhold the price on a disturbance or risk of eviction and does not say how it relates to it; the French edition of the same issue (p. 836) reads the same."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "حق الحبس لا يمتد إلى ظهور عيب في المبيع: يبقى للبائع المطالبة بالثمن، وللمشتري دعوى الضمان.",
+            "en": "The right to withhold does not extend to a defect: the seller keeps his claim to the price, and the buyer has the warranty action."
+          },
+          "basis": [
+            "b33"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "الجملة تتيح للبائع استيفاء الثمن رغم التعرض في الحالة التي تذكرها، ومداها غير واضح.",
+            "en": "The sentence lets the seller obtain payment despite the disturbance in the case it names, with an unclear reach."
+          },
+          "basis": [
+            "b33"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "عرض حق الحبس وجملة البائع معا، والتنبيه دون ترجيح.",
+        "en": "Show both the withholding right and the seller's sentence, and warn without choosing between them."
+      },
+      "grade": "C",
+      "refs": [
+        "b33",
+        "n5"
+      ]
+    },
+    {
+      "id": "o7",
+      "question": {
+        "ar": "هل المطالبة بثمن عقار مبيع مادة عقارية ينظرها القسم العقاري وترفع أمام محكمة موقع العقار دون سواها؟",
+        "en": "Is a claim to the price of real property sold a real-property matter, for the real-estate section and only the court where the property lies?"
+      },
+      "why": {
+        "ar": "المادتان 511 و512 تسندان إلى القسم العقاري المنازعات المتعلقة بالأملاك العقارية والتنازل عن الملكية، والمادتان 40 و518 ترفعان المواد العقارية أمام محكمة موقع العقار دون سواها؛ ولا يبين النص هل تعد المطالبة بمبلغ الثمن، وهي دين نقدي شخصي، مادة عقارية.",
+        "en": "Articles 511 and 512 give the real-estate section disputes about real property and transfers of ownership, and articles 40 and 518 send real-property matters only to the court where the property lies; the texts do not say whether a claim to the price, a personal money debt, is a real-property matter."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "مادة عقارية: القسم العقاري ومحكمة موقع العقار دون سواها.",
+            "en": "A real-property matter: the real-estate section and only the court where the property lies."
+          },
+          "basis": [
+            "b50",
+            "b51",
+            "b48",
+            "b49"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "دين نقدي شخصي: القسم المدني ومحكمة موطن المدعى عليه.",
+            "en": "A personal money debt: the civil section and the court of the defendant's domicile."
+          },
+          "basis": [
+            "b22",
+            "court-sections.b4"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "التنبيه إلى القراءتين عند تعلق البيع بعقار، وعرض محكمة موقع العقار والقسم العقاري، دون منع.",
+        "en": "Warn of both readings when the sale concerns real property, showing the court where the property lies and the real-estate section, without blocking."
+      },
+      "grade": "C",
+      "refs": [
+        "n1",
+        "t6",
+        "b50",
+        "b51"
+      ]
+    },
+    {
+      "id": "o8",
+      "question": {
+        "ar": "هل يجوز للبائع المطالبة بالأقساط التي لم يحل أجلها، بشرط حلول في العقد أو بسقوط حق المشتري في الأجل؟",
+        "en": "May the seller claim instalments not yet due, under an acceleration clause or because the buyer lost the benefit of the term?"
+      },
+      "why": {
+        "ar": "المادة 390 تحيل في سقوط حق المشتري في الأجل إلى المادة 212، وهي ليست في مخزن النصوص (طلبت).",
+        "en": "Article 390 refers to article 212 for the loss of the term, and article 212 is not in the article store (requested)."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "لا يطالب إلا بالأقساط الحالة، ما لم يثبت سقوط الأجل أو شرط الحلول.",
+            "en": "Only instalments already due may be claimed, unless loss of the term or an acceleration clause is shown."
+          },
+          "basis": [
+            "b46",
+            "b47"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "يجوز طلب كامل الباقي إذا سقط الأجل أو وجد شرط بحلول جميع الأقساط عند التخلف عن أحدها.",
+            "en": "The whole balance may be claimed where the term is lost or a clause makes all instalments due on one default."
+          },
+          "basis": [
+            "b47",
+            "b7"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "التنبيه إلى أن الأقساط غير الحالة لا يطالب بها إلا بسقوط الأجل أو شرط الحلول.",
+        "en": "Warn that instalments not yet due may be claimed only on loss of the term or under an acceleration clause."
+      },
+      "grade": "D",
+      "refs": [
+        "n7",
+        "e3"
+      ]
+    },
+    {
+      "id": "o9",
+      "question": {
+        "ar": "ما أثر وجوب الدفع عبر القنوات البنكية والمالية في بعض البيوع فوق مبالغ محددة على إثبات المشتري لوفاء نقدي؟",
+        "en": "What does the duty to pay certain sales above set sums through bank and financial channels do to the buyer's proof of a cash payment?"
+      },
+      "why": {
+        "ar": "المرسوم التنفيذي 15-153 (الجريدة الرسمية 2015 العدد 33 ص 6) يفرض الدفع بوسائل الدفع الكتابية لشراء العقار من 5.000.000 دج ولشراء منقولات معينة من 1.000.000 دج، ويحيل في الجزاء إلى المادة 31 من القانون 05-01؛ وهو ليس في مخزن النصوص (طلب)، ولا يبين أثرا مدنيا على الإثبات، ولم يبحث هل حل محله نص لاحق.",
+        "en": "Executive Decree 15-153 (Official Journal 2015 no. 33, p. 6) requires written means of payment for buying real property from 5,000,000 DA and certain movables from 1,000,000 DA, and refers for the sanction to Law 05-01 art. 31; it is not in the article store (requested), states no civil effect on proof, and whether a later text replaced it was not searched."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "الوفاء النقدي فوق الحد مخالفة جزائية لا تمس إثباته المدني.",
+            "en": "A cash payment above the threshold is an offence that leaves its civil proof untouched."
+          },
+          "basis": [
+            "periods.b42"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "يتوقع الدفع عبر البنك فيكون الكشف البنكي هو الدليل، ويمكن منازعة وصل نقدي.",
+            "en": "Payment is expected through a bank, so bank records are the evidence and a cash receipt may be contested."
+          },
+          "basis": [
+            "periods.b42"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "التنبيه إلى الكشوف البنكية في البيوع المعنية دون الحكم على الوصل النقدي.",
+        "en": "Point to bank records for the sales concerned, without ruling on a cash receipt."
+      },
+      "grade": "D",
+      "refs": [
+        "e4",
+        "doc3"
+      ]
+    },
+    {
+      "id": "o10",
+      "question": {
+        "ar": "إذا كان البيع تجاريا بالنسبة إلى البائع وحده (تاجر يبيع لغير تاجر لاستعماله الخاص)، هل يتحرر الإثبات في مواجهة المشتري غير التاجر؟",
+        "en": "Where the sale is commercial for the seller only (a trader selling to a non-trader for private use), is proof free against the non-trader buyer?"
+      },
+      "why": {
+        "ar": "المادة 30 من القانون التجاري تحرر إثبات العقد التجاري، والمادة 333 من القانون المدني تقيد الإثبات بالشهود في غير المواد التجارية؛ ولا يبين نص في المخزن حكم العمل المختلط، ومواد القانون التجاري المعرفة للأعمال التجارية ليست فيه، والقاعدة الفقهية المحتج بها لم تؤكد بنص رسمي.",
+        "en": "Commercial Code article 30 frees the proof of a commercial contract, and Civil Code article 333 limits witnesses outside commercial matters; no text in the store governs a mixed act, the Commercial Code articles defining commercial acts are not in it, and the doctrine relied on was not confirmed in an official text."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "متى كان البيع تجاريا تحرر الإثبات في مواجهة الطرفين.",
+            "en": "Once the sale is commercial, proof is free against both parties."
+          },
+          "basis": [
+            "b32"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "يتحرر الإثبات في مواجهة من كان العمل تجاريا بالنسبة إليه فقط، وتبقى قواعد الإثبات المدنية في مواجهة غير التاجر.",
+            "en": "Proof is free only against the party for whom the act is commercial; the civil rules apply against the non-trader."
+          },
+          "basis": [
+            "b8"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "اشتراط الكتابة فوق المبلغ المحدد في المادة 333 في مواجهة المشتري غير التاجر.",
+        "en": "Keep writing above the sum of article 333 against a non-trader buyer."
+      },
+      "grade": "D",
+      "refs": [
+        "n2",
+        "e1"
+      ]
+    }
+  ],
+  "checklist": [
+    {
+      "id": "k1",
+      "item": "Basis: the definition of sale and the buyer's duty to pay the price (Civil Code, sale chapter: definition of sale, obligations of the buyer: payment of the price, its time and place).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b1",
+        "b3",
+        "b4",
+        "r1"
+      ]
+    },
+    {
+      "id": "k2",
+      "item": "The contract binds the parties and must be performed in good faith (Civil Code, effects of contracts).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "formal-notice.b36",
+        "b7"
+      ]
+    },
+    {
+      "id": "k3",
+      "item": "Element: conclusion of the sale between plaintiff (seller) and defendant (buyer): date, thing sold, agreed price.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e1",
+        "b2"
+      ]
+    },
+    {
+      "id": "k4",
+      "item": "Element: delivery of the thing sold by the plaintiff, or that delivery was offered; the price is due at delivery unless agreed otherwise (time and place of payment).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e2",
+        "b3",
+        "b4",
+        "b5",
+        "b6"
+      ]
+    },
+    {
+      "id": "k5",
+      "item": "Element: what the defendant paid (dates, amounts) and the balance still unpaid; amount must be fixed at filing.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e3",
+        "e4",
+        "formal-notice.b15"
+      ],
+      "note": "The amount fixed when the claim is filed is a condition of the delay damages (civil-code 186 ¶1), not of the price claim."
+    },
+    {
+      "id": "k6",
+      "item": "Burden of proof: the creditor proves the obligation, the debtor proves payment or discharge.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "periods.b42",
+        "e3",
+        "e4"
+      ]
+    },
+    {
+      "id": "k7",
+      "item": "Proof form: writing required for a civil juristic act above the statutory sum (amended amount), or to contradict a writing; commencement of proof in writing and the exceptions (moral or material impossibility, loss of the writing).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b8",
+        "b43",
+        "b9",
+        "b10",
+        "b11",
+        "e1"
+      ],
+      "note": "civil-code 333 is in the store in the law-05-10 wording; 333 ¶2 values the act when it was made and disregards an excess due only to accessories (verifier, flag-f-b8-p2); 334 ¶3 bars witnesses for the remainder of a right that needs writing, which reaches a claim to the balance of a price."
+    },
+    {
+      "id": "k8",
+      "item": "Force of an official deed versus a private document; fixed date of a private document against third parties; sale of real property needs an official deed and publication.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b12",
+        "b21",
+        "n1"
+      ],
+      "note": "The fixed date of a private writing (civil-code 328) matters only against third parties and is not used."
+    },
+    {
+      "id": "k9",
+      "item": "Formal notice (iedhar): required before damages for delay; its form (warning by bailiff or equivalent, registered letter where allowed, or contract clause of default at term); cases where it is not needed (written refusal, performance impossible, contract stipulation).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "formal-notice.p1",
+        "formal-notice.p3",
+        "formal-notice.b5",
+        "formal-notice.b6",
+        "e5"
+      ]
+    },
+    {
+      "id": "k10",
+      "item": "Damages for delay in paying a sum of money between individuals: conditions (sum fixed at filing, delay, harm), and the ban on interest between individuals; whether harm must be proved.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "formal-notice.b15",
+        "formal-notice.b1",
+        "b18",
+        "b45",
+        "r2"
+      ],
+      "note": "No text in the store gives interest on a sale price; civil-code 454 ¶1 forbids interest only on loans between individuals, so no interest request is proposed. Article 186 speaks of 'the harm caused by the delay', and 182 ¶1 measures it; 182 ¶2 limits a contract debtor without fraud or gross fault to the damage foreseeable when the contract was made (verifier, flag-f-b18-p2)."
+    },
+    {
+      "id": "k11",
+      "item": "Seller's alternative remedies: right to withhold delivery until paid; rescission for non-payment (judicial rescission, express resolutory clause, automatic rescission in sale of goods/movables when the term for payment and taking delivery passes) - a boundary with a rescission claim.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b35",
+        "n3",
+        "n5",
+        "formal-notice.b2",
+        "formal-notice.b16",
+        "o1"
+      ]
+    },
+    {
+      "id": "k12",
+      "item": "Limitation: general long limitation (fifteen years) from the due date of the price; whether a shorter period applies (one year for things supplied by a trader or craftsman to a non-trader, with the oath exception; five years for periodic rights) - here the parties are not traders, so the general period should apply.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "periods.d1",
+        "periods.d7",
+        "d1",
+        "n6",
+        "n7"
+      ],
+      "note": "Added from the sale chapter: a one-year limitation from actual delivery for the seller's price supplement on an excess in quantity (civil-code 366 ¶1), with the conditions of that supplement (365 ¶2, boundary n6), and the lesion supplement for real property (358, 359, 360) as a boundary. A price in instalments runs from each instalment's due date (315 ¶2, boundary n7)."
+    },
+    {
+      "id": "k13",
+      "item": "How limitation is counted (by days, the first day not counted, the last day completed), what interrupts it (judicial claim, acknowledgement of debt, payment on account), what suspends it.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b16",
+        "b39",
+        "periods.d1",
+        "periods.doc2"
+      ],
+      "note": "Interruption and suspension (civil-code 316 to 319) are carried by the imported periods deadline and its document; civil-code 3 ¶1 counts periods by the Gregorian calendar (verifier, attack adv-1)."
+    },
+    {
+      "id": "k14",
+      "item": "Limitation is not raised by the court of its own motion; only on the plea of a party, at any stage; the lawyer must still be warned.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b17",
+        "b44",
+        "d1",
+        "periods.d1"
+      ]
+    },
+    {
+      "id": "k15",
+      "item": "Competent section: civil section of the tribunal (or the section that hears civil matters; if no section, the tribunal as a whole); listing before the wrong section is not a ground of inadmissibility.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "court-sections.b1",
+        "court-sections.b3",
+        "court-sections.b4",
+        "court-sections.n1"
+      ]
+    },
+    {
+      "id": "k16",
+      "item": "Territorial jurisdiction: court of the defendant's domicile as the general rule; in contract matters, the options (place of conclusion or performance / delivery) under the procedure code; whether the rule is of public order.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t1",
+        "t2",
+        "t3",
+        "t4",
+        "t5",
+        "t6",
+        "o2",
+        "o7"
+      ],
+      "note": "The plea must be raised before any defence on the merits (cpca 47 ¶1) and the parties may appear voluntarily (cpca 46 ¶1): the rule is not treated as of public order. In real-property matters cpca 40 ¶2 and 518 name the court where the property lies 'دون سواها' (t6, open point o7)."
+    },
+    {
+      "id": "k17",
+      "item": "Exit: if either party is a trader or the sale is a commercial act, the claim goes to the commercial section or, for listed matters, to the specialised commercial court with mandatory prior conciliation.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n2",
+        "b52",
+        "ordinary-court-exits.x4",
+        "o3",
+        "o10"
+      ],
+      "note": "Before the commercial section too, cpca 534 (Law 22-13 wording) has the section president refer the dispute to mediation first, without the parties' acceptance; it is not a filing condition (verifier, attack adv-4)."
+    },
+    {
+      "id": "k18",
+      "item": "Exit: if the debt is a fixed, due sum proven in writing (acknowledgement, undertaking, endorsed invoice), the order-to-pay procedure is available as an alternative to a claim; if an order was already issued, check its status.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "ordinary-court-exits.x7",
+        "ordinary-court-exits.d3",
+        "ordinary-court-exits.d4",
+        "ordinary-court-exits.doc1",
+        "ordinary-court-exits.t3",
+        "ordinary-court-exits.n4"
+      ]
+    },
+    {
+      "id": "k19",
+      "item": "Exit: if a public administrative body is a party, the administrative court has jurisdiction.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "ordinary-court-exits.x1",
+        "court-sections.x4"
+      ]
+    },
+    {
+      "id": "k20",
+      "item": "Exit: if a criminal complaint (fraud, bad cheque) is pending on the same facts, the civil claim may have to wait (criminal holds the civil in abeyance).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "ordinary-court-exits.x6"
+      ]
+    },
+    {
+      "id": "k21",
+      "item": "Boundary: sale of real property (needs official deed, publication of the petition at the land registry if the claim concerns rescission or the property right).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n1",
+        "b12",
+        "b21",
+        "b48",
+        "b49",
+        "b50",
+        "b51",
+        "t6",
+        "o5",
+        "o7"
+      ]
+    },
+    {
+      "id": "k22",
+      "item": "Boundary: a loan or an acknowledged debt rather than a sale price; a supply of goods by a trader (commercial, short limitation); a claim for non-delivery by the buyer (not this claim).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n4",
+        "n2",
+        "periods.d7",
+        "n5"
+      ]
+    },
+    {
+      "id": "k23",
+      "item": "Boundary: a claim for rescission of the sale plus restitution rather than payment; the plaintiff must choose or plead in the alternative.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n3",
+        "formal-notice.b2"
+      ]
+    },
+    {
+      "id": "k24",
+      "item": "Petition formal elements: court, parties' names and domiciles, summary of facts and grounds, the requests, documents listed; standing and interest; fees paid; served by bailiff.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b37",
+        "b38"
+      ],
+      "note": "The petition-formal-elements module has no final record to import; only the paragraphs that bear on stating the facts and the standing are cited here."
+    },
+    {
+      "id": "k25",
+      "item": "Documents: the sale contract or any writing proving the sale, proof of delivery (receipt, delivery note), proof of partial payments, the notice record (bailiff's record) if damages are claimed.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "doc1",
+        "doc2",
+        "doc3",
+        "formal-notice.doc1",
+        "formal-notice.doc2"
+      ]
+    },
+    {
+      "id": "k26",
+      "item": "Accessory requests: costs borne by the losing party; provisional execution conditions; penalty payment (astreinte) is generally not for sums of money; legal interest not allowed between individuals.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "r3",
+        "r4",
+        "b29",
+        "b30",
+        "b31"
+      ],
+      "note": "The penalty payment of civil-code 174 is tied to performance in kind that only the debtor can do; it is not proposed for a sum of money. No interest request (see k10)."
+    },
+    {
+      "id": "k27",
+      "item": "Amendments to check: Civil Code amended by Law 05-10 (2005) and Law 07-05 (2007); Code of Civil and Administrative Procedure 08-09 as amended by Law 22-13 (2022) creating specialised commercial courts.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b8",
+        "b52",
+        "ordinary-court-exits.x4"
+      ],
+      "note": "The store gives civil-code 333 in the law-05-10 wording and the other civil-code articles cited in the ordinance-75-58 wording; cpca 534 is cited in the law-22-13 wording, whose temporal boundary the store notes as unsettled; the law-22-13 change to the specialised courts is carried by the imported exit."
+    },
+    {
+      "id": "k28",
+      "item": "Request kinds: payment (main, with the amount) and damages for delay (with the amount, needs notice and the delay-damages article).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "r1",
+        "r2",
+        "formal-notice.p1"
+      ]
+    },
+    {
+      "id": "k29",
+      "item": "The article store notes on civil-code 106, 107, 119, 351 and 387 to 395 that the text is a current snapshot at the discovery cut-off, with the historical archive deferred and no lawyer verification: does the wording relied on apply to a sale made under an earlier wording?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b1",
+        "b3",
+        "b4",
+        "b7"
+      ],
+      "note": "The store records no amending publication for these articles; the note bounds what was checked and does not show a different earlier wording. Not settled beyond that; the items rest on the wording in force."
+    },
+    {
+      "id": "k30",
+      "item": "Definition of a trader and of commercial acts (Commercial Code, opening articles), needed to tell a civil sale from a commercial one.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "o3",
+        "n2"
+      ],
+      "note": "Searched the commercial-code text view of the store: only article 30 of the opening part is present; articles 1 to 4 are missing. Requested."
+    },
+    {
+      "id": "k31",
+      "item": "A price payable in instalments: the due date of each instalment, the limitation of each, and whether instalments not yet due may be claimed (acceleration clause, loss of the term).",
+      "from": [
+        "adversary"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n7",
+        "e3",
+        "b46",
+        "b47",
+        "o8"
+      ],
+      "note": "Verifier, attack adv-6: civil-code 315 ¶2 runs limitation on a deferred debt from the end of its term; 390 ¶2 refers to article 212 on the loss of the term, which is not in the store (requested; open point o8, grade D)."
+    },
+    {
+      "id": "k32",
+      "item": "Neighbour flag flag-f-b7-p3: civil-code 107 ¶3 (unforeseeable general exceptional events making performance excessively onerous; the judge may reduce the obligation).",
+      "from": [
+        "adversary"
+      ],
+      "answer": "doesNotApply",
+      "note": "Verifier: 107 ¶3 is a defence the buyer may raise and the judge applies on the circumstances; it sets no condition, period, proof rule or court for the seller's petition, so no item of this record changes. It does not apply to drafting the claim."
+    },
+    {
+      "id": "k33",
+      "item": "Neighbour flag flag-f-b7-next: civil-code 108 ¶1 (the contract binds the parties and their general successors, subject to the rules of inheritance).",
+      "from": [
+        "adversary"
+      ],
+      "answer": "doesNotApply",
+      "note": "Verifier: 108 ¶1 extends the contract to the general successors; it bears on who is sued when the buyer has died, not on any rule of this record (elements, periods, court), and the record has no slot on a deceased party. It does not change an item."
+    },
+    {
+      "id": "k34",
+      "item": "Payment of certain sales above set sums through bank and financial channels (Executive Decree 15-153), and its effect on proving payment.",
+      "from": [
+        "adversary"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "o9",
+        "e4"
+      ],
+      "note": "Verifier, attack adv-8: not in the article store; read in the Official Journal 2015 no. 33, p. 6 (arts. 2, 4, 5, 7, 10). Requested; open point o9 (grade D). Whether a later text replaced it was not searched."
+    },
+    {
+      "id": "k35",
+      "item": "Compulsory mediation before the commercial section (cpca 534).",
+      "from": [
+        "adversary"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b52",
+        "n2"
+      ]
+    }
+  ],
+  "history": {
+    "reconciliation": "Catalogue route (the owner, 18 November 2026): derivation A promoted by script, no derivation B, no reconciler. No item would block: no blind reading.",
+    "attacks": "Verifier, 18 November 2026: register docs/research/core-logic/rules/reports/unpaid-sale-price.attacks.json; fixed adv-1, adv-2, adv-3, adv-4, adv-5, adv-6, adv-7, adv-8, flag-f-b8-p2, flag-f-b17-p2, flag-f-b18-p2, values-section, values-section-2; refuted flag-f-b7-p3, flag-f-b7-next, values-b19; open adv-9."
+  }
+}

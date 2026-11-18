@@ -1,0 +1,192 @@
+{
+  "unit": "unpaid-sale-price",
+  "attacks": [
+    {
+      "id": "adv-1",
+      "who": "adversary",
+      "target": "d1, o4",
+      "kind": "exception",
+      "claim": "Civil Code article 3 counts periods by the Gregorian calendar unless the law says otherwise; d1 and o4 do not cite it and keep a 'fixed number of days' reading with no textual basis.",
+      "verdict": "fixed",
+      "verifierQuote": "تحسب الآجال بالتقويم الميلادى مالم ينص القانون على خلاف ذلك. — تحسب مدة التقادم بالايام لا بالساعات، ولا يحسب اليوم الاول وتكمل المدة بانقضاء آخر يوم منها .",
+      "quoteRef": "civil-code 3 ¶1 (store, ordinance-75-58 wording; OJ 1975 no. 78 p. 990; ledger: no amendment); civil-code 314 ¶1",
+      "change": "Added statement b39 (civil-code 3 ¶1); d1.counting.basis now b16 + b39; b39 and b44 added to d1.basis; d1 message names article 3; d1 interpretiveNote and readings, and o4 question, why and readings rewritten to rest the calendar rule on article 3. The second reading is kept, not removed: whether 314 ¶1 'بالايام لا بالساعات' is the contrary provision article 3 reserves is a reading the final periods module keeps open (its o15, owner's instruction); the rule already followed the calendar with a band widened by one leap day, so outcomes do not change. Example exv1."
+    },
+    {
+      "id": "adv-2",
+      "who": "adversary",
+      "target": "d1, b15, price_supplement_for_excess_quantity",
+      "kind": "exception",
+      "claim": "The seller's price supplement for excess quantity exists only under the conditions of civil-code 365 ¶2 (price per unit, indivisible thing, gross excess opens rescission, contrary agreement excludes it), which the record does not cite.",
+      "verdict": "fixed",
+      "verifierQuote": "وبالعكس إذا تبين أن قدر الشيء المبيع يزيد على ما ذكر بالعقد، وكان الثمن مقدرا بحسب الوحدة وجب على المشتري إذا كان المبيع غير قابل للتقسيم أن يدفع ثمنا زائدا الا إذا كانت الزيادة فاحشة ففي هذه الحالة يجوز له أن يطلب فسخ العقد كل هذا ما لم يوجد اتفاق يخالفه.",
+      "quoteRef": "civil-code 365 ¶2 (store, ordinance-75-58; OJ 1975 no. 78 p. 1011)",
+      "change": "Added statement b40 (civil-code 365 ¶2) and boundary n6 (when price_supplement_for_excess_quantity is yes: warns with 365's conditions and 366's limitation; basis b40, b15); proposed slot's why updated; k12 note; ex1 and ex15 expectations extended for n6. Example exv2."
+    },
+    {
+      "id": "adv-3",
+      "who": "adversary",
+      "target": "b33, n5",
+      "kind": "misreading",
+      "claim": "b33's 'says' and n5's message drop the last sentence of civil-code 388 ¶2, which lets the seller claim the price; the sentence may also have lost a condition (tier-3 lead).",
+      "verdict": "fixed",
+      "verifierQuote": "ومع ذلك يجوز للبائع أن يطالب باستيفاء الثمن إذا ظهر للمشتري عيب في الشيء المبيع.",
+      "quoteRef": "civil-code 388 ¶2 (store, ordinance-75-58; OJ 1975 no. 78 Arabic p. 1013); French edition OJ 1975 no. 78 p. 836 (PDF p. 20, file F1975078.pdf sha256 a6f6e4d51a3e0cd622682e6c8cf09bf91e96beb056cfa8378f8b4141d4001124): 'Le vendeur peut, dans ce cas, obtenir le paiement au cas où l'acheteur a découvert un défaut dans l'objet vendu.'",
+      "change": "b33 'says' now includes the seller's sentence and b33 is interpretive with a note; n5 message and telling facts name the sentence and the defect; new open point o6 (grade C) keeps two readings of its reach. The lost-condition lead is not confirmed: the French edition of the same issue reads the same as the Arabic, so no condition was added. Example exv7."
+    },
+    {
+      "id": "adv-4",
+      "who": "adversary",
+      "target": "court.section (alternative dispute_is_commercial), n2, k17, ex10",
+      "kind": "procedure",
+      "claim": "Since Law 22-13, cpca 534 requires the president of the commercial section to send the dispute to mediation first, without the parties' consent; no item says so.",
+      "verdict": "fixed",
+      "verifierQuote": "يجب على رئيس القسم التجاري عرض النزاع مسبقا على الوساطة. — لا تخضع الوساطة أمام القسم التجاري إلى قبول الأطراف، خلافا لأحكام المادة 994 من هذا القانون.",
+      "quoteRef": "cpca 534 ¶1-2 (store, law-22-13 wording; OJ 2022 no. 48; the store notes the temporal boundary of Law 22-13 as unsettled)",
+      "change": "Added statement b52 (cpca 534 ¶1-2); n2 message names article 534 and its basis adds b52; k17 note, k27 and new k35. Not a filing condition, so no prior step. Example exv4."
+    },
+    {
+      "id": "adv-5",
+      "who": "adversary",
+      "target": "n1, court.section, t1, ex12",
+      "kind": "procedure",
+      "claim": "For a real-property sale the record proposes the civil section and the defendant's domicile; cpca 511, 512 (transfer of ownership), 40 and 518 give the real-estate section and the court where the property lies («دون سواها»); whether a land-price claim is a real-property matter is a reading the record never raises.",
+      "verdict": "fixed",
+      "verifierQuote": "ينظر القسم العقاري في المنازعات المتعلقة بالأملاك العقارية. — 8 - في التنازل عن الملكية وحق الانتفاع، — فضلا عما ورد في المواد 37 و38 و46 من هذا القانون، ترفع الدعاوى أمام الجهات القضائية المبينة أدناه دون سواها : 1- في المواد العقارية ... أمام المحكمة التي يقع في دائرة اختصاصها العقار — يؤول الاختصاص الإقليمي إلى المحكمة التي يوجد العقار في دائرة اختصاصها، ما لم ينص القانون على خلاف ذلك.",
+      "quoteRef": "cpca 511 ¶1, 512 ¶1 and ¶9, 40 ¶1-2, 518 ¶1 (store, law-08-09 wording; ledger: law-22-13 does not touch them)",
+      "change": "Added statements b48 (cpca 40 ¶1-2), b49 (518 ¶1), b50 (511 ¶1), b51 (512 ¶1, ¶9); new territory rule t6 (when dispute_concerns_real_property is yes); n1 message and basis name the real-estate section and the exclusive court; section basis and message and interpretiveNote name 511/512; new open point o7 (grade C, both readings, protective: warn of both without blocking). The proposed section stays civil (a reading; a wrong section is only transferred, cpca 32 ¶6). k16, k21. Example exv5."
+    },
+    {
+      "id": "adv-6",
+      "who": "adversary",
+      "target": "e3, debt_due_date (periods import), k12",
+      "kind": "missing",
+      "claim": "A price payable in instalments has one due date per instalment and one limitation per instalment; the single debt_due_date can hide early instalments past the one-year trader limitation, and unmatured instalments need an acceleration clause or loss of the term (390 ¶2 refers to 212).",
+      "verdict": "fixed",
+      "verifierQuote": "وخصوصا لا يسرى التقادم بالنسبة الى دين معلق على شرط واقف الا من اليوم الذى يتحقق فيه الشرط ... وبالنسبة الى الدين المؤجل الا من الوقت الذى ينقضى فيه الاجل . — يجوز كذلك للبائع أن يمسك المبيع ولو لم يحل الأجل المتفق عليه لدفع الثمن إذا سقط حق المشتري في الأجل طبقا لمقتضيات المادة.212",
+      "quoteRef": "civil-code 315 ¶2 and 390 ¶2 (store, ordinance-75-58); civil-code 212 not in the store",
+      "change": "Added statements b46 (315 ¶2) and b47 (390 ¶2); proposed slot price_payable_in_instalments; boundary n7 (when yes: warns that each instalment runs from its own due date and to enter the oldest unpaid one); e3 fact line, slot and basis b46; open point o8 (grade D) on unmatured instalments; checklist k31; ex1 and ex15 updated for the new slot (ex1 sets it to no; ex15 asks it). civil-code 212 appended to requests.jsonl. Example exv6."
+    },
+    {
+      "id": "adv-7",
+      "who": "adversary",
+      "target": "n1, b20",
+      "kind": "exception",
+      "claim": "The lesion-supplement period starts later for a seller without capacity (359 ¶2), and no lesion challenge lies against a sale by public auction under the law (360).",
+      "verdict": "fixed",
+      "verifierQuote": "وبالنسبة لعديمي الأهلية فمن يوم انقطاع سبب العجز. — لا يجوز الطعن بالغبن في بيع تم بطريق المزاد العلني بمقتضى القانون.",
+      "quoteRef": "civil-code 359 ¶2 and 360 ¶1 (store, ordinance-75-58; OJ 1975 no. 78 p. 1011)",
+      "change": "Added statements b41 (359 ¶2) and b42 (360 ¶1) to n1's basis; n1 message states the later start and the auction bar. Example exv5."
+    },
+    {
+      "id": "adv-8",
+      "who": "adversary",
+      "target": "e4, doc3",
+      "kind": "specialLaw",
+      "claim": "Executive Decree 15-153 requires payment through bank channels above 5,000,000 DA for real property and 1,000,000 DA for listed movables, part payments included; e4 and doc3 accept cash receipts with no warning.",
+      "verdict": "fixed",
+      "verifierQuote": "يتم دفع كل المبادلات التي تساوي أو تفوق المبالغ المحددة أسفله، بوسائل الدفع الكتابية عن طريق القنوات البنكية والمالية : – خمسة ملايين دينار (5.000.000 دج) لشراء أملاك عقارية، – واحد مليون دينار (1.000.000 دج) لشراء : ... — تسري أحكام هذا المرسوم أيضا على عمليات الدفع الجزئية للدين نفسه المجزأ إراديا والذي يفوق مبلغه الإجمالي الحد المذكور أعلاه. — يؤدي عدم الامتثال لأحكام هذا المرسوم إلى تطبيق أحكام المادة 31 من القانون رقم 05 – 01",
+      "quoteRef": "Executive Decree 15-153 of 16 June 2015, arts. 2, 5, 7 (art. 10: in force 1 July 2015), Official Journal 2015 no. 33, p. 6 (read from the page image; file A2015033.pdf sha256 d6f0a1c15e184142ca1c0853051fd3671c0752a02cc5b20bc0fdb962a441fcac)",
+      "change": "Not in the store: appended executive-decree-15-153 to requests.jsonl; new open point o9 (grade D, two readings of the civil effect on proof); proof note on e4; checklist k34 (searchedNotFound). Whether a later decree replaced it after Law 05-01 was amended was not searched. Example exv8."
+    },
+    {
+      "id": "adv-9",
+      "who": "adversary",
+      "target": "n2, b32, b8",
+      "kind": "misreading",
+      "claim": "For a mixed sale (trader to non-trader), free proof applies only against the party for whom the act is commercial; against the non-trader buyer civil-code 333 still applies (tier-3 doctrine, from memory).",
+      "verdict": "open",
+      "verifierQuote": "في غير المواد التجارية إذا كان التصرف القانوني تزيد قيمته على 100.000 دينار جزائري أو كان غير محدد القيمة فلا يجوز الإثبات بالشهود في وجوده أو انقضائه ما لم يوجد نص يقضي بغير ذلك. — يثبت كل عقد تجاري: ... 6 - بالإثبات بالبينة أو بأية وسيلة أخرى إذا رأت المحكمة وجوب قبولها.",
+      "quoteRef": "civil-code 333 ¶1 (law-05-10 wording); commercial-code 30 ¶1, ¶7 (store)",
+      "change": "Searched the store's civil-code and commercial-code text views: no text governs a mixed act; the Commercial Code's opening articles defining commercial acts are not in the store (already requested, requests.jsonl line 43); no Supreme Court decision was fetched. Both readings kept in new open point o10 (grade D, protective reading: writing above the article 333 sum against a non-trader buyer); n2 message no longer presents free proof as settled when the sale is commercial for one party only; k17 refs o10."
+    },
+    {
+      "id": "flag-f-b7-p3",
+      "who": "neighbourFlag",
+      "target": "b7",
+      "kind": "exception",
+      "claim": "civil-code 107 ¶3 (imprévision) is next to b7, opens with «غير أنه», and the record neither cites it nor says why it does not apply.",
+      "verdict": "refuted",
+      "verifierQuote": "غير أنه إذا طرأت حوادث استثنائية عامة لم يكن في الوسع توقعها وترتب على حدوثها أن تنفيذ الالتزام التعاقدي، وإن لم يصبح مستحيلا، صار مرهقا للمدين بحيث يهدده بخسارة فادحة جاز للقاضي تبعا للظروف وبعد مراعاة لمصلحة الطرفين أن يرد الالتزام المرهق إلى الحد المعقول",
+      "quoteRef": "civil-code 107 ¶3 (store, ordinance-75-58)",
+      "change": "Checklist k32 (doesNotApply): a defence the judge applies on the circumstances; it sets no condition, period, proof rule or court for the seller's petition."
+    },
+    {
+      "id": "flag-f-b7-next",
+      "who": "neighbourFlag",
+      "target": "b7",
+      "kind": "exception",
+      "claim": "civil-code 108 ¶1 is next to b7, contains «ما لم», and the record neither cites it nor says why it does not apply.",
+      "verdict": "refuted",
+      "verifierQuote": "ينصرف العقد إلى المتعاقدين والخلف العام، ما لم يتبين من طبيعة التعامل، أو من نص القانون، أن هذا الأثر لا ينصرف إلى الخلف العام كل ذلك مع مراعاة القواعد المتعلقة بالميراث.",
+      "quoteRef": "civil-code 108 ¶1 (store, ordinance-75-58)",
+      "change": "Checklist k33 (doesNotApply): it bears on who is sued when a party has died, not on any rule of the record."
+    },
+    {
+      "id": "flag-f-b8-p2",
+      "who": "neighbourFlag",
+      "target": "b8",
+      "kind": "exception",
+      "claim": "civil-code 333 ¶2 (value at the time of the act; accessories) is next to b8 and is not cited.",
+      "verdict": "fixed",
+      "verifierQuote": "ويقدر الالتزام باعتبار قيمته وقت صدور التصرف القانوني ويجوز الإثبات بالشهود إذا كانت زيادة الإلتزام على 100.000 دينار جزائري لم تأت إلا من ضم الملحقات إلى الأصل.",
+      "quoteRef": "civil-code 333 ¶2 (store, law-05-10 wording)",
+      "change": "e1's proof note already relied on the value at the time of the sale without citing ¶2: added statement b43 (333 ¶2) to e1's first proof basis, note now states the accessories rule; k7 refs and note. Example exv7."
+    },
+    {
+      "id": "flag-f-b17-p2",
+      "who": "neighbourFlag",
+      "target": "b17",
+      "kind": "exception",
+      "claim": "civil-code 321 ¶2 (limitation may be pleaded at any stage, even on appeal) is next to b17 and is not cited.",
+      "verdict": "fixed",
+      "verifierQuote": "ويجوز التمسك بالتقادم فى أية حالة من حالات الدعوى ولو أمام المحكمة الاستئنافية .",
+      "quoteRef": "civil-code 321 ¶2 (store, ordinance-75-58)",
+      "change": "k14 already said 'at any stage' without the cite: added statement b44 (321 ¶2) to d1's basis and k14's refs; d1 message says it may be pleaded at any stage, even on appeal. Example exv1."
+    },
+    {
+      "id": "flag-f-b18-p2",
+      "who": "neighbourFlag",
+      "target": "b18",
+      "kind": "exception",
+      "claim": "civil-code 182 ¶2 (contract damages limited to the foreseeable without fraud or gross fault) is next to b18 and is not cited.",
+      "verdict": "fixed",
+      "verifierQuote": "غير أنه إذا كان الالتزام مصدره العقد، فلا يلتزم المدين الذي لم يرتكب غشا أو خطأ جسيما إلا بتعويض الضرر الذي كان يمكن توقعه عادة وقت التعاقد.",
+      "quoteRef": "civil-code 182 ¶2 (store, ordinance-75-58)",
+      "change": "The price is a contractual obligation, so ¶2 limits the delay damages of r2: added statement b45 (182 ¶2) to r2's basis and k10 (refs and note). Example exv7."
+    },
+    {
+      "id": "values-b19",
+      "who": "values",
+      "target": "b19",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"b19\", \"problem\": \"numberNotInQuote\", \"lang\": \"en\", \"numbers\": [4]}",
+      "verdict": "refuted",
+      "verifierQuote": "إذا بيع عقار بغبن يزيد عن الخمس فللبائع الحق في طلب تكملة الثمن إلى أربعة أخماس ثمن المثل.",
+      "quoteRef": "civil-code 358 ¶1 (store, ordinance-75-58)",
+      "change": "None: 'four fifths' in b19's English renders «أربعة أخماس», written in words in the quote."
+    },
+    {
+      "id": "values-section",
+      "who": "values",
+      "target": "section",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"section\", \"problem\": \"messageArticleNotInBasis\", \"lang\": \"ar\", \"articles\": [\"32\", \"531\"]}",
+      "verdict": "fixed",
+      "verifierQuote": "يختص القسم التجاري بالنظر في المنازعات التجارية، باستثناء تلك المذكورة في المادة 536 مكرر من هذا القانون. — تتم جدولة القضايا أمام الأقسام حسب طبيعة النزاع. — غير أنه في المحاكم التي لم تنشأ فيها الأقسام، يبقى القسم المدني هو الذي ينظر في جميع النزاعات باستثناء القضايا الاجتماعية.",
+      "quoteRef": "cpca 531 ¶1 (law-22-13; court-sections.b21); cpca 32 ¶4, ¶5 (court-sections.b3, b4)",
+      "change": "531 was only in the commercial alternative's basis: court-sections.b21 added to section.basis. Article 32 was already there (court-sections.b1, b3, b4 cite cpca 32 ¶1, ¶4, ¶5); that half of the finding is the script not resolving imported ids. Section basis also gains b50, b51 for the new 511/512 mention. Example exv4."
+    },
+    {
+      "id": "values-section-2",
+      "who": "values",
+      "target": "section",
+      "kind": "misreading",
+      "claim": "check-values: {\"item\": \"section\", \"problem\": \"messageArticleNotInBasis\", \"lang\": \"en\", \"articles\": [\"32\", \"531\"]}",
+      "verdict": "fixed",
+      "verifierQuote": "يختص القسم التجاري بالنظر في المنازعات التجارية، باستثناء تلك المذكورة في المادة 536 مكرر من هذا القانون. — تتم جدولة القضايا أمام الأقسام حسب طبيعة النزاع.",
+      "quoteRef": "cpca 531 ¶1 (court-sections.b21); cpca 32 ¶4 (court-sections.b3)",
+      "change": "Same change as values-section (English message): court-sections.b21 added to section.basis; 32 was already in basis through court-sections.b1, b3, b4. Example exv4."
+    }
+  ]
+}

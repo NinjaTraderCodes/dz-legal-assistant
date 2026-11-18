@@ -1,0 +1,27 @@
+{
+  "unit": "commercial-lease-regimes",
+  "attacks": [
+    {
+      "id": "uncertain-bc15",
+      "who": "owner",
+      "target": "p1",
+      "kind": "wrongEffect",
+      "claim": "Boundary case bc15 is uncertain: the verifier set it aside (the record asks p1's own composite slot), and Codex, reading the texts blind, gave «stepMissing», as the case writer expected, for a 1998 lease with no notice to quit served (187 مكرر 1 ¶1 keeps the old regime; 173 ¶1 requires the notice at least six months before the term). The owner asks to keep both readings in an open point and make the item warn, without settling it.",
+      "verdict": "open",
+      "verifierQuote": "يبقى تجديد عقود الإيجار المبرمة قبل النشر المذكور في المادة 187 مكرر أعلاه، خاضعا للتشريع الساري المفعول بتاريخ إبرام عقد الإيجار. / لا ينتهي إيجار المحلات الخاصة بهذه الأحكام إلا بأثر تنبيه بالإخلاء حسبما جرت عليه العادات المحلية وفي مدة ستة أشهر قبل الأجل على الأقل.",
+      "quoteRef": "commercial-code 187 مكرر 1 ¶1 (version law-05-02); commercial-code 173 ¶1 (version ordinance-75-59); both in the store",
+      "change": "p1 effectWhenUnknown ask -> warn (it still asks its own slot notice_to_quit_valid), so a case with the notice not answered (no notice served, the step's own slot unset) now gives p1's warning instead of a bare question; p1 interpretiveNote extended; new open point o17 (grade C, refs p1) keeps both readings: (1) no notice served is a missing step (b11, b13, b39), (2) the step is judged on its own slot joining means, content and timing and stays a question until answered (b11, b13, b73, b74); protective reading: warn and ask together, never block. Examples exA3 and exB6 corrected from ask to warn; new examples exV26 (this case: warn, asks notice_to_quit_valid) and exV28 (answered no: warn)."
+    },
+    {
+      "id": "uncertain-bc17",
+      "who": "owner",
+      "target": "p1",
+      "kind": "wrongEffect",
+      "claim": "Boundary case bc17 is uncertain: the verifier set it aside (the record asks p1's own composite slot), and Codex, reading the texts blind, gave «stepMissing», as the case writer expected, for a 1998 lease whose notice to quit went by registered letter (173 ¶5 requires an extrajudicial act stating reasons and restating 194, on pain of nullity). The owner asks to keep both readings in an open point and make the item warn, without settling it.",
+      "verdict": "open",
+      "verifierQuote": "يبقى تجديد عقود الإيجار المبرمة قبل النشر المذكور في المادة 187 مكرر أعلاه، خاضعا للتشريع الساري المفعول بتاريخ إبرام عقد الإيجار. / ويجب أن يتم التنبيه بالإخلاء بعقد غير قضائي وأن تبين فيه الأسباب التي أدت إلى توجيهه مع إعادة ذكر مضمون المادة 194، وإلا اعتبر باطلا.",
+      "quoteRef": "commercial-code 187 مكرر 1 ¶1 (version law-05-02); commercial-code 173 ¶5 (version ordinance-75-59); both in the store",
+      "change": "Same correction as uncertain-bc15 (p1 effectWhenUnknown ask -> warn, interpretiveNote extended, open point o17 naming the registered letter in its first reading: not «بعقد غير قضائي», void under 173 ¶5). New example exV27 (this case: p1 warns and asks notice_to_quit_valid); exV28 covers the answered case (notice_to_quit_valid no: warn)."
+    }
+  ]
+}

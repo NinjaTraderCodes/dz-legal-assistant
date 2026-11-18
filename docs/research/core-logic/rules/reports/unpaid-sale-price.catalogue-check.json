@@ -1,0 +1,321 @@
+{
+  "unit": "unpaid-sale-price",
+  "finalModules": [
+    "court-sections",
+    "formal-notice",
+    "labour-prelitigation",
+    "ordinary-court-exits",
+    "periods"
+  ],
+  "articles": [
+    {
+      "code": "civil-code",
+      "number": "351",
+      "role": "basis",
+      "required": true,
+      "inStore": true,
+      "status": "inForce",
+      "version": "ordinance-75-58",
+      "verified": true,
+      "verifiedBy": "libraryProofAndCorpus",
+      "proof": "mechanical",
+      "paragraphs": 1,
+      "tier": 2,
+      "frenchCheck": null,
+      "ledgerClean": true,
+      "ledgerReason": null,
+      "inModules": [],
+      "inUnitTexts": true
+    },
+    {
+      "code": "civil-code",
+      "number": "106",
+      "role": "basis",
+      "required": false,
+      "inStore": true,
+      "status": "inForce",
+      "version": "ordinance-75-58",
+      "verified": true,
+      "verifiedBy": "libraryProofAndCorpus",
+      "proof": "mechanical",
+      "paragraphs": 1,
+      "tier": 2,
+      "frenchCheck": null,
+      "ledgerClean": true,
+      "ledgerReason": null,
+      "inModules": [
+        {
+          "module": "formal-notice",
+          "statements": [
+            "b36"
+          ],
+          "items": [
+            "boundary:n10"
+          ]
+        }
+      ],
+      "inUnitTexts": true
+    },
+    {
+      "code": "civil-code",
+      "number": "164",
+      "role": "basis",
+      "required": false,
+      "inStore": true,
+      "status": "inForce",
+      "version": "ordinance-75-58",
+      "verified": true,
+      "verifiedBy": "libraryProof",
+      "proof": "mechanical",
+      "paragraphs": 1,
+      "tier": 2,
+      "frenchCheck": null,
+      "ledgerClean": true,
+      "ledgerReason": null,
+      "inModules": [
+        {
+          "module": "formal-notice",
+          "statements": [
+            "b4"
+          ],
+          "items": [
+            "priorStep:p3"
+          ]
+        }
+      ],
+      "inUnitTexts": true
+    },
+    {
+      "code": "civil-code",
+      "number": "323",
+      "role": "proof",
+      "required": true,
+      "inStore": true,
+      "status": "inForce",
+      "version": "ordinance-75-58",
+      "verified": true,
+      "verifiedBy": "libraryProof",
+      "proof": "mechanical",
+      "paragraphs": 1,
+      "tier": 2,
+      "frenchCheck": null,
+      "ledgerClean": true,
+      "ledgerReason": null,
+      "inModules": [
+        {
+          "module": "formal-notice",
+          "statements": [
+            "b24"
+          ],
+          "items": [
+            "element:e1"
+          ]
+        },
+        {
+          "module": "periods",
+          "statements": [
+            "b42"
+          ],
+          "items": []
+        }
+      ],
+      "inUnitTexts": true
+    },
+    {
+      "code": "civil-code",
+      "number": "179",
+      "role": "prerequisite",
+      "required": false,
+      "inStore": true,
+      "status": "inForce",
+      "version": "ordinance-75-58",
+      "verified": true,
+      "verifiedBy": "libraryProof",
+      "proof": "mechanical",
+      "paragraphs": 1,
+      "tier": 2,
+      "frenchCheck": null,
+      "ledgerClean": true,
+      "ledgerReason": null,
+      "inModules": [
+        {
+          "module": "formal-notice",
+          "statements": [
+            "b1"
+          ],
+          "items": [
+            "boundary:n12",
+            "element:e1",
+            "priorStep:p1"
+          ]
+        }
+      ],
+      "inUnitTexts": true
+    },
+    {
+      "code": "civil-code",
+      "number": "186",
+      "role": "damages",
+      "required": false,
+      "inStore": true,
+      "status": "inForce",
+      "version": "ordinance-75-58",
+      "verified": true,
+      "verifiedBy": "libraryProof",
+      "proof": "mechanical",
+      "paragraphs": 1,
+      "tier": 2,
+      "frenchCheck": null,
+      "ledgerClean": true,
+      "ledgerReason": null,
+      "inModules": [
+        {
+          "module": "formal-notice",
+          "statements": [
+            "b15"
+          ],
+          "items": []
+        }
+      ],
+      "inUnitTexts": true
+    }
+  ],
+  "prerequisites": [
+    {
+      "from": "articles",
+      "text": {
+        "ar": "لا يستحق التعويض إلا بعد إعذار المدين",
+        "en": "No damages before formal notice"
+      },
+      "article": "civil-code 179",
+      "inModules": [
+        {
+          "module": "formal-notice",
+          "items": [
+            "priorStep:p1"
+          ]
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "document": "عقد البيع",
+      "inModules": [
+        {
+          "module": "formal-notice",
+          "item": "documents:doc3",
+          "sharedWords": [
+            "عقد"
+          ],
+          "strength": "weak"
+        }
+      ]
+    },
+    {
+      "document": "ما يثبت تسليم المبيع",
+      "inModules": [
+        {
+          "module": "ordinary-court-exits",
+          "item": "documents:doc2",
+          "sharedWords": [
+            "يثبت"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "ordinary-court-exits",
+          "item": "documents:doc3",
+          "sharedWords": [
+            "يثبت"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "periods",
+          "item": "documents:doc2",
+          "sharedWords": [
+            "يثبت"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "periods",
+          "item": "documents:doc3",
+          "sharedWords": [
+            "تسليم",
+            "يثبت"
+          ],
+          "strength": "strong"
+        }
+      ]
+    },
+    {
+      "document": "محضر الإعذار",
+      "inModules": [
+        {
+          "module": "formal-notice",
+          "item": "documents:doc1",
+          "sharedWords": [
+            "اعذار"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "formal-notice",
+          "item": "documents:doc2",
+          "sharedWords": [
+            "محضر"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "labour-prelitigation",
+          "item": "documents:doc1",
+          "sharedWords": [
+            "محضر"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "periods",
+          "item": "documents:doc1",
+          "sharedWords": [
+            "محضر"
+          ],
+          "strength": "weak"
+        },
+        {
+          "module": "periods",
+          "item": "documents:doc3",
+          "sharedWords": [
+            "محضر"
+          ],
+          "strength": "weak"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "articles": 6,
+    "notInStore": [],
+    "repealedOrNotInForce": [],
+    "notVerified": [],
+    "proofLabels": {
+      "mechanical": 6,
+      "twoFamilies": 0,
+      "oneFamily": 0
+    },
+    "carriedByModules": [
+      "civil-code 106",
+      "civil-code 164",
+      "civil-code 323",
+      "civil-code 179",
+      "civil-code 186"
+    ],
+    "documentsMatchedInModules": 1,
+    "prerequisitesMatchedInModules": 1,
+    "outsideUnitTexts": []
+  },
+  "rule": "facts read by script from the article store and the final module records; a module match by shared words is a lead for the deriver, never a finding"
+}

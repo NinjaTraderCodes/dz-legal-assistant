@@ -125,6 +125,17 @@ public sealed partial class ChallengeTests
         Assert.Empty(Drawn.Value["contestOfAmount"].Rejected);  // forced in the draw: nothing to reject
     }
 
+    /// <summary>18 November 2026: «لا ننفي» (we do not deny) is a double negation, as «لا ينفي» is; a single cue is not.</summary>
+    [Theory]
+    [InlineData("لا ننفي توجيهنا تنبيها بالإخلاء", 2)]
+    [InlineData("لا تنفي المستأجرة استلام الإنذار", 2)]
+    [InlineData("لا أنكر أنه سلمني المبلغ", 2)]
+    [InlineData("لا ينكر المدين توقيعه", 2)]
+    [InlineData("ننفي استلام المبلغ", 1)]
+    [InlineData("لم يسدد المدين الدين", 1)]
+    public void ADisputeVerbCountsInEveryPersonOfItsPresent(string sentence, int count) =>
+        Assert.Equal(count, ChallengeChecks.NegationCount(sentence));
+
     [Fact]
     public void DocumentAgainstContestTargetsADisputedEventThatAPaperRecords()
     {

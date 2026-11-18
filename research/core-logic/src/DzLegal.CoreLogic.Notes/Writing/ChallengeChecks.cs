@@ -139,8 +139,12 @@ public static partial class ChallengeChecks
         var disputes = CueEngine.DisputeCues.Where(d => !d.Contains(' ', StringComparison.Ordinal)).ToList();
         bool Refusal(string w) => CueEngine.RefusalCues.Any(r => w.StartsWith(r, StringComparison.Ordinal) ||
             (w.Length > 1 && w[0] is 'ي' or 'ت' or 'ن' && w[1..].StartsWith(r[0] == 'ا' ? r[1..] : r, StringComparison.Ordinal)));
-        return Words(sentence).Count(w => CueEngine.NegationCues.Contains(w, StringComparer.Ordinal) || Refusal(w) ||
-                                          disputes.Any(d => w.StartsWith(d, StringComparison.Ordinal)));
+        // A dispute verb in any person of its present: the table writes «ينفي» and «تنفي», a lawyer's note writes «لا ننفي»
+        // (18 November 2026: 7 of w-challenge-0001's notes were refused on «لا ننفي», a true double negation). The check
+        // only: the reader's cue table is not changed by challenge notes, which only measure.
+        bool Dispute(string w) => disputes.Any(d => w.StartsWith(d, StringComparison.Ordinal) ||
+            (d[0] == 'ي' && w.Length > 1 && w[0] is 'ن' or 'أ' or 'ا' && w[1..].StartsWith(d[1..], StringComparison.Ordinal)));
+        return Words(sentence).Count(w => CueEngine.NegationCues.Contains(w, StringComparer.Ordinal) || Refusal(w) || Dispute(w));
     }
 
     [GeneratedRegex(@"[^\p{L}\p{Nd}]+")]

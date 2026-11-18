@@ -27,7 +27,7 @@ You are checking that a piece of research can be reproduced by someone who did n
 
 1. Do exactly what the document says, in its order, with its commands. Do not use anything you know about the project from elsewhere, do not read the handbook or other reports to fill a gap, and do not fix a broken step by guessing: when the document is unclear, wrong or silent, **write that down and stop that branch of the work**, then continue with the steps that do not depend on it.
 2. Do not open anything under `C:\dz-hidden*`. Figures that come from a hidden set are checked only by comparing the committed `summary.md` files with what the document quotes from them.
-3. No network, except a download the document lists with its URL and hash. No account, no key, no payment. Remove `OPENROUTER_API_KEY` and `GOOGLE_API_KEY` from the environment of every shell you start.
+3. No network, except a download the document lists with its URL and hash. No account, no key, no payment. In every shell you start, the first command is exactly `unset OPENROUTER_API_KEY GOOGLE_API_KEY`, alone: no other way of removing the keys (no `env`, no `export`), and never print the environment.
 4. Run builds and tests on an idle machine, and never while a training or a timing runs; run timings only if the document's conditions (mains power, Best performance) hold, and otherwise mark them "not rebuilt: conditions".
 5. Change nothing in the clone except what the commands themselves write. Copy no model file into the clone.
 

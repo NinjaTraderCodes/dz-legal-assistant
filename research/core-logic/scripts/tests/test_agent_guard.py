@@ -88,3 +88,20 @@ def test_the_hook_exits_2_with_a_reason_and_0_when_allowed():
     assert r.returncode == 2 and "Refused by the owner's tool settings" in r.stderr
     assert run("reader", {"tool_name": "Read", "tool_input": {"file_path": CL + r"\HANDBOOK.md"}}).returncode == 0
     assert run("nobody", {"tool_name": "Read", "tool_input": {}}).returncode == 2
+
+
+def test_env_is_refused_in_every_form_and_only_the_exact_unset_passes():
+    # The owner, 18 November 2026: `env -u ... <program>` runs any program; `env` alone prints the environment.
+    for role in ("rules", "checker"):
+        for cmd in ("env -u OPENROUTER_API_KEY -u GOOGLE_API_KEY", "env -u OPENROUTER_API_KEY sed x", "env",
+                    "export OPENROUTER_API_KEY=", "printenv", "unset OPENROUTER_API_KEY GOOGLE_API_KEY PATH"):
+            assert g.check(role, bash(cmd)), (role, cmd)
+        assert g.check(role, bash("unset OPENROUTER_API_KEY GOOGLE_API_KEY")) is None
+    assert g.check("reader", bash("unset OPENROUTER_API_KEY GOOGLE_API_KEY"))  # a reader runs nothing at all
+
+
+def test_the_builder_cannot_print_the_environment_either():
+    for cmd in ("env", "printenv", "set", "export", "cd x && env | sort", "env -u A python x.py", "dotnet test; printenv"):
+        assert g.check("builder", bash(cmd)), cmd
+    for cmd in ("dotnet build -c Release", "python -m pytest -q tests", "grep -n setting x.py", "git log --oneline -3"):
+        assert g.check("builder", bash(cmd)) is None, cmd

@@ -398,3 +398,21 @@ def test_the_blocker_view_gets_the_questions_and_the_texts_never_the_items(tmp_c
     (a / "loan-repayment.catalogue-changes.json").write_text(json.dumps({"wouldBlock": []}), encoding="utf-8")
     with pytest.raises(ValueError):  # nothing would block: stage 2e is skipped, never launched
         prompts.values_for("rules-blocker-view", "loan-repayment")
+
+
+def test_every_prompt_that_names_the_keys_removes_them_by_the_exact_unset_only():
+    # The owner, 18 November 2026: no `env -u` (it runs any program after it, or prints the whole environment); only
+    # the exact unset of the two keys, which the agent guard allows alone.
+    exact = "`unset OPENROUTER_API_KEY GOOGLE_API_KEY`, alone"
+    named = 0
+    for name in sorted(os.listdir(prompts.PROMPTS)):
+        if not name.endswith(".md"):
+            continue
+        with open(os.path.join(prompts.PROMPTS, name), encoding="utf-8") as f:
+            text = f.read()
+        if "OPENROUTER_API_KEY" not in text:
+            continue
+        named += 1
+        assert exact in text, name
+        assert "env -u" not in text and "Remove-Item Env:" not in text and "remove `OPENROUTER_API_KEY`" not in text, name
+    assert named >= 8

@@ -38,6 +38,8 @@ RULES_TOOL = re.compile(r"^" + re.escape(RESEARCH) + r"tools/rules/[0-9a-f]{7,40
 OJ_FETCH = WORKTREE + "research/core-logic/scripts/oj_fetch.py"
 KEY_UNSET = re.compile(r"^unset( (OPENROUTER_API_KEY|GOOGLE_API_KEY)){1,2}$")
 SHELL_CONSTRUCT = re.compile(r"[;&|<>`\n]|\$\(")
+# The owner, 18 November 2026: `env -u … <program>` runs any program and `env` alone prints the environment into the logs.
+ENV_DUMP = re.compile(r"(^|[;&|(]\s*)(env|printenv|set|export|declare\s+-[px])(\s|$)")
 GIT_CHANGES = re.compile(r"\bgit\b[^|;&]*\b(commit|push|reset|checkout|switch|stash|rebase|merge|cherry-pick|revert|"
                          r"clean|branch\s+-[dD]|worktree|tag|config|update-ref|gc|filter-branch)\b")
 READ_TOOLS = {"Read", "Glob", "Grep", "LS", "NotebookRead"}
@@ -69,6 +71,8 @@ def check_command(role: str, command: str) -> str | None:
     if role == "builder":
         if GIT_CHANGES.search(command):
             return "this agent may not run a git command that changes the repository"
+        if ENV_DUMP.search(command):
+            return "this agent may not run env, printenv, set or export (they run programs or print the environment)"
         return None
     if KEY_UNSET.match(command.strip()):  # the prompts' first step (the keys are absent when the gate is clean)
         return None

@@ -17,7 +17,7 @@ The repository is the worktree `{{worktree}}` (`C:\Users\TheShadow\dz-fable-core
 
 Everything else is off limits, in particular: every file of the repository (you run `oj-fetch` but do not read or change any file of the repository); the rule records, `data/law/`, `docs/research/core-logic/law/` and the article store; Codex's corpus and every other git branch; everything under `C:\Users\TheShadow\dz-core-research` beyond `{{work_folder}}`; the plan file and the state file (`C:\Users\TheShadow\dz-core-research\STATE.md`); any memory file (do not read or write anything under `C:\Users\TheShadow\.claude`); anything under `C:\dz-hidden*`.
 
-Before your first command, remove the two keys from your shell, and never print a key: in PowerShell `Remove-Item Env:OPENROUTER_API_KEY,Env:GOOGLE_API_KEY -ErrorAction SilentlyContinue`; in bash `unset OPENROUTER_API_KEY GOOGLE_API_KEY`.
+Your first command is exactly `unset OPENROUTER_API_KEY GOOGLE_API_KEY`, alone: no other way of removing the keys (no `env`, no `export`), and never print the environment.
 
 A scan of the Official Journal of the Algerian Republic found sentences in one issue that may announce an amendment to a law this project relies on. Read the issue and say exactly what it changes.
 

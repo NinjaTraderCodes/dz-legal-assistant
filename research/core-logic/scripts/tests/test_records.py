@@ -275,6 +275,17 @@ def test_flatten_copies_blocks_prefixes_ids_and_refuses_a_missing_block():
         rc.flatten_imports(claim, {"labour-prelitigation": module})
 
 
+def test_flatten_keeps_only_the_refs_a_copied_open_point_brings_in():
+    module = record(id="labour-prelitigation")
+    other = dict(module["deadlines"][0], id="d2")
+    module["deadlines"].append(other)
+    module["openPoints"] = [{"id": "o1", "question": {"ar": "؟", "en": "?"}, "refs": ["d1", "d2", "b1"]}]
+    claim = {"id": "c-test", "kind": "claim", "basis": [], "slots": [],
+             "imports": [{"module": "labour-prelitigation", "blocks": ["d1"]}]}
+    flat = rc.flatten_imports(claim, {"labour-prelitigation": module})
+    assert flat["openPoints"][0]["refs"] == ["labour-prelitigation.d1", "labour-prelitigation.b1"]
+
+
 def test_check_checklist_wants_every_line_and_flag_answered():
     r = record(checklist=[{"id": "k1", "item": "Which period?", "from": ["derivationA"], "answer": "applies", "refs": ["d1"]}])
     flags = rc.flag_neighbours(r, STORE)

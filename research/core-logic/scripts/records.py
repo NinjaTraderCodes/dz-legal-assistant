@@ -847,6 +847,9 @@ def flatten_imports(claim: dict, modules: dict) -> dict:
         taken_ids = {x.get("id") for x in taken}
         for point in module.get("openPoints", []):
             if set(point.get("refs", [])) & (taken_ids | needed):
+                # a copied point keeps only the refs the claim brings in: a ref to a block it does not import would
+                # dangle in the claim record (rules check, 18 November 2026: court-sections.o12 citing t6)
+                point["refs"] = [r for r in point["refs"] if r in taken_ids or r in statement_ids]
                 claim.setdefault("openPoints", []).append(point)
                 taken.append(point)
                 needed.update(r for r in point.get("refs", []) if r in statement_ids)

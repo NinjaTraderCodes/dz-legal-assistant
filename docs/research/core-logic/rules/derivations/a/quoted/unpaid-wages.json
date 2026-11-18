@@ -1,0 +1,1569 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "claim",
+  "id": "unpaid-wages",
+  "label": {
+    "ar": "المطالبة بالأجور غير المدفوعة",
+    "en": "Unpaid wages"
+  },
+  "verified": false,
+  "stage": "derivationA",
+  "derivedBy": {
+    "role": "derivationA",
+    "model": "claude-opus-5-5",
+    "date": "2026-11-18"
+  },
+  "area": "social",
+  "imports": [
+    {
+      "module": "labour-prelitigation",
+      "blocks": [
+        "b1",
+        "b2",
+        "b3",
+        "b19",
+        "b20",
+        "b21",
+        "b35",
+        "b40",
+        "b41",
+        "b58",
+        "t1",
+        "t2",
+        "t3",
+        "d1",
+        "d2",
+        "d3",
+        "p1",
+        "p2",
+        "doc1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "r1",
+        "r2"
+      ],
+      "how": {
+        "ar": "المطالبة بالأجور خلاف فردي في العمل: تسبقها محاولة الصلح أمام مكتب المصالحة وترفق العريضة بمحضر عدم المصالحة، وترفع الدعوى في أجل سقوط من تاريخ تسليم المحضر، أمام المحكمة المختصة إقليميا في المسائل الاجتماعية، ويشمل الحكم بدفع الأجور النفاذ المعجل في الحدود التي يعينها النص.",
+        "en": "A wage claim is an individual labour dispute: a conciliation attempt before the conciliation office comes first, the petition attaches the non-conciliation record, the claim is filed within a forfeiture period from the delivery of that record before the territorially competent court in social matters, and a judgment for wages carries provisional execution within the limits the text sets."
+      }
+    },
+    {
+      "module": "periods",
+      "blocks": [
+        "d3",
+        "d4",
+        "doc2"
+      ],
+      "how": {
+        "ar": "تقادم الأجور: مدتان في القانون المدني تقرآن على الأجور (سنة للمبالغ المستحقة للعمال، وخمس سنوات للمرتبات والأجور)، تسريان من تاريخ استحقاق أقدم أجر مطالب به، ولا تقضي بهما المحكمة تلقائيا.",
+        "en": "Limitation of wages: two Civil Code periods read on wages (one year for sums owed to workers, five years for salaries and wages), running from the due date of the oldest wage claimed, and not applied by the court of its own motion."
+      }
+    },
+    {
+      "module": "formal-notice",
+      "blocks": [
+        "b1",
+        "b14",
+        "b15",
+        "p1",
+        "doc1",
+        "doc2",
+        "doc3",
+        "doc4",
+        "n1",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "how": {
+        "ar": "طلب التعويض عن التأخر في دفع الأجور لا يستحق إلا بعد إعذار صاحب العمل ما لم يوجد نص مخالف أو حالة إعفاء.",
+        "en": "Damages for late payment of wages are due only after the employer has been put on notice, unless a text provides otherwise or an exemption applies."
+      }
+    },
+    {
+      "module": "ordinary-court-exits",
+      "blocks": [
+        "x1",
+        "x2",
+        "x5",
+        "x6"
+      ],
+      "how": {
+        "ar": "الحالات التي تخرج فيها المطالبة بالأجور من القسم الاجتماعي: طرف عمومي، أو عامل خاضع للقانون الأساسي للوظيفة العمومية، أو صاحب عمل في حالة إفلاس أو تسوية قضائية، أو دعوى جزائية عن نفس الوقائع.",
+        "en": "The cases in which a wage claim leaves the social section: a public party, a worker under the public-service statute, an employer in bankruptcy or judicial settlement, or a criminal case on the same facts."
+      }
+    },
+    {
+      "module": "court-sections",
+      "blocks": [
+        "b11",
+        "b13",
+        "b14",
+        "b47",
+        "b52",
+        "x3",
+        "x4"
+      ],
+      "how": {
+        "ar": "اختصاص القسم الاجتماعي وتشكيلته، وحالة المحكمة التي لم ينشأ فيها القسم، وحالة الهيئة العمومية الوطنية.",
+        "en": "The social section's jurisdiction and composition, a court where the section has not been created, and a national public body as a party."
+      }
+    }
+  ],
+  "slots": [
+    "requests",
+    "nonconciliation_record",
+    "nonconciliation_record_delivered_on",
+    "earlier_nonconciliation_record",
+    "earlier_nonconciliation_record_delivered_on",
+    "conciliation_agreement_reached",
+    "internal_grievance_exhausted",
+    "forfeiture_lifted_by_order",
+    "forfeiture_force_majeure_invoked",
+    "defendant_resides_abroad",
+    "employer_in_bankruptcy_or_settlement",
+    "worker_is_public_servant",
+    "work_accident_or_occupational_illness",
+    "wages_due_from",
+    "public_body_party",
+    "public_vehicle_damage",
+    "national_public_body_party",
+    "court_has_section_for_matter",
+    "criminal_case_on_same_facts",
+    "obligation_is_tort_compensation",
+    "damage_caused_by_offence",
+    "notice_served",
+    "notice_date",
+    "notice_means",
+    "notice_before_petition_day",
+    "default_on_due_date_agreed",
+    "performance_impossible_or_useless_by_debtor",
+    "return_of_thing_known_stolen_or_unduly_received",
+    "debtor_refused_in_writing",
+    "contract_sets_notice_terms",
+    "wages_claimed_after_dismissal"
+  ],
+  "proposedSlots": [
+    {
+      "id": "wages_claimed_after_dismissal",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل يطالب العامل بأجور عن فترة لاحقة لتسريحه أو لتوقفه عن العمل بقرار من المستخدم؟",
+        "en": "Does the worker claim pay for a period after his dismissal, or after the employer stopped him from working?"
+      },
+      "why": "Boundary n1 reads it: article 80 of Law 90-11 ties the wage to work performed, while article 73-4 grants a dismissed worker a compensation measured on the wage; pay claimed for a period after a dismissal is the dismissal claim, not a wage claim."
+    }
+  ],
+  "basis": [
+    {
+      "id": "b1",
+      "role": "basis",
+      "required": true,
+      "cite": {
+        "code": "labour-relations",
+        "article": "80",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "للعامل الحق في أجر مقابل العمل الذي أداه.",
+        "en": "The worker is entitled to a wage in return for the work performed."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "للعامل الحق في أجر مقابل العمل المؤدى، ويتقاضى بموجبه مرتبا أو دخلا يتناسب ونتائج العمل.",
+          "sha256": "05256b312ec6dd64d6ebc7757b1858bd23854abb8911730bfe954e5e5244d0f5"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b2",
+      "role": "basis",
+      "required": true,
+      "cite": {
+        "code": "labour-relations",
+        "article": "88",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يلتزم المستخدم بدفع الأجور لكل عامل بانتظام عند حلول أجل استحقاقها.",
+        "en": "The employer must pay each worker's wages regularly when they fall due."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجب على المستخدم دفع الأجور لكل عامل بانتظام، عند حلول أجل استحقاقه.",
+          "sha256": "60f3ab209ca28e6c88e307b33ba90ceaf892fb92df662e921d68c53d2d5da7e7"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b3",
+      "role": "basis",
+      "cite": {
+        "code": "labour-relations",
+        "article": "2",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "العامل الأجير هو من يؤدي عملا يدويا أو فكريا مقابل مرتب في إطار التنظيم ولحساب شخص آخر هو المستخدم.",
+        "en": "A salaried worker performs manual or intellectual work for pay, within an organisation and on behalf of another person, the employer."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يعتبر عمالا أجراء، في مفهوم هذا القانون، كل الأشخاص الذين يؤدون عملا يدويا أو فكريا مقابل مرتب، في إطار التنظيم، ولحساب شخص آخر طبيعي أو معنوي عمومي أو خاص، يدعى «المستخدم».",
+          "sha256": "39763319161ad3b2642e3ec7686faff9628e2a297edfdfa77d67b8b36f27cfb6"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b4",
+      "role": "proof",
+      "required": true,
+      "cite": {
+        "code": "civil-code",
+        "article": "323",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "على الدائن إثبات الالتزام وعلى المدين إثبات التخلص منه.",
+        "en": "The creditor proves the obligation; the debtor proves his release from it."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "على الدائن اثبات الالتزام وعلى المدين اثبات التخلص منه.",
+          "sha256": "ebb8762aac4c3d8159864a5a63be8505f0bf4de22b6f8f532a048a910d9ad268"
+        }
+      ],
+      "source": {
+        "tier": 2,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b5",
+      "role": "damages",
+      "cite": {
+        "code": "civil-code",
+        "article": "182",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يقدر القاضي التعويض غير المقدر في العقد أو القانون، ويشمل ما لحق الدائن من خسارة وما فاته من كسب متى كان نتيجة طبيعية للتأخر في الوفاء.",
+        "en": "The judge assesses compensation not fixed by contract or law; it covers the creditor's loss and lost gain when they are the natural result of late performance."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "إذا لم يكن التعويض مقدرا في العقد، أو في القانون فالقاضي هو الذي يقدره، ويشمل التعويض ما لحق الدائن من خسارة وما فاته من كسب، بشرط أن يكون هذا نتيجة طبيعية لعدم الوفاء بالالتزام أو للتأخر في الوفاء به. ويعتبر الضرر نتيجة طبيعية إذا لم يكن في استطاعة الدائن أن يتوقاه ببذل جهد معقول.",
+          "sha256": "fe977eb6f4a7487ea57058b2e93e284ad301c48fc7db5328445fd0a5ef676937"
+        }
+      ],
+      "source": {
+        "tier": 2,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b6",
+      "role": "limit",
+      "cite": {
+        "code": "labour-relations",
+        "article": "73-4",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "التسريح المخالف للإجراءات يلغى ويمنح العامل تعويضا لا يقل عن الأجر الذي كان يتقاضاه كما لو استمر في عمله.",
+        "en": "A dismissal in breach of procedure is annulled and the worker is granted compensation no lower than the wage he would have received had he gone on working."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "إذا وقع تسريح العامل مخالفة للإجراءات القانونية و/أو الاتفاقية الملزمة، تلغي المحكمة المختصة ابتدائيا ونهائيا قرار التسريح بسبب عدم احترام الإجراءات، وتلزم المستخدم بالقيام بالإجراء المعمول به، وتمنح العامل تعويضا ماليا على نفقة المستخدم، لا يقل عن الأجر الذي يتقاضاه كما لو استمر في عمله.",
+          "sha256": "ce1585b223d322a02334cbed37a3eb6bd087f6ceb0af7c25d787fc07a2f5a58e"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b7",
+      "role": "limit",
+      "cite": {
+        "code": "labour-relations",
+        "article": "73-4",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "في التسريح التعسفي تقضي المحكمة بإعادة الإدماج أو بتعويض مالي عند رفض أحد الطرفين.",
+        "en": "For an abusive dismissal the court orders reinstatement or, if either party refuses, a financial compensation."
+      },
+      "quote": [
+        {
+          "paragraph": 3,
+          "text": "تفصل المحكمة المختصة ابتدائيا ونهائيا إما بإعادة إدماج العامل في المؤسسة مع الاحتفاظ بامتيازاته المكتسبة، أو، في حالة رفض أحد الطرفين، يمنح العامل تعويضا ماليا لا يقل عن الأجر الذي يتقاضاه العامل عن مدة ستة (6) أشهر من العمل، دون الإخلال بالتعويضات المحتملة.",
+          "sha256": "04817830f938de911ced4ab962c46009f5e1b0e816984178852390c23b068e8f"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b8",
+      "role": "basis",
+      "cite": {
+        "code": "civil-code",
+        "article": "565",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "للعمال الذين يشتغلون لحساب المقاول في تنفيذ العمل حق مطالبة رب العمل مباشرة في حدود ما يكون مدينا به للمقاول وقت رفع الدعوى.",
+        "en": "Workers employed by a contractor on the work may claim directly from the owner of the work, up to what the owner owes the contractor when the claim is filed."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يكون للمقاولين الفرعيين والعمال الذين يشتغلون لحساب المقاول في تنفيذ العمل، حق مطالبة رب العمل مباشرة بما يجاوز القدر الذي يكون مدينا به للمقاول الأصلي وقت رفع الدعوى، ويكون لعمال المقاول الفرعي مثل هذا الحق تجاه كل من المقاول الأصلي ورب العمل.",
+          "sha256": "8af92ceb0f10eb0ce3b60ff7a44549945a3d0a1c9b2df983200a0d9c14e9d8a8"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "corpus",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    }
+  ],
+  "elements": [
+    {
+      "id": "e1",
+      "toProve": {
+        "ar": "قيام علاقة عمل بين المدعي والمدعى عليه: التحاق المدعي بالعمل لحساب المدعى عليه مقابل أجر.",
+        "en": "An employment relationship between the plaintiff and the defendant: the plaintiff joined the defendant's service and works for pay on its behalf."
+      },
+      "factsToState": [
+        {
+          "ar": "تاريخ التحاق المدعي بالعمل، والمنصب أو المهام.",
+          "en": "The date the plaintiff started work, and the post or duties."
+        },
+        {
+          "ar": "الأجر المتفق عليه أو المطبق وطريقة دفعه.",
+          "en": "The wage agreed or applied, and how it was paid."
+        },
+        {
+          "ar": "هوية المستخدم (شخص طبيعي أو معنوي) ومكان تنفيذ العمل.",
+          "en": "The employer's identity (natural or legal person) and the place where the work is performed."
+        }
+      ],
+      "events": [
+        "employment_started",
+        "contract_concluded"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "employmentContractOrOtherWriting",
+          "basis": [
+            "b3",
+            "b4"
+          ],
+          "note": {
+            "ar": "عقد العمل أو كشوف الرواتب أو شهادة العمل أو أي وثيقة تثبت العلاقة والأجر.",
+            "en": "The employment contract, payslips, a work certificate or any document that shows the relationship and the wage."
+          }
+        }
+      ],
+      "basis": [
+        "b3",
+        "b1",
+        "b4"
+      ]
+    },
+    {
+      "id": "e2",
+      "toProve": {
+        "ar": "استحقاق الأجور أو المستحقات المطالب بها مقابل عمل مؤدى، ومقدار كل منها وفترة استحقاقها، وعدم دفعها عند حلول أجلها.",
+        "en": "That the wages or sums claimed are owed for work performed, the amount and period of each, and that they were not paid when due."
+      },
+      "factsToState": [
+        {
+          "ar": "الفترة التي أدي فيها العمل ولم يدفع أجرها، شهرا بشهر.",
+          "en": "The period worked and not paid, month by month."
+        },
+        {
+          "ar": "عناصر المبلغ المطالب به (الأجر، المنح، الساعات الإضافية) ومقدار كل عنصر.",
+          "en": "The items of the sum claimed (wage, bonuses, overtime) and the amount of each."
+        },
+        {
+          "ar": "تاريخ استحقاق أقدم أجر غير مدفوع.",
+          "en": "The due date of the oldest unpaid wage."
+        }
+      ],
+      "events": [
+        "wages_unpaid"
+      ],
+      "slots": [
+        "wages_due_from"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "creditorProvesDebtDebtorProvesPayment",
+          "basis": [
+            "b4",
+            "b1",
+            "b2"
+          ],
+          "note": {
+            "ar": "يثبت العامل الالتزام بالأجر (العمل المؤدى والأجر المستحق)، ويقع على المستخدم إثبات أنه دفعه.",
+            "en": "The worker proves the obligation to pay (the work performed and the wage owed); the employer bears the proof that it paid."
+          }
+        }
+      ],
+      "basis": [
+        "b1",
+        "b2",
+        "b4"
+      ]
+    },
+    {
+      "id": "e3",
+      "toProve": {
+        "ar": "عرض النزاع على مكتب المصالحة وتحرير محضر بعدم المصالحة وتاريخ تسليمه.",
+        "en": "That the dispute went before the conciliation office, which drew up a non-conciliation record, and the date it was delivered."
+      },
+      "factsToState": [
+        {
+          "ar": "تاريخ إخطار مفتشية العمل وتاريخ تسليم محضر عدم المصالحة.",
+          "en": "The date the labour inspectorate was seised and the date the non-conciliation record was delivered."
+        }
+      ],
+      "events": [
+        "conciliation_failed"
+      ],
+      "slots": [
+        "nonconciliation_record",
+        "nonconciliation_record_delivered_on"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "nonConciliationRecord",
+          "basis": [
+            "labour-prelitigation.b20"
+          ],
+          "note": {
+            "ar": "نسخة من محضر عدم المصالحة الصادر عن مكتب المصالحة.",
+            "en": "A copy of the non-conciliation record issued by the conciliation office."
+          }
+        }
+      ],
+      "basis": [
+        "labour-prelitigation.b1",
+        "labour-prelitigation.b19",
+        "labour-prelitigation.b20"
+      ]
+    }
+  ],
+  "requests": [
+    {
+      "id": "r1",
+      "kind": "wages",
+      "accessory": false,
+      "amount": true,
+      "text": {
+        "ar": "إلزام المدعى عليه بأن يدفع للمدعي مبلغ (...) دج قيمة الأجور والمستحقات غير المدفوعة عن الفترة من (...) إلى (...).",
+        "en": "Order the defendant to pay the plaintiff (...) DZD, the unpaid wages and sums due for the period from (...) to (...)."
+      },
+      "basis": [
+        "b1",
+        "b2"
+      ]
+    },
+    {
+      "id": "r2",
+      "kind": "damages",
+      "accessory": true,
+      "amount": true,
+      "text": {
+        "ar": "إلزام المدعى عليه بأن يدفع للمدعي مبلغ (...) دج تعويضا عن الضرر اللاحق به من التأخر في دفع الأجور.",
+        "en": "Order the defendant to pay the plaintiff (...) DZD as compensation for the harm caused by the late payment of wages."
+      },
+      "basis": [
+        "formal-notice.b15",
+        "formal-notice.b14",
+        "b5",
+        "formal-notice.b1"
+      ]
+    }
+  ],
+  "court": {
+    "section": {
+      "value": "social",
+      "basis": [
+        "court-sections.b11",
+        "court-sections.b14",
+        "court-sections.b13"
+      ],
+      "alternatives": [
+        {
+          "when": {
+            "slot": "worker_is_public_servant",
+            "is": "yes"
+          },
+          "value": "other",
+          "basis": [
+            "court-sections.b52",
+            "court-sections.b47"
+          ]
+        }
+      ],
+      "message": {
+        "ar": "المادة 500 من قانون الإجراءات المدنية والإدارية والمادة 20 من القانون 90-04: يختص القسم الاجتماعي اختصاصا مانعا بتنفيذ عقود العمل، ومنها المطالبة بالأجور. تحقق من القسم المختار.",
+        "en": "Code of Civil and Administrative Procedure article 500 and article 20 of Law 90-04: the social section has exclusive jurisdiction over the performance of employment contracts, wage claims included. Check the section chosen."
+      }
+    }
+  },
+  "documents": [
+    {
+      "id": "doc1",
+      "name": {
+        "ar": "ما يثبت علاقة العمل والأجر: عقد العمل أو كشوف الرواتب أو شهادة العمل أو غيرها",
+        "en": "Proof of the employment relationship and the wage: the employment contract, payslips, a work certificate or other documents"
+      },
+      "why": {
+        "ar": "على العامل إثبات الالتزام الذي يطالب به.",
+        "en": "The worker must prove the obligation he claims."
+      },
+      "basis": [
+        "b3",
+        "b4"
+      ]
+    },
+    {
+      "id": "doc2",
+      "name": {
+        "ar": "كشف مفصل بالمبالغ المطالب بها، شهرا بشهر وعنصرا بعنصر",
+        "en": "A detailed statement of the sums claimed, month by month and item by item"
+      },
+      "why": {
+        "ar": "الأجر يستحق عند حلول أجل كل دفعة، ويجري التقادم من تاريخ استحقاق كل أجر.",
+        "en": "Each wage falls due at its own date, and limitation runs from the due date of each wage."
+      },
+      "basis": [
+        "b2",
+        "b4"
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "id": "n1",
+      "looksLike": {
+        "ar": "مطالبة بأجور عن فترة لاحقة لتسريح العامل أو لإبعاده عن العمل.",
+        "en": "A claim for wages for a period after the worker was dismissed or kept from working."
+      },
+      "isActually": "claim:abusive-dismissal",
+      "tellingFacts": [
+        {
+          "ar": "صدر قرار بتسريح العامل أو بإيقافه عن العمل.",
+          "en": "The employer issued a dismissal or suspension decision."
+        },
+        {
+          "ar": "الفترة المطالب بأجرها لم يؤد فيها عمل.",
+          "en": "No work was performed in the period claimed."
+        },
+        {
+          "ar": "يطلب العامل إعادة إدماجه.",
+          "en": "The worker asks for reinstatement."
+        }
+      ],
+      "when": {
+        "any": [
+          {
+            "slot": "wages_claimed_after_dismissal",
+            "is": "yes"
+          },
+          {
+            "slot": "requests",
+            "includes": "reinstatement"
+          }
+        ]
+      },
+      "slots": [
+        "wages_claimed_after_dismissal",
+        "requests"
+      ],
+      "message": {
+        "ar": "المادتان 80 و73-4 من القانون 90-11: الأجر مقابل العمل المؤدى، أما المبالغ عن فترة ما بعد التسريح فتعويض يحكم به في دعوى التسريح. تحقق من طبيعة الفترة المطالب بها ومن تكييف الدعوى.",
+        "en": "Articles 80 and 73-4 of Law 90-11: the wage is the return for work performed, while sums for the period after a dismissal are a compensation granted in the dismissal claim. Check the nature of the period claimed and how the claim is framed."
+      },
+      "basis": [
+        "b1",
+        "b6",
+        "b7"
+      ]
+    },
+    {
+      "id": "n2",
+      "looksLike": {
+        "ar": "مطالبة العامل بتسليم كشوف الرواتب أو شهادة العمل مع الأجور.",
+        "en": "A worker's request for payslips or a work certificate alongside the wages."
+      },
+      "isActually": "outside:payslip-or-certificate-delivery",
+      "tellingFacts": [
+        {
+          "ar": "الطلب الأساسي هو تسليم وثيقة لا دفع مبلغ.",
+          "en": "The main request is the delivery of a document, not the payment of a sum."
+        }
+      ],
+      "message": {
+        "ar": "المادة 21 من القانون 90-04: تفصل المحكمة ابتدائيا ونهائيا في الدعوى المتعلقة أساسا بتسليم شهادات العمل وكشوف الرواتب. تحقق من الطلب الأساسي.",
+        "en": "Article 21 of Law 90-04: the court rules at first and last instance on a claim mainly about the delivery of work certificates and payslips. Check what the main request is."
+      },
+      "basis": [
+        "labour-prelitigation.b41"
+      ]
+    },
+    {
+      "id": "n3",
+      "looksLike": {
+        "ar": "عامل لدى مقاول يطالب صاحب المشروع (رب العمل) بأجوره.",
+        "en": "A contractor's worker claims his wages from the owner of the project."
+      },
+      "isActually": "outside:direct-action-against-project-owner",
+      "tellingFacts": [
+        {
+          "ar": "المستخدم مقاول ينفذ عملا لحساب رب عمل، والدعوى موجهة إلى رب العمل.",
+          "en": "The employer is a contractor working for an owner, and the claim is aimed at the owner."
+        }
+      ],
+      "message": {
+        "ar": "المادة 565 من القانون المدني: لعمال المقاول مطالبة رب العمل مباشرة في حدود ما يكون مدينا به للمقاول وقت رفع الدعوى. تحقق من المدعى عليه ومن أساس الدعوى.",
+        "en": "Civil Code article 565: a contractor's workers may claim directly from the owner of the work up to what the owner owes the contractor when the claim is filed. Check who the defendant is and the ground of the claim."
+      },
+      "basis": [
+        "b8"
+      ]
+    }
+  ],
+  "openPoints": [
+    {
+      "id": "o1",
+      "question": {
+        "ar": "ما النصوص التي تحدد عناصر الأجر والمنح والساعات الإضافية وكشف الراتب والأجر الوطني الأدنى المضمون وامتياز الأجور؟",
+        "en": "Which texts define the items of the wage, bonuses, overtime, the payslip, the guaranteed minimum wage and the priority of wages?"
+      },
+      "why": {
+        "ar": "لا يحوي مخزن النصوص من القانون 90-11 في باب الأجور إلا المادتين 80 و88، ولم يعثر على المواد المجاورة.",
+        "en": "The article store holds only articles 80 and 88 of the wage chapter of Law 90-11; the neighbouring articles were not found."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "من الذاكرة: يحدد القانون 90-11 عناصر الأجر، ونسبة زيادة الساعات الإضافية، وواجب تسليم كشف الراتب، والأجر الوطني الأدنى المضمون، وأولوية دفع الأجور على سائر الديون؛ لم يتحقق من ذلك في النص.",
+            "en": "From memory: Law 90-11 defines the items of the wage, the overtime increase, the duty to deliver a payslip, the guaranteed minimum wage, and the priority of wages over other debts; not checked against the text."
+          }
+        }
+      ],
+      "protectiveReading": {
+        "ar": "يذكر المحامي كل عنصر من عناصر المبلغ وسنده (العقد أو الاتفاقية الجماعية أو الكشوف) دون أن يعتمد السجل قاعدة غير منصوص عليها في المخزن.",
+        "en": "The lawyer states each item of the sum and its source (contract, collective agreement, payslips); the record adds no rule for a text not in the store."
+      },
+      "grade": "D",
+      "refs": [
+        "r1",
+        "e2"
+      ]
+    },
+    {
+      "id": "o2",
+      "question": {
+        "ar": "هل تنطبق المادة 186 من القانون المدني، التي تتكلم عن الالتزام «بين أفراد» بمبلغ من النقود عين مقداره وقت رفع الدعوى، على أجر يدين به مستخدم شخص معنوي، أو على أجر لم يتحدد مقداره بعد؟",
+        "en": "Does Civil Code article 186, which speaks of an obligation 'between individuals' for a sum of money fixed when the claim is filed, cover a wage owed by an employer that is a legal person, or a wage whose amount is still disputed?"
+      },
+      "why": {
+        "ar": "النص لا يعرف «الأفراد» ويشترط تعيين المقدار وقت رفع الدعوى، والمادة 176 تقرر التعويض عن التأخر في التنفيذ بوجه عام.",
+        "en": "The text does not define 'individuals' and requires the amount to be fixed when the claim is filed, while article 176 grants damages for late performance in general terms."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "المادة 186 تشمل كل مدين بمبلغ نقدي معين المقدار، ومنه المستخدم.",
+            "en": "Article 186 covers every debtor of a fixed sum of money, the employer included."
+          },
+          "basis": [
+            "formal-notice.b15"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "يقوم طلب التعويض عن التأخر على المادتين 176 و182، ويثبت المدعي الضرر.",
+            "en": "The claim for delay damages rests on articles 176 and 182, and the plaintiff proves the harm."
+          },
+          "basis": [
+            "formal-notice.b14",
+            "b5"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "يذكر السجل النصين ويطلب بيان الضرر الناجم عن التأخر والإعذار السابق.",
+        "en": "The record names both texts, and asks the lawyer to state the harm caused by the delay and the prior notice."
+      },
+      "grade": "C",
+      "refs": [
+        "r2"
+      ]
+    },
+    {
+      "id": "o3",
+      "question": {
+        "ar": "هل يقبل طلب التعويض عن التأخر إذا لم يعرض على مكتب المصالحة؟",
+        "en": "Is the claim for delay damages admissible when it was not put to the conciliation office?"
+      },
+      "why": {
+        "ar": "تقبل المادة 510 من قانون الإجراءات المدنية والإدارية الطلبات الإضافية المترتبة على الطلب الأصلي ولو لم تكن موضوع محاولة صلح، ولا تعرف الطلب «المترتب».",
+        "en": "Article 510 of the Code of Civil and Administrative Procedure admits additional requests that follow from the original one even if they were not put to conciliation, and does not define a request that 'follows from' it."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "التعويض عن التأخر في الدفع مترتب على طلب الأجور، فيقبل.",
+            "en": "Damages for late payment follow from the wage request and are admissible."
+          },
+          "basis": [
+            "labour-prelitigation.b35"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "طلب التعويض طلب مستقل يجب أن يسبقه الصلح.",
+            "en": "The damages request is a separate request that conciliation must precede."
+          },
+          "basis": [
+            "labour-prelitigation.b1"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "يتحقق المحامي من أن محضر عدم المصالحة يذكر طلب التعويض، أو يستند إلى المادة 510.",
+        "en": "The lawyer checks whether the non-conciliation record mentions the damages request, or relies on article 510."
+      },
+      "grade": "C",
+      "refs": [
+        "r2"
+      ]
+    },
+    {
+      "id": "o4",
+      "question": {
+        "ar": "هل يوجد جزاء جزائي على عدم دفع الأجور في القانون 90-11، وهل يغير ذلك طريق الدعوى المدنية؟",
+        "en": "Does Law 90-11 punish the non-payment of wages as an offence, and does that change the route of the civil claim?"
+      },
+      "why": {
+        "ar": "لم يعثر في المخزن على الأحكام الجزائية للقانون 90-11.",
+        "en": "The penal provisions of Law 90-11 are not in the store."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "من الذاكرة: يعاقب القانون 90-11 المستخدم الذي لا يدفع الأجور في آجالها بغرامة؛ لم يتحقق من ذلك في النص.",
+            "en": "From memory: Law 90-11 fines an employer who does not pay wages on time; not checked against the text."
+          }
+        }
+      ],
+      "protectiveReading": {
+        "ar": "يسأل السجل عن وجود دعوى جزائية عن نفس الوقائع وينبه عند وجودها (المخرج المستورد).",
+        "en": "The record asks whether a criminal case on the same facts exists and warns when it does (the imported exit)."
+      },
+      "grade": "D",
+      "refs": [
+        "ordinary-court-exits.x6"
+      ]
+    },
+    {
+      "id": "o5",
+      "question": {
+        "ar": "هل يجوز للعامل الذي بيده سند مكتوب بأجر معين المقدار ومستحق أن يسلك طريق الأمر بالأداء بدل الدعوى أمام القسم الاجتماعي؟",
+        "en": "May a worker holding a writing that fixes a wage due and payable use the order-to-pay procedure instead of a claim before the social section?"
+      },
+      "why": {
+        "ar": "تعطي المادة 500 القسم الاجتماعي اختصاصا مانعا بتنفيذ عقود العمل وتوجب المادة 19 من القانون 90-04 الصلح قبل أي دعوى، بينما تفتح المادة 306 الأمر بالأداء لكل دين نقدي ثابت بالكتابة؛ والمخرج المستورد للأمر بالأداء لا ينظر إلا في طلب «الدفع».",
+        "en": "Article 500 gives the social section exclusive jurisdiction over the performance of employment contracts and article 19 of Law 90-04 requires conciliation before any claim, while article 306 opens the order to pay to any money debt proven in writing; the module's order-to-pay exit reads only a 'payment' request."
+      },
+      "protectiveReading": {
+        "ar": "لا يقترح السجل الأمر بالأداء في المطالبة بالأجور، ويبقي المسألة مفتوحة للمحامي.",
+        "en": "The record does not propose the order to pay for a wage claim and leaves the question to the lawyer."
+      },
+      "grade": "C",
+      "refs": [
+        "r1"
+      ]
+    }
+  ],
+  "checklist": [
+    {
+      "id": "k1",
+      "item": "Basis of the claim: Law 90-11 on labour relations, the worker's right to a regular wage for work done (wage articles, payment at each due date, components of the wage, overtime, bonuses and allowances), read with the employment contract and any collective agreement.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b1",
+        "b2",
+        "r1"
+      ],
+      "note": "Articles 80 and 88 of Law 90-11 are in the store; the articles on the components of the wage are not (k35, o1)."
+    },
+    {
+      "id": "k2",
+      "item": "Element 1: an employment relationship with the defendant (written or unwritten contract; Law 90-11 allows proof of the relationship by any means), its start date, the post and the agreed wage.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e1",
+        "b3"
+      ],
+      "note": "The article on proof of the relationship by any means is not in the store; e1 rests on articles 2 and 80 of Law 90-11 and Civil Code 323."
+    },
+    {
+      "id": "k3",
+      "item": "Element 2: work actually performed (or time at the employer's disposal) for the period claimed; wages are the counterpart of work, so periods of unpaid absence are excluded.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e2",
+        "b1",
+        "n1"
+      ]
+    },
+    {
+      "id": "k4",
+      "item": "Element 3: non-payment by the employer of the sums claimed (base wage, overtime, bonuses, allowances), with the period and the amount of each item.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e2",
+        "r1",
+        "doc2"
+      ]
+    },
+    {
+      "id": "k5",
+      "item": "Burden of proof: the worker proves the relationship and the work; the employer, as debtor, proves payment (civil code rule that the creditor proves the obligation and the debtor proves release); payslips and the payroll register are the employer's documents.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b4",
+        "e1",
+        "e2"
+      ],
+      "note": "The payroll register article is not in the store."
+    },
+    {
+      "id": "k6",
+      "item": "Payslip: the employer must deliver a payslip with each payment; ask whether payslips exist and what they show; a signed payslip without reservation may be argued as proof of payment.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "o1",
+        "n2",
+        "doc1"
+      ],
+      "note": "Searched labour-relations in the store (only articles 1, 2, 3, 73 to 73-4, 80 and 88 exist) and labour-disputes (article 21 names payslips only as a first-and-last-instance claim). Requested the payslip article of Law 90-11."
+    },
+    {
+      "id": "k7",
+      "item": "Overtime: check it was ordered or accepted by the employer, the legal limits, and the rate of increase set by Law 90-11 and the collective agreement.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "o1"
+      ],
+      "note": "No article on overtime in the store (labour-relations holds no working-time chapter). Requested."
+    },
+    {
+      "id": "k8",
+      "item": "Prior step: mandatory conciliation before the labour inspectorate's conciliation office (Law 90-04 on individual labour disputes) before any claim to the social section; the petition must attach the record of non-conciliation.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "labour-prelitigation.p1",
+        "labour-prelitigation.doc1",
+        "e3"
+      ]
+    },
+    {
+      "id": "k9",
+      "item": "Before conciliation: the internal procedure inside the employer (collective agreement procedure or referral to the superior and management) under Law 90-04; check whether it was used.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "labour-prelitigation.p2"
+      ]
+    },
+    {
+      "id": "k10",
+      "item": "Exceptions to conciliation: Law 90-04 lists cases where conciliation is not required (for example the employer residing abroad, or the employer in judicial settlement or bankruptcy); check which apply.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "labour-prelitigation.p1",
+        "labour-prelitigation.b2",
+        "labour-prelitigation.b3"
+      ]
+    },
+    {
+      "id": "k11",
+      "item": "Partial conciliation: if a conciliation record settled part of the dispute, that part is enforced by the president of the social section (enforcement order), not claimed anew; only the remainder is sued on.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "labour-prelitigation.n1"
+      ]
+    },
+    {
+      "id": "k12",
+      "item": "Time limit to file after non-conciliation: CPCM provides that the claim is filed within six months of the delivery of the record of non-conciliation, on pain of forfeiture; check the delivery date, count the six months, and whether the forfeiture is raised by the court.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "labour-prelitigation.d1",
+        "labour-prelitigation.d2",
+        "labour-prelitigation.d3",
+        "labour-prelitigation.b21"
+      ],
+      "note": "CPCA 504; counting under CPCA 405; who raises it is kept open by the module."
+    },
+    {
+      "id": "k13",
+      "item": "Limitation of wage claims: the civil code sets a short limitation for workers' wages (I recall one year for wages of workers and servants, with the creditor's oath available to the debtor), and a five-year limitation for periodic renewable rights; to be confirmed in the text.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "periods.d3",
+        "periods.d4"
+      ],
+      "note": "Civil Code 312 (one year, oath on whoever relies on it) and 309 (five years for salaries and wages) both read on wages; the module keeps both."
+    },
+    {
+      "id": "k14",
+      "item": "Start of limitation: each wage instalment prescribes from its own due date; check the oldest unpaid month.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "periods.d3",
+        "periods.d4",
+        "doc2"
+      ]
+    },
+    {
+      "id": "k15",
+      "item": "Interruption of limitation: by a judicial claim, an acknowledgement by the debtor; check whether referral to the conciliation office interrupts limitation (Law 90-04 or the civil code).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "periods.d3",
+        "periods.d4",
+        "periods.doc2"
+      ],
+      "note": "Civil Code 317 and 318; whether seising the conciliation office interrupts limitation is an open point of the labour-prelitigation module."
+    },
+    {
+      "id": "k16",
+      "item": "Limitation is not raised by the court of its own motion; only on the defendant's plea.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "periods.d3",
+        "periods.d4"
+      ],
+      "note": "Civil Code 321."
+    },
+    {
+      "id": "k17",
+      "item": "Competent section: the social section of the tribunal (CPCM articles on the social section: individual labour disputes, wages, contracts of employment, training and apprenticeship).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "court-sections.b11",
+        "court-sections.b14"
+      ]
+    },
+    {
+      "id": "k18",
+      "item": "Composition: the social section sits with assessors (workers' and employers' representatives); check that the court has a social section, otherwise the rules on courts without sections apply.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "court-sections.b13",
+        "court-sections.x3"
+      ]
+    },
+    {
+      "id": "k19",
+      "item": "Territorial jurisdiction: CPCM social matters: the court of the place where the contract was concluded or performed, or the plaintiff's domicile in specific cases (contract suspended or terminated by work accident or occupational disease); check whether this rule is of public order.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "labour-prelitigation.t1",
+        "labour-prelitigation.t2",
+        "labour-prelitigation.t3"
+      ],
+      "note": "CPCA 501 and Law 90-04 article 24; the plea of territorial incompetence must come before any defence on the merits (CPCA 47)."
+    },
+    {
+      "id": "k20",
+      "item": "Exit: civil servants and contractual agents of public administrative institutions governed by the general civil service statute (Ordinance 06-03) go before the administrative court, not the social section.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "ordinary-court-exits.x2",
+        "ordinary-court-exits.x1",
+        "court-sections.x4"
+      ],
+      "note": "Labour-relations article 3 and CPCA 800 and 804 are in the store; Ordinance 06-03 is not, and no rule rests on it."
+    },
+    {
+      "id": "k21",
+      "item": "Exit: a claim based on a criminal offence (for example the employer's criminal liability for non-payment) may be brought before the criminal judge as a civil party; check for a pending criminal case on the same facts.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "ordinary-court-exits.x6",
+        "o4"
+      ]
+    },
+    {
+      "id": "k22",
+      "item": "Exit: an order to pay (CPCM) might be considered for a fixed written debt, but the labour conciliation rule and social section specificity apply; check whether an order to pay was already issued.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "o5"
+      ],
+      "note": "The module's order-to-pay exit reads a 'payment' request only, so it is not imported; whether a worker may use it for wages is open point o5."
+    },
+    {
+      "id": "k23",
+      "item": "Accessory request: damages for delay in payment (civil code: damages for delay require a formal notice, except listed cases; interest between individuals prohibited); check the formal notice.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "r2",
+        "formal-notice.p1",
+        "o2",
+        "o3"
+      ],
+      "note": "The interest prohibition was not needed: no request for interest is proposed."
+    },
+    {
+      "id": "k24",
+      "item": "Accessory request: provisional execution: Law 90-04 gives provisional execution by right to judgments on payment of wages and allowances for the last six months; CPCM provisional execution rules for the rest.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "labour-prelitigation.r1",
+        "labour-prelitigation.r2"
+      ],
+      "note": "Law 90-04 article 22, paragraphs 4 and 5."
+    },
+    {
+      "id": "k25",
+      "item": "Judgment in first and last resort: Law 90-04 lists matters judged without appeal (for example issuing payslips or work certificates); wage claims generally are subject to appeal.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "labour-prelitigation.b41",
+        "n2"
+      ]
+    },
+    {
+      "id": "k26",
+      "item": "Wage preference: wages are a privileged debt ranking before other creditors (Law 90-11 and civil code privilege); relevant if the employer is insolvent or in bankruptcy.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "o1"
+      ],
+      "note": "Searched labour-relations (no article on the priority of wages) and the Civil Code privileges chapter by the words الأجور and العمال; only article 565 (contractor's workers) was found. Requested."
+    },
+    {
+      "id": "k27",
+      "item": "Employer in bankruptcy or judicial settlement: the claim must be declared in the collective procedure; check the specialised commercial court and the suspension of individual actions.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "ordinary-court-exits.x5",
+        "labour-prelitigation.p1"
+      ],
+      "note": "The Commercial Code articles on suspension of individual actions are not in the store; the exit warns and asks the lawyer to check."
+    },
+    {
+      "id": "k28",
+      "item": "Minimum wage (SNMG): if the agreed wage is below the national guaranteed minimum wage, the difference may be claimed; check the applicable decree.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "o1"
+      ],
+      "note": "No article on the guaranteed minimum wage in labour-relations in the store; the decree is not in the store. Requested."
+    },
+    {
+      "id": "k29",
+      "item": "Documents: record of non-conciliation, employment contract or proof of relationship, payslips, social-security affiliation, statement of sums claimed month by month, formal notice if any.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "labour-prelitigation.doc1",
+        "doc1",
+        "doc2",
+        "formal-notice.doc1",
+        "formal-notice.doc2"
+      ]
+    },
+    {
+      "id": "k30",
+      "item": "Petition formal elements: CPCM mandatory elements of the petition, identity of the employer (natural or legal person, its representative), fees.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "doesNotApply",
+      "note": "Belongs to the petition-formal-elements module, which has no final record to import yet; a claim record does not restate it."
+    },
+    {
+      "id": "k31",
+      "item": "Boundaries: dismissal compensation, abusive dismissal damages, end-of-service or redundancy compensation, and social-security benefits (social security disputes go to the social section under a different procedure with prior internal appeal) are distinct claims.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n1",
+        "labour-prelitigation.n2"
+      ],
+      "note": "Redundancy compensation texts are not in the store."
+    },
+    {
+      "id": "k32",
+      "item": "Boundary: wages of a domestic worker or a contract that is in truth a service or agency contract (civil code) rather than employment; check subordination.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "labour-prelitigation.n4",
+        "b3",
+        "n3"
+      ]
+    },
+    {
+      "id": "k33",
+      "item": "Amendments: Law 90-04 amended in 1991; Law 90-11 amended several times (1991, 1996 ordinance, 1997 ordinance); CPCM Law 08-09 amended by Law 22-13 (specialised commercial courts); check current versions.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b6",
+        "court-sections.x4",
+        "ordinary-court-exits.x5"
+      ],
+      "note": "The store gives articles 80 and 88 of Law 90-11 in their 1990 wording and 73-4 in the wording of ordinance 96-21; the articles of Law 90-04 in their 1990 wording, with the amendment ledger not covering them (the labour-prelitigation module keeps this open); Law 22-13 is applied through the imported exits."
+    },
+    {
+      "id": "k34",
+      "item": "Penal provisions of Law 90-11 on the non-payment of wages.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "o4"
+      ],
+      "note": "Not in the store (labour-relations holds no penal chapter). Requested as context."
+    },
+    {
+      "id": "k35",
+      "item": "The articles of Law 90-11 around article 80 and article 88 (the definition and items of the wage, its payment, and the articles that follow).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "o1"
+      ],
+      "note": "Articles 79, 81 to 87 and 89 of Law 90-11 are not in the store, so the articles before and after 80 and 88 could not be read. Requested."
+    }
+  ],
+  "examples": [
+    {
+      "id": "ex1",
+      "by": "derivationA",
+      "title": "Clean case: record delivered two and a half months ago, recent wages, private employer.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "requests": [
+          "wages"
+        ],
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2026-09-01",
+        "earlier_nonconciliation_record": "no",
+        "conciliation_agreement_reached": "no",
+        "internal_grievance_exhausted": "yes",
+        "forfeiture_lifted_by_order": "no",
+        "forfeiture_force_majeure_invoked": "no",
+        "wages_due_from": "2026-06-30",
+        "public_body_party": "no",
+        "national_public_body_party": "no",
+        "worker_is_public_servant": "no",
+        "employer_in_bankruptcy_or_settlement": "no",
+        "court_has_section_for_matter": "yes",
+        "criminal_case_on_same_facts": "no",
+        "obligation_is_tort_compensation": "no",
+        "wages_claimed_after_dismissal": "no",
+        "work_accident_or_occupational_illness": "no"
+      },
+      "expect": {
+        "section": "social",
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex2",
+      "by": "derivationA",
+      "title": "Record delivered almost a year ago: the six months are long past.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "requests": [
+          "wages"
+        ],
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2025-12-01",
+        "earlier_nonconciliation_record": "no",
+        "forfeiture_lifted_by_order": "no",
+        "forfeiture_force_majeure_invoked": "no"
+      },
+      "expect": {
+        "findings": []
+      }
+    },
+    {
+      "id": "ex3",
+      "by": "derivationA",
+      "title": "Record delivered six months and a few days ago: inside the band, a warning.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "requests": [
+          "wages"
+        ],
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2026-05-15",
+        "earlier_nonconciliation_record": "no",
+        "forfeiture_lifted_by_order": "no",
+        "forfeiture_force_majeure_invoked": "no"
+      },
+      "expect": {
+        "findings": []
+      }
+    },
+    {
+      "id": "ex4",
+      "by": "derivationA",
+      "title": "No conciliation and no exemption: a warning.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "requests": [
+          "wages"
+        ],
+        "nonconciliation_record": "no",
+        "defendant_resides_abroad": "no",
+        "employer_in_bankruptcy_or_settlement": "no",
+        "worker_is_public_servant": "no"
+      },
+      "expect": {
+        "findings": []
+      }
+    },
+    {
+      "id": "ex5",
+      "by": "derivationA",
+      "title": "Conciliation not known: the step asks.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "requests": [
+          "wages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "ask"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex6",
+      "by": "derivationA",
+      "title": "No conciliation, defendant resides abroad: the exemption applies.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "requests": [
+          "wages"
+        ],
+        "nonconciliation_record": "no",
+        "defendant_resides_abroad": "yes"
+      },
+      "expect": {
+        "findings": []
+      }
+    },
+    {
+      "id": "ex7",
+      "by": "derivationA",
+      "title": "The worker is a civil servant: exit to the administrative court.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "requests": [
+          "wages"
+        ],
+        "worker_is_public_servant": "yes"
+      },
+      "expect": {
+        "section": "other",
+        "findings": []
+      }
+    },
+    {
+      "id": "ex8",
+      "by": "derivationA",
+      "title": "Employer in judicial settlement, no conciliation: exit warning, conciliation optional.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "requests": [
+          "wages"
+        ],
+        "employer_in_bankruptcy_or_settlement": "yes",
+        "nonconciliation_record": "no"
+      },
+      "expect": {
+        "findings": []
+      }
+    },
+    {
+      "id": "ex9",
+      "by": "derivationA",
+      "title": "Delay damages asked, no formal notice, no exemption: a warning.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "requests": [
+          "wages",
+          "damages"
+        ],
+        "notice_served": "no",
+        "default_on_due_date_agreed": "no",
+        "performance_impossible_or_useless_by_debtor": "no",
+        "obligation_is_tort_compensation": "no",
+        "return_of_thing_known_stolen_or_unduly_received": "no",
+        "debtor_refused_in_writing": "no"
+      },
+      "expect": {
+        "findings": []
+      }
+    },
+    {
+      "id": "ex10",
+      "by": "derivationA",
+      "title": "Oldest wage due almost two years ago: the one-year limitation warns, the five-year one is silent.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "requests": [
+          "wages"
+        ],
+        "wages_due_from": "2025-01-31"
+      },
+      "expect": {
+        "findings": []
+      }
+    },
+    {
+      "id": "ex11",
+      "by": "derivationA",
+      "title": "Wages claimed for the months after a dismissal: the boundary warns.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "requests": [
+          "wages"
+        ],
+        "wages_claimed_after_dismissal": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex12",
+      "by": "derivationA",
+      "title": "A criminal case on the same facts is pending: exit warning.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "requests": [
+          "wages"
+        ],
+        "criminal_case_on_same_facts": "yes"
+      },
+      "expect": {
+        "findings": []
+      }
+    },
+    {
+      "id": "ex13",
+      "by": "derivationA",
+      "title": "Delay damages asked, notice served by bailiff before filing: the step is done.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "requests": [
+          "wages",
+          "damages"
+        ],
+        "notice_served": "yes",
+        "notice_means": "bailiff",
+        "notice_date": "2026-08-10"
+      },
+      "expect": {
+        "findings": []
+      }
+    }
+  ]
+}

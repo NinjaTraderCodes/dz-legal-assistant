@@ -1,0 +1,2016 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "claim",
+  "id": "abusive-dismissal",
+  "label": {
+    "ar": "التسريح التعسفي",
+    "en": "Abusive dismissal"
+  },
+  "verified": false,
+  "stage": "derivationB",
+  "derivedBy": {
+    "role": "derivationB",
+    "model": "claude-sonnet-5-5",
+    "date": "2026-11-18"
+  },
+  "area": "social",
+  "imports": [
+    {
+      "module": "labour-prelitigation",
+      "blocks": [
+        "p1",
+        "p2",
+        "d1",
+        "d2",
+        "d3",
+        "doc1",
+        "x1",
+        "x2",
+        "t1",
+        "t2",
+        "t3",
+        "n1",
+        "n5",
+        "b12",
+        "b15",
+        "b19",
+        "b20",
+        "b46"
+      ],
+      "how": {
+        "ar": "المصالحة السابقة على الدعوى العمالية وأجل ستة أشهر لرفع الدعوى والاختصاص الإقليمي وخروج المستخدمين العموميين، وكلها تسري على دعوى التسريح التعسفي لأنها نزاع فردي في العمل.",
+        "en": "Conciliation before the labour claim, the six-month forfeiture to file, territory and the exit of public servants: all apply because abusive dismissal is an individual labour dispute."
+      }
+    },
+    {
+      "module": "court-sections",
+      "blocks": [
+        "b3",
+        "b4",
+        "b5",
+        "b11",
+        "b13",
+        "b14",
+        "b15",
+        "b46",
+        "b47",
+        "b52",
+        "x3",
+        "n1"
+      ],
+      "how": {
+        "ar": "القسم الاجتماعي هو المختص، وتبقى قاعدة المحاكم التي لم تنشأ فيها أقسام؛ ويكتب الطلب قاعدة القسم الخاصة به.",
+        "en": "The social section hears the claim; the rule for courts without sections is kept; the claim writes its own section rule."
+      }
+    },
+    {
+      "module": "ordinary-court-exits",
+      "blocks": [
+        "x5",
+        "x6"
+      ],
+      "how": {
+        "ar": "تنبيه إلى إفلاس المستخدم أو تسويته القضائية، وإلى الدعوى الجزائية الجارية على الوقائع نفسها.",
+        "en": "Alerts to an employer in bankruptcy or judicial settlement, and to a criminal case on the same facts."
+      }
+    },
+    {
+      "module": "periods",
+      "blocks": [
+        "d1",
+        "doc3"
+      ],
+      "how": {
+        "ar": "التقادم العام للالتزامات لأن النصوص المتاحة لا تحدد أجلا خاصا لدعوى التسريح التعسفي.",
+        "en": "The general limitation of obligations, because the available texts set no special period for abusive dismissal."
+      }
+    }
+  ],
+  "checklist": [
+    {
+      "id": "k1",
+      "item": "Is the plaintiff a worker bound to the defendant by an employment relation (contract, written or not)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e1",
+        "b1",
+        "b16",
+        "doc1"
+      ],
+      "note": "The text that says the relation arises from a written or unwritten contract and may be proved by any means is not in the store: requested."
+    },
+    {
+      "id": "k2",
+      "item": "What is the legal basis of the right to contest a dismissal and the grounds that make a dismissal lawful?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b3",
+        "b4",
+        "b8",
+        "b10",
+        "b11",
+        "e4"
+      ]
+    },
+    {
+      "id": "k3",
+      "item": "Was the dismissal for a serious fault, and was the disciplinary procedure followed (notice of hearing, hearing, written decision, reasons)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b5",
+        "b6",
+        "b7",
+        "doc2",
+        "doc4",
+        "n3"
+      ],
+      "note": "The store gives written notification and hearing; the internal-regulation articles that fix the content of the procedure are not in the store: requested."
+    },
+    {
+      "id": "k4",
+      "item": "Was the dismissal a collective one for economic reasons, and were its procedures followed?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "note": "Only the French edition has the articles on reduction of staff; they are not in the article store. Requested; belief kept in open point o4."
+    },
+    {
+      "id": "k5",
+      "item": "Was the dismissal notified in writing, with its reasons, and on what date?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b7",
+        "doc2",
+        "e2"
+      ],
+      "note": "The store requires written notification; it does not say that the reasons must be stated."
+    },
+    {
+      "id": "k6",
+      "item": "Did the worker exhaust the internal procedure of the employer (collective agreement, appeal to the disciplinary body) before going to the conciliation office?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "labour-prelitigation.p2"
+      ]
+    },
+    {
+      "id": "k7",
+      "item": "Is conciliation before the labour conciliation office mandatory before filing, and what are its exceptions?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "labour-prelitigation.p1"
+      ]
+    },
+    {
+      "id": "k8",
+      "item": "Was a record of non-conciliation drawn up, on what date, and was a record of conciliation reached instead?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e3",
+        "labour-prelitigation.n1",
+        "labour-prelitigation.n5"
+      ]
+    },
+    {
+      "id": "k9",
+      "item": "Within what time after the record of non-conciliation must the claim be filed, and what is the sanction for filing late?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "labour-prelitigation.d1",
+        "labour-prelitigation.d2",
+        "labour-prelitigation.d3"
+      ]
+    },
+    {
+      "id": "k10",
+      "item": "Is there a limitation period for a claim of abusive dismissal, from what event does it run, and may the court raise it itself?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "periods.d1",
+        "o1"
+      ],
+      "note": "No special period for dismissal claims was found; the general period is imported, with the court unable to raise it of its own motion."
+    },
+    {
+      "id": "k11",
+      "item": "Before which court and which section is the claim filed (social section)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "court-sections.b11",
+        "court-sections.b14"
+      ]
+    },
+    {
+      "id": "k12",
+      "item": "Which court has territorial jurisdiction (place of work, place of contract, domicile of the employer)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "labour-prelitigation.t1",
+        "labour-prelitigation.t2",
+        "labour-prelitigation.t3"
+      ]
+    },
+    {
+      "id": "k13",
+      "item": "Does the case leave the ordinary courts (public employer, administrative court, criminal court)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "labour-prelitigation.x1",
+        "labour-prelitigation.x2",
+        "ordinary-court-exits.x6",
+        "ordinary-court-exits.x5"
+      ]
+    },
+    {
+      "id": "k14",
+      "item": "Is the claim heard at first instance and final, or open to appeal, and what are the thresholds?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b9",
+        "b11",
+        "b12"
+      ],
+      "note": "The store says the court rules at first and last instance and that cassation is open; no threshold appears."
+    },
+    {
+      "id": "k15",
+      "item": "What may the worker ask: reinstatement with the previous rights, and if the employer refuses, compensation?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "r1",
+        "r2",
+        "r3",
+        "r4",
+        "b11"
+      ]
+    },
+    {
+      "id": "k16",
+      "item": "How is compensation calculated, is there a minimum, and may it be combined with the notice indemnity and the severance indemnity?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "r2",
+        "r3",
+        "b9",
+        "b11"
+      ],
+      "note": "Minimums come from the store; the severance-indemnity article is not in the store: requested."
+    },
+    {
+      "id": "k17",
+      "item": "May the worker also claim unpaid wages, leave pay, notice indemnity, and damages for the manner of dismissal?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "note": "Only the general wage articles are in the store; nothing on notice indemnity or leave pay on dismissal. The ruling reserves other possible compensation (b11). Wages alone belong to claim unpaid-wages (n2)."
+    },
+    {
+      "id": "k18",
+      "item": "Who must prove the existence of the employment relation, and who must prove the serious fault?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e1",
+        "e4",
+        "b8",
+        "b16"
+      ]
+    },
+    {
+      "id": "k19",
+      "item": "What documents must be attached: contract, work certificate, pay slips, dismissal letter, non-conciliation record?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "doc1",
+        "doc2",
+        "doc3",
+        "doc4",
+        "labour-prelitigation.doc1"
+      ]
+    },
+    {
+      "id": "k20",
+      "item": "Is a formal notice required before the claim?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "None of the labour texts in the store asks for a formal notice; the prior step is the conciliation record."
+    },
+    {
+      "id": "k21",
+      "item": "What must the petition state (names, capacity, address of both parties, facts, requests)?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b17",
+        "b18",
+        "b19"
+      ]
+    },
+    {
+      "id": "k22",
+      "item": "Is the worker exempt from court fees in labour claims?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "labour-prelitigation.b46"
+      ],
+      "note": "The store gives legal aid as of right to a worker whose pay is below a threshold; no general fee exemption was found."
+    },
+    {
+      "id": "k23",
+      "item": "Is provisional execution available for the judgment, and for which part?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "r4",
+        "b14",
+        "o3"
+      ]
+    },
+    {
+      "id": "k24",
+      "item": "Does a probationary period or a fixed-term contract change the rules on the dismissal?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "note": "The articles on the trial period and fixed-term contracts are not in the store. Requested."
+    },
+    {
+      "id": "k25",
+      "item": "Does a dismissal of a staff delegate or a protected worker follow special rules?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "note": "The article that protects staff delegates from dismissal is not in the store. Requested."
+    },
+    {
+      "id": "k26",
+      "item": "Is the employer a public body whose staff are governed by the public-service statute?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b2",
+        "labour-prelitigation.x2",
+        "labour-prelitigation.x1"
+      ]
+    },
+    {
+      "id": "k27",
+      "item": "How are the days of a procedural period counted, and do they run during judicial holidays?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "labour-prelitigation.d1"
+      ]
+    },
+    {
+      "id": "k28",
+      "item": "Is there a pending criminal complaint on the same facts?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "ordinary-court-exits.x6"
+      ]
+    },
+    {
+      "id": "k29",
+      "item": "Can the defendant be a successor employer after a transfer of the business?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "note": "The article that keeps the labour relations when the employer's legal situation changes is not in the store. Requested."
+    },
+    {
+      "id": "k30",
+      "item": "What facts must the lawyer ask the client before drafting?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e1",
+        "e2",
+        "e3",
+        "e4"
+      ]
+    },
+    {
+      "id": "k31",
+      "item": "The store notes that the jurisdiction rules of Law 22-13 apply from the installation of the new courts: does the note touch this claim?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "The note concerns the administrative courts and the specialised commercial courts; the social section is not among them."
+    }
+  ],
+  "basis": [
+    {
+      "id": "b1",
+      "role": "basis",
+      "required": true,
+      "cite": {
+        "code": "labour-relations",
+        "article": "2",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "العامل الأجير هو من يؤدي عملا يدويا أو فكريا مقابل مرتب، في إطار التنظيم ولحساب شخص آخر طبيعي أو معنوي يسمى المستخدم.",
+        "en": "A salaried worker does manual or intellectual work for pay, within an organisation and on behalf of another person, called the employer."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يعتبر عمالا أجراء، في مفهوم هذا القانون، كل الأشخاص الذين يؤدون عملا يدويا أو فكريا مقابل مرتب، في إطار التنظيم، ولحساب شخص آخر طبيعي أو معنوي عمومي أو خاص، يدعى «المستخدم».",
+          "sha256": "39763319161ad3b2642e3ec7686faff9628e2a297edfdfa77d67b8b36f27cfb6"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b2",
+      "role": "limit",
+      "cite": {
+        "code": "labour-relations",
+        "article": "3",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "موظفو الإدارات العمومية وأعوانها المتعاقدون ومستخدمو المؤسسات العمومية ذات الطابع الإداري تحكمهم أحكام خاصة لا هذا القانون.",
+        "en": "Civil servants, contract agents of public administrations and staff of public administrative bodies are under special provisions, not this law."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يخضع المستخدمون المدنيون والعسكريون التابعون للدفاع الوطني والقضاة والموظفون والأعوان المتعاقدون في الهيئات والإدارات العمومية في الدولة والولايات والبلديات ومستخدمو المؤسسات العمومية ذات الطابع الإداري، لأحكام تشريعية وتنظيمية خاصة.",
+          "sha256": "f79899d72decb330f53e09f950c35e4768e0316cc0b0a541a2f0b6f5990d7616"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b3",
+      "role": "basis",
+      "required": true,
+      "interpretive": true,
+      "interpretiveNote": "The French edition supplied is the original 1990 text. Its article on dismissal is a single paragraph that refers the faults and conditions to the internal regulation; the Arabic text in force lists the serious faults itself. The Arabic is official and is followed.",
+      "cite": {
+        "code": "labour-relations",
+        "article": "73",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يكون التسريح التأديبي عند ارتكاب العامل أخطاء جسيمة.",
+        "en": "A disciplinary dismissal is made where the worker commits serious faults."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يتم التسريح التأديبي في حالة ارتكاب العامل أخطاء جسيمة.",
+          "sha256": "b119720f9bac11d6b6471e189f29eba9a0e2c76dd8ad444820fdff367b83741d"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b4",
+      "role": "basis",
+      "cite": {
+        "code": "labour-relations",
+        "article": "73",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "إضافة إلى الأخطاء الجسيمة المعاقب عليها جزائيا، تعد أخطاء جسيمة أفعال معينة منها رفض التعليمات وإفشاء المعلومات المهنية وأعمال العنف والإضرار العمدي وتناول الكحول والمخدرات في أماكن العمل.",
+        "en": "Besides serious faults punished by criminal law, certain acts count as serious faults, among them refusing instructions, disclosing professional information, violence, deliberate damage and taking alcohol or drugs at the workplace."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "وعلاوة على الأخطاء الجسيمة، التي يعاقب عليها التشريع الجزائي والتي ترتكب أثناء العمل، تعتبر على الخصوص أخطاء جسيمة، يحتمل أن ينجر عنها التسريح بدون مهلة العطلة وبدون علاوات، الأفعال الآتية:",
+          "sha256": "4dc7221bd651c7a87a618e1ca52ca7c27fba83db94c26d97d5855501f046e0a6"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b5",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-relations",
+        "article": "73-1",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "على المستخدم أن يراعي عند وصف الخطأ الجسيم ظروفه واتساعه ودرجة خطورته والضرر الذي ألحقه وسيرة العامل السابقة.",
+        "en": "In describing a serious fault the employer must weigh its circumstances, extent, gravity, the damage done and the worker's earlier conduct."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجب أن يراعي المستخدم، على الخصوص، عند تحديد ووصف الخطأ الجسيم الذي يرتكبه العامل، الظروف التي ارتكب فيها الخطأ ومدى اتساعه ودرجة خطورته والضرر الذي ألحقه وكذلك السيرة التي كان يسلكها العامل حتى تاريخ ارتكابه الخطأ نحو عمله ونحو ممتلكات هيئته المستخدمة.",
+          "sha256": "ce298b03fd3f84ef945a8dc8dcd640aed2a37bdd5e1d78825f17b0a33dc71051"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b6",
+      "role": "prerequisite",
+      "required": true,
+      "cite": {
+        "code": "labour-relations",
+        "article": "73-2",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يعلن التسريح مع احترام الإجراءات المحددة في النظام الداخلي.",
+        "en": "The dismissal is declared in compliance with the procedures laid down in the internal regulation."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يعلن على التسريح، المنصوص عليه في المادة 73 أعلاه، ضمن احترام الإجراءات المحددة في النظام الداخلي.",
+          "sha256": "3000e88507565978ade7c155797fc699de94377ec66fd84885ef51308127fde8"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b7",
+      "role": "prerequisite",
+      "required": true,
+      "cite": {
+        "code": "labour-relations",
+        "article": "73-2",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "تنص هذه الإجراءات على التبليغ الكتابي لقرار التسريح وعلى استماع المستخدم إلى العامل الذي يمكنه أن يصطحب عاملا من الهيئة المستخدمة.",
+        "en": "Those procedures must provide for written notification of the dismissal decision and for the employer to hear the worker, who may bring a colleague from the employer's staff."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "ويجب أن تنص هذه الإجراءات على التبليغ الكتابي لقرار التسريح واستماع المستخدم للعامل المعني، الذي يمكنه، في هذه الحالة، أن يختار عاملا تابعا للهيئة المستخدمة ليصطحبه.",
+          "sha256": "4b9f315109864c2a7b798fe887c9e840dffef08f67a23b41c5e9d9a614fa7cfb"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b8",
+      "role": "proof",
+      "required": true,
+      "cite": {
+        "code": "labour-relations",
+        "article": "73-3",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "كل تسريح فردي يتم خرقا لأحكام هذا القانون يعد تعسفيا، وعلى المستخدم أن يثبت العكس.",
+        "en": "Any individual dismissal made in breach of this law is deemed abusive, and the employer must prove the contrary."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "كل تسريح فردي، يتم خرقا لأحكام هذا القانون، يعتبر تعسفيا وعلى المستخدم أن يثبت العكس.",
+          "sha256": "d56f7992e3c5ba58026eb4bd120f3afefe7793b2683d90502afae5ba7a8aaf05"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b9",
+      "role": "damages",
+      "cite": {
+        "code": "labour-relations",
+        "article": "73-4",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "إذا وقع التسريح مخالفا للإجراءات القانونية أو الاتفاقية الملزمة، تلغي المحكمة قرار التسريح ابتدائيا ونهائيا وتلزم المستخدم بالإجراء المعمول به وتمنح العامل تعويضا لا يقل عن الأجر الذي كان يتقاضاه لو استمر في عمله.",
+        "en": "Where the dismissal breaches binding legal or contractual procedures, the court annuls the decision at first and last instance, orders the employer to carry out the procedure and awards the worker compensation not less than the pay he would have received had he continued working."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "إذا وقع تسريح العامل مخالفة للإجراءات القانونية و/أو الاتفاقية الملزمة، تلغي المحكمة المختصة ابتدائيا ونهائيا قرار التسريح بسبب عدم احترام الإجراءات، وتلزم المستخدم بالقيام بالإجراء المعمول به، وتمنح العامل تعويضا ماليا على نفقة المستخدم، لا يقل عن الأجر الذي يتقاضاه كما لو استمر في عمله.",
+          "sha256": "ce1585b223d322a02334cbed37a3eb6bd087f6ceb0af7c25d787fc07a2f5a58e"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b10",
+      "role": "basis",
+      "required": true,
+      "cite": {
+        "code": "labour-relations",
+        "article": "73-4",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "التسريح الواقع خرقا لأحكام المادة المتعلقة بالأخطاء الجسيمة يعد تعسفيا.",
+        "en": "A dismissal made in breach of the provisions on serious faults is deemed abusive."
+      },
+      "quote": [
+        {
+          "paragraph": 2,
+          "text": "وإذا حدث تسريح العامل خرقا لأحكام المادة 73 أعلاه، يعتبر تعسفيا.",
+          "sha256": "675d368d24e2319ce3ab5014280c2ffc6ed4cb06adb4ba5f2c7f49ca276959ce"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b11",
+      "role": "damages",
+      "required": true,
+      "cite": {
+        "code": "labour-relations",
+        "article": "73-4",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "تفصل المحكمة ابتدائيا ونهائيا إما بإعادة إدماج العامل مع احتفاظه بامتيازاته، أو عند رفض أحد الطرفين بتعويض لا يقل عن أجر ستة (6) أشهر من العمل، دون الإخلال بالتعويضات المحتملة.",
+        "en": "The court rules at first and last instance either to reinstate the worker with his acquired privileges or, if either party refuses, to award compensation not less than the pay of six (6) months of work, without prejudice to other possible compensation."
+      },
+      "quote": [
+        {
+          "paragraph": 3,
+          "text": "تفصل المحكمة المختصة ابتدائيا ونهائيا إما بإعادة إدماج العامل في المؤسسة مع الاحتفاظ بامتيازاته المكتسبة، أو، في حالة رفض أحد الطرفين، يمنح العامل تعويضا ماليا لا يقل عن الأجر الذي يتقاضاه العامل عن مدة ستة (6) أشهر من العمل، دون الإخلال بالتعويضات المحتملة.",
+          "sha256": "04817830f938de911ced4ab962c46009f5e1b0e816984178852390c23b068e8f"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b12",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-relations",
+        "article": "73-4",
+        "paragraphs": [
+          4
+        ]
+      },
+      "says": {
+        "ar": "يكون الحكم الصادر في هذا المجال قابلا للطعن بالنقض.",
+        "en": "The judgment given in this matter may be challenged by appeal to the Supreme Court."
+      },
+      "quote": [
+        {
+          "paragraph": 4,
+          "text": "يكون الحكم الصادر في هذا المجال قابلا للطعن بالنقض.",
+          "sha256": "7531f127cf45c97e92b34833078401c71887f706ef2b31246798042e7c252581"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b13",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "21",
+        "paragraphs": [
+          1,
+          3
+        ]
+      },
+      "says": {
+        "ar": "تبت المحكمة ابتدائيا ونهائيا في الدعوى المتعلقة أساسا بتسليم شهادات العمل وكشوف الرواتب والوثائق الأخرى المنصوص عليها قانونا لإثبات النشاط المهني.",
+        "en": "The court rules at first and last instance where the claim is mainly for delivery of work certificates, pay slips and other documents the law provides to prove professional activity."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "باستثناء الاختصاص الاصلي تبت المحاكم عند النظر في المسائل الاجتماعية ابتدائيا ونهائيا عندما تتعلق الدعوى اساسا ب :",
+          "sha256": "720fb499173a9f59e7b4794923fdcc90d32870171b3b67c03028384e2a8824e0"
+        },
+        {
+          "paragraph": 3,
+          "text": "– بتسليم شهادات العمل وكشوفات الرواتب او الوثائق الاخرى المنصوص عليها قانونا لاثبات النشاط المهني للمدعي.",
+          "sha256": "26030cae2e89ceacf4741e3e6b5e0fce98ce3d488f80d7e38b62f00279e3aee7"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "delta",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b14",
+      "role": "procedure",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "22",
+        "paragraphs": [
+          5
+        ]
+      },
+      "says": {
+        "ar": "يمكن للمحكمة الفاصلة في المسائل الاجتماعية أن تنطق بالتنفيذ المؤقت دون كفالة فيما يتجاوز ستة أشهر.",
+        "en": "The court in social matters may order provisional execution without bond beyond six months."
+      },
+      "quote": [
+        {
+          "paragraph": 5,
+          "text": "كما يمكن المحكمة عند النظر في المسائل الاجتماعية ان تنطق بالتنفيذ المؤقت دون كفالة فيما بعد ستة اشهر.",
+          "sha256": "3be8b6d29b10dfd0ff146cde8e610fa818d6b97433b3fd85d58e46f24fa77dd4"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "delta",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b15",
+      "role": "limit",
+      "cite": {
+        "code": "labour-disputes",
+        "article": "21",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "تبت المحكمة ابتدائيا ونهائيا في الدعوى المتعلقة أساسا بإلغاء العقوبات التأديبية التي قررها المستخدم دون تطبيق الإجراءات التأديبية أو الاتفاقيات الإجبارية.",
+        "en": "The court rules at first and last instance where the claim is mainly to annul disciplinary sanctions the employer imposed without the compulsory disciplinary procedures or agreements."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "باستثناء الاختصاص الاصلي تبت المحاكم عند النظر في المسائل الاجتماعية ابتدائيا ونهائيا عندما تتعلق الدعوى اساسا ب :",
+          "sha256": "720fb499173a9f59e7b4794923fdcc90d32870171b3b67c03028384e2a8824e0"
+        },
+        {
+          "paragraph": 2,
+          "text": "– بالغاء العقوبات التاديبية التي قررها المستخدم ضد المدعي دون تطبيق الاجراءات التاديبية و/ او الاتفاقيات الاجبارية.",
+          "sha256": "9c39739a7dff8e1edfc947f586618215008af2636e190191d0d3de9fc494801c"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "delta",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": false
+      }
+    },
+    {
+      "id": "b16",
+      "role": "proof",
+      "cite": {
+        "code": "civil-code",
+        "article": "323",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "على الدائن إثبات الالتزام وعلى المدين إثبات التخلص منه.",
+        "en": "The creditor proves the obligation and the debtor proves that he is released from it."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "على الدائن اثبات الالتزام وعلى المدين اثبات التخلص منه.",
+          "sha256": "ebb8762aac4c3d8159864a5a63be8505f0bf4de22b6f8f532a048a910d9ad268"
+        }
+      ],
+      "source": {
+        "tier": 2,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b17",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "503",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ترفع الدعوى أمام القسم الاجتماعي بعريضة افتتاح دعوى طبقا للقواعد المقررة قانونا.",
+        "en": "The claim is brought before the social section by a statement of claim under the rules the law lays down."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "ترفع الدعوى أمام القسم الاجتماعي بعريضة افتتاح دعوى طبقا للقواعد المقررة قانونا.",
+          "sha256": "84fc313a96363587892007d55cb09d0890a160921cf827eb56d85c6098dbbbe8"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b18",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "15",
+        "paragraphs": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "says": {
+        "ar": "تتضمن عريضة افتتاح الدعوى تحت طائلة عدم قبولها شكلا الجهة القضائية وبيانات الطرفين وعرضا موجزا للوقائع والطلبات والوسائل والإشارة إلى المستندات.",
+        "en": "The petition states, on pain of inadmissibility in form, the court, the particulars of both parties, a short account of the facts, requests and grounds, and refers to the supporting documents."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "يجب أن تتضمن عريضة افتتاح الدعوى، تحت طائلة عدم قبولها شكلا، البيانات الآتية :",
+          "sha256": "d1a2b858cb132be84beec6efc31e21b100252e635c1bc8f4ad3dadb68cf01eaa"
+        },
+        {
+          "paragraph": 2,
+          "text": "1 - الجهة القضائية التي ترفع أمامها الدعوى،",
+          "sha256": "5250ece05a710e4e7f2f0fff408bd2acfcaab510707616bf4e46dac863b3d6e0"
+        },
+        {
+          "paragraph": 3,
+          "text": "2- اسم ولقب المدعي وموطنه،",
+          "sha256": "b77d9872b866dcb49b5b2424df274397a53e34200f71ccad22b6b39cc0ad3512"
+        },
+        {
+          "paragraph": 4,
+          "text": "3- اسم ولقب وموطن المدعى عليه، فإن لم يكن له موطن معلوم، فآخر موطن له،",
+          "sha256": "65d50737987cee562c11814cfafa79e3519cb5f5b67f76cde4b2b45083f183a1"
+        },
+        {
+          "paragraph": 5,
+          "text": "4- الإشارة إلى تسمية وطبيعة الشخص المعنوي، ومقره الاجتماعي وصفة ممثله القانوني أو الاتفاقي،",
+          "sha256": "efdd0a68a2eacf6ec72d0748ab161b50e50bed501da3b7bef48dc1317e694def"
+        },
+        {
+          "paragraph": 6,
+          "text": "5- عرضا موجزا للوقائع والطلبات والوسائل التي تؤسس عليها الدعوى،",
+          "sha256": "5dccd81899d58fc8e4338ce07d36721ede10bca1069d30af3b74904cabe104f2"
+        },
+        {
+          "paragraph": 7,
+          "text": "6- الإشارة، عند الاقتضاء، إلى المستندات والوثائق المؤيدة للدعوى.",
+          "sha256": "711248183d4321f84cf8ebc68ed391d402232ec8438f0722d17c7fd90ea15424"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b19",
+      "role": "basis",
+      "cite": {
+        "code": "cpca",
+        "article": "13",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "لا يجوز لأي شخص التقاضي ما لم تكن له صفة وله مصلحة قائمة أو محتملة يقرها القانون.",
+        "en": "No one may sue unless he has standing and an existing or potential interest that the law recognises."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "لا يجوز لأي شخص، التقاضي ما لم تكن له صفة، وله مصلحة قائمة أو محتملة يقرها القانون.",
+          "sha256": "148841fd4470b70c28d22c15878737d32db8e0dadb189ee821fdcdcfaa48d116"
+        }
+      ],
+      "source": {
+        "tier": 1,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [],
+        "ledgerClean": true
+      }
+    },
+    {
+      "id": "b20",
+      "role": "damages",
+      "interpretive": true,
+      "interpretiveNote": "Used only for an open reading: the store does not say that a dismissal is a fault under the general rule of liability; the ruling's reservation of other possible compensation may be read as allowing it.",
+      "cite": {
+        "code": "civil-code",
+        "article": "124",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "كل فعل يرتكبه الشخص بخطئه ويسبب ضررا للغير يلزم من كان سببا في حدوثه بالتعويض.",
+        "en": "Any act a person commits through his fault and that causes harm to another obliges the person who caused it to make compensation."
+      },
+      "quote": [
+        {
+          "paragraph": 1,
+          "text": "كل فعل أيا كان يرتكبه الشخص بخطئه، ويسبب ضررا للغير يلزم من كان سببا في حدوثه بالتعويض.",
+          "sha256": "812a7bc5c8f091a9db83990e0a67b4aaeadd1b88ce749447b2badb7b62b0c0b7"
+        }
+      ],
+      "source": {
+        "tier": 2,
+        "store": "library",
+        "textAsOf": "2026-11-10",
+        "ledgerRefs": [
+          "civil-code/law-05-10"
+        ],
+        "ledgerClean": true
+      }
+    }
+  ],
+  "elements": [
+    {
+      "id": "e1",
+      "toProve": {
+        "ar": "قيام علاقة عمل بين المدعي العامل والمدعى عليه المستخدم.",
+        "en": "That an employment relation existed between the plaintiff worker and the defendant employer."
+      },
+      "factsToState": [
+        {
+          "ar": "تاريخ التحاق المدعي بالعمل لدى المدعى عليه ومنصبه.",
+          "en": "The date the plaintiff started work with the defendant and his post."
+        },
+        {
+          "ar": "أن المدعي يؤدي العمل مقابل مرتب في إطار التنظيم ولحساب المدعى عليه.",
+          "en": "That the plaintiff worked for pay, within the organisation and on behalf of the defendant."
+        }
+      ],
+      "events": [
+        "employment_started"
+      ],
+      "slots": [
+        "employment_start_date"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "contract, pay slips, work certificate, witnesses",
+          "basis": [
+            "b16"
+          ],
+          "note": {
+            "ar": "المدعي يثبت قيام العلاقة؛ والنص على حرية الإثبات في علاقة العمل غير وارد في المخزن.",
+            "en": "The plaintiff proves the relation; the text on freedom of proof of the employment relation is not in the store."
+          }
+        }
+      ],
+      "basis": [
+        "b1",
+        "b16",
+        "b19"
+      ]
+    },
+    {
+      "id": "e2",
+      "toProve": {
+        "ar": "أن المدعى عليه سرّح المدعي أو فصله من العمل، وتاريخ ذلك.",
+        "en": "That the defendant dismissed the plaintiff, and the date."
+      },
+      "factsToState": [
+        {
+          "ar": "تاريخ قرار التسريح وكيفية تبليغه (كتابة أو شفاهة).",
+          "en": "The date of the dismissal decision and how it was notified (in writing or orally)."
+        },
+        {
+          "ar": "الأسباب التي ذكرها المدعى عليه للتسريح إن ذكر شيئا.",
+          "en": "The grounds the defendant gave for the dismissal, if any."
+        },
+        {
+          "ar": "هل استمع المستخدم إلى العامل قبل التسريح.",
+          "en": "Whether the employer heard the worker before the dismissal."
+        }
+      ],
+      "events": [
+        "dismissal"
+      ],
+      "slots": [
+        "dismissal_date",
+        "dismissal_notified_in_writing",
+        "worker_heard_before_dismissal"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "the written dismissal decision, or witnesses where it was oral",
+          "basis": [
+            "b7",
+            "b16"
+          ],
+          "note": {
+            "ar": "القرار المكتوب هو ما يوجبه النص؛ وعند غيابه يثبت المدعي واقعة التسريح.",
+            "en": "A written decision is what the text requires; without one the plaintiff proves the fact of dismissal."
+          }
+        }
+      ],
+      "basis": [
+        "b3",
+        "b6",
+        "b7",
+        "b16"
+      ]
+    },
+    {
+      "id": "e3",
+      "toProve": {
+        "ar": "أن النزاع عرض على مكتب المصالحة وحرر المكتب محضر عدم المصالحة، وتاريخ تسليمه.",
+        "en": "That the dispute was put to the conciliation office and the office drew up a record of non-conciliation, and the date it was delivered."
+      },
+      "factsToState": [
+        {
+          "ar": "تاريخ تسليم محضر عدم المصالحة.",
+          "en": "The date the record of non-conciliation was delivered."
+        },
+        {
+          "ar": "هل سبق محضر آخر عن النزاع نفسه.",
+          "en": "Whether an earlier record was delivered for the same dispute."
+        }
+      ],
+      "events": [
+        "conciliation_failed"
+      ],
+      "slots": [
+        "nonconciliation_record",
+        "nonconciliation_record_delivered_on",
+        "earlier_nonconciliation_record"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "copy of the record of non-conciliation",
+          "basis": [
+            "labour-prelitigation.b20",
+            "labour-prelitigation.b15"
+          ],
+          "note": {
+            "ar": "ترفق نسخة من المحضر بالعريضة.",
+            "en": "A copy of the record is attached to the petition."
+          }
+        }
+      ],
+      "basis": [
+        "labour-prelitigation.b12",
+        "labour-prelitigation.b15",
+        "labour-prelitigation.b19",
+        "labour-prelitigation.b20"
+      ]
+    },
+    {
+      "id": "e4",
+      "toProve": {
+        "ar": "أن التسريح وقع خرقا للإجراءات أو لأحكام الأخطاء الجسيمة، فيعد تعسفيا، وللمستخدم أن يثبت العكس.",
+        "en": "That the dismissal breached the procedure or the provisions on serious faults, so that it is deemed abusive; the employer may prove the contrary."
+      },
+      "factsToState": [
+        {
+          "ar": "الإجراءات التي لم تحترم: التبليغ الكتابي أو الاستماع إلى العامل أو إجراءات النظام الداخلي.",
+          "en": "The steps that were not respected: written notification, hearing the worker, or the internal-regulation procedure."
+        },
+        {
+          "ar": "أن الخطأ المنسوب إلى العامل غير جسيم أو غير ثابت.",
+          "en": "That the fault attributed to the worker is not serious or is not established."
+        }
+      ],
+      "events": [],
+      "slots": [
+        "dismissal_notified_in_writing",
+        "worker_heard_before_dismissal"
+      ],
+      "burden": "defendant",
+      "proof": [
+        {
+          "means": "the employer's file and the internal regulation",
+          "basis": [
+            "b8",
+            "b6",
+            "b7"
+          ],
+          "note": {
+            "ar": "عبء إثبات العكس على المستخدم متى خرق التسريح أحكام القانون.",
+            "en": "The burden of proving the contrary lies on the employer once the dismissal breaches the law."
+          }
+        }
+      ],
+      "basis": [
+        "b5",
+        "b6",
+        "b7",
+        "b8",
+        "b10"
+      ]
+    }
+  ],
+  "requests": [
+    {
+      "id": "r1",
+      "kind": "reinstatement",
+      "accessory": false,
+      "text": {
+        "ar": "الحكم بإعادة إدماج المدعي في منصب عمله مع احتفاظه بامتيازاته المكتسبة.",
+        "en": "Order that the plaintiff be reinstated in his post with his acquired privileges."
+      },
+      "basis": [
+        "b11"
+      ]
+    },
+    {
+      "id": "r2",
+      "kind": "damages",
+      "accessory": false,
+      "amount": true,
+      "text": {
+        "ar": "الحكم للمدعي بتعويض مالي قدره (...) دج عن التسريح التعسفي، لا يقل عن أجر ستة أشهر من العمل، عند رفض أحد الطرفين إعادة الإدماج.",
+        "en": "Award the plaintiff compensation of (...) DZD for the abusive dismissal, not less than six months' pay, where either party refuses reinstatement."
+      },
+      "basis": [
+        "b11",
+        "b10"
+      ]
+    },
+    {
+      "id": "r3",
+      "kind": "damages",
+      "accessory": true,
+      "amount": true,
+      "text": {
+        "ar": "الحكم للمدعي بتعويض مالي قدره (...) دج لعدم احترام إجراءات التسريح، لا يقل عن الأجر الذي كان يتقاضاه لو استمر في عمله.",
+        "en": "Award the plaintiff compensation of (...) DZD for failure to follow the dismissal procedure, not less than the pay he would have received had he continued working."
+      },
+      "basis": [
+        "b9",
+        "b8"
+      ]
+    },
+    {
+      "id": "r4",
+      "kind": "provisional_execution",
+      "accessory": true,
+      "text": {
+        "ar": "الأمر بالنفاذ المعجل دون كفالة للحكم في الأجزاء التي تتعدى ستة أشهر.",
+        "en": "Order provisional execution without bond of the judgment for the parts beyond six months."
+      },
+      "basis": [
+        "b14"
+      ]
+    },
+    {
+      "id": "r5",
+      "kind": "annulment",
+      "accessory": true,
+      "text": {
+        "ar": "إلغاء قرار التسريح لعدم احترام الإجراءات القانونية أو الاتفاقية الملزمة، وإلزام المستخدم بالقيام بالإجراء المعمول به.",
+        "en": "Annul the dismissal decision for failure to respect the binding legal or contractual procedures, and order the employer to carry out the procedure."
+      },
+      "basis": [
+        "b9"
+      ]
+    },
+    {
+      "id": "r6",
+      "kind": "other",
+      "accessory": true,
+      "text": {
+        "ar": "إلزام المدعى عليه بتسليم المدعي شهادة العمل وكشوف الرواتب.",
+        "en": "Order the defendant to deliver the plaintiff's work certificate and pay slips."
+      },
+      "basis": [
+        "b13"
+      ]
+    }
+  ],
+  "court": {
+    "section": {
+      "value": "social",
+      "basis": [
+        "court-sections.b11",
+        "court-sections.b14",
+        "court-sections.b3",
+        "court-sections.b4"
+      ],
+      "alternatives": [
+        {
+          "when": {
+            "slot": "worker_is_public_servant",
+            "is": "yes"
+          },
+          "value": "other",
+          "basis": [
+            "court-sections.b52",
+            "court-sections.b47"
+          ]
+        }
+      ],
+      "message": {
+        "ar": "المادة 500 من قانون الإجراءات المدنية والإدارية والمادة 20 من قانون تسوية النزاعات الفردية في العمل: القسم الاجتماعي هو المختص بإنهاء عقود العمل، وتجدول القضايا حسب طبيعة النزاع (المادة 32). تحقق من القسم المختار.",
+        "en": "CPCA article 500 and article 20 of the law on individual labour disputes: the social section hears the termination of employment contracts, and cases are listed by the nature of the dispute (article 32). Check the section chosen."
+      }
+    }
+  },
+  "boundaries": [
+    {
+      "id": "n1",
+      "looksLike": {
+        "ar": "عقوبة تأديبية غير التسريح (إنذار أو توقيف) يطلب العامل إلغاءها.",
+        "en": "A disciplinary sanction other than dismissal (a warning or a suspension) that the worker asks to have annulled."
+      },
+      "isActually": "outside:disciplinary-sanction",
+      "tellingFacts": [
+        {
+          "ar": "لم تنته علاقة العمل ولم يسرح العامل.",
+          "en": "The employment relation did not end and the worker was not dismissed."
+        },
+        {
+          "ar": "المطلوب إلغاء عقوبة مقررة دون تطبيق الإجراءات التأديبية.",
+          "en": "The request is to annul a sanction imposed without the disciplinary procedure."
+        }
+      ],
+      "message": {
+        "ar": "المادة 21 من قانون تسوية النزاعات الفردية في العمل: الدعوى الرامية أساسا إلى إلغاء العقوبات التأديبية دون تطبيق الإجراءات تبت فيها المحكمة ابتدائيا ونهائيا. تحقق مما إذا كان الطلب ضد التسريح أم ضد عقوبة أخرى.",
+        "en": "Article 21 of the law on individual labour disputes: a claim mainly to annul disciplinary sanctions imposed without the procedure is decided at first and last instance. Check whether the claim is against a dismissal or against another sanction."
+      },
+      "basis": [
+        "b15"
+      ]
+    },
+    {
+      "id": "n2",
+      "looksLike": {
+        "ar": "المطالبة بالأجور المتأخرة فقط دون الطعن في التسريح.",
+        "en": "A claim for arrears of wages alone, without contesting the dismissal."
+      },
+      "isActually": "claim:unpaid-wages",
+      "tellingFacts": [
+        {
+          "ar": "لا يطلب المدعي إعادة الإدماج ولا تعويضا عن التسريح.",
+          "en": "The plaintiff asks for neither reinstatement nor compensation for the dismissal."
+        },
+        {
+          "ar": "المبالغ المطلوبة أجور عن عمل أنجز.",
+          "en": "The sums asked are pay for work done."
+        }
+      ],
+      "message": {
+        "ar": "المادة 88 من قانون علاقات العمل: على المستخدم دفع الأجور عند حلول أجل استحقاقها. تحقق مما إذا كان الطلب أجورا فقط، فيكون موضوعه دعوى الأجور لا التسريح.",
+        "en": "Article 88 of the labour relations law: the employer pays wages when they fall due. Check whether the request is for wages only, in which case it is a wages claim and not a dismissal claim."
+      }
+    },
+    {
+      "id": "n3",
+      "looksLike": {
+        "ar": "تسريح تأديبي اتبعت فيه إجراءات التبليغ الكتابي والاستماع إلى العامل.",
+        "en": "A disciplinary dismissal in which written notification and a hearing of the worker were both carried out."
+      },
+      "isActually": "outside:lawful-disciplinary-dismissal",
+      "tellingFacts": [
+        {
+          "ar": "بلغ قرار التسريح كتابة واستمع المستخدم إلى العامل.",
+          "en": "The dismissal decision was notified in writing and the employer heard the worker."
+        },
+        {
+          "ar": "الدعوى لا تقوم على خرق الإجراءات بل على عدم جسامة الخطأ.",
+          "en": "The claim rests not on a breach of procedure but on the fault not being serious."
+        }
+      ],
+      "when": {
+        "all": [
+          {
+            "slot": "dismissal_notified_in_writing",
+            "is": "yes"
+          },
+          {
+            "slot": "worker_heard_before_dismissal",
+            "is": "yes"
+          }
+        ]
+      },
+      "slots": [
+        "dismissal_notified_in_writing",
+        "worker_heard_before_dismissal"
+      ],
+      "message": {
+        "ar": "المادتان 73-2 و73-4: الإجراءات المنصوص عليها تشمل التبليغ الكتابي والاستماع إلى العامل، وقد ذكرتما منجزتين. تحقق مما إذا كانت الدعوى تقوم على خرق باقي إجراءات النظام الداخلي أو على عدم جسامة الخطأ.",
+        "en": "Articles 73-2 and 73-4: the procedures provided include written notification and a hearing of the worker, and both are stated as done. Check whether the claim rests on a breach of the rest of the internal-regulation procedure or on the fault not being serious."
+      },
+      "basis": [
+        "b6",
+        "b7",
+        "b10"
+      ]
+    },
+    {
+      "id": "n4",
+      "looksLike": {
+        "ar": "انتهاء علاقة العمل باستقالة العامل أو بانتهاء أجل العقد، لا بتسريح من المستخدم.",
+        "en": "An end of the employment relation by the worker's resignation or the end of a fixed term, not by a dismissal by the employer."
+      },
+      "isActually": "outside:other-termination",
+      "tellingFacts": [
+        {
+          "ar": "العامل هو من قدم استقالته كتابة، أو انتهى عقد محدد المدة بحلول أجله.",
+          "en": "The worker gave his resignation in writing, or a fixed-term contract ran out."
+        }
+      ],
+      "message": {
+        "ar": "تحقق من أن علاقة العمل انتهت بقرار من المستخدم (تسريح) لا باستقالة أو بانتهاء أجل العقد؛ فالنصوص المتعلقة بأسباب انتهاء علاقة العمل غير واردة في مخزن النصوص.",
+        "en": "Check that the relation was ended by a decision of the employer (a dismissal) and not by resignation or the end of a fixed term; the texts on the ways a relation ends are not in the article store."
+      }
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc1",
+      "name": {
+        "ar": "عقد العمل أو أي دليل على علاقة العمل (كشوف الرواتب، شهادة العمل، التصريح بالتأمين)",
+        "en": "The employment contract or any proof of the relation (pay slips, work certificate, social-security declaration)"
+      },
+      "why": {
+        "ar": "لإثبات علاقة العمل وتاريخ الالتحاق بها: المدعي هو الذي يثبتها.",
+        "en": "To prove the relation and its start date: the plaintiff proves it."
+      },
+      "basis": [
+        "b1",
+        "b16"
+      ]
+    },
+    {
+      "id": "doc2",
+      "name": {
+        "ar": "قرار التسريح المكتوب ووثيقة تبليغه",
+        "en": "The written dismissal decision and the record of its notification"
+      },
+      "why": {
+        "ar": "المادة 73-2: التبليغ الكتابي لقرار التسريح من الإجراءات؛ وغيابه يدل على خرق الإجراء.",
+        "en": "Article 73-2: written notification of the decision is part of the procedure; its absence points to a breach of procedure."
+      },
+      "basis": [
+        "b7"
+      ]
+    },
+    {
+      "id": "doc3",
+      "name": {
+        "ar": "كشوف الرواتب وشهادة العمل",
+        "en": "Pay slips and the work certificate"
+      },
+      "why": {
+        "ar": "المادة 21 من قانون تسوية النزاعات الفردية في العمل تسميها وثائق لإثبات النشاط المهني، وتبين الأجر الذي يقاس عليه التعويض.",
+        "en": "Article 21 of the law on individual labour disputes names them as documents proving professional activity, and they show the pay against which the compensation is measured."
+      },
+      "basis": [
+        "b13",
+        "b11"
+      ]
+    },
+    {
+      "id": "doc4",
+      "name": {
+        "ar": "النظام الداخلي للهيئة المستخدمة إن وجد، واتفاقية العمل الجماعية",
+        "en": "The employer's internal regulation, if there is one, and the collective agreement"
+      },
+      "why": {
+        "ar": "المادة 73-2: إجراءات التسريح تحددها هذه الوثيقة؛ ويقاس عليها احترام الإجراء.",
+        "en": "Article 73-2: the dismissal procedures are fixed there, and respect for the procedure is measured against it."
+      },
+      "basis": [
+        "b6"
+      ]
+    }
+  ],
+  "slots": [
+    "requests",
+    "employment_start_date",
+    "dismissal_date",
+    "dismissal_notified_in_writing",
+    "worker_heard_before_dismissal",
+    "nonconciliation_record",
+    "nonconciliation_record_delivered_on",
+    "earlier_nonconciliation_record",
+    "earlier_nonconciliation_record_delivered_on",
+    "worker_is_public_servant",
+    "public_body_party",
+    "defendant_resides_abroad",
+    "employer_in_bankruptcy_or_settlement",
+    "internal_grievance_exhausted",
+    "forfeiture_lifted_by_order",
+    "forfeiture_force_majeure_invoked",
+    "conciliation_agreement_reached",
+    "court_has_section_for_matter",
+    "criminal_case_on_same_facts",
+    "obligation_is_tort_compensation",
+    "damage_caused_by_offence",
+    "debt_due_date",
+    "claim_is_professional_fees",
+    "claim_is_trader_supply_or_hotel",
+    "claim_is_periodic_renewable_right",
+    "work_accident_or_occupational_illness"
+  ],
+  "proposedSlots": [
+    {
+      "id": "employment_start_date",
+      "type": "date",
+      "question": {
+        "ar": "ما تاريخ التحاق العامل بالعمل لدى المستخدم؟",
+        "en": "On what date did the worker start work for the employer?"
+      },
+      "why": "Element e1 (event employment_started); the text on the worker's definition makes the relation the first fact to prove."
+    },
+    {
+      "id": "dismissal_date",
+      "type": "date",
+      "question": {
+        "ar": "ما تاريخ قرار التسريح أو الفصل من العمل؟",
+        "en": "On what date was the worker dismissed?"
+      },
+      "why": "Element e2 (event dismissal); the date measures the compensation and may start a period."
+    },
+    {
+      "id": "dismissal_notified_in_writing",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل بلغ قرار التسريح إلى العامل كتابة؟",
+        "en": "Was the dismissal decision notified to the worker in writing?"
+      },
+      "why": "Boundary n3 and element e4; the text on the dismissal procedure requires written notification."
+    },
+    {
+      "id": "worker_heard_before_dismissal",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل استمع المستخدم إلى العامل قبل تسريحه؟",
+        "en": "Did the employer hear the worker before the dismissal?"
+      },
+      "why": "Boundary n3 and element e4; the text on the dismissal procedure requires the employer to hear the worker."
+    }
+  ],
+  "examples": [
+    {
+      "id": "ex1",
+      "by": "derivationB",
+      "title": "Clean case: dismissed without notice or hearing; reinstatement and damages; record delivered three months ago.",
+      "petitionDate": "2026-09-01",
+      "slots": {
+        "worker_is_public_servant": "no",
+        "public_body_party": "no",
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2026-06-15",
+        "earlier_nonconciliation_record": "no",
+        "defendant_resides_abroad": "no",
+        "employer_in_bankruptcy_or_settlement": "no",
+        "internal_grievance_exhausted": "yes",
+        "requests": [
+          "reinstatement",
+          "damages"
+        ],
+        "dismissal_date": "2026-02-01",
+        "employment_start_date": "2019-03-01",
+        "dismissal_notified_in_writing": "no",
+        "worker_heard_before_dismissal": "no",
+        "court_has_section_for_matter": "yes"
+      },
+      "expect": {
+        "section": "social",
+        "findings": [
+          {
+            "ref": "n3",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex2",
+      "by": "derivationB",
+      "title": "Near miss: a civil servant under the public statute; the claim leaves the social section.",
+      "petitionDate": "2026-09-01",
+      "slots": {
+        "worker_is_public_servant": "yes",
+        "public_body_party": "yes",
+        "nonconciliation_record": "no",
+        "nonconciliation_record_delivered_on": "2026-06-15",
+        "earlier_nonconciliation_record": "no",
+        "defendant_resides_abroad": "no",
+        "employer_in_bankruptcy_or_settlement": "no",
+        "internal_grievance_exhausted": "yes",
+        "requests": [
+          "reinstatement"
+        ],
+        "dismissal_notified_in_writing": "no",
+        "worker_heard_before_dismissal": "no"
+      },
+      "expect": {
+        "section": "other",
+        "findings": [
+          {
+            "ref": "n3",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex3",
+      "by": "derivationB",
+      "title": "Near miss: the written notice and the hearing were both done; the boundary warns.",
+      "petitionDate": "2026-09-01",
+      "slots": {
+        "worker_is_public_servant": "no",
+        "public_body_party": "no",
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2026-06-15",
+        "earlier_nonconciliation_record": "no",
+        "defendant_resides_abroad": "no",
+        "employer_in_bankruptcy_or_settlement": "no",
+        "internal_grievance_exhausted": "yes",
+        "requests": [
+          "reinstatement",
+          "damages"
+        ],
+        "dismissal_notified_in_writing": "yes",
+        "worker_heard_before_dismissal": "yes"
+      },
+      "expect": {
+        "section": "social",
+        "findings": [
+          {
+            "ref": "n3",
+            "effect": "warn"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex4",
+      "by": "derivationB",
+      "title": "Nothing about the procedure is known: the boundary asks for both facts.",
+      "petitionDate": "2026-09-01",
+      "slots": {
+        "requests": [
+          "reinstatement",
+          "damages"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n3",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "dismissal_notified_in_writing",
+          "worker_heard_before_dismissal",
+          "worker_is_public_servant"
+        ]
+      }
+    },
+    {
+      "id": "ex5",
+      "by": "derivationB",
+      "title": "Notified in writing but the worker was not heard: the boundary stays silent.",
+      "petitionDate": "2026-09-01",
+      "slots": {
+        "worker_is_public_servant": "no",
+        "public_body_party": "no",
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2026-06-15",
+        "earlier_nonconciliation_record": "no",
+        "defendant_resides_abroad": "no",
+        "employer_in_bankruptcy_or_settlement": "no",
+        "internal_grievance_exhausted": "yes",
+        "requests": [
+          "reinstatement",
+          "damages"
+        ],
+        "dismissal_notified_in_writing": "yes",
+        "worker_heard_before_dismissal": "no"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n3",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex6",
+      "by": "derivationB",
+      "title": "Notified in writing, hearing not yet known: only the hearing is asked.",
+      "petitionDate": "2026-09-01",
+      "slots": {
+        "worker_is_public_servant": "no",
+        "public_body_party": "no",
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2026-06-15",
+        "earlier_nonconciliation_record": "no",
+        "defendant_resides_abroad": "no",
+        "employer_in_bankruptcy_or_settlement": "no",
+        "internal_grievance_exhausted": "yes",
+        "requests": [
+          "reinstatement",
+          "damages"
+        ],
+        "dismissal_notified_in_writing": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n3",
+            "effect": "ask"
+          }
+        ],
+        "questions": [
+          "worker_heard_before_dismissal"
+        ]
+      }
+    },
+    {
+      "id": "ex7",
+      "by": "derivationB",
+      "title": "Oral dismissal, worker heard: the boundary stays silent.",
+      "petitionDate": "2026-09-01",
+      "slots": {
+        "worker_is_public_servant": "no",
+        "public_body_party": "no",
+        "nonconciliation_record": "yes",
+        "nonconciliation_record_delivered_on": "2026-06-15",
+        "earlier_nonconciliation_record": "no",
+        "defendant_resides_abroad": "no",
+        "employer_in_bankruptcy_or_settlement": "no",
+        "internal_grievance_exhausted": "yes",
+        "requests": [
+          "damages"
+        ],
+        "dismissal_notified_in_writing": "no",
+        "worker_heard_before_dismissal": "yes"
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n3",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    }
+  ],
+  "openPoints": [
+    {
+      "id": "o1",
+      "question": {
+        "ar": "ما أجل التقادم الذي يسري على دعوى التعويض عن التسريح التعسفي، ومن أي تاريخ يبدأ؟",
+        "en": "Which limitation period governs the compensation claim for abusive dismissal, and from what date does it run?"
+      },
+      "why": {
+        "ar": "لا يوجد نص خاص في المخزن؛ والتعويض ليس أجرا عن عمل منجز، وتاريخ استحقاقه قد يكون يوم التسريح أو يوم الحكم.",
+        "en": "There is no special text in the store; the compensation is not pay for work done, and its due date may be the day of the dismissal or the day of the judgment."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "يسري التقادم العام للالتزامات من تاريخ التسريح.",
+            "en": "The general limitation of obligations runs from the dismissal."
+          },
+          "basis": [
+            "b11"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "يسري التقادم القصير على المبالغ المستحقة للعمال مقابل عملهم.",
+            "en": "The short limitation on sums owed to workers for their work applies."
+          }
+        }
+      ],
+      "protectiveReading": {
+        "ar": "تحذير فقط، دون منع، مع سؤال المحامي عن تاريخ التسريح.",
+        "en": "Warn only, never block, and ask the lawyer for the date of the dismissal."
+      },
+      "grade": "C",
+      "refs": [
+        "r2",
+        "r3"
+      ]
+    },
+    {
+      "id": "o2",
+      "question": {
+        "ar": "هل يمكن الجمع بين التعويض عن خرق الإجراءات والتعويض عن التسريح التعسفي في الدعوى نفسها؟",
+        "en": "May the compensation for breach of procedure and the compensation for abusive dismissal be claimed together in the same claim?"
+      },
+      "why": {
+        "ar": "النص يذكر الحالتين في فقرتين مختلفتين ويحفظ التعويضات المحتملة دون بيان مدى الجمع.",
+        "en": "The text treats the two cases in separate paragraphs and reserves other possible compensation without saying how far they combine."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "يطلب المحامي الأول بصفة أصلية والثاني بصفة احتياطية.",
+            "en": "The lawyer asks for the first as the main request and the second in the alternative."
+          },
+          "basis": [
+            "b9",
+            "b11"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "يطلب المحامي الاثنين معا استنادا إلى حفظ التعويضات المحتملة.",
+            "en": "The lawyer asks for both, relying on the reservation of other possible compensation."
+          },
+          "basis": [
+            "b11",
+            "b20"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "تدرج الطلبات الاثنان مع بيان أن الثاني احتياطي، دون الجزم بالجمع.",
+        "en": "List both requests, with the second marked as an alternative, and do not assert that they combine."
+      },
+      "grade": "C",
+      "refs": [
+        "r2",
+        "r3"
+      ]
+    },
+    {
+      "id": "o3",
+      "question": {
+        "ar": "هل يشمل النفاذ المعجل بقوة القانون التعويض المحكوم به عن التسريح؟",
+        "en": "Does the provisional execution by law cover compensation awarded for dismissal?"
+      },
+      "why": {
+        "ar": "النص يذكر الرواتب والتعويضات الخاصة بالأشهر الستة الأخيرة، والتعويض عن التسريح ليس أجرا مستحقا عن شهر معين.",
+        "en": "The text names pay and allowances for the last six months, and compensation for dismissal is not pay due for a given month."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "لا يشمله إلا النفاذ المعجل الجوازي.",
+            "en": "Only the discretionary provisional execution reaches it."
+          },
+          "basis": [
+            "b14"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "يشمل التعويض المقابل لأجور الأشهر الستة الأخيرة بقوة القانون.",
+            "en": "The part of the compensation matching the last six months' pay is covered by law."
+          }
+        }
+      ],
+      "protectiveReading": {
+        "ar": "يطلب النفاذ المعجل ويحذر المحامي من أنه جوازي.",
+        "en": "Ask for provisional execution and warn that it is discretionary."
+      },
+      "grade": "C",
+      "refs": [
+        "r4"
+      ]
+    },
+    {
+      "id": "o4",
+      "question": {
+        "ar": "ما الأحكام التي تسري على التسريح لأسباب اقتصادية (تقليص العمالة) وعلى المستخدم الذي لا نظام داخلي له؟",
+        "en": "Which rules govern a dismissal for economic reasons (reduction of staff) and an employer with no internal regulation?"
+      },
+      "why": {
+        "ar": "هذه المواد موجودة في النسخة الفرنسية الأصلية فقط ولا نص عربي لها في المخزن؛ ويعتقد أنها تقضي بالتفاوض الجماعي وبأن النظام الداخلي إلزامي لعشرين عاملا فأكثر.",
+        "en": "These articles are found only in the French original edition and have no Arabic text in the store; they are believed to provide for collective negotiation and to make an internal regulation compulsory from twenty workers."
+      },
+      "protectiveReading": {
+        "ar": "تحذير المحامي بالتحقق من هذه المواد دون استنتاج.",
+        "en": "Warn the lawyer to check these articles; conclude nothing."
+      },
+      "grade": "D",
+      "refs": [
+        "n4",
+        "doc4"
+      ]
+    },
+    {
+      "id": "o5",
+      "question": {
+        "ar": "أي نص يطبق على المادة المتعلقة بالتسريح: الأصلي لسنة 1990 أم المعدل؟",
+        "en": "Which text of the dismissal article applies: the original of 1990 or the amended one?"
+      },
+      "why": {
+        "ar": "النسخة الفرنسية المتاحة هي الأصلية وتختلف عن النص العربي المعدل المخزن؛ والنص العربي هو الرسمي وقد اتبع.",
+        "en": "The French edition supplied is the original and differs from the amended Arabic text in the store; the Arabic is official and is followed."
+      },
+      "protectiveReading": {
+        "ar": "يتبع النص العربي المخزن ويشار إلى أن البند تفسيري.",
+        "en": "Follow the Arabic text in the store and mark the item interpretive."
+      },
+      "grade": "C",
+      "refs": [
+        "b3"
+      ]
+    }
+  ]
+}

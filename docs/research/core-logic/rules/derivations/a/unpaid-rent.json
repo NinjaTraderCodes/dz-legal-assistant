@@ -1,0 +1,2800 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "claim",
+  "id": "unpaid-rent",
+  "label": {
+    "ar": "المطالبة ببدلات إيجار غير مدفوعة",
+    "en": "Unpaid rent"
+  },
+  "verified": false,
+  "stage": "derivationA",
+  "derivedBy": {
+    "role": "derivationA",
+    "model": "claude-opus-5-5",
+    "date": "2026-11-18"
+  },
+  "area": "civil",
+  "imports": [
+    {
+      "module": "court-sections",
+      "blocks": [
+        "b3",
+        "b4",
+        "b16",
+        "b19",
+        "b21",
+        "b48",
+        "t3",
+        "n2",
+        "n3"
+      ],
+      "how": {
+        "ar": "تؤخذ من هذه الوحدة النصوص التي يبنى عليها اقتراح القسم (القسم العقاري لإيجار السكنات والمحلات المهنية، والقسم المدني في المحاكم التي لم تنشأ فيها الأقسام، والقسم التجاري محل قراءة في الإيجار التجاري)، وقاعدة الاختصاص الإقليمي لمحكمة موقع العقار في دعاوى الإيجار، والتنبيه على التدابير الاستعجالية وعلى قسم الإيجار التجاري.",
+        "en": "Takes the statements behind the section proposal (the real-estate section for leases of dwellings and professional premises, the civil section in courts without sections, the commercial section as a reading for commercial leases), the territorial rule sending lease actions to the court where the property is, and the notes on urgent measures and on the section for commercial leases."
+      }
+    },
+    {
+      "module": "periods",
+      "blocks": [
+        "d1",
+        "d8",
+        "doc2",
+        "doc3",
+        "b11",
+        "b23",
+        "b27"
+      ],
+      "how": {
+        "ar": "بدل إيجار المباني حق دوري متجدد يتقادم بخمس سنوات من استحقاق كل قسط؛ ويبقى أجل الخمس عشرة سنة لما ليس حقا دوريا. وتستعمل نصوص حساب مدة التقادم ومن يثيره لأجل الإيجار التجاري الخاص بهذه الدعوى.",
+        "en": "Building rent is a periodic renewable right, time-barred after five years from each instalment's due date; the fifteen-year period remains for what is not a periodic right. The statements on counting limitation and on who raises it serve this claim's own commercial-lease deadline."
+      }
+    },
+    {
+      "module": "formal-notice",
+      "blocks": [
+        "p1",
+        "p2",
+        "p3",
+        "doc1",
+        "doc2",
+        "doc3",
+        "doc4",
+        "n1",
+        "n2",
+        "n3",
+        "n8",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "how": {
+        "ar": "الإيجار عقد ملزم للجانبين: طلب الفسخ والتعويض والإلزام بالدفع والطرد يمر بالإعذار وإعفاءاته ووسائله وتاريخه كما تحددها هذه الوحدة.",
+        "en": "A lease is a bilateral contract: the requests for rescission, damages, payment and eviction go through the formal notice, its exemptions, means and date as the module sets them."
+      }
+    },
+    {
+      "module": "ordinary-court-exits",
+      "blocks": [
+        "x1",
+        "x4",
+        "x7",
+        "d3",
+        "d4",
+        "doc1",
+        "n5",
+        "n6"
+      ],
+      "how": {
+        "ar": "تخرج الدعوى من القضاء العادي إذا كان أحد الأطراف شخصا عموميا إداريا، أو كانت من مواد المحكمة التجارية المتخصصة، ويمكن أن يحل أمر الأداء محلها إذا كان الدين ثابتا بالكتابة معين المقدار حال الأداء، مع آجال أمر الأداء إن صدر.",
+        "en": "The claim leaves the ordinary courts when a party is a public administrative body or the matter belongs to the specialised commercial court, and an order to pay may replace it when the debt is written, fixed and due, with the order's periods if one was issued."
+      }
+    }
+  ],
+  "slots": [
+    "requests",
+    "commercial_lease",
+    "court_has_section_for_matter",
+    "property_registered",
+    "contract_date",
+    "notice_served",
+    "notice_date",
+    "notice_means",
+    "notice_before_petition_day",
+    "default_on_due_date_agreed",
+    "performance_impossible_or_useless_by_debtor",
+    "obligation_is_tort_compensation",
+    "return_of_thing_known_stolen_or_unduly_received",
+    "debtor_refused_in_writing",
+    "movable_sale_price_unpaid_at_term",
+    "contract_sets_notice_terms",
+    "debt_due_date",
+    "claim_is_periodic_renewable_right",
+    "claim_is_professional_fees",
+    "claim_is_trader_supply_or_hotel",
+    "public_body_party",
+    "public_vehicle_damage",
+    "specialised_commercial_matter",
+    "debt_written_fixed_due",
+    "payment_order_issued",
+    "payment_order_date",
+    "payment_order_notified_on",
+    "lease_form",
+    "lease_has_rescission_clause",
+    "rescission_clause_notice_month_elapsed",
+    "petition_lodged_for_publication",
+    "lease_term_expired",
+    "lease_with_public_housing_body"
+  ],
+  "proposedSlots": [
+    {
+      "id": "lease_form",
+      "type": "choice",
+      "question": {
+        "ar": "في أي شكل أبرم عقد الإيجار؟",
+        "en": "In what form was the lease made?"
+      },
+      "choices": [
+        {
+          "id": "official",
+          "label": {
+            "ar": "عقد رسمي (محرر لدى موثق)",
+            "en": "An official deed (drawn up by a notary)"
+          }
+        },
+        {
+          "id": "private_fixed_date",
+          "label": {
+            "ar": "عقد عرفي ثابت التاريخ (مسجل أو مؤشر عليه من ضابط عمومي)",
+            "en": "A private written contract with a fixed date (registered, or endorsed by a public officer)"
+          }
+        },
+        {
+          "id": "private_no_fixed_date",
+          "label": {
+            "ar": "عقد عرفي مكتوب غير ثابت التاريخ",
+            "en": "A private written contract without a fixed date"
+          }
+        },
+        {
+          "id": "oral",
+          "label": {
+            "ar": "إيجار شفهي دون كتابة",
+            "en": "An oral lease, with nothing in writing"
+          }
+        }
+      ],
+      "why": "Boundaries n1 and n2 read it: Civil Code 467 مكرر makes a lease void unless written with a fixed date, and Civil Code 324 مكرر 1 and Commercial Code 187 مكرر require the official form for commercial leases on pain of nullity; element e1 lists it."
+    },
+    {
+      "id": "lease_has_rescission_clause",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل يتضمن عقد الإيجار شرطا يقضي بفسخه بقوة القانون عند عدم دفع بدل الإيجار في مواعيده؟",
+        "en": "Does the lease contain a clause that rescinds it by law if the rent is not paid on the agreed dates?"
+      },
+      "why": "Prior step p1 reads it: Commercial Code 191 gives such a clause in a commercial lease effect only one month after an unanswered demand to pay that mentions the period."
+    },
+    {
+      "id": "rescission_clause_notice_month_elapsed",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل وجه إلى المستأجر إخطار بالدفع يذكر مهلة الشهر، ومضى شهر كامل من تبليغه دون أن يدفع؟",
+        "en": "Was the tenant served with a demand to pay that mentions the one-month period, and has a full month passed since it without payment?"
+      },
+      "why": "Prior step p1 (its own slot) reads it: Commercial Code 191 ¶1 and ¶2."
+    },
+    {
+      "id": "petition_lodged_for_publication",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل أودعت عريضة الدعوى للإشهار بالمحافظة العقارية، أو سيقدم ما يثبت إيداعها في أول جلسة؟",
+        "en": "Has the petition been lodged for publication at the land registry, or will proof of lodging be shown at the first hearing?"
+      },
+      "why": "Prior step p2 (its own slot) reads it: CPCA 17 ¶3 requires publication of a petition about a published immovable or real right, on pain of formal inadmissibility."
+    },
+    {
+      "id": "lease_term_expired",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل انقضت المدة المتفق عليها في عقد الإيجار دون تجديد قبل رفع الدعوى؟",
+        "en": "Did the agreed term of the lease end, without renewal, before the claim is filed?"
+      },
+      "why": "Boundary n3 reads it: Civil Code 469 مكرر 1 and Commercial Code 187 مكرر ¶2 end the lease at its term, after which Civil Code 502 gives compensation for holding over rather than rent."
+    },
+    {
+      "id": "lease_with_public_housing_body",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل الإيجار إيجار سكني مبرم مع مؤسسة عمومية مختصة في السكن؟",
+        "en": "Is the lease a residential lease made with a competent public housing institution?"
+      },
+      "why": "Boundary n4 reads it: Civil Code 507 مكرر 1 keeps such leases under their own special provisions."
+    }
+  ],
+  "basis": [
+    {
+      "id": "b1",
+      "role": "basis",
+      "cite": {
+        "code": "civil-code",
+        "article": "467",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "الإيجار عقد يمكن به المؤجر المستأجر من الانتفاع بشيء لمدة محددة مقابل بدل معلوم.",
+        "en": "A lease is a contract by which the lessor lets the tenant enjoy a thing for a fixed period against a known rent."
+      }
+    },
+    {
+      "id": "b2",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "467 مكرر",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ينعقد الإيجار كتابة وبتاريخ ثابت وإلا كان باطلا.",
+        "en": "A lease is made in writing with a fixed date, or it is void."
+      }
+    },
+    {
+      "id": "b3",
+      "role": "basis",
+      "required": true,
+      "cite": {
+        "code": "civil-code",
+        "article": "498",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يلتزم المستأجر بدفع بدل الإيجار في المواعيد المتفق عليها، وإلا ففي المواعيد المعمول بها في الجهة.",
+        "en": "The tenant must pay the rent on the agreed dates or, failing agreement, on the dates customary in the area."
+      }
+    },
+    {
+      "id": "b4",
+      "role": "procedure",
+      "cite": {
+        "code": "civil-code",
+        "article": "498",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يدفع بدل الإيجار في موطن المستأجر ما لم يوجد اتفاق أو عرف بخلافه.",
+        "en": "Rent is paid at the tenant's domicile unless an agreement or custom says otherwise."
+      }
+    },
+    {
+      "id": "b5",
+      "role": "proof",
+      "cite": {
+        "code": "civil-code",
+        "article": "499",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "الوفاء بقسط من بدل الإيجار قرينة على الوفاء بالأقساط السابقة حتى يثبت العكس.",
+        "en": "Payment of one rent instalment is presumed to show that the earlier ones were paid, until the contrary is proved."
+      }
+    },
+    {
+      "id": "b6",
+      "role": "proof",
+      "cite": {
+        "code": "civil-code",
+        "article": "323",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "على الدائن إثبات الالتزام وعلى المدين إثبات التخلص منه.",
+        "en": "The creditor proves the obligation; the debtor proves his release from it."
+      }
+    },
+    {
+      "id": "b7",
+      "role": "basis",
+      "cite": {
+        "code": "civil-code",
+        "article": "106",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "العقد شريعة المتعاقدين لا ينقض ولا يعدل إلا باتفاقهما أو لسبب يقرره القانون.",
+        "en": "The contract is the law of the parties; it is undone or changed only by their agreement or for a cause the law sets."
+      }
+    },
+    {
+      "id": "b8",
+      "role": "basis",
+      "cite": {
+        "code": "civil-code",
+        "article": "119",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "في العقد الملزم للجانبين، إذا لم يوف أحد المتعاقدين جاز للآخر بعد إعذاره أن يطلب التنفيذ أو الفسخ مع التعويض عند الاقتضاء.",
+        "en": "In a bilateral contract, when one party fails to perform, the other may, after notice, claim performance or rescission, with damages where due."
+      }
+    },
+    {
+      "id": "b9",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "119",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "للقاضي أن يمنح المدين أجلا وأن يرفض الفسخ إذا كان ما لم يوف به قليل الأهمية.",
+        "en": "The judge may give the debtor time, and may refuse rescission when the unperformed part is of little importance."
+      }
+    },
+    {
+      "id": "b10",
+      "role": "basis",
+      "cite": {
+        "code": "civil-code",
+        "article": "120",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجوز الاتفاق على الفسخ بحكم القانون عند عدم الوفاء دون حاجة إلى حكم، ولا يعفي هذا الشرط من الإعذار.",
+        "en": "The parties may agree that the contract is rescinded by law on non-performance without a judgment; the clause does not dispense with notice."
+      }
+    },
+    {
+      "id": "b11",
+      "role": "basis",
+      "cite": {
+        "code": "civil-code",
+        "article": "122",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "إذا فسخ العقد أعيد المتعاقدان إلى الحالة التي كانا عليها، وإلا جاز الحكم بالتعويض.",
+        "en": "When the contract is rescinded the parties are put back where they were before it, failing which compensation may be awarded."
+      }
+    },
+    {
+      "id": "b12",
+      "role": "basis",
+      "cite": {
+        "code": "civil-code",
+        "article": "502",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يرد المستأجر العين عند انتهاء الإيجار، فإن أبقاها دون حق دفع تعويضا باعتبار القيمة الإيجارية وما لحق المؤجر من ضرر.",
+        "en": "The tenant returns the property when the lease ends; if he keeps it without right he pays compensation based on the rental value and the lessor's loss."
+      }
+    },
+    {
+      "id": "b13",
+      "role": "basis",
+      "cite": {
+        "code": "civil-code",
+        "article": "476",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يلتزم المؤجر بتسليم العين المؤجرة في حالة تصلح للاستعمال المعد لها.",
+        "en": "The lessor must deliver the leased property fit for the use agreed."
+      }
+    },
+    {
+      "id": "b14",
+      "role": "proof",
+      "cite": {
+        "code": "civil-code",
+        "article": "476",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "تعاين الأماكن وجاهيا بمحضر أو بيان وصفي يلحق بعقد الإيجار.",
+        "en": "The premises are inspected in both parties' presence by a record or descriptive statement attached to the lease."
+      }
+    },
+    {
+      "id": "b15",
+      "role": "damages",
+      "cite": {
+        "code": "civil-code",
+        "article": "186",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "إذا كان محل الالتزام بين أفراد مبلغا من النقود معين المقدار وقت رفع الدعوى وتأخر المدين في الوفاء، لزمه تعويض الضرر اللاحق من التأخير.",
+        "en": "When the obligation between individuals is a sum of money fixed when the claim is filed and the debtor pays late, he compensates the loss caused by the delay."
+      }
+    },
+    {
+      "id": "b16",
+      "role": "damages",
+      "cite": {
+        "code": "civil-code",
+        "article": "176",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يحكم على المدين بتعويض الضرر الناجم عن عدم التنفيذ أو عن التأخر فيه ما لم يثبت السبب الأجنبي.",
+        "en": "The debtor is ordered to compensate the loss from non-performance or late performance unless he proves an outside cause."
+      }
+    },
+    {
+      "id": "b17",
+      "role": "damages",
+      "cite": {
+        "code": "civil-code",
+        "article": "174",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "إذا كان التنفيذ العيني لا يتم إلا بفعل المدين نفسه جاز الحكم بإلزامه به وبغرامة إجبارية إن امتنع.",
+        "en": "Where performance in kind needs the debtor's own act, he may be ordered to perform and to pay a coercive fine if he refuses."
+      }
+    },
+    {
+      "id": "b18",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "323",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يؤمر بالنفاذ المعجل عند طلبه إذا حكم بناء على عقد رسمي أو وعد معترف به أو حكم سابق نهائي.",
+        "en": "Provisional execution is ordered, when requested, where judgment rests on an official deed, an acknowledged promise or an earlier final judgment."
+      }
+    },
+    {
+      "id": "b19",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "323",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "في غير ذلك يجوز للقاضي في حالة الاستعجال أن يأمر بالنفاذ المعجل بكفالة أو بدونها.",
+        "en": "In other cases the judge may order provisional execution in urgency, with or without security."
+      }
+    },
+    {
+      "id": "b20",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "419",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يتحمل الخصم الخاسر المصاريف ما لم يقرر القاضي غير ذلك بقرار مسبب.",
+        "en": "The losing party bears the costs unless the judge, giving reasons, decides otherwise."
+      }
+    },
+    {
+      "id": "b21",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "324 مكرر 1",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تحرر عقود الإيجار التجارية والزراعية في شكل رسمي تحت طائلة البطلان.",
+        "en": "Commercial and agricultural leases are drawn up in official form, on pain of nullity."
+      }
+    },
+    {
+      "id": "b22",
+      "role": "limit",
+      "cite": {
+        "code": "commercial-code",
+        "article": "187 مكرر",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تحرر عقود الإيجار التجاري المبرمة منذ نشر القانون الذي أضاف هذه المادة في الشكل الرسمي تحت طائلة البطلان، ولمدة يحددها الأطراف.",
+        "en": "Commercial leases made since the publication of the law that added this article are drawn up in official form, on pain of nullity, for a term the parties set."
+      }
+    },
+    {
+      "id": "b23",
+      "role": "limit",
+      "cite": {
+        "code": "commercial-code",
+        "article": "187 مكرر",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يغادر المستأجر الأمكنة بانتهاء الأجل دون تنبيه بالإخلاء ودون تعويض استحقاق ما لم يتفق على خلافه.",
+        "en": "The tenant leaves at the end of the term, with no notice to quit and no eviction compensation, unless agreed otherwise."
+      }
+    },
+    {
+      "id": "b24",
+      "role": "limit",
+      "cite": {
+        "code": "commercial-code",
+        "article": "187 مكرر 1",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يبقى تجديد الإيجارات المبرمة قبل ذلك النشر خاضعا للتشريع الساري وقت إبرامها.",
+        "en": "The renewal of leases made before that publication stays under the law in force when they were made."
+      }
+    },
+    {
+      "id": "b25",
+      "role": "prerequisite",
+      "cite": {
+        "code": "commercial-code",
+        "article": "191",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "شرط الفسخ بقوة القانون لعدم دفع بدل الإيجار لا ينتج أثره إلا بعد مرور شهر من إخطار بالدفع بقي دون نتيجة.",
+        "en": "A clause rescinding the lease by law for unpaid rent takes effect only one month after a demand to pay that went unanswered."
+      }
+    },
+    {
+      "id": "b26",
+      "role": "prerequisite",
+      "cite": {
+        "code": "commercial-code",
+        "article": "191",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يجب أن يذكر الإخطار بالدفع هذه المهلة.",
+        "en": "The demand to pay must mention this period."
+      }
+    },
+    {
+      "id": "b27",
+      "role": "limit",
+      "cite": {
+        "code": "commercial-code",
+        "article": "191",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "يجوز للقضاة عند منح مهلة أن يوقفوا آثار شرط الفسخ ما لم يكن الفسخ قد تقرر بحكم نهائي، ولا أثر للشرط إذا وفى المستأجر بدينه.",
+        "en": "Judges granting time may suspend the clause's effects unless rescission was already declared by a final judgment, and the clause has no effect if the tenant pays."
+      }
+    },
+    {
+      "id": "b28",
+      "role": "limit",
+      "cite": {
+        "code": "commercial-code",
+        "article": "198",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ترفع الدعاوى الممارسة وفق باب الإيجارات التجارية، عدا دعاوى المادتين المستثناتين، أمام محكمة موقع العمارة وتتقادم بمرور سنتين.",
+        "en": "Actions brought under the commercial-lease title, except the two kinds it names, go to the court where the building is and are time-barred after two years."
+      }
+    },
+    {
+      "id": "b29",
+      "role": "limit",
+      "cite": {
+        "code": "commercial-code",
+        "article": "169",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تطبق أحكام الإيجارات التجارية على إيجار العمارات أو المحلات التي يستغل فيها محل تجاري لتاجر أو صناعي أو حرفي مقيد قانونا.",
+        "en": "The commercial-lease provisions apply to leases of buildings or premises where a business of a registered trader, manufacturer or craftsman is run."
+      }
+    },
+    {
+      "id": "b30",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "469 مكرر 1",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ينتهي الإيجار بانقضاء المدة المتفق عليها دون حاجة إلى تنبيه بالإخلاء.",
+        "en": "A lease ends when the agreed term runs out, with no need for a notice to quit."
+      }
+    },
+    {
+      "id": "b31",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "507 مكرر",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "بقيت الإيجارات المبرمة في ظل التشريع السابق خاضعة له عشر سنوات من نشر القانون المعدل.",
+        "en": "Leases made under the earlier legislation stayed under it for ten years from the publication of the amending law."
+      }
+    },
+    {
+      "id": "b32",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "507 مكرر",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يبقى للأشخاص الطبيعيين البالغين ستين سنة عند النشر حق البقاء في الأمكنة السكنية المكتسب وفق التشريع السابق إلى وفاتهم.",
+        "en": "Natural persons who were sixty at publication and held a right to stay in dwellings under the earlier legislation keep it until their death."
+      }
+    },
+    {
+      "id": "b33",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "507 مكرر 1",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تبقى الإيجارات السكنية المبرمة مع المؤسسات العمومية المختصة خاضعة لأحكامها الخاصة.",
+        "en": "Residential leases made with the competent public institutions stay under their own special provisions."
+      }
+    },
+    {
+      "id": "b34",
+      "role": "proof",
+      "cite": {
+        "code": "civil-code",
+        "article": "328",
+        "paragraphs": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "says": {
+        "ar": "لا يحتج بتاريخ العقد العرفي على الغير إلا من يوم ثبوته بالتسجيل أو بإثبات مضمونه في عقد رسمي أو بالتأشير عليه أو بوفاة أحد موقعيه.",
+        "en": "A private contract's date binds third parties only once fixed: by registration, by its content being recorded in an official act, by an officer's endorsement, or by the death of a signatory."
+      }
+    },
+    {
+      "id": "b35",
+      "role": "proof",
+      "cite": {
+        "code": "civil-code",
+        "article": "333",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "في غير المواد التجارية لا يجوز الإثبات بالشهود في تصرف تزيد قيمته على 100.000 دينار جزائري أو غير محدد القيمة ما لم يوجد نص بخلافه.",
+        "en": "Outside commercial matters, an act worth more than 100.000 Algerian dinars, or of undetermined value, cannot be proved by witnesses unless a text says otherwise."
+      }
+    },
+    {
+      "id": "b36",
+      "role": "prerequisite",
+      "cite": {
+        "code": "cpca",
+        "article": "17",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "تشهر عريضة الدعوى المتعلقة بعقار أو بحق عيني عقاري مشهر وتقدم في أول جلسة تحت طائلة عدم القبول شكلا، ما لم يثبت إيداعها للإشهار.",
+        "en": "A petition about a published immovable or real right in it is published at the land registry and shown at the first hearing, on pain of formal inadmissibility, unless its lodging for publication is proved."
+      }
+    },
+    {
+      "id": "b37",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "515",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ينظر القسم العقاري في دعاوى إبطال أو فسخ أو تعديل أو نقض الحقوق المترتبة على عقود مشهرة.",
+        "en": "The real-estate section hears actions to annul, rescind, amend or undo rights arising from published deeds."
+      }
+    },
+    {
+      "id": "b38",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "519",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ترفع الدعوى أمام القسم العقاري مع مراعاة الأحكام الخاصة بشهر دعاوى فسخ أو إبطال الحقوق القائمة على عقود مشهرة.",
+        "en": "Actions go to the real-estate section subject to the special rules on publishing actions to rescind or annul rights based on published deeds."
+      }
+    },
+    {
+      "id": "b39",
+      "role": "procedure",
+      "cite": {
+        "code": "civil-code",
+        "article": "501",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "للمؤجر ضمانا لحقوقه الناشئة عن الإيجار أن يحبس المنقولات القابلة للحجز الموجودة في العين المؤجرة.",
+        "en": "To secure his rights under the lease, the lessor may retain the seizable movables kept in the leased property."
+      }
+    },
+    {
+      "id": "b40",
+      "role": "basis",
+      "cite": {
+        "code": "civil-code",
+        "article": "507",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يلتزم المستأجر الفرعي مباشرة تجاه المؤجر بالقدر الذي في ذمته للمستأجر الأصلي من وقت إنذار المؤجر له.",
+        "en": "A sub-tenant is bound directly to the lessor, up to what he owes the main tenant, from the time the lessor warns him."
+      }
+    },
+    {
+      "id": "b41",
+      "role": "basis",
+      "cite": {
+        "code": "civil-code",
+        "article": "500",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجوز الاتفاق على كفالة لضمان الوفاء ببدل الإيجار والتكاليف.",
+        "en": "The parties may agree on a surety to guarantee payment of the rent and charges."
+      }
+    },
+    {
+      "id": "b42",
+      "role": "limit",
+      "cite": {
+        "code": "civil-code",
+        "article": "480",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "للمستأجر بعد إعذار المؤجر بمحرر غير قضائي أن يطلب الفسخ أو إنقاص الأجرة إذا لم يقم المؤجر بالصيانة.",
+        "en": "After notice by an extrajudicial instrument, the tenant may claim rescission or a rent reduction when the lessor fails to maintain."
+      }
+    },
+    {
+      "id": "b43",
+      "role": "limit",
+      "cite": {
+        "code": "commercial-code",
+        "article": "192",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجوز إعادة النظر في بدل الإيجار التجاري بطلب أحد الطرفين وفق الشروط المقررة.",
+        "en": "The rent of a commercial lease may be revised at either party's request on the conditions laid down."
+      }
+    },
+    {
+      "id": "b44",
+      "role": "basis",
+      "cite": {
+        "code": "civil-code",
+        "article": "469 مكرر 2",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "عند وفاة المستأجر يستمر العقد إلى انتهاء مدته ما لم يتفق على خلافه، ولورثته الساكنين معه إنهاؤه بشروط.",
+        "en": "On the tenant's death the lease continues to its term unless agreed otherwise, and heirs living with him may end it on conditions."
+      }
+    },
+    {
+      "id": "b45",
+      "role": "basis",
+      "cite": {
+        "code": "civil-code",
+        "article": "469 مكرر 3",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "إذا انتقلت ملكية العين المؤجرة كان الإيجار نافذا في حق المالك الجديد.",
+        "en": "When ownership of the leased property passes, the lease binds the new owner."
+      }
+    }
+  ],
+  "elements": [
+    {
+      "id": "e1",
+      "toProve": {
+        "ar": "إبرام عقد الإيجار بين المدعي والمدعى عليه وتحديد بدله ومواعيد دفعه.",
+        "en": "A lease was made between the plaintiff and the defendant, with its rent and payment dates."
+      },
+      "factsToState": [
+        {
+          "ar": "تاريخ العقد وشكله (رسمي أو عرفي ثابت التاريخ).",
+          "en": "The date and form of the contract (official, or private with a fixed date)."
+        },
+        {
+          "ar": "العين المؤجرة وطبيعتها (سكن أو محل تجاري أو مهني).",
+          "en": "The leased property and its nature (dwelling, business or professional premises)."
+        },
+        {
+          "ar": "مبلغ بدل الإيجار ودورية دفعه ومدة العقد.",
+          "en": "The rent, how often it is paid, and the term of the lease."
+        }
+      ],
+      "events": [
+        "contract_concluded"
+      ],
+      "slots": [
+        "contract_date",
+        "lease_form",
+        "commercial_lease"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "written lease with a fixed date",
+          "basis": [
+            "b2",
+            "b34"
+          ],
+          "note": {
+            "ar": "الإيجار المدني يكون كتابة وبتاريخ ثابت وإلا كان باطلا.",
+            "en": "A civil lease is written with a fixed date, or it is void."
+          }
+        },
+        {
+          "means": "official deed for a commercial lease",
+          "basis": [
+            "b21",
+            "b22"
+          ],
+          "note": {
+            "ar": "الإيجار التجاري يحرر في شكل رسمي تحت طائلة البطلان، مع مراعاة تاريخ إبرامه.",
+            "en": "A commercial lease is drawn up in official form on pain of nullity, subject to the date it was made."
+          }
+        },
+        {
+          "means": "limit on proof by witnesses",
+          "basis": [
+            "b35"
+          ]
+        }
+      ],
+      "basis": [
+        "b1",
+        "b2",
+        "b7",
+        "b21",
+        "b22"
+      ]
+    },
+    {
+      "id": "e2",
+      "toProve": {
+        "ar": "تسليم العين المؤجرة إلى المستأجر وبداية انتفاعه بها.",
+        "en": "The property was handed over to the tenant and his enjoyment of it began."
+      },
+      "factsToState": [
+        {
+          "ar": "تاريخ تسلم المستأجر للعين وحالتها عند التسليم.",
+          "en": "The date the tenant took possession, and the state of the property then."
+        }
+      ],
+      "events": [
+        "lease_started"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "inventory record or descriptive statement attached to the lease",
+          "basis": [
+            "b14"
+          ]
+        }
+      ],
+      "basis": [
+        "b1",
+        "b13"
+      ]
+    },
+    {
+      "id": "e3",
+      "toProve": {
+        "ar": "استحقاق بدلات الإيجار المطالب بها وعدم دفعها من المدعى عليه.",
+        "en": "The rent claimed fell due and the defendant did not pay it."
+      },
+      "factsToState": [
+        {
+          "ar": "الفترات غير المدفوعة ومبلغ كل منها وتاريخ استحقاق أقدمها.",
+          "en": "The unpaid periods, the sum for each, and the due date of the oldest."
+        },
+        {
+          "ar": "ما دفع جزئيا إن وجد، وآخر قسط مدفوع.",
+          "en": "Any partial payment, and the last instalment paid."
+        }
+      ],
+      "events": [
+        "rent_unpaid",
+        "payment_made"
+      ],
+      "slots": [
+        "debt_due_date"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "the creditor proves the obligation and its due dates; the tenant proves payment",
+          "basis": [
+            "b6"
+          ]
+        },
+        {
+          "means": "presumption that a later payment covers earlier instalments",
+          "basis": [
+            "b5"
+          ],
+          "note": {
+            "ar": "إذا كان المستأجر قد دفع قسطا لاحقا افترض وفاؤه بالأقساط السابقة حتى يثبت المؤجر العكس.",
+            "en": "If the tenant paid a later instalment, the earlier ones are presumed paid until the lessor proves otherwise."
+          }
+        }
+      ],
+      "basis": [
+        "b3",
+        "b6"
+      ]
+    },
+    {
+      "id": "e4",
+      "toProve": {
+        "ar": "إعذار المدعى عليه أو مطالبته بالدفع قبل رفع الدعوى، أو قيام حالة إعفاء.",
+        "en": "The defendant was put on notice or asked to pay before the claim, or an exemption applies."
+      },
+      "factsToState": [
+        {
+          "ar": "تاريخ الإعذار ووسيلته (محضر قضائي أو رسالة أو غيرها) ومضمونه.",
+          "en": "The date, means (bailiff, letter or other) and content of the notice."
+        }
+      ],
+      "events": [
+        "notice_served"
+      ],
+      "slots": [
+        "notice_served",
+        "notice_date",
+        "notice_means"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "the notice and the bailiff's record or acknowledgement of receipt",
+          "basis": [
+            "b8",
+            "b10"
+          ]
+        }
+      ],
+      "basis": [
+        "b8",
+        "b10",
+        "b25"
+      ]
+    }
+  ],
+  "requests": [
+    {
+      "id": "r1",
+      "kind": "payment",
+      "accessory": false,
+      "amount": true,
+      "text": {
+        "ar": "إلزام المدعى عليه بأن يدفع للمدعي مبلغ (...) دج قيمة بدلات الإيجار المستحقة وغير المدفوعة عن الفترة من (...) إلى (...).",
+        "en": "Order the defendant to pay the plaintiff DZD (...) for the rent due and unpaid for the period from (...) to (...)."
+      },
+      "basis": [
+        "b3",
+        "b7"
+      ]
+    },
+    {
+      "id": "r2",
+      "kind": "rescission",
+      "accessory": false,
+      "amount": false,
+      "text": {
+        "ar": "الحكم بفسخ عقد الإيجار المؤرخ في (...) المبرم بين الطرفين والمتعلق بالعين الكائنة بـ(...).",
+        "en": "Rescind the lease dated (...) between the parties for the property at (...)."
+      },
+      "basis": [
+        "b8",
+        "b9",
+        "b10",
+        "b25"
+      ]
+    },
+    {
+      "id": "r3",
+      "kind": "eviction",
+      "accessory": false,
+      "amount": false,
+      "text": {
+        "ar": "طرد المدعى عليه ومن يقوم مقامه أو يشغل العين بإذنه من العين المؤجرة الكائنة بـ(...).",
+        "en": "Evict the defendant, and anyone holding under him or with his leave, from the leased property at (...)."
+      },
+      "basis": [
+        "b11",
+        "b12"
+      ]
+    },
+    {
+      "id": "r4",
+      "kind": "damages",
+      "accessory": true,
+      "amount": true,
+      "text": {
+        "ar": "إلزام المدعى عليه بأن يدفع للمدعي مبلغ (...) دج تعويضا عن الضرر اللاحق من التأخر في الوفاء.",
+        "en": "Order the defendant to pay the plaintiff DZD (...) as compensation for the loss caused by the late payment."
+      },
+      "basis": [
+        "b15",
+        "b16"
+      ]
+    },
+    {
+      "id": "r5",
+      "kind": "damages",
+      "accessory": true,
+      "amount": true,
+      "when": {
+        "slot": "requests",
+        "includes": "eviction"
+      },
+      "text": {
+        "ar": "إلزام المدعى عليه بدفع تعويض عن شغل العين دون حق يعادل القيمة الإيجارية بمبلغ (...) دج شهريا من تاريخ (...) إلى غاية الإخلاء الفعلي.",
+        "en": "Order the defendant to pay compensation for occupying the property without right, equal to the rental value, of DZD (...) a month from (...) until he actually leaves."
+      },
+      "basis": [
+        "b12",
+        "b11"
+      ]
+    },
+    {
+      "id": "r6",
+      "kind": "other",
+      "accessory": true,
+      "amount": true,
+      "text": {
+        "ar": "إلزام المدعى عليه بغرامة إجبارية قدرها (...) دج عن كل يوم تأخير في التنفيذ.",
+        "en": "Order the defendant to pay a coercive fine of DZD (...) for each day of delay in compliance."
+      },
+      "basis": [
+        "b17"
+      ]
+    },
+    {
+      "id": "r7",
+      "kind": "provisional_execution",
+      "accessory": true,
+      "amount": false,
+      "text": {
+        "ar": "شمول الحكم بالنفاذ المعجل.",
+        "en": "Order provisional execution of the judgment."
+      },
+      "basis": [
+        "b18",
+        "b19"
+      ]
+    },
+    {
+      "id": "r8",
+      "kind": "other",
+      "accessory": true,
+      "amount": false,
+      "text": {
+        "ar": "تحميل المدعى عليه المصاريف القضائية.",
+        "en": "Order the defendant to pay the costs."
+      },
+      "basis": [
+        "b20"
+      ]
+    }
+  ],
+  "court": {
+    "section": {
+      "value": "realEstate",
+      "basis": [
+        "court-sections.b3",
+        "court-sections.b16",
+        "court-sections.b19"
+      ],
+      "alternatives": [
+        {
+          "when": {
+            "slot": "court_has_section_for_matter",
+            "is": "no"
+          },
+          "value": "civil",
+          "basis": [
+            "court-sections.b4"
+          ]
+        },
+        {
+          "when": {
+            "slot": "commercial_lease",
+            "is": "yes"
+          },
+          "value": "commercial",
+          "basis": [
+            "court-sections.b21",
+            "court-sections.b48"
+          ]
+        }
+      ],
+      "message": {
+        "ar": "المادة 512 من قانون الإجراءات المدنية والإدارية: ينظر القسم العقاري في إيجار السكنات والمحلات المهنية، وفي المحاكم التي لم تنشأ فيها الأقسام ينظر القسم المدني في النزاع (المادة 32)، وقسم الإيجار التجاري محل قراءة بين القسم التجاري (المادة 531) والقسم العقاري. القسم المختار يختلف عن المقترح؛ تحقق من طبيعة العين المؤجرة ومن أقسام المحكمة.",
+        "en": "CPCA article 512: the real-estate section hears leases of dwellings and professional premises; in courts without sections the civil section hears the dispute (article 32); for commercial leases the section is a reading between the commercial section (article 531) and the real-estate section. The section chosen differs from the one proposed; check the nature of the leased property and the court's sections."
+      },
+      "interpretive": true,
+      "interpretiveNote": "The commercial alternative follows the court-sections module's reading (its open point o2): article 512 ¶11 names leases of dwellings and professional premises, and article 531 gives commercial disputes to the commercial section; no text settles which section hears a commercial lease."
+    }
+  },
+  "deadlines": [
+    {
+      "id": "d1",
+      "kind": "limitation",
+      "period": {
+        "value": 2,
+        "unit": "year"
+      },
+      "startsFrom": {
+        "slot": "debt_due_date",
+        "event": "rent_unpaid",
+        "description": {
+          "ar": "تاريخ استحقاق أقدم بدل إيجار مطالب به.",
+          "en": "The due date of the oldest rent claimed."
+        }
+      },
+      "counting": {
+        "method": "excludeFirstDay",
+        "extendToWorkingDay": false,
+        "basis": [
+          "periods.b11",
+          "periods.b27"
+        ]
+      },
+      "raisedBy": "pleaOnly",
+      "when": {
+        "slot": "commercial_lease",
+        "is": "yes"
+      },
+      "effectWhenExpired": "warn",
+      "warnBandDays": 15,
+      "message": {
+        "ar": "المادة 198 من القانون التجاري: الدعاوى الممارسة وفق باب الإيجارات التجارية تتقادم بمرور سنتين (2)، وشمول هذا الأجل لدعوى المطالبة ببدلات الإيجار المتأخرة محل قراءة، ولا تقضي المحكمة بالتقادم تلقائيا (المادة 321 من القانون المدني). تحقق من تاريخ استحقاق أقدم بدل مطالب به ومن كل سبب قاطع للتقادم.",
+        "en": "Commercial Code article 198: actions brought under the commercial-lease title are time-barred after 2 years; whether this period reaches a claim for rent arrears is a matter of reading, and the court does not apply limitation of its own motion (Civil Code article 321). Check the due date of the oldest rent claimed and any act that interrupted the period."
+      },
+      "basis": [
+        "b28",
+        "b29",
+        "periods.b11",
+        "periods.b23"
+      ],
+      "extract": {
+        "period": "سنتين",
+        "sanction": "ويشملها التقادم"
+      },
+      "interpretive": true,
+      "interpretiveNote": "Article 198 ¶1 reaches 'all actions exercised under this title'. A claim for rent arrears rests on Civil Code 498 and the contract, not on a provision of the commercial-lease title, so the two-year period may not reach it; but a rescission founded on the clause regulated by article 191, which sits in that title, plausibly does. Kept as a warning on every commercial-lease claim (the protective reading); the periods module's five-year limitation for periodic rights runs alongside it. Counting follows the civil limitation rule (314) and the plea rule (321) by reading, since article 198 says nothing on either.",
+      "readings": [
+        {
+          "reading": {
+            "ar": "يشمل أجل السنتين كل دعوى ناشئة عن إيجار تجاري، ومنها المطالبة بالبدلات المتأخرة والفسخ.",
+            "en": "The two-year period reaches every action arising from a commercial lease, including arrears and rescission."
+          },
+          "basis": [
+            "b28",
+            "b29"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "يقتصر أجل السنتين على الدعاوى المؤسسة على أحكام باب الإيجارات التجارية (التجديد ورفضه والتعويض ومراجعة البدل وشرط الفسخ)، وتخضع المطالبة بالبدلات المتأخرة لتقادم الحقوق الدورية.",
+            "en": "The two-year period covers only actions founded on the commercial-lease title (renewal, refusal, compensation, rent revision, the rescission clause); rent arrears follow the limitation of periodic rights."
+          },
+          "basis": [
+            "b28",
+            "b3"
+          ]
+        }
+      ]
+    }
+  ],
+  "priorSteps": [
+    {
+      "id": "p1",
+      "kind": "formalNotice",
+      "slots": [
+        "rescission_clause_notice_month_elapsed",
+        "commercial_lease",
+        "requests",
+        "lease_has_rescission_clause"
+      ],
+      "requiredWhen": {
+        "all": [
+          {
+            "slot": "commercial_lease",
+            "is": "yes"
+          },
+          {
+            "slot": "requests",
+            "includes": "rescission"
+          },
+          {
+            "slot": "lease_has_rescission_clause",
+            "is": "yes"
+          }
+        ]
+      },
+      "effectWhenMissing": "warn",
+      "effectWhenUnknown": "ask",
+      "message": {
+        "ar": "المادة 191 من القانون التجاري: شرط الفسخ بقوة القانون لعدم دفع بدل الإيجار لا ينتج أثره إلا بعد مرور شهر واحد من إخطار بالدفع بقي دون نتيجة، ويجب أن يذكر الإخطار هذه المهلة، وللقضاة وقف آثار الشرط عند منح مهلة. تحقق من الإخطار ومضمونه وتاريخه.",
+        "en": "Commercial Code article 191: a clause rescinding the lease by law for unpaid rent takes effect only one month after an unanswered demand to pay, the demand must mention that period, and judges granting time may suspend the clause. Check the demand, its content and its date."
+      },
+      "basis": [
+        "b25",
+        "b26",
+        "b27"
+      ],
+      "interpretive": true,
+      "interpretiveNote": "Article 191 deprives the clause of effect before the month; it does not bar a petition for judicial rescission under Civil Code 119. Whether the month must have run before the petition, or only before the clause is relied on, is a reading; so the step warns and never blocks."
+    },
+    {
+      "id": "p2",
+      "kind": "landRegistryPublication",
+      "slots": [
+        "petition_lodged_for_publication",
+        "requests",
+        "property_registered"
+      ],
+      "requiredWhen": {
+        "all": [
+          {
+            "any": [
+              {
+                "slot": "requests",
+                "includes": "rescission"
+              },
+              {
+                "slot": "requests",
+                "includes": "eviction"
+              }
+            ]
+          },
+          {
+            "slot": "property_registered",
+            "is": "yes"
+          }
+        ]
+      },
+      "effectWhenMissing": "warn",
+      "effectWhenUnknown": "ask",
+      "message": {
+        "ar": "المادة 17 من قانون الإجراءات المدنية والإدارية: تشهر عريضة الدعوى المتعلقة بعقار أو بحق عيني عقاري مشهر وتقدم في أول جلسة تحت طائلة عدم القبول شكلا ما لم يثبت إيداعها للإشهار، وشمول دعوى فسخ الإيجار أو الطرد بهذا الحكم محل قراءة (المادتان 515 و519). تحقق من وضعية العقار ومن إيداع العريضة للإشهار.",
+        "en": "CPCA article 17: a petition about a published immovable or real right is published at the land registry and shown at the first hearing, on pain of formal inadmissibility, unless its lodging is proved; whether a claim to rescind a lease or to evict falls under it is a matter of reading (articles 515 and 519). Check the property's status and whether the petition was lodged for publication."
+      },
+      "basis": [
+        "b36",
+        "b37",
+        "b38"
+      ],
+      "interpretive": true,
+      "interpretiveNote": "A lease is a personal right; article 17 ¶3 speaks of a petition 'relating to' an immovable and/or a published real right, and articles 515 and 519 of rights arising from published deeds. Whether a rescission or eviction claim on a lease of a published building is such a petition is not settled by the texts, so the step warns and never blocks."
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc1",
+      "name": {
+        "ar": "عقد الإيجار",
+        "en": "The lease contract"
+      },
+      "why": {
+        "ar": "يثبت العقد وبدله ومواعيد دفعه وشكله (المادة 467 مكرر من القانون المدني، والمادة 324 مكرر 1 للإيجار التجاري).",
+        "en": "Proves the lease, its rent, payment dates and form (Civil Code article 467 مكرر, and article 324 مكرر 1 for a commercial lease)."
+      },
+      "basis": [
+        "b2",
+        "b21"
+      ]
+    },
+    {
+      "id": "doc2",
+      "name": {
+        "ar": "كشف بالفترات غير المدفوعة ومبالغها وتواريخ استحقاقها",
+        "en": "A statement of the unpaid periods, their sums and due dates"
+      },
+      "why": {
+        "ar": "يحدد المبلغ المطالب به ومواعيد استحقاقه (المادة 498 من القانون المدني).",
+        "en": "Sets out the sum claimed and its due dates (Civil Code article 498)."
+      },
+      "basis": [
+        "b3"
+      ]
+    },
+    {
+      "id": "doc3",
+      "name": {
+        "ar": "محضر المعاينة أو البيان الوصفي للأماكن عند التسليم",
+        "en": "The inspection record or descriptive statement of the premises at delivery"
+      },
+      "why": {
+        "ar": "يثبت تسليم العين وبداية الانتفاع (المادة 476 من القانون المدني).",
+        "en": "Proves delivery of the property and the start of enjoyment (Civil Code article 476)."
+      },
+      "basis": [
+        "b14"
+      ]
+    },
+    {
+      "id": "doc4",
+      "name": {
+        "ar": "الإخطار بالدفع المتضمن مهلة الشهر ومحضر تبليغه",
+        "en": "The demand to pay mentioning the one-month period, and its service record"
+      },
+      "requiredWhen": {
+        "all": [
+          {
+            "slot": "commercial_lease",
+            "is": "yes"
+          },
+          {
+            "slot": "requests",
+            "includes": "rescission"
+          },
+          {
+            "slot": "lease_has_rescission_clause",
+            "is": "yes"
+          }
+        ]
+      },
+      "why": {
+        "ar": "يثبت شروط إعمال شرط الفسخ في الإيجار التجاري (المادة 191 من القانون التجاري).",
+        "en": "Proves the conditions for the rescission clause of a commercial lease (Commercial Code article 191)."
+      },
+      "basis": [
+        "b25",
+        "b26"
+      ]
+    },
+    {
+      "id": "doc5",
+      "name": {
+        "ar": "ما يثبت إيداع العريضة للإشهار بالمحافظة العقارية",
+        "en": "Proof that the petition was lodged for publication at the land registry"
+      },
+      "requiredWhen": {
+        "all": [
+          {
+            "any": [
+              {
+                "slot": "requests",
+                "includes": "rescission"
+              },
+              {
+                "slot": "requests",
+                "includes": "eviction"
+              }
+            ]
+          },
+          {
+            "slot": "property_registered",
+            "is": "yes"
+          }
+        ]
+      },
+      "why": {
+        "ar": "المادة 17 من قانون الإجراءات المدنية والإدارية تشترط إثبات الإيداع في أول جلسة.",
+        "en": "CPCA article 17 requires proof of lodging at the first hearing."
+      },
+      "basis": [
+        "b36"
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "id": "n1",
+      "looksLike": {
+        "ar": "مطالبة ببدلات إيجار سكني أو مهني مبني على عقد غير مكتوب أو غير ثابت التاريخ",
+        "en": "A rent claim on a residential or professional lease that is unwritten or has no fixed date"
+      },
+      "isActually": "outside:lease-void-for-form",
+      "tellingFacts": [
+        {
+          "ar": "إيجار شفهي، أو ورقة عرفية غير مسجلة ولا مؤشر عليها.",
+          "en": "An oral lease, or a private paper neither registered nor endorsed."
+        },
+        {
+          "ar": "تاريخ إبرام العقد بالنسبة إلى تعديل أحكام الإيجار في القانون المدني.",
+          "en": "The date the lease was made, compared with the amendment of the Civil Code's lease provisions."
+        }
+      ],
+      "when": {
+        "all": [
+          {
+            "slot": "commercial_lease",
+            "is": "no"
+          },
+          {
+            "slot": "lease_form",
+            "in": [
+              "private_no_fixed_date",
+              "oral"
+            ]
+          }
+        ]
+      },
+      "slots": [
+        "commercial_lease",
+        "lease_form"
+      ],
+      "message": {
+        "ar": "المادة 467 مكرر من القانون المدني: ينعقد الإيجار كتابة ويكون له تاريخ ثابت وإلا كان باطلا، والإيجارات المبرمة في ظل التشريع السابق لها حكم انتقالي (المادة 507 مكرر)، ويثبت تاريخ العقد العرفي وفق المادة 328. تحقق من تاريخ العقد وشكله.",
+        "en": "Civil Code article 467 مكرر: a lease is made in writing with a fixed date, or it is void; leases made under the earlier legislation have a transitional rule (article 507 مكرر), and a private contract's date is fixed as article 328 says. Check the date and form of the lease."
+      },
+      "basis": [
+        "b2",
+        "b31",
+        "b34"
+      ]
+    },
+    {
+      "id": "n2",
+      "looksLike": {
+        "ar": "مطالبة ببدلات إيجار تجاري مبني على عقد غير رسمي",
+        "en": "A rent claim on a commercial lease that is not an official deed"
+      },
+      "isActually": "outside:commercial-lease-void-for-form",
+      "tellingFacts": [
+        {
+          "ar": "عقد عرفي أو شفهي لإيجار محل يستغل فيه محل تجاري.",
+          "en": "A private or oral lease of premises where a business is run."
+        },
+        {
+          "ar": "تاريخ إبرام العقد بالنسبة إلى نشر القانون الذي أضاف المادة 187 مكرر.",
+          "en": "The date the lease was made, compared with the publication of the law that added article 187 مكرر."
+        }
+      ],
+      "when": {
+        "all": [
+          {
+            "slot": "commercial_lease",
+            "is": "yes"
+          },
+          {
+            "slot": "lease_form",
+            "in": [
+              "private_fixed_date",
+              "private_no_fixed_date",
+              "oral"
+            ]
+          }
+        ]
+      },
+      "slots": [
+        "commercial_lease",
+        "lease_form"
+      ],
+      "message": {
+        "ar": "المادة 324 مكرر 1 من القانون المدني والمادة 187 مكرر من القانون التجاري: يحرر الإيجار التجاري في شكل رسمي تحت طائلة البطلان، ويبقى تجديد الإيجارات المبرمة قبل نشر القانون الذي أضاف المادة 187 مكرر خاضعا للتشريع الساري وقت إبرامها (المادة 187 مكرر 1). تحقق من تاريخ العقد وشكله.",
+        "en": "Civil Code article 324 مكرر 1 and Commercial Code article 187 مكرر: a commercial lease is drawn up in official form on pain of nullity, and the renewal of leases made before the publication of the law that added article 187 مكرر stays under the law in force when they were made (article 187 مكرر 1). Check the date and form of the lease."
+      },
+      "basis": [
+        "b21",
+        "b22",
+        "b24"
+      ]
+    },
+    {
+      "id": "n3",
+      "looksLike": {
+        "ar": "مطالبة ببدلات إيجار عن فترة لاحقة لانتهاء مدة العقد",
+        "en": "A rent claim for a period after the lease's term ended"
+      },
+      "isActually": "outside:holding-over-after-term",
+      "tellingFacts": [
+        {
+          "ar": "انتهت المدة المتفق عليها ولم يجدد العقد وبقي المستأجر في العين.",
+          "en": "The agreed term ended, the lease was not renewed, and the tenant stayed on."
+        }
+      ],
+      "when": {
+        "slot": "lease_term_expired",
+        "is": "yes"
+      },
+      "slots": [
+        "lease_term_expired"
+      ],
+      "message": {
+        "ar": "المادة 469 مكرر 1 من القانون المدني والمادة 187 مكرر من القانون التجاري: ينتهي الإيجار بانقضاء مدته دون تنبيه بالإخلاء، ومن أبقى العين بعد ذلك دون حق يدفع تعويضا باعتبار القيمة الإيجارية (المادة 502). تحقق من مدة العقد وتجديده والفترات المطالب بها.",
+        "en": "Civil Code article 469 مكرر 1 and Commercial Code article 187 مكرر: a lease ends when its term runs out, with no notice to quit, and whoever keeps the property afterwards without right owes compensation based on the rental value (article 502). Check the term, any renewal, and the periods claimed."
+      },
+      "basis": [
+        "b30",
+        "b23",
+        "b12"
+      ]
+    },
+    {
+      "id": "n4",
+      "looksLike": {
+        "ar": "مطالبة مؤسسة عمومية للسكن ببدلات إيجار سكني",
+        "en": "A public housing institution claiming residential rent"
+      },
+      "isActually": "outside:public-housing-lease",
+      "tellingFacts": [
+        {
+          "ar": "المؤجر مؤسسة عمومية مختصة في السكن، والعين سكن.",
+          "en": "The lessor is a competent public housing institution and the property is a dwelling."
+        }
+      ],
+      "when": {
+        "slot": "lease_with_public_housing_body",
+        "is": "yes"
+      },
+      "slots": [
+        "lease_with_public_housing_body"
+      ],
+      "message": {
+        "ar": "المادة 507 مكرر 1 من القانون المدني: تبقى الإيجارات السكنية المبرمة مع المؤسسات العمومية المختصة خاضعة لأحكامها الخاصة. تحقق من النصوص الخاصة التي تحكم هذا الإيجار.",
+        "en": "Civil Code article 507 مكرر 1: residential leases with the competent public institutions stay under their own special provisions. Check the special texts that govern this lease."
+      },
+      "basis": [
+        "b33"
+      ]
+    },
+    {
+      "id": "n5",
+      "looksLike": {
+        "ar": "نزاع حول بدل الإيجار يرفعه المستأجر بسبب عدم الصيانة أو العيب",
+        "en": "A rent dispute brought by the tenant over lack of maintenance or a defect"
+      },
+      "isActually": "outside:tenant-claim-against-lessor",
+      "tellingFacts": [
+        {
+          "ar": "المدعي هو المستأجر ويطلب الفسخ أو إنقاص الأجرة.",
+          "en": "The plaintiff is the tenant, seeking rescission or a rent reduction."
+        }
+      ],
+      "message": {
+        "ar": "المادة 480 من القانون المدني: للمستأجر بعد إعذار المؤجر بمحرر غير قضائي أن يطلب الفسخ أو إنقاص الأجرة لعدم الصيانة. هذه دعوى المستأجر لا دعوى المؤجر.",
+        "en": "Civil Code article 480: after notice by an extrajudicial instrument the tenant may claim rescission or a rent reduction for lack of maintenance. That is the tenant's claim, not the lessor's."
+      },
+      "basis": [
+        "b42"
+      ]
+    },
+    {
+      "id": "n6",
+      "looksLike": {
+        "ar": "طلب زيادة بدل إيجار تجاري أو مراجعته",
+        "en": "A request to raise or revise the rent of a commercial lease"
+      },
+      "isActually": "outside:commercial-rent-revision",
+      "tellingFacts": [
+        {
+          "ar": "المؤجر لا يطالب ببدلات مستحقة بل بتعديل مبلغ البدل.",
+          "en": "The lessor claims not rent that fell due but a change in the rent."
+        }
+      ],
+      "message": {
+        "ar": "المادة 192 من القانون التجاري: مراجعة بدل الإيجار التجاري طلب له إجراءاته الخاصة، وليست مطالبة ببدلات غير مدفوعة.",
+        "en": "Commercial Code article 192: revising a commercial rent is a request with its own procedure, not a claim for unpaid rent."
+      },
+      "basis": [
+        "b43"
+      ]
+    },
+    {
+      "id": "n7",
+      "looksLike": {
+        "ar": "مطالبة المؤجر للمستأجر الفرعي أو للكفيل ببدلات الإيجار",
+        "en": "The lessor claiming rent from a sub-tenant or a surety"
+      },
+      "isActually": "outside:subtenant-or-surety",
+      "tellingFacts": [
+        {
+          "ar": "المدعى عليه ليس المستأجر الأصلي بل مستأجر من الباطن أو كفيل.",
+          "en": "The defendant is not the main tenant but a sub-tenant or a surety."
+        }
+      ],
+      "message": {
+        "ar": "المادة 507 من القانون المدني: يلتزم المستأجر الفرعي مباشرة تجاه المؤجر بقدر ما في ذمته للمستأجر الأصلي من وقت إنذاره، والمادة 500 تجيز الكفالة لضمان البدل. تحقق من صفة المدعى عليه ومن الإنذار.",
+        "en": "Civil Code article 507: a sub-tenant is bound directly to the lessor, up to what he owes the main tenant, from the lessor's warning; article 500 allows a surety for the rent. Check the defendant's capacity and the warning."
+      },
+      "basis": [
+        "b40",
+        "b41"
+      ]
+    },
+    {
+      "id": "n8",
+      "looksLike": {
+        "ar": "طرد مستأجر سكن قديم بلغ ستين سنة عند تعديل أحكام الإيجار",
+        "en": "Evicting a long-standing residential tenant who was sixty when the lease provisions were amended"
+      },
+      "isActually": "outside:right-to-stay-earlier-law",
+      "tellingFacts": [
+        {
+          "ar": "عقد مبرم في ظل التشريع السابق، ومستأجر شخص طبيعي له حق البقاء.",
+          "en": "A lease made under the earlier legislation, and a tenant who is a natural person with a right to stay."
+        }
+      ],
+      "message": {
+        "ar": "المادة 507 مكرر من القانون المدني: يبقى للأشخاص البالغين ستين سنة عند نشر القانون المعدل حق البقاء في الأمكنة السكنية وفق التشريع السابق إلى وفاتهم. تحقق من تاريخ العقد ومن سن المستأجر وحقه.",
+        "en": "Civil Code article 507 مكرر: persons who were sixty when the amending law was published keep their right to stay in dwellings under the earlier legislation until their death. Check the lease date, the tenant's age and his right."
+      },
+      "basis": [
+        "b31",
+        "b32"
+      ]
+    }
+  ],
+  "openPoints": [
+    {
+      "id": "o1",
+      "question": {
+        "ar": "هل يسري تقادم السنتين المقرر للدعاوى الممارسة وفق باب الإيجارات التجارية على المطالبة ببدلات الإيجار التجاري المتأخرة وعلى طلب الفسخ؟",
+        "en": "Does the two-year limitation for actions under the commercial-lease title reach claims for commercial rent arrears and for rescission?"
+      },
+      "why": {
+        "ar": "المادة 198 تتحدث عن الدعاوى الممارسة وفقا لما ورد في الباب، والمطالبة بالبدل تستند إلى المادة 498 من القانون المدني.",
+        "en": "Article 198 speaks of actions exercised under the title, while a claim for rent rests on Civil Code article 498."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "يسري على كل دعوى ناشئة عن الإيجار التجاري.",
+            "en": "It reaches every action arising from a commercial lease."
+          },
+          "basis": [
+            "b28"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "يقتصر على الدعاوى المؤسسة على أحكام الباب، والبدلات تخضع لتقادم الحقوق الدورية.",
+            "en": "It covers only actions founded on the title; rent follows the limitation of periodic rights."
+          },
+          "basis": [
+            "b28",
+            "b3"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "ينبه إلى أجل السنتين في كل إيجار تجاري دون منع.",
+        "en": "Warn about the two years in every commercial lease, never block."
+      },
+      "grade": "C",
+      "refs": [
+        "d1"
+      ]
+    },
+    {
+      "id": "o2",
+      "question": {
+        "ar": "هل يجب أن يمضي شهر الإخطار المنصوص عليه في المادة 191 قبل رفع دعوى الفسخ القضائي، أم فقط قبل التمسك بشرط الفسخ الاتفاقي؟",
+        "en": "Must the month after the demand under article 191 have run before a petition for judicial rescission, or only before the agreed clause is relied on?"
+      },
+      "why": {
+        "ar": "المادة 191 تنظم أثر الشرط ولا تتكلم عن الفسخ القضائي وفق المادة 119 من القانون المدني.",
+        "en": "Article 191 governs the clause's effect and says nothing of judicial rescission under Civil Code article 119."
+      },
+      "protectiveReading": {
+        "ar": "ينبه عند وجود الشرط وطلب الفسخ في الإيجار التجاري.",
+        "en": "Warn when the clause exists and rescission is asked in a commercial lease."
+      },
+      "grade": "C",
+      "refs": [
+        "p1"
+      ]
+    },
+    {
+      "id": "o3",
+      "question": {
+        "ar": "هل تخضع دعوى فسخ الإيجار أو الطرد من عقار مشهر لوجوب إشهار العريضة؟",
+        "en": "Must a petition to rescind a lease of, or evict from, a published immovable be published at the land registry?"
+      },
+      "why": {
+        "ar": "المادة 17 تتكلم عن العريضة المتعلقة بعقار أو بحق عيني عقاري مشهر، والإيجار حق شخصي، والمادتان 515 و519 تتكلمان عن الحقوق المترتبة على عقود مشهرة.",
+        "en": "Article 17 speaks of a petition relating to a published immovable or real right; a lease is a personal right; articles 515 and 519 speak of rights arising from published deeds."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "تشهر كل عريضة تتعلق بعقار مشهر ولو كانت دعوى إيجار.",
+            "en": "Every petition about a published immovable is published, even a lease claim."
+          },
+          "basis": [
+            "b36"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "لا تشهر إلا إذا كان عقد الإيجار نفسه مشهرا أو كان النزاع حول حق عيني.",
+            "en": "Publication is needed only when the lease itself was published or a real right is in dispute."
+          },
+          "basis": [
+            "b37",
+            "b38"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "ينبه في طلبات الفسخ والطرد المتعلقة بعقار مشهر.",
+        "en": "Warn on rescission and eviction requests about a published property."
+      },
+      "grade": "C",
+      "refs": [
+        "p2"
+      ]
+    },
+    {
+      "id": "o4",
+      "question": {
+        "ar": "من أي تاريخ يسري وجوب الكتابة وثبوت التاريخ في الإيجار المدني، ووجوب الشكل الرسمي في الإيجار التجاري؟",
+        "en": "From what date do the writing and fixed-date rule for civil leases, and the official-form rule for commercial leases, apply?"
+      },
+      "why": {
+        "ar": "النصوص تحيل إلى تاريخ نشر القانونين المعدلين، والمخزن لا يحمل هذين التاريخين، وملاحظته على المادة 187 مكرر تقول إن بداية سريانها غير محسومة. من الذاكرة: نشر القانون 07-05 في ماي 2007 والقانون 05-02 في فيفري 2005، ولم يتحقق من ذلك.",
+        "en": "The texts refer to the publication of the amending laws; the store does not carry those dates, and its note on article 187 مكرر says the start is unsettled. From memory, law 07-05 was published in May 2007 and law 05-02 in February 2005; not checked."
+      },
+      "protectiveReading": {
+        "ar": "لا يقارن تاريخ العقد بتاريخ مفترض؛ ينبه كلما كان الشكل ناقصا ويطلب التحقق من تاريخ العقد.",
+        "en": "Do not compare the contract date with an assumed date; warn whenever the form falls short and ask to check the contract date."
+      },
+      "grade": "D",
+      "refs": [
+        "n1",
+        "n2"
+      ]
+    },
+    {
+      "id": "o5",
+      "question": {
+        "ar": "ما أثر المهلة القضائية (نظرة الميسرة) وامتياز المؤجر على المنقولات في دعوى البدلات؟",
+        "en": "What is the effect of the judicial grace period and of the lessor's privilege over movables in a rent claim?"
+      },
+      "why": {
+        "ar": "المادة 191 من القانون التجاري تحيل إلى المادتين 277 و281 من القانون المدني، وامتياز المؤجر منظم في باب الامتيازات، وكلها ليست في المخزن.",
+        "en": "Commercial Code article 191 refers to Civil Code articles 277 and 281, and the lessor's privilege sits in the chapter on privileges; none is in the store."
+      },
+      "protectiveReading": {
+        "ar": "لا قاعدة؛ يذكر في الملاحظات فقط.",
+        "en": "No rule; mention only."
+      },
+      "grade": "D",
+      "refs": [
+        "b27",
+        "b39"
+      ]
+    },
+    {
+      "id": "o6",
+      "question": {
+        "ar": "أي قسم ينظر في نزاع الإيجار التجاري: القسم التجاري أم القسم العقاري؟",
+        "en": "Which section hears a commercial-lease dispute: the commercial section or the real-estate section?"
+      },
+      "why": {
+        "ar": "المادة 512 تذكر السكنات والمحلات المهنية، والمادة 531 تذكر النزاعات التجارية، ولا نص يحسم.",
+        "en": "Article 512 names dwellings and professional premises, article 531 commercial disputes; no text settles it."
+      },
+      "protectiveReading": {
+        "ar": "يقترح القسم التجاري مع تنبيه، تبعا لوحدة أقسام المحكمة.",
+        "en": "Propose the commercial section with a warning, following the court-sections module."
+      },
+      "grade": "C",
+      "refs": [
+        "court-sections.n3"
+      ]
+    }
+  ],
+  "checklist": [
+    {
+      "id": "k1",
+      "item": "Basis: the lessee's duty to pay the rent at the agreed times (Civil Code, lease chapter, article around 498 as amended by Law 07-05 of 13 May 2007), and the binding force of the contract (article 106).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b3",
+        "b7",
+        "e3",
+        "r1"
+      ]
+    },
+    {
+      "id": "k2",
+      "item": "Is the lease in writing with a certain date? Since Law 07-05 (article 467 bis) a lease must be made in writing with a certain date, on pain of nullity; check the date of the contract against 2007 and how the lease can be proved otherwise.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b2",
+        "b31",
+        "b34",
+        "n1",
+        "o4"
+      ],
+      "note": "467 مكرر ¶1 found; the publication date of law 07-05 is not in the store, so no rule compares the contract date with it (open point o4)."
+    },
+    {
+      "id": "k3",
+      "item": "Element: conclusion of the lease and the agreed rent (amount, periodicity, due dates); attach the lease contract.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e1",
+        "doc1"
+      ]
+    },
+    {
+      "id": "k4",
+      "item": "Element: the lessee was put in possession / the lease began (date of handing over the premises).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e2",
+        "b13",
+        "b14",
+        "doc3"
+      ]
+    },
+    {
+      "id": "k5",
+      "item": "Element: the rent periods left unpaid and the total sum; who must prove payment: the lessor proves the obligation, the lessee proves payment (Civil Code article 323).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e3",
+        "b5",
+        "b6",
+        "doc2"
+      ],
+      "note": "Also article 499: payment of a later instalment is presumed to cover the earlier ones."
+    },
+    {
+      "id": "k6",
+      "item": "Element: formal notice (إعذار) served on the lessee by a bailiff or by registered letter (Civil Code articles 119-120, 180-181), especially before asking rescission or delay damages; check its date and that it preceded the petition.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e4",
+        "formal-notice.p1",
+        "formal-notice.p2",
+        "formal-notice.p3",
+        "formal-notice.n11",
+        "formal-notice.n12"
+      ]
+    },
+    {
+      "id": "k7",
+      "item": "Exemptions from formal notice: contract clause making the debtor in default on the due date, debtor's written refusal, performance impossible by the debtor's act (article 181).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "formal-notice.p1",
+        "formal-notice.p2",
+        "formal-notice.p3"
+      ]
+    },
+    {
+      "id": "k8",
+      "item": "Rescission: judicial rescission of a synallagmatic contract for non-performance after notice (article 119); the judge may grant a delay; express resolutory clause (article 120) still requires notice unless waived.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "r2",
+        "b8",
+        "b9",
+        "b10",
+        "formal-notice.n2",
+        "p1"
+      ]
+    },
+    {
+      "id": "k9",
+      "item": "Eviction of the lessee as a consequence of rescission; eviction of an occupant without title is a different claim.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "r3",
+        "r5",
+        "b11",
+        "b12",
+        "n3",
+        "formal-notice.n8"
+      ]
+    },
+    {
+      "id": "k10",
+      "item": "Limitation: rent as a periodic renewable right prescribes in five years (Civil Code article 309), counted from each instalment's due date; not raised by the court of its own motion (article 321), only on the debtor's plea.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "periods.d8"
+      ]
+    },
+    {
+      "id": "k11",
+      "item": "General limitation of fifteen years (article 308) does not apply to rent arrears; interruption by judicial claim, acknowledgement, or seizure (articles 317-318); suspension (article 316).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "periods.d1",
+        "periods.doc2",
+        "periods.doc3"
+      ],
+      "note": "Imported from the periods module; d1 stays silent when the right is periodic."
+    },
+    {
+      "id": "k12",
+      "item": "How periods are counted: Code of Civil and Administrative Procedure articles 404-405 (full periods, day of the starting act not counted, last day holiday extends).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "periods.b11",
+        "periods.b27",
+        "d1"
+      ],
+      "note": "Limitation is counted under Civil Code 314 (first day not counted, complete at the end of the last day), not under CPCA 405, which governs the code's own periods; the periods module keeps the readings."
+    },
+    {
+      "id": "k13",
+      "item": "Competent section: civil section of the tribunal for residential leases; commercial section when the lease is commercial (CPC article 32 and following).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "court-sections.b19",
+        "court-sections.b4",
+        "court-sections.b21",
+        "court-sections.n3",
+        "o6"
+      ],
+      "note": "The texts give leases of dwellings and professional premises to the real-estate section (CPCA 512 ¶11), not the civil section; the civil section only where the court has no sections."
+    },
+    {
+      "id": "k14",
+      "item": "Territorial jurisdiction: for real-property matters and leases, the court where the property is situated (CPC article 40), which is of public order there; otherwise defendant's domicile (article 37).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "court-sections.t3",
+        "court-sections.b48"
+      ],
+      "note": "Article 40 ¶2 sends lease actions, commercial ones included, only to the court where the property is; whether that is of public order is for the territorial-jurisdiction module, whose final record was not available."
+    },
+    {
+      "id": "k15",
+      "item": "Commercial leases: Commercial Code articles 169 to 202; after Law 05-02 of 6 February 2005 (article 187 bis) leases concluded after its entry into force end at term without notice to quit or eviction compensation; check which regime applies by contract date.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b22",
+        "b23",
+        "b24",
+        "b29",
+        "n2",
+        "n3",
+        "d1",
+        "p1"
+      ]
+    },
+    {
+      "id": "k16",
+      "item": "Commercial lease unpaid rent: rescission/eviction for non-payment of rent is not a refusal of renewal; check that the claim is not actually an expiry/refusal of renewal dispute (notice to quit, article 173).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "formal-notice.n3",
+        "n3",
+        "n6"
+      ]
+    },
+    {
+      "id": "k17",
+      "item": "Administrative courts: if one party is the State, a wilaya, a commune or a public administrative body (CPC article 800-801), the claim may leave the ordinary courts; leases of public domain property are administrative.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "ordinary-court-exits.x1",
+        "n4"
+      ]
+    },
+    {
+      "id": "k18",
+      "item": "Specialised commercial courts (CPC articles 536 bis and following, Law 22-13): unpaid rent between merchants is not usually among their listed matters.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "ordinary-court-exits.x4"
+      ]
+    },
+    {
+      "id": "k19",
+      "item": "Order to pay (CPC articles 306 and following) as an alternative for a fixed, due debt proved in writing; check whether one was already issued.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "ordinary-court-exits.x7",
+        "ordinary-court-exits.d3",
+        "ordinary-court-exits.d4",
+        "ordinary-court-exits.doc1"
+      ]
+    },
+    {
+      "id": "k20",
+      "item": "Summary proceedings (référé, CPC article 299 and following) for urgent eviction or provisional payment; different from a claim on the merits.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "ordinary-court-exits.n5",
+        "court-sections.n2"
+      ]
+    },
+    {
+      "id": "k21",
+      "item": "Petition formal elements: CPC articles 14-15 (court, parties' names and domiciles, facts, requests, documents); Arabic language (article 8); standing and interest (article 13).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "doesNotApply",
+      "note": "These belong to the petition-formal-elements module, whose final record was not available to import; CPCA 13, 14 and 15 were read in the store and are not restated here."
+    },
+    {
+      "id": "k22",
+      "item": "Land registry publication of petitions about real property rights (CPC article 17 / Decree 76-63 article 85): normally not required for a mere rent claim, but check if rescission of a published lease of more than 12 years is requested.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p2",
+        "b36",
+        "b37",
+        "b38",
+        "doc5",
+        "o3"
+      ],
+      "note": "CPCA 17 ¶3 found; the land-registry decree is not in the store (requested)."
+    },
+    {
+      "id": "k23",
+      "item": "Accessory requests: delay damages / interest (Civil Code article 182, 186; note interest prohibition between individuals article 454), penalty payment (astreinte, CPC articles 625, 174 Civil Code), costs (CPC article 419), provisional execution (CPC article 323).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "r4",
+        "r5",
+        "r6",
+        "r7",
+        "r8",
+        "b15",
+        "b16",
+        "b17",
+        "b18",
+        "b19",
+        "b20"
+      ],
+      "note": "Article 454 concerns loans only and does not bear on rent. The accessory-requests module's final record was not available."
+    },
+    {
+      "id": "k24",
+      "item": "Lessor's privilege on movables in the premises (Civil Code article 995) and conservatory seizure (CPC article 646 and following) for rent.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "b39",
+        "o5"
+      ],
+      "note": "Civil Code 995 is not in the store (searched the civil-code text view for the privileges chapter); article 501 on the lessor's right of retention was found and is cited. Conservatory seizure articles were not searched as they concern enforcement, not the petition."
+    },
+    {
+      "id": "k25",
+      "item": "Payment place and set-off: rent payable at the lessee's domicile unless agreed otherwise (article 499); lessee's defences: repairs owed by lessor, deposit (guarantee) offset.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b4",
+        "n5"
+      ],
+      "note": "The place of payment is in 498 ¶2, not 499."
+    },
+    {
+      "id": "k26",
+      "item": "Death of the lessee or transfer of the lease: who is the proper defendant (article 469 bis 1).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b44",
+        "b45",
+        "n7"
+      ],
+      "note": "The rule is in 469 مكرر 2 (death) and 469 مكرر 3 (transfer of ownership), not 469 مكرر 1."
+    },
+    {
+      "id": "k27",
+      "item": "Residential leases under Legislative Decree 93-03 on real-estate promotion and Executive Decree 94-69 model contract; public housing (OPGI) leases may involve a public body.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "searchedNotFound",
+      "refs": [
+        "n4",
+        "b33"
+      ],
+      "note": "Neither decree is in the store (no code id for them); Civil Code 507 مكرر 1 on public-institution leases was found. Requested."
+    },
+    {
+      "id": "k28",
+      "item": "Boundary: claim for occupation indemnity against an occupant without title is not unpaid rent; claim after expiry of commercial lease (eviction compensation) is not unpaid rent.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n3",
+        "formal-notice.n3",
+        "formal-notice.n8"
+      ]
+    },
+    {
+      "id": "k29",
+      "item": "Boundary: rent of agricultural land is governed by special rules; rent of a public property concession is administrative.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "doesNotApply",
+      "note": "The brief limits the claim to dwellings and business premises. Agricultural leases need the official form (Civil Code 324 مكرر 1) and go to the real-estate section (CPCA 512 ¶12); their special laws are not in the store. A public body as party is caught by exit ordinary-court-exits.x1."
+    },
+    {
+      "id": "k30",
+      "item": "Documents: lease contract, formal notice and bailiff's report, statement of the arrears, proof of ownership or capacity of lessor, receipts.",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "doc1",
+        "doc2",
+        "doc3",
+        "doc4",
+        "doc5",
+        "formal-notice.doc1",
+        "formal-notice.doc2"
+      ],
+      "note": "No text requires proof of ownership: the lessor's standing comes from the lease, and a new owner is bound by it (469 مكرر 3)."
+    },
+    {
+      "id": "k31",
+      "item": "Amendments to remember: Law 07-05 (2007) on Civil Code lease chapter; Law 05-02 (2005) Commercial Code article 187 bis; Law 22-13 (2022) amending CPC (specialised commercial courts, administrative appeal courts).",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b2",
+        "b22",
+        "o4",
+        "ordinary-court-exits.x4"
+      ]
+    },
+    {
+      "id": "k32",
+      "item": "The store's note on commercial-code 187 مكرر and 187 مكرر 1 says their temporal start is unsettled (no national commencement date): from when does the official-form rule and the end-at-term rule bind a commercial lease?",
+      "from": [
+        "derivationA"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n2",
+        "o4"
+      ],
+      "note": "No rule compares the contract date with an assumed publication date; the boundary warns on form and asks to check the date."
+    }
+  ],
+  "examples": [
+    {
+      "id": "ex1",
+      "by": "derivationA",
+      "title": "Residential lease, notice by bailiff, arrears well inside five years: nothing to flag.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "commercial_lease": "no",
+        "lease_form": "private_fixed_date",
+        "contract_date": "2023-01-01",
+        "debt_due_date": "2025-03-01",
+        "claim_is_periodic_renewable_right": "yes",
+        "claim_is_professional_fees": "no",
+        "claim_is_trader_supply_or_hotel": "no",
+        "obligation_is_tort_compensation": "no",
+        "notice_served": "yes",
+        "notice_means": "bailiff",
+        "notice_date": "2026-09-01",
+        "notice_before_petition_day": "yes",
+        "contract_sets_notice_terms": "no",
+        "default_on_due_date_agreed": "no",
+        "performance_impossible_or_useless_by_debtor": "no",
+        "return_of_thing_known_stolen_or_unduly_received": "no",
+        "debtor_refused_in_writing": "no",
+        "movable_sale_price_unpaid_at_term": "no",
+        "public_body_party": "no",
+        "public_vehicle_damage": "no",
+        "specialised_commercial_matter": "none",
+        "debt_written_fixed_due": "no",
+        "payment_order_issued": "no",
+        "court_has_section_for_matter": "yes",
+        "property_registered": "no",
+        "lease_term_expired": "no",
+        "lease_with_public_housing_body": "no",
+        "lease_has_rescission_clause": "no",
+        "requests": [
+          "payment",
+          "rescission",
+          "eviction",
+          "damages"
+        ]
+      },
+      "expect": {
+        "section": "realEstate",
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "p1",
+            "effect": "none"
+          },
+          {
+            "ref": "p2",
+            "effect": "none"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          },
+          {
+            "ref": "n2",
+            "effect": "none"
+          },
+          {
+            "ref": "n3",
+            "effect": "none"
+          },
+          {
+            "ref": "n4",
+            "effect": "none"
+          }
+        ],
+        "questions": []
+      }
+    },
+    {
+      "id": "ex2",
+      "by": "derivationA",
+      "title": "Residential lease, oldest rent over five years old: the commercial two-year deadline stays silent (the five-year limitation is the imported periods block).",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "commercial_lease": "no",
+        "lease_form": "private_fixed_date",
+        "debt_due_date": "2019-05-01",
+        "claim_is_periodic_renewable_right": "yes",
+        "obligation_is_tort_compensation": "no",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex4",
+      "by": "derivationA",
+      "title": "Commercial lease in official form, arrears under two years: commercial section, no limitation warning.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "commercial_lease": "yes",
+        "lease_form": "official",
+        "debt_due_date": "2026-03-01",
+        "claim_is_periodic_renewable_right": "yes",
+        "obligation_is_tort_compensation": "no",
+        "court_has_section_for_matter": "yes",
+        "lease_term_expired": "no",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "section": "commercial",
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "n2",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex5",
+      "by": "derivationA",
+      "title": "Commercial lease, oldest rent two years old in ten days: two-year reading warns.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "commercial_lease": "yes",
+        "debt_due_date": "2024-11-28",
+        "claim_is_periodic_renewable_right": "yes",
+        "obligation_is_tort_compensation": "no",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex6",
+      "by": "derivationA",
+      "title": "Commercial lease, oldest rent well over two years old: warning (limitation, never a block).",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "commercial_lease": "yes",
+        "debt_due_date": "2023-06-01",
+        "claim_is_periodic_renewable_right": "yes",
+        "obligation_is_tort_compensation": "no",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex12",
+      "by": "derivationA",
+      "title": "Oral residential lease: form warning.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "commercial_lease": "no",
+        "lease_form": "oral",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "warn"
+          },
+          {
+            "ref": "n2",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex13",
+      "by": "derivationA",
+      "title": "Commercial lease on a private contract: official-form warning.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "commercial_lease": "yes",
+        "lease_form": "private_fixed_date",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n2",
+            "effect": "warn"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex14",
+      "by": "derivationA",
+      "title": "Commercial lease with a rescission clause, month after the demand not yet run: warning.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "commercial_lease": "yes",
+        "lease_has_rescission_clause": "yes",
+        "rescission_clause_notice_month_elapsed": "no",
+        "requests": [
+          "payment",
+          "rescission"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex15",
+      "by": "derivationA",
+      "title": "Commercial lease with a rescission clause, month run after a demand that mentioned it.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "commercial_lease": "yes",
+        "lease_has_rescission_clause": "yes",
+        "rescission_clause_notice_month_elapsed": "yes",
+        "requests": [
+          "rescission"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex16",
+      "by": "derivationA",
+      "title": "Commercial lease with a rescission clause, demand not known: ask.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "commercial_lease": "yes",
+        "lease_has_rescission_clause": "yes",
+        "requests": [
+          "rescission"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "ask"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex17",
+      "by": "derivationA",
+      "title": "Eviction from a published building, petition not lodged for publication: warning.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "property_registered": "yes",
+        "petition_lodged_for_publication": "no",
+        "requests": [
+          "eviction",
+          "rescission"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p2",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex18",
+      "by": "derivationA",
+      "title": "Payment only, building published: no publication step.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "property_registered": "yes",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p2",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex19",
+      "by": "derivationA",
+      "title": "Court without the section: civil section proposed.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "court_has_section_for_matter": "no",
+        "commercial_lease": "no",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "section": "civil",
+        "findings": []
+      }
+    },
+    {
+      "id": "ex20",
+      "by": "derivationA",
+      "title": "Rent claimed after the term ended: holding-over boundary.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "lease_term_expired": "yes",
+        "requests": [
+          "payment",
+          "eviction"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n3",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex21",
+      "by": "derivationA",
+      "title": "Lease with a public housing institution: special regime warning.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "lease_with_public_housing_body": "yes",
+        "requests": [
+          "payment"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n4",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex22",
+      "by": "derivationA",
+      "title": "Nothing known but the request: the rules ask.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "requests": [
+          "payment",
+          "rescission",
+          "eviction"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "ask"
+          },
+          {
+            "ref": "n1",
+            "effect": "ask"
+          },
+          {
+            "ref": "n3",
+            "effect": "ask"
+          },
+          {
+            "ref": "p2",
+            "effect": "ask"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex23",
+      "by": "derivationA",
+      "title": "Rescission of a lease of a published building, petition lodged for publication: nothing to flag.",
+      "petitionDate": "2026-11-18",
+      "slots": {
+        "property_registered": "yes",
+        "petition_lodged_for_publication": "yes",
+        "requests": [
+          "rescission"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p2",
+            "effect": "none"
+          },
+          {
+            "ref": "doc5",
+            "effect": "none"
+          }
+        ]
+      }
+    }
+  ]
+}

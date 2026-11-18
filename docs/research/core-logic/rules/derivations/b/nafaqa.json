@@ -1,0 +1,2171 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "claim",
+  "id": "nafaqa",
+  "label": {
+    "ar": "النفقة",
+    "en": "Maintenance (nafaqa)"
+  },
+  "verified": false,
+  "stage": "derivationB",
+  "derivedBy": {
+    "role": "derivationB",
+    "model": "claude-sonnet-5-5",
+    "date": "2026-11-18"
+  },
+  "area": "family",
+  "imports": [
+    {
+      "module": "court-sections",
+      "blocks": [
+        "t4",
+        "n5",
+        "b3",
+        "b4",
+        "b5",
+        "b8",
+        "b30",
+        "b34",
+        "b42"
+      ],
+      "how": {
+        "ar": "قسم شؤون الأسرة ينظر في دعاوى النفقة، ورئيسه يمارس صلاحيات قاضي الاستعجال، والاختصاص الإقليمي لموطن الدائن بالنفقة؛ وتستورد مواد الملف ومواد الجدولة، وتكتب الدعوى مقطع القسم بنفسها.",
+        "en": "The family section hears maintenance claims, its president has the powers of the urgent-matters judge and the territorial rule follows the creditor's domicile; the statements on the sections and on listing are imported and the claim writes its own section rule."
+      }
+    },
+    {
+      "module": "ordinary-court-exits",
+      "blocks": [
+        "x6",
+        "b36",
+        "b37"
+      ],
+      "how": {
+        "ar": "قد تقوم متابعة جزائية موازية بشأن الوقائع ذاتها؛ تستورد قاعدة الخروج الجزائي دون إعادة صياغتها.",
+        "en": "A criminal case on the same facts may run in parallel; the criminal-court exit is imported and not restated."
+      }
+    }
+  ],
+  "basis": [
+    {
+      "id": "b1",
+      "role": "basis",
+      "required": true,
+      "cite": {
+        "code": "family-code",
+        "article": "74",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تجب نفقة الزوجة على زوجها بالدخول بها أو بدعوتها إليه ببينة.",
+        "en": "The husband owes his wife maintenance from consummation, or from her call to him made with evidence."
+      }
+    },
+    {
+      "id": "b2",
+      "role": "basis",
+      "required": true,
+      "cite": {
+        "code": "family-code",
+        "article": "75",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تجب نفقة الولد على الأب ما لم يكن للولد مال؛ للذكر إلى سن الرشد وللأنثى إلى الدخول، وتستمر للعاجز أو المزاول للدراسة، وتسقط بالاستغناء بالكسب.",
+        "en": "The father owes his child maintenance unless the child has property: to a boy until majority, to a girl until consummation; it continues for a disabled or studying child and ends when the child can live on his own earnings."
+      }
+    },
+    {
+      "id": "b3",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "76",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "إذا عجز الأب تجب نفقة الأولاد على الأم إن كانت قادرة.",
+        "en": "If the father is unable, the mother owes the children's maintenance where she is able."
+      }
+    },
+    {
+      "id": "b4",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "77",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تجب نفقة الأصول على الفروع والفروع على الأصول بحسب القدرة والحاجة ودرجة القرابة في الإرث.",
+        "en": "Ascendants and descendants owe each other maintenance according to means, need and degree of kinship in inheritance."
+      }
+    },
+    {
+      "id": "b5",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "78",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تشمل النفقة الغذاء والكسوة والعلاج والسكن أو أجرته وما يعد من الضروريات في العرف والعادة.",
+        "en": "Maintenance covers food, clothing, medical care, housing or its rent, and what custom treats as necessities."
+      }
+    },
+    {
+      "id": "b6",
+      "role": "procedure",
+      "cite": {
+        "code": "family-code",
+        "article": "79",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يقدر القاضي النفقة بحسب حال الطرفين وظروف المعاش، ولا يراجع تقديره قبل مضي سنة من الحكم.",
+        "en": "The judge fixes maintenance by the condition of both parties and the cost of living, and does not revise it before one year from the judgment."
+      }
+    },
+    {
+      "id": "b7",
+      "role": "limit",
+      "cite": {
+        "code": "family-code",
+        "article": "80",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "تستحق النفقة من تاريخ رفع الدعوى، وللقاضي أن يحكم بها بناء على بينة عن مدة سابقة لا تتجاوز سنة.",
+        "en": "Maintenance is due from the filing of the claim, and on evidence the judge may award it for a period before filing of no more than one year."
+      }
+    },
+    {
+      "id": "b8",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "61",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "للمطلقة الحق في النفقة في عدة الطلاق وفي البقاء في السكن العائلي خلالها إلا في حالة الفاحشة المبينة.",
+        "en": "A divorced wife has the right to maintenance during her waiting period, and to stay in the family home, except in case of manifest indecency."
+      }
+    },
+    {
+      "id": "b9",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "72",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "في الطلاق يوفر الأب للحاضنة سكنا ملائما لممارسة الحضانة، وإن تعذر فعليه بدل الإيجار.",
+        "en": "On divorce the father must give the custodian suitable housing to exercise custody, or failing that pay the rent."
+      }
+    },
+    {
+      "id": "b10",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "72",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "تبقى الحاضنة في بيت الزوجية حتى ينفذ الأب الحكم القضائي المتعلق بالسكن.",
+        "en": "The custodian stays in the marital home until the father carries out the court decision on housing."
+      }
+    },
+    {
+      "id": "b11",
+      "role": "proof",
+      "cite": {
+        "code": "family-code",
+        "article": "22",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يثبت الزواج بمستخرج من سجل الحالة المدنية، وإن لم يسجل فبحكم قضائي.",
+        "en": "Marriage is proved by an extract of the civil status register or, if it was not registered, by a judgment."
+      }
+    },
+    {
+      "id": "b12",
+      "role": "proof",
+      "cite": {
+        "code": "family-code",
+        "article": "49",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "لا يثبت الطلاق إلا بحكم بعد محاولات صلح يجريها القاضي.",
+        "en": "Divorce is established only by a judgment after conciliation attempts made by the judge."
+      }
+    },
+    {
+      "id": "b13",
+      "role": "basis",
+      "cite": {
+        "code": "family-code",
+        "article": "87",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "في حالة الطلاق يمنح القاضي الولاية لمن أسندت له حضانة الأولاد.",
+        "en": "On divorce the judge gives guardianship to the person to whom custody of the children is awarded."
+      }
+    },
+    {
+      "id": "b14",
+      "role": "procedure",
+      "cite": {
+        "code": "family-code",
+        "article": "57 مكرر",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجوز للقاضي أن يفصل على وجه الاستعجال بأمر على عريضة في التدابير المؤقتة، ولا سيما النفقة والحضانة والزيارة والمسكن.",
+        "en": "The judge may decide urgently, by order on petition, all provisional measures, notably maintenance, custody, visitation and housing."
+      }
+    },
+    {
+      "id": "b15",
+      "role": "limit",
+      "cite": {
+        "code": "family-code",
+        "article": "53",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يجوز للزوجة طلب التطليق لعدم الإنفاق بعد صدور الحكم بوجوبه، ما لم تكن عالمة بإعسار الزوج وقت الزواج.",
+        "en": "A wife may ask for dissolution for non-payment of maintenance after a judgment ordering it, unless she knew of her husband's insolvency at the time of the marriage."
+      }
+    },
+    {
+      "id": "b16",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "40",
+        "paragraphs": [
+          1,
+          3
+        ]
+      },
+      "says": {
+        "ar": "ترفع دعاوى النفقة الغذائية والسكن دون سواها أمام المحكمة التي بدائرتها موطن الدائن بالنفقة أو مكان وجود السكن.",
+        "en": "Claims for maintenance and housing go only to the court of the creditor's domicile or of the place where the housing is."
+      }
+    },
+    {
+      "id": "b17",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "47",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يجب إثارة الدفع بعدم الاختصاص الإقليمي قبل أي دفاع في الموضوع أو دفع بعدم القبول.",
+        "en": "The plea of lack of territorial jurisdiction must be raised before any defence on the merits or plea of inadmissibility."
+      }
+    },
+    {
+      "id": "b18",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "323",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يوقف تنفيذ الحكم خلال أجل الطعن العادي وبسبب ممارسته.",
+        "en": "Enforcement of a judgment is suspended during the period for an ordinary appeal and by the bringing of one."
+      }
+    },
+    {
+      "id": "b19",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "323",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "يؤمر بالنفاذ المعجل عند طلبه رغم المعارضة أو الاستئناف في مادة النفقة وفي منح مسكن الزوجية لمن أسندت له الحضانة.",
+        "en": "Provisional execution, notwithstanding opposition or appeal, is ordered when requested in maintenance matters and in the grant of the marital home to the custodian."
+      }
+    },
+    {
+      "id": "b20",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "324",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يرفع الاعتراض على النفاذ المعجل أمام رئيس الجهة القضائية المعروض أمامها الطعن، وله أن يوقفه استعجالا إذا خشي آثارا بالغة أو يتعذر استدراكها.",
+        "en": "An objection to provisional execution goes to the president of the court seised of the appeal, who may suspend it urgently if its continuation risks grave or irreparable effects."
+      }
+    },
+    {
+      "id": "b21",
+      "role": "proof",
+      "cite": {
+        "code": "civil-code",
+        "article": "323",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "على الدائن إثبات الالتزام وعلى المدين إثبات التخلص منه.",
+        "en": "The creditor proves the obligation and the debtor proves his release from it."
+      }
+    },
+    {
+      "id": "b22",
+      "role": "limit",
+      "interpretive": true,
+      "interpretiveNote": "The article makes every periodic renewable right, arrears and pensions among them, time-barred; whether it reaches maintenance arrears, which article 80 of the Family Code already limits, is a reading.",
+      "cite": {
+        "code": "civil-code",
+        "article": "309",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يتقادم بخمس سنوات كل حق دوري متجدد ولو أقر به المدين، كالديون المتأخرة والمعاشات.",
+        "en": "Every periodic renewable right, such as arrears and pensions, is time-barred after five years even if the debtor acknowledged it."
+      }
+    },
+    {
+      "id": "b23",
+      "role": "limit",
+      "interpretive": true,
+      "interpretiveNote": "The article names maintenance between relatives; a foreign defendant husband is not named, and the temporal applicability of this civil-code text is flagged in the store as unsettled.",
+      "cite": {
+        "code": "civil-code",
+        "article": "14",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "يطبق القانون الوطني للمدين على الالتزام بالنفقة بين الأقارب.",
+        "en": "The debtor's national law governs the obligation of maintenance between relatives."
+      }
+    },
+    {
+      "id": "b24",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "15",
+        "paragraphs": [
+          1,
+          6,
+          7
+        ]
+      },
+      "says": {
+        "ar": "تتضمن عريضة افتتاح الدعوى، تحت طائلة عدم القبول شكلا، عرضا موجزا للوقائع والطلبات والوسائل وبيان المستندات المؤيدة.",
+        "en": "The statement of claim must set out, on pain of formal inadmissibility, a short account of the facts, the requests and the means, and point to the supporting documents."
+      }
+    },
+    {
+      "id": "b25",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "17",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "لا تقيد العريضة إلا بعد دفع الرسوم المحددة قانونا ما لم ينص القانون على خلاف ذلك.",
+        "en": "The petition is registered only after the fees fixed by law are paid, unless the law provides otherwise."
+      }
+    },
+    {
+      "id": "b26",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "14",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "ترفع الدعوى بعريضة مكتوبة موقعة ومؤرخة يودعها المدعي أو وكيله أو محاميه بأمانة الضبط.",
+        "en": "The claim is brought by a written, signed and dated petition lodged at the registry by the plaintiff, his agent or his lawyer."
+      }
+    },
+    {
+      "id": "b27",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "777",
+        "paragraphs": [
+          1,
+          2
+        ]
+      },
+      "says": {
+        "ar": "يجوز الحجز على الأجر أو المرتب لاستيفاء نفقة القصر أو الوالدين أو الزوجة، ولا يتجاوز الحجز نصف الأجر.",
+        "en": "Wages may be attached for the maintenance of minors, parents or the wife, and the attachment may not exceed half of the wage."
+      }
+    },
+    {
+      "id": "b28",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "779",
+        "paragraphs": [
+          3
+        ]
+      },
+      "says": {
+        "ar": "لديون النفقة الغذائية أولوية على باقي الديون عند الاستيفاء.",
+        "en": "Maintenance debts rank before other debts when recovery is made."
+      }
+    },
+    {
+      "id": "b29",
+      "role": "procedure",
+      "cite": {
+        "code": "cpca",
+        "article": "781",
+        "paragraphs": [
+          2
+        ]
+      },
+      "says": {
+        "ar": "إذا كان الدين نفقة غذائية يتضمن أمر التحويل مواصلة الدفع شهريا إلى الدائن إلى غاية انقضائه قانونا أو صدور أمر مخالف.",
+        "en": "Where the debt is maintenance, the transfer order continues monthly payment to the creditor until it ends in law or a contrary order is made."
+      }
+    },
+    {
+      "id": "b30",
+      "role": "procedure",
+      "interpretive": true,
+      "interpretiveNote": "The article provides for the judge's ruling on a breach by one spouse; it does not say what becomes of the wife's maintenance in that case.",
+      "cite": {
+        "code": "family-code",
+        "article": "55",
+        "paragraphs": [
+          1
+        ]
+      },
+      "says": {
+        "ar": "عند نشوز أحد الزوجين يحكم القاضي بالطلاق وبالتعويض للطرف المتضرر.",
+        "en": "On a breach by one spouse the judge pronounces divorce and compensation to the injured party."
+      }
+    }
+  ],
+  "elements": [
+    {
+      "id": "e1",
+      "toProve": {
+        "ar": "انعقاد الزواج بين الطرفين، وبالنسبة للزوجة الدخول بها أو دعوتها إلى الزوج ببينة.",
+        "en": "That the marriage was concluded between the parties and, for a wife, consummation or her call to the husband made with evidence."
+      },
+      "factsToState": [
+        {
+          "ar": "تاريخ عقد الزواج وسجله بالحالة المدنية أو الحكم الذي أثبته.",
+          "en": "The date of the marriage and its civil status entry or the judgment that proved it."
+        },
+        {
+          "ar": "وقوع الدخول أو الدعوة إلى بيت الزوج وكيف أثبتت.",
+          "en": "That consummation took place or the wife was called to the husband's home, and how that is proved."
+        }
+      ],
+      "events": [
+        "marriage"
+      ],
+      "slots": [
+        "maintenance_creditor",
+        "wife_entered_or_called_with_proof"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "extract of the civil status register",
+          "basis": [
+            "b11"
+          ],
+          "note": {
+            "ar": "مستخرج من سجل الحالة المدنية.",
+            "en": "An extract of the civil status register."
+          }
+        },
+        {
+          "means": "judgment proving the marriage",
+          "basis": [
+            "b11"
+          ],
+          "note": {
+            "ar": "حكم قضائي إن لم يسجل الزواج.",
+            "en": "A judgment if the marriage was not registered."
+          }
+        },
+        {
+          "means": "evidence of the call to the husband",
+          "basis": [
+            "b1"
+          ],
+          "note": {
+            "ar": "بينة على دعوة الزوجة إلى الزوج.",
+            "en": "Evidence that the wife called the husband to take her."
+          }
+        }
+      ],
+      "basis": [
+        "b1",
+        "b11",
+        "b21"
+      ]
+    },
+    {
+      "id": "e2",
+      "toProve": {
+        "ar": "وقوع الطلاق بين الطرفين متى طلبت النفقة في العدة أو السكن لممارسة الحضانة.",
+        "en": "That the divorce took place between the parties where maintenance is asked for the waiting period or housing for the exercise of custody."
+      },
+      "factsToState": [
+        {
+          "ar": "تاريخ الحكم بالطلاق وتاريخ صيرورته نافذا.",
+          "en": "The date of the divorce judgment and of its taking effect."
+        },
+        {
+          "ar": "إسناد الحضانة وتاريخ الحكم به إن طلب السكن.",
+          "en": "The award of custody and its date where housing is asked."
+        }
+      ],
+      "events": [
+        "divorce"
+      ],
+      "slots": [
+        "maintenance_creditor"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "divorce judgment",
+          "basis": [
+            "b12"
+          ],
+          "note": {
+            "ar": "حكم الطلاق.",
+            "en": "The divorce judgment."
+          }
+        }
+      ],
+      "basis": [
+        "b8",
+        "b9",
+        "b12"
+      ]
+    },
+    {
+      "id": "e3",
+      "toProve": {
+        "ar": "امتناع المدعى عليه عن الإنفاق، ومدته، وقدرته وحال الطرفين.",
+        "en": "That the defendant refused to maintain, for how long, and the means and condition of the parties."
+      },
+      "factsToState": [
+        {
+          "ar": "المدة التي لم ينفق فيها المدعى عليه وتاريخ بدايتها.",
+          "en": "The period in which the defendant did not maintain and its starting date."
+        },
+        {
+          "ar": "دخل المدعى عليه ومهنته وحاجة المدعية أو الأولاد.",
+          "en": "The defendant's income and occupation and the needs of the plaintiff or the children."
+        }
+      ],
+      "events": [
+        "maintenance_unpaid"
+      ],
+      "slots": [
+        "maintenance_unpaid_since"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "evidence of the refusal and of the resources",
+          "basis": [
+            "b6",
+            "b7",
+            "b21"
+          ],
+          "note": {
+            "ar": "البينة على الامتناع وحال الطرفين؛ وعلى المدين إثبات الوفاء.",
+            "en": "Evidence of the refusal and of the parties' condition; the debtor proves payment."
+          }
+        }
+      ],
+      "basis": [
+        "b1",
+        "b2",
+        "b5",
+        "b6",
+        "b7",
+        "b21"
+      ]
+    },
+    {
+      "id": "e4",
+      "toProve": {
+        "ar": "صفة الحاضنة في طلب نفقة الأولاد، وصلة البنوة وسن الولد أو ما يمدد النفقة.",
+        "en": "The custodian's standing to ask for the children's maintenance, the filiation, the child's age or what prolongs maintenance."
+      },
+      "factsToState": [
+        {
+          "ar": "حكم إسناد الحضانة وتاريخ ميلاد كل ولد.",
+          "en": "The custody judgment and each child's date of birth."
+        },
+        {
+          "ar": "الدراسة أو العجز إن طلبت النفقة بعد سن الرشد.",
+          "en": "Studies or disability where maintenance is asked after majority."
+        }
+      ],
+      "events": [
+        "custody_held"
+      ],
+      "slots": [
+        "maintenance_creditor"
+      ],
+      "burden": "plaintiff",
+      "proof": [
+        {
+          "means": "custody judgment and civil status extracts",
+          "basis": [
+            "b13",
+            "b2"
+          ],
+          "note": {
+            "ar": "حكم الحضانة ومستخرجات الحالة المدنية.",
+            "en": "The custody judgment and civil status extracts."
+          }
+        }
+      ],
+      "basis": [
+        "b2",
+        "b13"
+      ]
+    }
+  ],
+  "requests": [
+    {
+      "id": "r1",
+      "kind": "maintenance",
+      "accessory": false,
+      "amount": true,
+      "text": {
+        "ar": "الحكم على المدعى عليه بدفع نفقة شهرية قدرها (...) دج للمدعية أو للأولاد ابتداء من تاريخ رفع الدعوى.",
+        "en": "Order the defendant to pay monthly maintenance of (...) DZD to the plaintiff or the children from the date of filing."
+      },
+      "basis": [
+        "b1",
+        "b2",
+        "b5",
+        "b6",
+        "b7"
+      ]
+    },
+    {
+      "id": "r2",
+      "kind": "maintenance",
+      "accessory": false,
+      "amount": true,
+      "text": {
+        "ar": "الحكم باستحقاق النفقة عن المدة السابقة لرفع الدعوى والمقدرة بـ (...) بمبلغ (...) دج.",
+        "en": "Award maintenance for the period before filing, stated as (...), in the amount of (...) DZD."
+      },
+      "basis": [
+        "b7"
+      ]
+    },
+    {
+      "id": "r3",
+      "kind": "housing",
+      "accessory": false,
+      "amount": true,
+      "text": {
+        "ar": "الحكم على المدعى عليه بتوفير سكن ملائم لممارسة الحضانة، وإن تعذر ذلك بدفع بدل الإيجار بمبلغ (...) دج شهريا.",
+        "en": "Order the defendant to provide suitable housing for the exercise of custody or, failing that, to pay rent of (...) DZD a month."
+      },
+      "basis": [
+        "b5",
+        "b9",
+        "b10"
+      ]
+    },
+    {
+      "id": "r4",
+      "kind": "provisional_execution",
+      "accessory": true,
+      "amount": false,
+      "text": {
+        "ar": "الأمر بالنفاذ المعجل للحكم رغم المعارضة أو الاستئناف.",
+        "en": "Order provisional execution of the judgment notwithstanding opposition or appeal."
+      },
+      "basis": [
+        "b19"
+      ]
+    }
+  ],
+  "court": {
+    "territory": [
+      {
+        "id": "t1",
+        "rule": {
+          "ar": "المحكمة التي بدائرتها موطن الدائن بالنفقة، وفي طلب السكن المحكمة التي بدائرتها مكان وجود السكن.",
+          "en": "The court of the maintenance creditor's domicile and, for a housing request, of the place where the housing is."
+        },
+        "basis": [
+          "b16"
+        ]
+      },
+      {
+        "id": "t2",
+        "rule": {
+          "ar": "يثار الدفع بعدم الاختصاص الإقليمي قبل أي دفاع في الموضوع أو دفع بعدم القبول؛ والمدعى عليه هو من يتمسك به.",
+          "en": "The plea of lack of territorial jurisdiction is raised before any defence on the merits or plea of inadmissibility; the defendant relies on it."
+        },
+        "basis": [
+          "b17"
+        ]
+      }
+    ],
+    "section": {
+      "value": "family",
+      "basis": [
+        "court-sections.b3",
+        "court-sections.b8"
+      ],
+      "alternatives": [
+        {
+          "when": {
+            "slot": "court_has_section_for_matter",
+            "is": "no"
+          },
+          "value": "civil",
+          "basis": [
+            "court-sections.b4"
+          ]
+        }
+      ],
+      "message": {
+        "ar": "المادة 423 من قانون الإجراءات المدنية والإدارية: ينظر قسم شؤون الأسرة في دعاوى النفقة؛ والمادة 32: في المحاكم التي لم تنشأ فيها الأقسام يبقى القسم المدني ينظر في جميع النزاعات باستثناء القضايا الاجتماعية. القسم المختار يختلف عن القسم المقترح؛ تحقق من أقسام المحكمة.",
+        "en": "CPCA article 423: the family section hears maintenance claims; article 32: in courts where the sections have not been created, the civil section hears every dispute except social ones. The section chosen differs from the one proposed; check the court's sections."
+      },
+      "interpretive": true,
+      "interpretiveNote": "Whether the fifth paragraph of article 32 reaches a court that has sections but lacks the family one is a reading (as the court-sections module records); the civil section is proposed as the protective one."
+    }
+  },
+  "deadlines": [
+    {
+      "id": "d1",
+      "kind": "limitation",
+      "period": {
+        "value": 1,
+        "unit": "year"
+      },
+      "startsFrom": {
+        "slot": "maintenance_unpaid_since",
+        "event": "maintenance_unpaid",
+        "description": {
+          "ar": "أول يوم لم ينفق فيه المدعى عليه.",
+          "en": "The first day on which the defendant did not maintain."
+        }
+      },
+      "raisedBy": "unclear",
+      "when": {
+        "slot": "requests",
+        "includes": "maintenance"
+      },
+      "effectWhenExpired": "warn",
+      "warnBandDays": 15,
+      "message": {
+        "ar": "المادة 80 من قانون الأسرة: تستحق النفقة من تاريخ رفع الدعوى، وللقاضي أن يحكم بها عن مدة سابقة لا تتجاوز سنة. تحقق من تاريخ بداية الامتناع ومن المدة المطلوبة قبل رفع الدعوى.",
+        "en": "Family Code article 80: maintenance is due from the filing of the claim, and the judge may award it for a period before filing of no more than one year. Check the date the refusal began and the period asked for before filing."
+      },
+      "basis": [
+        "b7"
+      ],
+      "extract": {
+        "period": "لمدة لا تتجاوز سنة قبل رفع الدعوى"
+      },
+      "interpretive": true,
+      "interpretiveNote": "The text caps the arrears the judge may award; it is not a time limit on filing. Treating it as a limitation counted from the first unpaid day is a reading, and the text gives no counting method and does not say who raises it.",
+      "readings": [
+        {
+          "reading": {
+            "ar": "السقف يحسب من تاريخ رفع الدعوى إلى الوراء، فتضيع النفقة عن المدة التي تتجاوز سنة قبل الرفع.",
+            "en": "The cap runs back from the filing date, so maintenance for the part beyond one year before filing is lost."
+          },
+          "basis": [
+            "b7"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "يتقادم المتجمد بخمس سنوات بحسب القانون المدني، فلا يقيده السقف.",
+            "en": "The accrued arrears are time-barred only after five years under the civil code, and the cap does not limit them."
+          },
+          "basis": [
+            "b22"
+          ]
+        }
+      ]
+    }
+  ],
+  "priorSteps": [
+    {
+      "id": "p1",
+      "kind": "other",
+      "slots": [
+        "wife_entered_or_called_with_proof",
+        "maintenance_creditor"
+      ],
+      "requiredWhen": {
+        "slot": "maintenance_creditor",
+        "is": "wife"
+      },
+      "effectWhenMissing": "warn",
+      "effectWhenUnknown": "ask",
+      "message": {
+        "ar": "المادة 74 من قانون الأسرة: تجب نفقة الزوجة بالدخول بها أو بدعوتها إلى الزوج ببينة. تحقق من وقوع الدخول أو من البينة على الدعوة.",
+        "en": "Family Code article 74: a wife's maintenance is owed from consummation or from her call to the husband made with evidence. Check that consummation took place or that there is evidence of the call."
+      },
+      "basis": [
+        "b1"
+      ],
+      "interpretive": true,
+      "interpretiveNote": "The article states the condition for the duty; it states no sanction when neither consummation nor a call is shown, and the effect of the wife's refusal to join the husband is not in the text."
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc1",
+      "name": {
+        "ar": "مستخرج من سجل الحالة المدنية يثبت الزواج أو الحكم القاضي بثبوته",
+        "en": "Civil status extract proving the marriage, or the judgment declaring it"
+      },
+      "why": {
+        "ar": "الزواج يثبت بالمستخرج أو بحكم عند عدم التسجيل.",
+        "en": "Marriage is proved by the extract or, if not registered, by a judgment."
+      },
+      "basis": [
+        "b11"
+      ]
+    },
+    {
+      "id": "doc2",
+      "name": {
+        "ar": "حكم الطلاق",
+        "en": "The divorce judgment"
+      },
+      "requiredWhen": {
+        "slot": "maintenance_creditor",
+        "in": [
+          "divorced_wife"
+        ]
+      },
+      "why": {
+        "ar": "الطلاق لا يثبت إلا بحكم.",
+        "en": "Divorce is established only by a judgment."
+      },
+      "basis": [
+        "b12"
+      ]
+    },
+    {
+      "id": "doc3",
+      "name": {
+        "ar": "مستخرجات ميلاد الأولاد وحكم إسناد الحضانة",
+        "en": "The children's birth extracts and the custody judgment"
+      },
+      "requiredWhen": {
+        "slot": "maintenance_creditor",
+        "in": [
+          "child"
+        ]
+      },
+      "why": {
+        "ar": "تثبت صلة البنوة وصفة الحاضنة.",
+        "en": "They show the filiation and the custodian's standing."
+      },
+      "basis": [
+        "b2",
+        "b13"
+      ]
+    },
+    {
+      "id": "doc4",
+      "name": {
+        "ar": "شهادة مدرسية أو إثبات العجز عن الكسب",
+        "en": "School certificate or proof of inability to earn"
+      },
+      "requiredWhen": {
+        "slot": "maintenance_creditor",
+        "in": [
+          "child"
+        ]
+      },
+      "why": {
+        "ar": "تستمر النفقة بعد سن الرشد للعاجز أو المزاول للدراسة.",
+        "en": "Maintenance continues after majority for a disabled or studying child."
+      },
+      "basis": [
+        "b2"
+      ]
+    },
+    {
+      "id": "doc5",
+      "name": {
+        "ar": "ما يثبت دخل المدعى عليه وحاله المالية",
+        "en": "Evidence of the defendant's income and financial condition"
+      },
+      "why": {
+        "ar": "يقدر القاضي النفقة بحسب حال الطرفين وظروف المعاش.",
+        "en": "The judge fixes maintenance by the condition of both parties and the cost of living."
+      },
+      "basis": [
+        "b6"
+      ]
+    },
+    {
+      "id": "doc6",
+      "name": {
+        "ar": "حكم إسناد الحضانة وما يثبت السكن الحالي أو الإيجار",
+        "en": "The custody judgment and evidence of the present housing or rent"
+      },
+      "requiredWhen": {
+        "slot": "requests",
+        "includes": "housing"
+      },
+      "why": {
+        "ar": "السكن أو بدل الإيجار يطلب لممارسة الحضانة.",
+        "en": "Housing or rent is asked for the exercise of custody."
+      },
+      "basis": [
+        "b9",
+        "b10"
+      ]
+    },
+    {
+      "id": "doc7",
+      "name": {
+        "ar": "بينة على الدخول أو على دعوة الزوجة إلى الزوج",
+        "en": "Evidence of consummation or of the wife's call to the husband"
+      },
+      "requiredWhen": {
+        "slot": "maintenance_creditor",
+        "in": [
+          "wife"
+        ]
+      },
+      "why": {
+        "ar": "تجب نفقة الزوجة بالدخول أو بدعوتها ببينة.",
+        "en": "A wife's maintenance is owed from consummation or from a call made with evidence."
+      },
+      "basis": [
+        "b1"
+      ]
+    },
+    {
+      "id": "doc8",
+      "name": {
+        "ar": "ما يثبت مدة الامتناع عن الإنفاق",
+        "en": "Evidence of the period of non-payment"
+      },
+      "why": {
+        "ar": "المتجمد يحكم به بناء على بينة.",
+        "en": "Arrears are awarded on evidence."
+      },
+      "basis": [
+        "b7"
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "id": "n1",
+      "looksLike": {
+        "ar": "طلب مراجعة نفقة سبق الحكم بها يبدو دعوى نفقة جديدة.",
+        "en": "A request to revise a maintenance already awarded, which looks like a new maintenance claim."
+      },
+      "isActually": "outside:revision-of-maintenance-judgment",
+      "tellingFacts": [
+        {
+          "ar": "صدر حكم سابق بالنفقة.",
+          "en": "A maintenance judgment was already given."
+        },
+        {
+          "ar": "يطلب الزيادة أو النقصان لا إنشاء النفقة.",
+          "en": "An increase or decrease is asked, not the creation of maintenance."
+        }
+      ],
+      "when": {
+        "slot": "maintenance_judgment_date",
+        "known": true
+      },
+      "slots": [
+        "maintenance_judgment_date"
+      ],
+      "message": {
+        "ar": "المادة 79 من قانون الأسرة: لا يراجع القاضي تقديره قبل مضي سنة من الحكم. تحقق من تاريخ الحكم السابق ومن الغاية من الطلب.",
+        "en": "Family Code article 79: the judge does not revise his assessment before one year from the judgment. Check the date of the earlier judgment and the purpose of the request."
+      },
+      "basis": [
+        "b6"
+      ]
+    },
+    {
+      "id": "n2",
+      "looksLike": {
+        "ar": "دعوى نفقة تضاف إليها المطالبة بالتطليق لعدم الإنفاق.",
+        "en": "A maintenance claim joined to a request for dissolution for non-payment."
+      },
+      "isActually": "outside:dissolution-for-non-payment",
+      "tellingFacts": [
+        {
+          "ar": "تطلب الزوجة التطليق وليس النفقة فقط.",
+          "en": "The wife asks for dissolution, not only maintenance."
+        },
+        {
+          "ar": "السبب عدم الإنفاق بعد الحكم بوجوبه.",
+          "en": "The ground is non-payment after a judgment ordering maintenance."
+        }
+      ],
+      "when": {
+        "slot": "requests",
+        "includes": "tatliq"
+      },
+      "message": {
+        "ar": "المادة 53 من قانون الأسرة: يجوز للزوجة طلب التطليق لعدم الإنفاق بعد صدور الحكم بوجوبه. تحقق من وجود هذا الحكم ومن أنها لم تكن عالمة بإعسار الزوج وقت الزواج.",
+        "en": "Family Code article 53: a wife may ask for dissolution for non-payment of maintenance after a judgment ordering it. Check that such a judgment exists and whether she knew of the husband's insolvency at the time of the marriage."
+      },
+      "basis": [
+        "b15"
+      ]
+    },
+    {
+      "id": "n3",
+      "looksLike": {
+        "ar": "نفقة بين الأقارب غير الزوجة والأولاد تبدو دعوى نفقة الزوجة أو الأولاد.",
+        "en": "Maintenance between other relatives that looks like a wife's or children's maintenance claim."
+      },
+      "isActually": "outside:maintenance-between-relatives",
+      "tellingFacts": [
+        {
+          "ar": "الدائن أصل أو فرع (والد أو ولد بالغ).",
+          "en": "The creditor is an ascendant or descendant (a parent or adult child)."
+        }
+      ],
+      "when": {
+        "slot": "maintenance_creditor",
+        "is": "ascendant_or_descendant"
+      },
+      "slots": [
+        "maintenance_creditor"
+      ],
+      "message": {
+        "ar": "المادة 77 من قانون الأسرة: تجب نفقة الأصول على الفروع والفروع على الأصول بحسب القدرة والحاجة ودرجة القرابة في الإرث. تحقق من القدرة والحاجة ودرجة القرابة.",
+        "en": "Family Code article 77: ascendants and descendants owe each other maintenance according to means, need and degree of kinship in inheritance. Check the means, the need and the degree of kinship."
+      },
+      "basis": [
+        "b4"
+      ]
+    },
+    {
+      "id": "n4",
+      "looksLike": {
+        "ar": "مدين بالنفقة أجنبي الجنسية.",
+        "en": "A maintenance debtor of foreign nationality."
+      },
+      "isActually": "outside:foreign-law-maintenance",
+      "tellingFacts": [
+        {
+          "ar": "المدعى عليه لا يحمل الجنسية الجزائرية.",
+          "en": "The defendant does not hold Algerian nationality."
+        }
+      ],
+      "when": {
+        "slot": "debtor_is_foreign_national",
+        "is": "yes"
+      },
+      "slots": [
+        "debtor_is_foreign_national"
+      ],
+      "message": {
+        "ar": "المادة 14 من القانون المدني: يطبق القانون الوطني للمدين على الالتزام بالنفقة بين الأقارب. تحقق من جنسية المدعى عليه ومن القانون الواجب التطبيق.",
+        "en": "Civil Code article 14: the debtor's national law governs the obligation of maintenance between relatives. Check the defendant's nationality and the applicable law."
+      },
+      "basis": [
+        "b23"
+      ]
+    },
+    {
+      "id": "n5",
+      "looksLike": {
+        "ar": "طلب نفقة مؤقتة أثناء الدعوى يبدو طلبا في الموضوع.",
+        "en": "A request for interim maintenance during the case that looks like a claim on the merits."
+      },
+      "isActually": "outside:urgent-matters",
+      "tellingFacts": [
+        {
+          "ar": "المطلوب تدبير مؤقت بأمر على عريضة لا حكم في أصل الحق.",
+          "en": "What is asked is a provisional measure by order on petition, not a decision on the right itself."
+        }
+      ],
+      "message": {
+        "ar": "المادة 57 مكرر من قانون الأسرة: يجوز للقاضي أن يفصل استعجالا بأمر على عريضة في التدابير المؤقتة ولا سيما النفقة. تحقق مما إذا كان المطلوب تدبيرا مؤقتا.",
+        "en": "Family Code article 57 bis: the judge may decide urgently by order on petition provisional measures, notably maintenance. Check whether what is asked is a provisional measure."
+      },
+      "basis": [
+        "b14"
+      ]
+    }
+  ],
+  "slots": [
+    "requests",
+    "maintenance_creditor",
+    "wife_entered_or_called_with_proof",
+    "maintenance_unpaid_since",
+    "maintenance_judgment_date",
+    "debtor_is_foreign_national",
+    "court_has_section_for_matter",
+    "criminal_case_on_same_facts",
+    "obligation_is_tort_compensation"
+  ],
+  "proposedSlots": [
+    {
+      "id": "maintenance_creditor",
+      "type": "choice",
+      "question": {
+        "ar": "من هو الدائن بالنفقة في هذه الدعوى؟",
+        "en": "Who is the maintenance creditor in this claim?"
+      },
+      "choices": [
+        {
+          "id": "wife",
+          "label": {
+            "ar": "زوجة لا تزال على ذمة الزوج",
+            "en": "A wife who is still married"
+          }
+        },
+        {
+          "id": "divorced_wife",
+          "label": {
+            "ar": "مطلقة (في العدة أو بعد الطلاق)",
+            "en": "A divorced wife (in her waiting period or after the divorce)"
+          }
+        },
+        {
+          "id": "child",
+          "label": {
+            "ar": "ولد أو أولاد (تطلب الحاضنة باسمهم)",
+            "en": "A child or children (the custodian asks in their name)"
+          }
+        },
+        {
+          "id": "ascendant_or_descendant",
+          "label": {
+            "ar": "أصل أو فرع (والد أو ولد بالغ)",
+            "en": "An ascendant or descendant (a parent or an adult child)"
+          }
+        }
+      ],
+      "why": "Prior step p1, boundary n3, documents doc2 to doc4 and doc7 read it; articles 74, 75, 77 and 61 of the Family Code give each creditor a different basis."
+    },
+    {
+      "id": "wife_entered_or_called_with_proof",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل دخل الزوج بزوجته أو دعته إلى الدخول بها ببينة؟",
+        "en": "Did the husband consummate the marriage, or did the wife call him to take her, with evidence?"
+      },
+      "why": "Prior step p1: article 74 of the Family Code makes a wife's maintenance depend on consummation or on a call made with evidence."
+    },
+    {
+      "id": "maintenance_unpaid_since",
+      "type": "date",
+      "question": {
+        "ar": "منذ أي تاريخ امتنع المدعى عليه عن الإنفاق؟",
+        "en": "From what date has the defendant not maintained?"
+      },
+      "why": "Deadline d1: article 80 of the Family Code limits arrears before filing to one year; the first unpaid day is where the one-year count is taken from."
+    },
+    {
+      "id": "maintenance_judgment_date",
+      "type": "date",
+      "question": {
+        "ar": "ما تاريخ الحكم السابق بالنفقة (إن وجد)؟",
+        "en": "On what date was the earlier maintenance judgment given (if any)?"
+      },
+      "why": "Boundary n1: article 79 of the Family Code bars revision of the assessment before one year from the judgment."
+    },
+    {
+      "id": "debtor_is_foreign_national",
+      "type": "yesNoUnknown",
+      "question": {
+        "ar": "هل المدعى عليه أجنبي الجنسية؟",
+        "en": "Is the defendant of foreign nationality?"
+      },
+      "why": "Boundary n4: article 14 of the Civil Code applies the debtor's national law to maintenance between relatives."
+    }
+  ],
+  "examples": [
+    {
+      "id": "ex1",
+      "by": "derivationB",
+      "title": "Wife, consummated marriage, refusal for four months: clean case.",
+      "petitionDate": "2026-05-10",
+      "slots": {
+        "maintenance_creditor": "wife",
+        "wife_entered_or_called_with_proof": "yes",
+        "maintenance_unpaid_since": "2026-01-15",
+        "debtor_is_foreign_national": "no",
+        "criminal_case_on_same_facts": "no",
+        "obligation_is_tort_compensation": "no",
+        "requests": [
+          "maintenance",
+          "provisional_execution"
+        ]
+      },
+      "expect": {
+        "section": "family",
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "none"
+          },
+          {
+            "ref": "p1",
+            "effect": "none"
+          },
+          {
+            "ref": "n3",
+            "effect": "none"
+          },
+          {
+            "ref": "n4",
+            "effect": "none"
+          },
+          {
+            "ref": "n2",
+            "effect": "none"
+          },
+          {
+            "ref": "n1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex2",
+      "by": "derivationB",
+      "title": "Refusal began long ago: arrears go beyond one year before filing.",
+      "petitionDate": "2026-05-10",
+      "slots": {
+        "maintenance_creditor": "wife",
+        "wife_entered_or_called_with_proof": "yes",
+        "maintenance_unpaid_since": "2025-01-10",
+        "requests": [
+          "maintenance"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex3",
+      "by": "derivationB",
+      "title": "Refusal began just under a year before filing: inside the band.",
+      "petitionDate": "2026-05-10",
+      "slots": {
+        "maintenance_creditor": "wife",
+        "wife_entered_or_called_with_proof": "yes",
+        "maintenance_unpaid_since": "2025-05-20",
+        "requests": [
+          "maintenance"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "d1",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex4",
+      "by": "derivationB",
+      "title": "Wife who neither consummated nor called the husband: a warning.",
+      "petitionDate": "2026-05-10",
+      "slots": {
+        "maintenance_creditor": "wife",
+        "wife_entered_or_called_with_proof": "no",
+        "maintenance_unpaid_since": "2026-03-01",
+        "requests": [
+          "maintenance"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "warn"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex5",
+      "by": "derivationB",
+      "title": "Nothing known about the wife's call and the creditor: the rules ask.",
+      "petitionDate": "2026-05-10",
+      "slots": {
+        "requests": [
+          "maintenance"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "ask"
+          },
+          {
+            "ref": "d1",
+            "effect": "ask"
+          },
+          {
+            "ref": "n3",
+            "effect": "ask"
+          },
+          {
+            "ref": "n4",
+            "effect": "ask"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex6",
+      "by": "derivationB",
+      "title": "Wife also asks for dissolution for non-payment: near-miss, a different claim.",
+      "petitionDate": "2026-05-10",
+      "slots": {
+        "maintenance_creditor": "wife",
+        "wife_entered_or_called_with_proof": "yes",
+        "maintenance_unpaid_since": "2026-02-01",
+        "requests": [
+          "maintenance",
+          "tatliq"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n2",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex7",
+      "by": "derivationB",
+      "title": "A judgment already awarded maintenance: a revision, not a new claim.",
+      "petitionDate": "2026-05-10",
+      "slots": {
+        "maintenance_creditor": "wife",
+        "maintenance_judgment_date": "2026-02-01",
+        "requests": [
+          "maintenance"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n1",
+            "effect": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex8",
+      "by": "derivationB",
+      "title": "A parent asks maintenance from an adult son: a different basis.",
+      "petitionDate": "2026-05-10",
+      "slots": {
+        "maintenance_creditor": "ascendant_or_descendant",
+        "requests": [
+          "maintenance"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "n3",
+            "effect": "warn"
+          },
+          {
+            "ref": "p1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex9",
+      "by": "derivationB",
+      "title": "Divorced custodian asks maintenance and housing for the children; court without sections.",
+      "petitionDate": "2026-05-10",
+      "slots": {
+        "maintenance_creditor": "child",
+        "maintenance_unpaid_since": "2026-03-01",
+        "court_has_section_for_matter": "no",
+        "debtor_is_foreign_national": "yes",
+        "requests": [
+          "maintenance",
+          "housing",
+          "provisional_execution"
+        ]
+      },
+      "expect": {
+        "section": "civil",
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          },
+          {
+            "ref": "n4",
+            "effect": "warn"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ex10",
+      "by": "derivationB",
+      "title": "A criminal complaint is pending on the same facts.",
+      "petitionDate": "2026-05-10",
+      "slots": {
+        "maintenance_creditor": "wife",
+        "wife_entered_or_called_with_proof": "yes",
+        "maintenance_unpaid_since": "2026-03-01",
+        "criminal_case_on_same_facts": "yes",
+        "requests": [
+          "maintenance"
+        ]
+      },
+      "expect": {
+        "findings": [
+          {
+            "ref": "p1",
+            "effect": "none"
+          },
+          {
+            "ref": "d1",
+            "effect": "none"
+          }
+        ]
+      }
+    }
+  ],
+  "openPoints": [
+    {
+      "id": "o1",
+      "question": {
+        "ar": "هل يخضع متجمد النفقة لتقادم القانون المدني بخمس سنوات أم يقيده سقف السنة؟",
+        "en": "Are maintenance arrears subject to the five-year civil-code limitation or limited by the one-year cap?"
+      },
+      "why": {
+        "ar": "المادة 80 من قانون الأسرة تتحدث عن مدة سابقة لا تتجاوز سنة، والمادة 309 من القانون المدني تخضع الحقوق الدورية المتجددة والديون المتأخرة لخمس سنوات، ولا نص يربط بينهما.",
+        "en": "Family Code article 80 speaks of a period before filing of no more than one year, and civil-code article 309 puts periodic renewable rights and arrears under five years; no text links the two."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "السقف على القاضي عند الحكم بالمتجمد، فتضيع النفقة عما يتجاوز سنة قبل الرفع.",
+            "en": "The cap binds the judge awarding arrears, so maintenance beyond one year before filing is lost."
+          },
+          "basis": [
+            "b7"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "للتقادم الخماسي مجال في المتجمد الذي أمر به حكم سابق.",
+            "en": "The five-year limitation applies to arrears already ordered by an earlier judgment."
+          },
+          "basis": [
+            "b22"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "تحذير من يتجاوز المتجمد سنة قبل الرفع دون منع، وإبقاء التقادم المدني في الاعتبار.",
+        "en": "Warn when the arrears go beyond one year before filing, without blocking, and keep the civil-code limitation in view."
+      },
+      "grade": "C",
+      "refs": [
+        "d1",
+        "b22"
+      ]
+    },
+    {
+      "id": "o2",
+      "question": {
+        "ar": "هل يتوقف وجوب نفقة الزوجة على الدخول أو الدعوة إليه فقط، وما أثر النشوز؟",
+        "en": "Does a wife's maintenance depend only on consummation or the call, and what is the effect of a breach of the marital duty?"
+      },
+      "why": {
+        "ar": "المادة 74 تذكر شرطا واحدا للوجوب، والمادة 55 تذكر النشوز دون بيان أثره على النفقة؛ والاعتقاد بسقوطها بالنشوز من الذاكرة وليس من النص.",
+        "en": "Article 74 states one condition for the duty, and article 55 mentions the breach without saying what it does to maintenance; the belief that maintenance is lost by it is from memory and not from the text."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "الدخول أو الدعوة ببينة كاف، ولا يسقط النشوز النفقة بنص.",
+            "en": "Consummation or a call with evidence is enough, and no text makes the breach cancel maintenance."
+          },
+          "basis": [
+            "b1"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "قد يتمسك المدين بنشوز الزوجة لإسقاط النفقة.",
+            "en": "The debtor may plead the wife's breach to defeat maintenance."
+          },
+          "basis": [
+            "b30"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "تحذير عند عدم ثبوت الدخول أو الدعوة، وعدم المنع، وعدم الجزم بأثر النشوز.",
+        "en": "Warn when consummation or the call is not shown, never block, and do not conclude on the effect of a breach."
+      },
+      "grade": "D",
+      "refs": [
+        "p1",
+        "b30"
+      ]
+    },
+    {
+      "id": "o3",
+      "question": {
+        "ar": "هل يلزم لدعوى نفقة منفردة إجراء مسبق من محاولة صلح أو إعذار؟",
+        "en": "Does a maintenance claim brought alone need a prior step such as a conciliation attempt or a notice?"
+      },
+      "why": {
+        "ar": "محاولات الصلح الوجوبية منصوص عليها في إجراءات الطلاق وليس في دعوى النفقة، ولا نص في قانون الأسرة أو الإجراءات يشترط إعذارا لها؛ وقد لا يتوفر الجزء الخاص بالصلح من الملف المشترك.",
+        "en": "The obligatory conciliation attempts are provided in the divorce procedure and not for a maintenance claim, and no text of the Family Code or of the procedure code requires a notice; the conciliation module record was not available."
+      },
+      "protectiveReading": {
+        "ar": "لا خطوة مسبقة في القاعدة؛ ويراجع نص الصلح والوساطة إن توفر.",
+        "en": "No prior step in the rule; review the conciliation and mediation text when it is available."
+      },
+      "grade": "C",
+      "refs": [
+        "p1"
+      ]
+    },
+    {
+      "id": "o4",
+      "question": {
+        "ar": "هل عنصر الطلاق لازم في كل دعوى نفقة؟",
+        "en": "Is the divorce element needed in every maintenance claim?"
+      },
+      "why": {
+        "ar": "نفقة الزوجة القائمة زوجيتها تجب دون طلاق (المادة 74)، أما النفقة في العدة والسكن لممارسة الحضانة فيفترضان الطلاق (المادتان 61 و72).",
+        "en": "A wife's maintenance during the marriage is owed without divorce (article 74), but maintenance in the waiting period and housing for the exercise of custody assume divorce (articles 61 and 72)."
+      },
+      "readings": [
+        {
+          "reading": {
+            "ar": "الطلاق عنصر مشروط بطلب العدة أو السكن.",
+            "en": "Divorce is an element only when the waiting period or housing is asked."
+          },
+          "basis": [
+            "b8",
+            "b9"
+          ]
+        },
+        {
+          "reading": {
+            "ar": "الطلاق عنصر في كل دعوى كما في ملخص الدعوى المعطى.",
+            "en": "Divorce is an element in every claim, as the brief of the claim lists it."
+          },
+          "basis": [
+            "b12"
+          ]
+        }
+      ],
+      "protectiveReading": {
+        "ar": "يعرض عنصر الطلاق ويستند إلى slot مستحدث للدائن، ولا يمنع التصدير بغيابه.",
+        "en": "Show the divorce element, tied to the creditor slot, and do not block export for its absence."
+      },
+      "grade": "C",
+      "refs": [
+        "e2"
+      ]
+    },
+    {
+      "id": "o5",
+      "question": {
+        "ar": "ما أثر الجنحة الجزائية لعدم تسديد النفقة، وما الحد الأدنى المرتبط بالأجر الوطني الأدنى؟",
+        "en": "What is the effect of the criminal offence of non-payment of maintenance, and the floor tied to the national minimum wage?"
+      },
+      "why": {
+        "ar": "هذان النصان ليسا في مستودع المواد؛ والاعتقاد أن عدم تسديد النفقة المحكوم بها جنحة جزائية، وأن التقدير لا ينزل عن حد أدنى مرتبط بالأجر الأدنى، من الذاكرة فقط.",
+        "en": "Neither text is in the article store; the belief that non-payment of an awarded maintenance is a criminal offence, and that the assessment has a floor tied to the minimum wage, rests on memory alone."
+      },
+      "protectiveReading": {
+        "ar": "يحذر عند وجود متابعة جزائية (استيراد قاعدة الخروج الجزائي) دون الجزم بأثرها.",
+        "en": "Warn when there is a criminal case (the imported criminal exit) without concluding on its effect."
+      },
+      "grade": "D"
+    }
+  ],
+  "checklist": [
+    {
+      "id": "k1",
+      "item": "ما أساس النفقة: الزوجية القائمة أم العدة أم الحضانة أم القرابة (الأصول والفروع)؟",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b1",
+        "b2",
+        "b8",
+        "b4",
+        "b9"
+      ],
+      "note": "Wife (74), child (75), divorced wife in her waiting period (61), custodian housing (72), relatives (77): each has its own statement."
+    },
+    {
+      "id": "k2",
+      "item": "هل الزواج ثابت بعقد رسمي أو بحكم قضائي بثبوت الزواج؟",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b11",
+        "doc1",
+        "e1"
+      ],
+      "note": "Civil status extract, else a judgment."
+    },
+    {
+      "id": "k3",
+      "item": "من الدائن بالنفقة: الزوجة، الأولاد القصر، الأولاد المتابعون للدراسة، البنت دون زواج، العاجز عن الكسب، الوالدان؟",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b2",
+        "b1",
+        "b4",
+        "b3",
+        "e4",
+        "n3"
+      ],
+      "note": "Wife, children, ascendants and descendants; the text lists no separate creditor for a studying or disabled child beyond its own statement."
+    },
+    {
+      "id": "k4",
+      "item": "من المدين بالنفقة: الزوج أو الأب أو الولد الموسر؟ وهل هو قادر على الإنفاق؟",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b2",
+        "b3",
+        "b4",
+        "e3"
+      ],
+      "note": "The husband or the father; the mother only if the father is unable; the capacity test is in the assessment statement."
+    },
+    {
+      "id": "k5",
+      "item": "هل امتنع المدين فعلا عن الإنفاق؟ وما مدة الامتناع وتاريخ بدايته؟",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e3",
+        "d1",
+        "b7"
+      ],
+      "note": "Facts to state and the start date slot maintenance_unpaid_since."
+    },
+    {
+      "id": "k6",
+      "item": "ما عناصر النفقة: الغذاء والكسوة والعلاج والسكن أو أجرته وما يعتبر من الضروريات في العرف؟",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b5",
+        "r1",
+        "r3"
+      ],
+      "note": "The statement lists the components of maintenance."
+    },
+    {
+      "id": "k7",
+      "item": "كيف تقدر النفقة: بحسب حال الطرفين وظروف المعاش؟ وما الحد الأدنى المرتبط بالأجر الوطني الأدنى المضمون؟",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b6",
+        "doc5"
+      ],
+      "note": "Condition of both parties and cost of living, no revision before one year. A floor tied to the minimum wage was searched in the family code and procedure code store texts: not found; see open point o5."
+    },
+    {
+      "id": "k8",
+      "item": "هل تجب النفقة للزوجة الناشز أو التي امتنعت عن الدخول؟ وهل يثبت الدفع بالنشوز؟",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "p1",
+        "b1",
+        "b30",
+        "o2"
+      ],
+      "note": "Condition in article 74; effect of a breach not settled by the text (open point o2, grade D)."
+    },
+    {
+      "id": "k9",
+      "item": "ما المحكمة المختصة إقليميا: موطن الدائن بالنفقة أم المدين؟ وهل القاعدة من النظام العام؟",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "t1",
+        "t2",
+        "court-sections.t4",
+        "b16",
+        "b17"
+      ],
+      "note": "Creditor domicile (and place of the housing); the plea must come first. The texts do not say the rule is of public order."
+    },
+    {
+      "id": "k10",
+      "item": "أي قسم يختص: قسم شؤون الأسرة؟ وماذا لو لم ينشأ هذا القسم؟",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "court-sections.b8"
+      ],
+      "note": "Family section; civil section when the court has no sections (imported section rule)."
+    },
+    {
+      "id": "k11",
+      "item": "هل يلزم محاولة صلح أو إجراء مسبق قبل رفع دعوى النفقة؟",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "refs": [
+        "o3"
+      ],
+      "note": "The obligatory conciliation attempts are in the divorce procedure; none is stated for a maintenance claim alone (open point o3)."
+    },
+    {
+      "id": "k12",
+      "item": "هل تعتبر النفقة مستحقة من تاريخ رفع الدعوى أم من تاريخ الامتناع؟ وما الحد الزمني للمطالبة بالمتأخر؟",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b7",
+        "d1",
+        "r2"
+      ],
+      "note": "Due from filing; arrears on evidence for no more than one year before filing."
+    },
+    {
+      "id": "k13",
+      "item": "هل يسقط المطلوب بالتقادم، وما مدة تقادم النفقة المتجمدة؟",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b22",
+        "o1"
+      ],
+      "note": "No special limitation found for maintenance; the civil-code article on periodic rights is an open reading (o1). The periods module deadlines were not imported for that reason."
+    },
+    {
+      "id": "k14",
+      "item": "هل تجوز المطالبة بنفقة الماضي (متجمد النفقة) وإلى أي مدة؟",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b7",
+        "d1",
+        "r2"
+      ],
+      "note": "Arrears up to one year before filing."
+    },
+    {
+      "id": "k15",
+      "item": "هل تثبت النفقة في العدة بعد الطلاق أو الخلع أو التطليق، وما مدتها؟",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b8",
+        "e2",
+        "b12"
+      ],
+      "note": "Maintenance during the waiting period of the divorced wife. The length of the waiting period itself is not part of this claim."
+    },
+    {
+      "id": "k16",
+      "item": "هل يمكن طلب نفقة مؤقتة أثناء سير الدعوى (أمر استعجالي أو تدبير مؤقت)؟",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b14",
+        "n5",
+        "court-sections.b30"
+      ],
+      "note": "Provisional maintenance by order on petition."
+    },
+    {
+      "id": "k17",
+      "item": "هل الحكم بالنفقة مشمول بالنفاذ المعجل بقوة القانون أم يجب طلبه؟",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b19",
+        "b18",
+        "b20",
+        "r4"
+      ],
+      "note": "Provisional execution is ordered when requested in maintenance matters; it does not arise without a request."
+    },
+    {
+      "id": "k18",
+      "item": "هل يجوز طلب الزيادة أو النقصان لاحقا بتغير الظروف؟",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b6",
+        "n1"
+      ],
+      "note": "No revision before one year from the judgment; a revision is not a new claim."
+    },
+    {
+      "id": "k19",
+      "item": "هل الحاضنة مستحقة لسكن لائق أو بدل إيجار، وما شروط ذلك؟",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b9",
+        "b10",
+        "r3",
+        "b8"
+      ],
+      "note": "Housing or rent for the custodian on divorce; the custodian stays in the marital home until the housing judgment is carried out."
+    },
+    {
+      "id": "k20",
+      "item": "ما الوثائق الواجب إرفاقها: عقد الزواج، شهادة الميلاد، شهادة الدراسة، إثبات دخل المدين؟",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "doc1",
+        "doc2",
+        "doc3",
+        "doc4",
+        "doc5",
+        "doc6",
+        "doc7",
+        "doc8"
+      ],
+      "note": "Documents listed by the claim."
+    },
+    {
+      "id": "k21",
+      "item": "كيف يثبت دخل المدين وقدرته: شهادة عمل، كشف راتب، تحقيق؟",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e3",
+        "doc5",
+        "b6",
+        "b21"
+      ],
+      "note": "The text names no means of proof of income; the means are left to the lawyer."
+    },
+    {
+      "id": "k22",
+      "item": "هل هناك دعوى جزائية موازية بجنحة ترك الأسرة أو عدم تسديد النفقة، وما أثرها؟",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "o5"
+      ],
+      "note": "Parallel criminal case: imported exit. The criminal offence of non-payment is in the Penal Code, which is not in the store (requested; open point o5, grade D). The imported exit is named in the import line; imported items cannot be referenced by id here."
+    },
+    {
+      "id": "k23",
+      "item": "هل صدر حكم سابق بالنفقة (حجية الشيء المقضي به) أو حكم طلاق يتضمن النفقة؟",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "n1",
+        "b6",
+        "n2"
+      ],
+      "note": "An earlier maintenance judgment is a boundary (revision); res judicata itself is not stated in a text of the store that I searched here."
+    },
+    {
+      "id": "k24",
+      "item": "هل الدعوى تحتاج إلى مصاريف قضائية أو يمكن الاستفادة من المساعدة القضائية؟",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "searchedNotFound",
+      "note": "Searched the family code and the procedure code for legal aid and fee exemption; only the fee article was found. Requested the legal aid law as context."
+    },
+    {
+      "id": "k25",
+      "item": "ما البيانات الشكلية الواجب ذكرها في العريضة: هوية الأطراف والمحكمة والوقائع والطلبات؟",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b24",
+        "b25"
+      ],
+      "note": "Contents of the petition and fees."
+    },
+    {
+      "id": "k26",
+      "item": "هل يلزم تمثيل بمحام؟ ومتى تعتبر العريضة مقبولة شكلا؟",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b26"
+      ],
+      "note": "The article names the plaintiff, his agent or his lawyer as the one who lodges the petition; no text read here makes a lawyer mandatory at first instance. Admissibility as to form: the petition contents statement."
+    },
+    {
+      "id": "k27",
+      "item": "هل تتطلب نفقة الأولاد نفقة مستقلة عن نفقة الأم، وهل تبقى للحاضنة صفة المطالبة باسمهم؟",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "e4",
+        "b13",
+        "b2"
+      ],
+      "note": "The custodian asks in the children's name; guardianship on divorce goes to the custodian."
+    },
+    {
+      "id": "k28",
+      "item": "ما أثر انتهاء الحضانة أو بلوغ سن الرشد على استمرار النفقة؟",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b2"
+      ],
+      "note": "Males to majority, females to consummation; continues for disability or studies; ends when self-supporting."
+    },
+    {
+      "id": "k29",
+      "item": "هل يجوز الحجز على أجر المدين لاستيفاء النفقة وما الحد المسموح به؟",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b27",
+        "b28",
+        "b29"
+      ],
+      "note": "Attachment of wages up to half; maintenance ranks first; monthly transfer."
+    },
+    {
+      "id": "k30",
+      "item": "هل هناك مدة معينة للاستئناف، وهل للاستئناف أثر موقف في نفقة؟",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b18",
+        "b19",
+        "b20"
+      ],
+      "note": "Appeal period not searched (not part of the petition); the suspensive effect of the appeal period and provisional execution are stated."
+    },
+    {
+      "id": "k31",
+      "item": "Store note on family-code 75: the original French printing has four paragraphs where the Arabic text has one. What does it raise?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b2"
+      ],
+      "note": "Layout difference only; the Arabic paragraph is cited whole and no French wording is relied on."
+    },
+    {
+      "id": "k32",
+      "item": "Store note on family-code 80: the original French printing has two paragraphs where the Arabic text has one. What does it raise?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b7",
+        "d1"
+      ],
+      "note": "Layout difference only; the Arabic single paragraph carries both the starting date of entitlement and the one-year cap, so they are cited together."
+    },
+    {
+      "id": "k33",
+      "item": "Store note on civil-code 14: temporal applicability of the civil-code text is unsettled. What does it raise?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "applies",
+      "refs": [
+        "b23",
+        "n4"
+      ],
+      "note": "The boundary n4 is a warning only and its statement is interpretive."
+    },
+    {
+      "id": "k34",
+      "item": "Store note on family-code 57 bis: a second region in the scan held only the next amending instruction. What does it raise?",
+      "from": [
+        "derivationB"
+      ],
+      "answer": "doesNotApply",
+      "note": "Nothing: the note says no wording changed."
+    }
+  ]
+}

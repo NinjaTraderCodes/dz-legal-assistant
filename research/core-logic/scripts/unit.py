@@ -54,6 +54,16 @@ AGENTS = {"2a": ("rules-derive-a", "opus", False), "2b": ("rules-derive-b", "son
           "5": ("rules-reconcile", "opus", False), "7a": ("rules-adversary", "opus", False),
           "7b": ("rules-attack", "sonnet", True), "8": ("rules-verify", "opus", False)}
 CODEX_STAGES = {"7c": "rules-support-check-codex", "8b": "boundary-second-view-codex"}
+# The agent definition each prompt runs under (the owner, 18 November 2026: "make each agent's allowed tools a setting it
+# cannot override"): dz-reader only reads, dz-rules also writes rule files and runs the rules tool, dz-checker also
+# fetches Official Journal issues and searches the web. The definitions are in the user's agents folder; their guard is
+# scripts/agent_guard.py. A Workflow launches with agent(prompt, {agentType}), the Agent tool with subagent_type.
+AGENT_TYPES = {"rules-adversary": "dz-checker", "rules-verify": "dz-checker", "rules-blocker-view": "dz-reader"}
+
+
+def agent_type(prompt: str) -> str:
+    return AGENT_TYPES.get(prompt, "dz-rules")
+
 # The owner's light route for the 21 claim types (17 November 2026): "full checking only where a rule can block. A field
 # that can only warn (grades B, C, D) gets one derivation pair, the reconciliation and one attack. No third derivation, no
 # Codex blind view, no follow-up run. Whatever stays uncertain is written as "open, warn" and the work moves on. At most
@@ -1253,7 +1263,8 @@ def launch(u: Unit, stage: str, ledger: str = LEDGER) -> str:
     _write_ledger({"id": rid, "kind": "agent", "role": prompt + (f" (follow-up {followup})" if followup else ""),
                    "model": f"claude-{model}-5-5", "unit": u.id, "stage": stage, "prompt": f"{prompt}.md@{commit}",
                    "started": now(), "status": "running", "outputs": []}, ledger)
-    return (f"LAUNCH  stage {stage}  {prompt}  model: {model}  fresh agent, background  (run {rid})\n"
+    return (f"LAUNCH  stage {stage}  {prompt}  model: {model}  agent type: {agent_type(prompt)}  fresh agent, "
+            f"background  (run {rid})\n"
             "PROMPT  Your whole task is written in one file. Read it first with your Read tool, in one call with allow_large\n"
             "        set to true (a long file is otherwise cut short), and follow it exactly,\n"
             f"        including its list of what you may open: {path}. That file is the only\n"
